@@ -1,0 +1,77 @@
+import type { Exercise } from "@/types";
+
+export const EXERCISES: Exercise[] = [
+  { id: "push-ups", name: "Push-ups", muscleGroups: ["Chest", "Arms", "Core"], equipment: "Bodyweight" },
+  { id: "pull-ups", name: "Pull-ups", muscleGroups: ["Back", "Arms"], equipment: "Bodyweight" },
+  { id: "bench-press", name: "Bench Press", muscleGroups: ["Chest", "Arms"], equipment: "Barbell" },
+  { id: "incline-bench", name: "Incline Bench Press", muscleGroups: ["Chest", "Shoulders"], equipment: "Barbell" },
+  { id: "dumbbell-press", name: "Dumbbell Chest Press", muscleGroups: ["Chest", "Arms"], equipment: "Dumbbells" },
+  { id: "squats", name: "Squats", muscleGroups: ["Legs", "Core"], equipment: "Barbell" },
+  { id: "front-squat", name: "Front Squat", muscleGroups: ["Legs", "Core"], equipment: "Barbell" },
+  { id: "deadlift", name: "Deadlift", muscleGroups: ["Back", "Legs"], equipment: "Barbell" },
+  { id: "romanian-deadlift", name: "Romanian Deadlift", muscleGroups: ["Legs", "Back"], equipment: "Barbell" },
+  { id: "lunges", name: "Lunges", muscleGroups: ["Legs"], equipment: "Dumbbells" },
+  { id: "leg-press", name: "Leg Press", muscleGroups: ["Legs"], equipment: "Machine" },
+  { id: "leg-curl", name: "Leg Curl", muscleGroups: ["Legs"], equipment: "Machine" },
+  { id: "calf-raise", name: "Calf Raise", muscleGroups: ["Legs"], equipment: "Machine" },
+  { id: "overhead-press", name: "Overhead Press", muscleGroups: ["Shoulders", "Arms"], equipment: "Barbell" },
+  { id: "lateral-raise", name: "Lateral Raise", muscleGroups: ["Shoulders"], equipment: "Dumbbells" },
+  { id: "face-pull", name: "Face Pull", muscleGroups: ["Shoulders", "Back"], equipment: "Cable" },
+  { id: "barbell-row", name: "Barbell Row", muscleGroups: ["Back", "Arms"], equipment: "Barbell" },
+  { id: "lat-pulldown", name: "Lat Pulldown", muscleGroups: ["Back", "Arms"], equipment: "Cable" },
+  { id: "cable-row", name: "Seated Cable Row", muscleGroups: ["Back", "Arms"], equipment: "Cable" },
+  { id: "bicep-curl", name: "Bicep Curl", muscleGroups: ["Arms"], equipment: "Dumbbells" },
+  { id: "hammer-curl", name: "Hammer Curl", muscleGroups: ["Arms"], equipment: "Dumbbells" },
+  { id: "tricep-pushdown", name: "Tricep Pushdown", muscleGroups: ["Arms"], equipment: "Cable" },
+  { id: "skull-crusher", name: "Skull Crusher", muscleGroups: ["Arms"], equipment: "Barbell" },
+  { id: "plank", name: "Plank", muscleGroups: ["Core"], equipment: "Bodyweight" },
+  { id: "crunches", name: "Crunches", muscleGroups: ["Core"], equipment: "Bodyweight" },
+  { id: "hanging-leg-raise", name: "Hanging Leg Raise", muscleGroups: ["Core"], equipment: "Bodyweight" },
+  { id: "burpees", name: "Burpees", muscleGroups: ["Full Body", "Cardio"], equipment: "Bodyweight" },
+  { id: "box-jump", name: "Box Jump", muscleGroups: ["Legs", "Cardio"], equipment: "Box" },
+  { id: "kettlebell-swing", name: "Kettlebell Swing", muscleGroups: ["Full Body", "Legs"], equipment: "Kettlebell" },
+  { id: "hip-thrust", name: "Hip Thrust", muscleGroups: ["Legs", "Core"], equipment: "Barbell" },
+  // Bodybuilding / Isolation + symmetry (from Ch10 specialist: isolation for weak points, unilateral, origin/insertion stress, myofibrillar vs sarcoplasmic, shaping via rep ranges/volume)
+  { id: "dumbbell-fly", name: "Dumbbell Fly", muscleGroups: ["Chest"], equipment: "Dumbbells", cues: "Control eccentric, deep stretch at bottom, squeeze pecs at top without locking elbows. Use for sarcoplasmic hypertrophy (higher reps). Unilateral option for lagging side." },
+  { id: "cable-crossover", name: "Cable Crossover", muscleGroups: ["Chest"], equipment: "Cable", cues: "Slight forward lean, cross hands at bottom for full contraction. High-to-low for lower pecs, low-to-high for upper. Attack origin/insertion." },
+  { id: "lateral-raise-db", name: "Lateral Raise", muscleGroups: ["Shoulders"], equipment: "Dumbbells", cues: "Lead with elbows, slight lean, stop at shoulder height. Unilateral for symmetry on lagging delt. Avoid swinging – pure isolation for side delt cap." },
+  { id: "rear-delt-fly", name: "Rear Delt Fly", muscleGroups: ["Shoulders", "Back"], equipment: "Dumbbells", cues: "Hinge at hips, lead elbows back, squeeze rear delts/scaps. Critical for symmetry and posture; often lagging in bodybuilders." },
+  { id: "triceps-extension", name: "Overhead Triceps Extension", muscleGroups: ["Arms"], equipment: "Dumbbells", cues: "Full stretch at bottom, lockout at top without flare. Unilateral to bring up weaker arm. Use for long head emphasis." },
+  { id: "leg-extension", name: "Leg Extension", muscleGroups: ["Legs"], equipment: "Machine", cues: "Full contraction at top (squeeze quads), slow negative. Unilateral for vastus medialis 'tear drop' sweep. Isolation overload for quads weak points." },
+  { id: "seated-calf", name: "Seated Calf Raise", muscleGroups: ["Legs"], equipment: "Machine", cues: "Full stretch at bottom (dorsiflex), pause at top. Targets soleus (deeper calf). Higher reps for sarcoplasmic growth." },
+  { id: "preacher-curl", name: "Preacher Curl", muscleGroups: ["Arms"], equipment: "Barbell", cues: "No swing, full extension at bottom, squeeze at top. Unilateral DB version for lagging bicep. Strict form for peak contraction." },
+  // Periodization notes integrated into programs (from Ch9: ABC model, linear/reverse/undulating/block, Granddaddy Laws, fast/slow gainers, recovery)
+  // Corrective / Mobility (from corrective course forms & analysis)
+  { id: "band-pull-apart", name: "Band Pull-Apart", muscleGroups: ["Shoulders", "Back"], equipment: "Band" },
+  { id: "dead-bug", name: "Dead Bug", muscleGroups: ["Core"], equipment: "Bodyweight" },
+  { id: "bird-dog", name: "Bird Dog", muscleGroups: ["Core", "Back"], equipment: "Bodyweight" },
+  { id: "glute-bridge", name: "Glute Bridge", muscleGroups: ["Legs", "Core"], equipment: "Bodyweight" },
+  { id: "face-pull-band", name: "Face Pull (Band)", muscleGroups: ["Shoulders", "Back"], equipment: "Band" },
+  { id: "cat-camel", name: "Cat-Camel", muscleGroups: ["Core", "Back"], equipment: "Bodyweight" },
+  // Conditioning / Metcon (CrossFit-style + specialist)
+  { id: "thruster", name: "Thruster", muscleGroups: ["Full Body"], equipment: "Barbell" },
+  { id: "wall-ball", name: "Wall Ball", muscleGroups: ["Full Body", "Legs"], equipment: "Medicine Ball" },
+  { id: "double-under", name: "Double Under", muscleGroups: ["Cardio"], equipment: "Jump Rope" },
+  { id: "kettlebell-swing-2h", name: "Two-Handed Kettlebell Swing", muscleGroups: ["Full Body", "Legs"], equipment: "Kettlebell" },
+  { id: "burpee-pullup", name: "Burpee + Pull-up", muscleGroups: ["Full Body"], equipment: "Bodyweight" },
+  { id: "sled-push", name: "Sled Push", muscleGroups: ["Legs", "Full Body"], equipment: "Sled" },
+  // Advanced Bodybuilding methods from Ch11 (supersets, drop sets, giant sets, rest-pause, pyramiding, forced reps, negatives, peak contraction, etc. for hypertrophy focus)
+  { id: "superset-bench-row", name: "Superset: Bench Press + Bent Over Row", muscleGroups: ["Chest", "Back"], equipment: "Barbell", cues: "Perform bench then immediately row with no rest. Opposing muscle groups for efficiency and pump. From bodybuilding methods: alternate push/pull for symmetry." },
+  { id: "drop-set-lateral-raise", name: "Drop Set Lateral Raise", muscleGroups: ["Shoulders"], equipment: "Dumbbells", cues: "Start heavy, reps to failure, drop 20-30% weight, continue to failure. Repeat 2-3 drops. Induces sarcoplasmic hypertrophy and pump per Ch11 techniques." },
+  { id: "giant-set-shoulders", name: "Giant Set: Delts (Lateral + Front + Rear Raises)", muscleGroups: ["Shoulders"], equipment: "Dumbbells", cues: "3+ exercises back to back no rest: lateral, front, rear delt raises. Targets all heads for full cap development and symmetry. Use for weak point training." },
+  { id: "rest-pause-squat", name: "Rest-Pause Squat", muscleGroups: ["Legs"], equipment: "Barbell", cues: "85-95% 1RM single, rest 15-30s, repeat 6-8 singles. CNS heavy but builds strength/hypertrophy. From advanced methods: great for 20-rep breathing squats variation." },
+  { id: "forced-rep-bench", name: "Forced Rep Bench (Partner)", muscleGroups: ["Chest", "Arms"], equipment: "Barbell", cues: "To failure, partner assists 2-3 extra reps. Builds intensity beyond failure. Use sparingly for advanced lifters per bodybuilding traditions." },
+  { id: "negative-pullup", name: "Negative Pull-ups", muscleGroups: ["Back", "Arms"], equipment: "Bodyweight", cues: "Jump or assisted to top, lower slowly 5-8s. Eccentric focus for strength and hypertrophy. Regression for pull-ups." },
+  { id: "peak-contraction-curl", name: "Peak Contraction Bicep Curl", muscleGroups: ["Arms"], equipment: "Dumbbells", cues: "At top of curl, hold and squeeze for 2s peak contraction. Weider principle for mind-muscle connection and bicep peak." },
+  // More from Ch11: EuroBlast, staggered sets, pyramiding, pre/post exhaustion, 20-rep squats, DC training, Weider, heavy duty, etc.
+  { id: "euroblast-curl", name: "EuroBlast Bicep Pump", muscleGroups: ["Arms"], equipment: "Dumbbells", cues: "High volume pump: continuous up/down motion with light weight for 30-60s to flood muscle with blood/nutrients. Ch11 technique for hypertrophy via metabolic stress." },
+  { id: "staggered-curls", name: "Staggered Concentration Curls", muscleGroups: ["Arms"], equipment: "Dumbbells", cues: "Alternate arms or do partials between sets for lagging biceps. Builds focus on weak points without full fatigue." },
+  { id: "pyramid-bench", name: "Traditional Pyramid Bench", muscleGroups: ["Chest"], equipment: "Barbell", cues: "Start light high reps, increase weight decrease reps up pyramid, then reverse down. Classic for progressive overload and volume." },
+  { id: "pre-exhaust-fly", name: "Pre-Exhaust Fly to Bench", muscleGroups: ["Chest"], equipment: "Dumbbells", cues: "Do isolation fly first to fatigue pecs, then compound bench for deeper stimulus. Pre-exhaust method from Ch11." },
+  { id: "20-rep-squat", name: "20-Rep Breathing Squats", muscleGroups: ["Legs"], equipment: "Barbell", cues: "Heavy 20 reps with breathing pauses at top. Legendary for leg mass and mental toughness. Rest-pause variation." },
+  { id: "dc-training-restpause", name: "DC Training Rest-Pause", muscleGroups: ["Full Body"], equipment: "Various", cues: "Rest-pause 3x to failure on key lifts (e.g. 8-12 reps). Extreme intensity for advanced. DC style from Ch11." },
+];
+
+export function getExerciseById(id: string): Exercise | undefined {
+  return EXERCISES.find((e) => e.id === id);
+}

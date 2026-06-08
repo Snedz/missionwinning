@@ -1,0 +1,206 @@
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import {
+  Dumbbell,
+  History,
+  Home,
+  BarChart3,
+  PenTool,
+  Zap,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useWorkoutStore } from "@/store/workoutStore";
+import { useTranslation } from "react-i18next";
+import { supabase, signInMagic, signOut, isPremium } from "@/lib/supabase";
+
+const navItems = [
+  // Train
+  { to: "/log", label: "Dashboard", icon: Home, group: "Train" },
+  { to: "/active", label: "Active Workout", icon: Zap, group: "Train" },
+  { to: "/builder", label: "Builder", icon: PenTool, group: "Train" },
+  { to: "/library", label: "Library", icon: BarChart3, group: "Train" },
+  { to: "/benchmarks", label: "Benchmarks", icon: BarChart3, group: "Train" },
+  // Fuel & Assess
+  { to: "/nutrition", label: "Nutrition", icon: BarChart3, group: "Fuel" },
+  { to: "/calculators", label: "Calculators", icon: BarChart3, group: "Fuel" },
+  { to: "/assessments", label: "Assessments", icon: BarChart3, group: "Fuel" },
+  // Progress
+  { to: "/history", label: "History", icon: History, group: "Progress" },
+  // You
+  { to: "/profile", label: "Profile", icon: BarChart3, group: "You" },
+];
+
+export function Sidebar() {
+  const { t, i18n } = useTranslation();
+  const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [showSignin, setShowSignin] = useState(false);
+  const [signinEmail, setSigninEmail] = useState("");
+  const [premium, setPremium] = useState(false);
+
+  // Language switcher: native names + dropdown so it makes sense even when the UI is in a non-English language.
+  // Users who only read Spanish, French, etc. can now discover and use it without needing English.
+  const LANGS = ['en', 'es', 'fr', 'pt', 'ru'] as const;
+  const NATIVE_NAMES: Record<string, string> = {
+    en: 'English',
+    es: 'Español',
+    fr: 'Français',
+    pt: 'Português',
+    ru: 'Русский',
+  };
+  const currentLang = i18n.language.split('-')[0];
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
+  // Simple auth listener + premium check (call on mount / after signin)
+  React.useEffect(() => {
+    let mounted = true;
+    supabase.auth.getUser().then(({ data }) => {
+      if (mounted && data.user?.email) {
+        setUserEmail(data.user.email);
+        isPremium().then(p => mounted && setPremium(p));
+      }
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      if (session?.user?.email) {
+        setUserEmail(session.user.email);
+        isPremium().then(p => setPremium(p));
+        // Load cloud data on sign in
+        useWorkoutStore.getState().loadFromCloud();
+      } else {
+        setUserEmail(null);
+        setPremium(!!(typeof window !== 'undefined' && localStorage.getItem('mw_premium')));
+      }
+    });
+    return () => { mounted = false; sub.subscription.unsubscribe(); };
+  }, []);
+
+  const handleMagic = async () => {
+    if (!signinEmail) return;
+    try {
+      await signInMagic(signinEmail);
+      alert("Magic link sent — check email and click to sign in. (Check spam too)");
+      setShowSignin(false);
+      setSigninEmail("");
+    } catch (e: any) {
+      alert("Sign in error: " + (e.message || e));
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    setUserEmail(null);
+    setPremium(false);
+  };
+
+  return (
+    <aside className="flex h-full w-56 flex-col border-r border-border/60 bg-card/50 backdrop-blur-sm">
+      <div className="flex items-center gap-2 border-b border-border/60 px-4 py-5">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600">
+          <Dumbbell className="h-5 w-5 text-white" />
+        </div>
+        <div>
+          <h1 className="text-sm font-bold tracking-tight">MISSION WINNING</h1>
+          <p className="text-xs text-muted-foreground">Train. Win. Daily.</p>
+        </div>
+      </div>
+
+      <nav className="flex-1 space-y-1 p-3">
+        {(() => {
+          const groups: Record<string, typeof navItems> = {};
+          navItems.forEach(item => {
+            const g = (item as any).group || 'Other';
+            if (!groups[g]) groups[g] = [];
+            groups[g].push(item as any);
+          });
+          return Object.entries(groups).map(([group, items]) => (
+            <div key={group} className="mb-2">
+              <div className="px-3 py-1 text-[10px] uppercase tracking-widest text-muted-foreground/70">{group}</div>
+              {items.map(({ to, label, icon: Icon }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={to === "/"}
+                  className={({ isActive }) =>
+                    cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-primary/15 text-primary"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    )
+                  }
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  {t(label.toLowerCase(), { defaultValue: label })}
+                  {to === "/active" && activeWorkout && (
+                    <span className="ml-auto h-2 w-2 rounded-full bg-secondary animate-pulse" />
+                  )}
+                </NavLink>
+              ))}
+            </div>
+          ));
+        })()}
+      </nav>
+
+      <div className="border-t border-border/60 p-4 space-y-3 text-xs">
+        <a href="/" className="block text-emerald-400 hover:text-emerald-300">← Back to Mission Winning</a>
+        <a href="/programs" className="block text-muted-foreground hover:text-foreground">View Education Programs</a>
+        <a href="/feedback" className="block text-emerald-400 hover:text-emerald-300">Beta Founders Hub — Share Wins</a>
+        <div className="text-[10px] text-emerald-400">Spots claimed: {typeof window !== 'undefined' ? (localStorage.getItem('mw_beta_spots_claimed') || '347') : '347'}/500</div>
+        <a href="/about" className="block text-muted-foreground hover:text-foreground">About &amp; Legal</a>
+        <div className="space-y-1">
+          <div className="text-[10px] text-muted-foreground">{t('language', { defaultValue: 'Language' })}</div>
+          <select
+            value={currentLang}
+            onChange={(e) => changeLanguage(e.target.value)}
+            className="w-full text-xs bg-background border border-border/50 rounded px-2 py-1 text-foreground"
+            aria-label={t('changeLanguage', { defaultValue: 'Change language' })}
+          >
+            {LANGS.map(l => (
+              <option key={l} value={l}>{NATIVE_NAMES[l]}</option>
+            ))}
+          </select>
+          <div className="text-[10px] text-emerald-400/70">{NATIVE_NAMES[currentLang] || 'English'}</div>
+        </div>
+        {typeof window !== "undefined" && localStorage.getItem("mw_premium") && (
+          <div className="text-green-400 font-medium pt-1">✓ Premium Unlocked (demo)</div>
+        )}
+        <p className="text-muted-foreground pt-1 border-t border-border/40">
+          {activeWorkout ? "Workout in progress" : "Ready to train"}
+        </p>
+
+        {/* Simple auth for cloud sync + real premium (Supabase magic link) */}
+        <div className="pt-2 border-t border-border/30">
+          {userEmail ? (
+            <div className="space-y-1">
+              <div className="text-[10px] truncate text-emerald-400">{userEmail}</div>
+              {premium && <div className="text-green-400 text-[10px]">✓ Premium</div>}
+              <button onClick={handleSignOut} className="text-[10px] text-muted-foreground hover:text-foreground">Sign out</button>
+            </div>
+          ) : (
+            <>
+              {!showSignin ? (
+                <button onClick={() => setShowSignin(true)} className="text-emerald-400 hover:text-emerald-300 text-xs">Sign in for sync + premium</button>
+              ) : (
+                <div className="space-y-1">
+                  <input
+                    type="email"
+                    value={signinEmail}
+                    onChange={e => setSigninEmail(e.target.value)}
+                    placeholder="you@email.com"
+                    className="w-full text-xs bg-background border border-border/50 rounded px-2 py-1"
+                  />
+                  <div className="flex gap-1">
+                    <button onClick={handleMagic} className="text-xs px-2 py-0.5 bg-emerald-600 text-white rounded flex-1">Send magic link</button>
+                    <button onClick={() => setShowSignin(false)} className="text-xs px-1">✕</button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </aside>
+  );
+}

@@ -1,0 +1,195 @@
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('Supabase env vars not set. Using demo mode (localStorage premium only). Create Supabase project and add VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY to .env')
+}
+
+export const supabase = createClient(
+  supabaseUrl || 'https://demo.supabase.co',
+  supabaseAnonKey || 'demo-anon-key'
+)
+
+// Types for our tables (match your Supabase schema)
+export type Profile = {
+  id: string
+  email: string
+  full_name?: string
+  created_at: string
+}
+
+export type Product = {
+  id: string
+  title: string
+  price: number
+  description: string
+  features: string[]
+  is_premium: boolean
+}
+
+export type Enrollment = {
+  id: string
+  user_id: string
+  product_id: string
+  purchased_at: string
+  premium_granted: boolean
+  pdf_urls?: string[]
+}
+
+export type Lead = {
+  id?: number
+  name: string
+  email: string
+  goals?: string
+  current_training?: string
+  package_interest?: string
+  created_at?: string
+}
+
+// Helper: check if user has premium (enrollment or local demo)
+export async function checkPremium(email?: string): Promise<boolean> {
+  if (typeof window !== 'undefined' && localStorage.getItem('mw_premium') === 'true') {
+    return true // demo fallback
+  }
+  if (!email || !supabaseUrl) return false
+  const { data } = await supabase
+    .from('enrollments')
+    .select('premium_granted')
+    .eq('user_email', email) // or join profiles
+    .eq('premium_granted', true)
+    .limit(1)
+  return !!(data && data.length > 0)
+}
+
+// For demo: grant premium locally + log to supabase if possible
+export async function grantDemoPremium(email: string) {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('mw_premium', 'true')
+    localStorage.setItem('mw_premium_email', email)
+  }
+  if (supabaseUrl) {
+    // Log lead/enrollment stub (in real: from webhook)
+    try { await supabase.from('leads').insert({ email, goals: 'demo-premium-grant' }) } catch {}
+  }
+}
+
+// Auth helpers (email magic link for low friction global signups)
+export async function signInMagic(email: string) {
+  const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.origin + '/log' } })
+  if (error) throw error
+  return true
+}
+
+export async function signOut() {
+  await supabase.auth.signOut()
+}
+
+export async function getSession() {
+  const { data } = await supabase.auth.getSession()
+  return data.session
+}
+
+export async function getUser() {
+  const { data: { user } } = await supabase.auth.getUser()
+  return user
+}
+
+// Real premium check (prefers DB enrollment for logged in user, falls back to demo local)
+export async function isPremium(): Promise<boolean> {
+  if (typeof window !== 'undefined' && localStorage.getItem('mw_premium') === 'true') {
+    return true
+  }
+  const user = await getUser()
+  if (!user || !supabaseUrl) return false
+  const { data } = await supabase
+    .from('enrollments')
+    .select('premium_granted')
+    .eq('user_id', user.id)
+    .eq('premium_granted', true)
+    .limit(1)
+  return !!(data && data.length > 0)
+}
+
+// --- Cloud Sync for Workouts & Nutrition (tied to authenticated user) ---
+export type CloudWorkoutLog = {
+  id?: string
+  user_id: string
+  workout_name: string
+  started_at: string
+  completed_at: string
+  duration_seconds: number
+  exercises: { exerciseId: string; sets: { reps: number; weight: number }[] }[]
+  total_volume: number
+}
+
+export async function saveWorkoutLog(log: Omit<CloudWorkoutLog, 'user_id'>) {
+  const user = await getUser()
+  if (!user) return null
+  const payload: CloudWorkoutLog = { ...log, user_id: user.id }
+  const { data, error } = await supabase.from('workout_logs').insert(payload).select().single()
+  if (error) { console.error('saveWorkoutLog error', error); return null }
+  return data
+}
+
+export async function getUserWorkoutHistory(limit = 50): Promise<CloudWorkoutLog[]> {
+  const user = await getUser()
+  if (!user) return []
+  const { data, error } = await supabase
+    .from('workout_logs')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('completed_at', { ascending: false })
+    .limit(limit)
+  if (error) { console.error('getUserWorkoutHistory error', error); return [] }
+  return data || []
+}
+
+export type CloudNutritionEntry = {
+  id?: string
+  user_id: string
+  date: string // YYYY-MM-DD
+  name: string
+  protein: number
+  cals: number
+  carbs?: number
+  fat?: number
+  water_glasses?: number
+}
+
+export async function saveNutritionEntry(entry: Omit<CloudNutritionEntry, 'user_id'>) {
+  const user = await getUser()
+  if (!user) return null
+  const payload: CloudNutritionEntry = { ...entry, user_id: user.id }
+  const { data, error } = await supabase.from('nutrition_logs').insert(payload).select().single()
+  if (error) { console.error('saveNutritionEntry error', error); return null }
+  return data
+}
+
+export async function getUserNutritionForDate(date: string): Promise<CloudNutritionEntry[]> {
+  const user = await getUser()
+  if (!user) return []
+  const { data, error } = await supabase
+    .from('nutrition_logs')
+    .select('*')
+    .eq('user_id', user.id)
+    .eq('date', date)
+  if (error) { console.error('getUserNutritionForDate error', error); return [] }
+  return data || []
+}
+
+export async function getUserNutritionHistory(days = 7) {
+  const user = await getUser()
+  if (!user) return []
+  const since = new Date()
+  since.setDate(since.getDate() - days)
+  const { data, error } = await supabase
+    .from('nutrition_logs')
+    .select('*')
+    .eq('user_id', user.id)
+    .gte('date', since.toISOString().split('T')[0])
+    .order('date', { ascending: false })
+  if (error) { console.error('getUserNutritionHistory error', error); return [] }
+  return data || []
+}
