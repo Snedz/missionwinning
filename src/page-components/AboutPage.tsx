@@ -1,3 +1,5 @@
+'use client';
+
 export function AboutPage() {
   return (
     <div className="max-w-3xl mx-auto prose prose-invert">

@@ -1,4 +1,6 @@
-import { useNavigate } from "react-router-dom";
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Clock, Dumbbell, Flame, Play, Target, TrendingUp, Trophy } from "lucide-react";
@@ -10,7 +12,7 @@ import { computeReadiness, getRecommendedFocus, computeWinScore } from "@/lib/sc
 import { EXERCISES } from "@/data/exercises";
 
 export function HomePage() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { t } = useTranslation();
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
@@ -41,18 +43,18 @@ export function HomePage() {
 
   const handleQuickStart = () => {
     if (activeWorkout) {
-      navigate("/active");
+      router.push("/active");
       return;
     }
     startEmptyWorkout();
-    navigate("/active");
+    router.push("/active");
   };
 
   const handleStartSaved = (id: string) => {
     const workout = savedWorkouts.find((w) => w.id === id);
     if (!workout) return;
     startWorkout(workout.name, workout.exercises, workout.id);
-    navigate("/active");
+    router.push("/active");
   };
 
   // === Today Hub computations using shared util (clean, reusable) ===
@@ -142,7 +144,7 @@ export function HomePage() {
               </Button>
             ))}
             {savedWorkouts.length === 0 && (
-              <Button variant="ghost" size="sm" onClick={() => navigate("/builder")}>
+              <Button variant="ghost" size="sm" onClick={() => router.push("/builder")}>
                 Or build a custom session →
               </Button>
             )}
@@ -178,7 +180,7 @@ export function HomePage() {
                       onClick={() => {
                         const template = matchingEx.map(ex => ({ exerciseId: ex.id, sets: [{ reps: 8, weight: 0 }] }));
                         startWorkout(`${g} Focus`, template);
-                        navigate("/active");
+                        router.push("/active");
                       }}
                     >
                       Train {g} now →
@@ -205,7 +207,7 @@ export function HomePage() {
             <span className="font-medium">Focus:</span> {userGoal} {userEquip === 'bodyweight' ? 'with bodyweight/minimal' : 'with available equipment'}
           </div>
           <div className="text-muted-foreground">Start with a simple full-body or split from Builder, or launch a program template. Complete sessions to level up your Win Score and unlock premium education.</div>
-          <Button variant="outline" size="sm" onClick={() => navigate('/builder')}>
+          <Button variant="outline" size="sm" onClick={() => router.push('/builder')}>
             Go to Builder / Choose Template →
           </Button>
         </CardContent>
@@ -320,7 +322,7 @@ export function HomePage() {
               </Card>
             ))}
           </div>
-          <Button variant="link" className="mt-2 px-0" onClick={() => navigate("/history")}>
+          <Button variant="link" className="mt-2 px-0" onClick={() => router.push("/history")}>
             View full history →
           </Button>
         </div>

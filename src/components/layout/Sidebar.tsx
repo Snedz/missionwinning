@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Dumbbell,
   History,
@@ -108,6 +111,7 @@ export function Sidebar() {
 
       <nav className="flex-1 space-y-1 p-3">
         {(() => {
+          const pathname = usePathname();
           const groups: Record<string, typeof navItems> = {};
           navItems.forEach(item => {
             const g = (item as any).group || 'Other';
@@ -117,27 +121,27 @@ export function Sidebar() {
           return Object.entries(groups).map(([group, items]) => (
             <div key={group} className="mb-2">
               <div className="px-3 py-1 text-[10px] uppercase tracking-widest text-muted-foreground/70">{group}</div>
-              {items.map(({ to, label, icon: Icon }) => (
-                <NavLink
-                  key={to}
-                  to={to}
-                  end={to === "/"}
-                  className={({ isActive }) =>
-                    cn(
+              {items.map(({ to, label, icon: Icon }) => {
+                const isActive = pathname === to || (to === '/log' && pathname === '/');
+                return (
+                  <Link
+                    key={to}
+                    href={to}
+                    className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                       isActive
                         ? "bg-primary/15 text-primary"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                    )
-                  }
-                >
-                  <Icon className="h-4 w-4 shrink-0" />
-                  {t(label.toLowerCase(), { defaultValue: label })}
-                  {to === "/active" && activeWorkout && (
-                    <span className="ml-auto h-2 w-2 rounded-full bg-secondary animate-pulse" />
-                  )}
-                </NavLink>
-              ))}
+                    )}
+                  >
+                    <Icon className="h-4 w-4 shrink-0" />
+                    {t(label.toLowerCase(), { defaultValue: label })}
+                    {to === "/active" && activeWorkout && (
+                      <span className="ml-auto h-2 w-2 rounded-full bg-secondary animate-pulse" />
+                    )}
+                  </Link>
+                );
+              })}
             </div>
           ));
         })()}

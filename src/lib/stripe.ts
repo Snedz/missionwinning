@@ -1,19 +1,20 @@
 import { loadStripe } from '@stripe/stripe-js'
 
-const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
 // For MVP revenue: prefer Stripe Payment Links (create once in Stripe Dashboard, no server needed).
-// Set these in .env as VITE_STRIPE_LINK_PT etc. (https://buy.stripe.com/xxxx)
+// Set these in .env.local as NEXT_PUBLIC_STRIPE_LINK_PT etc. (https://buy.stripe.com/xxxx)
 // Then the buy buttons will redirect directly. Fulfillment via Stripe email + manual or webhook later.
+// Both one-time programs AND recurring subs supported.
 export const STRIPE_LINKS = {
-  ptNutrition: import.meta.env.VITE_STRIPE_LINK_PT || '',
-  bodybuilding: import.meta.env.VITE_STRIPE_LINK_BB || '',
-  corrective: import.meta.env.VITE_STRIPE_LINK_CORR || '',
-  strengthBusiness: import.meta.env.VITE_STRIPE_LINK_BUS || '',
-  onlineCoaching: import.meta.env.VITE_STRIPE_LINK_COACH || '',
-  conditioning: import.meta.env.VITE_STRIPE_LINK_COND || '',
+  ptNutrition: process.env.NEXT_PUBLIC_STRIPE_LINK_PT || '',
+  bodybuilding: process.env.NEXT_PUBLIC_STRIPE_LINK_BB || '',
+  corrective: process.env.NEXT_PUBLIC_STRIPE_LINK_CORR || '',
+  strengthBusiness: process.env.NEXT_PUBLIC_STRIPE_LINK_BUS || '',
+  onlineCoaching: process.env.NEXT_PUBLIC_STRIPE_LINK_COACH || '',
+  conditioning: process.env.NEXT_PUBLIC_STRIPE_LINK_COND || '',
   // Recurring premium sub example (create a $9.99/mo price)
-  premiumMonthly: import.meta.env.VITE_STRIPE_LINK_PREMIUM || '',
+  premiumMonthly: process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM || '',
 }
 
 export async function redirectToCheckout(link: string) {

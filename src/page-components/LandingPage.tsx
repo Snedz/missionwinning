@@ -1,4 +1,6 @@
-import { useNavigate } from "react-router-dom";
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +8,7 @@ import { ArrowRight, Check, Dumbbell, Flame, Shield, TrendingUp } from "lucide-r
 import { STRIPE_LINKS, redirectToCheckout } from "@/lib/stripe";
 
 export function LandingPage() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [abVariant, setAbVariant] = useState<'founders' | 'mission'>('founders');
 
   useEffect(() => {
@@ -81,10 +83,10 @@ export function LandingPage() {
             <a href="#tools" className="hover:text-emerald-400 transition-colors">FREE TOOLS</a>
             <a href="#programs" className="hover:text-emerald-400 transition-colors">BETA PROGRAMS</a>
             <a href="#coaching" className="hover:text-emerald-400 transition-colors">ELITE COACHING</a>
-            <Button variant="outline" size="sm" onClick={() => navigate("/log")}>GRAB FREE TRACKER</Button>
+            <Button variant="outline" size="sm" onClick={() => router.push("/log")}>GRAB FREE TRACKER</Button>
             <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700" onClick={() => document.getElementById('programs')?.scrollIntoView({ behavior: 'smooth' })}>JOIN BETA FOUNDERS NOW</Button>
             <Button variant="ghost" size="sm" className="text-emerald-400" onClick={() => {
-              const trig = (window as any).triggerPwaInstall; if (trig) trig(); else navigate('/log');
+              const trig = (window as any).triggerPwaInstall; if (trig) trig(); else router.push('/log');
             }}>INSTALL FOR OFFLINE (PWA)</Button>
           </div>
         </div>
@@ -106,7 +108,7 @@ export function LandingPage() {
             The only tracker + education system built for the obsessed who refuse to settle. Whether you're in Lagos, Moscow, Dubai or anywhere — this is how you dominate your health and life.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
-            <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-10 h-14" onClick={() => navigate("/log")}>
+            <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-10 h-14" onClick={() => router.push("/log")}>
               START FREE TRACKER — PROVE IT TO YOURSELF <ArrowRight className="ml-2" />
             </Button>
             <Button size="lg" className="bg-white text-black hover:bg-white/90 text-lg px-10 h-14" onClick={() => {
@@ -175,7 +177,7 @@ export function LandingPage() {
         </div>
 
         <div className="text-center">
-          <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-10 h-14" onClick={() => navigate("/log")}>
+          <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-10 h-14" onClick={() => router.push("/log")}>
             GRAB THE FREE TRACKER NOW — START MASSIVE ACTION TODAY <ArrowRight className="ml-2" />
           </Button>
           <div className="text-xs mt-3 text-white/40">Used by serious lifters worldwide. 5x5 • Texas Method • Custom Builder • History • PR Tracking • PWA • Global</div>
@@ -298,7 +300,7 @@ export function LandingPage() {
           ))}
         </div>
 
-        <Button size="lg" className="bg-red-600 hover:bg-red-700 text-lg px-10 h-14" onClick={() => navigate("/coaching")}>APPLY FOR ELITE COACHING — ONLY THE OBSESSED</Button>
+        <Button size="lg" className="bg-red-600 hover:bg-red-700 text-lg px-10 h-14" onClick={() => router.push("/coaching")}>APPLY FOR ELITE COACHING — ONLY THE OBSESSED</Button>
         <div className="text-xs mt-3 text-white/40">Spots are extremely limited. We only work with people who are obsessed. Apply now or stay average.</div>
       </section>
 
@@ -309,7 +311,7 @@ export function LandingPage() {
         <p className="text-xl text-white/80 mb-8">Keep doing what you've always done and stay average. Or take massive action and dominate your effort, your body, and your results with Mission Winning Beta starting right now.</p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-10 h-14" onClick={() => navigate("/log")}>
+          <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-10 h-14" onClick={() => router.push("/log")}>
             START FREE — PROVE IT TO YOURSELF
           </Button>
           <Button size="lg" className="bg-white text-black hover:bg-white/90 text-lg px-10 h-14" onClick={() => document.getElementById('programs')?.scrollIntoView({ behavior: 'smooth' })}>

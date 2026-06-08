@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from 'next/navigation';
 import { Check, Clock, Plus, SkipForward, Square, Timer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,7 @@ import { formatDuration } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
 
 export function ActiveWorkoutPage() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
   const restSecondsRemaining = useWorkoutStore((s) => s.restSecondsRemaining);
@@ -118,7 +120,7 @@ export function ActiveWorkoutPage() {
         title: "Workout complete!",
         description: `${log.totalVolume.toLocaleString()} lbs total volume`,
       });
-      navigate("/history");
+      router.push("/history");
     } else {
       toast({
         title: "Nothing logged",
@@ -130,7 +132,7 @@ export function ActiveWorkoutPage() {
 
   const handleCancel = () => {
     cancelActiveWorkout();
-    navigate("/");
+    router.push("/");
   };
 
   if (!activeWorkout) {
