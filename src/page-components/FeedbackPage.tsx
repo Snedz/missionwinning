@@ -39,25 +39,24 @@ export function FeedbackPage() {
     return (
       <div className="max-w-2xl mx-auto py-12 px-6 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-emerald-600/20 text-emerald-400 text-sm mb-4 border border-emerald-500/30">
-          BETA FOUNDERS ONLY
+          MISSION BUILDERS
         </div>
-        <h1 className="text-5xl font-bold tracking-tighter mb-4">Thank You, Beta Founder.</h1>
+        <h1 className="text-5xl font-bold tracking-tighter mb-4">Thank You.</h1>
         <p className="text-xl text-white/70 mb-8">
-          Your massive action + feedback will shape Mission Winning for every winner who comes after you. 
-          You've locked in the perks and your voice counts.
+          Your action + feedback helps make the free core and Super Bundle better for the global mission. 
+          Your voice counts.
         </p>
         <div className="bg-[#111827] border border-white/10 rounded-2xl p-8 mb-8 text-left max-w-md mx-auto">
-          <div className="uppercase tracking-[3px] text-emerald-400 text-xs mb-2">YOUR BETA STATUS</div>
-          <div className="font-semibold">✓ Lifetime pricing locked</div>
-          <div className="font-semibold">✓ Premium unlocks active (or coming on program purchase)</div>
-          <div className="font-semibold">✓ Input on roadmap + future features</div>
-          <div className="font-semibold">✓ Priority for coaching cohort</div>
-          <div className="mt-4 text-xs text-white/50">Watch your email for updates + the first Beta Founders-only drop.</div>
+          <div className="uppercase tracking-[3px] text-emerald-400 text-xs mb-2">YOUR CONTRIBUTOR STATUS</div>
+          <div className="font-semibold">✓ Super Bundle premium unlocks</div>
+          <div className="font-semibold">✓ Input on roadmap + features</div>
+          <div className="font-semibold">✓ Early access to updates</div>
+          <div className="mt-4 text-xs text-white/50">Watch your email for updates + community drops.</div>
         </div>
         <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700" onClick={() => window.location.href = "/log"}>
-          BACK TO THE LOG — KEEP TAKING MASSIVE ACTION
+          BACK TO THE LOG — KEEP BUILDING THE PATH
         </Button>
-        <div className="mt-6 text-xs text-white/40">Winners don't just consume. They build. You are one of them.</div>
+        <div className="mt-6 text-xs text-white/40">You don't just consume. You help build a healthier world for all.</div>
       </div>
     );
   }
@@ -68,7 +67,7 @@ export function FeedbackPage() {
         <a href="/" className="text-sm text-emerald-400 hover:underline">← Back to Mission Winning</a>
 
         <div className="mt-6 mb-10">
-          <div className="uppercase tracking-[3px] text-red-500 text-sm mb-2">BETA FOUNDERS EXCLUSIVE</div>
+          <div className="uppercase tracking-[3px] text-red-500 text-sm mb-2">MISSION BUILDERS — YOUR VOICE MATTERS</div>
           <h1 className="text-5xl font-bold tracking-tighter">Shape Mission Winning. Share Your Wins.</h1>
           <p className="mt-3 text-xl text-white/70 max-w-2xl">
             You took massive action and joined early. Now tell us what results you're seeing, what worked, what to build next. 

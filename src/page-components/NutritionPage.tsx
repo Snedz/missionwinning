@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -152,6 +154,9 @@ const RECIPES = [
 ];
 
 export function NutritionPage() {
+  // Free core per vision.md: Basic logging, targets, accessible recipes free for all worldwide.
+  // Premium deep plans/recipes in Fuel pillar or Super Bundle. Core mission free forever.
+
   const { t } = useTranslation();
   const premium = typeof window !== "undefined" && localStorage.getItem("mw_premium") === "true";
   const [targetCals] = useState(2200);
@@ -335,7 +340,7 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
       <div className="text-[10px] text-muted-foreground">Data stored locally (synced when you sign in with Supabase in future updates). Full integration + meal plans in the paid Nutrition course.</div>
 
       <Card>
-        <CardHeader><CardTitle>Beta Recipes &amp; Meal Ideas (Premium)</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Premium Recipes &amp; Meal Ideas (Super Bundle)</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           {RECIPES.map((r, i) => (
             <div key={i} className="border border-white/10 rounded p-3 bg-black/20">
@@ -358,7 +363,7 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
       {/* PREMIUM RECIPES - From Nutrition Specialist Materials */}
       <Card>
         <CardHeader>
-          <CardTitle>Beta Recipes &amp; Meal Ideas</CardTitle>
+          <CardTitle>Premium Recipes &amp; Meal Ideas</CardTitle>
           <p className="text-sm text-muted-foreground">High-protein, balanced meals based on the nutrition certification principles. Log the whole meal with one click. Build muscle, recover faster, stay lean.</p>
         </CardHeader>
         <CardContent>

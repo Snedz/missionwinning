@@ -3,10 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
-import { STRIPE_LINKS, redirectToCheckout } from "@/lib/stripe";
+import { UnlockButton } from "@/components/UnlockButton";
 import { useState } from "react";
 
 export function ProgramsPage() {
+  // Transitioned per vision.md: This is legacy marketing for the Learn pillar (/learn).
+  // Core is free (tracker + basics). Premium education + full pillars via Super Bundle (50% off promos).
+  // See /bundle, /learn, and vision.md for the free global everything-health model.
   const [filterGoal, setFilterGoal] = useState<string>("All");
   const [filterEquip, setFilterEquip] = useState<string>("All");
 
@@ -105,7 +108,7 @@ export function ProgramsPage() {
   });
 
   const exportProgramPDF = (prog: any) => {
-    const content = `${prog.title}\n${prog.duration} • ${prog.price}\n\nWhat You Get:\n${prog.whatYouGet.map((w: string) => `- ${w}`).join("\n")}\n\n${prog.disclaimer}\n\nMission Winning Beta Founders • Take Massive Action`;
+    const content = `${prog.title}\n${prog.duration} • ${prog.price}\n\nWhat You Get:\n${prog.whatYouGet.map((w: string) => `- ${w}`).join("\n")}\n\n${prog.disclaimer}\n\nMission Winning — Free Core + Super Bundle. The path for all.`;
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -120,10 +123,10 @@ export function ProgramsPage() {
       <div className="max-w-5xl mx-auto">
         <div className="mb-10">
           <a href="/" className="text-sm text-emerald-400 hover:underline">← Back to Mission Winning</a>
-          <h1 className="text-5xl font-bold tracking-tighter mt-3">THE BETA PROGRAMS</h1>
-          <p className="text-xl text-white/70 mt-2">These aren't courses for average people. These are the exact practical weapons winners use to dominate their bodies, their knowledge, and their income. Battle-tested. Designed to be used inside Mission Winning immediately. Apply or stay mediocre.</p>
-          <p className="mt-4 text-sm max-w-prose text-white/50">These are <strong>premium practical education programs</strong> for the obsessed. Not certifications. Real skills. Real templates. Real results. The 1% execute. The rest talk. Beta Founders get early bird pricing and input.</p>
-          <div className="mt-2 text-emerald-400 font-semibold">347 / 500 BETA FOUNDER SPOTS CLAIMED — EARLY BIRD PRICING ACTIVE</div>
+          <h1 className="text-5xl font-bold tracking-tighter mt-3">THE LEARN PILLAR</h1>
+          <p className="text-xl text-white/70 mt-2">Premium practical education as part of the Super Bundle. Free core tools and intros for everyone worldwide. Full programs unlock deeper mastery for bundle members. Designed to be used inside the app immediately. The free path is always open.</p>
+          <p className="mt-4 text-sm max-w-prose text-white/50">These are <strong>premium practical education programs</strong> for those ready for more. Not certifications. Real skills. Real templates. Real results. Free core for the mission; bundle sustains it for all.</p>
+          <div className="mt-2 text-emerald-400 font-semibold">Join the Super Bundle to unlock full access + help shape the future.</div>
         </div>
 
         {/* M&S-style filters */}
@@ -148,30 +151,21 @@ export function ProgramsPage() {
                     <CardTitle className="text-3xl">{prog.title}</CardTitle>
                     <div className="text-emerald-400 mt-1">{prog.duration} • {prog.price} one-time</div>
                   </div>
-                  <Button 
-                    size="lg" 
-                    className="bg-red-600 hover:bg-red-700 whitespace-nowrap text-base"
-                    onClick={() => {
-                      // Use Stripe Payment Links (fastest path to real revenue)
-                      const linkMap: Record<string, string> = {
-                        "Elite Personal Training + Nutrition": STRIPE_LINKS.ptNutrition,
-                        "Bodybuilding Specialist Exercises & Programming": STRIPE_LINKS.bodybuilding,
-                        "Corrective Exercise Specialist": STRIPE_LINKS.corrective,
-                        "Strength Business of Personal Training": STRIPE_LINKS.strengthBusiness,
-                        "Online Coaching Mastery": STRIPE_LINKS.onlineCoaching,
-                        "Conditioning Specialist": STRIPE_LINKS.conditioning,
-                      };
-                      const link = linkMap[prog.title] || '';
-                      redirectToCheckout(link);
-                      // Analytics stub for beta pricing conversion
-                      console.log('analytics: beta_program_cta_clicked', prog.title);
-                      localStorage.setItem('mw_event_program_' + prog.title.replace(/\s/g,'_'), Date.now().toString());
-                      // Extra: "enroll" event for A/B or conversion tracking
-                      console.log('analytics: enroll_clicked', prog.title);
-                    }}
-                  >
-                    {Math.random() > 0.5 ? `TAKE MASSIVE ACTION — JOIN BETA FOR ${prog.price} (LIMITED)` : `SECURE YOUR SPOT — ${prog.price} EARLY BIRD`}
-                  </Button>
+                  <UnlockButton
+                    productId={
+                      prog.title.toLowerCase().includes('personal') ? 'pt-nutrition' :
+                      prog.title.toLowerCase().includes('bodybuilding') ? 'bodybuilding' :
+                      prog.title.toLowerCase().includes('corrective') ? 'corrective' :
+                      prog.title.toLowerCase().includes('business') ? 'strength-business' :
+                      prog.title.toLowerCase().includes('coaching') ? 'online-coaching' :
+                      prog.title.toLowerCase().includes('conditioning') ? 'conditioning' : undefined
+                    }
+                    price={prog.price.replace('$', '')}
+                    title={prog.title}
+                    className="mt-2"
+                  />
+                  {/* Analytics stub kept for compatibility */}
+                  <script dangerouslySetInnerHTML={{ __html: `console.log('analytics: program_view', '${prog.title}');` }} />
                 </div>
               </CardHeader>
               <CardContent>
@@ -185,11 +179,11 @@ export function ProgramsPage() {
                     </ul>
                   </div>
                   <div className="md:col-span-2 bg-black/30 p-5 rounded border border-white/10 text-sm">
-                    <div className="font-semibold text-emerald-400 mb-2">IMPORTANT DISCLAIMER</div>
+                    <div className="font-semibold text-emerald-400 mb-2">FREE INTRO — FULL IN SUPER BUNDLE OR PILLAR</div>
                     {prog.disclaimer}
-                    <div className="mt-4 text-xs text-white/50">All sales final. 30-day guarantee for serious buyers only. No refunds for quitters. Questions? Email support@missionwinning.com. This is for winners who take massive action. Beta Founders lock in special pricing. Mission Winning LLC.</div>
+                    <div className="mt-4 text-xs text-white/50">All sales final. 30-day guarantee. Questions? Email support@missionwinning.com. This sustains the free core for the global mission. Super Bundle members help shape it. Mission Winning LLC.</div>
                   <div className="mt-3 flex gap-3">
-                    <a href="/feedback" className="text-emerald-400 hover:text-emerald-300 text-xs underline">Beta Founders: Share wins &amp; feedback →</a>
+                    <a href="/feedback" className="text-emerald-400 hover:text-emerald-300 text-xs underline">Share wins &amp; feedback →</a>
                     <Button size="sm" variant="outline" onClick={() => exportProgramPDF(prog)} className="text-xs h-6">Download PDF Summary (M&S style)</Button>
                   </div>
                   </div>

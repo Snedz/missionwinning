@@ -37,5 +37,7 @@ if (typeof window !== 'undefined') {
 }
 
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
+  // PayPal provider temporarily removed while we finalize business setup.
+  // Will re-add when payment processor (e.g. Stripe/PayPal) is connected.
   return <>{children}</>;
 }

@@ -1,14 +1,14 @@
-# Mission Winning — Setup for Revenue (Mission Winning)
+# Mission Winning — Setup for the Free Global "Everything App" for Health (Freemium + Super Bundle Model)
 
-## 1. Legal / Business Structure (Do This Week for "Paid to Survive")
-- Form **Mission Winning LLC** (for-profit) — use your state or Delaware via Stripe Atlas / Clerky / attorney (~$100-500 + EIN free).
-  - This owns the app, Stripe account, contracts, pays you (salary + draws).
-- (Optional later) Form **Mission Winning Foundation** 501(c)(3) for mission work, grants, free global programs/scholarships.
-  - Hybrid: LLC runs revenue products; Foundation gets donations/grants and can receive % from LLC.
-- Apple Developer: Not needed for PWA launch (current model). If native iOS later, pay $99 under LLC. Waiver only for 100% free apps under qualifying nonprofit — not compatible with revenue IAP/subs.
-- Get business bank (Mercury, Relay, or local). Connect to Stripe.
+**See vision.md first** — this is the guiding document. Core mission (tracker + fundamentals) is **free forever for everyone worldwide**. Revenue via premium modules + flagship Super Bundle (inspired by Freeletics: freemium core hook + discounted bundle of synergistic pillars for holistic value, 50% off promos, etc.). "Mainly a free app" serving the mission of global health equity. PWA primary for zero-fee accessibility.
 
-Support email: support@missionwinning.com (or hello@). Update in code where placeholder.
+## 1. Legal / Business Structure (Mission + Sustainable Revenue)
+- Form **Mission Winning LLC** (for-profit) — use your state or Delaware via attorney/services (~$100-500 + EIN). Owns app IP, runs payments (PayPal), pays owner (salary/draws) for sustainability while pursuing mission.
+- **Optional/Parallel: Mission Winning Foundation (501(c)(3))** for pure mission impact: scholarships for free premium/bundle access in low-resource areas (Africa, etc.), grants, free global education/resources. LLC can donate % of profits or provide at-cost services. Common hybrid for impact orgs.
+- Apple Developer: **Not needed** for PWA launch (primary model — zero $99 fees or 30% cuts). Core is free, so aligns with accessibility. If native iOS companion later (after revenue), pay $99 under LLC. Non-profit waiver only for 100% free apps — use PWA + foundation for mission scale instead.
+- Get business bank (Mercury, Relay, or local). Connect to PayPal (or chosen processor for bundles/subs).
+
+Support email: support@missionwinning.com (or hello@). Update in code. Reference vision.md in all legal/about pages.
 
 ## 2. Domain & Hosting
 - Point missionwinning.com (or subdomains app./forge.) to Vercel (or your host).
@@ -69,36 +69,40 @@ create table workout_logs (
 
 6. Add VITE_SUPABASE_* to .env (copy .env.example).
 
-## 4. Stripe (Real Revenue — Hours to First $)
-1. Create Stripe account (stripe.com).
-2. Create Products + Prices:
-   - One-time: PT+Nutrition $497, Bodybuilding $297, etc.
-   - Recurring: Premium Monthly $9.99 (or your price).
-3. Create Payment Links for each (easiest, hosted, no code change needed beyond the links in .env).
-4. (Recommended for auto-fulfill) Set up webhooks to your Supabase Edge Function (or a small server) on `checkout.session.completed`:
-   - Look up/create user by email.
-   - Insert enrollment.
-   - Send email via Resend with signed PDF links + "premium granted — open Forge app".
-5. Put the buy.stripe.com/... links into .env VITE_STRIPE_LINK_* .
-6. Test with Stripe test cards. Real mode when ready (KYC etc).
+## 4. Payments (Temporarily Demo / Request-Based)
+Core mission (tracker + fundamentals) is **free forever for everyone worldwide** (see vision.md).
 
-In code, buy buttons now call redirectToCheckout which goes straight to your live Payment Link → customer pays → you get notified → grant access.
+Premium access (individual pillars or the full Super Bundle) currently uses simple "Request Access" buttons:
+- Grants demo premium locally (sets mw_premium and mw_bundle_active in localStorage).
+- Shows a confirmation message and logs the request (for analytics / owner review).
+- No real payment processor required right now.
+
+This is temporary while finalizing business setup (LLC etc.). Once ready, we can plug in a real processor (PayPal, Stripe, Lemon Squeezy, etc.) with proper checkout + webhook fulfillment at /api/paypal-webhook (or equivalent).
+
+For now:
+- No payment keys needed for core or demo unlocks.
+- Buttons appear in /bundle, /learn, pillar pages, landing CTAs, etc.
+- Super Bundle pricing shown for reference ($12/mo example, 50% intro promos).
+
+See .env.example (PayPal section noted as skipped for now).
+Later: easy to swap UnlockButton for real checkout flow.
 
 ## 5. Emails (Resend)
 - Sign up resend.com, verify domain (or use onboarding).
 - Add VITE_RESEND_API_KEY.
 - For MVP, Stripe receipts + manual "here are your PDFs" works; upgrade to automated.
 
-## 6. Run & Test Revenue Flow
+## 6. Run & Test (Free Core + Demo Premium)
 ```bash
-cp .env.example .env
-# fill keys
+cp .env.example .env.local
+# No payment keys needed right now
 npm install
 npm run dev
 ```
-- Visit / , click a program "Enroll" → goes to your Stripe link (or demo grants local premium).
-- Sign up (will add UI soon), see premium in app.
-- After real purchase, use Supabase dashboard or webhook to set premium_granted.
+- Visit / , use free core (tracker at /log, library, basic nutrition).
+- Click "Request Access" / Super Bundle buttons → demo unlock + message.
+- Premium status shows in Profile (demo).
+- Test PWA install and offline use of core features.
 
 ## 7. i18n, Global, Content
 - (Next) Add i18next. Default EN + ES/FR etc.
@@ -106,17 +110,66 @@ npm run dev
 - Add nutrition page (log + targets).
 - Keep PWA strong for offline global use (Africa, Russia, etc.).
 
-## 8. First Revenue Checklist
-- [ ] LLC + bank + Stripe account live.
-- [ ] 1-2 Payment Links created + env set.
-- [ ] Supabase project + basic tables + RLS.
-- [ ] Buy button tested end-to-end (test mode).
-- [ ] PDFs uploaded to Storage, test signed URL delivery.
-- [ ] Rebuild + deploy to live domain.
+## 8. First Launch Checklist (Free Core + Demo Premium)
+- [ ] LLC formed (recommended for proper payments later).
+- [ ] Supabase project + basic tables + RLS (optional for cloud sync).
+- [ ] .env.local set (can run fully in demo mode).
+- [ ] Free core tested (tracker, library, basics — no paywall).
+- [ ] Request/Unlock buttons tested (demo premium + bundle flag).
+- [ ] Rebuild + deploy to live domain (Vercel recommended).
 - [ ] Update disclaimers, legal, support@.
 - [ ] Tell 10 people / post / email list.
+- [ ] (Later) Add real payment processor + update webhook / env vars.
 
-## 9. Non-Profit Note
-PWA + web payments = no need for Apple fee waiver to launch and get paid. Use for-profit LLC. Add 501c3 later for mission scale (free tiers in low-resource areas, scholarships).
+## 9. Mission & Non-Profit Note
+PWA = true global accessibility with zero fees/cuts for the free core. Use for-profit LLC for ops/revenue (Super Bundle sustains the mission). Add 501c3 Foundation later/parallel for scholarships (free premium access in low-resource areas), grants, pure mission work. Hybrid structure: LLC pays owner while funding impact. Apple waiver not needed (PWA primary; core free aligns with mission). "Mainly a free app" per vision.md.
 
-Questions? Update plan or ask. This gets you paid fast while building the global winning health tool.
+## Local Development Environment (exact safe commands)
+
+**Always open a new terminal tab and paste these blocks exactly.**
+
+Block 1 (get into the folder):
+```bash
+cd ~/missionwinning
+pwd
+```
+
+Block 2:
+```bash
+npm install
+npm run dev
+```
+
+Visit http://localhost:3000.
+
+Everything in the core (log workout, library, nutrition, calculators, benchmarks) is free for anyone. The Super Bundle and pillar "Request Access" buttons use a simple email form that unlocks demo premium locally for testing.
+
+No payment keys are needed right now.
+
+## Deployment to Production (Vercel Recommended)
+
+Vercel is the best choice:
+- First-class Next.js support (build, API routes for /api/paypal-webhook, previews).
+- PWA works out of the box with our next-pwa config.
+- Free tier generous for this scale.
+- Easy custom domain setup for www.missionwinning.com.
+- Env vars + logs + serverless functions perfect for webhook.
+
+Steps:
+1. `git push` (or `npx vercel` for direct).
+2. Import to Vercel (vercel.com/new).
+3. Set all NEXT_PUBLIC_* and server vars (RESEND if email, PayPal plan ID) in Project Settings > Environment Variables. Use production values (live PayPal client ID).
+4. Deploy.
+5. In PayPal dashboard: Update the webhook endpoint to your production URL (e.g. https://www.missionwinning.com/api/paypal-webhook). Add events: PAYMENT.CAPTURE.COMPLETED, BILLING.SUBSCRIPTION.ACTIVATED.
+6. Add domain in Vercel: www.missionwinning.com + apex. Update DNS at registrar (CNAME/A records provided by Vercel).
+7. Test: Free core everywhere, PWA install on mobile, bundle purchase flow (sandbox or live), webhook fires and grants access.
+
+See vercel.json for redirects (old /programs -> /learn, /beta -> /bundle) and security headers.
+
+Alternative production: Netlify (with functions) or self-host on Fly.io/DigitalOcean, but Vercel minimizes ops for Next.js + PWA + domain.
+
+After deploy, monitor PayPal webhooks in dashboard, update client ID to live.
+
+This keeps the free core globally accessible while enabling sustainable Super Bundle revenue.
+
+Questions? Update plan or ask. This builds the free global everything-health super app (vision.md first) — core mission free for all, Super Bundle for synergy and sustainability. "Mainly a free app" making the world healthier.

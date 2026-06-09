@@ -5,7 +5,7 @@ import { I18nPwaProvider } from './i18n-pwa-provider';
 
 export const metadata: Metadata = {
   title: 'Mission Winning | All-in-One Health & Workout App | Train Anywhere. Win Daily.',
-  description: 'The all-in-one global health and workout app. Free tracker, premium education programs, nutrition logging, and elite practical training tools. Train anywhere. Win daily. Beta Founders Early Bird pricing live — limited spots.',
+  description: 'The free global everything app for health. Core mission (workout tracking + fundamentals) free for everyone worldwide. Premium modules + Super Bundle for deeper synergy (train + fuel + move + mind + track + learn). The path to a healthier world for all. Train anywhere. Win daily.',
   icons: {
     icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',

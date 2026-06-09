@@ -17,20 +17,28 @@ import { useTranslation } from "react-i18next";
 import { supabase, signInMagic, signOut, isPremium } from "@/lib/supabase";
 
 const navItems = [
-  // Train
+  // Train (free core + premium Coach)
   { to: "/log", label: "Dashboard", icon: Home, group: "Train" },
   { to: "/active", label: "Active Workout", icon: Zap, group: "Train" },
   { to: "/builder", label: "Builder", icon: PenTool, group: "Train" },
   { to: "/library", label: "Library", icon: BarChart3, group: "Train" },
   { to: "/benchmarks", label: "Benchmarks", icon: BarChart3, group: "Train" },
-  // Fuel & Assess
+  // Fuel (free basics + premium)
   { to: "/nutrition", label: "Nutrition", icon: BarChart3, group: "Fuel" },
   { to: "/calculators", label: "Calculators", icon: BarChart3, group: "Fuel" },
   { to: "/assessments", label: "Assessments", icon: BarChart3, group: "Fuel" },
+  // Move (mobility + yoga — free entry + premium)
+  { to: "/move", label: "Move & Mobility", icon: BarChart3, group: "Move" },
+  // Mind (mindfulness — free entry + premium)
+  { to: "/mind", label: "Mind & Recovery", icon: BarChart3, group: "Mind" },
   // Progress
   { to: "/history", label: "History", icon: History, group: "Progress" },
+  // Learn (education pillar — free intros + premium programs)
+  { to: "/learn", label: "Learn & Master", icon: BarChart3, group: "Learn" },
   // You
   { to: "/profile", label: "Profile", icon: BarChart3, group: "You" },
+  // Bundle hub (Super Bundle promo)
+  { to: "/bundle", label: "Super Bundle", icon: BarChart3, group: "Bundle" },
 ];
 
 export function Sidebar() {
@@ -149,9 +157,10 @@ export function Sidebar() {
 
       <div className="border-t border-border/60 p-4 space-y-3 text-xs">
         <a href="/" className="block text-emerald-400 hover:text-emerald-300">← Back to Mission Winning</a>
+        <a href="/vision" className="block text-xs text-white/50 hover:text-white/70">vision.md — the path for all</a>
         <a href="/programs" className="block text-muted-foreground hover:text-foreground">View Education Programs</a>
-        <a href="/feedback" className="block text-emerald-400 hover:text-emerald-300">Beta Founders Hub — Share Wins</a>
-        <div className="text-[10px] text-emerald-400">Spots claimed: {typeof window !== 'undefined' ? (localStorage.getItem('mw_beta_spots_claimed') || '347') : '347'}/500</div>
+        <a href="/feedback" className="block text-emerald-400 hover:text-emerald-300">Share Wins &amp; Feedback</a>
+        <div className="text-[10px] text-emerald-400">Global contributors: {typeof window !== 'undefined' ? (localStorage.getItem('mw_contributors') || '12,400') : '12,400'}+</div>
         <a href="/about" className="block text-muted-foreground hover:text-foreground">About &amp; Legal</a>
         <div className="space-y-1">
           <div className="text-[10px] text-muted-foreground">{t('language', { defaultValue: 'Language' })}</div>

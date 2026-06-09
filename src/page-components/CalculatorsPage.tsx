@@ -30,8 +30,8 @@ export function CalculatorsPage() {
     <div className="space-y-8 max-w-4xl">
       <div>
         <h2 className="text-3xl font-bold tracking-tight fitness-text-gradient">Mission Winning Calculators</h2>
-        <p className="text-muted-foreground">Free tools for the masses. <span className="text-emerald-400 font-semibold">Beta Founders unlock premium versions</span> — advanced periodization, contest prep macros, client scoring that syncs to your Log. Massive action starts with precision.</p>
-        <div className="mt-2 text-xs text-red-400">BETA FOUNDERS: Early bird pricing active — limited spots. Enroll now to lock lifetime access + exclusive calculators.</div>
+        <p className="text-muted-foreground">Free tools for everyone. <span className="text-emerald-400 font-semibold">Super Bundle unlocks premium versions</span> — advanced periodization, full macros, client tools that sync. The path to precision starts free.</p>
+        <div className="mt-2 text-xs text-emerald-400">Join the Super Bundle for lifetime premium calculators + all pillars. See /bundle.</div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -59,7 +59,7 @@ export function CalculatorsPage() {
         {/* Simple TDEE + Macros */}
         <Card>
           <CardHeader>
-            <CardTitle className="fitness-text-gradient">Macro &amp; TDEE Estimator (Free — Beta Unlock Premium)</CardTitle>
+            <CardTitle className="fitness-text-gradient">Macro &amp; TDEE Estimator (Free — Super Bundle unlocks advanced)</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
             <div className="grid grid-cols-3 gap-3">
@@ -102,19 +102,19 @@ export function CalculatorsPage() {
       <Card className="border-emerald-500/30 bg-emerald-950/10">
         <CardContent className="pt-6">
           <div className="font-semibold text-emerald-400 mb-1 flex items-center gap-2">
-            <Flame className="h-4 w-4" /> PREMIUM CALCULATORS &amp; TOOLS — BETA FOUNDERS ONLY
+            <Flame className="h-4 w-4" /> PREMIUM CALCULATORS &amp; TOOLS — SUPER BUNDLE MEMBERS
           </div>
           <p className="text-sm text-white/70">Enroll in any program (especially PT Education or Strength Business) to unlock advanced periodization calculators, contest prep macros, client assessment scoring, custom block generators that sync straight into your Log, and more. This is how the obsessed dominate — precision tools for massive results.</p>
-          <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white" onClick={() => window.location.href = "/programs"}>See Beta Programs &amp; Unlock Now — Limited Spots</Button>
+          <Button className="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white" onClick={() => window.location.href = "/bundle"}>See Super Bundle &amp; Unlock Premium Tools</Button>
         </CardContent>
       </Card>
 
       <div className="text-xs text-center text-muted-foreground">More calculators (strength standards by bodyweight, Wilks, conditioning readiness) coming with future program releases. Global default metric — toggle units in profile.</div>
-      <div className="text-center p-2 text-emerald-400 text-xs font-semibold">347 / 500 BETA FOUNDER SPOTS CLAIMED — JOIN NOW TO LOCK EARLY BIRD + SHAPE MISSION WINNING <a href="/feedback" className="underline">Share your results</a></div>
+      <div className="text-center p-2 text-emerald-400 text-xs font-semibold">Join the growing global community building healthier lives. <a href="/bundle" className="underline">Get the Super Bundle</a> to unlock all premium tools + shape the future via /feedback.</div>
 
-      {/* Beta Banner for consistency with landing */}
+      {/* Bundle Banner */}
       <div className="text-center p-3 bg-emerald-950/20 border border-emerald-500/30 rounded text-sm">
-        <span className="text-emerald-400 font-semibold">BETA FOUNDERS:</span> Early bird pricing live — limited to 500. Enroll in programs for premium calculators + lifetime lock. Massive action wins.
+        <span className="text-emerald-400 font-semibold">SUPER BUNDLE:</span> One subscription for all premium pillars (Train Coach, Fuel, Move, Mind, Learn). 50% intro pricing — free core always available for everyone.
       </div>
     </div>
   );
