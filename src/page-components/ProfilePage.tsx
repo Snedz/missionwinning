@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
@@ -87,9 +89,9 @@ export function ProfilePage() {
     if (!localStorage.getItem('mw_streak')) localStorage.setItem('mw_streak', '1');
   };
 
-  // Owner analytics / revenue stub (beta spots drive est. locked revenue)
-  const spotsClaimed = typeof window !== 'undefined' ? parseInt(localStorage.getItem('mw_beta_spots_claimed') || '347') : 347;
-  const estRevenue = Math.round(spotsClaimed * 347); // avg from beta pricing mix
+  // Owner analytics / revenue stub (bundle members)
+  const members = typeof window !== 'undefined' ? parseInt(localStorage.getItem('mw_contributors') || '12400') : 12400;
+  const estRevenue = Math.round(members * 12 * 0.3); // rough from bundle subs (demo)
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -197,24 +199,24 @@ export function ProfilePage() {
 
       {/* Owner Revenue Snapshot - Cardone-style beta proof + real numbers for founder view */}
       <Card className="border-emerald-500/40 bg-emerald-950/10">
-        <CardHeader><CardTitle>{t('revenueSnapshot', { defaultValue: 'Beta Revenue Snapshot (Demo)' })}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}</CardTitle></CardHeader>
         <CardContent className="space-y-2 text-sm">
-          <div className="flex justify-between"><span>{t('spotsClaimed', { defaultValue: 'Spots claimed' })}:</span> <span className="font-mono text-emerald-400">{spotsClaimed}/500</span></div>
-          <div className="flex justify-between"><span>{t('estRevenue', { defaultValue: 'Est. Beta Founders revenue locked' })}:</span> <span className="font-mono text-emerald-400">${estRevenue.toLocaleString()}</span></div>
-          <div className="text-xs text-muted-foreground">{t('avgTicket', { defaultValue: 'Avg ticket ~$347' })} — one-time specialist programs + unlocks. Track real via Supabase enrollments later. Massive action compounds.</div>
-          <div className="text-[10px] mt-1">Beta Founders who took massive action early lock lifetime pricing and shape the product. Share wins → /feedback.</div>
+          <div className="flex justify-between"><span>{t('spotsClaimed', { defaultValue: 'Members' })}:</span> <span className="font-mono text-emerald-400">{members.toLocaleString()}</span></div>
+          <div className="flex justify-between"><span>{t('estRevenue', { defaultValue: 'Est. revenue from bundles' })}:</span> <span className="font-mono text-emerald-400">${estRevenue.toLocaleString()}</span></div>
+          <div className="text-xs text-muted-foreground">{t('avgTicket', { defaultValue: 'Avg bundle ~$12/mo' })} — Super Bundle sustains the free core for the global mission. Track real via Supabase later.</div>
+          <div className="text-[10px] mt-1">Members who join the bundle help make the free path available worldwide. Share wins → /feedback.</div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader><CardTitle>{t('demoAnalytics', { defaultValue: 'Demo Analytics (Beta Events)' })}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('demoAnalytics', { defaultValue: 'Demo Analytics (Events)' })}</CardTitle></CardHeader>
         <CardContent>
           <Button variant="outline" onClick={() => {
             const events = Object.keys(localStorage).filter(k => k.startsWith('mw_event_')).map(k => ({key: k, val: localStorage.getItem(k)}));
             console.log('Mission Winning Analytics Events:', events);
-            alert('Events logged to console (open dev tools). ' + events.length + ' tracked actions (enrolls, feedback, PWA, etc.). Full Supabase analytics in next phase.');
+            alert('Events logged to console (open dev tools). ' + events.length + ' tracked actions (bundle views, feedback, PWA installs, etc.). Full Supabase analytics in next phase.');
           }}>{t('viewEvents', { defaultValue: 'View Tracked Events (console)' })}</Button>
-          <div className="text-xs mt-2">Tracks beta CTAs, feedback, installs, program views for owner insights and A/B. Share /feedback to build social proof.</div>
+          <div className="text-xs mt-2">Tracks bundle CTAs, feedback, installs, pillar views for owner insights. Share /feedback to help the mission.</div>
         </CardContent>
       </Card>
 

@@ -21,6 +21,8 @@ export function HomePage() {
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
 
   const recent = workoutHistory.slice(0, 3);
+
+  // Freeletics-inspired free core note (per vision.md): Generous basics for everyone; premium for "awesome" depth + bundle synergy.
   const totalSessions = workoutHistory.length;
   const totalVolume = workoutHistory.reduce((sum, w) => sum + w.totalVolume, 0);
 
@@ -111,7 +113,7 @@ export function HomePage() {
           </div>
         </div>
         <p className="mt-2 text-sm text-muted-foreground">
-          One clear action. Track your wins. Dominate daily. <span className="text-red-400">BETA FOUNDERS: Early bird active — 347/500 spots claimed. Lock in lifetime access.</span>
+          One clear action. Track your wins. <strong>Free core for all</strong> — the path forward. <a href="/bundle" className="underline text-emerald-400">Super Bundle</a> for full pillars (train + fuel + move + mind + learn). See <a href="/vision" className="underline">vision.md</a>.
         </p>
         {!isOnboarded && (
           <div className="mt-2 text-xs p-2 bg-amber-950/30 border border-amber-500/30 rounded">
@@ -279,7 +281,7 @@ export function HomePage() {
           <div className={highProteinDays >= 5 ? "text-emerald-400 font-medium" : ""}>
             {highProteinDays >= 5 ? "✓" : "○"} High Protein Days (150g+) ({highProteinDays}/5+) {highProteinDays >= 5 && "🏅"}
           </div>
-          <div className="col-span-2 text-xs text-muted-foreground">Share a win in the Beta Founders Hub (/feedback). Full program completion tracking coming in Builder.</div>
+          <div className="col-span-2 text-xs text-muted-foreground">Share wins & feedback in /feedback. Full pillar tracking coming soon.</div>
         </CardContent>
       </Card>
 

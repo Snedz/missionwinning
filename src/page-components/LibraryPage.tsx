@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,6 +24,8 @@ const CUES: Record<string, string> = {
 };
 
 export function LibraryPage() {
+  // Per vision.md: Library is core free for everyone (bodyweight/global focus). Premium filters/content in Learn/Move pillars or bundle.
+  // Free core always accessible — no paywall on basics.
   const [q, setQ] = useState("");
   const [equip, setEquip] = useState("");
   const [goal, setGoal] = useState(""); // M&S style: Build Muscle, Strength, etc.

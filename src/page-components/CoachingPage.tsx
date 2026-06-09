@@ -10,7 +10,7 @@ export function CoachingPage() {
         <a href="/" className="text-sm text-emerald-400 hover:underline">← Back to Mission Winning</a>
 
         <h1 className="text-5xl font-bold tracking-tighter mt-6">ELITE COACHING. APPLICATION ONLY.</h1>
-        <p className="text-2xl text-white/70 mt-2">1-on-1 with coaches who actually live the system. For the obsessed who want results faster than humanly possible on their own. Limited spots. No average people allowed. Beta cohort gets early access perks.</p>
+        <p className="text-2xl text-white/70 mt-2">1-on-1 with coaches who live the system. For those who want accelerated results on top of the free core and Super Bundle. Application only — we focus on serious commitment to the path.</p>
 
         <div className="my-10 grid gap-6">
           <Card className="bg-[#111827] border-white/10">
@@ -49,18 +49,18 @@ export function CoachingPage() {
 
         <div className="bg-white/5 border border-white/10 p-8 rounded-2xl">
           <h3 className="font-semibold mb-4">Ready to apply?</h3>
-          <p className="text-white/70 mb-6">Coaching is for the obsessed only. We don't work with people who "try." We work with winners who take massive action. Fill out the form below (or email hello@missionwinning.com with your goals, current training, and why you're ready to stop being average). Beta cohort gets priority.</p>
+          <p className="text-white/70 mb-6">This is for people ready to go all-in on the path — building on the free core and bundle tools. Share your goals, current training, and why you're committed. We prioritize those who will take consistent action.</p>
 
-          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert("Application received (MVP simulation). In real version this submits to backend and creates a lead in the system. Stripe invoice sent after review."); }}>
+          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert("Application received (MVP simulation). In real version this submits to backend and creates a lead in the system. PayPal invoice or manual billing sent after review."); }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input required className="bg-black/40 border border-white/20 rounded px-4 py-3 text-white placeholder:text-white/40" placeholder="Full Name" />
               <input required type="email" className="bg-black/40 border border-white/20 rounded px-4 py-3 text-white placeholder:text-white/40" placeholder="Email" />
             </div>
             <textarea required className="w-full h-32 bg-black/40 border border-white/20 rounded px-4 py-3 text-white placeholder:text-white/40" placeholder="Tell us about your goals, current training, and why Mission Winning coaching is the right fit right now..." />
-            <Button type="submit" size="lg" className="w-full bg-red-600 hover:bg-red-700">SUBMIT APPLICATION — ONLY FOR THE OBSESSED (BETA COHORT OPEN)</Button>
+            <Button type="submit" size="lg" className="w-full bg-red-600 hover:bg-red-700">SUBMIT APPLICATION — COMMITTED TO THE PATH</Button>
           </form>
-          <p className="text-[10px] text-center text-white/40 mt-4">We reply within 48 hours. Spots are limited.</p>
-          <div className="text-center mt-4"><a href="/feedback" className="text-emerald-400 hover:underline text-sm">Beta cohort: Share your transformation wins →</a></div>
+          <p className="text-[10px] text-center text-white/40 mt-4">We reply within 48 hours. Focused on those ready for consistent progress.</p>
+          <div className="text-center mt-4"><a href="/feedback" className="text-emerald-400 hover:underline text-sm">Share your wins & results →</a></div>
         </div>
 
         <div className="mt-10 text-xs text-white/40 text-center max-w-prose mx-auto">
