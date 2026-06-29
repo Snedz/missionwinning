@@ -20,6 +20,8 @@ import { TodayPageHeader } from "@/components/today/TodayPageHeader";
 import { TodayHealthSection } from "@/components/today/TodayHealthSection";
 import { TodayWeekSection } from "@/components/today/TodayWeekSection";
 import { TodayProgressSection } from "@/components/today/TodayProgressSection";
+import { TodayDashboardCustomize } from "@/components/today/TodayDashboardCustomize";
+import { loadTodayDashboardPrefs, type TodayDashboardPrefs } from "@/lib/todayDashboardPrefs";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { getTodayLayout } from "@/hooks/useTodayLayout";
 
@@ -40,6 +42,13 @@ export function HomePage() {
   // Recent pillar wins from cloud (Move/Mind/Assess logs as nutrition entries)
   const [recentPillarWins, setRecentPillarWins] = useState<any[]>([]);
   const [lastAssessment, setLastAssessment] = useState<any>(null);
+  const [sectionPrefs, setSectionPrefs] = useState<TodayDashboardPrefs>(() =>
+    typeof window !== 'undefined' ? loadTodayDashboardPrefs() : { health: true, week: true, progress: true }
+  );
+
+  useEffect(() => {
+    setSectionPrefs(loadTodayDashboardPrefs());
+  }, []);
 
   useEffect(() => {
     getUser().then(u => {
@@ -211,50 +220,67 @@ export function HomePage() {
       )}
 
       {layout.showDetailsAccordion && (
-        <TodaySections>
-          <TodaySection
-            title={t('todaySectionHealth', { defaultValue: 'Health scores' })}
-            description={t('todaySectionHealthDesc', { defaultValue: 'Coach insight and pillar breakdown' })}
-            defaultOpen={false}
-          >
-            <TodayHealthSection insight={coachInsight} breakdown={scoreBreakdown} />
-          </TodaySection>
+        <div className="space-y-3">
+          <TodayDashboardCustomize prefs={sectionPrefs} onChange={setSectionPrefs} />
+          <TodaySections>
+            {sectionPrefs.health && (
+              <TodaySection
+                title={t('todaySectionHealth', { defaultValue: 'Health scores' })}
+                description={t('todaySectionHealthDesc', {
+                  defaultValue: 'Coach insight and pillar breakdown',
+                })}
+                defaultOpen={false}
+              >
+                <TodayHealthSection insight={coachInsight} breakdown={scoreBreakdown} />
+              </TodaySection>
+            )}
 
-          <TodaySection
-            title={t('todaySectionWeek', { defaultValue: 'This week' })}
-            description={t('todaySectionWeekDesc', { defaultValue: 'Challenges and daily workout' })}
-          >
-            <TodayWeekSection
-              challenges={challenges}
-              streak={streak}
-              todaysWorkout={todaysWorkout}
-              onStartTodaysWorkout={() => onStartStarter(todaysWorkout.name, todaysWorkout.exercises)}
-            />
-          </TodaySection>
+            {sectionPrefs.week && (
+              <TodaySection
+                title={t('todaySectionWeek', { defaultValue: 'This week' })}
+                description={t('todaySectionWeekDesc', {
+                  defaultValue: 'Challenges and daily workout',
+                })}
+              >
+                <TodayWeekSection
+                  challenges={challenges}
+                  streak={streak}
+                  todaysWorkout={todaysWorkout}
+                  onStartTodaysWorkout={() =>
+                    onStartStarter(todaysWorkout.name, todaysWorkout.exercises)
+                  }
+                />
+              </TodaySection>
+            )}
 
-          <TodaySection
-            title={t('todaySectionProgress', { defaultValue: 'Progress & tools' })}
-            description={t('todaySectionProgressDesc', { defaultValue: 'Readiness, stats, and history' })}
-          >
-            <TodayProgressSection
-              savedWorkouts={savedWorkouts}
-              readiness={readiness}
-              userGoal={userGoal}
-              userEquip={userEquip}
-              totalSessions={totalSessions}
-              totalVolume={totalVolume}
-              streak={streak}
-              highProteinDays={highProteinDays}
-              nightSessions={nightSessions}
-              dawnSessions={dawnSessions}
-              lastAssessment={lastAssessment}
-              recentPillarWins={recentPillarWins}
-              setRecentPillarWins={setRecentPillarWins}
-              recent={recent}
-              onStartStarter={onStartStarter}
-            />
-          </TodaySection>
-        </TodaySections>
+            {sectionPrefs.progress && (
+              <TodaySection
+                title={t('todaySectionProgress', { defaultValue: 'Progress & tools' })}
+                description={t('todaySectionProgressDesc', {
+                  defaultValue: 'Readiness, stats, and history',
+                })}
+              >
+                <TodayProgressSection
+                  savedWorkouts={savedWorkouts}
+                  readiness={readiness}
+                  userGoal={userGoal}
+                  userEquip={userEquip}
+                  totalSessions={totalSessions}
+                  totalVolume={totalVolume}
+                  streak={streak}
+                  highProteinDays={highProteinDays}
+                  nightSessions={nightSessions}
+                  dawnSessions={dawnSessions}
+                  lastAssessment={lastAssessment}
+                  recentPillarWins={recentPillarWins}
+                  setRecentPillarWins={setRecentPillarWins}
+                  recent={recent}
+                  onStartStarter={onStartStarter}
+                />
+              </TodaySection>
+            )}
+          </TodaySections>
+        </div>
       )}
     </div>
   );

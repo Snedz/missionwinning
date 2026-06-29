@@ -44,6 +44,36 @@ type TodayStrings = {
   fuelTitle: string;
   fuelSubtitle: string;
   fuelSignInDesc: string;
+  todayCustomizeTitle: string;
+  todayCustomizeDesc: string;
+  challengeTrain7Title: string;
+  challengeTrain7Desc: string;
+  challengeProtein5Title: string;
+  challengeProtein5Desc: string;
+  challengeVolume10kTitle: string;
+  challengeVolume10kDesc: string;
+  photoLogProcessing: string;
+  photoLogEstimateTitle: string;
+  photoLogEstimateLow: string;
+  photoLogLogEstimate: string;
+  photoLogRetake: string;
+  todayWin7DayStreak: string;
+  todayWinVolume: string;
+  todayWinSessions: string;
+  todayWinSavedRoutines: string;
+  todayWinProteinDays: string;
+  todayWinUnderStars: string;
+  todayWinDawn: string;
+  todayWinBadgeFoot: string;
+  todayRankings: string;
+  todayAssessmentCardTitle: string;
+  todayAssessmentLast: string;
+  todayAssessmentRetake: string;
+  todayAssessmentNone: string;
+  todayAssessmentTake: string;
+  todayRecentPillarWinsLabel: string;
+  todaySeeNutritionLink: string;
+  todayPillarWinEmpty: string;
 };
 
 const en: TodayStrings = {
@@ -94,6 +124,37 @@ const en: TodayStrings = {
   fuelSubtitle:
     'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
   fuelSignInDesc: 'Sync meals and macro history across devices.',
+  todayCustomizeTitle: 'Customize Today',
+  todayCustomizeDesc: 'Choose which sections appear below. Saved on this device.',
+  challengeTrain7Title: '7-Day Train Streak',
+  challengeTrain7Desc: 'Log a workout on 7 separate days this week.',
+  challengeProtein5Title: '5 High-Protein Days',
+  challengeProtein5Desc: 'Hit 120g+ protein on 5 days (Fuel pillar).',
+  challengeVolume10kTitle: '10K Volume Week',
+  challengeVolume10kDesc: 'Accumulate 10,000 lb·reps volume this week.',
+  photoLogProcessing: 'Estimating on device…',
+  photoLogEstimateTitle: 'Estimated meal',
+  photoLogEstimateLow: 'Low confidence — edit after logging if needed.',
+  photoLogLogEstimate: 'Log estimate',
+  photoLogRetake: 'Choose another photo',
+  todayWin7DayStreak: '7-Day Streak ({{current}}/7)',
+  todayWinVolume: '1000kg+ Total Volume ({{current}}/1000)',
+  todayWinSessions: '15+ Sessions Logged ({{current}}/15)',
+  todayWinSavedRoutines: '3+ Saved Routines ({{current}}/3)',
+  todayWinProteinDays: 'High Protein Days (150g+) ({{current}}/5+)',
+  todayWinUnderStars: 'Under the Stars ({{current}}/3 night sessions)',
+  todayWinDawn: "By Dawn's Early Light ({{current}}/3 dawn sessions)",
+  todayWinBadgeFoot:
+    'Log wins daily — streaks & volume feed your Mission Score. Full cross-pillar challenges in updates.',
+  todayRankings: 'Rankings',
+  todayAssessmentCardTitle: 'Last Assessment & Recent Pillar Wins',
+  todayAssessmentLast: 'Last: {{risk}} risk ({{date}})',
+  todayAssessmentRetake: 'Retake',
+  todayAssessmentNone: 'No assessment yet.',
+  todayAssessmentTake: 'Take free Readiness Assessment →',
+  todayRecentPillarWinsLabel: 'Recent pillar wins:',
+  todaySeeNutritionLink: 'See full in Nutrition →',
+  todayPillarWinEmpty: 'Log wins from Move or Mind (saves to cloud when signed in).',
 };
 
 const es: TodayStrings = {
@@ -138,6 +199,37 @@ const es: TodayStrings = {
   todayBodyweightTag: 'peso corporal',
   fuelTitle: 'Nutrición',
   fuelSignInDesc: 'Sincroniza comidas e historial de macros entre dispositivos.',
+  todayCustomizeTitle: 'Personalizar Hoy',
+  todayCustomizeDesc: 'Elige qué secciones ver. Guardado en este dispositivo.',
+  challengeTrain7Title: 'Racha de 7 días',
+  challengeTrain7Desc: 'Registra entrenamiento en 7 días distintos esta semana.',
+  challengeProtein5Title: '5 días alta proteína',
+  challengeProtein5Desc: '120g+ proteína en 5 días (pilar Fuel).',
+  challengeVolume10kTitle: '10K volumen semanal',
+  challengeVolume10kDesc: 'Acumula 10.000 de volumen esta semana.',
+  photoLogProcessing: 'Estimando en el dispositivo…',
+  photoLogEstimateTitle: 'Comida estimada',
+  photoLogEstimateLow: 'Baja confianza — edita después si hace falta.',
+  photoLogLogEstimate: 'Registrar estimación',
+  photoLogRetake: 'Elegir otra foto',
+  todayWin7DayStreak: 'Racha de 7 días ({{current}}/7)',
+  todayWinVolume: '1000kg+ volumen total ({{current}}/1000)',
+  todayWinSessions: '15+ sesiones ({{current}}/15)',
+  todayWinSavedRoutines: '3+ rutinas guardadas ({{current}}/3)',
+  todayWinProteinDays: 'Días alta proteína 150g+ ({{current}}/5+)',
+  todayWinUnderStars: 'Bajo las estrellas ({{current}}/3 sesiones nocturnas)',
+  todayWinDawn: 'Al amanecer ({{current}}/3 sesiones al alba)',
+  todayWinBadgeFoot:
+    'Registra victorias a diario — rachas y volumen alimentan tu Puntuación de Misión.',
+  todayRankings: 'Clasificación',
+  todayAssessmentCardTitle: 'Última evaluación y victorias recientes',
+  todayAssessmentLast: 'Última: riesgo {{risk}} ({{date}})',
+  todayAssessmentRetake: 'Repetir',
+  todayAssessmentNone: 'Sin evaluación aún.',
+  todayAssessmentTake: 'Hacer evaluación de preparación gratis →',
+  todayRecentPillarWinsLabel: 'Victorias recientes por pilar:',
+  todaySeeNutritionLink: 'Ver todo en Nutrición →',
+  todayPillarWinEmpty: 'Registra victorias en Move o Mind (se guarda en la nube al iniciar sesión).',
 };
 
 const zh: TodayStrings = {
@@ -184,6 +276,36 @@ const zh: TodayStrings = {
   fuelTitle: '营养',
   fuelSubtitle: '免费核心：每日宏量记录、饮水、目标与全球可及食谱。',
   fuelSignInDesc: '跨设备同步餐食与宏量历史。',
+  todayCustomizeTitle: '自定义今日',
+  todayCustomizeDesc: '选择下方显示的分区。仅保存在本设备。',
+  challengeTrain7Title: '7 天训练连续',
+  challengeTrain7Desc: '本周在 7 个不同日记录训练。',
+  challengeProtein5Title: '5 天高蛋白质日',
+  challengeProtein5Desc: '5 天蛋白质 ≥120g（营养支柱）。',
+  challengeVolume10kTitle: '本周 10K 容量',
+  challengeVolume10kDesc: '本周累计 10,000 训练容量。',
+  photoLogProcessing: '正在本地估算…',
+  photoLogEstimateTitle: '估算餐食',
+  photoLogEstimateLow: '置信度较低 — 记录后可编辑。',
+  photoLogLogEstimate: '记录估算',
+  photoLogRetake: '重新选择照片',
+  todayWin7DayStreak: '7 天连续 ({{current}}/7)',
+  todayWinVolume: '1000kg+ 总容量 ({{current}}/1000)',
+  todayWinSessions: '15+ 次训练 ({{current}}/15)',
+  todayWinSavedRoutines: '3+ 已保存 routine ({{current}}/3)',
+  todayWinProteinDays: '高蛋白质日 150g+ ({{current}}/5+)',
+  todayWinUnderStars: '星空之下 ({{current}}/3 夜间训练)',
+  todayWinDawn: '黎明之光 ({{current}}/3 清晨训练)',
+  todayWinBadgeFoot: '每日记录胜利 — 连续与容量提升任务分数。',
+  todayRankings: '排行榜',
+  todayAssessmentCardTitle: '最近评估与支柱胜利',
+  todayAssessmentLast: '最近：{{risk}} 风险 ({{date}})',
+  todayAssessmentRetake: '重新评估',
+  todayAssessmentNone: '尚未评估。',
+  todayAssessmentTake: '免费就绪度评估 →',
+  todayRecentPillarWinsLabel: '近期支柱胜利：',
+  todaySeeNutritionLink: '在营养页查看全部 →',
+  todayPillarWinEmpty: '在 Move 或 Mind 记录胜利（登录后同步云端）。',
 };
 
 const id: TodayStrings = {
@@ -232,6 +354,36 @@ const id: TodayStrings = {
   fuelTitle: 'Nutrisi',
   fuelSubtitle: 'Inti gratis: log makro harian, air, target, dan resep global.',
   fuelSignInDesc: 'Sinkronkan makanan dan riwayat makro antar perangkat.',
+  todayCustomizeTitle: 'Sesuaikan Hari ini',
+  todayCustomizeDesc: 'Pilih bagian yang ditampilkan. Disimpan di perangkat ini.',
+  challengeTrain7Title: 'Streak latihan 7 hari',
+  challengeTrain7Desc: 'Catat latihan di 7 hari berbeda minggu ini.',
+  challengeProtein5Title: '5 hari protein tinggi',
+  challengeProtein5Desc: '120g+ protein di 5 hari (pilar Nutrisi).',
+  challengeVolume10kTitle: 'Volume 10K minggu ini',
+  challengeVolume10kDesc: 'Akumulasi 10.000 volume minggu ini.',
+  photoLogProcessing: 'Estimasi di perangkat…',
+  photoLogEstimateTitle: 'Estimasi makanan',
+  photoLogEstimateLow: 'Keyakinan rendah — edit setelah log jika perlu.',
+  photoLogLogEstimate: 'Log estimasi',
+  photoLogRetake: 'Pilih foto lain',
+  todayWin7DayStreak: 'Streak 7 hari ({{current}}/7)',
+  todayWinVolume: '1000kg+ volume total ({{current}}/1000)',
+  todayWinSessions: '15+ sesi ({{current}}/15)',
+  todayWinSavedRoutines: '3+ rutin tersimpan ({{current}}/3)',
+  todayWinProteinDays: 'Hari protein tinggi 150g+ ({{current}}/5+)',
+  todayWinUnderStars: 'Di bawah bintang ({{current}}/3 sesi malam)',
+  todayWinDawn: 'Fajar ({{current}}/3 sesi pagi)',
+  todayWinBadgeFoot: 'Log kemenangan harian — streak & volume menaikkan Skor Misi.',
+  todayRankings: 'Peringkat',
+  todayAssessmentCardTitle: 'Assesmen terakhir & kemenangan pilar',
+  todayAssessmentLast: 'Terakhir: risiko {{risk}} ({{date}})',
+  todayAssessmentRetake: 'Ulangi',
+  todayAssessmentNone: 'Belum ada assesmen.',
+  todayAssessmentTake: 'Assesmen kesiapan gratis →',
+  todayRecentPillarWinsLabel: 'Kemenangan pilar terbaru:',
+  todaySeeNutritionLink: 'Lihat lengkap di Nutrisi →',
+  todayPillarWinEmpty: 'Log dari Move atau Mind (tersimpan cloud saat masuk).',
 };
 
 const th: TodayStrings = {
@@ -279,6 +431,36 @@ const th: TodayStrings = {
   fuelTitle: 'โภชนาการ',
   fuelSubtitle: 'ฟรี: บันทึกมาโคร น้ำ เป้าหมาย และสูตรอาหารทั่วโลก',
   fuelSignInDesc: 'ซิงค์มื้ออาหารและประวัติมาโครข้ามอุปกรณ์',
+  todayCustomizeTitle: 'ปรับแต่งวันนี้',
+  todayCustomizeDesc: 'เลือกส่วนที่แสดงด้านล่าง บันทึกบนอุปกรณ์นี้',
+  challengeTrain7Title: 'สตรีคฝึก 7 วัน',
+  challengeTrain7Desc: 'บันทึกการฝึก 7 วันที่ต่างกันในสัปดาห์นี้',
+  challengeProtein5Title: '5 วันโปรตีนสูง',
+  challengeProtein5Desc: 'โปรตีน 120g+ ใน 5 วัน (เสาโภชนาการ)',
+  challengeVolume10kTitle: 'ปริมาณ 10K สัปดาห์นี้',
+  challengeVolume10kDesc: 'สะสมปริมาณ 10,000 ในสัปดาห์นี้',
+  photoLogProcessing: 'กำลังประมาณบนอุปกรณ์…',
+  photoLogEstimateTitle: 'ประมาณมื้ออาหาร',
+  photoLogEstimateLow: 'ความมั่นใจต่ำ — แก้ไขหลังบันทึกได้',
+  photoLogLogEstimate: 'บันทึกการประมาณ',
+  photoLogRetake: 'เลือกรูปใหม่',
+  todayWin7DayStreak: 'สตรีค 7 วัน ({{current}}/7)',
+  todayWinVolume: 'ปริมาณรวม 1000kg+ ({{current}}/1000)',
+  todayWinSessions: '15+ เซสชัน ({{current}}/15)',
+  todayWinSavedRoutines: '3+ routine ที่บันทึก ({{current}}/3)',
+  todayWinProteinDays: 'วันโปรตีนสูง 150g+ ({{current}}/5+)',
+  todayWinUnderStars: 'ใต้แสงดาว ({{current}}/3 เซสชันกลางคืน)',
+  todayWinDawn: 'แสงรุ่งอรุณ ({{current}}/3 เซสชันตอนเช้า)',
+  todayWinBadgeFoot: 'บันทึกชัยชนะทุกวัน — สตรีคและปริมาณเพิ่มคะแนนภารกิจ',
+  todayRankings: 'อันดับ',
+  todayAssessmentCardTitle: 'การประเมินล่าสุดและชัยชนะเสาหลัก',
+  todayAssessmentLast: 'ล่าสุด: ความเสี่ยง {{risk}} ({{date}})',
+  todayAssessmentRetake: 'ทำใหม่',
+  todayAssessmentNone: 'ยังไม่มีการประเมิน',
+  todayAssessmentTake: 'ทำการประเมินความพร้อมฟรี →',
+  todayRecentPillarWinsLabel: 'ชัยชนะเสาหลักล่าสุด:',
+  todaySeeNutritionLink: 'ดูทั้งหมดในโภชนาการ →',
+  todayPillarWinEmpty: 'บันทึกจาก Move หรือ Mind (ซิงค์คลาวด์เมื่อลงชื่อเข้าใช้)',
 };
 
 const LOCALES: Partial<Record<string, TodayStrings>> = { en, es, zh, id, th };

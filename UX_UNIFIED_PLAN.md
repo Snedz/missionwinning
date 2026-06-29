@@ -1,7 +1,7 @@
 # Unified UI Plan — Mission Winning
 
 **Date:** 2026-06-29  
-**Status:** Phase 2 largely complete; Phase 3 started  
+**Status:** Phase 2 complete; Phase 3 in progress  
 **Authority:** Extends [JOURNEY.md](JOURNEY.md) + [vision.md](vision.md)
 
 ---
@@ -114,15 +114,16 @@ Not seven separate apps — **one shell**, Freeletics-bundle **depth** behind Mo
 - [x] i18n: Today accordion + section chrome (`todayLocales.ts` — en, es, zh, id, th)
 - [x] HomePage refactor: `starterPrograms.ts`, `TodayWeekSection`, `TodayProgressSection`
 - [x] Page enter transition on route change (AppLayout)
-- [ ] i18n: Weekly challenge titles, wins badges (dynamic copy)
+- [x] i18n: Weekly challenge titles, wins badges (dynamic copy)
 - [ ] Animated hero transitions (staggered blocks)
 
 ### Phase 3 — Holistic depth
 
-- Nutrition photo log stub (Bevel-style entry points)
-- Commander’s intent line on commissioned Today
-- Customizable dashboard card order
-- Arabic RTL + zh full body copy
+- [x] Nutrition photo log stub (on-device estimate → log to Fuel)
+- [x] Commander's intent line on commissioned Today
+- [x] Customizable dashboard sections (show/hide; order TBD)
+- [ ] CSP enforce (Report-Only shipped in `vercel.json`)
+- [ ] Arabic RTL + zh full body copy
 
 ---
 
