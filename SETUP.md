@@ -69,7 +69,7 @@ create table workout_logs (
 
 6. Add `NEXT_PUBLIC_SUPABASE_*` to `.env.local` (copy from `.env.example`). See [ENV.md](ENV.md) for the full list including `PRIVATE_ACCESS_SECRET`.
 
-**Phase C schema:** Run [supabase/schema.sql](supabase/schema.sql) in the Supabase SQL editor (replaces the inline SQL below when starting fresh).
+**Phase C schema:** For a **fresh** Supabase project, run [supabase/migrations/20250629_complete_base_schema.sql](supabase/migrations/20250629_complete_base_schema.sql) (idempotent — safe if you only have partial tables). Full reference: [supabase/schema.sql](supabase/schema.sql).
 
 ## 4. Payments (Temporarily Demo / Request-Based)
 Core mission (tracker + fundamentals) is **free forever for everyone worldwide** (see vision.md).

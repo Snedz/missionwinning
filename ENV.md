@@ -30,6 +30,9 @@ Add these for **Production** and **Preview**:
 | `PRIVATE_MODE` | Yes | `true` while in private dev; set `false` when launching publicly |
 | `NEXT_PUBLIC_SUPABASE_URL` | Recommended | `https://YOUR-PROJECT.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Recommended | From Supabase → Project Settings → API |
+| `SUPABASE_SERVICE_ROLE_KEY` | Beta admin + webhooks | Server only — never `NEXT_PUBLIC_` |
+| `BETA_ADMIN_EMAILS` | Optional | Your email for Profile → beta funnel (all users) |
+| `RESEND_API_KEY` | Optional | Email nudge + receipts |
 
 After adding or changing env vars: **Deployments → Redeploy** (env changes do not apply until redeploy).
 
@@ -71,7 +74,7 @@ In a **private/incognito** browser window, visit https://www.missionwinning.com 
 Your project ref from the saved config: `tnzauplicgfrozvnowqp`
 
 - URL: `https://tnzauplicgfrozvnowqp.supabase.co`
-- Run the SQL in `SETUP.md` (profiles, enrollments, leads, workout_logs + RLS)
+- **SQL:** Run `supabase/migrations/20250629_complete_base_schema.sql` in SQL Editor (fresh project). If you already have tables, individual migrations in `supabase/migrations/` are safe to re-run.
 - Enable Email auth → Magic Link
 - Add the same URL + anon key to Vercel env vars
 

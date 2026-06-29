@@ -242,7 +242,9 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 
 ### F4 — Then Phase E (public)
 
-- [ ] PROTECTION.md P0 checklist  
+- [x] Privacy + Terms pages (`/privacy`, `/terms`)
+- [x] Beta funnel API (`/api/beta/metrics`) + founder panel on Profile
+- [ ] PROTECTION.md P0 checklist (manual: rotate secrets, Vercel env)
 - [ ] Beta with **10 users** — measure: % who finish I-Day, % commissioned in 14 days  
 - [ ] `PRIVATE_MODE=false` only if I-Day → BT completion ≥60% in beta  
 

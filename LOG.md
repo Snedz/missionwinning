@@ -6,6 +6,24 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase F4: Beta funnel, legal pages, launch gate
+
+**Branch:** `cursor/f4-beta-launch-699d`
+
+### Shipped
+
+- **`/privacy` + `/terms`** — linked from About (PROTECTION P0 legal)
+- **`/api/beta/metrics`** — aggregate funnel across all profiles (service role)
+- **BetaAdminPanel** on Profile for `BETA_ADMIN_EMAILS` — launch readiness vs targets
+- **`20250629_complete_base_schema.sql`** — idempotent migration for fresh/partial Supabase setups
+
+### Vercel env to enable founder dashboard
+
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `BETA_ADMIN_EMAILS=your@email.com`
+
+---
+
 ## 2026-06-29 — Phase F3b: Journey analytics, email nudge, copy pass
 
 **Branch:** `cursor/f3-analytics-nudge-699d`
