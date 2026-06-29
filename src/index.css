@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 0 72% 51%; /* Mission red */
+    --background: 220 20% 4%;
+    --foreground: 0 0% 98%;
+    --card: 220 18% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 220 18% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 160 84% 39%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 217 91% 60%; /* Deep blue */
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 173 80% 40%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 20%;
-    --input: 217 33% 20%;
-    --ring: 217 91% 60%;
-    --radius: 0.75rem;
+    --secondary: 220 14% 18%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 220 14% 14%;
+    --muted-foreground: 220 10% 58%;
+    --accent: 160 60% 45%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 14% 16%;
+    --input: 220 14% 16%;
+    --ring: 160 84% 39%;
+    --radius: 0.875rem;
   }
 }
 
@@ -32,19 +32,49 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, hsl(217 91% 60% / 0.15), transparent),
-      radial-gradient(ellipse 60% 40% at 100% 100%, hsl(160 84% 39% / 0.08), transparent);
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.47;
+    letter-spacing: -0.01em;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  /* Apple HIG: glass on navigation layer only — solid content below */
+  .glass-nav {
+    @apply bg-card/80 backdrop-blur-xl supports-[backdrop-filter]:bg-card/70;
+  }
+
+  .content-card {
+    @apply rounded-2xl border border-border/50 bg-card shadow-sm;
+  }
+
+  .ui-simple {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  .ui-simple .content-card {
+    @apply rounded-2xl;
+  }
+
+  .tap-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  .primary-action {
+    @apply w-full flex items-center justify-center gap-2 min-h-[52px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold text-[17px] transition-all;
   }
 }
 
 @layer utilities {
   .fitness-gradient {
-    @apply bg-gradient-to-r from-emerald-600 to-emerald-700;
+    @apply bg-emerald-600;
   }
   .fitness-text-gradient {
-    @apply bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent;
+    @apply text-foreground font-semibold tracking-tight;
   }
 }

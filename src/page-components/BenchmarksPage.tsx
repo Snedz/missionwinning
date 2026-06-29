@@ -44,6 +44,7 @@ import {
 } from "@/lib/benchmarks";
 import { formatDate } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
+import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
 
 export function BenchmarksPage() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
@@ -110,6 +111,7 @@ export function BenchmarksPage() {
             </p>
           </CardContent>
         </Card>
+        <MilitaryReadinessSection />
       </div>
     );
   }
@@ -124,6 +126,8 @@ export function BenchmarksPage() {
           Statistics, rep maxes, estimated vs actual, and progress over time.
         </p>
       </div>
+
+      <MilitaryReadinessSection />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="border-primary/20 bg-primary/5">

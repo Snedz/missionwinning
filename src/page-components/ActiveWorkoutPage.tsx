@@ -18,6 +18,8 @@ import { toast } from "@/hooks/use-toast";
 import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { formatDuration } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
+import { getFormGuide, hasFormGuide } from "@/lib/formGuides";
+import { FormGuideSheet } from "@/components/form/FormGuideSheet";
 
 export function ActiveWorkoutPage() {
   const router = useRouter();
@@ -40,6 +42,7 @@ export function ActiveWorkoutPage() {
 
   const [addExerciseId, setAddExerciseId] = useState("");
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});
+  const [formGuideId, setFormGuideId] = useState<string | null>(null);
 
   // Helper: prefill from last logged performance for progression (Forge style)
   const getLastPerformance = (exerciseId: string) => {
@@ -284,7 +287,18 @@ export function ActiveWorkoutPage() {
                   ))}
                 </CardDescription>
                 {exercise.cues && (
-                  <p className="text-xs text-muted-foreground mt-1 italic">{exercise.cues}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{exercise.cues}</p>
+                )}
+                {hasFormGuide(exercise.id) && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="mt-2 h-9 text-emerald-400"
+                    onClick={() => setFormGuideId(exercise.id)}
+                  >
+                    Form guide
+                  </Button>
                 )}
               </CardHeader>
               <CardContent className="space-y-3">
@@ -399,6 +413,20 @@ export function ActiveWorkoutPage() {
         </form>
         <div className="text-[10px] text-white/40 mt-1">Workouts auto-save to cloud when signed in. Public teaser only during build.</div>
       </div>
+
+      {formGuideId && (() => {
+        const ex = getExerciseById(formGuideId);
+        const guide = getFormGuide(formGuideId);
+        if (!ex || !guide) return null;
+        return (
+          <FormGuideSheet
+            exerciseName={ex.name}
+            guide={guide}
+            open
+            onClose={() => setFormGuideId(null)}
+          />
+        );
+      })()}
     </div>
   );
 }

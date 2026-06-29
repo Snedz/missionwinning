@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { HtmlLangSync } from '@/components/i18n/HtmlLangSync';
 
 // Initialize i18next + browser language detector + all our global resources (EN/ES/FR/PT/RU)
 // This must run on the client only.
@@ -37,7 +38,10 @@ if (typeof window !== 'undefined') {
 }
 
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
-  // PayPal provider temporarily removed while we finalize business setup.
-  // Will re-add when payment processor (e.g. Stripe/PayPal) is connected.
-  return <>{children}</>;
+  return (
+    <>
+      <HtmlLangSync />
+      {children}
+    </>
+  );
 }
