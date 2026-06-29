@@ -1,4 +1,8 @@
 import type { NextRequest } from 'next/server';
+import {
+  verifyPrivateAccessToken,
+  PRIVATE_ACCESS_COOKIE,
+} from '@/lib/privateSession';
 
 /** True when private development gate should be active (default: on in production). */
 export function isPrivateModeEnabled(): boolean {
@@ -89,7 +93,11 @@ export function hasValidSupabaseSession(request: NextRequest): boolean {
 
 export function hasPrivateAccessCookie(request: NextRequest, secret: string | undefined): boolean {
   if (!secret) return false;
-  return request.cookies.get('mw_private_access')?.value === secret;
+  const token = request.cookies.get(PRIVATE_ACCESS_COOKIE)?.value;
+  if (verifyPrivateAccessToken(token, secret)) return true;
+  // Legacy: migrate old cookies that stored raw secret (one release)
+  if (token === secret) return true;
+  return false;
 }
 
 export function queryGrantsAccess(searchParams: URLSearchParams, secret: string | undefined): boolean {

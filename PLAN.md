@@ -23,7 +23,7 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 | **B** | Six working pillar free tiers (Move, Mind, Learn, Track) | ✅ Done — see [LOG.md](LOG.md) |
 | **C** | Super Bundle synergy + Supabase hardening | ✅ Done — see [LOG.md](LOG.md) |
 | **D** | Content scale (200+ exercises, Learn paths) | ✅ Done — see [LOG.md](LOG.md) |
-| **E** | Go public (Vercel env, PRIVATE_MODE=false) | Next — blocked on Vercel 2FA reset |
+| **E** | Go public (Vercel env, PRIVATE_MODE=false) | Next — see [PROTECTION.md](PROTECTION.md) |
 
 ---
 
@@ -72,9 +72,12 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 
 ## Phase E — Launch (next)
 
-1. Vercel: `PRIVATE_ACCESS_SECRET=Done`, `PRIVATE_MODE=true`, Supabase keys
-2. Beta testers (10–20)
-3. `PRIVATE_MODE=false` for public launch
+See **[PROTECTION.md](PROTECTION.md)** for inspection checklist, security hardening status, and competitive gap analysis before setting `PRIVATE_MODE=false`.
+
+1. Vercel: rotate `PRIVATE_ACCESS_SECRET`, Supabase keys, `DEMO_PREMIUM=false`
+2. Run protection verification commands in PROTECTION.md
+3. Beta testers (10–20)
+4. `PRIVATE_MODE=false` for public launch
 
 ---
 

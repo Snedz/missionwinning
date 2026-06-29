@@ -44,6 +44,7 @@ import {
 import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { useWorkoutStore } from "@/store/workoutStore";
 import type { WorkoutExerciseTemplate } from "@/types";
+import { usePremium } from "@/hooks/usePremium";
 
 interface DraftExercise extends WorkoutExerciseTemplate {
   key: string;
@@ -60,7 +61,7 @@ export function BuilderPage() {
   const [exercises, setExercises] = useState<DraftExercise[]>([]);
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
   const [detailProgram, setDetailProgram] = useState<ProgramTemplate | null>(null);
-  const premium = typeof window !== "undefined" && localStorage.getItem("mw_premium") === "true";
+  const { premium } = usePremium();
   const [templateCategory, setTemplateCategory] = useState<ProgramCategory>("beginner");
 
   const loadSession = (program: ProgramTemplate, session: ProgramSession) => {

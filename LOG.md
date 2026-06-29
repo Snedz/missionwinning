@@ -4,6 +4,24 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Inspection & Protection (pre-launch hardening)
+
+**Branch:** `cursor/inspection-protection-699d`
+
+### Shipped
+
+- **PROTECTION.md** — Security audit, competitive gap analysis, verification checklist, backlog
+- **Private gate:** Signed session cookies (HMAC), rate-limited `/api/private-access`, timing-safe compare
+- **Webhooks:** Stripe signature verification; PayPal disabled until verified (blocks forged premium grants)
+- **Premium:** Server `/api/premium/status`; `usePremium()` hook; localStorage bypass removed in production
+- **Content protection:** 92 premium recipes server-only; `/api/premium/recipes` + pro programs API
+- **Headers:** HSTS, frame options, referrer policy in `vercel.json`
+- **PWA:** Disabled while `PRIVATE_MODE` active (reduces gated-content offline leak)
+
+See [PROTECTION.md](PROTECTION.md) for P0 checklist before public launch.
+
+---
+
 ## 2026-06-29 — Phase D: Content scale
 
 **Branch:** `cursor/phase-d-content-699d`

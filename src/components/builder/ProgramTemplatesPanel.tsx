@@ -1,4 +1,6 @@
-import { useMemo, useState } from "react";
+'use client';
+
+import { useEffect, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -22,6 +24,8 @@ import {
 } from "@/data/programTemplates";
 import { PROGRAM_TAG_LABELS } from "@/data/exerciseEnrichment";
 import type { ProgramTag } from "@/types";
+import { usePremium } from "@/hooks/usePremium";
+import Link from "next/link";
 
 export const TEMPLATE_PROGRAM_COUNT = PROGRAM_TEMPLATES.length;
 
@@ -120,7 +124,28 @@ export function ProgramTemplatesPanel({
 }: ProgramTemplatesPanelProps) {
   const [quickPick, setQuickPick] = useState("");
   const [tagFilter, setTagFilter] = useState<ProgramTag | "">("");
-  const programs = getProgramsByCategory(category).filter(
+  const { premium, loading: premiumLoading } = usePremium();
+  const [proPrograms, setProPrograms] = useState<ProgramTemplate[]>([]);
+
+  useEffect(() => {
+    if (category !== "pro" || !premium) {
+      setProPrograms([]);
+      return;
+    }
+    fetch("/api/premium/programs?category=pro", { credentials: "include" })
+      .then((r) => (r.ok ? r.json() : { programs: [] }))
+      .then((data) => setProPrograms(data.programs ?? []))
+      .catch(() => setProPrograms([]));
+  }, [category, premium]);
+
+  const basePrograms =
+    category === "pro"
+      ? premium
+        ? proPrograms
+        : []
+      : getProgramsByCategory(category);
+
+  const programs = basePrograms.filter(
     (p) => !tagFilter || getProgramTags(p).includes(tagFilter)
   );
   const categoryMeta = PROGRAM_CATEGORIES.find((c) => c.id === category)!;
@@ -171,6 +196,14 @@ export function ProgramTemplatesPanel({
           </Button>
         ))}
       </div>
+      {category === "pro" && !premiumLoading && !premium && (
+        <div className="rounded-lg border border-amber-500/40 bg-amber-950/20 p-4 text-sm">
+          Pro cycles require Super Bundle premium.{" "}
+          <Link href="/bundle" className="underline text-amber-400">
+            Unlock Super Bundle
+          </Link>
+        </div>
+      )}
       <ProgramList
         programs={programs}
         onLoadSession={onLoadSession}

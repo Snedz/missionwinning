@@ -84,7 +84,7 @@ export function Sidebar() {
         useWorkoutStore.getState().loadFromCloud();
       } else {
         setUserEmail(null);
-        setPremium(!!(typeof window !== 'undefined' && localStorage.getItem('mw_premium')));
+        setPremium(false);
       }
     });
     return () => { mounted = false; sub.subscription.unsubscribe(); };
@@ -179,8 +179,8 @@ export function Sidebar() {
           </select>
           <div className="text-[10px] text-emerald-400/70">{NATIVE_NAMES[currentLang] || 'English'}</div>
         </div>
-        {typeof window !== "undefined" && localStorage.getItem("mw_premium") && (
-          <div className="text-green-400 font-medium pt-1">✓ Premium Unlocked (demo)</div>
+        {premium && (
+          <div className="text-green-400 font-medium pt-1">✓ Premium active</div>
         )}
         <p className="text-muted-foreground pt-1 border-t border-border/40">
           {activeWorkout ? "Workout in progress" : "Ready to train"}

@@ -87,15 +87,16 @@ export function getStripeCheckoutUrl(productId?: string): string | null {
 
 // Helper to grant premium immediately (client-side optimistic + analytics)
 // Updated for bundle: supports 'super-bundle' to unlock full access.
+// Demo grant — localStorage only honored in development (production uses Supabase enrollments).
 export function grantPremiumDemo(productId?: string) {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('mw_premium', 'true')
-    if (productId) {
-      localStorage.setItem('mw_event_enroll_' + productId, Date.now().toString())
-      if (productId === 'super-bundle') {
-        localStorage.setItem('mw_bundle_active', 'true')
-      }
+  if (typeof window === 'undefined' || process.env.NODE_ENV !== 'development') {
+    return;
+  }
+  localStorage.setItem('mw_premium', 'true');
+  if (productId) {
+    localStorage.setItem('mw_event_enroll_' + productId, Date.now().toString());
+    if (productId === 'super-bundle') {
+      localStorage.setItem('mw_bundle_active', 'true');
     }
-    // Cleaned: no more beta spots, use for bundle conversion tracking if needed
   }
 }

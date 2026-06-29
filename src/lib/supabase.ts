@@ -48,10 +48,14 @@ export type Lead = {
   created_at?: string
 }
 
-// Helper: check if user has premium (enrollment or local demo)
+// Helper: check if user has premium (enrollment — demo only in development)
 export async function checkPremium(email?: string): Promise<boolean> {
-  if (typeof window !== 'undefined' && localStorage.getItem('mw_premium') === 'true') {
-    return true // demo fallback
+  if (
+    typeof window !== 'undefined' &&
+    process.env.NODE_ENV === 'development' &&
+    localStorage.getItem('mw_premium') === 'true'
+  ) {
+    return true;
   }
   if (!supabaseUrl) return false
 
@@ -109,8 +113,12 @@ export async function getUser() {
 
 // Real premium check (prefers DB enrollment for logged in user, falls back to demo local)
 export async function isPremium(): Promise<boolean> {
-  if (typeof window !== 'undefined' && localStorage.getItem('mw_premium') === 'true') {
-    return true
+  if (
+    typeof window !== 'undefined' &&
+    process.env.NODE_ENV === 'development' &&
+    localStorage.getItem('mw_premium') === 'true'
+  ) {
+    return true;
   }
   const user = await getUser()
   if (!user || !supabaseUrl) return false
