@@ -1,13 +1,14 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import type { LeaderboardEntry } from '@/lib/leaderboard/types';
+import type { LeaderboardEntry, LeaderboardBoardTheme } from '@/lib/leaderboard/types';
 import { Medal } from 'lucide-react';
 
 interface Props {
   entries: LeaderboardEntry[];
   unit: string;
   yourRank: number | null;
+  theme?: LeaderboardBoardTheme;
 }
 
 function rankDisplay(rank: number) {
@@ -23,9 +24,16 @@ function deltaDisplay(delta?: number) {
   return <span className="text-red-400/90">▼{Math.abs(delta)}</span>;
 }
 
-export function LeaderboardTable({ entries, unit, yourRank }: Props) {
+export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }: Props) {
   return (
-    <div className="rounded-2xl border border-white/10 overflow-hidden bg-card/80 backdrop-blur-md">
+    <div
+      className={cn(
+        'rounded-2xl border overflow-hidden backdrop-blur-md',
+        theme === 'night' && 'border-indigo-500/25 bg-indigo-950/20',
+        theme === 'dawn' && 'border-amber-500/25 bg-amber-950/15',
+        theme === 'default' && 'border-white/10 bg-card/80'
+      )}
+    >
       <div className="grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem] gap-2 px-3 py-2 text-[10px] uppercase tracking-wider text-muted-foreground border-b border-border/50 bg-muted/20">
         <span>#</span>
         <span>Operator</span>
@@ -40,7 +48,9 @@ export function LeaderboardTable({ entries, unit, yourRank }: Props) {
               key={e.id}
               className={cn(
                 'grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem] gap-2 px-3 py-2.5 items-center text-sm',
-                e.isYou && 'bg-emerald-500/15 ring-1 ring-inset ring-emerald-500/30',
+                e.isYou && theme === 'night' && 'bg-indigo-500/20 ring-1 ring-inset ring-indigo-400/40',
+                e.isYou && theme === 'dawn' && 'bg-amber-500/15 ring-1 ring-inset ring-amber-400/40',
+                e.isYou && theme === 'default' && 'bg-emerald-500/15 ring-1 ring-inset ring-emerald-500/30',
                 rank <= 3 && !e.isYou && 'bg-amber-500/5'
               )}
             >

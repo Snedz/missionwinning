@@ -62,6 +62,37 @@ export interface RankedLeaderboard {
   updatedAt: string;
 }
 
+export type SessionHourKind = 'night' | 'dawn';
+
+/** Night (22:00–05:00) or dawn (05:00–08:00) board bucket for a completed session. */
+export function getSessionHourKind(completedAt: string | Date): SessionHourKind | null {
+  const h = new Date(completedAt).getHours();
+  if (h >= 22 || h < 5) return 'night';
+  if (h >= 5 && h < 8) return 'dawn';
+  return null;
+}
+
+const BOARD_IDS: LeaderboardBoardId[] = [
+  'mission-score',
+  'training-streak',
+  'weekly-volume',
+  'fuel-days',
+  'under-the-stars',
+  'dawns-early-light',
+];
+
+export function parseLeaderboardBoardId(raw: string | null | undefined): LeaderboardBoardId | null {
+  if (!raw) return null;
+  return BOARD_IDS.includes(raw as LeaderboardBoardId) ? (raw as LeaderboardBoardId) : null;
+}
+
+const SCOPE_IDS: LeaderboardScope[] = ['global', 'regional', 'national', 'local', 'friends'];
+
+export function parseLeaderboardScope(raw: string | null | undefined): LeaderboardScope | null {
+  if (!raw) return null;
+  return SCOPE_IDS.includes(raw as LeaderboardScope) ? (raw as LeaderboardScope) : null;
+}
+
 /** Count workouts in a local hour window [startHour, endHour). */
 export function countSessionsInHourRange(
   workoutHistory: import('@/types').CompletedWorkoutLog[],
