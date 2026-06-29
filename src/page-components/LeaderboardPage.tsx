@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { Trophy, RefreshCw, Moon, Sunrise } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -18,11 +19,13 @@ import {
 import { fetchCloudLeaderboardSnapshots, pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import type { LeaderboardBoardId, LeaderboardScope } from '@/lib/leaderboard/types';
 import { parseLeaderboardBoardId, parseLeaderboardScope } from '@/lib/leaderboard/types';
+import { BOARD_I18N_KEY } from '@/i18n/leaderboardLocales';
 import { LeaderboardBoardPicker } from '@/components/leaderboard/LeaderboardBoardPicker';
 import { LeaderboardScopeTabs } from '@/components/leaderboard/LeaderboardScopeTabs';
 import { LeaderboardTable } from '@/components/leaderboard/LeaderboardTable';
 
 export function LeaderboardPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
@@ -103,6 +106,7 @@ export function LeaderboardPage() {
   );
 
   const boardTheme = ranked.board.theme;
+  const boardTitle = t(BOARD_I18N_KEY[boardId], { defaultValue: ranked.board.title });
 
   return (
     <div className="space-y-6 pb-8">
@@ -110,11 +114,18 @@ export function LeaderboardPage() {
         <div>
           <div className="flex items-center gap-2 text-emerald-400 mb-1">
             <Trophy className="h-5 w-5" />
-            <span className="text-xs uppercase tracking-widest font-medium">Rankings</span>
+            <span className="text-xs uppercase tracking-widest font-medium">
+              {t('leaderboardRankings', { defaultValue: 'Rankings' })}
+            </span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Leaderboard</h1>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+            {t('leaderboardTitle', { defaultValue: 'Leaderboard' })}
+          </h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-lg">
-            Compare Mission Operators globally, by region, country, locale, or squad.
+            {t('leaderboardSubtitle', {
+              defaultValue:
+                'Compare Mission Operators globally, by region, country, locale, or squad.',
+            })}
           </p>
         </div>
         <Button
@@ -125,7 +136,7 @@ export function LeaderboardPage() {
           disabled={syncing}
         >
           <RefreshCw className={syncing ? 'h-4 w-4 animate-spin' : 'h-4 w-4'} />
-          Sync
+          {t('leaderboardSync', { defaultValue: 'Sync' })}
         </Button>
       </div>
 
@@ -145,7 +156,8 @@ export function LeaderboardPage() {
               )}
             >
               <Moon className="h-3.5 w-3.5" />
-              {you.nightSessions} night {you.nightSessions === 1 ? 'session' : 'sessions'}
+              {you.nightSessions}{' '}
+              {t('lbNightSessions', { defaultValue: 'night sessions' })}
             </button>
           )}
           {you.dawnSessions > 0 && (
@@ -160,7 +172,8 @@ export function LeaderboardPage() {
               )}
             >
               <Sunrise className="h-3.5 w-3.5" />
-              {you.dawnSessions} dawn {you.dawnSessions === 1 ? 'session' : 'sessions'}
+              {you.dawnSessions}{' '}
+              {t('lbDawnSessions', { defaultValue: 'dawn sessions' })}
             </button>
           )}
         </div>
@@ -175,7 +188,7 @@ export function LeaderboardPage() {
               : 'rounded-2xl border border-border/50 bg-card/40 p-4 md:p-5'
         }
       >
-        <h2 className="text-lg font-semibold tracking-tight">{ranked.board.title}</h2>
+        <h2 className="text-lg font-semibold tracking-tight">{boardTitle}</h2>
         <p className="text-sm text-muted-foreground mt-1">{ranked.board.subtitle}</p>
         {ranked.board.flavor && (
           <p
@@ -197,11 +210,13 @@ export function LeaderboardPage() {
           scopeLabel={ranked.scopeLabel}
         />
         <div className="text-xs text-muted-foreground sm:text-right shrink-0">
-          {ranked.totalPlayers.toLocaleString()} operators
+          {ranked.totalPlayers.toLocaleString()} {t('leaderboardOperators', { defaultValue: 'operators' })}
           {ranked.yourRank != null && (
             <>
               {' · '}
-              <span className="text-emerald-400 font-medium">Your rank #{ranked.yourRank}</span>
+              <span className="text-emerald-400 font-medium">
+                {t('leaderboardYourRank', { defaultValue: 'Your rank' })} #{ranked.yourRank}
+              </span>
             </>
           )}
         </div>
@@ -209,7 +224,9 @@ export function LeaderboardPage() {
 
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="space-y-1">
-          <span className="text-xs text-muted-foreground">Call sign</span>
+          <span className="text-xs text-muted-foreground">
+            {t('leaderboardCallSign', { defaultValue: 'Call sign' })}
+          </span>
           <input
             value={operatorName}
             onChange={(e) => setOperatorName(e.target.value)}
@@ -223,7 +240,9 @@ export function LeaderboardPage() {
           />
         </label>
         <label className="space-y-1">
-          <span className="text-xs text-muted-foreground">Squad code (for Squad tab)</span>
+          <span className="text-xs text-muted-foreground">
+            {t('leaderboardSquadCode', { defaultValue: 'Squad code (for Squad tab)' })}
+          </span>
           <input
             value={squadCode}
             onChange={(e) => setSquadCode(e.target.value.toUpperCase())}
@@ -240,8 +259,10 @@ export function LeaderboardPage() {
 
       {scope === 'friends' && !squadCode && (
         <p className="text-sm text-muted-foreground rounded-lg border border-dashed border-border/50 p-4">
-          Set a squad code above to compare with others using the same code. Try <strong>ALPHA</strong> or{' '}
-          <strong>BRAVO</strong> to see demo squad members.
+          {t('leaderboardSquadHint', {
+            defaultValue:
+              'Set a squad code above to compare with others using the same code. Try ALPHA or BRAVO to see demo squad members.',
+          })}
         </p>
       )}
 
@@ -253,8 +274,10 @@ export function LeaderboardPage() {
       />
 
       <p className="text-[10px] text-muted-foreground leading-relaxed">
-        Demo operators fill boards until more members sync. Sign in and tap Sync to publish scores. Rankings
-        also update after workouts when signed in.
+        {t('leaderboardDemoNote', {
+          defaultValue:
+            'Demo operators fill boards until more members sync. Sign in and tap Sync to publish scores. Rankings also update after workouts when signed in.',
+        })}
       </p>
     </div>
   );

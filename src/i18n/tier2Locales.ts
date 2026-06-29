@@ -1,6 +1,6 @@
 /** Tier-2 UI strings — SEA, South Asia, MEA expansion. Same keys as Tier 1 core chrome. */
 
-export const TIER2_LANGS = ['th', 'vi', 'hi'] as const;
+export const TIER2_LANGS = ['th', 'vi', 'hi', 'zh', 'id'] as const;
 export type Tier2Lang = (typeof TIER2_LANGS)[number];
 
 type CoreStrings = {
@@ -39,6 +39,8 @@ type CoreStrings = {
   lang_th: string;
   lang_vi: string;
   lang_hi: string;
+  lang_zh: string;
+  lang_id: string;
   editJourneyProfile: string;
   cloudSyncActive: string;
   cloudSyncPending: string;
@@ -59,6 +61,8 @@ const sharedLangNames = {
   lang_th: 'ไทย',
   lang_vi: 'Tiếng Việt',
   lang_hi: 'हिन्दी',
+  lang_zh: '中文',
+  lang_id: 'Bahasa Indonesia',
 };
 
 const th: CoreStrings = {
@@ -190,7 +194,93 @@ const hi: CoreStrings = {
   navLeaderboard: 'लीडरबोर्ड',
 };
 
-export const TIER2_LOCALES: Record<Tier2Lang, CoreStrings> = { th, vi, hi };
+const zh: CoreStrings = {
+  navToday: '今天',
+  navTrain: '训练',
+  navFuel: '营养',
+  navTrack: '追踪',
+  navYou: '我的',
+  navMore: '更多',
+  yourNextStep: '下一步',
+  formGuide: '动作指南',
+  formGuideTitle: '动作指南',
+  gotItStartSet: '明白了 — 开始组',
+  setup: '准备',
+  execute: '执行',
+  avoid: '避免',
+  breath: '呼吸',
+  simpleMode: '简易',
+  proMode: '专业',
+  appMode: '应用模式',
+  commissionedLabel: '已就绪',
+  commissionedTitle: '你已准备好每日行动',
+  commissionedBody:
+    '基础训练与就绪评估已完成。今天是你的指挥中心 — 每天一个明确行动。健康属于每个人。',
+  commissionedCta: '继续到今日',
+  missionOperator: '任务操作员',
+  welcomeBegin: '开始',
+  welcomeTitle: '欢迎',
+  welcomeSubtitle: '迈向终身健康 — 一步一步。约 2 分钟。',
+  welcomeAccept: '我接受这条道路',
+  welcomeContinue: '继续',
+  welcomeSkipSignIn: '跳过 — 前往今日',
+  ...sharedLangNames,
+  editJourneyProfile: '编辑旅程资料',
+  cloudSyncActive: '旅程已同步到云端',
+  cloudSyncPending: '登录以跨设备同步',
+  saveProfile: '保存资料',
+  yourProfile: '你的资料',
+  firstTimeSetup: '首次设置',
+  betaJourneyProgress: '测试版进度',
+  emailNextStep: '邮件发送下一步',
+  emailNextStepSent: '请查收邮件',
+  navLeaderboard: '排行榜',
+};
+
+const id: CoreStrings = {
+  navToday: 'Hari ini',
+  navTrain: 'Latihan',
+  navFuel: 'Nutrisi',
+  navTrack: 'Lacak',
+  navYou: 'Profil',
+  navMore: 'Lainnya',
+  yourNextStep: 'Langkah berikutnya',
+  formGuide: 'Panduan form',
+  formGuideTitle: 'Panduan form',
+  gotItStartSet: 'Mengerti — mulai set',
+  setup: 'Persiapan',
+  execute: 'Gerakan',
+  avoid: 'Hindari',
+  breath: 'Napas',
+  simpleMode: 'Sederhana',
+  proMode: 'Pro',
+  appMode: 'Mode app',
+  commissionedLabel: 'Siap',
+  commissionedTitle: 'Anda siap setiap hari',
+  commissionedBody:
+    'Pelatihan dasar dan kesiapan selesai. Hari ini pusat komando Anda — satu aksi jelas setiap hari. Kesehatan untuk semua.',
+  commissionedCta: 'Lanjut ke Hari ini',
+  missionOperator: 'Operator Misi',
+  welcomeBegin: 'Mulai',
+  welcomeTitle: 'Selamat datang',
+  welcomeSubtitle: 'Perjalanan kesehatan seumur hidup — selangkah demi selangkah. ~2 menit.',
+  welcomeAccept: 'Saya menerima jalur ini',
+  welcomeContinue: 'Lanjut',
+  welcomeSkipSignIn: 'Lewati — ke Hari ini',
+  ...sharedLangNames,
+  editJourneyProfile: 'Edit profil perjalanan',
+  cloudSyncActive: 'Perjalanan tersinkron ke cloud',
+  cloudSyncPending: 'Masuk untuk sinkron antar perangkat',
+  saveProfile: 'Simpan profil',
+  yourProfile: 'Profil Anda',
+  firstTimeSetup: 'Pengaturan pertama',
+  betaJourneyProgress: 'Progres beta',
+  emailNextStep: 'Email langkah berikutnya',
+  emailNextStepSent: 'Periksa kotak masuk Anda',
+  navLeaderboard: 'Papan peringkat',
+};
+
+export const TIER2_LOCALES: Record<Tier2Lang, CoreStrings> = { th, vi, hi, zh, id };
 
 export function tier2StringsFor(lang: string): CoreStrings | null {
   const code = lang.split('-')[0] as Tier2Lang;

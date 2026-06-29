@@ -15,6 +15,8 @@ const LOCALE_COUNTRY: Record<string, { code: string; name: string; region: Macro
   th: { code: 'TH', name: 'Thailand', region: 'Asia-Pacific' },
   vi: { code: 'VN', name: 'Vietnam', region: 'Asia-Pacific' },
   hi: { code: 'IN', name: 'India', region: 'Asia-Pacific' },
+  zh: { code: 'CN', name: 'China', region: 'Asia-Pacific' },
+  id: { code: 'ID', name: 'Indonesia', region: 'Asia-Pacific' },
 };
 
 export function resolveGeoFromLocale(locale?: string | null): {

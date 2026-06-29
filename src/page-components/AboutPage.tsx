@@ -27,6 +27,10 @@ export function AboutPage() {
         <Link href="/terms" className="text-emerald-400 hover:underline no-underline">
           Terms of Use
         </Link>
+        {' · '}
+        <Link href="/beta" className="text-emerald-400 hover:underline no-underline">
+          Beta start guide
+        </Link>
       </p>
 
       <h2>Contact</h2>
