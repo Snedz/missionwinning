@@ -71,20 +71,25 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 
 ---
 
-## Phase F — Journey & simple UI (before public) ← **NEXT**
+## Phase F — Journey & simple UI (before public) ← **IN PROGRESS**
 
-Full spec: **[JOURNEY.md](JOURNEY.md)**
+Full spec: **[JOURNEY.md](JOURNEY.md)** · Global UX plan: **[UX_GLOBAL_PLAN.md](UX_GLOBAL_PLAN.md)**
 
-**Goal:** Foolproof UI + DoD-inspired member path (I-Day → Basic Training → Readiness → Commissioned).
+**Goal:** Foolproof UI + DoD-inspired member path (I-Day → Basic Training → Readiness → Commissioned), competitive with Bevel/Freeletics on clarity — not feature count.
 
 | Sub-phase | Deliverable |
 |-----------|-------------|
-| **F1** | `missionJourney.ts`, `/welcome` I-Day flow, Today = one hero CTA |
-| **F2** | Sidebar → 5 tabs + More; HomePage declutter; commissioning moment |
-| **F3** | Journey sync to Supabase; beta metrics |
+| **F1** ✅ | `missionJourney.ts`, `/welcome` I-Day flow, Today = one hero CTA |
+| **F2a** | Simple / Pro Mode toggle (crypto Lite/Pro pattern) — see UX_GLOBAL_PLAN §4 |
+| **F2b** | Sidebar → 5 tabs + More (Pro only) |
+| **F2c** | Today accordion + remove debug/demo clutter |
+| **F2d** | Commissioning ceremony modal |
+| **F3** | Journey + `ui_mode` sync to Supabase; beta metrics |
 | **F4** | Phase E launch only after journey + PROTECTION P0 |
 
-**Done when:** New user completes I-Day in &lt;3 min and always knows the next single action on Today.
+**Phase G (global):** i18n Tier 1 (DE, IT, KO + existing), Form Guide system — see UX_GLOBAL_PLAN §5–6.
+
+**Done when:** New user completes I-Day in &lt;3 min, Simple Mode is default, Tier 1 languages cover all CTAs, 50 exercises have visual form guides.
 
 ---
 

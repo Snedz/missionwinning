@@ -4,6 +4,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+See [UX_GLOBAL_PLAN.md](UX_GLOBAL_PLAN.md) for F2a–G2 roadmap.
+
+---
+
+## 2026-06-29 — UX Global Plan (pre-F2 research)
+
+**Branch:** `cursor/ux-global-plan-699d`
+
+### Documented
+
+- Competitive analysis: Bevel, Freeletics Super Bundle, Binance Lite/Pro pattern
+- **Simple Mode / Pro Mode** — user-controlled UI density (not paywall)
+- Tier 1 i18n: DE, IT, KO + existing languages; locale JSON architecture
+- **Form Guide** system — “Warrior Stance” structured teaching (setup, execute, errors, breath + video)
+
+---
+
 ## 2026-06-29 — Phase F1: Journey engine + I-Day
 
 **Branch:** `cursor/journey-i-day-699d`

@@ -215,13 +215,26 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 - [x] Today hero driven by `getNextAction()`  
 - [x] Remove duplicate sign-in blocks from Library, History, Nutrition (link to You tab)
 
-### F2 — Simplify chrome (1 branch)
+### F2 — Simplify chrome (1 branch → split per UX_GLOBAL_PLAN.md)
 
-- [ ] Sidebar → 5 primary + More sheet  
-- [ ] HomePage accordion for secondary content  
-- [ ] Profile: Mission Setup becomes “Edit Journey Profile” (link back to I-Day fields)  
-- [ ] Commissioning moment (modal + `mw_commissioned_at`)  
-- [ ] Copy pass: short labels everywhere (see glossary below)
+- [ ] **Simple / Pro Mode** toggle in Profile (`mw_ui_mode`) — Lite = one CTA + 5 tabs; Pro = full dashboard + More sheet
+- [ ] Sidebar → 5 primary + More sheet (Pro only; Simple matches mobile)
+- [ ] HomePage accordion for secondary content (Pro); Simple = hero + streak only
+- [ ] Profile: Mission Setup becomes “Edit Journey Profile” (link back to I-Day fields)
+- [ ] Commissioning moment (modal + `mw_commissioned_at`)
+- [ ] Copy pass: short labels everywhere (see glossary below + UX_GLOBAL_PLAN §5.5)
+
+### G1 — Global languages (parallel track)
+
+- [ ] Extract i18n to JSON namespaces; dynamic `<html lang>`
+- [ ] Tier 1: DE, IT, KO + existing EN/ES/FR/PT/RU
+- [ ] Translate journey, nav, and all primary CTAs
+
+### G2 — Form Guides (“Warrior Stance” model)
+
+- [ ] `FormGuide` schema + bottom sheet in Active Workout / Library
+- [ ] 50 priority exercises: setup → execute → errors → breath + poster image
+- [ ] Optional: licensed loop MP4 via CDN (MoveKit/GymVisual)
 
 ### F3 — Persist & polish (1 branch)
 
@@ -269,6 +282,7 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 | Doc | Role |
 |-----|------|
 | **JOURNEY.md** (this file) | UX + member path before public |
+| **UX_GLOBAL_PLAN.md** | Competitive UX research, Simple/Pro mode, i18n, Form Guides |
 | **PROTECTION.md** | Security + competitive gaps |
 | **PLAN.md** | Phase A–F roadmap |
 | **vision.md** | Mission and pillars (unchanged) |
@@ -277,12 +291,8 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 
 ## Next step for implementation
 
-Start **Phase F1** on branch `cursor/journey-i-day-699d`:
+**Review [UX_GLOBAL_PLAN.md](UX_GLOBAL_PLAN.md)** — competitive research (Bevel, Freeletics Super Bundle, crypto Lite/Pro), global i18n, Form Guide system.
 
-1. Add `missionJourney.ts` and `/welcome`  
-2. Wire Today hero to journey state  
-3. Ship for your review before sidebar surgery (F2)
-
-Say **“Start Phase F1”** to begin building.
+Then start **F2a** (Simple/Pro Mode toggle) on branch `cursor/simple-pro-mode-699d` after plan approval.
 
 *Last updated: 2026-06-29*
