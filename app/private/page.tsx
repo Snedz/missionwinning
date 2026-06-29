@@ -1,6 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { Shield } from 'lucide-react';
+import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 
 export default function PrivateTeaser() {
   const [password, setPassword] = useState('');
@@ -22,7 +25,6 @@ export default function PrivateTeaser() {
       });
 
       if (res.ok) {
-        // Cookie set — go to app root (gate will pass on next request).
         window.location.href = '/log';
       } else {
         const data = await res.json().catch(() => ({}));
@@ -43,50 +45,68 @@ export default function PrivateTeaser() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0f1a] text-white p-6">
-      <div className="max-w-md text-center space-y-6">
-        <div className="text-3xl font-bold tracking-tight">Private Development</div>
-
-        <div className="text-lg text-white/80">
-          This site is in private development and is not available to the public.
-        </div>
-
-        <form onSubmit={handleSubmit} className="pt-4 border-t border-white/10 text-left space-y-3">
-          <div className="text-sm text-white/70">Authorized access</div>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Access code"
-            autoComplete="off"
-            className="w-full bg-black/40 border border-white/20 rounded px-3 py-2 text-sm"
-            disabled={loading}
-          />
-          <button
-            type="submit"
-            disabled={loading || !password}
-            className="w-full bg-white text-black hover:bg-white/90 font-semibold py-2 rounded text-sm disabled:opacity-50"
-          >
-            {loading ? 'Checking...' : 'Unlock'}
-          </button>
-          {error && <div className="text-red-400 text-xs">{error}</div>}
-          <div className="text-[10px] text-white/40">
-            Or visit any URL with <span className="font-mono">?access=YOUR_SECRET</span> once.
-            The access cookie lasts 30 days.
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="w-full max-w-md page-enter">
+          <div className="text-center space-y-3 mb-8">
+            <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600/20 border border-emerald-500/30">
+              <Shield className="h-7 w-7 text-emerald-400" />
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight">Private Development</h1>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Mission Winning is in private beta. Enter your access code to continue.
+            </p>
           </div>
-        </form>
 
-        <div className="pt-4 border-t border-white/10 text-sm text-white/50">
-          Not open to the public during construction.
-          <br />
-          Contact the team for authorized access.
-        </div>
+          <form
+            onSubmit={handleSubmit}
+            className="content-card p-6 space-y-4"
+          >
+            <label className="block space-y-2 text-sm">
+              <span className="text-muted-foreground">Access code</span>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter code from your invite"
+                autoComplete="off"
+                className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+                disabled={loading}
+              />
+            </label>
+            <button
+              type="submit"
+              disabled={loading || !password}
+              className="primary-action disabled:opacity-50"
+            >
+              {loading ? 'Checking…' : 'Unlock Mission Winning'}
+            </button>
+            {error && (
+              <p className="text-sm text-red-400 bg-red-950/20 border border-red-500/20 rounded-lg px-3 py-2">
+                {error}
+              </p>
+            )}
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Or visit any URL once with{' '}
+              <span className="font-mono text-emerald-400/90">?access=YOUR_SECRET</span>. Cookie
+              lasts 30 days.
+            </p>
+          </form>
 
-        <div className="text-[10px] text-white/30 pt-2">
-          If you previously installed the app, clear your browser cache or uninstall the PWA —
-          an old cached version may show the full site without the gate.
+          <p className="text-center text-xs text-muted-foreground mt-6">
+            Need access?{' '}
+            <Link href="/beta" className="text-emerald-400 hover:underline">
+              Beta start guide
+            </Link>
+          </p>
+
+          <p className="text-[10px] text-muted-foreground/60 text-center mt-4 leading-relaxed">
+            If you installed the PWA before the gate, clear site data or reinstall — an old cache
+            may bypass this screen.
+          </p>
         </div>
       </div>
+      <AppLegalFooter className="border-t border-border/30 pb-6" />
     </div>
   );
 }

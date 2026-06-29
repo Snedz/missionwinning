@@ -13,6 +13,7 @@ import {
 } from '@/lib/missionJourney';
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { SignInPanel } from '@/components/auth/SignInPanel';
+import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 
 type Step = 'welcome' | 'mission' | 'profile' | 'signin';
 
@@ -218,10 +219,14 @@ export function WelcomePage() {
             {step === 'signin' && (
               <>
                 <div>
-                  <h2 className="text-xl font-bold mb-1">Save progress — your choice</h2>
+                  <h2 className="text-xl font-bold mb-1">
+                    {t('welcomeSignInTitle', { defaultValue: 'Save progress — your choice' })}
+                  </h2>
                   <p className="text-sm text-muted-foreground">
-                    Sign in with Apple, Google, or email to sync across devices. Skip anytime — local
-                    progress still works.
+                    {t('welcomeSignInSubtitle', {
+                      defaultValue:
+                        'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
+                    })}
                   </p>
                 </div>
                 <SignInPanel
@@ -239,9 +244,7 @@ export function WelcomePage() {
         </Card>
       </main>
 
-      <footer className="text-center text-[10px] text-muted-foreground py-4 px-4">
-        Civilian health app — inspired by structured military onboarding, not affiliated with DoD.
-      </footer>
+      <AppLegalFooter className="border-t border-border/30" />
     </div>
   );
 }

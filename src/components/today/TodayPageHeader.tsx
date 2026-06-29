@@ -51,12 +51,14 @@ export function TodayPageHeader({
         {!userEmail ? (
           <>
             <a href="/profile" className="text-emerald-400 hover:underline">
-              Sign in
+              {t('signInLink', { defaultValue: 'Sign in' })}
             </a>{' '}
-            optional — progress stays on this device.
+            {t('signInOptional', {
+              defaultValue: 'optional — progress stays on this device.',
+            })}
           </>
         ) : (
-          'Cloud sync on.'
+          t('cloudSyncOn', { defaultValue: 'Cloud sync on.' })
         )}
       </p>
       <div className="pt-3">

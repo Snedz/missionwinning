@@ -17,6 +17,7 @@ import { EXERCISES } from "@/data/exercises";
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
+import { CommandersIntent } from "@/components/journey/CommandersIntent";
 import { TodayQuickLinks } from "@/components/journey/TodayQuickLinks";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { TodayDashboardHeader } from "@/components/today/TodayDashboardHeader";
@@ -477,6 +478,8 @@ export function HomePage() {
         action={action}
         showFocusLine={layout.showFocusLine}
       />
+
+      {state.phase === 'commissioned' && <CommandersIntent />}
 
       <JourneyHero
         action={action}

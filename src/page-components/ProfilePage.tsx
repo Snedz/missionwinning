@@ -15,6 +15,7 @@ import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
 
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
+import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 
 const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi', 'zh', 'id'] as const;
 const NATIVE_NAMES: Record<string, string> = {
@@ -419,8 +420,7 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
-      <div className="text-xs text-muted-foreground">More settings (locale, notifications, data export) coming with full backend. Your data stays private and under your control.</div>
-      <p className="text-[10px] text-muted-foreground/70 text-center pt-2">Build {APP_BUILD_LABEL}</p>
+      <AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} className="pt-2" />
     </div>
   );
 }
