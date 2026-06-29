@@ -144,7 +144,7 @@ export function ActiveWorkoutPage() {
         <Timer className="h-16 w-16 text-muted-foreground" />
         <h2 className="text-2xl font-bold">No Active Workout</h2>
         <p className="text-muted-foreground max-w-sm">
-          Start a quick workout from the dashboard or launch a saved routine from the builder.
+          Start a quick workout from Today or launch a saved routine from the builder.
         </p>
         <Button
           variant="fitness"

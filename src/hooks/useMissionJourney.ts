@@ -29,8 +29,13 @@ export function useMissionJourney() {
     const onStorage = (e: StorageEvent) => {
       if (e.key?.startsWith('mw_')) refresh();
     };
+    const onJourneyEvent = () => refresh();
     window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    window.addEventListener('mw-journey-event', onJourneyEvent);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('mw-journey-event', onJourneyEvent);
+    };
   }, [refresh]);
 
   return {

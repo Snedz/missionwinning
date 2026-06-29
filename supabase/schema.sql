@@ -75,6 +75,26 @@ alter table public.leads enable row level security;
 create policy "Anyone can submit leads"
   on public.leads for insert with check (true);
 
+-- Journey analytics (beta funnel — journey_phase_complete, milestones)
+create table if not exists public.journey_events (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  event_name text not null,
+  payload jsonb default '{}',
+  created_at timestamptz default now()
+);
+
+create index if not exists journey_events_user_id_idx on public.journey_events(user_id);
+create index if not exists journey_events_name_idx on public.journey_events(event_name);
+
+alter table public.journey_events enable row level security;
+
+create policy "Users read own journey events"
+  on public.journey_events for select using (auth.uid() = user_id);
+
+create policy "Users insert own journey events"
+  on public.journey_events for insert with check (auth.uid() = user_id);
+
 -- Workout logs (cloud sync — flat columns match CloudWorkoutLog)
 create table if not exists public.workout_logs (
   id uuid primary key default gen_random_uuid(),

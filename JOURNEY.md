@@ -221,7 +221,7 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 - [x] HomePage accordion for secondary content  
 - [x] Profile: Mission Setup becomes “Edit Journey Profile” (link back to I-Day fields)  
 - [x] Commissioning moment (modal + `mw_commissioned_at`)  
-- [ ] Copy pass: short labels everywhere (see glossary below)
+- [x] Copy pass: short labels everywhere (see glossary below)
 
 ### G1 — Global languages
 
@@ -237,8 +237,8 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 
 - [x] Supabase `profiles.journey_state` + sync on sign-in  
 - [x] Journey badge on Profile (“Mission Operator · Day N”)  
-- [ ] Optional: email nudge via Resend (“Complete BT-2: log protein”)  
-- [ ] Analytics events: `journey_phase_complete`  
+- [x] Optional: email nudge via Resend (“Complete BT-2: log protein”)  
+- [x] Analytics events: `journey_phase_complete`  
 
 ### F4 — Then Phase E (public)
 

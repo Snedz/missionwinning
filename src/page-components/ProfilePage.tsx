@@ -10,6 +10,7 @@ import { useWorkoutStore } from "@/store/workoutStore";
 import { useUiMode } from "@/hooks/useUiMode";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { daysSinceCommission } from "@/lib/missionJourney";
+import { getBetaFunnelMetrics, getJourneyEvents } from "@/lib/journeyAnalytics";
 import { MoreSheet } from "@/components/layout/MoreSheet";
 import { LayoutGrid } from "lucide-react";
 
@@ -54,9 +55,11 @@ function LanguageSwitcher() {
 export function ProfilePage() {
   const { t } = useTranslation();
   const { mode, isPro, setUiMode } = useUiMode();
-  const { isCommissioned, state } = useMissionJourney();
+  const { isCommissioned, state, action } = useMissionJourney();
   const [moreOpen, setMoreOpen] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
+  const [nudgeLoading, setNudgeLoading] = useState(false);
+  const [nudgeSent, setNudgeSent] = useState(false);
   const [units, setUnits] = useState<"metric" | "imperial">("metric");
   const [goals, setGoals] = useState("Build strength and stay healthy");
   const [signInEmail, setSignInEmail] = useState("");
@@ -167,6 +170,34 @@ export function ProfilePage() {
     try { return JSON.parse(localStorage.getItem('mw_last_assessment') || 'null'); } catch { return null; }
   })() : null;
 
+  const funnel = getBetaFunnelMetrics(state);
+
+  const handleEmailNudge = async () => {
+    setNudgeLoading(true);
+    setNudgeSent(false);
+    try {
+      const res = await fetch('/api/journey/nudge', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          label: action.label,
+          description: action.description,
+          href: action.href,
+          stepLabel: action.stepLabel,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not send email');
+      setNudgeSent(true);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Email not available';
+      alert(msg);
+    } finally {
+      setNudgeLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-2xl space-y-6">
       <div>
@@ -226,7 +257,7 @@ export function ProfilePage() {
           <p className="text-sm text-muted-foreground leading-relaxed">
             <strong>{t('simpleMode', { defaultValue: 'Simple' })}</strong> — one clear action each day. Best for most people worldwide.
             <br />
-            <strong>{t('proMode', { defaultValue: 'Pro' })}</strong> — full dashboard, charts, and all tools.
+            <strong>{t('proMode', { defaultValue: 'Pro' })}</strong> — full Today view, charts, and all tools.
           </p>
           <div className="flex gap-2">
             <Button
@@ -319,10 +350,57 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
+      <Card className="border-emerald-500/40 bg-emerald-950/10">
+        <CardHeader>
+          <CardTitle>{t('betaJourneyProgress', { defaultValue: 'Beta journey progress' })}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 text-sm">
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-lg border border-border/50 p-3">
+              <div className="text-xs text-muted-foreground">Phase</div>
+              <div className="font-semibold capitalize">{funnel.phase.replace('-', ' ')}</div>
+            </div>
+            <div className="rounded-lg border border-border/50 p-3">
+              <div className="text-xs text-muted-foreground">Events</div>
+              <div className="font-semibold">{funnel.eventCount}</div>
+            </div>
+            <div className="rounded-lg border border-border/50 p-3">
+              <div className="text-xs text-muted-foreground">I-Day</div>
+              <div className="font-semibold">{funnel.iDayComplete ? '✓ Done' : '—'}</div>
+            </div>
+            <div className="rounded-lg border border-border/50 p-3">
+              <div className="text-xs text-muted-foreground">Basic Training</div>
+              <div className="font-semibold">{funnel.basicDone}/{funnel.basicTotal}</div>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Beta targets: I-Day ≥80%, commissioned ≥25% in 14 days. Phase transitions log as{' '}
+            <code className="text-[10px]">journey_phase_complete</code>.
+          </p>
+          {email && !isCommissioned && (
+            <Button
+              variant="outline"
+              className="w-full min-h-[44px]"
+              disabled={nudgeLoading}
+              onClick={handleEmailNudge}
+            >
+              {nudgeLoading
+                ? 'Sending…'
+                : t('emailNextStep', { defaultValue: 'Email my next step' })}
+            </Button>
+          )}
+          {nudgeSent && (
+            <p className="text-xs text-emerald-400">
+              {t('emailNextStepSent', { defaultValue: 'Check your inbox for your next step.' })}
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Journey profile — first-time onboarding or edit link */}
       {!isOnboarded ? (
         <Card className="border-emerald-500/40 bg-emerald-950/10">
-          <CardHeader><CardTitle>🚀 Mission Setup (First-Time Onboarding)</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('firstTimeSetup', { defaultValue: 'First-time setup' })}</CardTitle></CardHeader>
           <CardContent className="space-y-4 text-sm">
             <p className="text-muted-foreground">Complete this once to personalize your Win Score, muscle readiness, and starting recommendations. Sets your path to dominate.</p>
             <div>
@@ -403,11 +481,13 @@ export function ProfilePage() {
         <CardHeader><CardTitle>{t('demoAnalytics', { defaultValue: 'Demo Analytics (Events)' })}</CardTitle></CardHeader>
         <CardContent>
           <Button variant="outline" onClick={() => {
-            const events = Object.keys(localStorage).filter(k => k.startsWith('mw_event_')).map(k => ({key: k, val: localStorage.getItem(k)}));
-            console.log('Mission Winning Analytics Events:', events);
-            alert('Events logged to console (open dev tools). ' + events.length + ' tracked actions (bundle views, feedback, PWA installs, etc.). Full Supabase analytics in next phase.');
+            const events = getJourneyEvents();
+            const legacy = Object.keys(localStorage).filter(k => k.startsWith('mw_event_')).map(k => ({ key: k, val: localStorage.getItem(k) }));
+            console.log('Mission Winning Journey Events:', events);
+            console.log('Legacy mw_event_* keys:', legacy);
+            alert(`${events.length} journey events (${events.filter(e => e.name === 'journey_phase_complete').length} phase completes). See console for details.`);
           }}>{t('viewEvents', { defaultValue: 'View Tracked Events (console)' })}</Button>
-          <div className="text-xs mt-2">Tracks bundle CTAs, feedback, installs, pillar views for owner insights. Share /feedback to help the mission.</div>
+          <div className="text-xs mt-2">Tracks journey phases, milestones, bundle CTAs, feedback, and installs. Syncs to Supabase when signed in.</div>
         </CardContent>
       </Card>
 
@@ -418,7 +498,8 @@ export function ProfilePage() {
             const data = {
               workouts: localStorage.getItem('mw_workout_history') || '[]',
               nutrition: localStorage.getItem('mw_nutrition_log') || '[]',
-              events: Object.keys(localStorage).filter(k => k.startsWith('mw_event_')).reduce((acc: any, k) => { acc[k] = localStorage.getItem(k); return acc; }, {}),
+              events: getJourneyEvents(),
+              legacyEvents: Object.keys(localStorage).filter(k => k.startsWith('mw_event_')).reduce((acc: Record<string, string | null>, k) => { acc[k] = localStorage.getItem(k); return acc; }, {}),
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
