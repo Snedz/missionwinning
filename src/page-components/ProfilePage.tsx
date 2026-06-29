@@ -13,7 +13,9 @@ import { daysSinceCommission } from "@/lib/missionJourney";
 import { MoreSheet } from "@/components/layout/MoreSheet";
 import { LayoutGrid } from "lucide-react";
 
-const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko'] as const;
+import { scheduleJourneyPush } from '@/lib/journeySync';
+
+const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja'] as const;
 const NATIVE_NAMES: Record<string, string> = {
   en: 'English',
   es: 'Español',
@@ -23,6 +25,7 @@ const NATIVE_NAMES: Record<string, string> = {
   de: 'Deutsch',
   it: 'Italiano',
   ko: '한국어',
+  ja: '日本語',
 };
 
 function LanguageSwitcher() {
@@ -30,6 +33,7 @@ function LanguageSwitcher() {
   const currentLang = i18n.language.split('-')[0];
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+    scheduleJourneyPush();
   };
   return (
     <div className="space-y-1">
@@ -77,11 +81,12 @@ export function ProfilePage() {
   const saveUnits = (u: "metric" | "imperial") => {
     setUnits(u);
     localStorage.setItem("mw_units", u);
+    scheduleJourneyPush();
   };
 
   const saveGoals = () => {
     localStorage.setItem("mw_goals", goals);
-    alert("Goals saved (local for now; will sync with profile on Supabase when signed in).");
+    scheduleJourneyPush();
   };
 
   const handleSignOut = async () => {
@@ -148,9 +153,8 @@ export function ProfilePage() {
     localStorage.setItem('mw_equipment', equipment);
     localStorage.setItem('mw_primary_goal', primaryGoal);
     setGoals(primaryGoal);
-    saveGoals();
-    alert('Mission setup complete! Your Win Score and recommendations will now personalize. Start with a quick workout from the Dashboard.');
-    // Seed initial Win Score hint
+    localStorage.setItem('mw_goals', primaryGoal);
+    scheduleJourneyPush();
     if (!localStorage.getItem('mw_streak')) localStorage.setItem('mw_streak', '1');
   };
 
@@ -182,11 +186,19 @@ export function ProfilePage() {
             <>
               <div>Signed in as <span className="font-mono text-emerald-400">{email}</span></div>
               <Button variant="outline" onClick={handleSignOut}>{t('signOut', { defaultValue: 'Sign Out' })}</Button>
-              <div className="text-xs text-muted-foreground">Cloud sync, real premium from Supabase enrollments, and cross-device history now active.</div>
+              <div className="text-xs text-emerald-400/90">
+                {t('cloudSyncActive', { defaultValue: 'Journey synced to cloud' })}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Journey phase, preferences, and milestones merge across devices on sign-in.
+              </div>
             </>
           ) : (
             <div className="border border-emerald-500/30 bg-emerald-950/10 p-3 rounded">
               <div className="font-semibold mb-2 text-emerald-400">Sign up or sign in (free magic link)</div>
+              <div className="text-xs text-muted-foreground mb-2">
+                {t('cloudSyncPending', { defaultValue: 'Sign in to sync journey across devices' })}
+              </div>
               <form onSubmit={handleSignIn} className="space-y-2">
                 <input
                   type="email"
@@ -307,8 +319,8 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
-      {/* Light first-run onboarding for progression (goals, experience, equipment) */}
-      {!isOnboarded && (
+      {/* Journey profile — first-time onboarding or edit link */}
+      {!isOnboarded ? (
         <Card className="border-emerald-500/40 bg-emerald-950/10">
           <CardHeader><CardTitle>🚀 Mission Setup (First-Time Onboarding)</CardTitle></CardHeader>
           <CardContent className="space-y-4 text-sm">
@@ -343,6 +355,21 @@ export function ProfilePage() {
             </div>
             <Button onClick={completeOnboarding} disabled={!experience || !equipment} className="w-full">Complete Setup &amp; Seed Your First Win Score</Button>
             <div className="text-xs text-muted-foreground">This unlocks personalized Today hub recommendations and starting challenges. Premium programs expand this further.</div>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card>
+          <CardHeader><CardTitle>{t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}</CardTitle></CardHeader>
+          <CardContent className="space-y-3 text-sm">
+            <p className="text-muted-foreground">
+              Experience: <span className="text-foreground capitalize">{experience || '—'}</span>
+              {' · '}
+              Equipment: <span className="text-foreground capitalize">{equipment?.replace('-', ' ') || '—'}</span>
+            </p>
+            <p className="text-muted-foreground truncate">Goal: {primaryGoal || goals}</p>
+            <Button variant="outline" className="w-full min-h-[44px]" onClick={() => { window.location.href = '/welcome?edit=1'; }}>
+              {t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}
+            </Button>
           </CardContent>
         </Card>
       )}

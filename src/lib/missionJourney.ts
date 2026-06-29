@@ -86,6 +86,8 @@ export function loadJourneyState(): JourneyState {
 export function saveJourneyState(state: JourneyState): void {
   if (typeof window === 'undefined') return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  window.dispatchEvent(new CustomEvent('mw-journey-local-change'));
+  void import('@/lib/journeySync').then((m) => m.scheduleJourneyPush());
 }
 
 export function isIDayComplete(state?: JourneyState): boolean {

@@ -5,10 +5,12 @@ import { MobileNav } from "./MobileNav";
 import { JourneyGuard } from "@/components/journey/JourneyGuard";
 import { CommissioningCeremony } from "@/components/journey/CommissioningCeremony";
 import { useUiMode } from "@/hooks/useUiMode";
+import { useJourneySync } from "@/hooks/useJourneySync";
 import { cn } from "@/lib/utils";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const { isSimple } = useUiMode();
+  useJourneySync();
 
   return (
     <JourneyGuard>

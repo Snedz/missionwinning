@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import {
   markIDayStarted,
   markMissionAccepted,
 } from '@/lib/missionJourney';
+import { scheduleJourneyPush } from '@/lib/journeySync';
 import { signInMagic } from '@/lib/supabase';
 
 type Step = 'welcome' | 'mission' | 'profile' | 'signin';
@@ -29,6 +30,8 @@ const EQUIPMENT_OPTIONS = [
 
 export function WelcomePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isEdit = searchParams.get('edit') === '1';
   const { t } = useTranslation();
   const [step, setStep] = useState<Step>('welcome');
   const [experience, setExperience] = useState('beginner');
@@ -37,7 +40,32 @@ export function WelcomePage() {
   const [email, setEmail] = useState('');
   const [sending, setSending] = useState(false);
 
+  useEffect(() => {
+    if (!isEdit || typeof window === 'undefined') return;
+    setExperience(localStorage.getItem('mw_experience') || 'beginner');
+    setEquipment(localStorage.getItem('mw_equipment') || 'bodyweight');
+    setPrimaryGoal(
+      localStorage.getItem('mw_primary_goal') ||
+        localStorage.getItem('mw_goals') ||
+        'Build strength and stay healthy'
+    );
+    setStep('profile');
+  }, [isEdit]);
+
+  const saveProfileFields = () => {
+    localStorage.setItem('mw_experience', experience);
+    localStorage.setItem('mw_equipment', equipment);
+    localStorage.setItem('mw_primary_goal', primaryGoal);
+    localStorage.setItem('mw_goals', primaryGoal);
+    scheduleJourneyPush();
+  };
+
   const finish = () => {
+    if (isEdit) {
+      saveProfileFields();
+      router.push('/profile');
+      return;
+    }
     completeIDay({ experience, equipment, primaryGoal });
     router.push('/log');
   };
@@ -53,6 +81,10 @@ export function WelcomePage() {
   };
 
   const handleProfileNext = () => {
+    if (isEdit) {
+      finish();
+      return;
+    }
     setStep('signin');
   };
 
@@ -78,7 +110,9 @@ export function WelcomePage() {
     <div className="min-h-screen bg-[#0a0f1a] text-white flex flex-col">
       <header className="border-b border-white/10 px-4 py-4 flex items-center gap-2">
         <Shield className="h-6 w-6 text-emerald-400" />
-        <span className="font-bold tracking-tight">Mission Winning · I-Day</span>
+        <span className="font-bold tracking-tight">
+          Mission Winning · {isEdit ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' }) : 'I-Day'}
+        </span>
       </header>
 
       <main className="flex-1 flex items-center justify-center p-4">
@@ -136,8 +170,14 @@ export function WelcomePage() {
             {step === 'profile' && (
               <>
                 <div>
-                  <h2 className="text-xl font-bold mb-1">Three quick questions</h2>
-                  <p className="text-sm text-white/60">So Today can recommend the right starting point.</p>
+                  <h2 className="text-xl font-bold mb-1">
+                    {isEdit ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' }) : 'Three quick questions'}
+                  </h2>
+                  <p className="text-sm text-white/60">
+                    {isEdit
+                      ? 'Update experience, equipment, and goal. Changes sync when signed in.'
+                      : 'So Today can recommend the right starting point.'}
+                  </p>
                 </div>
                 <label className="block space-y-1 text-sm">
                   <span className="text-white/70">Experience</span>
@@ -180,9 +220,16 @@ export function WelcomePage() {
                   className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
                   onClick={handleProfileNext}
                 >
-                  {t('welcomeContinue', { defaultValue: 'Continue' })}
+                  {isEdit
+                    ? t('saveProfile', { defaultValue: 'Save profile' })
+                    : t('welcomeContinue', { defaultValue: 'Continue' })}
                 </Button>
-                <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('mission')}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => (isEdit ? router.push('/profile') : setStep('mission'))}
+                >
                   <ChevronLeft className="h-4 w-4 mr-1" /> Back
                 </Button>
               </>
