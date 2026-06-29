@@ -6,6 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Check, Dumbbell, Flame, Shield, TrendingUp } from "lucide-react";
 import { UnlockButton } from "@/components/UnlockButton";
+import { MetricsRow } from "@/components/metrics/MetricsRow";
+import type { BodyScores } from "@/lib/score";
+
+const DEMO_SCORES: BodyScores = {
+  readiness: 82,
+  strain: 45,
+  recovery: 78,
+  readinessLabel: 'Prime to push',
+  strainLabel: 'Moderate load',
+  recoveryLabel: 'Rebuilding',
+};
 
 export function LandingPage() {
   const router = useRouter();
@@ -70,15 +81,15 @@ export function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0f1a] text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Top Nav - Mission focused: Free core + Super Bundle */}
-      <nav className="border-b border-white/10 bg-[#0a0f1a]/95 backdrop-blur sticky top-0 z-50">
+      <nav className="border-b border-border/60 bg-background/95 backdrop-blur sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-emerald-600 flex items-center justify-center font-bold">F</div>
+            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center font-bold text-primary-foreground">MW</div>
             <div>
               <div className="font-semibold tracking-tight">MISSION WINNING</div>
-              <div className="text-[10px] text-white/50 -mt-1">MISSION WINNING • GLOBAL</div>
+              <div className="text-[10px] text-muted-foreground -mt-1">MISSION WINNING • GLOBAL</div>
             </div>
           </div>
           <div className="flex items-center gap-6 text-sm">
@@ -86,7 +97,7 @@ export function LandingPage() {
             <a href="#pillars" className="hover:text-emerald-400 transition-colors">PILLARS</a>
             <a href="#bundle" className="hover:text-emerald-400 transition-colors">SUPER BUNDLE</a>
             <Button variant="outline" size="sm" onClick={() => router.push("/log")}>GRAB FREE TRACKER</Button>
-            <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700" onClick={() => document.getElementById('bundle')?.scrollIntoView({ behavior: 'smooth' })}>GET SUPER BUNDLE</Button>
+            <Button size="sm" variant="fitness" onClick={() => document.getElementById('bundle')?.scrollIntoView({ behavior: 'smooth' })}>GET SUPER BUNDLE</Button>
             <Button variant="ghost" size="sm" className="text-emerald-400" onClick={() => {
               const trig = (window as any).triggerPwaInstall; if (trig) trig(); else router.push('/log');
             }}>INSTALL FOR OFFLINE (PWA)</Button>
@@ -94,40 +105,41 @@ export function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero - New Vision: Free for All, the Right Path, Super Bundle Everything App */}
-      <section className="relative pt-20 pb-16 px-6 border-b border-white/10">
-        <div className="max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 text-sm mb-6 border border-white/10">
-            <Shield className="h-4 w-4 text-emerald-500" /> FREE CORE FOR EVERYONE. THE PATH FORWARD.
+      {/* Hero — Bevel-style metric preview + Mission Winning messaging */}
+      <section className="relative pt-16 pb-20 px-6 border-b border-border/60">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-muted/50 text-sm mb-6 border border-border/60">
+              <Shield className="h-4 w-4 text-emerald-500" /> FREE CORE FOR EVERYONE. THE PATH FORWARD.
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6">
+              MISSION WINNING.<br />
+              <span className="fitness-text-gradient">Train smarter. Recover better.</span>
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8 max-w-lg">
+              Core mission — workout tracking, basic tools, accessible recipes — <strong className="text-foreground">100% free for everyone worldwide</strong>. Readiness, strain, and recovery scores built for serious lifters. Premium pillars + Super Bundle for holistic synergy.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 mb-4">
+              <Button size="lg" variant="fitness" className="text-lg px-10 h-14" onClick={() => router.push("/log")}>
+                START FREE TRACKER <ArrowRight className="ml-2" />
+              </Button>
+              <Button size="lg" variant="outline" className="text-lg px-10 h-14" onClick={() => document.getElementById('bundle')?.scrollIntoView({ behavior: 'smooth' })}>
+                GET SUPER BUNDLE
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground">Free core forever. PWA. Offline. Global. See <a href="/vision" className="underline text-emerald-400">vision.md</a>.</p>
           </div>
-          <h1 className="text-6xl md:text-7xl font-bold tracking-tighter leading-none mb-6">
-            MISSION WINNING.<br />
-            FREE FOR EVERYONE.<br />
-            THE EVERYTHING APP FOR HEALTH.
-          </h1>
-          <p className="max-w-3xl mx-auto text-2xl text-white/80 mb-8">
-            Core mission — workout tracking, basic tools, accessible recipes, fundamentals — <strong>100% free for everyone worldwide</strong>. No paywall. No excuses. Premium pillars + the Super Bundle bring holistic synergy (train + fuel + move + mind + track + learn). The right path to a stronger, healthier life — and a better world. See <a href="/vision" className="underline">vision.md</a>.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
-            <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-10 h-14" onClick={() => router.push("/log")}>
-              START FREE TRACKER — FOR EVERYONE <ArrowRight className="ml-2" />
-            </Button>
-            <Button size="lg" className="bg-white text-black hover:bg-white/90 text-lg px-10 h-14" onClick={() => document.getElementById('bundle')?.scrollIntoView({ behavior: 'smooth' })}>
-              GET THE SUPER BUNDLE — HOLISTIC VALUE
-            </Button>
-          </div>
-          <p className="text-sm text-white/60">Free core forever. PWA. Offline. Global. Metric or lbs. Super Bundle: 6 pillars, one price (50% off intro promos).</p>
-          <div className="mt-2 text-emerald-400 font-semibold">THE PATH IS OPEN TO ALL. JOIN THE BUNDLE OR START FREE — THE MISSION WINS TOGETHER.</div>
+          <MetricsRow scores={DEMO_SCORES} demo />
         </div>
       </section>
 
       {/* Problem Agitation - Cardone Style: Hit them hard */}
-      <section className="max-w-5xl mx-auto px-6 py-16 border-b border-white/10">
+      <section className="max-w-5xl mx-auto px-6 py-16 border-b border-border/60">
         <div className="text-center mb-10">
           <div className="uppercase tracking-[3px] text-red-500 text-sm font-medium mb-3">THE TRUTH NO ONE TELLS YOU</div>
           <h2 className="text-4xl font-bold tracking-tight mb-4">You're Average Because You're Playing Small.</h2>
         </div>
-        <div className="grid md:grid-cols-2 gap-8 text-lg text-white/80">
+        <div className="grid md:grid-cols-2 gap-8 text-lg text-muted-foreground">
           <div>
             <p className="mb-4">Most people drag through life with weak bodies, low energy, and zero discipline. They "try" the gym for 3 weeks then quit. They follow random YouTube videos and wonder why nothing changes.</p>
             <p>That's not you. Or it won't be. Because average is a choice — and you're done choosing it.</p>
@@ -141,7 +153,7 @@ export function LandingPage() {
       </section>
 
       {/* Problem + Solution - Cardone Agitation & Proof */}
-      <section className="max-w-5xl mx-auto px-6 py-16 border-b border-white/10">
+      <section className="max-w-5xl mx-auto px-6 py-16 border-b border-border/60">
         <div className="text-center mb-10">
           <div className="uppercase tracking-[3px] text-red-500 text-sm font-medium mb-3">THE MASSIVE ACTION DIFFERENCE</div>
           <h2 className="text-4xl font-bold tracking-tight mb-4">Most "Fitness Apps" Are For Losers Who Want To Feel Busy.</h2>
@@ -163,11 +175,11 @@ export function LandingPage() {
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           {toolsHighlights.map((t, i) => (
-            <Card key={i} className="bg-[#111827] border-white/10 hover:border-emerald-500/30 transition-colors">
+            <Card key={i} className="bg-card border-border/60 hover:border-emerald-500/30 transition-colors">
               <CardHeader>
                 <t.icon className="h-8 w-8 text-emerald-500 mb-3" />
                 <CardTitle>{t.label}</CardTitle>
-                <CardDescription className="text-white/60">{t.desc}</CardDescription>
+                <CardDescription className="text-muted-foreground">{t.desc}</CardDescription>
               </CardHeader>
             </Card>
           ))}
@@ -196,7 +208,7 @@ export function LandingPage() {
       </section>
 
       {/* BETA PROGRAMS - HIGH TICKET CARDONE CLOSES */}
-      <section id="programs" className="bg-[#0f1624] py-16 border-y border-white/10">
+      <section id="programs" className="bg-muted/20 py-16 border-y border-border/60">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-10">
             <div className="text-emerald-400 uppercase tracking-[3px] text-sm mb-2">THE PILLARS — FREE FOR ALL + SUPER BUNDLE SYNERGY</div>
@@ -206,7 +218,7 @@ export function LandingPage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {pillars.map((p) => (
-              <Card key={p.id} className="bg-[#111827] border-white/10 flex flex-col">
+              <Card key={p.id} className="bg-card border-border/60 flex flex-col">
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
@@ -220,7 +232,7 @@ export function LandingPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="flex-1 flex flex-col">
-                  <p className="text-white/70 mb-6">{p.desc}</p>
+                  <p className="text-muted-foreground mb-6">{p.desc}</p>
                   <ul className="space-y-2 mb-8 text-sm">
                     {p.features.map((f, idx) => (
                       <li key={idx} className="flex gap-2"><Check className="h-4 w-4 text-green-500 mt-0.5" /> {f}</li>

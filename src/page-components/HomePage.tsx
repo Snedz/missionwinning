@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDate, formatDuration } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
-import { computeReadiness, getRecommendedFocus, computeWinScore } from "@/lib/score";
+import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
 import { EXERCISES } from "@/data/exercises";
 import { getUser, signInMagic, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
+import { MetricsRow } from "@/components/metrics/MetricsRow";
+import { CoachInsightCard } from "@/components/metrics/CoachInsightCard";
 
 export function HomePage() {
   const router = useRouter();
@@ -426,6 +428,14 @@ export function HomePage() {
   });
   const score = scoreBreakdown.total;
 
+  const bodyScores = computeBodyScores(workoutHistory, {
+    assessmentRisk: lastAssessment?.risk,
+    pillarWins: recentPillarWins.length,
+  });
+  const coachInsight = getCoachInsight(bodyScores, recommendedFocus, {
+    assessmentRisk: lastAssessment?.risk,
+  });
+
   const MAJOR_GROUPS: Array<keyof typeof readiness> = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'];
 
   // Onboarding awareness for progression
@@ -487,6 +497,9 @@ export function HomePage() {
           </div>
         )}
       </div>
+
+      <MetricsRow scores={bodyScores} />
+      <CoachInsightCard insight={coachInsight} />
 
       {/* Primary Action Hero (Forge "JUST GO" spirit — biggest, clearest CTA on the functional homepage) */}
       <Card className="border-emerald-500/40 bg-gradient-to-br from-emerald-950/20 to-primary/5">
