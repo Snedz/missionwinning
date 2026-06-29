@@ -46,6 +46,8 @@ type TodayStrings = {
   fuelSignInDesc: string;
   todayCustomizeTitle: string;
   todayCustomizeDesc: string;
+  todayMoveSectionUp: string;
+  todayMoveSectionDown: string;
   challengeTrain7Title: string;
   challengeTrain7Desc: string;
   challengeProtein5Title: string;
@@ -125,7 +127,9 @@ const en: TodayStrings = {
     'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
   fuelSignInDesc: 'Sync meals and macro history across devices.',
   todayCustomizeTitle: 'Customize Today',
-  todayCustomizeDesc: 'Choose which sections appear below. Saved on this device.',
+  todayCustomizeDesc: 'Choose which sections appear below and their order. Saved on this device.',
+  todayMoveSectionUp: 'Move up',
+  todayMoveSectionDown: 'Move down',
   challengeTrain7Title: '7-Day Train Streak',
   challengeTrain7Desc: 'Log a workout on 7 separate days this week.',
   challengeProtein5Title: '5 High-Protein Days',
@@ -277,7 +281,9 @@ const zh: TodayStrings = {
   fuelSubtitle: '免费核心：每日宏量记录、饮水、目标与全球可及食谱。',
   fuelSignInDesc: '跨设备同步餐食与宏量历史。',
   todayCustomizeTitle: '自定义今日',
-  todayCustomizeDesc: '选择下方显示的分区。仅保存在本设备。',
+  todayCustomizeDesc: '选择下方显示的分区及顺序。仅保存在本设备。',
+  todayMoveSectionUp: '上移',
+  todayMoveSectionDown: '下移',
   challengeTrain7Title: '7 天训练连续',
   challengeTrain7Desc: '本周在 7 个不同日记录训练。',
   challengeProtein5Title: '5 天高蛋白质日',
@@ -356,6 +362,8 @@ const id: TodayStrings = {
   fuelSignInDesc: 'Sinkronkan makanan dan riwayat makro antar perangkat.',
   todayCustomizeTitle: 'Sesuaikan Hari ini',
   todayCustomizeDesc: 'Pilih bagian yang ditampilkan. Disimpan di perangkat ini.',
+  todayMoveSectionUp: 'Naik',
+  todayMoveSectionDown: 'Turun',
   challengeTrain7Title: 'Streak latihan 7 hari',
   challengeTrain7Desc: 'Catat latihan di 7 hari berbeda minggu ini.',
   challengeProtein5Title: '5 hari protein tinggi',
@@ -433,6 +441,8 @@ const th: TodayStrings = {
   fuelSignInDesc: 'ซิงค์มื้ออาหารและประวัติมาโครข้ามอุปกรณ์',
   todayCustomizeTitle: 'ปรับแต่งวันนี้',
   todayCustomizeDesc: 'เลือกส่วนที่แสดงด้านล่าง บันทึกบนอุปกรณ์นี้',
+  todayMoveSectionUp: 'เลื่อนขึ้น',
+  todayMoveSectionDown: 'เลื่อนลง',
   challengeTrain7Title: 'สตรีคฝึก 7 วัน',
   challengeTrain7Desc: 'บันทึกการฝึก 7 วันที่ต่างกันในสัปดาห์นี้',
   challengeProtein5Title: '5 วันโปรตีนสูง',

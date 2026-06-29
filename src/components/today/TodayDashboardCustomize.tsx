@@ -1,10 +1,12 @@
 'use client';
 
-import { LayoutGrid } from 'lucide-react';
+import { ChevronDown, ChevronUp, LayoutGrid } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
+  TODAY_SECTION_IDS,
   type TodayDashboardPrefs,
   type TodaySectionId,
+  moveSection,
   saveTodayDashboardPrefs,
 } from '@/lib/todayDashboardPrefs';
 
@@ -22,12 +24,19 @@ const SECTION_LABEL_KEYS: Record<TodaySectionId, { title: string; defaultTitle: 
 export function TodayDashboardCustomize({ prefs, onChange }: Props) {
   const { t } = useTranslation();
 
-  const toggle = (id: TodaySectionId) => {
-    const visibleCount = Object.values(prefs).filter(Boolean).length;
-    if (prefs[id] && visibleCount <= 1) return;
-    const next = { ...prefs, [id]: !prefs[id] };
+  const persist = (next: TodayDashboardPrefs) => {
     saveTodayDashboardPrefs(next);
     onChange(next);
+  };
+
+  const toggle = (id: TodaySectionId) => {
+    const visibleCount = TODAY_SECTION_IDS.filter((sid) => prefs[sid]).length;
+    if (prefs[id] && visibleCount <= 1) return;
+    persist({ ...prefs, [id]: !prefs[id] });
+  };
+
+  const reorder = (id: TodaySectionId, direction: 'up' | 'down') => {
+    persist(moveSection(prefs, id, direction));
   };
 
   return (
@@ -37,25 +46,51 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
         {t('todayCustomizeTitle', { defaultValue: 'Customize Today' })}
       </div>
       <p className="text-xs text-muted-foreground">
-        {t('todayCustomizeDesc', { defaultValue: 'Choose which sections appear below. Saved on this device.' })}
+        {t('todayCustomizeDesc', {
+          defaultValue: 'Choose which sections appear below and their order. Saved on this device.',
+        })}
       </p>
-      <div className="flex flex-wrap gap-2 pt-1">
-        {(Object.keys(SECTION_LABEL_KEYS) as TodaySectionId[]).map((id) => {
+      <div className="space-y-1.5 pt-1">
+        {prefs.order.map((id, idx) => {
           const { title, defaultTitle } = SECTION_LABEL_KEYS[id];
           const on = prefs[id];
           return (
-            <button
+            <div
               key={id}
-              type="button"
-              onClick={() => toggle(id)}
-              className={`rounded-full px-3 py-1.5 text-xs font-medium border transition-colors min-h-[36px] ${
-                on
-                  ? 'bg-emerald-600/20 border-emerald-500/40 text-emerald-400'
-                  : 'bg-muted/30 border-border text-muted-foreground hover:border-border/80'
-              }`}
+              className="flex items-center gap-2 rounded-lg border border-border/40 bg-muted/20 px-2 py-1.5"
             >
-              {t(title, { defaultValue: defaultTitle })}
-            </button>
+              <div className="flex flex-col">
+                <button
+                  type="button"
+                  aria-label={t('todayMoveSectionUp', { defaultValue: 'Move up' })}
+                  disabled={idx === 0}
+                  onClick={() => reorder(id, 'up')}
+                  className="rounded p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+                >
+                  <ChevronUp className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label={t('todayMoveSectionDown', { defaultValue: 'Move down' })}
+                  disabled={idx === prefs.order.length - 1}
+                  onClick={() => reorder(id, 'down')}
+                  className="rounded p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+                >
+                  <ChevronDown className="h-3.5 w-3.5" />
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={() => toggle(id)}
+                className={`flex-1 rounded-full px-3 py-1.5 text-xs font-medium border transition-colors min-h-[36px] text-left ${
+                  on
+                    ? 'bg-emerald-600/20 border-emerald-500/40 text-emerald-400'
+                    : 'bg-muted/30 border-border text-muted-foreground hover:border-border/80'
+                }`}
+              >
+                {t(title, { defaultValue: defaultTitle })}
+              </button>
+            </div>
           );
         })}
       </div>

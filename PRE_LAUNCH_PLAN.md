@@ -27,7 +27,7 @@
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
 | **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
-| **Build label** | ✅ | `2025.06-unified.7` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.8` on Profile footer |
 
 ### Open PR stack
 
@@ -40,10 +40,11 @@ Most feature work is merged to `master`. Branch `cursor/today-cards-challenges-6
 | 1 | Today i18n + HomePage refactor | ✅ `todayLocales.ts`, `TodayWeekSection`, `TodayProgressSection`, `starterPrograms.ts` |
 | 2 | Fuel i18n + SignInPrompt | ✅ partial |
 | 3 | Challenge copy i18n | ✅ `challengeI18n.ts` + `todayLocales` keys |
-| 4 | Customizable Today cards | ✅ `todayDashboardPrefs.ts`, `TodayDashboardCustomize` |
+| 4 | Customizable Today cards | ✅ show/hide + reorder (`todayDashboardPrefs` v2) |
 | 5 | Photo log → local estimate stub | ✅ `estimateMealFromPhoto.ts`, `PhotoLogStub` |
 | 6 | Wins badge i18n | ✅ `todayLocales` + `TodayProgressSection` |
-| 7 | Security P1 (PayPal sig, CSP) | ⬜ partial — CSP Report-Only in `vercel.json`; PayPal sig TODO |
+| 7 | Staggered Today hero animations | ✅ `StaggerReveal` on HomePage |
+| 8 | Security P1 (PayPal sig, CSP) | ⬜ partial — CSP Report-Only in `vercel.json`; PayPal sig TODO |
 
 ---
 
