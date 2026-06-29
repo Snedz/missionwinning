@@ -25,6 +25,25 @@ export default function SuperBundle() {
             price={SUPER_BUNDLE_PRICE}
             title={SUPER_BUNDLE_TITLE}
           />
+          <div className="mt-3 p-3 bg-[#0a0f1a] border border-emerald-500/30 rounded text-center">
+            <div className="text-sm font-medium text-emerald-400 mb-2">Sign in / Sign up for early private access &amp; cloud sync (free magic link)</div>
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              const email = (e.target as any).email.value;
+              if (!email) return;
+              try {
+                const { signInMagic } = await import('@/lib/supabase');
+                await signInMagic(email);
+                alert(`Magic link sent to ${email}. Check your email to join the private build.`);
+              } catch (err: any) {
+                alert('Error: ' + (err.message || 'Check Supabase config.'));
+              }
+            }} className="flex gap-2 justify-center">
+              <input name="email" type="email" placeholder="you@email.com" className="flex-1 max-w-xs border border-white/20 bg-black/40 rounded px-3 py-2 text-sm" required />
+              <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm font-medium">Send Magic Link</button>
+            </form>
+            <div className="text-[10px] text-white/40 mt-1">No password. Once signed in, full app + your progress syncs.</div>
+          </div>
         </div>
         <p className="text-center text-xs mt-3 text-white/40">Annual option for even better value. 30-day guarantee. See vision.md for the full model. Free core always available.</p>
       </div>

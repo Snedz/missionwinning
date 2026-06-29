@@ -97,6 +97,24 @@ export function CalculatorsPage() {
             <p className="text-[10px] text-muted-foreground">Rough Mifflin-St Jeor + activity. Premium version in programs includes adjustments for training phase, body comp, and Log integration.</p>
           </CardContent>
         </Card>
+
+        {/* Free core functional quick actions */}
+        <div className="flex flex-wrap gap-2">
+          <Button size="sm" variant="outline" onClick={() => {
+            const today = new Date().toISOString().split('T')[0];
+            const entry = { date: today, name: `Calc target protein ${protein}g`, protein, cals: targetCals };
+            const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]');
+            logs.unshift(entry);
+            localStorage.setItem('mw_nutrition_log', JSON.stringify(logs.slice(0, 50)));
+            alert(`Logged ${protein}g protein + ${targetCals} cals target to today (view in Nutrition). Free core syncs locally + cloud when signed in.`);
+          }}>Log Macro Targets to Nutrition</Button>
+          <Button size="sm" variant="outline" onClick={() => {
+            // Quick demo: navigate to builder with note about the e1RM
+            const msg = `Quick strength session targeting ~${e1rm} e1RM`;
+            window.location.href = `/builder?note=${encodeURIComponent(msg)}`;
+          }}>Build Session Targeting e1RM ~{e1rm}</Button>
+          <Button size="sm" variant="outline" onClick={() => window.location.href = "/assessments"}>Run Readiness Assessment First</Button>
+        </div>
       </div>
 
       <Card className="border-emerald-500/30 bg-emerald-950/10">
@@ -115,6 +133,27 @@ export function CalculatorsPage() {
       {/* Bundle Banner */}
       <div className="text-center p-3 bg-emerald-950/20 border border-emerald-500/30 rounded text-sm">
         <span className="text-emerald-400 font-semibold">SUPER BUNDLE:</span> One subscription for all premium pillars (Train Coach, Fuel, Move, Mind, Learn). 50% intro pricing — free core always available for everyone.
+      </div>
+
+      {/* Sign up / Sign in for early private access + cloud while building privately */}
+      <div className="mt-6 p-4 bg-[#111827] border border-emerald-500/30 rounded">
+        <div className="text-emerald-400 font-medium mb-2">Sign up / Sign in for early private access + cloud sync (free magic link)</div>
+        <form onSubmit={async (e) => {
+          e.preventDefault();
+          const email = (e.target as any).email.value;
+          if (!email) return;
+          try {
+            const { signInMagic } = await import('@/lib/supabase');
+            await signInMagic(email);
+            alert(`Magic link sent to ${email}. Check email to access the full private build.`);
+          } catch (err: any) {
+            alert('Error: ' + (err.message || 'Check Supabase/Resend in Vercel.'));
+          }
+        }} className="flex gap-2">
+          <input name="email" type="email" placeholder="you@email.com" className="flex-1 border border-white/20 bg-black/40 rounded px-3 py-2 text-sm" required />
+          <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm font-medium">Send Magic Link</button>
+        </form>
+        <div className="text-[10px] text-white/40 mt-1">Public teaser only. Sign in for full free calculators + cloud on the live domain.</div>
       </div>
     </div>
   );

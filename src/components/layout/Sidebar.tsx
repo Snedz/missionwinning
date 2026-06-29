@@ -158,7 +158,7 @@ export function Sidebar() {
       <div className="border-t border-border/60 p-4 space-y-3 text-xs">
         <a href="/" className="block text-emerald-400 hover:text-emerald-300">← Back to Mission Winning</a>
         <a href="/vision" className="block text-xs text-white/50 hover:text-white/70">vision.md — the path for all</a>
-        <a href="/programs" className="block text-muted-foreground hover:text-foreground">View Education Programs</a>
+        <a href="/learn" className="block text-muted-foreground hover:text-foreground">View Education Programs (free intros)</a>
         <a href="/feedback" className="block text-emerald-400 hover:text-emerald-300">Share Wins &amp; Feedback</a>
         <div className="text-[10px] text-emerald-400">Global contributors: {typeof window !== 'undefined' ? (localStorage.getItem('mw_contributors') || '12,400') : '12,400'}+</div>
         <a href="/about" className="block text-muted-foreground hover:text-foreground">About &amp; Legal</a>
@@ -182,19 +182,29 @@ export function Sidebar() {
         <p className="text-muted-foreground pt-1 border-t border-border/40">
           {activeWorkout ? "Workout in progress" : "Ready to train"}
         </p>
+        {/* Quick streak for retention (free core) */}
+        <div className="text-[10px] text-emerald-400/80 pt-1">
+          🔥 Streak: {typeof window !== 'undefined' ? (localStorage.getItem('mw_streak') || '0') : '0'} days
+        </div>
 
-        {/* Simple auth for cloud sync + real premium (Supabase magic link) */}
-        <div className="pt-2 border-t border-border/30">
+        {/* Sign in / Sign up for cloud sync + real premium (Supabase magic link) */}
+        <div className="pt-2 border-t border-border/30 bg-emerald-950/10 -mx-1 px-2 py-2 rounded">
           {userEmail ? (
             <div className="space-y-1">
               <div className="text-[10px] truncate text-emerald-400">{userEmail}</div>
-              {premium && <div className="text-green-400 text-[10px]">✓ Premium</div>}
+              {premium && <div className="text-green-400 text-[10px]">✓ Premium (Supabase)</div>}
               <button onClick={handleSignOut} className="text-[10px] text-muted-foreground hover:text-foreground">Sign out</button>
             </div>
           ) : (
-            <>
+            <div className="space-y-2">
+              <div className="text-[10px] text-emerald-400 font-medium">Sign in / Sign up (free magic link)</div>
               {!showSignin ? (
-                <button onClick={() => setShowSignin(true)} className="text-emerald-400 hover:text-emerald-300 text-xs">Sign in for sync + premium</button>
+                <button 
+                  onClick={() => setShowSignin(true)} 
+                  className="w-full text-xs bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded font-medium"
+                >
+                  Sign in with Magic Link (free)
+                </button>
               ) : (
                 <div className="space-y-1">
                   <input
@@ -205,12 +215,19 @@ export function Sidebar() {
                     className="w-full text-xs bg-background border border-border/50 rounded px-2 py-1"
                   />
                   <div className="flex gap-1">
-                    <button onClick={handleMagic} className="text-xs px-2 py-0.5 bg-emerald-600 text-white rounded flex-1">Send magic link</button>
-                    <button onClick={() => setShowSignin(false)} className="text-xs px-1">✕</button>
+                    <button 
+                      onClick={handleMagic} 
+                      className="text-xs px-2 py-1 bg-emerald-600 text-white rounded flex-1 font-medium"
+                      disabled={!signinEmail}
+                    >
+                      Send magic link
+                    </button>
+                    <button onClick={() => setShowSignin(false)} className="text-xs px-2 py-1 border border-border/50 rounded">Cancel</button>
                   </div>
+                  <div className="text-[9px] text-muted-foreground">No password. Check email (incl. spam). Enables cloud + real premium.</div>
                 </div>
               )}
-            </>
+            </div>
           )}
         </div>
       </div>

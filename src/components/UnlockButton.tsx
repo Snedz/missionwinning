@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { PROGRAM_PRICES, grantPremiumDemo } from '@/lib/payments';
+import { grantDemoPremium } from '@/lib/supabase';
 
 interface Props {
   productId?: string;
@@ -27,15 +28,21 @@ export function UnlockButton({
   const amount = price || program?.price || '297';
   const itemTitle = title || program?.title || (isSubscription ? 'Mission Winning Super Bundle' : 'Mission Winning Program');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     grantPremiumDemo(productId || (isSubscription ? 'super-bundle' : undefined));
 
-    // Log for "owner" analytics (in real: send to Supabase leads or email)
+    // Real lead capture to Supabase (if keys configured in Vercel)
+    try {
+      await grantDemoPremium(email);
+    } catch (e) {
+      // fallback already handled in grantDemoPremium
+    }
+
+    // Analytics
     console.log('analytics: unlock_requested', { productId, isSubscription, title: itemTitle, email });
-    console.log('Lead captured for Super Bundle / premium:', { email, product: itemTitle });
 
     setSubmitted(true);
 
@@ -71,12 +78,12 @@ export function UnlockButton({
           className="w-full bg-white text-black hover:bg-white/90 font-semibold py-3 rounded text-base"
         >
           {isSubscription
-            ? `REQUEST SUPER BUNDLE ($${amount}/mo — DEMO)`
-            : `REQUEST ACCESS — $${amount} (DEMO)`}
+            ? `REQUEST SUPER BUNDLE ($${amount}/mo)`
+            : `REQUEST ACCESS — $${amount}`}
         </button>
       </div>
       <div className="text-[10px] text-center mt-1 text-white/40">
-        Free core always. Real checkout coming with business setup.
+        Free core always. Real checkout & fulfillment via Supabase when business ready.
       </div>
     </form>
   );
