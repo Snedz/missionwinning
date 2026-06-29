@@ -1,22 +1,7 @@
--- Leaderboard snapshots (GT7-style global / regional / local rankings)
-create table if not exists public.leaderboard_snapshots (
-  user_id uuid primary key references auth.users(id) on delete cascade,
-  operator_name text not null default 'Mission Operator',
-  mission_score integer not null default 0,
-  training_streak integer not null default 0,
-  weekly_volume integer not null default 0,
-  fuel_days integer not null default 0,
-  night_sessions integer not null default 0,
-  dawn_sessions integer not null default 0,
-  squad_code text,
-  region text,
-  country_code text,
-  country_name text,
-  locale text default 'en',
-  updated_at timestamptz default now()
-);
+-- Run this in Supabase SQL Editor if you hit:
+--   ERROR: column "squad_code" does not exist
+-- Safe to run multiple times (idempotent).
 
--- Upgrade existing tables BEFORE indexes (CREATE TABLE IF NOT EXISTS skips new columns)
 alter table public.leaderboard_snapshots add column if not exists fuel_days integer not null default 0;
 alter table public.leaderboard_snapshots add column if not exists night_sessions integer not null default 0;
 alter table public.leaderboard_snapshots add column if not exists dawn_sessions integer not null default 0;

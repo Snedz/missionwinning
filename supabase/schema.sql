@@ -113,7 +113,20 @@ create table if not exists public.leaderboard_snapshots (
   updated_at timestamptz default now()
 );
 
+alter table public.leaderboard_snapshots add column if not exists fuel_days integer not null default 0;
+alter table public.leaderboard_snapshots add column if not exists night_sessions integer not null default 0;
+alter table public.leaderboard_snapshots add column if not exists dawn_sessions integer not null default 0;
+alter table public.leaderboard_snapshots add column if not exists squad_code text;
+alter table public.leaderboard_snapshots add column if not exists region text;
+alter table public.leaderboard_snapshots add column if not exists country_code text;
+alter table public.leaderboard_snapshots add column if not exists country_name text;
+alter table public.leaderboard_snapshots add column if not exists locale text default 'en';
+alter table public.leaderboard_snapshots add column if not exists updated_at timestamptz default now();
+
 create index if not exists leaderboard_mission_score_idx on public.leaderboard_snapshots(mission_score desc);
+create index if not exists leaderboard_region_idx on public.leaderboard_snapshots(region);
+create index if not exists leaderboard_country_idx on public.leaderboard_snapshots(country_code);
+create index if not exists leaderboard_squad_idx on public.leaderboard_snapshots(squad_code);
 
 alter table public.leaderboard_snapshots enable row level security;
 
