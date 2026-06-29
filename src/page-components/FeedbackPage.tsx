@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { submitLead } from "@/lib/supabase";
 
 export function FeedbackPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -17,21 +19,25 @@ export function FeedbackPage() {
     massiveAction: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // MVP: local + console (later Supabase beta_feedback table + lead)
+    setLoading(true);
     const entry = { ...form, at: new Date().toISOString() };
     const existing = JSON.parse(localStorage.getItem("mw_beta_feedback") || "[]");
     localStorage.setItem("mw_beta_feedback", JSON.stringify([...existing, entry]));
-    console.log("Beta Founders feedback submitted:", entry);
-    // Demo grant a 'beta contributor' flag
+    await submitLead({
+      name: form.name || "Beta Contributor",
+      email: form.email,
+      goals: `Results: ${form.results}\nTestimonial: ${form.testimonial}\nRating: ${form.rating}\nMassive action: ${form.massiveAction}`,
+      package_interest: "beta-feedback",
+      source: "feedback-page",
+      message: form.testimonial,
+    });
     localStorage.setItem("mw_beta_contributor", "true");
-    // Analytics stub
-    console.log('analytics: beta_feedback_submitted');
     localStorage.setItem('mw_event_feedback', Date.now().toString());
-    // Dynamic beta spots: "claim" one on feedback (social proof engine)
     const claimed = parseInt(localStorage.getItem('mw_beta_spots_claimed') || '347');
     localStorage.setItem('mw_beta_spots_claimed', Math.min(500, claimed + 1).toString());
+    setLoading(false);
     setSubmitted(true);
   };
 
@@ -130,8 +136,8 @@ export function FeedbackPage() {
                 </div>
               </div>
 
-              <Button type="submit" size="lg" className="w-full bg-red-600 hover:bg-red-700 text-lg py-6">
-                SUBMIT — HELP BUILD THE SYSTEM FOR THE NEXT WINNERS
+              <Button type="submit" size="lg" className="w-full bg-red-600 hover:bg-red-700 text-lg py-6" disabled={loading}>
+                {loading ? "Submitting..." : "SUBMIT — HELP BUILD THE SYSTEM FOR THE NEXT WINNERS"}
               </Button>
               <p className="text-[10px] text-center text-white/40">30 seconds. Your words may be featured (anonymized or with permission). This is how Beta Founders create the proof.</p>
             </form>

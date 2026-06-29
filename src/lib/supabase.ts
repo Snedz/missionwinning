@@ -193,3 +193,34 @@ export async function getUserNutritionHistory(days = 7) {
   if (error) { console.error('getUserNutritionHistory error', error); return [] }
   return data || []
 }
+
+/** Submit coaching inquiry or feedback to Supabase leads table (falls back to local-only). */
+export async function submitLead(lead: Lead & { source?: string; message?: string }): Promise<{ ok: boolean; localOnly?: boolean }> {
+  const payload = {
+    name: lead.name || 'Anonymous',
+    email: lead.email,
+    goals: lead.goals || lead.message || '',
+    current_training: lead.current_training || '',
+    package_interest: lead.package_interest || lead.source || 'general',
+  }
+
+  if (!supabaseUrl || supabaseUrl.includes('demo')) {
+    if (typeof window !== 'undefined') {
+      const existing = JSON.parse(localStorage.getItem('mw_leads') || '[]')
+      localStorage.setItem('mw_leads', JSON.stringify([...existing, { ...payload, at: new Date().toISOString() }]))
+    }
+    return { ok: true, localOnly: true }
+  }
+
+  try {
+    const { error } = await supabase.from('leads').insert(payload)
+    if (error) {
+      console.error('submitLead error', error)
+      return { ok: false }
+    }
+    return { ok: true }
+  } catch (e) {
+    console.error('submitLead exception', e)
+    return { ok: false }
+  }
+}

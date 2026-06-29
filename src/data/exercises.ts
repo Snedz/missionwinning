@@ -1,6 +1,6 @@
 import type { Exercise } from "@/types";
 
-export const EXERCISES: Exercise[] = [
+const EXERCISE_ENTRIES: Exercise[] = [
   { id: "push-ups", name: "Push-ups", muscleGroups: ["Chest", "Arms", "Core"], equipment: "Bodyweight" },
   { id: "pull-ups", name: "Pull-ups", muscleGroups: ["Back", "Arms"], equipment: "Bodyweight" },
   { id: "bench-press", name: "Bench Press", muscleGroups: ["Chest", "Arms"], equipment: "Barbell" },
@@ -93,36 +93,63 @@ export const EXERCISES: Exercise[] = [
   { id: "calf-raise-ankle-rock", name: "Calf Raise to Ankle Rock", muscleGroups: ["Legs"], equipment: "Bodyweight", cues: "Raise heels then rock forward. Free lower leg mobility and ankle stability." },
   { id: "seated-forward-fold-twist", name: "Seated Forward Fold + Twist", muscleGroups: ["Back", "Legs"], equipment: "Bodyweight", cues: "Fold then twist for hamstrings and spine. Free daily mobility staple." },
   { id: "standing-balance-quad", name: "Standing Balance Quad Stretch", muscleGroups: ["Legs", "Core"], equipment: "Bodyweight", cues: "Quad stretch with balance challenge. Free stability and flexibility." },
-  { id: "wall-chest-opener", name: "Wall Chest Opener", muscleGroups: ["Chest", "Shoulders"], equipment: "Bodyweight", cues: "Hands on wall, lean to open chest. Free counter to forward posture from daily life or desk." },
-  { id: "seated-spinal-twist", name: "Seated Spinal Twist", muscleGroups: ["Back", "Legs"], equipment: "Bodyweight", cues: "Twist gently for spine and hip mobility. Free daily reset or post-training." },
-  { id: "pigeon-to-down-dog", name: "Pigeon to Down Dog Flow", muscleGroups: ["Legs", "Full Body"], equipment: "Bodyweight", cues: "From pigeon pose to down dog. Free hip opener with full body stretch." },
-  { id: "calf-raise-ankle-rock", name: "Calf Raise to Ankle Rock", muscleGroups: ["Legs"], equipment: "Bodyweight", cues: "Raise heels then rock forward. Free lower leg mobility and ankle stability." },
-  { id: "seated-forward-fold-twist", name: "Seated Forward Fold + Twist", muscleGroups: ["Back", "Legs"], equipment: "Bodyweight", cues: "Fold then twist for hamstrings and spine. Free daily mobility staple." },
-  { id: "standing-balance-quad", name: "Standing Balance Quad Stretch", muscleGroups: ["Legs", "Core"], equipment: "Bodyweight", cues: "Quad stretch with balance challenge. Free stability and flexibility." },
   { id: "hip-90-90-flow", name: "90/90 Hip Flow", muscleGroups: ["Legs", "Full Body"], equipment: "Bodyweight", cues: "Switch between 90/90 positions with rock. Free deep hip mobility for daily or post training." },
   { id: "superman-to-yti", name: "Superman to Y-T-I", muscleGroups: ["Back", "Core"], equipment: "Bodyweight", cues: "Hold superman then lift arms in Y T I shapes. Free back and scapular strength + mobility." },
-  { id: "pigeon-to-down-dog", name: "Pigeon to Down Dog Flow", muscleGroups: ["Legs", "Full Body"], equipment: "Bodyweight", cues: "From pigeon pose to down dog. Free hip opener with full body stretch." },
-  { id: "calf-raise-ankle-rock", name: "Calf Raise to Ankle Rock", muscleGroups: ["Legs"], equipment: "Bodyweight", cues: "Raise heels then rock forward. Free lower leg mobility and ankle stability." },
-  { id: "seated-forward-fold-twist", name: "Seated Forward Fold + Twist", muscleGroups: ["Back", "Legs"], equipment: "Bodyweight", cues: "Fold then twist for hamstrings and spine. Free daily mobility staple." },
-  { id: "standing-balance-quad", name: "Standing Balance Quad Stretch", muscleGroups: ["Legs", "Core"], equipment: "Bodyweight", cues: "Quad stretch with balance challenge. Free stability and flexibility." },
-  { id: "hip-90-90-flow", name: "90/90 Hip Flow", muscleGroups: ["Legs", "Full Body"], equipment: "Bodyweight", cues: "Switch between 90/90 positions with rock. Free deep hip mobility for daily or post training." },
-  { id: "superman-to-yti", name: "Superman to Y-T-I", muscleGroups: ["Back", "Core"], equipment: "Bodyweight", cues: "Hold superman then lift arms in Y T I shapes. Free back and scapular strength + mobility." },
-  // Fresh unique free core additions (bodyweight/global, no-equip or minimal, daily habit friendly)
-  { id: "wall-angels", name: "Wall Angels", muscleGroups: ["Shoulders", "Back"], equipment: "Bodyweight", cues: "Back flat on wall, arms slide up/down like snow angel. 8-10 reps. Free scapular mobility + posture reset for desk or post training." },
-  { id: "thread-needle", name: "Thread the Needle", muscleGroups: ["Back", "Shoulders"], equipment: "Bodyweight", cues: "On all fours, thread one arm under, rotate and reach. 6-8/side. Free thoracic rotation and shoulder release." },
-  { id: "frog-pose", name: "Frog Pose Hold", muscleGroups: ["Legs", "Full Body"], equipment: "Bodyweight", cues: "Knees wide, hips low, ankles in. Breathe 45-90s. Free deep hip opener for squat depth and recovery." },
-  { id: "bear-hug-hold", name: "Bear Hug Hold (Imaginary)", muscleGroups: ["Back", "Core", "Arms"], equipment: "Bodyweight", cues: "Squeeze imaginary tree or self hard 20-40s. Isometric for upper back, grip, posture. Free anywhere." },
-  { id: "shrimp-squat-reg", name: "Shrimp Squat Regression (Assisted)", muscleGroups: ["Legs", "Core"], equipment: "Bodyweight", cues: "Hold wall or chair, one leg back, squat on front. 5-8/side. Free single leg strength builder, scale with support." },
-  { id: "neck-circles-release", name: "Neck Circles + Jaw Release", muscleGroups: ["Back", "Shoulders"], equipment: "Bodyweight", cues: "Slow circles 5 each way + open/close jaw gently. Counter phone/desk tension. Free daily 60s reset." },
-  { id: "ankle-dorsiflex-rock", name: "Ankle Dorsiflexion Rocks", muscleGroups: ["Legs"], equipment: "Bodyweight", cues: "Knee over toes, rock forward 10-15/side against wall or floor. Free squat depth + walking health." },
-  { id: "thoracic-rot-quad", name: "Thoracic Rotations on All Fours", muscleGroups: ["Back", "Core"], equipment: "Bodyweight", cues: "Open chest, follow hand with eyes 8/side. Free upper back mobility for better presses and posture." },
-  { id: "down-dog-cobra-flow", name: "Down Dog to Cobra Flow", muscleGroups: ["Full Body"], equipment: "Bodyweight", cues: "Flow 6 slow reps. Posterior chain + hip flexor + spine. Free full body primer or finisher." },
-  { id: "child-pose-thread", name: "Child's Pose to Thread Needle", muscleGroups: ["Back", "Shoulders"], equipment: "Bodyweight", cues: "Alternate fold and thread 5-6/side. Gentle recovery for spine and shoulders after any session." },
-  { id: "single-leg-stand-hold", name: "Single Leg Balance Hold", muscleGroups: ["Legs", "Core"], equipment: "Bodyweight", cues: "Stand on one leg 20-45s/side, eyes open then closed. Free ankle/knee/hip stability + focus (mind synergy)." },
-  { id: "pushup-to-down-dog", name: "Push-up to Down Dog", muscleGroups: ["Full Body"], equipment: "Bodyweight", cues: "Pushup then pike hips up. 6-8 reps. Free shoulder + hamstring + core link." },
-  { id: "lunge-with-reach", name: "Lunge with Overhead Reach", muscleGroups: ["Legs", "Full Body"], equipment: "Bodyweight", cues: "Front lunge + reach tall and slight backbend 6/side. Free hip + thoracic + stability." },
+  { id: "wall-angels", name: "Wall Angels", muscleGroups: ["Shoulders", "Back"], equipment: "Bodyweight", cues: "Back flat on wall, arms slide up/down like snow angel. 8-10 reps. Free scapular mobility + posture reset." },
+  { id: "thread-needle", name: "Thread the Needle", muscleGroups: ["Back", "Shoulders"], equipment: "Bodyweight", cues: "On all fours, thread one arm under, rotate and reach. 6-8/side. Free thoracic rotation." },
+  { id: "frog-pose", name: "Frog Pose Hold", muscleGroups: ["Legs", "Full Body"], equipment: "Bodyweight", cues: "Knees wide, hips low, ankles in. Breathe 45-90s. Free deep hip opener." },
+  { id: "bear-hug-hold", name: "Bear Hug Hold (Imaginary)", muscleGroups: ["Back", "Core", "Arms"], equipment: "Bodyweight", cues: "Squeeze imaginary tree or self hard 20-40s. Isometric for upper back and posture." },
+  { id: "shrimp-squat-reg", name: "Shrimp Squat Regression (Assisted)", muscleGroups: ["Legs", "Core"], equipment: "Bodyweight", cues: "Hold wall or chair, one leg back, squat on front. 5-8/side. Single leg strength builder." },
+  { id: "neck-circles-release", name: "Neck Circles + Jaw Release", muscleGroups: ["Back", "Shoulders"], equipment: "Bodyweight", cues: "Slow circles 5 each way + open/close jaw gently. Counter desk tension." },
+  { id: "ankle-dorsiflex-rock", name: "Ankle Dorsiflexion Rocks", muscleGroups: ["Legs"], equipment: "Bodyweight", cues: "Knee over toes, rock forward 10-15/side against wall or floor. Squat depth + walking health." },
+  { id: "thoracic-rot-quad", name: "Thoracic Rotations on All Fours", muscleGroups: ["Back", "Core"], equipment: "Bodyweight", cues: "Open chest, follow hand with eyes 8/side. Upper back mobility for presses and posture." },
+  { id: "down-dog-cobra-flow", name: "Down Dog to Cobra Flow", muscleGroups: ["Full Body"], equipment: "Bodyweight", cues: "Flow 6 slow reps. Posterior chain + hip flexor + spine." },
+  { id: "child-pose-thread", name: "Child's Pose to Thread Needle", muscleGroups: ["Back", "Shoulders"], equipment: "Bodyweight", cues: "Alternate fold and thread 5-6/side. Gentle recovery for spine and shoulders." },
+  { id: "single-leg-stand-hold", name: "Single Leg Balance Hold", muscleGroups: ["Legs", "Core"], equipment: "Bodyweight", cues: "Stand on one leg 20-45s/side. Ankle/knee/hip stability + focus." },
+  { id: "pushup-to-down-dog", name: "Push-up to Down Dog", muscleGroups: ["Full Body"], equipment: "Bodyweight", cues: "Pushup then pike hips up. 6-8 reps. Shoulder + hamstring + core link." },
+  { id: "lunge-with-reach", name: "Lunge with Overhead Reach", muscleGroups: ["Legs", "Full Body"], equipment: "Bodyweight", cues: "Front lunge + reach tall 6/side. Hip + thoracic + stability." },
   { id: "crawl-to-inchworm", name: "Bear Crawl to Inchworm", muscleGroups: ["Full Body", "Core"], equipment: "Bodyweight", cues: "Crawl 8 steps then inchworm back. 4-5 rounds. Free coordination, shoulder, wrist, hamstring." },
+  // Additional global bodyweight / minimal-equipment (M&S / BB.com scale path)
+  { id: "air-squat", name: "Air Squat", muscleGroups: ["Legs", "Core"], equipment: "Bodyweight", cues: "Feet shoulder width, break parallel if mobile, chest up. High-rep finisher or daily habit." },
+  { id: "hollow-hold", name: "Hollow Body Hold", muscleGroups: ["Core"], equipment: "Bodyweight", cues: "Lower back pressed to floor, arms/legs extended. 20-40s. Gymnastics core staple." },
+  { id: "v-up", name: "V-Up", muscleGroups: ["Core"], equipment: "Bodyweight", cues: "Touch toes at top, control down. Scale with bent knees." },
+  { id: "reverse-lunge", name: "Reverse Lunge", muscleGroups: ["Legs"], equipment: "Bodyweight", cues: "Step back, knee hovers, drive through front heel. Easier on knees than forward lunge." },
+  { id: "box-pistol-reg", name: "Box Pistol Regression", muscleGroups: ["Legs", "Core"], equipment: "Box/Bench", cues: "Sit to box on one leg, minimal hand assist. Build toward pistol squat." },
+  { id: "scap-pullup", name: "Scapular Pull-up", muscleGroups: ["Back", "Shoulders"], equipment: "Bodyweight", cues: "Hang, depress and retract scapula without bending elbows. Shoulder health primer." },
+  { id: "banded-dislocate", name: "Banded Shoulder Dislocate", muscleGroups: ["Shoulders", "Back"], equipment: "Band", cues: "Wide grip, slow arc overhead to hips. Prep for pressing and overhead work." },
+  { id: "farmers-walk-dbs", name: "Farmer's Walk (DBs/Bags)", muscleGroups: ["Full Body", "Core"], equipment: "Dumbbells", cues: "Tall posture, brisk steps 20-40m. Grip, core, conditioning in one." },
+  { id: "suitcase-carry", name: "Suitcase Carry", muscleGroups: ["Core", "Full Body"], equipment: "Dumbbells", cues: "One side loaded, walk without leaning. Anti-lateral flexion core strength." },
+  { id: "wall-handstand-hold", name: "Wall Handstand Hold", muscleGroups: ["Shoulders", "Core"], equipment: "Bodyweight", cues: "Chest to wall or facing wall kick-up. 15-30s. Shoulder endurance + body awareness." },
+  { id: "jumping-jack", name: "Jumping Jacks", muscleGroups: ["Cardio", "Full Body"], equipment: "Bodyweight", cues: "Warm-up or conditioning filler. Low skill, global-friendly." },
+  { id: "high-knees", name: "High Knees", muscleGroups: ["Cardio", "Legs"], equipment: "Bodyweight", cues: "Drive knees up, quick feet 30-60s. Warm-up or interval work." },
+  { id: "skater-hop", name: "Skater Hops", muscleGroups: ["Legs", "Cardio"], equipment: "Bodyweight", cues: "Lateral bounds, soft landings. Athletic conditioning without equipment." },
+  { id: "good-morning-bw", name: "Good Morning (Bodyweight)", muscleGroups: ["Back", "Legs"], equipment: "Bodyweight", cues: "Hands behind head, hinge hips, flat back. Hamstring + back endurance." },
+  { id: "cossack-squat", name: "Cossack Squat", muscleGroups: ["Legs"], equipment: "Bodyweight", cues: "Shift side to side in deep squat. Hip + ankle mobility + leg strength." },
+  { id: "tuck-jump", name: "Tuck Jump", muscleGroups: ["Legs", "Cardio"], equipment: "Bodyweight", cues: "Explosive jump, knees to chest, soft land. Power finisher." },
+  { id: "ring-row", name: "Ring/TRX Row", muscleGroups: ["Back", "Arms"], equipment: "Rings/TRX", cues: "Body angle sets difficulty. Horizontal pull scalable anywhere." },
+  { id: "decline-pushup", name: "Decline Push-up", muscleGroups: ["Chest", "Shoulders"], equipment: "Bodyweight", cues: "Feet elevated. Progression toward pike and handstand push-up." },
+  { id: "diamond-pushup", name: "Diamond Push-up", muscleGroups: ["Chest", "Arms"], equipment: "Bodyweight", cues: "Hands close, elbows track back. Tricep emphasis." },
+  { id: "split-squat", name: "Split Squat", muscleGroups: ["Legs"], equipment: "Bodyweight", cues: "Static lunge bottom, vertical torso. Unilateral leg builder." },
+  { id: "nordic-curl-reg", name: "Nordic Curl Regression", muscleGroups: ["Legs"], equipment: "Bodyweight", cues: "Anchor feet, slow lower with hands catch. Hamstring strength progressions." },
+  { id: "jump-rope-single", name: "Single Unders (Jump Rope)", muscleGroups: ["Cardio"], equipment: "Jump Rope", cues: "Light feet, minimal jump height. Cheap global conditioning tool." },
+  { id: "medicine-ball-slam", name: "Med Ball Slam", muscleGroups: ["Full Body", "Core"], equipment: "Medicine Ball", cues: "Overhead to floor with full extension. Power + stress relief." },
+  { id: "battle-rope-alt", name: "Battle Rope Alternating Waves", muscleGroups: ["Cardio", "Arms"], equipment: "Battle Ropes", cues: "Fast alternating waves 20-30s. Conditioning if gym has ropes." },
+  { id: "sled-drag-reg", name: "Sled Drag Regression (Tow Strap)", muscleGroups: ["Legs", "Full Body"], equipment: "Sled", cues: "Walk backward dragging load. Low-impact leg drive." },
 ];
+
+/** Deduplicated exercise list (first entry wins per id). */
+function dedupeExercises(list: Exercise[]): Exercise[] {
+  const seen = new Set<string>();
+  const out: Exercise[] = [];
+  for (const ex of list) {
+    if (seen.has(ex.id)) continue;
+    seen.add(ex.id);
+    out.push(ex);
+  }
+  return out;
+}
+
+export const EXERCISES = dedupeExercises(EXERCISE_ENTRIES);
 
 export function getExerciseById(id: string): Exercise | undefined {
   return EXERCISES.find((e) => e.id === id);
