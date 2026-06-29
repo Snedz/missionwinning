@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { getChallengeProgress } from '@/lib/challenges';
+import { localizedChallengeDesc, localizedChallengeTitle } from '@/lib/challengeI18n';
 import type { TodaysWorkout } from '@/lib/todaysWorkout';
 
 type Props = {
@@ -38,7 +39,9 @@ export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTod
           {challenges.map((c) => (
             <div key={c.id} className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="font-medium">{c.title}</span>
+                <span className="font-medium">
+                  {localizedChallengeTitle(c.id, c.title, t)}
+                </span>
                 <span className="text-muted-foreground">
                   {c.current}/{c.target}
                 </span>
@@ -49,7 +52,9 @@ export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTod
                   style={{ width: `${c.percent}%` }}
                 />
               </div>
-              <p className="text-[10px] text-muted-foreground">{c.description}</p>
+              <p className="text-[10px] text-muted-foreground">
+                {localizedChallengeDesc(c.id, c.description, t)}
+              </p>
             </div>
           ))}
         </CardContent>

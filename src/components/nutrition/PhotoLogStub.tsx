@@ -1,31 +1,46 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Camera, ImagePlus, Sparkles } from 'lucide-react';
+import { Camera, ImagePlus, Loader2, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { toast } from '@/hooks/use-toast';
+import { estimateMealFromPhoto, type MealEstimate } from '@/lib/estimateMealFromPhoto';
 
 type Props = {
-  onStubCapture?: (fileName: string) => void;
+  onLogEstimate: (estimate: MealEstimate) => void;
 };
 
-/** Bevel-style photo meal log entry point — stub until vision API ships. */
-export function PhotoLogStub({ onStubCapture }: Props) {
+type Phase = 'idle' | 'processing' | 'estimate';
+
+/** Bevel-style photo meal log — on-device filename heuristic until vision API. */
+export function PhotoLogStub({ onLogEstimate }: Props) {
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [phase, setPhase] = useState<Phase>('idle');
+  const [estimate, setEstimate] = useState<MealEstimate | null>(null);
 
-  const handleFile = (file: File | null) => {
+  const reset = () => {
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview(null);
+    setEstimate(null);
+    setPhase('idle');
+    if (inputRef.current) inputRef.current.value = '';
+  };
+
+  const handleFile = async (file: File | null) => {
     if (!file || !file.type.startsWith('image/')) return;
+    reset();
     const url = URL.createObjectURL(file);
     setPreview(url);
-    onStubCapture?.(file.name);
-    toast({
-      title: t('photoLogComingSoon', {
-        defaultValue: 'Photo logging is in development. Use quick log or recipes for now.',
-      }),
-    });
+    setPhase('processing');
+    try {
+      const result = await estimateMealFromPhoto(file);
+      setEstimate(result);
+      setPhase('estimate');
+    } catch {
+      reset();
+    }
   };
 
   return (
@@ -45,7 +60,7 @@ export function PhotoLogStub({ onStubCapture }: Props) {
           </div>
           <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
             {t('photoLogDesc', {
-              defaultValue: 'Snap a meal — we estimate macros (beta coming soon).',
+              defaultValue: 'Snap a meal — we estimate macros on your device (beta).',
             })}
           </p>
         </div>
@@ -54,15 +69,15 @@ export function PhotoLogStub({ onStubCapture }: Props) {
       {preview ? (
         <div className="relative rounded-xl overflow-hidden border border-border/60 aspect-[16/10] bg-muted/30">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={preview} alt="" className="w-full h-full object-cover opacity-80" />
-          <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm">
-            <p className="text-sm text-center px-6 max-w-xs text-muted-foreground">
-              <Sparkles className="h-5 w-5 text-emerald-400 mx-auto mb-2" />
-              {t('photoLogComingSoon', {
-                defaultValue: 'Photo logging is in development. Use quick log or recipes for now.',
-              })}
-            </p>
-          </div>
+          <img src={preview} alt="" className="w-full h-full object-cover" />
+          {phase === 'processing' && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/70 backdrop-blur-sm gap-2">
+              <Loader2 className="h-6 w-6 text-emerald-400 animate-spin" />
+              <p className="text-sm text-muted-foreground">
+                {t('photoLogProcessing', { defaultValue: 'Estimating on device…' })}
+              </p>
+            </div>
+          )}
         </div>
       ) : (
         <button
@@ -77,31 +92,72 @@ export function PhotoLogStub({ onStubCapture }: Props) {
         </button>
       )}
 
+      {phase === 'estimate' && estimate && (
+        <div className="rounded-xl border border-emerald-500/25 bg-emerald-950/20 p-4 space-y-3">
+          <div className="flex items-start gap-2">
+            <Sparkles className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
+            <div>
+              <p className="text-sm font-medium">
+                {t('photoLogEstimateTitle', { defaultValue: 'Estimated meal' })}: {estimate.name}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {estimate.protein}g protein · {estimate.cals} kcal · {estimate.carbs}c · {estimate.fat}f
+              </p>
+              {estimate.confidence === 'low' && (
+                <p className="text-[11px] text-amber-400/90 mt-1">
+                  {t('photoLogEstimateLow', {
+                    defaultValue: 'Low confidence — edit after logging if needed.',
+                  })}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              type="button"
+              size="sm"
+              className="bg-emerald-600 hover:bg-emerald-500"
+              onClick={() => {
+                onLogEstimate(estimate);
+                reset();
+              }}
+            >
+              {t('photoLogLogEstimate', { defaultValue: 'Log estimate' })}
+            </Button>
+            <Button type="button" size="sm" variant="outline" onClick={reset}>
+              {t('photoLogRetake', { defaultValue: 'Choose another photo' })}
+            </Button>
+          </div>
+        </div>
+      )}
+
       <input
         ref={inputRef}
         type="file"
         accept="image/*"
         capture="environment"
         className="hidden"
-        onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
+        onChange={(e) => void handleFile(e.target.files?.[0] ?? null)}
       />
 
-      <div className="flex flex-wrap gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="rounded-lg"
-          onClick={() => inputRef.current?.click()}
-        >
-          <Camera className="h-4 w-4" />
-          {t('photoLogChoose', { defaultValue: 'Choose photo' })}
-        </Button>
-      </div>
+      {phase === 'idle' && (
+        <div className="flex flex-wrap gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="rounded-lg"
+            onClick={() => inputRef.current?.click()}
+          >
+            <Camera className="h-4 w-4" />
+            {t('photoLogChoose', { defaultValue: 'Choose photo' })}
+          </Button>
+        </div>
+      )}
 
       <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
         {t('photoLogBetaNote', {
-          defaultValue: 'Bevel-style meal capture — privacy-first, on-device when possible.',
+          defaultValue: 'Privacy-first — processed on your device. Vision API coming later.',
         })}
       </p>
     </div>

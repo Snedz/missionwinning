@@ -27,11 +27,11 @@
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
 | **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
-| **Build label** | ✅ | `2025.06-unified.6` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.7` on Profile footer |
 
 ### Open PR stack
 
-Most feature work is merged to `master`. When Vercel 2FA resets: redeploy from `master`, verify build label `2025.06-unified.6`, run gate smoke test, then send beta invites per [BETA_INVITE.md](BETA_INVITE.md).
+Most feature work is merged to `master`. Branch `cursor/today-cards-challenges-699d` adds challenge i18n, customizable Today sections, photo estimate stub, wins badge i18n, and CSP Report-Only. When Vercel 2FA resets: redeploy from `master`, verify build label, run gate smoke test, then send beta invites per [BETA_INVITE.md](BETA_INVITE.md).
 
 ### While Vercel is blocked — continue locally
 
@@ -39,10 +39,11 @@ Most feature work is merged to `master`. When Vercel 2FA resets: redeploy from `
 |----------|------|--------|
 | 1 | Today i18n + HomePage refactor | ✅ `todayLocales.ts`, `TodayWeekSection`, `TodayProgressSection`, `starterPrograms.ts` |
 | 2 | Fuel i18n + SignInPrompt | ✅ partial |
-| 3 | Challenge copy i18n | ⬜ |
-| 4 | Customizable Today cards | ⬜ |
-| 5 | Photo log → local estimate stub | ⬜ |
-| 6 | Security P1 (PayPal sig, CSP) | ⬜ |
+| 3 | Challenge copy i18n | ✅ `challengeI18n.ts` + `todayLocales` keys |
+| 4 | Customizable Today cards | ✅ `todayDashboardPrefs.ts`, `TodayDashboardCustomize` |
+| 5 | Photo log → local estimate stub | ✅ `estimateMealFromPhoto.ts`, `PhotoLogStub` |
+| 6 | Wins badge i18n | ✅ `todayLocales` + `TodayProgressSection` |
+| 7 | Security P1 (PayPal sig, CSP) | ⬜ partial — CSP Report-Only in `vercel.json`; PayPal sig TODO |
 
 ---
 

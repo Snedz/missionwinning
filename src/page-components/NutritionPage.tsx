@@ -178,7 +178,11 @@ export function NutritionPage() {
         </p>
       </div>
 
-      <PhotoLogStub />
+      <PhotoLogStub
+        onLogEstimate={(est) => {
+          addEntry(est.name, est.protein, est.cals, est.carbs, est.fat);
+        }}
+      />
 
       <div className="grid md:grid-cols-2 gap-4">
         <Card>

@@ -204,26 +204,43 @@ export function TodayProgressSection({
         <Card className="border-emerald-500/20">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
-              <Target className="h-4 w-4" /> Last Assessment &amp; Recent Pillar Wins
+              <Target className="h-4 w-4" /> {t('todayAssessmentCardTitle', { defaultValue: 'Last Assessment & Recent Pillar Wins' })}
             </CardDescription>
           </CardHeader>
           <CardContent className="text-xs space-y-2">
             {lastAssessment ? (
-              <div>Last: <span className="font-medium uppercase">{lastAssessment.risk}</span> risk ({lastAssessment.date}) • <a href="/assessments" className="underline">Retake</a></div>
+              <div>
+                {t('todayAssessmentLast', {
+                  risk: lastAssessment.risk?.toUpperCase() ?? '',
+                  date: lastAssessment.date ?? '',
+                  defaultValue: `Last: ${lastAssessment.risk} risk (${lastAssessment.date})`,
+                })}{' '}
+                •{' '}
+                <a href="/assessments" className="underline">
+                  {t('todayAssessmentRetake', { defaultValue: 'Retake' })}
+                </a>
+              </div>
             ) : (
-              <div>No assessment yet. <a href="/assessments" className="underline">Take free Readiness Assessment →</a></div>
+              <div>
+                {t('todayAssessmentNone', { defaultValue: 'No assessment yet.' })}{' '}
+                <a href="/assessments" className="underline">
+                  {t('todayAssessmentTake', { defaultValue: 'Take free Readiness Assessment →' })}
+                </a>
+              </div>
             )}
 
             {recentPillarWins.length > 0 ? (
               <div>
-                Recent pillar wins:
+                {t('todayRecentPillarWinsLabel', { defaultValue: 'Recent pillar wins:' })}
                 <ul className="list-disc pl-4 mt-1">
                   {recentPillarWins.map((w, i) => <li key={i}>{w.name} {w.date && `(${w.date})`}</li>)}
                 </ul>
-                <a href="/nutrition" className="underline">See full in Nutrition →</a>
+                <a href="/nutrition" className="underline">
+                  {t('todaySeeNutritionLink', { defaultValue: 'See full in Nutrition →' })}
+                </a>
               </div>
             ) : (
-              <div>Log wins from /move or /mind "Do it" (saves to cloud Nutrition when signed in).</div>
+              <div>{t('todayPillarWinEmpty', { defaultValue: 'Log wins from Move or Mind (saves to cloud when signed in).' })}</div>
             )}
 
             <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
@@ -287,45 +304,77 @@ export function TodayProgressSection({
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 gap-4 text-sm">
           <div className={streak >= 7 ? "text-emerald-400 font-medium" : ""}>
-            {streak >= 7 ? "✓" : "○"} 7-Day Streak ({streak}/7) {streak >= 7 && "🏅"}
+            {streak >= 7 ? "✓" : "○"}{' '}
+            {t('todayWin7DayStreak', { current: streak, defaultValue: `7-Day Streak (${streak}/7)` })}{' '}
+            {streak >= 7 && "🏅"}
           </div>
           <div className={totalVolume > 1000 ? "text-emerald-400 font-medium" : ""}>
-            {totalVolume > 1000 ? "✓" : "○"} 1000kg+ Total Volume ({totalVolume.toLocaleString()}/1000) {totalVolume > 1000 && "🏅"}
+            {totalVolume > 1000 ? "✓" : "○"}{' '}
+            {t('todayWinVolume', {
+              current: totalVolume.toLocaleString(),
+              defaultValue: `1000kg+ Total Volume (${totalVolume.toLocaleString()}/1000)`,
+            })}{' '}
+            {totalVolume > 1000 && "🏅"}
           </div>
           <div className={totalSessions >= 15 ? "text-emerald-400 font-medium" : ""}>
-            {totalSessions >= 15 ? "✓" : "○"} 15+ Sessions Logged ({totalSessions}/15) {totalSessions >= 15 && "🏅"}
+            {totalSessions >= 15 ? "✓" : "○"}{' '}
+            {t('todayWinSessions', { current: totalSessions, defaultValue: `15+ Sessions Logged (${totalSessions}/15)` })}{' '}
+            {totalSessions >= 15 && "🏅"}
           </div>
           <div className={savedWorkouts.length >= 3 ? "text-emerald-400 font-medium" : ""}>
-            {savedWorkouts.length >= 3 ? "✓" : "○"} 3+ Saved Routines ({savedWorkouts.length}/3) {savedWorkouts.length >= 3 && "🏅"}
+            {savedWorkouts.length >= 3 ? "✓" : "○"}{' '}
+            {t('todayWinSavedRoutines', {
+              current: savedWorkouts.length,
+              defaultValue: `3+ Saved Routines (${savedWorkouts.length}/3)`,
+            })}{' '}
+            {savedWorkouts.length >= 3 && "🏅"}
           </div>
           <div className={highProteinDays >= 5 ? "text-emerald-400 font-medium" : ""}>
-            {highProteinDays >= 5 ? "✓" : "○"} High Protein Days (150g+) ({highProteinDays}/5+) {highProteinDays >= 5 && "🏅"}
+            {highProteinDays >= 5 ? "✓" : "○"}{' '}
+            {t('todayWinProteinDays', {
+              current: highProteinDays,
+              defaultValue: `High Protein Days (150g+) (${highProteinDays}/5+)`,
+            })}{' '}
+            {highProteinDays >= 5 && "🏅"}
           </div>
           <div className={nightSessions >= 3 ? "text-indigo-300 font-medium" : ""}>
-            {nightSessions >= 3 ? "✓" : "○"} Under the Stars ({nightSessions}/3 night sessions){' '}
+            {nightSessions >= 3 ? "✓" : "○"}{' '}
+            {t('todayWinUnderStars', {
+              current: nightSessions,
+              defaultValue: `Under the Stars (${nightSessions}/3 night sessions)`,
+            })}{' '}
             {nightSessions >= 3 && "🌙"}
             {nightSessions > 0 && (
               <>
                 {' · '}
                 <a href="/leaderboard?board=under-the-stars" className="text-indigo-400 hover:underline">
-                  Rankings
+                  {t('todayRankings', { defaultValue: 'Rankings' })}
                 </a>
               </>
             )}
           </div>
           <div className={dawnSessions >= 3 ? "text-amber-300 font-medium" : ""}>
-            {dawnSessions >= 3 ? "✓" : "○"} By Dawn&apos;s Early Light ({dawnSessions}/3 dawn sessions){' '}
+            {dawnSessions >= 3 ? "✓" : "○"}{' '}
+            {t('todayWinDawn', {
+              current: dawnSessions,
+              defaultValue: `By Dawn's Early Light (${dawnSessions}/3 dawn sessions)`,
+            })}{' '}
             {dawnSessions >= 3 && "🌅"}
             {dawnSessions > 0 && (
               <>
                 {' · '}
                 <a href="/leaderboard?board=dawns-early-light" className="text-amber-400 hover:underline">
-                  Rankings
+                  {t('todayRankings', { defaultValue: 'Rankings' })}
                 </a>
               </>
             )}
           </div>
-          <div className="col-span-2 text-xs text-muted-foreground">Log wins daily — streaks & volume feed your Mission Score. Full cross-pillar challenges in updates.</div>
+          <div className="col-span-2 text-xs text-muted-foreground">
+            {t('todayWinBadgeFoot', {
+              defaultValue:
+                'Log wins daily — streaks & volume feed your Mission Score. Full cross-pillar challenges in updates.',
+            })}
+          </div>
           <div className="col-span-2 flex gap-2 mt-1 flex-wrap">
             <Button size="sm" variant="outline" className="text-xs" onClick={() => { window.location.href = '/leaderboard'; }}>
               {t('todayViewLeaderboard', { defaultValue: 'View Leaderboard →' })}
