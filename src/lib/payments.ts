@@ -23,6 +23,68 @@ export const SUPER_BUNDLE_PRICE = '12'
 export const SUPER_BUNDLE_TITLE = 'Mission Winning Super Bundle (All Premium Pillars)'
 export const BUNDLE_DISCOUNT_NOTE = '50% off intro for first 6-12 months — holistic value (Freeletics-inspired)'
 
+/** Pillars included in the Super Bundle (Freeletics 7-in-1 model → our unified super app). */
+export const BUNDLE_PILLARS = [
+  {
+    id: 'train',
+    name: 'Train',
+    free: 'Full logger, builder, library, benchmarks',
+    premium: 'AI Coach, unlimited plans, hybrid programming',
+    standalone: '$15/mo',
+    route: '/log',
+  },
+  {
+    id: 'fuel',
+    name: 'Fuel',
+    free: 'Macro log, water, 12 recipes',
+    premium: 'Meal plans, periodized nutrition, coaching sync',
+    standalone: '$10/mo',
+    route: '/nutrition',
+  },
+  {
+    id: 'move',
+    name: 'Move',
+    free: '4 guided mobility flows + timer',
+    premium: 'Pliability + Skill Yoga depth',
+    standalone: '$9/mo',
+    route: '/move',
+  },
+  {
+    id: 'mind',
+    name: 'Mind',
+    free: 'Breathing timer + daily check-in',
+    premium: 'Guided meditations, sleep tools',
+    standalone: '$7/mo',
+    route: '/mind',
+  },
+  {
+    id: 'track',
+    name: 'Track',
+    free: 'Manual activity log + weekly stats',
+    premium: 'GPS routes, pace charts (MapMy-style)',
+    standalone: '$8/mo',
+    route: '/track',
+  },
+  {
+    id: 'learn',
+    name: 'Learn',
+    free: '5 education paths + samples',
+    premium: 'Full specialist programs (PT, BB, etc.)',
+    standalone: '$12/mo',
+    route: '/learn',
+  },
+] as const
+
+/** Stripe Payment Link for Super Bundle (set in Vercel when LLC ready). */
+export function getStripeCheckoutUrl(productId?: string): string | null {
+  if (typeof window === 'undefined') return null
+  if (productId === 'super-bundle' || productId === 'bundle' || !productId) {
+    return process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM || null
+  }
+  const key = `NEXT_PUBLIC_STRIPE_LINK_${productId.toUpperCase().replace(/-/g, '_')}` as keyof NodeJS.ProcessEnv
+  return (process.env[key] as string) || null
+}
+
 // Helper to grant premium immediately (client-side optimistic + analytics)
 // Updated for bundle: supports 'super-bundle' to unlock full access.
 export function grantPremiumDemo(productId?: string) {

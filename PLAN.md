@@ -20,9 +20,9 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 | Phase | Focus | Status |
 |-------|-------|--------|
 | **A** | Free core alignment (nutrition, streaks, challenges, today's workout, leads) | ✅ Done — see [LOG.md](LOG.md) |
-| **B** | Six working pillar free tiers (Move, Mind, Learn, Track) | ✅ In progress |
-| **C** | Super Bundle synergy + Supabase hardening | Planned |
-| **D** | Content scale (200+ exercises, Learn paths) | Ongoing |
+| **B** | Six working pillar free tiers (Move, Mind, Learn, Track) | ✅ Done — see [LOG.md](LOG.md) |
+| **C** | Super Bundle synergy + Supabase hardening | ✅ Done — see [LOG.md](LOG.md) |
+| **D** | Content scale (200+ exercises, Learn paths) | Next |
 | **E** | Go public (Vercel env, PRIVATE_MODE=false) | Blocked on Vercel 2FA reset |
 
 ---
@@ -51,16 +51,17 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 
 ---
 
-## Phase C — Bundle & backend (next)
+## Phase C — Bundle & backend ✅
 
-- Cross-pillar Win Score weighting
-- Bundle comparison UI (“7 tools, 1 price”)
-- Supabase schema + RLS + auto-merge cloud history
-- Stripe Payment Links when LLC ready
+- Cross-pillar Win Score weighting (Train ~40%, Fuel ~15%, Move/Mind/Track/Learn ~45%)
+- Bundle comparison UI on `/bundle` (“7 tools, 1 price” table + savings)
+- Supabase schema + RLS in `supabase/schema.sql`
+- Auto-merge cloud workout history (fingerprint dedup) on sign-in
+- Stripe Payment Link hook + `/api/stripe-webhook` placeholder
 
 ---
 
-## Phase D — Content
+## Phase D — Content (next)
 
 - Exercise library → 200+ with cues and alternatives
 - Program tags (strength, hypertrophy, conditioning, corrective)

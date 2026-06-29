@@ -9,12 +9,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { formatDate, formatDuration } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
+import { gatherWeeklyPillarStats } from "@/lib/pillarScoreInputs";
 import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { EXERCISES } from "@/data/exercises";
 import { getUser, signInMagic, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
 import { MetricsRow } from "@/components/metrics/MetricsRow";
 import { CoachInsightCard } from "@/components/metrics/CoachInsightCard";
+import { PillarScoreBreakdown } from "@/components/metrics/PillarScoreBreakdown";
 
 export function HomePage() {
   const router = useRouter();
@@ -66,8 +68,18 @@ export function HomePage() {
   const streak = getTrainingStreak(workoutHistory);
   const todaysWorkout = getTodaysWorkout();
   const [challenges, setChallenges] = useState<ReturnType<typeof getChallengeProgress>>([]);
+  const [pillarStats, setPillarStats] = useState(() => ({
+    moveFlows: 0,
+    mindSessions: 0,
+    trackActivities: 0,
+    learnLessons: 0,
+    trainDays: 0,
+    proteinDays: 0,
+    weekVolume: 0,
+  }));
   useEffect(() => {
     setChallenges(getChallengeProgress());
+    setPillarStats(gatherWeeklyPillarStats());
   }, [workoutHistory.length, totalVolume]);
 
   // Auto load cloud history for signed in users (quick win for persistence)
@@ -425,10 +437,15 @@ export function HomePage() {
   // Win/Mission Score via util
   const scoreBreakdown = computeWinScore({
     streak,
-    highProteinDays,
+    highProteinDays: Math.max(highProteinDays, pillarStats.proteinDays),
     totalSessions,
     totalVolume,
     savedCount: savedWorkouts.length,
+    moveFlows: pillarStats.moveFlows,
+    mindSessions: pillarStats.mindSessions,
+    trackActivities: pillarStats.trackActivities,
+    learnLessons: pillarStats.learnLessons,
+    trainDaysThisWeek: pillarStats.trainDays,
   });
   const score = scoreBreakdown.total;
 
@@ -504,6 +521,18 @@ export function HomePage() {
 
       <MetricsRow scores={bodyScores} />
       <CoachInsightCard insight={coachInsight} />
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Cross-pillar Mission Score</CardTitle>
+          <CardDescription>
+            All six pillars contribute — Train, Fuel, Move, Mind, Track, and Learn.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <PillarScoreBreakdown breakdown={scoreBreakdown} />
+        </CardContent>
+      </Card>
 
       {/* Weekly challenges — Freeletics-style retention, free for all */}
       <Card>

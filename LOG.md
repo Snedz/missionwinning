@@ -4,6 +4,27 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase C: Bundle & backend
+
+**Branch:** `cursor/phase-c-bundle-backend-699d`
+
+### Shipped
+
+- **Cross-pillar Win Score:** `computeWinScore()` weights all six pillars; dashboard shows `PillarScoreBreakdown` on `/log`
+- **Bundle page:** Full comparison table, savings calc, pillar list — `/bundle` via `BundlePage.tsx`
+- **Cloud merge:** `workoutMerge.ts` fingerprint dedup; `loadFromCloud()` + History auto-sync on sign-in
+- **Supabase:** `supabase/schema.sql` (profiles, enrollments, leads, workout_logs, nutrition_logs + RLS)
+- **Premium checks:** `checkPremium()` / `isPremium()` use `user_id` + email fallback; Stripe webhook placeholder
+- **UnlockButton:** Shows Stripe checkout when `NEXT_PUBLIC_STRIPE_LINK_BUNDLE` is set; demo request fallback
+
+### Files added / updated
+
+- `src/lib/pillarScoreInputs.ts`, `src/lib/workoutMerge.ts`, `src/lib/bundleConfig.ts`
+- `src/components/metrics/PillarScoreBreakdown.tsx`, `src/page-components/BundlePage.tsx`
+- `supabase/schema.sql`, `app/api/stripe-webhook/route.ts`
+
+---
+
 ## 2026-06-29 — Phase B: Pillar free tiers
 
 **Branch:** `cursor/phase-b-pillar-tiers-699d`
