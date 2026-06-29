@@ -23,7 +23,8 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 | **B** | Six working pillar free tiers (Move, Mind, Learn, Track) | ✅ Done — see [LOG.md](LOG.md) |
 | **C** | Super Bundle synergy + Supabase hardening | ✅ Done — see [LOG.md](LOG.md) |
 | **D** | Content scale (200+ exercises, Learn paths) | ✅ Done — see [LOG.md](LOG.md) |
-| **E** | Go public (Vercel env, PRIVATE_MODE=false) | Next — see [PROTECTION.md](PROTECTION.md) |
+| **F** | Simple UI + Mission Journey (I-Day → Commissioned) | **Next** — see [JOURNEY.md](JOURNEY.md) |
+| **E** | Go public (Vercel env, PRIVATE_MODE=false) | After F + [PROTECTION.md](PROTECTION.md) P0 |
 
 ---
 
@@ -70,14 +71,32 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 
 ---
 
-## Phase E — Launch (next)
+## Phase F — Journey & simple UI (before public) ← **NEXT**
 
-See **[PROTECTION.md](PROTECTION.md)** for inspection checklist, security hardening status, and competitive gap analysis before setting `PRIVATE_MODE=false`.
+Full spec: **[JOURNEY.md](JOURNEY.md)**
 
-1. Vercel: rotate `PRIVATE_ACCESS_SECRET`, Supabase keys, `DEMO_PREMIUM=false`
-2. Run protection verification commands in PROTECTION.md
-3. Beta testers (10–20)
-4. `PRIVATE_MODE=false` for public launch
+**Goal:** Foolproof UI + DoD-inspired member path (I-Day → Basic Training → Readiness → Commissioned).
+
+| Sub-phase | Deliverable |
+|-----------|-------------|
+| **F1** | `missionJourney.ts`, `/welcome` I-Day flow, Today = one hero CTA |
+| **F2** | Sidebar → 5 tabs + More; HomePage declutter; commissioning moment |
+| **F3** | Journey sync to Supabase; beta metrics |
+| **F4** | Phase E launch only after journey + PROTECTION P0 |
+
+**Done when:** New user completes I-Day in &lt;3 min and always knows the next single action on Today.
+
+---
+
+## Phase E — Launch (after F + protection)
+
+See **[PROTECTION.md](PROTECTION.md)** for inspection checklist and **[JOURNEY.md](JOURNEY.md)** for UX gates before setting `PRIVATE_MODE=false`.
+
+1. Complete Phase F (Journey + simple UI) — [JOURNEY.md](JOURNEY.md)
+2. Vercel: rotate `PRIVATE_ACCESS_SECRET`, Supabase keys, `DEMO_PREMIUM=false`
+3. Run protection verification commands in PROTECTION.md
+4. Beta testers (10–20) — track I-Day → Commissioned funnel
+5. `PRIVATE_MODE=false` for public launch
 
 ---
 
@@ -106,4 +125,4 @@ Open http://localhost:3000
 
 ---
 
-Last updated: 2026-06-29 (Phase D)
+Last updated: 2026-06-29 (Phase F plan — JOURNEY.md)

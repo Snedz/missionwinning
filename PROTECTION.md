@@ -19,7 +19,8 @@ Mission Winning has a strong **free-core vision** and solid pillar scaffolding, 
 | Supabase RLS | Improved — enrollment read by email |
 | Security headers | Added in `vercel.json` |
 | PWA cache (gated mode) | Disabled while `PRIVATE_MODE` active |
-| Competitive product depth | Documented — see § Competitive gap analysis |
+### Competitive product depth | Documented — see § Competitive gap analysis |
+| Simple UI + member journey | Planned — see [JOURNEY.md](JOURNEY.md) |
 
 ---
 
