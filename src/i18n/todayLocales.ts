@@ -76,6 +76,12 @@ type TodayStrings = {
   todayRecentPillarWinsLabel: string;
   todaySeeNutritionLink: string;
   todayPillarWinEmpty: string;
+  todayMuscleChest: string;
+  todayMuscleBack: string;
+  todayMuscleLegs: string;
+  todayMuscleShoulders: string;
+  todayMuscleArms: string;
+  todayMuscleCore: string;
 };
 
 const en: TodayStrings = {
@@ -159,6 +165,12 @@ const en: TodayStrings = {
   todayRecentPillarWinsLabel: 'Recent pillar wins:',
   todaySeeNutritionLink: 'See full in Nutrition →',
   todayPillarWinEmpty: 'Log wins from Move or Mind (saves to cloud when signed in).',
+  todayMuscleChest: 'Chest',
+  todayMuscleBack: 'Back',
+  todayMuscleLegs: 'Legs',
+  todayMuscleShoulders: 'Shoulders',
+  todayMuscleArms: 'Arms',
+  todayMuscleCore: 'Core',
 };
 
 const es: TodayStrings = {
@@ -234,6 +246,12 @@ const es: TodayStrings = {
   todayRecentPillarWinsLabel: 'Victorias recientes por pilar:',
   todaySeeNutritionLink: 'Ver todo en Nutrición →',
   todayPillarWinEmpty: 'Registra victorias en Move o Mind (se guarda en la nube al iniciar sesión).',
+  todayMuscleChest: 'Pecho',
+  todayMuscleBack: 'Espalda',
+  todayMuscleLegs: 'Piernas',
+  todayMuscleShoulders: 'Hombros',
+  todayMuscleArms: 'Brazos',
+  todayMuscleCore: 'Core',
 };
 
 const zh: TodayStrings = {
@@ -312,6 +330,12 @@ const zh: TodayStrings = {
   todayRecentPillarWinsLabel: '近期支柱胜利：',
   todaySeeNutritionLink: '在营养页查看全部 →',
   todayPillarWinEmpty: '在 Move 或 Mind 记录胜利（登录后同步云端）。',
+  todayMuscleChest: '胸',
+  todayMuscleBack: '背',
+  todayMuscleLegs: '腿',
+  todayMuscleShoulders: '肩',
+  todayMuscleArms: '臂',
+  todayMuscleCore: '核心',
 };
 
 const id: TodayStrings = {
@@ -392,6 +416,12 @@ const id: TodayStrings = {
   todayRecentPillarWinsLabel: 'Kemenangan pilar terbaru:',
   todaySeeNutritionLink: 'Lihat lengkap di Nutrisi →',
   todayPillarWinEmpty: 'Log dari Move atau Mind (tersimpan cloud saat masuk).',
+  todayMuscleChest: 'Dada',
+  todayMuscleBack: 'Punggung',
+  todayMuscleLegs: 'Kaki',
+  todayMuscleShoulders: 'Bahu',
+  todayMuscleArms: 'Lengan',
+  todayMuscleCore: 'Core',
 };
 
 const th: TodayStrings = {
@@ -471,6 +501,12 @@ const th: TodayStrings = {
   todayRecentPillarWinsLabel: 'ชัยชนะเสาหลักล่าสุด:',
   todaySeeNutritionLink: 'ดูทั้งหมดในโภชนาการ →',
   todayPillarWinEmpty: 'บันทึกจาก Move หรือ Mind (ซิงค์คลาวด์เมื่อลงชื่อเข้าใช้)',
+  todayMuscleChest: 'อก',
+  todayMuscleBack: 'หลัง',
+  todayMuscleLegs: 'ขา',
+  todayMuscleShoulders: 'ไหล่',
+  todayMuscleArms: 'แขน',
+  todayMuscleCore: 'แกนกลาง',
 };
 
 const ar: TodayStrings = {
@@ -549,6 +585,12 @@ const ar: TodayStrings = {
   todayRecentPillarWinsLabel: 'انتصارات الركائز الأخيرة:',
   todaySeeNutritionLink: 'عرض الكامل في التغذية ←',
   todayPillarWinEmpty: 'سجّل من Move أو Mind (يُحفظ في السحابة عند تسجيل الدخول).',
+  todayMuscleChest: 'صدر',
+  todayMuscleBack: 'ظهر',
+  todayMuscleLegs: 'أرجل',
+  todayMuscleShoulders: 'أكتاف',
+  todayMuscleArms: 'ذراعان',
+  todayMuscleCore: 'الوسط',
 };
 
 const LOCALES: Partial<Record<string, TodayStrings>> = { en, es, zh, id, th, ar };

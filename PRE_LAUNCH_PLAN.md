@@ -27,7 +27,7 @@
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
 | **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
-| **Build label** | ✅ | `2025.06-unified.12` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.13` on Profile footer |
 
 ### Open PR stack
 
@@ -48,7 +48,8 @@ Most feature work is merged to `master`. Branch `cursor/today-cards-challenges-6
 | 9 | Leads API rate limit | ✅ `/api/leads` + `submitLead` via server |
 | 10 | Pro program templates server-split | ✅ `premiumProgramTemplates.ts` |
 | 11 | Arabic locale + RTL | ✅ `meaLocales.ts`, welcome/today/fuel ar |
-| **Build label** | ✅ | `2025.06-unified.12` on Profile footer |
+| 12 | Nav + Fuel science i18n | ✅ `navLocales.ts`, header dropdown, muscle groups |
+| **Build label** | ✅ | `2025.06-unified.13` on Profile footer |
 
 ### When Vercel access returns
 

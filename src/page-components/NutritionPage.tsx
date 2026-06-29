@@ -175,7 +175,7 @@ export function NutritionPage() {
                 defaultValue:
                   ' Super Bundle unlocks the full recipe library and advanced meal plans.',
               })}{' '}
-          High-protein days boost your{' '}
+          {t('fuelHighProteinNote', { defaultValue: 'High-protein days boost your' })}{' '}
           <a href="/log" className="underline">
             {t('fuelWinScore', { defaultValue: 'Win Score' })}
           </a>
@@ -234,9 +234,20 @@ export function NutritionPage() {
         </Card>
       </div>
 
-      <div className="text-xs bg-muted/20 p-3 rounded">Protein insight from the specialist nutrition materials (textbook ch5): Essential for growth, maintenance, repair of cells (including muscle - actin/myosin), enzymes, hormones, and structural support (e.g. collagen). Active clients require more (1.6-2.2g/kg bodyweight); balance to avoid waste like ammonia/uric acid. Use complete proteins (animal or combined plant like beans+rice), BCAAs (leucine for protein synthesis, isoleucine/valine for energy) for recovery during intense exercise, glutamine for immune/gut health under stress. Time around workouts. From the textbook: prioritize variety for all essential aminos; excess can limit growth if energy is low. Recipes below emphasize these principles.
-
-Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice, potatoes for stable energy; avoid high GI except post-workout). Fats for hormones (15-30% calories from healthy sources like olive oil, salmon, nuts; avoid trans/saturated excess). Vitamins/minerals key for performance (A for vision, B's for energy, C/D for immunity/recovery, etc. from whole foods). Fiber 20-30g+ for digestion. Post-workout: protein + carbs for recovery. Hydration critical. Global accessible: focus on local whole foods over supplements.</div>
+      <div className="text-xs bg-muted/20 p-3 rounded space-y-2">
+        <p>
+          {t('fuelScienceCh5', {
+            defaultValue:
+              'Protein insight (textbook ch.5): Essential for growth, repair, enzymes, and hormones. Active clients often need 1.6–2.2g/kg. Use complete proteins; time intake around workouts. Variety covers essential aminos — recipes below follow these principles.',
+          })}
+        </p>
+        <p>
+          {t('fuelScienceCh12', {
+            defaultValue:
+              'Nutrition for bodybuilders (ch.12): Complex carbs fuel training; healthy fats support hormones (15–30% calories). Vitamins/minerals from whole foods; fiber 20–30g+. Post-workout protein + carbs aid recovery. Hydration matters — prioritize local whole foods.',
+          })}
+        </p>
+      </div>
 
       <Card>
         <CardHeader><CardTitle>{t('fuelQuickLogTitle', { defaultValue: 'Quick Log (common foods)' })}</CardTitle></CardHeader>
@@ -338,7 +349,11 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
               <div className="text-[10px] text-emerald-300 mt-1 italic">{r.tip}</div>
             </div>
           ))}
-          <div className="text-xs text-muted-foreground">Seeded from protein science + DASH/Med principles for global accessibility.</div>
+          <div className="text-xs text-muted-foreground">
+            {t('fuelPremiumRecipesFoot', {
+              defaultValue: 'Seeded from protein science + DASH/Med principles for global accessibility.',
+            })}
+          </div>
         </CardContent>
       </Card>
       ) : (

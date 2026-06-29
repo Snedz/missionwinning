@@ -45,7 +45,7 @@ curl -sI https://www.missionwinning.com/ | grep -i location
 # Expected: location: /private
 
 # Build label on Profile footer (match latest unified.*)
-# e.g. 2025.06-unified.12
+# e.g. 2025.06-unified.13
 
 # Premium API without auth
 curl -sI https://www.missionwinning.com/api/premium/recipes
