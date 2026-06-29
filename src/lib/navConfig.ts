@@ -1,4 +1,5 @@
-/** Shared nav config — Simple mode uses primary tabs only; Pro adds More tools. */
+/** Shared nav config — 5 primary tabs + extended routes in header dropdown. */
+import type { LucideIcon } from 'lucide-react';
 import {
   BookOpen,
   Brain,
@@ -17,15 +18,26 @@ import {
   Wind,
 } from 'lucide-react';
 
-export const PRIMARY_NAV = [
+export type NavLinkItem = {
+  href: string;
+  labelKey: string;
+  label: string;
+  icon: LucideIcon;
+  descriptionKey?: string;
+  description?: string;
+  military?: boolean;
+};
+
+export const PRIMARY_NAV: NavLinkItem[] = [
   { href: '/log', labelKey: 'navToday', label: 'Today', icon: Home },
-  { href: '/active', labelKey: 'navTrain', label: 'Train', icon: Dumbbell, pulseWhenActive: true as const },
+  { href: '/active', labelKey: 'navTrain', label: 'Train', icon: Dumbbell },
   { href: '/nutrition', labelKey: 'navFuel', label: 'Fuel', icon: UtensilsCrossed },
   { href: '/track', labelKey: 'navTrack', label: 'Track', icon: MapPin },
   { href: '/profile', labelKey: 'navYou', label: 'You', icon: User },
 ];
 
-export const MORE_NAV = [
+/** @deprecated Use EXTENDED_NAV_SECTIONS — kept for grep/migration */
+export const MORE_NAV: NavLinkItem[] = [
   { href: '/move', labelKey: 'navMove', label: 'Move', icon: Wind, descriptionKey: 'moreMoveDesc', description: 'Mobility flows' },
   { href: '/mind', labelKey: 'navMind', label: 'Mind', icon: Brain, descriptionKey: 'moreMindDesc', description: 'Breathing & recovery' },
   { href: '/learn', labelKey: 'navLearn', label: 'Learn', icon: BookOpen, descriptionKey: 'moreLearnDesc', description: 'Education paths' },
@@ -38,3 +50,46 @@ export const MORE_NAV = [
   { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators', icon: Calculator, descriptionKey: 'moreCalcDesc', description: 'Macros & tools' },
   { href: '/bundle', labelKey: 'navBundle', label: 'Super Bundle', icon: Sparkles, descriptionKey: 'moreBundleDesc', description: 'Premium pillars' },
 ];
+
+export type NavSection = {
+  id: string;
+  title: string;
+  items: NavLinkItem[];
+};
+
+/** Grouped extended navigation — shown in header dropdown. */
+export const EXTENDED_NAV_SECTIONS: NavSection[] = [
+  {
+    id: 'recover',
+    title: 'Recover',
+    items: MORE_NAV.filter((i) => ['/move', '/mind'].includes(i.href)),
+  },
+  {
+    id: 'train',
+    title: 'Train deeper',
+    items: MORE_NAV.filter((i) => ['/builder', '/library', '/history', '/leaderboard'].includes(i.href)),
+  },
+  {
+    id: 'learn',
+    title: 'Learn & measure',
+    items: MORE_NAV.filter((i) => ['/learn', '/benchmarks', '/assessments', '/calculators'].includes(i.href)),
+  },
+  {
+    id: 'premium',
+    title: 'Premium',
+    items: MORE_NAV.filter((i) => i.href === '/bundle'),
+  },
+];
+
+const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];
+
+export function pageTitleForPath(pathname: string): string {
+  const normalized = pathname === '/' ? '/log' : pathname;
+  const match = ALL_NAV.find((n) => normalized === n.href || normalized.startsWith(n.href + '/'));
+  return match?.label ?? 'Mission Winning';
+}
+
+export function isPrimaryPath(pathname: string): boolean {
+  const normalized = pathname === '/' ? '/log' : pathname;
+  return PRIMARY_NAV.some((n) => normalized === n.href);
+}

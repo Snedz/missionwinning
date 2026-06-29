@@ -8,11 +8,9 @@ import { supabase, signOut, signInMagic, isPremium, getUser } from "@/lib/supaba
 import i18n from "@/i18n";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
-import { useMoreNav } from "@/contexts/MoreNavContext";
 import { daysSinceCommission } from "@/lib/missionJourney";
 import { getBetaFunnelMetrics, getJourneyEvents } from "@/lib/journeyAnalytics";
 import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
-import { LayoutGrid } from "lucide-react";
 
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
@@ -61,7 +59,6 @@ function LanguageSwitcher() {
 export function ProfilePage() {
   const { t } = useTranslation();
   const { isCommissioned, state, action } = useMissionJourney();
-  const { openMore } = useMoreNav();
   const [email, setEmail] = useState<string | null>(null);
   const [nudgeLoading, setNudgeLoading] = useState(false);
   const [nudgeSent, setNudgeSent] = useState(false);
@@ -156,16 +153,6 @@ export function ProfilePage() {
     window.location.href = "/active";
   };
 
-  const completeOnboarding = () => {
-    localStorage.setItem('mw_experience', experience);
-    localStorage.setItem('mw_equipment', equipment);
-    localStorage.setItem('mw_primary_goal', primaryGoal);
-    setGoals(primaryGoal);
-    localStorage.setItem('mw_goals', primaryGoal);
-    scheduleJourneyPush();
-    if (!localStorage.getItem('mw_streak')) localStorage.setItem('mw_streak', '1');
-  };
-
   // Owner analytics / revenue stub (bundle members)
   const members = typeof window !== 'undefined' ? parseInt(localStorage.getItem('mw_contributors') || '12400') : 12400;
   const estRevenue = Math.round(members * 12 * 0.3); // rough from bundle subs (demo)
@@ -257,19 +244,6 @@ export function ProfilePage() {
       </Card>
 
       <Card className="content-card">
-        <CardHeader><CardTitle>{t('navMore', { defaultValue: 'More tools' })}</CardTitle></CardHeader>
-        <CardContent className="space-y-3">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Move, Mind, Learn, Leaderboard, Builder, Library, and more — one tap away on any device.
-          </p>
-          <Button variant="outline" className="w-full min-h-[44px] gap-2" onClick={openMore}>
-            <LayoutGrid className="h-4 w-4" />
-            {t('navMore', { defaultValue: 'Open More tools' })}
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Card>
         <CardHeader><CardTitle>{t('units', { defaultValue: 'Units' })}</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-2">
@@ -388,38 +362,13 @@ export function ProfilePage() {
       {!isOnboarded ? (
         <Card className="border-emerald-500/40 bg-emerald-950/10">
           <CardHeader><CardTitle>{t('firstTimeSetup', { defaultValue: 'First-time setup' })}</CardTitle></CardHeader>
-          <CardContent className="space-y-4 text-sm">
-            <p className="text-muted-foreground">Complete this once to personalize your Win Score, muscle readiness, and starting recommendations. Sets your path to dominate.</p>
-            <div>
-              <label className="text-xs font-medium">Experience Level</label>
-              <select value={experience} onChange={e => setExperience(e.target.value)} className="w-full border rounded p-2 bg-background mt-1">
-                <option value="">Select...</option>
-                <option value="beginner">Beginner (&lt;1 year)</option>
-                <option value="intermediate">Intermediate (1-3 years)</option>
-                <option value="advanced">Advanced (3+ years)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-medium">Equipment Access</label>
-              <select value={equipment} onChange={e => setEquipment(e.target.value)} className="w-full border rounded p-2 bg-background mt-1">
-                <option value="">Select...</option>
-                <option value="bodyweight">Bodyweight / Minimal (park, home)</option>
-                <option value="dumbbells">Dumbbells + Bodyweight</option>
-                <option value="full-gym">Full Gym / Barbell</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-xs font-medium">Primary Goal</label>
-              <select value={primaryGoal} onChange={e => setPrimaryGoal(e.target.value)} className="w-full border rounded p-2 bg-background mt-1">
-                <option value="Build strength and stay healthy">Build strength and stay healthy</option>
-                <option value="Build muscle / Hypertrophy">Build muscle / Hypertrophy</option>
-                <option value="Lose fat / Get lean">Lose fat / Get lean</option>
-                <option value="Get stronger (powerlifting style)">Get stronger (powerlifting style)</option>
-                <option value="Conditioning / Athletic performance">Conditioning / Athletic performance</option>
-              </select>
-            </div>
-            <Button onClick={completeOnboarding} disabled={!experience || !equipment} className="w-full">Complete Setup &amp; Seed Your First Win Score</Button>
-            <div className="text-xs text-muted-foreground">This unlocks personalized Today hub recommendations and starting challenges. Premium programs expand this further.</div>
+          <CardContent className="space-y-3 text-sm">
+            <p className="text-muted-foreground">
+              Complete I-Day to personalize workouts and Today recommendations (~2 minutes).
+            </p>
+            <Button className="w-full min-h-[44px]" onClick={() => { window.location.href = '/welcome'; }}>
+              {t('welcomeBegin', { defaultValue: 'Begin I-Day' })}
+            </Button>
           </CardContent>
         </Card>
       ) : (

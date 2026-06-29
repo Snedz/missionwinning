@@ -34,7 +34,7 @@ You're in the first cohort of **Mission Winning** — a free-core fitness app wi
 5. Optional: sign in on **Profile** for cloud sync
 
 **What to try:**
-- Tap **More** (green button above nav on phone) for Leaderboard, Move, Mind, Learn
+- Tap **Mission Winning** in the top header to open the menu (Move, Mind, Leaderboard, Learn, etc.)
 - Language switch on Profile (Thai, Japanese, Spanish, etc.)
 
 **Feedback:** Reply to this email or use in-app feedback. Confusing steps = exactly what we need to fix.

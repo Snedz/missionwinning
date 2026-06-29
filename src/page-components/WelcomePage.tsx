@@ -107,8 +107,8 @@ export function WelcomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0f1a] text-white flex flex-col">
-      <header className="border-b border-white/10 px-4 py-4 flex items-center gap-2">
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      <header className="glass-nav border-b border-border/50 px-4 py-4 flex items-center gap-2">
         <Shield className="h-6 w-6 text-emerald-400" />
         <span className="font-bold tracking-tight">
           Mission Winning · {isEdit ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' }) : 'I-Day'}
@@ -116,14 +116,14 @@ export function WelcomePage() {
       </header>
 
       <main className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-lg bg-[#111827] border-white/10 text-white">
+        <Card className="w-full max-w-lg content-card">
           <CardContent className="p-6 md:p-8 space-y-6">
             {step === 'welcome' && (
               <>
                 <div className="space-y-2">
                   <p className="text-xs uppercase tracking-widest text-emerald-400">Where the journey begins</p>
                   <h1 className="text-2xl md:text-3xl font-bold">{t('welcomeTitle', { defaultValue: 'Welcome, Mission Member' })}</h1>
-                  <p className="text-white/70 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     {t('welcomeSubtitle', {
                       defaultValue:
                         'Start your path toward lifelong health — one step at a time. About two minutes.',
@@ -141,9 +141,9 @@ export function WelcomePage() {
 
             {step === 'mission' && (
               <>
-                <div className="space-y-3 max-h-48 overflow-y-auto text-sm text-white/80 leading-relaxed pr-1">
+                <div className="space-y-3 max-h-48 overflow-y-auto text-sm text-muted-foreground leading-relaxed pr-1">
                   <p>
-                    <strong className="text-white">The mission:</strong> Mission Winning is a free global
+                    <strong className="text-foreground">The mission:</strong> Mission Winning is a free global
                     health app. Train, fuel, move, mind, track, and learn — one place, one path forward.
                   </p>
                   <p>
@@ -152,7 +152,7 @@ export function WelcomePage() {
                   </p>
                   <p>
                     Your job today: complete one step at a time. Today hub will always show your{' '}
-                    <strong className="text-white">next single action</strong>.
+                    <strong className="text-foreground">next single action</strong>.
                   </p>
                 </div>
                 <Button
@@ -173,18 +173,18 @@ export function WelcomePage() {
                   <h2 className="text-xl font-bold mb-1">
                     {isEdit ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' }) : 'Three quick questions'}
                   </h2>
-                  <p className="text-sm text-white/60">
+                  <p className="text-sm text-muted-foreground">
                     {isEdit
                       ? 'Update experience, equipment, and goal. Changes sync when signed in.'
                       : 'So Today can recommend the right starting point.'}
                   </p>
                 </div>
                 <label className="block space-y-1 text-sm">
-                  <span className="text-white/70">Experience</span>
+                  <span className="text-muted-foreground">Experience</span>
                   <select
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
-                    className="w-full rounded-md bg-black/40 border border-white/20 px-3 py-2"
+                    className="w-full rounded-md bg-background border border-border px-3 py-2"
                   >
                     {EXPERIENCE_OPTIONS.map((o) => (
                       <option key={o.value} value={o.value}>
@@ -194,11 +194,11 @@ export function WelcomePage() {
                   </select>
                 </label>
                 <label className="block space-y-1 text-sm">
-                  <span className="text-white/70">Gear check — what do you have today?</span>
+                  <span className="text-muted-foreground">Gear check — what do you have today?</span>
                   <select
                     value={equipment}
                     onChange={(e) => setEquipment(e.target.value)}
-                    className="w-full rounded-md bg-black/40 border border-white/20 px-3 py-2"
+                    className="w-full rounded-md bg-background border border-border px-3 py-2"
                   >
                     {EQUIPMENT_OPTIONS.map((o) => (
                       <option key={o.value} value={o.value}>
@@ -208,11 +208,11 @@ export function WelcomePage() {
                   </select>
                 </label>
                 <label className="block space-y-1 text-sm">
-                  <span className="text-white/70">Primary goal</span>
+                  <span className="text-muted-foreground">Primary goal</span>
                   <input
                     value={primaryGoal}
                     onChange={(e) => setPrimaryGoal(e.target.value)}
-                    className="w-full rounded-md bg-black/40 border border-white/20 px-3 py-2"
+                    className="w-full rounded-md bg-background border border-border px-3 py-2"
                     placeholder="Build strength and stay healthy"
                   />
                 </label>
@@ -239,7 +239,7 @@ export function WelcomePage() {
               <>
                 <div>
                   <h2 className="text-xl font-bold mb-1">Optional: save progress to cloud</h2>
-                  <p className="text-sm text-white/60">
+                  <p className="text-sm text-muted-foreground">
                     Skip if you want — you can sign in anytime from Profile. Free magic link, no password.
                   </p>
                 </div>
@@ -248,7 +248,7 @@ export function WelcomePage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@email.com (optional)"
-                  className="w-full rounded-md bg-black/40 border border-white/20 px-3 py-3 text-sm"
+                  className="w-full rounded-md bg-background border border-border px-3 py-3 text-sm"
                 />
                 <Button
                   className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
@@ -266,7 +266,7 @@ export function WelcomePage() {
         </Card>
       </main>
 
-      <footer className="text-center text-[10px] text-white/40 py-4 px-4">
+      <footer className="text-center text-[10px] text-muted-foreground py-4 px-4">
         Civilian health app — inspired by structured military onboarding, not affiliated with DoD.
       </footer>
     </div>
