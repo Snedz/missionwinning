@@ -19,6 +19,8 @@ import { MetricsRow } from "@/components/metrics/MetricsRow";
 import { CoachInsightCard } from "@/components/metrics/CoachInsightCard";
 import { PillarScoreBreakdown } from "@/components/metrics/PillarScoreBreakdown";
 import { JourneyStrip, JourneyHero } from "@/components/journey/JourneyHero";
+import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
+import { TodayQuickLinks } from "@/components/journey/TodayQuickLinks";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { useUiMode } from "@/hooks/useUiMode";
@@ -465,6 +467,8 @@ export function HomePage() {
 
   return (
     <div className="space-y-6">
+      <BetaWelcomeBanner />
+
       <header className="space-y-1">
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -512,6 +516,8 @@ export function HomePage() {
         onPrimaryClick={handleJourneyPrimary}
         activeWorkout={!!activeWorkout}
       />
+
+      {isSimple && <TodayQuickLinks />}
 
       {isSimple && !showExpandedToday && streak === 0 && (
         <p className="text-center text-sm text-muted-foreground px-4">

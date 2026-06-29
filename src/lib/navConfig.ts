@@ -18,11 +18,11 @@ import {
 } from 'lucide-react';
 
 export const PRIMARY_NAV = [
-  { href: '/log', labelKey: 'navToday', icon: Home },
-  { href: '/active', labelKey: 'navTrain', icon: Dumbbell, pulseWhenActive: true as const },
-  { href: '/nutrition', labelKey: 'navFuel', icon: UtensilsCrossed },
-  { href: '/track', labelKey: 'navTrack', icon: MapPin },
-  { href: '/profile', labelKey: 'navYou', icon: User },
+  { href: '/log', labelKey: 'navToday', label: 'Today', icon: Home },
+  { href: '/active', labelKey: 'navTrain', label: 'Train', icon: Dumbbell, pulseWhenActive: true as const },
+  { href: '/nutrition', labelKey: 'navFuel', label: 'Fuel', icon: UtensilsCrossed },
+  { href: '/track', labelKey: 'navTrack', label: 'Track', icon: MapPin },
+  { href: '/profile', labelKey: 'navYou', label: 'You', icon: User },
 ];
 
 export const MORE_NAV = [

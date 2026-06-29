@@ -32,7 +32,7 @@ export function Sidebar() {
         </div>
 
         <nav className="flex-1 space-y-0.5 px-3">
-          {PRIMARY_NAV.map(({ href, labelKey, icon: Icon, ...rest }) => {
+          {PRIMARY_NAV.map(({ href, labelKey, label, icon: Icon, ...rest }) => {
             const pulseWhenActive = 'pulseWhenActive' in rest && rest.pulseWhenActive;
             const isActive = pathname === href || (href === '/log' && pathname === '/');
             const showPulse = pulseWhenActive && activeWorkout;
@@ -48,7 +48,7 @@ export function Sidebar() {
                 )}
               >
                 <Icon className={cn('h-5 w-5 shrink-0', showPulse && 'text-emerald-400')} />
-                {t(labelKey, { defaultValue: labelKey })}
+                {t(labelKey, { defaultValue: label })}
                 {showPulse && (
                   <span className="ml-auto h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                 )}
