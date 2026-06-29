@@ -1,7 +1,6 @@
 import type { LeaderboardEntry, LeaderboardSnapshot } from './types';
 import type { MacroRegion } from './regions';
 
-/** Deterministic pseudo-random from seed string. */
 function hashSeed(s: string): number {
   let h = 0;
   for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
@@ -15,11 +14,9 @@ const CALLSIGNS = [
   'Jade Circuit', 'Keystone', 'Lunar Path', 'Meridian', 'North Star',
   'Orbit Nine', 'Phantom Step', 'Quartz Field', 'Ridge Walker', 'Summit Zero',
   'Tidal Forge', 'Umbra', 'Vanguard', 'Waypoint', 'Zenith',
-  'Boxer Ready', 'Venom Dawn', 'Indian Ocean', 'Night Deck', 'Helo Line',
-  'Amphib Six', 'Surface Watch', 'Deck Run', 'Hangar Light', 'Rotor Echo',
 ];
 
-const REGIONS: MacroRegion[] = ['Americas', 'Europe', 'Asia-Pacific', 'Middle East & Africa'];
+const SQUADS = ['ALPHA', 'BRAVO', 'CHARLIE', 'DELTA', 'ECHO', 'FOXTROT', 'GOLF', 'HOTEL'];
 
 const COUNTRIES: { code: string; name: string; region: MacroRegion }[] = [
   { code: 'US', name: 'United States', region: 'Americas' },
@@ -46,7 +43,6 @@ function pick<T>(arr: T[], seed: number): T {
   return arr[seed % arr.length];
 }
 
-/** Seeded demo operators — fills global boards until cloud data grows. */
 export function buildDemoPopulation(count = 96): LeaderboardSnapshot[] {
   const out: LeaderboardSnapshot[] = [];
 
@@ -54,35 +50,21 @@ export function buildDemoPopulation(count = 96): LeaderboardSnapshot[] {
     const seed = hashSeed(`mw-demo-${i}`);
     const country = pick(COUNTRIES, seed);
     const callsign = pick(CALLSIGNS, seed + i * 7);
-
-    const missionScore = 28 + (seed % 72);
-    const trainingStreak = Math.min(21, (seed >> 3) % 14);
-    const weeklyVolume = 800 + (seed % 9200);
-    const nightSessions = (seed >> 5) % 12;
+    const squadCode = pick(SQUADS, seed >> 2);
 
     out.push({
       operatorName: callsign,
-      missionScore,
-      trainingStreak,
-      weeklyVolume,
-      nightSessions,
+      missionScore: 28 + (seed % 72),
+      trainingStreak: Math.min(21, (seed >> 3) % 14),
+      weeklyVolume: 800 + (seed % 9200),
+      fuelDays: (seed >> 4) % 8,
+      squadCode,
       region: country.region,
       countryCode: country.code,
       countryName: country.name,
       locale: 'en',
     });
   }
-
-  // Featured high performers for "Under the Stars" flavor
-  out[0] = {
-    ...out[0],
-    operatorName: 'Night Vector',
-    nightSessions: 14,
-    missionScore: 91,
-    region: 'Asia-Pacific',
-    countryCode: 'IN',
-    countryName: 'Indian Ocean Sector',
-  };
 
   return out;
 }
@@ -100,8 +82,8 @@ export function snapshotToEntry(
         return snap.trainingStreak;
       case 'weekly-volume':
         return snap.weeklyVolume;
-      case 'under-the-stars':
-        return snap.nightSessions;
+      case 'fuel-days':
+        return snap.fuelDays;
     }
   })();
 
@@ -113,13 +95,11 @@ export function snapshotToEntry(
     countryCode: snap.countryCode,
     countryName: snap.countryName,
     locale: snap.locale,
+    squadCode: snap.squadCode,
     isYou: opts?.isYou,
     delta: opts?.delta,
     userId: snap.userId,
-    detail:
-      boardId === 'under-the-stars'
-        ? `${snap.nightSessions} night ops`
-        : `${snap.countryName}`,
+    detail: snap.countryName,
   };
 }
 

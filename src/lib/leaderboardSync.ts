@@ -3,6 +3,21 @@ import type { LeaderboardSnapshot } from '@/lib/leaderboard/types';
 import type { CompletedWorkoutLog } from '@/types';
 import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
 
+let pushTimer: ReturnType<typeof setTimeout> | null = null;
+
+export function scheduleLeaderboardPush(
+  workoutHistory: CompletedWorkoutLog[],
+  savedCount: number,
+  delayMs = 2000
+): void {
+  if (typeof window === 'undefined') return;
+  if (pushTimer) clearTimeout(pushTimer);
+  pushTimer = setTimeout(() => {
+    pushTimer = null;
+    void pushLeaderboardSnapshot(workoutHistory, savedCount);
+  }, delayMs);
+}
+
 export async function pushLeaderboardSnapshot(
   workoutHistory: CompletedWorkoutLog[],
   savedCount: number
@@ -20,7 +35,8 @@ export async function pushLeaderboardSnapshot(
       mission_score: snap.missionScore,
       training_streak: snap.trainingStreak,
       weekly_volume: snap.weeklyVolume,
-      night_sessions: snap.nightSessions,
+      fuel_days: snap.fuelDays,
+      squad_code: snap.squadCode || null,
       region: snap.region,
       country_code: snap.countryCode,
       country_name: snap.countryName,
@@ -39,7 +55,7 @@ export async function fetchCloudLeaderboardSnapshots(): Promise<LeaderboardSnaps
   const { data, error } = await supabase
     .from('leaderboard_snapshots')
     .select(
-      'user_id, operator_name, mission_score, training_streak, weekly_volume, night_sessions, region, country_code, country_name, locale'
+      'user_id, operator_name, mission_score, training_streak, weekly_volume, fuel_days, squad_code, region, country_code, country_name, locale'
     )
     .order('mission_score', { ascending: false })
     .limit(200);
@@ -52,7 +68,8 @@ export async function fetchCloudLeaderboardSnapshots(): Promise<LeaderboardSnaps
     missionScore: row.mission_score ?? 0,
     trainingStreak: row.training_streak ?? 0,
     weeklyVolume: row.weekly_volume ?? 0,
-    nightSessions: row.night_sessions ?? 0,
+    fuelDays: row.fuel_days ?? 0,
+    squadCode: row.squad_code ?? undefined,
     region: row.region ?? 'Americas',
     countryCode: row.country_code ?? 'US',
     countryName: row.country_name ?? 'United States',

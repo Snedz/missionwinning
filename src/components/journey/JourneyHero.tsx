@@ -10,6 +10,9 @@ export function JourneyStrip({ action }: { action: JourneyAction }) {
     return (
       <div className="flex items-center justify-between text-xs text-muted-foreground py-2">
         <span className="text-emerald-400 font-medium">{action.stepLabel}</span>
+        <a href="/leaderboard" className="text-emerald-400/80 hover:text-emerald-400 hover:underline">
+          Rankings →
+        </a>
       </div>
     );
   }

@@ -3,13 +3,13 @@
 import { cn } from '@/lib/utils';
 import { LEADERBOARD_BOARDS } from '@/lib/leaderboard/boards';
 import type { LeaderboardBoardId } from '@/lib/leaderboard/types';
-import { Star, Flame, TrendingUp, Moon } from 'lucide-react';
+import { Star, Flame, TrendingUp, UtensilsCrossed } from 'lucide-react';
 
 const ICONS: Record<LeaderboardBoardId, typeof Star> = {
   'mission-score': Star,
   'training-streak': Flame,
   'weekly-volume': TrendingUp,
-  'under-the-stars': Moon,
+  'fuel-days': UtensilsCrossed,
 };
 
 interface Props {

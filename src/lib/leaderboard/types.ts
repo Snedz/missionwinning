@@ -5,15 +5,13 @@ export type LeaderboardBoardId =
   | 'mission-score'
   | 'training-streak'
   | 'weekly-volume'
-  | 'under-the-stars';
+  | 'fuel-days';
 
 export interface LeaderboardBoard {
   id: LeaderboardBoardId;
   title: string;
   subtitle: string;
   unit: string;
-  /** Optional hero caption (event flavor text). */
-  flavor?: string;
 }
 
 export interface LeaderboardEntry {
@@ -25,8 +23,8 @@ export interface LeaderboardEntry {
   countryCode: string;
   countryName: string;
   locale: string;
+  squadCode?: string;
   isYou?: boolean;
-  /** Rank change vs last snapshot (positive = improved). */
   delta?: number;
   detail?: string;
   userId?: string;
@@ -38,7 +36,8 @@ export interface LeaderboardSnapshot {
   missionScore: number;
   trainingStreak: number;
   weeklyVolume: number;
-  nightSessions: number;
+  fuelDays: number;
+  squadCode?: string;
   region: string;
   countryCode: string;
   countryName: string;

@@ -13,7 +13,7 @@ Chronological record of shipped work. Newest first.
 ### Shipped
 
 - **`/leaderboard`** — Global, Regional, National, Local, Friends scopes
-- **Boards:** Mission Score, Training Streak, Weekly Volume, **Under the Stars** (night sessions)
+- **Boards:** Mission Score, Training Streak, Weekly Volume, Fuel Days
 - Demo operator population + cloud sync via `leaderboard_snapshots`
 - Call sign editor, GT7-style rank table with medals
 - More tools nav + Today wins card link

@@ -20,12 +20,10 @@ export const LEADERBOARD_BOARDS: LeaderboardBoard[] = [
     unit: 'vol',
   },
   {
-    id: 'under-the-stars',
-    title: 'Under the Stars',
-    subtitle: 'Night discipline — sessions logged between 22:00 and 05:00 local.',
-    unit: 'ops',
-    flavor:
-      'Operators who train when the world sleeps. Inspired by night-flight readiness — civilian fitness, not affiliated with DoD.',
+    id: 'fuel-days',
+    title: 'Fuel Days',
+    subtitle: 'Days this week with 120g+ protein logged in Fuel.',
+    unit: 'days',
   },
 ];
 
@@ -38,9 +36,21 @@ export const LEADERBOARD_SCOPES: {
   { id: 'regional', label: 'Regional', description: 'Your continent / macro region' },
   { id: 'national', label: 'National', description: 'Your country cohort' },
   { id: 'local', label: 'Local', description: 'Operators in your area (locale cohort)' },
-  { id: 'friends', label: 'Friends', description: 'Your squad — coming soon' },
+  { id: 'friends', label: 'Squad', description: 'Operators sharing your squad code' },
 ];
 
 export function boardById(id: import('./types').LeaderboardBoardId): LeaderboardBoard {
   return LEADERBOARD_BOARDS.find((b) => b.id === id) ?? LEADERBOARD_BOARDS[0];
+}
+
+export const SQUAD_CODE_KEY = 'mw_squad_code';
+
+export function loadSquadCode(): string {
+  if (typeof window === 'undefined') return '';
+  return localStorage.getItem(SQUAD_CODE_KEY)?.trim().toUpperCase().slice(0, 8) || '';
+}
+
+export function saveSquadCode(code: string): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(SQUAD_CODE_KEY, code.trim().toUpperCase().slice(0, 8));
 }
