@@ -1,4 +1,5 @@
 import type { WorkoutExerciseTemplate } from "@/types";
+import type { ProgramTag } from "@/types";
 
 export type ProgramCategory = "beginner" | "advanced" | "pro";
 
@@ -17,6 +18,8 @@ export interface ProgramTemplate {
   description: string;
   duration: string;
   focus: string;
+  /** Phase D — strength, hypertrophy, conditioning, corrective */
+  tags?: ProgramTag[];
   sessions: ProgramSession[];
 }
 
@@ -1565,6 +1568,7 @@ export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
     description: "4-day split for muscle growth. 8-12 rep range, controlled eccentrics, 60-90s rest on isolations.",
     duration: "8-12 weeks",
     focus: "Hypertrophy",
+    tags: ["hypertrophy"],
     sessions: [
       { id: "bb-ul-u1", name: "Upper A", exercises: [ex("bench-press", 4, 8), ex("barbell-row", 4, 8), ex("dumbbell-fly", 3, 12), ex("bicep-curl", 3, 10)] },
       { id: "bb-ul-l1", name: "Lower A", exercises: [ex("squats", 4, 8), ex("romanian-deadlift", 3, 10), ex("leg-extension", 3, 12), ex("hip-thrust", 3, 10)] },
@@ -1580,6 +1584,7 @@ export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
     description: "3x/week mobility + activation to bulletproof shoulders, hips, core. Use before or after main lifts.",
     duration: "4-6 weeks",
     focus: "Injury prevention & movement quality",
+    tags: ["corrective"],
     sessions: [
       { id: "corr-a", name: "Upper Focus + Core", notes: "Band work for scapular health, anti-rotation core.", exercises: [ex("band-pull-apart", 3, 15), ex("face-pull-band", 3, 15), ex("dead-bug", 3, 8), ex("cat-camel", 2, 10)] },
       { id: "corr-b", name: "Lower + Hips", notes: "Glute activation, hip mobility for squat/deadlift health.", exercises: [ex("glute-bridge", 3, 12), ex("bird-dog", 3, 8), ex("hip-thrust", 3, 10)] },
@@ -1594,6 +1599,7 @@ export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
       "Shock/hypertrophy block using supersets, giant sets, rest-pause, drop sets, EuroBlast pumps, 20-rep squats, DC rest-pause. Periodize carefully (1-2x per year).",
     duration: "4-8 weeks",
     focus: "Advanced hypertrophy & mental toughness",
+    tags: ["hypertrophy", "strength"],
     sessions: [
       {
         id: "aim-push",
@@ -1630,7 +1636,183 @@ export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
       },
     ],
   },
+  {
+    id: "cond-emom-starter",
+    name: "EMOM Metcon Starter",
+    category: "beginner",
+    description:
+      "20-minute every-minute-on-the-minute conditioning. Scales globally with bodyweight — burpees, squats, push-ups rotation.",
+    duration: "4 weeks",
+    focus: "Conditioning & work capacity",
+    tags: ["conditioning"],
+    sessions: [
+      {
+        id: "emom-1",
+        name: "EMOM 20 — Burpees",
+        notes: "Min 1: 8 burpees. Rest remainder. Track rounds completed.",
+        exercises: [ex("emom-burpees", 1, 8)],
+      },
+      {
+        id: "emom-2",
+        name: "EMOM 20 — Squat + Push",
+        notes: "Alternate: odd minutes air squats, even push-ups.",
+        exercises: [ex("amrap-air-squat-pushup", 1, 1)],
+      },
+      {
+        id: "emom-3",
+        name: "Mixed Modal",
+        notes: "KB swing + mountain climbers + jump rope singles.",
+        exercises: [
+          ex("kettlebell-swing", 3, 15),
+          ex("mountain-climbers", 3, 30),
+          ex("jump-rope-single", 3, 50),
+        ],
+      },
+    ],
+  },
+  {
+    id: "cond-engine-builder",
+    name: "Engine Builder (Intervals)",
+    category: "advanced",
+    description:
+      "Energy system development — bike sprints, row repeats, sled work. Complements strength without destroying recovery (ISSA conditioning principles).",
+    duration: "6 weeks",
+    focus: "Aerobic power & repeatability",
+    tags: ["conditioning"],
+    sessions: [
+      {
+        id: "eb-bike",
+        name: "Bike Intervals",
+        notes: "20s on / 40s off × 10. Log perceived effort in Track pillar.",
+        exercises: [ex("assault-bike-sprint", 1, 10)],
+      },
+      {
+        id: "eb-row",
+        name: "Row Repeats",
+        notes: "3×500m hard, 2 min rest between.",
+        exercises: [ex("rower-500m-repeats", 3, 1)],
+      },
+      {
+        id: "eb-sled",
+        name: "Sled + Carry",
+        notes: "Prowler push + farmer carry finisher.",
+        exercises: [ex("prowler-push", 4, 1), ex("farmer-walk-dbs", 3, 1)],
+      },
+    ],
+  },
+  {
+    id: "corr-desk-reset",
+    name: "Desk Reset & Prehab",
+    category: "beginner",
+    description:
+      "Daily 10-minute corrective block for desk workers — hips, thoracic spine, scapular control. ISSA corrective exercise foundations.",
+    duration: "Ongoing",
+    focus: "Posture & movement quality",
+    tags: ["corrective"],
+    sessions: [
+      {
+        id: "desk-a",
+        name: "Upper Reset",
+        exercises: [
+          ex("wall-angels", 2, 10),
+          ex("band-pull-apart", 3, 15),
+          ex("thread-needle", 2, 8),
+          ex("neck-circles-release", 1, 5),
+        ],
+      },
+      {
+        id: "desk-b",
+        name: "Lower Reset",
+        exercises: [
+          ex("hip-90-90-flow", 2, 8),
+          ex("couch-stretch", 2, 45),
+          ex("clamshell", 2, 12),
+          ex("ankle-dorsiflex-rock", 2, 12),
+        ],
+      },
+      {
+        id: "desk-c",
+        name: "Full Chain",
+        exercises: [
+          ex("worlds-greatest-stretch", 2, 6),
+          ex("cat-camel", 2, 10),
+          ex("dead-bug", 3, 8),
+          ex("pallof-press", 2, 10),
+        ],
+      },
+    ],
+  },
+  {
+    id: "hypertrophy-ppl-lite",
+    name: "Push / Pull / Legs (Hypertrophy Lite)",
+    category: "advanced",
+    description:
+      "Classic 3-day PPL for muscle growth — 8–12 reps, 60–90s rest on accessories. Free template from bodybuilding programming principles.",
+    duration: "8 weeks",
+    focus: "Muscle hypertrophy",
+    tags: ["hypertrophy"],
+    sessions: [
+      {
+        id: "ppl-push",
+        name: "Push",
+        exercises: [
+          ex("bench-press", 4, 8),
+          ex("incline-dumbbell-press", 3, 10),
+          ex("overhead-press", 3, 10),
+          ex("lateral-raise-db", 3, 15),
+          ex("rope-tricep-ext", 3, 12),
+        ],
+      },
+      {
+        id: "ppl-pull",
+        name: "Pull",
+        exercises: [
+          ex("barbell-row", 4, 8),
+          ex("lat-pulldown", 3, 10),
+          ex("face-pull", 3, 15),
+          ex("dumbbell-row", 3, 10),
+          ex("bicep-curl", 3, 12),
+        ],
+      },
+      {
+        id: "ppl-legs",
+        name: "Legs",
+        exercises: [
+          ex("squats", 4, 8),
+          ex("romanian-deadlift", 3, 10),
+          ex("leg-extension", 3, 12),
+          ex("hip-thrust", 3, 10),
+          ex("standing-calf-raise", 4, 15),
+        ],
+      },
+    ],
+  },
 ];
+
+/** Infer program tags from name, focus, and description when not set explicitly. */
+export function getProgramTags(program: ProgramTemplate): ProgramTag[] {
+  if (program.tags?.length) return program.tags;
+  const text = `${program.name} ${program.description} ${program.focus}`.toLowerCase();
+  const tags: ProgramTag[] = [];
+  if (/corrective|mobility|prehab|injury|movement quality|activation|bulletproof|rehab/.test(text)) {
+    tags.push("corrective");
+  }
+  if (/conditioning|metcon|cardio|emom|amrap|interval|energy system|hwpo|sprint|row repeat|bike/.test(text)) {
+    tags.push("conditioning");
+  }
+  if (/hypertrophy|bodybuilding|pump|muscle growth|8-12|isolation|bb |muscle|volume block|intensity methods|euroblast|giant set/.test(text)) {
+    tags.push("hypertrophy");
+  }
+  if (/strength|5x5|powerlifting|peaking|1rm|squat pr|bench|deadlift|texas|sheiko|smolov|5×5|linear|dup|block/.test(text)) {
+    tags.push("strength");
+  }
+  if (tags.length === 0) tags.push("strength");
+  return [...new Set(tags)];
+}
+
+export function getProgramsByTag(tag: ProgramTag): ProgramTemplate[] {
+  return PROGRAM_TEMPLATES.filter((p) => getProgramTags(p).includes(tag));
+}
 
 export function getProgramById(id: string): ProgramTemplate | undefined {
   return PROGRAM_TEMPLATES.find((p) => p.id === id);

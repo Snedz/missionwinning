@@ -8,12 +8,21 @@ export type MuscleGroup =
   | "Full Body"
   | "Cardio";
 
+export type ProgramTag = "strength" | "hypertrophy" | "conditioning" | "corrective";
+
+export type ExerciseLevel = "beginner" | "intermediate" | "advanced";
+
 export interface Exercise {
   id: string;
   name: string;
   muscleGroups: MuscleGroup[];
   equipment?: string;
-  cues?: string; // Bodybuilding Ch9/10 + corrective: technique notes, unilateral for symmetry, origin/insertion, rep range for myofibrillar vs sarcoplasmic hypertrophy, periodization context
+  cues?: string;
+  /** Primary program styles this exercise supports (Phase D). */
+  tags?: ProgramTag[];
+  /** Substitute exercise ids when equipment or skill differs. */
+  alternatives?: string[];
+  level?: ExerciseLevel;
 }
 
 export interface WorkoutSetTemplate {

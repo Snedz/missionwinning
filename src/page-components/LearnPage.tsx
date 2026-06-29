@@ -39,7 +39,7 @@ export function LearnPage() {
           Learn & Master
         </h1>
         <p className="text-muted-foreground mt-1">
-          Five free education paths — the entrance to the right way. Premium unlocks full specialist programs (Super Bundle).
+          {FREE_LEARN_PATHS.length} free education paths — ISSA-aligned foundations plus specialist intros. Premium unlocks full programs (Super Bundle).
         </p>
       </div>
 
