@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
 import '../src/index.css';
 import { Toaster } from '@/components/ui/toaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: 'Private Development',
@@ -31,8 +34,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-[#0a0f1a] text-foreground">
+    <html lang="en" className={`dark ${inter.variable}`}>
+      <body className="bg-background text-foreground font-sans">
         <I18nPwaProvider>
           {children}
           <Toaster />
