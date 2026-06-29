@@ -17,17 +17,8 @@ import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 
 type Step = 'welcome' | 'mission' | 'profile' | 'signin';
 
-const EXPERIENCE_OPTIONS = [
-  { value: 'beginner', label: 'New to training' },
-  { value: 'intermediate', label: 'Some experience' },
-  { value: 'advanced', label: 'Training for years' },
-];
-
-const EQUIPMENT_OPTIONS = [
-  { value: 'bodyweight', label: 'Bodyweight only' },
-  { value: 'dumbbells', label: 'Dumbbells or bands' },
-  { value: 'full-gym', label: 'Full gym access' },
-];
+const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
+const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
 
 export function WelcomePage() {
   const router = useRouter();
@@ -39,6 +30,18 @@ export function WelcomePage() {
   const [equipment, setEquipment] = useState('bodyweight');
   const [primaryGoal, setPrimaryGoal] = useState('Build strength and stay healthy');
 
+  const experienceLabel = (value: string) => {
+    if (value === 'beginner') return t('welcomeExpBeginner', { defaultValue: 'New to training' });
+    if (value === 'intermediate') return t('welcomeExpIntermediate', { defaultValue: 'Some experience' });
+    return t('welcomeExpAdvanced', { defaultValue: 'Training for years' });
+  };
+
+  const equipmentLabel = (value: string) => {
+    if (value === 'bodyweight') return t('welcomeEquipBodyweight', { defaultValue: 'Bodyweight only' });
+    if (value === 'dumbbells') return t('welcomeEquipDumbbells', { defaultValue: 'Dumbbells or bands' });
+    return t('welcomeEquipFullGym', { defaultValue: 'Full gym access' });
+  };
+
   useEffect(() => {
     if (!isEdit || typeof window === 'undefined') return;
     setExperience(localStorage.getItem('mw_experience') || 'beginner');
@@ -46,10 +49,10 @@ export function WelcomePage() {
     setPrimaryGoal(
       localStorage.getItem('mw_primary_goal') ||
         localStorage.getItem('mw_goals') ||
-        'Build strength and stay healthy'
+        t('welcomeGoalPlaceholder', { defaultValue: 'Build strength and stay healthy' })
     );
     setStep('profile');
-  }, [isEdit]);
+  }, [isEdit, t]);
 
   const saveProfileFields = () => {
     localStorage.setItem('mw_experience', experience);
@@ -92,18 +95,25 @@ export function WelcomePage() {
       <header className="glass-nav border-b border-border/50 px-4 py-4 flex items-center gap-2">
         <Shield className="h-6 w-6 text-emerald-400" />
         <span className="font-bold tracking-tight">
-          Mission Winning · {isEdit ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' }) : 'I-Day'}
+          Mission Winning ·{' '}
+          {isEdit
+            ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' })
+            : t('welcomeIDay', { defaultValue: 'I-Day' })}
         </span>
       </header>
 
       <main className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-lg content-card">
+        <Card className="w-full max-w-lg content-card page-enter">
           <CardContent className="p-6 md:p-8 space-y-6">
             {step === 'welcome' && (
               <>
                 <div className="space-y-2">
-                  <p className="text-xs uppercase tracking-widest text-emerald-400">Where the journey begins</p>
-                  <h1 className="text-2xl md:text-3xl font-bold">{t('welcomeTitle', { defaultValue: 'Welcome, Mission Member' })}</h1>
+                  <p className="text-xs uppercase tracking-widest text-emerald-400">
+                    {t('welcomeKicker', { defaultValue: 'Where the journey begins' })}
+                  </p>
+                  <h1 className="text-2xl md:text-3xl font-bold">
+                    {t('welcomeTitle', { defaultValue: 'Welcome, Mission Member' })}
+                  </h1>
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     {t('welcomeSubtitle', {
                       defaultValue:
@@ -124,16 +134,25 @@ export function WelcomePage() {
               <>
                 <div className="space-y-3 max-h-48 overflow-y-auto text-sm text-muted-foreground leading-relaxed pr-1">
                   <p>
-                    <strong className="text-foreground">The mission:</strong> Mission Winning is a free global
-                    health app. Train, fuel, move, mind, track, and learn — one place, one path forward.
+                    <strong className="text-foreground">
+                      {t('welcomeMissionLead', { defaultValue: 'The mission:' })}
+                    </strong>{' '}
+                    {t('welcomeMissionBody1', {
+                      defaultValue:
+                        'Mission Winning is a free global health app. Train, fuel, move, mind, track, and learn — one place, one path forward.',
+                    })}
                   </p>
                   <p>
-                    The fundamentals are <strong className="text-emerald-400">free forever</strong>.
-                    Premium deepens each pillar for those who want more — never required to start.
+                    {t('welcomeMissionP2', {
+                      defaultValue:
+                        'The fundamentals are free forever. Premium deepens each pillar for those who want more — never required to start.',
+                    })}
                   </p>
                   <p>
-                    Your job today: complete one step at a time. Today hub will always show your{' '}
-                    <strong className="text-foreground">next single action</strong>.
+                    {t('welcomeMissionP3', {
+                      defaultValue:
+                        'Your job today: complete one step at a time. Today hub will always show your next single action.',
+                    })}
                   </p>
                 </div>
                 <Button
@@ -143,7 +162,8 @@ export function WelcomePage() {
                   {t('welcomeAccept', { defaultValue: 'I accept the path' })}
                 </Button>
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('welcome')}>
-                  <ChevronLeft className="h-4 w-4 mr-1" /> Back
+                  <ChevronLeft className="h-4 w-4 mr-1" />{' '}
+                  {t('welcomeBack', { defaultValue: 'Back' })}
                 </Button>
               </>
             )}
@@ -152,49 +172,64 @@ export function WelcomePage() {
               <>
                 <div>
                   <h2 className="text-xl font-bold mb-1">
-                    {isEdit ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' }) : 'Three quick questions'}
+                    {isEdit
+                      ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' })
+                      : t('welcomeProfileTitle', { defaultValue: 'Three quick questions' })}
                   </h2>
                   <p className="text-sm text-muted-foreground">
                     {isEdit
-                      ? 'Update experience, equipment, and goal. Changes sync when signed in.'
-                      : 'So Today can recommend the right starting point.'}
+                      ? t('welcomeProfileEditHint', {
+                          defaultValue:
+                            'Update experience, equipment, and goal. Changes sync when signed in.',
+                        })
+                      : t('welcomeProfileHint', {
+                          defaultValue: 'So Today can recommend the right starting point.',
+                        })}
                   </p>
                 </div>
                 <label className="block space-y-1 text-sm">
-                  <span className="text-muted-foreground">Experience</span>
+                  <span className="text-muted-foreground">
+                    {t('welcomeExperience', { defaultValue: 'Experience' })}
+                  </span>
                   <select
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
                     className="w-full rounded-md bg-background border border-border px-3 py-2"
                   >
-                    {EXPERIENCE_OPTIONS.map((o) => (
-                      <option key={o.value} value={o.value}>
-                        {o.label}
+                    {EXPERIENCE_VALUES.map((value) => (
+                      <option key={value} value={value}>
+                        {experienceLabel(value)}
                       </option>
                     ))}
                   </select>
                 </label>
                 <label className="block space-y-1 text-sm">
-                  <span className="text-muted-foreground">Gear check — what do you have today?</span>
+                  <span className="text-muted-foreground">
+                    {t('welcomeGearCheck', { defaultValue: 'Gear check — what do you have today?' })}
+                  </span>
                   <select
                     value={equipment}
                     onChange={(e) => setEquipment(e.target.value)}
                     className="w-full rounded-md bg-background border border-border px-3 py-2"
                   >
-                    {EQUIPMENT_OPTIONS.map((o) => (
-                      <option key={o.value} value={o.value}>
-                        {o.label}
+                    {EQUIPMENT_VALUES.map((value) => (
+                      <option key={value} value={value}>
+                        {equipmentLabel(value)}
                       </option>
                     ))}
                   </select>
                 </label>
                 <label className="block space-y-1 text-sm">
-                  <span className="text-muted-foreground">Primary goal</span>
+                  <span className="text-muted-foreground">
+                    {t('welcomePrimaryGoal', { defaultValue: 'Primary goal' })}
+                  </span>
                   <input
                     value={primaryGoal}
                     onChange={(e) => setPrimaryGoal(e.target.value)}
                     className="w-full rounded-md bg-background border border-border px-3 py-2"
-                    placeholder="Build strength and stay healthy"
+                    placeholder={t('welcomeGoalPlaceholder', {
+                      defaultValue: 'Build strength and stay healthy',
+                    })}
                   />
                 </label>
                 <Button
@@ -211,7 +246,8 @@ export function WelcomePage() {
                   className="w-full"
                   onClick={() => (isEdit ? router.push('/profile') : setStep('mission'))}
                 >
-                  <ChevronLeft className="h-4 w-4 mr-1" /> Back
+                  <ChevronLeft className="h-4 w-4 mr-1" />{' '}
+                  {t('welcomeBack', { defaultValue: 'Back' })}
                 </Button>
               </>
             )}
@@ -236,7 +272,8 @@ export function WelcomePage() {
                   onComplete={finish}
                 />
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('profile')}>
-                  <ChevronLeft className="h-4 w-4 mr-1" /> Back
+                  <ChevronLeft className="h-4 w-4 mr-1" />{' '}
+                  {t('welcomeBack', { defaultValue: 'Back' })}
                 </Button>
               </>
             )}
