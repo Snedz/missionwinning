@@ -1,12 +1,22 @@
 import { EXERCISES } from "@/data/exercises";
 import type { CompletedWorkoutLog } from "@/types";
+import {
+  MAJOR_GROUPS,
+  type MuscleGroup,
+  readinessStatusKey,
+  type ReadinessStatusKey,
+} from "@/lib/muscleGroups";
 
-const MAJOR_GROUPS = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'] as const;
-export type MuscleGroup = typeof MAJOR_GROUPS[number];
+export type { MuscleGroup, ReadinessStatusKey };
 
 export interface ReadinessInfo {
   days: number;
-  status: string;
+  statusKey: ReadinessStatusKey;
+}
+
+export interface RecommendedFocus {
+  group: MuscleGroup;
+  statusKey: ReadinessStatusKey;
 }
 
 export interface WinScoreBreakdown {
@@ -33,7 +43,7 @@ export interface WinScoreBreakdown {
 
 /**
  * Compute muscle readiness from workout history.
- * Returns map of group to {days since last worked, status label}.
+ * Returns map of group to {days since last worked, status i18n key}.
  */
 export function computeReadiness(workoutHistory: CompletedWorkoutLog[]): Record<MuscleGroup, ReadinessInfo> {
   const lastByGroup: Record<string, Date | null> = {};
@@ -55,14 +65,11 @@ export function computeReadiness(workoutHistory: CompletedWorkoutLog[]): Record<
     });
   });
 
-  const readiness: Record<MuscleGroup, ReadinessInfo> = {} as any;
+  const readiness: Record<MuscleGroup, ReadinessInfo> = {} as Record<MuscleGroup, ReadinessInfo>;
   MAJOR_GROUPS.forEach(g => {
     const last = lastByGroup[g];
     const days = last ? Math.floor((Date.now() - last.getTime()) / (1000 * 3600 * 24)) : 99;
-    let status = 'Prime for growth';
-    if (days < 2) status = 'Recovering';
-    else if (days < 4) status = 'Good to go';
-    readiness[g] = { days, status };
+    readiness[g] = { days, statusKey: readinessStatusKey(days) };
   });
   return readiness;
 }
@@ -70,11 +77,11 @@ export function computeReadiness(workoutHistory: CompletedWorkoutLog[]): Record<
 /**
  * Get recommended focus group (longest rested major muscle).
  */
-export function getRecommendedFocus(readiness: Record<MuscleGroup, ReadinessInfo>): string {
+export function getRecommendedFocus(readiness: Record<MuscleGroup, ReadinessInfo>): RecommendedFocus {
   const groups = [...MAJOR_GROUPS];
   groups.sort((a, b) => readiness[b].days - readiness[a].days);
   const top = groups[0];
-  return `${top} focus — ${readiness[top].status.toLowerCase()}`;
+  return { group: top, statusKey: readiness[top].statusKey };
 }
 
 /**
@@ -162,16 +169,32 @@ export function computeWinScore(params: {
   };
 }
 
+export type BodyScoreLabelKey =
+  | 'todayBodyRestUp'
+  | 'todayBodyTrainSmart'
+  | 'todayBodyPrimePush'
+  | 'todayBodyLightWeek'
+  | 'todayBodyModerateLoad'
+  | 'todayBodyHighLoad'
+  | 'todayBodyNeedsRest'
+  | 'todayBodyRebuilding'
+  | 'todayBodyFullyRecovered';
+
 export interface BodyScores {
   readiness: number;
   strain: number;
   recovery: number;
-  readinessLabel: string;
-  strainLabel: string;
-  recoveryLabel: string;
+  readinessLabelKey: BodyScoreLabelKey;
+  strainLabelKey: BodyScoreLabelKey;
+  recoveryLabelKey: BodyScoreLabelKey;
 }
 
-function scoreLabel(v: number, low: string, mid: string, high: string): string {
+function scoreLabelKey(
+  v: number,
+  low: BodyScoreLabelKey,
+  mid: BodyScoreLabelKey,
+  high: BodyScoreLabelKey
+): BodyScoreLabelKey {
   return v >= 70 ? high : v >= 40 ? mid : low;
 }
 
@@ -209,64 +232,68 @@ export function computeBodyScores(
     readiness,
     strain,
     recovery,
-    readinessLabel: scoreLabel(readiness, 'Rest up', 'Train smart', 'Prime to push'),
-    strainLabel: scoreLabel(strain, 'Light week', 'Moderate load', 'High load'),
-    recoveryLabel: scoreLabel(recovery, 'Needs rest', 'Rebuilding', 'Fully recovered'),
+    readinessLabelKey: scoreLabelKey(readiness, 'todayBodyRestUp', 'todayBodyTrainSmart', 'todayBodyPrimePush'),
+    strainLabelKey: scoreLabelKey(strain, 'todayBodyLightWeek', 'todayBodyModerateLoad', 'todayBodyHighLoad'),
+    recoveryLabelKey: scoreLabelKey(recovery, 'todayBodyNeedsRest', 'todayBodyRebuilding', 'todayBodyFullyRecovered'),
   };
 }
 
 export interface CoachInsight {
-  message: string;
-  actionLabel: string;
+  messageKey: string;
+  messageParams?: Record<string, string>;
+  actionLabelKey: string;
   actionPath: string;
 }
 
 /**
  * Rule-based daily coaching insight from body scores and recommended focus.
+ * UI translates messageKey / actionLabelKey via i18n.
  */
 export function getCoachInsight(
   scores: BodyScores,
-  recommendedFocus: string,
+  focus: RecommendedFocus,
   opts?: { assessmentRisk?: string }
 ): CoachInsight {
   if (opts?.assessmentRisk === 'high') {
     return {
-      message: 'Your assessment flagged elevated risk. Prioritize recovery, mobility, and light movement today.',
-      actionLabel: 'Try recovery flow',
+      messageKey: 'coachInsightHighRisk',
+      actionLabelKey: 'coachActionRecoveryFlow',
       actionPath: '/move',
     };
   }
   if (scores.strain >= 70 && scores.recovery < 50) {
     return {
-      message: 'High training load with low recovery. A mobility or rest day will help you come back stronger.',
-      actionLabel: 'Open Move pillar',
+      messageKey: 'coachInsightHighStrain',
+      actionLabelKey: 'coachActionOpenMove',
       actionPath: '/move',
     };
   }
   if (scores.readiness >= 70 && scores.strain < 60) {
     return {
-      message: `You're primed to train. ${recommendedFocus.charAt(0).toUpperCase()}${recommendedFocus.slice(1)}.`,
-      actionLabel: 'Start workout',
+      messageKey: 'coachInsightPrimed',
+      messageParams: { focusGroup: focus.group, focusStatusKey: focus.statusKey },
+      actionLabelKey: 'coachActionStartWorkout',
       actionPath: '/active',
     };
   }
   if (scores.recovery >= 70 && scores.strain >= 50) {
     return {
-      message: 'Recovery is solid — good day to push volume on your focus groups or hit a benchmark session.',
-      actionLabel: 'Go to Builder',
+      messageKey: 'coachInsightSolidRecovery',
+      actionLabelKey: 'coachActionGoBuilder',
       actionPath: '/builder',
     };
   }
   if (scores.readiness < 45) {
     return {
-      message: 'Readiness is low. Log protein in Fuel, try a Mind breathing stack, or keep today lighter.',
-      actionLabel: 'Log nutrition',
+      messageKey: 'coachInsightLowReadiness',
+      actionLabelKey: 'coachActionLogNutrition',
       actionPath: '/nutrition',
     };
   }
   return {
-    message: `Steady progress. ${recommendedFocus.charAt(0).toUpperCase()}${recommendedFocus.slice(1)} when you're ready.`,
-    actionLabel: 'View Today hub',
+    messageKey: 'coachInsightSteady',
+    messageParams: { focusGroup: focus.group, focusStatusKey: focus.statusKey },
+    actionLabelKey: 'coachActionViewToday',
     actionPath: '/log',
   };
 }

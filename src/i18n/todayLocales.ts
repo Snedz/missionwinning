@@ -82,6 +82,41 @@ type TodayStrings = {
   todayMuscleShoulders: string;
   todayMuscleArms: string;
   todayMuscleCore: string;
+  todayReadinessPrime: string;
+  todayReadinessRecovering: string;
+  todayReadinessGood: string;
+  todayRecommendedFocusLine: string;
+  todayBodyRestUp: string;
+  todayBodyTrainSmart: string;
+  todayBodyPrimePush: string;
+  todayBodyLightWeek: string;
+  todayBodyModerateLoad: string;
+  todayBodyHighLoad: string;
+  todayBodyNeedsRest: string;
+  todayBodyRebuilding: string;
+  todayBodyFullyRecovered: string;
+  todayMetricReadiness: string;
+  todayMetricStrain: string;
+  todayMetricRecovery: string;
+  todayMetricsDemoNote: string;
+  todayMissionScore: string;
+  todayTrainingStreak: string;
+  todayMissionScoreTitle: string;
+  todayMissionScoreDesc: string;
+  todayCoachInsightTitle: string;
+  todayCoachInsightDesc: string;
+  coachInsightHighRisk: string;
+  coachInsightHighStrain: string;
+  coachInsightPrimed: string;
+  coachInsightSolidRecovery: string;
+  coachInsightLowReadiness: string;
+  coachInsightSteady: string;
+  coachActionRecoveryFlow: string;
+  coachActionOpenMove: string;
+  coachActionStartWorkout: string;
+  coachActionGoBuilder: string;
+  coachActionLogNutrition: string;
+  coachActionViewToday: string;
 };
 
 const en: TodayStrings = {
@@ -171,6 +206,45 @@ const en: TodayStrings = {
   todayMuscleShoulders: 'Shoulders',
   todayMuscleArms: 'Arms',
   todayMuscleCore: 'Core',
+  todayReadinessPrime: 'Prime for growth',
+  todayReadinessRecovering: 'Recovering',
+  todayReadinessGood: 'Good to go',
+  todayRecommendedFocusLine: '{{group}} focus — {{status}}',
+  todayBodyRestUp: 'Rest up',
+  todayBodyTrainSmart: 'Train smart',
+  todayBodyPrimePush: 'Prime to push',
+  todayBodyLightWeek: 'Light week',
+  todayBodyModerateLoad: 'Moderate load',
+  todayBodyHighLoad: 'High load',
+  todayBodyNeedsRest: 'Needs rest',
+  todayBodyRebuilding: 'Rebuilding',
+  todayBodyFullyRecovered: 'Fully recovered',
+  todayMetricReadiness: 'Readiness',
+  todayMetricStrain: 'Strain',
+  todayMetricRecovery: 'Recovery',
+  todayMetricsDemoNote: 'Preview — your scores update as you train',
+  todayMissionScore: 'Mission Score',
+  todayTrainingStreak: '{{count}}-day training streak',
+  todayMissionScoreTitle: 'Cross-pillar Mission Score',
+  todayMissionScoreDesc: 'All six pillars contribute — Train, Fuel, Move, Mind, Track, and Learn.',
+  todayCoachInsightTitle: 'Coach insight',
+  todayCoachInsightDesc: 'Based on your readiness, strain, and recovery',
+  coachInsightHighRisk:
+    'Your assessment flagged elevated risk. Prioritize recovery, mobility, and light movement today.',
+  coachInsightHighStrain:
+    'High training load with low recovery. A mobility or rest day will help you come back stronger.',
+  coachInsightPrimed: "You're primed to train. {{focusLine}}.",
+  coachInsightSolidRecovery:
+    'Recovery is solid — good day to push volume on your focus groups or hit a benchmark session.',
+  coachInsightLowReadiness:
+    'Readiness is low. Log protein in Fuel, try a Mind breathing stack, or keep today lighter.',
+  coachInsightSteady: 'Steady progress. {{focusLine}} when you\'re ready.',
+  coachActionRecoveryFlow: 'Try recovery flow',
+  coachActionOpenMove: 'Open Move pillar',
+  coachActionStartWorkout: 'Start workout',
+  coachActionGoBuilder: 'Go to Builder',
+  coachActionLogNutrition: 'Log nutrition',
+  coachActionViewToday: 'View Today hub',
 };
 
 const es: TodayStrings = {
@@ -252,6 +326,45 @@ const es: TodayStrings = {
   todayMuscleShoulders: 'Hombros',
   todayMuscleArms: 'Brazos',
   todayMuscleCore: 'Core',
+  todayReadinessPrime: 'Listo para crecer',
+  todayReadinessRecovering: 'Recuperando',
+  todayReadinessGood: 'Listo para entrenar',
+  todayRecommendedFocusLine: 'Enfoque {{group}} — {{status}}',
+  todayBodyRestUp: 'Descansa',
+  todayBodyTrainSmart: 'Entrena inteligente',
+  todayBodyPrimePush: 'Listo para exigir',
+  todayBodyLightWeek: 'Semana ligera',
+  todayBodyModerateLoad: 'Carga moderada',
+  todayBodyHighLoad: 'Carga alta',
+  todayBodyNeedsRest: 'Necesita descanso',
+  todayBodyRebuilding: 'Reconstruyendo',
+  todayBodyFullyRecovered: 'Recuperado',
+  todayMetricReadiness: 'Preparación',
+  todayMetricStrain: 'Carga',
+  todayMetricRecovery: 'Recuperación',
+  todayMetricsDemoNote: 'Vista previa — tus puntuaciones se actualizan al entrenar',
+  todayMissionScore: 'Puntuación de misión',
+  todayTrainingStreak: 'Racha de {{count}} días',
+  todayMissionScoreTitle: 'Puntuación de misión multipilar',
+  todayMissionScoreDesc: 'Los seis pilares contribuyen — Train, Fuel, Move, Mind, Track y Learn.',
+  todayCoachInsightTitle: 'Consejo del coach',
+  todayCoachInsightDesc: 'Según tu preparación, carga y recuperación',
+  coachInsightHighRisk:
+    'Tu evaluación indicó riesgo elevado. Prioriza recuperación, movilidad y movimiento ligero hoy.',
+  coachInsightHighStrain:
+    'Alta carga con poca recuperación. Un día de movilidad o descanso te ayudará a volver más fuerte.',
+  coachInsightPrimed: 'Estás listo para entrenar. {{focusLine}}.',
+  coachInsightSolidRecovery:
+    'Recuperación sólida — buen día para subir volumen en tus grupos foco o una sesión de referencia.',
+  coachInsightLowReadiness:
+    'Preparación baja. Registra proteína en Fuel, prueba Mind o mantén hoy más ligero.',
+  coachInsightSteady: 'Progreso constante. {{focusLine}} cuando estés listo.',
+  coachActionRecoveryFlow: 'Flujo de recuperación',
+  coachActionOpenMove: 'Abrir pilar Move',
+  coachActionStartWorkout: 'Iniciar entrenamiento',
+  coachActionGoBuilder: 'Ir al Builder',
+  coachActionLogNutrition: 'Registrar nutrición',
+  coachActionViewToday: 'Ver hub Today',
 };
 
 const zh: TodayStrings = {
@@ -336,6 +449,41 @@ const zh: TodayStrings = {
   todayMuscleShoulders: '肩',
   todayMuscleArms: '臂',
   todayMuscleCore: '核心',
+  todayReadinessPrime: '最佳增肌期',
+  todayReadinessRecovering: '恢复中',
+  todayReadinessGood: '可以训练',
+  todayRecommendedFocusLine: '{{group}} 重点 — {{status}}',
+  todayBodyRestUp: '多休息',
+  todayBodyTrainSmart: '聪明训练',
+  todayBodyPrimePush: '可全力推',
+  todayBodyLightWeek: '轻量周',
+  todayBodyModerateLoad: '中等负荷',
+  todayBodyHighLoad: '高负荷',
+  todayBodyNeedsRest: '需要休息',
+  todayBodyRebuilding: '重建中',
+  todayBodyFullyRecovered: '完全恢复',
+  todayMetricReadiness: '就绪度',
+  todayMetricStrain: '负荷',
+  todayMetricRecovery: '恢复',
+  todayMetricsDemoNote: '预览 — 训练后分数会更新',
+  todayMissionScore: '任务分数',
+  todayTrainingStreak: '{{count}} 天训练连续',
+  todayMissionScoreTitle: '跨支柱任务分数',
+  todayMissionScoreDesc: '六大支柱共同贡献 — 训练、营养、活动、心理、追踪、学习。',
+  todayCoachInsightTitle: '教练建议',
+  todayCoachInsightDesc: '基于就绪度、负荷与恢复',
+  coachInsightHighRisk: '评估显示风险较高。今天优先恢复、灵活性和轻度活动。',
+  coachInsightHighStrain: '训练负荷高、恢复不足。灵活或休息日会让你更强归来。',
+  coachInsightPrimed: '你已准备好训练。{{focusLine}}。',
+  coachInsightSolidRecovery: '恢复良好 — 适合在重点肌群加量或做基准测试。',
+  coachInsightLowReadiness: '就绪度偏低。在营养记录蛋白质、尝试心理呼吸，或今天轻一点。',
+  coachInsightSteady: '稳步前进。准备好时 {{focusLine}}。',
+  coachActionRecoveryFlow: '恢复流程',
+  coachActionOpenMove: '打开活动支柱',
+  coachActionStartWorkout: '开始训练',
+  coachActionGoBuilder: '前往构建器',
+  coachActionLogNutrition: '记录营养',
+  coachActionViewToday: '查看 Today',
 };
 
 const id: TodayStrings = {
@@ -422,6 +570,45 @@ const id: TodayStrings = {
   todayMuscleShoulders: 'Bahu',
   todayMuscleArms: 'Lengan',
   todayMuscleCore: 'Core',
+  todayReadinessPrime: 'Prime untuk pertumbuhan',
+  todayReadinessRecovering: 'Pemulihan',
+  todayReadinessGood: 'Siap latihan',
+  todayRecommendedFocusLine: 'Fokus {{group}} — {{status}}',
+  todayBodyRestUp: 'Istirahat',
+  todayBodyTrainSmart: 'Latih cerdas',
+  todayBodyPrimePush: 'Siap dorong',
+  todayBodyLightWeek: 'Minggu ringan',
+  todayBodyModerateLoad: 'Beban sedang',
+  todayBodyHighLoad: 'Beban tinggi',
+  todayBodyNeedsRest: 'Butuh istirahat',
+  todayBodyRebuilding: 'Membangun ulang',
+  todayBodyFullyRecovered: 'Pulih penuh',
+  todayMetricReadiness: 'Kesiapan',
+  todayMetricStrain: 'Beban',
+  todayMetricRecovery: 'Pemulihan',
+  todayMetricsDemoNote: 'Pratinjau — skor diperbarui saat latihan',
+  todayMissionScore: 'Skor Misi',
+  todayTrainingStreak: 'Streak latihan {{count}} hari',
+  todayMissionScoreTitle: 'Skor Misi multipilar',
+  todayMissionScoreDesc: 'Enam pilar berkontribusi — Train, Fuel, Move, Mind, Track, Learn.',
+  todayCoachInsightTitle: 'Wawasan coach',
+  todayCoachInsightDesc: 'Berdasarkan kesiapan, beban, dan pemulihan',
+  coachInsightHighRisk:
+    'Asesmen menandai risiko tinggi. Prioritaskan pemulihan, mobilitas, dan gerakan ringan hari ini.',
+  coachInsightHighStrain:
+    'Beban latihan tinggi dengan pemulihan rendah. Hari mobilitas/istirahat membantu comeback lebih kuat.',
+  coachInsightPrimed: 'Kamu siap latihan. {{focusLine}}.',
+  coachInsightSolidRecovery:
+    'Pemulihan solid — hari baik untuk naikkan volume atau sesi benchmark.',
+  coachInsightLowReadiness:
+    'Kesiapan rendah. Catat protein di Fuel, coba Mind, atau ringankan hari ini.',
+  coachInsightSteady: 'Progres stabil. {{focusLine}} saat siap.',
+  coachActionRecoveryFlow: 'Alur pemulihan',
+  coachActionOpenMove: 'Buka pilar Move',
+  coachActionStartWorkout: 'Mulai latihan',
+  coachActionGoBuilder: 'Ke Builder',
+  coachActionLogNutrition: 'Catat nutrisi',
+  coachActionViewToday: 'Lihat Today',
 };
 
 const th: TodayStrings = {
@@ -507,6 +694,41 @@ const th: TodayStrings = {
   todayMuscleShoulders: 'ไหล่',
   todayMuscleArms: 'แขน',
   todayMuscleCore: 'แกนกลาง',
+  todayReadinessPrime: 'พร้อมเติบโต',
+  todayReadinessRecovering: 'ฟื้นตัว',
+  todayReadinessGood: 'พร้อมฝึก',
+  todayRecommendedFocusLine: 'โฟกัส {{group}} — {{status}}',
+  todayBodyRestUp: 'พักผ่อน',
+  todayBodyTrainSmart: 'ฝึกอย่างฉลาด',
+  todayBodyPrimePush: 'พร้อมดันเต็มที่',
+  todayBodyLightWeek: 'สัปดาห์เบา',
+  todayBodyModerateLoad: 'โหลดปานกลาง',
+  todayBodyHighLoad: 'โหลดสูง',
+  todayBodyNeedsRest: 'ต้องพัก',
+  todayBodyRebuilding: 'กำลังฟื้น',
+  todayBodyFullyRecovered: 'ฟื้นครบ',
+  todayMetricReadiness: 'ความพร้อม',
+  todayMetricStrain: 'โหลด',
+  todayMetricRecovery: 'การฟื้นตัว',
+  todayMetricsDemoNote: 'ตัวอย่าง — คะแนนอัปเดตเมื่อคุณฝึก',
+  todayMissionScore: 'คะแนนภารกิจ',
+  todayTrainingStreak: 'สตรีคฝึก {{count}} วัน',
+  todayMissionScoreTitle: 'คะแนนภารกิจข้ามเสาหลัก',
+  todayMissionScoreDesc: 'หกเสาหลักมีส่วน — Train, Fuel, Move, Mind, Track, Learn',
+  todayCoachInsightTitle: 'คำแนะนำโค้ช',
+  todayCoachInsightDesc: 'จากความพร้อม โหลด และการฟื้นตัว',
+  coachInsightHighRisk: 'การประเมินบ่งชี้ความเสี่ยงสูง วันนี้เน้นฟื้นตัว ความคล่องตัว และการเคลื่อนไหวเบา',
+  coachInsightHighStrain: 'โหลดสูงแต่ฟื้นตัวต่ำ วันพักหรือ mobility จะช่วยกลับมาแข็งแกร่ง',
+  coachInsightPrimed: 'คุณพร้อมฝึก {{focusLine}}',
+  coachInsightSolidRecovery: 'ฟื้นตัวดี — วันดีสำหรับเพิ่มปริมาณหรือ benchmark',
+  coachInsightLowReadiness: 'ความพร้อมต่ำ บันทึกโปรตีนใน Fuel ลอง Mind หรือเบาวันนี้',
+  coachInsightSteady: 'ก้าวหน้าสม่ำเสมอ {{focusLine}} เมื่อพร้อม',
+  coachActionRecoveryFlow: 'โฟลว์ฟื้นตัว',
+  coachActionOpenMove: 'เปิดเสา Move',
+  coachActionStartWorkout: 'เริ่มฝึก',
+  coachActionGoBuilder: 'ไป Builder',
+  coachActionLogNutrition: 'บันทึกโภชนาการ',
+  coachActionViewToday: 'ดู Today',
 };
 
 const ar: TodayStrings = {
@@ -591,6 +813,41 @@ const ar: TodayStrings = {
   todayMuscleShoulders: 'أكتاف',
   todayMuscleArms: 'ذراعان',
   todayMuscleCore: 'الوسط',
+  todayReadinessPrime: 'جاهز للنمو',
+  todayReadinessRecovering: 'استشفاء',
+  todayReadinessGood: 'جاهز للتمرين',
+  todayRecommendedFocusLine: 'تركيز {{group}} — {{status}}',
+  todayBodyRestUp: 'راحة',
+  todayBodyTrainSmart: 'درّب بذكاء',
+  todayBodyPrimePush: 'جاهز للدفع',
+  todayBodyLightWeek: 'أسبوع خفيف',
+  todayBodyModerateLoad: 'حمولة متوسطة',
+  todayBodyHighLoad: 'حمولة عالية',
+  todayBodyNeedsRest: 'يحتاج راحة',
+  todayBodyRebuilding: 'إعادة بناء',
+  todayBodyFullyRecovered: 'تعافٍ كامل',
+  todayMetricReadiness: 'الجاهزية',
+  todayMetricStrain: 'الحمولة',
+  todayMetricRecovery: 'الاستشفاء',
+  todayMetricsDemoNote: 'معاينة — تتحدّث الدرجات مع تدريبك',
+  todayMissionScore: 'درجة المهمة',
+  todayTrainingStreak: 'سلسلة تدريب {{count}} أيام',
+  todayMissionScoreTitle: 'درجة المهمة متعددة الركائز',
+  todayMissionScoreDesc: 'الركائز الست تساهم — Train وFuel وMove وMind وTrack وLearn.',
+  todayCoachInsightTitle: 'نصيحة المدرب',
+  todayCoachInsightDesc: 'بناءً على الجاهزية والحمولة والاستشفاء',
+  coachInsightHighRisk: 'تقييمك أشار لخطر مرتفع. أولِّ استشفاءً وحركة خفيفة اليوم.',
+  coachInsightHighStrain: 'حمولة عالية واستشفاء منخفض. يوم راحة أو movilidad يعيدك أقوى.',
+  coachInsightPrimed: 'أنت جاهز للتمرين. {{focusLine}}.',
+  coachInsightSolidRecovery: 'استشفاء جيد — يوم مناسب لزيادة الحجم أو جلسة معيارية.',
+  coachInsightLowReadiness: 'جاهزية منخفضة. سجّل بروتين في Fuel أو جرّب Mind أو خفّف اليوم.',
+  coachInsightSteady: 'تقدّم ثابت. {{focusLine}} عندما تكون جاهزاً.',
+  coachActionRecoveryFlow: 'تدفق استشفاء',
+  coachActionOpenMove: 'فتح ركيزة Move',
+  coachActionStartWorkout: 'بدء التمرين',
+  coachActionGoBuilder: 'إلى Builder',
+  coachActionLogNutrition: 'تسجيل التغذية',
+  coachActionViewToday: 'عرض Today',
 };
 
 const LOCALES: Partial<Record<string, TodayStrings>> = { en, es, zh, id, th, ar };
