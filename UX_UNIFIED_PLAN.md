@@ -1,7 +1,7 @@
 # Unified UI Plan — Mission Winning
 
 **Date:** 2026-06-29  
-**Status:** Phase 1 implementing (remove Simple/Pro fork, Bevel-style dashboard, global More)  
+**Status:** Phase 2 largely complete; Phase 3 started  
 **Authority:** Extends [JOURNEY.md](JOURNEY.md) + [vision.md](vision.md)
 
 ---
@@ -110,8 +110,12 @@ Not seven separate apps — **one shell**, Freeletics-bundle **depth** behind Mo
 - [x] Commander's Intent on commissioned Today
 - [x] Legal footer (Terms / Privacy / About) on Profile, Welcome, private gate
 - [x] Page enter animations on hero + private gate
-- [ ] i18n: Today + Welcome strings to JSON (G2) — partial via coreLocales
-- [ ] Animated hero transitions (Bevel-style page transitions)
+- [x] i18n: Welcome strings (`welcomeLocales.ts` — en, zh, id, th, es)
+- [x] i18n: Today accordion + section chrome (`todayLocales.ts` — en, es, zh, id, th)
+- [x] HomePage refactor: `starterPrograms.ts`, `TodayWeekSection`, `TodayProgressSection`
+- [x] Page enter transition on route change (AppLayout)
+- [ ] i18n: Weekly challenge titles, wins badges (dynamic copy)
+- [ ] Animated hero transitions (staggered blocks)
 
 ### Phase 3 — Holistic depth
 
