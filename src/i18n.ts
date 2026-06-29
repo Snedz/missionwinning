@@ -2,6 +2,7 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { CORE_LOCALES, TIER1_LANGS } from './i18n/coreLocales'
+import { TIER2_LANGS, TIER2_LOCALES } from './i18n/tier2Locales'
 
 // Inline resources for fast global launch (add more langs + extract to json later)
 // Tier 1: EN ES FR PT RU DE IT KO
@@ -516,6 +517,13 @@ for (const lang of TIER1_LANGS) {
     resources[lang] = { common: { ...resources.en.common } }
   }
   Object.assign(resources[lang].common, CORE_LOCALES[lang])
+}
+
+for (const lang of TIER2_LANGS) {
+  if (!resources[lang]) {
+    resources[lang] = { common: { ...resources.en.common } }
+  }
+  Object.assign(resources[lang].common, TIER2_LOCALES[lang])
 }
 
 i18n

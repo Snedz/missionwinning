@@ -23,8 +23,8 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 | **B** | Six working pillar free tiers (Move, Mind, Learn, Track) | ✅ Done — see [LOG.md](LOG.md) |
 | **C** | Super Bundle synergy + Supabase hardening | ✅ Done — see [LOG.md](LOG.md) |
 | **D** | Content scale (200+ exercises, Learn paths) | ✅ Done — see [LOG.md](LOG.md) |
-| **F** | Simple UI + Mission Journey (I-Day → Commissioned) | **Next** — see [JOURNEY.md](JOURNEY.md) |
-| **E** | Go public (Vercel env, PRIVATE_MODE=false) | After F + [PROTECTION.md](PROTECTION.md) P0 |
+| **F** | Simple UI + Mission Journey (I-Day → Commissioned) | ✅ Done — see [JOURNEY.md](JOURNEY.md) |
+| **E** | Go public (Vercel env, PRIVATE_MODE=false) | **Blocked on beta gates** — see [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) |
 
 ---
 
@@ -90,7 +90,7 @@ Full spec: **[JOURNEY.md](JOURNEY.md)**
 
 ## Phase E — Launch (after F + protection)
 
-See **[PROTECTION.md](PROTECTION.md)** for inspection checklist and **[JOURNEY.md](JOURNEY.md)** for UX gates before setting `PRIVATE_MODE=false`.
+See **[PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md)** (master checklist), **[PROTECTION.md](PROTECTION.md)**, and **[JOURNEY.md](JOURNEY.md)** for UX gates before `PRIVATE_MODE=false`.
 
 1. Complete Phase F (Journey + simple UI) — [JOURNEY.md](JOURNEY.md)
 2. Vercel: rotate `PRIVATE_ACCESS_SECRET`, Supabase keys, `DEMO_PREMIUM=false`
