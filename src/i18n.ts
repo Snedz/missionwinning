@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { CORE_LOCALES, TIER1_LANGS } from './i18n/coreLocales'
 import { TIER2_LANGS, TIER2_LOCALES } from './i18n/tier2Locales'
+import { MEA_LANGS, MEA_LOCALES } from './i18n/meaLocales'
 import { leaderboardStringsFor } from './i18n/leaderboardLocales'
 import { mergeWelcomeStrings } from './i18n/welcomeLocales'
 import { mergeTodayStrings } from './i18n/todayLocales'
@@ -530,7 +531,14 @@ for (const lang of TIER2_LANGS) {
   Object.assign(resources[lang].common, TIER2_LOCALES[lang])
 }
 
-for (const lang of [...TIER1_LANGS, ...TIER2_LANGS]) {
+for (const lang of MEA_LANGS) {
+  if (!resources[lang]) {
+    resources[lang] = { common: { ...resources.en.common } }
+  }
+  Object.assign(resources[lang].common, MEA_LOCALES[lang])
+}
+
+for (const lang of [...TIER1_LANGS, ...TIER2_LANGS, ...MEA_LANGS]) {
   Object.assign(resources[lang].common, leaderboardStringsFor(lang))
   mergeWelcomeStrings(resources[lang].common, lang)
   mergeTodayStrings(resources[lang].common, lang)

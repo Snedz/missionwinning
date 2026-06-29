@@ -123,7 +123,7 @@ Not seven separate apps — **one shell**, Freeletics-bundle **depth** behind Mo
 - [x] Commander's intent line on commissioned Today
 - [x] Customizable dashboard sections (show/hide + reorder)
 - [x] CSP enforce in production (`next.config.js`; report-only in dev)
-- [ ] Arabic RTL + zh full body copy (RTL `dir` sync shipped; Arabic locale TBD)
+- [x] Arabic RTL (`dir` sync + nav/welcome/today/fuel ar locales); full body copy ongoing
 
 ---
 
