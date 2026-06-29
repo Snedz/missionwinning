@@ -125,6 +125,7 @@ Not seven separate apps — **one shell**, Freeletics-bundle **depth** behind Mo
 - [x] CSP enforce in production (`next.config.js`; report-only in dev)
 - [x] Arabic RTL (`dir` sync + nav/welcome/today/fuel ar locales); full body copy ongoing
 - [x] Nav dropdown + Fuel science i18n (`navLocales.ts` — en/es/zh/id/th/ar); muscle group labels on Today
+- [x] Readiness status, body score rings, coach insight i18n (`todayLocales` + `muscleGroups.ts`)
 
 ---
 

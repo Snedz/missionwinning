@@ -8,21 +8,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { EXERCISES } from '@/data/exercises';
 import { FREE_STARTER_PROGRAMS } from '@/data/starterPrograms';
 import { formatDate, formatDuration } from '@/lib/utils';
+import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from '@/lib/supabase';
+import { muscleGroupLabel } from '@/lib/readinessDisplay';
 import type { computeReadiness } from '@/lib/score';
 import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
 import { useWorkoutStore } from '@/store/workoutStore';
-
-const MAJOR_GROUPS = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'] as const;
-
-const MUSCLE_GROUP_I18N: Record<(typeof MAJOR_GROUPS)[number], string> = {
-  Chest: 'todayMuscleChest',
-  Back: 'todayMuscleBack',
-  Legs: 'todayMuscleLegs',
-  Shoulders: 'todayMuscleShoulders',
-  Arms: 'todayMuscleArms',
-  Core: 'todayMuscleCore',
-};
 
 export type TodayProgressSectionProps = {
   savedWorkouts: SavedWorkout[];
@@ -115,7 +106,7 @@ export function TodayProgressSection({
             {MAJOR_GROUPS.map(g => {
               const r = readiness[g];
               const isPrime = r.days >= 4;
-              const groupLabel = t(MUSCLE_GROUP_I18N[g], { defaultValue: g });
+              const groupLabel = muscleGroupLabel(g, t);
               const matchingEx = EXERCISES.filter(e => e.muscleGroups.includes(g)).slice(0, 2);
               return (
                 <div key={g} className={`p-3 rounded border ${isPrime ? 'border-emerald-500/40 bg-emerald-950/10' : 'border-border/60'}`}>
@@ -123,7 +114,7 @@ export function TodayProgressSection({
                   <div className={isPrime ? "text-emerald-400" : "text-muted-foreground"}>
                     {r.days === 99
                       ? t('todayNoRecentData', { defaultValue: 'No recent data' })
-                      : `${t('todayDaysRest', { days: r.days, defaultValue: `${r.days}d rest` })} — ${r.status}`}
+                      : `${t('todayDaysRest', { days: r.days, defaultValue: `${r.days}d rest` })} — ${t(r.statusKey, { defaultValue: r.statusKey })}`}
                   </div>
                   {isPrime && matchingEx.length > 0 && (
                     <Button

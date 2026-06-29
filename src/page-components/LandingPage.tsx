@@ -13,9 +13,9 @@ const DEMO_SCORES: BodyScores = {
   readiness: 82,
   strain: 45,
   recovery: 78,
-  readinessLabel: 'Prime to push',
-  strainLabel: 'Moderate load',
-  recoveryLabel: 'Rebuilding',
+  readinessLabelKey: 'todayBodyPrimePush',
+  strainLabelKey: 'todayBodyModerateLoad',
+  recoveryLabelKey: 'todayBodyRebuilding',
 };
 
 export function LandingPage() {

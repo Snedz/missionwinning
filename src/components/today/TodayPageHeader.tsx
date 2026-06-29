@@ -2,11 +2,13 @@
 
 import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
+import type { RecommendedFocus } from '@/lib/score';
 import { JourneyStrip } from '@/components/journey/JourneyHero';
+import { formatRecommendedFocusLine } from '@/lib/readinessDisplay';
 
 interface Props {
   today: string;
-  recommendedFocus: string;
+  recommendedFocus: RecommendedFocus;
   userEquip: string;
   streak: number;
   userEmail: string | null;
@@ -34,14 +36,14 @@ export function TodayPageHeader({
         <p className="text-base text-muted-foreground mt-1">{today}</p>
         {showFocusLine && (
           <p className="text-sm text-muted-foreground mt-0.5">
-            {t('recommendedFocus', { defaultValue: recommendedFocus })}
+            {formatRecommendedFocusLine(recommendedFocus, t)}
             {userEquip === 'bodyweight' ? ` · ${t('todayBodyweightTag', { defaultValue: 'bodyweight' })}` : ''}
           </p>
         )}
       </div>
       {streak > 0 && (
         <p className="text-sm text-muted-foreground pt-1">
-          {streak}-day streak ·{' '}
+          {t('todayDayStreak', { count: streak, defaultValue: `${streak}-day streak` })}{' · '}
           <a href="/leaderboard" className="text-emerald-400 hover:underline">
             {t('leaderboardRankings', { defaultValue: 'Rankings' })}
           </a>

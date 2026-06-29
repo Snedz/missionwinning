@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScoreRing } from './ScoreRing';
 import type { BodyScores } from '@/lib/score';
@@ -11,25 +12,32 @@ interface MetricsRowProps {
 }
 
 export function MetricsRow({ scores, demo, embedded }: MetricsRowProps) {
+  const { t } = useTranslation();
+
   const grid = (
     <>
       {demo && (
         <p className="text-xs text-muted-foreground text-center mb-4 uppercase tracking-widest">
-          Preview — your scores update as you train
+          {t('todayMetricsDemoNote', { defaultValue: 'Preview — your scores update as you train' })}
         </p>
       )}
       <div className="grid grid-cols-3 gap-4">
         <ScoreRing
-          label="Readiness"
+          label={t('todayMetricReadiness', { defaultValue: 'Readiness' })}
           value={scores.readiness}
-          subtitle={scores.readinessLabel}
+          subtitle={t(scores.readinessLabelKey, { defaultValue: scores.readinessLabelKey })}
           color="emerald"
         />
-        <ScoreRing label="Strain" value={scores.strain} subtitle={scores.strainLabel} color="amber" />
         <ScoreRing
-          label="Recovery"
+          label={t('todayMetricStrain', { defaultValue: 'Strain' })}
+          value={scores.strain}
+          subtitle={t(scores.strainLabelKey, { defaultValue: scores.strainLabelKey })}
+          color="amber"
+        />
+        <ScoreRing
+          label={t('todayMetricRecovery', { defaultValue: 'Recovery' })}
           value={scores.recovery}
-          subtitle={scores.recoveryLabel}
+          subtitle={t(scores.recoveryLabelKey, { defaultValue: scores.recoveryLabelKey })}
           color="blue"
         />
       </div>
