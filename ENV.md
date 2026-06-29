@@ -44,7 +44,7 @@ After adding or changing env vars: **Deployments → Redeploy** (env changes do 
 
 ---
 
-## OAuth sign-in (Apple + Google)
+## OAuth sign-in (Google + Apple)
 
 In **Supabase → Authentication → URL Configuration**:
 
@@ -54,9 +54,35 @@ In **Supabase → Authentication → URL Configuration**:
 | Redirect URLs | `https://www.missionwinning.com/auth/callback` |
 | Redirect URLs (dev) | `http://localhost:3000/auth/callback` |
 
-In **Authentication → Providers**, enable **Google** and **Apple** with credentials from each provider's console. Users must accept Terms + Privacy in-app before sign-in (stored locally as consent version).
+### Google (recommended first)
 
-Magic link and OAuth both land on `/auth/callback`, then redirect to Today (`/log`) or Profile.
+1. [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials → OAuth client (Web).
+2. Authorized redirect URI: `https://YOUR-PROJECT.supabase.co/auth/v1/callback`
+3. Copy **Client ID** + **Client Secret** into Supabase → Authentication → **Google** → Save.
+
+Google sign-in button shows automatically when Supabase keys are set. Hide with `NEXT_PUBLIC_OAUTH_GOOGLE=false` in `.env.local`.
+
+### Apple (optional — requires Apple Developer account)
+
+Supabase error **“At least one Client ID is required when Apple sign-in is enabled”** means Apple is toggled on but the **Services ID** field is empty. Either **turn Apple off** until ready, or complete all fields below before saving.
+
+1. [Apple Developer](https://developer.apple.com/account) → **Identifiers** → **Services IDs** → create one (e.g. `com.missionwinning.web`).
+   - This identifier is the **Client ID** in Supabase.
+   - Enable **Sign in with Apple** → configure **Return URLs**: `https://YOUR-PROJECT.supabase.co/auth/v1/callback`
+2. Create a **Sign in with Apple** key (.p8) → note **Key ID** and **Team ID**.
+3. In Supabase → Authentication → **Apple**, fill in:
+   - **Services ID (Client ID)** — from step 1
+   - **Secret Key** — contents of the .p8 file
+   - **Key ID** and **Team ID**
+4. Save in Supabase, then in `.env.local` set:
+   ```bash
+   NEXT_PUBLIC_OAUTH_APPLE=true
+   ```
+5. Redeploy / restart dev server.
+
+Until step 4, the app **does not show** the Apple button (email + Google only). Do not enable Apple in Supabase until all Client ID fields are filled.
+
+Magic link and OAuth both land on `/auth/callback`, then redirect to Today (`/log`) or Profile. Users must accept Terms + Privacy in-app before sign-in.
 
 ---
 
@@ -92,7 +118,7 @@ Your project ref from the saved config: `tnzauplicgfrozvnowqp`
 - URL: `https://tnzauplicgfrozvnowqp.supabase.co`
 - **SQL:** Run `supabase/migrations/20250629_complete_base_schema.sql` in SQL Editor (fresh project). If you already have tables, individual migrations in `supabase/migrations/` are safe to re-run.
 - Enable Email auth → Magic Link
-- Enable Google + Apple OAuth (see OAuth section above)
+- Enable **Google** OAuth (see above). Leave **Apple disabled** until Services ID + key are ready.
 - Add redirect URL `https://YOUR-DOMAIN/auth/callback` (+ localhost for dev)
 - Add the same URL + anon key to Vercel env vars
 
