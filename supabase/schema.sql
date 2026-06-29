@@ -103,6 +103,8 @@ create table if not exists public.leaderboard_snapshots (
   training_streak integer not null default 0,
   weekly_volume integer not null default 0,
   fuel_days integer not null default 0,
+  night_sessions integer not null default 0,
+  dawn_sessions integer not null default 0,
   squad_code text,
   region text,
   country_code text,

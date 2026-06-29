@@ -3,6 +3,7 @@ import { getTrainingStreak } from '@/lib/challenges';
 import { computeWinScore } from '@/lib/score';
 import type { CompletedWorkoutLog } from '@/types';
 import type { LeaderboardBoardId, LeaderboardSnapshot } from './types';
+import { countSessionsInHourRange } from './types';
 import { loadSquadCode, SQUAD_CODE_KEY } from './boards';
 import { resolveGeoFromLocale } from './regions';
 
@@ -38,6 +39,8 @@ export function computeLocalLeaderboardSnapshot(
   const totalSessions = workoutHistory.length;
   const totalVolume = workoutHistory.reduce((s, w) => s + w.totalVolume, 0);
   const fuelDays = highProteinDaysThisWeek();
+  const nightSessions = countSessionsInHourRange(workoutHistory, 22, 5);
+  const dawnSessions = countSessionsInHourRange(workoutHistory, 5, 8);
 
   const winScore = computeWinScore({
     streak,
@@ -59,6 +62,8 @@ export function computeLocalLeaderboardSnapshot(
     trainingStreak: streak,
     weeklyVolume: weekly.weekVolume,
     fuelDays,
+    nightSessions,
+    dawnSessions,
     squadCode: loadSquadCode() || undefined,
     region: geo.region,
     countryCode: geo.countryCode,
@@ -77,6 +82,10 @@ export function scoreForBoard(snapshot: LeaderboardSnapshot, boardId: Leaderboar
       return snapshot.weeklyVolume;
     case 'fuel-days':
       return snapshot.fuelDays;
+    case 'under-the-stars':
+      return snapshot.nightSessions;
+    case 'dawns-early-light':
+      return snapshot.dawnSessions;
   }
 }
 
@@ -90,8 +99,11 @@ export function detailForBoard(snapshot: LeaderboardSnapshot, boardId: Leaderboa
       return `${snapshot.missionScore} mission pts`;
     case 'fuel-days':
       return snapshot.fuelDays === 1 ? '1 fuel day' : `${snapshot.fuelDays} fuel days`;
+    case 'under-the-stars':
+      return snapshot.nightSessions === 1 ? '1 night session' : `${snapshot.nightSessions} night sessions`;
+    case 'dawns-early-light':
+      return snapshot.dawnSessions === 1 ? '1 dawn session' : `${snapshot.dawnSessions} dawn sessions`;
   }
 }
 
-/** Re-export squad key for forms. */
 export { SQUAD_CODE_KEY };

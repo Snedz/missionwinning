@@ -485,7 +485,10 @@ export function HomePage() {
         </div>
         {isSimple && streak > 0 && (
           <p className="text-sm text-muted-foreground pt-1">
-            {streak}-day streak · Free for everyone, everywhere
+            {streak}-day streak ·{' '}
+            <a href="/leaderboard" className="text-emerald-400 hover:underline">
+              Rankings
+            </a>
           </p>
         )}
         {isPro && (

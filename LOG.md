@@ -22,6 +22,10 @@ Chronological record of shipped work. Newest first.
 
 Run `supabase/migrations/20250629_leaderboard.sql`
 
+### Leaderboard boards (6)
+
+Mission Score · Training Streak · Weekly Volume · Fuel Days · **Under the Stars** (22:00–05:00) · **By Dawn's Early Light** (05:00–08:00)
+
 ---
 
 ## 2026-06-29 — Phase F4: Beta funnel, legal pages, launch gate
