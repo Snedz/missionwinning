@@ -10,6 +10,7 @@ import { syncProteinChallengeFromNutrition } from "@/lib/challenges";
 import { FREE_RECIPES } from "@/data/recipes/freeRecipes";
 import type { Recipe } from "@/data/recipes/types";
 import { usePremium } from "@/hooks/usePremium";
+import { PhotoLogStub } from "@/components/nutrition/PhotoLogStub";
 
 const FREE_RECIPE_COUNT = 12;
 
@@ -166,6 +167,8 @@ export function NutritionPage() {
           {' '}High-protein days boost your <a href="/log" className="underline">Win Score</a>.
         </p>
       </div>
+
+      <PhotoLogStub />
 
       <div className="grid md:grid-cols-2 gap-4">
         <Card>

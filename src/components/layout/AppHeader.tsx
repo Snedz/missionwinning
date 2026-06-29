@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { ChevronDown, Dumbbell } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { EXTENDED_NAV_SECTIONS, pageTitleForPath } from '@/lib/navConfig';
+import { HeaderAuthChip } from '@/components/layout/HeaderAuthChip';
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -39,27 +40,32 @@ export function AppHeader() {
 
   return (
     <header ref={headerRef} className="glass-nav shrink-0 z-50 border-b border-border/50">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        aria-haspopup="true"
-        className="flex w-full items-center gap-3 px-4 min-h-[56px] text-left hover:bg-white/[0.02] transition-colors"
-      >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 shadow-md shadow-emerald-950/30">
-          <Dumbbell className="h-5 w-5 text-white" />
-        </div>
-        <div className="flex-1 min-w-0 flex items-center gap-2">
-          <span className="font-semibold tracking-tight truncate">Mission Winning</span>
-          <ChevronDown
-            className={cn(
-              'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
-              open && 'rotate-180 text-emerald-400'
-            )}
-          />
-        </div>
-        <span className="text-sm text-muted-foreground shrink-0 hidden sm:inline">{pageTitle}</span>
-      </button>
+      <div className="flex items-center gap-2 px-4 min-h-[56px]">
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-haspopup="true"
+          className="flex flex-1 min-w-0 items-center gap-3 text-left hover:bg-white/[0.02] transition-colors rounded-lg -ml-1 pl-1 py-1"
+        >
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 shadow-md shadow-emerald-950/30">
+            <Dumbbell className="h-5 w-5 text-white" />
+          </div>
+          <div className="flex-1 min-w-0 flex items-center gap-2">
+            <span className="font-semibold tracking-tight truncate">Mission Winning</span>
+            <ChevronDown
+              className={cn(
+                'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                open && 'rotate-180 text-emerald-400'
+              )}
+            />
+          </div>
+        </button>
+        <HeaderAuthChip />
+        <span className="text-sm text-muted-foreground shrink-0 hidden sm:inline max-w-[120px] truncate">
+          {pageTitle}
+        </span>
+      </div>
 
       <div
         className={cn(
@@ -108,13 +114,19 @@ export function AppHeader() {
             </div>
             <div className="flex flex-wrap gap-4 mt-5 pt-4 border-t border-border/40 text-xs text-muted-foreground max-w-5xl mx-auto">
               <Link href="/vision" onClick={close} className="hover:text-emerald-400">
-                Our mission
+                {t('navOurMission', { defaultValue: 'Our mission' })}
               </Link>
               <Link href="/beta" onClick={close} className="hover:text-emerald-400">
-                Beta guide
+                {t('navBetaGuide', { defaultValue: 'Beta guide' })}
               </Link>
               <Link href="/about" onClick={close} className="hover:text-emerald-400">
-                About
+                {t('about', { defaultValue: 'About' })}
+              </Link>
+              <Link href="/terms" onClick={close} className="hover:text-emerald-400">
+                {t('termsOfService', { defaultValue: 'Terms' })}
+              </Link>
+              <Link href="/privacy" onClick={close} className="hover:text-emerald-400">
+                {t('privacyPolicy', { defaultValue: 'Privacy' })}
               </Link>
             </div>
           </div>
