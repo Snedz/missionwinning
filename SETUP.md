@@ -67,7 +67,7 @@ create table workout_logs (
 
 5. RLS policies: users can only read own profiles/enrollments/logs. Service role for webhooks.
 
-6. Add VITE_SUPABASE_* to .env (copy .env.example).
+6. Add `NEXT_PUBLIC_SUPABASE_*` to `.env.local` (copy from `.env.example`). See [ENV.md](ENV.md) for the full list including `PRIVATE_ACCESS_SECRET`.
 
 ## 4. Payments (Temporarily Demo / Request-Based)
 Core mission (tracker + fundamentals) is **free forever for everyone worldwide** (see vision.md).

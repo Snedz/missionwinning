@@ -1,80 +1,74 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import {
+  applyPrivateGateHeaders,
+  hasPrivateAccessCookie,
+  hasValidSupabaseSession,
+  isPrivateModeEnabled,
+  queryGrantsAccess,
+} from '@/lib/privateGate';
 
 // Private development mode gate (STRICT).
-// EVERY public visitor sees ONLY the minimal /private teaser.
-// ZERO product, service, or feature details are visible.
-// 
+// EVERY public visitor sees ONLY the minimal /private teaser unless they have the access cookie.
+//
 // Authorized builder / early access:
-//   1. ?access=THE_SECRET   (on any URL — sets 30-day cookie)
-//   2. Password form on the teaser page
-//   3. Magic link sign-in (Supabase auth cookie bypasses the gate)
-// 
-// CRITICAL: You MUST set the PRIVATE_ACCESS_SECRET environment variable
-// in the Vercel project dashboard for BOTH Production and Preview.
-// If it is missing the gate still hides the app, but the password form
-// will report "not configured".
-// 
-// To go fully public later: set PRIVATE_MODE=false or delete this file.
-
-const PRIVATE_MODE = true;
+//   1. ?access=THE_SECRET   (on any URL — sets 30-day httpOnly cookie)
+//   2. Password form on /private
+//
+// Optional (OFF by default): PRIVATE_ALLOW_AUTH_BYPASS=true + valid Supabase JWT session.
+//
+// CRITICAL — set in Vercel (Production + Preview) and redeploy:
+//   PRIVATE_ACCESS_SECRET=<strong random string>
+//   PRIVATE_MODE=true          (default in production; set false to go fully public)
+//
+// To go fully public later: PRIVATE_MODE=false in Vercel env vars.
 
 export function proxy(request: NextRequest) {
-  if (!PRIVATE_MODE) {
+  if (!isPrivateModeEnabled()) {
     return NextResponse.next();
   }
 
   const { pathname, searchParams } = request.nextUrl;
+  const secret = process.env.PRIVATE_ACCESS_SECRET;
 
-  // Always allow the gate page itself + system paths + API (magic links, leads, private-access)
+  // Always allow the gate page + system paths + API routes.
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname === '/private' ||
     pathname.startsWith('/private/')
   ) {
-    // Add noindex so search engines don't catalog the private state
-    const res = NextResponse.next();
-    res.headers.set('X-Robots-Tag', 'noindex, nofollow');
-    return res;
+    return applyPrivateGateHeaders(NextResponse.next());
   }
 
-  const secret = process.env.PRIVATE_ACCESS_SECRET;
-
-  const cookieAccess = request.cookies.get('mw_private_access')?.value;
-  const queryAccess = searchParams.get('access');
-
-  // Query param bypass: set cookie + proceed (builder convenience)
-  if (queryAccess && secret && queryAccess === secret) {
-    const response = NextResponse.next();
-    response.cookies.set('mw_private_access', secret, {
+  // Query param bypass: set cookie + proceed (builder convenience).
+  if (queryGrantsAccess(searchParams, secret)) {
+    const url = request.nextUrl.clone();
+    url.searchParams.delete('access');
+    const response = NextResponse.redirect(url);
+    response.cookies.set('mw_private_access', secret!, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 30,
       path: '/',
     });
-    return response;
+    return applyPrivateGateHeaders(response);
   }
 
-  // Cookie bypass
-  if (cookieAccess && secret && cookieAccess === secret) {
-    return NextResponse.next();
+  // Cookie bypass (password form or prior ?access= visit).
+  if (hasPrivateAccessCookie(request, secret)) {
+    return applyPrivateGateHeaders(NextResponse.next());
   }
 
-  // Supabase magic-link / signed-in users bypass (for early access people)
-  const hasSupabaseAuth = Array.from(request.cookies.getAll()).some(c =>
-    c.name.includes('sb-') && (c.name.includes('auth-token') || c.name.includes('access-token'))
-  );
-  if (hasSupabaseAuth) {
-    return NextResponse.next();
+  // Optional: validated Supabase session only (disabled unless PRIVATE_ALLOW_AUTH_BYPASS=true).
+  if (hasValidSupabaseSession(request)) {
+    return applyPrivateGateHeaders(NextResponse.next());
   }
 
-  // No valid bypass → send visitor to the completely generic private page.
-  // Use redirect so the address bar clearly shows they are on the gated page.
+  // No valid bypass → generic private teaser only.
   const redirectRes = NextResponse.redirect(new URL('/private', request.url));
-  redirectRes.headers.set('X-Robots-Tag', 'noindex, nofollow');
-  return redirectRes;
+  return applyPrivateGateHeaders(redirectRes);
 }
 
 export const config = {
