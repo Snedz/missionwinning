@@ -313,26 +313,10 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
         </Card>
       )}
 
-      {/* Sign up / Sign in for cloud sync */}
-      <div className="mt-6 p-4 bg-[#111827] border border-emerald-500/30 rounded">
-        <div className="text-emerald-400 font-medium mb-2">Sign up / Sign in for early private access (free magic link)</div>
-        <form onSubmit={async (e) => {
-          e.preventDefault();
-          const email = (e.target as any).email.value;
-          if (!email) return;
-          try {
-            const { signInMagic } = await import('@/lib/supabase');
-            await signInMagic(email);
-            alert(`Magic link sent to ${email}. Check email to access the full private build.`);
-          } catch (err: any) {
-            alert('Error: ' + (err.message || 'Check Supabase/Resend in Vercel.'));
-          }
-        }} className="flex gap-2">
-          <input name="email" type="email" placeholder="you@email.com" className="flex-1 border border-white/20 bg-black/40 rounded px-3 py-2 text-sm" required />
-          <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm font-medium">Send Magic Link</button>
-        </form>
-        <div className="text-[10px] text-white/40 mt-1">Public teaser only. Sign in for full Fuel + cloud on the live domain.</div>
-      </div>
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        <a href="/profile" className="text-emerald-400 hover:underline">Sign in (optional)</a>
+        {' '}to sync meals across devices.
+      </p>
     </div>
   );
 }

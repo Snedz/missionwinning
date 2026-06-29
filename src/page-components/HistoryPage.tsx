@@ -202,26 +202,10 @@ export function HistoryPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Sign up / Sign in for early private access + full cloud history while building */}
-      <div className="mt-6 p-4 bg-[#111827] border border-emerald-500/30 rounded">
-        <div className="text-emerald-400 font-medium mb-2">Sign up / Sign in for early private access + cloud sync (free magic link)</div>
-        <form onSubmit={async (e) => {
-          e.preventDefault();
-          const email = (e.target as any).email.value;
-          if (!email) return;
-          try {
-            const { signInMagic } = await import('@/lib/supabase');
-            await signInMagic(email);
-            alert(`Magic link sent to ${email}. Check email to access the full private build.`);
-          } catch (err: any) {
-            alert('Error: ' + (err.message || 'Check Supabase/Resend in Vercel.'));
-          }
-        }} className="flex gap-2">
-          <input name="email" type="email" placeholder="you@email.com" className="flex-1 border border-white/20 bg-black/40 rounded px-3 py-2 text-sm" required />
-          <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm font-medium">Send Magic Link</button>
-        </form>
-        <div className="text-[10px] text-white/40 mt-1">Load cloud history above works better when signed in. Public teaser only during build.</div>
-      </div>
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        <a href="/profile" className="text-emerald-400 hover:underline">Sign in (optional)</a>
+        {' '}to load full cloud history.
+      </p>
     </div>
   );
 }

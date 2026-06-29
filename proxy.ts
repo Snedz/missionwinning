@@ -37,7 +37,8 @@ export function proxy(request: NextRequest) {
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname === '/private' ||
-    pathname.startsWith('/private/')
+    pathname.startsWith('/private/') ||
+    pathname === '/welcome'
   ) {
     return applyPrivateGateHeaders(NextResponse.next());
   }

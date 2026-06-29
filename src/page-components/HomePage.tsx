@@ -13,10 +13,12 @@ import { gatherWeeklyPillarStats } from "@/lib/pillarScoreInputs";
 import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { EXERCISES } from "@/data/exercises";
-import { getUser, signInMagic, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
+import { getUser, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
 import { MetricsRow } from "@/components/metrics/MetricsRow";
 import { CoachInsightCard } from "@/components/metrics/CoachInsightCard";
 import { PillarScoreBreakdown } from "@/components/metrics/PillarScoreBreakdown";
+import { JourneyStrip, JourneyHero } from "@/components/journey/JourneyHero";
+import { useMissionJourney } from "@/hooks/useMissionJourney";
 
 export function HomePage() {
   const router = useRouter();
@@ -24,16 +26,12 @@ export function HomePage() {
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
-  const startEmptyWorkout = useWorkoutStore((s) => s.startEmptyWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const { action, showFullToday, refresh: refreshJourney } = useMissionJourney();
 
   const recent = workoutHistory.slice(0, 3);
 
-  // Auth for cloud and real premium (Supabase magic link)
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [showSignin, setShowSignin] = useState(false);
-  const [signinEmail, setSigninEmail] = useState("");
-  const [signinLoading, setSigninLoading] = useState(false);
 
   // Recent pillar wins from cloud (Move/Mind/Assess logs as nutrition entries)
   const [recentPillarWins, setRecentPillarWins] = useState<any[]>([]);
@@ -44,21 +42,6 @@ export function HomePage() {
       if (u?.email) setUserEmail(u.email);
     });
   }, []);
-
-  const handleMagic = async () => {
-    if (!signinEmail) return;
-    setSigninLoading(true);
-    try {
-      await signInMagic(signinEmail);
-      alert(`Magic link sent to ${signinEmail}. Check email (including spam) and click to sign in.`);
-      setSigninEmail("");
-      setShowSignin(false);
-    } catch (e: any) {
-      alert("Failed to send magic link: " + (e?.message || e));
-    } finally {
-      setSigninLoading(false);
-    }
-  };
 
   // Freeletics-inspired free core note (per vision.md): Generous basics for everyone; premium for "awesome" depth + bundle synergy.
   const totalSessions = workoutHistory.length;
@@ -117,13 +100,23 @@ export function HomePage() {
     load();
   }, []);
 
-  const handleQuickStart = () => {
+  const handleJourneyPrimary = () => {
     if (activeWorkout) {
       router.push("/active");
       return;
     }
-    startEmptyWorkout();
-    router.push("/active");
+    if (action.startWorkout) {
+      startWorkout(
+        action.startWorkout.name,
+        action.startWorkout.exercises.map((e) => ({
+          exerciseId: e.exerciseId,
+          sets: e.sets,
+        }))
+      );
+      router.push("/active");
+      return;
+    }
+    router.push(action.href);
   };
 
   // Free starter programs (always available - no premium required, core mission)
@@ -459,8 +452,7 @@ export function HomePage() {
 
   const MAJOR_GROUPS: Array<keyof typeof readiness> = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'];
 
-  // Onboarding awareness for progression
-  const isOnboarded = typeof window !== 'undefined' && !!(localStorage.getItem('mw_experience') && localStorage.getItem('mw_equipment'));
+  // Onboarding via I-Day journey (Profile fields synced from /welcome)
   const userGoal = typeof window !== 'undefined' ? (localStorage.getItem('mw_primary_goal') || 'Build strength and stay healthy') : 'Build strength and stay healthy';
   const userEquip = typeof window !== 'undefined' ? (localStorage.getItem('mw_equipment') || 'full-gym') : 'full-gym';
 
@@ -483,42 +475,26 @@ export function HomePage() {
           </div>
         </div>
         <p className="mt-2 text-sm text-muted-foreground">
-          One clear action. Track your wins. <strong>Free core for all</strong> — the path forward. <a href="/bundle" className="underline text-emerald-400">Super Bundle</a> for full pillars (train + fuel + move + mind + learn). See <a href="/vision" className="underline">vision.md</a>.
+          One clear action. Track your wins. <strong>Free core for all</strong>.
+          {!userEmail && (
+            <>
+              {' '}
+              <a href="/profile" className="underline text-emerald-400">Sign in</a> for cloud sync.
+            </>
+          )}
         </p>
 
-        {/* Quick sign in for cloud sync + real premium (visible when not signed in) */}
-        {!userEmail && (
-          <div className="bg-emerald-950/20 border border-emerald-500/30 rounded p-3 text-sm">
-            <div className="flex flex-col md:flex-row md:items-center gap-2">
-              <span className="text-emerald-400 font-medium">Sign in for cloud sync, real premium status from Supabase, and cross-device history (free magic link — no password).</span>
-              {!showSignin ? (
-                <Button size="sm" variant="outline" onClick={() => setShowSignin(true)} className="md:ml-auto">Sign in / Sign up</Button>
-              ) : (
-                <div className="flex gap-2 items-center w-full md:w-auto">
-                  <input
-                    type="email"
-                    value={signinEmail}
-                    onChange={e => setSigninEmail(e.target.value)}
-                    placeholder="you@email.com"
-                    className="flex-1 text-sm bg-background border border-border/50 rounded px-2 py-1"
-                  />
-                  <Button size="sm" onClick={handleMagic} disabled={signinLoading || !signinEmail}>
-                    {signinLoading ? "Sending..." : "Send link"}
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={() => setShowSignin(false)}>✕</Button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {!isOnboarded && (
-          <div className="mt-2 text-xs p-2 bg-amber-950/30 border border-amber-500/30 rounded">
-            First time? <a href="/profile" className="underline text-amber-400">Complete Mission Setup in Profile</a> to personalize your Win Score, readiness, and starting program recommendation.
-          </div>
-        )}
+        <JourneyStrip action={action} />
       </div>
 
+      <JourneyHero
+        action={action}
+        onPrimaryClick={handleJourneyPrimary}
+        activeWorkout={!!activeWorkout}
+      />
+
+      {showFullToday && (
+        <>
       <MetricsRow scores={bodyScores} />
       <CoachInsightCard insight={coachInsight} />
 
@@ -581,81 +557,21 @@ export function HomePage() {
         </CardContent>
       </Card>
 
-      {/* Primary Action Hero (Forge "JUST GO" spirit — biggest, clearest CTA on the functional homepage) */}
-      <Card className="border-emerald-500/40 bg-gradient-to-br from-emerald-950/20 to-primary/5">
+      {/* Free starters + saved routines — secondary to Journey hero */}
+      <Card className="border-border/60">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-emerald-400">
-            <Target className="h-5 w-5" /> Ready to Win Today
-          </CardTitle>
-          <CardDescription>
-            {activeWorkout
-              ? "Workout in progress — jump back in and keep the momentum."
-              : `Recommended: ${recommendedFocus}. Start now — no thinking required.`}
-          </CardDescription>
+          <CardTitle className="text-base">Quick options</CardTitle>
+          <CardDescription>Free starter programs and saved routines.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <Button variant="fitness" size="lg" className="w-full md:w-auto text-lg py-6" onClick={handleQuickStart}>
-            <Play className="h-5 w-5 mr-2" />
-            {activeWorkout ? "RESUME ACTIVE WORKOUT" : "TAKE MASSIVE ACTION — START WORKOUT"}
-          </Button>
-
-          {/* Free starter programs - always unlocked for the core mission */}
-          <div className="mt-2 text-xs text-muted-foreground">Free Starters (no premium needed):</div>
-          <div className="mt-1 flex flex-wrap gap-2">
-            {freeStarters.map((s, i) => (
+        <CardContent className="space-y-3">
+          <div className="flex flex-wrap gap-2">
+            {freeStarters.slice(0, 6).map((s, i) => (
               <Button key={i} variant="outline" size="sm" onClick={() => startFreeStarter(s.name, s.exercises)}>
                 {s.name}
               </Button>
             ))}
           </div>
-
-          <div className="mt-2">
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
-              alert('Great! Log a post-mobility recovery snack (e.g. yogurt bowl) in Nutrition to build Fuel + Move synergy.');
-              window.location.href = '/nutrition';
-            }}>Log Recovery Snack (Fuel + Move) →</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
-              const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-              localStorage.setItem('mw_streak', String(current));
-              alert(`Mobility habit logged! +1 to streak (${current} days). Synergy with Move pillar builds the path.`);
-              window.location.reload();
-            }}>Log Mobility Habit (+streak)</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={async () => {
-              try {
-                const u = await getUser();
-                const today = new Date().toISOString().split('T')[0];
-                if (u) await saveNutritionEntry({ date: today, name: 'Quick Mind Win from Home', protein: 0, cals: 0 });
-                const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-                localStorage.setItem('mw_streak', String(current));
-                setRecentPillarWins(prev => [{name: 'Quick Mind Win from Home', date: today}, ...prev].slice(0,5));
-                alert(`Mind win logged! +1 streak (${current}). ${u ? 'Cloud saved.' : ''}`);
-              } catch {}
-            }}>Log Mind Win (+streak + cloud)</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={async () => {
-              try {
-                const u = await getUser();
-                const today = new Date().toISOString().split('T')[0];
-                if (u) await saveNutritionEntry({ date: today, name: 'Quick Fuel + Move Win', protein: 0, cals: 0 });
-                const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-                localStorage.setItem('mw_streak', String(current));
-                setRecentPillarWins(prev => [{name: 'Quick Fuel + Move Win', date: today}, ...prev].slice(0,5));
-                alert(`Fuel + Move win logged! +1 streak (${current}). Check Nutrition.`);
-              } catch {}
-            }}>Log Fuel + Move Win (+streak + cloud)</Button>
-            <Button size="sm" variant="ghost" className="text-xs" onClick={async () => {
-              try {
-                const u = await getUser();
-                const today = new Date().toISOString().split('T')[0];
-                if (u) await saveNutritionEntry({ date: today, name: 'Quick Mind + Move Win', protein: 0, cals: 0 });
-                const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-                localStorage.setItem('mw_streak', String(current));
-                setRecentPillarWins(prev => [{name: 'Quick Mind + Move Win', date: today}, ...prev].slice(0,5));
-                alert(`Mind + Move win logged! +1 streak (${current}).`);
-              } catch {}
-            }}>Log Mind + Move Win (+streak + cloud)</Button>
-          </div>
-
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             {savedWorkouts.slice(0, 3).map((w) => (
               <Button key={w.id} variant="outline" size="sm" onClick={() => handleStartSaved(w.id)}>
                 {w.name}
@@ -663,7 +579,7 @@ export function HomePage() {
             ))}
             {savedWorkouts.length === 0 && (
               <Button variant="ghost" size="sm" onClick={() => router.push("/builder")}>
-                Or build a custom session →
+                Build a custom session →
               </Button>
             )}
           </div>
@@ -952,6 +868,8 @@ export function HomePage() {
             View full history →
           </Button>
         </div>
+      )}
+        </>
       )}
     </div>
   );
