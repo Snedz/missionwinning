@@ -10,6 +10,11 @@ import {
   savePrivacyConsent,
 } from '@/lib/privacyConsent';
 import {
+  getEnabledOAuthProviders,
+  isAppleOAuthEnabled,
+  isGoogleOAuthEnabled,
+} from '@/lib/oauthConfig';
+import {
   isSupabaseConfigured,
   signInMagic,
   signInWithOAuth,
@@ -73,6 +78,8 @@ export function SignInPanel({
   const [error, setError] = useState<string | null>(null);
 
   const configured = isSupabaseConfigured();
+  const oauthProviders = getEnabledOAuthProviders();
+  const showOAuth = configured && oauthProviders.length > 0;
 
   useEffect(() => {
     if (hasValidPrivacyConsent()) {
@@ -118,7 +125,7 @@ export function SignInPanel({
         onComplete?.();
         return;
       }
-      setError('Enter your email or use Apple / Google above.');
+      setError('Enter your email or use a sign-in option above.');
       return;
     }
 
@@ -150,32 +157,40 @@ export function SignInPanel({
         </p>
       )}
 
-      <div className="space-y-2.5">
-        <Button
-          type="button"
-          variant="outline"
-          className="oauth-btn oauth-btn-apple w-full h-12 text-[15px] font-medium"
-          disabled={!!loading || !configured}
-          onClick={() => handleOAuth('apple')}
-        >
-          <AppleIcon className="h-5 w-5" />
-          {loading === 'apple' ? 'Redirecting…' : 'Continue with Apple'}
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          className="oauth-btn oauth-btn-google w-full h-12 text-[15px] font-medium"
-          disabled={!!loading || !configured}
-          onClick={() => handleOAuth('google')}
-        >
-          <GoogleIcon className="h-5 w-5" />
-          {loading === 'google' ? 'Redirecting…' : 'Continue with Google'}
-        </Button>
-      </div>
+      {showOAuth && (
+        <div className="space-y-2.5">
+          {isAppleOAuthEnabled() && (
+            <Button
+              type="button"
+              variant="outline"
+              className="oauth-btn oauth-btn-apple w-full h-12 text-[15px] font-medium"
+              disabled={!!loading}
+              onClick={() => handleOAuth('apple')}
+            >
+              <AppleIcon className="h-5 w-5" />
+              {loading === 'apple' ? 'Redirecting…' : 'Continue with Apple'}
+            </Button>
+          )}
+          {isGoogleOAuthEnabled() && (
+            <Button
+              type="button"
+              variant="outline"
+              className="oauth-btn oauth-btn-google w-full h-12 text-[15px] font-medium"
+              disabled={!!loading}
+              onClick={() => handleOAuth('google')}
+            >
+              <GoogleIcon className="h-5 w-5" />
+              {loading === 'google' ? 'Redirecting…' : 'Continue with Google'}
+            </Button>
+          )}
+        </div>
+      )}
 
-      <div className="auth-divider">
-        <span>or use email</span>
-      </div>
+      {showOAuth && (
+        <div className="auth-divider">
+          <span>or use email</span>
+        </div>
+      )}
 
       <form onSubmit={handleEmail} className="space-y-3">
         <div className="relative">
@@ -239,8 +254,11 @@ export function SignInPanel({
       )}
 
       <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
-        Privacy by design: no password stored. OAuth uses Apple or Google — we receive your email and
-        name only. You can sign out anytime from Profile.
+        Privacy by design: no password stored.
+        {showOAuth
+          ? ' OAuth uses Apple or Google — we receive your email and name only.'
+          : ' Email magic link only — we receive your email to sync your account.'}{' '}
+        You can sign out anytime from Profile.
       </p>
     </div>
   );
