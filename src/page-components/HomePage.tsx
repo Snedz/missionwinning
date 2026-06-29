@@ -19,6 +19,7 @@ import { CoachInsightCard } from "@/components/metrics/CoachInsightCard";
 import { PillarScoreBreakdown } from "@/components/metrics/PillarScoreBreakdown";
 import { JourneyStrip, JourneyHero } from "@/components/journey/JourneyHero";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
+import { useUiMode } from "@/hooks/useUiMode";
 
 export function HomePage() {
   const router = useRouter();
@@ -27,7 +28,9 @@ export function HomePage() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
-  const { action, showFullToday, refresh: refreshJourney } = useMissionJourney();
+  const { action, showFullToday } = useMissionJourney();
+  const { isPro, isSimple } = useUiMode();
+  const showExpandedToday = isPro && showFullToday;
 
   const recent = workoutHistory.slice(0, 3);
 
@@ -457,35 +460,45 @@ export function HomePage() {
   const userEquip = typeof window !== 'undefined' ? (localStorage.getItem('mw_equipment') || 'full-gym') : 'full-gym';
 
   return (
-    <div className="space-y-8">
-      {/* Clear functional homepage header — distinct from sales Landing. This is the daily "Today" command center. */}
-      <div>
-        <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <header className="space-y-1">
+        <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight fitness-text-gradient">
-              {t('appName', { defaultValue: 'Mission Winning' })} • {t('today', { defaultValue: 'Today' })}
-            </h2>
-            <p className="mt-1 text-muted-foreground">{today} — {t('recommendedFocus', { defaultValue: recommendedFocus })} {userEquip === 'bodyweight' ? '(bodyweight focus)' : ''}</p>
+            <h1 className="text-[34px] font-semibold tracking-tight leading-tight">
+              {t('today', { defaultValue: 'Today' })}
+            </h1>
+            <p className="text-base text-muted-foreground mt-1">{today}</p>
+            {isPro && (
+              <p className="text-sm text-muted-foreground mt-0.5">
+                {t('recommendedFocus', { defaultValue: recommendedFocus })}
+                {userEquip === 'bodyweight' ? ' · bodyweight' : ''}
+              </p>
+            )}
           </div>
-          <div className="text-right">
-            <div className="text-xs text-muted-foreground">MISSION SCORE</div>
-            <div className="text-4xl font-bold text-emerald-400 flex items-center gap-2">
-              {score} <Trophy className="h-6 w-6" />
+          {(isPro || showExpandedToday) && (
+            <div className="text-right shrink-0">
+              <div className="text-xs text-muted-foreground uppercase tracking-wide">Score</div>
+              <div className="text-3xl font-semibold text-emerald-400 tabular-nums">{score}</div>
             </div>
-          </div>
-        </div>
-        <p className="mt-2 text-sm text-muted-foreground">
-          One clear action. Track your wins. <strong>Free core for all</strong>.
-          {!userEmail && (
-            <>
-              {' '}
-              <a href="/profile" className="underline text-emerald-400">Sign in</a> for cloud sync.
-            </>
           )}
-        </p>
-
-        <JourneyStrip action={action} />
-      </div>
+        </div>
+        {isSimple && streak > 0 && (
+          <p className="text-sm text-muted-foreground pt-1">
+            {streak}-day streak · Free for everyone, everywhere
+          </p>
+        )}
+        {isPro && (
+          <p className="text-sm text-muted-foreground pt-1">
+            {!userEmail && (
+              <a href="/profile" className="text-emerald-400 hover:underline">Sign in</a>
+            )}
+            {userEmail ? 'Cloud sync on.' : ' Sign in optional — progress stays on this device.'}
+          </p>
+        )}
+        <div className="pt-3">
+          <JourneyStrip action={action} />
+        </div>
+      </header>
 
       <JourneyHero
         action={action}
@@ -493,7 +506,13 @@ export function HomePage() {
         activeWorkout={!!activeWorkout}
       />
 
-      {showFullToday && (
+      {isSimple && !showExpandedToday && streak === 0 && (
+        <p className="text-center text-sm text-muted-foreground px-4">
+          One step at a time. Health for everyone — train, fuel, move, and learn on your path.
+        </p>
+      )}
+
+      {showExpandedToday && (
         <>
       <MetricsRow scores={bodyScores} />
       <CoachInsightCard insight={coachInsight} />

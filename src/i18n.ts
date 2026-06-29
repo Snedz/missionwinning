@@ -88,6 +88,7 @@ const resources = {
       coachFocus: "Coach Focus",
       oarsNote: "OARS in practice: Open questions, Affirm strengths, Reflect back, Summarize. Match approach to readiness.",
       // Today Hub / functional homepage (distinct from sales Landing at /)
+      today: "Today",
       missionScore: "Mission Score",
       muscleReadiness: "Muscle Readiness",
       recommendedFocus: "Recommended Focus",

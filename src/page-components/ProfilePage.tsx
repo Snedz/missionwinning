@@ -7,6 +7,9 @@ import { useTranslation } from "react-i18next";
 import { supabase, signOut, signInMagic, isPremium, getUser } from "@/lib/supabase";
 import i18n from "@/i18n";
 import { useWorkoutStore } from "@/store/workoutStore";
+import { useUiMode } from "@/hooks/useUiMode";
+import { MoreSheet } from "@/components/layout/MoreSheet";
+import { LayoutGrid } from "lucide-react";
 
 const LANGS = ['en', 'es', 'fr', 'pt', 'ru'] as const;
 const NATIVE_NAMES: Record<string, string> = {
@@ -41,6 +44,8 @@ function LanguageSwitcher() {
 
 export function ProfilePage() {
   const { t } = useTranslation();
+  const { mode, isPro, setUiMode } = useUiMode();
+  const [moreOpen, setMoreOpen] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const [units, setUnits] = useState<"metric" | "imperial">("metric");
   const [goals, setGoals] = useState("Build strength and stay healthy");
@@ -189,6 +194,39 @@ export function ProfilePage() {
             </div>
           )}
           <div className="text-xs text-muted-foreground">Premium status from Supabase enrollments (demo requests log a lead + grant local access). Full real payments + auth when LLC ready.</div>
+        </CardContent>
+      </Card>
+
+      <Card className="content-card">
+        <CardHeader><CardTitle>App mode</CardTitle></CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            <strong>Simple</strong> — one clear action each day. Best for most people worldwide.
+            <br />
+            <strong>Pro</strong> — full dashboard, charts, and all tools.
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant={mode === 'simple' ? 'default' : 'outline'}
+              className="flex-1 min-h-[44px]"
+              onClick={() => setUiMode('simple')}
+            >
+              Simple
+            </Button>
+            <Button
+              variant={mode === 'pro' ? 'default' : 'outline'}
+              className="flex-1 min-h-[44px]"
+              onClick={() => setUiMode('pro')}
+            >
+              Pro
+            </Button>
+          </div>
+          {isPro && (
+            <Button variant="outline" className="w-full min-h-[44px] gap-2" onClick={() => setMoreOpen(true)}>
+              <LayoutGrid className="h-4 w-4" />
+              Open all tools
+            </Button>
+          )}
         </CardContent>
       </Card>
 
@@ -357,6 +395,7 @@ export function ProfilePage() {
       </Card>
 
       <div className="text-xs text-muted-foreground">More settings (locale, notifications, data export) coming with full backend. Your data stays private and under your control.</div>
+      <MoreSheet open={moreOpen} onClose={() => setMoreOpen(false)} />
     </div>
   );
 }
