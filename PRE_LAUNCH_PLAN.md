@@ -19,7 +19,7 @@
 | **Form guides (G2)** | ✅ | 50+ text-only exercise guides |
 | **Legal (F4 partial)** | ✅ | `/privacy`, `/terms`, linked from `/about` |
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
-| **Leaderboard** | ✅ | GT7-style Global / Regional / National / Local / Squad |
+| **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
 
 ### Open PR stack (merge in order)
@@ -33,7 +33,8 @@
 | #12 | `cursor/f3-journey-sync-699d` | F3 sync + Japanese |
 | #13 | `cursor/f3-analytics-nudge-699d` | Analytics + email nudge |
 | #14 | `cursor/f4-beta-launch-699d` | Beta funnel + legal |
-| #15 | `cursor/leaderboard-gt7-699d` | Leaderboard |
+| #15 | `cursor/leaderboard-gt7-699d` | Leaderboard base |
+| #17 | `cursor/leaderboard-dawn-stars-699d` | Night + dawn boards, deep links, Today wins |
 
 **Recommendation:** Squash-merge or rebase stack into `master` in one integration pass before beta invites, then deploy from a single release tag.
 

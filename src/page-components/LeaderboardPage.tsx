@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Trophy, RefreshCw } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Trophy, RefreshCw, Moon, Sunrise } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -16,16 +17,23 @@ import {
 } from '@/lib/leaderboard/computeLocalStats';
 import { fetchCloudLeaderboardSnapshots, pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import type { LeaderboardBoardId, LeaderboardScope } from '@/lib/leaderboard/types';
+import { parseLeaderboardBoardId, parseLeaderboardScope } from '@/lib/leaderboard/types';
 import { LeaderboardBoardPicker } from '@/components/leaderboard/LeaderboardBoardPicker';
 import { LeaderboardScopeTabs } from '@/components/leaderboard/LeaderboardScopeTabs';
 import { LeaderboardTable } from '@/components/leaderboard/LeaderboardTable';
 
 export function LeaderboardPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
 
-  const [boardId, setBoardId] = useState<LeaderboardBoardId>('mission-score');
-  const [scope, setScope] = useState<LeaderboardScope>('global');
+  const [boardId, setBoardId] = useState<LeaderboardBoardId>(() => {
+    return parseLeaderboardBoardId(searchParams.get('board')) ?? 'mission-score';
+  });
+  const [scope, setScope] = useState<LeaderboardScope>(() => {
+    return parseLeaderboardScope(searchParams.get('scope')) ?? 'global';
+  });
   const [cloud, setCloud] = useState<Awaited<ReturnType<typeof fetchCloudLeaderboardSnapshots>>>([]);
   const [operatorName, setOperatorName] = useState(loadOperatorName);
   const [squadCode, setSquadCode] = useState(loadSquadCode);
@@ -48,6 +56,40 @@ export function LeaderboardPage() {
   useEffect(() => {
     void refresh();
   }, [refresh]);
+
+  useEffect(() => {
+    const nextBoard = parseLeaderboardBoardId(searchParams.get('board'));
+    const nextScope = parseLeaderboardScope(searchParams.get('scope'));
+    if (nextBoard) setBoardId(nextBoard);
+    if (nextScope) setScope(nextScope);
+  }, [searchParams]);
+
+  const updateUrl = useCallback(
+    (nextBoard: LeaderboardBoardId, nextScope: LeaderboardScope) => {
+      const params = new URLSearchParams();
+      if (nextBoard !== 'mission-score') params.set('board', nextBoard);
+      if (nextScope !== 'global') params.set('scope', nextScope);
+      const qs = params.toString();
+      router.replace(qs ? `/leaderboard?${qs}` : '/leaderboard', { scroll: false });
+    },
+    [router]
+  );
+
+  const handleBoardChange = useCallback(
+    (id: LeaderboardBoardId) => {
+      setBoardId(id);
+      updateUrl(id, scope);
+    },
+    [scope, updateUrl]
+  );
+
+  const handleScopeChange = useCallback(
+    (next: LeaderboardScope) => {
+      setScope(next);
+      updateUrl(boardId, next);
+    },
+    [boardId, updateUrl]
+  );
 
   const you = useMemo(
     () =>
@@ -87,7 +129,42 @@ export function LeaderboardPage() {
         </Button>
       </div>
 
-      <LeaderboardBoardPicker boardId={boardId} onBoardChange={setBoardId} />
+      <LeaderboardBoardPicker boardId={boardId} onBoardChange={handleBoardChange} />
+
+      {(you.nightSessions > 0 || you.dawnSessions > 0) && (
+        <div className="flex flex-wrap gap-2 text-xs">
+          {you.nightSessions > 0 && (
+            <button
+              type="button"
+              onClick={() => handleBoardChange('under-the-stars')}
+              className={cn(
+                'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 transition-colors',
+                boardId === 'under-the-stars'
+                  ? 'border-indigo-500/50 bg-indigo-950/50 text-indigo-200'
+                  : 'border-border/50 text-muted-foreground hover:border-indigo-500/30'
+              )}
+            >
+              <Moon className="h-3.5 w-3.5" />
+              {you.nightSessions} night {you.nightSessions === 1 ? 'session' : 'sessions'}
+            </button>
+          )}
+          {you.dawnSessions > 0 && (
+            <button
+              type="button"
+              onClick={() => handleBoardChange('dawns-early-light')}
+              className={cn(
+                'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 transition-colors',
+                boardId === 'dawns-early-light'
+                  ? 'border-amber-500/50 bg-amber-950/40 text-amber-200'
+                  : 'border-border/50 text-muted-foreground hover:border-amber-500/30'
+              )}
+            >
+              <Sunrise className="h-3.5 w-3.5" />
+              {you.dawnSessions} dawn {you.dawnSessions === 1 ? 'session' : 'sessions'}
+            </button>
+          )}
+        </div>
+      )}
 
       <div
         className={
@@ -116,7 +193,7 @@ export function LeaderboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:justify-between">
         <LeaderboardScopeTabs
           scope={scope}
-          onScopeChange={setScope}
+          onScopeChange={handleScopeChange}
           scopeLabel={ranked.scopeLabel}
         />
         <div className="text-xs text-muted-foreground sm:text-right shrink-0">
@@ -172,6 +249,7 @@ export function LeaderboardPage() {
         entries={ranked.entries}
         unit={ranked.board.unit}
         yourRank={ranked.yourRank}
+        theme={boardTheme}
       />
 
       <p className="text-[10px] text-muted-foreground leading-relaxed">

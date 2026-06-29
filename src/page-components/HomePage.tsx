@@ -11,6 +11,7 @@ import { useWorkoutStore } from "@/store/workoutStore";
 import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
 import { gatherWeeklyPillarStats } from "@/lib/pillarScoreInputs";
 import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
+import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { EXERCISES } from "@/data/exercises";
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
@@ -53,6 +54,8 @@ export function HomePage() {
 
   // Training streak + weekly challenges (Phase A — free core retention)
   const streak = getTrainingStreak(workoutHistory);
+  const nightSessions = countSessionsInHourRange(workoutHistory, 22, 5);
+  const dawnSessions = countSessionsInHourRange(workoutHistory, 5, 8);
   const todaysWorkout = getTodaysWorkout();
   const [challenges, setChallenges] = useState<ReturnType<typeof getChallengeProgress>>([]);
   const [pillarStats, setPillarStats] = useState(() => ({
@@ -821,6 +824,30 @@ export function HomePage() {
           </div>
           <div className={highProteinDays >= 5 ? "text-emerald-400 font-medium" : ""}>
             {highProteinDays >= 5 ? "✓" : "○"} High Protein Days (150g+) ({highProteinDays}/5+) {highProteinDays >= 5 && "🏅"}
+          </div>
+          <div className={nightSessions >= 3 ? "text-indigo-300 font-medium" : ""}>
+            {nightSessions >= 3 ? "✓" : "○"} Under the Stars ({nightSessions}/3 night sessions){' '}
+            {nightSessions >= 3 && "🌙"}
+            {nightSessions > 0 && (
+              <>
+                {' · '}
+                <a href="/leaderboard?board=under-the-stars" className="text-indigo-400 hover:underline">
+                  Rankings
+                </a>
+              </>
+            )}
+          </div>
+          <div className={dawnSessions >= 3 ? "text-amber-300 font-medium" : ""}>
+            {dawnSessions >= 3 ? "✓" : "○"} By Dawn&apos;s Early Light ({dawnSessions}/3 dawn sessions){' '}
+            {dawnSessions >= 3 && "🌅"}
+            {dawnSessions > 0 && (
+              <>
+                {' · '}
+                <a href="/leaderboard?board=dawns-early-light" className="text-amber-400 hover:underline">
+                  Rankings
+                </a>
+              </>
+            )}
           </div>
           <div className="col-span-2 text-xs text-muted-foreground">Log wins daily — streaks & volume feed your Mission Score. Full cross-pillar challenges in updates.</div>
           <div className="col-span-2 flex gap-2 mt-1 flex-wrap">

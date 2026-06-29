@@ -18,6 +18,7 @@ import { toast } from "@/hooks/use-toast";
 import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { formatDuration } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
+import { getSessionHourKind } from "@/lib/leaderboard/types";
 import { getFormGuide, hasFormGuide } from "@/lib/formGuides";
 import { FormGuideSheet } from "@/components/form/FormGuideSheet";
 
@@ -119,9 +120,16 @@ export function ActiveWorkoutPage() {
   const handleComplete = () => {
     const log = completeActiveWorkout();
     if (log) {
+      const hourKind = getSessionHourKind(log.completedAt);
+      let description = `${log.totalVolume.toLocaleString()} lbs total volume`;
+      if (hourKind === 'night') {
+        description += " · Counts toward Under the Stars on the leaderboard";
+      } else if (hourKind === 'dawn') {
+        description += " · Counts toward By Dawn's Early Light on the leaderboard";
+      }
       toast({
         title: "Workout complete!",
-        description: `${log.totalVolume.toLocaleString()} lbs total volume`,
+        description,
       });
       router.push("/history");
     } else {
