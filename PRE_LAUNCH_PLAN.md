@@ -27,7 +27,7 @@
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
 | **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
-| **Build label** | ✅ | `2025.06-unified.10` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.11` on Profile footer |
 
 ### Open PR stack
 
@@ -46,6 +46,7 @@ Most feature work is merged to `master`. Branch `cursor/today-cards-challenges-6
 | 7 | Staggered Today hero animations | ✅ `StaggerReveal` on HomePage |
 | 8 | Security P1 (PayPal sig, CSP) | ✅ PayPal verify + CSP enforce in prod (`next.config.js`) |
 | 9 | Leads API rate limit | ✅ `/api/leads` + `submitLead` via server |
+| 10 | Pro program templates server-split | ✅ `premiumProgramTemplates.ts` (7 pro cycles) |
 
 ---
 

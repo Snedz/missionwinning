@@ -15,7 +15,7 @@ Mission Winning has a strong **free-core vision** and solid pillar scaffolding, 
 | Private gate (pre-launch) | Hardened — signed cookies, rate limit |
 | Payment webhooks | Hardened — Stripe + PayPal sig verify |
 | Premium bypass | Hardened — server `/api/premium/status`; no localStorage in prod |
-| Premium content leak | Partial — recipes server-split; pro templates UI+API gated |
+| Premium content leak | Hardened — recipes + pro programs server-split |
 | Supabase RLS | Improved — enrollment read by email |
 | Security headers | Added in `vercel.json` |
 | PWA cache (gated mode) | Disabled while `PRIVATE_MODE` active |
@@ -63,7 +63,7 @@ Mission Winning has a strong **free-core vision** and solid pillar scaffolding, 
 
 **Now:**
 - **Recipes:** 12 free in `src/data/recipes/freeRecipes.ts`; 92 premium in server-only `premiumRecipes.ts` → `/api/premium/recipes`
-- **Pro programs:** UI gated + `/api/premium/programs` (template metadata still in bundle — see backlog)
+- **Pro programs:** Server-only `premiumProgramTemplates.ts` → `/api/premium/programs`; 56 free templates remain in client bundle
 
 ### 5. Infrastructure
 
@@ -140,7 +140,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 
 ### P1 — First 30 days public
 
-- [ ] Split `pro` program templates to server-only module (like recipes)
+- [x] Split `pro` program templates to server-only module (like recipes)
 - [x] PayPal webhook signature verification (`src/lib/paypalWebhook.ts`)
 - [x] CSP header enforced in production (`next.config.js`; `CSP_ENFORCE=false` for report-only)
 - [x] Leads table: rate limit on `/api/leads` (5/min/IP; server insert via service role)

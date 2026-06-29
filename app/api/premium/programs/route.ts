@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
-import { getProgramsByCategory, type ProgramCategory } from '@/data/programTemplates';
+import { getPremiumProgramTemplates } from '@/data/premiumProgramTemplates';
+import type { ProgramCategory } from '@/data/programTemplates';
 
-/** Pro program templates — gated server-side (not only client UI). */
+/** Pro program templates — gated server-side (not in client bundle). */
 export async function GET(request: NextRequest) {
   const category = (request.nextUrl.searchParams.get('category') ?? 'pro') as ProgramCategory;
 
@@ -13,7 +14,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (isDemoPremiumEnabled()) {
-    return NextResponse.json({ programs: getProgramsByCategory('pro') });
+    return NextResponse.json({ programs: getPremiumProgramTemplates() });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -41,5 +42,5 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Premium enrollment required' }, { status: 403 });
   }
 
-  return NextResponse.json({ programs: getProgramsByCategory('pro') });
+  return NextResponse.json({ programs: getPremiumProgramTemplates() });
 }
