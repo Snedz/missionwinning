@@ -2,11 +2,14 @@ export type UiMode = 'simple' | 'pro';
 
 const STORAGE_KEY = 'mw_ui_mode';
 
-/** Simple = one CTA + 5 tabs (default). Pro = full dashboard + More tools. */
+/**
+ * @deprecated Layout no longer gated by Simple/Pro — journey phase drives disclosure.
+ * Kept for cloud sync compatibility; new users default to unified experience.
+ */
 export function loadUiMode(): UiMode {
-  if (typeof window === 'undefined') return 'simple';
+  if (typeof window === 'undefined') return 'pro';
   const v = localStorage.getItem(STORAGE_KEY);
-  return v === 'pro' ? 'pro' : 'simple';
+  return v === 'simple' ? 'simple' : 'pro';
 }
 
 export function saveUiMode(mode: UiMode): void {
