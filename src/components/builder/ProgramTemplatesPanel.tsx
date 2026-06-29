@@ -28,6 +28,8 @@ import { usePremium } from "@/hooks/usePremium";
 import Link from "next/link";
 
 export const TEMPLATE_PROGRAM_COUNT = PROGRAM_TEMPLATES.length;
+/** Pro templates are server-only — fetched via /api/premium/programs when premium. */
+export const FREE_TEMPLATE_PROGRAM_COUNT = TEMPLATE_PROGRAM_COUNT;
 
 interface ProgramTemplatesPanelProps {
   category: ProgramCategory;
@@ -128,7 +130,7 @@ export function ProgramTemplatesPanel({
   const [proPrograms, setProPrograms] = useState<ProgramTemplate[]>([]);
 
   useEffect(() => {
-    if (category !== "pro" || !premium) {
+    if (!premium) {
       setProPrograms([]);
       return;
     }
@@ -136,7 +138,7 @@ export function ProgramTemplatesPanel({
       .then((r) => (r.ok ? r.json() : { programs: [] }))
       .then((data) => setProPrograms(data.programs ?? []))
       .catch(() => setProPrograms([]));
-  }, [category, premium]);
+  }, [premium]);
 
   const basePrograms =
     category === "pro"
@@ -150,17 +152,20 @@ export function ProgramTemplatesPanel({
   );
   const categoryMeta = PROGRAM_CATEGORIES.find((c) => c.id === category)!;
 
-  const quickOptions = useMemo(
-    () =>
-      PROGRAM_TEMPLATES.flatMap((program) =>
-        program.sessions.map((session) => ({
-          value: `${program.id}::${session.id}`,
-          program,
-          session,
-        }))
-      ),
-    []
-  );
+  const quickOptions = useMemo(() => {
+    const source =
+      premium && proPrograms.length > 0
+        ? [...PROGRAM_TEMPLATES, ...proPrograms]
+        : PROGRAM_TEMPLATES;
+
+    return source.flatMap((program) =>
+      program.sessions.map((session) => ({
+        value: `${program.id}::${session.id}`,
+        program,
+        session,
+      }))
+    );
+  }, [premium, proPrograms]);
 
   const handleQuickLoad = () => {
     if (!quickPick) return;
@@ -220,7 +225,12 @@ export function ProgramTemplatesPanel({
             </SelectTrigger>
             <SelectContent className="max-h-72">
               {PROGRAM_CATEGORIES.map((cat) => {
-                const catPrograms = getProgramsByCategory(cat.id);
+                const catPrograms =
+                  cat.id === "pro"
+                    ? premium
+                      ? proPrograms
+                      : []
+                    : getProgramsByCategory(cat.id);
                 if (catPrograms.length === 0) return null;
                 return (
                   <SelectGroup key={cat.id}>
