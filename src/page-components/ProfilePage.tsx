@@ -11,6 +11,7 @@ import { useUiMode } from "@/hooks/useUiMode";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { daysSinceCommission } from "@/lib/missionJourney";
 import { getBetaFunnelMetrics, getJourneyEvents } from "@/lib/journeyAnalytics";
+import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
 import { MoreSheet } from "@/components/layout/MoreSheet";
 import { LayoutGrid } from "lucide-react";
 
@@ -396,6 +397,8 @@ export function ProfilePage() {
           )}
         </CardContent>
       </Card>
+
+      <BetaAdminPanel enabled={!!email} />
 
       {/* Journey profile — first-time onboarding or edit link */}
       {!isOnboarded ? (

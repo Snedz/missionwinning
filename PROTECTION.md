@@ -132,11 +132,11 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 ### P0 — Before public (`PRIVATE_MODE=false`)
 
 - [ ] Rotate `PRIVATE_ACCESS_SECRET` (stop using `Done`)
-- [ ] Run `supabase/schema.sql` in production Supabase
+- [x] Run `supabase/schema.sql` in production Supabase (or `migrations/20250629_complete_base_schema.sql`)
 - [ ] Set `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in Vercel (never `NEXT_PUBLIC_`)
 - [ ] Set `DEMO_PREMIUM=false` explicitly in production
 - [ ] Verify gate + premium API with curl checklist above
-- [ ] Privacy policy + Terms pages linked from `/about`
+- [x] Privacy policy + Terms pages linked from `/about`
 
 ### P1 — First 30 days public
 
