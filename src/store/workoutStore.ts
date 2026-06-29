@@ -11,6 +11,7 @@ import type {
 } from "@/types";
 import { saveWorkoutLog, getUserWorkoutHistory, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
+import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
 import { mapCloudToLocal, mergeWorkoutHistories } from "@/lib/workoutMerge";
 
 const DEFAULT_REST_SECONDS = 30;
@@ -154,6 +155,9 @@ export const useWorkoutStore = create<WorkoutState>()(
         }));
 
         recordWorkoutCompleted(log);
+
+        const savedCount = get().savedWorkouts.length;
+        scheduleLeaderboardPush(get().workoutHistory, savedCount);
 
         // Auto sync to cloud if signed in (non-blocking)
         getUser().then(u => {

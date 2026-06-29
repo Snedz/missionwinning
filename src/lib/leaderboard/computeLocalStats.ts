@@ -3,6 +3,7 @@ import { getTrainingStreak } from '@/lib/challenges';
 import { computeWinScore } from '@/lib/score';
 import type { CompletedWorkoutLog } from '@/types';
 import type { LeaderboardBoardId, LeaderboardSnapshot } from './types';
+import { loadSquadCode, SQUAD_CODE_KEY } from './boards';
 import { resolveGeoFromLocale } from './regions';
 
 const OPERATOR_NAME_KEY = 'mw_operator_name';
@@ -17,33 +18,10 @@ export function saveOperatorName(name: string): void {
   localStorage.setItem(OPERATOR_NAME_KEY, name.trim().slice(0, 24));
 }
 
-function countNightSessions(workoutHistory: CompletedWorkoutLog[]): number {
-  return workoutHistory.filter((w) => {
-    const h = new Date(w.completedAt).getHours();
-    return h >= 22 || h < 5;
-  }).length;
-}
+export { loadSquadCode, saveSquadCode } from './boards';
 
 function highProteinDaysThisWeek(): number {
-  if (typeof window === 'undefined') return 0;
-  try {
-    const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]') as {
-      date?: string;
-      protein?: number;
-    }[];
-    const start = new Date();
-    const day = start.getDay();
-    const diff = day === 0 ? -6 : 1 - day;
-    start.setDate(start.getDate() + diff);
-    const weekStart = start.toISOString().split('T')[0];
-    const days = new Set<string>();
-    for (const l of logs) {
-      if ((l.protein ?? 0) >= 120 && l.date && l.date >= weekStart) days.add(l.date);
-    }
-    return days.size;
-  } catch {
-    return 0;
-  }
+  return gatherWeeklyPillarStats().proteinDays;
 }
 
 /** Build current user's leaderboard snapshot from live app data. */
@@ -59,10 +37,11 @@ export function computeLocalLeaderboardSnapshot(
   const streak = getTrainingStreak(workoutHistory);
   const totalSessions = workoutHistory.length;
   const totalVolume = workoutHistory.reduce((s, w) => s + w.totalVolume, 0);
+  const fuelDays = highProteinDaysThisWeek();
 
   const winScore = computeWinScore({
     streak,
-    highProteinDays: highProteinDaysThisWeek(),
+    highProteinDays: fuelDays,
     totalSessions,
     totalVolume,
     savedCount,
@@ -79,7 +58,8 @@ export function computeLocalLeaderboardSnapshot(
     missionScore: winScore.total,
     trainingStreak: streak,
     weeklyVolume: weekly.weekVolume,
-    nightSessions: countNightSessions(workoutHistory),
+    fuelDays,
+    squadCode: loadSquadCode() || undefined,
     region: geo.region,
     countryCode: geo.countryCode,
     countryName: geo.countryName,
@@ -95,8 +75,8 @@ export function scoreForBoard(snapshot: LeaderboardSnapshot, boardId: Leaderboar
       return snapshot.trainingStreak;
     case 'weekly-volume':
       return snapshot.weeklyVolume;
-    case 'under-the-stars':
-      return snapshot.nightSessions;
+    case 'fuel-days':
+      return snapshot.fuelDays;
   }
 }
 
@@ -108,7 +88,10 @@ export function detailForBoard(snapshot: LeaderboardSnapshot, boardId: Leaderboa
       return `${snapshot.missionScore} mission pts`;
     case 'weekly-volume':
       return `${snapshot.missionScore} mission pts`;
-    case 'under-the-stars':
-      return snapshot.nightSessions === 1 ? '1 night op' : `${snapshot.nightSessions} night ops`;
+    case 'fuel-days':
+      return snapshot.fuelDays === 1 ? '1 fuel day' : `${snapshot.fuelDays} fuel days`;
   }
 }
+
+/** Re-export squad key for forms. */
+export { SQUAD_CODE_KEY };

@@ -5,7 +5,8 @@ create table if not exists public.leaderboard_snapshots (
   mission_score integer not null default 0,
   training_streak integer not null default 0,
   weekly_volume integer not null default 0,
-  night_sessions integer not null default 0,
+  fuel_days integer not null default 0,
+  squad_code text,
   region text,
   country_code text,
   country_name text,
@@ -19,6 +20,8 @@ create index if not exists leaderboard_region_idx
   on public.leaderboard_snapshots(region);
 create index if not exists leaderboard_country_idx
   on public.leaderboard_snapshots(country_code);
+create index if not exists leaderboard_squad_idx
+  on public.leaderboard_snapshots(squad_code);
 
 alter table public.leaderboard_snapshots enable row level security;
 
@@ -33,3 +36,8 @@ create policy "Users upsert own leaderboard row"
 drop policy if exists "Users update own leaderboard row" on public.leaderboard_snapshots;
 create policy "Users update own leaderboard row"
   on public.leaderboard_snapshots for update using (auth.uid() = user_id);
+
+-- If upgrading from night_sessions column:
+alter table public.leaderboard_snapshots drop column if exists night_sessions;
+alter table public.leaderboard_snapshots add column if not exists fuel_days integer not null default 0;
+alter table public.leaderboard_snapshots add column if not exists squad_code text;

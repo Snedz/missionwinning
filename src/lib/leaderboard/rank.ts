@@ -16,7 +16,11 @@ function filterByScope(
   you: LeaderboardSnapshot
 ): LeaderboardEntry[] {
   if (scope === 'global') return entries;
-  if (scope === 'friends') return entries.filter((e) => e.isYou);
+  if (scope === 'friends') {
+    const squad = you.squadCode?.toUpperCase();
+    if (!squad) return entries.filter((e) => e.isYou);
+    return entries.filter((e) => e.isYou || e.squadCode?.toUpperCase() === squad);
+  }
 
   return entries.filter((e) => {
     if (e.isYou) return true;
@@ -79,6 +83,7 @@ export function buildRankedLeaderboard(
     locale: you.locale,
     isYou: true,
     delta: 0,
+    squadCode: you.squadCode,
     userId: you.userId,
     detail: detailForBoard(you, boardId),
   };
@@ -93,7 +98,7 @@ export function buildRankedLeaderboard(
 
   let filtered = filterByScope(Array.from(merged.values()), scope, you);
 
-  if (scope === 'friends' && filtered.length <= 1) {
+  if (scope === 'friends' && filtered.length <= 1 && !you.squadCode) {
     filtered = [youEntry];
   }
 

@@ -44,6 +44,6 @@ export function scopeLabel(
     case 'local':
       return `${geo.countryName} · Local`;
     case 'friends':
-      return 'Friends squad';
+      return geo.countryName + ' · Squad';
   }
 }

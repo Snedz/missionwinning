@@ -10,6 +10,8 @@ import {
   computeLocalLeaderboardSnapshot,
   loadOperatorName,
   saveOperatorName,
+  loadSquadCode,
+  saveSquadCode,
 } from '@/lib/leaderboard/computeLocalStats';
 import { fetchCloudLeaderboardSnapshots, pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import type { LeaderboardBoardId, LeaderboardScope } from '@/lib/leaderboard/types';
@@ -25,6 +27,7 @@ export function LeaderboardPage() {
   const [scope, setScope] = useState<LeaderboardScope>('global');
   const [cloud, setCloud] = useState<Awaited<ReturnType<typeof fetchCloudLeaderboardSnapshots>>>([]);
   const [operatorName, setOperatorName] = useState(loadOperatorName);
+  const [squadCode, setSquadCode] = useState(loadSquadCode);
   const [syncing, setSyncing] = useState(false);
   const [userId, setUserId] = useState<string | undefined>();
 
@@ -46,16 +49,15 @@ export function LeaderboardPage() {
   }, [refresh]);
 
   const you = useMemo(
-    () => computeLocalLeaderboardSnapshot(workoutHistory, savedWorkouts.length, userId),
-    [workoutHistory, savedWorkouts.length, userId, operatorName]
+    () =>
+      computeLocalLeaderboardSnapshot(workoutHistory, savedWorkouts.length, userId),
+    [workoutHistory, savedWorkouts.length, userId, operatorName, squadCode]
   );
 
   const ranked = useMemo(
-    () => buildRankedLeaderboard(boardId, scope, { ...you, operatorName }, cloud),
-    [boardId, scope, you, cloud, operatorName]
+    () => buildRankedLeaderboard(boardId, scope, { ...you, operatorName, squadCode: squadCode || undefined }, cloud),
+    [boardId, scope, you, cloud, operatorName, squadCode]
   );
-
-  const isNightBoard = boardId === 'under-the-stars';
 
   return (
     <div className="space-y-6 pb-8">
@@ -67,11 +69,16 @@ export function LeaderboardPage() {
           </div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Leaderboard</h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-lg">
-            Gran Turismo–style boards — compare Mission Operators globally, by region, country, and
-            local cohort.
+            Compare Mission Operators globally, by region, country, locale, or squad.
           </p>
         </div>
-        <Button variant="outline" size="sm" className="shrink-0 gap-1.5" onClick={() => void refresh()} disabled={syncing}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="shrink-0 gap-1.5"
+          onClick={() => void refresh()}
+          disabled={syncing}
+        >
           <RefreshCw className={syncing ? 'h-4 w-4 animate-spin' : 'h-4 w-4'} />
           Sync
         </Button>
@@ -79,20 +86,9 @@ export function LeaderboardPage() {
 
       <LeaderboardBoardPicker boardId={boardId} onBoardChange={setBoardId} />
 
-      <div
-        className={
-          isNightBoard
-            ? 'rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/80 via-slate-950 to-black p-4 md:p-5'
-            : 'rounded-2xl border border-border/50 bg-card/40 p-4 md:p-5'
-        }
-      >
+      <div className="rounded-2xl border border-border/50 bg-card/40 p-4 md:p-5">
         <h2 className="text-lg font-semibold tracking-tight">{ranked.board.title}</h2>
         <p className="text-sm text-muted-foreground mt-1">{ranked.board.subtitle}</p>
-        {ranked.board.flavor && (
-          <p className="text-xs text-indigo-200/70 mt-3 leading-relaxed border-l-2 border-indigo-500/40 pl-3 italic">
-            {ranked.board.flavor}
-          </p>
-        )}
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:justify-between">
@@ -112,25 +108,41 @@ export function LeaderboardPage() {
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-        <label className="text-xs text-muted-foreground shrink-0">Call sign</label>
-        <input
-          value={operatorName}
-          onChange={(e) => setOperatorName(e.target.value)}
-          onBlur={() => {
-            saveOperatorName(operatorName);
-            void refresh();
-          }}
-          maxLength={24}
-          placeholder="Mission Operator"
-          className="flex-1 rounded-lg border border-border/50 bg-background px-3 py-2 text-sm"
-        />
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="space-y-1">
+          <span className="text-xs text-muted-foreground">Call sign</span>
+          <input
+            value={operatorName}
+            onChange={(e) => setOperatorName(e.target.value)}
+            onBlur={() => {
+              saveOperatorName(operatorName);
+              void refresh();
+            }}
+            maxLength={24}
+            placeholder="Mission Operator"
+            className="w-full rounded-lg border border-border/50 bg-background px-3 py-2 text-sm"
+          />
+        </label>
+        <label className="space-y-1">
+          <span className="text-xs text-muted-foreground">Squad code (for Squad tab)</span>
+          <input
+            value={squadCode}
+            onChange={(e) => setSquadCode(e.target.value.toUpperCase())}
+            onBlur={() => {
+              saveSquadCode(squadCode);
+              void refresh();
+            }}
+            maxLength={8}
+            placeholder="e.g. ALPHA"
+            className="w-full rounded-lg border border-border/50 bg-background px-3 py-2 text-sm font-mono uppercase"
+          />
+        </label>
       </div>
 
-      {scope === 'friends' && ranked.entries.length <= 1 && (
+      {scope === 'friends' && !squadCode && (
         <p className="text-sm text-muted-foreground rounded-lg border border-dashed border-border/50 p-4">
-          Friends squad rankings are coming soon. For now, compare on Global, Regional, National, or
-          Local boards.
+          Set a squad code above to compare with others using the same code. Try <strong>ALPHA</strong> or{' '}
+          <strong>BRAVO</strong> to see demo squad members.
         </p>
       )}
 
@@ -141,9 +153,8 @@ export function LeaderboardPage() {
       />
 
       <p className="text-[10px] text-muted-foreground leading-relaxed">
-        Demo operators fill boards until more members sync. Sign in to publish your scores to the
-        cloud. Rankings refresh when you tap Sync or finish a workout. Civilian fitness app — not
-        affiliated with any military service.
+        Demo operators fill boards until more members sync. Sign in and tap Sync to publish scores. Rankings
+        also update after workouts when signed in.
       </p>
     </div>
   );
