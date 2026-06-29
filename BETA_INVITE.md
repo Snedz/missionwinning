@@ -34,8 +34,7 @@ You're in the first cohort of **Mission Winning** — a free-core fitness app wi
 5. Optional: sign in on **Profile** for cloud sync
 
 **What to try:**
-- Simple mode (default) vs Pro mode (Profile → App mode)
-- Leaderboard → **Under the Stars** / **By Dawn's Early Light** if you train early or late
+- Tap **More** (green button above nav on phone) for Leaderboard, Move, Mind, Learn
 - Language switch on Profile (Thai, Japanese, Spanish, etc.)
 
 **Feedback:** Reply to this email or use in-app feedback. Confusing steps = exactly what we need to fix.
