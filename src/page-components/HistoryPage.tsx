@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { Calendar, Dumbbell, Timer } from "lucide-react";
+import { Calendar, Dumbbell, Timer, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,10 +24,46 @@ import { getExerciseById } from "@/data/exercises";
 import { formatDate, formatDuration } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
 import type { CompletedWorkoutLog } from "@/types";
+import { getUser, getUserWorkoutHistory, getUserNutritionForDate } from "@/lib/supabase";
 
 export function HistoryPage() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
+  const [cloudHistory, setCloudHistory] = useState<CompletedWorkoutLog[]>([]);
+  const [loadingCloud, setLoadingCloud] = useState(false);
+  const [pillarWins, setPillarWins] = useState<any[]>([]);
+  const [loadingWins, setLoadingWins] = useState(false);
+
+  const loadCloudHistory = async () => {
+    setLoadingCloud(true);
+    const user = await getUser();
+    if (user) {
+      const cloud = await getUserWorkoutHistory(20);
+      // Map simple for display (the type is similar)
+      const mapped = cloud.map(c => ({
+        id: c.id,
+        workoutName: c.workout_name,
+        completedAt: c.completed_at,
+        durationSeconds: c.duration_seconds,
+        exercises: c.exercises,
+        totalVolume: c.total_volume,
+      })) as any;
+      setCloudHistory(mapped);
+    }
+    setLoadingCloud(false);
+  };
+
+  const loadPillarWins = async () => {
+    setLoadingWins(true);
+    const user = await getUser();
+    if (user) {
+      const today = new Date().toISOString().split('T')[0];
+      const cloud = await getUserNutritionForDate(today);
+      const wins = cloud.filter((c: any) => /win|assessment|mobility|mind/i.test(c.name || ''));
+      setPillarWins(wins);
+    }
+    setLoadingWins(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -37,6 +73,10 @@ export function HistoryPage() {
         <p className="mt-1 text-muted-foreground">
           {workoutHistory.length} completed session{workoutHistory.length !== 1 ? "s" : ""}
         </p>
+        <Button size="sm" variant="outline" onClick={loadCloudHistory} disabled={loadingCloud} className="mt-1 text-xs">
+          {loadingCloud ? "Loading cloud..." : "Load cloud history (if signed in)"}
+        </Button>
+        {cloudHistory.length > 0 && <div className="text-xs text-emerald-400 mt-1">{cloudHistory.length} from cloud (merged below if new)</div>}
         {workoutHistory.length > 0 && (
           <div className="mt-2 text-xs text-muted-foreground">
             Recent trend: Avg volume last 5: {Math.round(workoutHistory.slice(0,5).reduce((s,l)=>s+l.totalVolume,0)/Math.min(5,workoutHistory.length)).toLocaleString()} lbs. 
@@ -91,6 +131,39 @@ export function HistoryPage() {
         </div>
       )}
 
+      {/* Pillar Wins / Habit Logs from Move/Mind/Assessments (cloud nutrition entries) */}
+      <div>
+        <h3 className="text-xl font-semibold flex items-center gap-2 mb-2"><Trophy className="h-5 w-5" /> Pillar Wins &amp; Habit Logs</h3>
+        <p className="text-sm text-muted-foreground mb-2">Mobility wins, mind prompts, assessments logged from pillars appear here (synergy with Nutrition). Free core.</p>
+        <Button size="sm" variant="outline" onClick={loadPillarWins} disabled={loadingWins} className="text-xs mb-2">
+          {loadingWins ? "Loading..." : "Load today's pillar wins (cloud if signed in)"}
+        </Button>
+        {pillarWins.length > 0 ? (
+          <div className="space-y-2">
+            {pillarWins.slice(0,5).map((w, i) => (
+              <div key={i} className="text-sm p-2 border rounded bg-muted/20 flex justify-between">
+                <span>{w.name} <span className="text-xs text-muted-foreground">({formatDate(w.date || new Date().toISOString())})</span></span>
+                <a href="/nutrition" className="text-xs underline">View in Nutrition →</a>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-xs text-muted-foreground">No pillar wins logged today yet. Use "Do it" in /move or /mind, or complete Assessment.</div>
+        )}
+        <div className="mt-2 flex gap-2 text-xs">
+          <Button size="sm" variant="ghost" className="text-xs" onClick={async () => {
+            const u = await getUser();
+            const today = new Date().toISOString().split('T')[0];
+            if (u) await (await import('@/lib/supabase')).saveNutritionEntry({ date: today, name: 'Quick Pillar Win from History', protein: 0, cals: 0 });
+            alert('Win logged to Nutrition! Check Today hub for streak.');
+          }}>Log similar win (+cloud)</Button>
+          <a href="/log" className="px-2 py-0.5 border border-white/30 rounded hover:bg-white/10">Start free starter →</a>
+          <a href="/learn" className="px-2 py-0.5 border border-white/30 rounded hover:bg-white/10">More samples in Learn →</a>
+          <a href="/move" className="px-2 py-0.5 border border-white/30 rounded hover:bg-white/10">Do Move flow →</a>
+          <a href="/mind" className="px-2 py-0.5 border border-white/30 rounded hover:bg-white/10">Log Mind prompt →</a>
+        </div>
+      </div>
+
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
         <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
           {selected && (
@@ -143,6 +216,27 @@ export function HistoryPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Sign up / Sign in for early private access + full cloud history while building */}
+      <div className="mt-6 p-4 bg-[#111827] border border-emerald-500/30 rounded">
+        <div className="text-emerald-400 font-medium mb-2">Sign up / Sign in for early private access + cloud sync (free magic link)</div>
+        <form onSubmit={async (e) => {
+          e.preventDefault();
+          const email = (e.target as any).email.value;
+          if (!email) return;
+          try {
+            const { signInMagic } = await import('@/lib/supabase');
+            await signInMagic(email);
+            alert(`Magic link sent to ${email}. Check email to access the full private build.`);
+          } catch (err: any) {
+            alert('Error: ' + (err.message || 'Check Supabase/Resend in Vercel.'));
+          }
+        }} className="flex gap-2">
+          <input name="email" type="email" placeholder="you@email.com" className="flex-1 border border-white/20 bg-black/40 rounded px-3 py-2 text-sm" required />
+          <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm font-medium">Send Magic Link</button>
+        </form>
+        <div className="text-[10px] text-white/40 mt-1">Load cloud history above works better when signed in. Public teaser only during build.</div>
+      </div>
     </div>
   );
 }

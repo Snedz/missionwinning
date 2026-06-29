@@ -4,13 +4,13 @@ import { Toaster } from '@/components/ui/toaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
 
 export const metadata: Metadata = {
-  title: 'Mission Winning | All-in-One Health & Workout App | Train Anywhere. Win Daily.',
-  description: 'The free global everything app for health. Core mission (workout tracking + fundamentals) free for everyone worldwide. Premium modules + Super Bundle for deeper synergy (train + fuel + move + mind + track + learn). The path to a healthier world for all. Train anywhere. Win daily.',
+  title: 'Private Development',
+  description: 'Private build. Not open to the public.',
   icons: {
     icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',
   },
-  manifest: '/manifest.json', // generated / served by next-pwa into public
+  manifest: '/manifest.json',
 };
 
 export const viewport: Viewport = {

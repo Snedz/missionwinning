@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useWorkoutStore } from "@/store/workoutStore";
 import { saveNutritionEntry } from "@/lib/supabase"; // reuse for demo save, or extend
 
 interface AssessmentResult {
@@ -51,6 +52,8 @@ export function AssessmentsPage() {
     setAnswers(prev => ({ ...prev, [key]: value }));
   };
 
+  const startWorkout = useWorkoutStore((s) => s.startWorkout);
+
   const submitAssessment = () => {
     const yesFlags = Object.values(answers).filter(v => v.toLowerCase().includes('yes') || v.toLowerCase().includes('low')).length;
     let risk: 'low' | 'moderate' | 'high' = 'low';
@@ -73,22 +76,70 @@ export function AssessmentsPage() {
     // Save a note to nutrition logs as demo assessment record (or extend table later)
     const today = new Date().toISOString().split('T')[0];
     saveNutritionEntry({ date: today, name: `Assessment: ${risk} risk`, protein: 0, cals: 0 }).catch(() => {});
+
+    // Persist last result for profile / history
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mw_last_assessment', JSON.stringify({ risk, notes, date: today }));
+    }
   };
 
-  if (!premium) {
-    return <div className="max-w-md mx-auto text-center py-12">
-      <h2 className="text-2xl font-bold">Assessments &amp; Readiness</h2>
-      <p className="mt-2">Digital ParQ / Health History + movement screening based on corrective exercise protocols.</p>
-      <p className="mt-4 text-sm">Unlock with Premium or any specialist program.</p>
-      <Button className="mt-4" onClick={() => window.location.href = "/programs"}>View Programs</Button>
-    </div>;
-  }
+  const bumpStreak = () => {
+    const cur = parseInt((typeof window !== 'undefined' ? localStorage.getItem('mw_streak') : '0') || '0');
+    const next = Math.max(1, cur + 1);
+    if (typeof window !== 'undefined') localStorage.setItem('mw_streak', String(next));
+  };
+
+  const startRecommended = (rec: string) => {
+    bumpStreak();
+    let name = "Daily Mobility + Mind Habit";
+    let exs: any[] = [
+      { exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },
+      { exerciseId: "bird-dog", sets: [{ reps: 6, weight: 0 }] },
+      { exerciseId: "glute-bridge", sets: [{ reps: 10, weight: 0 }] },
+      { exerciseId: "couch-stretch", sets: [{ reps: 45, weight: 0 }] },
+    ];
+    if (rec.toLowerCase().includes('bodyweight') || rec.toLowerCase().includes('full body')) {
+      name = "Full Body Habit Builder";
+      exs = [
+        { exerciseId: "push-ups", sets: [{ reps: 10, weight: 0 }] },
+        { exerciseId: "squats", sets: [{ reps: 12, weight: 0 }] },
+        { exerciseId: "glute-bridge", sets: [{ reps: 12, weight: 0 }] },
+        { exerciseId: "plank", sets: [{ reps: 25, weight: 0 }] },
+        { exerciseId: "couch-stretch", sets: [{ reps: 45, weight: 0 }] },
+      ];
+    } else if (rec.toLowerCase().includes('mobility') || rec.toLowerCase().includes('corrective')) {
+      name = "Daily Mobility Circuit (Free)";
+      exs = [
+        { exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },
+        { exerciseId: "bird-dog", sets: [{ reps: 6, weight: 0 }] },
+        { exerciseId: "glute-bridge", sets: [{ reps: 10, weight: 0 }] },
+        { exerciseId: "wall-sit", sets: [{ reps: 30, weight: 0 }] },
+        { exerciseId: "superman", sets: [{ reps: 8, weight: 0 }] },
+      ];
+    } else if (rec.toLowerCase().includes('upper') || rec.toLowerCase().includes('bodyweight & dumbbell')) {
+      name = "Bodyweight Strength Circuit";
+      exs = [
+        { exerciseId: "push-ups", sets: [{ reps: 12, weight: 0 }] },
+        { exerciseId: "squats", sets: [{ reps: 12, weight: 0 }] },
+        { exerciseId: "inverted-row", sets: [{ reps: 8, weight: 0 }] },
+        { exerciseId: "lunges", sets: [{ reps: 10, weight: 0 }] },
+        { exerciseId: "plank", sets: [{ reps: 30, weight: 0 }] },
+      ];
+    }
+    startWorkout(name, exs);
+    // Navigate to active
+    window.location.href = "/active";
+  };
+
+  // Core assessment is FREE forever per vision.md (basic readiness, ParQ-style, stages of change).
+  // Premium unlocks deeper saved history, cross-device, advanced coaching integration + full programs.
+  // No paywall on the mission fundamentals.
 
   return (
     <div className="max-w-3xl space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Readiness Assessment</h2>
-        <p className="text-muted-foreground">Based on standard health history and ParQ-style questions (from corrective exercise materials). Answer honestly for personalized guidance.</p>
+        <p className="text-muted-foreground">Free core tool. Based on standard health history and ParQ-style questions (from corrective exercise materials). Answer honestly for personalized guidance. Results help choose safe free starters in the Today hub or Builder.</p>
       </div>
 
       {!result && (
@@ -141,16 +192,42 @@ export function AssessmentsPage() {
           <CardContent className="space-y-4">
             <p>{result.notes}</p>
             <div>
-              <div className="font-semibold mb-2">Recommendations:</div>
-              <ul className="list-disc pl-5 space-y-1">
-                {result.recommendations.map((r, i) => <li key={i}>{r}</li>)}
-              </ul>
+              <div className="font-semibold mb-2">Recommendations (click to start a matching free starter + log win):</div>
+              <div className="flex flex-wrap gap-2">
+                {result.recommendations.map((r, i) => (
+                  <Button key={i} size="sm" variant="outline" onClick={() => startRecommended(r)}>
+                    Start: {r.length > 45 ? r.slice(0,42) + '...' : r} →
+                  </Button>
+                ))}
+              </div>
             </div>
             <Button onClick={() => { setResult(null); setAnswers({}); }}>Retake Assessment</Button>
-            <div className="text-xs">Results saved to your profile logs. Use to guide program choice in the Builder.</div>
+            <div className="text-xs">Results saved locally + to logs. Use to guide program choice in the Builder / Today hub. Streak +1 on start.</div>
+            <Button onClick={() => window.location.href = "/log"} variant="outline" className="mt-2">Go to Today Hub (Home) for all free starters</Button>
           </CardContent>
         </Card>
       )}
+
+      {/* Sign up / Sign in for early private access + cloud while building privately */}
+      <div className="mt-6 p-4 bg-[#111827] border border-emerald-500/30 rounded">
+        <div className="text-emerald-400 font-medium mb-2">Sign up / Sign in for early private access + cloud sync (free magic link)</div>
+        <form onSubmit={async (e) => {
+          e.preventDefault();
+          const email = (e.target as any).email.value;
+          if (!email) return;
+          try {
+            const { signInMagic } = await import('@/lib/supabase');
+            await signInMagic(email);
+            alert(`Magic link sent to ${email}. Check email to access the full private build.`);
+          } catch (err: any) {
+            alert('Error: ' + (err.message || 'Check Supabase/Resend in Vercel.'));
+          }
+        }} className="flex gap-2">
+          <input name="email" type="email" placeholder="you@email.com" className="flex-1 border border-white/20 bg-black/40 rounded px-3 py-2 text-sm" required />
+          <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm font-medium">Send Magic Link</button>
+        </form>
+        <div className="text-[10px] text-white/40 mt-1">Public teaser only during build. Sign in for full free assessments + cloud history on live domain.</div>
+      </div>
     </div>
   );
 }

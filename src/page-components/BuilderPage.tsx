@@ -199,6 +199,7 @@ export function BuilderPage() {
             Program Templates
           </h3>
           <Badge variant="secondary">{TEMPLATE_PROGRAM_COUNT} programs</Badge>
+          <span className="text-xs text-emerald-400">Includes new free bodyweight + mobility circuits (vision core)</span>
         </div>
 
         <Tabs
@@ -267,6 +268,50 @@ export function BuilderPage() {
               Add
             </Button>
           </div>
+
+          {/* Quick free mobility warm-up for better sessions (free core) */}
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-xs"
+            onClick={() => {
+              const mobilityIds = ["cat-camel", "bird-dog", "glute-bridge", "couch-stretch", "bear-crawl"];
+              const toAdd = mobilityIds.filter(id => !exercises.some(e => e.exerciseId === id));
+              if (toAdd.length === 0) {
+                alert("Mobility warm-up already in session.");
+                return;
+              }
+              setExercises([
+                ...exercises,
+                ...toAdd.map(id => ({
+                  key: `ex-${Date.now()}-${id}`,
+                  exerciseId: id,
+                  sets: [{ reps: 8, weight: 0 }],
+                }))
+              ]);
+            }}
+          >
+            + Quick Add Free Mobility Warm-up (5 moves)
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-xs ml-2"
+            onClick={() => {
+              // Quick load a free core mobility/habit template
+              setWorkoutName("Daily Habit Stack (Free)");
+              setSessionNotes("Vision-aligned free core: mobility + consistency. Log in Nutrition too.");
+              setExercises([
+                { key: `ex-${Date.now()}-1`, exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },
+                { key: `ex-${Date.now()}-2`, exerciseId: "bird-dog", sets: [{ reps: 6, weight: 0 }] },
+                { key: `ex-${Date.now()}-3`, exerciseId: "glute-bridge", sets: [{ reps: 10, weight: 0 }] },
+                { key: `ex-${Date.now()}-4`, exerciseId: "couch-stretch", sets: [{ reps: 45, weight: 0 }] },
+                { key: `ex-${Date.now()}-5`, exerciseId: "bear-crawl", sets: [{ reps: 10, weight: 0 }] },
+              ]);
+            }}
+          >
+            Load Free Habit/Mobility Stack
+          </Button>
 
           {exercises.map((ex) => {
             const exercise = getExerciseById(ex.exerciseId);
@@ -439,6 +484,27 @@ export function BuilderPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Sign up / Sign in for early private access + cloud saved workouts while building */}
+      <div className="mt-6 p-4 bg-[#111827] border border-emerald-500/30 rounded">
+        <div className="text-emerald-400 font-medium mb-2">Sign up / Sign in for early private access + cloud sync (free magic link)</div>
+        <form onSubmit={async (e) => {
+          e.preventDefault();
+          const email = (e.target as any).email.value;
+          if (!email) return;
+          try {
+            const { signInMagic } = await import('@/lib/supabase');
+            await signInMagic(email);
+            alert(`Magic link sent to ${email}. Check email to access the full private build.`);
+          } catch (err: any) {
+            alert('Error: ' + (err.message || 'Check Supabase/Resend in Vercel.'));
+          }
+        }} className="flex gap-2">
+          <input name="email" type="email" placeholder="you@email.com" className="flex-1 border border-white/20 bg-black/40 rounded px-3 py-2 text-sm" required />
+          <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm font-medium">Send Magic Link</button>
+        </form>
+        <div className="text-[10px] text-white/40 mt-1">Join the private build. Full Builder + cloud saved programs after sign-in. Public teaser only.</div>
+      </div>
     </div>
   );
 }

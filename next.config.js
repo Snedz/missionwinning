@@ -14,11 +14,12 @@ const nextConfig = {
   // @/* alias continues to resolve to src/ (existing components, data, lib, store, pages)
   // next-pwa will output manifest + sw to public/ on build.
 
-  // Ignore ESLint during builds (legacy anys + empty blocks from original Vite codebase;
-  // the app runs and type-checked in prior Vite tsc). Clean up in follow-up if desired.
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Force webpack for next-pwa compatibility (Next 16 defaults to Turbopack).
+  // Build script uses --webpack.
+  turbopack: {},
+
+  // Silence workspace root warning (parent /Users/snedz/package-lock.json).
+  outputFileTracingRoot: __dirname,
 };
 
 module.exports = withPWA(nextConfig);
