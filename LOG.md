@@ -4,6 +4,20 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase F2a: Simple/Pro mode + Apple UI polish
+
+**Branch:** `cursor/simple-pro-mode-699d` (includes F1 from `cursor/journey-i-day-699d`)
+
+### Shipped
+
+- **Simple / Pro Mode** — Simple default; Profile toggle; Pro = full dashboard + More tools
+- **Apple-inspired UI** — glass nav, 44px targets, 17px Simple typography, solid content cards
+- **5-tab nav** — desktop matches mobile; Pro adds More sheet
+- **Text form guides** — 12+ exercises, no video budget
+- **Military test prep** — Benchmarks section only; global health tone everywhere else
+
+---
+
 ## 2026-06-29 — Phase F1: Journey engine + I-Day
 
 **Branch:** `cursor/journey-i-day-699d`
