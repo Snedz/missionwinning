@@ -143,7 +143,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 - [ ] Split `pro` program templates to server-only module (like recipes)
 - [x] PayPal webhook signature verification (`src/lib/paypalWebhook.ts`)
 - [x] CSP header enforced in production (`next.config.js`; `CSP_ENFORCE=false` for report-only)
-- [ ] Leads table: CAPTCHA or rate limit on `/api` lead inserts
+- [x] Leads table: rate limit on `/api/leads` (5/min/IP; server insert via service role)
 - [ ] JWT gate bypass: verify signature via Supabase JWKS if `PRIVATE_ALLOW_AUTH_BYPASS=true`
 
 ### P2 — Competitive parity

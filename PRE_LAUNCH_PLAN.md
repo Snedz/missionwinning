@@ -27,7 +27,7 @@
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
 | **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
-| **Build label** | ✅ | `2025.06-unified.9` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.10` on Profile footer |
 
 ### Open PR stack
 
@@ -38,13 +38,14 @@ Most feature work is merged to `master`. Branch `cursor/today-cards-challenges-6
 | Priority | Task | Status |
 |----------|------|--------|
 | 1 | Today i18n + HomePage refactor | ✅ `todayLocales.ts`, `TodayWeekSection`, `TodayProgressSection`, `starterPrograms.ts` |
-| 2 | Fuel i18n + SignInPrompt | ✅ partial |
+| 2 | Fuel i18n + SignInPrompt | ✅ `fuelLocales.ts` (en/es/zh/id/th) + SignInPrompt |
 | 3 | Challenge copy i18n | ✅ `challengeI18n.ts` + `todayLocales` keys |
 | 4 | Customizable Today cards | ✅ show/hide + reorder (`todayDashboardPrefs` v2) |
 | 5 | Photo log → local estimate stub | ✅ `estimateMealFromPhoto.ts`, `PhotoLogStub` |
 | 6 | Wins badge i18n | ✅ `todayLocales` + `TodayProgressSection` |
 | 7 | Staggered Today hero animations | ✅ `StaggerReveal` on HomePage |
 | 8 | Security P1 (PayPal sig, CSP) | ✅ PayPal verify + CSP enforce in prod (`next.config.js`) |
+| 9 | Leads API rate limit | ✅ `/api/leads` + `submitLead` via server |
 
 ---
 
@@ -169,7 +170,7 @@ Work **without Vercel** until access is restored.
 |---|------|
 | 1 | `PRIVATE_MODE=false` |
 | 2 | Stripe live + verified webhook |
-| 3 | PROTECTION P1 (PayPal verify, CSP, leads rate limit) |
+| 3 | PROTECTION P1 complete (PayPal verify, CSP, leads rate limit) | ✅ |
 | 4 | App Store / PWA install prompt on landing |
 | 5 | Tier 2 full page translation rollout |
 
@@ -196,7 +197,7 @@ Verify 6+ tables: `profiles`, `workout_logs`, `nutrition_logs`, `enrollments`, `
 - Video form guides / CDN
 - AI Coach v1
 - GPS / activity import
-- PayPal webhook (until signature verify)
+- PayPal webhook env setup when LLC + PayPal dashboard ready (verify code shipped)
 - Full 9-language body copy (100% UI)
 - Apple native app
 - `PRIVATE_MODE=false` before beta gates

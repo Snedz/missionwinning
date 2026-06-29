@@ -280,11 +280,21 @@ export async function submitLead(lead: Lead & { source?: string; message?: strin
   }
 
   try {
-    const { error } = await supabase.from('leads').insert(payload)
-    if (error) {
-      console.error('submitLead error', error)
+    const res = await fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+
+    if (res.status === 202) {
+      return { ok: true, localOnly: true }
+    }
+
+    if (!res.ok) {
+      console.error('submitLead error', res.status)
       return { ok: false }
     }
+
     return { ok: true }
   } catch (e) {
     console.error('submitLead exception', e)
