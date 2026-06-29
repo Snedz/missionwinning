@@ -115,13 +115,13 @@ Not seven separate apps — **one shell**, Freeletics-bundle **depth** behind Mo
 - [x] HomePage refactor: `starterPrograms.ts`, `TodayWeekSection`, `TodayProgressSection`
 - [x] Page enter transition on route change (AppLayout)
 - [x] i18n: Weekly challenge titles, wins badges (dynamic copy)
-- [ ] Animated hero transitions (staggered blocks)
+- [x] Animated hero transitions (staggered blocks)
 
 ### Phase 3 — Holistic depth
 
 - [x] Nutrition photo log stub (on-device estimate → log to Fuel)
 - [x] Commander's intent line on commissioned Today
-- [x] Customizable dashboard sections (show/hide; order TBD)
+- [x] Customizable dashboard sections (show/hide + reorder)
 - [ ] CSP enforce (Report-Only shipped in `vercel.json`)
 - [ ] Arabic RTL + zh full body copy
 

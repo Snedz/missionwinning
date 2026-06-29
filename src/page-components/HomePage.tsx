@@ -21,7 +21,8 @@ import { TodayHealthSection } from "@/components/today/TodayHealthSection";
 import { TodayWeekSection } from "@/components/today/TodayWeekSection";
 import { TodayProgressSection } from "@/components/today/TodayProgressSection";
 import { TodayDashboardCustomize } from "@/components/today/TodayDashboardCustomize";
-import { loadTodayDashboardPrefs, type TodayDashboardPrefs } from "@/lib/todayDashboardPrefs";
+import { loadTodayDashboardPrefs, type TodayDashboardPrefs, type TodaySectionId } from "@/lib/todayDashboardPrefs";
+import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { getTodayLayout } from "@/hooks/useTodayLayout";
 
@@ -43,7 +44,9 @@ export function HomePage() {
   const [recentPillarWins, setRecentPillarWins] = useState<any[]>([]);
   const [lastAssessment, setLastAssessment] = useState<any>(null);
   const [sectionPrefs, setSectionPrefs] = useState<TodayDashboardPrefs>(() =>
-    typeof window !== 'undefined' ? loadTodayDashboardPrefs() : { health: true, week: true, progress: true }
+    typeof window !== 'undefined'
+      ? loadTodayDashboardPrefs()
+      : { health: true, week: true, progress: true, order: ['health', 'week', 'progress'] }
   );
 
   useEffect(() => {
@@ -185,103 +188,152 @@ export function HomePage() {
   const userGoal = typeof window !== 'undefined' ? (localStorage.getItem('mw_primary_goal') || 'Build strength and stay healthy') : 'Build strength and stay healthy';
   const userEquip = typeof window !== 'undefined' ? (localStorage.getItem('mw_equipment') || 'full-gym') : 'full-gym';
 
-  return (
-    <div className="space-y-6">
-      <BetaWelcomeBanner />
+  const renderAccordionSection = (id: TodaySectionId) => {
+    if (!sectionPrefs[id]) return null;
+    switch (id) {
+      case 'health':
+        return (
+          <TodaySection
+            title={t('todaySectionHealth', { defaultValue: 'Health scores' })}
+            description={t('todaySectionHealthDesc', {
+              defaultValue: 'Coach insight and pillar breakdown',
+            })}
+            defaultOpen={false}
+          >
+            <TodayHealthSection insight={coachInsight} breakdown={scoreBreakdown} />
+          </TodaySection>
+        );
+      case 'week':
+        return (
+          <TodaySection
+            title={t('todaySectionWeek', { defaultValue: 'This week' })}
+            description={t('todaySectionWeekDesc', {
+              defaultValue: 'Challenges and daily workout',
+            })}
+          >
+            <TodayWeekSection
+              challenges={challenges}
+              streak={streak}
+              todaysWorkout={todaysWorkout}
+              onStartTodaysWorkout={() =>
+                onStartStarter(todaysWorkout.name, todaysWorkout.exercises)
+              }
+            />
+          </TodaySection>
+        );
+      case 'progress':
+        return (
+          <TodaySection
+            title={t('todaySectionProgress', { defaultValue: 'Progress & tools' })}
+            description={t('todaySectionProgressDesc', {
+              defaultValue: 'Readiness, stats, and history',
+            })}
+          >
+            <TodayProgressSection
+              savedWorkouts={savedWorkouts}
+              readiness={readiness}
+              userGoal={userGoal}
+              userEquip={userEquip}
+              totalSessions={totalSessions}
+              totalVolume={totalVolume}
+              streak={streak}
+              highProteinDays={highProteinDays}
+              nightSessions={nightSessions}
+              dawnSessions={dawnSessions}
+              lastAssessment={lastAssessment}
+              recentPillarWins={recentPillarWins}
+              setRecentPillarWins={setRecentPillarWins}
+              recent={recent}
+              onStartStarter={onStartStarter}
+            />
+          </TodaySection>
+        );
+      default:
+        return null;
+    }
+  };
 
-      <TodayPageHeader
-        today={today}
-        recommendedFocus={recommendedFocus}
-        userEquip={userEquip}
-        streak={streak}
-        userEmail={userEmail}
-        action={action}
-        showFocusLine={layout.showFocusLine}
-      />
+  const staggerBlocks: { key: string; node: React.ReactNode }[] = [
+    { key: 'beta', node: <BetaWelcomeBanner /> },
+    {
+      key: 'header',
+      node: (
+        <TodayPageHeader
+          today={today}
+          recommendedFocus={recommendedFocus}
+          userEquip={userEquip}
+          streak={streak}
+          userEmail={userEmail}
+          action={action}
+          showFocusLine={layout.showFocusLine}
+        />
+      ),
+    },
+  ];
 
-      {state.phase === 'commissioned' && <CommandersIntent />}
+  if (state.phase === 'commissioned') {
+    staggerBlocks.push({ key: 'intent', node: <CommandersIntent /> });
+  }
 
+  staggerBlocks.push({
+    key: 'hero',
+    node: (
       <JourneyHero
         action={action}
         onPrimaryClick={handleJourneyPrimary}
         activeWorkout={!!activeWorkout}
       />
+    ),
+  });
 
-      {layout.showDashboard && (
-        <TodayDashboardHeader missionScore={score} scores={bodyScores} streak={streak} />
-      )}
+  if (layout.showDashboard) {
+    staggerBlocks.push({
+      key: 'dashboard',
+      node: <TodayDashboardHeader missionScore={score} scores={bodyScores} streak={streak} />,
+    });
+  }
 
-      {layout.showQuickLinks && <TodayQuickLinks />}
+  if (layout.showQuickLinks) {
+    staggerBlocks.push({ key: 'quick-links', node: <TodayQuickLinks /> });
+  }
 
-      {!layout.showDashboard && state.phase === 'basic' && streak === 0 && (
+  if (!layout.showDashboard && state.phase === 'basic' && streak === 0) {
+    staggerBlocks.push({
+      key: 'encourage',
+      node: (
         <p className="text-center text-sm text-muted-foreground px-4">
-          {t('todayBasicEncouragement', { defaultValue: 'One step at a time. Health for everyone — train, fuel, move, and learn on your path.' })}
+          {t('todayBasicEncouragement', {
+            defaultValue:
+              'One step at a time. Health for everyone — train, fuel, move, and learn on your path.',
+          })}
         </p>
-      )}
+      ),
+    });
+  }
 
-      {layout.showDetailsAccordion && (
+  if (layout.showDetailsAccordion) {
+    staggerBlocks.push({
+      key: 'accordion',
+      node: (
         <div className="space-y-3">
           <TodayDashboardCustomize prefs={sectionPrefs} onChange={setSectionPrefs} />
           <TodaySections>
-            {sectionPrefs.health && (
-              <TodaySection
-                title={t('todaySectionHealth', { defaultValue: 'Health scores' })}
-                description={t('todaySectionHealthDesc', {
-                  defaultValue: 'Coach insight and pillar breakdown',
-                })}
-                defaultOpen={false}
-              >
-                <TodayHealthSection insight={coachInsight} breakdown={scoreBreakdown} />
-              </TodaySection>
-            )}
-
-            {sectionPrefs.week && (
-              <TodaySection
-                title={t('todaySectionWeek', { defaultValue: 'This week' })}
-                description={t('todaySectionWeekDesc', {
-                  defaultValue: 'Challenges and daily workout',
-                })}
-              >
-                <TodayWeekSection
-                  challenges={challenges}
-                  streak={streak}
-                  todaysWorkout={todaysWorkout}
-                  onStartTodaysWorkout={() =>
-                    onStartStarter(todaysWorkout.name, todaysWorkout.exercises)
-                  }
-                />
-              </TodaySection>
-            )}
-
-            {sectionPrefs.progress && (
-              <TodaySection
-                title={t('todaySectionProgress', { defaultValue: 'Progress & tools' })}
-                description={t('todaySectionProgressDesc', {
-                  defaultValue: 'Readiness, stats, and history',
-                })}
-              >
-                <TodayProgressSection
-                  savedWorkouts={savedWorkouts}
-                  readiness={readiness}
-                  userGoal={userGoal}
-                  userEquip={userEquip}
-                  totalSessions={totalSessions}
-                  totalVolume={totalVolume}
-                  streak={streak}
-                  highProteinDays={highProteinDays}
-                  nightSessions={nightSessions}
-                  dawnSessions={dawnSessions}
-                  lastAssessment={lastAssessment}
-                  recentPillarWins={recentPillarWins}
-                  setRecentPillarWins={setRecentPillarWins}
-                  recent={recent}
-                  onStartStarter={onStartStarter}
-                />
-              </TodaySection>
-            )}
+            {sectionPrefs.order.map((id) => (
+              <div key={id}>{renderAccordionSection(id)}</div>
+            ))}
           </TodaySections>
         </div>
-      )}
-    </div>
+      ),
+    });
+  }
+
+  return (
+    <StaggerGroup className="space-y-6">
+      {staggerBlocks.map(({ key, node }, index) => (
+        <StaggerItem key={key} index={index}>
+          {node}
+        </StaggerItem>
+      ))}
+    </StaggerGroup>
   );
 }
