@@ -11,6 +11,7 @@ import { FREE_RECIPES } from "@/data/recipes/freeRecipes";
 import type { Recipe } from "@/data/recipes/types";
 import { usePremium } from "@/hooks/usePremium";
 import { PhotoLogStub } from "@/components/nutrition/PhotoLogStub";
+import { SignInPrompt } from "@/components/auth/SignInPrompt";
 
 const FREE_RECIPE_COUNT = 12;
 
@@ -160,11 +161,20 @@ export function NutritionPage() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Nutrition</h2>
+        <h2 className="text-3xl font-bold tracking-tight">{t('fuelTitle', { defaultValue: 'Nutrition' })}</h2>
         <p className="text-muted-foreground">
-          Free core: daily macro log, water, targets, and {FREE_RECIPE_COUNT} accessible recipes for everyone worldwide.
-          {premium ? ' Premium: full recipe library + deep plans (Super Bundle).' : ' Super Bundle unlocks the full recipe library and advanced meal plans.'}
-          {' '}High-protein days boost your <a href="/log" className="underline">Win Score</a>.
+          {t('fuelSubtitle', {
+            defaultValue:
+              'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
+          })}
+          {premium
+            ? ' Premium: full recipe library + deep plans (Super Bundle).'
+            : ' Super Bundle unlocks the full recipe library and advanced meal plans.'}{' '}
+          High-protein days boost your{' '}
+          <a href="/log" className="underline">
+            Win Score
+          </a>
+          .
         </p>
       </div>
 
@@ -316,10 +326,7 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
         </Card>
       )}
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        <a href="/profile" className="text-emerald-400 hover:underline">Sign in (optional)</a>
-        {' '}to sync meals across devices.
-      </p>
+      <SignInPrompt className="mt-2" nextPath="/nutrition" description={t('fuelSignInDesc', { defaultValue: 'Sync meals and macro history across devices.' })} />
     </div>
   );
 }

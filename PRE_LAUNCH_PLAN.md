@@ -1,8 +1,8 @@
 # Pre-Launch Plan — Mission Winning
 
 **Purpose:** Single checklist before `PRIVATE_MODE=false` and public launch.  
-**Last updated:** 2026-06-29  
-**Vercel access:** Deferred — local + Supabase work can continue without it.
+**Last updated:** 2026-06-29 (post-unified UI)  
+**Vercel access:** Deferred — waiting on 2FA reset. Local + Supabase work continues.
 
 ---
 
@@ -14,32 +14,35 @@
 |------|--------|-------|
 | **Free core** | ✅ | Train, Fuel, Move, Mind, Track, Learn — usable without premium |
 | **Journey (F1–F3)** | ✅ | I-Day → Basic → Readiness → Commissioned; cloud sync |
-| **Simple / Pro UI (F2)** | ✅ | 5-tab Simple default; Pro = full Today + More tools |
+| **Unified UI** | ✅ | One shell — no Simple/Pro; journey phase drives Today layout |
+| **Auth & privacy** | ✅ | Google + email, consent gate, SignInPrompt on tool pages; Apple opt-in via env |
 | **i18n Tier 1 (G1)** | ✅ | EN, ES, FR, PT, RU, DE, IT, KO, JA — nav, welcome, journey chrome |
 | **i18n Tier 2 (G1b)** | ✅ | TH, VI, HI, ZH, ID — nav, welcome, journey chrome |
+| **Welcome i18n (G2 partial)** | ✅ | Full I-Day flow: en, zh, id, th, es (`welcomeLocales.ts`) |
+| **Today i18n (G2 partial)** | ✅ | Accordion chrome + main sections: en, es, zh, id, th (`todayLocales.ts`) |
 | **Beta invite kit** | ✅ | `/beta` start guide + [BETA_INVITE.md](BETA_INVITE.md) |
 | **Leaderboard i18n** | ✅ partial | Title, boards, scopes in EN/ES/FR/JA/DE/TH/ZH/ID |
 | **Form guides (G2)** | ✅ | 50+ text-only exercise guides |
-| **Legal (F4 partial)** | ✅ | `/privacy`, `/terms`, linked from `/about` |
+| **Legal (F4 partial)** | ✅ | `/privacy`, `/terms`, AppLegalFooter on Profile/Welcome/private |
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
 | **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
+| **Build label** | ✅ | `2025.06-unified.6` on Profile footer |
 
-### Open PR stack (merge in order)
+### Open PR stack
 
-| PR | Branch | Content |
-|----|--------|---------|
-| #8 | `cursor/journey-i-day-699d` | F1 journey + I-Day |
-| #9 | `cursor/ux-global-plan-699d` | UX plan doc |
-| #10 | `cursor/simple-pro-mode-699d` | F2a Simple/Pro |
-| #11 | `cursor/f2d-g1-form-guides-699d` | F2b commissioning, G1/G2 |
-| #12 | `cursor/f3-journey-sync-699d` | F3 sync + Japanese |
-| #13 | `cursor/f3-analytics-nudge-699d` | Analytics + email nudge |
-| #14 | `cursor/f4-beta-launch-699d` | Beta funnel + legal |
-| #15 | `cursor/leaderboard-gt7-699d` | Leaderboard base |
-| #17 | `cursor/leaderboard-dawn-stars-699d` | Night + dawn boards, deep links, Today wins |
+Most feature work is merged to `master`. When Vercel 2FA resets: redeploy from `master`, verify build label `2025.06-unified.6`, run gate smoke test, then send beta invites per [BETA_INVITE.md](BETA_INVITE.md).
 
-**Recommendation:** Squash-merge or rebase stack into `master` in one integration pass before beta invites, then deploy from a single release tag.
+### While Vercel is blocked — continue locally
+
+| Priority | Task | Status |
+|----------|------|--------|
+| 1 | Today i18n + HomePage refactor | ✅ `todayLocales.ts`, `TodayWeekSection`, `TodayProgressSection`, `starterPrograms.ts` |
+| 2 | Fuel i18n + SignInPrompt | ✅ partial |
+| 3 | Challenge copy i18n | ⬜ |
+| 4 | Customizable Today cards | ⬜ |
+| 5 | Photo log → local estimate stub | ⬜ |
+| 6 | Security P1 (PayPal sig, CSP) | ⬜ |
 
 ---
 

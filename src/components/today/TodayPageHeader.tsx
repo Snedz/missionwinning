@@ -35,7 +35,7 @@ export function TodayPageHeader({
         {showFocusLine && (
           <p className="text-sm text-muted-foreground mt-0.5">
             {t('recommendedFocus', { defaultValue: recommendedFocus })}
-            {userEquip === 'bodyweight' ? ' · bodyweight' : ''}
+            {userEquip === 'bodyweight' ? ` · ${t('todayBodyweightTag', { defaultValue: 'bodyweight' })}` : ''}
           </p>
         )}
       </div>
