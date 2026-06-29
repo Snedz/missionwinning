@@ -25,6 +25,24 @@ export const LEADERBOARD_BOARDS: LeaderboardBoard[] = [
     subtitle: 'Days this week with 120g+ protein logged in Fuel.',
     unit: 'days',
   },
+  {
+    id: 'under-the-stars',
+    title: 'Under the Stars',
+    subtitle: 'Sessions logged between 22:00 and 05:00 local — night discipline.',
+    unit: 'ops',
+    theme: 'night',
+    flavor:
+      'Operators who train when the world sleeps. Civilian fitness app — inspired by round-the-clock readiness, not affiliated with any military service.',
+  },
+  {
+    id: 'dawns-early-light',
+    title: "By Dawn's Early Light",
+    subtitle: 'Sessions logged between 05:00 and 08:00 local — first light of the day.',
+    unit: 'ops',
+    theme: 'dawn',
+    flavor:
+      'Early risers who win the morning before the day wins them. One clear action at first light.',
+  },
 ];
 
 export const LEADERBOARD_SCOPES: {

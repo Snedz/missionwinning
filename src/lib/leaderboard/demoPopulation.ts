@@ -58,6 +58,8 @@ export function buildDemoPopulation(count = 96): LeaderboardSnapshot[] {
       trainingStreak: Math.min(21, (seed >> 3) % 14),
       weeklyVolume: 800 + (seed % 9200),
       fuelDays: (seed >> 4) % 8,
+      nightSessions: (seed >> 5) % 12,
+      dawnSessions: (seed >> 6) % 10,
       squadCode,
       region: country.region,
       countryCode: country.code,
@@ -65,6 +67,10 @@ export function buildDemoPopulation(count = 96): LeaderboardSnapshot[] {
       locale: 'en',
     });
   }
+
+  // Featured leaders for themed boards
+  out[0] = { ...out[0], operatorName: 'Night Vector', nightSessions: 14, missionScore: 88 };
+  out[1] = { ...out[1], operatorName: 'First Light', dawnSessions: 12, missionScore: 85 };
 
   return out;
 }
@@ -84,6 +90,10 @@ export function snapshotToEntry(
         return snap.weeklyVolume;
       case 'fuel-days':
         return snap.fuelDays;
+      case 'under-the-stars':
+        return snap.nightSessions;
+      case 'dawns-early-light':
+        return snap.dawnSessions;
     }
   })();
 

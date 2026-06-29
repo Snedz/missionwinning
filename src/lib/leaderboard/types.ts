@@ -5,13 +5,19 @@ export type LeaderboardBoardId =
   | 'mission-score'
   | 'training-streak'
   | 'weekly-volume'
-  | 'fuel-days';
+  | 'fuel-days'
+  | 'under-the-stars'
+  | 'dawns-early-light';
+
+export type LeaderboardBoardTheme = 'default' | 'night' | 'dawn';
 
 export interface LeaderboardBoard {
   id: LeaderboardBoardId;
   title: string;
   subtitle: string;
   unit: string;
+  theme?: LeaderboardBoardTheme;
+  flavor?: string;
 }
 
 export interface LeaderboardEntry {
@@ -37,6 +43,8 @@ export interface LeaderboardSnapshot {
   trainingStreak: number;
   weeklyVolume: number;
   fuelDays: number;
+  nightSessions: number;
+  dawnSessions: number;
   squadCode?: string;
   region: string;
   countryCode: string;
@@ -52,4 +60,18 @@ export interface RankedLeaderboard {
   yourRank: number | null;
   totalPlayers: number;
   updatedAt: string;
+}
+
+/** Count workouts in a local hour window [startHour, endHour). */
+export function countSessionsInHourRange(
+  workoutHistory: import('@/types').CompletedWorkoutLog[],
+  startHour: number,
+  endHour: number
+): number {
+  return workoutHistory.filter((w) => {
+    const h = new Date(w.completedAt).getHours();
+    if (startHour <= endHour) return h >= startHour && h < endHour;
+    // wraps midnight e.g. 22–5 → 22,23,0,1,2,3,4
+    return h >= startHour || h < endHour;
+  }).length;
 }

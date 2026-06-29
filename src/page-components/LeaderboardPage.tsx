@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Trophy, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { getUser } from '@/lib/supabase';
 import { buildRankedLeaderboard } from '@/lib/leaderboard/rank';
@@ -59,6 +60,8 @@ export function LeaderboardPage() {
     [boardId, scope, you, cloud, operatorName, squadCode]
   );
 
+  const boardTheme = ranked.board.theme;
+
   return (
     <div className="space-y-6 pb-8">
       <div className="flex items-start justify-between gap-4">
@@ -86,9 +89,28 @@ export function LeaderboardPage() {
 
       <LeaderboardBoardPicker boardId={boardId} onBoardChange={setBoardId} />
 
-      <div className="rounded-2xl border border-border/50 bg-card/40 p-4 md:p-5">
+      <div
+        className={
+          boardTheme === 'night'
+            ? 'rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/80 via-slate-950 to-black p-4 md:p-5'
+            : boardTheme === 'dawn'
+              ? 'rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-950/50 via-orange-950/30 to-slate-950 p-4 md:p-5'
+              : 'rounded-2xl border border-border/50 bg-card/40 p-4 md:p-5'
+        }
+      >
         <h2 className="text-lg font-semibold tracking-tight">{ranked.board.title}</h2>
         <p className="text-sm text-muted-foreground mt-1">{ranked.board.subtitle}</p>
+        {ranked.board.flavor && (
+          <p
+            className={cn(
+              'text-xs mt-3 leading-relaxed border-l-2 pl-3 italic',
+              boardTheme === 'night' && 'text-indigo-200/70 border-indigo-500/40',
+              boardTheme === 'dawn' && 'text-amber-200/80 border-amber-500/40'
+            )}
+          >
+            {ranked.board.flavor}
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:justify-between">
