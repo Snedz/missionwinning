@@ -124,6 +124,33 @@ Your project ref from the saved config: `tnzauplicgfrozvnowqp`
 
 ---
 
+## PayPal webhook (Super Bundle — when LLC ready)
+
+Set in Vercel (server only — never `NEXT_PUBLIC_`):
+
+| Variable | Purpose |
+|----------|---------|
+| `PAYPAL_WEBHOOK_ID` | From PayPal Developer → your app → Webhooks |
+| `PAYPAL_CLIENT_ID` | REST app credentials |
+| `PAYPAL_CLIENT_SECRET` | REST app credentials |
+| `PAYPAL_ENV` | `sandbox` (default) or `live` |
+
+Webhook URL: `https://www.missionwinning.com/api/paypal-webhook`
+
+Events: `PAYMENT.CAPTURE.COMPLETED`, `BILLING.SUBSCRIPTION.ACTIVATED`
+
+Forged requests without PayPal transmission headers return **401**. Unconfigured env returns **503**.
+
+---
+
+## Content Security Policy
+
+CSP is set in `next.config.js`. Production builds **enforce** by default; local dev uses **Report-Only**.
+
+Set `CSP_ENFORCE=false` in Vercel temporarily if you need report-only on a preview deploy.
+
+---
+
 ## Going fully public (later)
 
 When ready to launch:
