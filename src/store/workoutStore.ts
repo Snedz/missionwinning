@@ -10,6 +10,7 @@ import type {
   WorkoutExerciseTemplate,
 } from "@/types";
 import { saveWorkoutLog, getUserWorkoutHistory, getUser } from "@/lib/supabase";
+import { recordWorkoutCompleted } from "@/lib/challenges";
 
 const DEFAULT_REST_SECONDS = 30;
 
@@ -150,6 +151,8 @@ export const useWorkoutStore = create<WorkoutState>()(
           restSecondsRemaining: 0,
           restTimerActive: false,
         }));
+
+        recordWorkoutCompleted(log);
 
         // Auto sync to cloud if signed in (non-blocking)
         getUser().then(u => {

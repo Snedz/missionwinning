@@ -6,6 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
+import { syncProteinChallengeFromNutrition } from "@/lib/challenges";
+
+const FREE_RECIPE_COUNT = 12;
 
 interface LogEntry {
   name: string;
@@ -1145,6 +1148,7 @@ export function NutritionPage() {
   const addEntry = (name: string, p: number, c: number, carbs = 0, fat = 0) => {
     const entry: LogEntry = { name, protein: p, cals: c, carbs, fat, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
     setLogged(prev => [...prev, entry]);
+    syncProteinChallengeFromNutrition();
     // Cloud sync
     getUser().then(u => {
       if (u) saveNutritionEntry({ date: today, name, protein: p, cals: c, carbs, fat }).catch(() => {});
@@ -1194,22 +1198,19 @@ export function NutritionPage() {
     setWater(0);
   };
 
-  if (!premium) {
-    return (
-      <div className="max-w-md mx-auto text-center py-12">
-        <h2 className="text-2xl font-bold">{t('nutrition', { defaultValue: 'Nutrition' })} Tracker</h2>
-        <p className="mt-2 text-muted-foreground">Daily macro logging, targets, water, and recipe ideas from the nutrition specialist program.</p>
-        <p className="mt-4 text-sm">Unlock with any specialist program purchase or Premium subscription.</p>
-        <Button className="mt-4" onClick={() => window.location.href = "/bundle"}>Explore Super Bundle</Button>
-      </div>
-    );
-  }
+
+  const freeRecipes = RECIPES.slice(0, FREE_RECIPE_COUNT);
+  const premiumRecipes = RECIPES.slice(FREE_RECIPE_COUNT);
 
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Nutrition</h2>
-        <p className="text-muted-foreground">Log intake. Hit targets. Recover better. High-protein days directly boost your <a href="/log" className="underline">Win Score</a> in the Today Hub. (Premium • from your Nutrition cert)</p>
+        <p className="text-muted-foreground">
+          Free core: daily macro log, water, targets, and {FREE_RECIPE_COUNT} accessible recipes for everyone worldwide.
+          {premium ? ' Premium: full recipe library + deep plans (Super Bundle).' : ' Super Bundle unlocks the full recipe library and advanced meal plans.'}
+          {' '}High-protein days boost your <a href="/log" className="underline">Win Score</a>.
+        </p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
@@ -1306,9 +1307,30 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
       <div className="text-[10px] text-muted-foreground">Data stored locally (synced when you sign in with Supabase in future updates). Full integration + meal plans in the paid Nutrition course.</div>
 
       <Card>
+        <CardHeader><CardTitle>Free Recipes ({FREE_RECIPE_COUNT} — core mission)</CardTitle></CardHeader>
+        <CardContent className="space-y-4">
+          {freeRecipes.map((r, i) => (
+            <div key={i} className="border border-white/10 rounded p-3 bg-black/20">
+              <div className="flex justify-between gap-2 flex-wrap">
+                <div>
+                  <div className="font-semibold">{r.name}</div>
+                  <div className="text-xs text-emerald-400">{r.protein}g protein • {r.cals} kcal</div>
+                </div>
+                <Button size="sm" variant="fitness" onClick={() => addEntry(r.name, r.protein, r.cals, r.carbs, r.fat)}>
+                  {t('logRecipe', { defaultValue: 'Log Recipe' })}
+                </Button>
+              </div>
+              <div className="text-xs mt-1 text-white/70">{r.ingredients}</div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {premium ? (
+      <Card>
         <CardHeader><CardTitle>Premium Recipes &amp; Meal Ideas (Super Bundle)</CardTitle></CardHeader>
         <CardContent className="space-y-4">
-          {RECIPES.map((r, i) => (
+          {premiumRecipes.map((r, i) => (
             <div key={i} className="border border-white/10 rounded p-3 bg-black/20">
               <div className="flex justify-between">
                 <div>
@@ -1322,107 +1344,22 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
               <div className="text-[10px] text-emerald-300 mt-1 italic">{r.tip}</div>
             </div>
           ))}
-          <div className="text-xs text-muted-foreground">Seeded from protein science (complete proteins, leucine trigger, waste management, recovery timing) + DASH/Med principles for global accessibility.</div>
+          <div className="text-xs text-muted-foreground">Seeded from protein science + DASH/Med principles for global accessibility.</div>
         </CardContent>
       </Card>
+      ) : (
+        <Card className="border-emerald-500/30">
+          <CardHeader>
+            <CardTitle>+{premiumRecipes.length} Premium Recipes</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground space-y-3">
+            <p>Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.</p>
+            <Button variant="fitness" onClick={() => window.location.href = '/bundle'}>Explore Super Bundle</Button>
+          </CardContent>
+        </Card>
+      )}
 
-      {/* PREMIUM RECIPES - From Nutrition Specialist Materials */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Premium Recipes &amp; Meal Ideas</CardTitle>
-          <p className="text-sm text-muted-foreground">High-protein, balanced meals based on the nutrition certification principles. Log the whole meal with one click. Build muscle, recover faster, stay lean.</p>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            {[
-              {
-                name: "Elite Chicken Rice Bowl",
-                desc: "Lean protein + complex carbs for sustained energy and recovery.",
-                ingredients: "150g grilled chicken breast, 200g cooked brown rice, 100g broccoli, 1 tbsp olive oil",
-                instructions: "Grill chicken seasoned with herbs. Steam broccoli. Combine with rice and drizzle oil. High volume, high protein.",
-                macros: { protein: 52, cals: 620, carbs: 68, fat: 12 }
-              },
-              {
-                name: "Protein Oat Pancakes",
-                desc: "Breakfast that fuels training and keeps you full for hours.",
-                ingredients: "80g oats, 1 scoop whey or plant protein, 1 egg + 2 whites, 1/2 banana, cinnamon",
-                instructions: "Blend oats into flour. Mix with protein, egg, mashed banana. Cook on skillet like pancakes. Top with berries.",
-                macros: { protein: 38, cals: 480, carbs: 52, fat: 8 }
-              },
-              {
-                name: "Salmon Power Salad",
-                desc: "Omega-3s + veggies for inflammation control and lean gains.",
-                ingredients: "120g baked salmon, 150g mixed greens, 1/2 avocado, 50g quinoa, lemon & herbs",
-                instructions: "Bake salmon with lemon. Toss greens, quinoa, sliced avocado. Top with salmon. Dress with lemon.",
-                macros: { protein: 35, cals: 520, carbs: 28, fat: 28 }
-              },
-              {
-                name: "Greek Yogurt Power Bowl",
-                desc: "Quick recovery snack or post-workout meal with probiotics.",
-                ingredients: "300g Greek yogurt (0% or 2%), 30g almonds, 1 scoop protein (optional), berries, honey drizzle",
-                instructions: "Mix yogurt with protein if using. Top with almonds, berries and light honey. Eat immediately after training.",
-                macros: { protein: 42, cals: 380, carbs: 32, fat: 14 }
-              },
-              {
-                name: "Egg White Veggie Omelette + Toast",
-                desc: "Classic high-volume breakfast for fat loss while preserving muscle.",
-                ingredients: "6 egg whites + 1 whole egg, spinach, tomatoes, mushrooms, 1 slice whole grain toast",
-                instructions: "Scramble or omelette the eggs with veggies. Season aggressively. Serve with toast on the side.",
-                macros: { protein: 32, cals: 310, carbs: 28, fat: 9 }
-              },
-              {
-                name: "Mediterranean Salmon Power Plate",
-                desc: "Omega-3s + veggies per Mediterranean diet (from nutrition textbook) for heart health and lean gains.",
-                ingredients: "120g baked salmon, 150g mixed greens, 80g olives/cucumber, 50g quinoa, olive oil & lemon",
-                instructions: "Bake salmon with herbs. Toss greens, quinoa, veggies. Drizzle oil. Per DASH/Med principles: low sodium, high healthy fats.",
-                macros: { protein: 35, cals: 480, carbs: 25, fat: 28 }
-              },
-              {
-                name: "DASH Veggie Chicken Stir",
-                desc: "Low-sodium veggie heavy with lean protein, per DASH guidelines for blood pressure and sustainable health.",
-                ingredients: "150g chicken, 200g mixed veggies (broccoli, carrots), 100g brown rice, low-sodium soy alternative",
-                instructions: "Stir fry chicken and veggies. Serve over rice. Focus on whole foods, limit added salt/sweets per textbook.",
-                macros: { protein: 40, cals: 420, carbs: 45, fat: 8 }
-              }
-            ].map((recipe, idx) => (
-              <Card key={idx} className="border-emerald-500/20">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">{recipe.name}</CardTitle>
-                  <div className="text-xs text-emerald-400">{recipe.desc}</div>
-                </CardHeader>
-                <CardContent className="text-sm space-y-2">
-                  <div><strong>Ingredients:</strong> {recipe.ingredients}</div>
-                  <div><strong>How to make:</strong> {recipe.instructions}</div>
-                  <div className="flex gap-3 text-xs pt-2 border-t">
-                    <span>P: <strong>{recipe.macros.protein}g</strong></span>
-                    <span>Cals: <strong>{recipe.macros.cals}</strong></span>
-                    <span>Carbs: <strong>{recipe.macros.carbs}g</strong></span>
-                    <span>Fat: <strong>{recipe.macros.fat}g</strong></span>
-                  </div>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="w-full mt-2"
-                    onClick={() => {
-                      // Log the entire recipe as one entry
-                      const totalP = recipe.macros.protein;
-                      const totalC = recipe.macros.cals;
-                      const totalCarbs = recipe.macros.carbs;
-                      const totalFat = recipe.macros.fat;
-                      addEntry(recipe.name, totalP, totalC, totalCarbs, totalFat);
-                    }}
-                  >
-                    Log Entire Recipe (+{recipe.macros.protein}g protein)
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          <div className="text-[10px] text-muted-foreground mt-4">These recipes are built from the nutrition certification framework: high protein (1.6-2.2g per kg bodyweight), balanced macros, whole foods focus. Scale portions to your targets. More recipes + meal timing strategies in the full paid Nutrition program.</div>
-        </CardContent>
-      </Card>
-
-      {/* Sign up / Sign in for early private access while building */}
+      {/* Sign up / Sign in for cloud sync */}
       <div className="mt-6 p-4 bg-[#111827] border border-emerald-500/30 rounded">
         <div className="text-emerald-400 font-medium mb-2">Sign up / Sign in for early private access (free magic link)</div>
         <form onSubmit={async (e) => {

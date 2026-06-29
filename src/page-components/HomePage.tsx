@@ -9,6 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { formatDate, formatDuration } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
+import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
+import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { EXERCISES } from "@/data/exercises";
 import { getUser, signInMagic, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
 import { MetricsRow } from "@/components/metrics/MetricsRow";
@@ -60,22 +62,13 @@ export function HomePage() {
   const totalSessions = workoutHistory.length;
   const totalVolume = workoutHistory.reduce((sum, w) => sum + w.totalVolume, 0);
 
-  // Simple local streak (retention feature - challenges logic stub per plan "What Else"; full UI in follow-up)
-  const [streak, setStreak] = useState(0);
+  // Training streak + weekly challenges (Phase A — free core retention)
+  const streak = getTrainingStreak(workoutHistory);
+  const todaysWorkout = getTodaysWorkout();
+  const [challenges, setChallenges] = useState<ReturnType<typeof getChallengeProgress>>([]);
   useEffect(() => {
-    const savedStreak = parseInt(localStorage.getItem('mw_streak') || '0');
-    const lastWorkout = workoutHistory[0]?.completedAt ? new Date(workoutHistory[0].completedAt) : null;
-    if (lastWorkout) {
-      const daysSince = Math.floor((Date.now() - lastWorkout.getTime()) / (1000*3600*24));
-      if (daysSince === 0 || daysSince === 1) {
-        setStreak(savedStreak || 1);
-      } else {
-        setStreak(0);
-        localStorage.setItem('mw_streak', '0');
-      }
-    }
-    // Challenges progress stub (from plan "What Else": 7-day, protein, volume, program complete). Enable UI + local save when ready.
-  }, [workoutHistory, streak, totalVolume]);
+    setChallenges(getChallengeProgress());
+  }, [workoutHistory.length, totalVolume]);
 
   // Auto load cloud history for signed in users (quick win for persistence)
   useEffect(() => {
@@ -500,6 +493,53 @@ export function HomePage() {
 
       <MetricsRow scores={bodyScores} />
       <CoachInsightCard insight={coachInsight} />
+
+      {/* Weekly challenges — Freeletics-style retention, free for all */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Flame className="h-5 w-5 text-orange-400" />
+            Weekly Challenges
+            <span className="text-sm font-normal text-muted-foreground ml-2">🔥 {streak}-day streak</span>
+          </CardTitle>
+          <CardDescription>Train + Fuel + volume goals this week. Free core — no premium required.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-3">
+          {challenges.map((c) => (
+            <div key={c.id} className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="font-medium">{c.title}</span>
+                <span className="text-muted-foreground">{c.current}/{c.target}</span>
+              </div>
+              <div className="h-2 bg-muted rounded overflow-hidden">
+                <div className="h-2 bg-emerald-500 rounded transition-all" style={{ width: `${c.percent}%` }} />
+              </div>
+              <p className="text-[10px] text-muted-foreground">{c.description}</p>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Today's Workout — CrossFit / Freeletics daily rotation */}
+      <Card className="border-primary/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Dumbbell className="h-5 w-5 text-primary" />
+            {todaysWorkout.name}
+            <span className="text-xs font-normal px-2 py-0.5 rounded bg-primary/20 text-primary">{todaysWorkout.tag}</span>
+          </CardTitle>
+          <CardDescription>{todaysWorkout.description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button
+            variant="fitness"
+            onClick={() => startFreeStarter(todaysWorkout.name, todaysWorkout.exercises)}
+          >
+            <Play className="h-4 w-4 mr-2" />
+            Start Today&apos;s Workout
+          </Button>
+        </CardContent>
+      </Card>
 
       {/* Primary Action Hero (Forge "JUST GO" spirit — biggest, clearest CTA on the functional homepage) */}
       <Card className="border-emerald-500/40 bg-gradient-to-br from-emerald-950/20 to-primary/5">
