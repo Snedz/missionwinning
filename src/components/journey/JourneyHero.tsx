@@ -46,7 +46,7 @@ export function JourneyHero({ action, onPrimaryClick, activeWorkout }: JourneyHe
   const label = activeWorkout ? t('resumeWorkout', { defaultValue: 'Resume workout' }) : action.label;
 
   return (
-    <div className="content-card p-6 space-y-4">
+    <div className="content-card journey-enter p-6 space-y-4">
       <div>
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
           {t('yourNextStep', { defaultValue: 'Your next step' })}

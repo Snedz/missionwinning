@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { submitLead } from "@/lib/supabase";
+import { SignInPrompt } from "@/components/auth/SignInPrompt";
 
 export function FeedbackPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -148,26 +149,11 @@ export function FeedbackPage() {
           Thank you for being one of the first. Winners take massive action and then tell the truth about what worked. That's how movements are built.
         </div>
 
-        {/* Sign up / Sign in for early private access + cloud while building privately */}
-        <div className="mt-6 p-4 bg-[#111827] border border-emerald-500/30 rounded">
-          <div className="text-emerald-400 font-medium mb-2">Sign up / Sign in for early private access + cloud sync (free magic link)</div>
-          <form onSubmit={async (e) => {
-            e.preventDefault();
-            const email = (e.target as any).email.value;
-            if (!email) return;
-            try {
-              const { signInMagic } = await import('@/lib/supabase');
-              await signInMagic(email);
-              alert(`Magic link sent to ${email}. Check email to access the full private build.`);
-            } catch (err: any) {
-              alert('Error: ' + (err.message || 'Check Supabase/Resend in Vercel.'));
-            }
-          }} className="flex gap-2">
-            <input name="email" type="email" placeholder="you@email.com" className="flex-1 border border-white/20 bg-black/40 rounded px-3 py-2 text-sm" required />
-            <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm font-medium">Send Magic Link</button>
-          </form>
-          <div className="text-[10px] text-white/40 mt-1">Public teaser only. Sign in for full access + to track your contributor impact in the private build.</div>
-        </div>
+        <SignInPrompt
+          className="mt-6"
+          nextPath="/feedback"
+          description="Sign in to link feedback to your journey and sync across devices."
+        />
       </div>
     </div>
   );

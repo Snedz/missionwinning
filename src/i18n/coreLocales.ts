@@ -45,6 +45,22 @@ type CoreStrings = {
   betaJourneyProgress: string;
   emailNextStep: string;
   emailNextStepSent: string;
+  signInOptional: string;
+  signInLink: string;
+  cloudSyncOn: string;
+  welcomeSignInTitle: string;
+  welcomeSignInSubtitle: string;
+  commandersIntent: string;
+  saveProgressCloud: string;
+  signInPromptExpand: string;
+  signInCollapse: string;
+  signInPromptDefault: string;
+  termsOfService: string;
+  privacyPolicy: string;
+  about: string;
+  legalFooterNote: string;
+  leaderboardRankings: string;
+  today: string;
 };
 
 const en: CoreStrings = {
@@ -91,9 +107,27 @@ const en: CoreStrings = {
   betaJourneyProgress: 'Beta journey progress',
   emailNextStep: 'Email my next step',
   emailNextStepSent: 'Check your inbox for your next step.',
+  signInOptional: 'Sign in optional — progress stays on this device.',
+  signInLink: 'Sign in',
+  cloudSyncOn: 'Cloud sync on.',
+  welcomeSignInTitle: 'Save progress — your choice',
+  welcomeSignInSubtitle:
+    'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
+  commandersIntent: "Today's focus",
+  saveProgressCloud: 'Save progress to cloud',
+  signInPromptExpand: 'Sign in with Google or email',
+  signInCollapse: 'Hide sign-in',
+  signInPromptDefault: 'Sign in to sync workouts and journey progress across devices.',
+  termsOfService: 'Terms of Service',
+  privacyPolicy: 'Privacy Policy',
+  about: 'About',
+  legalFooterNote: 'Civilian health app — not affiliated with DoD or any government agency.',
+  leaderboardRankings: 'Rankings',
+  today: 'Today',
 };
 
 const de: CoreStrings = {
+  ...en,
   navToday: 'Heute',
   navTrain: 'Training',
   navFuel: 'Ernährung',
@@ -140,6 +174,7 @@ const de: CoreStrings = {
 };
 
 const it: CoreStrings = {
+  ...en,
   navToday: 'Oggi',
   navTrain: 'Allenati',
   navFuel: 'Nutrizione',
@@ -186,6 +221,7 @@ const it: CoreStrings = {
 };
 
 const ko: CoreStrings = {
+  ...en,
   navToday: '오늘',
   navTrain: '운동',
   navFuel: '영양',
@@ -371,6 +407,7 @@ const ru: CoreStrings = {
 };
 
 const ja: CoreStrings = {
+  ...en,
   navToday: '今日',
   navTrain: 'トレーニング',
   navFuel: '栄養',

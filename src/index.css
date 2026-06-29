@@ -98,6 +98,25 @@
 }
 
 @layer utilities {
+  .page-enter {
+    animation: page-enter 0.45s ease-out both;
+  }
+
+  .journey-enter {
+    animation: page-enter 0.5s ease-out 0.06s both;
+  }
+
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .fitness-gradient {
     @apply bg-emerald-600;
   }

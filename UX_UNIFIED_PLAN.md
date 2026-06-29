@@ -106,7 +106,11 @@ Not seven separate apps — **one shell**, Freeletics-bundle **depth** behind Mo
 - [x] Extract `TodayPageHeader`, `TodayHealthSection`
 - [x] Welcome page uses design tokens
 - [x] Remove duplicate Profile first-time setup form (→ I-Day)
-- [ ] i18n: Today + Welcome strings to JSON (G2)
+- [x] Unified SignInPanel + SignInPrompt (Google/email; Apple opt-in via env)
+- [x] Commander's Intent on commissioned Today
+- [x] Legal footer (Terms / Privacy / About) on Profile, Welcome, private gate
+- [x] Page enter animations on hero + private gate
+- [ ] i18n: Today + Welcome strings to JSON (G2) — partial via coreLocales
 - [ ] Animated hero transitions (Bevel-style page transitions)
 
 ### Phase 3 — Holistic depth

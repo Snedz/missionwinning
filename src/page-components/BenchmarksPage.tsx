@@ -45,6 +45,7 @@ import {
 import { formatDate } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
+import { SignInPrompt } from "@/components/auth/SignInPrompt";
 
 export function BenchmarksPage() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
@@ -461,26 +462,11 @@ export function BenchmarksPage() {
         </CardContent>
       </Card>
 
-      {/* Sign up / Sign in for early private access + cloud history while building */}
-      <div className="mt-6 p-4 bg-[#111827] border border-emerald-500/30 rounded">
-        <div className="text-emerald-400 font-medium mb-2">Sign up / Sign in for early private access + cloud sync (free magic link)</div>
-        <form onSubmit={async (e) => {
-          e.preventDefault();
-          const email = (e.target as any).email.value;
-          if (!email) return;
-          try {
-            const { signInMagic } = await import('@/lib/supabase');
-            await signInMagic(email);
-            alert(`Magic link sent to ${email}. Check email to access the full private build.`);
-          } catch (err: any) {
-            alert('Error: ' + (err.message || 'Check Supabase/Resend in Vercel.'));
-          }
-        }} className="flex gap-2">
-          <input name="email" type="email" placeholder="you@email.com" className="flex-1 border border-white/20 bg-black/40 rounded px-3 py-2 text-sm" required />
-          <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm font-medium">Send Magic Link</button>
-        </form>
-        <div className="text-[10px] text-white/40 mt-1">Join the private build. Full benchmarks + cloud history after sign-in. Public teaser only.</div>
-      </div>
+      <SignInPrompt
+        className="mt-6"
+        nextPath="/benchmarks"
+        description="Sync benchmark history and PRs across devices."
+      />
     </div>
   );
 }
