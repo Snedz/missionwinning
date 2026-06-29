@@ -27,7 +27,7 @@
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
 | **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
-| **Build label** | ✅ | `2025.06-unified.8` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.9` on Profile footer |
 
 ### Open PR stack
 
@@ -44,7 +44,7 @@ Most feature work is merged to `master`. Branch `cursor/today-cards-challenges-6
 | 5 | Photo log → local estimate stub | ✅ `estimateMealFromPhoto.ts`, `PhotoLogStub` |
 | 6 | Wins badge i18n | ✅ `todayLocales` + `TodayProgressSection` |
 | 7 | Staggered Today hero animations | ✅ `StaggerReveal` on HomePage |
-| 8 | Security P1 (PayPal sig, CSP) | ⬜ partial — CSP Report-Only in `vercel.json`; PayPal sig TODO |
+| 8 | Security P1 (PayPal sig, CSP) | ✅ PayPal verify + CSP enforce in prod (`next.config.js`) |
 
 ---
 

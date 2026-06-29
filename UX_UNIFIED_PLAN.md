@@ -122,7 +122,7 @@ Not seven separate apps — **one shell**, Freeletics-bundle **depth** behind Mo
 - [x] Nutrition photo log stub (on-device estimate → log to Fuel)
 - [x] Commander's intent line on commissioned Today
 - [x] Customizable dashboard sections (show/hide + reorder)
-- [ ] CSP enforce (Report-Only shipped in `vercel.json`)
+- [x] CSP enforce in production (`next.config.js`; report-only in dev)
 - [ ] Arabic RTL + zh full body copy
 
 ---

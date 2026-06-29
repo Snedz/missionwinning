@@ -13,7 +13,7 @@ Mission Winning has a strong **free-core vision** and solid pillar scaffolding, 
 | Layer | Status |
 |-------|--------|
 | Private gate (pre-launch) | Hardened — signed cookies, rate limit |
-| Payment webhooks | Hardened — Stripe sig verify; PayPal disabled until verify |
+| Payment webhooks | Hardened — Stripe + PayPal sig verify |
 | Premium bypass | Hardened — server `/api/premium/status`; no localStorage in prod |
 | Premium content leak | Partial — recipes server-split; pro templates UI+API gated |
 | Supabase RLS | Improved — enrollment read by email |
@@ -44,7 +44,7 @@ Mission Winning has a strong **free-core vision** and solid pillar scaffolding, 
 
 **Now:**
 - **Stripe:** Signature verification (v1 HMAC) before enrollment insert; idempotent via `provider` + `external_id`
-- **PayPal:** Returns `503/501` until `PAYPAL_WEBHOOK_ID` + signature verification implemented
+- **PayPal:** Signature verification via PayPal REST API (`verify-webhook-signature`); rejects forged POSTs with 401
 - Webhooks use `SUPABASE_SERVICE_ROLE_KEY` via `supabaseAdmin.ts` (never anon client)
 
 ### 3. Premium authority
@@ -141,8 +141,8 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 ### P1 — First 30 days public
 
 - [ ] Split `pro` program templates to server-only module (like recipes)
-- [ ] PayPal webhook signature verification
-- [ ] CSP header (start report-only, then enforce)
+- [x] PayPal webhook signature verification (`src/lib/paypalWebhook.ts`)
+- [x] CSP header enforced in production (`next.config.js`; `CSP_ENFORCE=false` for report-only)
 - [ ] Leads table: CAPTCHA or rate limit on `/api` lead inserts
 - [ ] JWT gate bypass: verify signature via Supabase JWKS if `PRIVATE_ALLOW_AUTH_BYPASS=true`
 
@@ -165,6 +165,10 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 | `DEMO_PREMIUM` | Server only | Never `true` in production |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server only | Webhooks, admin |
 | `STRIPE_WEBHOOK_SECRET` | Server only | Stripe signature verify |
+| `PAYPAL_WEBHOOK_ID` | Server only | PayPal webhook id from Developer dashboard |
+| `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` | Server only | PayPal REST OAuth for signature verify |
+| `PAYPAL_ENV` | Server only | `sandbox` (default) or `live` |
+| `CSP_ENFORCE` | Server/build | `true` to enforce CSP; default enforce in production |
 | `NEXT_PUBLIC_SUPABASE_*` | Client (expected) | Anon key — RLS must protect data |
 
 See [ENV.md](ENV.md) and [.env.example](.env.example).
