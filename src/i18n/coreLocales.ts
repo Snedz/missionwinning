@@ -1,6 +1,6 @@
 /** Tier-1 UI strings — nav, journey chrome, welcome, profile. Merged into i18n resources. */
 
-export const TIER1_LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko'] as const;
+export const TIER1_LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja'] as const;
 export type Tier1Lang = (typeof TIER1_LANGS)[number];
 
 type CoreStrings = {
@@ -35,6 +35,11 @@ type CoreStrings = {
   lang_de: string;
   lang_it: string;
   lang_ko: string;
+  lang_ja: string;
+  editJourneyProfile: string;
+  cloudSyncActive: string;
+  cloudSyncPending: string;
+  saveProfile: string;
 };
 
 const en: CoreStrings = {
@@ -71,6 +76,11 @@ const en: CoreStrings = {
   lang_de: 'Deutsch',
   lang_it: 'Italiano',
   lang_ko: '한국어',
+  lang_ja: '日本語',
+  editJourneyProfile: 'Edit journey profile',
+  cloudSyncActive: 'Journey synced to cloud',
+  cloudSyncPending: 'Sign in to sync journey across devices',
+  saveProfile: 'Save profile',
 };
 
 const de: CoreStrings = {
@@ -107,6 +117,11 @@ const de: CoreStrings = {
   lang_de: 'Deutsch',
   lang_it: 'Italiano',
   lang_ko: '한국어',
+  lang_ja: '日本語',
+  editJourneyProfile: 'Profil bearbeiten',
+  cloudSyncActive: 'Reise in der Cloud gespeichert',
+  cloudSyncPending: 'Anmelden für geräteübergreifende Sync',
+  saveProfile: 'Profil speichern',
 };
 
 const it: CoreStrings = {
@@ -143,6 +158,11 @@ const it: CoreStrings = {
   lang_de: 'Deutsch',
   lang_it: 'Italiano',
   lang_ko: '한국어',
+  lang_ja: '日本語',
+  editJourneyProfile: 'Modifica profilo percorso',
+  cloudSyncActive: 'Percorso sincronizzato nel cloud',
+  cloudSyncPending: 'Accedi per sincronizzare su tutti i dispositivi',
+  saveProfile: 'Salva profilo',
 };
 
 const ko: CoreStrings = {
@@ -178,6 +198,11 @@ const ko: CoreStrings = {
   lang_de: 'Deutsch',
   lang_it: 'Italiano',
   lang_ko: '한국어',
+  lang_ja: '日本語',
+  editJourneyProfile: '여정 프로필 수정',
+  cloudSyncActive: '클라우드에 여정 동기화됨',
+  cloudSyncPending: '기기 간 동기화를 위해 로그인하세요',
+  saveProfile: '프로필 저장',
 };
 
 const es: CoreStrings = {
@@ -205,6 +230,14 @@ const es: CoreStrings = {
   welcomeAccept: 'Acepto el camino',
   welcomeContinue: 'Continuar',
   welcomeSkipSignIn: 'Omitir — ir a Hoy',
+  lang_de: 'Deutsch',
+  lang_it: 'Italiano',
+  lang_ko: '한국어',
+  lang_ja: '日本語',
+  editJourneyProfile: 'Editar perfil del recorrido',
+  cloudSyncActive: 'Recorrido sincronizado en la nube',
+  cloudSyncPending: 'Inicia sesión para sincronizar entre dispositivos',
+  saveProfile: 'Guardar perfil',
 };
 
 const fr: CoreStrings = {
@@ -232,6 +265,14 @@ const fr: CoreStrings = {
   welcomeAccept: 'J\'accepte le chemin',
   welcomeContinue: 'Continuer',
   welcomeSkipSignIn: 'Passer — aller à Aujourd\'hui',
+  lang_de: 'Deutsch',
+  lang_it: 'Italiano',
+  lang_ko: '한국어',
+  lang_ja: '日本語',
+  editJourneyProfile: 'Modifier le profil parcours',
+  cloudSyncActive: 'Parcours synchronisé dans le cloud',
+  cloudSyncPending: 'Connectez-vous pour synchroniser entre appareils',
+  saveProfile: 'Enregistrer le profil',
 };
 
 const pt: CoreStrings = {
@@ -259,6 +300,14 @@ const pt: CoreStrings = {
   welcomeAccept: 'Aceito o caminho',
   welcomeContinue: 'Continuar',
   welcomeSkipSignIn: 'Pular — ir para Hoje',
+  lang_de: 'Deutsch',
+  lang_it: 'Italiano',
+  lang_ko: '한국어',
+  lang_ja: '日本語',
+  editJourneyProfile: 'Editar perfil da jornada',
+  cloudSyncActive: 'Jornada sincronizada na nuvem',
+  cloudSyncPending: 'Entre para sincronizar entre dispositivos',
+  saveProfile: 'Salvar perfil',
 };
 
 const ru: CoreStrings = {
@@ -286,6 +335,54 @@ const ru: CoreStrings = {
   welcomeAccept: 'Принимаю путь',
   welcomeContinue: 'Продолжить',
   welcomeSkipSignIn: 'Пропустить — на Сегодня',
+  lang_de: 'Deutsch',
+  lang_it: 'Italiano',
+  lang_ko: '한국어',
+  lang_ja: '日本語',
+  editJourneyProfile: 'Изменить профиль пути',
+  cloudSyncActive: 'Путь синхронизирован в облаке',
+  cloudSyncPending: 'Войдите для синхронизации между устройствами',
+  saveProfile: 'Сохранить профиль',
+};
+
+const ja: CoreStrings = {
+  navToday: '今日',
+  navTrain: 'トレーニング',
+  navFuel: '栄養',
+  navTrack: '記録',
+  navYou: 'プロフィール',
+  navMore: 'その他',
+  yourNextStep: '次のステップ',
+  formGuide: 'フォームガイド',
+  formGuideTitle: 'フォームガイド',
+  gotItStartSet: '了解 — セット開始',
+  setup: 'セットアップ',
+  execute: '動作',
+  avoid: '避ける',
+  breath: '呼吸',
+  simpleMode: 'シンプル',
+  proMode: 'プロ',
+  appMode: 'アプリモード',
+  commissionedLabel: '任命完了',
+  commissionedTitle: '毎日の実践の準備ができました',
+  commissionedBody:
+    '基礎訓練と準備が完了しました。今日があなたの司令室 — 毎日一つの明確なアクション。すべての人のための健康。',
+  commissionedCta: '今日へ続ける',
+  missionOperator: 'ミッションオペレーター',
+  welcomeBegin: '始める',
+  welcomeTitle: 'ようこそ',
+  welcomeSubtitle: '生涯の健康への道 — 一歩ずつ。約2分。',
+  welcomeAccept: 'この道を受け入れる',
+  welcomeContinue: '続ける',
+  welcomeSkipSignIn: 'スキップ — 今日へ',
+  lang_de: 'Deutsch',
+  lang_it: 'Italiano',
+  lang_ko: '한국어',
+  lang_ja: '日本語',
+  editJourneyProfile: 'ジャーニープロフィールを編集',
+  cloudSyncActive: 'クラウドにジャーニーを同期済み',
+  cloudSyncPending: 'デバイス間同期にはサインインしてください',
+  saveProfile: 'プロフィールを保存',
 };
 
 export const CORE_LOCALES: Record<Tier1Lang, CoreStrings> = {
@@ -297,6 +394,7 @@ export const CORE_LOCALES: Record<Tier1Lang, CoreStrings> = {
   de,
   it,
   ko,
+  ja,
 };
 
 export function coreStringsFor(lang: string): CoreStrings {

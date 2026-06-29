@@ -11,6 +11,10 @@ create table if not exists public.profiles (
   units text default 'metric',
   goals text,
   equipment text,
+  experience text,
+  primary_goal text,
+  ui_mode text default 'simple',
+  journey_state jsonb,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );

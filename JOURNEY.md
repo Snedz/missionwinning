@@ -219,13 +219,13 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 
 - [x] Sidebar → 5 primary + More sheet  
 - [x] HomePage accordion for secondary content  
-- [ ] Profile: Mission Setup becomes “Edit Journey Profile” (link back to I-Day fields)  
+- [x] Profile: Mission Setup becomes “Edit Journey Profile” (link back to I-Day fields)  
 - [x] Commissioning moment (modal + `mw_commissioned_at`)  
 - [ ] Copy pass: short labels everywhere (see glossary below)
 
 ### G1 — Global languages
 
-- [x] Tier 1: DE, IT, KO + EN/ES/FR/PT/RU (nav, welcome, journey chrome)
+- [x] Tier 1: DE, IT, KO, **JA** + EN/ES/FR/PT/RU (nav, welcome, journey chrome)
 - [x] Dynamic `<html lang>`
 
 ### G2 — Form guides (text-only)
@@ -235,7 +235,7 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 
 ### F3 — Persist & polish (1 branch)
 
-- [ ] Supabase `profiles.journey_state` + sync on sign-in  
+- [x] Supabase `profiles.journey_state` + sync on sign-in  
 - [x] Journey badge on Profile (“Mission Operator · Day N”)  
 - [ ] Optional: email nudge via Resend (“Complete BT-2: log protein”)  
 - [ ] Analytics events: `journey_phase_complete`  
