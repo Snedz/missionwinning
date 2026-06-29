@@ -209,11 +209,11 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 
 ### F1 — Foundation (1 branch)
 
-- [ ] `missionJourney.ts` + `useMissionJourney()`  
-- [ ] `/welcome` I-Day flow (3–5 screens, skippable sign-in)  
-- [ ] Redirect first-time users: no `mw_journey_started` → `/welcome`  
-- [ ] Today hero driven by `getNextAction()`  
-- [ ] Remove duplicate sign-in blocks from Library, History, Nutrition (link to You tab)
+- [x] `missionJourney.ts` + `useMissionJourney()`  
+- [x] `/welcome` I-Day flow (3–5 screens, skippable sign-in)  
+- [x] Redirect first-time users: no `mw_journey_started` → `/welcome`  
+- [x] Today hero driven by `getNextAction()`  
+- [x] Remove duplicate sign-in blocks from Library, History, Nutrition (link to You tab)
 
 ### F2 — Simplify chrome (1 branch)
 

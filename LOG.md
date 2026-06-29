@@ -4,6 +4,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase F1: Journey engine + I-Day
+
+**Branch:** `cursor/journey-i-day-699d`
+
+### Shipped
+
+- **`missionJourney.ts`** — I-Day → Basic Training → Readiness → Commissioned phases; `getNextAction()` drives one hero CTA
+- **`/welcome`** — 4-step I-Day flow (Begin → Accept mission → 3 questions → optional sign-in)
+- **`JourneyGuard`** — redirects new members to `/welcome` before app shell
+- **Today hub** — `JourneyStrip` + `JourneyHero`; secondary cards hidden during Basic Training
+- **Sign-in cleanup** — Nutrition and History link to Profile instead of inline magic-link forms
+
+See [JOURNEY.md](JOURNEY.md) for F2–F4 roadmap.
+
+---
+
 ## 2026-06-29 — Inspection & Protection (pre-launch hardening)
 
 **Branch:** `cursor/inspection-protection-699d`
