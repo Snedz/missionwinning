@@ -168,11 +168,16 @@ export function NutritionPage() {
               'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
           })}
           {premium
-            ? ' Premium: full recipe library + deep plans (Super Bundle).'
-            : ' Super Bundle unlocks the full recipe library and advanced meal plans.'}{' '}
+            ? t('fuelPremiumActive', {
+                defaultValue: ' Premium: full recipe library + deep plans (Super Bundle).',
+              })
+            : t('fuelBundleUpsell', {
+                defaultValue:
+                  ' Super Bundle unlocks the full recipe library and advanced meal plans.',
+              })}{' '}
           High-protein days boost your{' '}
           <a href="/log" className="underline">
-            Win Score
+            {t('fuelWinScore', { defaultValue: 'Win Score' })}
           </a>
           .
         </p>
@@ -186,32 +191,45 @@ export function NutritionPage() {
 
       <div className="grid md:grid-cols-2 gap-4">
         <Card>
-          <CardHeader><CardTitle>Today's Targets</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('fuelTargetsTitle', { defaultValue: "Today's Targets" })}</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <div className="flex justify-between text-sm mb-1"><span>Calories</span><span>{totalCals} / {targetCals}</span></div>
+              <div className="flex justify-between text-sm mb-1"><span>{t('fuelCalories', { defaultValue: 'Calories' })}</span><span>{totalCals} / {targetCals}</span></div>
               <div className="h-2 bg-muted rounded"><div className="h-2 bg-emerald-500 rounded" style={{width: `${cProgress}%`}} /></div>
             </div>
             <div>
-              <div className="flex justify-between text-sm mb-1"><span>Protein</span><span>{totalProtein}g / {targetProtein}g</span></div>
+              <div className="flex justify-between text-sm mb-1"><span>{t('fuelProtein', { defaultValue: 'Protein' })}</span><span>{totalProtein}g / {targetProtein}g</span></div>
               <div className="h-2 bg-muted rounded"><div className="h-2 bg-emerald-500 rounded" style={{width: `${pProgress}%`}} /></div>
             </div>
-            <div className="text-xs text-muted-foreground">Carbs: {totalCarbs}g • Fat: {totalFat}g • Water: {water} / 8 glasses</div>
+            <div className="text-xs text-muted-foreground">
+              {t('fuelMacrosSummary', {
+                carbs: totalCarbs,
+                fat: totalFat,
+                water,
+                defaultValue: `Carbs: ${totalCarbs}g • Fat: ${totalFat}g • Water: ${water} / 8 glasses`,
+              })}
+            </div>
             {pillarWins.length > 0 && (
-              <div className="mt-2 text-[10px] text-emerald-400">Pillar wins today (Move/Mind/Assess): {pillarWins.length} — e.g. {pillarWins[0]?.name}</div>
+              <div className="mt-2 text-[10px] text-emerald-400">
+                {t('fuelPillarWinsToday', {
+                  count: pillarWins.length,
+                  example: pillarWins[0]?.name ?? '',
+                  defaultValue: `Pillar wins today (Move/Mind/Assess): ${pillarWins.length} — e.g. ${pillarWins[0]?.name}`,
+                })}
+              </div>
             )}
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader><CardTitle>Hydration</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('fuelHydrationTitle', { defaultValue: 'Hydration' })}</CardTitle></CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">
               <Button size="sm" variant="outline" onClick={() => setWater(Math.max(0, water-1))}>-</Button>
-              <div className="flex-1 text-center text-2xl font-bold tabular-nums">{water} <span className="text-sm font-normal">glasses</span></div>
+              <div className="flex-1 text-center text-2xl font-bold tabular-nums">{water} <span className="text-sm font-normal">{t('fuelGlasses', { defaultValue: 'glasses' })}</span></div>
               <Button size="sm" variant="outline" onClick={() => setWater(water+1)}>+</Button>
             </div>
-            <div className="text-xs text-center mt-2 text-muted-foreground">Aim for 8+ (adjust for climate/activity)</div>
+            <div className="text-xs text-center mt-2 text-muted-foreground">{t('fuelHydrationHint', { defaultValue: 'Aim for 8+ (adjust for climate/activity)' })}</div>
           </CardContent>
         </Card>
       </div>
@@ -221,45 +239,50 @@ export function NutritionPage() {
 Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice, potatoes for stable energy; avoid high GI except post-workout). Fats for hormones (15-30% calories from healthy sources like olive oil, salmon, nuts; avoid trans/saturated excess). Vitamins/minerals key for performance (A for vision, B's for energy, C/D for immunity/recovery, etc. from whole foods). Fiber 20-30g+ for digestion. Post-workout: protein + carbs for recovery. Hydration critical. Global accessible: focus on local whole foods over supplements.</div>
 
       <Card>
-        <CardHeader><CardTitle>Quick Log (common foods)</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('fuelQuickLogTitle', { defaultValue: 'Quick Log (common foods)' })}</CardTitle></CardHeader>
         <CardContent className="flex gap-2 flex-wrap">
           {QUICK_FOODS.map(([name, p, c, carbs, fat], i) => (
             <Button key={i} variant="outline" size="sm" onClick={() => addEntry(name as string, p as number, c as number, carbs as number, fat as number)}>{name}</Button>
           ))}
-          <div className="w-full text-xs text-muted-foreground mt-2">More complete database + recipes in the full Nutrition program. Adjust targets via Calculators page.</div>
+          <div className="w-full text-xs text-muted-foreground mt-2">{t('fuelQuickLogFoot', { defaultValue: 'More complete database + recipes in the full Nutrition program. Adjust targets via Calculators page.' })}</div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader><CardTitle>Custom Entry</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('fuelCustomEntryTitle', { defaultValue: 'Custom Entry' })}</CardTitle></CardHeader>
         <CardContent className="flex flex-wrap gap-2 items-end">
           <div className="flex-1 min-w-[120px]">
-            <div className="text-xs mb-1">Food</div>
+            <div className="text-xs mb-1">{t('fuelFoodLabel', { defaultValue: 'Food' })}</div>
             <Input value={customName} onChange={e=>setCustomName(e.target.value)} placeholder="e.g. Apple" />
           </div>
           <div>
-            <div className="text-xs mb-1">Protein g</div>
+            <div className="text-xs mb-1">{t('fuelProteinGLabel', { defaultValue: 'Protein g' })}</div>
             <Input type="number" value={customP} onChange={e=>setCustomP(parseInt(e.target.value)||0)} className="w-20" />
           </div>
           <div>
-            <div className="text-xs mb-1">Cals</div>
+            <div className="text-xs mb-1">{t('fuelCalsLabel', { defaultValue: 'Cals' })}</div>
             <Input type="number" value={customC} onChange={e=>setCustomC(parseInt(e.target.value)||0)} className="w-20" />
           </div>
-          <Button onClick={addCustom}>Log</Button>
+          <Button onClick={addCustom}>{t('fuelLogBtn', { defaultValue: 'Log' })}</Button>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Today's Log</CardTitle>
+          <CardTitle>{t('fuelTodayLogTitle', { defaultValue: "Today's Log" })}</CardTitle>
           <div className="flex gap-2">
-            <Button variant="ghost" size="sm" onClick={clearDay}>Clear day</Button>
-            <Button variant="outline" size="sm" onClick={async () => { setCloudStatus('Loading...'); await loadCloudNutrition(); setCloudStatus('Cloud loaded (signed-in only)'); setTimeout(() => setCloudStatus(''), 1800); }}>Load from Cloud</Button>
+            <Button variant="ghost" size="sm" onClick={clearDay}>{t('fuelClearDay', { defaultValue: 'Clear day' })}</Button>
+            <Button variant="outline" size="sm" onClick={async () => {
+              setCloudStatus(t('fuelCloudLoading', { defaultValue: 'Loading...' }));
+              await loadCloudNutrition();
+              setCloudStatus(t('fuelCloudLoaded', { defaultValue: 'Cloud loaded (signed-in only)' }));
+              setTimeout(() => setCloudStatus(''), 1800);
+            }}>{t('fuelLoadCloud', { defaultValue: 'Load from Cloud' })}</Button>
             {cloudStatus && <span className="text-[10px] text-emerald-400 ml-2">{cloudStatus}</span>}
           </div>
         </CardHeader>
         <CardContent>
-          {logged.length === 0 && <div className="text-muted-foreground text-sm">No entries yet. Use quick logs or custom above.</div>}
+          {logged.length === 0 && <div className="text-muted-foreground text-sm">{t('fuelNoEntries', { defaultValue: 'No entries yet. Use quick logs or custom above.' })}</div>}
           <ul className="space-y-1 text-sm">
             {logged.map((l, i) => (
               <li key={i} className="flex justify-between">
@@ -269,16 +292,16 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
             ))}
           </ul>
           <div className="mt-4 pt-3 border-t text-sm flex justify-between font-medium">
-            <span>Totals</span>
-            <span>{totalProtein}g protein • {totalCals} kcal</span>
+            <span>{t('fuelTotals', { defaultValue: 'Totals' })}</span>
+            <span>{t('fuelTotalsLine', { protein: totalProtein, cals: totalCals, defaultValue: `${totalProtein}g protein • ${totalCals} kcal` })}</span>
           </div>
         </CardContent>
       </Card>
 
-      <div className="text-[10px] text-muted-foreground">Data stored locally (synced when you sign in with Supabase in future updates). Full integration + meal plans in the paid Nutrition course.</div>
+      <div className="text-[10px] text-muted-foreground">{t('fuelLocalNote', { defaultValue: 'Data stored locally (synced when you sign in). Full integration + meal plans in the paid Nutrition course.' })}</div>
 
       <Card>
-        <CardHeader><CardTitle>Free Recipes ({FREE_RECIPE_COUNT} — core mission)</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('fuelFreeRecipesTitle', { count: FREE_RECIPE_COUNT, defaultValue: `Free Recipes (${FREE_RECIPE_COUNT} — core mission)` })}</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           {freeRecipes.map((r, i) => (
             <div key={i} className="border border-white/10 rounded p-3 bg-black/20">
@@ -299,7 +322,7 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
 
       {premium ? (
       <Card>
-        <CardHeader><CardTitle>Premium Recipes &amp; Meal Ideas (Super Bundle)</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('fuelPremiumRecipesTitle', { defaultValue: 'Premium Recipes & Meal Ideas (Super Bundle)' })}</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           {premiumRecipes.map((r, i) => (
             <div key={i} className="border border-white/10 rounded p-3 bg-black/20">
@@ -321,11 +344,11 @@ Ch12 Nutrition for Bodybuilders: Carbs are primary fuel (complex like oats, rice
       ) : (
         <Card className="border-emerald-500/30">
           <CardHeader>
-            <CardTitle>+{premiumRecipes.length} Premium Recipes</CardTitle>
+            <CardTitle>{t('fuelPremiumLockedTitle', { count: premiumRecipes.length, defaultValue: `+${premiumRecipes.length} Premium Recipes` })}</CardTitle>
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground space-y-3">
-            <p>Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.</p>
-            <Button variant="fitness" onClick={() => window.location.href = '/bundle'}>Explore Super Bundle</Button>
+            <p>{t('fuelPremiumLockedBody', { defaultValue: 'Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.' })}</p>
+            <Button variant="fitness" onClick={() => window.location.href = '/bundle'}>{t('fuelExploreBundle', { defaultValue: 'Explore Super Bundle' })}</Button>
           </CardContent>
         </Card>
       )}

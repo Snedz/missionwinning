@@ -6,6 +6,7 @@ import { TIER2_LANGS, TIER2_LOCALES } from './i18n/tier2Locales'
 import { leaderboardStringsFor } from './i18n/leaderboardLocales'
 import { mergeWelcomeStrings } from './i18n/welcomeLocales'
 import { mergeTodayStrings } from './i18n/todayLocales'
+import { mergeFuelStrings } from './i18n/fuelLocales'
 
 // Inline resources for fast global launch (add more langs + extract to json later)
 // Tier 1: EN ES FR PT RU DE IT KO
@@ -533,6 +534,7 @@ for (const lang of [...TIER1_LANGS, ...TIER2_LANGS]) {
   Object.assign(resources[lang].common, leaderboardStringsFor(lang))
   mergeWelcomeStrings(resources[lang].common, lang)
   mergeTodayStrings(resources[lang].common, lang)
+  mergeFuelStrings(resources[lang].common, lang)
 }
 
 i18n
