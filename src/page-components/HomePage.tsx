@@ -15,15 +15,15 @@ import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { EXERCISES } from "@/data/exercises";
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
-import { MetricsRow } from "@/components/metrics/MetricsRow";
 import { CoachInsightCard } from "@/components/metrics/CoachInsightCard";
 import { PillarScoreBreakdown } from "@/components/metrics/PillarScoreBreakdown";
 import { JourneyStrip, JourneyHero } from "@/components/journey/JourneyHero";
 import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
 import { TodayQuickLinks } from "@/components/journey/TodayQuickLinks";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
+import { TodayDashboardHeader } from "@/components/today/TodayDashboardHeader";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
-import { useUiMode } from "@/hooks/useUiMode";
+import { getTodayLayout } from "@/hooks/useTodayLayout";
 
 export function HomePage() {
   const router = useRouter();
@@ -32,9 +32,8 @@ export function HomePage() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
-  const { action, showFullToday } = useMissionJourney();
-  const { isPro, isSimple } = useUiMode();
-  const showExpandedToday = isPro && showFullToday;
+  const { action, state } = useMissionJourney();
+  const layout = getTodayLayout(state.phase);
 
   const recent = workoutHistory.slice(0, 3);
 
@@ -476,36 +475,32 @@ export function HomePage() {
               {t('today', { defaultValue: 'Today' })}
             </h1>
             <p className="text-base text-muted-foreground mt-1">{today}</p>
-            {isPro && (
+            {layout.showFocusLine && (
               <p className="text-sm text-muted-foreground mt-0.5">
                 {t('recommendedFocus', { defaultValue: recommendedFocus })}
                 {userEquip === 'bodyweight' ? ' · bodyweight' : ''}
               </p>
             )}
           </div>
-          {(isPro || showExpandedToday) && (
-            <div className="text-right shrink-0">
-              <div className="text-xs text-muted-foreground uppercase tracking-wide">Score</div>
-              <div className="text-3xl font-semibold text-emerald-400 tabular-nums">{score}</div>
-            </div>
-          )}
         </div>
-        {isSimple && streak > 0 && (
+        {streak > 0 && (
           <p className="text-sm text-muted-foreground pt-1">
             {streak}-day streak ·{' '}
             <a href="/leaderboard" className="text-emerald-400 hover:underline">
-              Rankings
+              {t('leaderboardRankings', { defaultValue: 'Rankings' })}
             </a>
           </p>
         )}
-        {isPro && (
-          <p className="text-sm text-muted-foreground pt-1">
-            {!userEmail && (
+        <p className="text-sm text-muted-foreground pt-1">
+          {!userEmail ? (
+            <>
               <a href="/profile" className="text-emerald-400 hover:underline">Sign in</a>
-            )}
-            {userEmail ? 'Cloud sync on.' : ' Sign in optional — progress stays on this device.'}
-          </p>
-        )}
+              {' '}optional — progress stays on this device.
+            </>
+          ) : (
+            'Cloud sync on.'
+          )}
+        </p>
         <div className="pt-3">
           <JourneyStrip action={action} />
         </div>
@@ -517,19 +512,22 @@ export function HomePage() {
         activeWorkout={!!activeWorkout}
       />
 
-      {isSimple && <TodayQuickLinks />}
+      {layout.showDashboard && (
+        <TodayDashboardHeader missionScore={score} scores={bodyScores} streak={streak} />
+      )}
 
-      {isSimple && !showExpandedToday && streak === 0 && (
+      {layout.showQuickLinks && <TodayQuickLinks />}
+
+      {!layout.showDashboard && state.phase === 'basic' && streak === 0 && (
         <p className="text-center text-sm text-muted-foreground px-4">
           One step at a time. Health for everyone — train, fuel, move, and learn on your path.
         </p>
       )}
 
-      {showExpandedToday && (
+      {layout.showDetailsAccordion && (
         <TodaySections>
-      <TodaySection title="Health scores" description="Readiness and coach insight" defaultOpen>
+      <TodaySection title="Health scores" description="Coach insight and pillar breakdown" defaultOpen={false}>
       <div className="space-y-4 pt-2">
-      <MetricsRow scores={bodyScores} />
       <CoachInsightCard insight={coachInsight} />
 
       <Card>

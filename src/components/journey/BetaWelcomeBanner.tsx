@@ -57,7 +57,7 @@ export function BetaWelcomeBanner() {
           href="/profile"
           className="inline-flex items-center gap-1.5 rounded-full border border-border/50 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          Pro mode &amp; language
+          Language &amp; profile
         </Link>
       </div>
     </div>

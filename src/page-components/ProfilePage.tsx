@@ -7,12 +7,11 @@ import { useTranslation } from "react-i18next";
 import { supabase, signOut, signInMagic, isPremium, getUser } from "@/lib/supabase";
 import i18n from "@/i18n";
 import { useWorkoutStore } from "@/store/workoutStore";
-import { useUiMode } from "@/hooks/useUiMode";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
+import { useMoreNav } from "@/contexts/MoreNavContext";
 import { daysSinceCommission } from "@/lib/missionJourney";
 import { getBetaFunnelMetrics, getJourneyEvents } from "@/lib/journeyAnalytics";
 import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
-import { MoreSheet } from "@/components/layout/MoreSheet";
 import { LayoutGrid } from "lucide-react";
 
 import { scheduleJourneyPush } from '@/lib/journeySync';
@@ -61,9 +60,8 @@ function LanguageSwitcher() {
 
 export function ProfilePage() {
   const { t } = useTranslation();
-  const { mode, isPro, setUiMode } = useUiMode();
   const { isCommissioned, state, action } = useMissionJourney();
-  const [moreOpen, setMoreOpen] = useState(false);
+  const { openMore } = useMoreNav();
   const [email, setEmail] = useState<string | null>(null);
   const [nudgeLoading, setNudgeLoading] = useState(false);
   const [nudgeSent, setNudgeSent] = useState(false);
@@ -259,35 +257,15 @@ export function ProfilePage() {
       </Card>
 
       <Card className="content-card">
-        <CardHeader><CardTitle>{t('appMode', { defaultValue: 'App mode' })}</CardTitle></CardHeader>
-        <CardContent className="space-y-4">
+        <CardHeader><CardTitle>{t('navMore', { defaultValue: 'More tools' })}</CardTitle></CardHeader>
+        <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground leading-relaxed">
-            <strong>{t('simpleMode', { defaultValue: 'Simple' })}</strong> — one clear action each day. Best for most people worldwide.
-            <br />
-            <strong>{t('proMode', { defaultValue: 'Pro' })}</strong> — full Today view, charts, and all tools.
+            Move, Mind, Learn, Leaderboard, Builder, Library, and more — one tap away on any device.
           </p>
-          <div className="flex gap-2">
-            <Button
-              variant={mode === 'simple' ? 'default' : 'outline'}
-              className="flex-1 min-h-[44px]"
-              onClick={() => setUiMode('simple')}
-            >
-              {t('simpleMode', { defaultValue: 'Simple' })}
-            </Button>
-            <Button
-              variant={mode === 'pro' ? 'default' : 'outline'}
-              className="flex-1 min-h-[44px]"
-              onClick={() => setUiMode('pro')}
-            >
-              {t('proMode', { defaultValue: 'Pro' })}
-            </Button>
-          </div>
-          {isPro && (
-            <Button variant="outline" className="w-full min-h-[44px] gap-2" onClick={() => setMoreOpen(true)}>
-              <LayoutGrid className="h-4 w-4" />
-              {t('navMore', { defaultValue: 'More tools' })}
-            </Button>
-          )}
+          <Button variant="outline" className="w-full min-h-[44px] gap-2" onClick={openMore}>
+            <LayoutGrid className="h-4 w-4" />
+            {t('navMore', { defaultValue: 'Open More tools' })}
+          </Button>
         </CardContent>
       </Card>
 
@@ -524,7 +502,6 @@ export function ProfilePage() {
 
       <div className="text-xs text-muted-foreground">More settings (locale, notifications, data export) coming with full backend. Your data stays private and under your control.</div>
       <p className="text-[10px] text-muted-foreground/70 text-center pt-2">Build {APP_BUILD_LABEL}</p>
-      <MoreSheet open={moreOpen} onClose={() => setMoreOpen(false)} />
     </div>
   );
 }
