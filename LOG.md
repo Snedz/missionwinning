@@ -4,6 +4,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase F2b–G2: Commissioning, i18n Tier 1, form guides
+
+**Branch:** `cursor/f2d-g1-form-guides-699d`
+
+### Shipped
+
+- **Commissioning ceremony** — one-time modal when Readiness complete
+- **Tier 1 i18n** — DE, IT, KO added; nav, welcome, journey, form guide UI strings
+- **HtmlLangSync** — document language follows app language
+- **50+ text form guides** — extended library, no video
+- **Pro Today accordion** — Health scores / This week / Progress sections
+- **Profile badge** — Mission Operator · Day N when commissioned
+
+---
+
 ## 2026-06-29 — Phase F2a: Simple/Pro mode + Apple UI polish
 
 **Branch:** `cursor/simple-pro-mode-699d` (includes F1 from `cursor/journey-i-day-699d`)

@@ -18,6 +18,7 @@ import { MetricsRow } from "@/components/metrics/MetricsRow";
 import { CoachInsightCard } from "@/components/metrics/CoachInsightCard";
 import { PillarScoreBreakdown } from "@/components/metrics/PillarScoreBreakdown";
 import { JourneyStrip, JourneyHero } from "@/components/journey/JourneyHero";
+import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { useUiMode } from "@/hooks/useUiMode";
 
@@ -513,7 +514,9 @@ export function HomePage() {
       )}
 
       {showExpandedToday && (
-        <>
+        <TodaySections>
+      <TodaySection title="Health scores" description="Readiness and coach insight" defaultOpen>
+      <div className="space-y-4 pt-2">
       <MetricsRow scores={bodyScores} />
       <CoachInsightCard insight={coachInsight} />
 
@@ -528,7 +531,11 @@ export function HomePage() {
           <PillarScoreBreakdown breakdown={scoreBreakdown} />
         </CardContent>
       </Card>
+      </div>
+      </TodaySection>
 
+      <TodaySection title="This week" description="Challenges and daily workout">
+      <div className="space-y-4 pt-2">
       {/* Weekly challenges — Freeletics-style retention, free for all */}
       <Card>
         <CardHeader>
@@ -575,7 +582,11 @@ export function HomePage() {
           </Button>
         </CardContent>
       </Card>
+      </div>
+      </TodaySection>
 
+      <TodaySection title="Progress & tools" description="Readiness, stats, and history">
+      <div className="space-y-4 pt-2">
       {/* Free starters + saved routines — secondary to Journey hero */}
       <Card className="border-border/60">
         <CardHeader>
@@ -888,7 +899,9 @@ export function HomePage() {
           </Button>
         </div>
       )}
-        </>
+      </div>
+      </TodaySection>
+        </TodaySections>
       )}
     </div>
   );

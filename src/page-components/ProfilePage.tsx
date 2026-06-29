@@ -8,16 +8,21 @@ import { supabase, signOut, signInMagic, isPremium, getUser } from "@/lib/supaba
 import i18n from "@/i18n";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { useUiMode } from "@/hooks/useUiMode";
+import { useMissionJourney } from "@/hooks/useMissionJourney";
+import { daysSinceCommission } from "@/lib/missionJourney";
 import { MoreSheet } from "@/components/layout/MoreSheet";
 import { LayoutGrid } from "lucide-react";
 
-const LANGS = ['en', 'es', 'fr', 'pt', 'ru'] as const;
+const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko'] as const;
 const NATIVE_NAMES: Record<string, string> = {
   en: 'English',
   es: 'Español',
   fr: 'Français',
   pt: 'Português',
   ru: 'Русский',
+  de: 'Deutsch',
+  it: 'Italiano',
+  ko: '한국어',
 };
 
 function LanguageSwitcher() {
@@ -45,6 +50,7 @@ function LanguageSwitcher() {
 export function ProfilePage() {
   const { t } = useTranslation();
   const { mode, isPro, setUiMode } = useUiMode();
+  const { isCommissioned, state } = useMissionJourney();
   const [moreOpen, setMoreOpen] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const [units, setUnits] = useState<"metric" | "imperial">("metric");
@@ -161,6 +167,11 @@ export function ProfilePage() {
     <div className="max-w-2xl space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">{t('profileSettings', { defaultValue: 'Profile & Settings' })}</h2>
+        {isCommissioned && state.commissionedAt && (
+          <p className="text-sm text-emerald-400 mt-1">
+            {t('missionOperator', { defaultValue: 'Mission Operator' })} · Day {daysSinceCommission(state.commissionedAt)}
+          </p>
+        )}
         <p className="text-muted-foreground">Your Mission Winning account. Global preferences. Premium status.</p>
       </div>
 
@@ -198,12 +209,12 @@ export function ProfilePage() {
       </Card>
 
       <Card className="content-card">
-        <CardHeader><CardTitle>App mode</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('appMode', { defaultValue: 'App mode' })}</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground leading-relaxed">
-            <strong>Simple</strong> — one clear action each day. Best for most people worldwide.
+            <strong>{t('simpleMode', { defaultValue: 'Simple' })}</strong> — one clear action each day. Best for most people worldwide.
             <br />
-            <strong>Pro</strong> — full dashboard, charts, and all tools.
+            <strong>{t('proMode', { defaultValue: 'Pro' })}</strong> — full dashboard, charts, and all tools.
           </p>
           <div className="flex gap-2">
             <Button
@@ -211,20 +222,20 @@ export function ProfilePage() {
               className="flex-1 min-h-[44px]"
               onClick={() => setUiMode('simple')}
             >
-              Simple
+              {t('simpleMode', { defaultValue: 'Simple' })}
             </Button>
             <Button
               variant={mode === 'pro' ? 'default' : 'outline'}
               className="flex-1 min-h-[44px]"
               onClick={() => setUiMode('pro')}
             >
-              Pro
+              {t('proMode', { defaultValue: 'Pro' })}
             </Button>
           </div>
           {isPro && (
             <Button variant="outline" className="w-full min-h-[44px] gap-2" onClick={() => setMoreOpen(true)}>
               <LayoutGrid className="h-4 w-4" />
-              Open all tools
+              {t('navMore', { defaultValue: 'More tools' })}
             </Button>
           )}
         </CardContent>

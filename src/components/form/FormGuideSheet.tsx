@@ -1,6 +1,7 @@
 'use client';
 
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { FormGuide } from '@/types/formGuide';
 import { cn } from '@/lib/utils';
 
@@ -12,6 +13,7 @@ interface FormGuideSheetProps {
 }
 
 export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuideSheetProps) {
+  const { t } = useTranslation();
   if (!open) return null;
 
   return (
@@ -34,7 +36,7 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
       >
         <div className="sticky top-0 flex items-center justify-between border-b border-border/40 bg-card/95 backdrop-blur px-5 py-4">
           <div>
-            <p className="text-xs uppercase tracking-widest text-muted-foreground">Form guide</p>
+            <p className="text-xs uppercase tracking-widest text-muted-foreground">{t('formGuideTitle', { defaultValue: 'Form guide' })}</p>
             <h2 id="form-guide-title" className="text-lg font-semibold">{exerciseName}</h2>
           </div>
           <button
@@ -62,14 +64,14 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
             </section>
           )}
 
-          <GuideSection title="Setup" items={guide.setup} />
-          <GuideSection title="Execute" items={guide.execute} />
+          <GuideSection title={t('setup', { defaultValue: 'Setup' })} items={guide.setup} />
+          <GuideSection title={t('execute', { defaultValue: 'Execute' })} items={guide.execute} />
           {guide.commonErrors && guide.commonErrors.length > 0 && (
-            <GuideSection title="Avoid" items={guide.commonErrors} variant="error" />
+            <GuideSection title={t('avoid', { defaultValue: 'Avoid' })} items={guide.commonErrors} variant="error" />
           )}
           {guide.breathing && (
             <section className="rounded-xl bg-muted/40 px-4 py-3">
-              <h3 className="text-sm font-semibold text-muted-foreground mb-1">Breath</h3>
+              <h3 className="text-sm font-semibold text-muted-foreground mb-1">{t('breath', { defaultValue: 'Breath' })}</h3>
               <p>{guide.breathing}</p>
             </section>
           )}
@@ -81,7 +83,7 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
             onClick={onClose}
             className="w-full min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[17px] transition-colors"
           >
-            Got it — start set
+          {t('gotItStartSet', { defaultValue: 'Got it — start set' })}
           </button>
         </div>
       </div>
