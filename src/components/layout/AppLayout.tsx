@@ -3,6 +3,7 @@
 import { Sidebar } from "./Sidebar";
 import { MobileNav } from "./MobileNav";
 import { JourneyGuard } from "@/components/journey/JourneyGuard";
+import { CommissioningCeremony } from "@/components/journey/CommissioningCeremony";
 import { useUiMode } from "@/hooks/useUiMode";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +12,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <JourneyGuard>
+      <CommissioningCeremony />
       <div className={cn('flex h-screen overflow-hidden', isSimple && 'ui-simple')}>
         <div className="hidden md:flex shrink-0">
           <Sidebar />

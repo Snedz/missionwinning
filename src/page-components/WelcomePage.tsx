@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -28,6 +29,7 @@ const EQUIPMENT_OPTIONS = [
 
 export function WelcomePage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [step, setStep] = useState<Step>('welcome');
   const [experience, setExperience] = useState('beginner');
   const [equipment, setEquipment] = useState('bodyweight');
@@ -86,17 +88,19 @@ export function WelcomePage() {
               <>
                 <div className="space-y-2">
                   <p className="text-xs uppercase tracking-widest text-emerald-400">Where the journey begins</p>
-                  <h1 className="text-2xl md:text-3xl font-bold">Welcome, Mission Member</h1>
+                  <h1 className="text-2xl md:text-3xl font-bold">{t('welcomeTitle', { defaultValue: 'Welcome, Mission Member' })}</h1>
                   <p className="text-white/70 text-sm leading-relaxed">
-                    Incoming members start here. In-processing marks the beginning of your path toward
-                    lifelong health — one step at a time. This takes about two minutes.
+                    {t('welcomeSubtitle', {
+                      defaultValue:
+                        'Start your path toward lifelong health — one step at a time. About two minutes.',
+                    })}
                   </p>
                 </div>
                 <Button
                   className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
                   onClick={handleBegin}
                 >
-                  Begin
+                  {t('welcomeBegin', { defaultValue: 'Begin' })}
                 </Button>
               </>
             )}
@@ -121,7 +125,7 @@ export function WelcomePage() {
                   className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
                   onClick={handleAcceptMission}
                 >
-                  I accept the path
+                  {t('welcomeAccept', { defaultValue: 'I accept the path' })}
                 </Button>
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('welcome')}>
                   <ChevronLeft className="h-4 w-4 mr-1" /> Back
@@ -176,7 +180,7 @@ export function WelcomePage() {
                   className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
                   onClick={handleProfileNext}
                 >
-                  Continue
+                  {t('welcomeContinue', { defaultValue: 'Continue' })}
                 </Button>
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('mission')}>
                   <ChevronLeft className="h-4 w-4 mr-1" /> Back
@@ -204,7 +208,7 @@ export function WelcomePage() {
                   onClick={handleSignIn}
                   disabled={sending}
                 >
-                  {sending ? 'Sending…' : email.trim() ? 'Send link & finish' : 'Skip — go to Today'}
+                  {sending ? 'Sending…' : email.trim() ? 'Send link & finish' : t('welcomeSkipSignIn', { defaultValue: 'Skip — go to Today' })}
                 </Button>
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('profile')}>
                   <ChevronLeft className="h-4 w-4 mr-1" /> Back

@@ -7,11 +7,13 @@ import { Dumbbell, LayoutGrid } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { useUiMode } from '@/hooks/useUiMode';
+import { useTranslation } from 'react-i18next';
 import { PRIMARY_NAV } from '@/lib/navConfig';
 import { MoreSheet } from './MoreSheet';
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { t } = useTranslation();
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const { isPro } = useUiMode();
   const [moreOpen, setMoreOpen] = useState(false);
@@ -30,7 +32,7 @@ export function Sidebar() {
         </div>
 
         <nav className="flex-1 space-y-0.5 px-3">
-          {PRIMARY_NAV.map(({ href, label, icon: Icon, ...rest }) => {
+          {PRIMARY_NAV.map(({ href, labelKey, icon: Icon, ...rest }) => {
             const pulseWhenActive = 'pulseWhenActive' in rest && rest.pulseWhenActive;
             const isActive = pathname === href || (href === '/log' && pathname === '/');
             const showPulse = pulseWhenActive && activeWorkout;
@@ -46,7 +48,7 @@ export function Sidebar() {
                 )}
               >
                 <Icon className={cn('h-5 w-5 shrink-0', showPulse && 'text-emerald-400')} />
-                {label}
+                {t(labelKey, { defaultValue: labelKey })}
                 {showPulse && (
                   <span className="ml-auto h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                 )}
@@ -61,7 +63,7 @@ export function Sidebar() {
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium min-h-[44px] text-muted-foreground hover:bg-white/5 hover:text-foreground transition-colors mt-2"
             >
               <LayoutGrid className="h-5 w-5 shrink-0" />
-              More tools
+              {t('navMore', { defaultValue: 'More tools' })}
             </button>
           )}
         </nav>

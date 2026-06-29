@@ -1,10 +1,11 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
+import { CORE_LOCALES, TIER1_LANGS } from './i18n/coreLocales'
 
 // Inline resources for fast global launch (add more langs + extract to json later)
-// EN + ES + FR + PT + RU for global reach (Africa, LatAm, Europe, Russia, etc.)
-const resources = {
+// Tier 1: EN ES FR PT RU DE IT KO
+const resources: Record<string, { common: Record<string, string> }> = {
   en: {
     common: {
       appName: "Mission Winning",
@@ -508,6 +509,13 @@ const resources = {
       currentLanguage: "Текущий язык",
     }
   }
+}
+
+for (const lang of TIER1_LANGS) {
+  if (!resources[lang]) {
+    resources[lang] = { common: { ...resources.en.common } }
+  }
+  Object.assign(resources[lang].common, CORE_LOCALES[lang])
 }
 
 i18n

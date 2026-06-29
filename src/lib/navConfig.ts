@@ -11,32 +11,28 @@ import {
   PenTool,
   Shield,
   Sparkles,
-  Target,
   User,
   UtensilsCrossed,
   Wind,
-  Zap,
 } from 'lucide-react';
 
 export const PRIMARY_NAV = [
-  { href: '/log', label: 'Today', icon: Home },
-  { href: '/active', label: 'Train', icon: Dumbbell, pulseWhenActive: true as const },
-  { href: '/nutrition', label: 'Fuel', icon: UtensilsCrossed },
-  { href: '/track', label: 'Track', icon: MapPin },
-  { href: '/profile', label: 'You', icon: User },
+  { href: '/log', labelKey: 'navToday', icon: Home },
+  { href: '/active', labelKey: 'navTrain', icon: Dumbbell, pulseWhenActive: true as const },
+  { href: '/nutrition', labelKey: 'navFuel', icon: UtensilsCrossed },
+  { href: '/track', labelKey: 'navTrack', icon: MapPin },
+  { href: '/profile', labelKey: 'navYou', icon: User },
 ];
 
 export const MORE_NAV = [
-  { href: '/move', label: 'Move', icon: Wind, description: 'Mobility flows' },
-  { href: '/mind', label: 'Mind', icon: Brain, description: 'Breathing & recovery' },
-  { href: '/learn', label: 'Learn', icon: BookOpen, description: 'Education paths' },
-  { href: '/builder', label: 'Builder', icon: PenTool, description: 'Build workouts' },
-  { href: '/library', label: 'Library', icon: Dumbbell, description: 'Exercise catalog' },
-  { href: '/history', label: 'History', icon: History, description: 'Past sessions' },
-  { href: '/benchmarks', label: 'Readiness tests', icon: Shield, description: 'Push-ups, pull-ups, strength standards', military: true },
-  { href: '/assessments', label: 'Health screen', icon: ClipboardList, description: 'PAR-Q assessment' },
-  { href: '/calculators', label: 'Calculators', icon: Calculator, description: 'Macros & tools' },
-  { href: '/bundle', label: 'Super Bundle', icon: Sparkles, description: 'Premium pillars' },
-] as const;
-
-export { Zap, Target };
+  { href: '/move', labelKey: 'navMove', label: 'Move', icon: Wind, descriptionKey: 'moreMoveDesc', description: 'Mobility flows' },
+  { href: '/mind', labelKey: 'navMind', label: 'Mind', icon: Brain, descriptionKey: 'moreMindDesc', description: 'Breathing & recovery' },
+  { href: '/learn', labelKey: 'navLearn', label: 'Learn', icon: BookOpen, descriptionKey: 'moreLearnDesc', description: 'Education paths' },
+  { href: '/builder', labelKey: 'navBuilder', label: 'Builder', icon: PenTool, descriptionKey: 'moreBuilderDesc', description: 'Build workouts' },
+  { href: '/library', labelKey: 'navLibrary', label: 'Library', icon: Dumbbell, descriptionKey: 'moreLibraryDesc', description: 'Exercise catalog' },
+  { href: '/history', labelKey: 'navHistory', label: 'History', icon: History, descriptionKey: 'moreHistoryDesc', description: 'Past sessions' },
+  { href: '/benchmarks', labelKey: 'navReadiness', label: 'Readiness tests', icon: Shield, descriptionKey: 'moreReadinessDesc', description: 'Push-ups, pull-ups, strength standards', military: true },
+  { href: '/assessments', labelKey: 'navHealth', label: 'Health screen', icon: ClipboardList, descriptionKey: 'moreHealthDesc', description: 'PAR-Q assessment' },
+  { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators', icon: Calculator, descriptionKey: 'moreCalcDesc', description: 'Macros & tools' },
+  { href: '/bundle', labelKey: 'navBundle', label: 'Super Bundle', icon: Sparkles, descriptionKey: 'moreBundleDesc', description: 'Premium pillars' },
+];

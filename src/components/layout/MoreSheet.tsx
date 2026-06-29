@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { ChevronRight, LayoutGrid } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MORE_NAV } from '@/lib/navConfig';
@@ -13,6 +14,7 @@ interface MoreSheetProps {
 
 export function MoreSheet({ open, onClose }: MoreSheetProps) {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   if (!open) return null;
 
@@ -28,7 +30,7 @@ export function MoreSheet({ open, onClose }: MoreSheetProps) {
         <div className="sticky top-0 flex items-center justify-between px-5 py-4 border-b border-border/40 bg-card/90 backdrop-blur">
           <div className="flex items-center gap-2">
             <LayoutGrid className="h-5 w-5 text-muted-foreground" />
-            <h2 className="text-lg font-semibold">More tools</h2>
+            <h2 className="text-lg font-semibold">{t('navMore', { defaultValue: 'More tools' })}</h2>
           </div>
           <button
             type="button"
@@ -40,7 +42,7 @@ export function MoreSheet({ open, onClose }: MoreSheetProps) {
         </div>
         <ul className="p-3 space-y-1 pb-[max(1rem,env(safe-area-inset-bottom))]">
           {MORE_NAV.map((item) => {
-            const { href, label, icon: Icon, description } = item;
+            const { href, labelKey, label, icon: Icon, descriptionKey, description } = item;
             const military = 'military' in item && item.military;
             const active = pathname === href;
             return (
@@ -56,8 +58,10 @@ export function MoreSheet({ open, onClose }: MoreSheetProps) {
                 >
                   <Icon className={cn('h-5 w-5 shrink-0', military && 'text-amber-600/80')} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium">{label}</div>
-                    <div className="text-xs text-muted-foreground truncate">{description}</div>
+                    <div className="font-medium">{t(labelKey, { defaultValue: label })}</div>
+                    <div className="text-xs text-muted-foreground truncate">
+                      {t(descriptionKey, { defaultValue: description })}
+                    </div>
                   </div>
                   <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
                 </Link>

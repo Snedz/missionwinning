@@ -1,4 +1,5 @@
 import type { FormGuide } from '@/types/formGuide';
+import { EXTENDED_GUIDES } from '@/lib/formGuidesExtended';
 
 /** Structured text form guides — no video budget required. */
 const GUIDES: Record<string, FormGuide> = {
@@ -88,6 +89,8 @@ const GUIDES: Record<string, FormGuide> = {
   },
 };
 
+const ALL_GUIDES: Record<string, FormGuide> = { ...GUIDES, ...EXTENDED_GUIDES };
+
 /** Military test prep — structured cues with readiness terminology (benchmarks only). */
 const MILITARY_GUIDES: Record<string, FormGuide> = {
   'push-ups': {
@@ -128,9 +131,9 @@ export function getFormGuide(exerciseId: string, opts?: { military?: boolean }):
   if (opts?.military && MILITARY_GUIDES[exerciseId]) {
     return MILITARY_GUIDES[exerciseId];
   }
-  return GUIDES[exerciseId] ?? null;
+  return ALL_GUIDES[exerciseId] ?? null;
 }
 
 export function hasFormGuide(exerciseId: string): boolean {
-  return exerciseId in GUIDES || exerciseId in MILITARY_GUIDES;
+  return exerciseId in ALL_GUIDES || exerciseId in MILITARY_GUIDES;
 }

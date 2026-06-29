@@ -1,7 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
 import { getPhaseLabel } from '@/lib/missionJourney';
 
@@ -39,12 +39,15 @@ interface JourneyHeroProps {
 }
 
 export function JourneyHero({ action, onPrimaryClick, activeWorkout }: JourneyHeroProps) {
-  const label = activeWorkout ? 'Resume workout' : action.label;
+  const { t } = useTranslation();
+  const label = activeWorkout ? t('resumeWorkout', { defaultValue: 'Resume workout' }) : action.label;
 
   return (
     <div className="content-card p-6 space-y-4">
       <div>
-        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Your next step</p>
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+          {t('yourNextStep', { defaultValue: 'Your next step' })}
+        </p>
         <h3 className="text-xl font-semibold tracking-tight">{label}</h3>
         <p className="text-base text-muted-foreground mt-2 leading-relaxed">{action.description}</p>
       </div>

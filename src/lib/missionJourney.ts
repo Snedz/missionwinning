@@ -365,4 +365,4 @@ export function getPhaseLabel(phase: JourneyPhase): string {
   }
 }
 
-export { FIRST_WORKOUT };
+export { FIRST_WORKOUT, daysSinceCommission };
