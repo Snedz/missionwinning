@@ -7,6 +7,7 @@ import {
   isPrivateModeEnabled,
   queryGrantsAccess,
 } from '@/lib/privateGate';
+import { createPrivateAccessToken, PRIVATE_ACCESS_COOKIE } from '@/lib/privateSession';
 
 // Private development mode gate (STRICT).
 // EVERY public visitor sees ONLY the minimal /private teaser unless they have the access cookie.
@@ -46,7 +47,7 @@ export function proxy(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.searchParams.delete('access');
     const response = NextResponse.redirect(url);
-    response.cookies.set('mw_private_access', secret!, {
+    response.cookies.set(PRIVATE_ACCESS_COOKIE, createPrivateAccessToken(secret!), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

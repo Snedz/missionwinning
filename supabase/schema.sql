@@ -44,12 +44,16 @@ create table if not exists public.enrollments (
 
 create index if not exists enrollments_user_id_idx on public.enrollments(user_id);
 create index if not exists enrollments_user_email_idx on public.enrollments(user_email);
+create unique index if not exists enrollments_provider_external_idx on public.enrollments(provider, external_id) where external_id is not null;
 
 alter table public.enrollments enable row level security;
 
 create policy "Users read own enrollments"
   on public.enrollments for select
-  using (auth.uid() = user_id);
+  using (
+    auth.uid() = user_id
+    or user_email = (auth.jwt() ->> 'email')
+  );
 
 -- Leads (coaching, feedback, unlock requests)
 create table if not exists public.leads (

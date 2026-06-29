@@ -164,8 +164,6 @@ export function ProgramsPage() {
                     title={prog.title}
                     className="mt-2"
                   />
-                  {/* Analytics stub kept for compatibility */}
-                  <script dangerouslySetInnerHTML={{ __html: `console.log('analytics: program_view', '${prog.title}');` }} />
                 </div>
               </CardHeader>
               <CardContent>

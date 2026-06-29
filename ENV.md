@@ -2,6 +2,8 @@
 
 This guide gets **www.missionwinning.com** running with the **private development gate** active so the public only sees the `/private` teaser until they have your access code.
 
+For the full pre-launch security inspection checklist and competitive readiness review, see **[PROTECTION.md](PROTECTION.md)**.
+
 ## Quick start (local)
 
 ```bash
