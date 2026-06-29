@@ -1,0 +1,40 @@
+'use client';
+
+import { cn } from '@/lib/utils';
+import { LEADERBOARD_SCOPES } from '@/lib/leaderboard/boards';
+import type { LeaderboardScope } from '@/lib/leaderboard/types';
+
+interface Props {
+  scope: LeaderboardScope;
+  onScopeChange: (s: LeaderboardScope) => void;
+  scopeLabel: string;
+}
+
+export function LeaderboardScopeTabs({ scope, onScopeChange, scopeLabel }: Props) {
+  return (
+    <div className="space-y-2">
+      <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+        {LEADERBOARD_SCOPES.map((s) => (
+          <button
+            key={s.id}
+            type="button"
+            onClick={() => onScopeChange(s.id)}
+            className={cn(
+              'shrink-0 rounded-full px-3.5 py-2 text-xs font-medium transition-colors min-h-[36px]',
+              scope === s.id
+                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/30'
+                : 'bg-muted/60 text-muted-foreground hover:bg-muted'
+            )}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+      <p className="text-xs text-muted-foreground">
+        <span className="text-foreground/80 font-medium">{scopeLabel}</span>
+        {' · '}
+        {LEADERBOARD_SCOPES.find((s) => s.id === scope)?.description}
+      </p>
+    </div>
+  );
+}

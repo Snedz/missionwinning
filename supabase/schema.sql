@@ -95,6 +95,34 @@ create policy "Users read own journey events"
 create policy "Users insert own journey events"
   on public.journey_events for insert with check (auth.uid() = user_id);
 
+-- Leaderboard snapshots (GT7-style rankings)
+create table if not exists public.leaderboard_snapshots (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  operator_name text not null default 'Mission Operator',
+  mission_score integer not null default 0,
+  training_streak integer not null default 0,
+  weekly_volume integer not null default 0,
+  night_sessions integer not null default 0,
+  region text,
+  country_code text,
+  country_name text,
+  locale text default 'en',
+  updated_at timestamptz default now()
+);
+
+create index if not exists leaderboard_mission_score_idx on public.leaderboard_snapshots(mission_score desc);
+
+alter table public.leaderboard_snapshots enable row level security;
+
+create policy "Anyone can read leaderboard"
+  on public.leaderboard_snapshots for select using (true);
+
+create policy "Users upsert own leaderboard row"
+  on public.leaderboard_snapshots for insert with check (auth.uid() = user_id);
+
+create policy "Users update own leaderboard row"
+  on public.leaderboard_snapshots for update using (auth.uid() = user_id);
+
 -- Workout logs (cloud sync — flat columns match CloudWorkoutLog)
 create table if not exists public.workout_logs (
   id uuid primary key default gen_random_uuid(),

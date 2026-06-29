@@ -6,6 +6,24 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — GT7-style global leaderboard
+
+**Branch:** `cursor/leaderboard-gt7-699d`
+
+### Shipped
+
+- **`/leaderboard`** — Global, Regional, National, Local, Friends scopes
+- **Boards:** Mission Score, Training Streak, Weekly Volume, **Under the Stars** (night sessions)
+- Demo operator population + cloud sync via `leaderboard_snapshots`
+- Call sign editor, GT7-style rank table with medals
+- More tools nav + Today wins card link
+
+### Supabase (when ready)
+
+Run `supabase/migrations/20250629_leaderboard.sql`
+
+---
+
 ## 2026-06-29 — Phase F4: Beta funnel, legal pages, launch gate
 
 **Branch:** `cursor/f4-beta-launch-699d`
