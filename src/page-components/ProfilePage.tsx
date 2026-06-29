@@ -17,7 +17,7 @@ import { LayoutGrid } from "lucide-react";
 
 import { scheduleJourneyPush } from '@/lib/journeySync';
 
-const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi'] as const;
+const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi', 'zh', 'id'] as const;
 const NATIVE_NAMES: Record<string, string> = {
   en: 'English',
   es: 'Español',
@@ -31,6 +31,8 @@ const NATIVE_NAMES: Record<string, string> = {
   th: 'ไทย',
   vi: 'Tiếng Việt',
   hi: 'हिन्दी',
+  zh: '中文',
+  id: 'Bahasa Indonesia',
 };
 
 function LanguageSwitcher() {

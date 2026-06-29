@@ -1,8 +1,10 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 import { LEADERBOARD_SCOPES } from '@/lib/leaderboard/boards';
 import type { LeaderboardScope } from '@/lib/leaderboard/types';
+import { SCOPE_I18N_KEY } from '@/i18n/leaderboardLocales';
 
 interface Props {
   scope: LeaderboardScope;
@@ -11,6 +13,7 @@ interface Props {
 }
 
 export function LeaderboardScopeTabs({ scope, onScopeChange, scopeLabel }: Props) {
+  const { t } = useTranslation();
   return (
     <div className="space-y-2">
       <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
@@ -26,7 +29,7 @@ export function LeaderboardScopeTabs({ scope, onScopeChange, scopeLabel }: Props
                 : 'bg-muted/60 text-muted-foreground hover:bg-muted'
             )}
           >
-            {s.label}
+            {t(SCOPE_I18N_KEY[s.id], { defaultValue: s.label })}
           </button>
         ))}
       </div>

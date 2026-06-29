@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 import type { LeaderboardEntry, LeaderboardBoardTheme } from '@/lib/leaderboard/types';
 import { Medal } from 'lucide-react';
 
@@ -25,6 +26,7 @@ function deltaDisplay(delta?: number) {
 }
 
 export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }: Props) {
+  const { t } = useTranslation();
   return (
     <div
       className={cn(
@@ -60,7 +62,7 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
                   {e.operatorName}
                   {e.isYou && (
                     <span className="ml-1.5 text-[10px] uppercase tracking-wide text-emerald-400/80">
-                      You
+                      {t('lbYou', { defaultValue: 'You' })}
                     </span>
                   )}
                 </div>

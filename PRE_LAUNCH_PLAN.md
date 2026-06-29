@@ -16,6 +16,9 @@
 | **Journey (F1–F3)** | ✅ | I-Day → Basic → Readiness → Commissioned; cloud sync |
 | **Simple / Pro UI (F2)** | ✅ | 5-tab Simple default; Pro = full Today + More tools |
 | **i18n Tier 1 (G1)** | ✅ | EN, ES, FR, PT, RU, DE, IT, KO, JA — nav, welcome, journey chrome |
+| **i18n Tier 2 (G1b)** | ✅ | TH, VI, HI, ZH, ID — nav, welcome, journey chrome |
+| **Beta invite kit** | ✅ | `/beta` start guide + [BETA_INVITE.md](BETA_INVITE.md) |
+| **Leaderboard i18n** | ✅ partial | Title, boards, scopes in EN/ES/FR/JA/DE/TH/ZH/ID |
 | **Form guides (G2)** | ✅ | 50+ text-only exercise guides |
 | **Legal (F4 partial)** | ✅ | `/privacy`, `/terms`, linked from `/about` |
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
@@ -139,9 +142,9 @@ Work **without Vercel** until access is restored.
 | # | Task | Branch idea | Effort |
 |---|------|-------------|--------|
 | 1 | **Merge PR stack** to `master` locally; fix conflicts | `cursor/release-integration-699d` | Integration |
-| 2 | **Tier 2 i18n:** Thai + Vietnamese + Hindi core chrome | `cursor/i18n-tier2-sea-699d` | Small |
-| 3 | **Leaderboard SQL** if not run: `20250629_leaderboard.sql` | — | 5 min |
-| 4 | **Beta invite kit:** 10 users, private gate code, 1-page “start here” | doc or `/beta` | Small |
+| 2 | **Tier 2 i18n:** Thai + Vietnamese + Hindi + Chinese + Indonesian | ✅ done | — |
+| 3 | **Leaderboard SQL** if not run: `20250629_leaderboard_squad_patch.sql` | — | 5 min |
+| 4 | **Beta invite kit:** 10 users, private gate code, 1-page “start here” | ✅ `/beta` + BETA_INVITE.md | — |
 | 5 | **Extract Today + Welcome strings** to JSON for ES/FR/TH | `cursor/i18n-extract-today-699d` | Medium |
 | 6 | **Simple mode leaderboard link** (streak chip → `/leaderboard`) | small | Tiny |
 
@@ -177,6 +180,7 @@ Run in SQL Editor (idempotent where noted):
 | `20250629_journey_state.sql` | Journey sync columns (if profiles existed without them) |
 | `20250629_journey_events.sql` | Analytics events |
 | `20250629_leaderboard.sql` | Leaderboard snapshots |
+| `20250629_leaderboard_squad_patch.sql` | Add `squad_code` + night/dawn if table existed earlier |
 
 Verify 6+ tables: `profiles`, `workout_logs`, `nutrition_logs`, `enrollments`, `leads`, `journey_events`, `leaderboard_snapshots`.
 

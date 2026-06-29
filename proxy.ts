@@ -38,7 +38,8 @@ export function proxy(request: NextRequest) {
     pathname.startsWith('/api') ||
     pathname === '/private' ||
     pathname.startsWith('/private/') ||
-    pathname === '/welcome'
+    pathname === '/welcome' ||
+    pathname === '/beta'
   ) {
     return applyPrivateGateHeaders(NextResponse.next());
   }

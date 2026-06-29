@@ -1,8 +1,10 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 import { LEADERBOARD_BOARDS } from '@/lib/leaderboard/boards';
 import type { LeaderboardBoardId } from '@/lib/leaderboard/types';
+import { BOARD_I18N_KEY } from '@/i18n/leaderboardLocales';
 import { Star, Flame, TrendingUp, UtensilsCrossed, Moon, Sunrise } from 'lucide-react';
 
 const ICONS: Record<LeaderboardBoardId, typeof Star> = {
@@ -20,12 +22,14 @@ interface Props {
 }
 
 export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
       {LEADERBOARD_BOARDS.map((b) => {
         const Icon = ICONS[b.id];
         const active = boardId === b.id;
         const themed = b.theme === 'night' || b.theme === 'dawn';
+        const title = t(BOARD_I18N_KEY[b.id], { defaultValue: b.title });
         return (
           <button
             key={b.id}
@@ -56,7 +60,7 @@ export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
                 active && !themed && 'text-emerald-100'
               )}
             >
-              {b.title}
+              {title}
             </div>
           </button>
         );
