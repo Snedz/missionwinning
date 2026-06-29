@@ -81,10 +81,21 @@ export function HomePage() {
         try {
           const today = new Date().toISOString().split('T')[0];
           const cloudWins = await getUserNutritionForDate(today);
-          const wins = cloudWins.filter((w: any) => /win|assessment|mobility|mind/i.test(w.name || ''));
+          const wins = cloudWins.filter((w: any) => /win|assessment|mobility|mind|track|learn|move/i.test(w.name || ''));
           setRecentPillarWins(wins.slice(0, 5));
         } catch {}
       }
+      // Local pillar wins (Move/Mind/Track/Learn)
+      try {
+        const { getPillarWins } = await import('@/lib/pillarLog');
+        const local = getPillarWins(5);
+        if (local.length) {
+          setRecentPillarWins(prev => {
+            const merged = [...local.map(w => ({ name: `${w.pillar}: ${w.title}` })), ...prev];
+            return merged.slice(0, 5);
+          });
+        }
+      } catch {}
       // Load last assessment from local (saved on submit)
       try {
         const la = localStorage.getItem('mw_last_assessment');

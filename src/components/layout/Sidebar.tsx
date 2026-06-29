@@ -10,6 +10,7 @@ import {
   BarChart3,
   PenTool,
   Zap,
+  MapPin,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
@@ -31,6 +32,8 @@ const navItems = [
   { to: "/move", label: "Move & Mobility", icon: BarChart3, group: "Move" },
   // Mind (mindfulness — free entry + premium)
   { to: "/mind", label: "Mind & Recovery", icon: BarChart3, group: "Mind" },
+  // Track (activity — free manual log + premium GPS)
+  { to: "/track", label: "Track Activity", icon: MapPin, group: "Track" },
   // Progress
   { to: "/history", label: "History", icon: History, group: "Progress" },
   // Learn (education pillar — free intros + premium programs)

@@ -4,6 +4,30 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase B: Pillar free tiers
+
+**Branch:** `cursor/phase-b-pillar-tiers-699d`
+
+### Shipped
+
+- **Move (`/move`):** 4 guided mobility flows with timed step-through runner
+- **Mind (`/mind`):** Box / 4-7-8 / relax breathing timer + daily check-in (sleep, mood, stress, energy)
+- **Learn (`/learn`):** 5 free education paths with expandable lesson cards + progress
+- **Track (`/track`):** New pillar — manual activity log (walk/run/bike/hike), weekly stats
+- **Mobile nav:** Bottom tab bar on phone (Today, Train, Fuel, Track, You); sidebar hidden on mobile
+- **Pillar wins:** Unified `logPillarWin()` for cross-pillar recovery score synergy
+
+### Files added
+
+- `src/components/pillars/TimedFlowRunner.tsx`, `BreathingTimer.tsx`, `DailyCheckIn.tsx`
+- `src/page-components/MovePage.tsx`, `MindPage.tsx`, `TrackPage.tsx`, `LearnPage.tsx`
+- `src/data/mobilityFlows.ts`, `src/data/learnPaths.ts`
+- `src/lib/pillarLog.ts`, `src/lib/activityLog.ts`
+- `src/components/layout/MobileNav.tsx`
+- `app/(app)/track/page.tsx`
+
+---
+
 ## 2026-06-29 — Phase A: Free core alignment
 
 **Branch:** `cursor/phase-a-free-core-699d`

@@ -19,8 +19,8 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 
 | Phase | Focus | Status |
 |-------|-------|--------|
-| **A** | Free core alignment (nutrition, streaks, challenges, today's workout, leads) | ✅ In progress — see [LOG.md](LOG.md) |
-| **B** | Six working pillar free tiers (Move, Mind, Learn, Track) | Planned |
+| **A** | Free core alignment (nutrition, streaks, challenges, today's workout, leads) | ✅ Done — see [LOG.md](LOG.md) |
+| **B** | Six working pillar free tiers (Move, Mind, Learn, Track) | ✅ In progress |
 | **C** | Super Bundle synergy + Supabase hardening | Planned |
 | **D** | Content scale (200+ exercises, Learn paths) | Ongoing |
 | **E** | Go public (Vercel env, PRIVATE_MODE=false) | Blocked on Vercel 2FA reset |
@@ -39,7 +39,7 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 
 ---
 
-## Phase B — Pillar free tiers (next)
+## Phase B — Pillar free tiers ✅
 
 - **Move:** Timed flow step-through + completion log
 - **Mind:** Breathing timer + daily check-in
@@ -47,9 +47,11 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 - **Track:** New `/track` route — manual activity log
 - **Mobile nav:** Bottom tabs or collapsible sidebar for PWA
 
+**Done when:** Each pillar has a usable free-tier experience, not just static lists.
+
 ---
 
-## Phase C — Bundle & backend
+## Phase C — Bundle & backend (next)
 
 - Cross-pillar Win Score weighting
 - Bundle comparison UI (“7 tools, 1 price”)
@@ -99,4 +101,4 @@ Open http://localhost:3000
 
 ---
 
-Last updated: 2026-06-29 (Phase A)
+Last updated: 2026-06-29 (Phase B)
