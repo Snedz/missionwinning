@@ -85,9 +85,32 @@ export function loadJourneyState(): JourneyState {
 
 export function saveJourneyState(state: JourneyState): void {
   if (typeof window === 'undefined') return;
+
+  let prev: JourneyState = { ...DEFAULT_STATE };
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) prev = { ...DEFAULT_STATE, ...JSON.parse(raw) } as JourneyState;
+  } catch {
+    // use default prev
+  }
+
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   window.dispatchEvent(new CustomEvent('mw-journey-local-change'));
   void import('@/lib/journeySync').then((m) => m.scheduleJourneyPush());
+
+  void import('@/lib/journeyAnalytics').then((a) => {
+    if (prev.phase !== state.phase) {
+      a.trackJourneyPhaseComplete(prev.phase, state.phase);
+    }
+    if (!prev.iDay.completedAt && state.iDay.completedAt) {
+      a.trackJourneyEvent('i_day_complete', { experience: localStorage.getItem('mw_experience') });
+    }
+    if (!prev.commissionedAt && state.commissionedAt) {
+      a.trackJourneyEvent('journey_commissioned', { at: state.commissionedAt });
+    }
+    a.trackBasicMilestoneChanges(prev.basic, state.basic);
+    a.trackReadinessMilestoneChanges(prev.readiness, state.readiness);
+  });
 }
 
 export function isIDayComplete(state?: JourneyState): boolean {

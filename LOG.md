@@ -6,6 +6,31 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase F3b: Journey analytics, email nudge, copy pass
+
+**Branch:** `cursor/f3-analytics-nudge-699d`
+
+### Shipped
+
+- **Journey analytics** — `journey_phase_complete`, milestone events, local log + Supabase `journey_events`
+- **Beta funnel card** on Profile — phase, BT progress, event counts vs targets
+- **Email nudge** — `/api/journey/nudge` via Resend when signed in (optional `RESEND_API_KEY`)
+- **Copy pass** — Dashboard → Today, Mission Setup → First-time setup / Your profile
+
+---
+
+## 2026-06-29 — Phase F3: Journey cloud sync + Japanese
+
+**Branch:** `cursor/f3-journey-sync-699d`
+
+### Shipped
+
+- **Supabase journey sync** — merge on sign-in, debounced push for journey + prefs
+- **Japanese (ja)** Tier-1 locale
+- **Edit journey profile** — `/welcome?edit=1` + Profile card
+
+---
+
 ## 2026-06-29 — Phase F2b–G2: Commissioning, i18n Tier 1, form guides
 
 **Branch:** `cursor/f2d-g1-form-guides-699d`

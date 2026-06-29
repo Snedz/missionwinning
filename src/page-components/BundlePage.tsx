@@ -29,7 +29,7 @@ export function BundlePage() {
         </h1>
         <p className="text-muted-foreground mt-2 max-w-2xl">
           Mission Winning replaces a stack of fitness apps with one PWA — Train,
-          Fuel, Move, Mind, Track, Learn, and your unified Win Score dashboard.
+          Fuel, Move, Mind, Track, Learn, and your unified Win Score on Today.
         </p>
       </div>
 

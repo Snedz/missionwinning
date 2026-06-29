@@ -40,6 +40,11 @@ type CoreStrings = {
   cloudSyncActive: string;
   cloudSyncPending: string;
   saveProfile: string;
+  yourProfile: string;
+  firstTimeSetup: string;
+  betaJourneyProgress: string;
+  emailNextStep: string;
+  emailNextStepSent: string;
 };
 
 const en: CoreStrings = {
@@ -81,6 +86,11 @@ const en: CoreStrings = {
   cloudSyncActive: 'Journey synced to cloud',
   cloudSyncPending: 'Sign in to sync journey across devices',
   saveProfile: 'Save profile',
+  yourProfile: 'Your profile',
+  firstTimeSetup: 'First-time setup',
+  betaJourneyProgress: 'Beta journey progress',
+  emailNextStep: 'Email my next step',
+  emailNextStepSent: 'Check your inbox for your next step.',
 };
 
 const de: CoreStrings = {
@@ -122,6 +132,11 @@ const de: CoreStrings = {
   cloudSyncActive: 'Reise in der Cloud gespeichert',
   cloudSyncPending: 'Anmelden für geräteübergreifende Sync',
   saveProfile: 'Profil speichern',
+  yourProfile: 'Dein Profil',
+  firstTimeSetup: 'Ersteinrichtung',
+  betaJourneyProgress: 'Beta-Fortschritt',
+  emailNextStep: 'Nächsten Schritt per E-Mail',
+  emailNextStepSent: 'Posteingang prüfen — dein nächster Schritt ist unterwegs.',
 };
 
 const it: CoreStrings = {
@@ -163,6 +178,11 @@ const it: CoreStrings = {
   cloudSyncActive: 'Percorso sincronizzato nel cloud',
   cloudSyncPending: 'Accedi per sincronizzare su tutti i dispositivi',
   saveProfile: 'Salva profilo',
+  yourProfile: 'Il tuo profilo',
+  firstTimeSetup: 'Configurazione iniziale',
+  betaJourneyProgress: 'Progresso beta',
+  emailNextStep: 'Invia il prossimo passo via email',
+  emailNextStepSent: 'Controlla la posta per il prossimo passo.',
 };
 
 const ko: CoreStrings = {
@@ -203,6 +223,11 @@ const ko: CoreStrings = {
   cloudSyncActive: '클라우드에 여정 동기화됨',
   cloudSyncPending: '기기 간 동기화를 위해 로그인하세요',
   saveProfile: '프로필 저장',
+  yourProfile: '내 프로필',
+  firstTimeSetup: '첫 설정',
+  betaJourneyProgress: '베타 진행 상황',
+  emailNextStep: '다음 단계 이메일 받기',
+  emailNextStepSent: '받은편지함에서 다음 단계를 확인하세요.',
 };
 
 const es: CoreStrings = {
@@ -383,6 +408,11 @@ const ja: CoreStrings = {
   cloudSyncActive: 'クラウドにジャーニーを同期済み',
   cloudSyncPending: 'デバイス間同期にはサインインしてください',
   saveProfile: 'プロフィールを保存',
+  yourProfile: 'あなたのプロフィール',
+  firstTimeSetup: '初回セットアップ',
+  betaJourneyProgress: 'ベータ進捗',
+  emailNextStep: '次のステップをメールで受け取る',
+  emailNextStepSent: '受信トレイで次のステップを確認してください。',
 };
 
 export const CORE_LOCALES: Record<Tier1Lang, CoreStrings> = {
