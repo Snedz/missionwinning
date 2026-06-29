@@ -17,7 +17,7 @@ import { scheduleJourneyPush } from '@/lib/journeySync';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 
-const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi', 'zh', 'id'] as const;
+const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi', 'zh', 'id', 'ar'] as const;
 const NATIVE_NAMES: Record<string, string> = {
   en: 'English',
   es: 'Español',
@@ -33,6 +33,7 @@ const NATIVE_NAMES: Record<string, string> = {
   hi: 'हिन्दी',
   zh: '中文',
   id: 'Bahasa Indonesia',
+  ar: 'العربية',
 };
 
 function LanguageSwitcher() {

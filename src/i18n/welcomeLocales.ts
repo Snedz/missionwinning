@@ -165,6 +165,39 @@ const th: WelcomeStrings = {
   navBetaGuide: 'คู่มือเบต้า',
 };
 
+const ar: WelcomeStrings = {
+  welcomeKicker: 'حيث تبدأ الرحلة',
+  welcomeIDay: 'يوم البداية',
+  welcomeMissionLead: 'المهمة:',
+  welcomeMissionBody1:
+    'Mission Winning تطبيق صحي عالمي مجاني. تدريب، تغذية، حركة، عقل، تتبع وتعلّم — مكان واحد، مسار واحد.',
+  welcomeMissionP2:
+    'الأساسيات مجانية للأبد. Premium يعمّق كل ركيزة لمن يريد المزيد — ليس مطلوباً للبدء.',
+  welcomeMissionP3: 'مهمتك اليوم: أكمل خطوة بخطوة. صفحة اليوم تعرض دائماً إجراءك التالي.',
+  welcomeProfileTitle: 'ثلاثة أسئلة سريعة',
+  welcomeProfileEditHint: 'حدّث الخبرة والمعدات والهدف. يتم المزامنة عند تسجيل الدخول.',
+  welcomeProfileHint: 'ليقترح اليوم نقطة البداية المناسبة.',
+  welcomeExperience: 'الخبرة',
+  welcomeExpBeginner: 'مبتدئ',
+  welcomeExpIntermediate: 'خبرة متوسطة',
+  welcomeExpAdvanced: 'متمرّس سنوات',
+  welcomeGearCheck: 'فحص المعدات — ماذا لديك اليوم؟',
+  welcomeEquipBodyweight: 'وزن الجسم فقط',
+  welcomeEquipDumbbells: 'دمبل أو أشرطة',
+  welcomeEquipFullGym: 'صالة كاملة',
+  welcomePrimaryGoal: 'الهدف الرئيسي',
+  welcomeGoalPlaceholder: 'بناء القوة والحفاظ على الصحة',
+  welcomeBack: 'رجوع',
+  headerSignIn: 'تسجيل الدخول',
+  photoLogTitle: 'تسجيل من صورة',
+  photoLogDesc: 'صوّر وجبتك — نقدّر الماكرو (نسخة تجريبية قريباً).',
+  photoLogChoose: 'اختر صورة',
+  photoLogComingSoon: 'تسجيل الصور قيد التطوير. استخدم التسجيل السريع أو الوصفات.',
+  photoLogBetaNote: 'التقاط الوجبات بأسلوب Bevel — الخصوصية أولاً على الجهاز عند الإمكان.',
+  navOurMission: 'مهمتنا',
+  navBetaGuide: 'دليل النسخة التجريبية',
+};
+
 const es: WelcomeStrings = {
   ...en,
   welcomeKicker: 'Donde comienza el camino',
@@ -178,7 +211,7 @@ const es: WelcomeStrings = {
   navBetaGuide: 'Guía beta',
 };
 
-const LOCALES: Partial<Record<string, WelcomeStrings>> = { en, zh, id, th, es };
+const LOCALES: Partial<Record<string, WelcomeStrings>> = { en, zh, id, th, es, ar };
 
 export function welcomeStringsFor(lang: string): WelcomeStrings {
   const code = lang.split('-')[0];

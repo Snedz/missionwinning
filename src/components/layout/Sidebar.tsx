@@ -14,7 +14,7 @@ export function Sidebar() {
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
 
   return (
-    <aside className="hidden md:flex h-full w-[72px] lg:w-[210px] flex-col border-r border-border/50 bg-card/30 shrink-0">
+    <aside className="hidden md:flex h-full w-[72px] lg:w-[210px] flex-col border-e border-border/50 bg-card/30 shrink-0">
       <nav className="flex-1 flex flex-col gap-1 p-2 lg:p-3 pt-4">
         {PRIMARY_NAV.map(({ href, labelKey, label, icon: Icon }) => {
           const isActive = pathname === href || (href === '/log' && pathname === '/');
@@ -33,11 +33,11 @@ export function Sidebar() {
               )}
             >
               <Icon className={cn('h-5 w-5 shrink-0', showPulse && 'text-emerald-400')} />
-              <span className="text-[10px] lg:text-[15px] font-medium lg:font-medium text-center lg:text-left leading-tight">
+              <span className="text-[10px] lg:text-[15px] font-medium lg:font-medium text-center lg:text-start leading-tight">
                 {t(labelKey, { defaultValue: label })}
               </span>
               {showPulse && (
-                <span className="absolute top-2 right-2 lg:top-1/2 lg:-translate-y-1/2 lg:right-3 h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="absolute top-2 end-2 lg:top-1/2 lg:-translate-y-1/2 lg:end-3 h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               )}
             </Link>
           );
