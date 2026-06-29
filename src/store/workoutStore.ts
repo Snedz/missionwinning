@@ -11,6 +11,7 @@ import type {
 } from "@/types";
 import { saveWorkoutLog, getUserWorkoutHistory, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
+import { mapCloudToLocal, mergeWorkoutHistories } from "@/lib/workoutMerge";
 
 const DEFAULT_REST_SECONDS = 30;
 
@@ -282,23 +283,10 @@ export const useWorkoutStore = create<WorkoutState>()(
         const user = await getUser();
         if (!user) return;
         const cloudLogs = await getUserWorkoutHistory(100);
-        if (cloudLogs.length === 0) return;
-        // Map cloud to local CompletedWorkoutLog shape and merge (prefer cloud for history)
-        const mapped: CompletedWorkoutLog[] = cloudLogs.map((cl) => ({
-          id: cl.id || `cloud-${Date.now()}`,
-          workoutName: cl.workout_name,
-          startedAt: cl.started_at,
-          completedAt: cl.completed_at,
-          durationSeconds: cl.duration_seconds,
-          exercises: cl.exercises,
-          totalVolume: cl.total_volume,
+        const mapped = mapCloudToLocal(cloudLogs);
+        set((s) => ({
+          workoutHistory: mergeWorkoutHistories(s.workoutHistory, mapped),
         }));
-        // Simple merge: keep local non-cloud + all cloud, dedup by completedAt roughly
-        set((s) => {
-          const localOnly = s.workoutHistory.filter(l => !l.id.startsWith('cloud-'));
-          const combined = [...mapped, ...localOnly].sort((a,b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime());
-          return { workoutHistory: combined.slice(0, 200) };
-        });
       },
 
       syncCurrentHistoryToCloud: async () => {

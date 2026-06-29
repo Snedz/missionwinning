@@ -15,6 +15,19 @@ export interface WinScoreBreakdown {
   sessions: number;
   volume: number;
   saved: number;
+  /** Cross-pillar contributions (Phase C) */
+  move: number;
+  mind: number;
+  track: number;
+  learn: number;
+  pillars: {
+    train: number;
+    fuel: number;
+    move: number;
+    mind: number;
+    track: number;
+    learn: number;
+  };
   total: number;
 }
 
@@ -65,9 +78,8 @@ export function getRecommendedFocus(readiness: Record<MuscleGroup, ReadinessInfo
 }
 
 /**
- * Compute composite Win / Mission Score (0-100).
- * Uses streak, high protein days, sessions, volume, saved routines.
- * High protein days must be passed in (computed from nutrition logs outside).
+ * Compute composite Win / Mission Score (0-100) with cross-pillar weighting.
+ * Train ~40%, Fuel ~15%, Move/Mind/Track/Learn ~45% combined (holistic super app).
  */
 export function computeWinScore(params: {
   streak: number;
@@ -75,20 +87,77 @@ export function computeWinScore(params: {
   totalSessions: number;
   totalVolume: number;
   savedCount: number;
+  /** Weekly pillar activity (from gatherWeeklyPillarStats) */
+  moveFlows?: number;
+  mindSessions?: number;
+  trackActivities?: number;
+  learnLessons?: number;
+  trainDaysThisWeek?: number;
 }): WinScoreBreakdown {
-  const { streak, highProteinDays, totalSessions, totalVolume, savedCount } = params;
-  const streakPart = Math.min(streak, 7) / 7 * 22;
-  const proteinPart = Math.min(highProteinDays, 7) / 7 * 22;
-  const sessionsPart = Math.min(totalSessions, 20) / 20 * 22;
-  const volumePart = Math.min(totalVolume, 8000) / 8000 * 22;
-  const savedPart = savedCount >= 3 ? 12 : 0;
-  const total = Math.min(100, Math.round(streakPart + proteinPart + sessionsPart + volumePart + savedPart));
+  const {
+    streak,
+    highProteinDays,
+    totalSessions,
+    totalVolume,
+    savedCount,
+    moveFlows = 0,
+    mindSessions = 0,
+    trackActivities = 0,
+    learnLessons = 0,
+    trainDaysThisWeek = 0,
+  } = params;
+
+  // Train pillar (~40 pts)
+  const streakPart = Math.min(streak, 7) / 7 * 10;
+  const trainDaysPart = Math.min(trainDaysThisWeek, 7) / 7 * 8;
+  const sessionsPart = Math.min(totalSessions, 20) / 20 * 10;
+  const volumePart = Math.min(totalVolume, 8000) / 8000 * 8;
+  const savedPart = savedCount >= 3 ? 4 : savedCount >= 1 ? 2 : 0;
+  const trainTotal = Math.round(streakPart + trainDaysPart + sessionsPart + volumePart + savedPart);
+
+  // Fuel (~15 pts)
+  const proteinPart = Math.min(highProteinDays, 7) / 7 * 15;
+  const fuelTotal = Math.round(proteinPart);
+
+  // Move (~12 pts) — up to 4 flows/week
+  const movePart = Math.min(moveFlows, 4) / 4 * 12;
+  const moveTotal = Math.round(movePart);
+
+  // Mind (~12 pts)
+  const mindPart = Math.min(mindSessions, 7) / 7 * 12;
+  const mindTotal = Math.round(mindPart);
+
+  // Track (~11 pts)
+  const trackPart = Math.min(trackActivities, 5) / 5 * 11;
+  const trackTotal = Math.round(trackPart);
+
+  // Learn (~10 pts)
+  const learnPart = Math.min(learnLessons, 5) / 5 * 10;
+  const learnTotal = Math.round(learnPart);
+
+  const total = Math.min(
+    100,
+    trainTotal + fuelTotal + moveTotal + mindTotal + trackTotal + learnTotal
+  );
+
   return {
     streak: Math.round(streakPart),
-    protein: Math.round(proteinPart),
+    protein: fuelTotal,
     sessions: Math.round(sessionsPart),
     volume: Math.round(volumePart),
     saved: savedPart,
+    move: moveTotal,
+    mind: mindTotal,
+    track: trackTotal,
+    learn: learnTotal,
+    pillars: {
+      train: trainTotal,
+      fuel: fuelTotal,
+      move: moveTotal,
+      mind: mindTotal,
+      track: trackTotal,
+      learn: learnTotal,
+    },
     total,
   };
 }

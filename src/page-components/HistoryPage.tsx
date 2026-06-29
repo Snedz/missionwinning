@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar, Dumbbell, Timer, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,46 +24,36 @@ import { getExerciseById } from "@/data/exercises";
 import { formatDate, formatDuration } from "@/lib/utils";
 import { useWorkoutStore } from "@/store/workoutStore";
 import type { CompletedWorkoutLog } from "@/types";
-import { getUser, getUserWorkoutHistory, getUserNutritionForDate } from "@/lib/supabase";
+import { getUser, getUserNutritionForDate } from "@/lib/supabase";
 
 export function HistoryPage() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const loadFromCloud = useWorkoutStore((s) => s.loadFromCloud);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
-  const [cloudHistory, setCloudHistory] = useState<CompletedWorkoutLog[]>([]);
-  const [loadingCloud, setLoadingCloud] = useState(false);
+  const [cloudSynced, setCloudSynced] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const [pillarWins, setPillarWins] = useState<any[]>([]);
-  const [loadingWins, setLoadingWins] = useState(false);
 
-  const loadCloudHistory = async () => {
-    setLoadingCloud(true);
-    const user = await getUser();
-    if (user) {
-      const cloud = await getUserWorkoutHistory(20);
-      // Map simple for display (the type is similar)
-      const mapped = cloud.map(c => ({
-        id: c.id,
-        workoutName: c.workout_name,
-        completedAt: c.completed_at,
-        durationSeconds: c.duration_seconds,
-        exercises: c.exercises,
-        totalVolume: c.total_volume,
-      })) as any;
-      setCloudHistory(mapped);
-    }
-    setLoadingCloud(false);
-  };
-
-  const loadPillarWins = async () => {
-    setLoadingWins(true);
-    const user = await getUser();
-    if (user) {
-      const today = new Date().toISOString().split('T')[0];
-      const cloud = await getUserNutritionForDate(today);
-      const wins = cloud.filter((c: any) => /win|assessment|mobility|mind/i.test(c.name || ''));
-      setPillarWins(wins);
-    }
-    setLoadingWins(false);
-  };
+  useEffect(() => {
+    const sync = async () => {
+      setSyncing(true);
+      const user = await getUser();
+      if (user) {
+        await loadFromCloud();
+        setCloudSynced(true);
+        try {
+          const today = new Date().toISOString().split('T')[0];
+          const cloud = await getUserNutritionForDate(today);
+          const wins = cloud.filter((c: any) => /win|assessment|mobility|mind|track|learn|move/i.test(c.name || ''));
+          setPillarWins(wins);
+        } catch {
+          // offline or schema not ready
+        }
+      }
+      setSyncing(false);
+    };
+    sync();
+  }, [loadFromCloud]);
 
   return (
     <div className="space-y-6">
@@ -72,11 +62,9 @@ export function HistoryPage() {
         <p className="text-muted-foreground">Your history powers the <a href="/log" className="underline">Today Hub</a> readiness and Win Score.</p>
         <p className="mt-1 text-muted-foreground">
           {workoutHistory.length} completed session{workoutHistory.length !== 1 ? "s" : ""}
+          {syncing && " — syncing cloud…"}
+          {!syncing && cloudSynced && " — cloud merged"}
         </p>
-        <Button size="sm" variant="outline" onClick={loadCloudHistory} disabled={loadingCloud} className="mt-1 text-xs">
-          {loadingCloud ? "Loading cloud..." : "Load cloud history (if signed in)"}
-        </Button>
-        {cloudHistory.length > 0 && <div className="text-xs text-emerald-400 mt-1">{cloudHistory.length} from cloud (merged below if new)</div>}
         {workoutHistory.length > 0 && (
           <div className="mt-2 text-xs text-muted-foreground">
             Recent trend: Avg volume last 5: {Math.round(workoutHistory.slice(0,5).reduce((s,l)=>s+l.totalVolume,0)/Math.min(5,workoutHistory.length)).toLocaleString()} lbs. 
@@ -135,9 +123,6 @@ export function HistoryPage() {
       <div>
         <h3 className="text-xl font-semibold flex items-center gap-2 mb-2"><Trophy className="h-5 w-5" /> Pillar Wins &amp; Habit Logs</h3>
         <p className="text-sm text-muted-foreground mb-2">Mobility wins, mind prompts, assessments logged from pillars appear here (synergy with Nutrition). Free core.</p>
-        <Button size="sm" variant="outline" onClick={loadPillarWins} disabled={loadingWins} className="text-xs mb-2">
-          {loadingWins ? "Loading..." : "Load today's pillar wins (cloud if signed in)"}
-        </Button>
         {pillarWins.length > 0 ? (
           <div className="space-y-2">
             {pillarWins.slice(0,5).map((w, i) => (

@@ -53,13 +53,24 @@ export async function checkPremium(email?: string): Promise<boolean> {
   if (typeof window !== 'undefined' && localStorage.getItem('mw_premium') === 'true') {
     return true // demo fallback
   }
-  if (!email || !supabaseUrl) return false
-  const { data } = await supabase
+  if (!supabaseUrl) return false
+
+  const user = email ? null : await getUser()
+  let query = supabase
     .from('enrollments')
-    .select('premium_granted')
-    .eq('user_email', email) // or join profiles
-    .eq('premium_granted', true)
+    .select('id')
+    .or('premium_granted.eq.true,status.eq.active')
     .limit(1)
+
+  if (user?.id) {
+    query = query.eq('user_id', user.id)
+  } else if (email) {
+    query = query.eq('user_email', email)
+  } else {
+    return false
+  }
+
+  const { data } = await query
   return !!(data && data.length > 0)
 }
 
@@ -105,11 +116,22 @@ export async function isPremium(): Promise<boolean> {
   if (!user || !supabaseUrl) return false
   const { data } = await supabase
     .from('enrollments')
-    .select('premium_granted')
+    .select('id')
     .eq('user_id', user.id)
-    .eq('premium_granted', true)
+    .or('premium_granted.eq.true,status.eq.active')
     .limit(1)
-  return !!(data && data.length > 0)
+  if (data && data.length > 0) return true
+
+  if (user.email) {
+    const { data: byEmail } = await supabase
+      .from('enrollments')
+      .select('id')
+      .eq('user_email', user.email)
+      .or('premium_granted.eq.true,status.eq.active')
+      .limit(1)
+    return !!(byEmail && byEmail.length > 0)
+  }
+  return false
 }
 
 // --- Cloud Sync for Workouts & Nutrition (tied to authenticated user) ---
