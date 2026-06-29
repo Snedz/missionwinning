@@ -6,12 +6,13 @@ import type { JourneyAction } from '@/lib/missionJourney';
 import { getPhaseLabel } from '@/lib/missionJourney';
 
 export function JourneyStrip({ action }: { action: JourneyAction }) {
+  const { t } = useTranslation();
   if (action.phase === 'commissioned') {
     return (
       <div className="flex items-center justify-between text-xs text-muted-foreground py-2">
         <span className="text-emerald-400 font-medium">{action.stepLabel}</span>
         <a href="/leaderboard" className="text-emerald-400/80 hover:text-emerald-400 hover:underline">
-          Rankings →
+          {t('todayRankings', { defaultValue: 'Rankings' })} →
         </a>
       </div>
     );
@@ -60,7 +61,7 @@ export function JourneyHero({ action, onPrimaryClick, activeWorkout }: JourneyHe
       </button>
       {action.phase === 'basic' && (
         <p className="text-xs text-center text-muted-foreground">
-          One step at a time. More tools unlock as you progress.
+          {t('journeyBasicFoot', { defaultValue: 'One step at a time. More tools unlock as you progress.' })}
         </p>
       )}
     </div>

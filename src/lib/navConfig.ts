@@ -54,6 +54,7 @@ export const MORE_NAV: NavLinkItem[] = [
 export type NavSection = {
   id: string;
   title: string;
+  titleKey: string;
   items: NavLinkItem[];
 };
 
@@ -62,26 +63,30 @@ export const EXTENDED_NAV_SECTIONS: NavSection[] = [
   {
     id: 'recover',
     title: 'Recover',
+    titleKey: 'navSectionRecover',
     items: MORE_NAV.filter((i) => ['/move', '/mind'].includes(i.href)),
   },
   {
     id: 'train',
     title: 'Train deeper',
+    titleKey: 'navSectionTrain',
     items: MORE_NAV.filter((i) => ['/builder', '/library', '/history', '/leaderboard'].includes(i.href)),
   },
   {
     id: 'learn',
     title: 'Learn & measure',
+    titleKey: 'navSectionLearn',
     items: MORE_NAV.filter((i) => ['/learn', '/benchmarks', '/assessments', '/calculators'].includes(i.href)),
   },
   {
     id: 'premium',
     title: 'Premium',
+    titleKey: 'navSectionPremium',
     items: MORE_NAV.filter((i) => i.href === '/bundle'),
   },
 ];
 
-const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];
+export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];
 
 export function pageTitleForPath(pathname: string): string {
   const normalized = pathname === '/' ? '/log' : pathname;

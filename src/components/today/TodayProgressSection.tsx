@@ -15,6 +15,15 @@ import { useWorkoutStore } from '@/store/workoutStore';
 
 const MAJOR_GROUPS = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'] as const;
 
+const MUSCLE_GROUP_I18N: Record<(typeof MAJOR_GROUPS)[number], string> = {
+  Chest: 'todayMuscleChest',
+  Back: 'todayMuscleBack',
+  Legs: 'todayMuscleLegs',
+  Shoulders: 'todayMuscleShoulders',
+  Arms: 'todayMuscleArms',
+  Core: 'todayMuscleCore',
+};
+
 export type TodayProgressSectionProps = {
   savedWorkouts: SavedWorkout[];
   readiness: ReturnType<typeof computeReadiness>;
@@ -106,10 +115,11 @@ export function TodayProgressSection({
             {MAJOR_GROUPS.map(g => {
               const r = readiness[g];
               const isPrime = r.days >= 4;
+              const groupLabel = t(MUSCLE_GROUP_I18N[g], { defaultValue: g });
               const matchingEx = EXERCISES.filter(e => e.muscleGroups.includes(g)).slice(0, 2);
               return (
                 <div key={g} className={`p-3 rounded border ${isPrime ? 'border-emerald-500/40 bg-emerald-950/10' : 'border-border/60'}`}>
-                  <div className="font-medium">{g}</div>
+                  <div className="font-medium">{groupLabel}</div>
                   <div className={isPrime ? "text-emerald-400" : "text-muted-foreground"}>
                     {r.days === 99
                       ? t('todayNoRecentData', { defaultValue: 'No recent data' })
@@ -122,11 +132,11 @@ export function TodayProgressSection({
                       className="mt-1 text-xs w-full"
                       onClick={() => {
                         const template = matchingEx.map(ex => ({ exerciseId: ex.id, sets: [{ reps: 8, weight: 0 }] }));
-                        startWorkout(`${g} Focus`, template);
+                        startWorkout(`${groupLabel} Focus`, template);
                         router.push("/active");
                       }}
                     >
-                      {t('todayTrainGroup', { group: g, defaultValue: `Train ${g} now →` })}
+                      {t('todayTrainGroup', { group: groupLabel, defaultValue: `Train ${groupLabel} now →` })}
                     </Button>
                   )}
                 </div>

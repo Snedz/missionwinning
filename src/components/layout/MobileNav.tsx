@@ -13,7 +13,7 @@ export function MobileNav() {
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
 
   return (
-    <nav className="glass-nav md:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
+    <nav className="glass-nav md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-stretch justify-around h-[52px]">
         {PRIMARY_NAV.map(({ href, labelKey, label, icon: Icon }) => {
           const isActive = pathname === href || (href === '/log' && pathname === '/');
@@ -30,7 +30,7 @@ export function MobileNav() {
             >
               <Icon className={cn('h-6 w-6', showPulse && 'text-emerald-400')} />
               {showPulse && (
-                <span className="absolute top-1.5 right-[calc(50%-20px)] h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="absolute top-1.5 end-[calc(50%-20px)] h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               )}
               {t(labelKey, { defaultValue: label })}
             </Link>

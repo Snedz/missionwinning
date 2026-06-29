@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, Dumbbell } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { EXTENDED_NAV_SECTIONS, pageTitleForPath } from '@/lib/navConfig';
+import { EXTENDED_NAV_SECTIONS, ALL_NAV } from '@/lib/navConfig';
 import { HeaderAuthChip } from '@/components/layout/HeaderAuthChip';
 
 export function AppHeader() {
@@ -15,7 +15,12 @@ export function AppHeader() {
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
-  const pageTitle = pageTitleForPath(pathname);
+  const pageTitle = (() => {
+    const normalized = pathname === '/' ? '/log' : pathname;
+    const match = ALL_NAV.find((n) => normalized === n.href || normalized.startsWith(n.href + '/'));
+    if (match) return t(match.labelKey, { defaultValue: match.label });
+    return t('appName', { defaultValue: 'Mission Winning' });
+  })();
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -46,7 +51,7 @@ export function AppHeader() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-haspopup="true"
-          className="flex flex-1 min-w-0 items-center gap-3 text-left hover:bg-white/[0.02] transition-colors rounded-lg -ml-1 pl-1 py-1"
+          className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-white/[0.02] transition-colors rounded-lg -ms-1 ps-1 py-1"
         >
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 shadow-md shadow-emerald-950/30">
             <Dumbbell className="h-5 w-5 text-white" />
@@ -80,7 +85,7 @@ export function AppHeader() {
               {EXTENDED_NAV_SECTIONS.map((section) => (
                 <div key={section.id}>
                   <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium mb-2 px-1">
-                    {section.title}
+                    {t(section.titleKey, { defaultValue: section.title })}
                   </h2>
                   <ul className="space-y-0.5">
                     {section.items.map((item) => {
