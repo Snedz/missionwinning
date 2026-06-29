@@ -1,4 +1,6 @@
 import type { Exercise } from "@/types";
+import { EXERCISES_EXTENDED } from "@/data/exercisesExtended";
+import { enrichExercises } from "@/data/exerciseEnrichment";
 
 const EXERCISE_ENTRIES: Exercise[] = [
   { id: "push-ups", name: "Push-ups", muscleGroups: ["Chest", "Arms", "Core"], equipment: "Bodyweight" },
@@ -135,6 +137,7 @@ const EXERCISE_ENTRIES: Exercise[] = [
   { id: "medicine-ball-slam", name: "Med Ball Slam", muscleGroups: ["Full Body", "Core"], equipment: "Medicine Ball", cues: "Overhead to floor with full extension. Power + stress relief." },
   { id: "battle-rope-alt", name: "Battle Rope Alternating Waves", muscleGroups: ["Cardio", "Arms"], equipment: "Battle Ropes", cues: "Fast alternating waves 20-30s. Conditioning if gym has ropes." },
   { id: "sled-drag-reg", name: "Sled Drag Regression (Tow Strap)", muscleGroups: ["Legs", "Full Body"], equipment: "Sled", cues: "Walk backward dragging load. Low-impact leg drive." },
+  ...EXERCISES_EXTENDED,
 ];
 
 /** Deduplicated exercise list (first entry wins per id). */
@@ -149,7 +152,7 @@ function dedupeExercises(list: Exercise[]): Exercise[] {
   return out;
 }
 
-export const EXERCISES = dedupeExercises(EXERCISE_ENTRIES);
+export const EXERCISES = enrichExercises(dedupeExercises(EXERCISE_ENTRIES));
 
 export function getExerciseById(id: string): Exercise | undefined {
   return EXERCISES.find((e) => e.id === id);

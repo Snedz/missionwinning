@@ -4,6 +4,25 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase D: Content scale
+
+**Branch:** `cursor/phase-d-content-699d`
+
+### Shipped
+
+- **200+ exercise library:** 90 new movements in `exercisesExtended.ts`; enrichment adds cues, tags, alternatives
+- **Library UI:** Filter by program style (strength/hypertrophy/conditioning/corrective), level, equipment; alternatives on cards
+- **Program tags:** `getProgramTags()` on templates; style filter in Builder; 4 new programs (EMOM, intervals, desk prehab, PPL)
+- **Learn paths:** 3 ISSA-aligned paths — Corrective Foundations, Periodization, Coaching & Client Success (8 paths total)
+
+### Files added / updated
+
+- `src/data/exercisesExtended.ts`, `src/data/exerciseEnrichment.ts`
+- `src/types/index.ts` (ProgramTag, alternatives, level)
+- `src/page-components/LibraryPage.tsx`, `src/data/programTemplates.ts`, `src/data/learnPaths.ts`
+
+---
+
 ## 2026-06-29 — Phase C: Bundle & backend
 
 **Branch:** `cursor/phase-c-bundle-backend-699d`

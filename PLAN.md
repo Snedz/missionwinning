@@ -22,8 +22,8 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 | **A** | Free core alignment (nutrition, streaks, challenges, today's workout, leads) | ✅ Done — see [LOG.md](LOG.md) |
 | **B** | Six working pillar free tiers (Move, Mind, Learn, Track) | ✅ Done — see [LOG.md](LOG.md) |
 | **C** | Super Bundle synergy + Supabase hardening | ✅ Done — see [LOG.md](LOG.md) |
-| **D** | Content scale (200+ exercises, Learn paths) | Next |
-| **E** | Go public (Vercel env, PRIVATE_MODE=false) | Blocked on Vercel 2FA reset |
+| **D** | Content scale (200+ exercises, Learn paths) | ✅ Done — see [LOG.md](LOG.md) |
+| **E** | Go public (Vercel env, PRIVATE_MODE=false) | Next — blocked on Vercel 2FA reset |
 
 ---
 
@@ -61,15 +61,16 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 
 ---
 
-## Phase D — Content (next)
+## Phase D — Content ✅
 
-- Exercise library → 200+ with cues and alternatives
-- Program tags (strength, hypertrophy, conditioning, corrective)
-- Original Learn content from ISSA-aligned materials
+- Exercise library expanded to 200+ with cues, alternatives, and program tags (strength / hypertrophy / conditioning / corrective)
+- Library filters by style, equipment, and level; alternatives shown on each card
+- Program templates tagged + 4 new templates (EMOM, Engine Builder, Desk Reset, PPL Hypertrophy)
+- 3 new ISSA-aligned Learn paths (Corrective, Periodization, Coaching)
 
 ---
 
-## Phase E — Launch
+## Phase E — Launch (next)
 
 1. Vercel: `PRIVATE_ACCESS_SECRET=Done`, `PRIVATE_MODE=true`, Supabase keys
 2. Beta testers (10–20)
@@ -102,4 +103,4 @@ Open http://localhost:3000
 
 ---
 
-Last updated: 2026-06-29 (Phase B)
+Last updated: 2026-06-29 (Phase D)

@@ -15,10 +15,13 @@ import {
   PROGRAM_CATEGORIES,
   PROGRAM_TEMPLATES,
   getProgramsByCategory,
+  getProgramTags,
   type ProgramCategory,
   type ProgramSession,
   type ProgramTemplate,
 } from "@/data/programTemplates";
+import { PROGRAM_TAG_LABELS } from "@/data/exerciseEnrichment";
+import type { ProgramTag } from "@/types";
 
 export const TEMPLATE_PROGRAM_COUNT = PROGRAM_TEMPLATES.length;
 
@@ -62,6 +65,11 @@ function ProgramList({
               <div className="flex flex-wrap gap-1.5 mt-2">
                 <Badge variant="outline">{program.duration}</Badge>
                 <Badge variant="muscle">{program.focus}</Badge>
+                {getProgramTags(program).map((t) => (
+                  <Badge key={t} variant="secondary" className="text-[10px]">
+                    {PROGRAM_TAG_LABELS[t]}
+                  </Badge>
+                ))}
               </div>
             </div>
             <div className="flex gap-2">
@@ -111,7 +119,10 @@ export function ProgramTemplatesPanel({
   onViewDetails,
 }: ProgramTemplatesPanelProps) {
   const [quickPick, setQuickPick] = useState("");
-  const programs = getProgramsByCategory(category);
+  const [tagFilter, setTagFilter] = useState<ProgramTag | "">("");
+  const programs = getProgramsByCategory(category).filter(
+    (p) => !tagFilter || getProgramTags(p).includes(tagFilter)
+  );
   const categoryMeta = PROGRAM_CATEGORIES.find((c) => c.id === category)!;
 
   const quickOptions = useMemo(
@@ -146,6 +157,20 @@ export function ProgramTemplatesPanel({
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">{categoryMeta.description}</p>
+      <div className="flex flex-wrap gap-2 items-center">
+        <span className="text-xs text-muted-foreground">Style:</span>
+        {(["", "strength", "hypertrophy", "conditioning", "corrective"] as const).map((t) => (
+          <Button
+            key={t || "all"}
+            size="sm"
+            variant={tagFilter === t ? "default" : "outline"}
+            className="h-7 text-xs"
+            onClick={() => setTagFilter(t)}
+          >
+            {t ? PROGRAM_TAG_LABELS[t] : "All"}
+          </Button>
+        ))}
+      </div>
       <ProgramList
         programs={programs}
         onLoadSession={onLoadSession}
