@@ -226,6 +226,9 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 ### G1 — Global languages
 
 - [x] Tier 1: DE, IT, KO, **JA** + EN/ES/FR/PT/RU (nav, welcome, journey chrome)
+- [x] Tier 2 (started): **TH**, **VI**, **HI** — same core chrome; see [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md)
+- [ ] Tier 2 next: zh, ar, id, tr, pl (+ RTL for Arabic)
+- [ ] G2 extract: Today, Welcome, Active, Nutrition → JSON per language
 - [x] Dynamic `<html lang>`
 
 ### G2 — Form guides (text-only)
