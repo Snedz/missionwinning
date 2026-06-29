@@ -12,7 +12,7 @@ import {
   markMissionAccepted,
 } from '@/lib/missionJourney';
 import { scheduleJourneyPush } from '@/lib/journeySync';
-import { signInMagic } from '@/lib/supabase';
+import { SignInPanel } from '@/components/auth/SignInPanel';
 
 type Step = 'welcome' | 'mission' | 'profile' | 'signin';
 
@@ -37,8 +37,6 @@ export function WelcomePage() {
   const [experience, setExperience] = useState('beginner');
   const [equipment, setEquipment] = useState('bodyweight');
   const [primaryGoal, setPrimaryGoal] = useState('Build strength and stay healthy');
-  const [email, setEmail] = useState('');
-  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     if (!isEdit || typeof window === 'undefined') return;
@@ -86,24 +84,6 @@ export function WelcomePage() {
       return;
     }
     setStep('signin');
-  };
-
-  const handleSignIn = async () => {
-    if (!email.trim()) {
-      finish();
-      return;
-    }
-    setSending(true);
-    try {
-      await signInMagic(email.trim());
-      alert(`Magic link sent to ${email}. Check your email, then continue on Today.`);
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : String(e);
-      alert('Could not send link: ' + msg + ' — you can skip and sign in later from Profile.');
-    } finally {
-      setSending(false);
-      finish();
-    }
   };
 
   return (
@@ -238,25 +218,18 @@ export function WelcomePage() {
             {step === 'signin' && (
               <>
                 <div>
-                  <h2 className="text-xl font-bold mb-1">Optional: save progress to cloud</h2>
+                  <h2 className="text-xl font-bold mb-1">Save progress — your choice</h2>
                   <p className="text-sm text-muted-foreground">
-                    Skip if you want — you can sign in anytime from Profile. Free magic link, no password.
+                    Sign in with Apple, Google, or email to sync across devices. Skip anytime — local
+                    progress still works.
                   </p>
                 </div>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@email.com (optional)"
-                  className="w-full rounded-md bg-background border border-border px-3 py-3 text-sm"
+                <SignInPanel
+                  allowSkip
+                  nextPath="/log"
+                  skipLabel={t('welcomeSkipSignIn', { defaultValue: 'Skip — go to Today' })}
+                  onComplete={finish}
                 />
-                <Button
-                  className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
-                  onClick={handleSignIn}
-                  disabled={sending}
-                >
-                  {sending ? 'Sending…' : email.trim() ? 'Send link & finish' : t('welcomeSkipSignIn', { defaultValue: 'Skip — go to Today' })}
-                </Button>
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('profile')}>
                   <ChevronLeft className="h-4 w-4 mr-1" /> Back
                 </Button>

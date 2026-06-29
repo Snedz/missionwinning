@@ -7,10 +7,35 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.warn('Supabase env vars not set. Using demo mode (localStorage premium only). Create Supabase project and add NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY to .env.local')
 }
 
+export function isSupabaseConfigured(): boolean {
+  return !!(
+    supabaseUrl &&
+    supabaseAnonKey &&
+    !supabaseUrl.includes('demo.supabase.co') &&
+    supabaseAnonKey !== 'demo-anon-key'
+  )
+}
+
+export function getAuthRedirectUrl(nextPath = '/log'): string {
+  if (typeof window === 'undefined') return '/auth/callback'
+  const safeNext = nextPath.startsWith('/') && !nextPath.startsWith('//') ? nextPath : '/log'
+  return `${window.location.origin}/auth/callback?next=${encodeURIComponent(safeNext)}`
+}
+
 export const supabase = createClient(
   supabaseUrl || 'https://demo.supabase.co',
-  supabaseAnonKey || 'demo-anon-key'
+  supabaseAnonKey || 'demo-anon-key',
+  {
+    auth: {
+      flowType: 'pkce',
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+    },
+  }
 )
+
+export type OAuthProvider = 'google' | 'apple'
 
 // Types for our tables (match your Supabase schema)
 export type Profile = {
@@ -90,9 +115,21 @@ export async function grantDemoPremium(email: string) {
   }
 }
 
-// Auth helpers (email magic link for low friction global signups)
-export async function signInMagic(email: string) {
-  const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.origin + '/log' } })
+// Auth helpers — OAuth + magic link (privacy-by-design: no passwords stored)
+export async function signInWithOAuth(provider: OAuthProvider, nextPath = '/log') {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo: getAuthRedirectUrl(nextPath) },
+  })
+  if (error) throw error
+  return true
+}
+
+export async function signInMagic(email: string, nextPath = '/log') {
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: getAuthRedirectUrl(nextPath) },
+  })
   if (error) throw error
   return true
 }

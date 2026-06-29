@@ -40,7 +40,23 @@ After adding or changing env vars: **Deployments → Redeploy** (env changes do 
 
 1. **Password:** Go to https://www.missionwinning.com/private and enter `PRIVATE_ACCESS_SECRET`.
 2. **URL shortcut:** Visit `https://www.missionwinning.com/?access=YOUR_SECRET` once — sets a 30-day httpOnly cookie.
-3. **Sign in:** After unlocking, use magic link sign-in inside the app (Profile / Sidebar) for cloud sync.
+3. **Sign in:** After unlocking, sign in with Apple, Google, or email magic link (Profile or Welcome onboarding).
+
+---
+
+## OAuth sign-in (Apple + Google)
+
+In **Supabase → Authentication → URL Configuration**:
+
+| Setting | Value |
+|---------|--------|
+| Site URL | `https://www.missionwinning.com` (or `http://localhost:3000` for dev) |
+| Redirect URLs | `https://www.missionwinning.com/auth/callback` |
+| Redirect URLs (dev) | `http://localhost:3000/auth/callback` |
+
+In **Authentication → Providers**, enable **Google** and **Apple** with credentials from each provider's console. Users must accept Terms + Privacy in-app before sign-in (stored locally as consent version).
+
+Magic link and OAuth both land on `/auth/callback`, then redirect to Today (`/log`) or Profile.
 
 ---
 
@@ -76,6 +92,8 @@ Your project ref from the saved config: `tnzauplicgfrozvnowqp`
 - URL: `https://tnzauplicgfrozvnowqp.supabase.co`
 - **SQL:** Run `supabase/migrations/20250629_complete_base_schema.sql` in SQL Editor (fresh project). If you already have tables, individual migrations in `supabase/migrations/` are safe to re-run.
 - Enable Email auth → Magic Link
+- Enable Google + Apple OAuth (see OAuth section above)
+- Add redirect URL `https://YOUR-DOMAIN/auth/callback` (+ localhost for dev)
 - Add the same URL + anon key to Vercel env vars
 
 ---

@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { supabase, signOut, signInMagic, isPremium, getUser } from "@/lib/supabase";
+import { supabase, signOut, isPremium, getUser } from "@/lib/supabase";
+import { SignInPanel } from "@/components/auth/SignInPanel";
 import i18n from "@/i18n";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
@@ -64,8 +65,6 @@ export function ProfilePage() {
   const [nudgeSent, setNudgeSent] = useState(false);
   const [units, setUnits] = useState<"metric" | "imperial">("metric");
   const [goals, setGoals] = useState("Build strength and stay healthy");
-  const [signInEmail, setSignInEmail] = useState("");
-  const [signInLoading, setSignInLoading] = useState(false);
   const [premium, setPremium] = useState(false);
 
   useEffect(() => {
@@ -97,21 +96,6 @@ export function ProfilePage() {
   const handleSignOut = async () => {
     await signOut();
     window.location.href = "/";
-  };
-
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!signInEmail) return;
-    setSignInLoading(true);
-    try {
-      await signInMagic(signInEmail);
-      alert(`Magic link sent to ${signInEmail}. Check your email and click the link to sign in. Then refresh this page.`);
-      setSignInEmail("");
-    } catch (err: any) {
-      alert("Sign in failed: " + (err.message || "Check your Supabase config and try again."));
-    } finally {
-      setSignInLoading(false);
-    }
   };
 
   // Light onboarding state
@@ -217,26 +201,12 @@ export function ProfilePage() {
               </div>
             </>
           ) : (
-            <div className="border border-emerald-500/30 bg-emerald-950/10 p-3 rounded">
-              <div className="font-semibold mb-2 text-emerald-400">Sign up or sign in (free magic link)</div>
-              <div className="text-xs text-muted-foreground mb-2">
+            <div className="auth-panel rounded-xl p-4">
+              <div className="font-semibold mb-1 text-emerald-400">Sign up or sign in</div>
+              <div className="text-xs text-muted-foreground mb-4">
                 {t('cloudSyncPending', { defaultValue: 'Sign in to sync journey across devices' })}
               </div>
-              <form onSubmit={handleSignIn} className="space-y-2">
-                <input
-                  type="email"
-                  required
-                  placeholder="you@email.com"
-                  value={signInEmail}
-                  onChange={(e) => setSignInEmail(e.target.value)}
-                  className="w-full border rounded px-3 py-2 text-sm bg-background"
-                  disabled={signInLoading}
-                />
-                <Button type="submit" disabled={signInLoading} className="w-full bg-emerald-600 hover:bg-emerald-700">
-                  {signInLoading ? "Sending magic link..." : "Send Magic Link → Sign In / Sign Up"}
-                </Button>
-              </form>
-              <div className="text-xs text-muted-foreground mt-2">Low-friction email OTP. Enables cloud workout/nutrition sync, real premium status from your enrollments, and cross-device access. No password.</div>
+              <SignInPanel nextPath="/profile" compact />
             </div>
           )}
           <div className="text-xs text-muted-foreground">Premium status from Supabase enrollments (demo requests log a lead + grant local access). Full real payments + auth when LLC ready.</div>

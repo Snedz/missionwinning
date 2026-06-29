@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 220 20% 4%;
-    --foreground: 0 0% 98%;
-    --card: 220 18% 8%;
-    --card-foreground: 0 0% 98%;
-    --popover: 220 18% 8%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 160 84% 39%;
+    --background: 222 24% 5%;
+    --foreground: 210 20% 98%;
+    --card: 222 20% 9%;
+    --card-foreground: 210 20% 98%;
+    --popover: 222 20% 9%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 158 64% 42%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 18%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 220 14% 14%;
-    --muted-foreground: 220 10% 58%;
-    --accent: 160 60% 45%;
-    --accent-foreground: 0 0% 98%;
+    --secondary: 222 16% 16%;
+    --secondary-foreground: 210 20% 96%;
+    --muted: 222 14% 13%;
+    --muted-foreground: 215 12% 58%;
+    --accent: 158 45% 38%;
+    --accent-foreground: 210 20% 98%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 14% 16%;
-    --input: 220 14% 16%;
-    --ring: 160 84% 39%;
-    --radius: 0.875rem;
+    --border: 222 14% 18%;
+    --input: 222 14% 18%;
+    --ring: 158 64% 42%;
+    --radius: 1rem;
   }
 }
 
@@ -39,21 +39,53 @@
     letter-spacing: -0.015em;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, hsl(158 64% 42% / 0.08), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 100%, hsl(222 40% 20% / 0.35), transparent);
+    background-attachment: fixed;
   }
 }
 
 @layer components {
-  /* Apple HIG: glass on navigation layer only — solid content below */
   .glass-nav {
-    @apply bg-card/80 backdrop-blur-xl supports-[backdrop-filter]:bg-card/70;
+    @apply bg-card/75 backdrop-blur-xl supports-[backdrop-filter]:bg-card/65;
   }
 
   .content-card {
-    @apply rounded-2xl border border-border/50 bg-card shadow-sm;
+    @apply rounded-2xl border border-border/60 bg-card/95 shadow-lg shadow-black/20;
   }
 
   .dashboard-panel {
-    @apply rounded-2xl border border-border/40 bg-gradient-to-br from-card via-card to-emerald-950/15;
+    @apply rounded-2xl border border-border/50 bg-gradient-to-br from-card via-card to-emerald-950/20 shadow-sm;
+  }
+
+  .auth-panel {
+    @apply border border-border/60 bg-gradient-to-b from-card/90 to-muted/30;
+  }
+
+  .auth-divider {
+    @apply relative flex items-center justify-center py-1;
+  }
+
+  .auth-divider::before {
+    content: '';
+    @apply absolute inset-x-0 top-1/2 h-px bg-border/80;
+  }
+
+  .auth-divider span {
+    @apply relative z-10 bg-card px-3 text-[11px] uppercase tracking-widest text-muted-foreground;
+  }
+
+  .oauth-btn {
+    @apply rounded-xl border-border/70 bg-background/60 hover:bg-secondary/80 transition-colors;
+  }
+
+  .oauth-btn-apple {
+    @apply hover:border-foreground/20;
+  }
+
+  .oauth-btn-google {
+    @apply hover:border-emerald-500/30;
   }
 
   .tap-target {
@@ -61,7 +93,7 @@
   }
 
   .primary-action {
-    @apply w-full flex items-center justify-center gap-2 min-h-[52px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold text-[17px] transition-all;
+    @apply w-full flex items-center justify-center gap-2 min-h-[52px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold text-[17px] transition-all shadow-md shadow-emerald-950/25;
   }
 }
 

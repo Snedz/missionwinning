@@ -25,7 +25,7 @@ export function PrivacyPage() {
         <h2 className="text-lg font-semibold">What we collect</h2>
         <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
           <li>
-            <strong className="text-foreground">Account:</strong> email address when you sign in (magic link).
+            <strong className="text-foreground">Account:</strong> email address when you sign in (Apple, Google, or magic link).
           </li>
           <li>
             <strong className="text-foreground">Health &amp; fitness data you enter:</strong> workouts, nutrition
