@@ -820,8 +820,11 @@ export function HomePage() {
             {highProteinDays >= 5 ? "✓" : "○"} High Protein Days (150g+) ({highProteinDays}/5+) {highProteinDays >= 5 && "🏅"}
           </div>
           <div className="col-span-2 text-xs text-muted-foreground">Log wins daily — streaks & volume feed your Mission Score. Full cross-pillar challenges in updates.</div>
-          <div className="col-span-2 flex gap-2 mt-1">
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => { 
+          <div className="col-span-2 flex gap-2 mt-1 flex-wrap">
+            <Button size="sm" variant="outline" className="text-xs" onClick={() => { window.location.href = '/leaderboard'; }}>
+              View Leaderboard →
+            </Button>
+            <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
               const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1; 
               localStorage.setItem('mw_streak', String(current)); 
               alert(`Win logged! Streak now ${current}. Refresh or complete a workout to update.`); 
