@@ -99,13 +99,15 @@ Not seven separate apps — **one shell**, Freeletics-bundle **depth** behind Mo
 - [x] Deprecate Profile app-mode toggle
 - [x] Build label `2025.06-unified.1`
 
-### Phase 2 — Polish (next)
+### Phase 2 — Polish (in progress)
 
-- Extract HomePage sections → `src/components/today/*`
-- Welcome page uses design tokens (not hardcoded `#0a0f1a`)
-- Remove duplicate Profile “First-time setup” card
-- i18n: Today + Welcome strings to JSON (G2)
-- Animated hero transitions (Bevel-style page transitions)
+- [x] Header dropdown navigation (replaces More FAB / More tools sheet)
+- [x] Slim sidebar — primary tabs only
+- [x] Extract `TodayPageHeader`, `TodayHealthSection`
+- [x] Welcome page uses design tokens
+- [x] Remove duplicate Profile first-time setup form (→ I-Day)
+- [ ] i18n: Today + Welcome strings to JSON (G2)
+- [ ] Animated hero transitions (Bevel-style page transitions)
 
 ### Phase 3 — Holistic depth
 

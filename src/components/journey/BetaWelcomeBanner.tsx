@@ -33,7 +33,7 @@ export function BetaWelcomeBanner() {
         New in this beta
       </div>
       <p className="text-sm text-foreground/90 leading-relaxed mb-3">
-        Journey path, rankings with night &amp; dawn boards, 14 languages, and cloud sync.{' '}
+        Journey path, rankings with night &amp; dawn boards, 14 languages. Tap the header to browse all tools.{' '}
         <Link href="/beta" className="text-emerald-400 hover:underline">
           Beta guide →
         </Link>

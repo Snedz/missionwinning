@@ -15,13 +15,13 @@ import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { EXERCISES } from "@/data/exercises";
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
-import { CoachInsightCard } from "@/components/metrics/CoachInsightCard";
-import { PillarScoreBreakdown } from "@/components/metrics/PillarScoreBreakdown";
-import { JourneyStrip, JourneyHero } from "@/components/journey/JourneyHero";
+import { JourneyHero } from "@/components/journey/JourneyHero";
 import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
 import { TodayQuickLinks } from "@/components/journey/TodayQuickLinks";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { TodayDashboardHeader } from "@/components/today/TodayDashboardHeader";
+import { TodayPageHeader } from "@/components/today/TodayPageHeader";
+import { TodayHealthSection } from "@/components/today/TodayHealthSection";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { getTodayLayout } from "@/hooks/useTodayLayout";
 
@@ -468,43 +468,15 @@ export function HomePage() {
     <div className="space-y-6">
       <BetaWelcomeBanner />
 
-      <header className="space-y-1">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-[34px] font-semibold tracking-tight leading-tight">
-              {t('today', { defaultValue: 'Today' })}
-            </h1>
-            <p className="text-base text-muted-foreground mt-1">{today}</p>
-            {layout.showFocusLine && (
-              <p className="text-sm text-muted-foreground mt-0.5">
-                {t('recommendedFocus', { defaultValue: recommendedFocus })}
-                {userEquip === 'bodyweight' ? ' · bodyweight' : ''}
-              </p>
-            )}
-          </div>
-        </div>
-        {streak > 0 && (
-          <p className="text-sm text-muted-foreground pt-1">
-            {streak}-day streak ·{' '}
-            <a href="/leaderboard" className="text-emerald-400 hover:underline">
-              {t('leaderboardRankings', { defaultValue: 'Rankings' })}
-            </a>
-          </p>
-        )}
-        <p className="text-sm text-muted-foreground pt-1">
-          {!userEmail ? (
-            <>
-              <a href="/profile" className="text-emerald-400 hover:underline">Sign in</a>
-              {' '}optional — progress stays on this device.
-            </>
-          ) : (
-            'Cloud sync on.'
-          )}
-        </p>
-        <div className="pt-3">
-          <JourneyStrip action={action} />
-        </div>
-      </header>
+      <TodayPageHeader
+        today={today}
+        recommendedFocus={recommendedFocus}
+        userEquip={userEquip}
+        streak={streak}
+        userEmail={userEmail}
+        action={action}
+        showFocusLine={layout.showFocusLine}
+      />
 
       <JourneyHero
         action={action}
@@ -527,21 +499,7 @@ export function HomePage() {
       {layout.showDetailsAccordion && (
         <TodaySections>
       <TodaySection title="Health scores" description="Coach insight and pillar breakdown" defaultOpen={false}>
-      <div className="space-y-4 pt-2">
-      <CoachInsightCard insight={coachInsight} />
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Cross-pillar Mission Score</CardTitle>
-          <CardDescription>
-            All six pillars contribute — Train, Fuel, Move, Mind, Track, and Learn.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <PillarScoreBreakdown breakdown={scoreBreakdown} />
-        </CardContent>
-      </Card>
-      </div>
+      <TodayHealthSection insight={coachInsight} breakdown={scoreBreakdown} />
       </TodaySection>
 
       <TodaySection title="This week" description="Challenges and daily workout">
