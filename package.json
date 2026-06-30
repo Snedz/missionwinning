@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "tsx --test src/lib/**/*.test.ts",
+    "export-locales": "tsx scripts/export-locale-json.ts",
     "check-env": "node --env-file=.env.local scripts/check-env.mjs"
   },
   "dependencies": {

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { formatStoredGoal } from '@/lib/journeyGoals';
 import { supabase, signOut, isPremium, getUser } from "@/lib/supabase";
 import { SignInPanel } from "@/components/auth/SignInPanel";
 import i18n from "@/i18n";
@@ -352,7 +353,9 @@ export function ProfilePage() {
               {' · '}
               Equipment: <span className="text-foreground capitalize">{equipment?.replace('-', ' ') || '—'}</span>
             </p>
-            <p className="text-muted-foreground truncate">Goal: {primaryGoal || goals}</p>
+            <p className="text-muted-foreground truncate">
+              Goal: {formatStoredGoal(primaryGoal || goals, t)}
+            </p>
             <Button variant="outline" className="w-full min-h-[44px]" onClick={() => { window.location.href = '/welcome?edit=1'; }}>
               {t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}
             </Button>

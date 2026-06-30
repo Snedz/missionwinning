@@ -3,20 +3,22 @@
 import { useEffect, useState } from 'react';
 import { Target } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatStoredGoal } from '@/lib/journeyGoals';
 
 export function CommandersIntent() {
   const { t } = useTranslation();
-  const [goal, setGoal] = useState('');
+  const [goalRaw, setGoalRaw] = useState('');
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    setGoal(
+    setGoalRaw(
       localStorage.getItem('mw_primary_goal') ||
         localStorage.getItem('mw_goals') ||
         ''
     );
   }, []);
 
+  const goal = formatStoredGoal(goalRaw, t);
   if (!goal.trim()) return null;
 
   return (

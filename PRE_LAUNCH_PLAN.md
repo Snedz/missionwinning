@@ -27,7 +27,7 @@
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
 | **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
-| **Build label** | ✅ | `2025.06-unified.16` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.17` on Profile footer |
 
 ### Open PR stack
 
@@ -52,7 +52,8 @@ Most feature work is merged to `master`. Branch `cursor/today-cards-challenges-6
 | 13 | Readiness + coach insight i18n | ✅ status keys, metrics rings, coach card, focus line |
 | 14 | Pillar score i18n + Today cleanup | ✅ pillar breakdown; dev-only founder tools |
 | 15 | CI + core unit tests | ✅ GitHub Actions; score + PayPal parse tests |
-| **Build label** | ✅ | `2025.06-unified.16` on Profile footer |
+| 16 | Goal presets i18n + locale JSON export | ✅ journeyGoals, welcome chips, export-locales |
+| **Build label** | ✅ | `2025.06-unified.17` on Profile footer |
 
 ### While Vercel is blocked
 

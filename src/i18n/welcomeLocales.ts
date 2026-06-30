@@ -22,6 +22,12 @@ type WelcomeStrings = {
   welcomeEquipFullGym: string;
   welcomePrimaryGoal: string;
   welcomeGoalPlaceholder: string;
+  goalPresetStrength: string;
+  goalPresetFatLoss: string;
+  goalPresetEndurance: string;
+  goalPresetMobility: string;
+  goalPresetGeneral: string;
+  welcomeGoalPresetsLabel: string;
   welcomeBack: string;
   headerSignIn: string;
   photoLogTitle: string;
@@ -56,6 +62,12 @@ const en: WelcomeStrings = {
   welcomeEquipFullGym: 'Full gym access',
   welcomePrimaryGoal: 'Primary goal',
   welcomeGoalPlaceholder: 'Build strength and stay healthy',
+  goalPresetStrength: 'Build strength and stay healthy',
+  goalPresetFatLoss: 'Lose fat and keep muscle',
+  goalPresetEndurance: 'Improve endurance and stamina',
+  goalPresetMobility: 'Move better — mobility and recovery',
+  goalPresetGeneral: 'Stay healthy and consistent',
+  welcomeGoalPresetsLabel: 'Quick picks (or type your own below)',
   welcomeBack: 'Back',
   headerSignIn: 'Sign in',
   photoLogTitle: 'Log from photo',
@@ -88,6 +100,12 @@ const zh: WelcomeStrings = {
   welcomeEquipFullGym: '完整健身房',
   welcomePrimaryGoal: '主要目标',
   welcomeGoalPlaceholder: '增强力量，保持健康',
+  goalPresetStrength: '增强力量，保持健康',
+  goalPresetFatLoss: '减脂并保持肌肉',
+  goalPresetEndurance: '提升耐力与持久力',
+  goalPresetMobility: '改善活动度与恢复',
+  goalPresetGeneral: '保持健康、坚持训练',
+  welcomeGoalPresetsLabel: '快捷选择（或在下方自定义）',
   welcomeBack: '返回',
   headerSignIn: '登录',
   photoLogTitle: '拍照记录',
@@ -122,6 +140,12 @@ const id: WelcomeStrings = {
   welcomeEquipFullGym: 'Akses gym lengkap',
   welcomePrimaryGoal: 'Tujuan utama',
   welcomeGoalPlaceholder: 'Bangun kekuatan dan tetap sehat',
+  goalPresetStrength: 'Bangun kekuatan dan tetap sehat',
+  goalPresetFatLoss: 'Turunkan lemak, pertahankan otot',
+  goalPresetEndurance: 'Tingkatkan daya tahan',
+  goalPresetMobility: 'Gerak lebih baik — mobilitas & recovery',
+  goalPresetGeneral: 'Tetap sehat dan konsisten',
+  welcomeGoalPresetsLabel: 'Pilihan cepat (atau ketik sendiri di bawah)',
   welcomeBack: 'Kembali',
   headerSignIn: 'Masuk',
   photoLogTitle: 'Catat dari foto',
@@ -154,6 +178,12 @@ const th: WelcomeStrings = {
   welcomeEquipFullGym: 'ยิมครบ',
   welcomePrimaryGoal: 'เป้าหมายหลัก',
   welcomeGoalPlaceholder: 'สร้างความแข็งแรงและสุขภาพดี',
+  goalPresetStrength: 'สร้างความแข็งแรงและสุขภาพดี',
+  goalPresetFatLoss: 'ลดไขมัน รักษากล้ามเนื้อ',
+  goalPresetEndurance: 'เพิ่มความอดทน',
+  goalPresetMobility: 'เคลื่อนไหวดีขึ้น — ความคล่องตัวและฟื้นตัว',
+  goalPresetGeneral: 'สุขภาพดีและสม่ำเสมอ',
+  welcomeGoalPresetsLabel: 'เลือกด่วน (หรือพิมพ์เองด้านล่าง)',
   welcomeBack: 'ย้อนกลับ',
   headerSignIn: 'ลงชื่อเข้าใช้',
   photoLogTitle: 'บันทึกจากรูป',
@@ -187,6 +217,12 @@ const ar: WelcomeStrings = {
   welcomeEquipFullGym: 'صالة كاملة',
   welcomePrimaryGoal: 'الهدف الرئيسي',
   welcomeGoalPlaceholder: 'بناء القوة والحفاظ على الصحة',
+  goalPresetStrength: 'بناء القوة والحفاظ على الصحة',
+  goalPresetFatLoss: 'خسارة الدهون مع الحفاظ على العضلات',
+  goalPresetEndurance: 'تحسين التحمل والقدرة',
+  goalPresetMobility: 'حركة أفضل — مرونة واستشفاء',
+  goalPresetGeneral: 'صحة مستمرة وانتظام',
+  welcomeGoalPresetsLabel: 'اختيارات سريعة (أو اكتب هدفك أدناه)',
   welcomeBack: 'رجوع',
   headerSignIn: 'تسجيل الدخول',
   photoLogTitle: 'تسجيل من صورة',

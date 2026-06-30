@@ -40,6 +40,7 @@ type TodayStrings = {
   todayViewLeaderboard: string;
   todayInstallPwa: string;
   todayInstallNow: string;
+  todayPwaInstallHint: string;
   todayBodyweightTag: string;
   fuelTitle: string;
   fuelSubtitle: string;
@@ -170,6 +171,7 @@ const en: TodayStrings = {
   todayViewLeaderboard: 'View Leaderboard →',
   todayInstallPwa: 'Install Mission Winning for offline use anywhere (PWA).',
   todayInstallNow: 'Install Now',
+  todayPwaInstallHint: 'Use browser menu (⋮ > Add to Home Screen / Install).',
   todayBodyweightTag: 'bodyweight',
   fuelTitle: 'Nutrition',
   fuelSubtitle:
@@ -303,6 +305,7 @@ const es: TodayStrings = {
   todayViewLeaderboard: 'Ver clasificación →',
   todayInstallPwa: 'Instala Mission Winning para uso sin conexión (PWA).',
   todayInstallNow: 'Instalar ahora',
+  todayPwaInstallHint: 'Usa el menú del navegador (⋮ > Añadir a inicio / Instalar).',
   todayBodyweightTag: 'peso corporal',
   fuelTitle: 'Nutrición',
   fuelSignInDesc: 'Sincroniza comidas e historial de macros entre dispositivos.',
@@ -433,6 +436,7 @@ const zh: TodayStrings = {
   todayViewLeaderboard: '查看排行榜 →',
   todayInstallPwa: '安装 Mission Winning 以便离线使用（PWA）。',
   todayInstallNow: '立即安装',
+  todayPwaInstallHint: '使用浏览器菜单（⋮ > 添加到主屏幕 / 安装）。',
   todayBodyweightTag: '自重',
   fuelTitle: '营养',
   fuelSubtitle: '免费核心：每日宏量记录、饮水、目标与全球可及食谱。',
@@ -562,6 +566,7 @@ const id: TodayStrings = {
   todayViewLeaderboard: 'Lihat papan peringkat →',
   todayInstallPwa: 'Instal Mission Winning untuk offline (PWA).',
   todayInstallNow: 'Instal sekarang',
+  todayPwaInstallHint: 'Gunakan menu browser (⋮ > Tambah ke Layar Utama / Instal).',
   todayBodyweightTag: 'berat badan',
   fuelTitle: 'Nutrisi',
   fuelSubtitle: 'Inti gratis: log makro harian, air, target, dan resep global.',
@@ -695,6 +700,7 @@ const th: TodayStrings = {
   todayViewLeaderboard: 'ดูอันดับ →',
   todayInstallPwa: 'ติดตั้ง Mission Winning ใช้งานออฟไลน์ (PWA)',
   todayInstallNow: 'ติดตั้งเลย',
+  todayPwaInstallHint: 'ใช้เมนูเบราว์เซอร์ (⋮ > เพิ่มไปหน้าจอหลัก / ติดตั้ง)',
   todayBodyweightTag: 'น้ำหนักตัว',
   fuelTitle: 'โภชนาการ',
   fuelSubtitle: 'ฟรี: บันทึกมาโคร น้ำ เป้าหมาย และสูตรอาหารทั่วโลก',
@@ -823,6 +829,7 @@ const ar: TodayStrings = {
   todayViewLeaderboard: 'عرض الترتيب ←',
   todayInstallPwa: 'ثبّت Mission Winning للاستخدام دون اتصال (PWA).',
   todayInstallNow: 'ثبّت الآن',
+  todayPwaInstallHint: 'استخدم قائمة المتصفح (⋮ > إضافة إلى الشاشة الرئيسية / تثبيت).',
   todayBodyweightTag: 'وزن الجسم',
   fuelTitle: 'التغذية',
   fuelSubtitle: 'مجاني: سجل يومي، ماء، أهداف ووصفات عالمية.',
