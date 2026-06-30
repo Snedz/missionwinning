@@ -13,7 +13,7 @@ Use when **Vercel 2FA access returns**. Merge open PRs to `master` first (recomm
 | [#24](https://github.com/Snedz/missionwinning/pull/24) | PayPal verify + CSP enforce |
 | [#25](https://github.com/Snedz/missionwinning/pull/25) | Fuel i18n + leads rate limit |
 | [#26](https://github.com/Snedz/missionwinning/pull/26) | Pro programs server-split |
-| Latest | Arabic locale + RTL (if open) |
+| Latest | Arabic RTL (#27), nav/fuel i18n (#28), readiness/coach (#29), pillar polish (#30) |
 
 ---
 
@@ -45,7 +45,7 @@ curl -sI https://www.missionwinning.com/ | grep -i location
 # Expected: location: /private
 
 # Build label on Profile footer (match latest unified.*)
-# e.g. 2025.06-unified.14
+# e.g. 2025.06-unified.15
 
 # Premium API without auth
 curl -sI https://www.missionwinning.com/api/premium/recipes

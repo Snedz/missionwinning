@@ -169,7 +169,140 @@ const ar: NavStrings = {
   fuelPremiumRecipesFoot: 'من علم البروتين ومبادئ DASH/Med.',
 };
 
-const LOCALES: Partial<Record<string, NavStrings>> = { en, es, zh, id, th, ar };
+const fr: NavStrings = {
+  ...en,
+  navSectionRecover: 'Récupération',
+  navSectionTrain: 'Entraînement approfondi',
+  navSectionLearn: 'Apprendre et mesurer',
+  navMove: 'Mouvement',
+  navMind: 'Esprit',
+  navLearn: 'Apprendre',
+  navBuilder: 'Constructeur',
+  navLibrary: 'Bibliothèque',
+  navHistory: 'Historique',
+  navLeaderboard: 'Classement',
+  navReadiness: 'Tests de préparation',
+  navHealth: 'Bilan santé',
+  navCalculators: 'Calculateurs',
+  journeyBasicFoot: 'Une étape à la fois. Plus d\'outils s\'ouvrent avec votre progression.',
+  fuelHighProteinNote: 'Les jours riches en protéines boostent votre',
+};
+
+const de: NavStrings = {
+  ...en,
+  navSectionRecover: 'Erholung',
+  navSectionTrain: 'Tiefer trainieren',
+  navSectionLearn: 'Lernen & messen',
+  navMove: 'Bewegung',
+  navMind: 'Geist',
+  navLearn: 'Lernen',
+  navBuilder: 'Builder',
+  navLibrary: 'Bibliothek',
+  navHistory: 'Verlauf',
+  navLeaderboard: 'Bestenliste',
+  navReadiness: 'Bereitschaftstests',
+  navHealth: 'Gesundheitscheck',
+  navCalculators: 'Rechner',
+  journeyBasicFoot: 'Schritt für Schritt. Mehr Tools öffnen sich mit deinem Fortschritt.',
+  fuelHighProteinNote: 'Proteinreiche Tage stärken deinen',
+};
+
+const it: NavStrings = {
+  ...en,
+  navSectionRecover: 'Recupero',
+  navSectionTrain: 'Allenamento profondo',
+  navSectionLearn: 'Impara e misura',
+  navMove: 'Movimento',
+  navMind: 'Mente',
+  navLearn: 'Impara',
+  navBuilder: 'Builder',
+  navLibrary: 'Biblioteca',
+  navHistory: 'Cronologia',
+  navLeaderboard: 'Classifica',
+  navReadiness: 'Test di prontezza',
+  navHealth: 'Screening salute',
+  navCalculators: 'Calcolatori',
+  journeyBasicFoot: 'Un passo alla volta. Più strumenti si sbloccano col progresso.',
+  fuelHighProteinNote: 'I giorni ad alto proteico potenziano il tuo',
+};
+
+const ko: NavStrings = {
+  ...en,
+  navSectionRecover: '회복',
+  navSectionTrain: '심화 훈련',
+  navSectionLearn: '학습 및 측정',
+  navMove: '움직임',
+  navMind: '마음',
+  navLearn: '학습',
+  navBuilder: '빌더',
+  navLibrary: '라이브러리',
+  navHistory: '기록',
+  navLeaderboard: '리더보드',
+  navReadiness: '준비도 테스트',
+  navHealth: '건강 검진',
+  navCalculators: '계산기',
+  journeyBasicFoot: '한 걸음씩. 진행에 따라 더 많은 도구가 열립니다.',
+  fuelHighProteinNote: '고단백일은 당신의',
+};
+
+const ja: NavStrings = {
+  ...en,
+  navSectionRecover: '回復',
+  navSectionTrain: '深いトレーニング',
+  navSectionLearn: '学習と測定',
+  navMove: 'ムーブ',
+  navMind: 'マインド',
+  navLearn: '学習',
+  navBuilder: 'ビルダー',
+  navLibrary: 'ライブラリ',
+  navHistory: '履歴',
+  navLeaderboard: 'ランキング',
+  navReadiness: '準備度テスト',
+  navHealth: '健康スクリーニング',
+  navCalculators: '計算機',
+  journeyBasicFoot: '一歩ずつ。進むほどツールが増えます。',
+  fuelHighProteinNote: '高タンパク日はあなたの',
+};
+
+const pt: NavStrings = {
+  ...en,
+  navSectionRecover: 'Recuperação',
+  navSectionTrain: 'Treino profundo',
+  navSectionLearn: 'Aprender e medir',
+  navMove: 'Movimento',
+  navMind: 'Mente',
+  navLearn: 'Aprender',
+  navBuilder: 'Construtor',
+  navLibrary: 'Biblioteca',
+  navHistory: 'Histórico',
+  navLeaderboard: 'Ranking',
+  navReadiness: 'Testes de prontidão',
+  navHealth: 'Triagem de saúde',
+  navCalculators: 'Calculadoras',
+  journeyBasicFoot: 'Um passo de cada vez. Mais ferramentas conforme você progride.',
+  fuelHighProteinNote: 'Dias com alta proteína impulsionam seu',
+};
+
+const ru: NavStrings = {
+  ...en,
+  navSectionRecover: 'Восстановление',
+  navSectionTrain: 'Углублённая тренировка',
+  navSectionLearn: 'Обучение и замеры',
+  navMove: 'Движение',
+  navMind: 'Разум',
+  navLearn: 'Обучение',
+  navBuilder: 'Конструктор',
+  navLibrary: 'Библиотека',
+  navHistory: 'История',
+  navLeaderboard: 'Рейтинг',
+  navReadiness: 'Тесты готовности',
+  navHealth: 'Скрининг здоровья',
+  navCalculators: 'Калькуляторы',
+  journeyBasicFoot: 'Шаг за шагом. Больше инструментов по мере прогресса.',
+  fuelHighProteinNote: 'Дни с высоким белком усиливают ваш',
+};
+
+const LOCALES: Partial<Record<string, NavStrings>> = { en, es, zh, id, th, ar, fr, de, it, ko, ja, pt, ru };
 
 export function navStringsFor(lang: string): NavStrings {
   const code = lang.split('-')[0];

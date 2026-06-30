@@ -27,7 +27,7 @@
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
 | **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
-| **Build label** | ✅ | `2025.06-unified.14` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.15` on Profile footer |
 
 ### Open PR stack
 
@@ -49,11 +49,13 @@ Most feature work is merged to `master`. Branch `cursor/today-cards-challenges-6
 | 10 | Pro program templates server-split | ✅ `premiumProgramTemplates.ts` |
 | 11 | Arabic locale + RTL | ✅ `meaLocales.ts`, welcome/today/fuel ar |
 | 12 | Nav + Fuel science i18n | ✅ `navLocales.ts`, header dropdown, muscle groups |
-| **Build label** | ✅ | `2025.06-unified.14` on Profile footer |
+| 13 | Readiness + coach insight i18n | ✅ status keys, metrics rings, coach card, focus line |
+| 14 | Pillar score i18n + Today cleanup | ✅ pillar breakdown; dev-only founder tools |
+| **Build label** | ✅ | `2025.06-unified.15` on Profile footer |
 
-### When Vercel access returns
+### While Vercel is blocked
 
-See **[VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md)** — merge PR stack #22–latest, set env vars, redeploy, verify gate + build label.
+Ship locally on branch stack `#22`–latest; merge to `master` when ready. No deploy until 2FA reset — use `npm run dev` + Profile build label to verify. See [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) for env + curl steps on day one of access.
 
 ---
 
