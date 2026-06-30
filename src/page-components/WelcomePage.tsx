@@ -14,6 +14,12 @@ import {
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { SignInPanel } from '@/components/auth/SignInPanel';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import {
+  GOAL_PRESET_IDS,
+  GOAL_PRESET_LABEL_KEY,
+  goalPresetValue,
+  isCustomGoal,
+} from '@/lib/journeyGoals';
 
 type Step = 'welcome' | 'mission' | 'profile' | 'signin';
 
@@ -28,7 +34,7 @@ export function WelcomePage() {
   const [step, setStep] = useState<Step>('welcome');
   const [experience, setExperience] = useState('beginner');
   const [equipment, setEquipment] = useState('bodyweight');
-  const [primaryGoal, setPrimaryGoal] = useState('Build strength and stay healthy');
+  const [primaryGoal, setPrimaryGoal] = useState(() => goalPresetValue('strength'));
 
   const experienceLabel = (value: string) => {
     if (value === 'beginner') return t('welcomeExpBeginner', { defaultValue: 'New to training' });
@@ -219,12 +225,36 @@ export function WelcomePage() {
                     ))}
                   </select>
                 </label>
-                <label className="block space-y-1 text-sm">
+                <label className="block space-y-2 text-sm">
                   <span className="text-muted-foreground">
                     {t('welcomePrimaryGoal', { defaultValue: 'Primary goal' })}
                   </span>
+                  <p className="text-xs text-muted-foreground">
+                    {t('welcomeGoalPresetsLabel', {
+                      defaultValue: 'Quick picks (or type your own below)',
+                    })}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {GOAL_PRESET_IDS.map((id) => {
+                      const value = goalPresetValue(id);
+                      const selected = primaryGoal === value;
+                      const labelKey = GOAL_PRESET_LABEL_KEY[id];
+                      return (
+                        <Button
+                          key={id}
+                          type="button"
+                          size="sm"
+                          variant={selected ? 'default' : 'outline'}
+                          className={selected ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
+                          onClick={() => setPrimaryGoal(value)}
+                        >
+                          {t(labelKey, { defaultValue: value })}
+                        </Button>
+                      );
+                    })}
+                  </div>
                   <input
-                    value={primaryGoal}
+                    value={isCustomGoal(primaryGoal) ? primaryGoal : ''}
                     onChange={(e) => setPrimaryGoal(e.target.value)}
                     className="w-full rounded-md bg-background border border-border px-3 py-2"
                     placeholder={t('welcomeGoalPlaceholder', {

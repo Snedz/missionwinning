@@ -25,6 +25,7 @@ import { loadTodayDashboardPrefs, type TodayDashboardPrefs, type TodaySectionId 
 import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { getTodayLayout } from "@/hooks/useTodayLayout";
+import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
 
 export function HomePage() {
   const router = useRouter();
@@ -189,7 +190,8 @@ export function HomePage() {
 
 
   // Onboarding via I-Day journey (Profile fields synced from /welcome)
-  const userGoal = typeof window !== 'undefined' ? (localStorage.getItem('mw_primary_goal') || 'Build strength and stay healthy') : 'Build strength and stay healthy';
+  const userGoalRaw = typeof window !== 'undefined' ? (localStorage.getItem('mw_primary_goal') || goalPresetValue('strength')) : goalPresetValue('strength');
+  const userGoal = formatStoredGoal(userGoalRaw, t);
   const userEquip = typeof window !== 'undefined' ? (localStorage.getItem('mw_equipment') || 'full-gym') : 'full-gym';
 
   const renderAccordionSection = (id: TodaySectionId) => {
@@ -236,7 +238,7 @@ export function HomePage() {
             <TodayProgressSection
               savedWorkouts={savedWorkouts}
               readiness={readiness}
-              userGoal={userGoal}
+              userGoalDisplay={userGoal}
               userEquip={userEquip}
               totalSessions={totalSessions}
               totalVolume={totalVolume}

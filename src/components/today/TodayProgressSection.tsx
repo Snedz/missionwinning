@@ -19,7 +19,7 @@ import { SHOW_TODAY_FOUNDER_TOOLS } from '@/lib/todayFounderTools';
 export type TodayProgressSectionProps = {
   savedWorkouts: SavedWorkout[];
   readiness: ReturnType<typeof computeReadiness>;
-  userGoal: string;
+  userGoalDisplay: string;
   userEquip: string;
   totalSessions: number;
   totalVolume: number;
@@ -37,7 +37,7 @@ export type TodayProgressSectionProps = {
 export function TodayProgressSection({
   savedWorkouts,
   readiness,
-  userGoal,
+  userGoalDisplay,
   userEquip,
   totalSessions,
   totalVolume,
@@ -149,7 +149,7 @@ export function TodayProgressSection({
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           <div>
-            <span className="font-medium">{t('todayFocusLabel', { defaultValue: 'Focus:' })}</span> {userGoal}{' '}
+            <span className="font-medium">{t('todayFocusLabel', { defaultValue: 'Focus:' })}</span> {userGoalDisplay}{' '}
             {userEquip === 'bodyweight'
               ? t('todayWithBodyweight', { defaultValue: 'with bodyweight/minimal' })
               : t('todayWithEquipment', { defaultValue: 'with available equipment' })}
@@ -433,7 +433,7 @@ export function TodayProgressSection({
             else {
               const p = (window as any).deferredPwaPrompt && (window as any).deferredPwaPrompt();
               if (p) p.prompt();
-              else alert('Use browser menu (⋮ > Add to Home Screen / Install).');
+              else alert(t('todayPwaInstallHint', { defaultValue: 'Use browser menu (⋮ > Add to Home Screen / Install).' }));
             }
           }}>{t('todayInstallNow', { defaultValue: 'Install Now' })}</Button>
         </div>
