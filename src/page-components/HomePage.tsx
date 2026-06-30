@@ -28,7 +28,7 @@ import { getTodayLayout } from "@/hooks/useTodayLayout";
 
 export function HomePage() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
@@ -143,7 +143,11 @@ export function HomePage() {
   };
 
   // === Today Hub computations using shared util (clean, reusable) ===
-  const today = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
+  const today = new Date().toLocaleDateString(i18n.language, {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  });
 
   const readiness = computeReadiness(workoutHistory);
   const recommendedFocus = getRecommendedFocus(readiness);

@@ -117,6 +117,14 @@ type TodayStrings = {
   coachActionGoBuilder: string;
   coachActionLogNutrition: string;
   coachActionViewToday: string;
+  todayPillarScoreByPillar: string;
+  todayPillarTrain: string;
+  todayPillarFuel: string;
+  todayPillarMove: string;
+  todayPillarMind: string;
+  todayPillarTrack: string;
+  todayPillarLearn: string;
+  todayPillarScoreFoot: string;
 };
 
 const en: TodayStrings = {
@@ -245,6 +253,15 @@ const en: TodayStrings = {
   coachActionGoBuilder: 'Go to Builder',
   coachActionLogNutrition: 'Log nutrition',
   coachActionViewToday: 'View Today hub',
+  todayPillarScoreByPillar: 'Mission Score by Pillar',
+  todayPillarTrain: 'Train',
+  todayPillarFuel: 'Fuel',
+  todayPillarMove: 'Move',
+  todayPillarMind: 'Mind',
+  todayPillarTrack: 'Track',
+  todayPillarLearn: 'Learn',
+  todayPillarScoreFoot:
+    'Holistic scoring — all six pillars contribute. Super Bundle deepens each route; free core counts for everyone.',
 };
 
 const es: TodayStrings = {
@@ -365,6 +382,15 @@ const es: TodayStrings = {
   coachActionGoBuilder: 'Ir al Builder',
   coachActionLogNutrition: 'Registrar nutrición',
   coachActionViewToday: 'Ver hub Today',
+  todayPillarScoreByPillar: 'Puntuación por pilar',
+  todayPillarTrain: 'Entrenar',
+  todayPillarFuel: 'Nutrición',
+  todayPillarMove: 'Mover',
+  todayPillarMind: 'Mente',
+  todayPillarTrack: 'Registrar',
+  todayPillarLearn: 'Aprender',
+  todayPillarScoreFoot:
+    'Puntuación holística — los seis pilares contribuyen. Super Bundle profundiza cada ruta; el núcleo gratis cuenta para todos.',
 };
 
 const zh: TodayStrings = {
@@ -484,6 +510,14 @@ const zh: TodayStrings = {
   coachActionGoBuilder: '前往构建器',
   coachActionLogNutrition: '记录营养',
   coachActionViewToday: '查看 Today',
+  todayPillarScoreByPillar: '各支柱任务分数',
+  todayPillarTrain: '训练',
+  todayPillarFuel: '营养',
+  todayPillarMove: '活动',
+  todayPillarMind: '心理',
+  todayPillarTrack: '追踪',
+  todayPillarLearn: '学习',
+  todayPillarScoreFoot: '整体评分 — 六大支柱共同贡献。Super Bundle 深化各路线；免费核心人人可用。',
 };
 
 const id: TodayStrings = {
@@ -609,6 +643,15 @@ const id: TodayStrings = {
   coachActionGoBuilder: 'Ke Builder',
   coachActionLogNutrition: 'Catat nutrisi',
   coachActionViewToday: 'Lihat Today',
+  todayPillarScoreByPillar: 'Skor Misi per Pilar',
+  todayPillarTrain: 'Latih',
+  todayPillarFuel: 'Fuel',
+  todayPillarMove: 'Gerak',
+  todayPillarMind: 'Pikiran',
+  todayPillarTrack: 'Track',
+  todayPillarLearn: 'Belajar',
+  todayPillarScoreFoot:
+    'Skor holistik — enam pilar berkontribusi. Super Bundle memperdalam setiap rute; inti gratis untuk semua.',
 };
 
 const th: TodayStrings = {
@@ -729,6 +772,15 @@ const th: TodayStrings = {
   coachActionGoBuilder: 'ไป Builder',
   coachActionLogNutrition: 'บันทึกโภชนาการ',
   coachActionViewToday: 'ดู Today',
+  todayPillarScoreByPillar: 'คะแนนภารกิจตามเสาหลัก',
+  todayPillarTrain: 'ฝึก',
+  todayPillarFuel: 'Fuel',
+  todayPillarMove: 'เคลื่อนไหว',
+  todayPillarMind: 'จิตใจ',
+  todayPillarTrack: 'Track',
+  todayPillarLearn: 'เรียนรู้',
+  todayPillarScoreFoot:
+    'คะแนนรวม — หกเสาหลักมีส่วน Super Bundle ลึกขึ้นในแต่ละเส้นทาง เหล่าฟรีนับทุกคน',
 };
 
 const ar: TodayStrings = {
@@ -848,6 +900,15 @@ const ar: TodayStrings = {
   coachActionGoBuilder: 'إلى Builder',
   coachActionLogNutrition: 'تسجيل التغذية',
   coachActionViewToday: 'عرض Today',
+  todayPillarScoreByPillar: 'درجة المهمة حسب الركيزة',
+  todayPillarTrain: 'تدريب',
+  todayPillarFuel: 'Fuel',
+  todayPillarMove: 'حركة',
+  todayPillarMind: 'عقل',
+  todayPillarTrack: 'تتبّع',
+  todayPillarLearn: 'تعلّم',
+  todayPillarScoreFoot:
+    'تقييم شامل — الركائز الست تساهم. Super Bundle يعمّق كل مسار؛ النواة المجانية للجميع.',
 };
 
 const LOCALES: Partial<Record<string, TodayStrings>> = { en, es, zh, id, th, ar };

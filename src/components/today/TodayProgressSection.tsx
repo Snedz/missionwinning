@@ -14,6 +14,7 @@ import { muscleGroupLabel } from '@/lib/readinessDisplay';
 import type { computeReadiness } from '@/lib/score';
 import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { SHOW_TODAY_FOUNDER_TOOLS } from '@/lib/todayFounderTools';
 
 export type TodayProgressSectionProps = {
   savedWorkouts: SavedWorkout[];
@@ -244,6 +245,8 @@ export function TodayProgressSection({
               <div>{t('todayPillarWinEmpty', { defaultValue: 'Log wins from Move or Mind (saves to cloud when signed in).' })}</div>
             )}
 
+            {SHOW_TODAY_FOUNDER_TOOLS && (
+              <>
             <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
               try {
                 const u = await getUser();
@@ -291,6 +294,8 @@ export function TodayProgressSection({
                 }
               } catch {}
             }}>Refresh pillar wins from cloud</Button>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -380,6 +385,8 @@ export function TodayProgressSection({
             <Button size="sm" variant="outline" className="text-xs" onClick={() => { window.location.href = '/leaderboard'; }}>
               {t('todayViewLeaderboard', { defaultValue: 'View Leaderboard →' })}
             </Button>
+            {SHOW_TODAY_FOUNDER_TOOLS && (
+              <>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
               const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1; 
               localStorage.setItem('mw_streak', String(current)); 
@@ -410,6 +417,8 @@ export function TodayProgressSection({
               alert('Log a post-mobility recovery snack in Nutrition (e.g. yogurt bowl). Builds Fuel + Move synergy.');
               window.location.href = '/nutrition';
             }}>Log Recovery Snack (Fuel + Move) →</Button>
+              </>
+            )}
           </div>
         </CardContent>
       </Card>
