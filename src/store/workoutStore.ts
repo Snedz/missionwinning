@@ -22,6 +22,7 @@ interface WorkoutState {
   activeWorkout: ActiveWorkout | null;
   restSecondsRemaining: number;
   restTimerActive: boolean;
+  restTimerInitialSeconds: number;
   elapsedSeconds: number;
 
   addSavedWorkout: (workout: Omit<SavedWorkout, "id" | "createdAt">) => void;
@@ -31,10 +32,23 @@ interface WorkoutState {
   cancelActiveWorkout: () => void;
   completeActiveWorkout: () => CompletedWorkoutLog | null;
   addExerciseToActive: (exerciseId: string) => void;
-  logSet: (exerciseIndex: number, setIndex: number, reps: number, weight: number, rpe?: 'easy' | 'med' | 'hard') => void;
+  logSet: (
+    exerciseIndex: number,
+    setIndex: number,
+    reps: number,
+    weight: number,
+    rpe?: 'easy' | 'med' | 'hard'
+  ) => void;
+  logSetAndAdvance: (
+    exerciseIndex: number,
+    setIndex: number,
+    reps: number,
+    weight: number
+  ) => { exerciseIndex: number; setIndex: number } | null;
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
   addSetToExercise: (exerciseIndex: number) => void;
   startRestTimer: (seconds?: number) => void;
+  adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
   stopRestTimer: () => void;
   tickElapsed: () => void;
@@ -60,6 +74,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       activeWorkout: null,
       restSecondsRemaining: 0,
       restTimerActive: false,
+      restTimerInitialSeconds: 90,
       elapsedSeconds: 0,
 
       addSavedWorkout: (workout) => {
@@ -92,6 +107,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
+          restTimerInitialSeconds: 90,
         });
       },
 
@@ -105,6 +121,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
+          restTimerInitialSeconds: 90,
         });
       },
 
@@ -114,6 +131,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
+          restTimerInitialSeconds: 90,
         });
       },
 
@@ -152,6 +170,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
+          restTimerInitialSeconds: 90,
         }));
 
         recordWorkoutCompleted(log);
@@ -195,7 +214,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
-      logSet: (exerciseIndex, setIndex, reps, weight, rpe?: 'easy' | 'med' | 'hard') => {
+      logSet: (exerciseIndex, setIndex, reps, weight, rpe) => {
         set((s) => {
           if (!s.activeWorkout) return s;
           const exercises = [...s.activeWorkout.exercises];
@@ -214,7 +233,21 @@ export const useWorkoutStore = create<WorkoutState>()(
             activeWorkout: { ...s.activeWorkout, exercises },
           };
         });
-        get().startRestTimer(DEFAULT_REST_SECONDS);
+      },
+
+      logSetAndAdvance: (exerciseIndex, setIndex, reps, weight) => {
+        get().logSet(exerciseIndex, setIndex, reps, weight);
+        const aw = get().activeWorkout;
+        if (!aw) return null;
+        for (let ei = exerciseIndex; ei < aw.exercises.length; ei++) {
+          const startSet = ei === exerciseIndex ? setIndex + 1 : 0;
+          for (let si = startSet; si < aw.exercises[ei].sets.length; si++) {
+            if (!aw.exercises[ei].sets[si].completed) {
+              return { exerciseIndex: ei, setIndex: si };
+            }
+          }
+        }
+        return null;
       },
 
       rateSet: (exerciseIndex, setIndex, rpe) => {
@@ -257,7 +290,23 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       startRestTimer: (seconds = DEFAULT_REST_SECONDS) => {
-        set({ restSecondsRemaining: seconds, restTimerActive: true });
+        set({
+          restSecondsRemaining: seconds,
+          restTimerInitialSeconds: seconds,
+          restTimerActive: true,
+        });
+      },
+
+      adjustRestTimer: (delta) => {
+        set((s) => {
+          const next = Math.max(0, s.restSecondsRemaining + delta);
+          return {
+            restSecondsRemaining: next,
+            restTimerActive: next > 0,
+            restTimerInitialSeconds:
+              next > s.restTimerInitialSeconds ? next : s.restTimerInitialSeconds,
+          };
+        });
       },
 
       tickRestTimer: () => {
@@ -265,6 +314,9 @@ export const useWorkoutStore = create<WorkoutState>()(
           if (!s.restTimerActive) return s;
           const next = s.restSecondsRemaining - 1;
           if (next <= 0) {
+            if (typeof navigator !== 'undefined' && navigator.vibrate) {
+              navigator.vibrate([120, 60, 120]);
+            }
             return { restSecondsRemaining: 0, restTimerActive: false };
           }
           return { restSecondsRemaining: next };
