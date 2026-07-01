@@ -17,6 +17,7 @@ import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import {
   GOAL_PRESET_IDS,
   GOAL_PRESET_LABEL_KEY,
+  GOAL_PRESET_DEFAULTS,
   goalPresetValue,
   isCustomGoal,
 } from '@/lib/journeyGoals';
@@ -248,7 +249,7 @@ export function WelcomePage() {
                           className={selected ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
                           onClick={() => setPrimaryGoal(value)}
                         >
-                          {t(labelKey, { defaultValue: value })}
+                          {t(labelKey, { defaultValue: GOAL_PRESET_DEFAULTS[id] })}
                         </Button>
                       );
                     })}
