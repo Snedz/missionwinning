@@ -14,6 +14,7 @@ import {
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import type { WeeklyVolumePoint } from '@/lib/historyAnalytics';
 
 type Props = {
@@ -22,6 +23,8 @@ type Props = {
 
 export function HistoryVolumeChart({ data }: Props) {
   const { t } = useTranslation();
+  const units = useUnits();
+  const unitLabel = weightUnitLabel(units);
   const hasData = data.some((d) => d.volume > 0);
 
   return (
@@ -31,7 +34,10 @@ export function HistoryVolumeChart({ data }: Props) {
           {t('historyVolumeTitle', { defaultValue: 'Weekly volume' })}
         </CardTitle>
         <CardDescription>
-          {t('historyVolumeDesc', { defaultValue: 'Total lbs × reps per week (last 12 weeks)' })}
+          {t('historyVolumeDesc', {
+            unit: unitLabel,
+            defaultValue: `Total ${unitLabel} × reps per week (last 12 weeks)`,
+          })}
         </CardDescription>
       </CardHeader>
       <CardContent className="h-56">

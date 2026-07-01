@@ -28,6 +28,13 @@ type HistoryStrings = {
   historyHeatNoData: string;
   historySelectExercise: string;
   historySignInFoot: string;
+  historySessionVolume: string;
+  historyTableSet: string;
+  historyTableReps: string;
+  historyTableWeight: string;
+  historyTableVolume: string;
+  historyTableType: string;
+  historyWarmupExcluded: string;
 };
 
 const en: HistoryStrings = {
@@ -36,7 +43,7 @@ const en: HistoryStrings = {
   historySessionCount: '{{count}} completed session',
   historySyncing: ' — syncing cloud…',
   historyCloudMerged: ' — cloud merged',
-  historyAvgVolume: 'Recent trend: Avg volume last 5: {{avg}} lbs.',
+  historyAvgVolume: 'Recent trend: Avg volume last 5: {{avg}} {{unit}}.',
   historyEmptyTitle: 'No workouts logged yet',
   historyEmptyDesc: 'Complete an active workout to see it here.',
   historyDetails: 'Details',
@@ -45,7 +52,7 @@ const en: HistoryStrings = {
   historyPillarWinsDesc:
     'Mobility wins, mind prompts, assessments logged from pillars appear here (synergy with Nutrition). Free core.',
   historyVolumeTitle: 'Weekly volume',
-  historyVolumeDesc: 'Total lbs × reps per week (last 12 weeks)',
+  historyVolumeDesc: 'Total {{unit}} × reps per week (last 12 weeks)',
   historyVolumeLabel: 'Volume',
   historySessionsLabel: 'Sessions',
   history1rmTitle: 'Estimated 1RM',
@@ -60,6 +67,13 @@ const en: HistoryStrings = {
   historyHeatNoData: 'No recent data',
   historySelectExercise: 'Chart exercise',
   historySignInFoot: 'Sign in (optional) to load full cloud history.',
+  historySessionVolume: '{{volume}} {{unit}} total volume',
+  historyTableSet: 'Set',
+  historyTableReps: 'Reps',
+  historyTableWeight: 'Weight',
+  historyTableVolume: 'Volume',
+  historyTableType: 'Type',
+  historyWarmupExcluded: '—',
 };
 
 const es: HistoryStrings = {

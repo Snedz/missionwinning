@@ -4,7 +4,7 @@
   "historySessionCount": "{{count}} completed session",
   "historySyncing": " — syncing cloud…",
   "historyCloudMerged": " — cloud merged",
-  "historyAvgVolume": "Recent trend: Avg volume last 5: {{avg}} lbs.",
+  "historyAvgVolume": "Recent trend: Avg volume last 5: {{avg}} {{unit}}.",
   "historyEmptyTitle": "Aún no hay entrenamientos",
   "historyEmptyDesc": "Complete an active workout to see it here.",
   "historyDetails": "Details",
@@ -12,7 +12,7 @@
   "historyPillarWins": "Pillar Wins & Habit Logs",
   "historyPillarWinsDesc": "Mobility wins, mind prompts, assessments logged from pillars appear here (synergy with Nutrition). Free core.",
   "historyVolumeTitle": "Volumen semanal",
-  "historyVolumeDesc": "Total lbs × reps per week (last 12 weeks)",
+  "historyVolumeDesc": "Total {{unit}} × reps per week (last 12 weeks)",
   "historyVolumeLabel": "Volume",
   "historySessionsLabel": "Sessions",
   "history1rmTitle": "1RM estimado",
@@ -25,5 +25,12 @@
   "historyHeatDaysRest": "{{days}}d since trained",
   "historyHeatNoData": "No recent data",
   "historySelectExercise": "Chart exercise",
-  "historySignInFoot": "Sign in (optional) to load full cloud history."
+  "historySignInFoot": "Sign in (optional) to load full cloud history.",
+  "historySessionVolume": "{{volume}} {{unit}} total volume",
+  "historyTableSet": "Set",
+  "historyTableReps": "Reps",
+  "historyTableWeight": "Weight",
+  "historyTableVolume": "Volume",
+  "historyTableType": "Type",
+  "historyWarmupExcluded": "—"
 }
