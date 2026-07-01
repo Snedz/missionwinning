@@ -60,6 +60,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I3: Track premium activity programs
+
+**Build:** `2025.06-unified.57`
+
+### Shipped
+
+- **Premium Track** — 5 gated programs (C25K sampler, rural walk, zone 2, hike builder, active recovery)
+- **`GET /api/premium/track-programs`** — auth gate; one-click session log on `/track`
+- **Pace insight** — avg min/km from logged distance (premium users)
+- **Gate smoke + launch readiness**
+
+**Tests:** 196 passing
+
+---
+
 ## 2026-06-29 — Phase I3: Move premium mobility flows
 
 **Build:** `2025.06-unified.56`

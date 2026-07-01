@@ -143,6 +143,18 @@ async function main() {
   }
 
   try {
+    const trackPrograms = await headOrGet('/api/premium/track-programs');
+    const ok = trackPrograms.status === 403 || trackPrograms.status === 401 || trackPrograms.status === 503;
+    checks.push({
+      name: 'GET /api/premium/track-programs (no auth)',
+      ok,
+      detail: `status ${trackPrograms.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/track-programs', ok: false, detail: String(e) });
+  }
+
+  try {
     const programs = await headOrGet('/api/premium/programs');
     const ok = programs.status === 403 || programs.status === 401 || programs.status === 503;
     checks.push({

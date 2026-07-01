@@ -105,6 +105,12 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       detail: '/api/premium/move-flows + 5 gated flows on /move; free tier unchanged',
     },
     {
+      id: 'track-i3',
+      label: 'Phase I3 — Track premium activity programs',
+      status: 'ready',
+      detail: '/api/premium/track-programs + 5 programs on /track; pace insight when premium',
+    },
+    {
       id: 'demo-premium-off',
       label: 'DEMO_PREMIUM=false in production',
       status: 'blocked',

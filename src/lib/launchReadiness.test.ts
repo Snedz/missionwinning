@@ -12,6 +12,7 @@ describe('launchReadiness', () => {
     assert.ok(r.checks.some((c) => c.id === 'phase-j-pathfinder' && c.status === 'ready'));
     assert.ok(r.checks.some((c) => c.id === 'mind-i3' && c.status === 'ready'));
     assert.ok(r.checks.some((c) => c.id === 'move-i3' && c.status === 'ready'));
+    assert.ok(r.checks.some((c) => c.id === 'track-i3' && c.status === 'ready'));
     assert.ok(r.checks.some((c) => c.id === 'private-mode-off' && c.status === 'blocked'));
   });
 
