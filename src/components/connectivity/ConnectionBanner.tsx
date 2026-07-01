@@ -11,18 +11,27 @@ const STRIPE: Record<string, string> = {
 };
 
 export function ConnectionBanner() {
-  const { mode } = useConnectivity();
-  const copy = connectivityBannerCopy(mode);
+  const { mode, outboxPending } = useConnectivity();
+  const copy = connectivityBannerCopy(mode, outboxPending);
 
-  if (mode === 'online' || !copy.message) return null;
+  if (!copy.message) return null;
 
   const Icon = mode === 'offline' ? WifiOff : mode === 'lite' ? Compass : Wifi;
+
+  const stripe =
+    mode === 'offline'
+      ? STRIPE.offline
+      : mode === 'lite'
+        ? STRIPE.lite
+        : outboxPending > 0
+          ? STRIPE.lite
+          : STRIPE.online;
 
   return (
     <div
       role="status"
       aria-live="polite"
-      className={`${STRIPE[mode]} text-white text-xs px-4 py-1.5 flex items-center gap-2 shrink-0`}
+      className={`${stripe} text-white text-xs px-4 py-1.5 flex items-center gap-2 shrink-0`}
     >
       <Icon className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
       <span>

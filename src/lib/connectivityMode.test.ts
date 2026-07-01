@@ -19,7 +19,11 @@ describe('connectivityMode', () => {
     assert.equal(connectivityBannerCopy('online').message, '');
   });
 
-  it('offline banner reassures local use', () => {
-    assert.match(connectivityBannerCopy('offline').message, /offline/i);
+  it('shows pending sync when online with outbox', () => {
+    assert.match(connectivityBannerCopy('online', 2).message, /2 changes waiting/);
+  });
+
+  it('offline includes pending count in detail', () => {
+    assert.match(connectivityBannerCopy('offline', 1).detail ?? '', /pending sync/i);
   });
 });

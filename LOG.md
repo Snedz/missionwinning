@@ -20,6 +20,20 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase J2/J4/J6: IndexedDB, a11y, Village Health Card
+
+**Build:** `2025.06-unified.47`
+
+### Shipped
+
+- **J2** — IndexedDB `missionLocalStore`, sync outbox for failed workout cloud saves, pending sync banner
+- **J4** — Text scale (Profile), skip link, assessment i18n (es/fr/pt/ar/hi), 44px touch targets on assessment
+- **J6** — Printable Village Health Card for Pathfinder users
+
+**Tests:** 142 passing
+
+---
+
 ## 2026-06-29 — Rural equity & connectivity plan (Phase J)
 
 **Doc:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)  

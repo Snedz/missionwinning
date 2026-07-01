@@ -1,3 +1,5 @@
+import { backupAssessmentJson } from '@/lib/missionLocalStore';
+
 export type AssessmentRisk = 'low' | 'moderate' | 'high';
 export type PathfinderAccess = 'regular' | 'limited' | 'none';
 export type ProgramGate = 'standard' | 'low-impact-only';
@@ -114,9 +116,11 @@ export function buildAssessmentResult(
 
 export function persistAssessment(record: AssessmentRecord): void {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(STORAGE_ASSESSMENT, JSON.stringify(record));
+  const json = JSON.stringify(record);
+  localStorage.setItem(STORAGE_ASSESSMENT, json);
   localStorage.setItem(STORAGE_PROGRAM_GATE, record.programGate ?? 'standard');
   localStorage.setItem(STORAGE_PATHFINDER, record.pathfinderTrack ? '1' : '0');
+  backupAssessmentJson(json).catch(() => {});
 }
 
 export function loadProgramGate(): ProgramGate {

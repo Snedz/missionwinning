@@ -27,15 +27,27 @@ export function resolveConnectivityMode(
   return 'online';
 }
 
-export function connectivityBannerCopy(mode: ConnectivityMode): {
+export function connectivityBannerCopy(
+  mode: ConnectivityMode,
+  outboxPending = 0
+): {
   message: string;
   detail?: string;
 } {
+  if (outboxPending > 0 && mode === 'online') {
+    return {
+      message: `${outboxPending} change${outboxPending === 1 ? '' : 's'} waiting to sync.`,
+      detail: 'Will upload automatically when connection is stable.',
+    };
+  }
   switch (mode) {
     case 'offline':
       return {
         message: "You're offline — workouts, logs, and assessments still work locally.",
-        detail: "Changes sync when you're back online.",
+        detail:
+          outboxPending > 0
+            ? `${outboxPending} pending sync when you're back online.`
+            : "Changes sync when you're back online.",
       };
     case 'lite':
       return {

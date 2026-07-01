@@ -15,25 +15,41 @@ import {
   resolveConnectivityMode,
   setLiteModePreference,
 } from '@/lib/connectivityMode';
+import { getOutboxPendingCount } from '@/lib/syncOutbox';
+import { MissionLocalSync } from '@/components/connectivity/MissionLocalSync';
 
 interface ConnectivityContextValue {
   mode: ConnectivityMode;
   online: boolean;
   litePreference: boolean;
+  outboxPending: number;
   setLitePreference: (enabled: boolean) => void;
+  refreshOutboxCount: () => Promise<void>;
 }
 
 const ConnectivityContext = createContext<ConnectivityContextValue>({
   mode: 'online',
   online: true,
   litePreference: false,
+  outboxPending: 0,
   setLitePreference: () => {},
+  refreshOutboxCount: async () => {},
 });
 
 export function ConnectivityProvider({ children }: { children: React.ReactNode }) {
   const [online, setOnline] = useState(true);
   const [litePreference, setLitePreferenceState] = useState(false);
   const [saveData, setSaveData] = useState(false);
+  const [outboxPending, setOutboxPending] = useState(0);
+
+  const refreshOutboxCount = useCallback(async () => {
+    try {
+      const count = await getOutboxPendingCount();
+      setOutboxPending(count);
+    } catch {
+      setOutboxPending(0);
+    }
+  }, []);
 
   useEffect(() => {
     setOnline(typeof navigator !== 'undefined' ? navigator.onLine : true);
@@ -68,12 +84,15 @@ export function ConnectivityProvider({ children }: { children: React.ReactNode }
   );
 
   const value = useMemo(
-    () => ({ mode, online, litePreference, setLitePreference }),
-    [mode, online, litePreference, setLitePreference]
+    () => ({ mode, online, litePreference, outboxPending, setLitePreference, refreshOutboxCount }),
+    [mode, online, litePreference, outboxPending, setLitePreference, refreshOutboxCount]
   );
 
   return (
-    <ConnectivityContext.Provider value={value}>{children}</ConnectivityContext.Provider>
+    <ConnectivityContext.Provider value={value}>
+      <MissionLocalSync onOutboxCount={setOutboxPending} />
+      {children}
+    </ConnectivityContext.Provider>
   );
 }
 
