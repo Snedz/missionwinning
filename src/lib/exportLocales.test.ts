@@ -8,13 +8,14 @@ import {
 } from '@/lib/exportLocales';
 
 describe('exportLocales', () => {
-  it('defines twelve namespaces for export', () => {
-    assert.equal(LOCALE_EXPORTS.length, 12);
+  it('defines thirteen namespaces for export', () => {
+    assert.equal(LOCALE_EXPORTS.length, 13);
     const names = LOCALE_EXPORTS.map((e) => e.namespace);
     assert.ok(names.includes('bundle'));
     assert.ok(names.includes('today'));
     assert.ok(names.includes('history'));
     assert.ok(names.includes('activeWorkout'));
+    assert.ok(names.includes('benchmarks'));
   });
 
   it('builds plan for all langs × namespaces', () => {

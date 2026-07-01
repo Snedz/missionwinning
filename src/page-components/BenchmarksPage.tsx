@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   BarChart3,
   LineChart as LineChartIcon,
@@ -43,11 +44,15 @@ import {
   getExercisesWithBenchmarkData,
 } from "@/lib/benchmarks";
 import { formatDate } from "@/lib/utils";
+import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 
 export function BenchmarksPage() {
+  const { t } = useTranslation();
+  const units = useUnits();
+  const unitLabel = weightUnitLabel(units);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const exerciseIds = useMemo(
     () => getExercisesWithBenchmarkData(workoutHistory),
@@ -96,19 +101,25 @@ export function BenchmarksPage() {
       <div className="space-y-6">
         <div>
           <h2 className="text-3xl font-bold tracking-tight fitness-text-gradient">
-            Benchmarks
+            {t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
           </h2>
           <p className="mt-1 text-muted-foreground">
-            Rep max statistics, estimates vs actuals, and progress charts.
+            {t('benchmarksSubtitle', {
+              defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
+            })}
           </p>
         </div>
         <Card className="border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <BarChart3 className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="font-medium">No benchmark data yet</p>
+            <p className="font-medium">
+              {t('benchmarksEmptyTitle', { defaultValue: 'No benchmark data yet' })}
+            </p>
             <p className="text-sm text-muted-foreground mt-1 max-w-md">
-              Complete workouts with logged sets to build estimated 1RMs. Log a set at 1 rep
-              to record an actual 1RM for comparison.
+              {t('benchmarksEmptyDesc', {
+                defaultValue:
+                  'Complete workouts with logged sets to build estimated 1RMs. Log a set at 1 rep to record an actual 1RM for comparison.',
+              })}
             </p>
           </CardContent>
         </Card>
@@ -121,10 +132,12 @@ export function BenchmarksPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight fitness-text-gradient">
-          Benchmarks
+          {t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
         </h2>
         <p className="mt-1 text-muted-foreground">
-          Statistics, rep maxes, estimated vs actual, and progress over time.
+          {t('benchmarksSubtitle', {
+            defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
+          })}
         </p>
       </div>
 
@@ -135,7 +148,7 @@ export function BenchmarksPage() {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Target className="h-4 w-4 text-primary" />
-              Exercises Tracked
+              {t('benchmarksExercisesTracked', { defaultValue: 'Exercises Tracked' })}
             </CardDescription>
             <CardTitle className="text-3xl">{globalStats.exercisesTracked}</CardTitle>
           </CardHeader>
@@ -144,7 +157,7 @@ export function BenchmarksPage() {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
-              Benchmark Sessions
+              {t('benchmarksSessions', { defaultValue: 'Benchmark Sessions' })}
             </CardDescription>
             <CardTitle className="text-3xl">{globalStats.totalSessions}</CardTitle>
           </CardHeader>
@@ -153,14 +166,14 @@ export function BenchmarksPage() {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Scale className="h-4 w-4 text-secondary" />
-              Avg Est. − Actual
+              {t('benchmarksAvgGap', { defaultValue: 'Avg Est. − Actual' })}
             </CardDescription>
             <CardTitle className="text-3xl">
               {globalStats.avgDelta !== null ? (
                 <>
                   {globalStats.avgDelta > 0 ? "+" : ""}
                   {globalStats.avgDelta}{" "}
-                  <span className="text-lg font-normal text-muted-foreground">lbs</span>
+                  <span className="text-lg font-normal text-muted-foreground">{unitLabel}</span>
                 </>
               ) : (
                 <span className="text-lg text-muted-foreground">—</span>
@@ -173,7 +186,9 @@ export function BenchmarksPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <Select value={activeId} onValueChange={setSelectedId}>
           <SelectTrigger className="w-full sm:w-72">
-            <SelectValue placeholder="Select exercise..." />
+            <SelectValue
+              placeholder={t('benchmarksSelectExercise', { defaultValue: 'Select exercise…' })}
+            />
           </SelectTrigger>
           <SelectContent>
             {exerciseIds.map((id) => {
@@ -187,7 +202,10 @@ export function BenchmarksPage() {
           </SelectContent>
         </Select>
         <p className="text-xs text-muted-foreground">
-          Estimates use the Epley formula from logged sets. Actual = weight on 1-rep sets.
+          {t('benchmarksFormulaNote', {
+            defaultValue:
+              'Estimates use the Epley formula from logged sets. Actual = weight on 1-rep sets.',
+          })}
         </p>
       </div>
 
@@ -196,46 +214,56 @@ export function BenchmarksPage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Best Estimated 1RM</CardDescription>
+                <CardDescription>
+                  {t('benchmarksBestEst', { defaultValue: 'Best Estimated 1RM' })}
+                </CardDescription>
                 <CardTitle className="text-2xl text-primary">
                   {benchmark.bestEstimated1RM}{" "}
-                  <span className="text-sm font-normal text-muted-foreground">lbs</span>
+                  <span className="text-sm font-normal text-muted-foreground">{unitLabel}</span>
                 </CardTitle>
               </CardHeader>
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Best Actual 1RM</CardDescription>
+                <CardDescription>
+                  {t('benchmarksBestActual', { defaultValue: 'Best Actual 1RM' })}
+                </CardDescription>
                 <CardTitle className="text-2xl text-secondary">
                   {benchmark.bestActual1RM !== null ? (
                     <>
                       {benchmark.bestActual1RM}{" "}
-                      <span className="text-sm font-normal text-muted-foreground">lbs</span>
+                      <span className="text-sm font-normal text-muted-foreground">{unitLabel}</span>
                     </>
                   ) : (
-                    <span className="text-base text-muted-foreground">No 1-rep sets</span>
+                    <span className="text-base text-muted-foreground">
+                      {t('benchmarksNo1Rep', { defaultValue: 'No 1-rep sets' })}
+                    </span>
                   )}
                 </CardTitle>
               </CardHeader>
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Latest Session Est.</CardDescription>
+                <CardDescription>
+                  {t('benchmarksLatestEst', { defaultValue: 'Latest Session Est.' })}
+                </CardDescription>
                 <CardTitle className="text-2xl">
                   {benchmark.latestEstimated1RM}{" "}
-                  <span className="text-sm font-normal text-muted-foreground">lbs</span>
+                  <span className="text-sm font-normal text-muted-foreground">{unitLabel}</span>
                 </CardTitle>
               </CardHeader>
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Est. vs Actual Gap</CardDescription>
+                <CardDescription>
+                  {t('benchmarksEstVsActual', { defaultValue: 'Est. vs Actual Gap' })}
+                </CardDescription>
                 <CardTitle className="text-2xl">
                   {benchmark.estimateVsActualDelta !== null ? (
                     <>
                       {benchmark.estimateVsActualDelta > 0 ? "+" : ""}
                       {benchmark.estimateVsActualDelta}{" "}
-                      <span className="text-sm font-normal text-muted-foreground">lbs</span>
+                      <span className="text-sm font-normal text-muted-foreground">{unitLabel}</span>
                     </>
                   ) : (
                     <span className="text-base text-muted-foreground">—</span>
@@ -246,18 +274,31 @@ export function BenchmarksPage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 text-sm text-muted-foreground">
-            <span>{benchmark.sessionCount} sessions logged</span>
-            <span>{benchmark.totalSets} total sets</span>
+            <span>
+              {t('benchmarksSessionsLogged', {
+                count: benchmark.sessionCount,
+                defaultValue: `${benchmark.sessionCount} sessions logged`,
+              })}
+            </span>
+            <span>
+              {t('benchmarksTotalSets', {
+                count: benchmark.totalSets,
+                defaultValue: `${benchmark.totalSets} total sets`,
+              })}
+            </span>
           </div>
 
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <LineChartIcon className="h-5 w-5 text-primary" />
-                1RM Progress
+                {t('benchmarks1rmProgress', { defaultValue: '1RM Progress' })}
               </CardTitle>
               <CardDescription>
-                Estimated (blue) from all sets · Actual (green) from 1-rep attempts only
+                {t('benchmarks1rmProgressDesc', {
+                  defaultValue:
+                    'Estimated (blue) from all sets · Actual (green) from 1-rep attempts only',
+                })}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -273,7 +314,7 @@ export function BenchmarksPage() {
                     <YAxis
                       tick={{ fill: "hsl(215 20% 65%)", fontSize: 12 }}
                       stroke="hsl(217 33% 25%)"
-                      unit=" lbs"
+                      unit={` ${unitLabel}`}
                     />
                     <Tooltip
                       contentStyle={{
@@ -283,15 +324,17 @@ export function BenchmarksPage() {
                       }}
                       labelStyle={{ color: "hsl(210 40% 98%)" }}
                       formatter={(value: number, name: string) => [
-                        value != null ? `${value} lbs` : "—",
-                        name === "estimated" ? "Estimated 1RM" : "Actual 1RM",
+                        value != null ? `${value} ${unitLabel}` : "—",
+                        name === "estimated"
+                          ? t('benchmarksEstLegend', { defaultValue: 'Estimated 1RM' })
+                          : t('benchmarksActLegend', { defaultValue: 'Actual 1RM' }),
                       ]}
                     />
                     <Legend />
                     <Line
                       type="monotone"
                       dataKey="estimated"
-                      name="Estimated 1RM"
+                      name={t('benchmarksEstLegend', { defaultValue: 'Estimated 1RM' })}
                       stroke="#3b82f6"
                       strokeWidth={2}
                       dot={{ fill: "#3b82f6", r: 4 }}
@@ -300,7 +343,7 @@ export function BenchmarksPage() {
                     <Line
                       type="monotone"
                       dataKey="actual"
-                      name="Actual 1RM"
+                      name={t('benchmarksActLegend', { defaultValue: 'Actual 1RM' })}
                       stroke="#22c55e"
                       strokeWidth={2}
                       dot={{ fill: "#22c55e", r: 4 }}
@@ -314,21 +357,25 @@ export function BenchmarksPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Timeline</CardTitle>
+              <CardTitle className="text-lg">
+                {t('benchmarksTimeline', { defaultValue: 'Timeline' })}
+              </CardTitle>
               <CardDescription>
-                Per-session best estimated and actual rep maxes
+                {t('benchmarksTimelineDesc', {
+                  defaultValue: 'Per-session best estimated and actual rep maxes',
+                })}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Workout</TableHead>
-                    <TableHead>Best Set</TableHead>
-                    <TableHead>Estimated 1RM</TableHead>
-                    <TableHead>Actual 1RM</TableHead>
-                    <TableHead>Δ</TableHead>
+                    <TableHead>{t('benchmarksTableDate', { defaultValue: 'Date' })}</TableHead>
+                    <TableHead>{t('benchmarksTableWorkout', { defaultValue: 'Workout' })}</TableHead>
+                    <TableHead>{t('benchmarksTableBestSet', { defaultValue: 'Best Set' })}</TableHead>
+                    <TableHead>{t('benchmarksTableEst', { defaultValue: 'Estimated 1RM' })}</TableHead>
+                    <TableHead>{t('benchmarksTableActual', { defaultValue: 'Actual 1RM' })}</TableHead>
+                    <TableHead>{t('benchmarksTableDelta', { defaultValue: 'Δ' })}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -344,14 +391,23 @@ export function BenchmarksPage() {
                         </TableCell>
                         <TableCell>{point.workoutName}</TableCell>
                         <TableCell>
-                          {point.bestSet.weight} lbs × {point.bestSet.reps}
+                          {t('benchmarksWeightTimesReps', {
+                            weight: point.bestSet.weight,
+                            unit: unitLabel,
+                            reps: point.bestSet.reps,
+                            defaultValue: `${point.bestSet.weight} ${unitLabel} × ${point.bestSet.reps}`,
+                          })}
                         </TableCell>
                         <TableCell>
-                          <Badge variant="default">{point.estimated1RM} lbs</Badge>
+                          <Badge variant="default">
+                            {point.estimated1RM} {unitLabel}
+                          </Badge>
                         </TableCell>
                         <TableCell>
                           {point.actual1RM !== null ? (
-                            <Badge variant="secondary">{point.actual1RM} lbs</Badge>
+                            <Badge variant="secondary">
+                              {point.actual1RM} {unitLabel}
+                            </Badge>
                           ) : (
                             <span className="text-muted-foreground">—</span>
                           )}
@@ -377,18 +433,26 @@ export function BenchmarksPage() {
           {summaries.length > 1 && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">All Exercises</CardTitle>
-                <CardDescription>Quick comparison across logged movements</CardDescription>
+                <CardTitle className="text-lg">
+                  {t('benchmarksAllExercises', { defaultValue: 'All Exercises' })}
+                </CardTitle>
+                <CardDescription>
+                  {t('benchmarksAllExercisesDesc', {
+                    defaultValue: 'Quick comparison across logged movements',
+                  })}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Exercise</TableHead>
-                      <TableHead>Sessions</TableHead>
-                      <TableHead>Best Est.</TableHead>
-                      <TableHead>Best Actual</TableHead>
-                      <TableHead>Gap</TableHead>
+                      <TableHead>
+                        {t('benchmarksTableExercise', { defaultValue: 'Exercise' })}
+                      </TableHead>
+                      <TableHead>{t('benchmarksSessions', { defaultValue: 'Benchmark Sessions' })}</TableHead>
+                      <TableHead>{t('benchmarksBestEst', { defaultValue: 'Best Estimated 1RM' })}</TableHead>
+                      <TableHead>{t('benchmarksBestActual', { defaultValue: 'Best Actual 1RM' })}</TableHead>
+                      <TableHead>{t('benchmarksEstVsActual', { defaultValue: 'Est. vs Actual Gap' })}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -406,9 +470,11 @@ export function BenchmarksPage() {
                             {ex?.name ?? s.exerciseId}
                           </TableCell>
                           <TableCell>{s.sessionCount}</TableCell>
-                          <TableCell>{s.bestEstimated1RM} lbs</TableCell>
                           <TableCell>
-                            {s.bestActual1RM !== null ? `${s.bestActual1RM} lbs` : "—"}
+                            {s.bestEstimated1RM} {unitLabel}
+                          </TableCell>
+                          <TableCell>
+                            {s.bestActual1RM !== null ? `${s.bestActual1RM} ${unitLabel}` : "—"}
                           </TableCell>
                           <TableCell>
                             {s.estimateVsActualDelta !== null
@@ -429,8 +495,15 @@ export function BenchmarksPage() {
       {/* Free core quick actions to populate benchmarks (functional) */}
       <Card className="mt-4 border-emerald-500/20">
         <CardHeader>
-          <CardTitle className="text-base">Quick Benchmark Starters (Free)</CardTitle>
-          <CardDescription>Start a short session focused on common benchmark lifts. Log sets → see progress here next time. Bumps streak on launch.</CardDescription>
+          <CardTitle className="text-base">
+            {t('benchmarksQuickTitle', { defaultValue: 'Quick Benchmark Starters (Free)' })}
+          </CardTitle>
+          <CardDescription>
+            {t('benchmarksQuickDesc', {
+              defaultValue:
+                'Start a short session focused on common benchmark lifts. Log sets → see progress here next time. Bumps streak on launch.',
+            })}
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
           <Button size="sm" variant="outline" onClick={() => {
@@ -438,34 +511,36 @@ export function BenchmarksPage() {
             store.startWorkout("Bench Benchmark", [{ exerciseId: "bench-press", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
             try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch {}
             window.location.href = "/active";
-          }}>Bench 5/3/1 style →</Button>
+          }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Squat Benchmark", [{ exerciseId: "squats", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
             try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch {}
             window.location.href = "/active";
-          }}>Squat working sets →</Button>
+          }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Deadlift Benchmark", [{ exerciseId: "deadlift", sets: [{ reps: 3, weight: 0 }, { reps: 3, weight: 0 }] }]);
             try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch {}
             window.location.href = "/active";
-          }}>Deadlift pulls →</Button>
-          <Button size="sm" variant="outline" onClick={() => window.location.href = "/log"}>All free starters in Today →</Button>
+          }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls →' })}</Button>
+          <Button size="sm" variant="outline" onClick={() => window.location.href = "/log"}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today →' })}</Button>
           <Button size="sm" variant="ghost" onClick={() => {
             try {
               const cur = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
               localStorage.setItem('mw_streak', String(cur));
               alert(`Benchmark habit logged! Streak +1 (${cur}). Complete the session to update charts.`);
             } catch {}
-          }}>Log benchmark habit (+streak)</Button>
+          }}>{t('benchmarksQuickHabit', { defaultValue: 'Log benchmark habit (+streak)' })}</Button>
         </CardContent>
       </Card>
 
       <SignInPrompt
         className="mt-6"
         nextPath="/benchmarks"
-        description="Sync benchmark history and PRs across devices."
+        description={t('benchmarksSignInFoot', {
+          defaultValue: 'Sync benchmark history and PRs across devices.',
+        })}
       />
     </div>
   );

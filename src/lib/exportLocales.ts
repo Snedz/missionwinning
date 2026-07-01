@@ -14,6 +14,7 @@ import { moveStringsFor } from '@/i18n/moveLocales';
 import { mindStringsFor } from '@/i18n/mindLocales';
 import { learnStringsFor } from '@/i18n/learnLocales';
 import { builderStringsFor } from '@/i18n/builderLocales';
+import { benchmarksStringsFor } from '@/i18n/benchmarksLocales';
 
 /** Languages with full or partial pillar-specific translations. */
 export const EXPORT_LANGS = ['en', 'es', 'zh', 'id', 'th', 'ar'] as const;
@@ -31,7 +32,8 @@ export type LocaleNamespace =
   | 'move'
   | 'mind'
   | 'learn'
-  | 'builder';
+  | 'builder'
+  | 'benchmarks';
 
 export type LocaleExportEntry = {
   namespace: LocaleNamespace;
@@ -111,6 +113,12 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'builder',
     filename: 'builder.json',
     stringsFor: builderStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'benchmarks',
+    filename: 'benchmarks.json',
+    stringsFor: benchmarksStringsFor,
     langs: EXPORT_LANGS,
   },
 ];
