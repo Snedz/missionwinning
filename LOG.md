@@ -34,6 +34,20 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase J6/J4: Offline coach v2 + chart a11y tables
+
+**Build:** `2025.06-unified.48`
+
+### Shipped
+
+- **Offline coach v2** — skips cloud LLM when offline/lite; cross-pillar rules + Pathfinder/equipment rotation; Offline badge on Today
+- **Offline plan templates** — 4-week bodyweight, mobility, Pathfinder gentle plans on `/builder`
+- **Chart data tables** — accessible `<table>` alternatives on History + Benchmarks charts
+
+**Tests:** 147 passing
+
+---
+
 ## 2026-06-29 — Rural equity & connectivity plan (Phase J)
 
 **Doc:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)  

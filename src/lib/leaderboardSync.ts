@@ -54,7 +54,7 @@ export async function pushLeaderboardSnapshot(
 }
 
 export async function fetchCloudLeaderboardSnapshots(
-  boardId: import('./types').LeaderboardBoardId = 'mission-score'
+  boardId: import('./leaderboard/types').LeaderboardBoardId = 'mission-score'
 ): Promise<LeaderboardSnapshot[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return [];
 

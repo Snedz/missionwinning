@@ -4,17 +4,31 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CoachInsight } from '@/lib/score';
 import type { DailyCoachContext } from '@/lib/coachDailyServer';
+import { offlineCoachFromContext, shouldSkipCloudCoach } from '@/lib/offlineCoach';
+import { isLowImpactGated } from '@/lib/pathfinderAssessment';
 
 type CoachDisplay = {
   message: string;
   actionLabel: string;
   actionPath: string;
-  source: 'llm' | 'rules' | 'local';
+  source: 'llm' | 'rules' | 'local' | 'offline';
   loading: boolean;
 };
 
 function cacheKey() {
   return `mw_coach_${new Date().toISOString().split('T')[0]}`;
+}
+
+function translateInsight(t: (key: string, opts?: Record<string, unknown>) => string, insight: CoachInsight): Pick<CoachDisplay, 'message' | 'actionLabel' | 'actionPath'> {
+  const params = insight.messageParams ?? {};
+  return {
+    message: t(insight.messageKey, {
+      ...params,
+      defaultValue: insight.messageKey,
+    }),
+    actionLabel: t(insight.actionLabelKey, { defaultValue: insight.actionLabelKey }),
+    actionPath: insight.actionPath,
+  };
 }
 
 export function useDailyCoachInsight(
@@ -33,14 +47,26 @@ export function useDailyCoachInsight(
   useEffect(() => {
     if (!context) return;
 
-    const params = { ...(fallback.messageParams ?? {}) };
-    const localMessage = t(fallback.messageKey, {
-      ...params,
-      defaultValue: fallback.messageKey,
-    });
-    const localLabel = t(fallback.actionLabelKey, {
-      defaultValue: fallback.actionLabelKey,
-    });
+    const local = translateInsight(t, fallback);
+
+    const applyOffline = () => {
+      const insight = offlineCoachFromContext(context, fallback, {
+        programGate: isLowImpactGated() ? 'low-impact-only' : 'standard',
+      });
+      const translated = translateInsight(t, insight);
+      return {
+        ...translated,
+        source: 'offline' as const,
+        loading: false,
+      };
+    };
+
+    if (shouldSkipCloudCoach()) {
+      const next = applyOffline();
+      setState(next);
+      sessionStorage.setItem(cacheKey(), JSON.stringify(next));
+      return;
+    }
 
     const cached = typeof window !== 'undefined' ? sessionStorage.getItem(cacheKey()) : null;
     if (cached) {
@@ -77,20 +103,18 @@ export function useDailyCoachInsight(
           data.source === 'llm' && data.message
             ? {
                 message: data.message,
-                actionLabel: data.actionLabel ?? localLabel,
+                actionLabel: data.actionLabel ?? local.actionLabel,
                 actionPath: data.actionPath ?? fallback.actionPath,
                 source: 'llm',
                 loading: false,
               }
             : {
-                message: t(data.messageKey ?? fallback.messageKey, {
-                  ...params,
-                  defaultValue: localMessage,
+                ...translateInsight(t, {
+                  messageKey: data.messageKey ?? fallback.messageKey,
+                  messageParams: fallback.messageParams,
+                  actionLabelKey: data.actionLabelKey ?? fallback.actionLabelKey,
+                  actionPath: data.actionPath ?? fallback.actionPath,
                 }),
-                actionLabel: t(data.actionLabelKey ?? fallback.actionLabelKey, {
-                  defaultValue: localLabel,
-                }),
-                actionPath: data.actionPath ?? fallback.actionPath,
                 source: 'rules',
                 loading: false,
               };
@@ -99,13 +123,9 @@ export function useDailyCoachInsight(
         sessionStorage.setItem(cacheKey(), JSON.stringify(next));
       } catch {
         if (cancelled) return;
-        setState({
-          message: localMessage,
-          actionLabel: localLabel,
-          actionPath: fallback.actionPath,
-          source: 'local',
-          loading: false,
-        });
+        const next = applyOffline();
+        setState(next);
+        sessionStorage.setItem(cacheKey(), JSON.stringify(next));
       }
     })();
 

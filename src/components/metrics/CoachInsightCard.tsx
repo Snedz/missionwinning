@@ -11,7 +11,7 @@ interface CoachInsightCardProps {
   message: string;
   actionLabel: string;
   actionPath: string;
-  source?: 'llm' | 'rules' | 'local';
+  source?: 'llm' | 'rules' | 'local' | 'offline';
   loading?: boolean;
 }
 
@@ -34,6 +34,11 @@ export function CoachInsightCard({
           {source === 'llm' && (
             <span className="text-[10px] font-normal uppercase tracking-wide text-emerald-400/80 border border-emerald-500/30 rounded-full px-2 py-0.5">
               {t('coachAiBadge', { defaultValue: 'AI' })}
+            </span>
+          )}
+          {source === 'offline' && (
+            <span className="text-[10px] font-normal uppercase tracking-wide text-slate-300/90 border border-slate-500/30 rounded-full px-2 py-0.5">
+              {t('coachOfflineBadge', { defaultValue: 'Offline' })}
             </span>
           )}
         </CardTitle>
