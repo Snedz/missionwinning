@@ -3,6 +3,11 @@ import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { tierToScore } from '@/lib/presidentialFitnessTest';
 import { authorizeSchoolClassUpsert, type SchoolClassRow } from '@/lib/schoolClassAuth';
 import { formatClassStandingsCsv } from '@/lib/schoolClassExport';
+import {
+  hashTeacherPin,
+  isHashedTeacherPin,
+  verifyTeacherPinValue,
+} from '@/lib/teacherPinCrypto';
 
 export { formatClassStandingsCsv };
 
@@ -71,7 +76,7 @@ export async function fetchTeacherClasses(userId: string): Promise<TeacherClassS
   return data.map((row) => ({
     code: row.code,
     name: row.name,
-    teacherPin: row.teacher_pin ?? null,
+    teacherPin: null,
     createdAt: row.created_at ?? new Date().toISOString(),
   }));
 }
@@ -122,12 +127,22 @@ export async function upsertSchoolClass(
 
   const normalized = code.toUpperCase();
   const existing = await fetchSchoolClass(normalized);
-  const auth = authorizeSchoolClassUpsert(existing, userId, teacherPin);
+
+  let pinVerified = false;
+  if (existing?.teacher_pin && teacherPin?.trim()) {
+    pinVerified = await verifyTeacherPinValue(existing.teacher_pin, teacherPin);
+  } else if (!existing?.teacher_pin) {
+    pinVerified = true;
+  } else if (existing.created_by === userId) {
+    pinVerified = true;
+  }
+
+  const auth = authorizeSchoolClassUpsert(existing, userId, { pinVerified });
   if (!auth.allowed) {
     return {
       ok: false,
       error: auth.reason,
-      status: auth.reason === 'forbidden' ? 403 : 403,
+      status: 403,
     };
   }
 
@@ -140,7 +155,7 @@ export async function upsertSchoolClass(
     payload.created_by = userId;
   }
   if (teacherPin?.trim()) {
-    payload.teacher_pin = teacherPin.trim();
+    payload.teacher_pin = await hashTeacherPin(teacherPin.trim());
   }
 
   const { error } = await admin.from('school_classes').upsert(payload, { onConflict: 'code' });
@@ -152,13 +167,37 @@ export async function upsertSchoolClass(
 export async function verifyTeacherPin(code: string, pin: string): Promise<boolean> {
   const admin = getSupabaseAdmin();
   if (!admin) return false;
+  const normalized = code.trim().toUpperCase();
   const { data } = await admin
     .from('school_classes')
     .select('teacher_pin')
-    .eq('code', code.trim().toUpperCase())
+    .eq('code', normalized)
     .maybeSingle();
   if (!data?.teacher_pin) return false;
-  return data.teacher_pin === pin.trim();
+
+  const ok = await verifyTeacherPinValue(data.teacher_pin, pin);
+  if (ok && !isHashedTeacherPin(data.teacher_pin)) {
+    void admin
+      .from('school_classes')
+      .update({ teacher_pin: await hashTeacherPin(pin.trim()) })
+      .eq('code', normalized);
+  }
+  return ok;
+}
+
+/** Teacher dashboard access — creator or valid PIN. */
+export async function canAccessTeacherDashboard(
+  code: string,
+  userId: string | null,
+  pin?: string | null
+): Promise<{ unlocked: boolean; isCreator: boolean }> {
+  if (userId && (await isClassCreator(code, userId))) {
+    return { unlocked: true, isCreator: true };
+  }
+  if (pin?.trim() && (await verifyTeacherPin(code, pin))) {
+    return { unlocked: true, isCreator: false };
+  }
+  return { unlocked: false, isCreator: false };
 }
 
 export async function fetchClassPftLeaderboard(code: string): Promise<ClassPftEntry[]> {

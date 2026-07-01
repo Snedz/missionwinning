@@ -12,32 +12,34 @@ describe('schoolClassAuth', () => {
   });
 
   it('allows new class creation', () => {
-    assert.deepEqual(authorizeSchoolClassUpsert(null, 'user-a', '123456'), { allowed: true });
+    assert.deepEqual(authorizeSchoolClassUpsert(null, 'user-a'), { allowed: true });
   });
 
   it('allows creator to update own class', () => {
     assert.deepEqual(authorizeSchoolClassUpsert(row(), 'user-a'), { allowed: true });
   });
 
-  it('blocks non-creator without pin', () => {
+  it('blocks non-creator without verified pin', () => {
     const result = authorizeSchoolClassUpsert(row(), 'user-b');
     assert.equal(result.allowed, false);
     if (!result.allowed) assert.equal(result.reason, 'forbidden');
   });
 
-  it('allows non-creator re-sync with matching pin', () => {
-    assert.deepEqual(authorizeSchoolClassUpsert(row(), 'user-b', '123456'), { allowed: true });
+  it('allows non-creator re-sync when pin verified', () => {
+    assert.deepEqual(authorizeSchoolClassUpsert(row(), 'user-b', { pinVerified: true }), {
+      allowed: true,
+    });
   });
 
-  it('allows claiming unowned class with matching pin', () => {
+  it('allows claiming unowned class when pin verified', () => {
     assert.deepEqual(
-      authorizeSchoolClassUpsert(row({ created_by: null }), 'user-b', '123456'),
+      authorizeSchoolClassUpsert(row({ created_by: null }), 'user-b', { pinVerified: true }),
       { allowed: true, claimCreator: true }
     );
   });
 
-  it('rejects wrong pin when claiming', () => {
-    const result = authorizeSchoolClassUpsert(row({ created_by: null }), 'user-b', '999999');
+  it('rejects claiming unowned class without pin verification', () => {
+    const result = authorizeSchoolClassUpsert(row({ created_by: null }), 'user-b');
     assert.equal(result.allowed, false);
     if (!result.allowed) assert.equal(result.reason, 'pin_mismatch');
   });

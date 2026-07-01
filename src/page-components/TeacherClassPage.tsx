@@ -142,7 +142,26 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
     URL.revokeObjectURL(url);
   };
 
-  const downloadStandingsCsv = () => {
+  const downloadStandingsCsv = async () => {
+    try {
+      const pin = getTeacherPin(code);
+      const url = pin
+        ? `/api/school/class/${code}/export?pin=${encodeURIComponent(pin)}`
+        : `/api/school/class/${code}/export`;
+      const res = await fetch(url, { credentials: 'include' });
+      if (res.ok) {
+        const blob = await res.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = objectUrl;
+        a.download = `mission-winning-standings-${code}.csv`;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+        return;
+      }
+    } catch {
+      /* fallback below */
+    }
     const csv = formatClassStandingsCsv(className, code, entries);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
