@@ -7,6 +7,7 @@ import {
   resolveAgeBand,
   scoreEvent,
   scoreFitnessTestSession,
+  tierToScore,
 } from '@/lib/presidentialFitnessTest';
 
 describe('presidentialFitnessTest', () => {
@@ -53,5 +54,10 @@ describe('presidentialFitnessTest', () => {
   it('maps award labels', () => {
     assert.equal(awardLabel('presidential'), 'Presidential');
     assert.equal(awardLabel('below'), 'Keep training');
+  });
+
+  it('maps tiers to leaderboard scores', () => {
+    assert.equal(tierToScore('presidential'), 100);
+    assert.equal(tierToScore('below'), 25);
   });
 });

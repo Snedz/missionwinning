@@ -1,5 +1,7 @@
 /** School / PE class codes — local join + optional cloud sync via Supabase. */
 
+import { saveSquadCode } from '@/lib/leaderboard/boards';
+
 const JOINED_CLASS_KEY = 'mw_class_code';
 const TEACHER_CLASSES_KEY = 'mw_teacher_classes';
 
@@ -39,6 +41,7 @@ export function joinClass(rawCode: string): string | null {
   const code = normalizeClassCode(rawCode);
   if (!code || typeof window === 'undefined') return null;
   localStorage.setItem(JOINED_CLASS_KEY, code);
+  saveSquadCode(code);
   return code;
 }
 

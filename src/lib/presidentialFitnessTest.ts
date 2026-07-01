@@ -170,3 +170,16 @@ export function awardLabel(tier: FitnessAwardTier): string {
       return 'Keep training';
   }
 }
+
+export function tierToScore(tier: string): number {
+  switch (tier) {
+    case 'presidential':
+      return 100;
+    case 'national':
+      return 75;
+    case 'participant':
+      return 50;
+    default:
+      return 25;
+  }
+}

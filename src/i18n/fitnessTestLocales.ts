@@ -78,6 +78,19 @@ type FitnessTestStrings = {
   shareCopied: string;
   shareSent: string;
   commissionedShareMaha: string;
+  schoolTeacherDashboard: string;
+  teacherDashboardKicker: string;
+  teacherLoading: string;
+  teacherAthletes: string;
+  teacherTests: string;
+  teacherPresidential: string;
+  teacherPftBoard: string;
+  teacherPftEmpty: string;
+  teacherOpenLeaderboard: string;
+  teacherWeekOne: string;
+  teacherPrint: string;
+  teacherCopyPlan: string;
+  teacherJoinLink: string;
 };
 
 const en: FitnessTestStrings = {
@@ -172,6 +185,20 @@ const en: FitnessTestStrings = {
   shareCopied: 'Copied!',
   shareSent: 'Shared!',
   commissionedShareMaha: 'Share — Make America Healthy Again',
+  schoolTeacherDashboard: 'Teacher dashboard →',
+  teacherDashboardKicker: 'Teacher dashboard',
+  teacherLoading: 'Loading class data…',
+  teacherAthletes: 'Athletes synced',
+  teacherTests: 'Tests logged',
+  teacherPresidential: 'Presidential awards',
+  teacherPftBoard: 'Class fitness test standings',
+  teacherPftEmpty:
+    'No synced results yet. Students join the class, sign in, and complete /fitness-test.',
+  teacherOpenLeaderboard: 'Open squad leaderboard →',
+  teacherWeekOne: 'Week 1 challenge (printable)',
+  teacherPrint: 'Print challenge',
+  teacherCopyPlan: 'Copy plan text',
+  teacherJoinLink: 'Student join link',
 };
 
 export function fitnessTestStringsFor(lang: string): FitnessTestStrings {
