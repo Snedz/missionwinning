@@ -11,6 +11,7 @@ import { mergeFuelStrings } from './i18n/fuelLocales'
 import { mergeNavStrings } from './i18n/navLocales'
 import { mergeBundleStrings } from './i18n/bundleLocales'
 import { mergeActiveWorkoutStrings } from './i18n/activeWorkoutLocales'
+import { mergeHistoryStrings } from './i18n/historyLocales'
 
 // Inline resources for fast global launch (add more langs + extract to json later)
 // Tier 1: EN ES FR PT RU DE IT KO
@@ -549,6 +550,7 @@ for (const lang of [...TIER1_LANGS, ...TIER2_LANGS, ...MEA_LANGS]) {
   mergeNavStrings(resources[lang].common, lang)
   mergeBundleStrings(resources[lang].common, lang)
   mergeActiveWorkoutStrings(resources[lang].common, lang)
+  mergeHistoryStrings(resources[lang].common, lang)
 }
 
 i18n

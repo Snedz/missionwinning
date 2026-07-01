@@ -1,0 +1,183 @@
+import { EXERCISES } from '@/data/exercises';
+import { buildExerciseBenchmark, getExercisesWithBenchmarkData } from '@/lib/benchmarks';
+import { computeReadiness } from '@/lib/score';
+import {
+  MAJOR_GROUPS,
+  MUSCLE_GROUP_I18N,
+  type MuscleGroup,
+  type ReadinessStatusKey,
+} from '@/lib/muscleGroups';
+import type { CompletedWorkoutLog } from '@/types';
+
+export interface WeeklyVolumePoint {
+  weekStart: string;
+  label: string;
+  volume: number;
+  sessions: number;
+}
+
+export interface MuscleHeatCell {
+  group: MuscleGroup;
+  labelKey: string;
+  volume: number;
+  sets: number;
+  sessions: number;
+  daysSince: number;
+  intensity: number;
+  statusKey: ReadinessStatusKey;
+}
+
+/** Monday-based week start (YYYY-MM-DD). */
+export function weekStartKey(iso: string): string {
+  const d = new Date(iso);
+  d.setHours(12, 0, 0, 0);
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().split('T')[0];
+}
+
+function recentWeekStarts(count: number, locale = 'en'): { key: string; label: string }[] {
+  const weeks: { key: string; label: string }[] = [];
+  const now = new Date();
+  now.setHours(12, 0, 0, 0);
+  const day = now.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  now.setDate(now.getDate() + diff);
+
+  for (let i = count - 1; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i * 7);
+    const key = d.toISOString().split('T')[0];
+    weeks.push({
+      key,
+      label: d.toLocaleDateString(locale, { month: 'short', day: 'numeric' }),
+    });
+  }
+  return weeks;
+}
+
+/** Weekly total volume + session count for the last N weeks. */
+export function buildWeeklyVolumeTimeline(
+  history: CompletedWorkoutLog[],
+  weeks = 12,
+  locale = 'en'
+): WeeklyVolumePoint[] {
+  const buckets = recentWeekStarts(weeks, locale);
+  const byWeek: Record<string, { volume: number; sessions: number }> = {};
+  buckets.forEach((b) => {
+    byWeek[b.key] = { volume: 0, sessions: 0 };
+  });
+
+  for (const log of history) {
+    const key = weekStartKey(log.completedAt);
+    if (!byWeek[key]) continue;
+    byWeek[key].volume += log.totalVolume;
+    byWeek[key].sessions += 1;
+  }
+
+  return buckets.map((b) => ({
+    weekStart: b.key,
+    label: b.label,
+    volume: byWeek[b.key]?.volume ?? 0,
+    sessions: byWeek[b.key]?.sessions ?? 0,
+  }));
+}
+
+function logsInWindow(history: CompletedWorkoutLog[], windowDays: number): CompletedWorkoutLog[] {
+  const cutoff = Date.now() - windowDays * 24 * 60 * 60 * 1000;
+  return history.filter((log) => new Date(log.completedAt).getTime() >= cutoff);
+}
+
+/** Per major muscle group: recent volume + readiness for heatmap cells. */
+export function buildMuscleHeatmap(
+  history: CompletedWorkoutLog[],
+  windowDays = 14
+): MuscleHeatCell[] {
+  const readiness = computeReadiness(history);
+  const windowLogs = logsInWindow(history, windowDays);
+
+  const volumeByGroup: Record<MuscleGroup, number> = {
+    Chest: 0,
+    Back: 0,
+    Legs: 0,
+    Shoulders: 0,
+    Arms: 0,
+    Core: 0,
+  };
+  const setsByGroup: Record<MuscleGroup, number> = { ...volumeByGroup };
+  const sessionsByGroup: Record<MuscleGroup, number> = { ...volumeByGroup };
+
+  for (const log of windowLogs) {
+    const groupsHit = new Set<MuscleGroup>();
+    for (const ex of log.exercises) {
+      const exData = EXERCISES.find((e) => e.id === ex.exerciseId);
+      if (!exData) continue;
+      const vol = ex.sets.reduce((s, set) => s + set.reps * set.weight, 0);
+      const setCount = ex.sets.length;
+      const groups = exData.muscleGroups.filter((mg): mg is MuscleGroup =>
+        (MAJOR_GROUPS as readonly string[]).includes(mg)
+      );
+      if (!groups.length) continue;
+      const share = 1 / groups.length;
+      groups.forEach((g) => {
+        volumeByGroup[g] += vol * share;
+        setsByGroup[g] += setCount * share;
+        groupsHit.add(g);
+      });
+    }
+    groupsHit.forEach((g) => {
+      sessionsByGroup[g] += 1;
+    });
+  }
+
+  const maxVol = Math.max(...MAJOR_GROUPS.map((g) => volumeByGroup[g]), 1);
+
+  return MAJOR_GROUPS.map((group) => ({
+    group,
+    labelKey: MUSCLE_GROUP_I18N[group],
+    volume: Math.round(volumeByGroup[group]),
+    sets: Math.round(setsByGroup[group]),
+    sessions: sessionsByGroup[group],
+    daysSince: readiness[group].days,
+    intensity: volumeByGroup[group] / maxVol,
+    statusKey: readiness[group].statusKey,
+  }));
+}
+
+/** Exercise with the most logged sessions (for default 1RM chart). */
+export function pickChartExerciseId(history: CompletedWorkoutLog[]): string | null {
+  const ids = getExercisesWithBenchmarkData(history);
+  if (!ids.length) return null;
+
+  const sessionCounts: Record<string, number> = {};
+  for (const log of history) {
+    for (const ex of log.exercises) {
+      if (ex.sets.some((s) => s.weight > 0 && s.reps > 0)) {
+        sessionCounts[ex.exerciseId] = (sessionCounts[ex.exerciseId] || 0) + 1;
+      }
+    }
+  }
+
+  return ids.sort((a, b) => (sessionCounts[b] || 0) - (sessionCounts[a] || 0))[0];
+}
+
+export function build1RMChartData(exerciseId: string, history: CompletedWorkoutLog[]) {
+  const stats = buildExerciseBenchmark(exerciseId, history);
+  if (!stats) return [];
+  return stats.timeline.map((p) => ({
+    date: p.dateLabel,
+    estimated: p.estimated1RM,
+    actual: p.actual1RM,
+  }));
+}
+
+export function historySummaryStats(history: CompletedWorkoutLog[]) {
+  const recent = history.slice(0, 5);
+  const avgVolume =
+    recent.length > 0
+      ? Math.round(recent.reduce((s, l) => s + l.totalVolume, 0) / recent.length)
+      : 0;
+  const totalVolume = history.reduce((s, l) => s + l.totalVolume, 0);
+  return { avgVolume, totalVolume, sessionCount: history.length };
+}

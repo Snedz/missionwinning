@@ -1,17 +1,25 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { Calendar, Dumbbell, Timer, Trophy } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Calendar, Dumbbell, Timer, Trophy } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -19,20 +27,54 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { getExerciseById } from "@/data/exercises";
-import { formatDate, formatDuration } from "@/lib/utils";
-import { useWorkoutStore } from "@/store/workoutStore";
-import type { CompletedWorkoutLog } from "@/types";
-import { getUser, getUserNutritionForDate } from "@/lib/supabase";
+} from '@/components/ui/table';
+import { History1RMChart, HistoryVolumeChart } from '@/components/history/HistoryCharts';
+import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
+import { getExerciseById } from '@/data/exercises';
+import { formatDate, formatDuration } from '@/lib/utils';
+import {
+  build1RMChartData,
+  buildMuscleHeatmap,
+  buildWeeklyVolumeTimeline,
+  historySummaryStats,
+  pickChartExerciseId,
+} from '@/lib/historyAnalytics';
+import { getExercisesWithBenchmarkData } from '@/lib/benchmarks';
+import { useWorkoutStore } from '@/store/workoutStore';
+import type { CompletedWorkoutLog } from '@/types';
+import { getUser, getUserNutritionForDate } from '@/lib/supabase';
+
+const HEATMAP_WINDOW_DAYS = 14;
 
 export function HistoryPage() {
+  const { t, i18n } = useTranslation();
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const loadFromCloud = useWorkoutStore((s) => s.loadFromCloud);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
   const [cloudSynced, setCloudSynced] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [pillarWins, setPillarWins] = useState<any[]>([]);
+  const [chartExerciseId, setChartExerciseId] = useState('');
+
+  const weeklyVolume = useMemo(
+    () => buildWeeklyVolumeTimeline(workoutHistory, 12, i18n.language),
+    [workoutHistory, i18n.language]
+  );
+  const heatmapCells = useMemo(
+    () => buildMuscleHeatmap(workoutHistory, HEATMAP_WINDOW_DAYS),
+    [workoutHistory]
+  );
+  const exerciseIds = useMemo(
+    () => getExercisesWithBenchmarkData(workoutHistory),
+    [workoutHistory]
+  );
+  const defaultExerciseId = useMemo(() => pickChartExerciseId(workoutHistory), [workoutHistory]);
+  const activeChartId = chartExerciseId || defaultExerciseId || '';
+  const oneRmData = useMemo(
+    () => (activeChartId ? build1RMChartData(activeChartId, workoutHistory) : []),
+    [activeChartId, workoutHistory]
+  );
+  const summary = useMemo(() => historySummaryStats(workoutHistory), [workoutHistory]);
 
   useEffect(() => {
     const sync = async () => {
@@ -44,10 +86,12 @@ export function HistoryPage() {
         try {
           const today = new Date().toISOString().split('T')[0];
           const cloud = await getUserNutritionForDate(today);
-          const wins = cloud.filter((c: any) => /win|assessment|mobility|mind|track|learn|move/i.test(c.name || ''));
+          const wins = cloud.filter((c: any) =>
+            /win|assessment|mobility|mind|track|learn|move/i.test(c.name || '')
+          );
           setPillarWins(wins);
         } catch {
-          // offline or schema not ready
+          /* offline */
         }
       }
       setSyncing(false);
@@ -55,31 +99,87 @@ export function HistoryPage() {
     sync();
   }, [loadFromCloud]);
 
+  const sessionLabel =
+    workoutHistory.length === 1
+      ? t('historySessionCount', { count: 1, defaultValue: '1 completed session' })
+      : t('historySessionCount', {
+          count: workoutHistory.length,
+          defaultValue: `${workoutHistory.length} completed sessions`,
+        });
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Workout History</h2>
-        <p className="text-muted-foreground">Your history powers the <a href="/log" className="underline">Today Hub</a> readiness and Win Score.</p>
+        <h2 className="text-3xl font-bold tracking-tight">
+          {t('historyTitle', { defaultValue: 'Workout History' })}
+        </h2>
+        <p className="text-muted-foreground">
+          {t('historySubtitle', {
+            defaultValue: 'Your history powers the Today Hub readiness and Win Score.',
+          })}{' '}
+          <a href="/log" className="underline">
+            Today Hub
+          </a>
+        </p>
         <p className="mt-1 text-muted-foreground">
-          {workoutHistory.length} completed session{workoutHistory.length !== 1 ? "s" : ""}
-          {syncing && " — syncing cloud…"}
-          {!syncing && cloudSynced && " — cloud merged"}
+          {sessionLabel}
+          {syncing && t('historySyncing', { defaultValue: ' — syncing cloud…' })}
+          {!syncing && cloudSynced && t('historyCloudMerged', { defaultValue: ' — cloud merged' })}
         </p>
         {workoutHistory.length > 0 && (
-          <div className="mt-2 text-xs text-muted-foreground">
-            Recent trend: Avg volume last 5: {Math.round(workoutHistory.slice(0,5).reduce((s,l)=>s+l.totalVolume,0)/Math.min(5,workoutHistory.length)).toLocaleString()} lbs. 
-            See your Win Score growth in the <a href="/log" className="underline">Today Hub</a>.
-          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            {t('historyAvgVolume', {
+              avg: summary.avgVolume.toLocaleString(),
+              defaultValue: `Recent trend: Avg volume last 5: ${summary.avgVolume.toLocaleString()} lbs.`,
+            })}{' '}
+            <a href="/log" className="underline">
+              Today Hub
+            </a>
+          </p>
         )}
       </div>
+
+      {workoutHistory.length > 0 && (
+        <>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <HistoryVolumeChart data={weeklyVolume} />
+            <div className="space-y-2">
+              {exerciseIds.length > 1 && (
+                <Select value={activeChartId} onValueChange={setChartExerciseId}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue
+                      placeholder={t('historySelectExercise', { defaultValue: 'Chart exercise' })}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {exerciseIds.map((id) => {
+                      const ex = getExerciseById(id);
+                      return (
+                        <SelectItem key={id} value={id}>
+                          {ex?.name ?? id}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              )}
+              <History1RMChart
+                data={oneRmData}
+                exerciseName={getExerciseById(activeChartId)?.name ?? activeChartId}
+              />
+            </div>
+          </div>
+          <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
+        </>
+      )}
 
       {workoutHistory.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <Dumbbell className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="font-medium">No workouts logged yet</p>
+            <p className="font-medium">{t('historyEmptyTitle', { defaultValue: 'No workouts logged yet' })}</p>
             <p className="text-sm text-muted-foreground mt-1">
-              Complete an active workout to see it here.
+              {t('historyEmptyDesc', { defaultValue: 'Complete an active workout to see it here.' })}
             </p>
           </CardContent>
         </Card>
@@ -104,13 +204,16 @@ export function HistoryPage() {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Total Volume</p>
+                    <p className="text-xs text-muted-foreground">
+                      {t('historyTotalVolume', { defaultValue: 'Total Volume' })}
+                    </p>
                     <p className="text-xl font-bold text-secondary">
-                      {log.totalVolume.toLocaleString()} <span className="text-sm font-normal">lbs</span>
+                      {log.totalVolume.toLocaleString()}{' '}
+                      <span className="text-sm font-normal">lbs</span>
                     </p>
                   </div>
                   <Button variant="outline" onClick={() => setSelected(log)}>
-                    Details
+                    {t('historyDetails', { defaultValue: 'Details' })}
                   </Button>
                 </div>
               </CardContent>
@@ -119,34 +222,41 @@ export function HistoryPage() {
         </div>
       )}
 
-      {/* Pillar Wins / Habit Logs from Move/Mind/Assessments (cloud nutrition entries) */}
       <div>
-        <h3 className="text-xl font-semibold flex items-center gap-2 mb-2"><Trophy className="h-5 w-5" /> Pillar Wins &amp; Habit Logs</h3>
-        <p className="text-sm text-muted-foreground mb-2">Mobility wins, mind prompts, assessments logged from pillars appear here (synergy with Nutrition). Free core.</p>
+        <h3 className="text-xl font-semibold flex items-center gap-2 mb-2">
+          <Trophy className="h-5 w-5" />{' '}
+          {t('historyPillarWins', { defaultValue: 'Pillar Wins & Habit Logs' })}
+        </h3>
+        <p className="text-sm text-muted-foreground mb-2">
+          {t('historyPillarWinsDesc', {
+            defaultValue:
+              'Mobility wins, mind prompts, assessments logged from pillars appear here.',
+          })}
+        </p>
         {pillarWins.length > 0 ? (
           <div className="space-y-2">
-            {pillarWins.slice(0,5).map((w, i) => (
-              <div key={i} className="text-sm p-2 border rounded bg-muted/20 flex justify-between">
-                <span>{w.name} <span className="text-xs text-muted-foreground">({formatDate(w.date || new Date().toISOString())})</span></span>
-                <a href="/nutrition" className="text-xs underline">View in Nutrition →</a>
+            {pillarWins.slice(0, 5).map((w, i) => (
+              <div
+                key={i}
+                className="text-sm p-2 border rounded bg-muted/20 flex justify-between"
+              >
+                <span>
+                  {w.name}{' '}
+                  <span className="text-xs text-muted-foreground">
+                    ({formatDate(w.date || new Date().toISOString())})
+                  </span>
+                </span>
+                <a href="/nutrition" className="text-xs underline">
+                  View in Nutrition →
+                </a>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-xs text-muted-foreground">No pillar wins logged today yet. Use "Do it" in /move or /mind, or complete Assessment.</div>
+          <div className="text-xs text-muted-foreground">
+            No pillar wins logged today yet. Use /move or /mind, or complete Assessment.
+          </div>
         )}
-        <div className="mt-2 flex gap-2 text-xs">
-          <Button size="sm" variant="ghost" className="text-xs" onClick={async () => {
-            const u = await getUser();
-            const today = new Date().toISOString().split('T')[0];
-            if (u) await (await import('@/lib/supabase')).saveNutritionEntry({ date: today, name: 'Quick Pillar Win from History', protein: 0, cals: 0 });
-            alert('Win logged to Nutrition! Check Today hub for streak.');
-          }}>Log similar win (+cloud)</Button>
-          <a href="/log" className="px-2 py-0.5 border border-white/30 rounded hover:bg-white/10">Start free starter →</a>
-          <a href="/learn" className="px-2 py-0.5 border border-white/30 rounded hover:bg-white/10">More samples in Learn →</a>
-          <a href="/move" className="px-2 py-0.5 border border-white/30 rounded hover:bg-white/10">Do Move flow →</a>
-          <a href="/mind" className="px-2 py-0.5 border border-white/30 rounded hover:bg-white/10">Log Mind prompt →</a>
-        </div>
       </div>
 
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
@@ -156,7 +266,7 @@ export function HistoryPage() {
               <DialogHeader>
                 <DialogTitle>{selected.workoutName}</DialogTitle>
                 <DialogDescription>
-                  {formatDate(selected.completedAt)} · {formatDuration(selected.durationSeconds)} ·{" "}
+                  {formatDate(selected.completedAt)} · {formatDuration(selected.durationSeconds)} ·{' '}
                   {selected.totalVolume.toLocaleString()} lbs total volume
                 </DialogDescription>
               </DialogHeader>
@@ -203,8 +313,9 @@ export function HistoryPage() {
       </Dialog>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        <a href="/profile" className="text-emerald-400 hover:underline">Sign in (optional)</a>
-        {' '}to load full cloud history.
+        <a href="/profile" className="text-emerald-400 hover:underline">
+          {t('historySignInFoot', { defaultValue: 'Sign in (optional) to load full cloud history.' })}
+        </a>
       </p>
     </div>
   );
