@@ -54,6 +54,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I3: Mind premium guided sessions
+
+**Build:** `2025.06-unified.54`
+
+### Shipped
+
+- **Premium Mind** — 6 gated guided sessions via `GET /api/premium/mind-sessions` (403 without enrollment)
+- **`/mind`** — Fuel-style locked teaser for free users; premium grid with `GuidedMindSessionRunner` when enrolled
+- **Gate smoke** — probes `/api/premium/mind-sessions` without auth
+- **Launch readiness** — Phase I3 Mind check marked ready
+
+**Tests:** 189 passing
+
+---
+
 ## 2026-06-29 — Phase I4: Tier 1 Today native IT/JA/KO/RU (complete)
 
 **Build:** `2025.06-unified.53`

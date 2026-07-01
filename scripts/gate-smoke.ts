@@ -119,6 +119,18 @@ async function main() {
   }
 
   try {
+    const mindSessions = await headOrGet('/api/premium/mind-sessions');
+    const ok = mindSessions.status === 403 || mindSessions.status === 401 || mindSessions.status === 503;
+    checks.push({
+      name: 'GET /api/premium/mind-sessions (no auth)',
+      ok,
+      detail: `status ${mindSessions.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/mind-sessions', ok: false, detail: String(e) });
+  }
+
+  try {
     const programs = await headOrGet('/api/premium/programs');
     const ok = programs.status === 403 || programs.status === 401 || programs.status === 503;
     checks.push({

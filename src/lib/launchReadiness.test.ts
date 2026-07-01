@@ -10,6 +10,7 @@ describe('launchReadiness', () => {
     const r = getLaunchReadinessReport();
     assert.equal(r.phaseJComplete, true);
     assert.ok(r.checks.some((c) => c.id === 'phase-j-pathfinder' && c.status === 'ready'));
+    assert.ok(r.checks.some((c) => c.id === 'mind-i3' && c.status === 'ready'));
     assert.ok(r.checks.some((c) => c.id === 'private-mode-off' && c.status === 'blocked'));
   });
 
