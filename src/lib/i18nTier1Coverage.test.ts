@@ -68,9 +68,15 @@ describe('i18n Tier 1 body coverage (Phase I4)', () => {
     });
   }
 
+  for (const lang of ['fr', 'de', 'pt', 'it', 'ja', 'ko', 'ru'] as const) {
+    it(`${lang} fuel body ≥75% translated vs en`, () => {
+      const ratio = translatedRatio(lang, fuelStringsFor);
+      assert.ok(ratio >= 0.75, `${lang} fuel ratio ${(ratio * 100).toFixed(1)}%`);
+    });
+  }
+
   for (const lang of ['it', 'ja', 'ko', 'ru'] as const) {
     it(`${lang} fuel + active partial translated`, () => {
-      assert.ok(translatedRatio(lang, fuelStringsFor) >= 0.15);
       assert.ok(translatedRatio(lang, activeWorkoutStringsFor) >= 0.15);
     });
   }

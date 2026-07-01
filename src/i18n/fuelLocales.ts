@@ -1,6 +1,7 @@
 /** Fuel / Nutrition page UI copy — merged into i18n `common` namespace. */
 
 import { tier1FuelBody } from './tier1WelcomeFuelActive';
+import { tier1FuelFullFor } from './tier1FuelFull';
 
 type FuelStrings = {
   fuelPremiumActive: string;
@@ -278,6 +279,8 @@ const LOCALES: Partial<Record<string, FuelStrings>> = { en, es, zh, id, th, ar }
 
 export function fuelStringsFor(lang: string): FuelStrings {
   const code = lang.split('-')[0];
+  const tier1Full = tier1FuelFullFor(code);
+  if (tier1Full) return tier1Full;
   return { ...en, ...(tier1FuelBody(lang) ?? {}), ...(LOCALES[code] ?? {}) };
 }
 

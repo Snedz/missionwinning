@@ -90,7 +90,7 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       id: 'i18n-i4',
       label: 'Phase I4 — Tier 1 body copy (Welcome/Fuel/Active/Today)',
       status: 'ready',
-      detail: 'All Tier 1 Today native; Welcome IT/KO/RU native; Fuel/Active tier1 packs',
+      detail: 'Today/Welcome/Fuel full Tier 1 (43 keys); Active partial; export-locales',
     },
     {
       id: 'mind-i3',

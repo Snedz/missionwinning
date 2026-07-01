@@ -62,6 +62,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I4: Fuel page full Tier 1 i18n
+
+**Build:** `2025.06-unified.58`
+
+### Shipped
+
+- **`tier1FuelFull.ts`** — complete Fuel/Nutrition UI (43 keys) for FR, DE, PT, IT, JA, KO, RU
+- **`fuelStringsFor`** — prefers full Tier 1 pack over partial tier1 body merge
+- **Tests** — fuel ≥75% vs EN for all Tier 1 langs; locales regenerated
+
+**Tests:** 203 passing
+
+---
+
 ## 2026-06-29 — Phase I3: Track premium activity programs
 
 **Build:** `2025.06-unified.57`
