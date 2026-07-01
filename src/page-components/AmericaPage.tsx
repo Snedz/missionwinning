@@ -13,6 +13,7 @@ import {
 } from '@/lib/presidentialFitnessStorage';
 import { useEffect, useState } from 'react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { SchoolClassPanel } from '@/components/fitness-test/SchoolClassPanel';
 
 export function AmericaPage() {
   const { t } = useTranslation();
@@ -60,6 +61,8 @@ export function AmericaPage() {
         </div>
 
         <CouncilLeadershipBlock />
+
+        <SchoolClassPanel />
 
         <div className="grid gap-4 sm:grid-cols-3">
           <Card className="content-card">
