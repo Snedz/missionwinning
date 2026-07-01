@@ -23,5 +23,8 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      - name: Export locale JSON (smoke)
+        run: npm run export-locales
+
       - name: Production build
         run: npm run build
