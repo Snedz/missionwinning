@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CouncilLeadershipBlock } from '@/components/america/CouncilLeadershipBlock';
-import { isAmericaTrackEnabled, showMahaCopy } from '@/lib/americaConfig';
+import { isAmericaTrackEnabled, showMahaCopy, getCouncilStatus } from '@/lib/americaConfig';
 import {
   isYouthModeEnabled,
   setYouthModeEnabled,
@@ -37,6 +37,27 @@ export function AmericaPage() {
     setYouth(next);
   };
 
+  const councilStatus = getCouncilStatus();
+  const heroBody = showMahaCopy()
+    ? t('americaHeroMaha', {
+        defaultValue:
+          "Mission Winning is bringing back the spirit of the Presidential Fitness Test — inspiring kids to get moving and restoring a culture of strength, health, and fitness. Let's Make America Healthy Again!",
+      })
+    : councilStatus === 'member'
+      ? t('americaHeroCouncilMember', {
+          defaultValue:
+            'Mission Winning supports national fitness priorities with free Presidential Fitness Test tools for families, schools, and communities — built in service of a stronger, healthier America.',
+        })
+      : councilStatus === 'pending'
+        ? t('americaHeroCouncilPending', {
+            defaultValue:
+              'Mission Winning is advancing national fitness tools in coordination with leadership on sports and youth health — starting with free Presidential Fitness Test scoring for every community.',
+          })
+        : t('americaHeroDefault', {
+            defaultValue:
+              'Mission Winning is reviving the Presidential Fitness Test tradition — free digital scoring for families, schools, and anyone ready to move with purpose.',
+          });
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <div className="flex-1 max-w-3xl mx-auto px-4 py-10 space-y-8 page-enter">
@@ -47,17 +68,7 @@ export function AmericaPage() {
           <h1 className="text-3xl font-bold tracking-tight">
             {t('americaHeroTitle', { defaultValue: 'Strength for the next generation' })}
           </h1>
-          <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto">
-            {showMahaCopy()
-              ? t('americaHeroMaha', {
-                  defaultValue:
-                    "Mission Winning is bringing back the spirit of the Presidential Fitness Test — inspiring kids to get moving and restoring a culture of strength, health, and fitness. Let's Make America Healthy Again!",
-                })
-              : t('americaHeroDefault', {
-                  defaultValue:
-                    'Mission Winning is reviving the Presidential Fitness Test tradition — free digital scoring for families, schools, and anyone ready to move with purpose.',
-                })}
-          </p>
+          <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto">{heroBody}</p>
         </div>
 
         <CouncilLeadershipBlock />
