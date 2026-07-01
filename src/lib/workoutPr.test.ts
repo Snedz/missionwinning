@@ -31,4 +31,8 @@ describe('workoutPr', () => {
   it('warmup sets do not trigger PR', () => {
     assert.equal(isPersonalRecord('bench-press', 10, 120, history, 'warmup'), false);
   });
+
+  it('drop sets do not trigger PR', () => {
+    assert.equal(isPersonalRecord('bench-press', 10, 120, history, 'drop'), false);
+  });
 });

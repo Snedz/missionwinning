@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { LoggedSet, SetKind } from '@/types';
-import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/setKind';
+import { SET_KINDS, setKindBadgeClass, setKindCompletedRowClass, setKindDefaultLabel, setKindLabelKey, setKindRowClass } from '@/lib/setKind';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -24,12 +24,6 @@ type Props = {
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
   onCopyLast?: () => void;
 };
-
-function kindBadgeClass(kind: SetKind): string {
-  if (kind === 'warmup') return 'border-amber-500/40 bg-amber-950/30 text-amber-300';
-  if (kind === 'failure') return 'border-rose-500/40 bg-rose-950/30 text-rose-300';
-  return '';
-}
 
 export function SetLogRow({
   setNumber,
@@ -55,16 +49,12 @@ export function SetLogRow({
       <div
         className={cn(
           'flex flex-wrap items-center gap-2 rounded-xl border p-3',
-          kind === 'warmup'
-            ? 'border-amber-500/30 bg-amber-950/15'
-            : kind === 'failure'
-              ? 'border-rose-500/30 bg-rose-950/15'
-              : 'border-secondary/40 bg-secondary/10'
+          setKindCompletedRowClass(kind)
         )}
       >
         <span className="w-7 text-sm font-medium text-muted-foreground">#{setNumber}</span>
         {kind !== 'normal' && (
-          <Badge variant="outline" className={cn('text-[10px] uppercase', kindBadgeClass(kind))}>
+          <Badge variant="outline" className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}>
             {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
           </Badge>
         )}
@@ -102,19 +92,13 @@ export function SetLogRow({
     <div
       className={cn(
         'rounded-xl border p-3 space-y-2 transition-colors',
-        isNext
-          ? 'border-emerald-500/50 bg-emerald-950/20 ring-1 ring-emerald-500/30'
-          : kind === 'warmup'
-            ? 'border-amber-500/25 bg-amber-950/10'
-            : kind === 'failure'
-              ? 'border-rose-500/25 bg-rose-950/10'
-              : 'border-border bg-card/40'
+        isNext ? setKindRowClass(kind, true) : setKindRowClass(kind, false)
       )}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="text-sm font-semibold text-muted-foreground">#{setNumber}</span>
-          <div className="flex gap-1">
+          <div className="flex flex-wrap gap-1">
             {SET_KINDS.map((k) => (
               <Button
                 key={k}
@@ -124,7 +108,8 @@ export function SetLogRow({
                 className={cn(
                   'h-7 px-2 text-[10px] min-w-[44px]',
                   kind === k && k === 'warmup' && 'bg-amber-600 hover:bg-amber-500',
-                  kind === k && k === 'failure' && 'bg-rose-600 hover:bg-rose-500'
+                  kind === k && k === 'failure' && 'bg-rose-600 hover:bg-rose-500',
+                  kind === k && k === 'drop' && 'bg-violet-600 hover:bg-violet-500'
                 )}
                 onClick={() => onSetKindChange(k)}
               >

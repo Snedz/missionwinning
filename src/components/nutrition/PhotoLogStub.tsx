@@ -4,7 +4,12 @@ import { useRef, useState } from 'react';
 import { Camera, ImagePlus, Loader2, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { estimateMealFromPhoto, type MealEstimate } from '@/lib/estimateMealFromPhoto';
+import {
+  estimateMealFromPhoto,
+  estimateMealViaApi,
+  sampleMealImageHints,
+  type MealEstimate,
+} from '@/lib/estimateMealFromPhoto';
 
 type Props = {
   onLogEstimate: (estimate: MealEstimate) => void;
@@ -12,7 +17,7 @@ type Props = {
 
 type Phase = 'idle' | 'processing' | 'estimate';
 
-/** Bevel-style photo meal log — on-device filename heuristic until vision API. */
+/** Bevel-style photo meal log — canvas hints + server estimate API with local fallback. */
 export function PhotoLogStub({ onLogEstimate }: Props) {
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,12 +35,15 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
 
   const handleFile = async (file: File | null) => {
     if (!file || !file.type.startsWith('image/')) return;
-    reset();
+    if (preview) URL.revokeObjectURL(preview);
     const url = URL.createObjectURL(file);
     setPreview(url);
     setPhase('processing');
+    setEstimate(null);
     try {
-      const result = await estimateMealFromPhoto(file);
+      const hints = await sampleMealImageHints(file);
+      const fromApi = await estimateMealViaApi(file, hints);
+      const result = fromApi ?? (await estimateMealFromPhoto(file, hints));
       setEstimate(result);
       setPhase('estimate');
     } catch {
@@ -60,7 +68,7 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
           </div>
           <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
             {t('photoLogDesc', {
-              defaultValue: 'Snap a meal — we estimate macros on your device (beta).',
+              defaultValue: 'Snap a meal — we estimate macros using photo analysis (beta).',
             })}
           </p>
         </div>
@@ -74,7 +82,7 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/70 backdrop-blur-sm gap-2">
               <Loader2 className="h-6 w-6 text-emerald-400 animate-spin" />
               <p className="text-sm text-muted-foreground">
-                {t('photoLogProcessing', { defaultValue: 'Estimating on device…' })}
+                {t('photoLogProcessing', { defaultValue: 'Analyzing meal…' })}
               </p>
             </div>
           )}
@@ -103,10 +111,10 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
               <p className="text-xs text-muted-foreground mt-1">
                 {estimate.protein}g protein · {estimate.cals} kcal · {estimate.carbs}c · {estimate.fat}f
               </p>
-              {estimate.confidence === 'low' && (
+              {estimate.confidence !== 'high' && (
                 <p className="text-[11px] text-amber-400/90 mt-1">
                   {t('photoLogEstimateLow', {
-                    defaultValue: 'Low confidence — edit after logging if needed.',
+                    defaultValue: 'Review and edit after logging if needed.',
                   })}
                 </p>
               )}
@@ -157,7 +165,7 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
 
       <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
         {t('photoLogBetaNote', {
-          defaultValue: 'Privacy-first — processed on your device. Vision API coming later.',
+          defaultValue: 'Privacy-first — photo analyzed via secure API with on-device fallback.',
         })}
       </p>
     </div>
