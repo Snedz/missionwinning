@@ -1,6 +1,7 @@
 import { gatherWeeklyPillarStats } from '@/lib/pillarScoreInputs';
 import { getTrainingStreak } from '@/lib/challenges';
 import { computeWinScore } from '@/lib/score';
+import { tierToScore } from '@/lib/presidentialFitnessTest';
 import type { CompletedWorkoutLog } from '@/types';
 import type { LeaderboardBoardId, LeaderboardSnapshot } from './types';
 import { countSessionsInHourRange } from './types';
@@ -20,6 +21,13 @@ export function saveOperatorName(name: string): void {
 }
 
 export { loadSquadCode, saveSquadCode } from './boards';
+
+function loadLocalPftScore(): { score: number; tier?: string } {
+  if (typeof window === 'undefined') return { score: 0 };
+  const tier = localStorage.getItem('mw_pft_last_tier') ?? undefined;
+  if (!tier) return { score: 0 };
+  return { score: tierToScore(tier), tier };
+}
 
 function highProteinDaysThisWeek(): number {
   return gatherWeeklyPillarStats().proteinDays;
@@ -41,6 +49,7 @@ export function computeLocalLeaderboardSnapshot(
   const fuelDays = highProteinDaysThisWeek();
   const nightSessions = countSessionsInHourRange(workoutHistory, 22, 5);
   const dawnSessions = countSessionsInHourRange(workoutHistory, 5, 8);
+  const pft = loadLocalPftScore();
 
   const winScore = computeWinScore({
     streak,
@@ -64,6 +73,8 @@ export function computeLocalLeaderboardSnapshot(
     fuelDays,
     nightSessions,
     dawnSessions,
+    pftScore: pft.score,
+    pftTier: pft.tier,
     squadCode: loadSquadCode() || undefined,
     region: geo.region,
     countryCode: geo.countryCode,
@@ -82,6 +93,8 @@ export function scoreForBoard(snapshot: LeaderboardSnapshot, boardId: Leaderboar
       return snapshot.weeklyVolume;
     case 'fuel-days':
       return snapshot.fuelDays;
+    case 'presidential-fitness':
+      return snapshot.pftScore;
     case 'under-the-stars':
       return snapshot.nightSessions;
     case 'dawns-early-light':
@@ -99,6 +112,8 @@ export function detailForBoard(snapshot: LeaderboardSnapshot, boardId: Leaderboa
       return `${snapshot.missionScore} mission pts`;
     case 'fuel-days':
       return snapshot.fuelDays === 1 ? '1 fuel day' : `${snapshot.fuelDays} fuel days`;
+    case 'presidential-fitness':
+      return snapshot.pftTier ? `${snapshot.pftTier} award` : 'No test logged';
     case 'under-the-stars':
       return snapshot.nightSessions === 1 ? '1 night session' : `${snapshot.nightSessions} night sessions`;
     case 'dawns-early-light':

@@ -60,6 +60,8 @@ export function buildDemoPopulation(count = 96): LeaderboardSnapshot[] {
       fuelDays: (seed >> 4) % 8,
       nightSessions: (seed >> 5) % 12,
       dawnSessions: (seed >> 6) % 10,
+      pftScore: 25 + (seed % 76),
+      pftTier: seed % 4 === 0 ? 'presidential' : seed % 3 === 0 ? 'national' : 'participant',
       squadCode,
       region: country.region,
       countryCode: country.code,
@@ -71,6 +73,7 @@ export function buildDemoPopulation(count = 96): LeaderboardSnapshot[] {
   // Featured leaders for themed boards
   out[0] = { ...out[0], operatorName: 'Night Vector', nightSessions: 14, missionScore: 88 };
   out[1] = { ...out[1], operatorName: 'First Light', dawnSessions: 12, missionScore: 85 };
+  out[2] = { ...out[2], operatorName: 'Presidential Eagle', pftScore: 100, pftTier: 'presidential' };
 
   return out;
 }
@@ -90,6 +93,8 @@ export function snapshotToEntry(
         return snap.weeklyVolume;
       case 'fuel-days':
         return snap.fuelDays;
+      case 'presidential-fitness':
+        return snap.pftScore;
       case 'under-the-stars':
         return snap.nightSessions;
       case 'dawns-early-light':

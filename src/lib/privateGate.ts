@@ -20,6 +20,7 @@ export const PUBLIC_PATHS_WHILE_GATED = [
   '/terms',
   '/about',
   '/america',
+  '/youth/consent/confirm',
   '/auth/callback',
 ] as const;
 

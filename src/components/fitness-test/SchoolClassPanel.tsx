@@ -9,11 +9,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import {
   classJoinUrl,
   getJoinedClassCode,
+  getTeacherPin,
   joinClass,
   leaveClass,
   loadTeacherClasses,
   normalizeClassCode,
   saveTeacherClass,
+  teacherDashboardUrl,
 } from '@/lib/schoolClass';
 import { buildClassInviteShareText, shareText } from '@/lib/shareFitnessMission';
 
@@ -34,6 +36,7 @@ export function SchoolClassPanel() {
   const [joinInput, setJoinInput] = useState('');
   const [className, setClassName] = useState('');
   const [createdCode, setCreatedCode] = useState<string | null>(null);
+  const [createdPin, setCreatedPin] = useState<string | null>(null);
   const [stats, setStats] = useState<ClassStatsResponse | null>(null);
   const [message, setMessage] = useState('');
 
@@ -62,14 +65,25 @@ export function SchoolClassPanel() {
   const handleCreate = async () => {
     const record = saveTeacherClass(className || t('schoolDefaultName', { defaultValue: 'PE Class' }));
     setCreatedCode(record.code);
+    setCreatedPin(record.teacherPin);
     setClassName('');
-    setMessage(t('schoolCreated', { defaultValue: 'Class created — share the code with students.' }));
+    setMessage(
+      t('schoolCreatedWithPin', {
+        defaultValue: 'Class {{code}} created. Teacher PIN: {{pin}} — save this PIN.',
+        code: record.code,
+        pin: record.teacherPin,
+      })
+    );
 
     try {
       await fetch('/api/school/class', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: record.code, name: record.name }),
+        body: JSON.stringify({
+          code: record.code,
+          name: record.name,
+          teacherPin: record.teacherPin,
+        }),
       });
     } catch {
       /* local-only ok */
@@ -124,7 +138,7 @@ export function SchoolClassPanel() {
             )}
             <div className="flex flex-wrap gap-2">
               <Button size="sm" variant="outline" asChild>
-                <Link href={`/school/class/${joined}`}>
+                <Link href={`/school/class/${joined}?pin=${encodeURIComponent(getTeacherPin(joined) ?? '')}`}>
                   {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard →' })}
                 </Link>
               </Button>
@@ -186,10 +200,15 @@ export function SchoolClassPanel() {
               </div>
             </div>
             <Button size="sm" variant="outline" className="w-full" asChild>
-              <Link href={`/school/class/${createdCode}`}>
+              <Link href={teacherDashboardUrl(createdCode, createdPin ?? getTeacherPin(createdCode) ?? '')}>
                 {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard →' })}
               </Link>
             </Button>
+            {createdPin && (
+              <p className="text-xs text-amber-400/90 font-mono">
+                {t('schoolPinLabel', { defaultValue: 'Teacher PIN' })}: {createdPin}
+              </p>
+            )}
             </div>
           )}
         </div>

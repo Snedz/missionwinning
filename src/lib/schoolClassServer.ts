@@ -54,7 +54,12 @@ export async function fetchClassStats(code: string): Promise<ClassStats | null> 
   };
 }
 
-export async function upsertSchoolClass(code: string, name: string, userId?: string | null) {
+export async function upsertSchoolClass(
+  code: string,
+  name: string,
+  userId?: string | null,
+  teacherPin?: string | null
+) {
   const admin = getSupabaseAdmin();
   if (!admin) return { ok: false as const, error: 'not_configured' };
 
@@ -63,12 +68,25 @@ export async function upsertSchoolClass(code: string, name: string, userId?: str
       code: code.toUpperCase(),
       name: name.trim() || 'PE Class',
       created_by: userId ?? null,
+      teacher_pin: teacherPin ?? null,
     },
     { onConflict: 'code' }
   );
 
   if (error) return { ok: false as const, error: error.message };
   return { ok: true as const };
+}
+
+export async function verifyTeacherPin(code: string, pin: string): Promise<boolean> {
+  const admin = getSupabaseAdmin();
+  if (!admin) return false;
+  const { data } = await admin
+    .from('school_classes')
+    .select('teacher_pin')
+    .eq('code', code.trim().toUpperCase())
+    .maybeSingle();
+  if (!data?.teacher_pin) return true;
+  return data.teacher_pin === pin.trim();
 }
 
 export async function fetchClassPftLeaderboard(code: string): Promise<ClassPftEntry[]> {

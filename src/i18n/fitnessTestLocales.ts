@@ -91,6 +91,25 @@ type FitnessTestStrings = {
   teacherPrint: string;
   teacherCopyPlan: string;
   teacherJoinLink: string;
+  pftLeaderboard: string;
+  schoolCreatedWithPin: string;
+  schoolPinLabel: string;
+  teacherPinTitle: string;
+  teacherPinDesc: string;
+  teacherPinInvalid: string;
+  teacherPinUnlock: string;
+  teacherDownloadPlan: string;
+  youthVerifyTitle: string;
+  youthVerifySent: string;
+  youthVerifyPending: string;
+  youthVerifyCta: string;
+  youthCodeInvalid: string;
+  youthSendCode: string;
+  youthConfirmTitle: string;
+  youthConfirmLoading: string;
+  youthConfirmOk: string;
+  youthConfirmError: string;
+  youthConfirmBack: string;
 };
 
 const en: FitnessTestStrings = {
@@ -199,6 +218,26 @@ const en: FitnessTestStrings = {
   teacherPrint: 'Print challenge',
   teacherCopyPlan: 'Copy plan text',
   teacherJoinLink: 'Student join link',
+  pftLeaderboard: 'PFT leaderboard →',
+  schoolCreatedWithPin: 'Class {{code}} created. Teacher PIN: {{pin}} — save this PIN.',
+  schoolPinLabel: 'Teacher PIN',
+  teacherPinTitle: 'Teacher PIN required',
+  teacherPinDesc: 'Enter the 6-digit PIN shown when you created class {{code}}.',
+  teacherPinInvalid: 'Incorrect teacher PIN.',
+  teacherPinUnlock: 'Unlock dashboard',
+  teacherDownloadPlan: 'Download .txt',
+  youthVerifyTitle: 'Enter verification code',
+  youthVerifySent:
+    'We emailed your parent/guardian a 6-digit code and confirm link. Enter the code here to continue.',
+  youthVerifyPending: 'Enter the 6-digit code from the parent consent email.',
+  youthVerifyCta: 'Verify & continue',
+  youthCodeInvalid: 'Incorrect verification code.',
+  youthSendCode: 'Send verification email',
+  youthConfirmTitle: 'Parent consent',
+  youthConfirmLoading: 'Confirming…',
+  youthConfirmOk: 'Consent verified. Redirecting to the fitness test…',
+  youthConfirmError: 'Link expired or invalid. Ask your parent to resubmit consent.',
+  youthConfirmBack: 'Back to fitness test',
 };
 
 export function fitnessTestStringsFor(lang: string): FitnessTestStrings {

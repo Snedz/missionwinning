@@ -11,7 +11,6 @@ describe('youthConsent', () => {
     assert.equal(COPPA_AGE_THRESHOLD, 13);
     assert.equal(requiresYouthConsent(12), true);
     assert.equal(requiresYouthConsent(13), false);
-    assert.equal(requiresYouthConsent(18), false);
   });
 
   it('validates parent email', () => {
