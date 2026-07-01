@@ -6,6 +6,7 @@ export type LeaderboardBoardId =
   | 'training-streak'
   | 'weekly-volume'
   | 'fuel-days'
+  | 'presidential-fitness'
   | 'under-the-stars'
   | 'dawns-early-light';
 
@@ -45,6 +46,8 @@ export interface LeaderboardSnapshot {
   fuelDays: number;
   nightSessions: number;
   dawnSessions: number;
+  pftScore: number;
+  pftTier?: string;
   squadCode?: string;
   region: string;
   countryCode: string;
@@ -77,6 +80,7 @@ const BOARD_IDS: LeaderboardBoardId[] = [
   'training-streak',
   'weekly-volume',
   'fuel-days',
+  'presidential-fitness',
   'under-the-stars',
   'dawns-early-light',
 ];

@@ -70,6 +70,11 @@ export function PresidentialFitnessSection() {
               })}
             </Link>
           </Button>
+          <Button asChild variant="outline" className="min-h-[44px] border-blue-800/30">
+            <Link href="/leaderboard?board=presidential-fitness">
+              {t('pftLeaderboard', { defaultValue: 'PFT leaderboard →' })}
+            </Link>
+          </Button>
         </div>
         <p className="text-[10px] text-muted-foreground text-center pt-1">
           {t('pftDisclaimer', {

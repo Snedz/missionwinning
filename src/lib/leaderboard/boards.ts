@@ -26,6 +26,14 @@ export const LEADERBOARD_BOARDS: LeaderboardBoard[] = [
     unit: 'days',
   },
   {
+    id: 'presidential-fitness',
+    title: 'Presidential Fitness',
+    subtitle: 'Best fitness test award tier — Presidential, National, Participant.',
+    unit: 'pts',
+    flavor:
+      'Inspired by the classic Presidential Fitness Test. Log your test at /fitness-test to rank on this board.',
+  },
+  {
     id: 'under-the-stars',
     title: 'Under the Stars',
     subtitle: 'Sessions logged between 22:00 and 05:00 local — night discipline.',

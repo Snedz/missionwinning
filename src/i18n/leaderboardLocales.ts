@@ -22,6 +22,7 @@ export type LeaderboardStrings = {
   lbBoardTrainingStreak: string;
   lbBoardWeeklyVolume: string;
   lbBoardFuelDays: string;
+  lbBoardPresidentialFitness: string;
   lbBoardUnderTheStars: string;
   lbBoardDawnsEarlyLight: string;
   lbNightSessions: string;
@@ -55,6 +56,7 @@ const en: LeaderboardStrings = {
   lbBoardTrainingStreak: 'Training Streak',
   lbBoardWeeklyVolume: 'Weekly Volume',
   lbBoardFuelDays: 'Fuel Days',
+  lbBoardPresidentialFitness: 'Presidential Fitness',
   lbBoardUnderTheStars: 'Under the Stars',
   lbBoardDawnsEarlyLight: "By Dawn's Early Light",
   lbNightSessions: 'night sessions',
@@ -193,6 +195,7 @@ export const BOARD_I18N_KEY: Record<
     | 'lbBoardTrainingStreak'
     | 'lbBoardWeeklyVolume'
     | 'lbBoardFuelDays'
+    | 'lbBoardPresidentialFitness'
     | 'lbBoardUnderTheStars'
     | 'lbBoardDawnsEarlyLight'
   >
@@ -201,6 +204,7 @@ export const BOARD_I18N_KEY: Record<
   'training-streak': 'lbBoardTrainingStreak',
   'weekly-volume': 'lbBoardWeeklyVolume',
   'fuel-days': 'lbBoardFuelDays',
+  'presidential-fitness': 'lbBoardPresidentialFitness',
   'under-the-stars': 'lbBoardUnderTheStars',
   'dawns-early-light': 'lbBoardDawnsEarlyLight',
 };
