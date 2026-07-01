@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { COPPA_AGE_THRESHOLD } from '@/lib/youthConsent';
+import {
+  consentConfirmUrl,
+  createConsentVerifyToken,
+  generateConsentCode,
+} from '@/lib/youthConsentToken';
 
-/** Notify parent/guardian that youth consent was recorded (Resend optional). */
+/** Email parent/guardian a verification code + confirm link. */
 export async function POST(request: NextRequest) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -23,24 +28,28 @@ export async function POST(request: NextRequest) {
   }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.missionwinning.com';
+  const code = generateConsentCode(parentEmail, childAge);
+  const token = createConsentVerifyToken(parentEmail, childAge);
+  const confirmLink = consentConfirmUrl(token, appUrl);
+
   const resend = new Resend(apiKey);
   const from = process.env.RESEND_FROM || 'Mission Winning <onboarding@resend.dev>';
 
   const { error } = await resend.emails.send({
     from,
     to: parentEmail,
-    subject: 'Mission Winning — youth fitness consent recorded',
+    subject: 'Mission Winning — verify youth fitness consent',
     text: [
-      'Mission Winning — parent/guardian notice',
+      'Mission Winning — parent/guardian verification',
       '',
-      `You approved fitness test tools for a child (age ${childAge}) on Mission Winning.`,
+      `A child (age ${childAge}) requested to use the Presidential Fitness Test tools.`,
       '',
-      'What this means:',
-      '- Consent was saved on the device used to sign up.',
-      '- Mission Winning provides educational fitness tools only — not medical advice.',
-      '- Results stay on the device unless the athlete signs in to sync with a class code.',
+      `Verification code (tell your athlete): ${code}`,
       '',
-      `Learn more: ${appUrl}/america`,
+      `Or confirm on this device: ${confirmLink}`,
+      '',
+      'Mission Winning provides educational fitness tools only — not medical advice.',
+      '',
       `Privacy: ${appUrl}/privacy`,
       '',
       'If you did not approve this, contact support@missionwinning.com.',
@@ -52,5 +61,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, codeSent: true });
 }

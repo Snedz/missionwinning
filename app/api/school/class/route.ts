@@ -4,7 +4,7 @@ import { normalizeClassCode } from '@/lib/schoolClass';
 
 /** Register a PE class code in Supabase (optional — local codes work offline). */
 export async function POST(request: NextRequest) {
-  let body: { code?: string; name?: string };
+  let body: { code?: string; name?: string; teacherPin?: string };
   try {
     body = await request.json();
   } catch {
@@ -17,14 +17,15 @@ export async function POST(request: NextRequest) {
   }
 
   const name = (body.name ?? 'PE Class').trim() || 'PE Class';
-  const result = await upsertSchoolClass(code, name, null);
+  const teacherPin = body.teacherPin?.trim() || null;
+  const result = await upsertSchoolClass(code, name, null, teacherPin);
 
   if (!result.ok) {
     if (result.error === 'not_configured') {
-      return NextResponse.json({ code, name, registered: false, source: 'local_only' });
+      return NextResponse.json({ code, name, teacherPin, registered: false, source: 'local_only' });
     }
     return NextResponse.json({ error: result.error }, { status: 500 });
   }
 
-  return NextResponse.json({ code, name, registered: true, source: 'cloud' });
+  return NextResponse.json({ code, name, teacherPin, registered: true, source: 'cloud' });
 }

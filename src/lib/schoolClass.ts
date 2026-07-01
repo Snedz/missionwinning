@@ -9,7 +9,10 @@ export type TeacherClassRecord = {
   code: string;
   name: string;
   createdAt: string;
+  teacherPin: string;
 };
+
+const TEACHER_PIN_PREFIX = 'mw_teacher_pin_';
 
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
@@ -62,15 +65,40 @@ export function loadTeacherClasses(): TeacherClassRecord[] {
   }
 }
 
+export function generateTeacherPin(): string {
+  return String(100000 + Math.floor(Math.random() * 900000));
+}
+
+export function saveTeacherPin(code: string, pin: string): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(`${TEACHER_PIN_PREFIX}${code}`, pin);
+}
+
+export function getTeacherPin(code: string): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem(`${TEACHER_PIN_PREFIX}${code}`);
+}
+
+export function teacherDashboardUrl(code: string, pin: string, baseUrl?: string): string {
+  const origin =
+    baseUrl ??
+    (typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com');
+  return `${origin.replace(/\/$/, '')}/school/class/${code}?pin=${encodeURIComponent(pin)}`;
+}
+
 export function saveTeacherClass(name: string, code?: string): TeacherClassRecord {
+  const normalized = code ? normalizeClassCode(code) ?? generateClassCode() : generateClassCode();
+  const teacherPin = generateTeacherPin();
   const record: TeacherClassRecord = {
-    code: code ? normalizeClassCode(code) ?? generateClassCode() : generateClassCode(),
+    code: normalized,
     name: name.trim() || 'PE Class',
     createdAt: new Date().toISOString(),
+    teacherPin,
   };
   if (typeof window === 'undefined') return record;
   const existing = loadTeacherClasses().filter((c) => c.code !== record.code);
   localStorage.setItem(TEACHER_CLASSES_KEY, JSON.stringify([record, ...existing].slice(0, 10)));
+  saveTeacherPin(record.code, teacherPin);
   return record;
 }
 

@@ -21,6 +21,8 @@ import { saveFitnessTestSession } from '@/lib/presidentialFitnessStorage';
 import { joinClass, getJoinedClassCode } from '@/lib/schoolClass';
 import { buildPftShareText } from '@/lib/shareFitnessMission';
 import { hasYouthConsent, requiresYouthConsent } from '@/lib/youthConsent';
+import { pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
+import { useWorkoutStore } from '@/store/workoutStore';
 
 type Step = 'profile' | 'youth' | 'events' | 'results';
 
@@ -85,6 +87,8 @@ export function FitnessTestRunner() {
       mode: isMini ? 'mini' : 'full',
     });
     saveFitnessTestSession(scored);
+    const store = useWorkoutStore.getState();
+    void pushLeaderboardSnapshot(store.workoutHistory, store.savedWorkouts.length);
     setSession(scored);
     setStep('results');
   };

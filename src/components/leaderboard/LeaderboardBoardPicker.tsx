@@ -5,13 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { LEADERBOARD_BOARDS } from '@/lib/leaderboard/boards';
 import type { LeaderboardBoardId } from '@/lib/leaderboard/types';
 import { BOARD_I18N_KEY } from '@/i18n/leaderboardLocales';
-import { Star, Flame, TrendingUp, UtensilsCrossed, Moon, Sunrise } from 'lucide-react';
+import { Star, Flame, TrendingUp, UtensilsCrossed, Moon, Sunrise, Medal } from 'lucide-react';
 
 const ICONS: Record<LeaderboardBoardId, typeof Star> = {
   'mission-score': Star,
   'training-streak': Flame,
   'weekly-volume': TrendingUp,
   'fuel-days': UtensilsCrossed,
+  'presidential-fitness': Medal,
   'under-the-stars': Moon,
   'dawns-early-light': Sunrise,
 };
