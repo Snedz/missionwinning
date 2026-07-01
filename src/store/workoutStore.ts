@@ -11,6 +11,7 @@ import type {
   WorkoutExerciseTemplate,
 } from "@/types";
 import { countsTowardVolume } from "@/lib/setKind";
+import { advanceAfterLog } from "@/lib/superset";
 import { saveWorkoutLog, getUserWorkoutHistory, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
@@ -49,6 +50,8 @@ interface WorkoutState {
   ) => { exerciseIndex: number; setIndex: number } | null;
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
   setSetKind: (exerciseIndex: number, setIndex: number, kind: SetKind) => void;
+  toggleSupersetWithNext: (exerciseIndex: number) => void;
+  unlinkSuperset: (exerciseIndex: number) => void;
   addSetToExercise: (exerciseIndex: number) => void;
   startRestTimer: (seconds?: number) => void;
   adjustRestTimer: (delta: number) => void;
@@ -249,15 +252,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         get().logSet(exerciseIndex, setIndex, reps, weight);
         const aw = get().activeWorkout;
         if (!aw) return null;
-        for (let ei = exerciseIndex; ei < aw.exercises.length; ei++) {
-          const startSet = ei === exerciseIndex ? setIndex + 1 : 0;
-          for (let si = startSet; si < aw.exercises[ei].sets.length; si++) {
-            if (!aw.exercises[ei].sets[si].completed) {
-              return { exerciseIndex: ei, setIndex: si };
-            }
-          }
-        }
-        return null;
+        return advanceAfterLog(aw.exercises, exerciseIndex, setIndex);
       },
 
       rateSet: (exerciseIndex, setIndex, rpe) => {
@@ -291,6 +286,33 @@ export const useWorkoutStore = create<WorkoutState>()(
           return {
             activeWorkout: { ...s.activeWorkout, exercises },
           };
+        });
+      },
+
+      unlinkSuperset: (exerciseIndex) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = s.activeWorkout.exercises.map((ex, i) => {
+            if (i !== exerciseIndex) return ex;
+            const { supersetGroup: _, ...rest } = ex;
+            return rest;
+          });
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
+      toggleSupersetWithNext: (exerciseIndex) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const nextIdx = exerciseIndex + 1;
+          if (nextIdx >= s.activeWorkout.exercises.length) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const current = exercises[exerciseIndex];
+          const next = exercises[nextIdx];
+          const shared = current.supersetGroup ?? next.supersetGroup ?? `ss-${Date.now()}`;
+          exercises[exerciseIndex] = { ...current, supersetGroup: shared };
+          exercises[nextIdx] = { ...next, supersetGroup: shared };
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
         });
       },
 

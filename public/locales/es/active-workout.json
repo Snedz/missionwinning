@@ -44,5 +44,8 @@
   "activeOpenPlateCalc": "Plates",
   "activeSetNormal": "Work",
   "activeSetWarmup": "Warmup",
-  "activeSetFailure": "Failure"
+  "activeSetFailure": "Failure",
+  "activeSupersetLink": "Superset w/ next",
+  "activeSupersetUnlink": "Unlink superset",
+  "activeSetLoggedSuperset": "{{reps}} × {{weight}} — next exercise in superset"
 }

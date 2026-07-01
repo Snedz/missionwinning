@@ -30,3 +30,11 @@ export function weightUnitLabel(units: UnitsPref): string {
 export function weightStep(units: UnitsPref): number {
   return units === 'imperial' ? 2.5 : 2.5;
 }
+
+export function heightUnitLabel(units: UnitsPref): string {
+  return units === 'imperial' ? 'in' : 'cm';
+}
+
+export function bodyweightUnitLabel(units: UnitsPref): string {
+  return weightUnitLabel(units);
+}
