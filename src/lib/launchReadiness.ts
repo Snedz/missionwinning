@@ -36,7 +36,7 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       id: 'unit-tests',
       label: 'Unit test suite (npm test)',
       status: 'manual',
-      detail: 'Run before merge — 161+ tests expected',
+      detail: 'Run before merge — 164+ tests expected',
     },
     {
       id: 'phase-j-pathfinder',
@@ -79,6 +79,12 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       label: 'Phase I1 — Stripe webhook + Checkout API scaffold',
       status: 'ready',
       detail: '/api/stripe-webhook (verified) + /api/stripe/create-checkout-session — set keys when LLC ready',
+    },
+    {
+      id: 'coach-i2',
+      label: 'Phase I2 — Premium AI Coach + plan generator',
+      status: 'ready',
+      detail: 'Cloud LLM + /api/coach/generate-plan gated; rules/offline free on /log and /builder',
     },
     {
       id: 'demo-premium-off',

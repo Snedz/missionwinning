@@ -131,6 +131,22 @@ async function main() {
   }
 
   try {
+    const coachPlan = await headOrGet('/api/coach/generate-plan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ readiness: 70, strain: 50, recovery: 55 }),
+    });
+    const ok = coachPlan.status === 403;
+    checks.push({
+      name: 'POST /api/coach/generate-plan (no premium)',
+      ok,
+      detail: `status ${coachPlan.status}${ok ? '' : ' — expected 403'}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'POST /api/coach/generate-plan', ok: false, detail: String(e) });
+  }
+
+  try {
     const privatePage = await headOrGet('/private');
     checks.push({
       name: 'GET /private (200)',

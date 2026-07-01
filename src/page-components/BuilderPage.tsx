@@ -50,6 +50,7 @@ import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 import { OfflinePlansPanel } from "@/components/builder/OfflinePlansPanel";
+import { CoachPlanGeneratorPanel } from "@/components/builder/CoachPlanGeneratorPanel";
 
 interface DraftExercise extends WorkoutExerciseTemplate {
   key: string;
@@ -224,6 +225,11 @@ export function BuilderPage() {
       />
 
       <OfflinePlansPanel />
+
+      <CoachPlanGeneratorPanel
+        onLoadSession={loadSession}
+        onSaveAllSessions={saveAllProgramSessions}
+      />
 
       <section
         id="program-templates"

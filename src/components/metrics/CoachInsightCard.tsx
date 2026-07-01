@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
@@ -13,6 +14,7 @@ interface CoachInsightCardProps {
   actionPath: string;
   source?: 'llm' | 'rules' | 'local' | 'offline';
   loading?: boolean;
+  premiumLocked?: boolean;
 }
 
 export function CoachInsightCard({
@@ -21,6 +23,7 @@ export function CoachInsightCard({
   actionPath,
   source = 'local',
   loading = false,
+  premiumLocked = false,
 }: CoachInsightCardProps) {
   const router = useRouter();
   const { t } = useTranslation();
@@ -46,6 +49,14 @@ export function CoachInsightCard({
           {t('todayCoachInsightDesc', {
             defaultValue: 'Based on your readiness, strain, recovery, and pillar synergy',
           })}
+          {premiumLocked && (
+            <>
+              {' '}
+              <Link href="/bundle" className="text-emerald-400 hover:underline">
+                {t('coachPremiumUpsell', { defaultValue: 'Unlock cloud AI Coach with Super Bundle' })}
+              </Link>
+            </>
+          )}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col sm:flex-row sm:items-center gap-4">

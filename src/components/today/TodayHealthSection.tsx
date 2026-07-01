@@ -38,6 +38,7 @@ export function TodayHealthSection({ insight, breakdown, coachContext }: Props) 
         actionPath={coach.actionPath}
         source={coach.source}
         loading={coach.loading}
+        premiumLocked={coach.premiumLocked}
       />
       <Card className="content-card">
         <CardHeader>

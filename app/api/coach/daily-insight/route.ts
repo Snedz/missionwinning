@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { rateLimit } from '@/lib/rateLimit';
+import { getCoachPremiumAccess } from '@/lib/coachPremiumAuth';
 import {
   coachFromFallback,
   fetchDailyCoachInsight,
   type DailyCoachContext,
 } from '@/lib/coachDailyServer';
 
-/** Daily AI coach insight — uses LLM when COACH_LLM_* env set; else rule keys from client. */
+/** Daily coach insight — cloud LLM is premium-only; rules/offline stay free. */
 export async function POST(request: NextRequest) {
   const ip =
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
@@ -30,6 +31,19 @@ export async function POST(request: NextRequest) {
     !body.fallback?.actionPath
   ) {
     return NextResponse.json({ error: 'Invalid context' }, { status: 400 });
+  }
+
+  const { premium } = await getCoachPremiumAccess(request);
+
+  if (!premium) {
+    const fb = coachFromFallback(body);
+    return NextResponse.json({
+      messageKey: fb.message,
+      actionLabelKey: fb.actionLabel,
+      actionPath: fb.actionPath,
+      source: 'rules' as const,
+      premiumRequired: true,
+    });
   }
 
   const result = await fetchDailyCoachInsight(body);

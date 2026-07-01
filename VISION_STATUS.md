@@ -61,8 +61,8 @@ Vision cannot land until the app is **public and installable**. Blocked on: beta
 ### 2. Live Super Bundle (Phase I1) — scaffold ready
 Vision’s sustainability model. **Shipped:** verified Stripe webhook + Checkout Session API + bundle UI wiring. **Remaining:** LLC + live Stripe keys in Vercel (`STRIPE_SECRET_KEY`, price IDs, `STRIPE_WEBHOOK_SECRET`); `DEMO_PREMIUM=false`.
 
-### 3. AI Coach v1 as premium Train (Phase I2)
-Vision explicitly positions Coach as premium. Today: free daily insight. Need: plan generator, fatigue-aware adjustments, bundle gate.
+### 3. AI Coach v1 as premium Train (Phase I2) — scaffold ready
+**Shipped:** Cloud LLM daily insight + `/api/coach/generate-plan` are premium-gated; rule-based insight and offline templates stay free. Builder includes Train Coach plan generator UI.
 
 ### 4. i18n body copy Tier 1 (Phase I4)
 Vision: “everyone, everywhere.” Today: language switch changes nav only. Need: Today, Fuel, Active, Welcome JSON per lang.

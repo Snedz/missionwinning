@@ -50,6 +50,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I2: Premium AI Train Coach
+
+**Build:** `2025.06-unified.51`
+
+### Shipped
+
+- **Premium gate** — cloud LLM daily insight requires Super Bundle; free tier keeps rules + offline coach
+- **Plan generator** — `POST /api/coach/generate-plan` (premium); LLM or rule fallback; exercise ID validation
+- **Builder UI** — `CoachPlanGeneratorPanel` on `/builder`; Today upsell link on Coach insight card
+- **Gate smoke** — generate-plan returns 403 without enrollment
+
+**Tests:** 164 passing
+
+---
+
 ## 2026-06-29 — Phase I1: Stripe Super Bundle scaffold
 
 **Build:** `2025.06-unified.50`
