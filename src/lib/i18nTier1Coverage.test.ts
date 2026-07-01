@@ -24,10 +24,22 @@ describe('i18n Tier 1 body coverage (Phase I4)', () => {
     assert.ok(enToday.coachPremiumUpsell);
   });
 
-  for (const lang of ['fr', 'de', 'pt'] as const) {
+  for (const lang of ['fr', 'de', 'pt', 'it', 'ja', 'ko', 'ru'] as const) {
     it(`${lang} today body ≥75% translated vs en`, () => {
       const ratio = translatedRatio(lang, todayStringsFor);
       assert.ok(ratio >= 0.75, `${lang} today ratio ${(ratio * 100).toFixed(1)}%`);
+    });
+  }
+
+  const germanMarkers = ['Schritt', 'Fortschritt', 'Einheiten', 'Gesundheitswerte', 'Rangliste'];
+  for (const lang of ['it', 'ja', 'ko', 'ru'] as const) {
+    it(`${lang} today body has no German string leakage`, () => {
+      const localized = todayStringsFor(lang);
+      const de = todayStringsFor('de');
+      const hits = Object.keys(localized).filter(
+        (k) => localized[k] === de[k] && germanMarkers.some((m) => de[k]?.includes(m)),
+      );
+      assert.equal(hits.length, 0, `${lang} inherits DE for: ${hits.slice(0, 5).join(', ')}`);
     });
   }
 

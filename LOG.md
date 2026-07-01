@@ -54,6 +54,21 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase I4: Tier 1 Today native IT/JA/KO/RU (complete)
+
+**Build:** `2025.06-unified.53`
+
+### Shipped
+
+- **Today hub** — full native body copy for IT, JA, KO, RU (126 keys each); no DE inheritance
+- **Generator** — `scripts/data/tier1TodayNative.mjs` + key-count validation in `generate-tier1-body.mjs`
+- **Tests** — ≥75% Today coverage for all Tier 1 langs; German leakage guard for IT/JA/KO/RU
+- **Locales** — regenerated `public/locales/*/today.json`
+
+**Tests:** 186 passing
+
+---
+
 ## 2026-06-29 — Phase I4: Tier 1 i18n body copy (partial)
 
 **Build:** `2025.06-unified.52`

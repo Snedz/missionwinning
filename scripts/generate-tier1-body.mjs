@@ -6,6 +6,7 @@
 import { writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { IT_TODAY, JA_TODAY, KO_TODAY, RU_TODAY } from './data/tier1TodayNative.mjs';
 
 /** ES today body keys (124 overrides) — baseline for romance langs + structure. */
 const ES_TODAY = {
@@ -473,56 +474,18 @@ const DE_TODAY = {
     'Ganzheitlicher Score — sechs Säulen. Super Bundle vertieft jede Route; der kostenlose Kern zählt für alle.',
 };
 
-// IT, KO, JA, RU — use dedicated objects (abbreviated in generator output)
-const IT_TODAY = { ...DE_TODAY,
-  todayBasicEncouragement: 'Un passo alla volta. Salute per tutti — allenati, nutri, muoviti e impara.',
-  todaySectionHealth: 'Punteggi salute',
-  todaySectionHealthDesc: 'Insight coach e ripartizione pilastri',
-  todayStartWorkout: 'Inizia allenamento di oggi',
-  todayCoachInsightTitle: 'Consiglio del coach',
-  coachPremiumUpsell: 'Sblocca AI Coach cloud con Super Bundle',
-  todayPillarTrain: 'Allenati', todayPillarFuel: 'Nutrizione', todayPillarMove: 'Muovi',
-  todayPillarMind: 'Mente', todayPillarTrack: 'Traccia', todayPillarLearn: 'Impara',
-  fuelTitle: 'Nutrizione',
-};
-
-const KO_TODAY = { ...DE_TODAY,
-  todayBasicEncouragement: '한 걸음씩. 모두를 위한 건강 — 훈련, 영양, 움직임, 학습을 이어가세요.',
-  todaySectionHealth: '건강 점수',
-  todaySectionHealthDesc: '코치 인사이트 및 기둥별 분석',
-  todayStartWorkout: '오늘 운동 시작',
-  todayCoachInsightTitle: '코치 인사이트',
-  coachPremiumUpsell: 'Super Bundle로 클라우드 AI 코치 잠금 해제',
-  todayPillarTrain: '운동', todayPillarFuel: '영양', todayPillarMove: '움직임',
-  todayPillarMind: '마음', todayPillarTrack: '기록', todayPillarLearn: '학습',
-  fuelTitle: '영양',
-};
-
-const JA_TODAY = { ...DE_TODAY,
-  todayBasicEncouragement: '一歩ずつ。すべての人の健康 — トレーニング、栄養、動き、学びを続けよう。',
-  todaySectionHealth: '健康スコア',
-  todaySectionHealthDesc: 'コーチの洞察とピラー内訳',
-  todayStartWorkout: '今日のワークアウトを開始',
-  todayCoachInsightTitle: 'コーチの洞察',
-  coachPremiumUpsell: 'Super BundleでクラウドAIコーチを解放',
-  todayPillarTrain: 'トレーニング', todayPillarFuel: '栄養', todayPillarMove: 'ムーブ',
-  todayPillarMind: 'マインド', todayPillarTrack: '記録', todayPillarLearn: 'ラーン',
-  fuelTitle: '栄養',
-};
-
-const RU_TODAY = { ...DE_TODAY,
-  todayBasicEncouragement: 'Шаг за шагом. Здоровье для всех — тренируйся, питайся, двигайся и учись.',
-  todaySectionHealth: 'Показатели здоровья',
-  todaySectionHealthDesc: 'Совет коуча и разбивка по столпам',
-  todayStartWorkout: 'Начать сегодняшнюю тренировку',
-  todayCoachInsightTitle: 'Совет коуча',
-  coachPremiumUpsell: 'Облачный AI-коуч с Super Bundle',
-  todayPillarTrain: 'Тренировка', todayPillarFuel: 'Питание', todayPillarMove: 'Движение',
-  todayPillarMind: 'Разум', todayPillarTrack: 'Трекинг', todayPillarLearn: 'Обучение',
-  fuelTitle: 'Питание',
-};
-
 const TIER1_TODAY = { fr: FR_TODAY, pt: PT_TODAY, de: DE_TODAY, it: IT_TODAY, ko: KO_TODAY, ja: JA_TODAY, ru: RU_TODAY };
+
+const deKeys = new Set(Object.keys(DE_TODAY));
+for (const [lang, body] of Object.entries(TIER1_TODAY)) {
+  const keys = Object.keys(body);
+  if (keys.length !== deKeys.size) {
+    throw new Error(`${lang} today has ${keys.length} keys, expected ${deKeys.size}`);
+  }
+  for (const k of deKeys) {
+    if (!(k in body)) throw new Error(`${lang} today missing key ${k}`);
+  }
+}
 
 function serialize(obj) {
   return JSON.stringify(obj, null, 2);
