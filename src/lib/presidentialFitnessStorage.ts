@@ -1,4 +1,5 @@
 import type { FitnessTestSession } from '@/lib/presidentialFitnessTest';
+import { schedulePftPush } from '@/lib/pftSync';
 
 const STORAGE_KEY = 'mw_pft_results';
 const YOUTH_KEY = 'mw_youth_mode';
@@ -22,6 +23,7 @@ export function saveFitnessTestSession(session: FitnessTestSession): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   localStorage.setItem('mw_pft_last_tier', session.overallTier);
   localStorage.setItem('mw_pft_last_at', session.completedAt);
+  schedulePftPush(session);
 }
 
 export function getLatestFitnessTestSession(): FitnessTestSession | null {
