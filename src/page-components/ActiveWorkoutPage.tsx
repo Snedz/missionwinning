@@ -66,6 +66,7 @@ export function ActiveWorkoutPage() {
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
   const logSetAndAdvance = useWorkoutStore((s) => s.logSetAndAdvance);
   const rateSet = useWorkoutStore((s) => s.rateSet);
+  const setSetKind = useWorkoutStore((s) => s.setSetKind);
   const addSetToExercise = useWorkoutStore((s) => s.addSetToExercise);
   const tickRestTimer = useWorkoutStore((s) => s.tickRestTimer);
   const stopRestTimer = useWorkoutStore((s) => s.stopRestTimer);
@@ -130,7 +131,8 @@ export function ActiveWorkoutPage() {
     const exercise = getExerciseById(activeWorkout!.exercises[exIdx].exerciseId);
     const restSec = exercise ? resolveRestSeconds(exercise.name) : 90;
     const exerciseId = activeWorkout!.exercises[exIdx].exerciseId;
-    const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory);
+    const setKind = set.kind ?? 'normal';
+    const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory, setKind);
 
     logSetAndAdvance(exIdx, setIdx, input.reps, input.weight);
     startRestTimer(restSec);
@@ -370,6 +372,7 @@ export function ActiveWorkoutPage() {
                         lastPerformance={lastPerf}
                         onRepsChange={(v) => updateSetInput(exIdx, setIdx, 'reps', v)}
                         onWeightChange={(v) => updateSetInput(exIdx, setIdx, 'weight', v)}
+                        onSetKindChange={(kind) => setSetKind(exIdx, setIdx, kind)}
                         onLog={() => handleLogSet(exIdx, setIdx)}
                         onRate={(rpe) => rateSet(exIdx, setIdx, rpe)}
                         onCopyLast={

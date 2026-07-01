@@ -44,6 +44,9 @@ type ActiveWorkoutStrings = {
   activePlateRemainder: string;
   activePlateApply: string;
   activeOpenPlateCalc: string;
+  activeSetNormal: string;
+  activeSetWarmup: string;
+  activeSetFailure: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -90,6 +93,9 @@ const en: ActiveWorkoutStrings = {
   activePlateRemainder: 'Cannot load exactly — {{remainder}}{{unit}} short',
   activePlateApply: 'Use {{weight}} {{unit}}',
   activeOpenPlateCalc: 'Plates',
+  activeSetNormal: 'Work',
+  activeSetWarmup: 'Warmup',
+  activeSetFailure: 'Failure',
 };
 
 const es: ActiveWorkoutStrings = {

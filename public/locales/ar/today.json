@@ -133,5 +133,10 @@
   "todaySectionJournal": "اليوميات",
   "todaySectionJournalDesc": "نشاط حديث عبر الأركان",
   "todayJournalEmpty": "لا سجلات بعد — تدرّب أو سجّل التغذية أو تحقّق في Mind.",
-  "todayJournalViewMind": "تسجيل تحقّق →"
+  "todayJournalViewMind": "تسجيل تحقّق →",
+  "todayQuickRankingsDesc": "نقاط المهمة والسلسلة",
+  "todayQuickHistoryDesc": "الحجم و1RM وخريطة العضلات",
+  "todayQuickBundleDesc": "ست ركائز، اشتراك واحد",
+  "todayQuickNightDesc": "جلسات 22:00–05:00",
+  "todayQuickDawnDesc": "جلسات 05:00–08:00"
 }

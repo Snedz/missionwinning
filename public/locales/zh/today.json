@@ -133,5 +133,10 @@
   "todaySectionJournal": "日志",
   "todaySectionJournalDesc": "各支柱近期活动",
   "todayJournalEmpty": "暂无记录 — 训练、记录营养或在 Mind 签到开始。",
-  "todayJournalViewMind": "记录签到 →"
+  "todayJournalViewMind": "记录签到 →",
+  "todayQuickRankingsDesc": "任务分数与连续记录",
+  "todayQuickHistoryDesc": "训练量、1RM 与肌肉图",
+  "todayQuickBundleDesc": "六大支柱，一次订阅",
+  "todayQuickNightDesc": "22:00–05:00 训练",
+  "todayQuickDawnDesc": "05:00–08:00 训练"
 }

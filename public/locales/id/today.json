@@ -133,5 +133,10 @@
   "todaySectionJournal": "Jurnal",
   "todaySectionJournalDesc": "Aktivitas terbaru lintas pilar",
   "todayJournalEmpty": "Belum ada log — latih, catat nutrisi, atau check-in di Mind.",
-  "todayJournalViewMind": "Catat check-in →"
+  "todayJournalViewMind": "Catat check-in →",
+  "todayQuickRankingsDesc": "Skor Misi & streak",
+  "todayQuickHistoryDesc": "Volume, 1RM & peta otot",
+  "todayQuickBundleDesc": "Enam pilar, satu langganan",
+  "todayQuickNightDesc": "Sesi 22:00–05:00",
+  "todayQuickDawnDesc": "Sesi 05:00–08:00"
 }

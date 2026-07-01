@@ -7,8 +7,10 @@ import type {
   CompletedWorkoutLog,
   LoggedSet,
   SavedWorkout,
+  SetKind,
   WorkoutExerciseTemplate,
 } from "@/types";
+import { countsTowardVolume } from "@/lib/setKind";
 import { saveWorkoutLog, getUserWorkoutHistory, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
@@ -46,6 +48,7 @@ interface WorkoutState {
     weight: number
   ) => { exerciseIndex: number; setIndex: number } | null;
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
+  setSetKind: (exerciseIndex: number, setIndex: number, kind: SetKind) => void;
   addSetToExercise: (exerciseIndex: number) => void;
   startRestTimer: (seconds?: number) => void;
   adjustRestTimer: (delta: number) => void;
@@ -63,6 +66,7 @@ function createLoggedSets(count: number, reps = 10, weight = 0): LoggedSet[] {
     reps,
     weight,
     completed: false,
+    kind: 'normal' as SetKind,
   }));
 }
 
@@ -144,7 +148,12 @@ export const useWorkoutStore = create<WorkoutState>()(
             exerciseId: ex.exerciseId,
             sets: ex.sets
               .filter((s) => s.completed)
-              .map((s) => ({ reps: s.reps, weight: s.weight, rpe: s.rpe })),
+              .map((s) => ({
+                reps: s.reps,
+                weight: s.weight,
+                kind: s.kind ?? 'normal',
+                rpe: s.rpe,
+              })),
           }))
           .filter((ex) => ex.sets.length > 0);
 
@@ -153,7 +162,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           return null;
         }
 
-        const allSets = exercises.flatMap((e) => e.sets);
+        const allSets = exercises.flatMap((e) => e.sets).filter((s) => countsTowardVolume(s.kind));
         const log: CompletedWorkoutLog = {
           id: `log-${Date.now()}`,
           workoutName: activeWorkout.workoutName,
@@ -226,6 +235,7 @@ export const useWorkoutStore = create<WorkoutState>()(
             weight,
             completed: true,
             rpe,
+            kind: sets[setIndex].kind ?? 'normal',
           };
           ex.sets = sets;
           exercises[exerciseIndex] = ex;
@@ -267,6 +277,23 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
+      setSetKind: (exerciseIndex, setIndex, kind) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = { ...exercises[exerciseIndex] };
+          const sets = [...ex.sets];
+          if (sets[setIndex] && !sets[setIndex].completed) {
+            sets[setIndex] = { ...sets[setIndex], kind };
+          }
+          ex.sets = sets;
+          exercises[exerciseIndex] = ex;
+          return {
+            activeWorkout: { ...s.activeWorkout, exercises },
+          };
+        });
+      },
+
       addSetToExercise: (exerciseIndex) => {
         set((s) => {
           if (!s.activeWorkout) return s;
@@ -282,6 +309,7 @@ export const useWorkoutStore = create<WorkoutState>()(
                 reps: lastSet?.reps ?? 10,
                 weight: lastSet?.weight ?? 0,
                 completed: false,
+                kind: lastSet?.kind ?? 'normal',
               },
             ],
           };

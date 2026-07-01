@@ -28,7 +28,7 @@ describe('workoutPr', () => {
     assert.equal(isPersonalRecord('bench-press', 8, 100, history), false);
   });
 
-  it('first logged set is a PR', () => {
-    assert.equal(isPersonalRecord('squat', 5, 80, history), true);
+  it('warmup sets do not trigger PR', () => {
+    assert.equal(isPersonalRecord('bench-press', 10, 120, history, 'warmup'), false);
   });
 });
