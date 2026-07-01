@@ -57,6 +57,16 @@
   html.text-scale-xl {
     font-size: 20px;
   }
+
+  [dir='rtl'] input:not([type='checkbox']):not([type='radio']),
+  [dir='rtl'] select,
+  [dir='rtl'] textarea {
+    text-align: right;
+  }
+
+  [dir='rtl'] .assessment-actions {
+    flex-direction: row-reverse;
+  }
 }
 
 @layer components {

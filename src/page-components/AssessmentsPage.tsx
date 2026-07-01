@@ -160,7 +160,7 @@ export function AssessmentsPage() {
             {questions.map((item, idx) => (
               <div key={idx} className="space-y-1">
                 <div className="text-sm font-medium">{item.q}</div>
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex gap-2 flex-wrap assessment-actions">
                   {(
                     [
                       { value: 'yes', label: t('assessYes', { defaultValue: 'Yes' }) },

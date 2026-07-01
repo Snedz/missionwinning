@@ -48,6 +48,21 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase H prep: launch readiness tooling
+
+**Build:** `2025.06-unified.49`
+
+### Shipped
+
+- **`launchReadiness.ts`** + `npm run phase-h-readiness` — static checklist (Phase J ✅, deploy blockers)
+- **[LAUNCH_DAY.md](LAUNCH_DAY.md)** — go-public sequence (env, deploy, PWA, rollback)
+- Gate smoke: `/privacy`, `/terms`, `/about`, `/manifest.json`
+- RTL form polish (ar) + assessment action row
+
+**Tests:** 149 passing
+
+---
+
 ## 2026-06-29 — Rural equity & connectivity plan (Phase J)
 
 **Doc:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)  

@@ -1,8 +1,8 @@
 # Pre-Launch Plan — Mission Winning
 
 **Purpose:** Single checklist before `PRIVATE_MODE=false` and public launch.  
-**Last updated:** 2026-06-29 (post Phase G PFT track, build `.45`)  
-**Vision alignment:** [VISION_STATUS.md](VISION_STATUS.md) · **Build phases:** [PLAN.md](PLAN.md)
+**Last updated:** 2026-06-29 (Phase J complete, build `.48`+)  
+**Vision alignment:** [VISION_STATUS.md](VISION_STATUS.md) · **Build phases:** [PLAN.md](PLAN.md) · **Launch day:** [LAUNCH_DAY.md](LAUNCH_DAY.md)
 
 ---
 
@@ -28,7 +28,9 @@
 | **Leaderboard** | ✅ | GT7-style scopes + 7 boards (incl. Presidential Fitness, night/dawn) |
 | **PFT / America track (Phase G)** | ✅ | `/america`, `/fitness-test`, school classes, teacher dashboard, youth consent |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, school/PFT tables |
-| **Build label** | ✅ | `2025.06-unified.45` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.48` on Profile footer |
+| **Phase J — Rural equity** | ✅ | Pathfinder, offline coach, IndexedDB outbox, Village Health Card — [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) |
+| **Launch readiness script** | ✅ | `npm run phase-h-readiness` |
 
 ### Open PR stack
 
@@ -166,7 +168,8 @@ See [PLAN.md](PLAN.md) Phase **H** (launch) and **I** (premium). Summary:
 | 2 | GitHub Secrets + **Sync Vercel env** ([ENV.md](ENV.md)) |
 | 3 | Run all Supabase migrations (incl. PFT/school) |
 | 4 | `npm run gate-smoke` on production URL |
-| 5 | Pass beta gates → `PRIVATE_MODE=false` + PWA enable |
+| 5 | `npm run phase-h-readiness` before merge |
+| 6 | Pass beta gates → `PRIVATE_MODE=false` + PWA enable ([LAUNCH_DAY.md](LAUNCH_DAY.md)) |
 
 ### After launch — Phase I (vision revenue + depth)
 
@@ -235,6 +238,8 @@ Verify tables: `profiles`, `workout_logs`, `nutrition_logs`, `enrollments`, `lea
 | [PLAN.md](PLAN.md) | Phase A–I roadmap |
 | [VISION_STATUS.md](VISION_STATUS.md) | Vision vs reality scorecard |
 | [LOG.md](LOG.md) | Shipped changelog |
+| [LAUNCH_DAY.md](LAUNCH_DAY.md) | Go-public sequence |
+| [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) | Phase J rural/offline plan |
 
 ---
 

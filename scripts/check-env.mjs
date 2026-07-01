@@ -20,6 +20,12 @@ const optional = [
   ['NEXT_PUBLIC_COUNCIL_STATUS', 'aspirational | pending | member'],
   ['NEXT_PUBLIC_SHOW_MAHA_COPY', 'true only after legal sign-off'],
   ['NEXT_PUBLIC_AMERICA_TRACK_ENABLED', 'false to hide /america PFT track'],
+  ['COACH_LLM_API_URL', 'Optional cloud coach — offline rules used when unset/offline'],
+];
+
+const launchHints = [
+  'Phase J shipped — Pathfinder, offline coach, IndexedDB outbox (see RURAL_EQUITY_PLAN.md)',
+  'Before public: npm run phase-h-readiness · LAUNCH_DAY.md',
 ];
 
 let ok = true;
@@ -54,6 +60,16 @@ if (
   process.env.NEXT_PUBLIC_SHOW_MAHA_COPY !== 'true'
 ) {
   console.log('  · COUNCIL_STATUS=member — MAHA copy still off (OK if intentional)');
+}
+
+for (const hint of launchHints) {
+  console.log(`  · ${hint}`);
+}
+
+if (process.env.PRIVATE_MODE === 'false') {
+  console.log('  ✓ PRIVATE_MODE=false — public + PWA enabled on next production build');
+} else if (process.env.PRIVATE_MODE === 'true') {
+  console.log('  · PRIVATE_MODE=true — gated; set false after beta gates (LAUNCH_DAY.md)');
 }
 
 console.log(ok ? '\nReady for private gated deploy.\n' : '\nFix the items above, then redeploy Vercel.\n');

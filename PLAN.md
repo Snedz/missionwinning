@@ -59,7 +59,7 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 
 ## Phase H — Launch & global accessibility ⬜
 
-*Formerly “Phase E” in older docs.* See [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) + [PROTECTION.md](PROTECTION.md).
+*Formerly “Phase E” in older docs.* See [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) · [LAUNCH_DAY.md](LAUNCH_DAY.md) · `npm run phase-h-readiness`
 
 ### Product gates (F4 / JOURNEY)
 

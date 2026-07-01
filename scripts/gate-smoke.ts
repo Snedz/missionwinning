@@ -141,6 +141,30 @@ async function main() {
     checks.push({ name: 'GET /private', ok: false, detail: String(e) });
   }
 
+  for (const path of ['/privacy', '/terms', '/about']) {
+    try {
+      const res = await headOrGet(path);
+      checks.push({
+        name: `GET ${path} (public legal/info)`,
+        ok: res.status === 200,
+        detail: `status ${res.status}`,
+      });
+    } catch (e) {
+      checks.push({ name: `GET ${path}`, ok: false, detail: String(e) });
+    }
+  }
+
+  try {
+    const manifest = await headOrGet('/manifest.json');
+    checks.push({
+      name: 'GET /manifest.json',
+      ok: manifest.status === 200,
+      detail: `status ${manifest.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /manifest.json', ok: false, detail: String(e) });
+  }
+
   try {
     const america = await headOrGet('/america', { redirect: 'manual' });
     const americaOk = america.status === 200;
