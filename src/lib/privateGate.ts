@@ -19,6 +19,7 @@ export const PUBLIC_PATHS_WHILE_GATED = [
   '/privacy',
   '/terms',
   '/about',
+  '/america',
   '/auth/callback',
 ] as const;
 
