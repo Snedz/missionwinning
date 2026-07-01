@@ -1,5 +1,7 @@
 /** Learn pillar UI chrome — merged into i18n `common` namespace. */
 
+import { learnContentStringsFor } from './learnContentLocales';
+
 type LearnStrings = {
   learnTitle: string;
   learnSubtitle: string;
@@ -63,8 +65,9 @@ const ar: LearnStrings = {
 
 const LOCALES: Partial<Record<string, LearnStrings>> = { en, es, zh, id, th, ar };
 
-export function learnStringsFor(lang: string): LearnStrings {
-  return LOCALES[lang.split('-')[0]] ?? en;
+export function learnStringsFor(lang: string): LearnStrings & Record<string, string> {
+  const ui = LOCALES[lang.split('-')[0]] ?? en;
+  return { ...ui, ...learnContentStringsFor(lang) };
 }
 
 export function mergeLearnStrings(target: Record<string, string>, lang: string): void {
