@@ -14,8 +14,8 @@ describe('deployReadiness', () => {
 
   it('report includes locale export plan', () => {
     const r = getDeployReadinessReport();
-    assert.equal(r.localeFiles, 78);
-    assert.equal(r.localeNamespaces, 13);
+    assert.equal(r.localeFiles, 84);
+    assert.equal(r.localeNamespaces, 14);
     assert.ok(r.minTodayKeys >= 100);
   });
 

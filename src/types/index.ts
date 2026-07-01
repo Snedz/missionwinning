@@ -56,6 +56,8 @@ export interface LoggedSet {
 export interface ActiveExerciseLog {
   exerciseId: string;
   sets: LoggedSet[];
+  /** Shared id — exercises in the same group are supersetted (minimal rest between). */
+  supersetGroup?: string;
 }
 
 export interface ActiveWorkout {

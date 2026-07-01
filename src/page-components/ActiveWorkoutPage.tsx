@@ -27,6 +27,7 @@ import { SetLogRow } from '@/components/workout/SetLogRow';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { resolveRestSeconds } from '@/lib/restTimer';
 import { isPersonalRecord } from '@/lib/workoutPr';
+import { shouldRestAfterLog, supersetLabel } from '@/lib/superset';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -67,6 +68,8 @@ export function ActiveWorkoutPage() {
   const logSetAndAdvance = useWorkoutStore((s) => s.logSetAndAdvance);
   const rateSet = useWorkoutStore((s) => s.rateSet);
   const setSetKind = useWorkoutStore((s) => s.setSetKind);
+  const toggleSupersetWithNext = useWorkoutStore((s) => s.toggleSupersetWithNext);
+  const unlinkSuperset = useWorkoutStore((s) => s.unlinkSuperset);
   const addSetToExercise = useWorkoutStore((s) => s.addSetToExercise);
   const tickRestTimer = useWorkoutStore((s) => s.tickRestTimer);
   const stopRestTimer = useWorkoutStore((s) => s.stopRestTimer);
@@ -134,8 +137,12 @@ export function ActiveWorkoutPage() {
     const setKind = set.kind ?? 'normal';
     const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory, setKind);
 
-    logSetAndAdvance(exIdx, setIdx, input.reps, input.weight);
-    startRestTimer(restSec);
+    const next = logSetAndAdvance(exIdx, setIdx, input.reps, input.weight);
+    const updatedExercises = useWorkoutStore.getState().activeWorkout?.exercises ?? activeWorkout!.exercises;
+    const takeRest = shouldRestAfterLog(updatedExercises, exIdx, setIdx, next);
+    if (takeRest) {
+      startRestTimer(restSec);
+    }
 
     if (isPr) {
       toast({
@@ -146,6 +153,15 @@ export function ActiveWorkoutPage() {
           defaultValue: `${input.reps} × ${input.weight} — personal best for this exercise`,
         }),
         className: 'border-fitness-gold/40 bg-amber-950/30',
+      });
+    } else if (next && !takeRest) {
+      toast({
+        title: t('activeSetLogged', { defaultValue: 'Set logged!' }),
+        description: t('activeSetLoggedSuperset', {
+          reps: input.reps,
+          weight: input.weight,
+          defaultValue: `${input.reps} × ${input.weight} — next exercise in superset`,
+        }),
       });
     } else {
       toast({
@@ -321,10 +337,23 @@ export function ActiveWorkoutPage() {
           const hasCompleted = exLog.sets.some((s) => s.completed);
           const restSec = resolveRestSeconds(exercise.name);
 
+          const ssLabel = supersetLabel(activeWorkout.exercises, exIdx);
+          const hasNext = exIdx < activeWorkout.exercises.length - 1;
+
           return (
-            <Card key={`${exLog.exerciseId}-${exIdx}`}>
+            <Card
+              key={`${exLog.exerciseId}-${exIdx}`}
+              className={ssLabel ? 'border-violet-500/30' : undefined}
+            >
               <CardHeader>
-                <CardTitle className="text-lg">{exercise.name}</CardTitle>
+                <CardTitle className="text-lg flex flex-wrap items-center gap-2">
+                  {exercise.name}
+                  {ssLabel && (
+                    <Badge variant="outline" className="text-[10px] uppercase border-violet-500/40 text-violet-300">
+                      {ssLabel}
+                    </Badge>
+                  )}
+                </CardTitle>
                 <CardDescription className="flex gap-1 flex-wrap">
                   {exercise.muscleGroups.map((mg) => (
                     <Badge key={mg} variant="muscle">
@@ -348,6 +377,26 @@ export function ActiveWorkoutPage() {
                       onClick={() => setFormGuideId(exercise.id)}
                     >
                       {t('activeFormGuide', { defaultValue: 'Form guide' })}
+                    </Button>
+                  )}
+                  {hasNext && !exLog.supersetGroup && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => toggleSupersetWithNext(exIdx)}
+                    >
+                      {t('activeSupersetLink', { defaultValue: 'Superset w/ next' })}
+                    </Button>
+                  )}
+                  {exLog.supersetGroup && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => unlinkSuperset(exIdx)}
+                    >
+                      {t('activeSupersetUnlink', { defaultValue: 'Unlink superset' })}
                     </Button>
                   )}
                 </div>
