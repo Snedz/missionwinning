@@ -9,7 +9,10 @@
     "lint": "next lint",
     "test": "tsx --test src/lib/**/*.test.ts",
     "export-locales": "tsx scripts/export-locale-json.ts",
-    "check-env": "node --env-file=.env.local scripts/check-env.mjs"
+    "check-env": "node --env-file=.env.local scripts/check-env.mjs",
+    "predeploy": "tsx scripts/pre-deploy-smoke.ts",
+    "gate-smoke": "tsx scripts/gate-smoke.ts",
+    "print-beta-invite": "node --env-file=.env.local scripts/print-beta-invite.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",

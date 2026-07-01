@@ -62,7 +62,7 @@ export function BetaStartPage() {
           </div>
           <ul className="text-sm text-white/75 space-y-1.5 list-disc list-inside">
             <li>Finish I-Day and at least one workout this week</li>
-            <li>Try Simple mode first — switch to Pro on Profile if you want the full Today view</li>
+            <li>Try journey phases on Today — dashboard unlocks as you progress (readiness → commissioned)</li>
             <li>Report anything confusing via Profile → feedback or reply to your invite email</li>
           </ul>
         </div>
