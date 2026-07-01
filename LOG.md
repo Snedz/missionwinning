@@ -52,6 +52,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I4: Tier 1 i18n body copy (partial)
+
+**Build:** `2025.06-unified.52`
+
+### Shipped
+
+- **Today hub** — FR/DE/PT ~79% body vs EN (`tier1BodyPack.ts`); ES unchanged; coach premium upsell i18n
+- **Welcome / Fuel / Active** — full Welcome + partial Fuel/Active for FR, PT, DE, IT, KO, JA, RU
+- **Export** — `EXPORT_LANGS` + Tier 1 langs in `public/locales/` (195 JSON files)
+- **Coverage tests** — `i18nTier1Coverage.test.ts`; `node scripts/generate-tier1-body.mjs`
+
+**Tests:** 178 passing
+
+---
+
 ## 2026-06-29 — Phase I2: Premium AI Train Coach
 
 **Build:** `2025.06-unified.51`

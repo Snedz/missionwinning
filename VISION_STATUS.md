@@ -64,8 +64,8 @@ Vision’s sustainability model. **Shipped:** verified Stripe webhook + Checkout
 ### 3. AI Coach v1 as premium Train (Phase I2) — scaffold ready
 **Shipped:** Cloud LLM daily insight + `/api/coach/generate-plan` are premium-gated; rule-based insight and offline templates stay free. Builder includes Train Coach plan generator UI.
 
-### 4. i18n body copy Tier 1 (Phase I4)
-Vision: “everyone, everywhere.” Today: language switch changes nav only. Need: Today, Fuel, Active, Welcome JSON per lang.
+### 4. i18n body copy Tier 1 (Phase I4) — in progress
+**Shipped:** Welcome + Fuel + Active body for FR, PT, DE, IT, KO, JA, RU; Today hub ~79% translated for FR/DE/PT (ES already complete). Locale JSON export expanded to 13 langs. **Remaining:** deepen JA/IT/KO/RU Today body; Tier 2 expansion.
 
 ### 5. One premium pillar MVP (Phase I3)
 Prove bundle value: pick **Track GPS**, **Mind audio**, or **Move video** — replace Unlock placeholder with real depth.

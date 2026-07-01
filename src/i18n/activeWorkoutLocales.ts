@@ -1,5 +1,7 @@
 /** Active workout / rest timer copy — merged into i18n `common` namespace. */
 
+import { tier1ActiveBody } from './tier1WelcomeFuelActive';
+
 type ActiveWorkoutStrings = {
   activeNoWorkout: string;
   activeNoWorkoutDesc: string;
@@ -162,7 +164,7 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = { en, es, zh, id,
 
 export function activeWorkoutStringsFor(lang: string): ActiveWorkoutStrings {
   const code = lang.split('-')[0];
-  return LOCALES[code] ?? en;
+  return { ...en, ...(tier1ActiveBody(lang) ?? {}), ...(LOCALES[code] ?? {}) };
 }
 
 export function mergeActiveWorkoutStrings(target: Record<string, string>, lang: string): void {

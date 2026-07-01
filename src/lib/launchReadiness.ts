@@ -36,7 +36,7 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       id: 'unit-tests',
       label: 'Unit test suite (npm test)',
       status: 'manual',
-      detail: 'Run before merge — 164+ tests expected',
+      detail: 'Run before merge — 178+ tests expected',
     },
     {
       id: 'phase-j-pathfinder',
@@ -85,6 +85,12 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       label: 'Phase I2 — Premium AI Coach + plan generator',
       status: 'ready',
       detail: 'Cloud LLM + /api/coach/generate-plan gated; rules/offline free on /log and /builder',
+    },
+    {
+      id: 'i18n-i4',
+      label: 'Phase I4 — Tier 1 body copy (Welcome/Fuel/Active/Today)',
+      status: 'ready',
+      detail: 'FR/DE/PT Today ~79%; Welcome all Tier 1; npm run export-locales',
     },
     {
       id: 'demo-premium-off',

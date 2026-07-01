@@ -114,6 +114,17 @@
   "coachInsightNeedFuel": "训练很猛但蛋白质不足。今天记录饮食以恢复和增长。",
   "coachInsightNeedMind": "恢复压力较大。简短的正念练习有助于睡眠和坚持。",
   "coachInsightSynergyMove": "训练周表现不错——配合灵活性训练持续进步。",
+  "coachInsightOfflinePathfinder": "Pathfinder track — gentle movement only today. Your offline plan is ready on Builder.",
+  "coachInsightOfflineFirstWin": "No workouts logged yet this week. One bodyweight session counts as a win — works offline.",
+  "coachInsightOfflineBwPush": "Offline day — push strength with bodyweight. Your cached 4-week plan is one tap away.",
+  "coachInsightOfflineBwMobility": "Offline day — protect joints with a mobility flow before your next hard session.",
+  "coachInsightOfflineBwFull": "Offline day — full-body bodyweight circuit. No gym or signal required.",
+  "coachInsightOfflineBwMind": "Offline day — recovery and breath build the path. Try a short Mind session.",
+  "coachInsightOfflineBwLower": "Offline day — legs and core from home. Start a quick session now.",
+  "coachInsightOfflineBwActive": "Offline day — load your cached plan and log a win locally.",
+  "coachInsightOfflineBwRest": "Offline rest day — light Mind or mobility keeps the streak alive without strain.",
+  "coachActionOfflinePlan": "Open offline plan",
+  "coachOfflineBadge": "Offline",
   "coachActionRecoveryFlow": "恢复流程",
   "coachActionOpenMove": "打开活动支柱",
   "coachActionOpenMind": "打开心智支柱",
@@ -144,5 +155,6 @@
   "todayQuickHistoryDesc": "训练量、1RM 与肌肉图",
   "todayQuickBundleDesc": "六大支柱，一次订阅",
   "todayQuickNightDesc": "22:00–05:00 训练",
-  "todayQuickDawnDesc": "05:00–08:00 训练"
+  "todayQuickDawnDesc": "05:00–08:00 训练",
+  "coachPremiumUpsell": "Unlock cloud AI Coach with Super Bundle"
 }

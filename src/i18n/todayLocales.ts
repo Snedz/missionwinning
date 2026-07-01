@@ -1,5 +1,7 @@
 /** Today hub UI copy — merged into i18n `common` namespace. */
 
+import { tier1TodayBody } from './tier1BodyPack';
+
 type TodayStrings = {
   todayBasicEncouragement: string;
   todaySectionHealth: string;
@@ -106,6 +108,7 @@ type TodayStrings = {
   todayMissionScoreDesc: string;
   todayCoachInsightTitle: string;
   todayCoachInsightDesc: string;
+  coachPremiumUpsell: string;
   coachInsightHighRisk: string;
   coachInsightHighStrain: string;
   coachInsightPrimed: string;
@@ -342,6 +345,7 @@ const en: TodayStrings = {
   todayQuickBundleDesc: 'All six pillars, one subscription',
   todayQuickNightDesc: '22:00–05:00 sessions',
   todayQuickDawnDesc: '05:00–08:00 sessions',
+  coachPremiumUpsell: 'Unlock cloud AI Coach with Super Bundle',
 };
 
 const es: Partial<TodayStrings> = {
@@ -465,6 +469,7 @@ const es: Partial<TodayStrings> = {
     'La recuperación está bajo estrés. Una sesión Mind breve ayuda al sueño y la constancia.',
   coachInsightSynergyMove:
     'Semana de entreno sólida — combínala con movilidad para seguir progresando.',
+  coachPremiumUpsell: 'Desbloquea AI Coach en la nube con Super Bundle',
   coachActionRecoveryFlow: 'Flujo de recuperación',
   coachActionOpenMove: 'Abrir pilar Move',
   coachActionOpenMind: 'Abrir pilar Mind',
@@ -1098,7 +1103,7 @@ const LOCALES: Partial<Record<string, Partial<TodayStrings>>> = { en, es, zh, id
 
 export function todayStringsFor(lang: string): TodayStrings {
   const code = lang.split('-')[0];
-  return { ...en, ...(LOCALES[code] ?? {}) };
+  return { ...en, ...(tier1TodayBody(lang) ?? {}), ...(LOCALES[code] ?? {}) };
 }
 
 export function mergeTodayStrings(target: Record<string, string>, lang: string): void {

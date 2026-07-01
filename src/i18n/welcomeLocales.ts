@@ -1,5 +1,7 @@
 /** Welcome / I-Day onboarding copy — merged into i18n `common` namespace. */
 
+import { tier1WelcomeBody } from './tier1WelcomeFuelActive';
+
 export type WelcomeLang = string;
 
 type WelcomeStrings = {
@@ -269,7 +271,7 @@ const LOCALES: Partial<Record<string, WelcomeStrings>> = { en, zh, id, th, es, a
 
 export function welcomeStringsFor(lang: string): WelcomeStrings {
   const code = lang.split('-')[0];
-  return LOCALES[code] ?? en;
+  return { ...en, ...(tier1WelcomeBody(lang) ?? {}), ...(LOCALES[code] ?? {}) };
 }
 
 export function mergeWelcomeStrings(
