@@ -30,5 +30,16 @@
   "fuelPremiumRecipesTitle": "高级食谱与餐点 (Super Bundle)",
   "fuelPremiumLockedTitle": "+{{count}} 高级食谱",
   "fuelPremiumLockedBody": "通过 Super Bundle 解锁完整 Fuel 食谱库、用餐时机与高级宏量指导。",
-  "fuelExploreBundle": "了解 Super Bundle"
+  "fuelExploreBundle": "了解 Super Bundle",
+  "fuelLogFab": "Log food",
+  "fuelLogSheetTitle": "Log to Fuel",
+  "fuelTabQuick": "Quick",
+  "fuelTabCustom": "Custom",
+  "fuelTabPhoto": "Photo",
+  "fuelMealBreakfast": "Breakfast",
+  "fuelMealLunch": "Lunch",
+  "fuelMealDinner": "Dinner",
+  "fuelMealSnack": "Snack",
+  "fuelMealOther": "Other",
+  "fuelLogStreak": "{{count}}-day log streak"
 }

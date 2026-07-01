@@ -30,5 +30,16 @@
   "fuelPremiumRecipesTitle": "สูตรพรีเมียม (Super Bundle)",
   "fuelPremiumLockedTitle": "+{{count}} สูตรพรีเมียม",
   "fuelPremiumLockedBody": "ปลดล็อกไลบรารี Fuel เต็มและโค้ชมาโครขั้นสูงผ่าน Super Bundle",
-  "fuelExploreBundle": "ดู Super Bundle"
+  "fuelExploreBundle": "ดู Super Bundle",
+  "fuelLogFab": "Log food",
+  "fuelLogSheetTitle": "Log to Fuel",
+  "fuelTabQuick": "Quick",
+  "fuelTabCustom": "Custom",
+  "fuelTabPhoto": "Photo",
+  "fuelMealBreakfast": "Breakfast",
+  "fuelMealLunch": "Lunch",
+  "fuelMealDinner": "Dinner",
+  "fuelMealSnack": "Snack",
+  "fuelMealOther": "Other",
+  "fuelLogStreak": "{{count}}-day log streak"
 }

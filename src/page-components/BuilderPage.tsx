@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from "react";
-import { Layers, Plus, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Layers, PenTool, Plus, Trash2 } from "lucide-react";
 import {
   ProgramTemplatesPanel,
   TEMPLATE_PROGRAM_COUNT,
@@ -45,13 +46,16 @@ import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { useWorkoutStore } from "@/store/workoutStore";
 import type { WorkoutExerciseTemplate } from "@/types";
 import { usePremium } from "@/hooks/usePremium";
+import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
+import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 
 interface DraftExercise extends WorkoutExerciseTemplate {
   key: string;
 }
 
 export function BuilderPage() {
+  const { t } = useTranslation();
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const addSavedWorkout = useWorkoutStore((s) => s.addSavedWorkout);
   const deleteSavedWorkout = useWorkoutStore((s) => s.deleteSavedWorkout);
@@ -63,6 +67,8 @@ export function BuilderPage() {
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
   const [detailProgram, setDetailProgram] = useState<ProgramTemplate | null>(null);
   const { premium } = usePremium();
+  const units = useUnits();
+  const unitLabel = weightUnitLabel(units);
   const [templateCategory, setTemplateCategory] = useState<ProgramCategory>("beginner");
 
   const loadSession = (program: ProgramTemplate, session: ProgramSession) => {
@@ -71,8 +77,11 @@ export function BuilderPage() {
     setSessionNotes(draft.notes ?? "");
     setExercises(draft.exercises);
     toast({
-      title: "Template loaded",
-      description: `${session.name} — adjust weights and save or start.`,
+      title: t('builderTemplateLoaded', { defaultValue: 'Template loaded' }),
+      description: t('builderTemplateLoadedDesc', {
+        session: session.name,
+        defaultValue: `${session.name} — adjust weights and save or start.`,
+      }),
     });
   };
 
@@ -84,15 +93,23 @@ export function BuilderPage() {
       });
     });
     toast({
-      title: "Cycle saved",
-      description: `${program.sessions.length} workouts added to saved list.`,
+      title: t('builderCycleSaved', { defaultValue: 'Cycle saved' }),
+      description: t('builderCycleSavedDesc', {
+        count: program.sessions.length,
+        defaultValue: `${program.sessions.length} workouts added to saved list.`,
+      }),
     });
   };
 
   const addExercise = () => {
     if (!selectedExerciseId) return;
     if (exercises.some((e) => e.exerciseId === selectedExerciseId)) {
-      toast({ title: "Already added", description: "This exercise is in the workout." });
+      toast({
+        title: t('builderAlreadyAdded', { defaultValue: 'Already added' }),
+        description: t('builderAlreadyAddedDesc', {
+          defaultValue: 'This exercise is in the workout.',
+        }),
+      });
       return;
     }
     setExercises([
@@ -151,18 +168,32 @@ export function BuilderPage() {
 
   const handleSave = () => {
     if (!workoutName.trim()) {
-      toast({ title: "Name required", description: "Give your workout a name.", variant: "destructive" });
+      toast({
+        title: t('builderNameRequired', { defaultValue: 'Name required' }),
+        description: t('builderNameRequiredDesc', { defaultValue: 'Give your workout a name.' }),
+        variant: "destructive",
+      });
       return;
     }
     if (exercises.length === 0) {
-      toast({ title: "Add exercises", description: "Add at least one exercise.", variant: "destructive" });
+      toast({
+        title: t('builderAddExercises', { defaultValue: 'Add exercises' }),
+        description: t('builderAddExercisesDesc', { defaultValue: 'Add at least one exercise.' }),
+        variant: "destructive",
+      });
       return;
     }
     addSavedWorkout({
       name: workoutName.trim(),
       exercises: exercises.map(({ exerciseId, sets }) => ({ exerciseId, sets })),
     });
-    toast({ title: "Workout saved", description: `"${workoutName}" is ready to use.` });
+    toast({
+      title: t('builderWorkoutSaved', { defaultValue: 'Workout saved' }),
+      description: t('builderWorkoutSavedDesc', {
+        name: workoutName,
+        defaultValue: `"${workoutName}" is ready to use.`,
+      }),
+    });
     setWorkoutName("");
     setSessionNotes("");
     setExercises([]);
@@ -170,26 +201,26 @@ export function BuilderPage() {
 
   const handleStart = () => {
     if (!workoutName.trim() || exercises.length === 0) {
-      toast({ title: "Incomplete workout", variant: "destructive" });
+      toast({ title: t('builderIncomplete', { defaultValue: 'Incomplete workout' }), variant: "destructive" });
       return;
     }
     startWorkout(
       workoutName.trim(),
       exercises.map(({ exerciseId, sets }) => ({ exerciseId, sets }))
     );
-    toast({ title: "Workout started!" });
+    toast({ title: t('builderStarted', { defaultValue: 'Workout started!' }) });
   };
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Workout Builder</h2>
-        <p className="mt-1 text-muted-foreground">
-          Use the <strong className="text-foreground">Beginner</strong>,{" "}
-          <strong className="text-foreground">Advanced</strong>, or{" "}
-          <strong className="text-foreground">Pro</strong> tabs below, then click Load on a session. {premium ? "All unlocked." : "Premium unlocks bodybuilding, corrective & conditioning specialist programs."}
-        </p>
-      </div>
+      <PillarPageHeader
+        icon={PenTool}
+        title={t('builderTitle', { defaultValue: 'Workout Builder' })}
+        subtitle={t('builderSubtitle', {
+          defaultValue:
+            'Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.',
+        })}
+      />
 
       <section
         id="program-templates"
@@ -198,10 +229,19 @@ export function BuilderPage() {
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-xl font-bold flex items-center gap-2">
             <Layers className="h-6 w-6 text-primary" />
-            Program Templates
+            {t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}
           </h3>
-          <Badge variant="secondary">{TEMPLATE_PROGRAM_COUNT} programs</Badge>
-          <span className="text-xs text-emerald-400">Includes new free bodyweight + mobility circuits (vision core)</span>
+          <Badge variant="secondary">
+            {t('builderProgramCount', {
+              count: TEMPLATE_PROGRAM_COUNT,
+              defaultValue: `${TEMPLATE_PROGRAM_COUNT} programs`,
+            })}
+          </Badge>
+          <span className="text-xs text-emerald-400">
+            {t('builderTemplatesFoot', {
+              defaultValue: 'Includes new free bodyweight + mobility circuits (vision core)',
+            })}
+          </span>
         </div>
 
         <Tabs
@@ -210,13 +250,13 @@ export function BuilderPage() {
         >
           <TabsList className="grid w-full grid-cols-3 h-12">
             <TabsTrigger value="beginner" className="text-base font-semibold">
-              Beginner
+              {t('builderTabBeginner', { defaultValue: 'Beginner' })}
             </TabsTrigger>
             <TabsTrigger value="advanced" className="text-base font-semibold">
-              Advanced
+              {t('builderTabAdvanced', { defaultValue: 'Advanced' })}
             </TabsTrigger>
             <TabsTrigger value="pro" className="text-base font-semibold">
-              Pro
+              {t('builderTabPro', { defaultValue: 'Pro' })}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -231,15 +271,19 @@ export function BuilderPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>New Workout</CardTitle>
-          <CardDescription>Pick exercises and configure sets</CardDescription>
+          <CardTitle>{t('builderNewWorkout', { defaultValue: 'New Workout' })}</CardTitle>
+          <CardDescription>
+            {t('builderNewWorkoutDesc', { defaultValue: 'Pick exercises and configure sets' })}
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="workout-name">Workout Name</Label>
+            <Label htmlFor="workout-name">
+              {t('builderWorkoutName', { defaultValue: 'Workout name' })}
+            </Label>
             <Input
               id="workout-name"
-              placeholder="e.g. Push Day A"
+              placeholder={t('builderWorkoutNamePlaceholder', { defaultValue: 'e.g. Push Day A' })}
               value={workoutName}
               onChange={(e) => setWorkoutName(e.target.value)}
             />
@@ -247,7 +291,9 @@ export function BuilderPage() {
 
           {sessionNotes && (
             <div className="rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">Program notes: </span>
+              <span className="font-medium text-foreground">
+                {t('builderProgramNotes', { defaultValue: 'Program notes:' })}{' '}
+              </span>
               {sessionNotes}
             </div>
           )}
@@ -255,7 +301,9 @@ export function BuilderPage() {
           <div className="flex gap-2">
             <Select value={selectedExerciseId} onValueChange={setSelectedExerciseId}>
               <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Select exercise..." />
+                <SelectValue
+                  placeholder={t('builderSelectExercise', { defaultValue: 'Select exercise…' })}
+                />
               </SelectTrigger>
               <SelectContent>
                 {EXERCISES.map((ex) => (
@@ -267,7 +315,7 @@ export function BuilderPage() {
             </Select>
             <Button onClick={addExercise} disabled={!selectedExerciseId}>
               <Plus className="h-4 w-4" />
-              Add
+              {t('builderAdd', { defaultValue: 'Add' })}
             </Button>
           </div>
 
@@ -280,7 +328,11 @@ export function BuilderPage() {
               const mobilityIds = ["cat-camel", "bird-dog", "glute-bridge", "couch-stretch", "bear-crawl"];
               const toAdd = mobilityIds.filter(id => !exercises.some(e => e.exerciseId === id));
               if (toAdd.length === 0) {
-                alert("Mobility warm-up already in session.");
+                toast({
+                  title: t('builderMobilityAlready', {
+                    defaultValue: 'Mobility warm-up already in session.',
+                  }),
+                });
                 return;
               }
               setExercises([
@@ -293,16 +345,22 @@ export function BuilderPage() {
               ]);
             }}
           >
-            + Quick Add Free Mobility Warm-up (5 moves)
+            {t('builderQuickMobility', {
+              defaultValue: '+ Quick Add Free Mobility Warm-up (5 moves)',
+            })}
           </Button>
           <Button
             variant="ghost"
             size="sm"
             className="text-xs ml-2"
             onClick={() => {
-              // Quick load a free core mobility/habit template
-              setWorkoutName("Daily Habit Stack (Free)");
-              setSessionNotes("Vision-aligned free core: mobility + consistency. Log in Nutrition too.");
+              setWorkoutName(t('builderHabitStackName', { defaultValue: 'Daily Habit Stack (Free)' }));
+              setSessionNotes(
+                t('builderHabitStackNotes', {
+                  defaultValue:
+                    'Vision-aligned free core: mobility + consistency. Log in Nutrition too.',
+                })
+              );
               setExercises([
                 { key: `ex-${Date.now()}-1`, exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },
                 { key: `ex-${Date.now()}-2`, exerciseId: "bird-dog", sets: [{ reps: 6, weight: 0 }] },
@@ -312,7 +370,7 @@ export function BuilderPage() {
               ]);
             }}
           >
-            Load Free Habit/Mobility Stack
+            {t('builderLoadHabitStack', { defaultValue: 'Load Free Habit/Mobility Stack' })}
           </Button>
 
           {exercises.map((ex) => {
@@ -339,9 +397,16 @@ export function BuilderPage() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="w-16">Set</TableHead>
-                        <TableHead>Reps</TableHead>
-                        <TableHead>Weight (lbs)</TableHead>
+                        <TableHead className="w-16">
+                          {t('builderTableSet', { defaultValue: 'Set' })}
+                        </TableHead>
+                        <TableHead>{t('builderTableReps', { defaultValue: 'Reps' })}</TableHead>
+                        <TableHead>
+                          {t('builderTableWeight', {
+                            unit: unitLabel,
+                            defaultValue: `Weight (${unitLabel})`,
+                          })}
+                        </TableHead>
                         <TableHead className="w-12" />
                       </TableRow>
                     </TableHeader>
@@ -388,7 +453,8 @@ export function BuilderPage() {
                     </TableBody>
                   </Table>
                   <Button variant="outline" size="sm" onClick={() => addSet(ex.key)}>
-                    <Plus className="h-3 w-3 mr-1" /> Add Set
+                    <Plus className="h-3 w-3 mr-1" />{' '}
+                    {t('builderAddSet', { defaultValue: 'Add Set' })}
                   </Button>
                 </CardContent>
               </Card>
@@ -397,10 +463,10 @@ export function BuilderPage() {
 
           <div className="flex gap-2 pt-2">
             <Button variant="fitness" onClick={handleSave}>
-              Save Workout
+              {t('builderSaveWorkout', { defaultValue: 'Save workout' })}
             </Button>
             <Button variant="secondary" onClick={handleStart}>
-              Start Now
+              {t('builderStartWorkout', { defaultValue: 'Start workout' })}
             </Button>
           </div>
         </CardContent>
@@ -408,7 +474,9 @@ export function BuilderPage() {
 
       {savedWorkouts.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold mb-3">Saved Workouts</h3>
+          <h3 className="text-lg font-semibold mb-3">
+            {t('builderSavedTitle', { defaultValue: 'Saved workouts' })}
+          </h3>
           <div className="grid gap-3">
             {savedWorkouts.map((w) => (
               <Card key={w.id}>
@@ -416,7 +484,11 @@ export function BuilderPage() {
                   <div>
                     <p className="font-medium">{w.name}</p>
                     <p className="text-sm text-muted-foreground">
-                      {w.exercises.length} exercises · {new Date(w.createdAt).toLocaleDateString()}
+                      {t('builderSavedMeta', {
+                        count: w.exercises.length,
+                        date: new Date(w.createdAt).toLocaleDateString(),
+                        defaultValue: `${w.exercises.length} exercises · ${new Date(w.createdAt).toLocaleDateString()}`,
+                      })}
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -425,7 +497,7 @@ export function BuilderPage() {
                       variant="fitness"
                       onClick={() => startWorkout(w.name, w.exercises, w.id)}
                     >
-                      Start
+                      {t('builderStartWorkout', { defaultValue: 'Start workout' })}
                     </Button>
                     <Button
                       size="sm"
@@ -453,10 +525,10 @@ export function BuilderPage() {
               <div className="flex flex-wrap gap-2 mb-4">
                 <Badge variant="outline">
                   {detailProgram.category === "beginner"
-                    ? "Beginner"
+                    ? t('builderTabBeginner', { defaultValue: 'Beginner' })
                     : detailProgram.category === "advanced"
-                      ? "Advanced"
-                      : "Pro"}
+                      ? t('builderTabAdvanced', { defaultValue: 'Advanced' })
+                      : t('builderTabPro', { defaultValue: 'Pro' })}
                 </Badge>
                 <Badge variant="outline">{detailProgram.duration}</Badge>
                 <Badge variant="muscle">{detailProgram.focus}</Badge>
@@ -474,7 +546,12 @@ export function BuilderPage() {
                         const repScheme = e.sets.map((s) => s.reps).join(", ");
                         return (
                           <li key={e.exerciseId}>
-                            {name}: {e.sets.length}× ({repScheme} reps)
+                            {t('builderSessionReps', {
+                              name,
+                              sets: e.sets.length,
+                              reps: repScheme,
+                              defaultValue: `${name}: ${e.sets.length}× (${repScheme} reps)`,
+                            })}
                           </li>
                         );
                       })}
@@ -490,7 +567,9 @@ export function BuilderPage() {
       <SignInPrompt
         className="mt-6"
         nextPath="/builder"
-        description="Save custom programs to the cloud and access them on any device."
+        description={t('builderSignInFoot', {
+          defaultValue: 'Sign in to sync saved routines across devices.',
+        })}
       />
     </div>
   );

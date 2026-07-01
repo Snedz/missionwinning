@@ -58,11 +58,33 @@ async function main() {
   }
 
   try {
-    const beta = await headOrGet('/beta');
+    const welcome = await headOrGet('/welcome', { redirect: 'manual' });
+    const welcomeLoc = welcome.headers.get('location') || '';
+    const welcomeGated =
+      welcome.status >= 300 &&
+      welcome.status < 400 &&
+      welcomeLoc.includes('/private');
     checks.push({
-      name: 'GET /beta (public guide)',
-      ok: beta.status === 200,
-      detail: `status ${beta.status}`,
+      name: 'GET /welcome redirects to /private',
+      ok: welcomeGated,
+      detail: welcomeGated
+        ? `${welcome.status} → ${welcomeLoc}`
+        : `status ${welcome.status} (welcome must not bypass gate)`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /welcome', ok: false, detail: String(e) });
+  }
+
+  try {
+    const beta = await headOrGet('/beta', { redirect: 'manual' });
+    const betaLoc = beta.headers.get('location') || '';
+    const betaGated =
+      (beta.status >= 300 && beta.status < 400 && betaLoc.includes('/private')) ||
+      betaLoc.includes('/bundle');
+    checks.push({
+      name: 'GET /beta does not expose app shell',
+      ok: betaGated,
+      detail: `${beta.status}${betaLoc ? ` → ${betaLoc}` : ''}`,
     });
   } catch (e) {
     checks.push({ name: 'GET /beta', ok: false, detail: String(e) });
@@ -78,6 +100,22 @@ async function main() {
     });
   } catch (e) {
     checks.push({ name: 'GET /api/premium/recipes', ok: false, detail: String(e) });
+  }
+
+  try {
+    const privateAccess = await headOrGet('/api/private-access', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: 'gate-smoke-probe' }),
+    });
+    const ok = privateAccess.status === 401 || privateAccess.status === 500;
+    checks.push({
+      name: 'POST /api/private-access reachable without gate cookie',
+      ok,
+      detail: `status ${privateAccess.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'POST /api/private-access', ok: false, detail: String(e) });
   }
 
   try {

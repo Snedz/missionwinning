@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Clock, Dumbbell, Flame, Target, TrendingUp, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { EXERCISES } from '@/data/exercises';
 import { FREE_STARTER_PROGRAMS } from '@/data/starterPrograms';
@@ -53,6 +54,8 @@ export function TodayProgressSection({
 }: TodayProgressSectionProps) {
   const router = useRouter();
   const { t } = useTranslation();
+  const units = useUnits();
+  const unitLabel = weightUnitLabel(units);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const freeStarters = FREE_STARTER_PROGRAMS;
 
@@ -179,7 +182,8 @@ export function TodayProgressSection({
               {t('todayStatVolume', { defaultValue: 'Total Volume' })}
             </CardDescription>
             <CardTitle className="text-3xl">
-              {totalVolume.toLocaleString()} <span className="text-lg font-normal text-muted-foreground">lbs</span>
+              {totalVolume.toLocaleString()}{' '}
+              <span className="text-lg font-normal text-muted-foreground">{unitLabel}</span>
             </CardTitle>
           </CardHeader>
         </Card>
@@ -318,7 +322,8 @@ export function TodayProgressSection({
             {totalVolume > 1000 ? "✓" : "○"}{' '}
             {t('todayWinVolume', {
               current: totalVolume.toLocaleString(),
-              defaultValue: `1000kg+ Total Volume (${totalVolume.toLocaleString()}/1000)`,
+              unit: unitLabel,
+              defaultValue: `1000+ total volume (${totalVolume.toLocaleString()}/1000 ${unitLabel})`,
             })}{' '}
             {totalVolume > 1000 && "🏅"}
           </div>
@@ -456,7 +461,9 @@ export function TodayProgressSection({
                       <Clock className="h-3.5 w-3.5" />
                       {formatDuration(log.durationSeconds)}
                     </span>
-                    <span>{log.totalVolume.toLocaleString()} lbs</span>
+                    <span>
+                      {log.totalVolume.toLocaleString()} {unitLabel}
+                    </span>
                   </div>
                 </CardContent>
               </Card>

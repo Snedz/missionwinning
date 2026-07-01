@@ -9,6 +9,13 @@ import { navStringsFor } from '@/i18n/navLocales';
 import { bundleStringsFor } from '@/i18n/bundleLocales';
 import { historyStringsFor } from '@/i18n/historyLocales';
 import { activeWorkoutStringsFor } from '@/i18n/activeWorkoutLocales';
+import { trackStringsFor } from '@/i18n/trackLocales';
+import { moveStringsFor } from '@/i18n/moveLocales';
+import { mindStringsFor } from '@/i18n/mindLocales';
+import { learnStringsFor } from '@/i18n/learnLocales';
+import { builderStringsFor } from '@/i18n/builderLocales';
+import { benchmarksStringsFor } from '@/i18n/benchmarksLocales';
+import { calculatorsStringsFor } from '@/i18n/calculatorsLocales';
 
 /** Languages with full or partial pillar-specific translations. */
 export const EXPORT_LANGS = ['en', 'es', 'zh', 'id', 'th', 'ar'] as const;
@@ -21,7 +28,14 @@ export type LocaleNamespace =
   | 'nav'
   | 'bundle'
   | 'history'
-  | 'activeWorkout';
+  | 'activeWorkout'
+  | 'track'
+  | 'move'
+  | 'mind'
+  | 'learn'
+  | 'builder'
+  | 'benchmarks'
+  | 'calculators';
 
 export type LocaleExportEntry = {
   namespace: LocaleNamespace;
@@ -71,6 +85,48 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'activeWorkout',
     filename: 'active-workout.json',
     stringsFor: activeWorkoutStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'track',
+    filename: 'track.json',
+    stringsFor: trackStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'move',
+    filename: 'move.json',
+    stringsFor: moveStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'mind',
+    filename: 'mind.json',
+    stringsFor: mindStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'learn',
+    filename: 'learn.json',
+    stringsFor: learnStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'builder',
+    filename: 'builder.json',
+    stringsFor: builderStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'benchmarks',
+    filename: 'benchmarks.json',
+    stringsFor: benchmarksStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'calculators',
+    filename: 'calculators.json',
+    stringsFor: calculatorsStringsFor,
     langs: EXPORT_LANGS,
   },
 ];

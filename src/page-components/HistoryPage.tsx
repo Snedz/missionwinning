@@ -31,7 +31,9 @@ import {
 import { History1RMChart, HistoryVolumeChart } from '@/components/history/HistoryCharts';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
 import { getExerciseById } from '@/data/exercises';
-import { formatDate, formatDuration } from '@/lib/utils';
+import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
+import { cn, formatDate, formatDuration } from '@/lib/utils';
+import { countsTowardVolume, setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/setKind';
 import {
   build1RMChartData,
   buildMuscleHeatmap,
@@ -41,13 +43,15 @@ import {
 } from '@/lib/historyAnalytics';
 import { getExercisesWithBenchmarkData } from '@/lib/benchmarks';
 import { useWorkoutStore } from '@/store/workoutStore';
-import type { CompletedWorkoutLog } from '@/types';
+import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { getUser, getUserNutritionForDate } from '@/lib/supabase';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
 export function HistoryPage() {
   const { t, i18n } = useTranslation();
+  const units = useUnits();
+  const unitLabel = weightUnitLabel(units);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const loadFromCloud = useWorkoutStore((s) => s.loadFromCloud);
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
@@ -130,7 +134,8 @@ export function HistoryPage() {
           <p className="mt-2 text-xs text-muted-foreground">
             {t('historyAvgVolume', {
               avg: summary.avgVolume.toLocaleString(),
-              defaultValue: `Recent trend: Avg volume last 5: ${summary.avgVolume.toLocaleString()} lbs.`,
+              unit: unitLabel,
+              defaultValue: `Recent trend: Avg volume last 5: ${summary.avgVolume.toLocaleString()} ${unitLabel}.`,
             })}{' '}
             <a href="/log" className="underline">
               Today Hub
@@ -209,7 +214,7 @@ export function HistoryPage() {
                     </p>
                     <p className="text-xl font-bold text-secondary">
                       {log.totalVolume.toLocaleString()}{' '}
-                      <span className="text-sm font-normal">lbs</span>
+                      <span className="text-sm font-normal">{unitLabel}</span>
                     </p>
                   </div>
                   <Button variant="outline" onClick={() => setSelected(log)}>
@@ -267,7 +272,11 @@ export function HistoryPage() {
                 <DialogTitle>{selected.workoutName}</DialogTitle>
                 <DialogDescription>
                   {formatDate(selected.completedAt)} · {formatDuration(selected.durationSeconds)} ·{' '}
-                  {selected.totalVolume.toLocaleString()} lbs total volume
+                  {t('historySessionVolume', {
+                    volume: selected.totalVolume.toLocaleString(),
+                    unit: unitLabel,
+                    defaultValue: `${selected.totalVolume.toLocaleString()} ${unitLabel} total volume`,
+                  })}
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 mt-2">
@@ -286,21 +295,57 @@ export function HistoryPage() {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Set</TableHead>
-                            <TableHead>Reps</TableHead>
-                            <TableHead>Weight</TableHead>
-                            <TableHead>Volume</TableHead>
+                            <TableHead>{t('historyTableSet', { defaultValue: 'Set' })}</TableHead>
+                            <TableHead>{t('historyTableType', { defaultValue: 'Type' })}</TableHead>
+                            <TableHead>{t('historyTableReps', { defaultValue: 'Reps' })}</TableHead>
+                            <TableHead>{t('historyTableWeight', { defaultValue: 'Weight' })}</TableHead>
+                            <TableHead>{t('historyTableVolume', { defaultValue: 'Volume' })}</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {ex.sets.map((set, i) => (
-                            <TableRow key={i}>
-                              <TableCell>{i + 1}</TableCell>
-                              <TableCell>{set.reps}</TableCell>
-                              <TableCell>{set.weight} lbs</TableCell>
-                              <TableCell>{(set.reps * set.weight).toLocaleString()} lbs</TableCell>
-                            </TableRow>
-                          ))}
+                          {ex.sets.map((set, i) => {
+                            const kind = set.kind ?? 'normal';
+                            const countsVolume = countsTowardVolume(kind);
+                            return (
+                              <TableRow
+                                key={i}
+                                className={cn(
+                                  kind === 'warmup' && 'bg-amber-950/10',
+                                  kind === 'failure' && 'bg-rose-950/10',
+                                  kind === 'drop' && 'bg-violet-950/10'
+                                )}
+                              >
+                                <TableCell>{i + 1}</TableCell>
+                                <TableCell>
+                                  {kind === 'normal' ? (
+                                    <span className="text-muted-foreground">—</span>
+                                  ) : (
+                                    <Badge
+                                      variant="outline"
+                                      className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}
+                                    >
+                                      {t(setKindLabelKey(kind), {
+                                        defaultValue: setKindDefaultLabel(kind),
+                                      })}
+                                    </Badge>
+                                  )}
+                                </TableCell>
+                                <TableCell>{set.reps}</TableCell>
+                                <TableCell>
+                                  {set.weight} {unitLabel}
+                                </TableCell>
+                                <TableCell>
+                                  {countsVolume ? (
+                                    <>
+                                      {(set.reps * set.weight).toLocaleString()} {unitLabel}
+                                    </>
+                                  ) : (
+                                    t('historyWarmupExcluded', { defaultValue: '—' })
+                                  )}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
                         </TableBody>
                       </Table>
                     </div>

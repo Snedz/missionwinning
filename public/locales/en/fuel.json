@@ -30,5 +30,16 @@
   "fuelPremiumRecipesTitle": "Premium Recipes & Meal Ideas (Super Bundle)",
   "fuelPremiumLockedTitle": "+{{count}} Premium Recipes",
   "fuelPremiumLockedBody": "Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.",
-  "fuelExploreBundle": "Explore Super Bundle"
+  "fuelExploreBundle": "Explore Super Bundle",
+  "fuelLogFab": "Log food",
+  "fuelLogSheetTitle": "Log to Fuel",
+  "fuelTabQuick": "Quick",
+  "fuelTabCustom": "Custom",
+  "fuelTabPhoto": "Photo",
+  "fuelMealBreakfast": "Breakfast",
+  "fuelMealLunch": "Lunch",
+  "fuelMealDinner": "Dinner",
+  "fuelMealSnack": "Snack",
+  "fuelMealOther": "Other",
+  "fuelLogStreak": "{{count}}-day log streak"
 }

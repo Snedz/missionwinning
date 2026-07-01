@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -49,10 +50,12 @@ function ProgramList({
   onSaveAllSessions: (program: ProgramTemplate) => void;
   onViewDetails?: (program: ProgramTemplate) => void;
 }) {
+  const { t } = useTranslation();
+
   if (programs.length === 0) {
     return (
       <p className="text-sm text-muted-foreground py-4 text-center">
-        No programs in this category.
+        {t('builderNoPrograms', { defaultValue: 'No programs in this category.' })}
       </p>
     );
   }
@@ -71,9 +74,9 @@ function ProgramList({
               <div className="flex flex-wrap gap-1.5 mt-2">
                 <Badge variant="outline">{program.duration}</Badge>
                 <Badge variant="muscle">{program.focus}</Badge>
-                {getProgramTags(program).map((t) => (
-                  <Badge key={t} variant="secondary" className="text-[10px]">
-                    {PROGRAM_TAG_LABELS[t]}
+                {getProgramTags(program).map((tag) => (
+                  <Badge key={tag} variant="secondary" className="text-[10px]">
+                    {PROGRAM_TAG_LABELS[tag]}
                   </Badge>
                 ))}
               </div>
@@ -81,11 +84,14 @@ function ProgramList({
             <div className="flex gap-2">
               {onViewDetails && (
                 <Button size="sm" variant="ghost" onClick={() => onViewDetails(program)}>
-                  Details
+                  {t('builderDetails', { defaultValue: 'Details' })}
                 </Button>
               )}
               <Button size="sm" variant="secondary" onClick={() => onSaveAllSessions(program)}>
-                Save all ({program.sessions.length})
+                {t('builderSaveAll', {
+                  count: program.sessions.length,
+                  defaultValue: `Save all (${program.sessions.length})`,
+                })}
               </Button>
             </div>
           </div>
@@ -102,12 +108,15 @@ function ProgramList({
                     <p className="text-xs text-muted-foreground">{session.weekLabel}</p>
                   )}
                   <p className="text-xs text-muted-foreground">
-                    {session.exercises.length} exercises ·{" "}
-                    {session.exercises.reduce((n, e) => n + e.sets.length, 0)} sets
+                    {t('builderSessionMeta', {
+                      exercises: session.exercises.length,
+                      sets: session.exercises.reduce((n, e) => n + e.sets.length, 0),
+                      defaultValue: `${session.exercises.length} exercises · ${session.exercises.reduce((n, e) => n + e.sets.length, 0)} sets`,
+                    })}
                   </p>
                 </div>
                 <Button size="sm" variant="fitness" onClick={() => onLoadSession(program, session)}>
-                  Load
+                  {t('builderLoad', { defaultValue: 'Load' })}
                 </Button>
               </div>
             ))}
@@ -124,6 +133,7 @@ export function ProgramTemplatesPanel({
   onSaveAllSessions,
   onViewDetails,
 }: ProgramTemplatesPanelProps) {
+  const { t } = useTranslation();
   const [quickPick, setQuickPick] = useState("");
   const [tagFilter, setTagFilter] = useState<ProgramTag | "">("");
   const { premium, loading: premiumLoading } = usePremium();
@@ -179,7 +189,9 @@ export function ProgramTemplatesPanel({
   if (PROGRAM_TEMPLATES.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-destructive/50 bg-destructive/10 p-6 text-center text-sm">
-        Template data failed to load. Restart the dev server.
+        {t('builderTemplateLoadFail', {
+          defaultValue: 'Template data failed to load. Restart the dev server.',
+        })}
       </div>
     );
   }
@@ -188,24 +200,26 @@ export function ProgramTemplatesPanel({
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">{categoryMeta.description}</p>
       <div className="flex flex-wrap gap-2 items-center">
-        <span className="text-xs text-muted-foreground">Style:</span>
-        {(["", "strength", "hypertrophy", "conditioning", "corrective"] as const).map((t) => (
+        <span className="text-xs text-muted-foreground">
+          {t('builderStyleFilter', { defaultValue: 'Style:' })}
+        </span>
+        {(["", "strength", "hypertrophy", "conditioning", "corrective"] as const).map((tag) => (
           <Button
-            key={t || "all"}
+            key={tag || "all"}
             size="sm"
-            variant={tagFilter === t ? "default" : "outline"}
+            variant={tagFilter === tag ? "default" : "outline"}
             className="h-7 text-xs"
-            onClick={() => setTagFilter(t)}
+            onClick={() => setTagFilter(tag)}
           >
-            {t ? PROGRAM_TAG_LABELS[t] : "All"}
+            {tag ? PROGRAM_TAG_LABELS[tag] : t('builderFilterAll', { defaultValue: 'All' })}
           </Button>
         ))}
       </div>
       {category === "pro" && !premiumLoading && !premium && (
         <div className="rounded-lg border border-amber-500/40 bg-amber-950/20 p-4 text-sm">
-          Pro cycles require Super Bundle premium.{" "}
+          {t('builderProPremium', { defaultValue: 'Pro cycles require Super Bundle premium.' })}{' '}
           <Link href="/bundle" className="underline text-amber-400">
-            Unlock Super Bundle
+            {t('builderUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
           </Link>
         </div>
       )}
@@ -217,11 +231,17 @@ export function ProgramTemplatesPanel({
       />
 
       <div className="rounded-lg border border-border bg-background/80 p-4 space-y-3">
-        <Label className="text-foreground font-medium">Quick load (all categories)</Label>
+        <Label className="text-foreground font-medium">
+          {t('builderQuickLoadLabel', { defaultValue: 'Quick load (all categories)' })}
+        </Label>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Select value={quickPick} onValueChange={setQuickPick}>
             <SelectTrigger className="flex-1 bg-background">
-              <SelectValue placeholder="Choose program & session..." />
+              <SelectValue
+                placeholder={t('builderQuickLoadPlaceholder', {
+                  defaultValue: 'Choose program & session…',
+                })}
+              />
             </SelectTrigger>
             <SelectContent className="max-h-72">
               {PROGRAM_CATEGORIES.map((cat) => {
@@ -251,7 +271,7 @@ export function ProgramTemplatesPanel({
             </SelectContent>
           </Select>
           <Button variant="fitness" onClick={handleQuickLoad} disabled={!quickPick}>
-            Load into builder
+            {t('builderQuickLoadButton', { defaultValue: 'Load into builder' })}
           </Button>
         </div>
       </div>

@@ -4,7 +4,8 @@ import { Check, Minus, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { LoggedSet } from '@/types';
+import type { LoggedSet, SetKind } from '@/types';
+import { SET_KINDS, setKindBadgeClass, setKindCompletedRowClass, setKindDefaultLabel, setKindLabelKey, setKindRowClass } from '@/lib/setKind';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -13,11 +14,15 @@ type Props = {
   reps: number;
   weight: number;
   isNext: boolean;
+  weightLabel: string;
+  weightStep: number;
   lastPerformance?: { reps: number; weight: number } | null;
   onRepsChange: (reps: number) => void;
   onWeightChange: (weight: number) => void;
+  onSetKindChange: (kind: SetKind) => void;
   onLog: () => void;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
+  onCopyLast?: () => void;
 };
 
 export function SetLogRow({
@@ -26,19 +31,34 @@ export function SetLogRow({
   reps,
   weight,
   isNext,
+  weightLabel,
+  weightStep,
   lastPerformance,
   onRepsChange,
   onWeightChange,
+  onSetKindChange,
   onLog,
   onRate,
+  onCopyLast,
 }: Props) {
   const { t } = useTranslation();
+  const kind = set.kind ?? 'normal';
 
   if (set.completed) {
     return (
-      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-secondary/40 bg-secondary/10 p-3">
+      <div
+        className={cn(
+          'flex flex-wrap items-center gap-2 rounded-xl border p-3',
+          setKindCompletedRowClass(kind)
+        )}
+      >
         <span className="w-7 text-sm font-medium text-muted-foreground">#{setNumber}</span>
-        <Badge variant="secondary" className="gap-1">
+        {kind !== 'normal' && (
+          <Badge variant="outline" className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}>
+            {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
+          </Badge>
+        )}
+        <Badge variant="secondary" className="gap-1 tabular-nums">
           <Check className="h-3 w-3" />
           {set.reps} × {set.weight}
         </Badge>
@@ -72,21 +92,49 @@ export function SetLogRow({
     <div
       className={cn(
         'rounded-xl border p-3 space-y-2 transition-colors',
-        isNext
-          ? 'border-emerald-500/50 bg-emerald-950/20 ring-1 ring-emerald-500/30'
-          : 'border-border bg-card/40'
+        isNext ? setKindRowClass(kind, true) : setKindRowClass(kind, false)
       )}
     >
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-sm font-semibold text-muted-foreground">#{setNumber}</span>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-sm font-semibold text-muted-foreground">#{setNumber}</span>
+          <div className="flex flex-wrap gap-1">
+            {SET_KINDS.map((k) => (
+              <Button
+                key={k}
+                type="button"
+                size="sm"
+                variant={kind === k ? 'default' : 'outline'}
+                className={cn(
+                  'h-7 px-2 text-[10px] min-w-[44px]',
+                  kind === k && k === 'warmup' && 'bg-amber-600 hover:bg-amber-500',
+                  kind === k && k === 'failure' && 'bg-rose-600 hover:bg-rose-500',
+                  kind === k && k === 'drop' && 'bg-violet-600 hover:bg-violet-500'
+                )}
+                onClick={() => onSetKindChange(k)}
+              >
+                {t(setKindLabelKey(k), {
+                  defaultValue: k === 'normal' ? 'Work' : setKindDefaultLabel(k),
+                })}
+              </Button>
+            ))}
+          </div>
+        </div>
         {lastPerformance && (
-          <span className="text-[10px] text-muted-foreground">
-            {t('activeLastPerformance', {
-              reps: lastPerformance.reps,
-              weight: lastPerformance.weight,
-              defaultValue: `Last: ${lastPerformance.reps} × ${lastPerformance.weight}`,
-            })}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-muted-foreground tabular-nums">
+              {t('activeLastPerformance', {
+                reps: lastPerformance.reps,
+                weight: lastPerformance.weight,
+                defaultValue: `Last: ${lastPerformance.reps} × ${lastPerformance.weight}`,
+              })}
+            </span>
+            {onCopyLast && (
+              <Button type="button" variant="ghost" size="sm" className="h-7 px-2 text-[10px]" onClick={onCopyLast}>
+                {t('activeCopyLast', { defaultValue: 'Copy last' })}
+              </Button>
+            )}
+          </div>
         )}
       </div>
 
@@ -117,14 +165,14 @@ export function SetLogRow({
         </div>
 
         <div className="flex items-center gap-1">
-          <span className="text-xs text-muted-foreground w-8">{t('activeWeight', { defaultValue: 'lbs' })}</span>
+          <span className="text-xs text-muted-foreground w-10">{weightLabel}</span>
           <Button
             type="button"
             variant="outline"
             size="icon"
             className="h-11 w-11 shrink-0"
             aria-label="Decrease weight"
-            onClick={() => onWeightChange(Math.max(0, weight - 2.5))}
+            onClick={() => onWeightChange(Math.max(0, weight - weightStep))}
           >
             <Minus className="h-4 w-4" />
           </Button>
@@ -135,7 +183,7 @@ export function SetLogRow({
             size="icon"
             className="h-11 w-11 shrink-0"
             aria-label="Increase weight"
-            onClick={() => onWeightChange(weight + 2.5)}
+            onClick={() => onWeightChange(weight + weightStep)}
           >
             <Plus className="h-4 w-4" />
           </Button>

@@ -32,6 +32,25 @@ type ActiveWorkoutStrings = {
   activeRpeEasy: string;
   activeRpeMed: string;
   activeRpeHard: string;
+  activePrTitle: string;
+  activePrDesc: string;
+  activeCopyLast: string;
+  activePlateCalcTitle: string;
+  activePlateCalcSubtitle: string;
+  activePlateTarget: string;
+  activePlateBar: string;
+  activePlatePerSide: string;
+  activePlateTotal: string;
+  activePlateRemainder: string;
+  activePlateApply: string;
+  activeOpenPlateCalc: string;
+  activeSetNormal: string;
+  activeSetWarmup: string;
+  activeSetFailure: string;
+  activeSetDrop: string;
+  activeSupersetLink: string;
+  activeSupersetUnlink: string;
+  activeSetLoggedSuperset: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -66,6 +85,25 @@ const en: ActiveWorkoutStrings = {
   activeRpeEasy: 'Easy',
   activeRpeMed: 'Med',
   activeRpeHard: 'Hard',
+  activePrTitle: 'New PR!',
+  activePrDesc: '{{reps}} × {{weight}} — personal best for this exercise',
+  activeCopyLast: 'Copy last',
+  activePlateCalcTitle: 'Plate calculator',
+  activePlateCalcSubtitle: 'Load the bar',
+  activePlateTarget: 'Target weight',
+  activePlateBar: 'Bar weight',
+  activePlatePerSide: 'Per side',
+  activePlateTotal: 'Total on bar: {{weight}} {{unit}}',
+  activePlateRemainder: 'Cannot load exactly — {{remainder}}{{unit}} short',
+  activePlateApply: 'Use {{weight}} {{unit}}',
+  activeOpenPlateCalc: 'Plates',
+  activeSetNormal: 'Work',
+  activeSetWarmup: 'Warmup',
+  activeSetFailure: 'Failure',
+  activeSetDrop: 'Drop',
+  activeSupersetLink: 'Superset w/ next',
+  activeSupersetUnlink: 'Unlink superset',
+  activeSetLoggedSuperset: '{{reps}} × {{weight}} — next exercise in superset',
 };
 
 const es: ActiveWorkoutStrings = {

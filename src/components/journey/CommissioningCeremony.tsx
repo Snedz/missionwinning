@@ -56,6 +56,27 @@ export function CommissioningCeremony() {
         <button type="button" onClick={dismiss} className="primary-action">
           {t('commissionedCta', { defaultValue: 'Continue to Today' })}
         </button>
+        <button
+          type="button"
+          className="mt-3 w-full text-sm text-emerald-400 hover:underline"
+          onClick={async () => {
+            const text = t('commissionedShareText', {
+              defaultValue:
+                'I completed Basic Training on Mission Winning — commissioned and on the path to health. missionwinning.com',
+            });
+            try {
+              if (navigator.share) {
+                await navigator.share({ title: 'Mission Winning', text });
+              } else if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(text);
+              }
+            } catch {
+              /* cancelled */
+            }
+          }}
+        >
+          {t('commissionedShare', { defaultValue: 'Share commissioning' })}
+        </button>
       </div>
     </div>
   );
