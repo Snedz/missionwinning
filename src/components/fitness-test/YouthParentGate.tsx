@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +9,7 @@ import {
   hasPendingYouthConsent,
   isValidParentEmail,
   markYouthConsentVerified,
+  mergeYouthConsentFromServer,
   requiresYouthConsent,
   saveYouthConsent,
   getYouthConsent,
@@ -31,6 +32,12 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
+
+  useEffect(() => {
+    void mergeYouthConsentFromServer().then((ok) => {
+      if (ok) onConsented();
+    });
+  }, [onConsented]);
 
   if (!requiresYouthConsent(childAge) || hasYouthConsent()) {
     return null;

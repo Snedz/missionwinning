@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { COPPA_AGE_THRESHOLD } from '@/lib/youthConsent';
+import { persistYouthConsent } from '@/lib/youthConsentServer';
+import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 import { verifyConsentCode } from '@/lib/youthConsentToken';
 
-/** Verify 6-digit parent consent code (cross-device). */
+/** Verify 6-digit parent consent code (cross-device). Persists when athlete is signed in. */
 export async function POST(request: NextRequest) {
   let body: { parentEmail?: string; childAge?: number; code?: string };
   try {
@@ -23,5 +25,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false, error: 'Invalid code' }, { status: 403 });
   }
 
-  return NextResponse.json({ ok: true });
+  const user = await getUserFromRequest(request);
+  if (user) {
+    const saved = await persistYouthConsent(user.id, parentEmail, childAge);
+    if (!saved.ok) {
+      return NextResponse.json({ ok: false, error: saved.error }, { status: 503 });
+    }
+  }
+
+  return NextResponse.json({ ok: true, persisted: Boolean(user) });
 }
