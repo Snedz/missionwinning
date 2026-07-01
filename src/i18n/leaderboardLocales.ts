@@ -12,6 +12,7 @@ export type LeaderboardStrings = {
   leaderboardSquadCode: string;
   leaderboardSquadHint: string;
   leaderboardDemoNote: string;
+  leaderboardClassHint: string;
   lbScopeGlobal: string;
   lbScopeRegional: string;
   lbScopeNational: string;
@@ -43,6 +44,8 @@ const en: LeaderboardStrings = {
     'Set a squad code above to compare with others using the same code. Try ALPHA or BRAVO to see demo squad members.',
   leaderboardDemoNote:
     'Demo operators fill boards until more members sync. Sign in and tap Sync to publish scores. Rankings also update after workouts when signed in.',
+  leaderboardClassHint:
+    'PE class code active — squad rankings include classmates who sync while signed in.',
   lbScopeGlobal: 'Global',
   lbScopeRegional: 'Regional',
   lbScopeNational: 'National',

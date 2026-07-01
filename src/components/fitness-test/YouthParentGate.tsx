@@ -42,6 +42,11 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
       return;
     }
     saveYouthConsent({ parentEmail: email.trim(), childAge });
+    void fetch('/api/youth/consent-notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ parentEmail: email.trim(), childAge }),
+    }).catch(() => {});
     onConsented();
   };
 
