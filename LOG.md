@@ -4,6 +4,31 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Vision plan refresh + Phase G (PFT / America G1–G8)
+
+**Docs:** [VISION_STATUS.md](VISION_STATUS.md), [PLAN.md](PLAN.md) Phase G/H/I  
+**Build:** `2025.06-unified.45`
+
+### Shipped (PFT track — PRs #52–#59)
+
+- **G1–G2:** Presidential Fitness Test, `/america`, school classes, youth gate, cloud sync
+- **G3–G4:** Teacher dashboard, PFT leaderboard board, teacher PIN, verified youth consent
+- **G5–G6:** Youth consent server sync, class scope leaderboard, creator auth, exports
+- **G7–G8:** Hashed teacher PINs, council i18n, HTML report export, PFT gate-smoke
+
+### Vision comparison (summary)
+
+| Area | Status |
+|------|--------|
+| Free core (train, fuel, pillars) | 🟢 Strong |
+| Journey + unified UI | 🟢 Shipped |
+| Super Bundle / premium depth | 🔴 UI + placeholders |
+| AI Coach as premium product | 🟡 Partial (free insight today) |
+| PWA offline | 🔴 Blocked until public launch |
+| Global i18n body copy | 🟡 Nav chrome only |
+
+**Next:** Phase **H** (launch gates) → Phase **I** (live payments, AI Coach, i18n body). Full scorecard: [VISION_STATUS.md](VISION_STATUS.md).
+
 ---
 
 ## 2026-06-29 — GT7-style global leaderboard
