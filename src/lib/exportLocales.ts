@@ -84,6 +84,14 @@ export type LocaleExportPlan = {
 };
 
 /** Build export plan with key counts (no filesystem writes). */
+export function buildMergedCommonStrings(lang: string): Record<string, string> {
+  const merged: Record<string, string> = {};
+  for (const entry of LOCALE_EXPORTS) {
+    Object.assign(merged, entry.stringsFor(lang));
+  }
+  return merged;
+}
+
 export function buildLocaleExportPlan(): LocaleExportPlan[] {
   const plan: LocaleExportPlan[] = [];
   for (const entry of LOCALE_EXPORTS) {
