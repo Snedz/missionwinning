@@ -49,6 +49,35 @@ type FitnessTestStrings = {
   americaCtaToday: string;
   americaGlobalNote: string;
   americaDisabled: string;
+  youthGateTitle: string;
+  youthGateBody: string;
+  youthParentEmail: string;
+  youthConsentCheckbox: string;
+  youthContinue: string;
+  youthEmailInvalid: string;
+  youthConsentRequired: string;
+  schoolTitle: string;
+  schoolDesc: string;
+  schoolJoin: string;
+  schoolJoinPlaceholder: string;
+  schoolInvalidCode: string;
+  schoolJoined: string;
+  schoolStats: string;
+  schoolRefreshStats: string;
+  schoolLeave: string;
+  schoolCreateTitle: string;
+  schoolCreate: string;
+  schoolNamePlaceholder: string;
+  schoolDefaultName: string;
+  schoolCreated: string;
+  schoolInviteCopied: string;
+  schoolLinkCopied: string;
+  schoolYourClasses: string;
+  pftShareResult: string;
+  shareFitness: string;
+  shareCopied: string;
+  shareSent: string;
+  commissionedShareMaha: string;
 };
 
 const en: FitnessTestStrings = {
@@ -111,6 +140,38 @@ const en: FitnessTestStrings = {
   americaGlobalNote:
     'Mission Winning remains a global health app — this U.S. track is optional and does not replace worldwide free access.',
   americaDisabled: 'National fitness track is not enabled in this build.',
+  youthGateTitle: 'Parent or guardian approval',
+  youthGateBody:
+    'Athletes under 13 need a parent or guardian to approve before logging fitness test results. We store consent locally on this device only.',
+  youthParentEmail: 'Parent/guardian email',
+  youthConsentCheckbox:
+    'I am the parent/guardian. I consent to my child using Mission Winning fitness tools. I understand this is not medical advice and results stay on this device unless we sign in to sync.',
+  youthContinue: 'Continue',
+  youthEmailInvalid: 'Enter a valid parent or guardian email.',
+  youthConsentRequired: 'Parent or guardian must accept the youth privacy notice.',
+  schoolTitle: 'School & PE class',
+  schoolDesc:
+    'Teachers create a class code. Students join and sync fitness test results when signed in — aggregate stats only on the leaderboard card.',
+  schoolJoin: 'Join class',
+  schoolJoinPlaceholder: 'MWA3K9',
+  schoolInvalidCode: 'Enter a valid class code (e.g. MWA3K9).',
+  schoolJoined: 'Joined class',
+  schoolStats: '{{tests}} tests · {{athletes}} athletes synced',
+  schoolRefreshStats: 'Refresh stats',
+  schoolLeave: 'Leave class',
+  schoolCreateTitle: 'Create a class',
+  schoolCreate: 'Generate class code',
+  schoolNamePlaceholder: 'Mrs. Smith — 5th Grade PE',
+  schoolDefaultName: 'PE Class',
+  schoolCreated: 'Class created — share the code with students.',
+  schoolInviteCopied: 'Invite link copied.',
+  schoolLinkCopied: 'Join link copied.',
+  schoolYourClasses: 'Your saved classes:',
+  pftShareResult: 'Share my results',
+  shareFitness: 'Share',
+  shareCopied: 'Copied!',
+  shareSent: 'Shared!',
+  commissionedShareMaha: 'Share — Make America Healthy Again',
 };
 
 export function fitnessTestStringsFor(lang: string): FitnessTestStrings {

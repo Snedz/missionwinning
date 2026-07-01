@@ -1,10 +1,12 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { YouthParentGate } from '@/components/fitness-test/YouthParentGate';
+import { ShareFitnessButton } from '@/components/fitness-test/ShareFitnessButton';
 import {
   awardLabel,
   formatMileTime,
@@ -16,8 +18,11 @@ import {
   type FitnessSex,
 } from '@/lib/presidentialFitnessTest';
 import { saveFitnessTestSession } from '@/lib/presidentialFitnessStorage';
+import { joinClass, getJoinedClassCode } from '@/lib/schoolClass';
+import { buildPftShareText } from '@/lib/shareFitnessMission';
+import { hasYouthConsent, requiresYouthConsent } from '@/lib/youthConsent';
 
-type Step = 'profile' | 'events' | 'results';
+type Step = 'profile' | 'youth' | 'events' | 'results';
 
 export function FitnessTestRunner() {
   const { t } = useTranslation();
@@ -36,9 +41,28 @@ export function FitnessTestRunner() {
   const [values, setValues] = useState<Record<string, string>>({});
   const [session, setSession] = useState<ReturnType<typeof scoreFitnessTestSession> | null>(null);
 
-  const handleScore = () => {
-    const ageNum = parseInt(age, 10);
+  useEffect(() => {
+    const classParam = searchParams.get('class');
+    if (classParam) joinClass(classParam);
+  }, [searchParams]);
+
+  const ageNum = parseInt(age, 10);
+
+  const proceedFromProfile = () => {
     if (!Number.isFinite(ageNum) || ageNum < 6) return;
+    if (requiresYouthConsent(ageNum) && !hasYouthConsent()) {
+      setStep('youth');
+    } else {
+      setStep('events');
+    }
+  };
+
+  const handleScore = () => {
+    if (!Number.isFinite(ageNum) || ageNum < 6) return;
+    if (requiresYouthConsent(ageNum) && !hasYouthConsent()) {
+      setStep('youth');
+      return;
+    }
 
     const results = eventIds
       .map((id) => {
@@ -90,6 +114,7 @@ export function FitnessTestRunner() {
   };
 
   if (step === 'results' && session) {
+    const shareText = buildPftShareText(session, getJoinedClassCode());
     return (
       <Card className="content-card max-w-lg mx-auto">
         <CardHeader>
@@ -120,6 +145,12 @@ export function FitnessTestRunner() {
               </li>
             ))}
           </ul>
+          <ShareFitnessButton
+            text={shareText}
+            className="w-full"
+            labelKey="pftShareResult"
+            defaultLabel="Share my results"
+          />
           <Button className="w-full" onClick={() => router.push('/benchmarks')}>
             {t('pftBackBenchmarks', { defaultValue: 'Back to Benchmarks' })}
           </Button>
@@ -173,10 +204,18 @@ export function FitnessTestRunner() {
                 </option>
               </select>
             </label>
-            <Button className="w-full" onClick={() => setStep('events')}>
+            <Button className="w-full" onClick={proceedFromProfile}>
               {t('pftContinue', { defaultValue: 'Continue to events' })}
             </Button>
           </>
+        )}
+
+        {step === 'youth' && (
+          <YouthParentGate
+            childAge={ageNum}
+            onConsented={() => setStep('events')}
+            onCancel={() => setStep('profile')}
+          />
         )}
 
         {step === 'events' && (

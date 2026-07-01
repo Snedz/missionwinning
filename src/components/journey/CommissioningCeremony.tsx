@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { Award } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useMissionJourney } from '@/hooks/useMissionJourney';
+import { ShareFitnessButton } from '@/components/fitness-test/ShareFitnessButton';
+import { buildCommissioningShareText } from '@/lib/shareFitnessMission';
+import { showMahaCopy } from '@/lib/americaConfig';
 
 const CELEBRATED_KEY = 'mw_commissioned_celebrated';
 
@@ -24,6 +27,9 @@ export function CommissioningCeremony() {
   };
 
   if (!open) return null;
+
+  const defaultShare = buildCommissioningShareText(false);
+  const mahaShare = buildCommissioningShareText(true);
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
@@ -56,27 +62,22 @@ export function CommissioningCeremony() {
         <button type="button" onClick={dismiss} className="primary-action">
           {t('commissionedCta', { defaultValue: 'Continue to Today' })}
         </button>
-        <button
-          type="button"
-          className="mt-3 w-full text-sm text-emerald-400 hover:underline"
-          onClick={async () => {
-            const text = t('commissionedShareText', {
-              defaultValue:
-                'I completed Basic Training on Mission Winning — commissioned and on the path to health. missionwinning.com',
-            });
-            try {
-              if (navigator.share) {
-                await navigator.share({ title: 'Mission Winning', text });
-              } else if (navigator.clipboard?.writeText) {
-                await navigator.clipboard.writeText(text);
-              }
-            } catch {
-              /* cancelled */
-            }
-          }}
-        >
-          {t('commissionedShare', { defaultValue: 'Share commissioning' })}
-        </button>
+        <ShareFitnessButton
+          text={defaultShare}
+          variant="ghost"
+          className="mt-3 w-full"
+          labelKey="commissionedShare"
+          defaultLabel="Share commissioning"
+        />
+        {(showMahaCopy() || process.env.NODE_ENV === 'development') && (
+          <ShareFitnessButton
+            text={mahaShare}
+            variant="ghost"
+            className="mt-1 w-full text-blue-400"
+            labelKey="commissionedShareMaha"
+            defaultLabel="Share — Make America Healthy Again"
+          />
+        )}
       </div>
     </div>
   );
