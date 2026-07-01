@@ -122,7 +122,11 @@ const ar: ActiveWorkoutStrings = {
 
 const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = { en, es, zh, id, th, ar };
 
-export function mergeActiveWorkoutStrings(target: Record<string, string>, lang: string): void {
+export function activeWorkoutStringsFor(lang: string): ActiveWorkoutStrings {
   const code = lang.split('-')[0];
-  Object.assign(target, LOCALES[code] ?? en);
+  return LOCALES[code] ?? en;
+}
+
+export function mergeActiveWorkoutStrings(target: Record<string, string>, lang: string): void {
+  Object.assign(target, activeWorkoutStringsFor(lang));
 }

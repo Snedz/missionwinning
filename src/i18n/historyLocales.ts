@@ -102,7 +102,11 @@ const ar: HistoryStrings = {
 
 const LOCALES: Partial<Record<string, HistoryStrings>> = { en, es, zh, id, th, ar };
 
-export function mergeHistoryStrings(target: Record<string, string>, lang: string): void {
+export function historyStringsFor(lang: string): HistoryStrings {
   const code = lang.split('-')[0];
-  Object.assign(target, LOCALES[code] ?? en);
+  return LOCALES[code] ?? en;
+}
+
+export function mergeHistoryStrings(target: Record<string, string>, lang: string): void {
+  Object.assign(target, historyStringsFor(lang));
 }

@@ -1,0 +1,22 @@
+{
+  "navSectionRecover": "ฟื้นตัว",
+  "navSectionTrain": "ฝึกเชิงลึก",
+  "navSectionLearn": "เรียนรู้และวัด",
+  "navSectionPremium": "พรีเมียม",
+  "navMove": "เคลื่อนไหว",
+  "navMind": "จิตใจ",
+  "navLearn": "เรียนรู้",
+  "navBuilder": "Builder",
+  "navLibrary": "ไลบรารี",
+  "navHistory": "ประวัติ",
+  "navLeaderboard": "อันดับ",
+  "navReadiness": "ทดสอบความพร้อม",
+  "navHealth": "คัดกรองสุขภาพ",
+  "navCalculators": "เครื่องคิดเลข",
+  "navBundle": "Super Bundle",
+  "journeyBasicFoot": "ทีละขั้น เครื่องมือเพิ่มเมื่อคุณก้าวหน้า",
+  "fuelHighProteinNote": "วันโปรตีนสูงช่วย",
+  "fuelScienceCh5": "โปรตีน (บท 5): สำคัญต่อการเติบโต ซ่อมแซม เอนไซม์ ฮอร์โมน ผู้ฝึกที่ออกกำลัง ~1.6–2.2g/kg โปรตีนครบ จัดเวลารอบการฝึก สูตรด้านล่างตามหลักนี้",
+  "fuelScienceCh12": "โภชนาการบอดี้บิลด์ (บท 12): คาร์บซับซ้อนให้พลังงาน ไขมันดีรองรับฮอร์โมน (15–30%) วิตามิน/แร่จากอาหารจริง ไฟเบอร์ 20–30g+ โปรตีน+คาร์บหลังฝึก ดื่มน้ำสำคัญ",
+  "fuelPremiumRecipesFoot": "จากวิทยาศาสตร์โปรตีน + หลัก DASH/Med"
+}
