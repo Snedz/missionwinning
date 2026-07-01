@@ -17,6 +17,7 @@ type Props = {
 
 const SECTION_LABEL_KEYS: Record<TodaySectionId, { title: string; defaultTitle: string }> = {
   health: { title: 'todaySectionHealth', defaultTitle: 'Health scores' },
+  journal: { title: 'todaySectionJournal', defaultTitle: 'Journal' },
   week: { title: 'todaySectionWeek', defaultTitle: 'This week' },
   progress: { title: 'todaySectionProgress', defaultTitle: 'Progress & tools' },
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
@@ -20,7 +20,9 @@ import { TodayPageHeader } from "@/components/today/TodayPageHeader";
 import { TodayHealthSection } from "@/components/today/TodayHealthSection";
 import { TodayWeekSection } from "@/components/today/TodayWeekSection";
 import { TodayProgressSection } from "@/components/today/TodayProgressSection";
+import { TodayJournalStrip } from "@/components/today/TodayJournalStrip";
 import { TodayDashboardCustomize } from "@/components/today/TodayDashboardCustomize";
+import { buildTodayTrends, gatherJournalEntries } from "@/lib/todayTrends";
 import { loadTodayDashboardPrefs, type TodayDashboardPrefs, type TodaySectionId } from "@/lib/todayDashboardPrefs";
 import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
@@ -47,7 +49,7 @@ export function HomePage() {
   const [sectionPrefs, setSectionPrefs] = useState<TodayDashboardPrefs>(() =>
     typeof window !== 'undefined'
       ? loadTodayDashboardPrefs()
-      : { health: true, week: true, progress: true, order: ['health', 'week', 'progress'] }
+      : { health: true, journal: true, week: true, progress: true, order: ['health', 'journal', 'week', 'progress'] }
   );
 
   useEffect(() => {
@@ -188,6 +190,15 @@ export function HomePage() {
     assessmentRisk: lastAssessment?.risk,
   });
 
+  const todayTrends = useMemo(
+    () => buildTodayTrends(workoutHistory, i18n.language),
+    [workoutHistory, i18n.language]
+  );
+  const journalEntries = useMemo(
+    () => gatherJournalEntries(workoutHistory, 8),
+    [workoutHistory]
+  );
+
 
   // Onboarding via I-Day journey (Profile fields synced from /welcome)
   const userGoalRaw = typeof window !== 'undefined' ? (localStorage.getItem('mw_primary_goal') || goalPresetValue('strength')) : goalPresetValue('strength');
@@ -207,6 +218,18 @@ export function HomePage() {
             defaultOpen={false}
           >
             <TodayHealthSection insight={coachInsight} breakdown={scoreBreakdown} />
+          </TodaySection>
+        );
+      case 'journal':
+        return (
+          <TodaySection
+            title={t('todaySectionJournal', { defaultValue: 'Journal' })}
+            description={t('todaySectionJournalDesc', {
+              defaultValue: 'Recent activity across pillars',
+            })}
+            defaultOpen
+          >
+            <TodayJournalStrip entries={journalEntries} locale={i18n.language} />
           </TodaySection>
         );
       case 'week':
@@ -295,7 +318,14 @@ export function HomePage() {
   if (layout.showDashboard) {
     staggerBlocks.push({
       key: 'dashboard',
-      node: <TodayDashboardHeader missionScore={score} scores={bodyScores} streak={streak} />,
+      node: (
+        <TodayDashboardHeader
+          missionScore={score}
+          scores={bodyScores}
+          streak={streak}
+          trends={todayTrends}
+        />
+      ),
     });
   }
 

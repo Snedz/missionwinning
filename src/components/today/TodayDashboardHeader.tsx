@@ -2,18 +2,21 @@
 
 import { useTranslation } from 'react-i18next';
 import { MetricsRow } from '@/components/metrics/MetricsRow';
+import { TodayMetricsSparklineRow } from '@/components/today/TodayMetricsSparklineRow';
 import type { BodyScores } from '@/lib/score';
+import type { TodayTrends } from '@/lib/todayTrends';
 import { cn } from '@/lib/utils';
 
 interface Props {
   missionScore: number;
   scores: BodyScores;
   streak: number;
+  trends?: TodayTrends;
   className?: string;
 }
 
 /** Bevel-style at-a-glance dashboard: Mission Score + readiness rings. */
-export function TodayDashboardHeader({ missionScore, scores, streak, className }: Props) {
+export function TodayDashboardHeader({ missionScore, scores, streak, trends, className }: Props) {
   const { t } = useTranslation();
 
   return (
@@ -37,6 +40,7 @@ export function TodayDashboardHeader({ missionScore, scores, streak, className }
         </div>
       </div>
       <MetricsRow scores={scores} embedded />
+      {trends && <TodayMetricsSparklineRow trends={trends} className="pt-1 border-t border-border/30" />}
     </div>
   );
 }
