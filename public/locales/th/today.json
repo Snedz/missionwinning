@@ -59,7 +59,7 @@
   "photoLogLogEstimate": "บันทึกการประมาณ",
   "photoLogRetake": "เลือกรูปใหม่",
   "todayWin7DayStreak": "สตรีค 7 วัน ({{current}}/7)",
-  "todayWinVolume": "ปริมาณรวม 1000kg+ ({{current}}/1000)",
+  "todayWinVolume": "ปริมาณรวม 1000+ ({{current}}/1000 {{unit}})",
   "todayWinSessions": "15+ เซสชัน ({{current}}/15)",
   "todayWinSavedRoutines": "3+ routine ที่บันทึก ({{current}}/3)",
   "todayWinProteinDays": "วันโปรตีนสูง 150g+ ({{current}}/5+)",

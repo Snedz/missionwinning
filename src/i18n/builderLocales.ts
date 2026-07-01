@@ -5,6 +5,7 @@ type BuilderStrings = {
   builderSubtitle: string;
   builderTemplatesTitle: string;
   builderTemplatesFoot: string;
+  builderProgramCount: string;
   builderTabBeginner: string;
   builderTabAdvanced: string;
   builderTabPro: string;
@@ -24,6 +25,45 @@ type BuilderStrings = {
   builderIncomplete: string;
   builderStarted: string;
   builderSignInFoot: string;
+  builderCycleSaved: string;
+  builderCycleSavedDesc: string;
+  builderAlreadyAdded: string;
+  builderAlreadyAddedDesc: string;
+  builderNameRequired: string;
+  builderNameRequiredDesc: string;
+  builderAddExercises: string;
+  builderAddExercisesDesc: string;
+  builderWorkoutSaved: string;
+  builderWorkoutSavedDesc: string;
+  builderNewWorkout: string;
+  builderNewWorkoutDesc: string;
+  builderWorkoutNamePlaceholder: string;
+  builderProgramNotes: string;
+  builderSelectExercise: string;
+  builderAdd: string;
+  builderMobilityAlready: string;
+  builderQuickMobility: string;
+  builderLoadHabitStack: string;
+  builderHabitStackName: string;
+  builderHabitStackNotes: string;
+  builderTableSet: string;
+  builderTableReps: string;
+  builderTableWeight: string;
+  builderAddSet: string;
+  builderSavedMeta: string;
+  builderSessionReps: string;
+  builderNoPrograms: string;
+  builderDetails: string;
+  builderSaveAll: string;
+  builderSessionMeta: string;
+  builderTemplateLoadFail: string;
+  builderStyleFilter: string;
+  builderFilterAll: string;
+  builderProPremium: string;
+  builderUnlockBundle: string;
+  builderQuickLoadLabel: string;
+  builderQuickLoadPlaceholder: string;
+  builderQuickLoadButton: string;
 };
 
 const en: BuilderStrings = {
@@ -32,6 +72,7 @@ const en: BuilderStrings = {
     'Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.',
   builderTemplatesTitle: 'Program Templates',
   builderTemplatesFoot: 'Includes new free bodyweight + mobility circuits (vision core)',
+  builderProgramCount: '{{count}} programs',
   builderTabBeginner: 'Beginner',
   builderTabAdvanced: 'Advanced',
   builderTabPro: 'Pro',
@@ -51,6 +92,45 @@ const en: BuilderStrings = {
   builderIncomplete: 'Incomplete workout',
   builderStarted: 'Workout started!',
   builderSignInFoot: 'Sign in to sync saved routines across devices.',
+  builderCycleSaved: 'Cycle saved',
+  builderCycleSavedDesc: '{{count}} workouts added to saved list.',
+  builderAlreadyAdded: 'Already added',
+  builderAlreadyAddedDesc: 'This exercise is in the workout.',
+  builderNameRequired: 'Name required',
+  builderNameRequiredDesc: 'Give your workout a name.',
+  builderAddExercises: 'Add exercises',
+  builderAddExercisesDesc: 'Add at least one exercise.',
+  builderWorkoutSaved: 'Workout saved',
+  builderWorkoutSavedDesc: '"{{name}}" is ready to use.',
+  builderNewWorkout: 'New Workout',
+  builderNewWorkoutDesc: 'Pick exercises and configure sets',
+  builderWorkoutNamePlaceholder: 'e.g. Push Day A',
+  builderProgramNotes: 'Program notes:',
+  builderSelectExercise: 'Select exercise…',
+  builderAdd: 'Add',
+  builderMobilityAlready: 'Mobility warm-up already in session.',
+  builderQuickMobility: '+ Quick Add Free Mobility Warm-up (5 moves)',
+  builderLoadHabitStack: 'Load Free Habit/Mobility Stack',
+  builderHabitStackName: 'Daily Habit Stack (Free)',
+  builderHabitStackNotes: 'Vision-aligned free core: mobility + consistency. Log in Nutrition too.',
+  builderTableSet: 'Set',
+  builderTableReps: 'Reps',
+  builderTableWeight: 'Weight ({{unit}})',
+  builderAddSet: 'Add Set',
+  builderSavedMeta: '{{count}} exercises · {{date}}',
+  builderSessionReps: '{{name}}: {{sets}}× ({{reps}} reps)',
+  builderNoPrograms: 'No programs in this category.',
+  builderDetails: 'Details',
+  builderSaveAll: 'Save all ({{count}})',
+  builderSessionMeta: '{{exercises}} exercises · {{sets}} sets',
+  builderTemplateLoadFail: 'Template data failed to load. Restart the dev server.',
+  builderStyleFilter: 'Style:',
+  builderFilterAll: 'All',
+  builderProPremium: 'Pro cycles require Super Bundle premium.',
+  builderUnlockBundle: 'Unlock Super Bundle',
+  builderQuickLoadLabel: 'Quick load (all categories)',
+  builderQuickLoadPlaceholder: 'Choose program & session…',
+  builderQuickLoadButton: 'Load into builder',
 };
 
 const es: BuilderStrings = {
@@ -61,6 +141,10 @@ const es: BuilderStrings = {
   builderSaveWorkout: 'Guardar entrenamiento',
   builderStartWorkout: 'Iniciar entrenamiento',
   builderTemplateLoaded: 'Plantilla cargada',
+  builderNewWorkout: 'Nuevo entrenamiento',
+  builderAdd: 'Añadir',
+  builderLoad: 'Cargar',
+  builderDetails: 'Detalles',
 };
 
 const zh: BuilderStrings = {
@@ -70,6 +154,9 @@ const zh: BuilderStrings = {
   builderTabAdvanced: '进阶',
   builderSaveWorkout: '保存训练',
   builderStartWorkout: '开始训练',
+  builderNewWorkout: '新建训练',
+  builderAdd: '添加',
+  builderLoad: '加载',
 };
 
 const id: BuilderStrings = {
@@ -77,6 +164,8 @@ const id: BuilderStrings = {
   builderTitle: 'Pembuat latihan',
   builderSaveWorkout: 'Simpan latihan',
   builderStartWorkout: 'Mulai latihan',
+  builderNewWorkout: 'Latihan baru',
+  builderAdd: 'Tambah',
 };
 
 const th: BuilderStrings = {
@@ -84,6 +173,8 @@ const th: BuilderStrings = {
   builderTitle: 'สร้างการฝึก',
   builderSaveWorkout: 'บันทึกการฝึก',
   builderStartWorkout: 'เริ่มฝึก',
+  builderNewWorkout: 'การฝึกใหม่',
+  builderAdd: 'เพิ่ม',
 };
 
 const ar: BuilderStrings = {
@@ -91,6 +182,8 @@ const ar: BuilderStrings = {
   builderTitle: 'منشئ التمارين',
   builderSaveWorkout: 'حفظ التمرين',
   builderStartWorkout: 'بدء التمرين',
+  builderNewWorkout: 'تمرين جديد',
+  builderAdd: 'إضافة',
 };
 
 const LOCALES: Partial<Record<string, BuilderStrings>> = { en, es, zh, id, th, ar };

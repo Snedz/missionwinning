@@ -59,7 +59,7 @@
   "photoLogLogEstimate": "تسجيل التقدير",
   "photoLogRetake": "اختر صورة أخرى",
   "todayWin7DayStreak": "سلسلة 7 أيام ({{current}}/7)",
-  "todayWinVolume": "1000kg+ حجم ({{current}}/1000)",
+  "todayWinVolume": "1000+ حجم ({{current}}/1000 {{unit}})",
   "todayWinSessions": "15+ جلسة ({{current}}/15)",
   "todayWinSavedRoutines": "3+ روتينات ({{current}}/3)",
   "todayWinProteinDays": "أيام بروتين 150g+ ({{current}}/5+)",

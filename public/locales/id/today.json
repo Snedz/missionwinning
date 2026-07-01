@@ -59,7 +59,7 @@
   "photoLogLogEstimate": "Log estimasi",
   "photoLogRetake": "Pilih foto lain",
   "todayWin7DayStreak": "Streak 7 hari ({{current}}/7)",
-  "todayWinVolume": "1000kg+ volume total ({{current}}/1000)",
+  "todayWinVolume": "1000+ volume total ({{current}}/1000 {{unit}})",
   "todayWinSessions": "15+ sesi ({{current}}/15)",
   "todayWinSavedRoutines": "3+ rutin tersimpan ({{current}}/3)",
   "todayWinProteinDays": "Hari protein tinggi 150g+ ({{current}}/5+)",

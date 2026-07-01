@@ -59,7 +59,7 @@
   "photoLogLogEstimate": "Log estimate",
   "photoLogRetake": "Choose another photo",
   "todayWin7DayStreak": "7-Day Streak ({{current}}/7)",
-  "todayWinVolume": "1000kg+ Total Volume ({{current}}/1000)",
+  "todayWinVolume": "1000+ total volume ({{current}}/1000 {{unit}})",
   "todayWinSessions": "15+ Sessions Logged ({{current}}/15)",
   "todayWinSavedRoutines": "3+ Saved Routines ({{current}}/3)",
   "todayWinProteinDays": "High Protein Days (150g+) ({{current}}/5+)",
