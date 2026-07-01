@@ -32,6 +32,9 @@ type ActiveWorkoutStrings = {
   activeRpeEasy: string;
   activeRpeMed: string;
   activeRpeHard: string;
+  activePrTitle: string;
+  activePrDesc: string;
+  activeCopyLast: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -66,6 +69,9 @@ const en: ActiveWorkoutStrings = {
   activeRpeEasy: 'Easy',
   activeRpeMed: 'Med',
   activeRpeHard: 'Hard',
+  activePrTitle: 'New PR!',
+  activePrDesc: '{{reps}} × {{weight}} — personal best for this exercise',
+  activeCopyLast: 'Copy last',
 };
 
 const es: ActiveWorkoutStrings = {

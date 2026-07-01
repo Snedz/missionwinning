@@ -25,6 +25,8 @@ import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { resolveRestSeconds } from '@/lib/restTimer';
+import { isPersonalRecord } from '@/lib/workoutPr';
+import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import type { CompletedWorkoutLog } from '@/types';
 
 function findNextSet(exercises: { sets: { completed: boolean }[] }[]) {
@@ -49,6 +51,9 @@ function getLastPerformance(workoutHistory: CompletedWorkoutLog[], exerciseId: s
 export function ActiveWorkoutPage() {
   const router = useRouter();
   const { t } = useTranslation();
+  const units = useUnits();
+  const unitLabel = weightUnitLabel(units);
+  const step = weightStep(units);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
   const restSecondsRemaining = useWorkoutStore((s) => s.restSecondsRemaining);
@@ -122,19 +127,33 @@ export function ActiveWorkoutPage() {
     const input = override ?? getSetInput(exIdx, setIdx, set.reps, set.weight);
     const exercise = getExerciseById(activeWorkout!.exercises[exIdx].exerciseId);
     const restSec = exercise ? resolveRestSeconds(exercise.name) : 90;
+    const exerciseId = activeWorkout!.exercises[exIdx].exerciseId;
+    const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory);
 
     logSetAndAdvance(exIdx, setIdx, input.reps, input.weight);
     startRestTimer(restSec);
 
-    toast({
-      title: t('activeSetLogged', { defaultValue: 'Set logged!' }),
-      description: t('activeSetLoggedDesc', {
-        reps: input.reps,
-        weight: input.weight,
-        rest: restSec,
-        defaultValue: `${input.reps} × ${input.weight} — ${restSec}s rest`,
-      }),
-    });
+    if (isPr) {
+      toast({
+        title: t('activePrTitle', { defaultValue: 'New PR!' }),
+        description: t('activePrDesc', {
+          reps: input.reps,
+          weight: input.weight,
+          defaultValue: `${input.reps} × ${input.weight} — personal best for this exercise`,
+        }),
+        className: 'border-fitness-gold/40 bg-amber-950/30',
+      });
+    } else {
+      toast({
+        title: t('activeSetLogged', { defaultValue: 'Set logged!' }),
+        description: t('activeSetLoggedDesc', {
+          reps: input.reps,
+          weight: input.weight,
+          rest: restSec,
+          defaultValue: `${input.reps} × ${input.weight} — ${restSec}s rest`,
+        }),
+      });
+    }
   };
 
   const handleRepeatLast = (exIdx: number) => {
@@ -149,7 +168,7 @@ export function ActiveWorkoutPage() {
     const log = completeActiveWorkout();
     if (log) {
       const hourKind = getSessionHourKind(log.completedAt);
-      let description = `${log.totalVolume.toLocaleString()} lbs total volume`;
+      let description = `${log.totalVolume.toLocaleString()} ${unitLabel} total volume`;
       if (hourKind === 'night') {
         description += ' · Counts toward Under the Stars on the leaderboard';
       } else if (hourKind === 'dawn') {
@@ -340,11 +359,21 @@ export function ActiveWorkoutPage() {
                         reps={input.reps}
                         weight={input.weight}
                         isNext={isNext}
+                        weightLabel={unitLabel}
+                        weightStep={step}
                         lastPerformance={lastPerf}
                         onRepsChange={(v) => updateSetInput(exIdx, setIdx, 'reps', v)}
                         onWeightChange={(v) => updateSetInput(exIdx, setIdx, 'weight', v)}
                         onLog={() => handleLogSet(exIdx, setIdx)}
                         onRate={(rpe) => rateSet(exIdx, setIdx, rpe)}
+                        onCopyLast={
+                          lastPerf
+                            ? () => {
+                                updateSetInput(exIdx, setIdx, 'reps', lastPerf.reps);
+                                updateSetInput(exIdx, setIdx, 'weight', lastPerf.weight);
+                              }
+                            : undefined
+                        }
                       />
                     </div>
                   );

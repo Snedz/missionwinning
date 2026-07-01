@@ -29,5 +29,8 @@
   "activeWeight": "lbs",
   "activeRpeEasy": "Easy",
   "activeRpeMed": "Med",
-  "activeRpeHard": "Hard"
+  "activeRpeHard": "Hard",
+  "activePrTitle": "New PR!",
+  "activePrDesc": "{{reps}} × {{weight}} — personal best for this exercise",
+  "activeCopyLast": "Copy last"
 }

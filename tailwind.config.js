@@ -42,6 +42,7 @@ export default {
           red: "#dc2626",
           navy: "#0f172a",
           gold: "#ca8a04",
+          teal: "#2dd4bf",
         },
       },
       borderRadius: {

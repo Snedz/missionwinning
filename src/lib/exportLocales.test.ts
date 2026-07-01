@@ -8,8 +8,8 @@ import {
 } from '@/lib/exportLocales';
 
 describe('exportLocales', () => {
-  it('defines seven namespaces for export', () => {
-    assert.equal(LOCALE_EXPORTS.length, 7);
+  it('defines ten namespaces for export', () => {
+    assert.equal(LOCALE_EXPORTS.length, 10);
     const names = LOCALE_EXPORTS.map((e) => e.namespace);
     assert.ok(names.includes('bundle'));
     assert.ok(names.includes('today'));

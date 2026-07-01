@@ -8,7 +8,7 @@ English and partial translations exported for translator handoff. Runtime uses i
 npm run export-locales
 ```
 
-Writes **48 files** per run: 7 namespaces + `common.json` (merged) × 6 languages (`en`, `es`, `zh`, `id`, `th`, `ar`).
+Writes **66 files** per run: 10 namespaces + `common.json` (merged) × 6 languages (`en`, `es`, `zh`, `id`, `th`, `ar`).
 
 ## HTTP overrides (post-beta translators)
 
