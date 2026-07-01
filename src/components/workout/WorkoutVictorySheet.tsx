@@ -1,6 +1,6 @@
 'use client';
 
-import { Trophy } from 'lucide-react';
+import { Share2, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -35,6 +35,33 @@ export function WorkoutVictorySheet({
   const unitLabel = weightUnitLabel(units);
 
   if (!summary) return null;
+
+  const shareText = t('victoryShareText', {
+    name: summary.workoutName,
+    volume: summary.totalVolume.toLocaleString(),
+    unit: unitLabel,
+    sets: summary.setCount,
+    streak: summary.streak,
+    defaultValue: `Mission complete: ${summary.workoutName} — ${summary.totalVolume.toLocaleString()} ${unitLabel}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}. #MissionWinning`,
+  });
+
+  const handleShare = async () => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: t('victoryTitle', { defaultValue: 'Mission complete' }),
+          text: shareText,
+          url: typeof window !== 'undefined' ? window.location.origin : undefined,
+        });
+        return;
+      } catch {
+        // user cancelled or failed
+      }
+    }
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(shareText);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -93,6 +120,10 @@ export function WorkoutVictorySheet({
           </Button>
           <Button variant="outline" className="w-full" onClick={onViewHistory}>
             {t('victoryViewHistory', { defaultValue: 'View history & charts' })}
+          </Button>
+          <Button variant="ghost" className="w-full gap-2" onClick={handleShare}>
+            <Share2 className="h-4 w-4" />
+            {t('victoryShare', { defaultValue: 'Share win' })}
           </Button>
         </DialogFooter>
       </DialogContent>

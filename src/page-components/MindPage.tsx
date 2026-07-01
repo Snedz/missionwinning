@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
 import { getPillarWins } from '@/lib/pillarLog';
+import { GUIDED_MIND_SESSIONS } from '@/data/guidedMindSessions';
+import { GuidedMindSessionRunner } from '@/components/pillars/GuidedMindSessionRunner';
 import { Brain } from 'lucide-react';
 
 export function MindPage() {
@@ -24,7 +26,7 @@ export function MindPage() {
           title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
           subtitle={t('mindSubtitle', {
             defaultValue:
-              'Free breathing timer and daily check-in. Premium unlocks guided meditations and sleep tools (Super Bundle).',
+              'Free breathing timer, guided sessions, and daily check-in. Premium unlocks full audio libraries (Super Bundle).',
           })}
         />
       </StaggerItem>
@@ -36,8 +38,21 @@ export function MindPage() {
         </div>
       </StaggerItem>
 
+      <StaggerItem index={2}>
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+            {t('mindGuidedFree', { defaultValue: 'Free guided sessions' })}
+          </h3>
+          <div className="grid gap-4 md:grid-cols-3">
+            {GUIDED_MIND_SESSIONS.map((s) => (
+              <GuidedMindSessionRunner key={s.id} session={s} />
+            ))}
+          </div>
+        </div>
+      </StaggerItem>
+
       {recentWins.length > 0 && (
-        <StaggerItem index={2}>
+        <StaggerItem index={3}>
           <Card className="content-card">
             <CardHeader>
               <CardTitle className="text-base">
@@ -55,7 +70,7 @@ export function MindPage() {
         </StaggerItem>
       )}
 
-      <StaggerItem index={3}>
+      <StaggerItem index={recentWins.length > 0 ? 4 : 3}>
         <Card className="content-card border-white/10 bg-card/50">
           <CardHeader>
             <CardTitle className="text-base">

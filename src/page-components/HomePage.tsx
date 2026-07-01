@@ -237,7 +237,24 @@ export function HomePage() {
             })}
             defaultOpen={false}
           >
-            <TodayHealthSection insight={coachInsight} breakdown={scoreBreakdown} />
+            <TodayHealthSection
+              insight={coachInsight}
+              breakdown={scoreBreakdown}
+              coachContext={{
+                readiness: bodyScores.readiness,
+                strain: bodyScores.strain,
+                recovery: bodyScores.recovery,
+                missionScore: score,
+                streak,
+                focusGroup: recommendedFocus.group,
+                pillars: {
+                  moveFlows: pillarStats.moveFlows,
+                  mindSessions: pillarStats.mindSessions,
+                  proteinDays: pillarStats.proteinDays,
+                  trainDays: pillarStats.trainDays,
+                },
+              }}
+            />
           </TodaySection>
         );
       case 'journal':
