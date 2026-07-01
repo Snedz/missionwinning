@@ -1,8 +1,8 @@
 # Pre-Launch Plan — Mission Winning
 
 **Purpose:** Single checklist before `PRIVATE_MODE=false` and public launch.  
-**Last updated:** 2026-06-29 (post-unified UI)  
-**Vercel access:** Deferred — waiting on 2FA reset. Local + Supabase work continues.
+**Last updated:** 2026-06-29 (post Phase G PFT track, build `.45`)  
+**Vision alignment:** [VISION_STATUS.md](VISION_STATUS.md) · **Build phases:** [PLAN.md](PLAN.md)
 
 ---
 
@@ -25,13 +25,16 @@
 | **Form guides (G2)** | ✅ | 50+ text-only exercise guides |
 | **Legal (F4 partial)** | ✅ | `/privacy`, `/terms`, AppLegalFooter on Profile/Welcome/private |
 | **Beta metrics (F4 partial)** | ✅ | `/api/beta/metrics`, founder panel on Profile |
-| **Leaderboard** | ✅ | GT7-style scopes + 6 boards (incl. Under the Stars, By Dawn's Early Light) |
-| **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, logs, RLS |
-| **Build label** | ✅ | `2025.06-unified.17` on Profile footer |
+| **Leaderboard** | ✅ | GT7-style scopes + 7 boards (incl. Presidential Fitness, night/dawn) |
+| **PFT / America track (Phase G)** | ✅ | `/america`, `/fitness-test`, school classes, teacher dashboard, youth consent |
+| **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, school/PFT tables |
+| **Build label** | ✅ | `2025.06-unified.45` on Profile footer |
 
 ### Open PR stack
 
-Most feature work is merged to `master`. Branch `cursor/today-cards-challenges-699d` adds challenge i18n, customizable Today sections, photo estimate stub, wins badge i18n, and CSP Report-Only. When Vercel 2FA resets: redeploy from `master`, verify build label, run gate smoke test, then send beta invites per [BETA_INVITE.md](BETA_INVITE.md).
+Most core work is merged to `master` (through PR #59 / build `.45`). Remaining **draft PRs** (#43–#48, #9) are separate train/fuel/i18n features — review individually; not required for Phase H launch.
+
+When Vercel access is restored: GitHub Secrets → run **Sync Vercel env** → redeploy → verify build label → `npm run gate-smoke` (optional `SMOKE_ACCESS_SECRET` for `/fitness-test`).
 
 ### While Vercel is blocked — continue locally
 
@@ -153,38 +156,26 @@ Scaffold added in `src/i18n/tier2Locales.ts` with full Tier-1-equivalent core st
 
 ## What to build next (recommended order)
 
-Work **without Vercel** until access is restored.
+See [PLAN.md](PLAN.md) Phase **H** (launch) and **I** (premium). Summary:
 
-### Now — private beta prep
-
-| # | Task | Branch idea | Effort |
-|---|------|-------------|--------|
-| 1 | **Merge PR stack** to `master` locally; fix conflicts | `cursor/release-integration-699d` | Integration |
-| 2 | **Tier 2 i18n:** Thai + Vietnamese + Hindi + Chinese + Indonesian | ✅ done | — |
-| 3 | **Leaderboard SQL** if not run: `20250629_leaderboard_squad_patch.sql` | — | 5 min |
-| 4 | **Beta invite kit:** 10 users, private gate code, 1-page “start here” | ✅ `/beta` + BETA_INVITE.md | — |
-| 5 | **Extract Today + Welcome strings** to JSON for ES/FR/TH | `cursor/i18n-extract-today-699d` | Medium |
-| 6 | **Simple mode leaderboard link** (streak chip → `/leaderboard`) | small | Tiny |
-
-### When Vercel access returns — deployment
+### Now — Phase H (private beta → public)
 
 | # | Task |
 |---|------|
-| 1 | Set env vars per [ENV.md](ENV.md) + [PROTECTION.md](PROTECTION.md) |
-| 2 | Redeploy; verify gate in incognito |
-| 3 | Enable PWA (`PRIVATE_MODE=false` only after beta gates) |
-| 4 | `RESEND_API_KEY` for journey nudge emails (optional) |
-| 5 | Custom domain DNS check |
+| 1 | Beta cohort 10+ users; track I-Day / BT funnel on Profile |
+| 2 | GitHub Secrets + **Sync Vercel env** ([ENV.md](ENV.md)) |
+| 3 | Run all Supabase migrations (incl. PFT/school) |
+| 4 | `npm run gate-smoke` on production URL |
+| 5 | Pass beta gates → `PRIVATE_MODE=false` + PWA enable |
 
-### After beta metrics pass — Phase E (public)
+### After launch — Phase I (vision revenue + depth)
 
 | # | Task |
 |---|------|
-| 1 | `PRIVATE_MODE=false` |
-| 2 | Stripe live + verified webhook |
-| 3 | PROTECTION P1 complete (PayPal verify, CSP, leads rate limit) | ✅ |
-| 4 | App Store / PWA install prompt on landing |
-| 5 | Tier 2 full page translation rollout |
+| 1 | Live Stripe Super Bundle checkout |
+| 2 | AI Coach v1 (premium-gated plan generator) |
+| 3 | i18n G2 body copy (Tier 1 languages) |
+| 4 | One premium pillar MVP (Track / Mind / Move) |
 
 ---
 
@@ -198,9 +189,12 @@ Run in SQL Editor (idempotent where noted):
 | `20250629_journey_state.sql` | Journey sync columns (if profiles existed without them) |
 | `20250629_journey_events.sql` | Analytics events |
 | `20250629_leaderboard.sql` | Leaderboard snapshots |
-| `20250629_leaderboard_squad_patch.sql` | Add `squad_code` + night/dawn if table existed earlier |
+| `20250629_leaderboard_squad_patch.sql` | Squad code + night/dawn columns |
+| `20250629_fitness_test_school.sql` | School classes + fitness_test_results |
+| `20250629_pft_leaderboard_teacher_pin.sql` | PFT scores on leaderboard + teacher_pin |
+| `20250629_youth_consent_records.sql` | Verified youth consent (signed-in athletes) |
 
-Verify 6+ tables: `profiles`, `workout_logs`, `nutrition_logs`, `enrollments`, `leads`, `journey_events`, `leaderboard_snapshots`.
+Verify tables: `profiles`, `workout_logs`, `nutrition_logs`, `enrollments`, `leads`, `journey_events`, `leaderboard_snapshots`, `school_classes`, `fitness_test_results`, `youth_consent_records`.
 
 ---
 
@@ -238,9 +232,10 @@ Verify 6+ tables: `profiles`, `workout_logs`, `nutrition_logs`, `enrollments`, `
 | [JOURNEY.md](JOURNEY.md) | Member path + F4 gates |
 | [PROTECTION.md](PROTECTION.md) | Security P0/P1/P2 |
 | [ENV.md](ENV.md) | Vercel env vars |
-| [PLAN.md](PLAN.md) | Phase A–F roadmap |
+| [PLAN.md](PLAN.md) | Phase A–I roadmap |
+| [VISION_STATUS.md](VISION_STATUS.md) | Vision vs reality scorecard |
 | [LOG.md](LOG.md) | Shipped changelog |
 
 ---
 
-*Next implementation suggestion: **Tier 2 Thai/Vietnamese/Hindi** (G1b) + **beta invite doc** — no Vercel required.*
+*Next implementation: **Phase H** beta cohort + Vercel env sync — see [PLAN.md](PLAN.md).*
