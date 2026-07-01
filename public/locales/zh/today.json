@@ -59,7 +59,7 @@
   "photoLogLogEstimate": "记录估算",
   "photoLogRetake": "重新选择照片",
   "todayWin7DayStreak": "7 天连续 ({{current}}/7)",
-  "todayWinVolume": "1000kg+ 总容量 ({{current}}/1000)",
+  "todayWinVolume": "1000+ 总容量 ({{current}}/1000 {{unit}})",
   "todayWinSessions": "15+ 次训练 ({{current}}/15)",
   "todayWinSavedRoutines": "3+ 已保存 routine ({{current}}/3)",
   "todayWinProteinDays": "高蛋白质日 150g+ ({{current}}/5+)",

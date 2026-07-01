@@ -59,7 +59,7 @@
   "photoLogLogEstimate": "Registrar estimación",
   "photoLogRetake": "Elegir otra foto",
   "todayWin7DayStreak": "Racha de 7 días ({{current}}/7)",
-  "todayWinVolume": "1000kg+ volumen total ({{current}}/1000)",
+  "todayWinVolume": "1000+ volumen total ({{current}}/1000 {{unit}})",
   "todayWinSessions": "15+ sesiones ({{current}}/15)",
   "todayWinSavedRoutines": "3+ rutinas guardadas ({{current}}/3)",
   "todayWinProteinDays": "Días alta proteína 150g+ ({{current}}/5+)",
