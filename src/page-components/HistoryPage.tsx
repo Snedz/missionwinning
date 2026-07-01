@@ -33,7 +33,7 @@ import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
 import { getExerciseById } from '@/data/exercises';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { cn, formatDate, formatDuration } from '@/lib/utils';
-import { countsTowardVolume, setKindDefaultLabel, setKindLabelKey } from '@/lib/setKind';
+import { countsTowardVolume, setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/setKind';
 import {
   build1RMChartData,
   buildMuscleHeatmap,
@@ -47,12 +47,6 @@ import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { getUser, getUserNutritionForDate } from '@/lib/supabase';
 
 const HEATMAP_WINDOW_DAYS = 14;
-
-function kindBadgeClass(kind: SetKind): string {
-  if (kind === 'warmup') return 'border-amber-500/40 bg-amber-950/30 text-amber-300';
-  if (kind === 'failure') return 'border-rose-500/40 bg-rose-950/30 text-rose-300';
-  return '';
-}
 
 export function HistoryPage() {
   const { t, i18n } = useTranslation();
@@ -317,7 +311,8 @@ export function HistoryPage() {
                                 key={i}
                                 className={cn(
                                   kind === 'warmup' && 'bg-amber-950/10',
-                                  kind === 'failure' && 'bg-rose-950/10'
+                                  kind === 'failure' && 'bg-rose-950/10',
+                                  kind === 'drop' && 'bg-violet-950/10'
                                 )}
                               >
                                 <TableCell>{i + 1}</TableCell>
@@ -327,7 +322,7 @@ export function HistoryPage() {
                                   ) : (
                                     <Badge
                                       variant="outline"
-                                      className={cn('text-[10px] uppercase', kindBadgeClass(kind))}
+                                      className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}
                                     >
                                       {t(setKindLabelKey(kind), {
                                         defaultValue: setKindDefaultLabel(kind),

@@ -45,6 +45,7 @@
   "activeSetNormal": "Work",
   "activeSetWarmup": "Warmup",
   "activeSetFailure": "Failure",
+  "activeSetDrop": "Drop",
   "activeSupersetLink": "Superset w/ next",
   "activeSupersetUnlink": "Unlink superset",
   "activeSetLoggedSuperset": "{{reps}} × {{weight}} — next exercise in superset"

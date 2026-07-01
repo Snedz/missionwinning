@@ -10,7 +10,7 @@ export type MuscleGroup =
 
 export type ProgramTag = "strength" | "hypertrophy" | "conditioning" | "corrective";
 
-export type SetKind = 'normal' | 'warmup' | 'failure';
+export type SetKind = 'normal' | 'warmup' | 'failure' | 'drop';
 
 export type ExerciseLevel = "beginner" | "intermediate" | "advanced";
 

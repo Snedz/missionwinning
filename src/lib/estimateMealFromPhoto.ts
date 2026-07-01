@@ -1,4 +1,4 @@
-/** On-device meal estimate stub — filename heuristics until vision API ships. */
+/** Meal photo estimation — heuristics + optional color hints; API-ready. */
 
 export type MealEstimate = {
   name: string;
@@ -6,11 +6,18 @@ export type MealEstimate = {
   cals: number;
   carbs: number;
   fat: number;
-  confidence: 'low' | 'medium';
+  confidence: 'low' | 'medium' | 'high';
+  source: 'heuristic' | 'api';
+};
+
+export type MealImageHints = {
+  /** Dominant palette bucket from client canvas sample */
+  palette?: 'green' | 'brown' | 'yellow' | 'red' | 'neutral';
 };
 
 type MealTemplate = {
   keywords: string[];
+  palettes?: MealImageHints['palette'][];
   name: string;
   protein: number;
   cals: number;
@@ -19,14 +26,16 @@ type MealTemplate = {
 };
 
 const TEMPLATES: MealTemplate[] = [
-  { keywords: ['chicken', 'pollo', 'ayam'], name: 'Grilled chicken meal (est.)', protein: 42, cals: 380, carbs: 12, fat: 8 },
-  { keywords: ['salmon', 'fish', 'ikan'], name: 'Salmon plate (est.)', protein: 35, cals: 420, carbs: 8, fat: 22 },
-  { keywords: ['rice', 'bowl', 'nasi'], name: 'Rice bowl (est.)', protein: 12, cals: 480, carbs: 72, fat: 6 },
-  { keywords: ['salad', 'greens'], name: 'Protein salad (est.)', protein: 18, cals: 320, carbs: 22, fat: 14 },
+  { keywords: ['chicken', 'pollo', 'ayam'], palettes: ['brown'], name: 'Grilled chicken meal (est.)', protein: 42, cals: 380, carbs: 12, fat: 8 },
+  { keywords: ['salmon', 'fish', 'ikan'], palettes: ['brown', 'red'], name: 'Salmon plate (est.)', protein: 35, cals: 420, carbs: 8, fat: 22 },
+  { keywords: ['rice', 'bowl', 'nasi'], palettes: ['yellow', 'neutral'], name: 'Rice bowl (est.)', protein: 12, cals: 480, carbs: 72, fat: 6 },
+  { keywords: ['salad', 'greens'], palettes: ['green'], name: 'Protein salad (est.)', protein: 18, cals: 320, carbs: 22, fat: 14 },
   { keywords: ['egg', 'breakfast'], name: 'Egg breakfast (est.)', protein: 22, cals: 350, carbs: 18, fat: 18 },
-  { keywords: ['pizza', 'pasta'], name: 'Carb-heavy meal (est.)', protein: 15, cals: 620, carbs: 78, fat: 20 },
+  { keywords: ['pizza', 'pasta'], palettes: ['yellow', 'red'], name: 'Carb-heavy meal (est.)', protein: 15, cals: 620, carbs: 78, fat: 20 },
   { keywords: ['shake', 'smoothie'], name: 'Protein smoothie (est.)', protein: 28, cals: 280, carbs: 32, fat: 4 },
-  { keywords: ['burger', 'sandwich'], name: 'Sandwich / burger (est.)', protein: 25, cals: 540, carbs: 45, fat: 22 },
+  { keywords: ['burger', 'sandwich'], palettes: ['brown', 'yellow'], name: 'Sandwich / burger (est.)', protein: 25, cals: 540, carbs: 45, fat: 22 },
+  { keywords: ['steak', 'beef'], palettes: ['brown', 'red'], name: 'Steak plate (est.)', protein: 45, cals: 520, carbs: 6, fat: 28 },
+  { keywords: ['yogurt', 'greek'], name: 'Yogurt bowl (est.)', protein: 20, cals: 220, carbs: 18, fat: 6 },
 ];
 
 const FALLBACK: MealTemplate = {
@@ -38,28 +47,54 @@ const FALLBACK: MealTemplate = {
   fat: 15,
 };
 
-function matchTemplate(fileName: string): MealTemplate {
+function scoreTemplate(t: MealTemplate, fileName: string, hints?: MealImageHints): number {
   const hay = fileName.toLowerCase();
+  let score = 0;
+  if (t.keywords.some((k) => hay.includes(k))) score += 10;
+  if (hints?.palette && t.palettes?.includes(hints.palette)) score += 4;
+  return score;
+}
+
+export function matchMealTemplate(fileName: string, hints?: MealImageHints): MealTemplate {
+  let best = FALLBACK;
+  let bestScore = 0;
   for (const t of TEMPLATES) {
-    if (t.keywords.some((k) => hay.includes(k))) return t;
+    const s = scoreTemplate(t, fileName, hints);
+    if (s > bestScore) {
+      bestScore = s;
+      best = t;
+    }
   }
-  return FALLBACK;
+  if (bestScore === 0 && hints?.palette === 'green') {
+    return TEMPLATES.find((t) => t.keywords.includes('salad')) ?? FALLBACK;
+  }
+  if (bestScore === 0 && hints?.palette === 'brown') {
+    return TEMPLATES.find((t) => t.keywords.includes('chicken')) ?? FALLBACK;
+  }
+  return best;
 }
 
 /** Rough portion scale from file size (very approximate demo heuristic). */
-function portionScale(file: File): number {
-  const kb = file.size / 1024;
+export function portionScaleFromBytes(byteSize: number): number {
+  const kb = byteSize / 1024;
   if (kb < 80) return 0.75;
   if (kb > 400) return 1.25;
   return 1;
 }
 
-export async function estimateMealFromPhoto(file: File): Promise<MealEstimate> {
-  // Small delay so UI feels like processing (on-device only).
-  await new Promise((r) => setTimeout(r, 400));
+export function estimateMealFromSignals(
+  fileName: string,
+  byteSize: number,
+  hints?: MealImageHints
+): MealEstimate {
+  const base = matchMealTemplate(fileName, hints);
+  const scale = portionScaleFromBytes(byteSize);
+  const nameMatch = scoreTemplate(base, fileName, hints) >= 10;
+  const paletteMatch = hints?.palette && base.palettes?.includes(hints.palette);
 
-  const base = matchTemplate(file.name);
-  const scale = portionScale(file);
+  let confidence: MealEstimate['confidence'] = 'low';
+  if (nameMatch && paletteMatch) confidence = 'high';
+  else if (nameMatch || paletteMatch || base !== FALLBACK) confidence = 'medium';
 
   return {
     name: base.name,
@@ -67,6 +102,88 @@ export async function estimateMealFromPhoto(file: File): Promise<MealEstimate> {
     cals: Math.round(base.cals * scale),
     carbs: Math.round(base.carbs * scale),
     fat: Math.round(base.fat * scale),
-    confidence: base === FALLBACK ? 'low' : 'medium',
+    confidence,
+    source: 'heuristic',
   };
+}
+
+export async function estimateMealFromPhoto(
+  file: File,
+  hints?: MealImageHints
+): Promise<MealEstimate> {
+  await new Promise((r) => setTimeout(r, 350));
+  return estimateMealFromSignals(file.name, file.size, hints);
+}
+
+/** Sample dominant palette from image file (browser only). */
+export async function sampleMealImageHints(file: File): Promise<MealImageHints> {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return {};
+  }
+
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 24;
+        canvas.height = 24;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          URL.revokeObjectURL(url);
+          resolve({});
+          return;
+        }
+        ctx.drawImage(img, 0, 0, 24, 24);
+        const { data } = ctx.getImageData(0, 0, 24, 24);
+        let r = 0;
+        let g = 0;
+        let b = 0;
+        const pixels = data.length / 4;
+        for (let i = 0; i < data.length; i += 4) {
+          r += data[i];
+          g += data[i + 1];
+          b += data[i + 2];
+        }
+        r /= pixels;
+        g /= pixels;
+        b /= pixels;
+        URL.revokeObjectURL(url);
+
+        let palette: MealImageHints['palette'] = 'neutral';
+        if (g > r + 15 && g > b + 10) palette = 'green';
+        else if (r > 140 && g < 100) palette = 'red';
+        else if (r > 110 && g > 90 && b < 80) palette = 'brown';
+        else if (r > 120 && g > 110) palette = 'yellow';
+        resolve({ palette });
+      } catch {
+        URL.revokeObjectURL(url);
+        resolve({});
+      }
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      resolve({});
+    };
+    img.src = url;
+  });
+}
+
+export async function estimateMealViaApi(
+  file: File,
+  hints?: MealImageHints
+): Promise<MealEstimate | null> {
+  const form = new FormData();
+  form.append('photo', file);
+  if (hints?.palette) form.append('palette', hints.palette);
+
+  try {
+    const res = await fetch('/api/fuel/estimate-meal', { method: 'POST', body: form });
+    if (!res.ok) return null;
+    const data = (await res.json()) as MealEstimate;
+    return data;
+  } catch {
+    return null;
+  }
 }
