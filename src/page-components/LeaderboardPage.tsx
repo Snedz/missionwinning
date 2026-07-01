@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { getUser } from '@/lib/supabase';
-import { buildRankedLeaderboard } from '@/lib/leaderboard/rank';
+import { buildRankedLeaderboard, type ClassLeaderboardRow } from '@/lib/leaderboard/rank';
 import {
   computeLocalLeaderboardSnapshot,
   loadOperatorName,
@@ -39,6 +39,8 @@ export function LeaderboardPage() {
     return parseLeaderboardScope(searchParams.get('scope')) ?? 'global';
   });
   const [cloud, setCloud] = useState<Awaited<ReturnType<typeof fetchCloudLeaderboardSnapshots>>>([]);
+  const [classRows, setClassRows] = useState<ClassLeaderboardRow[]>([]);
+  const [classCode, setClassCode] = useState('');
   const [operatorName, setOperatorName] = useState(loadOperatorName);
   const [squadCode, setSquadCode] = useState(loadSquadCode);
   const [syncing, setSyncing] = useState(false);
@@ -50,33 +52,50 @@ export function LeaderboardPage() {
       const u = await getUser();
       setUserId(u?.id);
       await pushLeaderboardSnapshot(workoutHistory, savedWorkouts.length);
-      const rows = await fetchCloudLeaderboardSnapshots();
+      const rows = await fetchCloudLeaderboardSnapshots(boardId);
       setCloud(rows);
+      const joined = getJoinedClassCode();
+      const activeClass = scope === 'class' ? classCode || joined : joined;
+      if (scope === 'class' && activeClass) {
+        setClassCode(activeClass);
+        try {
+          const res = await fetch(`/api/school/class/${activeClass}/leaderboard`);
+          const data = (await res.json()) as { entries?: ClassLeaderboardRow[] };
+          setClassRows(data.entries ?? []);
+        } catch {
+          setClassRows([]);
+        }
+      } else if (scope !== 'class') {
+        setClassRows([]);
+      }
     } finally {
       setSyncing(false);
     }
-  }, [workoutHistory, savedWorkouts.length]);
+  }, [workoutHistory, savedWorkouts.length, boardId, scope, classCode]);
 
   useEffect(() => {
     void refresh();
   }, [refresh]);
 
   useEffect(() => {
-    const classCode = getJoinedClassCode();
-    if (classCode && !loadSquadCode()) {
-      saveSquadCode(classCode);
-      setSquadCode(classCode);
+    const joined = getJoinedClassCode();
+    if (joined && !loadSquadCode()) {
+      saveSquadCode(joined);
+      setSquadCode(joined);
     }
-    if (classCode && !searchParams.get('scope')) {
-      setScope('friends');
+    if (joined) setClassCode(joined);
+    if (joined && !searchParams.get('scope')) {
+      setScope(boardId === 'presidential-fitness' ? 'class' : 'friends');
     }
-  }, [searchParams]);
+  }, [searchParams, boardId]);
 
   useEffect(() => {
     const nextBoard = parseLeaderboardBoardId(searchParams.get('board'));
     const nextScope = parseLeaderboardScope(searchParams.get('scope'));
+    const urlClass = searchParams.get('class')?.toUpperCase();
     if (nextBoard) setBoardId(nextBoard);
     if (nextScope) setScope(nextScope);
+    if (urlClass) setClassCode(urlClass);
   }, [searchParams]);
 
   const updateUrl = useCallback(
@@ -84,6 +103,8 @@ export function LeaderboardPage() {
       const params = new URLSearchParams();
       if (nextBoard !== 'mission-score') params.set('board', nextBoard);
       if (nextScope !== 'global') params.set('scope', nextScope);
+      const joined = getJoinedClassCode();
+      if (nextScope === 'class' && joined) params.set('class', joined);
       const qs = params.toString();
       router.replace(qs ? `/leaderboard?${qs}` : '/leaderboard', { scroll: false });
     },
@@ -113,8 +134,15 @@ export function LeaderboardPage() {
   );
 
   const ranked = useMemo(
-    () => buildRankedLeaderboard(boardId, scope, { ...you, operatorName, squadCode: squadCode || undefined }, cloud),
-    [boardId, scope, you, cloud, operatorName, squadCode]
+    () =>
+      buildRankedLeaderboard(
+        boardId,
+        scope,
+        { ...you, operatorName, squadCode: squadCode || undefined, userId },
+        cloud,
+        { classCode: classCode || undefined, classRows }
+      ),
+    [boardId, scope, you, cloud, operatorName, squadCode, userId, classCode, classRows]
   );
 
   const boardTheme = ranked.board.theme;
@@ -269,6 +297,15 @@ export function LeaderboardPage() {
         </label>
       </div>
 
+      {scope === 'class' && !classCode && (
+        <p className="text-sm text-muted-foreground rounded-lg border border-dashed border-border/50 p-4">
+          {t('leaderboardClassScopeHint', {
+            defaultValue:
+              'Join a PE class on /america to see class standings here. Class board uses signed-in fitness test results.',
+          })}
+        </p>
+      )}
+
       {scope === 'friends' && !squadCode && (
         <p className="text-sm text-muted-foreground rounded-lg border border-dashed border-border/50 p-4">
           {t('leaderboardSquadHint', {
@@ -295,10 +332,15 @@ export function LeaderboardPage() {
       />
 
       <p className="text-[10px] text-muted-foreground leading-relaxed">
-        {t('leaderboardDemoNote', {
-          defaultValue:
-            'Demo operators fill boards until more members sync. Sign in and tap Sync to publish scores. Rankings also update after workouts when signed in.',
-        })}
+        {scope === 'class'
+          ? t('leaderboardClassNote', {
+              defaultValue:
+                'Class standings rank best signed-in fitness test per athlete. Demo operators are hidden on this board.',
+            })
+          : t('leaderboardDemoNote', {
+              defaultValue:
+                'Demo operators fill boards until more members sync. Sign in and tap Sync to publish scores. Rankings also update after workouts when signed in.',
+            })}
       </p>
     </div>
   );

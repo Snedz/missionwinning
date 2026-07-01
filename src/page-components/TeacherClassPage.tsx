@@ -2,7 +2,7 @@
 
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Flag, Printer, Trophy, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -36,6 +36,7 @@ type ClassPftEntry = {
 
 function TeacherClassInner({ code: rawCode }: { code: string }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const code = normalizeClassCode(rawCode) ?? rawCode.toUpperCase();
   const [stats, setStats] = useState<ClassStats | null>(null);
@@ -56,6 +57,9 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
         saveTeacherPin(code, trimmed);
         setUnlocked(true);
         setPinError('');
+        if (searchParams.get('pin')) {
+          router.replace(`/school/class/${code}`, { scroll: false });
+        }
         return;
       }
       try {
@@ -65,6 +69,9 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
           saveTeacherPin(code, trimmed);
           setUnlocked(true);
           setPinError('');
+          if (searchParams.get('pin')) {
+            router.replace(`/school/class/${code}`, { scroll: false });
+          }
           return;
         }
       } catch {
@@ -76,7 +83,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
       }
       setPinError(t('teacherPinInvalid', { defaultValue: 'Incorrect teacher PIN.' }));
     },
-    [code, t]
+    [code, t, searchParams, router]
   );
 
   useEffect(() => {
@@ -249,7 +256,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                   </ul>
                 )}
                 <Button variant="outline" size="sm" className="mt-4" asChild>
-                  <Link href="/leaderboard?board=presidential-fitness&scope=friends">
+                  <Link href={`/leaderboard?board=presidential-fitness&scope=class&class=${code}`}>
                     {t('teacherOpenLeaderboard', { defaultValue: 'Open PFT leaderboard →' })}
                   </Link>
                 </Button>

@@ -63,6 +63,7 @@ export const LEADERBOARD_SCOPES: {
   { id: 'national', label: 'National', description: 'Your country cohort' },
   { id: 'local', label: 'Local', description: 'Operators in your area (locale cohort)' },
   { id: 'friends', label: 'Squad', description: 'Operators sharing your squad code' },
+  { id: 'class', label: 'Class', description: 'PE class standings from signed-in fitness tests' },
 ];
 
 export function boardById(id: import('./types').LeaderboardBoardId): LeaderboardBoard {

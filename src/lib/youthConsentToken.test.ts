@@ -16,6 +16,12 @@ describe('youthConsentToken', () => {
     assert.equal(verifyConsentToken(token + 'x'), null);
   });
 
+  it('creates tokens with optional athlete uid', () => {
+    const token = createConsentVerifyToken('parent@example.com', 10, undefined, 'user-abc');
+    const payload = verifyConsentToken(token);
+    assert.equal(payload?.uid, 'user-abc');
+  });
+
   it('generates stable six-digit codes', () => {
     const code = generateConsentCode('parent@example.com', 10);
     assert.match(code, /^\d{6}$/);

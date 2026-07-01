@@ -6,6 +6,8 @@ export type ConsentTokenPayload = {
   email: string;
   age: number;
   exp: number;
+  /** Signed-in athlete user id — parent confirm link can verify cross-device. */
+  uid?: string;
 };
 
 function consentSecret(): string {
@@ -25,11 +27,17 @@ function fromB64url(input: string): Buffer {
   return Buffer.from(input, 'base64url');
 }
 
-export function createConsentVerifyToken(email: string, age: number, ttlMs = DEFAULT_TTL_MS): string {
+export function createConsentVerifyToken(
+  email: string,
+  age: number,
+  ttlMs = DEFAULT_TTL_MS,
+  uid?: string
+): string {
   const payload: ConsentTokenPayload = {
     email: email.trim().toLowerCase(),
     age,
     exp: Date.now() + ttlMs,
+    ...(uid ? { uid } : {}),
   };
   const body = b64url(JSON.stringify(payload));
   const sig = createHmac('sha256', consentSecret()).update(body).digest('base64url');
@@ -51,6 +59,7 @@ export function verifyConsentToken(token: string): ConsentTokenPayload | null {
   try {
     const payload = JSON.parse(fromB64url(body).toString('utf8')) as ConsentTokenPayload;
     if (!payload.email || !Number.isFinite(payload.age) || !payload.exp) return null;
+    if (payload.uid != null && typeof payload.uid !== 'string') return null;
     if (Date.now() > payload.exp) return null;
     return payload;
   } catch {

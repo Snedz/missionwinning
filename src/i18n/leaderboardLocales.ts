@@ -18,6 +18,7 @@ export type LeaderboardStrings = {
   lbScopeNational: string;
   lbScopeLocal: string;
   lbScopeSquad: string;
+  lbScopeClass: string;
   lbBoardMissionScore: string;
   lbBoardTrainingStreak: string;
   lbBoardWeeklyVolume: string;
@@ -52,6 +53,7 @@ const en: LeaderboardStrings = {
   lbScopeNational: 'National',
   lbScopeLocal: 'Local',
   lbScopeSquad: 'Squad',
+  lbScopeClass: 'Class',
   lbBoardMissionScore: 'Mission Score',
   lbBoardTrainingStreak: 'Training Streak',
   lbBoardWeeklyVolume: 'Weekly Volume',
@@ -213,7 +215,12 @@ export const SCOPE_I18N_KEY: Record<
   import('@/lib/leaderboard/types').LeaderboardScope,
   keyof Pick<
     LeaderboardStrings,
-    'lbScopeGlobal' | 'lbScopeRegional' | 'lbScopeNational' | 'lbScopeLocal' | 'lbScopeSquad'
+    | 'lbScopeGlobal'
+    | 'lbScopeRegional'
+    | 'lbScopeNational'
+    | 'lbScopeLocal'
+    | 'lbScopeSquad'
+    | 'lbScopeClass'
   >
 > = {
   global: 'lbScopeGlobal',
@@ -221,4 +228,5 @@ export const SCOPE_I18N_KEY: Record<
   national: 'lbScopeNational',
   local: 'lbScopeLocal',
   friends: 'lbScopeSquad',
+  class: 'lbScopeClass',
 };

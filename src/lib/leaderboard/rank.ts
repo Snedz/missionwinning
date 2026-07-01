@@ -10,6 +10,14 @@ import { scopeLabel, resolveGeoFromLocale } from './regions';
 import { buildDemoPopulation, snapshotToEntry } from './demoPopulation';
 import { detailForBoard, scoreForBoard } from './computeLocalStats';
 
+export type ClassLeaderboardRow = {
+  rank: number;
+  userId: string;
+  athleteLabel: string;
+  bestTier: string;
+  score: number;
+};
+
 function filterByScope(
   entries: LeaderboardEntry[],
   scope: LeaderboardScope,
@@ -56,10 +64,61 @@ export function buildRankedLeaderboard(
   boardId: LeaderboardBoardId,
   scope: LeaderboardScope,
   you: LeaderboardSnapshot,
-  cloudSnapshots: LeaderboardSnapshot[] = []
+  cloudSnapshots: LeaderboardSnapshot[] = [],
+  options?: { classCode?: string; classRows?: ClassLeaderboardRow[] }
 ): RankedLeaderboard {
   const board = boardById(boardId);
   const geo = resolveGeoFromLocale(you.locale);
+  const classCode = options?.classCode;
+
+  if (scope === 'class' && boardId === 'presidential-fitness') {
+    const classRows = options?.classRows ?? [];
+    const entries: LeaderboardEntry[] = classRows.map((row) => ({
+      id: row.userId,
+      rank: row.rank,
+      operatorName: row.athleteLabel,
+      score: row.score,
+      region: you.region,
+      countryCode: you.countryCode,
+      countryName: you.countryName,
+      locale: you.locale,
+      isYou: row.userId === you.userId,
+      delta: 0,
+      squadCode: classCode,
+      userId: row.userId,
+      detail: row.bestTier,
+    }));
+
+    if (you.userId && !entries.some((e) => e.isYou) && scoreForBoard(you, boardId) > 0) {
+      entries.push({
+        id: you.userId,
+        operatorName: you.operatorName,
+        score: scoreForBoard(you, boardId),
+        region: you.region,
+        countryCode: you.countryCode,
+        countryName: you.countryName,
+        locale: you.locale,
+        isYou: true,
+        delta: 0,
+        squadCode: classCode,
+        userId: you.userId,
+        detail: detailForBoard(you, boardId),
+      });
+    }
+
+    const ranked = rankEntries(entries);
+    const yourRow = ranked.find((e) => e.isYou);
+
+    return {
+      board,
+      scope,
+      scopeLabel: scopeLabel(scope, geo, classCode),
+      entries: ranked.slice(0, 100),
+      yourRank: yourRow?.rank ?? null,
+      totalPlayers: ranked.length,
+      updatedAt: new Date().toISOString(),
+    };
+  }
 
   const demo = buildDemoPopulation();
   const cloudEntries = cloudSnapshots
@@ -108,7 +167,7 @@ export function buildRankedLeaderboard(
   return {
     board,
     scope,
-    scopeLabel: scopeLabel(scope, geo),
+    scopeLabel: scopeLabel(scope, geo, classCode),
     entries: ranked.slice(0, 100),
     yourRank: yourRow?.rank ?? null,
     totalPlayers: ranked.length,

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Copy, Share2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,6 +28,13 @@ type ClassStatsResponse = {
   source?: string;
 };
 
+type ClassLeaderboardPreview = {
+  rank: number;
+  athleteLabel: string;
+  bestTier: string;
+  score: number;
+};
+
 export function SchoolClassPanel() {
   const { t } = useTranslation();
   const [joined, setJoined] = useState<string | null>(() =>
@@ -38,17 +45,28 @@ export function SchoolClassPanel() {
   const [createdCode, setCreatedCode] = useState<string | null>(null);
   const [createdPin, setCreatedPin] = useState<string | null>(null);
   const [stats, setStats] = useState<ClassStatsResponse | null>(null);
+  const [standings, setStandings] = useState<ClassLeaderboardPreview[]>([]);
   const [message, setMessage] = useState('');
 
   const refreshStats = async (code: string) => {
     try {
-      const res = await fetch(`/api/school/class/${code}/stats`);
-      const data = (await res.json()) as ClassStatsResponse;
+      const [statsRes, lbRes] = await Promise.all([
+        fetch(`/api/school/class/${code}/stats`),
+        fetch(`/api/school/class/${code}/leaderboard`),
+      ]);
+      const data = (await statsRes.json()) as ClassStatsResponse;
+      const lb = (await lbRes.json()) as { entries?: ClassLeaderboardPreview[] };
       setStats(data);
+      setStandings((lb.entries ?? []).slice(0, 5));
     } catch {
       setStats(null);
+      setStandings([]);
     }
   };
+
+  useEffect(() => {
+    if (joined) void refreshStats(joined);
+  }, [joined]);
 
   const handleJoin = () => {
     const code = joinClass(joinInput);
@@ -136,6 +154,23 @@ export function SchoolClassPanel() {
                 })}
               </p>
             )}
+            {standings.length > 0 && (
+              <ul className="text-xs space-y-1 pt-1">
+                {standings.map((row) => (
+                  <li key={row.rank} className="flex justify-between gap-2 text-muted-foreground">
+                    <span>
+                      #{row.rank} {row.athleteLabel}
+                    </span>
+                    <span className="shrink-0">{row.score} pts</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Button size="sm" variant="outline" asChild>
+              <Link href={`/leaderboard?board=presidential-fitness&scope=class&class=${joined}`}>
+                {t('schoolViewStandings', { defaultValue: 'Class standings →' })}
+              </Link>
+            </Button>
             <div className="flex flex-wrap gap-2">
               <Button size="sm" variant="outline" asChild>
                 <Link href={`/school/class/${joined}?pin=${encodeURIComponent(getTeacherPin(joined) ?? '')}`}>

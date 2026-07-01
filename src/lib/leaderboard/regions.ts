@@ -37,7 +37,8 @@ export function resolveGeoFromLocale(locale?: string | null): {
 
 export function scopeLabel(
   scope: import('./types').LeaderboardScope,
-  geo: ReturnType<typeof resolveGeoFromLocale>
+  geo: ReturnType<typeof resolveGeoFromLocale>,
+  classCode?: string
 ): string {
   switch (scope) {
     case 'global':
@@ -50,5 +51,7 @@ export function scopeLabel(
       return `${geo.countryName} · Local`;
     case 'friends':
       return geo.countryName + ' · Squad';
+    case 'class':
+      return classCode ? `Class ${classCode}` : 'PE Class';
   }
 }

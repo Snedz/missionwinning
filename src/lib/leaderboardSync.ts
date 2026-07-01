@@ -53,15 +53,32 @@ export async function pushLeaderboardSnapshot(
   if (error) console.warn('leaderboard sync', error.message);
 }
 
-export async function fetchCloudLeaderboardSnapshots(): Promise<LeaderboardSnapshot[]> {
+export async function fetchCloudLeaderboardSnapshots(
+  boardId: import('./types').LeaderboardBoardId = 'mission-score'
+): Promise<LeaderboardSnapshot[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return [];
+
+  const orderColumn =
+    boardId === 'presidential-fitness'
+      ? 'pft_score'
+      : boardId === 'training-streak'
+        ? 'training_streak'
+        : boardId === 'weekly-volume'
+          ? 'weekly_volume'
+          : boardId === 'fuel-days'
+            ? 'fuel_days'
+            : boardId === 'under-the-stars'
+              ? 'night_sessions'
+              : boardId === 'dawns-early-light'
+                ? 'dawn_sessions'
+                : 'mission_score';
 
   const { data, error } = await supabase
     .from('leaderboard_snapshots')
     .select(
       'user_id, operator_name, mission_score, training_streak, weekly_volume, fuel_days, night_sessions, dawn_sessions, pft_score, pft_tier, squad_code, region, country_code, country_name, locale'
     )
-    .order('mission_score', { ascending: false })
+    .order(orderColumn, { ascending: false })
     .limit(200);
 
   if (error || !data) return [];
