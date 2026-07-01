@@ -58,8 +58,8 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 ### 1. Phase H — Launch & global access
 Vision cannot land until the app is **public and installable**. Blocked on: beta gates, Vercel env, `PRIVATE_MODE=false`, PWA enable, PROTECTION P0.
 
-### 2. Live Super Bundle (Phase I1)
-Vision’s sustainability model. Today: demo email grant. Need: verified Stripe webhook → `enrollments` → premium APIs.
+### 2. Live Super Bundle (Phase I1) — scaffold ready
+Vision’s sustainability model. **Shipped:** verified Stripe webhook + Checkout Session API + bundle UI wiring. **Remaining:** LLC + live Stripe keys in Vercel (`STRIPE_SECRET_KEY`, price IDs, `STRIPE_WEBHOOK_SECRET`); `DEMO_PREMIUM=false`.
 
 ### 3. AI Coach v1 as premium Train (Phase I2)
 Vision explicitly positions Coach as premium. Today: free daily insight. Need: plan generator, fatigue-aware adjustments, bundle gate.

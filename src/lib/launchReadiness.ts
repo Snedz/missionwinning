@@ -36,7 +36,7 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       id: 'unit-tests',
       label: 'Unit test suite (npm test)',
       status: 'manual',
-      detail: 'Run before merge — 147+ tests expected',
+      detail: 'Run before merge — 161+ tests expected',
     },
     {
       id: 'phase-j-pathfinder',
@@ -73,6 +73,12 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       label: 'Production gate-smoke',
       status: 'manual',
       detail: 'SMOKE_BASE_URL=https://www.missionwinning.com npm run gate-smoke',
+    },
+    {
+      id: 'stripe-i1',
+      label: 'Phase I1 — Stripe webhook + Checkout API scaffold',
+      status: 'ready',
+      detail: '/api/stripe-webhook (verified) + /api/stripe/create-checkout-session — set keys when LLC ready',
     },
     {
       id: 'demo-premium-off',

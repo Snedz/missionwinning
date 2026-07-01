@@ -102,7 +102,7 @@ Aligns revenue with [vision.md](vision.md) without gating free core.
 
 | Sub | Deliverable | Vision link |
 |-----|-------------|-------------|
-| **I1** | Live Stripe bundle + verified webhook → `enrollments` | Super Bundle revenue engine |
+| **I1** | Live Stripe bundle + verified webhook → `enrollments` | 🟡 Scaffold ready — set Stripe keys when LLC ready |
 | **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | “Personal trainer in pocket” |
 | **I3** | One pillar premium MVP (Track GPS, Mind audio, or Move video) | Replace Unlock placeholders |
 | **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | Global equity |

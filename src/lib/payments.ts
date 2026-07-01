@@ -1,11 +1,8 @@
-// Payments (temporarily demo / request-based while finalizing business setup / LLC).
+// Payments — Super Bundle via Stripe (Payment Links or Checkout Session API + webhook).
 //
 // Core is free for everyone (per vision.md).
-// Premium pillars and Super Bundle are unlocked via "Request Access" (demo grant for now).
-// Real processor (PayPal, Stripe, Lemon Squeezy etc.) will be added once business entity is ready.
-//
-// For now: buttons call grantPremiumDemo and show a request message.
-// Later: will support real checkout + webhook fulfillment.
+// Premium pillars and Super Bundle unlock via Stripe checkout → verified webhook → enrollments.
+// Demo email grant remains for gated beta when Stripe keys are not yet configured.
 
 // Product price map for reference (one-time programs / pillars).
 // Used in UnlockButton for display and demo.

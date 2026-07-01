@@ -204,6 +204,7 @@ export function BundlePage() {
                     isSubscription={p.isSubscription}
                     productId="super-bundle"
                     price={p.price}
+                    bundlePlanId={p.id}
                     stripeCheckoutUrl={stripeUrl}
                     label={t("bundleUnlockCta")}
                     className="w-full"

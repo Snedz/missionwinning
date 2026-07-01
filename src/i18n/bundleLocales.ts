@@ -86,7 +86,7 @@ const en: BundleStrings = {
   bundleFreeForeverBody:
     'Every pillar includes a free tier: workouts, recipes, mobility flows, breathing, activity logging, and learn paths. Premium unlocks advanced programs, full recipe library, and cloud sync priority.',
   bundleStripeHint:
-    'Stripe checkout activates when NEXT_PUBLIC_STRIPE_LINK_BUNDLE is set in production.',
+    'Live Stripe: set STRIPE_SECRET_KEY + price IDs (API checkout) or NEXT_PUBLIC_STRIPE_LINK_BUNDLE (payment link). Webhook: /api/stripe-webhook.',
   bundlePillarTrain: 'Train',
   bundlePillarFuel: 'Fuel',
   bundlePillarMove: 'Move',

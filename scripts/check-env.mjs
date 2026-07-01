@@ -21,10 +21,15 @@ const optional = [
   ['NEXT_PUBLIC_SHOW_MAHA_COPY', 'true only after legal sign-off'],
   ['NEXT_PUBLIC_AMERICA_TRACK_ENABLED', 'false to hide /america PFT track'],
   ['COACH_LLM_API_URL', 'Optional cloud coach — offline rules used when unset/offline'],
+  ['STRIPE_SECRET_KEY', 'Server-only — Checkout Session API for Super Bundle tiers'],
+  ['STRIPE_WEBHOOK_SECRET', 'Stripe webhook signature verify → enrollments'],
+  ['STRIPE_PRICE_ID_BUNDLE_12MO', 'Stripe Price ID for 12mo bundle (or STRIPE_PRICE_ID_SUPER_BUNDLE)'],
+  ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE', 'Optional Payment Link fallback on /bundle'],
 ];
 
 const launchHints = [
   'Phase J shipped — Pathfinder, offline coach, IndexedDB outbox (see RURAL_EQUITY_PLAN.md)',
+  'Phase I1 scaffold — Stripe webhook + Checkout API ready; set keys when LLC ready',
   'Before public: npm run phase-h-readiness · LAUNCH_DAY.md',
 ];
 

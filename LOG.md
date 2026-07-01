@@ -48,6 +48,25 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I1: Stripe Super Bundle scaffold
+
+**Build:** `2025.06-unified.50`
+
+### Shipped
+
+- **Stripe webhook** — signature verify extracted to `stripeWebhook.ts`; `checkout.session.completed` → `enrollments`
+- **Checkout Session API** — `POST /api/stripe/create-checkout-session` for 3mo / 12mo / lifetime tiers (REST, no stripe npm)
+- **Bundle UI** — `UnlockButton` calls API checkout per plan; Payment Link fallback; email prefill
+- **Env sync** — `STRIPE_SECRET_KEY`, price IDs in `check-env`, `sync-vercel-env`, `.env.example`
+
+**Live when LLC ready:** set `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, price IDs in Vercel; point Stripe webhook to `/api/stripe-webhook`.
+
+**Tests:** 161 passing
+
+---
+
 ## 2026-06-29 — Phase H prep: launch readiness tooling
 
 **Build:** `2025.06-unified.49`
