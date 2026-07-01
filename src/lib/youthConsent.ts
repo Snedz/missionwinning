@@ -75,6 +75,31 @@ export function markYouthConsentVerified(): YouthConsentRecord | null {
   return saveYouthConsent({ ...existing, verified: true });
 }
 
+/** Merge verified consent from server when athlete is signed in (cross-device). */
+export async function mergeYouthConsentFromServer(): Promise<boolean> {
+  if (typeof window === 'undefined') return hasYouthConsent();
+  try {
+    const res = await fetch('/api/youth/consent-status');
+    if (!res.ok) return hasYouthConsent();
+    const data = (await res.json()) as {
+      verified?: boolean;
+      parentEmail?: string;
+      childAge?: number;
+    };
+    if (data.verified && data.parentEmail && data.childAge != null) {
+      saveYouthConsent({
+        parentEmail: data.parentEmail,
+        childAge: data.childAge,
+        verified: true,
+      });
+      return true;
+    }
+    return hasYouthConsent();
+  } catch {
+    return hasYouthConsent();
+  }
+}
+
 export function isValidParentEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }

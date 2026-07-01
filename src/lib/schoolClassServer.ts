@@ -85,7 +85,7 @@ export async function verifyTeacherPin(code: string, pin: string): Promise<boole
     .select('teacher_pin')
     .eq('code', code.trim().toUpperCase())
     .maybeSingle();
-  if (!data?.teacher_pin) return true;
+  if (!data?.teacher_pin) return false;
   return data.teacher_pin === pin.trim();
 }
 

@@ -1,5 +1,5 @@
 /** Gran Turismo 7–style leaderboard scopes. */
-export type LeaderboardScope = 'global' | 'regional' | 'national' | 'local' | 'friends';
+export type LeaderboardScope = 'global' | 'regional' | 'national' | 'local' | 'friends' | 'class';
 
 export type LeaderboardBoardId =
   | 'mission-score'
@@ -90,7 +90,7 @@ export function parseLeaderboardBoardId(raw: string | null | undefined): Leaderb
   return BOARD_IDS.includes(raw as LeaderboardBoardId) ? (raw as LeaderboardBoardId) : null;
 }
 
-const SCOPE_IDS: LeaderboardScope[] = ['global', 'regional', 'national', 'local', 'friends'];
+const SCOPE_IDS: LeaderboardScope[] = ['global', 'regional', 'national', 'local', 'friends', 'class'];
 
 export function parseLeaderboardScope(raw: string | null | undefined): LeaderboardScope | null {
   if (!raw) return null;

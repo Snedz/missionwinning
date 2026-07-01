@@ -20,7 +20,8 @@ import {
 import { saveFitnessTestSession } from '@/lib/presidentialFitnessStorage';
 import { joinClass, getJoinedClassCode } from '@/lib/schoolClass';
 import { buildPftShareText } from '@/lib/shareFitnessMission';
-import { hasYouthConsent, requiresYouthConsent } from '@/lib/youthConsent';
+import { hasYouthConsent, mergeYouthConsentFromServer, requiresYouthConsent } from '@/lib/youthConsent';
+import { getUser } from '@/lib/supabase';
 import { pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import { useWorkoutStore } from '@/store/workoutStore';
 
@@ -42,6 +43,15 @@ export function FitnessTestRunner() {
   const [sex, setSex] = useState<FitnessSex>('male');
   const [values, setValues] = useState<Record<string, string>>({});
   const [session, setSession] = useState<ReturnType<typeof scoreFitnessTestSession> | null>(null);
+  const [youthConsented, setYouthConsented] = useState(false);
+  const [classRank, setClassRank] = useState<{ rank: number; total: number; code: string } | null>(
+    null
+  );
+
+  useEffect(() => {
+    setYouthConsented(hasYouthConsent());
+    void mergeYouthConsentFromServer().then(setYouthConsented);
+  }, []);
 
   useEffect(() => {
     const classParam = searchParams.get('class');
@@ -52,7 +62,7 @@ export function FitnessTestRunner() {
 
   const proceedFromProfile = () => {
     if (!Number.isFinite(ageNum) || ageNum < 6) return;
-    if (requiresYouthConsent(ageNum) && !hasYouthConsent()) {
+    if (requiresYouthConsent(ageNum) && !youthConsented) {
       setStep('youth');
     } else {
       setStep('events');
@@ -61,7 +71,7 @@ export function FitnessTestRunner() {
 
   const handleScore = () => {
     if (!Number.isFinite(ageNum) || ageNum < 6) return;
-    if (requiresYouthConsent(ageNum) && !hasYouthConsent()) {
+    if (requiresYouthConsent(ageNum) && !youthConsented) {
       setStep('youth');
       return;
     }
@@ -91,6 +101,31 @@ export function FitnessTestRunner() {
     void pushLeaderboardSnapshot(store.workoutHistory, store.savedWorkouts.length);
     setSession(scored);
     setStep('results');
+    const classCode = getJoinedClassCode();
+    if (classCode) {
+      void (async () => {
+        try {
+          const [user, res] = await Promise.all([
+            getUser(),
+            fetch(`/api/school/class/${classCode}/leaderboard`),
+          ]);
+          const data = (await res.json()) as {
+            entries?: { rank: number; userId: string }[];
+          };
+          const entries = data.entries ?? [];
+          const mine = user?.id ? entries.find((e) => e.userId === user.id) : undefined;
+          setClassRank({
+            rank: mine?.rank ?? entries.length + 1,
+            total: Math.max(entries.length, mine ? entries.length : entries.length + 1),
+            code: classCode,
+          });
+        } catch {
+          setClassRank(null);
+        }
+      })();
+    } else {
+      setClassRank(null);
+    }
   };
 
   const inputForEvent = (eventId: FitnessEventId) => {
@@ -135,6 +170,28 @@ export function FitnessTestRunner() {
               {awardLabel(session.overallTier)}
             </p>
           </div>
+          {classRank && (
+            <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-3 text-center text-sm">
+              <p className="text-emerald-300 font-medium">
+                {t('pftClassRank', {
+                  defaultValue: '#{{rank}} in class {{code}}',
+                  rank: classRank.rank,
+                  code: classRank.code,
+                })}
+              </p>
+              <Button
+                variant="link"
+                className="text-xs text-emerald-400 p-0 h-auto mt-1"
+                onClick={() =>
+                  router.push(
+                    `/leaderboard?board=presidential-fitness&scope=class&class=${classRank.code}`
+                  )
+                }
+              >
+                {t('pftViewClassBoard', { defaultValue: 'View class standings →' })}
+              </Button>
+            </div>
+          )}
           <ul className="space-y-2 text-sm">
             {session.events.map((ev) => (
               <li
@@ -217,7 +274,10 @@ export function FitnessTestRunner() {
         {step === 'youth' && (
           <YouthParentGate
             childAge={ageNum}
-            onConsented={() => setStep('events')}
+            onConsented={() => {
+              setYouthConsented(true);
+              setStep('events');
+            }}
             onCancel={() => setStep('profile')}
           />
         )}
