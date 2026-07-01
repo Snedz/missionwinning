@@ -113,5 +113,7 @@ This vision is the filter for every decision. If it doesn't serve free global ac
 
 **Mission Winning: Free for the world. The everything app for health. The path forward.**
 
+**Planning:** [PLAN.md](PLAN.md) · **Vision scorecard:** [VISION_STATUS.md](VISION_STATUS.md)
+
 ---
-Last Updated: June 28, 2026. Living document. Reference in all planning, code, marketing, and decisions.
+Last Updated: June 29, 2026. Living document. Reference in all planning, code, marketing, and decisions.
