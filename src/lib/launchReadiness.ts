@@ -36,7 +36,7 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       id: 'unit-tests',
       label: 'Unit test suite (npm test)',
       status: 'manual',
-      detail: 'Run before merge — 186+ tests expected',
+      detail: 'Run before merge — 190+ tests expected',
     },
     {
       id: 'phase-j-pathfinder',
@@ -97,6 +97,12 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       label: 'Phase I3 — Mind premium guided sessions',
       status: 'ready',
       detail: '/api/premium/mind-sessions + 6 gated sessions on /mind; free tier unchanged',
+    },
+    {
+      id: 'move-i3',
+      label: 'Phase I3 — Move premium mobility flows',
+      status: 'ready',
+      detail: '/api/premium/move-flows + 5 gated flows on /move; free tier unchanged',
     },
     {
       id: 'demo-premium-off',

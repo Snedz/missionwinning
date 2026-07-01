@@ -1,9 +1,14 @@
 {
   "moveTitle": "الحركة والمرونة",
   "moveSubtitle": "Free guided flows with timers — bodyweight, global-friendly. Premium adds sports-specific depth (Super Bundle).",
+  "moveFlowsFree": "Free mobility flows",
+  "moveFlowsPremium": "Premium mobility flows (Super Bundle)",
   "moveStartFlow": "بدء التدفق",
   "moveRecentWins": "انتصارات Move الأخيرة",
   "movePremiumTitle": "Premium — Pliability / Skill Yoga depth",
   "movePremiumDesc": "Sports-specific mobility, recovery protocols, and advanced flows.",
-  "movePremiumBtn": "Move Premium"
+  "movePremiumBtn": "Move Premium",
+  "movePremiumLockedTitle": "+{{count}} Premium Flows",
+  "movePremiumLockedBody": "Unlock sports-specific mobility, prehab circuits, and advanced recovery protocols via the Super Bundle.",
+  "moveExploreBundle": "Explore Super Bundle"
 }

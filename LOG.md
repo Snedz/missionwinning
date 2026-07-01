@@ -58,6 +58,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I3: Move premium mobility flows
+
+**Build:** `2025.06-unified.56`
+
+### Shipped
+
+- **Premium Move** — 5 gated mobility flows (runner knee, shoulder prehab, ankle, lower back, sport recovery)
+- **`GET /api/premium/move-flows`** — auth gate matching mind-sessions/recipes
+- **`/move`** — free 4 flows unchanged; locked teaser or premium grid via `TimedFlowRunner`
+- **Gate smoke + launch readiness** — move-flows endpoint probe
+
+**Tests:** 193 passing
+
+---
+
 ## 2026-06-29 — Phase I4: Welcome/Fuel/Active native IT/KO/RU
 
 **Build:** `2025.06-unified.55`

@@ -3,22 +3,33 @@
 type MoveStrings = {
   moveTitle: string;
   moveSubtitle: string;
+  moveFlowsFree: string;
+  moveFlowsPremium: string;
   moveStartFlow: string;
   moveRecentWins: string;
   movePremiumTitle: string;
   movePremiumDesc: string;
   movePremiumBtn: string;
+  movePremiumLockedTitle: string;
+  movePremiumLockedBody: string;
+  moveExploreBundle: string;
 };
 
 const en: MoveStrings = {
   moveTitle: 'Move & Mobility',
   moveSubtitle:
     'Free guided flows with timers — bodyweight, global-friendly. Premium adds sports-specific depth (Super Bundle).',
+  moveFlowsFree: 'Free mobility flows',
+  moveFlowsPremium: 'Premium mobility flows (Super Bundle)',
   moveStartFlow: 'Start Flow',
   moveRecentWins: 'Recent Move Wins',
   movePremiumTitle: 'Premium — Pliability / Skill Yoga depth',
   movePremiumDesc: 'Sports-specific mobility, recovery protocols, and advanced flows.',
   movePremiumBtn: 'Move Premium',
+  movePremiumLockedTitle: '+{{count}} Premium Flows',
+  movePremiumLockedBody:
+    'Unlock sports-specific mobility, prehab circuits, and advanced recovery protocols via the Super Bundle.',
+  moveExploreBundle: 'Explore Super Bundle',
 };
 
 const es: MoveStrings = {

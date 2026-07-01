@@ -131,6 +131,18 @@ async function main() {
   }
 
   try {
+    const moveFlows = await headOrGet('/api/premium/move-flows');
+    const ok = moveFlows.status === 403 || moveFlows.status === 401 || moveFlows.status === 503;
+    checks.push({
+      name: 'GET /api/premium/move-flows (no auth)',
+      ok,
+      detail: `status ${moveFlows.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/move-flows', ok: false, detail: String(e) });
+  }
+
+  try {
     const programs = await headOrGet('/api/premium/programs');
     const ok = programs.status === 403 || programs.status === 401 || programs.status === 503;
     checks.push({
