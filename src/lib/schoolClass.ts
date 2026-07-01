@@ -79,13 +79,6 @@ export function getTeacherPin(code: string): string | null {
   return localStorage.getItem(`${TEACHER_PIN_PREFIX}${code}`);
 }
 
-export function teacherDashboardUrl(code: string, pin: string, baseUrl?: string): string {
-  const origin =
-    baseUrl ??
-    (typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com');
-  return `${origin.replace(/\/$/, '')}/school/class/${code}?pin=${encodeURIComponent(pin)}`;
-}
-
 export function saveTeacherClass(name: string, code?: string): TeacherClassRecord {
   const normalized = code ? normalizeClassCode(code) ?? generateClassCode() : generateClassCode();
   const teacherPin = generateTeacherPin();
@@ -100,6 +93,33 @@ export function saveTeacherClass(name: string, code?: string): TeacherClassRecor
   localStorage.setItem(TEACHER_CLASSES_KEY, JSON.stringify([record, ...existing].slice(0, 10)));
   saveTeacherPin(record.code, teacherPin);
   return record;
+}
+
+export function mergeCloudTeacherClass(record: {
+  code: string;
+  name: string;
+  teacherPin: string | null;
+  createdAt: string;
+}): void {
+  if (typeof window === 'undefined' || !record.teacherPin) return;
+  const code = normalizeClassCode(record.code);
+  if (!code) return;
+  saveTeacherPin(code, record.teacherPin);
+  const local: TeacherClassRecord = {
+    code,
+    name: record.name.trim() || 'PE Class',
+    createdAt: record.createdAt,
+    teacherPin: record.teacherPin,
+  };
+  const existing = loadTeacherClasses().filter((c) => c.code !== code);
+  localStorage.setItem(TEACHER_CLASSES_KEY, JSON.stringify([local, ...existing].slice(0, 10)));
+}
+
+export function teacherDashboardUrl(code: string, pin: string, baseUrl?: string): string {
+  const origin =
+    baseUrl ??
+    (typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com');
+  return `${origin.replace(/\/$/, '')}/school/class/${code}?pin=${encodeURIComponent(pin)}`;
 }
 
 export function classJoinUrl(code: string, baseUrl?: string): string {
