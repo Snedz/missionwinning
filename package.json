@@ -12,6 +12,7 @@
     "check-env": "node --env-file=.env.local scripts/check-env.mjs",
     "predeploy": "tsx scripts/pre-deploy-smoke.ts",
     "gate-smoke": "tsx scripts/gate-smoke.ts",
+    "sync-vercel-env": "node scripts/sync-vercel-env.mjs",
     "print-beta-invite": "node --env-file=.env.local scripts/print-beta-invite.ts"
   },
   "dependencies": {

@@ -1,37 +1,40 @@
 # Vercel Deploy Checklist — Mission Winning
 
-Use when **Vercel 2FA access returns**. Merge open PRs to `master` first (recommended order: #22 → #26), then deploy.
+Use when **Vercel 2FA access returns**, or sync env via **GitHub Actions** (see below).
 
 ---
 
-## 1. Merge PR stack
+## 1. Code on `master`
 
-| PR | Topic |
-|----|--------|
-| [#22](https://github.com/Snedz/missionwinning/pull/22) | Challenge i18n, photo estimate, wins badges |
-| [#23](https://github.com/Snedz/missionwinning/pull/23) | Staggered hero + section reorder |
-| [#24](https://github.com/Snedz/missionwinning/pull/24) | PayPal verify + CSP enforce |
-| [#25](https://github.com/Snedz/missionwinning/pull/25) | Fuel i18n + leads rate limit |
-| [#26](https://github.com/Snedz/missionwinning/pull/26) | Pro programs server-split |
-| Latest | … pillar polish (#30), CI/tests (#31) |
+**Merged:** [#50](https://github.com/Snedz/missionwinning/pull/50) — H1 daily loop, strict gate, UI stack (`2025.06-unified.36+`).
+
+Vercel auto-deploys on push to `master` when the GitHub integration is connected.
 
 ---
 
-## 2. Vercel env vars (Production + Preview)
+## 2. Environment variables
 
 See [ENV.md](ENV.md) and [PROTECTION.md](PROTECTION.md).
 
 | Variable | Required for gate |
 |----------|-------------------|
-| `PRIVATE_ACCESS_SECRET` | Rotate with `openssl rand -base64 32` |
+| `PRIVATE_ACCESS_SECRET` | Rotate with `openssl rand -base64 32` — **not** the old placeholder `Done` |
 | `PRIVATE_MODE` | `true` during private beta |
 | `NEXT_PUBLIC_SUPABASE_URL` | Yes |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes |
 | `SUPABASE_SERVICE_ROLE_KEY` | Webhooks, leads API, beta panel |
 | `BETA_ADMIN_EMAILS` | Founder beta metrics |
 | `DEMO_PREMIUM` | **`false`** in production |
-| `STRIPE_WEBHOOK_SECRET` | When Stripe live |
-| `PAYPAL_*` | When PayPal live |
+
+### Option A — Vercel dashboard
+
+Vercel → Project → Settings → Environment Variables → **Production + Preview** → Redeploy.
+
+### Option B — GitHub Secrets (no Vercel UI)
+
+1. Add secrets listed in [ENV.md § Sync via GitHub](ENV.md) (`VERCEL_TOKEN`, `VERCEL_PROJECT_ID`, `PRIVATE_ACCESS_SECRET`, …).
+2. **Actions → Sync Vercel env → Run workflow**.
+3. Optional: set `VERCEL_DEPLOY_HOOK_URL` so the workflow triggers a production redeploy.
 
 OAuth redirect: `https://www.missionwinning.com/auth/callback`
 
@@ -45,11 +48,14 @@ curl -sI https://www.missionwinning.com/ | grep -i location
 # Expected: location: /private
 
 # Build label on Profile footer (match latest unified.*)
-# e.g. 2025.06-unified.16
+# e.g. 2025.06-unified.37
 
 # Premium API without auth
 curl -sI https://www.missionwinning.com/api/premium/recipes
 # Expected: 403
+
+# Local / CI gate smoke (optional)
+npm run gate-smoke -- https://www.missionwinning.com
 ```
 
 ---
