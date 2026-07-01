@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { PROGRAM_TAG_LABELS } from "@/data/exerciseEnrichment";
 import { useWorkoutStore } from "@/store/workoutStore";
+import { usePremium } from "@/hooks/usePremium";
 import type { ProgramTag } from "@/types";
 
 const TAG_OPTIONS: { value: ProgramTag | ""; label: string }[] = [
@@ -23,7 +24,7 @@ export function LibraryPage() {
   const [equip, setEquip] = useState("");
   const [tag, setTag] = useState<ProgramTag | "">("");
   const [level, setLevel] = useState("");
-  const premium = typeof window !== "undefined" && localStorage.getItem("mw_premium") === "true";
+  const { premium } = usePremium();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
 
   const filtered = EXERCISES.filter((e) => {

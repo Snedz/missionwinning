@@ -18,7 +18,6 @@ import { toast } from '@/hooks/use-toast';
 import { EXERCISES, getExerciseById } from '@/data/exercises';
 import { formatDuration } from '@/lib/utils';
 import { useWorkoutStore } from '@/store/workoutStore';
-import { getSessionHourKind } from '@/lib/leaderboard/types';
 import { getFormGuide, hasFormGuide } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
@@ -29,6 +28,9 @@ import { resolveRestSeconds } from '@/lib/restTimer';
 import { isPersonalRecord } from '@/lib/workoutPr';
 import { shouldRestAfterLog, supersetLabel } from '@/lib/superset';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
+import { getTrainingStreak } from '@/lib/challenges';
+import { summarizeWorkoutVictory, type WorkoutVictorySummary } from '@/lib/workoutVictory';
+import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import type { CompletedWorkoutLog } from '@/types';
 
 function findNextSet(exercises: { sets: { completed: boolean }[] }[]) {
@@ -82,6 +84,8 @@ export function ActiveWorkoutPage() {
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});
   const [formGuideId, setFormGuideId] = useState<string | null>(null);
   const [plateCalcOpen, setPlateCalcOpen] = useState(false);
+  const [victoryOpen, setVictoryOpen] = useState(false);
+  const [victorySummary, setVictorySummary] = useState<WorkoutVictorySummary | null>(null);
   const nextSetRef = useRef<HTMLDivElement | null>(null);
 
   const nextSet = useMemo(
@@ -185,20 +189,12 @@ export function ActiveWorkoutPage() {
   };
 
   const handleComplete = () => {
+    const historyBefore = workoutHistory;
     const log = completeActiveWorkout();
     if (log) {
-      const hourKind = getSessionHourKind(log.completedAt);
-      let description = `${log.totalVolume.toLocaleString()} ${unitLabel} total volume`;
-      if (hourKind === 'night') {
-        description += ' · Counts toward Under the Stars on the leaderboard';
-      } else if (hourKind === 'dawn') {
-        description += " · Counts toward By Dawn's Early Light on the leaderboard";
-      }
-      toast({
-        title: t('activeWorkoutComplete', { defaultValue: 'Workout complete!' }),
-        description,
-      });
-      router.push('/history');
+      const streak = getTrainingStreak([log, ...historyBefore]);
+      setVictorySummary(summarizeWorkoutVictory(log, streak));
+      setVictoryOpen(true);
     } else {
       toast({
         title: t('activeNothingLogged', { defaultValue: 'Nothing logged' }),
@@ -498,6 +494,19 @@ export function ActiveWorkoutPage() {
         onApplyTarget={(weight) => {
           if (!nextSet) return;
           updateSetInput(nextSet.exIdx, nextSet.setIdx, 'weight', weight);
+        }}
+      />
+      <WorkoutVictorySheet
+        open={victoryOpen}
+        summary={victorySummary}
+        onOpenChange={setVictoryOpen}
+        onViewToday={() => {
+          setVictoryOpen(false);
+          router.push('/log');
+        }}
+        onViewHistory={() => {
+          setVictoryOpen(false);
+          router.push('/history');
         }}
       />
     </div>
