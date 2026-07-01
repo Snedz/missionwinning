@@ -12,6 +12,7 @@ export function YouthConsentConfirmPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'ok' | 'error'>('loading');
+  const [crossDevice, setCrossDevice] = useState(false);
 
   useEffect(() => {
     const token = searchParams.get('token');
@@ -22,11 +23,17 @@ export function YouthConsentConfirmPage() {
     void (async () => {
       try {
         const res = await fetch(`/api/youth/consent-confirm?token=${encodeURIComponent(token)}`);
-        const data = (await res.json()) as { ok?: boolean; email?: string; age?: number };
+        const data = (await res.json()) as {
+          ok?: boolean;
+          email?: string;
+          age?: number;
+          persisted?: boolean;
+        };
         if (!res.ok || !data.ok || !data.email || data.age == null) {
           setStatus('error');
           return;
         }
+        setCrossDevice(Boolean(data.persisted));
         saveYouthConsent({
           parentEmail: data.email,
           childAge: data.age,
@@ -55,9 +62,14 @@ export function YouthConsentConfirmPage() {
           )}
           {status === 'ok' && (
             <p className="text-emerald-400">
-              {t('youthConfirmOk', {
-                defaultValue: 'Consent verified. Redirecting to the fitness test…',
-              })}
+              {crossDevice
+                ? t('youthConfirmCrossDevice', {
+                    defaultValue:
+                      'Consent saved to the athlete account. They can continue on any signed-in device.',
+                  })
+                : t('youthConfirmOk', {
+                    defaultValue: 'Consent verified. Redirecting to the fitness test…',
+                  })}
             </p>
           )}
           {status === 'error' && (
