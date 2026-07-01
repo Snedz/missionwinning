@@ -1,0 +1,258 @@
+/** Native Tier 1 Welcome / Fuel / Active body copy (IT, KO, RU + JA fuel/active gaps). */
+
+type WelcomePack = Record<string, string>;
+type FuelPack = Record<string, string>;
+type ActivePack = Record<string, string>;
+
+export const welcomeIt: WelcomePack = {
+  welcomeKicker: 'Dove inizia il percorso',
+  welcomeIDay: 'Giorno I',
+  welcomeMissionLead: 'La missione:',
+  welcomeMissionBody1:
+    'Mission Winning è un’app salute globale gratuita. Allenati, nutrizione, movimento, mente, tracking e apprendimento — un percorso.',
+  welcomeMissionP2:
+    'Le basi restano gratuite. Premium approfondisce ogni pilastro — mai necessario per iniziare.',
+  welcomeMissionP3:
+    'Oggi: un passo alla volta. Today mostra sempre la tua prossima azione.',
+  welcomeProfileTitle: 'Tre domande rapide',
+  welcomeProfileEditHint: 'Aggiorna esperienza, attrezzatura e obiettivo. Sync se connesso.',
+  welcomeProfileHint: 'Così Today consiglia il punto di partenza giusto.',
+  welcomeExperience: 'Esperienza',
+  welcomeExpBeginner: 'Nuovo all’allenamento',
+  welcomeExpIntermediate: 'Qualche esperienza',
+  welcomeExpAdvanced: 'Allenati da anni',
+  welcomeGearCheck: 'Attrezzatura — cosa hai oggi?',
+  welcomeEquipBodyweight: 'Solo peso corporeo',
+  welcomeEquipDumbbells: 'Manubri o elastici',
+  welcomeEquipFullGym: 'Palestra completa',
+  welcomePrimaryGoal: 'Obiettivo principale',
+  welcomeGoalPlaceholder: 'Aumentare forza e restare in forma',
+  goalPresetStrength: 'Forza e salute',
+  goalPresetFatLoss: 'Perdere grasso, mantenere muscolo',
+  goalPresetEndurance: 'Resistenza e stamina',
+  goalPresetMobility: 'Muoversi meglio — mobilità e recupero',
+  goalPresetGeneral: 'Restare in forma e costante',
+  goalPresetPft: 'Prepararsi al Presidential Fitness Test',
+  goalPresetKids: 'Far muovere i miei figli ogni giorno',
+  goalPresetAmericaHealth: 'Make America Healthy Again — iniziare da me',
+  welcomeGoalPresetsLabel: 'Scorciatoie (o scrivi il tuo sotto)',
+  welcomeBack: 'Indietro',
+  headerSignIn: 'Accedi',
+  photoLogTitle: 'Registra da foto',
+  photoLogDesc: 'Foto del pasto — stima macro (beta in arrivo).',
+  photoLogChoose: 'Scegli foto',
+  photoLogComingSoon: 'Log foto in sviluppo. Usa log rapido o ricette.',
+  photoLogBetaNote: 'Cattura pasti — privacy prima, sul dispositivo quando possibile.',
+  navOurMission: 'La nostra missione',
+  navBetaGuide: 'Guida beta',
+};
+
+export const welcomeKo: WelcomePack = {
+  welcomeKicker: '여정이 시작되는 곳',
+  welcomeIDay: 'I-Day',
+  welcomeMissionLead: '미션:',
+  welcomeMissionBody1:
+    'Mission Winning은 무료 글로벌 건강 앱입니다. 운동, 영양, 움직임, 마음, 기록, 학습 — 하나의 길.',
+  welcomeMissionP2:
+    '기본 기능은 영구 무료. Premium은 각 기둥을 심화합니다 — 시작에 필수 아님.',
+  welcomeMissionP3:
+    '오늘: 한 걸음씩. Today는 항상 다음 행동을 보여줍니다.',
+  welcomeProfileTitle: '세 가지 질문',
+  welcomeProfileEditHint: '경험, 장비, 목표를 업데이트. 로그인 시 동기화.',
+  welcomeProfileHint: 'Today가 맞는 시작점을 추천하도록.',
+  welcomeExperience: '경험',
+  welcomeExpBeginner: '운동 초보',
+  welcomeExpIntermediate: '약간의 경험',
+  welcomeExpAdvanced: '오래 운동함',
+  welcomeGearCheck: '장비 — 오늘 사용 가능한 것?',
+  welcomeEquipBodyweight: '맨몸만',
+  welcomeEquipDumbbells: '덤벨 또는 밴드',
+  welcomeEquipFullGym: '풀 짐',
+  welcomePrimaryGoal: '주요 목표',
+  welcomeGoalPlaceholder: '근력 키우고 건강 유지',
+  goalPresetStrength: '근력과 건강',
+  goalPresetFatLoss: '체지방 감소, 근육 유지',
+  goalPresetEndurance: '지구력 향상',
+  goalPresetMobility: '더 잘 움직이기 — 가동성과 회복',
+  goalPresetGeneral: '건강하고 꾸준히',
+  goalPresetPft: 'Presidential Fitness Test 준비',
+  goalPresetKids: '매일 아이들 움직이게 하기',
+  goalPresetAmericaHealth: 'Make America Healthy Again — 나부터 시작',
+  welcomeGoalPresetsLabel: '빠른 선택 (또는 아래에 입력)',
+  welcomeBack: '뒤로',
+  headerSignIn: '로그인',
+  photoLogTitle: '사진으로 기록',
+  photoLogDesc: '식사 사진 — 매크로 추정 (베타 예정).',
+  photoLogChoose: '사진 선택',
+  photoLogComingSoon: '사진 로그 개발 중. 빠른 로그 또는 레시피를 사용하세요.',
+  photoLogBetaNote: '식사 캡처 — 프라이버시 우선, 가능하면 기기에서.',
+  navOurMission: '우리의 미션',
+  navBetaGuide: '베타 가이드',
+};
+
+export const welcomeRu: WelcomePack = {
+  welcomeKicker: 'Здесь начинается путь',
+  welcomeIDay: 'День I',
+  welcomeMissionLead: 'Миссия:',
+  welcomeMissionBody1:
+    'Mission Winning — бесплатное глобальное приложение для здоровья. Тренировки, питание, движение, разум, трекинг и обучение — один путь.',
+  welcomeMissionP2:
+    'Основа остаётся бесплатной. Premium углубляет каждый столп — не нужен для старта.',
+  welcomeMissionP3:
+    'Сегодня: шаг за шагом. Today всегда показывает следующее действие.',
+  welcomeProfileTitle: 'Три быстрых вопроса',
+  welcomeProfileEditHint: 'Обновите опыт, оборудование и цель. Синхронизация при входе.',
+  welcomeProfileHint: 'Чтобы Today рекомендовал правильную отправную точку.',
+  welcomeExperience: 'Опыт',
+  welcomeExpBeginner: 'Новичок в тренировках',
+  welcomeExpIntermediate: 'Немного опыта',
+  welcomeExpAdvanced: 'Тренируюсь годами',
+  welcomeGearCheck: 'Оборудование — что есть сегодня?',
+  welcomeEquipBodyweight: 'Только собственный вес',
+  welcomeEquipDumbbells: 'Гантели или резинки',
+  welcomeEquipFullGym: 'Полный зал',
+  welcomePrimaryGoal: 'Главная цель',
+  welcomeGoalPlaceholder: 'Набрать силу и оставаться здоровым',
+  goalPresetStrength: 'Сила и здоровье',
+  goalPresetFatLoss: 'Сжечь жир, сохранить мышцы',
+  goalPresetEndurance: 'Выносливость',
+  goalPresetMobility: 'Лучше двигаться — мобильность и восстановление',
+  goalPresetGeneral: 'Быть здоровым и стабильным',
+  goalPresetPft: 'Подготовка к Presidential Fitness Test',
+  goalPresetKids: 'Заставить детей двигаться каждый день',
+  goalPresetAmericaHealth: 'Make America Healthy Again — начать с себя',
+  welcomeGoalPresetsLabel: 'Быстрый выбор (или введите ниже)',
+  welcomeBack: 'Назад',
+  headerSignIn: 'Войти',
+  photoLogTitle: 'Запись по фото',
+  photoLogDesc: 'Фото еды — оценка макросов (бета скоро).',
+  photoLogChoose: 'Выбрать фото',
+  photoLogComingSoon: 'Фото-лог в разработке. Используйте быстрый лог или рецепты.',
+  photoLogBetaNote: 'Съёмка еды — приватность прежде всего, на устройстве когда возможно.',
+  navOurMission: 'Наша миссия',
+  navBetaGuide: 'Бета-гид',
+};
+
+export const fuelIt: FuelPack = {
+  fuelPremiumActive: ' Premium: libreria completa + piani (Super Bundle).',
+  fuelWinScore: 'Punteggio Missione',
+  fuelTargetsTitle: 'Obiettivi di oggi',
+  fuelCalories: 'Calorie',
+  fuelProtein: 'Proteine',
+  fuelHydrationTitle: 'Idratazione',
+  fuelGlasses: 'bicchieri',
+  fuelQuickLogTitle: 'Log rapido',
+  fuelLogBtn: 'Registra',
+  fuelTodayLogTitle: 'Diario di oggi',
+  fuelExploreBundle: 'Scopri Super Bundle',
+  fuelLogFab: 'Registra pasto',
+  fuelLogSheetTitle: 'Registra in Fuel',
+  fuelTabQuick: 'Rapido',
+  fuelTabCustom: 'Personalizzato',
+  fuelTabPhoto: 'Foto',
+};
+
+export const fuelKo: FuelPack = {
+  fuelPremiumActive: ' Premium: 전체 레시피 + 심화 플랜 (Super Bundle).',
+  fuelWinScore: '미션 점수',
+  fuelTargetsTitle: '오늘의 목표',
+  fuelCalories: '칼로리',
+  fuelProtein: '단백질',
+  fuelHydrationTitle: '수분',
+  fuelGlasses: '잔',
+  fuelQuickLogTitle: '빠른 기록',
+  fuelLogBtn: '기록',
+  fuelTodayLogTitle: '오늘의 로그',
+  fuelExploreBundle: 'Super Bundle 둘러보기',
+  fuelLogFab: '식사 기록',
+  fuelLogSheetTitle: 'Fuel에 기록',
+  fuelTabQuick: '빠른',
+  fuelTabCustom: '맞춤',
+  fuelTabPhoto: '사진',
+};
+
+export const fuelRu: FuelPack = {
+  fuelPremiumActive: ' Premium: полная библиотека + планы (Super Bundle).',
+  fuelWinScore: 'Счёт миссии',
+  fuelTargetsTitle: 'Цели на сегодня',
+  fuelCalories: 'Калории',
+  fuelProtein: 'Белок',
+  fuelHydrationTitle: 'Гидратация',
+  fuelGlasses: 'стаканов',
+  fuelQuickLogTitle: 'Быстрая запись',
+  fuelLogBtn: 'Записать',
+  fuelTodayLogTitle: 'Журнал сегодня',
+  fuelExploreBundle: 'Super Bundle',
+  fuelLogFab: 'Записать еду',
+  fuelLogSheetTitle: 'Запись в Fuel',
+  fuelTabQuick: 'Быстро',
+  fuelTabCustom: 'Своё',
+  fuelTabPhoto: 'Фото',
+};
+
+export const fuelJaExtra: FuelPack = {
+  fuelPremiumActive: ' Premium: 全レシピ + 深いプラン (Super Bundle).',
+  fuelGlasses: '杯',
+  fuelQuickLogTitle: 'クイックログ',
+  fuelLogFab: '食事を記録',
+  fuelLogSheetTitle: 'Fuelに記録',
+  fuelTabQuick: 'クイック',
+  fuelTabCustom: 'カスタム',
+  fuelTabPhoto: '写真',
+};
+
+export const activeIt: ActivePack = {
+  activeNoWorkout: 'Nessun allenamento attivo',
+  activeStartWorkout: 'Inizia allenamento',
+  activeSetsCompleted: '{{done}}/{{total}} serie completate',
+  activeCancel: 'Annulla',
+  activeFinish: 'Termina',
+  activeRestTitle: 'Riposo',
+  activeRestSkip: 'Salta',
+  activeLogSet: 'Registra',
+  activeRepeatLast: 'Ripeti ultima serie',
+  activeSetLogged: 'Serie registrata!',
+  activeFormGuide: 'Guida tecnica',
+};
+
+export const activeKo: ActivePack = {
+  activeNoWorkout: '활성 운동 없음',
+  activeStartWorkout: '운동 시작',
+  activeSetsCompleted: '{{done}}/{{total}} 세트 완료',
+  activeCancel: '취소',
+  activeFinish: '종료',
+  activeRestTitle: '휴식',
+  activeRestSkip: '건너뛰기',
+  activeLogSet: '기록',
+  activeRepeatLast: '마지막 세트 반복',
+  activeSetLogged: '세트 기록 완료!',
+  activeFormGuide: '폼 가이드',
+};
+
+export const activeRu: ActivePack = {
+  activeNoWorkout: 'Нет активной тренировки',
+  activeStartWorkout: 'Начать тренировку',
+  activeSetsCompleted: '{{done}}/{{total}} подходов выполнено',
+  activeCancel: 'Отмена',
+  activeFinish: 'Завершить',
+  activeRestTitle: 'Отдых',
+  activeRestSkip: 'Пропустить',
+  activeLogSet: 'Записать',
+  activeRepeatLast: 'Повторить последний подход',
+  activeSetLogged: 'Подход записан!',
+  activeFormGuide: 'Техника',
+};
+
+export const activeJaExtra: ActivePack = {
+  activeSetsCompleted: '{{done}}/{{total}} セット完了',
+  activeCancel: 'キャンセル',
+  activeFinish: '完了',
+  activeRestSkip: 'スキップ',
+  activeFormGuide: 'フォームガイド',
+};
+
+export const welcomeJaGoalFixes: WelcomePack = {
+  goalPresetPft: 'Presidential Fitness Testに備える',
+  goalPresetKids: '毎日子どもを動かす',
+  goalPresetAmericaHealth: 'Make America Healthy Again — 自分から始める',
+};

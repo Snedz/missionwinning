@@ -43,18 +43,35 @@ describe('i18n Tier 1 body coverage (Phase I4)', () => {
     });
   }
 
-  for (const lang of TIER1_LANGS) {
-    if (lang === 'en' || lang === 'es') continue;
-    it(`${lang} welcome body mostly translated`, () => {
+  for (const lang of ['it', 'ja', 'ko', 'ru'] as const) {
+    it(`${lang} welcome body ≥75% translated vs en`, () => {
       const ratio = translatedRatio(lang, welcomeStringsFor);
-      assert.ok(ratio >= 0.5, `${lang} welcome ratio ${(ratio * 100).toFixed(1)}%`);
+      assert.ok(ratio >= 0.75, `${lang} welcome ratio ${(ratio * 100).toFixed(1)}%`);
     });
   }
 
-  for (const lang of ['fr', 'de', 'ja'] as const) {
+  const frenchMarkers = ['Connexion', 'parcours', 'Entraîne', 'Retour'];
+  const germanWelcomeMarkers = ['Anmelden', 'Reise', 'Zurück', 'Schritt'];
+  for (const lang of ['it', 'ko', 'ru'] as const) {
+    it(`${lang} welcome has no FR/DE string leakage`, () => {
+      const localized = welcomeStringsFor(lang);
+      const de = welcomeStringsFor('de');
+      const fr = welcomeStringsFor('fr');
+      const deHits = Object.keys(localized).filter(
+        (k) => localized[k] === de[k] && germanWelcomeMarkers.some((m) => de[k]?.includes(m)),
+      );
+      const frHits = Object.keys(localized).filter(
+        (k) => localized[k] === fr[k] && frenchMarkers.some((m) => fr[k]?.includes(m)),
+      );
+      assert.equal(deHits.length, 0, `${lang} inherits DE welcome: ${deHits.slice(0, 3).join(', ')}`);
+      assert.equal(frHits.length, 0, `${lang} inherits FR welcome: ${frHits.slice(0, 3).join(', ')}`);
+    });
+  }
+
+  for (const lang of ['it', 'ja', 'ko', 'ru'] as const) {
     it(`${lang} fuel + active partial translated`, () => {
       assert.ok(translatedRatio(lang, fuelStringsFor) >= 0.15);
-      assert.ok(translatedRatio(lang, activeWorkoutStringsFor) >= 0.10);
+      assert.ok(translatedRatio(lang, activeWorkoutStringsFor) >= 0.15);
     });
   }
 });

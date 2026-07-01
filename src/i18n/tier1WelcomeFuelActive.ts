@@ -1,5 +1,20 @@
 /** Tier 1 Welcome / Fuel / Active body copy (Phase I4). */
 
+import {
+  welcomeIt,
+  welcomeKo,
+  welcomeRu,
+  welcomeJaGoalFixes,
+  fuelIt,
+  fuelKo,
+  fuelRu,
+  fuelJaExtra,
+  activeIt,
+  activeKo,
+  activeRu,
+  activeJaExtra,
+} from './tier1WelcomeFuelActiveNative';
+
 type WelcomePack = Record<string, string>;
 type FuelPack = Record<string, string>;
 type ActivePack = Record<string, string>;
@@ -133,29 +148,9 @@ const welcomePt: WelcomePack = {
   navBetaGuide: 'Guia beta',
 };
 
-const welcomeIt: WelcomePack = { ...welcomeFr,
-  welcomeKicker: 'Dove inizia il percorso',
-  welcomeIDay: 'Giorno I',
-  welcomeMissionLead: 'La missione:',
-  welcomeMissionBody1:
-    'Mission Winning è un’app salute globale gratuita. Allenati, nutrizione, movimento, mente, tracking e apprendimento — un percorso.',
-  welcomeProfileTitle: 'Tre domande rapide',
-  welcomeBack: 'Indietro',
-  headerSignIn: 'Accedi',
-  navOurMission: 'La nostra missione',
-};
+const welcomeItPack = welcomeIt;
 
-const welcomeKo: WelcomePack = { ...welcomeDe,
-  welcomeKicker: '여정이 시작되는 곳',
-  welcomeIDay: 'I-Day',
-  welcomeMissionLead: '미션:',
-  welcomeMissionBody1:
-    'Mission Winning은 무료 글로벌 건강 앱입니다. 운동, 영양, 움직임, 마음, 기록, 학습 — 하나의 길.',
-  welcomeProfileTitle: '세 가지 질문',
-  welcomeBack: '뒤로',
-  headerSignIn: '로그인',
-  navOurMission: '우리의 미션',
-};
+const welcomeKoPack = welcomeKo;
 
 const welcomeJa: WelcomePack = {
   welcomeKicker: '旅の始まり',
@@ -183,9 +178,7 @@ const welcomeJa: WelcomePack = {
   goalPresetEndurance: '持久力を高める',
   goalPresetMobility: '動きを改善 — モビリティと回復',
   goalPresetGeneral: '健康で継続する',
-  goalPresetPft: 'Prepare for the Presidential Fitness Test',
-  goalPresetKids: 'Get my kids moving every day',
-  goalPresetAmericaHealth: 'Make America Healthy Again — start with me',
+  ...welcomeJaGoalFixes,
   welcomeGoalPresetsLabel: 'クイック選択（または下に入力）',
   welcomeBack: '戻る',
   headerSignIn: 'サインイン',
@@ -198,26 +191,16 @@ const welcomeJa: WelcomePack = {
   navBetaGuide: 'ベータガイド',
 };
 
-const welcomeRu: WelcomePack = { ...welcomeDe,
-  welcomeKicker: 'Здесь начинается путь',
-  welcomeIDay: 'День I',
-  welcomeMissionLead: 'Миссия:',
-  welcomeMissionBody1:
-    'Mission Winning — бесплатное глобальное приложение для здоровья. Тренировки, питание, движение, разум, трекинг и обучение.',
-  welcomeProfileTitle: 'Три быстрых вопроса',
-  welcomeBack: 'Назад',
-  headerSignIn: 'Войти',
-  navOurMission: 'Наша миссия',
-};
+const welcomeRuPack = welcomeRu;
 
 export const TIER1_WELCOME: Record<string, WelcomePack> = {
   fr: welcomeFr,
   de: welcomeDe,
   pt: welcomePt,
-  it: welcomeIt,
-  ko: welcomeKo,
+  it: welcomeItPack,
+  ko: welcomeKoPack,
   ja: welcomeJa,
-  ru: welcomeRu,
+  ru: welcomeRuPack,
 };
 
 const fuelEsStyle = {
@@ -282,8 +265,9 @@ const fuelPt: FuelPack = {
   fuelTodayLogTitle: 'Registro de hoje',
 };
 
-const fuelIt: FuelPack = { ...fuelFr, fuelWinScore: 'Punteggio Missione', fuelTargetsTitle: 'Obiettivi di oggi' };
-const fuelKo: FuelPack = { ...fuelDe, fuelWinScore: '미션 점수', fuelTargetsTitle: '오늘의 목표' };
+const fuelItPack = fuelIt;
+const fuelKoPack = fuelKo;
+const fuelRuPack = fuelRu;
 const fuelJa: FuelPack = {
   ...fuelEsStyle,
   fuelWinScore: 'ミッションスコア',
@@ -294,17 +278,17 @@ const fuelJa: FuelPack = {
   fuelLogBtn: '記録',
   fuelTodayLogTitle: '今日のログ',
   fuelExploreBundle: 'Super Bundleを見る',
+  ...fuelJaExtra,
 };
-const fuelRu: FuelPack = { ...fuelDe, fuelWinScore: 'Счёт миссии', fuelTargetsTitle: 'Цели на сегодня' };
 
 export const TIER1_FUEL: Record<string, FuelPack> = {
   fr: fuelFr,
   de: fuelDe,
   pt: fuelPt,
-  it: fuelIt,
-  ko: fuelKo,
+  it: fuelItPack,
+  ko: fuelKoPack,
   ja: fuelJa,
-  ru: fuelRu,
+  ru: fuelRuPack,
 };
 
 const activeBase = {
@@ -359,8 +343,8 @@ const activePt: ActivePack = {
   activeRepeatLast: 'Repetir última série',
 };
 
-const activeIt: ActivePack = { ...activeFr, activeStartWorkout: 'Inizia allenamento' };
-const activeKo: ActivePack = { ...activeDe, activeStartWorkout: '운동 시작', activeRestTitle: '휴식', activeLogSet: '기록' };
+const activeItPack = activeIt;
+const activeKoPack = activeKo;
 const activeJa: ActivePack = {
   ...activeBase,
   activeNoWorkout: 'アクティブなワークアウトなし',
@@ -369,17 +353,18 @@ const activeJa: ActivePack = {
   activeLogSet: '記録',
   activeRepeatLast: '前セットを繰り返す',
   activeSetLogged: 'セット記録完了！',
+  ...activeJaExtra,
 };
-const activeRu: ActivePack = { ...activeDe, activeStartWorkout: 'Начать тренировку', activeRestTitle: 'Отдых', activeLogSet: 'Записать' };
+const activeRuPack = activeRu;
 
 export const TIER1_ACTIVE: Record<string, ActivePack> = {
   fr: activeFr,
   de: activeDe,
   pt: activePt,
-  it: activeIt,
-  ko: activeKo,
+  it: activeItPack,
+  ko: activeKoPack,
   ja: activeJa,
-  ru: activeRu,
+  ru: activeRuPack,
 };
 
 export function tier1WelcomeBody(lang: string): WelcomePack | undefined {

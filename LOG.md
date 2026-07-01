@@ -56,6 +56,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I4: Welcome/Fuel/Active native IT/KO/RU
+
+**Build:** `2025.06-unified.55`
+
+### Shipped
+
+- **Welcome** — full native I-Day copy for IT, KO, RU (no FR/DE inheritance); JA goal preset fixes
+- **Fuel / Active** — native tier1 packs for IT, KO, RU; expanded JA fuel/active strings
+- **Tests** — welcome ≥75% + FR/DE leakage guards for IT/KO/RU; fuel/active ≥15% for IT/JA/KO/RU
+
+**Tests:** 190 passing
+
+---
+
 ## 2026-06-29 — Phase I3: Mind premium guided sessions
 
 **Build:** `2025.06-unified.54`
