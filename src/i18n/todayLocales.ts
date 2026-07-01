@@ -112,8 +112,14 @@ type TodayStrings = {
   coachInsightSolidRecovery: string;
   coachInsightLowReadiness: string;
   coachInsightSteady: string;
+  coachInsightNeedMove: string;
+  coachInsightNeedFuel: string;
+  coachInsightNeedMind: string;
+  coachInsightSynergyMove: string;
   coachActionRecoveryFlow: string;
   coachActionOpenMove: string;
+  coachActionOpenMind: string;
+  todayEditToday: string;
   coachActionStartWorkout: string;
   coachActionGoBuilder: string;
   coachActionLogNutrition: string;
@@ -264,8 +270,18 @@ const en: TodayStrings = {
   coachInsightLowReadiness:
     'Readiness is low. Log protein in Fuel, try a Mind breathing stack, or keep today lighter.',
   coachInsightSteady: 'Steady progress. {{focusLine}} when you\'re ready.',
+  coachInsightNeedMove:
+    'Training load is building — add mobility today to protect joints and stay on the path.',
+  coachInsightNeedFuel:
+    'You\'re training hard but protein is lagging. Log Fuel today to recover and grow.',
+  coachInsightNeedMind:
+    'Recovery is under stress. A short Mind session helps sleep, focus, and consistency.',
+  coachInsightSynergyMove:
+    'Strong training week — pair it with mobility so you keep progressing without breakdown.',
   coachActionRecoveryFlow: 'Try recovery flow',
   coachActionOpenMove: 'Open Move pillar',
+  coachActionOpenMind: 'Open Mind pillar',
+  todayEditToday: 'Edit Today',
   coachActionStartWorkout: 'Start workout',
   coachActionGoBuilder: 'Go to Builder',
   coachActionLogNutrition: 'Log nutrition',
@@ -410,8 +426,18 @@ const es: TodayStrings = {
   coachInsightLowReadiness:
     'Preparación baja. Registra proteína en Fuel, prueba Mind o mantén hoy más ligero.',
   coachInsightSteady: 'Progreso constante. {{focusLine}} cuando estés listo.',
+  coachInsightNeedMove:
+    'La carga de entrenamiento sube — añade movilidad hoy para proteger articulaciones.',
+  coachInsightNeedFuel:
+    'Entrenas fuerte pero la proteína va rezagada. Registra Fuel hoy para recuperar.',
+  coachInsightNeedMind:
+    'La recuperación está bajo estrés. Una sesión Mind breve ayuda al sueño y la constancia.',
+  coachInsightSynergyMove:
+    'Semana de entreno sólida — combínala con movilidad para seguir progresando.',
   coachActionRecoveryFlow: 'Flujo de recuperación',
   coachActionOpenMove: 'Abrir pilar Move',
+  coachActionOpenMind: 'Abrir pilar Mind',
+  todayEditToday: 'Editar Today',
   coachActionStartWorkout: 'Iniciar entrenamiento',
   coachActionGoBuilder: 'Ir al Builder',
   coachActionLogNutrition: 'Registrar nutrición',
@@ -539,8 +565,14 @@ const zh: TodayStrings = {
   coachInsightSolidRecovery: '恢复良好 — 适合在重点肌群加量或做基准测试。',
   coachInsightLowReadiness: '就绪度偏低。在营养记录蛋白质、尝试心理呼吸，或今天轻一点。',
   coachInsightSteady: '稳步前进。准备好时 {{focusLine}}。',
+  coachInsightNeedMove: '训练负荷在累积——今天做灵活性训练保护关节。',
+  coachInsightNeedFuel: '训练很猛但蛋白质不足。今天记录饮食以恢复和增长。',
+  coachInsightNeedMind: '恢复压力较大。简短的正念练习有助于睡眠和坚持。',
+  coachInsightSynergyMove: '训练周表现不错——配合灵活性训练持续进步。',
   coachActionRecoveryFlow: '恢复流程',
   coachActionOpenMove: '打开活动支柱',
+  coachActionOpenMind: '打开心智支柱',
+  todayEditToday: '编辑 Today',
   coachActionStartWorkout: '开始训练',
   coachActionGoBuilder: '前往构建器',
   coachActionLogNutrition: '记录营养',
@@ -688,8 +720,18 @@ const id: TodayStrings = {
   coachInsightLowReadiness:
     'Kesiapan rendah. Catat protein di Fuel, coba Mind, atau ringankan hari ini.',
   coachInsightSteady: 'Progres stabil. {{focusLine}} saat siap.',
+  coachInsightNeedMove:
+    'Beban latihan meningkat — tambahkan mobilitas hari ini untuk melindungi sendi.',
+  coachInsightNeedFuel:
+    'Latihan keras tapi protein tertinggal. Catat Fuel hari ini untuk pulih.',
+  coachInsightNeedMind:
+    'Pemulihan under stress. Sesi Mind singkat membantu tidur dan konsistensi.',
+  coachInsightSynergyMove:
+    'Minggu latihan kuat — padukan mobilitas agar terus progres tanpa cedera.',
   coachActionRecoveryFlow: 'Alur pemulihan',
   coachActionOpenMove: 'Buka pilar Move',
+  coachActionOpenMind: 'Buka pilar Mind',
+  todayEditToday: 'Edit Today',
   coachActionStartWorkout: 'Mulai latihan',
   coachActionGoBuilder: 'Ke Builder',
   coachActionLogNutrition: 'Catat nutrisi',
@@ -833,8 +875,14 @@ const th: TodayStrings = {
   coachInsightSolidRecovery: 'ฟื้นตัวดี — วันดีสำหรับเพิ่มปริมาณหรือ benchmark',
   coachInsightLowReadiness: 'ความพร้อมต่ำ บันทึกโปรตีนใน Fuel ลอง Mind หรือเบาวันนี้',
   coachInsightSteady: 'ก้าวหน้าสม่ำเสมอ {{focusLine}} เมื่อพร้อม',
+  coachInsightNeedMove: 'โหลดเทรนกำลังสะสม — เพิ่ม mobility วันนี้เพื่อปกป้องข้อต่อ',
+  coachInsightNeedFuel: 'เทรนหนักแต่โปรตีนตามไม่ทัน บันทึก Fuel วันนี้เพื่อฟื้นตัว',
+  coachInsightNeedMind: 'การฟื้นตัวตึงเครียด เซสชัน Mind สั้นๆ ช่วยการนอนและความสม่ำเสมอ',
+  coachInsightSynergyMove: 'สัปดาห์เทรนดี — จับคู่ mobility เพื่อก้าวหน้าต่อเนื่อง',
   coachActionRecoveryFlow: 'โฟลว์ฟื้นตัว',
   coachActionOpenMove: 'เปิดเสา Move',
+  coachActionOpenMind: 'เปิดเสา Mind',
+  todayEditToday: 'แก้ไข Today',
   coachActionStartWorkout: 'เริ่มฝึก',
   coachActionGoBuilder: 'ไป Builder',
   coachActionLogNutrition: 'บันทึกโภชนาการ',
@@ -977,8 +1025,14 @@ const ar: TodayStrings = {
   coachInsightSolidRecovery: 'استشفاء جيد — يوم مناسب لزيادة الحجم أو جلسة معيارية.',
   coachInsightLowReadiness: 'جاهزية منخفضة. سجّل بروتين في Fuel أو جرّب Mind أو خفّف اليوم.',
   coachInsightSteady: 'تقدّم ثابت. {{focusLine}} عندما تكون جاهزاً.',
+  coachInsightNeedMove: 'حمولة التدريب تتراكم — أضف movilidad اليوم لحماية المفاصل.',
+  coachInsightNeedFuel: 'تدريب قوي لكن البروtein متأخر. سجّل Fuel اليوم للتعافي.',
+  coachInsightNeedMind: 'الاستشفاء تحت ضغط. جلسة Mind قصيرة تساعد النوم والاستمرارية.',
+  coachInsightSynergyMove: 'أسبوع تدريب قوي — ادمج movilidad للتقدم بأمان.',
   coachActionRecoveryFlow: 'تدفق استشفاء',
   coachActionOpenMove: 'فتح ركيزة Move',
+  coachActionOpenMind: 'فتح ركيزة Mind',
+  todayEditToday: 'تعديل Today',
   coachActionStartWorkout: 'بدء التمرين',
   coachActionGoBuilder: 'إلى Builder',
   coachActionLogNutrition: 'تسجيل التغذية',

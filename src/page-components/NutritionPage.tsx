@@ -10,6 +10,8 @@ import { FREE_RECIPES } from "@/data/recipes/freeRecipes";
 import type { Recipe } from "@/data/recipes/types";
 import { usePremium } from "@/hooks/usePremium";
 import { FuelLogSheet, type MealType } from "@/components/nutrition/FuelLogSheet";
+import { FoodSearchBar } from "@/components/nutrition/FoodSearchBar";
+import type { FoodSearchItem } from "@/lib/foodSearch";
 import { MetricRing } from "@/components/ui/MetricRing";
 import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { bumpFuelLogStreak, getFuelLogStreak } from "@/lib/fuelStreak";
@@ -301,6 +303,27 @@ export function NutritionPage() {
       </StaggerItem>
 
       <StaggerItem index={3}>
+      <Card className="content-card">
+        <CardHeader>
+          <CardTitle>{t('fuelSearchTitle', { defaultValue: 'Search foods' })}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <FoodSearchBar
+            onSelect={(item: FoodSearchItem) => {
+              addEntry(
+                item.brand ? `${item.name} (${item.brand})` : item.name,
+                item.protein,
+                item.calories,
+                item.carbs,
+                item.fat
+              );
+            }}
+          />
+        </CardContent>
+      </Card>
+      </StaggerItem>
+
+      <StaggerItem index={4}>
       <Card className="content-card">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{t('fuelTodayLogTitle', { defaultValue: "Today's Log" })}</CardTitle>
