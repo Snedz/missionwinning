@@ -11,6 +11,7 @@ import type { Recipe } from "@/data/recipes/types";
 import { usePremium } from "@/hooks/usePremium";
 import { FuelLogSheet, type MealType } from "@/components/nutrition/FuelLogSheet";
 import { FoodSearchBar } from "@/components/nutrition/FoodSearchBar";
+import { BarcodeLookup } from "@/components/nutrition/BarcodeLookup";
 import type { FoodSearchItem } from "@/lib/foodSearch";
 import { MetricRing } from "@/components/ui/MetricRing";
 import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
@@ -307,7 +308,18 @@ export function NutritionPage() {
         <CardHeader>
           <CardTitle>{t('fuelSearchTitle', { defaultValue: 'Search foods' })}</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <BarcodeLookup
+            onSelect={(item) => {
+              addEntry(
+                item.brand ? `${item.name} (${item.brand})` : item.name,
+                item.protein,
+                item.calories,
+                item.carbs,
+                item.fat
+              );
+            }}
+          />
           <FoodSearchBar
             onSelect={(item: FoodSearchItem) => {
               addEntry(

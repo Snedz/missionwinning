@@ -4,19 +4,41 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CoachInsightCard } from '@/components/metrics/CoachInsightCard';
 import { PillarScoreBreakdown } from '@/components/metrics/PillarScoreBreakdown';
+import { useDailyCoachInsight } from '@/hooks/useDailyCoachInsight';
 import type { CoachInsight, WinScoreBreakdown } from '@/lib/score';
 
 interface Props {
   insight: CoachInsight;
   breakdown: WinScoreBreakdown;
+  coachContext: {
+    readiness: number;
+    strain: number;
+    recovery: number;
+    missionScore: number;
+    streak: number;
+    focusGroup: string;
+    pillars: {
+      moveFlows: number;
+      mindSessions: number;
+      proteinDays: number;
+      trainDays: number;
+    };
+  };
 }
 
-export function TodayHealthSection({ insight, breakdown }: Props) {
+export function TodayHealthSection({ insight, breakdown, coachContext }: Props) {
   const { t } = useTranslation();
+  const coach = useDailyCoachInsight(coachContext, insight);
 
   return (
     <div className="space-y-4 pt-2">
-      <CoachInsightCard insight={insight} />
+      <CoachInsightCard
+        message={coach.message}
+        actionLabel={coach.actionLabel}
+        actionPath={coach.actionPath}
+        source={coach.source}
+        loading={coach.loading}
+      />
       <Card className="content-card">
         <CardHeader>
           <CardTitle className="text-base">
