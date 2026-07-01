@@ -5,6 +5,8 @@ import {
   hasPrivateAccessCookie,
   hasValidSupabaseSession,
   isPrivateModeEnabled,
+  isPublicApiPathWhileGated,
+  isPublicPathWhileGated,
   queryGrantsAccess,
 } from '@/lib/privateGate';
 import { createPrivateAccessToken, PRIVATE_ACCESS_COOKIE } from '@/lib/privateSession';
@@ -32,16 +34,25 @@ export function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
   const secret = process.env.PRIVATE_ACCESS_SECRET;
 
-  // Always allow the gate page + system paths + API routes.
-  if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/api') ||
-    pathname === '/private' ||
-    pathname.startsWith('/private/') ||
-    pathname === '/welcome' ||
-    pathname === '/beta'
-  ) {
+  // Gate page, legal footer pages, OAuth callback, and static internals only.
+  if (isPublicPathWhileGated(pathname)) {
     return applyPrivateGateHeaders(NextResponse.next());
+  }
+
+  // Webhooks + gate form must stay reachable; everything else requires the access cookie.
+  if (pathname.startsWith('/api')) {
+    if (isPublicApiPathWhileGated(pathname)) {
+      return applyPrivateGateHeaders(NextResponse.next());
+    }
+    if (hasPrivateAccessCookie(request, secret)) {
+      return applyPrivateGateHeaders(NextResponse.next());
+    }
+    if (hasValidSupabaseSession(request)) {
+      return applyPrivateGateHeaders(NextResponse.next());
+    }
+    return applyPrivateGateHeaders(
+      NextResponse.json({ error: 'Private development gate' }, { status: 403 })
+    );
   }
 
   // Query param bypass: set cookie + proceed (builder convenience).
