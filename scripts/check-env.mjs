@@ -12,6 +12,8 @@ const required = [
 const optional = [
   ['PRIVATE_MODE', 'true/false — gate on in production by default'],
   ['PRIVATE_ALLOW_AUTH_BYPASS', 'Leave unset/false — magic link should not bypass gate'],
+  ['DEMO_PREMIUM', 'Must be false (or unset) in production'],
+  ['BETA_ADMIN_EMAILS', 'Comma-separated founder emails for beta panel'],
 ];
 
 let ok = true;
@@ -31,6 +33,10 @@ for (const [key, hint] of required) {
 for (const [key, hint] of optional) {
   const val = process.env[key];
   console.log(val ? `  ✓ ${key}=${val}` : `  · ${key} (optional) — ${hint}`);
+}
+
+if (process.env.DEMO_PREMIUM === 'true') {
+  console.log('  ⚠ DEMO_PREMIUM=true — disable before public production deploy');
 }
 
 console.log(ok ? '\nReady for private gated deploy.\n' : '\nFix the items above, then redeploy Vercel.\n');

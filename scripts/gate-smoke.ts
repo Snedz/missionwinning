@@ -1,0 +1,107 @@
+#!/usr/bin/env node
+/**
+ * Post-deploy gate smoke — curl-style checks against a running deployment.
+ * Usage: SMOKE_BASE_URL=https://www.missionwinning.com npm run gate-smoke
+ */
+const base = (process.env.SMOKE_BASE_URL || process.argv[2] || '').replace(/\/$/, '');
+
+if (!base) {
+  console.error('Usage: SMOKE_BASE_URL=https://your-domain npm run gate-smoke');
+  process.exit(1);
+}
+
+type Check = { name: string; ok: boolean; detail: string };
+
+async function headOrGet(path: string, init?: RequestInit): Promise<Response> {
+  const url = `${base}${path}`;
+  try {
+    return await fetch(url, { ...init, signal: AbortSignal.timeout(15_000) });
+  } catch (e) {
+    throw new Error(`${url} — ${e instanceof Error ? e.message : String(e)}`);
+  }
+}
+
+async function main() {
+  console.log(`\nGate smoke — ${base}\n`);
+  const checks: Check[] = [];
+
+  try {
+    const home = await headOrGet('/', { redirect: 'manual' });
+    const loc = home.headers.get('location') || '';
+    const gated =
+      home.status >= 300 &&
+      home.status < 400 &&
+      (loc.includes('/private') || loc.endsWith('/private'));
+    if (gated) {
+      checks.push({ name: 'GET / redirects to /private', ok: true, detail: `${home.status} → ${loc}` });
+    } else if (home.status === 200 && process.env.SMOKE_ALLOW_PUBLIC === 'true') {
+      checks.push({
+        name: 'GET / (public mode)',
+        ok: true,
+        detail: '200 OK — SMOKE_ALLOW_PUBLIC set',
+      });
+    } else if (home.status === 200) {
+      checks.push({
+        name: 'GET / redirects to /private',
+        ok: false,
+        detail: `Got ${home.status} (PRIVATE_MODE may be off — expected in local dev)`,
+      });
+    } else {
+      checks.push({
+        name: 'GET / gate redirect',
+        ok: false,
+        detail: `status ${home.status}, location ${loc || 'none'}`,
+      });
+    }
+  } catch (e) {
+    checks.push({ name: 'GET /', ok: false, detail: String(e) });
+  }
+
+  try {
+    const beta = await headOrGet('/beta');
+    checks.push({
+      name: 'GET /beta (public guide)',
+      ok: beta.status === 200,
+      detail: `status ${beta.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /beta', ok: false, detail: String(e) });
+  }
+
+  try {
+    const recipes = await headOrGet('/api/premium/recipes');
+    const ok = recipes.status === 403 || recipes.status === 401;
+    checks.push({
+      name: 'GET /api/premium/recipes (no auth)',
+      ok,
+      detail: `status ${recipes.status}${ok ? '' : ' — expected 403'}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/recipes', ok: false, detail: String(e) });
+  }
+
+  try {
+    const programs = await headOrGet('/api/premium/programs');
+    const ok = programs.status === 403 || programs.status === 401 || programs.status === 503;
+    checks.push({
+      name: 'GET /api/premium/programs (no auth)',
+      ok,
+      detail: `status ${programs.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/programs', ok: false, detail: String(e) });
+  }
+
+  let failed = 0;
+  for (const c of checks) {
+    const icon = c.ok ? '✓' : '✗';
+    console.log(`  ${icon} ${c.name}`);
+    console.log(`    ${c.detail}`);
+    if (!c.ok) failed++;
+  }
+
+  console.log(failed ? `\n${failed} check(s) failed.\n` : '\nAll gate checks passed.\n');
+  process.exit(failed ? 1 : 0);
+}
+
+main();
