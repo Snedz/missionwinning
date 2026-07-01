@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Copy, Share2, Users } from 'lucide-react';
@@ -122,6 +123,11 @@ export function SchoolClassPanel() {
               </p>
             )}
             <div className="flex flex-wrap gap-2">
+              <Button size="sm" variant="outline" asChild>
+                <Link href={`/school/class/${joined}`}>
+                  {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard →' })}
+                </Link>
+              </Button>
               <Button size="sm" variant="outline" onClick={() => void refreshStats(joined)}>
                 {t('schoolRefreshStats', { defaultValue: 'Refresh stats' })}
               </Button>
@@ -154,6 +160,7 @@ export function SchoolClassPanel() {
             {t('schoolCreate', { defaultValue: 'Generate class code' })}
           </Button>
           {createdCode && (
+            <div className="space-y-2">
             <div className="flex items-center justify-between gap-2 text-sm rounded-lg bg-black/20 px-3 py-2">
               <span className="font-mono text-blue-300">{createdCode}</span>
               <div className="flex gap-1">
@@ -177,6 +184,12 @@ export function SchoolClassPanel() {
                   <Share2 className="h-4 w-4" />
                 </Button>
               </div>
+            </div>
+            <Button size="sm" variant="outline" className="w-full" asChild>
+              <Link href={`/school/class/${createdCode}`}>
+                {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard →' })}
+              </Link>
+            </Button>
             </div>
           )}
         </div>

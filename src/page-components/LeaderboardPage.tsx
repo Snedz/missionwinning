@@ -23,6 +23,7 @@ import { BOARD_I18N_KEY } from '@/i18n/leaderboardLocales';
 import { LeaderboardBoardPicker } from '@/components/leaderboard/LeaderboardBoardPicker';
 import { LeaderboardScopeTabs } from '@/components/leaderboard/LeaderboardScopeTabs';
 import { LeaderboardTable } from '@/components/leaderboard/LeaderboardTable';
+import { getJoinedClassCode } from '@/lib/schoolClass';
 
 export function LeaderboardPage() {
   const { t } = useTranslation();
@@ -59,6 +60,17 @@ export function LeaderboardPage() {
   useEffect(() => {
     void refresh();
   }, [refresh]);
+
+  useEffect(() => {
+    const classCode = getJoinedClassCode();
+    if (classCode && !loadSquadCode()) {
+      saveSquadCode(classCode);
+      setSquadCode(classCode);
+    }
+    if (classCode && !searchParams.get('scope')) {
+      setScope('friends');
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const nextBoard = parseLeaderboardBoardId(searchParams.get('board'));
@@ -262,6 +274,15 @@ export function LeaderboardPage() {
           {t('leaderboardSquadHint', {
             defaultValue:
               'Set a squad code above to compare with others using the same code. Try ALPHA or BRAVO to see demo squad members.',
+          })}
+        </p>
+      )}
+
+      {scope === 'friends' && squadCode.startsWith('MW') && (
+        <p className="text-xs text-blue-400/90 rounded-lg border border-blue-500/20 bg-blue-950/20 px-3 py-2">
+          {t('leaderboardClassHint', {
+            defaultValue:
+              'PE class code active — squad rankings include classmates who sync while signed in.',
           })}
         </p>
       )}
