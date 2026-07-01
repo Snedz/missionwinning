@@ -1,5 +1,6 @@
-import type { CompletedWorkoutLog } from '@/types';
+import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { estimateOneRepMax } from '@/lib/benchmarks';
+import { countsTowardPr } from '@/lib/setKind';
 
 export type SetPerformance = { weight: number; reps: number };
 
@@ -16,6 +17,7 @@ export function getBestPriorSet(
     if (!ex) continue;
     for (const set of ex.sets) {
       if (set.weight <= 0 || set.reps <= 0) continue;
+      if (!countsTowardPr(set.kind)) continue;
       const est = estimateOneRepMax(set.weight, set.reps);
       if (est > bestEst) {
         bestEst = est;
@@ -32,9 +34,11 @@ export function isPersonalRecord(
   exerciseId: string,
   reps: number,
   weight: number,
-  history: CompletedWorkoutLog[]
+  history: CompletedWorkoutLog[],
+  kind: SetKind = 'normal'
 ): boolean {
   if (weight <= 0 || reps <= 0) return false;
+  if (!countsTowardPr(kind)) return false;
   const prior = getBestPriorSet(exerciseId, history);
   if (!prior) return true;
   const newEst = estimateOneRepMax(weight, reps);

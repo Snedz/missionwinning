@@ -10,6 +10,8 @@ export type MuscleGroup =
 
 export type ProgramTag = "strength" | "hypertrophy" | "conditioning" | "corrective";
 
+export type SetKind = 'normal' | 'warmup' | 'failure';
+
 export type ExerciseLevel = "beginner" | "intermediate" | "advanced";
 
 export interface Exercise {
@@ -47,7 +49,8 @@ export interface LoggedSet {
   reps: number;
   weight: number;
   completed: boolean;
-  rpe?: 'easy' | 'med' | 'hard'; // Per-set feedback for progression intelligence (like Forge Easy/Med/Hard)
+  kind?: SetKind;
+  rpe?: 'easy' | 'med' | 'hard';
 }
 
 export interface ActiveExerciseLog {
@@ -70,7 +73,7 @@ export interface CompletedWorkoutLog {
   durationSeconds: number;
   exercises: {
     exerciseId: string;
-    sets: { reps: number; weight: number; rpe?: 'easy' | 'med' | 'hard' }[];
+    sets: { reps: number; weight: number; kind?: SetKind; rpe?: 'easy' | 'med' | 'hard' }[];
   }[];
   totalVolume: number;
 }

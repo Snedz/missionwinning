@@ -133,5 +133,10 @@
   "todaySectionJournal": "บันทึก",
   "todaySectionJournalDesc": "กิจกรรมล่าสุดข้ามเสาหลัก",
   "todayJournalEmpty": "ยังไม่มีบันทึก — ฝึก บันทึกโภชนาการ หรือเช็คอินที่ Mind",
-  "todayJournalViewMind": "บันทึกเช็คอิน →"
+  "todayJournalViewMind": "บันทึกเช็คอิน →",
+  "todayQuickRankingsDesc": "คะแนนภารกิจและสตรีค",
+  "todayQuickHistoryDesc": "ปริมาณ 1RM และแผนที่กล้ามเนื้อ",
+  "todayQuickBundleDesc": "หกเสาหลัก สมัครครั้งเดียว",
+  "todayQuickNightDesc": "เซสชัน 22:00–05:00",
+  "todayQuickDawnDesc": "เซสชัน 05:00–08:00"
 }
