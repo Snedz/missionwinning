@@ -126,6 +126,16 @@ type TodayStrings = {
   todayPillarTrack: string;
   todayPillarLearn: string;
   todayPillarScoreFoot: string;
+  todayTrendsTitle: string;
+  todayTrendVolume: string;
+  todayTrendSessions: string;
+  todayTrendProtein: string;
+  todayTrendActive: string;
+  todayTrendToday: string;
+  todaySectionJournal: string;
+  todaySectionJournalDesc: string;
+  todayJournalEmpty: string;
+  todayJournalViewMind: string;
 };
 
 const en: TodayStrings = {
@@ -264,6 +274,17 @@ const en: TodayStrings = {
   todayPillarLearn: 'Learn',
   todayPillarScoreFoot:
     'Holistic scoring — all six pillars contribute. Super Bundle deepens each route; free core counts for everyone.',
+  todayTrendsTitle: '7-day trends',
+  todayTrendVolume: 'Volume',
+  todayTrendSessions: 'Sessions',
+  todayTrendProtein: 'Protein',
+  todayTrendActive: 'Active min',
+  todayTrendToday: 'Today',
+  todaySectionJournal: 'Journal',
+  todaySectionJournalDesc: 'Recent activity across pillars',
+  todayJournalEmpty:
+    'Nothing logged yet — train, fuel, or check in on Mind to start your strip.',
+  todayJournalViewMind: 'Log check-in →',
 };
 
 const es: TodayStrings = {
@@ -522,6 +543,16 @@ const zh: TodayStrings = {
   todayPillarTrack: '追踪',
   todayPillarLearn: '学习',
   todayPillarScoreFoot: '整体评分 — 六大支柱共同贡献。Super Bundle 深化各路线；免费核心人人可用。',
+  todayTrendsTitle: '7 日趋势',
+  todayTrendVolume: '训练量',
+  todayTrendSessions: '次数',
+  todayTrendProtein: '蛋白质',
+  todayTrendActive: '活动分钟',
+  todayTrendToday: '今日',
+  todaySectionJournal: '日志',
+  todaySectionJournalDesc: '各支柱近期活动',
+  todayJournalEmpty: '暂无记录 — 训练、记录营养或在 Mind 签到开始。',
+  todayJournalViewMind: '记录签到 →',
 };
 
 const id: TodayStrings = {
@@ -657,6 +688,16 @@ const id: TodayStrings = {
   todayPillarLearn: 'Belajar',
   todayPillarScoreFoot:
     'Skor holistik — enam pilar berkontribusi. Super Bundle memperdalam setiap rute; inti gratis untuk semua.',
+  todayTrendsTitle: 'Tren 7 hari',
+  todayTrendVolume: 'Volume',
+  todayTrendSessions: 'Sesi',
+  todayTrendProtein: 'Protein',
+  todayTrendActive: 'Menit aktif',
+  todayTrendToday: 'Hari ini',
+  todaySectionJournal: 'Jurnal',
+  todaySectionJournalDesc: 'Aktivitas terbaru lintas pilar',
+  todayJournalEmpty: 'Belum ada log — latih, catat nutrisi, atau check-in di Mind.',
+  todayJournalViewMind: 'Catat check-in →',
 };
 
 const th: TodayStrings = {
@@ -787,6 +828,16 @@ const th: TodayStrings = {
   todayPillarLearn: 'เรียนรู้',
   todayPillarScoreFoot:
     'คะแนนรวม — หกเสาหลักมีส่วน Super Bundle ลึกขึ้นในแต่ละเส้นทาง เหล่าฟรีนับทุกคน',
+  todayTrendsTitle: 'แนวโน้ม 7 วัน',
+  todayTrendVolume: 'ปริมาณ',
+  todayTrendSessions: 'เซสชัน',
+  todayTrendProtein: 'โปรตีน',
+  todayTrendActive: 'นาทีเคลื่อนไหว',
+  todayTrendToday: 'วันนี้',
+  todaySectionJournal: 'บันทึก',
+  todaySectionJournalDesc: 'กิจกรรมล่าสุดข้ามเสาหลัก',
+  todayJournalEmpty: 'ยังไม่มีบันทึก — ฝึก บันทึกโภชนาการ หรือเช็คอินที่ Mind',
+  todayJournalViewMind: 'บันทึกเช็คอิน →',
 };
 
 const ar: TodayStrings = {
@@ -916,6 +967,16 @@ const ar: TodayStrings = {
   todayPillarLearn: 'تعلّم',
   todayPillarScoreFoot:
     'تقييم شامل — الركائز الست تساهم. Super Bundle يعمّق كل مسار؛ النواة المجانية للجميع.',
+  todayTrendsTitle: 'اتجاهات 7 أيام',
+  todayTrendVolume: 'الحجم',
+  todayTrendSessions: 'الجلسات',
+  todayTrendProtein: 'البروتين',
+  todayTrendActive: 'دقائق نشطة',
+  todayTrendToday: 'اليوم',
+  todaySectionJournal: 'اليوميات',
+  todaySectionJournalDesc: 'نشاط حديث عبر الأركان',
+  todayJournalEmpty: 'لا سجلات بعد — تدرّب أو سجّل التغذية أو تحقّق في Mind.',
+  todayJournalViewMind: 'تسجيل تحقّق →',
 };
 
 const LOCALES: Partial<Record<string, TodayStrings>> = { en, es, zh, id, th, ar };

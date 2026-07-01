@@ -1,6 +1,6 @@
 /** User toggles and order for Today accordion sections (local only). */
 
-export const TODAY_SECTION_IDS = ['health', 'week', 'progress'] as const;
+export const TODAY_SECTION_IDS = ['health', 'journal', 'week', 'progress'] as const;
 export type TodaySectionId = (typeof TODAY_SECTION_IDS)[number];
 
 export type TodayDashboardPrefs = Record<TodaySectionId, boolean> & {
@@ -14,6 +14,7 @@ const DEFAULT_ORDER: TodaySectionId[] = [...TODAY_SECTION_IDS];
 
 const DEFAULT: TodayDashboardPrefs = {
   health: true,
+  journal: true,
   week: true,
   progress: true,
   order: DEFAULT_ORDER,
@@ -36,6 +37,7 @@ export function loadTodayDashboardPrefs(): TodayDashboardPrefs {
       const parsed = JSON.parse(rawV2) as Partial<TodayDashboardPrefs>;
       return {
         health: parsed.health !== false,
+        journal: parsed.journal !== false,
         week: parsed.week !== false,
         progress: parsed.progress !== false,
         order: normalizeOrder(parsed.order),
@@ -46,6 +48,7 @@ export function loadTodayDashboardPrefs(): TodayDashboardPrefs {
       const parsed = JSON.parse(rawV1) as Partial<Record<TodaySectionId, boolean>>;
       return {
         health: parsed.health !== false,
+        journal: parsed.journal !== false,
         week: parsed.week !== false,
         progress: parsed.progress !== false,
         order: [...DEFAULT_ORDER],
