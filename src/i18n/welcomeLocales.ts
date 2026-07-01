@@ -27,6 +27,9 @@ type WelcomeStrings = {
   goalPresetEndurance: string;
   goalPresetMobility: string;
   goalPresetGeneral: string;
+  goalPresetPft: string;
+  goalPresetKids: string;
+  goalPresetAmericaHealth: string;
   welcomeGoalPresetsLabel: string;
   welcomeBack: string;
   headerSignIn: string;
@@ -67,6 +70,9 @@ const en: WelcomeStrings = {
   goalPresetEndurance: 'Improve endurance and stamina',
   goalPresetMobility: 'Move better — mobility and recovery',
   goalPresetGeneral: 'Stay healthy and consistent',
+  goalPresetPft: 'Prepare for the Presidential Fitness Test',
+  goalPresetKids: 'Get my kids moving every day',
+  goalPresetAmericaHealth: 'Make America Healthy Again — start with me',
   welcomeGoalPresetsLabel: 'Quick picks (or type your own below)',
   welcomeBack: 'Back',
   headerSignIn: 'Sign in',
@@ -105,6 +111,9 @@ const zh: WelcomeStrings = {
   goalPresetEndurance: '提升耐力与持久力',
   goalPresetMobility: '改善活动度与恢复',
   goalPresetGeneral: '保持健康、坚持训练',
+  goalPresetPft: 'Prepare for the Presidential Fitness Test',
+  goalPresetKids: 'Get my kids moving every day',
+  goalPresetAmericaHealth: 'Make America Healthy Again — start with me',
   welcomeGoalPresetsLabel: '快捷选择（或在下方自定义）',
   welcomeBack: '返回',
   headerSignIn: '登录',
@@ -145,6 +154,9 @@ const id: WelcomeStrings = {
   goalPresetEndurance: 'Tingkatkan daya tahan',
   goalPresetMobility: 'Gerak lebih baik — mobilitas & recovery',
   goalPresetGeneral: 'Tetap sehat dan konsisten',
+  goalPresetPft: 'Prepare for the Presidential Fitness Test',
+  goalPresetKids: 'Get my kids moving every day',
+  goalPresetAmericaHealth: 'Make America Healthy Again — start with me',
   welcomeGoalPresetsLabel: 'Pilihan cepat (atau ketik sendiri di bawah)',
   welcomeBack: 'Kembali',
   headerSignIn: 'Masuk',
@@ -183,6 +195,9 @@ const th: WelcomeStrings = {
   goalPresetEndurance: 'เพิ่มความอดทน',
   goalPresetMobility: 'เคลื่อนไหวดีขึ้น — ความคล่องตัวและฟื้นตัว',
   goalPresetGeneral: 'สุขภาพดีและสม่ำเสมอ',
+  goalPresetPft: 'Prepare for the Presidential Fitness Test',
+  goalPresetKids: 'Get my kids moving every day',
+  goalPresetAmericaHealth: 'Make America Healthy Again — start with me',
   welcomeGoalPresetsLabel: 'เลือกด่วน (หรือพิมพ์เองด้านล่าง)',
   welcomeBack: 'ย้อนกลับ',
   headerSignIn: 'ลงชื่อเข้าใช้',
@@ -222,6 +237,9 @@ const ar: WelcomeStrings = {
   goalPresetEndurance: 'تحسين التحمل والقدرة',
   goalPresetMobility: 'حركة أفضل — مرونة واستشفاء',
   goalPresetGeneral: 'صحة مستمرة وانتظام',
+  goalPresetPft: 'Prepare for the Presidential Fitness Test',
+  goalPresetKids: 'Get my kids moving every day',
+  goalPresetAmericaHealth: 'Make America Healthy Again — start with me',
   welcomeGoalPresetsLabel: 'اختيارات سريعة (أو اكتب هدفك أدناه)',
   welcomeBack: 'رجوع',
   headerSignIn: 'تسجيل الدخول',

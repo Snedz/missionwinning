@@ -47,6 +47,7 @@ import { formatDate } from "@/lib/utils";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
+import { PresidentialFitnessSection } from "@/components/fitness-test/PresidentialFitnessSection";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 
 export function BenchmarksPage() {
@@ -124,6 +125,7 @@ export function BenchmarksPage() {
           </CardContent>
         </Card>
         <MilitaryReadinessSection />
+        <PresidentialFitnessSection />
       </div>
     );
   }
@@ -142,6 +144,7 @@ export function BenchmarksPage() {
       </div>
 
       <MilitaryReadinessSection />
+      <PresidentialFitnessSection />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="border-primary/20 bg-primary/5">

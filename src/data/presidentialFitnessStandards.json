@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "disclaimer": "Mission Winning standards inspired by classic Presidential Fitness Test events — not an official U.S. government test.",
+  "ageBands": [
+    { "id": "10-13", "label": "Ages 10–13", "minAge": 10, "maxAge": 13 },
+    { "id": "14-17", "label": "Ages 14–17", "minAge": 14, "maxAge": 17 },
+    { "id": "18-39", "label": "Ages 18–39", "minAge": 18, "maxAge": 39 },
+    { "id": "40+", "label": "Ages 40+", "minAge": 40, "maxAge": 120 }
+  ],
+  "events": [
+    {
+      "id": "curl_ups",
+      "name": "Curl-ups",
+      "unit": "reps",
+      "durationSec": 60,
+      "higherIsBetter": true,
+      "description": "Max curl-ups in one minute with proper form."
+    },
+    {
+      "id": "push_ups",
+      "name": "Push-ups",
+      "unit": "reps",
+      "durationSec": 120,
+      "higherIsBetter": true,
+      "description": "Max push-ups in two minutes (modified knees allowed for beginners)."
+    },
+    {
+      "id": "sit_reach",
+      "name": "Sit-and-reach",
+      "unit": "cm",
+      "higherIsBetter": true,
+      "description": "Best reach past toes in centimeters (use a yardstick or box)."
+    },
+    {
+      "id": "mile_run",
+      "name": "One-mile run",
+      "unit": "sec",
+      "higherIsBetter": false,
+      "description": "Fastest mile time. Walk-run is OK for your first attempt."
+    },
+    {
+      "id": "pull_ups",
+      "name": "Pull-ups / flexed-arm hang",
+      "unit": "reps",
+      "higherIsBetter": true,
+      "description": "Strict pull-ups, or flexed-arm hang seconds for younger athletes."
+    }
+  ],
+  "standards": {
+    "10-13": {
+      "male": {
+        "curl_ups": { "presidential": 45, "national": 35, "participant": 25 },
+        "push_ups": { "presidential": 30, "national": 22, "participant": 15 },
+        "sit_reach": { "presidential": 28, "national": 22, "participant": 15 },
+        "mile_run": { "presidential": 480, "national": 540, "participant": 660 },
+        "pull_ups": { "presidential": 6, "national": 4, "participant": 2 }
+      },
+      "female": {
+        "curl_ups": { "presidential": 40, "national": 32, "participant": 22 },
+        "push_ups": { "presidential": 24, "national": 18, "participant": 12 },
+        "sit_reach": { "presidential": 32, "national": 26, "participant": 18 },
+        "mile_run": { "presidential": 540, "national": 600, "participant": 720 },
+        "pull_ups": { "presidential": 4, "national": 2, "participant": 1 }
+      }
+    },
+    "14-17": {
+      "male": {
+        "curl_ups": { "presidential": 55, "national": 45, "participant": 30 },
+        "push_ups": { "presidential": 45, "national": 35, "participant": 25 },
+        "sit_reach": { "presidential": 30, "national": 24, "participant": 16 },
+        "mile_run": { "presidential": 420, "national": 480, "participant": 600 },
+        "pull_ups": { "presidential": 10, "national": 7, "participant": 4 }
+      },
+      "female": {
+        "curl_ups": { "presidential": 50, "national": 40, "participant": 28 },
+        "push_ups": { "presidential": 30, "national": 22, "participant": 15 },
+        "sit_reach": { "presidential": 34, "national": 28, "participant": 20 },
+        "mile_run": { "presidential": 480, "national": 540, "participant": 660 },
+        "pull_ups": { "presidential": 6, "national": 4, "participant": 2 }
+      }
+    },
+    "18-39": {
+      "male": {
+        "curl_ups": { "presidential": 60, "national": 50, "participant": 35 },
+        "push_ups": { "presidential": 55, "national": 42, "participant": 30 },
+        "sit_reach": { "presidential": 32, "national": 26, "participant": 18 },
+        "mile_run": { "presidential": 390, "national": 450, "participant": 570 },
+        "pull_ups": { "presidential": 12, "national": 8, "participant": 5 }
+      },
+      "female": {
+        "curl_ups": { "presidential": 55, "national": 45, "participant": 30 },
+        "push_ups": { "presidential": 35, "national": 26, "participant": 18 },
+        "sit_reach": { "presidential": 36, "national": 30, "participant": 22 },
+        "mile_run": { "presidential": 450, "national": 510, "participant": 630 },
+        "pull_ups": { "presidential": 8, "national": 5, "participant": 3 }
+      }
+    },
+    "40+": {
+      "male": {
+        "curl_ups": { "presidential": 50, "national": 40, "participant": 28 },
+        "push_ups": { "presidential": 45, "national": 35, "participant": 24 },
+        "sit_reach": { "presidential": 28, "national": 22, "participant": 15 },
+        "mile_run": { "presidential": 450, "national": 510, "participant": 660 },
+        "pull_ups": { "presidential": 8, "national": 5, "participant": 3 }
+      },
+      "female": {
+        "curl_ups": { "presidential": 45, "national": 36, "participant": 25 },
+        "push_ups": { "presidential": 28, "national": 20, "participant": 14 },
+        "sit_reach": { "presidential": 32, "national": 26, "participant": 18 },
+        "mile_run": { "presidential": 510, "national": 570, "participant": 720 },
+        "pull_ups": { "presidential": 5, "national": 3, "participant": 1 }
+      }
+    }
+  },
+  "miniTestEventIds": ["curl_ups", "push_ups"]
+}

@@ -27,4 +27,13 @@ describe('journeyGoals', () => {
     );
     assert.equal(formatStoredGoal('My custom goal', t), 'My custom goal');
   });
+
+  it('includes national fitness goal presets', () => {
+    assert.equal(parseGoalPresetId('goal:pft'), 'pft');
+    assert.equal(parseGoalPresetId('goal:kids'), 'kids');
+    assert.equal(
+      formatStoredGoal(goalPresetValue('america_health'), t),
+      GOAL_PRESET_DEFAULTS.america_health
+    );
+  });
 });

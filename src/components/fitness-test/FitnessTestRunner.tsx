@@ -1,0 +1,203 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  awardLabel,
+  formatMileTime,
+  parseMileTime,
+  PFT_EVENTS,
+  PFT_MINI_EVENT_IDS,
+  scoreFitnessTestSession,
+  type FitnessEventId,
+  type FitnessSex,
+} from '@/lib/presidentialFitnessTest';
+import { saveFitnessTestSession } from '@/lib/presidentialFitnessStorage';
+
+type Step = 'profile' | 'events' | 'results';
+
+export function FitnessTestRunner() {
+  const { t } = useTranslation();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const isMini = searchParams.get('mode') === 'mini';
+
+  const eventIds = useMemo(
+    () => (isMini ? PFT_MINI_EVENT_IDS : PFT_EVENTS.map((e) => e.id)),
+    [isMini]
+  );
+
+  const [step, setStep] = useState<Step>('profile');
+  const [age, setAge] = useState('14');
+  const [sex, setSex] = useState<FitnessSex>('male');
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [session, setSession] = useState<ReturnType<typeof scoreFitnessTestSession> | null>(null);
+
+  const handleScore = () => {
+    const ageNum = parseInt(age, 10);
+    if (!Number.isFinite(ageNum) || ageNum < 6) return;
+
+    const results = eventIds
+      .map((id) => {
+        const raw = values[id]?.trim();
+        if (!raw) return null;
+        let value: number | null = null;
+        if (id === 'mile_run') value = parseMileTime(raw);
+        else value = parseFloat(raw);
+        if (value == null || !Number.isFinite(value)) return null;
+        return { eventId: id as FitnessEventId, value };
+      })
+      .filter(Boolean) as { eventId: FitnessEventId; value: number }[];
+
+    if (results.length === 0) return;
+
+    const scored = scoreFitnessTestSession({
+      age: ageNum,
+      sex,
+      results,
+      mode: isMini ? 'mini' : 'full',
+    });
+    saveFitnessTestSession(scored);
+    setSession(scored);
+    setStep('results');
+  };
+
+  const inputForEvent = (eventId: FitnessEventId) => {
+    const ev = PFT_EVENTS.find((e) => e.id === eventId);
+    if (!ev) return null;
+    const placeholder =
+      eventId === 'mile_run'
+        ? t('pftMilePlaceholder', { defaultValue: '6:30 or 390' })
+        : t('pftRepsPlaceholder', { defaultValue: 'Enter result' });
+
+    return (
+      <label key={eventId} className="block space-y-1 text-sm">
+        <span className="font-medium">{ev.name}</span>
+        <span className="block text-xs text-muted-foreground">{ev.description}</span>
+        <input
+          type="text"
+          inputMode={eventId === 'mile_run' ? 'text' : 'decimal'}
+          value={values[eventId] ?? ''}
+          onChange={(e) => setValues((v) => ({ ...v, [eventId]: e.target.value }))}
+          className="w-full rounded-md bg-background border border-border px-3 py-2"
+          placeholder={placeholder}
+        />
+      </label>
+    );
+  };
+
+  if (step === 'results' && session) {
+    return (
+      <Card className="content-card max-w-lg mx-auto">
+        <CardHeader>
+          <CardTitle>
+            {t('pftResultsTitle', { defaultValue: 'Your fitness test results' })}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="rounded-xl border border-blue-500/30 bg-blue-950/20 px-4 py-3 text-center">
+            <p className="text-xs uppercase tracking-widest text-blue-400">
+              {t('pftOverallAward', { defaultValue: 'Overall award' })}
+            </p>
+            <p className="text-2xl font-bold text-blue-200 mt-1">
+              {awardLabel(session.overallTier)}
+            </p>
+          </div>
+          <ul className="space-y-2 text-sm">
+            {session.events.map((ev) => (
+              <li
+                key={ev.eventId}
+                className="flex justify-between gap-4 border-b border-border/50 pb-2"
+              >
+                <span>{ev.eventName}</span>
+                <span className="text-muted-foreground shrink-0">
+                  {ev.eventId === 'mile_run' ? formatMileTime(ev.value) : ev.value} ·{' '}
+                  {awardLabel(ev.tier)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <Button className="w-full" onClick={() => router.push('/benchmarks')}>
+            {t('pftBackBenchmarks', { defaultValue: 'Back to Benchmarks' })}
+          </Button>
+          <Button variant="outline" className="w-full" onClick={() => router.push('/america')}>
+            {t('pftShareAmerica', { defaultValue: 'National fitness mission →' })}
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="content-card max-w-lg mx-auto">
+      <CardHeader>
+        <CardTitle>
+          {isMini
+            ? t('pftMiniTitle', { defaultValue: 'Mini fitness test' })
+            : t('pftFullTitle', { defaultValue: 'Presidential Fitness Test' })}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {step === 'profile' && (
+          <>
+            <p className="text-sm text-muted-foreground">
+              {t('pftProfileHint', {
+                defaultValue:
+                  'Age and sex select scoring bands inspired by classic youth fitness standards.',
+              })}
+            </p>
+            <label className="block space-y-1 text-sm">
+              <span>{t('pftAge', { defaultValue: 'Age' })}</span>
+              <input
+                type="number"
+                min={6}
+                max={120}
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                className="w-full rounded-md bg-background border border-border px-3 py-2"
+              />
+            </label>
+            <label className="block space-y-1 text-sm">
+              <span>{t('pftSex', { defaultValue: 'Scoring group' })}</span>
+              <select
+                value={sex}
+                onChange={(e) => setSex(e.target.value as FitnessSex)}
+                className="w-full rounded-md bg-background border border-border px-3 py-2"
+              >
+                <option value="male">{t('pftSexMale', { defaultValue: 'Male standards' })}</option>
+                <option value="female">
+                  {t('pftSexFemale', { defaultValue: 'Female standards' })}
+                </option>
+              </select>
+            </label>
+            <Button className="w-full" onClick={() => setStep('events')}>
+              {t('pftContinue', { defaultValue: 'Continue to events' })}
+            </Button>
+          </>
+        )}
+
+        {step === 'events' && (
+          <>
+            {eventIds.map((id) => inputForEvent(id))}
+            <Button className="w-full bg-blue-700 hover:bg-blue-600" onClick={handleScore}>
+              {t('pftScore', { defaultValue: 'Score my test' })}
+            </Button>
+            <Button variant="ghost" className="w-full" onClick={() => setStep('profile')}>
+              {t('pftBack', { defaultValue: 'Back' })}
+            </Button>
+          </>
+        )}
+
+        <p className="text-[10px] text-muted-foreground">
+          {t('pftDisclaimer', {
+            defaultValue:
+              'Educational fitness tool by Mission Winning LLC — not an official U.S. government test or endorsement.',
+          })}
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
