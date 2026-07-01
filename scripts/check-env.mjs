@@ -14,6 +14,12 @@ const optional = [
   ['PRIVATE_ALLOW_AUTH_BYPASS', 'Leave unset/false — magic link should not bypass gate'],
   ['DEMO_PREMIUM', 'Must be false (or unset) in production'],
   ['BETA_ADMIN_EMAILS', 'Comma-separated founder emails for beta panel'],
+  ['SUPABASE_SERVICE_ROLE_KEY', 'School classes, youth consent, leaderboards'],
+  ['RESEND_API_KEY', 'Parent consent emails (required for under-13 flow in prod)'],
+  ['YOUTH_CONSENT_SECRET', 'HMAC for youth consent codes (defaults to PRIVATE_ACCESS_SECRET)'],
+  ['NEXT_PUBLIC_COUNCIL_STATUS', 'aspirational | pending | member'],
+  ['NEXT_PUBLIC_SHOW_MAHA_COPY', 'true only after legal sign-off'],
+  ['NEXT_PUBLIC_AMERICA_TRACK_ENABLED', 'false to hide /america PFT track'],
 ];
 
 let ok = true;
@@ -37,6 +43,17 @@ for (const [key, hint] of optional) {
 
 if (process.env.DEMO_PREMIUM === 'true') {
   console.log('  ⚠ DEMO_PREMIUM=true — disable before public production deploy');
+}
+
+if (process.env.NEXT_PUBLIC_SHOW_MAHA_COPY === 'true') {
+  console.log('  ⚠ NEXT_PUBLIC_SHOW_MAHA_COPY=true — confirm legal review for MAHA copy');
+}
+
+if (
+  process.env.NEXT_PUBLIC_COUNCIL_STATUS === 'member' &&
+  process.env.NEXT_PUBLIC_SHOW_MAHA_COPY !== 'true'
+) {
+  console.log('  · COUNCIL_STATUS=member — MAHA copy still off (OK if intentional)');
 }
 
 console.log(ok ? '\nReady for private gated deploy.\n' : '\nFix the items above, then redeploy Vercel.\n');

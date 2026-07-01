@@ -130,6 +130,64 @@ async function main() {
     checks.push({ name: 'GET /api/premium/programs', ok: false, detail: String(e) });
   }
 
+  try {
+    const privatePage = await headOrGet('/private');
+    checks.push({
+      name: 'GET /private (200)',
+      ok: privatePage.status === 200,
+      detail: `status ${privatePage.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /private', ok: false, detail: String(e) });
+  }
+
+  try {
+    const america = await headOrGet('/america', { redirect: 'manual' });
+    const americaOk = america.status === 200;
+    checks.push({
+      name: 'GET /america (public while gated)',
+      ok: americaOk,
+      detail: americaOk ? '200 OK' : `status ${america.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /america', ok: false, detail: String(e) });
+  }
+
+  try {
+    const classStats = await headOrGet('/api/school/class/MWTEST/stats');
+    const statsOk = classStats.status === 200 || classStats.status === 503;
+    checks.push({
+      name: 'GET /api/school/class/[code]/stats',
+      ok: statsOk,
+      detail: `status ${classStats.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/school/class/stats', ok: false, detail: String(e) });
+  }
+
+  const accessSecret = process.env.SMOKE_ACCESS_SECRET;
+  if (accessSecret) {
+    try {
+      const unlocked = await headOrGet(
+        `/fitness-test?access=${encodeURIComponent(accessSecret)}`
+      );
+      const ok = unlocked.status === 200;
+      checks.push({
+        name: 'GET /fitness-test (unlocked via ?access=)',
+        ok,
+        detail: ok ? '200 OK' : `status ${unlocked.status}`,
+      });
+    } catch (e) {
+      checks.push({ name: 'GET /fitness-test', ok: false, detail: String(e) });
+    }
+  } else {
+    checks.push({
+      name: 'GET /fitness-test (gated)',
+      ok: true,
+      detail: 'skipped — set SMOKE_ACCESS_SECRET to probe unlocked route',
+    });
+  }
+
   let failed = 0;
   for (const c of checks) {
     const icon = c.ok ? '✓' : '✗';

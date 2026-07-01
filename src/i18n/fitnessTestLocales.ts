@@ -107,6 +107,7 @@ type FitnessTestStrings = {
   teacherPinUnlock: string;
   teacherDownloadPlan: string;
   teacherDownloadCsv: string;
+  teacherDownloadHtml: string;
   teacherPrintReport: string;
   teacherCreatorBadge: string;
   youthVerifyTitle: string;
@@ -247,6 +248,7 @@ const en: FitnessTestStrings = {
   teacherPinUnlock: 'Unlock dashboard',
   teacherDownloadPlan: 'Download .txt',
   teacherDownloadCsv: 'Download CSV',
+  teacherDownloadHtml: 'Download report (HTML)',
   teacherPrintReport: 'Print report',
   teacherCreatorBadge: 'Signed in as class creator',
   youthVerifyTitle: 'Enter verification code',

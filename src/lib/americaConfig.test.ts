@@ -4,6 +4,7 @@ import {
   getCouncilStatus,
   isAmericaTrackEnabled,
   showMahaCopy,
+  getCouncilDeployWarnings,
 } from '@/lib/americaConfig';
 
 describe('americaConfig', () => {
@@ -17,5 +18,9 @@ describe('americaConfig', () => {
 
   it('defaults MAHA copy off', () => {
     assert.equal(showMahaCopy(), false);
+  });
+
+  it('returns council deploy warnings array', () => {
+    assert.ok(Array.isArray(getCouncilDeployWarnings()));
   });
 });
