@@ -133,5 +133,10 @@
   "todaySectionJournal": "Journal",
   "todaySectionJournalDesc": "Recent activity across pillars",
   "todayJournalEmpty": "Nothing logged yet — train, fuel, or check in on Mind to start your strip.",
-  "todayJournalViewMind": "Log check-in →"
+  "todayJournalViewMind": "Log check-in →",
+  "todayQuickRankingsDesc": "Mission Score & streaks",
+  "todayQuickHistoryDesc": "Volume, 1RM & muscle map",
+  "todayQuickBundleDesc": "All six pillars, one subscription",
+  "todayQuickNightDesc": "22:00–05:00 sessions",
+  "todayQuickDawnDesc": "05:00–08:00 sessions"
 }

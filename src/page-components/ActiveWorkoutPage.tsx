@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Check, Clock, Plus, Square, Timer } from 'lucide-react';
+import { Check, Clock, Plus, Scale, Square, Timer } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,6 +24,7 @@ import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { SetLogRow } from '@/components/workout/SetLogRow';
+import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { resolveRestSeconds } from '@/lib/restTimer';
 import { isPersonalRecord } from '@/lib/workoutPr';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
@@ -76,6 +77,7 @@ export function ActiveWorkoutPage() {
   const [addExerciseId, setAddExerciseId] = useState('');
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});
   const [formGuideId, setFormGuideId] = useState<string | null>(null);
+  const [plateCalcOpen, setPlateCalcOpen] = useState(false);
   const nextSetRef = useRef<HTMLDivElement | null>(null);
 
   const nextSet = useMemo(
@@ -232,7 +234,11 @@ export function ActiveWorkoutPage() {
             })}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap justify-end">
+          <Button variant="outline" size="sm" onClick={() => setPlateCalcOpen(true)}>
+            <Scale className="h-4 w-4" />
+            {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
+          </Button>
           <Card className="px-4 py-2">
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />
@@ -423,6 +429,25 @@ export function ActiveWorkoutPage() {
           onPreset={startRestTimer}
         />
       )}
+
+      <PlateCalculatorSheet
+        open={plateCalcOpen}
+        onClose={() => setPlateCalcOpen(false)}
+        initialTarget={
+          nextSet
+            ? getSetInput(
+                nextSet.exIdx,
+                nextSet.setIdx,
+                activeWorkout.exercises[nextSet.exIdx].sets[nextSet.setIdx].reps,
+                activeWorkout.exercises[nextSet.exIdx].sets[nextSet.setIdx].weight
+              ).weight
+            : undefined
+        }
+        onApplyTarget={(weight) => {
+          if (!nextSet) return;
+          updateSetInput(nextSet.exIdx, nextSet.setIdx, 'weight', weight);
+        }}
+      />
     </div>
   );
 }

@@ -35,6 +35,15 @@ type ActiveWorkoutStrings = {
   activePrTitle: string;
   activePrDesc: string;
   activeCopyLast: string;
+  activePlateCalcTitle: string;
+  activePlateCalcSubtitle: string;
+  activePlateTarget: string;
+  activePlateBar: string;
+  activePlatePerSide: string;
+  activePlateTotal: string;
+  activePlateRemainder: string;
+  activePlateApply: string;
+  activeOpenPlateCalc: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -72,6 +81,15 @@ const en: ActiveWorkoutStrings = {
   activePrTitle: 'New PR!',
   activePrDesc: '{{reps}} × {{weight}} — personal best for this exercise',
   activeCopyLast: 'Copy last',
+  activePlateCalcTitle: 'Plate calculator',
+  activePlateCalcSubtitle: 'Load the bar',
+  activePlateTarget: 'Target weight',
+  activePlateBar: 'Bar weight',
+  activePlatePerSide: 'Per side',
+  activePlateTotal: 'Total on bar: {{weight}} {{unit}}',
+  activePlateRemainder: 'Cannot load exactly — {{remainder}}{{unit}} short',
+  activePlateApply: 'Use {{weight}} {{unit}}',
+  activeOpenPlateCalc: 'Plates',
 };
 
 const es: ActiveWorkoutStrings = {

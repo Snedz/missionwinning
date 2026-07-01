@@ -35,8 +35,8 @@ export function assertDeployReady(): void {
   if (!r.buildLabelValid) {
     throw new Error(`Invalid APP_BUILD_LABEL: ${r.buildLabel}`);
   }
-  if (r.localeFiles < 60) {
-    throw new Error(`Expected ≥60 locale export files in plan, got ${r.localeFiles}`);
+  if (r.localeFiles < 72) {
+    throw new Error(`Expected ≥72 locale export files in plan, got ${r.localeFiles}`);
   }
   if (r.minTodayKeys < 100) {
     throw new Error(`Today locale export too small (${r.minTodayKeys} keys)`);
