@@ -4,9 +4,11 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
 ## 2026-06-29 — Phase J1/J3/J5: Pathfinder, connectivity, bodyweight defaults
 
-**Build:** `2025.06-unified.46`
+**Build:** `2025.06-unified.46` · **Plan:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)
 
 ### Shipped
 
@@ -17,6 +19,21 @@ Chronological record of shipped work. Newest first.
 **Tests:** 135 passing (+16 new)
 
 ---
+
+## 2026-06-29 — Rural equity & connectivity plan (Phase J)
+
+**Doc:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)  
+**Context:** Rural users without doctor access; prevention-at-scale thesis; connectivity/offline/a11y.
+
+### Plan highlights
+
+- **North star:** “Pathfinder for the disconnected” — install once, train offline 30+ days, sync when signal returns
+- **Workstreams:** A connectivity/offline · B Pathfinder · C accessibility · D rural UX · E offline coach
+- **Phase J1–J6** registered in [PLAN.md](PLAN.md); gap #7 in [VISION_STATUS.md](VISION_STATUS.md)
+
+---
+
+## 2026-06-29 — Vision plan refresh + Phase G (PFT / America G1–G8)
 
 **Docs:** [VISION_STATUS.md](VISION_STATUS.md), [PLAN.md](PLAN.md) Phase G/H/I  
 **Build:** `2025.06-unified.45`
