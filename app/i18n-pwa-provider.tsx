@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { HtmlLangSync } from '@/components/i18n/HtmlLangSync';
+import { LocaleHttpSync } from '@/components/i18n/LocaleHttpSync';
 
 // Initialize i18next + browser language detector + all our global resources (EN/ES/FR/PT/RU)
 // This must run on the client only.
@@ -41,6 +42,7 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
   return (
     <>
       <HtmlLangSync />
+      <LocaleHttpSync />
       {children}
     </>
   );
