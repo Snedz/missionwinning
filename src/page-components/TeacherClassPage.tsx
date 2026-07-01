@@ -142,19 +142,22 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
     URL.revokeObjectURL(url);
   };
 
-  const downloadStandingsCsv = async () => {
+  const downloadExport = async (format: 'csv' | 'html') => {
+    const ext = format === 'html' ? 'html' : 'csv';
+    const prefix = format === 'html' ? 'report' : 'standings';
     try {
       const pin = getTeacherPin(code);
-      const url = pin
-        ? `/api/school/class/${code}/export?pin=${encodeURIComponent(pin)}`
-        : `/api/school/class/${code}/export`;
-      const res = await fetch(url, { credentials: 'include' });
+      const params = new URLSearchParams({ format });
+      if (pin) params.set('pin', pin);
+      const res = await fetch(`/api/school/class/${code}/export?${params}`, {
+        credentials: 'include',
+      });
       if (res.ok) {
         const blob = await res.blob();
         const objectUrl = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = objectUrl;
-        a.download = `mission-winning-standings-${code}.csv`;
+        a.download = `mission-winning-${prefix}-${code}.${ext}`;
         a.click();
         URL.revokeObjectURL(objectUrl);
         return;
@@ -162,15 +165,20 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
     } catch {
       /* fallback below */
     }
-    const csv = formatClassStandingsCsv(className, code, entries);
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `mission-winning-standings-${code}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    if (format === 'csv') {
+      const csv = formatClassStandingsCsv(className, code, entries);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `mission-winning-standings-${code}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
   };
+
+  const downloadStandingsCsv = () => void downloadExport('csv');
+  const downloadReportHtml = () => void downloadExport('html');
 
   if (!unlocked) {
     return (
@@ -310,6 +318,10 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                   <Button variant="outline" size="sm" className="gap-1.5" onClick={downloadStandingsCsv}>
                     <Download className="h-4 w-4" />
                     {t('teacherDownloadCsv', { defaultValue: 'Download CSV' })}
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-1.5" onClick={downloadReportHtml}>
+                    <Download className="h-4 w-4" />
+                    {t('teacherDownloadHtml', { defaultValue: 'Download report (HTML)' })}
                   </Button>
                   <Button variant="outline" size="sm" className="gap-1.5" onClick={() => printSheet('report')}>
                     <Printer className="h-4 w-4" />

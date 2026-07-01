@@ -5,10 +5,11 @@ import {
   fetchClassStats,
   formatClassStandingsCsv,
 } from '@/lib/schoolClassServer';
+import { formatClassReportHtml } from '@/lib/schoolClassReportHtml';
 import { normalizeClassCode } from '@/lib/schoolClass';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 
-/** Authenticated CSV export of class standings (creator or PIN). */
+/** Authenticated class export — CSV (default) or printable HTML (Print to PDF). */
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ code: string }> }
@@ -26,13 +27,33 @@ export async function GET(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const format = request.nextUrl.searchParams.get('format')?.toLowerCase() ?? 'csv';
   const [stats, entries] = await Promise.all([
     fetchClassStats(code),
     fetchClassPftLeaderboard(code),
   ]);
   const className = stats?.className ?? 'PE Class';
-  const csv = formatClassStandingsCsv(className, code, entries);
 
+  if (format === 'html') {
+    const html = formatClassReportHtml(
+      className,
+      code,
+      {
+        uniqueAthletes: stats?.uniqueAthletes ?? 0,
+        totalTests: stats?.totalTests ?? 0,
+        tierCounts: stats?.tierCounts ?? {},
+      },
+      entries
+    );
+    return new NextResponse(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Content-Disposition': `attachment; filename="mission-winning-report-${code}.html"`,
+      },
+    });
+  }
+
+  const csv = formatClassStandingsCsv(className, code, entries);
   return new NextResponse(csv, {
     headers: {
       'Content-Type': 'text/csv; charset=utf-8',
