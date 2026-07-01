@@ -30,5 +30,16 @@
   "fuelPremiumRecipesTitle": "وصفات Premium (Super Bundle)",
   "fuelPremiumLockedTitle": "+{{count}} وصفات Premium",
   "fuelPremiumLockedBody": "افتح مكتبة Fuel الكاملة وتدريب الماكرو عبر Super Bundle.",
-  "fuelExploreBundle": "استكشف Super Bundle"
+  "fuelExploreBundle": "استكشف Super Bundle",
+  "fuelLogFab": "Log food",
+  "fuelLogSheetTitle": "Log to Fuel",
+  "fuelTabQuick": "Quick",
+  "fuelTabCustom": "Custom",
+  "fuelTabPhoto": "Photo",
+  "fuelMealBreakfast": "Breakfast",
+  "fuelMealLunch": "Lunch",
+  "fuelMealDinner": "Dinner",
+  "fuelMealSnack": "Snack",
+  "fuelMealOther": "Other",
+  "fuelLogStreak": "{{count}}-day log streak"
 }

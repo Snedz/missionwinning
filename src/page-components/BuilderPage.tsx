@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from "react";
-import { Layers, Plus, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Layers, PenTool, Plus, Trash2 } from "lucide-react";
 import {
   ProgramTemplatesPanel,
   TEMPLATE_PROGRAM_COUNT,
@@ -46,12 +47,14 @@ import { useWorkoutStore } from "@/store/workoutStore";
 import type { WorkoutExerciseTemplate } from "@/types";
 import { usePremium } from "@/hooks/usePremium";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
+import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 
 interface DraftExercise extends WorkoutExerciseTemplate {
   key: string;
 }
 
 export function BuilderPage() {
+  const { t } = useTranslation();
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const addSavedWorkout = useWorkoutStore((s) => s.addSavedWorkout);
   const deleteSavedWorkout = useWorkoutStore((s) => s.deleteSavedWorkout);
@@ -71,8 +74,11 @@ export function BuilderPage() {
     setSessionNotes(draft.notes ?? "");
     setExercises(draft.exercises);
     toast({
-      title: "Template loaded",
-      description: `${session.name} — adjust weights and save or start.`,
+      title: t('builderTemplateLoaded', { defaultValue: 'Template loaded' }),
+      description: t('builderTemplateLoadedDesc', {
+        session: session.name,
+        defaultValue: `${session.name} — adjust weights and save or start.`,
+      }),
     });
   };
 
@@ -170,26 +176,26 @@ export function BuilderPage() {
 
   const handleStart = () => {
     if (!workoutName.trim() || exercises.length === 0) {
-      toast({ title: "Incomplete workout", variant: "destructive" });
+      toast({ title: t('builderIncomplete', { defaultValue: 'Incomplete workout' }), variant: "destructive" });
       return;
     }
     startWorkout(
       workoutName.trim(),
       exercises.map(({ exerciseId, sets }) => ({ exerciseId, sets }))
     );
-    toast({ title: "Workout started!" });
+    toast({ title: t('builderStarted', { defaultValue: 'Workout started!' }) });
   };
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Workout Builder</h2>
-        <p className="mt-1 text-muted-foreground">
-          Use the <strong className="text-foreground">Beginner</strong>,{" "}
-          <strong className="text-foreground">Advanced</strong>, or{" "}
-          <strong className="text-foreground">Pro</strong> tabs below, then click Load on a session. {premium ? "All unlocked." : "Premium unlocks bodybuilding, corrective & conditioning specialist programs."}
-        </p>
-      </div>
+      <PillarPageHeader
+        icon={PenTool}
+        title={t('builderTitle', { defaultValue: 'Workout Builder' })}
+        subtitle={t('builderSubtitle', {
+          defaultValue:
+            'Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.',
+        })}
+      />
 
       <section
         id="program-templates"
@@ -198,10 +204,14 @@ export function BuilderPage() {
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-xl font-bold flex items-center gap-2">
             <Layers className="h-6 w-6 text-primary" />
-            Program Templates
+            {t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}
           </h3>
           <Badge variant="secondary">{TEMPLATE_PROGRAM_COUNT} programs</Badge>
-          <span className="text-xs text-emerald-400">Includes new free bodyweight + mobility circuits (vision core)</span>
+          <span className="text-xs text-emerald-400">
+            {t('builderTemplatesFoot', {
+              defaultValue: 'Includes new free bodyweight + mobility circuits (vision core)',
+            })}
+          </span>
         </div>
 
         <Tabs
@@ -210,13 +220,13 @@ export function BuilderPage() {
         >
           <TabsList className="grid w-full grid-cols-3 h-12">
             <TabsTrigger value="beginner" className="text-base font-semibold">
-              Beginner
+              {t('builderTabBeginner', { defaultValue: 'Beginner' })}
             </TabsTrigger>
             <TabsTrigger value="advanced" className="text-base font-semibold">
-              Advanced
+              {t('builderTabAdvanced', { defaultValue: 'Advanced' })}
             </TabsTrigger>
             <TabsTrigger value="pro" className="text-base font-semibold">
-              Pro
+              {t('builderTabPro', { defaultValue: 'Pro' })}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -397,10 +407,10 @@ export function BuilderPage() {
 
           <div className="flex gap-2 pt-2">
             <Button variant="fitness" onClick={handleSave}>
-              Save Workout
+              {t('builderSaveWorkout', { defaultValue: 'Save workout' })}
             </Button>
             <Button variant="secondary" onClick={handleStart}>
-              Start Now
+              {t('builderStartWorkout', { defaultValue: 'Start workout' })}
             </Button>
           </div>
         </CardContent>
@@ -408,7 +418,9 @@ export function BuilderPage() {
 
       {savedWorkouts.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold mb-3">Saved Workouts</h3>
+          <h3 className="text-lg font-semibold mb-3">
+            {t('builderSavedTitle', { defaultValue: 'Saved workouts' })}
+          </h3>
           <div className="grid gap-3">
             {savedWorkouts.map((w) => (
               <Card key={w.id}>
@@ -425,7 +437,7 @@ export function BuilderPage() {
                       variant="fitness"
                       onClick={() => startWorkout(w.name, w.exercises, w.id)}
                     >
-                      Start
+                      {t('builderStartWorkout', { defaultValue: 'Start workout' })}
                     </Button>
                     <Button
                       size="sm"

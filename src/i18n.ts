@@ -15,6 +15,8 @@ import { mergeHistoryStrings } from './i18n/historyLocales'
 import { mergeTrackStrings } from './i18n/trackLocales'
 import { mergeMoveStrings } from './i18n/moveLocales'
 import { mergeMindStrings } from './i18n/mindLocales'
+import { mergeLearnStrings } from './i18n/learnLocales'
+import { mergeBuilderStrings } from './i18n/builderLocales'
 
 // Inline resources for fast global launch (add more langs + extract to json later)
 // Tier 1: EN ES FR PT RU DE IT KO
@@ -557,6 +559,8 @@ for (const lang of [...TIER1_LANGS, ...TIER2_LANGS, ...MEA_LANGS]) {
   mergeTrackStrings(resources[lang].common, lang)
   mergeMoveStrings(resources[lang].common, lang)
   mergeMindStrings(resources[lang].common, lang)
+  mergeLearnStrings(resources[lang].common, lang)
+  mergeBuilderStrings(resources[lang].common, lang)
 }
 
 i18n

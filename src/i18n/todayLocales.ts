@@ -136,6 +136,11 @@ type TodayStrings = {
   todaySectionJournalDesc: string;
   todayJournalEmpty: string;
   todayJournalViewMind: string;
+  todayQuickRankingsDesc: string;
+  todayQuickHistoryDesc: string;
+  todayQuickBundleDesc: string;
+  todayQuickNightDesc: string;
+  todayQuickDawnDesc: string;
 };
 
 const en: TodayStrings = {
@@ -285,6 +290,11 @@ const en: TodayStrings = {
   todayJournalEmpty:
     'Nothing logged yet — train, fuel, or check in on Mind to start your strip.',
   todayJournalViewMind: 'Log check-in →',
+  todayQuickRankingsDesc: 'Mission Score & streaks',
+  todayQuickHistoryDesc: 'Volume, 1RM & muscle map',
+  todayQuickBundleDesc: 'All six pillars, one subscription',
+  todayQuickNightDesc: '22:00–05:00 sessions',
+  todayQuickDawnDesc: '05:00–08:00 sessions',
 };
 
 const es: TodayStrings = {
@@ -553,6 +563,11 @@ const zh: TodayStrings = {
   todaySectionJournalDesc: '各支柱近期活动',
   todayJournalEmpty: '暂无记录 — 训练、记录营养或在 Mind 签到开始。',
   todayJournalViewMind: '记录签到 →',
+  todayQuickRankingsDesc: '任务分数与连续记录',
+  todayQuickHistoryDesc: '训练量、1RM 与肌肉图',
+  todayQuickBundleDesc: '六大支柱，一次订阅',
+  todayQuickNightDesc: '22:00–05:00 训练',
+  todayQuickDawnDesc: '05:00–08:00 训练',
 };
 
 const id: TodayStrings = {
@@ -698,6 +713,11 @@ const id: TodayStrings = {
   todaySectionJournalDesc: 'Aktivitas terbaru lintas pilar',
   todayJournalEmpty: 'Belum ada log — latih, catat nutrisi, atau check-in di Mind.',
   todayJournalViewMind: 'Catat check-in →',
+  todayQuickRankingsDesc: 'Skor Misi & streak',
+  todayQuickHistoryDesc: 'Volume, 1RM & peta otot',
+  todayQuickBundleDesc: 'Enam pilar, satu langganan',
+  todayQuickNightDesc: 'Sesi 22:00–05:00',
+  todayQuickDawnDesc: 'Sesi 05:00–08:00',
 };
 
 const th: TodayStrings = {
@@ -838,6 +858,11 @@ const th: TodayStrings = {
   todaySectionJournalDesc: 'กิจกรรมล่าสุดข้ามเสาหลัก',
   todayJournalEmpty: 'ยังไม่มีบันทึก — ฝึก บันทึกโภชนาการ หรือเช็คอินที่ Mind',
   todayJournalViewMind: 'บันทึกเช็คอิน →',
+  todayQuickRankingsDesc: 'คะแนนภารกิจและสตรีค',
+  todayQuickHistoryDesc: 'ปริมาณ 1RM และแผนที่กล้ามเนื้อ',
+  todayQuickBundleDesc: 'หกเสาหลัก สมัครครั้งเดียว',
+  todayQuickNightDesc: 'เซสชัน 22:00–05:00',
+  todayQuickDawnDesc: 'เซสชัน 05:00–08:00',
 };
 
 const ar: TodayStrings = {
@@ -977,6 +1002,11 @@ const ar: TodayStrings = {
   todaySectionJournalDesc: 'نشاط حديث عبر الأركان',
   todayJournalEmpty: 'لا سجلات بعد — تدرّب أو سجّل التغذية أو تحقّق في Mind.',
   todayJournalViewMind: 'تسجيل تحقّق →',
+  todayQuickRankingsDesc: 'نقاط المهمة والسلسلة',
+  todayQuickHistoryDesc: 'الحجم و1RM وخريطة العضلات',
+  todayQuickBundleDesc: 'ست ركائز، اشتراك واحد',
+  todayQuickNightDesc: 'جلسات 22:00–05:00',
+  todayQuickDawnDesc: 'جلسات 05:00–08:00',
 };
 
 const LOCALES: Partial<Record<string, TodayStrings>> = { en, es, zh, id, th, ar };

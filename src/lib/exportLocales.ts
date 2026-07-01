@@ -12,6 +12,8 @@ import { activeWorkoutStringsFor } from '@/i18n/activeWorkoutLocales';
 import { trackStringsFor } from '@/i18n/trackLocales';
 import { moveStringsFor } from '@/i18n/moveLocales';
 import { mindStringsFor } from '@/i18n/mindLocales';
+import { learnStringsFor } from '@/i18n/learnLocales';
+import { builderStringsFor } from '@/i18n/builderLocales';
 
 /** Languages with full or partial pillar-specific translations. */
 export const EXPORT_LANGS = ['en', 'es', 'zh', 'id', 'th', 'ar'] as const;
@@ -27,7 +29,9 @@ export type LocaleNamespace =
   | 'activeWorkout'
   | 'track'
   | 'move'
-  | 'mind';
+  | 'mind'
+  | 'learn'
+  | 'builder';
 
 export type LocaleExportEntry = {
   namespace: LocaleNamespace;
@@ -95,6 +99,18 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'mind',
     filename: 'mind.json',
     stringsFor: mindStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'learn',
+    filename: 'learn.json',
+    stringsFor: learnStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'builder',
+    filename: 'builder.json',
+    stringsFor: builderStringsFor,
     langs: EXPORT_LANGS,
   },
 ];
