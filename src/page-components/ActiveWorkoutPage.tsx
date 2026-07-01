@@ -1,71 +1,82 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check, Clock, Plus, SkipForward, Square, Timer } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { useTranslation } from 'react-i18next';
+import { Check, Clock, Plus, Square, Timer } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { toast } from "@/hooks/use-toast";
-import { EXERCISES, getExerciseById } from "@/data/exercises";
-import { formatDuration } from "@/lib/utils";
-import { useWorkoutStore } from "@/store/workoutStore";
-import { getSessionHourKind } from "@/lib/leaderboard/types";
-import { getFormGuide, hasFormGuide } from "@/lib/formGuides";
-import { FormGuideSheet } from "@/components/form/FormGuideSheet";
-import { SignInPrompt } from "@/components/auth/SignInPrompt";
+} from '@/components/ui/select';
+import { toast } from '@/hooks/use-toast';
+import { EXERCISES, getExerciseById } from '@/data/exercises';
+import { formatDuration } from '@/lib/utils';
+import { useWorkoutStore } from '@/store/workoutStore';
+import { getSessionHourKind } from '@/lib/leaderboard/types';
+import { getFormGuide, hasFormGuide } from '@/lib/formGuides';
+import { FormGuideSheet } from '@/components/form/FormGuideSheet';
+import { SignInPrompt } from '@/components/auth/SignInPrompt';
+import { RestTimerBar } from '@/components/workout/RestTimerBar';
+import { SetLogRow } from '@/components/workout/SetLogRow';
+import { resolveRestSeconds } from '@/lib/restTimer';
+import type { CompletedWorkoutLog } from '@/types';
+
+function findNextSet(exercises: { sets: { completed: boolean }[] }[]) {
+  for (let exIdx = 0; exIdx < exercises.length; exIdx++) {
+    const setIdx = exercises[exIdx].sets.findIndex((s) => !s.completed);
+    if (setIdx >= 0) return { exIdx, setIdx };
+  }
+  return null;
+}
+
+function getLastPerformance(workoutHistory: CompletedWorkoutLog[], exerciseId: string) {
+  for (const log of workoutHistory) {
+    const ex = log.exercises.find((e) => e.exerciseId === exerciseId);
+    if (ex && ex.sets.length > 0) {
+      const last = ex.sets[ex.sets.length - 1];
+      return { reps: last.reps, weight: last.weight };
+    }
+  }
+  return null;
+}
 
 export function ActiveWorkoutPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
   const restSecondsRemaining = useWorkoutStore((s) => s.restSecondsRemaining);
   const restTimerActive = useWorkoutStore((s) => s.restTimerActive);
+  const restTimerInitialSeconds = useWorkoutStore((s) => s.restTimerInitialSeconds);
   const startEmptyWorkout = useWorkoutStore((s) => s.startEmptyWorkout);
   const cancelActiveWorkout = useWorkoutStore((s) => s.cancelActiveWorkout);
   const completeActiveWorkout = useWorkoutStore((s) => s.completeActiveWorkout);
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
-  const logSet = useWorkoutStore((s) => s.logSet);
+  const logSetAndAdvance = useWorkoutStore((s) => s.logSetAndAdvance);
   const rateSet = useWorkoutStore((s) => s.rateSet);
   const addSetToExercise = useWorkoutStore((s) => s.addSetToExercise);
   const tickRestTimer = useWorkoutStore((s) => s.tickRestTimer);
   const stopRestTimer = useWorkoutStore((s) => s.stopRestTimer);
+  const adjustRestTimer = useWorkoutStore((s) => s.adjustRestTimer);
   const tickElapsed = useWorkoutStore((s) => s.tickElapsed);
   const startRestTimer = useWorkoutStore((s) => s.startRestTimer);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
 
-  const [addExerciseId, setAddExerciseId] = useState("");
+  const [addExerciseId, setAddExerciseId] = useState('');
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});
   const [formGuideId, setFormGuideId] = useState<string | null>(null);
+  const nextSetRef = useRef<HTMLDivElement | null>(null);
 
-  // Helper: prefill from last logged performance for progression (Forge style)
-  const getLastPerformance = (exerciseId: string) => {
-    for (const log of workoutHistory) {
-      const ex = log.exercises.find(e => e.exerciseId === exerciseId);
-      if (ex && ex.sets.length > 0) {
-        const last = ex.sets[ex.sets.length - 1];
-        return { reps: last.reps, weight: last.weight };
-      }
-    }
-    return null;
-  };
-
-  // Smarter rest timer based on exercise type (compounds longer)
-  const getSuggestedRest = (exerciseName: string) => {
-    const name = exerciseName.toLowerCase();
-    const compounds = ['squat', 'deadlift', 'bench', 'press', 'row', 'pullup', 'clean'];
-    if (compounds.some(c => name.includes(c))) return 180; // 3 min
-    if (name.includes('curl') || name.includes('raise') || name.includes('fly')) return 60;
-    return 90; // default accessory
-  };
+  const nextSet = useMemo(
+    () => (activeWorkout ? findNextSet(activeWorkout.exercises) : null),
+    [activeWorkout]
+  );
 
   useEffect(() => {
     if (!activeWorkout) return;
@@ -79,22 +90,23 @@ export function ActiveWorkoutPage() {
     return () => clearInterval(interval);
   }, [restTimerActive, tickRestTimer]);
 
+  useEffect(() => {
+    if (nextSet && nextSetRef.current) {
+      nextSetRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [nextSet?.exIdx, nextSet?.setIdx]);
+
   const getSetKey = (exIdx: number, setIdx: number) => `${exIdx}-${setIdx}`;
 
   const getSetInput = (exIdx: number, setIdx: number, defaultReps: number, defaultWeight: number) => {
     const key = getSetKey(exIdx, setIdx);
     if (setInputs[key]) return setInputs[key];
     const exerciseId = activeWorkout!.exercises[exIdx].exerciseId;
-    const last = getLastPerformance(exerciseId);
+    const last = getLastPerformance(workoutHistory, exerciseId);
     return { reps: last ? last.reps : defaultReps, weight: last ? last.weight : defaultWeight };
   };
 
-  const updateSetInput = (
-    exIdx: number,
-    setIdx: number,
-    field: "reps" | "weight",
-    value: number
-  ) => {
+  const updateSetInput = (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => {
     const key = getSetKey(exIdx, setIdx);
     setSetInputs((prev) => ({
       ...prev,
@@ -105,17 +117,32 @@ export function ActiveWorkoutPage() {
     }));
   };
 
-  const handleLogSet = (exIdx: number, setIdx: number) => {
+  const handleLogSet = (exIdx: number, setIdx: number, override?: { reps: number; weight: number }) => {
     const set = activeWorkout!.exercises[exIdx].sets[setIdx];
-    const input = getSetInput(exIdx, setIdx, set.reps, set.weight);
+    const input = override ?? getSetInput(exIdx, setIdx, set.reps, set.weight);
     const exercise = getExerciseById(activeWorkout!.exercises[exIdx].exerciseId);
-    const suggestedRest = exercise ? getSuggestedRest(exercise.name) : 90;
-    logSet(exIdx, setIdx, input.reps, input.weight);
-    startRestTimer(suggestedRest);
+    const restSec = exercise ? resolveRestSeconds(exercise.name) : 90;
+
+    logSetAndAdvance(exIdx, setIdx, input.reps, input.weight);
+    startRestTimer(restSec);
+
     toast({
-      title: "Set logged!",
-      description: `${input.reps} reps × ${input.weight} lbs — ${suggestedRest}s rest started`,
+      title: t('activeSetLogged', { defaultValue: 'Set logged!' }),
+      description: t('activeSetLoggedDesc', {
+        reps: input.reps,
+        weight: input.weight,
+        rest: restSec,
+        defaultValue: `${input.reps} × ${input.weight} — ${restSec}s rest`,
+      }),
     });
+  };
+
+  const handleRepeatLast = (exIdx: number) => {
+    const ex = activeWorkout!.exercises[exIdx];
+    const lastCompleted = [...ex.sets].reverse().find((s) => s.completed);
+    const nextIdx = ex.sets.findIndex((s) => !s.completed);
+    if (!lastCompleted || nextIdx < 0) return;
+    handleLogSet(exIdx, nextIdx, { reps: lastCompleted.reps, weight: lastCompleted.weight });
   };
 
   const handleComplete = () => {
@@ -124,45 +151,41 @@ export function ActiveWorkoutPage() {
       const hourKind = getSessionHourKind(log.completedAt);
       let description = `${log.totalVolume.toLocaleString()} lbs total volume`;
       if (hourKind === 'night') {
-        description += " · Counts toward Under the Stars on the leaderboard";
+        description += ' · Counts toward Under the Stars on the leaderboard';
       } else if (hourKind === 'dawn') {
         description += " · Counts toward By Dawn's Early Light on the leaderboard";
       }
       toast({
-        title: "Workout complete!",
+        title: t('activeWorkoutComplete', { defaultValue: 'Workout complete!' }),
         description,
       });
-      router.push("/history");
+      router.push('/history');
     } else {
       toast({
-        title: "Nothing logged",
-        description: "Complete at least one set before finishing.",
-        variant: "destructive",
+        title: t('activeNothingLogged', { defaultValue: 'Nothing logged' }),
+        description: 'Complete at least one set before finishing.',
+        variant: 'destructive',
       });
     }
   };
 
   const handleCancel = () => {
     cancelActiveWorkout();
-    router.push("/");
+    router.push('/');
   };
 
   if (!activeWorkout) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
         <Timer className="h-16 w-16 text-muted-foreground" />
-        <h2 className="text-2xl font-bold">No Active Workout</h2>
+        <h2 className="text-2xl font-bold">{t('activeNoWorkout', { defaultValue: 'No Active Workout' })}</h2>
         <p className="text-muted-foreground max-w-sm">
-          Start a quick workout from Today or launch a saved routine from the builder.
+          {t('activeNoWorkoutDesc', {
+            defaultValue: 'Start a quick workout from Today or launch a saved routine from the builder.',
+          })}
         </p>
-        <Button
-          variant="fitness"
-          size="lg"
-          onClick={() => {
-            startEmptyWorkout();
-          }}
-        >
-          Start Workout
+        <Button variant="fitness" size="lg" onClick={() => startEmptyWorkout()}>
+          {t('activeStartWorkout', { defaultValue: 'Start Workout' })}
         </Button>
       </div>
     );
@@ -173,14 +196,21 @@ export function ActiveWorkoutPage() {
     0
   );
   const totalSets = activeWorkout.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
+  const hardCount = activeWorkout.exercises.flatMap((e) =>
+    e.sets.filter((s) => s.completed && s.rpe === 'hard')
+  ).length;
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${restTimerActive ? 'pb-44 md:pb-32' : 'pb-4'}`}>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">{activeWorkout.workoutName}</h2>
           <p className="mt-1 text-muted-foreground">
-            {completedSets}/{totalSets} sets completed
+            {t('activeSetsCompleted', {
+              done: completedSets,
+              total: totalSets,
+              defaultValue: `${completedSets}/${totalSets} sets completed`,
+            })}
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -192,65 +222,40 @@ export function ActiveWorkoutPage() {
           </Card>
           <Button variant="destructive" size="sm" onClick={handleCancel}>
             <Square className="h-4 w-4" />
-            Cancel
+            {t('activeCancel', { defaultValue: 'Cancel' })}
           </Button>
           <Button variant="fitness" onClick={handleComplete}>
             <Check className="h-4 w-4" />
-            Finish
+            {t('activeFinish', { defaultValue: 'Finish' })}
           </Button>
         </div>
       </div>
 
-      {/* Integrated coach notes for flow and progression (easy to use tips, no separate page) */}
       <Card className="bg-primary/5 border-primary/20">
         <CardContent className="py-3 text-sm">
-          <div className="font-medium mb-1 flex items-center gap-2">Coach Notes <Badge variant="outline" className="text-[10px]">Progression</Badge></div>
+          <div className="font-medium mb-1 flex items-center gap-2">
+            {t('activeCoachNotes', { defaultValue: 'Coach Notes' })}
+            <Badge variant="outline" className="text-[10px]">
+              {t('activeCoachProgression', { defaultValue: 'Progression' })}
+            </Badge>
+          </div>
           <p className="text-muted-foreground">
-            Rate each set Easy/Med/Hard after logging — feeds future smart suggestions. 
-            {(() => {
-              const hardCount = activeWorkout.exercises.flatMap(e => e.sets.filter(s => s.completed && s.rpe === 'hard')).length;
-              return hardCount > 2 ? " High effort detected — consider recovery focus or lighter volume next session." : " Control the negative. Full ROM for best results.";
-            })()}
+            Rate each set Easy/Med/Hard after logging — feeds future smart suggestions.{' '}
+            {hardCount > 2
+              ? 'High effort detected — consider recovery focus or lighter volume next session.'
+              : 'Control the negative. Full ROM for best results.'}
           </p>
         </CardContent>
       </Card>
 
-      {restTimerActive && (
-        <Card className="border-secondary/50 bg-secondary/10 animate-pulse">
-          <CardContent className="flex items-center justify-between p-4">
-            <div className="flex items-center gap-3">
-              <Timer className="h-6 w-6 text-secondary" />
-              <div>
-                <p className="font-semibold text-secondary">Rest Timer — Recover</p>
-                <p className="text-sm text-muted-foreground">Next set ready when timer ends</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-4xl font-mono font-bold text-secondary">
-                {restSecondsRemaining}s
-              </span>
-              <div className="flex gap-1">
-                <Button variant="outline" size="sm" onClick={() => startRestTimer(restSecondsRemaining + 15)}>
-                  +15s
-                </Button>
-                <Button variant="outline" size="sm" onClick={stopRestTimer}>
-                  <SkipForward className="h-4 w-4" />
-                  Skip
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Add Exercise</CardTitle>
+          <CardTitle className="text-base">{t('activeAddExercise', { defaultValue: 'Add Exercise' })}</CardTitle>
         </CardHeader>
         <CardContent className="flex gap-2">
           <Select value={addExerciseId} onValueChange={setAddExerciseId}>
             <SelectTrigger className="flex-1">
-              <SelectValue placeholder="Choose exercise..." />
+              <SelectValue placeholder={t('activeChooseExercise', { defaultValue: 'Choose exercise...' })} />
             </SelectTrigger>
             <SelectContent>
               {EXERCISES.map((ex) => (
@@ -264,10 +269,11 @@ export function ActiveWorkoutPage() {
             onClick={() => {
               if (addExerciseId) {
                 addExerciseToActive(addExerciseId);
-                setAddExerciseId("");
+                setAddExerciseId('');
               }
             }}
             disabled={!addExerciseId}
+            className="min-h-[44px] min-w-[44px]"
           >
             <Plus className="h-4 w-4" />
           </Button>
@@ -277,13 +283,17 @@ export function ActiveWorkoutPage() {
       {activeWorkout.exercises.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="py-12 text-center text-muted-foreground">
-            Add exercises above to begin logging sets.
+            {t('activeEmptyExercises', { defaultValue: 'Add exercises above to begin logging sets.' })}
           </CardContent>
         </Card>
       ) : (
         activeWorkout.exercises.map((exLog, exIdx) => {
           const exercise = getExerciseById(exLog.exerciseId);
           if (!exercise) return null;
+          const lastPerf = getLastPerformance(workoutHistory, exLog.exerciseId);
+          const hasCompleted = exLog.sets.some((s) => s.completed);
+          const restSec = resolveRestSeconds(exercise.name);
+
           return (
             <Card key={`${exLog.exerciseId}-${exIdx}`}>
               <CardHeader>
@@ -295,106 +305,57 @@ export function ActiveWorkoutPage() {
                     </Badge>
                   ))}
                 </CardDescription>
-                {exercise.cues && (
-                  <p className="text-xs text-muted-foreground mt-1">{exercise.cues}</p>
-                )}
-                {hasFormGuide(exercise.id) && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="mt-2 h-9 text-emerald-400"
-                    onClick={() => setFormGuideId(exercise.id)}
-                  >
-                    Form guide
-                  </Button>
-                )}
+                {exercise.cues && <p className="text-xs text-muted-foreground mt-1">{exercise.cues}</p>}
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {hasCompleted && (
+                    <Button type="button" variant="outline" size="sm" onClick={() => handleRepeatLast(exIdx)}>
+                      {t('activeRepeatLast', { defaultValue: 'Repeat last set' })}
+                    </Button>
+                  )}
+                  {hasFormGuide(exercise.id) && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-9 text-emerald-400"
+                      onClick={() => setFormGuideId(exercise.id)}
+                    >
+                      {t('activeFormGuide', { defaultValue: 'Form guide' })}
+                    </Button>
+                  )}
+                </div>
               </CardHeader>
               <CardContent className="space-y-3">
                 {exLog.sets.map((set, setIdx) => {
                   const input = getSetInput(exIdx, setIdx, set.reps, set.weight);
+                  const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
                   return (
                     <div
                       key={set.id}
-                      className={`flex flex-wrap items-center gap-3 rounded-lg border p-3 ${
-                        set.completed
-                          ? "border-secondary/40 bg-secondary/10"
-                          : "border-border"
-                      }`}
+                      ref={isNext ? nextSetRef : undefined}
                     >
-                      <span className="w-8 text-sm font-medium text-muted-foreground">
-                        #{setIdx + 1}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <label className="text-xs text-muted-foreground">Reps</label>
-                        <Input
-                          type="number"
-                          min={1}
-                          value={input.reps}
-                          disabled={set.completed}
-                          onChange={(e) =>
-                            updateSetInput(exIdx, setIdx, "reps", parseInt(e.target.value) || 0)
-                          }
-                          className="h-9 w-16"
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <label className="text-xs text-muted-foreground">lbs</label>
-                        <Input
-                          type="number"
-                          min={0}
-                          step={2.5}
-                          value={input.weight}
-                          disabled={set.completed}
-                          onChange={(e) =>
-                            updateSetInput(exIdx, setIdx, "weight", parseFloat(e.target.value) || 0)
-                          }
-                          className="h-9 w-20"
-                        />
-                      </div>
-                      {set.completed ? (
-                        <div className="ml-auto flex items-center gap-2">
-                          <Badge variant="secondary">
-                            <Check className="h-3 w-3 mr-1" />
-                            {set.reps} × {set.weight}
-                          </Badge>
-                          {!set.rpe ? (
-                            <div className="flex gap-1">
-                              {(['easy', 'med', 'hard'] as const).map((r) => (
-                                <Button
-                                  key={r}
-                                  variant="outline"
-                                  size="sm"
-                                  className="text-[10px] px-1.5 py-0 h-6"
-                                  onClick={() => rateSet(exIdx, setIdx, r)}
-                                >
-                                  {r}
-                                </Button>
-                              ))}
-                            </div>
-                          ) : (
-                            <Badge variant="outline" className="text-[10px]">{set.rpe}</Badge>
-                          )}
-                        </div>
-                      ) : (
-                        <Button
-                          variant="fitness"
-                          size="sm"
-                          className="ml-auto"
-                          onClick={() => handleLogSet(exIdx, setIdx)}
-                        >
-                          Log Set
-                        </Button>
-                      )}
+                      <SetLogRow
+                        setNumber={setIdx + 1}
+                        set={set}
+                        reps={input.reps}
+                        weight={input.weight}
+                        isNext={isNext}
+                        lastPerformance={lastPerf}
+                        onRepsChange={(v) => updateSetInput(exIdx, setIdx, 'reps', v)}
+                        onWeightChange={(v) => updateSetInput(exIdx, setIdx, 'weight', v)}
+                        onLog={() => handleLogSet(exIdx, setIdx)}
+                        onRate={(rpe) => rateSet(exIdx, setIdx, rpe)}
+                      />
                     </div>
                   );
                 })}
                 <div className="flex gap-2 pt-1">
                   <Button variant="outline" size="sm" onClick={() => addSetToExercise(exIdx)}>
-                    <Plus className="h-3 w-3 mr-1" /> Add Set
+                    <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={() => startRestTimer(getSuggestedRest(exercise.name))}>
-                    <Timer className="h-3 w-3 mr-1" /> {getSuggestedRest(exercise.name)}s Rest
+                  <Button variant="ghost" size="sm" onClick={() => startRestTimer(restSec)}>
+                    <Timer className="h-3 w-3 me-1" />
+                    {t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}
                   </Button>
                 </div>
               </CardContent>
@@ -402,25 +363,37 @@ export function ActiveWorkoutPage() {
           );
         })
       )}
+
       <SignInPrompt
         className="mt-6"
         nextPath="/active"
         description="Workouts auto-save to the cloud when you're signed in."
       />
 
-      {formGuideId && (() => {
-        const ex = getExerciseById(formGuideId);
-        const guide = getFormGuide(formGuideId);
-        if (!ex || !guide) return null;
-        return (
-          <FormGuideSheet
-            exerciseName={ex.name}
-            guide={guide}
-            open
-            onClose={() => setFormGuideId(null)}
-          />
-        );
-      })()}
+      {formGuideId &&
+        (() => {
+          const ex = getExerciseById(formGuideId);
+          const guide = getFormGuide(formGuideId);
+          if (!ex || !guide) return null;
+          return (
+            <FormGuideSheet
+              exerciseName={ex.name}
+              guide={guide}
+              open
+              onClose={() => setFormGuideId(null)}
+            />
+          );
+        })()}
+
+      {restTimerActive && (
+        <RestTimerBar
+          remaining={restSecondsRemaining}
+          initial={restTimerInitialSeconds}
+          onSkip={stopRestTimer}
+          onAdjust={adjustRestTimer}
+          onPreset={startRestTimer}
+        />
+      )}
     </div>
   );
 }
