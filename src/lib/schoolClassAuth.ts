@@ -14,20 +14,17 @@ export type SchoolClassUpsertAuth =
 export function authorizeSchoolClassUpsert(
   existing: SchoolClassRow | null,
   userId: string,
-  teacherPin?: string | null
+  options?: { pinVerified?: boolean }
 ): SchoolClassUpsertAuth {
   if (!existing) return { allowed: true };
 
   if (existing.created_by === userId) return { allowed: true };
 
   if (existing.created_by && existing.created_by !== userId) {
-    const pin = teacherPin?.trim() ?? '';
-    if (pin && existing.teacher_pin === pin) return { allowed: true };
-    return { allowed: false, reason: 'forbidden' };
+    return options?.pinVerified ? { allowed: true } : { allowed: false, reason: 'forbidden' };
   }
 
-  const pin = teacherPin?.trim() ?? '';
-  if (existing.teacher_pin && pin && existing.teacher_pin !== pin) {
+  if (existing.teacher_pin && !options?.pinVerified) {
     return { allowed: false, reason: 'pin_mismatch' };
   }
 
