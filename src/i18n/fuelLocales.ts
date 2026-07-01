@@ -33,6 +33,17 @@ type FuelStrings = {
   fuelPremiumLockedTitle: string;
   fuelPremiumLockedBody: string;
   fuelExploreBundle: string;
+  fuelLogFab: string;
+  fuelLogSheetTitle: string;
+  fuelTabQuick: string;
+  fuelTabCustom: string;
+  fuelTabPhoto: string;
+  fuelMealBreakfast: string;
+  fuelMealLunch: string;
+  fuelMealDinner: string;
+  fuelMealSnack: string;
+  fuelMealOther: string;
+  fuelLogStreak: string;
 };
 
 const en: FuelStrings = {
@@ -70,6 +81,17 @@ const en: FuelStrings = {
   fuelPremiumLockedBody:
     'Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.',
   fuelExploreBundle: 'Explore Super Bundle',
+  fuelLogFab: 'Log food',
+  fuelLogSheetTitle: 'Log to Fuel',
+  fuelTabQuick: 'Quick',
+  fuelTabCustom: 'Custom',
+  fuelTabPhoto: 'Photo',
+  fuelMealBreakfast: 'Breakfast',
+  fuelMealLunch: 'Lunch',
+  fuelMealDinner: 'Dinner',
+  fuelMealSnack: 'Snack',
+  fuelMealOther: 'Other',
+  fuelLogStreak: '{{count}}-day log streak',
 };
 
 const es: FuelStrings = {
@@ -107,6 +129,7 @@ const es: FuelStrings = {
 };
 
 const zh: FuelStrings = {
+  ...en,
   fuelPremiumActive: ' 高级版：完整食谱库与深度计划（Super Bundle）。',
   fuelBundleUpsell: ' Super Bundle 解锁完整食谱库与高级餐计划。',
   fuelWinScore: '任务分数',
@@ -142,6 +165,7 @@ const zh: FuelStrings = {
 };
 
 const id: FuelStrings = {
+  ...en,
   fuelPremiumActive: ' Premium: perpustakaan resep lengkap + rencana mendalam (Super Bundle).',
   fuelBundleUpsell: ' Super Bundle membuka perpustakaan resep lengkap dan rencana makan lanjutan.',
   fuelWinScore: 'Skor Misi',
@@ -177,6 +201,7 @@ const id: FuelStrings = {
 };
 
 const th: FuelStrings = {
+  ...en,
   fuelPremiumActive: ' พรีเมียม: สูตรครบ + แผนลึก (Super Bundle)',
   fuelBundleUpsell: ' Super Bundle ปลดล็อกสูตรครบและแผนมื้อขั้นสูง',
   fuelWinScore: 'คะแนนภารกิจ',
@@ -212,6 +237,7 @@ const th: FuelStrings = {
 };
 
 const ar: FuelStrings = {
+  ...en,
   fuelPremiumActive: ' Premium: مكتبة وصفات كاملة + خطط (Super Bundle).',
   fuelBundleUpsell: ' Super Bundle يفتح الوصفات الكاملة وخطط الوجبات المتقدمة.',
   fuelWinScore: 'نقاط المهمة',

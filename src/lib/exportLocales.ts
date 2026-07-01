@@ -9,6 +9,9 @@ import { navStringsFor } from '@/i18n/navLocales';
 import { bundleStringsFor } from '@/i18n/bundleLocales';
 import { historyStringsFor } from '@/i18n/historyLocales';
 import { activeWorkoutStringsFor } from '@/i18n/activeWorkoutLocales';
+import { trackStringsFor } from '@/i18n/trackLocales';
+import { moveStringsFor } from '@/i18n/moveLocales';
+import { mindStringsFor } from '@/i18n/mindLocales';
 
 /** Languages with full or partial pillar-specific translations. */
 export const EXPORT_LANGS = ['en', 'es', 'zh', 'id', 'th', 'ar'] as const;
@@ -21,7 +24,10 @@ export type LocaleNamespace =
   | 'nav'
   | 'bundle'
   | 'history'
-  | 'activeWorkout';
+  | 'activeWorkout'
+  | 'track'
+  | 'move'
+  | 'mind';
 
 export type LocaleExportEntry = {
   namespace: LocaleNamespace;
@@ -71,6 +77,24 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'activeWorkout',
     filename: 'active-workout.json',
     stringsFor: activeWorkoutStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'track',
+    filename: 'track.json',
+    stringsFor: trackStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'move',
+    filename: 'move.json',
+    stringsFor: moveStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'mind',
+    filename: 'mind.json',
+    stringsFor: mindStringsFor,
     langs: EXPORT_LANGS,
   },
 ];

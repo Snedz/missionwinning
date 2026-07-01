@@ -13,11 +13,14 @@ type Props = {
   reps: number;
   weight: number;
   isNext: boolean;
+  weightLabel: string;
+  weightStep: number;
   lastPerformance?: { reps: number; weight: number } | null;
   onRepsChange: (reps: number) => void;
   onWeightChange: (weight: number) => void;
   onLog: () => void;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
+  onCopyLast?: () => void;
 };
 
 export function SetLogRow({
@@ -26,11 +29,14 @@ export function SetLogRow({
   reps,
   weight,
   isNext,
+  weightLabel,
+  weightStep,
   lastPerformance,
   onRepsChange,
   onWeightChange,
   onLog,
   onRate,
+  onCopyLast,
 }: Props) {
   const { t } = useTranslation();
 
@@ -80,13 +86,20 @@ export function SetLogRow({
       <div className="flex items-center justify-between gap-2">
         <span className="text-sm font-semibold text-muted-foreground">#{setNumber}</span>
         {lastPerformance && (
-          <span className="text-[10px] text-muted-foreground">
-            {t('activeLastPerformance', {
-              reps: lastPerformance.reps,
-              weight: lastPerformance.weight,
-              defaultValue: `Last: ${lastPerformance.reps} × ${lastPerformance.weight}`,
-            })}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-muted-foreground tabular-nums">
+              {t('activeLastPerformance', {
+                reps: lastPerformance.reps,
+                weight: lastPerformance.weight,
+                defaultValue: `Last: ${lastPerformance.reps} × ${lastPerformance.weight}`,
+              })}
+            </span>
+            {onCopyLast && (
+              <Button type="button" variant="ghost" size="sm" className="h-7 px-2 text-[10px]" onClick={onCopyLast}>
+                {t('activeCopyLast', { defaultValue: 'Copy last' })}
+              </Button>
+            )}
+          </div>
         )}
       </div>
 
@@ -117,14 +130,14 @@ export function SetLogRow({
         </div>
 
         <div className="flex items-center gap-1">
-          <span className="text-xs text-muted-foreground w-8">{t('activeWeight', { defaultValue: 'lbs' })}</span>
+          <span className="text-xs text-muted-foreground w-10">{weightLabel}</span>
           <Button
             type="button"
             variant="outline"
             size="icon"
             className="h-11 w-11 shrink-0"
             aria-label="Decrease weight"
-            onClick={() => onWeightChange(Math.max(0, weight - 2.5))}
+            onClick={() => onWeightChange(Math.max(0, weight - weightStep))}
           >
             <Minus className="h-4 w-4" />
           </Button>
@@ -135,7 +148,7 @@ export function SetLogRow({
             size="icon"
             className="h-11 w-11 shrink-0"
             aria-label="Increase weight"
-            onClick={() => onWeightChange(weight + 2.5)}
+            onClick={() => onWeightChange(weight + weightStep)}
           >
             <Plus className="h-4 w-4" />
           </Button>

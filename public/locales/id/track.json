@@ -1,0 +1,21 @@
+{
+  "trackTitle": "Lacak aktivitas",
+  "trackSubtitle": "Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).",
+  "trackWeekSessions": "Minggu ini",
+  "trackTotalTime": "Total Time",
+  "trackDistance": "Distance",
+  "trackLogTitle": "Catat aktivitas",
+  "trackLogDesc": "No GPS needed — manual entry works offline anywhere.",
+  "trackTypeLabel": "Type",
+  "trackDurationLabel": "Duration (minutes)",
+  "trackDistanceLabel": "Distance km (optional)",
+  "trackNotesLabel": "Notes (optional)",
+  "trackNotesPlaceholder": "Morning park loop, felt great",
+  "trackLogBtn": "Catat",
+  "trackWeekLogTitle": "This Week's Log",
+  "trackEmptyWeek": "Belum ada aktivitas minggu ini.",
+  "trackEmptyTitle": "No activities this week",
+  "trackPremiumTitle": "Premium — GPS & advanced stats",
+  "trackPremiumDesc": "MapMy-style tracking, routes, pace charts, cross-pillar coaching.",
+  "trackPremiumBtn": "Track Premium"
+}

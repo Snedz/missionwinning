@@ -1,0 +1,21 @@
+{
+  "trackTitle": "تتبع النشاط",
+  "trackSubtitle": "Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).",
+  "trackWeekSessions": "هذا الأسبوع",
+  "trackTotalTime": "Total Time",
+  "trackDistance": "Distance",
+  "trackLogTitle": "تسجيل نشاط",
+  "trackLogDesc": "No GPS needed — manual entry works offline anywhere.",
+  "trackTypeLabel": "Type",
+  "trackDurationLabel": "Duration (minutes)",
+  "trackDistanceLabel": "Distance km (optional)",
+  "trackNotesLabel": "Notes (optional)",
+  "trackNotesPlaceholder": "Morning park loop, felt great",
+  "trackLogBtn": "تسجيل",
+  "trackWeekLogTitle": "This Week's Log",
+  "trackEmptyWeek": "لا أنشطة هذا الأسبوع بعد.",
+  "trackEmptyTitle": "No activities this week",
+  "trackPremiumTitle": "Premium — GPS & advanced stats",
+  "trackPremiumDesc": "MapMy-style tracking, routes, pace charts, cross-pillar coaching.",
+  "trackPremiumBtn": "Track Premium"
+}
