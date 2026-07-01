@@ -36,6 +36,40 @@ Add these for **Production** and **Preview**:
 
 After adding or changing env vars: **Deployments → Redeploy** (env changes do not apply until redeploy).
 
+### Sync via GitHub (when Vercel dashboard is locked)
+
+If you cannot open Vercel yet (e.g. 2FA reset), push env vars from **GitHub Secrets** instead:
+
+1. **GitHub → repo → Settings → Secrets and variables → Actions → New repository secret**
+
+   | Secret | Required | Notes |
+   |--------|----------|-------|
+   | `VERCEL_TOKEN` | **Yes** | [vercel.com/account/tokens](https://vercel.com/account/tokens) — scope: full account or project |
+   | `VERCEL_PROJECT_ID` | **Yes** | Ask a teammate with Vercel access, or recover from an old deploy log / email |
+   | `VERCEL_ORG_ID` | If team project | Team Settings → General → Team ID |
+   | `PRIVATE_ACCESS_SECRET` | **Yes** | Same value you use locally — `openssl rand -base64 32` |
+   | `PRIVATE_MODE` | Yes | `true` |
+   | `NEXT_PUBLIC_SUPABASE_URL` | Recommended | |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Recommended | |
+   | `SUPABASE_SERVICE_ROLE_KEY` | Recommended | |
+   | `DEMO_PREMIUM` | Yes in prod | `false` |
+   | `VERCEL_DEPLOY_HOOK_URL` | Optional | Deploy Hooks → Production — auto-redeploy after sync |
+
+2. **Actions → Sync Vercel env → Run workflow** (manual; does not run until you trigger it).
+
+3. Confirm gate: incognito visit to `/` should redirect to `/private`; unlock with your secret on `/private` or `/?access=SECRET`.
+
+Local dry-run (with token in shell):
+
+```bash
+export VERCEL_TOKEN=...
+export VERCEL_PROJECT_ID=...
+export PRIVATE_ACCESS_SECRET=...
+npm run sync-vercel-env
+```
+
+**Note:** GitHub ↔ Vercel integration auto-deploys on push to `master`; it does **not** copy GitHub Secrets to Vercel automatically. Use the workflow above once secrets are set.
+
 ### How you unlock the site (after deploy)
 
 1. **Password:** Go to https://www.missionwinning.com/private and enter `PRIVATE_ACCESS_SECRET`.

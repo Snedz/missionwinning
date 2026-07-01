@@ -1,0 +1,63 @@
+# Sync repository secrets → Vercel project env (no Vercel dashboard required).
+#
+# Setup (GitHub → Settings → Secrets and variables → Actions):
+#   VERCEL_TOKEN          — https://vercel.com/account/tokens
+#   VERCEL_PROJECT_ID     — Vercel project → Settings → General → Project ID
+#   VERCEL_ORG_ID         — optional team id (Settings → General → Team ID)
+#   PRIVATE_ACCESS_SECRET — openssl rand -base64 32
+#   … plus any vars from .env.example you want on Production/Preview
+#
+# Optional: VERCEL_DEPLOY_HOOK_URL — Deploy Hooks → create Production hook
+name: Sync Vercel env
+
+on:
+  workflow_dispatch:
+    inputs:
+      trigger_deploy:
+        description: 'POST VERCEL_DEPLOY_HOOK_URL after sync'
+        type: boolean
+        default: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Upsert env vars on Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_DEPLOY_HOOK_URL: ${{ inputs.trigger_deploy && secrets.VERCEL_DEPLOY_HOOK_URL || '' }}
+          PRIVATE_ACCESS_SECRET: ${{ secrets.PRIVATE_ACCESS_SECRET }}
+          PRIVATE_MODE: ${{ secrets.PRIVATE_MODE }}
+          PRIVATE_ALLOW_AUTH_BYPASS: ${{ secrets.PRIVATE_ALLOW_AUTH_BYPASS }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          BETA_ADMIN_EMAILS: ${{ secrets.BETA_ADMIN_EMAILS }}
+          BETA_ADMIN_SECRET: ${{ secrets.BETA_ADMIN_SECRET }}
+          DEMO_PREMIUM: ${{ secrets.DEMO_PREMIUM }}
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          NEXT_PUBLIC_OAUTH_GOOGLE: ${{ secrets.NEXT_PUBLIC_OAUTH_GOOGLE }}
+          NEXT_PUBLIC_OAUTH_APPLE: ${{ secrets.NEXT_PUBLIC_OAUTH_APPLE }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_STRIPE_LINK_BUNDLE: ${{ secrets.NEXT_PUBLIC_STRIPE_LINK_BUNDLE }}
+          NEXT_PUBLIC_STRIPE_LINK_PREMIUM: ${{ secrets.NEXT_PUBLIC_STRIPE_LINK_PREMIUM }}
+          PAYPAL_WEBHOOK_ID: ${{ secrets.PAYPAL_WEBHOOK_ID }}
+          PAYPAL_CLIENT_ID: ${{ secrets.PAYPAL_CLIENT_ID }}
+          PAYPAL_CLIENT_SECRET: ${{ secrets.PAYPAL_CLIENT_SECRET }}
+          PAYPAL_ENV: ${{ secrets.PAYPAL_ENV }}
+          CSP_ENFORCE: ${{ secrets.CSP_ENFORCE }}
+          COACH_LLM_API_URL: ${{ secrets.COACH_LLM_API_URL }}
+          COACH_LLM_API_KEY: ${{ secrets.COACH_LLM_API_KEY }}
+          COACH_LLM_MODEL: ${{ secrets.COACH_LLM_MODEL }}
+        run: node scripts/sync-vercel-env.mjs
