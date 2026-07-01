@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Check, Clock, Plus, Square, Timer } from 'lucide-react';
+import { Check, Clock, Plus, Scale, Square, Timer } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,13 +18,19 @@ import { toast } from '@/hooks/use-toast';
 import { EXERCISES, getExerciseById } from '@/data/exercises';
 import { formatDuration } from '@/lib/utils';
 import { useWorkoutStore } from '@/store/workoutStore';
-import { getSessionHourKind } from '@/lib/leaderboard/types';
 import { getFormGuide, hasFormGuide } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { SetLogRow } from '@/components/workout/SetLogRow';
+import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { resolveRestSeconds } from '@/lib/restTimer';
+import { isPersonalRecord } from '@/lib/workoutPr';
+import { shouldRestAfterLog, supersetLabel } from '@/lib/superset';
+import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
+import { getTrainingStreak } from '@/lib/challenges';
+import { summarizeWorkoutVictory, type WorkoutVictorySummary } from '@/lib/workoutVictory';
+import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import type { CompletedWorkoutLog } from '@/types';
 
 function findNextSet(exercises: { sets: { completed: boolean }[] }[]) {
@@ -49,6 +55,9 @@ function getLastPerformance(workoutHistory: CompletedWorkoutLog[], exerciseId: s
 export function ActiveWorkoutPage() {
   const router = useRouter();
   const { t } = useTranslation();
+  const units = useUnits();
+  const unitLabel = weightUnitLabel(units);
+  const step = weightStep(units);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
   const restSecondsRemaining = useWorkoutStore((s) => s.restSecondsRemaining);
@@ -60,6 +69,9 @@ export function ActiveWorkoutPage() {
   const addExerciseToActive = useWorkoutStore((s) => s.addExerciseToActive);
   const logSetAndAdvance = useWorkoutStore((s) => s.logSetAndAdvance);
   const rateSet = useWorkoutStore((s) => s.rateSet);
+  const setSetKind = useWorkoutStore((s) => s.setSetKind);
+  const toggleSupersetWithNext = useWorkoutStore((s) => s.toggleSupersetWithNext);
+  const unlinkSuperset = useWorkoutStore((s) => s.unlinkSuperset);
   const addSetToExercise = useWorkoutStore((s) => s.addSetToExercise);
   const tickRestTimer = useWorkoutStore((s) => s.tickRestTimer);
   const stopRestTimer = useWorkoutStore((s) => s.stopRestTimer);
@@ -71,6 +83,9 @@ export function ActiveWorkoutPage() {
   const [addExerciseId, setAddExerciseId] = useState('');
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});
   const [formGuideId, setFormGuideId] = useState<string | null>(null);
+  const [plateCalcOpen, setPlateCalcOpen] = useState(false);
+  const [victoryOpen, setVictoryOpen] = useState(false);
+  const [victorySummary, setVictorySummary] = useState<WorkoutVictorySummary | null>(null);
   const nextSetRef = useRef<HTMLDivElement | null>(null);
 
   const nextSet = useMemo(
@@ -122,19 +137,47 @@ export function ActiveWorkoutPage() {
     const input = override ?? getSetInput(exIdx, setIdx, set.reps, set.weight);
     const exercise = getExerciseById(activeWorkout!.exercises[exIdx].exerciseId);
     const restSec = exercise ? resolveRestSeconds(exercise.name) : 90;
+    const exerciseId = activeWorkout!.exercises[exIdx].exerciseId;
+    const setKind = set.kind ?? 'normal';
+    const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory, setKind);
 
-    logSetAndAdvance(exIdx, setIdx, input.reps, input.weight);
-    startRestTimer(restSec);
+    const next = logSetAndAdvance(exIdx, setIdx, input.reps, input.weight);
+    const updatedExercises = useWorkoutStore.getState().activeWorkout?.exercises ?? activeWorkout!.exercises;
+    const takeRest = shouldRestAfterLog(updatedExercises, exIdx, setIdx, next);
+    if (takeRest) {
+      startRestTimer(restSec);
+    }
 
-    toast({
-      title: t('activeSetLogged', { defaultValue: 'Set logged!' }),
-      description: t('activeSetLoggedDesc', {
-        reps: input.reps,
-        weight: input.weight,
-        rest: restSec,
-        defaultValue: `${input.reps} × ${input.weight} — ${restSec}s rest`,
-      }),
-    });
+    if (isPr) {
+      toast({
+        title: t('activePrTitle', { defaultValue: 'New PR!' }),
+        description: t('activePrDesc', {
+          reps: input.reps,
+          weight: input.weight,
+          defaultValue: `${input.reps} × ${input.weight} — personal best for this exercise`,
+        }),
+        className: 'border-fitness-gold/40 bg-amber-950/30',
+      });
+    } else if (next && !takeRest) {
+      toast({
+        title: t('activeSetLogged', { defaultValue: 'Set logged!' }),
+        description: t('activeSetLoggedSuperset', {
+          reps: input.reps,
+          weight: input.weight,
+          defaultValue: `${input.reps} × ${input.weight} — next exercise in superset`,
+        }),
+      });
+    } else {
+      toast({
+        title: t('activeSetLogged', { defaultValue: 'Set logged!' }),
+        description: t('activeSetLoggedDesc', {
+          reps: input.reps,
+          weight: input.weight,
+          rest: restSec,
+          defaultValue: `${input.reps} × ${input.weight} — ${restSec}s rest`,
+        }),
+      });
+    }
   };
 
   const handleRepeatLast = (exIdx: number) => {
@@ -146,20 +189,12 @@ export function ActiveWorkoutPage() {
   };
 
   const handleComplete = () => {
+    const historyBefore = workoutHistory;
     const log = completeActiveWorkout();
     if (log) {
-      const hourKind = getSessionHourKind(log.completedAt);
-      let description = `${log.totalVolume.toLocaleString()} lbs total volume`;
-      if (hourKind === 'night') {
-        description += ' · Counts toward Under the Stars on the leaderboard';
-      } else if (hourKind === 'dawn') {
-        description += " · Counts toward By Dawn's Early Light on the leaderboard";
-      }
-      toast({
-        title: t('activeWorkoutComplete', { defaultValue: 'Workout complete!' }),
-        description,
-      });
-      router.push('/history');
+      const streak = getTrainingStreak([log, ...historyBefore]);
+      setVictorySummary(summarizeWorkoutVictory(log, streak));
+      setVictoryOpen(true);
     } else {
       toast({
         title: t('activeNothingLogged', { defaultValue: 'Nothing logged' }),
@@ -213,7 +248,11 @@ export function ActiveWorkoutPage() {
             })}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap justify-end">
+          <Button variant="outline" size="sm" onClick={() => setPlateCalcOpen(true)}>
+            <Scale className="h-4 w-4" />
+            {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
+          </Button>
           <Card className="px-4 py-2">
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />
@@ -294,10 +333,23 @@ export function ActiveWorkoutPage() {
           const hasCompleted = exLog.sets.some((s) => s.completed);
           const restSec = resolveRestSeconds(exercise.name);
 
+          const ssLabel = supersetLabel(activeWorkout.exercises, exIdx);
+          const hasNext = exIdx < activeWorkout.exercises.length - 1;
+
           return (
-            <Card key={`${exLog.exerciseId}-${exIdx}`}>
+            <Card
+              key={`${exLog.exerciseId}-${exIdx}`}
+              className={ssLabel ? 'border-violet-500/30' : undefined}
+            >
               <CardHeader>
-                <CardTitle className="text-lg">{exercise.name}</CardTitle>
+                <CardTitle className="text-lg flex flex-wrap items-center gap-2">
+                  {exercise.name}
+                  {ssLabel && (
+                    <Badge variant="outline" className="text-[10px] uppercase border-violet-500/40 text-violet-300">
+                      {ssLabel}
+                    </Badge>
+                  )}
+                </CardTitle>
                 <CardDescription className="flex gap-1 flex-wrap">
                   {exercise.muscleGroups.map((mg) => (
                     <Badge key={mg} variant="muscle">
@@ -323,6 +375,26 @@ export function ActiveWorkoutPage() {
                       {t('activeFormGuide', { defaultValue: 'Form guide' })}
                     </Button>
                   )}
+                  {hasNext && !exLog.supersetGroup && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => toggleSupersetWithNext(exIdx)}
+                    >
+                      {t('activeSupersetLink', { defaultValue: 'Superset w/ next' })}
+                    </Button>
+                  )}
+                  {exLog.supersetGroup && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => unlinkSuperset(exIdx)}
+                    >
+                      {t('activeSupersetUnlink', { defaultValue: 'Unlink superset' })}
+                    </Button>
+                  )}
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -340,11 +412,22 @@ export function ActiveWorkoutPage() {
                         reps={input.reps}
                         weight={input.weight}
                         isNext={isNext}
+                        weightLabel={unitLabel}
+                        weightStep={step}
                         lastPerformance={lastPerf}
                         onRepsChange={(v) => updateSetInput(exIdx, setIdx, 'reps', v)}
                         onWeightChange={(v) => updateSetInput(exIdx, setIdx, 'weight', v)}
+                        onSetKindChange={(kind) => setSetKind(exIdx, setIdx, kind)}
                         onLog={() => handleLogSet(exIdx, setIdx)}
                         onRate={(rpe) => rateSet(exIdx, setIdx, rpe)}
+                        onCopyLast={
+                          lastPerf
+                            ? () => {
+                                updateSetInput(exIdx, setIdx, 'reps', lastPerf.reps);
+                                updateSetInput(exIdx, setIdx, 'weight', lastPerf.weight);
+                              }
+                            : undefined
+                        }
                       />
                     </div>
                   );
@@ -394,6 +477,38 @@ export function ActiveWorkoutPage() {
           onPreset={startRestTimer}
         />
       )}
+
+      <PlateCalculatorSheet
+        open={plateCalcOpen}
+        onClose={() => setPlateCalcOpen(false)}
+        initialTarget={
+          nextSet
+            ? getSetInput(
+                nextSet.exIdx,
+                nextSet.setIdx,
+                activeWorkout.exercises[nextSet.exIdx].sets[nextSet.setIdx].reps,
+                activeWorkout.exercises[nextSet.exIdx].sets[nextSet.setIdx].weight
+              ).weight
+            : undefined
+        }
+        onApplyTarget={(weight) => {
+          if (!nextSet) return;
+          updateSetInput(nextSet.exIdx, nextSet.setIdx, 'weight', weight);
+        }}
+      />
+      <WorkoutVictorySheet
+        open={victoryOpen}
+        summary={victorySummary}
+        onOpenChange={setVictoryOpen}
+        onViewToday={() => {
+          setVictoryOpen(false);
+          router.push('/log');
+        }}
+        onViewHistory={() => {
+          setVictoryOpen(false);
+          router.push('/history');
+        }}
+      />
     </div>
   );
 }

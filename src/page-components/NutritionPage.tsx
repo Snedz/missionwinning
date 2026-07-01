@@ -4,14 +4,20 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
 import { syncProteinChallengeFromNutrition } from "@/lib/challenges";
 import { FREE_RECIPES } from "@/data/recipes/freeRecipes";
 import type { Recipe } from "@/data/recipes/types";
 import { usePremium } from "@/hooks/usePremium";
-import { PhotoLogStub } from "@/components/nutrition/PhotoLogStub";
+import { FuelLogSheet, type MealType } from "@/components/nutrition/FuelLogSheet";
+import { FoodSearchBar } from "@/components/nutrition/FoodSearchBar";
+import { BarcodeLookup } from "@/components/nutrition/BarcodeLookup";
+import type { FoodSearchItem } from "@/lib/foodSearch";
+import { MetricRing } from "@/components/ui/MetricRing";
+import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
+import { bumpFuelLogStreak, getFuelLogStreak } from "@/lib/fuelStreak";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
+import { Plus } from "lucide-react";
 
 const FREE_RECIPE_COUNT = 12;
 
@@ -22,6 +28,7 @@ interface LogEntry {
   carbs?: number;
   fat?: number;
   time: string;
+  meal?: MealType;
 }
 
 const QUICK_FOODS = [
@@ -33,7 +40,7 @@ const QUICK_FOODS = [
   ["Greek yogurt 200g", 20, 130, 8, 0],
   ["Almonds 30g", 6, 170, 6, 15],
   ["Salmon 120g", 25, 250, 0, 15],
-];
+] as const;
 
 export function NutritionPage() {
   // Free core per vision.md: Basic logging, targets, accessible recipes free for all worldwide.
@@ -50,6 +57,9 @@ export function NutritionPage() {
   const [customP, setCustomP] = useState(20);
   const [customC, setCustomC] = useState(200);
   const [cloudStatus, setCloudStatus] = useState("");
+  const [logSheetOpen, setLogSheetOpen] = useState(false);
+  const [activeMeal, setActiveMeal] = useState<MealType>("lunch");
+  const [fuelStreak, setFuelStreak] = useState(0);
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -95,19 +105,49 @@ export function NutritionPage() {
   }, [premium]);
 
   useEffect(() => {
-    localStorage.setItem("mw_nutrition_log", JSON.stringify(logged));
+    setFuelStreak(getFuelLogStreak());
   }, [logged]);
 
   useEffect(() => {
     localStorage.setItem("mw_water", water.toString());
   }, [water]);
 
-  const addEntry = (name: string, p: number, c: number, carbs = 0, fat = 0) => {
-    const entry: LogEntry = { name, protein: p, cals: c, carbs, fat, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
-    setLogged(prev => [...prev, entry]);
+  useEffect(() => {
+    localStorage.setItem("mw_nutrition_log", JSON.stringify(logged));
+  }, [logged]);
+
+  const mealLabel = (meal?: MealType) => {
+    if (!meal) return t('fuelMealOther', { defaultValue: 'Other' });
+    const map: Record<MealType, string> = {
+      breakfast: t('fuelMealBreakfast', { defaultValue: 'Breakfast' }),
+      lunch: t('fuelMealLunch', { defaultValue: 'Lunch' }),
+      dinner: t('fuelMealDinner', { defaultValue: 'Dinner' }),
+      snack: t('fuelMealSnack', { defaultValue: 'Snack' }),
+    };
+    return map[meal];
+  };
+
+  const groupedLog = logged.reduce<Record<string, LogEntry[]>>((acc, entry) => {
+    const key = entry.meal ?? 'other';
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(entry);
+    return acc;
+  }, {});
+
+  const addEntry = (name: string, p: number, c: number, carbs = 0, fat = 0, meal = activeMeal) => {
+    const entry: LogEntry = {
+      name,
+      protein: p,
+      cals: c,
+      carbs,
+      fat,
+      meal,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+    setLogged((prev) => [...prev, entry]);
+    setFuelStreak(bumpFuelLogStreak());
     syncProteinChallengeFromNutrition();
-    // Cloud sync
-    getUser().then(u => {
+    getUser().then((u) => {
       if (u) saveNutritionEntry({ date: today, name, protein: p, cals: c, carbs, fat }).catch(() => {});
     });
   };
@@ -159,10 +199,18 @@ export function NutritionPage() {
   const freeRecipes = FREE_RECIPES;
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <StaggerGroup className="space-y-6 max-w-3xl pb-24">
+      <StaggerItem index={0}>
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">{t('fuelTitle', { defaultValue: 'Nutrition' })}</h2>
-        <p className="text-muted-foreground">
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{t('fuelTitle', { defaultValue: 'Nutrition' })}</h2>
+          {fuelStreak > 0 && (
+            <span className="rounded-full border border-emerald-500/30 bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-400">
+              {t('fuelLogStreak', { count: fuelStreak, defaultValue: `${fuelStreak}-day log streak` })}
+            </span>
+          )}
+        </div>
+        <p className="text-muted-foreground mt-1">
           {t('fuelSubtitle', {
             defaultValue:
               'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
@@ -182,24 +230,27 @@ export function NutritionPage() {
           .
         </p>
       </div>
+      </StaggerItem>
 
-      <PhotoLogStub
-        onLogEstimate={(est) => {
-          addEntry(est.name, est.protein, est.cals, est.carbs, est.fat);
-        }}
-      />
-
+      <StaggerItem index={1}>
       <div className="grid md:grid-cols-2 gap-4">
-        <Card>
+        <Card className="content-card">
           <CardHeader><CardTitle>{t('fuelTargetsTitle', { defaultValue: "Today's Targets" })}</CardTitle></CardHeader>
-          <CardContent className="space-y-3">
-            <div>
-              <div className="flex justify-between text-sm mb-1"><span>{t('fuelCalories', { defaultValue: 'Calories' })}</span><span>{totalCals} / {targetCals}</span></div>
-              <div className="h-2 bg-muted rounded"><div className="h-2 bg-emerald-500 rounded" style={{width: `${cProgress}%`}} /></div>
-            </div>
-            <div>
-              <div className="flex justify-between text-sm mb-1"><span>{t('fuelProtein', { defaultValue: 'Protein' })}</span><span>{totalProtein}g / {targetProtein}g</span></div>
-              <div className="h-2 bg-muted rounded"><div className="h-2 bg-emerald-500 rounded" style={{width: `${pProgress}%`}} /></div>
+          <CardContent className="space-y-4">
+            <div className="flex justify-around gap-4">
+              <MetricRing
+                label={t('fuelCalories', { defaultValue: 'Calories' })}
+                value={`${totalCals}`}
+                sublabel={`/ ${targetCals}`}
+                progress={cProgress}
+              />
+              <MetricRing
+                label={t('fuelProtein', { defaultValue: 'Protein' })}
+                value={`${totalProtein}g`}
+                sublabel={`/ ${targetProtein}g`}
+                progress={pProgress}
+                accentClassName="text-emerald-300"
+              />
             </div>
             <div className="text-xs text-muted-foreground">
               {t('fuelMacrosSummary', {
@@ -221,7 +272,7 @@ export function NutritionPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="content-card">
           <CardHeader><CardTitle>{t('fuelHydrationTitle', { defaultValue: 'Hydration' })}</CardTitle></CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">
@@ -233,7 +284,9 @@ export function NutritionPage() {
           </CardContent>
         </Card>
       </div>
+      </StaggerItem>
 
+      <StaggerItem index={2}>
       <div className="text-xs bg-muted/20 p-3 rounded space-y-2">
         <p>
           {t('fuelScienceCh5', {
@@ -248,37 +301,42 @@ export function NutritionPage() {
           })}
         </p>
       </div>
+      </StaggerItem>
 
-      <Card>
-        <CardHeader><CardTitle>{t('fuelQuickLogTitle', { defaultValue: 'Quick Log (common foods)' })}</CardTitle></CardHeader>
-        <CardContent className="flex gap-2 flex-wrap">
-          {QUICK_FOODS.map(([name, p, c, carbs, fat], i) => (
-            <Button key={i} variant="outline" size="sm" onClick={() => addEntry(name as string, p as number, c as number, carbs as number, fat as number)}>{name}</Button>
-          ))}
-          <div className="w-full text-xs text-muted-foreground mt-2">{t('fuelQuickLogFoot', { defaultValue: 'More complete database + recipes in the full Nutrition program. Adjust targets via Calculators page.' })}</div>
+      <StaggerItem index={3}>
+      <Card className="content-card">
+        <CardHeader>
+          <CardTitle>{t('fuelSearchTitle', { defaultValue: 'Search foods' })}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <BarcodeLookup
+            onSelect={(item) => {
+              addEntry(
+                item.brand ? `${item.name} (${item.brand})` : item.name,
+                item.protein,
+                item.calories,
+                item.carbs,
+                item.fat
+              );
+            }}
+          />
+          <FoodSearchBar
+            onSelect={(item: FoodSearchItem) => {
+              addEntry(
+                item.brand ? `${item.name} (${item.brand})` : item.name,
+                item.protein,
+                item.calories,
+                item.carbs,
+                item.fat
+              );
+            }}
+          />
         </CardContent>
       </Card>
+      </StaggerItem>
 
-      <Card>
-        <CardHeader><CardTitle>{t('fuelCustomEntryTitle', { defaultValue: 'Custom Entry' })}</CardTitle></CardHeader>
-        <CardContent className="flex flex-wrap gap-2 items-end">
-          <div className="flex-1 min-w-[120px]">
-            <div className="text-xs mb-1">{t('fuelFoodLabel', { defaultValue: 'Food' })}</div>
-            <Input value={customName} onChange={e=>setCustomName(e.target.value)} placeholder="e.g. Apple" />
-          </div>
-          <div>
-            <div className="text-xs mb-1">{t('fuelProteinGLabel', { defaultValue: 'Protein g' })}</div>
-            <Input type="number" value={customP} onChange={e=>setCustomP(parseInt(e.target.value)||0)} className="w-20" />
-          </div>
-          <div>
-            <div className="text-xs mb-1">{t('fuelCalsLabel', { defaultValue: 'Cals' })}</div>
-            <Input type="number" value={customC} onChange={e=>setCustomC(parseInt(e.target.value)||0)} className="w-20" />
-          </div>
-          <Button onClick={addCustom}>{t('fuelLogBtn', { defaultValue: 'Log' })}</Button>
-        </CardContent>
-      </Card>
-
-      <Card>
+      <StaggerItem index={4}>
+      <Card className="content-card">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{t('fuelTodayLogTitle', { defaultValue: "Today's Log" })}</CardTitle>
           <div className="flex gap-2">
@@ -293,21 +351,33 @@ export function NutritionPage() {
           </div>
         </CardHeader>
         <CardContent>
-          {logged.length === 0 && <div className="text-muted-foreground text-sm">{t('fuelNoEntries', { defaultValue: 'No entries yet. Use quick logs or custom above.' })}</div>}
-          <ul className="space-y-1 text-sm">
-            {logged.map((l, i) => (
-              <li key={i} className="flex justify-between">
-                <span>{l.time} — {l.name}</span>
-                <span className="text-muted-foreground">+{l.protein}g P • {l.cals} kcal</span>
-              </li>
-            ))}
-          </ul>
+          {logged.length === 0 && (
+            <div className="text-muted-foreground text-sm">
+              {t('fuelNoEntries', { defaultValue: 'No entries yet. Tap + Log food to add your first meal.' })}
+            </div>
+          )}
+          {Object.entries(groupedLog).map(([mealKey, entries]) => (
+            <div key={mealKey} className="mb-4 last:mb-0">
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                {mealKey === 'other' ? mealLabel() : mealLabel(mealKey as MealType)}
+              </div>
+              <ul className="space-y-1 text-sm">
+                {entries.map((l, i) => (
+                  <li key={`${mealKey}-${i}`} className="flex justify-between">
+                    <span>{l.time} — {l.name}</span>
+                    <span className="text-muted-foreground tabular-nums">+{l.protein}g P • {l.cals} kcal</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
           <div className="mt-4 pt-3 border-t text-sm flex justify-between font-medium">
             <span>{t('fuelTotals', { defaultValue: 'Totals' })}</span>
-            <span>{t('fuelTotalsLine', { protein: totalProtein, cals: totalCals, defaultValue: `${totalProtein}g protein • ${totalCals} kcal` })}</span>
+            <span className="tabular-nums">{t('fuelTotalsLine', { protein: totalProtein, cals: totalCals, defaultValue: `${totalProtein}g protein • ${totalCals} kcal` })}</span>
           </div>
         </CardContent>
       </Card>
+      </StaggerItem>
 
       <div className="text-[10px] text-muted-foreground">{t('fuelLocalNote', { defaultValue: 'Data stored locally (synced when you sign in). Full integration + meal plans in the paid Nutrition course.' })}</div>
 
@@ -369,7 +439,33 @@ export function NutritionPage() {
       )}
 
       <SignInPrompt className="mt-2" nextPath="/nutrition" description={t('fuelSignInDesc', { defaultValue: 'Sync meals and macro history across devices.' })} />
-    </div>
+
+      <Button
+        variant="fitness"
+        size="lg"
+        className="fixed bottom-[calc(52px+env(safe-area-inset-bottom)+12px)] end-4 z-40 h-14 rounded-2xl shadow-lg shadow-emerald-950/40 gap-2 px-5 md:bottom-6"
+        onClick={() => setLogSheetOpen(true)}
+      >
+        <Plus className="h-5 w-5" />
+        {t('fuelLogFab', { defaultValue: 'Log food' })}
+      </Button>
+
+      <FuelLogSheet
+        open={logSheetOpen}
+        onClose={() => setLogSheetOpen(false)}
+        meal={activeMeal}
+        onMealChange={setActiveMeal}
+        quickFoods={QUICK_FOODS}
+        onLog={(name, p, c, carbs, fat) => addEntry(name, p, c, carbs, fat, activeMeal)}
+        customName={customName}
+        customP={customP}
+        customC={customC}
+        onCustomNameChange={setCustomName}
+        onCustomPChange={setCustomP}
+        onCustomCChange={setCustomC}
+        onCustomLog={addCustom}
+      />
+    </StaggerGroup>
   );
 }
 

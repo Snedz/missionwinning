@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
+import { applyCrossPillarCoachRules } from "@/lib/crossPillarCoach";
 import { gatherWeeklyPillarStats } from "@/lib/pillarScoreInputs";
 import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
 import { countSessionsInHourRange } from "@/lib/leaderboard/types";
@@ -22,6 +23,12 @@ import { TodayWeekSection } from "@/components/today/TodayWeekSection";
 import { TodayProgressSection } from "@/components/today/TodayProgressSection";
 import { TodayJournalStrip } from "@/components/today/TodayJournalStrip";
 import { TodayDashboardCustomize } from "@/components/today/TodayDashboardCustomize";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { buildTodayTrends, gatherJournalEntries } from "@/lib/todayTrends";
 import { loadTodayDashboardPrefs, type TodayDashboardPrefs, type TodaySectionId } from "@/lib/todayDashboardPrefs";
 import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
@@ -51,6 +58,7 @@ export function HomePage() {
       ? loadTodayDashboardPrefs()
       : { health: true, journal: true, week: true, progress: true, order: ['health', 'journal', 'week', 'progress'] }
   );
+  const [editTodayOpen, setEditTodayOpen] = useState(false);
 
   useEffect(() => {
     setSectionPrefs(loadTodayDashboardPrefs());
@@ -186,9 +194,21 @@ export function HomePage() {
     assessmentRisk: lastAssessment?.risk,
     pillarWins: recentPillarWins.length,
   });
-  const coachInsight = getCoachInsight(bodyScores, recommendedFocus, {
+  const baseCoachInsight = getCoachInsight(bodyScores, recommendedFocus, {
     assessmentRisk: lastAssessment?.risk,
   });
+  const coachInsight = applyCrossPillarCoachRules(
+    bodyScores,
+    recommendedFocus,
+    baseCoachInsight,
+    {
+      moveFlows: pillarStats.moveFlows,
+      mindSessions: pillarStats.mindSessions,
+      proteinDays: pillarStats.proteinDays,
+      trainDays: pillarStats.trainDays,
+    },
+    { assessmentRisk: lastAssessment?.risk }
+  );
 
   const todayTrends = useMemo(
     () => buildTodayTrends(workoutHistory, i18n.language),
@@ -217,7 +237,24 @@ export function HomePage() {
             })}
             defaultOpen={false}
           >
-            <TodayHealthSection insight={coachInsight} breakdown={scoreBreakdown} />
+            <TodayHealthSection
+              insight={coachInsight}
+              breakdown={scoreBreakdown}
+              coachContext={{
+                readiness: bodyScores.readiness,
+                strain: bodyScores.strain,
+                recovery: bodyScores.recovery,
+                missionScore: score,
+                streak,
+                focusGroup: recommendedFocus.group,
+                pillars: {
+                  moveFlows: pillarStats.moveFlows,
+                  mindSessions: pillarStats.mindSessions,
+                  proteinDays: pillarStats.proteinDays,
+                  trainDays: pillarStats.trainDays,
+                },
+              }}
+            />
           </TodaySection>
         );
       case 'journal':
@@ -295,6 +332,8 @@ export function HomePage() {
           userEmail={userEmail}
           action={action}
           showFocusLine={layout.showFocusLine}
+          showEditToday={layout.showDetailsAccordion}
+          onEditToday={() => setEditTodayOpen(true)}
         />
       ),
     },
@@ -352,7 +391,6 @@ export function HomePage() {
       key: 'accordion',
       node: (
         <div className="space-y-3">
-          <TodayDashboardCustomize prefs={sectionPrefs} onChange={setSectionPrefs} />
           <TodaySections>
             {sectionPrefs.order.map((id) => (
               <div key={id}>{renderAccordionSection(id)}</div>
@@ -364,12 +402,22 @@ export function HomePage() {
   }
 
   return (
-    <StaggerGroup className="space-y-6">
+    <>
+      <Dialog open={editTodayOpen} onOpenChange={setEditTodayOpen}>
+        <DialogContent className="sm:max-w-md max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{t('todayCustomizeTitle', { defaultValue: 'Customize Today' })}</DialogTitle>
+          </DialogHeader>
+          <TodayDashboardCustomize prefs={sectionPrefs} onChange={setSectionPrefs} />
+        </DialogContent>
+      </Dialog>
+      <StaggerGroup className="space-y-6">
       {staggerBlocks.map(({ key, node }, index) => (
         <StaggerItem key={key} index={index}>
           {node}
         </StaggerItem>
       ))}
     </StaggerGroup>
+    </>
   );
 }

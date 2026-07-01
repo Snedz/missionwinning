@@ -13,6 +13,37 @@ export function isPrivateModeEnabled(): boolean {
   return process.env.NODE_ENV === 'production';
 }
 
+/** Page routes reachable without the access cookie while the gate is active. */
+export const PUBLIC_PATHS_WHILE_GATED = [
+  '/private',
+  '/privacy',
+  '/terms',
+  '/about',
+  '/auth/callback',
+] as const;
+
+/** API routes that must stay reachable for webhooks and the gate form (no access cookie). */
+export const PUBLIC_API_PATHS_WHILE_GATED = [
+  '/api/private-access',
+  '/api/stripe-webhook',
+  '/api/paypal-webhook',
+] as const;
+
+export function isPublicPathWhileGated(pathname: string): boolean {
+  if (pathname.startsWith('/_next')) return true;
+  if (pathname.startsWith('/private')) return true;
+  return PUBLIC_PATHS_WHILE_GATED.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`)
+  );
+}
+
+export function isPublicApiPathWhileGated(pathname: string): boolean {
+  if (!pathname.startsWith('/api')) return false;
+  return PUBLIC_API_PATHS_WHILE_GATED.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`)
+  );
+}
+
 const NO_STORE = 'private, no-store, no-cache, must-revalidate';
 
 export function privateGateHeaders(): Record<string, string> {

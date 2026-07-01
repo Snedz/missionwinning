@@ -30,5 +30,16 @@
   "fuelPremiumRecipesTitle": "Recetas premium (Super Bundle)",
   "fuelPremiumLockedTitle": "+{{count}} recetas premium",
   "fuelPremiumLockedBody": "Desbloquea la biblioteca Fuel completa y coaching avanzado con Super Bundle.",
-  "fuelExploreBundle": "Explorar Super Bundle"
+  "fuelExploreBundle": "Explorar Super Bundle",
+  "fuelLogFab": "Log food",
+  "fuelLogSheetTitle": "Log to Fuel",
+  "fuelTabQuick": "Quick",
+  "fuelTabCustom": "Custom",
+  "fuelTabPhoto": "Photo",
+  "fuelMealBreakfast": "Breakfast",
+  "fuelMealLunch": "Lunch",
+  "fuelMealDinner": "Dinner",
+  "fuelMealSnack": "Snack",
+  "fuelMealOther": "Other",
+  "fuelLogStreak": "{{count}}-day log streak"
 }

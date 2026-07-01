@@ -17,6 +17,7 @@ import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { showOwnerTools } from '@/lib/ownerTools';
 
 const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi', 'zh', 'id', 'ar'] as const;
 const NATIVE_NAMES: Record<string, string> = {
@@ -150,6 +151,7 @@ export function ProfilePage() {
   })() : null;
 
   const funnel = getBetaFunnelMetrics(state);
+  const ownerTools = showOwnerTools();
 
   const handleEmailNudge = async () => {
     setNudgeLoading(true);
@@ -212,7 +214,11 @@ export function ProfilePage() {
               <SignInPanel nextPath="/profile" compact />
             </div>
           )}
-          <div className="text-xs text-muted-foreground">Premium status from Supabase enrollments (demo requests log a lead + grant local access). Full real payments + auth when LLC ready.</div>
+          <div className="text-xs text-muted-foreground">
+            {ownerTools
+              ? 'Premium status from Supabase enrollments (demo requests log a lead + grant local access). Full real payments + auth when LLC ready.'
+              : t('premiumStatusFoot', { defaultValue: 'Premium unlocks via Super Bundle subscription.' })}
+          </div>
         </CardContent>
       </Card>
 
@@ -329,7 +335,7 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
-      <BetaAdminPanel enabled={!!email} />
+      {ownerTools && <BetaAdminPanel enabled={!!email} />}
 
       {/* Journey profile — first-time onboarding or edit link */}
       {!isOnboarded ? (
@@ -377,7 +383,9 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
-      {/* Owner Revenue Snapshot - Cardone-style beta proof + real numbers for founder view */}
+      {ownerTools && (
+      <>
+      {/* Owner Revenue Snapshot - founder view only */}
       <Card className="border-emerald-500/40 bg-emerald-950/10">
         <CardHeader><CardTitle>{t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}</CardTitle></CardHeader>
         <CardContent className="space-y-2 text-sm">
@@ -401,9 +409,11 @@ export function ProfilePage() {
           <div className="text-xs mt-2">Tracks journey phases, milestones, bundle CTAs, feedback, and installs. Syncs to Supabase when signed in.</div>
         </CardContent>
       </Card>
+      </>
+      )}
 
       <Card>
-        <CardHeader><CardTitle>{t('dataExport', { defaultValue: 'Data Export (Premium Demo)' })}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('dataExport', { defaultValue: 'Export your data' })}</CardTitle></CardHeader>
         <CardContent>
           <Button onClick={() => {
             const data = {
@@ -420,7 +430,7 @@ export function ProfilePage() {
             a.click();
             URL.revokeObjectURL(url);
           }}>{t('exportData', { defaultValue: 'Export Logs (JSON)' })}</Button>
-          <div className="text-xs mt-2">Premium feature stub. Full CSV/PDF in production. (Works for demo even in free.)</div>
+          <div className="text-xs mt-2">{t('dataExportFoot', { defaultValue: 'Download workouts and nutrition logs from this device.' })}</div>
         </CardContent>
       </Card>
 
