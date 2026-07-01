@@ -10,6 +10,8 @@ import { gatherWeeklyPillarStats } from "@/lib/pillarScoreInputs";
 import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
 import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
+import { getStoredEquipment } from "@/lib/equipmentPrefs";
+import { isLowImpactGated } from "@/lib/pathfinderAssessment";
 import { getUser, getUserNutritionForDate } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
@@ -78,7 +80,10 @@ export function HomePage() {
   const streak = getTrainingStreak(workoutHistory);
   const nightSessions = countSessionsInHourRange(workoutHistory, 22, 5);
   const dawnSessions = countSessionsInHourRange(workoutHistory, 5, 8);
-  const todaysWorkout = getTodaysWorkout();
+  const todaysWorkout = getTodaysWorkout(new Date(), {
+    equipment: typeof window !== 'undefined' ? getStoredEquipment() : 'bodyweight',
+    lowImpactOnly: typeof window !== 'undefined' ? isLowImpactGated() : false,
+  });
   const [challenges, setChallenges] = useState<ReturnType<typeof getChallengeProgress>>([]);
   const [pillarStats, setPillarStats] = useState(() => ({
     moveFlows: 0,
@@ -223,7 +228,7 @@ export function HomePage() {
   // Onboarding via I-Day journey (Profile fields synced from /welcome)
   const userGoalRaw = typeof window !== 'undefined' ? (localStorage.getItem('mw_primary_goal') || goalPresetValue('strength')) : goalPresetValue('strength');
   const userGoal = formatStoredGoal(userGoalRaw, t);
-  const userEquip = typeof window !== 'undefined' ? (localStorage.getItem('mw_equipment') || 'full-gym') : 'full-gym';
+  const userEquip = typeof window !== 'undefined' ? getStoredEquipment() : 'bodyweight';
 
   const renderAccordionSection = (id: TodaySectionId) => {
     if (!sectionPrefs[id]) return null;

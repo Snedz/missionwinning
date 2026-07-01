@@ -4,7 +4,19 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-06-29 — Vision plan refresh + Phase G (PFT / America G1–G8)
+## 2026-06-29 — Phase J1/J3/J5: Pathfinder, connectivity, bodyweight defaults
+
+**Build:** `2025.06-unified.46`
+
+### Shipped
+
+- **J3 Pathfinder Assessment** — care-access step on `/assessments`; self-managed track; low-impact program gate
+- **J1 Connectivity** — `ConnectivityProvider`, offline/lite banner, Profile lite-mode toggle
+- **J5 Rural preset** — “Where do you train?” on Welcome; bodyweight default chain (Home, Library, Today WOD)
+
+**Tests:** 135 passing (+16 new)
+
+---
 
 **Docs:** [VISION_STATUS.md](VISION_STATUS.md), [PLAN.md](PLAN.md) Phase G/H/I  
 **Build:** `2025.06-unified.45`

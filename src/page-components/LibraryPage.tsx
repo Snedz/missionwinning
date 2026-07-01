@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,7 @@ import { PROGRAM_TAG_LABELS } from "@/data/exerciseEnrichment";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { usePremium } from "@/hooks/usePremium";
 import type { ProgramTag } from "@/types";
+import { equipmentLibraryFilter, getStoredEquipment } from "@/lib/equipmentPrefs";
 
 const TAG_OPTIONS: { value: ProgramTag | ""; label: string }[] = [
   { value: "", label: "All styles" },
@@ -26,6 +27,10 @@ export function LibraryPage() {
   const [level, setLevel] = useState("");
   const { premium } = usePremium();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+
+  useEffect(() => {
+    setEquip(equipmentLibraryFilter(getStoredEquipment()));
+  }, []);
 
   const filtered = EXERCISES.filter((e) => {
     const matchQ =

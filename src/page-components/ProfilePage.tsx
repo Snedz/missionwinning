@@ -18,6 +18,7 @@ import { scheduleJourneyPush } from '@/lib/journeySync';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { showOwnerTools } from '@/lib/ownerTools';
+import { useConnectivity } from '@/components/connectivity/ConnectivityProvider';
 
 const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi', 'zh', 'id', 'ar'] as const;
 const NATIVE_NAMES: Record<string, string> = {
@@ -64,6 +65,7 @@ function LanguageSwitcher() {
 export function ProfilePage() {
   const { t } = useTranslation();
   const { isCommissioned, state, action } = useMissionJourney();
+  const { litePreference, setLitePreference } = useConnectivity();
   const [email, setEmail] = useState<string | null>(null);
   const [nudgeLoading, setNudgeLoading] = useState(false);
   const [nudgeSent, setNudgeSent] = useState(false);
@@ -230,6 +232,27 @@ export function ProfilePage() {
             <Button variant={units === "imperial" ? "default" : "outline"} onClick={() => saveUnits("imperial")}>{t('imperial', { defaultValue: 'Imperial (lbs, in)' })}</Button>
           </div>
           <div className="text-xs mt-2 text-muted-foreground">Affects calculators and future logs. (Global default metric for accessibility.)</div>
+        </CardContent>
+      </Card>
+
+      <Card className="content-card">
+        <CardHeader>
+          <CardTitle>{t('connectivityLite', { defaultValue: 'Use less data (Lite mode)' })}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
+            <input
+              type="checkbox"
+              checked={litePreference}
+              onChange={(e) => setLitePreference(e.target.checked)}
+              className="rounded border-border"
+            />
+            <span>
+              {t('connectivityLiteHint', {
+                defaultValue: 'Pause cloud coach and heavy sync — ideal for rural LTE or save-data plans.',
+              })}
+            </span>
+          </label>
         </CardContent>
       </Card>
 

@@ -21,6 +21,12 @@ import {
   goalPresetValue,
   isCustomGoal,
 } from '@/lib/journeyGoals';
+import {
+  type TrainLocation,
+  TRAIN_LOCATIONS,
+  saveTrainLocation,
+  trainLocationSuggestsBodyweight,
+} from '@/lib/equipmentPrefs';
 
 type Step = 'welcome' | 'mission' | 'profile' | 'signin';
 
@@ -35,6 +41,7 @@ export function WelcomePage() {
   const [step, setStep] = useState<Step>('welcome');
   const [experience, setExperience] = useState('beginner');
   const [equipment, setEquipment] = useState('bodyweight');
+  const [trainLocation, setTrainLocation] = useState<TrainLocation>('home');
   const [primaryGoal, setPrimaryGoal] = useState(() => goalPresetValue('strength'));
 
   const experienceLabel = (value: string) => {
@@ -49,10 +56,28 @@ export function WelcomePage() {
     return t('welcomeEquipFullGym', { defaultValue: 'Full gym access' });
   };
 
+  const trainLocationLabel = (value: TrainLocation) => {
+    if (value === 'village') return t('welcomeTrainVillage', { defaultValue: 'Village / rural area' });
+    if (value === 'home') return t('welcomeTrainHome', { defaultValue: 'Home' });
+    if (value === 'school') return t('welcomeTrainSchool', { defaultValue: 'School / schoolyard' });
+    return t('welcomeTrainGym', { defaultValue: 'Gym or fitness center' });
+  };
+
+  const handleTrainLocationChange = (value: TrainLocation) => {
+    setTrainLocation(value);
+    if (trainLocationSuggestsBodyweight(value)) {
+      setEquipment('bodyweight');
+    }
+  };
+
   useEffect(() => {
     if (!isEdit || typeof window === 'undefined') return;
     setExperience(localStorage.getItem('mw_experience') || 'beginner');
     setEquipment(localStorage.getItem('mw_equipment') || 'bodyweight');
+    const loc = localStorage.getItem('mw_train_location');
+    if (loc && TRAIN_LOCATIONS.includes(loc as TrainLocation)) {
+      setTrainLocation(loc as TrainLocation);
+    }
     setPrimaryGoal(
       localStorage.getItem('mw_primary_goal') ||
         localStorage.getItem('mw_goals') ||
@@ -64,6 +89,7 @@ export function WelcomePage() {
   const saveProfileFields = () => {
     localStorage.setItem('mw_experience', experience);
     localStorage.setItem('mw_equipment', equipment);
+    saveTrainLocation(trainLocation);
     localStorage.setItem('mw_primary_goal', primaryGoal);
     localStorage.setItem('mw_goals', primaryGoal);
     scheduleJourneyPush();
@@ -75,6 +101,8 @@ export function WelcomePage() {
       router.push('/profile');
       return;
     }
+    saveTrainLocation(trainLocation);
+    localStorage.setItem('mw_equipment', equipment);
     completeIDay({ experience, equipment, primaryGoal });
     router.push('/log');
   };
@@ -206,6 +234,22 @@ export function WelcomePage() {
                     {EXPERIENCE_VALUES.map((value) => (
                       <option key={value} value={value}>
                         {experienceLabel(value)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block space-y-1 text-sm">
+                  <span className="text-muted-foreground">
+                    {t('welcomeTrainWhere', { defaultValue: 'Where do you train?' })}
+                  </span>
+                  <select
+                    value={trainLocation}
+                    onChange={(e) => handleTrainLocationChange(e.target.value as TrainLocation)}
+                    className="w-full rounded-md bg-background border border-border px-3 py-2"
+                  >
+                    {TRAIN_LOCATIONS.map((value) => (
+                      <option key={value} value={value}>
+                        {trainLocationLabel(value)}
                       </option>
                     ))}
                   </select>
