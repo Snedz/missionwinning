@@ -13,10 +13,12 @@ import {
   joinClass,
   leaveClass,
   loadTeacherClasses,
+  mergeCloudTeacherClass,
   normalizeClassCode,
   saveTeacherClass,
   teacherDashboardUrl,
 } from '@/lib/schoolClass';
+import { getUser } from '@/lib/supabase';
 import { buildClassInviteShareText, shareText } from '@/lib/shareFitnessMission';
 
 type ClassStatsResponse = {
@@ -68,6 +70,25 @@ export function SchoolClassPanel() {
     if (joined) void refreshStats(joined);
   }, [joined]);
 
+  useEffect(() => {
+    void (async () => {
+      const user = await getUser();
+      if (!user) return;
+      try {
+        const res = await fetch('/api/school/class/mine', { credentials: 'include' });
+        if (!res.ok) return;
+        const data = (await res.json()) as {
+          classes?: { code: string; name: string; teacherPin: string | null; createdAt: string }[];
+        };
+        for (const row of data.classes ?? []) {
+          mergeCloudTeacherClass(row);
+        }
+      } catch {
+        /* local classes still work */
+      }
+    })();
+  }, []);
+
   const handleJoin = () => {
     const code = joinClass(joinInput);
     if (!code) {
@@ -94,8 +115,9 @@ export function SchoolClassPanel() {
     );
 
     try {
-      await fetch('/api/school/class', {
+      const res = await fetch('/api/school/class', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           code: record.code,
@@ -103,6 +125,22 @@ export function SchoolClassPanel() {
           teacherPin: record.teacherPin,
         }),
       });
+      if (res.status === 401) {
+        setMessage(
+          t('schoolSignInSync', {
+            defaultValue: 'Class saved locally. Sign in to sync this class across devices.',
+          })
+        );
+      } else if (!res.ok) {
+        const data = (await res.json()) as { error?: string };
+        if (data.error === 'forbidden') {
+          setMessage(
+            t('schoolCodeTaken', {
+              defaultValue: 'That class code is registered to another teacher.',
+            })
+          );
+        }
+      }
     } catch {
       /* local-only ok */
     }

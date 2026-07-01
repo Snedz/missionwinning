@@ -4,18 +4,19 @@ import { Suspense, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Flag, Printer, Trophy, Users } from 'lucide-react';
+import { Download, Flag, Printer, Trophy, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PftWeekOnePrintSheet } from '@/components/fitness-test/PftWeekOnePrintSheet';
+import { TeacherClassPrintSheet } from '@/components/fitness-test/TeacherClassPrintSheet';
 import { awardLabel, type FitnessAwardTier } from '@/lib/presidentialFitnessTest';
 import {
   getTeacherPin,
   normalizeClassCode,
   classJoinUrl,
   saveTeacherPin,
-  teacherDashboardUrl,
 } from '@/lib/schoolClass';
+import { formatClassStandingsCsv } from '@/lib/schoolClassExport';
 import { formatWeekOneChallengeText } from '@/data/pftWeekOneChallenge';
 
 type ClassStats = {
@@ -43,59 +44,59 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
   const [entries, setEntries] = useState<ClassPftEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [unlocked, setUnlocked] = useState(false);
+  const [isCreator, setIsCreator] = useState(false);
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
+  const [printMode, setPrintMode] = useState<'week1' | 'report'>('week1');
 
   const className = stats?.className ?? t('schoolDefaultName', { defaultValue: 'PE Class' });
 
-  const tryUnlock = useCallback(
+  const checkAccess = useCallback(
     async (pin: string) => {
       const trimmed = pin.trim();
-      if (!trimmed) return;
-      const local = getTeacherPin(code);
-      if (local && local === trimmed) {
-        saveTeacherPin(code, trimmed);
-        setUnlocked(true);
-        setPinError('');
-        if (searchParams.get('pin')) {
-          router.replace(`/school/class/${code}`, { scroll: false });
-        }
-        return;
-      }
       try {
-        const res = await fetch(`/api/school/class/${code}/verify?pin=${encodeURIComponent(trimmed)}`);
-        const data = (await res.json()) as { ok?: boolean };
-        if (data.ok) {
-          saveTeacherPin(code, trimmed);
+        const url = trimmed
+          ? `/api/school/class/${code}/access?pin=${encodeURIComponent(trimmed)}`
+          : `/api/school/class/${code}/access`;
+        const res = await fetch(url, { credentials: 'include' });
+        const data = (await res.json()) as {
+          unlocked?: boolean;
+          isCreator?: boolean;
+        };
+        if (data.unlocked) {
+          if (trimmed) saveTeacherPin(code, trimmed);
           setUnlocked(true);
+          setIsCreator(Boolean(data.isCreator));
           setPinError('');
           if (searchParams.get('pin')) {
             router.replace(`/school/class/${code}`, { scroll: false });
           }
-          return;
+          return true;
         }
       } catch {
         /* fall through */
       }
-      if (local && local === trimmed) {
-        setUnlocked(true);
-        return;
-      }
-      setPinError(t('teacherPinInvalid', { defaultValue: 'Incorrect teacher PIN.' }));
+      return false;
     },
-    [code, t, searchParams, router]
+    [code, searchParams, router]
+  );
+
+  const tryUnlock = useCallback(
+    async (pin: string) => {
+      const ok = await checkAccess(pin);
+      if (!ok) {
+        setPinError(t('teacherPinInvalid', { defaultValue: 'Incorrect teacher PIN.' }));
+      }
+    },
+    [checkAccess, t]
   );
 
   useEffect(() => {
     const qPin = searchParams.get('pin');
-    if (qPin) {
-      setPinInput(qPin);
-      void tryUnlock(qPin);
-    } else {
-      const local = getTeacherPin(code);
-      if (local) void tryUnlock(local);
-    }
-  }, [code, searchParams, tryUnlock]);
+    if (qPin) setPinInput(qPin);
+    const local = getTeacherPin(code);
+    void checkAccess(qPin || local || '');
+  }, [code, searchParams, checkAccess]);
 
   useEffect(() => {
     if (!unlocked) return;
@@ -121,7 +122,10 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
     };
   }, [code, unlocked]);
 
-  const printChallenge = () => window.print();
+  const printSheet = (mode: 'week1' | 'report') => {
+    setPrintMode(mode);
+    requestAnimationFrame(() => window.print());
+  };
 
   const copyChallenge = async () => {
     await navigator.clipboard?.writeText(formatWeekOneChallengeText(className, code));
@@ -134,6 +138,17 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
     const a = document.createElement('a');
     a.href = url;
     a.download = `mission-winning-pft-week1-${code}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const downloadStandingsCsv = () => {
+    const csv = formatClassStandingsCsv(className, code, entries);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `mission-winning-standings-${code}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -190,6 +205,11 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
             </div>
             <h1 className="text-2xl font-bold tracking-tight">{className}</h1>
             <p className="text-sm text-muted-foreground mt-1 font-mono">{code}</p>
+            {isCreator && (
+              <p className="text-xs text-emerald-400 mt-1">
+                {t('teacherCreatorBadge', { defaultValue: 'Signed in as class creator' })}
+              </p>
+            )}
           </div>
           <Button variant="outline" size="sm" asChild>
             <Link href="/america">/america</Link>
@@ -242,12 +262,19 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
               </CardHeader>
               <CardContent>
                 {entries.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">{t('teacherPftEmpty', { defaultValue: 'No synced results yet.' })}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t('teacherPftEmpty', { defaultValue: 'No synced results yet.' })}
+                  </p>
                 ) : (
                   <ul className="space-y-2 text-sm">
                     {entries.map((e) => (
-                      <li key={`${e.rank}-${e.athleteLabel}`} className="flex justify-between gap-4 border-b border-border/40 pb-2">
-                        <span>#{e.rank} {e.athleteLabel}</span>
+                      <li
+                        key={`${e.rank}-${e.athleteLabel}`}
+                        className="flex justify-between gap-4 border-b border-border/40 pb-2"
+                      >
+                        <span>
+                          #{e.rank} {e.athleteLabel}
+                        </span>
                         <span className="text-muted-foreground shrink-0">
                           {awardLabel(e.bestTier as FitnessAwardTier)} · {e.score} pts
                         </span>
@@ -255,11 +282,21 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                     ))}
                   </ul>
                 )}
-                <Button variant="outline" size="sm" className="mt-4" asChild>
-                  <Link href={`/leaderboard?board=presidential-fitness&scope=class&class=${code}`}>
-                    {t('teacherOpenLeaderboard', { defaultValue: 'Open PFT leaderboard →' })}
-                  </Link>
-                </Button>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={`/leaderboard?board=presidential-fitness&scope=class&class=${code}`}>
+                      {t('teacherOpenLeaderboard', { defaultValue: 'Open PFT leaderboard →' })}
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-1.5" onClick={downloadStandingsCsv}>
+                    <Download className="h-4 w-4" />
+                    {t('teacherDownloadCsv', { defaultValue: 'Download CSV' })}
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-1.5" onClick={() => printSheet('report')}>
+                    <Printer className="h-4 w-4" />
+                    {t('teacherPrintReport', { defaultValue: 'Print report' })}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
@@ -268,7 +305,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
                 <CardTitle className="text-base">{t('teacherWeekOne', { defaultValue: 'Week 1 challenge' })}</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-wrap gap-2">
-                <Button onClick={printChallenge} className="gap-2">
+                <Button onClick={() => printSheet('week1')} className="gap-2">
                   <Printer className="h-4 w-4" />
                   {t('teacherPrint', { defaultValue: 'Print' })}
                 </Button>
@@ -288,7 +325,20 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
           </>
         )}
       </div>
-      <PftWeekOnePrintSheet className={className} classCode={code} />
+      {printMode === 'week1' ? (
+        <PftWeekOnePrintSheet className={className} classCode={code} />
+      ) : (
+        <TeacherClassPrintSheet
+          className={className}
+          classCode={code}
+          stats={{
+            uniqueAthletes: stats?.uniqueAthletes ?? 0,
+            totalTests: stats?.totalTests ?? 0,
+            tierCounts: stats?.tierCounts ?? {},
+          }}
+          entries={entries}
+        />
+      )}
     </>
   );
 }
