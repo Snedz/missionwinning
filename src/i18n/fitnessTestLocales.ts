@@ -21,6 +21,8 @@ type FitnessTestStrings = {
   pftBack: string;
   pftResultsTitle: string;
   pftOverallAward: string;
+  pftClassRank: string;
+  pftViewClassBoard: string;
   pftBackBenchmarks: string;
   pftShareAmerica: string;
   pftMilePlaceholder: string;
@@ -34,6 +36,8 @@ type FitnessTestStrings = {
   americaHeroTitle: string;
   americaHeroMaha: string;
   americaHeroDefault: string;
+  americaHeroCouncilMember: string;
+  americaHeroCouncilPending: string;
   americaKids: string;
   americaKidsDesc: string;
   americaPft: string;
@@ -63,6 +67,9 @@ type FitnessTestStrings = {
   schoolInvalidCode: string;
   schoolJoined: string;
   schoolStats: string;
+  schoolViewStandings: string;
+  schoolSignInSync: string;
+  schoolCodeTaken: string;
   schoolRefreshStats: string;
   schoolLeave: string;
   schoolCreateTitle: string;
@@ -99,6 +106,9 @@ type FitnessTestStrings = {
   teacherPinInvalid: string;
   teacherPinUnlock: string;
   teacherDownloadPlan: string;
+  teacherDownloadCsv: string;
+  teacherPrintReport: string;
+  teacherCreatorBadge: string;
   youthVerifyTitle: string;
   youthVerifySent: string;
   youthVerifyPending: string;
@@ -108,6 +118,7 @@ type FitnessTestStrings = {
   youthConfirmTitle: string;
   youthConfirmLoading: string;
   youthConfirmOk: string;
+  youthConfirmCrossDevice: string;
   youthConfirmError: string;
   youthConfirmBack: string;
 };
@@ -136,6 +147,8 @@ const en: FitnessTestStrings = {
   pftBack: 'Back',
   pftResultsTitle: 'Your fitness test results',
   pftOverallAward: 'Overall award',
+  pftClassRank: '#{{rank}} in class {{code}}',
+  pftViewClassBoard: 'View class standings →',
   pftBackBenchmarks: 'Back to Benchmarks',
   pftShareAmerica: 'National fitness mission →',
   pftMilePlaceholder: '6:30 or 390',
@@ -156,6 +169,10 @@ const en: FitnessTestStrings = {
     "Mission Winning is bringing back the spirit of the Presidential Fitness Test — inspiring kids to get moving and restoring a culture of strength, health, and fitness. Let's Make America Healthy Again!",
   americaHeroDefault:
     'Mission Winning is reviving the Presidential Fitness Test tradition — free digital scoring for families, schools, and anyone ready to move with purpose.',
+  americaHeroCouncilMember:
+    'Mission Winning supports national fitness priorities with free Presidential Fitness Test tools for families, schools, and communities — built in service of a stronger, healthier America.',
+  americaHeroCouncilPending:
+    'Mission Winning is advancing national fitness tools in coordination with leadership on sports and youth health — starting with free Presidential Fitness Test scoring for every community.',
   americaKids: 'Kids & schools',
   americaKidsDesc: 'Age-based scoring, mini tests, and daily 10-minute missions.',
   americaPft: 'Presidential Fitness Test',
@@ -174,7 +191,7 @@ const en: FitnessTestStrings = {
   americaDisabled: 'National fitness track is not enabled in this build.',
   youthGateTitle: 'Parent or guardian approval',
   youthGateBody:
-    'Athletes under 13 need a parent or guardian to approve before logging fitness test results. We store consent locally on this device only.',
+    'Athletes under 13 need a parent or guardian to approve before logging fitness test results. When signed in, verified consent can sync across devices.',
   youthParentEmail: 'Parent/guardian email',
   youthConsentCheckbox:
     'I am the parent/guardian. I consent to my child using Mission Winning fitness tools. I understand this is not medical advice and results stay on this device unless we sign in to sync.',
@@ -189,6 +206,9 @@ const en: FitnessTestStrings = {
   schoolInvalidCode: 'Enter a valid class code (e.g. MWA3K9).',
   schoolJoined: 'Joined class',
   schoolStats: '{{tests}} tests · {{athletes}} athletes synced',
+  schoolViewStandings: 'Class standings →',
+  schoolSignInSync: 'Class saved locally. Sign in to sync this class across devices.',
+  schoolCodeTaken: 'That class code is registered to another teacher.',
   schoolRefreshStats: 'Refresh stats',
   schoolLeave: 'Leave class',
   schoolCreateTitle: 'Create a class',
@@ -226,6 +246,9 @@ const en: FitnessTestStrings = {
   teacherPinInvalid: 'Incorrect teacher PIN.',
   teacherPinUnlock: 'Unlock dashboard',
   teacherDownloadPlan: 'Download .txt',
+  teacherDownloadCsv: 'Download CSV',
+  teacherPrintReport: 'Print report',
+  teacherCreatorBadge: 'Signed in as class creator',
   youthVerifyTitle: 'Enter verification code',
   youthVerifySent:
     'We emailed your parent/guardian a 6-digit code and confirm link. Enter the code here to continue.',
@@ -236,13 +259,125 @@ const en: FitnessTestStrings = {
   youthConfirmTitle: 'Parent consent',
   youthConfirmLoading: 'Confirming…',
   youthConfirmOk: 'Consent verified. Redirecting to the fitness test…',
+  youthConfirmCrossDevice:
+    'Consent saved to the athlete account. They can continue on any signed-in device.',
   youthConfirmError: 'Link expired or invalid. Ask your parent to resubmit consent.',
   youthConfirmBack: 'Back to fitness test',
 };
 
+const es: FitnessTestStrings = {
+  ...en,
+  councilTitle: 'Misión nacional de fitness',
+  councilBodyAspirational:
+    'Mission Winning se alinea con las prioridades nacionales de deporte, fitness y nutrición — herramientas gratuitas para que los niños se muevan y las familias se fortalezcan.',
+  councilBodyPending:
+    'Mission Winning apoya el movimiento nacional para restaurar el fitness juvenil — con liderazgo avanzando prioridades del Consejo.',
+  councilBodyMember:
+    'Mission Winning lleva la misión del Consejo Presidencial de Deportes, Fitness y Nutrición a cada hogar y escuela.',
+  mahaTagline:
+    'Hagamos a América saludable de nuevo — empezando con fuerza, movimiento y familias entrenando juntas.',
+  americaHeroTitle: 'Fuerza para la próxima generación',
+  americaHeroMaha:
+    'Mission Winning revive el espíritu del Presidential Fitness Test — moviendo a los niños y restaurando una cultura de salud. ¡Hagamos a América saludable de nuevo!',
+  americaHeroDefault:
+    'Mission Winning revive la tradición del Presidential Fitness Test — puntuación digital gratuita para familias y escuelas.',
+  americaHeroCouncilMember:
+    'Mission Winning apoya las prioridades nacionales de fitness con herramientas gratuitas del Presidential Fitness Test.',
+  americaHeroCouncilPending:
+    'Mission Winning avanza herramientas nacionales de fitness en coordinación con el liderazgo en deporte juvenil.',
+  schoolTitle: 'Escuela y clase de EF',
+  schoolJoin: 'Unirse a la clase',
+  teacherPinTitle: 'PIN de profesor requerido',
+  teacherDownloadCsv: 'Descargar CSV',
+  teacherPrintReport: 'Imprimir informe',
+};
+
+const fr: FitnessTestStrings = {
+  ...en,
+  councilTitle: 'Mission fitness nationale',
+  councilBodyAspirational:
+    'Mission Winning s\'aligne sur les priorités nationales sport, fitness et nutrition — des outils gratuits pour aider les enfants à bouger.',
+  councilBodyPending:
+    'Mission Winning soutient le mouvement national pour restaurer la forme des jeunes — en avançant les priorités du Conseil.',
+  councilBodyMember:
+    'Mission Winning porte la mission du Conseil présidentiel du sport, du fitness et de la nutrition dans chaque foyer et école.',
+  americaHeroTitle: 'La force pour la prochaine génération',
+  americaHeroCouncilMember:
+    'Mission Winning soutient les priorités nationales de fitness avec des outils gratuits du Presidential Fitness Test.',
+  americaHeroCouncilPending:
+    'Mission Winning fait avancer les outils nationaux de fitness en coordination avec le leadership sportif jeunesse.',
+  schoolTitle: 'École et cours d\'EPS',
+  teacherDownloadCsv: 'Télécharger CSV',
+  teacherPrintReport: 'Imprimer le rapport',
+};
+
+const ja: FitnessTestStrings = {
+  ...en,
+  councilTitle: '国家フィットネス・ミッション',
+  councilBodyAspirational:
+    'Mission Winningはスポーツ・フィットネス・栄養の国家優先事項に沿って構築 — 子どもが動き、家族が強くなる無料ツール。',
+  councilBodyPending:
+    'Mission Winningは青少年フィットネス復興の国家運動を支援 — カウンシル優先事項を推進。',
+  councilBodyMember:
+    'Mission Winningは大統領スポーツ・フィットネス・栄養評議会の使命を家庭と学校へ。',
+  americaHeroTitle: '次世代のための強さ',
+  americaHeroCouncilMember:
+    'Mission Winningは大統領フィットネステストの無料ツールで国家フィットネス優先事項を支援。',
+  americaHeroCouncilPending:
+    'Mission Winningは青少年スポーツリーダーシップと連携し、国家フィットネスツールを推進。',
+  schoolTitle: '学校・体育クラス',
+  teacherDownloadCsv: 'CSVをダウンロード',
+  teacherPrintReport: 'レポートを印刷',
+};
+
+const de: FitnessTestStrings = {
+  ...en,
+  councilTitle: 'Nationale Fitness-Mission',
+  councilBodyAspirational:
+    'Mission Winning orientiert sich an nationalen Prioritäten für Sport, Fitness und Ernährung — kostenlose Tools für bewegte Kinder.',
+  councilBodyPending:
+    'Mission Winning unterstützt die nationale Bewegung für Jugendfitness — mit Führung für Council-Prioritäten.',
+  councilBodyMember:
+    'Mission Winning trägt die Mission des President\'s Council on Sports, Fitness, and Nutrition in jedes Zuhause und jede Schule.',
+  americaHeroCouncilMember:
+    'Mission Winning unterstützt nationale Fitness-Prioritäten mit kostenlosen Presidential Fitness Test Tools.',
+  americaHeroCouncilPending:
+    'Mission Winning treibt nationale Fitness-Tools in Abstimmung mit der Jugendsport-Führung voran.',
+  teacherDownloadCsv: 'CSV herunterladen',
+  teacherPrintReport: 'Bericht drucken',
+};
+
+const zh: FitnessTestStrings = {
+  ...en,
+  councilTitle: '国家健身使命',
+  councilBodyAspirational:
+    'Mission Winning 与国家体育、健身和营养优先事项保持一致 — 免费工具帮助孩子们动起来。',
+  councilBodyPending:
+    'Mission Winning 支持恢复青少年健身的国家运动 — 推进理事会优先事项。',
+  councilBodyMember:
+    'Mission Winning 将总统体育、健身与营养委员会的使命带入每个家庭和学校。',
+  americaHeroTitle: '为下一代打造力量',
+  americaHeroCouncilMember:
+    'Mission Winning 通过免费的总统健身测试工具支持国家健身优先事项。',
+  americaHeroCouncilPending:
+    'Mission Winning 与青少年体育领导层协调，推进国家健身工具。',
+  schoolTitle: '学校与体育班',
+  teacherDownloadCsv: '下载 CSV',
+  teacherPrintReport: '打印报告',
+};
+
+const FITNESS_TEST_LOCALES: Record<string, FitnessTestStrings> = {
+  en,
+  es,
+  fr,
+  ja,
+  de,
+  zh,
+};
+
 export function fitnessTestStringsFor(lang: string): FitnessTestStrings {
-  if (lang === 'en') return en;
-  return en;
+  const code = lang.split('-')[0].toLowerCase();
+  return FITNESS_TEST_LOCALES[code] ?? en;
 }
 
 export function mergeFitnessTestStrings(
