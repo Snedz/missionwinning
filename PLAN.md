@@ -2,7 +2,8 @@
 
 Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA). Filter every task through [vision.md](vision.md).
 
-**Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.
+**Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.  
+**Rural equity & connectivity:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) — offline, Pathfinder, accessibility.
 
 ## Design north stars (UI + product)
 
@@ -29,8 +30,9 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 | **G** | PFT / America track (school, teacher, youth, leaderboard) | ✅ Done — build `.45` |
 | **H** | Public launch + PWA + security P0 | ⬜ **Blocked** — [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) |
 | **I** | Premium depth + AI Coach + live payments | ⬜ Next after H |
+| **J** | Rural equity — offline, Pathfinder, a11y, connectivity | ⬜ Planned — [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) |
 
-> **Naming:** Journey “Phase 0–3” (JOURNEY.md) ≠ build phases here ≠ PFT sub-phases G1–G8.
+> **Naming:** Journey “Phase 0–3” (JOURNEY.md) ≠ build phases here ≠ PFT sub-phases G1–G8 ≠ rural J1–J6.
 
 ---
 
@@ -110,6 +112,29 @@ Aligns revenue with [vision.md](vision.md) without gating free core.
 
 ---
 
+## Phase J — Rural equity & connectivity ⬜
+
+**Master plan:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)
+
+For people **rural, offline, and far from a doctor** — complementary to telehealth/surgery (Musk thesis: expertise doesn’t scale; we scale **prevention**).
+
+| Sub | Deliverable | Depends on |
+|-----|-------------|------------|
+| **J1** | PWA on + offline shell + connection stripe banner | Phase H |
+| **J2** | IndexedDB `MissionLocalStore` + sync outbox | J1 |
+| **J3** | Pathfinder Assessment — “no regular doctor access” path + low-impact gating | — |
+| **J4** | a11y (text scale, focus audit) + PAR-Q i18n Tier 1 | — |
+| **J5** | Rural/bodyweight preset chain (Welcome → Today → Library) | — |
+| **J6** | Offline coach v2 + printable Village Health Card | J2 |
+
+**Parallel with H:** J3–J5 can ship while still gated; J1–J2 need `PRIVATE_MODE=false`.
+
+**Immediate next commits:** Pathfinder track · ConnectivityProvider · bodyweight default chain.
+
+**Done when:** ≥40% sessions complete offline (target); Pathfinder path live; Tier 1 assessment i18n; bodyweight default for new users.
+
+---
+
 ## Phase A–D + F (archive summary)
 
 <details>
@@ -138,10 +163,12 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 1. **Phase H prep** — beta invites, metrics, Supabase migrations, GitHub Secrets → Sync Vercel env
 2. **Phase H launch** — gates pass → `PRIVATE_MODE=false` → PWA on
-3. **Phase I1** — live payments (highest revenue impact)
-4. **Phase I2 + I4** — AI Coach premium + i18n body (parallel)
-5. **Phase I3** — one premium pillar proof
-6. **Open draft PRs** (#43–#48) — merge or close individually (train/fuel/i18n features, not PFT)
+3. **Phase J3 + J5** (parallel with H) — Pathfinder assessment + bodyweight rural preset
+4. **Phase J1–J2** — offline shell, IndexedDB, sync outbox (after H)
+5. **Phase I1** — live payments (highest revenue impact)
+6. **Phase I2 + J4** — AI Coach premium + a11y / assessment i18n (parallel)
+7. **Phase I3 + J6** — one premium pillar proof + offline coach v2
+8. **Open draft PRs** (#43–#48) — merge or close individually (train/fuel/i18n features, not PFT)
 
 ---
 
@@ -166,4 +193,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-06-29 (Phase G complete; Phase H/I roadmap; see VISION_STATUS.md)
+Last updated: 2026-06-29 (Phase G complete; Phase H/I/J roadmap; see VISION_STATUS.md + RURAL_EQUITY_PLAN.md)

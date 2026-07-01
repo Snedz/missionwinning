@@ -49,6 +49,7 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | **PFT / America G1–G8** | [PLAN.md](PLAN.md) Phase G | ✅ Optional US track; feature-flagged |
 | **Launch Phase H** | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | ⬜ Blocked on beta + Vercel secrets |
 | **Premium Phase I** | [PLAN.md](PLAN.md) | ⬜ Post-launch revenue depth |
+| **Rural equity Phase J** | [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) | ⬜ Offline, Pathfinder, a11y, connectivity |
 
 ---
 
@@ -72,6 +73,9 @@ Prove bundle value: pick **Track GPS**, **Mind audio**, or **Move video** — re
 ### 6. PFT track ops (Phase G ops)
 Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council legal sign-off before MAHA copy.
 
+### 7. Rural equity & connectivity (Phase J)
+Vision promises Lagos/Mumbai/rural PWA + bodyweight-first. Today: PWA off when gated; localStorage only; PAR-Q pushes “consult physician”; ~90% body EN. See [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) — Pathfinder track, IndexedDB sync, Lite mode, assessment i18n.
+
 ---
 
 ## What we should *not* do yet (vision filter)
@@ -92,7 +96,7 @@ Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council l
 | Habit formation | Streaks, consistency | Training streak, Win Score, challenges |
 | Bundle conversion | Meaningful % to premium | `enrollments` (when live) |
 | Multi-pillar retention | Synergy proof | Pillar wins + commissioned rate |
-| Global equity | Low-resource regions | PWA + i18n + bodyweight library |
+| Global equity | Low-resource regions | PWA + i18n + bodyweight library + Phase J metrics |
 | Beta before public | I-Day ≥80%, BT ≥60% | Profile beta panel + `/api/beta/metrics` |
 
 ---
@@ -102,7 +106,8 @@ Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council l
 | Doc | Purpose |
 |-----|---------|
 | [vision.md](vision.md) | Values filter — read first |
-| [PLAN.md](PLAN.md) | Build phases G / H / I |
+| [PLAN.md](PLAN.md) | Build phases G / H / I / J |
+| [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) | Rural, offline, Pathfinder, connectivity |
 | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | Launch checklist |
 | [UX_UNIFIED_PLAN.md](UX_UNIFIED_PLAN.md) | UI north stars (Bevel + Freeletics) |
 | [LOG.md](LOG.md) | Shipped changelog |

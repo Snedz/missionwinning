@@ -4,6 +4,20 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Rural equity & connectivity plan (Phase J)
+
+**Doc:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)  
+**Context:** Rural users without doctor access; Musk thesis (expertise doesn’t scale — we scale prevention); connectivity/offline/a11y.
+
+### Plan highlights
+
+- **North star:** “Pathfinder for the disconnected” — install once, train offline 30+ days, sync when signal returns
+- **Workstreams:** A connectivity/offline · B Pathfinder (no-doctor path) · C accessibility · D rural UX · E offline coach
+- **Phase J1–J6** registered in [PLAN.md](PLAN.md); gap #7 in [VISION_STATUS.md](VISION_STATUS.md)
+- **Next commits:** Pathfinder assessment · ConnectivityProvider · bodyweight default chain
+
+---
+
 ## 2026-06-29 — Vision plan refresh + Phase G (PFT / America G1–G8)
 
 **Docs:** [VISION_STATUS.md](VISION_STATUS.md), [PLAN.md](PLAN.md) Phase G/H/I  
