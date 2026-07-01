@@ -1,6 +1,10 @@
 import 'server-only';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { tierToScore } from '@/lib/presidentialFitnessTest';
+import { authorizeSchoolClassUpsert, type SchoolClassRow } from '@/lib/schoolClassAuth';
+import { formatClassStandingsCsv } from '@/lib/schoolClassExport';
+
+export { formatClassStandingsCsv };
 
 export type ClassStats = {
   code: string;
@@ -18,6 +22,59 @@ export type ClassPftEntry = {
   score: number;
   lastTestAt: string;
 };
+
+export type TeacherClassSummary = {
+  code: string;
+  name: string;
+  teacherPin: string | null;
+  createdAt: string;
+};
+
+export async function fetchSchoolClass(code: string): Promise<SchoolClassRow | null> {
+  const admin = getSupabaseAdmin();
+  if (!admin) return null;
+
+  const normalized = code.trim().toUpperCase();
+  const { data } = await admin
+    .from('school_classes')
+    .select('code, name, created_by, teacher_pin')
+    .eq('code', normalized)
+    .maybeSingle();
+
+  if (!data) return null;
+  return {
+    code: data.code,
+    name: data.name,
+    created_by: data.created_by ?? null,
+    teacher_pin: data.teacher_pin ?? null,
+  };
+}
+
+export async function isClassCreator(code: string, userId: string): Promise<boolean> {
+  const row = await fetchSchoolClass(code);
+  return Boolean(row?.created_by && row.created_by === userId);
+}
+
+export async function fetchTeacherClasses(userId: string): Promise<TeacherClassSummary[]> {
+  const admin = getSupabaseAdmin();
+  if (!admin) return [];
+
+  const { data, error } = await admin
+    .from('school_classes')
+    .select('code, name, teacher_pin, created_at')
+    .eq('created_by', userId)
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    code: row.code,
+    name: row.name,
+    teacherPin: row.teacher_pin ?? null,
+    createdAt: row.created_at ?? new Date().toISOString(),
+  }));
+}
 
 export async function fetchClassStats(code: string): Promise<ClassStats | null> {
   const admin = getSupabaseAdmin();
@@ -57,24 +114,39 @@ export async function fetchClassStats(code: string): Promise<ClassStats | null> 
 export async function upsertSchoolClass(
   code: string,
   name: string,
-  userId?: string | null,
+  userId: string,
   teacherPin?: string | null
-) {
+): Promise<{ ok: true } | { ok: false; error: string; status?: number }> {
   const admin = getSupabaseAdmin();
-  if (!admin) return { ok: false as const, error: 'not_configured' };
+  if (!admin) return { ok: false, error: 'not_configured' };
 
-  const { error } = await admin.from('school_classes').upsert(
-    {
-      code: code.toUpperCase(),
-      name: name.trim() || 'PE Class',
-      created_by: userId ?? null,
-      teacher_pin: teacherPin ?? null,
-    },
-    { onConflict: 'code' }
-  );
+  const normalized = code.toUpperCase();
+  const existing = await fetchSchoolClass(normalized);
+  const auth = authorizeSchoolClassUpsert(existing, userId, teacherPin);
+  if (!auth.allowed) {
+    return {
+      ok: false,
+      error: auth.reason,
+      status: auth.reason === 'forbidden' ? 403 : 403,
+    };
+  }
 
-  if (error) return { ok: false as const, error: error.message };
-  return { ok: true as const };
+  const payload: Record<string, string | null> = {
+    code: normalized,
+    name: name.trim() || 'PE Class',
+    created_by: existing?.created_by ?? userId,
+  };
+  if (auth.claimCreator || !existing?.created_by) {
+    payload.created_by = userId;
+  }
+  if (teacherPin?.trim()) {
+    payload.teacher_pin = teacherPin.trim();
+  }
+
+  const { error } = await admin.from('school_classes').upsert(payload, { onConflict: 'code' });
+
+  if (error) return { ok: false, error: error.message, status: 500 };
+  return { ok: true };
 }
 
 export async function verifyTeacherPin(code: string, pin: string): Promise<boolean> {
