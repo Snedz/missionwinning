@@ -19,6 +19,7 @@ import {
 } from '@/lib/activityLog';
 import { logPillarWin } from '@/lib/pillarLog';
 import { UnlockButton } from '@/components/UnlockButton';
+import { ActivityImportPanel } from '@/components/track/ActivityImportPanel';
 import { MapPin, Trash2 } from 'lucide-react';
 
 export function TrackPage() {
@@ -167,6 +168,10 @@ export function TrackPage() {
       </StaggerItem>
 
       <StaggerItem index={3}>
+        <ActivityImportPanel onImported={() => setRefresh((r) => r + 1)} />
+      </StaggerItem>
+
+      <StaggerItem index={4}>
         <Card className="content-card">
           <CardHeader>
             <CardTitle>{t('trackWeekLogTitle', { defaultValue: "This Week's Log" })}</CardTitle>
@@ -211,7 +216,7 @@ export function TrackPage() {
         </Card>
       </StaggerItem>
 
-      <StaggerItem index={4}>
+      <StaggerItem index={5}>
         <Card className="content-card border-white/10 bg-card/50">
           <CardHeader>
             <CardTitle className="text-base">
