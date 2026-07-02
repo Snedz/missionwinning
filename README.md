@@ -72,7 +72,7 @@ Open http://localhost:3000 in your browser.
 - [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
 - [Zustand](https://zustand.docs.pmnd.rs/) with localStorage + Supabase sync
 - Supabase (auth, DB, storage)
-- next-pwa for installable offline-first PWA
+- Serwist (`@serwist/next`) for installable offline-first PWA
 - Payments: Demo/request-based for now (Super Bundle access via "Request" buttons that grant demo premium). Real processor (e.g. Stripe / Lemon Squeezy / PayPal) will be added once LLC/business setup complete. Webhook placeholder at /api/paypal-webhook remains ready for future.
 
 ## Data Storage
