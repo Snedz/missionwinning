@@ -1,10 +1,10 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.69** (2026-07-02).
+**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.70** (2026-07-02).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
-**Integration:** [PR #69](https://github.com/Snedz/missionwinning/pull/69) merges product (#62), marketing (#63), and quality stack (#65–#68) into `master` — CI green, 282 tests.
+**Integration:** [PR #69](https://github.com/Snedz/missionwinning/pull/69) merges product (#62), marketing (#63), and quality stack (#65–#68) into `master` — CI green, **292 tests**.
 
 ---
 

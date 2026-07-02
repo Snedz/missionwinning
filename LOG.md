@@ -6,6 +6,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-02 — API tests: school class auth + Stripe checkout
+
+**Build:** `2025.06-unified.70` · **PR:** [#69](https://github.com/Snedz/missionwinning/pull/69)
+
+- School class routes: create (401 unsigned), verify PIN guards, access lock without auth
+- Stripe Checkout API: 503 unconfigured, 400 bad JSON/planId
+- `LAUNCH_DAY.md` → `DEPLOY.md` link fix
+
+---
+
 ## 2026-07-02 — Integration: product + marketing + quality stack
 
 **Build:** `2025.06-unified.69` · **PR:** [#69](https://github.com/Snedz/missionwinning/pull/69)

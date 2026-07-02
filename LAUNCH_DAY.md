@@ -14,7 +14,7 @@
    npm run predeploy
    ```
 3. **Supabase** — All migrations in [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) applied
-4. **Secrets** — [ENV.md](ENV.md): rotate `PRIVATE_ACCESS_SECRET`, confirm `DEMO_PREMIUM=false`
+4. **Secrets** — [DEPLOY.md](DEPLOY.md): rotate `PRIVATE_ACCESS_SECRET`, confirm `DEMO_PREMIUM=false`
 
 ---
 

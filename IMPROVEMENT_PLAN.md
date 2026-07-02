@@ -25,13 +25,14 @@ What remains is **user-side launch work** (beta gates, Vercel env, Supabase migr
 | P1 | npm audit quick wins + Next 16.2.10 | ✅ 9 → 3 moderate (nested postcss only) |
 | P1 | Hook deps hardening | ✅ Rule promoted to error |
 | P2 | API route tests (Stripe, PayPal, premium) | ✅ 21 tests |
-| P2 | Youth consent API route tests | ✅ +10 tests (31 API total) |
+| P2 | Youth consent API route tests | ✅ 10 tests |
+| P2 | School class + Stripe checkout API tests | ✅ +10 tests (41 API total) |
 | P2 | Component tests (UnlockButton, YouthParentGate) | ✅ 14 tests |
 | P3 | next-pwa → @serwist/next | ✅ Clears 5 high audit advisories |
 | P3 | Consolidate deploy docs → `DEPLOY.md` | ✅ |
 | P4 | Major dep upgrades, Lighthouse | ⬜ Post-launch |
 
-**Test count:** 119 (session start) → **282** (237 lib + 31 api + 14 components).
+**Test count:** 119 (session start) → **292** (237 lib + 41 api + 14 components).
 
 ---
 
