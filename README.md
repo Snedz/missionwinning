@@ -10,7 +10,7 @@ This is *mainly a free app* serving the vision of making the world better and he
 
 See [vision.md](vision.md) for the full guiding document (the "constitution" for every decision).
 
-**Environment setup:** See [ENV.md](ENV.md) for `.env.local`, Vercel variables, and the private development gate.
+**Environment setup & deploy:** See [DEPLOY.md](DEPLOY.md) for `.env.local`, Vercel variables, the private development gate, and launch verification.
 
 **Build plan & log:** See [PLAN.md](PLAN.md) and [LOG.md](LOG.md).
 

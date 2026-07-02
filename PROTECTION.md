@@ -142,7 +142,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 
 - [x] Split `pro` program templates to server-only module (like recipes)
 - [x] PayPal webhook signature verification (`src/lib/paypalWebhook.ts`)
-- [x] CSP header enforced in production (`next.config.js`; `CSP_ENFORCE=false` for report-only)
+- [x] CSP header enforced in production (`next.config.mjs`; `CSP_ENFORCE=false` for report-only)
 - [x] Leads table: rate limit on `/api/leads` (5/min/IP; server insert via service role)
 - [ ] JWT gate bypass: verify signature via Supabase JWKS if `PRIVATE_ALLOW_AUTH_BYPASS=true`
 
@@ -171,7 +171,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 | `CSP_ENFORCE` | Server/build | `true` to enforce CSP; default enforce in production |
 | `NEXT_PUBLIC_SUPABASE_*` | Client (expected) | Anon key — RLS must protect data |
 
-See [ENV.md](ENV.md) and [.env.example](.env.example).
+See [DEPLOY.md](DEPLOY.md) and [.env.example](.env.example).
 
 ---
 
