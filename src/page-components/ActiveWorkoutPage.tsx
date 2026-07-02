@@ -105,11 +105,13 @@ export function ActiveWorkoutPage() {
     return () => clearInterval(interval);
   }, [restTimerActive, tickRestTimer]);
 
+  const nextSetExIdx = nextSet?.exIdx;
+  const nextSetSetIdx = nextSet?.setIdx;
   useEffect(() => {
-    if (nextSet && nextSetRef.current) {
+    if (nextSetExIdx !== undefined && nextSetRef.current) {
       nextSetRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-  }, [nextSet?.exIdx, nextSet?.setIdx]);
+  }, [nextSetExIdx, nextSetSetIdx]);
 
   const getSetKey = (exIdx: number, setIdx: number) => `${exIdx}-${setIdx}`;
 

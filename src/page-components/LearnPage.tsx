@@ -16,12 +16,9 @@ import { logPillarWin } from '@/lib/pillarLog';
 import { ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
 
 export function LearnPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
-  const paths = useMemo(
-    () => localizeLearnPaths(FREE_LEARN_PATHS, t),
-    [i18n.language, t]
-  );
+  const paths = useMemo(() => localizeLearnPaths(FREE_LEARN_PATHS, t), [t]);
   const [expandedPath, setExpandedPath] = useState<string | null>(FREE_LEARN_PATHS[0]?.id ?? null);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();

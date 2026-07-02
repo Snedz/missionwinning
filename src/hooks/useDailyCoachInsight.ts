@@ -112,6 +112,10 @@ export function useDailyCoachInsight(
     return () => {
       cancelled = true;
     };
+    // Deps intentionally enumerate primitive fields instead of the `context`/`fallback`
+    // objects: callers rebuild those objects every render, and depending on identity
+    // would refetch the coach insight on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     context?.readiness,
     context?.strain,
