@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
-import { applyCrossPillarCoachRules } from "@/lib/crossPillarCoach";
+import { applyCrossPillarCoachRules, getCrossPillarSecondaryActions } from "@/lib/crossPillarCoach";
 import { gatherWeeklyPillarStats } from "@/lib/pillarScoreInputs";
 import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
 import { countSessionsInHourRange } from "@/lib/leaderboard/types";
@@ -211,7 +211,22 @@ export function HomePage() {
       mindSessions: pillarStats.mindSessions,
       proteinDays: pillarStats.proteinDays,
       trainDays: pillarStats.trainDays,
+      trackActivities: pillarStats.trackActivities,
+      learnLessons: pillarStats.learnLessons,
     },
+    { assessmentRisk: lastAssessment?.risk }
+  );
+  const coachSecondaryActions = getCrossPillarSecondaryActions(
+    bodyScores,
+    {
+      moveFlows: pillarStats.moveFlows,
+      mindSessions: pillarStats.mindSessions,
+      proteinDays: pillarStats.proteinDays,
+      trainDays: pillarStats.trainDays,
+      trackActivities: pillarStats.trackActivities,
+      learnLessons: pillarStats.learnLessons,
+    },
+    coachInsight.actionPath,
     { assessmentRisk: lastAssessment?.risk }
   );
 
@@ -245,6 +260,7 @@ export function HomePage() {
             <TodayHealthSection
               insight={coachInsight}
               breakdown={scoreBreakdown}
+              secondaryActions={coachSecondaryActions}
               coachContext={{
                 readiness: bodyScores.readiness,
                 strain: bodyScores.strain,
@@ -257,6 +273,8 @@ export function HomePage() {
                   mindSessions: pillarStats.mindSessions,
                   proteinDays: pillarStats.proteinDays,
                   trainDays: pillarStats.trainDays,
+                  trackActivities: pillarStats.trackActivities,
+                  learnLessons: pillarStats.learnLessons,
                 },
               }}
             />

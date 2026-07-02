@@ -117,6 +117,12 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       detail: '/api/premium/learn-paths + 6 gated programs on /learn; free tier unchanged',
     },
     {
+      id: 'i5-cross-pillar',
+      label: 'Phase I5 — Cross-pillar coach CTAs',
+      status: 'ready',
+      detail: 'Track/Learn rules + up to 3 secondary pillar links on Today coach card',
+    },
+    {
       id: 'demo-premium-off',
       label: 'DEMO_PREMIUM=false in production',
       status: 'blocked',

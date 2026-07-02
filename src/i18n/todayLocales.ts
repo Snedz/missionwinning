@@ -118,6 +118,8 @@ type TodayStrings = {
   coachInsightNeedMove: string;
   coachInsightNeedFuel: string;
   coachInsightNeedMind: string;
+  coachInsightNeedTrack: string;
+  coachInsightNeedLearn: string;
   coachInsightSynergyMove: string;
   coachInsightOfflinePathfinder: string;
   coachInsightOfflineFirstWin: string;
@@ -133,6 +135,9 @@ type TodayStrings = {
   coachActionRecoveryFlow: string;
   coachActionOpenMove: string;
   coachActionOpenMind: string;
+  coachActionOpenTrack: string;
+  coachActionOpenLearn: string;
+  coachAlsoTry: string;
   todayEditToday: string;
   coachActionStartWorkout: string;
   coachActionGoBuilder: string;
@@ -290,6 +295,10 @@ const en: TodayStrings = {
     'You\'re training hard but protein is lagging. Log Fuel today to recover and grow.',
   coachInsightNeedMind:
     'Recovery is under stress. A short Mind session helps sleep, focus, and consistency.',
+  coachInsightNeedTrack:
+    "You're training consistently — log walks, runs, or hikes in Track to complete the picture.",
+  coachInsightNeedLearn:
+    'Strong training week — a Learn lesson on periodization or nutrition keeps you on the right path.',
   coachInsightSynergyMove:
     'Strong training week — pair it with mobility so you keep progressing without breakdown.',
   coachInsightOfflinePathfinder:
@@ -315,6 +324,9 @@ const en: TodayStrings = {
   coachActionRecoveryFlow: 'Try recovery flow',
   coachActionOpenMove: 'Open Move pillar',
   coachActionOpenMind: 'Open Mind pillar',
+  coachActionOpenTrack: 'Open Track pillar',
+  coachActionOpenLearn: 'Open Learn pillar',
+  coachAlsoTry: 'Also try',
   todayEditToday: 'Edit Today',
   coachActionStartWorkout: 'Start workout',
   coachActionGoBuilder: 'Go to Builder',

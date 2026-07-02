@@ -7,9 +7,12 @@ import { PillarScoreBreakdown } from '@/components/metrics/PillarScoreBreakdown'
 import { useDailyCoachInsight } from '@/hooks/useDailyCoachInsight';
 import type { CoachInsight, WinScoreBreakdown } from '@/lib/score';
 
+import type { CoachSecondaryAction } from '@/lib/crossPillarCoach';
+
 interface Props {
   insight: CoachInsight;
   breakdown: WinScoreBreakdown;
+  secondaryActions: CoachSecondaryAction[];
   coachContext: {
     readiness: number;
     strain: number;
@@ -22,13 +25,15 @@ interface Props {
       mindSessions: number;
       proteinDays: number;
       trainDays: number;
+      trackActivities: number;
+      learnLessons: number;
     };
   };
 }
 
-export function TodayHealthSection({ insight, breakdown, coachContext }: Props) {
+export function TodayHealthSection({ insight, breakdown, secondaryActions, coachContext }: Props) {
   const { t } = useTranslation();
-  const coach = useDailyCoachInsight(coachContext, insight);
+  const coach = useDailyCoachInsight(coachContext, insight, secondaryActions);
 
   return (
     <div className="space-y-4 pt-2">
@@ -36,6 +41,7 @@ export function TodayHealthSection({ insight, breakdown, coachContext }: Props) 
         message={coach.message}
         actionLabel={coach.actionLabel}
         actionPath={coach.actionPath}
+        secondaryActions={coach.secondaryActions}
         source={coach.source}
         loading={coach.loading}
         premiumLocked={coach.premiumLocked}

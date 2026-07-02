@@ -12,6 +12,7 @@ interface CoachInsightCardProps {
   message: string;
   actionLabel: string;
   actionPath: string;
+  secondaryActions?: { actionLabel: string; actionPath: string }[];
   source?: 'llm' | 'rules' | 'local' | 'offline';
   loading?: boolean;
   premiumLocked?: boolean;
@@ -21,6 +22,7 @@ export function CoachInsightCard({
   message,
   actionLabel,
   actionPath,
+  secondaryActions = [],
   source = 'local',
   loading = false,
   premiumLocked = false,
@@ -59,26 +61,46 @@ export function CoachInsightCard({
           )}
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col sm:flex-row sm:items-center gap-4">
-        <p
-          className={cn(
-            'text-sm text-foreground/90 flex-1',
-            loading && 'animate-pulse text-muted-foreground'
-          )}
-        >
-          {loading
-            ? t('coachLoading', { defaultValue: 'Reading your mission data…' })
-            : message}
-        </p>
-        <Button
-          variant="outline"
-          size="sm"
-          className="shrink-0"
-          disabled={loading}
-          onClick={() => router.push(actionPath)}
-        >
-          {actionLabel}
-        </Button>
+      <CardContent className="flex flex-col gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <p
+            className={cn(
+              'text-sm text-foreground/90 flex-1',
+              loading && 'animate-pulse text-muted-foreground'
+            )}
+          >
+            {loading
+              ? t('coachLoading', { defaultValue: 'Reading your mission data…' })
+              : message}
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="shrink-0"
+            disabled={loading}
+            onClick={() => router.push(actionPath)}
+          >
+            {actionLabel}
+          </Button>
+        </div>
+        {!loading && secondaryActions.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 border-t border-border/40 pt-3">
+            <span className="text-[10px] uppercase tracking-wide text-muted-foreground shrink-0">
+              {t('coachAlsoTry', { defaultValue: 'Also try' })}
+            </span>
+            {secondaryActions.map((action) => (
+              <Button
+                key={action.actionPath}
+                variant="ghost"
+                size="sm"
+                className="h-8 text-xs text-emerald-400/90 hover:text-emerald-300"
+                onClick={() => router.push(action.actionPath)}
+              >
+                {action.actionLabel}
+              </Button>
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   );

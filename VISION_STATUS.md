@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.60** (2026-06-29).
+**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.61** (2026-06-29).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -38,7 +38,7 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | **/track** | Core logging, streaks | ⭐⭐⭐ Manual activities, import | MapMyFitness-style GPS | ⭐⭐ **5 premium programs** + pace insight (no GPS yet) |
 | **/learn** | Intros, basics, assessments | ⭐⭐⭐⭐ 8 free ISSA paths | Specialist programs | ⭐⭐⭐ **6 premium paths** gated |
 
-**Synergy:** Win Score weights all six pillars — unique vs siloed competitors. Cross-pillar coach rules exist; deep recommendations still shallow.
+**Synergy:** Win Score weights all six pillars — unique vs siloed competitors. Cross-pillar coach rules + secondary CTAs on Today hub (Phase I5).
 
 ---
 

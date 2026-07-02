@@ -12,6 +12,8 @@ export interface DailyCoachContext {
     mindSessions: number;
     proteinDays: number;
     trainDays: number;
+    trackActivities: number;
+    learnLessons: number;
   };
   fallback: CoachInsight;
 }
@@ -30,7 +32,7 @@ export function buildCoachPrompt(ctx: DailyCoachContext): string {
     `Readiness ${ctx.readiness}/100, strain ${ctx.strain}/100, recovery ${ctx.recovery}/100.`,
     `Mission score ${ctx.missionScore}, training streak ${ctx.streak} days.`,
     `Focus muscle group: ${ctx.focusGroup}.`,
-    `This week — train days ${ctx.pillars.trainDays}, protein days ${ctx.pillars.proteinDays}, move ${ctx.pillars.moveFlows}, mind ${ctx.pillars.mindSessions}.`,
+    `This week — train days ${ctx.pillars.trainDays}, protein days ${ctx.pillars.proteinDays}, move ${ctx.pillars.moveFlows}, mind ${ctx.pillars.mindSessions}, track ${ctx.pillars.trackActivities}, learn ${ctx.pillars.learnLessons}.`,
     'Valid action paths: /active /nutrition /move /mind /track /learn /log /builder',
     'Reply JSON only: {"message":"...","actionLabel":"...","actionPath":"/..."}',
   ].join('\n');

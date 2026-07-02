@@ -12,6 +12,7 @@ type CoachDisplay = {
   message: string;
   actionLabel: string;
   actionPath: string;
+  secondaryActions: { actionLabel: string; actionPath: string }[];
   source: 'llm' | 'rules' | 'local' | 'offline';
   loading: boolean;
   premiumLocked: boolean;
@@ -35,14 +36,23 @@ function translateInsight(t: (key: string, opts?: Record<string, unknown>) => st
 
 export function useDailyCoachInsight(
   context: Omit<DailyCoachContext, 'fallback'> | null,
-  fallback: CoachInsight
+  fallback: CoachInsight,
+  secondaryActions: { actionLabelKey: string; actionPath: string }[] = []
 ): CoachDisplay {
   const { t } = useTranslation();
   const { premium, loading: premiumLoading } = usePremium();
+
+  const translateSecondary = () =>
+    secondaryActions.map((a) => ({
+      actionPath: a.actionPath,
+      actionLabel: t(a.actionLabelKey, { defaultValue: a.actionLabelKey }),
+    }));
+
   const [state, setState] = useState<CoachDisplay>(() => ({
     message: '',
     actionLabel: t(fallback.actionLabelKey, { defaultValue: fallback.actionLabelKey }),
     actionPath: fallback.actionPath,
+    secondaryActions: translateSecondary(),
     source: 'local',
     loading: true,
     premiumLocked: false,
@@ -60,6 +70,7 @@ export function useDailyCoachInsight(
       const translated = translateInsight(t, insight);
       return {
         ...translated,
+        secondaryActions: translateSecondary(),
         source: 'offline' as const,
         loading: false,
         premiumLocked: !premium,
@@ -68,6 +79,7 @@ export function useDailyCoachInsight(
 
     const applyFreeRules = () => ({
       ...local,
+      secondaryActions: translateSecondary(),
       source: 'rules' as const,
       loading: false,
       premiumLocked: true,
@@ -93,7 +105,7 @@ export function useDailyCoachInsight(
     if (cached) {
       try {
         const parsed = JSON.parse(cached) as CoachDisplay;
-        setState({ ...parsed, loading: false, premiumLocked: !premium });
+        setState({ ...parsed, secondaryActions: translateSecondary(), loading: false, premiumLocked: !premium });
         return;
       } catch {
         sessionStorage.removeItem(cacheKey());
@@ -128,6 +140,7 @@ export function useDailyCoachInsight(
                 message: data.message,
                 actionLabel: data.actionLabel ?? local.actionLabel,
                 actionPath: data.actionPath ?? fallback.actionPath,
+                secondaryActions: translateSecondary(),
                 source: 'llm',
                 loading: false,
                 premiumLocked: false,
@@ -139,6 +152,7 @@ export function useDailyCoachInsight(
                   actionLabelKey: data.actionLabelKey ?? fallback.actionLabelKey,
                   actionPath: data.actionPath ?? fallback.actionPath,
                 }),
+                secondaryActions: translateSecondary(),
                 source: 'rules',
                 loading: false,
                 premiumLocked: Boolean(data.premiumRequired),
@@ -168,6 +182,9 @@ export function useDailyCoachInsight(
     context?.pillars.mindSessions,
     context?.pillars.proteinDays,
     context?.pillars.trainDays,
+    context?.pillars.trackActivities,
+    context?.pillars.learnLessons,
+    secondaryActions.map((a) => a.actionPath).join(','),
     fallback.messageKey,
     fallback.actionLabelKey,
     fallback.actionPath,

@@ -68,6 +68,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I5: Cross-pillar coach CTAs
+
+**Build:** `2025.06-unified.61`
+
+### Shipped
+
+- **Track + Learn rules** — coach suggests `/track` and `/learn` when training without activity/education engagement
+- **Secondary CTAs** — up to 3 "Also try" pillar links on Today coach card when multiple gaps exist
+- **`premiumApiRoutes.ts`** — canonical list of gated GET routes + sync test
+
+**Tests:** 215 passing
+
+---
+
 ## 2026-06-29 — Phase I3: Learn premium specialist paths
 
 **Build:** `2025.06-unified.60`
