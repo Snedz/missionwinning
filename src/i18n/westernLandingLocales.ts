@@ -156,6 +156,7 @@ const frPack: WesternPack = {
   landingScreenTrainHeader: 'Train',
   landingScreenFuelHeader: 'Fuel',
   landingScreenDownloadAsset: 'Télécharger l\'asset SVG',
+  landingNavScreens: 'Aperçu app',
 };
 
 const dePack: WesternPack = {
@@ -311,6 +312,7 @@ const dePack: WesternPack = {
   landingScreenTrainHeader: 'Train',
   landingScreenFuelHeader: 'Fuel',
   landingScreenDownloadAsset: 'SVG-Asset herunterladen',
+  landingNavScreens: 'App-Vorschau',
 };
 
 const ptPack: WesternPack = {
@@ -468,6 +470,7 @@ const ptPack: WesternPack = {
   landingScreenTrainHeader: 'Train',
   landingScreenFuelHeader: 'Fuel',
   landingScreenDownloadAsset: 'Baixar asset SVG',
+  landingNavScreens: 'Prévia do app',
 };
 
 const esPack: WesternPack = {
@@ -625,6 +628,7 @@ const esPack: WesternPack = {
   landingScreenTrainHeader: 'Train',
   landingScreenFuelHeader: 'Fuel',
   landingScreenDownloadAsset: 'Descargar asset SVG',
+  landingNavScreens: 'Vista previa',
 };
 
 export const westernLandingLocales: Record<'fr' | 'de' | 'pt' | 'es', WesternPack> = {

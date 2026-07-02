@@ -74,6 +74,20 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase M6: Tier 1 screenshot i18n + sitemap/robots
+
+**Build:** `2025.06-unified.68`
+
+### Shipped
+
+- **IT/JA/KO/RU screenshot i18n** — tier1 supplement + tests for gallery + nav keys
+- **`landingNavScreens`** — `#screenshots` link in marketing nav
+- **`app/sitemap.ts` + `app/robots.ts`** — public routes for crawlers; disallow `/private` and `/api/`
+
+**Tests:** 237 passing
+
+---
+
 ## 2026-06-29 — Phase M5: PWA manifest + screenshot gallery + hreflang
 
 **Build:** `2025.06-unified.67`

@@ -13,6 +13,7 @@ const en: Record<string, string> = {
   landingNavPillars: 'Pillars',
   landingNavBundle: 'Super Bundle',
   landingNavFaq: 'FAQ',
+  landingNavScreens: 'App preview',
   landingNavHome: 'Home',
   landingStartFree: 'Start free',
   landingStartFreeLong: 'Start free — 2 min setup',

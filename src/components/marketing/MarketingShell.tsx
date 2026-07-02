@@ -18,6 +18,7 @@ export type MarketingNavLink = { href: string; labelKey: string };
 
 const LANDING_LINKS: MarketingNavLink[] = [
   { href: '#tools', labelKey: 'landingNavFreeCore' },
+  { href: '#screenshots', labelKey: 'landingNavScreens' },
   { href: '#pillars', labelKey: 'landingNavPillars' },
   { href: '#bundle', labelKey: 'landingNavBundle' },
   { href: '#faq', labelKey: 'landingNavFaq' },

@@ -28,3 +28,16 @@ describe('PWA manifest (Phase M5)', () => {
     assert.ok(Array.isArray(manifest.screenshots) && manifest.screenshots.length >= 3);
   });
 });
+
+describe('marketing SEO routes (Phase M6)', () => {
+  it('sitemap and robots modules export default handlers', async () => {
+    const sitemap = (await import('../../app/sitemap.ts')).default;
+    const robots = (await import('../../app/robots.ts')).default;
+    const entries = sitemap();
+    const rules = robots();
+    assert.ok(entries.length >= 5);
+    assert.ok(entries.some((e) => e.url.includes('/bundle')));
+    assert.ok(rules.sitemap?.includes('sitemap.xml'));
+    assert.ok(rules.rules?.disallow?.includes('/private'));
+  });
+});

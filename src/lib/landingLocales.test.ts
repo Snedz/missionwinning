@@ -34,4 +34,14 @@ describe('landingLocales (Phase M2)', () => {
     assert.doesNotMatch(ko.landingPillar_fuel_desc ?? '', /프리mium/);
     assert.match(ko.landingPillar_fuel_desc ?? '', /프리미엄/);
   });
+
+  for (const lang of ['it', 'ja', 'ko', 'ru'] as const) {
+    it(`${lang} screenshot section translated vs en`, () => {
+      const en = landingStringsFor('en');
+      const loc = landingStringsFor(lang);
+      assert.notEqual(loc.landingScreensTitle, en.landingScreensTitle);
+      assert.notEqual(loc.landingScreenTodayDesc, en.landingScreenTodayDesc);
+      assert.notEqual(loc.landingNavScreens, en.landingNavScreens);
+    });
+  }
 });
