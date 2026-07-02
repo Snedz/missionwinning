@@ -7,8 +7,18 @@ import { I18nPwaProvider } from './i18n-pwa-provider';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Private Development',
-  description: 'Private build. Not open to the public.',
+  title: {
+    default: 'Mission Winning — Free Global Health App',
+    template: '%s · Mission Winning',
+  },
+  description:
+    'Free workout tracking and six-pillar health synergy — Train, Fuel, Move, Mind, Track, Learn. PWA, offline-ready, 14 languages. Super Bundle for AI Coach and premium depth.',
+  openGraph: {
+    title: 'Mission Winning — Free Global Health App',
+    description:
+      'One app. Six pillars. Free core forever. Readiness, strain, recovery, and cross-pillar Win Score on Today.',
+    type: 'website',
+  },
   icons: {
     icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',

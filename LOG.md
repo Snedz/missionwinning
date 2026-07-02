@@ -70,6 +70,26 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase M0: Premium landing marketing shell
+
+**Build:** `2025.06-unified.62`
+
+### Shipped
+
+- **Landing rewrite** — mission-aligned copy (retire Cardone insult tone); hero 4-question framework
+- **Six pillars** — Train/Fuel/Move/Mind/Track/Learn with free CTAs to pillar routes
+- **`#pillars` + `#bundle`** — fixed nav anchors; embedded bundle section
+- **Mobile** — hamburger dialog nav, sticky bottom CTA, tap-target links, skip link
+- **`abVariant`** — defaults to `mission`; founders variant preserved in localStorage
+- **Metadata** — public-ready title/description + OG (root layout + `/` page)
+- **Gradient** — emerald `fitness-text-gradient` polish
+
+**Tests:** 215 passing
+
+---
+
 ## 2026-06-29 — Phase I5: Cross-pillar coach CTAs
 
 **Build:** `2025.06-unified.61`

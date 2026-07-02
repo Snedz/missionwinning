@@ -1,13 +1,30 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Check, Dumbbell, Flame, Shield, TrendingUp } from "lucide-react";
-import { UnlockButton } from "@/components/UnlockButton";
-import { MetricsRow } from "@/components/metrics/MetricsRow";
-import type { BodyScores } from "@/lib/score";
+import { useState, useEffect, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  ArrowRight,
+  BookOpen,
+  Brain,
+  Check,
+  Dumbbell,
+  Flame,
+  Footprints,
+  Menu,
+  Shield,
+  TrendingUp,
+  Wind,
+} from 'lucide-react';
+import { MetricsRow } from '@/components/metrics/MetricsRow';
+import type { BodyScores } from '@/lib/score';
 
 const DEMO_SCORES: BodyScores = {
   readiness: 82,
@@ -18,329 +35,632 @@ const DEMO_SCORES: BodyScores = {
   recoveryLabelKey: 'todayBodyRebuilding',
 };
 
+type AbVariant = 'founders' | 'mission';
+
+const HERO_COPY: Record<
+  AbVariant,
+  { badge: string; headline: string; gradient: string; subtitle: string }
+> = {
+  mission: {
+    badge: 'Free core forever · Global PWA · Works offline',
+    headline: 'One app. Six pillars.',
+    gradient: 'Your path forward.',
+    subtitle:
+      'Free workout tracking, nutrition, mobility, mind, activity, and education — forever, everywhere. Readiness, strain, and recovery on Today. Super Bundle adds AI Coach and premium depth when you are ready.',
+  },
+  founders: {
+    badge: 'Founders pricing · Limited beta access',
+    headline: 'Mission Winning.',
+    gradient: 'Train smarter. Recover better.',
+    subtitle:
+      'The everything app for serious lifters — free core forever, premium Super Bundle for full synergy across Train, Fuel, Move, Mind, Track, and Learn.',
+  },
+};
+
+const pillars = [
+  {
+    id: 'train',
+    route: '/welcome',
+    icon: Dumbbell,
+    title: 'Train',
+    subtitle: 'Free tracker + premium AI Coach',
+    price: 'Free core',
+    desc: 'Workout logger, builder, 200+ library, benchmarks, and history. Premium unlocks AI plan generator and pro templates.',
+    features: ['Free full logger & PR tracking', 'Premium: AI Coach + pro programs', 'Synergizes with every pillar'],
+    cta: 'Start free',
+  },
+  {
+    id: 'fuel',
+    route: '/nutrition',
+    icon: Flame,
+    title: 'Fuel',
+    subtitle: 'Nutrition logging + recipes',
+    price: 'Free core',
+    desc: 'Macro log, water, and global-friendly high-protein recipes. Premium adds meal plans and periodized nutrition.',
+    features: ['Free recipes & daily tracker', 'Premium: 92+ gated recipes', 'Powers recovery and training'],
+    cta: 'Log nutrition',
+  },
+  {
+    id: 'move',
+    route: '/move',
+    icon: Wind,
+    title: 'Move',
+    subtitle: 'Mobility flows + prehab',
+    price: 'Free core',
+    desc: 'Timed bodyweight mobility flows — free for everyone. Premium adds sports-specific prehab depth.',
+    features: ['4 free guided flows', 'Premium: +5 prehab flows', 'Protects joints under load'],
+    cta: 'Try a flow',
+  },
+  {
+    id: 'mind',
+    route: '/mind',
+    icon: Brain,
+    title: 'Mind',
+    subtitle: 'Breathing + recovery habits',
+    price: 'Free core',
+    desc: 'Breathing timer, guided sessions, and daily check-in. Premium unlocks full guided session library.',
+    features: ['Free breathing & check-in', 'Premium: +6 guided sessions', 'Boosts consistency'],
+    cta: 'Open Mind',
+  },
+  {
+    id: 'track',
+    route: '/track',
+    icon: Footprints,
+    title: 'Track',
+    subtitle: 'Activity log + weekly stats',
+    price: 'Free core',
+    desc: 'Manual activity logging and streaks — no GPS required. Premium adds structured programs and pace insights.',
+    features: ['Free activity log', 'Premium: 5 activity programs', 'Completes your training picture'],
+    cta: 'Log activity',
+  },
+  {
+    id: 'learn',
+    route: '/learn',
+    icon: BookOpen,
+    title: 'Learn',
+    subtitle: 'Evidence-based education',
+    price: 'Free core',
+    desc: 'Eight free ISSA-aligned education paths. Premium unlocks six specialist programs (PT, bodybuilding, corrective, and more).',
+    features: ['8 free education paths', 'Premium: 6 specialist programs', 'The right way, for everyone'],
+    cta: 'Start learning',
+  },
+] as const;
+
+const toolsHighlights = [
+  {
+    icon: Dumbbell,
+    label: 'Free workout logger',
+    desc: '5×5, custom builder, WOD-style sessions, history, and PRs. Metric or imperial. Offline PWA.',
+  },
+  {
+    icon: TrendingUp,
+    label: 'Mission Score on Today',
+    desc: 'Readiness, strain, recovery rings plus cross-pillar Win Score — Bevel-inspired, strength-focused.',
+  },
+  {
+    icon: Shield,
+    label: 'Six pillars, one path',
+    desc: 'Train, Fuel, Move, Mind, Track, Learn — free entry everywhere. Super Bundle for full depth.',
+  },
+];
+
+const NAV_LINKS = [
+  { href: '#tools', label: 'Free core' },
+  { href: '#pillars', label: 'Pillars' },
+  { href: '#bundle', label: 'Super Bundle' },
+] as const;
+
+function scrollToId(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
+
 export function LandingPage() {
   const router = useRouter();
-  const [abVariant, setAbVariant] = useState<'founders' | 'mission'>('founders');
+  const [abVariant, setAbVariant] = useState<AbVariant>('mission');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [showStickyCta, setShowStickyCta] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('mw_ab_pricing_variant') as 'founders' | 'mission' | null;
-    if (saved) {
+    const saved = localStorage.getItem('mw_ab_pricing_variant') as AbVariant | null;
+    if (saved === 'founders' || saved === 'mission') {
       setAbVariant(saved);
     } else {
-      const v = Math.random() > 0.5 ? 'founders' : 'mission';
-      setAbVariant(v);
-      localStorage.setItem('mw_ab_pricing_variant', v);
+      localStorage.setItem('mw_ab_pricing_variant', 'mission');
     }
   }, []);
 
-  // Pillars for the Super App (per vision.md - free entry to core, premium depth + Super Bundle for synergy)
-  // Repurposed from old education programs as the /learn pillar + others. Core is free.
-  const pillars = [
-    {
-      id: "train",
-      title: "Train (Core + Premium Coach)",
-      subtitle: "Free tracker + AI-powered personalized plans",
-      price: "Free core • Bundle for full",
-      desc: "The heart of the mission: free workout tracking, builder, library (bodyweight/global focus). Premium unlocks full Coach with personalized plans, adjustments, and advanced programming — like the best digital trainer, accessible to all.",
-      features: ["Free full logger & benchmarks", "Premium: AI plans, 700+ exercises, hybrid options", "Synergizes with all pillars"],
-      cta: "Start Free Tracker"
-    },
-    {
-      id: "fuel",
-      title: "Fuel (Nutrition)",
-      subtitle: "Free basics + premium plans",
-      price: "Free core • Bundle for full",
-      desc: "Accessible high-protein recipes and logging from elite principles (global ingredients, DASH/Med). Premium: advanced macro coaching, special scenarios, integration with training.",
-      features: ["Free recipes & daily tracker", "Premium: deep plans & targets", "Powers every other pillar"],
-      cta: "Explore Free Nutrition"
-    },
-    {
-      id: "move",
-      title: "Move (Mobility & Yoga)",
-      subtitle: "Free flows + premium athletic mobility",
-      price: "Free entry • Bundle",
-      desc: "Bodyweight mobility and functional movement (free basics). Premium: Pliability-style routines + Skill Yoga for performance, recovery, and longevity.",
-      features: ["Free mobility cues & progressions", "Premium: sports-specific + feedback", "Complements training perfectly"],
-      cta: "Try Free Move"
-    },
-    {
-      id: "mind",
-      title: "Mind (Mindfulness & Recovery)",
-      subtitle: "Free habits + premium depth",
-      price: "Free core • Bundle",
-      desc: "Basic presence and recovery prompts (free for everyone). Premium: Calm/Waking Up-style meditations, sleep tools, and expert lessons on building resilience — the mind pillar that makes the physical path sustainable.",
-      features: ["Free breathing & habit tools", "Premium: guided sessions + 'why'", "Boosts consistency across the app"],
-      cta: "Start Free Mind Habits"
-    }
-  ];
+  useEffect(() => {
+    const onScroll = () => setShowStickyCta(window.scrollY > 400);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-  const toolsHighlights = [
-    { icon: Dumbbell, label: "FREE Full Workout Logger (Core Mission)", desc: "5x5, linear progression, WOD-style, custom — like StrongLifts & CrossFit. Global, offline PWA. Free forever for everyone." },
-    { icon: TrendingUp, label: "1RM & Benchmarks (Free)", desc: "Estimated vs actual, history charts, PR tracking. Metric or lbs. Core for all." },
-    { icon: Flame, label: "Premium Pillars + Super Bundle", desc: "Advanced plans, mobility, mind, nutrition depth, education. One bundle for holistic synergy (50% off promos)." },
-  ];
+  const hero = HERO_COPY[abVariant];
+
+  const goWelcome = useCallback(() => router.push('/welcome'), [router]);
+  const goBundle = useCallback(() => router.push('/bundle'), [router]);
+
+  const navLink = (href: string, label: string, onClick?: () => void) => (
+    <a
+      key={href}
+      href={href}
+      className="tap-target inline-flex items-center px-2 py-2 text-sm hover:text-emerald-400 transition-colors rounded-lg"
+      onClick={(e) => {
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          scrollToId(href.slice(1));
+        }
+        onClick?.();
+      }}
+    >
+      {label}
+    </a>
+  );
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Top Nav - Mission focused: Free core + Super Bundle */}
-      <nav className="border-b border-border/60 bg-background/95 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center font-bold text-primary-foreground">MW</div>
-            <div>
-              <div className="font-semibold tracking-tight">MISSION WINNING</div>
-              <div className="text-[10px] text-muted-foreground -mt-1">MISSION WINNING • GLOBAL</div>
+    <div className="min-h-screen bg-background text-foreground pb-24 md:pb-0">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-emerald-600 focus:text-white"
+      >
+        Skip to content
+      </a>
+
+      <nav className="border-b border-border/60 bg-background/95 backdrop-blur sticky top-0 z-50 safe-area-top">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            className="flex items-center gap-3 tap-target rounded-lg"
+            onClick={() => router.push('/')}
+          >
+            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center font-bold text-primary-foreground shrink-0">
+              MW
             </div>
+            <div className="text-left hidden sm:block">
+              <div className="font-semibold tracking-tight text-sm sm:text-base">MISSION WINNING</div>
+              <div className="text-[10px] text-muted-foreground -mt-0.5">Global health super-app</div>
+            </div>
+          </button>
+
+          <div className="hidden lg:flex items-center gap-1 text-sm">
+            {NAV_LINKS.map((l) => navLink(l.href, l.label))}
+            <Button variant="outline" size="sm" className="tap-target ml-2" onClick={goWelcome}>
+              Start free
+            </Button>
+            <Button size="sm" variant="fitness" className="tap-target" onClick={() => scrollToId('bundle')}>
+              Super Bundle
+            </Button>
           </div>
-          <div className="flex items-center gap-6 text-sm">
-            <a href="#tools" className="hover:text-emerald-400 transition-colors">FREE CORE</a>
-            <a href="#pillars" className="hover:text-emerald-400 transition-colors">PILLARS</a>
-            <a href="#bundle" className="hover:text-emerald-400 transition-colors">SUPER BUNDLE</a>
-            <Button variant="outline" size="sm" onClick={() => router.push("/log")}>GRAB FREE TRACKER</Button>
-            <Button size="sm" variant="fitness" onClick={() => document.getElementById('bundle')?.scrollIntoView({ behavior: 'smooth' })}>GET SUPER BUNDLE</Button>
-            <Button variant="ghost" size="sm" className="text-emerald-400" onClick={() => {
-              const trig = (window as any).triggerPwaInstall; if (trig) trig(); else router.push('/log');
-            }}>INSTALL FOR OFFLINE (PWA)</Button>
+
+          <div className="flex lg:hidden items-center gap-2">
+            <Button size="sm" variant="fitness" className="tap-target h-11" onClick={goWelcome}>
+              Start free
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="tap-target shrink-0"
+              aria-label="Open menu"
+              onClick={() => setMobileNavOpen(true)}
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
           </div>
         </div>
       </nav>
 
-      {/* Hero — Bevel-style metric preview + Mission Winning messaging */}
-      <section className="relative pt-16 pb-20 px-6 border-b border-border/60">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-muted/50 text-sm mb-6 border border-border/60">
-              <Shield className="h-4 w-4 text-emerald-500" /> FREE CORE FOR EVERYONE. THE PATH FORWARD.
+      <Dialog open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+        <DialogContent className="sm:max-w-md gap-0 p-0 overflow-hidden max-h-[85vh]">
+          <DialogHeader className="p-4 border-b border-border/60 space-y-0">
+            <DialogTitle className="text-base text-left">Menu</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col p-4 gap-1">
+            {NAV_LINKS.map((l) =>
+              navLink(l.href, l.label, () => setMobileNavOpen(false))
+            )}
+            <Button
+              variant="fitness"
+              className="primary-action mt-4"
+              onClick={() => {
+                setMobileNavOpen(false);
+                goWelcome();
+              }}
+            >
+              Start free — 2 min setup
+            </Button>
+            <Button
+              variant="outline"
+              className="tap-target mt-2"
+              onClick={() => {
+                setMobileNavOpen(false);
+                scrollToId('bundle');
+              }}
+            >
+              Explore Super Bundle
+            </Button>
+            <Button
+              variant="ghost"
+              className="tap-target text-emerald-400"
+              onClick={() => {
+                setMobileNavOpen(false);
+                const trig = (window as Window & { triggerPwaInstall?: () => void }).triggerPwaInstall;
+                if (trig) trig();
+                else goWelcome();
+              }}
+            >
+              Install PWA (offline)
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <main id="main-content">
+        <section className="relative pt-12 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-6 border-b border-border/60">
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-muted/50 text-xs sm:text-sm mb-6 border border-border/60">
+                <Shield className="h-4 w-4 text-emerald-500 shrink-0" />
+                {hero.badge}
+              </div>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.08] mb-6">
+                {hero.headline}
+                <br />
+                <span className="fitness-text-gradient">{hero.gradient}</span>
+              </h1>
+              <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-lg">{hero.subtitle}</p>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+                <Button
+                  size="lg"
+                  variant="fitness"
+                  className="primary-action sm:w-auto sm:px-10"
+                  onClick={goWelcome}
+                >
+                  Start free — 2 min setup
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="tap-target sm:px-10 h-[52px] text-base"
+                  onClick={() => scrollToId('bundle')}
+                >
+                  Explore Super Bundle
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
+                <span>✓ Free core forever</span>
+                <span>✓ 14 languages in-app</span>
+                <span>✓ Offline PWA</span>
+                <span>✓ Rural & bodyweight ready</span>
+              </div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6">
-              MISSION WINNING.<br />
-              <span className="fitness-text-gradient">Train smarter. Recover better.</span>
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8 max-w-lg">
-              Core mission — workout tracking, basic tools, accessible recipes — <strong className="text-foreground">100% free for everyone worldwide</strong>. Readiness, strain, and recovery scores built for serious lifters. Premium pillars + Super Bundle for holistic synergy.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-4">
-              <Button size="lg" variant="fitness" className="text-lg px-10 h-14" onClick={() => router.push("/log")}>
-                START FREE TRACKER <ArrowRight className="ml-2" />
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg px-10 h-14" onClick={() => document.getElementById('bundle')?.scrollIntoView({ behavior: 'smooth' })}>
-                GET SUPER BUNDLE
-              </Button>
-            </div>
-            <p className="text-sm text-muted-foreground">Free core forever. PWA. Offline. Global. See <a href="/vision" className="underline text-emerald-400">vision.md</a>.</p>
+            <MetricsRow scores={DEMO_SCORES} demo />
           </div>
-          <MetricsRow scores={DEMO_SCORES} demo />
-        </div>
-      </section>
+        </section>
 
-      {/* Problem Agitation - Cardone Style: Hit them hard */}
-      <section className="max-w-5xl mx-auto px-6 py-16 border-b border-border/60">
-        <div className="text-center mb-10">
-          <div className="uppercase tracking-[3px] text-red-500 text-sm font-medium mb-3">THE TRUTH NO ONE TELLS YOU</div>
-          <h2 className="text-4xl font-bold tracking-tight mb-4">You're Average Because You're Playing Small.</h2>
-        </div>
-        <div className="grid md:grid-cols-2 gap-8 text-lg text-muted-foreground">
-          <div>
-            <p className="mb-4">Most people drag through life with weak bodies, low energy, and zero discipline. They "try" the gym for 3 weeks then quit. They follow random YouTube videos and wonder why nothing changes.</p>
-            <p>That's not you. Or it won't be. Because average is a choice — and you're done choosing it.</p>
-          </div>
-          <div>
-            <p className="mb-4">The top performers? They don't mess around. They use systems. They take massive action. They dominate their space. They invest in real knowledge and tools that actually move the needle — and they do it now, before the window closes.</p>
-            <p>Mission Winning is built for everyone. Free core tools for the global mission. The Super Bundle for those who want the full synergistic path to better health.</p>
-          </div>
-        </div>
-        <div className="mt-8 text-center text-red-400 font-bold">The free core is here for all. The Super Bundle makes the full path accessible and sustainable.</div>
-      </section>
-
-      {/* Problem + Solution - Cardone Agitation & Proof */}
-      <section className="max-w-5xl mx-auto px-6 py-16 border-b border-border/60">
-        <div className="text-center mb-10">
-          <div className="uppercase tracking-[3px] text-red-500 text-sm font-medium mb-3">THE MASSIVE ACTION DIFFERENCE</div>
-          <h2 className="text-4xl font-bold tracking-tight mb-4">Most "Fitness Apps" Are For Losers Who Want To Feel Busy.</h2>
-          <p className="max-w-2xl mx-auto text-lg text-white/70">Mission Winning is different. Free core tools so anyone, anywhere can start the path. Premium pillars and the Super Bundle for deeper transformation and to sustain the mission for all.</p>
-        </div>
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-sm leading-relaxed max-w-3xl mx-auto">
-          <div className="font-semibold mb-3 text-emerald-400">OUR PROMISE TO THE OBSESSED</div>
-          Every single program and tool in Mission Winning is engineered so you apply it immediately inside the tracker. No fluff. No theory. Just massive action and measurable elite results. Winners don't read books and hope. They execute.
-        </div>
-      </section>
-
-      {/* Free Tools Hook - Cardone Lead Magnet */}
-      <section id="tools" className="max-w-6xl mx-auto px-6 py-16">
-        <div className="text-center mb-10">
-          <div className="text-emerald-500 uppercase tracking-widest text-xs mb-2">100% FREE. NO EXCUSES. NO LIMITS.</div>
-          <h2 className="text-4xl font-bold tracking-tight">The Free Tracker That Separates The 1% From Everyone Else.</h2>
-          <p className="mt-3 text-white/60 max-w-md mx-auto">Real tools. Real progress. The same systems the winners use — free so you can feel the power before you go all-in on the Beta Founders programs.</p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          {toolsHighlights.map((t, i) => (
-            <Card key={i} className="bg-card border-border/60 hover:border-emerald-500/30 transition-colors">
-              <CardHeader>
-                <t.icon className="h-8 w-8 text-emerald-500 mb-3" />
-                <CardTitle>{t.label}</CardTitle>
-                <CardDescription className="text-muted-foreground">{t.desc}</CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-
-        <div className="text-center">
-          <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-10 h-14" onClick={() => router.push("/log")}>
-            GRAB THE FREE TRACKER NOW — START MASSIVE ACTION TODAY <ArrowRight className="ml-2" />
-          </Button>
-          <div className="text-xs mt-3 text-white/40">Used by serious lifters worldwide. 5x5 • Texas Method • Custom Builder • History • PR Tracking • PWA • Global</div>
-          <Button size="sm" variant="outline" className="mt-3 border-emerald-400 text-emerald-400" onClick={() => {
-            // Use captured beforeinstallprompt if available (from main.tsx)
-            const promptEvt = (window as any).deferredPwaPrompt && (window as any).deferredPwaPrompt();
-            if (promptEvt && promptEvt.prompt) {
-              promptEvt.prompt().then(() => { console.log('analytics: pwa_prompt_used'); });
-            } else if ('serviceWorker' in navigator) {
-              alert("Add to Home Screen from browser menu (Chrome: ⋮ > Install Mission Winning). Full offline PWA ready — train anywhere. No excuses.");
-            } else {
-              window.location.href = "/log";
-            }
-            // Analytics stub
-            console.log('analytics: pwa_install_clicked');
-            localStorage.setItem('mw_event_pwa', Date.now().toString());
-          }}>INSTALL MISSION WINNING (PWA • OFFLINE • FREE)</Button>
-        </div>
-      </section>
-
-      {/* BETA PROGRAMS - HIGH TICKET CARDONE CLOSES */}
-      <section id="programs" className="bg-muted/20 py-16 border-y border-border/60">
-        <div className="max-w-6xl mx-auto px-6">
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 border-b border-border/60">
           <div className="text-center mb-10">
-            <div className="text-emerald-400 uppercase tracking-[3px] text-sm mb-2">THE PILLARS — FREE FOR ALL + SUPER BUNDLE SYNERGY</div>
-            <h2 className="text-4xl font-bold tracking-tight">The Right Path, Accessible to Everyone.</h2>
-            <p className="mt-3 text-white/70 max-w-2xl mx-auto">Free core in every pillar (per vision.md). Premium depth and the Super Bundle (6 pillars, one subscription, 50% off intro like the best holistic models) for full transformation and the mission's sustainability.</p>
+            <div className="uppercase tracking-[0.2em] text-emerald-500/90 text-xs font-medium mb-3">
+              The system problem
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+              Five apps. Zero synergy.
+            </h2>
+            <p className="max-w-2xl mx-auto text-muted-foreground text-lg">
+              You log workouts in one place, protein in another, and mobility never happens — because nothing connects.
+              Mission Winning unifies Train, Fuel, Move, Mind, Track, and Learn with one Win Score on Today.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 text-muted-foreground">
+            <div className="space-y-4">
+              <p>
+                Most fitness tools gate the logger or drown you in ads. They treat training, nutrition, and recovery as
+                separate products — so you train hard but never see the full picture.
+              </p>
+              <p>
+                <strong className="text-foreground">Our promise:</strong> the core mission stays free forever — workout
+                tracking, basics in every pillar, offline PWA, global access.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <p>
+                Premium Super Bundle funds that mission: AI Coach, premium sessions, specialist Learn paths, and deeper
+                Fuel/Move/Track — when you want the full synergistic path.
+              </p>
+              <p className="text-emerald-400/90 font-medium">
+                Evidence-based. Accessible everywhere. The right way — not another fad app.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="tools" className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+          <div className="text-center mb-10">
+            <div className="text-emerald-500 uppercase tracking-widest text-xs mb-2">Free forever</div>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Start with real tools — not a trial trap</h2>
+            <p className="mt-3 text-muted-foreground max-w-lg mx-auto">
+              Log your first workout in minutes. No credit card. Core tracking never paywalled.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {pillars.map((p) => (
-              <Card key={p.id} className="bg-card border-border/60 flex flex-col">
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
+            {toolsHighlights.map((t) => (
+              <Card key={t.label} className="content-card hover:border-emerald-500/30 transition-colors">
                 <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-2xl">{p.title}</CardTitle>
-                      <CardDescription className="text-emerald-400/80 mt-1">{p.subtitle}</CardDescription>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-3xl font-semibold tabular-nums">{p.price}</div>
-                      <div className="text-xs text-white/50">FREE ENTRY. BUNDLE FOR FULL PATH.</div>
-                    </div>
-                  </div>
+                  <t.icon className="h-8 w-8 text-emerald-500 mb-3" />
+                  <CardTitle className="text-lg">{t.label}</CardTitle>
+                  <CardDescription>{t.desc}</CardDescription>
                 </CardHeader>
-                <CardContent className="flex-1 flex flex-col">
-                  <p className="text-muted-foreground mb-6">{p.desc}</p>
-                  <ul className="space-y-2 mb-8 text-sm">
-                    {p.features.map((f, idx) => (
-                      <li key={idx} className="flex gap-2"><Check className="h-4 w-4 text-green-500 mt-0.5" /> {f}</li>
-                    ))}
-                  </ul>
-                  <div className="mb-3 text-xs text-emerald-400 font-semibold">FREE CORE FOR EVERYONE. Super Bundle for the full synergistic path (50% off intro promos — like proven holistic models). See vision.md.</div>
-                  <UnlockButton
-                    productId={p.id}
-                    className="mt-auto"
-                  />
-                  <div className="text-[10px] text-center mt-3 text-white/40">Free basics always. Premium unlocks + bundle synergies • 30-day guarantee • Powered by PayPal</div>
-                </CardContent>
               </Card>
             ))}
           </div>
 
-          <p className="text-center text-xs mt-8 text-white/50 max-w-lg mx-auto">
-            The pillars are <strong>accessible to all</strong>. Free entry + useful tools for the mission of global health. Premium depth and the Super Bundle for those who want the complete, synergistic path. Not gated elite content — the right way, for everyone.
-          </p>
-          <div className="text-center mt-6">
-            <a href="/bundle" className="inline-block text-emerald-400 hover:text-emerald-300 text-sm underline">Explore the Super Bundle →</a>
+          <div className="text-center space-y-3">
+            <Button size="lg" variant="fitness" className="primary-action sm:w-auto sm:px-10" onClick={goWelcome}>
+              Start free — log your first workout
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              5×5 · Custom builder · History · PRs · PWA install · Works offline
+            </p>
           </div>
+        </section>
 
-          {/* Early Users / Social Proof - updated for new model */}
-          <div className="mt-8 max-w-2xl mx-auto">
-            <div className="text-emerald-400 uppercase tracking-[3px] text-sm mb-2">EARLY USERS OF THE PATH</div>
-            <div className="grid md:grid-cols-2 gap-4 text-left text-sm">
-              {(() => {
-                try {
-                  const fb = JSON.parse(localStorage.getItem('mw_beta_feedback') || '[]');
-                  if (fb.length > 0) {
-                    return fb.slice(0,2).map((f: any, i: number) => (
-                      <div key={i} className="bg-white/5 p-3 rounded border border-white/10">
-                        “{f.testimonial || f.results}” <span className="text-emerald-400 text-xs">— Early user, {f.rating}/5 results</span>
-                      </div>
-                    ));
-                  }
-                } catch {}
-                return [
-                  <div key="d1" className="bg-white/5 p-3 rounded border border-white/10">“The free tracker got me consistent. The bundle unlocked the full synergy — mobility + mind + nutrition transformed my training.” <span className="text-emerald-400 text-xs">— A. R., rating 5</span></div>,
-                  <div key="d2" className="bg-white/5 p-3 rounded border border-white/10">“Free core for my whole family. Bundle for me. Finally the everything app that actually works globally.” <span className="text-emerald-400 text-xs">— J. K., rating 5</span></div>
-                ];
-              })()}
+        <section id="pillars" className="bg-muted/20 py-12 sm:py-16 border-y border-border/60 scroll-mt-16">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-10">
+              <div className="text-emerald-400 uppercase tracking-[0.2em] text-xs mb-2">Six pillars</div>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">One app. Holistic synergy.</h2>
+              <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+                Free entry in every pillar. Super Bundle unlocks premium depth across all six — modeled on proven
+                holistic bundle models.
+              </p>
             </div>
-            <div className="text-xs text-white/50 mt-2">Real feedback from early users of the free core + Super Bundle. Your results can be next.</div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {pillars.map((p) => (
+                <Card key={p.id} className="content-card flex flex-col">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 rounded-lg bg-emerald-500/10 shrink-0">
+                        <p.icon className="h-5 w-5 text-emerald-400" />
+                      </div>
+                      <div className="min-w-0">
+                        <CardTitle className="text-xl">{p.title}</CardTitle>
+                        <CardDescription className="text-emerald-400/80 mt-0.5">{p.subtitle}</CardDescription>
+                      </div>
+                    </div>
+                    <div className="text-sm font-medium text-foreground/80 mt-2">{p.price}</div>
+                  </CardHeader>
+                  <CardContent className="flex-1 flex flex-col pt-0">
+                    <p className="text-sm text-muted-foreground mb-4">{p.desc}</p>
+                    <ul className="space-y-2 mb-6 text-sm flex-1">
+                      {p.features.map((f) => (
+                        <li key={f} className="flex gap-2">
+                          <Check className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <Button variant="fitness" className="tap-target w-full" onClick={() => router.push(p.route)}>
+                      {p.cta}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="mt-10 max-w-2xl mx-auto">
+              <div className="text-emerald-400 uppercase tracking-[0.2em] text-xs mb-3 text-center">Early users</div>
+              <div className="grid sm:grid-cols-2 gap-4 text-sm">
+                {(() => {
+                  try {
+                    const fb = JSON.parse(localStorage.getItem('mw_beta_feedback') || '[]') as {
+                      testimonial?: string;
+                      results?: string;
+                      rating?: number;
+                    }[];
+                    if (fb.length > 0) {
+                      return fb.slice(0, 2).map((f, i) => (
+                        <div key={i} className="bg-card/80 p-4 rounded-xl border border-border/60">
+                          &ldquo;{f.testimonial || f.results}&rdquo;
+                          <span className="block text-emerald-400 text-xs mt-2">
+                            — Beta user · {f.rating}/5
+                          </span>
+                        </div>
+                      ));
+                    }
+                  } catch {
+                    /* ignore */
+                  }
+                  return (
+                    <>
+                      <div className="bg-card/80 p-4 rounded-xl border border-border/60">
+                        &ldquo;The free tracker got me consistent. Cross-pillar coach on Today actually tells me what
+                        to do next.&rdquo;
+                        <span className="block text-emerald-400 text-xs mt-2">— Early user · 5/5</span>
+                      </div>
+                      <div className="bg-card/80 p-4 rounded-xl border border-border/60">
+                        &ldquo;Free core for my family. Offline PWA works where signal does not.&rdquo;
+                        <span className="block text-emerald-400 text-xs mt-2">— Early user · 5/5</span>
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="bundle" className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 scroll-mt-16">
+          <div className="text-center mb-8">
+            <div className="text-emerald-400 uppercase tracking-[0.2em] text-xs mb-2">Super Bundle</div>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+              Replace your fitness app stack with one mission
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              Six pillars. One subscription. AI Coach, premium Mind/Move/Track/Learn, and deep Fuel — while core tracking
+              stays free forever.
+            </p>
+          </div>
+
+          <Card className="content-card border-emerald-500/30 overflow-hidden">
+            <CardHeader className="text-center pb-2">
+              <CardTitle className="text-2xl">Mission Winning Super Bundle</CardTitle>
+              <CardDescription>Intro pricing for early members · Cancel anytime</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center text-sm">
+                {pillars.map((p) => (
+                  <div
+                    key={p.id}
+                    className="tap-target rounded-xl border border-border/50 bg-muted/30 p-3 flex flex-col items-center gap-1"
+                  >
+                    <p.icon className="h-5 w-5 text-emerald-400" />
+                    <span className="font-medium">{p.title}</span>
+                    <span className="text-[10px] text-muted-foreground">Free + Premium</span>
+                  </div>
+                ))}
+              </div>
+              <ul className="space-y-2 text-sm max-w-md mx-auto">
+                {[
+                  'Premium AI Coach + plan generator',
+                  '6 Mind · 5 Move · 5 Track · 6 Learn premium',
+                  '92+ premium recipes & pro programs',
+                  'Cross-pillar Win Score on Today',
+                ].map((item) => (
+                  <li key={item} className="flex gap-2">
+                    <Check className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button variant="fitness" className="primary-action sm:w-auto sm:px-10" onClick={goBundle}>
+                  View pricing & unlock
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button variant="outline" className="tap-target sm:px-8 h-[52px]" onClick={goWelcome}>
+                  Start free first
+                </Button>
+              </div>
+              <p className="text-xs text-center text-muted-foreground">
+                Paying for premium funds the free mission for everyone, everywhere.
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section id="coaching" className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center border-b border-border/60 scroll-mt-16">
+          <div className="uppercase text-emerald-500/90 tracking-widest text-xs mb-2">1-on-1 coaching</div>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Human coaching when you want accountability</h2>
+          <p className="text-muted-foreground max-w-md mx-auto mb-8">
+            Application-based elite coaching — programming, nutrition, and weekly reviews. Separate from the Super Bundle
+            app subscription.
+          </p>
+
+          <div className="grid sm:grid-cols-3 gap-4 mb-8 text-left max-w-3xl mx-auto">
+            {[
+              {
+                title: 'Monthly coaching',
+                price: 'From $997/mo',
+                desc: 'Full programming, nutrition, and weekly video reviews.',
+              },
+              {
+                title: '90-day block',
+                price: 'From $2,497',
+                desc: 'Intensive transformation with assessments and premium app access.',
+              },
+              {
+                title: 'Coach mentorship',
+                price: 'Custom',
+                desc: 'For trainers building a practice with Mission Winning systems.',
+              },
+            ].map((c) => (
+              <Card key={c.title} className="content-card">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">{c.title}</CardTitle>
+                  <div className="text-lg font-semibold text-emerald-400">{c.price}</div>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground">{c.desc}</CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <Button size="lg" variant="fitness" className="tap-target px-10 h-[52px]" onClick={() => router.push('/coaching')}>
+            Apply for coaching
+          </Button>
+        </section>
+
+        <section className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Ready for your first win?</h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Two minutes on Welcome. One workout logged. Your Mission Score starts on Today.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button size="lg" variant="fitness" className="primary-action sm:w-auto sm:px-10" onClick={goWelcome}>
+              Start free
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="tap-target sm:px-10 h-[52px]"
+              onClick={() => scrollToId('bundle')}
+            >
+              Explore Super Bundle
+            </Button>
+          </div>
+        </section>
+
+        <section className="max-w-3xl mx-auto px-4 sm:px-6 py-10 text-sm text-muted-foreground border-t border-border/60">
+          <p className="text-center leading-relaxed">
+            <strong className="text-foreground">Disclaimer:</strong> Mission Winning provides educational fitness tools,
+            not medical advice. Consult qualified professionals before intense training. We issue certificates of
+            educational achievement — not licensure. Premium revenue supports free global access to core tools.
+          </p>
+        </section>
+      </main>
+
+      <footer className="border-t border-border/60 py-10 text-center text-xs text-muted-foreground px-4">
+        © Mission Winning ·{' '}
+        <a href="#pillars" className="hover:text-emerald-400 tap-target inline-flex px-1">
+          Pillars
+        </a>{' '}
+        ·{' '}
+        <a href="/bundle" className="hover:text-emerald-400 tap-target inline-flex px-1">
+          Bundle
+        </a>{' '}
+        ·{' '}
+        <a href="/welcome" className="hover:text-emerald-400 tap-target inline-flex px-1">
+          Start free
+        </a>{' '}
+        ·{' '}
+        <a href="/about" className="hover:text-emerald-400 tap-target inline-flex px-1">
+          About
+        </a>{' '}
+        ·{' '}
+        <a href="/vision" className="hover:text-emerald-400 tap-target inline-flex px-1">
+          Vision
+        </a>
+      </footer>
+
+      {showStickyCta && (
+        <div
+          className="fixed bottom-0 inset-x-0 z-40 md:hidden border-t border-border/60 bg-background/95 backdrop-blur p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+          role="region"
+          aria-label="Quick actions"
+        >
+          <div className="flex gap-2 max-w-lg mx-auto">
+            <Button variant="fitness" className="primary-action flex-1 min-h-[48px]" onClick={goWelcome}>
+              Start free
+            </Button>
+            <Button variant="outline" className="tap-target flex-1 min-h-[48px]" onClick={() => scrollToId('bundle')}>
+              Bundle
+            </Button>
           </div>
         </div>
-      </section>
-
-      {/* ELITE COACHING - CARDONE HIGH TICKET */}
-      <section id="coaching" className="max-w-4xl mx-auto px-6 py-16 text-center border-b border-white/10">
-        <div className="uppercase text-red-500 tracking-widest text-sm mb-2">FOR THE OBSESSED ONLY</div>
-        <h2 className="text-4xl font-bold tracking-tight mb-4">1-on-1 Elite Coaching. Limited. Expensive. Life-Changing.</h2>
-        <p className="text-white/70 max-w-md mx-auto mb-8">Work directly with the best. Full programming. Nutrition. Weekly reviews. Direct access. This is what the obsessed pay for to dominate their results faster than anyone else. Application only. No tire-kickers. Beta cohort gets early access.</p>
-
-        <div className="grid sm:grid-cols-3 gap-4 mb-8 text-left max-w-3xl mx-auto">
-          {[
-            { title: "Monthly Elite Coaching", price: "$997/mo", desc: "Full programming + nutrition + weekly video reviews. Direct access." },
-            { title: "90-Day Transformation", price: "$2,497", desc: "Intensive block. Pre/post assessments. Full premium Mission Winning access. Results or we work for free." },
-            { title: "Coach Mentorship", price: "Custom", desc: "For trainers ready to build their own empire using the exact Mission Winning systems." }
-          ].map((c, i) => (
-            <Card key={i} className="bg-white/5 border-white/10">
-              <CardHeader className="pb-2">
-                <CardTitle>{c.title}</CardTitle>
-                <div className="text-2xl font-semibold text-emerald-400">{c.price}</div>
-              </CardHeader>
-              <CardContent className="text-sm text-white/70">{c.desc}</CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <Button size="lg" className="bg-red-600 hover:bg-red-700 text-lg px-10 h-14" onClick={() => router.push("/coaching")}>APPLY FOR ELITE COACHING — ONLY THE OBSESSED</Button>
-        <div className="text-xs mt-3 text-white/40">Spots are extremely limited. We only work with people who are obsessed. Apply now or stay average.</div>
-      </section>
-
-      {/* FINAL URGENCY / MASSIVE ACTION CLOSE - CARDONE STYLE */}
-      <section className="max-w-3xl mx-auto px-6 py-16 text-center">
-        <div className="text-red-500 text-sm tracking-[3px] mb-2">THE CLOCK IS TICKING</div>
-        <h2 className="text-4xl font-bold tracking-tight mb-4">You Have Two Choices.</h2>
-        <p className="text-xl text-white/80 mb-8">Keep doing what you've always done and stay average. Or take massive action and dominate your effort, your body, and your results with Mission Winning Beta starting right now.</p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-10 h-14" onClick={() => router.push("/log")}>
-            START FREE — PROVE IT TO YOURSELF
-          </Button>
-          <Button size="lg" className="bg-white text-black hover:bg-white/90 text-lg px-10 h-14" onClick={() => document.getElementById('programs')?.scrollIntoView({ behavior: 'smooth' })}>
-            JOIN BETA — TAKE MASSIVE ACTION NOW
-          </Button>
-        </div>
-        <p className="mt-6 text-sm text-white/50">Winners use Mission Winning. Losers make excuses. Which one are you?</p>
-      </section>
-
-      {/* Trust / Disclaimers - Cardone Direct */}
-      <section className="max-w-3xl mx-auto px-6 py-12 text-sm text-white/60">
-        <div className="flex flex-wrap gap-x-8 gap-y-2 justify-center mb-6 text-xs uppercase tracking-widest">
-          <div>MASSIVE ACTION ONLY</div>
-          <div>BUILT FOR REAL WINNERS</div>
-          <div>GLOBAL. NO EXCUSES.</div>
-          <div>RESULTS OR NOTHING</div>
-        </div>
-        <p className="text-center leading-relaxed">
-          <strong>Listen up:</strong> Mission Winning is for people who actually want to win. This is elite practical education and tools — not a magic pill. We are not a certifying agency. You get a Mission Winning Certificate of Educational Achievement. Results require massive action on your part. Consult doctors. Don't be stupid. This is education, not medical advice. Winners take responsibility. Average people blame the system. The operating company is a for-profit entity; a separate nonprofit foundation may support free global access and scholarships.
-        </p>
-      </section>
-
-      <footer className="border-t border-white/10 py-10 text-center text-xs text-white/40">
-        © Mission Winning • Dominate Your Health. Build an Unstoppable Life. • <a href="#programs" className="hover:text-white/70">BETA PROGRAMS</a> • <a href="/log" className="hover:text-white/70">FREE TRACKER</a> • <a href="/about" className="hover:text-white/70">ABOUT</a>
-      </footer>
+      )}
     </div>
   );
 }
