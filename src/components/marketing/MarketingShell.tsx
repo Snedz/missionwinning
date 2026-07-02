@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -11,36 +12,49 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Menu } from 'lucide-react';
+import { MarketingLanguageSelect } from '@/components/marketing/MarketingLanguageSelect';
 
-export type MarketingNavLink = { href: string; label: string };
+export type MarketingNavLink = { href: string; labelKey: string };
 
 const LANDING_LINKS: MarketingNavLink[] = [
-  { href: '/#tools', label: 'Free core' },
-  { href: '/#pillars', label: 'Pillars' },
-  { href: '/#bundle', label: 'Super Bundle' },
+  { href: '#tools', labelKey: 'landingNavFreeCore' },
+  { href: '#pillars', labelKey: 'landingNavPillars' },
+  { href: '#bundle', labelKey: 'landingNavBundle' },
+  { href: '#faq', labelKey: 'landingNavFaq' },
 ];
 
 const BUNDLE_LINKS: MarketingNavLink[] = [
-  { href: '/', label: 'Home' },
-  { href: '/#pillars', label: 'Pillars' },
-  { href: '#faq', label: 'FAQ' },
+  { href: '/', labelKey: 'landingNavHome' },
+  { href: '/#pillars', labelKey: 'landingNavPillars' },
+  { href: '#faq', labelKey: 'landingNavFaq' },
 ];
 
 function scrollToHash(href: string) {
-  if (!href.startsWith('#')) return;
-  document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+  const hashIdx = href.indexOf('#');
+  if (hashIdx === -1) return;
+  const hash = href.slice(hashIdx);
+  if (hash.length <= 1) return;
+  document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' });
 }
+
+type MarketingShellProps = {
+  children: ReactNode;
+  variant?: 'landing' | 'bundle';
+  stickyCta?: {
+    primaryLabel: string;
+    onPrimary: () => void;
+    secondaryLabel?: string;
+    onSecondary?: () => void;
+  };
+};
 
 export function MarketingShell({
   children,
   variant = 'landing',
   stickyCta,
-}: {
-  children: ReactNode;
-  variant?: 'landing' | 'bundle';
-  stickyCta?: { primaryLabel: string; onPrimary: () => void; secondaryLabel?: string; onSecondary?: () => void };
-}) {
+}: MarketingShellProps) {
   const router = useRouter();
+  const { t } = useTranslation();
   const links = variant === 'bundle' ? BUNDLE_LINKS : LANDING_LINKS;
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
@@ -56,10 +70,10 @@ export function MarketingShell({
   const goBundle = useCallback(() => router.push('/bundle'), [router]);
 
   const navAnchor = (link: MarketingNavLink, onNavigate?: () => void) => {
-    const isHash = link.href.startsWith('#');
-    const isCrossPageHash = link.href.includes('#') && !link.href.startsWith('#');
+    const label = t(link.labelKey);
+    const isSamePageHash = link.href.startsWith('#');
 
-    if (isHash) {
+    if (isSamePageHash) {
       return (
         <a
           key={link.href}
@@ -71,7 +85,7 @@ export function MarketingShell({
             onNavigate?.();
           }}
         >
-          {link.label}
+          {label}
         </a>
       );
     }
@@ -83,7 +97,7 @@ export function MarketingShell({
         className="tap-target inline-flex items-center px-2 py-2 text-sm hover:text-emerald-400 transition-colors rounded-lg"
         onClick={() => onNavigate?.()}
       >
-        {link.label}
+        {label}
       </Link>
     );
   };
@@ -99,26 +113,30 @@ export function MarketingShell({
             <div className="text-left hidden sm:block">
               <div className="font-semibold tracking-tight text-sm">MISSION WINNING</div>
               <div className="text-[10px] text-muted-foreground -mt-0.5">
-                {variant === 'bundle' ? 'Super Bundle' : 'Global health super-app'}
+                {variant === 'bundle'
+                  ? t('marketingTaglineBundle', { defaultValue: 'Super Bundle' })
+                  : t('marketingTagline', { defaultValue: 'Global health super-app' })}
               </div>
             </div>
           </Link>
 
           <div className="hidden lg:flex items-center gap-1 text-sm">
             {links.map((l) => navAnchor(l))}
-            <Button variant="outline" size="sm" className="tap-target ml-2" onClick={goWelcome}>
-              Start free
+            <MarketingLanguageSelect className="tap-target ml-1 rounded-lg border border-border/60 bg-background/80 px-2 py-1.5 text-xs" />
+            <Button variant="outline" size="sm" className="tap-target ml-1" onClick={goWelcome}>
+              {t('landingStartFree', { defaultValue: 'Start free' })}
             </Button>
             {variant !== 'bundle' && (
               <Button size="sm" variant="fitness" className="tap-target" onClick={goBundle}>
-                Super Bundle
+                {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
               </Button>
             )}
           </div>
 
           <div className="flex lg:hidden items-center gap-2">
+            <MarketingLanguageSelect className="tap-target rounded-lg border border-border/60 bg-background/80 px-1.5 py-1.5 text-[10px] max-w-[52px]" />
             <Button size="sm" variant="fitness" className="tap-target h-11" onClick={goWelcome}>
-              Start free
+              {t('landingStartFree', { defaultValue: 'Start free' })}
             </Button>
             <Button
               variant="outline"
@@ -136,7 +154,7 @@ export function MarketingShell({
       <Dialog open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
         <DialogContent className="sm:max-w-md gap-0 p-0 overflow-hidden max-h-[85vh]">
           <DialogHeader className="p-4 border-b border-border/60 space-y-0">
-            <DialogTitle className="text-base text-left">Menu</DialogTitle>
+            <DialogTitle className="text-base text-left">{t('landingMenu', { defaultValue: 'Menu' })}</DialogTitle>
           </DialogHeader>
           <div className="flex flex-col p-4 gap-1">
             {links.map((l) => navAnchor(l, () => setMobileNavOpen(false)))}
@@ -148,7 +166,7 @@ export function MarketingShell({
                 goWelcome();
               }}
             >
-              Start free — 2 min setup
+              {t('landingStartFreeLong', { defaultValue: 'Start free — 2 min setup' })}
             </Button>
             {variant !== 'bundle' && (
               <Button
@@ -159,9 +177,12 @@ export function MarketingShell({
                   goBundle();
                 }}
               >
-                View Super Bundle pricing
+                {t('marketingViewPricing', { defaultValue: 'View Super Bundle pricing' })}
               </Button>
             )}
+            <div className="pt-3">
+              <MarketingLanguageSelect className="tap-target w-full rounded-lg border border-border/60 bg-background px-3 py-2 text-sm" />
+            </div>
           </div>
         </DialogContent>
       </Dialog>
@@ -171,19 +192,19 @@ export function MarketingShell({
       <footer className="border-t border-border/60 py-8 text-center text-xs text-muted-foreground px-4 mt-8">
         © Mission Winning ·{' '}
         <Link href="/welcome" className="hover:text-emerald-400 tap-target inline-flex px-1">
-          Start free
+          {t('marketingFooterStart', { defaultValue: 'Start free' })}
         </Link>{' '}
         ·{' '}
         <Link href="/bundle" className="hover:text-emerald-400 tap-target inline-flex px-1">
-          Bundle
+          {t('marketingFooterBundle', { defaultValue: 'Bundle' })}
         </Link>{' '}
         ·{' '}
         <Link href="/about" className="hover:text-emerald-400 tap-target inline-flex px-1">
-          About
+          {t('marketingFooterAbout', { defaultValue: 'About' })}
         </Link>{' '}
         ·{' '}
         <Link href="/vision" className="hover:text-emerald-400 tap-target inline-flex px-1">
-          Vision
+          {t('marketingFooterVision', { defaultValue: 'Vision' })}
         </Link>
       </footer>
 

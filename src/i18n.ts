@@ -21,6 +21,7 @@ import { mergeBenchmarksStrings } from './i18n/benchmarksLocales'
 import { mergeCalculatorsStrings } from './i18n/calculatorsLocales'
 import { mergeFitnessTestStrings } from './i18n/fitnessTestLocales'
 import { mergeAssessmentStrings } from './i18n/assessmentLocales'
+import { mergeLandingStrings } from './i18n/landingLocales'
 
 // Inline resources for fast global launch (add more langs + extract to json later)
 // Tier 1: EN ES FR PT RU DE IT KO
@@ -569,6 +570,7 @@ for (const lang of [...TIER1_LANGS, ...TIER2_LANGS, ...MEA_LANGS]) {
   mergeCalculatorsStrings(resources[lang].common, lang)
   mergeFitnessTestStrings(resources[lang].common, lang)
   mergeAssessmentStrings(resources[lang].common, lang)
+  mergeLandingStrings(resources[lang].common, lang)
 }
 
 i18n

@@ -16,6 +16,7 @@ import { learnStringsFor } from '@/i18n/learnLocales';
 import { builderStringsFor } from '@/i18n/builderLocales';
 import { benchmarksStringsFor } from '@/i18n/benchmarksLocales';
 import { calculatorsStringsFor } from '@/i18n/calculatorsLocales';
+import { landingStringsFor } from '@/i18n/landingLocales';
 
 /** Languages with full or partial pillar-specific translations. */
 export const EXPORT_LANGS = [
@@ -38,7 +39,8 @@ export type LocaleNamespace =
   | 'learn'
   | 'builder'
   | 'benchmarks'
-  | 'calculators';
+  | 'calculators'
+  | 'landing';
 
 export type LocaleExportEntry = {
   namespace: LocaleNamespace;
@@ -130,6 +132,12 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'calculators',
     filename: 'calculators.json',
     stringsFor: calculatorsStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'landing',
+    filename: 'landing.json',
+    stringsFor: landingStringsFor,
     langs: EXPORT_LANGS,
   },
 ];

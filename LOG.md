@@ -74,6 +74,21 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase M2: Landing i18n + hero mockup
+
+**Build:** `2025.06-unified.64`
+
+### Shipped
+
+- **Landing i18n** — `landingLocales.ts` + Tier 1 native packs (IT/JA/KO/RU ≥75%); `LandingPage` wired to `useTranslation()`
+- **Hero mockup** — `LandingHeroMockup` phone-frame Today preview replaces raw `MetricsRow`
+- **Marketing language select** — nav + mobile menu on landing; `MarketingShell` label keys
+- **Locale export** — `landing.json` namespace for all 14 export langs
+
+**Tests:** 223 passing
+
+---
+
 ## 2026-06-29 — Phase M1: Standalone bundle sales + FAQ
 
 **Build:** `2025.06-unified.63`
