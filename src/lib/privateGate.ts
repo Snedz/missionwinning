@@ -22,6 +22,7 @@ export const PUBLIC_PATHS_WHILE_GATED = [
   '/america',
   '/youth/consent/confirm',
   '/auth/callback',
+  '/manifest.webmanifest',
 ] as const;
 
 /** API routes that must stay reachable for webhooks and the gate form (no access cookie). */

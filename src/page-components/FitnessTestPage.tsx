@@ -4,10 +4,20 @@ import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FitnessTestRunner } from '@/components/fitness-test/FitnessTestRunner';
+import { isAmericaTrackEnabled } from '@/lib/americaConfig';
 import { Suspense } from 'react';
 
 function FitnessTestInner() {
   const { t } = useTranslation();
+
+  if (!isAmericaTrackEnabled()) {
+    return (
+      <div className="max-w-2xl mx-auto py-12 px-4 text-center text-muted-foreground">
+        {t('americaDisabled', { defaultValue: 'National fitness track is not enabled in this build.' })}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <Link

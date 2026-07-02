@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { LEADERBOARD_BOARDS } from '@/lib/leaderboard/boards';
+import { visibleLeaderboardBoards } from '@/lib/leaderboard/boards';
 import type { LeaderboardBoardId } from '@/lib/leaderboard/types';
 import { BOARD_I18N_KEY } from '@/i18n/leaderboardLocales';
 import { Star, Flame, TrendingUp, UtensilsCrossed, Moon, Sunrise, Medal } from 'lucide-react';
@@ -26,7 +26,7 @@ export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
   const { t } = useTranslation();
   return (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-      {LEADERBOARD_BOARDS.map((b) => {
+      {visibleLeaderboardBoards().map((b) => {
         const Icon = ICONS[b.id];
         const active = boardId === b.id;
         const themed = b.theme === 'night' || b.theme === 'dawn';
