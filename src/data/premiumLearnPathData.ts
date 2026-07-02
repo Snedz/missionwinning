@@ -1,0 +1,293 @@
+import type { LearnPath } from '@/data/learnPaths';
+
+/** Premium specialist learn paths — import via premiumLearnPaths.ts on server only. */
+export const PREMIUM_LEARN_PATH_DATA: LearnPath[] = [
+  {
+    id: 'pt-nutrition',
+    title: 'Elite Personal Training + Nutrition',
+    subtitle: 'Integrated programming, intake, and fueling for real-world clients',
+    icon: '🎯',
+    lessons: [
+      {
+        id: 'ptn-1',
+        title: 'Client Intake & Goal Setting',
+        summary: 'Structured discovery: health history, movement screen, lifestyle, and SMART goals.',
+        keyPoints: [
+          'PAR-Q and red flags before any program design',
+          'Match training volume to sleep, stress, and nutrition capacity',
+          'Document baseline metrics — photos, measurements, strength tests',
+        ],
+        actionHref: '/assessments',
+        actionLabel: 'Run PAR-Q',
+      },
+      {
+        id: 'ptn-2',
+        title: 'Periodized Training + Fueling',
+        summary: 'Align macronutrients and meal timing with training phase — hypertrophy, strength, or fat loss.',
+        keyPoints: [
+          'Protein anchor first — adjust carbs around training days',
+          'Hydration and electrolytes for high-volume blocks',
+          'Use Fuel pillar logs to spot under-fueling patterns',
+        ],
+        actionHref: '/nutrition',
+        actionLabel: 'Log Fuel',
+      },
+      {
+        id: 'ptn-3',
+        title: 'Progression & Deload Logic',
+        summary: 'When to push, when to pull back — RPE, readiness, and recovery scores.',
+        keyPoints: [
+          'Double progression: reps then load within rep ranges',
+          'Deload every 4–8 weeks or when readiness crashes',
+          'Coach plan generator (premium) synthesizes cross-pillar signals',
+        ],
+        actionHref: '/log',
+        actionLabel: 'Today Hub',
+      },
+      {
+        id: 'ptn-4',
+        title: 'Ethical Scope & Referrals',
+        summary: 'Stay in lane — educate and program; refer out for diagnosis and medical nutrition therapy.',
+        keyPoints: [
+          'Nutrition guidance stays general wellness unless licensed RD',
+          'Persistent pain → physician or PT before loading',
+          'Mission Winning supports coaching — it does not replace licensure',
+        ],
+        actionHref: '/coaching',
+        actionLabel: 'Coaching Inquiry',
+      },
+    ],
+  },
+  {
+    id: 'bodybuilding',
+    title: 'Bodybuilding Specialist',
+    subtitle: 'Hypertrophy science, split design, and advanced intensity methods',
+    icon: '💪',
+    lessons: [
+      {
+        id: 'bb-1',
+        title: 'Volume Landmarks for Hypertrophy',
+        summary: 'Effective reps per muscle per week — minimum, maximum, and recovery cost.',
+        keyPoints: [
+          '10–20 hard sets per muscle per week for most lifters',
+          'Track volume in History — avoid junk volume without proximity to failure',
+          'Smaller muscles recover faster — adjust frequency accordingly',
+        ],
+        actionHref: '/history',
+        actionLabel: 'Review Volume',
+      },
+      {
+        id: 'bb-2',
+        title: 'Split Selection',
+        summary: 'Full body, upper/lower, push/pull/legs — match split to schedule and recovery.',
+        keyPoints: [
+          '2–4 sessions/week: full body or upper/lower works well',
+          '5–6 days: PPL or body-part splits with careful overlap management',
+          'Builder templates include hypertrophy and advanced intensity blocks',
+        ],
+        actionHref: '/builder',
+        actionLabel: 'Load Template',
+      },
+      {
+        id: 'bb-3',
+        title: 'Intensity Techniques (Shock Blocks)',
+        summary: 'Supersets, rest-pause, drop sets — short blocks, not year-round training.',
+        keyPoints: [
+          'Use shock methods 4–8 weeks max, then return to straight sets',
+          'Pre-exhaust for lagging muscles — isolation before compound',
+          'Pro templates include Advanced Intensity Methods sample',
+        ],
+        actionHref: '/programs',
+        actionLabel: 'Pro Programs',
+      },
+    ],
+  },
+  {
+    id: 'corrective',
+    title: 'Corrective Exercise Specialist',
+    subtitle: 'Assessment-driven correction before progressive loading',
+    icon: '🩹',
+    lessons: [
+      {
+        id: 'ce-1',
+        title: 'Movement Screen Deep Dive',
+        summary: 'Overhead squat, single-leg balance, and gait clues — document compensations.',
+        keyPoints: [
+          'Left/right asymmetry → unilateral work before bilateral max effort',
+          'Knee valgus often traces to hip control — not just “weak quads”',
+          'Assessments pillar + Move flows before heavy blocks',
+        ],
+        actionHref: '/assessments',
+        actionLabel: 'Assessments',
+      },
+      {
+        id: 'ce-2',
+        title: 'Corrective Exercise Progressions',
+        summary: 'Activation → integration → loaded patterns — never skip the middle step.',
+        keyPoints: [
+          'Band pull-aparts, clamshells, dead bugs — low fatigue, high signal',
+          'Face pulls and scapular work on every pressing day',
+          'Premium Move flows include runner knee and shoulder prehab',
+        ],
+        actionHref: '/move',
+        actionLabel: 'Prehab Flows',
+      },
+      {
+        id: 'ce-3',
+        title: 'When to Refer Out',
+        summary: 'Sharp pain, radiating symptoms, or no improvement in 2–3 weeks → clinician.',
+        keyPoints: [
+          'Correctives support training — they rarely replace medical care',
+          'Pain during assessment is data — do not “push through”',
+          'Pathfinder users may need gentler progressions — honor care access',
+        ],
+        actionHref: '/assessments',
+        actionLabel: 'Pathfinder Check',
+      },
+    ],
+  },
+  {
+    id: 'strength-business',
+    title: 'Strength Business of Personal Training',
+    subtitle: 'Pricing, packages, retention, and sustainable coaching practice',
+    icon: '📈',
+    lessons: [
+      {
+        id: 'sbiz-1',
+        title: 'Packaging & Pricing',
+        summary: 'Value-based pricing — outcomes and accountability, not hourly gym rent.',
+        keyPoints: [
+          'Tier packages: foundation, performance, premium touchpoints',
+          'Super Bundle model — holistic pillars increase retention vs single-skill apps',
+          'Transparent pricing builds trust; hidden fees destroy it',
+        ],
+        actionHref: '/bundle',
+        actionLabel: 'View Bundle',
+      },
+      {
+        id: 'sbiz-2',
+        title: 'Client Retention Systems',
+        summary: 'Check-ins, streaks, and celebration — process metrics over scale weight alone.',
+        keyPoints: [
+          'Mind pillar daily check-in builds adherence data',
+          'Weekly challenges on Today Hub — train, fuel, volume',
+          'Celebrate sessions completed, not only PRs',
+        ],
+        actionHref: '/mind',
+        actionLabel: 'Check-In Tool',
+      },
+      {
+        id: 'sbiz-3',
+        title: 'Operations & Liability',
+        summary: 'Waivers, documentation, and professional boundaries protect you and clients.',
+        keyPoints: [
+          'PAR-Q on file before intense programming',
+          'Cloud sync preserves long-term training history for reviews',
+          'Scope of practice — coach, don’t diagnose',
+        ],
+        actionHref: '/coaching',
+        actionLabel: 'Coaching Form',
+      },
+    ],
+  },
+  {
+    id: 'online-coaching',
+    title: 'Online Coaching Mastery',
+    subtitle: 'Remote delivery, async feedback, and scalable client success',
+    icon: '🌐',
+    lessons: [
+      {
+        id: 'oc-1',
+        title: 'Remote Onboarding',
+        summary: 'Video form checks, intake forms, and equipment audits before week one.',
+        keyPoints: [
+          'Welcome flow captures goals, equipment, and rural/connectivity context',
+          'Set expectations for check-in cadence and response times',
+          'Demo premium content in onboarding — show Super Bundle value',
+        ],
+        actionHref: '/welcome',
+        actionLabel: 'Welcome Flow',
+      },
+      {
+        id: 'oc-2',
+        title: 'Async Programming Loops',
+        summary: 'Weekly plan → log → review → adjust — data beats guesswork.',
+        keyPoints: [
+          'History charts and benchmarks inform next block',
+          'Premium AI Coach plan generator for enrolled users',
+          'Offline coach v2 keeps Today useful on low connectivity',
+        ],
+        actionHref: '/log',
+        actionLabel: 'Today Hub',
+      },
+      {
+        id: 'oc-3',
+        title: 'Community & Accountability',
+        summary: 'Streaks, challenges, and human touchpoints — tech enables, humans connect.',
+        keyPoints: [
+          'Pillar wins log celebrates cross-pillar consistency',
+          'Coaching inquiry captures leads for human follow-up',
+          'Start clients with 2–3 habits, not twelve',
+        ],
+        actionHref: '/coaching',
+        actionLabel: 'Coaching Inquiry',
+      },
+      {
+        id: 'oc-4',
+        title: 'Scaling Without Burnout',
+        summary: 'Templates, automation, and clear office hours — protect your energy.',
+        keyPoints: [
+          'Builder + program templates reduce custom plan time',
+          'Group challenges reduce 1:1 message load',
+          'Refer complex cases — depth over breadth',
+        ],
+        actionHref: '/builder',
+        actionLabel: 'Templates',
+      },
+    ],
+  },
+  {
+    id: 'conditioning',
+    title: 'Conditioning Specialist',
+    subtitle: 'Energy systems, work capacity, and sport-specific conditioning',
+    icon: '⚡',
+    lessons: [
+      {
+        id: 'cond-1',
+        title: 'Energy System Basics',
+        summary: 'Alactic, glycolytic, aerobic — train the system your sport demands.',
+        keyPoints: [
+          'Strength athletes: mostly alactic + aerobic base; sparingly glycolytic',
+          'Field sports: repeated sprint ability + aerobic recovery between bursts',
+          'Track pillar logs sessions — build weekly conditioning volume gradually',
+        ],
+        actionHref: '/track',
+        actionLabel: 'Log Activity',
+      },
+      {
+        id: 'cond-2',
+        title: 'Zone 2 & Aerobic Base',
+        summary: 'Low-intensity steady work builds recovery capacity and work tolerance.',
+        keyPoints: [
+          'Talk-test pace — nasal breathing when possible',
+          'Premium Track includes zone 2 and rural walk programs',
+          'Do not sacrifice lifting recovery with excessive HIIT',
+        ],
+        actionHref: '/track',
+        actionLabel: 'Track Programs',
+      },
+      {
+        id: 'cond-3',
+        title: 'Conditioning + Lifting Integration',
+        summary: 'Order, frequency, and interference effect — legs before sprints or vice versa?',
+        keyPoints: [
+          'Separate hard conditioning from heavy lower days when possible',
+          'Finisher circuits after upper days — lower interference',
+          'Deload conditioning volume when strength peaking',
+        ],
+        actionHref: '/active',
+        actionLabel: 'Active Workout',
+      },
+    ],
+  },
+];

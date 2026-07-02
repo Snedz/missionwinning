@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.59** (2026-06-29).
+**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.60** (2026-06-29).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -15,7 +15,7 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 | **#1 health everything app** — unified, not fragmented | 🟡 Strong scaffold | Six pillars + Today hub + Win Score synergy |
 | **Free core forever** — train, log, basics | 🟢 Shipped | Phases A–D; no paywall on core logger/library |
 | **Super Bundle** — primary revenue | 🟡 Scaffold ready | `/bundle` + Stripe Checkout API + verified webhook; live keys when LLC ready |
-| **Premium depth per pillar** | 🟡 Three MVPs | Mind sessions, Move flows, Track programs gated; Fuel recipes/programs gated |
+| **Premium depth per pillar** | 🟡 Four MVPs | Mind, Move, Track, Learn gated; Fuel recipes/programs gated |
 | **AI Coach — personal trainer in pocket** | 🟡 Premium-gated | Cloud LLM daily insight + plan generator; rules/offline free |
 | **PWA offline everywhere** | 🔴 Blocked | Disabled while `PRIVATE_MODE=true`; offline coach + IndexedDB shipped |
 | **Global i18n** | 🟢 Tier 1 body | Today/Welcome/Fuel/Active full for FR, DE, PT, IT, JA, KO, RU; 195 locale JSON files |
@@ -36,7 +36,7 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | **/move** | Basic flows, bodyweight | ⭐⭐⭐ 4 timed flows | Pliability / Skill Yoga depth | ⭐⭐⭐ **5 premium flows** gated |
 | **/mind** | Basic habits, recovery | ⭐⭐⭐ Breathing, 3 guided, check-in | Calm/Waking Up depth | ⭐⭐⭐ **6 premium sessions** gated |
 | **/track** | Core logging, streaks | ⭐⭐⭐ Manual activities, import | MapMyFitness-style GPS | ⭐⭐ **5 premium programs** + pace insight (no GPS yet) |
-| **/learn** | Intros, basics, assessments | ⭐⭐⭐⭐ 8 free ISSA paths | Specialist programs | ⭐⭐ Marketing pages; no course UX |
+| **/learn** | Intros, basics, assessments | ⭐⭐⭐⭐ 8 free ISSA paths | Specialist programs | ⭐⭐⭐ **6 premium paths** gated |
 
 **Synergy:** Win Score weights all six pillars — unique vs siloed competitors. Cross-pillar coach rules exist; deep recommendations still shallow.
 
@@ -69,8 +69,8 @@ Cloud LLM daily insight + `/api/coach/generate-plan` premium-gated; rule-based i
 ### 4. i18n body copy Tier 1 (Phase I4) — shipped
 Today, Welcome, Fuel (43 keys), Active (50 keys) full for FR, DE, PT, IT, JA, KO, RU. **Remaining:** Tier 2 expansion; AR RTL polish.
 
-### 5. Premium pillar MVPs (Phase I3) — shipped (3/3)
-Mind (6 sessions), Move (5 flows), Track (5 programs + pace insight). **Remaining:** GPS routes, Mind audio CDN when infra ready.
+### 5. Premium pillar MVPs (Phase I3) — shipped (4/4)
+Mind (6 sessions), Move (5 flows), Track (5 programs + pace insight), Learn (6 specialist paths). **Remaining:** GPS routes, Mind audio CDN when infra ready.
 
 ### 6. PFT track ops (Phase G ops)
 Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council legal sign-off before MAHA copy.

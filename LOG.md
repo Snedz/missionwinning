@@ -66,6 +66,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I3: Learn premium specialist paths
+
+**Build:** `2025.06-unified.60`
+
+### Shipped
+
+- **Premium Learn** — 6 gated specialist paths (PT+Nutrition, Bodybuilding, Corrective, Business, Online Coaching, Conditioning)
+- **`GET /api/premium/learn-paths`** — auth gate matching mind/move/track pattern
+- **`/learn`** — free 8 paths unchanged; locked teaser or premium expandable paths; UnlockButton removed
+- **Gate smoke** — probes `/api/premium/learn-paths` without auth
+
+**Tests:** 209 passing
+
+---
+
 ## 2026-06-29 — Phase H prep: launch docs sync (build .59)
 
 ### Updated

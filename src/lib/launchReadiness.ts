@@ -111,6 +111,12 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       detail: '/api/premium/track-programs + 5 programs on /track; pace insight when premium',
     },
     {
+      id: 'learn-i3',
+      label: 'Phase I3 — Learn premium specialist paths',
+      status: 'ready',
+      detail: '/api/premium/learn-paths + 6 gated programs on /learn; free tier unchanged',
+    },
+    {
       id: 'demo-premium-off',
       label: 'DEMO_PREMIUM=false in production',
       status: 'blocked',

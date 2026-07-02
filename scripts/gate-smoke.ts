@@ -167,6 +167,18 @@ async function main() {
   }
 
   try {
+    const learnPaths = await headOrGet('/api/premium/learn-paths');
+    const ok = learnPaths.status === 403 || learnPaths.status === 401 || learnPaths.status === 503;
+    checks.push({
+      name: 'GET /api/premium/learn-paths (no auth)',
+      ok,
+      detail: `status ${learnPaths.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/learn-paths', ok: false, detail: String(e) });
+  }
+
+  try {
     const coachPlan = await headOrGet('/api/coach/generate-plan', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
