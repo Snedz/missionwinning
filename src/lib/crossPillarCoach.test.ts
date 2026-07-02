@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { applyCrossPillarCoachRules } from './crossPillarCoach.ts';
-import type { BodyScores, CoachInsight, RecommendedFocus } from './score.ts';
+import { applyCrossPillarCoachRules } from './crossPillarCoach';
+import type { BodyScores, CoachInsight, RecommendedFocus } from './score';
 
 const baseScores: BodyScores = {
   readiness: 60,
@@ -12,7 +12,7 @@ const baseScores: BodyScores = {
   recoveryLabelKey: 'todayBodyRebuilding',
 };
 
-const focus: RecommendedFocus = { group: 'push', statusKey: 'todayFocusPush' };
+const focus: RecommendedFocus = { group: 'Chest', statusKey: 'todayReadinessPrime' };
 
 const steady: CoachInsight = {
   messageKey: 'coachInsightSteady',

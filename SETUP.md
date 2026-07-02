@@ -67,7 +67,7 @@ create table workout_logs (
 
 5. RLS policies: users can only read own profiles/enrollments/logs. Service role for webhooks.
 
-6. Add `NEXT_PUBLIC_SUPABASE_*` to `.env.local` (copy from `.env.example`). See [ENV.md](ENV.md) for the full list including `PRIVATE_ACCESS_SECRET`.
+6. Add `NEXT_PUBLIC_SUPABASE_*` to `.env.local` (copy from `.env.example`). See [DEPLOY.md](DEPLOY.md) for the full list including `PRIVATE_ACCESS_SECRET`.
 
 **Phase C schema:** For a **fresh** Supabase project, run [supabase/migrations/20250629_complete_base_schema.sql](supabase/migrations/20250629_complete_base_schema.sql) (idempotent — safe if you only have partial tables). Full reference: [supabase/schema.sql](supabase/schema.sql).
 
@@ -152,7 +152,7 @@ No payment keys are needed right now.
 
 Vercel is the best choice:
 - First-class Next.js support (build, API routes for /api/paypal-webhook, previews).
-- PWA works out of the box with our next-pwa config.
+- PWA works out of the box with our Serwist (`@serwist/next`) config.
 - Free tier generous for this scale.
 - Easy custom domain setup for www.missionwinning.com.
 - Env vars + logs + serverless functions perfect for webhook.

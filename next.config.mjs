@@ -1,7 +1,8 @@
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
+import withSerwistInit from '@serwist/next';
+
+const withSerwist = withSerwistInit({
+  swSrc: 'app/sw.ts',
+  swDest: 'public/sw.js',
   // Disable PWA precache while private gate is active (prevents offline leak of full app).
   disable:
     process.env.NODE_ENV === 'development' ||
@@ -34,7 +35,7 @@ function cspHeaderKey() {
 const nextConfig = {
   reactStrictMode: true,
   turbopack: {},
-  outputFileTracingRoot: __dirname,
+  outputFileTracingRoot: import.meta.dirname,
   async headers() {
     return [
       {
@@ -45,4 +46,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPWA(nextConfig);
+export default withSerwist(nextConfig);

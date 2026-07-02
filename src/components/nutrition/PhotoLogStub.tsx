@@ -76,7 +76,6 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
 
       {preview ? (
         <div className="relative rounded-xl overflow-hidden border border-border/60 aspect-[16/10] bg-muted/30">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={preview} alt="" className="w-full h-full object-cover" />
           {phase === 'processing' && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/70 backdrop-blur-sm gap-2">

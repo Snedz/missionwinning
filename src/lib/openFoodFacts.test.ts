@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { mapOffProduct } from './openFoodFacts.ts';
+import { mapOffProduct } from './openFoodFacts';
 
 describe('mapOffProduct', () => {
   it('maps nutriments to FoodSearchItem', () => {

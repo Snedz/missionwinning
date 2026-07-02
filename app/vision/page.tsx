@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 export default function VisionPage() {
   // In production this would be better as MDX or static, but for now show key parts + link to file
   return (

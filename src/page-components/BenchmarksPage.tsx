@@ -512,19 +512,19 @@ export function BenchmarksPage() {
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Bench Benchmark", [{ exerciseId: "bench-press", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
-            try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch {}
+            try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch { /* offline */ }
             window.location.href = "/active";
           }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Squat Benchmark", [{ exerciseId: "squats", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
-            try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch {}
+            try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch { /* offline */ }
             window.location.href = "/active";
           }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Deadlift Benchmark", [{ exerciseId: "deadlift", sets: [{ reps: 3, weight: 0 }, { reps: 3, weight: 0 }] }]);
-            try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch {}
+            try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch { /* offline */ }
             window.location.href = "/active";
           }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => window.location.href = "/log"}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today →' })}</Button>
@@ -533,7 +533,9 @@ export function BenchmarksPage() {
               const cur = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
               localStorage.setItem('mw_streak', String(cur));
               alert(`Benchmark habit logged! Streak +1 (${cur}). Complete the session to update charts.`);
-            } catch {}
+            } catch {
+              /* offline */
+            }
           }}>{t('benchmarksQuickHabit', { defaultValue: 'Log benchmark habit (+streak)' })}</Button>
         </CardContent>
       </Card>

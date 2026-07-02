@@ -294,7 +294,8 @@ export const useWorkoutStore = create<WorkoutState>()(
           if (!s.activeWorkout) return s;
           const exercises = s.activeWorkout.exercises.map((ex, i) => {
             if (i !== exerciseIndex) return ex;
-            const { supersetGroup: _, ...rest } = ex;
+            const rest = { ...ex };
+            delete rest.supersetGroup;
             return rest;
           });
           return { activeWorkout: { ...s.activeWorkout, exercises } };

@@ -1,0 +1,26 @@
+/// <reference lib="webworker" />
+import { defaultCache } from '@serwist/next/worker';
+import type { PrecacheEntry, SerwistGlobalConfig } from 'serwist';
+import { Serwist } from 'serwist';
+
+// `__SW_MANIFEST` is the injection point replaced with the precache manifest at build time.
+declare global {
+  interface WorkerGlobalScope extends SerwistGlobalConfig {
+    __SW_MANIFEST: (PrecacheEntry | string)[] | undefined;
+  }
+}
+
+declare const self: ServiceWorkerGlobalScope;
+
+const serwist = new Serwist({
+  precacheEntries: self.__SW_MANIFEST,
+  precacheOptions: {
+    cleanupOutdatedCaches: true,
+  },
+  skipWaiting: true,
+  clientsClaim: true,
+  navigationPreload: true,
+  runtimeCaching: defaultCache,
+});
+
+serwist.addEventListeners();

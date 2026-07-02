@@ -47,7 +47,7 @@ export function NutritionPage() {
   // Premium deep plans/recipes in Fuel pillar or Super Bundle. Core mission free forever.
 
   const { t } = useTranslation();
-  const { premium, loading: premiumLoading } = usePremium();
+  const { premium } = usePremium();
   const [premiumRecipes, setPremiumRecipes] = useState<Recipe[]>([]);
   const [targetCals] = useState(2200);
   const [targetProtein] = useState(160);

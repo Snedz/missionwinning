@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { saveNutritionEntry } from "@/lib/supabase"; // reuse for demo save, or extend
-import { usePremium } from "@/hooks/usePremium";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
+import type { WorkoutExerciseTemplate } from "@/types";
 
 interface AssessmentResult {
   riskLevel: 'low' | 'moderate' | 'high';
@@ -17,7 +17,6 @@ interface AssessmentResult {
 export function AssessmentsPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [result, setResult] = useState<AssessmentResult | null>(null);
-  const { premium } = usePremium();
 
   const questions = [
     { key: "chest_pain", q: "Have you experienced any chest pain associated with either exercise or stress?" },
@@ -94,7 +93,7 @@ export function AssessmentsPage() {
   const startRecommended = (rec: string) => {
     bumpStreak();
     let name = "Daily Mobility + Mind Habit";
-    let exs: any[] = [
+    let exs: WorkoutExerciseTemplate[] = [
       { exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },
       { exerciseId: "bird-dog", sets: [{ reps: 6, weight: 0 }] },
       { exerciseId: "glute-bridge", sets: [{ reps: 10, weight: 0 }] },

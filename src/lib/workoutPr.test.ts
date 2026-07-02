@@ -7,12 +7,14 @@ const history: CompletedWorkoutLog[] = [
   {
     id: '1',
     workoutName: 'Test',
+    startedAt: '2025-01-01T09:30:00Z',
     completedAt: '2025-01-01T10:00:00Z',
+    durationSeconds: 1800,
     totalVolume: 800,
     exercises: [
       {
         exerciseId: 'bench-press',
-        sets: [{ id: 's1', reps: 8, weight: 100, completed: true }],
+        sets: [{ reps: 8, weight: 100 }],
       },
     ],
   },

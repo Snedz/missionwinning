@@ -4,7 +4,7 @@ import {
   importActivitiesFromJson,
   parseHealthImportFile,
   normalizeActivityType,
-} from './healthImport.ts';
+} from './healthImport';
 
 describe('healthImport', () => {
   it('normalizes activity types', () => {

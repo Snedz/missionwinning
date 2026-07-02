@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
   isPublicApiPathWhileGated,
   isPublicPathWhileGated,
-} from './privateGate.ts';
+} from './privateGate';
 
 describe('isPublicPathWhileGated', () => {
   it('allows the gate page and legal footer routes', () => {

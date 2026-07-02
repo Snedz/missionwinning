@@ -47,7 +47,7 @@ When Vercel access is restored: GitHub Secrets → run **Sync Vercel env** → r
 | 5 | Photo log → local estimate stub | ✅ `estimateMealFromPhoto.ts`, `PhotoLogStub` |
 | 6 | Wins badge i18n | ✅ `todayLocales` + `TodayProgressSection` |
 | 7 | Staggered Today hero animations | ✅ `StaggerReveal` on HomePage |
-| 8 | Security P1 (PayPal sig, CSP) | ✅ PayPal verify + CSP enforce in prod (`next.config.js`) |
+| 8 | Security P1 (PayPal sig, CSP) | ✅ PayPal verify + CSP enforce in prod (`next.config.mjs`) |
 | 9 | Leads API rate limit | ✅ `/api/leads` + `submitLead` via server |
 | 10 | Pro program templates server-split | ✅ `premiumProgramTemplates.ts` |
 | 11 | Arabic locale + RTL | ✅ `meaLocales.ts`, welcome/today/fuel ar |
@@ -60,7 +60,7 @@ When Vercel access is restored: GitHub Secrets → run **Sync Vercel env** → r
 
 ### While Vercel is blocked
 
-Ship locally on branch stack `#22`–latest; merge to `master` when ready. No deploy until 2FA reset — use `npm run dev` + Profile build label to verify. See [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) for env + curl steps on day one of access.
+Ship locally on branch stack `#22`–latest; merge to `master` when ready. No deploy until 2FA reset — use `npm run dev` + Profile build label to verify. See [DEPLOY.md](DEPLOY.md) for env + curl steps on day one of access.
 
 ---
 
@@ -163,7 +163,7 @@ See [PLAN.md](PLAN.md) Phase **H** (launch) and **I** (premium). Summary:
 | # | Task |
 |---|------|
 | 1 | Beta cohort 10+ users; track I-Day / BT funnel on Profile |
-| 2 | GitHub Secrets + **Sync Vercel env** ([ENV.md](ENV.md)) |
+| 2 | GitHub Secrets + **Sync Vercel env** ([DEPLOY.md](DEPLOY.md)) |
 | 3 | Run all Supabase migrations (incl. PFT/school) |
 | 4 | `npm run gate-smoke` on production URL |
 | 5 | Pass beta gates → `PRIVATE_MODE=false` + PWA enable |
@@ -231,7 +231,7 @@ Verify tables: `profiles`, `workout_logs`, `nutrition_logs`, `enrollments`, `lea
 |-----|-----|
 | [JOURNEY.md](JOURNEY.md) | Member path + F4 gates |
 | [PROTECTION.md](PROTECTION.md) | Security P0/P1/P2 |
-| [ENV.md](ENV.md) | Vercel env vars |
+| [DEPLOY.md](DEPLOY.md) | Vercel env vars + deploy checklist |
 | [PLAN.md](PLAN.md) | Phase A–I roadmap |
 | [VISION_STATUS.md](VISION_STATUS.md) | Vision vs reality scorecard |
 | [LOG.md](LOG.md) | Shipped changelog |

@@ -13,7 +13,15 @@ export function ProgramsPage() {
   const [filterGoal, setFilterGoal] = useState<string>("All");
   const [filterEquip, setFilterEquip] = useState<string>("All");
 
-  const allPrograms = [
+  type LegacyProgram = {
+    title: string;
+    price: string;
+    duration: string;
+    whatYouGet: string[];
+    disclaimer: string;
+  };
+
+  const allPrograms: LegacyProgram[] = [
     {
       title: "Elite Personal Training Education + Nutrition",
       price: "$497",
@@ -107,7 +115,7 @@ export function ProgramsPage() {
     return goalMatch && equipMatch;
   });
 
-  const exportProgramPDF = (prog: any) => {
+  const exportProgramPDF = (prog: LegacyProgram) => {
     const content = `${prog.title}\n${prog.duration} • ${prog.price}\n\nWhat You Get:\n${prog.whatYouGet.map((w: string) => `- ${w}`).join("\n")}\n\n${prog.disclaimer}\n\nMission Winning — Free Core + Super Bundle. The path for all.`;
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);

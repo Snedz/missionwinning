@@ -22,8 +22,7 @@ for (const id of proIds) {
   result = result.replace(pattern, '');
 }
 
-// Remove orphaned Pro section comment
-result = result.replace(/\n  \/\/ ─── Pro ───[^\n]*\n/g, '\n');
+result = result.replace(/\n {2}\/\/ ─── Pro ───[^\n]*\n/g, '\n');
 
 writeFileSync('src/data/programTemplates.ts', result);
 console.log('Updated src/data/programTemplates.ts');
