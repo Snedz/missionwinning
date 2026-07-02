@@ -10,6 +10,11 @@ This is *mainly a free app* serving the vision of making the world better and he
 
 See [vision.md](vision.md) for the full guiding document (the "constitution" for every decision).
 
+**Start here (2026-07 launch package):**
+- [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) — the founder's copy-paste critical path to public launch + revenue
+- [STRATEGY.md](STRATEGY.md) — lean business plan, customer profile, pricing, first-10-users playbook
+- [REDTEAM.md](REDTEAM.md) — assumptions audit, pre-mortem, competitor attack plan (read quarterly)
+
 **Environment setup:** See [ENV.md](ENV.md) for `.env.local`, Vercel variables, and the private development gate.
 
 **Build plan & log:** See [PLAN.md](PLAN.md) and [LOG.md](LOG.md).

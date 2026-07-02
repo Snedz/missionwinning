@@ -59,6 +59,16 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 
 *Formerly “Phase E” in older docs.* See [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) + [PROTECTION.md](PROTECTION.md).
 
+> **2026-07-02 — Launch package shipped (code side of Phase H):** security hardening migration
+> (`20260702_security_hardening.sql` — teacher PIN column privileges, authenticated-only leaderboard
+> reads), consent-notify rate limit, PWA manifest (`app/manifest.ts` — was 404), `.env.local.save`
+> untracked, leaderboard bots relabeled as honest "Pacers" (+ kill switch), America/PFT track now
+> **opt-in** (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED=true` to enable), premium redesign of Landing /
+> Bundle / private gate / Welcome / Coaching (display type system, no hype copy, no fake
+> testimonials), UnlockButton → real Stripe checkout when links configured / honest founders
+> waitlist otherwise. **Remaining Phase H work is founder ops → [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md).**
+> Strategy + risk docs: [STRATEGY.md](STRATEGY.md) · [REDTEAM.md](REDTEAM.md).
+
 ### Product gates (F4 / JOURNEY)
 
 | Gate | Target |

@@ -102,6 +102,9 @@ Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council l
 | Doc | Purpose |
 |-----|---------|
 | [vision.md](vision.md) | Values filter — read first |
+| [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path to public + revenue |
+| [STRATEGY.md](STRATEGY.md) | Business plan, ICP, pricing, GTM |
+| [REDTEAM.md](REDTEAM.md) | Assumptions audit + pre-mortem (quarterly) |
 | [PLAN.md](PLAN.md) | Build phases G / H / I |
 | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | Launch checklist |
 | [UX_UNIFIED_PLAN.md](UX_UNIFIED_PLAN.md) | UI north stars (Bevel + Freeletics) |
