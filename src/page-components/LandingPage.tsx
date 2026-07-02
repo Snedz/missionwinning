@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { FaqSection } from '@/components/marketing/FaqSection';
 import { LandingHeroMockup } from '@/components/marketing/LandingHeroMockup';
+import { MarketingScreensGallery } from '@/components/marketing/MarketingScreensGallery';
 import { MarketingShell } from '@/components/marketing/MarketingShell';
 import { LANDING_PILLAR_IDS, type LandingPillarId } from '@/i18n/landingLocales';
 
@@ -238,6 +239,8 @@ export function LandingPage() {
             <p className="text-xs text-muted-foreground">{t('landingToolsFoot')}</p>
           </div>
         </section>
+
+        <MarketingScreensGallery />
 
         <section id="pillars" className="bg-muted/20 py-12 sm:py-16 border-y border-border/60 scroll-mt-16">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">

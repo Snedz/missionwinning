@@ -143,6 +143,19 @@ const frPack: WesternPack = {
   landingPillar_learn_feat2: 'Premium : 6 programmes spécialisés',
   landingPillar_learn_feat3: 'La bonne voie, pour tous',
   landingPillar_learn_cta: 'Commencer à apprendre',
+  landingScreensKicker: 'Voir l\'app',
+  landingScreensTitle: 'Conçu pour un vrai entraînement — sur tout appareil',
+  landingScreensSubtitle:
+    'Hub Aujourd\'hui, logger et nutrition — core gratuit pour toujours. Installez la PWA pour l\'offline.',
+  landingScreenTodayTitle: 'Hub Aujourd\'hui',
+  landingScreenTodayDesc: 'Mission Score, anneaux de préparation et coach cross-pilier — votre centre daily.',
+  landingScreenTrainTitle: 'Logger d\'entraînement',
+  landingScreenTrainDesc: '5×5, builder, historique et PR. Métrique ou impérial. Fonctionne offline.',
+  landingScreenFuelTitle: 'Tracker nutrition',
+  landingScreenFuelDesc: 'Macros, eau et recettes mondiales. Alimente récupération et entraînement.',
+  landingScreenTrainHeader: 'Train',
+  landingScreenFuelHeader: 'Fuel',
+  landingScreenDownloadAsset: 'Télécharger l\'asset SVG',
 };
 
 const dePack: WesternPack = {
@@ -285,6 +298,19 @@ const dePack: WesternPack = {
   landingPillar_learn_feat2: 'Premium: 6 Spezialprogramme',
   landingPillar_learn_feat3: 'Der richtige Weg für alle',
   landingPillar_learn_cta: 'Lernen starten',
+  landingScreensKicker: 'App ansehen',
+  landingScreensTitle: 'Für echtes Training gebaut — auf jedem Gerät',
+  landingScreensSubtitle:
+    'Heute-Hub, Workout-Logger und Ernährung — Kern für immer gratis. PWA für Offline installieren.',
+  landingScreenTodayTitle: 'Heute-Hub',
+  landingScreenTodayDesc: 'Mission Score, Bereitschaftsringe und Cross-Säulen-Coach — dein Tageszentrum.',
+  landingScreenTrainTitle: 'Workout-Logger',
+  landingScreenTrainDesc: '5×5, Builder, Historie und PRs. Metrisch oder imperial. Offline.',
+  landingScreenFuelTitle: 'Ernährungs-Tracker',
+  landingScreenFuelDesc: 'Makros, Wasser und globale Rezepte. Stärkt Erholung und Training.',
+  landingScreenTrainHeader: 'Train',
+  landingScreenFuelHeader: 'Fuel',
+  landingScreenDownloadAsset: 'SVG-Asset herunterladen',
 };
 
 const ptPack: WesternPack = {
@@ -429,6 +455,19 @@ const ptPack: WesternPack = {
   landingPillar_learn_feat2: 'Premium: 6 programas especializados',
   landingPillar_learn_feat3: 'O caminho certo, para todos',
   landingPillar_learn_cta: 'Começar a aprender',
+  landingScreensKicker: 'Veja o app',
+  landingScreensTitle: 'Feito para treino real — em qualquer dispositivo',
+  landingScreensSubtitle:
+    'Hub Hoje, logger de treino e nutrição — core grátis para sempre. Instale a PWA para offline.',
+  landingScreenTodayTitle: 'Hub Hoje',
+  landingScreenTodayDesc: 'Mission Score, anéis de prontidão e coach cross-pilar — seu centro diário.',
+  landingScreenTrainTitle: 'Logger de treino',
+  landingScreenTrainDesc: '5×5, builder, histórico e PRs. Métrico ou imperial. Funciona offline.',
+  landingScreenFuelTitle: 'Tracker de nutrição',
+  landingScreenFuelDesc: 'Macros, água e receitas globais. Alimenta recuperação e treino.',
+  landingScreenTrainHeader: 'Train',
+  landingScreenFuelHeader: 'Fuel',
+  landingScreenDownloadAsset: 'Baixar asset SVG',
 };
 
 const esPack: WesternPack = {
@@ -573,6 +612,19 @@ const esPack: WesternPack = {
   landingPillar_learn_feat2: 'Premium: 6 programas especializados',
   landingPillar_learn_feat3: 'El camino correcto, para todos',
   landingPillar_learn_cta: 'Empezar a aprender',
+  landingScreensKicker: 'Ver la app',
+  landingScreensTitle: 'Hecho para entrenamiento real — en cualquier dispositivo',
+  landingScreensSubtitle:
+    'Hub Hoy, logger de entreno y nutrición — core gratis para siempre. Instala la PWA para offline.',
+  landingScreenTodayTitle: 'Hub Hoy',
+  landingScreenTodayDesc: 'Mission Score, anillos de preparación y coach cross-pilar — tu centro diario.',
+  landingScreenTrainTitle: 'Logger de entrenamiento',
+  landingScreenTrainDesc: '5×5, builder, historial y PRs. Métrico o imperial. Funciona offline.',
+  landingScreenFuelTitle: 'Tracker de nutrición',
+  landingScreenFuelDesc: 'Macros, agua y recetas globales. Alimenta recuperación y entreno.',
+  landingScreenTrainHeader: 'Train',
+  landingScreenFuelHeader: 'Fuel',
+  landingScreenDownloadAsset: 'Descargar asset SVG',
 };
 
 export const westernLandingLocales: Record<'fr' | 'de' | 'pt' | 'es', WesternPack> = {

@@ -1,4 +1,8 @@
 import type { Metadata } from 'next';
+import {
+  MARKETING_OG_ALTERNATE_LOCALES,
+  marketingLanguageAlternates,
+} from '@/lib/marketingHreflang';
 
 const DEFAULT_SITE_URL = 'https://www.missionwinning.com';
 
@@ -23,6 +27,7 @@ export function defaultOpenGraph(): NonNullable<Metadata['openGraph']> {
     type: 'website',
     siteName: 'Mission Winning',
     locale: 'en_US',
+    alternateLocale: [...MARKETING_OG_ALTERNATE_LOCALES],
   };
 }
 
@@ -41,6 +46,7 @@ export function landingPageMetadata(): Metadata {
   return {
     title,
     description,
+    alternates: marketingLanguageAlternates('/'),
     openGraph: {
       ...defaultOpenGraph(),
       title: `Mission Winning — ${title}`,
@@ -61,6 +67,7 @@ export function bundlePageMetadata(): Metadata {
   return {
     title,
     description,
+    alternates: marketingLanguageAlternates('/bundle'),
     openGraph: {
       ...defaultOpenGraph(),
       title: `Mission Winning — ${title}`,

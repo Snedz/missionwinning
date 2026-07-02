@@ -74,6 +74,20 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase M5: PWA manifest + screenshot gallery + hreflang
+
+**Build:** `2025.06-unified.67`
+
+### Shipped
+
+- **`public/manifest.json`** — PWA install manifest with marketing screenshot assets for store listings
+- **`MarketingScreensGallery`** — Today / Train / Fuel phone previews on landing + downloadable SVG assets in `/marketing/`
+- **Hreflang + OG locales** — `marketingHreflang.ts`; `alternateLocale` and `alternates.languages` on landing/bundle metadata
+
+**Tests:** 232 passing
+
+---
+
 ## 2026-06-29 — Phase M4: ES landing + OG images + bundle sticky shell
 
 **Build:** `2025.06-unified.66`

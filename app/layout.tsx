@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: defaultTwitter(),
   icons: {
     icon: '/favicon.svg',
-    apple: '/apple-touch-icon.png',
+    apple: '/favicon.svg',
   },
   manifest: '/manifest.json',
 };

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" fill="none">
+  <rect width="390" height="844" rx="32" fill="#0a0d12"/>
+  <rect x="24" y="56" width="342" height="48" rx="12" fill="#111827"/>
+  <text x="40" y="86" fill="#34d399" font-family="system-ui,sans-serif" font-size="18" font-weight="700">Fuel</text>
+  <rect x="24" y="128" width="106" height="72" rx="12" fill="#1e293b" stroke="#334155"/>
+  <text x="77" y="158" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="12" text-anchor="middle">Protein</text>
+  <text x="77" y="182" fill="#34d399" font-family="system-ui,sans-serif" font-size="22" font-weight="700" text-anchor="middle">142g</text>
+  <rect x="142" y="128" width="106" height="72" rx="12" fill="#1e293b" stroke="#334155"/>
+  <text x="195" y="158" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="12" text-anchor="middle">Carbs</text>
+  <text x="195" y="182" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="22" font-weight="700" text-anchor="middle">180g</text>
+  <rect x="260" y="128" width="106" height="72" rx="12" fill="#1e293b" stroke="#334155"/>
+  <text x="313" y="158" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="12" text-anchor="middle">Fat</text>
+  <text x="313" y="182" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="22" font-weight="700" text-anchor="middle">58g</text>
+  <rect x="24" y="224" width="342" height="44" rx="10" fill="#1e293b"/>
+  <circle cx="44" cy="246" r="4" fill="#10b981"/>
+  <text x="60" y="251" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="14">High-protein bowl</text>
+  <rect x="24" y="280" width="342" height="44" rx="10" fill="#1e293b"/>
+  <circle cx="44" cy="302" r="4" fill="#10b981"/>
+  <text x="60" y="307" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="14">Water +2 cups</text>
+  <rect x="24" y="352" width="342" height="52" rx="12" fill="#059669"/>
+  <text x="195" y="384" fill="#fff" font-family="system-ui,sans-serif" font-size="16" font-weight="700" text-anchor="middle">Log nutrition</text>
+  <text x="195" y="820" fill="#64748b" font-family="system-ui,sans-serif" font-size="11" text-anchor="middle">Mission Winning · Fuel</text>
+</svg>

@@ -17,6 +17,8 @@ describe('marketingMetadata (Phase M4)', () => {
     const meta = landingPageMetadata();
     assert.ok(meta.openGraph?.title);
     assert.ok(meta.twitter?.card === 'summary_large_image');
+    assert.ok(meta.alternates?.languages?.en);
+    assert.ok(meta.openGraph?.alternateLocale?.includes('es_ES'));
   });
 
   it('bundle metadata has distinct description', () => {
