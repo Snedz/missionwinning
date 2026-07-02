@@ -24,6 +24,7 @@ import {
   Wind,
 } from 'lucide-react';
 import { MetricsRow } from '@/components/metrics/MetricsRow';
+import { FaqSection } from '@/components/marketing/FaqSection';
 import type { BodyScores } from '@/lib/score';
 
 const DEMO_SCORES: BodyScores = {
@@ -148,6 +149,40 @@ const NAV_LINKS = [
   { href: '#tools', label: 'Free core' },
   { href: '#pillars', label: 'Pillars' },
   { href: '#bundle', label: 'Super Bundle' },
+  { href: '#faq', label: 'FAQ' },
+] as const;
+
+const LANDING_FAQ = [
+  {
+    id: 'free',
+    question: 'Is the core app really free forever?',
+    answer:
+      'Yes. Workout logging, library, nutrition basics, mobility flows, mind breathing, activity log, and learn paths are never paywalled. Premium Super Bundle adds AI Coach and full depth when you choose to upgrade.',
+  },
+  {
+    id: 'offline',
+    question: 'Does it work offline?',
+    answer:
+      'Install the PWA for offline workout logging, cached plans, and offline coach on Today. Built for rural and low-connectivity users worldwide.',
+  },
+  {
+    id: 'bundle',
+    question: 'What is the Super Bundle?',
+    answer:
+      'One subscription unlocks premium across all six pillars — AI Coach, premium Mind/Move/Track/Learn programs, 92+ recipes, and pro templates. Core tools stay free if you cancel.',
+  },
+  {
+    id: 'who',
+    question: 'Who is Mission Winning for?',
+    answer:
+      'Anyone who wants evidence-based training with holistic synergy — home gym lifters, bodyweight athletes, coaches, and users in low-resource settings. The path is free to start.',
+  },
+  {
+    id: 'medical',
+    question: 'Is this medical advice?',
+    answer:
+      'No. Mission Winning provides educational fitness tools. Consult qualified professionals before intense training.',
+  },
 ] as const;
 
 function scrollToId(id: string) {
@@ -550,6 +585,15 @@ export function LandingPage() {
               </p>
             </CardContent>
           </Card>
+        </section>
+
+        <section className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 border-b border-border/60">
+          <FaqSection
+            id="faq"
+            title="Common questions"
+            subtitle="Free core forever. Premium funds the global mission."
+            items={[...LANDING_FAQ]}
+          />
         </section>
 
         <section id="coaching" className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center border-b border-border/60 scroll-mt-16">

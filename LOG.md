@@ -72,6 +72,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase M1: Standalone bundle sales + FAQ
+
+**Build:** `2025.06-unified.63`
+
+### Shipped
+
+- **`/bundle` moved outside app shell** — full-bleed `MarketingShell` (no sidebar/mobile app nav)
+- **Bundle FAQ** — 6 questions, mobile tab/pillar grid polish, sticky unlock CTA, checkout success/cancel banner
+- **Landing FAQ** — `#faq` section + nav link
+- **`FaqSection`** + **`MarketingShell`** reusable marketing components
+
+**Tests:** 217 passing
+
+---
+
 ## 2026-06-29 — Phase M0: Premium landing marketing shell
 
 **Build:** `2025.06-unified.62`
