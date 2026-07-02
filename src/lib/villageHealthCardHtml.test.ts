@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { formatVillageHealthCardHtml } from './villageHealthCardHtml.ts';
+import { formatVillageHealthCardHtml } from './villageHealthCardHtml';
 
 describe('villageHealthCardHtml', () => {
   it('includes pathfinder badge and assessment summary', () => {

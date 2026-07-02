@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { PREMIUM_GATED_GET_ROUTES, PREMIUM_GATE_OK_STATUSES } from './premiumApiRoutes.ts';
+import { PREMIUM_GATED_GET_ROUTES, PREMIUM_GATE_OK_STATUSES } from './premiumApiRoutes';
 
 describe('premiumApiRoutes', () => {
   it('lists all premium content GET routes under app/api/premium', () => {

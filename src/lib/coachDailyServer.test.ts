@@ -10,7 +10,7 @@ const ctx: DailyCoachContext = {
   missionScore: 55,
   streak: 3,
   focusGroup: 'push',
-  pillars: { moveFlows: 0, mindSessions: 0, proteinDays: 1, trainDays: 2 },
+  pillars: { moveFlows: 0, mindSessions: 0, proteinDays: 1, trainDays: 2, trackActivities: 0, learnLessons: 0 },
   fallback: {
     messageKey: 'coachInsightSteady',
     actionLabelKey: 'coachActionViewToday',

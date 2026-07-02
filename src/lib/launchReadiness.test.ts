@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
   formatLaunchReadinessText,
   getLaunchReadinessReport,
-} from './launchReadiness.ts';
+} from './launchReadiness';
 
 describe('launchReadiness', () => {
   it('includes Phase J ready checks', () => {

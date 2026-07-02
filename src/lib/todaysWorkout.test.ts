@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { filterWorkoutsForEquipment, getTodaysWorkout } from './todaysWorkout.ts';
+import { filterWorkoutsForEquipment, getTodaysWorkout } from './todaysWorkout';
 
 describe('todaysWorkout equipment filter', () => {
   it('bodyweight users only get bodyweight-tier workouts', () => {

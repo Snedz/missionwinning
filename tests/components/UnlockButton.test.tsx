@@ -24,12 +24,15 @@ describe('UnlockButton', () => {
     assert.ok(screen.getByRole('button', { name: /Unlock Super Bundle \(\$12\/mo\)/ }));
   });
 
-  it('shows a Stripe checkout link when a checkout URL is configured', () => {
+  it('shows a Stripe checkout CTA when a checkout URL is configured', () => {
     render(<UnlockButton isSubscription price="12" stripeCheckoutUrl="https://buy.stripe.com/test_123" />);
-    const link = screen.getByRole('link', { name: /Stripe Checkout/ }) as HTMLAnchorElement;
-    assert.equal(link.href, 'https://buy.stripe.com/test_123');
-    assert.equal(link.rel, 'noopener noreferrer');
+    assert.ok(screen.getByRole('button', { name: /Stripe Checkout/ }));
     assert.ok(screen.getByRole('button', { name: /Or request demo access/ }));
+  });
+
+  it('hides the Stripe CTA without a plan or checkout URL', () => {
+    render(<UnlockButton isSubscription price="12" />);
+    assert.equal(screen.queryByRole('button', { name: /Stripe Checkout/ }), null);
   });
 
   it('does not grant demo premium when submitted without an email', () => {

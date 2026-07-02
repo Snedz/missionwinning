@@ -27,7 +27,6 @@ export function AssessmentsPage() {
   const { t } = useTranslation();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [step, setStep] = useState<Step>('questions');
-  const [pathfinderAccess, setPathfinderAccess] = useState<PathfinderAccess>('regular');
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   usePremium();
@@ -59,7 +58,6 @@ export function AssessmentsPage() {
 
   const submitAssessment = (access: PathfinderAccess) => {
     const res = buildAssessmentResult(answers, access);
-    setPathfinderAccess(access);
     setResult(res);
     setStep('result');
     persistAssessment(res);

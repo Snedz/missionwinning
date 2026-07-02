@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { getOfflinePlan, listOfflinePlans } from './offlinePlanTemplates.ts';
+import { getOfflinePlan, listOfflinePlans } from './offlinePlanTemplates';
 
 describe('offlinePlanTemplates', () => {
   it('includes bodyweight strength plan', () => {

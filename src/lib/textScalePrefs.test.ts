@@ -2,10 +2,9 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   readTextScale,
-  saveTextScale,
   textScaleClass,
   TEXT_SCALE_OPTIONS,
-} from './textScalePrefs.ts';
+} from './textScalePrefs';
 
 describe('textScalePrefs', () => {
   it('defines four scale options', () => {

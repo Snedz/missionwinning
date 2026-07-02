@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { shouldSkipCloudCoach, resolveOfflineCoachInsight } from './offlineCoach.ts';
-import type { BodyScores, RecommendedFocus } from './score.ts';
+import { shouldSkipCloudCoach, resolveOfflineCoachInsight } from './offlineCoach';
+import type { BodyScores, RecommendedFocus } from './score';
 
 const scores: BodyScores = {
   readiness: 60,
@@ -12,7 +12,7 @@ const scores: BodyScores = {
   recoveryLabelKey: 'todayBodyRebuilding',
 };
 
-const focus: RecommendedFocus = { group: 'push', statusKey: 'todayFocusPush' };
+const focus: RecommendedFocus = { group: 'Chest', statusKey: 'todayReadinessPrime' };
 
 describe('offlineCoach', () => {
   it('shouldSkipCloudCoach when lite preference set', () => {

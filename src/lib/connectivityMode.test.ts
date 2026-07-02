@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
   connectivityBannerCopy,
   resolveConnectivityMode,
-} from './connectivityMode.ts';
+} from './connectivityMode';
 
 describe('connectivityMode', () => {
   it('resolves offline when not online', () => {

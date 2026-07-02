@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { workoutLogToCloudPayload } from './syncOutbox.ts';
+import { workoutLogToCloudPayload } from './syncOutbox';
 
 describe('syncOutbox', () => {
   it('maps completed workout to cloud payload', () => {

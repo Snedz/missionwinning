@@ -1,6 +1,5 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { TIER1_LANGS } from '@/i18n/coreLocales';
 import { todayStringsFor } from '@/i18n/todayLocales';
 import { welcomeStringsFor } from '@/i18n/welcomeLocales';
 import { fuelStringsFor } from '@/i18n/fuelLocales';
@@ -34,8 +33,8 @@ describe('i18n Tier 1 body coverage (Phase I4)', () => {
   const germanMarkers = ['Schritt', 'Fortschritt', 'Einheiten', 'Gesundheitswerte', 'Rangliste'];
   for (const lang of ['it', 'ja', 'ko', 'ru'] as const) {
     it(`${lang} today body has no German string leakage`, () => {
-      const localized = todayStringsFor(lang);
-      const de = todayStringsFor('de');
+      const localized = todayStringsFor(lang) as unknown as Record<string, string>;
+      const de = todayStringsFor('de') as unknown as Record<string, string>;
       const hits = Object.keys(localized).filter(
         (k) => localized[k] === de[k] && germanMarkers.some((m) => de[k]?.includes(m)),
       );
@@ -54,9 +53,9 @@ describe('i18n Tier 1 body coverage (Phase I4)', () => {
   const germanWelcomeMarkers = ['Anmelden', 'Reise', 'Zurück', 'Schritt'];
   for (const lang of ['it', 'ko', 'ru'] as const) {
     it(`${lang} welcome has no FR/DE string leakage`, () => {
-      const localized = welcomeStringsFor(lang);
-      const de = welcomeStringsFor('de');
-      const fr = welcomeStringsFor('fr');
+      const localized = welcomeStringsFor(lang) as unknown as Record<string, string>;
+      const de = welcomeStringsFor('de') as unknown as Record<string, string>;
+      const fr = welcomeStringsFor('fr') as unknown as Record<string, string>;
       const deHits = Object.keys(localized).filter(
         (k) => localized[k] === de[k] && germanWelcomeMarkers.some((m) => de[k]?.includes(m)),
       );

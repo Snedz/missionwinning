@@ -104,17 +104,14 @@ function LearnPathCards({
 }
 
 export function LearnPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { premium, loading: premiumLoading } = usePremium();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
-  const freePaths = useMemo(
-    () => localizeLearnPaths(FREE_LEARN_PATHS, t),
-    [i18n.language, t]
-  );
+  const freePaths = useMemo(() => localizeLearnPaths(FREE_LEARN_PATHS, t), [t]);
   const [premiumPathsRaw, setPremiumPathsRaw] = useState<LearnPath[]>([]);
   const premiumPaths = useMemo(
     () => localizeLearnPaths(premiumPathsRaw, t),
-    [i18n.language, t, premiumPathsRaw]
+    [t, premiumPathsRaw]
   );
   const [expandedPath, setExpandedPath] = useState<string | null>(FREE_LEARN_PATHS[0]?.id ?? null);
   const [expandedPremiumPath, setExpandedPremiumPath] = useState<string | null>(null);

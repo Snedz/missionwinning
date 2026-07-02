@@ -6,7 +6,7 @@ import {
   countRiskFlags,
   recommendationAllowed,
   resolveProgramGate,
-} from './pathfinderAssessment.ts';
+} from './pathfinderAssessment';
 
 describe('pathfinderAssessment', () => {
   it('counts yes/low flags', () => {

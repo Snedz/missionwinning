@@ -5,7 +5,7 @@ import {
   equipmentLibraryFilter,
   isBodyweightFirst,
   trainLocationSuggestsBodyweight,
-} from './equipmentPrefs.ts';
+} from './equipmentPrefs';
 
 describe('equipmentPrefs', () => {
   it('defaults to bodyweight', () => {

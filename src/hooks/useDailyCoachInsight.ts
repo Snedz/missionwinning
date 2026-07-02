@@ -48,6 +48,8 @@ export function useDailyCoachInsight(
       actionLabel: t(a.actionLabelKey, { defaultValue: a.actionLabelKey }),
     }));
 
+  const secondaryActionsKey = secondaryActions.map((a) => a.actionPath).join(',');
+
   const [state, setState] = useState<CoachDisplay>(() => ({
     message: '',
     actionLabel: t(fallback.actionLabelKey, { defaultValue: fallback.actionLabelKey }),
@@ -188,7 +190,7 @@ export function useDailyCoachInsight(
     context?.pillars.trainDays,
     context?.pillars.trackActivities,
     context?.pillars.learnLessons,
-    secondaryActions.map((a) => a.actionPath).join(','),
+    secondaryActionsKey,
     fallback.messageKey,
     fallback.actionLabelKey,
     fallback.actionPath,
