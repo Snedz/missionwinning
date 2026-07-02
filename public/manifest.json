@@ -1,0 +1,50 @@
+{
+  "name": "Mission Winning",
+  "short_name": "Mission Winning",
+  "description": "Free global health super-app — Train, Fuel, Move, Mind, Track, Learn. Offline PWA, 14 languages.",
+  "start_url": "/welcome",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0d12",
+  "theme_color": "#0a0d12",
+  "lang": "en",
+  "categories": ["health", "fitness", "lifestyle"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/marketing/screenshot-today.svg",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Today hub with Mission Score"
+    },
+    {
+      "src": "/marketing/screenshot-train.svg",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Workout logger"
+    },
+    {
+      "src": "/marketing/screenshot-fuel.svg",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Nutrition tracker"
+    }
+  ]
+}

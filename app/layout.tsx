@@ -3,15 +3,23 @@ import { Inter } from 'next/font/google';
 import '../src/index.css';
 import { Toaster } from '@/components/ui/toaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
+import { defaultOpenGraph, defaultTwitter, marketingMetadataBase } from '@/lib/marketingMetadata';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Private Development',
-  description: 'Private build. Not open to the public.',
+  metadataBase: marketingMetadataBase(),
+  title: {
+    default: 'Mission Winning — Free Global Health App',
+    template: '%s · Mission Winning',
+  },
+  description:
+    'Free workout tracking and six-pillar health synergy — Train, Fuel, Move, Mind, Track, Learn. PWA, offline-ready, 14 languages. Super Bundle for AI Coach and premium depth.',
+  openGraph: defaultOpenGraph(),
+  twitter: defaultTwitter(),
   icons: {
     icon: '/favicon.svg',
-    apple: '/apple-touch-icon.png',
+    apple: '/favicon.svg',
   },
   manifest: '/manifest.json',
 };

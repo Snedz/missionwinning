@@ -70,6 +70,114 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+---
+
+## 2026-06-29 — Phase M6: Tier 1 screenshot i18n + sitemap/robots
+
+**Build:** `2025.06-unified.68`
+
+### Shipped
+
+- **IT/JA/KO/RU screenshot i18n** — tier1 supplement + tests for gallery + nav keys
+- **`landingNavScreens`** — `#screenshots` link in marketing nav
+- **`app/sitemap.ts` + `app/robots.ts`** — public routes for crawlers; disallow `/private` and `/api/`
+
+**Tests:** 237 passing
+
+---
+
+## 2026-06-29 — Phase M5: PWA manifest + screenshot gallery + hreflang
+
+**Build:** `2025.06-unified.67`
+
+### Shipped
+
+- **`public/manifest.json`** — PWA install manifest with marketing screenshot assets for store listings
+- **`MarketingScreensGallery`** — Today / Train / Fuel phone previews on landing + downloadable SVG assets in `/marketing/`
+- **Hreflang + OG locales** — `marketingHreflang.ts`; `alternateLocale` and `alternates.languages` on landing/bundle metadata
+
+**Tests:** 232 passing
+
+---
+
+## 2026-06-29 — Phase M4: ES landing + OG images + bundle sticky shell
+
+**Build:** `2025.06-unified.66`
+
+### Shipped
+
+- **ES landing ≥88%** — full Spanish pack in `westernLandingLocales.ts`
+- **OG/social previews** — `app/opengraph-image.tsx` + `app/bundle/opengraph-image.tsx` (1200×630); `marketingMetadata.ts` with `metadataBase`, Twitter cards
+- **Bundle sticky unlock CTA** — moved to `MarketingShell` via `BundleMarketingLayout` (DRY with landing)
+
+**Tests:** 230 passing
+
+---
+
+## 2026-06-29 — Phase M3: MarketingShell DRY + western landing i18n
+
+**Build:** `2025.06-unified.65`
+
+### Shipped
+
+- **Landing wrapped in `MarketingShell`** — shared nav/footer/sticky CTA with `/bundle`; skip link + PWA install preserved
+- **FR/DE/PT landing ≥75%** — `westernLandingLocales.ts` full marketing packs
+- **`landingBundleTierLabel`** i18n key for bundle pillar grid
+
+**Tests:** 226 passing
+
+---
+
+## 2026-06-29 — Phase M2: Landing i18n + hero mockup
+
+**Build:** `2025.06-unified.64`
+
+### Shipped
+
+- **Landing i18n** — `landingLocales.ts` + Tier 1 native packs (IT/JA/KO/RU ≥75%); `LandingPage` wired to `useTranslation()`
+- **Hero mockup** — `LandingHeroMockup` phone-frame Today preview replaces raw `MetricsRow`
+- **Marketing language select** — nav + mobile menu on landing; `MarketingShell` label keys
+- **Locale export** — `landing.json` namespace for all 14 export langs
+
+**Tests:** 223 passing
+
+---
+
+## 2026-06-29 — Phase M1: Standalone bundle sales + FAQ
+
+**Build:** `2025.06-unified.63`
+
+### Shipped
+
+- **`/bundle` moved outside app shell** — full-bleed `MarketingShell` (no sidebar/mobile app nav)
+- **Bundle FAQ** — 6 questions, mobile tab/pillar grid polish, sticky unlock CTA, checkout success/cancel banner
+- **Landing FAQ** — `#faq` section + nav link
+- **`FaqSection`** + **`MarketingShell`** reusable marketing components
+
+**Tests:** 217 passing
+
+---
+
+## 2026-06-29 — Phase M0: Premium landing marketing shell
+
+**Build:** `2025.06-unified.62`
+
+### Shipped
+
+- **Landing rewrite** — mission-aligned copy (retire Cardone insult tone); hero 4-question framework
+- **Six pillars** — Train/Fuel/Move/Mind/Track/Learn with free CTAs to pillar routes
+- **`#pillars` + `#bundle`** — fixed nav anchors; embedded bundle section
+- **Mobile** — hamburger dialog nav, sticky bottom CTA, tap-target links, skip link
+- **`abVariant`** — defaults to `mission`; founders variant preserved in localStorage
+- **Metadata** — public-ready title/description + OG (root layout + `/` page)
+- **Gradient** — emerald `fitness-text-gradient` polish
+
+**Tests:** 215 passing
+
+---
+
 ## 2026-06-29 — Phase I5: Cross-pillar coach CTAs
 
 **Build:** `2025.06-unified.61`

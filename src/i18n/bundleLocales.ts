@@ -50,6 +50,24 @@ type BundleStrings = {
   bundlePillarLearnPremium: string;
   bundleVsSeparate: string;
   bundleRowTotal: string;
+  bundleFaqTitle: string;
+  bundleFaqSubtitle: string;
+  bundleFaq1Q: string;
+  bundleFaq1A: string;
+  bundleFaq2Q: string;
+  bundleFaq2A: string;
+  bundleFaq3Q: string;
+  bundleFaq3A: string;
+  bundleFaq4Q: string;
+  bundleFaq4A: string;
+  bundleFaq5Q: string;
+  bundleFaq5A: string;
+  bundleFaq6Q: string;
+  bundleFaq6A: string;
+  bundleCheckoutSuccess: string;
+  bundleCheckoutCancel: string;
+  bundleGoToApp: string;
+  bundleStartFreeFirst: string;
 };
 
 const en: BundleStrings = {
@@ -103,10 +121,34 @@ const en: BundleStrings = {
   bundlePillarMindPremium: 'Guided meditations, sleep tools',
   bundlePillarTrackFree: 'Manual activity log + weekly stats',
   bundlePillarTrackPremium: 'GPS routes, pace charts (MapMy-style)',
-  bundlePillarLearnFree: '5 education paths + samples',
+  bundlePillarLearnFree: '8 education paths + samples',
   bundlePillarLearnPremium: 'Full specialist programs (PT, BB, etc.)',
   bundleVsSeparate: 'Save {{percent}}% vs buying pillars separately',
   bundleRowTotal: 'Super Bundle (all pillars)',
+  bundleFaqTitle: 'Frequently asked questions',
+  bundleFaqSubtitle: 'Core stays free. Premium funds the global mission.',
+  bundleFaq1Q: 'Is the core app really free forever?',
+  bundleFaq1A:
+    'Yes. Workout logging, basic library, nutrition log, free mobility flows, mind breathing, activity log, and learn paths are never paywalled. Premium adds depth — AI Coach, premium sessions, specialist programs, and more recipes.',
+  bundleFaq2Q: 'What if I cancel the Super Bundle?',
+  bundleFaq2A:
+    'You keep all free-tier access. Premium features lock when your enrollment ends, but your workout history and core tools remain. Downgrade anytime — no hostage pricing on the logger.',
+  bundleFaq3Q: 'Does Mission Winning work offline?',
+  bundleFaq3A:
+    'Yes. Install the PWA for offline workout logging, cached plans, and offline coach on Today. Built for rural and low-connectivity users worldwide.',
+  bundleFaq4Q: 'What is included in premium?',
+  bundleFaq4A:
+    'AI Coach + plan generator, 6 Mind / 5 Move / 5 Track / 6 Learn premium programs, 92+ recipes, pro workout templates, and cross-pillar Win Score depth on Today.',
+  bundleFaq5Q: 'Is this medical advice?',
+  bundleFaq5A:
+    'No. Mission Winning provides educational fitness tools. Consult qualified professionals before intense training. We issue certificates of educational achievement — not medical licensure.',
+  bundleFaq6Q: 'Which languages are supported?',
+  bundleFaq6A:
+    'Fourteen locales ship today with Tier 1 body copy for Today, Welcome, Fuel, and Active in FR, DE, PT, IT, JA, KO, and RU. More expansion is planned.',
+  bundleCheckoutSuccess: 'Welcome to the Super Bundle! Premium unlocks after payment is confirmed.',
+  bundleCheckoutCancel: 'Checkout cancelled — your free core access is unchanged.',
+  bundleGoToApp: 'Open Today hub',
+  bundleStartFreeFirst: 'Start free first — no card required',
 };
 
 const es: BundleStrings = {
