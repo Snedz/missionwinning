@@ -75,9 +75,10 @@ describe('i18n Tier 1 body coverage (Phase I4)', () => {
     });
   }
 
-  for (const lang of ['it', 'ja', 'ko', 'ru'] as const) {
-    it(`${lang} fuel + active partial translated`, () => {
-      assert.ok(translatedRatio(lang, activeWorkoutStringsFor) >= 0.15);
+  for (const lang of ['fr', 'de', 'pt', 'it', 'ja', 'ko', 'ru'] as const) {
+    it(`${lang} active workout ≥75% translated vs en`, () => {
+      const ratio = translatedRatio(lang, activeWorkoutStringsFor);
+      assert.ok(ratio >= 0.75, `${lang} active ratio ${(ratio * 100).toFixed(1)}%`);
     });
   }
 });

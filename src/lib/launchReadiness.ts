@@ -36,7 +36,7 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       id: 'unit-tests',
       label: 'Unit test suite (npm test)',
       status: 'manual',
-      detail: 'Run before merge — 190+ tests expected',
+      detail: 'Run before merge — 206+ tests expected',
     },
     {
       id: 'phase-j-pathfinder',
@@ -90,7 +90,7 @@ export function getLaunchReadinessReport(): LaunchReadinessReport {
       id: 'i18n-i4',
       label: 'Phase I4 — Tier 1 body copy (Welcome/Fuel/Active/Today)',
       status: 'ready',
-      detail: 'Today/Welcome/Fuel full Tier 1 (43 keys); Active partial; export-locales',
+      detail: 'Today/Welcome/Fuel/Active full Tier 1; export-locales',
     },
     {
       id: 'mind-i3',

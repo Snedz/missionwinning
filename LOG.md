@@ -64,6 +64,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase I4: Active workout full Tier 1 i18n
+
+**Build:** `2025.06-unified.59`
+
+### Shipped
+
+- **`tier1ActiveFull.ts`** — complete active workout UI (50 keys) for FR, DE, PT, IT, JA, KO, RU
+- Rest timer, plate calc, superset, PR strings; metric `kg` label for Tier 1
+- **Tests** — active ≥75% vs EN for all Tier 1 langs
+
+**Tests:** 206 passing
+
+---
+
 ## 2026-06-29 — Phase I4: Fuel page full Tier 1 i18n
 
 **Build:** `2025.06-unified.58`
