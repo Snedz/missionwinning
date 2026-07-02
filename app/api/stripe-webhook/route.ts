@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { grantEnrollmentFromWebhook } from '@/lib/premiumServer';
-import { verifyStripeSignature } from '@/lib/stripeWebhookVerify';
+import {
+  parseStripeWebhookPayload,
+  verifyStripeSignature,
+} from '@/lib/stripeWebhook';
+import { handleStripeWebhookEvent } from '@/lib/stripeWebhookHandler';
 
 /**
  * Stripe webhook — requires signature verification before granting premium.
@@ -22,34 +25,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
   }
 
-  let event: { type?: string; data?: { object?: Record<string, unknown> } };
-  try {
-    event = JSON.parse(raw);
-  } catch {
+  const event = parseStripeWebhookPayload(raw);
+  if (!event) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data?.object ?? {};
-    const email =
-      (session.customer_details as { email?: string } | undefined)?.email ??
-      (session.customer_email as string | undefined) ??
-      null;
-    const sessionId = String(session.id ?? '');
-
-    if (email && sessionId) {
-      try {
-        await grantEnrollmentFromWebhook({
-          user_email: email,
-          product_id: 'super-bundle',
-          provider: 'stripe',
-          external_id: sessionId,
-        });
-      } catch (e) {
-        console.error('Stripe webhook enrollment error:', e);
-        return NextResponse.json({ error: 'Enrollment failed' }, { status: 500 });
-      }
-    }
+  try {
+    await handleStripeWebhookEvent(event);
+  } catch (e) {
+    console.error('Stripe webhook enrollment error:', e);
+    return NextResponse.json({ error: 'Enrollment failed' }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });

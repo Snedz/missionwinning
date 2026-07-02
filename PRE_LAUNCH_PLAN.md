@@ -1,8 +1,8 @@
 # Pre-Launch Plan — Mission Winning
 
 **Purpose:** Single checklist before `PRIVATE_MODE=false` and public launch.  
-**Last updated:** 2026-06-29 (post Phase G PFT track, build `.45`)  
-**Vision alignment:** [VISION_STATUS.md](VISION_STATUS.md) · **Build phases:** [PLAN.md](PLAN.md)
+**Last updated:** 2026-06-29 (build **`.59`**, PR [#62](https://github.com/Snedz/missionwinning/pull/62))  
+**Vision alignment:** [VISION_STATUS.md](VISION_STATUS.md) · **Build phases:** [PLAN.md](PLAN.md) · **Launch day:** [LAUNCH_DAY.md](LAUNCH_DAY.md)
 
 ---
 
@@ -28,11 +28,17 @@
 | **Leaderboard** | ✅ | GT7-style scopes + 7 boards (incl. Presidential Fitness, night/dawn) |
 | **PFT / America track (Phase G)** | ✅ | `/america`, `/fitness-test`, school classes, teacher dashboard, youth consent |
 | **Supabase schema** | ✅ | profiles, journey_events, leaderboard_snapshots, school/PFT tables |
-| **Build label** | ✅ | `2025.06-unified.45` on Profile footer |
+| **Build label** | ✅ | `2025.06-unified.59` on Profile footer |
+| **Phase I — Premium scaffold** | ✅ | Stripe Checkout + webhook, AI Coach, Mind/Move/Track premium MVPs — PR #62 |
+| **Phase I4 — Tier 1 i18n body** | ✅ | Today/Welcome/Fuel/Active full for FR, DE, PT, IT, JA, KO, RU |
+| **Phase J — Rural equity** | ✅ | Pathfinder, offline coach, IndexedDB outbox, Village Health Card — [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) |
+| **Launch readiness script** | ✅ | `npm run phase-h-readiness` (tsx + tests) |
 
 ### Open PR stack
 
-Most core work is merged to `master` (through PR #59 / build `.45`). Remaining **draft PRs** (#43–#48, #9) are separate train/fuel/i18n features — review individually; not required for Phase H launch.
+**Primary integration:** [PR #62](https://github.com/Snedz/missionwinning/pull/62) — Phase J + I1–I4 (206 tests, build `.59`). Merge after beta gates + `npm run phase-h-readiness`.
+
+Older draft PRs (#43–#48) are separate features — review individually; not required for Phase H launch.
 
 When Vercel access is restored: GitHub Secrets → run **Sync Vercel env** → redeploy → verify build label → `npm run gate-smoke` (optional `SMOKE_ACCESS_SECRET` for `/fitness-test`).
 
@@ -166,7 +172,8 @@ See [PLAN.md](PLAN.md) Phase **H** (launch) and **I** (premium). Summary:
 | 2 | GitHub Secrets + **Sync Vercel env** ([DEPLOY.md](DEPLOY.md)) |
 | 3 | Run all Supabase migrations (incl. PFT/school) |
 | 4 | `npm run gate-smoke` on production URL |
-| 5 | Pass beta gates → `PRIVATE_MODE=false` + PWA enable |
+| 5 | `npm run phase-h-readiness` before merge |
+| 6 | Pass beta gates → `PRIVATE_MODE=false` + PWA enable ([LAUNCH_DAY.md](LAUNCH_DAY.md)) |
 
 ### After launch — Phase I (vision revenue + depth)
 
@@ -235,6 +242,8 @@ Verify tables: `profiles`, `workout_logs`, `nutrition_logs`, `enrollments`, `lea
 | [PLAN.md](PLAN.md) | Phase A–I roadmap |
 | [VISION_STATUS.md](VISION_STATUS.md) | Vision vs reality scorecard |
 | [LOG.md](LOG.md) | Shipped changelog |
+| [LAUNCH_DAY.md](LAUNCH_DAY.md) | Go-public sequence |
+| [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) | Phase J rural/offline plan |
 
 ---
 

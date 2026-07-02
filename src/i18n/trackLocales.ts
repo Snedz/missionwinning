@@ -6,6 +6,7 @@ type TrackStrings = {
   trackWeekSessions: string;
   trackTotalTime: string;
   trackDistance: string;
+  trackAvgPace: string;
   trackLogTitle: string;
   trackLogDesc: string;
   trackTypeLabel: string;
@@ -14,21 +15,27 @@ type TrackStrings = {
   trackNotesLabel: string;
   trackNotesPlaceholder: string;
   trackLogBtn: string;
+  trackLogSession: string;
   trackWeekLogTitle: string;
   trackEmptyWeek: string;
   trackEmptyTitle: string;
+  trackProgramsPremium: string;
   trackPremiumTitle: string;
   trackPremiumDesc: string;
   trackPremiumBtn: string;
+  trackPremiumLockedTitle: string;
+  trackPremiumLockedBody: string;
+  trackExploreBundle: string;
 };
 
 const en: TrackStrings = {
   trackTitle: 'Track Activity',
   trackSubtitle:
-    'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
+    'Free manual activity log — walk, run, bike, hike. Premium adds structured programs and pace insights (Super Bundle).',
   trackWeekSessions: 'This Week',
   trackTotalTime: 'Total Time',
   trackDistance: 'Distance',
+  trackAvgPace: 'Avg pace {{pace}} min/km (logged distance)',
   trackLogTitle: 'Log Activity',
   trackLogDesc: 'No GPS needed — manual entry works offline anywhere.',
   trackTypeLabel: 'Type',
@@ -37,12 +44,18 @@ const en: TrackStrings = {
   trackNotesLabel: 'Notes (optional)',
   trackNotesPlaceholder: 'Morning park loop, felt great',
   trackLogBtn: 'Log Activity',
+  trackLogSession: 'Log',
   trackWeekLogTitle: "This Week's Log",
   trackEmptyWeek: 'No activities yet this week. Log a walk or run above.',
   trackEmptyTitle: 'No activities this week',
+  trackProgramsPremium: 'Premium activity programs (Super Bundle)',
   trackPremiumTitle: 'Premium — GPS & advanced stats',
   trackPremiumDesc: 'MapMy-style tracking, routes, pace charts, cross-pillar coaching.',
   trackPremiumBtn: 'Track Premium',
+  trackPremiumLockedTitle: '+{{count}} Premium Programs',
+  trackPremiumLockedBody:
+    'Unlock structured walk/run/hike programs, pace insights, and advanced stats via the Super Bundle.',
+  trackExploreBundle: 'Explore Super Bundle',
 };
 
 const es: TrackStrings = {

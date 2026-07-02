@@ -13,6 +13,7 @@ import type {
 import { countsTowardVolume } from "@/lib/setKind";
 import { advanceAfterLog } from "@/lib/superset";
 import { saveWorkoutLog, getUserWorkoutHistory, getUser } from "@/lib/supabase";
+import { enqueueWorkoutLog, scheduleOutboxFlush } from "@/lib/syncOutbox";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
 import { mapCloudToLocal, mergeWorkoutHistories } from "@/lib/workoutMerge";
@@ -191,15 +192,21 @@ export const useWorkoutStore = create<WorkoutState>()(
         scheduleLeaderboardPush(get().workoutHistory, savedCount);
 
         // Auto sync to cloud if signed in (non-blocking)
-        getUser().then(u => {
-          if (u) saveWorkoutLog({
+        getUser().then(async (u) => {
+          if (!u) return;
+          const payload = {
             workout_name: log.workoutName,
             started_at: log.startedAt,
             completed_at: log.completedAt,
             duration_seconds: log.durationSeconds,
             exercises: log.exercises,
             total_volume: log.totalVolume,
-          }).catch(()=>{}); 
+          };
+          const saved = await saveWorkoutLog(payload);
+          if (!saved) {
+            await enqueueWorkoutLog(log);
+            scheduleOutboxFlush();
+          }
         });
 
         return log;

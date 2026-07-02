@@ -13,6 +13,7 @@ import {
   YAxis,
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
+import { ChartDataTable } from '@/components/a11y/ChartDataTable';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import type { WeeklyVolumePoint } from '@/lib/historyAnalytics';
@@ -75,6 +76,23 @@ export function HistoryVolumeChart({ data }: Props) {
             </BarChart>
           </ResponsiveContainer>
         )}
+        <ChartDataTable
+          caption={t('historyVolumeTitle', { defaultValue: 'Weekly volume' })}
+          columns={[
+            { key: 'label', header: t('historyChartColWeek', { defaultValue: 'Week' }) },
+            {
+              key: 'volume',
+              header: t('historyVolumeLabel', { defaultValue: 'Volume' }),
+              format: (v) => Number(v).toLocaleString(),
+            },
+            {
+              key: 'sessions',
+              header: t('historySessionsLabel', { defaultValue: 'Sessions' }),
+              format: (v) => String(v),
+            },
+          ]}
+          rows={data}
+        />
       </CardContent>
     </Card>
   );
@@ -136,6 +154,23 @@ export function History1RMChart({ data, exerciseName }: OneRmProps) {
             </LineChart>
           </ResponsiveContainer>
         )}
+        <ChartDataTable
+          caption={`${t('history1rmTitle', { defaultValue: 'Estimated 1RM' })} — ${exerciseName}`}
+          columns={[
+            { key: 'date', header: t('historyChartColDate', { defaultValue: 'Date' }) },
+            {
+              key: 'estimated',
+              header: t('historyEst1rm', { defaultValue: 'Estimated' }),
+              format: (v) => (v != null ? String(v) : '—'),
+            },
+            {
+              key: 'actual',
+              header: t('historyAct1rm', { defaultValue: 'Actual (1 rep)' }),
+              format: (v) => (v != null ? String(v) : '—'),
+            },
+          ]}
+          rows={data}
+        />
       </CardContent>
     </Card>
   );

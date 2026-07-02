@@ -48,6 +48,8 @@ import type { WorkoutExerciseTemplate } from "@/types";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
+import { OfflinePlansPanel } from "@/components/builder/OfflinePlansPanel";
+import { CoachPlanGeneratorPanel } from "@/components/builder/CoachPlanGeneratorPanel";
 
 interface DraftExercise extends WorkoutExerciseTemplate {
   key: string;
@@ -218,6 +220,13 @@ export function BuilderPage() {
           defaultValue:
             'Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.',
         })}
+      />
+
+      <OfflinePlansPanel />
+
+      <CoachPlanGeneratorPanel
+        onLoadSession={loadSession}
+        onSaveAllSessions={saveAllProgramSessions}
       />
 
       <section

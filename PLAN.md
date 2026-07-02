@@ -2,7 +2,8 @@
 
 Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA). Filter every task through [vision.md](vision.md).
 
-**Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.
+**Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.  
+**Rural equity & connectivity:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) — offline, Pathfinder, accessibility.
 
 ## Design north stars (UI + product)
 
@@ -29,8 +30,9 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 | **G** | PFT / America track (school, teacher, youth, leaderboard) | ✅ Done — build `.45` |
 | **H** | Public launch + PWA + security P0 | ⬜ **Blocked** — [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) |
 | **I** | Premium depth + AI Coach + live payments | ⬜ Next after H |
+| **J** | Rural equity — offline, Pathfinder, a11y, connectivity | ⬜ Planned — [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) |
 
-> **Naming:** Journey “Phase 0–3” (JOURNEY.md) ≠ build phases here ≠ PFT sub-phases G1–G8.
+> **Naming:** Journey “Phase 0–3” (JOURNEY.md) ≠ build phases here ≠ PFT sub-phases G1–G8 ≠ rural J1–J6.
 
 ---
 
@@ -57,7 +59,7 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 
 ## Phase H — Launch & global accessibility ⬜
 
-*Formerly “Phase E” in older docs.* See [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) + [PROTECTION.md](PROTECTION.md).
+*Formerly “Phase E” in older docs.* See [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) · [LAUNCH_DAY.md](LAUNCH_DAY.md) · `npm run phase-h-readiness`
 
 ### Product gates (F4 / JOURNEY)
 
@@ -100,13 +102,36 @@ Aligns revenue with [vision.md](vision.md) without gating free core.
 
 | Sub | Deliverable | Vision link |
 |-----|-------------|-------------|
-| **I1** | Live Stripe bundle + verified webhook → `enrollments` | Super Bundle revenue engine |
-| **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | “Personal trainer in pocket” |
-| **I3** | One pillar premium MVP (Track GPS, Mind audio, or Move video) | Replace Unlock placeholders |
-| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | Global equity |
+| **I1** | Live Stripe bundle + verified webhook → `enrollments` | 🟡 Scaffold ready — set Stripe keys when LLC ready |
+| **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | 🟢 Shipped — cloud LLM + plan API gated; rules/offline free |
+| **I3** | Premium pillar MVPs (Mind / Move / Track) | 🟢 Shipped — 3 gated APIs; GPS/audio CDN later |
+| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 | 🟢 Shipped — full Tier 1 for FR/DE/PT/IT/JA/KO/RU |
 | **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | 1+1+1 > sum |
 
 **Done when:** Paying users get differentiated premium; free core unchanged; bundle LTV measurable.
+
+---
+
+## Phase J — Rural equity & connectivity ⬜
+
+**Master plan:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)
+
+For people **rural, offline, and far from a doctor** — complementary to telehealth/surgery (Musk thesis: expertise doesn’t scale; we scale **prevention**).
+
+| Sub | Deliverable | Depends on |
+|-----|-------------|------------|
+| **J1** | PWA on + offline shell + connection stripe banner | Phase H |
+| **J2** | IndexedDB `MissionLocalStore` + sync outbox | J1 |
+| **J3** | Pathfinder Assessment — “no regular doctor access” path + low-impact gating | — |
+| **J4** | a11y (text scale, focus audit) + PAR-Q i18n Tier 1 | — |
+| **J5** | Rural/bodyweight preset chain (Welcome → Today → Library) | — |
+| **J6** | Offline coach v2 + printable Village Health Card | J2 |
+
+**Parallel with H:** J3–J5 can ship while still gated; J1–J2 need `PRIVATE_MODE=false`.
+
+**Immediate next commits:** Pathfinder track · ConnectivityProvider · bodyweight default chain.
+
+**Done when:** ≥40% sessions complete offline (target); Pathfinder path live; Tier 1 assessment i18n; bodyweight default for new users.
 
 ---
 
@@ -138,10 +163,12 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 1. **Phase H prep** — beta invites, metrics, Supabase migrations, GitHub Secrets → Sync Vercel env
 2. **Phase H launch** — gates pass → `PRIVATE_MODE=false` → PWA on
-3. **Phase I1** — live payments (highest revenue impact)
-4. **Phase I2 + I4** — AI Coach premium + i18n body (parallel)
-5. **Phase I3** — one premium pillar proof
-6. **Open draft PRs** (#43–#48) — merge or close individually (train/fuel/i18n features, not PFT)
+3. **Phase J3 + J5** (parallel with H) — Pathfinder assessment + bodyweight rural preset
+4. **Phase J1–J2** — offline shell, IndexedDB, sync outbox (after H)
+5. **Phase I1** — live payments (highest revenue impact)
+6. **Phase I2 + J4** — AI Coach premium + a11y / assessment i18n (parallel)
+7. **Phase I3 + J6** — one premium pillar proof + offline coach v2
+8. **Open draft PRs** (#43–#48) — merge or close individually (train/fuel/i18n features, not PFT)
 
 ---
 
@@ -166,4 +193,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-06-29 (Phase G complete; Phase H/I roadmap; see VISION_STATUS.md)
+Last updated: 2026-06-29 (build `.59` — Phase J + I1–I4 on PR #62; see VISION_STATUS.md)

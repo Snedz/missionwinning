@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,13 +17,17 @@ import {
   getWeeklyStats,
   logActivity,
 } from '@/lib/activityLog';
+import type { PremiumTrackProgram, TrackProgramSession } from '@/data/premiumTrackProgramData';
 import { logPillarWin } from '@/lib/pillarLog';
-import { UnlockButton } from '@/components/UnlockButton';
 import { ActivityImportPanel } from '@/components/track/ActivityImportPanel';
+import { usePremium } from '@/hooks/usePremium';
+import { PREMIUM_TRACK_PROGRAM_COUNT } from '@/lib/trackPremiumMeta';
 import { MapPin, Trash2 } from 'lucide-react';
 
 export function TrackPage() {
   const { t } = useTranslation();
+  const { premium, loading: premiumLoading } = usePremium();
+  const [premiumPrograms, setPremiumPrograms] = useState<PremiumTrackProgram[]>([]);
   const [type, setType] = useState<ActivityType>('walk');
   const [durationMin, setDurationMin] = useState(30);
   const [distanceKm, setDistanceKm] = useState('');
@@ -35,23 +39,45 @@ export function TrackPage() {
     ? getWeeklyStats()
     : { count: 0, totalMin: 0, totalKm: 0, byType: {} };
 
-  const handleLog = () => {
-    if (durationMin < 1) return;
+  useEffect(() => {
+    if (!premium) {
+      setPremiumPrograms([]);
+      return;
+    }
+    fetch('/api/premium/track-programs', { credentials: 'include' })
+      .then((r) => (r.ok ? r.json() : { programs: [] }))
+      .then((data) => setPremiumPrograms(data.programs ?? []))
+      .catch(() => setPremiumPrograms([]));
+  }, [premium]);
+
+  const logSession = (session: TrackProgramSession, programName?: string) => {
     const today = new Date().toISOString().split('T')[0];
     logActivity({
       date: today,
+      type: session.type,
+      durationMin: session.durationMin,
+      distanceKm: session.distanceKm,
+      notes: session.notes?.trim() || undefined,
+    });
+    logPillarWin('track', session.title, {
+      durationMin: session.durationMin,
+      distanceKm: session.distanceKm ?? 0,
+      ...(programName ? { program: programName } : {}),
+    });
+    setRefresh((r) => r + 1);
+  };
+
+  const handleLog = () => {
+    if (durationMin < 1) return;
+    logSession({
+      title: `${ACTIVITY_LABELS[type]} ${durationMin}min`,
       type,
       durationMin,
       distanceKm: distanceKm ? parseFloat(distanceKm) : undefined,
       notes: notes.trim() || undefined,
     });
-    logPillarWin('track', `${ACTIVITY_LABELS[type]} ${durationMin}min`, {
-      durationMin,
-      distanceKm: distanceKm || 0,
-    });
     setNotes('');
     setDistanceKm('');
-    setRefresh((r) => r + 1);
   };
 
   const handleDelete = (id: string) => {
@@ -61,6 +87,12 @@ export function TrackPage() {
 
   void refresh;
 
+  const paceEntries = weekActivities.filter((a) => a.distanceKm && a.distanceKm > 0);
+  const avgPaceMinKm =
+    paceEntries.length > 0
+      ? paceEntries.reduce((s, a) => s + a.durationMin / (a.distanceKm ?? 1), 0) / paceEntries.length
+      : null;
+
   return (
     <StaggerGroup className="space-y-6">
       <StaggerItem index={0}>
@@ -69,7 +101,7 @@ export function TrackPage() {
           title={t('trackTitle', { defaultValue: 'Track Activity' })}
           subtitle={t('trackSubtitle', {
             defaultValue:
-              'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
+              'Free manual activity log — walk, run, bike, hike. Premium adds structured programs and pace insights (Super Bundle).',
           })}
         />
       </StaggerItem>
@@ -100,6 +132,14 @@ export function TrackPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold tabular-nums">{stats.totalKm.toFixed(1)} km</div>
+              {premium && avgPaceMinKm != null && (
+                <p className="text-xs text-emerald-400 mt-1">
+                  {t('trackAvgPace', {
+                    pace: avgPaceMinKm.toFixed(1),
+                    defaultValue: `Avg pace ${avgPaceMinKm.toFixed(1)} min/km (logged distance)`,
+                  })}
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -217,26 +257,69 @@ export function TrackPage() {
       </StaggerItem>
 
       <StaggerItem index={5}>
-        <Card className="content-card border-white/10 bg-card/50">
-          <CardHeader>
-            <CardTitle className="text-base">
-              {t('trackPremiumTitle', { defaultValue: 'Premium — GPS & advanced stats' })}
-            </CardTitle>
-            <CardDescription>
-              {t('trackPremiumDesc', {
-                defaultValue: 'MapMy-style tracking, routes, pace charts, cross-pillar coaching.',
-              })}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <UnlockButton
-              productId="track-premium"
-              price="8"
-              title={t('trackPremiumBtn', { defaultValue: 'Track Premium' })}
-              isSubscription
-            />
-          </CardContent>
-        </Card>
+        {premium && !premiumLoading && premiumPrograms.length > 0 ? (
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+              {t('trackProgramsPremium', { defaultValue: 'Premium activity programs (Super Bundle)' })}
+            </h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              {premiumPrograms.map((program) => (
+                <Card key={program.id} className="content-card border-emerald-500/20">
+                  <CardHeader>
+                    <CardTitle className="text-base">{program.name}</CardTitle>
+                    <CardDescription>{program.subtitle}</CardDescription>
+                    <p className="text-xs text-muted-foreground">{program.focus}</p>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    {program.sessions.map((session) => (
+                      <div
+                        key={`${program.id}-${session.title}`}
+                        className="flex items-center justify-between gap-2 text-sm border border-border/40 rounded-lg p-3"
+                      >
+                        <div>
+                          <div className="font-medium">{session.title}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {ACTIVITY_LABELS[session.type]} · {session.durationMin} min
+                            {session.distanceKm != null ? ` · ${session.distanceKm} km` : ''}
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="fitness"
+                          onClick={() => logSession(session, program.name)}
+                        >
+                          {t('trackLogSession', { defaultValue: 'Log' })}
+                        </Button>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <Card className="content-card border-emerald-500/30">
+            <CardHeader>
+              <CardTitle className="text-base">
+                {t('trackPremiumLockedTitle', {
+                  count: PREMIUM_TRACK_PROGRAM_COUNT,
+                  defaultValue: `+${PREMIUM_TRACK_PROGRAM_COUNT} Premium Programs`,
+                })}
+              </CardTitle>
+              <CardDescription>
+                {t('trackPremiumLockedBody', {
+                  defaultValue:
+                    'Unlock structured walk/run/hike programs, pace insights, and MapMy-style depth via the Super Bundle.',
+                })}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="fitness" onClick={() => { window.location.href = '/bundle'; }}>
+                {t('trackExploreBundle', { defaultValue: 'Explore Super Bundle' })}
+              </Button>
+            </CardContent>
+          </Card>
+        )}
       </StaggerItem>
     </StaggerGroup>
   );

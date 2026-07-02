@@ -1,87 +1,75 @@
 'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useWorkoutStore } from "@/store/workoutStore";
-import { saveNutritionEntry } from "@/lib/supabase"; // reuse for demo save, or extend
-import { SignInPrompt } from "@/components/auth/SignInPrompt";
-import type { WorkoutExerciseTemplate } from "@/types";
+import { useState } from 'react';
+import { Compass } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useWorkoutStore } from '@/store/workoutStore';
+import { saveNutritionEntry } from '@/lib/supabase';
+import { usePremium } from '@/hooks/usePremium';
+import { SignInPrompt } from '@/components/auth/SignInPrompt';
+import {
+  type AssessmentResult,
+  type PathfinderAccess,
+  buildAssessmentResult,
+  persistAssessment,
+  recommendationAllowed,
+} from '@/lib/pathfinderAssessment';
+import { ASSESSMENT_QUESTION_KEYS, assessmentStringsFor } from '@/i18n/assessmentLocales';
+import { openVillageHealthCard } from '@/lib/villageHealthCardHtml';
+import { getStoredTrainLocation } from '@/lib/equipmentPrefs';
+import { getTrainingStreak } from '@/lib/challenges';
 
-interface AssessmentResult {
-  riskLevel: 'low' | 'moderate' | 'high';
-  notes: string;
-  recommendations: string[];
-}
+type Step = 'questions' | 'pathfinder' | 'result';
 
 export function AssessmentsPage() {
+  const { t } = useTranslation();
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [step, setStep] = useState<Step>('questions');
+  const [pathfinderAccess, setPathfinderAccess] = useState<PathfinderAccess>('regular');
   const [result, setResult] = useState<AssessmentResult | null>(null);
+  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  usePremium();
 
-  const questions = [
-    { key: "chest_pain", q: "Have you experienced any chest pain associated with either exercise or stress?" },
-    { key: "shortness_breath", q: "Have you experienced shortness of breath with or without exercise?" },
-    { key: "fainting", q: "Have you experienced fainting or light-headedness?" },
-    { key: "hospital", q: "Have you had a recent hospitalization for any cause?" },
-    { key: "ortho", q: "Do you have any orthopedic conditions (including arthritis)?" },
-    { key: "heart", q: "Have you ever experienced a rapid heartbeat or palpitations?" },
-    { key: "no_exercise", q: "Is there any reason why you should not follow a regular exercise program?" },
-    { key: "smoke", q: "Do you smoke? (yes/no/former)" },
-    { key: "sleep", q: "Average hours of sleep per night? (under 5 / 5-7 / 8-10 / over 10)" },
-    { key: "energy", q: "Daily energy level? (high / moderate / low)" },
-    // Expanded from Health History form (exact/adapted for digital)
-    { key: "high_bp", q: "Has your doctor ever diagnosed you with high blood pressure?" },
-    { key: "bone_joint", q: "Has your doctor ever diagnosed you with a bone or joint problem that has been or could be made worse by exercise?" },
-    { key: "family_heart", q: "Family history of heart disease, heart attack, or stroke before age 55 (father/brother) or 65 (mother/sister)?" },
-    { key: "smoking_detail", q: "Current smoking: non / former (date quit) / <15 cigs/day / 16-25 / >25 or pipe/cigar?" },
-    { key: "pain_history", q: "Any current or past pain in: head/neck, upper/lower back, shoulder/clavicle, arm/elbow, wrist/hand, hip/pelvis, thigh/knee, arthritis, hernia, surgeries? (list)" },
-    { key: "meds", q: "Taking any medications? List with dosage/frequency and condition." },
-    { key: "allergies", q: "List any and all allergies." },
-    { key: "lifestyle", q: "Occupation stress (low/med/high), energy level, caffeine/alcohol use, recent weight fluctuation, diet plan or supplements?" },
-  ];
+  const enAssess = assessmentStringsFor('en');
 
-  // Stage-matched questions + OARS from coaching materials (quick guide). Use for personalization, not diagnosis.
+  const questions = ASSESSMENT_QUESTION_KEYS.map((key) => ({
+    key,
+    q: t(`assessQ_${key}`, { defaultValue: enAssess[`assessQ_${key}`] ?? key }),
+  }));
+
   const stages = [
-    { name: "Pre-Contemplation (Not Ready)", focus: "Build awareness without pressure. Evoke curiosity and values.", qs: ["What do you enjoy about your current habits?", "How do you view your health or energy 5 years from now?"] },
-    { name: "Contemplation (Getting Ready)", focus: "Normalize ambivalence. Explore benefits and barriers.", qs: ["What might be some benefits if you made this change?", "What feels hardest about starting?"] },
-    { name: "Preparation / Action", focus: "Strengthen confidence. Reinforce progress. Small wins + autonomy.", qs: ["What's one small step you could take this week?", "What's been working best so far?"] },
-    { name: "Maintenance", focus: "Support autonomy, mastery, relapse prevention. New goals.", qs: ["How do you maintain progress when life gets stressful?", "What new goals feel inspiring now?"] },
+    { name: 'Pre-Contemplation (Not Ready)', focus: 'Build awareness without pressure. Evoke curiosity and values.', qs: ['What do you enjoy about your current habits?', 'How do you view your health or energy 5 years from now?'] },
+    { name: 'Contemplation (Getting Ready)', focus: 'Normalize ambivalence. Explore benefits and barriers.', qs: ['What might be some benefits if you made this change?', 'What feels hardest about starting?'] },
+    { name: 'Preparation / Action', focus: 'Strengthen confidence. Reinforce progress. Small wins + autonomy.', qs: ["What's one small step you could take this week?", "What's been working best so far?"] },
+    { name: 'Maintenance', focus: 'Support autonomy, mastery, relapse prevention. New goals.', qs: ['How do you maintain progress when life gets stressful?', 'What new goals feel inspiring now?'] },
   ];
   const [selectedStage, setSelectedStage] = useState(0);
 
   const handleAnswer = (key: string, value: string) => {
-    setAnswers(prev => ({ ...prev, [key]: value }));
+    setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
 
-  const submitAssessment = () => {
-    const yesFlags = Object.values(answers).filter(v => v.toLowerCase().includes('yes') || v.toLowerCase().includes('low')).length;
-    let risk: 'low' | 'moderate' | 'high' = 'low';
-    let notes = "Great baseline. Proceed with standard programs.";
-    let recs = ["Start with Beginner Full Body or Bodyweight program.", "Focus on consistent form."];
+  const proceedToPathfinder = () => {
+    setStep('pathfinder');
+  };
 
-    if (yesFlags >= 3) {
-      risk = 'high';
-      notes = "Multiple flags detected. Strongly recommend medical clearance before intense training.";
-      recs = ["Begin with Corrective & Mobility block.", "Consult physician.", "Use low-impact options and monitor symptoms."];
-    } else if (yesFlags >= 1) {
-      risk = 'moderate';
-      notes = "Some caution advised. Consider starting with corrective work.";
-      recs = ["Prioritize the Corrective Exercise Specialist templates.", "Build with Bodyweight & Dumbbell Starter first."];
-    }
-
-    const res: AssessmentResult = { riskLevel: risk, notes, recommendations: recs };
+  const submitAssessment = (access: PathfinderAccess) => {
+    const res = buildAssessmentResult(answers, access);
+    setPathfinderAccess(access);
     setResult(res);
+    setStep('result');
+    persistAssessment(res);
 
-    // Save a note to nutrition logs as demo assessment record (or extend table later)
-    const today = new Date().toISOString().split('T')[0];
-    saveNutritionEntry({ date: today, name: `Assessment: ${risk} risk`, protein: 0, cals: 0 }).catch(() => {});
-
-    // Persist last result for profile / history
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('mw_last_assessment', JSON.stringify({ risk, notes, date: today }));
-    }
+    saveNutritionEntry({
+      date: res.date,
+      name: `Assessment: ${res.risk} risk${res.pathfinderTrack ? ' (Pathfinder)' : ''}`,
+      protein: 0,
+      cals: 0,
+    }).catch(() => {});
   };
 
   const bumpStreak = () => {
@@ -91,120 +79,270 @@ export function AssessmentsPage() {
   };
 
   const startRecommended = (rec: string) => {
+    if (result && !recommendationAllowed(rec, result.programGate ?? 'standard')) return;
     bumpStreak();
-    let name = "Daily Mobility + Mind Habit";
-    let exs: WorkoutExerciseTemplate[] = [
-      { exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },
-      { exerciseId: "bird-dog", sets: [{ reps: 6, weight: 0 }] },
-      { exerciseId: "glute-bridge", sets: [{ reps: 10, weight: 0 }] },
-      { exerciseId: "couch-stretch", sets: [{ reps: 45, weight: 0 }] },
+    let name = 'Daily Mobility + Mind Habit';
+    let exs: { exerciseId: string; sets: { reps: number; weight: number }[] }[] = [
+      { exerciseId: 'cat-camel', sets: [{ reps: 8, weight: 0 }] },
+      { exerciseId: 'bird-dog', sets: [{ reps: 6, weight: 0 }] },
+      { exerciseId: 'glute-bridge', sets: [{ reps: 10, weight: 0 }] },
+      { exerciseId: 'couch-stretch', sets: [{ reps: 45, weight: 0 }] },
     ];
     if (rec.toLowerCase().includes('bodyweight') || rec.toLowerCase().includes('full body')) {
-      name = "Full Body Habit Builder";
+      name = 'Full Body Habit Builder';
       exs = [
-        { exerciseId: "push-ups", sets: [{ reps: 10, weight: 0 }] },
-        { exerciseId: "squats", sets: [{ reps: 12, weight: 0 }] },
-        { exerciseId: "glute-bridge", sets: [{ reps: 12, weight: 0 }] },
-        { exerciseId: "plank", sets: [{ reps: 25, weight: 0 }] },
-        { exerciseId: "couch-stretch", sets: [{ reps: 45, weight: 0 }] },
+        { exerciseId: 'push-ups', sets: [{ reps: 10, weight: 0 }] },
+        { exerciseId: 'squats', sets: [{ reps: 12, weight: 0 }] },
+        { exerciseId: 'glute-bridge', sets: [{ reps: 12, weight: 0 }] },
+        { exerciseId: 'plank', sets: [{ reps: 25, weight: 0 }] },
+        { exerciseId: 'couch-stretch', sets: [{ reps: 45, weight: 0 }] },
       ];
     } else if (rec.toLowerCase().includes('mobility') || rec.toLowerCase().includes('corrective')) {
-      name = "Daily Mobility Circuit (Free)";
+      name = 'Daily Mobility Circuit (Free)';
       exs = [
-        { exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },
-        { exerciseId: "bird-dog", sets: [{ reps: 6, weight: 0 }] },
-        { exerciseId: "glute-bridge", sets: [{ reps: 10, weight: 0 }] },
-        { exerciseId: "wall-sit", sets: [{ reps: 30, weight: 0 }] },
-        { exerciseId: "superman", sets: [{ reps: 8, weight: 0 }] },
+        { exerciseId: 'cat-camel', sets: [{ reps: 8, weight: 0 }] },
+        { exerciseId: 'bird-dog', sets: [{ reps: 6, weight: 0 }] },
+        { exerciseId: 'glute-bridge', sets: [{ reps: 10, weight: 0 }] },
+        { exerciseId: 'wall-sit', sets: [{ reps: 30, weight: 0 }] },
+        { exerciseId: 'superman', sets: [{ reps: 8, weight: 0 }] },
       ];
     } else if (rec.toLowerCase().includes('upper') || rec.toLowerCase().includes('bodyweight & dumbbell')) {
-      name = "Bodyweight Strength Circuit";
+      name = 'Bodyweight Strength Circuit';
       exs = [
-        { exerciseId: "push-ups", sets: [{ reps: 12, weight: 0 }] },
-        { exerciseId: "squats", sets: [{ reps: 12, weight: 0 }] },
-        { exerciseId: "inverted-row", sets: [{ reps: 8, weight: 0 }] },
-        { exerciseId: "lunges", sets: [{ reps: 10, weight: 0 }] },
-        { exerciseId: "plank", sets: [{ reps: 30, weight: 0 }] },
+        { exerciseId: 'push-ups', sets: [{ reps: 12, weight: 0 }] },
+        { exerciseId: 'squats', sets: [{ reps: 12, weight: 0 }] },
+        { exerciseId: 'inverted-row', sets: [{ reps: 8, weight: 0 }] },
+        { exerciseId: 'lunges', sets: [{ reps: 10, weight: 0 }] },
+        { exerciseId: 'plank', sets: [{ reps: 30, weight: 0 }] },
       ];
     }
     startWorkout(name, exs);
-    // Navigate to active
-    window.location.href = "/active";
+    window.location.href = '/active';
   };
 
-  // Core assessment is FREE forever per vision.md (basic readiness, ParQ-style, stages of change).
-  // Premium unlocks deeper saved history, cross-device, advanced coaching integration + full programs.
-  // No paywall on the mission fundamentals.
+  const printHealthCard = () => {
+    if (!result) return;
+    const streak = getTrainingStreak(workoutHistory);
+    openVillageHealthCard({
+      assessment: result,
+      workoutCount: workoutHistory.length,
+      lastWorkoutName: workoutHistory[0]?.workoutName,
+      streak,
+      trainLocation: getStoredTrainLocation(),
+    });
+  };
+
+  const visibleRecommendations =
+    result?.recommendations.filter((r) =>
+      recommendationAllowed(r, result.programGate ?? 'standard')
+    ) ?? [];
 
   return (
     <div className="max-w-3xl space-y-6">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Readiness Assessment</h2>
-        <p className="text-muted-foreground">Free core tool. Based on standard health history and ParQ-style questions (from corrective exercise materials). Answer honestly for personalized guidance. Results help choose safe free starters in the Today hub or Builder.</p>
+        <h2 className="text-3xl font-bold tracking-tight">
+          {t('assessmentTitle', { defaultValue: 'Readiness Assessment' })}
+        </h2>
+        <p className="text-muted-foreground">
+          {t('assessSubtitle', {
+            defaultValue:
+              'Free core tool. Answer honestly for personalized guidance — including a Pathfinder track if regular doctor access is difficult.',
+          })}
+        </p>
       </div>
 
-      {!result && (
+      {step === 'questions' && (
         <Card>
-          <CardHeader><CardTitle>Quick Health &amp; Lifestyle Screen</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>{t('healthScreen', { defaultValue: 'Quick Health & Lifestyle Screen' })}</CardTitle>
+          </CardHeader>
           <CardContent className="space-y-4">
             {questions.map((item, idx) => (
               <div key={idx} className="space-y-1">
                 <div className="text-sm font-medium">{item.q}</div>
-                <div className="flex gap-2 flex-wrap">
-                  {['Yes', 'No', 'Unsure'].map(opt => (
-                    <Button key={opt} size="sm" variant={answers[item.key] === opt.toLowerCase() ? 'default' : 'outline'} onClick={() => handleAnswer(item.key, opt.toLowerCase())}>{opt}</Button>
+                <div className="flex gap-2 flex-wrap assessment-actions">
+                  {(
+                    [
+                      { value: 'yes', label: t('assessYes', { defaultValue: 'Yes' }) },
+                      { value: 'no', label: t('assessNo', { defaultValue: 'No' }) },
+                      { value: 'unsure', label: t('assessUnsure', { defaultValue: 'Unsure' }) },
+                    ] as const
+                  ).map(({ value, label }) => (
+                    <Button
+                      key={value}
+                      size="sm"
+                      variant={answers[item.key] === value ? 'default' : 'outline'}
+                      onClick={() => handleAnswer(item.key, value)}
+                    >
+                      {label}
+                    </Button>
                   ))}
                   {item.key === 'smoke' || item.key === 'sleep' || item.key === 'energy' ? (
-                    <input className="border rounded px-2 text-sm" placeholder="details" onBlur={e => handleAnswer(item.key, e.target.value || answers[item.key] || '')} />
+                    <input
+                      className="border rounded px-2 text-sm min-h-[44px]"
+                      placeholder="details"
+                      aria-label={`${item.q} details`}
+                      onBlur={(e) =>
+                        handleAnswer(item.key, e.target.value || answers[item.key] || '')
+                      }
+                    />
                   ) : null}
                 </div>
               </div>
             ))}
-            <Button className="mt-4 w-full" onClick={submitAssessment} disabled={Object.keys(answers).length < 5}>Submit Assessment</Button>
-            <div className="text-xs text-muted-foreground">This is educational screening only — not medical advice. Always consult a doctor.</div>
+            <Button
+              className="mt-4 w-full min-h-[44px]"
+              onClick={proceedToPathfinder}
+              disabled={Object.keys(answers).length < 5}
+            >
+              {t('assessContinue', { defaultValue: 'Continue' })}
+            </Button>
+            <div className="text-xs text-muted-foreground">
+              {t('assessDisclaimer', {
+                defaultValue:
+                  'Educational screening only — not medical advice. Emergency symptoms: seek urgent care if available.',
+              })}
+            </div>
           </CardContent>
         </Card>
       )}
 
-      {/* Stage + OARS prompts from coaching guide (for personalization & coach mode) */}
+      {step === 'pathfinder' && (
+        <Card className="border-emerald-500/40">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Compass className="h-5 w-5 text-emerald-400" aria-hidden />
+              {t('assessPathfinderTitle', { defaultValue: 'Pathfinder — care access' })}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              {t('assessPathfinderBody', {
+                defaultValue:
+                  'Many members train in villages, rural areas, or places without a regular doctor.',
+              })}
+            </p>
+            <p className="text-sm font-medium">
+              {t('assessPathfinderQuestion', {
+                defaultValue: 'Can you reach a doctor or nurse regularly?',
+              })}
+            </p>
+            <div className="flex flex-col gap-2">
+              <Button variant="outline" className="justify-start min-h-[44px]" onClick={() => submitAssessment('regular')}>
+                {t('assessAccessRegular', { defaultValue: 'Yes — I can usually see a clinician' })}
+              </Button>
+              <Button variant="outline" className="justify-start min-h-[44px]" onClick={() => submitAssessment('limited')}>
+                {t('assessAccessLimited', {
+                  defaultValue: 'Sometimes — clinics are far or appointments are rare',
+                })}
+              </Button>
+              <Button
+                variant="default"
+                className="justify-start min-h-[44px] bg-emerald-600 hover:bg-emerald-700"
+                onClick={() => submitAssessment('none')}
+              >
+                {t('assessAccessNone', {
+                  defaultValue: 'No — I cannot reach a doctor easily (Pathfinder track)',
+                })}
+              </Button>
+            </div>
+            <Button variant="ghost" size="sm" onClick={() => setStep('questions')}>
+              {t('assessBackQuestions', { defaultValue: 'Back to questions' })}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
       <Card>
-        <CardHeader><CardTitle>Stage of Change + Coaching Prompts</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>{t('stagePrompts', { defaultValue: 'Stage of Change + Coaching Prompts' })}</CardTitle>
+        </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <div className="flex flex-wrap gap-2">
             {stages.map((s, i) => (
-              <Button key={i} size="sm" variant={selectedStage === i ? 'default' : 'outline'} onClick={() => setSelectedStage(i)}>{s.name.split('(')[0].trim()}</Button>
+              <Button
+                key={i}
+                size="sm"
+                variant={selectedStage === i ? 'default' : 'outline'}
+                onClick={() => setSelectedStage(i)}
+              >
+                {s.name.split('(')[0].trim()}
+              </Button>
             ))}
           </div>
           <div className="bg-black/30 p-3 rounded">
-            <div className="font-medium text-emerald-400">Coach Focus: {stages[selectedStage].focus}</div>
+            <div className="font-medium text-emerald-400">
+              {t('coachFocus', { defaultValue: 'Coach Focus' })}: {stages[selectedStage].focus}
+            </div>
             <ul className="list-disc pl-5 mt-1 text-white/80">
-              {stages[selectedStage].qs.map((q, i) => <li key={i}>{q}</li>)}
+              {stages[selectedStage].qs.map((q, i) => (
+                <li key={i}>{q}</li>
+              ))}
             </ul>
           </div>
-          <div className="text-xs text-muted-foreground">OARS in practice: Open questions, Affirm strengths, Reflect back, Summarize. Match approach to readiness. Use to personalize programs or coaching sessions. (From coaching quick guide.)</div>
         </CardContent>
       </Card>
 
-      {result && (
-        <Card className={`border-2 ${result.riskLevel === 'high' ? 'border-red-500' : result.riskLevel === 'moderate' ? 'border-yellow-500' : 'border-emerald-500'}`}>
+      {step === 'result' && result && (
+        <Card
+          className={`border-2 ${result.risk === 'high' ? 'border-red-500' : result.risk === 'moderate' ? 'border-yellow-500' : 'border-emerald-500'}`}
+        >
           <CardHeader>
-            <CardTitle>Assessment Result: <span className="uppercase">{result.riskLevel} risk</span></CardTitle>
+            <CardTitle>
+              {t('assessResultTitle', { defaultValue: 'Assessment Result' })}:{' '}
+              <span className="uppercase">
+                {result.risk === 'high'
+                  ? t('riskHigh', { defaultValue: 'High risk' })
+                  : result.risk === 'moderate'
+                    ? t('riskModerate', { defaultValue: 'Moderate risk' })
+                    : t('riskLow', { defaultValue: 'Low risk' })}
+              </span>
+              {result.pathfinderTrack ? (
+                <span className="ml-2 inline-flex items-center gap-1 text-sm font-normal text-emerald-400">
+                  <Compass className="h-4 w-4" aria-hidden />
+                  {t('assessPathfinderBadge', { defaultValue: 'Pathfinder track' })}
+                </span>
+              ) : null}
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p>{result.notes}</p>
+            {result.programGate === 'low-impact-only' ? (
+              <p className="text-xs text-amber-400/90">
+                {t('assessLowImpactNote', {
+                  defaultValue: 'Low-impact programs only until you can seek medical clearance.',
+                })}
+              </p>
+            ) : null}
             <div>
-              <div className="font-semibold mb-2">Recommendations (click to start a matching free starter + log win):</div>
+              <div className="font-semibold mb-2">
+                {t('assessRecsLabel', { defaultValue: 'Recommendations (click to start):' })}
+              </div>
               <div className="flex flex-wrap gap-2">
-                {result.recommendations.map((r, i) => (
-                  <Button key={i} size="sm" variant="outline" onClick={() => startRecommended(r)}>
-                    Start: {r.length > 45 ? r.slice(0,42) + '...' : r} →
+                {visibleRecommendations.map((r, i) => (
+                  <Button key={i} size="sm" variant="outline" className="min-h-[44px]" onClick={() => startRecommended(r)}>
+                    {t('assessStartPrefix', { defaultValue: 'Start' })}: {r.length > 45 ? `${r.slice(0, 42)}...` : r} →
                   </Button>
                 ))}
               </div>
             </div>
-            <Button onClick={() => { setResult(null); setAnswers({}); }}>Retake Assessment</Button>
-            <div className="text-xs">Results saved locally + to logs. Use to guide program choice in the Builder / Today hub. Streak +1 on start.</div>
-            <Button onClick={() => window.location.href = "/log"} variant="outline" className="mt-2">Go to Today Hub (Home) for all free starters</Button>
+            {result.pathfinderTrack ? (
+              <Button variant="secondary" className="min-h-[44px]" onClick={printHealthCard}>
+                {t('assessVillageCard', { defaultValue: 'Print Village Health Card' })}
+              </Button>
+            ) : null}
+            <Button
+              onClick={() => {
+                setResult(null);
+                setAnswers({});
+                setStep('questions');
+              }}
+            >
+              {t('assessRetake', { defaultValue: 'Retake Assessment' })}
+            </Button>
+            <Button onClick={() => { window.location.href = '/log'; }} variant="outline" className="mt-2 min-h-[44px]">
+              {t('assessGoToday', { defaultValue: 'Go to Today Hub for all free starters' })}
+            </Button>
           </CardContent>
         </Card>
       )}

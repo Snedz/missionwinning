@@ -119,6 +119,42 @@ async function main() {
   }
 
   try {
+    const mindSessions = await headOrGet('/api/premium/mind-sessions');
+    const ok = mindSessions.status === 403 || mindSessions.status === 401 || mindSessions.status === 503;
+    checks.push({
+      name: 'GET /api/premium/mind-sessions (no auth)',
+      ok,
+      detail: `status ${mindSessions.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/mind-sessions', ok: false, detail: String(e) });
+  }
+
+  try {
+    const moveFlows = await headOrGet('/api/premium/move-flows');
+    const ok = moveFlows.status === 403 || moveFlows.status === 401 || moveFlows.status === 503;
+    checks.push({
+      name: 'GET /api/premium/move-flows (no auth)',
+      ok,
+      detail: `status ${moveFlows.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/move-flows', ok: false, detail: String(e) });
+  }
+
+  try {
+    const trackPrograms = await headOrGet('/api/premium/track-programs');
+    const ok = trackPrograms.status === 403 || trackPrograms.status === 401 || trackPrograms.status === 503;
+    checks.push({
+      name: 'GET /api/premium/track-programs (no auth)',
+      ok,
+      detail: `status ${trackPrograms.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/track-programs', ok: false, detail: String(e) });
+  }
+
+  try {
     const programs = await headOrGet('/api/premium/programs');
     const ok = programs.status === 403 || programs.status === 401 || programs.status === 503;
     checks.push({
@@ -131,6 +167,34 @@ async function main() {
   }
 
   try {
+    const learnPaths = await headOrGet('/api/premium/learn-paths');
+    const ok = learnPaths.status === 403 || learnPaths.status === 401 || learnPaths.status === 503;
+    checks.push({
+      name: 'GET /api/premium/learn-paths (no auth)',
+      ok,
+      detail: `status ${learnPaths.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/learn-paths', ok: false, detail: String(e) });
+  }
+
+  try {
+    const coachPlan = await headOrGet('/api/coach/generate-plan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ readiness: 70, strain: 50, recovery: 55 }),
+    });
+    const ok = coachPlan.status === 403;
+    checks.push({
+      name: 'POST /api/coach/generate-plan (no premium)',
+      ok,
+      detail: `status ${coachPlan.status}${ok ? '' : ' — expected 403'}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'POST /api/coach/generate-plan', ok: false, detail: String(e) });
+  }
+
+  try {
     const privatePage = await headOrGet('/private');
     checks.push({
       name: 'GET /private (200)',
@@ -139,6 +203,30 @@ async function main() {
     });
   } catch (e) {
     checks.push({ name: 'GET /private', ok: false, detail: String(e) });
+  }
+
+  for (const path of ['/privacy', '/terms', '/about']) {
+    try {
+      const res = await headOrGet(path);
+      checks.push({
+        name: `GET ${path} (public legal/info)`,
+        ok: res.status === 200,
+        detail: `status ${res.status}`,
+      });
+    } catch (e) {
+      checks.push({ name: `GET ${path}`, ok: false, detail: String(e) });
+    }
+  }
+
+  try {
+    const manifest = await headOrGet('/manifest.json');
+    checks.push({
+      name: 'GET /manifest.json',
+      ok: manifest.status === 200,
+      detail: `status ${manifest.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /manifest.json', ok: false, detail: String(e) });
   }
 
   try {

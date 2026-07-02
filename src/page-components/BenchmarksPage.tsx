@@ -22,6 +22,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartDataTable } from "@/components/a11y/ChartDataTable";
 import {
   Select,
   SelectContent,
@@ -355,6 +356,23 @@ export function BenchmarksPage() {
                   </LineChart>
                 </ResponsiveContainer>
               </div>
+              <ChartDataTable
+                caption={t('benchmarks1rmProgress', { defaultValue: '1RM Progress' })}
+                columns={[
+                  { key: 'date', header: t('historyChartColDate', { defaultValue: 'Date' }) },
+                  {
+                    key: 'estimated',
+                    header: t('benchmarksEstLegend', { defaultValue: 'Estimated 1RM' }),
+                    format: (v) => (v != null ? `${v} ${unitLabel}` : '—'),
+                  },
+                  {
+                    key: 'actual',
+                    header: t('benchmarksActLegend', { defaultValue: 'Actual 1RM' }),
+                    format: (v) => (v != null ? `${v} ${unitLabel}` : '—'),
+                  },
+                ]}
+                rows={chartData}
+              />
             </CardContent>
           </Card>
 

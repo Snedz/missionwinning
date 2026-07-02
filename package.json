@@ -13,9 +13,11 @@
     "test:api": "tsx --conditions react-server --test tests/api/**/*.test.ts",
     "test:components": "tsx --test --test-force-exit tests/components/**/*.test.tsx",
     "export-locales": "tsx scripts/export-locale-json.ts",
+    "generate-tier1-body": "node scripts/generate-tier1-body.mjs",
     "check-env": "node --env-file=.env.local scripts/check-env.mjs",
     "predeploy": "tsx scripts/pre-deploy-smoke.ts",
     "gate-smoke": "tsx scripts/gate-smoke.ts",
+    "phase-h-readiness": "tsx scripts/phase-h-readiness.mjs",
     "sync-vercel-env": "node scripts/sync-vercel-env.mjs",
     "print-beta-invite": "node --env-file=.env.local scripts/print-beta-invite.ts"
   },

@@ -1,9 +1,14 @@
 {
   "moveTitle": "Mover y movilidad",
   "moveSubtitle": "Flujos guiados gratuitos con temporizador. Premium añade profundidad deportiva.",
+  "moveFlowsFree": "Free mobility flows",
+  "moveFlowsPremium": "Premium mobility flows (Super Bundle)",
   "moveStartFlow": "Iniciar flujo",
   "moveRecentWins": "Victorias recientes de Move",
   "movePremiumTitle": "Premium — Pliability / Skill Yoga depth",
   "movePremiumDesc": "Sports-specific mobility, recovery protocols, and advanced flows.",
-  "movePremiumBtn": "Move Premium"
+  "movePremiumBtn": "Move Premium",
+  "movePremiumLockedTitle": "+{{count}} Premium Flows",
+  "movePremiumLockedBody": "Unlock sports-specific mobility, prehab circuits, and advanced recovery protocols via the Super Bundle.",
+  "moveExploreBundle": "Explore Super Bundle"
 }

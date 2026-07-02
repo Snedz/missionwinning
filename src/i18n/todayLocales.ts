@@ -1,5 +1,7 @@
 /** Today hub UI copy — merged into i18n `common` namespace. */
 
+import { tier1TodayBody } from './tier1BodyPack';
+
 type TodayStrings = {
   todayBasicEncouragement: string;
   todaySectionHealth: string;
@@ -106,6 +108,7 @@ type TodayStrings = {
   todayMissionScoreDesc: string;
   todayCoachInsightTitle: string;
   todayCoachInsightDesc: string;
+  coachPremiumUpsell: string;
   coachInsightHighRisk: string;
   coachInsightHighStrain: string;
   coachInsightPrimed: string;
@@ -115,10 +118,26 @@ type TodayStrings = {
   coachInsightNeedMove: string;
   coachInsightNeedFuel: string;
   coachInsightNeedMind: string;
+  coachInsightNeedTrack: string;
+  coachInsightNeedLearn: string;
   coachInsightSynergyMove: string;
+  coachInsightOfflinePathfinder: string;
+  coachInsightOfflineFirstWin: string;
+  coachInsightOfflineBwPush: string;
+  coachInsightOfflineBwMobility: string;
+  coachInsightOfflineBwFull: string;
+  coachInsightOfflineBwMind: string;
+  coachInsightOfflineBwLower: string;
+  coachInsightOfflineBwActive: string;
+  coachInsightOfflineBwRest: string;
+  coachActionOfflinePlan: string;
+  coachOfflineBadge: string;
   coachActionRecoveryFlow: string;
   coachActionOpenMove: string;
   coachActionOpenMind: string;
+  coachActionOpenTrack: string;
+  coachActionOpenLearn: string;
+  coachAlsoTry: string;
   todayEditToday: string;
   coachActionStartWorkout: string;
   coachActionGoBuilder: string;
@@ -276,11 +295,38 @@ const en: TodayStrings = {
     'You\'re training hard but protein is lagging. Log Fuel today to recover and grow.',
   coachInsightNeedMind:
     'Recovery is under stress. A short Mind session helps sleep, focus, and consistency.',
+  coachInsightNeedTrack:
+    "You're training consistently — log walks, runs, or hikes in Track to complete the picture.",
+  coachInsightNeedLearn:
+    'Strong training week — a Learn lesson on periodization or nutrition keeps you on the right path.',
   coachInsightSynergyMove:
     'Strong training week — pair it with mobility so you keep progressing without breakdown.',
+  coachInsightOfflinePathfinder:
+    'Pathfinder track — gentle movement only today. Your offline plan is ready on Builder.',
+  coachInsightOfflineFirstWin:
+    'No workouts logged yet this week. One bodyweight session counts as a win — works offline.',
+  coachInsightOfflineBwPush:
+    'Offline day — push strength with bodyweight. Your cached 4-week plan is one tap away.',
+  coachInsightOfflineBwMobility:
+    'Offline day — protect joints with a mobility flow before your next hard session.',
+  coachInsightOfflineBwFull:
+    'Offline day — full-body bodyweight circuit. No gym or signal required.',
+  coachInsightOfflineBwMind:
+    'Offline day — recovery and breath build the path. Try a short Mind session.',
+  coachInsightOfflineBwLower:
+    'Offline day — legs and core from home. Start a quick session now.',
+  coachInsightOfflineBwActive:
+    'Offline day — load your cached plan and log a win locally.',
+  coachInsightOfflineBwRest:
+    'Offline rest day — light Mind or mobility keeps the streak alive without strain.',
+  coachActionOfflinePlan: 'Open offline plan',
+  coachOfflineBadge: 'Offline',
   coachActionRecoveryFlow: 'Try recovery flow',
   coachActionOpenMove: 'Open Move pillar',
   coachActionOpenMind: 'Open Mind pillar',
+  coachActionOpenTrack: 'Open Track pillar',
+  coachActionOpenLearn: 'Open Learn pillar',
+  coachAlsoTry: 'Also try',
   todayEditToday: 'Edit Today',
   coachActionStartWorkout: 'Start workout',
   coachActionGoBuilder: 'Go to Builder',
@@ -311,9 +357,10 @@ const en: TodayStrings = {
   todayQuickBundleDesc: 'All six pillars, one subscription',
   todayQuickNightDesc: '22:00–05:00 sessions',
   todayQuickDawnDesc: '05:00–08:00 sessions',
+  coachPremiumUpsell: 'Unlock cloud AI Coach with Super Bundle',
 };
 
-const es: TodayStrings = {
+const es: Partial<TodayStrings> = {
   ...en,
   todayBasicEncouragement:
     'Un paso a la vez. Salud para todos — entrena, alimenta, muévete y aprende en tu camino.',
@@ -434,6 +481,7 @@ const es: TodayStrings = {
     'La recuperación está bajo estrés. Una sesión Mind breve ayuda al sueño y la constancia.',
   coachInsightSynergyMove:
     'Semana de entreno sólida — combínala con movilidad para seguir progresando.',
+  coachPremiumUpsell: 'Desbloquea AI Coach en la nube con Super Bundle',
   coachActionRecoveryFlow: 'Flujo de recuperación',
   coachActionOpenMove: 'Abrir pilar Move',
   coachActionOpenMind: 'Abrir pilar Mind',
@@ -453,7 +501,7 @@ const es: TodayStrings = {
     'Puntuación holística — los seis pilares contribuyen. Super Bundle profundiza cada ruta; el núcleo gratis cuenta para todos.',
 };
 
-const zh: TodayStrings = {
+const zh: Partial<TodayStrings> = {
   todayBasicEncouragement: '一步一步来。健康属于每个人 — 在你的路上训练、营养、活动和学习。',
   todaySectionHealth: '健康评分',
   todaySectionHealthDesc: '教练洞察与支柱分解',
@@ -602,7 +650,7 @@ const zh: TodayStrings = {
   todayQuickDawnDesc: '05:00–08:00 训练',
 };
 
-const id: TodayStrings = {
+const id: Partial<TodayStrings> = {
   todayBasicEncouragement:
     'Satu langkah demi langkah. Kesehatan untuk semua — latihan, nutrisi, gerak, dan belajar.',
   todaySectionHealth: 'Skor kesehatan',
@@ -762,7 +810,7 @@ const id: TodayStrings = {
   todayQuickDawnDesc: 'Sesi 05:00–08:00',
 };
 
-const th: TodayStrings = {
+const th: Partial<TodayStrings> = {
   todayBasicEncouragement:
     'ทีละขั้น สุขภาพสำหรับทุกคน — ฝึก โภชนาการ เคลื่อนไหว และเรียนรู้บนเส้นทางของคุณ',
   todaySectionHealth: 'คะแนนสุขภาพ',
@@ -913,7 +961,7 @@ const th: TodayStrings = {
   todayQuickDawnDesc: 'เซสชัน 05:00–08:00',
 };
 
-const ar: TodayStrings = {
+const ar: Partial<TodayStrings> = {
   todayBasicEncouragement: 'خطوة بخطوة. الصحة للجميع — تدريب وتغذية وحركة وتعلّم على مسارك.',
   todaySectionHealth: 'درجات الصحة',
   todaySectionHealthDesc: 'رؤية المدرب وتفصيل الركائز',
@@ -1063,11 +1111,11 @@ const ar: TodayStrings = {
   todayQuickDawnDesc: 'جلسات 05:00–08:00',
 };
 
-const LOCALES: Partial<Record<string, TodayStrings>> = { en, es, zh, id, th, ar };
+const LOCALES: Partial<Record<string, Partial<TodayStrings>>> = { en, es, zh, id, th, ar };
 
 export function todayStringsFor(lang: string): TodayStrings {
   const code = lang.split('-')[0];
-  return LOCALES[code] ?? en;
+  return { ...en, ...(tier1TodayBody(lang) ?? {}), ...(LOCALES[code] ?? {}) };
 }
 
 export function mergeTodayStrings(target: Record<string, string>, lang: string): void {

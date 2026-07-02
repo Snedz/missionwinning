@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { applyCrossPillarCoachRules } from './crossPillarCoach';
+import { applyCrossPillarCoachRules, getCrossPillarSecondaryActions } from './crossPillarCoach';
 import type { BodyScores, CoachInsight, RecommendedFocus } from './score';
 
 const baseScores: BodyScores = {
@@ -60,7 +60,55 @@ describe('applyCrossPillarCoachRules', () => {
       mindSessions: 2,
       proteinDays: 2,
       trainDays: 2,
+      trackActivities: 2,
+      learnLessons: 2,
     });
     assert.equal(out.messageKey, 'coachInsightSteady');
+  });
+
+  it('suggests Track when training without activity logs', () => {
+    const out = applyCrossPillarCoachRules(
+      { ...baseScores, strain: 45 },
+      focus,
+      steady,
+      { trainDays: 4, trackActivities: 0, moveFlows: 2, mindSessions: 1, proteinDays: 2 }
+    );
+    assert.equal(out.messageKey, 'coachInsightNeedTrack');
+    assert.equal(out.actionPath, '/track');
+  });
+
+  it('suggests Learn when training without education engagement', () => {
+    const out = applyCrossPillarCoachRules(
+      { ...baseScores, readiness: 55, strain: 40 },
+      focus,
+      steady,
+      { trainDays: 3, learnLessons: 0, moveFlows: 2, mindSessions: 1, proteinDays: 2, trackActivities: 1 }
+    );
+    assert.equal(out.messageKey, 'coachInsightNeedLearn');
+    assert.equal(out.actionPath, '/learn');
+  });
+});
+
+describe('getCrossPillarSecondaryActions', () => {
+  it('returns secondary CTAs for gaps excluding primary path', () => {
+    const secondary = getCrossPillarSecondaryActions(
+      { ...baseScores, strain: 50, recovery: 50 },
+      { moveFlows: 0, mindSessions: 0, proteinDays: 0, trainDays: 3, trackActivities: 0, learnLessons: 0 },
+      '/active'
+    );
+    assert.ok(secondary.length >= 2);
+    assert.ok(secondary.every((a) => a.actionPath !== '/active'));
+    assert.ok(secondary.some((a) => a.actionPath === '/move'));
+    assert.ok(secondary.some((a) => a.actionPath === '/nutrition'));
+  });
+
+  it('returns empty when assessment risk is high', () => {
+    const secondary = getCrossPillarSecondaryActions(
+      baseScores,
+      { trainDays: 0 },
+      '/move',
+      { assessmentRisk: 'high' }
+    );
+    assert.equal(secondary.length, 0);
   });
 });

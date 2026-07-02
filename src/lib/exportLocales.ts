@@ -18,7 +18,10 @@ import { benchmarksStringsFor } from '@/i18n/benchmarksLocales';
 import { calculatorsStringsFor } from '@/i18n/calculatorsLocales';
 
 /** Languages with full or partial pillar-specific translations. */
-export const EXPORT_LANGS = ['en', 'es', 'zh', 'id', 'th', 'ar'] as const;
+export const EXPORT_LANGS = [
+  'en', 'es', 'fr', 'pt', 'de', 'it', 'ko', 'ja', 'ru',
+  'zh', 'id', 'th', 'ar',
+] as const;
 export type ExportLang = (typeof EXPORT_LANGS)[number];
 
 export type LocaleNamespace =

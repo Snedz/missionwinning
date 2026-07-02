@@ -4,6 +4,286 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+---
+
+## 2026-06-29 — Phase J1/J3/J5: Pathfinder, connectivity, bodyweight defaults
+
+**Build:** `2025.06-unified.46` · **Plan:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)
+
+### Shipped
+
+- **J3 Pathfinder Assessment** — care-access step on `/assessments`; self-managed track; low-impact program gate
+- **J1 Connectivity** — `ConnectivityProvider`, offline/lite banner, Profile lite-mode toggle
+- **J5 Rural preset** — “Where do you train?” on Welcome; bodyweight default chain (Home, Library, Today WOD)
+
+**Tests:** 135 passing (+16 new)
+
+---
+
+## 2026-06-29 — Phase J2/J4/J6: IndexedDB, a11y, Village Health Card
+
+**Build:** `2025.06-unified.47`
+
+### Shipped
+
+- **J2** — IndexedDB `missionLocalStore`, sync outbox for failed workout cloud saves, pending sync banner
+- **J4** — Text scale (Profile), skip link, assessment i18n (es/fr/pt/ar/hi), 44px touch targets on assessment
+- **J6** — Printable Village Health Card for Pathfinder users
+
+**Tests:** 142 passing
+
+---
+
+## 2026-06-29 — Phase J6/J4: Offline coach v2 + chart a11y tables
+
+**Build:** `2025.06-unified.48`
+
+### Shipped
+
+- **Offline coach v2** — skips cloud LLM when offline/lite; cross-pillar rules + Pathfinder/equipment rotation; Offline badge on Today
+- **Offline plan templates** — 4-week bodyweight, mobility, Pathfinder gentle plans on `/builder`
+- **Chart data tables** — accessible `<table>` alternatives on History + Benchmarks charts
+
+**Tests:** 147 passing
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+## 2026-06-29 — Phase I5: Cross-pillar coach CTAs
+
+**Build:** `2025.06-unified.61`
+
+### Shipped
+
+- **Track + Learn rules** — coach suggests `/track` and `/learn` when training without activity/education engagement
+- **Secondary CTAs** — up to 3 "Also try" pillar links on Today coach card when multiple gaps exist
+- **`premiumApiRoutes.ts`** — canonical list of gated GET routes + sync test
+
+**Tests:** 215 passing
+
+---
+
+## 2026-06-29 — Phase I3: Learn premium specialist paths
+
+**Build:** `2025.06-unified.60`
+
+### Shipped
+
+- **Premium Learn** — 6 gated specialist paths (PT+Nutrition, Bodybuilding, Corrective, Business, Online Coaching, Conditioning)
+- **`GET /api/premium/learn-paths`** — auth gate matching mind/move/track pattern
+- **`/learn`** — free 8 paths unchanged; locked teaser or premium expandable paths; UnlockButton removed
+- **Gate smoke** — probes `/api/premium/learn-paths` without auth
+
+**Tests:** 209 passing
+
+---
+
+## 2026-06-29 — Phase H prep: launch docs sync (build .59)
+
+### Updated
+
+- **VISION_STATUS.md** — build `.59`; I1–I4 + J status; pillar scorecard; PR #62
+- **PLAN.md**, **PRE_LAUNCH_PLAN.md**, **LAUNCH_DAY.md** — merge checklist, integration PR #62
+
+---
+
+**Build:** `2025.06-unified.59`
+
+### Shipped
+
+- **`tier1ActiveFull.ts`** — complete active workout UI (50 keys) for FR, DE, PT, IT, JA, KO, RU
+- Rest timer, plate calc, superset, PR strings; metric `kg` label for Tier 1
+- **Tests** — active ≥75% vs EN for all Tier 1 langs
+- **`phase-h-readiness`** — fixed to run via `tsx` (was broken on `.ts` import)
+
+**Tests:** 206 passing
+
+---
+
+## 2026-06-29 — Phase I4: Fuel page full Tier 1 i18n
+
+**Build:** `2025.06-unified.58`
+
+### Shipped
+
+- **`tier1FuelFull.ts`** — complete Fuel/Nutrition UI (43 keys) for FR, DE, PT, IT, JA, KO, RU
+- **`fuelStringsFor`** — prefers full Tier 1 pack over partial tier1 body merge
+- **Tests** — fuel ≥75% vs EN for all Tier 1 langs; locales regenerated
+
+**Tests:** 203 passing
+
+---
+
+## 2026-06-29 — Phase I3: Track premium activity programs
+
+**Build:** `2025.06-unified.57`
+
+### Shipped
+
+- **Premium Track** — 5 gated programs (C25K sampler, rural walk, zone 2, hike builder, active recovery)
+- **`GET /api/premium/track-programs`** — auth gate; one-click session log on `/track`
+- **Pace insight** — avg min/km from logged distance (premium users)
+- **Gate smoke + launch readiness**
+
+**Tests:** 196 passing
+
+---
+
+## 2026-06-29 — Phase I3: Move premium mobility flows
+
+**Build:** `2025.06-unified.56`
+
+### Shipped
+
+- **Premium Move** — 5 gated mobility flows (runner knee, shoulder prehab, ankle, lower back, sport recovery)
+- **`GET /api/premium/move-flows`** — auth gate matching mind-sessions/recipes
+- **`/move`** — free 4 flows unchanged; locked teaser or premium grid via `TimedFlowRunner`
+- **Gate smoke + launch readiness** — move-flows endpoint probe
+
+**Tests:** 193 passing
+
+---
+
+## 2026-06-29 — Phase I4: Welcome/Fuel/Active native IT/KO/RU
+
+**Build:** `2025.06-unified.55`
+
+### Shipped
+
+- **Welcome** — full native I-Day copy for IT, KO, RU (no FR/DE inheritance); JA goal preset fixes
+- **Fuel / Active** — native tier1 packs for IT, KO, RU; expanded JA fuel/active strings
+- **Tests** — welcome ≥75% + FR/DE leakage guards for IT/KO/RU; fuel/active ≥15% for IT/JA/KO/RU
+
+**Tests:** 190 passing
+
+---
+
+## 2026-06-29 — Phase I3: Mind premium guided sessions
+
+**Build:** `2025.06-unified.54`
+
+### Shipped
+
+- **Premium Mind** — 6 gated guided sessions via `GET /api/premium/mind-sessions` (403 without enrollment)
+- **`/mind`** — Fuel-style locked teaser for free users; premium grid with `GuidedMindSessionRunner` when enrolled
+- **Gate smoke** — probes `/api/premium/mind-sessions` without auth
+- **Launch readiness** — Phase I3 Mind check marked ready
+
+**Tests:** 189 passing
+
+---
+
+## 2026-06-29 — Phase I4: Tier 1 Today native IT/JA/KO/RU (complete)
+
+**Build:** `2025.06-unified.53`
+
+### Shipped
+
+- **Today hub** — full native body copy for IT, JA, KO, RU (126 keys each); no DE inheritance
+- **Generator** — `scripts/data/tier1TodayNative.mjs` + key-count validation in `generate-tier1-body.mjs`
+- **Tests** — ≥75% Today coverage for all Tier 1 langs; German leakage guard for IT/JA/KO/RU
+- **Locales** — regenerated `public/locales/*/today.json`
+
+**Tests:** 186 passing
+
+---
+
+## 2026-06-29 — Phase I4: Tier 1 i18n body copy (partial)
+
+**Build:** `2025.06-unified.52`
+
+### Shipped
+
+- **Today hub** — FR/DE/PT ~79% body vs EN (`tier1BodyPack.ts`); ES unchanged; coach premium upsell i18n
+- **Welcome / Fuel / Active** — full Welcome + partial Fuel/Active for FR, PT, DE, IT, KO, JA, RU
+- **Export** — `EXPORT_LANGS` + Tier 1 langs in `public/locales/` (195 JSON files)
+- **Coverage tests** — `i18nTier1Coverage.test.ts`; `node scripts/generate-tier1-body.mjs`
+
+**Tests:** 178 passing
+
+---
+
+## 2026-06-29 — Phase I2: Premium AI Train Coach
+
+**Build:** `2025.06-unified.51`
+
+### Shipped
+
+- **Premium gate** — cloud LLM daily insight requires Super Bundle; free tier keeps rules + offline coach
+- **Plan generator** — `POST /api/coach/generate-plan` (premium); LLM or rule fallback; exercise ID validation
+- **Builder UI** — `CoachPlanGeneratorPanel` on `/builder`; Today upsell link on Coach insight card
+- **Gate smoke** — generate-plan returns 403 without enrollment
+
+**Tests:** 164 passing
+
+---
+
+## 2026-06-29 — Phase I1: Stripe Super Bundle scaffold
+
+**Build:** `2025.06-unified.50`
+
+### Shipped
+
+- **Stripe webhook** — signature verify extracted to `stripeWebhook.ts`; `checkout.session.completed` → `enrollments`
+- **Checkout Session API** — `POST /api/stripe/create-checkout-session` for 3mo / 12mo / lifetime tiers (REST, no stripe npm)
+- **Bundle UI** — `UnlockButton` calls API checkout per plan; Payment Link fallback; email prefill
+- **Env sync** — `STRIPE_SECRET_KEY`, price IDs in `check-env`, `sync-vercel-env`, `.env.example`
+
+**Live when LLC ready:** set `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, price IDs in Vercel; point Stripe webhook to `/api/stripe-webhook`.
+
+**Tests:** 161 passing
+
+---
+
+## 2026-06-29 — Phase H prep: launch readiness tooling
+
+**Build:** `2025.06-unified.49`
+
+### Shipped
+
+- **`launchReadiness.ts`** + `npm run phase-h-readiness` — static checklist (Phase J ✅, deploy blockers)
+- **[LAUNCH_DAY.md](LAUNCH_DAY.md)** — go-public sequence (env, deploy, PWA, rollback)
+- Gate smoke: `/privacy`, `/terms`, `/about`, `/manifest.json`
+- RTL form polish (ar) + assessment action row
+
+**Tests:** 149 passing
+
+---
+
+## 2026-06-29 — Rural equity & connectivity plan (Phase J)
+
+**Doc:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)  
+**Context:** Rural users without doctor access; prevention-at-scale thesis; connectivity/offline/a11y.
+
+### Plan highlights
+
+- **North star:** “Pathfinder for the disconnected” — install once, train offline 30+ days, sync when signal returns
+- **Workstreams:** A connectivity/offline · B Pathfinder · C accessibility · D rural UX · E offline coach
+- **Phase J1–J6** registered in [PLAN.md](PLAN.md); gap #7 in [VISION_STATUS.md](VISION_STATUS.md)
+
+---
+
 ## 2026-06-29 — Vision plan refresh + Phase G (PFT / America G1–G8)
 
 **Docs:** [VISION_STATUS.md](VISION_STATUS.md), [PLAN.md](PLAN.md) Phase G/H/I  

@@ -3,20 +3,31 @@
 type MindStrings = {
   mindTitle: string;
   mindSubtitle: string;
+  mindGuidedFree: string;
+  mindGuidedPremium: string;
   mindRecentWins: string;
   mindPremiumTitle: string;
   mindPremiumDesc: string;
   mindPremiumBtn: string;
+  mindPremiumLockedTitle: string;
+  mindPremiumLockedBody: string;
+  mindExploreBundle: string;
 };
 
 const en: MindStrings = {
   mindTitle: 'Mind & Recovery',
   mindSubtitle:
-    'Free breathing timer and daily check-in. Premium unlocks guided meditations and sleep tools (Super Bundle).',
+    'Free breathing timer, guided sessions, and daily check-in. Premium unlocks deeper guided libraries (Super Bundle).',
+  mindGuidedFree: 'Free guided sessions',
+  mindGuidedPremium: 'Premium guided sessions (Super Bundle)',
   mindRecentWins: 'Recent Mind Wins',
   mindPremiumTitle: 'Premium — Calm / Waking Up depth',
   mindPremiumDesc: 'Guided sessions, sleep stories, expert lessons on building resilience.',
   mindPremiumBtn: 'Mind & Recovery Premium',
+  mindPremiumLockedTitle: '+{{count}} Premium Sessions',
+  mindPremiumLockedBody:
+    'Unlock sleep stories, anxiety resets, focus blocks, and deep recovery scans via the Super Bundle.',
+  mindExploreBundle: 'Explore Super Bundle',
 };
 
 const es: MindStrings = {

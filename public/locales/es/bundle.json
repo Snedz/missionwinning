@@ -27,7 +27,7 @@
   "bundleCompareFoot": "Los precios individuales son ilustrativos — el bundle cuesta menos que suscribirse por separado.",
   "bundleFreeForeverTitle": "Gratis para siempre",
   "bundleFreeForeverBody": "Cada pilar incluye nivel gratuito: entrenamientos, recetas, movilidad, respiración, registro de actividad y rutas de aprendizaje. Premium desbloquea programas avanzados, biblioteca completa y prioridad de sync.",
-  "bundleStripeHint": "Stripe checkout activates when NEXT_PUBLIC_STRIPE_LINK_BUNDLE is set in production.",
+  "bundleStripeHint": "Live Stripe: set STRIPE_SECRET_KEY + price IDs (API checkout) or NEXT_PUBLIC_STRIPE_LINK_BUNDLE (payment link). Webhook: /api/stripe-webhook.",
   "bundlePillarTrain": "Train",
   "bundlePillarFuel": "Fuel",
   "bundlePillarMove": "Move",

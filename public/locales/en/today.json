@@ -114,6 +114,17 @@
   "coachInsightNeedFuel": "You're training hard but protein is lagging. Log Fuel today to recover and grow.",
   "coachInsightNeedMind": "Recovery is under stress. A short Mind session helps sleep, focus, and consistency.",
   "coachInsightSynergyMove": "Strong training week — pair it with mobility so you keep progressing without breakdown.",
+  "coachInsightOfflinePathfinder": "Pathfinder track — gentle movement only today. Your offline plan is ready on Builder.",
+  "coachInsightOfflineFirstWin": "No workouts logged yet this week. One bodyweight session counts as a win — works offline.",
+  "coachInsightOfflineBwPush": "Offline day — push strength with bodyweight. Your cached 4-week plan is one tap away.",
+  "coachInsightOfflineBwMobility": "Offline day — protect joints with a mobility flow before your next hard session.",
+  "coachInsightOfflineBwFull": "Offline day — full-body bodyweight circuit. No gym or signal required.",
+  "coachInsightOfflineBwMind": "Offline day — recovery and breath build the path. Try a short Mind session.",
+  "coachInsightOfflineBwLower": "Offline day — legs and core from home. Start a quick session now.",
+  "coachInsightOfflineBwActive": "Offline day — load your cached plan and log a win locally.",
+  "coachInsightOfflineBwRest": "Offline rest day — light Mind or mobility keeps the streak alive without strain.",
+  "coachActionOfflinePlan": "Open offline plan",
+  "coachOfflineBadge": "Offline",
   "coachActionRecoveryFlow": "Try recovery flow",
   "coachActionOpenMove": "Open Move pillar",
   "coachActionOpenMind": "Open Mind pillar",
@@ -144,5 +155,6 @@
   "todayQuickHistoryDesc": "Volume, 1RM & muscle map",
   "todayQuickBundleDesc": "All six pillars, one subscription",
   "todayQuickNightDesc": "22:00–05:00 sessions",
-  "todayQuickDawnDesc": "05:00–08:00 sessions"
+  "todayQuickDawnDesc": "05:00–08:00 sessions",
+  "coachPremiumUpsell": "Unlock cloud AI Coach with Super Bundle"
 }

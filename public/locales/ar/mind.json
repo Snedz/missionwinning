@@ -1,8 +1,13 @@
 {
   "mindTitle": "العقل والتعافي",
-  "mindSubtitle": "Free breathing timer and daily check-in. Premium unlocks guided meditations and sleep tools (Super Bundle).",
+  "mindSubtitle": "Free breathing timer, guided sessions, and daily check-in. Premium unlocks deeper guided libraries (Super Bundle).",
+  "mindGuidedFree": "Free guided sessions",
+  "mindGuidedPremium": "Premium guided sessions (Super Bundle)",
   "mindRecentWins": "انتصارات Mind الأخيرة",
   "mindPremiumTitle": "Premium — Calm / Waking Up depth",
   "mindPremiumDesc": "Guided sessions, sleep stories, expert lessons on building resilience.",
-  "mindPremiumBtn": "Mind & Recovery Premium"
+  "mindPremiumBtn": "Mind & Recovery Premium",
+  "mindPremiumLockedTitle": "+{{count}} Premium Sessions",
+  "mindPremiumLockedBody": "Unlock sleep stories, anxiety resets, focus blocks, and deep recovery scans via the Super Bundle.",
+  "mindExploreBundle": "Explore Super Bundle"
 }

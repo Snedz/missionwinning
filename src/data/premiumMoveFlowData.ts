@@ -1,0 +1,80 @@
+import type { MobilityFlow } from '@/data/mobilityFlows';
+
+/** Premium mobility flows — served via /api/premium/move-flows (Super Bundle). */
+export const PREMIUM_MOVE_FLOW_DATA: MobilityFlow[] = [
+  {
+    id: 'runners-knee-protocol',
+    name: "Runner's Knee Protocol",
+    durationMin: 9,
+    focus: 'Patellar tracking + quad/ham balance — pre or post run',
+    steps: [
+      { title: 'Foam Roll Quads', cue: 'Slow passes, pause on tender spots — 30s each leg.', durationSec: 60 },
+      { title: 'Terminal Knee Extensions', cue: 'Band behind knee, squeeze quad at top — 12 each leg.', durationSec: 50 },
+      { title: 'Single Leg RDL Reach', cue: 'Hinge slow, hip back — balance and hamstring load.', durationSec: 45 },
+      { title: 'Clamshells', cue: 'Left side — glute med activation, no rolling back.', durationSec: 40 },
+      { title: 'Clamshells', cue: 'Right side — same control.', durationSec: 40 },
+      { title: 'Step-Down Control', cue: 'Slow eccentric off 6" step — 8 each leg.', durationSec: 55 },
+      { title: 'Wall Sit Hold', cue: 'Knees over ankles, 45s — build quad endurance.', durationSec: 45 },
+    ],
+  },
+  {
+    id: 'shoulder-prehab',
+    name: 'Shoulder Prehab Circuit',
+    durationMin: 8,
+    focus: 'Rotator cuff + scapular control before pressing',
+    steps: [
+      { title: 'Band Pull-Aparts', cue: 'External rotation at end — 15 reps.', durationSec: 40 },
+      { title: 'Wall Slides', cue: 'Ribs down, reach overhead without arching.', durationSec: 45 },
+      { title: 'Sleeper Stretch', cue: 'Left — gentle internal rotation, no forcing.', durationSec: 35 },
+      { title: 'Sleeper Stretch', cue: 'Right side — breathe into stretch.', durationSec: 35 },
+      { title: 'Y-T-W Raises', cue: 'Light weight or band — 8 each position.', durationSec: 50 },
+      { title: 'Scap Push-Ups', cue: 'Protract and retract — 12 slow reps.', durationSec: 40 },
+      { title: 'Dead Hang Prep', cue: 'Active shoulders, 20s hang or simulated.', durationSec: 35 },
+    ],
+  },
+  {
+    id: 'ankle-stability',
+    name: 'Ankle Stability Flow',
+    durationMin: 7,
+    focus: 'Sprain prevention — proprioception and calf/soleus',
+    steps: [
+      { title: 'Ankle Alphabet', cue: 'Draw letters with toes — full range each foot.', durationSec: 50 },
+      { title: 'Calf Raises', cue: 'Straight knee — 15 slow reps.', durationSec: 40 },
+      { title: 'Soleus Raises', cue: 'Bent knee — 15 reps, smaller range.', durationSec: 40 },
+      { title: 'Single Leg Balance', cue: 'Eyes open 20s, then closed 10s each leg.', durationSec: 70 },
+      { title: 'Lateral Band Walks', cue: 'Mini-band above knees — 10 steps each direction.', durationSec: 45 },
+      { title: 'Toe Yoga', cue: 'Lift big toe only, then others — alternate 10 reps.', durationSec: 35 },
+    ],
+  },
+  {
+    id: 'lower-back-relief',
+    name: 'Lower Back Relief',
+    durationMin: 10,
+    focus: 'Gentle decompression — not for acute injury without clearance',
+    steps: [
+      { title: 'Supine Pelvic Tilts', cue: 'Flatten low back to floor — 12 slow reps.', durationSec: 40 },
+      { title: 'Knee-to-Chest', cue: 'Hold 30s each side — gentle pull.', durationSec: 70 },
+      { title: 'Figure-4 Stretch', cue: 'Left glute/piriformis — no twisting spine.', durationSec: 45 },
+      { title: 'Figure-4 Stretch', cue: 'Right side — same ease.', durationSec: 45 },
+      { title: 'Cat-Camel', cue: 'Small range, pain-free — 10 reps.', durationSec: 45 },
+      { title: 'Bird Dog', cue: 'Opposite arm/leg — 8 each side, hold 3s.', durationSec: 55 },
+      { title: 'Supported Child\'s Pose', cue: 'Bolster or pillow — long exhales.', durationSec: 60 },
+    ],
+  },
+  {
+    id: 'sport-recovery-circuit',
+    name: 'Sport Recovery Circuit',
+    durationMin: 12,
+    focus: 'Post-game or hard training — full-chain flush',
+    steps: [
+      { title: 'Leg Swings', cue: 'Front/back and lateral — 10 each leg each direction.', durationSec: 60 },
+      { title: 'World\'s Greatest Stretch', cue: '3 per side — deep lunge + rotation.', durationSec: 60 },
+      { title: 'Thoracic Opener', cue: 'Quadruped rotation — 8 each side.', durationSec: 45 },
+      { title: 'Couch Stretch', cue: 'Left quad/hip — tall torso.', durationSec: 45 },
+      { title: 'Couch Stretch', cue: 'Right side.', durationSec: 45 },
+      { title: 'Pigeon Hold', cue: 'Left — glute focus, 45s.', durationSec: 45 },
+      { title: 'Pigeon Hold', cue: 'Right — same depth.', durationSec: 45 },
+      { title: 'Box Breathing', cue: '4-4-4-4 — downshift nervous system.', durationSec: 75 },
+    ],
+  },
+];
