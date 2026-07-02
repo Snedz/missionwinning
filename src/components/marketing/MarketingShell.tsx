@@ -37,20 +37,33 @@ function scrollToHash(href: string) {
   document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' });
 }
 
+export type MarketingStickyCta = {
+  primaryLabel?: string;
+  primaryLabelKey?: string;
+  onPrimary: () => void;
+  secondaryLabel?: string;
+  secondaryLabelKey?: string;
+  onSecondary?: () => void;
+};
+
 type MarketingShellProps = {
   children: ReactNode;
   variant?: 'landing' | 'bundle';
-  stickyCta?: {
-    primaryLabel: string;
-    onPrimary: () => void;
-    secondaryLabel?: string;
-    onSecondary?: () => void;
-  };
+  /** Landing uses full-bleed sections without shell main padding. */
+  fullBleed?: boolean;
+  showSkipLink?: boolean;
+  showPwaInstall?: boolean;
+  stickyScrollThreshold?: number;
+  stickyCta?: MarketingStickyCta;
 };
 
 export function MarketingShell({
   children,
   variant = 'landing',
+  fullBleed = false,
+  showSkipLink = false,
+  showPwaInstall = false,
+  stickyScrollThreshold = 320,
   stickyCta,
 }: MarketingShellProps) {
   const router = useRouter();
@@ -60,14 +73,17 @@ export function MarketingShell({
   const [showSticky, setShowSticky] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setShowSticky(window.scrollY > 320);
+    const onScroll = () => setShowSticky(window.scrollY > stickyScrollThreshold);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [stickyScrollThreshold]);
 
   const goWelcome = useCallback(() => router.push('/welcome'), [router]);
   const goBundle = useCallback(() => router.push('/bundle'), [router]);
+
+  const resolveLabel = (label?: string, labelKey?: string) =>
+    labelKey ? t(labelKey) : label ?? '';
 
   const navAnchor = (link: MarketingNavLink, onNavigate?: () => void) => {
     const label = t(link.labelKey);
@@ -103,7 +119,16 @@ export function MarketingShell({
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-24 md:pb-8">
+    <div className={`min-h-screen bg-background text-foreground ${fullBleed ? 'pb-24 md:pb-0' : 'pb-24 md:pb-8'}`}>
+      {showSkipLink && (
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-emerald-600 focus:text-white"
+        >
+          {t('landingSkipToContent')}
+        </a>
+      )}
+
       <nav className="border-b border-border/60 bg-background/95 backdrop-blur sticky top-0 z-50 safe-area-top">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
           <Link href="/" className="flex items-center gap-3 tap-target rounded-lg shrink-0">
@@ -111,7 +136,7 @@ export function MarketingShell({
               MW
             </div>
             <div className="text-left hidden sm:block">
-              <div className="font-semibold tracking-tight text-sm">MISSION WINNING</div>
+              <div className="font-semibold tracking-tight text-sm sm:text-base">MISSION WINNING</div>
               <div className="text-[10px] text-muted-foreground -mt-0.5">
                 {variant === 'bundle'
                   ? t('marketingTaglineBundle', { defaultValue: 'Super Bundle' })
@@ -142,7 +167,7 @@ export function MarketingShell({
               variant="outline"
               size="icon"
               className="tap-target shrink-0"
-              aria-label="Open menu"
+              aria-label={t('landingMenu', { defaultValue: 'Menu' })}
               onClick={() => setMobileNavOpen(true)}
             >
               <Menu className="h-5 w-5" />
@@ -180,6 +205,20 @@ export function MarketingShell({
                 {t('marketingViewPricing', { defaultValue: 'View Super Bundle pricing' })}
               </Button>
             )}
+            {showPwaInstall && variant === 'landing' && (
+              <Button
+                variant="ghost"
+                className="tap-target text-emerald-400 mt-2"
+                onClick={() => {
+                  setMobileNavOpen(false);
+                  const trig = (window as Window & { triggerPwaInstall?: () => void }).triggerPwaInstall;
+                  if (trig) trig();
+                  else goWelcome();
+                }}
+              >
+                {t('landingInstallPwa')}
+              </Button>
+            )}
             <div className="pt-3">
               <MarketingLanguageSelect className="tap-target w-full rounded-lg border border-border/60 bg-background px-3 py-2 text-sm" />
             </div>
@@ -187,10 +226,32 @@ export function MarketingShell({
         </DialogContent>
       </Dialog>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10">{children}</main>
+      <main
+        id="main-content"
+        className={fullBleed ? undefined : 'max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10'}
+      >
+        {children}
+      </main>
 
       <footer className="border-t border-border/60 py-8 text-center text-xs text-muted-foreground px-4 mt-8">
-        © Mission Winning ·{' '}
+        © Mission Winning
+        {variant === 'landing' && (
+          <>
+            {' '}
+            ·{' '}
+            <a
+              href="#pillars"
+              className="hover:text-emerald-400 tap-target inline-flex px-1"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToHash('#pillars');
+              }}
+            >
+              {t('landingNavPillars')}
+            </a>
+          </>
+        )}{' '}
+        ·{' '}
         <Link href="/welcome" className="hover:text-emerald-400 tap-target inline-flex px-1">
           {t('marketingFooterStart', { defaultValue: 'Start free' })}
         </Link>{' '}
@@ -220,15 +281,15 @@ export function MarketingShell({
               className="primary-action flex-1 min-h-[48px]"
               onClick={stickyCta.onPrimary}
             >
-              {stickyCta.primaryLabel}
+              {resolveLabel(stickyCta.primaryLabel, stickyCta.primaryLabelKey)}
             </Button>
-            {stickyCta.secondaryLabel && stickyCta.onSecondary && (
+            {(stickyCta.secondaryLabel || stickyCta.secondaryLabelKey) && stickyCta.onSecondary && (
               <Button
                 variant="outline"
                 className="tap-target flex-1 min-h-[48px]"
                 onClick={stickyCta.onSecondary}
               >
-                {stickyCta.secondaryLabel}
+                {resolveLabel(stickyCta.secondaryLabel, stickyCta.secondaryLabelKey)}
               </Button>
             )}
           </div>

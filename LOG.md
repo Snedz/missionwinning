@@ -74,6 +74,20 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase M3: MarketingShell DRY + western landing i18n
+
+**Build:** `2025.06-unified.65`
+
+### Shipped
+
+- **Landing wrapped in `MarketingShell`** — shared nav/footer/sticky CTA with `/bundle`; skip link + PWA install preserved
+- **FR/DE/PT landing ≥75%** — `westernLandingLocales.ts` full marketing packs
+- **`landingBundleTierLabel`** i18n key for bundle pillar grid
+
+**Tests:** 226 passing
+
+---
+
 ## 2026-06-29 — Phase M2: Landing i18n + hero mockup
 
 **Build:** `2025.06-unified.64`

@@ -6,12 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
   ArrowRight,
   BookOpen,
   Brain,
@@ -19,14 +13,13 @@ import {
   Dumbbell,
   Flame,
   Footprints,
-  Menu,
   Shield,
   TrendingUp,
   Wind,
 } from 'lucide-react';
 import { FaqSection } from '@/components/marketing/FaqSection';
 import { LandingHeroMockup } from '@/components/marketing/LandingHeroMockup';
-import { MarketingLanguageSelect } from '@/components/marketing/MarketingLanguageSelect';
+import { MarketingShell } from '@/components/marketing/MarketingShell';
 import { LANDING_PILLAR_IDS, type LandingPillarId } from '@/i18n/landingLocales';
 
 type AbVariant = 'founders' | 'mission';
@@ -45,13 +38,6 @@ const PILLAR_META: Record<
 
 const TOOL_ICONS = [Dumbbell, TrendingUp, Shield] as const;
 
-const NAV_LINKS = [
-  { href: '#tools', labelKey: 'landingNavFreeCore' },
-  { href: '#pillars', labelKey: 'landingNavPillars' },
-  { href: '#bundle', labelKey: 'landingNavBundle' },
-  { href: '#faq', labelKey: 'landingNavFaq' },
-] as const;
-
 const FAQ_IDS = ['free', 'offline', 'bundle', 'who', 'medical'] as const;
 
 function scrollToId(id: string) {
@@ -66,8 +52,6 @@ export function LandingPage() {
   const router = useRouter();
   const { t } = useTranslation();
   const [abVariant, setAbVariant] = useState<AbVariant>('mission');
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [showStickyCta, setShowStickyCta] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('mw_ab_pricing_variant') as AbVariant | null;
@@ -76,13 +60,6 @@ export function LandingPage() {
     } else {
       localStorage.setItem('mw_ab_pricing_variant', 'mission');
     }
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setShowStickyCta(window.scrollY > 400);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const hero = useMemo(
@@ -157,124 +134,20 @@ export function LandingPage() {
   const goWelcome = useCallback(() => router.push('/welcome'), [router]);
   const goBundle = useCallback(() => router.push('/bundle'), [router]);
 
-  const navLink = (href: string, label: string, onClick?: () => void) => (
-    <a
-      key={href}
-      href={href}
-      className="tap-target inline-flex items-center px-2 py-2 text-sm hover:text-emerald-400 transition-colors rounded-lg"
-      onClick={(e) => {
-        if (href.startsWith('#')) {
-          e.preventDefault();
-          scrollToId(href.slice(1));
-        }
-        onClick?.();
+  return (
+    <MarketingShell
+      variant="landing"
+      fullBleed
+      showSkipLink
+      showPwaInstall
+      stickyScrollThreshold={400}
+      stickyCta={{
+        primaryLabelKey: 'landingStartFree',
+        onPrimary: goWelcome,
+        secondaryLabelKey: 'marketingFooterBundle',
+        onSecondary: () => scrollToId('bundle'),
       }}
     >
-      {label}
-    </a>
-  );
-
-  return (
-    <div className="min-h-screen bg-background text-foreground pb-24 md:pb-0">
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-emerald-600 focus:text-white"
-      >
-        {t('landingSkipToContent')}
-      </a>
-
-      <nav className="border-b border-border/60 bg-background/95 backdrop-blur sticky top-0 z-50 safe-area-top">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
-          <button
-            type="button"
-            className="flex items-center gap-3 tap-target rounded-lg"
-            onClick={() => router.push('/')}
-          >
-            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center font-bold text-primary-foreground shrink-0">
-              MW
-            </div>
-            <div className="text-left hidden sm:block">
-              <div className="font-semibold tracking-tight text-sm sm:text-base">MISSION WINNING</div>
-              <div className="text-[10px] text-muted-foreground -mt-0.5">{t('marketingTagline')}</div>
-            </div>
-          </button>
-
-          <div className="hidden lg:flex items-center gap-1 text-sm">
-            {NAV_LINKS.map((l) => navLink(l.href, t(l.labelKey)))}
-            <MarketingLanguageSelect className="tap-target ml-1 rounded-lg border border-border/60 bg-background/80 px-2 py-1.5 text-xs" />
-            <Button variant="outline" size="sm" className="tap-target ml-1" onClick={goWelcome}>
-              {t('landingStartFree')}
-            </Button>
-            <Button size="sm" variant="fitness" className="tap-target" onClick={() => scrollToId('bundle')}>
-              {t('landingNavBundle')}
-            </Button>
-          </div>
-
-          <div className="flex lg:hidden items-center gap-2">
-            <MarketingLanguageSelect className="tap-target rounded-lg border border-border/60 bg-background/80 px-1.5 py-1.5 text-[10px] max-w-[52px]" />
-            <Button size="sm" variant="fitness" className="tap-target h-11" onClick={goWelcome}>
-              {t('landingStartFree')}
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="tap-target shrink-0"
-              aria-label={t('landingMenu')}
-              onClick={() => setMobileNavOpen(true)}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
-      </nav>
-
-      <Dialog open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-        <DialogContent className="sm:max-w-md gap-0 p-0 overflow-hidden max-h-[85vh]">
-          <DialogHeader className="p-4 border-b border-border/60 space-y-0">
-            <DialogTitle className="text-base text-left">{t('landingMenu')}</DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-col p-4 gap-1">
-            {NAV_LINKS.map((l) => navLink(l.href, t(l.labelKey), () => setMobileNavOpen(false)))}
-            <Button
-              variant="fitness"
-              className="primary-action mt-4"
-              onClick={() => {
-                setMobileNavOpen(false);
-                goWelcome();
-              }}
-            >
-              {t('landingStartFreeLong')}
-            </Button>
-            <Button
-              variant="outline"
-              className="tap-target mt-2"
-              onClick={() => {
-                setMobileNavOpen(false);
-                scrollToId('bundle');
-              }}
-            >
-              {t('landingExploreBundle')}
-            </Button>
-            <Button
-              variant="ghost"
-              className="tap-target text-emerald-400"
-              onClick={() => {
-                setMobileNavOpen(false);
-                const trig = (window as Window & { triggerPwaInstall?: () => void }).triggerPwaInstall;
-                if (trig) trig();
-                else goWelcome();
-              }}
-            >
-              {t('landingInstallPwa')}
-            </Button>
-            <div className="pt-3">
-              <MarketingLanguageSelect className="tap-target w-full rounded-lg border border-border/60 bg-background px-3 py-2 text-sm" />
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <main id="main-content">
         <section className="relative pt-12 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-6 border-b border-border/60">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
             <div>
@@ -471,7 +344,7 @@ export function LandingPage() {
                   >
                     <p.icon className="h-5 w-5 text-emerald-400" />
                     <span className="font-medium">{p.title}</span>
-                    <span className="text-[10px] text-muted-foreground">Free + Premium</span>
+                    <span className="text-[10px] text-muted-foreground">{t('landingBundleTierLabel')}</span>
                   </div>
                 ))}
               </div>
@@ -549,47 +422,6 @@ export function LandingPage() {
         <section className="max-w-3xl mx-auto px-4 sm:px-6 py-10 text-sm text-muted-foreground border-t border-border/60">
           <p className="text-center leading-relaxed">{t('landingDisclaimer')}</p>
         </section>
-      </main>
-
-      <footer className="border-t border-border/60 py-10 text-center text-xs text-muted-foreground px-4">
-        © Mission Winning ·{' '}
-        <a href="#pillars" className="hover:text-emerald-400 tap-target inline-flex px-1">
-          {t('landingNavPillars')}
-        </a>{' '}
-        ·{' '}
-        <a href="/bundle" className="hover:text-emerald-400 tap-target inline-flex px-1">
-          {t('marketingFooterBundle')}
-        </a>{' '}
-        ·{' '}
-        <a href="/welcome" className="hover:text-emerald-400 tap-target inline-flex px-1">
-          {t('marketingFooterStart')}
-        </a>{' '}
-        ·{' '}
-        <a href="/about" className="hover:text-emerald-400 tap-target inline-flex px-1">
-          {t('marketingFooterAbout')}
-        </a>{' '}
-        ·{' '}
-        <a href="/vision" className="hover:text-emerald-400 tap-target inline-flex px-1">
-          {t('marketingFooterVision')}
-        </a>
-      </footer>
-
-      {showStickyCta && (
-        <div
-          className="fixed bottom-0 inset-x-0 z-40 md:hidden border-t border-border/60 bg-background/95 backdrop-blur p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-          role="region"
-          aria-label="Quick actions"
-        >
-          <div className="flex gap-2 max-w-lg mx-auto">
-            <Button variant="fitness" className="primary-action flex-1 min-h-[48px]" onClick={goWelcome}>
-              {t('landingStartFree')}
-            </Button>
-            <Button variant="outline" className="tap-target flex-1 min-h-[48px]" onClick={() => scrollToId('bundle')}>
-              {t('marketingFooterBundle')}
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
+    </MarketingShell>
   );
 }

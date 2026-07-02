@@ -2,6 +2,7 @@
 
 import { tier1LandingNative } from './tier1LandingNative';
 import { tier1LandingNativeSupplement } from './tier1LandingNativeSupplement';
+import { westernLandingLocales } from './westernLandingLocales';
 
 export const LANDING_PILLAR_IDS = ['train', 'fuel', 'move', 'mind', 'track', 'learn'] as const;
 
@@ -76,6 +77,7 @@ const en: Record<string, string> = {
   landingBundleCta: 'View pricing & unlock',
   landingBundleStartFree: 'Start free first',
   landingBundleFoot: 'Paying for premium funds the free mission for everyone, everywhere.',
+  landingBundleTierLabel: 'Free + Premium',
   landingFaqTitle: 'Common questions',
   landingFaqSubtitle: 'Free core forever. Premium funds the global mission.',
   landingFaq1Q: 'Is the core app really free forever?',
@@ -266,8 +268,9 @@ export function landingStringsFor(lang: string): Record<string, string> {
   const base = LOCALES[code] ?? en;
   const native = tier1LandingNative[code as keyof typeof tier1LandingNative];
   const supplement = tier1LandingNativeSupplement[code as keyof typeof tier1LandingNativeSupplement];
-  if (native || supplement) {
-    return { ...base, ...native, ...supplement };
+  const western = westernLandingLocales[code as keyof typeof westernLandingLocales];
+  if (native || supplement || western) {
+    return { ...base, ...native, ...supplement, ...western };
   }
   return base;
 }

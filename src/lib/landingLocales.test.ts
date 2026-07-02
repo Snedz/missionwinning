@@ -22,7 +22,7 @@ describe('landingLocales (Phase M2)', () => {
     assert.ok(en.landingSkipToContent.length > 0);
   });
 
-  for (const lang of ['it', 'ja', 'ko', 'ru'] as const) {
+  for (const lang of ['it', 'ja', 'ko', 'ru', 'fr', 'de', 'pt'] as const) {
     it(`${lang} landing ≥75% translated vs en`, () => {
       const ratio = translatedRatio(lang);
       assert.ok(ratio >= 0.75, `${lang} landing ratio ${(ratio * 100).toFixed(1)}%`);
