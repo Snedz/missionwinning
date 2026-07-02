@@ -24,6 +24,9 @@
     --input: 222 14% 18%;
     --ring: 158 64% 42%;
     --radius: 1rem;
+    /* Honors accent — medals, rank, founders. Green = action, brass = honor. */
+    --brass: 42 48% 58%;
+    --brass-foreground: 222 24% 5%;
   }
 }
 
@@ -94,6 +97,41 @@
 
   .primary-action {
     @apply w-full flex items-center justify-center gap-2 min-h-[52px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-semibold text-[17px] transition-all shadow-md shadow-emerald-950/25;
+  }
+
+  /* ── Briefing-document type system (public pages) ─────────────────
+     Eyebrow (mono, telemetry) → display headline (condensed caps) → body.
+     Green marks actions; brass marks honors. */
+
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground;
+  }
+
+  .eyebrow-live {
+    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-primary;
+  }
+
+  .eyebrow-honor {
+    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-brass;
+  }
+
+  .display-hero {
+    @apply font-display font-bold uppercase leading-[0.95] tracking-[-0.01em];
+    font-size: clamp(2.75rem, 8vw, 5.5rem);
+  }
+
+  .display-section {
+    @apply font-display font-semibold uppercase leading-none tracking-[0.005em];
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+  }
+
+  .briefing-rule {
+    @apply flex items-center gap-3 text-muted-foreground/70;
+  }
+
+  .briefing-rule::after {
+    content: '';
+    @apply h-px flex-1 bg-border/70;
   }
 }
 

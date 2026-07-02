@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { ChevronLeft, Shield } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -99,10 +99,14 @@ export function WelcomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
-      <header className="glass-nav border-b border-border/50 px-4 py-4 flex items-center gap-2">
-        <Shield className="h-6 w-6 text-emerald-400" />
-        <span className="font-bold tracking-tight">
-          Mission Winning ·{' '}
+      <header className="glass-nav border-b border-border/50 px-4 py-3.5 flex items-center gap-3">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-display text-sm font-bold text-primary-foreground">
+          MW
+        </span>
+        <span className="font-display text-lg font-semibold uppercase tracking-wide">
+          Mission Winning
+        </span>
+        <span className="eyebrow ms-auto">
           {isEdit
             ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' })
             : t('welcomeIDay', { defaultValue: 'I-Day' })}
@@ -115,10 +119,10 @@ export function WelcomePage() {
             {step === 'welcome' && (
               <>
                 <div className="space-y-2">
-                  <p className="text-xs uppercase tracking-widest text-emerald-400">
+                  <p className="eyebrow-live">
                     {t('welcomeKicker', { defaultValue: 'Where the journey begins' })}
                   </p>
-                  <h1 className="text-2xl md:text-3xl font-bold">
+                  <h1 className="font-display text-3xl font-semibold uppercase leading-none md:text-4xl">
                     {t('welcomeTitle', { defaultValue: 'Welcome, Mission Member' })}
                   </h1>
                   <p className="text-muted-foreground text-sm leading-relaxed">
