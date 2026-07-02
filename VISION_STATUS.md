@@ -1,8 +1,10 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.45** (2026-06-29).
+**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.59** (2026-06-29).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
+
+**Integration branch:** [PR #62](https://github.com/Snedz/missionwinning/pull/62) — Phase J + I1–I4 scaffold/MVP stack ready for merge after beta gates.
 
 ---
 
@@ -12,11 +14,11 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 |----------------|--------|-------|
 | **#1 health everything app** — unified, not fragmented | 🟡 Strong scaffold | Six pillars + Today hub + Win Score synergy |
 | **Free core forever** — train, log, basics | 🟢 Shipped | Phases A–D; no paywall on core logger/library |
-| **Super Bundle** — primary revenue | 🔴 UI only | `/bundle` + demo unlock; no live Stripe fulfillment |
-| **Premium depth per pillar** | 🔴 Mostly placeholders | Unlock cards; recipes/programs partially gated |
-| **AI Coach — personal trainer in pocket** | 🟡 Partial | Daily insight (rules/LLM) exists but **not premium**; no plan generator |
-| **PWA offline everywhere** | 🔴 Blocked | Disabled while `PRIVATE_MODE=true` |
-| **Global i18n** | 🟡 Partial | Tier 1/2 nav chrome; ~90% body copy still EN |
+| **Super Bundle** — primary revenue | 🟡 Scaffold ready | `/bundle` + Stripe Checkout API + verified webhook; live keys when LLC ready |
+| **Premium depth per pillar** | 🟡 Three MVPs | Mind sessions, Move flows, Track programs gated; Fuel recipes/programs gated |
+| **AI Coach — personal trainer in pocket** | 🟡 Premium-gated | Cloud LLM daily insight + plan generator; rules/offline free |
+| **PWA offline everywhere** | 🔴 Blocked | Disabled while `PRIVATE_MODE=true`; offline coach + IndexedDB shipped |
+| **Global i18n** | 🟢 Tier 1 body | Today/Welcome/Fuel/Active full for FR, DE, PT, IT, JA, KO, RU; 195 locale JSON files |
 | **Bevel-style metric UI** | 🟢 Good | Readiness/Strain/Recovery rings, Mission Score |
 | **Freeletics journey + streaks** | 🟢 Shipped | I-Day → Commissioned; challenges; leaderboard |
 | **Evidence-based, holistic path** | 🟢 Core tone | Learn paths, disclaimers, no fad positioning |
@@ -29,11 +31,11 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 
 | Pillar | Free tier (vision) | Free tier (app) | Premium (vision) | Premium (app) |
 |--------|-------------------|-----------------|------------------|---------------|
-| **/train** | Robust tracker, basic library | ⭐⭐⭐⭐ Logger, 200+ library, templates, form guides | AI Coach, 30+ plans | ⭐ Unlock + pro templates; no AI plans |
-| **/fuel** | Basic log, accessible recipes | ⭐⭐⭐⭐ Log, water, 12 recipes, barcode | Deep plans, coaching | ⭐⭐ 92 server recipes only |
-| **/move** | Basic flows, bodyweight | ⭐⭐⭐ 4 timed flows | Pliability / Skill Yoga depth | ⭐ Unlock card only |
-| **/mind** | Basic habits, recovery | ⭐⭐⭐ Breathing, 3 guided, check-in | Calm/Waking Up depth | ⭐ Unlock card only |
-| **/track** | Core logging, streaks | ⭐⭐⭐ Manual activities, import | MapMyFitness-style GPS | ⭐ Unlock card only |
+| **/train** | Robust tracker, basic library | ⭐⭐⭐⭐ Logger, 200+ library, templates, form guides | AI Coach, 30+ plans | ⭐⭐⭐ Pro templates + **premium AI plan generator** |
+| **/fuel** | Basic log, accessible recipes | ⭐⭐⭐⭐ Log, water, 12 recipes, barcode | Deep plans, coaching | ⭐⭐⭐ 92 server recipes + premium lock UI |
+| **/move** | Basic flows, bodyweight | ⭐⭐⭐ 4 timed flows | Pliability / Skill Yoga depth | ⭐⭐⭐ **5 premium flows** gated |
+| **/mind** | Basic habits, recovery | ⭐⭐⭐ Breathing, 3 guided, check-in | Calm/Waking Up depth | ⭐⭐⭐ **6 premium sessions** gated |
+| **/track** | Core logging, streaks | ⭐⭐⭐ Manual activities, import | MapMyFitness-style GPS | ⭐⭐ **5 premium programs** + pace insight (no GPS yet) |
 | **/learn** | Intros, basics, assessments | ⭐⭐⭐⭐ 8 free ISSA paths | Specialist programs | ⭐⭐ Marketing pages; no course UX |
 
 **Synergy:** Win Score weights all six pillars — unique vs siloed competitors. Cross-pillar coach rules exist; deep recommendations still shallow.
@@ -47,9 +49,9 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | **Build phases A–D, F** | [PLAN.md](PLAN.md) | ✅ Free core, journey, unified UI |
 | **Member journey phases** | [JOURNEY.md](JOURNEY.md) | I-Day → Commissioned (in-app) |
 | **PFT / America G1–G8** | [PLAN.md](PLAN.md) Phase G | ✅ Optional US track; feature-flagged |
-| **Launch Phase H** | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | ⬜ Blocked on beta + Vercel secrets |
-| **Premium Phase I** | [PLAN.md](PLAN.md) | ⬜ Post-launch revenue depth |
-| **Rural equity Phase J** | [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) | ⬜ Offline, Pathfinder, a11y, connectivity |
+| **Launch Phase H** | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | ⬜ Blocked on beta gates + Vercel secrets — code ready |
+| **Premium Phase I** | [PLAN.md](PLAN.md) | 🟡 I1–I4 scaffold/MVP on PR #62; live Stripe + GPS later |
+| **Rural equity Phase J** | [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) | 🟢 Shipped — Pathfinder, offline coach, IndexedDB, Village Card |
 
 ---
 
@@ -59,22 +61,22 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 Vision cannot land until the app is **public and installable**. Blocked on: beta gates, Vercel env, `PRIVATE_MODE=false`, PWA enable, PROTECTION P0.
 
 ### 2. Live Super Bundle (Phase I1) — scaffold ready
-Vision’s sustainability model. **Shipped:** verified Stripe webhook + Checkout Session API + bundle UI wiring. **Remaining:** LLC + live Stripe keys in Vercel (`STRIPE_SECRET_KEY`, price IDs, `STRIPE_WEBHOOK_SECRET`); `DEMO_PREMIUM=false`.
+**Shipped:** verified Stripe webhook + Checkout Session API + bundle UI wiring. **Remaining:** LLC + live Stripe keys in Vercel; `DEMO_PREMIUM=false`.
 
-### 3. AI Coach v1 as premium Train (Phase I2) — scaffold ready
-**Shipped:** Cloud LLM daily insight + `/api/coach/generate-plan` are premium-gated; rule-based insight and offline templates stay free. Builder includes Train Coach plan generator UI.
+### 3. AI Coach v1 as premium Train (Phase I2) — shipped
+Cloud LLM daily insight + `/api/coach/generate-plan` premium-gated; rule-based insight and offline templates stay free. Builder includes Train Coach plan generator UI.
 
-### 4. i18n body copy Tier 1 (Phase I4) — in progress
-**Shipped:** Welcome + Fuel + Active body for FR, PT, DE, IT, KO, JA, RU; Today hub ~79% translated for FR/DE/PT (ES already complete). Locale JSON export expanded to 13 langs. **Remaining:** deepen JA/IT/KO/RU Today body; Tier 2 expansion.
+### 4. i18n body copy Tier 1 (Phase I4) — shipped
+Today, Welcome, Fuel (43 keys), Active (50 keys) full for FR, DE, PT, IT, JA, KO, RU. **Remaining:** Tier 2 expansion; AR RTL polish.
 
-### 5. One premium pillar MVP (Phase I3)
-Prove bundle value: pick **Track GPS**, **Mind audio**, or **Move video** — replace Unlock placeholder with real depth.
+### 5. Premium pillar MVPs (Phase I3) — shipped (3/3)
+Mind (6 sessions), Move (5 flows), Track (5 programs + pace insight). **Remaining:** GPS routes, Mind audio CDN when infra ready.
 
 ### 6. PFT track ops (Phase G ops)
 Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council legal sign-off before MAHA copy.
 
-### 7. Rural equity & connectivity (Phase J)
-Vision promises Lagos/Mumbai/rural PWA + bodyweight-first. Today: PWA off when gated; localStorage only; PAR-Q pushes “consult physician”; ~90% body EN. See [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md) — Pathfinder track, IndexedDB sync, Lite mode, assessment i18n.
+### 7. Rural equity & connectivity (Phase J) — shipped
+Pathfinder assessment, offline/lite mode, IndexedDB outbox, bodyweight defaults, Village Health Card, offline coach v2. PWA still off while gated. See [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md).
 
 ---
 

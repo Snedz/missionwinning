@@ -38,7 +38,7 @@ Sync from GitHub: **Actions → Sync Vercel env** (or `npm run sync-vercel-env` 
 
 ## Deploy sequence
 
-1. Merge `master` with latest build label (Phase J complete)
+1. Merge integration branch ([PR #62](https://github.com/Snedz/missionwinning/pull/62) or `master` after merge) with latest build label
 2. Vercel production deploy completes
 3. **Gate smoke (gated or public):**
    ```bash
@@ -63,10 +63,10 @@ Set `PRIVATE_MODE=true` in Vercel → redeploy. PWA precache disables automatica
 
 ---
 
-## Post-launch (Phase I)
+## Post-launch (Phase I — mostly scaffolded on PR #62)
 
-- Live Stripe Super Bundle
-- Premium AI Coach (cloud LLM)
-- i18n body copy Tier 1
+- Live Stripe keys → Super Bundle fulfillment
+- Track GPS / Mind audio CDN (premium depth v2)
+- Tier 2 i18n expansion
 
-See [PLAN.md](PLAN.md) Phase I.
+See [PLAN.md](PLAN.md) Phase I · [VISION_STATUS.md](VISION_STATUS.md).

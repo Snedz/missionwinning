@@ -103,9 +103,9 @@ Aligns revenue with [vision.md](vision.md) without gating free core.
 | Sub | Deliverable | Vision link |
 |-----|-------------|-------------|
 | **I1** | Live Stripe bundle + verified webhook → `enrollments` | 🟡 Scaffold ready — set Stripe keys when LLC ready |
-| **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | 🟡 Cloud LLM + plan API gated; rules/offline free |
-| **I3** | One pillar premium MVP (Track GPS, Mind audio, or Move video) | Replace Unlock placeholders |
-| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 FR/DE/PT/ES today ~79%; Welcome/Fuel/Active all Tier 1 |
+| **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | 🟢 Shipped — cloud LLM + plan API gated; rules/offline free |
+| **I3** | Premium pillar MVPs (Mind / Move / Track) | 🟢 Shipped — 3 gated APIs; GPS/audio CDN later |
+| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 | 🟢 Shipped — full Tier 1 for FR/DE/PT/IT/JA/KO/RU |
 | **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | 1+1+1 > sum |
 
 **Done when:** Paying users get differentiated premium; free core unchanged; bundle LTV measurable.
@@ -193,4 +193,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-06-29 (Phase G complete; Phase H/I/J roadmap; see VISION_STATUS.md + RURAL_EQUITY_PLAN.md)
+Last updated: 2026-06-29 (build `.59` — Phase J + I1–I4 on PR #62; see VISION_STATUS.md)
