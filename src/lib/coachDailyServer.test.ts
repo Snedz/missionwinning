@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseCoachLlmJson, coachFromFallback } from './coachDailyServer.ts';
-import type { DailyCoachContext } from './coachDailyServer.ts';
+import { parseCoachLlmJson, coachFromFallback } from './coachDailyServer';
+import type { DailyCoachContext } from './coachDailyServer';
 
 const ctx: DailyCoachContext = {
   readiness: 70,

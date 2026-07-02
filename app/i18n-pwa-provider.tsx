@@ -11,19 +11,21 @@ import '@/i18n';
 // PWA beforeinstallprompt capture + trigger (used by Landing "Install" CTAs and Home PWA banner).
 // Ported from the original Vite main.tsx logic so "Install Mission Winning for offline" works.
 if (typeof window !== 'undefined') {
-  let deferredPwaPrompt: any = null;
+  let deferredPwaPrompt: BeforeInstallPromptEvent | null = null;
 
-  window.addEventListener('beforeinstallprompt', (e: any) => {
+  window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    deferredPwaPrompt = e;
+    deferredPwaPrompt = e as BeforeInstallPromptEvent;
     try {
       localStorage.setItem('mw_event_pwa_prompt_available', new Date().toISOString());
-    } catch {}
+    } catch {
+      /* storage unavailable */
+    }
   });
 
-  (window as any).deferredPwaPrompt = () => deferredPwaPrompt;
+  window.deferredPwaPrompt = () => deferredPwaPrompt;
 
-  (window as any).triggerPwaInstall = async () => {
+  window.triggerPwaInstall = async () => {
     const promptEvent = deferredPwaPrompt;
     if (!promptEvent) {
       alert('Use your browser menu (⋮ or Share > Add to Home Screen) to install Mission Winning for offline use anywhere.');
@@ -33,7 +35,9 @@ if (typeof window !== 'undefined') {
     const { outcome } = await promptEvent.userChoice;
     try {
       localStorage.setItem('mw_event_pwa_install_' + outcome, new Date().toISOString());
-    } catch {}
+    } catch {
+      /* storage unavailable */
+    }
     deferredPwaPrompt = null;
   };
 }

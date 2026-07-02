@@ -111,7 +111,7 @@ export async function grantDemoPremium(email: string) {
   }
   if (supabaseUrl) {
     // Log lead/enrollment stub (in real: from webhook)
-    try { await supabase.from('leads').insert({ email, goals: 'demo-premium-grant' }) } catch {}
+    try { await supabase.from('leads').insert({ email, goals: 'demo-premium-grant' }) } catch { /* offline */ }
   }
 }
 

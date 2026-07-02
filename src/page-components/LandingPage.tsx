@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Check, Dumbbell, Flame, Shield, TrendingUp } from "lucide-react";
@@ -20,15 +20,11 @@ const DEMO_SCORES: BodyScores = {
 
 export function LandingPage() {
   const router = useRouter();
-  const [abVariant, setAbVariant] = useState<'founders' | 'mission'>('founders');
 
   useEffect(() => {
-    const saved = localStorage.getItem('mw_ab_pricing_variant') as 'founders' | 'mission' | null;
-    if (saved) {
-      setAbVariant(saved);
-    } else {
+    const saved = localStorage.getItem('mw_ab_pricing_variant');
+    if (!saved) {
       const v = Math.random() > 0.5 ? 'founders' : 'mission';
-      setAbVariant(v);
       localStorage.setItem('mw_ab_pricing_variant', v);
     }
   }, []);
@@ -99,7 +95,7 @@ export function LandingPage() {
             <Button variant="outline" size="sm" onClick={() => router.push("/log")}>GRAB FREE TRACKER</Button>
             <Button size="sm" variant="fitness" onClick={() => document.getElementById('bundle')?.scrollIntoView({ behavior: 'smooth' })}>GET SUPER BUNDLE</Button>
             <Button variant="ghost" size="sm" className="text-emerald-400" onClick={() => {
-              const trig = (window as any).triggerPwaInstall; if (trig) trig(); else router.push('/log');
+              const trig = window.triggerPwaInstall; if (trig) void trig(); else router.push('/log');
             }}>INSTALL FOR OFFLINE (PWA)</Button>
           </div>
         </div>
@@ -192,9 +188,9 @@ export function LandingPage() {
           <div className="text-xs mt-3 text-white/40">Used by serious lifters worldwide. 5x5 • Texas Method • Custom Builder • History • PR Tracking • PWA • Global</div>
           <Button size="sm" variant="outline" className="mt-3 border-emerald-400 text-emerald-400" onClick={() => {
             // Use captured beforeinstallprompt if available (from main.tsx)
-            const promptEvt = (window as any).deferredPwaPrompt && (window as any).deferredPwaPrompt();
-            if (promptEvt && promptEvt.prompt) {
-              promptEvt.prompt().then(() => { console.log('analytics: pwa_prompt_used'); });
+            const promptEvt = window.deferredPwaPrompt?.();
+            if (promptEvt?.prompt) {
+              void promptEvt.prompt().then(() => { console.log('analytics: pwa_prompt_used'); });
             } else if ('serviceWorker' in navigator) {
               alert("Add to Home Screen from browser menu (Chrome: ⋮ > Install Mission Winning). Full offline PWA ready — train anywhere. No excuses.");
             } else {
@@ -264,13 +260,15 @@ export function LandingPage() {
                 try {
                   const fb = JSON.parse(localStorage.getItem('mw_beta_feedback') || '[]');
                   if (fb.length > 0) {
-                    return fb.slice(0,2).map((f: any, i: number) => (
+                    return fb.slice(0,2).map((f: { testimonial?: string; results?: string; rating?: number }, i: number) => (
                       <div key={i} className="bg-white/5 p-3 rounded border border-white/10">
                         “{f.testimonial || f.results}” <span className="text-emerald-400 text-xs">— Early user, {f.rating}/5 results</span>
                       </div>
                     ));
                   }
-                } catch {}
+                } catch {
+                  /* invalid beta feedback */
+                }
                 return [
                   <div key="d1" className="bg-white/5 p-3 rounded border border-white/10">“The free tracker got me consistent. The bundle unlocked the full synergy — mobility + mind + nutrition transformed my training.” <span className="text-emerald-400 text-xs">— A. R., rating 5</span></div>,
                   <div key="d2" className="bg-white/5 p-3 rounded border border-white/10">“Free core for my whole family. Bundle for me. Finally the everything app that actually works globally.” <span className="text-emerald-400 text-xs">— J. K., rating 5</span></div>

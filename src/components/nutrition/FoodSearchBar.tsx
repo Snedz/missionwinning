@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import type { FoodSearchItem } from '@/lib/foodSearch';
 
 type Props = {
