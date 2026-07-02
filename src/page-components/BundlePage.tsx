@@ -57,7 +57,6 @@ export function BundlePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [planId, setPlanId] = useState<BundlePlanId>(DEFAULT_BUNDLE_PLAN);
-  const [showStickyCta, setShowStickyCta] = useState(false);
   const [checkoutBanner, setCheckoutBanner] = useState<"success" | "cancel" | null>(null);
 
   const plan = BUNDLE_PLANS[planId];
@@ -70,13 +69,6 @@ export function BundlePage() {
       setCheckoutBanner(checkout);
     }
   }, [searchParams]);
-
-  useEffect(() => {
-    const onScroll = () => setShowStickyCta(window.scrollY > 400);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const planTabLabel =
     planId === "3mo"
@@ -101,10 +93,6 @@ export function BundlePage() {
     ],
     [t]
   );
-
-  const scrollToUnlock = () => {
-    document.getElementById("bundle-offer")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <div className="space-y-10 max-w-4xl mx-auto pb-8">
@@ -359,18 +347,6 @@ export function BundlePage() {
           </Button>
         </CardContent>
       </Card>
-
-      {showStickyCta && (
-        <div
-          className="fixed bottom-0 inset-x-0 z-40 md:hidden border-t border-border/60 bg-background/95 backdrop-blur p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-          role="region"
-          aria-label="Unlock bundle"
-        >
-          <Button variant="fitness" className="primary-action w-full max-w-lg mx-auto" onClick={scrollToUnlock}>
-            {t("bundleUnlockCta")}
-          </Button>
-        </div>
-      )}
     </div>
   );
 }

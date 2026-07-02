@@ -1,13 +1,10 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { BundlePage } from '@/page-components/BundlePage';
-import { MarketingShell } from '@/components/marketing/MarketingShell';
+import { BundleMarketingLayout } from '@/components/marketing/BundleMarketingLayout';
+import { bundlePageMetadata } from '@/lib/marketingMetadata';
 
-export const metadata: Metadata = {
-  title: 'Super Bundle Pricing',
-  description:
-    'Six pillars, one subscription — AI Coach, premium Mind/Move/Track/Learn, and deep Fuel. Core tracking stays free forever.',
-};
+export const metadata: Metadata = bundlePageMetadata();
 
 function BundleFallback() {
   return (
@@ -19,10 +16,10 @@ function BundleFallback() {
 
 export default function SuperBundleRoute() {
   return (
-    <MarketingShell variant="bundle">
+    <BundleMarketingLayout>
       <Suspense fallback={<BundleFallback />}>
         <BundlePage />
       </Suspense>
-    </MarketingShell>
+    </BundleMarketingLayout>
   );
 }

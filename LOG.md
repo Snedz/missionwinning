@@ -74,6 +74,20 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-06-29 — Phase M4: ES landing + OG images + bundle sticky shell
+
+**Build:** `2025.06-unified.66`
+
+### Shipped
+
+- **ES landing ≥88%** — full Spanish pack in `westernLandingLocales.ts`
+- **OG/social previews** — `app/opengraph-image.tsx` + `app/bundle/opengraph-image.tsx` (1200×630); `marketingMetadata.ts` with `metadataBase`, Twitter cards
+- **Bundle sticky unlock CTA** — moved to `MarketingShell` via `BundleMarketingLayout` (DRY with landing)
+
+**Tests:** 230 passing
+
+---
+
 ## 2026-06-29 — Phase M3: MarketingShell DRY + western landing i18n
 
 **Build:** `2025.06-unified.65`

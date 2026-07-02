@@ -3,22 +3,20 @@ import { Inter } from 'next/font/google';
 import '../src/index.css';
 import { Toaster } from '@/components/ui/toaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
+import { defaultOpenGraph, defaultTwitter, marketingMetadataBase } from '@/lib/marketingMetadata';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
+  metadataBase: marketingMetadataBase(),
   title: {
     default: 'Mission Winning — Free Global Health App',
     template: '%s · Mission Winning',
   },
   description:
     'Free workout tracking and six-pillar health synergy — Train, Fuel, Move, Mind, Track, Learn. PWA, offline-ready, 14 languages. Super Bundle for AI Coach and premium depth.',
-  openGraph: {
-    title: 'Mission Winning — Free Global Health App',
-    description:
-      'One app. Six pillars. Free core forever. Readiness, strain, recovery, and cross-pillar Win Score on Today.',
-    type: 'website',
-  },
+  openGraph: defaultOpenGraph(),
+  twitter: defaultTwitter(),
   icons: {
     icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',
