@@ -44,6 +44,10 @@ export default {
           gold: "#ca8a04",
           teal: "#2dd4bf",
         },
+        brass: {
+          DEFAULT: "hsl(var(--brass))",
+          foreground: "hsl(var(--brass-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -52,6 +56,8 @@ export default {
       },
       fontFamily: {
         sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Barlow Condensed", "Inter", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "IBM Plex Mono", "ui-monospace", "monospace"],
       },
     },
   },
