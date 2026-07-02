@@ -1,10 +1,10 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.61** (2026-06-29).
+**Living comparison** against [vision.md](vision.md). Updated with build **2025.06-unified.69** (2026-07-02).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
-**Integration branch:** [PR #62](https://github.com/Snedz/missionwinning/pull/62) — Phase J + I1–I4 scaffold/MVP stack ready for merge after beta gates.
+**Integration:** [PR #69](https://github.com/Snedz/missionwinning/pull/69) merges product (#62), marketing (#63), and quality stack (#65–#68) into `master` — CI green, 282 tests.
 
 ---
 

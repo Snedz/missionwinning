@@ -6,6 +6,24 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-02 — Integration: product + marketing + quality stack
+
+**Build:** `2025.06-unified.69` · **PR:** [#69](https://github.com/Snedz/missionwinning/pull/69)
+
+### Shipped (integration branch)
+
+- **Quality stack (#65–#68)** — CI lint + typecheck gates; 272→282 tests; Serwist PWA; canonical `DEPLOY.md`; API + component tests
+- **Product (#62)** — Phase J pathfinder/offline; Stripe Checkout + webhook; AI Coach premium; Learn premium paths; Tier-1 i18n; cross-pillar coach
+- **Marketing (#63)** — M0–M6 landing, bundle shell, landing i18n, OG, manifest, hreflang, sitemap/robots
+- **Youth consent API tests** — verify/notify/status/confirm route handlers (minors' data paths)
+
+### Verification
+
+- `npm test` — 282 passing (237 lib + 31 api + 14 components)
+- CI on #69 — green (lint, typecheck, test, export-locales, build)
+
+---
+
 ## 2026-06-29 — Phase J1/J3/J5: Pathfinder, connectivity, bodyweight defaults
 
 **Build:** `2025.06-unified.46` · **Plan:** [RURAL_EQUITY_PLAN.md](RURAL_EQUITY_PLAN.md)
