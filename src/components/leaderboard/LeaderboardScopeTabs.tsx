@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { LEADERBOARD_SCOPES } from '@/lib/leaderboard/boards';
+import { visibleLeaderboardScopes } from '@/lib/leaderboard/boards';
 import type { LeaderboardScope } from '@/lib/leaderboard/types';
 import { SCOPE_I18N_KEY } from '@/i18n/leaderboardLocales';
 
@@ -17,7 +17,7 @@ export function LeaderboardScopeTabs({ scope, onScopeChange, scopeLabel }: Props
   return (
     <div className="space-y-2">
       <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-        {LEADERBOARD_SCOPES.map((s) => (
+        {visibleLeaderboardScopes().map((s) => (
           <button
             key={s.id}
             type="button"
@@ -36,7 +36,7 @@ export function LeaderboardScopeTabs({ scope, onScopeChange, scopeLabel }: Props
       <p className="text-xs text-muted-foreground">
         <span className="text-foreground/80 font-medium">{scopeLabel}</span>
         {' · '}
-        {LEADERBOARD_SCOPES.find((s) => s.id === scope)?.description}
+        {visibleLeaderboardScopes().find((s) => s.id === scope)?.description}
       </p>
     </div>
   );

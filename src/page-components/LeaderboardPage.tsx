@@ -339,7 +339,7 @@ export function LeaderboardPage() {
             })
           : t('leaderboardDemoNote', {
               defaultValue:
-                'Demo operators fill boards until more members sync. Sign in and tap Sync to publish scores. Rankings also update after workouts when signed in.',
+                'Rows marked Pacer are virtual pace-setters, not real athletes — they keep boards motivating while the community grows. Sign in and tap Sync to publish your score.',
             })}
       </p>
     </div>

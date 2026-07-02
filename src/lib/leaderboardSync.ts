@@ -1,5 +1,5 @@
 import { supabase, getUser } from '@/lib/supabase';
-import type { LeaderboardSnapshot } from '@/lib/leaderboard/types';
+import type { LeaderboardBoardId, LeaderboardSnapshot } from '@/lib/leaderboard/types';
 import type { CompletedWorkoutLog } from '@/types';
 import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
 
@@ -54,7 +54,7 @@ export async function pushLeaderboardSnapshot(
 }
 
 export async function fetchCloudLeaderboardSnapshots(
-  boardId: import('./types').LeaderboardBoardId = 'mission-score'
+  boardId: LeaderboardBoardId = 'mission-score'
 ): Promise<LeaderboardSnapshot[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return [];
 
