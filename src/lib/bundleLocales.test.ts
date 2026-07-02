@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { bundleStringsFor } from '@/i18n/bundleLocales.ts';
+import { bundleStringsFor } from '@/i18n/bundleLocales';
 
 describe('bundleLocales FAQ (Phase M1)', () => {
   it('includes FAQ and checkout strings in EN', () => {

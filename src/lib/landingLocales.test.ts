@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { landingStringsFor, landingKeyCount } from '@/i18n/landingLocales.ts';
+import { landingStringsFor, landingKeyCount } from '@/i18n/landingLocales';
 
 function translatedRatio(lang: string): number {
   const en = landingStringsFor('en');

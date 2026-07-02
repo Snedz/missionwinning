@@ -16,7 +16,7 @@ describe('marketingMetadata (Phase M4)', () => {
   it('landing metadata includes openGraph and twitter', () => {
     const meta = landingPageMetadata();
     assert.ok(meta.openGraph?.title);
-    assert.ok(meta.twitter?.card === 'summary_large_image');
+    assert.ok((meta.twitter as { card?: string } | undefined)?.card === 'summary_large_image');
     assert.ok(meta.alternates?.languages?.en);
     assert.ok(meta.openGraph?.alternateLocale?.includes('es_ES'));
   });
