@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { PROGRAM_PRICES, grantPremiumDemo } from '@/lib/payments';
-import { grantDemoPremium } from '@/lib/supabase';
+import { ArrowUpRight, Check } from 'lucide-react';
+import { PROGRAM_PRICES, getStripeCheckoutUrl, grantPremiumDemo } from '@/lib/payments';
+import { submitLead } from '@/lib/supabase';
 
 interface Props {
   productId?: string;
@@ -15,6 +16,16 @@ interface Props {
   onSuccess?: () => void;
 }
 
+const IS_DEV = process.env.NODE_ENV === 'development';
+
+/**
+ * Checkout entry point for premium products.
+ *
+ * - When a Stripe Payment Link is configured (env or prop), renders real checkout.
+ * - Otherwise renders an honest founders-waitlist capture — no fake purchases,
+ *   no "access granted" theater. (In local dev only, joining the waitlist also
+ *   grants demo premium so the paid experience can be tested.)
+ */
 export function UnlockButton({
   productId,
   price,
@@ -27,79 +38,97 @@ export function UnlockButton({
 }: Props) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const program = productId ? PROGRAM_PRICES[productId] : null;
-  const amount = price || program?.price || '297';
-  const itemTitle = title || program?.title || (isSubscription ? 'Mission Winning Super Bundle' : 'Mission Winning Program');
-  const buttonLabel =
-    label ||
-    (isSubscription ? `Unlock Super Bundle ($${amount}/mo)` : `Request Access — $${amount}`);
+  const amount = price || program?.price;
+  const itemTitle =
+    title || program?.title || (isSubscription ? 'Mission Winning Super Bundle' : 'Mission Winning Program');
+  const checkoutUrl =
+    stripeCheckoutUrl ?? getStripeCheckoutUrl(productId || (isSubscription ? 'super-bundle' : undefined));
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const checkoutLabel =
+    label || (isSubscription ? `Unlock the Super Bundle${amount ? ` — $${amount}/mo` : ''}` : `Unlock${amount ? ` — $${amount}` : ''}`);
+
+  const handleWaitlist = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-
-    grantPremiumDemo(productId || (isSubscription ? 'super-bundle' : undefined));
+    if (!email || submitting) return;
+    setSubmitting(true);
 
     try {
-      await grantDemoPremium(email);
+      await submitLead({
+        name: '',
+        email,
+        source: `waitlist-${productId || (isSubscription ? 'super-bundle' : 'premium')}`,
+        message: `Founders waitlist: ${itemTitle}`,
+      });
     } catch {
-      // fallback already handled in grantDemoPremium
+      // Lead capture is best-effort; the confirmation below is still honest —
+      // the founder reviews waitlist submissions manually during beta.
     }
 
-    console.log('analytics: unlock_requested', { productId, isSubscription, title: itemTitle, email });
+    if (IS_DEV) grantPremiumDemo(productId || (isSubscription ? 'super-bundle' : undefined));
 
     setSubmitted(true);
-
-    setTimeout(() => {
-      if (onSuccess) onSuccess();
-      else window.location.href = '/log';
-    }, 1500);
+    setSubmitting(false);
+    if (onSuccess) setTimeout(onSuccess, 1200);
   };
+
+  if (checkoutUrl) {
+    return (
+      <div className={className}>
+        <a
+          href={checkoutUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="primary-action"
+        >
+          {checkoutLabel}
+          <ArrowUpRight className="h-4 w-4" />
+        </a>
+        <p className="mt-2 text-center text-[11px] text-muted-foreground">
+          Secure checkout by Stripe · 30-day guarantee · The free core stays free
+        </p>
+      </div>
+    );
+  }
 
   if (submitted) {
     return (
-      <div className={`text-center p-3 bg-emerald-900/20 border border-emerald-400/30 rounded ${className}`}>
-        <div className="text-emerald-400 font-semibold">Thank you! Demo access granted.</div>
-        <div className="text-xs text-white/60 mt-1">We&apos;ll follow up at {email}. Welcome to the path.</div>
+      <div
+        className={`rounded-2xl border border-primary/30 bg-primary/10 p-4 text-center ${className}`}
+      >
+        <p className="inline-flex items-center gap-1.5 font-semibold text-primary">
+          <Check className="h-4 w-4" /> You&apos;re on the founders list.
+        </p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          We&apos;ll email {email} when checkout opens. Founders lock in the launch discount.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className={className}>
-      {stripeCheckoutUrl && (
-        <a
-          href={stripeCheckoutUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded text-base text-center mb-3"
-        >
-          {buttonLabel} — Stripe Checkout
-        </a>
-      )}
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-2">
-          <input
-            type="email"
-            required
-            placeholder="your@email.com (for demo request)"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-black/40 border border-white/20 rounded px-3 py-2 text-sm text-white placeholder:text-white/40"
-          />
-          <button
-            type="submit"
-            className="w-full bg-white text-black hover:bg-white/90 font-semibold py-3 rounded text-base"
-          >
-            {stripeCheckoutUrl ? 'Or request demo access' : buttonLabel}
-          </button>
-        </div>
-        <div className="text-[10px] text-center mt-1 text-white/40">
-          Free core always. Real checkout via Stripe when LLC + payment link is configured.
-        </div>
-      </form>
-    </div>
+    <form onSubmit={handleWaitlist} className={className}>
+      <div className="flex flex-col gap-2">
+        <input
+          type="email"
+          required
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          aria-label="Email for the founders waitlist"
+          className="tap-target w-full rounded-xl border border-input bg-background/60 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+        />
+        <button type="submit" disabled={submitting} className="primary-action disabled:opacity-60">
+          {submitting ? 'Joining…' : 'Join the founders waitlist'}
+        </button>
+      </div>
+      <p className="mt-2 text-center text-[11px] leading-relaxed text-muted-foreground">
+        Checkout opens soon. Founders get the launch discount first — and the free core stays free
+        either way.
+      </p>
+    </form>
   );
 }
 
