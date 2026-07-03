@@ -26,6 +26,7 @@ function FitnessTestInner() {
       subtitle={t('pftPageSubtitle', {
         defaultValue: 'Log your events, earn Presidential / National / Participant awards.',
       })}
+      showLegalFooter
     >
       <Link
         href="/benchmarks"

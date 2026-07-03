@@ -46,8 +46,7 @@ import { getExercisesWithBenchmarkData } from '@/lib/benchmarks';
 import { useWorkoutStore } from '@/store/workoutStore';
 import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { getUser, getUserNutritionForDate } from '@/lib/supabase';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -115,17 +114,15 @@ export function HistoryPage() {
         });
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
+    <PillarPageShell
+      icon={HistoryIcon}
+      title={t('historyTitle', { defaultValue: 'Workout History' })}
+      subtitle={t('historySubtitle', {
+        defaultValue: 'Your history powers the Today Hub readiness and Win Score.',
+      })}
+    >
       <div>
-        <PillarPageHeader
-          icon={HistoryIcon}
-          title={t('historyTitle', { defaultValue: 'Workout History' })}
-          subtitle={t('historySubtitle', {
-            defaultValue: 'Your history powers the Today Hub readiness and Win Score.',
-          })}
-        />
-        <p className="text-muted-foreground text-sm mt-2">
+        <p className="text-muted-foreground text-sm">
           <Link href="/log" className="underline">
             Today Hub
           </Link>
@@ -148,7 +145,6 @@ export function HistoryPage() {
           </p>
         )}
       </div>
-      </StaggerItem>
 
       {workoutHistory.length > 0 && (
         <>
@@ -368,6 +364,6 @@ export function HistoryPage() {
           {t('historySignInFoot', { defaultValue: 'Sign in (optional) to load full cloud history.' })}
         </Link>
       </p>
-    </StaggerGroup>
+    </PillarPageShell>
   );
 }

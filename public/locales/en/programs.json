@@ -1,0 +1,12 @@
+{
+  "programsFilterGoal": "Filter by goal:",
+  "programsFilterEquip": "Equipment:",
+  "programsGoalAll": "All",
+  "programsGoalHypertrophy": "Hypertrophy",
+  "programsGoalCorrective": "Corrective",
+  "programsGoalStrengthBusiness": "Strength/Business",
+  "programsGoalConditioning": "Conditioning",
+  "programsEquipAll": "All",
+  "programsEquipBodyweight": "Bodyweight/Minimal",
+  "programsEquipGym": "Gym/Barbell"
+}

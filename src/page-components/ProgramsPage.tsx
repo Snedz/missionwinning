@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Check } from 'lucide-react';
 import { UnlockButton } from '@/components/UnlockButton';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
+import { PROGRAM_EQUIP_FILTERS, PROGRAM_GOAL_FILTERS } from '@/i18n/programsLocales';
 import { useState } from 'react';
 
 export function ProgramsPage() {
@@ -145,16 +146,30 @@ export function ProgramsPage() {
         </Card>
 
       <div className="flex flex-wrap gap-3 text-sm">
-          <span className="text-muted-foreground self-center">Filter by goal:</span>
-          {['All', 'Hypertrophy', 'Corrective', 'Strength/Business', 'Conditioning'].map((g) => (
-            <Button key={g} size="sm" variant={filterGoal === g ? 'default' : 'outline'} onClick={() => setFilterGoal(g)}>
-              {g}
+          <span className="text-muted-foreground self-center">
+            {t('programsFilterGoal', { defaultValue: 'Filter by goal:' })}
+          </span>
+          {PROGRAM_GOAL_FILTERS.map((g) => (
+            <Button
+              key={g.value}
+              size="sm"
+              variant={filterGoal === g.value ? 'default' : 'outline'}
+              onClick={() => setFilterGoal(g.value)}
+            >
+              {t(g.labelKey, { defaultValue: g.value })}
             </Button>
           ))}
-          <span className="text-muted-foreground self-center ml-2">Equipment:</span>
-          {['All', 'Bodyweight/Minimal', 'Gym/Barbell'].map((e) => (
-            <Button key={e} size="sm" variant={filterEquip === e ? 'default' : 'outline'} onClick={() => setFilterEquip(e)}>
-              {e}
+          <span className="text-muted-foreground self-center ml-2">
+            {t('programsFilterEquip', { defaultValue: 'Equipment:' })}
+          </span>
+          {PROGRAM_EQUIP_FILTERS.map((e) => (
+            <Button
+              key={e.value}
+              size="sm"
+              variant={filterEquip === e.value ? 'default' : 'outline'}
+              onClick={() => setFilterEquip(e.value)}
+            >
+              {t(e.labelKey, { defaultValue: e.value })}
             </Button>
           ))}
         </div>

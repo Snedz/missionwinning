@@ -11,8 +11,7 @@ import { PROGRAM_PRICES } from '@/lib/payments';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { logPillarWin } from '@/lib/pillarLog';
 import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
 
@@ -43,19 +42,14 @@ export function LearnPage() {
   };
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={BookOpen}
-          title={t('learnTitle', { defaultValue: 'Learn & Master' })}
-          subtitle={t('learnSubtitle', {
-            count: FREE_LEARN_PATHS.length,
-            defaultValue: `${FREE_LEARN_PATHS.length} free education paths — ISSA-aligned foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
-          })}
-        />
-      </StaggerItem>
-
-      <StaggerItem index={1}>
+    <PillarPageShell
+      icon={BookOpen}
+      title={t('learnTitle', { defaultValue: 'Learn & Master' })}
+      subtitle={t('learnSubtitle', {
+        count: FREE_LEARN_PATHS.length,
+        defaultValue: `${FREE_LEARN_PATHS.length} free education paths — ISSA-aligned foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
+      })}
+    >
         <Card className="content-card border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 to-card">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
@@ -79,9 +73,7 @@ export function LearnPage() {
             </Button>
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={2}>
         <div className="space-y-3">
           {paths.map((path) => {
             const open = expandedPath === path.id;
@@ -151,9 +143,7 @@ export function LearnPage() {
             );
           })}
         </div>
-      </StaggerItem>
 
-      <StaggerItem index={3}>
         <Card className="content-card border-emerald-500/20">
           <CardHeader>
             <CardTitle className="text-base">
@@ -177,9 +167,7 @@ export function LearnPage() {
             </Button>
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={4}>
         <Card className="content-card border-white/10 bg-card/50">
           <CardHeader>
             <CardTitle className="text-base">
@@ -207,7 +195,6 @@ export function LearnPage() {
             />
           </CardContent>
         </Card>
-      </StaggerItem>
-    </StaggerGroup>
+    </PillarPageShell>
   );
 }

@@ -17,8 +17,6 @@ import { getBetaFunnelMetrics, getJourneyEvents } from "@/lib/journeyAnalytics";
 import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
 
 import { scheduleJourneyPush } from '@/lib/journeySync';
-import { APP_BUILD_LABEL } from '@/lib/buildInfo';
-import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { LegalNav } from '@/components/layout/LegalNav';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { showOwnerTools } from '@/lib/ownerTools';
@@ -530,7 +528,7 @@ export function ProfilePage() {
                       keys: result.keysRestored ?? 0,
                     }),
                   });
-                  setTimeout(() => window.location.reload(), 1200);
+                  setTimeout(() => router.refresh(), 1200);
                 };
                 reader.readAsText(file);
               }}
@@ -553,8 +551,6 @@ export function ProfilePage() {
           <LegalNav />
         </CardContent>
       </Card>
-
-      <AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} className="pt-2" />
     </div>
   );
 }

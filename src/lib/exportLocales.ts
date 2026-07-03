@@ -21,6 +21,9 @@ import { guidebookStringsFor } from '@/i18n/guidebookLocales';
 import { leaderboardStringsFor } from '@/i18n/leaderboardLocales';
 import { fitnessTestStringsFor } from '@/i18n/fitnessTestLocales';
 import { assessmentsStringsFor } from '@/i18n/assessmentsLocales';
+import { feedbackStringsFor } from '@/i18n/feedbackLocales';
+import { programsStringsFor } from '@/i18n/programsLocales';
+import { libraryStringsFor } from '@/i18n/libraryLocales';
 
 /** Languages with full or partial pillar-specific translations. */
 export const EXPORT_LANGS = ['en', 'es', 'zh', 'id', 'th', 'ar'] as const;
@@ -45,7 +48,10 @@ export type LocaleNamespace =
   | 'guidebook'
   | 'leaderboard'
   | 'fitnessTest'
-  | 'assessments';
+  | 'assessments'
+  | 'feedback'
+  | 'programs'
+  | 'library';
 
 export type LocaleExportEntry = {
   namespace: LocaleNamespace;
@@ -167,6 +173,24 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'assessments',
     filename: 'assessments.json',
     stringsFor: assessmentsStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'feedback',
+    filename: 'feedback.json',
+    stringsFor: feedbackStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'programs',
+    filename: 'programs.json',
+    stringsFor: programsStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'library',
+    filename: 'library.json',
+    stringsFor: libraryStringsFor,
     langs: EXPORT_LANGS,
   },
 ];

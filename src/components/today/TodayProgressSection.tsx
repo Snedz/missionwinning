@@ -439,7 +439,7 @@ export function TodayProgressSection({
               const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1; 
               localStorage.setItem('mw_streak', String(current)); 
               alert(`Win logged! Streak now ${current}. Refresh or complete a workout to update.`); 
-              window.location.reload(); 
+              router.refresh(); 
             }}>Log a daily win +1 streak</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => { alert('Great protein day logged (demo). Complete real logs in /nutrition for real tracking.'); }}>Log high-protein day</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={async () => {
@@ -458,7 +458,7 @@ export function TodayProgressSection({
               const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
               localStorage.setItem('mw_streak', String(current));
               alert(`Mobility habit logged! +1 to streak (${current} days). Synergy with Move pillar builds the path.`);
-              window.location.reload();
+              router.refresh();
             }}>Log Mobility Habit (+streak)</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => onStartStarter("Daily Mobility + Mind Habit", freeStarters.find(s => s.name.includes("Mind Habit"))?.exercises || [])}>Start Daily Habit Stack →</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => {

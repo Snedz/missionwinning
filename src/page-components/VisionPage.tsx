@@ -5,6 +5,14 @@ import { Compass } from 'lucide-react';
 import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
 
+const VISION_CORE_ITEMS = [
+  'infoVisionCoreLi1',
+  'infoVisionCoreLi2',
+  'infoVisionCoreLi3',
+  'infoVisionCoreLi4',
+  'infoVisionCoreLi5',
+] as const;
+
 export function VisionPage() {
   const { t } = useTranslation();
 
@@ -19,64 +27,72 @@ export function VisionPage() {
       footer={<InfoPageFooter showLegal showToday showBundle />}
     >
       <p className="text-muted-foreground">
-        <strong className="text-foreground">The #1 Health &quot;Everything App&quot; for the World</strong>
+        <strong className="text-foreground">
+          {t('infoVisionLead', { defaultValue: 'The #1 Health "Everything App" for the World' })}
+        </strong>
       </p>
       <p className="text-muted-foreground">
-        Mission Winning exists to be the entrance to the path — the clear, evidence-based guide to the{' '}
-        <em>right way</em> to build lifelong health, strength, resilience, and well-being for every human on Earth.
-        It is the alternative to the path of destruction: average habits, excuses, short-term fixes, mediocrity,
-        and the slow decline that comes from inconsistent or misguided approaches to the body and mind.
+        {t('infoVisionP1', {
+          defaultValue:
+            'Mission Winning exists to be the entrance to the path — the clear, evidence-based guide to the right way to build lifelong health, strength, resilience, and well-being for every human on Earth.',
+        })}
       </p>
       <p className="text-muted-foreground">
-        We are building the everything app for health. Not another fragmented tool, but a unified, synergistic
-        ecosystem where training, nutrition, mobility, mindfulness, activity tracking, and learning reinforce
-        each other. One app. One mission. Accessible to{' '}
-        <strong className="text-foreground">everyone, everywhere</strong> — regardless of money, location,
-        resources, or background.
+        {t('infoVisionP2', {
+          defaultValue:
+            'We are building the everything app for health. One app. One mission. Accessible to everyone, everywhere.',
+        })}
       </p>
 
       <InfoSection title={t('infoVisionCorePromise', { defaultValue: 'Core promise: free forever for the mission' })}>
         <p className="text-muted-foreground">
-          The fundamentals that make the world healthier must be available to all, with{' '}
-          <strong className="text-foreground">no money barrier</strong>.
+          {t('infoVisionCoreP1', {
+            defaultValue:
+              'The fundamentals that make the world healthier must be available to all, with no money barrier.',
+          })}
         </p>
         <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-          <li>Workout tracking (the core mission) is 100% free, forever.</li>
-          <li>Basic exercise library (bodyweight/minimal-equipment focused, global-friendly).</li>
-          <li>Basic nutrition logging and accessible recipes.</li>
-          <li>Basic assessments, streaks, challenges, and habit tools.</li>
-          <li>Full PWA experience: installable, offline-first, low-data, works on any device/browser anywhere.</li>
+          {VISION_CORE_ITEMS.map((key) => (
+            <li key={key}>{t(key, { defaultValue: key })}</li>
+          ))}
         </ul>
         <p className="text-muted-foreground italic">
-          &quot;Those with no money should be able to utilize it to track workouts. The core mission should be
-          available for everyone in the world.&quot;
+          {t('infoVisionCoreQuote', {
+            defaultValue:
+              '"Those with no money should be able to utilize it to track workouts. The core mission should be available for everyone in the world."',
+          })}
         </p>
       </InfoSection>
 
       <InfoSection title={t('infoVisionSuperApp', { defaultValue: 'The super app structure' })}>
         <p className="text-muted-foreground">
-          Inspired by successful freemium + bundle models (notably Freeletics), Mission Winning is structured as
-          modular &quot;universes&quot; or pillars. Each route/section is{' '}
-          <strong className="text-foreground">accessible</strong> (free entry points and basics for everyone) yet
-          serves as a revenue stream through premium layers and the Super Bundle.
+          {t('infoVisionSuperAppP1', {
+            defaultValue:
+              'Inspired by successful freemium + bundle models, Mission Winning is structured as modular pillars with free entry points and premium depth.',
+          })}
         </p>
         <p className="text-muted-foreground">
-          <strong className="text-foreground">The pillars:</strong> Train (free tracker + premium Coach), Fuel
-          (nutrition), Move (mobility + yoga), Mind (mindfulness), Track (activity), Learn (education programs).
+          {t('infoVisionSuperAppP2', {
+            defaultValue:
+              'The pillars: Train, Fuel, Move, Mind, Track, Learn.',
+          })}
         </p>
       </InfoSection>
 
       <InfoSection title={t('infoVisionSuperBundle', { defaultValue: 'Super Bundle' })}>
         <p className="text-muted-foreground">
-          The flagship offering. One subscription unlocks premium depth across multiple (or all) pillars — &quot;X
-          premium tools for the price of 1–2.&quot; Modeled directly on Freeletics: 50% off introductory pricing for
-          first 6–12 months, annual discounts, &quot;X apps for the price of 1&quot;.
+          {t('infoVisionSuperBundleBody', {
+            defaultValue:
+              'The flagship offering. One subscription unlocks premium depth across multiple pillars.',
+          })}
         </p>
       </InfoSection>
 
       <p className="text-xs text-muted-foreground">
-        Full details in <code className="text-foreground/80">vision.md</code> in the project root. This page is a
-        summary. The app exists to serve this vision.
+        {t('infoVisionFoot', {
+          defaultValue:
+            'Full details in vision.md in the project root. This page is a summary. The app exists to serve this vision.',
+        })}
       </p>
     </InfoPageShell>
   );
