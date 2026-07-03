@@ -8,6 +8,7 @@ import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScor
 import { applyCrossPillarCoachRules } from "@/lib/crossPillarCoach";
 import { gatherWeeklyPillarStats } from "@/lib/pillarScoreInputs";
 import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
+import { GuidebookContinueCard } from "@/components/learn/GuidebookContinueCard";
 import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { getUser, getUserNutritionForDate } from "@/lib/supabase";
@@ -353,6 +354,10 @@ export function HomePage() {
       />
     ),
   });
+
+  if (state.phase === 'readiness' || state.phase === 'commissioned') {
+    staggerBlocks.push({ key: 'guidebook', node: <GuidebookContinueCard /> });
+  }
 
   if (layout.showDashboard) {
     staggerBlocks.push({

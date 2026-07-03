@@ -1,0 +1,122 @@
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
+import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
+import type { GuideChapter } from '@/data/guidebook/types';
+import { localizeGuidebookChapters } from '@/lib/localizeGuidebook';
+import { usePremium } from '@/hooks/usePremium';
+import {
+  getChapterProgress,
+  getGuidebookStats,
+  loadGuidebookProgress,
+} from '@/lib/guidebookProgress';
+import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { BookMarked, ChevronRight } from 'lucide-react';
+
+export function GuidebookIndexPage() {
+  const { t, i18n } = useTranslation();
+  const { premium } = usePremium();
+  const [premiumChapters, setPremiumChapters] = useState<GuideChapter[]>([]);
+  const [completed, setCompleted] = useState<Set<string>>(() => loadGuidebookProgress());
+
+  useEffect(() => {
+    if (!premium) {
+      setPremiumChapters([]);
+      return;
+    }
+    fetch('/api/premium/guidebook')
+      .then((r) => (r.ok ? r.json() : { chapters: [] }))
+      .then((d) => setPremiumChapters(d.chapters ?? []))
+      .catch(() => setPremiumChapters([]));
+  }, [premium]);
+
+  const allChapters = useMemo(
+    () => [...BEYOND_THE_BASICS_CHAPTERS, ...premiumChapters],
+    [premiumChapters]
+  );
+  const chapters = useMemo(
+    () => localizeGuidebookChapters(allChapters, t),
+    [allChapters, i18n.language, t]
+  );
+
+  useEffect(() => {
+    const sync = () => setCompleted(loadGuidebookProgress());
+    window.addEventListener('mw-guidebook-progress', sync);
+    return () => window.removeEventListener('mw-guidebook-progress', sync);
+  }, []);
+
+  const stats = getGuidebookStats(completed);
+
+  return (
+    <StaggerGroup className="space-y-6">
+      <StaggerItem index={0}>
+        <PillarPageHeader
+          icon={BookMarked}
+          title={t('guidebookTitle', { defaultValue: 'Beyond the Basics' })}
+          subtitle={t('guidebookSubtitle', {
+            defaultValue:
+              'Now with even more content! The Mission Winning guidebook — understand training from the ground up.',
+          })}
+        />
+      </StaggerItem>
+
+      <StaggerItem index={1}>
+        <Card className="content-card border-emerald-500/25 bg-emerald-950/20">
+          <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-medium text-emerald-300">
+                {t('guidebookProgress', { defaultValue: 'Your progress' })}
+              </p>
+              <p className="text-2xl font-bold tabular-nums">
+                {stats.done}/{stats.totalSections}{' '}
+                <span className="text-sm font-normal text-muted-foreground">
+                  ({stats.pct}%)
+                </span>
+              </p>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/learn">{t('guidebookQuickPaths', { defaultValue: 'Quick paths →' })}</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </StaggerItem>
+
+      <StaggerItem index={2}>
+        <div className="space-y-3">
+          {chapters.map((chapter) => {
+            const prog = getChapterProgress(chapter.id, completed);
+            return (
+              <Card key={chapter.id} className="content-card">
+                <Link href={`/learn/guide/${chapter.id}`} className="block">
+                  <CardHeader className="flex flex-row items-center justify-between py-4">
+                    <div className="space-y-1">
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <span className="text-muted-foreground text-sm font-mono">
+                          CH {chapter.number}
+                        </span>
+                        <span>{chapter.icon}</span>
+                        {chapter.title}
+                      </CardTitle>
+                      <CardDescription>{chapter.subtitle}</CardDescription>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-xs text-emerald-400 tabular-nums">
+                        {prog.done}/{prog.total}
+                      </span>
+                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </CardHeader>
+                </Link>
+              </Card>
+            );
+          })}
+        </div>
+      </StaggerItem>
+    </StaggerGroup>
+  );
+}

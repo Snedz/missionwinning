@@ -1,16 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import { Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
 import { submitLead } from '@/lib/supabase';
 
-/**
- * 1:1 coaching interest page. Coaching is not a live offer yet — this page
- * collects genuine interest so the founder can shape and price the program
- * with real demand data. No fictional price cards, no pressure copy.
- */
 export function CoachingPage() {
+  const { t } = useTranslation();
+  const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -39,30 +41,28 @@ export function CoachingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background px-6 py-12 text-foreground">
-      <div className="mx-auto max-w-2xl">
-        <Link href="/" className="text-sm text-primary hover:underline">
-          ← Mission Winning
-        </Link>
+    <StaggerGroup className="space-y-6">
+      <StaggerItem index={0}>
+        <PillarPageHeader
+          icon={Users}
+          title={t('infoCoachingTitle', { defaultValue: 'A coach in your corner' })}
+          subtitle={t('infoCoachingSubtitle', {
+            defaultValue:
+              "We're building a small 1:1 coaching program on top of the free core. Tell us about your goals — no commitment, no payment today.",
+          })}
+        />
+      </StaggerItem>
 
-        <header className="mb-10 mt-8">
-          <p className="eyebrow mb-4">1:1 Coaching · Interest list</p>
-          <h1 className="display-section mb-4">A coach in your corner.</h1>
-          <p className="max-w-lg leading-relaxed text-muted-foreground">
-            We&apos;re building a small 1:1 coaching program on top of the free core: custom
-            programming, nutrition guidance, and regular check-ins with a real coach. It opens to a
-            limited first group. Tell us about your goals and we&apos;ll reach out as spots open —
-            no commitment, no payment today.
-          </p>
-        </header>
-
+      <StaggerItem index={1}>
         {submitted ? (
           <div className="content-card p-8 text-center">
             <h2 className="font-display mb-2 text-2xl font-semibold uppercase">Received.</h2>
             <p className="mb-6 text-sm text-muted-foreground">
               Thanks — we read every note and reply personally, usually within 48 hours.
             </p>
-            <Button onClick={() => (window.location.href = '/log')}>Back to Today</Button>
+            <Button variant="fitness" onClick={() => router.push('/log')}>
+              Back to Today
+            </Button>
           </div>
         ) : (
           <form className="content-card space-y-4 p-6 sm:p-8" onSubmit={handleSubmit}>
@@ -94,7 +94,7 @@ export function CoachingPage() {
               aria-label="Your goals and current training"
             />
             {error && <p className="text-sm text-red-400">{error}</p>}
-            <Button type="submit" size="lg" className="w-full" disabled={loading}>
+            <Button type="submit" size="lg" variant="fitness" className="w-full" disabled={loading}>
               {loading ? 'Sending…' : 'Join the coaching interest list'}
             </Button>
             <p className="text-center text-[11px] text-muted-foreground">
@@ -102,12 +102,18 @@ export function CoachingPage() {
             </p>
           </form>
         )}
+      </StaggerItem>
 
-        <p className="mx-auto mt-10 max-w-prose text-center text-xs leading-relaxed text-muted-foreground/80">
+      <StaggerItem index={2}>
+        <p className="text-center text-xs leading-relaxed text-muted-foreground/80">
           Coaching is education and accountability — results depend on your consistency and
           circumstances. Always clear new training or nutrition plans with your physician.
         </p>
-      </div>
-    </div>
+      </StaggerItem>
+
+      <StaggerItem index={3}>
+        <AppLegalFooter />
+      </StaggerItem>
+    </StaggerGroup>
   );
 }

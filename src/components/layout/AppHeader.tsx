@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, Dumbbell } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { EXTENDED_NAV_SECTIONS, ALL_NAV } from '@/lib/navConfig';
+import { EXTENDED_NAV_SECTIONS, ALL_NAV, STATIC_PAGE_TITLES } from '@/lib/navConfig';
 import { HeaderAuthChip } from '@/components/layout/HeaderAuthChip';
 
 export function AppHeader() {
@@ -17,6 +17,12 @@ export function AppHeader() {
 
   const pageTitle = (() => {
     const normalized = pathname === '/' ? '/log' : pathname;
+    const staticTitle = STATIC_PAGE_TITLES[normalized];
+    if (staticTitle) {
+      return staticTitle.labelKey
+        ? t(staticTitle.labelKey, { defaultValue: staticTitle.label })
+        : staticTitle.label;
+    }
     const match = ALL_NAV.find((n) => normalized === n.href || normalized.startsWith(n.href + '/'));
     if (match) return t(match.labelKey, { defaultValue: match.label });
     return t('appName', { defaultValue: 'Mission Winning' });

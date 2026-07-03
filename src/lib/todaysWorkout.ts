@@ -85,6 +85,83 @@ const ROTATION: TodaysWorkout[] = [
       { exerciseId: 'dead-bug', sets: [{ reps: 10, weight: 0 }] },
     ],
   },
+  {
+    name: "Today's Core & Carry",
+    tag: 'Strength',
+    description: 'Anti-rotation and loaded carries — athletic durability.',
+    exercises: [
+      { exerciseId: 'pallof-press', sets: [{ reps: 10, weight: 0 }] },
+      { exerciseId: 'farmer-carry', sets: [{ reps: 40, weight: 0 }] },
+      { exerciseId: 'plank', sets: [{ reps: 45, weight: 0 }] },
+      { exerciseId: 'dead-bug', sets: [{ reps: 10, weight: 0 }] },
+    ],
+  },
+  {
+    name: "Today's Pull Focus",
+    tag: 'Strength',
+    description: 'Back and biceps density — rows and pulls.',
+    exercises: [
+      { exerciseId: 'pull-ups', sets: [{ reps: 6, weight: 0 }, { reps: 6, weight: 0 }] },
+      { exerciseId: 'barbell-row', sets: [{ reps: 8, weight: 0 }, { reps: 8, weight: 0 }] },
+      { exerciseId: 'face-pull-band', sets: [{ reps: 15, weight: 0 }] },
+      { exerciseId: 'hammer-curl', sets: [{ reps: 10, weight: 0 }] },
+    ],
+  },
+  {
+    name: "Today's Push Circuit",
+    tag: 'WOD',
+    description: '3 rounds for quality — push strength endurance.',
+    exercises: [
+      { exerciseId: 'push-ups', sets: [{ reps: 15, weight: 0 }] },
+      { exerciseId: 'dips-chair', sets: [{ reps: 10, weight: 0 }] },
+      { exerciseId: 'pike-pushup', sets: [{ reps: 8, weight: 0 }] },
+      { exerciseId: 'plank', sets: [{ reps: 40, weight: 0 }] },
+    ],
+  },
+  {
+    name: "Today's Leg Volume",
+    tag: 'Strength',
+    description: 'Higher rep leg work — hypertrophy friendly.',
+    exercises: [
+      { exerciseId: 'goblet-squat', sets: [{ reps: 12, weight: 0 }, { reps: 12, weight: 0 }] },
+      { exerciseId: 'romanian-deadlift', sets: [{ reps: 10, weight: 0 }] },
+      { exerciseId: 'walking-lunge', sets: [{ reps: 10, weight: 0 }] },
+      { exerciseId: 'calf-raise', sets: [{ reps: 15, weight: 0 }] },
+    ],
+  },
+  {
+    name: "Today's Band & Body",
+    tag: 'Mobility',
+    description: 'Minimal equipment session — bands and bodyweight.',
+    exercises: [
+      { exerciseId: 'band-pull-apart', sets: [{ reps: 20, weight: 0 }] },
+      { exerciseId: 'push-ups', sets: [{ reps: 10, weight: 0 }] },
+      { exerciseId: 'split-squat', sets: [{ reps: 8, weight: 0 }] },
+      { exerciseId: 'glute-bridge', sets: [{ reps: 12, weight: 0 }] },
+    ],
+  },
+  {
+    name: "Today's Conditioning Ladder",
+    tag: 'Conditioning',
+    description: 'Ascending reps — pace yourself.',
+    exercises: [
+      { exerciseId: 'burpees', sets: [{ reps: 5, weight: 0 }] },
+      { exerciseId: 'jump-squat', sets: [{ reps: 10, weight: 0 }] },
+      { exerciseId: 'mountain-climbers', sets: [{ reps: 20, weight: 0 }] },
+      { exerciseId: 'high-knees', sets: [{ reps: 30, weight: 0 }] },
+    ],
+  },
+  {
+    name: "Today's Unilateral Day",
+    tag: 'Strength',
+    description: 'Single-leg and single-arm balance for symmetry.',
+    exercises: [
+      { exerciseId: 'bulgarian-split-squat', sets: [{ reps: 8, weight: 0 }] },
+      { exerciseId: 'single-leg-rdl', sets: [{ reps: 8, weight: 0 }] },
+      { exerciseId: 'dumbbell-row', sets: [{ reps: 10, weight: 0 }] },
+      { exerciseId: 'side-plank', sets: [{ reps: 30, weight: 0 }] },
+    ],
+  },
 ];
 
 export function getTodaysWorkout(date = new Date()): TodaysWorkout {

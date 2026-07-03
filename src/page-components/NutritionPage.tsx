@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import Link from 'next/link';
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,8 +17,10 @@ import type { FoodSearchItem } from "@/lib/foodSearch";
 import { MetricRing } from "@/components/ui/MetricRing";
 import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { bumpFuelLogStreak, getFuelLogStreak } from "@/lib/fuelStreak";
+import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from "@/lib/macroTargets";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
-import { Plus } from "lucide-react";
+import { Plus, UtensilsCrossed } from "lucide-react";
+import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 
 const FREE_RECIPE_COUNT = 12;
 
@@ -49,8 +52,8 @@ export function NutritionPage() {
   const { t } = useTranslation();
   const { premium, loading: premiumLoading } = usePremium();
   const [premiumRecipes, setPremiumRecipes] = useState<Recipe[]>([]);
-  const [targetCals] = useState(2200);
-  const [targetProtein] = useState(160);
+  const [targetCals, setTargetCals] = useState(2200);
+  const [targetProtein, setTargetProtein] = useState(160);
   const [logged, setLogged] = useState<LogEntry[]>([]);
   const [water, setWater] = useState(0);
   const [customName, setCustomName] = useState("");
@@ -65,6 +68,15 @@ export function NutritionPage() {
 
   // Persist + cloud load/save
   useEffect(() => {
+    const savedTargets = loadMacroTargets();
+    if (savedTargets) {
+      setTargetCals(savedTargets.cals);
+      setTargetProtein(savedTargets.protein);
+    } else {
+      setTargetCals(DEFAULT_MACRO_TARGETS.cals);
+      setTargetProtein(DEFAULT_MACRO_TARGETS.protein);
+    }
+
     const saved = localStorage.getItem("mw_nutrition_log");
     if (saved) setLogged(JSON.parse(saved));
     const savedWater = localStorage.getItem("mw_water");
@@ -201,20 +213,24 @@ export function NutritionPage() {
   return (
     <StaggerGroup className="space-y-6 max-w-3xl pb-24">
       <StaggerItem index={0}>
-      <div>
+      <div className="space-y-2">
         <div className="flex flex-wrap items-start justify-between gap-2">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{t('fuelTitle', { defaultValue: 'Nutrition' })}</h2>
+          <PillarPageHeader
+            icon={UtensilsCrossed}
+            title={t('fuelTitle', { defaultValue: 'Nutrition' })}
+            subtitle={t('fuelSubtitle', {
+              defaultValue:
+                'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
+            })}
+            className="flex-1 min-w-0"
+          />
           {fuelStreak > 0 && (
-            <span className="rounded-full border border-emerald-500/30 bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-400">
+            <span className="rounded-full border border-emerald-500/30 bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-400 shrink-0">
               {t('fuelLogStreak', { count: fuelStreak, defaultValue: `${fuelStreak}-day log streak` })}
             </span>
           )}
         </div>
-        <p className="text-muted-foreground mt-1">
-          {t('fuelSubtitle', {
-            defaultValue:
-              'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
-          })}
+        <p className="text-muted-foreground text-sm">
           {premium
             ? t('fuelPremiumActive', {
                 defaultValue: ' Premium: full recipe library + deep plans (Super Bundle).',
@@ -433,7 +449,9 @@ export function NutritionPage() {
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground space-y-3">
             <p>{t('fuelPremiumLockedBody', { defaultValue: 'Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.' })}</p>
-            <Button variant="fitness" onClick={() => window.location.href = '/bundle'}>{t('fuelExploreBundle', { defaultValue: 'Explore Super Bundle' })}</Button>
+            <Button variant="fitness" asChild>
+              <Link href="/bundle">{t('fuelExploreBundle', { defaultValue: 'Explore Super Bundle' })}</Link>
+            </Button>
           </CardContent>
         </Card>
       )}

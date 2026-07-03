@@ -1,4 +1,5 @@
 import { getTrainingStreak } from '@/lib/challenges';
+import { getContinueChapter, getGuidebookStats, loadGuidebookProgress } from '@/lib/guidebookProgress';
 import { getPillarWins } from '@/lib/pillarLog';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -185,7 +186,8 @@ function detectBasicMilestones(workoutHistory: CompletedWorkoutLog[] = []): Jour
   let learn = false;
   try {
     const completed = JSON.parse(localStorage.getItem('mw_learn_completed') || '[]') as unknown[];
-    learn = completed.length > 0;
+    const guideDone = JSON.parse(localStorage.getItem('mw_guidebook_progress') || '[]') as unknown[];
+    learn = completed.length > 0 || guideDone.length > 0;
   } catch {
     learn = false;
   }
@@ -280,9 +282,9 @@ const BASIC_STEPS: { key: keyof JourneyBasicMilestones; label: string; descripti
   },
   {
     key: 'learn',
-    label: 'Finish one Learn lesson',
-    description: 'Mark any lesson done — takes about 2 minutes.',
-    href: '/learn',
+    label: 'Start the guidebook',
+    description: 'Read one section of Beyond the Basics — about 3 minutes.',
+    href: '/learn/guide',
   },
 ];
 
@@ -339,6 +341,18 @@ export function getNextAction(workoutHistory: CompletedWorkoutLog[] = []): Journ
       };
     }
     if (!state.readiness.streakMet) {
+      const guideStats = getGuidebookStats(loadGuidebookProgress());
+      const cont = getContinueChapter(loadGuidebookProgress());
+      if (cont && guideStats.done < 6) {
+        return {
+          label: `Guidebook: ${cont.section.title}`,
+          description: 'Build your training foundation — read one section, then train.',
+          href: `/learn/guide/${cont.chapter.id}`,
+          phase: 'readiness',
+          stepLabel: 'Readiness · Guidebook',
+          progressPct: 50,
+        };
+      }
       return {
         label: 'Keep your training streak',
         description: '7-day streak or 5 workouts in 14 days — build the habit.',

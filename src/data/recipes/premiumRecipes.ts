@@ -12,7 +12,7 @@ export interface Recipe {
 
 export const PREMIUM_RECIPES: Recipe[] = [
   {
-    "name": "Free Core: Egg Fried Rice Bowl (Global)",
+    "name": "Egg Fried Rice Bowl (Global)",
     "protein": 28,
     "cals": 480,
     "carbs": 55,
@@ -22,7 +22,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core staple: Eggs + rice/veg is accessible worldwide, balanced macros, easy post-workout or any meal."
   },
   {
-    "name": "Free Core: Tuna or Chickpea Salad (No Cook)",
+    "name": "Tuna or Chickpea Salad (No Cook)",
     "protein": 35,
     "cals": 380,
     "carbs": 20,
@@ -32,7 +32,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Canned or legume protein + fresh veg = high protein, hydrating, zero equipment meal for global users."
   },
   {
-    "name": "Free Core: Peanut Butter Banana Oats (Breakfast)",
+    "name": "Peanut Butter Banana Oats (Breakfast)",
     "protein": 18,
     "cals": 420,
     "carbs": 55,
@@ -42,7 +42,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Oats + PB + fruit is globally available, sustained energy, easy to scale for training days."
   },
   {
-    "name": "Free Core: Greek Yogurt Power Bowl",
+    "name": "Greek Yogurt Power Bowl",
     "protein": 30,
     "cals": 350,
     "carbs": 35,
@@ -52,7 +52,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Yogurt + fruit + seeds is cheap, global, quick recovery or snack. Protein for muscle, carbs for energy."
   },
   {
-    "name": "Free Core: Simple Lentil Stew (One Pot)",
+    "name": "Simple Lentil Stew (One Pot)",
     "protein": 25,
     "cals": 400,
     "carbs": 60,
@@ -62,7 +62,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Lentils are cheap complete protein base worldwide. Bulk cook for multiple meals. Pairs with rice for full profile."
   },
   {
-    "name": "Free Core: Post-Mobility Recovery Yogurt Bowl",
+    "name": "Post-Mobility Recovery Yogurt Bowl",
     "protein": 28,
     "cals": 320,
     "carbs": 35,
@@ -72,7 +72,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Synergy with Move/Mind: protein for repair + carbs for glycogen after mobility work. Low effort, high adherence per vision."
   },
   {
-    "name": "Free Core: Simple Egg Rice Recovery (Global)",
+    "name": "Simple Egg Rice Recovery (Global)",
     "protein": 22,
     "cals": 420,
     "carbs": 50,
@@ -82,7 +82,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core recovery: eggs + rice = complete, cheap, worldwide. Supports training adaptation without fancy ingredients."
   },
   {
-    "name": "Free Core: Mindful Post-Workout Oats (Mind + Fuel)",
+    "name": "Mindful Post-Workout Oats (Mind + Fuel)",
     "protein": 18,
     "cals": 380,
     "carbs": 55,
@@ -92,7 +92,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Vision synergy: complex carbs + protein for recovery, mindful eating habit from Mind pillar. Accessible anywhere, cheap base."
   },
   {
-    "name": "Free Core: Lentil Veggie Recovery Stew (Global One-Pot)",
+    "name": "Lentil Veggie Recovery Stew (Global One-Pot)",
     "protein": 26,
     "cals": 410,
     "carbs": 58,
@@ -102,7 +102,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: plant protein + fiber for gut health and recovery. Ties Move (mobility) to Fuel. Low cost, worldwide ingredients."
   },
   {
-    "name": "Free Core: Quick Sardine Toast (Omega Recovery)",
+    "name": "Quick Sardine Toast (Omega Recovery)",
     "protein": 24,
     "cals": 340,
     "carbs": 28,
@@ -112,7 +112,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core omega boost for inflammation/recovery. Minimal equipment, shelf-stable, pairs with Mind wind-down."
   },
   {
-    "name": "Free Core: Chickpea Hummus Wrap (Plant Power)",
+    "name": "Chickpea Hummus Wrap (Plant Power)",
     "protein": 22,
     "cals": 380,
     "carbs": 52,
@@ -122,7 +122,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core plant protein + fiber for sustained energy. Global staple (falafel-inspired), ties to Move recovery and Fuel basics."
   },
   {
-    "name": "Free Core: Banana Almond Butter Rice Cake (Quick Fuel)",
+    "name": "Banana Almond Butter Rice Cake (Quick Fuel)",
     "protein": 8,
     "cals": 280,
     "carbs": 42,
@@ -132,7 +132,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core fast carbs + healthy fat/protein. Minimalist, portable, supports Mind focus and Move sessions without prep."
   },
   {
-    "name": "Free Core: Tofu Scramble Bowl (Veg Protein)",
+    "name": "Tofu Scramble Bowl (Veg Protein)",
     "protein": 25,
     "cals": 350,
     "carbs": 25,
@@ -142,7 +142,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core affordable complete plant protein. Easy for global users, supports training recovery and habit consistency per vision."
   },
   {
-    "name": "Free Core: Tofu Veggie Scramble (Global Veg)",
+    "name": "Tofu Veggie Scramble (Global Veg)",
     "protein": 24,
     "cals": 320,
     "carbs": 18,
@@ -152,7 +152,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Tofu + veg is accessible, high volume, low cost complete protein. Add rice or bread for more cals on training days."
   },
   {
-    "name": "Free Core: Sardine or Mackerel Rice Bowl (Omega Cheap)",
+    "name": "Sardine or Mackerel Rice Bowl (Omega Cheap)",
     "protein": 32,
     "cals": 480,
     "carbs": 45,
@@ -162,7 +162,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Canned oily fish = affordable omega-3s + high protein. Excellent for recovery and global low-resource kitchens."
   },
   {
-    "name": "Free Core: Black Bean Power Rice (Legume Complete)",
+    "name": "Black Bean Power Rice (Legume Complete)",
     "protein": 26,
     "cals": 520,
     "carbs": 85,
@@ -172,7 +172,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Beans + rice = classic complete protein combo used worldwide. High fiber, cheap, sustaining for volume eating."
   },
   {
-    "name": "Free Core: Egg & Potato Hash (Bodyweight Fuel)",
+    "name": "Egg & Potato Hash (Bodyweight Fuel)",
     "protein": 22,
     "cals": 420,
     "carbs": 45,
@@ -182,7 +182,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Eggs + potato is simple, filling, globally common. Great for beginners or minimal equipment days. Add beans for more protein."
   },
   {
-    "name": "Free Core: Overnight Oats Power Bowl (Mind Fuel)",
+    "name": "Overnight Oats Power Bowl (Mind Fuel)",
     "protein": 20,
     "cals": 380,
     "carbs": 48,
@@ -192,7 +192,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Prep-ahead for busy days. Synergy with Mind (mindful eating) + Fuel. Cheap, global ingredients, high fiber/protein."
   },
   {
-    "name": "Free Core: Bean & Rice Burrito Bowl (Global Complete)",
+    "name": "Bean & Rice Burrito Bowl (Global Complete)",
     "protein": 24,
     "cals": 450,
     "carbs": 68,
@@ -202,7 +202,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Beans + rice = complete protein worldwide staple. Ties Fuel to Move recovery. Low cost, scalable, plant-based option."
   },
   {
-    "name": "Free Core: Cottage Cheese or Yogurt Fruit Plate (Quick Protein)",
+    "name": "Cottage Cheese or Yogurt Fruit Plate (Quick Protein)",
     "protein": 28,
     "cals": 300,
     "carbs": 30,
@@ -212,7 +212,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: High protein, probiotic, minimal prep. Global dairy or alternatives. Supports habit stacking with Move/Mind."
   },
   {
-    "name": "Free Core: Sweet Potato & Egg Power Plate (Simple Carbs)",
+    "name": "Sweet Potato & Egg Power Plate (Simple Carbs)",
     "protein": 18,
     "cals": 380,
     "carbs": 42,
@@ -222,7 +222,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Sweet potato for sustained energy + eggs for protein. Minimal equipment, ties to free starters in Home."
   },
   {
-    "name": "Free Core: Avocado Egg Toast (Healthy Fats)",
+    "name": "Avocado Egg Toast (Healthy Fats)",
     "protein": 16,
     "cals": 320,
     "carbs": 28,
@@ -232,7 +232,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Healthy fats from avocado support hormones and recovery. Quick, global ingredients, pairs with Mind wind-down."
   },
   {
-    "name": "Free Core: Chickpea Salad (Plant Protein No-Cook)",
+    "name": "Chickpea Salad (Plant Protein No-Cook)",
     "protein": 18,
     "cals": 340,
     "carbs": 38,
@@ -242,7 +242,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Legume protein for veg days. Hydrating, cheap, ties to Move for post-mobility refuel."
   },
   {
-    "name": "Free Core: Protein Pancakes (Weekend Treat)",
+    "name": "Protein Pancakes (Weekend Treat)",
     "protein": 22,
     "cals": 360,
     "carbs": 42,
@@ -252,7 +252,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Fun way to hit protein. Use as post-training meal. Simple, no special equipment."
   },
   {
-    "name": "Free Core: Quinoa Veggie Bowl (Complete Grain)",
+    "name": "Quinoa Veggie Bowl (Complete Grain)",
     "protein": 20,
     "cals": 390,
     "carbs": 52,
@@ -262,7 +262,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Quinoa is complete protein + fiber. Global, easy, pairs with mobility for recovery fuel."
   },
   {
-    "name": "Free Core: Hummus Veggie Plate (Dip & Dip)",
+    "name": "Hummus Veggie Plate (Dip & Dip)",
     "protein": 15,
     "cals": 310,
     "carbs": 32,
@@ -272,7 +272,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Chickpea hummus for plant protein. Simple, accessible, great with Mind reset."
   },
   {
-    "name": "Free Core: Cottage Cheese Bowl (High Protein Snack)",
+    "name": "Cottage Cheese Bowl (High Protein Snack)",
     "protein": 32,
     "cals": 280,
     "carbs": 18,
@@ -282,7 +282,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Cottage cheese is cheap complete protein. Low prep, supports training recovery."
   },
   {
-    "name": "Free Core: Oatmeal with Egg (Savory Power)",
+    "name": "Oatmeal with Egg (Savory Power)",
     "protein": 22,
     "cals": 400,
     "carbs": 48,
@@ -292,7 +292,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Oats + egg for balanced macros. Ties to habit stacking in Mind and Fuel."
   },
   {
-    "name": "Free Core: Lentil Soup with Greens (One Pot Recovery)",
+    "name": "Lentil Soup with Greens (One Pot Recovery)",
     "protein": 24,
     "cals": 380,
     "carbs": 48,
@@ -302,7 +302,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Lentils for cheap protein + iron. Post training or mobility, easy global meal."
   },
   {
-    "name": "Free Core: Greek Yogurt Parfait with Nuts (Probiotic)",
+    "name": "Greek Yogurt Parfait with Nuts (Probiotic)",
     "protein": 26,
     "cals": 340,
     "carbs": 32,
@@ -312,7 +312,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Yogurt for gut health + protein. Portable, ties Mind and Fuel for daily habit."
   },
   {
-    "name": "Free Core: Simple Dal and Rice (Plant Protein)",
+    "name": "Simple Dal and Rice (Plant Protein)",
     "protein": 22,
     "cals": 410,
     "carbs": 62,
@@ -322,7 +322,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Lentils + rice = complete protein staple worldwide. Cheap, ties to Move recovery and Fuel basics."
   },
   {
-    "name": "Free Core: Banana with PB on Toast (Quick Energy)",
+    "name": "Banana with PB on Toast (Quick Energy)",
     "protein": 10,
     "cals": 320,
     "carbs": 42,
@@ -332,7 +332,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Fast carbs + fat/protein. Minimalist, portable, supports Mind focus and Move sessions."
   },
   {
-    "name": "Free Core: Egg and Bean Scramble (Protein Boost)",
+    "name": "Egg and Bean Scramble (Protein Boost)",
     "protein": 24,
     "cals": 360,
     "carbs": 28,
@@ -342,7 +342,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Eggs + beans for complete protein. Easy, ties to habit stacking in Mind and Fuel."
   },
   {
-    "name": "Free Core: Chia Pudding (Mind Fuel)",
+    "name": "Chia Pudding (Mind Fuel)",
     "protein": 12,
     "cals": 280,
     "carbs": 32,
@@ -352,7 +352,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Prep-ahead for busy days. Synergy with Mind (mindful eating) + Fuel. High fiber, global ingredients."
   },
   {
-    "name": "Free Core: Tempeh Stir Fry (Plant Power)",
+    "name": "Tempeh Stir Fry (Plant Power)",
     "protein": 28,
     "cals": 420,
     "carbs": 35,
@@ -362,7 +362,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Tempeh for fermented plant protein. Synergy with Move (post-mobility) and Fuel basics. Affordable, accessible."
   },
   {
-    "name": "Free Core: Cottage Cheese Bowl (High Protein Snack)",
+    "name": "Cottage Cheese Bowl (High Protein Snack)",
     "protein": 32,
     "cals": 280,
     "carbs": 18,
@@ -372,7 +372,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Cottage cheese is cheap complete protein. Low prep, supports training recovery."
   },
   {
-    "name": "Free Core: Oatmeal with Egg (Savory Power)",
+    "name": "Oatmeal with Egg (Savory Power)",
     "protein": 22,
     "cals": 400,
     "carbs": 48,
@@ -382,7 +382,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Oats + egg for balanced macros. Ties to habit stacking in Mind and Fuel."
   },
   {
-    "name": "Free Core: Lentil Soup with Greens (One Pot Recovery)",
+    "name": "Lentil Soup with Greens (One Pot Recovery)",
     "protein": 24,
     "cals": 380,
     "carbs": 48,
@@ -392,7 +392,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Lentils for cheap protein + iron. Post training or mobility, easy global meal."
   },
   {
-    "name": "Free Core: Peanut Stew (African Inspired)",
+    "name": "Peanut Stew (African Inspired)",
     "protein": 22,
     "cals": 420,
     "carbs": 38,
@@ -402,7 +402,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Affordable peanut + veg protein boost. Global flavors, post training recovery fuel."
   },
   {
-    "name": "Free Core: Smoked Fish + Yam (West African Style)",
+    "name": "Smoked Fish + Yam (West African Style)",
     "protein": 30,
     "cals": 460,
     "carbs": 42,
@@ -412,7 +412,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Canned fish for omega + protein. Yam for sustained carbs. Simple, low resource friendly."
   },
   {
-    "name": "Free Core: Rajma (Kidney Bean Curry) + Rice",
+    "name": "Rajma (Kidney Bean Curry) + Rice",
     "protein": 20,
     "cals": 440,
     "carbs": 68,
@@ -422,7 +422,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Beans + rice complete protein. Cheap, hearty, ties to daily habit in Fuel + recovery."
   },
   {
-    "name": "Free Core: Spinach Egg Drop (Quick Asian)",
+    "name": "Spinach Egg Drop (Quick Asian)",
     "protein": 18,
     "cals": 280,
     "carbs": 12,
@@ -432,7 +432,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Eggs + greens for fast complete protein. Pairs with Mind reset or light Move day."
   },
   {
-    "name": "Free Core: Cottage Cheese + Veggie Stuffed Pepper",
+    "name": "Cottage Cheese + Veggie Stuffed Pepper",
     "protein": 26,
     "cals": 260,
     "carbs": 18,
@@ -442,7 +442,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: High protein low prep snack/meal. Ties to Mind (prep as ritual) and Move recovery."
   },
   {
-    "name": "Free Core: Simple Miso Tofu Bowl (Japanese Inspired)",
+    "name": "Simple Miso Tofu Bowl (Japanese Inspired)",
     "protein": 24,
     "cals": 340,
     "carbs": 22,
@@ -452,7 +452,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Plant protein + umami. Global adaptable, great after mobility or light training."
   },
   {
-    "name": "Free Core: Red Lentil 'Pancakes' (Protein Flatbread)",
+    "name": "Red Lentil 'Pancakes' (Protein Flatbread)",
     "protein": 22,
     "cals": 320,
     "carbs": 42,
@@ -462,7 +462,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Lentils for cheap complete plant protein. Stack with veg or yogurt. Ties Fuel to Mind (mindful prep)."
   },
   {
-    "name": "Free Core: Avocado Egg Smash (No Cook)",
+    "name": "Avocado Egg Smash (No Cook)",
     "protein": 18,
     "cals": 340,
     "carbs": 12,
@@ -472,7 +472,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Healthy fats + complete protein. Great post Move or as Mind wind-down snack. Global breakfast staple."
   },
   {
-    "name": "Free Core: Canned Mackerel + Potato Hash",
+    "name": "Canned Mackerel + Potato Hash",
     "protein": 28,
     "cals": 420,
     "carbs": 38,
@@ -482,7 +482,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Omega + protein from shelf stable fish. Cheap, pairs with recovery after any pillar work."
   },
   {
-    "name": "Free Core: Spinach Egg Scramble with Beans",
+    "name": "Spinach Egg Scramble with Beans",
     "protein": 26,
     "cals": 360,
     "carbs": 28,
@@ -492,7 +492,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Eggs + legumes for full EAA profile. Quick, affordable, synergy with daily Mind/Fuel habits."
   },
   {
-    "name": "Free Core: Chickpea Tomato Curry (One Pan)",
+    "name": "Chickpea Tomato Curry (One Pan)",
     "protein": 20,
     "cals": 380,
     "carbs": 52,
@@ -502,7 +502,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Legume curry staple worldwide. High fiber + protein. Pair with Move recovery or Mind evening meal."
   },
   {
-    "name": "Free Core: Cottage Cheese Berry Plate (Probiotic Power)",
+    "name": "Cottage Cheese Berry Plate (Probiotic Power)",
     "protein": 30,
     "cals": 300,
     "carbs": 28,
@@ -512,7 +512,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Fast complete protein + probiotics. Great post-mobility or as Mind wind-down. Cheap, global dairy alternative friendly."
   },
   {
-    "name": "Free Core: Sardine Egg Toast (Omega + Protein)",
+    "name": "Sardine Egg Toast (Omega + Protein)",
     "protein": 26,
     "cals": 380,
     "carbs": 28,
@@ -522,7 +522,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Shelf-stable omega boost + eggs. Excellent for recovery days or quick Fuel + Move stack."
   },
   {
-    "name": "Free Core: Savory Oat + Egg Bowl (Global Breakfast)",
+    "name": "Savory Oat + Egg Bowl (Global Breakfast)",
     "protein": 22,
     "cals": 380,
     "carbs": 42,
@@ -532,7 +532,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Oats + egg for sustained energy. Versatile base; log as Fuel win after any morning Move or Mind practice."
   },
   {
-    "name": "Free Core: Black Bean & Egg Scramble (Latin Inspired)",
+    "name": "Black Bean & Egg Scramble (Latin Inspired)",
     "protein": 24,
     "cals": 380,
     "carbs": 32,
@@ -542,7 +542,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Beans + eggs complete protein. Cheap, fast, pairs with Mind reset or post Move recovery."
   },
   {
-    "name": "Free Core: Chickpea 'Tuna' Salad (No Cook Vegan)",
+    "name": "Chickpea 'Tuna' Salad (No Cook Vegan)",
     "protein": 18,
     "cals": 340,
     "carbs": 38,
@@ -552,7 +552,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Plant-based complete combo. Portable, no cook, great for Fuel + Mind mindful eating."
   },
   {
-    "name": "Free Core: Cottage Cheese + Black Bean Bowl (Probiotic Power)",
+    "name": "Cottage Cheese + Black Bean Bowl (Probiotic Power)",
     "protein": 28,
     "cals": 320,
     "carbs": 30,
@@ -562,7 +562,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Dairy + legume for extra protein. Synergy with Move (post workout) and Mind (simple ritual)."
   },
   {
-    "name": "Free Core: Savory Lentil 'Porridge' with Egg",
+    "name": "Savory Lentil 'Porridge' with Egg",
     "protein": 26,
     "cals": 400,
     "carbs": 48,
@@ -572,7 +572,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Lentils for affordable protein base. Warm, comforting, log as Fuel win after any pillar work."
   },
   {
-    "name": "Free Core: Canned Tuna Chickpea Mash (No Cook)",
+    "name": "Canned Tuna Chickpea Mash (No Cook)",
     "protein": 32,
     "cals": 380,
     "carbs": 28,
@@ -582,7 +582,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Shelf-stable complete protein. Portable for travel or post-Move recovery. Ties to Mind mindful eating."
   },
   {
-    "name": "Free Core: Savory Oatmeal with Egg & Greens",
+    "name": "Savory Oatmeal with Egg & Greens",
     "protein": 22,
     "cals": 360,
     "carbs": 42,
@@ -592,7 +592,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Oats + egg for sustained energy. Quick Fuel after Mind or Move sessions. Global breakfast staple."
   },
   {
-    "name": "Free Core: Black Bean Veggie Bowl (Plant Power)",
+    "name": "Black Bean Veggie Bowl (Plant Power)",
     "protein": 20,
     "cals": 400,
     "carbs": 58,
@@ -602,7 +602,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Affordable legume + grain complete protein. Batch cook friendly, pairs with daily Move or Mind habit."
   },
   {
-    "name": "Free Core: Greek Yogurt with Lentils & Herbs (Probiotic + Protein)",
+    "name": "Greek Yogurt with Lentils & Herbs (Probiotic + Protein)",
     "protein": 28,
     "cals": 340,
     "carbs": 32,
@@ -612,7 +612,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Yogurt + legumes for gut + muscle support. Simple post-training or evening Mind wind-down fuel."
   },
   {
-    "name": "Free Core: Red Lentil Soup with Egg (One Pot)",
+    "name": "Red Lentil Soup with Egg (One Pot)",
     "protein": 24,
     "cals": 380,
     "carbs": 48,
@@ -622,7 +622,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Affordable lentil protein base. Warm, comforting; log as Fuel win after Move or Mind sessions."
   },
   {
-    "name": "Free Core: Chickpea Avocado Mash (No Cook)",
+    "name": "Chickpea Avocado Mash (No Cook)",
     "protein": 18,
     "cals": 360,
     "carbs": 32,
@@ -632,7 +632,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Plant complete protein + healthy fats. Portable for post-Move recovery or Mind snack."
   },
   {
-    "name": "Free Core: Tofu Scramble with Black Beans (Veg Power)",
+    "name": "Tofu Scramble with Black Beans (Veg Power)",
     "protein": 26,
     "cals": 380,
     "carbs": 32,
@@ -642,7 +642,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: High volume plant protein. Ties Fuel to daily Mind or Move habit stacking."
   },
   {
-    "name": "Free Core: Savory Yogurt with Beans & Corn (Quick)",
+    "name": "Savory Yogurt with Beans & Corn (Quick)",
     "protein": 22,
     "cals": 340,
     "carbs": 38,
@@ -652,7 +652,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Probiotic + legume protein. Simple evening Fuel + Mind ritual or post training."
   },
   {
-    "name": "Free Core: Quick Chickpea Curry (One Pan)",
+    "name": "Quick Chickpea Curry (One Pan)",
     "protein": 20,
     "cals": 400,
     "carbs": 52,
@@ -662,7 +662,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Affordable legume curry staple worldwide. Batch cook friendly, pairs with Move recovery or Mind evening meal."
   },
   {
-    "name": "Free Core: Egg & Potato Hash with Beans",
+    "name": "Egg & Potato Hash with Beans",
     "protein": 24,
     "cals": 420,
     "carbs": 48,
@@ -672,7 +672,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Hearty complete protein + carb. Quick Fuel after any pillar work, ties to daily habit stacking."
   },
   {
-    "name": "Free Core: Mackerel or Sardine Sweet Potato Mash",
+    "name": "Mackerel or Sardine Sweet Potato Mash",
     "protein": 28,
     "cals": 400,
     "carbs": 38,
@@ -682,7 +682,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Shelf-stable omega + protein. Excellent for recovery days or quick Fuel + Move stack."
   },
   {
-    "name": "Free Core: Black Bean & Corn Salad with Yogurt",
+    "name": "Black Bean & Corn Salad with Yogurt",
     "protein": 18,
     "cals": 340,
     "carbs": 42,
@@ -692,7 +692,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Plant protein + probiotic. Portable for post-Move or Mind wind-down snack."
   },
   {
-    "name": "Free Core: Lentil Veggie Stew with Egg (One Pot)",
+    "name": "Lentil Veggie Stew with Egg (One Pot)",
     "protein": 26,
     "cals": 400,
     "carbs": 52,
@@ -702,7 +702,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Affordable lentil protein base. Warm, comforting; log as Fuel win after Move or Mind sessions."
   },
   {
-    "name": "Free Core: Cottage Cheese with Black Beans & Corn (Quick)",
+    "name": "Cottage Cheese with Black Beans & Corn (Quick)",
     "protein": 28,
     "cals": 360,
     "carbs": 38,
@@ -712,7 +712,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: High protein + probiotic. Simple post-training or evening Mind wind-down fuel."
   },
   {
-    "name": "Free Core: Savory Oat with Sardines or Beans",
+    "name": "Savory Oat with Sardines or Beans",
     "protein": 24,
     "cals": 380,
     "carbs": 42,
@@ -722,7 +722,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Oats + complete protein. Quick Fuel after any pillar work, ties to daily habit stacking."
   },
   {
-    "name": "Free Core: Tofu Rice Bowl with Veggies (Plant Power)",
+    "name": "Tofu Rice Bowl with Veggies (Plant Power)",
     "protein": 22,
     "cals": 400,
     "carbs": 52,
@@ -732,7 +732,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: High volume plant protein. Ties Fuel to Move recovery or Mind mindful eating."
   },
   {
-    "name": "Free Core: Chickpea Curry Quick (One Pan)",
+    "name": "Chickpea Curry Quick (One Pan)",
     "protein": 20,
     "cals": 380,
     "carbs": 48,
@@ -742,7 +742,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Affordable legume curry staple worldwide. Batch cook friendly, pairs with Move recovery or Mind evening meal."
   },
   {
-    "name": "Free Core: Egg & Lentil Scramble (Quick)",
+    "name": "Egg & Lentil Scramble (Quick)",
     "protein": 26,
     "cals": 360,
     "carbs": 28,
@@ -752,7 +752,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Eggs + legumes for complete protein. Quick Fuel after any pillar work, ties to daily habit stacking."
   },
   {
-    "name": "Free Core: Yogurt with Beans & Greens (Probiotic)",
+    "name": "Yogurt with Beans & Greens (Probiotic)",
     "protein": 22,
     "cals": 320,
     "carbs": 32,
@@ -762,7 +762,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Probiotic + legume protein. Simple evening Fuel + Mind ritual or post training."
   },
   {
-    "name": "Free Core: Tofu Veggie Stir (Plant Power)",
+    "name": "Tofu Veggie Stir (Plant Power)",
     "protein": 24,
     "cals": 360,
     "carbs": 28,
@@ -772,7 +772,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: High volume plant protein. Ties Fuel to Move recovery or Mind mindful eating."
   },
   {
-    "name": "Free Core: Black Bean and Egg Power Bowl",
+    "name": "Black Bean and Egg Power Bowl",
     "protein": 28,
     "cals": 420,
     "carbs": 48,
@@ -782,7 +782,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Legume + egg complete protein. Quick post-Move or Mind session fuel, ties to daily habit."
   },
   {
-    "name": "Free Core: Cottage Cheese with Lentils and Herbs",
+    "name": "Cottage Cheese with Lentils and Herbs",
     "protein": 30,
     "cals": 340,
     "carbs": 28,
@@ -792,7 +792,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: High protein + probiotic. Simple evening wind-down or post-training snack, synergy with Mind."
   },
   {
-    "name": "Free Core: Savory Oat with Sardines or Chickpeas",
+    "name": "Savory Oat with Sardines or Chickpeas",
     "protein": 26,
     "cals": 400,
     "carbs": 42,
@@ -802,7 +802,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Oats + complete protein. Versatile quick Fuel after any pillar work."
   },
   {
-    "name": "Free Core: Tofu Scramble with Veggies and Beans",
+    "name": "Tofu Scramble with Veggies and Beans",
     "protein": 26,
     "cals": 380,
     "carbs": 32,
@@ -812,7 +812,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Plant-based complete protein. Ties Fuel to Move or Mind daily habit."
   },
   {
-    "name": "Free Core: Savory Chickpea and Spinach Scramble",
+    "name": "Savory Chickpea and Spinach Scramble",
     "protein": 24,
     "cals": 340,
     "carbs": 32,
@@ -822,7 +822,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Quick complete protein scramble. Great post-Move or as Mind reset meal, log in Nutrition for synergy."
   },
   {
-    "name": "Free Core: High Protein Lentil and Egg Bowl",
+    "name": "High Protein Lentil and Egg Bowl",
     "protein": 28,
     "cals": 400,
     "carbs": 48,
@@ -832,7 +832,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Lentils + egg for affordable complete protein. Ties Fuel to daily Move or Mind habit."
   },
   {
-    "name": "Free Core: Cottage Cheese and Black Bean Power Plate",
+    "name": "Cottage Cheese and Black Bean Power Plate",
     "protein": 32,
     "cals": 360,
     "carbs": 30,
@@ -842,7 +842,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Probiotic + legume protein combo. Simple, portable, synergy with Mind and post-Move recovery."
   },
   {
-    "name": "Free Core: Quick Tofu and Veggie Rice Bowl",
+    "name": "Quick Tofu and Veggie Rice Bowl",
     "protein": 24,
     "cals": 420,
     "carbs": 52,
@@ -852,7 +852,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Plant protein + carb for sustained energy. Log after Move or as Fuel + Mind stack."
   },
   {
-    "name": "Free Core: Black Bean and Corn Salad with Yogurt",
+    "name": "Black Bean and Corn Salad with Yogurt",
     "protein": 18,
     "cals": 340,
     "carbs": 42,
@@ -862,7 +862,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Plant protein + probiotic. Portable for post-Move or Mind wind-down snack."
   },
   {
-    "name": "Free Core: Egg and Sweet Potato Hash with Beans",
+    "name": "Egg and Sweet Potato Hash with Beans",
     "protein": 24,
     "cals": 420,
     "carbs": 48,
@@ -872,7 +872,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Hearty complete protein + carb. Quick Fuel after any pillar work."
   },
   {
-    "name": "Free Core: Cottage Cheese with Lentils and Veggies",
+    "name": "Cottage Cheese with Lentils and Veggies",
     "protein": 30,
     "cals": 340,
     "carbs": 28,
@@ -882,7 +882,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Probiotic + legume protein. Ties to Mind wind-down or post-Move recovery."
   },
   {
-    "name": "Free Core: Tofu Rice Bowl with Simple Peanut Sauce",
+    "name": "Tofu Rice Bowl with Simple Peanut Sauce",
     "protein": 24,
     "cals": 420,
     "carbs": 48,
@@ -892,7 +892,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Plant protein with flavor. Synergy with Move or Mind daily habit."
   },
   {
-    "name": "Free Core: Lentil and Rice Bowl with Egg",
+    "name": "Lentil and Rice Bowl with Egg",
     "protein": 26,
     "cals": 420,
     "carbs": 52,
@@ -902,7 +902,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Affordable complete protein + carb. Ties Fuel to daily Move or Mind habit."
   },
   {
-    "name": "Free Core: Cottage Cheese with Black Beans and Greens",
+    "name": "Cottage Cheese with Black Beans and Greens",
     "protein": 30,
     "cals": 340,
     "carbs": 28,
@@ -912,7 +912,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: Probiotic + legume protein. Simple post-Move or evening Mind wind-down."
   },
   {
-    "name": "Free Core: Tofu Stir Fry with Veggies and Rice",
+    "name": "Tofu Stir Fry with Veggies and Rice",
     "protein": 24,
     "cals": 400,
     "carbs": 48,
@@ -922,7 +922,7 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "tip": "Free core: High volume plant protein. Synergy with Move recovery or Mind stack."
   },
   {
-    "name": "Free Core: Greek Yogurt with Lentils and Veggies",
+    "name": "Greek Yogurt with Lentils and Veggies",
     "protein": 28,
     "cals": 360,
     "carbs": 32,
@@ -930,5 +930,105 @@ export const PREMIUM_RECIPES: Recipe[] = [
     "ingredients": "200g Greek yogurt, 100g cooked lentils, cucumber, tomato, cumin, lemon",
     "instructions": "Mix yogurt with lentils and salad. 2 min.",
     "tip": "Free core: Probiotic + complete protein. Portable for post-Move or Mind snack."
+  },
+  {
+    "name": "Meal Prep Chicken & Rice (5 containers)",
+    "protein": 42,
+    "cals": 520,
+    "carbs": 55,
+    "fat": 12,
+    "ingredients": "1kg chicken, 800g cooked rice, broccoli, oil, spices",
+    "instructions": "Batch grill chicken, portion with rice and veg into 5 containers. Refrigerate.",
+    "tip": "Premium meal prep — one cook session fuels the work week."
+  },
+  {
+    "name": "High-Protein Chili",
+    "protein": 38,
+    "cals": 450,
+    "carbs": 42,
+    "fat": 14,
+    "ingredients": "500g lean beef or turkey, beans, tomato, onion, chili spices",
+    "instructions": "Brown meat, simmer with beans and tomato 30 min.",
+    "tip": "Freezer-friendly. Fiber + protein for training phases."
+  },
+  {
+    "name": "Salmon & Asparagus Sheet Pan",
+    "protein": 40,
+    "cals": 420,
+    "carbs": 12,
+    "fat": 24,
+    "ingredients": "2 salmon fillets, asparagus, lemon, olive oil, garlic",
+    "instructions": "Roast 18 min at 200°C. Simple omega-3 dinner.",
+    "tip": "Low carb evening option on rest days."
+  },
+  {
+    "name": "Overnight Protein Oats (7 jars)",
+    "protein": 32,
+    "cals": 400,
+    "carbs": 48,
+    "fat": 10,
+    "ingredients": "Oats, whey, yogurt, chia, berries × 7 jars",
+    "instructions": "Prep Sunday, grab daily. Add water if too thick.",
+    "tip": "Breakfast solved for the training week."
+  },
+  {
+    "name": "Turkey Meatball Marinara",
+    "protein": 36,
+    "cals": 440,
+    "carbs": 38,
+    "fat": 16,
+    "ingredients": "500g ground turkey, marinara, whole wheat pasta optional",
+    "instructions": "Bake meatballs, simmer in sauce, serve over pasta or zucchini.",
+    "tip": "Family-friendly premium staple."
+  },
+  {
+    "name": "Pre-Workout Rice Cakes & Honey",
+    "protein": 8,
+    "cals": 280,
+    "carbs": 58,
+    "fat": 2,
+    "ingredients": "2 rice cakes, honey, pinch salt, optional jam",
+    "instructions": "Spread honey, eat 30–60 min pre-lift.",
+    "tip": "Fast carbs before heavy sessions."
+  },
+  {
+    "name": "Post-Leg-Day Carb Bowl",
+    "protein": 35,
+    "cals": 580,
+    "carbs": 75,
+    "fat": 12,
+    "ingredients": "White rice, chicken, pineapple, teriyaki light",
+    "instructions": "Combine warm. Higher GI post lower-body volume.",
+    "tip": "Glycogen refill after leg day."
+  },
+  {
+    "name": "Cottage Cheese Pancakes",
+    "protein": 34,
+    "cals": 360,
+    "carbs": 28,
+    "fat": 14,
+    "ingredients": "200g cottage cheese, 2 eggs, oats, vanilla, berries",
+    "instructions": "Blend batter, pan fry small cakes.",
+    "tip": "Protein-dense breakfast variation."
+  },
+  {
+    "name": "Shrimp & Veg Stir Fry",
+    "protein": 32,
+    "cals": 320,
+    "carbs": 22,
+    "fat": 12,
+    "ingredients": "300g shrimp, mixed veg, garlic, soy, rice optional",
+    "instructions": "High heat stir fry 6 min. Do not overcook shrimp.",
+    "tip": "Lean protein, quick premium dinner."
+  },
+  {
+    "name": "Beef & Sweet Potato Hash",
+    "protein": 44,
+    "cals": 540,
+    "carbs": 42,
+    "fat": 22,
+    "ingredients": "Lean beef, sweet potato cubes, peppers, eggs optional",
+    "instructions": "Cook potato first, add beef and veg, top with fried egg.",
+    "tip": "Hearty refeed meal for hard training blocks."
   }
 ];

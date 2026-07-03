@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Calendar, Dumbbell, Timer, Trophy } from 'lucide-react';
+import { Calendar, Dumbbell, History as HistoryIcon, Timer, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -45,6 +46,8 @@ import { getExercisesWithBenchmarkData } from '@/lib/benchmarks';
 import { useWorkoutStore } from '@/store/workoutStore';
 import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { getUser, getUserNutritionForDate } from '@/lib/supabase';
+import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -112,18 +115,20 @@ export function HistoryPage() {
         });
 
   return (
-    <div className="space-y-6">
+    <StaggerGroup className="space-y-6">
+      <StaggerItem index={0}>
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">
-          {t('historyTitle', { defaultValue: 'Workout History' })}
-        </h2>
-        <p className="text-muted-foreground">
-          {t('historySubtitle', {
+        <PillarPageHeader
+          icon={HistoryIcon}
+          title={t('historyTitle', { defaultValue: 'Workout History' })}
+          subtitle={t('historySubtitle', {
             defaultValue: 'Your history powers the Today Hub readiness and Win Score.',
-          })}{' '}
-          <a href="/log" className="underline">
+          })}
+        />
+        <p className="text-muted-foreground text-sm mt-2">
+          <Link href="/log" className="underline">
             Today Hub
-          </a>
+          </Link>
         </p>
         <p className="mt-1 text-muted-foreground">
           {sessionLabel}
@@ -137,12 +142,13 @@ export function HistoryPage() {
               unit: unitLabel,
               defaultValue: `Recent trend: Avg volume last 5: ${summary.avgVolume.toLocaleString()} ${unitLabel}.`,
             })}{' '}
-            <a href="/log" className="underline">
+            <Link href="/log" className="underline">
               Today Hub
-            </a>
+            </Link>
           </p>
         )}
       </div>
+      </StaggerItem>
 
       {workoutHistory.length > 0 && (
         <>
@@ -251,9 +257,9 @@ export function HistoryPage() {
                     ({formatDate(w.date || new Date().toISOString())})
                   </span>
                 </span>
-                <a href="/nutrition" className="text-xs underline">
+                <Link href="/nutrition" className="text-xs underline">
                   View in Nutrition →
-                </a>
+                </Link>
               </div>
             ))}
           </div>
@@ -358,10 +364,10 @@ export function HistoryPage() {
       </Dialog>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        <a href="/profile" className="text-emerald-400 hover:underline">
+        <Link href="/profile" className="text-emerald-400 hover:underline">
           {t('historySignInFoot', { defaultValue: 'Sign in (optional) to load full cloud history.' })}
-        </a>
+        </Link>
       </p>
-    </div>
+    </StaggerGroup>
   );
 }

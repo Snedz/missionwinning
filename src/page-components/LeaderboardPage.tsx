@@ -23,6 +23,7 @@ import { BOARD_I18N_KEY } from '@/i18n/leaderboardLocales';
 import { LeaderboardBoardPicker } from '@/components/leaderboard/LeaderboardBoardPicker';
 import { LeaderboardScopeTabs } from '@/components/leaderboard/LeaderboardScopeTabs';
 import { LeaderboardTable } from '@/components/leaderboard/LeaderboardTable';
+import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { getJoinedClassCode } from '@/lib/schoolClass';
 
 export function LeaderboardPage() {
@@ -151,23 +152,15 @@ export function LeaderboardPage() {
   return (
     <div className="space-y-6 pb-8">
       <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 text-emerald-400 mb-1">
-            <Trophy className="h-5 w-5" />
-            <span className="text-xs uppercase tracking-widest font-medium">
-              {t('leaderboardRankings', { defaultValue: 'Rankings' })}
-            </span>
-          </div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-            {t('leaderboardTitle', { defaultValue: 'Leaderboard' })}
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1 max-w-lg">
-            {t('leaderboardSubtitle', {
-              defaultValue:
-                'Compare Mission Operators globally, by region, country, locale, or squad.',
-            })}
-          </p>
-        </div>
+        <PillarPageHeader
+          icon={Trophy}
+          title={t('leaderboardTitle', { defaultValue: 'Leaderboard' })}
+          subtitle={t('leaderboardSubtitle', {
+            defaultValue:
+              'Compare Mission Operators globally, by region, country, locale, or squad.',
+          })}
+          className="flex-1 min-w-0"
+        />
         <Button
           variant="outline"
           size="sm"

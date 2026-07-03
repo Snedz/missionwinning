@@ -447,6 +447,87 @@ export const PREMIUM_PROGRAM_TEMPLATES: ProgramTemplate[] = [
       },
     ],
   },
+  {
+    id: "pro-531-bbb",
+    name: "5/3/1 Boring But Big",
+    category: "pro",
+    description: "Wendler 5/3/1 main lifts plus 5×10 supplemental volume on the same movement.",
+    duration: "4-week waves",
+    focus: "Strength + hypertrophy",
+    sessions: [
+      {
+        id: "531-squat",
+        name: "Squat 5/3/1 + BBB",
+        notes: "Main work per 5/3/1 week; then 5×10 @ 50% same lift.",
+        exercises: [ex("squats", 3, 5), ex("squats", 5, 10)],
+      },
+      {
+        id: "531-bench",
+        name: "Bench 5/3/1 + BBB",
+        exercises: [ex("bench-press", 3, 5), ex("bench-press", 5, 10)],
+      },
+      {
+        id: "531-dead",
+        name: "Deadlift 5/3/1 + BBB",
+        exercises: [ex("deadlift", 3, 5), ex("romanian-deadlift", 5, 10)],
+      },
+      {
+        id: "531-ohp",
+        name: "OHP 5/3/1 + BBB",
+        exercises: [ex("overhead-press", 3, 5), ex("overhead-press", 5, 10)],
+      },
+    ],
+  },
+  {
+    id: "pro-gzclp",
+    name: "GZCLP Linear",
+    category: "pro",
+    description: "Cody Lefever GZCL linear progression — tier 1/2/3 structure for novices.",
+    duration: "Until stalls",
+    focus: "Novice linear",
+    sessions: [
+      {
+        id: "gzcl-a",
+        name: "Day A — Squat / Bench / Lat",
+        exercises: [ex("squats", 5, 3), ex("bench-press", 3, 10), ex("lat-pulldown", 3, 15)],
+      },
+      {
+        id: "gzcl-b",
+        name: "Day B — OHP / Deadlift",
+        exercises: [ex("overhead-press", 5, 3), ex("deadlift", 3, 5)],
+      },
+    ],
+  },
+  {
+    id: "pro-nsuns-lite",
+    name: "nSuns Lite (4-day)",
+    category: "pro",
+    description: "Reduced T1/T2 volume inspired by nSuns — still high frequency bench/squat.",
+    duration: "Weekly",
+    focus: "Intermediate frequency",
+    sessions: [
+      {
+        id: "nsuns-bench",
+        name: "Bench + OHP",
+        exercises: [ex("bench-press", 8, 5), ex("overhead-press", 4, 8), ex("tricep-pushdown", 3, 12)],
+      },
+      {
+        id: "nsuns-squat",
+        name: "Squat + Sumo",
+        exercises: [ex("squats", 8, 5), ex("sumo-deadlift", 4, 8), ex("leg-curl", 3, 12)],
+      },
+      {
+        id: "nsuns-ohp",
+        name: "OHP + Incline",
+        exercises: [ex("overhead-press", 8, 5), ex("incline-bench", 4, 8), ex("lateral-raise", 3, 15)],
+      },
+      {
+        id: "nsuns-dead",
+        name: "Dead + Front Squat",
+        exercises: [ex("deadlift", 6, 3), ex("front-squat", 4, 8), ex("barbell-row", 3, 10)],
+      },
+    ],
+  },
 ];
 
 export function getPremiumProgramTemplates(): ProgramTemplate[] {

@@ -1,11 +1,13 @@
 'use client';
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import {
   BarChart3,
   LineChart as LineChartIcon,
   Scale,
+  Shield,
   Target,
   TrendingUp,
 } from "lucide-react";
@@ -48,10 +50,12 @@ import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
 import { PresidentialFitnessSection } from "@/components/fitness-test/PresidentialFitnessSection";
+import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 
 export function BenchmarksPage() {
   const { t } = useTranslation();
+  const router = useRouter();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
@@ -100,17 +104,14 @@ export function BenchmarksPage() {
   if (workoutHistory.length === 0 || exerciseIds.length === 0) {
     return (
       <div className="space-y-6">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight fitness-text-gradient">
-            {t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
-          </h2>
-          <p className="mt-1 text-muted-foreground">
-            {t('benchmarksSubtitle', {
-              defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
-            })}
-          </p>
-        </div>
-        <Card className="border-dashed">
+        <PillarPageHeader
+          icon={Shield}
+          title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
+          subtitle={t('benchmarksSubtitle', {
+            defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
+          })}
+        />
+        <Card className="content-card border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <BarChart3 className="h-12 w-12 text-muted-foreground mb-4" />
             <p className="font-medium">
@@ -132,16 +133,13 @@ export function BenchmarksPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight fitness-text-gradient">
-          {t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
-        </h2>
-        <p className="mt-1 text-muted-foreground">
-          {t('benchmarksSubtitle', {
-            defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
-          })}
-        </p>
-      </div>
+      <PillarPageHeader
+        icon={Shield}
+        title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
+        subtitle={t('benchmarksSubtitle', {
+          defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
+        })}
+      />
 
       <MilitaryReadinessSection />
       <PresidentialFitnessSection />
@@ -513,21 +511,21 @@ export function BenchmarksPage() {
             const store = useWorkoutStore.getState();
             store.startWorkout("Bench Benchmark", [{ exerciseId: "bench-press", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
             try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch {}
-            window.location.href = "/active";
+            router.push('/active');
           }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Squat Benchmark", [{ exerciseId: "squats", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
             try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch {}
-            window.location.href = "/active";
+            router.push('/active');
           }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Deadlift Benchmark", [{ exerciseId: "deadlift", sets: [{ reps: 3, weight: 0 }, { reps: 3, weight: 0 }] }]);
             try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch {}
-            window.location.href = "/active";
+            router.push('/active');
           }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls →' })}</Button>
-          <Button size="sm" variant="outline" onClick={() => window.location.href = "/log"}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today →' })}</Button>
+          <Button size="sm" variant="outline" onClick={() => router.push('/log')}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today →' })}</Button>
           <Button size="sm" variant="ghost" onClick={() => {
             try {
               const cur = parseInt(localStorage.getItem('mw_streak') || '0') + 1;

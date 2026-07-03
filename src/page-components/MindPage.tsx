@@ -1,9 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BreathingTimer } from '@/components/pillars/BreathingTimer';
 import { DailyCheckIn } from '@/components/pillars/DailyCheckIn';
 import { UnlockButton } from '@/components/UnlockButton';
+import { usePremium } from '@/hooks/usePremium';
+import type { GuidedMindSession } from '@/data/guidedMindSessions';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
@@ -14,9 +17,24 @@ import { Brain } from 'lucide-react';
 
 export function MindPage() {
   const { t } = useTranslation();
+  const { premium } = usePremium();
+  const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
   const recentWins = typeof window !== 'undefined'
     ? getPillarWins(5).filter((w) => w.pillar === 'mind')
     : [];
+
+  useEffect(() => {
+    if (!premium) {
+      setPremiumSessions([]);
+      return;
+    }
+    fetch('/api/premium/mind')
+      .then((r) => (r.ok ? r.json() : { sessions: [] }))
+      .then((d) => setPremiumSessions(d.sessions ?? []))
+      .catch(() => setPremiumSessions([]));
+  }, [premium]);
+
+  const allSessions = [...GUIDED_MIND_SESSIONS, ...premiumSessions];
 
   return (
     <StaggerGroup className="space-y-6">
@@ -26,7 +44,7 @@ export function MindPage() {
           title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
           subtitle={t('mindSubtitle', {
             defaultValue:
-              'Free breathing timer, guided sessions, and daily check-in. Premium unlocks full audio libraries (Super Bundle).',
+              '10 free guided sessions, breathing timer, and daily check-in. Premium adds 12 deeper sessions (Super Bundle).',
           })}
         />
       </StaggerItem>
@@ -44,12 +62,20 @@ export function MindPage() {
             {t('mindGuidedFree', { defaultValue: 'Free guided sessions' })}
           </h3>
           <div className="grid gap-4 md:grid-cols-3">
-            {GUIDED_MIND_SESSIONS.map((s) => (
+            {allSessions.map((s) => (
               <GuidedMindSessionRunner key={s.id} session={s} />
             ))}
           </div>
         </div>
       </StaggerItem>
+
+      {premiumSessions.length > 0 && (
+        <StaggerItem index={2}>
+          <p className="text-xs text-emerald-400">
+            {t('mindPremiumLoaded', { defaultValue: 'Premium sessions unlocked above.' })}
+          </p>
+        </StaggerItem>
+      )}
 
       {recentWins.length > 0 && (
         <StaggerItem index={3}>

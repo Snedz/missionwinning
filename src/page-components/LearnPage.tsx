@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
 import { logPillarWin } from '@/lib/pillarLog';
-import { ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
+import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
 
 export function LearnPage() {
   const { t, i18n } = useTranslation();
@@ -54,6 +54,32 @@ export function LearnPage() {
       </StaggerItem>
 
       <StaggerItem index={1}>
+        <Card className="content-card border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 to-card">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <BookMarked className="h-4 w-4 text-emerald-400" />
+              {t('learnExpandedBanner', {
+                defaultValue: 'Now with even more content!',
+              })}
+            </CardTitle>
+            <CardDescription>
+              {t('learnExpandedDesc', {
+                defaultValue:
+                  'Beyond the Basics guidebook — 6 chapters on performance science, movement, programming, and more. ISSA-aligned, free core.',
+              })}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button variant="fitness" size="sm" asChild>
+              <Link href="/learn/guide">
+                {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook →' })}
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </StaggerItem>
+
+      <StaggerItem index={2}>
         <div className="space-y-3">
           {paths.map((path) => {
             const open = expandedPath === path.id;
@@ -125,7 +151,7 @@ export function LearnPage() {
         </div>
       </StaggerItem>
 
-      <StaggerItem index={2}>
+      <StaggerItem index={3}>
         <Card className="content-card border-emerald-500/20">
           <CardHeader>
             <CardTitle className="text-base">
@@ -151,7 +177,7 @@ export function LearnPage() {
         </Card>
       </StaggerItem>
 
-      <StaggerItem index={3}>
+      <StaggerItem index={4}>
         <Card className="content-card border-white/10 bg-card/50">
           <CardHeader>
             <CardTitle className="text-base">

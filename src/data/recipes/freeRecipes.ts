@@ -129,5 +129,85 @@ export const FREE_RECIPES: Recipe[] = [
     "ingredients": "250g milk or Greek yogurt, 30g whey or more yogurt, banana, 15g almonds, cinnamon",
     "instructions": "Blend all. Post-session quick hit. Add ice. 5-10min prep.",
     "tip": "Ch5: Milk proteins (lactalbumin) fast + complete. Leucine rich for immediate synthesis trigger. Hormonal support (insulin response with carbs). Great when solid food heavy."
+  },
+  {
+    "name": "Budget Chicken & Rice (Global Staple)",
+    "protein": 45,
+    "cals": 520,
+    "carbs": 55,
+    "fat": 10,
+    "ingredients": "150g chicken thigh or breast, 200g cooked rice, frozen mixed veg, soy or hot sauce",
+    "instructions": "Pan cook chicken, steam veg, combine over rice. Season to taste.",
+    "tip": "Affordable worldwide. Batch cook 3 days at once. Protein + carb base for trainees on a budget."
+  },
+  {
+    "name": "15-Min Tuna Pasta",
+    "protein": 38,
+    "cals": 480,
+    "carbs": 52,
+    "fat": 12,
+    "ingredients": "1 can tuna, 80g dry pasta, cherry tomatoes, garlic, olive oil, lemon",
+    "instructions": "Boil pasta. Sauté garlic/tomato, flake tuna in, toss with pasta and lemon.",
+    "tip": "Fast post-workout when time is tight. Complete protein from fish."
+  },
+  {
+    "name": "Overnight Oats (No Cook)",
+    "protein": 28,
+    "cals": 380,
+    "carbs": 48,
+    "fat": 10,
+    "ingredients": "60g oats, 200g milk or yogurt, 1 scoop whey or extra yogurt, berries, chia",
+    "instructions": "Mix night before, refrigerate. Grab and go in the morning.",
+    "tip": "Consistent breakfast habit beats perfect macros you never eat."
+  },
+  {
+    "name": "Black Bean & Egg Bowl",
+    "protein": 32,
+    "cals": 420,
+    "carbs": 38,
+    "fat": 14,
+    "ingredients": "1 can black beans, 2 eggs, salsa, avocado half, rice optional",
+    "instructions": "Warm beans, fry or scramble eggs, top with salsa and avocado.",
+    "tip": "Plant + animal protein combo. High fiber for satiety."
+  },
+  {
+    "name": "Cottage Cheese & Fruit Plate",
+    "protein": 35,
+    "cals": 310,
+    "carbs": 28,
+    "fat": 8,
+    "ingredients": "250g cottage cheese, apple or pineapple, cinnamon, 15g walnuts",
+    "instructions": "Plate cottage cheese, top fruit and nuts. No cooking required.",
+    "tip": "Casein-rich dairy — good evening snack for sustained amino acids."
+  },
+  {
+    "name": "Sheet Pan Sausage & Veg",
+    "protein": 30,
+    "cals": 450,
+    "carbs": 25,
+    "fat": 28,
+    "ingredients": "2 chicken sausages, bell peppers, zucchini, onion, olive oil, herbs",
+    "instructions": "Roast all on one tray 25 min at 200°C / 400°F. Minimal cleanup.",
+    "tip": "Meal prep friendly. Adjust veg for local availability."
+  },
+  {
+    "name": "Peanut Butter Banana Toast",
+    "protein": 18,
+    "cals": 380,
+    "carbs": 42,
+    "fat": 16,
+    "ingredients": "2 slices whole grain bread, 2 tbsp peanut butter, 1 banana, honey optional",
+    "instructions": "Toast bread, spread PB, slice banana on top.",
+    "tip": "Pre-training quick fuel when you have 30 min before the gym."
+  },
+  {
+    "name": "Simple Miso Tofu Soup",
+    "protein": 22,
+    "cals": 280,
+    "carbs": 18,
+    "fat": 14,
+    "ingredients": "200g firm tofu, miso paste, green onion, seaweed, bok choy or spinach",
+    "instructions": "Simmer veg in water, whisk miso off heat, add cubed tofu.",
+    "tip": "Light recovery meal. Hydrating and easy to digest."
   }
 ];

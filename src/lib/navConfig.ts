@@ -41,6 +41,7 @@ export const MORE_NAV: NavLinkItem[] = [
   { href: '/move', labelKey: 'navMove', label: 'Move', icon: Wind, descriptionKey: 'moreMoveDesc', description: 'Mobility flows' },
   { href: '/mind', labelKey: 'navMind', label: 'Mind', icon: Brain, descriptionKey: 'moreMindDesc', description: 'Breathing & recovery' },
   { href: '/learn', labelKey: 'navLearn', label: 'Learn', icon: BookOpen, descriptionKey: 'moreLearnDesc', description: 'Education paths' },
+  { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook', icon: BookOpen, descriptionKey: 'moreGuidebookDesc', description: 'Beyond the Basics — deep reference' },
   { href: '/builder', labelKey: 'navBuilder', label: 'Builder', icon: PenTool, descriptionKey: 'moreBuilderDesc', description: 'Build workouts' },
   { href: '/library', labelKey: 'navLibrary', label: 'Library', icon: Dumbbell, descriptionKey: 'moreLibraryDesc', description: 'Exercise catalog' },
   { href: '/history', labelKey: 'navHistory', label: 'History', icon: History, descriptionKey: 'moreHistoryDesc', description: 'Past sessions' },
@@ -76,7 +77,7 @@ export const EXTENDED_NAV_SECTIONS: NavSection[] = [
     id: 'learn',
     title: 'Learn & measure',
     titleKey: 'navSectionLearn',
-    items: MORE_NAV.filter((i) => ['/learn', '/benchmarks', '/assessments', '/calculators'].includes(i.href)),
+    items: MORE_NAV.filter((i) => ['/learn', '/learn/guide', '/benchmarks', '/assessments', '/calculators'].includes(i.href)),
   },
   {
     id: 'premium',
@@ -88,8 +89,22 @@ export const EXTENDED_NAV_SECTIONS: NavSection[] = [
 
 export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];
 
+export const STATIC_PAGE_TITLES: Record<string, { label: string; labelKey?: string }> = {
+  '/about': { label: 'About', labelKey: 'about' },
+  '/terms': { label: 'Terms', labelKey: 'termsOfService' },
+  '/privacy': { label: 'Privacy', labelKey: 'privacyPolicy' },
+  '/vision': { label: 'Vision' },
+  '/feedback': { label: 'Feedback' },
+  '/beta': { label: 'Beta guide' },
+  '/programs': { label: 'Programs' },
+  '/coaching': { label: 'Coaching' },
+  '/america': { label: 'National fitness' },
+};
+
 export function pageTitleForPath(pathname: string): string {
   const normalized = pathname === '/' ? '/log' : pathname;
+  const staticTitle = STATIC_PAGE_TITLES[normalized];
+  if (staticTitle) return staticTitle.label;
   const match = ALL_NAV.find((n) => normalized === n.href || normalized.startsWith(n.href + '/'));
   return match?.label ?? 'Mission Winning';
 }
