@@ -1,10 +1,15 @@
 'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import { Dumbbell } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
 import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { PROGRAM_TAG_LABELS } from "@/data/exerciseEnrichment";
 import { useWorkoutStore } from "@/store/workoutStore";
@@ -20,6 +25,8 @@ const TAG_OPTIONS: { value: ProgramTag | ""; label: string }[] = [
 ];
 
 export function LibraryPage() {
+  const { t } = useTranslation();
+  const router = useRouter();
   const [q, setQ] = useState("");
   const [equip, setEquip] = useState("");
   const [tag, setTag] = useState<ProgramTag | "">("");
@@ -39,17 +46,22 @@ export function LibraryPage() {
   });
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Exercise Library</h2>
-        <p className="text-muted-foreground">
-          {EXERCISES.length}+ movements with cues and alternatives. Bodyweight and minimal equipment prioritized.{" "}
-          <Link href="/log" className="underline">Today Hub</Link> ·{" "}
+    <StaggerGroup className="space-y-6">
+      <StaggerItem index={0}>
+        <PillarPageHeader
+          icon={Dumbbell}
+          title={t('library', { defaultValue: 'Exercise Library' })}
+          subtitle={`${EXERCISES.length}+ movements with cues and alternatives. Bodyweight and minimal equipment prioritized.`}
+        />
+        <p className="text-muted-foreground text-sm mt-2">
+          <Link href="/log" className="underline">Today Hub</Link>
+          {' · '}
           <Link href="/builder" className="underline">Program templates</Link>
-          {premium ? " — full library unlocked." : " — free core includes the full catalog."}
+          {premium ? ' — full library unlocked.' : ' — free core includes the full catalog.'}
         </p>
-      </div>
+      </StaggerItem>
 
+      <StaggerItem index={1}>
       <div className="flex gap-3 flex-wrap">
         <Input
           placeholder="Search name or muscle..."
@@ -95,10 +107,12 @@ export function LibraryPage() {
           Showing {filtered.length} of {EXERCISES.length}
         </span>
       </div>
+      </StaggerItem>
 
+      <StaggerItem index={2}>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((ex) => (
-          <Card key={ex.id} className="border-primary/10">
+          <Card key={ex.id} className="content-card">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg">{ex.name}</CardTitle>
               <div className="text-xs text-muted-foreground">
@@ -137,7 +151,7 @@ export function LibraryPage() {
                 type="button"
                 onClick={() => {
                   startWorkout(ex.name, [{ exerciseId: ex.id, sets: [{ reps: 8, weight: 0 }] }]);
-                  window.location.href = "/active";
+                  router.push('/active');
                 }}
                 className="text-xs px-3 py-1.5 border border-primary/50 rounded hover:bg-primary/10 font-medium w-full text-center"
               >
@@ -153,6 +167,7 @@ export function LibraryPage() {
           No exercises match these filters. Try clearing equipment or style filters.
         </p>
       )}
-    </div>
+      </StaggerItem>
+    </StaggerGroup>
   );
 }

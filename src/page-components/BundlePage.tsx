@@ -79,6 +79,9 @@ export function BundlePage() {
       <header className="text-center sm:text-start space-y-3">
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
           <Badge variant="secondary">{t("bundleBadge")}</Badge>
+          <Badge className="border-emerald-500/40 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-950/40">
+            {t("bundleExpandedContent", { defaultValue: "Now with even more content!" })}
+          </Badge>
           <Badge className="border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
             {t("bundleUrgencyBadge")}
           </Badge>

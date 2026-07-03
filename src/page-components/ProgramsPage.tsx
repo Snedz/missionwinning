@@ -1,16 +1,19 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check } from "lucide-react";
-import { UnlockButton } from "@/components/UnlockButton";
-import { useState } from "react";
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { BookOpen, Check } from 'lucide-react';
+import { UnlockButton } from '@/components/UnlockButton';
+import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { useState } from 'react';
 
 export function ProgramsPage() {
-  // Transitioned per vision.md: This is legacy marketing for the Learn pillar (/learn).
-  // Core is free (tracker + basics). Premium education + full pillars via Super Bundle (50% off promos).
-  // See /bundle, /learn, and vision.md for the free global everything-health model.
-  const [filterGoal, setFilterGoal] = useState<string>("All");
+  const { t } = useTranslation();
+  const [filterGoal, setFilterGoal] = useState<string>('All');
   const [filterEquip, setFilterEquip] = useState<string>("All");
 
   const allPrograms = [
@@ -119,37 +122,62 @@ export function ProgramsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0f1a] text-white py-12 px-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="mb-10">
-          <a href="/" className="text-sm text-emerald-400 hover:underline">← Back to Mission Winning</a>
-          <h1 className="text-5xl font-bold tracking-tighter mt-3">THE LEARN PILLAR</h1>
-          <p className="text-xl text-white/70 mt-2">Premium practical education as part of the Super Bundle. Free core tools and intros for everyone worldwide. Full programs unlock deeper mastery for bundle members. Designed to be used inside the app immediately. The free path is always open.</p>
-          <p className="mt-4 text-sm max-w-prose text-white/50">These are <strong>premium practical education programs</strong> for those ready for more. Not certifications. Real skills. Real templates. Real results. Free core for the mission; bundle sustains it for all.</p>
-          <div className="mt-2 text-emerald-400 font-semibold">Join the Super Bundle to unlock full access + help shape the future.</div>
-        </div>
+    <StaggerGroup className="space-y-6">
+      <StaggerItem index={0}>
+        <PillarPageHeader
+          icon={BookOpen}
+          title={t('infoProgramsTitle', { defaultValue: 'Learn programs' })}
+          subtitle={t('infoProgramsSubtitle', {
+            defaultValue:
+              'Premium practical education as part of the Super Bundle. Free core tools and intros for everyone worldwide.',
+          })}
+        />
+      </StaggerItem>
 
-        {/* M&S-style filters */}
-        <div className="mb-6 flex flex-wrap gap-3 text-sm">
-          <span className="text-white/60 self-center">Filter by Goal:</span>
-          {["All", "Hypertrophy", "Corrective", "Strength/Business", "Conditioning"].map(g => (
-            <Button key={g} size="sm" variant={filterGoal === g ? "default" : "outline"} onClick={() => setFilterGoal(g)}>{g}</Button>
-          ))}
-          <span className="text-white/60 self-center ml-4">Equipment:</span>
-          {["All", "Bodyweight/Minimal", "Gym/Barbell"].map(e => (
-            <Button key={e} size="sm" variant={filterEquip === e ? "default" : "outline"} onClick={() => setFilterEquip(e)}>{e}</Button>
-          ))}
-          <div className="text-xs text-white/50 self-center ml-auto">Emulating muscleandstrength.com 1000+ plans structure (goal/level/equip/duration filters + summaries)</div>
-        </div>
+      <StaggerItem index={1}>
+        <Card className="content-card border-amber-500/30 bg-amber-950/10">
+          <CardContent className="pt-6 text-sm text-muted-foreground">
+            Legacy catalog — the Learn pillar has moved to{' '}
+            <Link href="/learn" className="text-emerald-400 hover:underline">
+              /learn
+            </Link>
+            . See{' '}
+            <Link href="/bundle" className="text-emerald-400 hover:underline">
+              Super Bundle
+            </Link>{' '}
+            for full access.
+          </CardContent>
+        </Card>
+      </StaggerItem>
 
-        <div className="space-y-8">
+      <StaggerItem index={2}>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <span className="text-muted-foreground self-center">Filter by goal:</span>
+          {['All', 'Hypertrophy', 'Corrective', 'Strength/Business', 'Conditioning'].map((g) => (
+            <Button key={g} size="sm" variant={filterGoal === g ? 'default' : 'outline'} onClick={() => setFilterGoal(g)}>
+              {g}
+            </Button>
+          ))}
+          <span className="text-muted-foreground self-center ml-2">Equipment:</span>
+          {['All', 'Bodyweight/Minimal', 'Gym/Barbell'].map((e) => (
+            <Button key={e} size="sm" variant={filterEquip === e ? 'default' : 'outline'} onClick={() => setFilterEquip(e)}>
+              {e}
+            </Button>
+          ))}
+        </div>
+      </StaggerItem>
+
+      <StaggerItem index={3}>
+        <div className="space-y-6">
           {filteredPrograms.map((prog, idx) => (
-            <Card key={idx} className="bg-[#111827] border-white/10">
+            <Card key={idx} className="content-card">
               <CardHeader>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div>
-                    <CardTitle className="text-3xl">{prog.title}</CardTitle>
-                    <div className="text-emerald-400 mt-1">{prog.duration} • {prog.price} one-time</div>
+                    <CardTitle className="text-xl">{prog.title}</CardTitle>
+                    <div className="text-emerald-400 mt-1 text-sm">
+                      {prog.duration} • {prog.price} one-time
+                    </div>
                   </div>
                   <UnlockButton
                     productId={
@@ -167,34 +195,49 @@ export function ProgramsPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-5 gap-8">
+                <div className="grid md:grid-cols-5 gap-6">
                   <div className="md:col-span-3">
-                    <h4 className="font-semibold mb-3 text-sm uppercase tracking-widest text-white/60">What You Actually Get</h4>
-                    <ul className="space-y-2.5">
+                    <h4 className="font-semibold mb-3 text-xs uppercase tracking-widest text-muted-foreground">
+                      What you get
+                    </h4>
+                    <ul className="space-y-2">
                       {prog.whatYouGet.map((item, i) => (
-                        <li key={i} className="flex gap-3 text-white/90"><Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" /> {item}</li>
+                        <li key={i} className="flex gap-3 text-sm">
+                          <Check className="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5" /> {item}
+                        </li>
                       ))}
                     </ul>
                   </div>
-                  <div className="md:col-span-2 bg-black/30 p-5 rounded border border-white/10 text-sm">
-                    <div className="font-semibold text-emerald-400 mb-2">FREE INTRO — FULL IN SUPER BUNDLE OR PILLAR</div>
-                    {prog.disclaimer}
-                    <div className="mt-4 text-xs text-white/50">All sales final. 30-day guarantee. Questions? Email support@missionwinning.com. This sustains the free core for the global mission. Super Bundle members help shape it. Mission Winning LLC.</div>
-                  <div className="mt-3 flex gap-3">
-                    <a href="/feedback" className="text-emerald-400 hover:text-emerald-300 text-xs underline">Share wins &amp; feedback →</a>
-                    <Button size="sm" variant="outline" onClick={() => exportProgramPDF(prog)} className="text-xs h-6">Download PDF Summary (M&S style)</Button>
-                  </div>
+                  <div className="md:col-span-2 rounded-xl border border-border/60 bg-muted/30 p-4 text-sm space-y-3">
+                    <div className="font-semibold text-emerald-400 text-xs uppercase tracking-wide">
+                      Free intro — full in Super Bundle
+                    </div>
+                    <p className="text-muted-foreground">{prog.disclaimer}</p>
+                    <div className="flex flex-wrap gap-3">
+                      <Link href="/feedback" className="text-emerald-400 hover:underline text-xs">
+                        Share feedback →
+                      </Link>
+                      <Button size="sm" variant="outline" onClick={() => exportProgramPDF(prog)} className="text-xs h-7">
+                        Download summary
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
+      </StaggerItem>
 
-        <div className="mt-12 text-center text-xs text-white/40 max-w-md mx-auto">
-          Bundle all programs for significant discount (coming soon). Existing purchasers get notified of updates and new templates.
-        </div>
-      </div>
-    </div>
+      <StaggerItem index={4}>
+        <AppLegalFooter />
+      </StaggerItem>
+
+      <StaggerItem index={5}>
+        <p className="text-center text-xs text-muted-foreground max-w-md mx-auto">
+          Bundle all programs for significant discount (coming soon). Existing purchasers get notified of updates.
+        </p>
+      </StaggerItem>
+    </StaggerGroup>
   );
 }

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { isIDayComplete } from '@/lib/missionJourney';
 
-const BYPASS = ['/welcome', '/private', '/vision', '/about'];
+const BYPASS = ['/welcome', '/private', '/vision', '/about', '/terms', '/privacy', '/beta', '/america', '/feedback'];
 
 /** Sends new members to I-Day before using the app shell. */
 export function JourneyGuard({ children }: { children: React.ReactNode }) {

@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
+import type { MobilityFlow } from '@/data/mobilityFlows';
 import { TimedFlowRunner } from '@/components/pillars/TimedFlowRunner';
 import { UnlockButton } from '@/components/UnlockButton';
+import { usePremium } from '@/hooks/usePremium';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
@@ -14,8 +16,23 @@ import { Clock, Wind } from 'lucide-react';
 
 export function MovePage() {
   const { t } = useTranslation();
+  const { premium, loading: premiumLoading } = usePremium();
+  const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
   const [activeFlowId, setActiveFlowId] = useState<string | null>(null);
-  const activeFlow = MOBILITY_FLOWS.find((f) => f.id === activeFlowId);
+
+  useEffect(() => {
+    if (!premium) {
+      setPremiumFlows([]);
+      return;
+    }
+    fetch('/api/premium/mobility')
+      .then((r) => (r.ok ? r.json() : { flows: [] }))
+      .then((d) => setPremiumFlows(d.flows ?? []))
+      .catch(() => setPremiumFlows([]));
+  }, [premium]);
+
+  const allFlows = [...MOBILITY_FLOWS, ...premiumFlows];
+  const activeFlow = allFlows.find((f) => f.id === activeFlowId);
   const recentWins = typeof window !== 'undefined'
     ? getPillarWins(5).filter((w) => w.pillar === 'move')
     : [];
@@ -36,14 +53,14 @@ export function MovePage() {
           title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
           subtitle={t('moveSubtitle', {
             defaultValue:
-              'Free guided flows with timers — bodyweight, global-friendly. Premium adds sports-specific depth (Super Bundle).',
+              '10 free guided flows with timers — bodyweight, global-friendly. Premium adds 8 longer recovery flows (Super Bundle).',
           })}
         />
       </StaggerItem>
 
       <StaggerItem index={1}>
         <div className="grid gap-4 md:grid-cols-2">
-          {MOBILITY_FLOWS.map((flow) => (
+          {allFlows.map((flow) => (
             <Card key={flow.id} className="content-card hover:border-emerald-500/40 transition-colors">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -63,6 +80,9 @@ export function MovePage() {
             </Card>
           ))}
         </div>
+        {premiumLoading && premium && (
+          <p className="text-xs text-muted-foreground">{t('loading', { defaultValue: 'Loading premium flows…' })}</p>
+        )}
       </StaggerItem>
 
       {recentWins.length > 0 && (

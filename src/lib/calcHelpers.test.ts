@@ -1,10 +1,21 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { defaultCalcInputs, epley1rm, mifflinBmr, proteinTargetGrams } from './calcHelpers';
+import { defaultCalcInputs, epley1rm, brzycki1rm, mifflinBmr, proteinTargetGrams } from './calcHelpers';
 
 describe('calcHelpers', () => {
   it('computes epley 1RM', () => {
     assert.equal(epley1rm(225, 5), 263);
+  });
+
+  it('computes brzycki 1RM', () => {
+    const brz = brzycki1rm(225, 5);
+    assert.ok(brz > 250 && brz < 280);
+  });
+
+  it('applies sex offset in BMR', () => {
+    const male = mifflinBmr(82, 178, 28, 'metric', 'male');
+    const female = mifflinBmr(82, 178, 28, 'metric', 'female');
+    assert.equal(male - female, 166);
   });
 
   it('uses metric vs imperial BMR inputs', () => {

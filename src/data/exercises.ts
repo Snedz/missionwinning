@@ -1,5 +1,6 @@
 import type { Exercise } from "@/types";
 import { EXERCISES_EXTENDED } from "@/data/exercisesExtended";
+import { EXERCISES_VOLUME_2 } from "@/data/exercisesVolume2";
 import { enrichExercises } from "@/data/exerciseEnrichment";
 
 const EXERCISE_ENTRIES: Exercise[] = [
@@ -138,6 +139,7 @@ const EXERCISE_ENTRIES: Exercise[] = [
   { id: "battle-rope-alt", name: "Battle Rope Alternating Waves", muscleGroups: ["Cardio", "Arms"], equipment: "Battle Ropes", cues: "Fast alternating waves 20-30s. Conditioning if gym has ropes." },
   { id: "sled-drag-reg", name: "Sled Drag Regression (Tow Strap)", muscleGroups: ["Legs", "Full Body"], equipment: "Sled", cues: "Walk backward dragging load. Low-impact leg drive." },
   ...EXERCISES_EXTENDED,
+  ...EXERCISES_VOLUME_2,
 ];
 
 /** Deduplicated exercise list (first entry wins per id). */

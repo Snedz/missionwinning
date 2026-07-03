@@ -1,6 +1,16 @@
 import type { CompletedWorkoutLog } from '@/types';
+import { getPillarWins, type PillarType } from '@/lib/pillarLog';
+import { loadGuidebookProgress } from '@/lib/guidebookProgress';
 
-export type ChallengeId = 'train-7' | 'protein-5' | 'volume-10k';
+export type ChallengeId =
+  | 'train-7'
+  | 'protein-5'
+  | 'volume-10k'
+  | 'move-4'
+  | 'mind-4'
+  | 'learn-4'
+  | 'guide-3'
+  | 'track-5';
 
 export interface ChallengeDef {
   id: ChallengeId;
@@ -31,6 +41,41 @@ export const CHALLENGES: ChallengeDef[] = [
     description: 'Accumulate 10,000 kg·reps (or lb·reps) this week.',
     target: 10000,
     unit: 'volume',
+  },
+  {
+    id: 'move-4',
+    title: '4 Move Wins',
+    description: 'Complete 4 mobility flows or Move pillar wins this week.',
+    target: 4,
+    unit: 'wins',
+  },
+  {
+    id: 'mind-4',
+    title: '4 Mind Sessions',
+    description: 'Log 4 Mind pillar wins (breathing, guided, or check-in) this week.',
+    target: 4,
+    unit: 'wins',
+  },
+  {
+    id: 'learn-4',
+    title: '4 Learn Wins',
+    description: 'Complete 4 Learn lessons or guidebook sections this week.',
+    target: 4,
+    unit: 'wins',
+  },
+  {
+    id: 'guide-3',
+    title: '3 Guidebook Sections',
+    description: 'Read and mark 3 guidebook sections (cumulative).',
+    target: 3,
+    unit: 'sections',
+  },
+  {
+    id: 'track-5',
+    title: '5 Track Activities',
+    description: 'Log 5 activities on the Track pillar this week.',
+    target: 5,
+    unit: 'activities',
   },
 ];
 
@@ -157,12 +202,37 @@ export function getTrainingStreak(workoutHistory: CompletedWorkoutLog[]): number
 export function getChallengeProgress(): Array<ChallengeDef & { current: number; percent: number }> {
   syncProteinChallengeFromNutrition();
   const state = loadState();
+  const weekStart = state.weekStart;
+
+  const pillarWinsThisWeek = (pillar: PillarType) =>
+    getPillarWins(100).filter((w) => {
+      const d = w.completedAt.split('T')[0];
+      return w.pillar === pillar && d >= weekStart;
+    }).length;
+
+  const learnWinsThisWeek = () => {
+    let n = pillarWinsThisWeek('learn');
+    try {
+      const completed = JSON.parse(localStorage.getItem('mw_learn_completed') || '[]') as string[];
+      n = Math.max(n, Math.min(completed.length, 4));
+    } catch {
+      // ignore
+    }
+    return n;
+  };
+
+  const guideSectionsDone = () => loadGuidebookProgress().size;
 
   return CHALLENGES.map((c) => {
     let current = 0;
     if (c.id === 'train-7') current = state.trainDays.length;
     if (c.id === 'protein-5') current = state.proteinDays.length;
     if (c.id === 'volume-10k') current = Math.round(state.weekVolume);
+    if (c.id === 'move-4') current = pillarWinsThisWeek('move');
+    if (c.id === 'mind-4') current = pillarWinsThisWeek('mind');
+    if (c.id === 'learn-4') current = learnWinsThisWeek();
+    if (c.id === 'guide-3') current = guideSectionsDone();
+    if (c.id === 'track-5') current = pillarWinsThisWeek('track');
     const percent = Math.min(100, Math.round((current / c.target) * 100));
     return { ...c, current, percent };
   });

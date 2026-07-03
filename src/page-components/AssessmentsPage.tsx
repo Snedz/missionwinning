@@ -1,12 +1,17 @@
 'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useWorkoutStore } from "@/store/workoutStore";
-import { saveNutritionEntry } from "@/lib/supabase"; // reuse for demo save, or extend
-import { usePremium } from "@/hooks/usePremium";
-import { SignInPrompt } from "@/components/auth/SignInPrompt";
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { ClipboardList } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { useWorkoutStore } from '@/store/workoutStore';
+import { usePremium } from '@/hooks/usePremium';
+import { SignInPrompt } from '@/components/auth/SignInPrompt';
+import { saveNutritionEntry } from '@/lib/supabase';
 
 interface AssessmentResult {
   riskLevel: 'low' | 'moderate' | 'high';
@@ -15,6 +20,7 @@ interface AssessmentResult {
 }
 
 export function AssessmentsPage() {
+  const router = useRouter();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const { premium } = usePremium();
@@ -129,8 +135,7 @@ export function AssessmentsPage() {
       ];
     }
     startWorkout(name, exs);
-    // Navigate to active
-    window.location.href = "/active";
+    router.push('/active');
   };
 
   // Core assessment is FREE forever per vision.md (basic readiness, ParQ-style, stages of change).
@@ -138,14 +143,18 @@ export function AssessmentsPage() {
   // No paywall on the mission fundamentals.
 
   return (
-    <div className="max-w-3xl space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Readiness Assessment</h2>
-        <p className="text-muted-foreground">Free core tool. Based on standard health history and ParQ-style questions (from corrective exercise materials). Answer honestly for personalized guidance. Results help choose safe free starters in the Today hub or Builder.</p>
-      </div>
+    <StaggerGroup className="space-y-6">
+      <StaggerItem index={0}>
+        <PillarPageHeader
+          icon={ClipboardList}
+          title="Readiness Assessment"
+          subtitle="Free core tool. Based on standard health history and ParQ-style questions. Answer honestly for personalized guidance."
+        />
+      </StaggerItem>
 
       {!result && (
-        <Card>
+        <StaggerItem index={1}>
+        <Card className="content-card">
           <CardHeader><CardTitle>Quick Health &amp; Lifestyle Screen</CardTitle></CardHeader>
           <CardContent className="space-y-4">
             {questions.map((item, idx) => (
@@ -165,10 +174,11 @@ export function AssessmentsPage() {
             <div className="text-xs text-muted-foreground">This is educational screening only — not medical advice. Always consult a doctor.</div>
           </CardContent>
         </Card>
+        </StaggerItem>
       )}
 
-      {/* Stage + OARS prompts from coaching guide (for personalization & coach mode) */}
-      <Card>
+      <StaggerItem index={2}>
+      <Card className="content-card">
         <CardHeader><CardTitle>Stage of Change + Coaching Prompts</CardTitle></CardHeader>
         <CardContent className="space-y-3 text-sm">
           <div className="flex flex-wrap gap-2">
@@ -185,9 +195,11 @@ export function AssessmentsPage() {
           <div className="text-xs text-muted-foreground">OARS in practice: Open questions, Affirm strengths, Reflect back, Summarize. Match approach to readiness. Use to personalize programs or coaching sessions. (From coaching quick guide.)</div>
         </CardContent>
       </Card>
+      </StaggerItem>
 
       {result && (
-        <Card className={`border-2 ${result.riskLevel === 'high' ? 'border-red-500' : result.riskLevel === 'moderate' ? 'border-yellow-500' : 'border-emerald-500'}`}>
+        <StaggerItem index={3}>
+        <Card className={`content-card border-2 ${result.riskLevel === 'high' ? 'border-red-500' : result.riskLevel === 'moderate' ? 'border-yellow-500' : 'border-emerald-500'}`}>
           <CardHeader>
             <CardTitle>Assessment Result: <span className="uppercase">{result.riskLevel} risk</span></CardTitle>
           </CardHeader>
@@ -205,16 +217,21 @@ export function AssessmentsPage() {
             </div>
             <Button onClick={() => { setResult(null); setAnswers({}); }}>Retake Assessment</Button>
             <div className="text-xs">Results saved locally + to logs. Use to guide program choice in the Builder / Today hub. Streak +1 on start.</div>
-            <Button onClick={() => window.location.href = "/log"} variant="outline" className="mt-2">Go to Today Hub (Home) for all free starters</Button>
+            <Button variant="outline" className="mt-2" asChild>
+              <Link href="/log">Go to Today Hub for all free starters</Link>
+            </Button>
           </CardContent>
         </Card>
+        </StaggerItem>
       )}
 
+      <StaggerItem index={4}>
       <SignInPrompt
-        className="mt-6"
+        className="mt-2"
         nextPath="/assessments"
         description="Keep assessment history synced when you sign in."
       />
-    </div>
+      </StaggerItem>
+    </StaggerGroup>
   );
 }

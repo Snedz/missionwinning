@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
+import Link from 'next/link';
 import { useTranslation } from "react-i18next";
 import { formatStoredGoal } from '@/lib/journeyGoals';
 import { supabase, signOut, isPremium, getUser } from "@/lib/supabase";
@@ -535,6 +536,31 @@ export function ProfilePage() {
                 'The backup includes workouts, saved routines, nutrition, and journey progress from this device. Restoring merges — nothing on this device is deleted.',
             })}
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="content-card">
+        <CardContent className="pt-6">
+          <p className="text-sm font-medium mb-3">
+            {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}
+          </p>
+          <nav className="flex flex-wrap gap-x-3 gap-y-2 text-sm text-muted-foreground">
+            <Link href="/about" className="hover:text-emerald-400 transition-colors">
+              {t('about', { defaultValue: 'About' })}
+            </Link>
+            <Link href="/beta" className="hover:text-emerald-400 transition-colors">
+              {t('navBetaGuide', { defaultValue: 'Beta guide' })}
+            </Link>
+            <Link href="/feedback" className="hover:text-emerald-400 transition-colors">
+              {t('feedback', { defaultValue: 'Feedback' })}
+            </Link>
+            <Link href="/terms" className="hover:text-emerald-400 transition-colors">
+              {t('termsOfService', { defaultValue: 'Terms of Service' })}
+            </Link>
+            <Link href="/privacy" className="hover:text-emerald-400 transition-colors">
+              {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
+            </Link>
+          </nav>
         </CardContent>
       </Card>
 

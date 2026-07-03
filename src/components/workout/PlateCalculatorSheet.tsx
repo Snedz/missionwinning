@@ -1,18 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
-import {
-  availablePlates,
-  calculatePlatesPerSide,
-  defaultBarWeight,
-  formatPlateList,
-} from '@/lib/plateCalculator';
+import { PlateCalculatorPanel } from '@/components/calculators/PlateCalculatorPanel';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -24,20 +15,15 @@ type Props = {
 
 export function PlateCalculatorSheet({ open, onClose, initialTarget, onApplyTarget }: Props) {
   const { t } = useTranslation();
-  const units = useUnits();
-  const unit = weightUnitLabel(units);
-  const [target, setTarget] = useState(initialTarget ?? defaultBarWeight(units) + 60);
-  const [bar, setBar] = useState(defaultBarWeight(units));
 
   useEffect(() => {
-    if (open && initialTarget != null) setTarget(initialTarget);
-    if (open) setBar(defaultBarWeight(units));
-  }, [open, initialTarget, units]);
-
-  const result = useMemo(
-    () => calculatePlatesPerSide(target, bar, availablePlates(units)),
-    [target, bar, units]
-  );
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
 
   if (!open) return null;
 
@@ -77,70 +63,19 @@ export function PlateCalculatorSheet({ open, onClose, initialTarget, onApplyTarg
           </button>
         </div>
 
-        <div className="p-5 space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <Label>{t('activePlateTarget', { defaultValue: 'Target weight' })} ({unit})</Label>
-              <Input
-                type="number"
-                step={units === 'imperial' ? 2.5 : 1.25}
-                value={target}
-                onChange={(e) => setTarget(parseFloat(e.target.value) || 0)}
-                className="mt-1 tabular-nums"
-              />
-            </div>
-            <div>
-              <Label>{t('activePlateBar', { defaultValue: 'Bar weight' })} ({unit})</Label>
-              <Input
-                type="number"
-                value={bar}
-                onChange={(e) => setBar(parseFloat(e.target.value) || 0)}
-                className="mt-1 tabular-nums"
-              />
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-4 space-y-2">
-            <div className="text-sm text-muted-foreground">
-              {t('activePlatePerSide', { defaultValue: 'Per side' })}
-            </div>
-            <div className="text-xl font-bold tabular-nums text-emerald-300">
-              {formatPlateList(result.perSide, unit)}
-            </div>
-            <div className="text-sm tabular-nums">
-              {t('activePlateTotal', {
-                weight: result.achievedWeight,
-                unit,
-                defaultValue: `Total on bar: ${result.achievedWeight} ${unit}`,
-              })}
-            </div>
-            {result.remainder !== 0 && (
-              <div className="text-xs text-amber-400">
-                {t('activePlateRemainder', {
-                  remainder: result.remainder,
-                  unit,
-                  defaultValue: `Cannot load exactly — ${result.remainder}${unit} short`,
-                })}
-              </div>
-            )}
-          </div>
-
-          {onApplyTarget && (
-            <Button
-              variant="fitness"
-              className="w-full"
-              onClick={() => {
-                onApplyTarget(result.achievedWeight);
-                onClose();
-              }}
-            >
-              {t('activePlateApply', {
-                weight: result.achievedWeight,
-                unit,
-                defaultValue: `Use ${result.achievedWeight} ${unit}`,
-              })}
-            </Button>
-          )}
+        <div className="p-5">
+          <PlateCalculatorPanel
+            compact
+            initialTarget={initialTarget}
+            onApplyTarget={
+              onApplyTarget
+                ? (weight) => {
+                    onApplyTarget(weight);
+                    onClose();
+                  }
+                : undefined
+            }
+          />
         </div>
       </div>
     </div>

@@ -48,6 +48,23 @@ export const LIBRARY_CUE_OVERRIDES: Record<string, string> = {
     "Lead with elbows, slight lean, stop at shoulder height. Unilateral for symmetry.",
   "bicep-curl": "Control eccentric, full stretch at bottom, no swing.",
   "tricep-pushdown": "Elbows pinned, full extension, squeeze triceps at bottom.",
+  "incline-bench": "Bench 30–45°, retract scapulae, bar to upper chest, controlled lower.",
+  "dumbbell-press": "Neutral or pronated grip, full range, dumbbells meet at top without clashing.",
+  "front-squat": "Elbows high, bar on front delts, upright torso, core braced throughout.",
+  "leg-press": "Feet mid-platform, lower until knees ~90°, drive through whole foot, no butt lift.",
+  "leg-curl": "Hips pinned, curl to glutes, slow eccentric, squeeze hamstrings at top.",
+  "calf-raise": "Full stretch at bottom, pause at top, straight or bent knee per machine setup.",
+  "cable-row": "Torso stable, pull to lower ribs, squeeze shoulder blades, control return.",
+  "hammer-curl": "Neutral grip, elbows at sides, no swing, full extension at bottom.",
+  "skull-crusher": "Elbows fixed, lower to forehead or behind head, extend without flaring elbows.",
+  crunches: "Ribs toward pelvis, chin off chest, exhale on crunch, no neck pulling.",
+  "hanging-leg-raise": "Depress shoulders, posterior pelvic tilt, raise legs with control.",
+  "box-jump": "Soft landing on box, stand fully, step down — reset each rep for quality.",
+  "wall-ball": "Squat to parallel, drive hips, throw to target, catch and absorb into next squat.",
+  "double-under": "Wrists spin rope, small jump, practice singles until rhythm is consistent.",
+  "kettlebell-swing-2h": "Hinge, snap hips, arms relaxed; bell floats to chest height, not overhead.",
+  "burpee-pullup": "Burpee under bar, jump to pull-up, full chin over bar when possible.",
+  "sled-push": "Low body angle, drive through balls of feet, short powerful steps, steady breathing.",
 };
 
 /** Common substitutions by exercise id. */
