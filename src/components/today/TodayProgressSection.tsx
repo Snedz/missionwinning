@@ -463,7 +463,7 @@ export function TodayProgressSection({
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => onStartStarter("Daily Mobility + Mind Habit", freeStarters.find(s => s.name.includes("Mind Habit"))?.exercises || [])}>Start Daily Habit Stack →</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
               alert('Log a post-mobility recovery snack in Nutrition (e.g. yogurt bowl). Builds Fuel + Move synergy.');
-              window.location.href = '/nutrition';
+              router.push('/nutrition');
             }}>Log Recovery Snack (Fuel + Move) →</Button>
               </>
             )}

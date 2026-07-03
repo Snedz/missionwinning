@@ -23,7 +23,7 @@ import { BOARD_I18N_KEY } from '@/i18n/leaderboardLocales';
 import { LeaderboardBoardPicker } from '@/components/leaderboard/LeaderboardBoardPicker';
 import { LeaderboardScopeTabs } from '@/components/leaderboard/LeaderboardScopeTabs';
 import { LeaderboardTable } from '@/components/leaderboard/LeaderboardTable';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { getJoinedClassCode } from '@/lib/schoolClass';
 
 export function LeaderboardPage() {
@@ -150,17 +150,15 @@ export function LeaderboardPage() {
   const boardTitle = t(BOARD_I18N_KEY[boardId], { defaultValue: ranked.board.title });
 
   return (
-    <div className="space-y-6 pb-8">
-      <div className="flex items-start justify-between gap-4">
-        <PillarPageHeader
-          icon={Trophy}
-          title={t('leaderboardTitle', { defaultValue: 'Leaderboard' })}
-          subtitle={t('leaderboardSubtitle', {
-            defaultValue:
-              'Compare Mission Operators globally, by region, country, locale, or squad.',
-          })}
-          className="flex-1 min-w-0"
-        />
+    <PillarPageShell
+      icon={Trophy}
+      title={t('leaderboardTitle', { defaultValue: 'Leaderboard' })}
+      subtitle={t('leaderboardSubtitle', {
+        defaultValue:
+          'Compare Mission Operators globally, by region, country, locale, or squad.',
+      })}
+      className="pb-8"
+      headerActions={
         <Button
           variant="outline"
           size="sm"
@@ -171,8 +169,8 @@ export function LeaderboardPage() {
           <RefreshCw className={syncing ? 'h-4 w-4 animate-spin' : 'h-4 w-4'} />
           {t('leaderboardSync', { defaultValue: 'Sync' })}
         </Button>
-      </div>
-
+      }
+    >
       <LeaderboardBoardPicker boardId={boardId} onBoardChange={handleBoardChange} />
 
       {(you.nightSessions > 0 || you.dawnSessions > 0) && (
@@ -335,6 +333,6 @@ export function LeaderboardPage() {
                 'Rows marked Pacer are virtual pace-setters, not real athletes — they keep boards motivating while the community grows. Sign in and tap Sync to publish your score.',
             })}
       </p>
-    </div>
+    </PillarPageShell>
   );
 }

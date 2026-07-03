@@ -17,7 +17,11 @@ export function AppHeader() {
 
   const pageTitle = (() => {
     const normalized = pathname === '/' ? '/log' : pathname;
-    const staticTitle = STATIC_PAGE_TITLES[normalized];
+    const staticTitle =
+      STATIC_PAGE_TITLES[normalized] ??
+      (normalized.startsWith('/learn/guide/')
+        ? STATIC_PAGE_TITLES['/learn/guide']
+        : undefined);
     if (staticTitle) {
       return staticTitle.labelKey
         ? t(staticTitle.labelKey, { defaultValue: staticTitle.label })

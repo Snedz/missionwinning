@@ -6,9 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Check } from 'lucide-react';
 import { UnlockButton } from '@/components/UnlockButton';
-import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { useState } from 'react';
 
 export function ProgramsPage() {
@@ -122,19 +120,16 @@ export function ProgramsPage() {
   };
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={BookOpen}
-          title={t('infoProgramsTitle', { defaultValue: 'Learn programs' })}
-          subtitle={t('infoProgramsSubtitle', {
-            defaultValue:
-              'Premium practical education as part of the Super Bundle. Free core tools and intros for everyone worldwide.',
-          })}
-        />
-      </StaggerItem>
-
-      <StaggerItem index={1}>
+    <InfoPageShell
+      icon={BookOpen}
+      title={t('infoProgramsTitle', { defaultValue: 'Learn programs' })}
+      subtitle={t('infoProgramsSubtitle', {
+        defaultValue:
+          'Premium practical education as part of the Super Bundle. Free core tools and intros for everyone worldwide.',
+      })}
+      variant="sections"
+      showLegalFooter
+    >
         <Card className="content-card border-amber-500/30 bg-amber-950/10">
           <CardContent className="pt-6 text-sm text-muted-foreground">
             Legacy catalog — the Learn pillar has moved to{' '}
@@ -148,10 +143,8 @@ export function ProgramsPage() {
             for full access.
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={2}>
-        <div className="flex flex-wrap gap-3 text-sm">
+      <div className="flex flex-wrap gap-3 text-sm">
           <span className="text-muted-foreground self-center">Filter by goal:</span>
           {['All', 'Hypertrophy', 'Corrective', 'Strength/Business', 'Conditioning'].map((g) => (
             <Button key={g} size="sm" variant={filterGoal === g ? 'default' : 'outline'} onClick={() => setFilterGoal(g)}>
@@ -165,10 +158,8 @@ export function ProgramsPage() {
             </Button>
           ))}
         </div>
-      </StaggerItem>
 
-      <StaggerItem index={3}>
-        <div className="space-y-6">
+      <div className="space-y-6">
           {filteredPrograms.map((prog, idx) => (
             <Card key={idx} className="content-card">
               <CardHeader>
@@ -227,17 +218,10 @@ export function ProgramsPage() {
             </Card>
           ))}
         </div>
-      </StaggerItem>
 
-      <StaggerItem index={4}>
-        <AppLegalFooter />
-      </StaggerItem>
-
-      <StaggerItem index={5}>
-        <p className="text-center text-xs text-muted-foreground max-w-md mx-auto">
-          Bundle all programs for significant discount (coming soon). Existing purchasers get notified of updates.
-        </p>
-      </StaggerItem>
-    </StaggerGroup>
+      <p className="text-center text-xs text-muted-foreground max-w-md mx-auto">
+        Bundle all programs for significant discount (coming soon). Existing purchasers get notified of updates.
+      </p>
+    </InfoPageShell>
   );
 }

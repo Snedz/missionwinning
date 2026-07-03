@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
@@ -8,6 +9,7 @@ import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 
 export default function PrivateTeaser() {
+  const router = useRouter();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -30,7 +32,7 @@ export default function PrivateTeaser() {
       });
 
       if (res.ok) {
-        window.location.href = '/log';
+        router.push('/log');
       } else {
         const data = await res.json().catch(() => ({}));
         const msg = data.error || 'Incorrect access code';

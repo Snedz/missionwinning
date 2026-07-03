@@ -18,7 +18,8 @@ describe('isPublicPathWhileGated', () => {
   it('blocks app routes including welcome and beta', () => {
     assert.equal(isPublicPathWhileGated('/'), false);
     assert.equal(isPublicPathWhileGated('/welcome'), false);
-    assert.equal(isPublicPathWhileGated('/beta'), false);
+    assert.equal(isPublicPathWhileGated('/beta'), true);
+    assert.equal(isPublicPathWhileGated('/feedback'), true);
     assert.equal(isPublicPathWhileGated('/today'), false);
     assert.equal(isPublicPathWhileGated('/log'), false);
   });

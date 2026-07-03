@@ -397,7 +397,7 @@ export function NutritionPage() {
 
       <div className="text-[10px] text-muted-foreground">{t('fuelLocalNote', { defaultValue: 'Data stored locally (synced when you sign in). Full integration + meal plans in the paid Nutrition course.' })}</div>
 
-      <Card>
+      <Card className="content-card">
         <CardHeader><CardTitle>{t('fuelFreeRecipesTitle', { count: FREE_RECIPE_COUNT, defaultValue: `Free Recipes (${FREE_RECIPE_COUNT} — core mission)` })}</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           {freeRecipes.map((r, i) => (
@@ -418,7 +418,7 @@ export function NutritionPage() {
       </Card>
 
       {premium ? (
-      <Card>
+      <Card className="content-card">
         <CardHeader><CardTitle>{t('fuelPremiumRecipesTitle', { defaultValue: 'Premium Recipes & Meal Ideas (Super Bundle)' })}</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           {premiumRecipes.map((r, i) => (
@@ -443,7 +443,7 @@ export function NutritionPage() {
         </CardContent>
       </Card>
       ) : (
-        <Card className="border-emerald-500/30">
+        <Card className="content-card border-emerald-500/30">
           <CardHeader>
             <CardTitle>{t('fuelPremiumLockedTitle', { count: premiumRecipes.length, defaultValue: `+${premiumRecipes.length} Premium Recipes` })}</CardTitle>
           </CardHeader>

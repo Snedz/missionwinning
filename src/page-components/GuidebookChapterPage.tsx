@@ -12,7 +12,8 @@ import {
 import { logPillarWin } from '@/lib/pillarLog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Check } from 'lucide-react';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { ArrowLeft, BookMarked, Check } from 'lucide-react';
 
 type Props = { chapterId: string };
 
@@ -57,8 +58,14 @@ export function GuidebookChapterPage({ chapterId }: Props) {
   };
 
   return (
-    <div className="space-y-6 pb-24">
-      <div className="flex items-center gap-2 text-sm">
+    <PillarPageShell
+      icon={BookMarked}
+      title={chapter.title}
+      subtitle={chapter.subtitle}
+      className="pb-24"
+      showLegalFooter
+    >
+      <div className="flex items-center gap-2 text-sm -mt-2">
         <Button variant="ghost" size="sm" asChild className="-ml-2">
           <Link href="/learn/guide">
             <ArrowLeft className="h-4 w-4 mr-1" />
@@ -68,20 +75,13 @@ export function GuidebookChapterPage({ chapterId }: Props) {
         <span className="text-muted-foreground">CH {chapter.number}</span>
       </div>
 
-      <header className="space-y-2">
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <span>{chapter.icon}</span>
-          {chapter.title}
-        </h1>
-        <p className="text-muted-foreground">{chapter.subtitle}</p>
-        {chapter.quickPathId && (
-          <Button variant="link" size="sm" className="px-0 h-auto" asChild>
-            <Link href="/learn">
-              {t('guidebookQuickVersion', { defaultValue: '5-minute quick path →' })}
-            </Link>
-          </Button>
-        )}
-      </header>
+      {chapter.quickPathId && (
+        <Button variant="link" size="sm" className="px-0 h-auto -mt-4" asChild>
+          <Link href="/learn">
+            {t('guidebookQuickVersion', { defaultValue: '5-minute quick path →' })}
+          </Link>
+        </Button>
+      )}
 
       <div className="space-y-8">
         {chapter.sections.map((section) => {
@@ -158,7 +158,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
           </Link>
         </Button>
       </div>
-    </div>
+    </PillarPageShell>
   );
 }
 

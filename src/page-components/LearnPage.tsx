@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { localizeLearnPaths } from '@/lib/localizeLearnPaths';
@@ -17,6 +18,7 @@ import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
 
 export function LearnPage() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const paths = useMemo(
     () => localizeLearnPaths(FREE_LEARN_PATHS, t),
@@ -168,7 +170,7 @@ export function LearnPage() {
                   { exerciseId: 'squats', sets: [{ reps: 12, weight: 0 }] },
                   { exerciseId: 'plank', sets: [{ reps: 30, weight: 0 }] },
                 ]);
-                window.location.href = '/active';
+                router.push('/active');
               }}
             >
               {t('learnSampleBtn', { defaultValue: 'Start Bodyweight Sample →' })}
