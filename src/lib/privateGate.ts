@@ -30,6 +30,9 @@ export const PUBLIC_API_PATHS_WHILE_GATED = [
   '/api/private-access',
   '/api/stripe-webhook',
   '/api/paypal-webhook',
+  '/api/leads',
+  '/api/cron/nudges',
+  '/api/nudges/unsubscribe',
 ] as const;
 
 export function isPublicPathWhileGated(pathname: string): boolean {

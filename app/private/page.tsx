@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { submitLead } from '@/lib/supabase';
+import { track } from '@/lib/analytics';
 
 export default function PrivateTeaser() {
   const [password, setPassword] = useState('');
@@ -62,6 +63,7 @@ export default function PrivateTeaser() {
     } catch {
       // Best-effort — submissions are reviewed manually during beta.
     }
+    track('waitlist_joined', { product: 'launch' });
     setWaitDone(true);
     setWaitBusy(false);
   };

@@ -11,6 +11,7 @@ import {
   markIDayStarted,
   markMissionAccepted,
 } from '@/lib/missionJourney';
+import { track } from '@/lib/analytics';
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { SignInPanel } from '@/components/auth/SignInPanel';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
@@ -76,11 +77,13 @@ export function WelcomePage() {
       return;
     }
     completeIDay({ experience, equipment, primaryGoal });
+    track('iday_completed', { experience, equipment });
     router.push('/log');
   };
 
   const handleBegin = () => {
     markIDayStarted();
+    track('iday_started');
     setStep('mission');
   };
 
@@ -300,6 +303,25 @@ export function WelcomePage() {
                     })}
                   </p>
                 </div>
+                <label className="flex cursor-pointer items-start gap-2.5 rounded-xl border border-border/60 bg-muted/20 p-3 text-sm">
+                  <input
+                    type="checkbox"
+                    className="mt-0.5 h-4 w-4 accent-emerald-600"
+                    defaultChecked={false}
+                    onChange={(e) => {
+                      try {
+                        if (e.target.checked) localStorage.setItem('mw_reminders_pref', '1');
+                        else localStorage.removeItem('mw_reminders_pref');
+                      } catch {}
+                    }}
+                  />
+                  <span className="text-muted-foreground">
+                    {t('welcomeRemindersOptIn', {
+                      defaultValue:
+                        'Email me training reminders (streak at risk, next step). Optional — unsubscribe anytime.',
+                    })}
+                  </span>
+                </label>
                 <SignInPanel
                   allowSkip
                   nextPath="/log"

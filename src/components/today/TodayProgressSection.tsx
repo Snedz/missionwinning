@@ -1,7 +1,19 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Clock, Dumbbell, Flame, Target, TrendingUp, Trophy } from 'lucide-react';
+import {
+  Check,
+  Circle,
+  Clock,
+  Dumbbell,
+  Flame,
+  Medal,
+  Moon,
+  Sunrise,
+  Target,
+  TrendingUp,
+  Trophy,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
@@ -304,81 +316,112 @@ export function TodayProgressSection({
         </Card>
       </div>
 
-      {/* Wins & Challenges (reframed as proof of massive action — elevated but secondary to the primary CTA) */}
-      <Card className="border-emerald-500/30">
+      {/* Wins & Challenges — earned milestones, secondary to the primary CTA */}
+      <Card className="border-primary/30">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-emerald-400">
+          <CardTitle className="flex items-center gap-2 text-primary">
             <Trophy className="h-5 w-5" /> {t('todayYourWins', { defaultValue: 'Your Wins & Streaks' })}
           </CardTitle>
-          <CardDescription>{t('todayYourWinsDesc', { defaultValue: 'Proof you are taking massive action. Complete these for badges and coaching priority.' })}</CardDescription>
+          <CardDescription>
+            {t('todayYourWinsDesc', {
+              defaultValue: 'Milestones earned from your logs — streaks and volume feed your Win Score.',
+            })}
+          </CardDescription>
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 gap-4 text-sm">
-          <div className={streak >= 7 ? "text-emerald-400 font-medium" : ""}>
-            {streak >= 7 ? "✓" : "○"}{' '}
-            {t('todayWin7DayStreak', { current: streak, defaultValue: `7-Day Streak (${streak}/7)` })}{' '}
-            {streak >= 7 && "🏅"}
-          </div>
-          <div className={totalVolume > 1000 ? "text-emerald-400 font-medium" : ""}>
-            {totalVolume > 1000 ? "✓" : "○"}{' '}
-            {t('todayWinVolume', {
-              current: totalVolume.toLocaleString(),
-              unit: unitLabel,
-              defaultValue: `1000+ total volume (${totalVolume.toLocaleString()}/1000 ${unitLabel})`,
-            })}{' '}
-            {totalVolume > 1000 && "🏅"}
-          </div>
-          <div className={totalSessions >= 15 ? "text-emerald-400 font-medium" : ""}>
-            {totalSessions >= 15 ? "✓" : "○"}{' '}
-            {t('todayWinSessions', { current: totalSessions, defaultValue: `15+ Sessions Logged (${totalSessions}/15)` })}{' '}
-            {totalSessions >= 15 && "🏅"}
-          </div>
-          <div className={savedWorkouts.length >= 3 ? "text-emerald-400 font-medium" : ""}>
-            {savedWorkouts.length >= 3 ? "✓" : "○"}{' '}
-            {t('todayWinSavedRoutines', {
-              current: savedWorkouts.length,
-              defaultValue: `3+ Saved Routines (${savedWorkouts.length}/3)`,
-            })}{' '}
-            {savedWorkouts.length >= 3 && "🏅"}
-          </div>
-          <div className={highProteinDays >= 5 ? "text-emerald-400 font-medium" : ""}>
-            {highProteinDays >= 5 ? "✓" : "○"}{' '}
-            {t('todayWinProteinDays', {
-              current: highProteinDays,
-              defaultValue: `High Protein Days (150g+) (${highProteinDays}/5+)`,
-            })}{' '}
-            {highProteinDays >= 5 && "🏅"}
-          </div>
-          <div className={nightSessions >= 3 ? "text-indigo-300 font-medium" : ""}>
-            {nightSessions >= 3 ? "✓" : "○"}{' '}
-            {t('todayWinUnderStars', {
-              current: nightSessions,
-              defaultValue: `Under the Stars (${nightSessions}/3 night sessions)`,
-            })}{' '}
-            {nightSessions >= 3 && "🌙"}
-            {nightSessions > 0 && (
-              <>
-                {' · '}
-                <a href="/leaderboard?board=under-the-stars" className="text-indigo-400 hover:underline">
-                  {t('todayRankings', { defaultValue: 'Rankings' })}
-                </a>
-              </>
+          {(
+            [
+              {
+                done: streak >= 7,
+                label: t('todayWin7DayStreak', { current: streak, defaultValue: `7-Day Streak (${streak}/7)` }),
+              },
+              {
+                done: totalVolume > 1000,
+                label: t('todayWinVolume', {
+                  current: totalVolume.toLocaleString(),
+                  unit: unitLabel,
+                  defaultValue: `1000+ total volume (${totalVolume.toLocaleString()}/1000 ${unitLabel})`,
+                }),
+              },
+              {
+                done: totalSessions >= 15,
+                label: t('todayWinSessions', {
+                  current: totalSessions,
+                  defaultValue: `15+ Sessions Logged (${totalSessions}/15)`,
+                }),
+              },
+              {
+                done: savedWorkouts.length >= 3,
+                label: t('todayWinSavedRoutines', {
+                  current: savedWorkouts.length,
+                  defaultValue: `3+ Saved Routines (${savedWorkouts.length}/3)`,
+                }),
+              },
+              {
+                done: highProteinDays >= 5,
+                label: t('todayWinProteinDays', {
+                  current: highProteinDays,
+                  defaultValue: `High Protein Days (150g+) (${highProteinDays}/5+)`,
+                }),
+              },
+            ] as { done: boolean; label: string }[]
+          ).map((win, i) => (
+            <div
+              key={i}
+              className={`flex items-start gap-2 ${win.done ? 'font-medium text-primary' : ''}`}
+            >
+              {win.done ? (
+                <Check className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
+              ) : (
+                <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/50" aria-hidden />
+              )}
+              <span>
+                {win.label}
+                {win.done && <Medal className="ms-1.5 inline h-3.5 w-3.5 text-brass" aria-label="earned" />}
+              </span>
+            </div>
+          ))}
+          <div className={`flex items-start gap-2 ${nightSessions >= 3 ? 'font-medium text-indigo-300' : ''}`}>
+            {nightSessions >= 3 ? (
+              <Moon className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
+            ) : (
+              <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/50" aria-hidden />
             )}
+            <span>
+              {t('todayWinUnderStars', {
+                current: nightSessions,
+                defaultValue: `Under the Stars (${nightSessions}/3 night sessions)`,
+              })}
+              {nightSessions > 0 && (
+                <>
+                  {' · '}
+                  <a href="/leaderboard?board=under-the-stars" className="text-indigo-400 hover:underline">
+                    {t('todayRankings', { defaultValue: 'Rankings' })}
+                  </a>
+                </>
+              )}
+            </span>
           </div>
-          <div className={dawnSessions >= 3 ? "text-amber-300 font-medium" : ""}>
-            {dawnSessions >= 3 ? "✓" : "○"}{' '}
-            {t('todayWinDawn', {
-              current: dawnSessions,
-              defaultValue: `By Dawn's Early Light (${dawnSessions}/3 dawn sessions)`,
-            })}{' '}
-            {dawnSessions >= 3 && "🌅"}
-            {dawnSessions > 0 && (
-              <>
-                {' · '}
-                <a href="/leaderboard?board=dawns-early-light" className="text-amber-400 hover:underline">
-                  {t('todayRankings', { defaultValue: 'Rankings' })}
-                </a>
-              </>
+          <div className={`flex items-start gap-2 ${dawnSessions >= 3 ? 'font-medium text-amber-300' : ''}`}>
+            {dawnSessions >= 3 ? (
+              <Sunrise className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
+            ) : (
+              <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/50" aria-hidden />
             )}
+            <span>
+              {t('todayWinDawn', {
+                current: dawnSessions,
+                defaultValue: `By Dawn's Early Light (${dawnSessions}/3 dawn sessions)`,
+              })}
+              {dawnSessions > 0 && (
+                <>
+                  {' · '}
+                  <a href="/leaderboard?board=dawns-early-light" className="text-amber-400 hover:underline">
+                    {t('todayRankings', { defaultValue: 'Rankings' })}
+                  </a>
+                </>
+              )}
+            </span>
           </div>
           <div className="col-span-2 text-xs text-muted-foreground">
             {t('todayWinBadgeFoot', {
@@ -387,7 +430,7 @@ export function TodayProgressSection({
             })}
           </div>
           <div className="col-span-2 flex gap-2 mt-1 flex-wrap">
-            <Button size="sm" variant="outline" className="text-xs" onClick={() => { window.location.href = '/leaderboard'; }}>
+            <Button size="sm" variant="outline" className="text-xs" onClick={() => router.push('/leaderboard')}>
               {t('todayViewLeaderboard', { defaultValue: 'View Leaderboard →' })}
             </Button>
             {SHOW_TODAY_FOUNDER_TOOLS && (

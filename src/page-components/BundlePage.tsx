@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { track } from "@/lib/analytics";
 import {
   BookOpen,
   Brain,
@@ -55,6 +56,10 @@ export function BundlePage() {
   const plan = BUNDLE_PLANS[planId];
   const stripeUrl = getStripeCheckoutUrl("super-bundle");
   const vsSeparateSavings = bundleSavingsPercent();
+
+  useEffect(() => {
+    track('bundle_viewed');
+  }, []);
 
   const planTabLabel =
     planId === "3mo"
