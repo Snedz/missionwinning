@@ -157,6 +157,7 @@ export function LeaderboardPage() {
         defaultValue:
           'Compare Mission Operators globally, by region, country, locale, or squad.',
       })}
+      showLegalFooter
       className="pb-8"
       headerActions={
         <Button

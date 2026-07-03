@@ -1,0 +1,80 @@
+/** Exercise library filter labels — merged into i18n `common` namespace. */
+
+const LIBRARY_EN: Record<string, string> = {
+  librarySubtitle:
+    '{{count}}+ movements with cues and alternatives. Bodyweight and minimal equipment prioritized.',
+  libraryTodayHub: 'Today Hub',
+  libraryProgramTemplates: 'Program templates',
+  libraryPremiumUnlocked: ' — full library unlocked.',
+  libraryFreeCatalog: ' — free core includes the full catalog.',
+  librarySearchPlaceholder: 'Search name or muscle...',
+  libraryEquipAll: 'All Equipment',
+  libraryEquipBodyweight: 'Bodyweight',
+  libraryEquipDumbbell: 'Dumbbells',
+  libraryEquipBarbell: 'Barbell',
+  libraryEquipCable: 'Cable / Machine',
+  libraryEquipBand: 'Band',
+  libraryEquipKettlebell: 'Kettlebell',
+  libraryTagAll: 'All styles',
+  libraryTagStrength: 'Strength',
+  libraryTagHypertrophy: 'Hypertrophy',
+  libraryTagConditioning: 'Conditioning',
+  libraryTagCorrective: 'Corrective',
+  libraryLevelAll: 'All Levels',
+  libraryLevelBeginner: 'Beginner',
+  libraryLevelIntermediate: 'Intermediate',
+  libraryLevelAdvanced: 'Advanced',
+  libraryShowingCount: 'Showing {{shown}} of {{total}}',
+  libraryKeyCues: 'Key cues:',
+  libraryCuesComing: 'Form cues coming soon for this movement.',
+  libraryAlternatives: 'Alternatives:',
+  libraryQuickAdd: "Quick Add to Today's Workout →",
+  libraryNoResults: 'No exercises match these filters. Try clearing equipment or style filters.',
+};
+
+const LIBRARY_ES: Record<string, string> = {
+  ...LIBRARY_EN,
+  librarySubtitle:
+    '{{count}}+ movimientos con indicaciones y alternativas. Prioridad a peso corporal y equipo mínimo.',
+  libraryTodayHub: 'Centro de hoy',
+  libraryProgramTemplates: 'Plantillas de programa',
+  libraryPremiumUnlocked: ' — biblioteca completa desbloqueada.',
+  libraryFreeCatalog: ' — el núcleo gratuito incluye el catálogo completo.',
+  librarySearchPlaceholder: 'Buscar nombre o músculo...',
+  libraryEquipAll: 'Todo el equipo',
+  libraryEquipBodyweight: 'Peso corporal',
+  libraryEquipDumbbell: 'Mancuernas',
+  libraryEquipBarbell: 'Barra',
+  libraryEquipCable: 'Cable / Máquina',
+  libraryEquipBand: 'Banda',
+  libraryEquipKettlebell: 'Kettlebell',
+  libraryTagAll: 'Todos los estilos',
+  libraryTagStrength: 'Fuerza',
+  libraryTagHypertrophy: 'Hipertrofia',
+  libraryTagConditioning: 'Acondicionamiento',
+  libraryTagCorrective: 'Correctivo',
+  libraryLevelAll: 'Todos los niveles',
+  libraryLevelBeginner: 'Principiante',
+  libraryLevelIntermediate: 'Intermedio',
+  libraryLevelAdvanced: 'Avanzado',
+  libraryShowingCount: 'Mostrando {{shown}} de {{total}}',
+  libraryKeyCues: 'Indicaciones clave:',
+  libraryCuesComing: 'Indicaciones de forma próximamente para este movimiento.',
+  libraryAlternatives: 'Alternativas:',
+  libraryQuickAdd: 'Agregar rápido al entrenamiento de hoy →',
+  libraryNoResults:
+    'Ningún ejercicio coincide con estos filtros. Prueba quitar filtros de equipo o estilo.',
+};
+
+const BY_LANG: Record<string, Record<string, string>> = {
+  en: LIBRARY_EN,
+  es: LIBRARY_ES,
+};
+
+export function libraryStringsFor(lang: string): Record<string, string> {
+  return BY_LANG[lang] ?? BY_LANG.en;
+}
+
+export function mergeLibraryStrings(common: Record<string, string>, lang: string): void {
+  Object.assign(common, libraryStringsFor(lang));
+}

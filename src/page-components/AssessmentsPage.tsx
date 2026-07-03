@@ -47,13 +47,28 @@ export function AssessmentsPage() {
     { key: 'lifestyle' },
   ] as const;
 
-  // Stage-matched questions + OARS from coaching materials (quick guide). Use for personalization, not diagnosis.
   const stages = [
-    { name: "Pre-Contemplation (Not Ready)", focus: "Build awareness without pressure. Evoke curiosity and values.", qs: ["What do you enjoy about your current habits?", "How do you view your health or energy 5 years from now?"] },
-    { name: "Contemplation (Getting Ready)", focus: "Normalize ambivalence. Explore benefits and barriers.", qs: ["What might be some benefits if you made this change?", "What feels hardest about starting?"] },
-    { name: "Preparation / Action", focus: "Strengthen confidence. Reinforce progress. Small wins + autonomy.", qs: ["What's one small step you could take this week?", "What's been working best so far?"] },
-    { name: "Maintenance", focus: "Support autonomy, mastery, relapse prevention. New goals.", qs: ["How do you maintain progress when life gets stressful?", "What new goals feel inspiring now?"] },
-  ];
+    {
+      shortKey: 'stagePre',
+      focusKey: 'assessStagePreFocus',
+      questionKeys: ['assessStagePreQ1', 'assessStagePreQ2'] as const,
+    },
+    {
+      shortKey: 'stageCont',
+      focusKey: 'assessStageContFocus',
+      questionKeys: ['assessStageContQ1', 'assessStageContQ2'] as const,
+    },
+    {
+      shortKey: 'stagePrep',
+      focusKey: 'assessStagePrepFocus',
+      questionKeys: ['assessStagePrepQ1', 'assessStagePrepQ2'] as const,
+    },
+    {
+      shortKey: 'stageMaint',
+      focusKey: 'assessStageMaintFocus',
+      questionKeys: ['assessStageMaintQ1', 'assessStageMaintQ2'] as const,
+    },
+  ] as const;
   const [selectedStage, setSelectedStage] = useState(0);
 
   const handleAnswer = (key: string, value: string) => {
@@ -65,17 +80,34 @@ export function AssessmentsPage() {
   const submitAssessment = () => {
     const yesFlags = Object.values(answers).filter(v => v.toLowerCase().includes('yes') || v.toLowerCase().includes('low')).length;
     let risk: 'low' | 'moderate' | 'high' = 'low';
-    let notes = "Great baseline. Proceed with standard programs.";
-    let recs = ["Start with Beginner Full Body or Bodyweight program.", "Focus on consistent form."];
+    let notes = t('assessRiskLowNotes', { defaultValue: 'Great baseline. Proceed with standard programs.' });
+    let recs = [
+      t('assessRecLow1', { defaultValue: 'Start with Beginner Full Body or Bodyweight program.' }),
+      t('assessRecLow2', { defaultValue: 'Focus on consistent form.' }),
+    ];
 
     if (yesFlags >= 3) {
       risk = 'high';
-      notes = "Multiple flags detected. Strongly recommend medical clearance before intense training.";
-      recs = ["Begin with Corrective & Mobility block.", "Consult physician.", "Use low-impact options and monitor symptoms."];
+      notes = t('assessRiskHighNotes', {
+        defaultValue:
+          'Multiple flags detected. Strongly recommend medical clearance before intense training.',
+      });
+      recs = [
+        t('assessRecHigh1', { defaultValue: 'Begin with Corrective & Mobility block.' }),
+        t('assessRecHigh2', { defaultValue: 'Consult physician.' }),
+        t('assessRecHigh3', { defaultValue: 'Use low-impact options and monitor symptoms.' }),
+      ];
     } else if (yesFlags >= 1) {
       risk = 'moderate';
-      notes = "Some caution advised. Consider starting with corrective work.";
-      recs = ["Prioritize the Corrective Exercise Specialist templates.", "Build with Bodyweight & Dumbbell Starter first."];
+      notes = t('assessRiskModerateNotes', {
+        defaultValue: 'Some caution advised. Consider starting with corrective work.',
+      });
+      recs = [
+        t('assessRecModerate1', {
+          defaultValue: 'Prioritize the Corrective Exercise Specialist templates.',
+        }),
+        t('assessRecModerate2', { defaultValue: 'Build with Bodyweight & Dumbbell Starter first.' }),
+      ];
     }
 
     const res: AssessmentResult = { riskLevel: risk, notes, recommendations: recs };
@@ -150,6 +182,7 @@ export function AssessmentsPage() {
         defaultValue:
           'Free core tool. Based on standard health history and ParQ-style questions. Answer honestly for personalized guidance.',
       })}
+      showLegalFooter
     >
       {!result && (
         <Card className="content-card">
@@ -209,13 +242,25 @@ export function AssessmentsPage() {
         <CardContent className="space-y-3 text-sm">
           <div className="flex flex-wrap gap-2">
             {stages.map((s, i) => (
-              <Button key={i} size="sm" variant={selectedStage === i ? 'default' : 'outline'} onClick={() => setSelectedStage(i)}>{s.name.split('(')[0].trim()}</Button>
+              <Button
+                key={s.shortKey}
+                size="sm"
+                variant={selectedStage === i ? 'default' : 'outline'}
+                onClick={() => setSelectedStage(i)}
+              >
+                {t(s.shortKey, { defaultValue: s.shortKey })}
+              </Button>
             ))}
           </div>
           <div className="bg-black/30 p-3 rounded">
-            <div className="font-medium text-emerald-400">Coach Focus: {stages[selectedStage].focus}</div>
+            <div className="font-medium text-emerald-400">
+              {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
+              {t(stages[selectedStage].focusKey, { defaultValue: '' })}
+            </div>
             <ul className="list-disc pl-5 mt-1 text-white/80">
-              {stages[selectedStage].qs.map((q, i) => <li key={i}>{q}</li>)}
+              {stages[selectedStage].questionKeys.map((qKey) => (
+                <li key={qKey}>{t(qKey, { defaultValue: qKey })}</li>
+              ))}
             </ul>
           </div>
           <div className="text-xs text-muted-foreground">

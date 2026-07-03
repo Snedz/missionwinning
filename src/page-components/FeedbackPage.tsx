@@ -62,18 +62,18 @@ export function FeedbackPage() {
         <Card className="content-card text-center">
             <CardContent className="pt-8 pb-8 space-y-4">
               <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-emerald-600/20 text-emerald-400 text-sm border border-emerald-500/30">
-                Mission Builders
+                {t('feedbackThankBadge', { defaultValue: 'Mission Builders' })}
               </div>
               <div className="text-left max-w-md mx-auto space-y-2 text-sm">
-                <p className="font-semibold">✓ Super Bundle premium unlocks</p>
-                <p className="font-semibold">✓ Input on roadmap + features</p>
-                <p className="font-semibold">✓ Early access to updates</p>
+                <p className="font-semibold">{t('feedbackThankUnlock', { defaultValue: '✓ Super Bundle premium unlocks' })}</p>
+                <p className="font-semibold">{t('feedbackThankRoadmap', { defaultValue: '✓ Input on roadmap + features' })}</p>
+                <p className="font-semibold">{t('feedbackThankEarly', { defaultValue: '✓ Early access to updates' })}</p>
                 <p className="text-xs text-muted-foreground mt-4">
-                  Watch your email for updates + community drops.
+                  {t('feedbackThankEmail', { defaultValue: 'Watch your email for updates + community drops.' })}
                 </p>
               </div>
               <Button size="lg" variant="fitness" onClick={() => router.push('/log')}>
-                Back to Today
+                {t('feedbackBackToday', { defaultValue: 'Back to Today' })}
               </Button>
             </CardContent>
           </Card>
@@ -100,21 +100,21 @@ export function FeedbackPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Full name (optional)</Label>
+                  <Label>{t('feedbackNameLabel', { defaultValue: 'Full name (optional)' })}</Label>
                   <Input
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="Alex Rivera"
+                    placeholder={t('feedbackNamePlaceholder', { defaultValue: 'Alex Rivera' })}
                     className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label>Email (for follow-up)</Label>
+                  <Label>{t('feedbackEmailLabel', { defaultValue: 'Email (for follow-up)' })}</Label>
                   <Input
                     type="email"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    placeholder="you@winning.com"
+                    placeholder={t('feedbackEmailPlaceholder', { defaultValue: 'you@winning.com' })}
                     required
                     className="mt-1"
                   />
@@ -122,30 +122,34 @@ export function FeedbackPage() {
               </div>
 
               <div>
-                <Label>Key results so far</Label>
+                <Label>{t('feedbackResultsLabel', { defaultValue: 'Key results so far' })}</Label>
                 <textarea
                   className="mt-1 w-full h-24 rounded-xl border border-input bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                   value={form.results}
                   onChange={(e) => setForm({ ...form, results: e.target.value })}
-                  placeholder="Added 25kg to squat in 6 weeks. Energy through the roof."
+                  placeholder={t('feedbackResultsPlaceholder', {
+                    defaultValue: 'Added 25kg to squat in 6 weeks. Energy through the roof.',
+                  })}
                   required
                 />
               </div>
 
               <div>
-                <Label>Your testimonial</Label>
+                <Label>{t('feedbackTestimonialLabel', { defaultValue: 'Your testimonial' })}</Label>
                 <textarea
                   className="mt-1 w-full h-28 rounded-xl border border-input bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                   value={form.testimonial}
                   onChange={(e) => setForm({ ...form, testimonial: e.target.value })}
-                  placeholder="Stop waiting. The free tracker alone got me consistent..."
+                  placeholder={t('feedbackTestimonialPlaceholder', {
+                    defaultValue: 'Stop waiting. The free tracker alone got me consistent...',
+                  })}
                   required
                 />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Rate your results (1–5)</Label>
+                  <Label>{t('feedbackRatingLabel', { defaultValue: 'Rate your results (1–5)' })}</Label>
                   <div className="flex gap-2 mt-2">
                     {['1', '2', '3', '4', '5'].map((r) => (
                       <Button
@@ -161,21 +165,27 @@ export function FeedbackPage() {
                   </div>
                 </div>
                 <div>
-                  <Label>Biggest action you took</Label>
+                  <Label>{t('feedbackActionLabel', { defaultValue: 'Biggest action you took' })}</Label>
                   <Input
                     value={form.massiveAction}
                     onChange={(e) => setForm({ ...form, massiveAction: e.target.value })}
-                    placeholder="Finally ran the 5x5 program start to finish."
+                    placeholder={t('feedbackActionPlaceholder', {
+                      defaultValue: 'Finally ran the 5x5 program start to finish.',
+                    })}
                     className="mt-1"
                   />
                 </div>
               </div>
 
               <Button type="submit" size="lg" variant="fitness" className="w-full" disabled={loading}>
-                {loading ? 'Submitting…' : 'Submit feedback'}
+                {loading
+                  ? t('feedbackSubmitting', { defaultValue: 'Submitting…' })
+                  : t('feedbackSubmit', { defaultValue: 'Submit feedback' })}
               </Button>
               <p className="text-[10px] text-center text-muted-foreground">
-                Your words may be featured (anonymized or with permission).
+                {t('feedbackFootnote', {
+                  defaultValue: 'Your words may be featured (anonymized or with permission).',
+                })}
               </p>
             </form>
           </CardContent>
@@ -183,7 +193,9 @@ export function FeedbackPage() {
 
       <SignInPrompt
         nextPath="/feedback"
-        description="Sign in to link feedback to your journey and sync across devices."
+        description={t('feedbackSignInDesc', {
+          defaultValue: 'Sign in to link feedback to your journey and sync across devices.',
+        })}
       />
     </InfoPageShell>
   );

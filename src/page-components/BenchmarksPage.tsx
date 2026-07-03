@@ -109,6 +109,7 @@ export function BenchmarksPage() {
         subtitle={t('benchmarksSubtitle', {
           defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
         })}
+        showLegalFooter
       >
         <Card className="content-card border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
@@ -137,6 +138,7 @@ export function BenchmarksPage() {
       subtitle={t('benchmarksSubtitle', {
         defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
       })}
+      showLegalFooter
     >
       <MilitaryReadinessSection />
       <PresidentialFitnessSection />

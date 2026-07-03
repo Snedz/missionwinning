@@ -220,6 +220,7 @@ export function BuilderPage() {
         defaultValue:
           'Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.',
       })}
+      showLegalFooter
     >
       <section
         id="program-templates"

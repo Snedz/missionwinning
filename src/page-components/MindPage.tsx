@@ -8,8 +8,7 @@ import { UnlockButton } from '@/components/UnlockButton';
 import { usePremium } from '@/hooks/usePremium';
 import type { GuidedMindSession } from '@/data/guidedMindSessions';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { getPillarWins } from '@/lib/pillarLog';
 import { GUIDED_MIND_SESSIONS } from '@/data/guidedMindSessions';
 import { GuidedMindSessionRunner } from '@/components/pillars/GuidedMindSessionRunner';
@@ -37,87 +36,73 @@ export function MindPage() {
   const allSessions = [...GUIDED_MIND_SESSIONS, ...premiumSessions];
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={Brain}
-          title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
-          subtitle={t('mindSubtitle', {
-            defaultValue:
-              '10 free guided sessions, breathing timer, and daily check-in. Premium adds 12 deeper sessions (Super Bundle).',
-          })}
-        />
-      </StaggerItem>
+    <PillarPageShell
+      icon={Brain}
+      title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
+      subtitle={t('mindSubtitle', {
+        defaultValue:
+          '10 free guided sessions, breathing timer, and daily check-in. Premium adds 12 deeper sessions (Super Bundle).',
+      })}
+    >
+      <div className="grid gap-6 lg:grid-cols-2">
+        <BreathingTimer />
+        <DailyCheckIn />
+      </div>
 
-      <StaggerItem index={1}>
-        <div className="grid gap-6 lg:grid-cols-2">
-          <BreathingTimer />
-          <DailyCheckIn />
+      <div className="space-y-3">
+        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+          {t('mindGuidedFree', { defaultValue: 'Free guided sessions' })}
+        </h3>
+        <div className="grid gap-4 md:grid-cols-3">
+          {allSessions.map((s) => (
+            <GuidedMindSessionRunner key={s.id} session={s} />
+          ))}
         </div>
-      </StaggerItem>
-
-      <StaggerItem index={2}>
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-            {t('mindGuidedFree', { defaultValue: 'Free guided sessions' })}
-          </h3>
-          <div className="grid gap-4 md:grid-cols-3">
-            {allSessions.map((s) => (
-              <GuidedMindSessionRunner key={s.id} session={s} />
-            ))}
-          </div>
-        </div>
-      </StaggerItem>
+      </div>
 
       {premiumSessions.length > 0 && (
-        <StaggerItem index={2}>
-          <p className="text-xs text-emerald-400">
-            {t('mindPremiumLoaded', { defaultValue: 'Premium sessions unlocked above.' })}
-          </p>
-        </StaggerItem>
+        <p className="text-xs text-emerald-400">
+          {t('mindPremiumLoaded', { defaultValue: 'Premium sessions unlocked above.' })}
+        </p>
       )}
 
       {recentWins.length > 0 && (
-        <StaggerItem index={3}>
-          <Card className="content-card">
-            <CardHeader>
-              <CardTitle className="text-base">
-                {t('mindRecentWins', { defaultValue: 'Recent Mind Wins' })}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm space-y-1">
-              {recentWins.map((w) => (
-                <div key={w.id} className="text-muted-foreground">
-                  {new Date(w.completedAt).toLocaleDateString()} — {w.title}
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </StaggerItem>
-      )}
-
-      <StaggerItem index={recentWins.length > 0 ? 4 : 3}>
-        <Card className="content-card border-white/10 bg-card/50">
+        <Card className="content-card">
           <CardHeader>
             <CardTitle className="text-base">
-              {t('mindPremiumTitle', { defaultValue: 'Premium — Calm / Waking Up depth' })}
+              {t('mindRecentWins', { defaultValue: 'Recent Mind Wins' })}
             </CardTitle>
-            <CardDescription>
-              {t('mindPremiumDesc', {
-                defaultValue: 'Guided sessions, sleep stories, expert lessons on building resilience.',
-              })}
-            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <UnlockButton
-              productId="mind-premium"
-              price="7"
-              title={t('mindPremiumBtn', { defaultValue: 'Mind & Recovery Premium' })}
-              isSubscription
-            />
+          <CardContent className="text-sm space-y-1">
+            {recentWins.map((w) => (
+              <div key={w.id} className="text-muted-foreground">
+                {new Date(w.completedAt).toLocaleDateString()} — {w.title}
+              </div>
+            ))}
           </CardContent>
         </Card>
-      </StaggerItem>
-    </StaggerGroup>
+      )}
+
+      <Card className="content-card border-white/10 bg-card/50">
+        <CardHeader>
+          <CardTitle className="text-base">
+            {t('mindPremiumTitle', { defaultValue: 'Premium — Calm / Waking Up depth' })}
+          </CardTitle>
+          <CardDescription>
+            {t('mindPremiumDesc', {
+              defaultValue: 'Guided sessions, sleep stories, expert lessons on building resilience.',
+            })}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <UnlockButton
+            productId="mind-premium"
+            price="7"
+            title={t('mindPremiumBtn', { defaultValue: 'Mind & Recovery Premium' })}
+            isSubscription
+          />
+        </CardContent>
+      </Card>
+    </PillarPageShell>
   );
 }

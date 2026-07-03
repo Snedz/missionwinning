@@ -385,6 +385,12 @@ export function LandingPage() {
             <Link href="/about" className="hover:text-foreground">
               About
             </Link>
+            <Link href="/beta" className="hover:text-foreground">
+              Beta guide
+            </Link>
+            <Link href="/feedback" className="hover:text-foreground">
+              Feedback
+            </Link>
             <Link href="/vision" className="hover:text-foreground">
               Vision
             </Link>

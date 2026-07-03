@@ -46,6 +46,34 @@ const ASSESS_EN: Record<string, string> = {
   assessQ_allergies: 'List any and all allergies.',
   assessQ_lifestyle:
     'Occupation stress (low/med/high), energy level, caffeine/alcohol use, recent weight fluctuation, diet plan or supplements?',
+  assessStagePreName: 'Pre-Contemplation (Not Ready)',
+  assessStagePreFocus: 'Build awareness without pressure. Evoke curiosity and values.',
+  assessStagePreQ1: 'What do you enjoy about your current habits?',
+  assessStagePreQ2: 'How do you view your health or energy 5 years from now?',
+  assessStageContName: 'Contemplation (Getting Ready)',
+  assessStageContFocus: 'Normalize ambivalence. Explore benefits and barriers.',
+  assessStageContQ1: 'What might be some benefits if you made this change?',
+  assessStageContQ2: 'What feels hardest about starting?',
+  assessStagePrepName: 'Preparation / Action',
+  assessStagePrepFocus: 'Strengthen confidence. Reinforce progress. Small wins + autonomy.',
+  assessStagePrepQ1: "What's one small step you could take this week?",
+  assessStagePrepQ2: "What's been working best so far?",
+  assessStageMaintName: 'Maintenance',
+  assessStageMaintFocus: 'Support autonomy, mastery, relapse prevention. New goals.',
+  assessStageMaintQ1: 'How do you maintain progress when life gets stressful?',
+  assessStageMaintQ2: 'What new goals feel inspiring now?',
+  assessCoachFocus: 'Coach Focus:',
+  assessRiskLowNotes: 'Great baseline. Proceed with standard programs.',
+  assessRiskModerateNotes: 'Some caution advised. Consider starting with corrective work.',
+  assessRiskHighNotes:
+    'Multiple flags detected. Strongly recommend medical clearance before intense training.',
+  assessRecLow1: 'Start with Beginner Full Body or Bodyweight program.',
+  assessRecLow2: 'Focus on consistent form.',
+  assessRecModerate1: 'Prioritize the Corrective Exercise Specialist templates.',
+  assessRecModerate2: 'Build with Bodyweight & Dumbbell Starter first.',
+  assessRecHigh1: 'Begin with Corrective & Mobility block.',
+  assessRecHigh2: 'Consult physician.',
+  assessRecHigh3: 'Use low-impact options and monitor symptoms.',
 };
 
 const ASSESS_ES: Record<string, string> = {
@@ -56,6 +84,13 @@ const ASSESS_ES: Record<string, string> = {
   assessFormTitle: 'Evaluación rápida de salud y estilo de vida',
   assessYes: 'Sí',
   assessNo: 'No',
+  assessStagePreFocus: 'Genera conciencia sin presión. Despierta curiosidad y valores.',
+  assessStagePreQ1: '¿Qué disfrutas de tus hábitos actuales?',
+  assessCoachFocus: 'Enfoque del coach:',
+  assessRiskLowNotes: 'Buena línea base. Continúa con programas estándar.',
+  assessRiskModerateNotes: 'Algo de precaución. Considera empezar con trabajo correctivo.',
+  assessRiskHighNotes:
+    'Varias señales detectadas. Se recomienda autorización médica antes de entrenamiento intenso.',
 };
 
 const BY_LANG: Record<string, Record<string, string>> = {

@@ -40,6 +40,17 @@ type WelcomeStrings = {
   photoLogBetaNote: string;
   navOurMission: string;
   navBetaGuide: string;
+  welcomeTitle: string;
+  welcomeSubtitle: string;
+  welcomeBegin: string;
+  welcomeAccept: string;
+  welcomeContinue: string;
+  welcomeSignInTitle: string;
+  welcomeSignInSubtitle: string;
+  welcomeSkipSignIn: string;
+  welcomeRemindersOptIn: string;
+  editJourneyProfile: string;
+  saveProfile: string;
 };
 
 const en: WelcomeStrings = {
@@ -83,9 +94,24 @@ const en: WelcomeStrings = {
   photoLogBetaNote: 'Bevel-style meal capture — privacy-first, on-device when possible.',
   navOurMission: 'Our mission',
   navBetaGuide: 'Beta guide',
+  welcomeTitle: 'Welcome, Mission Member',
+  welcomeSubtitle:
+    'Start your path toward lifelong health — one step at a time. About two minutes.',
+  welcomeBegin: 'Begin',
+  welcomeAccept: 'I accept the path',
+  welcomeContinue: 'Continue',
+  welcomeSignInTitle: 'Save progress — your choice',
+  welcomeSignInSubtitle:
+    'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
+  welcomeSkipSignIn: 'Skip — go to Today',
+  welcomeRemindersOptIn:
+    'Email me training reminders (streak at risk, next step). Optional — unsubscribe anytime.',
+  editJourneyProfile: 'Edit journey profile',
+  saveProfile: 'Save profile',
 };
 
 const zh: WelcomeStrings = {
+  ...en,
   welcomeKicker: '旅程从这里开始',
   welcomeIDay: '入门日',
   welcomeMissionLead: '使命：',
@@ -127,6 +153,7 @@ const zh: WelcomeStrings = {
 };
 
 const id: WelcomeStrings = {
+  ...en,
   welcomeKicker: 'Perjalanan dimulai di sini',
   welcomeIDay: 'Hari-I',
   welcomeMissionLead: 'Misi:',
@@ -170,6 +197,7 @@ const id: WelcomeStrings = {
 };
 
 const th: WelcomeStrings = {
+  ...en,
   welcomeKicker: 'จุดเริ่มต้นของเส้นทาง',
   welcomeIDay: 'วัน I',
   welcomeMissionLead: 'ภารกิจ:',
@@ -211,6 +239,7 @@ const th: WelcomeStrings = {
 };
 
 const ar: WelcomeStrings = {
+  ...en,
   welcomeKicker: 'حيث تبدأ الرحلة',
   welcomeIDay: 'يوم البداية',
   welcomeMissionLead: 'المهمة:',
@@ -263,6 +292,20 @@ const es: WelcomeStrings = {
   photoLogTitle: 'Registrar con foto',
   navOurMission: 'Nuestra misión',
   navBetaGuide: 'Guía beta',
+  welcomeTitle: 'Bienvenido, miembro de la misión',
+  welcomeSubtitle:
+    'Comienza tu camino hacia la salud de por vida — un paso a la vez. Unos dos minutos.',
+  welcomeBegin: 'Comenzar',
+  welcomeAccept: 'Acepto el camino',
+  welcomeContinue: 'Continuar',
+  welcomeSignInTitle: 'Guardar progreso — tu elección',
+  welcomeSignInSubtitle:
+    'Inicia sesión con Google o correo para sincronizar. Omite cuando quieras — el progreso local funciona.',
+  welcomeSkipSignIn: 'Omitir — ir a Hoy',
+  welcomeRemindersOptIn:
+    'Envíame recordatorios de entrenamiento (racha en riesgo, siguiente paso). Opcional — cancela cuando quieras.',
+  editJourneyProfile: 'Editar perfil del viaje',
+  saveProfile: 'Guardar perfil',
 };
 
 const LOCALES: Partial<Record<string, WelcomeStrings>> = { en, zh, id, th, es, ar };
