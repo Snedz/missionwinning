@@ -32,6 +32,8 @@ export interface LeaderboardEntry {
   locale: string;
   squadCode?: string;
   isYou?: boolean;
+  /** Synthetic pace-setter (bot), always labeled in the UI — never a real athlete. */
+  isPacer?: boolean;
   delta?: number;
   detail?: string;
   userId?: string;

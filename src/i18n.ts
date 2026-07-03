@@ -56,7 +56,7 @@ const resources: Record<string, { common: Record<string, string> }> = {
       startEmpty: "Start Empty Workout",
       resumeWorkout: "Resume Workout",
       logRecipe: "Log Entire Recipe",
-      exportData: "Export Logs (JSON)",
+      exportData: "Download backup (JSON)",
       viewEvents: "View Tracked Events (console)",
       riskLow: "Low risk",
       riskModerate: "Moderate risk",

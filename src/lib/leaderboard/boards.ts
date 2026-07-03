@@ -1,4 +1,5 @@
 import type { LeaderboardBoard } from './types';
+import { isAmericaTrackEnabled } from '@/lib/americaConfig';
 
 export const LEADERBOARD_BOARDS: LeaderboardBoard[] = [
   {
@@ -68,6 +69,18 @@ export const LEADERBOARD_SCOPES: {
 
 export function boardById(id: import('./types').LeaderboardBoardId): LeaderboardBoard {
   return LEADERBOARD_BOARDS.find((b) => b.id === id) ?? LEADERBOARD_BOARDS[0];
+}
+
+/** Boards visible in this build — PFT board rides with the America track flag. */
+export function visibleLeaderboardBoards(): LeaderboardBoard[] {
+  if (isAmericaTrackEnabled()) return LEADERBOARD_BOARDS;
+  return LEADERBOARD_BOARDS.filter((b) => b.id !== 'presidential-fitness');
+}
+
+/** Scopes visible in this build — the PE class scope rides with the America track flag. */
+export function visibleLeaderboardScopes(): typeof LEADERBOARD_SCOPES {
+  if (isAmericaTrackEnabled()) return LEADERBOARD_SCOPES;
+  return LEADERBOARD_SCOPES.filter((s) => s.id !== 'class');
 }
 
 export const SQUAD_CODE_KEY = 'mw_squad_code';

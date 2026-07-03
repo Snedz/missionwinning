@@ -19,7 +19,7 @@ const optional = [
   ['YOUTH_CONSENT_SECRET', 'HMAC for youth consent codes (defaults to PRIVATE_ACCESS_SECRET)'],
   ['NEXT_PUBLIC_COUNCIL_STATUS', 'aspirational | pending | member'],
   ['NEXT_PUBLIC_SHOW_MAHA_COPY', 'true only after legal sign-off'],
-  ['NEXT_PUBLIC_AMERICA_TRACK_ENABLED', 'false to hide /america PFT track'],
+  ['NEXT_PUBLIC_AMERICA_TRACK_ENABLED', 'true to enable /america PFT track (default off)'],
 ];
 
 let ok = true;

@@ -12,8 +12,8 @@ describe('americaConfig', () => {
     assert.equal(getCouncilStatus(), 'aspirational');
   });
 
-  it('defaults america track enabled', () => {
-    assert.equal(isAmericaTrackEnabled(), true);
+  it('defaults america track disabled (opt-in via NEXT_PUBLIC_AMERICA_TRACK_ENABLED=true)', () => {
+    assert.equal(isAmericaTrackEnabled(), false);
   });
 
   it('defaults MAHA copy off', () => {

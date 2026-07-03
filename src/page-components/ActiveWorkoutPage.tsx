@@ -41,15 +41,26 @@ function findNextSet(exercises: { sets: { completed: boolean }[] }[]) {
   return null;
 }
 
-function getLastPerformance(workoutHistory: CompletedWorkoutLog[], exerciseId: string) {
+/** All sets from the most recent session containing this exercise. */
+function getLastSessionSets(workoutHistory: CompletedWorkoutLog[], exerciseId: string) {
   for (const log of workoutHistory) {
     const ex = log.exercises.find((e) => e.exerciseId === exerciseId);
-    if (ex && ex.sets.length > 0) {
-      const last = ex.sets[ex.sets.length - 1];
-      return { reps: last.reps, weight: last.weight };
-    }
+    if (ex && ex.sets.length > 0) return ex.sets;
   }
   return null;
+}
+
+/** Previous value for the matching set index (Strong/Hevy-style), falling back
+ * to the last set when this session plans more sets than last time. */
+function getLastPerformanceForSet(
+  workoutHistory: CompletedWorkoutLog[],
+  exerciseId: string,
+  setIdx: number
+) {
+  const sets = getLastSessionSets(workoutHistory, exerciseId);
+  if (!sets) return null;
+  const match = sets[setIdx] ?? sets[sets.length - 1];
+  return { reps: match.reps, weight: match.weight };
 }
 
 export function ActiveWorkoutPage() {
@@ -73,6 +84,10 @@ export function ActiveWorkoutPage() {
   const toggleSupersetWithNext = useWorkoutStore((s) => s.toggleSupersetWithNext);
   const unlinkSuperset = useWorkoutStore((s) => s.unlinkSuperset);
   const addSetToExercise = useWorkoutStore((s) => s.addSetToExercise);
+  const removeLastPlannedSet = useWorkoutStore((s) => s.removeLastPlannedSet);
+  const removeExerciseFromActive = useWorkoutStore((s) => s.removeExerciseFromActive);
+  const replaceExerciseInActive = useWorkoutStore((s) => s.replaceExerciseInActive);
+  const setExerciseNote = useWorkoutStore((s) => s.setExerciseNote);
   const tickRestTimer = useWorkoutStore((s) => s.tickRestTimer);
   const stopRestTimer = useWorkoutStore((s) => s.stopRestTimer);
   const adjustRestTimer = useWorkoutStore((s) => s.adjustRestTimer);
@@ -82,6 +97,9 @@ export function ActiveWorkoutPage() {
 
   const [addExerciseId, setAddExerciseId] = useState('');
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});
+  const [swapOpenIdx, setSwapOpenIdx] = useState<number | null>(null);
+  const [noteOpenIdx, setNoteOpenIdx] = useState<number | null>(null);
+  const [confirmRemoveIdx, setConfirmRemoveIdx] = useState<number | null>(null);
   const [formGuideId, setFormGuideId] = useState<string | null>(null);
   const [plateCalcOpen, setPlateCalcOpen] = useState(false);
   const [victoryOpen, setVictoryOpen] = useState(false);
@@ -117,7 +135,7 @@ export function ActiveWorkoutPage() {
     const key = getSetKey(exIdx, setIdx);
     if (setInputs[key]) return setInputs[key];
     const exerciseId = activeWorkout!.exercises[exIdx].exerciseId;
-    const last = getLastPerformance(workoutHistory, exerciseId);
+    const last = getLastPerformanceForSet(workoutHistory, exerciseId, setIdx);
     return { reps: last ? last.reps : defaultReps, weight: last ? last.weight : defaultWeight };
   };
 
@@ -329,9 +347,20 @@ export function ActiveWorkoutPage() {
         activeWorkout.exercises.map((exLog, exIdx) => {
           const exercise = getExerciseById(exLog.exerciseId);
           if (!exercise) return null;
-          const lastPerf = getLastPerformance(workoutHistory, exLog.exerciseId);
           const hasCompleted = exLog.sets.some((s) => s.completed);
+          const hasPlanned = exLog.sets.some((s) => !s.completed);
           const restSec = resolveRestSeconds(exercise.name);
+          const swapCandidates =
+            swapOpenIdx === exIdx
+              ? [...EXERCISES]
+                  .filter((e) => e.id !== exLog.exerciseId)
+                  .sort((a, b) => {
+                    const aShared = a.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
+                    const bShared = b.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
+                    if (aShared !== bShared) return aShared ? -1 : 1;
+                    return a.name.localeCompare(b.name);
+                  })
+              : [];
 
           const ssLabel = supersetLabel(activeWorkout.exercises, exIdx);
           const hasNext = exIdx < activeWorkout.exercises.length - 1;
@@ -395,12 +424,101 @@ export function ActiveWorkoutPage() {
                       {t('activeSupersetUnlink', { defaultValue: 'Unlink superset' })}
                     </Button>
                   )}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setNoteOpenIdx(noteOpenIdx === exIdx ? null : exIdx)}
+                  >
+                    {t('activeNote', { defaultValue: 'Note' })}
+                  </Button>
+                  {!hasCompleted && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSwapOpenIdx(swapOpenIdx === exIdx ? null : exIdx)}
+                    >
+                      {t('activeSwap', { defaultValue: 'Swap' })}
+                    </Button>
+                  )}
+                  {confirmRemoveIdx === exIdx ? (
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => {
+                        removeExerciseFromActive(exIdx);
+                        setConfirmRemoveIdx(null);
+                        setSwapOpenIdx(null);
+                        setNoteOpenIdx(null);
+                        setSetInputs({});
+                      }}
+                    >
+                      {hasCompleted
+                        ? t('activeRemoveConfirmLogged', { defaultValue: 'Remove — discards logged sets' })
+                        : t('activeRemoveConfirm', { defaultValue: 'Confirm remove' })}
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="text-muted-foreground hover:text-destructive"
+                      onClick={() => {
+                        setConfirmRemoveIdx(exIdx);
+                        setTimeout(() => setConfirmRemoveIdx((c) => (c === exIdx ? null : c)), 3500);
+                      }}
+                    >
+                      {t('activeRemove', { defaultValue: 'Remove' })}
+                    </Button>
+                  )}
                 </div>
+                {swapOpenIdx === exIdx && !hasCompleted && (
+                  <div className="mt-2 flex gap-2">
+                    <Select
+                      value=""
+                      onValueChange={(id) => {
+                        replaceExerciseInActive(exIdx, id);
+                        setSwapOpenIdx(null);
+                        setSetInputs({});
+                      }}
+                    >
+                      <SelectTrigger className="flex-1">
+                        <SelectValue
+                          placeholder={t('activeSwapPlaceholder', {
+                            defaultValue: 'Swap to… (same muscles first)',
+                          })}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {swapCandidates.map((ex) => (
+                          <SelectItem key={ex.id} value={ex.id}>
+                            {ex.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                {(noteOpenIdx === exIdx || exLog.note) && (
+                  <input
+                    type="text"
+                    value={exLog.note ?? ''}
+                    maxLength={200}
+                    placeholder={t('activeNotePlaceholder', {
+                      defaultValue: 'Note — "machine 3, seat 4", "left knee tight"…',
+                    })}
+                    onChange={(e) => setExerciseNote(exIdx, e.target.value)}
+                    className="mt-2 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                )}
               </CardHeader>
               <CardContent className="space-y-3">
                 {exLog.sets.map((set, setIdx) => {
                   const input = getSetInput(exIdx, setIdx, set.reps, set.weight);
                   const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
+                  const setPerf = getLastPerformanceForSet(workoutHistory, exLog.exerciseId, setIdx);
                   return (
                     <div
                       key={set.id}
@@ -414,17 +532,17 @@ export function ActiveWorkoutPage() {
                         isNext={isNext}
                         weightLabel={unitLabel}
                         weightStep={step}
-                        lastPerformance={lastPerf}
+                        lastPerformance={setPerf}
                         onRepsChange={(v) => updateSetInput(exIdx, setIdx, 'reps', v)}
                         onWeightChange={(v) => updateSetInput(exIdx, setIdx, 'weight', v)}
                         onSetKindChange={(kind) => setSetKind(exIdx, setIdx, kind)}
                         onLog={() => handleLogSet(exIdx, setIdx)}
                         onRate={(rpe) => rateSet(exIdx, setIdx, rpe)}
                         onCopyLast={
-                          lastPerf
+                          setPerf
                             ? () => {
-                                updateSetInput(exIdx, setIdx, 'reps', lastPerf.reps);
-                                updateSetInput(exIdx, setIdx, 'weight', lastPerf.weight);
+                                updateSetInput(exIdx, setIdx, 'reps', setPerf.reps);
+                                updateSetInput(exIdx, setIdx, 'weight', setPerf.weight);
                               }
                             : undefined
                         }
@@ -432,10 +550,23 @@ export function ActiveWorkoutPage() {
                     </div>
                   );
                 })}
-                <div className="flex gap-2 pt-1">
+                <div className="flex flex-wrap gap-2 pt-1">
                   <Button variant="outline" size="sm" onClick={() => addSetToExercise(exIdx)}>
                     <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
                   </Button>
+                  {hasPlanned && exLog.sets.length > 1 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-muted-foreground"
+                      onClick={() => {
+                        removeLastPlannedSet(exIdx);
+                        setSetInputs({});
+                      }}
+                    >
+                      {t('activeRemoveSet', { defaultValue: 'Remove set' })}
+                    </Button>
+                  )}
                   <Button variant="ghost" size="sm" onClick={() => startRestTimer(restSec)}>
                     <Timer className="h-3 w-3 me-1" />
                     {t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}

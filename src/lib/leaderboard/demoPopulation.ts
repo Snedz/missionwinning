@@ -43,7 +43,16 @@ function pick<T>(arr: T[], seed: number): T {
   return arr[seed % arr.length];
 }
 
+/** Pacers are synthetic pace-setter entries (clearly labeled bots) that keep
+ * early boards motivating before the real population fills in.
+ * Kill switch: NEXT_PUBLIC_LEADERBOARD_PACERS=false removes them entirely. */
+export function pacersEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_LEADERBOARD_PACERS !== 'false';
+}
+
 export function buildDemoPopulation(count = 96): LeaderboardSnapshot[] {
+  if (!pacersEnabled()) return [];
+
   const out: LeaderboardSnapshot[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -81,7 +90,7 @@ export function buildDemoPopulation(count = 96): LeaderboardSnapshot[] {
 export function snapshotToEntry(
   snap: LeaderboardSnapshot,
   boardId: import('./types').LeaderboardBoardId,
-  opts?: { isYou?: boolean; id?: string; delta?: number }
+  opts?: { isYou?: boolean; isPacer?: boolean; id?: string; delta?: number }
 ): LeaderboardEntry {
   const score = (() => {
     switch (boardId) {
@@ -112,6 +121,7 @@ export function snapshotToEntry(
     locale: snap.locale,
     squadCode: snap.squadCode,
     isYou: opts?.isYou,
+    isPacer: opts?.isPacer,
     delta: opts?.delta,
     userId: snap.userId,
     detail: snap.countryName,
@@ -122,6 +132,6 @@ export function demoEntriesForBoard(
   boardId: import('./types').LeaderboardBoardId
 ): LeaderboardEntry[] {
   return buildDemoPopulation().map((s, i) =>
-    snapshotToEntry(s, boardId, { id: `demo-${i}` })
+    snapshotToEntry(s, boardId, { id: `demo-${i}`, isPacer: true })
   );
 }

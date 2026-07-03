@@ -130,7 +130,9 @@ export function buildRankedLeaderboard(
       })
     );
 
-  const demoEntries = demo.map((s, i) => snapshotToEntry(s, boardId, { id: `demo-${i}` }));
+  const demoEntries = demo.map((s, i) =>
+    snapshotToEntry(s, boardId, { id: `demo-${i}`, isPacer: true })
+  );
 
   const youEntry: LeaderboardEntry = {
     id: you.userId ?? 'you',

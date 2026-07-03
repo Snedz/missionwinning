@@ -1,19 +1,32 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Barlow_Condensed, IBM_Plex_Mono, Inter } from 'next/font/google';
 import '../src/index.css';
 import { Toaster } from '@/components/ui/toaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const barlowCondensed = Barlow_Condensed({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  variable: '--font-display',
+});
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+});
 
 export const metadata: Metadata = {
-  title: 'Private Development',
-  description: 'Private build. Not open to the public.',
+  title: {
+    default: 'Mission Winning — Train Anywhere. Win Daily.',
+    template: '%s · Mission Winning',
+  },
+  description:
+    'The free health everything app: workout tracking, nutrition, mobility, mind, activity, and learning. Free core forever. Works offline, anywhere in the world.',
   icons: {
     icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',
   },
-  manifest: '/manifest.json',
 };
 
 export const viewport: Viewport = {
@@ -34,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`dark ${inter.variable}`}>
+    <html lang="en" className={`dark ${inter.variable} ${barlowCondensed.variable} ${plexMono.variable}`}>
       <body className="bg-background text-foreground font-sans">
         <I18nPwaProvider>
           {children}
