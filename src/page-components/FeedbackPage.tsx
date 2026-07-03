@@ -8,9 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { submitLead } from '@/lib/supabase';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 
@@ -52,19 +50,16 @@ export function FeedbackPage() {
 
   if (submitted) {
     return (
-      <StaggerGroup className="space-y-6">
-        <StaggerItem index={0}>
-          <PillarPageHeader
-            icon={MessageSquare}
-            title={t('infoFeedbackThankTitle', { defaultValue: 'Thank you' })}
-            subtitle={t('infoFeedbackThankSubtitle', {
-              defaultValue:
-                'Your feedback helps make the free core and Super Bundle better for the global mission.',
-            })}
-          />
-        </StaggerItem>
-        <StaggerItem index={1}>
-          <Card className="content-card text-center">
+      <InfoPageShell
+        icon={MessageSquare}
+        title={t('infoFeedbackThankTitle', { defaultValue: 'Thank you' })}
+        subtitle={t('infoFeedbackThankSubtitle', {
+          defaultValue:
+            'Your feedback helps make the free core and Super Bundle better for the global mission.',
+        })}
+        variant="sections"
+      >
+        <Card className="content-card text-center">
             <CardContent className="pt-8 pb-8 space-y-4">
               <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-emerald-600/20 text-emerald-400 text-sm border border-emerald-500/30">
                 Mission Builders
@@ -82,26 +77,22 @@ export function FeedbackPage() {
               </Button>
             </CardContent>
           </Card>
-        </StaggerItem>
-      </StaggerGroup>
+      </InfoPageShell>
     );
   }
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={MessageSquare}
-          title={t('infoFeedbackTitle', { defaultValue: 'Share your wins' })}
-          subtitle={t('infoFeedbackSubtitle', {
-            defaultValue:
-              "Tell us what results you're seeing, what worked, and what to build next. Beta founders shape the roadmap.",
-          })}
-        />
-      </StaggerItem>
-
-      <StaggerItem index={1}>
-        <Card className="content-card">
+    <InfoPageShell
+      icon={MessageSquare}
+      title={t('infoFeedbackTitle', { defaultValue: 'Share your wins' })}
+      subtitle={t('infoFeedbackSubtitle', {
+        defaultValue:
+          "Tell us what results you're seeing, what worked, and what to build next. Beta founders shape the roadmap.",
+      })}
+      variant="sections"
+      showLegalFooter
+    >
+      <Card className="content-card">
           <CardHeader>
             <CardTitle>{t('infoFeedbackFormTitle', { defaultValue: 'Beta founders feedback' })}</CardTitle>
           </CardHeader>
@@ -189,18 +180,11 @@ export function FeedbackPage() {
             </form>
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={2}>
-        <SignInPrompt
-          nextPath="/feedback"
-          description="Sign in to link feedback to your journey and sync across devices."
-        />
-      </StaggerItem>
-
-      <StaggerItem index={3}>
-        <AppLegalFooter />
-      </StaggerItem>
-    </StaggerGroup>
+      <SignInPrompt
+        nextPath="/feedback"
+        description="Sign in to link feedback to your journey and sync across devices."
+      />
+    </InfoPageShell>
   );
 }

@@ -50,7 +50,7 @@ import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
 import { PresidentialFitnessSection } from "@/components/fitness-test/PresidentialFitnessSection";
-import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
+import { PillarPageShell } from "@/components/layout/PillarPageShell";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 
 export function BenchmarksPage() {
@@ -103,14 +103,13 @@ export function BenchmarksPage() {
 
   if (workoutHistory.length === 0 || exerciseIds.length === 0) {
     return (
-      <div className="space-y-6">
-        <PillarPageHeader
-          icon={Shield}
-          title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
-          subtitle={t('benchmarksSubtitle', {
-            defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
-          })}
-        />
+      <PillarPageShell
+        icon={Shield}
+        title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
+        subtitle={t('benchmarksSubtitle', {
+          defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
+        })}
+      >
         <Card className="content-card border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <BarChart3 className="h-12 w-12 text-muted-foreground mb-4" />
@@ -127,25 +126,23 @@ export function BenchmarksPage() {
         </Card>
         <MilitaryReadinessSection />
         <PresidentialFitnessSection />
-      </div>
+      </PillarPageShell>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <PillarPageHeader
-        icon={Shield}
-        title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
-        subtitle={t('benchmarksSubtitle', {
-          defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
-        })}
-      />
-
+    <PillarPageShell
+      icon={Shield}
+      title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
+      subtitle={t('benchmarksSubtitle', {
+        defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
+      })}
+    >
       <MilitaryReadinessSection />
       <PresidentialFitnessSection />
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="border-primary/20 bg-primary/5">
+        <Card className="content-card border-primary/20 bg-primary/5">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Target className="h-4 w-4 text-primary" />
@@ -163,7 +160,7 @@ export function BenchmarksPage() {
             <CardTitle className="text-3xl">{globalStats.totalSessions}</CardTitle>
           </CardHeader>
         </Card>
-        <Card className="border-secondary/20 bg-secondary/5">
+        <Card className="content-card border-secondary/20 bg-secondary/5">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Scale className="h-4 w-4 text-secondary" />
@@ -494,7 +491,7 @@ export function BenchmarksPage() {
       )}
 
       {/* Free core quick actions to populate benchmarks (functional) */}
-      <Card className="mt-4 border-emerald-500/20">
+      <Card className="content-card mt-4 border-emerald-500/20">
         <CardHeader>
           <CardTitle className="text-base">
             {t('benchmarksQuickTitle', { defaultValue: 'Quick Benchmark Starters (Free)' })}
@@ -543,6 +540,6 @@ export function BenchmarksPage() {
           defaultValue: 'Sync benchmark history and PRs across devices.',
         })}
       />
-    </div>
+    </PillarPageShell>
   );
 }

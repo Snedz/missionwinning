@@ -3,6 +3,10 @@ import {
   verifyPrivateAccessToken,
   PRIVATE_ACCESS_COOKIE,
 } from '@/lib/privateSession';
+import {
+  isPrivateGatePublicPath,
+  PRIVATE_GATE_PUBLIC_PATHS,
+} from '@/lib/publicRoutes';
 
 /** True when private development gate should be active (default: on in production). */
 export function isPrivateModeEnabled(): boolean {
@@ -14,16 +18,7 @@ export function isPrivateModeEnabled(): boolean {
 }
 
 /** Page routes reachable without the access cookie while the gate is active. */
-export const PUBLIC_PATHS_WHILE_GATED = [
-  '/private',
-  '/privacy',
-  '/terms',
-  '/about',
-  '/america',
-  '/youth/consent/confirm',
-  '/auth/callback',
-  '/manifest.webmanifest',
-] as const;
+export const PUBLIC_PATHS_WHILE_GATED = PRIVATE_GATE_PUBLIC_PATHS;
 
 /** API routes that must stay reachable for webhooks and the gate form (no access cookie). */
 export const PUBLIC_API_PATHS_WHILE_GATED = [
@@ -36,11 +31,7 @@ export const PUBLIC_API_PATHS_WHILE_GATED = [
 ] as const;
 
 export function isPublicPathWhileGated(pathname: string): boolean {
-  if (pathname.startsWith('/_next')) return true;
-  if (pathname.startsWith('/private')) return true;
-  return PUBLIC_PATHS_WHILE_GATED.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`)
-  );
+  return isPrivateGatePublicPath(pathname);
 }
 
 export function isPublicApiPathWhileGated(pathname: string): boolean {

@@ -17,6 +17,10 @@ import { builderStringsFor } from '@/i18n/builderLocales';
 import { benchmarksStringsFor } from '@/i18n/benchmarksLocales';
 import { calculatorsStringsFor } from '@/i18n/calculatorsLocales';
 import { infoStringsFor } from '@/i18n/infoLocales';
+import { guidebookStringsFor } from '@/i18n/guidebookLocales';
+import { leaderboardStringsFor } from '@/i18n/leaderboardLocales';
+import { fitnessTestStringsFor } from '@/i18n/fitnessTestLocales';
+import { assessmentsStringsFor } from '@/i18n/assessmentsLocales';
 
 /** Languages with full or partial pillar-specific translations. */
 export const EXPORT_LANGS = ['en', 'es', 'zh', 'id', 'th', 'ar'] as const;
@@ -37,7 +41,11 @@ export type LocaleNamespace =
   | 'builder'
   | 'benchmarks'
   | 'calculators'
-  | 'info';
+  | 'info'
+  | 'guidebook'
+  | 'leaderboard'
+  | 'fitnessTest'
+  | 'assessments';
 
 export type LocaleExportEntry = {
   namespace: LocaleNamespace;
@@ -135,6 +143,30 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'info',
     filename: 'info.json',
     stringsFor: infoStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'guidebook',
+    filename: 'guidebook.json',
+    stringsFor: guidebookStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'leaderboard',
+    filename: 'leaderboard.json',
+    stringsFor: leaderboardStringsFor,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'fitnessTest',
+    filename: 'fitness-test.json',
+    stringsFor: (lang) => fitnessTestStringsFor(lang) as Record<string, string>,
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'assessments',
+    filename: 'assessments.json',
+    stringsFor: assessmentsStringsFor,
     langs: EXPORT_LANGS,
   },
 ];

@@ -185,7 +185,7 @@ export function HistoryPage() {
       )}
 
       {workoutHistory.length === 0 ? (
-        <Card className="border-dashed">
+        <Card className="content-card border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <Dumbbell className="h-12 w-12 text-muted-foreground mb-4" />
             <p className="font-medium">{t('historyEmptyTitle', { defaultValue: 'No workouts logged yet' })}</p>
@@ -197,7 +197,7 @@ export function HistoryPage() {
       ) : (
         <div className="space-y-3">
           {workoutHistory.map((log) => (
-            <Card key={log.id} className="hover:border-primary/30 transition-colors">
+            <Card key={log.id} className="content-card hover:border-primary/30 transition-colors">
               <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
                 <div>
                   <p className="font-semibold text-lg">{log.workoutName}</p>

@@ -93,18 +93,26 @@ export const STATIC_PAGE_TITLES: Record<string, { label: string; labelKey?: stri
   '/about': { label: 'About', labelKey: 'about' },
   '/terms': { label: 'Terms', labelKey: 'termsOfService' },
   '/privacy': { label: 'Privacy', labelKey: 'privacyPolicy' },
-  '/vision': { label: 'Vision' },
-  '/feedback': { label: 'Feedback' },
-  '/beta': { label: 'Beta guide' },
-  '/programs': { label: 'Programs' },
-  '/coaching': { label: 'Coaching' },
-  '/america': { label: 'National fitness' },
+  '/vision': { label: 'Vision', labelKey: 'infoVisionTitle' },
+  '/feedback': { label: 'Feedback', labelKey: 'feedback' },
+  '/beta': { label: 'Beta guide', labelKey: 'navBetaGuide' },
+  '/programs': { label: 'Programs', labelKey: 'infoProgramsTitle' },
+  '/coaching': { label: 'Coaching', labelKey: 'infoCoachingTitle' },
+  '/america': { label: 'National fitness', labelKey: 'americaHeroTitle' },
+  '/calculators': { label: 'Calculators', labelKey: 'calcTitle' },
+  '/welcome': { label: 'Welcome', labelKey: 'welcomeTitle' },
+  '/fitness-test': { label: 'Fitness test', labelKey: 'pftPageTitle' },
+  '/learn/guide': { label: 'Guidebook', labelKey: 'guidebookTitle' },
+  '/assessments': { label: 'Health screen', labelKey: 'assessTitle' },
 };
 
 export function pageTitleForPath(pathname: string): string {
   const normalized = pathname === '/' ? '/log' : pathname;
   const staticTitle = STATIC_PAGE_TITLES[normalized];
   if (staticTitle) return staticTitle.label;
+  if (normalized.startsWith('/learn/guide/')) {
+    return STATIC_PAGE_TITLES['/learn/guide']?.label ?? 'Guidebook';
+  }
   const match = ALL_NAV.find((n) => normalized === n.href || normalized.startsWith(n.href + '/'));
   return match?.label ?? 'Mission Winning';
 }

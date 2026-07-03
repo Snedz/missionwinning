@@ -1,0 +1,28 @@
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  isJourneyBypassPath,
+  isPrivateGatePublicPath,
+  JOURNEY_BYPASS_PATHS,
+} from '@/lib/publicRoutes';
+
+describe('publicRoutes', () => {
+  it('bypasses info and marketing paths pre-I-Day', () => {
+    assert.equal(isJourneyBypassPath('/about'), true);
+    assert.equal(isJourneyBypassPath('/feedback'), true);
+    assert.equal(isJourneyBypassPath('/calculators'), true);
+    assert.equal(isJourneyBypassPath('/join/class/MW-TEST'), true);
+    assert.equal(isJourneyBypassPath('/log'), false);
+  });
+
+  it('includes join class prefix in bypass list', () => {
+    assert.ok(JOURNEY_BYPASS_PATHS.includes('/join/class'));
+  });
+
+  it('allows private gate public paths', () => {
+    assert.equal(isPrivateGatePublicPath('/vision'), true);
+    assert.equal(isPrivateGatePublicPath('/beta'), true);
+    assert.equal(isPrivateGatePublicPath('/log'), false);
+    assert.equal(isPrivateGatePublicPath('/_next/static/chunk.js'), true);
+  });
+});

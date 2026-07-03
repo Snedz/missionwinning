@@ -26,5 +26,8 @@ jobs:
       - name: Export locale JSON (smoke)
         run: npm run export-locales
 
+      - name: Deploy readiness
+        run: npx tsx -e "import { assertDeployReady } from './src/lib/deployReadiness'; assertDeployReady();"
+
       - name: Production build
         run: npm run build
