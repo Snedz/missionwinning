@@ -33,7 +33,15 @@ describe('isPublicApiPathWhileGated', () => {
 
   it('blocks app APIs until the gate cookie is set', () => {
     assert.equal(isPublicApiPathWhileGated('/api/premium/recipes'), false);
-    assert.equal(isPublicApiPathWhileGated('/api/leads'), false);
     assert.equal(isPublicApiPathWhileGated('/api/beta/metrics'), false);
+    assert.equal(isPublicApiPathWhileGated('/api/coach/daily-insight'), false);
+  });
+
+  it('allows self-authenticating public routes while gated', () => {
+    // /api/leads powers the public waitlist on /private (rate-limited, validated);
+    // cron + unsubscribe carry their own auth (CRON_SECRET bearer / HMAC token).
+    assert.equal(isPublicApiPathWhileGated('/api/leads'), true);
+    assert.equal(isPublicApiPathWhileGated('/api/cron/nudges'), true);
+    assert.equal(isPublicApiPathWhileGated('/api/nudges/unsubscribe'), true);
   });
 });

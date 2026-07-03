@@ -186,6 +186,7 @@ export function BuilderPage() {
     addSavedWorkout({
       name: workoutName.trim(),
       exercises: exercises.map(({ exerciseId, sets }) => ({ exerciseId, sets })),
+      note: sessionNotes.trim() || undefined,
     });
     toast({
       title: t('builderWorkoutSaved', { defaultValue: 'Workout saved' }),

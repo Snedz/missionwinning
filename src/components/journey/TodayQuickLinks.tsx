@@ -7,12 +7,18 @@ import { ChevronRight, History, Moon, Sparkles, Sunrise, Trophy } from 'lucide-r
 const linkClass =
   'group flex items-center gap-3 rounded-2xl border p-4 hover:border-emerald-500/50 transition-colors min-h-[72px]';
 
-export function TodayQuickLinks() {
+interface TodayQuickLinksProps {
+  /** Basic phase (pre-first-workout): no Bundle upsell, no themed boards —
+   * nothing competes with the journey hero's single next action. */
+  compact?: boolean;
+}
+
+export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
   const { t } = useTranslation();
 
   return (
     <div className="space-y-3">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className={`grid grid-cols-1 gap-3 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
         <Link
           href="/leaderboard"
           className={`${linkClass} border-emerald-500/30 bg-emerald-950/20`}
@@ -46,6 +52,7 @@ export function TodayQuickLinks() {
           <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-sky-300" />
         </Link>
 
+        {!compact && (
         <Link href="/bundle" className={`${linkClass} border-violet-500/30 bg-violet-950/20`}>
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/20">
             <Sparkles className="h-5 w-5 text-violet-300" />
@@ -60,8 +67,10 @@ export function TodayQuickLinks() {
           </div>
           <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-violet-300" />
         </Link>
+        )}
       </div>
 
+      {!compact && (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Link
           href="/leaderboard?board=under-the-stars"
@@ -99,6 +108,7 @@ export function TodayQuickLinks() {
           <ChevronRight className="h-4 w-4 text-amber-300/60 group-hover:text-amber-300" />
         </Link>
       </div>
+      )}
     </div>
   );
 }

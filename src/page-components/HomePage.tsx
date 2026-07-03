@@ -369,7 +369,10 @@ export function HomePage() {
   }
 
   if (layout.showQuickLinks) {
-    staggerBlocks.push({ key: 'quick-links', node: <TodayQuickLinks /> });
+    staggerBlocks.push({
+      key: 'quick-links',
+      node: <TodayQuickLinks compact={state.phase === 'basic'} />,
+    });
   }
 
   if (!layout.showDashboard && state.phase === 'basic' && streak === 0) {

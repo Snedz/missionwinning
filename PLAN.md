@@ -68,6 +68,16 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 > testimonials), UnlockButton → real Stripe checkout when links configured / honest founders
 > waitlist otherwise. **Remaining Phase H work is founder ops → [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md).**
 > Strategy + risk docs: [STRATEGY.md](STRATEGY.md) · [REDTEAM.md](REDTEAM.md).
+>
+> **2026-07-03 — Pre-launch v2 shipped:** real PWA icons (placeholders were broken 87-byte files),
+> working backup export/import (`src/lib/backup.ts`), error boundaries, offline-for-real (the SW
+> now actually registers under App Router — next-pwa@5 never registered it — plus `/offline`
+> fallback; verified by Playwright with the network disabled), decluttered new-user Today, logger
+> upgrades (tap-to-type entry, per-set previous values, swap/remove exercise, persistent notes,
+> honest sync-failure toast), PostHog funnel analytics (env-gated), and Resend email nudges
+> (streak-at-risk / comeback / week-1 recap; opt-in + one-tap unsubscribe; daily Vercel cron).
+> New founder env steps: run `20260703_reminders_optin.sql`, set `CRON_SECRET`, optionally
+> `NEXT_PUBLIC_POSTHOG_KEY`. Next build phase: **AI Coach v1** (Track D) once beta activation ≥40%.
 
 ### Product gates (F4 / JOURNEY)
 

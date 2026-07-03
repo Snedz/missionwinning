@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ArrowUpRight, Check } from 'lucide-react';
 import { PROGRAM_PRICES, getStripeCheckoutUrl, grantPremiumDemo } from '@/lib/payments';
 import { submitLead } from '@/lib/supabase';
+import { track } from '@/lib/analytics';
 
 interface Props {
   productId?: string;
@@ -67,6 +68,8 @@ export function UnlockButton({
       // the founder reviews waitlist submissions manually during beta.
     }
 
+    track('waitlist_joined', { product: productId || (isSubscription ? 'super-bundle' : 'premium') });
+
     if (IS_DEV) grantPremiumDemo(productId || (isSubscription ? 'super-bundle' : undefined));
 
     setSubmitted(true);
@@ -82,6 +85,11 @@ export function UnlockButton({
           target="_blank"
           rel="noopener noreferrer"
           className="primary-action"
+          onClick={() =>
+            track('checkout_clicked', {
+              product: productId || (isSubscription ? 'super-bundle' : 'premium'),
+            })
+          }
         >
           {checkoutLabel}
           <ArrowUpRight className="h-4 w-4" />
