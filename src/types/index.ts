@@ -42,6 +42,8 @@ export interface SavedWorkout {
   name: string;
   exercises: WorkoutExerciseTemplate[];
   createdAt: string;
+  /** Routine notes from the Builder (programming intent, cues). */
+  note?: string;
 }
 
 export interface LoggedSet {
@@ -58,6 +60,8 @@ export interface ActiveExerciseLog {
   sets: LoggedSet[];
   /** Shared id — exercises in the same group are supersetted (minimal rest between). */
   supersetGroup?: string;
+  /** Free-form note for this exercise ("felt heavy", "machine 3, seat pos 4"). */
+  note?: string;
 }
 
 export interface ActiveWorkout {
@@ -76,6 +80,7 @@ export interface CompletedWorkoutLog {
   exercises: {
     exerciseId: string;
     sets: { reps: number; weight: number; kind?: SetKind; rpe?: 'easy' | 'med' | 'hard' }[];
+    note?: string;
   }[];
   totalVolume: number;
 }

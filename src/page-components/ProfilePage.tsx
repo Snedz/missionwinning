@@ -18,6 +18,9 @@ import { scheduleJourneyPush } from '@/lib/journeySync';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { showOwnerTools } from '@/lib/ownerTools';
+import { downloadBackup, restoreBackupFromJson } from '@/lib/backup';
+import { useToast } from '@/hooks/use-toast';
+import { track } from '@/lib/analytics';
 
 const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi', 'zh', 'id', 'ar'] as const;
 const NATIVE_NAMES: Record<string, string> = {
@@ -63,6 +66,7 @@ function LanguageSwitcher() {
 
 export function ProfilePage() {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const { isCommissioned, state, action } = useMissionJourney();
   const [email, setEmail] = useState<string | null>(null);
   const [nudgeLoading, setNudgeLoading] = useState(false);
@@ -70,10 +74,22 @@ export function ProfilePage() {
   const [units, setUnits] = useState<"metric" | "imperial">("metric");
   const [goals, setGoals] = useState("Build strength and stay healthy");
   const [premium, setPremium] = useState(false);
+  const [reminders, setReminders] = useState(false);
+  const [remindersBusy, setRemindersBusy] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user?.email) setEmail(data.user.email);
+      if (data.user?.id) {
+        supabase
+          .from('profiles')
+          .select('reminders_opt_in')
+          .eq('id', data.user.id)
+          .single()
+          .then(({ data: profile }) => {
+            if (profile) setReminders(!!profile.reminders_opt_in);
+          });
+      }
     });
     const savedUnits = localStorage.getItem("mw_units") as "metric" | "imperial" | null;
     if (savedUnits) setUnits(savedUnits);
@@ -85,6 +101,27 @@ export function ProfilePage() {
       isPremium().then(setPremium);
     });
   }, []);
+
+  const toggleReminders = async () => {
+    if (remindersBusy) return;
+    setRemindersBusy(true);
+    const next = !reminders;
+    const { data } = await supabase.auth.getUser();
+    if (data.user?.id) {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ reminders_opt_in: next })
+        .eq('id', data.user.id);
+      if (!error) setReminders(next);
+      else
+        toast({
+          title: t('remindersUpdateFailed', { defaultValue: 'Could not update reminders' }),
+          description: t('remindersUpdateFailedDesc', { defaultValue: 'Try again in a moment.' }),
+          variant: 'destructive',
+        });
+    }
+    setRemindersBusy(false);
+  };
 
   const saveUnits = (u: "metric" | "imperial") => {
     setUnits(u);
@@ -221,6 +258,33 @@ export function ProfilePage() {
           </div>
         </CardContent>
       </Card>
+
+      {email && (
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('remindersTitle', { defaultValue: 'Training reminders' })}</CardTitle>
+          </CardHeader>
+          <CardContent className="flex items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              {t('remindersDesc', {
+                defaultValue:
+                  'Occasional emails when your streak is at risk or you go quiet — never more than one every two days. One-tap unsubscribe in every email.',
+              })}
+            </p>
+            <Button
+              variant={reminders ? 'default' : 'outline'}
+              disabled={remindersBusy}
+              onClick={toggleReminders}
+              className="shrink-0"
+              aria-pressed={reminders}
+            >
+              {reminders
+                ? t('remindersOn', { defaultValue: 'On' })
+                : t('remindersOff', { defaultValue: 'Off' })}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       <Card className="content-card">
         <CardHeader><CardTitle>{t('units', { defaultValue: 'Units' })}</CardTitle></CardHeader>
@@ -413,24 +477,64 @@ export function ProfilePage() {
       )}
 
       <Card>
-        <CardHeader><CardTitle>{t('dataExport', { defaultValue: 'Export your data' })}</CardTitle></CardHeader>
-        <CardContent>
-          <Button onClick={() => {
-            const data = {
-              workouts: localStorage.getItem('mw_workout_history') || '[]',
-              nutrition: localStorage.getItem('mw_nutrition_log') || '[]',
-              events: getJourneyEvents(),
-              legacyEvents: Object.keys(localStorage).filter(k => k.startsWith('mw_event_')).reduce((acc: Record<string, string | null>, k) => { acc[k] = localStorage.getItem(k); return acc; }, {}),
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'mission-winning-data.json';
-            a.click();
-            URL.revokeObjectURL(url);
-          }}>{t('exportData', { defaultValue: 'Export Logs (JSON)' })}</Button>
-          <div className="text-xs mt-2">{t('dataExportFoot', { defaultValue: 'Download workouts and nutrition logs from this device.' })}</div>
+        <CardHeader><CardTitle>{t('dataBackup', { defaultValue: 'Back up your data' })}</CardTitle></CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button
+              onClick={() => {
+                downloadBackup();
+                track('backup_exported');
+              }}
+            >
+              {t('exportData', { defaultValue: 'Download backup (JSON)' })}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => document.getElementById('mw-backup-file')?.click()}
+            >
+              {t('importData', { defaultValue: 'Restore from backup' })}
+            </Button>
+            <input
+              id="mw-backup-file"
+              type="file"
+              accept="application/json,.json"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = '';
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                  const result = restoreBackupFromJson(String(reader.result ?? ''));
+                  if (!result.ok) {
+                    toast({
+                      title: t('importFailed', { defaultValue: 'Restore failed' }),
+                      description: result.error,
+                      variant: 'destructive',
+                    });
+                    return;
+                  }
+                  track('backup_restored', { workouts: result.workoutsMerged ?? 0 });
+                  toast({
+                    title: t('importDone', { defaultValue: 'Backup restored' }),
+                    description: t('importDoneDesc', {
+                      defaultValue: '{{workouts}} workouts merged, {{keys}} settings restored. Reloading…',
+                      workouts: result.workoutsMerged ?? 0,
+                      keys: result.keysRestored ?? 0,
+                    }),
+                  });
+                  setTimeout(() => window.location.reload(), 1200);
+                };
+                reader.readAsText(file);
+              }}
+            />
+          </div>
+          <div className="text-xs text-muted-foreground">
+            {t('dataBackupFoot', {
+              defaultValue:
+                'The backup includes workouts, saved routines, nutrition, and journey progress from this device. Restoring merges — nothing on this device is deleted.',
+            })}
+          </div>
         </CardContent>
       </Card>
 

@@ -22,6 +22,7 @@ export const PUBLIC_PATHS_WHILE_GATED = [
   '/america',
   '/youth/consent/confirm',
   '/auth/callback',
+  '/manifest.webmanifest',
 ] as const;
 
 /** API routes that must stay reachable for webhooks and the gate form (no access cookie). */
@@ -29,6 +30,9 @@ export const PUBLIC_API_PATHS_WHILE_GATED = [
   '/api/private-access',
   '/api/stripe-webhook',
   '/api/paypal-webhook',
+  '/api/leads',
+  '/api/cron/nudges',
+  '/api/nudges/unsubscribe',
 ] as const;
 
 export function isPublicPathWhileGated(pathname: string): boolean {

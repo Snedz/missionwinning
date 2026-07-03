@@ -151,7 +151,19 @@ export function SetLogRow({
           >
             <Minus className="h-4 w-4" />
           </Button>
-          <span className="w-10 text-center text-lg font-bold tabular-nums">{reps}</span>
+          <input
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            value={reps}
+            aria-label={t('activeReps', { defaultValue: 'Reps' })}
+            onFocus={(e) => e.target.select()}
+            onChange={(e) => {
+              const parsed = parseInt(e.target.value.replace(/\D/g, ''), 10);
+              onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
+            }}
+            className="h-11 w-12 rounded-lg border border-input bg-background text-center text-lg font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
+          />
           <Button
             type="button"
             variant="outline"
@@ -176,7 +188,19 @@ export function SetLogRow({
           >
             <Minus className="h-4 w-4" />
           </Button>
-          <span className="w-12 text-center text-lg font-bold tabular-nums">{weight}</span>
+          <input
+            type="text"
+            inputMode="decimal"
+            value={weight}
+            aria-label={weightLabel}
+            onFocus={(e) => e.target.select()}
+            onChange={(e) => {
+              const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
+              const parsed = parseFloat(cleaned);
+              onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
+            }}
+            className="h-11 w-16 rounded-lg border border-input bg-background text-center text-lg font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
+          />
           <Button
             type="button"
             variant="outline"

@@ -8,8 +8,13 @@ export function getCouncilStatus(): CouncilStatus {
   return 'aspirational';
 }
 
+/**
+ * Opt-in for the global launch: the US/PFT side track stays parked until
+ * NEXT_PUBLIC_AMERICA_TRACK_ENABLED=true is set (see STRATEGY.md — focus the
+ * core loop first; this track adds COPPA/teacher support surface).
+ */
 export function isAmericaTrackEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_AMERICA_TRACK_ENABLED !== 'false';
+  return process.env.NEXT_PUBLIC_AMERICA_TRACK_ENABLED === 'true';
 }
 
 export function showMahaCopy(): boolean {

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { track } from "@/lib/analytics";
 import {
   BookOpen,
   Brain,
@@ -56,6 +57,10 @@ export function BundlePage() {
   const stripeUrl = getStripeCheckoutUrl("super-bundle");
   const vsSeparateSavings = bundleSavingsPercent();
 
+  useEffect(() => {
+    track('bundle_viewed');
+  }, []);
+
   const planTabLabel =
     planId === "3mo"
       ? t("bundleTab3mo")
@@ -74,11 +79,13 @@ export function BundlePage() {
       <header className="text-center sm:text-start space-y-3">
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
           <Badge variant="secondary">{t("bundleBadge")}</Badge>
-          <Badge className="bg-amber-500/90 hover:bg-amber-500/90 text-amber-950 border-0 animate-pulse">
+          <Badge className="border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
             {t("bundleUrgencyBadge")}
           </Badge>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{t("bundleHeadline")}</h1>
+        <h1 className="font-display text-4xl font-semibold uppercase leading-none tracking-tight sm:text-5xl">
+          {t("bundleHeadline")}
+        </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto sm:mx-0">{t("bundleSubhead")}</p>
       </header>
 
@@ -203,16 +210,11 @@ export function BundlePage() {
                   <UnlockButton
                     isSubscription={p.isSubscription}
                     productId="super-bundle"
-                    price={p.price}
-                    stripeCheckoutUrl={stripeUrl}
+                    price={p.perMonth ?? p.price}
+                    stripeCheckoutUrl={getStripeCheckoutUrl(`bundle-${id}`) ?? stripeUrl}
                     label={t("bundleUnlockCta")}
                     className="w-full"
                   />
-                  {!stripeUrl && (
-                    <p className="text-xs text-muted-foreground text-center">
-                      {t("bundleStripeHint")}
-                    </p>
-                  )}
                 </CardContent>
               </Card>
             </TabsContent>

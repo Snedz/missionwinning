@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { rateLimit } from '@/lib/rateLimit';
 import { COPPA_AGE_THRESHOLD } from '@/lib/youthConsent';
 import {
   consentConfirmUrl,
@@ -10,6 +11,22 @@ import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 
 /** Email parent/guardian a verification code + confirm link. */
 export async function POST(request: NextRequest) {
+  const ip =
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip') ||
+    'unknown';
+
+  const limited = rateLimit(`youth-consent:${ip}`, 3, 60_000);
+  if (!limited.ok) {
+    return NextResponse.json(
+      { error: 'Too many consent requests. Try again shortly.' },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(limited.retryAfterSec ?? 60) },
+      }
+    );
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ ok: false, error: 'Email not configured' }, { status: 503 });

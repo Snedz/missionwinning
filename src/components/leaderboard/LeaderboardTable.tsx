@@ -65,6 +65,16 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
                       {t('lbYou', { defaultValue: 'You' })}
                     </span>
                   )}
+                  {e.isPacer && !e.isYou && (
+                    <span
+                      className="ml-1.5 rounded border border-border/60 bg-muted/40 px-1 py-px text-[9px] uppercase tracking-wide text-muted-foreground align-middle"
+                      title={t('lbPacerHint', {
+                        defaultValue: 'Pacer — a virtual pace-setter, not a real athlete',
+                      })}
+                    >
+                      {t('lbPacer', { defaultValue: 'Pacer' })}
+                    </span>
+                  )}
                 </div>
                 <div className="text-[11px] text-muted-foreground truncate">
                   {e.detail ?? e.countryName}

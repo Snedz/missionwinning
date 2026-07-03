@@ -20,5 +20,6 @@
   "redirects": [
     { "source": "/programs", "destination": "/learn", "permanent": false },
     { "source": "/beta", "destination": "/bundle", "permanent": false }
-  ]
+  ],
+  "crons": [{ "path": "/api/cron/nudges", "schedule": "0 17 * * *" }]
 }

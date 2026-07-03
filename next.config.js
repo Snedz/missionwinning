@@ -2,6 +2,16 @@ const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
   skipWaiting: true,
+  // Cache documents on client-side navigation too, so pages a user has
+  // visited keep working offline (the core "train anywhere" promise).
+  cacheOnFrontEndNav: true,
+  // Cold-miss navigations while offline land on a branded page instead of
+  // the browser error screen. NOTE: not `/_offline` — App Router treats
+  // underscore-prefixed folders as private (404), which would abort the
+  // whole service-worker install when workbox precaches the fallback.
+  fallbacks: {
+    document: '/offline',
+  },
   // Disable PWA precache while private gate is active (prevents offline leak of full app).
   disable:
     process.env.NODE_ENV === 'development' ||

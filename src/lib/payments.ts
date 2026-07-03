@@ -75,14 +75,34 @@ export const BUNDLE_PILLARS = [
   },
 ] as const
 
-/** Stripe Payment Link for Super Bundle (set in Vercel when LLC ready). */
+/**
+ * Stripe Payment Links (set in Vercel when the business entity is ready —
+ * see LAUNCH_RUNBOOK.md). Checkout activates automatically wherever a link
+ * is configured; otherwise the UI falls back to the founders waitlist.
+ *
+ * NOTE: NEXT_PUBLIC_* vars are inlined at build time ONLY for static
+ * `process.env.X` property access — a dynamic `process.env[key]` lookup is
+ * always undefined in the browser, so every link must be listed here.
+ */
+const STRIPE_LINKS: Record<string, string | undefined> = {
+  'super-bundle': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM,
+  bundle: process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM,
+  'bundle-3mo': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_3MO,
+  'bundle-12mo': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_12MO,
+  'bundle-lifetime': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME,
+  'pt-nutrition': process.env.NEXT_PUBLIC_STRIPE_LINK_PT,
+  bodybuilding: process.env.NEXT_PUBLIC_STRIPE_LINK_BB,
+  corrective: process.env.NEXT_PUBLIC_STRIPE_LINK_CORR,
+  'strength-business': process.env.NEXT_PUBLIC_STRIPE_LINK_BUS,
+  'online-coaching': process.env.NEXT_PUBLIC_STRIPE_LINK_COACH,
+  conditioning: process.env.NEXT_PUBLIC_STRIPE_LINK_COND,
+}
+
 export function getStripeCheckoutUrl(productId?: string): string | null {
-  if (typeof window === 'undefined') return null
-  if (productId === 'super-bundle' || productId === 'bundle' || !productId) {
-    return process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM || null
+  if (!productId) {
+    return STRIPE_LINKS['bundle'] || null
   }
-  const key = `NEXT_PUBLIC_STRIPE_LINK_${productId.toUpperCase().replace(/-/g, '_')}` as keyof NodeJS.ProcessEnv
-  return (process.env[key] as string) || null
+  return STRIPE_LINKS[productId] || null
 }
 
 // Helper to grant premium immediately (client-side optimistic + analytics)

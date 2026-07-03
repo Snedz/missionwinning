@@ -16,8 +16,18 @@ import { saveWorkoutLog, getUserWorkoutHistory, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
 import { mapCloudToLocal, mergeWorkoutHistories } from "@/lib/workoutMerge";
+import { toast } from "@/hooks/use-toast";
+import { track } from "@/lib/analytics";
 
 const DEFAULT_REST_SECONDS = 30;
+
+/** Honest sync status: the workout is safe locally; the cloud write failed. */
+function notifySyncPending() {
+  toast({
+    title: "Saved on this device",
+    description: "Cloud sync didn't go through — we'll retry automatically.",
+  });
+}
 
 interface WorkoutState {
   savedWorkouts: SavedWorkout[];
@@ -53,6 +63,12 @@ interface WorkoutState {
   toggleSupersetWithNext: (exerciseIndex: number) => void;
   unlinkSuperset: (exerciseIndex: number) => void;
   addSetToExercise: (exerciseIndex: number) => void;
+  /** Removes the last not-yet-completed set (planned-too-many case). */
+  removeLastPlannedSet: (exerciseIndex: number) => void;
+  removeExerciseFromActive: (exerciseIndex: number) => void;
+  /** Swap to a different exercise — only while no sets are completed. */
+  replaceExerciseInActive: (exerciseIndex: number, newExerciseId: string) => void;
+  setExerciseNote: (exerciseIndex: number, note: string) => void;
   startRestTimer: (seconds?: number) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -157,6 +173,7 @@ export const useWorkoutStore = create<WorkoutState>()(
                 kind: s.kind ?? 'normal',
                 rpe: s.rpe,
               })),
+            ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
           }))
           .filter((ex) => ex.sets.length > 0);
 
@@ -176,6 +193,8 @@ export const useWorkoutStore = create<WorkoutState>()(
           totalVolume: calculateVolume(allSets),
         };
 
+        const isFirstWorkout = get().workoutHistory.length === 0;
+
         set((s) => ({
           workoutHistory: [log, ...s.workoutHistory],
           activeWorkout: null,
@@ -187,19 +206,40 @@ export const useWorkoutStore = create<WorkoutState>()(
 
         recordWorkoutCompleted(log);
 
+        if (isFirstWorkout) track("first_workout_completed");
+        track("workout_completed", {
+          sets: allSets.length,
+          volume: log.totalVolume,
+          durationMin: Math.round(log.durationSeconds / 60),
+        });
+
         const savedCount = get().savedWorkouts.length;
         scheduleLeaderboardPush(get().workoutHistory, savedCount);
 
-        // Auto sync to cloud if signed in (non-blocking)
-        getUser().then(u => {
-          if (u) saveWorkoutLog({
+        // Auto sync to cloud if signed in (non-blocking). Local persist already
+        // holds the log — on cloud failure, tell the user honestly and retry once.
+        getUser().then((u) => {
+          if (!u) return;
+          const payload = {
             workout_name: log.workoutName,
             started_at: log.startedAt,
             completed_at: log.completedAt,
             duration_seconds: log.durationSeconds,
             exercises: log.exercises,
             total_volume: log.totalVolume,
-          }).catch(()=>{}); 
+          };
+          saveWorkoutLog(payload).then((saved) => {
+            if (saved) return;
+            notifySyncPending();
+            setTimeout(() => {
+              saveWorkoutLog(payload).catch(() => {});
+            }, 60_000);
+          }).catch(() => {
+            notifySyncPending();
+            setTimeout(() => {
+              saveWorkoutLog(payload).catch(() => {});
+            }, 60_000);
+          });
         });
 
         return log;
@@ -335,6 +375,63 @@ export const useWorkoutStore = create<WorkoutState>()(
               },
             ],
           };
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
+      removeLastPlannedSet: (exerciseIndex) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = exercises[exerciseIndex];
+          if (!ex) return s;
+          const lastPlannedIdx = [...ex.sets].map((x) => x.completed).lastIndexOf(false);
+          if (lastPlannedIdx < 0) return s;
+          exercises[exerciseIndex] = {
+            ...ex,
+            sets: ex.sets.filter((_, i) => i !== lastPlannedIdx),
+          };
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
+      removeExerciseFromActive: (exerciseIndex) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          return {
+            activeWorkout: {
+              ...s.activeWorkout,
+              exercises: s.activeWorkout.exercises.filter((_, i) => i !== exerciseIndex),
+            },
+          };
+        });
+      },
+
+      replaceExerciseInActive: (exerciseIndex, newExerciseId) => {
+        const exercise = EXERCISES.find((e) => e.id === newExerciseId);
+        if (!exercise) return;
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = exercises[exerciseIndex];
+          if (!ex || ex.sets.some((x) => x.completed)) return s;
+          exercises[exerciseIndex] = {
+            ...ex,
+            exerciseId: newExerciseId,
+            // Keep the planned set count; reset target loads — different lift, different weights.
+            sets: createLoggedSets(ex.sets.length),
+          };
+          return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
+      setExerciseNote: (exerciseIndex, note) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          const exercises = [...s.activeWorkout.exercises];
+          const ex = exercises[exerciseIndex];
+          if (!ex) return s;
+          exercises[exerciseIndex] = { ...ex, note };
           return { activeWorkout: { ...s.activeWorkout, exercises } };
         });
       },
