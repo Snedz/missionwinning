@@ -1,5 +1,7 @@
 # Mission Winning
 
+**AI agents:** read [AGENTS.md](AGENTS.md) then [INDEX.md](INDEX.md) first.
+
 **The Free Global "Everything App" for Health — The Path to a Healthier World for All**
 
 **Mission**: Become the #1 health super app — the entrance to the *right path* (evidence-based, holistic, consistent habits for strength, health, and resilience) vs. the path of average, excuses, and destruction. Core mission (workout tracking and foundational tools) is **100% free and accessible to everyone worldwide**, with no money barrier. Premium depth and the "Super Bundle" (synergistic pillars for training, nutrition, mobility, mind, tracking, and learning) sustain the mission while delivering transformative value.
