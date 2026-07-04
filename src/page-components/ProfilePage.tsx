@@ -18,7 +18,7 @@ import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
 
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { LegalNav } from '@/components/layout/LegalNav';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { showOwnerTools } from '@/lib/ownerTools';
 import { downloadBackup, restoreBackupFromJson } from '@/lib/backup';
 import { useToast } from '@/hooks/use-toast';
@@ -229,19 +229,17 @@ export function ProfilePage() {
   };
 
   return (
-    <div className="space-y-6">
-      <PillarPageHeader
-        icon={User}
-        title={t('profileSettings', { defaultValue: 'Profile & Settings' })}
-        subtitle={
-          isCommissioned && state.commissionedAt
-            ? `${t('missionOperator', { defaultValue: 'Mission Operator' })} · Day ${daysSinceCommission(state.commissionedAt)}`
-            : t('profileSubtitle', {
-                defaultValue: 'Your Mission Winning account. Global preferences. Premium status.',
-              })
-        }
-      />
-
+    <PillarPageShell
+      icon={User}
+      title={t('profileSettings', { defaultValue: 'Profile & Settings' })}
+      subtitle={
+        isCommissioned && state.commissionedAt
+          ? `${t('missionOperator', { defaultValue: 'Mission Operator' })} · Day ${daysSinceCommission(state.commissionedAt)}`
+          : t('profileSubtitle', {
+              defaultValue: 'Your Mission Winning account. Global preferences. Premium status.',
+            })
+      }
+    >
       <Card>
         <CardHeader><CardTitle>{t('account', { defaultValue: 'Account & Sign In' })}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
@@ -583,6 +581,6 @@ export function ProfilePage() {
           <LegalNav />
         </CardContent>
       </Card>
-    </div>
+    </PillarPageShell>
   );
 }

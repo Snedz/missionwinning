@@ -32,7 +32,10 @@ type AnalyticsEvent =
   | 'coach_plan_adapted'
   | 'coach_taster_locked'
   | 'backup_exported'
-  | 'backup_restored';
+  | 'backup_restored'
+  | 'guide_read'
+  | 'exercise_page_viewed'
+  | 'public_cta_clicked';
 
 let initialized = false;
 

@@ -56,6 +56,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { getUser, getUserNutritionForDate } from '@/lib/supabase';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -190,15 +191,13 @@ export function HistoryPage() {
       )}
 
       {workoutHistory.length === 0 ? (
-        <Card className="content-card border-dashed">
-          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <Dumbbell className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="font-medium">{t('historyEmptyTitle', { defaultValue: 'No workouts logged yet' })}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('historyEmptyDesc', { defaultValue: 'Complete an active workout to see it here.' })}
-            </p>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={Dumbbell}
+          title={t('historyEmptyTitle', { defaultValue: 'No workouts logged yet' })}
+          description={t('historyEmptyDesc', { defaultValue: 'Complete an active workout to see it here.' })}
+          actionLabel={t('historyStartWorkout', { defaultValue: 'Start a workout' })}
+          href="/builder"
+        />
       ) : (
         <div className="space-y-3">
           {workoutHistory.map((log) => (

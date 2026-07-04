@@ -1,0 +1,77 @@
+export type NutritionLogRow = {
+  name: string;
+  protein: number;
+  cals: number;
+  carbs?: number;
+  fat?: number;
+  date?: string;
+  time?: string;
+  meal?: string;
+};
+
+export type QuickFoodTuple = readonly [string, number, number, number, number];
+
+const DEFAULT_QUICK: QuickFoodTuple[] = [
+  ['Chicken breast 150g', 45, 165, 0, 3],
+  ['Oats 80g dry', 10, 300, 54, 5],
+  ['Eggs 3 large', 18, 210, 1, 15],
+  ['Rice 200g cooked', 8, 260, 56, 0],
+  ['Banana 1 med', 1, 105, 27, 0],
+  ['Greek yogurt 200g', 20, 130, 8, 0],
+];
+
+export function parseNutritionLog(raw: string | null): NutritionLogRow[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw) as NutritionLogRow[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export function getFrequentQuickFoods(
+  logs: NutritionLogRow[],
+  defaults: readonly QuickFoodTuple[] = DEFAULT_QUICK,
+  limit = 6
+): QuickFoodTuple[] {
+  const counts = new Map<string, { count: number; row: NutritionLogRow }>();
+  for (const row of logs) {
+    const key = row.name.trim().toLowerCase();
+    if (!key) continue;
+    const prev = counts.get(key);
+    if (prev) prev.count += 1;
+    else counts.set(key, { count: 1, row });
+  }
+
+  const fromLog: QuickFoodTuple[] = [...counts.entries()]
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, limit)
+    .map(([, { row }]) => [
+      row.name,
+      row.protein,
+      row.cals,
+      row.carbs ?? 0,
+      row.fat ?? 0,
+    ] as QuickFoodTuple);
+
+  const seen = new Set(fromLog.map((f) => f[0].toLowerCase()));
+  for (const d of defaults) {
+    if (fromLog.length >= limit) break;
+    if (!seen.has(d[0].toLowerCase())) {
+      fromLog.push(d);
+      seen.add(d[0].toLowerCase());
+    }
+  }
+  return fromLog;
+}
+
+export function getYesterdayEntries(logs: NutritionLogRow[], todayIso: string): NutritionLogRow[] {
+  const today = new Date(`${todayIso}T12:00:00`);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yKey = yesterday.toISOString().split('T')[0];
+  return logs.filter((l) => l.date === yKey);
+}
+
+export { DEFAULT_QUICK as DEFAULT_QUICK_FOODS };
