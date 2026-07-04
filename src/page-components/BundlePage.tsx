@@ -18,6 +18,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UnlockButton } from "@/components/UnlockButton";
 import { BUNDLE_PILLARS } from "@/lib/payments";
@@ -75,9 +76,9 @@ export function BundlePage() {
 
   return (
     <div className="space-y-10 max-w-4xl mx-auto pb-8">
-      {/* Hero */}
-      <header className="text-center sm:text-start space-y-3">
-        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+      {/* Title block */}
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary">{t("bundleBadge")}</Badge>
           <Badge className="border-emerald-500/40 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-950/40">
             {t("bundleExpandedContent", { defaultValue: "Now with even more content!" })}
@@ -86,11 +87,12 @@ export function BundlePage() {
             {t("bundleUrgencyBadge")}
           </Badge>
         </div>
-        <h1 className="font-display text-4xl font-semibold uppercase leading-none tracking-tight sm:text-5xl">
-          {t("bundleHeadline")}
-        </h1>
-        <p className="text-muted-foreground max-w-2xl mx-auto sm:mx-0">{t("bundleSubhead")}</p>
-      </header>
+        <PillarPageHeader
+          icon={Sparkles}
+          title={t("bundleHeadline")}
+          subtitle={t("bundleSubhead")}
+        />
+      </div>
 
       {/* Duration tabs + hero offer card */}
       <Tabs

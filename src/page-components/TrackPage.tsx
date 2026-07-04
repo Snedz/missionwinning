@@ -6,8 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import {
   ACTIVITY_LABELS,
@@ -62,19 +61,14 @@ export function TrackPage() {
   void refresh;
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={MapPin}
-          title={t('trackTitle', { defaultValue: 'Track Activity' })}
-          subtitle={t('trackSubtitle', {
-            defaultValue:
-              'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
-          })}
-        />
-      </StaggerItem>
-
-      <StaggerItem index={1}>
+    <PillarPageShell
+      icon={MapPin}
+      title={t('trackTitle', { defaultValue: 'Track Activity' })}
+      subtitle={t('trackSubtitle', {
+        defaultValue:
+          'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
+      })}
+    >
         <div className="grid gap-4 md:grid-cols-3">
           <Card className="content-card">
             <CardHeader className="pb-2">
@@ -103,10 +97,8 @@ export function TrackPage() {
             </CardContent>
           </Card>
         </div>
-      </StaggerItem>
 
-      <StaggerItem index={2}>
-        <Card className="content-card">
+      <Card className="content-card">
           <CardHeader>
             <CardTitle>{t('trackLogTitle', { defaultValue: 'Log Activity' })}</CardTitle>
             <CardDescription>
@@ -165,14 +157,10 @@ export function TrackPage() {
             </Button>
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={3}>
         <ActivityImportPanel onImported={() => setRefresh((r) => r + 1)} />
-      </StaggerItem>
 
-      <StaggerItem index={4}>
-        <Card className="content-card">
+      <Card className="content-card">
           <CardHeader>
             <CardTitle>{t('trackWeekLogTitle', { defaultValue: "This Week's Log" })}</CardTitle>
           </CardHeader>
@@ -214,10 +202,8 @@ export function TrackPage() {
             )}
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={5}>
-        <Card className="content-card border-white/10 bg-card/50">
+      <Card className="content-card border-white/10 bg-card/50">
           <CardHeader>
             <CardTitle className="text-base">
               {t('trackPremiumTitle', { defaultValue: 'Premium — GPS & advanced stats' })}
@@ -237,7 +223,6 @@ export function TrackPage() {
             />
           </CardContent>
         </Card>
-      </StaggerItem>
-    </StaggerGroup>
+    </PillarPageShell>
   );
 }

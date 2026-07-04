@@ -126,3 +126,7 @@ export function mergeGuidebookStrings(common: Record<string, string>, lang: stri
   const pack = BY_LANG[lang] ?? BY_LANG.en;
   Object.assign(common, pack);
 }
+
+export function guidebookStringsFor(lang: string): Record<string, string> {
+  return BY_LANG[lang] ?? BY_LANG.en;
+}

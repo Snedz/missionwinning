@@ -26,13 +26,16 @@ export function AboutPage() {
         <CardContent className="pt-6 space-y-6 text-sm leading-relaxed">
           <InfoSection title={t('infoAboutMission', { defaultValue: 'Our mission' })}>
             <p className="text-muted-foreground">
-              Mission Winning is the all-in-one global health and workout app. Free powerful tracker +
-              premium specialist education programs and coaching drawn from elite practical training
-              curricula.
+              {t('infoAboutMissionP1', {
+                defaultValue:
+                  'Mission Winning is the all-in-one global health and workout app. Free powerful tracker + premium specialist education programs and coaching drawn from elite practical training curricula.',
+              })}
             </p>
             <p className="text-muted-foreground">
-              Accessible, science-based training and nutrition tools for everyone, everywhere — from city
-              gyms to rural areas with minimal equipment. Train smart. Win daily. No borders.
+              {t('infoAboutMissionP2', {
+                defaultValue:
+                  'Accessible, science-based training and nutrition tools for everyone, everywhere — from city gyms to rural areas with minimal equipment. Train smart. Win daily. No borders.',
+              })}
             </p>
           </InfoSection>
 
@@ -41,7 +44,9 @@ export function AboutPage() {
               <CouncilLeadershipBlock />
               <p className="text-muted-foreground">
                 <Link href="/america" className="text-blue-400 hover:underline">
-                  Presidential Fitness Test &amp; youth movement →
+                  {t('infoAboutAmericaLink', {
+                    defaultValue: 'Presidential Fitness Test & youth movement →',
+                  })}
                 </Link>
               </p>
             </InfoSection>
@@ -49,27 +54,31 @@ export function AboutPage() {
 
           <InfoSection title={t('infoAboutBusiness', { defaultValue: 'Business structure' })}>
             <p className="text-muted-foreground">
-              Operated by Mission Winning LLC (for-profit) for the app, programs, and coaching. A separate
-              nonprofit foundation is planned to support free access, scholarships for coaches in
-              underserved regions, and mission-driven initiatives.
+              {t('infoAboutBusinessBody', {
+                defaultValue:
+                  'Operated by Mission Winning LLC (for-profit) for the app, programs, and coaching. A separate nonprofit foundation is planned to support free access, scholarships for coaches in underserved regions, and mission-driven initiatives.',
+              })}
             </p>
           </InfoSection>
 
           <InfoSection title={t('infoAboutDisclaimers', { defaultValue: 'Important disclaimers' })}>
             <p className="text-muted-foreground">
-              <strong className="text-foreground">Educational only.</strong> Mission Winning provides practical training education and
-              tools. We are not a federally recognized or accredited certifying agency. Completion grants
-              a Mission Winning Certificate of Educational Achievement only.
+              {t('infoAboutDisclaimerEducational', {
+                defaultValue:
+                  'Educational only. Mission Winning provides practical training education and tools. We are not a federally recognized or accredited certifying agency. Completion grants a Mission Winning Certificate of Educational Achievement only.',
+              })}
             </p>
             <p className="text-muted-foreground">
-              <strong className="text-foreground">Not a government site.</strong> Mission Winning is not operated by the U.S.
-              government. Presidential Fitness Test scoring is an educational revival inspired by classic
-              youth fitness programs — not an official federal test unless explicitly partnered and
-              labeled as such.
+              {t('infoAboutDisclaimerGov', {
+                defaultValue:
+                  'Not a government site. Mission Winning is not operated by the U.S. government. Presidential Fitness Test scoring is an educational revival inspired by classic youth fitness programs — not an official federal test unless explicitly partnered and labeled as such.',
+              })}
             </p>
             <p className="text-muted-foreground">
-              Always consult qualified medical professionals before starting new training or nutrition
-              protocols. Results vary. This is not medical, legal, or licensing advice.
+              {t('infoAboutDisclaimerMedical', {
+                defaultValue:
+                  'Always consult qualified medical professionals before starting new training or nutrition protocols. Results vary. This is not medical, legal, or licensing advice.',
+              })}
             </p>
           </InfoSection>
 
@@ -90,7 +99,7 @@ export function AboutPage() {
                 <>
                   {' · '}
                   <Link href="/america" className="text-blue-400 hover:underline">
-                    National fitness
+                    {t('infoAboutNationalLink', { defaultValue: 'National fitness' })}
                   </Link>
                 </>
               )}
@@ -99,12 +108,16 @@ export function AboutPage() {
 
           <InfoSection title={t('infoAboutContact', { defaultValue: 'Contact' })}>
             <p className="text-muted-foreground">
-              support@missionwinning.com · hello@missionwinning.com for coaching inquiries.
+              {t('infoAboutContactBody', {
+                defaultValue: 'support@missionwinning.com · hello@missionwinning.com for coaching inquiries.',
+              })}
             </p>
           </InfoSection>
 
           <p className="text-xs text-muted-foreground">
-            © Mission Winning. Global by design. PWA — works offline anywhere.
+            {t('infoAboutCopyright', {
+              defaultValue: '© Mission Winning. Global by design. PWA — works offline anywhere.',
+            })}
           </p>
         </CardContent>
       </Card>

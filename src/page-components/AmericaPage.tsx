@@ -11,9 +11,7 @@ import {
   isYouthModeEnabled,
   setYouthModeEnabled,
 } from '@/lib/presidentialFitnessStorage';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
-import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { useEffect, useState } from 'react';
 import { SchoolClassPanel } from '@/components/fitness-test/SchoolClassPanel';
 
@@ -27,13 +25,15 @@ export function AmericaPage() {
 
   if (!isAmericaTrackEnabled()) {
     return (
-      <StaggerGroup className="space-y-6">
-        <StaggerItem index={0}>
-          <p className="text-center text-muted-foreground py-12">
-            {t('americaDisabled', { defaultValue: 'National fitness track is not enabled in this build.' })}
-          </p>
-        </StaggerItem>
-      </StaggerGroup>
+      <InfoPageShell
+        icon={Flag}
+        title={t('americaHeroTitle', { defaultValue: 'Strength for the next generation' })}
+        variant="sections"
+      >
+        <p className="text-center text-muted-foreground py-12">
+          {t('americaDisabled', { defaultValue: 'National fitness track is not enabled in this build.' })}
+        </p>
+      </InfoPageShell>
     );
   }
 
@@ -65,25 +65,17 @@ export function AmericaPage() {
           });
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={Flag}
-          iconClassName="text-blue-400"
-          title={t('americaHeroTitle', { defaultValue: 'Strength for the next generation' })}
-          subtitle={heroBody}
-        />
-      </StaggerItem>
-
-      <StaggerItem index={1}>
+    <InfoPageShell
+      icon={Flag}
+      iconClassName="text-blue-400"
+      title={t('americaHeroTitle', { defaultValue: 'Strength for the next generation' })}
+      subtitle={heroBody}
+      variant="sections"
+      showLegalFooter
+    >
         <CouncilLeadershipBlock />
-      </StaggerItem>
-
-      <StaggerItem index={2}>
         <SchoolClassPanel />
-      </StaggerItem>
 
-      <StaggerItem index={3}>
         <div className="grid gap-4 sm:grid-cols-3">
           <Card className="content-card">
             <CardContent className="pt-6 text-center space-y-2">
@@ -125,9 +117,7 @@ export function AmericaPage() {
             </CardContent>
           </Card>
         </div>
-      </StaggerItem>
 
-      <StaggerItem index={4}>
         <Card className="content-card border-dashed">
           <CardContent className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
@@ -145,9 +135,7 @@ export function AmericaPage() {
             </Button>
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={5}>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button asChild size="lg" className="bg-blue-700 hover:bg-blue-600">
             <Link href="/fitness-test">{t('americaCtaTest', { defaultValue: 'Take the fitness test' })}</Link>
@@ -159,20 +147,13 @@ export function AmericaPage() {
             <Link href="/log">{t('americaCtaToday', { defaultValue: 'Go to Today' })}</Link>
           </Button>
         </div>
-      </StaggerItem>
 
-      <StaggerItem index={6}>
         <p className="text-xs text-center text-muted-foreground">
           {t('americaGlobalNote', {
             defaultValue:
               'Mission Winning remains a global health app — this U.S. track is optional and does not replace worldwide free access.',
           })}
         </p>
-      </StaggerItem>
-
-      <StaggerItem index={7}>
-        <AppLegalFooter />
-      </StaggerItem>
-    </StaggerGroup>
+    </InfoPageShell>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { localizeLearnPaths } from '@/lib/localizeLearnPaths';
@@ -10,13 +11,13 @@ import { PROGRAM_PRICES } from '@/lib/payments';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { logPillarWin } from '@/lib/pillarLog';
 import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
 
 export function LearnPage() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const paths = useMemo(
     () => localizeLearnPaths(FREE_LEARN_PATHS, t),
@@ -41,19 +42,14 @@ export function LearnPage() {
   };
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={BookOpen}
-          title={t('learnTitle', { defaultValue: 'Learn & Master' })}
-          subtitle={t('learnSubtitle', {
-            count: FREE_LEARN_PATHS.length,
-            defaultValue: `${FREE_LEARN_PATHS.length} free education paths — ISSA-aligned foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
-          })}
-        />
-      </StaggerItem>
-
-      <StaggerItem index={1}>
+    <PillarPageShell
+      icon={BookOpen}
+      title={t('learnTitle', { defaultValue: 'Learn & Master' })}
+      subtitle={t('learnSubtitle', {
+        count: FREE_LEARN_PATHS.length,
+        defaultValue: `${FREE_LEARN_PATHS.length} free education paths — ISSA-aligned foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
+      })}
+    >
         <Card className="content-card border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 to-card">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
@@ -77,9 +73,7 @@ export function LearnPage() {
             </Button>
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={2}>
         <div className="space-y-3">
           {paths.map((path) => {
             const open = expandedPath === path.id;
@@ -149,9 +143,7 @@ export function LearnPage() {
             );
           })}
         </div>
-      </StaggerItem>
 
-      <StaggerItem index={3}>
         <Card className="content-card border-emerald-500/20">
           <CardHeader>
             <CardTitle className="text-base">
@@ -168,16 +160,14 @@ export function LearnPage() {
                   { exerciseId: 'squats', sets: [{ reps: 12, weight: 0 }] },
                   { exerciseId: 'plank', sets: [{ reps: 30, weight: 0 }] },
                 ]);
-                window.location.href = '/active';
+                router.push('/active');
               }}
             >
               {t('learnSampleBtn', { defaultValue: 'Start Bodyweight Sample →' })}
             </Button>
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={4}>
         <Card className="content-card border-white/10 bg-card/50">
           <CardHeader>
             <CardTitle className="text-base">
@@ -205,7 +195,6 @@ export function LearnPage() {
             />
           </CardContent>
         </Card>
-      </StaggerItem>
-    </StaggerGroup>
+    </PillarPageShell>
   );
 }

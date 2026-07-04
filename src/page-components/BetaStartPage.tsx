@@ -6,8 +6,7 @@ import { CheckCircle2, ChevronRight, Globe, Rocket, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { InfoPageShell } from '@/components/layout/InfoPageShell';
 
 const STEPS = [
   {
@@ -51,19 +50,22 @@ export function BetaStartPage() {
   const { t } = useTranslation();
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={Rocket}
-          title={t('infoBetaTitle', { defaultValue: 'Start here' })}
-          subtitle={t('infoBetaSubtitle', {
-            defaultValue:
-              'Mission Winning is in private development. You are among the first Mission Operators helping us validate the journey, Today hub, and rankings before public launch.',
-          })}
+    <InfoPageShell
+      icon={Rocket}
+      title={t('infoBetaTitle', { defaultValue: 'Start here' })}
+      subtitle={t('infoBetaSubtitle', {
+        defaultValue:
+          'Mission Winning is in private development. You are among the first Mission Operators helping us validate the journey, Today hub, and rankings before public launch.',
+      })}
+      variant="sections"
+      footer={
+        <InfoPageFooter
+          showLegal
+          showToday
+          todayLabel={t('infoSkipToday', { defaultValue: 'Skip to Today' })}
         />
-      </StaggerItem>
-
-      <StaggerItem index={1}>
+      }
+    >
         <Card className="content-card border-emerald-500/30 bg-emerald-950/20">
           <CardContent className="pt-6 space-y-2">
             <div className="flex items-center gap-2 text-emerald-300 font-medium">
@@ -77,9 +79,7 @@ export function BetaStartPage() {
             </ul>
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={2}>
         <ol className="space-y-3">
           {STEPS.map((step) => (
             <li key={step.n}>
@@ -103,9 +103,7 @@ export function BetaStartPage() {
             </li>
           ))}
         </ol>
-      </StaggerItem>
 
-      <StaggerItem index={3}>
         <div className="grid sm:grid-cols-2 gap-3 text-sm">
           <Card className="content-card">
             <CardContent className="p-4 flex gap-3">
@@ -130,15 +128,6 @@ export function BetaStartPage() {
             </CardContent>
           </Card>
         </div>
-      </StaggerItem>
-
-      <StaggerItem index={4}>
-        <InfoPageFooter
-          showLegal
-          showToday
-          todayLabel={t('infoSkipToday', { defaultValue: 'Skip to Today' })}
-        />
-      </StaggerItem>
-    </StaggerGroup>
+    </InfoPageShell>
   );
 }

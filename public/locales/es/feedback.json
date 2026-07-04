@@ -1,0 +1,23 @@
+{
+  "feedbackNameLabel": "Nombre completo (opcional)",
+  "feedbackNamePlaceholder": "Alex Rivera",
+  "feedbackEmailLabel": "Correo (para seguimiento)",
+  "feedbackEmailPlaceholder": "you@winning.com",
+  "feedbackResultsLabel": "Resultados clave hasta ahora",
+  "feedbackResultsPlaceholder": "Added 25kg to squat in 6 weeks. Energy through the roof.",
+  "feedbackTestimonialLabel": "Tu testimonio",
+  "feedbackTestimonialPlaceholder": "Stop waiting. The free tracker alone got me consistent...",
+  "feedbackRatingLabel": "Califica tus resultados (1–5)",
+  "feedbackActionLabel": "La acción más grande que tomaste",
+  "feedbackActionPlaceholder": "Finally ran the 5x5 program start to finish.",
+  "feedbackSubmit": "Enviar comentarios",
+  "feedbackSubmitting": "Enviando…",
+  "feedbackFootnote": "Your words may be featured (anonymized or with permission).",
+  "feedbackThankBadge": "Constructores de la misión",
+  "feedbackThankUnlock": "✓ Desbloqueos premium del Super Bundle",
+  "feedbackThankRoadmap": "✓ Voz en la hoja de ruta y funciones",
+  "feedbackThankEarly": "✓ Acceso anticipado a actualizaciones",
+  "feedbackThankEmail": "Watch your email for updates + community drops.",
+  "feedbackBackToday": "Volver a Hoy",
+  "feedbackSignInDesc": "Sign in to link feedback to your journey and sync across devices."
+}
