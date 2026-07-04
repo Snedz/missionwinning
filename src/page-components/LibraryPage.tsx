@@ -19,10 +19,12 @@ import {
   type LibraryFilterState,
 } from '@/lib/libraryFilters';
 import { usePremium } from '@/hooks/usePremium';
+import type { ProgramTag } from '@/types';
 import { cn } from '@/lib/utils';
 
 const EQUIP_CHIPS = ['', 'bodyweight', 'dumbbell', 'barbell', 'cable', 'band', 'kettlebell'] as const;
 const LEVEL_CHIPS = ['', 'beginner', 'intermediate', 'advanced'] as const;
+const TAG_CHIPS: (ProgramTag | '')[] = ['', 'strength', 'hypertrophy', 'conditioning', 'corrective'];
 
 const EQUIP_LABELS: Record<string, string> = {
   '': 'libraryEquipAll',
@@ -160,6 +162,21 @@ export function LibraryPage() {
               onClick={() => setFilter('level', l)}
             >
               {t(LEVEL_LABELS[l])}
+            </FilterChip>
+          ))}
+        </div>
+
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground self-center shrink-0">
+            {t('libraryFilterTag', { defaultValue: 'Goal' })}
+          </span>
+          {TAG_CHIPS.map((tag) => (
+            <FilterChip
+              key={tag || 'all-tag'}
+              active={filters.tag === tag}
+              onClick={() => setFilter('tag', tag)}
+            >
+              {tag ? PROGRAM_TAG_LABELS[tag] : t('libraryTagAll', { defaultValue: 'All' })}
             </FilterChip>
           ))}
         </div>

@@ -35,6 +35,38 @@ jobs:
       - name: Production build
         run: npm run build
 
+  lighthouse-budget:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start production server
+        run: |
+          npm run build
+          npm run start &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000/private >/dev/null && break
+            sleep 2
+          done
+
+      - name: Install Lighthouse
+        run: npm i -D lighthouse chrome-launcher
+
+      - name: Lighthouse budget (soft warning)
+        env:
+          SMOKE_BASE_URL: http://localhost:3000
+        run: node scripts/lighthouse-budget.mjs
+
   e2e-screenshots:
     runs-on: ubuntu-latest
     continue-on-error: true

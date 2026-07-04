@@ -1,0 +1,36 @@
+# Manual production deploy when Vercel Git integration only creates Preview deployments.
+#
+# Setup (GitHub → Settings → Secrets → Actions):
+#   VERCEL_TOKEN — https://vercel.com/account/tokens
+#   VERCEL_ORG_ID — Team ID (optional for personal accounts)
+#   VERCEL_PROJECT_ID — Project → Settings → General
+name: Deploy production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy to Vercel production
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "Skipping deploy — set VERCEL_TOKEN and VERCEL_PROJECT_ID in GitHub Secrets"
+            exit 1
+          fi
+          npx vercel deploy --prod --yes --token "$VERCEL_TOKEN"

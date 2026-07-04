@@ -19,11 +19,13 @@
 | If you are… | Read first | Do not use as source of truth |
 |-------------|------------|-------------------------------|
 | Implementing a feature | [PLAN.md](PLAN.md) + relevant `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
-| Launch / deploy | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [ENV.md](ENV.md) | [SETUP.md](SETUP.md) (one-time LLC/domain setup) |
+| Launch / deploy | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [ENV.md](ENV.md), [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md) | [SETUP.md](SETUP.md) (one-time LLC/domain setup) |
 | Premium / conversion | [REDTEAM.md](REDTEAM.md), [STRATEGY.md](STRATEGY.md) | — |
 | Journey UX (I-Day → Commissioned) | [JOURNEY.md](JOURNEY.md) | Build phases in [PLAN.md](PLAN.md) (different “phase”) |
 | UI unification | [UX_UNIFIED_PLAN.md](UX_UNIFIED_PLAN.md) | — |
 | Experience build (v4) | [docs/ROADMAP_V4_EXPERIENCE.md](docs/ROADMAP_V4_EXPERIENCE.md) | Old chat plans in `~/.cursor/plans/` |
+| SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md) | — |
+| Stripe + premium | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
 | Vision scorecard | [VISION_STATUS.md](VISION_STATUS.md) | — |
 | Beta testers | [BETA_INVITE.md](BETA_INVITE.md) | — |
 | Security | [PROTECTION.md](PROTECTION.md) | — |
