@@ -3,25 +3,20 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
-import { MetricsRow } from '@/components/metrics/MetricsRow';
-import { ScoreRing } from '@/components/metrics/ScoreRing';
 import { BUNDLE_PILLARS } from '@/lib/payments';
-import type { BodyScores } from '@/lib/score';
-import { LANDING_FAQ_KEYS, LANDING_JOURNEY_KEYS } from '@/i18n/landingLocales';
+import { LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
+import { JourneyScroll } from '@/components/landing/JourneyScroll';
+import { CoachAdaptDemo } from '@/components/landing/CoachAdaptDemo';
+import { GuideTeaser } from '@/components/landing/GuideTeaser';
+import { HeroDemoFallback } from '@/components/landing/HeroDemo';
 import { ArrowRight, Check, Download, Globe2, WifiOff } from 'lucide-react';
 
-const DEMO_SCORES: BodyScores = {
-  readiness: 82,
-  strain: 45,
-  recovery: 78,
-  readinessLabelKey: 'todayBodyPrimePush',
-  strainLabelKey: 'todayBodyModerateLoad',
-  recoveryLabelKey: 'todayBodyRebuilding',
-};
-
-/** The member path — a real sequence, so the numbering carries meaning. */
-const JOURNEY_PHASES = LANDING_JOURNEY_KEYS;
+const HeroDemo = dynamic(
+  () => import('@/components/landing/HeroDemo').then((m) => m.HeroDemo),
+  { ssr: false, loading: () => <HeroDemoFallback /> }
+);
 
 const FAQ = LANDING_FAQ_KEYS;
 
@@ -119,54 +114,24 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Signature: live briefing card with real score components */}
           <div className="journey-enter">
-            <div className="content-card p-6 sm:p-8">
-              <div className="briefing-rule mb-6">
-                <span className="eyebrow">Today</span>
-              </div>
-              <div className="mb-6 flex items-center justify-center">
-                <ScoreRing label="Win Score" value={74} subtitle="All six pillars" color="emerald" size="lg" />
-              </div>
-              <MetricsRow scores={DEMO_SCORES} demo embedded />
-              <div className="mt-6 border-t border-border/60 pt-4">
-                <p className="eyebrow mb-1.5">Next action</p>
-                <p className="text-sm text-foreground">
-                  Lower body strength · 32 min · barbell or bodyweight
-                </p>
-              </div>
-            </div>
+            <HeroDemo staticFallback={<HeroDemoFallback />} />
           </div>
         </div>
       </header>
 
-      {/* ── The path (journey) ──────────────────────────────────────── */}
-      <section id="path" className="border-b border-border/60">
-        <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">
-          <div className="briefing-rule mb-4">
-            <span className="eyebrow">{t('landingJourneyTitle', { defaultValue: 'The member path' })}</span>
-          </div>
-          <h2 className="display-section mb-4">
-            A clear beginning.
-            <br className="sm:hidden" /> One step at a time.
+      <JourneyScroll />
+
+      <section className="border-b border-border/60 bg-muted/10">
+        <div className="mx-auto max-w-6xl px-5 py-16 text-center">
+          <h2 className="display-section mb-6">
+            {t('landingCoachDemoTitle', { defaultValue: 'Plans that adapt when life happens' })}
           </h2>
-          <p className="mb-10 max-w-xl text-muted-foreground">
-            Borrowed from academy onboarding: you always know exactly where you are and what comes
-            next. No wall of features on day one.
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {JOURNEY_PHASES.map((p) => (
-              <div key={p.phase} className="content-card p-5">
-                <p className="eyebrow-live mb-3">{p.phase}</p>
-                <h3 className="font-display mb-2 text-2xl font-semibold uppercase leading-none">
-                  {t(p.nameKey)}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{t(p.descKey)}</p>
-              </div>
-            ))}
-          </div>
+          <CoachAdaptDemo />
         </div>
       </section>
+
+      <GuideTeaser />
 
       {/* ── Free manifest ───────────────────────────────────────────── */}
       <section className="border-b border-border/60">

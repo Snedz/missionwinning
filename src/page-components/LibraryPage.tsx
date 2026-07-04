@@ -1,65 +1,100 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dumbbell } from 'lucide-react';
+import { Dumbbell, Search } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
-import { EXERCISES, getExerciseById } from '@/data/exercises';
+import { LibraryDetailSheet } from '@/components/library/LibraryDetailSheet';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { EXERCISES } from '@/data/exercises';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
-import { useWorkoutStore } from '@/store/workoutStore';
+import {
+  filterExercises,
+  uniqueMuscleGroups,
+  type LibraryFilterState,
+} from '@/lib/libraryFilters';
 import { usePremium } from '@/hooks/usePremium';
 import type { ProgramTag } from '@/types';
+import { cn } from '@/lib/utils';
 
-const TAG_OPTIONS: { value: ProgramTag | ''; labelKey: string }[] = [
-  { value: '', labelKey: 'libraryTagAll' },
-  { value: 'strength', labelKey: 'libraryTagStrength' },
-  { value: 'hypertrophy', labelKey: 'libraryTagHypertrophy' },
-  { value: 'conditioning', labelKey: 'libraryTagConditioning' },
-  { value: 'corrective', labelKey: 'libraryTagCorrective' },
-];
+const EQUIP_CHIPS = ['', 'bodyweight', 'dumbbell', 'barbell', 'cable', 'band', 'kettlebell'] as const;
+const LEVEL_CHIPS = ['', 'beginner', 'intermediate', 'advanced'] as const;
+const TAG_CHIPS: (ProgramTag | '')[] = ['', 'strength', 'hypertrophy', 'conditioning', 'corrective'];
 
-const EQUIP_OPTIONS: { value: string; labelKey: string }[] = [
-  { value: '', labelKey: 'libraryEquipAll' },
-  { value: 'bodyweight', labelKey: 'libraryEquipBodyweight' },
-  { value: 'dumbbell', labelKey: 'libraryEquipDumbbell' },
-  { value: 'barbell', labelKey: 'libraryEquipBarbell' },
-  { value: 'cable', labelKey: 'libraryEquipCable' },
-  { value: 'band', labelKey: 'libraryEquipBand' },
-  { value: 'kettlebell', labelKey: 'libraryEquipKettlebell' },
-];
+const EQUIP_LABELS: Record<string, string> = {
+  '': 'libraryEquipAll',
+  bodyweight: 'libraryEquipBodyweight',
+  dumbbell: 'libraryEquipDumbbell',
+  barbell: 'libraryEquipBarbell',
+  cable: 'libraryEquipCable',
+  band: 'libraryEquipBand',
+  kettlebell: 'libraryEquipKettlebell',
+};
 
-const LEVEL_OPTIONS: { value: string; labelKey: string }[] = [
-  { value: '', labelKey: 'libraryLevelAll' },
-  { value: 'beginner', labelKey: 'libraryLevelBeginner' },
-  { value: 'intermediate', labelKey: 'libraryLevelIntermediate' },
-  { value: 'advanced', labelKey: 'libraryLevelAdvanced' },
-];
+const LEVEL_LABELS: Record<string, string> = {
+  '': 'libraryLevelAll',
+  beginner: 'libraryLevelBeginner',
+  intermediate: 'libraryLevelIntermediate',
+  advanced: 'libraryLevelAdvanced',
+};
+
+const TAG_LABELS: Record<string, string> = {
+  '': 'libraryTagAll',
+  strength: 'libraryTagStrength',
+  hypertrophy: 'libraryTagHypertrophy',
+  conditioning: 'libraryTagConditioning',
+  corrective: 'libraryTagCorrective',
+};
+
+function FilterChip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        'shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        active
+          ? 'border-primary bg-primary/15 text-primary'
+          : 'border-border/60 text-muted-foreground hover:bg-muted/50'
+      )}
+    >
+      {children}
+    </button>
+  );
+}
 
 export function LibraryPage() {
   const { t } = useTranslation();
-  const router = useRouter();
-  const [q, setQ] = useState('');
-  const [equip, setEquip] = useState('');
-  const [tag, setTag] = useState<ProgramTag | ''>('');
-  const [level, setLevel] = useState('');
   const { premium } = usePremium();
-  const startWorkout = useWorkoutStore((s) => s.startWorkout);
-
-  const filtered = EXERCISES.filter((e) => {
-    const matchQ =
-      !q ||
-      e.name.toLowerCase().includes(q.toLowerCase()) ||
-      e.muscleGroups.some((m) => m.toLowerCase().includes(q.toLowerCase()));
-    const matchE = !equip || (e.equipment || '').toLowerCase().includes(equip.toLowerCase());
-    const matchTag = !tag || (e.tags ?? []).includes(tag);
-    const matchLevel = !level || e.level === level;
-    return matchQ && matchE && matchTag && matchLevel;
+  const [filters, setFilters] = useState<LibraryFilterState>({
+    query: '',
+    equipment: '',
+    tag: '',
+    level: '',
+    muscle: '',
   });
+  const [detailId, setDetailId] = useState<string | null>(null);
+
+  const muscleChips = useMemo(() => ['', ...uniqueMuscleGroups(EXERCISES).slice(0, 12)], []);
+  const filtered = useMemo(() => filterExercises(EXERCISES, filters), [filters]);
+  const detailExercise = detailId ? EXERCISES.find((e) => e.id === detailId) ?? null : null;
+
+  const setFilter = <K extends keyof LibraryFilterState>(key: K, value: LibraryFilterState[K]) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
 
   return (
     <PillarPageShell
@@ -83,62 +118,85 @@ export function LibraryPage() {
           : t('libraryFreeCatalog', { defaultValue: ' — free core includes the full catalog.' })}
       </p>
 
-      <div className="flex gap-3 flex-wrap">
-        <Input
-          placeholder={t('librarySearchPlaceholder', { defaultValue: 'Search name or muscle...' })}
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          className="max-w-xs"
-        />
-        <select
-          value={equip}
-          onChange={(e) => setEquip(e.target.value)}
-          className="border rounded px-3 bg-background text-sm"
-        >
-          {EQUIP_OPTIONS.map((o) => (
-            <option key={o.value || 'all'} value={o.value}>
-              {t(o.labelKey)}
-            </option>
+      <div className="sticky top-0 z-10 -mx-1 space-y-3 bg-background/95 backdrop-blur-sm py-2">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder={t('librarySearchPlaceholder', { defaultValue: 'Search name or muscle...' })}
+            value={filters.query}
+            onChange={(e) => setFilter('query', e.target.value)}
+            className="pl-9"
+          />
+        </div>
+
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground self-center shrink-0">
+            {t('libraryFilterMuscle', { defaultValue: 'Muscle' })}
+          </span>
+          {muscleChips.map((m) => (
+            <FilterChip
+              key={m || 'all-muscle'}
+              active={filters.muscle === m}
+              onClick={() => setFilter('muscle', m)}
+            >
+              {m || t('libraryEquipAll', { defaultValue: 'All' })}
+            </FilterChip>
           ))}
-        </select>
-        <select
-          value={tag}
-          onChange={(e) => setTag(e.target.value as ProgramTag | '')}
-          className="border rounded px-3 bg-background text-sm"
-        >
-          {TAG_OPTIONS.map((o) => (
-            <option key={o.value || 'all'} value={o.value}>
-              {t(o.labelKey)}
-            </option>
+        </div>
+
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground self-center shrink-0">
+            {t('libraryFilterEquipment', { defaultValue: 'Equipment' })}
+          </span>
+          {EQUIP_CHIPS.map((e) => (
+            <FilterChip
+              key={e || 'all-equip'}
+              active={filters.equipment === e}
+              onClick={() => setFilter('equipment', e)}
+            >
+              {t(EQUIP_LABELS[e])}
+            </FilterChip>
           ))}
-        </select>
-        <select
-          value={level}
-          onChange={(e) => setLevel(e.target.value)}
-          className="border rounded px-3 bg-background text-sm"
-        >
-          {LEVEL_OPTIONS.map((o) => (
-            <option key={o.value || 'all'} value={o.value}>
-              {t(o.labelKey)}
-            </option>
+        </div>
+
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground self-center shrink-0">
+            {t('libraryFilterLevel', { defaultValue: 'Level' })}
+          </span>
+          {LEVEL_CHIPS.map((l) => (
+            <FilterChip
+              key={l || 'all-level'}
+              active={filters.level === l}
+              onClick={() => setFilter('level', l)}
+            >
+              {t(LEVEL_LABELS[l])}
+            </FilterChip>
           ))}
-        </select>
-        <span className="text-xs self-center text-muted-foreground">
+        </div>
+
+        <p className="text-xs text-muted-foreground">
           {t('libraryShowingCount', {
             shown: filtered.length,
             total: EXERCISES.length,
             defaultValue: `Showing ${filtered.length} of ${EXERCISES.length}`,
           })}
-        </span>
+        </p>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((ex) => (
-          <Card key={ex.id} className="content-card">
+          <Card
+            key={ex.id}
+            className="content-card pressable-card cursor-pointer"
+            onClick={() => setDetailId(ex.id)}
+            onKeyDown={(e) => e.key === 'Enter' && setDetailId(ex.id)}
+            role="button"
+            tabIndex={0}
+          >
             <CardHeader className="pb-2">
               <CardTitle className="text-lg">{ex.name}</CardTitle>
               <div className="text-xs text-muted-foreground">
-                {ex.muscleGroups.join(' • ')} • {ex.equipment || 'Various'}
+                {ex.muscleGroups.join(' • ')} · {ex.equipment || 'Various'}
               </div>
               <div className="flex flex-wrap gap-1 mt-1">
                 {(ex.tags ?? []).slice(0, 3).map((tagId) => (
@@ -153,50 +211,41 @@ export function LibraryPage() {
                 )}
               </div>
             </CardHeader>
-            <CardContent className="text-sm space-y-2">
-              {ex.cues ? (
-                <div>
-                  <span className="font-medium">{t('libraryKeyCues', { defaultValue: 'Key cues:' })}</span>{' '}
-                  {ex.cues}
-                </div>
-              ) : (
-                <div className="text-muted-foreground">
-                  {t('libraryCuesComing', {
+            <CardContent className="text-sm">
+              <p className="text-muted-foreground line-clamp-2">
+                {ex.cues ||
+                  t('libraryCuesComing', {
                     defaultValue: 'Form cues coming soon for this movement.',
                   })}
-                </div>
-              )}
-              {ex.alternatives && ex.alternatives.length > 0 && (
-                <div className="text-xs text-muted-foreground">
-                  <span className="font-medium text-foreground">
-                    {t('libraryAlternatives', { defaultValue: 'Alternatives:' })}
-                  </span>{' '}
-                  {ex.alternatives.map((id) => getExerciseById(id)?.name ?? id).join(', ')}
-                </div>
-              )}
-              <button
-                type="button"
-                onClick={() => {
-                  startWorkout(ex.name, [{ exerciseId: ex.id, sets: [{ reps: 8, weight: 0 }] }]);
-                  router.push('/active');
-                }}
-                className="text-xs px-3 py-1.5 border border-primary/50 rounded hover:bg-primary/10 font-medium w-full text-center"
-              >
-                {t('libraryQuickAdd', { defaultValue: "Quick Add to Today's Workout →" })}
-              </button>
+              </p>
+              <Button variant="ghost" size="sm" className="mt-2 w-full text-xs">
+                {t('libraryViewDetails', { defaultValue: 'View details →' })}
+              </Button>
             </CardContent>
           </Card>
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-sm text-muted-foreground py-8">
-          {t('libraryNoResults', {
+        <EmptyState
+          icon={Dumbbell}
+          title={t('libraryNoResultsTitle', { defaultValue: 'No matches' })}
+          description={t('libraryNoResults', {
             defaultValue:
-              'No exercises match these filters. Try clearing equipment or style filters.',
+              'No exercises match these filters. Try clearing equipment or muscle filters.',
           })}
-        </p>
+          actionLabel={t('libraryClearFilters', { defaultValue: 'Clear filters' })}
+          onAction={() =>
+            setFilters({ query: '', equipment: '', tag: '', level: '', muscle: '' })
+          }
+        />
       )}
+
+      <LibraryDetailSheet
+        exercise={detailExercise}
+        open={!!detailId}
+        onOpenChange={(open) => !open && setDetailId(null)}
+      />
     </PillarPageShell>
   );
 }
