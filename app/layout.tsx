@@ -23,6 +23,21 @@ export const metadata: Metadata = {
   },
   description:
     'The free health everything app: workout tracking, nutrition, mobility, mind, activity, and learning. Free core forever. Works offline, anywhere in the world.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://missionwinning.com'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Mission Winning',
+    title: 'Mission Winning — Train Anywhere. Win Daily.',
+    description:
+      'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline. Mission Coach plans your week.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mission Winning — Train Anywhere. Win Daily.',
+    description:
+      'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline.',
+  },
   icons: {
     icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',

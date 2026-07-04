@@ -12,6 +12,7 @@
     "check-env": "node --env-file=.env.local scripts/check-env.mjs",
     "predeploy": "tsx scripts/pre-deploy-smoke.ts",
     "gate-smoke": "tsx scripts/gate-smoke.ts",
+    "e2e": "node scripts/e2e-smoke.mjs",
     "sync-vercel-env": "node scripts/sync-vercel-env.mjs",
     "print-beta-invite": "node --env-file=.env.local scripts/print-beta-invite.ts"
   },
@@ -51,6 +52,7 @@
     "eslint-config-next": "^16.2.7",
     "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^15.15.0",
+    "playwright": "^1.51.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.22.4",

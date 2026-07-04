@@ -22,6 +22,7 @@ export const ROUTE_TITLES = {
   feedback: 'Feedback',
   beta: 'Beta Start Guide',
   coaching: 'Coaching',
+  coach: 'Mission Coach',
   calculators: 'Calculators',
   assessments: 'Assessments',
   fitnessTest: 'Fitness Test',

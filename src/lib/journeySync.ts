@@ -14,6 +14,10 @@ const PHASE_RANK: Record<JourneyPhase, number> = {
   commissioned: 3,
 };
 
+import { loadPlan, COACH_TASTER_KEY, savePlan } from '@/lib/coach/storage';
+import { mergeCoachPlans } from '@/lib/coachSync';
+import type { CoachPlan } from '@/lib/coach/types';
+
 export interface CloudProfileSlice {
   locale?: string | null;
   units?: string | null;
@@ -23,6 +27,8 @@ export interface CloudProfileSlice {
   primary_goal?: string | null;
   ui_mode?: string | null;
   journey_state?: JourneyState | null;
+  coach_plan?: CoachPlan | null;
+  coach_taster_used?: boolean | null;
   updated_at?: string | null;
 }
 
@@ -67,6 +73,14 @@ function applyProfileFieldsToLocal(profile: CloudProfileSlice): void {
   if (profile.ui_mode === 'simple' || profile.ui_mode === 'pro') {
     saveUiMode(profile.ui_mode);
   }
+  if (profile.coach_taster_used) {
+    localStorage.setItem(COACH_TASTER_KEY, '1');
+  }
+  if (profile.coach_plan && typeof profile.coach_plan === 'object') {
+    const local = loadPlan();
+    const merged = mergeCoachPlans(local, profile.coach_plan as CoachPlan);
+    if (merged) savePlan(merged);
+  }
 }
 
 /** Pull cloud profile journey + preferences; merge with local (farthest progress wins). */
@@ -76,7 +90,7 @@ export async function pullJourneyFromCloud(): Promise<boolean> {
 
   const { data, error } = await supabase
     .from('profiles')
-    .select('locale, units, goals, equipment, experience, primary_goal, ui_mode, journey_state, updated_at')
+    .select('locale, units, goals, equipment, experience, primary_goal, ui_mode, journey_state, coach_plan, coach_taster_used, updated_at')
     .eq('id', user.id)
     .maybeSingle();
 
@@ -114,6 +128,9 @@ export async function pushJourneyToCloud(): Promise<boolean> {
   const primaryGoal =
     typeof window !== 'undefined' ? localStorage.getItem('mw_primary_goal') || goals : goals;
   const uiMode: UiMode = loadUiMode();
+  const coachPlan = typeof window !== 'undefined' ? loadPlan() : null;
+  const coachTasterUsed =
+    typeof window !== 'undefined' ? localStorage.getItem(COACH_TASTER_KEY) === '1' : false;
 
   const { error } = await supabase.from('profiles').upsert(
     {
@@ -127,6 +144,8 @@ export async function pushJourneyToCloud(): Promise<boolean> {
       primary_goal: primaryGoal,
       ui_mode: uiMode,
       journey_state: journey,
+      coach_plan: coachPlan,
+      coach_taster_used: coachTasterUsed,
       updated_at: new Date().toISOString(),
     },
     { onConflict: 'id' }

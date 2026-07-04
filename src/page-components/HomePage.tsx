@@ -15,6 +15,7 @@ import { getUser, getUserNutritionForDate } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
 import { CommandersIntent } from "@/components/journey/CommandersIntent";
+import { CoachTodayCard } from '@/components/coach/CoachTodayCard';
 import { TodayQuickLinks } from "@/components/journey/TodayQuickLinks";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { TodayDashboardHeader } from "@/components/today/TodayDashboardHeader";
@@ -373,6 +374,10 @@ export function HomePage() {
         />
       ),
     });
+  }
+
+  if (state.phase === 'commissioned') {
+    staggerBlocks.push({ key: 'coach-today', node: <CoachTodayCard /> });
   }
 
   if (layout.showQuickLinks) {

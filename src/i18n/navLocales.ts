@@ -9,6 +9,7 @@ type NavStrings = {
   navMind: string;
   navLearn: string;
   navBuilder: string;
+  navCoach: string;
   navLibrary: string;
   navHistory: string;
   navLeaderboard: string;
@@ -32,6 +33,7 @@ const en: NavStrings = {
   navMind: 'Mind',
   navLearn: 'Learn',
   navBuilder: 'Builder',
+  navCoach: 'Mission Coach',
   navLibrary: 'Library',
   navHistory: 'History',
   navLeaderboard: 'Leaderboard',
@@ -69,7 +71,7 @@ const es: NavStrings = {
   fuelHighProteinNote: 'Los días altos en proteína impulsan tu',
 };
 
-const zh: NavStrings = {
+const zh: Partial<NavStrings> = {
   navSectionRecover: '恢复',
   navSectionTrain: '深度训练',
   navSectionLearn: '学习与测量',
@@ -94,7 +96,7 @@ const zh: NavStrings = {
   fuelPremiumRecipesFoot: '基于蛋白质科学与 DASH/地中海原则，全球可及。',
 };
 
-const id: NavStrings = {
+const id: Partial<NavStrings> = {
   navSectionRecover: 'Pemulihan',
   navSectionTrain: 'Latihan mendalam',
   navSectionLearn: 'Belajar & ukur',
@@ -119,7 +121,7 @@ const id: NavStrings = {
   fuelPremiumRecipesFoot: 'Dari sains protein + prinsip DASH/Med untuk akses global.',
 };
 
-const th: NavStrings = {
+const th: Partial<NavStrings> = {
   navSectionRecover: 'ฟื้นตัว',
   navSectionTrain: 'ฝึกเชิงลึก',
   navSectionLearn: 'เรียนรู้และวัด',
@@ -144,7 +146,7 @@ const th: NavStrings = {
   fuelPremiumRecipesFoot: 'จากวิทยาศาสตร์โปรตีน + หลัก DASH/Med',
 };
 
-const ar: NavStrings = {
+const ar: Partial<NavStrings> = {
   navSectionRecover: 'استشفاء',
   navSectionTrain: 'تدريب أعمق',
   navSectionLearn: 'تعلّم وقياس',
@@ -169,7 +171,7 @@ const ar: NavStrings = {
   fuelPremiumRecipesFoot: 'من علم البروتين ومبادئ DASH/Med.',
 };
 
-const fr: NavStrings = {
+const fr: Partial<NavStrings> = {
   ...en,
   navSectionRecover: 'Récupération',
   navSectionTrain: 'Entraînement approfondi',
@@ -188,7 +190,7 @@ const fr: NavStrings = {
   fuelHighProteinNote: 'Les jours riches en protéines boostent votre',
 };
 
-const de: NavStrings = {
+const de: Partial<NavStrings> = {
   ...en,
   navSectionRecover: 'Erholung',
   navSectionTrain: 'Tiefer trainieren',
@@ -207,7 +209,7 @@ const de: NavStrings = {
   fuelHighProteinNote: 'Proteinreiche Tage stärken deinen',
 };
 
-const it: NavStrings = {
+const it: Partial<NavStrings> = {
   ...en,
   navSectionRecover: 'Recupero',
   navSectionTrain: 'Allenamento profondo',
@@ -226,7 +228,7 @@ const it: NavStrings = {
   fuelHighProteinNote: 'I giorni ad alto proteico potenziano il tuo',
 };
 
-const ko: NavStrings = {
+const ko: Partial<NavStrings> = {
   ...en,
   navSectionRecover: '회복',
   navSectionTrain: '심화 훈련',
@@ -245,7 +247,7 @@ const ko: NavStrings = {
   fuelHighProteinNote: '고단백일은 당신의',
 };
 
-const ja: NavStrings = {
+const ja: Partial<NavStrings> = {
   ...en,
   navSectionRecover: '回復',
   navSectionTrain: '深いトレーニング',
@@ -264,7 +266,7 @@ const ja: NavStrings = {
   fuelHighProteinNote: '高タンパク日はあなたの',
 };
 
-const pt: NavStrings = {
+const pt: Partial<NavStrings> = {
   ...en,
   navSectionRecover: 'Recuperação',
   navSectionTrain: 'Treino profundo',
@@ -283,7 +285,7 @@ const pt: NavStrings = {
   fuelHighProteinNote: 'Dias com alta proteína impulsionam seu',
 };
 
-const ru: NavStrings = {
+const ru: Partial<NavStrings> = {
   ...en,
   navSectionRecover: 'Восстановление',
   navSectionTrain: 'Углублённая тренировка',
@@ -302,11 +304,11 @@ const ru: NavStrings = {
   fuelHighProteinNote: 'Дни с высоким белком усиливают ваш',
 };
 
-const LOCALES: Partial<Record<string, NavStrings>> = { en, es, zh, id, th, ar, fr, de, it, ko, ja, pt, ru };
+const LOCALES: Partial<Record<string, Partial<NavStrings>>> = { en, es, zh, id, th, ar, fr, de, it, ko, ja, pt, ru };
 
 export function navStringsFor(lang: string): NavStrings {
   const code = lang.split('-')[0];
-  return LOCALES[code] ?? en;
+  return { ...en, ...(LOCALES[code] ?? {}) };
 }
 
 export function mergeNavStrings(target: Record<string, string>, lang: string): void {

@@ -29,8 +29,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { History1RMChart, HistoryVolumeChart } from '@/components/history/HistoryCharts';
+import dynamic from 'next/dynamic';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
+
+const History1RMChart = dynamic(
+  () => import('@/components/history/HistoryCharts').then((m) => m.History1RMChart),
+  { ssr: false, loading: () => <div className="h-48 animate-pulse rounded-lg bg-muted/30" /> }
+);
+const HistoryVolumeChart = dynamic(
+  () => import('@/components/history/HistoryCharts').then((m) => m.HistoryVolumeChart),
+  { ssr: false, loading: () => <div className="h-48 animate-pulse rounded-lg bg-muted/30" /> }
+);
 import { getExerciseById } from '@/data/exercises';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { cn, formatDate, formatDuration } from '@/lib/utils';
