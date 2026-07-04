@@ -48,7 +48,7 @@ import type { WorkoutExerciseTemplate } from "@/types";
 import { usePremium } from "@/hooks/usePremium";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
-import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
+import { PillarPageShell } from "@/components/layout/PillarPageShell";
 
 interface DraftExercise extends WorkoutExerciseTemplate {
   key: string;
@@ -213,16 +213,15 @@ export function BuilderPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <PillarPageHeader
-        icon={PenTool}
-        title={t('builderTitle', { defaultValue: 'Workout Builder' })}
-        subtitle={t('builderSubtitle', {
-          defaultValue:
-            'Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.',
-        })}
-      />
-
+    <PillarPageShell
+      icon={PenTool}
+      title={t('builderTitle', { defaultValue: 'Workout Builder' })}
+      subtitle={t('builderSubtitle', {
+        defaultValue:
+          'Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.',
+      })}
+      showLegalFooter
+    >
       <section
         id="program-templates"
         className="rounded-xl border-2 border-primary/40 bg-gradient-to-b from-primary/10 to-card p-5 md:p-6 space-y-4"
@@ -572,6 +571,6 @@ export function BuilderPage() {
           defaultValue: 'Sign in to sync saved routines across devices.',
         })}
       />
-    </div>
+    </PillarPageShell>
   );
 }

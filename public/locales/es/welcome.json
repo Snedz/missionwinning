@@ -35,5 +35,16 @@
   "photoLogComingSoon": "Photo logging is in development. Use quick log or recipes for now.",
   "photoLogBetaNote": "Bevel-style meal capture — privacy-first, on-device when possible.",
   "navOurMission": "Nuestra misión",
-  "navBetaGuide": "Guía beta"
+  "navBetaGuide": "Guía beta",
+  "welcomeTitle": "Bienvenido, miembro de la misión",
+  "welcomeSubtitle": "Comienza tu camino hacia la salud de por vida — un paso a la vez. Unos dos minutos.",
+  "welcomeBegin": "Comenzar",
+  "welcomeAccept": "Acepto el camino",
+  "welcomeContinue": "Continuar",
+  "welcomeSignInTitle": "Guardar progreso — tu elección",
+  "welcomeSignInSubtitle": "Inicia sesión con Google o correo para sincronizar. Omite cuando quieras — el progreso local funciona.",
+  "welcomeSkipSignIn": "Omitir — ir a Hoy",
+  "welcomeRemindersOptIn": "Envíame recordatorios de entrenamiento (racha en riesgo, siguiente paso). Opcional — cancela cuando quieras.",
+  "editJourneyProfile": "Editar perfil del viaje",
+  "saveProfile": "Guardar perfil"
 }

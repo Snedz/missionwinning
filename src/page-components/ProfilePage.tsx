@@ -3,8 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from "react-i18next";
+import { User } from 'lucide-react';
 import { formatStoredGoal } from '@/lib/journeyGoals';
 import { supabase, signOut, isPremium, getUser } from "@/lib/supabase";
 import { SignInPanel } from "@/components/auth/SignInPanel";
@@ -16,8 +17,8 @@ import { getBetaFunnelMetrics, getJourneyEvents } from "@/lib/journeyAnalytics";
 import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
 
 import { scheduleJourneyPush } from '@/lib/journeySync';
-import { APP_BUILD_LABEL } from '@/lib/buildInfo';
-import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { LegalNav } from '@/components/layout/LegalNav';
+import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { showOwnerTools } from '@/lib/ownerTools';
 import { downloadBackup, restoreBackupFromJson } from '@/lib/backup';
 import { useToast } from '@/hooks/use-toast';
@@ -67,6 +68,7 @@ function LanguageSwitcher() {
 
 export function ProfilePage() {
   const { t } = useTranslation();
+  const router = useRouter();
   const { toast } = useToast();
   const { isCommissioned, state, action } = useMissionJourney();
   const [email, setEmail] = useState<string | null>(null);
@@ -137,7 +139,7 @@ export function ProfilePage() {
 
   const handleSignOut = async () => {
     await signOut();
-    window.location.href = "/";
+    router.push("/");
   };
 
   // Light onboarding state
@@ -176,7 +178,7 @@ export function ProfilePage() {
       ];
     }
     startWorkout(name, exs);
-    window.location.href = "/active";
+    router.push("/active");
   };
 
   // Owner analytics / revenue stub (bundle members)
@@ -218,16 +220,18 @@ export function ProfilePage() {
   };
 
   return (
-    <div className="max-w-2xl space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">{t('profileSettings', { defaultValue: 'Profile & Settings' })}</h2>
-        {isCommissioned && state.commissionedAt && (
-          <p className="text-sm text-emerald-400 mt-1">
-            {t('missionOperator', { defaultValue: 'Mission Operator' })} · Day {daysSinceCommission(state.commissionedAt)}
-          </p>
-        )}
-        <p className="text-muted-foreground">Your Mission Winning account. Global preferences. Premium status.</p>
-      </div>
+    <div className="space-y-6">
+      <PillarPageHeader
+        icon={User}
+        title={t('profileSettings', { defaultValue: 'Profile & Settings' })}
+        subtitle={
+          isCommissioned && state.commissionedAt
+            ? `${t('missionOperator', { defaultValue: 'Mission Operator' })} · Day ${daysSinceCommission(state.commissionedAt)}`
+            : t('profileSubtitle', {
+                defaultValue: 'Your Mission Winning account. Global preferences. Premium status.',
+              })
+        }
+      />
 
       <Card>
         <CardHeader><CardTitle>{t('account', { defaultValue: 'Account & Sign In' })}</CardTitle></CardHeader>
@@ -333,7 +337,7 @@ export function ProfilePage() {
               </div>
               <div className="text-muted-foreground">{lastAssessment.notes}</div>
               <div className="flex gap-2 flex-wrap">
-                <Button size="sm" variant="outline" onClick={() => window.location.href = '/assessments'}>Retake Assessment</Button>
+                <Button size="sm" variant="outline" onClick={() => router.push('/assessments')}>{t('retake', { defaultValue: 'Retake Assessment' })}</Button>
                 <Button size="sm" onClick={() => launchFromAssessment(lastAssessment.risk)}>Start recommended starter for {lastAssessment.risk} risk →</Button>
                 <Button size="sm" variant="ghost" onClick={async () => {
                   const u = await getUser();
@@ -345,7 +349,7 @@ export function ProfilePage() {
             </>
           ) : (
             <div>
-              No assessment yet. <Button size="sm" variant="outline" onClick={() => window.location.href = '/assessments'}>Take the free Readiness Assessment</Button>
+              No assessment yet. <Button size="sm" variant="outline" onClick={() => router.push('/assessments')}>{t('takeAssessment', { defaultValue: 'Take the free Readiness Assessment' })}</Button>
               <div className="text-xs mt-1 text-muted-foreground">ParQ-style screen + stage of change. Results guide safe free starters (always available).</div>
             </div>
           )}
@@ -353,7 +357,7 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
-      <Card className="border-emerald-500/40 bg-emerald-950/10">
+      <Card className="content-card border-emerald-500/40 bg-emerald-950/10">
         <CardHeader>
           <CardTitle>{t('betaJourneyProgress', { defaultValue: 'Beta journey progress' })}</CardTitle>
         </CardHeader>
@@ -404,13 +408,13 @@ export function ProfilePage() {
 
       {/* Journey profile — first-time onboarding or edit link */}
       {!isOnboarded ? (
-        <Card className="border-emerald-500/40 bg-emerald-950/10">
+        <Card className="content-card border-emerald-500/40 bg-emerald-950/10">
           <CardHeader><CardTitle>{t('firstTimeSetup', { defaultValue: 'First-time setup' })}</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm">
             <p className="text-muted-foreground">
               Complete I-Day to personalize workouts and Today recommendations (~2 minutes).
             </p>
-            <Button className="w-full min-h-[44px]" onClick={() => { window.location.href = '/welcome'; }}>
+            <Button className="w-full min-h-[44px]" onClick={() => router.push('/welcome')}>
               {t('welcomeBegin', { defaultValue: 'Begin I-Day' })}
             </Button>
           </CardContent>
@@ -427,7 +431,7 @@ export function ProfilePage() {
             <p className="text-muted-foreground truncate">
               Goal: {formatStoredGoal(primaryGoal || goals, t)}
             </p>
-            <Button variant="outline" className="w-full min-h-[44px]" onClick={() => { window.location.href = '/welcome?edit=1'; }}>
+            <Button variant="outline" className="w-full min-h-[44px]" onClick={() => router.push('/welcome?edit=1')}>
               {t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}
             </Button>
           </CardContent>
@@ -442,7 +446,7 @@ export function ProfilePage() {
           ) : (
             <div>
               {t('noPremium', { defaultValue: 'Free tier active. Unlock full library cues, deep nutrition, mobility flows, mind sessions, advanced programs, and analytics via the Super Bundle or specialist programs.' })}
-              <Button className="mt-2" onClick={() => window.location.href = "/bundle"}>{t('exploreBundle', { defaultValue: 'Explore Super Bundle' })}</Button>
+              <Button className="mt-2" onClick={() => router.push('/bundle')}>{t('exploreBundle', { defaultValue: 'Explore Super Bundle' })}</Button>
             </div>
           )}
         </CardContent>
@@ -451,7 +455,7 @@ export function ProfilePage() {
       {ownerTools && (
       <>
       {/* Owner Revenue Snapshot - founder view only */}
-      <Card className="border-emerald-500/40 bg-emerald-950/10">
+      <Card className="content-card border-emerald-500/40 bg-emerald-950/10">
         <CardHeader><CardTitle>{t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}</CardTitle></CardHeader>
         <CardContent className="space-y-2 text-sm">
           <div className="flex justify-between"><span>{t('spotsClaimed', { defaultValue: 'Members' })}:</span> <span className="font-mono text-emerald-400">{members.toLocaleString()}</span></div>
@@ -524,7 +528,7 @@ export function ProfilePage() {
                       keys: result.keysRestored ?? 0,
                     }),
                   });
-                  setTimeout(() => window.location.reload(), 1200);
+                  setTimeout(() => router.refresh(), 1200);
                 };
                 reader.readAsText(file);
               }}
@@ -544,27 +548,9 @@ export function ProfilePage() {
           <p className="text-sm font-medium mb-3">
             {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}
           </p>
-          <nav className="flex flex-wrap gap-x-3 gap-y-2 text-sm text-muted-foreground">
-            <Link href="/about" className="hover:text-emerald-400 transition-colors">
-              {t('about', { defaultValue: 'About' })}
-            </Link>
-            <Link href="/beta" className="hover:text-emerald-400 transition-colors">
-              {t('navBetaGuide', { defaultValue: 'Beta guide' })}
-            </Link>
-            <Link href="/feedback" className="hover:text-emerald-400 transition-colors">
-              {t('feedback', { defaultValue: 'Feedback' })}
-            </Link>
-            <Link href="/terms" className="hover:text-emerald-400 transition-colors">
-              {t('termsOfService', { defaultValue: 'Terms of Service' })}
-            </Link>
-            <Link href="/privacy" className="hover:text-emerald-400 transition-colors">
-              {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
-            </Link>
-          </nav>
+          <LegalNav />
         </CardContent>
       </Card>
-
-      <AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} className="pt-2" />
     </div>
   );
 }

@@ -15,12 +15,11 @@ import { FoodSearchBar } from "@/components/nutrition/FoodSearchBar";
 import { BarcodeLookup } from "@/components/nutrition/BarcodeLookup";
 import type { FoodSearchItem } from "@/lib/foodSearch";
 import { MetricRing } from "@/components/ui/MetricRing";
-import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { bumpFuelLogStreak, getFuelLogStreak } from "@/lib/fuelStreak";
 import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from "@/lib/macroTargets";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { Plus, UtensilsCrossed } from "lucide-react";
-import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
+import { PillarPageShell } from "@/components/layout/PillarPageShell";
 
 const FREE_RECIPE_COUNT = 12;
 
@@ -211,44 +210,38 @@ export function NutritionPage() {
   const freeRecipes = FREE_RECIPES;
 
   return (
-    <StaggerGroup className="space-y-6 max-w-3xl pb-24">
-      <StaggerItem index={0}>
-      <div className="space-y-2">
-        <div className="flex flex-wrap items-start justify-between gap-2">
-          <PillarPageHeader
-            icon={UtensilsCrossed}
-            title={t('fuelTitle', { defaultValue: 'Nutrition' })}
-            subtitle={t('fuelSubtitle', {
+    <PillarPageShell
+      className="max-w-3xl pb-24"
+      icon={UtensilsCrossed}
+      title={t('fuelTitle', { defaultValue: 'Nutrition' })}
+      subtitle={t('fuelSubtitle', {
+        defaultValue:
+          'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
+      })}
+      headerActions={
+        fuelStreak > 0 ? (
+          <span className="rounded-full border border-emerald-500/30 bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-400 shrink-0">
+            {t('fuelLogStreak', { count: fuelStreak, defaultValue: `${fuelStreak}-day log streak` })}
+          </span>
+        ) : undefined
+      }
+    >
+      <p className="text-muted-foreground text-sm">
+        {premium
+          ? t('fuelPremiumActive', {
+              defaultValue: ' Premium: full recipe library + deep plans (Super Bundle).',
+            })
+          : t('fuelBundleUpsell', {
               defaultValue:
-                'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
-            })}
-            className="flex-1 min-w-0"
-          />
-          {fuelStreak > 0 && (
-            <span className="rounded-full border border-emerald-500/30 bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-400 shrink-0">
-              {t('fuelLogStreak', { count: fuelStreak, defaultValue: `${fuelStreak}-day log streak` })}
-            </span>
-          )}
-        </div>
-        <p className="text-muted-foreground text-sm">
-          {premium
-            ? t('fuelPremiumActive', {
-                defaultValue: ' Premium: full recipe library + deep plans (Super Bundle).',
-              })
-            : t('fuelBundleUpsell', {
-                defaultValue:
-                  ' Super Bundle unlocks the full recipe library and advanced meal plans.',
-              })}{' '}
-          {t('fuelHighProteinNote', { defaultValue: 'High-protein days boost your' })}{' '}
-          <a href="/log" className="underline">
-            {t('fuelWinScore', { defaultValue: 'Win Score' })}
-          </a>
-          .
-        </p>
-      </div>
-      </StaggerItem>
+                ' Super Bundle unlocks the full recipe library and advanced meal plans.',
+            })}{' '}
+        {t('fuelHighProteinNote', { defaultValue: 'High-protein days boost your' })}{' '}
+        <a href="/log" className="underline">
+          {t('fuelWinScore', { defaultValue: 'Win Score' })}
+        </a>
+        .
+      </p>
 
-      <StaggerItem index={1}>
       <div className="grid md:grid-cols-2 gap-4">
         <Card className="content-card">
           <CardHeader><CardTitle>{t('fuelTargetsTitle', { defaultValue: "Today's Targets" })}</CardTitle></CardHeader>
@@ -300,9 +293,7 @@ export function NutritionPage() {
           </CardContent>
         </Card>
       </div>
-      </StaggerItem>
 
-      <StaggerItem index={2}>
       <div className="text-xs bg-muted/20 p-3 rounded space-y-2">
         <p>
           {t('fuelScienceCh5', {
@@ -317,9 +308,7 @@ export function NutritionPage() {
           })}
         </p>
       </div>
-      </StaggerItem>
 
-      <StaggerItem index={3}>
       <Card className="content-card">
         <CardHeader>
           <CardTitle>{t('fuelSearchTitle', { defaultValue: 'Search foods' })}</CardTitle>
@@ -349,9 +338,7 @@ export function NutritionPage() {
           />
         </CardContent>
       </Card>
-      </StaggerItem>
 
-      <StaggerItem index={4}>
       <Card className="content-card">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{t('fuelTodayLogTitle', { defaultValue: "Today's Log" })}</CardTitle>
@@ -393,11 +380,10 @@ export function NutritionPage() {
           </div>
         </CardContent>
       </Card>
-      </StaggerItem>
 
       <div className="text-[10px] text-muted-foreground">{t('fuelLocalNote', { defaultValue: 'Data stored locally (synced when you sign in). Full integration + meal plans in the paid Nutrition course.' })}</div>
 
-      <Card>
+      <Card className="content-card">
         <CardHeader><CardTitle>{t('fuelFreeRecipesTitle', { count: FREE_RECIPE_COUNT, defaultValue: `Free Recipes (${FREE_RECIPE_COUNT} — core mission)` })}</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           {freeRecipes.map((r, i) => (
@@ -418,7 +404,7 @@ export function NutritionPage() {
       </Card>
 
       {premium ? (
-      <Card>
+      <Card className="content-card">
         <CardHeader><CardTitle>{t('fuelPremiumRecipesTitle', { defaultValue: 'Premium Recipes & Meal Ideas (Super Bundle)' })}</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           {premiumRecipes.map((r, i) => (
@@ -443,7 +429,7 @@ export function NutritionPage() {
         </CardContent>
       </Card>
       ) : (
-        <Card className="border-emerald-500/30">
+        <Card className="content-card border-emerald-500/30">
           <CardHeader>
             <CardTitle>{t('fuelPremiumLockedTitle', { count: premiumRecipes.length, defaultValue: `+${premiumRecipes.length} Premium Recipes` })}</CardTitle>
           </CardHeader>
@@ -483,7 +469,7 @@ export function NutritionPage() {
         onCustomCChange={setCustomC}
         onCustomLog={addCustom}
       />
-    </StaggerGroup>
+    </PillarPageShell>
   );
 }
 

@@ -19,6 +19,7 @@ type InfoPageShellProps = {
   footer?: React.ReactNode;
   jumpLinks?: { id: string; label: string }[];
   className?: string;
+  iconClassName?: string;
 };
 
 export function InfoSection({
@@ -51,13 +52,14 @@ export function InfoPageShell({
   footer,
   jumpLinks,
   className,
+  iconClassName,
 }: InfoPageShellProps) {
   const headerSubtitle = [subtitle, lastUpdated].filter(Boolean).join(' · ');
 
   return (
     <StaggerGroup className={cn('space-y-6', className)}>
       <StaggerItem index={0}>
-        <PillarPageHeader icon={icon} title={title} subtitle={headerSubtitle} />
+        <PillarPageHeader icon={icon} title={title} subtitle={headerSubtitle} iconClassName={iconClassName} />
       </StaggerItem>
 
       {jumpLinks && jumpLinks.length > 0 && (

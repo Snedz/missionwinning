@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { ClipboardList } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { useTranslation } from 'react-i18next';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { usePremium } from '@/hooks/usePremium';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
@@ -20,40 +20,55 @@ interface AssessmentResult {
 }
 
 export function AssessmentsPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const { premium } = usePremium();
 
   const questions = [
-    { key: "chest_pain", q: "Have you experienced any chest pain associated with either exercise or stress?" },
-    { key: "shortness_breath", q: "Have you experienced shortness of breath with or without exercise?" },
-    { key: "fainting", q: "Have you experienced fainting or light-headedness?" },
-    { key: "hospital", q: "Have you had a recent hospitalization for any cause?" },
-    { key: "ortho", q: "Do you have any orthopedic conditions (including arthritis)?" },
-    { key: "heart", q: "Have you ever experienced a rapid heartbeat or palpitations?" },
-    { key: "no_exercise", q: "Is there any reason why you should not follow a regular exercise program?" },
-    { key: "smoke", q: "Do you smoke? (yes/no/former)" },
-    { key: "sleep", q: "Average hours of sleep per night? (under 5 / 5-7 / 8-10 / over 10)" },
-    { key: "energy", q: "Daily energy level? (high / moderate / low)" },
-    // Expanded from Health History form (exact/adapted for digital)
-    { key: "high_bp", q: "Has your doctor ever diagnosed you with high blood pressure?" },
-    { key: "bone_joint", q: "Has your doctor ever diagnosed you with a bone or joint problem that has been or could be made worse by exercise?" },
-    { key: "family_heart", q: "Family history of heart disease, heart attack, or stroke before age 55 (father/brother) or 65 (mother/sister)?" },
-    { key: "smoking_detail", q: "Current smoking: non / former (date quit) / <15 cigs/day / 16-25 / >25 or pipe/cigar?" },
-    { key: "pain_history", q: "Any current or past pain in: head/neck, upper/lower back, shoulder/clavicle, arm/elbow, wrist/hand, hip/pelvis, thigh/knee, arthritis, hernia, surgeries? (list)" },
-    { key: "meds", q: "Taking any medications? List with dosage/frequency and condition." },
-    { key: "allergies", q: "List any and all allergies." },
-    { key: "lifestyle", q: "Occupation stress (low/med/high), energy level, caffeine/alcohol use, recent weight fluctuation, diet plan or supplements?" },
-  ];
+    { key: 'chest_pain' },
+    { key: 'shortness_breath' },
+    { key: 'fainting' },
+    { key: 'hospital' },
+    { key: 'ortho' },
+    { key: 'heart' },
+    { key: 'no_exercise' },
+    { key: 'smoke' },
+    { key: 'sleep' },
+    { key: 'energy' },
+    { key: 'high_bp' },
+    { key: 'bone_joint' },
+    { key: 'family_heart' },
+    { key: 'smoking_detail' },
+    { key: 'pain_history' },
+    { key: 'meds' },
+    { key: 'allergies' },
+    { key: 'lifestyle' },
+  ] as const;
 
-  // Stage-matched questions + OARS from coaching materials (quick guide). Use for personalization, not diagnosis.
   const stages = [
-    { name: "Pre-Contemplation (Not Ready)", focus: "Build awareness without pressure. Evoke curiosity and values.", qs: ["What do you enjoy about your current habits?", "How do you view your health or energy 5 years from now?"] },
-    { name: "Contemplation (Getting Ready)", focus: "Normalize ambivalence. Explore benefits and barriers.", qs: ["What might be some benefits if you made this change?", "What feels hardest about starting?"] },
-    { name: "Preparation / Action", focus: "Strengthen confidence. Reinforce progress. Small wins + autonomy.", qs: ["What's one small step you could take this week?", "What's been working best so far?"] },
-    { name: "Maintenance", focus: "Support autonomy, mastery, relapse prevention. New goals.", qs: ["How do you maintain progress when life gets stressful?", "What new goals feel inspiring now?"] },
-  ];
+    {
+      shortKey: 'stagePre',
+      focusKey: 'assessStagePreFocus',
+      questionKeys: ['assessStagePreQ1', 'assessStagePreQ2'] as const,
+    },
+    {
+      shortKey: 'stageCont',
+      focusKey: 'assessStageContFocus',
+      questionKeys: ['assessStageContQ1', 'assessStageContQ2'] as const,
+    },
+    {
+      shortKey: 'stagePrep',
+      focusKey: 'assessStagePrepFocus',
+      questionKeys: ['assessStagePrepQ1', 'assessStagePrepQ2'] as const,
+    },
+    {
+      shortKey: 'stageMaint',
+      focusKey: 'assessStageMaintFocus',
+      questionKeys: ['assessStageMaintQ1', 'assessStageMaintQ2'] as const,
+    },
+  ] as const;
   const [selectedStage, setSelectedStage] = useState(0);
 
   const handleAnswer = (key: string, value: string) => {
@@ -65,17 +80,34 @@ export function AssessmentsPage() {
   const submitAssessment = () => {
     const yesFlags = Object.values(answers).filter(v => v.toLowerCase().includes('yes') || v.toLowerCase().includes('low')).length;
     let risk: 'low' | 'moderate' | 'high' = 'low';
-    let notes = "Great baseline. Proceed with standard programs.";
-    let recs = ["Start with Beginner Full Body or Bodyweight program.", "Focus on consistent form."];
+    let notes = t('assessRiskLowNotes', { defaultValue: 'Great baseline. Proceed with standard programs.' });
+    let recs = [
+      t('assessRecLow1', { defaultValue: 'Start with Beginner Full Body or Bodyweight program.' }),
+      t('assessRecLow2', { defaultValue: 'Focus on consistent form.' }),
+    ];
 
     if (yesFlags >= 3) {
       risk = 'high';
-      notes = "Multiple flags detected. Strongly recommend medical clearance before intense training.";
-      recs = ["Begin with Corrective & Mobility block.", "Consult physician.", "Use low-impact options and monitor symptoms."];
+      notes = t('assessRiskHighNotes', {
+        defaultValue:
+          'Multiple flags detected. Strongly recommend medical clearance before intense training.',
+      });
+      recs = [
+        t('assessRecHigh1', { defaultValue: 'Begin with Corrective & Mobility block.' }),
+        t('assessRecHigh2', { defaultValue: 'Consult physician.' }),
+        t('assessRecHigh3', { defaultValue: 'Use low-impact options and monitor symptoms.' }),
+      ];
     } else if (yesFlags >= 1) {
       risk = 'moderate';
-      notes = "Some caution advised. Consider starting with corrective work.";
-      recs = ["Prioritize the Corrective Exercise Specialist templates.", "Build with Bodyweight & Dumbbell Starter first."];
+      notes = t('assessRiskModerateNotes', {
+        defaultValue: 'Some caution advised. Consider starting with corrective work.',
+      });
+      recs = [
+        t('assessRecModerate1', {
+          defaultValue: 'Prioritize the Corrective Exercise Specialist templates.',
+        }),
+        t('assessRecModerate2', { defaultValue: 'Build with Bodyweight & Dumbbell Starter first.' }),
+      ];
     }
 
     const res: AssessmentResult = { riskLevel: risk, notes, recommendations: recs };
@@ -143,95 +175,165 @@ export function AssessmentsPage() {
   // No paywall on the mission fundamentals.
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={ClipboardList}
-          title="Readiness Assessment"
-          subtitle="Free core tool. Based on standard health history and ParQ-style questions. Answer honestly for personalized guidance."
-        />
-      </StaggerItem>
-
+    <PillarPageShell
+      icon={ClipboardList}
+      title={t('assessTitle', { defaultValue: 'Readiness Assessment' })}
+      subtitle={t('assessSubtitle', {
+        defaultValue:
+          'Free core tool. Based on standard health history and ParQ-style questions. Answer honestly for personalized guidance.',
+      })}
+      showLegalFooter
+    >
       {!result && (
-        <StaggerItem index={1}>
         <Card className="content-card">
-          <CardHeader><CardTitle>Quick Health &amp; Lifestyle Screen</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>{t('assessFormTitle', { defaultValue: 'Quick Health & Lifestyle Screen' })}</CardTitle>
+          </CardHeader>
           <CardContent className="space-y-4">
-            {questions.map((item, idx) => (
-              <div key={idx} className="space-y-1">
-                <div className="text-sm font-medium">{item.q}</div>
+            {questions.map((item) => (
+              <div key={item.key} className="space-y-1">
+                <div className="text-sm font-medium">
+                  {t(`assessQ_${item.key}`, { defaultValue: item.key })}
+                </div>
                 <div className="flex gap-2 flex-wrap">
-                  {['Yes', 'No', 'Unsure'].map(opt => (
-                    <Button key={opt} size="sm" variant={answers[item.key] === opt.toLowerCase() ? 'default' : 'outline'} onClick={() => handleAnswer(item.key, opt.toLowerCase())}>{opt}</Button>
+                  {[
+                    { opt: 'yes', label: t('assessYes', { defaultValue: 'Yes' }) },
+                    { opt: 'no', label: t('assessNo', { defaultValue: 'No' }) },
+                    { opt: 'unsure', label: t('assessUnsure', { defaultValue: 'Unsure' }) },
+                  ].map(({ opt, label }) => (
+                    <Button
+                      key={opt}
+                      size="sm"
+                      variant={answers[item.key] === opt ? 'default' : 'outline'}
+                      onClick={() => handleAnswer(item.key, opt)}
+                    >
+                      {label}
+                    </Button>
                   ))}
                   {item.key === 'smoke' || item.key === 'sleep' || item.key === 'energy' ? (
-                    <input className="border rounded px-2 text-sm" placeholder="details" onBlur={e => handleAnswer(item.key, e.target.value || answers[item.key] || '')} />
+                    <input
+                      className="border rounded px-2 text-sm"
+                      placeholder={t('assessDetailsPlaceholder', { defaultValue: 'details' })}
+                      onBlur={(e) =>
+                        handleAnswer(item.key, e.target.value || answers[item.key] || '')
+                      }
+                    />
                   ) : null}
                 </div>
               </div>
             ))}
-            <Button className="mt-4 w-full" onClick={submitAssessment} disabled={Object.keys(answers).length < 5}>Submit Assessment</Button>
-            <div className="text-xs text-muted-foreground">This is educational screening only — not medical advice. Always consult a doctor.</div>
+            <Button className="mt-4 w-full" onClick={submitAssessment} disabled={Object.keys(answers).length < 5}>
+              {t('submitAssessment', { defaultValue: 'Submit Assessment' })}
+            </Button>
+            <div className="text-xs text-muted-foreground">
+              {t('assessDisclaimer', {
+                defaultValue:
+                  'This is educational screening only — not medical advice. Always consult a doctor.',
+              })}
+            </div>
           </CardContent>
         </Card>
-        </StaggerItem>
       )}
 
-      <StaggerItem index={2}>
       <Card className="content-card">
-        <CardHeader><CardTitle>Stage of Change + Coaching Prompts</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>{t('assessStageTitle', { defaultValue: 'Stage of Change + Coaching Prompts' })}</CardTitle>
+        </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <div className="flex flex-wrap gap-2">
             {stages.map((s, i) => (
-              <Button key={i} size="sm" variant={selectedStage === i ? 'default' : 'outline'} onClick={() => setSelectedStage(i)}>{s.name.split('(')[0].trim()}</Button>
+              <Button
+                key={s.shortKey}
+                size="sm"
+                variant={selectedStage === i ? 'default' : 'outline'}
+                onClick={() => setSelectedStage(i)}
+              >
+                {t(s.shortKey, { defaultValue: s.shortKey })}
+              </Button>
             ))}
           </div>
           <div className="bg-black/30 p-3 rounded">
-            <div className="font-medium text-emerald-400">Coach Focus: {stages[selectedStage].focus}</div>
+            <div className="font-medium text-emerald-400">
+              {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
+              {t(stages[selectedStage].focusKey, { defaultValue: '' })}
+            </div>
             <ul className="list-disc pl-5 mt-1 text-white/80">
-              {stages[selectedStage].qs.map((q, i) => <li key={i}>{q}</li>)}
+              {stages[selectedStage].questionKeys.map((qKey) => (
+                <li key={qKey}>{t(qKey, { defaultValue: qKey })}</li>
+              ))}
             </ul>
           </div>
-          <div className="text-xs text-muted-foreground">OARS in practice: Open questions, Affirm strengths, Reflect back, Summarize. Match approach to readiness. Use to personalize programs or coaching sessions. (From coaching quick guide.)</div>
+          <div className="text-xs text-muted-foreground">
+            {t('assessOarsNote', {
+              defaultValue:
+                'OARS in practice: Open questions, Affirm strengths, Reflect back, Summarize. Match approach to readiness.',
+            })}
+          </div>
         </CardContent>
       </Card>
-      </StaggerItem>
 
       {result && (
-        <StaggerItem index={3}>
-        <Card className={`content-card border-2 ${result.riskLevel === 'high' ? 'border-red-500' : result.riskLevel === 'moderate' ? 'border-yellow-500' : 'border-emerald-500'}`}>
+        <Card
+          className={`content-card border-2 ${result.riskLevel === 'high' ? 'border-red-500' : result.riskLevel === 'moderate' ? 'border-yellow-500' : 'border-emerald-500'}`}
+        >
           <CardHeader>
-            <CardTitle>Assessment Result: <span className="uppercase">{result.riskLevel} risk</span></CardTitle>
+            <CardTitle>
+              {t('assessResultTitle', { defaultValue: 'Assessment Result' })}:{' '}
+              <span className="uppercase">
+                {result.riskLevel === 'low'
+                  ? t('riskLow', { defaultValue: 'Low risk' })
+                  : result.riskLevel === 'moderate'
+                    ? t('riskModerate', { defaultValue: 'Moderate risk' })
+                    : t('riskHigh', { defaultValue: 'High risk' })}
+              </span>
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p>{result.notes}</p>
             <div>
-              <div className="font-semibold mb-2">Recommendations (click to start a matching free starter + log win):</div>
+              <div className="font-semibold mb-2">
+                {t('assessRecommendations', {
+                  defaultValue:
+                    'Recommendations (click to start a matching free starter + log win):',
+                })}
+              </div>
               <div className="flex flex-wrap gap-2">
                 {result.recommendations.map((r, i) => (
                   <Button key={i} size="sm" variant="outline" onClick={() => startRecommended(r)}>
-                    Start: {r.length > 45 ? r.slice(0,42) + '...' : r} →
+                    {t('assessStartPrefix', { defaultValue: 'Start' })}:{' '}
+                    {r.length > 45 ? `${r.slice(0, 42)}...` : r} →
                   </Button>
                 ))}
               </div>
             </div>
-            <Button onClick={() => { setResult(null); setAnswers({}); }}>Retake Assessment</Button>
-            <div className="text-xs">Results saved locally + to logs. Use to guide program choice in the Builder / Today hub. Streak +1 on start.</div>
+            <Button
+              onClick={() => {
+                setResult(null);
+                setAnswers({});
+              }}
+            >
+              {t('retake', { defaultValue: 'Retake Assessment' })}
+            </Button>
+            <div className="text-xs">
+              {t('assessResultFoot', {
+                defaultValue:
+                  'Results saved locally + to logs. Use to guide program choice in the Builder / Today hub. Streak +1 on start.',
+              })}
+            </div>
             <Button variant="outline" className="mt-2" asChild>
-              <Link href="/log">Go to Today Hub for all free starters</Link>
+              <Link href="/log">{t('assessGoToday', { defaultValue: 'Go to Today Hub for all free starters' })}</Link>
             </Button>
           </CardContent>
         </Card>
-        </StaggerItem>
       )}
 
-      <StaggerItem index={4}>
       <SignInPrompt
         className="mt-2"
         nextPath="/assessments"
-        description="Keep assessment history synced when you sign in."
+        description={t('assessSignInFoot', {
+          defaultValue: 'Keep assessment history synced when you sign in.',
+        })}
       />
-      </StaggerItem>
-    </StaggerGroup>
+    </PillarPageShell>
   );
 }

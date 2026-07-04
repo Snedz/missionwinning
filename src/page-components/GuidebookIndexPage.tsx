@@ -12,8 +12,7 @@ import {
   getGuidebookStats,
   loadGuidebookProgress,
 } from '@/lib/guidebookProgress';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BookMarked, ChevronRight } from 'lucide-react';
@@ -53,19 +52,15 @@ export function GuidebookIndexPage() {
   const stats = getGuidebookStats(completed);
 
   return (
-    <StaggerGroup className="space-y-6">
-      <StaggerItem index={0}>
-        <PillarPageHeader
-          icon={BookMarked}
-          title={t('guidebookTitle', { defaultValue: 'Beyond the Basics' })}
-          subtitle={t('guidebookSubtitle', {
-            defaultValue:
-              'Now with even more content! The Mission Winning guidebook — understand training from the ground up.',
-          })}
-        />
-      </StaggerItem>
-
-      <StaggerItem index={1}>
+    <PillarPageShell
+      icon={BookMarked}
+      title={t('guidebookTitle', { defaultValue: 'Beyond the Basics' })}
+      subtitle={t('guidebookSubtitle', {
+        defaultValue:
+          'Now with even more content! The Mission Winning guidebook — understand training from the ground up.',
+      })}
+      showLegalFooter
+    >
         <Card className="content-card border-emerald-500/25 bg-emerald-950/20">
           <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -84,10 +79,8 @@ export function GuidebookIndexPage() {
             </Button>
           </CardContent>
         </Card>
-      </StaggerItem>
 
-      <StaggerItem index={2}>
-        <div className="space-y-3">
+      <div className="space-y-3">
           {chapters.map((chapter) => {
             const prog = getChapterProgress(chapter.id, completed);
             return (
@@ -116,7 +109,6 @@ export function GuidebookIndexPage() {
             );
           })}
         </div>
-      </StaggerItem>
-    </StaggerGroup>
+    </PillarPageShell>
   );
 }
