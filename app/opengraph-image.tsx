@@ -1,7 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
-
 export const alt = 'Mission Winning — Train Anywhere. Win Daily.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -42,7 +40,7 @@ export default function OpenGraphImage() {
             Mission Winning
           </span>
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ fontSize: 56, fontWeight: 700, lineHeight: 1.1, maxWidth: 900 }}>
             Train Anywhere. Win Daily.
           </div>
