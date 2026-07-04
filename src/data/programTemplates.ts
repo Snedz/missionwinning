@@ -1302,7 +1302,7 @@ export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
     name: "Engine Builder (Intervals)",
     category: "advanced",
     description:
-      "Energy system development — bike sprints, row repeats, sled work. Complements strength without destroying recovery (ISSA conditioning principles).",
+      "Energy system development — bike sprints, row repeats, sled work. Complements strength without destroying recovery (evidence-based conditioning principles).",
     duration: "6 weeks",
     focus: "Aerobic power & repeatability",
     tags: ["conditioning"],
@@ -1332,7 +1332,7 @@ export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
     name: "Desk Reset & Prehab",
     category: "beginner",
     description:
-      "Daily 10-minute corrective block for desk workers — hips, thoracic spine, scapular control. ISSA corrective exercise foundations.",
+      "Daily 10-minute corrective block for desk workers — hips, thoracic spine, scapular control. Evidence-based corrective exercise foundations.",
     duration: "Ongoing",
     focus: "Posture & movement quality",
     tags: ["corrective"],

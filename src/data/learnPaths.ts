@@ -191,7 +191,7 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
   {
     id: 'corrective-foundations',
     title: 'Corrective Exercise Foundations',
-    subtitle: 'ISSA-aligned — assess, correct, then load (not the reverse)',
+    subtitle: 'Assess, correct, then load — never the reverse',
     icon: '🩹',
     lessons: [
       {
@@ -279,7 +279,7 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
   {
     id: 'coaching-client-success',
     title: 'Coaching & Client Success',
-    subtitle: 'Communication, adherence, and ethical scope — ISSA coaching principles',
+    subtitle: 'Communication, adherence, and ethical scope — professional coaching principles',
     icon: '🤝',
     lessons: [
       {
