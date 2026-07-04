@@ -12,7 +12,7 @@ export interface GuideSection {
   practiceCTA: GuidePracticeCTA;
   relatedExerciseIds?: string[];
   relatedLearnPathId?: string;
-  /** ISSA source unit reference for originality log — not shown to users. */
+  /** Internal source-topic reference for the originality log — not shown to users. */
   sourceRef?: string;
 }
 

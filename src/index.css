@@ -151,10 +151,70 @@
   @media (prefers-reduced-motion: reduce) {
     .page-enter,
     .journey-enter,
-    .stagger-enter {
+    .stagger-enter,
+    .ring-draw-in,
+    .week-strip-pulse,
+    .score-tick,
+    .victory-reveal {
       animation: none;
       opacity: 1;
       transform: none;
+    }
+
+    .pressable-card:active {
+      transform: none;
+    }
+  }
+
+  .pressable-card {
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), border-color 200ms ease;
+  }
+
+  .pressable-card:active {
+    transform: scale(0.98);
+  }
+
+  .ring-draw-in {
+    animation: ring-draw-in 450ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .week-strip-pulse {
+    animation: week-strip-pulse 350ms ease-out;
+  }
+
+  .victory-reveal {
+    animation: victory-reveal 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes ring-draw-in {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes week-strip-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.04);
+    }
+  }
+
+  @keyframes victory-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
   }
 

@@ -1,7 +1,9 @@
-'use client';
-
+import type { Metadata } from 'next';
 import { BuilderPage } from '@/page-components/BuilderPage';
+import { routeMetadata } from '@/lib/routeMetadata';
 
-export default function Builder() {
+export const metadata: Metadata = routeMetadata('builder');
+
+export default function BuilderRoute() {
   return <BuilderPage />;
 }

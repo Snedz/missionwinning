@@ -35,5 +35,16 @@
   "photoLogComingSoon": "拍照记录开发中。请先用快速记录或食谱。",
   "photoLogBetaNote": "隐私优先 — 尽可能在设备上处理。",
   "navOurMission": "我们的使命",
-  "navBetaGuide": "测试指南"
+  "navBetaGuide": "测试指南",
+  "welcomeTitle": "Welcome, Mission Member",
+  "welcomeSubtitle": "Start your path toward lifelong health — one step at a time. About two minutes.",
+  "welcomeBegin": "Begin",
+  "welcomeAccept": "I accept the path",
+  "welcomeContinue": "Continue",
+  "welcomeSignInTitle": "Save progress — your choice",
+  "welcomeSignInSubtitle": "Sign in with Google or email to sync across devices. Skip anytime — local progress still works.",
+  "welcomeSkipSignIn": "Skip — go to Today",
+  "welcomeRemindersOptIn": "Email me training reminders (streak at risk, next step). Optional — unsubscribe anytime.",
+  "editJourneyProfile": "Edit journey profile",
+  "saveProfile": "Save profile"
 }

@@ -35,5 +35,16 @@
   "photoLogComingSoon": "تسجيل الصور قيد التطوير. استخدم التسجيل السريع أو الوصفات.",
   "photoLogBetaNote": "التقاط الوجبات بأسلوب Bevel — الخصوصية أولاً على الجهاز عند الإمكان.",
   "navOurMission": "مهمتنا",
-  "navBetaGuide": "دليل النسخة التجريبية"
+  "navBetaGuide": "دليل النسخة التجريبية",
+  "welcomeTitle": "Welcome, Mission Member",
+  "welcomeSubtitle": "Start your path toward lifelong health — one step at a time. About two minutes.",
+  "welcomeBegin": "Begin",
+  "welcomeAccept": "I accept the path",
+  "welcomeContinue": "Continue",
+  "welcomeSignInTitle": "Save progress — your choice",
+  "welcomeSignInSubtitle": "Sign in with Google or email to sync across devices. Skip anytime — local progress still works.",
+  "welcomeSkipSignIn": "Skip — go to Today",
+  "welcomeRemindersOptIn": "Email me training reminders (streak at risk, next step). Optional — unsubscribe anytime.",
+  "editJourneyProfile": "Edit journey profile",
+  "saveProfile": "Save profile"
 }

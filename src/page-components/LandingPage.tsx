@@ -2,45 +2,23 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
-import { MetricsRow } from '@/components/metrics/MetricsRow';
-import { ScoreRing } from '@/components/metrics/ScoreRing';
 import { BUNDLE_PILLARS } from '@/lib/payments';
-import type { BodyScores } from '@/lib/score';
+import { LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
+import { JourneyScroll } from '@/components/landing/JourneyScroll';
+import { CoachAdaptDemo } from '@/components/landing/CoachAdaptDemo';
+import { GuideTeaser } from '@/components/landing/GuideTeaser';
+import { HeroDemoFallback } from '@/components/landing/HeroDemo';
 import { ArrowRight, Check, Download, Globe2, WifiOff } from 'lucide-react';
 
-const DEMO_SCORES: BodyScores = {
-  readiness: 82,
-  strain: 45,
-  recovery: 78,
-  readinessLabelKey: 'todayBodyPrimePush',
-  strainLabelKey: 'todayBodyModerateLoad',
-  recoveryLabelKey: 'todayBodyRebuilding',
-};
+const HeroDemo = dynamic(
+  () => import('@/components/landing/HeroDemo').then((m) => m.HeroDemo),
+  { ssr: false, loading: () => <HeroDemoFallback /> }
+);
 
-/** The member path — a real sequence, so the numbering carries meaning. */
-const JOURNEY_PHASES = [
-  {
-    phase: 'Phase 0',
-    name: 'I-Day',
-    desc: 'Three questions — experience, equipment, goal. No account needed. Under three minutes.',
-  },
-  {
-    phase: 'Phase 1',
-    name: 'Basic Training',
-    desc: 'One small win in each pillar: first workout, first meal logged, first flow, first breath, first lesson.',
-  },
-  {
-    phase: 'Phase 2',
-    name: 'Readiness',
-    desc: 'A health screen, your baseline Win Score, and a seven-day streak. Standards before speed.',
-  },
-  {
-    phase: 'Phase 3',
-    name: 'Commissioned',
-    desc: 'Today becomes your command center. One clear action every day, scored across all six pillars.',
-  },
-];
+const FAQ = LANDING_FAQ_KEYS;
 
 const FREE_MANIFEST = [
   'Full workout logger — sets, reps, RPE, rest timers, supersets',
@@ -53,27 +31,9 @@ const FREE_MANIFEST = [
   'Installable app that works offline — no store, no fees, no account',
 ];
 
-const FAQ = [
-  {
-    q: 'Is the free version actually complete?',
-    a: 'Yes. The workout tracker, exercise library, program templates, nutrition log, scores, streaks, and leaderboards are free forever, with no account required. Premium adds depth — coaching plans, specialist programs, advanced tools — and is never required to train.',
-  },
-  {
-    q: 'Does it work offline, in my country, in my language?',
-    a: 'Mission Winning is an installable web app: it runs in any modern browser, installs to your home screen without an app store, and the core keeps working with no connection. Navigation is available in 14 languages, with more copy translated every release.',
-  },
-  {
-    q: 'What is the Super Bundle?',
-    a: 'One subscription that unlocks premium depth across all six pillars — training plans, deep nutrition, full mobility and mind libraries, advanced tracking, and complete specialist programs. Founding members get permanent discounted pricing when checkout opens.',
-  },
-  {
-    q: 'Who is this for?',
-    a: 'Anyone who wants a disciplined, evidence-based path: a barbell in a garage, dumbbells in a flat, or nothing but floor space in a park. If you can train, Mission Winning can track it and guide it.',
-  },
-];
-
 export function LandingPage() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -90,17 +50,17 @@ export function LandingPage() {
           </Link>
           <div className="hidden items-center gap-6 text-sm sm:flex">
             <a href="#path" className="text-muted-foreground transition-colors hover:text-foreground">
-              The path
+              {t('landingNavPath', { defaultValue: 'The path' })}
             </a>
             <a href="#pillars" className="text-muted-foreground transition-colors hover:text-foreground">
-              Pillars
+              {t('landingNavPillars', { defaultValue: 'Pillars' })}
             </a>
             <Link href="/bundle" className="text-muted-foreground transition-colors hover:text-foreground">
-              Super Bundle
+              {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
             </Link>
           </div>
           <Button onClick={() => router.push('/welcome')} className="tap-target font-semibold">
-            Start free
+            {t('landingNavStart', { defaultValue: 'Start free' })}
           </Button>
         </div>
       </nav>
@@ -109,16 +69,19 @@ export function LandingPage() {
       <header className="border-b border-border/60">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
           <div className="page-enter">
-            <p className="eyebrow-live mb-5">Free for everyone · Works offline · No account needed</p>
+            <p className="eyebrow-live mb-5">
+              {t('landingHeroEyebrow', { defaultValue: 'Free core forever · Global PWA' })}
+            </p>
             <h1 className="display-hero mb-6">
-              Train anywhere.
+              {t('landingHeroTitle1', { defaultValue: 'Train anywhere.' })}
               <br />
-              Win daily.
+              {t('landingHeroTitle2', { defaultValue: 'Win daily.' })}
             </h1>
             <p className="mb-8 max-w-md text-lg leading-relaxed text-muted-foreground">
-              One app for training, nutrition, mobility, mind, activity, and learning — scored
-              together, so consistency finally has a number. The core is free.{' '}
-              <span className="text-foreground">Forever. For everyone.</span>
+              {t('landingHeroSubtitle', {
+                defaultValue:
+                  'The free health everything app — workout tracking, nutrition, mobility, mind, activity, and learning scored together. No store. No paywall on the core.',
+              })}
             </p>
             <div className="mb-6 flex flex-col gap-3 sm:flex-row">
               <Button
@@ -151,54 +114,24 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Signature: live briefing card with real score components */}
           <div className="journey-enter">
-            <div className="content-card p-6 sm:p-8">
-              <div className="briefing-rule mb-6">
-                <span className="eyebrow">Today</span>
-              </div>
-              <div className="mb-6 flex items-center justify-center">
-                <ScoreRing label="Win Score" value={74} subtitle="All six pillars" color="emerald" size="lg" />
-              </div>
-              <MetricsRow scores={DEMO_SCORES} demo embedded />
-              <div className="mt-6 border-t border-border/60 pt-4">
-                <p className="eyebrow mb-1.5">Next action</p>
-                <p className="text-sm text-foreground">
-                  Lower body strength · 32 min · barbell or bodyweight
-                </p>
-              </div>
-            </div>
+            <HeroDemo staticFallback={<HeroDemoFallback />} />
           </div>
         </div>
       </header>
 
-      {/* ── The path (journey) ──────────────────────────────────────── */}
-      <section id="path" className="border-b border-border/60">
-        <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">
-          <div className="briefing-rule mb-4">
-            <span className="eyebrow">The member path</span>
-          </div>
-          <h2 className="display-section mb-4">
-            A clear beginning.
-            <br className="sm:hidden" /> One step at a time.
+      <JourneyScroll />
+
+      <section className="border-b border-border/60 bg-muted/10">
+        <div className="mx-auto max-w-6xl px-5 py-16 text-center">
+          <h2 className="display-section mb-6">
+            {t('landingCoachDemoTitle', { defaultValue: 'Plans that adapt when life happens' })}
           </h2>
-          <p className="mb-10 max-w-xl text-muted-foreground">
-            Borrowed from academy onboarding: you always know exactly where you are and what comes
-            next. No wall of features on day one.
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {JOURNEY_PHASES.map((p) => (
-              <div key={p.phase} className="content-card p-5">
-                <p className="eyebrow-live mb-3">{p.phase}</p>
-                <h3 className="font-display mb-2 text-2xl font-semibold uppercase leading-none">
-                  {p.name}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
-              </div>
-            ))}
-          </div>
+          <CoachAdaptDemo />
         </div>
       </section>
+
+      <GuideTeaser />
 
       {/* ── Free manifest ───────────────────────────────────────────── */}
       <section className="border-b border-border/60">
@@ -344,16 +277,16 @@ export function LandingPage() {
           </div>
           <div className="space-y-3">
             {FAQ.map((f) => (
-              <details key={f.q} className="content-card group px-5 py-4">
+              <details key={f.qKey} className="content-card group px-5 py-4">
                 <summary className="cursor-pointer list-none text-sm font-semibold marker:content-none">
                   <span className="flex items-center justify-between gap-4">
-                    {f.q}
+                    {t(f.qKey)}
                     <span className="text-muted-foreground transition-transform group-open:rotate-45">
                       +
                     </span>
                   </span>
                 </summary>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(f.aKey)}</p>
               </details>
             ))}
           </div>

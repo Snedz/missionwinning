@@ -158,7 +158,19 @@ const ar: ActiveWorkoutStrings = {
   activeRestSkip: 'تخطي',
 };
 
-const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = { en, es, zh, id, th, ar };
+const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
+  en,
+  es,
+  zh,
+  id,
+  th,
+  ar,
+  fr: { ...en, activeNoWorkout: 'Aucun entraînement actif', activeFinish: 'Terminer' },
+  pt: { ...en, activeNoWorkout: 'Nenhum treino ativo', activeFinish: 'Concluir' },
+  de: { ...en, activeNoWorkout: 'Kein aktives Training', activeFinish: 'Beenden' },
+  it: { ...en, activeNoWorkout: 'Nessun allenamento attivo', activeFinish: 'Fine' },
+  ko: { ...en, activeNoWorkout: '진행 중인 운동 없음', activeFinish: '완료' },
+};
 
 export function activeWorkoutStringsFor(lang: string): ActiveWorkoutStrings {
   const code = lang.split('-')[0];

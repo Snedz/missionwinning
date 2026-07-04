@@ -43,6 +43,7 @@ export const MORE_NAV: NavLinkItem[] = [
   { href: '/learn', labelKey: 'navLearn', label: 'Learn', icon: BookOpen, descriptionKey: 'moreLearnDesc', description: 'Education paths' },
   { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook', icon: BookOpen, descriptionKey: 'moreGuidebookDesc', description: 'Beyond the Basics — deep reference' },
   { href: '/builder', labelKey: 'navBuilder', label: 'Builder', icon: PenTool, descriptionKey: 'moreBuilderDesc', description: 'Build workouts' },
+  { href: '/coach', labelKey: 'navCoach', label: 'Mission Coach', icon: Sparkles, descriptionKey: 'moreCoachDesc', description: 'AI weekly training plan' },
   { href: '/library', labelKey: 'navLibrary', label: 'Library', icon: Dumbbell, descriptionKey: 'moreLibraryDesc', description: 'Exercise catalog' },
   { href: '/history', labelKey: 'navHistory', label: 'History', icon: History, descriptionKey: 'moreHistoryDesc', description: 'Past sessions' },
   { href: '/leaderboard', labelKey: 'navLeaderboard', label: 'Leaderboard', icon: Trophy, descriptionKey: 'moreLeaderboardDesc', description: 'Global & regional rankings' },
@@ -71,7 +72,7 @@ export const EXTENDED_NAV_SECTIONS: NavSection[] = [
     id: 'train',
     title: 'Train deeper',
     titleKey: 'navSectionTrain',
-    items: MORE_NAV.filter((i) => ['/builder', '/library', '/history', '/leaderboard'].includes(i.href)),
+    items: MORE_NAV.filter((i) => ['/builder', '/coach', '/library', '/history', '/leaderboard'].includes(i.href)),
   },
   {
     id: 'learn',

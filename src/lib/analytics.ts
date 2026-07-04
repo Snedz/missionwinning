@@ -25,8 +25,17 @@ type AnalyticsEvent =
   | 'waitlist_joined'
   | 'checkout_clicked'
   | 'pwa_installed'
+  | 'coach_plan_generated'
+  | 'coach_plan_loaded'
+  | 'coach_week_generated'
+  | 'coach_session_started'
+  | 'coach_plan_adapted'
+  | 'coach_taster_locked'
   | 'backup_exported'
-  | 'backup_restored';
+  | 'backup_restored'
+  | 'guide_read'
+  | 'exercise_page_viewed'
+  | 'public_cta_clicked';
 
 let initialized = false;
 

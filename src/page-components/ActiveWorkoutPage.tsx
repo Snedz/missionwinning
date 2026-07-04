@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Check, Clock, Plus, Scale, Square, Timer } from 'lucide-react';
+import { Check, Clock, Dumbbell, Plus, Scale, Square, Timer } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +22,7 @@ import { getFormGuide, hasFormGuide } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
+import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { resolveRestSeconds } from '@/lib/restTimer';
@@ -256,16 +257,16 @@ export function ActiveWorkoutPage() {
   return (
     <div className={`space-y-6 ${restTimerActive ? 'pb-44 md:pb-32' : 'pb-4'}`}>
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">{activeWorkout.workoutName}</h2>
-          <p className="mt-1 text-muted-foreground">
-            {t('activeSetsCompleted', {
-              done: completedSets,
-              total: totalSets,
-              defaultValue: `${completedSets}/${totalSets} sets completed`,
-            })}
-          </p>
-        </div>
+        <PillarPageHeader
+          icon={Dumbbell}
+          title={activeWorkout.workoutName}
+          subtitle={t('activeSetsCompleted', {
+            done: completedSets,
+            total: totalSets,
+            defaultValue: `${completedSets}/${totalSets} sets completed`,
+          })}
+          className="flex-1 min-w-0"
+        />
         <div className="flex items-center gap-3 flex-wrap justify-end">
           <Button variant="outline" size="sm" onClick={() => setPlateCalcOpen(true)}>
             <Scale className="h-4 w-4" />

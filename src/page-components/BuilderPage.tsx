@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Layers, PenTool, Plus, Trash2 } from "lucide-react";
+import { Layers, PenTool, Plus, Trash2, ChevronUp, ChevronDown, ChevronRight } from "lucide-react";
 import {
   ProgramTemplatesPanel,
   TEMPLATE_PROGRAM_COUNT,
@@ -45,10 +45,11 @@ import {
 import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { useWorkoutStore } from "@/store/workoutStore";
 import type { WorkoutExerciseTemplate } from "@/types";
-import { usePremium } from "@/hooks/usePremium";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
+import { reorderDraftExercises } from "@/lib/builderDraft";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 interface DraftExercise extends WorkoutExerciseTemplate {
   key: string;
@@ -58,7 +59,6 @@ export function BuilderPage() {
   const { t } = useTranslation();
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const addSavedWorkout = useWorkoutStore((s) => s.addSavedWorkout);
-  const deleteSavedWorkout = useWorkoutStore((s) => s.deleteSavedWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
 
   const [workoutName, setWorkoutName] = useState("");
@@ -66,10 +66,39 @@ export function BuilderPage() {
   const [exercises, setExercises] = useState<DraftExercise[]>([]);
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
   const [detailProgram, setDetailProgram] = useState<ProgramTemplate | null>(null);
-  const { premium } = usePremium();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const [templateCategory, setTemplateCategory] = useState<ProgramCategory>("beginner");
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+
+  const loadSaved = (w: (typeof savedWorkouts)[0]) => {
+    setWorkoutName(w.name);
+    setSessionNotes(w.note ?? "");
+    setExercises(
+      w.exercises.map((e, i) => ({
+        key: `ex-saved-${i}-${e.exerciseId}`,
+        exerciseId: e.exerciseId,
+        sets: e.sets.map((s) => ({ ...s })),
+      }))
+    );
+    setStep(2);
+  };
+
+  const startBlank = () => {
+    setWorkoutName("");
+    setSessionNotes("");
+    setExercises([]);
+    setStep(2);
+  };
+
+  const loadSessionAndAdvance = (program: ProgramTemplate, session: ProgramSession) => {
+    loadSession(program, session);
+    setStep(2);
+  };
+
+  const moveExercise = (index: number, direction: 'up' | 'down') => {
+    setExercises((prev) => reorderDraftExercises(prev, index, direction));
+  };
 
   const loadSession = (program: ProgramTemplate, session: ProgramSession) => {
     const draft = draftExercisesFromSession(session);
@@ -198,6 +227,7 @@ export function BuilderPage() {
     setWorkoutName("");
     setSessionNotes("");
     setExercises([]);
+    setStep(1);
   };
 
   const handleStart = () => {
@@ -210,7 +240,14 @@ export function BuilderPage() {
       exercises.map(({ exerciseId, sets }) => ({ exerciseId, sets }))
     );
     toast({ title: t('builderStarted', { defaultValue: 'Workout started!' }) });
+    setStep(1);
   };
+
+  const stepLabels = [
+    t('builderStepStart', { defaultValue: 'Start' }),
+    t('builderStepArrange', { defaultValue: 'Arrange' }),
+    t('builderStepFinish', { defaultValue: 'Finish' }),
+  ];
 
   return (
     <PillarPageShell
@@ -218,14 +255,59 @@ export function BuilderPage() {
       title={t('builderTitle', { defaultValue: 'Workout Builder' })}
       subtitle={t('builderSubtitle', {
         defaultValue:
-          'Use the Beginner, Advanced, or Pro tabs below, then click Load on a session. Premium unlocks bodybuilding, corrective & conditioning specialist programs.',
+          'Build a session in three steps — pick a start, arrange exercises, then save or train.',
       })}
       showLegalFooter
     >
-      <section
-        id="program-templates"
-        className="rounded-xl border-2 border-primary/40 bg-gradient-to-b from-primary/10 to-card p-5 md:p-6 space-y-4"
-      >
+      <div className="flex items-center gap-2 text-sm">
+        {stepLabels.map((label, i) => {
+          const n = (i + 1) as 1 | 2 | 3;
+          const active = step === n;
+          const done = step > n;
+          return (
+            <div key={label} className="flex items-center gap-2">
+              {i > 0 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+              <button
+                type="button"
+                onClick={() => n < step && setStep(n)}
+                className={`rounded-full px-3 py-1 text-xs font-medium border ${
+                  active
+                    ? 'border-primary bg-primary/15 text-primary'
+                    : done
+                      ? 'border-border/60 text-foreground'
+                      : 'border-border/40 text-muted-foreground'
+                }`}
+                disabled={n > step}
+              >
+                {n}. {label}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      {step === 1 && (
+        <div className="space-y-6">
+          <Card className="content-card">
+            <CardHeader>
+              <CardTitle>{t('builderPickStart', { defaultValue: 'How do you want to start?' })}</CardTitle>
+              <CardDescription>
+                {t('builderPickStartDesc', {
+                  defaultValue: 'Blank session, a program template, or a saved routine.',
+                })}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-2">
+              <Button variant="fitness" onClick={startBlank}>
+                {t('builderStartBlank', { defaultValue: 'Blank workout' })}
+              </Button>
+            </CardContent>
+          </Card>
+
+          <section
+            id="program-templates"
+            className="content-card rounded-xl border border-primary/30 bg-gradient-to-b from-primary/10 to-card p-5 md:p-6 space-y-4"
+          >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-xl font-bold flex items-center gap-2">
             <Layers className="h-6 w-6 text-primary" />
@@ -263,13 +345,55 @@ export function BuilderPage() {
 
         <ProgramTemplatesPanel
           category={templateCategory}
-          onLoadSession={loadSession}
+          onLoadSession={loadSessionAndAdvance}
           onSaveAllSessions={saveAllProgramSessions}
           onViewDetails={setDetailProgram}
         />
       </section>
 
-      <Card>
+      {savedWorkouts.length > 0 ? (
+        <div>
+          <h3 className="text-lg font-semibold mb-3">
+            {t('builderSavedTitle', { defaultValue: 'Saved workouts' })}
+          </h3>
+          <div className="grid gap-3">
+            {savedWorkouts.map((w) => (
+              <Card key={w.id} className="content-card pressable-card">
+                <CardContent className="flex items-center justify-between p-4">
+                  <div>
+                    <p className="font-medium">{w.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t('builderSavedMeta', {
+                        count: w.exercises.length,
+                        date: new Date(w.createdAt).toLocaleDateString(),
+                        defaultValue: `${w.exercises.length} exercises · ${new Date(w.createdAt).toLocaleDateString()}`,
+                      })}
+                    </p>
+                  </div>
+                  <Button size="sm" variant="outline" onClick={() => loadSaved(w)}>
+                    {t('builderLoadSaved', { defaultValue: 'Load' })}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <EmptyState
+          icon={PenTool}
+          title={t('builderNoSaved', { defaultValue: 'No saved routines yet' })}
+          description={t('builderNoSavedDesc', {
+            defaultValue: 'Build a workout and save it — your routines appear here.',
+          })}
+          actionLabel={t('builderStartBlank', { defaultValue: 'Blank workout' })}
+          onAction={startBlank}
+        />
+      )}
+        </div>
+      )}
+
+      {step === 2 && (
+      <Card className="content-card">
         <CardHeader>
           <CardTitle>{t('builderNewWorkout', { defaultValue: 'New Workout' })}</CardTitle>
           <CardDescription>
@@ -277,18 +401,6 @@ export function BuilderPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="workout-name">
-              {t('builderWorkoutName', { defaultValue: 'Workout name' })}
-            </Label>
-            <Input
-              id="workout-name"
-              placeholder={t('builderWorkoutNamePlaceholder', { defaultValue: 'e.g. Push Day A' })}
-              value={workoutName}
-              onChange={(e) => setWorkoutName(e.target.value)}
-            />
-          </div>
-
           {sessionNotes && (
             <div className="rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-muted-foreground">
               <span className="font-medium text-foreground">
@@ -373,13 +485,36 @@ export function BuilderPage() {
             {t('builderLoadHabitStack', { defaultValue: 'Load Free Habit/Mobility Stack' })}
           </Button>
 
-          {exercises.map((ex) => {
+          {exercises.map((ex, exIndex) => {
             const exercise = getExerciseById(ex.exerciseId);
             if (!exercise) return null;
             return (
               <Card key={ex.key} className="bg-muted/30">
                 <CardContent className="p-4 space-y-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="flex flex-col gap-0.5 shrink-0">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7"
+                          disabled={exIndex === 0}
+                          onClick={() => moveExercise(exIndex, 'up')}
+                          aria-label="Move up"
+                        >
+                          <ChevronUp className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7"
+                          disabled={exIndex === exercises.length - 1}
+                          onClick={() => moveExercise(exIndex, 'down')}
+                          aria-label="Move down"
+                        >
+                          <ChevronDown className="h-4 w-4" />
+                        </Button>
+                      </div>
                     <div>
                       <h4 className="font-semibold">{exercise.name}</h4>
                       <div className="flex gap-1 mt-1">
@@ -389,6 +524,7 @@ export function BuilderPage() {
                           </Badge>
                         ))}
                       </div>
+                    </div>
                     </div>
                     <Button variant="ghost" size="icon" onClick={() => removeExercise(ex.key)}>
                       <Trash2 className="h-4 w-4 text-destructive" />
@@ -461,8 +597,54 @@ export function BuilderPage() {
             );
           })}
 
-          <div className="flex gap-2 pt-2">
-            <Button variant="fitness" onClick={handleSave}>
+          <div className="sticky bottom-0 -mx-1 border-t border-border/60 bg-background/95 backdrop-blur py-3 flex gap-2">
+            <Button variant="outline" onClick={() => setStep(1)}>
+              {t('builderBack', { defaultValue: 'Back' })}
+            </Button>
+            <Button
+              variant="fitness"
+              className="flex-1 primary-action"
+              disabled={exercises.length === 0}
+              onClick={() => setStep(3)}
+            >
+              {t('builderContinue', { defaultValue: 'Continue' })}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+      )}
+
+      {step === 3 && (
+      <Card className="content-card">
+        <CardHeader>
+          <CardTitle>{t('builderStepFinish', { defaultValue: 'Finish' })}</CardTitle>
+          <CardDescription>
+            {t('builderFinishDesc', { defaultValue: 'Name your session and save or start training.' })}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="workout-name-finish">
+              {t('builderWorkoutName', { defaultValue: 'Workout name' })}
+            </Label>
+            <Input
+              id="workout-name-finish"
+              placeholder={t('builderWorkoutNamePlaceholder', { defaultValue: 'e.g. Push Day A' })}
+              value={workoutName}
+              onChange={(e) => setWorkoutName(e.target.value)}
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {t('builderExerciseCount', {
+              count: exercises.length,
+              defaultValue: `${exercises.length} exercises ready`,
+            })}
+          </p>
+          <div className="sticky bottom-0 -mx-1 border-t border-border/60 bg-background/95 backdrop-blur py-3 flex gap-2">
+            <Button variant="outline" onClick={() => setStep(2)}>
+              {t('builderBack', { defaultValue: 'Back' })}
+            </Button>
+            <Button variant="fitness" className="flex-1 primary-action" onClick={handleSave}>
               {t('builderSaveWorkout', { defaultValue: 'Save workout' })}
             </Button>
             <Button variant="secondary" onClick={handleStart}>
@@ -471,47 +653,6 @@ export function BuilderPage() {
           </div>
         </CardContent>
       </Card>
-
-      {savedWorkouts.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold mb-3">
-            {t('builderSavedTitle', { defaultValue: 'Saved workouts' })}
-          </h3>
-          <div className="grid gap-3">
-            {savedWorkouts.map((w) => (
-              <Card key={w.id}>
-                <CardContent className="flex items-center justify-between p-4">
-                  <div>
-                    <p className="font-medium">{w.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('builderSavedMeta', {
-                        count: w.exercises.length,
-                        date: new Date(w.createdAt).toLocaleDateString(),
-                        defaultValue: `${w.exercises.length} exercises · ${new Date(w.createdAt).toLocaleDateString()}`,
-                      })}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="fitness"
-                      onClick={() => startWorkout(w.name, w.exercises, w.id)}
-                    >
-                      {t('builderStartWorkout', { defaultValue: 'Start workout' })}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => deleteSavedWorkout(w.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
       )}
 
       <Dialog open={!!detailProgram} onOpenChange={(open) => !open && setDetailProgram(null)}>

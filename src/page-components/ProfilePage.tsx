@@ -18,11 +18,17 @@ import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
 
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { LegalNav } from '@/components/layout/LegalNav';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { showOwnerTools } from '@/lib/ownerTools';
 import { downloadBackup, restoreBackupFromJson } from '@/lib/backup';
 import { useToast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
+import {
+  loadDaysPerWeek,
+  saveDaysPerWeek,
+} from '@/lib/coach/schedulePrefs';
+
+const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
 
 const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi', 'zh', 'id', 'ar'] as const;
 const NATIVE_NAMES: Record<string, string> = {
@@ -145,6 +151,9 @@ export function ProfilePage() {
   // Light onboarding state
   const [experience, setExperience] = useState(localStorage.getItem('mw_experience') || '');
   const [equipment, setEquipment] = useState(localStorage.getItem('mw_equipment') || '');
+  const [daysPerWeek, setDaysPerWeek] = useState(() =>
+    loadDaysPerWeek(localStorage.getItem('mw_experience') || 'beginner')
+  );
   const [primaryGoal, setPrimaryGoal] = useState(localStorage.getItem('mw_primary_goal') || goals);
 
   const isOnboarded = !!(localStorage.getItem('mw_experience') && localStorage.getItem('mw_equipment'));
@@ -220,19 +229,17 @@ export function ProfilePage() {
   };
 
   return (
-    <div className="space-y-6">
-      <PillarPageHeader
-        icon={User}
-        title={t('profileSettings', { defaultValue: 'Profile & Settings' })}
-        subtitle={
-          isCommissioned && state.commissionedAt
-            ? `${t('missionOperator', { defaultValue: 'Mission Operator' })} · Day ${daysSinceCommission(state.commissionedAt)}`
-            : t('profileSubtitle', {
-                defaultValue: 'Your Mission Winning account. Global preferences. Premium status.',
-              })
-        }
-      />
-
+    <PillarPageShell
+      icon={User}
+      title={t('profileSettings', { defaultValue: 'Profile & Settings' })}
+      subtitle={
+        isCommissioned && state.commissionedAt
+          ? `${t('missionOperator', { defaultValue: 'Mission Operator' })} · Day ${daysSinceCommission(state.commissionedAt)}`
+          : t('profileSubtitle', {
+              defaultValue: 'Your Mission Winning account. Global preferences. Premium status.',
+            })
+      }
+    >
       <Card>
         <CardHeader><CardTitle>{t('account', { defaultValue: 'Account & Sign In' })}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
@@ -431,6 +438,29 @@ export function ProfilePage() {
             <p className="text-muted-foreground truncate">
               Goal: {formatStoredGoal(primaryGoal || goals, t)}
             </p>
+            <div className="space-y-2">
+              <span className="text-muted-foreground">
+                {t('coachDaysPerWeek', { defaultValue: 'How many days a week?' })}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {DAYS_PER_WEEK_OPTIONS.map((n) => (
+                  <Button
+                    key={n}
+                    type="button"
+                    size="sm"
+                    variant={daysPerWeek === n ? 'default' : 'outline'}
+                    className={daysPerWeek === n ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
+                    onClick={() => {
+                      setDaysPerWeek(n);
+                      saveDaysPerWeek(n);
+                      scheduleJourneyPush();
+                    }}
+                  >
+                    {n}
+                  </Button>
+                ))}
+              </div>
+            </div>
             <Button variant="outline" className="w-full min-h-[44px]" onClick={() => router.push('/welcome?edit=1')}>
               {t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}
             </Button>
@@ -551,6 +581,6 @@ export function ProfilePage() {
           <LegalNav />
         </CardContent>
       </Card>
-    </div>
+    </PillarPageShell>
   );
 }

@@ -24,6 +24,8 @@ interface Props {
       trainDays: number;
     };
   };
+  goal?: string;
+  equipment?: string;
 }
 
 export function TodayHealthSection({ insight, breakdown, coachContext }: Props) {

@@ -272,7 +272,19 @@ const ar: FuelStrings = {
   fuelExploreBundle: 'استكشف Super Bundle',
 };
 
-const LOCALES: Partial<Record<string, FuelStrings>> = { en, es, zh, id, th, ar };
+const LOCALES: Partial<Record<string, FuelStrings>> = {
+  en,
+  es,
+  zh,
+  id,
+  th,
+  ar,
+  fr: { ...en, fuelTargetsTitle: "Objectifs du jour" },
+  pt: { ...en, fuelTargetsTitle: 'Metas de hoje' },
+  de: { ...en, fuelTargetsTitle: 'Heutige Ziele' },
+  it: { ...en, fuelTargetsTitle: 'Obiettivi di oggi' },
+  ko: { ...en, fuelTargetsTitle: '오늘의 목표' },
+};
 
 export function fuelStringsFor(lang: string): FuelStrings {
   const code = lang.split('-')[0];

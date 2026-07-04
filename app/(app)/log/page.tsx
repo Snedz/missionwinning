@@ -1,8 +1,9 @@
-'use client';
-
+import type { Metadata } from 'next';
 import { HomePage } from '@/page-components/HomePage';
+import { routeMetadata } from '@/lib/routeMetadata';
+
+export const metadata: Metadata = routeMetadata('log');
 
 export default function LogDashboard() {
-  // /log is the primary "Today / Mission Hub" for users (distinct from pure sales landing at /)
   return <HomePage />;
 }

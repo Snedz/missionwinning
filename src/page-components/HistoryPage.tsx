@@ -29,8 +29,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { History1RMChart, HistoryVolumeChart } from '@/components/history/HistoryCharts';
+import dynamic from 'next/dynamic';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
+
+const History1RMChart = dynamic(
+  () => import('@/components/history/HistoryCharts').then((m) => m.History1RMChart),
+  { ssr: false, loading: () => <div className="h-48 animate-pulse rounded-lg bg-muted/30" /> }
+);
+const HistoryVolumeChart = dynamic(
+  () => import('@/components/history/HistoryCharts').then((m) => m.HistoryVolumeChart),
+  { ssr: false, loading: () => <div className="h-48 animate-pulse rounded-lg bg-muted/30" /> }
+);
 import { getExerciseById } from '@/data/exercises';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { cn, formatDate, formatDuration } from '@/lib/utils';
@@ -47,6 +56,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import type { CompletedWorkoutLog, SetKind } from '@/types';
 import { getUser, getUserNutritionForDate } from '@/lib/supabase';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -181,15 +191,13 @@ export function HistoryPage() {
       )}
 
       {workoutHistory.length === 0 ? (
-        <Card className="content-card border-dashed">
-          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <Dumbbell className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="font-medium">{t('historyEmptyTitle', { defaultValue: 'No workouts logged yet' })}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('historyEmptyDesc', { defaultValue: 'Complete an active workout to see it here.' })}
-            </p>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={Dumbbell}
+          title={t('historyEmptyTitle', { defaultValue: 'No workouts logged yet' })}
+          description={t('historyEmptyDesc', { defaultValue: 'Complete an active workout to see it here.' })}
+          actionLabel={t('historyStartWorkout', { defaultValue: 'Start a workout' })}
+          href="/builder"
+        />
       ) : (
         <div className="space-y-3">
           {workoutHistory.map((log) => (

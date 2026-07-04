@@ -20,10 +20,10 @@ export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTod
 
   return (
     <div className="space-y-4 pt-2">
-      <Card>
+      <Card className="content-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Flame className="h-5 w-5 text-orange-400" />
+            <Flame className="h-5 w-5 text-primary" />
             {t('todayWeeklyChallenges', { defaultValue: 'Weekly Challenges' })}
             <span className="text-sm font-normal text-muted-foreground ml-2">
               🔥 {t('todayDayStreak', { count: streak, defaultValue: `${streak}-day streak` })}
@@ -48,7 +48,7 @@ export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTod
               </div>
               <div className="h-2 bg-muted rounded overflow-hidden">
                 <div
-                  className="h-2 bg-emerald-500 rounded transition-all"
+                  className="h-2 bg-primary rounded transition-all"
                   style={{ width: `${c.percent}%` }}
                 />
               </div>
@@ -60,7 +60,7 @@ export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTod
         </CardContent>
       </Card>
 
-      <Card className="border-primary/30">
+      <Card className="content-card border-primary/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Dumbbell className="h-5 w-5 text-primary" />

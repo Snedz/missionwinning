@@ -20,6 +20,7 @@ console.log('Mission Winning — pre-deploy smoke\n');
 
 run('Unit tests', 'npm test');
 run('Locale export', 'npm run export-locales');
+run('Lint', 'npm run lint');
 assertDeployReady();
 const report = getDeployReadinessReport();
 console.log(`\n✓ Static checks — build ${report.buildLabel}, ${report.localeFiles} locale files planned`);

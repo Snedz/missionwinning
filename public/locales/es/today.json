@@ -144,5 +144,12 @@
   "todayQuickHistoryDesc": "Volume, 1RM & muscle map",
   "todayQuickBundleDesc": "All six pillars, one subscription",
   "todayQuickNightDesc": "22:00–05:00 sessions",
-  "todayQuickDawnDesc": "05:00–08:00 sessions"
+  "todayQuickDawnDesc": "05:00–08:00 sessions",
+  "coachPlanTitle": "Coach IA — plan semanal",
+  "coachPlanDesc": "Tres sesiones según preparación, carga y equipo.",
+  "coachPlanPremiumDesc": "Premium genera una semana consciente de la fatiga para el registro.",
+  "coachPlanCta": "Generar esta semana",
+  "coachPlanGenerating": "Creando tu semana…",
+  "coachPlanLoad": "Cargar",
+  "coachPlanRegenerate": "Regenerar"
 }

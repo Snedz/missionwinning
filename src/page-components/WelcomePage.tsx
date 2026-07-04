@@ -22,6 +22,13 @@ import {
   goalPresetValue,
   isCustomGoal,
 } from '@/lib/journeyGoals';
+import {
+  defaultDaysPerWeek,
+  loadDaysPerWeek,
+  saveDaysPerWeek,
+} from '@/lib/coach/schedulePrefs';
+
+const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
 
 type Step = 'welcome' | 'mission' | 'profile' | 'signin';
 
@@ -37,6 +44,7 @@ export function WelcomePage() {
   const [experience, setExperience] = useState('beginner');
   const [equipment, setEquipment] = useState('bodyweight');
   const [primaryGoal, setPrimaryGoal] = useState(() => goalPresetValue('strength'));
+  const [daysPerWeek, setDaysPerWeek] = useState(3);
 
   const experienceLabel = (value: string) => {
     if (value === 'beginner') return t('welcomeExpBeginner', { defaultValue: 'New to training' });
@@ -59,6 +67,7 @@ export function WelcomePage() {
         localStorage.getItem('mw_goals') ||
         t('welcomeGoalPlaceholder', { defaultValue: 'Build strength and stay healthy' })
     );
+    setDaysPerWeek(loadDaysPerWeek(localStorage.getItem('mw_experience') || 'beginner'));
     setStep('profile');
   }, [isEdit, t]);
 
@@ -67,6 +76,7 @@ export function WelcomePage() {
     localStorage.setItem('mw_equipment', equipment);
     localStorage.setItem('mw_primary_goal', primaryGoal);
     localStorage.setItem('mw_goals', primaryGoal);
+    saveDaysPerWeek(daysPerWeek);
     scheduleJourneyPush();
   };
 
@@ -207,7 +217,12 @@ export function WelcomePage() {
                   </span>
                   <select
                     value={experience}
-                    onChange={(e) => setExperience(e.target.value)}
+                    onChange={(e) => {
+                      setExperience(e.target.value);
+                      if (!isEdit) {
+                        setDaysPerWeek(defaultDaysPerWeek(e.target.value));
+                      }
+                    }}
                     className="w-full rounded-md bg-background border border-border px-3 py-2"
                   >
                     {EXPERIENCE_VALUES.map((value) => (
@@ -269,6 +284,25 @@ export function WelcomePage() {
                       defaultValue: 'Build strength and stay healthy',
                     })}
                   />
+                </label>
+                <label className="block space-y-2 text-sm">
+                  <span className="text-muted-foreground">
+                    {t('coachDaysPerWeek', { defaultValue: 'How many days a week?' })}
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {DAYS_PER_WEEK_OPTIONS.map((n) => (
+                      <Button
+                        key={n}
+                        type="button"
+                        size="sm"
+                        variant={daysPerWeek === n ? 'default' : 'outline'}
+                        className={daysPerWeek === n ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
+                        onClick={() => setDaysPerWeek(n)}
+                      >
+                        {n}
+                      </Button>
+                    ))}
+                  </div>
                 </label>
                 <Button
                   className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"

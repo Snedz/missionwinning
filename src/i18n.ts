@@ -25,7 +25,11 @@ import { mergeGuidebookStrings } from './i18n/guidebookLocales'
 import { mergeAssessmentsStrings } from './i18n/assessmentsLocales'
 import { mergeFeedbackStrings } from './i18n/feedbackLocales'
 import { mergeProgramsStrings } from './i18n/programsLocales'
+import { mergeCoachStrings } from './i18n/coachLocales'
 import { mergeLibraryStrings } from './i18n/libraryLocales'
+import { mergeLandingStrings } from './i18n/landingLocales'
+import { mergeGateStrings } from './i18n/gateLocales'
+import { mergeBetaStrings } from './i18n/betaLocales'
 
 // Inline resources for fast global launch (add more langs + extract to json later)
 // Tier 1: EN ES FR PT RU DE IT KO
@@ -577,8 +581,12 @@ for (const lang of [...TIER1_LANGS, ...TIER2_LANGS, ...MEA_LANGS]) {
   mergeAssessmentsStrings(resources[lang].common, lang)
   mergeFeedbackStrings(resources[lang].common, lang)
   mergeProgramsStrings(resources[lang].common, lang)
+  mergeCoachStrings(resources[lang].common, lang)
   mergeLibraryStrings(resources[lang].common, lang)
   mergeFitnessTestStrings(resources[lang].common, lang)
+  mergeLandingStrings(resources[lang].common, lang)
+  mergeGateStrings(resources[lang].common, lang)
+  mergeBetaStrings(resources[lang].common, lang)
 }
 
 i18n
