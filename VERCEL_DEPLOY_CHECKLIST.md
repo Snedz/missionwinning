@@ -8,7 +8,19 @@ Use when **Vercel 2FA access returns**, or sync env via **GitHub Actions** (see 
 
 **Merged:** [#50](https://github.com/Snedz/missionwinning/pull/50) — H1 daily loop, strict gate, UI stack (`2025.06-unified.36+`).
 
-Vercel auto-deploys on push to `master` when the GitHub integration is connected.
+Vercel auto-deploys on push to `master` when the GitHub integration is connected and **Production Branch** is set to `master`.
+
+### Preview vs production (2026-07-04)
+
+If GitHub PR checks show **Vercel Preview** passing but `www.missionwinning.com` stays on an old build:
+
+1. Vercel → Project → **Settings → Git** → confirm Production Branch = `master`
+2. Or trigger production manually:
+   - **Actions → Deploy production** (workflow_dispatch; needs `VERCEL_TOKEN` + `VERCEL_PROJECT_ID`)
+   - Or **Sync Vercel env** with `VERCEL_DEPLOY_HOOK_URL` set
+   - Or local: `npx vercel deploy --prod --yes`
+
+GitHub **Deployments** tab may list only `Preview` — that does not update the production alias.
 
 ---
 
@@ -18,7 +30,7 @@ See [ENV.md](ENV.md) and [PROTECTION.md](PROTECTION.md).
 
 | Variable | Required for gate |
 |----------|-------------------|
-| `PRIVATE_ACCESS_SECRET` | Rotate with `openssl rand -base64 32` — **not** the old placeholder `Done` |
+| `PRIVATE_ACCESS_SECRET` | Rotate with `openssl rand -base64 32` — **never** ship the dev placeholder `Done` to Production |
 | `PRIVATE_MODE` | `true` during private beta |
 | `NEXT_PUBLIC_SUPABASE_URL` | Yes |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes |

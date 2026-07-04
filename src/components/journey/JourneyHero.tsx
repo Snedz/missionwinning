@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
@@ -7,6 +8,12 @@ import { getPhaseLabel } from '@/lib/missionJourney';
 
 export function JourneyStrip({ action }: { action: JourneyAction }) {
   const { t } = useTranslation();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (action.phase === 'commissioned') {
     return (
       <div className="flex items-center justify-between text-xs text-muted-foreground py-2">
@@ -29,7 +36,8 @@ export function JourneyStrip({ action }: { action: JourneyAction }) {
       <div className="h-1 bg-muted rounded-full overflow-hidden">
         <div
           className="h-full bg-emerald-500 transition-all duration-500 rounded-full"
-          style={{ width: `${action.progressPct}%` }}
+          style={{ width: mounted ? `${action.progressPct}%` : '0%' }}
+          suppressHydrationWarning
         />
       </div>
     </div>

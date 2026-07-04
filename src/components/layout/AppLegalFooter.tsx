@@ -33,11 +33,6 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
           {t('about', { defaultValue: 'About' })}
         </Link>
       </nav>
-      <p className="text-[10px] text-muted-foreground/60 max-w-md mx-auto leading-relaxed">
-        {t('legalFooterNote', {
-          defaultValue: 'Civilian health app — not affiliated with DoD or any government agency.',
-        })}
-      </p>
       {showBuild && buildLabel && (
         <p className="text-[10px] text-muted-foreground/50">Build {buildLabel}</p>
       )}

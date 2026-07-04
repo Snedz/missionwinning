@@ -14,6 +14,9 @@
 | [issa-source-map.md](issa-source-map.md) | ISSA PDF → guidebook chapter mapping |
 | [guidebook-originality-log.md](guidebook-originality-log.md) | Originality / legal tracking |
 | [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) | Experience build v4 — UI, landing, SEO (exception: lives in docs/) |
+| [BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md) | Founder checklist — beta cohort, env, mobile QA |
+| [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog funnel + Search Console + Lighthouse baselines |
+| [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe webhook + Coach premium gate |
 | [archive/INDEX.md](archive/INDEX.md) | Superseded docs (when moved here) |
 
 ## Product / engineering docs

@@ -52,7 +52,6 @@ type MeaCoreStrings = {
   termsOfService: string;
   privacyPolicy: string;
   about: string;
-  legalFooterNote: string;
   leaderboardRankings: string;
   today: string;
   lang_en: string;
@@ -111,7 +110,6 @@ const ar: MeaCoreStrings = {
   termsOfService: 'شروط الخدمة',
   privacyPolicy: 'سياسة الخصوصية',
   about: 'حول',
-  legalFooterNote: 'تطبيق صحي مدني — غير تابع لأي جهة حكومية.',
   leaderboardRankings: 'الترتيب',
   today: 'اليوم',
   lang_en: 'English',

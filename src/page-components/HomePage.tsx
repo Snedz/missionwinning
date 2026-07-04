@@ -62,6 +62,17 @@ export function HomePage() {
       : { health: true, journal: true, week: true, progress: true, order: ['health', 'journal', 'week', 'progress'] }
   );
   const [editTodayOpen, setEditTodayOpen] = useState(false);
+  const [todayLabel, setTodayLabel] = useState('');
+
+  useEffect(() => {
+    setTodayLabel(
+      new Date().toLocaleDateString(i18n.language, {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric',
+      })
+    );
+  }, [i18n.language]);
 
   useEffect(() => {
     setSectionPrefs(loadTodayDashboardPrefs());
@@ -157,12 +168,6 @@ export function HomePage() {
   };
 
   // === Today Hub computations using shared util (clean, reusable) ===
-  const today = new Date().toLocaleDateString(i18n.language, {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-  });
-
   const readiness = computeReadiness(workoutHistory);
   const recommendedFocus = getRecommendedFocus(readiness);
 
@@ -330,7 +335,7 @@ export function HomePage() {
       key: 'header',
       node: (
         <TodayPageHeader
-          today={today}
+          today={todayLabel}
           recommendedFocus={recommendedFocus}
           userEquip={userEquip}
           streak={streak}

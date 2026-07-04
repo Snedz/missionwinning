@@ -58,7 +58,6 @@ type CoreStrings = {
   termsOfService: string;
   privacyPolicy: string;
   about: string;
-  legalFooterNote: string;
   leaderboardRankings: string;
   today: string;
 };
@@ -121,7 +120,6 @@ const en: CoreStrings = {
   termsOfService: 'Terms of Service',
   privacyPolicy: 'Privacy Policy',
   about: 'About',
-  legalFooterNote: 'Civilian health app — not affiliated with DoD or any government agency.',
   leaderboardRankings: 'Rankings',
   today: 'Today',
 };

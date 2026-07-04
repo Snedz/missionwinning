@@ -48,6 +48,7 @@ export function useCoachPlan() {
         savePlan(existing);
         scheduleCoachPush();
         track('coach_week_generated', { weekStart, premium: !!premium, auto: true });
+        if (premium) track('coach_premium_active', { weekStart });
       }
       setPlan(existing);
       return;
