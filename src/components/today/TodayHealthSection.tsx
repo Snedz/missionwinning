@@ -3,6 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CoachInsightCard } from '@/components/metrics/CoachInsightCard';
+import { CoachPlanCard } from '@/components/metrics/CoachPlanCard';
 import { PillarScoreBreakdown } from '@/components/metrics/PillarScoreBreakdown';
 import { useDailyCoachInsight } from '@/hooks/useDailyCoachInsight';
 import type { CoachInsight, WinScoreBreakdown } from '@/lib/score';
@@ -24,9 +25,11 @@ interface Props {
       trainDays: number;
     };
   };
+  goal?: string;
+  equipment?: string;
 }
 
-export function TodayHealthSection({ insight, breakdown, coachContext }: Props) {
+export function TodayHealthSection({ insight, breakdown, coachContext, goal, equipment }: Props) {
   const { t } = useTranslation();
   const coach = useDailyCoachInsight(coachContext, insight);
 
@@ -38,6 +41,13 @@ export function TodayHealthSection({ insight, breakdown, coachContext }: Props) 
         actionPath={coach.actionPath}
         source={coach.source}
         loading={coach.loading}
+      />
+      <CoachPlanCard
+        readiness={coachContext.readiness}
+        strain={coachContext.strain}
+        recovery={coachContext.recovery}
+        goal={goal}
+        equipment={equipment}
       />
       <Card className="content-card">
         <CardHeader>

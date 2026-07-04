@@ -7,6 +7,10 @@ import {
   localeExportSummary,
 } from '@/lib/exportLocales';
 
+const PARITY_NAMESPACES = ['today', 'welcome', 'feedback'] as const;
+/** Langs whose namespace objects inherit full key set from `en` via spread. */
+const PARITY_LANGS = ['en', 'es', 'fr', 'pt', 'de', 'it', 'ko'] as const;
+
 describe('exportLocales', () => {
   it('defines twenty-two namespaces for export', () => {
     assert.equal(LOCALE_EXPORTS.length, 22);
@@ -33,5 +37,22 @@ describe('exportLocales', () => {
     const summary = localeExportSummary();
     assert.equal(summary.files, plan.length);
     assert.equal(summary.namespaces, LOCALE_EXPORTS.length);
+    assert.equal(summary.langs, EXPORT_LANGS.length);
+  });
+
+  it('critical namespaces have key parity across EXPORT_LANGS', () => {
+    for (const namespace of PARITY_NAMESPACES) {
+      const entry = LOCALE_EXPORTS.find((e) => e.namespace === namespace);
+      assert.ok(entry, `missing namespace ${namespace}`);
+      const enKeys = Object.keys(entry!.stringsFor('en')).sort();
+      for (const lang of PARITY_LANGS) {
+        const langKeys = Object.keys(entry!.stringsFor(lang)).sort();
+        assert.deepEqual(
+          langKeys,
+          enKeys,
+          `${namespace}/${lang} key mismatch vs en (${langKeys.length} vs ${enKeys.length})`
+        );
+      }
+    }
   });
 });

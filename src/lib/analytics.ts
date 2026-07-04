@@ -25,6 +25,8 @@ type AnalyticsEvent =
   | 'waitlist_joined'
   | 'checkout_clicked'
   | 'pwa_installed'
+  | 'coach_plan_generated'
+  | 'coach_plan_loaded'
   | 'backup_exported'
   | 'backup_restored';
 

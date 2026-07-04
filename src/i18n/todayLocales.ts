@@ -147,6 +147,13 @@ type TodayStrings = {
   todayQuickBundleDesc: string;
   todayQuickNightDesc: string;
   todayQuickDawnDesc: string;
+  coachPlanTitle: string;
+  coachPlanDesc: string;
+  coachPlanPremiumDesc: string;
+  coachPlanCta: string;
+  coachPlanGenerating: string;
+  coachPlanLoad: string;
+  coachPlanRegenerate: string;
 };
 
 const en: TodayStrings = {
@@ -311,6 +318,23 @@ const en: TodayStrings = {
   todayQuickBundleDesc: 'All six pillars, one subscription',
   todayQuickNightDesc: '22:00–05:00 sessions',
   todayQuickDawnDesc: '05:00–08:00 sessions',
+  coachPlanTitle: 'AI Coach — weekly plan',
+  coachPlanDesc: 'Three sessions tuned to readiness, strain, and your equipment.',
+  coachPlanPremiumDesc: 'Premium generates a fatigue-aware week you can load into the logger.',
+  coachPlanCta: 'Generate this week',
+  coachPlanGenerating: 'Building your week…',
+  coachPlanLoad: 'Load',
+  coachPlanRegenerate: 'Regenerate',
+};
+
+const coachPlanDefaults = {
+  coachPlanTitle: en.coachPlanTitle,
+  coachPlanDesc: en.coachPlanDesc,
+  coachPlanPremiumDesc: en.coachPlanPremiumDesc,
+  coachPlanCta: en.coachPlanCta,
+  coachPlanGenerating: en.coachPlanGenerating,
+  coachPlanLoad: en.coachPlanLoad,
+  coachPlanRegenerate: en.coachPlanRegenerate,
 };
 
 const es: TodayStrings = {
@@ -451,6 +475,13 @@ const es: TodayStrings = {
   todayPillarLearn: 'Aprender',
   todayPillarScoreFoot:
     'Puntuación holística — los seis pilares contribuyen. Super Bundle profundiza cada ruta; el núcleo gratis cuenta para todos.',
+  coachPlanTitle: 'Coach IA — plan semanal',
+  coachPlanDesc: 'Tres sesiones según preparación, carga y equipo.',
+  coachPlanPremiumDesc: 'Premium genera una semana consciente de la fatiga para el registro.',
+  coachPlanCta: 'Generar esta semana',
+  coachPlanGenerating: 'Creando tu semana…',
+  coachPlanLoad: 'Cargar',
+  coachPlanRegenerate: 'Regenerar',
 };
 
 const zh: TodayStrings = {
@@ -600,6 +631,7 @@ const zh: TodayStrings = {
   todayQuickBundleDesc: '六大支柱，一次订阅',
   todayQuickNightDesc: '22:00–05:00 训练',
   todayQuickDawnDesc: '05:00–08:00 训练',
+  ...coachPlanDefaults,
 };
 
 const id: TodayStrings = {
@@ -760,6 +792,7 @@ const id: TodayStrings = {
   todayQuickBundleDesc: 'Enam pilar, satu langganan',
   todayQuickNightDesc: 'Sesi 22:00–05:00',
   todayQuickDawnDesc: 'Sesi 05:00–08:00',
+  ...coachPlanDefaults,
 };
 
 const th: TodayStrings = {
@@ -911,6 +944,7 @@ const th: TodayStrings = {
   todayQuickBundleDesc: 'หกเสาหลัก สมัครครั้งเดียว',
   todayQuickNightDesc: 'เซสชัน 22:00–05:00',
   todayQuickDawnDesc: 'เซสชัน 05:00–08:00',
+  ...coachPlanDefaults,
 };
 
 const ar: TodayStrings = {
@@ -1061,9 +1095,58 @@ const ar: TodayStrings = {
   todayQuickBundleDesc: 'ست ركائز، اشتراك واحد',
   todayQuickNightDesc: 'جلسات 22:00–05:00',
   todayQuickDawnDesc: 'جلسات 05:00–08:00',
+  ...coachPlanDefaults,
 };
 
-const LOCALES: Partial<Record<string, TodayStrings>> = { en, es, zh, id, th, ar };
+const LOCALES: Partial<Record<string, TodayStrings>> = {
+  en,
+  es,
+  zh,
+  id,
+  th,
+  ar,
+  fr: {
+    ...en,
+    todayBasicEncouragement:
+      'Un pas à la fois. La santé pour tous — entraînez-vous, alimentez-vous, bougez et apprenez.',
+    todayStartWorkout: "Commencer l'entraînement du jour",
+    todaySectionHealth: 'Scores de santé',
+    coachPlanTitle: 'Coach IA — plan hebdomadaire',
+    coachPlanCta: 'Générer cette semaine',
+  },
+  pt: {
+    ...en,
+    todayBasicEncouragement:
+      'Um passo de cada vez. Saúde para todos — treine, alimente-se, mova-se e aprenda.',
+    todayStartWorkout: 'Começar treino de hoje',
+    coachPlanTitle: 'Coach IA — plano semanal',
+    coachPlanCta: 'Gerar esta semana',
+  },
+  de: {
+    ...en,
+    todayBasicEncouragement:
+      'Schritt für Schritt. Gesundheit für alle — trainieren, essen, bewegen und lernen.',
+    todayStartWorkout: 'Heutiges Training starten',
+    coachPlanTitle: 'KI-Coach — Wochenplan',
+    coachPlanCta: 'Diese Woche generieren',
+  },
+  it: {
+    ...en,
+    todayBasicEncouragement:
+      'Un passo alla volta. Salute per tutti — allenati, nutri, muoviti e impara.',
+    todayStartWorkout: 'Inizia allenamento di oggi',
+    coachPlanTitle: 'Coach IA — piano settimanale',
+    coachPlanCta: 'Genera questa settimana',
+  },
+  ko: {
+    ...en,
+    todayBasicEncouragement:
+      '한 걸음씩. 모두를 위한 건강 — 훈련, 영양, 움직임, 학습을 이어가세요.',
+    todayStartWorkout: '오늘 운동 시작',
+    coachPlanTitle: 'AI 코치 — 주간 계획',
+    coachPlanCta: '이번 주 생성',
+  },
+};
 
 export function todayStringsFor(lang: string): TodayStrings {
   const code = lang.split('-')[0];

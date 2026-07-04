@@ -241,6 +241,8 @@ export function HomePage() {
             <TodayHealthSection
               insight={coachInsight}
               breakdown={scoreBreakdown}
+              goal={userGoalRaw}
+              equipment={userEquip}
               coachContext={{
                 readiness: bodyScores.readiness,
                 strain: bodyScores.strain,

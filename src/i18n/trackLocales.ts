@@ -20,6 +20,16 @@ type TrackStrings = {
   trackPremiumTitle: string;
   trackPremiumDesc: string;
   trackPremiumBtn: string;
+  trackGpsTitle: string;
+  trackGpsPremiumDesc: string;
+  trackGpsUnsupported: string;
+  trackGpsDenied: string;
+  trackGpsTooShort: string;
+  trackGpsRecording: string;
+  trackGpsIdle: string;
+  trackGpsStart: string;
+  trackGpsStop: string;
+  trackGpsSave: string;
 };
 
 const en: TrackStrings = {
@@ -43,6 +53,17 @@ const en: TrackStrings = {
   trackPremiumTitle: 'Premium — GPS & advanced stats',
   trackPremiumDesc: 'MapMy-style tracking, routes, pace charts, cross-pillar coaching.',
   trackPremiumBtn: 'Track Premium',
+  trackGpsTitle: 'GPS track (Premium)',
+  trackGpsPremiumDesc:
+    'Record outdoor walks and runs with live distance — MapMy-style, Super Bundle.',
+  trackGpsUnsupported: 'GPS not supported on this device.',
+  trackGpsDenied: 'Location permission denied.',
+  trackGpsTooShort: 'Need more GPS points — walk a bit longer.',
+  trackGpsRecording: 'Recording… {{count}} points',
+  trackGpsIdle: 'Start when you begin your walk or run.',
+  trackGpsStart: 'Start GPS',
+  trackGpsStop: 'Stop',
+  trackGpsSave: 'Save to log',
 };
 
 const es: TrackStrings = {

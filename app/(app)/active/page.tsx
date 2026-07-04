@@ -1,7 +1,9 @@
-'use client';
-
+import type { Metadata } from 'next';
 import { ActiveWorkoutPage } from '@/page-components/ActiveWorkoutPage';
+import { routeMetadata } from '@/lib/routeMetadata';
 
-export default function Active() {
+export const metadata: Metadata = routeMetadata('active');
+
+export default function ActiveRoute() {
   return <ActiveWorkoutPage />;
 }
