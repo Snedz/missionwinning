@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createHmac, timingSafeEqual } from 'crypto';
 import { grantEnrollmentFromWebhook } from '@/lib/premiumServer';
+import { emailFromCheckoutSession, verifyStripeSignature } from '@/lib/stripeWebhook';
 
 /**
  * Stripe webhook — requires signature verification before granting premium.
@@ -31,10 +31,7 @@ export async function POST(req: NextRequest) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data?.object ?? {};
-    const email =
-      (session.customer_details as { email?: string } | undefined)?.email ??
-      (session.customer_email as string | undefined) ??
-      null;
+    const email = emailFromCheckoutSession(session as Parameters<typeof emailFromCheckoutSession>[0]);
     const sessionId = String(session.id ?? '');
 
     if (email && sessionId) {
@@ -53,36 +50,4 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ received: true });
-}
-
-/** Verify Stripe webhook signature (v1 scheme) without adding stripe npm dependency. */
-function verifyStripeSignature(payload: string, header: string, secret: string): boolean {
-  const parts = header.split(',').reduce(
-    (acc, part) => {
-      const [k, v] = part.split('=');
-      if (k === 't') acc.t = v;
-      if (k === 'v1') acc.v1.push(v);
-      return acc;
-    },
-    { t: '', v1: [] as string[] }
-  );
-
-  if (!parts.t || parts.v1.length === 0) return false;
-
-  const signed = `${parts.t}.${payload}`;
-  const expected = createHmac('sha256', secret).update(signed, 'utf8').digest('hex');
-
-  for (const sig of parts.v1) {
-    try {
-      const a = Buffer.from(sig, 'hex');
-      const b = Buffer.from(expected, 'hex');
-      if (a.length === b.length && timingSafeEqual(a, b)) {
-        const age = Math.abs(Date.now() / 1000 - Number(parts.t));
-        if (age <= 300) return true;
-      }
-    } catch {
-      continue;
-    }
-  }
-  return false;
 }

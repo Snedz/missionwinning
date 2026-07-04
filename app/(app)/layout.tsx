@@ -1,12 +1,12 @@
 import { AppLayout } from '@/components/layout/AppLayout';
 
+// Interactive app shell (auth, zustand, i18n) — scoped to authenticated routes.
+export const dynamic = 'force-dynamic';
+
 export default function AppGroupLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // This layout (under the (app) route group) adds the Sidebar + main shell
-  // for all authenticated/tool pages: /log, /active, /library, /nutrition, etc.
-  // Marketing pages (/, /programs, /coaching...) stay outside this group in root layout (no sidebar).
   return <AppLayout>{children}</AppLayout>;
 }

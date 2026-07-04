@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint app src --max-warnings 60",
     "test": "tsx --test src/lib/**/*.test.ts",
     "export-locales": "tsx scripts/export-locale-json.ts",
     "check-env": "node --env-file=.env.local scripts/check-env.mjs",

@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
       - name: Unit tests
         run: npm test
 
@@ -31,3 +34,28 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+  gate-smoke:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Remote gate smoke
+        env:
+          SMOKE_BASE_URL: ${{ secrets.SMOKE_BASE_URL }}
+          SMOKE_ACCESS_SECRET: ${{ secrets.SMOKE_ACCESS_SECRET }}
+        run: |
+          if [ -z "$SMOKE_BASE_URL" ]; then
+            echo "Skipping gate-smoke (SMOKE_BASE_URL not set)"
+            exit 0
+          fi
+          npm run gate-smoke

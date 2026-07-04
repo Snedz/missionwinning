@@ -19,6 +19,7 @@ import {
 import { logPillarWin } from '@/lib/pillarLog';
 import { UnlockButton } from '@/components/UnlockButton';
 import { ActivityImportPanel } from '@/components/track/ActivityImportPanel';
+import { TrackGpsPanel } from '@/components/track/TrackGpsPanel';
 import { MapPin, Trash2 } from 'lucide-react';
 
 export function TrackPage() {
@@ -97,6 +98,8 @@ export function TrackPage() {
             </CardContent>
           </Card>
         </div>
+
+        <TrackGpsPanel onLogged={() => setRefresh((r) => r + 1)} />
 
       <Card className="content-card">
           <CardHeader>

@@ -35,12 +35,6 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-// Force dynamic rendering for the whole app during initial Next.js migration.
-// The app is a highly interactive PWA (zustand, i18n, auth, local + cloud state, A/B, beforeinstallprompt).
-// This avoids prerender hook errors on marketing pages and _not-found. 
-// We can make the pure landing static + revalidate later for SEO/perf once stable.
-export const dynamic = 'force-dynamic';
-
 export default function RootLayout({
   children,
 }: {

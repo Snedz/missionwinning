@@ -308,7 +308,60 @@ const es: WelcomeStrings = {
   saveProfile: 'Guardar perfil',
 };
 
-const LOCALES: Partial<Record<string, WelcomeStrings>> = { en, zh, id, th, es, ar };
+const fr: WelcomeStrings = {
+  ...en,
+  welcomeTitle: 'Bienvenue, membre de la mission',
+  welcomeBegin: 'Commencer',
+  welcomeContinue: 'Continuer',
+  welcomeSkipSignIn: 'Passer — aller à Aujourd’hui',
+  welcomeBack: 'Retour',
+};
+
+const pt: WelcomeStrings = {
+  ...en,
+  welcomeTitle: 'Bem-vindo, membro da missão',
+  welcomeBegin: 'Começar',
+  welcomeContinue: 'Continuar',
+  welcomeSkipSignIn: 'Pular — ir para Hoje',
+};
+
+const de: WelcomeStrings = {
+  ...en,
+  welcomeTitle: 'Willkommen, Missionsmitglied',
+  welcomeBegin: 'Starten',
+  welcomeContinue: 'Weiter',
+  welcomeSkipSignIn: 'Überspringen — zu Heute',
+};
+
+const it: WelcomeStrings = {
+  ...en,
+  welcomeTitle: 'Benvenuto, membro della missione',
+  welcomeBegin: 'Inizia',
+  welcomeContinue: 'Continua',
+  welcomeSkipSignIn: 'Salta — vai a Oggi',
+};
+
+const ko: WelcomeStrings = {
+  ...en,
+  welcomeTitle: '환영합니다, 미션 멤버',
+  welcomeBegin: '시작',
+  welcomeContinue: '계속',
+  welcomeSkipSignIn: '건너뛰기 — 오늘로',
+};
+
+const LOCALES: Partial<Record<string, WelcomeStrings>> = {
+  en,
+  zh,
+  id,
+  th,
+  es,
+  ar,
+  fr,
+  pt,
+  de,
+  it,
+  ko,
+};
 
 export function welcomeStringsFor(lang: string): WelcomeStrings {
   const code = lang.split('-')[0];

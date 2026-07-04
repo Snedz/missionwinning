@@ -26,7 +26,19 @@ import { programsStringsFor } from '@/i18n/programsLocales';
 import { libraryStringsFor } from '@/i18n/libraryLocales';
 
 /** Languages with full or partial pillar-specific translations. */
-export const EXPORT_LANGS = ['en', 'es', 'zh', 'id', 'th', 'ar'] as const;
+export const EXPORT_LANGS = [
+  'en',
+  'es',
+  'zh',
+  'id',
+  'th',
+  'ar',
+  'fr',
+  'pt',
+  'de',
+  'it',
+  'ko',
+] as const;
 export type ExportLang = (typeof EXPORT_LANGS)[number];
 
 export type LocaleNamespace =
