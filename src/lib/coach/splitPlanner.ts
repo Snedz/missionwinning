@@ -112,10 +112,10 @@ function sharesFocus(a: MuscleGroup[], b: MuscleGroup[]): boolean {
 export function mapToCalendar(
   split: SplitDay[],
   preferredDays: number[],
-  weekStart: string
+  _weekStart: string
 ): { day: SplitDay; dayOffset: number }[] {
   const count = split.length;
-  let offsets =
+  const offsets =
     preferredDays.length >= count
       ? [...preferredDays].sort((a, b) => a - b).slice(0, count)
       : defaultPreferredOffsets(count);
