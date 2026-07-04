@@ -1,8 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import {
+  type UnitsPref,
+  weightUnitLabel,
+  weightStep,
+  heightUnitLabel,
+  bodyweightUnitLabel,
+} from '@/lib/units';
 
-export type UnitsPref = 'metric' | 'imperial';
+export type { UnitsPref };
 
 export function useUnits(): UnitsPref {
   const [units, setUnits] = useState<UnitsPref>('metric');
@@ -23,18 +30,4 @@ export function useUnits(): UnitsPref {
   return units;
 }
 
-export function weightUnitLabel(units: UnitsPref): string {
-  return units === 'imperial' ? 'lbs' : 'kg';
-}
-
-export function weightStep(units: UnitsPref): number {
-  return units === 'imperial' ? 2.5 : 2.5;
-}
-
-export function heightUnitLabel(units: UnitsPref): string {
-  return units === 'imperial' ? 'in' : 'cm';
-}
-
-export function bodyweightUnitLabel(units: UnitsPref): string {
-  return weightUnitLabel(units);
-}
+export { weightUnitLabel, weightStep, heightUnitLabel, bodyweightUnitLabel };

@@ -79,9 +79,12 @@ interface WorkoutState {
   syncCurrentHistoryToCloud: () => Promise<void>;
 }
 
+import { templateSetsToLogged } from '@/lib/workoutTemplate';
+
 function createLoggedSets(count: number, reps = 10, weight = 0): LoggedSet[] {
+  const now = Date.now();
   return Array.from({ length: count }, (_, i) => ({
-    id: `set-${Date.now()}-${i}`,
+    id: `set-${now}-${i}`,
     reps,
     weight,
     completed: false,
@@ -122,7 +125,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           startedAt: new Date().toISOString(),
           exercises: exercises.map((ex) => ({
             exerciseId: ex.exerciseId,
-            sets: createLoggedSets(ex.sets.length, ex.sets[0]?.reps ?? 10, ex.sets[0]?.weight ?? 0),
+            sets: templateSetsToLogged(ex),
           })),
         };
         set({

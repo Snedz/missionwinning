@@ -3,6 +3,7 @@ import {
   verifyPrivateAccessToken,
   PRIVATE_ACCESS_COOKIE,
 } from '@/lib/privateSession';
+import { parseSupabaseAuthCookie } from '@/lib/supabaseAuthCookies';
 import {
   isPrivateGatePublicPath,
   PRIVATE_GATE_PUBLIC_PATHS,
@@ -65,27 +66,6 @@ function decodeBase64Url(input: string): string {
     return atob(padded);
   }
   return Buffer.from(padded, 'base64').toString('utf8');
-}
-
-function parseSupabaseAuthCookie(raw: string): string | null {
-  try {
-    const trimmed = raw.trim();
-    if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
-      const parsed = JSON.parse(trimmed) as unknown;
-      if (Array.isArray(parsed) && typeof parsed[0] === 'string') return parsed[0];
-      if (parsed && typeof parsed === 'object' && 'access_token' in parsed) {
-        return String((parsed as { access_token: string }).access_token);
-      }
-    }
-    if (trimmed.startsWith('base64-')) {
-      const decoded = decodeBase64Url(trimmed.slice(7));
-      return parseSupabaseAuthCookie(decoded);
-    }
-    if (trimmed.split('.').length === 3) return trimmed;
-  } catch {
-    // fall through
-  }
-  return null;
 }
 
 function isAccessTokenValid(accessToken: string): boolean {

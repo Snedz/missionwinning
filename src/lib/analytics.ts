@@ -27,6 +27,10 @@ type AnalyticsEvent =
   | 'pwa_installed'
   | 'coach_plan_generated'
   | 'coach_plan_loaded'
+  | 'coach_week_generated'
+  | 'coach_session_started'
+  | 'coach_plan_adapted'
+  | 'coach_taster_locked'
   | 'backup_exported'
   | 'backup_restored';
 

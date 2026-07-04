@@ -7,7 +7,7 @@ function decodeBase64Url(input: string): string {
   return Buffer.from(padded, 'base64').toString('utf8');
 }
 
-function parseSupabaseAuthCookie(raw: string): string | null {
+export function parseSupabaseAuthCookie(raw: string): string | null {
   try {
     const trimmed = raw.trim();
     if (trimmed.startsWith('[') || trimmed.startsWith('{')) {

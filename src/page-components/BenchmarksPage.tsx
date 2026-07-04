@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import dynamic from 'next/dynamic';
 import {
   BarChart3,
   LineChart as LineChartIcon,
@@ -11,16 +12,6 @@ import {
   Target,
   TrendingUp,
 } from "lucide-react";
-import {
-  CartesianGrid,
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,6 +39,11 @@ import {
 import { formatDate } from "@/lib/utils";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { useWorkoutStore } from "@/store/workoutStore";
+
+const Benchmarks1RMChart = dynamic(
+  () => import('@/components/benchmarks/Benchmarks1RMChart').then((m) => m.Benchmarks1RMChart),
+  { ssr: false, loading: () => <div className="h-72 animate-pulse rounded-lg bg-muted/30" /> }
+);
 import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
 import { PresidentialFitnessSection } from "@/components/fitness-test/PresidentialFitnessSection";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
@@ -302,56 +298,7 @@ export function BenchmarksPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-72 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData} margin={{ top: 8, right: 16, left: 0, bottom: 8 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(217 33% 20%)" />
-                    <XAxis
-                      dataKey="date"
-                      tick={{ fill: "hsl(215 20% 65%)", fontSize: 12 }}
-                      stroke="hsl(217 33% 25%)"
-                    />
-                    <YAxis
-                      tick={{ fill: "hsl(215 20% 65%)", fontSize: 12 }}
-                      stroke="hsl(217 33% 25%)"
-                      unit={` ${unitLabel}`}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "hsl(222 47% 9%)",
-                        border: "1px solid hsl(217 33% 20%)",
-                        borderRadius: "8px",
-                      }}
-                      labelStyle={{ color: "hsl(210 40% 98%)" }}
-                      formatter={(value: number, name: string) => [
-                        value != null ? `${value} ${unitLabel}` : "—",
-                        name === "estimated"
-                          ? t('benchmarksEstLegend', { defaultValue: 'Estimated 1RM' })
-                          : t('benchmarksActLegend', { defaultValue: 'Actual 1RM' }),
-                      ]}
-                    />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="estimated"
-                      name={t('benchmarksEstLegend', { defaultValue: 'Estimated 1RM' })}
-                      stroke="#3b82f6"
-                      strokeWidth={2}
-                      dot={{ fill: "#3b82f6", r: 4 }}
-                      activeDot={{ r: 6 }}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="actual"
-                      name={t('benchmarksActLegend', { defaultValue: 'Actual 1RM' })}
-                      stroke="#22c55e"
-                      strokeWidth={2}
-                      dot={{ fill: "#22c55e", r: 4 }}
-                      connectNulls={false}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+              <Benchmarks1RMChart data={chartData} unitLabel={unitLabel} />
             </CardContent>
           </Card>
 
