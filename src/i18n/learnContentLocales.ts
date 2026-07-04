@@ -53,7 +53,7 @@ const es: ContentOverrides = {
   'learnLesson_a-2_action': 'Ver benchmarks',
 
   'learnPath_corrective-foundations_title': 'Fundamentos correctivos',
-  'learnPath_corrective-foundations_subtitle': 'Alineado ISSA — evaluar, corregir, luego cargar',
+  'learnPath_corrective-foundations_subtitle': 'Evaluar, corregir, luego cargar — nunca al revés',
   'learnLesson_cf-1_action': 'Ejecutar evaluación',
   'learnLesson_cf-2_action': 'Biblioteca correctiva',
   'learnLesson_cf-3_action': 'Cargar plantilla correctiva',
@@ -65,7 +65,7 @@ const es: ContentOverrides = {
   'learnLesson_pd-3_action': 'Combustible para la fase',
 
   'learnPath_coaching-client-success_title': 'Coaching y éxito del cliente',
-  'learnPath_coaching-client-success_subtitle': 'Comunicación, adherencia y alcance ético — ISSA',
+  'learnPath_coaching-client-success_subtitle': 'Comunicación, adherencia y alcance ético — principios profesionales',
   'learnLesson_cc-1_action': 'Revisar PAR-Q',
   'learnLesson_cc-2_action': 'Check-in diario',
   'learnLesson_cc-3_action': 'Consulta de coaching',

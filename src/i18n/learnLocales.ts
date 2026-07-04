@@ -17,7 +17,7 @@ type LearnStrings = {
 const en: LearnStrings = {
   learnTitle: 'Learn & Master',
   learnSubtitle:
-    '{{count}} free education paths — ISSA-aligned foundations plus specialist intros. Premium unlocks full programs (Super Bundle).',
+    '{{count}} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).',
   learnDone: '✓ Done',
   learnMarkComplete: 'Mark complete',
   learnSampleTitle: 'Try it — free sample workout',
@@ -32,7 +32,7 @@ const es: LearnStrings = {
   ...en,
   learnTitle: 'Aprender y dominar',
   learnSubtitle:
-    '{{count}} rutas educativas gratis — fundamentos ISSA e intros especialistas. Premium desbloquea programas completos.',
+    '{{count}} rutas educativas gratis — fundamentos basados en evidencia e intros especialistas. Premium desbloquea programas completos.',
   learnMarkComplete: 'Marcar completado',
   learnSampleTitle: 'Pruébalo — entrenamiento muestra gratis',
   learnSampleBtn: 'Iniciar muestra bodyweight →',

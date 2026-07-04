@@ -1,0 +1,37 @@
+# src/data/
+
+> One concern: Static catalogs and content — exercises, programs, recipes, guidebook, mind/mobility.
+
+## Read order
+
+1. File for your content type (table below)
+2. `exerciseEnrichment.ts` — tags/alternatives added to base exercises
+
+## Content map
+
+| File(s) | Content |
+|---------|---------|
+| `exercises.ts` | Base exercise catalog |
+| `exercisesExtended.ts`, `exercisesVolume2.ts` | Additional exercises (merged in `exercises.ts`) |
+| `exerciseEnrichment.ts` | Tags, levels, alternatives |
+| `programTemplates.ts` | Builder program templates |
+| `starterPrograms.ts` | Free starter programs |
+| `premiumProgramTemplates.ts` | Premium programs (server-gated) |
+| `mobilityFlows.ts` | Free mobility flows (UI runner — not loggable sets) |
+| `premiumMobilityFlows.ts` | Premium mobility |
+| `guidedMindSessions.ts` | Free mind sessions |
+| `premiumMindSessions.ts` | Premium mind |
+| `recipes/freeRecipes.ts`, `recipes/premiumRecipes.ts` | Nutrition recipes |
+| `guidebook/chapters.ts`, `guidebook/premiumChapters.ts` | Guidebook content |
+| `learnPaths.ts`, `learnLessonEnhancements.ts` | Learn pillar paths |
+| `presidentialFitnessStandards.json` | PFT scoring standards |
+| `pftWeekOneChallenge.ts` | PFT challenge data |
+
+## Coach note
+
+Mission Coach **recovery days** use loggable exercise ids from the exercise catalog — not `mobilityFlows.ts` steps (see `src/lib/coach/INDEX.md`).
+
+## Related (not here)
+
+- Exercise types: `src/types/index.ts`
+- Premium API serving: `app/api/premium/`

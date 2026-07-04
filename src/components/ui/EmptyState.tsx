@@ -1,6 +1,7 @@
 'use client';
 
 import type { LucideIcon } from 'lucide-react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -20,6 +21,7 @@ export function EmptyState({
   description,
   actionLabel,
   onAction,
+  href,
   className,
 }: EmptyStateProps) {
   return (
@@ -29,12 +31,17 @@ export function EmptyState({
         className
       )}
     >
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/10">
-        <Icon className="h-7 w-7 text-emerald-400" />
+      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+        <Icon className="h-7 w-7 text-primary" />
       </div>
       <h3 className="text-base font-semibold">{title}</h3>
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>
-      {actionLabel && onAction && (
+      {actionLabel && href && (
+        <Button variant="fitness" className="mt-5" asChild>
+          <Link href={href}>{actionLabel}</Link>
+        </Button>
+      )}
+      {actionLabel && onAction && !href && (
         <Button variant="fitness" className="mt-5" onClick={onAction}>
           {actionLabel}
         </Button>

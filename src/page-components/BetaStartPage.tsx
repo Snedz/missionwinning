@@ -8,43 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
 
-const STEPS = [
-  {
-    n: 1,
-    title: 'Unlock access',
-    body: 'Use the private access code from your invite. Enter it on the gate page or append ?access=YOUR_CODE to any URL once.',
-    href: '/private',
-    cta: 'Enter access code',
-  },
-  {
-    n: 2,
-    title: 'Complete I-Day (≈2 min)',
-    body: 'Welcome flow sets your goal and equipment. This syncs to your profile when you sign in.',
-    href: '/welcome',
-    cta: 'Start I-Day',
-  },
-  {
-    n: 3,
-    title: 'Log your first workout',
-    body: 'Today → your next step → Train. One completed session unlocks streak tracking and leaderboard sync.',
-    href: '/log',
-    cta: 'Go to Today',
-  },
-  {
-    n: 4,
-    title: 'Sign in (optional but recommended)',
-    body: 'Magic link on Profile keeps journey, workouts, and rankings in the cloud across devices.',
-    href: '/profile',
-    cta: 'Profile & sign in',
-  },
-  {
-    n: 5,
-    title: 'Explore rankings',
-    body: 'Six boards including Under the Stars (night) and By Dawn\'s Early Light (early morning). Set a squad code to compare with friends.',
-    href: '/leaderboard',
-    cta: 'Open leaderboard',
-  },
-];
+import { BETA_STEP_DEFS } from '@/i18n/betaLocales';
 
 export function BetaStartPage() {
   const { t } = useTranslation();
@@ -73,15 +37,25 @@ export function BetaStartPage() {
               {t('infoBetaNeedTitle', { defaultValue: 'What we need from you' })}
             </div>
             <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
-              <li>Finish I-Day and at least one workout this week</li>
-              <li>Try journey phases on Today — dashboard unlocks as you progress (readiness → commissioned)</li>
-              <li>Report anything confusing via Profile → feedback or reply to your invite email</li>
+              <li>{t('betaNeedLi1', { defaultValue: 'Finish I-Day and at least one workout this week' })}</li>
+              <li>
+                {t('betaNeedLi2', {
+                  defaultValue:
+                    'Try journey phases on Today — dashboard unlocks as you progress',
+                })}
+              </li>
+              <li>
+                {t('betaNeedLi3', {
+                  defaultValue:
+                    'Report anything confusing via Profile → feedback or reply to your invite email',
+                })}
+              </li>
             </ul>
           </CardContent>
         </Card>
 
         <ol className="space-y-3">
-          {STEPS.map((step) => (
+          {BETA_STEP_DEFS.map((step) => (
             <li key={step.n}>
               <Card className="content-card">
                 <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-4">
@@ -89,12 +63,12 @@ export function BetaStartPage() {
                     {step.n}
                   </div>
                   <div className="flex-1 min-w-0 space-y-1">
-                    <h2 className="font-semibold">{step.title}</h2>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+                    <h2 className="font-semibold">{t(step.titleKey)}</h2>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{t(step.bodyKey)}</p>
                   </div>
                   <Button asChild size="sm" variant="outline" className="shrink-0">
                     <Link href={step.href}>
-                      {step.cta}
+                      {t(step.ctaKey)}
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </Link>
                   </Button>

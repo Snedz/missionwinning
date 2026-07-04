@@ -16,7 +16,7 @@ const GUIDEBOOK_EN: Record<string, string> = {
   guidebookContinue: 'Continue guidebook',
   learnExpandedBanner: 'Now with even more content!',
   learnExpandedDesc:
-    'Beyond the Basics guidebook — 6 chapters on performance science, movement, programming, and more. ISSA-aligned, free core.',
+    'Beyond the Basics guidebook — 6 chapters on performance science, movement, programming, and more. Evidence-based, free core.',
   learnOpenGuidebook: 'Open Guidebook →',
   navGuidebook: 'Guidebook',
   moreGuidebookDesc: 'Beyond the Basics — deep reference',
@@ -49,7 +49,7 @@ const GUIDEBOOK_ES: Record<string, string> = {
   guidebookContinue: 'Continuar guía',
   learnExpandedBanner: '¡Ahora con aún más contenido!',
   learnExpandedDesc:
-    'Guía Más allá de lo básico — 6 capítulos sobre ciencia del rendimiento, movimiento y programación. Alineado ISSA, núcleo gratis.',
+    'Guía Más allá de lo básico — 6 capítulos sobre ciencia del rendimiento, movimiento y programación. Basado en evidencia, núcleo gratis.',
   learnOpenGuidebook: 'Abrir guía →',
   navGuidebook: 'Guía',
   moreGuidebookDesc: 'Referencia profunda — Más allá de lo básico',

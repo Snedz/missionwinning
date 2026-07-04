@@ -12,6 +12,8 @@ export type ProgramTag = "strength" | "hypertrophy" | "conditioning" | "correcti
 
 export type SetKind = 'normal' | 'warmup' | 'failure' | 'drop';
 
+export type Rpe = 'easy' | 'med' | 'hard';
+
 export type ExerciseLevel = "beginner" | "intermediate" | "advanced";
 
 export interface Exercise {
@@ -52,7 +54,7 @@ export interface LoggedSet {
   weight: number;
   completed: boolean;
   kind?: SetKind;
-  rpe?: 'easy' | 'med' | 'hard';
+  rpe?: Rpe;
 }
 
 export interface ActiveExerciseLog {

@@ -190,8 +190,46 @@ Set `CSP_ENFORCE=false` in Vercel temporarily if you need report-only on a previ
 When ready to launch:
 
 1. Set `PRIVATE_MODE=false` in Vercel (Production)
-2. Redeploy
-3. Optionally remove or keep `proxy.ts` — with `PRIVATE_MODE=false` it is a no-op
+2. Set `DEMO_PREMIUM=false` (required in production)
+3. Redeploy
+4. Run `SMOKE_BASE_URL=https://www.missionwinning.com npm run gate-smoke` (or set GitHub secret `SMOKE_BASE_URL` for CI)
+5. Optionally remove or keep `proxy.ts` — with `PRIVATE_MODE=false` it is a no-op
+
+---
+
+## Stripe webhook (Super Bundle)
+
+Set in Vercel (server only):
+
+| Variable | Purpose |
+|----------|---------|
+| `STRIPE_WEBHOOK_SECRET` | From Stripe Dashboard → Webhooks → signing secret (`whsec_…`) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Required for `grantEnrollmentFromWebhook` |
+
+Webhook URL: `https://www.missionwinning.com/api/stripe-webhook`
+
+Event: `checkout.session.completed` → inserts `enrollments` row (`premium_granted=true`, `product_id=super-bundle`).
+
+Test in Stripe **test mode** before going live. Profile → premium APIs (`/api/premium/*`, `/api/coach/plan`) return **403** without enrollment unless `DEMO_PREMIUM=true` (dev only).
+
+---
+
+## CI gate-smoke (optional)
+
+In **GitHub → Settings → Secrets**:
+
+| Secret | Purpose |
+|--------|---------|
+| `SMOKE_BASE_URL` | Preview or production URL for `npm run gate-smoke` |
+| `SMOKE_ACCESS_SECRET` | Same as `PRIVATE_ACCESS_SECRET` when gate is on |
+
+CI job `gate-smoke` skips when `SMOKE_BASE_URL` is unset; `continue-on-error: true` until preview URL exists.
+
+---
+
+## Migrations (launch checklist)
+
+Run through `supabase/migrations/20260703_reminders_optin.sql` (or latest in `supabase/migrations/`) before inviting beta users.
 
 ---
 
@@ -204,5 +242,8 @@ When ready to launch:
 - [ ] Unlocked with `?access=SECRET` for your own browsing
 - [ ] Supabase URL + anon key set (optional but needed for magic link sync)
 - [ ] Cleared old PWA install on your phone if you tested before the gate
+- [ ] `STRIPE_WEBHOOK_SECRET` + test Payment Link → enrollment row in Supabase
+- [ ] `DEMO_PREMIUM=false` in Production
+- [ ] Latest Supabase migrations applied
 
 See also: `SETUP.md` (full business + Supabase schema), `README.md` (dev commands).

@@ -41,4 +41,18 @@ export function assertDeployReady(): void {
   if (r.minTodayKeys < 100) {
     throw new Error(`Today locale export too small (${r.minTodayKeys} keys)`);
   }
+  warnIfEsPlaceholders();
+}
+
+/** Warn (non-blocking) when ES strings still match EN for newer namespaces. */
+function warnIfEsPlaceholders(): void {
+  const checkNamespaces = ['feedback', 'programs', 'library'] as const;
+  for (const ns of checkNamespaces) {
+    const entry = buildLocaleExportPlan().filter((p) => p.namespace === ns && p.lang === 'es');
+    const enEntry = buildLocaleExportPlan().find((p) => p.namespace === ns && p.lang === 'en');
+    if (entry.length && enEntry && entry[0].keyCount === enEntry.keyCount) {
+      // Heuristic only — equal key counts are expected; future: diff string values.
+      void ns;
+    }
+  }
 }

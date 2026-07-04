@@ -16,6 +16,12 @@ import { BarcodeLookup } from "@/components/nutrition/BarcodeLookup";
 import type { FoodSearchItem } from "@/lib/foodSearch";
 import { MetricRing } from "@/components/ui/MetricRing";
 import { bumpFuelLogStreak, getFuelLogStreak } from "@/lib/fuelStreak";
+import {
+  DEFAULT_QUICK_FOODS,
+  getFrequentQuickFoods,
+  getYesterdayEntries,
+  parseNutritionLog,
+} from "@/lib/nutritionQuickLog";
 import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from "@/lib/macroTargets";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { Plus, UtensilsCrossed } from "lucide-react";
@@ -33,23 +39,14 @@ interface LogEntry {
   meal?: MealType;
 }
 
-const QUICK_FOODS = [
-  ["Chicken breast 150g", 45, 165, 0, 3],
-  ["Oats 80g dry", 10, 300, 54, 5],
-  ["Eggs 3 large", 18, 210, 1, 15],
-  ["Rice 200g cooked", 8, 260, 56, 0],
-  ["Banana 1 med", 1, 105, 27, 0],
-  ["Greek yogurt 200g", 20, 130, 8, 0],
-  ["Almonds 30g", 6, 170, 6, 15],
-  ["Salmon 120g", 25, 250, 0, 15],
-] as const;
+const QUICK_FOODS = DEFAULT_QUICK_FOODS;
 
 export function NutritionPage() {
   // Free core per vision.md: Basic logging, targets, accessible recipes free for all worldwide.
   // Premium deep plans/recipes in Fuel pillar or Super Bundle. Core mission free forever.
 
   const { t } = useTranslation();
-  const { premium, loading: premiumLoading } = usePremium();
+  const { premium } = usePremium();
   const [premiumRecipes, setPremiumRecipes] = useState<Recipe[]>([]);
   const [targetCals, setTargetCals] = useState(2200);
   const [targetProtein, setTargetProtein] = useState(160);
@@ -62,8 +59,13 @@ export function NutritionPage() {
   const [logSheetOpen, setLogSheetOpen] = useState(false);
   const [activeMeal, setActiveMeal] = useState<MealType>("lunch");
   const [fuelStreak, setFuelStreak] = useState(0);
+  const [allLogs, setAllLogs] = useState(() =>
+    typeof window !== 'undefined' ? parseNutritionLog(localStorage.getItem('mw_nutrition_log')) : []
+  );
 
   const today = new Date().toISOString().split('T')[0];
+  const frequentFoods = getFrequentQuickFoods(allLogs, QUICK_FOODS);
+  const yesterdayMeals = getYesterdayEntries(allLogs, today);
 
   // Persist + cloud load/save
   useEffect(() => {
@@ -77,7 +79,23 @@ export function NutritionPage() {
     }
 
     const saved = localStorage.getItem("mw_nutrition_log");
-    if (saved) setLogged(JSON.parse(saved));
+    if (saved) {
+      const parsed = parseNutritionLog(saved);
+      setAllLogs(parsed);
+      setLogged(
+        parsed
+          .filter((l) => !l.date || l.date === today)
+          .map((l) => ({
+            name: l.name,
+            protein: l.protein,
+            cals: l.cals,
+            carbs: l.carbs,
+            fat: l.fat,
+            meal: l.meal as MealType | undefined,
+            time: l.time ?? '',
+          }))
+      );
+    }
     const savedWater = localStorage.getItem("mw_water");
     if (savedWater) setWater(parseInt(savedWater));
 
@@ -146,16 +164,26 @@ export function NutritionPage() {
   }, {});
 
   const addEntry = (name: string, p: number, c: number, carbs = 0, fat = 0, meal = activeMeal) => {
-    const entry: LogEntry = {
+    const entry: LogEntry & { date: string } = {
       name,
       protein: p,
       cals: c,
       carbs,
       fat,
       meal,
+      date: today,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
-    setLogged((prev) => [...prev, entry]);
+    setLogged((prev) => {
+      const next = [...prev, entry];
+      localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
+      return next;
+    });
+    setAllLogs((prev) => {
+      const next = [...prev, entry];
+      localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
+      return next;
+    });
     setFuelStreak(bumpFuelLogStreak());
     syncProteinChallengeFromNutrition();
     getUser().then((u) => {
@@ -293,6 +321,45 @@ export function NutritionPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Card className="content-card">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">
+            {t('fuelQuickLog', { defaultValue: 'Quick log' })}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex flex-wrap gap-2">
+            {frequentFoods.map(([name, p, c, carbs, fat]) => (
+              <Button
+                key={name}
+                variant="outline"
+                size="sm"
+                className="text-xs"
+                onClick={() => addEntry(name, p, c, carbs, fat)}
+              >
+                {name}
+              </Button>
+            ))}
+          </div>
+          {yesterdayMeals.length > 0 && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                for (const m of yesterdayMeals) {
+                  addEntry(m.name, m.protein, m.cals, m.carbs ?? 0, m.fat ?? 0, (m.meal as MealType) ?? activeMeal);
+                }
+              }}
+            >
+              {t('fuelRepeatYesterday', {
+                count: yesterdayMeals.length,
+                defaultValue: `Repeat yesterday (${yesterdayMeals.length} items)`,
+              })}
+            </Button>
+          )}
+        </CardContent>
+      </Card>
 
       <div className="text-xs bg-muted/20 p-3 rounded space-y-2">
         <p>
@@ -459,7 +526,7 @@ export function NutritionPage() {
         onClose={() => setLogSheetOpen(false)}
         meal={activeMeal}
         onMealChange={setActiveMeal}
-        quickFoods={QUICK_FOODS}
+        quickFoods={frequentFoods}
         onLog={(name, p, c, carbs, fat) => addEntry(name, p, c, carbs, fat, activeMeal)}
         customName={customName}
         customP={customP}

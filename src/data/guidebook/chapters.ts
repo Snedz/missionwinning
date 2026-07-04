@@ -21,7 +21,7 @@ This is why "muscle confusion" is oversold. Variation has a place — especially
 
 Mission Winning tracks what you actually do. That history is the feedback loop: without logs, you are guessing whether adaptation is happening.`,
         practiceCTA: { label: 'Check readiness on Today', href: '/log' },
-        sourceRef: 'ISSA-CPT — adaptation',
+        sourceRef: 'foundations — adaptation',
       },
       {
         id: 'ch1-s2',
@@ -39,7 +39,7 @@ Mission Winning tracks what you actually do. That history is the feedback loop: 
 Most general fitness blends all three across the week. A lifter who never trains oxidative capacity may gas out on conditioning tests; a runner who never lifts may lack strength for posture and injury resilience. The six-pillar Win Score nudges balance — not perfection every day.`,
         practiceCTA: { label: 'Log an activity', href: '/track' },
         relatedLearnPathId: 'strength-basics',
-        sourceRef: 'ISSA-CPT — energy systems',
+        sourceRef: 'foundations — energy systems',
       },
       {
         id: 'ch1-s3',
@@ -52,7 +52,7 @@ Practical recovery levers you can control today: 7–9 hours sleep when possible
 
 Readiness on the Today hub is a consistency score from your logs — not a medical device. Use it as a nudge to push, maintain, or back off — not as an excuse to skip forever.`,
         practiceCTA: { label: 'Open health screen (PAR-Q)', href: '/assessments' },
-        sourceRef: 'ISSA-CPT — recovery',
+        sourceRef: 'foundations — recovery',
       },
     ],
   },
@@ -82,7 +82,7 @@ Readiness on the Today hub is a consistency score from your logs — not a medic
 Use the Library form guides and swap to goblet squats or box squats if barbell depth is not there yet.`,
         practiceCTA: { label: 'Browse squat variations', href: '/library' },
         relatedExerciseIds: ['squats', 'goblet-squat', 'air-squat'],
-        sourceRef: 'ISSA — squat pattern',
+        sourceRef: 'foundations — squat pattern',
       },
       {
         id: 'ch2-s2',
@@ -98,7 +98,7 @@ Use the Library form guides and swap to goblet squats or box squats if barbell d
 Romanian deadlifts and good mornings teach the hinge with lighter loads. Master the pattern before chasing maximal singles.`,
         practiceCTA: { label: 'View hinge exercises', href: '/library' },
         relatedExerciseIds: ['deadlift', 'romanian-deadlift', 'kettlebell-swing'],
-        sourceRef: 'ISSA — hinge pattern',
+        sourceRef: 'foundations — hinge pattern',
       },
       {
         id: 'ch2-s3',
@@ -114,7 +114,7 @@ Romanian deadlifts and good mornings teach the hinge with lighter loads. Master 
 Pair patterns across the week rather than cramming everything into one marathon session. The Builder and program templates encode sane splits for you.`,
         practiceCTA: { label: 'Open workout Builder', href: '/builder' },
         relatedExerciseIds: ['push-ups', 'pull-ups', 'barbell-row'],
-        sourceRef: 'ISSA — movement patterns',
+        sourceRef: 'foundations — movement patterns',
       },
     ],
   },
@@ -139,7 +139,7 @@ A common beginner mistake is maxing out every week. A common intermediate mistak
 
 Log sets and reps in Active Workout. Mission Winning history is your programming notebook.`,
         practiceCTA: { label: 'Start a workout', href: '/active' },
-        sourceRef: 'ISSA-CPT — volume & intensity',
+        sourceRef: 'foundations — volume & intensity',
       },
       {
         id: 'ch3-s2',
@@ -152,7 +152,7 @@ Use RPE when sleep was poor, stress is high, or readiness trends down. Maintain 
 
 In the logger, note how sets felt. Over time you will recognize when to add weight versus when to repeat.`,
         practiceCTA: { label: 'Use program templates', href: '/builder' },
-        sourceRef: 'ISSA — RPE',
+        sourceRef: 'foundations — RPE',
       },
       {
         id: 'ch3-s3',
@@ -168,7 +168,7 @@ In the logger, note how sets felt. Over time you will recognize when to add weig
 Program templates in the Builder encode these ideas. Pro templates (premium) add classic strength blocks — Texas Method, 5/3/1 variants, and more — when you are ready for structure beyond starters.`,
         practiceCTA: { label: 'Browse templates', href: '/builder' },
         relatedLearnPathId: 'periodization-design',
-        sourceRef: 'ISSA — periodization',
+        sourceRef: 'foundations — periodization',
       },
     ],
   },
@@ -191,7 +191,7 @@ You are not locked into one program forever. Revisit Welcome with ?edit=1 to upd
 
 The journey phases — Basic, Readiness, Commissioned — exist to build habits across all six pillars, not just the barbell.`,
         practiceCTA: { label: 'Review Welcome / I-Day', href: '/welcome' },
-        sourceRef: 'ISSA onboarding / Purpose Driven',
+        sourceRef: 'foundations — onboarding & purpose',
       },
       {
         id: 'ch4-s2',
@@ -250,7 +250,7 @@ Beta testers: see /beta for the start guide and feedback channels.`,
 
 Log a typical day on Fuel. Use recipes for ideas — free core includes dozens; premium adds meal-prep depth.`,
         practiceCTA: { label: 'Open Fuel log', href: '/nutrition' },
-        sourceRef: 'ISSA Nutritionist — macros',
+        sourceRef: 'nutrition science — macros',
       },
       {
         id: 'ch5-s2',
@@ -263,7 +263,7 @@ Sleep is when growth hormone peaks and memory consolidates — including motor l
 
 Mind pillar includes wind-down sessions; Move includes recovery flows. Use them on rest days.`,
         practiceCTA: { label: 'Try a recovery flow', href: '/move' },
-        sourceRef: 'ISSA — hydration & sleep',
+        sourceRef: 'foundations — hydration & sleep',
       },
       {
         id: 'ch5-s3',
@@ -278,7 +278,7 @@ Post-workout: protein and carbs within a few hours supports recovery — not a m
 
 Log recipes from the Fuel page to pre-fill macros. Weekly challenges can nudge protein-day streaks.`,
         practiceCTA: { label: 'Browse recipes', href: '/nutrition' },
-        sourceRef: 'ISSA — meal timing',
+        sourceRef: 'foundations — meal timing',
       },
     ],
   },
@@ -301,7 +301,7 @@ Complete the in-app health screen honestly. Mission Winning is a civilian fitnes
 
 Assessments save a summary to your log for your own reference — share with your doctor or coach if useful.`,
         practiceCTA: { label: 'Complete PAR-Q', href: '/assessments' },
-        sourceRef: 'ISSA PAR-Q',
+        sourceRef: 'PAR-Q screening',
       },
       {
         id: 'ch6-s2',
@@ -314,7 +314,7 @@ Use Readiness tests and history trends together. One bad day is noise; four week
 
 Leaderboards add optional social motivation. Squad codes let friends compare without posting publicly.`,
         practiceCTA: { label: 'Open benchmarks', href: '/benchmarks' },
-        sourceRef: 'ISSA — assessments',
+        sourceRef: 'foundations — assessments',
       },
       {
         id: 'ch6-s3',
@@ -329,7 +329,7 @@ Leaderboards add optional social motivation. Squad codes let friends compare wit
 
 History and Win Score trends on Today help you decide. This guidebook is the reference; your log is the truth.`,
         practiceCTA: { label: 'View workout history', href: '/history' },
-        sourceRef: 'ISSA — program adjustment',
+        sourceRef: 'foundations — program adjustment',
       },
     ],
   },

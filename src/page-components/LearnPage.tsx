@@ -47,7 +47,7 @@ export function LearnPage() {
       title={t('learnTitle', { defaultValue: 'Learn & Master' })}
       subtitle={t('learnSubtitle', {
         count: FREE_LEARN_PATHS.length,
-        defaultValue: `${FREE_LEARN_PATHS.length} free education paths — ISSA-aligned foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
+        defaultValue: `${FREE_LEARN_PATHS.length} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
       })}
     >
         <Card className="content-card border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 to-card">
@@ -61,7 +61,7 @@ export function LearnPage() {
             <CardDescription>
               {t('learnExpandedDesc', {
                 defaultValue:
-                  'Beyond the Basics guidebook — 6 chapters on performance science, movement, programming, and more. ISSA-aligned, free core.',
+                  'Beyond the Basics guidebook — 6 chapters on performance science, movement, programming, and more. evidence-based, free core.',
               })}
             </CardDescription>
           </CardHeader>

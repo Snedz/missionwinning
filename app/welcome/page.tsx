@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { WelcomePage } from '@/page-components/WelcomePage';
+import { routeMetadata } from '@/lib/routeMetadata';
 
-export const metadata: Metadata = { title: 'Welcome' };
+export const metadata: Metadata = routeMetadata('welcome');
 
 export default function WelcomeRoute() {
   return (

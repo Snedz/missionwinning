@@ -15,6 +15,8 @@ import { getUser, getUserNutritionForDate } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
 import { CommandersIntent } from "@/components/journey/CommandersIntent";
+import { CoachTodayCard } from '@/components/coach/CoachTodayCard';
+import { TodayCoachWeekStrip } from '@/components/coach/TodayCoachWeekStrip';
 import { TodayQuickLinks } from "@/components/journey/TodayQuickLinks";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { TodayDashboardHeader } from "@/components/today/TodayDashboardHeader";
@@ -241,6 +243,8 @@ export function HomePage() {
             <TodayHealthSection
               insight={coachInsight}
               breakdown={scoreBreakdown}
+              goal={userGoalRaw}
+              equipment={userEquip}
               coachContext={{
                 readiness: bodyScores.readiness,
                 strain: bodyScores.strain,
@@ -356,7 +360,7 @@ export function HomePage() {
   });
 
   if (state.phase === 'readiness' || state.phase === 'commissioned') {
-    staggerBlocks.push({ key: 'guidebook', node: <GuidebookContinueCard /> });
+    staggerBlocks.push({ key: 'coach-week', node: <TodayCoachWeekStrip /> });
   }
 
   if (layout.showDashboard) {
@@ -371,6 +375,14 @@ export function HomePage() {
         />
       ),
     });
+  }
+
+  if (state.phase === 'commissioned') {
+    staggerBlocks.push({ key: 'coach-today', node: <CoachTodayCard /> });
+  }
+
+  if (state.phase === 'readiness' || state.phase === 'commissioned') {
+    staggerBlocks.push({ key: 'guidebook', node: <GuidebookContinueCard /> });
   }
 
   if (layout.showQuickLinks) {

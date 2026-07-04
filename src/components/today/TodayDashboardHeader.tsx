@@ -22,7 +22,7 @@ export function TodayDashboardHeader({ missionScore, scores, streak, trends, cla
   return (
     <div
       className={cn(
-        'rounded-2xl border border-border/40 bg-gradient-to-br from-card via-card to-emerald-950/20 p-5 space-y-4',
+        'rounded-2xl border border-border/40 bg-gradient-to-br from-card via-card to-emerald-950/20 p-5 space-y-4 ring-draw-in',
         className
       )}
     >
