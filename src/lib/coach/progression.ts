@@ -143,7 +143,8 @@ export function nextTargets(
   const perf = lastPerformance(sessions);
   if (!perf) return seedTargets(exerciseId, goalId, experience);
 
-  let { reps, weight, setCount } = perf;
+  let { reps, weight } = perf;
+  const { setCount } = perf;
   let whyKey = 'coachWhyHold';
 
   if (stalled(sessions)) {

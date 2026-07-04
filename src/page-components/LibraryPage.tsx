@@ -19,12 +19,10 @@ import {
   type LibraryFilterState,
 } from '@/lib/libraryFilters';
 import { usePremium } from '@/hooks/usePremium';
-import type { ProgramTag } from '@/types';
 import { cn } from '@/lib/utils';
 
 const EQUIP_CHIPS = ['', 'bodyweight', 'dumbbell', 'barbell', 'cable', 'band', 'kettlebell'] as const;
 const LEVEL_CHIPS = ['', 'beginner', 'intermediate', 'advanced'] as const;
-const TAG_CHIPS: (ProgramTag | '')[] = ['', 'strength', 'hypertrophy', 'conditioning', 'corrective'];
 
 const EQUIP_LABELS: Record<string, string> = {
   '': 'libraryEquipAll',
@@ -41,14 +39,6 @@ const LEVEL_LABELS: Record<string, string> = {
   beginner: 'libraryLevelBeginner',
   intermediate: 'libraryLevelIntermediate',
   advanced: 'libraryLevelAdvanced',
-};
-
-const TAG_LABELS: Record<string, string> = {
-  '': 'libraryTagAll',
-  strength: 'libraryTagStrength',
-  hypertrophy: 'libraryTagHypertrophy',
-  conditioning: 'libraryTagConditioning',
-  corrective: 'libraryTagCorrective',
 };
 
 function FilterChip({

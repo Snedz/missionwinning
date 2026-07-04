@@ -45,7 +45,6 @@ import {
 import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { useWorkoutStore } from "@/store/workoutStore";
 import type { WorkoutExerciseTemplate } from "@/types";
-import { usePremium } from "@/hooks/usePremium";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
@@ -60,7 +59,6 @@ export function BuilderPage() {
   const { t } = useTranslation();
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const addSavedWorkout = useWorkoutStore((s) => s.addSavedWorkout);
-  const deleteSavedWorkout = useWorkoutStore((s) => s.deleteSavedWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
 
   const [workoutName, setWorkoutName] = useState("");
@@ -68,7 +66,6 @@ export function BuilderPage() {
   const [exercises, setExercises] = useState<DraftExercise[]>([]);
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
   const [detailProgram, setDetailProgram] = useState<ProgramTemplate | null>(null);
-  const { premium } = usePremium();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const [templateCategory, setTemplateCategory] = useState<ProgramCategory>("beginner");
