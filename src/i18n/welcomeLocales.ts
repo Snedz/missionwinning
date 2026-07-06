@@ -286,7 +286,26 @@ const es: WelcomeStrings = {
   welcomeKicker: 'Donde comienza el camino',
   welcomeIDay: 'Día I',
   welcomeMissionLead: 'La misión:',
+  welcomeMissionBody1:
+    'Mission Winning es una app de salud global gratuita. Entrena, alimenta, muévete, mente, registro y aprende — un solo lugar, un camino.',
+  welcomeMissionP2:
+    'Lo fundamental es gratis para siempre. Premium profundiza cada pilar para quien quiera más — nunca obligatorio para empezar.',
+  welcomeMissionP3:
+    'Tu trabajo hoy: un paso a la vez. El hub Hoy siempre muestra tu siguiente acción.',
   welcomeProfileTitle: 'Tres preguntas rápidas',
+  welcomeProfileEditHint:
+    'Actualiza experiencia, equipo y objetivo. Los cambios se sincronizan al iniciar sesión.',
+  welcomeProfileHint: 'Para que Hoy recomiende el mejor punto de partida.',
+  welcomeExperience: 'Experiencia',
+  welcomeExpBeginner: 'Nuevo en el entrenamiento',
+  welcomeExpIntermediate: 'Algo de experiencia',
+  welcomeExpAdvanced: 'Años entrenando',
+  welcomeGearCheck: 'Equipo — ¿qué tienes hoy?',
+  welcomeEquipBodyweight: 'Solo peso corporal',
+  welcomeEquipDumbbells: 'Mancuernas o bandas',
+  welcomeEquipFullGym: 'Gimnasio completo',
+  welcomePrimaryGoal: 'Objetivo principal',
+  welcomeGoalPresetsLabel: 'Opciones rápidas (o escribe el tuyo abajo)',
   welcomeBack: 'Atrás',
   headerSignIn: 'Entrar',
   photoLogTitle: 'Registrar con foto',

@@ -160,7 +160,7 @@ export function LeaderboardPage() {
   const you = useMemo(
     () =>
       computeLocalLeaderboardSnapshot(workoutHistory, savedWorkouts.length, userId),
-    [workoutHistory, savedWorkouts.length, userId, operatorName, squadCode]
+    [workoutHistory, savedWorkouts.length, userId]
   );
 
   const ranked = useMemo(

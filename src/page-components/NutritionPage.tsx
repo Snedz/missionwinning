@@ -12,8 +12,10 @@ import { Button } from "@/components/ui/button";
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from "@/lib/supabase";
 import { syncProteinChallengeFromNutrition } from "@/lib/challenges";
 import { FREE_RECIPES } from "@/data/recipes/freeRecipes";
+import { FREE_RECIPE_COUNT, PREMIUM_RECIPE_COUNT, PREMIUM_RECIPE_TEASERS } from "@/data/recipes/catalogMeta";
 import type { Recipe } from "@/data/recipes/types";
 import { usePremium } from "@/hooks/usePremium";
+import { FuelMealPlanCard } from "@/components/nutrition/FuelMealPlanCard";
 import { FuelLogSheet, type MealType } from "@/components/nutrition/FuelLogSheet";
 import { FoodSearchBar } from "@/components/nutrition/FoodSearchBar";
 import { BarcodeLookup } from "@/components/nutrition/BarcodeLookup";
@@ -32,7 +34,7 @@ import { Plus, UtensilsCrossed } from "lucide-react";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
 import { EmptyState } from '@/components/ui/EmptyState';
 
-const FREE_RECIPE_COUNT = 12;
+const freeRecipes = FREE_RECIPES;
 
 interface LogEntry {
   name: string;
@@ -238,9 +240,6 @@ export function NutritionPage() {
     setLogged([]);
     setWater(0);
   };
-
-
-  const freeRecipes = FREE_RECIPES;
 
   return (
     <PillarPageShell
@@ -482,6 +481,8 @@ export function NutritionPage() {
         </CardContent>
       </Card>
 
+      <FuelMealPlanCard premium={premium} />
+
       {premium ? (
       <Card className="content-card">
         <CardHeader><CardTitle>{t('fuelPremiumRecipesTitle', { defaultValue: 'Premium Recipes & Meal Ideas (Super Bundle)' })}</CardTitle></CardHeader>
@@ -510,10 +511,28 @@ export function NutritionPage() {
       ) : (
         <Card className="content-card border-emerald-500/30">
           <CardHeader>
-            <CardTitle>{t('fuelPremiumLockedTitle', { count: premiumRecipes.length, defaultValue: `+${premiumRecipes.length} Premium Recipes` })}</CardTitle>
+            <CardTitle>
+              {t('fuelPremiumLockedTitle', {
+                count: PREMIUM_RECIPE_COUNT,
+                defaultValue: `+${PREMIUM_RECIPE_COUNT} Premium Recipes`,
+              })}
+            </CardTitle>
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground space-y-3">
-            <p>{t('fuelPremiumLockedBody', { defaultValue: 'Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.' })}</p>
+            <p>
+              {t('fuelPremiumLockedBody', {
+                defaultValue:
+                  'Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.',
+              })}
+            </p>
+            <ul className="text-xs space-y-1">
+              {PREMIUM_RECIPE_TEASERS.map((name) => (
+                <li key={name} className="flex gap-2">
+                  <span className="text-emerald-400">+</span>
+                  <span>{name}</span>
+                </li>
+              ))}
+            </ul>
             <Button variant="fitness" asChild>
               <Link href="/bundle">{t('fuelExploreBundle', { defaultValue: 'Explore Super Bundle' })}</Link>
             </Button>

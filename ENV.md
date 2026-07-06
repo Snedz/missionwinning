@@ -196,8 +196,9 @@ When ready to launch:
 
 1. Set `PRIVATE_MODE=false` in Vercel (Production)
 2. Set `DEMO_PREMIUM=false` (required in production)
-3. Redeploy
-4. Run `SMOKE_BASE_URL=https://www.missionwinning.com npm run gate-smoke` (or set GitHub secret `SMOKE_BASE_URL` for CI)
+3. Set `DEPLOY_READINESS_TARGET=production` on Vercel **Production** builds (fails deploy if `PRIVATE_MODE` is not `false` or secrets missing)
+4. Redeploy
+5. Run `SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ACCESS_SECRET=... npm run launch-verify`
 5. Optionally remove or keep `proxy.ts` — with `PRIVATE_MODE=false` it is a no-op
 
 ---
@@ -227,6 +228,8 @@ In **GitHub → Settings → Secrets**:
 |--------|---------|
 | `SMOKE_BASE_URL` | Preview or production URL for `npm run gate-smoke` |
 | `SMOKE_ACCESS_SECRET` | Same as `PRIVATE_ACCESS_SECRET` when gate is on |
+| `SMOKE_EXPECT_PWA` | Set `true` after `PRIVATE_MODE=false` to assert `/sw.js` + manifest in gate-smoke |
+| `DEPLOY_READINESS_TARGET` | `production` on Vercel prod builds — enforces launch env in `assertDeployReady()` |
 
 CI job `gate-smoke` skips when `SMOKE_BASE_URL` is unset; `continue-on-error: true` until preview URL exists.
 

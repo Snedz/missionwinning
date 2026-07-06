@@ -27,6 +27,7 @@ Open http://localhost:3000 — unlock `/private` if `PRIVATE_MODE=true`.
 | Command | Purpose |
 |---------|---------|
 | `npm run dev` | Local dev server |
+| `npm run typecheck` | TypeScript check (`tsc --noEmit`, includes tests) |
 | `npm test` | Unit tests (`src/lib/**/*.test.ts`) |
 | `npm run build` | Production build + typecheck |
 | `npm run lint` | ESLint |

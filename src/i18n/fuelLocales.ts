@@ -44,6 +44,16 @@ type FuelStrings = {
   fuelMealSnack: string;
   fuelMealOther: string;
   fuelLogStreak: string;
+  fuelMealPlanTitle: string;
+  fuelMealPlanLocked: string;
+  fuelScienceCh5: string;
+  fuelScienceCh12: string;
+  fuelQuickLog: string;
+  fuelRepeatYesterday: string;
+  fuelSearchTitle: string;
+  fuelEmptyTitle: string;
+  fuelLogFirstMeal: string;
+  fuelSubtitle: string;
 };
 
 const en: FuelStrings = {
@@ -92,6 +102,20 @@ const en: FuelStrings = {
   fuelMealSnack: 'Snack',
   fuelMealOther: 'Other',
   fuelLogStreak: '{{count}}-day log streak',
+  fuelMealPlanTitle: '7-day high-protein meal outline',
+  fuelMealPlanLocked:
+    '+{{count}} more days — timing strategies and macro-synced meals in Super Bundle.',
+  fuelScienceCh5:
+    'Protein insight: Essential for growth, repair, enzymes, and hormones. Active clients often need 1.6–2.2g/kg.',
+  fuelScienceCh12:
+    'Nutrition for athletes: Complex carbs fuel training; healthy fats support hormones. Hydration matters.',
+  fuelQuickLog: 'Quick log',
+  fuelRepeatYesterday: 'Repeat yesterday ({{count}} items)',
+  fuelSearchTitle: 'Search foods',
+  fuelEmptyTitle: 'No meals logged today',
+  fuelLogFirstMeal: 'Log first meal',
+  fuelSubtitle:
+    'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
 };
 
 const es: FuelStrings = {
@@ -118,7 +142,7 @@ const es: FuelStrings = {
   fuelLoadCloud: 'Cargar de la nube',
   fuelCloudLoading: 'Cargando...',
   fuelCloudLoaded: 'Nube cargada (solo con sesión)',
-  fuelNoEntries: 'Sin entradas. Usa registro rápido o personalizado.',
+  fuelNoEntries: 'Sin entradas. Toca + Registrar comida para añadir tu primera comida.',
   fuelTotals: 'Totales',
   fuelTotalsLine: '{{protein}}g proteína • {{cals}} kcal',
   fuelFreeRecipesTitle: 'Recetas gratis ({{count}} — misión core)',
@@ -126,6 +150,19 @@ const es: FuelStrings = {
   fuelPremiumLockedTitle: '+{{count}} recetas premium',
   fuelPremiumLockedBody: 'Desbloquea la biblioteca Fuel completa y coaching avanzado con Super Bundle.',
   fuelExploreBundle: 'Explorar Super Bundle',
+  fuelMealPlanTitle: 'Plan de comidas alto en proteína (7 días)',
+  fuelMealPlanLocked:
+    '+{{count}} días más — estrategias de horario y comidas sincronizadas con macros en Super Bundle.',
+  fuelScienceCh5:
+    'Proteína: esencial para crecimiento, reparación y hormonas. Clientes activos suelen necesitar 1,6–2,2 g/kg.',
+  fuelScienceCh12:
+    'Nutrición para atletas: carbohidratos complejos para entrenar; grasas saludables para hormonas. Hidrátate.',
+  fuelQuickLog: 'Registro rápido',
+  fuelRepeatYesterday: 'Repetir ayer ({{count}} elementos)',
+  fuelSearchTitle: 'Buscar alimentos',
+  fuelEmptyTitle: 'Sin comidas registradas hoy',
+  fuelLogFirstMeal: 'Registrar primera comida',
+  fuelSubtitle: 'Núcleo gratis: registro diario, agua, objetivos y recetas accesibles en todo el mundo.',
 };
 
 const zh: FuelStrings = {

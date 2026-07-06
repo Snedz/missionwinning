@@ -42,5 +42,14 @@
   "fuelMealSnack": "Snack",
   "fuelMealOther": "Other",
   "fuelLogStreak": "{{count}}-day log streak",
-  "fuelTitle": "Nutrição"
+  "fuelMealPlanTitle": "7-day high-protein meal outline",
+  "fuelMealPlanLocked": "+{{count}} more days — timing strategies and macro-synced meals in Super Bundle.",
+  "fuelScienceCh5": "Protein insight: Essential for growth, repair, enzymes, and hormones. Active clients often need 1.6–2.2g/kg.",
+  "fuelScienceCh12": "Nutrition for athletes: Complex carbs fuel training; healthy fats support hormones. Hydration matters.",
+  "fuelQuickLog": "Quick log",
+  "fuelRepeatYesterday": "Repeat yesterday ({{count}} items)",
+  "fuelSearchTitle": "Search foods",
+  "fuelEmptyTitle": "No meals logged today",
+  "fuelLogFirstMeal": "Log first meal",
+  "fuelSubtitle": "Free core: daily macro log, water, targets, and accessible recipes worldwide."
 }

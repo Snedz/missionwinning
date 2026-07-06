@@ -30,7 +30,9 @@ Mission Coach and Super Bundle premium are **code-complete**; production needs l
    - Complete checkout → check Supabase `enrollments` for buyer email
    - Sign in with that email → `/coach` regenerates weekly plan (not locked)
    - Return URL: configure Stripe Payment Link success URL → `/bundle?checkout=success`
-   - Verify: `node scripts/verify-stripe-enrollment.mjs` (row shape) or `--ping-webhook` with `STRIPE_WEBHOOK_SECRET`
+   - Verify: `node scripts/verify-stripe-enrollment.mjs` (row shape)
+   - Verify gates: `npm run verify-premium` or `--check-gates` with `SMOKE_BASE_URL`
+   - Webhook test: `--ping-webhook` with `STRIPE_WEBHOOK_SECRET`
 
 ---
 
@@ -43,7 +45,7 @@ After payment, users land on `/bundle?checkout=success`. The page shows **Premiu
 ## Coach v1 premium behavior
 
 - **Free:** one generated week (taster); adaptation within the week; locked after week rollover
-- **Premium:** unlimited week regeneration + rollover via `generateWeek` / `adaptPlan`
+- **Premium:** unlimited week regeneration + rollover via `generateWeek` / `adaptPlan`; fatigue-aware split when strain ≥ 70
 
 Analytics: `coach_taster_locked`, `coach_week_generated` with `premium` property.
 

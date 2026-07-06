@@ -57,8 +57,8 @@ import {
 } from '@/lib/historyAnalytics';
 import { getExercisesWithBenchmarkData } from '@/lib/benchmarks';
 import { useWorkoutStore } from '@/store/workoutStore';
-import type { CompletedWorkoutLog, SetKind } from '@/types';
-import { getUser, getUserNutritionForDate } from '@/lib/supabase';
+import type { CompletedWorkoutLog } from '@/types';
+import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 
@@ -73,7 +73,7 @@ export function HistoryPage() {
   const [selected, setSelected] = useState<CompletedWorkoutLog | null>(null);
   const [cloudSynced, setCloudSynced] = useState(false);
   const [syncing, setSyncing] = useState(false);
-  const [pillarWins, setPillarWins] = useState<any[]>([]);
+  const [pillarWins, setPillarWins] = useState<CloudNutritionEntry[]>([]);
   const [chartExerciseId, setChartExerciseId] = useState('');
 
   const weeklyVolume = useMemo(
@@ -106,7 +106,7 @@ export function HistoryPage() {
         try {
           const today = new Date().toISOString().split('T')[0];
           const cloud = await getUserNutritionForDate(today);
-          const wins = cloud.filter((c: any) =>
+          const wins = cloud.filter((c: CloudNutritionEntry) =>
             /win|assessment|mobility|mind|track|learn|move/i.test(c.name || '')
           );
           setPillarWins(wins);

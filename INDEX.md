@@ -19,7 +19,7 @@
 | If you are… | Read first | Do not use as source of truth |
 |-------------|------------|-------------------------------|
 | Implementing a feature | [PLAN.md](PLAN.md) + relevant `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
-| Launch / deploy | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [ENV.md](ENV.md), [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md) | [SETUP.md](SETUP.md) (one-time LLC/domain setup) |
+| Launch / deploy | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [ENV.md](ENV.md), [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md), [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | [SETUP.md](SETUP.md) (one-time LLC/domain setup) |
 | Premium / conversion | [REDTEAM.md](REDTEAM.md), [STRATEGY.md](STRATEGY.md) | — |
 | Journey UX (I-Day → Commissioned) | [JOURNEY.md](JOURNEY.md) | Build phases in [PLAN.md](PLAN.md) (different “phase”) |
 | UI unification | [UX_UNIFIED_PLAN.md](UX_UNIFIED_PLAN.md) | — |

@@ -17,7 +17,7 @@ import { track } from '@/lib/analytics';
 export function CoachTodayCard() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { plan, todaySession, todayOffset, loading, locked, generate } = useCoachPlan();
+  const { plan, todaySession, loading, locked, generate } = useCoachPlan();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
 
   if (loading) return null;

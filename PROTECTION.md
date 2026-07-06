@@ -140,7 +140,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 - [ ] Set `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in Vercel (never `NEXT_PUBLIC_`)
 - [ ] Set `DEMO_PREMIUM=false` explicitly in production
 - [ ] Optional: `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` for distributed rate limits
-- [ ] Verify gate + premium API with `npm run security-smoke` and curl checklist below
+- [ ] Verify gate + premium API with `npm run launch-verify` (or `security-smoke`) and curl checklist below
 - [x] Privacy policy + Terms pages linked from `/about`
 
 ### P1 — First 30 days public

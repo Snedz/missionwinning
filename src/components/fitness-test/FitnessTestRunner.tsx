@@ -25,7 +25,6 @@ import { saveFitnessTestSession } from '@/lib/presidentialFitnessStorage';
 import { joinClass, getJoinedClassCode } from '@/lib/schoolClass';
 import { buildPftShareText } from '@/lib/shareFitnessMission';
 import { hasYouthConsent, mergeYouthConsentFromServer, requiresYouthConsent } from '@/lib/youthConsent';
-import { getUser } from '@/lib/supabase';
 import { pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
 import { useWorkoutStore } from '@/store/workoutStore';
 

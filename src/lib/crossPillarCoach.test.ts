@@ -12,7 +12,7 @@ const baseScores: BodyScores = {
   recoveryLabelKey: 'todayBodyRebuilding',
 };
 
-const focus: RecommendedFocus = { group: 'push', statusKey: 'todayFocusPush' };
+const focus: RecommendedFocus = { group: 'Chest', statusKey: 'todayReadinessPrime' };
 
 const steady: CoachInsight = {
   messageKey: 'coachInsightSteady',

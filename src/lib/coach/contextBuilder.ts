@@ -2,10 +2,10 @@ import { computeBodyScores, computeReadiness } from '@/lib/score';
 import { parseGoalPresetId } from '@/lib/journeyGoals';
 import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
-import type { CoachContext, EquipmentProfile } from '@/lib/coach/types';
+import type { CoachContext } from '@/lib/coach/types';
 import { mapStorageEquipment } from '@/lib/coach/equipment';
 import { getOrCreateDeviceId } from '@/lib/coach/storage';
-import { defaultDaysPerWeek, loadPreferredDays, loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
+import { loadPreferredDays, loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 
 export function buildCoachContextFromInputs(params: {
   history: CompletedWorkoutLog[];

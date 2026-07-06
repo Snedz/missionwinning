@@ -71,7 +71,7 @@ export function BreathingTimer() {
     }
     const t = setTimeout(() => setRemaining((r) => r - 1), 1000);
     return () => clearTimeout(t);
-  }, [running, remaining, phaseIdx, cycles, config.phases]);
+  }, [running, remaining, phaseIdx, cycles, config.phases, config.name]);
 
   const scale = phase.label === 'Inhale' ? 1.15 : phase.label === 'Exhale' ? 0.85 : 1;
 

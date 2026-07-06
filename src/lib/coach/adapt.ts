@@ -2,7 +2,6 @@ import { EXERCISES } from '@/data/exercises';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import type { CompletedWorkoutLog } from '@/types';
 import type { CoachContext, CoachPlan, PlanSession } from '@/lib/coach/types';
-import { generateWeek } from '@/lib/coach/planEngine';
 import { chooseSplit, mapToCalendar, todayDayOffset } from '@/lib/coach/splitPlanner';
 import { buildSession } from '@/lib/coach/selector';
 import { hashString, mulberry32 } from '@/lib/coach/rng';
@@ -101,7 +100,7 @@ export function markSessionsFromExternalWorkouts(
   return { ...plan, sessions };
 }
 
-export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): CoachPlan {
+export function adaptPlan(plan: CoachPlan, ctx: CoachContext, _today: string): CoachPlan {
   const weekStart = plan.weekStart;
   const todayOffset = todayDayOffset(weekStart);
   let sessions = plan.sessions.map((s) => ({ ...s }));
@@ -180,7 +179,11 @@ export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, tod
   const daysLeft = ctx.daysPerWeek - doneSessions.length;
   if (daysLeft <= 0) return plan;
 
-  const split = chooseSplit(daysLeft, ctx.experience, ctx.goalId, ctx.assessmentRisk);
+  const split = chooseSplit(daysLeft, ctx.experience, ctx.goalId, ctx.assessmentRisk, {
+    readiness: ctx.bodyScores.readiness,
+    strain: ctx.bodyScores.strain,
+    recovery: ctx.bodyScores.recovery,
+  });
   const preferred = ctx.preferredDays.filter((d) => d >= todayOffset);
   const calendar = mapToCalendar(split, preferred.length ? preferred : [], plan.weekStart);
   const rng = mulberry32(hashString(`${plan.weekStart}:${ctx.seedId}:regen`));

@@ -22,12 +22,17 @@ import { EXERCISES } from '@/data/exercises';
 import { FREE_STARTER_PROGRAMS } from '@/data/starterPrograms';
 import { formatDate, formatDuration } from '@/lib/utils';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
-import { getUser, saveNutritionEntry, getUserNutritionForDate } from '@/lib/supabase';
+import { getUser, saveNutritionEntry, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
 import { muscleGroupLabel } from '@/lib/readinessDisplay';
 import type { computeReadiness } from '@/lib/score';
 import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { SHOW_TODAY_FOUNDER_TOOLS } from '@/lib/todayFounderTools';
+
+type MwWindow = Window & {
+  triggerPwaInstall?: () => Promise<void>;
+  deferredPwaPrompt?: () => { prompt: () => void } | null;
+};
 
 export type TodayProgressSectionProps = {
   savedWorkouts: SavedWorkout[];
@@ -272,7 +277,7 @@ export function TodayProgressSection({
                 localStorage.setItem('mw_streak', String(current));
                 setRecentPillarWins(prev => [{name: 'Daily Pillar Win (quick log)', date: today}, ...prev].slice(0,5));
                 alert(`Daily win logged! +1 streak (${current}). ${u ? 'Saved to cloud.' : 'Sign in for cloud sync.'}`);
-              } catch {}
+              } catch { /* noop */ }
             }}>Log Daily Pillar Win (+streak + cloud)</Button>
             <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
               try {
@@ -283,7 +288,7 @@ export function TodayProgressSection({
                 localStorage.setItem('mw_streak', String(current));
                 setRecentPillarWins(prev => [{name: 'Quick Mind Win from Home', date: today}, ...prev].slice(0,5));
                 alert(`Mind win logged! +1 streak (${current}). ${u ? 'Cloud saved.' : ''}`);
-              } catch {}
+              } catch { /* noop */ }
             }}>Log Mind Win (+streak + cloud)</Button>
             <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
               try {
@@ -294,7 +299,7 @@ export function TodayProgressSection({
                 localStorage.setItem('mw_streak', String(current));
                 setRecentPillarWins(prev => [{name: 'Quick Move Win from Home', date: today}, ...prev].slice(0,5));
                 alert(`Move win logged! +1 streak (${current}). ${u ? 'Cloud saved.' : ''}`);
-              } catch {}
+              } catch { /* noop */ }
             }}>Log Move Win (+streak + cloud)</Button>
             <Button size="sm" variant="outline" className="text-xs mt-1" onClick={async () => {
               try {
@@ -302,13 +307,13 @@ export function TodayProgressSection({
                 if (u) {
                   const today = new Date().toISOString().split('T')[0];
                   const cloud = await getUserNutritionForDate(today);
-                  const wins = cloud.filter((w: any) => /win|assessment|mobility|mind/i.test(w.name || ''));
+                  const wins = cloud.filter((w: CloudNutritionEntry) => /win|assessment|mobility|mind/i.test(w.name || ''));
                   setRecentPillarWins(wins.slice(0, 5));
                   alert('Pillar wins refreshed from cloud.');
                 } else {
                   alert('Sign in to load cloud wins.');
                 }
-              } catch {}
+              } catch { /* noop */ }
             }}>Refresh pillar wins from cloud</Button>
               </>
             )}
@@ -451,7 +456,7 @@ export function TodayProgressSection({
                 const cur = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
                 localStorage.setItem('mw_streak', String(cur));
                 alert(`Mind Win logged! +1 streak (${cur}). Check Nutrition for the entry.`);
-              } catch {}
+              } catch { /* noop */ }
             }}>Log Mind Win (+streak + cloud)</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => onStartStarter("Daily Mobility Circuit (Free)", freeStarters.find(s => s.name.includes("Mobility"))?.exercises || [])}>Quick Mobility Win →</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
@@ -476,10 +481,11 @@ export function TodayProgressSection({
         <div className="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded text-sm flex items-center justify-between">
           <span>{t('todayInstallPwa', { defaultValue: 'Install Mission Winning for offline use anywhere (PWA).' })}</span>
           <Button size="sm" variant="outline" onClick={() => {
-            const trig = (window as any).triggerPwaInstall;
+            const mw = window as MwWindow;
+            const trig = mw.triggerPwaInstall;
             if (trig) trig();
             else {
-              const p = (window as any).deferredPwaPrompt && (window as any).deferredPwaPrompt();
+              const p = mw.deferredPwaPrompt?.();
               if (p) p.prompt();
               else alert(t('todayPwaInstallHint', { defaultValue: 'Use browser menu (⋮ > Add to Home Screen / Install).' }));
             }

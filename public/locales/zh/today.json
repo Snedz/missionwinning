@@ -114,9 +114,11 @@
   "coachInsightNeedFuel": "训练很猛但蛋白质不足。今天记录饮食以恢复和增长。",
   "coachInsightNeedMind": "恢复压力较大。简短的正念练习有助于睡眠和坚持。",
   "coachInsightSynergyMove": "训练周表现不错——配合灵活性训练持续进步。",
+  "coachInsightNeedTrack": "训练很稳定——在 Track 记录一次户外步行或跑步，补全健康图景。",
   "coachActionRecoveryFlow": "恢复流程",
   "coachActionOpenMove": "打开活动支柱",
-  "coachActionOpenMind": "打开心智支柱",
+  "coachActionOpenMind": "打开心理支柱",
+  "coachActionOpenTrack": "打开追踪支柱",
   "todayEditToday": "编辑 Today",
   "coachActionStartWorkout": "开始训练",
   "coachActionGoBuilder": "前往构建器",
@@ -144,5 +146,12 @@
   "todayQuickHistoryDesc": "训练量、1RM 与肌肉图",
   "todayQuickBundleDesc": "六大支柱，一次订阅",
   "todayQuickNightDesc": "22:00–05:00 训练",
-  "todayQuickDawnDesc": "05:00–08:00 训练"
+  "todayQuickDawnDesc": "05:00–08:00 训练",
+  "coachPlanTitle": "AI Coach — weekly plan",
+  "coachPlanDesc": "Three sessions tuned to readiness, strain, and your equipment.",
+  "coachPlanPremiumDesc": "Premium generates a fatigue-aware week you can load into the logger.",
+  "coachPlanCta": "Generate this week",
+  "coachPlanGenerating": "Building your week…",
+  "coachPlanLoad": "Load",
+  "coachPlanRegenerate": "Regenerate"
 }

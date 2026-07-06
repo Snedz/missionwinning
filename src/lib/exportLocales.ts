@@ -255,3 +255,20 @@ export function localeExportSummary(): {
     totalKeys: plan.reduce((s, p) => s + p.keyCount, 0),
   };
 }
+
+/** Count ES keys whose value still equals EN (untranslated placeholder heuristic). */
+export function countEsPlaceholderKeys(namespace: LocaleNamespace): {
+  total: number;
+  placeholders: number;
+} {
+  const entry = LOCALE_EXPORTS.find((e) => e.namespace === namespace);
+  if (!entry) return { total: 0, placeholders: 0 };
+  const en = entry.stringsFor('en') as Record<string, string>;
+  const es = entry.stringsFor('es') as Record<string, string>;
+  const keys = Object.keys(en);
+  let placeholders = 0;
+  for (const key of keys) {
+    if (es[key] === en[key]) placeholders++;
+  }
+  return { total: keys.length, placeholders };
+}

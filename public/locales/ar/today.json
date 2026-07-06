@@ -114,9 +114,11 @@
   "coachInsightNeedFuel": "تدريب قوي لكن البروtein متأخر. سجّل Fuel اليوم للتعافي.",
   "coachInsightNeedMind": "الاستشفاء تحت ضغط. جلسة Mind قصيرة تساعد النوم والاستمرارية.",
   "coachInsightSynergyMove": "أسبوع تدريب قوي — ادمج movilidad للتقدم بأمان.",
+  "coachInsightNeedTrack": "تدريب منتظم — سجّل مشياً أو جرياً في Track لإكمال الصورة.",
   "coachActionRecoveryFlow": "تدفق استشفاء",
   "coachActionOpenMove": "فتح ركيزة Move",
   "coachActionOpenMind": "فتح ركيزة Mind",
+  "coachActionOpenTrack": "فتح ركيزة Track",
   "todayEditToday": "تعديل Today",
   "coachActionStartWorkout": "بدء التمرين",
   "coachActionGoBuilder": "إلى Builder",
@@ -144,5 +146,12 @@
   "todayQuickHistoryDesc": "الحجم و1RM وخريطة العضلات",
   "todayQuickBundleDesc": "ست ركائز، اشتراك واحد",
   "todayQuickNightDesc": "جلسات 22:00–05:00",
-  "todayQuickDawnDesc": "جلسات 05:00–08:00"
+  "todayQuickDawnDesc": "جلسات 05:00–08:00",
+  "coachPlanTitle": "AI Coach — weekly plan",
+  "coachPlanDesc": "Three sessions tuned to readiness, strain, and your equipment.",
+  "coachPlanPremiumDesc": "Premium generates a fatigue-aware week you can load into the logger.",
+  "coachPlanCta": "Generate this week",
+  "coachPlanGenerating": "Building your week…",
+  "coachPlanLoad": "Load",
+  "coachPlanRegenerate": "Regenerate"
 }

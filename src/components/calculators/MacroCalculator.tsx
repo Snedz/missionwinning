@@ -19,9 +19,9 @@ import { MetricRing } from '@/components/ui/MetricRing';
 import { useToast } from '@/hooks/use-toast';
 import {
   useUnits,
-  weightUnitLabel,
   heightUnitLabel,
   bodyweightUnitLabel,
+  weightUnitLabel,
 } from '@/hooks/useUnits';
 import {
   ACTIVITY_LEVELS,
@@ -38,7 +38,6 @@ export function MacroCalculator() {
   const { t } = useTranslation();
   const { toast } = useToast();
   const units = useUnits();
-  const unitLabel = weightUnitLabel(units);
   const heightLabel = heightUnitLabel(units);
   const bwLabel = bodyweightUnitLabel(units);
 

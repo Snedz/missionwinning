@@ -30,6 +30,12 @@ type TrackStrings = {
   trackGpsStart: string;
   trackGpsStop: string;
   trackGpsSave: string;
+  trackGpsHint: string;
+  trackGpsDistance: string;
+  trackGpsPace: string;
+  trackWeeklyGpsTitle: string;
+  trackGpsSessions: string;
+  trackAvgPace: string;
 };
 
 const en: TrackStrings = {
@@ -64,6 +70,12 @@ const en: TrackStrings = {
   trackGpsStart: 'Start GPS',
   trackGpsStop: 'Stop',
   trackGpsSave: 'Save to log',
+  trackGpsHint: 'Allow location when prompted. Works best outdoors with clear sky.',
+  trackGpsDistance: 'Distance',
+  trackGpsPace: 'Pace',
+  trackWeeklyGpsTitle: 'GPS week at a glance',
+  trackGpsSessions: 'GPS sessions',
+  trackAvgPace: 'avg pace /km',
 };
 
 const es: TrackStrings = {
@@ -79,6 +91,15 @@ const es: TrackStrings = {
   trackLogBtn: 'Registrar',
   trackWeekLogTitle: 'Registro de la semana',
   trackEmptyWeek: 'Sin actividades esta semana. Registra una caminata arriba.',
+  trackGpsTitle: 'GPS (Premium)',
+  trackGpsPremiumDesc:
+    'Graba caminatas y carreras con distancia en vivo — estilo MapMy, Super Bundle.',
+  trackGpsDistance: 'Distancia',
+  trackGpsPace: 'Ritmo',
+  trackWeeklyGpsTitle: 'Resumen GPS de la semana',
+  trackGpsSessions: 'sesiones GPS',
+  trackAvgPace: 'ritmo prom. /km',
+  trackGpsHint: 'Permite ubicación cuando se solicite. Mejor al aire libre.',
 };
 
 const zh: TrackStrings = {

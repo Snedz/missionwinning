@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /**
- * Stripe enrollment verification helper.
+ * Stripe enrollment + premium gate verification.
  *
  * Usage:
- *   SMOKE_BASE_URL=https://www.missionwinning.com node scripts/verify-stripe-enrollment.mjs
+ *   node scripts/verify-stripe-enrollment.mjs
+ *   SMOKE_BASE_URL=https://www.missionwinning.com node scripts/verify-stripe-enrollment.mjs --check-gates
  *   STRIPE_WEBHOOK_SECRET=whsec_... node scripts/verify-stripe-enrollment.mjs --ping-webhook
  *
- * --ping-webhook sends a signed test payload (Stripe CLI recommended for real events).
- * Without flags, prints expected enrollments row shape and premium status check URLs.
+ * --check-gates  Assert premium APIs reject unauthenticated callers (403).
+ * --ping-webhook Send a signed test checkout.session.completed payload.
  */
 const base = (process.env.SMOKE_BASE_URL || 'http://localhost:3000').replace(/\/$/, '');
 
@@ -21,20 +22,60 @@ const ENROLLMENT_ROW = {
   external_id: 'cs_test_...',
 };
 
-async function main() {
-  const ping = process.argv.includes('--ping-webhook');
+const PREMIUM_ROUTES = [
+  '/api/premium/recipes',
+  '/api/premium/programs',
+  '/api/premium/mind',
+  '/api/premium/mobility',
+  '/api/premium/guidebook',
+];
 
-  console.log('Expected Supabase enrollments row after checkout.session.completed:\n');
-  console.log(JSON.stringify(ENROLLMENT_ROW, null, 2));
-  console.log('\nPremium gate: GET /api/premium/status (signed-in cookie) → { premium: true }');
-  console.log(`Coach unlock: ${base}/coach — useCoachPlan locked=false when premium\n`);
+async function checkPremiumGates() {
+  let failed = false;
+  console.log(`Checking premium API gates at ${base} …\n`);
 
-  if (!ping) {
-    console.log('Tip: run with --ping-webhook after setting STRIPE_WEBHOOK_SECRET (or use Stripe CLI:');
-    console.log('  stripe listen --forward-to localhost:3000/api/stripe-webhook)');
-    return;
+  for (const path of PREMIUM_ROUTES) {
+    const res = await fetch(`${base}${path}`, { method: 'GET' });
+    const ok = res.status === 403;
+    console.log(`${ok ? '✓' : '✗'} GET ${path} → ${res.status}${ok ? '' : ' (expected 403)'}`);
+    if (!ok) failed = true;
   }
 
+  const statusRes = await fetch(`${base}/api/premium/status`, { method: 'GET' });
+  let statusBody;
+  try {
+    statusBody = await statusRes.json();
+  } catch {
+    statusBody = {};
+  }
+  const statusOk =
+    statusRes.status === 200 &&
+    statusBody.premium === false &&
+    (statusBody.source === 'anonymous' || statusBody.source === 'unconfigured');
+  console.log(
+    `${statusOk ? '✓' : '✗'} GET /api/premium/status → ${statusRes.status} premium=${statusBody.premium} source=${statusBody.source ?? '?'}`
+  );
+  if (!statusOk) failed = true;
+
+  const stripeLink =
+    process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM;
+  if (stripeLink) {
+    console.log(`✓ NEXT_PUBLIC_STRIPE_LINK_BUNDLE configured`);
+  } else {
+    console.log('⚠ NEXT_PUBLIC_STRIPE_LINK_BUNDLE not set — UnlockButton shows founders waitlist');
+  }
+
+  if (process.env.STRIPE_WEBHOOK_SECRET) {
+    console.log('✓ STRIPE_WEBHOOK_SECRET configured');
+  } else {
+    console.log('⚠ STRIPE_WEBHOOK_SECRET not set — webhook returns 503');
+  }
+
+  if (failed) process.exit(1);
+  console.log('\nPremium gates OK (unenrolled callers blocked on content APIs).\n');
+}
+
+async function pingWebhook() {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!secret) {
     console.error('STRIPE_WEBHOOK_SECRET required for --ping-webhook');
@@ -71,6 +112,33 @@ async function main() {
   const text = await res.text();
   console.log(`Webhook POST ${res.status}: ${text.slice(0, 200)}`);
   if (!res.ok) process.exit(1);
+  console.log('\nWebhook accepted. Confirm Supabase enrollments row for verify-test@missionwinning.com\n');
+}
+
+async function main() {
+  const ping = process.argv.includes('--ping-webhook');
+  const checkGates = process.argv.includes('--check-gates');
+
+  if (checkGates) {
+    await checkPremiumGates();
+    return;
+  }
+
+  console.log('Expected Supabase enrollments row after checkout.session.completed:\n');
+  console.log(JSON.stringify(ENROLLMENT_ROW, null, 2));
+  console.log('\nPremium gate: GET /api/premium/status (signed-in cookie) → { premium: true }');
+  console.log(`Coach unlock: ${base}/coach — useCoachPlan locked=false when premium`);
+  console.log(`Bundle return: ${base}/bundle?checkout=success\n`);
+
+  if (ping) {
+    await pingWebhook();
+    return;
+  }
+
+  console.log('Next steps:');
+  console.log('  --check-gates   Verify premium APIs return 403 without enrollment');
+  console.log('  --ping-webhook  Send signed test event (needs STRIPE_WEBHOOK_SECRET)');
+  console.log('  Or use Stripe CLI: stripe listen --forward-to localhost:3000/api/stripe-webhook');
 }
 
 main().catch((e) => {

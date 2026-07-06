@@ -27,5 +27,11 @@
   "trackGpsIdle": "Start when you begin your walk or run.",
   "trackGpsStart": "Start GPS",
   "trackGpsStop": "Stop",
-  "trackGpsSave": "Save to log"
+  "trackGpsSave": "Save to log",
+  "trackGpsHint": "Allow location when prompted. Works best outdoors with clear sky.",
+  "trackGpsDistance": "Distance",
+  "trackGpsPace": "Pace",
+  "trackWeeklyGpsTitle": "GPS week at a glance",
+  "trackGpsSessions": "GPS sessions",
+  "trackAvgPace": "avg pace /km"
 }

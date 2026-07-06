@@ -3,9 +3,11 @@ import assert from 'node:assert/strict';
 import { nextTargets } from '@/lib/coach/progression';
 import type { CompletedWorkoutLog } from '@/types';
 
+import type { SetKind } from '@/types';
+
 function logWithExercise(
   exerciseId: string,
-  sets: { reps: number; weight: number; rpe?: 'easy' | 'med' | 'hard'; kind?: string }[],
+  sets: { reps: number; weight: number; rpe?: 'easy' | 'med' | 'hard'; kind?: SetKind }[],
   daysAgo = 0
 ): CompletedWorkoutLog {
   const d = new Date();

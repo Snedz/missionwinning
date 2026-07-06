@@ -22,12 +22,12 @@ import { ArrowLeft, BookMarked, Check } from 'lucide-react';
 type Props = { chapterId: string };
 
 export function GuidebookChapterPage({ chapterId }: Props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const raw = getGuideChapter(chapterId);
   const chapter = useMemo(() => {
     if (!raw) return undefined;
     return localizeGuidebookChapters([raw], t)[0];
-  }, [raw, i18n.language, t]);
+  }, [raw, t]);
 
   const [completed, setCompleted] = useState<Set<string>>(() => loadGuidebookProgress());
 

@@ -15,7 +15,15 @@ type CoachStrings = {
   coachVoiceTitle: string;
   coachVoiceLoading: string;
   coachTasterLocked: string;
+  coachTasterLockedDesc: string;
   coachTasterDesc: string;
+  coachCompareBundle: string;
+  coachLockedWeekSummary: string;
+  coachLockedBenefit1: string;
+  coachLockedBenefit2: string;
+  coachLockedBenefit3: string;
+  coachLockedBenefit4: string;
+  coachFreeCoreNote: string;
   coachWhyLoadUp: string;
   coachWhyRepProgress: string;
   coachWhyHold: string;
@@ -49,7 +57,16 @@ const en: CoachStrings = {
   coachVoiceTitle: "Commander's intent",
   coachVoiceLoading: 'Briefing your week…',
   coachTasterLocked: 'Your free week is complete',
+  coachTasterLockedDesc:
+    'Super Bundle unlocks a new weekly plan, on-demand regeneration, and Commander\'s intent briefings tuned to your readiness.',
   coachTasterDesc: 'Unlock Mission Coach to regenerate and adapt your plan every week.',
+  coachCompareBundle: 'Compare Super Bundle',
+  coachLockedWeekSummary: '{{done}}/{{total}} sessions logged last week',
+  coachLockedBenefit1: 'Unlimited week regeneration and rollover',
+  coachLockedBenefit2: 'Fatigue-aware plans that adapt to strain and recovery',
+  coachLockedBenefit3: "Commander's intent briefings every week",
+  coachLockedBenefit4: 'All six premium pillars — Train, Fuel, Move, Mind, Track, Learn',
+  coachFreeCoreNote: 'Workout logger, library, and Today stay free — premium funds the mission.',
   coachWhyLoadUp: 'Last session felt easy — small load bump.',
   coachWhyRepProgress: 'Building reps before adding weight.',
   coachWhyHold: 'Hold this load until reps feel solid.',

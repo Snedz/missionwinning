@@ -39,10 +39,12 @@ export async function POST(req: NextRequest) {
     const sessionId = String(session.id ?? '');
 
     if (email && sessionId) {
+      const meta = session.metadata as { product_id?: string } | undefined;
+      const productId = meta?.product_id?.trim() || 'super-bundle';
       try {
         await grantEnrollmentFromWebhook({
           user_email: email,
-          product_id: 'super-bundle',
+          product_id: productId,
           provider: 'stripe',
           external_id: sessionId,
         });

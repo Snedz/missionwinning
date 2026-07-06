@@ -4,28 +4,29 @@ import {
   YouthConsentMisconfiguredError,
   generateConsentCode,
 } from './youthConsentToken.ts';
+import { restoreEnv, setTestEnv, snapshotEnv } from './testEnv.ts';
 
 describe('youthConsentToken', () => {
-  const env = process.env;
+  let envSnapshot: NodeJS.ProcessEnv;
 
   beforeEach(() => {
-    process.env = { ...env };
+    envSnapshot = snapshotEnv();
     delete process.env.YOUTH_CONSENT_SECRET;
     delete process.env.PRIVATE_ACCESS_SECRET;
   });
 
   afterEach(() => {
-    process.env = env;
+    restoreEnv(envSnapshot);
   });
 
   it('uses dev fallback in non-production', () => {
-    process.env.NODE_ENV = 'development';
+    setTestEnv('NODE_ENV', 'development');
     const code = generateConsentCode('parent@example.com', 12);
     assert.match(code, /^\d{6}$/);
   });
 
   it('throws when YOUTH_CONSENT_SECRET missing in production', () => {
-    process.env.NODE_ENV = 'production';
+    setTestEnv('NODE_ENV', 'production');
     assert.throws(() => generateConsentCode('parent@example.com', 12), YouthConsentMisconfiguredError);
   });
 });

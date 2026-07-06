@@ -1,5 +1,3 @@
-import type { BodyScores } from '@/lib/score';
-
 export interface PlanVoiceContext {
   plan: {
     weekStart: string;

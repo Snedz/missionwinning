@@ -114,9 +114,11 @@
   "coachInsightNeedFuel": "Latihan keras tapi protein tertinggal. Catat Fuel hari ini untuk pulih.",
   "coachInsightNeedMind": "Pemulihan under stress. Sesi Mind singkat membantu tidur dan konsistensi.",
   "coachInsightSynergyMove": "Minggu latihan kuat — padukan mobilitas agar terus progres tanpa cedera.",
+  "coachInsightNeedTrack": "Latihan konsisten — catat jalan atau lari di Track untuk melengkapi gambaran.",
   "coachActionRecoveryFlow": "Alur pemulihan",
   "coachActionOpenMove": "Buka pilar Move",
   "coachActionOpenMind": "Buka pilar Mind",
+  "coachActionOpenTrack": "Buka pilar Track",
   "todayEditToday": "Edit Today",
   "coachActionStartWorkout": "Mulai latihan",
   "coachActionGoBuilder": "Ke Builder",
@@ -144,5 +146,12 @@
   "todayQuickHistoryDesc": "Volume, 1RM & peta otot",
   "todayQuickBundleDesc": "Enam pilar, satu langganan",
   "todayQuickNightDesc": "Sesi 22:00–05:00",
-  "todayQuickDawnDesc": "Sesi 05:00–08:00"
+  "todayQuickDawnDesc": "Sesi 05:00–08:00",
+  "coachPlanTitle": "AI Coach — weekly plan",
+  "coachPlanDesc": "Three sessions tuned to readiness, strain, and your equipment.",
+  "coachPlanPremiumDesc": "Premium generates a fatigue-aware week you can load into the logger.",
+  "coachPlanCta": "Generate this week",
+  "coachPlanGenerating": "Building your week…",
+  "coachPlanLoad": "Load",
+  "coachPlanRegenerate": "Regenerate"
 }

@@ -350,7 +350,7 @@ export function WelcomePage() {
                       try {
                         if (e.target.checked) localStorage.setItem('mw_reminders_pref', '1');
                         else localStorage.removeItem('mw_reminders_pref');
-                      } catch {}
+                      } catch { /* noop */ }
                     }}
                   />
                   <span className="text-muted-foreground">

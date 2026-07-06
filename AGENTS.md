@@ -55,6 +55,7 @@ Works in Cursor, Claude Code, Grok, Copilot, and other agents — tool-agnostic 
 
 ```bash
 npm run dev          # local dev server
+npm run typecheck    # tsc --noEmit (tests + app)
 npm test             # unit tests (src/lib/**/*.test.ts)
 npm run build        # production build
 npm run lint         # eslint

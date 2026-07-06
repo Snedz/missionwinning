@@ -114,9 +114,11 @@
   "coachInsightNeedFuel": "เทรนหนักแต่โปรตีนตามไม่ทัน บันทึก Fuel วันนี้เพื่อฟื้นตัว",
   "coachInsightNeedMind": "การฟื้นตัวตึงเครียด เซสชัน Mind สั้นๆ ช่วยการนอนและความสม่ำเสมอ",
   "coachInsightSynergyMove": "สัปดาห์เทรนดี — จับคู่ mobility เพื่อก้าวหน้าต่อเนื่อง",
+  "coachInsightNeedTrack": "เทรนสม่ำเสมอ — บันทึกเดินหรือวิ่งกลางแจ้งใน Track ให้ครบภาพ",
   "coachActionRecoveryFlow": "โฟลว์ฟื้นตัว",
   "coachActionOpenMove": "เปิดเสา Move",
   "coachActionOpenMind": "เปิดเสา Mind",
+  "coachActionOpenTrack": "เปิดเสา Track",
   "todayEditToday": "แก้ไข Today",
   "coachActionStartWorkout": "เริ่มฝึก",
   "coachActionGoBuilder": "ไป Builder",
@@ -144,5 +146,12 @@
   "todayQuickHistoryDesc": "ปริมาณ 1RM และแผนที่กล้ามเนื้อ",
   "todayQuickBundleDesc": "หกเสาหลัก สมัครครั้งเดียว",
   "todayQuickNightDesc": "เซสชัน 22:00–05:00",
-  "todayQuickDawnDesc": "เซสชัน 05:00–08:00"
+  "todayQuickDawnDesc": "เซสชัน 05:00–08:00",
+  "coachPlanTitle": "AI Coach — weekly plan",
+  "coachPlanDesc": "Three sessions tuned to readiness, strain, and your equipment.",
+  "coachPlanPremiumDesc": "Premium generates a fatigue-aware week you can load into the logger.",
+  "coachPlanCta": "Generate this week",
+  "coachPlanGenerating": "Building your week…",
+  "coachPlanLoad": "Load",
+  "coachPlanRegenerate": "Regenerate"
 }

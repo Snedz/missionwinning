@@ -67,15 +67,30 @@ export function CoachPage() {
             <CardDescription>
               {t('coachTasterLockedDesc', {
                 defaultValue:
-                  'Unlock Super Bundle for a new weekly plan, regeneration, and Commander\'s intent briefings.',
+                  'Super Bundle unlocks a new weekly plan, on-demand regeneration, and Commander\'s intent briefings tuned to your readiness.',
               })}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-4">
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {(['coachLockedBenefit1', 'coachLockedBenefit2', 'coachLockedBenefit3', 'coachLockedBenefit4'] as const).map(
+                (key) => (
+                  <li key={key} className="flex gap-2">
+                    <span className="text-emerald-400 shrink-0">✓</span>
+                    <span>{t(key)}</span>
+                  </li>
+                )
+              )}
+            </ul>
             <UnlockButton productId="super-bundle" price="59" title="Super Bundle" isSubscription />
             <Button asChild variant="outline" className="w-full">
               <Link href="/bundle">{t('coachCompareBundle', { defaultValue: 'Compare Super Bundle' })}</Link>
             </Button>
+            <p className="text-center text-[11px] text-muted-foreground">
+              {t('coachFreeCoreNote', {
+                defaultValue: 'Workout logger, library, and Today stay free — premium funds the mission.',
+              })}
+            </p>
           </CardContent>
         </Card>
       )}
