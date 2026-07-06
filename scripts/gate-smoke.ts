@@ -12,6 +12,23 @@ if (!base) {
 
 type Check = { name: string; ok: boolean; detail: string };
 
+/** Obtain gate cookie via POST /api/private-access (preferred over ?access= URL). */
+async function unlockCookie(baseUrl: string, secret: string): Promise<string> {
+  const res = await fetch(`${baseUrl}/api/private-access`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: secret }),
+    signal: AbortSignal.timeout(15_000),
+  });
+  const setCookie = res.headers.getSetCookie?.() ?? [];
+  const raw = setCookie[0] ?? res.headers.get('set-cookie') ?? '';
+  const match = raw.match(/^([^=]+=[^;]+)/);
+  if (!res.ok || !match) {
+    throw new Error(`Gate unlock failed: HTTP ${res.status}`);
+  }
+  return match[1];
+}
+
 async function headOrGet(path: string, init?: RequestInit): Promise<Response> {
   const url = `${base}${path}`;
   try {
@@ -207,26 +224,102 @@ async function main() {
     checks.push({ name: 'POST /api/stripe-webhook', ok: false, detail: String(e) });
   }
 
+  try {
+    const paypalForgery = await headOrGet('/api/paypal-webhook', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    const paypalOk = paypalForgery.status === 401 || paypalForgery.status === 400 || paypalForgery.status === 503;
+    checks.push({
+      name: 'POST /api/paypal-webhook rejects unsigned body',
+      ok: paypalOk,
+      detail: `status ${paypalForgery.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'POST /api/paypal-webhook', ok: false, detail: String(e) });
+  }
+
+  try {
+    const premiumStatus = await headOrGet('/api/premium/status');
+    const statusOk = premiumStatus.status === 401 || premiumStatus.status === 403;
+    checks.push({
+      name: 'GET /api/premium/status (no session)',
+      ok: statusOk,
+      detail: `status ${premiumStatus.status}${statusOk ? '' : ' — expected 401/403'}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/premium/status', ok: false, detail: String(e) });
+  }
+
+  try {
+    const offline = await headOrGet('/offline');
+    checks.push({
+      name: 'GET /offline fallback page',
+      ok: offline.status === 200,
+      detail: `status ${offline.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /offline', ok: false, detail: String(e) });
+  }
+
+  try {
+    const homeHeaders = await headOrGet('/');
+    const nosniff = homeHeaders.headers.get('x-content-type-options');
+    const frame = homeHeaders.headers.get('x-frame-options');
+    const headersOk =
+      (nosniff?.toLowerCase() === 'nosniff' || !!nosniff) &&
+      (frame?.toLowerCase() === 'sameorigin' || !!frame);
+    checks.push({
+      name: 'Security headers on /',
+      ok: headersOk,
+      detail: `X-Content-Type-Options=${nosniff ?? 'missing'}, X-Frame-Options=${frame ?? 'missing'}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'Security headers', ok: false, detail: String(e) });
+  }
+
+  if (process.env.SMOKE_EXPECT_PWA === 'true') {
+    try {
+      const sw = await headOrGet('/sw.js');
+      const manifest = await headOrGet('/manifest.webmanifest');
+      const pwaOk = sw.status === 200 && manifest.status === 200;
+      checks.push({
+        name: 'PWA assets (sw.js + manifest)',
+        ok: pwaOk,
+        detail: `sw.js=${sw.status}, manifest=${manifest.status}`,
+      });
+    } catch (e) {
+      checks.push({ name: 'PWA assets', ok: false, detail: String(e) });
+    }
+  } else {
+    checks.push({
+      name: 'PWA assets',
+      ok: true,
+      detail: 'skipped — set SMOKE_EXPECT_PWA=true after PRIVATE_MODE=false',
+    });
+  }
+
   const accessSecret = process.env.SMOKE_ACCESS_SECRET;
   if (accessSecret) {
     try {
-      const unlocked = await headOrGet(
-        `/fitness-test?access=${encodeURIComponent(accessSecret)}`
-      );
+      const unlocked = await headOrGet('/welcome', {
+        headers: { Cookie: await unlockCookie(base, accessSecret) },
+      });
       const ok = unlocked.status === 200;
       checks.push({
-        name: 'GET /fitness-test (unlocked via ?access=)',
+        name: 'GET /welcome (unlocked via gate cookie)',
         ok,
         detail: ok ? '200 OK' : `status ${unlocked.status}`,
       });
     } catch (e) {
-      checks.push({ name: 'GET /fitness-test', ok: false, detail: String(e) });
+      checks.push({ name: 'GET /welcome unlocked', ok: false, detail: String(e) });
     }
   } else {
     checks.push({
-      name: 'GET /fitness-test (gated)',
+      name: 'GET /welcome (unlocked)',
       ok: true,
-      detail: 'skipped — set SMOKE_ACCESS_SECRET to probe unlocked route',
+      detail: 'skipped — set SMOKE_ACCESS_SECRET to probe gated welcome route',
     });
   }
 

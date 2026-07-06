@@ -1,6 +1,6 @@
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
-import type { SessionKind, SplitDay } from '@/lib/coach/types';
+import type { SplitDay } from '@/lib/coach/types';
 
 const ALL_GROUPS: MuscleGroup[] = [...MAJOR_GROUPS];
 
@@ -54,6 +54,33 @@ function injectRecoveryIfNeeded(
   return copy;
 }
 
+/** Readiness/strain-aware split adjustments (premium plan depth). */
+export function applyFatigueToSplit(
+  days: SplitDay[],
+  signals?: { readiness: number; strain: number; recovery: number }
+): SplitDay[] {
+  if (!signals) return days;
+  const split = [...days];
+
+  if (signals.readiness < 40 || signals.strain >= 70) {
+    const idx = Math.min(1, split.length - 1);
+    if (split[idx]?.kind === 'strength') {
+      split[idx] = recoveryDay();
+    }
+  }
+
+  if (signals.strain >= 85) {
+    for (let i = split.length - 1; i >= 0; i--) {
+      if (split[i].kind === 'strength') {
+        split[i] = recoveryDay();
+        break;
+      }
+    }
+  }
+
+  return split;
+}
+
 function swapConditioningIfNeeded(days: SplitDay[], goalId: string): SplitDay[] {
   if (goalId !== 'endurance' && goalId !== 'fat_loss') return days;
   const copy = [...days];
@@ -68,7 +95,8 @@ export function chooseSplit(
   daysPerWeek: number,
   experience: string,
   goalId: string,
-  assessmentRisk?: string
+  assessmentRisk?: string,
+  bodySignals?: { readiness: number; strain: number; recovery: number }
 ): SplitDay[] {
   const d = Math.max(2, Math.min(6, daysPerWeek));
   let split: SplitDay[];
@@ -90,6 +118,7 @@ export function chooseSplit(
   }
 
   split = injectRecoveryIfNeeded(split, goalId, assessmentRisk);
+  split = applyFatigueToSplit(split, bodySignals);
   split = swapConditioningIfNeeded(split, goalId);
   return split;
 }

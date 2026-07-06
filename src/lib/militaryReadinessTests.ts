@@ -1,5 +1,3 @@
-import type { FormGuide } from '@/types/formGuide';
-
 export interface MilitaryReadinessTest {
   id: string;
   name: string;

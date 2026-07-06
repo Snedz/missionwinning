@@ -21,13 +21,15 @@ import {
   logActivity,
 } from '@/lib/activityLog';
 import { logPillarWin } from '@/lib/pillarLog';
-import { UnlockButton } from '@/components/UnlockButton';
-import { ActivityImportPanel } from '@/components/track/ActivityImportPanel';
 import { TrackGpsPanel } from '@/components/track/TrackGpsPanel';
+import { TrackWeeklyInsights } from '@/components/track/TrackWeeklyInsights';
+import { ActivityImportPanel } from '@/components/track/ActivityImportPanel';
+import { usePremium } from '@/hooks/usePremium';
 import { MapPin, Trash2 } from 'lucide-react';
 
 export function TrackPage() {
   const { t } = useTranslation();
+  const { premium } = usePremium();
   const [type, setType] = useState<ActivityType>('walk');
   const [durationMin, setDurationMin] = useState(30);
   const [distanceKm, setDistanceKm] = useState('');
@@ -104,6 +106,8 @@ export function TrackPage() {
         </div>
 
         <TrackGpsPanel onLogged={() => setRefresh((r) => r + 1)} />
+
+        {premium && <TrackWeeklyInsights />}
 
       <Card className="content-card">
           <CardHeader>
@@ -207,27 +211,6 @@ export function TrackPage() {
                 ))}
               </ul>
             )}
-          </CardContent>
-        </Card>
-
-      <Card className="content-card border-white/10 bg-card/50">
-          <CardHeader>
-            <CardTitle className="text-base">
-              {t('trackPremiumTitle', { defaultValue: 'Premium — GPS & advanced stats' })}
-            </CardTitle>
-            <CardDescription>
-              {t('trackPremiumDesc', {
-                defaultValue: 'MapMy-style tracking, routes, pace charts, cross-pillar coaching.',
-              })}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <UnlockButton
-              productId="track-premium"
-              price="8"
-              title={t('trackPremiumBtn', { defaultValue: 'Track Premium' })}
-              isSubscription
-            />
           </CardContent>
         </Card>
     </PillarPageShell>

@@ -3,6 +3,8 @@
  * Playwright E2E smoke — offline cold-start, backup, 404, logger, coach, screenshot matrix.
  * Usage: SMOKE_BASE_URL=http://localhost:3000 npm run e2e
  * Requires: npm install -D playwright && npx playwright install chromium
+ *
+ * Hero flow (Phase H): set SMOKE_ACCESS_SECRET to unlock gate, then runs mobile welcome → today → builder.
  */
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -11,6 +13,7 @@ const base = (process.env.SMOKE_BASE_URL || process.argv[2] || 'http://localhost
   /\/$/,
   ''
 );
+const accessSecret = process.env.SMOKE_ACCESS_SECRET;
 
 const SCREENSHOT_ROUTES = [
   '/',
@@ -26,6 +29,36 @@ const VIEWPORTS = [
   { name: '390', width: 390, height: 844 },
   { name: '1440', width: 1440, height: 900 },
 ];
+
+/** Unlock private gate via password form API (sets httpOnly cookie on context). */
+async function unlockGate(page, context) {
+  if (!accessSecret) return false;
+
+  const res = await page.request.post(`${base}/api/private-access`, {
+    data: { password: accessSecret },
+  });
+  if (!res.ok()) return false;
+
+  const headers = res.headers();
+  const setCookie = headers['set-cookie'];
+  if (!setCookie) return false;
+
+  const match = setCookie.match(/([^=]+)=([^;]+)/);
+  if (!match) return false;
+
+  await context.addCookies([
+    {
+      name: match[1],
+      value: match[2],
+      domain: new URL(base).hostname,
+      path: '/',
+      httpOnly: true,
+      secure: base.startsWith('https'),
+      sameSite: 'Lax',
+    },
+  ]);
+  return true;
+}
 
 async function main() {
   let chromium;
@@ -62,12 +95,90 @@ async function main() {
     if (!res || res.status() !== 404) throw new Error(`Expected 404, got ${res?.status()}`);
   });
 
+  await check('offline fallback page', async () => {
+    const res = await page.goto(`${base}/offline`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    if (!res || res.status() !== 200) throw new Error(`Expected 200, got ${res?.status()}`);
+    const text = await page.textContent('body');
+    if (!text || text.length < 10) throw new Error('Offline page empty');
+  });
+
+  if (process.env.SMOKE_EXPECT_PWA === 'true') {
+    await check('PWA sw.js registered', async () => {
+      const res = await page.request.get(`${base}/sw.js`);
+      if (!res.ok()) throw new Error(`sw.js status ${res.status()}`);
+    });
+    await check('PWA manifest', async () => {
+      const res = await page.request.get(`${base}/manifest.webmanifest`);
+      if (!res.ok()) throw new Error(`manifest status ${res.status()}`);
+    });
+  }
+
+  const gateOk = await unlockGate(page, context);
+  if (accessSecret && !gateOk) {
+    failures.push('gate unlock');
+    console.error('✗ gate unlock: POST /api/private-access failed');
+  } else if (gateOk) {
+    console.log('✓ gate unlocked via SMOKE_ACCESS_SECRET');
+  }
+
+  await check('hero flow mobile welcome', async () => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    const res = await page.goto(`${base}/welcome`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    if (!res) throw new Error('No response');
+    if (res.status() === 200) {
+      const body = await page.textContent('body');
+      if (!body?.toLowerCase().includes('day') && !body?.toLowerCase().includes('welcome')) {
+        throw new Error('Welcome page missing expected copy');
+      }
+      return;
+    }
+    if (!gateOk && page.url().includes('/private')) {
+      throw new Error('Welcome gated — set SMOKE_ACCESS_SECRET');
+    }
+    throw new Error(`Unexpected status ${res.status()} url=${page.url()}`);
+  });
+
+  await check('hero flow today loads', async () => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${base}/log`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    if (!gateOk && page.url().includes('/private')) {
+      throw new Error('Today gated — set SMOKE_ACCESS_SECRET');
+    }
+    await page.waitForSelector('body', { timeout: 15_000 });
+  });
+
+  await check('hero flow builder reachable', async () => {
+    await page.goto(`${base}/builder`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    if (!gateOk && page.url().includes('/private')) {
+      throw new Error('Builder gated — set SMOKE_ACCESS_SECRET');
+    }
+    await page.waitForSelector('body', { timeout: 15_000 });
+  });
+
+  await check('language switch on profile', async () => {
+    if (!gateOk) {
+      console.log('  (skipped — gate required for /profile)');
+      return;
+    }
+    await page.goto(`${base}/profile`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    const langSelect = page.locator('select[aria-label*="anguage" i], select[aria-label*="Change language" i]');
+    if ((await langSelect.count()) === 0) throw new Error('Language select not found');
+    await langSelect.selectOption('es');
+    await page.waitForTimeout(500);
+    const nav = await page.textContent('nav');
+    if (!nav) throw new Error('Nav missing after language change');
+  });
+
   await check('log page loads', async () => {
     await page.goto(`${base}/log`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
     await page.waitForSelector('body', { timeout: 15_000 });
   });
 
   await check('coach page offline shell', async () => {
+    if (!gateOk) {
+      console.log('  (skipped offline coach — gate required)');
+      return;
+    }
     await context.setOffline(true);
     await page.goto(`${base}/coach`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
     const text = await page.textContent('body');

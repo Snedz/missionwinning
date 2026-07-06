@@ -116,22 +116,7 @@ export function useDailyCoachInsight(
     return () => {
       cancelled = true;
     };
-  }, [
-    context?.readiness,
-    context?.strain,
-    context?.recovery,
-    context?.missionScore,
-    context?.streak,
-    context?.focusGroup,
-    context?.pillars.moveFlows,
-    context?.pillars.mindSessions,
-    context?.pillars.proteinDays,
-    context?.pillars.trainDays,
-    fallback.messageKey,
-    fallback.actionLabelKey,
-    fallback.actionPath,
-    t,
-  ]);
+  }, [context, fallback, t]);
 
   return state;
 }

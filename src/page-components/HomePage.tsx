@@ -15,7 +15,7 @@ import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
 import { GuidebookContinueCard } from "@/components/learn/GuidebookContinueCard";
 import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
-import { getUser, getUserNutritionForDate } from "@/lib/supabase";
+import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
 import { CommandersIntent } from "@/components/journey/CommandersIntent";
@@ -58,8 +58,8 @@ export function HomePage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   // Recent pillar wins from cloud (Move/Mind/Assess logs as nutrition entries)
-  const [recentPillarWins, setRecentPillarWins] = useState<any[]>([]);
-  const [lastAssessment, setLastAssessment] = useState<any>(null);
+  const [recentPillarWins, setRecentPillarWins] = useState<{ name?: string; date?: string }[]>([]);
+  const [lastAssessment, setLastAssessment] = useState<{ risk?: string; date?: string } | null>(null);
   const [sectionPrefs, setSectionPrefs] = useState<TodayDashboardPrefs>(() =>
     typeof window !== 'undefined'
       ? loadTodayDashboardPrefs()
@@ -123,9 +123,9 @@ export function HomePage() {
         try {
           const today = new Date().toISOString().split('T')[0];
           const cloudWins = await getUserNutritionForDate(today);
-          const wins = cloudWins.filter((w: any) => /win|assessment|mobility|mind|track|learn|move/i.test(w.name || ''));
+          const wins = cloudWins.filter((w: CloudNutritionEntry) => /win|assessment|mobility|mind|track|learn|move/i.test(w.name || ''));
           setRecentPillarWins(wins.slice(0, 5));
-        } catch {}
+        } catch { /* noop */ }
       }
       // Local pillar wins (Move/Mind/Track/Learn)
       try {
@@ -137,12 +137,12 @@ export function HomePage() {
             return merged.slice(0, 5);
           });
         }
-      } catch {}
+      } catch { /* noop */ }
       // Load last assessment from local (saved on submit)
       try {
         const la = localStorage.getItem('mw_last_assessment');
         if (la) setLastAssessment(JSON.parse(la));
-      } catch {}
+      } catch { /* noop */ }
     };
     load();
   }, []);
@@ -180,12 +180,12 @@ export function HomePage() {
   try {
     const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]');
     const byDate: Record<string, number> = {};
-    logs.forEach((l: any) => {
+    logs.forEach((l: { date?: string; protein?: number }) => {
       const d = l.date || new Date().toISOString().split('T')[0];
       byDate[d] = (byDate[d] || 0) + (l.protein || 0);
     });
     highProteinDays = Object.values(byDate).filter((p: number) => p >= 150).length;
-  } catch {}
+  } catch { /* noop */ }
 
   // Win/Mission Score via util
   const scoreBreakdown = computeWinScore({

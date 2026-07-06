@@ -132,7 +132,7 @@ export function ActiveWorkoutPage() {
     if (nextSet && nextSetRef.current) {
       nextSetRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-  }, [nextSet?.exIdx, nextSet?.setIdx]);
+  }, [nextSet]);
 
   const getSetKey = (exIdx: number, setIdx: number) => `${exIdx}-${setIdx}`;
 

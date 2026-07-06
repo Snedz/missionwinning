@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from "react-i18next";
 import { User } from 'lucide-react';
 import { formatStoredGoal } from '@/lib/journeyGoals';
-import { supabase, signOut, isPremium, getUser } from "@/lib/supabase";
+import { supabase, signOut, getUser } from "@/lib/supabase";
 import { SignInPanel } from "@/components/auth/SignInPanel";
 import i18n from "@/i18n";
 import { useWorkoutStore } from "@/store/workoutStore";
@@ -153,12 +153,12 @@ export function ProfilePage() {
   };
 
   // Light onboarding state
-  const [experience, setExperience] = useState(localStorage.getItem('mw_experience') || '');
-  const [equipment, setEquipment] = useState(localStorage.getItem('mw_equipment') || '');
+  const [experience] = useState(localStorage.getItem('mw_experience') || '');
+  const [equipment] = useState(localStorage.getItem('mw_equipment') || '');
   const [daysPerWeek, setDaysPerWeek] = useState(() =>
     loadDaysPerWeek(localStorage.getItem('mw_experience') || 'beginner')
   );
-  const [primaryGoal, setPrimaryGoal] = useState(localStorage.getItem('mw_primary_goal') || goals);
+  const [primaryGoal] = useState(localStorage.getItem('mw_primary_goal') || goals);
 
   const isOnboarded = !!(localStorage.getItem('mw_experience') && localStorage.getItem('mw_equipment'));
 

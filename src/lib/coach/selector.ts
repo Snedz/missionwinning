@@ -33,12 +33,21 @@ function levelAllows(ex: Exercise, experience: string): boolean {
   return true;
 }
 
-function exerciseCountForDay(kind: SplitDay['kind'], experience: string): number {
+function exerciseCountForDay(
+  kind: SplitDay['kind'],
+  experience: string,
+  strain?: number
+): number {
   if (kind === 'recovery') return 4;
   if (kind === 'conditioning') return experience === 'beginner' ? 4 : 6;
-  if (experience === 'beginner') return 3;
-  if (experience === 'advanced') return 5;
-  return 4;
+  let count: number;
+  if (experience === 'beginner') count = 3;
+  else if (experience === 'advanced') count = 5;
+  else count = 4;
+  if (kind === 'strength' && strain !== undefined && strain >= 70) {
+    count = Math.max(2, count - 1);
+  }
+  return count;
 }
 
 function historyExerciseIds(history: CoachContext['history']): Set<string> {
@@ -111,7 +120,7 @@ export function pickExercises(
   }
 
   const familiar = historyExerciseIds(ctx.history);
-  const count = exerciseCountForDay(day.kind, ctx.experience);
+  const count = exerciseCountForDay(day.kind, ctx.experience, ctx.bodyScores.strain);
 
   let candidates = EXERCISES.filter(
     (ex) =>

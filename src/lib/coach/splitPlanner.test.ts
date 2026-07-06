@@ -31,6 +31,25 @@ describe('chooseSplit', () => {
     const split = chooseSplit(4, 'intermediate', 'mobility');
     assert.ok(split.some((d) => d.kind === 'recovery'));
   });
+
+  it('high strain injects recovery day', () => {
+    const split = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      readiness: 55,
+      strain: 75,
+      recovery: 40,
+    });
+    assert.ok(split.some((d) => d.kind === 'recovery'));
+  });
+
+  it('very high strain swaps last strength to recovery', () => {
+    const split = chooseSplit(4, 'intermediate', 'strength', undefined, {
+      readiness: 40,
+      strain: 90,
+      recovery: 30,
+    });
+    const recoveryCount = split.filter((d) => d.kind === 'recovery').length;
+    assert.ok(recoveryCount >= 2);
+  });
 });
 
 describe('mapToCalendar', () => {

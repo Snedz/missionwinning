@@ -96,6 +96,8 @@ From [JOURNEY.md](JOURNEY.md) and [PROTECTION.md](PROTECTION.md):
 
 ### Hero flow (manual QA before public)
 
+Automated partial coverage: `SMOKE_BASE_URL=... SMOKE_ACCESS_SECRET=... npm run e2e` (mobile 390px welcome → today → builder → language switch).
+
 One polished path on **mobile**:
 
 1. `/welcome` I-Day (≤3 min)

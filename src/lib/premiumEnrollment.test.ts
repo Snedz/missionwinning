@@ -1,6 +1,7 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { emailFromCheckoutSession } from '@/lib/stripeWebhook';
+import { restoreEnv, setTestEnv, snapshotEnv } from './testEnv.ts';
 
 function isDemoPremiumEnabled(): boolean {
   if (process.env.NODE_ENV === 'production' && process.env.DEMO_PREMIUM === 'true') {
@@ -13,31 +14,31 @@ function isDemoPremiumEnabled(): boolean {
 }
 
 describe('premium enrollment flow', () => {
-  const env = process.env;
+  let envSnapshot: NodeJS.ProcessEnv;
 
   beforeEach(() => {
-    process.env = { ...env };
+    envSnapshot = snapshotEnv();
   });
 
   afterEach(() => {
-    process.env = env;
+    restoreEnv(envSnapshot);
   });
 
   it('demo premium mode unlocks without enrollment row', () => {
-    process.env.DEMO_PREMIUM = 'true';
-    process.env.NODE_ENV = 'development';
+    setTestEnv('DEMO_PREMIUM', 'true');
+    setTestEnv('NODE_ENV', 'development');
     assert.equal(isDemoPremiumEnabled(), true);
   });
 
   it('production refuses DEMO_PREMIUM even when env is true', () => {
-    process.env.DEMO_PREMIUM = 'true';
-    process.env.NODE_ENV = 'production';
+    setTestEnv('DEMO_PREMIUM', 'true');
+    setTestEnv('NODE_ENV', 'production');
     assert.equal(isDemoPremiumEnabled(), false);
   });
 
   it('production defaults demo premium off', () => {
-    process.env.DEMO_PREMIUM = 'false';
-    process.env.NODE_ENV = 'production';
+    setTestEnv('DEMO_PREMIUM', 'false');
+    setTestEnv('NODE_ENV', 'production');
     assert.equal(isDemoPremiumEnabled(), false);
   });
 

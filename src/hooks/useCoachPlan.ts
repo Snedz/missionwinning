@@ -11,7 +11,7 @@ import { supabase } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 import { readLocalCoachContext } from '@/lib/coach/contextBuilder';
 import { generateWeek } from '@/lib/coach/planEngine';
-import { adaptPlan, adaptForEquipmentChange } from '@/lib/coach/adapt';
+import { adaptPlan, adaptForEquipmentChange, regenerateFutureSessions } from '@/lib/coach/adapt';
 import { currentWeekStart, todayDayOffset } from '@/lib/coach/splitPlanner';
 import {
   loadPlan,
@@ -73,6 +73,15 @@ export function useCoachPlan() {
 
     let next = adaptPlan(existing, ctx, weekStart);
     next = adaptForEquipmentChange(next, ctx, todayOffset);
+
+    if (premium && ctx.bodyScores.strain >= 70 && todayOffset < 6) {
+      const regen = regenerateFutureSessions(next, ctx, todayOffset);
+      if (regen.revision !== next.revision) {
+        next = regen;
+        track('coach_plan_regenerated_fatigue', { strain: ctx.bodyScores.strain });
+      }
+    }
+
     if (next.revision !== existing.revision) {
       track('coach_plan_adapted', { revision: next.revision });
       savePlan(next);

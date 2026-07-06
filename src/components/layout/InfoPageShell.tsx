@@ -1,7 +1,6 @@
 'use client';
 
 import type { LucideIcon } from 'lucide-react';
-import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { StaggerGroup, StaggerItem } from '@/components/layout/StaggerReveal';

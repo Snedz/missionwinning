@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { BookMarked, ChevronRight } from 'lucide-react';
 
 export function GuidebookIndexPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { premium } = usePremium();
   const [premiumChapters, setPremiumChapters] = useState<GuideChapter[]>([]);
   const [completed, setCompleted] = useState<Set<string>>(() => loadGuidebookProgress());
@@ -44,7 +44,7 @@ export function GuidebookIndexPage() {
   );
   const chapters = useMemo(
     () => localizeGuidebookChapters(allChapters, t),
-    [allChapters, i18n.language, t]
+    [allChapters, t]
   );
 
   useEffect(() => {

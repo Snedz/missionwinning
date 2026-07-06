@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import type { MuscleGroup } from '@/types';
 import { EXERCISES } from '@/data/exercises';
 import {
   countExerciseHistory,
@@ -37,7 +38,7 @@ describe('libraryFilters', () => {
   it('filters by muscle chip', () => {
     const muscles = uniqueMuscleGroups(EXERCISES);
     assert.ok(muscles.length > 0);
-    const muscle = muscles[0];
+    const muscle = muscles[0] as MuscleGroup;
     const result = filterExercises(EXERCISES, {
       query: '',
       equipment: '',

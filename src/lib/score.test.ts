@@ -15,6 +15,7 @@ function chestWorkout(daysAgo: number): CompletedWorkoutLog {
   return {
     id: `log-${daysAgo}`,
     workoutName: 'Chest',
+    startedAt: d.toISOString(),
     completedAt: d.toISOString(),
     durationSeconds: 1800,
     totalVolume: 500,

@@ -4,7 +4,7 @@
  * Consumers: CoachPage, BundlePage, gated UI
  */
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 /**
  * Server-verified premium flag. In production, localStorage mw_premium is ignored
@@ -13,9 +13,13 @@ import { useEffect, useState } from 'react';
 export function usePremium() {
   const [premium, setPremium] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const refetch = useCallback(() => setRefreshKey((k) => k + 1), []);
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
     fetch('/api/premium/status', { credentials: 'include' })
       .then((r) => r.json())
       .then((data) => {
@@ -37,7 +41,7 @@ export function usePremium() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [refreshKey]);
 
-  return { premium, loading };
+  return { premium, loading, refetch };
 }

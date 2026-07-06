@@ -34,7 +34,12 @@ export function generateWeek(ctx: CoachContext, weekStart: string, revision = 1)
     ctx.daysPerWeek,
     ctx.experience,
     ctx.goalId,
-    ctx.assessmentRisk
+    ctx.assessmentRisk,
+    {
+      readiness: ctx.bodyScores.readiness,
+      strain: ctx.bodyScores.strain,
+      recovery: ctx.bodyScores.recovery,
+    }
   );
   const calendar = mapToCalendar(split, ctx.preferredDays, weekStart);
 

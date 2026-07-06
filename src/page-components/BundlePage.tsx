@@ -61,7 +61,7 @@ function planBadgeLabel(
 export function BundlePage() {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
-  const { premium, loading: premiumLoading } = usePremium();
+  const { premium, loading: premiumLoading, refetch } = usePremium();
   const [planId, setPlanId] = useState<BundlePlanId>(DEFAULT_BUNDLE_PLAN);
   const plan = BUNDLE_PLANS[planId];
   const stripeUrl = getStripeCheckoutUrl("super-bundle");
@@ -74,8 +74,19 @@ export function BundlePage() {
   const checkoutSuccess = searchParams.get('checkout') === 'success';
 
   useEffect(() => {
-    if (!checkoutSuccess || premiumLoading) return;
-    track('checkout_completed', { premium: !!premium });
+    if (!checkoutSuccess || premiumLoading || premium) return;
+    refetch();
+    const interval = setInterval(refetch, 4000);
+    const stop = setTimeout(() => clearInterval(interval), 90_000);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(stop);
+    };
+  }, [checkoutSuccess, premium, premiumLoading, refetch]);
+
+  useEffect(() => {
+    if (!checkoutSuccess || premiumLoading || !premium) return;
+    track('checkout_completed', { premium: true });
   }, [checkoutSuccess, premium, premiumLoading]);
 
   const planTabLabel =

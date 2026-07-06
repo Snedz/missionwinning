@@ -8,7 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { usePremium } from '@/hooks/usePremium';
 import { logActivity } from '@/lib/activityLog';
 import { logPillarWin } from '@/lib/pillarLog';
-import { totalTrackDistanceKm, type GpsPoint } from '@/lib/trackGps';
+import {
+  formatPaceMinPerKm,
+  livePaceFromPoints,
+  segmentPaceSeries,
+  totalTrackDistanceKm,
+  type GpsPoint,
+} from '@/lib/trackGps';
+import { TrackPaceChart } from '@/components/track/TrackPaceChart';
 import { UnlockButton } from '@/components/UnlockButton';
 
 export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
@@ -75,6 +82,10 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
     onLogged?.();
   };
 
+  const distanceKm = totalTrackDistanceKm(points);
+  const livePace = livePaceFromPoints(points);
+  const paceSeries = segmentPaceSeries(points);
+
   if (!premium) {
     return (
       <Card className="content-card border-emerald-500/20">
@@ -90,7 +101,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
               defaultValue: 'Record outdoor walks and runs with live distance — MapMy-style, Super Bundle.',
             })}
           </p>
-          <UnlockButton productId="track-premium" price="8" title="Track Premium" isSubscription />
+          <UnlockButton productId="super-bundle" price="59" title="Super Bundle" isSubscription />
         </CardContent>
       </Card>
     );
@@ -105,6 +116,21 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-4 text-sm">
+          <div>
+            <span className="text-muted-foreground">{t('trackGpsDistance', { defaultValue: 'Distance' })}: </span>
+            <span className="font-mono font-medium">{distanceKm.toFixed(2)} km</span>
+          </div>
+          {livePace != null && (
+            <div>
+              <span className="text-muted-foreground">{t('trackGpsPace', { defaultValue: 'Pace' })}: </span>
+              <span className="font-mono font-medium">{formatPaceMinPerKm(livePace)}</span>
+            </div>
+          )}
+        </div>
+        {paceSeries.length >= 2 && (
+          <TrackPaceChart data={paceSeries} />
+        )}
         <p className="text-sm text-muted-foreground">
           {tracking
             ? t('trackGpsRecording', {
