@@ -47,3 +47,30 @@ export function defaultCalcInputs(units: UnitsPref) {
   }
   return { weight: 225, bw: 180, height: 70 };
 }
+
+export type MacroGoal = 'cut' | 'maintain' | 'bulk';
+
+/** TDEE-based macro targets — shared by MacroCalculator and Fuel Coach. */
+export function macroTargetsFromStats(params: {
+  bw: number;
+  height?: number;
+  age?: number;
+  sex?: CalcSex;
+  activity?: number;
+  goal?: MacroGoal;
+  units?: UnitsPref;
+}): { cals: number; protein: number; carbs: number; fat: number } {
+  const units = params.units ?? 'metric';
+  const height = params.height ?? defaultCalcInputs(units).height;
+  const age = params.age ?? 28;
+  const activity = params.activity ?? 1.55;
+  const goal = params.goal ?? 'maintain';
+  const bmr = mifflinBmr(params.bw, height, age, units, params.sex ?? 'male');
+  const tdee = Math.round(bmr * activity);
+  const cals =
+    goal === 'cut' ? Math.round(tdee * 0.85) : goal === 'bulk' ? Math.round(tdee * 1.1) : tdee;
+  const protein = proteinTargetGrams(params.bw, units);
+  const fat = Math.round((cals * 0.25) / 9);
+  const carbs = Math.max(0, Math.round((cals - protein * 4 - fat * 9) / 4));
+  return { cals, protein, carbs, fat };
+}

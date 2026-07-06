@@ -54,6 +54,15 @@ type FuelStrings = {
   fuelEmptyTitle: string;
   fuelLogFirstMeal: string;
   fuelSubtitle: string;
+  fuelCoachTitle: string;
+  fuelCoachGenerateDesc: string;
+  fuelCoachGenerate: string;
+  fuelCoachWeekTitle: string;
+  fuelCoachRegenerate: string;
+  fuelCoachDayTotals: string;
+  fuelCoachLockedDesc: string;
+  fuelCoachTargets: string;
+  fuelCoachPreviewNote: string;
 };
 
 const en: FuelStrings = {
@@ -116,6 +125,17 @@ const en: FuelStrings = {
   fuelLogFirstMeal: 'Log first meal',
   fuelSubtitle:
     'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
+  fuelCoachTitle: 'Fuel Coach — adaptive meal plan',
+  fuelCoachGenerateDesc:
+    'Generate a 7-day plan from your macro targets and this week’s training load.',
+  fuelCoachGenerate: 'Generate meal plan',
+  fuelCoachWeekTitle: 'Your adaptive meal plan',
+  fuelCoachRegenerate: 'Regenerate',
+  fuelCoachDayTotals: 'Day totals',
+  fuelCoachLockedDesc:
+    'Macro-synced 7-day plan from your targets and training load — not a static sample.',
+  fuelCoachTargets: 'Your targets',
+  fuelCoachPreviewNote: 'Recipes from your library, adapted to heavy vs rest days',
 };
 
 const es: FuelStrings = {

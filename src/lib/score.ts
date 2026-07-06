@@ -100,6 +100,8 @@ export function computeWinScore(params: {
   trackActivities?: number;
   learnLessons?: number;
   trainDaysThisWeek?: number;
+  /** 1 when Fuel Coach plan exists this week — synergy with protein logging */
+  fuelCoachActive?: number;
 }): WinScoreBreakdown {
   const {
     streak,
@@ -112,6 +114,7 @@ export function computeWinScore(params: {
     trackActivities = 0,
     learnLessons = 0,
     trainDaysThisWeek = 0,
+    fuelCoachActive = 0,
   } = params;
 
   // Train pillar (~40 pts)
@@ -124,7 +127,9 @@ export function computeWinScore(params: {
 
   // Fuel (~15 pts)
   const proteinPart = Math.min(highProteinDays, 7) / 7 * 15;
-  const fuelTotal = Math.round(proteinPart);
+  const fuelCoachBonus =
+    fuelCoachActive > 0 && highProteinDays > 0 ? Math.min(3, highProteinDays) : 0;
+  const fuelTotal = Math.round(proteinPart + fuelCoachBonus);
 
   // Move (~12 pts) — up to 4 flows/week
   const movePart = Math.min(moveFlows, 4) / 4 * 12;

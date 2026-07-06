@@ -19,6 +19,7 @@
 | **Journey** | `missionJourney.ts`, `journeySync.ts`, `journeyGoals.ts`, `journeyAnalytics.ts` | I-Day → Commissioned |
 | **Workouts** | `workoutTemplate.ts`, `workoutMerge.ts`, `historyAnalytics.ts`, `benchmarks.ts` | Logger helpers |
 | **Nutrition / Fuel** | `macroTargets.ts`, `openFoodFacts.ts`, `nutritionLog.ts` | Fuel pillar |
+| **Fuel Coach** | `fuelCoach/` subfolder | Adaptive meal plan — see [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | **Payments** | `premiumServer.ts`, `payments.ts`, `stripeWebhook.ts`, `paypalWebhook.ts` | Premium gating |
 | **School / PFT** | `schoolClassServer.ts`, `presidentialFitness*.ts`, `fitnessTest*.ts` | America track |
 | **Gating / auth** | `privateGate.ts`, `supabaseAuthCookies.ts`, `supabaseRequestAuth.ts` | Private beta, JWT cookies |
@@ -34,6 +35,7 @@
 | Folder | INDEX |
 |--------|-------|
 | `coach/` | [coach/INDEX.md](coach/INDEX.md) |
+| `fuelCoach/` | [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | `leaderboard/` | Leaderboard compute/sync helpers — [leaderboard/INDEX.md](leaderboard/INDEX.md) |
 
 ## Convention: adding new domains

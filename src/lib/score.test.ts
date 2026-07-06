@@ -62,6 +62,20 @@ describe('computeWinScore', () => {
     });
     assert.equal(score.total, 100);
   });
+
+  it('adds Fuel Coach synergy bonus when plan is active and protein is logged', () => {
+    const base = {
+      streak: 0,
+      highProteinDays: 3,
+      totalSessions: 0,
+      totalVolume: 0,
+      savedCount: 0,
+    };
+    const without = computeWinScore({ ...base, fuelCoachActive: 0 });
+    const withCoach = computeWinScore({ ...base, fuelCoachActive: 1 });
+    assert.ok(withCoach.pillars.fuel > without.pillars.fuel);
+    assert.equal(withCoach.pillars.fuel - without.pillars.fuel, 3);
+  });
 });
 
 describe('getCoachInsight', () => {

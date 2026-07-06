@@ -1,6 +1,7 @@
 import { getChallengeProgress } from '@/lib/challenges';
 import { getPillarWins, type PillarType } from '@/lib/pillarLog';
 import { getActivitiesForWeek } from '@/lib/activityLog';
+import { hasFuelPlanThisWeek, todayFuelSynergyBump } from '@/lib/fuelCoach/synergy';
 
 export interface WeeklyPillarStats {
   moveFlows: number;
@@ -10,6 +11,8 @@ export interface WeeklyPillarStats {
   trainDays: number;
   proteinDays: number;
   weekVolume: number;
+  fuelCoachActive: number;
+  fuelCoachCarbBump: number;
 }
 
 function weekStartIso(): string {
@@ -69,5 +72,7 @@ export function gatherWeeklyPillarStats(): WeeklyPillarStats {
     trainDays,
     proteinDays,
     weekVolume,
+    fuelCoachActive: hasFuelPlanThisWeek() ? 1 : 0,
+    fuelCoachCarbBump: todayFuelSynergyBump(),
   };
 }

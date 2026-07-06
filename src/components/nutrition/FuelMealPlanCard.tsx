@@ -1,51 +1,93 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FUEL_MEAL_PLAN } from '@/data/fuelMealPlan';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { FuelLockedPreview } from '@/components/nutrition/FuelLockedPreview';
+import { useFuelPlan } from '@/hooks/useFuelPlan';
+import { RefreshCw, Sparkles } from 'lucide-react';
 
-type Props = {
-  premium: boolean;
-};
-
-export function FuelMealPlanCard({ premium }: Props) {
+export function FuelMealPlanCard() {
   const { t } = useTranslation();
-  const visibleDays = premium ? FUEL_MEAL_PLAN : FUEL_MEAL_PLAN.slice(0, 1);
-  const lockedCount = FUEL_MEAL_PLAN.length - visibleDays.length;
+  const { plan, premium, loading, generate, regenerate, baseTargets } = useFuelPlan();
+
+  if (!premium) {
+    return <FuelLockedPreview baseTargets={baseTargets} />;
+  }
+
+  if (loading) {
+    return (
+      <Card className="content-card">
+        <CardContent className="py-6 text-sm text-muted-foreground">
+          {t('loading', { defaultValue: 'Loading…' })}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!plan) {
+    return (
+      <Card className="content-card border-emerald-500/20">
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-emerald-400" />
+            {t('fuelCoachTitle', { defaultValue: 'Fuel Coach — adaptive meal plan' })}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <p className="text-sm text-muted-foreground">
+            {t('fuelCoachGenerateDesc', {
+              defaultValue:
+                'Generate a 7-day plan from your macro targets and this week’s training load.',
+            })}
+          </p>
+          <p className="text-xs text-muted-foreground tabular-nums">
+            {baseTargets.cals} kcal · {baseTargets.protein}g protein · {baseTargets.carbs}g carbs
+          </p>
+          <Button variant="fitness" size="sm" onClick={() => generate()}>
+            {t('fuelCoachGenerate', { defaultValue: 'Generate meal plan' })}
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
-    <Card className="content-card">
-      <CardHeader>
-        <CardTitle>
-          {t('fuelMealPlanTitle', { defaultValue: '7-day high-protein meal outline' })}
+    <Card className="content-card border-emerald-500/20">
+      <CardHeader className="flex flex-row items-start justify-between gap-2">
+        <CardTitle className="text-base">
+          {t('fuelCoachWeekTitle', { defaultValue: 'Your adaptive meal plan' })}
         </CardTitle>
+        <Button variant="outline" size="sm" onClick={() => regenerate()} aria-label={t('fuelCoachRegenerate', { defaultValue: 'Regenerate plan' })}>
+          <RefreshCw className="h-4 w-4 mr-1" aria-hidden />
+          {t('fuelCoachRegenerate', { defaultValue: 'Regenerate' })}
+        </Button>
       </CardHeader>
       <CardContent className="space-y-4">
-        {visibleDays.map((day) => (
-          <div key={day.dayKey} className="border border-white/10 rounded-lg p-3 bg-black/20">
-            <div className="text-sm font-semibold mb-2">{day.label}</div>
+        {plan.days.map((day) => (
+          <div key={day.dayKey} className="border border-white/10 rounded-lg p-3 bg-black/20 space-y-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="text-sm font-semibold">{day.label}</div>
+              <div className="text-xs text-emerald-400 capitalize">{day.trainingLoad} day</div>
+            </div>
+            {day.adaptedNote && (
+              <p className="text-[11px] text-muted-foreground">{day.adaptedNote}</p>
+            )}
             <ul className="text-xs text-muted-foreground space-y-1 list-disc ps-4">
               {day.meals.map((meal) => (
-                <li key={meal}>{meal}</li>
+                <li key={`${day.dayKey}-${meal.slot}`}>
+                  <span className="capitalize">{meal.slot}</span>: {meal.recipeName} ({meal.protein}g
+                  P · {meal.cals} kcal)
+                </li>
               ))}
             </ul>
+            <p className="text-[11px] tabular-nums text-emerald-300/90">
+              {t('fuelCoachDayTotals', { defaultValue: 'Day totals' })}: {day.totals.protein}/
+              {day.targets.protein}g P · {day.totals.carbs}/{day.targets.carbs}g C · {day.totals.cals}/
+              {day.targets.cals} kcal
+            </p>
           </div>
         ))}
-        {!premium && lockedCount > 0 && (
-          <div className="rounded-lg border border-emerald-500/30 bg-emerald-950/20 p-4 text-sm space-y-2">
-            <p className="text-muted-foreground">
-              {t('fuelMealPlanLocked', {
-                count: lockedCount,
-                defaultValue: `+${lockedCount} more days — timing strategies and macro-synced meals in Super Bundle.`,
-              })}
-            </p>
-            <Button variant="fitness" size="sm" asChild>
-              <Link href="/bundle">{t('fuelExploreBundle', { defaultValue: 'Explore Super Bundle' })}</Link>
-            </Button>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

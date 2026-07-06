@@ -481,7 +481,7 @@ export function NutritionPage() {
         </CardContent>
       </Card>
 
-      <FuelMealPlanCard premium={premium} />
+      <FuelMealPlanCard />
 
       {premium ? (
       <Card className="content-card">

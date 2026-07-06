@@ -7,6 +7,7 @@ export interface PillarWeekContext {
   trainDays?: number;
   trackActivities?: number;
   learnLessons?: number;
+  fuelCoachCarbBump?: number;
 }
 
 /**
@@ -76,6 +77,7 @@ export function listCrossPillarCoachSuggestions(
   const trainDays = pillars.trainDays ?? 0;
   const trackActivities = pillars.trackActivities ?? 0;
   const learnLessons = pillars.learnLessons ?? 0;
+  const fuelCoachCarbBump = pillars.fuelCoachCarbBump ?? 0;
   const out: CoachInsight[] = [];
 
   if (scores.strain >= 55 && move === 0) {
@@ -123,6 +125,15 @@ export function listCrossPillarCoachSuggestions(
       messageKey: 'coachInsightNeedLearn',
       actionLabelKey: 'coachActionOpenLearn',
       actionPath: '/learn/course',
+    });
+  }
+
+  if (trainDays >= 1 && fuelCoachCarbBump > 0) {
+    out.push({
+      messageKey: 'coachInsightFuelCoachSynergy',
+      messageParams: { carbs: String(fuelCoachCarbBump) },
+      actionLabelKey: 'coachActionOpenFuel',
+      actionPath: '/nutrition',
     });
   }
 

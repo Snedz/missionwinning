@@ -48,6 +48,7 @@
 | Routes & API | [app/INDEX.md](app/INDEX.md) | Next.js pages and API handlers |
 | Business logic | [src/lib/INDEX.md](src/lib/INDEX.md) | Pure TS domain code |
 | Mission Coach engine | [src/lib/coach/INDEX.md](src/lib/coach/INDEX.md) | Weekly plan prediction |
+| Fuel Coach engine | [src/lib/fuelCoach/INDEX.md](src/lib/fuelCoach/INDEX.md) | Adaptive meal plan |
 | Full-page UI | [src/page-components/INDEX.md](src/page-components/INDEX.md) | Page components |
 | Reusable UI | [src/components/INDEX.md](src/components/INDEX.md) | Feature components |
 | Translations | [src/i18n/INDEX.md](src/i18n/INDEX.md) | Locale strings |
