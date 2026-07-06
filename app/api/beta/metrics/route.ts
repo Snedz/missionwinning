@@ -3,12 +3,13 @@
  * Auth: session + BETA_ADMIN_EMAILS | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { computeBetaFunnelAggregate, isBetaAdminEmail } from '@/lib/betaMetricsServer';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 
 /** Founder beta funnel — all users' journey progress (requires BETA_ADMIN_EMAILS or BETA_ADMIN_SECRET). */
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('beta/metrics', async(request: NextRequest) => {
   const secret = request.headers.get('x-beta-admin-secret');
   const secretOk = secret && secret === process.env.BETA_ADMIN_SECRET;
 
@@ -41,4 +42,4 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.json(metrics);
-}
+});

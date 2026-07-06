@@ -3,12 +3,13 @@
  * Auth: premium | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { PREMIUM_GUIDEBOOK_CHAPTERS } from '@/data/guidebook/premiumChapters';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('premium/guidebook', async(request: NextRequest) => {
   if (isDemoPremiumEnabled()) {
     return NextResponse.json({ chapters: PREMIUM_GUIDEBOOK_CHAPTERS });
   }
@@ -39,4 +40,4 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.json({ chapters: PREMIUM_GUIDEBOOK_CHAPTERS });
-}
+});

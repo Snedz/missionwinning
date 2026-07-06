@@ -1,3 +1,5 @@
+const { withSentryConfig } = require('@sentry/nextjs');
+
 const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
@@ -26,7 +28,7 @@ const CSP_POLICY =
   "style-src 'self' 'unsafe-inline'; " +
   "img-src 'self' data: blob: https:; " +
   "font-src 'self' data:; " +
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://eu.i.posthog.com https://us.i.posthog.com https://app.posthog.com; " +
+  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://eu.i.posthog.com https://us.i.posthog.com https://app.posthog.com https://*.ingest.sentry.io https://*.sentry.io; " +
   "frame-ancestors 'self'; " +
   "base-uri 'self'; " +
   "form-action 'self'; " +
@@ -55,4 +57,19 @@ const nextConfig = {
   },
 };
 
-module.exports = withPWA(nextConfig);
+const pwaConfig = withPWA(nextConfig);
+
+const sentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN?.trim();
+const sentryBuildOptions = {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  hideSourceMaps: true,
+  disableLogger: true,
+};
+
+module.exports = sentryDsn
+  ? withSentryConfig(pwaConfig, sentryBuildOptions)
+  : pwaConfig;

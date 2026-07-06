@@ -4,6 +4,7 @@
  * See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { verifyTeacherPin } from '@/lib/schoolClassServer';
 import { normalizeClassCode } from '@/lib/schoolClass';
 import { rateLimitAsync } from '@/lib/rateLimit';
@@ -37,10 +38,10 @@ async function handleVerify(
 }
 
 /** Verify teacher PIN for class dashboard access. */
-export async function POST(
+export const POST = withApiLogging('school/class/[code]/verify', async(
   request: NextRequest,
   context: { params: Promise<{ code: string }> }
-) {
+) => {
   const { code: raw } = await context.params;
   let body: unknown;
   try {
@@ -53,14 +54,14 @@ export async function POST(
     return NextResponse.json({ ok: false, error: parsed.error }, { status: 400 });
   }
   return handleVerify(request, raw, parsed.data.pin.trim());
-}
+});
 
 /** @deprecated Use POST with JSON body — PIN in query strings may leak via logs. */
-export async function GET(
+export const GET = withApiLogging('school/class/[code]/verify', async(
   request: NextRequest,
   context: { params: Promise<{ code: string }> }
-) {
+) => {
   const { code: raw } = await context.params;
   const pin = request.nextUrl.searchParams.get('pin')?.trim() ?? '';
   return handleVerify(request, raw, pin);
-}
+});

@@ -3,11 +3,12 @@
  * Auth: signed token | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { persistYouthConsent } from '@/lib/youthConsentServer';
 import { verifyConsentToken } from '@/lib/youthConsentToken';
 
 /** Verify parent email link token. Persists to athlete account when token includes uid. */
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('youth/consent-confirm', async(request: NextRequest) => {
   const token = request.nextUrl.searchParams.get('token');
   if (!token) {
     return NextResponse.json({ ok: false, error: 'Missing token' }, { status: 400 });
@@ -30,4 +31,4 @@ export async function GET(request: NextRequest) {
     age: payload.age,
     persisted,
   });
-}
+});

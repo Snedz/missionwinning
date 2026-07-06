@@ -109,8 +109,11 @@ export function DailyCheckIn() {
         <RatingRow label="Stress level" value={stress} onChange={setStress} />
         <RatingRow label="Energy" value={energy} onChange={setEnergy} />
         <div>
-          <label className="text-sm">Optional note</label>
+          <label htmlFor="daily-checkin-note" className="text-sm">
+            Optional note
+          </label>
           <textarea
+            id="daily-checkin-note"
             value={note}
             onChange={(e) => setNote(e.target.value)}
             className="w-full mt-1 min-h-[60px] rounded border border-border bg-background px-3 py-2 text-sm"

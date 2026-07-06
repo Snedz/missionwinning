@@ -4,6 +4,7 @@
  * See: app/api/INDEX.md, src/lib/schoolClassAccess.ts
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { canAccessTeacherDashboard } from '@/lib/schoolClassServer';
 import { normalizeClassCode } from '@/lib/schoolClass';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
@@ -12,10 +13,10 @@ import { clientIp } from '@/lib/clientIp';
 import { parseJsonBody, schoolPinBodySchema } from '@/lib/apiSchemas';
 
 /** Check teacher dashboard access — creator bypass or valid PIN (POST body). */
-export async function POST(
+export const POST = withApiLogging('school/class/[code]/access', async(
   request: NextRequest,
   context: { params: Promise<{ code: string }> }
-) {
+) => {
   const { code: raw } = await context.params;
   const code = normalizeClassCode(raw);
   if (!code) {
@@ -58,13 +59,13 @@ export async function POST(
     isCreator: access.isCreator,
     pinRequired: false,
   });
-}
+});
 
 /** Creator-only quick check without PIN in URL. */
-export async function GET(
+export const GET = withApiLogging('school/class/[code]/access', async(
   request: NextRequest,
   context: { params: Promise<{ code: string }> }
-) {
+) => {
   const { code: raw } = await context.params;
   const code = normalizeClassCode(raw);
   if (!code) {
@@ -79,4 +80,4 @@ export async function GET(
     isCreator: access.isCreator,
     pinRequired: !access.unlocked,
   });
-}
+});

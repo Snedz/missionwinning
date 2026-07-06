@@ -3,11 +3,12 @@
  * Auth: session | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { fetchYouthConsent } from '@/lib/youthConsentServer';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 
 /** Check whether the signed-in athlete has verified parent consent on the server. */
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('youth/consent-status', async(request: NextRequest) => {
   const user = await getUserFromRequest(request);
   if (!user) {
     return NextResponse.json({ ok: false, verified: false, error: 'not_signed_in' }, { status: 401 });
@@ -25,4 +26,4 @@ export async function GET(request: NextRequest) {
     childAge: record.childAge,
     verifiedAt: record.verifiedAt,
   });
-}
+});

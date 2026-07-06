@@ -3,14 +3,15 @@
  * Auth: teacher | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { fetchClassPftLeaderboard, toPublicLeaderboardEntries } from '@/lib/schoolClassServer';
 import { resolveTeacherClassAccess } from '@/lib/schoolClassAccess';
 
 /** Class PFT leaderboard — teacher or creator only; athlete ids redacted. */
-export async function GET(
+export const GET = withApiLogging('school/class/[code]/leaderboard', async(
   request: NextRequest,
   context: { params: Promise<{ code: string }> }
-) {
+) => {
   const { code: raw } = await context.params;
   const access = await resolveTeacherClassAccess(request, raw);
   if (!access.ok) {
@@ -23,4 +24,4 @@ export async function GET(
     entries: toPublicLeaderboardEntries(entries),
     source: entries.length ? 'cloud' : 'empty',
   });
-}
+});

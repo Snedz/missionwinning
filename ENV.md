@@ -190,6 +190,23 @@ Set `CSP_ENFORCE=false` in Vercel temporarily if you need report-only on a previ
 
 ---
 
+## Error monitoring (Sentry — optional)
+
+Entirely disabled unless `NEXT_PUBLIC_SENTRY_DSN` is set (local dev stays silent, same pattern as PostHog).
+
+| Variable | Required | Notes |
+|----------|----------|-------|
+| `NEXT_PUBLIC_SENTRY_DSN` | **Yes** (to enable) | Project → Settings → Client Keys (DSN) |
+| `SENTRY_ORG` | For source maps | Organization slug in Sentry |
+| `SENTRY_PROJECT` | For source maps | Project slug (e.g. `mission-winning`) |
+| `SENTRY_AUTH_TOKEN` | For source maps | Auth token with `project:releases` — **server/CI only**, never `NEXT_PUBLIC_` |
+
+Add `SENTRY_AUTH_TOKEN` to **GitHub Secrets** (for sync workflow) and Vercel if builds upload source maps. `next.config.js` wraps with `withSentryConfig` only when the DSN is set.
+
+Thrown API route errors and client error boundaries (`app/error.tsx`, `app/global-error.tsx`) report to Sentry when enabled. API routes use `withApiLogging()` for structured request logs + exception capture.
+
+---
+
 ## Going fully public (later)
 
 When ready to launch:

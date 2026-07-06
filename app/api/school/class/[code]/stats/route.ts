@@ -4,14 +4,15 @@
  * See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { fetchClassStats } from '@/lib/schoolClassServer';
 import { resolveTeacherClassAccess } from '@/lib/schoolClassAccess';
 
 /** Aggregate class fitness test stats — teacher or creator only. */
-export async function GET(
+export const GET = withApiLogging('school/class/[code]/stats', async(
   request: NextRequest,
   context: { params: Promise<{ code: string }> }
-) {
+) => {
   const { code: raw } = await context.params;
   const access = await resolveTeacherClassAccess(request, raw);
   if (!access.ok) {
@@ -32,4 +33,4 @@ export async function GET(
   }
 
   return NextResponse.json({ ...stats, source: 'cloud' });
-}
+});

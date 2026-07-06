@@ -51,7 +51,7 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | **Member journey phases** | [JOURNEY.md](JOURNEY.md) | I-Day → Commissioned (in-app) |
 | **PFT / America G1–G8** | [PLAN.md](PLAN.md) Phase G | ✅ Optional US track; feature-flagged |
 | **Launch Phase H** | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | ⬜ Blocked on beta + Vercel secrets |
-| **Premium Phase I** | [PLAN.md](PLAN.md) | 🟡 Stripe + Coach + Track GPS depth |
+| **Premium Phase I** | [PLAN.md](PLAN.md) | 🟡 Stripe + Coach + Track GPS MVP shipped |
 
 ---
 

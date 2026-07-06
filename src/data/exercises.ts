@@ -1,6 +1,4 @@
 import type { Exercise } from "@/types";
-import { EXERCISES_EXTENDED } from "@/data/exercisesExtended";
-import { EXERCISES_VOLUME_2 } from "@/data/exercisesVolume2";
 import { enrichExercises } from "@/data/exerciseEnrichment";
 
 const EXERCISE_ENTRIES: Exercise[] = [
@@ -138,8 +136,6 @@ const EXERCISE_ENTRIES: Exercise[] = [
   { id: "medicine-ball-slam", name: "Med Ball Slam", muscleGroups: ["Full Body", "Core"], equipment: "Medicine Ball", cues: "Overhead to floor with full extension. Power + stress relief." },
   { id: "battle-rope-alt", name: "Battle Rope Alternating Waves", muscleGroups: ["Cardio", "Arms"], equipment: "Battle Ropes", cues: "Fast alternating waves 20-30s. Conditioning if gym has ropes." },
   { id: "sled-drag-reg", name: "Sled Drag Regression (Tow Strap)", muscleGroups: ["Legs", "Full Body"], equipment: "Sled", cues: "Walk backward dragging load. Low-impact leg drive." },
-  ...EXERCISES_EXTENDED,
-  ...EXERCISES_VOLUME_2,
 ];
 
 /** Deduplicated exercise list (first entry wins per id). */
@@ -154,7 +150,36 @@ function dedupeExercises(list: Exercise[]): Exercise[] {
   return out;
 }
 
-export const EXERCISES = enrichExercises(dedupeExercises(EXERCISE_ENTRIES));
+export const EXERCISES: Exercise[] = enrichExercises(dedupeExercises(EXERCISE_ENTRIES));
+
+let extendedCatalogLoaded = false;
+let extendedCatalogPromise: Promise<void> | null = null;
+
+/** Lazy-load extended + volume-2 catalogs (large JSON modules). Safe to call repeatedly. */
+export function ensureFullExerciseCatalog(): Promise<void> {
+  if (extendedCatalogLoaded) return Promise.resolve();
+  if (!extendedCatalogPromise) {
+    extendedCatalogPromise = Promise.all([
+      import('@/data/exercisesExtended'),
+      import('@/data/exercisesVolume2'),
+    ]).then(([extended, volume2]) => {
+      const merged = enrichExercises(
+        dedupeExercises([
+          ...EXERCISE_ENTRIES,
+          ...extended.EXERCISES_EXTENDED,
+          ...volume2.EXERCISES_VOLUME_2,
+        ])
+      );
+      EXERCISES.splice(0, EXERCISES.length, ...merged);
+      extendedCatalogLoaded = true;
+    });
+  }
+  return extendedCatalogPromise;
+}
+
+export function isFullExerciseCatalogLoaded(): boolean {
+  return extendedCatalogLoaded;
+}
 
 export function getExerciseById(id: string): Exercise | undefined {
   return EXERCISES.find((e) => e.id === id);

@@ -1,10 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { EXERCISES } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
 import {
   filterExercises,
@@ -50,9 +50,22 @@ export function ExercisesPublicFilter() {
     level: '',
     muscle: '',
   });
+  const [catalogRevision, setCatalogRevision] = useState(0);
 
-  const muscleChips = useMemo(() => ['', ...uniqueMuscleGroups(EXERCISES).slice(0, 10)], []);
-  const filtered = useMemo(() => filterExercises(EXERCISES, filters), [filters]);
+  useEffect(() => {
+    void ensureFullExerciseCatalog().then(() => setCatalogRevision((n) => n + 1));
+  }, []);
+
+  const muscleChips = useMemo(
+    () => ['', ...uniqueMuscleGroups(EXERCISES).slice(0, 10)],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
+    [catalogRevision]
+  );
+  const filtered = useMemo(
+    () => filterExercises(EXERCISES, filters),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
+    [filters, catalogRevision]
+  );
 
   const setFilter = <K extends keyof LibraryFilterState>(key: K, value: LibraryFilterState[K]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));

@@ -4,13 +4,14 @@
  * See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { upsertSchoolClass } from '@/lib/schoolClassServer';
 import { normalizeClassCode } from '@/lib/schoolClass';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 import { parseJsonBody, schoolClassCreateSchema } from '@/lib/apiSchemas';
 
 /** Register a PE class in Supabase — requires sign-in; sets created_by. */
-export async function POST(request: NextRequest) {
+export const POST = withApiLogging('school/class', async(request: NextRequest) => {
   let body: unknown;
   try {
     body = await request.json();
@@ -61,4 +62,4 @@ export async function POST(request: NextRequest) {
     source: 'cloud',
     createdBy: user.id,
   });
-}
+});

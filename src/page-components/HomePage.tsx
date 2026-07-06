@@ -6,30 +6,47 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
 import { applyCrossPillarCoachRules } from "@/lib/crossPillarCoach";
 import { gatherWeeklyPillarStats } from "@/lib/pillarScoreInputs";
 import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
-import { GuidebookContinueCard } from "@/components/learn/GuidebookContinueCard";
 import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
 import { CommandersIntent } from "@/components/journey/CommandersIntent";
-import { CoachTodayCard } from '@/components/coach/CoachTodayCard';
-import { TodayCoachWeekStrip } from '@/components/coach/TodayCoachWeekStrip';
 import { TodayQuickLinks } from "@/components/journey/TodayQuickLinks";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { TodayDashboardHeader } from "@/components/today/TodayDashboardHeader";
 import { TodayPageHeader } from "@/components/today/TodayPageHeader";
 import { TodayHealthSection } from "@/components/today/TodayHealthSection";
 import { TodayWeekSection } from "@/components/today/TodayWeekSection";
-import { TodayProgressSection } from "@/components/today/TodayProgressSection";
 import { TodayJournalStrip } from "@/components/today/TodayJournalStrip";
 import { TodayDashboardCustomize } from "@/components/today/TodayDashboardCustomize";
+
+const CoachTodayCard = dynamic(
+  () => import('@/components/coach/CoachTodayCard').then((m) => m.CoachTodayCard),
+  { ssr: false }
+);
+
+const TodayCoachWeekStrip = dynamic(
+  () => import('@/components/coach/TodayCoachWeekStrip').then((m) => m.TodayCoachWeekStrip),
+  { ssr: false }
+);
+
+const TodayProgressSection = dynamic(
+  () => import('@/components/today/TodayProgressSection').then((m) => m.TodayProgressSection),
+  { ssr: false }
+);
+
+const GuidebookContinueCard = dynamic(
+  () => import('@/components/learn/GuidebookContinueCard').then((m) => m.GuidebookContinueCard),
+  { ssr: false }
+);
 import {
   Dialog,
   DialogContent,
@@ -67,6 +84,17 @@ export function HomePage() {
   );
   const [editTodayOpen, setEditTodayOpen] = useState(false);
   const [todayLabel, setTodayLabel] = useState('');
+  const [belowFoldReady, setBelowFoldReady] = useState(false);
+
+  useEffect(() => {
+    const onIdle = () => setBelowFoldReady(true);
+    if (typeof requestIdleCallback !== 'undefined') {
+      const id = requestIdleCallback(onIdle, { timeout: 1200 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(onIdle, 50);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     setTodayLabel(
@@ -370,7 +398,7 @@ export function HomePage() {
     ),
   });
 
-  if (state.phase === 'readiness' || state.phase === 'commissioned') {
+  if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
     staggerBlocks.push({ key: 'coach-week', node: <TodayCoachWeekStrip /> });
   }
 
@@ -388,15 +416,15 @@ export function HomePage() {
     });
   }
 
-  if (state.phase === 'commissioned') {
+  if (belowFoldReady && state.phase === 'commissioned') {
     staggerBlocks.push({ key: 'coach-today', node: <CoachTodayCard /> });
   }
 
-  if (state.phase === 'readiness' || state.phase === 'commissioned') {
+  if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
     staggerBlocks.push({ key: 'guidebook', node: <GuidebookContinueCard /> });
   }
 
-  if (layout.showQuickLinks) {
+  if (belowFoldReady && layout.showQuickLinks) {
     staggerBlocks.push({
       key: 'quick-links',
       node: <TodayQuickLinks compact={state.phase === 'basic'} />,
@@ -417,7 +445,7 @@ export function HomePage() {
     });
   }
 
-  if (layout.showDetailsAccordion) {
+  if (belowFoldReady && layout.showDetailsAccordion) {
     staggerBlocks.push({
       key: 'accordion',
       node: (

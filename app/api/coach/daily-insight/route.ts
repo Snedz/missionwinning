@@ -4,6 +4,7 @@
  * See: app/api/INDEX.md, src/lib/coachDailyServer.ts
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { hasAppAccess } from '@/lib/requestAccess';
@@ -14,7 +15,7 @@ import {
 import { coachDailyContextSchema, parseJsonBody } from '@/lib/apiSchemas';
 
 /** Daily AI coach insight — uses LLM when COACH_LLM_* env set; else rule keys from client. */
-export async function POST(request: NextRequest) {
+export const POST = withApiLogging('coach/daily-insight', async(request: NextRequest) => {
   const ip = clientIp(request);
   const limited = await rateLimitAsync(`coach-daily:${ip}`, 12, 60_000);
   if (!limited.ok) {
@@ -53,4 +54,4 @@ export async function POST(request: NextRequest) {
     actionPath: result.actionPath,
     source: 'llm' as const,
   });
-}
+});

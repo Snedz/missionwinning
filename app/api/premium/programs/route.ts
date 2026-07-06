@@ -3,6 +3,7 @@
  * Auth: premium | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
@@ -10,7 +11,7 @@ import { getPremiumProgramTemplates } from '@/data/premiumProgramTemplates';
 import type { ProgramCategory } from '@/data/programTemplates';
 
 /** Pro program templates — gated server-side (not in client bundle). */
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('premium/programs', async(request: NextRequest) => {
   const category = (request.nextUrl.searchParams.get('category') ?? 'pro') as ProgramCategory;
 
   if (category !== 'pro') {
@@ -47,4 +48,4 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.json({ programs: getPremiumProgramTemplates() });
-}
+});

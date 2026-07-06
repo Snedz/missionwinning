@@ -3,12 +3,13 @@
  * Auth: session | See: app/api/INDEX.md, src/lib/premiumServer.ts
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
 /** Server-verified premium status — do not trust localStorage alone in production. */
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('premium/status', async(request: NextRequest) => {
   if (isDemoPremiumEnabled()) {
     return NextResponse.json({ premium: true, source: 'demo' });
   }
@@ -36,4 +37,4 @@ export async function GET(request: NextRequest) {
 
   const premium = await isPremiumForUser(user.id, user.email ?? null);
   return NextResponse.json({ premium, source: premium ? 'enrollment' : 'free' });
-}
+});

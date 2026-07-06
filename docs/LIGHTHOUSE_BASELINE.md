@@ -5,25 +5,27 @@ Mobile Lighthouse scores for key routes. Re-run after major perf changes.
 ## How to capture
 
 ```bash
-npm run build && npm run start   # or use deployed preview
-SMOKE_BASE_URL=http://localhost:3000 LIGHTHOUSE_SNAPSHOT=1 node scripts/lighthouse-budget.mjs
+npm run build && PRIVATE_MODE=false npm run start
+SMOKE_BASE_URL=http://localhost:3000 LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget
 ```
 
 Routes checked: `/`, `/log`, `/guide/human-performance`, `/exercises/squats`.
 
 Budget: **≥90** performance, accessibility, best-practices (soft warning in CI — see `.github/workflows/ci.yml`).
 
-## Snapshot (update after runs)
+## Snapshot (2026-07-06 — local prod build, `PRIVATE_MODE=false`)
+
+Captured after Track C code-splitting + lazy Today sections. Performance is still a soft-warning target on heavy client routes (`/log`); accessibility and best-practices meet budget.
 
 | Route | Performance | Accessibility | Best practices | Notes |
 |-------|-------------|---------------|----------------|-------|
-| `/` | — | — | — | Landing (when `PRIVATE_MODE=false`) |
-| `/log` | — | — | — | Today hub (authenticated / beta) |
-| `/guide/human-performance` | — | — | — | Public SEO chapter |
-| `/exercises/squats` | — | — | — | Public exercise detail |
+| `/` | 86 | 94 | 100 | Landing — below-fold demos lazy-loaded |
+| `/log` | 78 | 96 | 100 | Today hub — client-heavy; coach/accordion deferred via `requestIdleCallback` |
+| `/guide/human-performance` | 89 | 100 | 100 | Public SEO chapter |
+| `/exercises/squats` | 87 | 96 | 100 | Public exercise detail |
 
-*Last manual capture: pending — run `lighthouse-budget.mjs` against production or local build and paste scores above.*
+*Re-run `npm run lighthouse-budget` after perf work; CI job `lighthouse-budget` logs warnings without failing the build.*
 
 ## CI
 
-The `lighthouse` job in CI runs against the preview URL when `SMOKE_BASE_URL` is set. Warnings do not fail the build.
+The `lighthouse-budget` job in `.github/workflows/ci.yml` runs against a local production server after `build-and-test`. Warnings do not fail the build.

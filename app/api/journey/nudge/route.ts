@@ -3,12 +3,13 @@
  * Auth: session | See: app/api/INDEX.md, src/lib/nudgeServer.ts
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 
 /** Optional Resend nudge — emails the user's current journey next step. */
-export async function POST(request: NextRequest) {
+export const POST = withApiLogging('journey/nudge', async(request: NextRequest) => {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ ok: false, error: 'Email not configured' }, { status: 503 });
@@ -77,4 +78,4 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json({ ok: true, step: stepLabel, label });
-}
+});

@@ -4,6 +4,7 @@
  * See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { COPPA_AGE_THRESHOLD } from '@/lib/youthConsent';
 import { persistYouthConsent } from '@/lib/youthConsentServer';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
@@ -14,7 +15,7 @@ import { createHash } from 'node:crypto';
 import { parseJsonBody, youthConsentVerifySchema } from '@/lib/apiSchemas';
 
 /** Verify 6-digit parent consent code (cross-device). Persists when athlete is signed in. */
-export async function POST(request: NextRequest) {
+export const POST = withApiLogging('youth/consent-verify', async(request: NextRequest) => {
   const ip = clientIp(request);
   let body: unknown;
   try {
@@ -60,4 +61,4 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json({ ok: true, persisted: Boolean(user) });
-}
+});

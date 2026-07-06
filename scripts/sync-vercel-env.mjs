@@ -47,6 +47,10 @@ const SYNC_KEYS = [
   'COACH_LLM_API_URL',
   'COACH_LLM_API_KEY',
   'COACH_LLM_MODEL',
+  'NEXT_PUBLIC_SENTRY_DSN',
+  'SENTRY_ORG',
+  'SENTRY_PROJECT',
+  'SENTRY_AUTH_TOKEN',
 ];
 
 function fail(msg) {

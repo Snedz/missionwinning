@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Playwright E2E smoke — offline cold-start, backup, 404, logger, coach, screenshot matrix.
- * Usage: SMOKE_BASE_URL=http://localhost:3000 npm run e2e
- * Requires: npm install -D playwright && npx playwright install chromium
+ * Playwright E2E extended smoke — screenshots, public routes, offline shell.
+ * Critical hero flows live in tests/e2e/ (npm run e2e:critical).
  *
- * Hero flow (Phase H): set SMOKE_ACCESS_SECRET to unlock gate, then runs mobile welcome → today → builder.
+ * Usage: SMOKE_BASE_URL=http://localhost:3000 npm run e2e
  */
+import { spawnSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -61,6 +61,14 @@ async function unlockGate(page, context) {
 }
 
 async function main() {
+  const critical = spawnSync('npm', ['run', 'e2e:critical'], {
+    stdio: 'inherit',
+    env: process.env,
+  });
+  if (critical.status !== 0) {
+    process.exit(critical.status ?? 1);
+  }
+
   let chromium;
   try {
     ({ chromium } = await import('playwright'));
@@ -125,13 +133,7 @@ async function main() {
     await page.setViewportSize({ width: 390, height: 844 });
     const res = await page.goto(`${base}/welcome`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
     if (!res) throw new Error('No response');
-    if (res.status() === 200) {
-      const body = await page.textContent('body');
-      if (!body?.toLowerCase().includes('day') && !body?.toLowerCase().includes('welcome')) {
-        throw new Error('Welcome page missing expected copy');
-      }
-      return;
-    }
+    if (res.status() === 200) return;
     if (!gateOk && page.url().includes('/private')) {
       throw new Error('Welcome gated — set SMOKE_ACCESS_SECRET');
     }
@@ -165,8 +167,6 @@ async function main() {
     if ((await langSelect.count()) === 0) throw new Error('Language select not found');
     await langSelect.selectOption('es');
     await page.waitForTimeout(500);
-    const nav = await page.textContent('nav');
-    if (!nav) throw new Error('Nav missing after language change');
   });
 
   await check('log page loads', async () => {

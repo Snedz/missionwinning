@@ -4,15 +4,24 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import dynamic from "next/dynamic";
 import { Layers, PenTool, Plus, Trash2, ChevronUp, ChevronDown, ChevronRight } from "lucide-react";
-import {
-  ProgramTemplatesPanel,
-  TEMPLATE_PROGRAM_COUNT,
-} from "@/components/builder/ProgramTemplatesPanel";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { ProgramCategory } from "@/data/programTemplates";
+import type { ProgramCategory, ProgramSession, ProgramTemplate } from "@/data/programTemplates";
+
+const ProgramTemplatesPanel = dynamic(
+  () =>
+    import("@/components/builder/ProgramTemplatesPanel").then((m) => ({
+      default: m.ProgramTemplatesPanel,
+    })),
+  {
+    loading: () => (
+      <p className="text-sm text-muted-foreground py-6 text-center">Loading program templates…</p>
+    ),
+  }
+);
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,12 +50,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
-import {
-  draftExercisesFromSession,
-  type ProgramSession,
-  type ProgramTemplate,
-} from "@/data/programTemplates";
-import { EXERCISES, getExerciseById } from "@/data/exercises";
+import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from "@/data/exercises";
 import { useWorkoutStore } from "@/store/workoutStore";
 import type { WorkoutExerciseTemplate } from "@/types";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
@@ -74,6 +78,10 @@ export function BuilderPage() {
   const unitLabel = weightUnitLabel(units);
   const [templateCategory, setTemplateCategory] = useState<ProgramCategory>("beginner");
   const [step, setStep] = useState<1 | 2 | 3>(1);
+
+  useEffect(() => {
+    void ensureFullExerciseCatalog();
+  }, []);
 
   const loadSaved = (w: (typeof savedWorkouts)[0]) => {
     setWorkoutName(w.name);
@@ -104,7 +112,8 @@ export function BuilderPage() {
     setExercises((prev) => reorderDraftExercises(prev, index, direction));
   };
 
-  const loadSession = (program: ProgramTemplate, session: ProgramSession) => {
+  const loadSession = async (program: ProgramTemplate, session: ProgramSession) => {
+    const { draftExercisesFromSession } = await import("@/data/programTemplates");
     const draft = draftExercisesFromSession(session);
     setWorkoutName(`${program.name} — ${draft.workoutName}`);
     setSessionNotes(draft.notes ?? "");
@@ -318,10 +327,7 @@ export function BuilderPage() {
             {t('builderTemplatesTitle', { defaultValue: 'Program Templates' })}
           </h3>
           <Badge variant="secondary">
-            {t('builderProgramCount', {
-              count: TEMPLATE_PROGRAM_COUNT,
-              defaultValue: `${TEMPLATE_PROGRAM_COUNT} programs`,
-            })}
+            {t('builderProgramCount', { defaultValue: 'Free programs' })}
           </Badge>
           <span className="text-xs text-emerald-400">
             {t('builderTemplatesFoot', {

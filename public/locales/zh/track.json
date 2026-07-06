@@ -33,5 +33,10 @@
   "trackGpsPace": "Pace",
   "trackWeeklyGpsTitle": "GPS week at a glance",
   "trackGpsSessions": "GPS sessions",
-  "trackAvgPace": "avg pace /km"
+  "trackAvgPace": "avg pace /km",
+  "trackGpsTypeLabel": "Activity type",
+  "trackGpsPreviewChart": "Live pace chart while you move",
+  "trackGpsLockedHint": "Free tier keeps manual logging and JSON import. Premium unlocks GPS + weekly pace stats.",
+  "trackExploreBundle": "See Super Bundle",
+  "trackWeeklyGpsLocked": "Weekly GPS distance and average pace — Super Bundle."
 }

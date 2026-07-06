@@ -4,13 +4,14 @@
  * See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { leadsBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 
 /** Coaching / feedback lead capture with IP rate limit (PROTECTION P1). */
-export async function POST(req: NextRequest) {
+export const POST = withApiLogging('leads', async(req: NextRequest) => {
   const ip = clientIp(req);
 
   const limited = await rateLimitAsync(`leads:${ip}`, 5, 60_000);
@@ -50,4 +51,4 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ ok: true });
-}
+});

@@ -4,13 +4,14 @@
  * See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { searchOpenFoodFacts } from '@/lib/openFoodFacts';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { parseQuery, fuelSearchQuerySchema } from '@/lib/apiSchemas';
 
 /** Free-tier food search via Open Food Facts (global database). */
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('fuel/search-food', async(request: NextRequest) => {
   const ip = clientIp(request);
   const limited = await rateLimitAsync(`fuel-search:${ip}`, 30, 60_000);
   if (!limited.ok) {
@@ -30,4 +31,4 @@ export async function GET(request: NextRequest) {
   } catch {
     return NextResponse.json({ items: [], error: 'search_timeout' }, { status: 504 });
   }
-}
+});

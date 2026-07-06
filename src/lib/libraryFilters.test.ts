@@ -1,7 +1,7 @@
-import { describe, it } from 'node:test';
+import { describe, it, before } from 'node:test';
 import assert from 'node:assert/strict';
 import type { MuscleGroup } from '@/types';
-import { EXERCISES } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import {
   countExerciseHistory,
   filterExercises,
@@ -9,6 +9,9 @@ import {
 } from './libraryFilters';
 
 describe('libraryFilters', () => {
+  before(async () => {
+    await ensureFullExerciseCatalog();
+  });
   it('filters by query on name', () => {
     const result = filterExercises(EXERCISES, {
       query: 'squat',

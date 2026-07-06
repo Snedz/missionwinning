@@ -3,12 +3,13 @@
  * Auth: HMAC token | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { setRemindersOptOut, verifyUnsubscribeToken } from '@/lib/nudgeServer';
 
 export const dynamic = 'force-dynamic';
 
 /** One-click unsubscribe from training reminder emails (HMAC-signed link). */
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('nudges/unsubscribe', async(request: NextRequest) => {
   const userId = request.nextUrl.searchParams.get('u') ?? '';
   const token = request.nextUrl.searchParams.get('t') ?? '';
 
@@ -33,4 +34,4 @@ export async function GET(request: NextRequest) {
 </div></body></html>`,
     { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
   );
-}
+});

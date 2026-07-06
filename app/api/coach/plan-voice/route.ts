@@ -4,6 +4,7 @@
  * See: app/api/INDEX.md, src/lib/coach/planVoiceServer.ts
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
@@ -13,7 +14,7 @@ import { hasAppAccess } from '@/lib/requestAccess';
 import { fetchPlanVoice } from '@/lib/coach/planVoiceServer';
 import { coachPlanVoiceSchema, parseJsonBody } from '@/lib/apiSchemas';
 
-export async function POST(request: NextRequest) {
+export const POST = withApiLogging('coach/plan-voice', async(request: NextRequest) => {
   const ip = clientIp(request);
   const limited = await rateLimitAsync(`coach-plan-voice:${ip}`, 6, 60_000);
   if (!limited.ok) {
@@ -62,4 +63,4 @@ export async function POST(request: NextRequest) {
   );
 
   return NextResponse.json(voice);
-}
+});

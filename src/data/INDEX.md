@@ -11,17 +11,17 @@
 
 | File(s) | Content |
 |---------|---------|
-| `exercises.ts` | Base exercise catalog |
-| `exercisesExtended.ts`, `exercisesVolume2.ts` | Additional exercises (merged in `exercises.ts`) |
+| `exercises.ts` | Base catalog; extended/volume-2 via `ensureFullExerciseCatalog()` |
+| `exercisesExtended.ts`, `exercisesVolume2.ts` | Additional exercises (dynamic import from `exercises.ts`) |
 | `exerciseEnrichment.ts` | Tags, levels, alternatives |
-| `programTemplates.ts` | Builder program templates |
+| `programTemplates.ts` | Builder program templates (lazy-loaded on `/builder`) |
 | `starterPrograms.ts` | Free starter programs |
 | `premiumProgramTemplates.ts` | Premium programs (server-gated) |
 | `mobilityFlows.ts` | Free mobility flows (UI runner — not loggable sets) |
 | `premiumMobilityFlows.ts` | Premium mobility |
 | `guidedMindSessions.ts` | Free mind sessions |
 | `premiumMindSessions.ts` | Premium mind |
-| `recipes/freeRecipes.ts`, `recipes/premiumRecipes.ts` | Nutrition recipes |
+| `recipes/freeRecipes.ts`, `recipes/premiumRecipes.ts` | Nutrition recipes (`premiumRecipes` dynamic import on API route) |
 | `guidebook/chapters.ts`, `guidebook/premiumChapters.ts` | Guidebook content |
 | `learnPaths.ts`, `learnLessonEnhancements.ts` | Learn pillar paths |
 | `presidentialFitnessStandards.json` | PFT scoring standards |

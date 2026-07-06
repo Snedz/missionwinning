@@ -3,6 +3,7 @@
  * Auth: teacher | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import {
   canAccessTeacherDashboard,
   fetchClassPftLeaderboard,
@@ -16,10 +17,10 @@ import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 import { TEACHER_PIN_HEADER } from '@/lib/schoolClassAccess';
 
 /** Authenticated class export — CSV (default) or printable HTML (Print to PDF). */
-export async function GET(
+export const GET = withApiLogging('school/class/[code]/export', async(
   request: NextRequest,
   context: { params: Promise<{ code: string }> }
-) {
+) => {
   const { code: raw } = await context.params;
   const code = normalizeClassCode(raw);
   if (!code) {
@@ -88,4 +89,4 @@ export async function GET(
       'Content-Disposition': `attachment; filename="mission-winning-standings-${code}.csv"`,
     },
   });
-}
+});

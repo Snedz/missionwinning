@@ -35,7 +35,8 @@ See [VERCEL_DEPLOY_CHECKLIST.md](../VERCEL_DEPLOY_CHECKLIST.md) for preview-vs-p
 - [ ] Set `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated; see [OWASP_AUDIT.md](OWASP_AUDIT.md))
 - [ ] Apply `20260702_security_hardening.sql` + `20260705_leads_api_only.sql` in Supabase
 - [ ] Confirm `DEMO_PREMIUM=false` on Vercel Production
-- [ ] Run `npm run security-smoke` + `node scripts/verify-supabase-security.mjs` against prod
+- [ ] Run `npm run launch-verify` (or `LAUNCH_STRICT=true npm run launch-verify` before go-public)
+- [ ] `node scripts/verify-supabase-security.mjs --probe` with service role against prod
 - [ ] Optional: `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` for distributed rate limits
 
 ### Mobile QA (do yourself first)

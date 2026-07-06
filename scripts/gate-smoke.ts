@@ -242,11 +242,22 @@ async function main() {
 
   try {
     const premiumStatus = await headOrGet('/api/premium/status');
-    const statusOk = premiumStatus.status === 401 || premiumStatus.status === 403;
+    let body: { premium?: boolean; source?: string } = {};
+    try {
+      body = (await premiumStatus.json()) as { premium?: boolean; source?: string };
+    } catch {
+      body = {};
+    }
+    const statusOk =
+      premiumStatus.status === 200 &&
+      body.premium === false &&
+      (body.source === 'anonymous' ||
+        body.source === 'unconfigured' ||
+        body.source === 'free');
     checks.push({
-      name: 'GET /api/premium/status (no session)',
+      name: 'GET /api/premium/status (anonymous)',
       ok: statusOk,
-      detail: `status ${premiumStatus.status}${statusOk ? '' : ' — expected 401/403'}`,
+      detail: `status ${premiumStatus.status} premium=${String(body.premium)} source=${body.source ?? '?'}`,
     });
   } catch (e) {
     checks.push({ name: 'GET /api/premium/status', ok: false, detail: String(e) });
