@@ -1,27 +1,39 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 import { usePremium } from '@/hooks/usePremium';
-import { logActivity } from '@/lib/activityLog';
+import { ACTIVITY_LABELS, logActivity, type ActivityType } from '@/lib/activityLog';
 import { logPillarWin } from '@/lib/pillarLog';
+import { track } from '@/lib/analytics';
 import {
+  formatGpsActivityNotes,
   formatPaceMinPerKm,
   livePaceFromPoints,
+  paceMinPerKm,
   segmentPaceSeries,
   totalTrackDistanceKm,
   type GpsPoint,
 } from '@/lib/trackGps';
-import { TrackPaceChart } from '@/components/track/TrackPaceChart';
-import { UnlockButton } from '@/components/UnlockButton';
+import { TrackGpsLockedPreview } from '@/components/track/TrackGpsLockedPreview';
+
+const TrackPaceChart = dynamic(
+  () => import('@/components/track/TrackPaceChart').then((m) => m.TrackPaceChart),
+  { ssr: false }
+);
+
+const GPS_TYPES: ActivityType[] = ['walk', 'run', 'bike', 'hike'];
 
 export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
   const { t } = useTranslation();
   const { premium } = usePremium();
   const [tracking, setTracking] = useState(false);
+  const [gpsType, setGpsType] = useState<ActivityType>('walk');
   const [points, setPoints] = useState<GpsPoint[]>([]);
   const [watchId, setWatchId] = useState<number | null>(null);
   const [error, setError] = useState('');
@@ -42,6 +54,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
     }
     setPoints([]);
     setTracking(true);
+    track('pillar_win', { pillar: 'track', action: 'gps_started' });
     const id = navigator.geolocation.watchPosition(
       (pos) => {
         setPoints((prev) => [
@@ -69,46 +82,31 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
     const end = points[points.length - 1].at;
     const durationMin = Math.max(1, Math.round((end - start) / 60_000));
     const distanceKm = totalTrackDistanceKm(points);
+    const avgPace = paceMinPerKm(distanceKm, durationMin);
     const today = new Date().toISOString().split('T')[0];
     logActivity({
       date: today,
-      type: 'walk',
+      type: gpsType,
       durationMin,
       distanceKm: Math.round(distanceKm * 100) / 100,
-      notes: `GPS track (${points.length} points)`,
+      notes: formatGpsActivityNotes(ACTIVITY_LABELS[gpsType], points.length, avgPace),
     });
     logPillarWin('track', `GPS ${distanceKm.toFixed(2)} km`, { durationMin, distanceKm });
+    track('pillar_win', { pillar: 'track', action: 'gps_saved', distanceKm });
     setPoints([]);
     onLogged?.();
   };
+
+  if (!premium) {
+    return <TrackGpsLockedPreview />;
+  }
 
   const distanceKm = totalTrackDistanceKm(points);
   const livePace = livePaceFromPoints(points);
   const paceSeries = segmentPaceSeries(points);
 
-  if (!premium) {
-    return (
-      <Card className="content-card border-emerald-500/20">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-emerald-400" />
-            {t('trackGpsTitle', { defaultValue: 'GPS track (Premium)' })}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground mb-3">
-            {t('trackGpsPremiumDesc', {
-              defaultValue: 'Record outdoor walks and runs with live distance — MapMy-style, Super Bundle.',
-            })}
-          </p>
-          <UnlockButton productId="super-bundle" price="59" title="Super Bundle" isSubscription />
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
-    <Card className="content-card">
+    <Card className="content-card border-emerald-500/20">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <MapPin className="h-4 w-4 text-emerald-400" />
@@ -116,6 +114,25 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
+        <div>
+          <Label className="text-xs text-muted-foreground">
+            {t('trackGpsTypeLabel', { defaultValue: 'Activity type' })}
+          </Label>
+          <div className="flex flex-wrap gap-2 mt-1">
+            {GPS_TYPES.map((act) => (
+              <Button
+                key={act}
+                type="button"
+                size="sm"
+                variant={gpsType === act ? 'default' : 'outline'}
+                disabled={tracking}
+                onClick={() => setGpsType(act)}
+              >
+                {ACTIVITY_LABELS[act]}
+              </Button>
+            ))}
+          </div>
+        </div>
         <div className="flex flex-wrap gap-4 text-sm">
           <div>
             <span className="text-muted-foreground">{t('trackGpsDistance', { defaultValue: 'Distance' })}: </span>
@@ -128,9 +145,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
             </div>
           )}
         </div>
-        {paceSeries.length >= 2 && (
-          <TrackPaceChart data={paceSeries} />
-        )}
+        {paceSeries.length >= 2 && <TrackPaceChart data={paceSeries} />}
         <p className="text-sm text-muted-foreground">
           {tracking
             ? t('trackGpsRecording', {

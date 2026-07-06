@@ -1,12 +1,23 @@
 #!/usr/bin/env node
 /**
- * Quick env sanity check — run: node scripts/check-env.mjs
+ * Quick env sanity check — run: npm run check-env
+ * Production launch: npm run check-env -- --launch
  * Does not print secret values.
  */
+const launch = process.argv.includes('--launch');
+
 const required = [
   ['PRIVATE_ACCESS_SECRET', 'Private gate password (Vercel + .env.local)'],
   ['NEXT_PUBLIC_SUPABASE_URL', 'Supabase project URL'],
   ['NEXT_PUBLIC_SUPABASE_ANON_KEY', 'Supabase anon key'],
+];
+
+const launchRequired = [
+  ['SUPABASE_SERVICE_ROLE_KEY', 'Webhooks, enrollments, admin APIs'],
+  ['STRIPE_WEBHOOK_SECRET', 'Stripe checkout.session.completed'],
+  ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE', 'Bundle checkout link (or NEXT_PUBLIC_STRIPE_LINK_PREMIUM)'],
+  ['YOUTH_CONSENT_SECRET', 'Dedicated — never reuse PRIVATE_ACCESS_SECRET'],
+  ['NUDGE_SECRET', 'Journey email unsubscribe HMAC'],
 ];
 
 const optional = [
@@ -14,25 +25,54 @@ const optional = [
   ['PRIVATE_ALLOW_AUTH_BYPASS', 'Leave unset/false — magic link should not bypass gate'],
   ['DEMO_PREMIUM', 'Must be false (or unset) in production'],
   ['BETA_ADMIN_EMAILS', 'Comma-separated founder emails for beta panel'],
-  ['SUPABASE_SERVICE_ROLE_KEY', 'School classes, youth consent, leaderboards'],
-  ['RESEND_API_KEY', 'Parent consent emails (required for under-13 flow in prod)'],
-  ['YOUTH_CONSENT_SECRET', 'HMAC for youth consent codes (defaults to PRIVATE_ACCESS_SECRET)'],
+  ['RESEND_API_KEY', 'Parent consent + nudge emails'],
+  ['NEXT_PUBLIC_SENTRY_DSN', 'Error monitoring (optional)'],
+  ['NEXT_PUBLIC_POSTHOG_KEY', 'Product analytics (optional)'],
   ['NEXT_PUBLIC_COUNCIL_STATUS', 'aspirational | pending | member'],
   ['NEXT_PUBLIC_SHOW_MAHA_COPY', 'true only after legal sign-off'],
   ['NEXT_PUBLIC_AMERICA_TRACK_ENABLED', 'true to enable /america PFT track (default off)'],
 ];
 
-let ok = true;
+const PLACEHOLDER_SECRETS = new Set(['done', 'change-me', 'your-secret', 'test-gate-secret-32chars-min!!']);
 
-console.log('\nMission Winning — environment check\n');
+function isWeakSecret(val) {
+  if (!val || val.length < 16) return true;
+  return PLACEHOLDER_SECRETS.has(val.trim().toLowerCase());
+}
+
+let ok = true;
+let warn = 0;
+
+console.log(`\nMission Winning — environment check${launch ? ' (launch)' : ''}\n`);
 
 for (const [key, hint] of required) {
   const val = process.env[key];
-  if (!val || val.includes('YOUR-PROJECT') || val.includes('change-me')) {
+  if (!val || val.includes('YOUR-PROJECT') || val.includes('your-anon-key')) {
     console.log(`  ✗ ${key} — missing or placeholder (${hint})`);
+    ok = false;
+  } else if (key === 'PRIVATE_ACCESS_SECRET' && isWeakSecret(val)) {
+    console.log(`  ✗ ${key} — rotate before production (weak or dev placeholder)`);
     ok = false;
   } else {
     console.log(`  ✓ ${key}`);
+  }
+}
+
+if (launch) {
+  for (const [key, hint] of launchRequired) {
+    const val =
+      key === 'NEXT_PUBLIC_STRIPE_LINK_BUNDLE'
+        ? process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM
+        : process.env[key];
+    if (!val || val.includes('YOUR-') || val === 'whsec_...' || val.includes('pk_live_...')) {
+      console.log(`  ✗ ${key} — required for go-live (${hint})`);
+      ok = false;
+    } else if ((key === 'YOUTH_CONSENT_SECRET' || key === 'NUDGE_SECRET') && isWeakSecret(val)) {
+      console.log(`  ✗ ${key} — use openssl rand -base64 32 (dedicated secret)`);
+      ok = false;
+    } else {
+      console.log(`  ✓ ${key}`);
+    }
   }
 }
 
@@ -42,19 +82,23 @@ for (const [key, hint] of optional) {
 }
 
 if (process.env.DEMO_PREMIUM === 'true') {
-  console.log('  ⚠ DEMO_PREMIUM=true — disable before public production deploy');
+  console.log('  ✗ DEMO_PREMIUM=true — must be false before public production deploy');
+  ok = false;
+}
+
+if (launch && process.env.PRIVATE_MODE !== 'false') {
+  console.log('  ⚠ PRIVATE_MODE is not false — OK for pre-launch gate verify; set false for §5 go-public');
+  warn++;
 }
 
 if (process.env.NEXT_PUBLIC_SHOW_MAHA_COPY === 'true') {
   console.log('  ⚠ NEXT_PUBLIC_SHOW_MAHA_COPY=true — confirm legal review for MAHA copy');
+  warn++;
 }
 
-if (
-  process.env.NEXT_PUBLIC_COUNCIL_STATUS === 'member' &&
-  process.env.NEXT_PUBLIC_SHOW_MAHA_COPY !== 'true'
-) {
-  console.log('  · COUNCIL_STATUS=member — MAHA copy still off (OK if intentional)');
-}
-
-console.log(ok ? '\nReady for private gated deploy.\n' : '\nFix the items above, then redeploy Vercel.\n');
+console.log(
+  ok
+    ? `\n${launch ? 'Launch env looks ready.' : 'Ready for private gated deploy.'}${warn ? ` (${warn} warning(s))` : ''}\n`
+    : '\nFix the items above, then redeploy Vercel.\n'
+);
 process.exit(ok ? 0 : 1);

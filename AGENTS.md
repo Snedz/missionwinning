@@ -31,7 +31,7 @@ Works in Cursor, Claude Code, Grok, Copilot, and other agents — tool-agnostic 
 
 **Pattern:** `app/(app)/foo/page.tsx` imports `FooPage` from `src/page-components/FooPage.tsx`.
 
-**Tests:** `src/lib/**/*.test.ts` — run with `npm test` (`tsx --test`).
+**Tests:** `src/lib/**/*.test.ts` — run with `npm test` (`tsx --test`). Critical UI flows: `npm run e2e:critical` (`tests/e2e/`).
 
 ---
 

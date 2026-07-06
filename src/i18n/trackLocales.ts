@@ -36,6 +36,11 @@ type TrackStrings = {
   trackWeeklyGpsTitle: string;
   trackGpsSessions: string;
   trackAvgPace: string;
+  trackGpsTypeLabel: string;
+  trackGpsPreviewChart: string;
+  trackGpsLockedHint: string;
+  trackExploreBundle: string;
+  trackWeeklyGpsLocked: string;
 };
 
 const en: TrackStrings = {
@@ -76,6 +81,12 @@ const en: TrackStrings = {
   trackWeeklyGpsTitle: 'GPS week at a glance',
   trackGpsSessions: 'GPS sessions',
   trackAvgPace: 'avg pace /km',
+  trackGpsTypeLabel: 'Activity type',
+  trackGpsPreviewChart: 'Live pace chart while you move',
+  trackGpsLockedHint:
+    'Free tier keeps manual logging and JSON import. Premium unlocks GPS + weekly pace stats.',
+  trackExploreBundle: 'See Super Bundle',
+  trackWeeklyGpsLocked: 'Weekly GPS distance and average pace — Super Bundle.',
 };
 
 const es: TrackStrings = {

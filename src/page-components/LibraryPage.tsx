@@ -5,7 +5,7 @@
  */
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dumbbell, Search } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { LibraryDetailSheet } from '@/components/library/LibraryDetailSheet';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { EXERCISES } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
 import {
   filterExercises,
@@ -83,9 +83,23 @@ export function LibraryPage() {
     muscle: '',
   });
   const [detailId, setDetailId] = useState<string | null>(null);
+  const [catalogRevision, setCatalogRevision] = useState(0);
 
-  const muscleChips = useMemo(() => ['', ...uniqueMuscleGroups(EXERCISES).slice(0, 12)], []);
-  const filtered = useMemo(() => filterExercises(EXERCISES, filters), [filters]);
+  useEffect(() => {
+    void ensureFullExerciseCatalog().then(() => setCatalogRevision((n) => n + 1));
+  }, []);
+
+  // EXERCISES mutates in place when extended catalog loads — catalogRevision forces re-filter.
+  const muscleChips = useMemo(
+    () => ['', ...uniqueMuscleGroups(EXERCISES).slice(0, 12)],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
+    [catalogRevision]
+  );
+  const filtered = useMemo(
+    () => filterExercises(EXERCISES, filters),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
+    [filters, catalogRevision]
+  );
   const detailExercise = detailId ? EXERCISES.find((e) => e.id === detailId) ?? null : null;
 
   const setFilter = <K extends keyof LibraryFilterState>(key: K, value: LibraryFilterState[K]) => {

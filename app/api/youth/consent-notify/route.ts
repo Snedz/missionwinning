@@ -3,6 +3,7 @@
  * Auth: session | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { Resend } from 'resend';
 import { rateLimit } from '@/lib/rateLimit';
 import { COPPA_AGE_THRESHOLD } from '@/lib/youthConsent';
@@ -14,7 +15,7 @@ import {
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
 
 /** Email parent/guardian a verification code + confirm link. */
-export async function POST(request: NextRequest) {
+export const POST = withApiLogging('youth/consent-notify', async(request: NextRequest) => {
   const ip =
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
     request.headers.get('x-real-ip') ||
@@ -93,4 +94,4 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json({ ok: true, codeSent: true });
-}
+});

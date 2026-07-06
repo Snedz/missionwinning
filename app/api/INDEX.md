@@ -81,7 +81,8 @@ Full reference: [docs/API.md](../../docs/API.md).
 1. Create `app/api/.../route.ts`
 2. Logic in `src/lib/`
 3. Zod in `src/lib/apiSchemas.ts`
-4. Update this file + [docs/API.md](../../docs/API.md)
+4. Wrap exports with `withApiLogging('path/under/api', handler)` from `src/lib/api/withApiLogging.ts`
+5. Update this file + [docs/API.md](../../docs/API.md)
 
 ## Deleted — do not recreate
 

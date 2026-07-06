@@ -41,6 +41,7 @@
 | File | Purpose |
 |------|---------|
 | [BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md) | Founder checklist — beta, env, QA |
+| [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe + premium gate |
 | [OWASP_AUDIT.md](OWASP_AUDIT.md) | OWASP Top 10 sweep |
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |

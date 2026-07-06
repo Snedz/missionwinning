@@ -68,6 +68,18 @@
 
 ## §5 — Go public (only after §2 security boxes + §3 gates)
 
+**Automated verify** (after env is set on Vercel):
+
+```bash
+# Gate still on
+SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ACCESS_SECRET=... npm run launch-verify
+
+# After PRIVATE_MODE=false
+SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify
+```
+
+See [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md) for Stripe enrollment + Supabase probe commands.
+
 1. Final security curls (replace domain if needed):
    ```bash
    curl -sI https://www.missionwinning.com/ | grep -i location        # → /private while gated

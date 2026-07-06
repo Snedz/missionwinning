@@ -56,3 +56,50 @@ export function segmentPaceSeries(points: GpsPoint[]): { index: number; pace: nu
   }
   return out;
 }
+
+/** Prefix for GPS-logged activities in `activityLog` notes. */
+export const GPS_NOTE_PREFIX = 'GPS';
+
+export function isGpsActivity(notes?: string): boolean {
+  return !!notes?.trim().toLowerCase().startsWith(GPS_NOTE_PREFIX.toLowerCase());
+}
+
+export function formatGpsActivityNotes(
+  type: string,
+  pointCount: number,
+  avgPace: number | null
+): string {
+  const paceSuffix = avgPace != null ? ` · ${formatPaceMinPerKm(avgPace)}` : '';
+  return `${GPS_NOTE_PREFIX} · ${type} · ${pointCount} pts${paceSuffix}`;
+}
+
+export type GpsWeekSummary = {
+  sessions: number;
+  totalKm: number;
+  avgPace: number | null;
+};
+
+/** Aggregate GPS sessions from activity log entries (premium weekly card). */
+export function summarizeGpsWeek(
+  activities: { notes?: string; distanceKm?: number; durationMin: number }[]
+): GpsWeekSummary | null {
+  const gpsActivities = activities.filter((a) => isGpsActivity(a.notes));
+  if (!gpsActivities.length) return null;
+  const totalKm = gpsActivities.reduce((s, a) => s + (a.distanceKm ?? 0), 0);
+  const totalMin = gpsActivities.reduce((s, a) => s + a.durationMin, 0);
+  return {
+    sessions: gpsActivities.length,
+    totalKm,
+    avgPace: paceMinPerKm(totalKm, totalMin),
+  };
+}
+
+/** Demo pace curve for locked premium preview (not user data). */
+export const DEMO_PACE_SERIES: { index: number; pace: number }[] = [
+  { index: 1, pace: 6.4 },
+  { index: 2, pace: 6.1 },
+  { index: 3, pace: 5.9 },
+  { index: 4, pace: 5.7 },
+  { index: 5, pace: 5.8 },
+  { index: 6, pace: 5.6 },
+];

@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { EXERCISES, getExerciseById } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { formatDuration } from '@/lib/utils';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { getFormGuide, hasFormGuide } from '@/lib/formGuides';
@@ -99,6 +99,10 @@ export function ActiveWorkoutPage() {
   const tickElapsed = useWorkoutStore((s) => s.tickElapsed);
   const startRestTimer = useWorkoutStore((s) => s.startRestTimer);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+
+  useEffect(() => {
+    void ensureFullExerciseCatalog();
+  }, []);
 
   const [addExerciseId, setAddExerciseId] = useState('');
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});

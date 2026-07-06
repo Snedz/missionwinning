@@ -3,6 +3,7 @@
  * Auth: CRON_SECRET | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { Resend } from 'resend';
 import { collectNudgeCandidates, markNudged } from '@/lib/nudgeServer';
 
@@ -15,7 +16,7 @@ export const dynamic = 'force-dynamic';
  * `?dryRun=1` lists candidates without sending or updating anything —
  * use it to sanity-check the cohort before the first live run.
  */
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('cron/nudges', async(request: NextRequest) => {
   const cronSecret = process.env.CRON_SECRET;
   if (!cronSecret) {
     return NextResponse.json({ ok: false, error: 'CRON_SECRET not configured' }, { status: 503 });
@@ -74,4 +75,4 @@ export async function GET(request: NextRequest) {
     sent: sent.length,
     failed: failed.length,
   });
-}
+});

@@ -3,13 +3,15 @@
  * Auth: premium | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
-import { PREMIUM_RECIPES } from '@/data/recipes/premiumRecipes';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
 /** Premium recipe library — server-only data, never bundled for free users. */
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('premium/recipes', async(request: NextRequest) => {
+  const { PREMIUM_RECIPES } = await import('@/data/recipes/premiumRecipes');
+
   if (isDemoPremiumEnabled()) {
     return NextResponse.json({ recipes: PREMIUM_RECIPES });
   }
@@ -40,4 +42,4 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.json({ recipes: PREMIUM_RECIPES });
-}
+});

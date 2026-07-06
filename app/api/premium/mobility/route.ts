@@ -3,12 +3,13 @@
  * Auth: premium | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { PREMIUM_MOBILITY_FLOWS } from '@/data/premiumMobilityFlows';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
-export async function GET(request: NextRequest) {
+export const GET = withApiLogging('premium/mobility', async(request: NextRequest) => {
   if (isDemoPremiumEnabled()) {
     return NextResponse.json({ flows: PREMIUM_MOBILITY_FLOWS });
   }
@@ -39,4 +40,4 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.json({ flows: PREMIUM_MOBILITY_FLOWS });
-}
+});

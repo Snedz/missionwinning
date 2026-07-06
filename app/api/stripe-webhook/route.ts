@@ -3,27 +3,23 @@
  * Auth: Stripe-Signature | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { grantEnrollmentFromWebhook } from '@/lib/premiumServer';
-import { emailFromCheckoutSession, verifyStripeSignature } from '@/lib/stripeWebhook';
+import { emailFromCheckoutSession } from '@/lib/stripeWebhook';
+import { validateStripeWebhookRequest } from '@/lib/api/stripeWebhookAuth';
 
 /**
  * Stripe webhook — requires signature verification before granting premium.
  * Set STRIPE_WEBHOOK_SECRET + SUPABASE_SERVICE_ROLE_KEY in production.
  */
-export async function POST(req: NextRequest) {
+export const POST = withApiLogging('stripe-webhook', async(req: NextRequest) => {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!secret) {
-    return NextResponse.json({ error: 'Stripe webhook not configured' }, { status: 503 });
-  }
-
   const sig = req.headers.get('stripe-signature');
-  if (!sig) {
-    return NextResponse.json({ error: 'Missing stripe-signature header' }, { status: 401 });
-  }
-
   const raw = await req.text();
-  if (!verifyStripeSignature(raw, sig, secret)) {
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+
+  const auth = validateStripeWebhookRequest(secret, sig, raw);
+  if (!auth.ok) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status });
   }
 
   let event: { type?: string; data?: { object?: Record<string, unknown> } };
@@ -56,4 +52,4 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ received: true });
-}
+});

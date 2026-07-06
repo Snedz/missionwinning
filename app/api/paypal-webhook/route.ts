@@ -3,6 +3,7 @@
  * Auth: PayPal transmission headers | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import { grantEnrollmentFromWebhook } from '@/lib/premiumServer';
 import {
   isPayPalWebhookConfigured,
@@ -15,7 +16,7 @@ import {
  * Requires PAYPAL_WEBHOOK_ID, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET.
  * Set PAYPAL_ENV=live for production API (default: sandbox).
  */
-export async function POST(req: NextRequest) {
+export const POST = withApiLogging('paypal-webhook', async(req: NextRequest) => {
   const webhookId = process.env.PAYPAL_WEBHOOK_ID;
   if (!webhookId) {
     return NextResponse.json(
@@ -60,7 +61,7 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ received: true });
-}
+});
 
 async function handleVerifiedPayPalEvent(event: {
   event_type?: string;

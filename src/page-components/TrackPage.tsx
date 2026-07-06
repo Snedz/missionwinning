@@ -20,6 +20,7 @@ import {
   getWeeklyStats,
   logActivity,
 } from '@/lib/activityLog';
+import { isGpsActivity } from '@/lib/trackGps';
 import { logPillarWin } from '@/lib/pillarLog';
 import { TrackGpsPanel } from '@/components/track/TrackGpsPanel';
 import { TrackWeeklyInsights } from '@/components/track/TrackWeeklyInsights';
@@ -107,7 +108,7 @@ export function TrackPage() {
 
         <TrackGpsPanel onLogged={() => setRefresh((r) => r + 1)} />
 
-        {premium && <TrackWeeklyInsights />}
+        <TrackWeeklyInsights locked={!premium} key={refresh} />
 
       <Card className="content-card">
           <CardHeader>
@@ -195,6 +196,11 @@ export function TrackPage() {
                   >
                     <div>
                       <span className="font-medium">{ACTIVITY_LABELS[a.type]}</span>
+                      {isGpsActivity(a.notes) && (
+                        <span className="ms-1.5 text-[10px] uppercase tracking-wide text-emerald-400/90 font-semibold">
+                          GPS
+                        </span>
+                      )}
                       <span className="text-muted-foreground">
                         {' '}
                         · {a.date} · {a.durationMin} min

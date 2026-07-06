@@ -122,7 +122,7 @@ Aligns revenue with [vision.md](vision.md) without gating free core.
 |-----|-------------|-------------|
 | **I1** | Live Stripe bundle + verified webhook → `enrollments` | Super Bundle revenue engine |
 | **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | “Personal trainer in pocket” |
-| **I3** | One pillar premium MVP (Track GPS, Mind audio, or Move video) | Replace Unlock placeholders |
+| **I3** | Track GPS premium MVP — live recording, pace chart, weekly stats, locked preview | ✅ Track (Mind/Move next) |
 | **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | Global equity |
 | **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | 1+1+1 > sum |
 

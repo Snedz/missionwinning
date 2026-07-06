@@ -4,9 +4,11 @@
  */
 import { ExercisesPublicFilter } from '@/components/public/ExercisesPublicFilter';
 import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
-import { EXERCISES } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 
-export function ExercisesPublicIndexPage() {
+export async function ExercisesPublicIndexPage() {
+  await ensureFullExerciseCatalog();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border/60">

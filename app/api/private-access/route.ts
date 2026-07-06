@@ -4,6 +4,7 @@
  * See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { withApiLogging } from '@/lib/api/withApiLogging';
 import {
   createPrivateAccessToken,
   timingSafeSecretMatch,
@@ -13,7 +14,7 @@ import { rateLimit } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { privateAccessBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 
-export async function POST(request: NextRequest) {
+export const POST = withApiLogging('private-access', async(request: NextRequest) => {
   const secret = process.env.PRIVATE_ACCESS_SECRET;
 
   if (!secret) {
@@ -54,4 +55,4 @@ export async function POST(request: NextRequest) {
   });
 
   return response;
-}
+});

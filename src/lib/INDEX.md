@@ -26,6 +26,7 @@
 | **Units** | `units.ts` | `weightStep`, metric/imperial |
 | **Backup** | `backup.ts` | Device backup export/restore |
 | **Analytics** | `analytics.ts` | PostHog events |
+| **Observability** | `sentryCommon.ts`, `api/withApiLogging.ts` | Sentry (env-gated) + API request logs |
 | **Leaderboard** | `leaderboard/` subfolder | Local + cloud leaderboard |
 
 ## Subfolders (one concern each)

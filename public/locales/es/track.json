@@ -33,5 +33,10 @@
   "trackGpsPace": "Ritmo",
   "trackWeeklyGpsTitle": "Resumen GPS de la semana",
   "trackGpsSessions": "sesiones GPS",
-  "trackAvgPace": "ritmo prom. /km"
+  "trackAvgPace": "ritmo prom. /km",
+  "trackGpsTypeLabel": "Activity type",
+  "trackGpsPreviewChart": "Live pace chart while you move",
+  "trackGpsLockedHint": "Free tier keeps manual logging and JSON import. Premium unlocks GPS + weekly pace stats.",
+  "trackExploreBundle": "See Super Bundle",
+  "trackWeeklyGpsLocked": "Weekly GPS distance and average pace — Super Bundle."
 }

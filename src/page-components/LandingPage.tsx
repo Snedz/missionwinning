@@ -11,15 +11,27 @@ import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { BUNDLE_PILLARS } from '@/lib/payments';
 import { LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
-import { JourneyScroll } from '@/components/landing/JourneyScroll';
-import { CoachAdaptDemo } from '@/components/landing/CoachAdaptDemo';
-import { GuideTeaser } from '@/components/landing/GuideTeaser';
 import { HeroDemoFallback } from '@/components/landing/HeroDemo';
 import { ArrowRight, Check, Download, Globe2, WifiOff } from 'lucide-react';
 
 const HeroDemo = dynamic(
   () => import('@/components/landing/HeroDemo').then((m) => m.HeroDemo),
   { ssr: false, loading: () => <HeroDemoFallback /> }
+);
+
+const JourneyScroll = dynamic(
+  () => import('@/components/landing/JourneyScroll').then((m) => m.JourneyScroll),
+  { ssr: false }
+);
+
+const CoachAdaptDemo = dynamic(
+  () => import('@/components/landing/CoachAdaptDemo').then((m) => m.CoachAdaptDemo),
+  { ssr: false }
+);
+
+const GuideTeaser = dynamic(
+  () => import('@/components/landing/GuideTeaser').then((m) => m.GuideTeaser),
+  { ssr: false }
 );
 
 const FAQ = LANDING_FAQ_KEYS;

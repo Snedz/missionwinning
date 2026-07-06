@@ -1,5 +1,8 @@
 'use client';
 
+import * as Sentry from '@sentry/nextjs';
+import { useEffect } from 'react';
+
 /**
  * Last-resort boundary — replaces the entire document when the root layout
  * itself throws, so it must render its own <html>/<body> and use no app CSS
@@ -12,6 +15,12 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
+      Sentry.captureException(error, { extra: { digest: error.digest } });
+    }
+  }, [error]);
+
   const copyDetails = () => {
     const details = `Mission Winning error\n${new Date().toISOString()}\n${error.digest ?? ''}\n${error.message}\n${error.stack ?? ''}`;
     try {
