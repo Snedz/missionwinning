@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Journey phase hero on Today.
+ * See: src/components/journey/INDEX.md
+ */
 
 import { useEffect, useState } from 'react';
 import { ChevronRight } from 'lucide-react';

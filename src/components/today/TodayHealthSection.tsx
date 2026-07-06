@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Readiness/strain/recovery on Today.
+ * See: src/components/today/INDEX.md
+ */
 
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

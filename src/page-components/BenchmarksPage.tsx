@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /benchmarks — 1RM stats
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";

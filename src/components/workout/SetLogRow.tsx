@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Active workout set logging row.
+ * See: src/components/workout/INDEX.md
+ */
 
 import { Check, Minus, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

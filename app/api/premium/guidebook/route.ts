@@ -1,3 +1,7 @@
+/**
+ * Full premium guidebook content payload.
+ * Auth: premium | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { PREMIUM_GUIDEBOOK_CHAPTERS } from '@/data/guidebook/premiumChapters';

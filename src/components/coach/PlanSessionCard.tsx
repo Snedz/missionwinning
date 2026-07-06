@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Single coach session with exercises.
+ * See: src/components/coach/INDEX.md
+ */
 
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';

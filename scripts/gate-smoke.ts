@@ -142,6 +142,20 @@ async function main() {
   }
 
   try {
+    const log = await headOrGet('/log', { redirect: 'manual' });
+    const logLoc = log.headers.get('location') || '';
+    const logGated =
+      (log.status >= 300 && log.status < 400 && logLoc.includes('/private')) || log.status === 403;
+    checks.push({
+      name: 'GET /log gated without cookie',
+      ok: logGated,
+      detail: logGated ? `${log.status}${logLoc ? ` → ${logLoc}` : ''}` : `status ${log.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /log gated', ok: false, detail: String(e) });
+  }
+
+  try {
     const america = await headOrGet('/america', { redirect: 'manual' });
     const americaOk = america.status === 200;
     checks.push({
@@ -155,14 +169,42 @@ async function main() {
 
   try {
     const classStats = await headOrGet('/api/school/class/MWTEST/stats');
-    const statsOk = classStats.status === 200 || classStats.status === 503;
+    const statsProtected = classStats.status === 401 || classStats.status === 403;
     checks.push({
-      name: 'GET /api/school/class/[code]/stats',
-      ok: statsOk,
-      detail: `status ${classStats.status}`,
+      name: 'GET /api/school/class/[code]/stats (no teacher auth)',
+      ok: statsProtected,
+      detail: `status ${classStats.status}${statsProtected ? '' : ' — expected 401/403'}`,
     });
   } catch (e) {
     checks.push({ name: 'GET /api/school/class/stats', ok: false, detail: String(e) });
+  }
+
+  try {
+    const classLb = await headOrGet('/api/school/class/MWTEST/leaderboard');
+    const lbProtected = classLb.status === 401 || classLb.status === 403;
+    checks.push({
+      name: 'GET /api/school/class/[code]/leaderboard (no teacher auth)',
+      ok: lbProtected,
+      detail: `status ${classLb.status}${lbProtected ? '' : ' — expected 401/403'}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/school/class/leaderboard', ok: false, detail: String(e) });
+  }
+
+  try {
+    const stripeForgery = await headOrGet('/api/stripe-webhook', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    const stripeOk = stripeForgery.status === 401 || stripeForgery.status === 503;
+    checks.push({
+      name: 'POST /api/stripe-webhook rejects unsigned body',
+      ok: stripeOk,
+      detail: `status ${stripeForgery.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'POST /api/stripe-webhook', ok: false, detail: String(e) });
   }
 
   const accessSecret = process.env.SMOKE_ACCESS_SECRET;

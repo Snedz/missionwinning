@@ -1,28 +1,35 @@
+/**
+ * Weekly coach voice briefing — LLM or rules fallback.
+ * Auth: gate + app access + premium | Rate: 6/min/IP
+ * See: app/api/INDEX.md, src/lib/coach/planVoiceServer.ts
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
-import { rateLimit } from '@/lib/rateLimit';
+import { rateLimitAsync } from '@/lib/rateLimit';
+import { clientIp } from '@/lib/clientIp';
+import { hasAppAccess } from '@/lib/requestAccess';
 import { fetchPlanVoice } from '@/lib/coach/planVoiceServer';
-import type { PlanVoiceContext } from '@/lib/coach/planVoiceServer';
+import { coachPlanVoiceSchema, parseJsonBody } from '@/lib/apiSchemas';
 
 export async function POST(request: NextRequest) {
-  const ip =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown';
-  const limited = rateLimit(`coach-plan-voice:${ip}`, 6, 60_000);
+  const ip = clientIp(request);
+  const limited = await rateLimitAsync(`coach-plan-voice:${ip}`, 6, 60_000);
   if (!limited.ok) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
   }
 
-  const body = (await request.json().catch(() => null)) as
-    | (PlanVoiceContext & { premium?: boolean })
-    | null;
-
-  if (!body?.plan?.sessions) {
-    return NextResponse.json({ error: 'Invalid context' }, { status: 400 });
+  if (!(await hasAppAccess(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  const raw = await request.json().catch(() => null);
+  const parsed = parseJsonBody(coachPlanVoiceSchema, raw);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
+  }
+  const body = parsed.data;
 
   let useLlm = false;
   if (isDemoPremiumEnabled()) {

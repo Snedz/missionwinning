@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /fitness-test — PFT and school panel
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import Link from 'next/link';
 import { ChevronLeft, Shield } from 'lucide-react';

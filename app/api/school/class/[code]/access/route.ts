@@ -1,10 +1,18 @@
+/**
+ * Teacher dashboard unlock check — creator or PIN.
+ * Auth: session + optional PIN | Rate: 5/min/IP
+ * See: app/api/INDEX.md, src/lib/schoolClassAccess.ts
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { canAccessTeacherDashboard } from '@/lib/schoolClassServer';
 import { normalizeClassCode } from '@/lib/schoolClass';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
+import { rateLimitAsync } from '@/lib/rateLimit';
+import { clientIp } from '@/lib/clientIp';
+import { parseJsonBody, schoolPinBodySchema } from '@/lib/apiSchemas';
 
-/** Check teacher dashboard access — creator bypass or valid PIN. */
-export async function GET(
+/** Check teacher dashboard access — creator bypass or valid PIN (POST body). */
+export async function POST(
   request: NextRequest,
   context: { params: Promise<{ code: string }> }
 ) {
@@ -14,8 +22,27 @@ export async function GET(
     return NextResponse.json({ unlocked: false, error: 'Invalid class code' }, { status: 400 });
   }
 
+  const ip = clientIp(request);
+  const rl = await rateLimitAsync(`school-access:${ip}:${code}`, 5, 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { unlocked: false, error: 'Too many attempts' },
+      { status: 429, headers: rl.retryAfterSec ? { 'Retry-After': String(rl.retryAfterSec) } : {} }
+    );
+  }
+
+  let pin = '';
+  try {
+    const body = await request.json();
+    const parsed = parseJsonBody(schoolPinBodySchema.partial(), body);
+    if (parsed.ok && parsed.data.pin) {
+      pin = parsed.data.pin.trim();
+    }
+  } catch {
+    pin = '';
+  }
+
   const user = await getUserFromRequest(request);
-  const pin = request.nextUrl.searchParams.get('pin')?.trim() ?? '';
   const access = await canAccessTeacherDashboard(code, user?.id ?? null, pin || null);
 
   if (!access.unlocked) {
@@ -30,5 +57,26 @@ export async function GET(
     unlocked: true,
     isCreator: access.isCreator,
     pinRequired: false,
+  });
+}
+
+/** Creator-only quick check without PIN in URL. */
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ code: string }> }
+) {
+  const { code: raw } = await context.params;
+  const code = normalizeClassCode(raw);
+  if (!code) {
+    return NextResponse.json({ unlocked: false, error: 'Invalid class code' }, { status: 400 });
+  }
+
+  const user = await getUserFromRequest(request);
+  const access = await canAccessTeacherDashboard(code, user?.id ?? null, null);
+
+  return NextResponse.json({
+    unlocked: access.unlocked,
+    isCreator: access.isCreator,
+    pinRequired: !access.unlocked,
   });
 }

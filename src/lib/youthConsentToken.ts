@@ -10,12 +10,22 @@ export type ConsentTokenPayload = {
   uid?: string;
 };
 
+export class YouthConsentMisconfiguredError extends Error {
+  constructor() {
+    super('YOUTH_CONSENT_SECRET is required in production');
+    this.name = 'YouthConsentMisconfiguredError';
+  }
+}
+
 function consentSecret(): string {
-  return (
-    process.env.YOUTH_CONSENT_SECRET ||
-    process.env.PRIVATE_ACCESS_SECRET ||
-    'dev-youth-consent-change-me'
-  );
+  const dedicated = process.env.YOUTH_CONSENT_SECRET?.trim();
+  if (dedicated) return dedicated;
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new YouthConsentMisconfiguredError();
+  }
+
+  return process.env.PRIVATE_ACCESS_SECRET || 'dev-youth-consent-change-me';
 }
 
 function b64url(input: Buffer | string): string {

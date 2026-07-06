@@ -1,8 +1,15 @@
+/**
+ * Server-only premium checks and webhook enrollment grants.
+ * Consumers: /api/premium/*, webhooks | See: docs/API.md
+ */
 import 'server-only';
-import { createClient } from '@supabase/supabase-js';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 
 export function isDemoPremiumEnabled(): boolean {
+  if (process.env.NODE_ENV === 'production' && process.env.DEMO_PREMIUM === 'true') {
+    console.error('[security] DEMO_PREMIUM=true is forbidden in production');
+    return false;
+  }
   return (
     process.env.DEMO_PREMIUM === 'true' ||
     (process.env.NODE_ENV === 'development' && process.env.DEMO_PREMIUM !== 'false')
@@ -16,14 +23,11 @@ export async function isPremiumForUser(
   if (isDemoPremiumEnabled()) return true;
   if (!userId && !email) return false;
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anon) return false;
-
-  const supabase = createClient(url, anon);
+  const admin = getSupabaseAdmin();
+  if (!admin) return false;
 
   if (userId) {
-    const { data } = await supabase
+    const { data } = await admin
       .from('enrollments')
       .select('id')
       .eq('user_id', userId)
@@ -33,10 +37,11 @@ export async function isPremiumForUser(
   }
 
   if (email) {
-    const { data } = await supabase
+    const normalized = email.trim().toLowerCase();
+    const { data } = await admin
       .from('enrollments')
       .select('id')
-      .eq('user_email', email)
+      .eq('user_email', normalized)
       .or('premium_granted.eq.true,status.eq.active')
       .limit(1);
     if (data?.length) return true;

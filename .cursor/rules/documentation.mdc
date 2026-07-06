@@ -1,0 +1,45 @@
+---
+description: Keep documentation in sync when editing Mission Winning
+globs:
+  - "**/*"
+alwaysApply: false
+---
+
+# Documentation discipline
+
+Before exploring or grepping broadly, read [AGENTS.md](../../AGENTS.md) and [INDEX.md](../../INDEX.md).
+
+## When editing a folder
+
+1. Read that folder's `INDEX.md` first.
+2. If you add/remove/rename a significant file, update the folder `INDEX.md`.
+3. Match existing table style and "one concern" tone.
+
+## When adding an API route
+
+1. Add file-header comment (purpose, auth, rate limit, schema).
+2. Update [app/api/INDEX.md](../../app/api/INDEX.md).
+3. Update [docs/API.md](../../docs/API.md).
+
+## When adding a page route
+
+1. Update [app/INDEX.md](../../app/INDEX.md).
+2. Add file-header on `src/page-components/*Page.tsx`.
+
+## When adding customer-visible behavior
+
+Update [docs/help/](../../docs/help/INDEX.md) in plain language — no internal file paths.
+
+## When adding a lib domain (>5 files)
+
+Create `src/lib/{domain}/` + `INDEX.md` (model: `src/lib/coach/`).
+
+## Do not
+
+- Use `~/.cursor/plans/` as source of truth — use `PLAN.md` / `LOG.md`.
+- Open deleted paths listed in INDEX.md §4.
+- Add docs under `src/locales/` — deprecated.
+
+## Hub
+
+[docs/README.md](../../docs/README.md) — all audiences.

@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /privacy — privacy policy
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useTranslation } from 'react-i18next';
 import { Shield } from 'lucide-react';

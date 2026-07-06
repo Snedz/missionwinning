@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Move/Fuel/Mind suggestion chips.
+ * See: src/components/today/INDEX.md
+ */
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';

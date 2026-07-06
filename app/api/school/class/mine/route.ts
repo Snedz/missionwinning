@@ -1,3 +1,7 @@
+/**
+ * List teacher's cloud-synced classes.
+ * Auth: session | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchTeacherClasses } from '@/lib/schoolClassServer';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';

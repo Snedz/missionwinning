@@ -1,4 +1,8 @@
 'use client';
+/**
+ * PE class join/create panel.
+ * See: src/components/fitness-test/INDEX.md
+ */
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -21,22 +25,6 @@ import {
 import { getUser } from '@/lib/supabase';
 import { buildClassInviteShareText, shareText } from '@/lib/shareFitnessMission';
 
-type ClassStatsResponse = {
-  code: string;
-  className: string | null;
-  totalTests: number;
-  uniqueAthletes: number;
-  tierCounts: Record<string, number>;
-  source?: string;
-};
-
-type ClassLeaderboardPreview = {
-  rank: number;
-  athleteLabel: string;
-  bestTier: string;
-  score: number;
-};
-
 export function SchoolClassPanel() {
   const { t } = useTranslation();
   const [joined, setJoined] = useState<string | null>(() =>
@@ -46,29 +34,7 @@ export function SchoolClassPanel() {
   const [className, setClassName] = useState('');
   const [createdCode, setCreatedCode] = useState<string | null>(null);
   const [createdPin, setCreatedPin] = useState<string | null>(null);
-  const [stats, setStats] = useState<ClassStatsResponse | null>(null);
-  const [standings, setStandings] = useState<ClassLeaderboardPreview[]>([]);
   const [message, setMessage] = useState('');
-
-  const refreshStats = async (code: string) => {
-    try {
-      const [statsRes, lbRes] = await Promise.all([
-        fetch(`/api/school/class/${code}/stats`),
-        fetch(`/api/school/class/${code}/leaderboard`),
-      ]);
-      const data = (await statsRes.json()) as ClassStatsResponse;
-      const lb = (await lbRes.json()) as { entries?: ClassLeaderboardPreview[] };
-      setStats(data);
-      setStandings((lb.entries ?? []).slice(0, 5));
-    } catch {
-      setStats(null);
-      setStandings([]);
-    }
-  };
-
-  useEffect(() => {
-    if (joined) void refreshStats(joined);
-  }, [joined]);
 
   useEffect(() => {
     void (async () => {
@@ -98,7 +64,6 @@ export function SchoolClassPanel() {
     setJoined(code);
     setJoinInput('');
     setMessage('');
-    void refreshStats(code);
   };
 
   const handleCreate = async () => {
@@ -149,7 +114,6 @@ export function SchoolClassPanel() {
   const handleLeave = () => {
     leaveClass();
     setJoined(null);
-    setStats(null);
   };
 
   const copyInvite = async (code: string, name: string) => {
@@ -183,27 +147,12 @@ export function SchoolClassPanel() {
               {t('schoolJoined', { defaultValue: 'Joined class' })}:{' '}
               <span className="font-mono text-blue-300">{joined}</span>
             </p>
-            {stats && (
-              <p className="text-xs text-muted-foreground">
-                {t('schoolStats', {
-                  defaultValue: '{{tests}} tests · {{athletes}} athletes synced',
-                  tests: stats.totalTests,
-                  athletes: stats.uniqueAthletes,
-                })}
-              </p>
-            )}
-            {standings.length > 0 && (
-              <ul className="text-xs space-y-1 pt-1">
-                {standings.map((row) => (
-                  <li key={row.rank} className="flex justify-between gap-2 text-muted-foreground">
-                    <span>
-                      #{row.rank} {row.athleteLabel}
-                    </span>
-                    <span className="shrink-0">{row.score} pts</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <p className="text-xs text-muted-foreground">
+              {t('schoolJoinedTeacherNote', {
+                defaultValue:
+                  'Complete a fitness test while signed in to sync your score. Teachers view standings on the class dashboard.',
+              })}
+            </p>
             <Button size="sm" variant="outline" asChild>
               <Link href={`/leaderboard?board=presidential-fitness&scope=class&class=${joined}`}>
                 {t('schoolViewStandings', { defaultValue: 'Class standings →' })}
@@ -211,12 +160,9 @@ export function SchoolClassPanel() {
             </Button>
             <div className="flex flex-wrap gap-2">
               <Button size="sm" variant="outline" asChild>
-                <Link href={`/school/class/${joined}?pin=${encodeURIComponent(getTeacherPin(joined) ?? '')}`}>
+                <Link href={`/school/class/${joined}`}>
                   {t('schoolTeacherDashboard', { defaultValue: 'Teacher dashboard →' })}
                 </Link>
-              </Button>
-              <Button size="sm" variant="outline" onClick={() => void refreshStats(joined)}>
-                {t('schoolRefreshStats', { defaultValue: 'Refresh stats' })}
               </Button>
               <Button size="sm" variant="ghost" onClick={handleLeave}>
                 {t('schoolLeave', { defaultValue: 'Leave class' })}

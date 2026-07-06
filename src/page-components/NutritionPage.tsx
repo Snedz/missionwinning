@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /nutrition — Fuel pillar
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useState, useEffect } from "react";
 import Link from 'next/link';

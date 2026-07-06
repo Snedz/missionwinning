@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Mission Coach weekly plan state — generate, adapt, persist.
+ * Consumers: CoachPage | See: src/lib/coach/INDEX.md
+ */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWorkoutStore } from '@/store/workoutStore';

@@ -10,6 +10,7 @@
 | `gate-smoke.ts` | `npm run gate-smoke` | Post-deploy HTTP checks |
 | `lighthouse-budget.mjs` | `LIGHTHOUSE_SNAPSHOT=1 node scripts/lighthouse-budget.mjs` | Mobile Lighthouse budgets (see [docs/LIGHTHOUSE_BASELINE.md](../docs/LIGHTHOUSE_BASELINE.md)) |
 | `verify-stripe-enrollment.mjs` | `node scripts/verify-stripe-enrollment.mjs` | Stripe webhook + enrollments row verification |
+| `verify-supabase-security.mjs` | `node scripts/verify-supabase-security.mjs` | Security migration checklist |
 | `pre-deploy-smoke.ts` | `npm run predeploy` | Before deploy |
 | `check-env.mjs` | `npm run check-env` | Verify `.env.local` |
 | `export-locale-json.ts` | `npm run export-locales` | Export i18n TS → `public/locales/` |

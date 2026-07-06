@@ -1,3 +1,8 @@
+/**
+ * Private beta gate password form — sets signed httpOnly cookie.
+ * Auth: public | Rate: 8/min/IP | Schema: privateAccessBodySchema
+ * See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import {
   createPrivateAccessToken,
@@ -5,6 +10,8 @@ import {
   PRIVATE_ACCESS_COOKIE,
 } from '@/lib/privateSession';
 import { rateLimit } from '@/lib/rateLimit';
+import { clientIp } from '@/lib/clientIp';
+import { privateAccessBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 
 export async function POST(request: NextRequest) {
   const secret = process.env.PRIVATE_ACCESS_SECRET;
@@ -19,10 +26,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const ip =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown';
+  const ip = clientIp(request);
   const limited = rateLimit(`private-access:${ip}`, 8, 60_000);
   if (!limited.ok) {
     return NextResponse.json(
@@ -31,8 +35,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { password } = await request.json().catch(() => ({}));
-  if (typeof password !== 'string' || !timingSafeSecretMatch(password, secret)) {
+  const raw = await request.json().catch(() => ({}));
+  const parsed = parseJsonBody(privateAccessBodySchema, raw);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+  }
+  if (!timingSafeSecretMatch(parsed.data.password, secret)) {
     return NextResponse.json({ error: 'Incorrect access code' }, { status: 401 });
   }
 

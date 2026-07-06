@@ -1,9 +1,14 @@
 'use client';
+/**
+ * Page: /auth/callback — OAuth redirect handler
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Shield } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { sanitizeNextPath } from '@/lib/safeRedirect';
 
 export function AuthCallbackPage() {
   const router = useRouter();
@@ -16,7 +21,7 @@ export function AuthCallbackPage() {
 
     const finish = async () => {
       const next = searchParams.get('next') || '/log';
-      const safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/log';
+      const safeNext = sanitizeNextPath(next);
       const code = searchParams.get('code');
       const errorDesc = searchParams.get('error_description');
 

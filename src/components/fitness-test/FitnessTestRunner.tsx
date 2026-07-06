@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Presidential Fitness Test runner flow.
+ * See: src/components/fitness-test/INDEX.md
+ */
 
 import { useMemo, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -103,26 +107,7 @@ export function FitnessTestRunner() {
     setStep('results');
     const classCode = getJoinedClassCode();
     if (classCode) {
-      void (async () => {
-        try {
-          const [user, res] = await Promise.all([
-            getUser(),
-            fetch(`/api/school/class/${classCode}/leaderboard`),
-          ]);
-          const data = (await res.json()) as {
-            entries?: { rank: number; userId: string }[];
-          };
-          const entries = data.entries ?? [];
-          const mine = user?.id ? entries.find((e) => e.userId === user.id) : undefined;
-          setClassRank({
-            rank: mine?.rank ?? entries.length + 1,
-            total: Math.max(entries.length, mine ? entries.length : entries.length + 1),
-            code: classCode,
-          });
-        } catch {
-          setClassRank(null);
-        }
-      })();
+      setClassRank(null);
     } else {
       setClassRank(null);
     }

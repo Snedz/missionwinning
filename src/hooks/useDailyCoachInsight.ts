@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Fetch daily coach insight from API or rules fallback.
+ * Consumers: CoachInsightCard, Today | See: src/lib/coachDailyServer.ts
+ */
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

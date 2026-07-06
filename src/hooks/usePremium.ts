@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Premium enrollment status from /api/premium/status.
+ * Consumers: CoachPage, BundlePage, gated UI
+ */
 
 import { useEffect, useState } from 'react';
 

@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /track — activity/GPS pillar
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

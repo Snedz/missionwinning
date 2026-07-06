@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Push/pull journey progress to Supabase when signed in.
+ * Consumers: AppLayout | See: src/lib/journeySync.ts
+ */
 
 import { useEffect } from 'react';
 import { supabase } from '@/lib/supabase';

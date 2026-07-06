@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /active — live workout logger
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';

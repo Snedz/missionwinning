@@ -1,3 +1,7 @@
+/**
+ * Schedule journey email nudge.
+ * Auth: session | See: app/api/INDEX.md, src/lib/nudgeServer.ts
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';

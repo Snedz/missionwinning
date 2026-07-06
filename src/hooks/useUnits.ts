@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Metric/imperial preference from localStorage.
+ * Consumers: workout logger, calculators
+ */
 
 import { useEffect, useState } from 'react';
 import {

@@ -1,3 +1,7 @@
+/**
+ * Premium guided mind sessions payload.
+ * Auth: premium | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { PREMIUM_MIND_SESSIONS } from '@/data/premiumMindSessions';

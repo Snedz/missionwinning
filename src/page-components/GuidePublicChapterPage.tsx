@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /guide/[chapter] — public chapter
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import Link from 'next/link';
 import { useEffect } from 'react';

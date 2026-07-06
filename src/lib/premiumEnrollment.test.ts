@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import { emailFromCheckoutSession } from '@/lib/stripeWebhook';
 
 function isDemoPremiumEnabled(): boolean {
+  if (process.env.NODE_ENV === 'production' && process.env.DEMO_PREMIUM === 'true') {
+    return false;
+  }
   return (
     process.env.DEMO_PREMIUM === 'true' ||
     (process.env.NODE_ENV === 'development' && process.env.DEMO_PREMIUM !== 'false')
@@ -22,8 +25,14 @@ describe('premium enrollment flow', () => {
 
   it('demo premium mode unlocks without enrollment row', () => {
     process.env.DEMO_PREMIUM = 'true';
-    process.env.NODE_ENV = 'production';
+    process.env.NODE_ENV = 'development';
     assert.equal(isDemoPremiumEnabled(), true);
+  });
+
+  it('production refuses DEMO_PREMIUM even when env is true', () => {
+    process.env.DEMO_PREMIUM = 'true';
+    process.env.NODE_ENV = 'production';
+    assert.equal(isDemoPremiumEnabled(), false);
   });
 
   it('production defaults demo premium off', () => {

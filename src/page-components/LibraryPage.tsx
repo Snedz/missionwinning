@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /library — exercise catalog
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';

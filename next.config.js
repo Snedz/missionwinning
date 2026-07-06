@@ -26,7 +26,7 @@ const CSP_POLICY =
   "style-src 'self' 'unsafe-inline'; " +
   "img-src 'self' data: blob: https:; " +
   "font-src 'self' data:; " +
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co; " +
+  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://eu.i.posthog.com https://us.i.posthog.com https://app.posthog.com; " +
   "frame-ancestors 'self'; " +
   "base-uri 'self'; " +
   "form-action 'self'; " +

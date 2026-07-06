@@ -1,3 +1,8 @@
+/**
+ * Private beta gate helpers — public paths, JWT via getUser(), query bypass policy.
+ * Consumers: proxy.ts | See: PROTECTION.md
+ */
+import { createClient } from '@supabase/supabase-js';
 import type { NextRequest } from 'next/server';
 import {
   verifyPrivateAccessToken,
@@ -14,14 +19,11 @@ export function isPrivateModeEnabled(): boolean {
   const flag = process.env.PRIVATE_MODE;
   if (flag === 'false' || flag === '0') return false;
   if (flag === 'true' || flag === '1') return true;
-  // Default: gate on in production builds, off in local dev unless explicitly set.
   return process.env.NODE_ENV === 'production';
 }
 
-/** Page routes reachable without the access cookie while the gate is active. */
 export const PUBLIC_PATHS_WHILE_GATED = PRIVATE_GATE_PUBLIC_PATHS;
 
-/** API routes that must stay reachable for webhooks and the gate form (no access cookie). */
 export const PUBLIC_API_PATHS_WHILE_GATED = [
   '/api/private-access',
   '/api/stripe-webhook',
@@ -51,7 +53,6 @@ export function privateGateHeaders(): Record<string, string> {
   };
 }
 
-/** Apply anti-cache + noindex headers to a NextResponse. */
 export function applyPrivateGateHeaders<T extends { headers: Headers }>(response: T): T {
   for (const [key, value] of Object.entries(privateGateHeaders())) {
     response.headers.set(key, value);
@@ -59,56 +60,49 @@ export function applyPrivateGateHeaders<T extends { headers: Headers }>(response
   return response;
 }
 
-function decodeBase64Url(input: string): string {
-  const base64 = input.replace(/-/g, '+').replace(/_/g, '/');
-  const padded = base64 + '='.repeat((4 - (base64.length % 4)) % 4);
-  if (typeof atob === 'function') {
-    return atob(padded);
-  }
-  return Buffer.from(padded, 'base64').toString('utf8');
-}
-
-function isAccessTokenValid(accessToken: string): boolean {
-  try {
-    const parts = accessToken.split('.');
-    if (parts.length !== 3) return false;
-    const payload = JSON.parse(decodeBase64Url(parts[1])) as {
-      exp?: number;
-      sub?: string;
-    };
-    if (!payload.sub || !payload.exp) return false;
-    return payload.exp * 1000 > Date.now();
-  } catch {
-    return false;
-  }
-}
-
-/**
- * Optional Supabase session bypass — OFF by default.
- * When enabled, only a non-expired JWT in the auth cookie counts (not cookie name alone).
- */
-export function hasValidSupabaseSession(request: NextRequest): boolean {
-  if (process.env.PRIVATE_ALLOW_AUTH_BYPASS !== 'true') return false;
-
+function extractAccessToken(request: NextRequest): string | null {
   for (const cookie of request.cookies.getAll()) {
     if (!cookie.name.includes('sb-')) continue;
     if (!cookie.name.includes('auth-token') && !cookie.name.includes('access-token')) continue;
     const accessToken = parseSupabaseAuthCookie(cookie.value);
-    if (accessToken && isAccessTokenValid(accessToken)) return true;
+    if (accessToken) return accessToken;
   }
-  return false;
+  return null;
+}
+
+/**
+ * Optional Supabase session bypass — OFF by default.
+ * Verifies JWT via Supabase auth API (not payload decode only).
+ */
+export async function hasValidSupabaseSession(request: NextRequest): Promise<boolean> {
+  if (process.env.PRIVATE_ALLOW_AUTH_BYPASS !== 'true') return false;
+
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !anon) return false;
+
+  const accessToken = extractAccessToken(request);
+  if (!accessToken) return false;
+
+  const supabase = createClient(url, anon);
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser(accessToken);
+  return Boolean(user && !error);
 }
 
 export function hasPrivateAccessCookie(request: NextRequest, secret: string | undefined): boolean {
   if (!secret) return false;
   const token = request.cookies.get(PRIVATE_ACCESS_COOKIE)?.value;
-  if (verifyPrivateAccessToken(token, secret)) return true;
-  // Legacy: migrate old cookies that stored raw secret (one release)
-  if (token === secret) return true;
-  return false;
+  return verifyPrivateAccessToken(token, secret);
 }
 
+/** Query-string gate bypass — disabled in production unless PRIVATE_ALLOW_QUERY_ACCESS=true. */
 export function queryGrantsAccess(searchParams: URLSearchParams, secret: string | undefined): boolean {
   if (!secret) return false;
+  if (process.env.NODE_ENV === 'production' && process.env.PRIVATE_ALLOW_QUERY_ACCESS !== 'true') {
+    return false;
+  }
   return searchParams.get('access') === secret;
 }

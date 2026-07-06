@@ -1,3 +1,7 @@
+/**
+ * Unsubscribe from journey nudge emails.
+ * Auth: HMAC token | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { setRemindersOptOut, verifyUnsubscribeToken } from '@/lib/nudgeServer';
 

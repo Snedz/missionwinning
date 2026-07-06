@@ -1,18 +1,29 @@
+/**
+ * Register PE class in Supabase (teacher, signed in).
+ * Auth: session | Schema: schoolClassCreateSchema
+ * See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { upsertSchoolClass } from '@/lib/schoolClassServer';
 import { normalizeClassCode } from '@/lib/schoolClass';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
+import { parseJsonBody, schoolClassCreateSchema } from '@/lib/apiSchemas';
 
 /** Register a PE class in Supabase — requires sign-in; sets created_by. */
 export async function POST(request: NextRequest) {
-  let body: { code?: string; name?: string; teacherPin?: string };
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  const code = normalizeClassCode(body.code ?? '');
+  const parsed = parseJsonBody(schoolClassCreateSchema, body);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
+  }
+
+  const code = normalizeClassCode(parsed.data.code);
   if (!code) {
     return NextResponse.json({ error: 'Invalid class code' }, { status: 400 });
   }
@@ -31,8 +42,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const name = (body.name ?? 'PE Class').trim() || 'PE Class';
-  const teacherPin = body.teacherPin?.trim() || null;
+  const name = (parsed.data.name ?? 'PE Class').trim() || 'PE Class';
+  const teacherPin = parsed.data.teacherPin?.trim() || null;
   const result = await upsertSchoolClass(code, name, user.id, teacherPin);
 
   if (!result.ok) {

@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Weekly voice briefing card.
+ * See: src/components/coach/INDEX.md
+ */
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

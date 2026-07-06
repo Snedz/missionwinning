@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Redirects incomplete I-Day users to Welcome.
+ * See: src/components/journey/INDEX.md
+ */
 
 import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';

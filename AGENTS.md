@@ -23,11 +23,11 @@ Works in Cursor, Claude Code, Grok, Copilot, and other agents — tool-agnostic 
 | Pages | `src/page-components/` | Full page UI |
 | Components | `src/components/` | Reusable UI by feature |
 | Logic | `src/lib/` | Pure business logic, API helpers, scoring |
-| State | `src/store/` | Zustand (`workoutStore.ts`) |
-| Hooks | `src/hooks/` | Client data/orchestration |
+| State | `src/store/` | Zustand — [src/store/INDEX.md](src/store/INDEX.md) |
+| Hooks | `src/hooks/` | Client hooks — [src/hooks/INDEX.md](src/hooks/INDEX.md) |
 | Data | `src/data/` | Static catalogs (exercises, recipes, guidebook) |
 | i18n | `src/i18n/` | Translation strings (`*Locales.ts`) |
-| API | `app/api/` | Route handlers (thin; logic in `src/lib/`) |
+| API | `app/api/` | Route handlers — [app/api/INDEX.md](app/api/INDEX.md) |
 
 **Pattern:** `app/(app)/foo/page.tsx` imports `FooPage` from `src/page-components/FooPage.tsx`.
 
@@ -86,3 +86,43 @@ npm run check-env    # verify .env.local
 ## Skills
 
 [`.claude/skills/`](.claude/skills/) — UI/brand/design tooling only. App rules live in this file.
+
+---
+
+## Documentation map
+
+| Audience | Entry |
+|----------|--------|
+| All | [docs/README.md](docs/README.md) |
+| Customers | [docs/help/INDEX.md](docs/help/INDEX.md) |
+| Developers | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/API.md](docs/API.md), [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Agents | This file + [INDEX.md](INDEX.md) + [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md) |
+
+When you add or change an API route, update [app/api/INDEX.md](app/api/INDEX.md) and [docs/API.md](docs/API.md).
+When you add a feature folder, add or update its `INDEX.md`.
+
+---
+
+## Common tasks (recipes)
+
+| Task | Steps |
+|------|--------|
+| **New page route** | `app/(app)/foo/page.tsx` → `src/page-components/FooPage.tsx` → row in `app/INDEX.md` |
+| **New API route** | `app/api/foo/route.ts` → logic in `src/lib/` → Zod in `apiSchemas.ts` → `app/api/INDEX.md` + `docs/API.md` |
+| **New lib domain** | After ~5 files: `src/lib/foo/` + `INDEX.md` (model: `src/lib/coach/`) |
+| **New coach rule** | `crossPillarCoach.ts` or `coach/adapt.ts` + colocated `*.test.ts` |
+| **New i18n string** | `src/i18n/*Locales.ts` — not `src/locales/` |
+
+Full playbooks: [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md).
+
+---
+
+## Do not grep / open (stale)
+
+See [INDEX.md](INDEX.md) §4. Highlights:
+
+- `src/lib/coachPlan.ts`, `CoachPlanCard.tsx`, `app/api/coach/plan/route.ts` — **deleted**
+- `src/locales/` — **deprecated**; use `src/i18n/`
+- `~/.cursor/plans/*.plan.md` — session plans, not repo truth
+- Empty ghost dirs under `app/about/`, etc. — routes live in `app/(app)/`
+

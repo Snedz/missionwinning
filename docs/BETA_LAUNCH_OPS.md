@@ -32,10 +32,11 @@ See [VERCEL_DEPLOY_CHECKLIST.md](../VERCEL_DEPLOY_CHECKLIST.md) for preview-vs-p
 **v5 founder checklist (parallel with code):**
 
 - [ ] Rotate `PRIVATE_ACCESS_SECRET` off dev placeholder (`Done`) — see §2
-- [ ] Vercel **Production Branch** = `master` (§1)
-- [ ] Search Console: submit sitemap after public launch ([SEO_ANALYTICS.md](SEO_ANALYTICS.md))
-- [ ] PostHog funnel: visit → I-Day → first workout → `checkout_completed` ([SEO_ANALYTICS.md](SEO_ANALYTICS.md))
-- [ ] Stripe test enrollment: `node scripts/verify-stripe-enrollment.mjs` + live purchase on Preview
+- [ ] Set `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated; see [OWASP_AUDIT.md](OWASP_AUDIT.md))
+- [ ] Apply `20260702_security_hardening.sql` + `20260705_leads_api_only.sql` in Supabase
+- [ ] Confirm `DEMO_PREMIUM=false` on Vercel Production
+- [ ] Run `npm run security-smoke` + `node scripts/verify-supabase-security.mjs` against prod
+- [ ] Optional: `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` for distributed rate limits
 
 ### Mobile QA (do yourself first)
 

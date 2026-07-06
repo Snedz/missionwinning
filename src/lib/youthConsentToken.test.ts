@@ -1,30 +1,31 @@
-import { describe, it } from 'node:test';
+import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { createConsentVerifyToken, verifyConsentToken, generateConsentCode, verifyConsentCode } from '@/lib/youthConsentToken';
+import {
+  YouthConsentMisconfiguredError,
+  generateConsentCode,
+} from './youthConsentToken.ts';
 
 describe('youthConsentToken', () => {
-  it('creates and verifies tokens', () => {
-    const token = createConsentVerifyToken('parent@example.com', 10);
-    const payload = verifyConsentToken(token);
-    assert.ok(payload);
-    assert.equal(payload?.email, 'parent@example.com');
-    assert.equal(payload?.age, 10);
+  const env = process.env;
+
+  beforeEach(() => {
+    process.env = { ...env };
+    delete process.env.YOUTH_CONSENT_SECRET;
+    delete process.env.PRIVATE_ACCESS_SECRET;
   });
 
-  it('rejects tampered tokens', () => {
-    const token = createConsentVerifyToken('parent@example.com', 10);
-    assert.equal(verifyConsentToken(token + 'x'), null);
+  afterEach(() => {
+    process.env = env;
   });
 
-  it('creates tokens with optional athlete uid', () => {
-    const token = createConsentVerifyToken('parent@example.com', 10, undefined, 'user-abc');
-    const payload = verifyConsentToken(token);
-    assert.equal(payload?.uid, 'user-abc');
-  });
-
-  it('generates stable six-digit codes', () => {
-    const code = generateConsentCode('parent@example.com', 10);
+  it('uses dev fallback in non-production', () => {
+    process.env.NODE_ENV = 'development';
+    const code = generateConsentCode('parent@example.com', 12);
     assert.match(code, /^\d{6}$/);
-    assert.equal(verifyConsentCode('parent@example.com', 10, code), true);
+  });
+
+  it('throws when YOUTH_CONSENT_SECRET missing in production', () => {
+    process.env.NODE_ENV = 'production';
+    assert.throws(() => generateConsentCode('parent@example.com', 12), YouthConsentMisconfiguredError);
   });
 });

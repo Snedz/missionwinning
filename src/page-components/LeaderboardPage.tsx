@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /leaderboard — boards and class standings
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -24,7 +28,7 @@ import { LeaderboardBoardPicker } from '@/components/leaderboard/LeaderboardBoar
 import { LeaderboardScopeTabs } from '@/components/leaderboard/LeaderboardScopeTabs';
 import { LeaderboardTable } from '@/components/leaderboard/LeaderboardTable';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
-import { getJoinedClassCode } from '@/lib/schoolClass';
+import { getJoinedClassCode, getTeacherPin } from '@/lib/schoolClass';
 
 export function LeaderboardPage() {
   const { t } = useTranslation();
@@ -60,9 +64,34 @@ export function LeaderboardPage() {
       if (scope === 'class' && activeClass) {
         setClassCode(activeClass);
         try {
-          const res = await fetch(`/api/school/class/${activeClass}/leaderboard`);
-          const data = (await res.json()) as { entries?: ClassLeaderboardRow[] };
-          setClassRows(data.entries ?? []);
+          const pin = getTeacherPin(activeClass);
+          const headers: HeadersInit = pin ? { 'x-teacher-pin': pin } : {};
+          const res = await fetch(`/api/school/class/${activeClass}/leaderboard`, {
+            credentials: 'include',
+            headers,
+          });
+          if (res.ok) {
+            const data = (await res.json()) as {
+              entries?: Array<{
+                rank: number;
+                athleteId?: string;
+                userId?: string;
+                athleteLabel: string;
+                bestTier: string;
+                score: number;
+              }>;
+            };
+            setClassRows(
+              (data.entries ?? []).map((e) => ({
+                rank: e.rank,
+                userId: e.athleteId ?? e.userId ?? '',
+                athleteLabel: e.athleteLabel,
+                bestTier: e.bestTier,
+                score: e.score,
+              }))
+            );
+            setClassRows([]);
+          }
         } catch {
           setClassRows([]);
         }

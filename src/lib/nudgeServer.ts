@@ -25,7 +25,10 @@ export interface NudgeCandidate {
 const NUDGE_COOLDOWN_MS = 44 * 60 * 60 * 1000;
 
 function nudgeSecret(): string {
-  return process.env.NUDGE_SECRET || process.env.PRIVATE_ACCESS_SECRET || '';
+  const dedicated = process.env.NUDGE_SECRET?.trim();
+  if (dedicated) return dedicated;
+  if (process.env.NODE_ENV === 'production') return '';
+  return process.env.PRIVATE_ACCESS_SECRET || '';
 }
 
 export function unsubscribeToken(userId: string): string {

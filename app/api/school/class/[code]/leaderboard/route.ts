@@ -1,18 +1,26 @@
+/**
+ * Class leaderboard — redacted athlete ids, teacher auth.
+ * Auth: teacher | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchClassPftLeaderboard } from '@/lib/schoolClassServer';
-import { normalizeClassCode } from '@/lib/schoolClass';
+import { fetchClassPftLeaderboard, toPublicLeaderboardEntries } from '@/lib/schoolClassServer';
+import { resolveTeacherClassAccess } from '@/lib/schoolClassAccess';
 
-/** Class PFT leaderboard — best tier per signed-in athlete (no emails exposed). */
+/** Class PFT leaderboard — teacher or creator only; athlete ids redacted. */
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   context: { params: Promise<{ code: string }> }
 ) {
   const { code: raw } = await context.params;
-  const code = normalizeClassCode(raw);
-  if (!code) {
-    return NextResponse.json({ error: 'Invalid class code' }, { status: 400 });
+  const access = await resolveTeacherClassAccess(request, raw);
+  if (!access.ok) {
+    return NextResponse.json({ error: access.error }, { status: access.status });
   }
 
-  const entries = await fetchClassPftLeaderboard(code);
-  return NextResponse.json({ code, entries, source: entries.length ? 'cloud' : 'empty' });
+  const entries = await fetchClassPftLeaderboard(access.code);
+  return NextResponse.json({
+    code: access.code,
+    entries: toPublicLeaderboardEntries(entries),
+    source: entries.length ? 'cloud' : 'empty',
+  });
 }

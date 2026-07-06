@@ -26,6 +26,10 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      - name: Dependency audit (high)
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
       - name: Export locale JSON (smoke)
         run: npm run export-locales
 
