@@ -26,6 +26,7 @@ import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from "@/lib/macroTargets";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { Plus, UtensilsCrossed } from "lucide-react";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const FREE_RECIPE_COUNT = 12;
 
@@ -421,26 +422,33 @@ export function NutritionPage() {
           </div>
         </CardHeader>
         <CardContent>
-          {logged.length === 0 && (
-            <div className="text-muted-foreground text-sm">
-              {t('fuelNoEntries', { defaultValue: 'No entries yet. Tap + Log food to add your first meal.' })}
-            </div>
-          )}
-          {Object.entries(groupedLog).map(([mealKey, entries]) => (
-            <div key={mealKey} className="mb-4 last:mb-0">
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
-                {mealKey === 'other' ? mealLabel() : mealLabel(mealKey as MealType)}
+          {logged.length === 0 ? (
+            <EmptyState
+              icon={UtensilsCrossed}
+              title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
+              description={t('fuelNoEntries', {
+                defaultValue: 'No entries yet. Tap + Log food to add your first meal.',
+              })}
+              actionLabel={t('fuelLogFirstMeal', { defaultValue: 'Log first meal' })}
+              onAction={() => setLogSheetOpen(true)}
+            />
+          ) : (
+            Object.entries(groupedLog).map(([mealKey, entries]) => (
+              <div key={mealKey} className="mb-4 last:mb-0">
+                <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                  {mealKey === 'other' ? mealLabel() : mealLabel(mealKey as MealType)}
+                </div>
+                <ul className="space-y-1 text-sm">
+                  {entries.map((l, i) => (
+                    <li key={`${mealKey}-${i}`} className="flex justify-between">
+                      <span>{l.time} — {l.name}</span>
+                      <span className="text-muted-foreground tabular-nums">+{l.protein}g P • {l.cals} kcal</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="space-y-1 text-sm">
-                {entries.map((l, i) => (
-                  <li key={`${mealKey}-${i}`} className="flex justify-between">
-                    <span>{l.time} — {l.name}</span>
-                    <span className="text-muted-foreground tabular-nums">+{l.protein}g P • {l.cals} kcal</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            ))
+          )}
           <div className="mt-4 pt-3 border-t text-sm flex justify-between font-medium">
             <span>{t('fuelTotals', { defaultValue: 'Totals' })}</span>
             <span className="tabular-nums">{t('fuelTotalsLine', { protein: totalProtein, cals: totalCals, defaultValue: `${totalProtein}g protein • ${totalCals} kcal` })}</span>

@@ -42,19 +42,36 @@ export function CoachPage() {
         </p>
       )}
 
+      {!loading && locked && plan && (
+        <div className="space-y-4">
+          <p className="eyebrow">{t('coachWeekEyebrow', { defaultValue: "THIS WEEK'S MISSION" })}</p>
+          <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
+          <p className="text-sm text-muted-foreground text-center">
+            {t('coachLockedWeekSummary', {
+              done: plan.sessions.filter((s) => s.status === 'done').length,
+              total: plan.sessions.length,
+              defaultValue: `${plan.sessions.filter((s) => s.status === 'done').length}/${plan.sessions.length} sessions logged last week`,
+            })}
+          </p>
+        </div>
+      )}
+
       {!loading && locked && (
         <Card className="content-card border-emerald-500/20">
           <CardHeader>
             <CardTitle>{t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}</CardTitle>
             <CardDescription>
-              {t('coachTasterDesc', {
+              {t('coachTasterLockedDesc', {
                 defaultValue:
-                  'Unlock Mission Coach to regenerate and adapt your plan every week.',
+                  'Unlock Super Bundle for a new weekly plan, regeneration, and Commander\'s intent briefings.',
               })}
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-3">
             <UnlockButton productId="super-bundle" price="59" title="Super Bundle" isSubscription />
+            <Button asChild variant="outline" className="w-full">
+              <Link href="/bundle">{t('coachCompareBundle', { defaultValue: 'Compare Super Bundle' })}</Link>
+            </Button>
           </CardContent>
         </Card>
       )}

@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { applyCrossPillarCoachRules } from './crossPillarCoach.ts';
+import { applyCrossPillarCoachRules, listCrossPillarCoachSuggestions } from './crossPillarCoach.ts';
 import type { BodyScores, CoachInsight, RecommendedFocus } from './score.ts';
 
 const baseScores: BodyScores = {
@@ -62,5 +62,27 @@ describe('applyCrossPillarCoachRules', () => {
       trainDays: 2,
     });
     assert.equal(out.messageKey, 'coachInsightSteady');
+  });
+});
+
+describe('listCrossPillarCoachSuggestions', () => {
+  it('returns multiple chips when several pillars need attention', () => {
+    const out = listCrossPillarCoachSuggestions(
+      { ...baseScores, strain: 70, recovery: 40 },
+      { moveFlows: 0, mindSessions: 0, trainDays: 3, proteinDays: 0, trackActivities: 0 }
+    );
+    const keys = out.map((o) => o.messageKey);
+    assert.ok(keys.includes('coachInsightNeedMove'));
+    assert.ok(keys.includes('coachInsightNeedFuel'));
+    assert.ok(keys.includes('coachInsightNeedMind'));
+    assert.ok(keys.includes('coachInsightNeedTrack'));
+  });
+
+  it('suggests Track when training without logged activities', () => {
+    const out = listCrossPillarCoachSuggestions(baseScores, {
+      trainDays: 3,
+      trackActivities: 0,
+    });
+    assert.ok(out.some((o) => o.messageKey === 'coachInsightNeedTrack'));
   });
 });

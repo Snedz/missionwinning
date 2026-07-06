@@ -6,6 +6,7 @@ import { getExerciseById } from '@/data/exercises';
 import { getFormGuide, hasFormGuide } from '@/lib/formGuides';
 import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
+import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
 import type { Exercise } from '@/types';
 
 type Props = {
@@ -87,6 +88,7 @@ export function ExercisePublicPage({ exercise, jsonLd }: Props) {
           </Link>
         </Button>
       </main>
+      <PublicSeoFooter />
     </div>
   );
 }

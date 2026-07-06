@@ -29,6 +29,14 @@ See [VERCEL_DEPLOY_CHECKLIST.md](../VERCEL_DEPLOY_CHECKLIST.md) for preview-vs-p
 
 ## §3 Beta cohort — 10 real users (14 days)
 
+**v5 founder checklist (parallel with code):**
+
+- [ ] Rotate `PRIVATE_ACCESS_SECRET` off dev placeholder (`Done`) — see §2
+- [ ] Vercel **Production Branch** = `master` (§1)
+- [ ] Search Console: submit sitemap after public launch ([SEO_ANALYTICS.md](SEO_ANALYTICS.md))
+- [ ] PostHog funnel: visit → I-Day → first workout → `checkout_completed` ([SEO_ANALYTICS.md](SEO_ANALYTICS.md))
+- [ ] Stripe test enrollment: `node scripts/verify-stripe-enrollment.mjs` + live purchase on Preview
+
 ### Mobile QA (do yourself first)
 
 On a real phone, incognito:

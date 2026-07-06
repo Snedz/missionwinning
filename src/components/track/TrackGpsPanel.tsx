@@ -8,9 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { usePremium } from '@/hooks/usePremium';
 import { logActivity } from '@/lib/activityLog';
 import { logPillarWin } from '@/lib/pillarLog';
+import { totalTrackDistanceKm, type GpsPoint } from '@/lib/trackGps';
 import { UnlockButton } from '@/components/UnlockButton';
-
-type GpsPoint = { lat: number; lng: number; at: number };
 
 export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
   const { t } = useTranslation();
@@ -62,10 +61,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
     const start = points[0].at;
     const end = points[points.length - 1].at;
     const durationMin = Math.max(1, Math.round((end - start) / 60_000));
-    let distanceKm = 0;
-    for (let i = 1; i < points.length; i++) {
-      distanceKm += haversineKm(points[i - 1], points[i]);
-    }
+    const distanceKm = totalTrackDistanceKm(points);
     const today = new Date().toISOString().split('T')[0];
     logActivity({
       date: today,
@@ -134,19 +130,14 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
           )}
         </div>
         {error && <p className="text-xs text-red-400">{error}</p>}
+        {!tracking && points.length === 0 && !error && (
+          <p className="text-xs text-muted-foreground">
+            {t('trackGpsHint', {
+              defaultValue: 'Allow location when prompted. Works best outdoors with clear sky.',
+            })}
+          </p>
+        )}
       </CardContent>
     </Card>
   );
-}
-
-function haversineKm(a: GpsPoint, b: GpsPoint): number {
-  const R = 6371;
-  const dLat = ((b.lat - a.lat) * Math.PI) / 180;
-  const dLng = ((b.lng - a.lng) * Math.PI) / 180;
-  const lat1 = (a.lat * Math.PI) / 180;
-  const lat2 = (b.lat * Math.PI) / 180;
-  const x =
-    Math.sin(dLat / 2) ** 2 +
-    Math.sin(dLng / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
-  return 2 * R * Math.asin(Math.sqrt(x));
 }

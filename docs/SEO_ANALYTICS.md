@@ -18,6 +18,7 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. C
 | `iday_started` / `iday_completed` | Journey onboarding |
 | `first_workout_completed` / `workout_completed` | Train retention |
 | `coach_taster_locked` | Free Coach week exhausted → upgrade moment |
+| `checkout_completed` | Return from Stripe on `/bundle?checkout=success` |
 
 ### Suggested funnel (PostHog → Insights → Funnel)
 
@@ -45,14 +46,16 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. C
 
 ## Lighthouse baselines
 
+See [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) for route table and snapshot process.
+
 Capture after each experience PR:
 
 ```bash
 npm run build && npm run start &
-SMOKE_BASE_URL=http://localhost:3000 node scripts/lighthouse-budget.mjs
+SMOKE_BASE_URL=http://localhost:3000 LIGHTHOUSE_SNAPSHOT=1 node scripts/lighthouse-budget.mjs
 ```
 
-Targets (mobile): performance, accessibility, best-practices ≥ 90 on `/` and `/log`.
+Targets (mobile): performance, accessibility, best-practices ≥ 90 on `/`, `/log`, `/guide/human-performance`, `/exercises/squats`.
 
 CI runs the same script as a **soft warning** (`.github/workflows/ci.yml` → `lighthouse-budget` job).
 

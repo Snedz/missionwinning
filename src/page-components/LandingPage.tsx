@@ -315,6 +315,15 @@ export function LandingPage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-5 py-10 text-xs text-muted-foreground sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} Mission Winning · Train anywhere. Win daily.</p>
           <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+            <Link href="/guide" className="hover:text-foreground">
+              Guide
+            </Link>
+            <Link href="/exercises" className="hover:text-foreground">
+              Exercises
+            </Link>
+            <Link href="/compare" className="hover:text-foreground">
+              Compare
+            </Link>
             <Link href="/about" className="hover:text-foreground">
               About
             </Link>

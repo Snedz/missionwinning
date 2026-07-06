@@ -1,10 +1,12 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MetricsRow } from '@/components/metrics/MetricsRow';
 import { TodayMetricsSparklineRow } from '@/components/today/TodayMetricsSparklineRow';
 import type { BodyScores } from '@/lib/score';
 import type { TodayTrends } from '@/lib/todayTrends';
+import { animateCount } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 interface Props {
@@ -18,6 +20,14 @@ interface Props {
 /** Bevel-style at-a-glance dashboard: Mission Score + readiness rings. */
 export function TodayDashboardHeader({ missionScore, scores, streak, trends, className }: Props) {
   const { t } = useTranslation();
+  const [displayScore, setDisplayScore] = useState(missionScore);
+  const prevScoreRef = useRef(missionScore);
+
+  useEffect(() => {
+    const cancel = animateCount(prevScoreRef.current, missionScore, 450, setDisplayScore);
+    prevScoreRef.current = missionScore;
+    return cancel;
+  }, [missionScore]);
 
   return (
     <div
@@ -31,7 +41,7 @@ export function TodayDashboardHeader({ missionScore, scores, streak, trends, cla
           <p className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
             {t('todayMissionScore', { defaultValue: 'Mission Score' })}
           </p>
-          <p className="text-4xl font-bold tabular-nums text-emerald-400 tracking-tight">{missionScore}</p>
+          <p className="text-4xl font-bold tabular-nums text-emerald-400 tracking-tight">{displayScore}</p>
           {streak > 0 && (
             <p className="text-sm text-muted-foreground mt-1">
               {t('todayTrainingStreak', { count: streak, defaultValue: `${streak}-day training streak` })}

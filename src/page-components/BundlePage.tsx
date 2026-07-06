@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { track } from "@/lib/analytics";
+import { usePremium } from "@/hooks/usePremium";
 import {
   BookOpen,
   Brain,
@@ -18,6 +20,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UnlockButton } from "@/components/UnlockButton";
@@ -53,6 +56,8 @@ function planBadgeLabel(
 
 export function BundlePage() {
   const { t } = useTranslation();
+  const searchParams = useSearchParams();
+  const { premium, loading: premiumLoading } = usePremium();
   const [planId, setPlanId] = useState<BundlePlanId>(DEFAULT_BUNDLE_PLAN);
   const plan = BUNDLE_PLANS[planId];
   const stripeUrl = getStripeCheckoutUrl("super-bundle");
@@ -61,6 +66,13 @@ export function BundlePage() {
   useEffect(() => {
     track('bundle_viewed');
   }, []);
+
+  const checkoutSuccess = searchParams.get('checkout') === 'success';
+
+  useEffect(() => {
+    if (!checkoutSuccess || premiumLoading) return;
+    track('checkout_completed', { premium: !!premium });
+  }, [checkoutSuccess, premium, premiumLoading]);
 
   const planTabLabel =
     planId === "3mo"
@@ -93,6 +105,32 @@ export function BundlePage() {
           subtitle={t("bundleSubhead")}
         />
       </div>
+
+      {checkoutSuccess && !premiumLoading && (
+        <Card className="border-emerald-500/40 bg-emerald-950/30">
+          <CardContent className="pt-6">
+            {premium ? (
+              <p className="text-sm font-medium text-emerald-300">
+                {t('bundleCheckoutSuccess', {
+                  defaultValue: 'Premium active — Mission Coach and bundle content are unlocked.',
+                })}
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                {t('bundleCheckoutPending', {
+                  defaultValue:
+                    'Thanks! If you just paid, premium may take a minute — refresh or sign in with your checkout email.',
+                })}
+              </p>
+            )}
+            {premium && (
+              <Button asChild variant="fitness" size="sm" className="mt-3">
+                <Link href="/coach">{t('coachViewPlan', { defaultValue: 'View full week' })}</Link>
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Duration tabs + hero offer card */}
       <Tabs
