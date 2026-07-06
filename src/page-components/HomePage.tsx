@@ -134,6 +134,8 @@ export function HomePage() {
     trainDays: 0,
     proteinDays: 0,
     weekVolume: 0,
+    fuelCoachActive: 0,
+    fuelCoachCarbBump: 0,
   }));
   useEffect(() => {
     setChallenges(getChallengeProgress());
@@ -227,6 +229,7 @@ export function HomePage() {
     trackActivities: pillarStats.trackActivities,
     learnLessons: pillarStats.learnLessons,
     trainDaysThisWeek: pillarStats.trainDays,
+    fuelCoachActive: pillarStats.fuelCoachActive,
   });
   const score = scoreBreakdown.total;
 
@@ -248,6 +251,7 @@ export function HomePage() {
       trainDays: pillarStats.trainDays,
       trackActivities: pillarStats.trackActivities,
       learnLessons: pillarStats.learnLessons,
+      fuelCoachCarbBump: pillarStats.fuelCoachCarbBump,
     },
     { assessmentRisk: lastAssessment?.risk }
   );
@@ -298,6 +302,7 @@ export function HomePage() {
                   trainDays: pillarStats.trainDays,
                   trackActivities: pillarStats.trackActivities,
                   learnLessons: pillarStats.learnLessons,
+                  fuelCoachCarbBump: pillarStats.fuelCoachCarbBump,
                 },
               }}
             />

@@ -97,4 +97,15 @@ describe('listCrossPillarCoachSuggestions', () => {
     });
     assert.ok(out.some((o) => o.messageKey === 'coachInsightNeedLearn'));
   });
+
+  it('suggests Fuel Coach synergy when training load bumps carbs', () => {
+    const out = listCrossPillarCoachSuggestions(baseScores, {
+      trainDays: 2,
+      fuelCoachCarbBump: 40,
+    });
+    const chip = out.find((o) => o.messageKey === 'coachInsightFuelCoachSynergy');
+    assert.ok(chip);
+    assert.equal(chip?.messageParams?.carbs, '40');
+    assert.equal(chip?.actionPath, '/nutrition');
+  });
 });

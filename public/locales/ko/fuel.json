@@ -51,5 +51,14 @@
   "fuelSearchTitle": "Search foods",
   "fuelEmptyTitle": "No meals logged today",
   "fuelLogFirstMeal": "Log first meal",
-  "fuelSubtitle": "Free core: daily macro log, water, targets, and accessible recipes worldwide."
+  "fuelSubtitle": "Free core: daily macro log, water, targets, and accessible recipes worldwide.",
+  "fuelCoachTitle": "Fuel Coach — adaptive meal plan",
+  "fuelCoachGenerateDesc": "Generate a 7-day plan from your macro targets and this week’s training load.",
+  "fuelCoachGenerate": "Generate meal plan",
+  "fuelCoachWeekTitle": "Your adaptive meal plan",
+  "fuelCoachRegenerate": "Regenerate",
+  "fuelCoachDayTotals": "Day totals",
+  "fuelCoachLockedDesc": "Macro-synced 7-day plan from your targets and training load — not a static sample.",
+  "fuelCoachTargets": "Your targets",
+  "fuelCoachPreviewNote": "Recipes from your library, adapted to heavy vs rest days"
 }

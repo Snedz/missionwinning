@@ -7,6 +7,7 @@
 | Hook | Consumers | Depends on |
 |------|-----------|------------|
 | `useCoachPlan.ts` | `CoachPage`, coach cards | `src/lib/coach/*`, localStorage |
+| `useFuelPlan.ts` | `FuelMealPlanCard`, Nutrition | `src/lib/fuelCoach/*`, `/api/premium/recipes` |
 | `useDailyCoachInsight.ts` | `CoachInsightCard`, Today | `/api/coach/daily-insight`, `score.ts` |
 | `useMissionJourney.ts` | Journey components, guards | `missionJourney.ts` |
 | `useJourneySync.ts` | `AppLayout`, Profile | `journeySync.ts`, Supabase |

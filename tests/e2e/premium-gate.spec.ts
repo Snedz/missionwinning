@@ -10,6 +10,10 @@ test.describe('Premium API gate', () => {
     await expectPremiumApiBlocked(request, '/api/premium/programs');
   });
 
+  test('premium fuel-plan rejects unauthenticated access', async ({ request }) => {
+    await expectPremiumApiBlocked(request, '/api/premium/fuel-plan');
+  });
+
   test('premium status returns free for anonymous session', async ({ request }) => {
     const res = await request.get('/api/premium/status');
     expect(res.ok()).toBeTruthy();

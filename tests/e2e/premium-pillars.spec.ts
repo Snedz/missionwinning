@@ -35,4 +35,10 @@ test.describe('Premium pillar experiences', () => {
     await page.goto('/mind', { waitUntil: 'domcontentloaded' });
     await expect(page.getByText(/super bundle|premium/i).first()).toBeVisible();
   });
+
+  test('free user sees Fuel Coach locked preview on nutrition', async ({ page }) => {
+    await page.goto('/nutrition', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByText(/fuel coach|adaptive meal plan/i).first()).toBeVisible();
+    await expect(page.getByText(/super bundle|premium/i).first()).toBeVisible();
+  });
 });

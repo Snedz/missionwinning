@@ -96,7 +96,7 @@ const en: BundleStrings = {
   bundlePillarTrainFree: 'Full logger, builder, library, benchmarks',
   bundlePillarTrainPremium: 'AI Coach, unlimited plans, hybrid programming',
   bundlePillarFuelFree: 'Macro log, water, 12 recipes',
-  bundlePillarFuelPremium: 'Meal plans, periodized nutrition, coaching sync',
+  bundlePillarFuelPremium: 'Fuel Coach — macro-synced 7-day plan + training-load adaptation',
   bundlePillarMoveFree: '10 guided mobility flows + timer',
   bundlePillarMovePremium: '18 timed recovery flows — press play, follow cues',
   bundlePillarMindFree: 'Breathing timer + 10 guided sessions',

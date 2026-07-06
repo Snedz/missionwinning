@@ -31,16 +31,23 @@ export function CrossPillarCoachChips({ suggestions, className }: Props) {
       {suggestions.map((s) => {
         const path = s.actionPath ?? '/log';
         const pillar = PILLAR_CHIP[path] ?? 'Action';
-        const label = s.actionLabelKey
+        const actionLabel = s.actionLabelKey
           ? t(s.actionLabelKey, { defaultValue: pillar })
           : pillar;
+        const message = s.messageKey
+          ? t(s.messageKey, {
+              defaultValue: actionLabel,
+              ...(s.messageParams ?? {}),
+            })
+          : actionLabel;
         return (
           <Link
             key={`${path}-${s.messageKey}`}
             href={path}
             className="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300 hover:bg-emerald-500/20 transition-colors"
+            title={actionLabel}
           >
-            {label} →
+            {message} →
           </Link>
         );
       })}

@@ -30,6 +30,7 @@ interface Props {
       trainDays: number;
       trackActivities?: number;
       learnLessons?: number;
+      fuelCoachCarbBump?: number;
     };
   };
   goal?: string;

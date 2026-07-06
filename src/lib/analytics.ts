@@ -34,6 +34,8 @@ type AnalyticsEvent =
   | 'coach_plan_regenerated_fatigue'
   | 'coach_taster_locked'
   | 'coach_premium_active'
+  | 'fuel_plan_generated'
+  | 'fuel_plan_regenerated'
   | 'backup_exported'
   | 'backup_restored'
   | 'guide_read'

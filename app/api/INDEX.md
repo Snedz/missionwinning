@@ -29,6 +29,7 @@ Full reference: [docs/API.md](../../docs/API.md).
 | `premium/programs/route.ts` | GET | premium |
 | `premium/mobility/route.ts` | GET | premium |
 | `premium/mind/route.ts` | GET | premium |
+| `premium/fuel-plan/route.ts` | GET | premium |
 | `premium/guidebook/route.ts` | GET | premium |
 
 ### Fuel
