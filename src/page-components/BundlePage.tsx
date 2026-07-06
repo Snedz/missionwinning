@@ -280,6 +280,43 @@ export function BundlePage() {
         })}
       </Tabs>
 
+      {/* Shipped premium experiences */}
+      <section className="rounded-lg border border-emerald-500/20 bg-emerald-950/10 p-4 space-y-3">
+        <h2 className="text-sm font-semibold text-emerald-300">
+          {t('bundleShippedTitle', { defaultValue: 'What premium unlocks today' })}
+        </h2>
+        <ul className="grid sm:grid-cols-2 gap-2 text-sm text-muted-foreground">
+          <li>
+            <Link href="/mind" className="text-foreground hover:text-primary">
+              {t('bundlePillarMind')}
+            </Link>
+            {' — '}
+            {t('bundlePillarMindPremium')}
+          </li>
+          <li>
+            <Link href="/move" className="text-foreground hover:text-primary">
+              {t('bundlePillarMove')}
+            </Link>
+            {' — '}
+            {t('bundlePillarMovePremium')}
+          </li>
+          <li>
+            <Link href="/learn/course" className="text-foreground hover:text-primary">
+              {t('bundlePillarLearn')}
+            </Link>
+            {' — '}
+            {t('bundlePillarLearnPremium')}
+          </li>
+          <li>
+            <Link href="/track" className="text-foreground hover:text-primary">
+              {t('bundlePillarTrack')}
+            </Link>
+            {' — '}
+            {t('bundlePillarTrackPremium')}
+          </li>
+        </ul>
+      </section>
+
       {/* Comparison table — below fold */}
       <section>
         <h2 className="text-lg font-semibold mb-4">{t("bundleCompareTitle")}</h2>

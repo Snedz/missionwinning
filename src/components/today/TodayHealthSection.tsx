@@ -29,6 +29,7 @@ interface Props {
       proteinDays: number;
       trainDays: number;
       trackActivities?: number;
+      learnLessons?: number;
     };
   };
   goal?: string;

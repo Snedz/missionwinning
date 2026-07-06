@@ -31,8 +31,12 @@ function countLearnLessonsThisWeek(): number {
   if (typeof window === 'undefined') return 0;
   try {
     const completed = JSON.parse(localStorage.getItem('mw_learn_completed') || '[]') as string[];
-    // Lesson IDs don't have dates — count total completed capped for score (engagement proxy)
-    return Math.min(completed.length, 10);
+    const premium = JSON.parse(
+      localStorage.getItem('mw_premium_course_progress') || '[]'
+    ) as string[];
+    const guide = JSON.parse(localStorage.getItem('mw_guidebook_progress') || '[]') as string[];
+    const total = new Set([...completed, ...premium, ...guide]).size;
+    return Math.min(total, 10);
   } catch {
     return 0;
   }

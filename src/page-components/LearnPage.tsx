@@ -10,8 +10,8 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { localizeLearnPaths } from '@/lib/localizeLearnPaths';
-import { UnlockButton } from '@/components/UnlockButton';
-import { PROGRAM_PRICES } from '@/lib/payments';
+import { LearnLockedPreview } from '@/components/learn/LearnLockedPreview';
+import { usePremium } from '@/hooks/usePremium';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +22,7 @@ import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
 export function LearnPage() {
   const { t } = useTranslation();
   const router = useRouter();
+  const { premium } = usePremium();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const paths = useMemo(
     () => localizeLearnPaths(FREE_LEARN_PATHS, t),
@@ -172,33 +173,29 @@ export function LearnPage() {
           </CardContent>
         </Card>
 
-        <Card className="content-card border-white/10 bg-card/50">
-          <CardHeader>
-            <CardTitle className="text-base">
-              {t('learnPremiumTitle', { defaultValue: 'Premium Specialist Programs' })}
-            </CardTitle>
-            <CardDescription>
-              {t('learnPremiumDesc', {
-                defaultValue:
-                  'Full PT+Nutrition, Bodybuilding, Corrective, Business, Coaching, Conditioning.',
-              })}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <ul className="text-xs text-muted-foreground list-disc pl-4">
-              {Object.entries(PROGRAM_PRICES).map(([id, info]) => (
-                <li key={id}>
-                  {info.title} — ${info.price}
-                </li>
-              ))}
-            </ul>
-            <UnlockButton
-              productId="learn-premium"
-              price="147"
-              title={t('learnPremiumBtn', { defaultValue: 'Learn & Master Bundle (All Programs)' })}
-            />
-          </CardContent>
-        </Card>
+        {premium ? (
+          <Card className="content-card border-emerald-500/20">
+            <CardHeader>
+              <CardTitle className="text-base">
+                {t('learnPremiumTitle', { defaultValue: 'Premium Specialist Programs' })}
+              </CardTitle>
+              <CardDescription>
+                {t('learnPremiumCourseDesc', {
+                  defaultValue: 'Multi-chapter specialist courses with progress that survives reload.',
+                })}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="fitness" size="sm" asChild>
+                <Link href="/learn/course">
+                  {t('learnOpenCourses', { defaultValue: 'Open specialist courses →' })}
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <LearnLockedPreview />
+        )}
     </PillarPageShell>
   );
 }

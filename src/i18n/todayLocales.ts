@@ -117,10 +117,13 @@ type TodayStrings = {
   coachInsightNeedMind: string;
   coachInsightSynergyMove: string;
   coachInsightNeedTrack: string;
+  coachInsightNeedLearn: string;
+  coachInsightSynergyMultipillar: string;
   coachActionRecoveryFlow: string;
   coachActionOpenMove: string;
   coachActionOpenMind: string;
   coachActionOpenTrack: string;
+  coachActionOpenLearn: string;
   todayEditToday: string;
   coachActionStartWorkout: string;
   coachActionGoBuilder: string;
@@ -289,10 +292,15 @@ const en: TodayStrings = {
     'Strong training week — pair it with mobility so you keep progressing without breakdown.',
   coachInsightNeedTrack:
     'You\'re training consistently — log an outdoor walk or run in Track to complete the picture.',
+  coachInsightNeedLearn:
+    'You\'re active across pillars — open a specialist course in Learn to deepen the stack.',
+  coachInsightSynergyMultipillar:
+    'Multi-pillar week — your Win Score reflects Train + recovery + learning together.',
   coachActionRecoveryFlow: 'Try recovery flow',
   coachActionOpenMove: 'Open Move pillar',
   coachActionOpenMind: 'Open Mind pillar',
   coachActionOpenTrack: 'Open Track pillar',
+  coachActionOpenLearn: 'Open Learn courses',
   todayEditToday: 'Edit Today',
   coachActionStartWorkout: 'Start workout',
   coachActionGoBuilder: 'Go to Builder',
@@ -613,6 +621,9 @@ const zh: TodayStrings = {
   coachActionOpenMove: '打开活动支柱',
   coachActionOpenMind: '打开心理支柱',
   coachActionOpenTrack: '打开追踪支柱',
+  coachInsightNeedLearn: '你已在多个支柱活跃——打开 Learn 专业课程深化体系。',
+  coachInsightSynergyMultipillar: '多支柱的一周——Win Score 反映训练、恢复与学习合力。',
+  coachActionOpenLearn: '打开 Learn 课程',
   todayEditToday: '编辑 Today',
   coachActionStartWorkout: '开始训练',
   coachActionGoBuilder: '前往构建器',
@@ -776,6 +787,9 @@ const id: TodayStrings = {
   coachActionOpenMove: 'Buka pilar Move',
   coachActionOpenMind: 'Buka pilar Mind',
   coachActionOpenTrack: 'Buka pilar Track',
+  coachInsightNeedLearn: 'Kamu aktif di beberapa pilar — buka kursus Learn untuk memperdalam.',
+  coachInsightSynergyMultipillar: 'Minggu multi-pilar — Win Score mencerminkan latihan + pemulihan + belajar.',
+  coachActionOpenLearn: 'Buka kursus Learn',
   todayEditToday: 'Edit Today',
   coachActionStartWorkout: 'Mulai latihan',
   coachActionGoBuilder: 'Ke Builder',
@@ -930,6 +944,9 @@ const th: TodayStrings = {
   coachActionOpenMove: 'เปิดเสา Move',
   coachActionOpenMind: 'เปิดเสา Mind',
   coachActionOpenTrack: 'เปิดเสา Track',
+  coachInsightNeedLearn: 'คุณทำหลายเสาแล้ว — เปิดคอร์ส Learn เพื่อเสริมความลึก',
+  coachInsightSynergyMultipillar: 'สัปดาห์หลายเสา — Win Score สะท้อนการเทรน + ฟื้นตัว + เรียนรู้',
+  coachActionOpenLearn: 'เปิดคอร์ส Learn',
   todayEditToday: 'แก้ไข Today',
   coachActionStartWorkout: 'เริ่มฝึก',
   coachActionGoBuilder: 'ไป Builder',
@@ -1083,6 +1100,9 @@ const ar: TodayStrings = {
   coachActionOpenMove: 'فتح ركيزة Move',
   coachActionOpenMind: 'فتح ركيزة Mind',
   coachActionOpenTrack: 'فتح ركيزة Track',
+  coachInsightNeedLearn: 'أنت نشط عبر عدة ركائز — افتح دورة Learn لتعميق المسار.',
+  coachInsightSynergyMultipillar: 'أسبوع متعدد الركائز — Win Score يعكس التدريب والتعافي والتعلم.',
+  coachActionOpenLearn: 'فتح دورات Learn',
   todayEditToday: 'تعديل Today',
   coachActionStartWorkout: 'بدء التمرين',
   coachActionGoBuilder: 'إلى Builder',

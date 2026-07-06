@@ -6,6 +6,7 @@ export interface PillarWeekContext {
   proteinDays?: number;
   trainDays?: number;
   trackActivities?: number;
+  learnLessons?: number;
 }
 
 /**
@@ -74,6 +75,7 @@ export function listCrossPillarCoachSuggestions(
   const protein = pillars.proteinDays ?? 0;
   const trainDays = pillars.trainDays ?? 0;
   const trackActivities = pillars.trackActivities ?? 0;
+  const learnLessons = pillars.learnLessons ?? 0;
   const out: CoachInsight[] = [];
 
   if (scores.strain >= 55 && move === 0) {
@@ -113,6 +115,25 @@ export function listCrossPillarCoachSuggestions(
       messageKey: 'coachInsightNeedTrack',
       actionLabelKey: 'coachActionOpenTrack',
       actionPath: '/track',
+    });
+  }
+
+  if (trainDays >= 2 && learnLessons === 0 && (move >= 1 || mind >= 1)) {
+    out.push({
+      messageKey: 'coachInsightNeedLearn',
+      actionLabelKey: 'coachActionOpenLearn',
+      actionPath: '/learn/course',
+    });
+  }
+
+  const synergyPillars = [move >= 1, mind >= 1, trackActivities >= 1, learnLessons >= 1].filter(
+    Boolean
+  ).length;
+  if (trainDays >= 2 && synergyPillars >= 2) {
+    out.push({
+      messageKey: 'coachInsightSynergyMultipillar',
+      actionLabelKey: 'coachActionViewToday',
+      actionPath: '/log',
     });
   }
 
