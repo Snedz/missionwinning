@@ -247,6 +247,7 @@ export function HomePage() {
       proteinDays: pillarStats.proteinDays,
       trainDays: pillarStats.trainDays,
       trackActivities: pillarStats.trackActivities,
+      learnLessons: pillarStats.learnLessons,
     },
     { assessmentRisk: lastAssessment?.risk }
   );
@@ -296,6 +297,7 @@ export function HomePage() {
                   proteinDays: pillarStats.proteinDays,
                   trainDays: pillarStats.trainDays,
                   trackActivities: pillarStats.trackActivities,
+                  learnLessons: pillarStats.learnLessons,
                 },
               }}
             />

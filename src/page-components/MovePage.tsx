@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
 import type { MobilityFlow } from '@/data/mobilityFlows';
 import { TimedFlowRunner } from '@/components/pillars/TimedFlowRunner';
-import { UnlockButton } from '@/components/UnlockButton';
+import { MoveLockedPreview } from '@/components/move/MoveLockedPreview';
 import { usePremium } from '@/hooks/usePremium';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +22,7 @@ export function MovePage() {
   const { premium, loading: premiumLoading } = usePremium();
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
   const [activeFlowId, setActiveFlowId] = useState<string | null>(null);
+  const [refresh, setRefresh] = useState(0);
 
   useEffect(() => {
     if (!premium) {
@@ -34,31 +35,37 @@ export function MovePage() {
       .catch(() => setPremiumFlows([]));
   }, [premium]);
 
-  const allFlows = [...MOBILITY_FLOWS, ...premiumFlows];
-  const activeFlow = allFlows.find((f) => f.id === activeFlowId);
+  const freeFlows = MOBILITY_FLOWS;
+  const activeFlow = [...freeFlows, ...premiumFlows].find((f) => f.id === activeFlowId);
   const recentWins = typeof window !== 'undefined'
     ? getPillarWins(5).filter((w) => w.pillar === 'move')
     : [];
 
+  void refresh;
+
   if (activeFlow) {
     return (
       <div className="space-y-4">
-        <TimedFlowRunner flow={activeFlow} onExit={() => setActiveFlowId(null)} />
+        <TimedFlowRunner
+          flow={activeFlow}
+          onComplete={() => setRefresh((r) => r + 1)}
+          onExit={() => setActiveFlowId(null)}
+        />
       </div>
     );
   }
 
-  return (
-    <PillarPageShell
-      icon={Wind}
-      title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
-      subtitle={t('moveSubtitle', {
-        defaultValue:
-          '10 free guided flows with timers — bodyweight, global-friendly. Premium adds 8 longer recovery flows (Super Bundle).',
-      })}
-    >
+  const renderFlowGrid = (flows: MobilityFlow[], label: string, accent?: boolean) => (
+    <div className="space-y-3">
+      <h3
+        className={`text-sm font-semibold uppercase tracking-wide ${
+          accent ? 'text-emerald-400' : 'text-muted-foreground'
+        }`}
+      >
+        {label}
+      </h3>
       <div className="grid gap-4 md:grid-cols-2">
-        {allFlows.map((flow) => (
+        {flows.map((flow) => (
           <Card key={flow.id} className="content-card hover:border-emerald-500/40 transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -78,9 +85,32 @@ export function MovePage() {
           </Card>
         ))}
       </div>
+    </div>
+  );
+
+  return (
+    <PillarPageShell
+      icon={Wind}
+      title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
+      subtitle={t('moveSubtitle', {
+        defaultValue:
+          '10 free guided flows with timers — bodyweight, global-friendly. Premium adds 8 longer recovery flows (Super Bundle).',
+      })}
+    >
+      {renderFlowGrid(freeFlows, t('moveFreeFlows', { defaultValue: 'Free mobility flows' }))}
+
+      {premium && premiumFlows.length > 0 &&
+        renderFlowGrid(
+          premiumFlows,
+          t('movePremiumFlows', { defaultValue: 'Premium recovery flows' }),
+          true
+        )}
+
       {premiumLoading && premium && (
         <p className="text-xs text-muted-foreground">{t('loading', { defaultValue: 'Loading premium flows…' })}</p>
       )}
+
+      {!premium && <MoveLockedPreview />}
 
       {recentWins.length > 0 && (
         <Card className="content-card">
@@ -98,27 +128,6 @@ export function MovePage() {
           </CardContent>
         </Card>
       )}
-
-      <Card className="content-card border-white/10 bg-card/50">
-        <CardHeader>
-          <CardTitle className="text-base">
-            {t('movePremiumTitle', { defaultValue: 'Premium — Pliability / Skill Yoga depth' })}
-          </CardTitle>
-          <CardDescription>
-            {t('movePremiumDesc', {
-              defaultValue: 'Sports-specific mobility, recovery protocols, and advanced flows.',
-            })}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <UnlockButton
-            productId="move-premium"
-            price="6"
-            title={t('movePremiumBtn', { defaultValue: 'Move Premium' })}
-            isSubscription
-          />
-        </CardContent>
-      </Card>
     </PillarPageShell>
   );
 }

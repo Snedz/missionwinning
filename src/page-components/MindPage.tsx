@@ -8,10 +8,10 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BreathingTimer } from '@/components/pillars/BreathingTimer';
 import { DailyCheckIn } from '@/components/pillars/DailyCheckIn';
-import { UnlockButton } from '@/components/UnlockButton';
+import { MindLockedPreview } from '@/components/mind/MindLockedPreview';
 import { usePremium } from '@/hooks/usePremium';
 import type { GuidedMindSession } from '@/data/guidedMindSessions';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { getPillarWins } from '@/lib/pillarLog';
@@ -25,10 +25,11 @@ export function MindPage() {
   const { premium } = usePremium();
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
   const [recentWins, setRecentWins] = useState<PillarWin[]>([]);
+  const [refresh, setRefresh] = useState(0);
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (!premium) {
@@ -40,8 +41,6 @@ export function MindPage() {
       .then((d) => setPremiumSessions(d.sessions ?? []))
       .catch(() => setPremiumSessions([]));
   }, [premium]);
-
-  const allSessions = [...GUIDED_MIND_SESSIONS, ...premiumSessions];
 
   return (
     <PillarPageShell
@@ -61,18 +60,27 @@ export function MindPage() {
         <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           {t('mindGuidedFree', { defaultValue: 'Free guided sessions' })}
         </h3>
-        <div className="grid gap-4 md:grid-cols-3">
-          {allSessions.map((s) => (
-            <GuidedMindSessionRunner key={s.id} session={s} />
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {GUIDED_MIND_SESSIONS.map((s) => (
+            <GuidedMindSessionRunner key={s.id} session={s} onLogged={() => setRefresh((r) => r + 1)} />
           ))}
         </div>
       </div>
 
-      {premiumSessions.length > 0 && (
-        <p className="text-xs text-emerald-400">
-          {t('mindPremiumLoaded', { defaultValue: 'Premium sessions unlocked above.' })}
-        </p>
+      {premium && premiumSessions.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-emerald-400 uppercase tracking-wide">
+            {t('mindPremiumSessions', { defaultValue: 'Premium guided sessions' })}
+          </h3>
+          <div className="grid gap-4 md:grid-cols-2">
+            {premiumSessions.map((s) => (
+              <GuidedMindSessionRunner key={s.id} session={s} onLogged={() => setRefresh((r) => r + 1)} />
+            ))}
+          </div>
+        </div>
       )}
+
+      {!premium && <MindLockedPreview />}
 
       {recentWins.length > 0 ? (
         <Card className="content-card">
@@ -98,27 +106,6 @@ export function MindPage() {
           })}
         />
       )}
-
-      <Card className="content-card border-white/10 bg-card/50">
-        <CardHeader>
-          <CardTitle className="text-base">
-            {t('mindPremiumTitle', { defaultValue: 'Premium — Calm / Waking Up depth' })}
-          </CardTitle>
-          <CardDescription>
-            {t('mindPremiumDesc', {
-              defaultValue: 'Guided sessions, sleep stories, expert lessons on building resilience.',
-            })}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <UnlockButton
-            productId="mind-premium"
-            price="7"
-            title={t('mindPremiumBtn', { defaultValue: 'Mind & Recovery Premium' })}
-            isSubscription
-          />
-        </CardContent>
-      </Card>
     </PillarPageShell>
   );
 }

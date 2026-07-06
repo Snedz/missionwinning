@@ -78,11 +78,23 @@ describe('listCrossPillarCoachSuggestions', () => {
     assert.ok(keys.includes('coachInsightNeedTrack'));
   });
 
-  it('suggests Track when training without logged activities', () => {
+  it('suggests synergy when multiple pillars are active', () => {
     const out = listCrossPillarCoachSuggestions(baseScores, {
       trainDays: 3,
+      moveFlows: 2,
+      mindSessions: 1,
+      learnLessons: 1,
       trackActivities: 0,
     });
-    assert.ok(out.some((o) => o.messageKey === 'coachInsightNeedTrack'));
+    assert.ok(out.some((o) => o.messageKey === 'coachInsightSynergyMultipillar'));
+  });
+
+  it('suggests Learn when training plus move/mind without courses', () => {
+    const out = listCrossPillarCoachSuggestions(baseScores, {
+      trainDays: 3,
+      moveFlows: 1,
+      learnLessons: 0,
+    });
+    assert.ok(out.some((o) => o.messageKey === 'coachInsightNeedLearn'));
   });
 });
