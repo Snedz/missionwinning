@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CoachInsightCard } from '@/components/metrics/CoachInsightCard';
 import { PillarScoreBreakdown } from '@/components/metrics/PillarScoreBreakdown';
+import { CrossPillarCoachChips } from '@/components/today/CrossPillarCoachChips';
 import { useDailyCoachInsight } from '@/hooks/useDailyCoachInsight';
+import { listCrossPillarCoachSuggestions } from '@/lib/crossPillarCoach';
 import type { CoachInsight, WinScoreBreakdown } from '@/lib/score';
 
 interface Props {
@@ -22,6 +24,7 @@ interface Props {
       mindSessions: number;
       proteinDays: number;
       trainDays: number;
+      trackActivities?: number;
     };
   };
   goal?: string;
@@ -31,6 +34,17 @@ interface Props {
 export function TodayHealthSection({ insight, breakdown, coachContext }: Props) {
   const { t } = useTranslation();
   const coach = useDailyCoachInsight(coachContext, insight);
+  const crossPillarChips = listCrossPillarCoachSuggestions(
+    {
+      readiness: coachContext.readiness,
+      strain: coachContext.strain,
+      recovery: coachContext.recovery,
+      readinessLabelKey: 'todayBodyTrainSmart',
+      strainLabelKey: 'todayBodyModerateLoad',
+      recoveryLabelKey: 'todayBodyRebuilding',
+    },
+    coachContext.pillars
+  );
 
   return (
     <div className="space-y-4 pt-2">
@@ -41,6 +55,7 @@ export function TodayHealthSection({ insight, breakdown, coachContext }: Props) 
         source={coach.source}
         loading={coach.loading}
       />
+      <CrossPillarCoachChips suggestions={crossPillarChips} />
       <Card className="content-card">
         <CardHeader>
           <CardTitle className="text-base">

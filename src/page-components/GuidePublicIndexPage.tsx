@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
 import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
+import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
 
 export function GuidePublicIndexPage() {
   useEffect(() => {
@@ -49,6 +50,7 @@ export function GuidePublicIndexPage() {
           </Button>
         </div>
       </main>
+      <PublicSeoFooter />
     </div>
   );
 }

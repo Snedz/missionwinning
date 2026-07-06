@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PlanSession } from '@/lib/coach/types';
 import { cn } from '@/lib/utils';
@@ -14,6 +15,22 @@ type Props = {
 
 export function WeekStrip({ sessions, todayOffset }: Props) {
   const { t } = useTranslation();
+  const [pulseOffsets, setPulseOffsets] = useState<Set<number>>(() => new Set());
+  const prevDoneRef = useRef<Map<number, boolean>>(new Map());
+
+  useEffect(() => {
+    const nextPulse = new Set<number>();
+    sessions.forEach((s) => {
+      const wasDone = prevDoneRef.current.get(s.dayOffset);
+      const isDone = s.status === 'done';
+      if (isDone && !wasDone) nextPulse.add(s.dayOffset);
+      prevDoneRef.current.set(s.dayOffset, isDone);
+    });
+    if (nextPulse.size === 0) return;
+    setPulseOffsets(nextPulse);
+    const timer = setTimeout(() => setPulseOffsets(new Set()), 400);
+    return () => clearTimeout(timer);
+  }, [sessions]);
 
   const byOffset = new Map(sessions.map((s) => [s.dayOffset, s]));
 
@@ -34,6 +51,7 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
               'flex flex-col items-center rounded-lg border p-2 text-center text-[10px] transition-colors',
               isToday && 'ring-2 ring-emerald-500/80 border-emerald-500/40',
               done && 'border-amber-500/40 bg-amber-500/10',
+              pulseOffsets.has(i) && 'week-strip-pulse',
               missed && 'opacity-50 border-border/30',
               session?.kind === 'recovery' && 'border-indigo-500/30 bg-indigo-500/10',
               !session && 'border-border/20 opacity-40'

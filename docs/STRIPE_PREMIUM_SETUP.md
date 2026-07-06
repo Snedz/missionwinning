@@ -29,6 +29,14 @@ Mission Coach and Super Bundle premium are **code-complete**; production needs l
 4. Test with a real card (or Stripe test mode on Preview):
    - Complete checkout → check Supabase `enrollments` for buyer email
    - Sign in with that email → `/coach` regenerates weekly plan (not locked)
+   - Return URL: configure Stripe Payment Link success URL → `/bundle?checkout=success`
+   - Verify: `node scripts/verify-stripe-enrollment.mjs` (row shape) or `--ping-webhook` with `STRIPE_WEBHOOK_SECRET`
+
+---
+
+## Checkout return UX
+
+After payment, users land on `/bundle?checkout=success`. The page shows **Premium active** when `/api/premium/status` resolves true and fires `checkout_completed` in PostHog.
 
 ---
 

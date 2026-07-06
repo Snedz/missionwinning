@@ -6,6 +6,7 @@ import { Scale } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { Button } from '@/components/ui/button';
+import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
 
 type Row = {
   feature: string;
@@ -125,6 +126,7 @@ export function ComparePage() {
           <Link href="/bundle">{t('exploreBundle', { defaultValue: 'Explore Super Bundle' })}</Link>
         </Button>
       </div>
+      <PublicSeoFooter />
     </div>
   );
 }

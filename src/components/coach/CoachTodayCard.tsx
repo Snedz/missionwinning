@@ -13,7 +13,7 @@ import { track } from '@/lib/analytics';
 export function CoachTodayCard() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { plan, todaySession, todayOffset, loading, generate } = useCoachPlan();
+  const { plan, todaySession, todayOffset, loading, locked, generate } = useCoachPlan();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
 
   if (loading) return null;
@@ -40,7 +40,7 @@ export function CoachTodayCard() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {!plan && (
+        {!plan && !locked && (
           <>
             <p className="text-sm text-muted-foreground">
               {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
@@ -50,14 +50,24 @@ export function CoachTodayCard() {
             </Button>
           </>
         )}
-        {plan && !todaySession && (
+        {locked && (
+          <>
+            <p className="text-sm text-muted-foreground">
+              {t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}
+            </p>
+            <Button asChild variant="fitness" size="sm" className="w-full">
+              <Link href="/bundle">{t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}</Link>
+            </Button>
+          </>
+        )}
+        {plan && !locked && !todaySession && (
           <p className="text-sm text-muted-foreground">
             {t('coachNoSessionToday', {
               defaultValue: 'Rest or recovery day — light movement still counts.',
             })}
           </p>
         )}
-        {plan && todaySession && (
+        {plan && !locked && todaySession && (
           <>
             <p className="font-medium">{todaySession.name}</p>
             {todaySession.status !== 'done' && (
@@ -72,11 +82,11 @@ export function CoachTodayCard() {
             )}
           </>
         )}
-        <Link
-          href="/coach"
-          className="text-xs text-emerald-400 hover:underline block text-center"
-        >
-          {t('coachViewPlan', { defaultValue: 'View full week' })} →
+        <Link href="/coach" className="text-xs text-emerald-400 hover:underline block text-center">
+          {locked
+            ? t('coachViewLockedPlan', { defaultValue: 'View last week & unlock' })
+            : t('coachViewPlan', { defaultValue: 'View full week' })}{' '}
+          →
         </Link>
       </CardContent>
     </Card>

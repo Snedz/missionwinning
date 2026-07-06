@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import type { GuideChapter } from '@/data/guidebook/types';
 import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
+import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
 
 type Props = {
   chapter: GuideChapter;
@@ -87,6 +88,7 @@ export function GuidePublicChapterPage({ chapter, prev, next, jsonLd }: Props) {
           )}
         </div>
       </main>
+      <PublicSeoFooter />
     </div>
   );
 }

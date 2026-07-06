@@ -15,6 +15,7 @@
 | **Moat (today)** | Honesty + accessibility positioning (free-forever PWA, no account, offline) and the unified six-pillar Win Score. **Truth: there is no defensible moat yet — speed and trust are the strategy.** |
 | **First 90 days** | Days 1–14: unblock deploy, 10 beta users, hit journey gates. Days 15–45: public launch (PH/Reddit/communities), 1,000 visitors → measure activation. Days 46–90: wire Stripe, founders offer to the list, build AI Coach v1 only if activation holds. |
 | **#1 metric (year one)** | **Week-4 retained weekly loggers** — users who log ≥1 workout in week 4 after first workout. Everything else (users, sessions, languages, pillars) is vanity until this number holds. |
+| **SEO KPIs (year one)** | **Indexed public URLs** (Search Console) — target growth on `/guide/*`, `/exercises/*`, `/compare`. **Weekly organic sessions** — baseline after `PRIVATE_MODE=false`; track in PostHog + Search Console. See [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md). |
 
 ---
 
