@@ -1,3 +1,7 @@
+/**
+ * Which Today sections show per journey phase.
+ * Consumers: HomePage | See: JOURNEY.md
+ */
 import type { JourneyPhase } from '@/lib/missionJourney';
 
 export interface TodayLayoutFlags {

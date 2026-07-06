@@ -1,18 +1,22 @@
+/**
+ * Daily coach one-liner — LLM or rules fallback.
+ * Auth: gate + app access | Rate: 12/min/IP
+ * See: app/api/INDEX.md, src/lib/coachDailyServer.ts
+ */
 import { NextRequest, NextResponse } from 'next/server';
-import { rateLimit } from '@/lib/rateLimit';
+import { rateLimitAsync } from '@/lib/rateLimit';
+import { clientIp } from '@/lib/clientIp';
+import { hasAppAccess } from '@/lib/requestAccess';
 import {
   coachFromFallback,
   fetchDailyCoachInsight,
-  type DailyCoachContext,
 } from '@/lib/coachDailyServer';
+import { coachDailyContextSchema, parseJsonBody } from '@/lib/apiSchemas';
 
 /** Daily AI coach insight — uses LLM when COACH_LLM_* env set; else rule keys from client. */
 export async function POST(request: NextRequest) {
-  const ip =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown';
-  const limited = rateLimit(`coach-daily:${ip}`, 12, 60_000);
+  const ip = clientIp(request);
+  const limited = await rateLimitAsync(`coach-daily:${ip}`, 12, 60_000);
   if (!limited.ok) {
     return NextResponse.json(
       { error: 'Too many requests' },
@@ -20,17 +24,16 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const body = (await request.json().catch(() => null)) as DailyCoachContext | null;
-  if (
-    !body ||
-    typeof body.readiness !== 'number' ||
-    typeof body.strain !== 'number' ||
-    typeof body.recovery !== 'number' ||
-    !body.fallback?.messageKey ||
-    !body.fallback?.actionPath
-  ) {
-    return NextResponse.json({ error: 'Invalid context' }, { status: 400 });
+  if (!(await hasAppAccess(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  const raw = await request.json().catch(() => null);
+  const parsed = parseJsonBody(coachDailyContextSchema, raw);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
+  }
+  const body = parsed.data;
 
   const result = await fetchDailyCoachInsight(body);
 

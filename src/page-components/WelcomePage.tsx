@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /welcome — I-Day onboarding
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';

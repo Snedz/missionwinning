@@ -1,22 +1,27 @@
+/**
+ * Class aggregate stats — teacher PIN or creator only.
+ * Auth: teacher | Header: x-teacher-pin
+ * See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchClassStats } from '@/lib/schoolClassServer';
-import { normalizeClassCode } from '@/lib/schoolClass';
+import { resolveTeacherClassAccess } from '@/lib/schoolClassAccess';
 
-/** Aggregate class fitness test stats (no individual athlete data exposed). */
+/** Aggregate class fitness test stats — teacher or creator only. */
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   context: { params: Promise<{ code: string }> }
 ) {
   const { code: raw } = await context.params;
-  const code = normalizeClassCode(raw);
-  if (!code) {
-    return NextResponse.json({ error: 'Invalid class code' }, { status: 400 });
+  const access = await resolveTeacherClassAccess(request, raw);
+  if (!access.ok) {
+    return NextResponse.json({ error: access.error }, { status: access.status });
   }
 
-  const stats = await fetchClassStats(code);
+  const stats = await fetchClassStats(access.code);
   if (!stats) {
     return NextResponse.json({
-      code,
+      code: access.code,
       className: null,
       totalTests: 0,
       uniqueAthletes: 0,

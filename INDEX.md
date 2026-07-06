@@ -28,9 +28,14 @@
 | Stripe + premium | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
 | Vision scorecard | [VISION_STATUS.md](VISION_STATUS.md) | — |
 | Beta testers | [BETA_INVITE.md](BETA_INVITE.md) | — |
-| Security | [PROTECTION.md](PROTECTION.md) | — |
+| Security | [PROTECTION.md](PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md) | — |
 | Vercel deploy | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | — |
 | Pre-launch checklist | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | — |
+| **User help** | [docs/help/INDEX.md](docs/help/INDEX.md) | — |
+| **Architecture** | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | — |
+| **API reference** | [docs/API.md](docs/API.md), [app/api/INDEX.md](app/api/INDEX.md) | — |
+| **Contributing** | [CONTRIBUTING.md](CONTRIBUTING.md) | — |
+| **Doc hub (all audiences)** | [docs/README.md](docs/README.md) | — |
 
 **Phase naming trap:** Journey “Phase 0–3” ([JOURNEY.md](JOURNEY.md)) ≠ build phases A–I ([PLAN.md](PLAN.md)) ≠ PFT sub-phases G1–G8.
 
@@ -49,7 +54,10 @@
 | Static content | [src/data/INDEX.md](src/data/INDEX.md) | Exercises, recipes, guidebook |
 | Database | [supabase/INDEX.md](supabase/INDEX.md) | Migrations & schema |
 | Scripts | [scripts/INDEX.md](scripts/INDEX.md) | Dev/deploy automation |
-| Reference docs | [docs/INDEX.md](docs/INDEX.md) | ISSA/legal sourcing only |
+| Hooks | [src/hooks/INDEX.md](src/hooks/INDEX.md) | Client data orchestration |
+| State | [src/store/INDEX.md](src/store/INDEX.md) | Zustand workout store |
+| API handlers | [app/api/INDEX.md](app/api/INDEX.md) | Route inventory + auth |
+| Reference docs | [docs/INDEX.md](docs/INDEX.md) | Help, architecture, ops, legal |
 
 ---
 

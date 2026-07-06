@@ -1,3 +1,8 @@
+/**
+ * Zustand store — active workout, history, saved templates, rest timer.
+ * Consumers: ActiveWorkoutPage, BuilderPage, HomePage
+ * See: src/store/INDEX.md
+ */
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { EXERCISES } from "@/data/exercises";

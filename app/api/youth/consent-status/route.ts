@@ -1,3 +1,7 @@
+/**
+ * Youth consent status for signed-in athlete.
+ * Auth: session | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchYouthConsent } from '@/lib/youthConsentServer';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';

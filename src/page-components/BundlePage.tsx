@@ -1,3 +1,7 @@
+/**
+ * Page: /bundle — Super Bundle checkout
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 "use client";
 
 import { useEffect, useState } from "react";

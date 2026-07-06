@@ -1,3 +1,7 @@
+/**
+ * Send parent consent notification email.
+ * Auth: session | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { rateLimit } from '@/lib/rateLimit';

@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /terms — terms of service
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';

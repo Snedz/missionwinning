@@ -2,7 +2,7 @@
 
 **Metaphor:** Like a C-RAM system, we **detect** threats (audit), **track** exposure (competitive gaps), and **intercept** before they reach production (hardening). This document is the inspection checklist and protection status before Phase E (public launch).
 
-Last updated: 2026-06-29
+Last updated: 2026-07-05 (OWASP security sweep)
 
 ---
 
@@ -19,7 +19,9 @@ Mission Winning has a strong **free-core vision** and solid pillar scaffolding, 
 | Supabase RLS | Improved — enrollment read by email |
 | Security headers | Added in `vercel.json` |
 | PWA cache (gated mode) | Disabled while `PRIVATE_MODE` active |
-### Competitive product depth | Documented — see § Competitive gap analysis |
+| School class APIs | Hardened — teacher PIN/creator; redacted athlete ids |
+| OWASP audit | [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md) — 2026-07-05 sweep |
+| Competitive product depth | Documented — see § Competitive gap analysis |
 | Simple UI + member journey | Planned — see [JOURNEY.md](JOURNEY.md) |
 
 ---
@@ -133,9 +135,12 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 
 - [ ] Rotate `PRIVATE_ACCESS_SECRET` (stop using `Done`)
 - [x] Run `supabase/schema.sql` in production Supabase (or `migrations/20250629_complete_base_schema.sql`)
+- [ ] Apply `20260702_security_hardening.sql` + `20260705_leads_api_only.sql`
+- [ ] Set `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated — not shared with gate secret)
 - [ ] Set `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in Vercel (never `NEXT_PUBLIC_`)
 - [ ] Set `DEMO_PREMIUM=false` explicitly in production
-- [ ] Verify gate + premium API with curl checklist above
+- [ ] Optional: `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` for distributed rate limits
+- [ ] Verify gate + premium API with `npm run security-smoke` and curl checklist below
 - [x] Privacy policy + Terms pages linked from `/about`
 
 ### P1 — First 30 days public
@@ -143,8 +148,8 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 - [x] Split `pro` program templates to server-only module (like recipes)
 - [x] PayPal webhook signature verification (`src/lib/paypalWebhook.ts`)
 - [x] CSP header enforced in production (`next.config.js`; `CSP_ENFORCE=false` for report-only)
-- [x] Leads table: rate limit on `/api/leads` (5/min/IP; server insert via service role)
-- [ ] JWT gate bypass: verify signature via Supabase JWKS if `PRIVATE_ALLOW_AUTH_BYPASS=true`
+- [x] Leads table: rate limit on `/api/leads` (5/min/IP; server insert via service role); anon INSERT revoked (`20260705_leads_api_only.sql`)
+- [x] JWT gate bypass: `hasValidSupabaseSession()` uses `supabase.auth.getUser()` (no unsigned payload parse)
 
 ### P2 — Competitive parity
 
@@ -161,6 +166,10 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 | Variable | Exposure | Purpose |
 |----------|----------|---------|
 | `PRIVATE_ACCESS_SECRET` | Server only | Pre-launch gate password |
+| `YOUTH_CONSENT_SECRET` | Server only | Parent consent HMAC (required in prod) |
+| `NUDGE_SECRET` | Server only | Journey nudge HMAC (required in prod) |
+| `UPSTASH_REDIS_REST_*` | Server only | Distributed rate limits (recommended prod) |
+| `PRIVATE_ALLOW_QUERY_ACCESS` | Server only | Allow deprecated `?access=` bypass in prod |
 | `PRIVATE_MODE` | Server only | `true` until public launch |
 | `DEMO_PREMIUM` | Server only | Never `true` in production |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server only | Webhooks, admin |
@@ -171,7 +180,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 | `CSP_ENFORCE` | Server/build | `true` to enforce CSP; default enforce in production |
 | `NEXT_PUBLIC_SUPABASE_*` | Client (expected) | Anon key — RLS must protect data |
 
-See [ENV.md](ENV.md) and [.env.example](.env.example).
+See [ENV.md](ENV.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), and [.env.example](.env.example).
 
 ---
 

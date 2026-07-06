@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /learn — education paths
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';

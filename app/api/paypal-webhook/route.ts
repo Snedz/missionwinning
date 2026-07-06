@@ -1,3 +1,7 @@
+/**
+ * PayPal subscription webhook.
+ * Auth: PayPal transmission headers | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { grantEnrollmentFromWebhook } from '@/lib/premiumServer';
 import {

@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /log — Today dashboard
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from "react";

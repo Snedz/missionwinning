@@ -1,21 +1,19 @@
+/**
+ * Waitlist / lead capture — service-role insert only.
+ * Auth: gate | Rate: 5/min/IP | Schema: leadsBodySchema
+ * See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
-import { rateLimit } from '@/lib/rateLimit';
+import { rateLimitAsync } from '@/lib/rateLimit';
+import { clientIp } from '@/lib/clientIp';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
-
-const MAX_NAME = 200;
-const MAX_EMAIL = 320;
-const MAX_GOALS = 2000;
-const MAX_TRAINING = 500;
-const MAX_PACKAGE = 100;
+import { leadsBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 
 /** Coaching / feedback lead capture with IP rate limit (PROTECTION P1). */
 export async function POST(req: NextRequest) {
-  const ip =
-    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    req.headers.get('x-real-ip') ||
-    'unknown';
+  const ip = clientIp(req);
 
-  const limited = rateLimit(`leads:${ip}`, 5, 60_000);
+  const limited = await rateLimitAsync(`leads:${ip}`, 5, 60_000);
   if (!limited.ok) {
     return NextResponse.json(
       { error: 'Too many submissions. Try again shortly.' },
@@ -26,17 +24,18 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
-  if (!body || typeof body.email !== 'string' || !body.email.includes('@')) {
-    return NextResponse.json({ error: 'Valid email required' }, { status: 400 });
+  const raw = await req.json().catch(() => null);
+  const parsed = parseJsonBody(leadsBodySchema, raw);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
   const payload = {
-    name: String(body.name || 'Anonymous').slice(0, MAX_NAME),
-    email: body.email.trim().slice(0, MAX_EMAIL),
-    goals: String(body.goals || body.message || '').slice(0, MAX_GOALS),
-    current_training: String(body.current_training || '').slice(0, MAX_TRAINING),
-    package_interest: String(body.package_interest || body.source || 'general').slice(0, MAX_PACKAGE),
+    name: String(parsed.data.name || 'Anonymous').slice(0, 200),
+    email: parsed.data.email.trim().slice(0, 320),
+    goals: String(parsed.data.goals || '').slice(0, 2000),
+    current_training: '',
+    package_interest: String(parsed.data.source || 'general').slice(0, 100),
   };
 
   const admin = getSupabaseAdmin();

@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /learn/guide/[chapter] — guidebook chapter
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';

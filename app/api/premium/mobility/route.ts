@@ -1,3 +1,7 @@
+/**
+ * Premium mobility flows payload.
+ * Auth: premium | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { PREMIUM_MOBILITY_FLOWS } from '@/data/premiumMobilityFlows';

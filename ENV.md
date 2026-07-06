@@ -33,6 +33,11 @@ Add these for **Production** and **Preview**:
 | `SUPABASE_SERVICE_ROLE_KEY` | Beta admin + webhooks | Server only — never `NEXT_PUBLIC_` |
 | `BETA_ADMIN_EMAILS` | Optional | Your email for Profile → beta funnel (all users) |
 | `RESEND_API_KEY` | Optional | Email nudge + receipts |
+| `YOUTH_CONSENT_SECRET` | **Yes in prod** | `openssl rand -base64 32` — dedicated; never reuse gate secret |
+| `NUDGE_SECRET` | **Yes in prod** | `openssl rand -base64 32` — journey email nudge HMAC |
+| `UPSTASH_REDIS_REST_URL` | Optional | Distributed rate limits (Vercel serverless) |
+| `UPSTASH_REDIS_REST_TOKEN` | Optional | Pair with Upstash URL above |
+| `PRIVATE_ALLOW_QUERY_ACCESS` | Optional | Set `true` only to allow `/?access=` bypass in production (deprecated) |
 
 After adding or changing env vars: **Deployments → Redeploy** (env changes do not apply until redeploy).
 
@@ -73,7 +78,7 @@ npm run sync-vercel-env
 ### How you unlock the site (after deploy)
 
 1. **Password:** Go to https://www.missionwinning.com/private and enter `PRIVATE_ACCESS_SECRET`.
-2. **URL shortcut:** Visit `https://www.missionwinning.com/?access=YOUR_SECRET` once — sets a 30-day httpOnly cookie.
+2. **URL shortcut (deprecated):** `/?access=SECRET` is disabled in production unless `PRIVATE_ALLOW_QUERY_ACCESS=true`. Prefer the password form — query strings leak via logs and referrer headers.
 3. **Sign in:** After unlocking, sign in with Apple, Google, or email magic link (Profile or Welcome onboarding).
 
 ---

@@ -1,3 +1,7 @@
+/**
+ * Premium enrollment status for signed-in user.
+ * Auth: session | See: app/api/INDEX.md, src/lib/premiumServer.ts
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';

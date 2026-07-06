@@ -1,3 +1,7 @@
+/**
+ * Stripe checkout webhook — grant premium enrollment.
+ * Auth: Stripe-Signature | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { grantEnrollmentFromWebhook } from '@/lib/premiumServer';
 import { emailFromCheckoutSession, verifyStripeSignature } from '@/lib/stripeWebhook';

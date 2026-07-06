@@ -1,0 +1,265 @@
+# API Reference — Mission Winning
+
+HTTP handlers live in `app/api/**/route.ts`. Business logic in `src/lib/`. Inventory: [app/api/INDEX.md](../app/api/INDEX.md).
+
+**Auth legend**
+
+| Tag | Meaning |
+|-----|---------|
+| `gate` | Private-mode gate cookie or Supabase session |
+| `session` | Valid Supabase user JWT |
+| `premium` | Session + enrollment (or dev `DEMO_PREMIUM`) |
+| `teacher` | Creator session or verified teacher PIN |
+| `webhook` | Signature-verified provider |
+| `cron` | `CRON_SECRET` header |
+| `public` | No user session (may still need gate in private beta) |
+
+**Rate limits** use `rateLimitAsync` (Upstash when configured) or in-memory fallback.
+
+---
+
+## Private gate
+
+### `POST /api/private-access`
+
+| | |
+|--|--|
+| Auth | `public` (password form) |
+| Rate | 8/min/IP |
+| Schema | `privateAccessBodySchema` — `{ password }` |
+| Response | Sets httpOnly gate cookie on success |
+
+```bash
+curl -X POST "$BASE/api/private-access" \
+  -H 'Content-Type: application/json' \
+  -d '{"password":"YOUR_SECRET"}'
+```
+
+---
+
+## Leads
+
+### `POST /api/leads`
+
+| | |
+|--|--|
+| Auth | `gate` |
+| Rate | 5/min/IP |
+| Schema | `leadsBodySchema` |
+| Insert | Service role only (anon INSERT revoked) |
+
+---
+
+## Coach (LLM)
+
+### `POST /api/coach/daily-insight`
+
+| | |
+|--|--|
+| Auth | `gate` + `hasAppAccess` |
+| Rate | 12/min/IP |
+| Schema | `coachDailyContextSchema` |
+| Notes | LLM when env set; else rules fallback keys |
+
+### `POST /api/coach/plan-voice`
+
+| | |
+|--|--|
+| Auth | `gate` + `hasAppAccess` |
+| Rate | 6/min/IP |
+| Schema | `coachPlanVoiceSchema` |
+
+---
+
+## Premium (gated content)
+
+All `GET` — auth `premium` (session + `isPremiumForUser`).
+
+| Route | Content |
+|-------|---------|
+| `/api/premium/status` | Enrollment boolean |
+| `/api/premium/recipes` | Premium recipe bundle |
+| `/api/premium/programs` | Pro program templates |
+| `/api/premium/mobility` | Mobility flows |
+| `/api/premium/mind` | Mind sessions |
+| `/api/premium/guidebook` | Full guidebook payload |
+
+```bash
+# Expect 401/403 without session + enrollment
+curl -sI "$BASE/api/premium/recipes"
+```
+
+---
+
+## Fuel
+
+### `GET /api/fuel/search-food?q=`
+
+| | |
+|--|--|
+| Auth | `gate` |
+| Rate | 30/min/IP |
+| Schema | `fuelSearchQuerySchema` |
+
+### `GET /api/fuel/barcode?code=`
+
+| | |
+|--|--|
+| Auth | `gate` |
+| Rate | 30/min/IP |
+| Schema | `fuelBarcodeQuerySchema` |
+
+### `POST /api/fuel/estimate-meal`
+
+| | |
+|--|--|
+| Auth | `gate` |
+| Rate | 10/min/IP |
+| Body | `multipart/form-data` — `photo` (image), optional `palette` |
+
+---
+
+## School / PFT
+
+### `POST /api/school/class`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Schema | `schoolClassCreateSchema` |
+| Body | `{ code, name?, teacherPin? }` |
+
+### `GET /api/school/class/mine`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Response | Teacher's cloud-synced classes |
+
+### `POST /api/school/class/[code]/access`
+
+| | |
+|--|--|
+| Auth | `session` optional + PIN in body |
+| Rate | 5/min/IP per code |
+| Schema | `schoolPinBodySchema` (partial) |
+
+### `POST /api/school/class/[code]/verify`
+
+| | |
+|--|--|
+| Auth | `gate` |
+| Rate | 5/min/IP per code |
+| Schema | `schoolPinBodySchema` |
+
+### `GET /api/school/class/[code]/stats`
+
+| | |
+|--|--|
+| Auth | `teacher` — header `x-teacher-pin` or creator |
+| Response | Aggregate class stats |
+
+### `GET /api/school/class/[code]/leaderboard`
+
+| | |
+|--|--|
+| Auth | `teacher` |
+| Response | Redacted `athleteId` labels |
+
+### `GET /api/school/class/[code]/export`
+
+| | |
+|--|--|
+| Auth | `teacher` |
+| Response | CSV export |
+
+```bash
+# Expect 401/403 without PIN
+curl -sI "$BASE/api/school/class/MWTEST/leaderboard"
+```
+
+---
+
+## Youth consent (COPPA)
+
+| Route | Method | Auth | Rate | Schema |
+|-------|--------|------|------|--------|
+| `/api/youth/consent-verify` | POST | gate | 5/min/IP per email hash | `youthConsentVerifySchema` |
+| `/api/youth/consent-notify` | POST | session | — | — |
+| `/api/youth/consent-status` | GET | session | — | — |
+| `/api/youth/consent-confirm` | GET | token link | — | — |
+
+---
+
+## Journey / nudges
+
+### `POST /api/journey/nudge`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Notes | Schedule journey email nudge |
+
+### `POST /api/nudges/unsubscribe`
+
+| | |
+|--|--|
+| Auth | signed token in body/query |
+
+### `GET /api/cron/nudges`
+
+| | |
+|--|--|
+| Auth | `cron` — `Authorization: Bearer $CRON_SECRET` |
+
+---
+
+## Webhooks
+
+### `POST /api/stripe-webhook`
+
+| | |
+|--|--|
+| Auth | `webhook` — Stripe-Signature |
+| Notes | Grants enrollment via `premiumServer.grantEnrollmentFromWebhook` |
+
+```bash
+curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '{}'
+# Expect 401
+```
+
+### `POST /api/paypal-webhook`
+
+| | |
+|--|--|
+| Auth | `webhook` — PayPal transmission headers |
+
+---
+
+## Beta admin
+
+### `GET /api/beta/metrics`
+
+| | |
+|--|--|
+| Auth | `session` + beta admin email allowlist |
+
+---
+
+## Zod schemas
+
+Defined in [`src/lib/apiSchemas.ts`](../src/lib/apiSchemas.ts). Add new POST bodies there; use `parseJsonBody` / `parseQuery`.
+
+---
+
+## Private mode behavior
+
+When `PRIVATE_MODE=true`, most routes require gate cookie unless listed in `isPublicApiPathWhileGated` ([`publicRoutes.ts`](../src/lib/publicRoutes.ts)): gate endpoint, webhooks, some self-authenticating paths.
+
+---
+
+## Related
+
+- [ARCHITECTURE.md](ARCHITECTURE.md)
+- [PROTECTION.md](../PROTECTION.md)
+- Smoke: `npm run security-smoke`

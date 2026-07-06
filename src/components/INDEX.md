@@ -16,21 +16,21 @@
 | `benchmarks/` | Benchmark charts |
 | `beta/` | Beta admin, welcome banner |
 | `builder/` | Workout builder panels |
-| `coach/` | Mission Coach UI (WeekStrip, PlanSessionCard, CoachTodayCard) |
-| `fitness-test/` | PFT test runner |
+| `coach/` | Mission Coach UI — [coach/INDEX.md](coach/INDEX.md) |
+| `fitness-test/` | PFT test runner — [fitness-test/INDEX.md](fitness-test/INDEX.md) |
 | `form/` | Form guides |
 | `history/` | History charts, muscle heatmap |
-| `journey/` | JourneyHero, CommandersIntent, guidebook card |
-| `layout/` | AppLayout, PillarPageHeader, nav |
+| `journey/` | Journey UX — [journey/INDEX.md](journey/INDEX.md) |
+| `layout/` | App shell — [layout/INDEX.md](layout/INDEX.md) |
 | `leaderboard/` | Leaderboard UI |
 | `learn/` | Learn path UI |
 | `metrics/` | CoachInsightCard, pillar scores (not weekly plan) |
 | `nutrition/` | Fuel UI |
 | `pillars/` | Shared pillar panels, timed flows |
-| `today/` | TodayHealthSection, dashboard headers |
+| `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | GPS / activity panels |
 | `ui/` | Design system primitives |
-| `workout/` | Active workout UI pieces |
+| `workout/` | Active workout — [workout/INDEX.md](workout/INDEX.md) |
 
 ## Coach UI split
 

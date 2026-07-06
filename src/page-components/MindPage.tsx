@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /mind — mind pillar
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

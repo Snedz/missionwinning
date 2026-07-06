@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /coach — Mission Coach weekly plan
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useState } from 'react';
 import Link from 'next/link';

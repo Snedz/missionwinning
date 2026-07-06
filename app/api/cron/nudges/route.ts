@@ -1,3 +1,7 @@
+/**
+ * Cron: send scheduled journey nudges.
+ * Auth: CRON_SECRET | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { collectNudgeCandidates, markNudged } from '@/lib/nudgeServer';

@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /history — past workouts
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';

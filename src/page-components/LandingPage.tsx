@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: / — marketing landing
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

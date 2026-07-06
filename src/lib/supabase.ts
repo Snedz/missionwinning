@@ -16,9 +16,11 @@ export function isSupabaseConfigured(): boolean {
   )
 }
 
+import { sanitizeNextPath } from '@/lib/safeRedirect';
+
 export function getAuthRedirectUrl(nextPath = '/log'): string {
   if (typeof window === 'undefined') return '/auth/callback'
-  const safeNext = nextPath.startsWith('/') && !nextPath.startsWith('//') ? nextPath : '/log'
+  const safeNext = sanitizeNextPath(nextPath)
   return `${window.location.origin}/auth/callback?next=${encodeURIComponent(safeNext)}`
 }
 
@@ -103,15 +105,12 @@ export async function checkPremium(email?: string): Promise<boolean> {
   return !!(data && data.length > 0)
 }
 
-// For demo: grant premium locally + log to supabase if possible
+// For demo: grant premium locally (development only)
 export async function grantDemoPremium(email: string) {
+  if (process.env.NODE_ENV === 'production') return;
   if (typeof window !== 'undefined') {
     localStorage.setItem('mw_premium', 'true')
     localStorage.setItem('mw_premium_email', email)
-  }
-  if (supabaseUrl) {
-    // Log lead/enrollment stub (in real: from webhook)
-    try { await supabase.from('leads').insert({ email, goals: 'demo-premium-grant' }) } catch {}
   }
 }
 

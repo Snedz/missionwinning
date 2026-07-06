@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /feedback — user feedback form
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';

@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /coaching — human coaching leads (not AI)
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';

@@ -8,6 +8,7 @@ import {
   isHashedTeacherPin,
   verifyTeacherPinValue,
 } from '@/lib/teacherPinCrypto';
+import { redactUserId } from '@/lib/userIdRedact';
 
 export { formatClassStandingsCsv };
 
@@ -26,6 +27,10 @@ export type ClassPftEntry = {
   bestTier: string;
   score: number;
   lastTestAt: string;
+};
+
+export type ClassPftEntryPublic = Omit<ClassPftEntry, 'userId'> & {
+  athleteId: string;
 };
 
 export type TeacherClassSummary = {
@@ -256,4 +261,12 @@ export async function fetchClassPftLeaderboard(code: string): Promise<ClassPftEn
     .sort((a, b) => b.score - a.score || a.athleteLabel.localeCompare(b.athleteLabel));
 
   return sorted.map((row, i) => ({ rank: i + 1, ...row }));
+}
+
+/** Leaderboard rows with redacted user ids for API responses. */
+export function toPublicLeaderboardEntries(entries: ClassPftEntry[]): ClassPftEntryPublic[] {
+  return entries.map(({ userId, ...rest }) => ({
+    ...rest,
+    athleteId: redactUserId(userId),
+  }));
 }

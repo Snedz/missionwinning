@@ -21,6 +21,14 @@ See [vision.md](vision.md) for the full guiding document (the "constitution" for
 
 **Build plan & log:** See [PLAN.md](PLAN.md) and [LOG.md](LOG.md).
 
+## Documentation
+
+**[docs/README.md](docs/README.md)** — hub for all audiences:
+
+- **Athletes & teachers** — [docs/help/](docs/help/INDEX.md) user guides
+- **Developers** — [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/API.md](docs/API.md), [CONTRIBUTING.md](CONTRIBUTING.md)
+- **AI agents** — [AGENTS.md](AGENTS.md) + [INDEX.md](INDEX.md)
+
 ## Features (Freemium + Super Bundle Model)
 - **Free Core (Accessible to Everyone, No Money Barrier)**: Full workout logger/tracker (RPE, rests, cues), basic library (M&S-style filters, bodyweight/minimal-equip global focus), basic nutrition logging + accessible recipes, basic assessments/streaks/challenges, 1RM benchmarks, history. Installable PWA — works offline anywhere in the world (Africa, Russia, low-resource areas). Core mission (tracking + fundamentals) is free forever.
 - **Calculators & Basics**: 1RM, macros/TDEE, strength standards, readiness score — free.

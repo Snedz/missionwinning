@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /youth/consent/confirm — parent consent link
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';

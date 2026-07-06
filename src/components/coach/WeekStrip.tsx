@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Week navigation strip on Coach page.
+ * See: src/components/coach/INDEX.md
+ */
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,3 +1,7 @@
+/**
+ * Beta funnel metrics — admin allowlist only.
+ * Auth: session + BETA_ADMIN_EMAILS | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { computeBetaFunnelAggregate, isBetaAdminEmail } from '@/lib/betaMetricsServer';

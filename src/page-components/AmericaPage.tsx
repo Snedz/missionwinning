@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /america — optional national fitness track
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import Link from 'next/link';
 import { Flag, Heart, Users } from 'lucide-react';

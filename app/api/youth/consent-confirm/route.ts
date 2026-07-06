@@ -1,3 +1,7 @@
+/**
+ * Parent email link consent confirmation.
+ * Auth: signed token | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { persistYouthConsent } from '@/lib/youthConsentServer';
 import { verifyConsentToken } from '@/lib/youthConsentToken';

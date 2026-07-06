@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /school/class/[code] — teacher dashboard
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -55,10 +59,12 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
     async (pin: string) => {
       const trimmed = pin.trim();
       try {
-        const url = trimmed
-          ? `/api/school/class/${code}/access?pin=${encodeURIComponent(trimmed)}`
-          : `/api/school/class/${code}/access`;
-        const res = await fetch(url, { credentials: 'include' });
+        const res = await fetch(`/api/school/class/${code}/access`, {
+          method: trimmed ? 'POST' : 'GET',
+          credentials: 'include',
+          headers: trimmed ? { 'Content-Type': 'application/json' } : undefined,
+          body: trimmed ? JSON.stringify({ pin: trimmed }) : undefined,
+        });
         const data = (await res.json()) as {
           unlocked?: boolean;
           isCreator?: boolean;
@@ -104,9 +110,11 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
     (async () => {
       setLoading(true);
       try {
+        const pin = getTeacherPin(code);
+        const headers: HeadersInit = pin ? { 'x-teacher-pin': pin } : {};
         const [statsRes, lbRes] = await Promise.all([
-          fetch(`/api/school/class/${code}/stats`),
-          fetch(`/api/school/class/${code}/leaderboard`),
+          fetch(`/api/school/class/${code}/stats`, { credentials: 'include', headers }),
+          fetch(`/api/school/class/${code}/leaderboard`, { credentials: 'include', headers }),
         ]);
         if (!cancelled) {
           setStats((await statsRes.json()) as ClassStats);

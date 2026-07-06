@@ -11,22 +11,7 @@ import {
 } from '@/lib/privateGate';
 import { createPrivateAccessToken, PRIVATE_ACCESS_COOKIE } from '@/lib/privateSession';
 
-// Private development mode gate (STRICT).
-// EVERY public visitor sees ONLY the minimal /private teaser unless they have the access cookie.
-//
-// Authorized builder / early access:
-//   1. ?access=THE_SECRET   (on any URL — sets 30-day httpOnly cookie)
-//   2. Password form on /private
-//
-// Optional (OFF by default): PRIVATE_ALLOW_AUTH_BYPASS=true + valid Supabase JWT session.
-//
-// CRITICAL — set in Vercel (Production + Preview) and redeploy:
-//   PRIVATE_ACCESS_SECRET=<strong random string>
-//   PRIVATE_MODE=true          (default in production; set false to go fully public)
-//
-// To go fully public later: PRIVATE_MODE=false in Vercel env vars.
-
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (!isPrivateModeEnabled()) {
     return NextResponse.next();
   }
@@ -34,12 +19,10 @@ export function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
   const secret = process.env.PRIVATE_ACCESS_SECRET;
 
-  // Gate page, legal footer pages, OAuth callback, and static internals only.
   if (isPublicPathWhileGated(pathname)) {
     return applyPrivateGateHeaders(NextResponse.next());
   }
 
-  // Webhooks + gate form must stay reachable; everything else requires the access cookie.
   if (pathname.startsWith('/api')) {
     if (isPublicApiPathWhileGated(pathname)) {
       return applyPrivateGateHeaders(NextResponse.next());
@@ -47,7 +30,7 @@ export function proxy(request: NextRequest) {
     if (hasPrivateAccessCookie(request, secret)) {
       return applyPrivateGateHeaders(NextResponse.next());
     }
-    if (hasValidSupabaseSession(request)) {
+    if (await hasValidSupabaseSession(request)) {
       return applyPrivateGateHeaders(NextResponse.next());
     }
     return applyPrivateGateHeaders(
@@ -55,7 +38,6 @@ export function proxy(request: NextRequest) {
     );
   }
 
-  // Query param bypass: set cookie + proceed (builder convenience).
   if (queryGrantsAccess(searchParams, secret)) {
     const url = request.nextUrl.clone();
     url.searchParams.delete('access');
@@ -70,17 +52,14 @@ export function proxy(request: NextRequest) {
     return applyPrivateGateHeaders(response);
   }
 
-  // Cookie bypass (password form or prior ?access= visit).
   if (hasPrivateAccessCookie(request, secret)) {
     return applyPrivateGateHeaders(NextResponse.next());
   }
 
-  // Optional: validated Supabase session only (disabled unless PRIVATE_ALLOW_AUTH_BYPASS=true).
-  if (hasValidSupabaseSession(request)) {
+  if (await hasValidSupabaseSession(request)) {
     return applyPrivateGateHeaders(NextResponse.next());
   }
 
-  // No valid bypass → generic private teaser only.
   const redirectRes = NextResponse.redirect(new URL('/private', request.url));
   return applyPrivateGateHeaders(redirectRes);
 }

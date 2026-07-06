@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Today card linking to Mission Coach weekly plan.
+ * See: src/components/coach/INDEX.md
+ */
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

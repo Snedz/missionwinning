@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /join/class/[code] — student class join
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';

@@ -1,3 +1,7 @@
+/**
+ * Page: /exercises — public exercise catalog
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 import { ExercisesPublicFilter } from '@/components/public/ExercisesPublicFilter';
 import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
 import { EXERCISES } from '@/data/exercises';

@@ -1,32 +1,69 @@
 # docs/
 
-> One concern: Legal, sourcing, and reference material — **not** product roadmap or architecture.
+> Documentation hub for customers, developers, and agents.
 
-## Read order
+## Start here
 
-1. This file
-2. The specific reference doc for your task
+**[README.md](README.md)** — three-audience portal (help, architecture, agent paths).
 
-## Files
+---
+
+## Customer help (`help/`)
 
 | File | Purpose |
 |------|---------|
-| [issa-source-map.md](issa-source-map.md) | ISSA PDF → guidebook chapter mapping |
+| [help/INDEX.md](help/INDEX.md) | Help library index |
+| [help/getting-started.md](help/getting-started.md) | New user onboarding |
+| [help/pillars.md](help/pillars.md) | Six pillars explained |
+| [help/mission-coach.md](help/mission-coach.md) | AI weekly coach |
+| [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md) | Nutrition logging |
+| [help/fitness-test-and-school.md](help/fitness-test-and-school.md) | PFT + PE classes |
+| [help/premium-and-billing.md](help/premium-and-billing.md) | Super Bundle |
+| [help/privacy-and-data.md](help/privacy-and-data.md) | Data & consent |
+| [help/faq.md](help/faq.md) | FAQ |
+| [help/troubleshooting.md](help/troubleshooting.md) | Common fixes |
+
+---
+
+## Developer reference
+
+| File | Purpose |
+|------|---------|
+| [ARCHITECTURE.md](ARCHITECTURE.md) | System design, layers, state |
+| [API.md](API.md) | HTTP API reference |
+| [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
+| [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contributor guide |
+
+---
+
+## Ops, security, growth
+
+| File | Purpose |
+|------|---------|
+| [BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md) | Founder checklist — beta, env, QA |
+| [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe + premium gate |
+| [OWASP_AUDIT.md](OWASP_AUDIT.md) | OWASP Top 10 sweep |
+| [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |
+| [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Lighthouse baselines |
+| [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) | Experience build v4 |
+
+---
+
+## Legal & sourcing
+
+| File | Purpose |
+|------|---------|
+| [issa-source-map.md](issa-source-map.md) | ISSA PDF → guidebook mapping |
 | [guidebook-originality-log.md](guidebook-originality-log.md) | Originality / legal tracking |
-| [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) | Experience build v4 — UI, landing, SEO (exception: lives in docs/) |
-| [BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md) | Founder checklist — beta cohort, env, mobile QA |
-| [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog funnel + Search Console + Lighthouse baselines |
-| [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe webhook + Coach premium gate |
-| [archive/INDEX.md](archive/INDEX.md) | Superseded docs (when moved here) |
+| [archive/INDEX.md](archive/INDEX.md) | Superseded docs |
 
-## Product / engineering docs
+---
 
-Live at **repo root** — see [INDEX.md](../INDEX.md):
+## Product planning (repo root)
 
-- `PLAN.md`, `LOG.md`, `JOURNEY.md`, `REDTEAM.md`, etc.
+Live at **repo root** — see [INDEX.md](../INDEX.md): `PLAN.md`, `LOG.md`, `JOURNEY.md`, `REDTEAM.md`, etc.
 
-**Exception:** [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) is the active experience roadmap (v4).
-
-## Related (not here)
+## Related
 
 - Agent conventions: [AGENTS.md](../AGENTS.md)
+- Code indexes: [app/INDEX.md](../app/INDEX.md), [src/lib/INDEX.md](../src/lib/INDEX.md)

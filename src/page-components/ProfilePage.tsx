@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Page: /profile — account, settings, backup
+ * See: app/INDEX.md, src/page-components/INDEX.md
+ */
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

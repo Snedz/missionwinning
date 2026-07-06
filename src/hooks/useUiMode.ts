@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Simplified vs full UI mode toggle.
+ * Consumers: layout, Profile
+ */
 
 import { useCallback, useEffect, useState } from 'react';
 import { loadUiMode, saveUiMode, type UiMode } from '@/lib/uiMode';

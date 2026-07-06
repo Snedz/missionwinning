@@ -1,0 +1,100 @@
+/**
+ * Zod schemas for API request validation.
+ * Consumers: app/api POST/GET handlers | See: docs/API.md
+ */
+import { z } from 'zod';
+
+export const leadsBodySchema = z.object({
+  email: z.string().email().max(320),
+  name: z.string().max(120).optional(),
+  goals: z.string().max(2000).optional(),
+  source: z.string().max(80).optional(),
+});
+
+export const privateAccessBodySchema = z.object({
+  password: z.string().min(1).max(256),
+});
+
+export const schoolPinBodySchema = z.object({
+  pin: z.string().min(4).max(32),
+});
+
+export const youthConsentVerifySchema = z.object({
+  parentEmail: z.string().email().max(320),
+  childAge: z.number().int().min(1).max(17),
+  code: z.string().min(6).max(12),
+});
+
+export const coachDailyContextSchema = z.object({
+  readiness: z.number().min(0).max(100),
+  strain: z.number().min(0).max(100),
+  recovery: z.number().min(0).max(100),
+  missionScore: z.number().default(0),
+  streak: z.number().default(0),
+  focusGroup: z.string().max(40).default('push'),
+  pillars: z
+    .object({
+      moveFlows: z.number().default(0),
+      mindSessions: z.number().default(0),
+      proteinDays: z.number().default(0),
+      trainDays: z.number().default(0),
+    })
+    .default({ moveFlows: 0, mindSessions: 0, proteinDays: 0, trainDays: 0 }),
+  fallback: z.object({
+    messageKey: z.string().max(120),
+    actionLabelKey: z.string().max(120),
+    actionPath: z.string().max(120),
+  }),
+});
+
+export const coachPlanVoiceSchema = z.object({
+  plan: z.object({
+    weekStart: z.string().max(20),
+    sessions: z.array(
+      z.object({
+        name: z.string().max(120),
+        kind: z.string().max(40),
+        whyKeys: z.array(z.string().max(80)).default([]),
+      })
+    ),
+  }),
+  readiness: z.number().min(0).max(100).optional(),
+  strain: z.number().min(0).max(100).optional(),
+  recovery: z.number().min(0).max(100).optional(),
+});
+
+export const fuelSearchQuerySchema = z.object({
+  q: z.string().min(2).max(120),
+});
+
+export const fuelBarcodeQuerySchema = z.object({
+  code: z.string().min(8).max(32),
+});
+
+export const schoolClassCreateSchema = z.object({
+  code: z.string().min(4).max(16),
+  name: z.string().max(120).optional(),
+  teacherPin: z.string().min(4).max(32).optional(),
+});
+
+export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
+  | { ok: true; data: T }
+  | { ok: false; error: string } {
+  const result = schema.safeParse(body);
+  if (!result.success) {
+    return { ok: false, error: result.error.issues[0]?.message ?? 'Invalid payload' };
+  }
+  return { ok: true, data: result.data };
+}
+
+export function parseQuery<T>(
+  schema: z.ZodType<T>,
+  params: URLSearchParams
+): { ok: true; data: T } | { ok: false; error: string } {
+  const raw = Object.fromEntries(params.entries());
+  const result = schema.safeParse(raw);
+  if (!result.success) {
+    return { ok: false, error: result.error.issues[0]?.message ?? 'Invalid query' };
+  }
+  return { ok: true, data: result.data };
+}

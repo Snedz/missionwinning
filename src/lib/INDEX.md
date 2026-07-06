@@ -33,7 +33,7 @@
 | Folder | INDEX |
 |--------|-------|
 | `coach/` | [coach/INDEX.md](coach/INDEX.md) |
-| `leaderboard/` | Leaderboard compute/sync helpers |
+| `leaderboard/` | Leaderboard compute/sync helpers — [leaderboard/INDEX.md](leaderboard/INDEX.md) |
 
 ## Convention: adding new domains
 

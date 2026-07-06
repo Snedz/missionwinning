@@ -1,3 +1,7 @@
+/**
+ * Premium recipe bundle payload.
+ * Auth: premium | See: app/api/INDEX.md
+ */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { PREMIUM_RECIPES } from '@/data/recipes/premiumRecipes';

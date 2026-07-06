@@ -1,4 +1,8 @@
 'use client';
+/**
+ * Root app shell — nav, sync, journey guard.
+ * See: src/components/layout/INDEX.md
+ */
 
 import { Sidebar } from './Sidebar';
 import { MobileNav } from './MobileNav';

@@ -12,6 +12,8 @@
     "check-env": "node --env-file=.env.local scripts/check-env.mjs",
     "predeploy": "tsx scripts/pre-deploy-smoke.ts",
     "gate-smoke": "tsx scripts/gate-smoke.ts",
+    "security-smoke": "tsx scripts/gate-smoke.ts",
+    "security-audit": "npm audit --audit-level=high",
     "e2e": "node scripts/e2e-smoke.mjs",
     "sync-vercel-env": "node scripts/sync-vercel-env.mjs",
     "print-beta-invite": "node --env-file=.env.local scripts/print-beta-invite.ts"
@@ -24,6 +26,8 @@
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-toast": "^1.2.6",
     "@supabase/supabase-js": "^2.107.0",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.38.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "i18next": "^26.3.1",
@@ -40,6 +44,7 @@
     "server-only": "^0.0.1",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
+    "zod": "^4.4.3",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
