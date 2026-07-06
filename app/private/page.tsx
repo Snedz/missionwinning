@@ -30,11 +30,13 @@ export default function PrivateTeaser() {
       const res = await fetch('/api/private-access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ password }),
       });
 
       if (res.ok) {
-        router.push('/log');
+        router.push('/');
+        router.refresh();
       } else {
         const data = await res.json().catch(() => ({}));
         const msg = data.error || 'Incorrect access code';
