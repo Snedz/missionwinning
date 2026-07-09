@@ -125,12 +125,15 @@ export function GuidedStepPlayer({
           <p className="text-sm text-muted-foreground">{title}</p>
           <p className="text-xs text-muted-foreground px-2">
             {t('guidedSessionNextHint', {
-              defaultValue: 'Next: log protein on Fuel, or start today’s training from Today.',
+              defaultValue: 'Next: log protein on Fuel, read a Learn chapter, or return to Today.',
             })}
           </p>
           <div className="flex gap-2 justify-center flex-wrap">
             <Button asChild variant="outline" size="sm">
               <Link href="/nutrition">{t('coachActionLogNutrition', { defaultValue: 'Log Fuel' })}</Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/learn/guide">{t('coachActionOpenLearn', { defaultValue: 'Open Learn' })}</Link>
             </Button>
             <Button asChild variant="outline" size="sm">
               <Link href="/log">{t('coachActionViewToday', { defaultValue: 'Back to Today' })}</Link>

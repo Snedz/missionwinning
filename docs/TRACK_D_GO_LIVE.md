@@ -6,6 +6,32 @@ Full narrative: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) · [BETA_LAUNCH_OPS.md
 
 ---
 
+## Day-of go-public (copy-paste)
+
+Do **not** flip `PRIVATE_MODE=false` until §3 beta gates pass (Basic Training ≥60%).
+
+```bash
+# 1) Gate still ON — fail if launch env incomplete
+LAUNCH_STRICT=true \
+SMOKE_BASE_URL=https://www.missionwinning.com \
+SMOKE_ACCESS_SECRET=<PRIVATE_ACCESS_SECRET> \
+npm run launch-verify
+
+# 2) Stripe enrollment shape (after a test checkout)
+node scripts/verify-stripe-enrollment.mjs --verify-enrollment <buyer@email>
+# Optional: --check-gates / --ping-webhook (needs STRIPE_WEBHOOK_SECRET)
+
+# 3) Flip on Vercel: PRIVATE_MODE=false → Redeploy
+
+# 4) Public + PWA smoke
+SMOKE_BASE_URL=https://www.missionwinning.com \
+SMOKE_ALLOW_PUBLIC=true \
+SMOKE_EXPECT_PWA=true \
+npm run launch-verify
+```
+
+---
+
 ## One command chain
 
 ```bash

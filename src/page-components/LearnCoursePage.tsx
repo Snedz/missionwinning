@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import type { GuideChapter } from '@/data/guidebook/types';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
@@ -11,6 +12,8 @@ import { BookOpen } from 'lucide-react';
 
 export function LearnCoursePage() {
   const { t } = useTranslation();
+  const searchParams = useSearchParams();
+  const initialChapterId = searchParams.get('chapter') ?? undefined;
   const { premium, loading } = usePremium();
   const [chapters, setChapters] = useState<GuideChapter[]>([]);
 
@@ -35,7 +38,9 @@ export function LearnCoursePage() {
     >
       {loading && <p className="text-sm text-muted-foreground">{t('loading', { defaultValue: 'Loading…' })}</p>}
       {!loading && !premium && <LearnLockedPreview />}
-      {!loading && premium && chapters.length > 0 && <CourseReader chapters={chapters} />}
+      {!loading && premium && chapters.length > 0 && (
+        <CourseReader chapters={chapters} initialChapterId={initialChapterId} />
+      )}
       {!loading && premium && chapters.length === 0 && (
         <p className="text-sm text-muted-foreground">
           {t('learnCourseSignIn', {

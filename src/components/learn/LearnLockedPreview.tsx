@@ -61,6 +61,12 @@ export function LearnLockedPreview() {
             {t('learnPreviewCourse', { defaultValue: 'Multi-chapter courses with progress tracking' })}
           </p>
         </div>
+        <p className="text-xs text-muted-foreground">
+          {t('learnLockedHint', {
+            defaultValue:
+              'Free: 6 guidebook chapters + 10 paths. Premium: 4 specialist courses, 16 sections — corrective, coaching, periodization, sports nutrition.',
+          })}
+        </p>
         <div className="flex flex-wrap gap-2">
           <UnlockButton productId="super-bundle" price="59" title="Super Bundle" isSubscription />
           <Button variant="outline" size="sm" asChild>

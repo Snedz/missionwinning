@@ -87,9 +87,13 @@ export function GuidebookIndexPage() {
       <div className="space-y-3">
           {chapters.map((chapter) => {
             const prog = getChapterProgress(chapter.id, completed);
+            const isPremiumChapter = premiumChapters.some((c) => c.id === chapter.id);
+            const href = isPremiumChapter
+              ? `/learn/course?chapter=${encodeURIComponent(chapter.id)}`
+              : `/learn/guide/${chapter.id}`;
             return (
               <Card key={chapter.id} className="content-card">
-                <Link href={`/learn/guide/${chapter.id}`} className="block">
+                <Link href={href} className="block">
                   <CardHeader className="flex flex-row items-center justify-between py-4">
                     <div className="space-y-1">
                       <CardTitle className="text-lg flex items-center gap-2">
@@ -98,6 +102,11 @@ export function GuidebookIndexPage() {
                         </span>
                         <span>{chapter.icon}</span>
                         {chapter.title}
+                        {isPremiumChapter && (
+                          <span className="text-[10px] uppercase tracking-wide text-emerald-400 font-normal">
+                            {t('learnPremiumBadge', { defaultValue: 'Premium' })}
+                          </span>
+                        )}
                       </CardTitle>
                       <CardDescription>{chapter.subtitle}</CardDescription>
                     </div>

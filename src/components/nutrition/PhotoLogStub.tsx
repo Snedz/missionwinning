@@ -10,6 +10,7 @@ import {
   sampleMealImageHints,
   type MealEstimate,
 } from '@/lib/estimateMealFromPhoto';
+import type { FoodSearchItem } from '@/lib/foodSearch';
 
 type Props = {
   onLogEstimate: (estimate: MealEstimate) => void;
@@ -17,20 +18,58 @@ type Props = {
 
 type Phase = 'idle' | 'processing' | 'estimate';
 
-/** Bevel-style photo meal log — canvas hints + server estimate API with local fallback. */
+function foodToEstimate(item: FoodSearchItem): MealEstimate {
+  return {
+    name: item.brand ? `${item.name} (${item.brand})` : item.name,
+    protein: item.protein,
+    cals: item.calories,
+    carbs: item.carbs,
+    fat: item.fat,
+    confidence: 'high',
+    source: 'heuristic',
+  };
+}
+
+/** Bevel-style photo meal log — canvas hints + server estimate API with OFF grounding. */
 export function PhotoLogStub({ onLogEstimate }: Props) {
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [phase, setPhase] = useState<Phase>('idle');
   const [estimate, setEstimate] = useState<MealEstimate | null>(null);
+  const [offMatches, setOffMatches] = useState<FoodSearchItem[]>([]);
+  const [offLoading, setOffLoading] = useState(false);
 
   const reset = () => {
     if (preview) URL.revokeObjectURL(preview);
     setPreview(null);
     setEstimate(null);
+    setOffMatches([]);
+    setOffLoading(false);
     setPhase('idle');
     if (inputRef.current) inputRef.current.value = '';
+  };
+
+  const groundWithOff = async (name: string) => {
+    const q = name.trim();
+    if (q.length < 2) {
+      setOffMatches([]);
+      return;
+    }
+    setOffLoading(true);
+    try {
+      const res = await fetch(`/api/fuel/search-food?q=${encodeURIComponent(q)}&limit=3`);
+      if (!res.ok) {
+        setOffMatches([]);
+        return;
+      }
+      const data = (await res.json()) as { items?: FoodSearchItem[] };
+      setOffMatches((data.items ?? []).slice(0, 3));
+    } catch {
+      setOffMatches([]);
+    } finally {
+      setOffLoading(false);
+    }
   };
 
   const handleFile = async (file: File | null) => {
@@ -40,12 +79,14 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
     setPreview(url);
     setPhase('processing');
     setEstimate(null);
+    setOffMatches([]);
     try {
       const hints = await sampleMealImageHints(file);
       const fromApi = await estimateMealViaApi(file, hints);
       const result = fromApi ?? (await estimateMealFromPhoto(file, hints));
       setEstimate(result);
       setPhase('estimate');
+      void groundWithOff(result.name);
     } catch {
       reset();
     }
@@ -68,7 +109,7 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
           </div>
           <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
             {t('photoLogDesc', {
-              defaultValue: 'Snap a meal — we estimate macros using photo analysis (beta).',
+              defaultValue: 'Snap a meal — we estimate macros, then match Open Food Facts when possible.',
             })}
           </p>
         </div>
@@ -120,6 +161,40 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
               )}
             </div>
           </div>
+
+          {(offLoading || offMatches.length > 0) && (
+            <div className="space-y-2 border-t border-border/40 pt-3">
+              <p className="text-xs font-medium text-muted-foreground">
+                {t('photoLogOffMatches', {
+                  defaultValue: 'Open Food Facts matches — tap to use macros',
+                })}
+              </p>
+              {offLoading && (
+                <p className="text-xs text-muted-foreground flex items-center gap-2">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  {t('photoLogOffSearching', { defaultValue: 'Searching food database…' })}
+                </p>
+              )}
+              {offMatches.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className="w-full text-left rounded-lg border border-border/50 bg-background/40 hover:border-emerald-500/40 px-3 py-2 transition-colors"
+                  onClick={() => {
+                    onLogEstimate(foodToEstimate(item));
+                    reset();
+                  }}
+                >
+                  <span className="text-sm font-medium block truncate">{item.name}</span>
+                  <span className="text-[11px] text-muted-foreground">
+                    {item.protein}g P · {item.calories} kcal
+                    {item.servingLabel ? ` · ${item.servingLabel}` : ''}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
           <div className="flex flex-wrap gap-2">
             <Button
               type="button"
@@ -165,7 +240,7 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
 
       <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
         {t('photoLogBetaNote', {
-          defaultValue: 'Privacy-first — photo analyzed via secure API with on-device fallback.',
+          defaultValue: 'Privacy-first — photo analyzed via secure API with on-device fallback; matches use Open Food Facts.',
         })}
       </p>
     </div>

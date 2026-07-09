@@ -1,12 +1,22 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
 import { Camera, Plus, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { PhotoLogStub } from '@/components/nutrition/PhotoLogStub';
 import { cn } from '@/lib/utils';
+
+const PhotoLogStub = dynamic(
+  () => import('@/components/nutrition/PhotoLogStub').then((m) => m.PhotoLogStub),
+  {
+    ssr: false,
+    loading: () => (
+      <p className="text-sm text-muted-foreground py-6 text-center">Loading photo log…</p>
+    ),
+  }
+);
 
 export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
 

@@ -111,7 +111,7 @@ export function WorkoutVictorySheet({
 
         <p className="text-center text-xs text-muted-foreground leading-relaxed px-2">
           {t('victorySynergyHint', {
-            defaultValue: 'Log Fuel or Move today to boost your Mission Score synergy.',
+            defaultValue: 'Log Fuel, Move, Mind, or Learn today to boost Mission Score synergy.',
           })}
         </p>
 
@@ -124,6 +124,16 @@ export function WorkoutVictorySheet({
           <Button asChild variant="outline" size="sm" className="w-full">
             <Link href="/mind" onClick={() => onOpenChange(false)}>
               {t('coachActionOpenMind', { defaultValue: 'Open Mind' })}
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="sm" className="w-full">
+            <Link href="/move" onClick={() => onOpenChange(false)}>
+              {t('coachActionOpenMove', { defaultValue: 'Open Move' })}
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="sm" className="w-full">
+            <Link href="/learn" onClick={() => onOpenChange(false)}>
+              {t('coachActionOpenLearn', { defaultValue: 'Open Learn' })}
             </Link>
           </Button>
         </div>

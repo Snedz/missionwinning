@@ -60,8 +60,21 @@ describe('applyCrossPillarCoachRules', () => {
       mindSessions: 2,
       proteinDays: 2,
       trainDays: 2,
+      learnLessons: 1,
     });
     assert.equal(out.messageKey, 'coachInsightSteady');
+  });
+
+  it('suggests Learn when training plus move/mind without courses', () => {
+    const out = applyCrossPillarCoachRules(baseScores, focus, steady, {
+      moveFlows: 1,
+      mindSessions: 0,
+      proteinDays: 2,
+      trainDays: 2,
+      learnLessons: 0,
+    });
+    assert.equal(out.messageKey, 'coachInsightNeedLearn');
+    assert.equal(out.actionPath, '/learn');
   });
 });
 

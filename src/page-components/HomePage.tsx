@@ -10,20 +10,29 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
-import { applyCrossPillarCoachRules } from "@/lib/crossPillarCoach";
-import { gatherWeeklyPillarStats } from "@/lib/pillarScoreInputs";
-import { getTrainingStreak, getChallengeProgress } from "@/lib/challenges";
+import type { CoachInsight } from "@/lib/score";
+import { getTrainingStreak } from "@/lib/challenges";
 import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
 import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
 import { CommandersIntent } from "@/components/journey/CommandersIntent";
-import { TodayQuickLinks } from "@/components/journey/TodayQuickLinks";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { TodayDashboardHeader } from "@/components/today/TodayDashboardHeader";
 import { TodayPageHeader } from "@/components/today/TodayPageHeader";
-import { TodayDashboardCustomize } from "@/components/today/TodayDashboardCustomize";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { buildTodayTrends, gatherJournalEntries } from "@/lib/todayTrends";
+import { loadTodayDashboardPrefs, type TodayDashboardPrefs, type TodaySectionId } from "@/lib/todayDashboardPrefs";
+import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
+import { useMissionJourney } from "@/hooks/useMissionJourney";
+import { getTodayLayout } from "@/hooks/useTodayLayout";
+import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
 
 const CoachTodayCard = dynamic(
   () => import('@/components/coach/CoachTodayCard').then((m) => m.CoachTodayCard),
@@ -59,18 +68,16 @@ const GuidebookContinueCard = dynamic(
   () => import('@/components/learn/GuidebookContinueCard').then((m) => m.GuidebookContinueCard),
   { ssr: false }
 );
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { buildTodayTrends, gatherJournalEntries } from "@/lib/todayTrends";
-import { loadTodayDashboardPrefs, type TodayDashboardPrefs, type TodaySectionId } from "@/lib/todayDashboardPrefs";
-import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
-import { useMissionJourney } from "@/hooks/useMissionJourney";
-import { getTodayLayout } from "@/hooks/useTodayLayout";
-import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
+
+const TodayQuickLinks = dynamic(
+  () => import('@/components/journey/TodayQuickLinks').then((m) => m.TodayQuickLinks),
+  { ssr: false }
+);
+
+const TodayDashboardCustomize = dynamic(
+  () => import('@/components/today/TodayDashboardCustomize').then((m) => m.TodayDashboardCustomize),
+  { ssr: false }
+);
 
 export function HomePage() {
   const router = useRouter();
@@ -137,7 +144,7 @@ export function HomePage() {
   const nightSessions = countSessionsInHourRange(workoutHistory, 22, 5);
   const dawnSessions = countSessionsInHourRange(workoutHistory, 5, 8);
   const todaysWorkout = getTodaysWorkout();
-  const [challenges, setChallenges] = useState<ReturnType<typeof getChallengeProgress>>([]);
+  const [challenges, setChallenges] = useState<ReturnType<typeof import('@/lib/challenges').getChallengeProgress>>([]);
   const [pillarStats, setPillarStats] = useState(() => ({
     moveFlows: 0,
     mindSessions: 0,
@@ -150,9 +157,21 @@ export function HomePage() {
     fuelCoachCarbBump: 0,
   }));
   useEffect(() => {
-    setChallenges(getChallengeProgress());
-    setPillarStats(gatherWeeklyPillarStats());
-  }, [workoutHistory.length, totalVolume]);
+    if (!belowFoldReady) return;
+    let cancelled = false;
+    void (async () => {
+      const [{ getChallengeProgress }, { gatherWeeklyPillarStats }] = await Promise.all([
+        import('@/lib/challenges'),
+        import('@/lib/pillarScoreInputs'),
+      ]);
+      if (cancelled) return;
+      setChallenges(getChallengeProgress());
+      setPillarStats(gatherWeeklyPillarStats());
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [belowFoldReady, workoutHistory.length, totalVolume]);
 
   // Auto load cloud history for signed in users (quick win for persistence)
   useEffect(() => {
@@ -269,21 +288,52 @@ export function HomePage() {
     [workoutHistory, lastAssessment?.risk, recentPillarWins.length]
   );
 
-  const coachInsight = useMemo(() => {
-    // Defer cross-pillar rules until below-fold — first paint only needs rings/score
+  const [coachInsight, setCoachInsight] = useState<CoachInsight>(() =>
+    getCoachInsight(
+      {
+        readiness: 50,
+        strain: 50,
+        recovery: 50,
+        readinessLabelKey: 'todayBodyTrainSmart',
+        strainLabelKey: 'todayBodyModerateLoad',
+        recoveryLabelKey: 'todayBodyRebuilding',
+      },
+      { group: 'Core', statusKey: 'todayReadinessGood' }
+    )
+  );
+
+  useEffect(() => {
     const base = getCoachInsight(bodyScores, recommendedFocus, {
       assessmentRisk: lastAssessment?.risk,
     });
-    if (!belowFoldReady) return base;
-    return applyCrossPillarCoachRules(bodyScores, recommendedFocus, base, {
-      moveFlows: pillarStats.moveFlows,
-      mindSessions: pillarStats.mindSessions,
-      proteinDays: pillarStats.proteinDays,
-      trainDays: pillarStats.trainDays,
-      trackActivities: pillarStats.trackActivities,
-      learnLessons: pillarStats.learnLessons,
-      fuelCoachCarbBump: pillarStats.fuelCoachCarbBump,
-    }, { assessmentRisk: lastAssessment?.risk });
+    if (!belowFoldReady) {
+      setCoachInsight(base);
+      return;
+    }
+    let cancelled = false;
+    void import('@/lib/crossPillarCoach').then(({ applyCrossPillarCoachRules }) => {
+      if (cancelled) return;
+      setCoachInsight(
+        applyCrossPillarCoachRules(
+          bodyScores,
+          recommendedFocus,
+          base,
+          {
+            moveFlows: pillarStats.moveFlows,
+            mindSessions: pillarStats.mindSessions,
+            proteinDays: pillarStats.proteinDays,
+            trainDays: pillarStats.trainDays,
+            trackActivities: pillarStats.trackActivities,
+            learnLessons: pillarStats.learnLessons,
+            fuelCoachCarbBump: pillarStats.fuelCoachCarbBump,
+          },
+          { assessmentRisk: lastAssessment?.risk }
+        )
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [
     belowFoldReady,
     bodyScores,

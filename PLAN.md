@@ -125,8 +125,9 @@ Aligns revenue with [vision.md](vision.md) without gating free core.
 | **I2b** | Fuel Coach — adaptive meal plans synced to macros / training | ✅ Premium-gated (`src/lib/fuelCoach/`) | Fuel depth |
 | **I3** | Track GPS premium MVP — live recording, pace chart, weekly stats | ✅ Shipped | Track |
 | **I3b** | Mind / Move premium depth beyond unlock cards | ✅ 17 Mind + 11 Move premium sessions | Bundle proof |
+| **I3c** | Learn premium specialist chapters | ✅ 4 courses / 16 sections + course fix | Bundle proof |
 | **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 es + **fr** body waves shipped; expand one locale at a time | Global equity |
-| **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | 🟡 Chips + post-session Fuel/Mind CTAs on victory & guided complete | 1+1+1 > sum |
+| **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | ✅ Victory/guided/course CTAs + Learn in single insight | 1+1+1 > sum |
 
 **Done when:** Paying users get differentiated premium; free core unchanged; bundle LTV measurable.
 
@@ -158,12 +159,11 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 ## Recommended work order (now)
 
-1. **Phase H founder ops** — [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1–5 (Vercel, migrations, beta gates, Stripe, then `PRIVATE_MODE=false`)
-2. **Phase I1** — live Stripe payment links + webhook verify (code ready)
-3. **Mind / Move premium depth** — audio-or-timed sessions + multi-step flows (bundle proof)
-4. **Coach locked-state polish** + **i18n body** (one Tier-1 locale fully)
-5. **Cross-pillar post-session CTAs** (I5 depth)
-6. **Perf** — `/log` Lighthouse toward 90 ([docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md))
+1. **Phase H founder ops** — [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1–5 · day-of commands in [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md)
+2. **Phase I1** — live Stripe payment links + webhook verify (code ready — [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md))
+3. **Learn premium depth + I5** — specialist chapters + post-session CTAs (Mind/Move depth ✅)
+4. **Perf** — `/log` Lighthouse toward 90 + photo-log OFF grounding
+5. **i18n body** — next Tier-1 locale after `es`/`fr` (one at a time)
 
 ---
 
@@ -188,4 +188,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-07-09 (July engines + v4/v5 shipped; Phase H still founder-ops; build `2026.07-unified.46`)
+Last updated: 2026-07-09 (Learn/I5 + /log defer + photo OFF; Phase H founder-ops; build `2026.07-unified.47`)
