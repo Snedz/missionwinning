@@ -19,11 +19,20 @@ See [VERCEL_DEPLOY_CHECKLIST.md](../VERCEL_DEPLOY_CHECKLIST.md) for preview-vs-p
 
 ## §2 Environment & database (~45 min)
 
-- [ ] Generate secrets: `openssl rand -base64 32` (twice — `PRIVATE_ACCESS_SECRET`, `YOUTH_CONSENT_SECRET`)
+- [ ] Generate secrets: `openssl rand -base64 32` (three times — `PRIVATE_ACCESS_SECRET`, `YOUTH_CONSENT_SECRET`, `NUDGE_SECRET`)
 - [ ] **Rotate** `PRIVATE_ACCESS_SECRET` — do not use dev placeholder `Done` in production
-- [ ] Vercel env: `PRIVATE_MODE=true`, `DEMO_PREMIUM=false`, Supabase keys, `BETA_ADMIN_EMAILS`
-- [ ] Run all `supabase/migrations/` in order (finish with `20260702_security_hardening.sql`)
+- [ ] Vercel env: `PRIVATE_MODE=true`, `DEMO_PREMIUM=false`, Supabase keys, `BETA_ADMIN_EMAILS`, `YOUTH_CONSENT_SECRET`, `NUDGE_SECRET`
+- [ ] Run all `supabase/migrations/` in **filename order** (idempotent — safe to re-run):
+  1. `20250629_complete_base_schema.sql`
+  2. `20250629_fitness_test_school.sql`
+  3. `20250629_pft_leaderboard_teacher_pin.sql`
+  4. `20250629_youth_consent_records.sql`
+  5. `20260702_security_hardening.sql`
+  6. `20260703_reminders_optin.sql`
+  7. `20260704_coach_plan.sql`
+  8. `20260705_leads_api_only.sql`
 - [ ] Redeploy; `curl -sI https://www.missionwinning.com/` → redirects to `/private`
+- [ ] Profile build label matches latest `master` commit
 
 **GitHub shortcut:** Actions → **Sync Vercel env** (secrets in [ENV.md](../ENV.md)).
 
@@ -31,13 +40,10 @@ See [VERCEL_DEPLOY_CHECKLIST.md](../VERCEL_DEPLOY_CHECKLIST.md) for preview-vs-p
 
 ## §3 Beta cohort — 10 real users (14 days)
 
-**v5 founder checklist (parallel with code):**
+**Pre-recruit verify (parallel with invites):**
 
-- [ ] Rotate `PRIVATE_ACCESS_SECRET` off dev placeholder (`Done`) — see §2
-- [ ] Set `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated; see [OWASP_AUDIT.md](OWASP_AUDIT.md))
-- [ ] Apply `20260702_security_hardening.sql` + `20260705_leads_api_only.sql` in Supabase
 - [ ] Confirm `DEMO_PREMIUM=false` on Vercel Production
-- [ ] Run `npm run launch-verify` (or `LAUNCH_STRICT=true npm run launch-verify` before go-public)
+- [ ] `LAUNCH_STRICT=true SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ACCESS_SECRET=… npm run launch-verify`
 - [ ] `node scripts/verify-supabase-security.mjs --probe` with service role against prod
 - [ ] Optional: `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` for distributed rate limits
 
@@ -63,15 +69,22 @@ On a real phone, incognito:
 
 ## §4 Stripe (parallel)
 
-- [ ] Stripe account + live checkout links in env (`NEXT_PUBLIC_STRIPE_LINK_BUNDLE`)
-- [ ] `STRIPE_WEBHOOK_SECRET` on Vercel; webhook URL → `/api/stripe-webhook`
-- [ ] Test purchase → `enrollments` row → Coach unlocks (premium gate in [`useCoachPlan`](../src/hooks/useCoachPlan.ts))
+Full detail: [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md).
+
+- [ ] Stripe account + live checkout links in env (`NEXT_PUBLIC_STRIPE_LINK_BUNDLE`, `_LIFETIME`)
+- [ ] `STRIPE_WEBHOOK_SECRET` on Vercel; webhook URL → `/api/stripe-webhook` (`checkout.session.completed`)
+- [ ] Test purchase → `enrollments` row → Coach unlocks ([`useCoachPlan`](../src/hooks/useCoachPlan.ts))
+- [ ] `node scripts/verify-stripe-enrollment.mjs --verify-enrollment <email>`
 
 ---
 
 ## §5 Go public (after gates)
 
-- [ ] `PRIVATE_MODE=false` on Vercel Production
-- [ ] Landing `/` + HeroDemo visible; PWA install prompt active
+Day-of commands: [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md) (top of file).
+
+- [ ] Gate-on verify passes (`LAUNCH_STRICT=true … npm run launch-verify`)
+- [ ] `PRIVATE_MODE=false` on Vercel Production → redeploy
+- [ ] Public verify: `SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify`
+- [ ] Landing `/` + HeroDemo visible; PWA install from phone
 - [ ] Submit sitemap in Search Console ([SEO_ANALYTICS.md](SEO_ANALYTICS.md))
 - [ ] PostHog funnel dashboard live

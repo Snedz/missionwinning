@@ -14,6 +14,7 @@ const PILLAR_CHIP: Record<string, string> = {
   '/nutrition': 'Fuel',
   '/mind': 'Mind',
   '/track': 'Track',
+  '/learn': 'Learn',
   '/learn/course': 'Learn',
 };
 

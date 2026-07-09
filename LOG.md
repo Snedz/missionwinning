@@ -4,6 +4,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-09 — Launch ops docs + Learn/I5 + quality
+
+**Build:** `2026.07-unified.47`
+
+### Shipped
+
+- **Track A:** BETA_LAUNCH_OPS migration list + TRACK_D day-of go-public commands
+- **Learn:** 16 premium guidebook sections; guidebook index → `/learn/course?chapter=`; locked-preview counts
+- **I5:** Victory Move/Learn CTAs; guided Learn CTA; CourseReader Fuel/Move; Learn in `applyCrossPillarCoachRules` (`/learn`)
+- **`/log`:** dynamic QuickLinks/customize; deferred challenges/pillarStats/crossPillarCoach
+- **Photo log:** Open Food Facts match list after estimate; PhotoLogStub lazy on Fuel photo tab
+
+**Next:** Founder [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) → public flip when beta gates pass.
+
+---
+
 ## 2026-07-09 — Resume plan: status sync + Phase I depth
 
 **Docs:** [PLAN.md](PLAN.md), [VISION_STATUS.md](VISION_STATUS.md)  

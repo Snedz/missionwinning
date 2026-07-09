@@ -147,15 +147,30 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
 
         {allDone && (
           <Card className="content-card border-emerald-500/30">
-            <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-emerald-300">
-                {t('learnChapterComplete', { defaultValue: 'Chapter complete — logged to Learn pillar.' })}
+            <CardContent className="py-4 space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="text-sm text-emerald-300">
+                  {t('learnChapterComplete', { defaultValue: 'Chapter complete — logged to Learn pillar.' })}
+                </p>
+                {chapterIndex < chapters.length - 1 ? (
+                  <Button size="sm" onClick={() => setChapterId(chapters[chapterIndex + 1]!.id)}>
+                    {t('guidebookNextChapter', { defaultValue: 'Next chapter →' })}
+                  </Button>
+                ) : null}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {t('learnChapterNextHint', {
+                  defaultValue: 'Practice what you learned — mobility or a Fuel log compounds the win.',
+                })}
               </p>
-              {chapterIndex < chapters.length - 1 ? (
-                <Button size="sm" onClick={() => setChapterId(chapters[chapterIndex + 1]!.id)}>
-                  {t('guidebookNextChapter', { defaultValue: 'Next chapter →' })}
+              <div className="flex flex-wrap gap-2">
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/move">{t('coachActionOpenMove', { defaultValue: 'Open Move' })}</Link>
                 </Button>
-              ) : null}
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/nutrition">{t('coachActionLogNutrition', { defaultValue: 'Log Fuel' })}</Link>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}

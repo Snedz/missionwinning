@@ -60,6 +60,15 @@ export function applyCrossPillarCoachRules(
     };
   }
 
+  const learnLessons = pillars.learnLessons ?? 0;
+  if (trainDays >= 2 && learnLessons === 0 && (move >= 1 || mind >= 1)) {
+    return {
+      messageKey: 'coachInsightNeedLearn',
+      actionLabelKey: 'coachActionOpenLearn',
+      actionPath: '/learn',
+    };
+  }
+
   return insight;
 }
 
@@ -124,7 +133,7 @@ export function listCrossPillarCoachSuggestions(
     out.push({
       messageKey: 'coachInsightNeedLearn',
       actionLabelKey: 'coachActionOpenLearn',
-      actionPath: '/learn/course',
+      actionPath: '/learn',
     });
   }
 

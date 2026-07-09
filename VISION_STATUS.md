@@ -35,7 +35,7 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | **/move** | Basic flows, bodyweight | ⭐⭐⭐ Timed flows + guided player | Pliability / Skill Yoga depth | ⭐⭐⭐ 11 premium multi-step flows |
 | **/mind** | Basic habits, recovery | ⭐⭐⭐ Breathing, guided text, check-in | Calm/Waking Up depth | ⭐⭐⭐ 17 premium timed sessions |
 | **/track** | Core logging, streaks | ⭐⭐⭐ Manual activities, import | MapMyFitness-style GPS | ⭐⭐⭐ GPS panel (premium-gated) |
-| **/learn** | Intros, basics, assessments | ⭐⭐⭐⭐ 8 free paths + public guide | Specialist programs | ⭐⭐⭐ Course reader (premium-gated) |
+| **/learn** | Intros, basics, assessments | ⭐⭐⭐⭐ 8 free paths + public guide | Specialist programs | ⭐⭐⭐ Course reader + 16 premium sections |
 
 **Synergy:** Win Score weights all six pillars. Cross-pillar coach rules + actionable chips on Today.
 
@@ -88,4 +88,4 @@ Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council l
 
 ## Build label
 
-Current: `2026.07-unified.46` ([`src/lib/buildInfo.ts`](src/lib/buildInfo.ts)). Confirm Profile footer matches Vercel production after deploy.
+Current: `2026.07-unified.47` ([`src/lib/buildInfo.ts`](src/lib/buildInfo.ts)). Confirm Profile footer matches Vercel production after deploy.
