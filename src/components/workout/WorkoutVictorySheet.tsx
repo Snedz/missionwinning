@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Share2, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -113,6 +114,19 @@ export function WorkoutVictorySheet({
             defaultValue: 'Log Fuel or Move today to boost your Mission Score synergy.',
           })}
         </p>
+
+        <div className="grid grid-cols-2 gap-2">
+          <Button asChild variant="outline" size="sm" className="w-full">
+            <Link href="/nutrition" onClick={() => onOpenChange(false)}>
+              {t('coachActionLogNutrition', { defaultValue: 'Log Fuel' })}
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="sm" className="w-full">
+            <Link href="/mind" onClick={() => onOpenChange(false)}>
+              {t('coachActionOpenMind', { defaultValue: 'Open Mind' })}
+            </Link>
+          </Button>
+        </div>
 
         <DialogFooter className="flex-col sm:flex-col gap-2">
           <Button className="w-full primary-action" onClick={onViewToday}>

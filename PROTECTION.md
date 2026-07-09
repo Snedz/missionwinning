@@ -153,11 +153,11 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 
 ### P2 — Competitive parity
 
-- [ ] AI Coach v1 (LLM + user context from Today Hub)
-- [ ] GPS / activity import for Track
+- [x] AI Coach v1 — Mission Coach engine + daily insight + plan-voice (`src/lib/coach/`)
+- [x] GPS / activity import for Track — premium GPS panel (`src/lib/trackGps.ts`)
 - [ ] Video or GIF cues for top 50 exercises
-- [ ] Barcode / food search API for Fuel
-- [ ] Audio-guided Mind sessions
+- [x] Barcode / food search API for Fuel (`BarcodeLookup.tsx`, Open Food Facts)
+- [x] Audio-guided Mind sessions — premium timed guided sessions (CDN audio optional next)
 
 ---
 

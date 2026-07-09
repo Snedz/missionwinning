@@ -4,6 +4,33 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-09 — Resume plan: status sync + Phase I depth
+
+**Docs:** [PLAN.md](PLAN.md), [VISION_STATUS.md](VISION_STATUS.md)  
+**Build:** `2026.07-unified.46`
+
+### Already on master (July, previously under-logged)
+
+- **Roadmap v4** — in-app polish, landing demos, public `/guide` + `/exercises` SEO (PR #73)
+- **Roadmap v5** — Stripe UX, Coach locked state, Track GPS premium, cross-pillar chips, es i18n body wave
+- **Mission Coach** — weekly plan engine + free taster + premium regen (`src/lib/coach/`)
+- **Fuel Coach** — adaptive meal plans synced to macros / training load (`src/lib/fuelCoach/`)
+- **Guided Mind/Move** — text timed player + Learn course reader
+- **Launch package** — PWA manifest/SW, security migrations, offline fallback, retention nudges
+
+### This pass
+
+- Build label bump; PLAN / VISION / PROTECTION / LOG aligned with reality
+- Mind: +5 premium timed sessions (17 total); Move: +3 premium flows (11 total)
+- Coach locked-state + fatigue clarity; French body pass (Today/Fuel/Active/Welcome/Coach)
+- `/log` accordion dynamic imports + memoized scores; post-session Fuel/Mind CTAs
+- Founder ops: local `launch-verify` run; remaining boxes in [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md)
+- Fix: `adaptPlan` honors `today` arg (tests were calendar-flaky); build label `2026.07-unified.46`
+
+**Next:** Founder [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) → public flip when beta gates pass.
+
+---
+
 ## 2026-06-29 — Vision plan refresh + Phase G (PFT / America G1–G8)
 
 **Docs:** [VISION_STATUS.md](VISION_STATUS.md), [PLAN.md](PLAN.md) Phase G/H/I  

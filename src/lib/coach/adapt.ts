@@ -100,9 +100,9 @@ export function markSessionsFromExternalWorkouts(
   return { ...plan, sessions };
 }
 
-export function adaptPlan(plan: CoachPlan, ctx: CoachContext, _today: string): CoachPlan {
+export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): CoachPlan {
   const weekStart = plan.weekStart;
-  const todayOffset = todayDayOffset(weekStart);
+  const todayOffset = todayDayOffset(weekStart, today);
   let sessions = plan.sessions.map((s) => ({ ...s }));
 
   // Mark missed sessions

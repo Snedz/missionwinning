@@ -59,6 +59,12 @@ export function CoachTodayCard() {
             <p className="text-sm text-muted-foreground">
               {t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}
             </p>
+            <p className="text-xs text-muted-foreground">
+              {t('coachTasterFatigueNote', {
+                defaultValue:
+                  'Premium also watches strain: when load runs high (≥70), future sessions auto-shift lighter so you recover without quitting the week.',
+              })}
+            </p>
             <Button asChild variant="fitness" size="sm" className="w-full">
               <Link href="/bundle">{t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}</Link>
             </Button>

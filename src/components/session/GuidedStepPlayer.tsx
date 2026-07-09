@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useReducer, useRef } from 'react';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -122,7 +123,18 @@ export function GuidedStepPlayer({
             {t('guidedSessionComplete', { defaultValue: 'Session complete' })}
           </h3>
           <p className="text-sm text-muted-foreground">{title}</p>
+          <p className="text-xs text-muted-foreground px-2">
+            {t('guidedSessionNextHint', {
+              defaultValue: 'Next: log protein on Fuel, or start today’s training from Today.',
+            })}
+          </p>
           <div className="flex gap-2 justify-center flex-wrap">
+            <Button asChild variant="outline" size="sm">
+              <Link href="/nutrition">{t('coachActionLogNutrition', { defaultValue: 'Log Fuel' })}</Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/log">{t('coachActionViewToday', { defaultValue: 'Back to Today' })}</Link>
+            </Button>
             <Button variant="fitness" onClick={handleReset}>
               {t('guidedSessionRepeat', { defaultValue: 'Repeat' })}
             </Button>

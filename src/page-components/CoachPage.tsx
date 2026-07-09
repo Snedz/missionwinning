@@ -67,11 +67,17 @@ export function CoachPage() {
             <CardDescription>
               {t('coachTasterLockedDesc', {
                 defaultValue:
-                  'Super Bundle unlocks a new weekly plan, on-demand regeneration, and Commander\'s intent briefings tuned to your readiness.',
+                  'You got one free Coach week. Super Bundle unlocks a new plan every Monday, on-demand regeneration, and Commander\'s intent tuned to readiness.',
               })}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground border border-emerald-500/15 rounded-lg p-3 bg-emerald-500/5">
+              {t('coachTasterFatigueNote', {
+                defaultValue:
+                  'Premium also watches strain: when load runs high (≥70), future sessions auto-shift lighter so you recover without quitting the week.',
+              })}
+            </p>
             <ul className="space-y-2 text-sm text-muted-foreground">
               {(['coachLockedBenefit1', 'coachLockedBenefit2', 'coachLockedBenefit3', 'coachLockedBenefit4'] as const).map(
                 (key) => (

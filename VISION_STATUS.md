@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated post **v4 experience build + v5 polish** (2026-07-05).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-09** (post Fuel Coach + resume plan).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -13,8 +13,8 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 | **#1 health everything app** — unified, not fragmented | 🟡 Strong scaffold | Six pillars + Today hub + Win Score synergy; cross-pillar coach chips on Today |
 | **Free core forever** — train, log, basics | 🟢 Shipped | Phases A–D; no paywall on core logger/library |
 | **Super Bundle** — primary revenue | 🟡 Code + checkout | `/bundle`, Stripe webhook → `enrollments`; founder wires live links |
-| **Premium depth per pillar** | 🟡 Partial | GPS Track premium, Coach taster gate, recipes/programs gated |
-| **AI Coach — personal trainer in pocket** | 🟡 v1 shipped | Mission Coach engine + free taster week; premium regeneration + plan-voice |
+| **Premium depth per pillar** | 🟡 Partial | GPS Track, Fuel Coach, Coach taster; Mind/Move depth in progress |
+| **AI Coach — personal trainer in pocket** | 🟢 v1 shipped | Mission Coach engine + free taster week; premium regeneration + plan-voice |
 | **PWA offline everywhere** | 🔴 Blocked | Disabled while `PRIVATE_MODE=true` |
 | **Global i18n** | 🟡 Partial | Tier 1/2 nav chrome; es body wave for Today/Fuel/Active in progress |
 | **Bevel-style metric UI** | 🟢 Good | Readiness/Strain/Recovery rings, Mission Score tick-up animation |
@@ -31,11 +31,11 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | Pillar | Free tier (vision) | Free tier (app) | Premium (vision) | Premium (app) |
 |--------|-------------------|-----------------|------------------|---------------|
 | **/train** | Robust tracker, basic library | ⭐⭐⭐⭐ Logger, 200+ library, templates, form guides | AI Coach, 30+ plans | ⭐⭐⭐ Mission Coach engine + taster; premium regen |
-| **/fuel** | Basic log, accessible recipes | ⭐⭐⭐⭐ Log, water, 12 recipes, barcode, empty-state CTA | Deep plans, coaching | ⭐⭐ 92 server recipes only |
-| **/move** | Basic flows, bodyweight | ⭐⭐⭐ 4 timed flows | Pliability / Skill Yoga depth | ⭐ Unlock card only |
-| **/mind** | Basic habits, recovery | ⭐⭐⭐ Breathing, 3 guided, check-in | Calm/Waking Up depth | ⭐ Unlock card only |
-| **/track** | Core logging, streaks | ⭐⭐⭐ Manual activities, import | MapMyFitness-style GPS | ⭐⭐ GPS panel (premium-gated) |
-| **/learn** | Intros, basics, assessments | ⭐⭐⭐⭐ 8 free ISSA paths + public guide | Specialist programs | ⭐⭐ Marketing pages; no course UX |
+| **/fuel** | Basic log, accessible recipes | ⭐⭐⭐⭐ Log, water, 12 recipes, barcode, empty-state CTA | Deep plans, coaching | ⭐⭐⭐ Fuel Coach + 92 server recipes |
+| **/move** | Basic flows, bodyweight | ⭐⭐⭐ Timed flows + guided player | Pliability / Skill Yoga depth | ⭐⭐⭐ 11 premium multi-step flows |
+| **/mind** | Basic habits, recovery | ⭐⭐⭐ Breathing, guided text, check-in | Calm/Waking Up depth | ⭐⭐⭐ 17 premium timed sessions |
+| **/track** | Core logging, streaks | ⭐⭐⭐ Manual activities, import | MapMyFitness-style GPS | ⭐⭐⭐ GPS panel (premium-gated) |
+| **/learn** | Intros, basics, assessments | ⭐⭐⭐⭐ 8 free paths + public guide | Specialist programs | ⭐⭐⭐ Course reader (premium-gated) |
 
 **Synergy:** Win Score weights all six pillars. Cross-pillar coach rules + actionable chips on Today.
 
@@ -47,11 +47,11 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 |-------|-----|--------|
 | **Build phases A–D, F** | [PLAN.md](PLAN.md) | ✅ Free core, journey, unified UI |
 | **Experience v4** | [docs/ROADMAP_V4_EXPERIENCE.md](docs/ROADMAP_V4_EXPERIENCE.md) | ✅ Shipped PR #73 |
-| **v5 polish + Phase I depth** | Roadmap v5 plan | 🟡 In progress — polish, Stripe hardening, Coach UX |
+| **v5 polish + Phase I depth** | [PLAN.md](PLAN.md) Phase I | 🟡 Engines shipped; Mind/Move + live Stripe remaining |
 | **Member journey phases** | [JOURNEY.md](JOURNEY.md) | I-Day → Commissioned (in-app) |
 | **PFT / America G1–G8** | [PLAN.md](PLAN.md) Phase G | ✅ Optional US track; feature-flagged |
-| **Launch Phase H** | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | ⬜ Blocked on beta + Vercel secrets |
-| **Premium Phase I** | [PLAN.md](PLAN.md) | 🟡 Stripe + Coach + Track GPS MVP shipped |
+| **Launch Phase H** | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | ⬜ Blocked on beta + Vercel secrets |
+| **Premium Phase I** | [PLAN.md](PLAN.md) | 🟡 Stripe code + Coach + Fuel Coach + Track GPS shipped |
 
 ---
 
@@ -63,14 +63,14 @@ Vision cannot land until the app is **public and installable**. Blocked on: beta
 ### 2. Live Super Bundle ops (Phase I1)
 Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Founder: live links, rotate `PRIVATE_ACCESS_SECRET`, verify with `scripts/verify-stripe-enrollment.mjs`.
 
-### 3. Coach premium polish (Phase I2)
-Engine + taster gate shipped. Remaining: more plan depth, fatigue signals, marketing copy on locked state.
+### 3. Premium pillar depth — Mind / Move (Phase I3b)
+Track GPS + Fuel Coach shipped. Next proof points: premium guided Mind sessions and multi-step Move flows.
 
-### 4. i18n body copy Tier 1 (Phase I4)
-es Today/Fuel/Active body keys filled in v5; expand after beta traction.
+### 4. Coach premium polish (Phase I2 remainder)
+Engine + taster gate shipped. Remaining: locked-state marketing copy, fatigue/strain messaging clarity.
 
-### 5. Premium pillar depth beyond Track GPS (Phase I3)
-Mind audio or Move video — next proof points for bundle value.
+### 5. i18n body copy Tier 1 (Phase I4)
+es Today/Fuel/Active body keys filled in v5; complete one more Tier-1 locale fully before spraying.
 
 ### 6. PFT track ops (Phase G ops)
 Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council legal sign-off before MAHA copy.
@@ -88,4 +88,4 @@ Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council l
 
 ## Build label
 
-Profile build string should reflect **post-v4** deploys (not `2025.06-unified.45`). Check Vercel production after merge.
+Current: `2026.07-unified.46` ([`src/lib/buildInfo.ts`](src/lib/buildInfo.ts)). Confirm Profile footer matches Vercel production after deploy.

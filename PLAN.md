@@ -27,8 +27,8 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 | **D** | Content scale (200+ exercises, Learn paths) | ✅ Done |
 | **F** | Simple UI + Mission Journey (I-Day → Commissioned) | ✅ Done — [JOURNEY.md](JOURNEY.md) |
 | **G** | PFT / America track (school, teacher, youth, leaderboard) | ✅ Done — build `.45` |
-| **H** | Public launch + PWA + security P0 | ⬜ **Blocked** — [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) |
-| **I** | Premium depth + AI Coach + live payments | ⬜ Next after H |
+| **H** | Public launch + PWA + security P0 | ⬜ **Blocked** — founder ops → [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) |
+| **I** | Premium depth + AI Coach + live payments | 🟡 Partial — engines + Track GPS shipped; Mind/Move depth + live Stripe next |
 
 > **Naming:** Journey “Phase 0–3” (JOURNEY.md) ≠ build phases here ≠ PFT sub-phases G1–G8.
 
@@ -114,17 +114,19 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 
 ---
 
-## Phase I — Premium parity & synergy ⬜
+## Phase I — Premium parity & synergy 🟡
 
 Aligns revenue with [vision.md](vision.md) without gating free core.
 
-| Sub | Deliverable | Vision link |
-|-----|-------------|-------------|
-| **I1** | Live Stripe bundle + verified webhook → `enrollments` | Super Bundle revenue engine |
-| **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | “Personal trainer in pocket” |
-| **I3** | Track GPS premium MVP — live recording, pace chart, weekly stats, locked preview | ✅ Track (Mind/Move next) |
-| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | Global equity |
-| **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | 1+1+1 > sum |
+| Sub | Deliverable | Status | Vision link |
+|-----|-------------|--------|-------------|
+| **I1** | Live Stripe bundle + verified webhook → `enrollments` | 🟡 Code ready — founder wires live links ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)) | Super Bundle revenue engine |
+| **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | ✅ Engine + taster + regen; polish remaining | “Personal trainer in pocket” |
+| **I2b** | Fuel Coach — adaptive meal plans synced to macros / training | ✅ Premium-gated (`src/lib/fuelCoach/`) | Fuel depth |
+| **I3** | Track GPS premium MVP — live recording, pace chart, weekly stats | ✅ Shipped | Track |
+| **I3b** | Mind / Move premium depth beyond unlock cards | ✅ 17 Mind + 11 Move premium sessions | Bundle proof |
+| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 es + **fr** body waves shipped; expand one locale at a time | Global equity |
+| **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | 🟡 Chips + post-session Fuel/Mind CTAs on victory & guided complete | 1+1+1 > sum |
 
 **Done when:** Paying users get differentiated premium; free core unchanged; bundle LTV measurable.
 
@@ -156,12 +158,12 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 ## Recommended work order (now)
 
-1. **Phase H prep** — beta invites, metrics, Supabase migrations, GitHub Secrets → Sync Vercel env
-2. **Phase H launch** — gates pass → `PRIVATE_MODE=false` → PWA on
-3. **Phase I1** — live payments (highest revenue impact)
-4. **Phase I2 + I4** — AI Coach premium + i18n body (parallel)
-5. **Phase I3** — one premium pillar proof
-6. **Open draft PRs** (#43–#48) — merge or close individually (train/fuel/i18n features, not PFT)
+1. **Phase H founder ops** — [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1–5 (Vercel, migrations, beta gates, Stripe, then `PRIVATE_MODE=false`)
+2. **Phase I1** — live Stripe payment links + webhook verify (code ready)
+3. **Mind / Move premium depth** — audio-or-timed sessions + multi-step flows (bundle proof)
+4. **Coach locked-state polish** + **i18n body** (one Tier-1 locale fully)
+5. **Cross-pillar post-session CTAs** (I5 depth)
+6. **Perf** — `/log` Lighthouse toward 90 ([docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md))
 
 ---
 
@@ -186,4 +188,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-06-29 (Phase G complete; Phase H/I roadmap; see VISION_STATUS.md)
+Last updated: 2026-07-09 (July engines + v4/v5 shipped; Phase H still founder-ops; build `2026.07-unified.46`)

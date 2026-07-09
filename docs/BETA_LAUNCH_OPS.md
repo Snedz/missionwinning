@@ -2,6 +2,8 @@
 
 **Code is ready.** This is the critical path from private beta to public launch. Full detail: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md).
 
+> **2026-07-09 agent note:** `npm run launch-verify` was run locally (migrations listed, env shape checked). Remaining boxes below still require **your** Vercel / Supabase / Stripe / beta cohort actions — agents cannot complete §1–§5 alone.
+
 ---
 
 ## §1 Deploy access (~30 min)
