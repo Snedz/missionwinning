@@ -50,6 +50,12 @@ run('0. Launch env checklist (local or CI secrets)', 'node', checkEnvArgs, {
   optional: !strict,
 });
 
+if (strict) {
+  run('0b. Pre-deploy smoke (LAUNCH_STRICT)', 'npm', ['run', 'predeploy']);
+} else {
+  console.log('\n0b. Pre-deploy smoke — skipped (set LAUNCH_STRICT=true to require)\n');
+}
+
 run('1. Supabase security migrations + probe', 'node', [
   'scripts/verify-supabase-security.mjs',
   ...(process.env.SUPABASE_SERVICE_ROLE_KEY ? ['--probe'] : []),

@@ -20,7 +20,7 @@ Captured after Track C code-splitting + lazy Today sections. Performance is stil
 | Route | Performance | Accessibility | Best practices | Notes |
 |-------|-------------|---------------|----------------|-------|
 | `/` | 86 | 94 | 100 | Landing — below-fold demos lazy-loaded |
-| **`/log`** | **78*** | **96** | **100** | *Re-measure after 2026-07-09 defer pass (crossPillarCoach + QuickLinks dynamic)* |
+| **`/log`** | **78*** | **96** | **100** | *Slim readiness shipped (`2026.07-unified.48`); re-run snapshot to replace 78* |
 | `/guide/human-performance` | 89 | 100 | 100 | Public SEO chapter |
 | `/exercises/squats` | 87 | 96 | 100 | Public exercise detail |
 

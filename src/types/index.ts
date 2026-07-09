@@ -83,6 +83,8 @@ export interface CompletedWorkoutLog {
     exerciseId: string;
     sets: { reps: number; weight: number; kind?: SetKind; rpe?: 'easy' | 'med' | 'hard' }[];
     note?: string;
+    /** Snapshot from catalog at complete time — readiness can skip EXERCISES lookup. */
+    muscleGroups?: MuscleGroup[];
   }[];
   totalVolume: number;
 }

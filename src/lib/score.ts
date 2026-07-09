@@ -1,18 +1,15 @@
-import { EXERCISES } from "@/data/exercises";
 import type { CompletedWorkoutLog } from "@/types";
 import {
   MAJOR_GROUPS,
   type MuscleGroup,
-  readinessStatusKey,
   type ReadinessStatusKey,
 } from "@/lib/muscleGroups";
+import {
+  computeReadinessFromHistory,
+  type ReadinessInfo,
+} from "@/lib/readinessIndex";
 
-export type { MuscleGroup, ReadinessStatusKey };
-
-export interface ReadinessInfo {
-  days: number;
-  statusKey: ReadinessStatusKey;
-}
+export type { MuscleGroup, ReadinessStatusKey, ReadinessInfo };
 
 export interface RecommendedFocus {
   group: MuscleGroup;
@@ -43,35 +40,12 @@ export interface WinScoreBreakdown {
 
 /**
  * Compute muscle readiness from workout history.
- * Returns map of group to {days since last worked, status i18n key}.
+ * Prefers stored muscleGroups. For old logs missing groups, callers should
+ * `await computeReadinessIndex(history)` first (lazy catalog seed).
+ * HomePage above-fold uses `computeReadinessFromHistory` directly.
  */
 export function computeReadiness(workoutHistory: CompletedWorkoutLog[]): Record<MuscleGroup, ReadinessInfo> {
-  const lastByGroup: Record<string, Date | null> = {};
-  MAJOR_GROUPS.forEach(g => { lastByGroup[g] = null; });
-
-  workoutHistory.forEach(log => {
-    const logDate = new Date(log.completedAt);
-    log.exercises.forEach(ex => {
-      const exData = EXERCISES.find(e => e.id === ex.exerciseId);
-      if (!exData) return;
-      exData.muscleGroups.forEach(mg => {
-        if ((MAJOR_GROUPS as readonly string[]).includes(mg)) {
-          const g = mg as MuscleGroup;
-          if (!lastByGroup[g] || logDate > lastByGroup[g]!) {
-            lastByGroup[g] = logDate;
-          }
-        }
-      });
-    });
-  });
-
-  const readiness: Record<MuscleGroup, ReadinessInfo> = {} as Record<MuscleGroup, ReadinessInfo>;
-  MAJOR_GROUPS.forEach(g => {
-    const last = lastByGroup[g];
-    const days = last ? Math.floor((Date.now() - last.getTime()) / (1000 * 3600 * 24)) : 99;
-    readiness[g] = { days, statusKey: readinessStatusKey(days) };
-  });
-  return readiness;
+  return computeReadinessFromHistory(workoutHistory);
 }
 
 /**

@@ -157,7 +157,52 @@ const fr: CoachStrings = {
     'Une semaine d’entraînement complète devant vous. Bien vous alimenter, dormir régulièrement, et faire confiance à la progression.',
 };
 
-const LOCALES: Partial<Record<string, CoachStrings>> = { en, es, fr };
+const de: CoachStrings = {
+  ...en,
+  coachPageTitle: 'Mission Coach',
+  coachWeekEyebrow: 'MISSION DIESER WOCHE',
+  coachGenerateWeek: 'Diese Woche generieren',
+  coachRegenerate: 'Woche neu generieren',
+  coachRegenerateConfirm: 'Nochmal tippen zum Bestätigen',
+  coachStartSession: 'Diese Einheit starten',
+  coachViewPlan: 'Ganze Woche ansehen',
+  coachTodayMission: 'Mission des Tages',
+  coachNoSessionToday: 'Ruhe- oder Erholungstag — leichte Bewegung zählt trotzdem.',
+  coachRestDay: 'Ruhetag',
+  coachDaysPerWeek: 'Wie viele Tage pro Woche?',
+  coachVoiceTitle: 'Absicht des Kommandanten',
+  coachVoiceLoading: 'Briefing deiner Woche…',
+  coachTasterLocked: 'Deine kostenlose Woche ist vorbei',
+  coachTasterLockedDesc:
+    'Du hattest eine kostenlose Coach-Woche. Super Bundle schaltet jeden Montag einen neuen Plan frei, Regeneration auf Abruf und Absicht des Kommandanten nach deiner Bereitschaft.',
+  coachTasterFatigueNote:
+    'Premium überwacht auch die Belastung: Wenn der Strain hoch ist (≥70), werden kommende Einheiten leichter, damit du dich erholst, ohne die Woche abzubrechen.',
+  coachTasterDesc: 'Schalte Mission Coach frei, um deinen Plan jede Woche neu zu generieren und anzupassen.',
+  coachCompareBundle: 'Super Bundle vergleichen',
+  coachUnlockBundle: 'Super Bundle freischalten',
+  coachViewLockedPlan: 'Letzte Woche ansehen und freischalten',
+  coachLockedWeekSummary: '{{done}}/{{total}} Einheiten letzte Woche protokolliert',
+  coachLockedBenefit1: 'Unbegrenzte Wochen-Regeneration und Montags-Rollover',
+  coachLockedBenefit2: 'Ermüdungssensible Pläne, die sich bei hohem Strain anpassen',
+  coachLockedBenefit3: 'Briefings zur Absicht des Kommandanten jede Woche',
+  coachLockedBenefit4: 'Alle sechs Premium-Säulen — Train, Fuel, Move, Mind, Track, Learn',
+  coachFreeCoreNote:
+    'Trainingsjournal, Bibliothek und Heute bleiben kostenlos — Premium finanziert die Mission.',
+  coachSessionDone: 'Erledigt',
+  coachSessionMissed: 'Verpasst',
+  coachSessionSwapped: 'Angepasst',
+  coachEstMinutes: '{{minutes}} Min',
+  coachVoiceDefault:
+    'Diese Woche balanciert progressive Überlastung und Erholung. Geh jede Einheit mit Absicht an und protokolliere deine Sätze.',
+  coachVoiceDeload:
+    'Die Belastung ist hoch — behandle das als Konsolidierungswoche. Gleiche Bewegungen, etwas leichtere Lasten.',
+  coachVoiceRecovery:
+    'Die Bereitschaft ist niedriger — priorisiere Mobilität und saubere Reps. Kraft kommt mit der Erholung zurück.',
+  coachVoiceHighVolume:
+    'Eine volle Trainingswoche liegt vor dir. Ernähre dich gut, schlaf regelmäßig und vertrau der Progression.',
+};
+
+const LOCALES: Partial<Record<string, CoachStrings>> = { en, es, fr, de };
 
 export function coachStringsFor(lang: string): CoachStrings {
   const code = lang.split('-')[0];

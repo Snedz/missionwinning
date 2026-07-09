@@ -8,6 +8,10 @@
  */
 const MIGRATIONS = [
   '20250629_complete_base_schema.sql',
+  '20250629_journey_events.sql',
+  '20250629_journey_state.sql',
+  '20250629_leaderboard.sql',
+  '20250629_leaderboard_squad_patch.sql',
   '20250629_fitness_test_school.sql',
   '20250629_pft_leaderboard_teacher_pin.sql',
   '20250629_youth_consent_records.sql',

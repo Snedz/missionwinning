@@ -9,8 +9,9 @@ import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
-import { computeReadiness, getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
+import { getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
 import type { CoachInsight } from "@/lib/score";
+import { computeReadinessFromHistory } from "@/lib/readinessIndex";
 import { getTrainingStreak } from "@/lib/challenges";
 import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
@@ -233,8 +234,25 @@ export function HomePage() {
   };
 
   // === Today Hub computations (memoized — avoid recompute on every render) ===
-  const readiness = useMemo(() => computeReadiness(workoutHistory), [workoutHistory]);
+  // Slim path: stored muscleGroups only — no sync EXERCISES import on first paint.
+  const [readiness, setReadiness] = useState(() => computeReadinessFromHistory(workoutHistory));
   const recommendedFocus = useMemo(() => getRecommendedFocus(readiness), [readiness]);
+
+  useEffect(() => {
+    setReadiness(computeReadinessFromHistory(workoutHistory));
+    const needsBackfill = workoutHistory.some((log) =>
+      log.exercises.some((ex) => !ex.muscleGroups?.length)
+    );
+    if (!needsBackfill) return;
+    let cancelled = false;
+    void import('@/lib/readinessIndex').then(async ({ computeReadinessIndex }) => {
+      const next = await computeReadinessIndex(workoutHistory);
+      if (!cancelled) setReadiness(next);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [workoutHistory]);
 
   // High protein days (from nutrition logs) — only needed for score / below-fold
   const highProteinDays = useMemo(() => {
@@ -279,14 +297,22 @@ export function HomePage() {
   );
   const score = scoreBreakdown.total;
 
-  const bodyScores = useMemo(
-    () =>
-      computeBodyScores(workoutHistory, {
-        assessmentRisk: lastAssessment?.risk,
-        pillarWins: recentPillarWins.length,
-      }),
-    [workoutHistory, lastAssessment?.risk, recentPillarWins.length]
-  );
+  const bodyScores = useMemo(() => {
+    if (!belowFoldReady) {
+      return {
+        readiness: 50,
+        strain: 50,
+        recovery: 50,
+        readinessLabelKey: 'todayBodyTrainSmart' as const,
+        strainLabelKey: 'todayBodyModerateLoad' as const,
+        recoveryLabelKey: 'todayBodyRebuilding' as const,
+      };
+    }
+    return computeBodyScores(workoutHistory, {
+      assessmentRisk: lastAssessment?.risk,
+      pillarWins: recentPillarWins.length,
+    });
+  }, [belowFoldReady, workoutHistory, lastAssessment?.risk, recentPillarWins.length]);
 
   const [coachInsight, setCoachInsight] = useState<CoachInsight>(() =>
     getCoachInsight(

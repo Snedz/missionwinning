@@ -383,10 +383,48 @@ const pt: WelcomeStrings = {
 
 const de: WelcomeStrings = {
   ...en,
+  welcomeKicker: 'Hier beginnt der Weg',
+  welcomeIDay: 'I-Tag',
+  welcomeMissionLead: 'Die Mission:',
+  welcomeMissionBody1:
+    'Mission Winning ist eine kostenlose globale Gesundheits-App. Trainiere, ernähre dich, bewege dich, Geist, Tracking und Lernen — an einem Ort, auf einem Weg.',
+  welcomeMissionP2:
+    'Die Grundlagen sind für immer kostenlos. Premium vertieft jede Säule für alle, die mehr wollen — nie Pflicht zum Start.',
+  welcomeMissionP3:
+    'Deine Aufgabe heute: ein Schritt nach dem anderen. Der Heute-Hub zeigt immer deine nächste Aktion.',
+  welcomeProfileTitle: 'Drei kurze Fragen',
+  welcomeProfileEditHint:
+    'Aktualisiere Erfahrung, Equipment und Ziel. Änderungen synchronisieren sich bei Anmeldung.',
+  welcomeProfileHint: 'Damit Heute den besten Startpunkt empfiehlt.',
+  welcomeExperience: 'Erfahrung',
+  welcomeExpBeginner: 'Neu beim Training',
+  welcomeExpIntermediate: 'Etwas Erfahrung',
+  welcomeExpAdvanced: 'Jahre Training',
+  welcomeGearCheck: 'Equipment — was hast du heute?',
+  welcomeEquipBodyweight: 'Nur Körpergewicht',
+  welcomeEquipDumbbells: 'Hanteln oder Bänder',
+  welcomeEquipFullGym: 'Volles Fitnessstudio',
+  welcomePrimaryGoal: 'Hauptziel',
+  welcomeGoalPresetsLabel: 'Schnellauswahl (oder schreib dein eigenes unten)',
+  welcomeBack: 'Zurück',
+  headerSignIn: 'Anmelden',
+  photoLogTitle: 'Mit Foto protokollieren',
+  navOurMission: 'Unsere Mission',
+  navBetaGuide: 'Beta-Guide',
   welcomeTitle: 'Willkommen, Missionsmitglied',
+  welcomeSubtitle:
+    'Starte deinen Weg zu nachhaltiger Gesundheit — Schritt für Schritt. Etwa zwei Minuten.',
   welcomeBegin: 'Starten',
+  welcomeAccept: 'Ich nehme den Weg an',
   welcomeContinue: 'Weiter',
+  welcomeSignInTitle: 'Fortschritt speichern — deine Wahl',
+  welcomeSignInSubtitle:
+    'Melde dich mit Google oder E-Mail an zum Synchronisieren. Überspringe jederzeit — lokaler Fortschritt funktioniert.',
   welcomeSkipSignIn: 'Überspringen — zu Heute',
+  welcomeRemindersOptIn:
+    'Schick mir Trainingserinnerungen (Serie in Gefahr, nächster Schritt). Optional — Abmeldung mit einem Klick.',
+  editJourneyProfile: 'Reiseprofil bearbeiten',
+  saveProfile: 'Profil speichern',
 };
 
 const it: WelcomeStrings = {

@@ -28,7 +28,7 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 | **F** | Simple UI + Mission Journey (I-Day → Commissioned) | ✅ Done — [JOURNEY.md](JOURNEY.md) |
 | **G** | PFT / America track (school, teacher, youth, leaderboard) | ✅ Done — build `.45` |
 | **H** | Public launch + PWA + security P0 | ⬜ **Blocked** — founder ops → [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) |
-| **I** | Premium depth + AI Coach + live payments | 🟡 Partial — engines + Track GPS shipped; Mind/Move depth + live Stripe next |
+| **I** | Premium depth + AI Coach + live payments | 🟡 Partial — engines + Mind/Move/Learn/I5 + de body; live Stripe next |
 
 > **Naming:** Journey “Phase 0–3” (JOURNEY.md) ≠ build phases here ≠ PFT sub-phases G1–G8.
 
@@ -126,7 +126,7 @@ Aligns revenue with [vision.md](vision.md) without gating free core.
 | **I3** | Track GPS premium MVP — live recording, pace chart, weekly stats | ✅ Shipped | Track |
 | **I3b** | Mind / Move premium depth beyond unlock cards | ✅ 17 Mind + 11 Move premium sessions | Bundle proof |
 | **I3c** | Learn premium specialist chapters | ✅ 4 courses / 16 sections + course fix | Bundle proof |
-| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 es + **fr** body waves shipped; expand one locale at a time | Global equity |
+| **I4** | i18n G2 — Today/Fuel/Active/Welcome body for Tier 1 + AR RTL | 🟡 es + **fr** shipped; **de** next (one locale at a time) | Global equity |
 | **I5** | Cross-pillar recommendation depth (coach → multi-pillar CTAs) | ✅ Victory/guided/course CTAs + Learn in single insight | 1+1+1 > sum |
 
 **Done when:** Paying users get differentiated premium; free core unchanged; bundle LTV measurable.
@@ -161,9 +161,9 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 1. **Phase H founder ops** — [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1–5 · day-of commands in [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md)
 2. **Phase I1** — live Stripe payment links + webhook verify (code ready — [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md))
-3. **Learn premium depth + I5** — specialist chapters + post-session CTAs (Mind/Move depth ✅)
-4. **Perf** — `/log` Lighthouse toward 90 + photo-log OFF grounding
-5. **i18n body** — next Tier-1 locale after `es`/`fr` (one at a time)
+3. **Re-measure `/log` Lighthouse** after slim readiness — update [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md)
+4. **Form media depth** — more hero assets / video when needed (15 SVGs shipped)
+5. **More i18n locales** — only after PMF (es/fr/de body done)
 
 ---
 
@@ -188,4 +188,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-07-09 (Learn/I5 + /log defer + photo OFF; Phase H founder-ops; build `2026.07-unified.47`)
+Last updated: 2026-07-09 (next wave: de i18n, slim readiness, form media; build `2026.07-unified.48`)

@@ -50,6 +50,10 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
         </div>
 
         <div className="p-5 space-y-5 text-[17px] leading-relaxed">
+          {guide.mediaUrl && (
+            <FormGuideMedia url={guide.mediaUrl} type={guide.mediaType ?? 'image'} name={exerciseName} />
+          )}
+
           {guide.readyPosition && (
             <section>
               <h3 className={cn(
@@ -87,6 +91,44 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function FormGuideMedia({
+  url,
+  type,
+  name,
+}: {
+  url: string;
+  type: 'image' | 'video';
+  name: string;
+}) {
+  if (type === 'video') {
+    return (
+      <div className="overflow-hidden rounded-xl border border-border/40 bg-muted/30">
+        <video
+          className="w-full max-h-56 object-contain"
+          src={url}
+          controls
+          preload="none"
+          playsInline
+          aria-label={`${name} form video`}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-border/40 bg-muted/30">
+      {/* eslint-disable-next-line @next/next/no-img-element -- lazy public asset, not LCP hero */}
+      <img
+        src={url}
+        alt={`${name} form diagram`}
+        loading="lazy"
+        decoding="async"
+        className="mx-auto w-full max-h-56 object-contain p-3"
+      />
     </div>
   );
 }

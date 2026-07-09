@@ -22,7 +22,7 @@ import { toast } from '@/hooks/use-toast';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { formatDuration } from '@/lib/utils';
 import { useWorkoutStore } from '@/store/workoutStore';
-import { getFormGuide, hasFormGuide } from '@/lib/formGuides';
+import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
@@ -402,7 +402,7 @@ export function ActiveWorkoutPage() {
                       {t('activeRepeatLast', { defaultValue: 'Repeat last set' })}
                     </Button>
                   )}
-                  {hasFormGuide(exercise.id) && (
+                  {getFormGuideOrCues(exercise.id, { exercise }) && (
                     <Button
                       type="button"
                       variant="ghost"
@@ -596,7 +596,7 @@ export function ActiveWorkoutPage() {
       {formGuideId &&
         (() => {
           const ex = getExerciseById(formGuideId);
-          const guide = getFormGuide(formGuideId);
+          const guide = getFormGuideOrCues(formGuideId, { exercise: ex });
           if (!ex || !guide) return null;
           return (
             <FormGuideSheet
