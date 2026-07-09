@@ -16,8 +16,11 @@ type CoachStrings = {
   coachVoiceLoading: string;
   coachTasterLocked: string;
   coachTasterLockedDesc: string;
+  coachTasterFatigueNote: string;
   coachTasterDesc: string;
   coachCompareBundle: string;
+  coachUnlockBundle: string;
+  coachViewLockedPlan: string;
   coachLockedWeekSummary: string;
   coachLockedBenefit1: string;
   coachLockedBenefit2: string;
@@ -58,12 +61,16 @@ const en: CoachStrings = {
   coachVoiceLoading: 'Briefing your week…',
   coachTasterLocked: 'Your free week is complete',
   coachTasterLockedDesc:
-    'Super Bundle unlocks a new weekly plan, on-demand regeneration, and Commander\'s intent briefings tuned to your readiness.',
+    'You got one free Coach week. Super Bundle unlocks a new plan every Monday, on-demand regeneration, and Commander\'s intent tuned to readiness.',
+  coachTasterFatigueNote:
+    'Premium also watches strain: when load runs high (≥70), future sessions auto-shift lighter so you recover without quitting the week.',
   coachTasterDesc: 'Unlock Mission Coach to regenerate and adapt your plan every week.',
   coachCompareBundle: 'Compare Super Bundle',
+  coachUnlockBundle: 'Unlock Super Bundle',
+  coachViewLockedPlan: 'View last week & unlock',
   coachLockedWeekSummary: '{{done}}/{{total}} sessions logged last week',
-  coachLockedBenefit1: 'Unlimited week regeneration and rollover',
-  coachLockedBenefit2: 'Fatigue-aware plans that adapt to strain and recovery',
+  coachLockedBenefit1: 'Unlimited week regeneration and Monday rollover',
+  coachLockedBenefit2: 'Fatigue-aware plans that adapt when strain is elevated',
   coachLockedBenefit3: "Commander's intent briefings every week",
   coachLockedBenefit4: 'All six premium pillars — Train, Fuel, Move, Mind, Track, Learn',
   coachFreeCoreNote: 'Workout logger, library, and Today stay free — premium funds the mission.',
@@ -96,9 +103,61 @@ const es: CoachStrings = {
   coachGenerateWeek: 'Generar esta semana',
   coachStartSession: 'Iniciar sesión',
   coachDaysPerWeek: '¿Cuántos días a la semana?',
+  coachTasterLocked: 'Tu semana gratis terminó',
+  coachTasterLockedDesc:
+    'Tuviste una semana gratis de Coach. Super Bundle desbloquea un plan nuevo cada lunes, regeneración bajo demanda e intención del comandante según tu preparación.',
+  coachTasterFatigueNote:
+    'Premium también vigila la carga: si el strain es alto (≥70), las sesiones futuras se aligeran para que recuperes sin abandonar la semana.',
+  coachUnlockBundle: 'Desbloquear Super Bundle',
+  coachViewLockedPlan: 'Ver la semana pasada y desbloquear',
 };
 
-const LOCALES: Partial<Record<string, CoachStrings>> = { en, es };
+const fr: CoachStrings = {
+  ...en,
+  coachPageTitle: 'Coach de mission',
+  coachWeekEyebrow: 'MISSION DE CETTE SEMAINE',
+  coachGenerateWeek: 'Générer cette semaine',
+  coachRegenerate: 'Régénérer la semaine',
+  coachRegenerateConfirm: 'Appuyez encore pour confirmer',
+  coachStartSession: 'Commencer cette séance',
+  coachViewPlan: 'Voir la semaine complète',
+  coachTodayMission: 'Mission du jour',
+  coachNoSessionToday: 'Jour de repos ou de récupération — un peu de mouvement compte encore.',
+  coachRestDay: 'Jour de repos',
+  coachDaysPerWeek: 'Combien de jours par semaine ?',
+  coachVoiceTitle: 'Intention du commandant',
+  coachVoiceLoading: 'Briefing de votre semaine…',
+  coachTasterLocked: 'Votre semaine gratuite est terminée',
+  coachTasterLockedDesc:
+    'Vous avez eu une semaine Coach gratuite. Super Bundle débloque un nouveau plan chaque lundi, la régénération à la demande et l’intention du commandant selon votre préparation.',
+  coachTasterFatigueNote:
+    'Premium surveille aussi la charge : si le strain est élevé (≥70), les séances à venir s’allègent pour récupérer sans quitter la semaine.',
+  coachTasterDesc: 'Débloquez Mission Coach pour régénérer et adapter votre plan chaque semaine.',
+  coachCompareBundle: 'Comparer Super Bundle',
+  coachUnlockBundle: 'Débloquer Super Bundle',
+  coachViewLockedPlan: 'Voir la semaine dernière et débloquer',
+  coachLockedWeekSummary: '{{done}}/{{total}} séances enregistrées la semaine dernière',
+  coachLockedBenefit1: 'Régénération illimitée et bascule du lundi',
+  coachLockedBenefit2: 'Plans sensibles à la fatigue quand le strain monte',
+  coachLockedBenefit3: 'Briefings d’intention du commandant chaque semaine',
+  coachLockedBenefit4: 'Les six piliers premium — Train, Fuel, Move, Mind, Track, Learn',
+  coachFreeCoreNote:
+    'Le journal d’entraînement, la bibliothèque et Aujourd’hui restent gratuits — le premium finance la mission.',
+  coachSessionDone: 'Terminé',
+  coachSessionMissed: 'Manqué',
+  coachSessionSwapped: 'Adapté',
+  coachEstMinutes: '{{minutes}} min',
+  coachVoiceDefault:
+    'Cette semaine équilibre surcharge progressive et récupération. Abordez chaque séance avec intention et enregistrez vos séries.',
+  coachVoiceDeload:
+    'La charge est élevée — traitez ceci comme une semaine de consolidation. Mêmes mouvements, charges un peu plus légères.',
+  coachVoiceRecovery:
+    'La préparation est plus basse — priorisez mobilité et qualité des reps. La force revient avec la récupération.',
+  coachVoiceHighVolume:
+    'Une semaine d’entraînement complète devant vous. Bien vous alimenter, dormir régulièrement, et faire confiance à la progression.',
+};
+
+const LOCALES: Partial<Record<string, CoachStrings>> = { en, es, fr };
 
 export function coachStringsFor(lang: string): CoachStrings {
   const code = lang.split('-')[0];

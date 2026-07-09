@@ -50,7 +50,8 @@ export function MoveLockedPreview() {
         </div>
         <p className="text-xs text-muted-foreground">
           {t('moveLockedHint', {
-            defaultValue: 'Free tier includes 10 flows. Premium adds 8 longer athlete & desk-worker protocols.',
+            defaultValue:
+              'Free tier includes 10 flows. Premium adds 11 longer protocols — post-lift, morning open, low-back friendly, and athlete recovery.',
           })}
         </p>
         <div className="flex flex-wrap gap-2">

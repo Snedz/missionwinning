@@ -94,7 +94,7 @@ export function MovePage() {
       title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
       subtitle={t('moveSubtitle', {
         defaultValue:
-          '10 free guided flows with timers — bodyweight, global-friendly. Premium adds 8 longer recovery flows (Super Bundle).',
+          '10 free guided flows with timers — bodyweight, global-friendly. Premium adds 11 longer recovery flows (Super Bundle).',
       })}
     >
       {renderFlowGrid(freeFlows, t('moveFreeFlows', { defaultValue: 'Free mobility flows' }))}

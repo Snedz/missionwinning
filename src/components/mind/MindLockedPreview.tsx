@@ -46,7 +46,8 @@ export function MindLockedPreview() {
         </div>
         <p className="text-xs text-muted-foreground">
           {t('mindLockedHint', {
-            defaultValue: 'Free tier includes 10 guided sessions. Premium adds 12 deeper Calm-style sessions.',
+            defaultValue:
+              'Free tier includes 10 guided sessions. Premium adds 17 deeper timed sessions — focus, recovery, race calm, and travel resets.',
           })}
         </p>
         <div className="flex flex-wrap gap-2">

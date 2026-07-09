@@ -197,9 +197,9 @@ export function currentWeekStart(): string {
   return d.toISOString().split('T')[0];
 }
 
-export function todayDayOffset(weekStart: string): number {
+export function todayDayOffset(weekStart: string, todayIso?: string): number {
   const start = new Date(`${weekStart}T12:00:00`);
-  const now = new Date();
+  const now = todayIso ? new Date(`${todayIso}T12:00:00`) : new Date();
   now.setHours(12, 0, 0, 0);
   const diff = Math.floor((now.getTime() - start.getTime()) / 86400000);
   return Math.max(0, Math.min(6, diff));

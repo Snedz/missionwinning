@@ -23,9 +23,6 @@ import { TodayQuickLinks } from "@/components/journey/TodayQuickLinks";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { TodayDashboardHeader } from "@/components/today/TodayDashboardHeader";
 import { TodayPageHeader } from "@/components/today/TodayPageHeader";
-import { TodayHealthSection } from "@/components/today/TodayHealthSection";
-import { TodayWeekSection } from "@/components/today/TodayWeekSection";
-import { TodayJournalStrip } from "@/components/today/TodayJournalStrip";
 import { TodayDashboardCustomize } from "@/components/today/TodayDashboardCustomize";
 
 const CoachTodayCard = dynamic(
@@ -40,6 +37,21 @@ const TodayCoachWeekStrip = dynamic(
 
 const TodayProgressSection = dynamic(
   () => import('@/components/today/TodayProgressSection').then((m) => m.TodayProgressSection),
+  { ssr: false }
+);
+
+const TodayHealthSection = dynamic(
+  () => import('@/components/today/TodayHealthSection').then((m) => m.TodayHealthSection),
+  { ssr: false }
+);
+
+const TodayWeekSection = dynamic(
+  () => import('@/components/today/TodayWeekSection').then((m) => m.TodayWeekSection),
+  { ssr: false }
+);
+
+const TodayJournalStrip = dynamic(
+  () => import('@/components/today/TodayJournalStrip').then((m) => m.TodayJournalStrip),
   { ssr: false }
 );
 
@@ -201,50 +213,69 @@ export function HomePage() {
     router.push("/active");
   };
 
-  // === Today Hub computations using shared util (clean, reusable) ===
-  const readiness = computeReadiness(workoutHistory);
-  const recommendedFocus = getRecommendedFocus(readiness);
+  // === Today Hub computations (memoized — avoid recompute on every render) ===
+  const readiness = useMemo(() => computeReadiness(workoutHistory), [workoutHistory]);
+  const recommendedFocus = useMemo(() => getRecommendedFocus(readiness), [readiness]);
 
-  // High protein days (from nutrition logs)
-  let highProteinDays = 0;
-  try {
-    const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]');
-    const byDate: Record<string, number> = {};
-    logs.forEach((l: { date?: string; protein?: number }) => {
-      const d = l.date || new Date().toISOString().split('T')[0];
-      byDate[d] = (byDate[d] || 0) + (l.protein || 0);
-    });
-    highProteinDays = Object.values(byDate).filter((p: number) => p >= 150).length;
-  } catch { /* noop */ }
+  // High protein days (from nutrition logs) — only needed for score / below-fold
+  const highProteinDays = useMemo(() => {
+    if (typeof window === 'undefined') return 0;
+    try {
+      const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]');
+      const byDate: Record<string, number> = {};
+      logs.forEach((l: { date?: string; protein?: number }) => {
+        const d = l.date || new Date().toISOString().split('T')[0];
+        byDate[d] = (byDate[d] || 0) + (l.protein || 0);
+      });
+      return Object.values(byDate).filter((p: number) => p >= 150).length;
+    } catch {
+      return 0;
+    }
+  }, [workoutHistory.length, pillarStats.proteinDays]);
 
   // Win/Mission Score via util
-  const scoreBreakdown = computeWinScore({
-    streak,
-    highProteinDays: Math.max(highProteinDays, pillarStats.proteinDays),
-    totalSessions,
-    totalVolume,
-    savedCount: savedWorkouts.length,
-    moveFlows: pillarStats.moveFlows,
-    mindSessions: pillarStats.mindSessions,
-    trackActivities: pillarStats.trackActivities,
-    learnLessons: pillarStats.learnLessons,
-    trainDaysThisWeek: pillarStats.trainDays,
-    fuelCoachActive: pillarStats.fuelCoachActive,
-  });
+  const scoreBreakdown = useMemo(
+    () =>
+      computeWinScore({
+        streak,
+        highProteinDays: Math.max(highProteinDays, pillarStats.proteinDays),
+        totalSessions,
+        totalVolume,
+        savedCount: savedWorkouts.length,
+        moveFlows: pillarStats.moveFlows,
+        mindSessions: pillarStats.mindSessions,
+        trackActivities: pillarStats.trackActivities,
+        learnLessons: pillarStats.learnLessons,
+        trainDaysThisWeek: pillarStats.trainDays,
+        fuelCoachActive: pillarStats.fuelCoachActive,
+      }),
+    [
+      streak,
+      highProteinDays,
+      pillarStats,
+      totalSessions,
+      totalVolume,
+      savedWorkouts.length,
+    ]
+  );
   const score = scoreBreakdown.total;
 
-  const bodyScores = computeBodyScores(workoutHistory, {
-    assessmentRisk: lastAssessment?.risk,
-    pillarWins: recentPillarWins.length,
-  });
-  const baseCoachInsight = getCoachInsight(bodyScores, recommendedFocus, {
-    assessmentRisk: lastAssessment?.risk,
-  });
-  const coachInsight = applyCrossPillarCoachRules(
-    bodyScores,
-    recommendedFocus,
-    baseCoachInsight,
-    {
+  const bodyScores = useMemo(
+    () =>
+      computeBodyScores(workoutHistory, {
+        assessmentRisk: lastAssessment?.risk,
+        pillarWins: recentPillarWins.length,
+      }),
+    [workoutHistory, lastAssessment?.risk, recentPillarWins.length]
+  );
+
+  const coachInsight = useMemo(() => {
+    // Defer cross-pillar rules until below-fold — first paint only needs rings/score
+    const base = getCoachInsight(bodyScores, recommendedFocus, {
+      assessmentRisk: lastAssessment?.risk,
+    });
+    if (!belowFoldReady) return base;
+    return applyCrossPillarCoachRules(bodyScores, recommendedFocus, base, {
       moveFlows: pillarStats.moveFlows,
       mindSessions: pillarStats.mindSessions,
       proteinDays: pillarStats.proteinDays,
@@ -252,9 +283,14 @@ export function HomePage() {
       trackActivities: pillarStats.trackActivities,
       learnLessons: pillarStats.learnLessons,
       fuelCoachCarbBump: pillarStats.fuelCoachCarbBump,
-    },
-    { assessmentRisk: lastAssessment?.risk }
-  );
+    }, { assessmentRisk: lastAssessment?.risk });
+  }, [
+    belowFoldReady,
+    bodyScores,
+    recommendedFocus,
+    lastAssessment?.risk,
+    pillarStats,
+  ]);
 
   const todayTrends = useMemo(
     () => buildTodayTrends(workoutHistory, i18n.language),

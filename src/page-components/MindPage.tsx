@@ -48,7 +48,7 @@ export function MindPage() {
       title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
       subtitle={t('mindSubtitle', {
         defaultValue:
-          '10 free guided sessions, breathing timer, and daily check-in. Premium adds 12 deeper sessions (Super Bundle).',
+          '10 free guided sessions, breathing timer, and daily check-in. Premium adds 17 deeper timed sessions (Super Bundle).',
       })}
     >
       <div className="grid gap-6 lg:grid-cols-2">
