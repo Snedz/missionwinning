@@ -2,7 +2,7 @@
 
 **Code is ready.** This is the critical path from private beta to public launch. Full detail: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md).
 
-> **2026-07-09 agent note:** `npm run launch-verify` was run locally (migrations listed, env shape checked). Remaining boxes below still require **your** Vercel / Supabase / Stripe / beta cohort actions — agents cannot complete §1–§5 alone.
+> **2026-07-09 agent note:** Launch scripts hardened (full 12-migration list, `check-env` CRON/UPSTASH/lifetime Stripe warnings, gate-smoke unlocked `/log` + build label + PWA icons, `LAUNCH_STRICT` → `predeploy`). Remaining §1–§5 boxes still require **your** Vercel / Supabase / Stripe / beta cohort actions — agents must not flip `PRIVATE_MODE`.
 
 ---
 
@@ -24,13 +24,17 @@ See [VERCEL_DEPLOY_CHECKLIST.md](../VERCEL_DEPLOY_CHECKLIST.md) for preview-vs-p
 - [ ] Vercel env: `PRIVATE_MODE=true`, `DEMO_PREMIUM=false`, Supabase keys, `BETA_ADMIN_EMAILS`, `YOUTH_CONSENT_SECRET`, `NUDGE_SECRET`
 - [ ] Run all `supabase/migrations/` in **filename order** (idempotent — safe to re-run):
   1. `20250629_complete_base_schema.sql`
-  2. `20250629_fitness_test_school.sql`
-  3. `20250629_pft_leaderboard_teacher_pin.sql`
-  4. `20250629_youth_consent_records.sql`
-  5. `20260702_security_hardening.sql`
-  6. `20260703_reminders_optin.sql`
-  7. `20260704_coach_plan.sql`
-  8. `20260705_leads_api_only.sql`
+  2. `20250629_journey_events.sql`
+  3. `20250629_journey_state.sql`
+  4. `20250629_leaderboard.sql`
+  5. `20250629_leaderboard_squad_patch.sql`
+  6. `20250629_fitness_test_school.sql`
+  7. `20250629_pft_leaderboard_teacher_pin.sql`
+  8. `20250629_youth_consent_records.sql`
+  9. `20260702_security_hardening.sql`
+  10. `20260703_reminders_optin.sql`
+  11. `20260704_coach_plan.sql`
+  12. `20260705_leads_api_only.sql`
 - [ ] Redeploy; `curl -sI https://www.missionwinning.com/` → redirects to `/private`
 - [ ] Profile build label matches latest `master` commit
 

@@ -7,7 +7,7 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { getExerciseById } from '@/data/exercises';
-import { getFormGuide, hasFormGuide } from '@/lib/formGuides';
+import { getFormGuideOrCues } from '@/lib/formGuides';
 import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
 import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
@@ -23,7 +23,7 @@ export function ExercisePublicPage({ exercise, jsonLd }: Props) {
     track('exercise_page_viewed', { exerciseId: exercise.id });
   }, [exercise.id]);
 
-  const guide = hasFormGuide(exercise.id) ? getFormGuide(exercise.id) : null;
+  const guide = getFormGuideOrCues(exercise.id, { exercise });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -53,6 +53,29 @@ export function ExercisePublicPage({ exercise, jsonLd }: Props) {
         {guide && (
           <section>
             <h2 className="font-semibold mb-2">Form guide</h2>
+            {guide.mediaUrl && (
+              <div className="mb-4 overflow-hidden rounded-xl border border-border/40 bg-muted/30">
+                {guide.mediaType === 'video' ? (
+                  <video
+                    className="w-full max-h-56 object-contain"
+                    src={guide.mediaUrl}
+                    controls
+                    preload="none"
+                    playsInline
+                    aria-label={`${exercise.name} form video`}
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={guide.mediaUrl}
+                    alt={`${exercise.name} form diagram`}
+                    loading="lazy"
+                    decoding="async"
+                    className="mx-auto w-full max-h-56 object-contain p-3"
+                  />
+                )}
+              </div>
+            )}
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               {guide.setup.map((line, i) => (
                 <li key={`setup-${i}`}>{line}</li>

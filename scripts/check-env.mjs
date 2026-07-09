@@ -20,12 +20,21 @@ const launchRequired = [
   ['NUDGE_SECRET', 'Journey email unsubscribe HMAC'],
 ];
 
+const launchRecommended = [
+  ['CRON_SECRET', 'Vercel cron auth for /api/cron/* (reminders)'],
+  ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME', 'Founders lifetime payment link'],
+];
+
 const optional = [
   ['PRIVATE_MODE', 'true/false — gate on in production by default'],
   ['PRIVATE_ALLOW_AUTH_BYPASS', 'Leave unset/false — magic link should not bypass gate'],
   ['DEMO_PREMIUM', 'Must be false (or unset) in production'],
   ['BETA_ADMIN_EMAILS', 'Comma-separated founder emails for beta panel'],
   ['RESEND_API_KEY', 'Parent consent + nudge emails'],
+  ['CRON_SECRET', 'Vercel cron auth for reminder nudges'],
+  ['UPSTASH_REDIS_REST_URL', 'Distributed rate limits (recommended prod)'],
+  ['UPSTASH_REDIS_REST_TOKEN', 'Paired with UPSTASH_REDIS_REST_URL'],
+  ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME', 'Founders lifetime checkout link'],
   ['NEXT_PUBLIC_SENTRY_DSN', 'Error monitoring (optional)'],
   ['NEXT_PUBLIC_POSTHOG_KEY', 'Product analytics (optional)'],
   ['NEXT_PUBLIC_COUNCIL_STATUS', 'aspirational | pending | member'],
@@ -70,6 +79,16 @@ if (launch) {
     } else if ((key === 'YOUTH_CONSENT_SECRET' || key === 'NUDGE_SECRET') && isWeakSecret(val)) {
       console.log(`  ✗ ${key} — use openssl rand -base64 32 (dedicated secret)`);
       ok = false;
+    } else {
+      console.log(`  ✓ ${key}`);
+    }
+  }
+
+  for (const [key, hint] of launchRecommended) {
+    const val = process.env[key];
+    if (!val) {
+      console.log(`  ⚠ ${key} — recommended for go-live (${hint})`);
+      warn++;
     } else {
       console.log(`  ✓ ${key}`);
     }

@@ -314,14 +314,50 @@ async function main() {
   const accessSecret = process.env.SMOKE_ACCESS_SECRET;
   if (accessSecret) {
     try {
+      const cookie = await unlockCookie(base, accessSecret);
       const unlocked = await headOrGet('/welcome', {
-        headers: { Cookie: await unlockCookie(base, accessSecret) },
+        headers: { Cookie: cookie },
       });
       const ok = unlocked.status === 200;
       checks.push({
         name: 'GET /welcome (unlocked via gate cookie)',
         ok,
         detail: ok ? '200 OK' : `status ${unlocked.status}`,
+      });
+
+      const logUnlocked = await headOrGet('/log', {
+        headers: { Cookie: cookie },
+        redirect: 'manual',
+      });
+      const logLoc = logUnlocked.headers.get('location') || '';
+      const logOk =
+        logUnlocked.status === 200 ||
+        (logUnlocked.status >= 300 && logUnlocked.status < 400 && !logLoc.includes('/private'));
+      checks.push({
+        name: 'GET /log (unlocked via gate cookie)',
+        ok: logOk,
+        detail: logOk
+          ? `${logUnlocked.status}${logLoc ? ` → ${logLoc}` : ''}`
+          : `status ${logUnlocked.status}${logLoc ? ` → ${logLoc}` : ''}`,
+      });
+
+      const profile = await headOrGet('/profile', {
+        headers: { Cookie: cookie },
+      });
+      let buildDetail = `status ${profile.status}`;
+      let buildOk = profile.status === 200;
+      if (profile.status === 200) {
+        const html = await profile.text();
+        const labelMatch = html.match(/20\d{2}\.\d{2}-unified\.\d+/);
+        buildOk = !!labelMatch;
+        buildDetail = labelMatch
+          ? `build label ${labelMatch[0]}`
+          : '200 but APP_BUILD_LABEL pattern not found in HTML';
+      }
+      checks.push({
+        name: 'GET /profile shows build label',
+        ok: buildOk,
+        detail: buildDetail,
       });
     } catch (e) {
       checks.push({ name: 'GET /welcome unlocked', ok: false, detail: String(e) });
@@ -332,6 +368,19 @@ async function main() {
       ok: true,
       detail: 'skipped — set SMOKE_ACCESS_SECRET to probe gated welcome route',
     });
+  }
+
+  try {
+    const icon192 = await headOrGet('/pwa-192x192.png');
+    const icon512 = await headOrGet('/pwa-512x512.png');
+    const iconsOk = icon192.status === 200 && icon512.status === 200;
+    checks.push({
+      name: 'PWA icon assets (192 + 512)',
+      ok: iconsOk,
+      detail: `192=${icon192.status}, 512=${icon512.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'PWA icon assets', ok: false, detail: String(e) });
   }
 
   let failed = 0;

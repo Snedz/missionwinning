@@ -4,6 +4,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-09 — Next wave: launch scripts, de i18n, /log slim readiness, form media
+
+**Docs:** [VISION_STATUS.md](VISION_STATUS.md), [PLAN.md](PLAN.md)  
+**Build:** `2026.07-unified.48`
+
+### Shipped
+
+- Doc sync: Mind/Move/Learn/I5 done; I4 = fr done, **de** body shipped (Today/Welcome/Coach/Fuel/Active)
+- Launch scripts: `check-env` CRON/UPSTASH/lifetime Stripe; gate-smoke unlocked `/log` + build label + PWA icons; full 12-migration list; `LAUNCH_STRICT` → `predeploy`
+- Slim readiness: `readinessIndex` + `exerciseMuscleMap`; persist `muscleGroups` on finish; HomePage above-fold avoids sync catalog
+- Form media: `mediaUrl`/`mediaType` + `getFormGuideOrCues`; 15 SVGs under `public/form-guides/`
+
+**Founder parallel:** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) — agents do not flip `PRIVATE_MODE`.
+
+---
+
 ## 2026-07-09 — Launch ops docs + Learn/I5 + quality
 
 **Build:** `2026.07-unified.47`

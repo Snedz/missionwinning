@@ -19,7 +19,13 @@ function chestWorkout(daysAgo: number): CompletedWorkoutLog {
     completedAt: d.toISOString(),
     durationSeconds: 1800,
     totalVolume: 500,
-    exercises: [{ exerciseId: 'bench-press', sets: [{ reps: 8, weight: 135 }] }],
+    exercises: [
+      {
+        exerciseId: 'bench-press',
+        sets: [{ reps: 8, weight: 135 }],
+        muscleGroups: ['Chest', 'Arms'],
+      },
+    ],
   };
 }
 

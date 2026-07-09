@@ -18,7 +18,7 @@ import { getExerciseById } from '@/data/exercises';
 import type { Exercise } from '@/types';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
 import { countExerciseHistory } from '@/lib/libraryFilters';
-import { getFormGuide, hasFormGuide } from '@/lib/formGuides';
+import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { useWorkoutStore } from '@/store/workoutStore';
 
@@ -42,7 +42,7 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange }: Props) {
     [exercise, workoutHistory]
   );
 
-  const guide = exercise ? getFormGuide(exercise.id) : null;
+  const guide = exercise ? getFormGuideOrCues(exercise.id, { exercise }) : null;
 
   const addToSession = () => {
     if (!exercise) return;
@@ -136,7 +136,7 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange }: Props) {
                   </div>
                 )}
 
-                {hasFormGuide(exercise.id) && (
+                {guide && (
                   <Button variant="outline" size="sm" onClick={() => setFormGuideOpen(true)}>
                     {t('libraryViewFormGuide', { defaultValue: 'View form guide' })}
                   </Button>

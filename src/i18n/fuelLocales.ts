@@ -404,6 +404,81 @@ const ar: FuelStrings = {
   fuelExploreBundle: 'استكشف Super Bundle',
 };
 
+const de: FuelStrings = {
+  ...en,
+  fuelPremiumActive: ' Premium: vollständige Bibliothek + vertiefte Pläne (Super Bundle).',
+  fuelBundleUpsell: ' Super Bundle schaltet vollständige Rezepte und erweiterte Pläne frei.',
+  fuelWinScore: 'Mission Score',
+  fuelTargetsTitle: 'Heutige Ziele',
+  fuelCalories: 'Kalorien',
+  fuelProtein: 'Protein',
+  fuelMacrosSummary: 'Kohlenhydrate: {{carbs}}g • Fette: {{fat}}g • Wasser: {{water}} / 8 Gläser',
+  fuelPillarWinsToday: 'Siege heute (Move/Mind/Assess): {{count}} — z. B. {{example}}',
+  fuelHydrationTitle: 'Hydration',
+  fuelGlasses: 'Gläser',
+  fuelHydrationHint: 'Ziel 8+ (an Klima/Aktivität anpassen)',
+  fuelQuickLogTitle: 'Schnellprotokoll',
+  fuelQuickLogFoot:
+    'Vollständigere Basis + Rezepte im Ernährungsprogramm. Ziele über Rechner anpassen.',
+  fuelCustomEntryTitle: 'Eigener Eintrag',
+  fuelFoodLabel: 'Lebensmittel',
+  fuelProteinGLabel: 'Protein g',
+  fuelCalsLabel: 'Kal',
+  fuelLogBtn: 'Speichern',
+  fuelTodayLogTitle: 'Tagesprotokoll',
+  fuelClearDay: 'Tag löschen',
+  fuelLoadCloud: 'Aus der Cloud laden',
+  fuelCloudLoading: 'Laden…',
+  fuelCloudLoaded: 'Cloud geladen (Anmeldung erforderlich)',
+  fuelNoEntries: 'Keine Einträge. Nutze Schnell- oder Eigenprotokoll oben.',
+  fuelTotals: 'Summen',
+  fuelTotalsLine: '{{protein}}g Protein • {{cals}} kcal',
+  fuelLocalNote:
+    'Lokale Daten (synchronisiert bei Anmeldung). Vollständige Essenspläne im kostenpflichtigen Ernährungskurs.',
+  fuelFreeRecipesTitle: 'Kostenlose Rezepte ({{count}} — Kernmission)',
+  fuelPremiumRecipesTitle: 'Premium-Rezepte (Super Bundle)',
+  fuelPremiumLockedTitle: '+{{count}} Premium-Rezepte',
+  fuelPremiumLockedBody:
+    'Schalte die vollständige Fuel-Bibliothek, Mahlzeiten-Timing und Makro-Coaching über Super Bundle frei.',
+  fuelExploreBundle: 'Super Bundle entdecken',
+  fuelLogFab: 'Mahlzeit protokollieren',
+  fuelLogSheetTitle: 'Zu Fuel hinzufügen',
+  fuelTabQuick: 'Schnell',
+  fuelTabCustom: 'Eigen',
+  fuelTabPhoto: 'Foto',
+  fuelMealBreakfast: 'Frühstück',
+  fuelMealLunch: 'Mittagessen',
+  fuelMealDinner: 'Abendessen',
+  fuelMealSnack: 'Snack',
+  fuelMealOther: 'Sonstiges',
+  fuelLogStreak: '{{count}}-Tage-Protokollserie',
+  fuelMealPlanTitle: 'Proteinreicher Essensplan (7 Tage)',
+  fuelMealPlanLocked:
+    '+{{count}} weitere Tage — Timing-Strategien und makrosynchrone Mahlzeiten in Super Bundle.',
+  fuelScienceCh5:
+    'Protein: essenziell für Wachstum, Reparatur und Hormone. Aktive Nutzer: oft 1,6–2,2 g/kg.',
+  fuelScienceCh12:
+    'Sportlernährung: komplexe Kohlenhydrate fürs Training; gesunde Fette für Hormone. Hydriere dich.',
+  fuelQuickLog: 'Schnellprotokoll',
+  fuelRepeatYesterday: 'Gestern wiederholen ({{count}} Elemente)',
+  fuelSearchTitle: 'Lebensmittel suchen',
+  fuelEmptyTitle: 'Heute keine Mahlzeiten protokolliert',
+  fuelLogFirstMeal: 'Erste Mahlzeit protokollieren',
+  fuelSubtitle:
+    'Kostenloser Kern: Tagesprotokoll, Wasser, Ziele und Rezepte überall zugänglich.',
+  fuelCoachTitle: 'Fuel Coach — adaptiver Essensplan',
+  fuelCoachGenerateDesc:
+    'Erzeuge einen 7-Tage-Plan aus deinen Makros und der Trainingsbelastung der Woche.',
+  fuelCoachGenerate: 'Essensplan generieren',
+  fuelCoachWeekTitle: 'Dein adaptiver Essensplan',
+  fuelCoachRegenerate: 'Neu generieren',
+  fuelCoachDayTotals: 'Tagessummen',
+  fuelCoachLockedDesc:
+    '7-Tage-Plan synchron zu Makros und Belastung — kein statisches Sample.',
+  fuelCoachTargets: 'Deine Ziele',
+  fuelCoachPreviewNote: 'Rezepte aus deiner Bibliothek, angepasst an schwere vs. Ruhetage',
+};
+
 const LOCALES: Partial<Record<string, FuelStrings>> = {
   en,
   es,
@@ -412,8 +487,8 @@ const LOCALES: Partial<Record<string, FuelStrings>> = {
   id,
   th,
   ar,
+  de,
   pt: { ...en, fuelTargetsTitle: 'Metas de hoje' },
-  de: { ...en, fuelTargetsTitle: 'Heutige Ziele' },
   it: { ...en, fuelTargetsTitle: 'Obiettivi di oggi' },
   ko: { ...en, fuelTargetsTitle: '오늘의 목표' },
 };

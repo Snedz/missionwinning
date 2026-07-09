@@ -1,7 +1,37 @@
 import type { FormGuide } from '@/types/formGuide';
+import type { Exercise } from '@/types';
+import { getExerciseById } from '@/data/exercises';
 import { EXTENDED_GUIDES } from '@/lib/formGuidesExtended';
 
-/** Structured text form guides — no video budget required. */
+/** Hero movements with diagram placeholders under /public/form-guides/. */
+const FORM_MEDIA_IDS = new Set([
+  'push-ups',
+  'air-squat',
+  'squats',
+  'deadlift',
+  'pull-ups',
+  'plank',
+  'glute-bridge',
+  'lunges',
+  'overhead-press',
+  'barbell-row',
+  'burpees',
+  'inverted-row',
+  'bench-press',
+  'romanian-deadlift',
+  'hip-thrust',
+]);
+
+function attachFormMedia(exerciseId: string, guide: FormGuide): FormGuide {
+  if (!FORM_MEDIA_IDS.has(exerciseId) || guide.mediaUrl) return guide;
+  return {
+    ...guide,
+    mediaUrl: `/form-guides/${exerciseId}.svg`,
+    mediaType: 'image',
+  };
+}
+
+/** Structured text form guides — optional SVG/video media for hero movements. */
 const GUIDES: Record<string, FormGuide> = {
   'push-ups': {
     readyPosition: 'Plank position',
@@ -129,11 +159,42 @@ const MILITARY_GUIDES: Record<string, FormGuide> = {
 
 export function getFormGuide(exerciseId: string, opts?: { military?: boolean }): FormGuide | null {
   if (opts?.military && MILITARY_GUIDES[exerciseId]) {
-    return MILITARY_GUIDES[exerciseId];
+    return attachFormMedia(exerciseId, MILITARY_GUIDES[exerciseId]);
   }
-  return ALL_GUIDES[exerciseId] ?? null;
+  const guide = ALL_GUIDES[exerciseId];
+  return guide ? attachFormMedia(exerciseId, guide) : null;
 }
 
 export function hasFormGuide(exerciseId: string): boolean {
   return exerciseId in ALL_GUIDES || exerciseId in MILITARY_GUIDES;
+}
+
+/** Split a free-form cues string into short execute lines. */
+function cuesToExecute(cues: string): string[] {
+  return cues
+    .split(/[.;]+/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 6);
+}
+
+/**
+ * Structured guide when present; otherwise a minimal FormGuide from Exercise.cues.
+ */
+export function getFormGuideOrCues(
+  exerciseId: string,
+  opts?: { military?: boolean; exercise?: Exercise | null }
+): FormGuide | null {
+  const structured = getFormGuide(exerciseId, opts);
+  if (structured) return structured;
+
+  const exercise = opts?.exercise ?? getExerciseById(exerciseId);
+  const cues = exercise?.cues?.trim();
+  if (!cues) return null;
+
+  return {
+    setup: ['Set up with stable footing and braced core'],
+    execute: cuesToExecute(cues),
+    breathing: 'Breathe steadily — brace before the hard part',
+  };
 }

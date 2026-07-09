@@ -5,7 +5,7 @@
  */
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { EXERCISES } from "@/data/exercises";
+import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { calculateVolume } from "@/lib/utils";
 import type {
   ActiveWorkout,
@@ -171,18 +171,24 @@ export const useWorkoutStore = create<WorkoutState>()(
         if (!activeWorkout) return null;
 
         const exercises = activeWorkout.exercises
-          .map((ex) => ({
-            exerciseId: ex.exerciseId,
-            sets: ex.sets
-              .filter((s) => s.completed)
-              .map((s) => ({
-                reps: s.reps,
-                weight: s.weight,
-                kind: s.kind ?? 'normal',
-                rpe: s.rpe,
-              })),
-            ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
-          }))
+          .map((ex) => {
+            const catalog = getExerciseById(ex.exerciseId);
+            return {
+              exerciseId: ex.exerciseId,
+              sets: ex.sets
+                .filter((s) => s.completed)
+                .map((s) => ({
+                  reps: s.reps,
+                  weight: s.weight,
+                  kind: s.kind ?? 'normal',
+                  rpe: s.rpe,
+                })),
+              ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
+              ...(catalog?.muscleGroups?.length
+                ? { muscleGroups: [...catalog.muscleGroups] }
+                : {}),
+            };
+          })
           .filter((ex) => ex.sets.length > 0);
 
         if (exercises.length === 0) {
