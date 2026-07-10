@@ -235,6 +235,7 @@ export function ProfilePage() {
   return (
     <PillarPageShell
       icon={User}
+      eyebrow={t('profileEyebrow', { defaultValue: 'You' })}
       title={t('profileSettings', { defaultValue: 'Profile & Settings' })}
       subtitle={
         isCommissioned && state.commissionedAt

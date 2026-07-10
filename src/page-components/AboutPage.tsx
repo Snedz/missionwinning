@@ -18,6 +18,7 @@ export function AboutPage() {
   return (
     <InfoPageShell
       icon={Info}
+      eyebrow={t('aboutEyebrow', { defaultValue: 'About' })}
       title={t('infoAboutTitle', { defaultValue: 'About Mission Winning' })}
       subtitle={t('infoAboutSubtitle', {
         defaultValue:

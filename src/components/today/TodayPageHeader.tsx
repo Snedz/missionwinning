@@ -34,17 +34,19 @@ export function TodayPageHeader({
   const { t } = useTranslation();
 
   return (
-    <header className="space-y-1">
+    <header className="space-y-3">
       <div className="flex items-start justify-between gap-3">
-        <div>
-          <h1 className="text-[32px] font-semibold tracking-tight leading-tight">
+        <div className="min-w-0 space-y-1">
+          <p className="eyebrow-live">{today}</p>
+          <h1 className="display-section text-[1.85rem] md:text-[2.35rem]">
             {t('today', { defaultValue: 'Today' })}
           </h1>
-          <p className="text-base text-muted-foreground mt-1">{today}</p>
           {showFocusLine && (
-            <p className="text-sm text-muted-foreground mt-0.5">
+            <p className="text-sm text-muted-foreground">
               {formatRecommendedFocusLine(recommendedFocus, t)}
-              {userEquip === 'bodyweight' ? ` · ${t('todayBodyweightTag', { defaultValue: 'bodyweight' })}` : ''}
+              {userEquip === 'bodyweight'
+                ? ` · ${t('todayBodyweightTag', { defaultValue: 'bodyweight' })}`
+                : ''}
             </p>
           )}
         </div>
@@ -62,14 +64,15 @@ export function TodayPageHeader({
         )}
       </div>
       {streak > 0 && (
-        <p className="text-sm text-muted-foreground pt-1">
-          {t('todayDayStreak', { count: streak, defaultValue: `${streak}-day streak` })}{' · '}
+        <p className="text-sm text-muted-foreground">
+          {t('todayDayStreak', { count: streak, defaultValue: `${streak}-day streak` })}
+          {' · '}
           <a href="/leaderboard" className="text-emerald-400 hover:underline">
             {t('leaderboardRankings', { defaultValue: 'Rankings' })}
           </a>
         </p>
       )}
-      <p className="text-sm text-muted-foreground pt-0.5">
+      <p className="text-sm text-muted-foreground">
         {!userEmail ? (
           <>
             <a href="/profile" className="text-emerald-400 hover:underline">
@@ -83,9 +86,7 @@ export function TodayPageHeader({
           t('cloudSyncOn', { defaultValue: 'Cloud sync on.' })
         )}
       </p>
-      <div className="pt-3">
-        <JourneyStrip action={action} />
-      </div>
+      <JourneyStrip action={action} />
     </header>
   );
 }

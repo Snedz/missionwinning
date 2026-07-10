@@ -71,6 +71,7 @@ export function TrackPage() {
   return (
     <PillarPageShell
       icon={MapPin}
+      eyebrow={t('trackEyebrow', { defaultValue: 'Track' })}
       title={t('trackTitle', { defaultValue: 'Track Activity' })}
       subtitle={t('trackSubtitle', {
         defaultValue:

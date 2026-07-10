@@ -31,6 +31,7 @@ export function LearnCoursePage() {
   return (
     <PillarPageShell
       icon={BookOpen}
+      eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('learnCourseTitle', { defaultValue: 'Specialist courses' })}
       subtitle={t('learnCourseSubtitle', {
         defaultValue: 'Premium guidebook chapters — corrective, coaching business, periodization, and more.',

@@ -24,8 +24,10 @@ export function MobileNav() {
               key={href}
               href={href}
               className={cn(
-                'flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium min-h-[44px] relative transition-colors',
-                isActive ? 'text-emerald-400' : 'text-muted-foreground'
+                'flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium min-h-[48px] relative transition-colors',
+                isActive
+                  ? 'text-emerald-400 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-emerald-400'
+                  : 'text-muted-foreground hover:text-foreground/80'
               )}
             >
               <Icon className={cn('h-6 w-6', showPulse && 'text-emerald-400')} />

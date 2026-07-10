@@ -61,10 +61,12 @@ export function JourneyHero({ action, onPrimaryClick, activeWorkout }: JourneyHe
   return (
     <div className="content-card p-6 space-y-4">
       <div>
-        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+        <p className="eyebrow-live mb-2">
           {t('yourNextStep', { defaultValue: 'Your next step' })}
         </p>
-        <h3 className="text-xl font-semibold tracking-tight">{label}</h3>
+        <h3 className="display-section text-[1.35rem] md:text-[1.6rem] normal-case tracking-normal">
+          {label}
+        </h3>
         <p className="text-base text-muted-foreground mt-2 leading-relaxed">{action.description}</p>
       </div>
       <button type="button" onClick={onPrimaryClick} className="primary-action">

@@ -7,24 +7,37 @@ type PillarPageHeaderProps = {
   icon: LucideIcon;
   title: string;
   subtitle: string;
+  /** Mono eyebrow above the display title (briefing anatomy). */
+  eyebrow?: string;
   iconClassName?: string;
   className?: string;
 };
 
+/**
+ * Unified page header: optional eyebrow → display title (+ icon) → muted subtitle.
+ * Matches marketing briefing type so in-app pillars don't drop quality after Landing.
+ */
 export function PillarPageHeader({
   icon: Icon,
   title,
   subtitle,
+  eyebrow,
   iconClassName,
   className,
 }: PillarPageHeaderProps) {
   return (
-    <div className={cn('space-y-1', className)}>
-      <h1 className="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-2">
-        <Icon className={cn('h-7 w-7 text-emerald-400 shrink-0', iconClassName)} />
-        {title}
+    <div className={cn('space-y-2', className)}>
+      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+      <h1 className="display-section flex items-center gap-3 text-[1.75rem] md:text-[2.25rem]">
+        <Icon
+          className={cn('h-7 w-7 shrink-0 text-emerald-400 md:h-8 md:w-8', iconClassName)}
+          aria-hidden
+        />
+        <span className="min-w-0">{title}</span>
       </h1>
-      <p className="text-muted-foreground text-sm md:text-base">{subtitle}</p>
+      {subtitle ? (
+        <p className="max-w-2xl text-sm text-muted-foreground md:text-base">{subtitle}</p>
+      ) : null}
     </div>
   );
 }

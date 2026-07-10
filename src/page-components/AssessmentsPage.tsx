@@ -277,7 +277,7 @@ export function AssessmentsPage() {
 
       {result && (
         <Card
-          className={`content-card border-2 ${result.riskLevel === 'high' ? 'border-red-500' : result.riskLevel === 'moderate' ? 'border-yellow-500' : 'border-emerald-500'}`}
+          className={`content-card border-2 ${result.riskLevel === 'high' ? 'border-status-danger' : result.riskLevel === 'moderate' ? 'border-status-warn' : 'border-status-ok'}`}
         >
           <CardHeader>
             <CardTitle>

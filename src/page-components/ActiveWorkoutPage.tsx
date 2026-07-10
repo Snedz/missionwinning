@@ -25,6 +25,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { SetLogRow } from '@/components/workout/SetLogRow';
@@ -36,6 +37,8 @@ import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import { getTrainingStreak } from '@/lib/challenges';
 import { summarizeWorkoutVictory, type WorkoutVictorySummary } from '@/lib/workoutVictory';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
+import { suggestNextSetTarget } from '@/lib/nextSetTargets';
+import { computeBodyScores } from '@/lib/score';
 import type { CompletedWorkoutLog } from '@/types';
 
 function findNextSet(exercises: { sets: { completed: boolean }[] }[]) {
@@ -183,7 +186,7 @@ export function ActiveWorkoutPage() {
           weight: input.weight,
           defaultValue: `${input.reps} × ${input.weight} — personal best for this exercise`,
         }),
-        className: 'border-fitness-gold/40 bg-amber-950/30',
+        className: 'border-brass/40 bg-brass/10 text-brass',
       });
     } else if (next && !takeRest) {
       toast({
@@ -217,10 +220,19 @@ export function ActiveWorkoutPage() {
 
   const handleComplete = () => {
     const historyBefore = workoutHistory;
+    const beforeScores = computeBodyScores(historyBefore);
     const log = completeActiveWorkout();
     if (log) {
-      const streak = getTrainingStreak([log, ...historyBefore]);
-      setVictorySummary(summarizeWorkoutVictory(log, streak));
+      const historyAfter = [log, ...historyBefore];
+      const streak = getTrainingStreak(historyAfter);
+      const afterScores = computeBodyScores(historyAfter);
+      setVictorySummary(
+        summarizeWorkoutVictory(log, streak, {
+          readiness: afterScores.readiness - beforeScores.readiness,
+          strain: afterScores.strain - beforeScores.strain,
+          recovery: afterScores.recovery - beforeScores.recovery,
+        })
+      );
       setVictoryOpen(true);
     } else {
       toast({
@@ -231,6 +243,20 @@ export function ActiveWorkoutPage() {
     }
   };
 
+  const applyTargetsForExercise = (exIdx: number) => {
+    if (!activeWorkout) return;
+    const exLog = activeWorkout.exercises[exIdx];
+    const lastSets = getLastSessionSets(workoutHistory, exLog.exerciseId);
+    if (!lastSets) return;
+    exLog.sets.forEach((set, setIdx) => {
+      if (set.completed) return;
+      const target = suggestNextSetTarget(lastSets, setIdx, units);
+      if (!target) return;
+      updateSetInput(exIdx, setIdx, 'reps', target.reps);
+      updateSetInput(exIdx, setIdx, 'weight', target.weight);
+    });
+  };
+
   const handleCancel = () => {
     cancelActiveWorkout();
     router.push('/');
@@ -238,17 +264,32 @@ export function ActiveWorkoutPage() {
 
   if (!activeWorkout) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-        <Timer className="h-16 w-16 text-muted-foreground" />
-        <h2 className="text-2xl font-bold">{t('activeNoWorkout', { defaultValue: 'No Active Workout' })}</h2>
-        <p className="text-muted-foreground max-w-sm">
-          {t('activeNoWorkoutDesc', {
+      <div className="space-y-6 py-6">
+        <PillarPageHeader
+          icon={Dumbbell}
+          eyebrow={t('activeEyebrow', { defaultValue: 'Train' })}
+          title={t('activeTitle', { defaultValue: 'Active workout' })}
+          subtitle={t('activeEmptySubtitle', {
+            defaultValue: 'Log sets with rest timers, PRs, and form cues — offline ready.',
+          })}
+        />
+        <EmptyState
+          icon={Timer}
+          title={t('activeNoWorkout', { defaultValue: 'No Active Workout' })}
+          description={t('activeNoWorkoutDesc', {
             defaultValue: 'Start a quick workout from Today or launch a saved routine from the builder.',
           })}
-        </p>
-        <Button variant="fitness" size="lg" onClick={() => startEmptyWorkout()}>
-          {t('activeStartWorkout', { defaultValue: 'Start Workout' })}
-        </Button>
+          actionLabel={t('activeStartWorkout', { defaultValue: 'Start Workout' })}
+          onAction={() => startEmptyWorkout()}
+        />
+        <div className="flex flex-wrap gap-3 justify-center text-sm">
+          <Button variant="outline" asChild>
+            <a href="/log">{t('activeGoToday', { defaultValue: 'Today hub' })}</a>
+          </Button>
+          <Button variant="outline" asChild>
+            <a href="/builder">{t('activeGoBuilder', { defaultValue: 'Builder' })}</a>
+          </Button>
+        </div>
       </div>
     );
   }
@@ -267,6 +308,7 @@ export function ActiveWorkoutPage() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <PillarPageHeader
           icon={Dumbbell}
+          eyebrow={t('activeEyebrow', { defaultValue: 'Train · Live' })}
           title={activeWorkout.workoutName}
           subtitle={t('activeSetsCompleted', {
             done: completedSets,
@@ -528,6 +570,11 @@ export function ActiveWorkoutPage() {
                   const input = getSetInput(exIdx, setIdx, set.reps, set.weight);
                   const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
                   const setPerf = getLastPerformanceForSet(workoutHistory, exLog.exerciseId, setIdx);
+                  const lastSets = getLastSessionSets(workoutHistory, exLog.exerciseId);
+                  const target =
+                    !set.completed && lastSets
+                      ? suggestNextSetTarget(lastSets, setIdx, units)
+                      : null;
                   return (
                     <div
                       key={set.id}
@@ -542,11 +589,20 @@ export function ActiveWorkoutPage() {
                         weightLabel={unitLabel}
                         weightStep={step}
                         lastPerformance={setPerf}
+                        target={target}
                         onRepsChange={(v) => updateSetInput(exIdx, setIdx, 'reps', v)}
                         onWeightChange={(v) => updateSetInput(exIdx, setIdx, 'weight', v)}
                         onSetKindChange={(kind) => setSetKind(exIdx, setIdx, kind)}
                         onLog={() => handleLogSet(exIdx, setIdx)}
                         onRate={(rpe) => rateSet(exIdx, setIdx, rpe)}
+                        onApplyTarget={
+                          target
+                            ? () => {
+                                updateSetInput(exIdx, setIdx, 'reps', target.reps);
+                                updateSetInput(exIdx, setIdx, 'weight', target.weight);
+                              }
+                            : undefined
+                        }
                         onCopyLast={
                           setPerf
                             ? () => {
@@ -560,6 +616,17 @@ export function ActiveWorkoutPage() {
                   );
                 })}
                 <div className="flex flex-wrap gap-2 pt-1">
+                  {getLastSessionSets(workoutHistory, exLog.exerciseId) &&
+                    exLog.sets.some((s) => !s.completed) && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="text-emerald-300"
+                        onClick={() => applyTargetsForExercise(exIdx)}
+                      >
+                        {t('activeApplyAllTargets', { defaultValue: 'Apply targets' })}
+                      </Button>
+                    )}
                   <Button variant="outline" size="sm" onClick={() => addSetToExercise(exIdx)}>
                     <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
                   </Button>

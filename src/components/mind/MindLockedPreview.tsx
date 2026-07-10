@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Brain } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MetricRing } from '@/components/ui/MetricRing';
+import { ProgressRing } from '@/components/ui/ProgressRing';
 import { UnlockButton } from '@/components/UnlockButton';
 
 const DEMO_STEPS = ['Set one intention for this session', 'Box breathing 4-4-4-4', 'Visualize smooth reps'];
@@ -31,7 +31,7 @@ export function MindLockedPreview() {
         </p>
         <div className="relative rounded-lg border border-border/50 bg-black/20 p-4">
           <div className="pointer-events-none select-none opacity-60 blur-[1px] flex flex-col sm:flex-row items-center gap-4">
-            <MetricRing label="Progress" value="42%" sublabel="2:30" progress={42} />
+            <ProgressRing label="Progress" value="42%" subtitle="2:30" progress={42} />
             <ul className="text-sm space-y-2 flex-1">
               {DEMO_STEPS.map((s) => (
                 <li key={s} className="text-muted-foreground">

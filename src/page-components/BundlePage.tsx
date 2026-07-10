@@ -102,13 +102,33 @@ export function BundlePage() {
       : t("bundleBilledTotal", { price });
 
   return (
-    <div className="space-y-10 max-w-4xl mx-auto pb-8">
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="border-b border-border/60">
+        <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-5 py-4">
+          <Link href="/" className="flex items-center gap-2.5 min-w-0">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary font-display text-sm font-bold text-primary-foreground">
+              MW
+            </span>
+            <span className="font-display text-lg font-semibold uppercase tracking-wide truncate">
+              Mission Winning
+            </span>
+          </Link>
+          <Link
+            href="/welcome"
+            className="shrink-0 rounded-xl border border-border/60 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {t('bundleNavFree', { defaultValue: 'Free core' })}
+          </Link>
+        </div>
+      </div>
+
+    <div className="space-y-10 max-w-4xl mx-auto px-5 pb-12 pt-8">
       {/* Title block */}
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary">{t("bundleBadge")}</Badge>
           <Badge className="border-emerald-500/40 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-950/40">
-            {t("bundleExpandedContent", { defaultValue: "Now with even more content!" })}
+            {t("bundleExpandedContent", { defaultValue: "Depth when you want it" })}
           </Badge>
           <Badge className="border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
             {t("bundleUrgencyBadge")}
@@ -116,9 +136,16 @@ export function BundlePage() {
         </div>
         <PillarPageHeader
           icon={Sparkles}
+          eyebrow={t('bundleEyebrow', { defaultValue: 'Super Bundle' })}
           title={t("bundleHeadline")}
           subtitle={t("bundleSubhead")}
         />
+        <p className="text-sm text-muted-foreground max-w-xl">
+          {t('bundleHonestNote', {
+            defaultValue:
+              'Free tracker stays free. Bundle unlocks Coach, deeper Fuel/Move/Mind/Learn — never required to log workouts.',
+          })}
+        </p>
       </div>
 
       {checkoutSuccess && !premiumLoading && (
@@ -265,6 +292,11 @@ export function BundlePage() {
                     })}
                   </ul>
 
+                  <p className="text-xs text-emerald-300/90 mb-2">
+                    {t('bundleProofNearCta', {
+                      defaultValue: 'Six pillars in one app — not a multi-app unlock email.',
+                    })}
+                  </p>
                   <UnlockButton
                     isSubscription={p.isSubscription}
                     productId="super-bundle"
@@ -389,6 +421,7 @@ export function BundlePage() {
           <p>{t("bundleFreeForeverBody")}</p>
         </CardContent>
       </Card>
+    </div>
     </div>
   );
 }

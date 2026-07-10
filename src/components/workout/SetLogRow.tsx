@@ -21,12 +21,15 @@ type Props = {
   weightLabel: string;
   weightStep: number;
   lastPerformance?: { reps: number; weight: number } | null;
+  /** RepStack-style suggested next target (free forever). */
+  target?: { reps: number; weight: number } | null;
   onRepsChange: (reps: number) => void;
   onWeightChange: (weight: number) => void;
   onSetKindChange: (kind: SetKind) => void;
   onLog: () => void;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
   onCopyLast?: () => void;
+  onApplyTarget?: () => void;
 };
 
 export function SetLogRow({
@@ -38,12 +41,14 @@ export function SetLogRow({
   weightLabel,
   weightStep,
   lastPerformance,
+  target,
   onRepsChange,
   onWeightChange,
   onSetKindChange,
   onLog,
   onRate,
   onCopyLast,
+  onApplyTarget,
 }: Props) {
   const { t } = useTranslation();
   const kind = set.kind ?? 'normal';
@@ -124,22 +129,46 @@ export function SetLogRow({
             ))}
           </div>
         </div>
-        {lastPerformance && (
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] text-muted-foreground tabular-nums">
-              {t('activeLastPerformance', {
-                reps: lastPerformance.reps,
-                weight: lastPerformance.weight,
-                defaultValue: `Last: ${lastPerformance.reps} × ${lastPerformance.weight}`,
-              })}
-            </span>
-            {onCopyLast && (
-              <Button type="button" variant="ghost" size="sm" className="h-7 px-2 text-[10px]" onClick={onCopyLast}>
-                {t('activeCopyLast', { defaultValue: 'Copy last' })}
-              </Button>
-            )}
-          </div>
-        )}
+        <div className="flex items-center gap-2 flex-wrap justify-end">
+          {target && (
+            <>
+              <span className="rounded-full border border-emerald-500/40 bg-emerald-950/40 px-2 py-0.5 text-[10px] font-medium tabular-nums text-emerald-300">
+                {t('activeTargetChip', {
+                  reps: target.reps,
+                  weight: target.weight,
+                  defaultValue: `Target ${target.reps} × ${target.weight}`,
+                })}
+              </span>
+              {onApplyTarget && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 px-2 text-[10px] text-emerald-400"
+                  onClick={onApplyTarget}
+                >
+                  {t('activeApplyTarget', { defaultValue: 'Apply' })}
+                </Button>
+              )}
+            </>
+          )}
+          {lastPerformance && (
+            <>
+              <span className="text-[10px] text-muted-foreground tabular-nums">
+                {t('activeLastPerformance', {
+                  reps: lastPerformance.reps,
+                  weight: lastPerformance.weight,
+                  defaultValue: `Last: ${lastPerformance.reps} × ${lastPerformance.weight}`,
+                })}
+              </span>
+              {onCopyLast && (
+                <Button type="button" variant="ghost" size="sm" className="h-7 px-2 text-[10px]" onClick={onCopyLast}>
+                  {t('activeCopyLast', { defaultValue: 'Copy last' })}
+                </Button>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">

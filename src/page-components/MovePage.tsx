@@ -91,6 +91,7 @@ export function MovePage() {
   return (
     <PillarPageShell
       icon={Wind}
+      eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
       title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
       subtitle={t('moveSubtitle', {
         defaultValue:

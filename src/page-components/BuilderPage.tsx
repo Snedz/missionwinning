@@ -265,6 +265,7 @@ export function BuilderPage() {
   return (
     <PillarPageShell
       icon={PenTool}
+      eyebrow={t('builderEyebrow', { defaultValue: 'Builder' })}
       title={t('builderTitle', { defaultValue: 'Workout Builder' })}
       subtitle={t('builderSubtitle', {
         defaultValue:

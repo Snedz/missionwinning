@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Wind } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MetricRing } from '@/components/ui/MetricRing';
+import { ProgressRing } from '@/components/ui/ProgressRing';
 import { UnlockButton } from '@/components/UnlockButton';
 
 const DEMO_FLOW = [
@@ -35,7 +35,7 @@ export function MoveLockedPreview() {
         <div className="relative rounded-lg border border-border/50 bg-black/20 p-4">
           <div className="pointer-events-none select-none opacity-60 blur-[1px] space-y-3">
             <div className="flex justify-center">
-              <MetricRing label="Athlete recovery" value="18%" sublabel="0:45" progress={18} />
+              <ProgressRing label="Athlete recovery" value="18%" subtitle="0:45" progress={18} />
             </div>
             {DEMO_FLOW.map((s) => (
               <div key={s.label} className="text-sm border border-border/30 rounded-lg p-2">

@@ -105,6 +105,7 @@ export function BenchmarksPage() {
     return (
       <PillarPageShell
         icon={Shield}
+        eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })}
         title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
         subtitle={t('benchmarksSubtitle', {
           defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
@@ -134,6 +135,7 @@ export function BenchmarksPage() {
   return (
     <PillarPageShell
       icon={Shield}
+      eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })}
       title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
       subtitle={t('benchmarksSubtitle', {
         defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',

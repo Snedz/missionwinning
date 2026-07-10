@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MetricRing } from '@/components/ui/MetricRing';
+import { ProgressRing } from '@/components/ui/ProgressRing';
 import { track } from '@/lib/analytics';
 import {
   buildCompletionResult,
@@ -179,10 +179,10 @@ export function GuidedStepPlayer({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className={`flex ${isCompact ? 'flex-col' : 'flex-col sm:flex-row'} items-center gap-4`}>
-          <MetricRing
+          <ProgressRing
             label={t('guidedSessionProgress', { defaultValue: 'Progress' })}
             value={`${totalPct}%`}
-            sublabel={formatGuidedClock(state.remainingSec)}
+            subtitle={formatGuidedClock(state.remainingSec)}
             progress={totalPct}
             className="shrink-0"
           />

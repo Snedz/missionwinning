@@ -47,6 +47,8 @@
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Lighthouse baselines |
 | [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) | Experience build v4 |
+| [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid |
+| [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing |
 
 ---
 

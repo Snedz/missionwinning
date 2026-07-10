@@ -109,6 +109,7 @@ export function LibraryPage() {
   return (
     <PillarPageShell
       icon={Dumbbell}
+      eyebrow={t('libraryEyebrow', { defaultValue: 'Library' })}
       title={t('library', { defaultValue: 'Exercise Library' })}
       subtitle={t('librarySubtitle', {
         count: EXERCISES.length,

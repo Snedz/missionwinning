@@ -46,6 +46,7 @@ export function ProgramsPage() {
   return (
     <InfoPageShell
       icon={BookOpen}
+      eyebrow={t('programsEyebrow', { defaultValue: 'Programs' })}
       title={t('infoProgramsTitle', { defaultValue: 'Learn programs' })}
       subtitle={t('infoProgramsSubtitle', {
         defaultValue:

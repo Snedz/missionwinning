@@ -29,7 +29,7 @@
 | `pillars/` | Shared pillar panels, timed flows |
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | GPS / activity panels |
-| `ui/` | Design system primitives |
+| `ui/` | Design system primitives (`ProgressRing`, `EmptyState`, shadcn) |
 | `workout/` | Active workout — [workout/INDEX.md](workout/INDEX.md) |
 
 ## Coach UI split

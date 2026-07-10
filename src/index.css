@@ -27,6 +27,11 @@
     /* Honors accent — medals, rank, founders. Green = action, brass = honor. */
     --brass: 42 48% 58%;
     --brass-foreground: 222 24% 5%;
+    /* Semantic status — prefer these over ad-hoc amber/blue skins */
+    --status-warn: 38 92% 50%;
+    --status-info: 210 70% 55%;
+    --status-danger: 0 72% 51%;
+    --status-ok: 158 64% 42%;
   }
 }
 
@@ -178,6 +183,10 @@
     animation: ring-draw-in 450ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
+  .score-tick {
+    animation: score-tick 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
   .week-strip-pulse {
     animation: week-strip-pulse 350ms ease-out;
   }
@@ -189,6 +198,17 @@
   @keyframes ring-draw-in {
     from {
       opacity: 0;
+      transform: scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes score-tick {
+    from {
+      opacity: 0.4;
       transform: scale(0.92);
     }
     to {

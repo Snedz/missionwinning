@@ -37,14 +37,10 @@ const GuideTeaser = dynamic(
 const FAQ = LANDING_FAQ_KEYS;
 
 const FREE_MANIFEST = [
-  'Full workout logger — sets, reps, RPE, rest timers, supersets',
-  '217-exercise library with form cues, bodyweight and minimal-equipment first',
-  '152 program templates — 5×5, Texas Method, splits, conditioning',
-  'Nutrition log with food search, barcode scan, and water tracking',
-  'Win Score, readiness, strain, and recovery — computed from your logs',
-  'Streaks, weekly challenges, and world leaderboards',
-  'Mobility flows, breathing sessions, and eight learning paths',
-  'Installable app that works offline — no store, no fees, no account',
+  'Full workout logger — sets, reps, RPE, rest timers',
+  '217-exercise library — bodyweight and minimal gear first',
+  'Offline PWA — no store, no fees, no account required',
+  'Win Score from your logs — readiness, strain, recovery',
 ];
 
 export function LandingPage() {
@@ -86,46 +82,59 @@ export function LandingPage() {
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
           <div className="page-enter">
             <p className="eyebrow-live mb-5">
-              {t('landingHeroEyebrow', { defaultValue: 'Free core forever · Global PWA' })}
+              {t('landingHeroEyebrow', { defaultValue: 'Free workout tracker · Offline PWA' })}
             </p>
             <h1 className="display-hero mb-6">
               {t('landingHeroTitle1', { defaultValue: 'Train anywhere.' })}
               <br />
               {t('landingHeroTitle2', { defaultValue: 'Win daily.' })}
             </h1>
-            <p className="mb-8 max-w-md text-lg leading-relaxed text-muted-foreground">
+            <p className="mb-6 max-w-md text-lg leading-relaxed text-muted-foreground">
               {t('landingHeroSubtitle', {
                 defaultValue:
-                  'The free health everything app — workout tracking, nutrition, mobility, mind, activity, and learning scored together. No store. No paywall on the core.',
+                  'The free workout tracker that works offline — no account, no app store, no paywall on the basics. Nutrition, mobility, mind, and learning deepen the same Win Score when you want them.',
               })}
             </p>
-            <div className="mb-6 flex flex-col gap-3 sm:flex-row">
-              <Button
-                size="lg"
-                className="h-14 px-8 text-base font-semibold"
+            <p className="mb-6 text-sm text-brass/90">
+              {t('landingHeroProof', {
+                defaultValue: 'Log a set in the demo → Win Score ticks. That’s the loop.',
+              })}
+            </p>
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:flex-wrap">
+              <button
+                type="button"
+                className="primary-action max-w-sm sm:max-w-none sm:w-auto sm:px-10"
                 onClick={() => router.push('/welcome')}
               >
-                Start free — no account
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+                {t('landingNavStart', { defaultValue: 'Start free' })}
+                <ArrowRight className="h-5 w-5" />
+              </button>
+              <span className="inline-flex items-center rounded-full border border-emerald-500/35 bg-emerald-950/40 px-3 py-1.5 text-xs font-medium text-emerald-300 tabular-nums">
+                {t('landingProofChip', {
+                  defaultValue: '217 exercises · offline · no account',
+                })}
+              </span>
               <Button
                 size="lg"
                 variant="outline"
-                className="h-14 px-8 text-base"
+                className="h-[52px] px-8 text-base border-border/60"
                 onClick={() => document.getElementById('path')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                See how it works
+                {t('landingSeeHow', { defaultValue: 'See how it works' })}
               </Button>
             </div>
             <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">
-                <Download className="h-3.5 w-3.5" /> Installs like an app
+                <Download className="h-3.5 w-3.5 text-primary" />{' '}
+                {t('landingTrustInstall', { defaultValue: 'Installs like an app' })}
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <WifiOff className="h-3.5 w-3.5" /> Trains offline
+                <WifiOff className="h-3.5 w-3.5 text-primary" />{' '}
+                {t('landingTrustOffline', { defaultValue: 'Trains offline' })}
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Globe2 className="h-3.5 w-3.5" /> 14 languages
+                <Globe2 className="h-3.5 w-3.5 text-primary" />{' '}
+                {t('landingTrustLang', { defaultValue: '14 languages' })}
               </span>
             </div>
           </div>

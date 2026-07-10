@@ -41,8 +41,6 @@
 | `/learn` | `LearnPage.tsx` | Education |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | **Human** coaching leads — not AI Coach |
-| `/bundle` | `BundlePage.tsx` | Premium |
-| `/compare` | `ComparePage.tsx` | Competitor comparison |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
 
 ### Outside `(app)` group
@@ -50,6 +48,9 @@
 | URL | File |
 |-----|------|
 | `/` | `app/page.tsx` → `LandingPage` |
+| `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome) |
+| `/compare` | `app/compare/page.tsx` → `ComparePage` (marketing chrome) |
+| `/guide`, `/exercises` | Public SEO pages |
 | `/private` | `app/private/page.tsx` |
 | `/offline` | `app/offline/page.tsx` |
 | `/auth/callback` | `app/auth/callback/page.tsx` |
