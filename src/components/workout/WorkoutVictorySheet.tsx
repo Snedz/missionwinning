@@ -100,6 +100,55 @@ export function WorkoutVictorySheet({
           </div>
         </div>
 
+        {summary.bodyDelta && (
+          <div className="flex flex-wrap items-center justify-center gap-2 rounded-xl border border-border/40 bg-muted/15 px-3 py-2 text-[11px] tabular-nums">
+            <span className="text-muted-foreground uppercase tracking-wide me-1">
+              {t('victoryBodyDeltaLabel', { defaultValue: 'What changed' })}
+            </span>
+            <span className="text-amber-300/90">
+              {t('victoryReadinessDelta', {
+                delta:
+                  summary.bodyDelta.readiness > 0
+                    ? `+${summary.bodyDelta.readiness}`
+                    : `${summary.bodyDelta.readiness}`,
+                defaultValue: `Readiness ${
+                  summary.bodyDelta.readiness > 0
+                    ? `+${summary.bodyDelta.readiness}`
+                    : summary.bodyDelta.readiness
+                }`,
+              })}
+            </span>
+            <span className="text-muted-foreground">·</span>
+            <span className="text-rose-300/90">
+              {t('victoryStrainDelta', {
+                delta:
+                  summary.bodyDelta.strain > 0
+                    ? `+${summary.bodyDelta.strain}`
+                    : `${summary.bodyDelta.strain}`,
+                defaultValue: `Strain ${
+                  summary.bodyDelta.strain > 0
+                    ? `+${summary.bodyDelta.strain}`
+                    : summary.bodyDelta.strain
+                }`,
+              })}
+            </span>
+            <span className="text-muted-foreground">·</span>
+            <span className="text-emerald-300/90">
+              {t('victoryRecoveryDelta', {
+                delta:
+                  summary.bodyDelta.recovery > 0
+                    ? `+${summary.bodyDelta.recovery}`
+                    : `${summary.bodyDelta.recovery}`,
+                defaultValue: `Recovery ${
+                  summary.bodyDelta.recovery > 0
+                    ? `+${summary.bodyDelta.recovery}`
+                    : summary.bodyDelta.recovery
+                }`,
+              })}
+            </span>
+          </div>
+        )}
+
         {summary.streak > 0 && (
           <p className="text-center text-sm text-emerald-400/90">
             {t('victoryStreak', {

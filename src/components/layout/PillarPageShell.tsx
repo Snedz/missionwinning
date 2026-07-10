@@ -10,6 +10,8 @@ type PillarPageShellProps = {
   icon: LucideIcon;
   title: string;
   subtitle?: string;
+  /** Briefing eyebrow above the display title. */
+  eyebrow?: string;
   children: React.ReactNode;
   headerActions?: React.ReactNode;
   showLegalFooter?: boolean;
@@ -21,6 +23,7 @@ export function PillarPageShell({
   icon,
   title,
   subtitle = '',
+  eyebrow,
   children,
   headerActions,
   showLegalFooter = false,
@@ -36,12 +39,18 @@ export function PillarPageShell({
               icon={icon}
               title={title}
               subtitle={subtitle}
+              eyebrow={eyebrow}
               className="flex-1 min-w-0"
             />
             {headerActions}
           </div>
         ) : (
-          <PillarPageHeader icon={icon} title={title} subtitle={subtitle} />
+          <PillarPageHeader
+            icon={icon}
+            title={title}
+            subtitle={subtitle}
+            eyebrow={eyebrow}
+          />
         )}
       </StaggerItem>
 

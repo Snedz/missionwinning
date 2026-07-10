@@ -49,6 +49,7 @@ export function LearnPage() {
   return (
     <PillarPageShell
       icon={BookOpen}
+      eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
       title={t('learnTitle', { defaultValue: 'Learn & Master' })}
       subtitle={t('learnSubtitle', {
         count: FREE_LEARN_PATHS.length,

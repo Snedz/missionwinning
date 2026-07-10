@@ -45,5 +45,6 @@ export function setKindCompletedRowClass(kind: SetKind): string {
   if (kind === 'warmup') return 'border-amber-500/30 bg-amber-950/15';
   if (kind === 'failure') return 'border-rose-500/30 bg-rose-950/15';
   if (kind === 'drop') return 'border-violet-500/30 bg-violet-950/15';
-  return 'border-secondary/40 bg-secondary/10';
+  // Hevy-style emerald wash on completed working sets
+  return 'border-emerald-500/35 bg-emerald-950/25';
 }

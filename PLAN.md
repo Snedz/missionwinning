@@ -188,4 +188,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-07-09 (next wave: de i18n, slim readiness, form media; build `2026.07-unified.48`)
+Last updated: 2026-07-10 (Wave 2 UI + feature steals `2026.07-unified.50`; prior: UI research `.49`, de i18n / slim readiness)

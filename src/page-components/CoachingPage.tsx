@@ -50,6 +50,7 @@ export function CoachingPage() {
   return (
     <InfoPageShell
       icon={Users}
+      eyebrow={t('coachingEyebrow', { defaultValue: 'Coaching' })}
       title={t('infoCoachingTitle', { defaultValue: 'A coach in your corner' })}
       subtitle={t('infoCoachingSubtitle', {
         defaultValue:

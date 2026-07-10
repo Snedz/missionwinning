@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-09** (next wave shipped; build `2026.07-unified.48`).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-10** (Wave 2 UI + feature steals; build `2026.07-unified.50`).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -16,8 +16,8 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 | **Premium depth per pillar** | 🟢 Strong | GPS Track, Fuel Coach, Coach, Mind/Move/Learn premium depth shipped |
 | **AI Coach — personal trainer in pocket** | 🟢 v1 shipped | Mission Coach engine + free taster week; premium regeneration + plan-voice |
 | **PWA offline everywhere** | 🔴 Blocked | Disabled while `PRIVATE_MODE=true` |
-| **Global i18n** | 🟡 Partial | Tier 1/2 nav chrome; **es + fr** body shipped; **de** next |
-| **Bevel-style metric UI** | 🟢 Good | Readiness/Strain/Recovery rings, Mission Score tick-up animation |
+| **Global i18n** | 🟡 Partial | Tier 1/2 nav chrome; **es + fr + de** body shipped for core surfaces |
+| **Bevel-style metric UI** | 🟢 Good | Unified `ProgressRing`; Mission Score + clinical rings; briefing Today + Victory body delta |
 | **Freeletics journey + streaks** | 🟢 Shipped | I-Day → Commissioned; challenges; leaderboard |
 | **Evidence-based, holistic path** | 🟢 Core tone | Learn paths, public `/guide` + `/exercises`, disclaimers |
 | **Public SEO** | 🟡 Growing | Sitemap, JSON-LD, link mesh on guide/exercise/compare pages |
@@ -30,8 +30,8 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 
 | Pillar | Free tier (vision) | Free tier (app) | Premium (vision) | Premium (app) |
 |--------|-------------------|-----------------|------------------|---------------|
-| **/train** | Robust tracker, basic library | ⭐⭐⭐⭐ Logger, 200+ library, templates, form guides | AI Coach, 30+ plans | ⭐⭐⭐ Mission Coach engine + taster; premium regen |
-| **/fuel** | Basic log, accessible recipes | ⭐⭐⭐⭐ Log, water, 12 recipes, barcode, empty-state CTA | Deep plans, coaching | ⭐⭐⭐ Fuel Coach + 92 server recipes |
+| **/train** | Robust tracker, basic library | ⭐⭐⭐⭐ Logger, 200+ library, templates, form guides, next-set targets | AI Coach, 30+ plans | ⭐⭐⭐ Mission Coach engine + taster; premium regen |
+| **/fuel** | Basic log, accessible recipes | ⭐⭐⭐⭐ Log, water, NL quick log, 12 recipes, barcode | Deep plans, coaching | ⭐⭐⭐ Fuel Coach + 92 server recipes |
 | **/move** | Basic flows, bodyweight | ⭐⭐⭐ Timed flows + guided player | Pliability / Skill Yoga depth | ⭐⭐⭐ 11 premium multi-step flows |
 | **/mind** | Basic habits, recovery | ⭐⭐⭐ Breathing, guided text, check-in | Calm/Waking Up depth | ⭐⭐⭐ 17 premium timed sessions |
 | **/track** | Core logging, streaks | ⭐⭐⭐ Manual activities, import | MapMyFitness-style GPS | ⭐⭐⭐ GPS panel (premium-gated) |

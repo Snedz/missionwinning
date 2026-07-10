@@ -56,7 +56,7 @@ const en: BundleStrings = {
   bundleBadge: 'Super Bundle',
   bundleHeadline: 'Six pillars. One app. One price.',
   bundleSubhead:
-    'Mission Winning replaces a stack of fitness apps with one PWA — Train, Fuel, Move, Mind, Track, Learn, and your unified Win Score on Today.',
+    'Six pillars in one app — not a Freeletics-style multi-app stack. Train, Fuel, Move, Mind, Track, Learn, and one Win Score on Today.',
   bundleUrgencyBadge: 'Founders pricing — locked in at launch',
   bundleTab3mo: '3 months',
   bundleTab12mo: '12 months',
@@ -69,11 +69,11 @@ const en: BundleStrings = {
   bundleBilledTotal: '${{price}} billed once',
   bundleBilledOnce: '${{price}} one-time',
   bundleHeroTitle: 'Super Bundle',
-  bundleHeroSubtitle: 'All six premium pillars + unified Today hub',
+  bundleHeroSubtitle: 'All six premium pillars in one install — vs juggling partner apps',
   bundleUnlockCta: 'Unlock Super Bundle',
   bundleOneAppTitle: 'One app — not seven',
   bundleOneAppDesc:
-    'Freeletics sells separate apps. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one install with one Win Score.',
+    'Freeletics Super Bundle spans multiple apps. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one PWA with one Win Score.',
   bundleWinScoreNote: 'Today hub Win Score ties every pillar together.',
   bundleCompareTitle: 'Compare standalone vs bundle',
   bundleColPillar: 'Pillar',

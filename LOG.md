@@ -4,6 +4,38 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-10 — Wave 2 UI + feature steals
+
+**Docs:** [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md) § Wave 2  
+**Build:** `2026.07-unified.50`
+
+### Shipped
+
+- Research: RepStack, IntervalCoach, 0xCal, Bevel, Freeletics SB, CrossFit/WOD steal sheet
+- Today: one boss CTA (JourneyHero); insight + rings as glance; secondary strips below fold
+- Train: emerald completed-row wash; rest clock pill; **next-set targets** + Apply (free)
+- Fuel: densified above-fold + NL meal quick log; ProgressRing migration
+- Landing: 4-bullet free manifest + proof chip; Bundle one-app vs multi-app louder
+- Victory: body-score delta strip (readiness / strain / recovery)
+
+---
+
+## 2026-07-10 — UI research + system refresh + rebuild
+
+**Docs:** [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md), [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md)  
+**Build:** `2026.07-unified.49`
+
+### Shipped
+
+- Competitive research brief (Hevy/Strong, WHOOP/Bevel, Freeletics, wellness CRO, Linear)
+- Design system: status tokens, unified `ProgressRing`, briefing `PillarPageHeader`, `.score-tick`
+- P0: Landing tracker-led hero; Welcome briefing flow; Today command header; MobileNav active bar
+- Active EmptyState + brass PR; Bundle/Compare out of AppLayout with marketing chrome
+- PublicSeoHeader on Guide/Exercises/Compare; Coach on PillarPageShell; eyebrow cascade on pillars
+- `/compare` + `/bundle` public while gated
+
+---
+
 ## 2026-07-09 — Next wave: launch scripts, de i18n, /log slim readiness, form media
 
 **Docs:** [VISION_STATUS.md](VISION_STATUS.md), [PLAN.md](PLAN.md)  

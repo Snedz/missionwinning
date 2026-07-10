@@ -506,22 +506,19 @@ export function HomePage() {
     staggerBlocks.push({ key: 'intent', node: <CommandersIntent /> });
   }
 
-  staggerBlocks.push({
-    key: 'hero',
-    node: (
-      <JourneyHero
-        action={action}
-        onPrimaryClick={handleJourneyPrimary}
-        activeWorkout={!!activeWorkout}
-      />
-    ),
-  });
-
-  if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
-    staggerBlocks.push({ key: 'coach-week', node: <TodayCoachWeekStrip /> });
-  }
-
+  // Daily briefing densification: one insight line before metrics (not a second CTA).
   if (layout.showDashboard) {
+    staggerBlocks.push({
+      key: 'insight',
+      node: (
+        <p className="text-sm text-muted-foreground leading-relaxed px-0.5">
+          {t(coachInsight.messageKey, {
+            ...coachInsight.messageParams,
+            defaultValue: coachInsight.messageKey,
+          })}
+        </p>
+      ),
+    });
     staggerBlocks.push({
       key: 'dashboard',
       node: (
@@ -533,6 +530,23 @@ export function HomePage() {
         />
       ),
     });
+  }
+
+  // One boss CTA above the fold (JOURNEY F2).
+  staggerBlocks.push({
+    key: 'hero',
+    node: (
+      <JourneyHero
+        action={action}
+        onPrimaryClick={handleJourneyPrimary}
+        activeWorkout={!!activeWorkout}
+      />
+    ),
+  });
+
+  // Secondary surfaces only after idle — never compete with JourneyHero.
+  if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
+    staggerBlocks.push({ key: 'coach-week', node: <TodayCoachWeekStrip /> });
   }
 
   if (belowFoldReady && state.phase === 'commissioned') {

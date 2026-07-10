@@ -20,7 +20,8 @@ import { FuelLogSheet, type MealType } from "@/components/nutrition/FuelLogSheet
 import { FoodSearchBar } from "@/components/nutrition/FoodSearchBar";
 import { BarcodeLookup } from "@/components/nutrition/BarcodeLookup";
 import type { FoodSearchItem } from "@/lib/foodSearch";
-import { MetricRing } from "@/components/ui/MetricRing";
+import { ProgressRing } from "@/components/ui/ProgressRing";
+import { estimateMealFromDescription } from "@/lib/nlMealLog";
 import { bumpFuelLogStreak, getFuelLogStreak } from "@/lib/fuelStreak";
 import {
   DEFAULT_QUICK_FOODS,
@@ -66,6 +67,9 @@ export function NutritionPage() {
   const [logSheetOpen, setLogSheetOpen] = useState(false);
   const [activeMeal, setActiveMeal] = useState<MealType>("lunch");
   const [fuelStreak, setFuelStreak] = useState(0);
+  const [nlMealText, setNlMealText] = useState("");
+  const [nlPreview, setNlPreview] = useState<ReturnType<typeof estimateMealFromDescription>>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [allLogs, setAllLogs] = useState(() =>
     typeof window !== 'undefined' ? parseNutritionLog(localStorage.getItem('mw_nutrition_log')) : []
   );
@@ -209,8 +213,6 @@ export function NutritionPage() {
   const totalCarbs = logged.reduce((s, l) => s + (l.carbs || 0), 0);
   const totalFat = logged.reduce((s, l) => s + (l.fat || 0), 0);
 
-  const pillarWins = logged.filter(l => /win|assessment|mobility|mind/i.test(l.name));
-
   const loadCloudNutrition = async () => {
     const u = await getUser();
     if (u) {
@@ -245,6 +247,7 @@ export function NutritionPage() {
     <PillarPageShell
       className="max-w-3xl pb-24"
       icon={UtensilsCrossed}
+      eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
       title={t('fuelTitle', { defaultValue: 'Nutrition' })}
       subtitle={t('fuelSubtitle', {
         defaultValue:
@@ -258,42 +261,26 @@ export function NutritionPage() {
         ) : undefined
       }
     >
-      <p className="text-muted-foreground text-sm">
-        {premium
-          ? t('fuelPremiumActive', {
-              defaultValue: ' Premium: full recipe library + deep plans (Super Bundle).',
-            })
-          : t('fuelBundleUpsell', {
-              defaultValue:
-                ' Super Bundle unlocks the full recipe library and advanced meal plans.',
-            })}{' '}
-        {t('fuelHighProteinNote', { defaultValue: 'High-protein days boost your' })}{' '}
-        <a href="/log" className="underline">
-          {t('fuelWinScore', { defaultValue: 'Win Score' })}
-        </a>
-        .
-      </p>
-
-      <div className="grid md:grid-cols-2 gap-4">
-        <Card className="content-card">
-          <CardHeader><CardTitle>{t('fuelTargetsTitle', { defaultValue: "Today's Targets" })}</CardTitle></CardHeader>
-          <CardContent className="space-y-4">
+      <div className="space-y-4">
+        <Card className="content-card border-emerald-500/20">
+          <CardContent className="pt-6 space-y-4">
             <div className="flex justify-around gap-4">
-              <MetricRing
+              <ProgressRing
                 label={t('fuelCalories', { defaultValue: 'Calories' })}
                 value={`${totalCals}`}
-                sublabel={`/ ${targetCals}`}
+                subtitle={`/ ${targetCals}`}
                 progress={cProgress}
+                tone="brass"
               />
-              <MetricRing
+              <ProgressRing
                 label={t('fuelProtein', { defaultValue: 'Protein' })}
                 value={`${totalProtein}g`}
-                sublabel={`/ ${targetProtein}g`}
+                subtitle={`/ ${targetProtein}g`}
                 progress={pProgress}
-                accentClassName="text-emerald-300"
+                tone="emerald"
               />
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-xs text-center text-muted-foreground">
               {t('fuelMacrosSummary', {
                 carbs: totalCarbs,
                 fat: totalFat,
@@ -301,114 +288,188 @@ export function NutritionPage() {
                 defaultValue: `Carbs: ${totalCarbs}g • Fat: ${totalFat}g • Water: ${water} / 8 glasses`,
               })}
             </div>
-            {pillarWins.length > 0 && (
-              <div className="mt-2 text-[10px] text-emerald-400">
-                {t('fuelPillarWinsToday', {
-                  count: pillarWins.length,
-                  example: pillarWins[0]?.name ?? '',
-                  defaultValue: `Pillar wins today (Move/Mind/Assess): ${pillarWins.length} — e.g. ${pillarWins[0]?.name}`,
-                })}
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium" htmlFor="fuel-nl-meal">
+                {t('fuelNlTitle', { defaultValue: 'Describe what you ate' })}
+              </label>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  id="fuel-nl-meal"
+                  type="text"
+                  value={nlMealText}
+                  placeholder={t('fuelNlPlaceholder', {
+                    defaultValue: 'chicken rice broccoli…',
+                  })}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setNlMealText(v);
+                    setNlPreview(estimateMealFromDescription(v));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key !== 'Enter') return;
+                    e.preventDefault();
+                    const est = estimateMealFromDescription(nlMealText);
+                    if (!est) return;
+                    addEntry(est.name, est.protein, est.cals, est.carbs, est.fat);
+                    setNlMealText('');
+                    setNlPreview(null);
+                  }}
+                  className="flex-1 h-11 rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+                <Button
+                  variant="fitness"
+                  className="h-11 gap-2 shrink-0"
+                  disabled={!nlPreview}
+                  onClick={() => {
+                    if (!nlPreview) return;
+                    addEntry(
+                      nlPreview.name,
+                      nlPreview.protein,
+                      nlPreview.cals,
+                      nlPreview.carbs,
+                      nlPreview.fat
+                    );
+                    setNlMealText('');
+                    setNlPreview(null);
+                  }}
+                >
+                  <Plus className="h-4 w-4" />
+                  {t('fuelLogMeal', { defaultValue: 'Log meal' })}
+                </Button>
               </div>
+              {nlPreview && (
+                <p className="text-xs text-muted-foreground tabular-nums">
+                  {t('fuelNlPreview', {
+                    name: nlPreview.name,
+                    protein: nlPreview.protein,
+                    cals: nlPreview.cals,
+                    defaultValue: `Est. ${nlPreview.name} — ${nlPreview.protein}g P · ${nlPreview.cals} kcal (${nlPreview.confidence})`,
+                  })}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {frequentFoods.map(([name, p, c, carbs, fat]) => (
+                <Button
+                  key={name}
+                  variant="outline"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => addEntry(name, p, c, carbs, fat)}
+                >
+                  {name}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap gap-2 items-center">
+              <Button variant="outline" size="sm" onClick={() => setLogSheetOpen(true)}>
+                <Plus className="h-3.5 w-3.5 me-1" />
+                {t('fuelLogDetailed', { defaultValue: 'Detailed log' })}
+              </Button>
+              <div className="flex items-center gap-1 ms-auto">
+                <Button size="sm" variant="ghost" onClick={() => setWater(Math.max(0, water - 1))}>
+                  −
+                </Button>
+                <span className="text-sm tabular-nums text-muted-foreground min-w-[4.5rem] text-center">
+                  {water} {t('fuelGlasses', { defaultValue: 'glasses' })}
+                </span>
+                <Button size="sm" variant="ghost" onClick={() => setWater(water + 1)}>
+                  +
+                </Button>
+              </div>
+            </div>
+            {yesterdayMeals.length > 0 && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => {
+                  for (const m of yesterdayMeals) {
+                    addEntry(
+                      m.name,
+                      m.protein,
+                      m.cals,
+                      m.carbs ?? 0,
+                      m.fat ?? 0,
+                      (m.meal as MealType) ?? activeMeal
+                    );
+                  }
+                }}
+              >
+                {t('fuelRepeatYesterday', {
+                  count: yesterdayMeals.length,
+                  defaultValue: `Repeat yesterday (${yesterdayMeals.length} items)`,
+                })}
+              </Button>
             )}
           </CardContent>
         </Card>
-
-        <Card className="content-card">
-          <CardHeader><CardTitle>{t('fuelHydrationTitle', { defaultValue: 'Hydration' })}</CardTitle></CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              <Button size="sm" variant="outline" onClick={() => setWater(Math.max(0, water-1))}>-</Button>
-              <div className="flex-1 text-center text-2xl font-bold tabular-nums">{water} <span className="text-sm font-normal">{t('fuelGlasses', { defaultValue: 'glasses' })}</span></div>
-              <Button size="sm" variant="outline" onClick={() => setWater(water+1)}>+</Button>
-            </div>
-            <div className="text-xs text-center mt-2 text-muted-foreground">{t('fuelHydrationHint', { defaultValue: 'Aim for 8+ (adjust for climate/activity)' })}</div>
-          </CardContent>
-        </Card>
       </div>
 
-      <Card className="content-card">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base">
-            {t('fuelQuickLog', { defaultValue: 'Quick log' })}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex flex-wrap gap-2">
-            {frequentFoods.map(([name, p, c, carbs, fat]) => (
-              <Button
-                key={name}
-                variant="outline"
-                size="sm"
-                className="text-xs"
-                onClick={() => addEntry(name, p, c, carbs, fat)}
-              >
-                {name}
-              </Button>
-            ))}
-          </div>
-          {yesterdayMeals.length > 0 && (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => {
-                for (const m of yesterdayMeals) {
-                  addEntry(m.name, m.protein, m.cals, m.carbs ?? 0, m.fat ?? 0, (m.meal as MealType) ?? activeMeal);
-                }
-              }}
-            >
-              {t('fuelRepeatYesterday', {
-                count: yesterdayMeals.length,
-                defaultValue: `Repeat yesterday (${yesterdayMeals.length} items)`,
+      <div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="text-muted-foreground"
+          onClick={() => setMoreOpen((o) => !o)}
+        >
+          {moreOpen
+            ? t('fuelHideMore', { defaultValue: 'Hide search & recipes' })
+            : t('fuelShowMore', { defaultValue: 'Search, barcode & recipes' })}
+        </Button>
+      </div>
+
+      {moreOpen && (
+        <>
+          <div className="text-xs bg-muted/20 p-3 rounded space-y-2">
+            <p>
+              {t('fuelScienceCh5', {
+                defaultValue:
+                  'Protein insight (textbook ch.5): Essential for growth, repair, enzymes, and hormones. Active clients often need 1.6–2.2g/kg. Use complete proteins; time intake around workouts. Variety covers essential aminos — recipes below follow these principles.',
               })}
-            </Button>
-          )}
-        </CardContent>
-      </Card>
+            </p>
+            <p>
+              {t('fuelScienceCh12', {
+                defaultValue:
+                  'Nutrition for bodybuilders (ch.12): Complex carbs fuel training; healthy fats support hormones (15–30% calories). Vitamins/minerals from whole foods; fiber 20–30g+. Post-workout protein + carbs aid recovery. Hydration matters — prioritize local whole foods.',
+              })}
+            </p>
+          </div>
 
-      <div className="text-xs bg-muted/20 p-3 rounded space-y-2">
-        <p>
-          {t('fuelScienceCh5', {
-            defaultValue:
-              'Protein insight (textbook ch.5): Essential for growth, repair, enzymes, and hormones. Active clients often need 1.6–2.2g/kg. Use complete proteins; time intake around workouts. Variety covers essential aminos — recipes below follow these principles.',
-          })}
-        </p>
-        <p>
-          {t('fuelScienceCh12', {
-            defaultValue:
-              'Nutrition for bodybuilders (ch.12): Complex carbs fuel training; healthy fats support hormones (15–30% calories). Vitamins/minerals from whole foods; fiber 20–30g+. Post-workout protein + carbs aid recovery. Hydration matters — prioritize local whole foods.',
-          })}
-        </p>
-      </div>
-
-      <Card className="content-card">
-        <CardHeader>
-          <CardTitle>{t('fuelSearchTitle', { defaultValue: 'Search foods' })}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <BarcodeLookup
-            onSelect={(item) => {
-              addEntry(
-                item.brand ? `${item.name} (${item.brand})` : item.name,
-                item.protein,
-                item.calories,
-                item.carbs,
-                item.fat
-              );
-            }}
-          />
-          <FoodSearchBar
-            onSelect={(item: FoodSearchItem) => {
-              addEntry(
-                item.brand ? `${item.name} (${item.brand})` : item.name,
-                item.protein,
-                item.calories,
-                item.carbs,
-                item.fat
-              );
-            }}
-          />
-        </CardContent>
-      </Card>
+          <Card className="content-card">
+            <CardHeader>
+              <CardTitle>{t('fuelSearchTitle', { defaultValue: 'Search foods' })}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <BarcodeLookup
+                onSelect={(item) => {
+                  addEntry(
+                    item.brand ? `${item.name} (${item.brand})` : item.name,
+                    item.protein,
+                    item.calories,
+                    item.carbs,
+                    item.fat
+                  );
+                }}
+              />
+              <FoodSearchBar
+                onSelect={(item: FoodSearchItem) => {
+                  addEntry(
+                    item.brand ? `${item.name} (${item.brand})` : item.name,
+                    item.protein,
+                    item.calories,
+                    item.carbs,
+                    item.fat
+                  );
+                }}
+              />
+            </CardContent>
+          </Card>
+        </>
+      )}
 
       <Card className="content-card">
         <CardHeader className="flex flex-row items-center justify-between">
@@ -430,7 +491,7 @@ export function NutritionPage() {
               icon={UtensilsCrossed}
               title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
               description={t('fuelNoEntries', {
-                defaultValue: 'No entries yet. Tap + Log food to add your first meal.',
+                defaultValue: 'No entries yet. Describe a meal above or tap Log meal.',
               })}
               actionLabel={t('fuelLogFirstMeal', { defaultValue: 'Log first meal' })}
               onAction={() => setLogSheetOpen(true)}
@@ -461,6 +522,8 @@ export function NutritionPage() {
 
       <div className="text-[10px] text-muted-foreground">{t('fuelLocalNote', { defaultValue: 'Data stored locally (synced when you sign in). Full integration + meal plans in the paid Nutrition course.' })}</div>
 
+      {moreOpen && (
+        <>
       <Card className="content-card">
         <CardHeader><CardTitle>{t('fuelFreeRecipesTitle', { count: FREE_RECIPE_COUNT, defaultValue: `Free Recipes (${FREE_RECIPE_COUNT} — core mission)` })}</CardTitle></CardHeader>
         <CardContent className="space-y-4">
@@ -482,8 +545,10 @@ export function NutritionPage() {
       </Card>
 
       <FuelMealPlanCard />
+        </>
+      )}
 
-      {premium ? (
+      {moreOpen && (premium ? (
       <Card className="content-card">
         <CardHeader><CardTitle>{t('fuelPremiumRecipesTitle', { defaultValue: 'Premium Recipes & Meal Ideas (Super Bundle)' })}</CardTitle></CardHeader>
         <CardContent className="space-y-4">
@@ -538,7 +603,7 @@ export function NutritionPage() {
             </Button>
           </CardContent>
         </Card>
-      )}
+      ))}
 
       <SignInPrompt className="mt-2" nextPath="/nutrition" description={t('fuelSignInDesc', { defaultValue: 'Sync meals and macro history across devices.' })} />
 

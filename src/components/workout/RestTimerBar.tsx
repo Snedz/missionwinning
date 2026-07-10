@@ -79,7 +79,7 @@ export function RestTimerBar({
           </p>
         </div>
 
-        <span className="text-3xl font-mono font-bold tabular-nums text-emerald-400 shrink-0">
+        <span className="inline-flex min-w-[5.5rem] items-center justify-center rounded-full border border-emerald-500/35 bg-emerald-950/50 px-3 py-1 text-4xl font-mono font-bold tabular-nums text-emerald-400 shrink-0 tracking-tight">
           {formatRestClock(remaining)}
         </span>
       </div>

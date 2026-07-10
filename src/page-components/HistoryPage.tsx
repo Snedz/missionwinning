@@ -130,6 +130,7 @@ export function HistoryPage() {
   return (
     <PillarPageShell
       icon={HistoryIcon}
+      eyebrow={t('historyEyebrow', { defaultValue: 'History' })}
       title={t('historyTitle', { defaultValue: 'Workout History' })}
       subtitle={t('historySubtitle', {
         defaultValue: 'Your history powers the Today Hub readiness and Win Score.',

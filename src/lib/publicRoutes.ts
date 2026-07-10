@@ -16,6 +16,7 @@ export const JOURNEY_BYPASS_PATHS = [
   '/bundle',
   '/guide',
   '/exercises',
+  '/compare',
   '/join/class',
 ] as const;
 
@@ -34,6 +35,8 @@ export const PRIVATE_GATE_PUBLIC_PATHS = [
   '/manifest.webmanifest',
   '/guide',
   '/exercises',
+  '/compare',
+  '/bundle',
 ] as const;
 
 export function isJourneyBypassPath(pathname: string): boolean {

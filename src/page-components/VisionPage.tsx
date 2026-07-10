@@ -23,6 +23,7 @@ export function VisionPage() {
   return (
     <InfoPageShell
       icon={Compass}
+      eyebrow={t('visionEyebrow', { defaultValue: 'Vision' })}
       title={t('infoVisionTitle', { defaultValue: 'Mission Winning Vision' })}
       subtitle={t('infoVisionSubtitle', {
         defaultValue:

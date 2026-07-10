@@ -45,6 +45,7 @@ export function MindPage() {
   return (
     <PillarPageShell
       icon={Brain}
+      eyebrow={t('mindEyebrow', { defaultValue: 'Mind' })}
       title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
       subtitle={t('mindSubtitle', {
         defaultValue:

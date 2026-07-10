@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { MetricRing } from '@/components/ui/MetricRing';
+import { ProgressRing } from '@/components/ui/ProgressRing';
 import { useToast } from '@/hooks/use-toast';
 import {
   useUnits,
@@ -208,30 +208,30 @@ export function MacroCalculator() {
 
         <div className="pt-3 border-t space-y-4">
           <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-            <MetricRing
+            <ProgressRing
               label={t('calcTargetCals', { defaultValue: 'Target Calories' })}
               value={String(targetCals)}
-              sublabel={`BMR ${bmr} · TDEE ${tdee}`}
+              subtitle={`BMR ${bmr} · TDEE ${tdee}`}
               progress={Math.min(100, (targetCals / 3500) * 100)}
-              accentClassName="text-emerald-400"
+              tone="emerald"
             />
-            <MetricRing
+            <ProgressRing
               label={t('calcProtein', { defaultValue: 'Protein' })}
               value={`${protein}g`}
               progress={Math.min(100, (protein / 200) * 100)}
-              accentClassName="text-sky-400"
+              tone="info"
             />
-            <MetricRing
+            <ProgressRing
               label={t('calcCarbs', { defaultValue: 'Carbs' })}
               value={`${carbs}g`}
               progress={Math.min(100, (carbs / 300) * 100)}
-              accentClassName="text-amber-400"
+              tone="amber"
             />
-            <MetricRing
+            <ProgressRing
               label={t('calcFat', { defaultValue: 'Fat' })}
               value={`${fat}g`}
               progress={Math.min(100, (fat / 100) * 100)}
-              accentClassName="text-rose-400"
+              tone="warn"
             />
           </div>
 

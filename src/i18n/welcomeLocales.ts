@@ -6,9 +6,12 @@ type WelcomeStrings = {
   welcomeKicker: string;
   welcomeIDay: string;
   welcomeMissionLead: string;
+  welcomeMissionTitle: string;
   welcomeMissionBody1: string;
   welcomeMissionP2: string;
   welcomeMissionP3: string;
+  welcomeProfileEyebrow: string;
+  welcomeSignInEyebrow: string;
   welcomeProfileTitle: string;
   welcomeProfileEditHint: string;
   welcomeProfileHint: string;
@@ -54,15 +57,18 @@ type WelcomeStrings = {
 };
 
 const en: WelcomeStrings = {
-  welcomeKicker: 'Where the journey begins',
+  welcomeKicker: 'I-Day · About two minutes',
   welcomeIDay: 'I-Day',
-  welcomeMissionLead: 'The mission:',
+  welcomeMissionLead: 'The mission',
+  welcomeMissionTitle: 'One path. Free fundamentals.',
   welcomeMissionBody1:
-    'Mission Winning is a free global health app. Train, fuel, move, mind, track, and learn — one place, one path forward.',
+    'Mission Winning is a free workout tracker first — then fuel, move, mind, track, and learn in one place.',
   welcomeMissionP2:
     'The fundamentals are free forever. Premium deepens each pillar for those who want more — never required to start.',
   welcomeMissionP3:
-    'Your job today: complete one step at a time. Today hub will always show your next single action.',
+    'Your job today: complete one step at a time. Today always shows your next single action.',
+  welcomeProfileEyebrow: 'Briefing',
+  welcomeSignInEyebrow: 'Optional',
   welcomeProfileTitle: 'Three quick questions',
   welcomeProfileEditHint: 'Update experience, equipment, and goal. Changes sync when signed in.',
   welcomeProfileHint: 'So Today can recommend the right starting point.',
@@ -96,7 +102,7 @@ const en: WelcomeStrings = {
   navBetaGuide: 'Beta guide',
   welcomeTitle: 'Welcome, Mission Member',
   welcomeSubtitle:
-    'Start your path toward lifelong health — one step at a time. About two minutes.',
+    'Set your path, then log your first session. One step at a time — Today always shows the next action.',
   welcomeBegin: 'Begin',
   welcomeAccept: 'I accept the path',
   welcomeContinue: 'Continue',

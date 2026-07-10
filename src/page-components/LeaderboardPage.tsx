@@ -181,6 +181,7 @@ export function LeaderboardPage() {
   return (
     <PillarPageShell
       icon={Trophy}
+      eyebrow={t('leaderboardEyebrow', { defaultValue: 'Leaderboard' })}
       title={t('leaderboardTitle', { defaultValue: 'Leaderboard' })}
       subtitle={t('leaderboardSubtitle', {
         defaultValue:
@@ -228,8 +229,8 @@ export function LeaderboardPage() {
               className={cn(
                 'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 transition-colors',
                 boardId === 'dawns-early-light'
-                  ? 'border-amber-500/50 bg-amber-950/40 text-amber-200'
-                  : 'border-border/50 text-muted-foreground hover:border-amber-500/30'
+                  ? 'border-brass/50 bg-brass/10 text-brass'
+                  : 'border-border/50 text-muted-foreground hover:border-brass/30'
               )}
             >
               <Sunrise className="h-3.5 w-3.5" />
@@ -243,9 +244,9 @@ export function LeaderboardPage() {
       <div
         className={
           boardTheme === 'night'
-            ? 'rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/80 via-slate-950 to-black p-4 md:p-5'
+            ? 'rounded-2xl border border-status-info/30 bg-gradient-to-br from-[hsl(var(--status-info)/0.15)] via-card to-background p-4 md:p-5'
             : boardTheme === 'dawn'
-              ? 'rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-950/50 via-orange-950/30 to-slate-950 p-4 md:p-5'
+              ? 'rounded-2xl border border-brass/30 bg-gradient-to-br from-brass/10 via-card to-background p-4 md:p-5'
               : 'rounded-2xl border border-border/50 bg-card/40 p-4 md:p-5'
         }
       >
@@ -255,8 +256,8 @@ export function LeaderboardPage() {
           <p
             className={cn(
               'text-xs mt-3 leading-relaxed border-l-2 pl-3 italic',
-              boardTheme === 'night' && 'text-indigo-200/70 border-indigo-500/40',
-              boardTheme === 'dawn' && 'text-amber-200/80 border-amber-500/40'
+              boardTheme === 'night' && 'text-status-info/80 border-status-info/40',
+              boardTheme === 'dawn' && 'text-brass/90 border-brass/40'
             )}
           >
             {ranked.board.flavor}
@@ -337,7 +338,7 @@ export function LeaderboardPage() {
       )}
 
       {scope === 'friends' && squadCode.startsWith('MW') && (
-        <p className="text-xs text-blue-400/90 rounded-lg border border-blue-500/20 bg-blue-950/20 px-3 py-2">
+        <p className="text-xs text-status-info rounded-lg border border-status-info/20 bg-[hsl(var(--status-info)/0.1)] px-3 py-2">
           {t('leaderboardClassHint', {
             defaultValue:
               'PE class code active — squad rankings include classmates who sync while signed in.',

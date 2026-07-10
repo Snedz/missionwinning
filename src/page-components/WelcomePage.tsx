@@ -9,7 +9,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import {
   completeIDay,
   markIDayStarted,
@@ -131,43 +130,42 @@ export function WelcomePage() {
       </header>
 
       <main className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-lg content-card page-enter">
-          <CardContent className="p-6 md:p-8 space-y-6">
+        <div className="w-full max-w-lg content-card page-enter p-6 md:p-8 space-y-6">
             {step === 'welcome' && (
               <>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <p className="eyebrow-live">
-                    {t('welcomeKicker', { defaultValue: 'Where the journey begins' })}
+                    {t('welcomeKicker', { defaultValue: 'I-Day · About two minutes' })}
                   </p>
-                  <h1 className="font-display text-3xl font-semibold uppercase leading-none md:text-4xl">
+                  <h1 className="display-section text-[1.75rem] md:text-[2.5rem]">
                     {t('welcomeTitle', { defaultValue: 'Welcome, Mission Member' })}
                   </h1>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed md:text-base">
                     {t('welcomeSubtitle', {
                       defaultValue:
-                        'Start your path toward lifelong health — one step at a time. About two minutes.',
+                        'Set your path, then log your first session. One step at a time — Today always shows the next action.',
                     })}
                   </p>
                 </div>
-                <Button
-                  className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
-                  onClick={handleBegin}
-                >
+                <button type="button" className="primary-action" onClick={handleBegin}>
                   {t('welcomeBegin', { defaultValue: 'Begin' })}
-                </Button>
+                </button>
               </>
             )}
 
             {step === 'mission' && (
               <>
-                <div className="space-y-3 max-h-48 overflow-y-auto text-sm text-muted-foreground leading-relaxed pr-1">
+                <div className="space-y-2">
+                  <p className="eyebrow">{t('welcomeMissionLead', { defaultValue: 'The mission' })}</p>
+                  <h2 className="display-section text-[1.5rem] md:text-[1.85rem]">
+                    {t('welcomeMissionTitle', { defaultValue: 'One path. Free fundamentals.' })}
+                  </h2>
+                </div>
+                <div className="space-y-3 max-h-52 overflow-y-auto text-sm text-muted-foreground leading-relaxed pr-1">
                   <p>
-                    <strong className="text-foreground">
-                      {t('welcomeMissionLead', { defaultValue: 'The mission:' })}
-                    </strong>{' '}
                     {t('welcomeMissionBody1', {
                       defaultValue:
-                        'Mission Winning is a free global health app. Train, fuel, move, mind, track, and learn — one place, one path forward.',
+                        'Mission Winning is a free workout tracker first — then fuel, move, mind, track, and learn in one place.',
                     })}
                   </p>
                   <p>
@@ -179,16 +177,13 @@ export function WelcomePage() {
                   <p>
                     {t('welcomeMissionP3', {
                       defaultValue:
-                        'Your job today: complete one step at a time. Today hub will always show your next single action.',
+                        'Your job today: complete one step at a time. Today always shows your next single action.',
                     })}
                   </p>
                 </div>
-                <Button
-                  className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
-                  onClick={handleAcceptMission}
-                >
+                <button type="button" className="primary-action" onClick={handleAcceptMission}>
                   {t('welcomeAccept', { defaultValue: 'I accept the path' })}
-                </Button>
+                </button>
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('welcome')}>
                   <ChevronLeft className="h-4 w-4 mr-1" />{' '}
                   {t('welcomeBack', { defaultValue: 'Back' })}
@@ -199,7 +194,12 @@ export function WelcomePage() {
             {step === 'profile' && (
               <>
                 <div>
-                  <h2 className="text-xl font-bold mb-1">
+                  <p className="eyebrow mb-2">
+                    {isEdit
+                      ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' })
+                      : t('welcomeProfileEyebrow', { defaultValue: 'Briefing' })}
+                  </p>
+                  <h2 className="display-section text-[1.5rem] md:text-[1.85rem] mb-1">
                     {isEdit
                       ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' })
                       : t('welcomeProfileTitle', { defaultValue: 'Three quick questions' })}
@@ -227,7 +227,7 @@ export function WelcomePage() {
                         setDaysPerWeek(defaultDaysPerWeek(e.target.value));
                       }
                     }}
-                    className="w-full rounded-md bg-background border border-border px-3 py-2"
+                    className="w-full rounded-xl bg-background border border-border/60 px-3 py-2.5 min-h-[44px]"
                   >
                     {EXPERIENCE_VALUES.map((value) => (
                       <option key={value} value={value}>
@@ -243,7 +243,7 @@ export function WelcomePage() {
                   <select
                     value={equipment}
                     onChange={(e) => setEquipment(e.target.value)}
-                    className="w-full rounded-md bg-background border border-border px-3 py-2"
+                    className="w-full rounded-xl bg-background border border-border/60 px-3 py-2.5 min-h-[44px]"
                   >
                     {EQUIPMENT_VALUES.map((value) => (
                       <option key={value} value={value}>
@@ -272,7 +272,7 @@ export function WelcomePage() {
                           type="button"
                           size="sm"
                           variant={selected ? 'default' : 'outline'}
-                          className={selected ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
+                          className={selected ? 'bg-emerald-600 hover:bg-emerald-500' : ''}
                           onClick={() => setPrimaryGoal(value)}
                         >
                           {t(labelKey, { defaultValue: GOAL_PRESET_DEFAULTS[id] })}
@@ -283,7 +283,7 @@ export function WelcomePage() {
                   <input
                     value={isCustomGoal(primaryGoal) ? primaryGoal : ''}
                     onChange={(e) => setPrimaryGoal(e.target.value)}
-                    className="w-full rounded-md bg-background border border-border px-3 py-2"
+                    className="w-full rounded-xl bg-background border border-border/60 px-3 py-2.5 min-h-[44px]"
                     placeholder={t('welcomeGoalPlaceholder', {
                       defaultValue: 'Build strength and stay healthy',
                     })}
@@ -300,7 +300,7 @@ export function WelcomePage() {
                         type="button"
                         size="sm"
                         variant={daysPerWeek === n ? 'default' : 'outline'}
-                        className={daysPerWeek === n ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
+                        className={daysPerWeek === n ? 'bg-emerald-600 hover:bg-emerald-500' : ''}
                         onClick={() => setDaysPerWeek(n)}
                       >
                         {n}
@@ -308,14 +308,11 @@ export function WelcomePage() {
                     ))}
                   </div>
                 </label>
-                <Button
-                  className="w-full py-6 text-lg bg-emerald-600 hover:bg-emerald-700"
-                  onClick={handleProfileNext}
-                >
+                <button type="button" className="primary-action" onClick={handleProfileNext}>
                   {isEdit
                     ? t('saveProfile', { defaultValue: 'Save profile' })
                     : t('welcomeContinue', { defaultValue: 'Continue' })}
-                </Button>
+                </button>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -331,7 +328,10 @@ export function WelcomePage() {
             {step === 'signin' && (
               <>
                 <div>
-                  <h2 className="text-xl font-bold mb-1">
+                  <p className="eyebrow mb-2">
+                    {t('welcomeSignInEyebrow', { defaultValue: 'Optional' })}
+                  </p>
+                  <h2 className="display-section text-[1.5rem] md:text-[1.85rem] mb-1">
                     {t('welcomeSignInTitle', { defaultValue: 'Save progress — your choice' })}
                   </h2>
                   <p className="text-sm text-muted-foreground">
@@ -372,8 +372,7 @@ export function WelcomePage() {
                 </Button>
               </>
             )}
-          </CardContent>
-        </Card>
+        </div>
       </main>
 
       <AppLegalFooter className="border-t border-border/30" />

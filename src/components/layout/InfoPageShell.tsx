@@ -9,6 +9,8 @@ import { cn } from '@/lib/utils';
 
 type InfoPageShellProps = {
   icon: LucideIcon;
+  /** Briefing eyebrow above the display title. */
+  eyebrow?: string;
   title: string;
   subtitle?: string;
   lastUpdated?: string;
@@ -42,6 +44,7 @@ export function InfoSection({
 
 export function InfoPageShell({
   icon,
+  eyebrow,
   title,
   subtitle,
   lastUpdated,
@@ -58,7 +61,13 @@ export function InfoPageShell({
   return (
     <StaggerGroup className={cn('space-y-6', className)}>
       <StaggerItem index={0}>
-        <PillarPageHeader icon={icon} title={title} subtitle={headerSubtitle} iconClassName={iconClassName} />
+        <PillarPageHeader
+          icon={icon}
+          eyebrow={eyebrow}
+          title={title}
+          subtitle={headerSubtitle}
+          iconClassName={iconClassName}
+        />
       </StaggerItem>
 
       {jumpLinks && jumpLinks.length > 0 && (

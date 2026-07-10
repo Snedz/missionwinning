@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
+import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { WeekStrip } from '@/components/coach/WeekStrip';
 import { PlanSessionCard } from '@/components/coach/PlanSessionCard';
 import { CoachVoiceCard } from '@/components/coach/CoachVoiceCard';
@@ -33,13 +33,15 @@ export function CoachPage() {
   };
 
   return (
-    <div className="page-stack max-w-2xl mx-auto pb-24">
-      <PillarPageHeader
-        title={t('coachPageTitle', { defaultValue: 'Mission Coach' })}
-        icon={Sparkles}
-        subtitle={t('coachWeekEyebrow', { defaultValue: "THIS WEEK'S MISSION" })}
-      />
-
+    <PillarPageShell
+      className="max-w-2xl pb-24"
+      icon={Sparkles}
+      eyebrow={t('coachWeekEyebrow', { defaultValue: "THIS WEEK'S MISSION" })}
+      title={t('coachPageTitle', { defaultValue: 'Mission Coach' })}
+      subtitle={t('coachPageSubtitle', {
+        defaultValue: 'Fatigue-aware weekly plan — one next session, adapted when life happens.',
+      })}
+    >
       {loading && (
         <p className="text-sm text-muted-foreground text-center py-8">
           {t('coachVoiceLoading', { defaultValue: 'Briefing your week…' })}
@@ -158,6 +160,6 @@ export function CoachPage() {
           </Link>
         </p>
       )}
-    </div>
+    </PillarPageShell>
   );
 }

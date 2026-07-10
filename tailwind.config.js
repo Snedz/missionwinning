@@ -48,6 +48,12 @@ export default {
           DEFAULT: "hsl(var(--brass))",
           foreground: "hsl(var(--brass-foreground))",
         },
+        status: {
+          warn: "hsl(var(--status-warn))",
+          info: "hsl(var(--status-info))",
+          danger: "hsl(var(--status-danger))",
+          ok: "hsl(var(--status-ok))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
