@@ -114,14 +114,15 @@ function FormGuideMedia({
           preload="none"
           playsInline
           aria-label={`${name} form video`}
-        />
+        >
+          <track kind="captions" srcLang="en" label="Captions" />
+        </video>
       </div>
     );
   }
 
   return (
     <div className="overflow-hidden rounded-xl border border-border/40 bg-muted/30">
-      {/* eslint-disable-next-line @next/next/no-img-element -- lazy public asset, not LCP hero */}
       <img
         src={url}
         alt={`${name} form diagram`}

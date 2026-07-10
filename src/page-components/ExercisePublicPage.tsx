@@ -88,9 +88,10 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
                     preload="none"
                     playsInline
                     aria-label={`${exercise.name} form video`}
-                  />
+                  >
+                    <track kind="captions" srcLang="en" label="Captions" />
+                  </video>
                 ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={guide.mediaUrl}
                     alt={`${exercise.name} form diagram`}

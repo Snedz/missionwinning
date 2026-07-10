@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { CompareStoryPage, COMPARE_STORIES, getCompareStory } from '@/page-components/CompareStoryPage';
+import { CompareStoryPage } from '@/page-components/CompareStoryPage';
+import { COMPARE_STORIES, getCompareStory } from '@/data/compareStories';
 
 export const dynamic = 'force-static';
 
