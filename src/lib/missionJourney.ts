@@ -54,6 +54,16 @@ const DEFAULT_STATE: JourneyState = {
   readiness: { parq: false, streakMet: false, winScoreSeen: false },
 };
 
+/** Hydration-safe empty journey (no localStorage). */
+export function getDefaultJourneyState(): JourneyState {
+  return {
+    phase: DEFAULT_STATE.phase,
+    iDay: {},
+    basic: { ...DEFAULT_STATE.basic },
+    readiness: { ...DEFAULT_STATE.readiness },
+  };
+}
+
 function hasLegacyOnboarding(): boolean {
   if (typeof window === 'undefined') return false;
   return !!(localStorage.getItem('mw_experience') && localStorage.getItem('mw_equipment'));

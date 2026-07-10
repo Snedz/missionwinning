@@ -53,7 +53,7 @@ function ex(exerciseId: string, setCount: number, reps: number, weight = 0): Wor
   return { exerciseId, sets: sets(setCount, reps, weight) };
 }
 
-export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
+const PROGRAM_TEMPLATES_RAW: ProgramTemplate[] = [
   // ─── Beginner ─────────────────────────────────────────────────────────────
   {
     id: "beginner-full-body",
@@ -634,7 +634,7 @@ export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
     ],
   },
   {
-    id: "beginner-bodyweight-full",
+    id: "beginner-bodyweight-habit",
     name: "Full Bodyweight Habit",
     category: "beginner",
     description: "Free core full body bodyweight for strength and mobility. Use as base for all pillars.",
@@ -1415,6 +1415,16 @@ export const PROGRAM_TEMPLATES: ProgramTemplate[] = [
     ],
   },
 ];
+
+/** Deduped catalog — copy-paste left duplicate ids that break React keys in Builder. */
+export const PROGRAM_TEMPLATES: ProgramTemplate[] = (() => {
+  const seen = new Set<string>();
+  return PROGRAM_TEMPLATES_RAW.filter((p) => {
+    if (seen.has(p.id)) return false;
+    seen.add(p.id);
+    return true;
+  });
+})();
 
 /** Infer program tags from name, focus, and description when not set explicitly. */
 export function getProgramTags(program: ProgramTemplate): ProgramTag[] {
