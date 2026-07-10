@@ -35,7 +35,7 @@ import { isPersonalRecord } from '@/lib/workoutPr';
 import { shouldRestAfterLog, supersetLabel } from '@/lib/superset';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import { getTrainingStreak } from '@/lib/challenges';
-import { summarizeWorkoutVictory, type WorkoutVictorySummary } from '@/lib/workoutVictory';
+import { summarizeWorkoutVictory, buildProgressionInsight, type WorkoutVictorySummary } from '@/lib/workoutVictory';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import { suggestNextSetTarget } from '@/lib/nextSetTargets';
 import { computeBodyScores } from '@/lib/score';
@@ -147,6 +147,11 @@ export function ActiveWorkoutPage() {
     const key = getSetKey(exIdx, setIdx);
     if (setInputs[key]) return setInputs[key];
     const exerciseId = activeWorkout!.exercises[exIdx].exerciseId;
+    const lastSets = getLastSessionSets(workoutHistory, exerciseId);
+    if (lastSets) {
+      const target = suggestNextSetTarget(lastSets, setIdx, units);
+      if (target) return { reps: target.reps, weight: target.weight };
+    }
     const last = getLastPerformanceForSet(workoutHistory, exerciseId, setIdx);
     return { reps: last ? last.reps : defaultReps, weight: last ? last.weight : defaultWeight };
   };
@@ -171,7 +176,7 @@ export function ActiveWorkoutPage() {
     const setKind = set.kind ?? 'normal';
     const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory, setKind);
 
-    const next = logSetAndAdvance(exIdx, setIdx, input.reps, input.weight);
+    const next = logSetAndAdvance(exIdx, setIdx, input.reps, input.weight, isPr);
     const updatedExercises = useWorkoutStore.getState().activeWorkout?.exercises ?? activeWorkout!.exercises;
     const takeRest = shouldRestAfterLog(updatedExercises, exIdx, setIdx, next);
     if (takeRest) {
@@ -179,6 +184,9 @@ export function ActiveWorkoutPage() {
     }
 
     if (isPr) {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate([80, 40, 80]);
+      }
       toast({
         title: t('activePrTitle', { defaultValue: 'New PR!' }),
         description: t('activePrDesc', {
@@ -227,11 +235,16 @@ export function ActiveWorkoutPage() {
       const streak = getTrainingStreak(historyAfter);
       const afterScores = computeBodyScores(historyAfter);
       setVictorySummary(
-        summarizeWorkoutVictory(log, streak, {
-          readiness: afterScores.readiness - beforeScores.readiness,
-          strain: afterScores.strain - beforeScores.strain,
-          recovery: afterScores.recovery - beforeScores.recovery,
-        })
+        summarizeWorkoutVictory(
+          log,
+          streak,
+          {
+            readiness: afterScores.readiness - beforeScores.readiness,
+            strain: afterScores.strain - beforeScores.strain,
+            recovery: afterScores.recovery - beforeScores.recovery,
+          },
+          buildProgressionInsight(log, units)
+        )
       );
       setVictoryOpen(true);
     } else {

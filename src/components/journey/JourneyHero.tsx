@@ -52,28 +52,54 @@ interface JourneyHeroProps {
   action: JourneyAction;
   onPrimaryClick: () => void;
   activeWorkout?: boolean;
+  /** Forge-style Just Go meta — muscle focus under CTA (not a second button). */
+  justGoMeta?: { focusLabel: string } | null;
 }
 
-export function JourneyHero({ action, onPrimaryClick, activeWorkout }: JourneyHeroProps) {
+export function JourneyHero({
+  action,
+  onPrimaryClick,
+  activeWorkout,
+  justGoMeta,
+}: JourneyHeroProps) {
   const { t } = useTranslation();
-  const label = activeWorkout ? t('resumeWorkout', { defaultValue: 'Resume workout' }) : action.label;
+  const useJustGo = !activeWorkout && !!justGoMeta;
+  const label = activeWorkout
+    ? t('resumeWorkout', { defaultValue: 'Resume workout' })
+    : useJustGo
+      ? t('justGoCta', { defaultValue: 'Just Go' })
+      : action.label;
 
   return (
     <div className="content-card p-6 space-y-4">
       <div>
         <p className="eyebrow-live mb-2">
-          {t('yourNextStep', { defaultValue: 'Your next step' })}
+          {useJustGo
+            ? t('justGoEyebrow', { defaultValue: 'Ready to train' })
+            : t('yourNextStep', { defaultValue: 'Your next step' })}
         </p>
         <h3 className="display-section text-[1.35rem] md:text-[1.6rem] normal-case tracking-normal">
-          {label}
+          {useJustGo
+            ? t('justGoTitle', {
+                focus: justGoMeta!.focusLabel,
+                defaultValue: `${justGoMeta!.focusLabel} — Just Go`,
+              })
+            : label}
         </h3>
-        <p className="text-base text-muted-foreground mt-2 leading-relaxed">{action.description}</p>
+        <p className="text-base text-muted-foreground mt-2 leading-relaxed">
+          {useJustGo
+            ? t('justGoDesc', {
+                focus: justGoMeta!.focusLabel,
+                defaultValue: `One tap builds today’s ${justGoMeta!.focusLabel.toLowerCase()} session from your readiness and last lifts — no AI key.`,
+              })
+            : action.description}
+        </p>
       </div>
       <button type="button" onClick={onPrimaryClick} className="primary-action">
         {label}
         <ChevronRight className="h-5 w-5" />
       </button>
-      {action.phase === 'basic' && (
+      {action.phase === 'basic' && !useJustGo && (
         <p className="text-xs text-center text-muted-foreground">
           {t('journeyBasicFoot', { defaultValue: 'One step at a time. More tools unlock as you progress.' })}
         </p>

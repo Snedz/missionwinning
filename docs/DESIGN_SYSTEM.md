@@ -2,7 +2,7 @@
 
 **Runtime source:** [`src/index.css`](../src/index.css) · [`tailwind.config.js`](../tailwind.config.js) · fonts in [`app/layout.tsx`](../app/layout.tsx)  
 **Research:** [`DESIGN_RESEARCH.md`](DESIGN_RESEARCH.md)  
-**Build:** `2026.07-unified.50`+
+**Build:** `2026.07-unified.51`+
 
 ---
 

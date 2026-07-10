@@ -55,6 +55,8 @@ export interface LoggedSet {
   completed: boolean;
   kind?: SetKind;
   rpe?: Rpe;
+  /** Set at log time when this beat prior e1RM — brass chip on row. */
+  isPr?: boolean;
 }
 
 export interface ActiveExerciseLog {

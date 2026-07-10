@@ -114,6 +114,11 @@ export function LandingPage() {
                   defaultValue: '217 exercises · offline · no account',
                 })}
               </span>
+              <span className="inline-flex items-center rounded-full border border-border/50 bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+                {t('landingProofNoAiKey', {
+                  defaultValue: 'No AI API key. Free logger.',
+                })}
+              </span>
               <Button
                 size="lg"
                 variant="outline"

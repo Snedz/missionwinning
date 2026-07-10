@@ -17,8 +17,8 @@
 | **Mission Coach (weekly)** | `coach/` subfolder | Plan engine — see [coach/INDEX.md](coach/INDEX.md) |
 | **Coach sync** | `coachSync.ts` | Cloud push for coach plan |
 | **Journey** | `missionJourney.ts`, `journeySync.ts`, `journeyGoals.ts`, `journeyAnalytics.ts` | I-Day → Commissioned |
-| **Workouts** | `workoutTemplate.ts`, `workoutMerge.ts`, `historyAnalytics.ts`, `benchmarks.ts`, `nextSetTargets.ts`, `workoutVictory.ts` | Logger helpers; RepStack-style next-set targets |
-| **Nutrition / Fuel** | `macroTargets.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts` | Fuel pillar; 0xCal-lite NL meal parse |
+| **Workouts** | `workoutTemplate.ts`, `workoutMerge.ts`, `historyAnalytics.ts`, `benchmarks.ts`, `nextSetTargets.ts`, `justGoSession.ts`, `workoutVictory.ts` | Logger helpers; Just Go; next-set targets |
+| **Nutrition / Fuel** | `macroTargets.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `savedMeals.ts` | Fuel pillar; NL + saved presets |
 | **Fuel Coach** | `fuelCoach/` subfolder | Adaptive meal plan — see [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | **Payments** | `premiumServer.ts`, `payments.ts`, `stripeWebhook.ts`, `paypalWebhook.ts` | Premium gating |
 | **School / PFT** | `schoolClassServer.ts`, `presidentialFitness*.ts`, `fitnessTest*.ts` | America track |

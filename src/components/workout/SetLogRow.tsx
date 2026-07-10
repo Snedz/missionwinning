@@ -71,6 +71,14 @@ export function SetLogRow({
           <Check className="h-3 w-3" />
           {set.reps} × {set.weight}
         </Badge>
+        {set.isPr && (
+          <Badge
+            variant="outline"
+            className="border-brass/50 bg-brass/15 text-brass text-[10px] uppercase tracking-wide"
+          >
+            {t('activePrBadge', { defaultValue: 'PR' })}
+          </Badge>
+        )}
         <div className="ms-auto flex gap-1">
           {!set.rpe ? (
             (['easy', 'med', 'hard'] as const).map((r) => (

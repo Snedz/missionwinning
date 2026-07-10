@@ -22,6 +22,7 @@ import { BarcodeLookup } from "@/components/nutrition/BarcodeLookup";
 import type { FoodSearchItem } from "@/lib/foodSearch";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { estimateMealFromDescription } from "@/lib/nlMealLog";
+import { listMealPresets, saveMealPreset, type SavedMealPreset } from "@/lib/savedMeals";
 import { bumpFuelLogStreak, getFuelLogStreak } from "@/lib/fuelStreak";
 import {
   DEFAULT_QUICK_FOODS,
@@ -70,6 +71,9 @@ export function NutritionPage() {
   const [nlMealText, setNlMealText] = useState("");
   const [nlPreview, setNlPreview] = useState<ReturnType<typeof estimateMealFromDescription>>(null);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [savedMeals, setSavedMeals] = useState<SavedMealPreset[]>(() =>
+    typeof window !== 'undefined' ? listMealPresets() : []
+  );
   const [allLogs, setAllLogs] = useState(() =>
     typeof window !== 'undefined' ? parseNutritionLog(localStorage.getItem('mw_nutrition_log')) : []
   );
@@ -237,6 +241,11 @@ export function NutritionPage() {
 
   const pProgress = Math.min(100, Math.round((totalProtein / targetProtein) * 100));
   const cProgress = Math.min(100, Math.round((totalCals / targetCals) * 100));
+  const carbsTarget = Math.max(1, Math.round(targetCals * 0.45 / 4));
+  const fatTarget = Math.max(1, Math.round(targetCals * 0.25 / 9));
+  const carbsProgress = Math.min(100, Math.round((totalCarbs / carbsTarget) * 100));
+  const fatProgress = Math.min(100, Math.round((totalFat / fatTarget) * 100));
+  const calsLeft = Math.max(0, targetCals - totalCals);
 
   const clearDay = () => {
     setLogged([]);
@@ -279,6 +288,52 @@ export function NutritionPage() {
                 progress={pProgress}
                 tone="emerald"
               />
+            </div>
+            <div className="rounded-xl border border-border/40 bg-muted/15 px-3 py-2 text-center">
+              <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                {t('fuelCalsLeft', { defaultValue: 'Cal left' })}
+              </p>
+              <p className="text-2xl font-bold tabular-nums text-emerald-400">{calsLeft}</p>
+              <p className="text-[10px] text-muted-foreground tabular-nums">
+                {totalCals} / {targetCals}
+              </p>
+            </div>
+            <div className="space-y-2">
+              {(
+                [
+                  {
+                    key: 'p',
+                    label: t('fuelProtein', { defaultValue: 'Protein' }),
+                    pct: pProgress,
+                    bar: 'bg-emerald-500',
+                    line: `${totalProtein}g / ${targetProtein}g`,
+                  },
+                  {
+                    key: 'c',
+                    label: t('fuelCarbsShort', { defaultValue: 'Carbs' }),
+                    pct: carbsProgress,
+                    bar: 'bg-amber-500/80',
+                    line: `${totalCarbs}g / ${carbsTarget}g`,
+                  },
+                  {
+                    key: 'f',
+                    label: t('fuelFatShort', { defaultValue: 'Fat' }),
+                    pct: fatProgress,
+                    bar: 'bg-rose-400/70',
+                    line: `${totalFat}g / ${fatTarget}g`,
+                  },
+                ] as const
+              ).map((m) => (
+                <div key={m.key} className="space-y-1">
+                  <div className="flex justify-between text-[11px] text-muted-foreground">
+                    <span>{m.label}</span>
+                    <span className="tabular-nums">{m.line}</span>
+                  </div>
+                  <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden">
+                    <div className={`h-full ${m.bar} transition-all`} style={{ width: `${m.pct}%` }} />
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="text-xs text-center text-muted-foreground">
               {t('fuelMacrosSummary', {
@@ -363,6 +418,26 @@ export function NutritionPage() {
                 </Button>
               ))}
             </div>
+            {savedMeals.length > 0 && (
+              <div className="space-y-1.5">
+                <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  {t('fuelSavedMeals', { defaultValue: 'Saved meals' })}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {savedMeals.map((m) => (
+                    <Button
+                      key={m.id}
+                      variant="secondary"
+                      size="sm"
+                      className="text-xs"
+                      onClick={() => addEntry(m.name, m.protein, m.cals, m.carbs, m.fat)}
+                    >
+                      {m.name}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="flex flex-wrap gap-2 items-center">
               <Button variant="outline" size="sm" onClick={() => setLogSheetOpen(true)}>
@@ -504,9 +579,32 @@ export function NutritionPage() {
                 </div>
                 <ul className="space-y-1 text-sm">
                   {entries.map((l, i) => (
-                    <li key={`${mealKey}-${i}`} className="flex justify-between">
-                      <span>{l.time} — {l.name}</span>
-                      <span className="text-muted-foreground tabular-nums">+{l.protein}g P • {l.cals} kcal</span>
+                    <li key={`${mealKey}-${i}`} className="flex justify-between gap-2 items-center">
+                      <span className="min-w-0 truncate">{l.time} — {l.name}</span>
+                      <span className="flex items-center gap-2 shrink-0">
+                        <span className="text-muted-foreground tabular-nums text-xs">
+                          +{l.protein}g P • {l.cals} kcal
+                        </span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 px-2 text-[10px]"
+                          onClick={() => {
+                            setSavedMeals(
+                              saveMealPreset({
+                                name: l.name,
+                                protein: l.protein,
+                                cals: l.cals,
+                                carbs: l.carbs,
+                                fat: l.fat,
+                              })
+                            );
+                          }}
+                        >
+                          {t('fuelSaveMeal', { defaultValue: 'Save' })}
+                        </Button>
+                      </span>
                     </li>
                   ))}
                 </ul>

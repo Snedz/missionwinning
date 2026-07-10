@@ -34,6 +34,12 @@ import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { getTodayLayout } from "@/hooks/useTodayLayout";
 import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
+import { useCoachPlan } from "@/hooks/useCoachPlan";
+import { useUnits } from "@/hooks/useUnits";
+import { buildJustGoSession, muscleFreshnessRows } from "@/lib/justGoSession";
+import { MuscleFreshnessStrip } from "@/components/today/MuscleFreshnessStrip";
+import { muscleGroupLabel } from "@/lib/readinessDisplay";
+import { track } from "@/lib/analytics";
 
 const CoachTodayCard = dynamic(
   () => import('@/components/coach/CoachTodayCard').then((m) => m.CoachTodayCard),
@@ -87,6 +93,8 @@ export function HomePage() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  const units = useUnits();
+  const { todaySession } = useCoachPlan();
   const { action, state } = useMissionJourney();
   const layout = getTodayLayout(state.phase);
 
@@ -209,34 +217,11 @@ export function HomePage() {
     load();
   }, []);
 
-  const handleJourneyPrimary = () => {
-    if (activeWorkout) {
-      router.push("/active");
-      return;
-    }
-    if (action.startWorkout) {
-      startWorkout(
-        action.startWorkout.name,
-        action.startWorkout.exercises.map((e) => ({
-          exerciseId: e.exerciseId,
-          sets: e.sets,
-        }))
-      );
-      router.push("/active");
-      return;
-    }
-    router.push(action.href);
-  };
-
-  const onStartStarter = (name: string, exs: Parameters<typeof startWorkout>[1]) => {
-    startWorkout(name, exs);
-    router.push("/active");
-  };
-
   // === Today Hub computations (memoized — avoid recompute on every render) ===
   // Slim path: stored muscleGroups only — no sync EXERCISES import on first paint.
   const [readiness, setReadiness] = useState(() => computeReadinessFromHistory(workoutHistory));
   const recommendedFocus = useMemo(() => getRecommendedFocus(readiness), [readiness]);
+  const freshnessRows = useMemo(() => muscleFreshnessRows(readiness), [readiness]);
 
   useEffect(() => {
     setReadiness(computeReadinessFromHistory(workoutHistory));
@@ -382,6 +367,61 @@ export function HomePage() {
   const userGoalRaw = typeof window !== 'undefined' ? (localStorage.getItem('mw_primary_goal') || goalPresetValue('strength')) : goalPresetValue('strength');
   const userGoal = formatStoredGoal(userGoalRaw, t);
   const userEquip = typeof window !== 'undefined' ? (localStorage.getItem('mw_equipment') || 'full-gym') : 'full-gym';
+
+  const handleJourneyPrimary = () => {
+    if (activeWorkout) {
+      router.push('/active');
+      return;
+    }
+    const trainReady =
+      action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned';
+    if (trainReady) {
+      const session = buildJustGoSession({
+        focus: recommendedFocus,
+        readiness,
+        history: workoutHistory,
+        units,
+        equipment: userEquip,
+        coachToday: todaySession
+          ? {
+              name: todaySession.name,
+              status: todaySession.status,
+              focusGroups: todaySession.focusGroups,
+              exercises: todaySession.exercises,
+            }
+          : null,
+      });
+      if (session.exercises.length > 0) {
+        startWorkout(session.name, session.exercises);
+        track('just_go_started', { source: session.source, focus: session.focusGroup });
+        router.push('/active');
+        return;
+      }
+    }
+    if (action.startWorkout) {
+      startWorkout(
+        action.startWorkout.name,
+        action.startWorkout.exercises.map((e) => ({
+          exerciseId: e.exerciseId,
+          sets: e.sets,
+        }))
+      );
+      router.push('/active');
+      return;
+    }
+    router.push(action.href);
+  };
+
+  const onStartStarter = (name: string, exs: Parameters<typeof startWorkout>[1]) => {
+    startWorkout(name, exs);
+    router.push('/active');
+  };
+
+  const justGoMeta =
+    !activeWorkout &&
+    (action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned')
+      ? { focusLabel: muscleGroupLabel(recommendedFocus.group, t) }
+      : null;
 
   const renderAccordionSection = (id: TodaySectionId) => {
     if (!sectionPrefs[id]) return null;
@@ -530,6 +570,10 @@ export function HomePage() {
         />
       ),
     });
+    staggerBlocks.push({
+      key: 'freshness',
+      node: <MuscleFreshnessStrip rows={freshnessRows} />,
+    });
   }
 
   // One boss CTA above the fold (JOURNEY F2).
@@ -540,6 +584,7 @@ export function HomePage() {
         action={action}
         onPrimaryClick={handleJourneyPrimary}
         activeWorkout={!!activeWorkout}
+        justGoMeta={justGoMeta}
       />
     ),
   });
