@@ -4,6 +4,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-10 — Wave 3 Forge Fitness steals
+
+**Docs:** [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md) § Wave 3  
+**Build:** `2026.07-unified.51`
+
+### Shipped
+
+- Research: Forge Just Go / progression / meal density steal sheet
+- **Just Go** rule-based session from readiness (+ coach today when present) — free, no API key
+- Train: auto-seed next-set targets; brass PR chip + haptic
+- Today: muscle freshness strip above JourneyHero
+- Fuel: cal-left + macro bars + saved meal presets
+- Victory progression insight; Landing/Compare “no AI key” proof
+
+---
+
 ## 2026-07-10 — Wave 2 UI + feature steals
 
 **Docs:** [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md) § Wave 2  

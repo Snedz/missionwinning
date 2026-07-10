@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-10** (Wave 2 UI + feature steals; build `2026.07-unified.50`).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-10** (Wave 3 Forge steals; build `2026.07-unified.51`).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -30,8 +30,8 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 
 | Pillar | Free tier (vision) | Free tier (app) | Premium (vision) | Premium (app) |
 |--------|-------------------|-----------------|------------------|---------------|
-| **/train** | Robust tracker, basic library | ⭐⭐⭐⭐ Logger, 200+ library, templates, form guides, next-set targets | AI Coach, 30+ plans | ⭐⭐⭐ Mission Coach engine + taster; premium regen |
-| **/fuel** | Basic log, accessible recipes | ⭐⭐⭐⭐ Log, water, NL quick log, 12 recipes, barcode | Deep plans, coaching | ⭐⭐⭐ Fuel Coach + 92 server recipes |
+| **/train** | Robust tracker, basic library | ⭐⭐⭐⭐ Logger, Just Go, next-set targets, PR chip, templates, form guides | AI Coach, 30+ plans | ⭐⭐⭐ Mission Coach engine + taster; premium regen |
+| **/fuel** | Basic log, accessible recipes | ⭐⭐⭐⭐ Log, NL + saved meals, cal-left bars, water, barcode, 12 recipes | Deep plans, coaching | ⭐⭐⭐ Fuel Coach + 92 server recipes |
 | **/move** | Basic flows, bodyweight | ⭐⭐⭐ Timed flows + guided player | Pliability / Skill Yoga depth | ⭐⭐⭐ 11 premium multi-step flows |
 | **/mind** | Basic habits, recovery | ⭐⭐⭐ Breathing, guided text, check-in | Calm/Waking Up depth | ⭐⭐⭐ 17 premium timed sessions |
 | **/track** | Core logging, streaks | ⭐⭐⭐ Manual activities, import | MapMyFitness-style GPS | ⭐⭐⭐ GPS panel (premium-gated) |

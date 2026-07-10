@@ -55,13 +55,15 @@ interface WorkoutState {
     setIndex: number,
     reps: number,
     weight: number,
-    rpe?: 'easy' | 'med' | 'hard'
+    rpe?: 'easy' | 'med' | 'hard',
+    isPr?: boolean
   ) => void;
   logSetAndAdvance: (
     exerciseIndex: number,
     setIndex: number,
     reps: number,
-    weight: number
+    weight: number,
+    isPr?: boolean
   ) => { exerciseIndex: number; setIndex: number } | null;
   rateSet: (exerciseIndex: number, setIndex: number, rpe: 'easy' | 'med' | 'hard') => void;
   setSetKind: (exerciseIndex: number, setIndex: number, kind: SetKind) => void;
@@ -280,7 +282,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
-      logSet: (exerciseIndex, setIndex, reps, weight, rpe) => {
+      logSet: (exerciseIndex, setIndex, reps, weight, rpe, isPr) => {
         set((s) => {
           if (!s.activeWorkout) return s;
           const exercises = [...s.activeWorkout.exercises];
@@ -293,6 +295,7 @@ export const useWorkoutStore = create<WorkoutState>()(
             completed: true,
             rpe,
             kind: sets[setIndex].kind ?? 'normal',
+            isPr: isPr || undefined,
           };
           ex.sets = sets;
           exercises[exerciseIndex] = ex;
@@ -302,8 +305,8 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
-      logSetAndAdvance: (exerciseIndex, setIndex, reps, weight) => {
-        get().logSet(exerciseIndex, setIndex, reps, weight);
+      logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr) => {
+        get().logSet(exerciseIndex, setIndex, reps, weight, undefined, isPr);
         const aw = get().activeWorkout;
         if (!aw) return null;
         return advanceAfterLog(aw.exercises, exerciseIndex, setIndex);

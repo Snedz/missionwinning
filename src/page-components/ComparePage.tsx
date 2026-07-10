@@ -70,6 +70,19 @@ const COMPARE_ROWS: Row[] = [
     hevy: '—',
     strong: '—',
   },
+  {
+    feature: 'AI API key required',
+    mw: 'No — Just Go is rule-based & free',
+    hevy: '—',
+    strong: '—',
+    source: 'vs Forge Fitness BYOK Pro (2026)',
+  },
+  {
+    feature: 'Rest timer / PRs / progression (free)',
+    mw: 'Included forever',
+    hevy: 'Core free; limits elsewhere',
+    strong: 'Core free; limits elsewhere',
+  },
 ];
 
 export function ComparePage() {
@@ -81,7 +94,8 @@ export function ComparePage() {
         eyebrow={t('compareEyebrow', { defaultValue: 'Honest comparison' })}
         title={t('compareTitle', { defaultValue: 'How we compare' })}
         subtitle={t('compareSubtitle', {
-          defaultValue: 'Free tiers side by side — Mission Winning leads with the tracker, not the paywall.',
+          defaultValue:
+            'Free tiers side by side — Mission Winning leads with the tracker, not the paywall. No AI API key required.',
         })}
       />
 

@@ -30,6 +30,7 @@ type AnalyticsEvent =
   | 'coach_plan_loaded'
   | 'coach_week_generated'
   | 'coach_session_started'
+  | 'just_go_started'
   | 'coach_plan_adapted'
   | 'coach_plan_regenerated_fatigue'
   | 'coach_taster_locked'

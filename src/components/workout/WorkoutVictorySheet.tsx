@@ -149,6 +149,12 @@ export function WorkoutVictorySheet({
           </div>
         )}
 
+        {summary.progressionInsight && (
+          <p className="text-center text-sm text-emerald-300/90 px-2 leading-relaxed">
+            {summary.progressionInsight}
+          </p>
+        )}
+
         {summary.streak > 0 && (
           <p className="text-center text-sm text-emerald-400/90">
             {t('victoryStreak', {

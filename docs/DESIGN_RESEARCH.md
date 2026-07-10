@@ -174,8 +174,45 @@ Per [`STRATEGY.md`](../STRATEGY.md):
 
 ---
 
+## 7. Wave 3 — Forge Fitness (2026-07-10)
+
+Source: [forgefitnessapp.com](https://forgefitnessapp.com/) — FORGE Workout OS (iPhone beta; BYOK AI).
+
+| Forge nails | Steal for MW | Avoid |
+|-------------|--------------|-------|
+| **Just Go** — one tap builds today’s workout | Free **rule-based** Just Go from readiness + starters / coach session (no API key) | BYOK Claude/ChatGPT/Gemini; Pro-only generation |
+| Double progression auto-fills next weights | **Auto-seed** empty set inputs from `nextSetTargets` (Apply optional) | Paywall progression (Forge Pro) |
+| Today: muscle chips “CHEST 5d · REC” + score + Just Go | Above-fold **muscle freshness strip** (data already in readiness) | Clone FORGE Score branding / violet UI |
+| Trophy PR banners | **Brass PR chip** on completed set row + haptic | Confetti / Hevy blue |
+| Meal tracker: cal left, macro bars, saved meals, NL | **Cal left + denser bars**; **saved meal presets** | Full camera AI scan; supplement TAKE ALL domain |
+| Post-workout insight cards | Victory **progression line** + existing body delta | Wearable HRV insights |
+| “0 data on our servers” / privacy | Marketing: offline-first **without** requiring an AI key | Claiming we never use cloud when signed-in sync exists |
+| Free vs Pro gates rest/PRs/timer | Keep rest, PRs, targets, Just Go **free forever** | Forge’s free-tier gutting |
+
+### Wave 3 MW gaps (cite)
+
+| Gap | Path |
+|-----|------|
+| Just Go missing as primary CTA path | [`JourneyHero.tsx`](../src/components/journey/JourneyHero.tsx), [`HomePage.tsx`](../src/page-components/HomePage.tsx) |
+| Targets require Apply | [`ActiveWorkoutPage.tsx`](../src/page-components/ActiveWorkoutPage.tsx) |
+| Muscle freshness buried in accordion Progress | [`TodayProgressSection.tsx`](../src/components/today/TodayProgressSection.tsx) |
+| No saved meals | [`NutritionPage.tsx`](../src/page-components/NutritionPage.tsx), [`nutritionQuickLog.ts`](../src/lib/nutritionQuickLog.ts) |
+| PR = toast only | [`SetLogRow.tsx`](../src/components/workout/SetLogRow.tsx) |
+
+### Wave 3 ship order
+
+1. Research § Forge  
+2. Just Go rule session + Today wire  
+3. Auto-seed targets + PR chip  
+4. Muscle freshness strip  
+5. Fuel cal-left + saved meals  
+6. Victory insight + Landing/Compare proof  
+
+---
+
 ## Sources folded in
 
 - Internal: UX_UNIFIED_PLAN (Bevel/Freeletics), ROADMAP_V4_EXPERIENCE (no teardown)  
 - External: Hevy/Strong DESIGN.md, WHOOP clinical metrics, wellness CRO, Linear density  
-- Wave 2: RepStack, IntervalCoach, 0xCal, Bevel, Freeletics Super Bundle, CrossFit/WOD loggers
+- Wave 2: RepStack, IntervalCoach, 0xCal, Bevel, Freeletics Super Bundle, CrossFit/WOD loggers  
+- Wave 3: Forge Fitness / FORGE Workout OS

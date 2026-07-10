@@ -188,4 +188,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-07-10 (Wave 2 UI + feature steals `2026.07-unified.50`; prior: UI research `.49`, de i18n / slim readiness)
+Last updated: 2026-07-10 (Wave 3 Forge steals `2026.07-unified.51`; prior: Wave 2 `.50`, UI research `.49`)
