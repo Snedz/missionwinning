@@ -58,3 +58,43 @@ test.describe('Phase H hero flows', () => {
     expect(stored?.startsWith('es')).toBeTruthy();
   });
 });
+
+test.describe('Wave 5 public CTA integrity', () => {
+  test.beforeEach(async ({ page, context, baseURL }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+  });
+
+  test('compare forge story links to welcome', async ({ page }) => {
+    const res = await page.goto('/compare/forge', { waitUntil: 'domcontentloaded' });
+    expect(res?.status()).toBe(200);
+    await expect(page.getByRole('link', { name: /start free/i }).first()).toHaveAttribute(
+      'href',
+      '/welcome'
+    );
+  });
+
+  test('learn path teaser CTA goes to welcome', async ({ page }) => {
+    const res = await page.goto('/paths', { waitUntil: 'domcontentloaded' });
+    expect(res?.status()).toBe(200);
+    const firstPath = page.locator('a[href^="/paths/"]').first();
+    await expect(firstPath).toBeVisible();
+    await firstPath.click();
+    await expect(page).toHaveURL(/\/paths\//);
+    await expect(page.getByRole('link', { name: /begin i-day|start free/i }).first()).toHaveAttribute(
+      'href',
+      '/welcome'
+    );
+  });
+
+  test('exercise public page CTA to welcome', async ({ page }) => {
+    const res = await page.goto('/exercises/squats', { waitUntil: 'domcontentloaded' });
+    expect(res?.status()).toBe(200);
+    await expect(page.getByRole('link', { name: /start free|track|welcome|begin/i }).first()).toBeVisible();
+    const welcome = page.locator('a[href="/welcome"]').first();
+    await expect(welcome).toBeVisible();
+  });
+});

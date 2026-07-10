@@ -7,24 +7,31 @@
 import Link from 'next/link';
 import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dumbbell, Search } from 'lucide-react';
+import { Dumbbell, Search, SlidersHorizontal, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { LibraryDetailSheet } from '@/components/library/LibraryDetailSheet';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { FilterChip } from '@/components/ui/FilterChip';
 import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { PROGRAM_TAG_LABELS } from '@/data/exerciseEnrichment';
 import {
+  DEFAULT_LIBRARY_FILTERS,
   filterExercises,
   uniqueMuscleGroups,
   type LibraryFilterState,
 } from '@/lib/libraryFilters';
 import { usePremium } from '@/hooks/usePremium';
 import type { ProgramTag } from '@/types';
-import { cn } from '@/lib/utils';
 
 const EQUIP_CHIPS = ['', 'bodyweight', 'dumbbell', 'barbell', 'cable', 'band', 'kettlebell'] as const;
 const LEVEL_CHIPS = ['', 'beginner', 'intermediate', 'advanced'] as const;
@@ -47,54 +54,30 @@ const LEVEL_LABELS: Record<string, string> = {
   advanced: 'libraryLevelAdvanced',
 };
 
-function FilterChip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        'shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-        active
-          ? 'border-primary bg-primary/15 text-primary'
-          : 'border-border/60 text-muted-foreground hover:bg-muted/50'
-      )}
-    >
-      {children}
-    </button>
-  );
-}
-
 export function LibraryPage() {
   const { t } = useTranslation();
   const { premium } = usePremium();
-  const [filters, setFilters] = useState<LibraryFilterState>({
-    query: '',
-    equipment: '',
-    tag: '',
-    level: '',
-    muscle: '',
-  });
+  const [filters, setFilters] = useState<LibraryFilterState>({ ...DEFAULT_LIBRARY_FILTERS });
   const [detailId, setDetailId] = useState<string | null>(null);
   const [catalogRevision, setCatalogRevision] = useState(0);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [muscleQuery, setMuscleQuery] = useState('');
 
   useEffect(() => {
     void ensureFullExerciseCatalog().then(() => setCatalogRevision((n) => n + 1));
   }, []);
 
-  // EXERCISES mutates in place when extended catalog loads — catalogRevision forces re-filter.
-  const muscleChips = useMemo(
-    () => ['', ...uniqueMuscleGroups(EXERCISES).slice(0, 12)],
+  const allMuscles = useMemo(
+    () => uniqueMuscleGroups(EXERCISES),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
     [catalogRevision]
   );
+  const muscleOptions = useMemo(() => {
+    const q = muscleQuery.trim().toLowerCase();
+    if (!q) return allMuscles;
+    return allMuscles.filter((m) => m.toLowerCase().includes(q));
+  }, [allMuscles, muscleQuery]);
+
   const filtered = useMemo(
     () => filterExercises(EXERCISES, filters),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
@@ -105,6 +88,12 @@ export function LibraryPage() {
   const setFilter = <K extends keyof LibraryFilterState>(key: K, value: LibraryFilterState[K]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
+
+  const activeFilterCount = [filters.equipment, filters.tag, filters.level, filters.muscle].filter(
+    Boolean
+  ).length;
+
+  const clearFilters = () => setFilters({ ...DEFAULT_LIBRARY_FILTERS, query: filters.query });
 
   return (
     <PillarPageShell
@@ -129,76 +118,64 @@ export function LibraryPage() {
           : t('libraryFreeCatalog', { defaultValue: ' — free core includes the full catalog.' })}
       </p>
 
-      <div className="sticky top-0 z-10 -mx-1 space-y-3 bg-background/95 backdrop-blur-sm py-2">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder={t('librarySearchPlaceholder', { defaultValue: 'Search name or muscle...' })}
-            value={filters.query}
-            onChange={(e) => setFilter('query', e.target.value)}
-            className="pl-9"
-          />
+      <div className="sticky top-0 z-10 -mx-1 space-y-2 bg-background/95 backdrop-blur-sm py-2">
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder={t('librarySearchPlaceholder', { defaultValue: 'Search name or muscle...' })}
+              value={filters.query}
+              onChange={(e) => setFilter('query', e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            className="shrink-0 min-h-[44px] gap-1.5"
+            onClick={() => setFiltersOpen(true)}
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            {t('libraryFilters', { defaultValue: 'Filters' })}
+            {activeFilterCount > 0 && (
+              <span className="tabular-nums text-emerald-400">({activeFilterCount})</span>
+            )}
+          </Button>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground self-center shrink-0">
-            {t('libraryFilterMuscle', { defaultValue: 'Muscle' })}
-          </span>
-          {muscleChips.map((m) => (
-            <FilterChip
-              key={m || 'all-muscle'}
-              active={filters.muscle === m}
-              onClick={() => setFilter('muscle', m)}
+        {activeFilterCount > 0 && (
+          <div className="flex flex-wrap gap-1.5 items-center">
+            {filters.muscle && (
+              <FilterChip active onClick={() => setFilter('muscle', '')}>
+                {filters.muscle} <X className="inline h-3 w-3 ms-0.5" />
+              </FilterChip>
+            )}
+            {filters.equipment && (
+              <FilterChip active onClick={() => setFilter('equipment', '')}>
+                {t(EQUIP_LABELS[filters.equipment] ?? 'libraryEquipAll')}{' '}
+                <X className="inline h-3 w-3 ms-0.5" />
+              </FilterChip>
+            )}
+            {filters.level && (
+              <FilterChip active onClick={() => setFilter('level', '')}>
+                {t(LEVEL_LABELS[filters.level] ?? 'libraryLevelAll')}{' '}
+                <X className="inline h-3 w-3 ms-0.5" />
+              </FilterChip>
+            )}
+            {filters.tag && (
+              <FilterChip active onClick={() => setFilter('tag', '')}>
+                {PROGRAM_TAG_LABELS[filters.tag]} <X className="inline h-3 w-3 ms-0.5" />
+              </FilterChip>
+            )}
+            <button
+              type="button"
+              className="text-xs text-muted-foreground underline"
+              onClick={clearFilters}
             >
-              {m || t('libraryEquipAll', { defaultValue: 'All' })}
-            </FilterChip>
-          ))}
-        </div>
-
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground self-center shrink-0">
-            {t('libraryFilterEquipment', { defaultValue: 'Equipment' })}
-          </span>
-          {EQUIP_CHIPS.map((e) => (
-            <FilterChip
-              key={e || 'all-equip'}
-              active={filters.equipment === e}
-              onClick={() => setFilter('equipment', e)}
-            >
-              {t(EQUIP_LABELS[e])}
-            </FilterChip>
-          ))}
-        </div>
-
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground self-center shrink-0">
-            {t('libraryFilterLevel', { defaultValue: 'Level' })}
-          </span>
-          {LEVEL_CHIPS.map((l) => (
-            <FilterChip
-              key={l || 'all-level'}
-              active={filters.level === l}
-              onClick={() => setFilter('level', l)}
-            >
-              {t(LEVEL_LABELS[l])}
-            </FilterChip>
-          ))}
-        </div>
-
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground self-center shrink-0">
-            {t('libraryFilterTag', { defaultValue: 'Goal' })}
-          </span>
-          {TAG_CHIPS.map((tag) => (
-            <FilterChip
-              key={tag || 'all-tag'}
-              active={filters.tag === tag}
-              onClick={() => setFilter('tag', tag)}
-            >
-              {tag ? PROGRAM_TAG_LABELS[tag] : t('libraryTagAll', { defaultValue: 'All' })}
-            </FilterChip>
-          ))}
-        </div>
+              {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
+            </button>
+          </div>
+        )}
 
         <p className="text-xs text-muted-foreground">
           {t('libraryShowingCount', {
@@ -208,6 +185,101 @@ export function LibraryPage() {
           })}
         </p>
       </div>
+
+      <Dialog open={filtersOpen} onOpenChange={setFiltersOpen}>
+        <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t('libraryFilters', { defaultValue: 'Filters' })}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                {t('libraryFilterMuscle', { defaultValue: 'Muscle' })}
+              </p>
+              <Input
+                type="search"
+                value={muscleQuery}
+                onChange={(e) => setMuscleQuery(e.target.value)}
+                placeholder={t('libraryMuscleSearch', { defaultValue: 'Search muscles…' })}
+              />
+              <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
+                <FilterChip active={!filters.muscle} onClick={() => setFilter('muscle', '')}>
+                  {t('libraryEquipAll', { defaultValue: 'All' })}
+                </FilterChip>
+                {muscleOptions.map((m) => (
+                  <FilterChip
+                    key={m}
+                    active={filters.muscle === m}
+                    onClick={() => setFilter('muscle', m)}
+                  >
+                    {m}
+                  </FilterChip>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                {t('libraryFilterEquipment', { defaultValue: 'Equipment' })}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {EQUIP_CHIPS.map((e) => (
+                  <FilterChip
+                    key={e || 'all-equip'}
+                    active={filters.equipment === e}
+                    onClick={() => setFilter('equipment', e)}
+                  >
+                    {t(EQUIP_LABELS[e])}
+                  </FilterChip>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                {t('libraryFilterLevel', { defaultValue: 'Level' })}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {LEVEL_CHIPS.map((l) => (
+                  <FilterChip
+                    key={l || 'all-level'}
+                    active={filters.level === l}
+                    onClick={() => setFilter('level', l)}
+                  >
+                    {t(LEVEL_LABELS[l])}
+                  </FilterChip>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                {t('libraryFilterTag', { defaultValue: 'Goal' })}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {TAG_CHIPS.map((tag) => (
+                  <FilterChip
+                    key={tag || 'all-tag'}
+                    active={filters.tag === tag}
+                    onClick={() => setFilter('tag', tag)}
+                  >
+                    {tag ? PROGRAM_TAG_LABELS[tag] : t('libraryTagAll', { defaultValue: 'All' })}
+                  </FilterChip>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <Button variant="outline" className="flex-1" onClick={clearFilters}>
+                {t('libraryClearFilters', { defaultValue: 'Clear filters' })}
+              </Button>
+              <Button variant="fitness" className="flex-1" onClick={() => setFiltersOpen(false)}>
+                {t('libraryApplyFilters', { defaultValue: 'Done' })}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((ex) => (
@@ -261,9 +333,7 @@ export function LibraryPage() {
               'No exercises match these filters. Try clearing equipment or muscle filters.',
           })}
           actionLabel={t('libraryClearFilters', { defaultValue: 'Clear filters' })}
-          onAction={() =>
-            setFilters({ query: '', equipment: '', tag: '', level: '', muscle: '' })
-          }
+          onAction={() => setFilters({ ...DEFAULT_LIBRARY_FILTERS })}
         />
       )}
 
@@ -271,6 +341,7 @@ export function LibraryPage() {
         exercise={detailExercise}
         open={!!detailId}
         onOpenChange={(open) => !open && setDetailId(null)}
+        onSelectExercise={(id) => setDetailId(id)}
       />
     </PillarPageShell>
   );

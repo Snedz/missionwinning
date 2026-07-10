@@ -1,6 +1,6 @@
 'use client';
 /**
- * Page: /welcome — I-Day onboarding
+ * Page: /welcome — I-Day onboarding (cinematic briefing handoff)
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
@@ -30,6 +30,7 @@ import {
   loadDaysPerWeek,
   saveDaysPerWeek,
 } from '@/lib/coach/schedulePrefs';
+import { cn } from '@/lib/utils';
 
 const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
 
@@ -37,6 +38,8 @@ type Step = 'welcome' | 'mission' | 'profile' | 'signin';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
+
+const STEP_ORDER: Step[] = ['welcome', 'mission', 'profile', 'signin'];
 
 export function WelcomePage() {
   const router = useRouter();
@@ -113,9 +116,16 @@ export function WelcomePage() {
     setStep('signin');
   };
 
+  const stepIndex = STEP_ORDER.indexOf(step);
+
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
-      <header className="glass-nav border-b border-border/50 px-4 py-3.5 flex items-center gap-3">
+    <div className="relative min-h-screen text-foreground flex flex-col overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(16,185,129,0.14),transparent_50%),radial-gradient(ellipse_at_90%_20%,rgba(180,140,60,0.08),transparent_45%),linear-gradient(180deg,hsl(222_40%_8%)_0%,hsl(222_45%_6%)_100%)]"
+        aria-hidden
+      />
+
+      <header className="relative z-10 border-b border-border/40 px-4 py-3.5 flex items-center gap-3">
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-display text-sm font-bold text-primary-foreground">
           MW
         </span>
@@ -129,24 +139,61 @@ export function WelcomePage() {
         </span>
       </header>
 
-      <main className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-lg content-card page-enter p-6 md:p-8 space-y-6">
+      {!isEdit && (
+        <div className="relative z-10 mx-auto w-full max-w-lg px-5 pt-4 flex gap-1.5" aria-hidden>
+          {STEP_ORDER.map((s, i) => (
+            <div
+              key={s}
+              className={cn(
+                'h-1 flex-1 rounded-full transition-colors',
+                i <= stepIndex ? 'bg-emerald-500' : 'bg-border/50'
+              )}
+            />
+          ))}
+        </div>
+      )}
+
+      <main className="relative z-10 flex-1 flex items-center justify-center p-4 md:p-8">
+        <div
+          key={step}
+          className="w-full max-w-lg page-enter space-y-6"
+        >
             {step === 'welcome' && (
               <>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <p className="eyebrow-live">
                     {t('welcomeKicker', { defaultValue: 'I-Day · About two minutes' })}
                   </p>
-                  <h1 className="display-section text-[1.75rem] md:text-[2.5rem]">
+                  <h1 className="display-hero text-[2rem] md:text-[2.75rem] leading-[1.05]">
                     {t('welcomeTitle', { defaultValue: 'Welcome, Mission Member' })}
                   </h1>
-                  <p className="text-muted-foreground text-sm leading-relaxed md:text-base">
+                  <p className="text-muted-foreground text-base leading-relaxed max-w-md">
                     {t('welcomeSubtitle', {
                       defaultValue:
                         'Set your path, then log your first session. One step at a time — Today always shows the next action.',
                     })}
                   </p>
                 </div>
+
+                <div className="rounded-2xl border border-emerald-500/25 bg-emerald-950/20 p-4 space-y-3">
+                  <p className="text-[10px] uppercase tracking-widest text-emerald-400/90 font-medium">
+                    {t('welcomePreviewLabel', { defaultValue: 'What you’ll open next' })}
+                  </p>
+                  <div className="flex items-end justify-between gap-4">
+                    <div>
+                      <p className="text-xs text-muted-foreground">
+                        {t('todayMissionScore', { defaultValue: 'Mission Score' })}
+                      </p>
+                      <p className="text-3xl font-bold tabular-nums text-emerald-400 score-tick">—</p>
+                    </div>
+                    <div className="text-right text-xs text-muted-foreground max-w-[10rem]">
+                      {t('welcomePreviewJustGo', {
+                        defaultValue: 'Today → Just Go builds a free session from your gear.',
+                      })}
+                    </div>
+                  </div>
+                </div>
+
                 <button type="button" className="primary-action" onClick={handleBegin}>
                   {t('welcomeBegin', { defaultValue: 'Begin' })}
                 </button>
@@ -155,13 +202,13 @@ export function WelcomePage() {
 
             {step === 'mission' && (
               <>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <p className="eyebrow">{t('welcomeMissionLead', { defaultValue: 'The mission' })}</p>
-                  <h2 className="display-section text-[1.5rem] md:text-[1.85rem]">
+                  <h2 className="display-section text-[1.65rem] md:text-[2rem]">
                     {t('welcomeMissionTitle', { defaultValue: 'One path. Free fundamentals.' })}
                   </h2>
                 </div>
-                <div className="space-y-3 max-h-52 overflow-y-auto text-sm text-muted-foreground leading-relaxed pr-1">
+                <div className="space-y-4 text-sm md:text-base text-muted-foreground leading-relaxed">
                   <p>
                     {t('welcomeMissionBody1', {
                       defaultValue:
@@ -227,7 +274,7 @@ export function WelcomePage() {
                         setDaysPerWeek(defaultDaysPerWeek(e.target.value));
                       }
                     }}
-                    className="w-full rounded-xl bg-background border border-border/60 px-3 py-2.5 min-h-[44px]"
+                    className="w-full rounded-xl bg-background/80 border border-border/60 px-3 py-2.5 min-h-[44px]"
                   >
                     {EXPERIENCE_VALUES.map((value) => (
                       <option key={value} value={value}>
@@ -243,7 +290,7 @@ export function WelcomePage() {
                   <select
                     value={equipment}
                     onChange={(e) => setEquipment(e.target.value)}
-                    className="w-full rounded-xl bg-background border border-border/60 px-3 py-2.5 min-h-[44px]"
+                    className="w-full rounded-xl bg-background/80 border border-border/60 px-3 py-2.5 min-h-[44px]"
                   >
                     {EQUIPMENT_VALUES.map((value) => (
                       <option key={value} value={value}>
@@ -283,7 +330,7 @@ export function WelcomePage() {
                   <input
                     value={isCustomGoal(primaryGoal) ? primaryGoal : ''}
                     onChange={(e) => setPrimaryGoal(e.target.value)}
-                    className="w-full rounded-xl bg-background border border-border/60 px-3 py-2.5 min-h-[44px]"
+                    className="w-full rounded-xl bg-background/80 border border-border/60 px-3 py-2.5 min-h-[44px]"
                     placeholder={t('welcomeGoalPlaceholder', {
                       defaultValue: 'Build strength and stay healthy',
                     })}
@@ -375,7 +422,7 @@ export function WelcomePage() {
         </div>
       </main>
 
-      <AppLegalFooter className="border-t border-border/30" />
+      <AppLegalFooter className="relative z-10 border-t border-border/30" />
     </div>
   );
 }

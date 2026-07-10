@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
 import { Layers, PenTool, Plus, Trash2, ChevronUp, ChevronDown, ChevronRight } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs } from "@/components/ui/tabs";
 import type { ProgramCategory, ProgramSession, ProgramTemplate } from "@/data/programTemplates";
 
 const ProgramTemplatesPanel = dynamic(
@@ -35,13 +35,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Table,
   TableBody,
   TableCell,
@@ -50,7 +43,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
-import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from "@/data/exercises";
+import { ensureFullExerciseCatalog, getExerciseById } from "@/data/exercises";
 import { useWorkoutStore } from "@/store/workoutStore";
 import type { WorkoutExerciseTemplate } from "@/types";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
@@ -58,6 +51,7 @@ import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
 import { reorderDraftExercises } from "@/lib/builderDraft";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { ExercisePicker } from "@/components/library/ExercisePicker";
 
 interface DraftExercise extends WorkoutExerciseTemplate {
   key: string;
@@ -78,6 +72,7 @@ export function BuilderPage() {
   const unitLabel = weightUnitLabel(units);
   const [templateCategory, setTemplateCategory] = useState<ProgramCategory>("beginner");
   const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [showAllSaved, setShowAllSaved] = useState(false);
 
   useEffect(() => {
     void ensureFullExerciseCatalog();
@@ -341,17 +336,30 @@ export function BuilderPage() {
           value={templateCategory}
           onValueChange={(v) => setTemplateCategory(v as ProgramCategory)}
         >
-          <TabsList className="grid w-full grid-cols-3 h-12">
-            <TabsTrigger value="beginner" className="text-base font-semibold">
-              {t('builderTabBeginner', { defaultValue: 'Beginner' })}
-            </TabsTrigger>
-            <TabsTrigger value="advanced" className="text-base font-semibold">
-              {t('builderTabAdvanced', { defaultValue: 'Advanced' })}
-            </TabsTrigger>
-            <TabsTrigger value="pro" className="text-base font-semibold">
-              {t('builderTabPro', { defaultValue: 'Pro' })}
-            </TabsTrigger>
-          </TabsList>
+          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Template categories">
+            {(
+              [
+                ['beginner', 'builderTabBeginner', 'Beginner'],
+                ['advanced', 'builderTabAdvanced', 'Advanced'],
+                ['pro', 'builderTabPro', 'Pro'],
+              ] as const
+            ).map(([value, key, fallback]) => (
+              <button
+                key={value}
+                type="button"
+                role="tab"
+                aria-selected={templateCategory === value}
+                onClick={() => setTemplateCategory(value)}
+                className={
+                  templateCategory === value
+                    ? 'rounded-full border border-emerald-500/50 bg-emerald-950/40 px-4 py-2 text-sm font-semibold text-emerald-300'
+                    : 'rounded-full border border-border/50 bg-muted/20 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground'
+                }
+              >
+                {t(key, { defaultValue: fallback })}
+              </button>
+            ))}
+          </div>
         </Tabs>
 
         <ProgramTemplatesPanel
@@ -368,7 +376,7 @@ export function BuilderPage() {
             {t('builderSavedTitle', { defaultValue: 'Saved workouts' })}
           </h3>
           <div className="grid gap-3">
-            {savedWorkouts.map((w) => (
+            {(showAllSaved ? savedWorkouts : savedWorkouts.slice(0, 6)).map((w) => (
               <Card key={w.id} className="content-card pressable-card">
                 <CardContent className="flex items-center justify-between p-4">
                   <div>
@@ -388,6 +396,21 @@ export function BuilderPage() {
               </Card>
             ))}
           </div>
+          {savedWorkouts.length > 6 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mt-2 w-full"
+              onClick={() => setShowAllSaved((v) => !v)}
+            >
+              {showAllSaved
+                ? t('builderShowLessSaved', { defaultValue: 'Show less' })
+                : t('builderShowAllSaved', {
+                    count: savedWorkouts.length,
+                    defaultValue: `Show all ${savedWorkouts.length}`,
+                  })}
+            </Button>
+          )}
         </div>
       ) : (
         <EmptyState
@@ -421,22 +444,9 @@ export function BuilderPage() {
             </div>
           )}
 
-          <div className="flex gap-2">
-            <Select value={selectedExerciseId} onValueChange={setSelectedExerciseId}>
-              <SelectTrigger className="flex-1">
-                <SelectValue
-                  placeholder={t('builderSelectExercise', { defaultValue: 'Select exercise…' })}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {EXERCISES.map((ex) => (
-                  <SelectItem key={ex.id} value={ex.id}>
-                    {ex.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button onClick={addExercise} disabled={!selectedExerciseId}>
+          <div className="flex gap-2 items-start">
+            <ExercisePicker value={selectedExerciseId} onChange={setSelectedExerciseId} />
+            <Button onClick={addExercise} disabled={!selectedExerciseId} className="min-h-[44px] shrink-0">
               <Plus className="h-4 w-4" />
               {t('builderAdd', { defaultValue: 'Add' })}
             </Button>

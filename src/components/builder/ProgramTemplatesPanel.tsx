@@ -2,9 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -61,19 +63,25 @@ function ProgramList({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {programs.map((program) => (
-        <div
+        <details
           key={program.id}
-          className="rounded-lg border border-border bg-card p-4 space-y-3"
+          className="group rounded-lg border border-border bg-card"
         >
-          <div className="flex flex-wrap items-start justify-between gap-2">
-            <div>
+          <summary className="flex cursor-pointer list-none items-start justify-between gap-2 p-4 min-h-[44px] [&::-webkit-details-marker]:hidden">
+            <div className="min-w-0 text-left">
               <h4 className="font-semibold text-base">{program.name}</h4>
-              <p className="text-sm text-muted-foreground mt-0.5">{program.description}</p>
+              <p className="text-sm text-muted-foreground mt-0.5 line-clamp-2">{program.description}</p>
               <div className="flex flex-wrap gap-1.5 mt-2">
                 <Badge variant="outline">{program.duration}</Badge>
                 <Badge variant="muscle">{program.focus}</Badge>
+                <Badge variant="secondary" className="text-[10px]">
+                  {t('builderSessionCount', {
+                    count: program.sessions.length,
+                    defaultValue: `${program.sessions.length} sessions`,
+                  })}
+                </Badge>
                 {getProgramTags(program).map((tag) => (
                   <Badge key={tag} variant="secondary" className="text-[10px]">
                     {PROGRAM_TAG_LABELS[tag]}
@@ -81,7 +89,10 @@ function ProgramList({
                 ))}
               </div>
             </div>
-            <div className="flex gap-2">
+            <ChevronDown className="h-5 w-5 text-muted-foreground shrink-0 mt-1 transition-transform group-open:rotate-180" />
+          </summary>
+          <div className="px-4 pb-4 space-y-3 border-t border-border/40 pt-3">
+            <div className="flex flex-wrap gap-2">
               {onViewDetails && (
                 <Button size="sm" variant="ghost" onClick={() => onViewDetails(program)}>
                   {t('builderDetails', { defaultValue: 'Details' })}
@@ -94,34 +105,33 @@ function ProgramList({
                 })}
               </Button>
             </div>
-          </div>
-
-          <div className="space-y-2">
-            {program.sessions.map((session) => (
-              <div
-                key={session.id}
-                className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border/60 bg-muted/30 px-3 py-2"
-              >
-                <div>
-                  <p className="text-sm font-medium">{session.name}</p>
-                  {session.weekLabel && (
-                    <p className="text-xs text-muted-foreground">{session.weekLabel}</p>
-                  )}
-                  <p className="text-xs text-muted-foreground">
-                    {t('builderSessionMeta', {
-                      exercises: session.exercises.length,
-                      sets: session.exercises.reduce((n, e) => n + e.sets.length, 0),
-                      defaultValue: `${session.exercises.length} exercises · ${session.exercises.reduce((n, e) => n + e.sets.length, 0)} sets`,
-                    })}
-                  </p>
+            <div className="space-y-2">
+              {program.sessions.map((session) => (
+                <div
+                  key={session.id}
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border/60 bg-muted/30 px-3 py-2"
+                >
+                  <div>
+                    <p className="text-sm font-medium">{session.name}</p>
+                    {session.weekLabel && (
+                      <p className="text-xs text-muted-foreground">{session.weekLabel}</p>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      {t('builderSessionMeta', {
+                        exercises: session.exercises.length,
+                        sets: session.exercises.reduce((n, e) => n + e.sets.length, 0),
+                        defaultValue: `${session.exercises.length} exercises · ${session.exercises.reduce((n, e) => n + e.sets.length, 0)} sets`,
+                      })}
+                    </p>
+                  </div>
+                  <Button size="sm" variant="fitness" onClick={() => onLoadSession(program, session)}>
+                    {t('builderLoad', { defaultValue: 'Load' })}
+                  </Button>
                 </div>
-                <Button size="sm" variant="fitness" onClick={() => onLoadSession(program, session)}>
-                  {t('builderLoad', { defaultValue: 'Load' })}
-                </Button>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        </details>
       ))}
     </div>
   );
@@ -136,6 +146,7 @@ export function ProgramTemplatesPanel({
   const { t } = useTranslation();
   const [quickPick, setQuickPick] = useState("");
   const [tagFilter, setTagFilter] = useState<ProgramTag | "">("");
+  const [search, setSearch] = useState("");
   const { premium, loading: premiumLoading } = usePremium();
   const [proPrograms, setProPrograms] = useState<ProgramTemplate[]>([]);
 
@@ -157,9 +168,13 @@ export function ProgramTemplatesPanel({
         : []
       : getProgramsByCategory(category);
 
-  const programs = basePrograms.filter(
-    (p) => !tagFilter || getProgramTags(p).includes(tagFilter)
-  );
+  const programs = basePrograms.filter((p) => {
+    if (tagFilter && !getProgramTags(p).includes(tagFilter)) return false;
+    const q = search.trim().toLowerCase();
+    if (!q) return true;
+    if (p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)) return true;
+    return p.sessions.some((s) => s.name.toLowerCase().includes(q));
+  });
   const categoryMeta = PROGRAM_CATEGORIES.find((c) => c.id === category)!;
 
   const quickOptions = useMemo(() => {
@@ -199,6 +214,23 @@ export function ProgramTemplatesPanel({
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">{categoryMeta.description}</p>
+      <Input
+        type="search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder={t('builderTemplateSearch', {
+          defaultValue: 'Search programs or sessions…',
+        })}
+        className="bg-background"
+      />
+      {search.trim() && (
+        <p className="text-xs text-muted-foreground">
+          {t('builderTemplateSearchCount', {
+            count: programs.length,
+            defaultValue: `${programs.length} matching`,
+          })}
+        </p>
+      )}
       <div className="flex flex-wrap gap-2 items-center">
         <span className="text-xs text-muted-foreground">
           {t('builderStyleFilter', { defaultValue: 'Style:' })}

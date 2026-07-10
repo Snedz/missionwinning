@@ -50,7 +50,10 @@
 | `/` | `app/page.tsx` → `LandingPage` |
 | `/bundle` | `app/bundle/page.tsx` → `BundlePage` (marketing chrome) |
 | `/compare` | `app/compare/page.tsx` → `ComparePage` (marketing chrome) |
+| `/compare/[slug]` | `CompareStoryPage` — forge / freeletics / spreadsheet |
 | `/guide`, `/exercises` | Public SEO pages |
+| `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
+| `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |
 | `/private` | `app/private/page.tsx` |
 | `/offline` | `app/offline/page.tsx` |
 | `/auth/callback` | `app/auth/callback/page.tsx` |

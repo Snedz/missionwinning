@@ -135,6 +135,54 @@ export function ComparePage() {
           </div>
         </div>
 
+        <div className="grid sm:grid-cols-3 gap-3">
+          {[
+            {
+              href: '/compare/forge',
+              title: 'vs Forge',
+              body: 'No AI API key. Just Go + PRs free.',
+            },
+            {
+              href: '/compare/freeletics',
+              title: 'vs Freeletics',
+              body: 'Six pillars in one app — not a multi-app stack.',
+            },
+            {
+              href: '/compare/spreadsheet',
+              title: 'vs spreadsheets',
+              body: 'Auto targets, rest timer, readiness from logs.',
+            },
+          ].map((c) => (
+            <Link
+              key={c.href}
+              href={c.href}
+              className="rounded-2xl border border-border/50 p-4 hover:border-emerald-500/40 hover:bg-emerald-950/15 transition-colors"
+            >
+              <p className="font-semibold text-sm">{c.title}</p>
+              <p className="text-xs text-muted-foreground mt-1">{c.body}</p>
+            </Link>
+          ))}
+        </div>
+
+        <div className="rounded-2xl border border-border/40 bg-muted/15 p-5 text-sm text-muted-foreground space-y-2">
+          <p className="font-medium text-foreground">Proof, not vibes</p>
+          <p>
+            Free library:{' '}
+            <Link href="/exercises" className="text-primary hover:underline">
+              217 exercise pages
+            </Link>
+            {' · '}
+            <Link href="/guide" className="text-primary hover:underline">
+              full foundations guide
+            </Link>
+            {' · '}
+            <Link href="/paths" className="text-primary hover:underline">
+              10 learning paths
+            </Link>
+            . Rest timers, PRs, and Just Go are free forever — not Pro bait.
+          </p>
+        </div>
+
         <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Button asChild variant="fitness" size="lg" className="min-h-[52px] px-8">
             <Link href="/welcome">{t('welcomeBegin', { defaultValue: 'Begin' })}</Link>

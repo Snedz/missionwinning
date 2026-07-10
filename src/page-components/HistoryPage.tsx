@@ -61,8 +61,12 @@ import type { CompletedWorkoutLog } from '@/types';
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { TodaySection } from '@/components/journey/TodaySection';
+import { Input } from '@/components/ui/input';
 
 const HEATMAP_WINDOW_DAYS = 14;
+
+type RangeFilter = '7' | '30' | 'all';
 
 export function HistoryPage() {
   const { t, i18n } = useTranslation();
@@ -75,6 +79,21 @@ export function HistoryPage() {
   const [syncing, setSyncing] = useState(false);
   const [pillarWins, setPillarWins] = useState<CloudNutritionEntry[]>([]);
   const [chartExerciseId, setChartExerciseId] = useState('');
+  const [nameQuery, setNameQuery] = useState('');
+  const [range, setRange] = useState<RangeFilter>('all');
+
+  const filteredHistory = useMemo(() => {
+    const q = nameQuery.trim().toLowerCase();
+    const cutoff =
+      range === 'all'
+        ? 0
+        : Date.now() - Number(range) * 24 * 60 * 60 * 1000;
+    return workoutHistory.filter((log) => {
+      if (cutoff && new Date(log.completedAt).getTime() < cutoff) return false;
+      if (q && !log.workoutName.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [workoutHistory, nameQuery, range]);
 
   const weeklyVolume = useMemo(
     () => buildWeeklyVolumeTimeline(workoutHistory, 12, i18n.language),
@@ -95,6 +114,21 @@ export function HistoryPage() {
     [activeChartId, workoutHistory]
   );
   const summary = useMemo(() => historySummaryStats(workoutHistory), [workoutHistory]);
+
+  const briefingLine = useMemo(() => {
+    if (workoutHistory.length === 0) {
+      return t('historyBriefingEmpty', {
+        defaultValue: 'Your mission story starts with the first logged set.',
+      });
+    }
+    const sessions = summary.sessionCount;
+    const vol = summary.totalVolume;
+    return t('historyBriefingLine', {
+      count: sessions,
+      volume: vol.toLocaleString(),
+      defaultValue: `${sessions} sessions · ${vol.toLocaleString()} total volume — consistency compounds.`,
+    });
+  }, [workoutHistory.length, summary, t]);
 
   useEffect(() => {
     const sync = async () => {
@@ -136,6 +170,22 @@ export function HistoryPage() {
         defaultValue: 'Your history powers the Today Hub readiness and Win Score.',
       })}
     >
+      <div className="rounded-2xl border border-emerald-500/20 bg-emerald-950/15 px-4 py-3 space-y-1 ring-draw-in">
+        <p className="text-[10px] uppercase tracking-widest text-emerald-400/90 font-medium">
+          {t('historyMissionStory', { defaultValue: 'Mission story' })}
+        </p>
+        <p className="text-sm text-foreground leading-snug">{briefingLine}</p>
+        {summary.sessionCount > 0 && (
+          <p className="text-xs text-muted-foreground tabular-nums">
+            {t('historyAvgVolume', {
+              avg: summary.avgVolume.toLocaleString(),
+              unit: unitLabel,
+              defaultValue: `Recent avg volume ${summary.avgVolume.toLocaleString()} ${unitLabel}`,
+            })}
+          </p>
+        )}
+      </div>
+
       <div>
         <p className="text-muted-foreground text-sm">
           <Link href="/log" className="underline">
@@ -147,23 +197,17 @@ export function HistoryPage() {
           {syncing && t('historySyncing', { defaultValue: ' — syncing cloud…' })}
           {!syncing && cloudSynced && t('historyCloudMerged', { defaultValue: ' — cloud merged' })}
         </p>
-        {workoutHistory.length > 0 && (
-          <p className="mt-2 text-xs text-muted-foreground">
-            {t('historyAvgVolume', {
-              avg: summary.avgVolume.toLocaleString(),
-              unit: unitLabel,
-              defaultValue: `Recent trend: Avg volume last 5: ${summary.avgVolume.toLocaleString()} ${unitLabel}.`,
-            })}{' '}
-            <Link href="/log" className="underline">
-              Today Hub
-            </Link>
-          </p>
-        )}
       </div>
 
       {workoutHistory.length > 0 && (
-        <>
-          <div className="grid gap-4 lg:grid-cols-2">
+        <TodaySection
+          title={t('historyTrendsTitle', { defaultValue: 'Trends' })}
+          description={t('historyTrendsDesc', {
+            defaultValue: 'Volume, estimated 1RM, and muscle heatmap',
+          })}
+          defaultOpen={false}
+        >
+          <div className="grid gap-4 lg:grid-cols-2 pt-3">
             <HistoryVolumeChart data={weeklyVolume} />
             <div className="space-y-2">
               {exerciseIds.length > 1 && (
@@ -191,54 +235,100 @@ export function HistoryPage() {
               />
             </div>
           </div>
-          <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
-        </>
+          <div className="pt-3">
+            <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
+          </div>
+        </TodaySection>
       )}
 
       {workoutHistory.length === 0 ? (
         <EmptyState
           icon={Dumbbell}
           title={t('historyEmptyTitle', { defaultValue: 'No workouts logged yet' })}
-          description={t('historyEmptyDesc', { defaultValue: 'Complete an active workout to see it here.' })}
-          actionLabel={t('historyStartWorkout', { defaultValue: 'Start a workout' })}
-          href="/builder"
+          description={t('historyEmptyDesc', {
+            defaultValue: 'Just Go on Today builds a free session — finish it and your story starts here.',
+          })}
+          actionLabel={t('historyStartWorkout', { defaultValue: 'Go to Today' })}
+          href="/log"
         />
       ) : (
         <div className="space-y-3">
-          {workoutHistory.map((log) => (
-            <Card key={log.id} className="content-card hover:border-primary/30 transition-colors">
-              <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-                <div>
-                  <p className="font-semibold text-lg">{log.workoutName}</p>
-                  <div className="flex flex-wrap items-center gap-3 mt-1 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-3.5 w-3.5" />
-                      {formatDate(log.completedAt)}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Timer className="h-3.5 w-3.5" />
-                      {formatDuration(log.durationSeconds)}
-                    </span>
-                    <span>{log.exercises.length} exercises</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="text-xs text-muted-foreground">
-                      {t('historyTotalVolume', { defaultValue: 'Total Volume' })}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <Input
+              type="search"
+              value={nameQuery}
+              onChange={(e) => setNameQuery(e.target.value)}
+              placeholder={t('historySearchPlaceholder', {
+                defaultValue: 'Search by workout name…',
+              })}
+              className="sm:flex-1"
+            />
+            <div className="flex flex-wrap gap-1.5">
+              {(
+                [
+                  ['7', 'Last 7'],
+                  ['30', 'Last 30'],
+                  ['all', 'All'],
+                ] as const
+              ).map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setRange(value)}
+                  className={
+                    range === value
+                      ? 'rounded-full border border-emerald-500/50 bg-emerald-950/40 px-3 py-1.5 text-xs font-semibold text-emerald-300'
+                      : 'rounded-full border border-border/50 px-3 py-1.5 text-xs text-muted-foreground'
+                  }
+                >
+                  {t(`historyRange${value}`, { defaultValue: label })}
+                </button>
+              ))}
+            </div>
+          </div>
+          {filteredHistory.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4 text-center">
+              {t('historyNoMatches', { defaultValue: 'No sessions match these filters.' })}
+            </p>
+          ) : (
+            filteredHistory.map((log) => (
+              <Card
+                key={log.id}
+                className="content-card hover:border-primary/30 transition-colors cursor-pointer"
+                onClick={() => setSelected(log)}
+              >
+                <CardContent className="flex items-center justify-between gap-3 py-3 px-4">
+                  <div className="min-w-0">
+                    <p className="font-semibold truncate">{log.workoutName}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5">
+                      <span className="inline-flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {formatDate(log.completedAt)}
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <Timer className="h-3 w-3" />
+                        {formatDuration(log.durationSeconds)}
+                      </span>
+                      <span>
+                        {log.exercises.length} · {log.totalVolume.toLocaleString()} {unitLabel}
+                      </span>
                     </p>
-                    <p className="text-xl font-bold text-secondary">
-                      {log.totalVolume.toLocaleString()}{' '}
-                      <span className="text-sm font-normal">{unitLabel}</span>
-                    </p>
                   </div>
-                  <Button variant="outline" onClick={() => setSelected(log)}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="shrink-0"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelected(log);
+                    }}
+                  >
                     {t('historyDetails', { defaultValue: 'Details' })}
                   </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       )}
 

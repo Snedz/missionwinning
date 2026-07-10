@@ -13,6 +13,10 @@ export function PublicSeoFooter() {
           Exercises
         </Link>
         <span aria-hidden>·</span>
+        <Link href="/paths" className="hover:text-emerald-400 transition-colors">
+          Paths
+        </Link>
+        <span aria-hidden>·</span>
         <Link href="/compare" className="hover:text-emerald-400 transition-colors">
           Compare
         </Link>

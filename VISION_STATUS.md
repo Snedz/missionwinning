@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-10** (Wave 3 Forge steals; build `2026.07-unified.51`).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-10** (Wave 5 integrity + density; build `2026.07-unified.53`).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 

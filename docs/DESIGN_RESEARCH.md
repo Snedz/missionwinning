@@ -210,9 +210,82 @@ Source: [forgefitnessapp.com](https://forgefitnessapp.com/) — FORGE Workout OS
 
 ---
 
+## Wave 4 — Inspire + volume (2026-07-10)
+
+**Thesis:** Landing is cinematic; Welcome/Bundle/Compare and ~160 thin exercise pages were not. Highest leverage is **volume on URLs you already own** + **inspire the conversion path** (Landing → Welcome → Just Go → Victory) — not a website teardown. Keep `app/(app)/` → page-components, Zustand logger, Mission Coach, tokens. Build `2026.07-unified.52`. Do not flip `PRIVATE_MODE`.
+
+### Volume (acquisition)
+
+| Ship | Notes |
+|------|--------|
+| Internal link mesh | Related exercises + guide links on public exercise/chapter pages; CTA → `/welcome` |
+| Top-50 enrichment | `exercisePublicEnrichment.ts` — cues / alternatives / form tips for compounds |
+| Muscle / equipment hubs | `/exercises/muscle/*`, `/exercises/equipment/*` + sitemap |
+| Public Learn teasers | `/paths` + `/paths/[id]` (10 paths; in-app `/learn` unchanged) |
+| Compare stories | `/compare/forge`, `/compare/freeletics`, `/compare/spreadsheet` |
+
+### Inspire (conversion)
+
+| Ship | Notes |
+|------|--------|
+| Welcome cinematic | Briefing typography, atmosphere, Today/Just Go preview — not card-wizard |
+| Bundle story scroll | Six pillars narrative **before** plan tabs (REDTEAM under-promise) |
+| Landing / Compare CRO | Tracker-first + 217-page library line; proof chips + story links |
+
+### Delight (retention)
+
+| Ship | Notes |
+|------|--------|
+| Library sparkline | Real volume series from `workoutHistory` in detail sheet |
+| History mission story | Briefing header + empty → Today |
+| Today motion | `ring-draw-in` + `score-tick` + `animateCount` (reduced-motion safe) |
+| Builder chips | Category chips on template pick |
+| EmptyState audit | History/Train invitation CTAs |
+
+### Explicit do-not
+
+Teardown · PRIVATE_MODE flip · BYOK AI · gate Just Go/rest/PRs · mass i18n · video as primary
+
+---
+
+## Wave 5 — Integrity + density (2026-07-10)
+
+**Thesis:** After Wave 4 volume, the product must be *trustworthy to tap* and *scannable*. Fix dead CTAs first; then collapse + search the longest lists. Reuse `TodaySection` / `<details>` and `filterExercises`. No cmdk. Build `2026.07-unified.53`. Do not flip `PRIVATE_MODE`.
+
+### Integrity
+
+| Ship | Notes |
+|------|--------|
+| Library alternatives | Open alt exercise in sheet (not `/library` reload) |
+| Mind EmptyState | CTA scrolls to guided sessions |
+| Public practice CTAs | Guarded deep-links remap to `/welcome` or `/exercises` |
+| Path teaser copy | “Start free — Begin I-Day” |
+| Footer `/paths` | PublicSeoFooter + Landing |
+| e2e | Compare/paths/exercise public CTA smoke |
+
+### Density + search
+
+| Ship | Notes |
+|------|--------|
+| Builder | Collapsed program sessions; template search; saved truncate; `ExercisePicker` |
+| Active | Searchable add/swap picker |
+| History | Name search + 7/30/All; trends accordion; compact rows |
+| Fuel | Meal-group accordion; recipe expand-on-tap |
+| Library | Filter sheet + all muscles; active pills; shared `FilterChip` |
+| Learn | Default collapsed + path search |
+| Move / Mind | Premium preview collapsed for free users |
+
+### Explicit do-not
+
+Teardown · PRIVATE_MODE · cmdk · virtualize entire Library · gate free tracker
+
+---
+
 ## Sources folded in
 
 - Internal: UX_UNIFIED_PLAN (Bevel/Freeletics), ROADMAP_V4_EXPERIENCE (no teardown)  
 - External: Hevy/Strong DESIGN.md, WHOOP clinical metrics, wellness CRO, Linear density  
 - Wave 2: RepStack, IntervalCoach, 0xCal, Bevel, Freeletics Super Bundle, CrossFit/WOD loggers  
 - Wave 3: Forge Fitness / FORGE Workout OS
+- Wave 4: SEO volume + marketing inspire
+- Wave 5: CTA integrity + list density/search
