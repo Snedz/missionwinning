@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { getPillarWins } from '@/lib/pillarLog';
-import { Clock, Wind } from 'lucide-react';
+import { Clock, Wind, ChevronDown } from 'lucide-react';
 
 export function MovePage() {
   const { t } = useTranslation();
@@ -23,6 +23,7 @@ export function MovePage() {
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
   const [activeFlowId, setActiveFlowId] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(0);
+  const [premiumOpen, setPremiumOpen] = useState(false);
 
   useEffect(() => {
     if (!premium) {
@@ -100,18 +101,41 @@ export function MovePage() {
     >
       {renderFlowGrid(freeFlows, t('moveFreeFlows', { defaultValue: 'Free mobility flows' }))}
 
-      {premium && premiumFlows.length > 0 &&
-        renderFlowGrid(
-          premiumFlows,
-          t('movePremiumFlows', { defaultValue: 'Premium recovery flows' }),
-          true
-        )}
+      {premium && premiumFlows.length > 0 && (
+        <details className="group" open>
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-2 min-h-[44px] [&::-webkit-details-marker]:hidden">
+            <span className="text-sm font-semibold uppercase tracking-wide text-emerald-400">
+              {t('movePremiumFlows', { defaultValue: 'Premium recovery flows' })}
+            </span>
+            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+          </summary>
+          <div className="pt-2">
+            {renderFlowGrid(premiumFlows, '', true)}
+          </div>
+        </details>
+      )}
 
       {premiumLoading && premium && (
         <p className="text-xs text-muted-foreground">{t('loading', { defaultValue: 'Loading premium flows…' })}</p>
       )}
 
-      {!premium && <MoveLockedPreview />}
+      {!premium && (
+        <div className="space-y-2">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between gap-2 rounded-xl border border-border/50 px-4 py-3 text-sm min-h-[44px]"
+            onClick={() => setPremiumOpen((v) => !v)}
+          >
+            <span className="font-medium text-muted-foreground">
+              {t('movePremiumPreview', { defaultValue: 'Premium recovery flows' })}
+            </span>
+            <ChevronDown
+              className={`h-4 w-4 text-muted-foreground transition-transform ${premiumOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
+          {premiumOpen && <MoveLockedPreview />}
+        </div>
+      )}
 
       {recentWins.length > 0 && (
         <Card className="content-card">

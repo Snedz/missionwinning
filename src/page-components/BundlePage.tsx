@@ -174,6 +174,50 @@ export function BundlePage() {
         </Card>
       )}
 
+      {/* Story scroll — six pillars before checkout (REDTEAM: under-promise) */}
+      <section className="rounded-2xl border border-border/40 bg-gradient-to-br from-emerald-950/25 via-card/40 to-transparent p-6 md:p-8 space-y-5">
+        <div className="space-y-2">
+          <p className="eyebrow">{t('bundleStoryEyebrow', { defaultValue: 'One app' })}</p>
+          <h2 className="display-section text-xl md:text-2xl">
+            {t('bundleStoryTitle', { defaultValue: 'Six pillars. One Win Score.' })}
+          </h2>
+          <p className="text-sm text-muted-foreground max-w-xl">
+            {t('bundleStoryBody', {
+              defaultValue:
+                'Train, Fuel, Move, Mind, Track, and Learn share the same briefing — not six subscriptions. The free logger stays free; Bundle deepens Coach and pillar content when you want more.',
+            })}
+          </p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {BUNDLE_PILLARS.map((pillar) => {
+            const Icon = PILLAR_ICONS[pillar.id] ?? Sparkles;
+            const keys = BUNDLE_PILLAR_I18N[pillar.id];
+            return (
+              <div
+                key={pillar.id}
+                className="rounded-xl border border-border/40 bg-background/40 px-3 py-3 space-y-1"
+              >
+                <Icon className="h-4 w-4 text-emerald-400" />
+                <p className="text-sm font-medium">
+                  {keys ? t(keys.nameKey) : pillar.name}
+                </p>
+                <p className="text-[11px] text-muted-foreground leading-snug">
+                  {keys ? t(keys.freeKey) : pillar.free}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-xs text-muted-foreground">
+          {t('bundleStoryProof', {
+            defaultValue: 'Product proof: Today briefing · Just Go · rest · PRs — free forever.',
+          })}{' '}
+          <Link href="/compare" className="text-primary hover:underline">
+            {t('bundleStoryCompare', { defaultValue: 'See comparisons' })}
+          </Link>
+        </p>
+      </section>
+
       {/* Duration tabs + hero offer card */}
       <Tabs
         value={planId}

@@ -53,6 +53,11 @@
 |------|-------|
 | `BundlePage.tsx` | `/bundle` |
 | `ComparePage.tsx` | `/compare` |
+| `CompareStoryPage.tsx` | `/compare/[slug]` |
+| `LearnPathsPublicIndexPage.tsx` | `/paths` |
+| `LearnPathPublicPage.tsx` | `/paths/[id]` |
+| `ExerciseMuscleHubPage.tsx` | `/exercises/muscle/[group]` |
+| `ExerciseEquipmentHubPage.tsx` | `/exercises/equipment/[slug]` |
 | `ProgramsPage.tsx` | `/programs` |
 | `AboutPage.tsx` | `/about` |
 | `VisionPage.tsx` | `/vision` |

@@ -89,11 +89,23 @@ export function LandingPage() {
               <br />
               {t('landingHeroTitle2', { defaultValue: 'Win daily.' })}
             </h1>
-            <p className="mb-6 max-w-md text-lg leading-relaxed text-muted-foreground">
+            <p className="mb-4 max-w-md text-lg leading-relaxed text-muted-foreground">
               {t('landingHeroSubtitle', {
                 defaultValue:
                   'The free workout tracker that works offline — no account, no app store, no paywall on the basics. Nutrition, mobility, mind, and learning deepen the same Win Score when you want them.',
               })}
+            </p>
+            <p className="mb-6 max-w-md text-sm text-muted-foreground">
+              {t('landingHeroLibrary', {
+                defaultValue: 'Library of 217 free exercise pages — form cues, hubs, and a full foundations guide.',
+              })}{' '}
+              <button
+                type="button"
+                className="text-primary hover:underline"
+                onClick={() => router.push('/exercises')}
+              >
+                {t('landingHeroLibraryCta', { defaultValue: 'Browse exercises' })}
+              </button>
             </p>
             <p className="mb-6 text-sm text-brass/90">
               {t('landingHeroProof', {
@@ -350,6 +362,9 @@ export function LandingPage() {
             </Link>
             <Link href="/exercises" className="hover:text-foreground">
               Exercises
+            </Link>
+            <Link href="/paths" className="hover:text-foreground">
+              Paths
             </Link>
             <Link href="/compare" className="hover:text-foreground">
               Compare

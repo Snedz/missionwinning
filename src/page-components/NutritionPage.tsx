@@ -32,7 +32,7 @@ import {
 } from "@/lib/nutritionQuickLog";
 import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from "@/lib/macroTargets";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
-import { Plus, UtensilsCrossed } from "lucide-react";
+import { ChevronDown, Plus, UtensilsCrossed } from "lucide-react";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
 import { EmptyState } from '@/components/ui/EmptyState';
 
@@ -573,11 +573,17 @@ export function NutritionPage() {
             />
           ) : (
             Object.entries(groupedLog).map(([mealKey, entries]) => (
-              <div key={mealKey} className="mb-4 last:mb-0">
-                <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
-                  {mealKey === 'other' ? mealLabel() : mealLabel(mealKey as MealType)}
-                </div>
-                <ul className="space-y-1 text-sm">
+              <details key={mealKey} className="group mb-3 last:mb-0 rounded-lg border border-border/40" open>
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 min-h-[44px] [&::-webkit-details-marker]:hidden">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {mealKey === 'other' ? mealLabel() : mealLabel(mealKey as MealType)}
+                    <span className="ms-2 normal-case font-normal tabular-nums">
+                      ({entries.length})
+                    </span>
+                  </span>
+                  <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+                </summary>
+                <ul className="space-y-1 text-sm px-3 pb-3 border-t border-border/30 pt-2">
                   {entries.map((l, i) => (
                     <li key={`${mealKey}-${i}`} className="flex justify-between gap-2 items-center">
                       <span className="min-w-0 truncate">{l.time} — {l.name}</span>
@@ -608,7 +614,7 @@ export function NutritionPage() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </details>
             ))
           )}
           <div className="mt-4 pt-3 border-t text-sm flex justify-between font-medium">
@@ -624,20 +630,32 @@ export function NutritionPage() {
         <>
       <Card className="content-card">
         <CardHeader><CardTitle>{t('fuelFreeRecipesTitle', { count: FREE_RECIPE_COUNT, defaultValue: `Free Recipes (${FREE_RECIPE_COUNT} — core mission)` })}</CardTitle></CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-2">
           {freeRecipes.map((r, i) => (
-            <div key={i} className="border border-white/10 rounded p-3 bg-black/20">
-              <div className="flex justify-between gap-2 flex-wrap">
-                <div>
+            <details key={i} className="group border border-white/10 rounded p-3 bg-black/20">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 [&::-webkit-details-marker]:hidden">
+                <div className="min-w-0">
                   <div className="font-semibold">{r.name}</div>
-                  <div className="text-xs text-emerald-400">{r.protein}g protein • {r.cals} kcal</div>
+                  <div className="text-xs text-emerald-400">
+                    {r.protein}g protein • {r.cals} kcal
+                  </div>
                 </div>
-                <Button size="sm" variant="fitness" onClick={() => addEntry(r.name, r.protein, r.cals, r.carbs, r.fat)}>
-                  {t('logRecipe', { defaultValue: 'Log Recipe' })}
-                </Button>
-              </div>
-              <div className="text-xs mt-1 text-white/70">{r.ingredients}</div>
-            </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    size="sm"
+                    variant="fitness"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addEntry(r.name, r.protein, r.cals, r.carbs, r.fat);
+                    }}
+                  >
+                    {t('logRecipe', { defaultValue: 'Log Recipe' })}
+                  </Button>
+                  <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+                </div>
+              </summary>
+              <div className="text-xs mt-2 pt-2 border-t border-white/10 text-white/70">{r.ingredients}</div>
+            </details>
           ))}
         </CardContent>
       </Card>
@@ -649,20 +667,32 @@ export function NutritionPage() {
       {moreOpen && (premium ? (
       <Card className="content-card">
         <CardHeader><CardTitle>{t('fuelPremiumRecipesTitle', { defaultValue: 'Premium Recipes & Meal Ideas (Super Bundle)' })}</CardTitle></CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-2">
           {premiumRecipes.map((r, i) => (
-            <div key={i} className="border border-white/10 rounded p-3 bg-black/20">
-              <div className="flex justify-between">
-                <div>
+            <details key={i} className="group border border-white/10 rounded p-3 bg-black/20">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-2 [&::-webkit-details-marker]:hidden">
+                <div className="min-w-0">
                   <div className="font-semibold">{r.name}</div>
-                  <div className="text-xs text-emerald-400">{r.protein}g protein • {r.cals} kcal • {r.carbs}c {r.fat}f</div>
+                  <div className="text-xs text-emerald-400">
+                    {r.protein}g protein • {r.cals} kcal • {r.carbs}c {r.fat}f
+                  </div>
                 </div>
-                <Button size="sm" variant="fitness" className="w-full" onClick={() => addEntry(r.name, r.protein, r.cals, r.carbs, r.fat)}>{t('logRecipe', { defaultValue: 'Log Entire Recipe + Boost Score' })}</Button>
+                <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0 mt-1 transition-transform group-open:rotate-180" />
+              </summary>
+              <div className="mt-2 pt-2 border-t border-white/10 space-y-1">
+                <Button
+                  size="sm"
+                  variant="fitness"
+                  className="w-full"
+                  onClick={() => addEntry(r.name, r.protein, r.cals, r.carbs, r.fat)}
+                >
+                  {t('logRecipe', { defaultValue: 'Log Entire Recipe + Boost Score' })}
+                </Button>
+                <div className="text-xs text-white/70">{r.ingredients}</div>
+                <div className="text-xs">{r.instructions}</div>
+                <div className="text-[10px] text-emerald-300 italic">{r.tip}</div>
               </div>
-              <div className="text-xs mt-1 text-white/70">{r.ingredients}</div>
-              <div className="text-xs mt-1">{r.instructions}</div>
-              <div className="text-[10px] text-emerald-300 mt-1 italic">{r.tip}</div>
-            </div>
+            </details>
           ))}
           <div className="text-xs text-muted-foreground">
             {t('fuelPremiumRecipesFoot', {

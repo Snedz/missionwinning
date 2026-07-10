@@ -11,36 +11,11 @@ import {
   uniqueMuscleGroups,
   type LibraryFilterState,
 } from '@/lib/libraryFilters';
+import { FilterChip } from '@/components/ui/FilterChip';
 import type { ProgramTag } from '@/types';
-import { cn } from '@/lib/utils';
 
 const EQUIP_CHIPS = ['', 'bodyweight', 'dumbbell', 'barbell', 'cable', 'band', 'kettlebell'] as const;
 const TAG_CHIPS: (ProgramTag | '')[] = ['', 'strength', 'hypertrophy', 'conditioning', 'corrective'];
-
-function Chip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        'shrink-0 rounded-full border px-3 py-1 text-xs transition-colors',
-        active
-          ? 'border-primary bg-primary/15 text-primary'
-          : 'border-border/60 text-muted-foreground hover:bg-muted/50'
-      )}
-    >
-      {children}
-    </button>
-  );
-}
 
 export function ExercisesPublicFilter() {
   const [filters, setFilters] = useState<LibraryFilterState>({
@@ -56,7 +31,7 @@ export function ExercisesPublicFilter() {
     void ensureFullExerciseCatalog().then(() => setCatalogRevision((n) => n + 1));
   }, []);
 
-  const muscleChips = useMemo(
+  const muscleFilterChips = useMemo(
     () => ['', ...uniqueMuscleGroups(EXERCISES).slice(0, 10)],
     // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
     [catalogRevision]
@@ -84,28 +59,28 @@ export function ExercisesPublicFilter() {
           />
         </div>
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-          {muscleChips.map((m) => (
-            <Chip key={m || 'all'} active={filters.muscle === m} onClick={() => setFilter('muscle', m)}>
+          {muscleFilterChips.map((m) => (
+            <FilterChip key={m || 'all'} active={filters.muscle === m} onClick={() => setFilter('muscle', m)}>
               {m || 'All muscles'}
-            </Chip>
+            </FilterChip>
           ))}
         </div>
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
           {EQUIP_CHIPS.map((e) => (
-            <Chip
+            <FilterChip
               key={e || 'all-e'}
               active={filters.equipment === e}
               onClick={() => setFilter('equipment', e)}
             >
               {e || 'All equipment'}
-            </Chip>
+            </FilterChip>
           ))}
         </div>
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
           {TAG_CHIPS.map((tag) => (
-            <Chip key={tag || 'all-t'} active={filters.tag === tag} onClick={() => setFilter('tag', tag)}>
+            <FilterChip key={tag || 'all-t'} active={filters.tag === tag} onClick={() => setFilter('tag', tag)}>
               {tag ? PROGRAM_TAG_LABELS[tag] : 'All goals'}
-            </Chip>
+            </FilterChip>
           ))}
         </div>
         <p className="text-xs text-muted-foreground">

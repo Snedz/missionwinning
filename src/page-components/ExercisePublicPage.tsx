@@ -8,9 +8,16 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { getExerciseById } from '@/data/exercises';
 import { getFormGuideOrCues } from '@/lib/formGuides';
+import {
+  enrichExerciseForPublic,
+  relatedExercises,
+  guideChaptersForExercise,
+  muscleHubSlug,
+} from '@/lib/exerciseSeo';
 import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
 import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
+import { PublicSeoHeader } from '@/components/public/PublicSeoHeader';
 import type { Exercise } from '@/types';
 
 type Props = {
@@ -18,12 +25,18 @@ type Props = {
   jsonLd: Record<string, unknown>;
 };
 
-export function ExercisePublicPage({ exercise, jsonLd }: Props) {
+export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
+  const exercise = enrichExerciseForPublic(raw);
+  const related = relatedExercises(exercise, 6);
+  const guides = guideChaptersForExercise(exercise);
+  const enrichment = 'enrichment' in exercise ? exercise.enrichment : undefined;
+
   useEffect(() => {
     track('exercise_page_viewed', { exerciseId: exercise.id });
   }, [exercise.id]);
 
   const guide = getFormGuideOrCues(exercise.id, { exercise });
+  const tipLines = enrichment?.formTips;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -31,19 +44,31 @@ export function ExercisePublicPage({ exercise, jsonLd }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <header className="border-b border-border/60">
-        <div className="mx-auto max-w-3xl px-5 py-10">
-          <Link href="/exercises" className="text-sm text-primary hover:underline">
+      <PublicSeoHeader
+        eyebrow="Free exercise library"
+        title={exercise.name}
+        subtitle={`${exercise.muscleGroups.join(' · ')} · ${exercise.equipment || 'Various'}${
+          exercise.level ? ` · ${exercise.level}` : ''
+        }`}
+      />
+      <main className="mx-auto max-w-3xl px-5 py-10 space-y-8">
+        <p className="text-sm">
+          <Link href="/exercises" className="text-primary hover:underline">
             ← All exercises
           </Link>
-          <h1 className="display-section mt-4">{exercise.name}</h1>
-          <p className="text-muted-foreground mt-2">
-            {exercise.muscleGroups.join(' · ')} · {exercise.equipment || 'Various'}
-            {exercise.level ? ` · ${exercise.level}` : ''}
-          </p>
-        </div>
-      </header>
-      <main className="mx-auto max-w-3xl px-5 py-10 space-y-6">
+          {exercise.muscleGroups[0] && (
+            <>
+              {' · '}
+              <Link
+                href={`/exercises/muscle/${muscleHubSlug(exercise.muscleGroups[0])}`}
+                className="text-primary hover:underline"
+              >
+                More {exercise.muscleGroups[0]}
+              </Link>
+            </>
+          )}
+        </p>
+
         {exercise.cues && (
           <section>
             <h2 className="font-semibold mb-2">Key cues</h2>
@@ -86,6 +111,17 @@ export function ExercisePublicPage({ exercise, jsonLd }: Props) {
             </ul>
           </section>
         )}
+        {!guide && tipLines && tipLines.length > 0 && (
+          <section>
+            <h2 className="font-semibold mb-2">Form tips</h2>
+            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+              {tipLines.map((line, i) => (
+                <li key={i}>{line}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {exercise.alternatives && exercise.alternatives.length > 0 && (
           <section>
             <h2 className="font-semibold mb-2">Alternatives</h2>
@@ -106,14 +142,52 @@ export function ExercisePublicPage({ exercise, jsonLd }: Props) {
             </div>
           </section>
         )}
-        <Button asChild variant="fitness" className="primary-action">
-          <Link
-            href="/welcome"
-            onClick={() => track('public_cta_clicked', { target: '/welcome', exercise: exercise.id })}
-          >
-            Track this exercise free →
-          </Link>
-        </Button>
+
+        {related.length > 0 && (
+          <section>
+            <h2 className="font-semibold mb-2">Related movements</h2>
+            <div className="flex flex-wrap gap-2">
+              {related.map((ex) => (
+                <Link
+                  key={ex.id}
+                  href={`/exercises/${ex.id}`}
+                  className="text-sm px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-950/20 hover:bg-emerald-950/40"
+                >
+                  {ex.name}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {guides.length > 0 && (
+          <section>
+            <h2 className="font-semibold mb-2">Read in the free guide</h2>
+            <ul className="space-y-2 text-sm">
+              {guides.map((g) => (
+                <li key={g.id}>
+                  <Link href={`/guide/${g.id}`} className="text-primary hover:underline">
+                    {g.title} →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-5 space-y-3">
+          <p className="text-sm text-muted-foreground">
+            Log sets offline — no account, no AI API key. 217 free exercise pages in the library.
+          </p>
+          <Button asChild variant="fitness" className="primary-action">
+            <Link
+              href="/welcome"
+              onClick={() => track('public_cta_clicked', { target: '/welcome', exercise: exercise.id })}
+            >
+              Track this exercise free →
+            </Link>
+          </Button>
+        </div>
       </main>
       <PublicSeoFooter />
     </div>

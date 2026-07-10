@@ -37,10 +37,12 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. C
 1. Add property: `https://www.missionwinning.com`
 2. Verify via DNS TXT or HTML tag (Vercel domain settings)
 3. Submit sitemap: `https://www.missionwinning.com/sitemap.xml`
-   - Includes `/guide/*` and `/exercises/*` (217+ exercise URLs from [`app/sitemap.ts`](../app/sitemap.ts))
+   - Includes `/guide/*`, `/exercises/*` (~217 exercise URLs), muscle/equipment hubs, `/paths/*` (10 Learn teasers), `/compare` + Forge/Freeletics/spreadsheet stories ([`app/sitemap.ts`](../app/sitemap.ts))
 4. Monitor weekly: indexed pages, impressions, top queries ("how to squat", etc.)
 
-**Note:** While `PRIVATE_MODE=true`, `/` redirects to `/private` — public SEO pages `/guide` and `/exercises` remain indexable.
+**Approx public SEO surface (Wave 4):** ~217 exercises + ~6 guide chapters + ~12–20 hubs + 10 path teasers + compare index/stories + marketing (`/`, `/welcome`, `/bundle`, `/compare`).
+
+**Note:** While `PRIVATE_MODE=true`, `/` redirects to `/private` — public SEO pages `/guide`, `/exercises`, `/paths`, and `/compare` remain indexable.
 
 ---
 

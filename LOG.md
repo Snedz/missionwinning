@@ -4,6 +4,32 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-10 — Wave 5 Integrity + density
+
+**Docs:** [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md) § Wave 5  
+**Build:** `2026.07-unified.53`
+
+### Shipped
+
+- Integrity: Library alt opens exercise; Mind EmptyState CTA; public practice → welcome/exercises; path CTA copy; footer `/paths`; e2e public CTA smoke
+- Density: Builder program accordion + template search + ExercisePicker; History search/range + trends accordion; Fuel meal/recipe collapse
+- Search/UI: Library filter sheet; Learn default-collapsed + search; Move/Mind premium collapse
+
+---
+
+## 2026-07-10 — Wave 4 Inspire + volume
+
+**Docs:** [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md) § Wave 4  
+**Build:** `2026.07-unified.52`
+
+### Shipped
+
+- SEO: exercise/guide link mesh; top-50 public enrichment; muscle/equipment hubs; `/paths` Learn teasers; Compare Forge/Freeletics/spreadsheet stories
+- Marketing: Welcome cinematic briefing; Bundle six-pillar story before checkout; Landing library line; Compare proof mesh
+- Product: Library volume sparkline; History mission-story header; Today score-tick; Builder template chips; EmptyState CTAs
+
+---
+
 ## 2026-07-10 — Wave 3 Forge Fitness steals
 
 **Docs:** [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md) § Wave 3  

@@ -11,13 +11,6 @@ import { Check, Clock, Dumbbell, Plus, Scale, Square, Timer } from 'lucide-react
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { formatDuration } from '@/lib/utils';
@@ -26,6 +19,7 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { SetLogRow } from '@/components/workout/SetLogRow';
@@ -373,19 +367,8 @@ export function ActiveWorkoutPage() {
         <CardHeader className="pb-3">
           <CardTitle className="text-base">{t('activeAddExercise', { defaultValue: 'Add Exercise' })}</CardTitle>
         </CardHeader>
-        <CardContent className="flex gap-2">
-          <Select value={addExerciseId} onValueChange={setAddExerciseId}>
-            <SelectTrigger className="flex-1">
-              <SelectValue placeholder={t('activeChooseExercise', { defaultValue: 'Choose exercise...' })} />
-            </SelectTrigger>
-            <SelectContent>
-              {EXERCISES.map((ex) => (
-                <SelectItem key={ex.id} value={ex.id}>
-                  {ex.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <CardContent className="flex gap-2 items-start">
+          <ExercisePicker value={addExerciseId} onChange={setAddExerciseId} />
           <Button
             onClick={() => {
               if (addExerciseId) {
@@ -394,7 +377,7 @@ export function ActiveWorkoutPage() {
               }
             }}
             disabled={!addExerciseId}
-            className="min-h-[44px] min-w-[44px]"
+            className="min-h-[44px] min-w-[44px] shrink-0"
           >
             <Plus className="h-4 w-4" />
           </Button>
@@ -539,30 +522,19 @@ export function ActiveWorkoutPage() {
                   )}
                 </div>
                 {swapOpenIdx === exIdx && !hasCompleted && (
-                  <div className="mt-2 flex gap-2">
-                    <Select
+                  <div className="mt-2">
+                    <ExercisePicker
                       value=""
-                      onValueChange={(id) => {
+                      exercises={swapCandidates}
+                      placeholder={t('activeSwapPlaceholder', {
+                        defaultValue: 'Swap to… (same muscles first)',
+                      })}
+                      onChange={(id) => {
                         replaceExerciseInActive(exIdx, id);
                         setSwapOpenIdx(null);
                         setSetInputs({});
                       }}
-                    >
-                      <SelectTrigger className="flex-1">
-                        <SelectValue
-                          placeholder={t('activeSwapPlaceholder', {
-                            defaultValue: 'Swap to… (same muscles first)',
-                          })}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {swapCandidates.map((ex) => (
-                          <SelectItem key={ex.id} value={ex.id}>
-                            {ex.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    />
                   </div>
                 )}
                 {(noteOpenIdx === exIdx || exLog.note) && (

@@ -188,4 +188,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-07-10 (Wave 3 Forge steals `2026.07-unified.51`; prior: Wave 2 `.50`, UI research `.49`)
+Last updated: 2026-07-10 (Wave 5 integrity + density `2026.07-unified.53`; prior: Wave 4 `.52`, Wave 3 `.51`, Wave 2 `.50`)

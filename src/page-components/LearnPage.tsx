@@ -28,7 +28,8 @@ export function LearnPage() {
     () => localizeLearnPaths(FREE_LEARN_PATHS, t),
     [t]
   );
-  const [expandedPath, setExpandedPath] = useState<string | null>(FREE_LEARN_PATHS[0]?.id ?? null);
+  const [expandedPath, setExpandedPath] = useState<string | null>(null);
+  const [pathQuery, setPathQuery] = useState('');
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
@@ -37,6 +38,17 @@ export function LearnPage() {
       return new Set();
     }
   });
+
+  const filteredPaths = useMemo(() => {
+    const q = pathQuery.trim().toLowerCase();
+    if (!q) return paths;
+    return paths.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.subtitle.toLowerCase().includes(q) ||
+        p.lessons.some((l) => l.title.toLowerCase().includes(q))
+    );
+  }, [paths, pathQuery]);
 
   const markLessonDone = (lessonId: string, title: string) => {
     const next = new Set(completedLessons);
@@ -81,7 +93,21 @@ export function LearnPage() {
         </Card>
 
         <div className="space-y-3">
-          {paths.map((path) => {
+          <input
+            type="search"
+            value={pathQuery}
+            onChange={(e) => setPathQuery(e.target.value)}
+            placeholder={t('learnSearchPlaceholder', {
+              defaultValue: 'Search paths or lessons…',
+            })}
+            className="w-full rounded-xl border border-border/60 bg-background px-3 py-2.5 min-h-[44px] text-sm"
+          />
+          {filteredPaths.length === 0 && (
+            <p className="text-sm text-muted-foreground text-center py-4">
+              {t('learnNoMatches', { defaultValue: 'No paths match that search.' })}
+            </p>
+          )}
+          {filteredPaths.map((path) => {
             const open = expandedPath === path.id;
             const doneCount = path.lessons.filter((l) => completedLessons.has(l.id)).length;
             return (

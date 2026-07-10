@@ -18,7 +18,7 @@ import { getPillarWins } from '@/lib/pillarLog';
 import type { PillarWin } from '@/lib/pillarLog';
 import { GUIDED_MIND_SESSIONS } from '@/data/guidedMindSessions';
 import { GuidedMindSessionRunner } from '@/components/pillars/GuidedMindSessionRunner';
-import { Brain } from 'lucide-react';
+import { Brain, ChevronDown } from 'lucide-react';
 
 export function MindPage() {
   const { t } = useTranslation();
@@ -26,6 +26,7 @@ export function MindPage() {
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
   const [recentWins, setRecentWins] = useState<PillarWin[]>([]);
   const [refresh, setRefresh] = useState(0);
+  const [premiumOpen, setPremiumOpen] = useState(false);
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));
@@ -57,7 +58,7 @@ export function MindPage() {
         <DailyCheckIn />
       </div>
 
-      <div className="space-y-3">
+      <div id="mind-guided" className="space-y-3 scroll-mt-20">
         <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           {t('mindGuidedFree', { defaultValue: 'Free guided sessions' })}
         </h3>
@@ -69,19 +70,38 @@ export function MindPage() {
       </div>
 
       {premium && premiumSessions.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-emerald-400 uppercase tracking-wide">
-            {t('mindPremiumSessions', { defaultValue: 'Premium guided sessions' })}
-          </h3>
+        <details className="group space-y-3" open>
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-1 min-h-[44px] [&::-webkit-details-marker]:hidden">
+            <h3 className="text-sm font-semibold text-emerald-400 uppercase tracking-wide">
+              {t('mindPremiumSessions', { defaultValue: 'Premium guided sessions' })}
+            </h3>
+            <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+          </summary>
           <div className="grid gap-4 md:grid-cols-2">
             {premiumSessions.map((s) => (
               <GuidedMindSessionRunner key={s.id} session={s} onLogged={() => setRefresh((r) => r + 1)} />
             ))}
           </div>
-        </div>
+        </details>
       )}
 
-      {!premium && <MindLockedPreview />}
+      {!premium && (
+        <div className="space-y-2">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between gap-2 rounded-xl border border-border/50 px-4 py-3 text-sm min-h-[44px]"
+            onClick={() => setPremiumOpen((v) => !v)}
+          >
+            <span className="font-medium text-muted-foreground">
+              {t('mindPremiumPreview', { defaultValue: 'Premium guided sessions' })}
+            </span>
+            <ChevronDown
+              className={`h-4 w-4 text-muted-foreground transition-transform ${premiumOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
+          {premiumOpen && <MindLockedPreview />}
+        </div>
+      )}
 
       {recentWins.length > 0 ? (
         <Card className="content-card">
@@ -105,6 +125,10 @@ export function MindPage() {
           description={t('mindEmptyDesc', {
             defaultValue: 'Try a guided session or breathing timer — your first win shows here.',
           })}
+          actionLabel={t('mindEmptyCta', { defaultValue: 'Browse guided sessions' })}
+          onAction={() =>
+            document.getElementById('mind-guided')?.scrollIntoView({ behavior: 'smooth' })
+          }
         />
       )}
     </PillarPageShell>
