@@ -32,10 +32,12 @@ export function JourneyStrip({ action }: { action: JourneyAction }) {
   return (
     <div className="rounded-2xl border border-border/40 bg-muted/30 p-4 space-y-2">
       <div className="flex items-center justify-between text-xs">
-        <span className="font-medium text-emerald-400 uppercase tracking-wide">
-          {getPhaseLabel(action.phase)}
+        <span className="font-medium text-emerald-400 uppercase tracking-wide" suppressHydrationWarning>
+          {mounted ? getPhaseLabel(action.phase) : '\u00a0'}
         </span>
-        <span className="text-muted-foreground">{action.stepLabel}</span>
+        <span className="text-muted-foreground" suppressHydrationWarning>
+          {mounted ? action.stepLabel : '\u00a0'}
+        </span>
       </div>
       <div className="h-1 bg-muted rounded-full overflow-hidden">
         <div

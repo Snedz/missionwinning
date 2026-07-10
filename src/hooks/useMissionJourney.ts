@@ -7,17 +7,27 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useWorkoutStore } from '@/store/workoutStore';
 import {
+  getDefaultJourneyState,
   getNextAction,
-  loadJourneyState,
   syncJourneyPhase,
   type JourneyAction,
   type JourneyState,
 } from '@/lib/missionJourney';
 
+const SSR_ACTION: JourneyAction = {
+  label: 'Begin I-Day',
+  description: 'Where the journey begins — in-processing takes about 2 minutes.',
+  href: '/welcome',
+  phase: 'i-day',
+  stepLabel: 'I-Day · Where you start',
+  progressPct: 0,
+};
+
 export function useMissionJourney() {
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
-  const [state, setState] = useState<JourneyState>(() => loadJourneyState());
-  const [action, setAction] = useState<JourneyAction>(() => getNextAction([]));
+  /** Stable SSR defaults — localStorage journey phase only applied after mount. */
+  const [state, setState] = useState<JourneyState>(() => getDefaultJourneyState());
+  const [action, setAction] = useState<JourneyAction>(() => SSR_ACTION);
 
   const refresh = useCallback(() => {
     const next = syncJourneyPhase(workoutHistory);

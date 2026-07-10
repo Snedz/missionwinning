@@ -287,10 +287,10 @@ export function ProgramTemplatesPanel({
                 return (
                   <SelectGroup key={cat.id}>
                     <SelectLabel>{cat.label}</SelectLabel>
-                    {catPrograms.flatMap((program) =>
-                      program.sessions.map((session) => (
+                    {catPrograms.flatMap((program, pi) =>
+                      program.sessions.map((session, si) => (
                         <SelectItem
-                          key={`${program.id}-${session.id}`}
+                          key={`${cat.id}-${program.id}-${session.id}-${pi}-${si}`}
                           value={`${program.id}::${session.id}`}
                         >
                           {program.name} — {session.name}
