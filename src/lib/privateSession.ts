@@ -49,4 +49,31 @@ export function timingSafeSecretMatch(provided: string, secret: string): boolean
   }
 }
 
+/**
+ * Primary HMAC secret + optional comma-separated codes from PRIVATE_ACCESS_CODES.
+ * Cookies are always signed with PRIVATE_ACCESS_SECRET; extras are password-only.
+ */
+export function getPrivateAccessPasswords(
+  primary = process.env.PRIVATE_ACCESS_SECRET,
+  extras = process.env.PRIVATE_ACCESS_CODES
+): string[] {
+  const codes = [primary, ...(extras ?? '').split(',')]
+    .map((s) => s?.trim() ?? '')
+    .filter(Boolean);
+  return [...new Set(codes)];
+}
+
+/** True if provided matches the primary secret or any PRIVATE_ACCESS_CODES entry. */
+export function matchesPrivateAccessPassword(
+  provided: string,
+  primary = process.env.PRIVATE_ACCESS_SECRET,
+  extras = process.env.PRIVATE_ACCESS_CODES
+): boolean {
+  let matched = false;
+  for (const secret of getPrivateAccessPasswords(primary, extras)) {
+    if (timingSafeSecretMatch(provided, secret)) matched = true;
+  }
+  return matched;
+}
+
 export { COOKIE_NAME as PRIVATE_ACCESS_COOKIE };

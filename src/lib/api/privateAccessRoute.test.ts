@@ -53,6 +53,20 @@ describe('private-access API route', () => {
     assert.ok(setCookie.includes(PRIVATE_ACCESS_COOKIE));
   });
 
+  it('returns 200 for PRIVATE_ACCESS_CODES alias', async () => {
+    setTestEnv('PRIVATE_ACCESS_CODES', 'Done');
+    const res = await POST(
+      makeNextRequest('http://localhost/api/private-access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-forwarded-for': '10.0.0.102' },
+        body: JSON.stringify({ password: 'Done' }),
+      })
+    );
+    assert.equal(res.status, 200);
+    const setCookie = res.headers.get('set-cookie') ?? '';
+    assert.ok(setCookie.includes(PRIVATE_ACCESS_COOKIE));
+  });
+
   it('returns 400 for invalid body', async () => {
     const res = await POST(
       makeNextRequest('http://localhost/api/private-access', {
