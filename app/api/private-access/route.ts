@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import {
   createPrivateAccessToken,
-  timingSafeSecretMatch,
+  matchesPrivateAccessPassword,
   PRIVATE_ACCESS_COOKIE,
 } from '@/lib/privateSession';
 import { rateLimit } from '@/lib/rateLimit';
@@ -41,7 +41,7 @@ export const POST = withApiLogging('private-access', async(request: NextRequest)
   if (!parsed.ok) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
-  if (!timingSafeSecretMatch(parsed.data.password, secret)) {
+  if (!matchesPrivateAccessPassword(parsed.data.password, secret, process.env.PRIVATE_ACCESS_CODES)) {
     return NextResponse.json({ error: 'Incorrect access code' }, { status: 401 });
   }
 

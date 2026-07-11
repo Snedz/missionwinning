@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import type { NextRequest } from 'next/server';
 import {
   verifyPrivateAccessToken,
+  matchesPrivateAccessPassword,
   PRIVATE_ACCESS_COOKIE,
 } from '@/lib/privateSession';
 import { parseSupabaseAuthCookie } from '@/lib/supabaseAuthCookies';
@@ -106,5 +107,7 @@ export function queryGrantsAccess(searchParams: URLSearchParams, secret: string 
   if (process.env.NODE_ENV === 'production' && process.env.PRIVATE_ALLOW_QUERY_ACCESS !== 'true') {
     return false;
   }
-  return searchParams.get('access') === secret;
+  const access = searchParams.get('access');
+  if (!access) return false;
+  return matchesPrivateAccessPassword(access, secret, process.env.PRIVATE_ACCESS_CODES);
 }
