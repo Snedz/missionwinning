@@ -93,14 +93,13 @@ async function main() {
   }
 
   try {
+    // /beta is intentionally public while gated (PRIVATE_GATE_PUBLIC_PATHS)
     const beta = await headOrGet('/beta', { redirect: 'manual' });
     const betaLoc = beta.headers.get('location') || '';
-    const betaGated =
-      (beta.status >= 300 && beta.status < 400 && betaLoc.includes('/private')) ||
-      betaLoc.includes('/bundle');
+    const betaOk = beta.status === 200;
     checks.push({
-      name: 'GET /beta does not expose app shell',
-      ok: betaGated,
+      name: 'GET /beta public while gated',
+      ok: betaOk,
       detail: `${beta.status}${betaLoc ? ` → ${betaLoc}` : ''}`,
     });
   } catch (e) {
