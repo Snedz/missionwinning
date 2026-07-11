@@ -23,6 +23,8 @@ import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { LegalNav } from '@/components/layout/LegalNav';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { showOwnerTools } from '@/lib/ownerTools';
 import { downloadBackup, restoreBackupFromJson } from '@/lib/backup';
 import { useToast } from '@/hooks/use-toast';
@@ -152,15 +154,27 @@ export function ProfilePage() {
     router.push("/");
   };
 
-  // Light onboarding state
-  const [experience] = useState(localStorage.getItem('mw_experience') || '');
-  const [equipment] = useState(localStorage.getItem('mw_equipment') || '');
-  const [daysPerWeek, setDaysPerWeek] = useState(() =>
-    loadDaysPerWeek(localStorage.getItem('mw_experience') || 'beginner')
+  // Light onboarding state (SSR-safe — localStorage only in browser)
+  const [experience] = useState(() =>
+    typeof window !== 'undefined' ? localStorage.getItem('mw_experience') || '' : ''
   );
-  const [primaryGoal] = useState(localStorage.getItem('mw_primary_goal') || goals);
+  const [equipment] = useState(() =>
+    typeof window !== 'undefined' ? localStorage.getItem('mw_equipment') || '' : ''
+  );
+  const [daysPerWeek, setDaysPerWeek] = useState(() =>
+    loadDaysPerWeek(
+      typeof window !== 'undefined'
+        ? localStorage.getItem('mw_experience') || 'beginner'
+        : 'beginner'
+    )
+  );
+  const [primaryGoal] = useState(() =>
+    typeof window !== 'undefined'
+      ? localStorage.getItem('mw_primary_goal') || goals
+      : goals
+  );
 
-  const isOnboarded = !!(localStorage.getItem('mw_experience') && localStorage.getItem('mw_equipment'));
+  const isOnboarded = !!(experience && equipment);
 
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
 
@@ -244,6 +258,7 @@ export function ProfilePage() {
               defaultValue: 'Your Mission Winning account. Global preferences. Premium status.',
             })
       }
+      footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
     >
       <Card>
         <CardHeader><CardTitle>{t('account', { defaultValue: 'Account & Sign In' })}</CardTitle></CardHeader>
