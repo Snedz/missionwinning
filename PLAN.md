@@ -159,11 +159,14 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 ## Recommended work order (now)
 
-1. **Phase H founder ops** — confirm Vercel Production env (service role + Stripe); recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2–4)
+**Long-term sequencing (horizons 0–3, role split, kill criteria):** [ORCHESTRATION.md](ORCHESTRATION.md) — read this before starting a multi-week initiative.
+
+1. **Horizon 0 — Phase H founder ops** — Vercel secrets + Stripe + recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2–4)
 2. **Hit beta gates** — 10+ users, I-Day ≥80%, BT ≥60% — then `PRIVATE_MODE=false`
-3. **Phase I1** — live Stripe payment links + webhook verify ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md))
-4. **Re-measure `/log` Lighthouse** after slim readiness — update [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md)
-5. **More i18n locales** — only after PMF (es/fr/de body done)
+3. **Horizon 1 — Phase I1** — live Stripe payment links + webhook verify ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md))
+4. **Lighthouse `/log` + `/` → 90** + Serwist/PWA harden — [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md)
+5. **Horizon 2 — week-4 retention** — measure before new features ([docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md))
+6. **Horizon 3 — i18n / SEO / TWA** — only after PMF (es/fr/de body already partial)
 
 ---
 
@@ -188,17 +191,17 @@ npm run dev
 
 ---
 
-Last updated: 2026-07-14 (S-Tier waves 0–4 ship `2026.07-unified.55` — pricing single source, journey-gated nav, first-session I-Day preview, victory one-next-action, design tokens/a11y polish)
+Last updated: 2026-07-14 (ORCHESTRATION.md horizons; S-Tier build `2026.07-unified.58`)
 
 ---
 
-## S-Tier improvement track (2026-07-14)
+## S-Tier improvement track (2026-07-14) — closed into ORCHESTRATION
 
 | Wave | Status | Notes |
 |------|--------|-------|
 | **0** Focus + pricing | ✅ | `bundleConfig` monthly/$11.99 · 12mo/$59 · lifetime/$149; Basic nav train-only |
 | **1** First hour | ✅ | Welcome real Just Go preview; landing single primary CTA; journey empty copy |
-| **2** Daily polish | ✅ partial | ErrorState/Skeleton, MobileNav `aria-current`, Escape menu, token pass on chrome |
-| **3** Perf + page splits | ✅ | Fuel sections + BuilderArrange + ProfileBackup extracted; token lint on core pages |
-| **4** Coach + money honesty | ✅ | Victory one next action; week recap; coach invite after first session |
-| **5** Launch ops | 🟡 | Runbook pricing env updated; founder: beta cohort, Vercel secrets, `PRIVATE_MODE=false` |
+| **2** Daily polish | ✅ | ErrorState/Skeleton, MobileNav `aria-current`, Escape menu, token pass |
+| **3** Perf + page splits | ✅ | Fuel sections + BuilderArrange + ProfileBackup; further ActiveWorkout later |
+| **4** Coach + money honesty | ✅ | Victory one next action; week recap; coach invite; Bundle inventory |
+| **5** Launch ops | ⬜ | → Horizon 0 in [ORCHESTRATION.md](ORCHESTRATION.md) |

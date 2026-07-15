@@ -25,10 +25,11 @@ User guides in plain language (no code paths):
 
 ---
 
-## For developers
+## For developers & agents
 
 | Doc | Purpose |
 |-----|---------|
+| [../ORCHESTRATION.md](../ORCHESTRATION.md) | Long-term horizons, gates, what to build next |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Layers, state, request lifecycle |
 | [API.md](API.md) | All API routes — auth, rate limits, schemas |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Setup, PR workflow, where to put code |
