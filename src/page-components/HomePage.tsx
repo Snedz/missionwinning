@@ -40,6 +40,7 @@ import { buildJustGoSession, muscleFreshnessRows } from "@/lib/justGoSession";
 import { MuscleFreshnessStrip } from "@/components/today/MuscleFreshnessStrip";
 import { muscleGroupLabel } from "@/lib/readinessDisplay";
 import { track } from "@/lib/analytics";
+import { buildWeekRecap } from "@/lib/weekRecap";
 
 const CoachTodayCard = dynamic(
   () => import('@/components/coach/CoachTodayCard').then((m) => m.CoachTodayCard),
@@ -83,6 +84,11 @@ const TodayQuickLinks = dynamic(
 
 const TodayDashboardCustomize = dynamic(
   () => import('@/components/today/TodayDashboardCustomize').then((m) => m.TodayDashboardCustomize),
+  { ssr: false }
+);
+
+const TodayWeekRecapCard = dynamic(
+  () => import('@/components/today/TodayWeekRecapCard').then((m) => m.TodayWeekRecapCard),
   { ssr: false }
 );
 
@@ -588,6 +594,49 @@ export function HomePage() {
       />
     ),
   });
+
+  // After first logged session, surface Mission Coach as the depth path (Basic+).
+  if (
+    belowFoldReady &&
+    totalSessions >= 1 &&
+    (state.phase === 'basic' || state.phase === 'readiness')
+  ) {
+    staggerBlocks.push({
+      key: 'coach-invite',
+      node: (
+        <a
+          href="/coach"
+          className="content-card block border-primary/25 bg-primary/5 p-4 pressable-card"
+        >
+          <p className="eyebrow mb-1">
+            {t('todayCoachInviteEyebrow', { defaultValue: 'AI weekly plan' })}
+          </p>
+          <p className="text-sm font-medium">
+            {t('todayCoachInviteTitle', {
+              defaultValue: 'Generate a free taster week of Mission Coach',
+            })}
+          </p>
+          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+            {t('todayCoachInviteBody', {
+              defaultValue:
+                'Adaptive plan from your gear and days/week — free taster, no API key required.',
+            })}
+          </p>
+        </a>
+      ),
+    });
+  }
+
+  // Week recap — Sunday ceremony or mid-week pulse when active.
+  if (belowFoldReady) {
+    const weekRecap = buildWeekRecap(workoutHistory);
+    if (weekRecap.hasActivity || weekRecap.isWeekEnd) {
+      staggerBlocks.push({
+        key: 'week-recap',
+        node: <TodayWeekRecapCard recap={weekRecap} />,
+      });
+    }
+  }
 
   // Secondary surfaces only after idle — never compete with JourneyHero.
   if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
