@@ -1,4 +1,7 @@
-import { getUser, saveNutritionEntry } from '@/lib/supabase';
+/**
+ * Local pillar wins. Cloud sync is dynamic so getPillarWins stays free of supabase-js
+ * (missionJourney / lean Today cold path).
+ */
 
 export type PillarType = 'move' | 'mind' | 'track' | 'learn';
 
@@ -41,6 +44,7 @@ export async function logPillarWin(
   localStorage.setItem(WINS_KEY, JSON.stringify([win, ...existing].slice(0, 100)));
 
   try {
+    const { getUser, saveNutritionEntry } = await import('@/lib/supabase');
     const u = await getUser();
     if (u) {
       const today = new Date().toISOString().split('T')[0];

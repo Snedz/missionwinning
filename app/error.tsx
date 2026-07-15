@@ -1,12 +1,12 @@
 'use client';
 
-import * as Sentry from '@sentry/nextjs';
 import { useEffect } from 'react';
 
 /**
  * Route-segment error boundary. The app is fully client-rendered, so without
  * this any render throw is a blank screen. Local-first data is safe in
  * localStorage — say so, because that's the user's first fear.
+ * Sentry is dynamic-imported so the SDK is not on every page's critical path.
  */
 export default function RouteError({
   error,
@@ -18,7 +18,9 @@ export default function RouteError({
   useEffect(() => {
     console.error('Route error:', error);
     if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
-      Sentry.captureException(error, { extra: { digest: error.digest } });
+      void import('@sentry/nextjs').then((Sentry) => {
+        Sentry.captureException(error, { extra: { digest: error.digest } });
+      });
     }
   }, [error]);
 

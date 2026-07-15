@@ -1,7 +1,9 @@
-import { getTrainingStreak } from '@/lib/challenges';
-import { getContinueChapter, getGuidebookStats, loadGuidebookProgress } from '@/lib/guidebookProgress';
-import { getPillarWins } from '@/lib/pillarLog';
+/**
+ * Journey phase + next action. Cold-path free of challenges/guidebook/supabase —
+ * only localStorage + optional workout history arrays.
+ */
 import type { CompletedWorkoutLog } from '@/types';
+import { getPillarWins } from '@/lib/pillarLog';
 
 export type JourneyPhase = 'i-day' | 'basic' | 'readiness' | 'commissioned';
 
@@ -205,6 +207,33 @@ function detectBasicMilestones(workoutHistory: CompletedWorkoutLog[] = []): Jour
   return { workout, fuel, move, mind, learn };
 }
 
+/** Streak without importing challenges (which pulls nutrition/guidebook graph). */
+function trainingStreakLite(workoutHistory: CompletedWorkoutLog[]): number {
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = parseInt(localStorage.getItem('mw_streak') || '0', 10);
+      if (Number.isFinite(stored) && stored > 0) return stored;
+    } catch {
+      /* fall through */
+    }
+  }
+  if (workoutHistory.length === 0) return 0;
+  const dates = [
+    ...new Set(workoutHistory.map((w) => new Date(w.completedAt).toISOString().split('T')[0])),
+  ]
+    .sort()
+    .reverse();
+  let streak = 1;
+  for (let i = 0; i < dates.length - 1; i++) {
+    const a = new Date(dates[i]);
+    const b = new Date(dates[i + 1]);
+    const diff = Math.floor((a.getTime() - b.getTime()) / (1000 * 3600 * 24));
+    if (diff === 1) streak++;
+    else break;
+  }
+  return streak;
+}
+
 function detectReadinessMilestones(workoutHistory: CompletedWorkoutLog[]): JourneyReadinessMilestones {
   let parq = false;
   try {
@@ -213,7 +242,7 @@ function detectReadinessMilestones(workoutHistory: CompletedWorkoutLog[]): Journ
     parq = false;
   }
 
-  const streak = getTrainingStreak(workoutHistory);
+  const streak = trainingStreakLite(workoutHistory);
   const recent14 = workoutHistory.filter(
     (w) => Date.now() - new Date(w.completedAt).getTime() <= 14 * 86400000
   ).length;
@@ -351,13 +380,19 @@ export function getNextAction(workoutHistory: CompletedWorkoutLog[] = []): Journ
       };
     }
     if (!state.readiness.streakMet) {
-      const guideStats = getGuidebookStats(loadGuidebookProgress());
-      const cont = getContinueChapter(loadGuidebookProgress());
-      if (cont && guideStats.done < 6) {
+      // Avoid guidebook chapter catalog on cold path — generic guide CTA when incomplete.
+      let guideSectionsDone = 0;
+      try {
+        const raw = JSON.parse(localStorage.getItem('mw_guidebook_progress') || '[]') as unknown[];
+        guideSectionsDone = Array.isArray(raw) ? raw.length : 0;
+      } catch {
+        guideSectionsDone = 0;
+      }
+      if (guideSectionsDone < 6) {
         return {
-          label: `Guidebook: ${cont.section.title}`,
+          label: 'Continue the guidebook',
           description: 'Build your training foundation — read one section, then train.',
-          href: `/learn/guide/${cont.chapter.id}`,
+          href: '/learn/guide',
           phase: 'readiness',
           stepLabel: 'Readiness · Guidebook',
           progressPct: 50,
