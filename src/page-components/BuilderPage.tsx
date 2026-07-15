@@ -7,7 +7,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
-import { Layers, PenTool, Plus, Trash2, ChevronUp, ChevronDown, ChevronRight } from "lucide-react";
+import { Layers, PenTool, ChevronRight } from "lucide-react";
 import { Tabs } from "@/components/ui/tabs";
 import type { ProgramCategory, ProgramSession, ProgramTemplate } from "@/data/programTemplates";
 
@@ -34,28 +34,18 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
 import { ensureFullExerciseCatalog, getExerciseById } from "@/data/exercises";
 import { useWorkoutStore } from "@/store/workoutStore";
-import type { WorkoutExerciseTemplate } from "@/types";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
 import { reorderDraftExercises } from "@/lib/builderDraft";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { ExercisePicker } from "@/components/library/ExercisePicker";
-
-interface DraftExercise extends WorkoutExerciseTemplate {
-  key: string;
-}
+import {
+  BuilderArrangeStep,
+  type DraftExercise,
+} from "@/components/builder/BuilderArrangeStep";
 
 export function BuilderPage() {
   const { t } = useTranslation();
@@ -325,7 +315,7 @@ export function BuilderPage() {
           <Badge variant="secondary">
             {t('builderProgramCount', { defaultValue: 'Free programs' })}
           </Badge>
-          <span className="text-xs text-emerald-400">
+          <span className="text-xs text-primary">
             {t('builderTemplatesFoot', {
               defaultValue: 'Includes new free bodyweight + mobility circuits (vision core)',
             })}
@@ -352,7 +342,7 @@ export function BuilderPage() {
                 onClick={() => setTemplateCategory(value)}
                 className={
                   templateCategory === value
-                    ? 'rounded-full border border-emerald-500/50 bg-emerald-950/40 px-4 py-2 text-sm font-semibold text-emerald-300'
+                    ? 'rounded-full border border-primary/50 bg-primary/15 px-4 py-2 text-sm font-semibold text-primary'
                     : 'rounded-full border border-border/50 bg-muted/20 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground'
                 }
               >
@@ -427,212 +417,85 @@ export function BuilderPage() {
       )}
 
       {step === 2 && (
-      <Card className="content-card">
-        <CardHeader>
-          <CardTitle>{t('builderNewWorkout', { defaultValue: 'New Workout' })}</CardTitle>
-          <CardDescription>
-            {t('builderNewWorkoutDesc', { defaultValue: 'Pick exercises and configure sets' })}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {sessionNotes && (
-            <div className="rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">
-                {t('builderProgramNotes', { defaultValue: 'Program notes:' })}{' '}
-              </span>
-              {sessionNotes}
-            </div>
-          )}
-
-          <div className="flex gap-2 items-start">
-            <ExercisePicker value={selectedExerciseId} onChange={setSelectedExerciseId} />
-            <Button onClick={addExercise} disabled={!selectedExerciseId} className="min-h-[44px] shrink-0">
-              <Plus className="h-4 w-4" />
-              {t('builderAdd', { defaultValue: 'Add' })}
-            </Button>
-          </div>
-
-          {/* Quick free mobility warm-up for better sessions (free core) */}
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-xs"
-            onClick={() => {
-              const mobilityIds = ["cat-camel", "bird-dog", "glute-bridge", "couch-stretch", "bear-crawl"];
-              const toAdd = mobilityIds.filter(id => !exercises.some(e => e.exerciseId === id));
-              if (toAdd.length === 0) {
-                toast({
-                  title: t('builderMobilityAlready', {
-                    defaultValue: 'Mobility warm-up already in session.',
-                  }),
-                });
-                return;
-              }
-              setExercises([
-                ...exercises,
-                ...toAdd.map(id => ({
-                  key: `ex-${Date.now()}-${id}`,
-                  exerciseId: id,
-                  sets: [{ reps: 8, weight: 0 }],
-                }))
-              ]);
-            }}
-          >
-            {t('builderQuickMobility', {
-              defaultValue: '+ Quick Add Free Mobility Warm-up (5 moves)',
-            })}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-xs ml-2"
-            onClick={() => {
-              setWorkoutName(t('builderHabitStackName', { defaultValue: 'Daily Habit Stack (Free)' }));
-              setSessionNotes(
-                t('builderHabitStackNotes', {
-                  defaultValue:
-                    'Vision-aligned free core: mobility + consistency. Log in Nutrition too.',
-                })
-              );
-              setExercises([
-                { key: `ex-${Date.now()}-1`, exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },
-                { key: `ex-${Date.now()}-2`, exerciseId: "bird-dog", sets: [{ reps: 6, weight: 0 }] },
-                { key: `ex-${Date.now()}-3`, exerciseId: "glute-bridge", sets: [{ reps: 10, weight: 0 }] },
-                { key: `ex-${Date.now()}-4`, exerciseId: "couch-stretch", sets: [{ reps: 45, weight: 0 }] },
-                { key: `ex-${Date.now()}-5`, exerciseId: "bear-crawl", sets: [{ reps: 10, weight: 0 }] },
-              ]);
-            }}
-          >
-            {t('builderLoadHabitStack', { defaultValue: 'Load Free Habit/Mobility Stack' })}
-          </Button>
-
-          {exercises.map((ex, exIndex) => {
-            const exercise = getExerciseById(ex.exerciseId);
-            if (!exercise) return null;
-            return (
-              <Card key={ex.key} className="bg-muted/30">
-                <CardContent className="p-4 space-y-3">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="flex flex-col gap-0.5 shrink-0">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7"
-                          disabled={exIndex === 0}
-                          onClick={() => moveExercise(exIndex, 'up')}
-                          aria-label="Move up"
-                        >
-                          <ChevronUp className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7"
-                          disabled={exIndex === exercises.length - 1}
-                          onClick={() => moveExercise(exIndex, 'down')}
-                          aria-label="Move down"
-                        >
-                          <ChevronDown className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    <div>
-                      <h4 className="font-semibold">{exercise.name}</h4>
-                      <div className="flex gap-1 mt-1">
-                        {exercise.muscleGroups.map((mg) => (
-                          <Badge key={mg} variant="muscle" className="text-[10px]">
-                            {mg}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    </div>
-                    <Button variant="ghost" size="icon" onClick={() => removeExercise(ex.key)}>
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                  </div>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-16">
-                          {t('builderTableSet', { defaultValue: 'Set' })}
-                        </TableHead>
-                        <TableHead>{t('builderTableReps', { defaultValue: 'Reps' })}</TableHead>
-                        <TableHead>
-                          {t('builderTableWeight', {
-                            unit: unitLabel,
-                            defaultValue: `Weight (${unitLabel})`,
-                          })}
-                        </TableHead>
-                        <TableHead className="w-12" />
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {ex.sets.map((set, i) => (
-                        <TableRow key={i}>
-                          <TableCell>{i + 1}</TableCell>
-                          <TableCell>
-                            <Input
-                              type="number"
-                              min={1}
-                              value={set.reps}
-                              onChange={(e) =>
-                                updateSet(ex.key, i, "reps", parseInt(e.target.value) || 0)
-                              }
-                              className="h-8 w-20"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Input
-                              type="number"
-                              min={0}
-                              step={2.5}
-                              value={set.weight}
-                              onChange={(e) =>
-                                updateSet(ex.key, i, "weight", parseFloat(e.target.value) || 0)
-                              }
-                              className="h-8 w-24"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              onClick={() => removeSet(ex.key, i)}
-                              disabled={ex.sets.length <= 1}
-                            >
-                              <Trash2 className="h-3 w-3" />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <Button variant="outline" size="sm" onClick={() => addSet(ex.key)}>
-                    <Plus className="h-3 w-3 mr-1" />{' '}
-                    {t('builderAddSet', { defaultValue: 'Add Set' })}
-                  </Button>
-                </CardContent>
-              </Card>
+        <BuilderArrangeStep
+          sessionNotes={sessionNotes}
+          exercises={exercises}
+          selectedExerciseId={selectedExerciseId}
+          unitLabel={unitLabel}
+          onSelectedChange={setSelectedExerciseId}
+          onAddExercise={addExercise}
+          onQuickMobility={() => {
+            const mobilityIds = [
+              'cat-camel',
+              'bird-dog',
+              'glute-bridge',
+              'couch-stretch',
+              'bear-crawl',
+            ];
+            const toAdd = mobilityIds.filter((id) => !exercises.some((e) => e.exerciseId === id));
+            if (toAdd.length === 0) {
+              toast({
+                title: t('builderMobilityAlready', {
+                  defaultValue: 'Mobility warm-up already in session.',
+                }),
+              });
+              return;
+            }
+            setExercises([
+              ...exercises,
+              ...toAdd.map((id) => ({
+                key: `ex-${Date.now()}-${id}`,
+                exerciseId: id,
+                sets: [{ reps: 8, weight: 0 }],
+              })),
+            ]);
+          }}
+          onLoadHabitStack={() => {
+            setWorkoutName(
+              t('builderHabitStackName', { defaultValue: 'Daily Habit Stack (Free)' })
             );
-          })}
-
-          <div className="sticky bottom-0 -mx-1 border-t border-border/60 bg-background/95 backdrop-blur py-3 flex gap-2">
-            <Button variant="outline" onClick={() => setStep(1)}>
-              {t('builderBack', { defaultValue: 'Back' })}
-            </Button>
-            <Button
-              variant="fitness"
-              className="flex-1 primary-action"
-              disabled={exercises.length === 0}
-              onClick={() => setStep(3)}
-            >
-              {t('builderContinue', { defaultValue: 'Continue' })}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+            setSessionNotes(
+              t('builderHabitStackNotes', {
+                defaultValue:
+                  'Vision-aligned free core: mobility + consistency. Log in Nutrition too.',
+              })
+            );
+            setExercises([
+              {
+                key: `ex-${Date.now()}-1`,
+                exerciseId: 'cat-camel',
+                sets: [{ reps: 8, weight: 0 }],
+              },
+              {
+                key: `ex-${Date.now()}-2`,
+                exerciseId: 'bird-dog',
+                sets: [{ reps: 6, weight: 0 }],
+              },
+              {
+                key: `ex-${Date.now()}-3`,
+                exerciseId: 'glute-bridge',
+                sets: [{ reps: 10, weight: 0 }],
+              },
+              {
+                key: `ex-${Date.now()}-4`,
+                exerciseId: 'couch-stretch',
+                sets: [{ reps: 45, weight: 0 }],
+              },
+              {
+                key: `ex-${Date.now()}-5`,
+                exerciseId: 'bear-crawl',
+                sets: [{ reps: 10, weight: 0 }],
+              },
+            ]);
+          }}
+          onMoveExercise={moveExercise}
+          onRemoveExercise={removeExercise}
+          onUpdateSet={updateSet}
+          onAddSet={addSet}
+          onRemoveSet={removeSet}
+          onBack={() => setStep(1)}
+          onContinue={() => setStep(3)}
+        />
       )}
 
       {step === 3 && (
