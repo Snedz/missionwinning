@@ -13,9 +13,30 @@ Routes checked: `/`, `/log`, `/guide/human-performance`, `/exercises/squats`.
 
 Budget: **≥90** performance, accessibility, best-practices (soft warning in CI — see `.github/workflows/ci.yml`).
 
-## Snapshot (2026-07-15 — nav pulse + lean Today store-free, build `.66`)
+## Snapshot (2026-07-15 — supabase off shell, journey lite, build `.67`)
 
 Mobile, `PRIVATE_MODE=false`, local prod (run variance ±2–3):
+
+| Route | Performance | Accessibility | Best practices | Notes |
+|-------|-------------|---------------|----------------|-------|
+| `/` | **91** | 94 | 100 | ✅ Meets ≥90 |
+| **`/log`** | **79–80** | **96** | **100** | App shell + Today client still heavy |
+| `/guide/human-performance` | **91** | 100 | 100 | ✅ Meets ≥90 |
+| `/exercises/squats` | **90** | 96 | 100 | ✅ Meets ≥90 |
+
+### Residual plan to hit `/log` ≥90
+
+1. ~~Lazy i18n / lean Today / static app layout / deferred analytics~~ — shipped  
+2. ~~workoutStore no longer imports exercise catalog~~ — shipped  
+3. ~~AppHeader phase-lite; auth chip idle~~ — shipped  
+4. ~~MobileNav pulse; HomeTodayLean store deferred~~ — shipped  
+5. ~~Sentry dynamic in error boundaries; supabase deferred from root + pillarLog~~ — shipped  
+6. ~~missionJourney free of challenges/guidebook catalog~~ — shipped  
+7. Next: further AppLayout/Today first-paint split; CSS weight; third-party residual
+
+*CI job `lighthouse-budget` remains soft-warning. Target `/log` → 90 after deeper shell cuts / real-device data.*
+
+## Prior snapshot (2026-07-15 — nav pulse + lean Today store-free, build `.66`)
 
 | Route | Performance | Accessibility | Best practices | Notes |
 |-------|-------------|---------------|----------------|-------|
@@ -23,17 +44,6 @@ Mobile, `PRIVATE_MODE=false`, local prod (run variance ±2–3):
 | **`/log`** | **80–81** | **96** | **100** | Shell + missionJourney still on cold path |
 | `/guide/human-performance` | **88–91** | 100 | 100 | Often ≥90 |
 | `/exercises/squats` | **83–86** | 96 | 100 | Public SEO |
-
-### Residual plan to hit `/log` ≥90
-
-1. ~~Lazy i18n / lean Today / static app layout / deferred analytics~~ — shipped  
-2. ~~workoutStore no longer imports exercise catalog~~ — shipped  
-3. ~~AppHeader phase-lite (no useMissionJourney); auth chip idle~~ — shipped  
-4. ~~MobileNav/Sidebar pulse-only (no workoutStore); HomeTodayLean store deferred~~ — shipped  
-5. Lazy Sentry when DSN set (prod-only)  
-6. Further: slim missionJourney/challenges graph on lean Today; reduce shared shell CSS/JS
-
-*CI job `lighthouse-budget` remains soft-warning. Target `/log` → 90 after public activation data + deeper shell cuts.*
 
 ## Prior snapshot (2026-07-15 — store catalog decouple + header lite, build `.65`)
 

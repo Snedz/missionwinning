@@ -5,9 +5,9 @@ import { HtmlLangSync } from '@/components/i18n/HtmlLangSync';
 import { LocaleHttpSync } from '@/components/i18n/LocaleHttpSync';
 import { OnlineStatusBanner } from '@/components/layout/OnlineStatusBanner';
 import { identifyUser, initAnalytics, resetAnalyticsIdentity, track } from '@/lib/analytics';
-import { supabase } from '@/lib/supabase';
 
 // Bootstrap i18next (minimal EN). Full locale catalogs hydrate after idle.
+// supabase-js is NOT imported here — auth listener loads it after idle.
 import i18n, { hydrateI18nResources } from '@/i18n';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -101,31 +101,36 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
     void navigator.serviceWorker.register('/sw.js').catch(() => { /* noop */ });
   }, []);
 
-  // Auth listener after idle — supabase-js should not block first paint.
+  // Auth listener after idle — dynamic-import supabase-js so it is off first paint.
   useEffect(() => {
     let unsub: (() => void) | undefined;
     let cancelled = false;
     const boot = () => {
       if (cancelled) return;
-      const { data } = supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_IN' && session?.user?.id) {
-          identifyUser(session.user.id);
-          try {
-            if (localStorage.getItem('mw_reminders_pref') === '1') {
-              void supabase
-                .from('profiles')
-                .update({ reminders_opt_in: true })
-                .eq('id', session.user.id)
-                .then(({ error }) => {
-                  if (!error) localStorage.removeItem('mw_reminders_pref');
-                });
+      void import('@/lib/supabase').then(({ supabase }) => {
+        if (cancelled) return;
+        const { data } = supabase.auth.onAuthStateChange((event, session) => {
+          if (event === 'SIGNED_IN' && session?.user?.id) {
+            identifyUser(session.user.id);
+            try {
+              if (localStorage.getItem('mw_reminders_pref') === '1') {
+                void supabase
+                  .from('profiles')
+                  .update({ reminders_opt_in: true })
+                  .eq('id', session.user.id)
+                  .then(({ error }) => {
+                    if (!error) localStorage.removeItem('mw_reminders_pref');
+                  });
+              }
+            } catch {
+              /* noop */
             }
-          } catch { /* noop */ }
-        } else if (event === 'SIGNED_OUT') {
-          resetAnalyticsIdentity();
-        }
+          } else if (event === 'SIGNED_OUT') {
+            resetAnalyticsIdentity();
+          }
+        });
+        unsub = () => data.subscription.unsubscribe();
       });
-      unsub = () => data.subscription.unsubscribe();
     };
     if (typeof requestIdleCallback !== 'undefined') {
       const id = requestIdleCallback(boot, { timeout: 3000 });

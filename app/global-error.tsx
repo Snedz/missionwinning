@@ -1,12 +1,12 @@
 'use client';
 
-import * as Sentry from '@sentry/nextjs';
 import { useEffect } from 'react';
 
 /**
  * Last-resort boundary — replaces the entire document when the root layout
  * itself throws, so it must render its own <html>/<body> and use no app CSS
  * (the stylesheet may be part of what crashed). Inline styles only.
+ * Sentry is dynamic-imported so the SDK is not on the critical path.
  */
 export default function GlobalError({
   error,
@@ -17,7 +17,9 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
-      Sentry.captureException(error, { extra: { digest: error.digest } });
+      void import('@sentry/nextjs').then((Sentry) => {
+        Sentry.captureException(error, { extra: { digest: error.digest } });
+      });
     }
   }, [error]);
 

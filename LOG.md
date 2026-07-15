@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-15 — Cut supabase from shell / journey cold path (`2026.07-unified.67`)
+
+- `pillarLog.getPillarWins` no longer static-imports supabase (cloud only on `logPillarWin`)
+- `missionJourney` drops challenges + guidebook catalog imports (lite streak + progress count)
+- Root `I18nPwaProvider` dynamic-imports supabase for idle auth listener
+- Route/global error boundaries dynamic-import Sentry
+- Lighthouse mobile: `/` **91**, guide **91**, exercises **90**, `/log` **~79–80** (still shell-bound)
+
+---
+
 ## 2026-07-15 — Nav pulse + lean Today without workoutStore (`2026.07-unified.66`)
 
 - `activeWorkoutPulse` + `useActiveWorkoutPulse`: MobileNav/Sidebar no longer import `workoutStore`
