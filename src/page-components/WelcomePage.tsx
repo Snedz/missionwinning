@@ -4,7 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft } from 'lucide-react';
@@ -30,6 +30,8 @@ import {
   loadDaysPerWeek,
   saveDaysPerWeek,
 } from '@/lib/coach/schedulePrefs';
+import { previewJustGoForEquipment } from '@/lib/justGoSession';
+import { getExerciseById } from '@/data/exercises';
 import { cn } from '@/lib/utils';
 
 const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
@@ -117,6 +119,14 @@ export function WelcomePage() {
   };
 
   const stepIndex = STEP_ORDER.indexOf(step);
+  const firstSession = useMemo(() => previewJustGoForEquipment(equipment), [equipment]);
+  const firstSessionNames = useMemo(
+    () =>
+      firstSession.exercises
+        .slice(0, 4)
+        .map((ex) => getExerciseById(ex.exerciseId)?.name ?? ex.exerciseId),
+    [firstSession]
+  );
 
   return (
     <div className="relative min-h-screen text-foreground flex flex-col overflow-hidden">
@@ -140,16 +150,32 @@ export function WelcomePage() {
       </header>
 
       {!isEdit && (
-        <div className="relative z-10 mx-auto w-full max-w-lg px-5 pt-4 flex gap-1.5" aria-hidden>
-          {STEP_ORDER.map((s, i) => (
-            <div
-              key={s}
-              className={cn(
-                'h-1 flex-1 rounded-full transition-colors',
-                i <= stepIndex ? 'bg-emerald-500' : 'bg-border/50'
-              )}
-            />
-          ))}
+        <div
+          className="relative z-10 mx-auto w-full max-w-lg px-5 pt-4"
+          role="group"
+          aria-label={t('welcomeProgressLabel', {
+            defaultValue: `I-Day progress, step ${stepIndex + 1} of ${STEP_ORDER.length}`,
+          })}
+        >
+          <p className="sr-only">
+            {t('welcomeProgressSr', {
+              defaultValue: `Step ${stepIndex + 1} of ${STEP_ORDER.length}: ${step}`,
+              step: stepIndex + 1,
+              total: STEP_ORDER.length,
+              name: step,
+            })}
+          </p>
+          <div className="flex gap-1.5" aria-hidden>
+            {STEP_ORDER.map((s, i) => (
+              <div
+                key={s}
+                className={cn(
+                  'h-1 flex-1 rounded-full transition-colors',
+                  i <= stepIndex ? 'bg-primary' : 'bg-border/50'
+                )}
+              />
+            ))}
+          </div>
         </div>
       )}
 
@@ -175,22 +201,31 @@ export function WelcomePage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-emerald-500/25 bg-emerald-950/20 p-4 space-y-3">
-                  <p className="text-[10px] uppercase tracking-widest text-emerald-400/90 font-medium">
-                    {t('welcomePreviewLabel', { defaultValue: 'What you’ll open next' })}
+                <div className="rounded-2xl border border-primary/25 bg-primary/5 p-4 space-y-3">
+                  <p className="text-[10px] uppercase tracking-widest text-primary/90 font-medium">
+                    {t('welcomePreviewLabel', { defaultValue: 'Your first session is ready' })}
                   </p>
-                  <div className="flex items-end justify-between gap-4">
-                    <div>
-                      <p className="text-xs text-muted-foreground">
-                        {t('todayMissionScore', { defaultValue: 'Mission Score' })}
-                      </p>
-                      <p className="text-3xl font-bold tabular-nums text-emerald-400 score-tick">—</p>
-                    </div>
-                    <div className="text-right text-xs text-muted-foreground max-w-[10rem]">
-                      {t('welcomePreviewJustGo', {
-                        defaultValue: 'Today → Just Go builds a free session from your gear.',
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-foreground">
+                      {t('welcomePreviewSessionName', {
+                        defaultValue: firstSession.name,
+                        name: firstSession.name,
                       })}
-                    </div>
+                    </p>
+                    <ul className="text-xs text-muted-foreground space-y-1">
+                      {firstSessionNames.map((name) => (
+                        <li key={name} className="flex items-center gap-2">
+                          <span className="h-1 w-1 rounded-full bg-primary shrink-0" aria-hidden />
+                          {name}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-xs text-muted-foreground pt-1">
+                      {t('welcomePreviewJustGo', {
+                        defaultValue:
+                          'After I-Day, Today → Just Go opens this free session. Log one set — Mission Score starts moving.',
+                      })}
+                    </p>
                   </div>
                 </div>
 
@@ -319,7 +354,7 @@ export function WelcomePage() {
                           type="button"
                           size="sm"
                           variant={selected ? 'default' : 'outline'}
-                          className={selected ? 'bg-emerald-600 hover:bg-emerald-500' : ''}
+                          className={selected ? 'bg-primary hover:bg-primary/90' : ''}
                           onClick={() => setPrimaryGoal(value)}
                         >
                           {t(labelKey, { defaultValue: GOAL_PRESET_DEFAULTS[id] })}
@@ -347,7 +382,7 @@ export function WelcomePage() {
                         type="button"
                         size="sm"
                         variant={daysPerWeek === n ? 'default' : 'outline'}
-                        className={daysPerWeek === n ? 'bg-emerald-600 hover:bg-emerald-500' : ''}
+                        className={daysPerWeek === n ? 'bg-primary hover:bg-primary/90' : ''}
                         onClick={() => setDaysPerWeek(n)}
                       >
                         {n}
@@ -388,10 +423,32 @@ export function WelcomePage() {
                     })}
                   </p>
                 </div>
+                <div className="rounded-2xl border border-brass/30 bg-brass/5 p-4 space-y-2">
+                  <p className="text-[10px] uppercase tracking-widest text-brass font-medium">
+                    {t('welcomeSessionReadyEyebrow', { defaultValue: 'Session ready' })}
+                  </p>
+                  <p className="text-sm font-medium">
+                    {t('welcomeSessionReadyTitle', {
+                      defaultValue: 'Next: open Today and tap Just Go',
+                    })}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {t('welcomeSessionReadyBody', {
+                      defaultValue: `${firstSession.name} · ${firstSessionNames.length} exercises from your gear. One set logs your first Mission Score.`,
+                      name: firstSession.name,
+                      count: firstSessionNames.length,
+                    })}
+                  </p>
+                  <ul className="text-xs text-muted-foreground flex flex-wrap gap-x-3 gap-y-1">
+                    {firstSessionNames.map((name) => (
+                      <li key={name}>{name}</li>
+                    ))}
+                  </ul>
+                </div>
                 <label className="flex cursor-pointer items-start gap-2.5 rounded-xl border border-border/60 bg-muted/20 p-3 text-sm">
                   <input
                     type="checkbox"
-                    className="mt-0.5 h-4 w-4 accent-emerald-600"
+                    className="mt-0.5 h-4 w-4 accent-primary"
                     defaultChecked={false}
                     onChange={(e) => {
                       try {
@@ -410,7 +467,7 @@ export function WelcomePage() {
                 <SignInPanel
                   allowSkip
                   nextPath="/log"
-                  skipLabel={t('welcomeSkipSignIn', { defaultValue: 'Skip — go to Today' })}
+                  skipLabel={t('welcomeSkipSignIn', { defaultValue: 'Skip — start first session' })}
                   onComplete={finish}
                 />
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('profile')}>

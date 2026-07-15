@@ -18,7 +18,12 @@ export const PILLAR_STANDALONE_PRICES: Record<string, string> = {
   learn: '12',
 };
 
-export type BundlePlanId = '3mo' | '12mo' | 'lifetime';
+/**
+ * Plan IDs aligned with STRATEGY.md:
+ * monthly $11.99 · 12-month founders $59 · lifetime $149
+ * (`monthly` replaces the old 3-month tier.)
+ */
+export type BundlePlanId = 'monthly' | '12mo' | 'lifetime';
 
 export type BundlePlanBadge = 'popular' | 'bestValue' | 'limited';
 
@@ -35,24 +40,24 @@ export interface BundlePlan {
   savingsPercent: number;
 }
 
-/** Freeletics-style duration tiers — illustrative until Stripe links per plan. */
+/** Single source of truth for Super Bundle merchandising (STRATEGY.md). */
 export const BUNDLE_PLANS: Record<BundlePlanId, BundlePlan> = {
-  '3mo': {
-    id: '3mo',
-    price: '33',
-    strikePrice: '36',
-    perMonth: '11',
+  monthly: {
+    id: 'monthly',
+    price: '11.99',
+    strikePrice: '24',
+    perMonth: '11.99',
     isSubscription: true,
-    savingsPercent: 8,
+    savingsPercent: 50,
   },
   '12mo': {
     id: '12mo',
-    price: '96',
-    strikePrice: '144',
-    perMonth: '8',
+    price: '59',
+    strikePrice: '143.88',
+    perMonth: '4.92',
     badge: 'popular',
     isSubscription: true,
-    savingsPercent: 33,
+    savingsPercent: 59,
   },
   lifetime: {
     id: 'lifetime',

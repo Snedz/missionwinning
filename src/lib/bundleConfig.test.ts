@@ -7,8 +7,11 @@ import {
 } from '@/lib/bundleConfig';
 
 describe('bundleConfig', () => {
-  it('defines three duration plans with strike pricing', () => {
+  it('defines STRATEGY pricing: monthly / 12mo founders / lifetime', () => {
+    assert.equal(BUNDLE_PLANS.monthly.price, '11.99');
+    assert.equal(BUNDLE_PLANS['12mo'].price, '59');
     assert.equal(BUNDLE_PLANS['12mo'].badge, 'popular');
+    assert.equal(BUNDLE_PLANS.lifetime.price, '149');
     assert.equal(BUNDLE_PLANS.lifetime.isSubscription, false);
     assert.ok(parseFloat(BUNDLE_PLANS['12mo'].strikePrice) > parseFloat(BUNDLE_PLANS['12mo'].price));
   });

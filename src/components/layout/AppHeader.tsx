@@ -6,14 +6,18 @@ import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, Dumbbell } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { EXTENDED_NAV_SECTIONS, ALL_NAV, STATIC_PAGE_TITLES } from '@/lib/navConfig';
+import { ALL_NAV, STATIC_PAGE_TITLES, extendedNavSectionsForPhase } from '@/lib/navConfig';
 import { HeaderAuthChip } from '@/components/layout/HeaderAuthChip';
+import { useMissionJourney } from '@/hooks/useMissionJourney';
 
 export function AppHeader() {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { state } = useMissionJourney();
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+
+  const navSections = extendedNavSectionsForPhase(state.phase);
 
   const pageTitle = (() => {
     const normalized = pathname === '/' ? '/log' : pathname;
@@ -45,11 +49,16 @@ export function AppHeader() {
         setOpen(false);
       }
     };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
     document.addEventListener('mousedown', onPointerDown);
     document.addEventListener('touchstart', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('mousedown', onPointerDown);
       document.removeEventListener('touchstart', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
     };
   }, [open]);
 
@@ -63,15 +72,15 @@ export function AppHeader() {
           aria-haspopup="true"
           className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-white/[0.02] transition-colors rounded-lg -ms-1 ps-1 py-1"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 shadow-md shadow-emerald-950/30">
-            <Dumbbell className="h-5 w-5 text-white" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary shadow-md shadow-emerald-950/30">
+            <Dumbbell className="h-5 w-5 text-primary-foreground" />
           </div>
           <div className="flex-1 min-w-0 flex items-center gap-2">
             <span className="font-semibold tracking-tight truncate">Mission Winning</span>
             <ChevronDown
               className={cn(
                 'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
-                open && 'rotate-180 text-emerald-400'
+                open && 'rotate-180 text-primary'
               )}
             />
           </div>
@@ -91,8 +100,24 @@ export function AppHeader() {
         <div className="overflow-hidden">
           <div className="px-4 py-4 bg-card/90 backdrop-blur-xl max-h-[min(70vh,520px)] overflow-y-auto">
             <p className="text-xs text-muted-foreground mb-4 sm:hidden">{pageTitle}</p>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
-              {EXTENDED_NAV_SECTIONS.map((section) => (
+            {(state.phase === 'i-day' || state.phase === 'basic') && (
+              <p className="text-xs text-muted-foreground mb-3 max-w-5xl mx-auto">
+                {t('navBasicFocusHint', {
+                  defaultValue: 'Basic Training focus — train tools first. More pillars unlock as you go.',
+                })}
+              </p>
+            )}
+            <div
+              className={cn(
+                'grid gap-6 max-w-5xl mx-auto',
+                navSections.length === 1
+                  ? 'sm:grid-cols-1'
+                  : navSections.length === 2
+                    ? 'sm:grid-cols-2'
+                    : 'sm:grid-cols-2 lg:grid-cols-4'
+              )}
+            >
+              {navSections.map((section) => (
                 <div key={section.id}>
                   <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium mb-2 px-1">
                     {t(section.titleKey, { defaultValue: section.title })}
@@ -110,12 +135,18 @@ export function AppHeader() {
                             className={cn(
                               'flex items-center gap-2.5 rounded-xl px-3 py-2.5 min-h-[44px] text-sm transition-colors',
                               active
-                                ? 'bg-emerald-600/15 text-emerald-400'
+                                ? 'bg-primary/15 text-primary'
                                 : 'text-foreground/90 hover:bg-muted/60',
-                              military && !active && 'border border-amber-800/20'
+                              military && !active && 'border border-status-warn/20'
                             )}
                           >
-                            <Icon className={cn('h-4 w-4 shrink-0', military && 'text-amber-600/80')} />
+                            <Icon
+                              className={cn(
+                                'h-4 w-4 shrink-0',
+                                military && 'text-status-warn/80'
+                              )}
+                              aria-hidden
+                            />
                             <span className="font-medium truncate">
                               {t(item.labelKey, { defaultValue: item.label })}
                             </span>
@@ -128,19 +159,19 @@ export function AppHeader() {
               ))}
             </div>
             <div className="flex flex-wrap gap-4 mt-5 pt-4 border-t border-border/40 text-xs text-muted-foreground max-w-5xl mx-auto">
-              <Link href="/vision" onClick={close} className="hover:text-emerald-400">
+              <Link href="/vision" onClick={close} className="hover:text-primary">
                 {t('navOurMission', { defaultValue: 'Our mission' })}
               </Link>
-              <Link href="/beta" onClick={close} className="hover:text-emerald-400">
+              <Link href="/beta" onClick={close} className="hover:text-primary">
                 {t('navBetaGuide', { defaultValue: 'Beta guide' })}
               </Link>
-              <Link href="/about" onClick={close} className="hover:text-emerald-400">
+              <Link href="/about" onClick={close} className="hover:text-primary">
                 {t('about', { defaultValue: 'About' })}
               </Link>
-              <Link href="/terms" onClick={close} className="hover:text-emerald-400">
+              <Link href="/terms" onClick={close} className="hover:text-primary">
                 {t('termsOfService', { defaultValue: 'Terms' })}
               </Link>
-              <Link href="/privacy" onClick={close} className="hover:text-emerald-400">
+              <Link href="/privacy" onClick={close} className="hover:text-primary">
                 {t('privacyPolicy', { defaultValue: 'Privacy' })}
               </Link>
             </div>

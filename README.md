@@ -37,7 +37,7 @@ See [vision.md](vision.md) for the full guiding document (the "constitution" for
 - **PWA First**: Zero store fees/cuts. Global, offline-first, accessible.
 - **Vision-Driven**: See vision.md. Free core for impact + equity; premium/bundle for depth and sustainability of the mission. "Mainly a free app."
 
-Built with React (Next.js), TypeScript, Tailwind, shadcn/ui, Zustand, Recharts, Supabase, PayPal (for bundles/subs).
+Built with React (Next.js), TypeScript, Tailwind, shadcn/ui, Zustand, Recharts, Supabase, Stripe (Super Bundle) + PayPal webhook scaffold.
 
 ## Core App Features
 
@@ -88,7 +88,7 @@ Open http://localhost:3000 in your browser.
 - [Zustand](https://zustand.docs.pmnd.rs/) with localStorage + Supabase sync
 - Supabase (auth, DB, storage)
 - next-pwa for installable offline-first PWA
-- Payments: Demo/request-based for now (Super Bundle access via "Request" buttons that grant demo premium). Real processor (e.g. Stripe / Lemon Squeezy / PayPal) will be added once LLC/business setup complete. Webhook placeholder at /api/paypal-webhook remains ready for future.
+- Payments: **Stripe Payment Links** → verified webhook → Supabase `enrollments` (see [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)). Pricing source of truth: monthly **$11.99**, founders 12-month **$59**, lifetime **$149** (`src/lib/bundleConfig.ts` + [STRATEGY.md](STRATEGY.md)). Without live Stripe links, `/bundle` uses an honest founders waitlist. PayPal webhook at `/api/paypal-webhook` remains available. `DEMO_PREMIUM` is blocked in production builds.
 
 ## Data Storage
 

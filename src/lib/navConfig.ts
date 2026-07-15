@@ -17,6 +17,7 @@ import {
   UtensilsCrossed,
   Wind,
 } from 'lucide-react';
+import type { JourneyPhase } from '@/lib/missionJourney';
 
 export type NavLinkItem = {
   href: string;
@@ -43,7 +44,14 @@ export const MORE_NAV: NavLinkItem[] = [
   { href: '/learn', labelKey: 'navLearn', label: 'Learn', icon: BookOpen, descriptionKey: 'moreLearnDesc', description: 'Education paths' },
   { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook', icon: BookOpen, descriptionKey: 'moreGuidebookDesc', description: 'Beyond the Basics — deep reference' },
   { href: '/builder', labelKey: 'navBuilder', label: 'Builder', icon: PenTool, descriptionKey: 'moreBuilderDesc', description: 'Build workouts' },
-  { href: '/coach', labelKey: 'navCoach', label: 'Mission Coach', icon: Sparkles, descriptionKey: 'moreCoachDesc', description: 'AI weekly training plan' },
+  {
+    href: '/coach',
+    labelKey: 'navCoach',
+    label: 'AI weekly plan',
+    icon: Sparkles,
+    descriptionKey: 'moreCoachDesc',
+    description: 'Mission Coach — adaptive weekly training plan',
+  },
   { href: '/library', labelKey: 'navLibrary', label: 'Library', icon: Dumbbell, descriptionKey: 'moreLibraryDesc', description: 'Exercise catalog' },
   { href: '/history', labelKey: 'navHistory', label: 'History', icon: History, descriptionKey: 'moreHistoryDesc', description: 'Past sessions' },
   { href: '/leaderboard', labelKey: 'navLeaderboard', label: 'Leaderboard', icon: Trophy, descriptionKey: 'moreLeaderboardDesc', description: 'Global & regional rankings' },
@@ -60,7 +68,7 @@ export type NavSection = {
   items: NavLinkItem[];
 };
 
-/** Grouped extended navigation — shown in header dropdown. */
+/** Full extended navigation — commissioned operators. */
 export const EXTENDED_NAV_SECTIONS: NavSection[] = [
   {
     id: 'recover',
@@ -72,13 +80,17 @@ export const EXTENDED_NAV_SECTIONS: NavSection[] = [
     id: 'train',
     title: 'Train deeper',
     titleKey: 'navSectionTrain',
-    items: MORE_NAV.filter((i) => ['/builder', '/coach', '/library', '/history', '/leaderboard'].includes(i.href)),
+    items: MORE_NAV.filter((i) =>
+      ['/builder', '/coach', '/library', '/history', '/leaderboard'].includes(i.href)
+    ),
   },
   {
     id: 'learn',
     title: 'Learn & measure',
     titleKey: 'navSectionLearn',
-    items: MORE_NAV.filter((i) => ['/learn', '/learn/guide', '/benchmarks', '/assessments', '/calculators'].includes(i.href)),
+    items: MORE_NAV.filter((i) =>
+      ['/learn', '/learn/guide', '/benchmarks', '/assessments', '/calculators'].includes(i.href)
+    ),
   },
   {
     id: 'premium',
@@ -87,6 +99,29 @@ export const EXTENDED_NAV_SECTIONS: NavSection[] = [
     items: MORE_NAV.filter((i) => i.href === '/bundle'),
   },
 ];
+
+/**
+ * Journey-aware More menu — Basic Training sees train tools only so first week
+ * stays focused on logging (S-Tier: less surface, better core).
+ */
+export function extendedNavSectionsForPhase(phase: JourneyPhase): NavSection[] {
+  if (phase === 'i-day' || phase === 'basic') {
+    return [
+      {
+        id: 'train',
+        title: 'Train tools',
+        titleKey: 'navSectionTrain',
+        items: MORE_NAV.filter((i) =>
+          ['/builder', '/coach', '/library', '/history', '/calculators'].includes(i.href)
+        ),
+      },
+    ];
+  }
+  if (phase === 'readiness') {
+    return EXTENDED_NAV_SECTIONS.filter((s) => s.id !== 'premium');
+  }
+  return EXTENDED_NAV_SECTIONS;
+}
 
 export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];
 
@@ -98,7 +133,7 @@ export const STATIC_PAGE_TITLES: Record<string, { label: string; labelKey?: stri
   '/feedback': { label: 'Feedback', labelKey: 'feedback' },
   '/beta': { label: 'Beta guide', labelKey: 'navBetaGuide' },
   '/programs': { label: 'Programs', labelKey: 'infoProgramsTitle' },
-  '/coaching': { label: 'Coaching', labelKey: 'infoCoachingTitle' },
+  '/coaching': { label: 'Talk to a human coach', labelKey: 'infoCoachingTitle' },
   '/america': { label: 'National fitness', labelKey: 'americaHeroTitle' },
   '/calculators': { label: 'Calculators', labelKey: 'calcTitle' },
   '/welcome': { label: 'Welcome', labelKey: 'welcomeTitle' },

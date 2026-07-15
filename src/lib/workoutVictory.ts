@@ -10,6 +10,15 @@ export type VictoryBodyDelta = {
   recovery: number;
 };
 
+export type VictoryNextAction = {
+  href: string;
+  labelKey: string;
+  /** English fallback for labelKey */
+  defaultLabel: string;
+  reasonKey: string;
+  defaultReason: string;
+};
+
 export interface WorkoutVictorySummary {
   workoutName: string;
   totalVolume: number;
@@ -21,6 +30,8 @@ export interface WorkoutVictorySummary {
   bodyDelta?: VictoryBodyDelta;
   /** Forge-style one-liner for next session progression. */
   progressionInsight?: string;
+  /** Single post-workout ritual CTA (S-Tier: one next action). */
+  nextAction?: VictoryNextAction;
 }
 
 /** Build a short “Next: …” line from the heaviest working set in this log. */
@@ -59,11 +70,47 @@ export function buildProgressionInsight(
   return `Next: hold ${target.reps} × ${target.weight} ${unit} on ${name}`;
 }
 
+/**
+ * One boss next step after a session — Fuel first (protein), else Mind, else Move.
+ * Keeps victory UI focused (not four equal doors).
+ */
+export function pickVictoryNextAction(opts?: {
+  proteinLoggedToday?: boolean;
+  strainDelta?: number;
+}): VictoryNextAction {
+  if (!opts?.proteinLoggedToday) {
+    return {
+      href: '/nutrition',
+      labelKey: 'coachActionLogNutrition',
+      defaultLabel: 'Log protein',
+      reasonKey: 'victoryNextFuelReason',
+      defaultReason: 'Fuel the work — log a meal so Win Score captures recovery nutrition.',
+    };
+  }
+  if ((opts.strainDelta ?? 0) >= 5) {
+    return {
+      href: '/mind',
+      labelKey: 'coachActionOpenMind',
+      defaultLabel: '3-min Mind',
+      reasonKey: 'victoryNextMindReason',
+      defaultReason: 'Downshift strain with a short breathing session.',
+    };
+  }
+  return {
+    href: '/move',
+    labelKey: 'coachActionOpenMove',
+    defaultLabel: 'Mobility flow',
+    reasonKey: 'victoryNextMoveReason',
+    defaultReason: 'A short Move flow keeps tomorrow’s readiness high.',
+  };
+}
+
 export function summarizeWorkoutVictory(
   log: CompletedWorkoutLog,
   streak: number,
   bodyDelta?: VictoryBodyDelta,
-  progressionInsight?: string
+  progressionInsight?: string,
+  nextAction?: VictoryNextAction
 ): WorkoutVictorySummary {
   const setCount = log.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
   return {
@@ -75,5 +122,6 @@ export function summarizeWorkoutVictory(
     streak,
     bodyDelta,
     progressionInsight,
+    nextAction: nextAction ?? pickVictoryNextAction({ strainDelta: bodyDelta?.strain }),
   };
 }
