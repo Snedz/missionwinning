@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-15 — i18n bootstrap + deferred hydrate (`2026.07-unified.63`)
+
+- `src/i18n.ts` now boots minimal EN; full multi-lang `*Locales.ts` catalogs load via `hydrateI18nResources` after interaction/2.8s
+- Display font weights trimmed (Barlow 700 only; mono 400 only)
+- Lighthouse mobile: `/` **87**, `/log` still ~**78–80** (shell residual documented)
+
+---
+
 ## 2026-07-15 — Today lean split + Lighthouse remeasure (`2026.07-unified.62`)
 
 - `/log` code-split: `HomeTodayLean` (I-Day/Basic) vs dynamic `HomeTodayDashboard` (readiness+)

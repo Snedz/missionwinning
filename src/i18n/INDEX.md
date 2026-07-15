@@ -4,9 +4,11 @@
 
 ## Read order
 
-1. `src/i18n.ts` — registers all locales, calls `merge*Strings` for each language
-2. The `*Locales.ts` file for your feature (table below)
-3. `public/locales/README.md` — optional HTTP JSON overrides
+1. `src/i18n.ts` — **bootstrap** minimal EN + detector (first paint)
+2. `bootstrapResources.ts` — lean keys for nav/Today lean
+3. `hydrateResources.ts` — dynamic-imports all `*Locales.ts` after idle
+4. The `*Locales.ts` file for your feature (table below)
+5. `public/locales/README.md` — optional HTTP JSON overrides
 
 ## Locale files (`*Locales.ts`)
 
