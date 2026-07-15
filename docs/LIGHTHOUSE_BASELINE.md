@@ -13,25 +13,24 @@ Routes checked: `/`, `/log`, `/guide/human-performance`, `/exercises/squats`.
 
 Budget: **≥90** performance, accessibility, best-practices (soft warning in CI — see `.github/workflows/ci.yml`).
 
-## Snapshot (2026-07-15 — no force-dynamic app shell + deferred analytics, build `.64`)
+## Snapshot (2026-07-15 — store catalog decouple + header lite, build `.65`)
 
-Mobile, `PRIVATE_MODE=false`, local prod:
+Mobile, `PRIVATE_MODE=false`, local prod (run variance ±2):
 
 | Route | Performance | Accessibility | Best practices | Notes |
 |-------|-------------|---------------|----------------|-------|
-| `/` | **91** | 94 | 100 | ✅ Meets ≥90 (was 79 → 87 → **91**) |
-| **`/log`** | **81** | **96** | **100** | +3 vs 78; still under 90 |
+| `/` | **88–91** | 94 | 100 | Often ≥90 |
+| **`/log`** | **80–81** | **96** | **100** | Decoupled EXERCISES from zustand store |
 | `/guide/human-performance` | **91** | 100 | 100 | ✅ Meets ≥90 |
-| `/exercises/squats` | **86** | 96 | 100 | +4–6 vs prior |
+| `/exercises/squats` | **86** | 96 | 100 | Public SEO |
 
 ### Residual plan to hit `/log` ≥90
 
-1. ~~Lazy-load full i18n catalogs~~ — shipped  
-2. ~~Lean Today split~~ — shipped  
-3. ~~Drop `(app)` `force-dynamic`~~ — shipped (routes now static ○ where possible)  
-4. ~~Dynamic posthog-js + deferred init~~ — shipped  
-5. Further: slim AppHeader auth chip; optional RSC shell for `/log` without full client layout on cold empty state  
-6. Lazy Sentry client when DSN set (prod only impact)
+1. ~~Lazy i18n / lean Today / static app layout / deferred analytics~~ — shipped  
+2. ~~workoutStore no longer imports exercise catalog~~ — shipped  
+3. ~~AppHeader phase-lite (no useMissionJourney); auth chip idle~~ — shipped  
+4. Optional: split MobileNav from store (pulse only when active)  
+5. Lazy Sentry when DSN set (prod-only)
 
 *CI job `lighthouse-budget` remains soft-warning. Target `/log` → 90 after public activation data + shell work.*
 

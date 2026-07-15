@@ -385,7 +385,8 @@ export function ActiveWorkoutPage() {
           <Button
             onClick={() => {
               if (addExerciseId) {
-                addExerciseToActive(addExerciseId);
+                const ex = getExerciseById(addExerciseId);
+                addExerciseToActive(addExerciseId, ex?.muscleGroups);
                 setAddExerciseId('');
               }
             }}
@@ -457,7 +458,8 @@ export function ActiveWorkoutPage() {
                 setSetInputs({});
               }}
               onSwapTo={(id) => {
-                replaceExerciseInActive(exIdx, id);
+                const ex = getExerciseById(id);
+                replaceExerciseInActive(exIdx, id, ex?.muscleGroups);
                 setSwapOpenIdx(null);
                 setSetInputs({});
               }}

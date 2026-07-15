@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-15 — Decouple exercise catalog from workout store (`2026.07-unified.65`)
+
+- `workoutStore` no longer imports `EXERCISES` — muscle groups snapshot on add/swap
+- AppHeader uses lite journey phase (localStorage) instead of `useMissionJourney`
+- HeaderAuthChip defers Supabase getUser to idle
+- Lighthouse mobile: `/log` **~80–81**, `/` **~88–91**, guide **91**
+
+---
+
 ## 2026-07-15 — App shell static + deferred PostHog (`2026.07-unified.64`)
 
 - Removed `force-dynamic` from `app/(app)/layout` — app routes can static-shell

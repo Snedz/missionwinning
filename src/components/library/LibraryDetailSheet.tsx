@@ -66,7 +66,7 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
   const addToSession = () => {
     if (!exercise) return;
     if (activeWorkout) {
-      addExerciseToActive(exercise.id);
+      addExerciseToActive(exercise.id, exercise.muscleGroups);
       router.push('/active');
       onOpenChange(false);
       return;

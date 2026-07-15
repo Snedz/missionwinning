@@ -5,7 +5,6 @@
  */
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { EXERCISES, getExerciseById } from "@/data/exercises";
 import { calculateVolume } from "@/lib/utils";
 import type {
   ActiveWorkout,
@@ -49,7 +48,7 @@ interface WorkoutState {
   startEmptyWorkout: () => void;
   cancelActiveWorkout: () => void;
   completeActiveWorkout: () => CompletedWorkoutLog | null;
-  addExerciseToActive: (exerciseId: string) => void;
+  addExerciseToActive: (exerciseId: string, muscleGroups?: import('@/types').MuscleGroup[]) => void;
   logSet: (
     exerciseIndex: number,
     setIndex: number,
@@ -74,7 +73,11 @@ interface WorkoutState {
   removeLastPlannedSet: (exerciseIndex: number) => void;
   removeExerciseFromActive: (exerciseIndex: number) => void;
   /** Swap to a different exercise — only while no sets are completed. */
-  replaceExerciseInActive: (exerciseIndex: number, newExerciseId: string) => void;
+  replaceExerciseInActive: (
+    exerciseIndex: number,
+    newExerciseId: string,
+    muscleGroups?: import('@/types').MuscleGroup[]
+  ) => void;
   setExerciseNote: (exerciseIndex: number, note: string) => void;
   startRestTimer: (seconds?: number) => void;
   adjustRestTimer: (delta: number) => void;
@@ -172,9 +175,10 @@ export const useWorkoutStore = create<WorkoutState>()(
         const { activeWorkout, elapsedSeconds } = get();
         if (!activeWorkout) return null;
 
+        // Prefer muscle groups already on the active log (set when exercise was added).
+        // Avoid importing the full exercise catalog into every page that uses this store.
         const exercises = activeWorkout.exercises
           .map((ex) => {
-            const catalog = getExerciseById(ex.exerciseId);
             return {
               exerciseId: ex.exerciseId,
               sets: ex.sets
@@ -186,9 +190,7 @@ export const useWorkoutStore = create<WorkoutState>()(
                   rpe: s.rpe,
                 })),
               ...(ex.note?.trim() ? { note: ex.note.trim() } : {}),
-              ...(catalog?.muscleGroups?.length
-                ? { muscleGroups: [...catalog.muscleGroups] }
-                : {}),
+              ...(ex.muscleGroups?.length ? { muscleGroups: [...ex.muscleGroups] } : {}),
             };
           })
           .filter((ex) => ex.sets.length > 0);
@@ -261,10 +263,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         return log;
       },
 
-      addExerciseToActive: (exerciseId) => {
-        const exercise = EXERCISES.find((e) => e.id === exerciseId);
-        if (!exercise) return;
-
+      addExerciseToActive: (exerciseId, muscleGroups) => {
         set((s) => {
           if (!s.activeWorkout) return s;
           return {
@@ -275,6 +274,7 @@ export const useWorkoutStore = create<WorkoutState>()(
                 {
                   exerciseId,
                   sets: createLoggedSets(3),
+                  ...(muscleGroups?.length ? { muscleGroups: [...muscleGroups] } : {}),
                 },
               ],
             },
@@ -424,9 +424,7 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
-      replaceExerciseInActive: (exerciseIndex, newExerciseId) => {
-        const exercise = EXERCISES.find((e) => e.id === newExerciseId);
-        if (!exercise) return;
+      replaceExerciseInActive: (exerciseIndex, newExerciseId, muscleGroups) => {
         set((s) => {
           if (!s.activeWorkout) return s;
           const exercises = [...s.activeWorkout.exercises];
@@ -437,6 +435,7 @@ export const useWorkoutStore = create<WorkoutState>()(
             exerciseId: newExerciseId,
             // Keep the planned set count; reset target loads — different lift, different weights.
             sets: createLoggedSets(ex.sets.length),
+            muscleGroups: muscleGroups?.length ? [...muscleGroups] : undefined,
           };
           return { activeWorkout: { ...s.activeWorkout, exercises } };
         });
