@@ -87,7 +87,7 @@ Open http://localhost:3000 in your browser.
 - [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
 - [Zustand](https://zustand.docs.pmnd.rs/) with localStorage + Supabase sync
 - Supabase (auth, DB, storage)
-- next-pwa for installable offline-first PWA
+- Serwist (`@serwist/next`) for installable offline-first PWA (disabled while `PRIVATE_MODE=true`)
 - Payments: **Stripe Payment Links** → verified webhook → Supabase `enrollments` (see [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)). Pricing source of truth: monthly **$11.99**, founders 12-month **$59**, lifetime **$149** (`src/lib/bundleConfig.ts` + [STRATEGY.md](STRATEGY.md)). Without live Stripe links, `/bundle` uses an honest founders waitlist. PayPal webhook at `/api/paypal-webhook` remains available. `DEMO_PREMIUM` is blocked in production builds.
 
 ## Data Storage

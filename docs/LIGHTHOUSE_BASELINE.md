@@ -13,14 +13,27 @@ Routes checked: `/`, `/log`, `/guide/human-performance`, `/exercises/squats`.
 
 Budget: **≥90** performance, accessibility, best-practices (soft warning in CI — see `.github/workflows/ci.yml`).
 
-## Snapshot (2026-07-11 — local prod build, `PRIVATE_MODE=false`)
+## Snapshot (2026-07-15 — Serwist + Today/Landing deferrals, `2026.07-unified.61`)
 
-Captured after pre-launch quality bar (`2026.07-unified.54`). Performance remains a soft-warning target on heavy client routes; accessibility and best-practices meet budget.
+Code changes for perf (re-measure after deploy or locally):
+
+- Landing: idle-defer JourneyScroll / CoachAdapt / GuideTeaser
+- Today: dynamic journey chrome; lazy justGo / trends / weekRecap
+- PWA: `next-pwa` → **Serwist** (`app/sw.ts`), SW only when `PRIVATE_MODE=false`
+
+| Route | Performance | Accessibility | Best practices | Notes |
+|-------|-------------|---------------|----------------|-------|
+| `/` | *re-run* | — | — | `LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget` |
+| **`/log`** | *re-run* | — | — | Target still ≥90 |
+| `/guide/human-performance` | — | — | — | Public SEO |
+| `/exercises/squats` | — | — | — | Public SEO |
+
+## Prior snapshot (2026-07-11 — `2026.07-unified.54`)
 
 | Route | Performance | Accessibility | Best practices | Notes |
 |-------|-------------|---------------|----------------|-------|
 | `/` | 79 | 94 | 100 | Landing — below-fold demos lazy-loaded |
-| **`/log`** | **78** | **96** | **100** | Still under 90; slim readiness already shipped — further cuts post-launch |
+| **`/log`** | **78** | **96** | **100** | Under 90 |
 | `/guide/human-performance` | 88 | 100 | 100 | Public SEO chapter |
 | `/exercises/squats` | 82 | 96 | 100 | Public exercise detail |
 

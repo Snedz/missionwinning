@@ -15,7 +15,7 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 | **Super Bundle** — primary revenue | 🟡 Code + checkout | `/bundle`, Stripe webhook → `enrollments`; founder wires live links |
 | **Premium depth per pillar** | 🟢 Strong | GPS Track, Fuel Coach, Coach, Mind/Move/Learn premium depth shipped |
 | **AI Coach — personal trainer in pocket** | 🟢 v1 shipped | Mission Coach engine + free taster week; premium regeneration + plan-voice |
-| **PWA offline everywhere** | 🔴 Blocked | Disabled while `PRIVATE_MODE=true` |
+| **PWA offline everywhere** | 🟡 Serwist ready | SW via Serwist when `PRIVATE_MODE=false`; still gated until public launch |
 | **Global i18n** | 🟡 Partial | Tier 1/2 nav chrome; **es + fr + de** body shipped for core surfaces |
 | **Bevel-style metric UI** | 🟢 Good | Unified `ProgressRing`; Mission Score + clinical rings; briefing Today + Victory body delta |
 | **Freeletics journey + streaks** | 🟢 Shipped | I-Day → Commissioned; challenges; leaderboard |
@@ -65,8 +65,8 @@ Vercel connected; migrations verified. Still need: live Stripe env, service-role
 ### 2. Horizon 1 — Live Super Bundle + public (Phase I1)
 Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149**. Then `PRIVATE_MODE=false` + PWA.
 
-### 3. Horizon 1 eng — `/log` Lighthouse toward 90 + Serwist
-Baseline still ~78* — re-measure with `LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget`. Replace fragile `next-pwa` when public.
+### 3. Horizon 1 eng — `/log` Lighthouse toward 90
+Serwist PWA shipped (`.61`). Baseline still ~78 historically — re-measure with `LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget` after next public-mode deploy.
 
 ### 4. Horizon 2 — week-4 retention wall metric
 Prove habit loop before scale. See [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md).

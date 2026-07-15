@@ -28,8 +28,8 @@ if (typeof window !== 'undefined') {
   initAnalytics();
 
   // (Service worker registration lives in I18nPwaProvider's useEffect below —
-  // next-pwa@5 only injects its register script into the Pages Router entry,
-  // so under the App Router we must register manually.)
+  // Serwist emits public/sw.js when PRIVATE_MODE=false; App Router still needs
+  // explicit register.)
 
   window.addEventListener('appinstalled', () => {
     track('pwa_installed');
@@ -63,12 +63,21 @@ if (typeof window !== 'undefined') {
 }
 
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
-  // Register the PWA service worker (no-op when the worker wasn't generated,
-  // e.g. gated/private builds — the fetch 404s and the catch swallows it).
+  // Register Serwist SW only when builds enable it (PRIVATE_MODE=false).
+  // When gated, unregister any stale workers so the private app is not offline-cached.
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => { /* noop */ });
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
+    const pwaEnabled = process.env.NEXT_PUBLIC_PWA_ENABLED === 'true';
+    if (process.env.NODE_ENV !== 'production') return;
+    if (!pwaEnabled) {
+      void navigator.serviceWorker.getRegistrations().then((regs) => {
+        regs.forEach((r) => {
+          void r.unregister();
+        });
+      });
+      return;
     }
+    void navigator.serviceWorker.register('/sw.js').catch(() => { /* noop */ });
   }, []);
 
   // Tie analytics identity to auth: anonymous users stay anonymous
