@@ -18,6 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { logPillarWin } from '@/lib/pillarLog';
 import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 export function LearnPage() {
   const { t } = useTranslation();
@@ -103,9 +104,15 @@ export function LearnPage() {
             className="w-full rounded-xl border border-border/60 bg-background px-3 py-2.5 min-h-[44px] text-sm"
           />
           {filteredPaths.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">
-              {t('learnNoMatches', { defaultValue: 'No paths match that search.' })}
-            </p>
+            <EmptyState
+              icon={BookOpen}
+              title={t('learnNoMatches', { defaultValue: 'No paths match that search.' })}
+              description={t('learnNoMatchesDesc', {
+                defaultValue: 'Try a different keyword, or clear search to see all free paths.',
+              })}
+              actionLabel={t('learnClearSearch', { defaultValue: 'Clear search' })}
+              onAction={() => setPathQuery('')}
+            />
           )}
           {filteredPaths.map((path) => {
             const open = expandedPath === path.id;

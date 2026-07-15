@@ -19,14 +19,17 @@ import type { PillarWin } from '@/lib/pillarLog';
 import { GUIDED_MIND_SESSIONS } from '@/data/guidedMindSessions';
 import { GuidedMindSessionRunner } from '@/components/pillars/GuidedMindSessionRunner';
 import { Brain, ChevronDown } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export function MindPage() {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const { premium } = usePremium();
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
   const [recentWins, setRecentWins] = useState<PillarWin[]>([]);
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
+  const [premiumFetchError, setPremiumFetchError] = useState(false);
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));
@@ -35,13 +38,28 @@ export function MindPage() {
   useEffect(() => {
     if (!premium) {
       setPremiumSessions([]);
+      setPremiumFetchError(false);
       return;
     }
+    setPremiumFetchError(false);
     fetch('/api/premium/mind')
-      .then((r) => (r.ok ? r.json() : { sessions: [] }))
+      .then((r) => {
+        if (!r.ok) throw new Error('premium mind unavailable');
+        return r.json();
+      })
       .then((d) => setPremiumSessions(d.sessions ?? []))
-      .catch(() => setPremiumSessions([]));
-  }, [premium]);
+      .catch(() => {
+        setPremiumSessions([]);
+        setPremiumFetchError(true);
+        toast({
+          title: t('mindPremiumFetchFailed', { defaultValue: 'Could not load premium sessions' }),
+          description: t('mindPremiumFetchFailedDesc', {
+            defaultValue: 'Free mind tools still work. Check your connection and try again.',
+          }),
+          variant: 'destructive',
+        });
+      });
+  }, [premium, t, toast]);
 
   return (
     <PillarPageShell
@@ -68,6 +86,14 @@ export function MindPage() {
           ))}
         </div>
       </div>
+
+      {premiumFetchError && premium && (
+        <p className="text-xs text-muted-foreground rounded-lg border border-dashed border-border/50 px-3 py-2">
+          {t('mindPremiumOffline', {
+            defaultValue: 'Premium sessions unavailable offline — free tools above still work.',
+          })}
+        </p>
+      )}
 
       {premium && premiumSessions.length > 0 && (
         <details className="group space-y-3" open>

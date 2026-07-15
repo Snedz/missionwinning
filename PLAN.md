@@ -159,10 +159,10 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 ## Recommended work order (now)
 
-1. **Phase H founder ops** — [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §1–5 · day-of commands in [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md)
-2. **Phase I1** — live Stripe payment links + webhook verify (code ready — [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md))
-3. **Re-measure `/log` Lighthouse** after slim readiness — update [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md)
-4. **Form media depth** — more hero assets / video when needed (15 SVGs shipped)
+1. **Phase H founder ops** — confirm Vercel Production env (service role + Stripe); recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2–4)
+2. **Hit beta gates** — 10+ users, I-Day ≥80%, BT ≥60% — then `PRIVATE_MODE=false`
+3. **Phase I1** — live Stripe payment links + webhook verify ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md))
+4. **Re-measure `/log` Lighthouse** after slim readiness — update [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md)
 5. **More i18n locales** — only after PMF (es/fr/de body done)
 
 ---
@@ -188,4 +188,4 @@ npm run dev
 
 ---
 
-Last updated: 2026-07-10 (Wave 5 integrity + density `2026.07-unified.53`; prior: Wave 4 `.52`, Wave 3 `.51`, Wave 2 `.50`)
+Last updated: 2026-07-11 (pre-launch quality bar `2026.07-unified.54`; prior Wave 5 `.53`)

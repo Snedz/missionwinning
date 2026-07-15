@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-10** (Wave 5 integrity + density; build `2026.07-unified.53`).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-11** (pre-launch quality bar; build `2026.07-unified.54`).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -57,11 +57,11 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 
 ## Biggest gaps (priority order)
 
-### 1. Phase H — Launch & global access
-Vision cannot land until the app is **public and installable**. Blocked on: beta gates, Vercel env, `PRIVATE_MODE=false`, PWA enable. Day-of: [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md).
+### 1. Phase H — Beta cohort + env finish
+Vercel connected; migrations verified. Still need: live Stripe env, service-role on Vercel if missing, **≥10 beta users** (currently 0 profiles). Day-of: [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md).
 
 ### 2. Live Super Bundle ops (Phase I1)
-Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Founder: live links, rotate `PRIVATE_ACCESS_SECRET`, verify with `scripts/verify-stripe-enrollment.mjs`.
+Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Founder: live links + webhook verify.
 
 ### 3. `/log` Lighthouse toward 90
 Slim readiness shipped (`readinessIndex` + stored `muscleGroups`). Baseline still ~78* — re-measure with `LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget`.
@@ -73,7 +73,7 @@ Slim readiness shipped (`readinessIndex` + stored `muscleGroups`). Baseline stil
 es + fr + **de** body shipped for Today/Fuel/Active/Welcome/Coach. Do not spray remaining languages pre-PMF.
 
 ### 6. PFT track ops (Phase G ops)
-Code shipped; production needs: Supabase migrations, `RESEND_API_KEY`, council legal sign-off before MAHA copy.
+Code shipped; production migrations applied; council legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
 
 ---
 

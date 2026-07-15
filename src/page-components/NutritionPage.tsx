@@ -35,6 +35,7 @@ import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { ChevronDown, Plus, UtensilsCrossed } from "lucide-react";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
 import { EmptyState } from '@/components/ui/EmptyState';
+import { useToast } from '@/hooks/use-toast';
 
 const freeRecipes = FREE_RECIPES;
 
@@ -55,8 +56,10 @@ export function NutritionPage() {
   // Premium deep plans/recipes in Fuel pillar or Super Bundle. Core mission free forever.
 
   const { t } = useTranslation();
+  const { toast } = useToast();
   const { premium } = usePremium();
   const [premiumRecipes, setPremiumRecipes] = useState<Recipe[]>([]);
+  const [premiumFetchError, setPremiumFetchError] = useState(false);
   const [targetCals, setTargetCals] = useState(2200);
   const [targetProtein, setTargetProtein] = useState(160);
   const [logged, setLogged] = useState<LogEntry[]>([]);
@@ -140,13 +143,28 @@ export function NutritionPage() {
   useEffect(() => {
     if (!premium) {
       setPremiumRecipes([]);
+      setPremiumFetchError(false);
       return;
     }
+    setPremiumFetchError(false);
     fetch('/api/premium/recipes', { credentials: 'include' })
-      .then((r) => (r.ok ? r.json() : { recipes: [] }))
+      .then((r) => {
+        if (!r.ok) throw new Error('premium recipes unavailable');
+        return r.json();
+      })
       .then((data) => setPremiumRecipes(data.recipes ?? []))
-      .catch(() => setPremiumRecipes([]));
-  }, [premium]);
+      .catch(() => {
+        setPremiumRecipes([]);
+        setPremiumFetchError(true);
+        toast({
+          title: t('fuelPremiumFetchFailed', { defaultValue: 'Could not load premium recipes' }),
+          description: t('fuelPremiumFetchFailedDesc', {
+            defaultValue: 'Free recipes still work. Check your connection and try again.',
+          }),
+          variant: 'destructive',
+        });
+      });
+  }, [premium, t, toast]);
 
   useEffect(() => {
     setFuelStreak(getFuelLogStreak());
@@ -662,6 +680,14 @@ export function NutritionPage() {
 
       <FuelMealPlanCard />
         </>
+      )}
+
+      {moreOpen && premiumFetchError && premium && (
+        <p className="text-xs text-muted-foreground rounded-lg border border-dashed border-border/50 px-3 py-2">
+          {t('fuelPremiumOffline', {
+            defaultValue: 'Premium recipes unavailable offline — free recipes above still work.',
+          })}
+        </p>
       )}
 
       {moreOpen && (premium ? (

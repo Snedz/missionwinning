@@ -8,10 +8,12 @@
 
 ## §1 — Regain deploy access (do today, ~30–60 min)
 
-1. Vercel 2FA reset: go to https://vercel.com/help → "Account access" → follow the 2FA recovery flow (needs your account email; have a recovery code or ID handy). If truly stuck, create a NEW Vercel account with your email, import the GitHub repo `Snedz/missionwinning` fresh — a new project works just as well; update the domain after.
-2. Confirm you can see the project dashboard and trigger a deploy from `master`.
+> **2026-07-11:** Vercel is connected via GitHub + Cursor. Skip 2FA recovery unless access breaks again. Confirm Production deploys from `master` and Profile shows the latest build label.
 
-- [ ] I can open the Vercel project and deploy
+1. Confirm you can see the project dashboard and Production deploys from `master`.
+2. After each ship, check Profile footer build label matches `src/lib/buildInfo.ts`.
+
+- [x] I can open the Vercel project and deploy (GitHub integration)
 
 ## §2 — Environment & database (~45 min, one-time)
 
@@ -88,8 +90,8 @@ See [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md) for Stripe enrollment + S
    ```
 2. Vercel env: set `PRIVATE_MODE=false` → redeploy. PWA + landing page are now live.
 3. Install the PWA on your own phone from the live site (browser menu → "Install / Add to Home Screen"). Confirm offline logging works in airplane mode.
-4. Launch posts (order): the beta testers ("we're live — share it?") → Product Hunt → Show HN → the 2–3 communities from §3. One honest post each, written as the builder. STRATEGY.md has angles.
-5. Email the waitlist (Supabase `leads` where source in `launch-waitlist`, `waitlist-*`): you're live + founders offer.
+4. Launch posts (order): the beta testers ("we're live — share it?") → Product Hunt → Show HN → the 2–3 communities from §3. One honest post each, written as the builder. **Copy kit:** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) Phase B.
+5. Email the waitlist (Supabase `leads` where source in `launch-waitlist`, `waitlist-*`): you're live + founders offer. Template in SOCIAL_LAUNCH.md.
 
 - [ ] Curls pass · [ ] PRIVATE_MODE=false · [ ] PWA installs from prod
 - [ ] Launch posts up · [ ] Waitlist emailed

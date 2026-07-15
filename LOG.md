@@ -4,6 +4,43 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-11 — Capital sequence kits (social, LLC, soft launch, TWA)
+
+**Docs only (founder executes):** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md), [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md), expanded [BETA_INVITE.md](BETA_INVITE.md) + [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) week-4 SQL.
+
+**Not done by agents (by design):** recruiting 10 users, forming LLC, filming, flipping `PRIVATE_MODE`, native apps.
+
+---
+
+## 2026-07-11 — Pre-launch quality bar + ops verify
+
+**Docs:** [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md), [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md)  
+**Build:** `2026.07-unified.54`
+
+### Shipped
+
+- Hero E2E: workout complete → Mission Score (`seedReadinessPhase` + Learn sample path)
+- **Bugfix:** Victory sheet now renders after Finish (was lost when `activeWorkout` cleared)
+- Photo log: error phase + retry instead of silent reset; OFF lookup failure hint
+- EmptyState on Coach (no plan), Move (no wins), Learn (no search matches), Leaderboard (class/squad hints)
+- Leaderboard class rows bugfix (was clearing successful fetches)
+- Profile nudge: `alert` → toast; Fuel/Move/Mind premium fetch failures toast + offline hint
+- Ops: Vercel Production verified connected; all 12 Supabase migrations verified; PRE_LAUNCH + BETA_LAUNCH_OPS + BETA_INVITE refreshed
+- Lighthouse re-snapshot (2026-07-11): `/log` still 78 — recorded in [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md)
+- Post-launch cadence doc: [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md)
+
+### Founder still owns
+
+- Stripe payment links + webhook secret on Vercel
+- Confirm `SUPABASE_SERVICE_ROLE_KEY` on Vercel Production
+- Recruit ≥10 beta users (prod profiles = 0) before `PRIVATE_MODE=false`
+
+### Operating cadence (Phase 4)
+
+After public: wall metric = week-4 retained weekly loggers; weekly 1h user calls; no new pillars until retention holds ([STRATEGY.md](STRATEGY.md), [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §6).
+
+---
+
 ## 2026-07-10 — Wave 5 Integrity + density
 
 **Docs:** [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md) § Wave 5  

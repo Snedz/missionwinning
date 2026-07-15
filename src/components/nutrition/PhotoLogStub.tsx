@@ -16,7 +16,7 @@ type Props = {
   onLogEstimate: (estimate: MealEstimate) => void;
 };
 
-type Phase = 'idle' | 'processing' | 'estimate';
+type Phase = 'idle' | 'processing' | 'estimate' | 'error';
 
 function foodToEstimate(item: FoodSearchItem): MealEstimate {
   return {
@@ -39,6 +39,8 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
   const [estimate, setEstimate] = useState<MealEstimate | null>(null);
   const [offMatches, setOffMatches] = useState<FoodSearchItem[]>([]);
   const [offLoading, setOffLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [offLookupFailed, setOffLookupFailed] = useState(false);
 
   const reset = () => {
     if (preview) URL.revokeObjectURL(preview);
@@ -46,6 +48,8 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
     setEstimate(null);
     setOffMatches([]);
     setOffLoading(false);
+    setError(null);
+    setOffLookupFailed(false);
     setPhase('idle');
     if (inputRef.current) inputRef.current.value = '';
   };
@@ -54,19 +58,23 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
     const q = name.trim();
     if (q.length < 2) {
       setOffMatches([]);
+      setOffLookupFailed(false);
       return;
     }
     setOffLoading(true);
+    setOffLookupFailed(false);
     try {
       const res = await fetch(`/api/fuel/search-food?q=${encodeURIComponent(q)}&limit=3`);
       if (!res.ok) {
         setOffMatches([]);
+        setOffLookupFailed(true);
         return;
       }
       const data = (await res.json()) as { items?: FoodSearchItem[] };
       setOffMatches((data.items ?? []).slice(0, 3));
     } catch {
       setOffMatches([]);
+      setOffLookupFailed(true);
     } finally {
       setOffLoading(false);
     }
@@ -80,6 +88,8 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
     setPhase('processing');
     setEstimate(null);
     setOffMatches([]);
+    setError(null);
+    setOffLookupFailed(false);
     try {
       const hints = await sampleMealImageHints(file);
       const fromApi = await estimateMealViaApi(file, hints);
@@ -87,8 +97,13 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
       setEstimate(result);
       setPhase('estimate');
       void groundWithOff(result.name);
-    } catch {
-      reset();
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : t('photoLogError', { defaultValue: 'Could not analyze that photo. Try another image.' });
+      setError(msg);
+      setPhase('error');
     }
   };
 
@@ -141,6 +156,31 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
         </button>
       )}
 
+      {phase === 'error' && error && (
+        <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 space-y-3">
+          <p className="text-sm text-destructive" role="alert">
+            {error}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              type="button"
+              size="sm"
+              variant="fitness"
+              onClick={() => {
+                setError(null);
+                setPhase('idle');
+                inputRef.current?.click();
+              }}
+            >
+              {t('photoLogRetry', { defaultValue: 'Try another photo' })}
+            </Button>
+            <Button type="button" size="sm" variant="outline" onClick={reset}>
+              {t('photoLogDismiss', { defaultValue: 'Dismiss' })}
+            </Button>
+          </div>
+        </div>
+      )}
+
       {phase === 'estimate' && estimate && (
         <div className="rounded-xl border border-emerald-500/25 bg-emerald-950/20 p-4 space-y-3">
           <div className="flex items-start gap-2">
@@ -162,7 +202,7 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
             </div>
           </div>
 
-          {(offLoading || offMatches.length > 0) && (
+          {(offLoading || offMatches.length > 0 || offLookupFailed) && (
             <div className="space-y-2 border-t border-border/40 pt-3">
               <p className="text-xs font-medium text-muted-foreground">
                 {t('photoLogOffMatches', {
@@ -173,6 +213,13 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
                 <p className="text-xs text-muted-foreground flex items-center gap-2">
                   <Loader2 className="h-3 w-3 animate-spin" />
                   {t('photoLogOffSearching', { defaultValue: 'Searching food database…' })}
+                </p>
+              )}
+              {offLookupFailed && !offLoading && (
+                <p className="text-xs text-muted-foreground">
+                  {t('photoLogOffFailed', {
+                    defaultValue: 'Food database lookup unavailable — you can still log the estimate.',
+                  })}
                 </p>
               )}
               {offMatches.map((item) => (

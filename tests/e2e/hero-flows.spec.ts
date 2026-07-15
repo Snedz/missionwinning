@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
-import { seedLegacyOnboarding } from './helpers/journey';
+import { seedLegacyOnboarding, seedReadinessPhase } from './helpers/journey';
 
 test.describe('Phase H hero flows', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
@@ -41,6 +41,34 @@ test.describe('Phase H hero flows', () => {
     await expect(page.locator('body')).not.toBeEmpty();
   });
 
+  test('workout complete updates Mission Score on Today', async ({ page, context, baseURL }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedReadinessPhase(page);
+
+    await page.goto('/learn', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: /start bodyweight sample/i }).click();
+    await expect(page).toHaveURL(/\/active/);
+    await expect(page.getByRole('heading', { name: /learn sample/i })).toBeVisible({
+      timeout: 15_000,
+    });
+
+    const logBtn = page.getByRole('button', { name: /^log$/i }).first();
+    await expect(logBtn).toBeVisible({ timeout: 15_000 });
+    await logBtn.click();
+    await expect(page.getByText(/set logged|pr!/i)).toBeVisible({ timeout: 10_000 });
+
+    await page.getByRole('button', { name: /^finish$/i }).click();
+    const backToday = page.getByRole('button', { name: /back to today/i });
+    await expect(backToday).toBeVisible({ timeout: 15_000 });
+    await backToday.click();
+    await expect(page).toHaveURL(/\/log/);
+    await expect(page.getByText(/mission score/i)).toBeVisible({ timeout: 15_000 });
+  });
+
   test('sign-in sync prompt visible on Fuel', async ({ page }) => {
     await page.goto('/nutrition', { waitUntil: 'domcontentloaded' });
     const body = await page.textContent('body');
@@ -48,9 +76,8 @@ test.describe('Phase H hero flows', () => {
   });
 
   test('language switch on profile', async ({ page }) => {
-    await page.goto('/profile', { waitUntil: 'domcontentloaded' });
+    await page.goto('/profile', { waitUntil: 'networkidle' });
     const langSelect = page.getByLabel(/change language/i);
-    await langSelect.scrollIntoViewIfNeeded();
     await expect(langSelect).toBeVisible({ timeout: 15_000 });
     await langSelect.selectOption('es');
     await page.waitForTimeout(500);
