@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-15 — Today lean split + Lighthouse remeasure (`2026.07-unified.62`)
+
+- `/log` code-split: `HomeTodayLean` (I-Day/Basic) vs dynamic `HomeTodayDashboard` (readiness+)
+- Removed eager `useCoachPlan` from Today; coach session loaded on Just Go click only
+- AppLayout: dynamic Sidebar/CommissioningCeremony; idle journey sync boot
+- Lighthouse mobile (`PRIVATE_MODE=false`): `/` **87** (was 79), `/log` **~80** (was 78) — residual shell plan in [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md)
+
+---
+
 ## 2026-07-15 — Serwist PWA + landing idle demos (`2026.07-unified.61`)
 
 - Replaced `next-pwa` with **Serwist** (`@serwist/next`, `app/sw.ts`); SW disabled while private gate on; client unregisters stale workers via `NEXT_PUBLIC_PWA_ENABLED`

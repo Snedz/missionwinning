@@ -13,31 +13,36 @@ Routes checked: `/`, `/log`, `/guide/human-performance`, `/exercises/squats`.
 
 Budget: **≥90** performance, accessibility, best-practices (soft warning in CI — see `.github/workflows/ci.yml`).
 
-## Snapshot (2026-07-15 — Serwist + Today/Landing deferrals, `2026.07-unified.61`)
+## Snapshot (2026-07-15 — local prod, `PRIVATE_MODE=false`, build `.61`+ lean Today)
 
-Code changes for perf (re-measure after deploy or locally):
-
-- Landing: idle-defer JourneyScroll / CoachAdapt / GuideTeaser
-- Today: dynamic journey chrome; lazy justGo / trends / weekRecap
-- PWA: `next-pwa` → **Serwist** (`app/sw.ts`), SW only when `PRIVATE_MODE=false`
+Mobile Lighthouse after Serwist, landing idle demos, Today lean/full split, AppLayout deferrals:
 
 | Route | Performance | Accessibility | Best practices | Notes |
 |-------|-------------|---------------|----------------|-------|
-| `/` | *re-run* | — | — | `LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget` |
-| **`/log`** | *re-run* | — | — | Target still ≥90 |
-| `/guide/human-performance` | — | — | — | Public SEO |
-| `/exercises/squats` | — | — | — | Public SEO |
+| `/` | **87** | 94 | 100 | +8 vs 2026-07-11 (79) |
+| **`/log`** | **79–80** | **96** | **100** | +1–2 vs 78; still under 90 |
+| `/guide/human-performance` | **88–94** | 100 | 100 | Meets/near budget |
+| `/exercises/squats` | **80–82** | 96 | 100 | Public SEO |
+
+### Residual plan to hit `/log` ≥90
+
+Dominant cost is **app shell** (`force-dynamic` `(app)` layout + full i18n + AppHeader/MobileNav + client boundary), not the lean hero alone. Next cuts (post-beta if needed):
+
+1. Split marketing vs app chrome; avoid loading full i18n resources on first paint (namespace lazy load).
+2. Consider static shell for `/log` without `force-dynamic` where safe.
+3. Font subset / fewer display weights on first paint.
+4. Profile Sentry/PostHog third-party cost when env keys set in prod.
+
+*CI job `lighthouse-budget` remains soft-warning. Target `/log` → 90 after public activation data + shell work.*
 
 ## Prior snapshot (2026-07-11 — `2026.07-unified.54`)
 
 | Route | Performance | Accessibility | Best practices | Notes |
 |-------|-------------|---------------|----------------|-------|
-| `/` | 79 | 94 | 100 | Landing — below-fold demos lazy-loaded |
+| `/` | 79 | 94 | 100 | Landing |
 | **`/log`** | **78** | **96** | **100** | Under 90 |
 | `/guide/human-performance` | 88 | 100 | 100 | Public SEO chapter |
 | `/exercises/squats` | 82 | 96 | 100 | Public exercise detail |
-
-*CI job `lighthouse-budget` logs warnings without failing the build. Target `/log` → 90 after public activation data.*
 
 ## Prior snapshot (2026-07-06)
 
