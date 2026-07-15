@@ -9,9 +9,12 @@ Works in Cursor, Claude Code, Grok, Copilot, and other agents — tool-agnostic 
 ## Start here
 
 1. Read [INDEX.md](INDEX.md) — doc routing, task → file map, stale paths.
-2. Read the `INDEX.md` in the folder you are about to edit.
-3. Prefer indexed paths over repo-wide grep for planning docs.
-4. Do not use old chat plans in `~/.cursor/plans/` as source of truth — use `PLAN.md` and `LOG.md`.
+2. Read [ORCHESTRATION.md](ORCHESTRATION.md) — horizon gates (what is allowed *now* vs post-PMF).
+3. Read the `INDEX.md` in the folder you are about to edit.
+4. Prefer indexed paths over repo-wide grep for planning docs.
+5. Do not use old chat plans as source of truth — use `ORCHESTRATION.md`, `PLAN.md`, and `LOG.md`.
+
+**Horizon rule:** In Horizon 0 (pre-public beta), only hero bugs, launch unblock, and CI. Refuse new pillars/locales/redesigns unless the founder explicitly overrides.
 
 ---
 

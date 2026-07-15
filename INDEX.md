@@ -8,9 +8,10 @@
 
 1. [AGENTS.md](AGENTS.md) — conventions, glossary, commands
 2. [vision.md](vision.md) — product constitution
-3. [PLAN.md](PLAN.md) — **current** build roadmap (phases A–I)
-4. [LOG.md](LOG.md) — chronological dev log (newest first)
-5. Everything below — only when your task requires it
+3. [ORCHESTRATION.md](ORCHESTRATION.md) — **what to do next** (horizons 0–3, gates, kill criteria)
+4. [PLAN.md](PLAN.md) — build phases A–I detail
+5. [LOG.md](LOG.md) — chronological dev log (newest first)
+6. Everything below — only when your task requires it
 
 ---
 
@@ -18,7 +19,8 @@
 
 | If you are… | Read first | Do not use as source of truth |
 |-------------|------------|-------------------------------|
-| Implementing a feature | [PLAN.md](PLAN.md) + relevant `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
+| **Deciding what to build next** | [ORCHESTRATION.md](ORCHESTRATION.md) | Old chat plans; infinite feature lists |
+| Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [PLAN.md](PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
 | Launch / deploy | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md), [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md), [ENV.md](ENV.md), [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md), [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | [SETUP.md](SETUP.md) (one-time LLC/domain setup) |
 | Social / launch posts | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [BETA_INVITE.md](BETA_INVITE.md) | — |
 | LLC + Stripe | [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |

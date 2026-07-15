@@ -4,18 +4,24 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-14 — Long-term orchestration doc
+
+**Shipped:** [ORCHESTRATION.md](ORCHESTRATION.md) — horizons 0–3, founder vs agent role split, kill criteria, 90-day calendar. Wired into [AGENTS.md](AGENTS.md), [INDEX.md](INDEX.md), [PLAN.md](PLAN.md), [VISION_STATUS.md](VISION_STATUS.md).
+
+---
+
 ## 2026-07-14 — S-Tier waves 0–4 + selective rebuilds (`2026.07-unified.58`)
 
 **Theme:** No greenfield rewrite — focus, first hour, polish, retention, honest money, fat-page decomp.
 
-### Commits (local master)
+### Commits
 
 1. Pricing single source ($11.99 / $59 / $149), journey-gated Basic nav, I-Day real Just Go preview, landing one CTA, victory one next action, ErrorState/Skeleton
 2. Fuel sections + BuilderArrange extract; Today week recap + coach invite after first session
 3. Design-token pass on page-components; ProfileBackupCard; LAUNCH_RUNBOOK Stripe monthly env
 4. Bundle premium inventory chips; coach miss-day adapt copy; components token pass
 
-### Still founder-owned
+### Still founder-owned (Horizon 0)
 
 - Beta cohort ≥10, Vercel service role + live Stripe, `PRIVATE_MODE=false`
 

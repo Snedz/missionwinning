@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-14** (S-Tier waves 0–4 ship; build `2026.07-unified.55`).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-14** (S-Tier `.58` + [ORCHESTRATION.md](ORCHESTRATION.md) horizons).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -57,23 +57,25 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 
 ## Biggest gaps (priority order)
 
-### 1. Phase H — Beta cohort + env finish
-Vercel connected; migrations verified. Still need: live Stripe env, service-role on Vercel if missing, **≥10 beta users** (currently 0 profiles). Day-of: [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md).
+Full sequencing: [ORCHESTRATION.md](ORCHESTRATION.md) (Horizon 0 → 3).
 
-### 2. Live Super Bundle ops (Phase I1)
-Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing single source: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149** (`bundleConfig.ts`). Founder: live links + webhook verify.
+### 1. Horizon 0 — Phase H beta + env (founder)
+Vercel connected; migrations verified. Still need: live Stripe env, service-role on Vercel if missing, **≥10 beta users**. Day-of: [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md).
 
-### 3. `/log` Lighthouse toward 90
-Slim readiness shipped (`readinessIndex` + stored `muscleGroups`). Baseline still ~78* — re-measure with `LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget`.
+### 2. Horizon 1 — Live Super Bundle + public (Phase I1)
+Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149**. Then `PRIVATE_MODE=false` + PWA.
 
-### 4. Form media depth (PROTECTION P2)
-15 hero SVGs + cues fallback shipped; expand toward top-50 video/GIF when retention justifies.
+### 3. Horizon 1 eng — `/log` Lighthouse toward 90 + Serwist
+Baseline still ~78* — re-measure with `LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget`. Replace fragile `next-pwa` when public.
 
-### 5. i18n — more locales after PMF (Phase I4)
-es + fr + **de** body shipped for Today/Fuel/Active/Welcome/Coach. Do not spray remaining languages pre-PMF.
+### 4. Horizon 2 — week-4 retention wall metric
+Prove habit loop before scale. See [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md).
 
-### 6. PFT track ops (Phase G ops)
-Code shipped; production migrations applied; council legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
+### 5. Horizon 3 — Form media / i18n / SEO / TWA (post-PMF only)
+Form media top-20; more locales; SEO compound; TWA if PWA install fails.
+
+### 6. PFT track ops (Phase G ops) — optional channel
+Code shipped; legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
 
 ---
 
