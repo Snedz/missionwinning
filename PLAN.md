@@ -161,6 +161,8 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 **Long-term sequencing (horizons 0–3, role split, kill criteria):** [ORCHESTRATION.md](ORCHESTRATION.md) — read this before starting a multi-week initiative.
 
+**Next agent eng task (Horizon 0–1 prep):** B1 Lighthouse `/log`+`/` → 90, then B2 Serwist spike, B3 sync tests, B4 Active/Home extract.
+
 1. **Horizon 0 — Phase H founder ops** — Vercel secrets + Stripe + recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2–4)
 2. **Hit beta gates** — 10+ users, I-Day ≥80%, BT ≥60% — then `PRIVATE_MODE=false`
 3. **Horizon 1 — Phase I1** — live Stripe payment links + webhook verify ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md))

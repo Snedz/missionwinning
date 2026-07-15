@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-15 — Further improvement track B (`2026.07-unified.60`)
+
+**Eng (Horizon 0–1 prep):** Today first-paint deferrals (dynamic journey/coach chrome; lazy justGo/trends/weekRecap); sync merge unit tests (`workoutMerge`, `journeySync`, `coachSync`); `ActiveExerciseCard` extract; doc next-task pointers.
+
+**Still founder:** beta ≥10, Stripe/env, `PRIVATE_MODE=false`.
+
+---
+
 ## 2026-07-14 — Long-term orchestration doc
 
 **Shipped:** [ORCHESTRATION.md](ORCHESTRATION.md) — horizons 0–3, founder vs agent role split, kill criteria, 90-day calendar. Wired into [AGENTS.md](AGENTS.md), [INDEX.md](INDEX.md), [PLAN.md](PLAN.md), [VISION_STATUS.md](VISION_STATUS.md).

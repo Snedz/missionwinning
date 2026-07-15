@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Check, Clock, Dumbbell, Plus, Scale, Square, Timer } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { formatDuration } from '@/lib/utils';
@@ -22,11 +22,11 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
-import { SetLogRow } from '@/components/workout/SetLogRow';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
+import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { resolveRestSeconds } from '@/lib/restTimer';
 import { isPersonalRecord } from '@/lib/workoutPr';
-import { shouldRestAfterLog, supersetLabel } from '@/lib/superset';
+import { shouldRestAfterLog } from '@/lib/superset';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import { getTrainingStreak } from '@/lib/challenges';
 import { summarizeWorkoutVictory, buildProgressionInsight, type WorkoutVictorySummary } from '@/lib/workoutVictory';
@@ -407,9 +407,6 @@ export function ActiveWorkoutPage() {
         activeWorkout.exercises.map((exLog, exIdx) => {
           const exercise = getExerciseById(exLog.exerciseId);
           if (!exercise) return null;
-          const hasCompleted = exLog.sets.some((s) => s.completed);
-          const hasPlanned = exLog.sets.some((s) => !s.completed);
-          const restSec = resolveRestSeconds(exercise.name);
           const swapCandidates =
             swapOpenIdx === exIdx
               ? [...EXERCISES]
@@ -422,232 +419,62 @@ export function ActiveWorkoutPage() {
                   })
               : [];
 
-          const ssLabel = supersetLabel(activeWorkout.exercises, exIdx);
-          const hasNext = exIdx < activeWorkout.exercises.length - 1;
-
           return (
-            <Card
+            <ActiveExerciseCard
               key={`${exLog.exerciseId}-${exIdx}`}
-              className={ssLabel ? 'border-violet-500/30' : undefined}
-            >
-              <CardHeader>
-                <CardTitle className="text-lg flex flex-wrap items-center gap-2">
-                  {exercise.name}
-                  {ssLabel && (
-                    <Badge variant="outline" className="text-[10px] uppercase border-violet-500/40 text-violet-300">
-                      {ssLabel}
-                    </Badge>
-                  )}
-                </CardTitle>
-                <CardDescription className="flex gap-1 flex-wrap">
-                  {exercise.muscleGroups.map((mg) => (
-                    <Badge key={mg} variant="muscle">
-                      {mg}
-                    </Badge>
-                  ))}
-                </CardDescription>
-                {exercise.cues && <p className="text-xs text-muted-foreground mt-1">{exercise.cues}</p>}
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {hasCompleted && (
-                    <Button type="button" variant="outline" size="sm" onClick={() => handleRepeatLast(exIdx)}>
-                      {t('activeRepeatLast', { defaultValue: 'Repeat last set' })}
-                    </Button>
-                  )}
-                  {getFormGuideOrCues(exercise.id, { exercise }) && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="h-9 text-primary"
-                      onClick={() => setFormGuideId(exercise.id)}
-                    >
-                      {t('activeFormGuide', { defaultValue: 'Form guide' })}
-                    </Button>
-                  )}
-                  {hasNext && !exLog.supersetGroup && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => toggleSupersetWithNext(exIdx)}
-                    >
-                      {t('activeSupersetLink', { defaultValue: 'Superset w/ next' })}
-                    </Button>
-                  )}
-                  {exLog.supersetGroup && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => unlinkSuperset(exIdx)}
-                    >
-                      {t('activeSupersetUnlink', { defaultValue: 'Unlink superset' })}
-                    </Button>
-                  )}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setNoteOpenIdx(noteOpenIdx === exIdx ? null : exIdx)}
-                  >
-                    {t('activeNote', { defaultValue: 'Note' })}
-                  </Button>
-                  {!hasCompleted && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setSwapOpenIdx(swapOpenIdx === exIdx ? null : exIdx)}
-                    >
-                      {t('activeSwap', { defaultValue: 'Swap' })}
-                    </Button>
-                  )}
-                  {confirmRemoveIdx === exIdx ? (
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => {
-                        removeExerciseFromActive(exIdx);
-                        setConfirmRemoveIdx(null);
-                        setSwapOpenIdx(null);
-                        setNoteOpenIdx(null);
-                        setSetInputs({});
-                      }}
-                    >
-                      {hasCompleted
-                        ? t('activeRemoveConfirmLogged', { defaultValue: 'Remove — discards logged sets' })
-                        : t('activeRemoveConfirm', { defaultValue: 'Confirm remove' })}
-                    </Button>
-                  ) : (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="text-muted-foreground hover:text-destructive"
-                      onClick={() => {
-                        setConfirmRemoveIdx(exIdx);
-                        setTimeout(() => setConfirmRemoveIdx((c) => (c === exIdx ? null : c)), 3500);
-                      }}
-                    >
-                      {t('activeRemove', { defaultValue: 'Remove' })}
-                    </Button>
-                  )}
-                </div>
-                {swapOpenIdx === exIdx && !hasCompleted && (
-                  <div className="mt-2">
-                    <ExercisePicker
-                      value=""
-                      exercises={swapCandidates}
-                      placeholder={t('activeSwapPlaceholder', {
-                        defaultValue: 'Swap to… (same muscles first)',
-                      })}
-                      onChange={(id) => {
-                        replaceExerciseInActive(exIdx, id);
-                        setSwapOpenIdx(null);
-                        setSetInputs({});
-                      }}
-                    />
-                  </div>
-                )}
-                {(noteOpenIdx === exIdx || exLog.note) && (
-                  <input
-                    type="text"
-                    value={exLog.note ?? ''}
-                    maxLength={200}
-                    placeholder={t('activeNotePlaceholder', {
-                      defaultValue: 'Note — "machine 3, seat 4", "left knee tight"…',
-                    })}
-                    onChange={(e) => setExerciseNote(exIdx, e.target.value)}
-                    className="mt-2 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                  />
-                )}
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {exLog.sets.map((set, setIdx) => {
-                  const input = getSetInput(exIdx, setIdx, set.reps, set.weight);
-                  const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
-                  const setPerf = getLastPerformanceForSet(workoutHistory, exLog.exerciseId, setIdx);
-                  const lastSets = getLastSessionSets(workoutHistory, exLog.exerciseId);
-                  const target =
-                    !set.completed && lastSets
-                      ? suggestNextSetTarget(lastSets, setIdx, units)
-                      : null;
-                  return (
-                    <div
-                      key={set.id}
-                      ref={isNext ? nextSetRef : undefined}
-                    >
-                      <SetLogRow
-                        setNumber={setIdx + 1}
-                        set={set}
-                        reps={input.reps}
-                        weight={input.weight}
-                        isNext={isNext}
-                        weightLabel={unitLabel}
-                        weightStep={step}
-                        lastPerformance={setPerf}
-                        target={target}
-                        onRepsChange={(v) => updateSetInput(exIdx, setIdx, 'reps', v)}
-                        onWeightChange={(v) => updateSetInput(exIdx, setIdx, 'weight', v)}
-                        onSetKindChange={(kind) => setSetKind(exIdx, setIdx, kind)}
-                        onLog={() => handleLogSet(exIdx, setIdx)}
-                        onRate={(rpe) => rateSet(exIdx, setIdx, rpe)}
-                        onApplyTarget={
-                          target
-                            ? () => {
-                                updateSetInput(exIdx, setIdx, 'reps', target.reps);
-                                updateSetInput(exIdx, setIdx, 'weight', target.weight);
-                              }
-                            : undefined
-                        }
-                        onCopyLast={
-                          setPerf
-                            ? () => {
-                                updateSetInput(exIdx, setIdx, 'reps', setPerf.reps);
-                                updateSetInput(exIdx, setIdx, 'weight', setPerf.weight);
-                              }
-                            : undefined
-                        }
-                      />
-                    </div>
-                  );
-                })}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {getLastSessionSets(workoutHistory, exLog.exerciseId) &&
-                    exLog.sets.some((s) => !s.completed) && (
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="text-primary"
-                        onClick={() => applyTargetsForExercise(exIdx)}
-                      >
-                        {t('activeApplyAllTargets', { defaultValue: 'Apply targets' })}
-                      </Button>
-                    )}
-                  <Button variant="outline" size="sm" onClick={() => addSetToExercise(exIdx)}>
-                    <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
-                  </Button>
-                  {hasPlanned && exLog.sets.length > 1 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-muted-foreground"
-                      onClick={() => {
-                        removeLastPlannedSet(exIdx);
-                        setSetInputs({});
-                      }}
-                    >
-                      {t('activeRemoveSet', { defaultValue: 'Remove set' })}
-                    </Button>
-                  )}
-                  <Button variant="ghost" size="sm" onClick={() => startRestTimer(restSec)}>
-                    <Timer className="h-3 w-3 me-1" />
-                    {t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+              exLog={exLog}
+              exIdx={exIdx}
+              exercises={activeWorkout.exercises}
+              exercise={exercise}
+              workoutHistory={workoutHistory}
+              units={units}
+              unitLabel={unitLabel}
+              weightStep={step}
+              nextSet={nextSet}
+              nextSetRef={nextSetRef}
+              swapOpen={swapOpenIdx === exIdx}
+              noteOpen={noteOpenIdx === exIdx}
+              confirmRemove={confirmRemoveIdx === exIdx}
+              swapCandidates={swapCandidates}
+              getSetInput={getSetInput}
+              lastPerformanceForSet={getLastPerformanceForSet}
+              lastSessionSets={getLastSessionSets}
+              onRepeatLast={() => handleRepeatLast(exIdx)}
+              onFormGuide={() => setFormGuideId(exercise.id)}
+              onToggleSuperset={() => toggleSupersetWithNext(exIdx)}
+              onUnlinkSuperset={() => unlinkSuperset(exIdx)}
+              onToggleNote={() => setNoteOpenIdx(noteOpenIdx === exIdx ? null : exIdx)}
+              onToggleSwap={() => setSwapOpenIdx(swapOpenIdx === exIdx ? null : exIdx)}
+              onConfirmRemove={() => {
+                setConfirmRemoveIdx(exIdx);
+                setTimeout(() => setConfirmRemoveIdx((c) => (c === exIdx ? null : c)), 3500);
+              }}
+              onRemove={() => {
+                removeExerciseFromActive(exIdx);
+                setConfirmRemoveIdx(null);
+                setSwapOpenIdx(null);
+                setNoteOpenIdx(null);
+                setSetInputs({});
+              }}
+              onSwapTo={(id) => {
+                replaceExerciseInActive(exIdx, id);
+                setSwapOpenIdx(null);
+                setSetInputs({});
+              }}
+              onNoteChange={(note) => setExerciseNote(exIdx, note)}
+              onRepsChange={(setIdx, v) => updateSetInput(exIdx, setIdx, 'reps', v)}
+              onWeightChange={(setIdx, v) => updateSetInput(exIdx, setIdx, 'weight', v)}
+              onSetKindChange={(setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+              onLog={(setIdx) => handleLogSet(exIdx, setIdx)}
+              onRate={(setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
+              onApplyAllTargets={() => applyTargetsForExercise(exIdx)}
+              onAddSet={() => addSetToExercise(exIdx)}
+              onRemoveSet={() => {
+                removeLastPlannedSet(exIdx);
+                setSetInputs({});
+              }}
+              onStartRest={(seconds) => startRestTimer(seconds)}
+            />
           );
         })
       )}
