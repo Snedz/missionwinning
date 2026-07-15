@@ -63,7 +63,7 @@ Rules: the current `bundleConfig.ts` tiers (3mo/$33, 12mo/$96, lifetime/$149) sh
 - **Days 3–7 — communities you already inhabit (target 5–10)**: pick 2 subreddits + 1 Discord *where you genuinely participate*. Give value first (answer form/programming questions), then use the builder-story angle: *"I got tired of paywalled trackers so I built a free one that works offline — looking for 10 beta testers, honest feedback wanted."* Builder stories are welcomed where ads are banned; read each community's self-promo rules first.
 - **Days 8–14 — follow-up loop**: DM every tester at day 2 and day 7: *"Did you get a workout in? What almost stopped you?"* Watch the Profile beta panel funnel. Fix the top confusion within 48h and tell the tester you fixed it — that converts testers into advocates.
 
-**First 100 (public, days 15–45)**: Product Hunt + Hacker News "Show HN" (the no-account offline demo is the hook — a visitor can try the logger in 30 seconds without signing up), r/InternetIsBeautiful, one honest launch post per community from the beta list, and a 30–60s screen-recording of I-Day → first workout → Win Score for Shorts/TikTok. Measure: visitor → I-Day start → first workout, weekly.
+**First 100 (public, days 15–45)**: Product Hunt + Hacker News "Show HN" (the no-account offline demo is the hook — a visitor can try the logger in 30 seconds without signing up), r/InternetIsBeautiful, one honest launch post per community from the beta list, and a 30–60s screen-recording of I-Day → first workout → Win Score for Shorts/TikTok. Measure: visitor → I-Day start → first workout, weekly. **Copy kit:** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md).
 
 ---
 
@@ -82,7 +82,7 @@ Rules: the current `bundleConfig.ts` tiers (3mo/$33, 12mo/$96, lifetime/$149) sh
 | Beta metrics | Already automated (`/api/beta/metrics` + Profile panel). Check twice a week, not hourly. |
 | Waitlist → launch emails | Resend broadcast from `leads` export. Template once, reuse. |
 | Support | One `support@` inbox; hold a public FAQ; answer patterns, not individuals — every repeated question becomes app copy. |
-| Content/marketing | Batch: one filming session → month of Shorts. Repurpose Learn content as posts. |
+| Content/marketing | Batch: one filming session → month of Shorts. Repurpose Learn content as posts. Kit: [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md). |
 | Code | CI runs tests (already set up); `gate-smoke` before every deploy; Claude Code sessions for feature work with `/code-review` before merge. |
 
 **Founder-only (cannot delegate)**: talking to users weekly, pricing decisions, the vision filter, legal/entity setup.

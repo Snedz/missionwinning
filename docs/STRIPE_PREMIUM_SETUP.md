@@ -18,6 +18,8 @@ Mission Coach and Super Bundle premium are **code-complete**; production needs l
 
 ## Production setup
 
+**Entity first (recommended when funded):** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md).
+
 1. Stripe Dashboard → Products → Super Bundle payment link
 2. Vercel env (Production):
    - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
@@ -33,6 +35,8 @@ Mission Coach and Super Bundle premium are **code-complete**; production needs l
    - Verify: `node scripts/verify-stripe-enrollment.mjs` (row shape)
    - Verify gates: `npm run verify-premium` or `--check-gates` with `SMOKE_BASE_URL`
    - Webhook test: `--ping-webhook` with `STRIPE_WEBHOOK_SECRET`
+
+Entity + bank before charging at scale: [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md).
 
 ---
 
@@ -53,4 +57,4 @@ Analytics: `coach_taster_locked`, `coach_week_generated` with `premium` property
 
 ## After beta gates (Phase I)
 
-Per [PLAN.md](../PLAN.md) Phase I — enable live Stripe before scaling invites; keep free core unchanged.
+Per [PLAN.md](../PLAN.md) Phase I — enable live Stripe before scaling invites; keep free core unchanged. Flip-day checklist: [SOFT_LAUNCH_DAY.md](SOFT_LAUNCH_DAY.md).

@@ -224,30 +224,30 @@ export function ActiveWorkoutPage() {
     const historyBefore = workoutHistory;
     const beforeScores = computeBodyScores(historyBefore);
     const log = completeActiveWorkout();
-    if (log) {
-      const historyAfter = [log, ...historyBefore];
-      const streak = getTrainingStreak(historyAfter);
-      const afterScores = computeBodyScores(historyAfter);
-      setVictorySummary(
-        summarizeWorkoutVictory(
-          log,
-          streak,
-          {
-            readiness: afterScores.readiness - beforeScores.readiness,
-            strain: afterScores.strain - beforeScores.strain,
-            recovery: afterScores.recovery - beforeScores.recovery,
-          },
-          buildProgressionInsight(log, units)
-        )
-      );
-      setVictoryOpen(true);
-    } else {
+    if (!log) {
       toast({
         title: t('activeNothingLogged', { defaultValue: 'Nothing logged' }),
         description: 'Complete at least one set before finishing.',
         variant: 'destructive',
       });
+      return;
     }
+    const historyAfter = [log, ...historyBefore];
+    const streak = getTrainingStreak(historyAfter);
+    const afterScores = computeBodyScores(historyAfter);
+    setVictorySummary(
+      summarizeWorkoutVictory(
+        log,
+        streak,
+        {
+          readiness: afterScores.readiness - beforeScores.readiness,
+          strain: afterScores.strain - beforeScores.strain,
+          recovery: afterScores.recovery - beforeScores.recovery,
+        },
+        buildProgressionInsight(log, units)
+      )
+    );
+    setVictoryOpen(true);
   };
 
   const applyTargetsForExercise = (exIdx: number) => {
@@ -297,6 +297,19 @@ export function ActiveWorkoutPage() {
             <a href="/builder">{t('activeGoBuilder', { defaultValue: 'Builder' })}</a>
           </Button>
         </div>
+        <WorkoutVictorySheet
+          open={victoryOpen}
+          summary={victorySummary}
+          onOpenChange={setVictoryOpen}
+          onViewToday={() => {
+            setVictoryOpen(false);
+            router.push('/log');
+          }}
+          onViewHistory={() => {
+            setVictoryOpen(false);
+            router.push('/history');
+          }}
+        />
       </div>
     );
   }

@@ -28,6 +28,7 @@ import { LeaderboardBoardPicker } from '@/components/leaderboard/LeaderboardBoar
 import { LeaderboardScopeTabs } from '@/components/leaderboard/LeaderboardScopeTabs';
 import { LeaderboardTable } from '@/components/leaderboard/LeaderboardTable';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { getJoinedClassCode, getTeacherPin } from '@/lib/schoolClass';
 
 export function LeaderboardPage() {
@@ -90,7 +91,6 @@ export function LeaderboardPage() {
                 score: e.score,
               }))
             );
-            setClassRows([]);
           }
         } catch {
           setClassRows([]);
@@ -320,21 +320,27 @@ export function LeaderboardPage() {
       </div>
 
       {scope === 'class' && !classCode && (
-        <p className="text-sm text-muted-foreground rounded-lg border border-dashed border-border/50 p-4">
-          {t('leaderboardClassScopeHint', {
+        <EmptyState
+          icon={Trophy}
+          title={t('leaderboardClassEmptyTitle', { defaultValue: 'Join a PE class' })}
+          description={t('leaderboardClassScopeHint', {
             defaultValue:
               'Join a PE class on /america to see class standings here. Class board uses signed-in fitness test results.',
           })}
-        </p>
+          actionLabel={t('leaderboardClassEmptyCta', { defaultValue: 'Open America track' })}
+          href="/america"
+        />
       )}
 
       {scope === 'friends' && !squadCode && (
-        <p className="text-sm text-muted-foreground rounded-lg border border-dashed border-border/50 p-4">
-          {t('leaderboardSquadHint', {
+        <EmptyState
+          icon={Trophy}
+          title={t('leaderboardSquadEmptyTitle', { defaultValue: 'Add a squad code' })}
+          description={t('leaderboardSquadHint', {
             defaultValue:
               'Set a squad code above to compare with others using the same code. Try ALPHA or BRAVO to see demo squad members.',
           })}
-        </p>
+        />
       )}
 
       {scope === 'friends' && squadCode.startsWith('MW') && (

@@ -45,7 +45,10 @@ export function useFuelPlan() {
       return;
     }
     fetch('/api/premium/recipes', { credentials: 'include' })
-      .then((r) => (r.ok ? r.json() : { recipes: [] }))
+      .then((r) => {
+        if (!r.ok) throw new Error('premium recipes unavailable');
+        return r.json();
+      })
       .then((d) => setPremiumRecipes(d.recipes ?? []))
       .catch(() => setPremiumRecipes([]));
   }, [premium]);

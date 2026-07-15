@@ -240,7 +240,11 @@ export function ProfilePage() {
       setNudgeSent(true);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Email not available';
-      alert(msg);
+      toast({
+        title: t('emailNextStepFailed', { defaultValue: 'Could not send email' }),
+        description: msg,
+        variant: 'destructive',
+      });
     } finally {
       setNudgeLoading(false);
     }

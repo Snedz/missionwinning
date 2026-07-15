@@ -15,6 +15,7 @@ import { WeekStrip } from '@/components/coach/WeekStrip';
 import { PlanSessionCard } from '@/components/coach/PlanSessionCard';
 import { CoachVoiceCard } from '@/components/coach/CoachVoiceCard';
 import { UnlockButton } from '@/components/UnlockButton';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 
 export function CoachPage() {
@@ -104,19 +105,16 @@ export function CoachPage() {
       )}
 
       {!loading && !plan && !locked && (
-        <Card className="content-card">
-          <CardContent className="pt-6 space-y-4">
-            <p className="text-sm text-muted-foreground">
-              {t('coachTasterDesc', {
-                defaultValue:
-                  'Unlock Mission Coach to regenerate and adapt your plan every week.',
-              })}
-            </p>
-            <Button variant="fitness" className="w-full" onClick={() => generate()}>
-              {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
-            </Button>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={Sparkles}
+          title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week yet' })}
+          description={t('coachTasterDesc', {
+            defaultValue:
+              'Unlock Mission Coach to regenerate and adapt your plan every week.',
+          })}
+          actionLabel={t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
+          onAction={() => generate()}
+        />
       )}
 
       {plan && !locked && (

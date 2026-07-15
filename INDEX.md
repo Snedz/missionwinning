@@ -19,7 +19,10 @@
 | If you are… | Read first | Do not use as source of truth |
 |-------------|------------|-------------------------------|
 | Implementing a feature | [PLAN.md](PLAN.md) + relevant `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
-| Launch / deploy | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md), [ENV.md](ENV.md), [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md), [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | [SETUP.md](SETUP.md) (one-time LLC/domain setup) |
+| Launch / deploy | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md), [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md), [ENV.md](ENV.md), [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md), [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | [SETUP.md](SETUP.md) (one-time LLC/domain setup) |
+| Social / launch posts | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [BETA_INVITE.md](BETA_INVITE.md) | — |
+| LLC + Stripe | [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
+| Mobile (deferred) | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Native rewrite |
 | Premium / conversion | [REDTEAM.md](REDTEAM.md), [STRATEGY.md](STRATEGY.md) | — |
 | Journey UX (I-Day → Commissioned) | [JOURNEY.md](JOURNEY.md) | Build phases in [PLAN.md](PLAN.md) (different “phase”) |
 | UI unification | [UX_UNIFIED_PLAN.md](UX_UNIFIED_PLAN.md) | — |
@@ -32,6 +35,7 @@
 | Security | [PROTECTION.md](PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md) | — |
 | Vercel deploy | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | — |
 | Pre-launch checklist | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | — |
+| Post-launch cadence | [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) | — |
 | **User help** | [docs/help/INDEX.md](docs/help/INDEX.md) | — |
 | **Architecture** | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | — |
 | **API reference** | [docs/API.md](docs/API.md), [app/api/INDEX.md](app/api/INDEX.md) | — |
@@ -88,6 +92,10 @@
 | [JOURNEY.md](JOURNEY.md) | Mission journey UX |
 | [UX_UNIFIED_PLAN.md](UX_UNIFIED_PLAN.md) | UI unification |
 | [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) | Launch checklist |
+| [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) | Social + launch post kit |
+| [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md) | LLC → Stripe checklist |
+| [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md) | Public flip day |
+| [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Deferred Play/iOS shells |
 | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
 | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |
 | [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |

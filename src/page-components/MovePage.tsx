@@ -16,25 +16,44 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { getPillarWins } from '@/lib/pillarLog';
 import { Clock, Wind, ChevronDown } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { useToast } from '@/hooks/use-toast';
 
 export function MovePage() {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const { premium, loading: premiumLoading } = usePremium();
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
   const [activeFlowId, setActiveFlowId] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
+  const [premiumFetchError, setPremiumFetchError] = useState(false);
 
   useEffect(() => {
     if (!premium) {
       setPremiumFlows([]);
+      setPremiumFetchError(false);
       return;
     }
+    setPremiumFetchError(false);
     fetch('/api/premium/mobility')
-      .then((r) => (r.ok ? r.json() : { flows: [] }))
+      .then((r) => {
+        if (!r.ok) throw new Error('premium mobility unavailable');
+        return r.json();
+      })
       .then((d) => setPremiumFlows(d.flows ?? []))
-      .catch(() => setPremiumFlows([]));
-  }, [premium]);
+      .catch(() => {
+        setPremiumFlows([]);
+        setPremiumFetchError(true);
+        toast({
+          title: t('movePremiumFetchFailed', { defaultValue: 'Could not load premium flows' }),
+          description: t('movePremiumFetchFailedDesc', {
+            defaultValue: 'Free flows still work. Check your connection and try again.',
+          }),
+          variant: 'destructive',
+        });
+      });
+  }, [premium, t, toast]);
 
   const freeFlows = MOBILITY_FLOWS;
   const activeFlow = [...freeFlows, ...premiumFlows].find((f) => f.id === activeFlowId);
@@ -119,6 +138,14 @@ export function MovePage() {
         <p className="text-xs text-muted-foreground">{t('loading', { defaultValue: 'Loading premium flows…' })}</p>
       )}
 
+      {premiumFetchError && premium && (
+        <p className="text-xs text-muted-foreground rounded-lg border border-dashed border-border/50 px-3 py-2">
+          {t('movePremiumOffline', {
+            defaultValue: 'Premium recovery flows unavailable offline — free flows below still work.',
+          })}
+        </p>
+      )}
+
       {!premium && (
         <div className="space-y-2">
           <button
@@ -137,7 +164,7 @@ export function MovePage() {
         </div>
       )}
 
-      {recentWins.length > 0 && (
+      {recentWins.length > 0 ? (
         <Card className="content-card">
           <CardHeader>
             <CardTitle className="text-base">
@@ -152,6 +179,16 @@ export function MovePage() {
             ))}
           </CardContent>
         </Card>
+      ) : (
+        <EmptyState
+          icon={Wind}
+          title={t('moveEmptyTitle', { defaultValue: 'No Move sessions logged yet' })}
+          description={t('moveEmptyDesc', {
+            defaultValue: 'Start a free mobility flow — your first win shows here.',
+          })}
+          actionLabel={t('moveEmptyCta', { defaultValue: 'Browse free flows' })}
+          onAction={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        />
       )}
     </PillarPageShell>
   );

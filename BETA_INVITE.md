@@ -1,15 +1,17 @@
 # Beta Invite Kit — Mission Winning
 
-Use this when inviting the first **10 private beta operators**. No Vercel changes required beyond existing `PRIVATE_ACCESS_SECRET`.
+Use this when inviting the first **10 private beta operators**. Prod is live at **https://www.missionwinning.com** (private gate on). Share the access code from Vercel `PRIVATE_ACCESS_SECRET` / `PRIVATE_ACCESS_CODES`.
+
+**Current status (2026-07-11):** 0 signed-in profiles in Supabase — recruiting is the critical path before `PRIVATE_MODE=false`.
 
 ---
 
 ## Invite link format
 
-Send each tester **one** of these (replace placeholders):
+Send each tester **one** of these (replace `YOUR_CODE` with the invite code):
 
 ```
-https://YOUR-DEPLOY-URL/?access=YOUR_PRIVATE_ACCESS_SECRET
+https://www.missionwinning.com/?access=YOUR_CODE
 ```
 
 After the first visit, a 30-day cookie is set — they can bookmark `/beta` or `/log` without the query param.
@@ -27,7 +29,7 @@ Hi [Name],
 You're in the first cohort of **Mission Winning** — a free-core fitness app with a guided member journey (I-Day → training → rankings).
 
 **Start here (2 minutes):**
-1. Open: `https://YOUR-URL/?access=YOUR_CODE`
+1. Open: `https://www.missionwinning.com/?access=YOUR_CODE`
 2. Read the beta guide: `/beta`
 3. Complete **I-Day** at `/welcome`
 4. Log one workout from **Today**
@@ -64,6 +66,49 @@ Thanks for helping us ship health for everyone.
 3. **`journey_events`** — `journey_phase_complete`, `journey_commissioned`
 
 Launch gates (from [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md)): ≥10 users, I-Day ≥80%, Basic Training ≥60% before `PRIVATE_MODE=false`.
+
+---
+
+## Day-2 and day-7 follow-ups (copy/paste)
+
+**Day 2**
+
+```
+Hey [Name] — did you get a workout logged in Mission Winning?
+
+What almost stopped you (confusing screen, too many steps, something else)?
+```
+
+**Day 7**
+
+```
+Quick check-in: are you still opening the app this week?
+
+One thing you'd change about the first 3 minutes?
+```
+
+After each reply: fix the #1 confusion within 48h if it's a real bug/UX issue, then reply “fixed — try again?”
+
+---
+
+## Invite tracker (first 10)
+
+| # | Name | Invited | I-Day | Workout | Signed in | Day-2 DM | Day-7 DM | Notes |
+|---|------|---------|-------|---------|-----------|----------|----------|-------|
+| 1 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+| 2 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+| 3 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+| 4 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+| 5 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+| 6 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+| 7 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+| 8 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+| 9 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+| 10 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+
+Watch for A1 signal: “is there an app?” / won’t install PWA — log in Notes ([REDTEAM.md](REDTEAM.md)).
+
+Social/recruiting angle: [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md).
 
 ---
 
