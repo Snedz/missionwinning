@@ -3,21 +3,21 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useWorkoutStore } from '@/store/workoutStore';
+import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import { useTranslation } from 'react-i18next';
 import { PRIMARY_NAV } from '@/lib/navConfig';
 
 export function MobileNav() {
   const pathname = usePathname();
   const { t } = useTranslation();
-  const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
+  const hasActiveWorkout = useActiveWorkoutPulse();
 
   return (
     <nav className="glass-nav md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-stretch justify-around h-[52px]">
         {PRIMARY_NAV.map(({ href, labelKey, label, icon: Icon }) => {
           const isActive = pathname === href || (href === '/log' && pathname === '/');
-          const showPulse = href === '/active' && !!activeWorkout;
+          const showPulse = href === '/active' && hasActiveWorkout;
 
           return (
             <Link

@@ -22,8 +22,13 @@ import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
 import { mapCloudToLocal, mergeWorkoutHistories } from "@/lib/workoutMerge";
 import { toast } from "@/hooks/use-toast";
 import { track } from "@/lib/analytics";
+import { setActiveWorkoutFlag } from "@/lib/activeWorkoutPulse";
 
 const DEFAULT_REST_SECONDS = 30;
+
+function syncActiveFlag(active: { exercises?: unknown } | null | undefined) {
+  setActiveWorkoutFlag(!!active);
+}
 
 /** Honest sync status: the workout is safe locally; the cloud write failed. */
 function notifySyncPending() {
@@ -138,6 +143,7 @@ export const useWorkoutStore = create<WorkoutState>()(
             sets: templateSetsToLogged(ex),
           })),
         };
+        syncActiveFlag(active);
         set({
           activeWorkout: active,
           elapsedSeconds: 0,
@@ -148,12 +154,14 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       startEmptyWorkout: () => {
+        const active = {
+          workoutName: "Quick Workout",
+          startedAt: new Date().toISOString(),
+          exercises: [] as ActiveWorkout['exercises'],
+        };
+        syncActiveFlag(active);
         set({
-          activeWorkout: {
-            workoutName: "Quick Workout",
-            startedAt: new Date().toISOString(),
-            exercises: [],
-          },
+          activeWorkout: active,
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
@@ -162,6 +170,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       cancelActiveWorkout: () => {
+        syncActiveFlag(null);
         set({
           activeWorkout: null,
           elapsedSeconds: 0,
@@ -196,6 +205,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           .filter((ex) => ex.sets.length > 0);
 
         if (exercises.length === 0) {
+          syncActiveFlag(null);
           set({ activeWorkout: null, elapsedSeconds: 0 });
           return null;
         }
@@ -213,6 +223,7 @@ export const useWorkoutStore = create<WorkoutState>()(
 
         const isFirstWorkout = get().workoutHistory.length === 0;
 
+        syncActiveFlag(null);
         set((s) => ({
           workoutHistory: [log, ...s.workoutHistory],
           activeWorkout: null,
@@ -534,6 +545,9 @@ export const useWorkoutStore = create<WorkoutState>()(
         activeWorkout: state.activeWorkout,
         elapsedSeconds: state.elapsedSeconds,
       }),
+      onRehydrateStorage: () => (state) => {
+        syncActiveFlag(state?.activeWorkout ?? null);
+      },
     }
   )
 );

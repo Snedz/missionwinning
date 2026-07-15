@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useWorkoutStore } from '@/store/workoutStore';
+import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import { useTranslation } from 'react-i18next';
 import { PRIMARY_NAV } from '@/lib/navConfig';
 
@@ -11,14 +11,14 @@ import { PRIMARY_NAV } from '@/lib/navConfig';
 export function Sidebar() {
   const pathname = usePathname();
   const { t } = useTranslation();
-  const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
+  const hasActiveWorkout = useActiveWorkoutPulse();
 
   return (
     <aside className="hidden md:flex h-full w-[72px] lg:w-[210px] flex-col border-e border-border/50 bg-card/30 shrink-0">
       <nav className="flex-1 flex flex-col gap-1 p-2 lg:p-3 pt-4">
         {PRIMARY_NAV.map(({ href, labelKey, label, icon: Icon }) => {
           const isActive = pathname === href || (href === '/log' && pathname === '/');
-          const showPulse = href === '/active' && activeWorkout;
+          const showPulse = href === '/active' && hasActiveWorkout;
 
           return (
             <Link
