@@ -37,7 +37,7 @@ export function RestTimerBar({
       className={cn(
         'fixed inset-x-0 z-40 md:max-w-lg md:mx-auto md:bottom-4 md:rounded-2xl',
         'bottom-[calc(52px+env(safe-area-inset-bottom))]',
-        'border-t md:border border-emerald-500/40 bg-card/95 backdrop-blur-md shadow-lg',
+        'border-t md:border border-primary/40 bg-card/95 backdrop-blur-md shadow-lg',
         className
       )}
       role="timer"
@@ -67,11 +67,11 @@ export function RestTimerBar({
               strokeLinecap="round"
             />
           </svg>
-          <Timer className="absolute inset-0 m-auto h-5 w-5 text-emerald-400" aria-hidden />
+          <Timer className="absolute inset-0 m-auto h-5 w-5 text-primary" aria-hidden />
         </div>
 
         <div className="min-w-0 flex-1">
-          <p className="font-semibold text-emerald-400 leading-tight">
+          <p className="font-semibold text-primary leading-tight">
             {t('activeRestTitle', { defaultValue: 'Rest' })}
           </p>
           <p className="text-xs text-muted-foreground truncate">
@@ -79,7 +79,7 @@ export function RestTimerBar({
           </p>
         </div>
 
-        <span className="inline-flex min-w-[5.5rem] items-center justify-center rounded-full border border-emerald-500/35 bg-emerald-950/50 px-3 py-1 text-4xl font-mono font-bold tabular-nums text-emerald-400 shrink-0 tracking-tight">
+        <span className="inline-flex min-w-[5.5rem] items-center justify-center rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-4xl font-mono font-bold tabular-nums text-primary shrink-0 tracking-tight">
           {formatRestClock(remaining)}
         </span>
       </div>

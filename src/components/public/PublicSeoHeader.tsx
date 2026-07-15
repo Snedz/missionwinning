@@ -30,7 +30,7 @@ export function PublicSeoHeader({
         </Link>
         <Link
           href={ctaHref}
-          className="shrink-0 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500 transition-colors min-h-[40px] inline-flex items-center"
+          className="shrink-0 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary transition-colors min-h-[40px] inline-flex items-center"
         >
           {ctaLabel}
         </Link>

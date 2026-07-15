@@ -58,7 +58,7 @@ export function TodayPageHeader({
             className="shrink-0 gap-1.5 min-h-[40px] border-border/60"
             onClick={onEditToday}
           >
-            <LayoutGrid className="h-4 w-4 text-emerald-400" />
+            <LayoutGrid className="h-4 w-4 text-primary" />
             {t('todayEditToday', { defaultValue: 'Edit Today' })}
           </Button>
         )}
@@ -67,7 +67,7 @@ export function TodayPageHeader({
         <p className="text-sm text-muted-foreground">
           {t('todayDayStreak', { count: streak, defaultValue: `${streak}-day streak` })}
           {' · '}
-          <a href="/leaderboard" className="text-emerald-400 hover:underline">
+          <a href="/leaderboard" className="text-primary hover:underline">
             {t('leaderboardRankings', { defaultValue: 'Rankings' })}
           </a>
         </p>
@@ -75,7 +75,7 @@ export function TodayPageHeader({
       <p className="text-sm text-muted-foreground">
         {!userEmail ? (
           <>
-            <a href="/profile" className="text-emerald-400 hover:underline">
+            <a href="/profile" className="text-primary hover:underline">
               {t('signInLink', { defaultValue: 'Sign in' })}
             </a>{' '}
             {t('signInOptional', {

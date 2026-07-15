@@ -36,10 +36,10 @@ export function GuidebookContinueCard() {
   if (stats.pct >= 100) return null;
 
   return (
-    <Card className="content-card border-emerald-500/25">
+    <Card className="content-card border-primary/40">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <BookMarked className="h-4 w-4 text-emerald-400" />
+          <BookMarked className="h-4 w-4 text-primary" />
           {t('guidebookContinue', { defaultValue: 'Continue guidebook' })}
         </CardTitle>
         <CardDescription>

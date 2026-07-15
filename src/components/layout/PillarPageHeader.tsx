@@ -30,7 +30,7 @@ export function PillarPageHeader({
       {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
       <h1 className="display-section flex items-center gap-3 text-[1.75rem] md:text-[2.25rem]">
         <Icon
-          className={cn('h-7 w-7 shrink-0 text-emerald-400 md:h-8 md:w-8', iconClassName)}
+          className={cn('h-7 w-7 shrink-0 text-primary md:h-8 md:w-8', iconClassName)}
           aria-hidden
         />
         <span className="min-w-0">{title}</span>

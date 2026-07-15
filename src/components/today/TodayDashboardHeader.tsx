@@ -41,7 +41,7 @@ export function TodayDashboardHeader({ missionScore, scores, streak, trends, cla
           <p className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
             {t('todayMissionScore', { defaultValue: 'Mission Score' })}
           </p>
-          <p className="text-4xl font-bold tabular-nums text-emerald-400 tracking-tight score-tick">
+          <p className="text-4xl font-bold tabular-nums text-primary tracking-tight score-tick">
             {displayScore}
           </p>
           {streak > 0 && (

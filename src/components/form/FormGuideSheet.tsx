@@ -58,7 +58,7 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
             <section>
               <h3 className={cn(
                 'text-sm font-semibold uppercase tracking-wide mb-2',
-                guide.militaryStyle ? 'text-amber-500/90' : 'text-emerald-400'
+                guide.militaryStyle ? 'text-amber-500/90' : 'text-primary'
               )}>
                 {guide.militaryStyle ? 'Ready position' : guide.readyPosition}
               </h3>
@@ -85,7 +85,7 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
           <button
             type="button"
             onClick={onClose}
-            className="w-full min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[17px] transition-colors"
+            className="w-full min-h-[44px] rounded-xl bg-primary hover:bg-emerald-700 text-white font-semibold text-[17px] transition-colors"
           >
           {t('gotItStartSet', { defaultValue: 'Got it — start set' })}
           </button>

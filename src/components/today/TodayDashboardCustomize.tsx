@@ -43,7 +43,7 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
   return (
     <div className="rounded-xl border border-border/50 bg-card/60 px-4 py-3 space-y-2">
       <div className="flex items-center gap-2 text-sm font-medium">
-        <LayoutGrid className="h-4 w-4 text-emerald-400" />
+        <LayoutGrid className="h-4 w-4 text-primary" />
         {t('todayCustomizeTitle', { defaultValue: 'Customize Today' })}
       </div>
       <p className="text-xs text-muted-foreground">
@@ -85,7 +85,7 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
                 onClick={() => toggle(id)}
                 className={`flex-1 rounded-full px-3 py-1.5 text-xs font-medium border transition-colors min-h-[36px] text-left ${
                   on
-                    ? 'bg-emerald-600/20 border-emerald-500/40 text-emerald-400'
+                    ? 'bg-primary/20 border-primary/40 text-primary'
                     : 'bg-muted/30 border-border text-muted-foreground hover:border-border/80'
                 }`}
               >

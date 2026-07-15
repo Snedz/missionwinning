@@ -13,7 +13,7 @@ interface Props {
 }
 
 function rankDisplay(rank: number) {
-  if (rank === 1) return <Medal className="h-4 w-4 text-amber-400" aria-label="1st" />;
+  if (rank === 1) return <Medal className="h-4 w-4 text-status-warn" aria-label="1st" />;
   if (rank === 2) return <Medal className="h-4 w-4 text-slate-300" aria-label="2nd" />;
   if (rank === 3) return <Medal className="h-4 w-4 text-amber-700" aria-label="3rd" />;
   return <span className="font-mono text-muted-foreground tabular-nums">{rank}</span>;
@@ -21,7 +21,7 @@ function rankDisplay(rank: number) {
 
 function deltaDisplay(delta?: number) {
   if (delta == null || delta === 0) return <span className="text-muted-foreground">—</span>;
-  if (delta > 0) return <span className="text-emerald-400">▲{delta}</span>;
+  if (delta > 0) return <span className="text-primary">▲{delta}</span>;
   return <span className="text-red-400/90">▼{Math.abs(delta)}</span>;
 }
 
@@ -52,16 +52,16 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
                 'grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem] gap-2 px-3 py-2.5 items-center text-sm',
                 e.isYou && theme === 'night' && 'bg-indigo-500/20 ring-1 ring-inset ring-indigo-400/40',
                 e.isYou && theme === 'dawn' && 'bg-amber-500/15 ring-1 ring-inset ring-amber-400/40',
-                e.isYou && theme === 'default' && 'bg-emerald-500/15 ring-1 ring-inset ring-emerald-500/30',
+                e.isYou && theme === 'default' && 'bg-primary/15 ring-1 ring-inset ring-emerald-500/30',
                 rank <= 3 && !e.isYou && 'bg-amber-500/5'
               )}
             >
               <div className="flex justify-center">{rankDisplay(rank)}</div>
               <div className="min-w-0">
-                <div className={cn('font-medium truncate', e.isYou && 'text-emerald-300')}>
+                <div className={cn('font-medium truncate', e.isYou && 'text-primary')}>
                   {e.operatorName}
                   {e.isYou && (
-                    <span className="ml-1.5 text-[10px] uppercase tracking-wide text-emerald-400/80">
+                    <span className="ml-1.5 text-[10px] uppercase tracking-wide text-primary/80">
                       {t('lbYou', { defaultValue: 'You' })}
                     </span>
                   )}

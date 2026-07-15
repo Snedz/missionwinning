@@ -80,7 +80,7 @@ export function ExercisePicker({
                   aria-selected={value === ex.id}
                   className={cn(
                     'w-full text-left px-3 py-2.5 text-sm min-h-[44px] hover:bg-muted/40',
-                    value === ex.id && 'bg-emerald-950/30 text-emerald-300'
+                    value === ex.id && 'bg-primary/10 text-primary'
                   )}
                   onClick={() => {
                     onChange(ex.id);

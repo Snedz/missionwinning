@@ -40,14 +40,14 @@ export function CommissioningCeremony() {
         onClick={dismiss}
       />
       <div
-        className="relative w-full max-w-md rounded-3xl border border-emerald-500/30 bg-card p-8 text-center shadow-2xl animate-in zoom-in-95 duration-300"
+        className="relative w-full max-w-md rounded-3xl border border-primary/40 bg-card p-8 text-center shadow-2xl animate-in zoom-in-95 duration-300"
         role="dialog"
         aria-labelledby="commissioning-title"
       >
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-600/20">
-          <Award className="h-8 w-8 text-emerald-400" />
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20">
+          <Award className="h-8 w-8 text-primary" />
         </div>
-        <p className="text-xs uppercase tracking-widest text-emerald-400 mb-2">
+        <p className="text-xs uppercase tracking-widest text-primary mb-2">
           {t('commissionedLabel', { defaultValue: 'Commissioned' })}
         </p>
         <h2 id="commissioning-title" className="text-2xl font-semibold tracking-tight mb-3">

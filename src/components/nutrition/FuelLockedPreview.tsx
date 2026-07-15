@@ -66,10 +66,10 @@ export function FuelLockedPreview({ baseTargets }: Props) {
   const day = DEMO_DAY;
 
   return (
-    <Card className="content-card border-emerald-500/20">
+    <Card className="content-card border-primary/40">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <UtensilsCrossed className="h-4 w-4 text-emerald-400" />
+          <UtensilsCrossed className="h-4 w-4 text-primary" />
           {t('fuelCoachTitle', { defaultValue: 'Fuel Coach — adaptive meal plan' })}
         </CardTitle>
       </CardHeader>
@@ -90,7 +90,7 @@ export function FuelLockedPreview({ baseTargets }: Props) {
           <div className="pointer-events-none select-none opacity-60 blur-[1px] space-y-2">
             <div className="flex justify-between text-sm font-semibold">
               <span>{day.label}</span>
-              <span className="text-emerald-400 text-xs">{day.adaptedNote}</span>
+              <span className="text-primary text-xs">{day.adaptedNote}</span>
             </div>
             <ul className="text-xs space-y-1 text-muted-foreground">
               {day.meals.map((m) => (

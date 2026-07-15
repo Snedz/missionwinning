@@ -152,7 +152,7 @@ export function SignInPanel({
   return (
     <div className={compact ? 'space-y-4' : 'space-y-5'}>
       {!configured && (
-        <p className="text-xs text-amber-400/90 bg-amber-950/20 border border-amber-500/20 rounded-lg px-3 py-2">
+        <p className="text-xs text-status-warn/90 bg-amber-950/20 border border-amber-500/20 rounded-lg px-3 py-2">
           Demo mode — add Supabase keys to enable cloud sync and social sign-in.
         </p>
       )}
@@ -209,7 +209,7 @@ export function SignInPanel({
         <Button
           type="submit"
           disabled={!!loading}
-          className="w-full h-12 text-[15px] font-semibold bg-emerald-600 hover:bg-emerald-500"
+          className="w-full h-12 text-[15px] font-semibold bg-primary hover:bg-primary"
         >
           {loading === 'email'
             ? 'Sending secure link…'
@@ -231,11 +231,11 @@ export function SignInPanel({
         />
         <span>
           I agree to the{' '}
-          <Link href="/terms" target="_blank" className="text-emerald-400 hover:underline">
+          <Link href="/terms" target="_blank" className="text-primary hover:underline">
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link href="/privacy" target="_blank" className="text-emerald-400 hover:underline">
+          <Link href="/privacy" target="_blank" className="text-primary hover:underline">
             Privacy Policy
           </Link>
           . We only sync data you choose to save when signed in.
@@ -243,7 +243,7 @@ export function SignInPanel({
       </label>
 
       {message && (
-        <p className="text-sm text-emerald-400 bg-emerald-950/30 border border-emerald-500/20 rounded-lg px-3 py-2">
+        <p className="text-sm text-primary bg-primary/10 border border-primary/40 rounded-lg px-3 py-2">
           {message}
         </p>
       )}

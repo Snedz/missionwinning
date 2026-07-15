@@ -224,7 +224,7 @@ export function SchoolClassPanel() {
               </Link>
             </Button>
             {createdPin && (
-              <p className="text-xs text-amber-400/90 font-mono">
+              <p className="text-xs text-status-warn/90 font-mono">
                 {t('schoolPinLabel', { defaultValue: 'Teacher PIN' })}: {createdPin}
               </p>
             )}
@@ -254,7 +254,7 @@ export function SchoolClassPanel() {
           </div>
         )}
 
-        {message && <p className="text-xs text-emerald-400">{message}</p>}
+        {message && <p className="text-xs text-primary">{message}</p>}
       </CardContent>
     </Card>
   );

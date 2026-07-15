@@ -27,10 +27,10 @@ export function FuelMealPlanCard() {
 
   if (!plan) {
     return (
-      <Card className="content-card border-emerald-500/20">
+      <Card className="content-card border-primary/40">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-emerald-400" />
+            <Sparkles className="h-4 w-4 text-primary" />
             {t('fuelCoachTitle', { defaultValue: 'Fuel Coach — adaptive meal plan' })}
           </CardTitle>
         </CardHeader>
@@ -53,7 +53,7 @@ export function FuelMealPlanCard() {
   }
 
   return (
-    <Card className="content-card border-emerald-500/20">
+    <Card className="content-card border-primary/40">
       <CardHeader className="flex flex-row items-start justify-between gap-2">
         <CardTitle className="text-base">
           {t('fuelCoachWeekTitle', { defaultValue: 'Your adaptive meal plan' })}
@@ -68,7 +68,7 @@ export function FuelMealPlanCard() {
           <div key={day.dayKey} className="border border-white/10 rounded-lg p-3 bg-black/20 space-y-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="text-sm font-semibold">{day.label}</div>
-              <div className="text-xs text-emerald-400 capitalize">{day.trainingLoad} day</div>
+              <div className="text-xs text-primary capitalize">{day.trainingLoad} day</div>
             </div>
             {day.adaptedNote && (
               <p className="text-[11px] text-muted-foreground">{day.adaptedNote}</p>
@@ -81,7 +81,7 @@ export function FuelMealPlanCard() {
                 </li>
               ))}
             </ul>
-            <p className="text-[11px] tabular-nums text-emerald-300/90">
+            <p className="text-[11px] tabular-nums text-primary/90">
               {t('fuelCoachDayTotals', { defaultValue: 'Day totals' })}: {day.totals.protein}/
               {day.targets.protein}g P · {day.totals.carbs}/{day.targets.carbs}g C · {day.totals.cals}/
               {day.targets.cals} kcal

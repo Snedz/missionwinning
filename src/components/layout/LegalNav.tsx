@@ -13,7 +13,7 @@ type LegalNavProps = {
 
 export function LegalNav({
   className,
-  linkClassName = 'hover:text-emerald-400 transition-colors',
+  linkClassName = 'hover:text-primary transition-colors',
   includeBeta = true,
   includeFeedback = true,
 }: LegalNavProps) {

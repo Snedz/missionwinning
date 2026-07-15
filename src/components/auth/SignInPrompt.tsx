@@ -40,12 +40,12 @@ export function SignInPrompt({
     <div className={`auth-panel rounded-xl p-4 ${className}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="font-medium text-emerald-400 text-sm">
+          <div className="font-medium text-primary text-sm">
             {t('saveProgressCloud', { defaultValue: 'Save progress to cloud' })}
           </div>
           <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{copy}</p>
         </div>
-        <Link href="/profile" className="text-xs text-emerald-400 hover:underline shrink-0 pt-0.5">
+        <Link href="/profile" className="text-xs text-primary hover:underline shrink-0 pt-0.5">
           {t('yourProfile', { defaultValue: 'Profile' })} →
         </Link>
       </div>

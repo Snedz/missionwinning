@@ -20,10 +20,10 @@ export function LearnLockedPreview() {
   const intro = BEYOND_THE_BASICS_CHAPTERS[0];
 
   return (
-    <Card className="content-card border-emerald-500/20">
+    <Card className="content-card border-primary/40">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <BookOpen className="h-4 w-4 text-emerald-400" />
+          <BookOpen className="h-4 w-4 text-primary" />
           {t('learnPremiumTitle', { defaultValue: 'Premium Specialist Programs' })}
         </CardTitle>
       </CardHeader>
@@ -35,8 +35,8 @@ export function LearnLockedPreview() {
           })}
         </p>
         {intro && (
-          <div className="rounded-lg border border-emerald-500/30 bg-emerald-950/20 p-4 space-y-2">
-            <p className="text-xs uppercase tracking-wide text-emerald-400">
+          <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 space-y-2">
+            <p className="text-xs uppercase tracking-wide text-primary">
               {t('learnFreeIntro', { defaultValue: 'Free — read now' })}
             </p>
             <p className="font-semibold">{intro.title}</p>

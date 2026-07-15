@@ -116,9 +116,9 @@ export function GuidedStepPlayer({
 
   if (state.status === 'completed') {
     return (
-      <Card className="content-card border-emerald-500/40" tabIndex={0} onKeyDown={onKeyDown}>
+      <Card className="content-card border-primary/40" tabIndex={0} onKeyDown={onKeyDown}>
         <CardContent className="py-10 text-center space-y-4">
-          <Check className="h-12 w-12 text-emerald-400 mx-auto" aria-hidden />
+          <Check className="h-12 w-12 text-primary mx-auto" aria-hidden />
           <h3 className="text-xl font-bold">
             {t('guidedSessionComplete', { defaultValue: 'Session complete' })}
           </h3>
@@ -156,7 +156,7 @@ export function GuidedStepPlayer({
 
   return (
     <Card
-      className={`content-card ${isCompact ? 'border-emerald-500/15' : 'border-primary/30'}`}
+      className={`content-card ${isCompact ? 'border-primary/40' : 'border-primary/30'}`}
       tabIndex={0}
       onKeyDown={onKeyDown}
       role="region"
@@ -192,7 +192,7 @@ export function GuidedStepPlayer({
               <p className="text-sm text-muted-foreground mt-2">{step.cue}</p>
             )}
             {state.status !== 'idle' && (
-              <p className="text-2xl font-bold tabular-nums text-emerald-400 mt-3" aria-live="polite">
+              <p className="text-2xl font-bold tabular-nums text-primary mt-3" aria-live="polite">
                 {formatGuidedClock(state.remainingSec)}
               </p>
             )}
@@ -200,7 +200,7 @@ export function GuidedStepPlayer({
         </div>
         <div className="h-2 bg-muted rounded overflow-hidden" aria-hidden>
           <div
-            className="h-2 bg-emerald-500 transition-all duration-1000"
+            className="h-2 bg-primary transition-all duration-1000"
             style={{ width: `${stepPct}%` }}
           />
         </div>

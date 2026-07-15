@@ -49,7 +49,7 @@ export function BetaAdminPanel({ enabled }: Props) {
             type="button"
             onClick={() => void load()}
             disabled={loading}
-            className="text-xs font-normal text-emerald-400 hover:underline disabled:opacity-50"
+            className="text-xs font-normal text-primary hover:underline disabled:opacity-50"
           >
             {loading ? 'Loading…' : 'Refresh'}
           </button>
@@ -74,7 +74,7 @@ export function BetaAdminPanel({ enabled }: Props) {
             <div
               className={`rounded-lg border p-3 text-xs ${
                 metrics.launchReady
-                  ? 'border-emerald-500/40 bg-emerald-950/20 text-emerald-300'
+                  ? 'border-primary/40 bg-primary/10 text-primary'
                   : 'border-amber-500/30 bg-amber-950/10 text-amber-200/90'
               }`}
             >

@@ -53,7 +53,7 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
             key={label}
             className={cn(
               'flex flex-col items-center rounded-lg border p-2 text-center text-[10px] transition-colors',
-              isToday && 'ring-2 ring-emerald-500/80 border-emerald-500/40',
+              isToday && 'ring-2 ring-emerald-500/80 border-primary/40',
               done && 'border-amber-500/40 bg-amber-500/10',
               pulseOffsets.has(i) && 'week-strip-pulse',
               missed && 'opacity-50 border-border/30',
@@ -64,11 +64,11 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
             <span className="font-medium text-muted-foreground">{label}</span>
             {session ? (
               <>
-                <span className={cn('mt-1 font-semibold', done && 'text-amber-400')}>
+                <span className={cn('mt-1 font-semibold', done && 'text-status-warn')}>
                   {done ? '✓' : session.kind === 'strength' ? '💪' : session.kind === 'conditioning' ? '⚡' : '🧘'}
                 </span>
                 {done && (
-                  <span className="text-[9px] text-amber-400/80">
+                  <span className="text-[9px] text-status-warn/80">
                     {t('coachSessionDone', { defaultValue: 'Done' })}
                   </span>
                 )}

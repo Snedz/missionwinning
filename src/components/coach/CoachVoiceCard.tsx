@@ -73,10 +73,10 @@ export function CoachVoiceCard({ plan, bodyScores, premium }: Props) {
       : voice?.message;
 
   return (
-    <Card className="content-card border-emerald-500/20">
+    <Card className="content-card border-primary/40">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-emerald-400" />
+          <Sparkles className="h-4 w-4 text-primary" />
           {t('coachVoiceTitle', { defaultValue: "Commander's intent" })}
         </CardTitle>
       </CardHeader>
