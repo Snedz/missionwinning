@@ -21,10 +21,9 @@ type MwWindow = Window & {
 };
 
 // PWA beforeinstallprompt capture + trigger (used by Landing "Install" CTAs and Home PWA banner).
-// Ported from the original Vite main.tsx logic so "Install Mission Winning for offline" works.
+// Analytics init is deferred to useEffect (idle) so posthog-js is not on the critical path.
 if (typeof window !== 'undefined') {
   const mw = window as MwWindow;
-  initAnalytics();
 
   // (Service worker registration lives in I18nPwaProvider's useEffect below —
   // Serwist emits public/sw.js when PRIVATE_MODE=false; App Router still needs
@@ -62,13 +61,14 @@ if (typeof window !== 'undefined') {
 }
 
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
-  // Hydrate full i18n catalogs after first interaction or a short delay so LCP/TBT
-  // are not competing with multi-language *Locales.ts chunks.
+  // Hydrate full i18n + start analytics after first interaction or a short delay
+  // so LCP/TBT are not competing with multi-language catalogs or posthog-js.
   useEffect(() => {
     let done = false;
     const run = () => {
       if (done) return;
       done = true;
+      initAnalytics();
       void hydrateI18nResources(i18n).catch(() => {
         /* keep bootstrap strings */
       });
@@ -101,29 +101,46 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
     void navigator.serviceWorker.register('/sw.js').catch(() => { /* noop */ });
   }, []);
 
-  // Tie analytics identity to auth: anonymous users stay anonymous
-  // (person_profiles: 'identified_only'); signed-in events join their profile.
-  // Also apply the I-Day reminders opt-in once a profile row exists.
+  // Auth listener after idle — supabase-js should not block first paint.
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user?.id) {
-        identifyUser(session.user.id);
-        try {
-          if (localStorage.getItem('mw_reminders_pref') === '1') {
-            void supabase
-              .from('profiles')
-              .update({ reminders_opt_in: true })
-              .eq('id', session.user.id)
-              .then(({ error }) => {
-                if (!error) localStorage.removeItem('mw_reminders_pref');
-              });
-          }
-        } catch { /* noop */ }
-      } else if (event === 'SIGNED_OUT') {
-        resetAnalyticsIdentity();
-      }
-    });
-    return () => data.subscription.unsubscribe();
+    let unsub: (() => void) | undefined;
+    let cancelled = false;
+    const boot = () => {
+      if (cancelled) return;
+      const { data } = supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN' && session?.user?.id) {
+          identifyUser(session.user.id);
+          try {
+            if (localStorage.getItem('mw_reminders_pref') === '1') {
+              void supabase
+                .from('profiles')
+                .update({ reminders_opt_in: true })
+                .eq('id', session.user.id)
+                .then(({ error }) => {
+                  if (!error) localStorage.removeItem('mw_reminders_pref');
+                });
+            }
+          } catch { /* noop */ }
+        } else if (event === 'SIGNED_OUT') {
+          resetAnalyticsIdentity();
+        }
+      });
+      unsub = () => data.subscription.unsubscribe();
+    };
+    if (typeof requestIdleCallback !== 'undefined') {
+      const id = requestIdleCallback(boot, { timeout: 3000 });
+      return () => {
+        cancelled = true;
+        cancelIdleCallback(id);
+        unsub?.();
+      };
+    }
+    const t = setTimeout(boot, 500);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+      unsub?.();
+    };
   }, []);
 
   return (

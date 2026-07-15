@@ -66,7 +66,7 @@ Vercel connected; migrations verified. Still need: live Stripe env, service-role
 Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149**. Then `PRIVATE_MODE=false` + PWA.
 
 ### 3. Horizon 1 eng — `/log` Lighthouse toward 90
-Serwist PWA shipped (`.61`). Baseline still ~78 historically — re-measure with `LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget` after next public-mode deploy.
+Landing/guide hit **≥90** (build `.64`). `/log` at **81** — residual app-chrome work remains (`docs/LIGHTHOUSE_BASELINE.md`).
 
 ### 4. Horizon 2 — week-4 retention wall metric
 Prove habit loop before scale. See [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md).

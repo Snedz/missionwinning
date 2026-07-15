@@ -1,8 +1,9 @@
 import { AppLayout } from '@/components/layout/AppLayout';
 
-// Interactive app shell (auth, zustand, i18n) — scoped to authenticated routes.
-export const dynamic = 'force-dynamic';
-
+/**
+ * App shell layout. Client-only auth/journey — no force-dynamic so Next can
+ * stream/static-shell where possible (Lighthouse / cold path).
+ */
 export default function AppGroupLayout({
   children,
 }: {
