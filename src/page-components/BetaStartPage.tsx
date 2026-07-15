@@ -34,9 +34,9 @@ export function BetaStartPage() {
         />
       }
     >
-        <Card className="content-card border-emerald-500/30 bg-emerald-950/20">
+        <Card className="content-card border-primary/30 bg-primary/10">
           <CardContent className="pt-6 space-y-2">
-            <div className="flex items-center gap-2 text-emerald-300 font-medium">
+            <div className="flex items-center gap-2 text-primary font-medium">
               <CheckCircle2 className="h-5 w-5" />
               {t('infoBetaNeedTitle', { defaultValue: 'What we need from you' })}
             </div>
@@ -63,7 +63,7 @@ export function BetaStartPage() {
             <li key={step.n}>
               <Card className="content-card">
                 <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-4">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300 font-semibold text-sm">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary font-semibold text-sm">
                     {step.n}
                   </div>
                   <div className="flex-1 min-w-0 space-y-1">
@@ -85,7 +85,7 @@ export function BetaStartPage() {
         <div className="grid sm:grid-cols-2 gap-3 text-sm">
           <Card className="content-card">
             <CardContent className="p-4 flex gap-3">
-              <Globe className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+              <Globe className="h-5 w-5 text-primary shrink-0 mt-0.5" />
               <div>
                 <div className="font-medium">Languages</div>
                 <p className="text-muted-foreground mt-1">

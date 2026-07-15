@@ -123,7 +123,7 @@ export function GuidePublicChapterPage({ chapter, prev, next, jsonLd }: Props) {
                 <Link
                   key={ex.id}
                   href={`/exercises/${ex.id}`}
-                  className="text-sm px-3 py-1.5 rounded-full border border-border/60 hover:border-emerald-500/40 hover:bg-emerald-950/20"
+                  className="text-sm px-3 py-1.5 rounded-full border border-border/60 hover:border-primary/40 hover:bg-primary/10"
                 >
                   {ex.name}
                 </Link>

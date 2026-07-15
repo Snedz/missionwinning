@@ -23,7 +23,7 @@ export function CompareStoryPage({ story }: { story: CompareStory }) {
           </Link>
         </p>
 
-        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-3 text-sm text-emerald-300">
+        <div className="rounded-2xl border border-primary/40 bg-primary/10 px-4 py-3 text-sm text-primary">
           {story.proof}
         </div>
 
@@ -34,7 +34,7 @@ export function CompareStoryPage({ story }: { story: CompareStory }) {
               className="grid sm:grid-cols-[8rem_1fr_1fr] gap-2 rounded-xl border border-border/50 px-4 py-3 text-sm"
             >
               <span className="text-muted-foreground font-medium">{b.label}</span>
-              <span className="text-emerald-300">{b.mw}</span>
+              <span className="text-primary">{b.mw}</span>
               <span className="text-muted-foreground">{b.them}</span>
             </div>
           ))}

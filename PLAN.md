@@ -199,6 +199,6 @@ Last updated: 2026-07-14 (S-Tier waves 0–4 ship `2026.07-unified.55` — prici
 | **0** Focus + pricing | ✅ | `bundleConfig` monthly/$11.99 · 12mo/$59 · lifetime/$149; Basic nav train-only |
 | **1** First hour | ✅ | Welcome real Just Go preview; landing single primary CTA; journey empty copy |
 | **2** Daily polish | ✅ partial | ErrorState/Skeleton, MobileNav `aria-current`, Escape menu, token pass on chrome |
-| **3** Perf + page splits | 🟡 | Charts already dynamic; fat page extract deferred (logger sacred) |
-| **4** Coach + money honesty | ✅ | Victory one next action; pricing/README aligned |
-| **5** Launch ops | ⬜ | Founder: beta cohort, Vercel secrets, `PRIVATE_MODE=false` |
+| **3** Perf + page splits | ✅ | Fuel sections + BuilderArrange + ProfileBackup extracted; token lint on core pages |
+| **4** Coach + money honesty | ✅ | Victory one next action; week recap; coach invite after first session |
+| **5** Launch ops | 🟡 | Runbook pricing env updated; founder: beta cohort, Vercel secrets, `PRIVATE_MODE=false` |

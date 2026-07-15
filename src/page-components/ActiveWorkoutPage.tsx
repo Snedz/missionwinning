@@ -458,7 +458,7 @@ export function ActiveWorkoutPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="h-9 text-emerald-400"
+                      className="h-9 text-primary"
                       onClick={() => setFormGuideId(exercise.id)}
                     >
                       {t('activeFormGuide', { defaultValue: 'Form guide' })}
@@ -619,7 +619,7 @@ export function ActiveWorkoutPage() {
                       <Button
                         variant="secondary"
                         size="sm"
-                        className="text-emerald-300"
+                        className="text-primary"
                         onClick={() => applyTargetsForExercise(exIdx)}
                       >
                         {t('activeApplyAllTargets', { defaultValue: 'Apply targets' })}

@@ -109,7 +109,7 @@ export function AmericaPage() {
           </Card>
           <Card className="content-card">
             <CardContent className="pt-6 text-center space-y-2">
-              <Heart className="h-8 w-8 mx-auto text-emerald-400" />
+              <Heart className="h-8 w-8 mx-auto text-primary" />
               <p className="font-medium text-sm">
                 {t('americaFree', { defaultValue: 'Free forever' })}
               </p>

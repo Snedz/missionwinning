@@ -256,7 +256,7 @@ export function AssessmentsPage() {
             ))}
           </div>
           <div className="bg-black/30 p-3 rounded">
-            <div className="font-medium text-emerald-400">
+            <div className="font-medium text-primary">
               {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
               {t(stages[selectedStage].focusKey, { defaultValue: '' })}
             </div>

@@ -26,13 +26,13 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { showOwnerTools } from '@/lib/ownerTools';
-import { downloadBackup, restoreBackupFromJson } from '@/lib/backup';
 import { useToast } from '@/hooks/use-toast';
-import { track } from '@/lib/analytics';
 import {
   loadDaysPerWeek,
   saveDaysPerWeek,
 } from '@/lib/coach/schedulePrefs';
+import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
+import { SUPER_BUNDLE_PRICE } from '@/lib/payments';
 
 const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
 
@@ -269,9 +269,9 @@ export function ProfilePage() {
         <CardContent className="space-y-3">
           {email ? (
             <>
-              <div>Signed in as <span className="font-mono text-emerald-400">{email}</span></div>
+              <div>Signed in as <span className="font-mono text-primary">{email}</span></div>
               <Button variant="outline" onClick={handleSignOut}>{t('signOut', { defaultValue: 'Sign Out' })}</Button>
-              <div className="text-xs text-emerald-400/90">
+              <div className="text-xs text-primary/90">
                 {t('cloudSyncActive', { defaultValue: 'Journey synced to cloud' })}
               </div>
               <div className="text-xs text-muted-foreground">
@@ -280,7 +280,7 @@ export function ProfilePage() {
             </>
           ) : (
             <div className="auth-panel rounded-xl p-4">
-              <div className="font-semibold mb-1 text-emerald-400">Sign up or sign in</div>
+              <div className="font-semibold mb-1 text-primary">Sign up or sign in</div>
               <div className="text-xs text-muted-foreground mb-4">
                 {t('cloudSyncPending', { defaultValue: 'Sign in to sync journey across devices' })}
               </div>
@@ -388,7 +388,7 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
-      <Card className="content-card border-emerald-500/40 bg-emerald-950/10">
+      <Card className="content-card border-primary/40 bg-primary/5">
         <CardHeader>
           <CardTitle>{t('betaJourneyProgress', { defaultValue: 'Beta journey progress' })}</CardTitle>
         </CardHeader>
@@ -428,7 +428,7 @@ export function ProfilePage() {
             </Button>
           )}
           {nudgeSent && (
-            <p className="text-xs text-emerald-400">
+            <p className="text-xs text-primary">
               {t('emailNextStepSent', { defaultValue: 'Check your inbox for your next step.' })}
             </p>
           )}
@@ -439,7 +439,7 @@ export function ProfilePage() {
 
       {/* Journey profile — first-time onboarding or edit link */}
       {!isOnboarded ? (
-        <Card className="content-card border-emerald-500/40 bg-emerald-950/10">
+        <Card className="content-card border-primary/40 bg-primary/5">
           <CardHeader><CardTitle>{t('firstTimeSetup', { defaultValue: 'First-time setup' })}</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm">
             <p className="text-muted-foreground">
@@ -473,7 +473,7 @@ export function ProfilePage() {
                     type="button"
                     size="sm"
                     variant={daysPerWeek === n ? 'default' : 'outline'}
-                    className={daysPerWeek === n ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
+                    className={daysPerWeek === n ? 'bg-primary hover:bg-primary/90' : ''}
                     onClick={() => {
                       setDaysPerWeek(n);
                       saveDaysPerWeek(n);
@@ -496,7 +496,7 @@ export function ProfilePage() {
         <CardHeader><CardTitle>{t('premiumStatus', { defaultValue: 'Premium Status' })}</CardTitle></CardHeader>
         <CardContent>
           {premium ? (
-            <div className="text-emerald-400 font-medium">{t('premiumUnlocked', { defaultValue: '✓ Premium unlocked (via Super Bundle or demo request)' })}</div>
+            <div className="text-primary font-medium">{t('premiumUnlocked', { defaultValue: '✓ Premium unlocked (via Super Bundle or demo request)' })}</div>
           ) : (
             <div>
               {t('noPremium', { defaultValue: 'Free tier active. Unlock full library cues, deep nutrition, mobility flows, mind sessions, advanced programs, and analytics via the Super Bundle or specialist programs.' })}
@@ -509,12 +509,12 @@ export function ProfilePage() {
       {ownerTools && (
       <>
       {/* Owner Revenue Snapshot - founder view only */}
-      <Card className="content-card border-emerald-500/40 bg-emerald-950/10">
+      <Card className="content-card border-primary/40 bg-primary/5">
         <CardHeader><CardTitle>{t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}</CardTitle></CardHeader>
         <CardContent className="space-y-2 text-sm">
-          <div className="flex justify-between"><span>{t('spotsClaimed', { defaultValue: 'Members' })}:</span> <span className="font-mono text-emerald-400">{members.toLocaleString()}</span></div>
-          <div className="flex justify-between"><span>{t('estRevenue', { defaultValue: 'Est. revenue from bundles' })}:</span> <span className="font-mono text-emerald-400">${estRevenue.toLocaleString()}</span></div>
-          <div className="text-xs text-muted-foreground">{t('avgTicket', { defaultValue: 'Avg bundle ~$12/mo' })} — Super Bundle sustains the free core for the global mission. Track real via Supabase later.</div>
+          <div className="flex justify-between"><span>{t('spotsClaimed', { defaultValue: 'Members' })}:</span> <span className="font-mono text-primary">{members.toLocaleString()}</span></div>
+          <div className="flex justify-between"><span>{t('estRevenue', { defaultValue: 'Est. revenue from bundles' })}:</span> <span className="font-mono text-primary">${estRevenue.toLocaleString()}</span></div>
+          <div className="text-xs text-muted-foreground">{t('avgTicket', { defaultValue: `Avg bundle ~$${SUPER_BUNDLE_PRICE}/mo` })} — Super Bundle sustains the free core for the global mission. Track real via Supabase later.</div>
           <div className="text-[10px] mt-1">Members who join the bundle help make the free path available worldwide. Share wins → /feedback.</div>
         </CardContent>
       </Card>
@@ -535,67 +535,7 @@ export function ProfilePage() {
       </>
       )}
 
-      <Card>
-        <CardHeader><CardTitle>{t('dataBackup', { defaultValue: 'Back up your data' })}</CardTitle></CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button
-              onClick={() => {
-                downloadBackup();
-                track('backup_exported');
-              }}
-            >
-              {t('exportData', { defaultValue: 'Download backup (JSON)' })}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => document.getElementById('mw-backup-file')?.click()}
-            >
-              {t('importData', { defaultValue: 'Restore from backup' })}
-            </Button>
-            <input
-              id="mw-backup-file"
-              type="file"
-              accept="application/json,.json"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                e.target.value = '';
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = () => {
-                  const result = restoreBackupFromJson(String(reader.result ?? ''));
-                  if (!result.ok) {
-                    toast({
-                      title: t('importFailed', { defaultValue: 'Restore failed' }),
-                      description: result.error,
-                      variant: 'destructive',
-                    });
-                    return;
-                  }
-                  track('backup_restored', { workouts: result.workoutsMerged ?? 0 });
-                  toast({
-                    title: t('importDone', { defaultValue: 'Backup restored' }),
-                    description: t('importDoneDesc', {
-                      defaultValue: '{{workouts}} workouts merged, {{keys}} settings restored. Reloading…',
-                      workouts: result.workoutsMerged ?? 0,
-                      keys: result.keysRestored ?? 0,
-                    }),
-                  });
-                  setTimeout(() => router.refresh(), 1200);
-                };
-                reader.readAsText(file);
-              }}
-            />
-          </div>
-          <div className="text-xs text-muted-foreground">
-            {t('dataBackupFoot', {
-              defaultValue:
-                'The backup includes workouts, saved routines, nutrition, and journey progress from this device. Restoring merges — nothing on this device is deleted.',
-            })}
-          </div>
-        </CardContent>
-      </Card>
+      <ProfileBackupCard />
 
       <Card className="content-card">
         <CardContent className="pt-6">

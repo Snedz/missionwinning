@@ -98,7 +98,7 @@ export function MindPage() {
       {premium && premiumSessions.length > 0 && (
         <details className="group space-y-3" open>
           <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-1 min-h-[44px] [&::-webkit-details-marker]:hidden">
-            <h3 className="text-sm font-semibold text-emerald-400 uppercase tracking-wide">
+            <h3 className="text-sm font-semibold text-primary uppercase tracking-wide">
               {t('mindPremiumSessions', { defaultValue: 'Premium guided sessions' })}
             </h3>
             <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />

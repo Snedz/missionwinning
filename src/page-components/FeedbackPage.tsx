@@ -65,7 +65,7 @@ export function FeedbackPage() {
       >
         <Card className="content-card text-center">
             <CardContent className="pt-8 pb-8 space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-emerald-600/20 text-emerald-400 text-sm border border-emerald-500/30">
+              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-primary/20 text-primary text-sm border border-primary/40">
                 {t('feedbackThankBadge', { defaultValue: 'Mission Builders' })}
               </div>
               <div className="text-left max-w-md mx-auto space-y-2 text-sm">

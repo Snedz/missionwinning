@@ -129,7 +129,7 @@ export function BundlePage() {
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary">{t("bundleBadge")}</Badge>
-          <Badge className="border-emerald-500/40 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-950/40">
+          <Badge className="border-primary/40 bg-primary/10 text-primary hover:bg-primary/10">
             {t("bundleExpandedContent", { defaultValue: "Depth when you want it" })}
           </Badge>
           <Badge className="border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
@@ -151,10 +151,10 @@ export function BundlePage() {
       </div>
 
       {checkoutSuccess && !premiumLoading && (
-        <Card className="border-emerald-500/40 bg-emerald-950/30">
+        <Card className="border-primary/40 bg-primary/10">
           <CardContent className="pt-6">
             {premium ? (
-              <p className="text-sm font-medium text-emerald-300">
+              <p className="text-sm font-medium text-primary">
                 {t('bundleCheckoutSuccess', {
                   defaultValue: 'Premium active — Mission Coach and bundle content are unlocked.',
                 })}
@@ -199,7 +199,7 @@ export function BundlePage() {
                 key={pillar.id}
                 className="rounded-xl border border-border/40 bg-background/40 px-3 py-3 space-y-1"
               >
-                <Icon className="h-4 w-4 text-emerald-400" />
+                <Icon className="h-4 w-4 text-primary" />
                 <p className="text-sm font-medium">
                   {keys ? t(keys.nameKey) : pillar.name}
                 </p>
@@ -338,7 +338,7 @@ export function BundlePage() {
                     })}
                   </ul>
 
-                  <p className="text-xs text-emerald-300/90 mb-2">
+                  <p className="text-xs text-primary/90 mb-2">
                     {t('bundleProofNearCta', {
                       defaultValue: 'Six pillars in one app — not a multi-app unlock email.',
                     })}
@@ -359,8 +359,8 @@ export function BundlePage() {
       </Tabs>
 
       {/* Shipped premium experiences */}
-      <section className="rounded-lg border border-emerald-500/20 bg-emerald-950/10 p-4 space-y-3">
-        <h2 className="text-sm font-semibold text-emerald-300">
+      <section className="rounded-lg border border-primary/40 bg-primary/10 p-4 space-y-3">
+        <h2 className="text-sm font-semibold text-primary">
           {t('bundleShippedTitle', { defaultValue: 'What premium unlocks today' })}
         </h2>
         <ul className="grid sm:grid-cols-2 gap-2 text-sm text-muted-foreground">

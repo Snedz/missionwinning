@@ -170,8 +170,8 @@ export function HistoryPage() {
         defaultValue: 'Your history powers the Today Hub readiness and Win Score.',
       })}
     >
-      <div className="rounded-2xl border border-emerald-500/20 bg-emerald-950/15 px-4 py-3 space-y-1 ring-draw-in">
-        <p className="text-[10px] uppercase tracking-widest text-emerald-400/90 font-medium">
+      <div className="rounded-2xl border border-primary/20 bg-primary/10 px-4 py-3 space-y-1 ring-draw-in">
+        <p className="text-[10px] uppercase tracking-widest text-primary/90 font-medium">
           {t('historyMissionStory', { defaultValue: 'Mission story' })}
         </p>
         <p className="text-sm text-foreground leading-snug">{briefingLine}</p>
@@ -278,7 +278,7 @@ export function HistoryPage() {
                   onClick={() => setRange(value)}
                   className={
                     range === value
-                      ? 'rounded-full border border-emerald-500/50 bg-emerald-950/40 px-3 py-1.5 text-xs font-semibold text-emerald-300'
+                      ? 'rounded-full border border-primary/50 bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary'
                       : 'rounded-full border border-border/50 px-3 py-1.5 text-xs text-muted-foreground'
                   }
                 >
@@ -464,7 +464,7 @@ export function HistoryPage() {
       </Dialog>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        <Link href="/profile" className="text-emerald-400 hover:underline">
+        <Link href="/profile" className="text-primary hover:underline">
           {t('historySignInFoot', { defaultValue: 'Sign in (optional) to load full cloud history.' })}
         </Link>
       </p>

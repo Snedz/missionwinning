@@ -57,7 +57,7 @@ export function TermsPage() {
 
       <p className="text-xs text-muted-foreground pt-2">
         {t('infoTermsFoot', { defaultValue: 'Mission Winning LLC · support@missionwinning.com · See also' })}{' '}
-        <Link href="/privacy" className="text-emerald-400 hover:underline">
+        <Link href="/privacy" className="text-primary hover:underline">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
         </Link>
       </p>

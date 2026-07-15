@@ -241,7 +241,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
             <h1 className="text-2xl font-bold tracking-tight">{className}</h1>
             <p className="text-sm text-muted-foreground mt-1 font-mono">{code}</p>
             {isCreator && (
-              <p className="text-xs text-emerald-400 mt-1">
+              <p className="text-xs text-primary mt-1">
                 {t('teacherCreatorBadge', { defaultValue: 'Signed in as class creator' })}
               </p>
             )}
