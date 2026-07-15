@@ -126,6 +126,16 @@ export function CoachPage() {
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
           </div>
 
+          {plan.sessions.some((s) => s.status === 'missed') && (
+            <p className="text-sm text-status-warn leading-relaxed rounded-xl border border-status-warn/25 bg-status-warn/5 px-4 py-3">
+              {t('coachAdaptMissedNote', {
+                count: plan.sessions.filter((s) => s.status === 'missed').length,
+                defaultValue:
+                  'Missed sessions earlier this week — remaining days re-spread so the plan still fits life.',
+              })}
+            </p>
+          )}
+
           <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
 
           <div className="space-y-4">
