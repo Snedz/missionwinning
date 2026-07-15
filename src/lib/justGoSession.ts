@@ -178,3 +178,30 @@ export function muscleFreshnessRows(
     };
   });
 }
+
+/**
+ * Equipment-aware Just Go preview for I-Day (no history/readiness required).
+ * Used so Welcome can show a real first session instead of an abstract score.
+ */
+export function previewJustGoForEquipment(
+  equipment: string,
+  units: UnitsPref = 'metric'
+): JustGoSession {
+  const equip =
+    equipment === 'bodyweight' || equipment === 'minimal'
+      ? 'bodyweight'
+      : equipment === 'dumbbells' || equipment === 'bands'
+        ? 'dumbbells'
+        : 'full-gym';
+  const readiness = {} as Record<MuscleGroup, ReadinessInfo>;
+  for (const g of MAJOR_GROUPS) {
+    readiness[g] = { days: 99, statusKey: 'todayReadinessPrime' };
+  }
+  return buildJustGoSession({
+    focus: { group: 'Legs', statusKey: 'todayReadinessPrime' },
+    readiness,
+    history: [],
+    units,
+    equipment: equip,
+  });
+}

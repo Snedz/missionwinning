@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-11** (pre-launch quality bar; build `2026.07-unified.54`).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-14** (S-Tier waves 0–4 ship; build `2026.07-unified.55`).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -61,7 +61,7 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 Vercel connected; migrations verified. Still need: live Stripe env, service-role on Vercel if missing, **≥10 beta users** (currently 0 profiles). Day-of: [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md).
 
 ### 2. Live Super Bundle ops (Phase I1)
-Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Founder: live links + webhook verify.
+Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing single source: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149** (`bundleConfig.ts`). Founder: live links + webhook verify.
 
 ### 3. `/log` Lighthouse toward 90
 Slim readiness shipped (`readinessIndex` + stored `muscleGroups`). Baseline still ~78* — re-measure with `LIGHTHOUSE_SNAPSHOT=1 npm run lighthouse-budget`.

@@ -1,7 +1,24 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { summarizeWorkoutVictory } from './workoutVictory.ts';
+import { pickVictoryNextAction, summarizeWorkoutVictory } from './workoutVictory.ts';
 import type { CompletedWorkoutLog } from '@/types';
+
+describe('pickVictoryNextAction', () => {
+  it('defaults to fuel when protein not logged', () => {
+    const a = pickVictoryNextAction({ proteinLoggedToday: false });
+    assert.equal(a.href, '/nutrition');
+  });
+
+  it('prefers mind when strain is high and protein done', () => {
+    const a = pickVictoryNextAction({ proteinLoggedToday: true, strainDelta: 8 });
+    assert.equal(a.href, '/mind');
+  });
+
+  it('falls back to move when fueled and low strain', () => {
+    const a = pickVictoryNextAction({ proteinLoggedToday: true, strainDelta: 0 });
+    assert.equal(a.href, '/move');
+  });
+});
 
 describe('summarizeWorkoutVictory', () => {
   it('aggregates set and exercise counts', () => {

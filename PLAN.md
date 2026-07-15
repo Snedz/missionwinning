@@ -188,4 +188,17 @@ npm run dev
 
 ---
 
-Last updated: 2026-07-11 (pre-launch quality bar `2026.07-unified.54`; prior Wave 5 `.53`)
+Last updated: 2026-07-14 (S-Tier waves 0–4 ship `2026.07-unified.55` — pricing single source, journey-gated nav, first-session I-Day preview, victory one-next-action, design tokens/a11y polish)
+
+---
+
+## S-Tier improvement track (2026-07-14)
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| **0** Focus + pricing | ✅ | `bundleConfig` monthly/$11.99 · 12mo/$59 · lifetime/$149; Basic nav train-only |
+| **1** First hour | ✅ | Welcome real Just Go preview; landing single primary CTA; journey empty copy |
+| **2** Daily polish | ✅ partial | ErrorState/Skeleton, MobileNav `aria-current`, Escape menu, token pass on chrome |
+| **3** Perf + page splits | 🟡 | Charts already dynamic; fat page extract deferred (logger sacred) |
+| **4** Coach + money honesty | ✅ | Victory one next action; pricing/README aligned |
+| **5** Launch ops | ⬜ | Founder: beta cohort, Vercel secrets, `PRIVATE_MODE=false` |

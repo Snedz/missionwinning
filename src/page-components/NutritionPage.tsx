@@ -584,7 +584,8 @@ export function NutritionPage() {
               icon={UtensilsCrossed}
               title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
               description={t('fuelNoEntries', {
-                defaultValue: 'No entries yet. Describe a meal above or tap Log meal.',
+                defaultValue:
+                  'After training, log one meal — protein and calories feed your Win Score. Describe a meal above or tap Log meal.',
               })}
               actionLabel={t('fuelLogFirstMeal', { defaultValue: 'Log first meal' })}
               onAction={() => setLogSheetOpen(true)}

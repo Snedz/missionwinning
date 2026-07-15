@@ -23,16 +23,17 @@ export function MobileNav() {
             <Link
               key={href}
               href={href}
+              aria-current={isActive ? 'page' : undefined}
               className={cn(
                 'flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium min-h-[48px] relative transition-colors',
                 isActive
-                  ? 'text-emerald-400 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-emerald-400'
+                  ? 'text-primary after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-primary'
                   : 'text-muted-foreground hover:text-foreground/80'
               )}
             >
-              <Icon className={cn('h-6 w-6', showPulse && 'text-emerald-400')} />
+              <Icon className={cn('h-6 w-6', showPulse && 'text-primary')} aria-hidden />
               {showPulse && (
-                <span className="absolute top-1.5 end-[calc(50%-20px)] h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="absolute top-1.5 end-[calc(50%-20px)] h-2 w-2 rounded-full bg-primary animate-pulse" />
               )}
               {t(labelKey, { defaultValue: label })}
             </Link>

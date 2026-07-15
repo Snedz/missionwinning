@@ -246,7 +246,8 @@ export function HistoryPage() {
           icon={Dumbbell}
           title={t('historyEmptyTitle', { defaultValue: 'No workouts logged yet' })}
           description={t('historyEmptyDesc', {
-            defaultValue: 'Just Go on Today builds a free session — finish it and your story starts here.',
+            defaultValue:
+              'Basic Training step: open Today → Just Go, finish one set. Your first session appears here and Mission Score starts moving.',
           })}
           actionLabel={t('historyStartWorkout', { defaultValue: 'Go to Today' })}
           href="/log"

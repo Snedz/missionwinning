@@ -36,12 +36,24 @@ const GuideTeaser = dynamic(
 
 const FAQ = LANDING_FAQ_KEYS;
 
-const FREE_MANIFEST = [
-  'Full workout logger — sets, reps, RPE, rest timers',
-  '217-exercise library — bodyweight and minimal gear first',
-  'Offline PWA — no store, no fees, no account required',
-  'Win Score from your logs — readiness, strain, recovery',
-];
+const FREE_MANIFEST_KEYS = [
+  {
+    key: 'landingFreeLogger',
+    defaultValue: 'Full workout logger — sets, reps, RPE, rest timers',
+  },
+  {
+    key: 'landingFreeLibrary',
+    defaultValue: '217-exercise library — bodyweight and minimal gear first',
+  },
+  {
+    key: 'landingFreeOffline',
+    defaultValue: 'Offline PWA — no store, no fees, no account required',
+  },
+  {
+    key: 'landingFreeWinScore',
+    defaultValue: 'Win Score from your logs — readiness, strain, recovery',
+  },
+] as const;
 
 export function LandingPage() {
   const router = useRouter();
@@ -121,7 +133,15 @@ export function LandingPage() {
                 {t('landingNavStart', { defaultValue: 'Start free' })}
                 <ArrowRight className="h-5 w-5" />
               </button>
-              <span className="inline-flex items-center rounded-full border border-emerald-500/35 bg-emerald-950/40 px-3 py-1.5 text-xs font-medium text-emerald-300 tabular-nums">
+              <a
+                href="#path"
+                className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline px-1 py-2"
+              >
+                {t('landingSeeHow', { defaultValue: 'See how it works' })}
+              </a>
+            </div>
+            <div className="mb-6 flex flex-wrap gap-2">
+              <span className="inline-flex items-center rounded-full border border-primary/35 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary tabular-nums">
                 {t('landingProofChip', {
                   defaultValue: '217 exercises · offline · no account',
                 })}
@@ -131,14 +151,6 @@ export function LandingPage() {
                   defaultValue: 'No AI API key. Free logger.',
                 })}
               </span>
-              <Button
-                size="lg"
-                variant="outline"
-                className="h-[52px] px-8 text-base border-border/60"
-                onClick={() => document.getElementById('path')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                {t('landingSeeHow', { defaultValue: 'See how it works' })}
-              </Button>
             </div>
             <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">
@@ -180,26 +192,36 @@ export function LandingPage() {
         <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:py-20">
           <div>
             <div className="briefing-rule mb-4">
-              <span className="eyebrow">The free core</span>
+              <span className="eyebrow">
+                {t('landingFreeEyebrow', { defaultValue: 'The free core' })}
+              </span>
             </div>
             <h2 className="display-section mb-4">
-              Free is the mission,
-              <br /> not the trial.
+              {t('landingFreeTitle1', { defaultValue: 'Free is the mission,' })}
+              <br />
+              {t('landingFreeTitle2', { defaultValue: 'not the trial.' })}
             </h2>
             <p className="max-w-md leading-relaxed text-muted-foreground">
-              The fundamentals that make people healthier should have no price of admission —
-              anywhere in the world. That is the founding promise, written into{' '}
+              {t('landingFreeBody', {
+                defaultValue:
+                  'The fundamentals that make people healthier should have no price of admission — anywhere in the world. That is the founding promise, written into our vision, and it does not expire.',
+              })}{' '}
               <Link href="/vision" className="underline underline-offset-4 hover:text-foreground">
-                our vision
+                {t('landingFreeVisionLink', { defaultValue: 'our vision' })}
               </Link>
-              , and it does not expire.
+              .
             </p>
           </div>
           <ul className="grid content-center gap-3 sm:grid-cols-2">
-            {FREE_MANIFEST.map((item) => (
-              <li key={item} className="flex items-start gap-2.5 text-sm leading-relaxed">
+            {FREE_MANIFEST_KEYS.map((item) => (
+              <li
+                key={item.key}
+                className="flex items-start gap-2.5 text-sm leading-relaxed"
+              >
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span className="text-foreground/90">{item}</span>
+                <span className="text-foreground/90">
+                  {t(item.key, { defaultValue: item.defaultValue })}
+                </span>
               </li>
             ))}
           </ul>

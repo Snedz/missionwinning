@@ -1,6 +1,10 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildJustGoSession, muscleFreshnessRows } from '@/lib/justGoSession';
+import {
+  buildJustGoSession,
+  muscleFreshnessRows,
+  previewJustGoForEquipment,
+} from '@/lib/justGoSession';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import type { ReadinessInfo } from '@/lib/score';
@@ -17,6 +21,13 @@ function readinessAll(days: number): Record<MuscleGroup, ReadinessInfo> {
 }
 
 describe('justGoSession', () => {
+  it('previews a first session from equipment alone', () => {
+    const body = previewJustGoForEquipment('bodyweight');
+    assert.ok(body.exercises.length >= 2);
+    const gym = previewJustGoForEquipment('full-gym');
+    assert.ok(gym.exercises.length >= 2);
+  });
+
   it('builds a focus session with seeded exercises', () => {
     const session = buildJustGoSession({
       focus: { group: 'Chest', statusKey: 'todayReadinessPrime' },

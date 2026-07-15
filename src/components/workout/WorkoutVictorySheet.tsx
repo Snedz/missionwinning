@@ -66,10 +66,10 @@ export function WorkoutVictorySheet({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md border-emerald-500/30 bg-gradient-to-b from-card to-emerald-950/20">
+      <DialogContent className="sm:max-w-md border-primary/30 bg-gradient-to-b from-card to-primary/5">
         <DialogHeader className="text-center space-y-3 victory-reveal">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/20 border border-amber-500/40 victory-reveal">
-            <Trophy className="h-8 w-8 text-amber-400" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brass/20 border border-brass/40 victory-reveal">
+            <Trophy className="h-8 w-8 text-brass" />
           </div>
           <DialogTitle className="text-2xl">
             {t('victoryTitle', { defaultValue: 'Mission complete' })}
@@ -84,7 +84,7 @@ export function WorkoutVictorySheet({
             <p className="text-xs text-muted-foreground uppercase tracking-wide">
               {t('victoryVolume', { defaultValue: 'Volume' })}
             </p>
-            <p className="text-xl font-bold tabular-nums text-emerald-400">
+            <p className="text-xl font-bold tabular-nums text-primary">
               {summary.totalVolume.toLocaleString()}
             </p>
             <p className="text-[10px] text-muted-foreground">{unitLabel}</p>
@@ -105,7 +105,7 @@ export function WorkoutVictorySheet({
             <span className="text-muted-foreground uppercase tracking-wide me-1">
               {t('victoryBodyDeltaLabel', { defaultValue: 'What changed' })}
             </span>
-            <span className="text-amber-300/90">
+            <span className="text-status-warn/90">
               {t('victoryReadinessDelta', {
                 delta:
                   summary.bodyDelta.readiness > 0
@@ -119,7 +119,7 @@ export function WorkoutVictorySheet({
               })}
             </span>
             <span className="text-muted-foreground">·</span>
-            <span className="text-rose-300/90">
+            <span className="text-status-danger/90">
               {t('victoryStrainDelta', {
                 delta:
                   summary.bodyDelta.strain > 0
@@ -133,7 +133,7 @@ export function WorkoutVictorySheet({
               })}
             </span>
             <span className="text-muted-foreground">·</span>
-            <span className="text-emerald-300/90">
+            <span className="text-primary/90">
               {t('victoryRecoveryDelta', {
                 delta:
                   summary.bodyDelta.recovery > 0
@@ -150,13 +150,13 @@ export function WorkoutVictorySheet({
         )}
 
         {summary.progressionInsight && (
-          <p className="text-center text-sm text-emerald-300/90 px-2 leading-relaxed">
+          <p className="text-center text-sm text-primary/90 px-2 leading-relaxed">
             {summary.progressionInsight}
           </p>
         )}
 
         {summary.streak > 0 && (
-          <p className="text-center text-sm text-emerald-400/90">
+          <p className="text-center text-sm text-primary/90">
             {t('victoryStreak', {
               count: summary.streak,
               defaultValue: `${summary.streak}-day training streak — keep the path alive`,
@@ -164,40 +164,31 @@ export function WorkoutVictorySheet({
           </p>
         )}
 
-        <p className="text-center text-xs text-muted-foreground leading-relaxed px-2">
-          {t('victorySynergyHint', {
-            defaultValue: 'Log Fuel, Move, Mind, or Learn today to boost Mission Score synergy.',
-          })}
-        </p>
-
-        <div className="grid grid-cols-2 gap-2">
-          <Button asChild variant="outline" size="sm" className="w-full">
-            <Link href="/nutrition" onClick={() => onOpenChange(false)}>
-              {t('coachActionLogNutrition', { defaultValue: 'Log Fuel' })}
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="sm" className="w-full">
-            <Link href="/mind" onClick={() => onOpenChange(false)}>
-              {t('coachActionOpenMind', { defaultValue: 'Open Mind' })}
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="sm" className="w-full">
-            <Link href="/move" onClick={() => onOpenChange(false)}>
-              {t('coachActionOpenMove', { defaultValue: 'Open Move' })}
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="sm" className="w-full">
-            <Link href="/learn" onClick={() => onOpenChange(false)}>
-              {t('coachActionOpenLearn', { defaultValue: 'Open Learn' })}
-            </Link>
-          </Button>
-        </div>
+        {summary.nextAction && (
+          <div className="rounded-xl border border-primary/30 bg-primary/5 p-3 space-y-2 text-center">
+            <p className="text-[10px] uppercase tracking-widest text-primary font-medium">
+              {t('victoryNextLabel', { defaultValue: 'One next step' })}
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {t(summary.nextAction.reasonKey, {
+                defaultValue: summary.nextAction.defaultReason,
+              })}
+            </p>
+            <Button asChild className="w-full primary-action">
+              <Link href={summary.nextAction.href} onClick={() => onOpenChange(false)}>
+                {t(summary.nextAction.labelKey, {
+                  defaultValue: summary.nextAction.defaultLabel,
+                })}
+              </Link>
+            </Button>
+          </div>
+        )}
 
         <DialogFooter className="flex-col sm:flex-col gap-2">
-          <Button className="w-full primary-action" onClick={onViewToday}>
+          <Button variant="outline" className="w-full" onClick={onViewToday}>
             {t('victoryBackToday', { defaultValue: 'Back to Today' })}
           </Button>
-          <Button variant="outline" className="w-full" onClick={onViewHistory}>
+          <Button variant="ghost" className="w-full" onClick={onViewHistory}>
             {t('victoryViewHistory', { defaultValue: 'View history & charts' })}
           </Button>
           <Button variant="ghost" className="w-full gap-2" onClick={handleShare}>

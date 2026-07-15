@@ -33,7 +33,7 @@ const en: NavStrings = {
   navMind: 'Mind',
   navLearn: 'Learn',
   navBuilder: 'Builder',
-  navCoach: 'Mission Coach',
+  navCoach: 'AI weekly plan',
   navLibrary: 'Library',
   navHistory: 'History',
   navLeaderboard: 'Leaderboard',

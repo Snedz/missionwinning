@@ -16,10 +16,11 @@ export const PROGRAM_PRICES: Record<string, { price: string; currency: string; t
   'conditioning': { price: '247', currency: 'USD', title: 'Conditioning Specialist' },
 }
 
-// Super Bundle pricing (monthly example). Will be used for real checkout later.
-export const SUPER_BUNDLE_PRICE = '12'
+// Super Bundle monthly anchor — keep in sync with BUNDLE_PLANS in bundleConfig.ts + STRATEGY.md.
+export const SUPER_BUNDLE_PRICE = '11.99'
 export const SUPER_BUNDLE_TITLE = 'Mission Winning Super Bundle (All Premium Pillars)'
-export const BUNDLE_DISCOUNT_NOTE = '50% off intro for first 6-12 months — holistic value (Freeletics-inspired)'
+export const BUNDLE_DISCOUNT_NOTE =
+  'Founders annual ~$4.92/mo ($59/yr) · monthly $11.99 · lifetime $149 — free core forever'
 
 /** Pillars included in the Super Bundle (Freeletics 7-in-1 model → our unified super app). */
 export const BUNDLE_PILLARS = [
@@ -85,7 +86,11 @@ export const BUNDLE_PILLARS = [
 const STRIPE_LINKS: Record<string, string | undefined> = {
   'super-bundle': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM,
   bundle: process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM,
-  'bundle-3mo': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_3MO,
+  /** Monthly plan (preferred). Falls back to legacy 3-month link env if still set. */
+  'bundle-monthly':
+    process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_MONTHLY || process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_3MO,
+  'bundle-3mo':
+    process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_MONTHLY || process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_3MO,
   'bundle-12mo': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_12MO,
   'bundle-lifetime': process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME,
   'pt-nutrition': process.env.NEXT_PUBLIC_STRIPE_LINK_PT,

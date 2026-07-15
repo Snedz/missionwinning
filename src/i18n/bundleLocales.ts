@@ -6,8 +6,11 @@ type BundleStrings = {
   bundleSubhead: string;
   bundleUrgencyBadge: string;
   bundleTab3mo: string;
+  /** Preferred label for monthly plan (STRATEGY). */
+  bundleTabMonthly: string;
   bundleTab12mo: string;
   bundleTabLifetime: string;
+  bundleBilledMonthly: string;
   bundleBadgePopular: string;
   bundleBadgeBestValue: string;
   bundleBadgeLimited: string;
@@ -58,15 +61,17 @@ const en: BundleStrings = {
   bundleSubhead:
     'Six pillars in one app — not a Freeletics-style multi-app stack. Train, Fuel, Move, Mind, Track, Learn, and one Win Score on Today.',
   bundleUrgencyBadge: 'Founders pricing — locked in at launch',
-  bundleTab3mo: '3 months',
+  bundleTab3mo: 'Monthly',
+  bundleTabMonthly: 'Monthly',
   bundleTab12mo: '12 months',
   bundleTabLifetime: 'Lifetime',
-  bundleBadgePopular: 'Most popular',
+  bundleBadgePopular: 'Founders',
   bundleBadgeBestValue: 'Best value',
   bundleBadgeLimited: 'Limited offer',
   bundleSavePercent: 'Save {{percent}}%',
   bundlePerMonth: '${{price}}/mo',
   bundleBilledTotal: '${{price}} billed once',
+  bundleBilledMonthly: '${{price}} billed monthly',
   bundleBilledOnce: '${{price}} one-time',
   bundleHeroTitle: 'Super Bundle',
   bundleHeroSubtitle: 'All six premium pillars in one install — vs juggling partner apps',

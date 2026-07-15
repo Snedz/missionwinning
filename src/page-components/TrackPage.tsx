@@ -183,7 +183,8 @@ export function TrackPage() {
                 icon={MapPin}
                 title={t('trackEmptyTitle', { defaultValue: 'No activities this week' })}
                 description={t('trackEmptyWeek', {
-                  defaultValue: 'No activities yet this week. Log a walk or run above.',
+                  defaultValue:
+                    'Optional this week: log a walk or run above. Core mission is Train + Fuel — Track adds when you are ready.',
                 })}
                 actionLabel={t('trackLogBtn', { defaultValue: 'Log Activity' })}
                 onAction={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

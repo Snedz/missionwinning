@@ -90,8 +90,8 @@ export function BundlePage() {
   }, [checkoutSuccess, premium, premiumLoading]);
 
   const planTabLabel =
-    planId === "3mo"
-      ? t("bundleTab3mo")
+    planId === "monthly"
+      ? t("bundleTabMonthly", { defaultValue: t("bundleTab3mo", { defaultValue: "Monthly" }) })
       : planId === "12mo"
         ? t("bundleTab12mo")
         : t("bundleTabLifetime");
@@ -99,7 +99,9 @@ export function BundlePage() {
   const billingLineFor = (id: BundlePlanId, price: string) =>
     id === "lifetime"
       ? t("bundleBilledOnce", { price })
-      : t("bundleBilledTotal", { price });
+      : id === "monthly"
+        ? t("bundleBilledMonthly", { price, defaultValue: `$${price} billed monthly` })
+        : t("bundleBilledTotal", { price });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -225,8 +227,8 @@ export function BundlePage() {
         className="w-full"
       >
         <TabsList className="grid grid-cols-3 h-auto p-1">
-          <TabsTrigger value="3mo" className="py-2.5 text-xs sm:text-sm">
-            {t("bundleTab3mo")}
+          <TabsTrigger value="monthly" className="py-2.5 text-xs sm:text-sm">
+            {t("bundleTabMonthly", { defaultValue: t("bundleTab3mo", { defaultValue: "Monthly" }) })}
           </TabsTrigger>
           <TabsTrigger value="12mo" className="py-2.5 text-xs sm:text-sm relative">
             {t("bundleTab12mo")}
@@ -241,7 +243,7 @@ export function BundlePage() {
           </TabsTrigger>
         </TabsList>
 
-        {(["3mo", "12mo", "lifetime"] as const).map((id) => {
+        {(["monthly", "12mo", "lifetime"] as const).map((id) => {
           const p = BUNDLE_PLANS[id];
           const badgeText = planBadgeLabel(p.badge, t);
           return (
@@ -261,7 +263,7 @@ export function BundlePage() {
                         <Badge className="bg-primary text-primary-foreground">{badgeText}</Badge>
                       )}
                       {p.savingsPercent > 0 && (
-                        <Badge variant="outline" className="border-emerald-500/50 text-emerald-600 dark:text-emerald-400">
+                        <Badge variant="outline" className="border-primary/50 text-primary">
                           {t("bundleSavePercent", { percent: p.savingsPercent })}
                         </Badge>
                       )}
@@ -285,7 +287,7 @@ export function BundlePage() {
                   <p className="text-sm text-muted-foreground">{billingLineFor(id, p.price)}</p>
 
                   {vsSeparateSavings > 0 && (
-                    <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                    <p className="text-sm font-medium text-primary">
                       {t("bundleVsSeparate", { percent: vsSeparateSavings })}
                     </p>
                   )}
