@@ -4,6 +4,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-14 — S-Tier waves 0–4 + selective rebuilds (`2026.07-unified.58`)
+
+**Theme:** No greenfield rewrite — focus, first hour, polish, retention, honest money, fat-page decomp.
+
+### Commits (local master)
+
+1. Pricing single source ($11.99 / $59 / $149), journey-gated Basic nav, I-Day real Just Go preview, landing one CTA, victory one next action, ErrorState/Skeleton
+2. Fuel sections + BuilderArrange extract; Today week recap + coach invite after first session
+3. Design-token pass on page-components; ProfileBackupCard; LAUNCH_RUNBOOK Stripe monthly env
+4. Bundle premium inventory chips; coach miss-day adapt copy; components token pass
+
+### Still founder-owned
+
+- Beta cohort ≥10, Vercel service role + live Stripe, `PRIVATE_MODE=false`
+
+---
+
 ## 2026-07-11 — Capital sequence kits (social, LLC, soft launch, TWA)
 
 **Docs only (founder executes):** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md), [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md), expanded [BETA_INVITE.md](BETA_INVITE.md) + [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) week-4 SQL.
