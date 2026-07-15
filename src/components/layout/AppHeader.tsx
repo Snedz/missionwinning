@@ -4,20 +4,42 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import dynamic from 'next/dynamic';
 import { ChevronDown, Dumbbell } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ALL_NAV, STATIC_PAGE_TITLES, extendedNavSectionsForPhase } from '@/lib/navConfig';
-import { HeaderAuthChip } from '@/components/layout/HeaderAuthChip';
-import { useMissionJourney } from '@/hooks/useMissionJourney';
+import type { JourneyPhase } from '@/lib/missionJourney';
+
+const HeaderAuthChip = dynamic(
+  () => import('@/components/layout/HeaderAuthChip').then((m) => ({ default: m.HeaderAuthChip })),
+  { ssr: false }
+);
+
+/** Read journey phase without pulling full missionJourney sync into first paint. */
+function useJourneyPhaseLite(): JourneyPhase {
+  const [phase, setPhase] = useState<JourneyPhase>('basic');
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('mw_journey_state');
+      if (raw) {
+        const parsed = JSON.parse(raw) as { phase?: JourneyPhase };
+        if (parsed.phase) setPhase(parsed.phase);
+      }
+    } catch {
+      /* keep basic */
+    }
+  }, []);
+  return phase;
+}
 
 export function AppHeader() {
   const pathname = usePathname();
   const { t } = useTranslation();
-  const { state } = useMissionJourney();
+  const phase = useJourneyPhaseLite();
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
-  const navSections = extendedNavSectionsForPhase(state.phase);
+  const navSections = extendedNavSectionsForPhase(phase);
 
   const pageTitle = (() => {
     const normalized = pathname === '/' ? '/log' : pathname;
@@ -98,84 +120,87 @@ export function AppHeader() {
         )}
       >
         <div className="overflow-hidden">
-          <div className="px-4 py-4 bg-card/90 backdrop-blur-xl max-h-[min(70vh,520px)] overflow-y-auto">
-            <p className="text-xs text-muted-foreground mb-4 sm:hidden">{pageTitle}</p>
-            {(state.phase === 'i-day' || state.phase === 'basic') && (
-              <p className="text-xs text-muted-foreground mb-3 max-w-5xl mx-auto">
-                {t('navBasicFocusHint', {
-                  defaultValue: 'Basic Training focus — train tools first. More pillars unlock as you go.',
-                })}
-              </p>
-            )}
-            <div
-              className={cn(
-                'grid gap-6 max-w-5xl mx-auto',
-                navSections.length === 1
-                  ? 'sm:grid-cols-1'
-                  : navSections.length === 2
-                    ? 'sm:grid-cols-2'
-                    : 'sm:grid-cols-2 lg:grid-cols-4'
+          {open && (
+            <div className="px-4 py-4 bg-card/90 backdrop-blur-xl max-h-[min(70vh,520px)] overflow-y-auto">
+              <p className="text-xs text-muted-foreground mb-4 sm:hidden">{pageTitle}</p>
+              {(phase === 'i-day' || phase === 'basic') && (
+                <p className="text-xs text-muted-foreground mb-3 max-w-5xl mx-auto">
+                  {t('navBasicFocusHint', {
+                    defaultValue:
+                      'Basic Training focus — train tools first. More pillars unlock as you go.',
+                  })}
+                </p>
               )}
-            >
-              {navSections.map((section) => (
-                <div key={section.id}>
-                  <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium mb-2 px-1">
-                    {t(section.titleKey, { defaultValue: section.title })}
-                  </h2>
-                  <ul className="space-y-0.5">
-                    {section.items.map((item) => {
-                      const Icon = item.icon;
-                      const active = pathname === item.href;
-                      const military = item.military;
-                      return (
-                        <li key={item.href}>
-                          <Link
-                            href={item.href}
-                            onClick={close}
-                            className={cn(
-                              'flex items-center gap-2.5 rounded-xl px-3 py-2.5 min-h-[44px] text-sm transition-colors',
-                              active
-                                ? 'bg-primary/15 text-primary'
-                                : 'text-foreground/90 hover:bg-muted/60',
-                              military && !active && 'border border-status-warn/20'
-                            )}
-                          >
-                            <Icon
+              <div
+                className={cn(
+                  'grid gap-6 max-w-5xl mx-auto',
+                  navSections.length === 1
+                    ? 'sm:grid-cols-1'
+                    : navSections.length === 2
+                      ? 'sm:grid-cols-2'
+                      : 'sm:grid-cols-2 lg:grid-cols-4'
+                )}
+              >
+                {navSections.map((section) => (
+                  <div key={section.id}>
+                    <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium mb-2 px-1">
+                      {t(section.titleKey, { defaultValue: section.title })}
+                    </h2>
+                    <ul className="space-y-0.5">
+                      {section.items.map((item) => {
+                        const Icon = item.icon;
+                        const active = pathname === item.href;
+                        const military = item.military;
+                        return (
+                          <li key={item.href}>
+                            <Link
+                              href={item.href}
+                              onClick={close}
                               className={cn(
-                                'h-4 w-4 shrink-0',
-                                military && 'text-status-warn/80'
+                                'flex items-center gap-2.5 rounded-xl px-3 py-2.5 min-h-[44px] text-sm transition-colors',
+                                active
+                                  ? 'bg-primary/15 text-primary'
+                                  : 'text-foreground/90 hover:bg-muted/60',
+                                military && !active && 'border border-status-warn/20'
                               )}
-                              aria-hidden
-                            />
-                            <span className="font-medium truncate">
-                              {t(item.labelKey, { defaultValue: item.label })}
-                            </span>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ))}
+                            >
+                              <Icon
+                                className={cn(
+                                  'h-4 w-4 shrink-0',
+                                  military && 'text-status-warn/80'
+                                )}
+                                aria-hidden
+                              />
+                              <span className="font-medium truncate">
+                                {t(item.labelKey, { defaultValue: item.label })}
+                              </span>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-4 mt-5 pt-4 border-t border-border/40 text-xs text-muted-foreground max-w-5xl mx-auto">
+                <Link href="/vision" onClick={close} className="hover:text-primary">
+                  {t('navOurMission', { defaultValue: 'Our mission' })}
+                </Link>
+                <Link href="/beta" onClick={close} className="hover:text-primary">
+                  {t('navBetaGuide', { defaultValue: 'Beta guide' })}
+                </Link>
+                <Link href="/about" onClick={close} className="hover:text-primary">
+                  {t('about', { defaultValue: 'About' })}
+                </Link>
+                <Link href="/terms" onClick={close} className="hover:text-primary">
+                  {t('termsOfService', { defaultValue: 'Terms' })}
+                </Link>
+                <Link href="/privacy" onClick={close} className="hover:text-primary">
+                  {t('privacyPolicy', { defaultValue: 'Privacy' })}
+                </Link>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-4 mt-5 pt-4 border-t border-border/40 text-xs text-muted-foreground max-w-5xl mx-auto">
-              <Link href="/vision" onClick={close} className="hover:text-primary">
-                {t('navOurMission', { defaultValue: 'Our mission' })}
-              </Link>
-              <Link href="/beta" onClick={close} className="hover:text-primary">
-                {t('navBetaGuide', { defaultValue: 'Beta guide' })}
-              </Link>
-              <Link href="/about" onClick={close} className="hover:text-primary">
-                {t('about', { defaultValue: 'About' })}
-              </Link>
-              <Link href="/terms" onClick={close} className="hover:text-primary">
-                {t('termsOfService', { defaultValue: 'Terms' })}
-              </Link>
-              <Link href="/privacy" onClick={close} className="hover:text-primary">
-                {t('privacyPolicy', { defaultValue: 'Privacy' })}
-              </Link>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </header>

@@ -13,9 +13,18 @@ export function HeaderAuthChip() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    getUser()
-      .then((u) => setEmail(u?.email ?? null))
-      .finally(() => setReady(true));
+    // Defer auth lookup so Supabase is not on first paint for cold /log.
+    const boot = () => {
+      getUser()
+        .then((u) => setEmail(u?.email ?? null))
+        .finally(() => setReady(true));
+    };
+    if (typeof requestIdleCallback !== 'undefined') {
+      const id = requestIdleCallback(boot, { timeout: 2500 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(boot, 400);
+    return () => clearTimeout(t);
   }, []);
 
   if (!ready || email) return null;

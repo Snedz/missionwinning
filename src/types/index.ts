@@ -66,6 +66,8 @@ export interface ActiveExerciseLog {
   supersetGroup?: string;
   /** Free-form note for this exercise ("felt heavy", "machine 3, seat pos 4"). */
   note?: string;
+  /** Snapshot from catalog when exercise was added — avoids store importing EXERCISES. */
+  muscleGroups?: MuscleGroup[];
 }
 
 export interface ActiveWorkout {
