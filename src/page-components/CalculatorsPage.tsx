@@ -70,10 +70,10 @@ export function CalculatorsPage() {
         })}
       </p>
 
-      <Card className="content-card border-emerald-500/30 bg-emerald-950/10">
+      <Card className="content-card border-primary/30 bg-primary/5">
         <CardContent className="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="space-y-1">
-            <p className="font-semibold text-emerald-400">
+            <p className="font-semibold text-primary">
               {t('calcPremiumTitle', { defaultValue: 'Premium calculators' })}
             </p>
             <p className="text-sm text-muted-foreground">
@@ -81,7 +81,7 @@ export function CalculatorsPage() {
                 defaultValue:
                   'Super Bundle unlocks periodization blocks, contest prep macros, and client tools that sync to your log.',
               })}{' '}
-              <Link href="/bundle" className="text-emerald-400 underline underline-offset-2">
+              <Link href="/bundle" className="text-primary underline underline-offset-2">
                 {t('calcPremiumLink', { defaultValue: 'View bundle' })}
               </Link>
             </p>

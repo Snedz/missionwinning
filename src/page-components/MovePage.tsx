@@ -79,17 +79,17 @@ export function MovePage() {
     <div className="space-y-3">
       <h3
         className={`text-sm font-semibold uppercase tracking-wide ${
-          accent ? 'text-emerald-400' : 'text-muted-foreground'
+          accent ? 'text-primary' : 'text-muted-foreground'
         }`}
       >
         {label}
       </h3>
       <div className="grid gap-4 md:grid-cols-2">
         {flows.map((flow) => (
-          <Card key={flow.id} className="content-card hover:border-emerald-500/40 transition-colors">
+          <Card key={flow.id} className="content-card hover:border-primary/40 transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Clock className="h-4 w-4 text-emerald-400" />
+                <Clock className="h-4 w-4 text-primary" />
                 {flow.name}
               </CardTitle>
               <CardDescription>{flow.focus}</CardDescription>
@@ -123,7 +123,7 @@ export function MovePage() {
       {premium && premiumFlows.length > 0 && (
         <details className="group" open>
           <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-2 min-h-[44px] [&::-webkit-details-marker]:hidden">
-            <span className="text-sm font-semibold uppercase tracking-wide text-emerald-400">
+            <span className="text-sm font-semibold uppercase tracking-wide text-primary">
               {t('movePremiumFlows', { defaultValue: 'Premium recovery flows' })}
             </span>
             <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />

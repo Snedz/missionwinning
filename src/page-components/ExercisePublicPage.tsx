@@ -152,7 +152,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
                 <Link
                   key={ex.id}
                   href={`/exercises/${ex.id}`}
-                  className="text-sm px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-950/20 hover:bg-emerald-950/40"
+                  className="text-sm px-3 py-1 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/15"
                 >
                   {ex.name}
                 </Link>
@@ -176,7 +176,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           </section>
         )}
 
-        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-5 space-y-3">
+        <div className="rounded-2xl border border-primary/30 bg-primary/10 p-5 space-y-3">
           <p className="text-sm text-muted-foreground">
             Log sets offline — no account, no AI API key. 217 free exercise pages in the library.
           </p>

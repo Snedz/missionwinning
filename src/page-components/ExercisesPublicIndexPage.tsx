@@ -26,14 +26,14 @@ export async function ExercisesPublicIndexPage() {
             <a
               key={g}
               href={`/exercises/muscle/${g.toLowerCase()}`}
-              className="px-3 py-1 rounded-full border border-border/60 hover:border-emerald-500/40 text-xs"
+              className="px-3 py-1 rounded-full border border-border/60 hover:border-primary/40 text-xs"
             >
               {g}
             </a>
           ))}
           <a
             href="/exercises/equipment/bodyweight"
-            className="px-3 py-1 rounded-full border border-emerald-500/30 text-xs text-emerald-300"
+            className="px-3 py-1 rounded-full border border-primary/40 text-xs text-primary"
           >
             Bodyweight
           </a>

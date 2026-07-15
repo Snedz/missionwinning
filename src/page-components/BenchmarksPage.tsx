@@ -446,7 +446,7 @@ export function BenchmarksPage() {
       )}
 
       {/* Free core quick actions to populate benchmarks (functional) */}
-      <Card className="content-card mt-4 border-emerald-500/20">
+      <Card className="content-card mt-4 border-primary/40">
         <CardHeader>
           <CardTitle className="text-base">
             {t('benchmarksQuickTitle', { defaultValue: 'Quick Benchmark Starters (Free)' })}

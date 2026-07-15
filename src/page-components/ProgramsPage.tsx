@@ -58,11 +58,11 @@ export function ProgramsPage() {
       <Card className="content-card border-amber-500/30 bg-amber-950/10">
         <CardContent className="pt-6 text-sm text-muted-foreground">
           Legacy catalog — the Learn pillar has moved to{' '}
-          <Link href="/learn" className="text-emerald-400 hover:underline">
+          <Link href="/learn" className="text-primary hover:underline">
             /learn
           </Link>
           . See{' '}
-          <Link href="/bundle" className="text-emerald-400 hover:underline">
+          <Link href="/bundle" className="text-primary hover:underline">
             Super Bundle
           </Link>{' '}
           for full access.
@@ -105,7 +105,7 @@ export function ProgramsPage() {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                   <CardTitle className="text-xl">{t(prog.titleKey)}</CardTitle>
-                  <div className="text-emerald-400 mt-1 text-sm">
+                  <div className="text-primary mt-1 text-sm">
                     {t(prog.durationKey)} • {t(prog.priceKey)} one-time
                   </div>
                 </div>
@@ -133,12 +133,12 @@ export function ProgramsPage() {
                   </ul>
                 </div>
                 <div className="md:col-span-2 rounded-xl border border-border/60 bg-muted/30 p-4 text-sm space-y-3">
-                  <div className="font-semibold text-emerald-400 text-xs uppercase tracking-wide">
+                  <div className="font-semibold text-primary text-xs uppercase tracking-wide">
                     {t('programsBundleNote', { defaultValue: 'Free intro — full in Super Bundle' })}
                   </div>
                   <p className="text-muted-foreground">{t(prog.disclaimerKey)}</p>
                   <div className="flex flex-wrap gap-3">
-                    <Link href="/feedback" className="text-emerald-400 hover:underline text-xs">
+                    <Link href="/feedback" className="text-primary hover:underline text-xs">
                       Share feedback →
                     </Link>
                     <Button

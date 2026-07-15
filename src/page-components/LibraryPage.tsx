@@ -138,7 +138,7 @@ export function LibraryPage() {
             <SlidersHorizontal className="h-4 w-4" />
             {t('libraryFilters', { defaultValue: 'Filters' })}
             {activeFilterCount > 0 && (
-              <span className="tabular-nums text-emerald-400">({activeFilterCount})</span>
+              <span className="tabular-nums text-primary">({activeFilterCount})</span>
             )}
           </Button>
         </div>

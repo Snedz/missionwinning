@@ -65,10 +65,10 @@ export function GuidebookIndexPage() {
       })}
       showLegalFooter
     >
-        <Card className="content-card border-emerald-500/25 bg-emerald-950/20">
+        <Card className="content-card border-primary/25 bg-primary/10">
           <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-medium text-emerald-300">
+              <p className="text-sm font-medium text-primary">
                 {t('guidebookProgress', { defaultValue: 'Your progress' })}
               </p>
               <p className="text-2xl font-bold tabular-nums">
@@ -103,7 +103,7 @@ export function GuidebookIndexPage() {
                         <span>{chapter.icon}</span>
                         {chapter.title}
                         {isPremiumChapter && (
-                          <span className="text-[10px] uppercase tracking-wide text-emerald-400 font-normal">
+                          <span className="text-[10px] uppercase tracking-wide text-primary font-normal">
                             {t('learnPremiumBadge', { defaultValue: 'Premium' })}
                           </span>
                         )}
@@ -111,7 +111,7 @@ export function GuidebookIndexPage() {
                       <CardDescription>{chapter.subtitle}</CardDescription>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs text-emerald-400 tabular-nums">
+                      <span className="text-xs text-primary tabular-nums">
                         {prog.done}/{prog.total}
                       </span>
                       <ChevronRight className="h-4 w-4 text-muted-foreground" />

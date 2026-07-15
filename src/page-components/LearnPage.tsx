@@ -69,10 +69,10 @@ export function LearnPage() {
         defaultValue: `${FREE_LEARN_PATHS.length} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
       })}
     >
-        <Card className="content-card border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 to-card">
+        <Card className="content-card border-primary/40 bg-gradient-to-br from-emerald-950/40 to-card">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
-              <BookMarked className="h-4 w-4 text-emerald-400" />
+              <BookMarked className="h-4 w-4 text-primary" />
               {t('learnExpandedBanner', {
                 defaultValue: 'Now with even more content!',
               })}
@@ -133,7 +133,7 @@ export function LearnPage() {
                       <CardDescription>{path.subtitle}</CardDescription>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs text-emerald-400 tabular-nums">
+                      <span className="text-xs text-primary tabular-nums">
                         {doneCount}/{path.lessons.length}
                       </span>
                       {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -147,7 +147,7 @@ export function LearnPage() {
                         <div className="flex items-start justify-between gap-2">
                           <h3 className="font-semibold">{lesson.title}</h3>
                           {completedLessons.has(lesson.id) && (
-                            <span className="text-xs text-emerald-400 shrink-0">
+                            <span className="text-xs text-primary shrink-0">
                               {t('learnDone', { defaultValue: '✓ Done' })}
                             </span>
                           )}
@@ -183,7 +183,7 @@ export function LearnPage() {
           })}
         </div>
 
-        <Card className="content-card border-emerald-500/20">
+        <Card className="content-card border-primary/40">
           <CardHeader>
             <CardTitle className="text-base">
               {t('learnSampleTitle', { defaultValue: 'Try it — free sample workout' })}
@@ -208,7 +208,7 @@ export function LearnPage() {
         </Card>
 
         {premium ? (
-          <Card className="content-card border-emerald-500/20">
+          <Card className="content-card border-primary/40">
             <CardHeader>
               <CardTitle className="text-base">
                 {t('learnPremiumTitle', { defaultValue: 'Premium Specialist Programs' })}

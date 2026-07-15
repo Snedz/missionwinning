@@ -97,7 +97,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
                   <div className="flex justify-between gap-2">
                     <CardTitle className="text-lg">{section.title}</CardTitle>
                     {done && (
-                      <span className="text-xs text-emerald-400 flex items-center gap-1 shrink-0">
+                      <span className="text-xs text-primary flex items-center gap-1 shrink-0">
                         <Check className="h-3 w-3" />
                         {t('learnDone', { defaultValue: 'Done' })}
                       </span>
@@ -135,9 +135,9 @@ export function GuidebookChapterPage({ chapterId }: Props) {
       </div>
 
       {allDone && (
-        <Card className="content-card border-emerald-500/30">
+        <Card className="content-card border-primary/40">
           <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-emerald-300">
+            <p className="text-sm text-primary">
               {t('guidebookChapterComplete', { defaultValue: 'Chapter complete!' })}
             </p>
             {BEYOND_NEXT_CHAPTER(chapterId) ? (

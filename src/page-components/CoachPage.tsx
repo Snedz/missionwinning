@@ -64,7 +64,7 @@ export function CoachPage() {
       )}
 
       {!loading && locked && (
-        <Card className="content-card border-emerald-500/20">
+        <Card className="content-card border-primary/20">
           <CardHeader>
             <CardTitle>{t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}</CardTitle>
             <CardDescription>
@@ -75,7 +75,7 @@ export function CoachPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground border border-emerald-500/15 rounded-lg p-3 bg-emerald-500/5">
+            <p className="text-sm text-muted-foreground border border-primary/40 rounded-lg p-3 bg-primary/5">
               {t('coachTasterFatigueNote', {
                 defaultValue:
                   'Premium also watches strain: when load runs high (≥70), future sessions auto-shift lighter so you recover without quitting the week.',
@@ -85,7 +85,7 @@ export function CoachPage() {
               {(['coachLockedBenefit1', 'coachLockedBenefit2', 'coachLockedBenefit3', 'coachLockedBenefit4'] as const).map(
                 (key) => (
                   <li key={key} className="flex gap-2">
-                    <span className="text-emerald-400 shrink-0">✓</span>
+                    <span className="text-primary shrink-0">✓</span>
                     <span>{t(key)}</span>
                   </li>
                 )
@@ -153,7 +153,7 @@ export function CoachPage() {
 
       {todaySession && (
         <p className="text-xs text-center text-muted-foreground">
-          <Link href="/log" className="text-emerald-400 hover:underline">
+          <Link href="/log" className="text-primary hover:underline">
             ← {t('navToday', { defaultValue: 'Today' })}
           </Link>
         </p>

@@ -111,7 +111,7 @@ export function ComparePage() {
               <thead>
                 <tr className="border-b border-border/50 text-left">
                   <th className="py-3 pr-4 font-medium text-muted-foreground">Feature</th>
-                  <th className="py-3 pr-4 font-semibold text-emerald-400">Mission Winning</th>
+                  <th className="py-3 pr-4 font-semibold text-primary">Mission Winning</th>
                   <th className="py-3 pr-4">Hevy</th>
                   <th className="py-3">Strong</th>
                 </tr>
@@ -156,7 +156,7 @@ export function ComparePage() {
             <Link
               key={c.href}
               href={c.href}
-              className="rounded-2xl border border-border/50 p-4 hover:border-emerald-500/40 hover:bg-emerald-950/15 transition-colors"
+              className="rounded-2xl border border-border/50 p-4 hover:border-primary/40 hover:bg-primary/10 transition-colors"
             >
               <p className="font-semibold text-sm">{c.title}</p>
               <p className="text-xs text-muted-foreground mt-1">{c.body}</p>

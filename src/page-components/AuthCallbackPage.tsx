@@ -61,7 +61,7 @@ export function AuthCallbackPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
-      <Shield className="h-10 w-10 text-emerald-400 mb-4" />
+      <Shield className="h-10 w-10 text-primary mb-4" />
       <h1 className="text-xl font-semibold mb-2">
         {status === 'working' ? 'Signing you in' : 'Sign-in issue'}
       </h1>
@@ -70,7 +70,7 @@ export function AuthCallbackPage() {
         <button
           type="button"
           onClick={() => router.push('/profile')}
-          className="mt-6 text-sm text-emerald-400 hover:underline"
+          className="mt-6 text-sm text-primary hover:underline"
         >
           Back to Profile
         </button>

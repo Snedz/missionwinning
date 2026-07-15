@@ -51,20 +51,23 @@
 *No LLC required to start in most places — Stripe supports individual/sole-proprietor accounts; you can move to an entity later. This is not legal/tax advice — check your local requirements.*
 
 1. Create the account: https://dashboard.stripe.com/register (individual is fine).
-2. Create 2 **Products** with **Payment Links** (Dashboard → Product catalog → Add product → "Create payment link"):
-   - "Mission Winning Super Bundle — 12 months" · $59/year (recurring yearly) → copy link
-   - "Mission Winning Super Bundle — Founders Lifetime" · $149 one-time → copy link
+2. Create **Products** with **Payment Links** (Dashboard → Product catalog → Add product → "Create payment link"). Pricing source of truth: `src/lib/bundleConfig.ts` + STRATEGY.md:
+   - "Mission Winning Super Bundle — Monthly" · **$11.99/mo** (recurring monthly) → copy link
+   - "Mission Winning Super Bundle — 12 months (Founders)" · **$59/year** (recurring yearly) → copy link  **← push this**
+   - "Mission Winning Super Bundle — Founders Lifetime" · **$149** one-time → copy link
 3. Webhook: Dashboard → Developers → Webhooks → Add endpoint → URL `https://www.missionwinning.com/api/stripe-webhook` → events: `checkout.session.completed` → copy the **signing secret** (`whsec_…`).
 4. Add to Vercel env (Production):
    ```
-   NEXT_PUBLIC_STRIPE_LINK_BUNDLE=<12-month payment link>
+   NEXT_PUBLIC_STRIPE_LINK_BUNDLE=<12-month payment link>   # default checkout
+   NEXT_PUBLIC_STRIPE_LINK_BUNDLE_MONTHLY=<monthly payment link>
+   NEXT_PUBLIC_STRIPE_LINK_BUNDLE_12MO=<12-month payment link>
    NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME=<lifetime payment link>
    STRIPE_WEBHOOK_SECRET=<whsec_...>
    ```
 5. Redeploy. The bundle page switches from "waitlist" to real checkout automatically.
 6. **Test in Stripe test mode first**: use test links + test card `4242 4242 4242 4242`, confirm a row appears in Supabase `enrollments`, and that the account you paid with gets premium (`/api/premium/status` → `premium: true`).
 
-- [ ] Stripe account live · [ ] 2 payment links created
+- [ ] Stripe account live · [ ] payment links created (monthly + 12mo + lifetime)
 - [ ] Webhook verified end-to-end in test mode
 - [ ] Env vars set + redeployed
 

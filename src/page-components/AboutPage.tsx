@@ -89,15 +89,15 @@ export function AboutPage() {
 
           <InfoSection title={t('infoAboutMore', { defaultValue: 'More' })}>
             <p className="text-muted-foreground">
-              <Link href="/privacy" className="text-emerald-400 hover:underline">
+              <Link href="/privacy" className="text-primary hover:underline">
                 {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
               </Link>
               {' · '}
-              <Link href="/terms" className="text-emerald-400 hover:underline">
+              <Link href="/terms" className="text-primary hover:underline">
                 {t('termsOfService', { defaultValue: 'Terms of Use' })}
               </Link>
               {' · '}
-              <Link href="/beta" className="text-emerald-400 hover:underline">
+              <Link href="/beta" className="text-primary hover:underline">
                 {t('navBetaGuide', { defaultValue: 'Beta guide' })}
               </Link>
               {isAmericaTrackEnabled() && (

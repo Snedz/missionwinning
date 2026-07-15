@@ -65,7 +65,7 @@ export function YouthConsentConfirmPage() {
             </p>
           )}
           {status === 'ok' && (
-            <p className="text-emerald-400">
+            <p className="text-primary">
               {crossDevice
                 ? t('youthConfirmCrossDevice', {
                     defaultValue:
