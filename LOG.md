@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-15 — Nav pulse + lean Today without workoutStore (`2026.07-unified.66`)
+
+- `activeWorkoutPulse` + `useActiveWorkoutPulse`: MobileNav/Sidebar no longer import `workoutStore`
+- Store syncs flag on start/cancel/complete (incl. empty complete) and on persist rehydrate
+- `workoutPersistLite` + HomeTodayLean: history/streak/journey from localStorage; `startWorkout` dynamic-import
+- HomePage phase gate is localStorage-only (no `useMissionJourney` / store on basic cold path)
+- Lighthouse mobile: `/` **90**, `/log` **~80–81**, guide **88–91** (run variance)
+
+---
+
 ## 2026-07-15 — Decouple exercise catalog from workout store (`2026.07-unified.65`)
 
 - `workoutStore` no longer imports `EXERCISES` — muscle groups snapshot on add/swap
