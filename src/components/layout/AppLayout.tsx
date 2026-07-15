@@ -4,27 +4,39 @@
  * See: src/components/layout/INDEX.md
  */
 
-import { Sidebar } from './Sidebar';
+import dynamic from 'next/dynamic';
 import { MobileNav } from './MobileNav';
 import { AppHeader } from './AppHeader';
 import { JourneyGuard } from '@/components/journey/JourneyGuard';
-import { CommissioningCeremony } from '@/components/journey/CommissioningCeremony';
 import { PageTransition } from '@/components/layout/PageTransition';
-import { useJourneySync } from '@/hooks/useJourneySync';
+import { JourneySyncBoot } from '@/components/layout/JourneySyncBoot';
+
+const Sidebar = dynamic(() => import('./Sidebar').then((m) => ({ default: m.Sidebar })), {
+  ssr: false,
+});
+
+const CommissioningCeremony = dynamic(
+  () =>
+    import('@/components/journey/CommissioningCeremony').then((m) => ({
+      default: m.CommissioningCeremony,
+    })),
+  { ssr: false }
+);
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-  useJourneySync();
-
   return (
     <JourneyGuard>
       <CommissioningCeremony />
+      <JourneySyncBoot />
       <div className="flex flex-col h-screen overflow-hidden bg-background">
         <AppHeader />
         <div className="flex flex-1 min-h-0">
-          <Sidebar />
+          <div className="hidden md:block">
+            <Sidebar />
+          </div>
           <main className="flex-1 overflow-y-auto pb-[calc(52px+env(safe-area-inset-bottom))] md:pb-0">
             <div className="mx-auto max-w-lg md:max-w-2xl lg:max-w-3xl px-4 py-5 md:px-8 md:py-6">
-            <PageTransition>{children}</PageTransition>
+              <PageTransition>{children}</PageTransition>
             </div>
           </main>
         </div>
