@@ -24,7 +24,7 @@ export function TrackWeeklyInsights({ locked = false }: Props) {
     : stats!;
 
   return (
-    <Card className={`content-card border-emerald-500/20 ${locked ? 'opacity-95' : ''}`}>
+    <Card className={`content-card border-primary/40 ${locked ? 'opacity-95' : ''}`}>
       <CardHeader className="pb-2">
         <CardTitle className="text-base">
           {t('trackWeeklyGpsTitle', { defaultValue: 'GPS week at a glance' })}
@@ -52,7 +52,7 @@ export function TrackWeeklyInsights({ locked = false }: Props) {
           </div>
         </div>
         {locked && (
-          <div className="rounded-lg border border-emerald-500/30 bg-emerald-950/20 p-3 text-sm space-y-2">
+          <div className="rounded-lg border border-primary/40 bg-primary/10 p-3 text-sm space-y-2">
             <p className="text-muted-foreground">
               {t('trackWeeklyGpsLocked', {
                 defaultValue: 'Weekly GPS distance and average pace — Super Bundle.',

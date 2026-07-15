@@ -75,15 +75,15 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
               onClick={() => setChapterId(ch.id)}
               className={`w-full text-left rounded-lg border px-3 py-2 text-sm transition-colors ${
                 active
-                  ? 'border-emerald-500/50 bg-emerald-950/30'
-                  : 'border-border/50 hover:border-emerald-500/30'
+                  ? 'border-primary/40 bg-primary/10'
+                  : 'border-border/50 hover:border-primary/40'
               }`}
             >
               <div className="font-medium">
                 {ch.icon} CH {ch.number}
               </div>
               <div className="text-xs text-muted-foreground line-clamp-2">{ch.title}</div>
-              <div className="text-[10px] text-emerald-400 tabular-nums mt-1">
+              <div className="text-[10px] text-primary tabular-nums mt-1">
                 {chProg.done}/{chProg.total}
               </div>
             </button>
@@ -109,7 +109,7 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
                   <div className="flex justify-between gap-2">
                     <CardTitle className="text-lg">{section.title}</CardTitle>
                     {done && (
-                      <span className="text-xs text-emerald-400 flex items-center gap-1 shrink-0">
+                      <span className="text-xs text-primary flex items-center gap-1 shrink-0">
                         <Check className="h-3 w-3" />
                         {t('learnDone', { defaultValue: 'Done' })}
                       </span>
@@ -146,10 +146,10 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
         })}
 
         {allDone && (
-          <Card className="content-card border-emerald-500/30">
+          <Card className="content-card border-primary/40">
             <CardContent className="py-4 space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-sm text-emerald-300">
+                <p className="text-sm text-primary">
                   {t('learnChapterComplete', { defaultValue: 'Chapter complete — logged to Learn pillar.' })}
                 </p>
                 {chapterIndex < chapters.length - 1 ? (

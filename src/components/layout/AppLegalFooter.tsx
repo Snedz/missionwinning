@@ -17,19 +17,19 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
       className={`text-center text-[11px] text-muted-foreground/80 space-y-2 py-4 ${className}`}
     >
       <nav className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-        <Link href="/terms" className="hover:text-emerald-400 transition-colors">
+        <Link href="/terms" className="hover:text-primary transition-colors">
           {t('termsOfService', { defaultValue: 'Terms of Service' })}
         </Link>
         <span aria-hidden className="text-border">
           ·
         </span>
-        <Link href="/privacy" className="hover:text-emerald-400 transition-colors">
+        <Link href="/privacy" className="hover:text-primary transition-colors">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
         </Link>
         <span aria-hidden className="text-border">
           ·
         </span>
-        <Link href="/about" className="hover:text-emerald-400 transition-colors">
+        <Link href="/about" className="hover:text-primary transition-colors">
           {t('about', { defaultValue: 'About' })}
         </Link>
       </nav>

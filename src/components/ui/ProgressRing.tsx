@@ -24,12 +24,12 @@ const TONE_MAP: Record<
 > = {
   emerald: {
     stroke: 'stroke-emerald-400',
-    text: 'text-emerald-400',
+    text: 'text-primary',
     track: 'stroke-emerald-950/80',
   },
   amber: {
     stroke: 'stroke-amber-400',
-    text: 'text-amber-400',
+    text: 'text-status-warn',
     track: 'stroke-amber-950/80',
   },
   blue: {

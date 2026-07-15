@@ -28,11 +28,11 @@ export function Sidebar() {
               className={cn(
                 'flex flex-col lg:flex-row items-center lg:items-center gap-1 lg:gap-3 rounded-xl px-2 lg:px-3 py-2.5 min-h-[52px] transition-colors relative',
                 isActive
-                  ? 'bg-emerald-600/20 text-emerald-400'
+                  ? 'bg-primary/20 text-primary'
                   : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
               )}
             >
-              <Icon className={cn('h-5 w-5 shrink-0', showPulse && 'text-emerald-400')} />
+              <Icon className={cn('h-5 w-5 shrink-0', showPulse && 'text-primary')} />
               <span className="text-[10px] lg:text-[15px] font-medium lg:font-medium text-center lg:text-start leading-tight">
                 {t(labelKey, { defaultValue: label })}
               </span>

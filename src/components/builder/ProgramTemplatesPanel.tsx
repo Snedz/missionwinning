@@ -250,7 +250,7 @@ export function ProgramTemplatesPanel({
       {category === "pro" && !premiumLoading && !premium && (
         <div className="rounded-lg border border-amber-500/40 bg-amber-950/20 p-4 text-sm">
           {t('builderProPremium', { defaultValue: 'Pro cycles require Super Bundle premium.' })}{' '}
-          <Link href="/bundle" className="underline text-amber-400">
+          <Link href="/bundle" className="underline text-status-warn">
             {t('builderUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
           </Link>
         </div>

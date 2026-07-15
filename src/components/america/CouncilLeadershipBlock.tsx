@@ -27,7 +27,7 @@ export function CouncilLeadershipBlock() {
         })}
       </p>
       {showMahaCopy() && (
-        <p className="text-sm font-medium text-emerald-300/90 m-0">
+        <p className="text-sm font-medium text-primary/90 m-0">
           {t('mahaTagline', {
             defaultValue:
               "Let's Make America Healthy Again — starting with strength, movement, and families training together.",

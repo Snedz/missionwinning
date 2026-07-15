@@ -19,10 +19,10 @@ export function MoveLockedPreview() {
   const { t } = useTranslation();
 
   return (
-    <Card className="content-card border-emerald-500/20">
+    <Card className="content-card border-primary/40">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <Wind className="h-4 w-4 text-emerald-400" />
+          <Wind className="h-4 w-4 text-primary" />
           {t('movePremiumTitle', { defaultValue: 'Premium — Pliability / Skill Yoga depth' })}
         </CardTitle>
       </CardHeader>

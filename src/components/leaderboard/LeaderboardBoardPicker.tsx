@@ -40,7 +40,7 @@ export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
               'rounded-xl border p-3 text-left transition-all min-h-[72px]',
               active && b.theme === 'night' && 'border-indigo-500/50 bg-indigo-950/40 shadow-md',
               active && b.theme === 'dawn' && 'border-amber-500/50 bg-amber-950/30 shadow-md',
-              active && !themed && 'border-emerald-500/50 bg-emerald-950/30 shadow-md',
+              active && !themed && 'border-primary/40 bg-primary/10 shadow-md',
               !active && 'border-border/50 bg-card/50 hover:border-border'
             )}
           >
@@ -48,8 +48,8 @@ export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
               className={cn(
                 'h-4 w-4 mb-1.5',
                 active && b.theme === 'night' && 'text-indigo-300',
-                active && b.theme === 'dawn' && 'text-amber-300',
-                active && !themed && 'text-emerald-400',
+                active && b.theme === 'dawn' && 'text-status-warn',
+                active && !themed && 'text-primary',
                 !active && 'text-muted-foreground'
               )}
             />

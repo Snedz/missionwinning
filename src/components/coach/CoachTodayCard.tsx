@@ -22,6 +22,8 @@ export function CoachTodayCard() {
 
   if (loading) return null;
 
+  const missedCount = plan?.sessions.filter((s) => s.status === 'missed').length ?? 0;
+
   const startToday = () => {
     if (!todaySession || todaySession.status === 'done') return;
     const exercises = todaySession.exercises.map((ex) => ({
@@ -34,16 +36,24 @@ export function CoachTodayCard() {
   };
 
   return (
-    <Card className="content-card border-emerald-500/20">
+    <Card className="content-card border-primary/40">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-emerald-400" />
+          <Sparkles className="h-4 w-4 text-primary" />
           <span className="eyebrow text-[10px]">
             {t('coachTodayMission', { defaultValue: "Today's mission" })}
           </span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
+        {plan && missedCount > 0 && !locked && (
+          <p className="text-xs text-status-warn leading-relaxed rounded-lg border border-status-warn/25 bg-status-warn/5 px-3 py-2">
+            {t('coachAdaptMissedNote', {
+              count: missedCount,
+              defaultValue: `${missedCount} session${missedCount === 1 ? '' : 's'} missed earlier this week — remaining days re-spread so the plan still fits.`,
+            })}
+          </p>
+        )}
         {!plan && !locked && (
           <>
             <p className="text-sm text-muted-foreground">
@@ -86,13 +96,13 @@ export function CoachTodayCard() {
               </Button>
             )}
             {todaySession.status === 'done' && (
-              <p className="text-sm text-amber-400">
+              <p className="text-sm text-status-warn">
                 {t('coachSessionDone', { defaultValue: 'Done' })} ✓
               </p>
             )}
           </>
         )}
-        <Link href="/coach" className="text-xs text-emerald-400 hover:underline block text-center">
+        <Link href="/coach" className="text-xs text-primary hover:underline block text-center">
           {locked
             ? t('coachViewLockedPlan', { defaultValue: 'View last week & unlock' })
             : t('coachViewPlan', { defaultValue: 'View full week' })}{' '}

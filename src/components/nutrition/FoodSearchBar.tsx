@@ -80,7 +80,7 @@ export function FoodSearchBar({ onSelect }: Props) {
             <li key={item.id}>
               <button
                 type="button"
-                className="w-full text-left px-3 py-2.5 hover:bg-emerald-950/30 transition-colors min-h-[44px]"
+                className="w-full text-left px-3 py-2.5 hover:bg-primary/10 transition-colors min-h-[44px]"
                 onClick={() => {
                   onSelect(item);
                   setQuery('');

@@ -97,12 +97,12 @@ export function BreathingTimer() {
 
         <div className="flex flex-col items-center py-6">
           <div
-            className="w-32 h-32 rounded-full border-4 border-emerald-500/50 flex items-center justify-center transition-transform duration-1000 bg-emerald-950/30"
+            className="w-32 h-32 rounded-full border-4 border-primary/40 flex items-center justify-center transition-transform duration-1000 bg-primary/10"
             style={{ transform: `scale(${scale})` }}
           >
             <div className="text-center">
               <div className="text-2xl font-bold">{remaining}</div>
-              <div className="text-sm text-emerald-400">{phase.label}</div>
+              <div className="text-sm text-primary">{phase.label}</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground mt-4">
@@ -121,7 +121,7 @@ export function BreathingTimer() {
           )}
         </div>
         {cycles >= targetCycles && !running && (
-          <p className="text-center text-emerald-400 text-sm">Session complete — logged to Mind pillar.</p>
+          <p className="text-center text-primary text-sm">Session complete — logged to Mind pillar.</p>
         )}
       </CardContent>
     </Card>

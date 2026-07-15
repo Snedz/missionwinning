@@ -140,7 +140,7 @@ export function SetLogRow({
         <div className="flex items-center gap-2 flex-wrap justify-end">
           {target && (
             <>
-              <span className="rounded-full border border-emerald-500/40 bg-emerald-950/40 px-2 py-0.5 text-[10px] font-medium tabular-nums text-emerald-300">
+              <span className="rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[10px] font-medium tabular-nums text-primary">
                 {t('activeTargetChip', {
                   reps: target.reps,
                   weight: target.weight,
@@ -152,7 +152,7 @@ export function SetLogRow({
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="h-7 px-2 text-[10px] text-emerald-400"
+                  className="h-7 px-2 text-[10px] text-primary"
                   onClick={onApplyTarget}
                 >
                   {t('activeApplyTarget', { defaultValue: 'Apply' })}

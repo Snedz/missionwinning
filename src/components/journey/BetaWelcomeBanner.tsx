@@ -16,7 +16,7 @@ export function BetaWelcomeBanner() {
   if (!visible) return null;
 
   return (
-    <div className="relative rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-emerald-950/50 via-slate-950 to-indigo-950/40 p-4 pr-10 shadow-lg shadow-emerald-900/20">
+    <div className="relative rounded-2xl border border-primary/40 bg-gradient-to-br from-emerald-950/50 via-slate-950 to-indigo-950/40 p-4 pr-10 shadow-lg shadow-emerald-900/20">
       <button
         type="button"
         aria-label="Dismiss"
@@ -28,20 +28,20 @@ export function BetaWelcomeBanner() {
       >
         <X className="h-4 w-4" />
       </button>
-      <div className="flex items-center gap-2 text-emerald-400 text-xs uppercase tracking-widest font-medium mb-2">
+      <div className="flex items-center gap-2 text-primary text-xs uppercase tracking-widest font-medium mb-2">
         <Sparkles className="h-4 w-4" />
         New in this beta
       </div>
       <p className="text-sm text-foreground/90 leading-relaxed mb-3">
         Journey path, rankings with night &amp; dawn boards, 14 languages. Tap the header to browse all tools.{' '}
-        <Link href="/beta" className="text-emerald-400 hover:underline">
+        <Link href="/beta" className="text-primary hover:underline">
           Beta guide →
         </Link>
       </p>
       <div className="flex flex-wrap gap-2">
         <Link
           href="/leaderboard"
-          className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-300 hover:bg-emerald-500/20"
+          className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/20"
         >
           <Trophy className="h-3.5 w-3.5" />
           Rankings

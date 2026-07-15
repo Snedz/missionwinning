@@ -19,10 +19,10 @@ export function TrackGpsLockedPreview() {
   const { t } = useTranslation();
 
   return (
-    <Card className="content-card border-emerald-500/20">
+    <Card className="content-card border-primary/40">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <MapPin className="h-4 w-4 text-emerald-400" />
+          <MapPin className="h-4 w-4 text-primary" />
           {t('trackGpsTitle', { defaultValue: 'GPS track (Premium)' })}
         </CardTitle>
       </CardHeader>
@@ -41,7 +41,7 @@ export function TrackGpsLockedPreview() {
             {t('trackGpsPreviewChart', { defaultValue: 'Live pace chart while you move' })}
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-2 text-center text-sm rounded-lg border border-emerald-500/20 bg-emerald-950/20 p-3">
+        <div className="grid grid-cols-3 gap-2 text-center text-sm rounded-lg border border-primary/40 bg-primary/10 p-3">
           <div>
             <div className="font-bold tabular-nums">2</div>
             <div className="text-xs text-muted-foreground">

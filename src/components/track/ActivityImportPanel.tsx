@@ -51,7 +51,7 @@ export function ActivityImportPanel({ onImported }: Props) {
     <Card className="content-card border-dashed border-border/60">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <Upload className="h-4 w-4 text-emerald-400" />
+          <Upload className="h-4 w-4 text-primary" />
           {t('trackImportTitle', { defaultValue: 'Import activities (JSON)' })}
         </CardTitle>
         <CardDescription>

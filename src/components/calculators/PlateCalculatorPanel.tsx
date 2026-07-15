@@ -77,7 +77,7 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
           </div>
         </div>
 
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 p-4 space-y-3">
+        <div className="rounded-xl border border-primary/40 bg-primary/10 p-4 space-y-3">
           <div className="text-sm text-muted-foreground">
             {t('calcPlatePerSide', { defaultValue: 'Per side' })}
           </div>
@@ -86,7 +86,7 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
               {result.perSide.map((plate, i) => (
                 <span
                   key={`${plate}-${i}`}
-                  className="inline-flex items-center rounded-lg border border-emerald-500/40 bg-emerald-950/40 px-3 py-1.5 text-sm font-semibold tabular-nums text-emerald-300"
+                  className="inline-flex items-center rounded-lg border border-primary/40 bg-primary/10 px-3 py-1.5 text-sm font-semibold tabular-nums text-primary"
                 >
                   {plate}
                   {unit}
@@ -107,7 +107,7 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
             })}
           </div>
           {result.remainder !== 0 && (
-            <div className="text-xs text-amber-400">
+            <div className="text-xs text-status-warn">
               {t('calcPlateRemainder', {
                 remainder: result.remainder,
                 unit,

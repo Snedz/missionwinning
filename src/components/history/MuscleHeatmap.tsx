@@ -13,10 +13,10 @@ type Props = {
 
 function heatColor(intensity: number, daysSince: number): string {
   if (intensity <= 0 && daysSince >= 99) return 'bg-muted/30 border-border/40';
-  if (intensity <= 0) return 'bg-emerald-950/20 border-emerald-500/20';
+  if (intensity <= 0) return 'bg-primary/10 border-primary/40';
   if (intensity >= 0.75) return 'bg-amber-500/35 border-amber-500/50';
-  if (intensity >= 0.4) return 'bg-emerald-500/25 border-emerald-500/40';
-  return 'bg-emerald-500/10 border-emerald-500/25';
+  if (intensity >= 0.4) return 'bg-primary/25 border-primary/40';
+  return 'bg-primary/10 border-primary/40';
 }
 
 export function MuscleHeatmap({ cells, windowDays }: Props) {

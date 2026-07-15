@@ -38,6 +38,10 @@ import {
   type BundlePlanId,
 } from "@/lib/bundleConfig";
 import { BUNDLE_PILLAR_I18N } from "@/i18n/bundleLocales";
+import {
+  PREMIUM_INVENTORY,
+  PREMIUM_RECIPE_COUNT,
+} from "@/data/premiumInventory";
 
 const PILLAR_ICONS: Record<string, LucideIcon> = {
   train: Dumbbell,
@@ -148,6 +152,29 @@ export function BundlePage() {
               'Free tracker stays free. Bundle unlocks Coach, deeper Fuel/Move/Mind/Learn — never required to log workouts.',
           })}
         </p>
+        <ul className="flex flex-wrap gap-2 text-[11px] text-muted-foreground">
+          <li className="rounded-full border border-border/50 px-2.5 py-1">
+            {t('bundleProofRecipes', {
+              count: PREMIUM_RECIPE_COUNT,
+              defaultValue: `${PREMIUM_RECIPE_COUNT} premium recipes`,
+            })}
+          </li>
+          <li className="rounded-full border border-border/50 px-2.5 py-1">
+            {t('bundleProofMind', {
+              count: PREMIUM_INVENTORY.mindSessions,
+              defaultValue: `${PREMIUM_INVENTORY.mindSessions} Mind sessions`,
+            })}
+          </li>
+          <li className="rounded-full border border-border/50 px-2.5 py-1">
+            {t('bundleProofMove', {
+              count: PREMIUM_INVENTORY.moveFlows,
+              defaultValue: `${PREMIUM_INVENTORY.moveFlows} Move flows`,
+            })}
+          </li>
+          <li className="rounded-full border border-border/50 px-2.5 py-1">
+            {t('bundleProofCoach', { defaultValue: 'AI weekly plan + GPS Track' })}
+          </li>
+        </ul>
       </div>
 
       {checkoutSuccess && !premiumLoading && (

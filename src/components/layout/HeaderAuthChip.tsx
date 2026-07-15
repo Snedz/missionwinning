@@ -24,7 +24,7 @@ export function HeaderAuthChip() {
     <Link
       href="/profile"
       onClick={(e) => e.stopPropagation()}
-      className="inline-flex items-center gap-1.5 shrink-0 rounded-full border border-emerald-500/35 bg-emerald-950/30 px-3 py-1.5 text-xs font-medium text-emerald-400 hover:bg-emerald-950/50 transition-colors min-h-[36px]"
+      className="inline-flex items-center gap-1.5 shrink-0 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 transition-colors min-h-[36px]"
     >
       <User className="h-3.5 w-3.5" />
       {t('headerSignIn', { defaultValue: 'Sign in' })}

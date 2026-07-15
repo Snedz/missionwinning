@@ -130,9 +130,9 @@ export function TodayProgressSection({
               const groupLabel = muscleGroupLabel(g, t);
               const matchingEx = EXERCISES.filter(e => e.muscleGroups.includes(g)).slice(0, 2);
               return (
-                <div key={g} className={`p-3 rounded border ${isPrime ? 'border-emerald-500/40 bg-emerald-950/10' : 'border-border/60'}`}>
+                <div key={g} className={`p-3 rounded border ${isPrime ? 'border-primary/40 bg-primary/10' : 'border-border/60'}`}>
                   <div className="font-medium">{groupLabel}</div>
-                  <div className={isPrime ? "text-emerald-400" : "text-muted-foreground"}>
+                  <div className={isPrime ? "text-primary" : "text-muted-foreground"}>
                     {r.days === 99
                       ? t('todayNoRecentData', { defaultValue: 'No recent data' })
                       : `${t('todayDaysRest', { days: r.days, defaultValue: `${r.days}d rest` })} — ${t(r.statusKey, { defaultValue: r.statusKey })}`}
@@ -224,7 +224,7 @@ export function TodayProgressSection({
         </Card>
 
         {/* Last Assessment + Recent Pillar Wins (cloud loaded) - free core visibility + functional */}
-        <Card className="border-emerald-500/20">
+        <Card className="border-primary/40">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Target className="h-4 w-4" /> {t('todayAssessmentCardTitle', { defaultValue: 'Last Assessment & Recent Pillar Wins' })}
@@ -407,7 +407,7 @@ export function TodayProgressSection({
               )}
             </span>
           </div>
-          <div className={`flex items-start gap-2 ${dawnSessions >= 3 ? 'font-medium text-amber-300' : ''}`}>
+          <div className={`flex items-start gap-2 ${dawnSessions >= 3 ? 'font-medium text-status-warn' : ''}`}>
             {dawnSessions >= 3 ? (
               <Sunrise className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
             ) : (
@@ -421,7 +421,7 @@ export function TodayProgressSection({
               {dawnSessions > 0 && (
                 <>
                   {' · '}
-                  <a href="/leaderboard?board=dawns-early-light" className="text-amber-400 hover:underline">
+                  <a href="/leaderboard?board=dawns-early-light" className="text-status-warn hover:underline">
                     {t('todayRankings', { defaultValue: 'Rankings' })}
                   </a>
                 </>
@@ -478,7 +478,7 @@ export function TodayProgressSection({
 
       {/* PWA Install Banner (kept, now in context of daily use) */}
       {typeof window !== 'undefined' && !window.matchMedia('(display-mode: standalone)').matches && (
-        <div className="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded text-sm flex items-center justify-between">
+        <div className="p-3 bg-primary/10 border border-primary/40 rounded text-sm flex items-center justify-between">
           <span>{t('todayInstallPwa', { defaultValue: 'Install Mission Winning for offline use anywhere (PWA).' })}</span>
           <Button size="sm" variant="outline" onClick={() => {
             const mw = window as MwWindow;

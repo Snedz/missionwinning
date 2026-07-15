@@ -155,8 +155,8 @@ export function FitnessTestRunner() {
             </p>
           </div>
           {classRank && (
-            <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-3 text-center text-sm">
-              <p className="text-emerald-300 font-medium">
+            <div className="rounded-xl border border-primary/40 bg-primary/10 px-4 py-3 text-center text-sm">
+              <p className="text-primary font-medium">
                 {t('pftClassRank', {
                   defaultValue: '#{{rank}} in class {{code}}',
                   rank: classRank.rank,
@@ -165,7 +165,7 @@ export function FitnessTestRunner() {
               </p>
               <Button
                 variant="link"
-                className="text-xs text-emerald-400 p-0 h-auto mt-1"
+                className="text-xs text-primary p-0 h-auto mt-1"
                 onClick={() =>
                   router.push(
                     `/leaderboard?board=presidential-fitness&scope=class&class=${classRank.code}`

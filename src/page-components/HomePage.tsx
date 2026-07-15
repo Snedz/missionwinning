@@ -259,6 +259,7 @@ export function HomePage() {
     } catch {
       return 0;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- proteinDays / history length intentionally re-read localStorage when fuel or sessions change
   }, [workoutHistory.length, pillarStats.proteinDays]);
 
   // Win/Mission Score via util

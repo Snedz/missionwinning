@@ -59,7 +59,7 @@ export function TodayJournalStrip({ entries, locale, className }: Props) {
               'Nothing logged yet — train, fuel, or check in on Mind to start your strip.',
           })}
         </p>
-        <Link href="/mind" className="text-sm text-emerald-400 hover:underline inline-block">
+        <Link href="/mind" className="text-sm text-primary hover:underline inline-block">
           {t('todayJournalViewMind', { defaultValue: 'Log check-in →' })}
         </Link>
       </div>
@@ -75,10 +75,10 @@ export function TodayJournalStrip({ entries, locale, className }: Props) {
           <Link
             key={entry.id}
             href={meta.href}
-            className="flex items-start gap-3 rounded-xl border border-border/40 bg-card/50 px-3 py-2.5 hover:border-emerald-500/30 hover:bg-emerald-950/10 transition-colors"
+            className="flex items-start gap-3 rounded-xl border border-border/40 bg-card/50 px-3 py-2.5 hover:border-primary/40 hover:bg-primary/10 transition-colors"
           >
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted/60">
-              <Icon className="h-4 w-4 text-emerald-400" aria-hidden />
+              <Icon className="h-4 w-4 text-primary" aria-hidden />
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 text-[10px] uppercase tracking-wide text-muted-foreground">

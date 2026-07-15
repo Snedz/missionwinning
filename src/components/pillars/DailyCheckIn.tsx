@@ -59,7 +59,7 @@ function RatingRow({
             type="button"
             onClick={() => onChange(n)}
             className={`flex-1 py-2 rounded text-sm font-medium transition-colors ${
-              value >= n ? 'bg-emerald-600 text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
+              value >= n ? 'bg-primary text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
             {n}
@@ -123,7 +123,7 @@ export function DailyCheckIn() {
         <Button variant="fitness" className="w-full" onClick={handleSave}>
           {saved ? 'Update Today\'s Check-In' : 'Save Check-In'}
         </Button>
-        {saved && <p className="text-xs text-emerald-400 text-center">Saved for today — feeds recovery insights.</p>}
+        {saved && <p className="text-xs text-primary text-center">Saved for today — feeds recovery insights.</p>}
       </CardContent>
     </Card>
   );

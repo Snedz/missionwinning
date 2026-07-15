@@ -26,13 +26,13 @@ export function CoachInsightCard({
   const { t } = useTranslation();
 
   return (
-    <Card className="border-border/60 bg-card/80 backdrop-blur-sm border-emerald-500/20">
+    <Card className="border-border/60 bg-card/80 backdrop-blur-sm border-primary/40">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
-          <Sparkles className="h-4 w-4 text-emerald-400" />
+          <Sparkles className="h-4 w-4 text-primary" />
           {t('todayCoachInsightTitle', { defaultValue: 'Coach insight' })}
           {source === 'llm' && (
-            <span className="text-[10px] font-normal uppercase tracking-wide text-emerald-400/80 border border-emerald-500/30 rounded-full px-2 py-0.5">
+            <span className="text-[10px] font-normal uppercase tracking-wide text-primary/80 border border-primary/40 rounded-full px-2 py-0.5">
               {t('coachAiBadge', { defaultValue: 'AI' })}
             </span>
           )}
