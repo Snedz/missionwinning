@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-15 — App shell static + deferred PostHog (`2026.07-unified.64`)
+
+- Removed `force-dynamic` from `app/(app)/layout` — app routes can static-shell
+- PostHog dynamic-import + init after interaction/2.8s; auth listener idle-deferred
+- Lighthouse mobile: `/` **91**, guide **91**, `/log` **81**, exercises **86**
+
+---
+
 ## 2026-07-15 — i18n bootstrap + deferred hydrate (`2026.07-unified.63`)
 
 - `src/i18n.ts` now boots minimal EN; full multi-lang `*Locales.ts` catalogs load via `hydrateI18nResources` after interaction/2.8s
