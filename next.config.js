@@ -1,24 +1,25 @@
 const { withSentryConfig } = require('@sentry/nextjs');
+const withSerwistInit = require('@serwist/next').default;
 
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-  // Cache documents on client-side navigation too, so pages a user has
-  // visited keep working offline (the core "train anywhere" promise).
-  cacheOnFrontEndNav: true,
-  // Cold-miss navigations while offline land on a branded page instead of
-  // the browser error screen. NOTE: not `/_offline` — App Router treats
-  // underscore-prefixed folders as private (404), which would abort the
-  // whole service-worker install when workbox precaches the fallback.
-  fallbacks: {
-    document: '/offline',
-  },
-  // Disable PWA precache while private gate is active (prevents offline leak of full app).
-  disable:
-    process.env.NODE_ENV === 'development' ||
-    process.env.PRIVATE_MODE === 'true' ||
-    (process.env.NODE_ENV === 'production' && process.env.PRIVATE_MODE !== 'false'),
+/** Disable SW while private gate is on (prevents offline leak of full app). */
+const pwaDisabled =
+  process.env.NODE_ENV === 'development' ||
+  process.env.PRIVATE_MODE === 'true' ||
+  (process.env.NODE_ENV === 'production' && process.env.PRIVATE_MODE !== 'false');
+
+const withSerwist = withSerwistInit({
+  swSrc: 'app/sw.ts',
+  swDest: 'public/sw.js',
+  disable: pwaDisabled,
+  // Cache documents on client-side navigation (train-anywhere offline promise).
+  cacheOnNavigation: true,
+  reloadOnOnline: true,
+  additionalPrecacheEntries: pwaDisabled
+    ? []
+    : [
+        { url: '/offline', revision: `${Date.now()}` },
+        { url: '/manifest.webmanifest', revision: '1' },
+      ],
 });
 
 /** @see PROTECTION.md — enforce in production unless CSP_ENFORCE=false */
@@ -47,6 +48,10 @@ const nextConfig = {
   reactStrictMode: true,
   turbopack: {},
   outputFileTracingRoot: __dirname,
+  // Client needs to know whether to register SW (private gate must not keep a stale worker).
+  env: {
+    NEXT_PUBLIC_PWA_ENABLED: pwaDisabled ? 'false' : 'true',
+  },
   async headers() {
     return [
       {
@@ -57,7 +62,7 @@ const nextConfig = {
   },
 };
 
-const pwaConfig = withPWA(nextConfig);
+const pwaConfig = withSerwist(nextConfig);
 
 const sentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN?.trim();
 const sentryBuildOptions = {

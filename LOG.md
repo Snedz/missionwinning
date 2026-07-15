@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-15 — Serwist PWA + landing idle demos (`2026.07-unified.61`)
+
+- Replaced `next-pwa` with **Serwist** (`@serwist/next`, `app/sw.ts`); SW disabled while private gate on; client unregisters stale workers via `NEXT_PUBLIC_PWA_ENABLED`
+- Landing below-fold demos idle-deferred for first paint
+- Build verified: `PRIVATE_MODE=false` emits `public/sw.js` (gitignored)
+
+---
+
 ## 2026-07-15 — Further improvement track B (`2026.07-unified.60`)
 
 **Eng (Horizon 0–1 prep):** Today first-paint deferrals (dynamic journey/coach chrome; lazy justGo/trends/weekRecap); sync merge unit tests (`workoutMerge`, `journeySync`, `coachSync`); `ActiveExerciseCard` extract; doc next-task pointers.

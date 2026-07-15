@@ -4,6 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
@@ -21,17 +22,17 @@ const HeroDemo = dynamic(
 
 const JourneyScroll = dynamic(
   () => import('@/components/landing/JourneyScroll').then((m) => m.JourneyScroll),
-  { ssr: false }
+  { ssr: false, loading: () => <div className="min-h-[12rem]" aria-hidden /> }
 );
 
 const CoachAdaptDemo = dynamic(
   () => import('@/components/landing/CoachAdaptDemo').then((m) => m.CoachAdaptDemo),
-  { ssr: false }
+  { ssr: false, loading: () => <div className="min-h-[8rem]" aria-hidden /> }
 );
 
 const GuideTeaser = dynamic(
   () => import('@/components/landing/GuideTeaser').then((m) => m.GuideTeaser),
-  { ssr: false }
+  { ssr: false, loading: () => <div className="min-h-[8rem]" aria-hidden /> }
 );
 
 const FAQ = LANDING_FAQ_KEYS;
@@ -58,6 +59,18 @@ const FREE_MANIFEST_KEYS = [
 export function LandingPage() {
   const router = useRouter();
   const { t } = useTranslation();
+  /** Defer interactive demos until idle so first paint stays lean (Lighthouse). */
+  const [belowFoldReady, setBelowFoldReady] = useState(false);
+
+  useEffect(() => {
+    const ready = () => setBelowFoldReady(true);
+    if (typeof requestIdleCallback !== 'undefined') {
+      const id = requestIdleCallback(ready, { timeout: 1800 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(ready, 200);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -174,18 +187,18 @@ export function LandingPage() {
         </div>
       </header>
 
-      <JourneyScroll />
+      {belowFoldReady ? <JourneyScroll /> : <div id="path" className="min-h-[12rem]" aria-hidden />}
 
       <section className="border-b border-border/60 bg-muted/10">
         <div className="mx-auto max-w-6xl px-5 py-16 text-center">
           <h2 className="display-section mb-6">
             {t('landingCoachDemoTitle', { defaultValue: 'Plans that adapt when life happens' })}
           </h2>
-          <CoachAdaptDemo />
+          {belowFoldReady ? <CoachAdaptDemo /> : <div className="min-h-[8rem]" aria-hidden />}
         </div>
       </section>
 
-      <GuideTeaser />
+      {belowFoldReady ? <GuideTeaser /> : <div className="min-h-[8rem]" aria-hidden />}
 
       {/* ── Free manifest ───────────────────────────────────────────── */}
       <section className="border-b border-border/60">
