@@ -7,9 +7,8 @@ import { OnlineStatusBanner } from '@/components/layout/OnlineStatusBanner';
 import { identifyUser, initAnalytics, resetAnalyticsIdentity, track } from '@/lib/analytics';
 import { supabase } from '@/lib/supabase';
 
-// Initialize i18next + browser language detector + all our global resources (EN/ES/FR/PT/RU)
-// This must run on the client only.
-import '@/i18n';
+// Bootstrap i18next (minimal EN). Full locale catalogs hydrate after idle.
+import i18n, { hydrateI18nResources } from '@/i18n';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -63,6 +62,28 @@ if (typeof window !== 'undefined') {
 }
 
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
+  // Hydrate full i18n catalogs after first interaction or a short delay so LCP/TBT
+  // are not competing with multi-language *Locales.ts chunks.
+  useEffect(() => {
+    let done = false;
+    const run = () => {
+      if (done) return;
+      done = true;
+      void hydrateI18nResources(i18n).catch(() => {
+        /* keep bootstrap strings */
+      });
+    };
+    const onInteract = () => run();
+    window.addEventListener('pointerdown', onInteract, { once: true, passive: true });
+    window.addEventListener('keydown', onInteract, { once: true });
+    const t = setTimeout(run, 2800);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener('pointerdown', onInteract);
+      window.removeEventListener('keydown', onInteract);
+    };
+  }, []);
+
   // Register Serwist SW only when builds enable it (PRIVATE_MODE=false).
   // When gated, unregister any stale workers so the private app is not offline-cached.
   useEffect(() => {

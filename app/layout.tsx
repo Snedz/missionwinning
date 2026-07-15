@@ -4,16 +4,23 @@ import '../src/index.css';
 import { Toaster } from '@/components/ui/toaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+  // Limit axes for faster first paint (body + medium UI).
+  weight: ['400', '500', '600', '700'],
+});
 const barlowCondensed = Barlow_Condensed({
   subsets: ['latin'],
-  weight: ['600', '700'],
+  // Display titles use bold; single weight keeps the display font small.
+  weight: ['700'],
   variable: '--font-display',
   display: 'swap',
 });
 const plexMono = IBM_Plex_Mono({
   subsets: ['latin'],
-  weight: ['400', '500'],
+  weight: ['400'],
   variable: '--font-mono',
   display: 'swap',
 });

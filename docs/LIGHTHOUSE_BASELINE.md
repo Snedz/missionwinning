@@ -13,25 +13,22 @@ Routes checked: `/`, `/log`, `/guide/human-performance`, `/exercises/squats`.
 
 Budget: **≥90** performance, accessibility, best-practices (soft warning in CI — see `.github/workflows/ci.yml`).
 
-## Snapshot (2026-07-15 — local prod, `PRIVATE_MODE=false`, build `.61`+ lean Today)
-
-Mobile Lighthouse after Serwist, landing idle demos, Today lean/full split, AppLayout deferrals:
+## Snapshot (2026-07-15 — i18n hydrate + lean Today, build `.63`)
 
 | Route | Performance | Accessibility | Best practices | Notes |
 |-------|-------------|---------------|----------------|-------|
-| `/` | **87** | 94 | 100 | +8 vs 2026-07-11 (79) |
-| **`/log`** | **79–80** | **96** | **100** | +1–2 vs 78; still under 90 |
-| `/guide/human-performance` | **88–94** | 100 | 100 | Meets/near budget |
+| `/` | **87** | 94 | 100 | +8 vs Jul 11 (79); idle demos + fonts |
+| **`/log`** | **78–80** | **96** | **100** | Lean shell + deferred i18n; still shell-bound |
+| `/guide/human-performance` | **88–94** | 100 | 100 | Near/meets budget |
 | `/exercises/squats` | **80–82** | 96 | 100 | Public SEO |
 
 ### Residual plan to hit `/log` ≥90
 
-Dominant cost is **app shell** (`force-dynamic` `(app)` layout + full i18n + AppHeader/MobileNav + client boundary), not the lean hero alone. Next cuts (post-beta if needed):
-
-1. Split marketing vs app chrome; avoid loading full i18n resources on first paint (namespace lazy load).
-2. Consider static shell for `/log` without `force-dynamic` where safe.
-3. Font subset / fewer display weights on first paint.
-4. Profile Sentry/PostHog third-party cost when env keys set in prod.
+1. ~~Lazy-load full i18n catalogs~~ — shipped (bootstrap + `hydrateI18nResources`)
+2. ~~Lean Today split~~ — shipped
+3. Consider static or partially static `(app)` layout (drop blanket `force-dynamic` where safe)
+4. Lazy third-party (Sentry/PostHog) when keys present
+5. Further AppHeader/MobileNav split for cold Basic path
 
 *CI job `lighthouse-budget` remains soft-warning. Target `/log` → 90 after public activation data + shell work.*
 
