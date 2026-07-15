@@ -17,8 +17,6 @@ import { countSessionsInHourRange } from "@/lib/leaderboard/types";
 import { getTodaysWorkout } from "@/lib/todaysWorkout";
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
-import { BetaWelcomeBanner } from "@/components/journey/BetaWelcomeBanner";
-import { CommandersIntent } from "@/components/journey/CommandersIntent";
 import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { TodayDashboardHeader } from "@/components/today/TodayDashboardHeader";
 import { TodayPageHeader } from "@/components/today/TodayPageHeader";
@@ -28,7 +26,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { buildTodayTrends, gatherJournalEntries } from "@/lib/todayTrends";
 import { loadTodayDashboardPrefs, type TodayDashboardPrefs, type TodaySectionId } from "@/lib/todayDashboardPrefs";
 import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
@@ -36,11 +33,23 @@ import { getTodayLayout } from "@/hooks/useTodayLayout";
 import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
 import { useCoachPlan } from "@/hooks/useCoachPlan";
 import { useUnits } from "@/hooks/useUnits";
-import { buildJustGoSession, muscleFreshnessRows } from "@/lib/justGoSession";
-import { MuscleFreshnessStrip } from "@/components/today/MuscleFreshnessStrip";
 import { muscleGroupLabel } from "@/lib/readinessDisplay";
 import { track } from "@/lib/analytics";
-import { buildWeekRecap } from "@/lib/weekRecap";
+
+const BetaWelcomeBanner = dynamic(
+  () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
+  { ssr: false }
+);
+
+const CommandersIntent = dynamic(
+  () => import('@/components/journey/CommandersIntent').then((m) => m.CommandersIntent),
+  { ssr: false }
+);
+
+const MuscleFreshnessStrip = dynamic(
+  () => import('@/components/today/MuscleFreshnessStrip').then((m) => m.MuscleFreshnessStrip),
+  { ssr: false }
+);
 
 const CoachTodayCard = dynamic(
   () => import('@/components/coach/CoachTodayCard').then((m) => m.CoachTodayCard),
@@ -227,7 +236,9 @@ export function HomePage() {
   // Slim path: stored muscleGroups only — no sync EXERCISES import on first paint.
   const [readiness, setReadiness] = useState(() => computeReadinessFromHistory(workoutHistory));
   const recommendedFocus = useMemo(() => getRecommendedFocus(readiness), [readiness]);
-  const freshnessRows = useMemo(() => muscleFreshnessRows(readiness), [readiness]);
+  const [freshnessRows, setFreshnessRows] = useState<
+    { group: import('@/lib/muscleGroups').MuscleGroup; days: number; recommended: boolean }[]
+  >([]);
 
   useEffect(() => {
     setReadiness(computeReadinessFromHistory(workoutHistory));
@@ -244,6 +255,18 @@ export function HomePage() {
       cancelled = true;
     };
   }, [workoutHistory]);
+
+  // Defer muscle freshness rows until below-fold (saves justGoSession import on first paint).
+  useEffect(() => {
+    if (!belowFoldReady && !layout.showDashboard) return;
+    let cancelled = false;
+    void import('@/lib/justGoSession').then(({ muscleFreshnessRows }) => {
+      if (!cancelled) setFreshnessRows(muscleFreshnessRows(readiness));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [belowFoldReady, layout.showDashboard, readiness]);
 
   // High protein days (from nutrition logs) — only needed for score / below-fold
   const highProteinDays = useMemo(() => {
@@ -360,14 +383,30 @@ export function HomePage() {
     pillarStats,
   ]);
 
-  const todayTrends = useMemo(
-    () => buildTodayTrends(workoutHistory, i18n.language),
-    [workoutHistory, i18n.language]
-  );
-  const journalEntries = useMemo(
-    () => gatherJournalEntries(workoutHistory, 8),
-    [workoutHistory]
-  );
+  const [todayTrends, setTodayTrends] = useState<
+    import('@/lib/todayTrends').TodayTrends | undefined
+  >(undefined);
+  const [journalEntries, setJournalEntries] = useState<
+    import('@/lib/todayTrends').JournalEntry[]
+  >([]);
+  const [weekRecap, setWeekRecap] = useState<import('@/lib/weekRecap').WeekRecap | null>(null);
+
+  useEffect(() => {
+    if (!belowFoldReady) return;
+    let cancelled = false;
+    void Promise.all([
+      import('@/lib/todayTrends'),
+      import('@/lib/weekRecap'),
+    ]).then(([{ buildTodayTrends, gatherJournalEntries }, { buildWeekRecap }]) => {
+      if (cancelled) return;
+      setTodayTrends(buildTodayTrends(workoutHistory, i18n.language));
+      setJournalEntries(gatherJournalEntries(workoutHistory, 8));
+      setWeekRecap(buildWeekRecap(workoutHistory));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [belowFoldReady, workoutHistory, i18n.language]);
 
 
   // Onboarding via I-Day journey (Profile fields synced from /welcome)
@@ -383,27 +422,42 @@ export function HomePage() {
     const trainReady =
       action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned';
     if (trainReady) {
-      const session = buildJustGoSession({
-        focus: recommendedFocus,
-        readiness,
-        history: workoutHistory,
-        units,
-        equipment: userEquip,
-        coachToday: todaySession
-          ? {
-              name: todaySession.name,
-              status: todaySession.status,
-              focusGroups: todaySession.focusGroups,
-              exercises: todaySession.exercises,
-            }
-          : null,
+      void import('@/lib/justGoSession').then(({ buildJustGoSession }) => {
+        const session = buildJustGoSession({
+          focus: recommendedFocus,
+          readiness,
+          history: workoutHistory,
+          units,
+          equipment: userEquip,
+          coachToday: todaySession
+            ? {
+                name: todaySession.name,
+                status: todaySession.status,
+                focusGroups: todaySession.focusGroups,
+                exercises: todaySession.exercises,
+              }
+            : null,
+        });
+        if (session.exercises.length > 0) {
+          startWorkout(session.name, session.exercises);
+          track('just_go_started', { source: session.source, focus: session.focusGroup });
+          router.push('/active');
+          return;
+        }
+        if (action.startWorkout) {
+          startWorkout(
+            action.startWorkout.name,
+            action.startWorkout.exercises.map((e) => ({
+              exerciseId: e.exerciseId,
+              sets: e.sets,
+            }))
+          );
+          router.push('/active');
+          return;
+        }
+        router.push(action.href);
       });
-      if (session.exercises.length > 0) {
-        startWorkout(session.name, session.exercises);
-        track('just_go_started', { source: session.source, focus: session.focusGroup });
-        router.push('/active');
-        return;
-      }
+      return;
     }
     if (action.startWorkout) {
       startWorkout(
@@ -629,14 +683,11 @@ export function HomePage() {
   }
 
   // Week recap — Sunday ceremony or mid-week pulse when active.
-  if (belowFoldReady) {
-    const weekRecap = buildWeekRecap(workoutHistory);
-    if (weekRecap.hasActivity || weekRecap.isWeekEnd) {
-      staggerBlocks.push({
-        key: 'week-recap',
-        node: <TodayWeekRecapCard recap={weekRecap} />,
-      });
-    }
+  if (belowFoldReady && weekRecap && (weekRecap.hasActivity || weekRecap.isWeekEnd)) {
+    staggerBlocks.push({
+      key: 'week-recap',
+      node: <TodayWeekRecapCard recap={weekRecap} />,
+    });
   }
 
   // Secondary surfaces only after idle — never compete with JourneyHero.

@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-14** (S-Tier `.58` + [ORCHESTRATION.md](ORCHESTRATION.md) horizons).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-15** (build `2026.07-unified.59` + further-improvement track B).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -90,4 +90,4 @@ Code shipped; legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
 
 ## Build label
 
-Current: see [`src/lib/buildInfo.ts`](src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after deploy.
+Current: `2026.07-unified.59` — see [`src/lib/buildInfo.ts`](src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after deploy.
