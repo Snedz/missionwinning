@@ -17,20 +17,44 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. C
 | `guide_read` | Public guide chapter viewed |
 | `exercise_page_viewed` | Public exercise page viewed |
 | `public_cta_clicked` | CTA on public SEO pages |
+| `waitlist_joined` | Landing capture / waitlist (`product: landing`) |
 | `iday_started` / `iday_completed` | Journey onboarding |
 | `first_workout_completed` / `workout_completed` | Train retention |
+| `class_joined` | School class join |
+| `checkout_clicked` | Bundle / Unlock checkout start (inherits UTM super-props) |
 | `coach_taster_locked` | Free Coach week exhausted → upgrade moment |
 | `checkout_completed` | Return from Stripe on `/bundle?checkout=success` |
 
-### Suggested funnel (PostHog → Insights → Funnel)
+### Primary funnel (PostHog → Insights → Funnel) — build once post-flip
 
-1. `$pageview` where path starts with `/guide` or `/exercises`
-2. `public_cta_clicked`
+**Setup checklist (&lt;15 min):**
+
+1. Confirm `NEXT_PUBLIC_POSTHOG_KEY` on Production + users can **Allow analytics** (privacy default is off until allow).
+2. Insights → New funnel → ordered steps:
+
+| Step | Event / filter |
+|------|----------------|
+| 1 | `$pageview` (optional: path = `/` or starts with `/guide`) |
+| 2 | `waitlist_joined` **or** `iday_started` (two funnels if you want split: list vs product) |
+| 3 | `iday_completed` |
+| 4 | `first_workout_completed` |
+| 5 | `workout_completed` (repeat) for retention |
+
+**Money funnel (separate):**
+
+1. `bundle_viewed`  
+2. `checkout_clicked`  
+3. `checkout_completed`  
+
+**Attribution:** first-touch `utm_source` / `utm_medium` / `utm_campaign` / `landing_path` are PostHog super-properties after consent (`attribution.ts`). Breakdown funnels by `utm_source`.
+
+**Retention:** weekly cohort on `workout_completed` (repeat training) — year-one #1 metric.
+
+**SEO organic funnel (optional):**
+
+1. `$pageview` where path starts with `/guide` or `/exercises`  
+2. `public_cta_clicked`  
 3. `iday_started`
-4. `iday_completed`
-5. `first_workout_completed`
-
-**Retention:** weekly cohort on `workout_completed` (repeat training).
 
 ---
 

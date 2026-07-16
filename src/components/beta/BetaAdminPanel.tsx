@@ -71,6 +71,21 @@ export function BetaAdminPanel({ enabled }: Props) {
               Phases: I-Day {metrics.phaseCounts['i-day']} · Basic {metrics.phaseCounts.basic} · Readiness{' '}
               {metrics.phaseCounts.readiness} · Commissioned {metrics.phaseCounts.commissioned}
             </div>
+            {metrics.leadSourceTop && metrics.leadSourceTop.length > 0 ? (
+              <div className="rounded-lg border border-border/50 p-3 text-xs space-y-1.5">
+                <div className="font-semibold text-foreground">
+                  Lead sources ({metrics.leadTotal ?? 0} rows, top {metrics.leadSourceTop.length})
+                </div>
+                <ul className="space-y-1 font-mono text-muted-foreground">
+                  {metrics.leadSourceTop.map((row) => (
+                    <li key={row.source} className="flex justify-between gap-2">
+                      <span className="truncate">{row.source}</span>
+                      <span className="tabular-nums text-foreground">{row.count}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             <div
               className={`rounded-lg border p-3 text-xs ${
                 metrics.launchReady

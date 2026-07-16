@@ -89,6 +89,30 @@ export async function computeBetaFunnelAggregate(): Promise<BetaFunnelAggregate 
     iDayCompletionPct >= targets.iDayPct &&
     basicCompletePct >= targets.launchBasicPct;
 
+  // Waitlist / lead source breakdown (package_interest) — best-effort.
+  let leadSourceTop: Array<{ source: string; count: number }> = [];
+  let leadTotal = 0;
+  try {
+    const { data: leadRows, error: leadErr } = await admin
+      .from('leads')
+      .select('package_interest')
+      .limit(2000);
+    if (!leadErr && leadRows) {
+      leadTotal = leadRows.length;
+      const counts = new Map<string, number>();
+      for (const row of leadRows) {
+        const src = String(row.package_interest || 'general').slice(0, 80);
+        counts.set(src, (counts.get(src) ?? 0) + 1);
+      }
+      leadSourceTop = [...counts.entries()]
+        .map(([source, count]) => ({ source, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 12);
+    }
+  } catch {
+    /* column missing pre-migration or table empty — non-fatal */
+  }
+
   return {
     totalProfiles,
     signedUpLast14Days,
@@ -104,6 +128,8 @@ export async function computeBetaFunnelAggregate(): Promise<BetaFunnelAggregate 
     targets,
     launchReady,
     launchNotes,
+    leadSourceTop,
+    leadTotal,
   };
 }
 

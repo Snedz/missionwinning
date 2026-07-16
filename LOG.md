@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Wave 3 launch verification (`2026.07-unified.82`)
+
+- `npm run growth-smoke` — leads source, unsub bad token, welcome 401, /guide public
+- Beta panel: lead `package_interest` top sources from service role
+- LAUNCH_READY: full migration SQL + verify query + ordered flip sequence
+- PUBLIC_FLIP + SEO_ANALYTICS funnel checklist; ORCHESTRATION/VISION/PLAN truth-up
+
+---
+
 ## 2026-07-16 — Marketing & growth Wave 2 (`2026.07-unified.81`)
 
 - Fix lead source bug (`source` → `package_interest`); utm/referrer schema + migration

@@ -7,12 +7,16 @@ This is the **agent-prepared** one-pager for the technical smoke after public mo
 
 ---
 
-**Wave 2 prep:** see [docs/LAUNCH_READY.md](LAUNCH_READY.md) for greened conversion/SEO/email items before flip.
+**Wave 2–3 prep:** [LAUNCH_READY.md](LAUNCH_READY.md) — conversion, SEO, email, growth smoke, ordered flip sequence.
 
 ## Pre-flip (gate still on)
 
 - [ ] CI green on `master` (`build-and-test` + `e2e-critical`)
 - [ ] Profile footer build label matches [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts)
+- [ ] Growth migration applied (verify 6 columns) — [LAUNCH_READY.md](LAUNCH_READY.md) §1
+- [ ] `NEXT_PUBLIC_SITE_URL=https://www.missionwinning.com` on Production
+- [ ] `RESEND_FROM` is a verified domain (not `resend.dev`) if sending mail
+- [ ] `SMOKE_BASE_URL=… npm run growth-smoke` green against staging/prod
 - [ ] `LAUNCH_STRICT=true npm run launch-verify` against prod (with access secret)
 - [ ] Stripe test path once verified ([STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md))
 
@@ -20,8 +24,8 @@ This is the **agent-prepared** one-pager for the technical smoke after public mo
 
 ## Flip (founder only)
 
-1. Vercel Production: `PRIVATE_MODE=false`
-2. Confirm `NEXT_PUBLIC_PWA_ENABLED` path builds with SW (`app/sw.ts` / Serwist) — build uses `PRIVATE_MODE=false` so SW is not disabled
+1. Vercel Production: `PRIVATE_MODE=false` (+ confirm `NEXT_PUBLIC_SITE_URL` www)
+2. Confirm Serwist SW builds when gate is off (`app/sw.ts`) — `PRIVATE_MODE=false` so SW is not disabled
 3. Redeploy from `master`
 
 ---
@@ -43,7 +47,22 @@ SMOKE_EXPECT_PWA=true \
 npm run launch-verify
 ```
 
+### 1b. Growth + capture
+
+```bash
+SMOKE_BASE_URL=https://www.missionwinning.com npm run growth-smoke
+# Landing capture: open / → scroll to launch list → submit test email
+# Confirm lead row package_interest = landing-updates (Supabase)
+```
+
 ### 2. Offline + service worker
+
+**Assert SW file after public build:**
+
+```bash
+curl -sfI https://www.missionwinning.com/sw.js | head -5
+# Expect 200 (or 304), content-type javascript — not 404
+```
 
 On a real phone (production URL):
 

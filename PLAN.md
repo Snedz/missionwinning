@@ -161,14 +161,15 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 **Long-term sequencing (horizons 0–3, role split, kill criteria):** [ORCHESTRATION.md](ORCHESTRATION.md) — read this before starting a multi-week initiative.
 
-**Agent H1 eng prep:** complete (Lighthouse ≥90, Serwist, sync tests, logger E2E, Active/Today decomp, `src/lib/workout/`). Hygiene + public-flip checklist: [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md).
+**Agent H1 eng prep:** complete. **Growth Wave 2–3:** leads/email/SEO + `npm run growth-smoke` + [docs/LAUNCH_READY.md](docs/LAUNCH_READY.md). Flip checklist: [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md).
 
-1. **Horizon 0 — Phase H founder ops** — Vercel secrets + Stripe + recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2–4) — **current bottleneck**
+1. **Horizon 0 — Phase H founder ops** — migration + Vercel secrets + Stripe + recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/LAUNCH_READY.md](docs/LAUNCH_READY.md)) — **current bottleneck**
 2. **Hit beta gates** — 10+ users, I-Day ≥80%, BT ≥60% — then `PRIVATE_MODE=false` ([docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md), [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md))
-3. **Horizon 1 — Phase I1** — live Stripe payment links + webhook verify ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)); offline/SW/Search Console smoke
-4. ~~Lighthouse + Serwist + logger decomp~~ — **shipped** ([docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md))
-5. **Horizon 2 — week-4 retention** — measure before new features ([docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md))
+3. **Horizon 1 — Phase I1** — live Stripe + webhook verify ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)); offline/SW/Search Console smoke
+4. ~~Lighthouse + Serwist + growth smoke~~ — **shipped** ([docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md); `npm run growth-smoke`)
+5. **Horizon 2 — week-4 retention** — measure before new features ([docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md), funnel in [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md))
 6. **Horizon 3 — i18n / SEO / TWA** — only after PMF (es/fr/de body already partial)
+7. **Agent idle only** — Profile/Nutrition extract, landing i18n Batch C — not launch-blocking
 
 ---
 
