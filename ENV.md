@@ -41,6 +41,25 @@ Add these for **Production** and **Preview**:
 | `UPSTASH_REDIS_REST_URL` | Optional | Distributed rate limits (Vercel serverless) |
 | `UPSTASH_REDIS_REST_TOKEN` | Optional | Pair with Upstash URL above |
 | `PRIVATE_ALLOW_QUERY_ACCESS` | Optional | Set `true` only to allow `/?access=` bypass in production (deprecated) |
+| `COACH_LLM_API_URL` | Optional | OpenAI-compatible chat completions URL. Prefer SpaceXAI/xAI: `https://api.x.ai/v1/chat/completions`. Omit for rules-only coach |
+| `COACH_LLM_API_KEY` | Optional | Provider API key (e.g. `xai-…` from [console.x.ai](https://console.x.ai/)). **Never** `NEXT_PUBLIC_` |
+| `COACH_LLM_MODEL` | Optional | Model slug (e.g. `grok-4.5` — confirm on [docs.x.ai/developers/models](https://docs.x.ai/developers/models)) |
+| `COACH_LLM_REQUIRE_ZDR` | Optional | `true` recommended in production when using xAI: fail closed unless response header `x-zero-data-retention: true` |
+
+### Optional AI Coach + Zero Data Retention (ZDR)
+
+Free core coach logic is **rules-based** and needs no API key. When you enable optional LLM voice/insight:
+
+1. Create/use an xAI team at [console.x.ai](https://console.x.ai/).
+2. Delete any **Files** / **Collections** on that team (Console blocks Enable while they remain).
+3. **Team Settings → Zero Data Retention (ZDR) → Enable** (team-wide; all keys inherit). Accept the Console acknowledgments.
+4. Confirm **Active** badge and team picker **ZDR** badge.
+5. Create an API key; set the four `COACH_LLM_*` vars above (with `COACH_LLM_REQUIRE_ZDR=true` in production).
+6. Smoke a coach call and confirm the response header `x-zero-data-retention: true` (server logs structured `coach_llm` meta — never prompt bodies).
+
+Canonical docs: [What is Zero Data Retention (ZDR)?](https://docs.x.ai/developers/faq/security#what-is-zero-data-retention-zdr).
+
+**Stay ZDR-compatible:** use only one-shot **chat completions**. Do not add Files, Collections, Batch, deferred completions, or stateful Responses (`store_messages` / `previous_response_id`) on this team.
 
 After adding or changing env vars: **Deployments → Redeploy** (env changes do not apply until redeploy).
 

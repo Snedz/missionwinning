@@ -61,40 +61,14 @@ export async function fetchPlanVoice(
 ): Promise<PlanVoiceResponse> {
   if (!useLlm) return planVoiceFromRules(ctx);
 
-  const apiUrl = process.env.COACH_LLM_API_URL;
-  const apiKey = process.env.COACH_LLM_API_KEY;
-  if (!apiUrl || !apiKey) return planVoiceFromRules(ctx);
-
-  const model = process.env.COACH_LLM_MODEL || 'gpt-4o-mini';
-  const body = {
-    model,
-    messages: [
-      { role: 'system', content: 'Reply with valid JSON only.' },
-      { role: 'user', content: buildPlanVoicePrompt(ctx) },
-    ],
-    max_tokens: 200,
+  const { fetchCoachLlmCompletion } = await import('@/lib/coachLlmClient');
+  const result = await fetchCoachLlmCompletion({
+    system: 'Reply with valid JSON only.',
+    user: buildPlanVoicePrompt(ctx),
+    maxTokens: 200,
     temperature: 0.6,
-  };
-
-  try {
-    const res = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(12_000),
-    });
-    if (!res.ok) return planVoiceFromRules(ctx);
-    const data = (await res.json()) as {
-      choices?: { message?: { content?: string } }[];
-    };
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) return planVoiceFromRules(ctx);
-    const parsed = parsePlanVoiceJson(content);
-    return parsed ?? planVoiceFromRules(ctx);
-  } catch {
-    return planVoiceFromRules(ctx);
-  }
+  });
+  if (!result.ok) return planVoiceFromRules(ctx);
+  const parsed = parsePlanVoiceJson(result.content);
+  return parsed ?? planVoiceFromRules(ctx);
 }

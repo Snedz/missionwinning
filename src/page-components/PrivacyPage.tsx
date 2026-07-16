@@ -14,13 +14,20 @@ const PRIVACY_SECTIONS = [
   {
     id: 'collect',
     key: 'infoPrivacyCollect',
-    listKeys: ['infoPrivacyCollectLi1', 'infoPrivacyCollectLi2', 'infoPrivacyCollectLi3', 'infoPrivacyCollectLi4'],
+    listKeys: [
+      'infoPrivacyCollectLi1',
+      'infoPrivacyCollectLi2',
+      'infoPrivacyCollectLi3',
+      'infoPrivacyCollectLi4',
+      'infoPrivacyCollectLi5',
+    ],
   },
   {
     id: 'use',
     key: 'infoPrivacyUse',
     listKeys: ['infoPrivacyUseLi1', 'infoPrivacyUseLi2', 'infoPrivacyUseLi3', 'infoPrivacyUseLi4'],
   },
+  { id: 'ai-coach', key: 'infoPrivacyAiCoach', bodyKey: 'infoPrivacyAiCoachBody' },
   { id: 'third-parties', key: 'infoPrivacyThirdParties', bodyKey: 'infoPrivacyThirdPartiesBody' },
   {
     id: 'choices',

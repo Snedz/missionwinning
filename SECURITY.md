@@ -60,6 +60,14 @@ See [PROTECTION.md](PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), 
 
 Product analytics are **off until the user allows them** (and respect Do Not Track). Workouts default to device storage. If you find a path that exfiltrates health data without consent, treat it as a **security** report (same email).
 
+### Optional AI Coach + Zero Data Retention (ZDR)
+
+When operators enable the optional coach LLM (`COACH_LLM_*`), prefer **SpaceXAI/xAI** with **team-level Zero Data Retention** enabled in the [xAI Console](https://console.x.ai/) (see [xAI ZDR FAQ](https://docs.x.ai/developers/faq/security#what-is-zero-data-retention-zdr) and [ENV.md](ENV.md)).
+
+- Production should set `COACH_LLM_REQUIRE_ZDR=true` so the app fails closed to rules-based coach unless the response header `x-zero-data-retention` is `true`.
+- Shared client: `src/lib/coachLlmClient.ts` (stateless chat completions only; no prompt/completion body logging).
+- Free core with LLM env unset never calls a third-party model.
+
 ---
 
 ## Safe harbor

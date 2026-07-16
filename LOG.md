@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — SpaceXAI/xAI Zero Data Retention (ZDR) for optional coach LLM (`2026.07-unified.86`)
+
+- Shared `coachLlmClient`: stateless chat completions only; reads `x-zero-data-retention`; `COACH_LLM_REQUIRE_ZDR` fail-closed
+- Prefer SpaceXAI/xAI env defaults; ops checklist in ENV.md + SECURITY.md (Console team ZDR)
+- Privacy: optional AI coach section + collect/third-parties honesty (no full-stack ZDR claim)
+- README trust row; coach INDEX guardrails (no Files/Batch/stateful Responses)
+
+---
+
 ## 2026-07-16 — Wave 6 Mission Experience `/experience` (`2026.07-unified.85`)
 
 **Founder Horizon-0 override:** new frontier dossier route (not app chrome).
