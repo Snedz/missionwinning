@@ -6,14 +6,20 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import dynamic from 'next/dynamic';
-import { Button } from '@/components/ui/button';
 import { BUNDLE_PILLARS } from '@/lib/payments';
 import { LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
 import { HeroDemoFallback } from '@/components/landing/HeroDemo';
+import { MarketingNav } from '@/components/marketing/MarketingNav';
+import { MarketingFooter } from '@/components/marketing/MarketingFooter';
+import { StatBand } from '@/components/marketing/StatBand';
+import { BundleTeaserCard } from '@/components/marketing/BundleTeaserCard';
+import { Reveal } from '@/components/marketing/Reveal';
 import { ArrowRight, Check, Download, Globe2, WifiOff } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const HeroDemo = dynamic(
   () => import('@/components/landing/HeroDemo').then((m) => m.HeroDemo),
@@ -22,7 +28,7 @@ const HeroDemo = dynamic(
 
 const JourneyScroll = dynamic(
   () => import('@/components/landing/JourneyScroll').then((m) => m.JourneyScroll),
-  { ssr: false, loading: () => <div className="min-h-[12rem]" aria-hidden /> }
+  { ssr: false, loading: () => <div id="path" className="min-h-[12rem]" aria-hidden /> }
 );
 
 const CoachAdaptDemo = dynamic(
@@ -56,6 +62,33 @@ const FREE_MANIFEST_KEYS = [
   },
 ] as const;
 
+const FREE_MINI_STATS = [
+  {
+    valueKey: 'landingFreeStatWorkouts',
+    valueDefault: 'Unlimited logs',
+    hintKey: 'landingFreeStatWorkoutsHint',
+    hintDefault: 'Forever free',
+  },
+  {
+    valueKey: 'landingFreeStatLibrary',
+    valueDefault: '217 exercises',
+    hintKey: 'landingFreeStatLibraryHint',
+    hintDefault: 'Form cues included',
+  },
+  {
+    valueKey: 'landingFreeStatOffline',
+    valueDefault: 'Works offline',
+    hintKey: 'landingFreeStatOfflineHint',
+    hintDefault: 'Install as PWA',
+  },
+  {
+    valueKey: 'landingFreeStatScore',
+    valueDefault: 'Win Score',
+    hintKey: 'landingFreeStatScoreHint',
+    hintDefault: 'Six pillars, one number',
+  },
+] as const;
+
 export function LandingPage() {
   const router = useRouter();
   const { t } = useTranslation();
@@ -68,43 +101,17 @@ export function LandingPage() {
       const id = requestIdleCallback(ready, { timeout: 1800 });
       return () => cancelIdleCallback(id);
     }
-    const t = setTimeout(ready, 200);
-    return () => clearTimeout(t);
+    const timer = setTimeout(ready, 200);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* ── Nav ─────────────────────────────────────────────────────── */}
-      <nav className="glass-nav sticky top-0 z-50 border-b border-border/60">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-          <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary font-display text-lg font-bold text-primary-foreground">
-              MW
-            </span>
-            <span className="font-display text-xl font-semibold uppercase tracking-wide">
-              Mission Winning
-            </span>
-          </Link>
-          <div className="hidden items-center gap-6 text-sm sm:flex">
-            <a href="#path" className="text-muted-foreground transition-colors hover:text-foreground">
-              {t('landingNavPath', { defaultValue: 'The path' })}
-            </a>
-            <a href="#pillars" className="text-muted-foreground transition-colors hover:text-foreground">
-              {t('landingNavPillars', { defaultValue: 'Pillars' })}
-            </a>
-            <Link href="/bundle" className="text-muted-foreground transition-colors hover:text-foreground">
-              {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
-            </Link>
-          </div>
-          <Button onClick={() => router.push('/welcome')} className="tap-target font-semibold">
-            {t('landingNavStart', { defaultValue: 'Start free' })}
-          </Button>
-        </div>
-      </nav>
+      <MarketingNav variant="full" />
 
       {/* ── Hero ────────────────────────────────────────────────────── */}
-      <header className="border-b border-border/60">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
+      <header className="hero-field texture-grid texture-noise section-seam relative overflow-hidden">
+        <div className="relative z-[1] mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
           <div className="page-enter">
             <p className="eyebrow-live mb-5">
               {t('landingHeroEyebrow', { defaultValue: 'Free workout tracker · Offline PWA' })}
@@ -122,7 +129,8 @@ export function LandingPage() {
             </p>
             <p className="mb-6 max-w-md text-sm text-muted-foreground">
               {t('landingHeroLibrary', {
-                defaultValue: 'Library of 217 free exercise pages — form cues, hubs, and a full foundations guide.',
+                defaultValue:
+                  'Library of 217 free exercise pages — form cues, hubs, and a full foundations guide.',
               })}{' '}
               <button
                 type="button"
@@ -148,7 +156,7 @@ export function LandingPage() {
               </button>
               <a
                 href="#path"
-                className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline px-1 py-2"
+                className="px-1 py-2 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
               >
                 {t('landingSeeHow', { defaultValue: 'See how it works' })}
               </a>
@@ -181,29 +189,86 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="journey-enter">
-            <HeroDemo staticFallback={<HeroDemoFallback />} />
+          <div className="journey-enter relative">
+            <div
+              className="pointer-events-none absolute -inset-6 -z-0 opacity-70"
+              aria-hidden
+            >
+              <Image
+                src="/art/hero-field.avif"
+                alt=""
+                width={640}
+                height={640}
+                priority
+                className="h-full w-full object-cover rounded-3xl opacity-80"
+              />
+            </div>
+            <div className="card-elevated card-glow-emerald relative z-[1] p-1 sm:p-1.5 lg:rotate-1 transition-transform duration-500 hover:rotate-0">
+              <div className="absolute -right-2 -top-2 z-10 rounded-full border border-brass/40 bg-background/90 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-brass shadow-glow-brass">
+                PR
+              </div>
+              <HeroDemo staticFallback={<HeroDemoFallback />} />
+            </div>
           </div>
         </div>
       </header>
 
+      <StatBand />
+
       {belowFoldReady ? <JourneyScroll /> : <div id="path" className="min-h-[12rem]" aria-hidden />}
 
-      <section className="border-b border-border/60 bg-muted/10">
-        <div className="mx-auto max-w-6xl px-5 py-16 text-center">
-          <h2 className="display-section mb-6">
-            {t('landingCoachDemoTitle', { defaultValue: 'Plans that adapt when life happens' })}
-          </h2>
-          {belowFoldReady ? <CoachAdaptDemo /> : <div className="min-h-[8rem]" aria-hidden />}
+      {/* ── Coach band ──────────────────────────────────────────────── */}
+      <section className="texture-grid section-seam relative overflow-hidden bg-muted/10">
+        <div className="relative z-[1] mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2 lg:items-center lg:py-20">
+          <Reveal>
+            <p className="section-index mb-3">04 · Coach</p>
+            <h2 className="display-section mb-6">
+              {t('landingCoachDemoTitle', {
+                defaultValue: 'Plans that adapt when life happens',
+              })}
+            </h2>
+            <p className="max-w-md text-muted-foreground">
+              {t('landingCoachDemoBody', {
+                defaultValue:
+                  'Miss a day, sleep poorly, or crush a PR — Mission Coach reshapes the week without a spreadsheet.',
+              })}
+            </p>
+          </Reveal>
+          <Reveal delayMs={100}>
+            <div className="card-elevated mx-auto w-full max-w-md border-border/40 p-3 shadow-glow sm:p-4">
+              <div className="mb-2 flex items-center justify-center gap-1.5" aria-hidden>
+                <span className="h-1.5 w-1.5 rounded-full bg-border" />
+                <span className="h-1.5 w-8 rounded-full bg-border/80" />
+              </div>
+              {belowFoldReady ? (
+                <CoachAdaptDemo />
+              ) : (
+                <div className="min-h-[8rem]" aria-hidden />
+              )}
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {belowFoldReady ? <GuideTeaser /> : <div className="min-h-[8rem]" aria-hidden />}
 
-      {/* ── Free manifest ───────────────────────────────────────────── */}
-      <section className="border-b border-border/60">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:py-20">
-          <div>
+      {/* ── Free manifesto ───────────────────────────────────────────── */}
+      <section className="section-seam relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-30"
+          aria-hidden
+        >
+          <Image
+            src="/art/topo-brass.avif"
+            alt=""
+            fill
+            className="object-cover"
+            sizes="100vw"
+            loading="lazy"
+          />
+        </div>
+        <div className="relative z-[1] mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:py-20">
+          <Reveal>
             <div className="briefing-rule mb-4">
               <span className="eyebrow">
                 {t('landingFreeEyebrow', { defaultValue: 'The free core' })}
@@ -224,146 +289,183 @@ export function LandingPage() {
               </Link>
               .
             </p>
-          </div>
-          <ul className="grid content-center gap-3 sm:grid-cols-2">
-            {FREE_MANIFEST_KEYS.map((item) => (
-              <li
-                key={item.key}
-                className="flex items-start gap-2.5 text-sm leading-relaxed"
-              >
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span className="text-foreground/90">
+            <ul className="mt-6 space-y-2.5">
+              {FREE_MANIFEST_KEYS.map((item) => (
+                <li key={item.key} className="flex items-start gap-2.5 text-sm text-foreground/90">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   {t(item.key, { defaultValue: item.defaultValue })}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ── Six pillars ─────────────────────────────────────────────── */}
-      <section id="pillars" className="border-b border-border/60">
-        <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">
-          <div className="briefing-rule mb-4">
-            <span className="eyebrow">Six pillars · One score</span>
-          </div>
-          <h2 className="display-section mb-4">Everything reinforces everything.</h2>
-          <p className="mb-10 max-w-xl text-muted-foreground">
-            Mobility improves training. Mind improves consistency. Fuel powers results. The Win
-            Score weighs all six — one number for the whole self, not another silo.
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {BUNDLE_PILLARS.map((p, i) => (
-              <div key={p.id} className="content-card flex flex-col p-5">
-                <div className="mb-3 flex items-baseline justify-between">
-                  <h3 className="font-display text-2xl font-semibold uppercase leading-none">
-                    {p.name}
-                  </h3>
-                  <span className="font-mono text-xs text-muted-foreground/70">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <p className="mb-1 text-sm text-foreground/90">
-                  <span className="eyebrow-live mr-2 text-[10px]">Free</span>
-                  {p.free}
-                </p>
-                <p className="mb-4 text-sm text-muted-foreground">
-                  <span className="eyebrow-honor mr-2 text-[10px]">Bundle</span>
-                  {p.premium}
-                </p>
-                <Link
-                  href={p.route}
-                  className="mt-auto inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80"
-                >
-                  Open {p.name} <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Super Bundle teaser ─────────────────────────────────────── */}
-      <section className="border-b border-border/60">
-        <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">
-          <div className="content-card grid gap-8 p-8 sm:p-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-            <div>
-              <p className="eyebrow-honor mb-4">The Super Bundle</p>
-              <h2 className="display-section mb-4">
-                Six premium tools.
-                <br /> One subscription.
-              </h2>
-              <p className="mb-6 max-w-lg leading-relaxed text-muted-foreground">
-                Coaching-grade training plans, deep nutrition, complete mobility and mind
-                libraries, advanced tracking, and full specialist programs — the depth of six apps,
-                priced like one. Founding members lock in discounted pricing for good.
-              </p>
-              <Button
-                size="lg"
-                variant="outline"
-                className="h-12 border-brass/40 px-6 text-brass hover:bg-brass/10 hover:text-brass"
-                onClick={() => router.push('/bundle')}
-              >
-                See the bundle <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-            <ul className="space-y-2.5 text-sm">
-              {BUNDLE_PILLARS.map((p) => (
-                <li key={p.id} className="flex items-center gap-2.5 text-foreground/90">
-                  <Check className="h-4 w-4 shrink-0 text-brass" />
-                  <span>
-                    <span className="font-medium">{p.name}</span>
-                    <span className="text-muted-foreground"> — {p.premium}</span>
-                  </span>
                 </li>
               ))}
             </ul>
-          </div>
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            The free core never moves behind the bundle. Premium funds the mission — it doesn’t
-            gate it.
-          </p>
+          </Reveal>
+          <Reveal delayMs={80}>
+            <div className="grid grid-cols-2 gap-3 content-center">
+              {FREE_MINI_STATS.map((s) => (
+                <div key={s.valueKey} className="card-elevated p-4 sm:p-5">
+                  <p className="font-display text-xl font-semibold uppercase leading-tight sm:text-2xl">
+                    {t(s.valueKey, { defaultValue: s.valueDefault })}
+                  </p>
+                  <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                    {t(s.hintKey, { defaultValue: s.hintDefault })}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ── Mission ─────────────────────────────────────────────────── */}
-      <section className="border-b border-border/60">
-        <div className="mx-auto max-w-3xl px-5 py-16 text-center lg:py-20">
-          <div className="mb-4 flex justify-center">
-            <span className="eyebrow">Why we build</span>
+      {/* ── Six pillars bento ────────────────────────────────────────── */}
+      <section id="pillars" className="section-seam">
+        <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">
+          <Reveal>
+            <div className="briefing-rule mb-4">
+              <span className="eyebrow">
+                {t('landingPillarsEyebrow', { defaultValue: 'Six pillars' })}
+              </span>
+            </div>
+            <h2 className="display-section mb-4">
+              {t('landingPillarsTitle', {
+                defaultValue: 'Everything reinforces everything.',
+              })}
+            </h2>
+            <p className="mb-10 max-w-xl text-muted-foreground">
+              {t('landingPillarsBody', {
+                defaultValue:
+                  'Mobility improves training. Mind improves consistency. Fuel powers results. The Win Score weighs all six — one number for the whole self, not another silo.',
+              })}
+            </p>
+          </Reveal>
+          <div className="grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
+            {BUNDLE_PILLARS.map((p, i) => {
+              const isTrain = p.id === 'train';
+              return (
+                <Reveal
+                  key={p.id}
+                  delayMs={i * 50}
+                  className={cn(isTrain && 'sm:col-span-2 sm:row-span-2')}
+                >
+                  <div
+                    className={cn(
+                      'card-elevated flex h-full flex-col p-5',
+                      isTrain && 'card-glow-emerald sm:p-7'
+                    )}
+                  >
+                    <div className="mb-3 flex items-baseline justify-between gap-2">
+                      <h3
+                        className={cn(
+                          'font-display font-semibold uppercase leading-none',
+                          isTrain ? 'text-3xl sm:text-4xl' : 'text-2xl'
+                        )}
+                      >
+                        {p.name}
+                      </h3>
+                      <span className="section-index">{String(i + 1).padStart(2, '0')}</span>
+                    </div>
+                    <p className={cn('mb-1 text-sm text-foreground/90', isTrain && 'sm:text-base')}>
+                      <span className="eyebrow-live mr-2 text-[10px]">
+                        {t('landingPillarsFree', { defaultValue: 'Free' })}
+                      </span>
+                      {p.free}
+                    </p>
+                    <p className={cn('mb-4 text-sm text-muted-foreground', isTrain && 'sm:text-base')}>
+                      <span className="eyebrow-honor mr-2 text-[10px]">
+                        {t('landingPillarsBundle', { defaultValue: 'Bundle' })}
+                      </span>
+                      {p.premium}
+                    </p>
+                    <Link
+                      href={p.route}
+                      className="mt-auto inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80"
+                    >
+                      {t('landingPillarsOpen', {
+                        defaultValue: `Open ${p.name}`,
+                        name: p.name,
+                      })}{' '}
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
-          <blockquote className="font-display text-3xl font-medium uppercase leading-tight sm:text-4xl">
-            “The right way to build a body and a life should be obvious, doable, and free — for
-            every human on Earth.”
-          </blockquote>
-          <p className="mt-6 text-sm text-muted-foreground">
-            Mission Winning is the entrance to that path: evidence-based, holistic, habit-first.{' '}
-            <Link href="/vision" className="underline underline-offset-4 hover:text-foreground">
-              Read the full vision
-            </Link>
-            .
-          </p>
+        </div>
+      </section>
+
+      <BundleTeaserCard />
+
+      {/* ── Mission ─────────────────────────────────────────────────── */}
+      <section className="section-seam relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 opacity-20" aria-hidden>
+          <Image
+            src="/art/topo-brass.avif"
+            alt=""
+            fill
+            className="object-cover"
+            sizes="100vw"
+            loading="lazy"
+          />
+        </div>
+        <div className="relative z-[1] mx-auto max-w-3xl px-5 py-16 text-center lg:py-24">
+          <Reveal>
+            <div className="mb-4 flex justify-center">
+              <span className="eyebrow">
+                {t('landingMissionEyebrow', { defaultValue: 'Why we build' })}
+              </span>
+            </div>
+            <div className="mb-6 font-display text-6xl leading-none text-brass/40" aria-hidden>
+              “
+            </div>
+            <blockquote className="font-display text-3xl font-medium uppercase leading-tight sm:text-4xl">
+              {t('landingMissionQuote', {
+                defaultValue:
+                  '“The right way to build a body and a life should be obvious, doable, and free — for every human on Earth.”',
+              })}
+            </blockquote>
+            <p className="mt-6 text-sm text-muted-foreground">
+              {t('landingMissionBody', {
+                defaultValue:
+                  'Mission Winning is the entrance to that path: evidence-based, holistic, habit-first.',
+              })}{' '}
+              <Link href="/vision" className="underline underline-offset-4 hover:text-foreground">
+                {t('landingMissionLink', { defaultValue: 'Read the full vision' })}
+              </Link>
+              .
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* ── FAQ ─────────────────────────────────────────────────────── */}
-      <section className="border-b border-border/60">
+      <section className="section-seam">
         <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
           <div className="briefing-rule mb-8">
-            <span className="eyebrow">Straight answers</span>
+            <span className="eyebrow">
+              {t('landingFaqEyebrow', { defaultValue: 'Straight answers' })}
+            </span>
           </div>
-          <div className="space-y-3">
-            {FAQ.map((f) => (
-              <details key={f.qKey} className="content-card group px-5 py-4">
+          <div className="space-y-0">
+            {FAQ.map((f, i) => (
+              <details
+                key={f.qKey}
+                className="group section-seam px-1 py-4 first:pt-0 last:border-0 last:bg-none"
+              >
                 <summary className="cursor-pointer list-none text-sm font-semibold marker:content-none">
                   <span className="flex items-center justify-between gap-4">
-                    {t(f.qKey)}
+                    <span className="flex items-start gap-3">
+                      <span className="section-index mt-0.5 shrink-0">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      {t(f.qKey)}
+                    </span>
                     <span className="text-muted-foreground transition-transform group-open:rotate-45">
                       +
                     </span>
                   </span>
                 </summary>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(f.aKey)}</p>
+                <p className="mt-3 pl-10 text-sm leading-relaxed text-muted-foreground">
+                  {t(f.aKey)}
+                </p>
               </details>
             ))}
           </div>
@@ -371,67 +473,48 @@ export function LandingPage() {
       </section>
 
       {/* ── Final CTA ───────────────────────────────────────────────── */}
-      <section>
-        <div className="mx-auto max-w-3xl px-5 py-20 text-center">
-          <h2 className="display-section mb-6">The path starts with one workout.</h2>
-          <Button
-            size="lg"
-            className="h-14 px-10 text-base font-semibold"
-            onClick={() => router.push('/welcome')}
-          >
-            Start free — no account <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-          <p className="mt-4 text-xs text-muted-foreground">
-            Under three minutes to your first session. Nothing to install, nothing to pay.
-          </p>
+      <section className="hero-field texture-noise relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-40"
+          aria-hidden
+        >
+          <Image
+            src="/art/arc-momentum.avif"
+            alt=""
+            width={480}
+            height={320}
+            className="object-contain"
+            loading="lazy"
+          />
+        </div>
+        <div className="relative z-[1] mx-auto max-w-3xl px-5 py-20 text-center lg:py-28">
+          <Reveal>
+            <h2 className="display-section mb-6">
+              {t('landingFinalCtaTitle', {
+                defaultValue: 'The path starts with one workout.',
+              })}
+            </h2>
+            <button
+              type="button"
+              className="primary-action mx-auto max-w-sm sm:max-w-none sm:w-auto sm:px-12"
+              onClick={() => router.push('/welcome')}
+            >
+              {t('landingFinalCtaButton', {
+                defaultValue: 'Start free — no account',
+              })}
+              <ArrowRight className="h-5 w-5" />
+            </button>
+            <p className="mt-4 text-xs text-muted-foreground">
+              {t('landingFinalCtaFoot', {
+                defaultValue:
+                  'Under three minutes to your first session. Nothing to install, nothing to pay.',
+              })}
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* ── Footer ──────────────────────────────────────────────────── */}
-      <footer className="border-t border-border/60">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-5 py-10 text-xs text-muted-foreground sm:flex-row sm:justify-between">
-          <p>© {new Date().getFullYear()} Mission Winning · Train anywhere. Win daily.</p>
-          <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2">
-            <Link href="/guide" className="hover:text-foreground">
-              Guide
-            </Link>
-            <Link href="/exercises" className="hover:text-foreground">
-              Exercises
-            </Link>
-            <Link href="/paths" className="hover:text-foreground">
-              Paths
-            </Link>
-            <Link href="/compare" className="hover:text-foreground">
-              Compare
-            </Link>
-            <Link href="/about" className="hover:text-foreground">
-              About
-            </Link>
-            <Link href="/beta" className="hover:text-foreground">
-              Beta guide
-            </Link>
-            <Link href="/feedback" className="hover:text-foreground">
-              Feedback
-            </Link>
-            <Link href="/vision" className="hover:text-foreground">
-              Vision
-            </Link>
-            <Link href="/bundle" className="hover:text-foreground">
-              Super Bundle
-            </Link>
-            <Link href="/privacy" className="hover:text-foreground">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-foreground">
-              Terms
-            </Link>
-          </nav>
-        </div>
-        <div className="border-t border-border/40 px-5 py-4 text-center text-[11px] leading-relaxed text-muted-foreground/70">
-          Educational fitness tools — not medical advice. Consult a physician before starting any
-          training program.
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   );
 }

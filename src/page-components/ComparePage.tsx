@@ -99,9 +99,9 @@ export function ComparePage() {
         })}
       />
 
-      <main className="mx-auto max-w-4xl px-5 py-10 space-y-8">
-        <div className="content-card overflow-hidden">
-          <div className="border-b border-border/50 px-5 py-4">
+      <main className="mx-auto max-w-4xl space-y-8 px-5 py-10">
+        <div className="card-elevated overflow-hidden">
+          <div className="section-seam px-5 py-4">
             <h2 className="text-base font-semibold">
               {t('compareTableTitle', { defaultValue: 'Free tier at a glance' })}
             </h2>
@@ -111,7 +111,9 @@ export function ComparePage() {
               <thead>
                 <tr className="border-b border-border/50 text-left">
                   <th className="py-3 pr-4 font-medium text-muted-foreground">Feature</th>
-                  <th className="py-3 pr-4 font-semibold text-primary">Mission Winning</th>
+                  <th className="bg-primary/5 py-3 pr-4 font-semibold text-primary">
+                    Mission Winning
+                  </th>
                   <th className="py-3 pr-4">Hevy</th>
                   <th className="py-3">Strong</th>
                 </tr>
@@ -120,7 +122,9 @@ export function ComparePage() {
                 {COMPARE_ROWS.map((row) => (
                   <tr key={row.feature} className="border-b border-border/30">
                     <td className="py-3 pr-4 text-muted-foreground">{row.feature}</td>
-                    <td className="py-3 pr-4 font-medium">{row.mw}</td>
+                    <td className="bg-primary/5 py-3 pr-4 font-medium text-foreground">
+                      {row.mw}
+                    </td>
                     <td className="py-3 pr-4">{row.hevy}</td>
                     <td className="py-3">{row.strong}</td>
                   </tr>
@@ -156,7 +160,7 @@ export function ComparePage() {
             <Link
               key={c.href}
               href={c.href}
-              className="rounded-2xl border border-border/50 p-4 hover:border-primary/40 hover:bg-primary/10 transition-colors"
+              className="card-elevated pressable-card block p-4 transition-shadow hover:shadow-glow"
             >
               <p className="font-semibold text-sm">{c.title}</p>
               <p className="text-xs text-muted-foreground mt-1">{c.body}</p>

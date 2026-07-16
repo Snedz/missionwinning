@@ -29,6 +29,8 @@ import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UnlockButton } from "@/components/UnlockButton";
 import { PhantomLifetimeCheckout } from "@/components/crypto/PhantomLifetimeCheckout";
+import { MarketingNav } from "@/components/marketing/MarketingNav";
+import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { BUNDLE_PILLARS } from "@/lib/payments";
 import {
   BUNDLE_PLANS,
@@ -43,6 +45,7 @@ import {
   PREMIUM_INVENTORY,
   PREMIUM_RECIPE_COUNT,
 } from "@/data/premiumInventory";
+import { cn } from "@/lib/utils";
 
 const PILLAR_ICONS: Record<string, LucideIcon> = {
   train: Dumbbell,
@@ -110,73 +113,58 @@ export function BundlePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="border-b border-border/60">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-5 py-4">
-          <Link href="/" className="flex items-center gap-2.5 min-w-0">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary font-display text-sm font-bold text-primary-foreground">
-              MW
-            </span>
-            <span className="font-display text-lg font-semibold uppercase tracking-wide truncate">
-              Mission Winning
-            </span>
-          </Link>
-          <Link
-            href="/welcome"
-            className="shrink-0 rounded-xl border border-border/60 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            {t('bundleNavFree', { defaultValue: 'Free core' })}
-          </Link>
+      <MarketingNav variant="compact" />
+
+      <div className="hero-field texture-noise section-seam relative">
+        <div className="relative z-[1] mx-auto max-w-4xl space-y-3 px-5 pb-10 pt-10">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">{t("bundleBadge")}</Badge>
+            <Badge className="border-primary/40 bg-primary/10 text-primary hover:bg-primary/10">
+              {t("bundleExpandedContent", { defaultValue: "Depth when you want it" })}
+            </Badge>
+            <Badge className="border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
+              {t("bundleUrgencyBadge")}
+            </Badge>
+          </div>
+          <PillarPageHeader
+            icon={Sparkles}
+            eyebrow={t('bundleEyebrow', { defaultValue: 'Super Bundle' })}
+            title={t("bundleHeadline")}
+            subtitle={t("bundleSubhead")}
+          />
+          <p className="text-sm text-muted-foreground max-w-xl">
+            {t('bundleHonestNote', {
+              defaultValue:
+                'Free tracker stays free. Bundle unlocks Coach, deeper Fuel/Move/Mind/Learn — never required to log workouts.',
+            })}
+          </p>
+          <ul className="flex flex-wrap gap-2 text-[11px] text-muted-foreground">
+            <li className="rounded-full border border-border/50 px-2.5 py-1">
+              {t('bundleProofRecipes', {
+                count: PREMIUM_RECIPE_COUNT,
+                defaultValue: `${PREMIUM_RECIPE_COUNT} premium recipes`,
+              })}
+            </li>
+            <li className="rounded-full border border-border/50 px-2.5 py-1">
+              {t('bundleProofMind', {
+                count: PREMIUM_INVENTORY.mindSessions,
+                defaultValue: `${PREMIUM_INVENTORY.mindSessions} Mind sessions`,
+              })}
+            </li>
+            <li className="rounded-full border border-border/50 px-2.5 py-1">
+              {t('bundleProofMove', {
+                count: PREMIUM_INVENTORY.moveFlows,
+                defaultValue: `${PREMIUM_INVENTORY.moveFlows} Move flows`,
+              })}
+            </li>
+            <li className="rounded-full border border-border/50 px-2.5 py-1">
+              {t('bundleProofCoach', { defaultValue: 'AI weekly plan + GPS Track' })}
+            </li>
+          </ul>
         </div>
       </div>
 
     <div className="space-y-10 max-w-4xl mx-auto px-5 pb-12 pt-8">
-      {/* Title block */}
-      <div className="space-y-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary">{t("bundleBadge")}</Badge>
-          <Badge className="border-primary/40 bg-primary/10 text-primary hover:bg-primary/10">
-            {t("bundleExpandedContent", { defaultValue: "Depth when you want it" })}
-          </Badge>
-          <Badge className="border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
-            {t("bundleUrgencyBadge")}
-          </Badge>
-        </div>
-        <PillarPageHeader
-          icon={Sparkles}
-          eyebrow={t('bundleEyebrow', { defaultValue: 'Super Bundle' })}
-          title={t("bundleHeadline")}
-          subtitle={t("bundleSubhead")}
-        />
-        <p className="text-sm text-muted-foreground max-w-xl">
-          {t('bundleHonestNote', {
-            defaultValue:
-              'Free tracker stays free. Bundle unlocks Coach, deeper Fuel/Move/Mind/Learn — never required to log workouts.',
-          })}
-        </p>
-        <ul className="flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-          <li className="rounded-full border border-border/50 px-2.5 py-1">
-            {t('bundleProofRecipes', {
-              count: PREMIUM_RECIPE_COUNT,
-              defaultValue: `${PREMIUM_RECIPE_COUNT} premium recipes`,
-            })}
-          </li>
-          <li className="rounded-full border border-border/50 px-2.5 py-1">
-            {t('bundleProofMind', {
-              count: PREMIUM_INVENTORY.mindSessions,
-              defaultValue: `${PREMIUM_INVENTORY.mindSessions} Mind sessions`,
-            })}
-          </li>
-          <li className="rounded-full border border-border/50 px-2.5 py-1">
-            {t('bundleProofMove', {
-              count: PREMIUM_INVENTORY.moveFlows,
-              defaultValue: `${PREMIUM_INVENTORY.moveFlows} Move flows`,
-            })}
-          </li>
-          <li className="rounded-full border border-border/50 px-2.5 py-1">
-            {t('bundleProofCoach', { defaultValue: 'AI weekly plan + GPS Track' })}
-          </li>
-        </ul>
-      </div>
 
       {checkoutSuccess && !premiumLoading && (
         <Card className="border-primary/40 bg-primary/10">
@@ -205,7 +193,7 @@ export function BundlePage() {
       )}
 
       {/* Story scroll — six pillars before checkout (REDTEAM: under-promise) */}
-      <section className="rounded-2xl border border-border/40 bg-gradient-to-br from-emerald-950/25 via-card/40 to-transparent p-6 md:p-8 space-y-5">
+      <section className="card-elevated p-6 md:p-8 space-y-5">
         <div className="space-y-2">
           <p className="eyebrow">{t('bundleStoryEyebrow', { defaultValue: 'One app' })}</p>
           <h2 className="display-section text-xl md:text-2xl">
@@ -254,21 +242,45 @@ export function BundlePage() {
         onValueChange={(v) => setPlanId(v as BundlePlanId)}
         className="w-full"
       >
-        <TabsList className="grid grid-cols-3 h-auto p-1">
-          <TabsTrigger value="monthly" className="py-2.5 text-xs sm:text-sm">
-            {t("bundleTabMonthly", { defaultValue: t("bundleTab3mo", { defaultValue: "Monthly" }) })}
-          </TabsTrigger>
-          <TabsTrigger value="12mo" className="py-2.5 text-xs sm:text-sm relative">
-            {t("bundleTab12mo")}
-            <span className="absolute -top-1 end-1 hidden sm:inline-flex">
-              <Badge variant="secondary" className="text-[9px] px-1 py-0 h-4">
-                {t("bundleBadgePopular")}
-              </Badge>
-            </span>
-          </TabsTrigger>
-          <TabsTrigger value="lifetime" className="py-2.5 text-xs sm:text-sm">
-            {t("bundleTabLifetime")}
-          </TabsTrigger>
+        <TabsList className="grid h-auto w-full grid-cols-3 gap-2 bg-transparent p-0">
+          {(["monthly", "12mo", "lifetime"] as const).map((id) => {
+            const p = BUNDLE_PLANS[id];
+            const label =
+              id === "monthly"
+                ? t("bundleTabMonthly", {
+                    defaultValue: t("bundleTab3mo", { defaultValue: "Monthly" }),
+                  })
+                : id === "12mo"
+                  ? t("bundleTab12mo")
+                  : t("bundleTabLifetime");
+            const badgeText = planBadgeLabel(p.badge, t);
+            return (
+              <TabsTrigger
+                key={id}
+                value={id}
+                className={cn(
+                  "flex h-auto flex-col items-start gap-0.5 rounded-xl border border-border/50 bg-card/60 px-3 py-3 text-left data-[state=active]:border-primary/50 data-[state=active]:bg-primary/10 data-[state=active]:shadow-glow"
+                )}
+              >
+                <span className="text-xs font-medium sm:text-sm">{label}</span>
+                <span className="font-display text-lg font-semibold tabular-nums leading-none">
+                  ${p.price}
+                </span>
+                {p.perMonth ? (
+                  <span className="text-[10px] text-muted-foreground tabular-nums">
+                    ${p.perMonth}/mo
+                  </span>
+                ) : (
+                  <span className="text-[10px] text-muted-foreground">once</span>
+                )}
+                {badgeText ? (
+                  <span className="mt-1 text-[9px] uppercase tracking-wider text-primary">
+                    {badgeText}
+                  </span>
+                ) : null}
+              </TabsTrigger>
+            );
+          })}
         </TabsList>
 
         {(["monthly", "12mo", "lifetime"] as const).map((id) => {
@@ -276,7 +288,7 @@ export function BundlePage() {
           const badgeText = planBadgeLabel(p.badge, t);
           return (
             <TabsContent key={id} value={id} className="mt-4">
-              <Card className="border-primary/40 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent overflow-hidden shadow-lg">
+              <Card className="card-elevated card-glow-emerald overflow-hidden border-primary/30">
                 <CardHeader className="pb-2">
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="space-y-1">
@@ -303,7 +315,7 @@ export function BundlePage() {
                     <span className="text-lg text-muted-foreground line-through tabular-nums">
                       ${p.strikePrice}
                     </span>
-                    <span className="text-4xl sm:text-5xl font-bold tabular-nums tracking-tight">
+                    <span className="display-mega text-primary">
                       ${p.price}
                     </span>
                     {p.perMonth && (
@@ -449,10 +461,10 @@ export function BundlePage() {
       {/* Comparison table — below fold */}
       <section>
         <h2 className="text-lg font-semibold mb-4">{t("bundleCompareTitle")}</h2>
-        <div className="overflow-x-auto rounded-lg border">
+        <div className="card-elevated overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-muted/50">
+              <tr className="border-b border-border/50 bg-muted/30">
                 <th className="text-start p-3 font-medium">{t("bundleColPillar")}</th>
                 <th className="text-start p-3 font-medium hidden sm:table-cell">
                   {t("bundleColPremium")}
@@ -465,7 +477,7 @@ export function BundlePage() {
               {BUNDLE_PILLARS.map((pillar) => {
                 const keys = BUNDLE_PILLAR_I18N[pillar.id];
                 return (
-                  <tr key={pillar.id} className="border-b last:border-0">
+                  <tr key={pillar.id} className="border-b border-border/30 last:border-0">
                     <td className="p-3">
                       <p className="font-medium">{keys ? t(keys.nameKey) : pillar.name}</p>
                       <p className="text-xs text-muted-foreground sm:hidden">
@@ -510,7 +522,7 @@ export function BundlePage() {
         <p className="text-xs text-muted-foreground mt-3">{t("bundleCompareFoot")}</p>
       </section>
 
-      <Card>
+      <Card className="card-elevated">
         <CardHeader>
           <CardTitle className="text-base">{t("bundleFreeForeverTitle")}</CardTitle>
         </CardHeader>
@@ -519,6 +531,7 @@ export function BundlePage() {
         </CardContent>
       </Card>
     </div>
+    <MarketingFooter />
     </div>
   );
 }
