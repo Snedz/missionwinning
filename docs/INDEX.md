@@ -42,6 +42,7 @@
 |------|---------|
 | [BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md) | Founder checklist — beta, env, QA |
 | [SOFT_LAUNCH_DAY.md](SOFT_LAUNCH_DAY.md) | Flip-day checklist (after gates) |
+| [PUBLIC_FLIP_CHECKLIST.md](PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Beta + public social copy kit |
 | [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → PayPal later |
 | [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) | Deferred Android TWA / thin iOS |

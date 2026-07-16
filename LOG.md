@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Hygiene + public-flip checklist (`2026.07-unified.76`)
+
+- Build label → `2026.07-unified.76`
+- VISION_STATUS / PLAN / ORCHESTRATION: H1 eng prep done; founder H0 is bottleneck
+- New [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md) — offline, SW, Search Console, analytics baseline after `PRIVATE_MODE=false`
+
+---
+
 ## 2026-07-16 — `src/lib/workout/` domain folder (`2026.07-unified.75`)
 
 - Moved logger/merge/rest/PR/victory/pulse helpers into `src/lib/workout/` + INDEX
