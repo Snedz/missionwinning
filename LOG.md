@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Today dashboard extract (shared Just Go + accordion) (`2026.07-unified.74`)
+
+- `todayPrimaryAction` + `loadCoachTodayOptional` shared by lean + full Today
+- `nutritionHighProteinDays` pure helper (+ tests)
+- `TodayDashboardAccordion` code-split section block
+- HomeTodayDashboard ~807 → ~633 lines
+
+---
+
 ## 2026-07-16 — Logger E2E picker → log → rest (`2026.07-unified.73`)
 
 - `tests/e2e/logger-depth.spec.ts`: empty start, search/add Push-ups, Log, rest timer Skip, Finish

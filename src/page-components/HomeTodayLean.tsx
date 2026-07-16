@@ -23,6 +23,7 @@ import {
   type JourneyState,
 } from '@/lib/missionJourney';
 import type { CompletedWorkoutLog } from '@/types';
+import { runTodayPrimaryAction } from '@/lib/todayPrimaryAction';
 
 const SSR_ACTION: JourneyAction = {
   label: 'Begin I-Day',
@@ -32,29 +33,6 @@ const SSR_ACTION: JourneyAction = {
   stepLabel: 'I-Day · Where you start',
   progressPct: 0,
 };
-
-async function loadCoachTodayOptional() {
-  try {
-    const [{ loadPlan }, { currentWeekStart, todayDayOffset }] = await Promise.all([
-      import('@/lib/coach/storage'),
-      import('@/lib/coach/splitPlanner'),
-    ]);
-    const plan = loadPlan();
-    if (!plan) return null;
-    const weekStart = currentWeekStart();
-    if (plan.weekStart !== weekStart) return null;
-    const session = plan.sessions.find((s) => s.dayOffset === todayDayOffset(weekStart));
-    if (!session || session.status === 'done') return null;
-    return {
-      name: session.name,
-      status: session.status,
-      focusGroups: session.focusGroups,
-      exercises: session.exercises,
-    };
-  } catch {
-    return null;
-  }
-}
 
 async function startWorkoutFromStore(
   name: string,
@@ -154,78 +132,35 @@ export function HomeTodayLean() {
   }, [t, workoutHistory.length]);
 
   const handleJourneyPrimary = () => {
-    if (hasActiveWorkout) {
-      router.push('/active');
-      return;
-    }
-    const trainReady =
-      action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned';
-    if (trainReady) {
-      void (async () => {
-        const history = readWorkoutHistoryFromStorage();
-        const [
-          { computeReadinessFromHistory },
-          { getRecommendedFocus },
-          { buildJustGoSession },
-          coachToday,
-        ] = await Promise.all([
-          import('@/lib/readinessIndex'),
-          import('@/lib/score'),
-          import('@/lib/justGoSession'),
-          loadCoachTodayOptional(),
-        ]);
-        const readiness = computeReadinessFromHistory(history);
-        const recommendedFocus = getRecommendedFocus(readiness);
-        const units =
-          typeof window !== 'undefined' && localStorage.getItem('mw_units') === 'imperial'
-            ? 'imperial'
-            : 'metric';
-        const userEquip =
-          typeof window !== 'undefined'
-            ? localStorage.getItem('mw_equipment') || 'full-gym'
-            : 'full-gym';
-        const session = buildJustGoSession({
-          focus: recommendedFocus,
-          readiness,
-          history,
-          units,
-          equipment: userEquip,
-          coachToday,
-        });
-        if (session.exercises.length > 0) {
-          await startWorkoutFromStore(session.name, session.exercises);
-          void import('@/lib/analytics').then(({ track }) =>
-            track('just_go_started', { source: session.source, focus: session.focusGroup })
-          );
-          router.push('/active');
-          return;
-        }
-        if (action.startWorkout) {
-          await startWorkoutFromStore(
-            action.startWorkout.name,
-            action.startWorkout.exercises.map((e) => ({
-              exerciseId: e.exerciseId,
-              sets: e.sets,
-            }))
-          );
-          router.push('/active');
-          return;
-        }
-        router.push(action.href);
-      })();
-      return;
-    }
-    if (action.startWorkout) {
-      void startWorkoutFromStore(
-        action.startWorkout.name,
-        action.startWorkout.exercises.map((e) => ({
-          exerciseId: e.exerciseId,
-          sets: e.sets,
-        }))
-      ).then(() => router.push('/active'));
-      return;
-    }
-    router.push(action.href);
+    void (async () => {
+      const history = readWorkoutHistoryFromStorage();
+      const [{ computeReadinessFromHistory }, { getRecommendedFocus }] = await Promise.all([
+        import('@/lib/readinessIndex'),
+        import('@/lib/score'),
+      ]);
+      const readiness = computeReadinessFromHistory(history);
+      const recommendedFocus = getRecommendedFocus(readiness);
+      const units =
+        typeof window !== 'undefined' && localStorage.getItem('mw_units') === 'imperial'
+          ? 'imperial'
+          : 'metric';
+      const userEquip =
+        typeof window !== 'undefined'
+          ? localStorage.getItem('mw_equipment') || 'full-gym'
+          : 'full-gym';
+      await runTodayPrimaryAction({
+        hasActiveWorkout,
+        action,
+        recommendedFocus,
+        readiness,
+        history,
+        units,
+        equipment: userEquip,
+        includeBasicJustGo: true,
+        startWorkout: (name, exercises) => startWorkoutFromStore(name, exercises),
+        navigate: (href) => router.push(href),
+      });
+    })();
   };
 
   const justGoMeta =

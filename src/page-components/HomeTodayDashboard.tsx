@@ -16,7 +16,6 @@ import { computeReadinessFromHistory } from "@/lib/readinessIndex";
 import { getTrainingStreak } from "@/lib/challenges";
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
-import { TodaySection, TodaySections } from "@/components/journey/TodaySection";
 import { TodayPageHeader } from "@/components/today/TodayPageHeader";
 import {
   Dialog,
@@ -31,7 +30,8 @@ import { getTodayLayout } from "@/hooks/useTodayLayout";
 import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
 import { useUnits } from "@/hooks/useUnits";
 import { formatRecommendedFocusLine, muscleGroupLabel } from "@/lib/readinessDisplay";
-import { track } from "@/lib/analytics";
+import { runTodayPrimaryAction } from "@/lib/todayPrimaryAction";
+import { countHighProteinDaysFromNutritionLog } from "@/lib/nutritionHighProteinDays";
 
 const BetaWelcomeBanner = dynamic(
   () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
@@ -58,26 +58,6 @@ const TodayCoachWeekStrip = dynamic(
   { ssr: false }
 );
 
-const TodayProgressSection = dynamic(
-  () => import('@/components/today/TodayProgressSection').then((m) => m.TodayProgressSection),
-  { ssr: false }
-);
-
-const TodayHealthSection = dynamic(
-  () => import('@/components/today/TodayHealthSection').then((m) => m.TodayHealthSection),
-  { ssr: false }
-);
-
-const TodayWeekSection = dynamic(
-  () => import('@/components/today/TodayWeekSection').then((m) => m.TodayWeekSection),
-  { ssr: false }
-);
-
-const TodayJournalStrip = dynamic(
-  () => import('@/components/today/TodayJournalStrip').then((m) => m.TodayJournalStrip),
-  { ssr: false }
-);
-
 const GuidebookContinueCard = dynamic(
   () => import('@/components/learn/GuidebookContinueCard').then((m) => m.GuidebookContinueCard),
   { ssr: false }
@@ -98,34 +78,15 @@ const TodayWeekRecapCard = dynamic(
   { ssr: false }
 );
 
+const TodayDashboardAccordion = dynamic(
+  () => import('@/components/today/TodayDashboardAccordion').then((m) => m.TodayDashboardAccordion),
+  { ssr: false }
+);
+
 const TodayDashboardHeader = dynamic(
   () => import('@/components/today/TodayDashboardHeader').then((m) => m.TodayDashboardHeader),
   { ssr: false }
 );
-
-/** Optional coach session for Just Go — lazy so Today first paint skips coach engine. */
-async function loadCoachTodayOptional() {
-  try {
-    const [{ loadPlan }, { currentWeekStart, todayDayOffset }] = await Promise.all([
-      import('@/lib/coach/storage'),
-      import('@/lib/coach/splitPlanner'),
-    ]);
-    const plan = loadPlan();
-    if (!plan) return null;
-    const weekStart = currentWeekStart();
-    if (plan.weekStart !== weekStart) return null;
-    const session = plan.sessions.find((s) => s.dayOffset === todayDayOffset(weekStart));
-    if (!session || session.status === 'done') return null;
-    return {
-      name: session.name,
-      status: session.status,
-      focusGroups: session.focusGroups,
-      exercises: session.exercises,
-    };
-  } catch {
-    return null;
-  }
-}
 
 export function HomeTodayDashboard() {
   const router = useRouter();
@@ -307,18 +268,7 @@ export function HomeTodayDashboard() {
 
   // High protein days (from nutrition logs) — only needed for score / below-fold
   const highProteinDays = useMemo(() => {
-    if (typeof window === 'undefined') return 0;
-    try {
-      const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]');
-      const byDate: Record<string, number> = {};
-      logs.forEach((l: { date?: string; protein?: number }) => {
-        const d = l.date || new Date().toISOString().split('T')[0];
-        byDate[d] = (byDate[d] || 0) + (l.protein || 0);
-      });
-      return Object.values(byDate).filter((p: number) => p >= 150).length;
-    } catch {
-      return 0;
-    }
+    return countHighProteinDaysFromNutritionLog();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- proteinDays / history length intentionally re-read localStorage when fuel or sessions change
   }, [workoutHistory.length, pillarStats.proteinDays]);
 
@@ -452,59 +402,17 @@ export function HomeTodayDashboard() {
   const userEquip = typeof window !== 'undefined' ? (localStorage.getItem('mw_equipment') || 'full-gym') : 'full-gym';
 
   const handleJourneyPrimary = () => {
-    if (activeWorkout) {
-      router.push('/active');
-      return;
-    }
-    const trainReady =
-      action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned';
-    if (trainReady) {
-      void (async () => {
-        const [{ buildJustGoSession }, coachToday] = await Promise.all([
-          import('@/lib/justGoSession'),
-          loadCoachTodayOptional(),
-        ]);
-        const session = buildJustGoSession({
-          focus: recommendedFocus,
-          readiness,
-          history: workoutHistory,
-          units,
-          equipment: userEquip,
-          coachToday,
-        });
-        if (session.exercises.length > 0) {
-          startWorkout(session.name, session.exercises);
-          track('just_go_started', { source: session.source, focus: session.focusGroup });
-          router.push('/active');
-          return;
-        }
-        if (action.startWorkout) {
-          startWorkout(
-            action.startWorkout.name,
-            action.startWorkout.exercises.map((e) => ({
-              exerciseId: e.exerciseId,
-              sets: e.sets,
-            }))
-          );
-          router.push('/active');
-          return;
-        }
-        router.push(action.href);
-      })();
-      return;
-    }
-    if (action.startWorkout) {
-      startWorkout(
-        action.startWorkout.name,
-        action.startWorkout.exercises.map((e) => ({
-          exerciseId: e.exerciseId,
-          sets: e.sets,
-        }))
-      );
-      router.push('/active');
-      return;
-    }
-    router.push(action.href);
+    void runTodayPrimaryAction({
+      hasActiveWorkout: !!activeWorkout,
+      action,
+      recommendedFocus,
+      readiness,
+      history: workoutHistory,
+      units,
+      equipment: userEquip,
+      startWorkout,
+      navigate: (href) => router.push(href),
+    });
   };
 
   const onStartStarter = (name: string, exs: Parameters<typeof startWorkout>[1]) => {
@@ -517,111 +425,6 @@ export function HomeTodayDashboard() {
     (action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned')
       ? { focusLabel: muscleGroupLabel(recommendedFocus.group, t) }
       : null;
-
-  const renderAccordionSection = (id: TodaySectionId) => {
-    if (!sectionPrefs[id]) return null;
-    switch (id) {
-      case 'health':
-        return (
-          <TodaySection
-            title={t('todaySectionHealth', { defaultValue: 'Health scores' })}
-            description={t('todaySectionHealthDesc', {
-              defaultValue: 'Coach insight and pillar breakdown',
-            })}
-            defaultOpen={false}
-          >
-            <TodayHealthSection
-              insight={coachInsight}
-              breakdown={scoreBreakdown}
-              goal={userGoalRaw}
-              equipment={userEquip}
-              coachContext={{
-                readiness: bodyScores.readiness,
-                strain: bodyScores.strain,
-                recovery: bodyScores.recovery,
-                missionScore: score,
-                streak,
-                focusGroup: recommendedFocus.group,
-                pillars: {
-                  moveFlows: pillarStats.moveFlows,
-                  mindSessions: pillarStats.mindSessions,
-                  proteinDays: pillarStats.proteinDays,
-                  trainDays: pillarStats.trainDays,
-                  trackActivities: pillarStats.trackActivities,
-                  learnLessons: pillarStats.learnLessons,
-                  fuelCoachCarbBump: pillarStats.fuelCoachCarbBump,
-                },
-              }}
-            />
-          </TodaySection>
-        );
-      case 'journal':
-        return (
-          <TodaySection
-            title={t('todaySectionJournal', { defaultValue: 'Journal' })}
-            description={t('todaySectionJournalDesc', {
-              defaultValue: 'Recent activity across pillars',
-            })}
-            defaultOpen
-          >
-            <TodayJournalStrip entries={journalEntries} locale={i18n.language} />
-          </TodaySection>
-        );
-      case 'week':
-        return (
-          <TodaySection
-            title={t('todaySectionWeek', { defaultValue: 'This week' })}
-            description={t('todaySectionWeekDesc', {
-              defaultValue: 'Challenges and daily workout',
-            })}
-          >
-            {todaysWorkout ? (
-              <TodayWeekSection
-                challenges={challenges}
-                streak={streak}
-                todaysWorkout={todaysWorkout}
-                onStartTodaysWorkout={() =>
-                  onStartStarter(todaysWorkout.name, todaysWorkout.exercises)
-                }
-              />
-            ) : (
-              <p className="text-sm text-muted-foreground py-2">
-                {t('todayWeekLoading', { defaultValue: 'Loading week…' })}
-              </p>
-            )}
-          </TodaySection>
-        );
-      case 'progress':
-        return (
-          <TodaySection
-            title={t('todaySectionProgress', { defaultValue: 'Progress & tools' })}
-            description={t('todaySectionProgressDesc', {
-              defaultValue: 'Readiness, stats, and history',
-            })}
-          >
-            <TodayProgressSection
-              savedWorkouts={savedWorkouts}
-              readiness={readiness}
-              userGoalDisplay={userGoal}
-              userEquip={userEquip}
-              totalSessions={totalSessions}
-              totalVolume={totalVolume}
-              streak={streak}
-              highProteinDays={highProteinDays}
-              nightSessions={nightSessions}
-              dawnSessions={dawnSessions}
-              lastAssessment={lastAssessment}
-              recentPillarWins={recentPillarWins}
-              setRecentPillarWins={setRecentPillarWins}
-              recent={recent}
-              onStartStarter={onStartStarter}
-            />
-          </TodaySection>
-        );
-      default:
-        return null;
-    }
-  };
 
   const staggerBlocks: { key: string; node: React.ReactNode }[] = [
     { key: 'beta', node: <BetaWelcomeBanner /> },
@@ -774,13 +577,35 @@ export function HomeTodayDashboard() {
     staggerBlocks.push({
       key: 'accordion',
       node: (
-        <div className="space-y-3">
-          <TodaySections>
-            {sectionPrefs.order.map((id) => (
-              <div key={id}>{renderAccordionSection(id)}</div>
-            ))}
-          </TodaySections>
-        </div>
+        <TodayDashboardAccordion
+          sectionPrefs={sectionPrefs}
+          coachInsight={coachInsight}
+          scoreBreakdown={scoreBreakdown}
+          bodyScores={bodyScores}
+          score={score}
+          streak={streak}
+          recommendedFocus={recommendedFocus}
+          pillarStats={pillarStats}
+          userGoalRaw={userGoalRaw}
+          userGoalDisplay={userGoal}
+          userEquip={userEquip}
+          journalEntries={journalEntries}
+          locale={i18n.language}
+          challenges={challenges}
+          todaysWorkout={todaysWorkout}
+          savedWorkouts={savedWorkouts}
+          readiness={readiness}
+          totalSessions={totalSessions}
+          totalVolume={totalVolume}
+          highProteinDays={highProteinDays}
+          nightSessions={nightSessions}
+          dawnSessions={dawnSessions}
+          lastAssessment={lastAssessment}
+          recentPillarWins={recentPillarWins}
+          setRecentPillarWins={setRecentPillarWins}
+          recent={recent}
+          onStartStarter={onStartStarter}
+        />
       ),
     });
   }

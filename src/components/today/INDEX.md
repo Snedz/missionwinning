@@ -7,6 +7,7 @@
 | File | Purpose |
 |------|---------|
 | `TodayPageHeader.tsx` | Greeting, date, journey phase |
+| `TodayDashboardAccordion.tsx` | Health/journal/week/progress accordion (readiness+) |
 | `TodayDashboardHeader.tsx` | Win Score ring row |
 | `TodayHealthSection.tsx` | Readiness, strain, recovery metrics |
 | `TodayProgressSection.tsx` | Streak, mission score |
