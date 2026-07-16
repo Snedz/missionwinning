@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Exercise hubs RSC + sync conflict tests (`2026.07-unified.71`)
+
+- Muscle + equipment public hubs are Server Components (no client catalog hydration)
+- Expanded `workoutMerge` conflict cases (volume fingerprint, cap 200, empty sides, cloud-vs-cloud)
+- Expanded `journeySync` merge cases (readiness OR, commutativity of phase/milestones)
+
+---
+
 ## 2026-07-16 — Exercise detail RSC; all Lighthouse routes ≥90 (`2026.07-unified.70`)
 
 - `ExercisePublicPage` is a Server Component (catalog/form guides/SEO off client)
