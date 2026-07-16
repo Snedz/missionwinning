@@ -2,6 +2,7 @@
   "name": "mission-winning",
   "private": true,
   "version": "1.0.0",
+  "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "next dev",
     "build": "next build --webpack",

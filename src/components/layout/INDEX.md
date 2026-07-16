@@ -20,6 +20,7 @@
 | `PageTransition.tsx` | Route transition animation |
 | `StaggerReveal.tsx` | Staggered entrance motion |
 | `OnlineStatusBanner.tsx` | Offline/sync banner |
+| `AnalyticsConsentBanner.tsx` | First-visit product analytics choice (private by default) |
 
 ## Related
 

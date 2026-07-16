@@ -68,6 +68,9 @@ type InfoStrings = {
   infoPrivacyChoicesLi1: string;
   infoPrivacyChoicesLi2: string;
   infoPrivacyChoicesLi3: string;
+  infoPrivacyChoicesLi4: string;
+  infoPrivacyLocalFirst: string;
+  infoPrivacyLocalFirstBody: string;
   infoPrivacyNotMedicalBody: string;
   infoPrivacyFoot: string;
   infoAboutMissionP1: string;
@@ -97,7 +100,7 @@ type InfoStrings = {
 };
 
 const en: InfoStrings = {
-  infoLastUpdated: 'Last updated: June 2026',
+  infoLastUpdated: 'Last updated: July 2026',
   infoAboutTitle: 'About Mission Winning',
   infoAboutSubtitle:
     "The all-in-one global health and workout app — free core forever, premium depth when you're ready.",
@@ -166,25 +169,31 @@ const en: InfoStrings = {
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
   infoPrivacyOverviewBody:
-    'Mission Winning ("we", "us") operates the Mission Winning app at missionwinning.com. This policy explains what we collect, why, and your choices.',
+    'Mission Winning ("we", "us") operates the Mission Winning app at missionwinning.com. Privacy is the default: workouts and logs stay on your device until you sign in to sync. Optional product analytics are off until you allow them. This policy explains what we collect, why, and your choices.',
   infoPrivacyCollectLi1:
     'Account: email address when you sign in (Apple, Google, or magic link).',
   infoPrivacyCollectLi2:
     'Health & fitness data you enter: workouts, nutrition logs, assessments, journey progress, preferences (units, language, goals).',
   infoPrivacyCollectLi3:
-    'Device / usage: basic analytics events (e.g. journey milestones) to improve the product.',
+    'Optional product analytics: typed product events (e.g. journey milestones, checkout) only if you allow analytics. No session recording, no autocapture of form fields.',
   infoPrivacyCollectLi4:
-    'Local storage: much of the free core works offline; data may stay on your device until you sign in to sync.',
+    'Local storage: the free core works offline; data stays on your device until you sign in to sync.',
   infoPrivacyUseLi1: 'Provide and personalize your training journey (Today hub, recommendations).',
   infoPrivacyUseLi2: 'Sync across devices when signed in (Supabase cloud database).',
   infoPrivacyUseLi3: 'Process premium enrollments and support requests.',
-  infoPrivacyUseLi4: 'Improve the app during private beta (aggregate funnel metrics).',
+  infoPrivacyUseLi4:
+    'Improve the product with aggregate funnel metrics — only when product analytics are allowed on your device.',
   infoPrivacyThirdPartiesBody:
-    'We use Supabase (hosting/auth/database), Vercel (app hosting), and optionally Resend (transactional email), Stripe/PayPal (payments when enabled). Each has its own privacy terms.',
+    'We use Supabase (hosting/auth/database), Vercel (app hosting), and optionally Resend (transactional email), Stripe/PayPal (payments when enabled), and PostHog EU (product analytics only if you allow it). Each has its own privacy terms. Session recording is disabled in our PostHog config.',
   infoPrivacyChoicesLi1: 'Use the free core without an account (local-only).',
-  infoPrivacyChoicesLi2: 'Request export from Profile → Data Export.',
+  infoPrivacyChoicesLi2: 'Export or restore device data from Profile → Back up your data.',
   infoPrivacyChoicesLi3:
     'Contact us to delete your account and cloud data: support@missionwinning.com',
+  infoPrivacyChoicesLi4:
+    'Control product analytics anytime: first-visit banner, or Profile → Privacy & analytics. Browsers with Do Not Track keep analytics off.',
+  infoPrivacyLocalFirst: 'Local-first by design',
+  infoPrivacyLocalFirstBody:
+    'Training logs, nutrition, and journey progress are stored on your device first. Cloud sync is optional and requires sign-in. We do not sell personal health data. The app harness is open source so you can inspect how privacy works.',
   infoPrivacyNotMedicalBody:
     'Mission Winning provides educational fitness tools only. Consult a qualified professional before starting new exercise or nutrition programs.',
   infoPrivacyFoot: 'Questions: support@missionwinning.com',

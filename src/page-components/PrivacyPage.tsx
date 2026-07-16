@@ -10,6 +10,7 @@ import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
 
 const PRIVACY_SECTIONS = [
   { id: 'overview', key: 'infoPrivacyOverview', bodyKey: 'infoPrivacyOverviewBody' },
+  { id: 'local-first', key: 'infoPrivacyLocalFirst', bodyKey: 'infoPrivacyLocalFirstBody' },
   {
     id: 'collect',
     key: 'infoPrivacyCollect',
@@ -24,7 +25,12 @@ const PRIVACY_SECTIONS = [
   {
     id: 'choices',
     key: 'infoPrivacyChoices',
-    listKeys: ['infoPrivacyChoicesLi1', 'infoPrivacyChoicesLi2', 'infoPrivacyChoicesLi3'],
+    listKeys: [
+      'infoPrivacyChoicesLi1',
+      'infoPrivacyChoicesLi2',
+      'infoPrivacyChoicesLi3',
+      'infoPrivacyChoicesLi4',
+    ],
   },
   { id: 'not-medical', key: 'infoPrivacyNotMedical', bodyKey: 'infoPrivacyNotMedicalBody' },
 ] as const;

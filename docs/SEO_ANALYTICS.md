@@ -8,6 +8,8 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. C
 
 **Prerequisite:** `NEXT_PUBLIC_POSTHOG_KEY` set in Vercel Production + Preview ([ENV.md](../ENV.md)).
 
+**Privacy default (July 2026):** PostHog only initializes after the user allows product analytics (first-visit banner or Profile → Privacy & analytics). Do Not Track forces off. Undecided = no capture. See `src/lib/analyticsOptOut.ts`.
+
 ### Events (typed in [`src/lib/analytics.ts`](../src/lib/analytics.ts))
 
 | Event | When fired |

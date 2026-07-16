@@ -2,6 +2,10 @@
 
 Thank you for helping build a healthier world. This guide is for developers and agents working in the repo.
 
+**License:** contributions are accepted under the [GNU Affero General Public License v3.0](LICENSE). By opening a PR you agree your contribution is licensed under AGPL-3.0.
+
+**Acceptable use:** do not contribute features whose primary purpose violates [ACCEPTABLE_USE.md](ACCEPTABLE_USE.md) (illegal deepfakes, CSAM, fraud, etc.). Security issues → [SECURITY.md](SECURITY.md).
+
 ---
 
 ## Prerequisites

@@ -32,6 +32,7 @@ import {
   saveDaysPerWeek,
 } from '@/lib/coach/schedulePrefs';
 import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
+import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { SUPER_BUNDLE_PRICE, openBillingPortal } from '@/lib/payments';
 
 const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
@@ -564,6 +565,8 @@ export function ProfilePage() {
       </Card>
       </>
       )}
+
+      <ProfilePrivacyCard />
 
       <ProfileBackupCard />
 

@@ -4,15 +4,18 @@
  * Product analytics — PostHog, privacy-first configuration.
  *
  * - Entirely disabled unless NEXT_PUBLIC_POSTHOG_KEY is set (dev/beta-off stays clean).
+ * - Off until the user explicitly allows product analytics (see analyticsOptOut.ts).
+ * - Respects Do Not Track (hard off).
  * - Anonymous events only until a user signs in (`person_profiles: 'identified_only'`).
  * - No session recording, no autocapture — only the typed events below.
- * - Respects Do Not Track.
  * - posthog-js is dynamic-imported so it never ships on first paint when unused.
  *
  * The funnel these events exist to answer (STRATEGY.md #1 metric):
  *   visit → iday_started → iday_completed → first_workout_completed →
  *   workout_completed (repeat) → week-4 retention cohort.
  */
+
+import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
 
 type AnalyticsEvent =
   | 'iday_started'
@@ -47,6 +50,8 @@ type PostHogClient = {
   capture: (event: string, properties?: Record<string, string | number | boolean>) => void;
   identify: (userId: string) => void;
   reset: () => void;
+  opt_out_capturing?: () => void;
+  opt_in_capturing?: () => void;
 };
 
 let initialized = false;
@@ -74,14 +79,27 @@ function flushPending() {
 }
 
 export function initAnalytics(): void {
-  if (initStarted || typeof window === 'undefined') return;
+  if (typeof window === 'undefined') return;
+  if (!isAnalyticsAllowed()) return;
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
   if (!key) return;
-  if (navigator.doNotTrack === '1') return;
+  if (initialized && ph) {
+    try {
+      ph.opt_in_capturing?.();
+    } catch {
+      /* noop */
+    }
+    return;
+  }
+  if (initStarted) return;
   initStarted = true;
 
   void import('posthog-js')
     .then((mod) => {
+      if (!isAnalyticsAllowed()) {
+        initStarted = false;
+        return;
+      }
       const posthog = (mod.default ?? mod) as PostHogClient;
       posthog.init(key, {
         api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
@@ -91,6 +109,7 @@ export function initAnalytics(): void {
         autocapture: false,
         disable_session_recording: true,
         persistence: 'localStorage',
+        opt_out_capturing_by_default: false,
       });
       ph = posthog;
       initialized = true;
@@ -101,12 +120,25 @@ export function initAnalytics(): void {
     });
 }
 
+/** Stop capture after the user opts out (mid-session safe). */
+export function stopAnalyticsCapture(): void {
+  pending.length = 0;
+  if (!ph) return;
+  try {
+    ph.opt_out_capturing?.();
+    ph.reset();
+  } catch {
+    /* noop */
+  }
+}
+
 export function track(
   event: AnalyticsEvent,
   properties?: Record<string, string | number | boolean>
 ): void {
   if (typeof window === 'undefined') return;
   if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) return;
+  if (!isAnalyticsAllowed()) return;
   if (!initialized || !ph) {
     pending.push({ type: 'track', event, properties });
     return;
@@ -122,6 +154,7 @@ export function track(
 export function identifyUser(userId: string): void {
   if (typeof window === 'undefined') return;
   if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) return;
+  if (!isAnalyticsAllowed()) return;
   if (!initialized || !ph) {
     pending.push({ type: 'identify', userId });
     return;
@@ -136,6 +169,7 @@ export function identifyUser(userId: string): void {
 export function resetAnalyticsIdentity(): void {
   if (typeof window === 'undefined') return;
   if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) return;
+  if (!isAnalyticsAllowed()) return;
   if (!initialized || !ph) {
     pending.push({ type: 'reset' });
     return;

@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Privacy default + OSS trust (`2026.07-unified.79`)
+
+- Product analytics **off until allow** (`analyticsOptOut.ts`); banner + Profile privacy card
+- Privacy policy: local-first section, choices for analytics control
+- Open source prep: AGPL-3.0 `LICENSE`, `ACCEPTABLE_USE.md` (illegal deepfakes/CSAM/fraud ban), `SECURITY.md`
+- README trust section; `package.json` license field; CONTRIBUTING license/AUP note
+
+---
+
 ## 2026-07-16 — API abuse hardening A2 (`2026.07-unified.78`)
 
 - Rate limits: journey/nudge, school class create, unsubscribe

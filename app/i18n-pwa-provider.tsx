@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { HtmlLangSync } from '@/components/i18n/HtmlLangSync';
 import { LocaleHttpSync } from '@/components/i18n/LocaleHttpSync';
 import { identifyUser, initAnalytics, resetAnalyticsIdentity, track } from '@/lib/analytics';
+import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
 
 // Bootstrap i18next (minimal EN). Full locale catalogs hydrate after idle.
 // supabase-js is NOT imported here — auth listener loads it after idle.
@@ -14,6 +15,14 @@ const OnlineStatusBanner = dynamic(
   () =>
     import('@/components/layout/OnlineStatusBanner').then((m) => ({
       default: m.OnlineStatusBanner,
+    })),
+  { ssr: false }
+);
+
+const AnalyticsConsentBanner = dynamic(
+  () =>
+    import('@/components/layout/AnalyticsConsentBanner').then((m) => ({
+      default: m.AnalyticsConsentBanner,
     })),
   { ssr: false }
 );
@@ -81,14 +90,14 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
     return () => clearTimeout(t);
   }, []);
 
-  // Hydrate full i18n + start analytics after first interaction or a short delay
-  // so LCP/TBT are not competing with multi-language catalogs or posthog-js.
+  // Hydrate full i18n after first interaction or a short delay so LCP/TBT are
+  // not competing with multi-language catalogs. Analytics only if user allowed.
   useEffect(() => {
     let done = false;
     const run = () => {
       if (done) return;
       done = true;
-      initAnalytics();
+      if (isAnalyticsAllowed()) initAnalytics();
       void hydrateI18nResources(i18n).catch(() => {
         /* keep bootstrap strings */
       });
@@ -174,6 +183,7 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
       <LocaleHttpSync />
       {showOfflineBanner ? <OnlineStatusBanner /> : null}
       {children}
+      <AnalyticsConsentBanner />
     </>
   );
 }
