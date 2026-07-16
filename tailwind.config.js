@@ -48,12 +48,18 @@ export default {
           DEFAULT: "hsl(var(--brass))",
           foreground: "hsl(var(--brass-foreground))",
         },
+        "surface-raised": "hsl(var(--surface-raised))",
+        "grid-line": "hsl(var(--grid-line))",
         status: {
           warn: "hsl(var(--status-warn))",
           info: "hsl(var(--status-info))",
           danger: "hsl(var(--status-danger))",
           ok: "hsl(var(--status-ok))",
         },
+      },
+      boxShadow: {
+        glow: "0 0 48px -12px hsl(158 64% 42% / 0.4)",
+        "glow-brass": "0 0 48px -12px hsl(42 48% 58% / 0.35)",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -16,6 +16,7 @@
 | `useUiMode.ts` | Layout, simplified UI | `uiMode.ts` |
 | `useTodayLayout.ts` | Today sections | `missionJourney.ts` phase flags |
 | `use-toast.ts` | shadcn toast primitive | UI only |
+| `useScrollReveal.ts` | marketing `Reveal` | IntersectionObserver |
 
 ## Conventions
 

@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Marketing elevation redesign (`2026.07-unified.80`)
+
+- Design language: hero-field, textures, card-elevated/glow, section seams, reveal/ticker
+- MarketingNav/Footer, StatBand, BundleTeaserCard, useScrollReveal
+- Landing rebuild (bento pillars, sticky journey rail, art in `public/art/`)
+- Bundle/Welcome/Compare + PublicSeo chrome polish; OG gradient aligned
+- DESIGN_SYSTEM.md marketing section; payments logic untouched
+
+---
+
 ## 2026-07-16 — Privacy default + OSS trust (`2026.07-unified.79`)
 
 - Product analytics **off until allow** (`analyticsOptOut.ts`); banner + Profile privacy card

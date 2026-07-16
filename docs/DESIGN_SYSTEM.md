@@ -22,13 +22,39 @@
 |-------|------|
 | `--background` / `--foreground` | Navy canvas / primary text |
 | `--card` / `--border` | Solid content surfaces |
+| `--surface-raised` / `--grid-line` | Marketing elevation + faint grids |
 | `--primary` / `--accent` | Emerald action |
 | `--brass` | Honor, PR, founders, rank |
 | `--status-warn` | Strain / caution (prefer over raw amber) |
 | `--status-info` | Recovery / info (prefer over raw blue) |
 | `--status-danger` / `--status-ok` | Risk / success |
 
-Utility classes: `glass-nav`, `content-card`, `dashboard-panel`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `briefing-rule`, `pressable-card`, `ring-draw-in`, `score-tick`.
+Utility classes: `glass-nav`, `content-card`, `dashboard-panel`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `display-mega`, `section-index`, `briefing-rule`, `pressable-card`, `ring-draw-in`, `score-tick`.
+
+### Marketing elevation (landing / bundle / SEO)
+
+| Class | Role |
+|-------|------|
+| `hero-field` | Full-bleed emerald + brass radial field on navy |
+| `texture-grid` / `texture-noise` | CSS grid + grain (mobile-cheap) |
+| `card-elevated` | Raised surface above `content-card` |
+| `card-glow-emerald` / `card-glow-brass` | Soft brand glows |
+| `section-seam` / `section-seam-glow` | Gradient hairlines (replace uniform borders) |
+| `reveal` / `reveal-visible` | Scroll-reveal (pair with `Reveal` / `useScrollReveal`) |
+| `ticker-track` | Mono telemetry marquee (md+) |
+
+Tailwind: `surface-raised`, `shadow-glow`, `shadow-glow-brass`.
+
+### Generated art (`public/art/`)
+
+| Asset | Use |
+|-------|-----|
+| `hero-field.avif` (+ webp) | Landing hero (priority) |
+| `topo-brass.*` | Manifesto / mission bands |
+| `arc-momentum.*` | Final CTA |
+| `bundle-brass.*` | Bundle teaser flourish |
+
+Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except hero, ≤80 KB each / ≤250 KB total on `/`.
 
 ---
 
@@ -53,6 +79,9 @@ Utility classes: `glass-nav`, `content-card`, `dashboard-panel`, `primary-action
 | **PillarPageHeader** | briefing anatomy (eyebrow optional) | All pillar + info pages |
 | **PillarPageShell** | stagger + header + children | In-app pillars |
 | **InfoPageShell** | info/marketing in app chrome | About, legal, etc. |
+| **MarketingNav / Footer** | `src/components/marketing/` | Landing + Bundle chrome |
+| **PublicSeoHeader / Footer** | `src/components/public/` | Guide, exercises, compare, paths |
+| **Reveal / StatBand** | `src/components/marketing/` | Landing motion + telemetry |
 | **EmptyState** | dashed invite + CTA | First-week empties |
 | **primary-action** | CSS class | Journey / conversion CTAs |
 

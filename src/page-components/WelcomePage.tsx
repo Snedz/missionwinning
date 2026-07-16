@@ -131,11 +131,11 @@ export function WelcomePage() {
   return (
     <div className="relative min-h-screen text-foreground flex flex-col overflow-hidden">
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(16,185,129,0.14),transparent_50%),radial-gradient(ellipse_at_90%_20%,rgba(180,140,60,0.08),transparent_45%),linear-gradient(180deg,hsl(222_40%_8%)_0%,hsl(222_45%_6%)_100%)]"
+        className="hero-field texture-noise pointer-events-none absolute inset-0"
         aria-hidden
       />
 
-      <header className="relative z-10 border-b border-border/40 px-4 py-3.5 flex items-center gap-3">
+      <header className="relative z-10 section-seam px-4 py-3.5 flex items-center gap-3">
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-display text-sm font-bold text-primary-foreground">
           MW
         </span>
@@ -170,8 +170,10 @@ export function WelcomePage() {
               <div
                 key={s}
                 className={cn(
-                  'h-1 flex-1 rounded-full transition-colors',
-                  i <= stepIndex ? 'bg-primary' : 'bg-border/50'
+                  'h-1.5 flex-1 rounded-full transition-all',
+                  i <= stepIndex
+                    ? 'bg-primary shadow-[0_0_12px_-2px_hsl(158_64%_42%_/_0.7)]'
+                    : 'bg-border/50'
                 )}
               />
             ))}
@@ -201,7 +203,7 @@ export function WelcomePage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-primary/25 bg-primary/5 p-4 space-y-3">
+                <div className="card-elevated card-glow-emerald p-4 space-y-3">
                   <p className="text-[10px] uppercase tracking-widest text-primary/90 font-medium">
                     {t('welcomePreviewLabel', { defaultValue: 'Your first session is ready' })}
                   </p>
@@ -423,7 +425,7 @@ export function WelcomePage() {
                     })}
                   </p>
                 </div>
-                <div className="rounded-2xl border border-brass/30 bg-brass/5 p-4 space-y-2">
+                <div className="card-elevated card-glow-brass p-4 space-y-2">
                   <p className="text-[10px] uppercase tracking-widest text-brass font-medium">
                     {t('welcomeSessionReadyEyebrow', { defaultValue: 'Session ready' })}
                   </p>
