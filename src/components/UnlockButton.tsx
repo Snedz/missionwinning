@@ -1,8 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ArrowUpRight, Check } from 'lucide-react';
-import { PROGRAM_PRICES, getStripeCheckoutUrl, grantPremiumDemo } from '@/lib/payments';
+import Link from 'next/link';
+import { ArrowUpRight, Check, Loader2 } from 'lucide-react';
+import {
+  PROGRAM_PRICES,
+  createCheckoutForPlan,
+  getStripeCheckoutUrl,
+  grantPremiumDemo,
+  isCheckoutSessionsEnabled,
+  type CheckoutPlanId,
+} from '@/lib/payments';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 
@@ -13,7 +21,10 @@ interface Props {
   label?: string;
   isSubscription?: boolean;
   className?: string;
+  /** Legacy Payment Link URL (fallback when Checkout Sessions unavailable). */
   stripeCheckoutUrl?: string | null;
+  /** When set, prefer POST /api/checkout for this Super Bundle plan. */
+  planId?: CheckoutPlanId;
   onSuccess?: () => void;
 }
 
@@ -22,10 +33,9 @@ const IS_DEV = process.env.NODE_ENV === 'development';
 /**
  * Checkout entry point for premium products.
  *
- * - When a Stripe Payment Link is configured (env or prop), renders real checkout.
- * - Otherwise renders an honest founders-waitlist capture — no fake purchases,
- *   no "access granted" theater. (In local dev only, joining the waitlist also
- *   grants demo premium so the paid experience can be tested.)
+ * - Prefer Checkout Sessions (`planId` + NEXT_PUBLIC_STRIPE_CHECKOUT) → same-tab redirect.
+ * - Else Payment Link (env or prop).
+ * - Otherwise founders waitlist (dev: grantPremiumDemo).
  */
 export function UnlockButton({
   productId,
@@ -35,11 +45,14 @@ export function UnlockButton({
   isSubscription = false,
   className = '',
   stripeCheckoutUrl,
+  planId,
   onSuccess,
 }: Props) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [checkoutBusy, setCheckoutBusy] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const program = productId ? PROGRAM_PRICES[productId] : null;
   const amount = price || program?.price;
@@ -47,6 +60,9 @@ export function UnlockButton({
     title || program?.title || (isSubscription ? 'Mission Winning Super Bundle' : 'Mission Winning Program');
   const checkoutUrl =
     stripeCheckoutUrl ?? getStripeCheckoutUrl(productId || (isSubscription ? 'super-bundle' : undefined));
+
+  const useSessions = Boolean(planId) && isCheckoutSessionsEnabled();
+  const hasLiveCheckout = useSessions || Boolean(checkoutUrl);
 
   const checkoutLabel =
     label || (isSubscription ? `Unlock the Super Bundle${amount ? ` — $${amount}/mo` : ''}` : `Unlock${amount ? ` — $${amount}` : ''}`);
@@ -77,26 +93,77 @@ export function UnlockButton({
     if (onSuccess) setTimeout(onSuccess, 1200);
   };
 
-  if (checkoutUrl) {
+  const startCheckout = async () => {
+    setCheckoutError(null);
+    track('checkout_clicked', {
+      product: productId || (isSubscription ? 'super-bundle' : 'premium'),
+      ...(planId ? { plan: planId } : {}),
+      mode: useSessions ? 'checkout_session' : 'payment_link',
+    });
+
+    if (useSessions && planId) {
+      setCheckoutBusy(true);
+      const result = await createCheckoutForPlan(planId);
+      setCheckoutBusy(false);
+
+      if (result.ok) {
+        window.location.href = result.url;
+        return;
+      }
+
+      if (result.code === 'auth_required') {
+        setCheckoutError('Sign in on Profile with the email you will pay with, then try again.');
+        return;
+      }
+
+      if (result.code === 'unavailable' && checkoutUrl) {
+        window.location.href = checkoutUrl;
+        return;
+      }
+
+      setCheckoutError(result.message);
+      return;
+    }
+
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
+    }
+  };
+
+  if (hasLiveCheckout) {
     return (
       <div className={className}>
-        <a
-          href={checkoutUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="primary-action"
-          onClick={() =>
-            track('checkout_clicked', {
-              product: productId || (isSubscription ? 'super-bundle' : 'premium'),
-            })
-          }
+        <button
+          type="button"
+          className="primary-action w-full disabled:opacity-60"
+          disabled={checkoutBusy}
+          onClick={() => void startCheckout()}
         >
-          {checkoutLabel}
-          <ArrowUpRight className="h-4 w-4" />
-        </a>
+          {checkoutBusy ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Starting checkout…
+            </>
+          ) : (
+            <>
+              {checkoutLabel}
+              <ArrowUpRight className="h-4 w-4" />
+            </>
+          )}
+        </button>
         <p className="mt-2 text-center text-[11px] text-muted-foreground">
-          Secure checkout by Stripe · 30-day guarantee · The free core stays free
+          Secure checkout by Stripe · Card · Apple Pay · Google Pay · PayPal · USDC · 30-day guarantee
         </p>
+        {checkoutError && (
+          <p className="mt-2 text-center text-xs text-destructive" role="alert">
+            {checkoutError}{' '}
+            {checkoutError.includes('Sign in') && (
+              <Link href="/profile" className="underline underline-offset-2">
+                Open Profile
+              </Link>
+            )}
+          </p>
+        )}
       </div>
     );
   }

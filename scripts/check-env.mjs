@@ -15,14 +15,17 @@ const required = [
 const launchRequired = [
   ['SUPABASE_SERVICE_ROLE_KEY', 'Webhooks, enrollments, admin APIs'],
   ['STRIPE_WEBHOOK_SECRET', 'Stripe checkout.session.completed'],
-  ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE', 'Bundle checkout link (or NEXT_PUBLIC_STRIPE_LINK_PREMIUM)'],
   ['YOUTH_CONSENT_SECRET', 'Dedicated — never reuse PRIVATE_ACCESS_SECRET'],
   ['NUDGE_SECRET', 'Journey email unsubscribe HMAC'],
 ];
 
 const launchRecommended = [
   ['CRON_SECRET', 'Vercel cron auth for /api/cron/* (reminders)'],
-  ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME', 'Founders lifetime payment link'],
+  ['STRIPE_SECRET_KEY', 'Checkout Sessions + Billing Portal'],
+  ['STRIPE_PRICE_BUNDLE_12MO', 'Founders annual Price ID'],
+  ['STRIPE_PRICE_BUNDLE_LIFETIME', 'Founders lifetime Price ID'],
+  ['NEXT_PUBLIC_STRIPE_CHECKOUT', 'true when Sessions are live'],
+  ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME', 'Founders lifetime payment link (fallback)'],
 ];
 
 const optional = [
@@ -34,6 +37,8 @@ const optional = [
   ['CRON_SECRET', 'Vercel cron auth for reminder nudges'],
   ['UPSTASH_REDIS_REST_URL', 'Distributed rate limits (recommended prod)'],
   ['UPSTASH_REDIS_REST_TOKEN', 'Paired with UPSTASH_REDIS_REST_URL'],
+  ['STRIPE_PRICE_BUNDLE_MONTHLY', 'Monthly Super Bundle Price ID'],
+  ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE', 'Payment Link fallback (or NEXT_PUBLIC_STRIPE_LINK_PREMIUM)'],
   ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME', 'Founders lifetime checkout link'],
   ['NEXT_PUBLIC_SENTRY_DSN', 'Error monitoring (optional)'],
   ['NEXT_PUBLIC_POSTHOG_KEY', 'Product analytics (optional)'],
@@ -92,6 +97,23 @@ if (launch) {
     } else {
       console.log(`  ✓ ${key}`);
     }
+  }
+
+  const hasSessions =
+    process.env.STRIPE_SECRET_KEY &&
+    process.env.STRIPE_PRICE_BUNDLE_12MO &&
+    process.env.NEXT_PUBLIC_STRIPE_CHECKOUT === 'true';
+  const hasPaymentLink =
+    process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM;
+  if (!hasSessions && !hasPaymentLink) {
+    console.log(
+      '  ✗ Checkout — set Checkout Sessions (STRIPE_SECRET_KEY + prices + NEXT_PUBLIC_STRIPE_CHECKOUT=true) or NEXT_PUBLIC_STRIPE_LINK_BUNDLE'
+    );
+    ok = false;
+  } else if (hasSessions) {
+    console.log('  ✓ Checkout Sessions path configured');
+  } else {
+    console.log('  ✓ Payment Link fallback configured');
   }
 }
 

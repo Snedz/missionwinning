@@ -32,7 +32,7 @@ import {
   saveDaysPerWeek,
 } from '@/lib/coach/schedulePrefs';
 import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
-import { SUPER_BUNDLE_PRICE } from '@/lib/payments';
+import { SUPER_BUNDLE_PRICE, openBillingPortal } from '@/lib/payments';
 
 const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
 
@@ -91,6 +91,7 @@ export function ProfilePage() {
   const [premium, setPremium] = useState(false);
   const [reminders, setReminders] = useState(false);
   const [remindersBusy, setRemindersBusy] = useState(false);
+  const [billingBusy, setBillingBusy] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -496,7 +497,36 @@ export function ProfilePage() {
         <CardHeader><CardTitle>{t('premiumStatus', { defaultValue: 'Premium Status' })}</CardTitle></CardHeader>
         <CardContent>
           {premium ? (
-            <div className="text-primary font-medium">{t('premiumUnlocked', { defaultValue: '✓ Premium unlocked (via Super Bundle or demo request)' })}</div>
+            <div className="space-y-3">
+              <div className="text-primary font-medium">{t('premiumUnlocked', { defaultValue: '✓ Premium unlocked (via Super Bundle or demo request)' })}</div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={billingBusy}
+                onClick={async () => {
+                  setBillingBusy(true);
+                  const result = await openBillingPortal();
+                  setBillingBusy(false);
+                  if (result.ok) {
+                    window.location.href = result.url;
+                    return;
+                  }
+                  toast({
+                    title: t('billingPortalError', { defaultValue: 'Billing portal' }),
+                    description:
+                      result.code === 'auth_required'
+                        ? t('billingPortalSignIn', { defaultValue: 'Sign in to manage billing.' })
+                        : result.message,
+                    variant: 'destructive',
+                  });
+                }}
+              >
+                {billingBusy
+                  ? t('billingPortalOpening', { defaultValue: 'Opening…' })
+                  : t('manageBilling', { defaultValue: 'Manage billing' })}
+              </Button>
+            </div>
           ) : (
             <div>
               {t('noPremium', { defaultValue: 'Free tier active. Unlock full library cues, deep nutrition, mobility flows, mind sessions, advanced programs, and analytics via the Super Bundle or specialist programs.' })}

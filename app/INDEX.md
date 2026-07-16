@@ -68,7 +68,7 @@
 | `/api/school/` | Teacher class, PFT leaderboard |
 | `/api/youth/` | COPPA consent |
 | `/api/journey/` | Nudge emails |
-| `/api/stripe-webhook`, `/api/paypal-webhook` | Payments |
+| `/api/checkout`, `/api/billing-portal`, `/api/crypto-checkout/*`, `/api/stripe-webhook`, `/api/paypal-webhook` | Payments |
 | `/api/private-access` | Dev gate |
 | `/api/leads` | Waitlist / leads |
 | `/api/cron/nudges` | Scheduled nudges |

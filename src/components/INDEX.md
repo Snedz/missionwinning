@@ -12,6 +12,7 @@
 
 | Folder | Purpose |
 |--------|---------|
+| `crypto/` | Phantom lifetime USDC checkout |
 | `auth/` | Sign-in panel |
 | `benchmarks/` | Benchmark charts |
 | `beta/` | Beta admin, welcome banner |

@@ -5,14 +5,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { grantEnrollmentFromWebhook } from '@/lib/premiumServer';
-import { emailFromCheckoutSession } from '@/lib/stripeWebhook';
+import {
+  emailFromCheckoutSession,
+  userIdFromCheckoutSession,
+  type StripeCheckoutSession,
+} from '@/lib/stripeWebhook';
 import { validateStripeWebhookRequest } from '@/lib/api/stripeWebhookAuth';
 
 /**
  * Stripe webhook — requires signature verification before granting premium.
  * Set STRIPE_WEBHOOK_SECRET + SUPABASE_SERVICE_ROLE_KEY in production.
+ * Prefer metadata.user_id from Checkout Sessions when present.
  */
-export const POST = withApiLogging('stripe-webhook', async(req: NextRequest) => {
+export const POST = withApiLogging('stripe-webhook', async (req: NextRequest) => {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   const sig = req.headers.get('stripe-signature');
   const raw = await req.text();
@@ -30,16 +35,17 @@ export const POST = withApiLogging('stripe-webhook', async(req: NextRequest) => 
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data?.object ?? {};
-    const email = emailFromCheckoutSession(session as Parameters<typeof emailFromCheckoutSession>[0]);
+    const session = (event.data?.object ?? {}) as StripeCheckoutSession;
+    const email = emailFromCheckoutSession(session);
+    const userId = userIdFromCheckoutSession(session);
     const sessionId = String(session.id ?? '');
 
     if (email && sessionId) {
-      const meta = session.metadata as { product_id?: string } | undefined;
-      const productId = meta?.product_id?.trim() || 'super-bundle';
+      const productId = session.metadata?.product_id?.trim() || 'super-bundle';
       try {
         await grantEnrollmentFromWebhook({
           user_email: email,
+          user_id: userId,
           product_id: productId,
           provider: 'stripe',
           external_id: sessionId,

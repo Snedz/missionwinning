@@ -87,6 +87,9 @@ export function CalculatorsPage() {
             </p>
           </div>
           <UnlockButton
+            productId="super-bundle"
+            planId="12mo"
+            isSubscription
             label={t('calcPremiumBtn', { defaultValue: 'Unlock premium tools' })}
             className="shrink-0"
           />

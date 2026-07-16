@@ -36,8 +36,22 @@ export type StripeCheckoutSession = {
   id?: string;
   customer_email?: string;
   customer_details?: { email?: string };
+  client_reference_id?: string | null;
+  metadata?: {
+    user_id?: string;
+    product_id?: string;
+    plan_id?: string;
+  } | null;
 };
 
 export function emailFromCheckoutSession(session: StripeCheckoutSession): string | null {
   return session.customer_details?.email ?? session.customer_email ?? null;
+}
+
+/** Prefer metadata.user_id, then client_reference_id (Checkout Sessions). */
+export function userIdFromCheckoutSession(session: StripeCheckoutSession): string | null {
+  const fromMeta = session.metadata?.user_id?.trim();
+  if (fromMeta) return fromMeta;
+  const fromRef = session.client_reference_id?.trim();
+  return fromRef || null;
 }

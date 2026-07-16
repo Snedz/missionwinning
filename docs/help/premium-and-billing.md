@@ -24,14 +24,19 @@ Exact entitlements may evolve — Profile shows your status.
 
 ## Buying the Super Bundle
 
-1. Go to **Bundle** (`/bundle`) or upgrade prompts in Coach.
-2. Checkout via **Stripe** (card) — secure, handled off-device.
-3. After payment, premium APIs activate for your signed-in email.
-4. Refresh Profile if content doesn't unlock immediately (usually instant).
+1. Sign in (Profile) with the email you will pay with.
+2. Go to **Bundle** (`/bundle`) or upgrade prompts in Coach.
+3. Choose monthly, founders annual, or lifetime.
+4. Checkout via **Stripe** — card, Apple Pay, Google Pay, PayPal, or **USDC** when offered.
+5. **Lifetime only:** you can also **Pay with Phantom (USDC)** on Solana — wallet transfer, no Stripe card form.
+6. After payment, premium activates for your account (same email / signed-in user).
+7. Refresh Profile if content doesn't unlock immediately (usually instant).
+
+Lifetime is the best plan if you prefer paying with USDC (Stripe or Phantom).
 
 ## Restore access
 
-Premium ties to the **email used at checkout**:
+Premium ties to your **signed-in account** and the **email used at checkout**:
 
 1. Sign in with the **same email** you paid with.
 2. If still locked, check spam for receipt and contact support with your email and approximate purchase date.
@@ -39,7 +44,8 @@ Premium ties to the **email used at checkout**:
 
 ## Refunds and cancellation
 
-Follow the policy on `/terms`. Subscription management links appear in Stripe receipt emails when applicable.
+- **Subscriptions:** Profile → **Manage billing** opens Stripe’s customer portal (cancel / update card).
+- Also follow the policy on `/terms`. Receipt emails from Stripe include manage links when applicable.
 
 ## Beta and demo mode
 

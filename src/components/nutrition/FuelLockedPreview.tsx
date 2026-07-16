@@ -111,7 +111,7 @@ export function FuelLockedPreview({ baseTargets }: Props) {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <UnlockButton productId="super-bundle" price="59" title="Super Bundle" isSubscription />
+          <UnlockButton productId="super-bundle" planId="12mo" price="59" title="Super Bundle" isSubscription />
           <Button variant="outline" size="sm" asChild>
             <Link href="/bundle">{t('fuelExploreBundle', { defaultValue: 'Explore Super Bundle' })}</Link>
           </Button>

@@ -6,15 +6,20 @@
  *   node scripts/verify-stripe-enrollment.mjs
  *   SMOKE_BASE_URL=https://www.missionwinning.com node scripts/verify-stripe-enrollment.mjs --check-gates
  *   STRIPE_WEBHOOK_SECRET=whsec_... node scripts/verify-stripe-enrollment.mjs --ping-webhook
+ *   node scripts/verify-stripe-enrollment.mjs --check-checkout
+ *   node scripts/verify-stripe-enrollment.mjs --check-crypto-checkout
  *
  * --check-gates  Assert premium APIs reject unauthenticated callers (403).
  * --ping-webhook Send a signed test checkout.session.completed payload.
+ * --check-checkout  POST /api/checkout without session → expect 401 (or 503 if Sessions unset).
+ * --check-crypto-checkout  POST /api/crypto-checkout/* without session → expect 401/503.
  * --verify-enrollment <email>  Query Supabase enrollments for a buyer email.
  */
 const base = (process.env.SMOKE_BASE_URL || 'http://localhost:3000').replace(/\/$/, '');
 
 const ENROLLMENT_ROW = {
   user_email: 'buyer@example.com',
+  user_id: 'uuid-optional-from-checkout-session',
   product_id: 'super-bundle',
   plan: 'bundle',
   status: 'active',
@@ -58,12 +63,23 @@ async function checkPremiumGates() {
   );
   if (!statusOk) failed = true;
 
+  const sessionsOn = process.env.NEXT_PUBLIC_STRIPE_CHECKOUT === 'true';
   const stripeLink =
     process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM;
-  if (stripeLink) {
-    console.log(`✓ NEXT_PUBLIC_STRIPE_LINK_BUNDLE configured`);
+  if (sessionsOn) {
+    console.log('✓ NEXT_PUBLIC_STRIPE_CHECKOUT=true (Checkout Sessions preferred)');
+  } else if (stripeLink) {
+    console.log('✓ NEXT_PUBLIC_STRIPE_LINK_BUNDLE configured (Payment Link fallback)');
   } else {
-    console.log('⚠ NEXT_PUBLIC_STRIPE_LINK_BUNDLE not set — UnlockButton shows founders waitlist');
+    console.log(
+      '⚠ Neither NEXT_PUBLIC_STRIPE_CHECKOUT nor Payment Links set — UnlockButton shows founders waitlist'
+    );
+  }
+
+  if (process.env.STRIPE_SECRET_KEY) {
+    console.log('✓ STRIPE_SECRET_KEY configured');
+  } else {
+    console.log('⚠ STRIPE_SECRET_KEY not set — /api/checkout returns 503');
   }
 
   if (process.env.STRIPE_WEBHOOK_SECRET) {
@@ -74,6 +90,76 @@ async function checkPremiumGates() {
 
   if (failed) process.exit(1);
   console.log('\nPremium gates OK (unenrolled callers blocked on content APIs).\n');
+}
+
+async function checkCheckout() {
+  console.log(`Checking POST /api/checkout at ${base} …\n`);
+  const res = await fetch(`${base}/api/checkout`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ planId: 'lifetime' }),
+  });
+  let body;
+  try {
+    body = await res.json();
+  } catch {
+    body = {};
+  }
+
+  // Unauthenticated: 401. Sessions unconfigured after auth would be 503 — without session always 401.
+  const ok = res.status === 401 || res.status === 503;
+  console.log(
+    `${ok ? '✓' : '✗'} POST /api/checkout → ${res.status} ${JSON.stringify(body).slice(0, 120)}`
+  );
+  if (!ok) process.exit(1);
+
+  const portalRes = await fetch(`${base}/api/billing-portal`, { method: 'POST' });
+  const portalOk = portalRes.status === 401 || portalRes.status === 503;
+  console.log(
+    `${portalOk ? '✓' : '✗'} POST /api/billing-portal → ${portalRes.status} (expect 401 without session)`
+  );
+  if (!portalOk) process.exit(1);
+
+  console.log('\nCheckout routes respond as expected without a session.\n');
+}
+
+async function checkCryptoCheckout() {
+  console.log(`Checking POST /api/crypto-checkout/* at ${base} …\n`);
+
+  const intentRes = await fetch(`${base}/api/crypto-checkout/intent`, { method: 'POST' });
+  let intentBody;
+  try {
+    intentBody = await intentRes.json();
+  } catch {
+    intentBody = {};
+  }
+  const intentOk = intentRes.status === 401 || intentRes.status === 503;
+  console.log(
+    `${intentOk ? '✓' : '✗'} POST /api/crypto-checkout/intent → ${intentRes.status} ${JSON.stringify(intentBody).slice(0, 120)}`
+  );
+  if (!intentOk) process.exit(1);
+
+  const confirmRes = await fetch(`${base}/api/crypto-checkout/confirm`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      intentId: '00000000-0000-4000-8000-000000000000',
+      signature: '1111111111111111111111111111111111111111111111111111111111111111',
+    }),
+  });
+  const confirmOk = confirmRes.status === 401 || confirmRes.status === 503 || confirmRes.status === 400;
+  console.log(
+    `${confirmOk ? '✓' : '✗'} POST /api/crypto-checkout/confirm → ${confirmRes.status} (expect 401 without session)`
+  );
+  if (!confirmOk) process.exit(1);
+
+  if (process.env.NEXT_PUBLIC_CRYPTO_CHECKOUT === 'true') {
+    console.log('✓ NEXT_PUBLIC_CRYPTO_CHECKOUT=true');
+  } else {
+    console.log('· NEXT_PUBLIC_CRYPTO_CHECKOUT unset — Phantom CTA hidden');
+  }
+
+  console.log('\nCrypto checkout routes respond as expected without a session.\n');
 }
 
 async function pingWebhook() {
@@ -90,7 +176,8 @@ async function pingWebhook() {
       object: {
         id: 'cs_verify_test',
         customer_email: 'verify-test@missionwinning.com',
-        metadata: { product_id: 'super-bundle' },
+        client_reference_id: 'verify-user-id',
+        metadata: { product_id: 'super-bundle', user_id: 'verify-user-id', plan_id: 'lifetime' },
       },
     },
   });
@@ -128,7 +215,7 @@ async function verifyEnrollment(email) {
   }
 
   const res = await fetch(
-    `${url}/rest/v1/enrollments?user_email=eq.${encodeURIComponent(email)}&select=user_email,product_id,premium_granted,status,provider,external_id&order=created_at.desc&limit=1`,
+    `${url}/rest/v1/enrollments?user_email=eq.${encodeURIComponent(email)}&select=user_email,user_id,product_id,premium_granted,status,provider,external_id&order=created_at.desc&limit=1`,
     {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
     }
@@ -163,6 +250,8 @@ async function verifyEnrollment(email) {
 async function main() {
   const ping = process.argv.includes('--ping-webhook');
   const checkGates = process.argv.includes('--check-gates');
+  const checkCheckoutFlag = process.argv.includes('--check-checkout');
+  const checkCryptoFlag = process.argv.includes('--check-crypto-checkout');
   const verifyIdx = process.argv.indexOf('--verify-enrollment');
   const verifyEmail = verifyIdx >= 0 ? process.argv[verifyIdx + 1] : null;
 
@@ -173,6 +262,16 @@ async function main() {
 
   if (checkGates) {
     await checkPremiumGates();
+    return;
+  }
+
+  if (checkCheckoutFlag) {
+    await checkCheckout();
+    return;
+  }
+
+  if (checkCryptoFlag) {
+    await checkCryptoCheckout();
     return;
   }
 
@@ -189,6 +288,8 @@ async function main() {
 
   console.log('Next steps:');
   console.log('  --check-gates          Verify premium APIs return 403 without enrollment');
+  console.log('  --check-checkout       POST /api/checkout + /api/billing-portal without session');
+  console.log('  --check-crypto-checkout  POST /api/crypto-checkout/* without session');
   console.log('  --ping-webhook         Send signed test event (needs STRIPE_WEBHOOK_SECRET)');
   console.log('  --verify-enrollment <email>  Confirm Supabase enrollments row after purchase');
   console.log('  Or use Stripe CLI: stripe listen --forward-to localhost:3000/api/stripe-webhook');
