@@ -49,6 +49,7 @@
 | [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
 | [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe + premium gate |
+| [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md) | Lifetime Phantom Solana USDC |
 | [OWASP_AUDIT.md](OWASP_AUDIT.md) | OWASP Top 10 sweep |
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Lighthouse baselines |

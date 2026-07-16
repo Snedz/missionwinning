@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHmac } from 'crypto';
-import { emailFromCheckoutSession, verifyStripeSignature } from '@/lib/stripeWebhook';
+import { emailFromCheckoutSession, userIdFromCheckoutSession, verifyStripeSignature } from '@/lib/stripeWebhook';
 
 function signPayload(payload: string, secret: string, timestamp?: number): string {
   const t = timestamp ?? Math.floor(Date.now() / 1000);
@@ -38,5 +38,24 @@ describe('stripeWebhook', () => {
       'legacy@example.com'
     );
     assert.equal(emailFromCheckoutSession({ id: 'cs_3' }), null);
+  });
+
+  it('extracts user_id from metadata or client_reference_id', () => {
+    assert.equal(
+      userIdFromCheckoutSession({
+        id: 'cs_1',
+        metadata: { user_id: 'uuid-meta' },
+        client_reference_id: 'uuid-ref',
+      }),
+      'uuid-meta'
+    );
+    assert.equal(
+      userIdFromCheckoutSession({
+        id: 'cs_2',
+        client_reference_id: 'uuid-ref',
+      }),
+      'uuid-ref'
+    );
+    assert.equal(userIdFromCheckoutSession({ id: 'cs_3' }), null);
   });
 });

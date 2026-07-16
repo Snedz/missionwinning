@@ -221,20 +221,51 @@ When ready to launch:
 
 ---
 
-## Stripe webhook (Super Bundle)
+## Stripe checkout + webhook (Super Bundle)
 
-Set in Vercel (server only):
+Preferred path: **Checkout Sessions** (`POST /api/checkout`) with Price IDs. Payment Links remain a fallback.
+
+Set in Vercel:
 
 | Variable | Purpose |
 |----------|---------|
+| `STRIPE_SECRET_KEY` | Server — create Checkout + Billing Portal sessions |
+| `STRIPE_PRICE_BUNDLE_MONTHLY` | Price ID for $11.99/mo |
+| `STRIPE_PRICE_BUNDLE_12MO` | Price ID for $59/yr |
+| `STRIPE_PRICE_BUNDLE_LIFETIME` | Price ID for $149 lifetime |
 | `STRIPE_WEBHOOK_SECRET` | From Stripe Dashboard → Webhooks → signing secret (`whsec_…`) |
+| `NEXT_PUBLIC_STRIPE_CHECKOUT` | `true` when Sessions are live (UnlockButton prefers `/api/checkout`) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Required for `grantEnrollmentFromWebhook` |
+| `NEXT_PUBLIC_APP_URL` | Success/cancel + portal return URLs |
+
+Optional Payment Link fallback:
+
+| Variable | Purpose |
+|----------|---------|
+| `NEXT_PUBLIC_STRIPE_LINK_BUNDLE` | Default / annual Payment Link |
+| `NEXT_PUBLIC_STRIPE_LINK_BUNDLE_MONTHLY` | Monthly link |
+| `NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME` | Lifetime link |
 
 Webhook URL: `https://www.missionwinning.com/api/stripe-webhook`
 
-Event: `checkout.session.completed` → inserts `enrollments` row (`premium_granted=true`, `product_id=super-bundle`).
+Event: `checkout.session.completed` → inserts `enrollments` (`premium_granted=true`, `product_id=super-bundle`, `user_id` when Sessions metadata present).
 
-Test in Stripe **test mode** before going live. Profile → premium APIs (`/api/premium/*`, `/api/coach/plan`) return **403** without enrollment unless `DEMO_PREMIUM=true` (dev only).
+Dashboard: enable Card, Link, wallets, PayPal, Crypto (USDC). Customer Portal for cancel/update. Details: [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md).
+
+Test in Stripe **test mode** before going live. Profile → premium APIs (`/api/premium/*`) return **403** without enrollment unless `DEMO_PREMIUM=true` (dev only).
+
+---
+
+## Phantom USDC lifetime (optional)
+
+Wallet pay for **lifetime only** ($149 USDC on Solana) — see [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md).
+
+| Variable | Purpose |
+|----------|---------|
+| `NEXT_PUBLIC_CRYPTO_CHECKOUT` | `true` to show Pay with Phantom on `/bundle` lifetime |
+| `NEXT_PUBLIC_PHANTOM_APP_ID` | Phantom Portal app ID |
+| `SOLANA_TREASURY_ADDRESS` | Base58 treasury pubkey (receives USDC) |
+| `SOLANA_RPC_URL` | Helius/QuickNode (preferred over public RPC) |
 
 ---
 

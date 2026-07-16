@@ -53,6 +53,7 @@ export async function isPremiumForUser(
 /** Grant enrollment via service role (webhooks only). */
 export async function grantEnrollmentFromWebhook(payload: {
   user_email: string;
+  user_id?: string | null;
   product_id?: string;
   provider: string;
   external_id: string;
@@ -69,15 +70,20 @@ export async function grantEnrollmentFromWebhook(payload: {
 
   if (existing?.length) return { duplicate: true };
 
-  const { error } = await admin.from('enrollments').insert({
-    user_email: payload.user_email,
+  const row: Record<string, unknown> = {
+    user_email: payload.user_email.trim().toLowerCase(),
     product_id: payload.product_id ?? 'super-bundle',
     plan: 'bundle',
     status: 'active',
     premium_granted: true,
     provider: payload.provider,
     external_id: payload.external_id,
-  });
+  };
+  if (payload.user_id) {
+    row.user_id = payload.user_id;
+  }
+
+  const { error } = await admin.from('enrollments').insert(row);
 
   if (error) throw error;
   return { duplicate: false };

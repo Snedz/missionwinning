@@ -71,6 +71,16 @@ export const fuelBarcodeQuerySchema = z.object({
   code: z.string().min(8).max(32),
 });
 
+/** Super Bundle Checkout Session plan IDs (matches bundleConfig BundlePlanId). */
+export const checkoutBodySchema = z.object({
+  planId: z.enum(['monthly', '12mo', 'lifetime']),
+});
+
+export const cryptoCheckoutConfirmSchema = z.object({
+  intentId: z.string().uuid(),
+  signature: z.string().min(32).max(128),
+});
+
 export const schoolClassCreateSchema = z.object({
   code: z.string().min(4).max(16),
   name: z.string().max(120).optional(),

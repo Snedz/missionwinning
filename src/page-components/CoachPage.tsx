@@ -91,7 +91,7 @@ export function CoachPage() {
                 )
               )}
             </ul>
-            <UnlockButton productId="super-bundle" price="59" title="Super Bundle" isSubscription />
+            <UnlockButton productId="super-bundle" planId="12mo" price="59" title="Super Bundle" isSubscription />
             <Button asChild variant="outline" className="w-full">
               <Link href="/bundle">{t('coachCompareBundle', { defaultValue: 'Compare Super Bundle' })}</Link>
             </Button>

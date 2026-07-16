@@ -22,7 +22,7 @@
 | `20250629_youth_consent_records.sql` | COPPA consent |
 | `20260702_security_hardening.sql` | Security |
 | `20260703_reminders_optin.sql` | `reminders_opt_in`, `last_nudge_at` |
-| `20260704_coach_plan.sql` | `coach_plan`, `coach_taster_used` on profiles |
+| `20260716_crypto_payment_intents.sql` | Phantom USDC lifetime payment intents |
 
 ## Key tables
 
@@ -30,6 +30,7 @@
 |-------|---------|
 | `profiles` | User prefs, journey, coach plan JSON, locale, units |
 | `enrollments` | Premium subscription records |
+| `crypto_payment_intents` | Solana Pay reference intents for Phantom USDC |
 | School/PFT tables | See fitness_test migration |
 | `youth_consent_records` | COPPA |
 

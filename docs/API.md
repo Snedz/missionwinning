@@ -73,7 +73,7 @@ curl -X POST "$BASE/api/private-access" \
 
 ## Premium (gated content)
 
-All `GET` — auth `premium` (session + `isPremiumForUser`).
+All `GET` — auth `premium` (session + `isPremiumForUser`) except status.
 
 | Route | Content |
 |-------|---------|
@@ -88,6 +88,54 @@ All `GET` — auth `premium` (session + `isPremiumForUser`).
 # Expect 401/403 without session + enrollment
 curl -sI "$BASE/api/premium/recipes"
 ```
+
+---
+
+## Checkout & billing
+
+### `POST /api/checkout`
+
+| | |
+|--|--|
+| Auth | `session` (signed-in email required) |
+| Rate | 10/min/IP |
+| Schema | `checkoutBodySchema` — `{ planId: "monthly" \| "12mo" \| "lifetime" }` |
+| Response | `{ url, sessionId }` — redirect browser to `url` |
+| Notes | Requires `STRIPE_SECRET_KEY` + `STRIPE_PRICE_BUNDLE_*`. Metadata includes `user_id`. |
+
+```bash
+curl -X POST "$BASE/api/checkout" \
+  -H 'Content-Type: application/json' \
+  -d '{"planId":"lifetime"}'
+# Expect 401 without session
+```
+
+### `POST /api/billing-portal`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 10/min/IP |
+| Response | `{ url }` — Stripe Customer Portal |
+| Notes | Looks up Stripe Customer by account email |
+
+### `POST /api/crypto-checkout/intent`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 8/min/IP |
+| Response | `{ intentId, reference, treasury, amountUsdc, expiresAt, rpcUrl }` |
+| Notes | Lifetime $149 USDC only — see [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md) |
+
+### `POST /api/crypto-checkout/confirm`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 10/min/IP |
+| Schema | `cryptoCheckoutConfirmSchema` — `{ intentId, signature }` |
+| Notes | Verifies Solana tx → `enrollments` with `provider: phantom` |
 
 ---
 
@@ -221,7 +269,7 @@ curl -sI "$BASE/api/school/class/MWTEST/leaderboard"
 | | |
 |--|--|
 | Auth | `webhook` — Stripe-Signature |
-| Notes | Grants enrollment via `premiumServer.grantEnrollmentFromWebhook` |
+| Notes | Grants enrollment via `premiumServer.grantEnrollmentFromWebhook` (email + optional `user_id` from Session metadata) |
 
 ```bash
 curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '{}'

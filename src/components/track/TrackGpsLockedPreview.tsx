@@ -65,7 +65,7 @@ export function TrackGpsLockedPreview() {
           })}
         </p>
         <div className="flex flex-wrap gap-2">
-          <UnlockButton productId="super-bundle" price="59" title="Super Bundle" isSubscription />
+          <UnlockButton productId="super-bundle" planId="12mo" price="59" title="Super Bundle" isSubscription />
           <Button variant="outline" size="sm" asChild>
             <Link href="/bundle">{t('trackExploreBundle', { defaultValue: 'See Super Bundle' })}</Link>
           </Button>

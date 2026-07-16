@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UnlockButton } from "@/components/UnlockButton";
+import { PhantomLifetimeCheckout } from "@/components/crypto/PhantomLifetimeCheckout";
 import { BUNDLE_PILLARS } from "@/lib/payments";
 import {
   BUNDLE_PLANS,
@@ -370,14 +371,37 @@ export function BundlePage() {
                       defaultValue: 'Six pillars in one app — not a multi-app unlock email.',
                     })}
                   </p>
+                  <p className="text-center text-[11px] text-muted-foreground mb-3">
+                    {t('bundlePayMethods', {
+                      defaultValue: 'Card · Apple Pay · Google Pay · PayPal · USDC',
+                    })}
+                  </p>
+                  {id === 'lifetime' && (
+                    <p className="text-center text-xs text-primary mb-3">
+                      {t('bundleUsdcNote', {
+                        defaultValue:
+                          'Prefer wallet USDC? Pay with Phantom below (no Stripe) — or use USDC inside Stripe Checkout when enabled.',
+                      })}
+                    </p>
+                  )}
                   <UnlockButton
                     isSubscription={p.isSubscription}
                     productId="super-bundle"
+                    planId={id}
                     price={p.perMonth ?? p.price}
                     stripeCheckoutUrl={getStripeCheckoutUrl(`bundle-${id}`) ?? stripeUrl}
-                    label={t("bundleUnlockCta")}
+                    label={
+                      id === 'lifetime'
+                        ? t('bundleUnlockLifetimeCta', {
+                            defaultValue: 'Unlock lifetime — card or USDC',
+                          })
+                        : t('bundleUnlockCta')
+                    }
                     className="w-full"
                   />
+                  {id === 'lifetime' && (
+                    <PhantomLifetimeCheckout className="w-full mt-3" />
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>

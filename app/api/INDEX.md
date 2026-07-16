@@ -69,13 +69,17 @@ Full reference: [docs/API.md](../../docs/API.md).
 | `nudges/unsubscribe/route.ts` | POST | token |
 | `cron/nudges/route.ts` | GET | CRON_SECRET |
 
-### Webhooks & beta
+### Webhooks & beta & checkout
 
-| Route | Methods | Auth |
-|-------|---------|------|
-| `stripe-webhook/route.ts` | POST | Stripe sig |
-| `paypal-webhook/route.ts` | POST | PayPal sig |
-| `beta/metrics/route.ts` | GET | beta admin |
+| Route | Methods | Auth | Rate |
+|-------|---------|------|------|
+| `checkout/route.ts` | POST | session | 10/min |
+| `billing-portal/route.ts` | POST | session | 10/min |
+| `crypto-checkout/intent/route.ts` | POST | session | 8/min |
+| `crypto-checkout/confirm/route.ts` | POST | session | 10/min |
+| `stripe-webhook/route.ts` | POST | Stripe sig | — |
+| `paypal-webhook/route.ts` | POST | PayPal sig | — |
+| `beta/metrics/route.ts` | GET | beta admin | — |
 
 ## Adding a route
 

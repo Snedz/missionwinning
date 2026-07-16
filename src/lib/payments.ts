@@ -1,9 +1,15 @@
-// Payments — Stripe Payment Links + webhook enrollment (see docs/STRIPE_PREMIUM_SETUP.md).
+// Payments — Stripe Checkout Sessions (+ Payment Link fallback) + webhook enrollment.
+// See docs/STRIPE_PREMIUM_SETUP.md.
 //
 // Core is free for everyone (per vision.md).
-// When NEXT_PUBLIC_STRIPE_LINK_* env vars are set, UnlockButton opens live Stripe checkout.
+// Preferred path: UnlockButton → POST /api/checkout → Stripe hosted Checkout
+//   (card, wallets, PayPal, USDC when enabled in Dashboard).
+// Fallback: NEXT_PUBLIC_STRIPE_LINK_* Payment Links when Sessions are unconfigured.
 // Webhooks grant rows in Supabase `enrollments`; usePremium reads /api/premium/status.
-// Without Stripe links, UI falls back to an honest founders waitlist (dev: grantPremiumDemo).
+// Without either path, UI falls back to an honest founders waitlist (dev: grantPremiumDemo).
+
+/** Super Bundle plan IDs — keep in sync with BUNDLE_PLANS in bundleConfig.ts. */
+export type CheckoutPlanId = 'monthly' | '12mo' | 'lifetime';
 
 // Product price map for reference (one-time programs / pillars).
 // Used in UnlockButton for display and demo.
@@ -75,9 +81,8 @@ export const BUNDLE_PILLARS = [
 ] as const
 
 /**
- * Stripe Payment Links (set in Vercel when the business entity is ready —
- * see LAUNCH_RUNBOOK.md). Checkout activates automatically wherever a link
- * is configured; otherwise the UI falls back to the founders waitlist.
+ * Stripe Payment Links (legacy / fallback — see LAUNCH_RUNBOOK.md).
+ * Prefer Checkout Sessions via POST /api/checkout when STRIPE_SECRET_KEY + price IDs are set.
  *
  * NOTE: NEXT_PUBLIC_* vars are inlined at build time ONLY for static
  * `process.env.X` property access — a dynamic `process.env[key]` lookup is
@@ -106,6 +111,96 @@ export function getStripeCheckoutUrl(productId?: string): string | null {
     return STRIPE_LINKS['bundle'] || null
   }
   return STRIPE_LINKS[productId] || null
+}
+
+/**
+ * Client flag: Checkout Sessions API is live (set with STRIPE_SECRET_KEY + price IDs on server).
+ * When true, UnlockButton prefers POST /api/checkout over Payment Links.
+ */
+export function isCheckoutSessionsEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_STRIPE_CHECKOUT === 'true'
+}
+
+export type CreateCheckoutForPlanResult =
+  | { ok: true; url: string }
+  | { ok: false; code: 'auth_required' | 'unavailable' | 'error'; message: string }
+
+/**
+ * Start Checkout Sessions for a Super Bundle plan. Caller redirects to `url` on success.
+ * Requires signed-in session cookies.
+ */
+export async function createCheckoutForPlan(
+  planId: CheckoutPlanId
+): Promise<CreateCheckoutForPlanResult> {
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ planId }),
+    })
+    const data = (await res.json().catch(() => ({}))) as {
+      url?: string
+      error?: string
+      code?: string
+    }
+    if (res.status === 401 || data.code === 'auth_required') {
+      return {
+        ok: false,
+        code: 'auth_required',
+        message: data.error || 'Sign in required to checkout',
+      }
+    }
+    if (res.status === 503) {
+      return {
+        ok: false,
+        code: 'unavailable',
+        message: data.error || 'Checkout not configured',
+      }
+    }
+    if (!res.ok || !data.url) {
+      return {
+        ok: false,
+        code: 'error',
+        message: data.error || 'Checkout failed',
+      }
+    }
+    return { ok: true, url: data.url }
+  } catch {
+    return { ok: false, code: 'error', message: 'Network error starting checkout' }
+  }
+}
+
+/** Open Stripe Customer Portal (manage / cancel). Requires signed-in session. */
+export async function openBillingPortal(): Promise<CreateCheckoutForPlanResult> {
+  try {
+    const res = await fetch('/api/billing-portal', {
+      method: 'POST',
+      credentials: 'include',
+    })
+    const data = (await res.json().catch(() => ({}))) as {
+      url?: string
+      error?: string
+      code?: string
+    }
+    if (res.status === 401 || data.code === 'auth_required') {
+      return {
+        ok: false,
+        code: 'auth_required',
+        message: data.error || 'Sign in required',
+      }
+    }
+    if (!res.ok || !data.url) {
+      return {
+        ok: false,
+        code: res.status === 503 || res.status === 404 ? 'unavailable' : 'error',
+        message: data.error || 'Billing portal unavailable',
+      }
+    }
+    return { ok: true, url: data.url }
+  } catch {
+    return { ok: false, code: 'error', message: 'Network error opening billing portal' }
+  }
 }
 
 // Helper to grant premium immediately (client-side optimistic + analytics)
