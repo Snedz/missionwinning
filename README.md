@@ -12,6 +12,21 @@ This is *mainly a free app* serving the vision of making the world better and he
 
 See [vision.md](vision.md) for the full guiding document (the "constitution" for every decision).
 
+## Open source & privacy (trust)
+
+Mission Winning is open source so anyone can inspect how the free core works, improve the harness, and verify our privacy claims.
+
+| Commitment | Detail |
+|------------|--------|
+| **License** | [AGPL-3.0](LICENSE) — network use requires sharing corresponding source |
+| **Acceptable use** | [ACCEPTABLE_USE.md](ACCEPTABLE_USE.md) — illegal deepfakes, CSAM, fraud, and similar abuse are banned |
+| **Security** | [SECURITY.md](SECURITY.md) — private vulnerability reports |
+| **Local-first** | Workouts, nutrition, and journey progress stay on-device until you sign in to sync |
+| **Product analytics** | **Off by default** until you allow them (banner + Profile). No session recording, no autocapture. Do Not Track is respected |
+| **Free core** | Tracking and foundational tools stay free forever — never paywalled |
+
+We are not a clone of any coding-tool vendor; the parallel is **transparent software + user control over data**. Hosted secrets, Stripe, and production keys stay with operators — they are never committed.
+
 **Start here (2026-07 launch package):**
 - [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) — the founder's copy-paste critical path to public launch + revenue
 - [STRATEGY.md](STRATEGY.md) — lean business plan, customer profile, pricing, first-10-users playbook
@@ -28,6 +43,7 @@ See [vision.md](vision.md) for the full guiding document (the "constitution" for
 - **Athletes & teachers** — [docs/help/](docs/help/INDEX.md) user guides
 - **Developers** — [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/API.md](docs/API.md), [CONTRIBUTING.md](CONTRIBUTING.md)
 - **AI agents** — [AGENTS.md](AGENTS.md) + [INDEX.md](INDEX.md)
+- **License & AUP** — [LICENSE](LICENSE), [ACCEPTABLE_USE.md](ACCEPTABLE_USE.md), [SECURITY.md](SECURITY.md)
 
 ## Features (Freemium + Super Bundle Model)
 - **Free Core (Accessible to Everyone, No Money Barrier)**: Full workout logger/tracker (RPE, rests, cues), basic library (M&S-style filters, bodyweight/minimal-equip global focus), basic nutrition logging + accessible recipes, basic assessments/streaks/challenges, 1RM benchmarks, history. Installable PWA — works offline anywhere in the world (Africa, Russia, low-resource areas). Core mission (tracking + fundamentals) is free forever.
