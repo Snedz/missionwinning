@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Mobile paint cuts; `/log` Lighthouse ≥90 (`2026.07-unified.69`)
+
+- Drop `background-attachment: fixed` + dual gradients; solid mobile `glass-nav` (blur md+)
+- DeferredToaster (Radix toast after idle); offline banner dynamic after idle
+- PageTransition animates client nav only; Inter drops weight 500
+- Lighthouse mobile: `/log` **90** (stable ×3), `/` **92**, guide **91**, exercises **~87**
+
+---
+
 ## 2026-07-16 — Slim app chrome: primary nav split + deferred Today graph (`2026.07-unified.68`)
 
 - `primaryNav` (5 icons) for MobileNav/Sidebar; extended Lucide menu loads only when header opens
