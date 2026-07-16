@@ -1,11 +1,10 @@
-'use client';
 /**
- * Page: /exercises/[id] — public exercise detail
+ * Page: /exercises/[id] — public exercise detail (Server Component).
+ * Catalog / form guides / SEO helpers stay on the server; only a tiny analytics beacon hydrates.
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { getExerciseById } from '@/data/exercises';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import {
@@ -14,10 +13,9 @@ import {
   guideChaptersForExercise,
   muscleHubSlug,
 } from '@/lib/exerciseSeo';
-import { track } from '@/lib/analytics';
-import { Button } from '@/components/ui/button';
 import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
 import { PublicSeoHeader } from '@/components/public/PublicSeoHeader';
+import { ExercisePageBeacon } from '@/components/public/ExercisePageBeacon';
 import type { Exercise } from '@/types';
 
 type Props = {
@@ -30,13 +28,15 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
   const related = relatedExercises(exercise, 6);
   const guides = guideChaptersForExercise(exercise);
   const enrichment = 'enrichment' in exercise ? exercise.enrichment : undefined;
-
-  useEffect(() => {
-    track('exercise_page_viewed', { exerciseId: exercise.id });
-  }, [exercise.id]);
-
   const guide = getFormGuideOrCues(exercise.id, { exercise });
   const tipLines = enrichment?.formTips;
+
+  const alternatives = (exercise.alternatives ?? [])
+    .map((id) => {
+      const alt = getExerciseById(id);
+      return alt ? { id, name: alt.name } : null;
+    })
+    .filter((x): x is { id: string; name: string } => x != null);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -44,6 +44,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <ExercisePageBeacon exerciseId={exercise.id} />
       <PublicSeoHeader
         eyebrow="Free exercise library"
         title={exercise.name}
@@ -92,6 +93,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
                     <track kind="captions" srcLang="en" label="Captions" />
                   </video>
                 ) : (
+                  // eslint-disable-next-line @next/next/no-img-element -- static form diagram assets
                   <img
                     src={guide.mediaUrl}
                     alt={`${exercise.name} form diagram`}
@@ -123,23 +125,19 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           </section>
         )}
 
-        {exercise.alternatives && exercise.alternatives.length > 0 && (
+        {alternatives.length > 0 && (
           <section>
             <h2 className="font-semibold mb-2">Alternatives</h2>
             <div className="flex flex-wrap gap-2">
-              {exercise.alternatives.map((id) => {
-                const alt = getExerciseById(id);
-                if (!alt) return null;
-                return (
-                  <Link
-                    key={id}
-                    href={`/exercises/${id}`}
-                    className="text-sm px-3 py-1 rounded-full border border-border/60 hover:bg-muted/50"
-                  >
-                    {alt.name}
-                  </Link>
-                );
-              })}
+              {alternatives.map((alt) => (
+                <Link
+                  key={alt.id}
+                  href={`/exercises/${alt.id}`}
+                  className="text-sm px-3 py-1 rounded-full border border-border/60 hover:bg-muted/50"
+                >
+                  {alt.name}
+                </Link>
+              ))}
             </div>
           </section>
         )}
@@ -180,14 +178,9 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           <p className="text-sm text-muted-foreground">
             Log sets offline — no account, no AI API key. 217 free exercise pages in the library.
           </p>
-          <Button asChild variant="fitness" className="primary-action">
-            <Link
-              href="/welcome"
-              onClick={() => track('public_cta_clicked', { target: '/welcome', exercise: exercise.id })}
-            >
-              Track this exercise free →
-            </Link>
-          </Button>
+          <Link href="/welcome" className="primary-action">
+            Track this exercise free →
+          </Link>
         </div>
       </main>
       <PublicSeoFooter />
