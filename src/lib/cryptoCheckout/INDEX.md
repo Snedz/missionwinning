@@ -17,6 +17,18 @@
 2. Client Phantom transfer USDC + Solana Pay reference
 3. `POST /api/crypto-checkout/confirm` → verify → `grantEnrollmentFromWebhook(provider: phantom)`
 
+## Security properties (red-team 2026-07-16)
+
+| Property | Enforcement |
+|----------|-------------|
+| Auth | Session required on intent + confirm (`getUserFromRequest`) |
+| Rate limit | 8/min intent, 10/min confirm per IP |
+| Amount | Server constants only — client cannot choose price |
+| Ownership | `getIntentForUser(intentId, userId)` — no cross-user confirm |
+| Integrity | On-chain verify treasury + amount + reference before enroll |
+| Idempotency | Duplicate signature / already confirmed handled |
+| Config off | `isCryptoCheckoutEnabled()` → 503 when unset |
+
 ## Env
 
 | Var | Role |

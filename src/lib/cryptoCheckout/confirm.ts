@@ -15,6 +15,7 @@ import {
 } from '@/lib/cryptoCheckout/intent';
 import { isIntentExpired } from '@/lib/cryptoCheckout/intentExpiry';
 import { verifyUsdcPayment } from '@/lib/cryptoCheckout/verifyTransfer';
+import { isPlausibleTxSignature } from '@/lib/cryptoCheckout/confirmGuards';
 
 export type ConfirmPaymentResult =
   | { ok: true; duplicate?: boolean }
@@ -26,7 +27,7 @@ export async function confirmCryptoPayment(input: {
   signature: string;
 }): Promise<ConfirmPaymentResult> {
   const signature = input.signature.trim();
-  if (!signature || signature.length < 32) {
+  if (!isPlausibleTxSignature(signature)) {
     return { ok: false, status: 400, error: 'Invalid signature' };
   }
 

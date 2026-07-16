@@ -2,7 +2,7 @@
 
 **Metaphor:** Like a C-RAM system, we **detect** threats (audit), **track** exposure (competitive gaps), and **intercept** before they reach production (hardening). This document is the inspection checklist and protection status before Phase E (public launch).
 
-Last updated: 2026-07-05 (OWASP security sweep)
+Last updated: 2026-07-16 (red-team S1 inventory + smoke expansion; base OWASP sweep 2026-07-05)
 
 ---
 

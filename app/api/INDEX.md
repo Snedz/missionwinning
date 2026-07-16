@@ -1,93 +1,140 @@
 # app/api/
 
-> HTTP API route handlers — thin wrappers over `src/lib/`.
+> HTTP API route handlers — thin wrappers over `src/lib/`.  
+> Full reference: [docs/API.md](../../docs/API.md) · Security: [docs/OWASP_AUDIT.md](../../docs/OWASP_AUDIT.md)
 
-Full reference: [docs/API.md](../../docs/API.md).
+## Security inventory (auth · rate · schema)
 
-## Inventory by domain
+Legend:
+
+| Auth | Meaning |
+|------|---------|
+| **public** | No session (may still be gate-cookie limited while `PRIVATE_MODE`) |
+| **gate** | Reachable while private gate on (proxy allows or cookie) |
+| **session** | Supabase user via cookie/JWT |
+| **premium** | Session + server enrollment |
+| **teacher** | Session + class PIN or creator |
+| **sig** | Provider signature (Stripe/PayPal) |
+| **secret** | Shared secret header/bearer |
+| **token** | Signed unsubscribe/consent token |
+
+| Rate | Default memory limiter; Upstash when configured |
+
+---
 
 ### Gate & leads
 
-| Route | Methods | Auth | Rate |
-|-------|---------|------|------|
-| `private-access/route.ts` | POST | public password | 8/min |
-| `leads/route.ts` | POST | gate | 5/min |
+| Route | Methods | Auth | Rate | Body |
+|-------|---------|------|------|------|
+| `private-access` | POST | public password | 8/min/IP | password |
+| `leads` | POST | public (gate path) | 5/min/IP | Zod `leadsBodySchema` |
 
 ### Coach
 
-| Route | Methods | Auth | Rate |
-|-------|---------|------|------|
-| `coach/daily-insight/route.ts` | POST | gate + app access | 12/min |
-| `coach/plan-voice/route.ts` | POST | gate + app access | 6/min |
+| Route | Methods | Auth | Rate | Body |
+|-------|---------|------|------|------|
+| `coach/daily-insight` | POST | session or gate app access | 12/min | Zod |
+| `coach/plan-voice` | POST | session or gate app access | 6/min | Zod |
 
-### Premium
+### Premium content
 
-| Route | Methods | Auth |
-|-------|---------|------|
-| `premium/status/route.ts` | GET | session |
-| `premium/recipes/route.ts` | GET | premium |
-| `premium/programs/route.ts` | GET | premium |
-| `premium/mobility/route.ts` | GET | premium |
-| `premium/mind/route.ts` | GET | premium |
-| `premium/fuel-plan/route.ts` | GET | premium |
-| `premium/guidebook/route.ts` | GET | premium |
+| Route | Methods | Auth | Rate | Notes |
+|-------|---------|------|------|-------|
+| `premium/status` | GET | public → anonymous free | — | Never trusts client `mw_premium` in prod |
+| `premium/recipes` | GET | premium | — | 401/403 anonymous |
+| `premium/programs` | GET | premium | — | |
+| `premium/mobility` | GET | premium | — | |
+| `premium/mind` | GET | premium | — | |
+| `premium/fuel-plan` | GET | premium | — | |
+| `premium/guidebook` | GET | premium | — | |
 
-### Fuel
+### Fuel helpers
 
-| Route | Methods | Rate |
-|-------|---------|------|
-| `fuel/search-food/route.ts` | GET | 30/min |
-| `fuel/barcode/route.ts` | GET | 30/min |
-| `fuel/estimate-meal/route.ts` | POST | 10/min |
+| Route | Methods | Auth | Rate | Body |
+|-------|---------|------|------|------|
+| `fuel/search-food` | GET | public/gate | 30/min | query |
+| `fuel/barcode` | GET | public/gate | 30/min | query |
+| `fuel/estimate-meal` | POST | public/gate | 10/min | Zod |
 
 ### School
 
-| Route | Methods | Auth |
-|-------|---------|------|
-| `school/class/route.ts` | POST | session |
-| `school/class/mine/route.ts` | GET | session |
-| `school/class/[code]/access/route.ts` | GET, POST | session + PIN |
-| `school/class/[code]/verify/route.ts` | GET, POST | gate + PIN |
-| `school/class/[code]/stats/route.ts` | GET | teacher |
-| `school/class/[code]/leaderboard/route.ts` | GET | teacher |
-| `school/class/[code]/export/route.ts` | GET | teacher |
+| Route | Methods | Auth | Rate | Notes |
+|-------|---------|------|------|-------|
+| `school/class` | POST | session | — | create class |
+| `school/class/mine` | GET | session | — | |
+| `school/class/[code]/access` | GET, POST | session + PIN | — | |
+| `school/class/[code]/verify` | GET, POST | gate + PIN | — | |
+| `school/class/[code]/stats` | GET | teacher | — | IDOR-closed |
+| `school/class/[code]/leaderboard` | GET | teacher | — | IDOR-closed |
+| `school/class/[code]/export` | GET | teacher | — | redacted ids |
 
-### Youth
+### Youth (COPPA-sensitive)
 
-| Route | Methods |
-|-------|---------|
-| `youth/consent-verify/route.ts` | POST |
-| `youth/consent-notify/route.ts` | POST |
-| `youth/consent-status/route.ts` | GET |
-| `youth/consent-confirm/route.ts` | GET |
+| Route | Methods | Auth | Rate | Notes |
+|-------|---------|------|------|-------|
+| `youth/consent-verify` | POST | token HMAC | limited | fail-closed secret |
+| `youth/consent-notify` | POST | session/parent flow | limited | |
+| `youth/consent-status` | GET | token/session | — | |
+| `youth/consent-confirm` | GET | token | — | |
 
-### Journey & cron
-
-| Route | Methods | Auth |
-|-------|---------|------|
-| `journey/nudge/route.ts` | POST | session |
-| `nudges/unsubscribe/route.ts` | POST | token |
-| `cron/nudges/route.ts` | GET | CRON_SECRET |
-
-### Webhooks & beta & checkout
+### Journey, nudges, cron
 
 | Route | Methods | Auth | Rate |
 |-------|---------|------|------|
-| `checkout/route.ts` | POST | session | 10/min |
-| `billing-portal/route.ts` | POST | session | 10/min |
-| `crypto-checkout/intent/route.ts` | POST | session | 8/min |
-| `crypto-checkout/confirm/route.ts` | POST | session | 10/min |
-| `stripe-webhook/route.ts` | POST | Stripe sig | — |
-| `paypal-webhook/route.ts` | POST | PayPal sig | — |
-| `beta/metrics/route.ts` | GET | beta admin | — |
+| `journey/nudge` | POST | session | — |
+| `nudges/unsubscribe` | POST | signed token | — |
+| `cron/nudges` | GET | `Authorization: Bearer CRON_SECRET` | — |
+
+### Checkout & webhooks
+
+| Route | Methods | Auth | Rate | Notes |
+|-------|---------|------|------|-------|
+| `checkout` | POST | session | 10/min | Stripe Checkout session |
+| `billing-portal` | POST | session | 10/min | |
+| `crypto-checkout/intent` | POST | session | 8/min | Phantom USDC lifetime; amount server-fixed |
+| `crypto-checkout/confirm` | POST | session | 10/min | Zod; intent ownership enforced; on-chain verify |
+| `stripe-webhook` | POST | Stripe HMAC sig | — | service role enroll |
+| `paypal-webhook` | POST | PayPal REST verify | — | service role enroll |
+| `beta/metrics` | GET | beta admin email **or** `x-beta-admin-secret` | — | service role aggregate |
+
+---
+
+## Red-team quick curls (Wave 1)
+
+```bash
+BASE=https://www.missionwinning.com   # or localhost:3000
+
+# Premium must not leak
+curl -sI "$BASE/api/premium/recipes"          # 401/403
+curl -sI "$BASE/api/premium/programs"         # 401/403/503
+
+# Webhooks reject forgery
+curl -s -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '{}'
+curl -s -X POST "$BASE/api/paypal-webhook" -H 'Content-Type: application/json' -d '{}'
+
+# Cron / admin
+curl -sI "$BASE/api/cron/nudges"              # 401
+curl -sI "$BASE/api/beta/metrics"             # 403
+
+# School IDOR
+curl -sI "$BASE/api/school/class/MWTEST/leaderboard"  # 401/403
+
+# Crypto without session
+curl -s -X POST "$BASE/api/crypto-checkout/intent" -H 'Content-Type: application/json' -d '{}'  # 401
+```
+
+Automated: `SMOKE_BASE_URL=… npm run security-smoke` (alias of `gate-smoke`).
+
+---
 
 ## Adding a route
 
 1. Create `app/api/.../route.ts`
 2. Logic in `src/lib/`
 3. Zod in `src/lib/apiSchemas.ts`
-4. Wrap exports with `withApiLogging('path/under/api', handler)` from `src/lib/api/withApiLogging.ts`
-5. Update this file + [docs/API.md](../../docs/API.md)
+4. `rateLimitAsync` on mutating / expensive public endpoints
+5. Wrap with `withApiLogging('path/under/api', handler)`
+6. Update **this inventory** + [docs/API.md](../../docs/API.md)
 
 ## Deleted — do not recreate
 
@@ -97,4 +144,4 @@ Full reference: [docs/API.md](../../docs/API.md).
 
 - [../INDEX.md](../INDEX.md) — page routes
 - [../../src/lib/apiSchemas.ts](../../src/lib/apiSchemas.ts)
-- [../../src/lib/INDEX.md](../../src/lib/INDEX.md)
+- [../../docs/SECURITY_AUDIT_TRIAGE.md](../../docs/SECURITY_AUDIT_TRIAGE.md)
