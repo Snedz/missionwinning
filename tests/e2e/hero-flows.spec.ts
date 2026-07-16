@@ -80,20 +80,9 @@ test.describe('Phase H hero flows', () => {
     await expect(backToday).toBeVisible({ timeout: 15_000 });
     await backToday.click();
     await expect(page).toHaveURL(/\/log/);
-    // Re-seed readiness so HomePage phase lite mounts full dashboard (Mission Score chrome).
-    await page.evaluate(() => {
-      try {
-        const raw = localStorage.getItem('mw_journey_state');
-        const s = raw ? JSON.parse(raw) : {};
-        s.phase = 'readiness';
-        s.basic = { workout: true, fuel: true, move: true, mind: true, learn: true };
-        s.readiness = { parq: true, streakMet: false, winScoreSeen: true };
-        localStorage.setItem('mw_journey_state', JSON.stringify(s));
-      } catch {
-        /* keep */
-      }
-    });
-    await page.reload({ waitUntil: 'domcontentloaded' });
+    // Full dashboard (Mission Score) needs readiness phase + live basic milestone evidence.
+    await seedReadinessPhase(page);
+    await page.goto('/log', { waitUntil: 'domcontentloaded' });
     await expect(
       page.getByText(/mission score|win score|cross-pillar/i).first()
     ).toBeVisible({ timeout: 20_000 });
