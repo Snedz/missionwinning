@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Wave 5 content depth & honesty (`2026.07-unified.84`)
+
+- Exercise public depth: steps/mistakes defaults + enrichment; HowTo JSON-LD steps; template usage index
+- Honesty: mind 22, move 18, free recipes 20, premium recipes 102; `contentInventory.test.ts`
+- Compare: +6 stories + long-form body; sitemap derived from COMPARE_STORIES
+- Learn lesson bodies; fuel meal plan structured meals; program curriculum outlines on /programs
+
+---
+
 ## 2026-07-16 — Wave 4 in-app design elevation (`2026.07-unified.83`)
 
 - Base `Card` → `rounded-2xl`; ProgressRing drop amber/blue; WeekStrip brass/status + lucide

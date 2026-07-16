@@ -2,20 +2,18 @@ import type { MetadataRoute } from 'next';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
 import { EXERCISES } from '@/data/exercises';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
+import { COMPARE_STORIES } from '@/data/compareStories';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { EQUIPMENT_HUBS, muscleHubSlug } from '@/lib/exerciseSeo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://missionwinning.com';
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.missionwinning.com';
   const routes = [
     '',
     '/about',
     '/vision',
     '/bundle',
     '/compare',
-    '/compare/forge',
-    '/compare/freeletics',
-    '/compare/spreadsheet',
     '/terms',
     '/privacy',
     '/welcome',
@@ -30,6 +28,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now,
     changeFrequency: path === '' ? ('weekly' as const) : ('monthly' as const),
     priority: path === '' ? 1 : 0.7,
+  }));
+
+  const compareEntries = COMPARE_STORIES.map((s) => ({
+    url: `${base}/compare/${s.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.65,
   }));
 
   const guideEntries = BEYOND_THE_BASICS_CHAPTERS.map((ch) => ({
@@ -69,6 +74,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticEntries,
+    ...compareEntries,
     ...guideEntries,
     ...exerciseEntries,
     ...muscleHubs,

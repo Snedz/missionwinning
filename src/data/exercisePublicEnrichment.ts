@@ -8,13 +8,27 @@ export type ExercisePublicEnrichment = {
   alternatives?: string[];
   /** Extra execute lines when no structured form guide exists. */
   formTips?: string[];
+  /** Imperative how-to steps for page + HowTo JSON-LD. */
+  steps?: string[];
+  /** Common mistakes to avoid. */
+  mistakes?: string[];
+  /** Optional safety note (loaded / spinal / overhead). */
+  safety?: string;
 };
 
-/** ~50 high-intent movements for “how to do X” SEO. */
+/** Public SEO depth overlays keyed by exercise id (Wave 5 steps/mistakes). */
 export const EXERCISE_PUBLIC_ENRICHMENT: Record<string, ExercisePublicEnrichment> = {
   squats: {
     alternatives: ['goblet-squat', 'air-squat', 'front-squat', 'leg-press'],
     formTips: ['Brace before you descend', 'Knees track over mid-foot', 'Stand by driving the floor away'],
+    steps: [
+      'Set feet about shoulder-width with toes slightly out.',
+      'Brace ribs down and own the floor with the whole foot.',
+      'Sit hips down and back while knees track over mid-foot.',
+      'Descend to honest depth, then drive the floor away to stand tall.',
+    ],
+    mistakes: ['Knees collapsing inward', 'Heels lifting', 'Losing brace and rounding the low back'],
+    safety: 'Use a rack and safeties when loaded. Stop if sharp pain appears.',
   },
   deadlift: {
     alternatives: ['romanian-deadlift', 'sumo-deadlift', 'kettlebell-swing'],

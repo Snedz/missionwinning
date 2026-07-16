@@ -100,7 +100,7 @@ const en: BundleStrings = {
   bundlePillarLearn: 'Learn',
   bundlePillarTrainFree: 'Full logger, builder, library, benchmarks',
   bundlePillarTrainPremium: 'AI Coach, unlimited plans, hybrid programming',
-  bundlePillarFuelFree: 'Macro log, water, 12 recipes',
+  bundlePillarFuelFree: 'Macro log, water, 20 recipes',
   bundlePillarFuelPremium: 'Fuel Coach — macro-synced 7-day plan + training-load adaptation',
   bundlePillarMoveFree: '10 guided mobility flows + timer',
   bundlePillarMovePremium: '18 timed recovery flows — press play, follow cues',

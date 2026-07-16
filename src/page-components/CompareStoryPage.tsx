@@ -40,6 +40,28 @@ export function CompareStoryPage({ story }: { story: CompareStory }) {
           ))}
         </div>
 
+        {story.body && story.body.length > 0 && (
+          <div className="space-y-6">
+            {story.body.map((section) => (
+              <section key={section.heading}>
+                <h2 className="font-semibold mb-2">{section.heading}</h2>
+                <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                  {section.paragraphs.map((p) => (
+                    <p key={p.slice(0, 48)}>{p}</p>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        )}
+
+        {story.verdict ? (
+          <p className="rounded-xl border border-brass/30 bg-brass/10 px-4 py-3 text-sm text-foreground/90">
+            <span className="font-medium text-brass">Verdict: </span>
+            {story.verdict}
+          </p>
+        ) : null}
+
         <p className="text-sm text-muted-foreground">{story.ctaNote}</p>
 
         <div className="flex flex-wrap gap-3">

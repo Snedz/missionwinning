@@ -29,8 +29,11 @@ export default async function ExerciseDetailRoute({ params }: Props) {
   const exercise = getExerciseById(id);
   if (!exercise) notFound();
   const base = siteBaseUrl();
+  const { enrichExerciseForPublic } = await import('@/lib/exerciseSeo');
+  const enriched = enrichExerciseForPublic(exercise);
+  const steps = enriched.enrichment?.steps;
   const jsonLd = [
-    exerciseHowToJsonLd(exercise, base),
+    exerciseHowToJsonLd(exercise, base, steps),
     breadcrumbJsonLd(
       [
         { name: 'Exercises', path: '/exercises' },

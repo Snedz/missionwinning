@@ -11,6 +11,7 @@ import {
   EXERCISE_PUBLIC_ENRICHMENT,
   type ExercisePublicEnrichment,
 } from '@/data/exercisePublicEnrichment';
+import { withPublicDepth } from '@/lib/exerciseDepthDefaults';
 
 export const EQUIPMENT_HUBS = [
   { slug: 'bodyweight', label: 'Bodyweight', match: (e: string) => /bodyweight|none|chair|table|box/i.test(e) },
@@ -83,15 +84,15 @@ export function guideChaptersForExercise(exercise: Exercise): { id: string; titl
   return out;
 }
 
-/** Merge catalog exercise with public enrichment overlay. */
+/** Merge catalog exercise with public enrichment overlay + depth defaults. */
 export function enrichExerciseForPublic(exercise: Exercise): Exercise & {
   enrichment?: ExercisePublicEnrichment;
 } {
-  const enrichment = EXERCISE_PUBLIC_ENRICHMENT[exercise.id];
-  if (!enrichment) return exercise;
+  const raw = EXERCISE_PUBLIC_ENRICHMENT[exercise.id];
+  const enrichment = withPublicDepth(exercise, raw);
   return {
     ...exercise,
-    cues: exercise.cues || enrichment.cues,
+    cues: exercise.cues || enrichment.cues || exercise.cues,
     alternatives: exercise.alternatives?.length
       ? exercise.alternatives
       : enrichment.alternatives,

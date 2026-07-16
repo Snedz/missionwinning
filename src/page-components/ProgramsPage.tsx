@@ -17,6 +17,7 @@ import {
   PROGRAM_GOAL_FILTERS,
   type ProgramCatalogEntry,
 } from '@/i18n/programsLocales';
+import { getCurriculum } from '@/data/programCurricula';
 import { useState } from 'react';
 
 export function ProgramsPage() {
@@ -55,17 +56,19 @@ export function ProgramsPage() {
       variant="sections"
       showLegalFooter
     >
-      <Card className="content-card border-amber-500/30 bg-amber-950/10">
+      <Card className="content-card">
         <CardContent className="pt-6 text-sm text-muted-foreground">
-          Legacy catalog — the Learn pillar has moved to{' '}
+          {t('programsCatalogIntro', {
+            defaultValue:
+              'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',
+          })}{' '}
           <Link href="/learn" className="text-primary hover:underline">
             /learn
           </Link>
-          . See{' '}
+          {' · '}
           <Link href="/bundle" className="text-primary hover:underline">
             Super Bundle
-          </Link>{' '}
-          for full access.
+          </Link>
         </CardContent>
       </Card>
 
@@ -119,18 +122,67 @@ export function ProgramsPage() {
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-5 gap-6">
-                <div className="md:col-span-3">
-                  <h4 className="font-semibold mb-3 text-xs uppercase tracking-widest text-muted-foreground">
-                    {t('programsWhatYouGet', { defaultValue: 'What you get' })}
-                  </h4>
-                  <ul className="space-y-2">
-                    {prog.bulletKeys.map((key) => (
-                      <li key={key} className="flex gap-3 text-sm">
-                        <Check className="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5" />{' '}
-                        {t(key)}
-                      </li>
-                    ))}
-                  </ul>
+                <div className="md:col-span-3 space-y-4">
+                  <div>
+                    <h4 className="font-semibold mb-3 text-xs uppercase tracking-widest text-muted-foreground">
+                      {t('programsWhatYouGet', { defaultValue: 'What you get' })}
+                    </h4>
+                    <ul className="space-y-2">
+                      {prog.bulletKeys.map((key) => (
+                        <li key={key} className="flex gap-3 text-sm">
+                          <Check className="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5" />{' '}
+                          {t(key)}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  {(() => {
+                    const curriculum = getCurriculum(prog.id);
+                    if (!curriculum) return null;
+                    return (
+                      <div>
+                        <h4 className="font-semibold mb-2 text-xs uppercase tracking-widest text-muted-foreground">
+                          {t('programsCurriculumOutline', {
+                            defaultValue: 'Curriculum outline',
+                          })}
+                        </h4>
+                        <div className="space-y-2">
+                          {curriculum.modules.map((m) => (
+                            <details
+                              key={m.index}
+                              className="rounded-xl border border-border/50 px-3 py-2 text-sm"
+                            >
+                              <summary className="cursor-pointer font-medium list-none flex justify-between gap-2">
+                                <span>
+                                  {t('programsModuleLabel', {
+                                    defaultValue: `Module ${m.index}`,
+                                    n: m.index,
+                                  })}
+                                  {': '}
+                                  {m.focus}
+                                </span>
+                                <span className="text-muted-foreground">+</span>
+                              </summary>
+                              <ul className="mt-2 space-y-2 text-muted-foreground pl-1">
+                                {m.sessions.map((s) => (
+                                  <li key={s.title}>
+                                    <span className="text-foreground/90 font-medium">
+                                      {s.title}
+                                    </span>
+                                    <ul className="list-disc pl-4 mt-0.5">
+                                      {s.outline.map((line) => (
+                                        <li key={line}>{line}</li>
+                                      ))}
+                                    </ul>
+                                  </li>
+                                ))}
+                              </ul>
+                            </details>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
                 <div className="md:col-span-2 rounded-xl border border-border/60 bg-muted/30 p-4 text-sm space-y-3">
                   <div className="font-semibold text-primary text-xs uppercase tracking-wide">
