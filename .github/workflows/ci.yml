@@ -148,6 +148,8 @@ jobs:
           SMOKE_BASE_URL: http://127.0.0.1:3000
         run: npm run e2e:critical
 
+  # Perimeter security smoke (premium 403, webhooks 401, cron/admin, crypto auth).
+  # Alias: npm run security-smoke → same script as gate-smoke.
   gate-smoke:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -162,13 +164,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Remote gate smoke
+      - name: Remote security / gate smoke
         env:
           SMOKE_BASE_URL: ${{ secrets.SMOKE_BASE_URL }}
           SMOKE_ACCESS_SECRET: ${{ secrets.SMOKE_ACCESS_SECRET }}
         run: |
           if [ -z "$SMOKE_BASE_URL" ]; then
-            echo "Skipping gate-smoke (SMOKE_BASE_URL not set)"
+            echo "Skipping security-smoke (SMOKE_BASE_URL not set)"
             exit 0
           fi
-          npm run gate-smoke
+          npm run security-smoke

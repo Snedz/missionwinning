@@ -240,6 +240,69 @@ async function main() {
   }
 
   try {
+    const cron = await headOrGet('/api/cron/nudges');
+    const cronOk = cron.status === 401 || cron.status === 403;
+    checks.push({
+      name: 'GET /api/cron/nudges without CRON_SECRET',
+      ok: cronOk,
+      detail: `status ${cron.status}${cronOk ? '' : ' — expected 401/403'}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/cron/nudges', ok: false, detail: String(e) });
+  }
+
+  try {
+    const beta = await headOrGet('/api/beta/metrics');
+    const betaOk = beta.status === 403 || beta.status === 401 || beta.status === 503;
+    checks.push({
+      name: 'GET /api/beta/metrics without admin',
+      ok: betaOk,
+      detail: `status ${beta.status}${betaOk ? '' : ' — expected 403'}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/beta/metrics', ok: false, detail: String(e) });
+  }
+
+  try {
+    const cryptoIntent = await headOrGet('/api/crypto-checkout/intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    // Unauthenticated → 401; gated private mode may return 403 before route
+    const cryptoOk =
+      cryptoIntent.status === 401 ||
+      cryptoIntent.status === 403 ||
+      cryptoIntent.status === 503;
+    checks.push({
+      name: 'POST /api/crypto-checkout/intent without session',
+      ok: cryptoOk,
+      detail: `status ${cryptoIntent.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'POST /api/crypto-checkout/intent', ok: false, detail: String(e) });
+  }
+
+  try {
+    const cryptoConfirm = await headOrGet('/api/crypto-checkout/confirm', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ intentId: '00000000-0000-0000-0000-000000000000', signature: 'x'.repeat(64) }),
+    });
+    const confirmOk =
+      cryptoConfirm.status === 401 ||
+      cryptoConfirm.status === 403 ||
+      cryptoConfirm.status === 503;
+    checks.push({
+      name: 'POST /api/crypto-checkout/confirm without session',
+      ok: confirmOk,
+      detail: `status ${cryptoConfirm.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'POST /api/crypto-checkout/confirm', ok: false, detail: String(e) });
+  }
+
+  try {
     const premiumStatus = await headOrGet('/api/premium/status');
     let body: { premium?: boolean; source?: string } = {};
     try {

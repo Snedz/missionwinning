@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Security red-team agent track S1 (`2026.07-unified.77`)
+
+- Full API auth/rate inventory in `app/api/INDEX.md`
+- `docs/SECURITY_AUDIT_TRIAGE.md` — npm high CVEs (Phantom/Solana accepted)
+- Crypto confirm signature guards + INDEX security properties
+- `gate-smoke` / `security-smoke` Wave 1: cron, beta metrics, crypto unauth
+- OWASP residual risks refresh
+
+---
+
 ## 2026-07-16 — Hygiene + public-flip checklist (`2026.07-unified.76`)
 
 - Build label → `2026.07-unified.76`

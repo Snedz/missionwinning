@@ -1,6 +1,6 @@
 # OWASP Security Audit — Mission Winning
 
-**Last audit:** 2026-07-05 (full sweep PR). Living companion to [PROTECTION.md](../PROTECTION.md).
+**Last audit:** 2026-07-05 (full sweep) · **Refresh:** 2026-07-16 (red-team plan + residual risks). Living companion to [PROTECTION.md](../PROTECTION.md).
 
 ---
 
@@ -44,7 +44,7 @@ flowchart LR
 | A03 | Injection | **Low risk** | React escaping; JSON-LD static; Zod on API bodies |
 | A04 | Insecure Design | **Improved** | LLM/fuel endpoints rate-limited; coach APIs require gate cookie or session |
 | A05 | Security Misconfiguration | **Improved** | `DEMO_PREMIUM` blocked in prod; `?access=` query bypass off in prod by default |
-| A06 | Vulnerable Components | **Monitored** | `npm audit --audit-level=high` in CI (soft fail); `next-pwa` chain documented |
+| A06 | Vulnerable Components | **Monitored** | `npm audit --audit-level=high` in CI (soft fail); Solana/Phantom graph triaged in [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md); Serwist replaced next-pwa |
 | A07 | Auth Failures | **Improved** | PIN/consent rate limits; JWT bypass uses `getUser()` not payload decode |
 | A08 | Data Integrity | **Low** | Backup restore schema-checked client-side |
 | A09 | Logging | **Partial** | Server errors logged; no centralized SIEM |
@@ -102,15 +102,33 @@ curl -sI https://www.missionwinning.com/api/school/class/MWTEST/leaderboard
 
 | Item | Rationale |
 |------|-----------|
-| CSP `unsafe-inline` / `unsafe-eval` | Required by Next.js + PWA workbox today; tighten when Serwist migration lands |
-| In-memory rate limit fallback | OK for local dev; production should set Upstash env |
+| CSP `unsafe-inline` / `unsafe-eval` | Still required by Next.js client runtime; Serwist migration shipped but CSP not fully locked down |
+| In-memory rate limit fallback | OK for local/single instance; **production should set Upstash** before public abuse (S0.6) |
 | Coach taster localStorage reset | Product abuse only — premium LLM server-gated |
-| `next-pwa` audit highs | Build-time tooling; evaluate `@serwist/next` migration |
+| Solana/Phantom high advisories | Required for lifetime crypto checkout; ownership + amount server-enforced — see [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) |
+| Soft CI dependency audit | Soft until crypto path removed or upstream clean |
+| No SIEM | A09 partial — rely on Vercel/Supabase logs + weekly enrollment review post-public |
+
+## Residual risks (2026-07-16 red-team)
+
+| Risk | Severity | Mitigation next |
+|------|----------|-----------------|
+| Founder secrets not rotated on prod | Critical if true | Founder S0 checklist |
+| Multi-instance rate-limit bypass | Medium | Upstash env |
+| Crypto checkout less mature than Stripe | Medium | Session + intent ownership + on-chain verify (shipped); keep optional |
+| Public flip expands surface | High if flip without S3 | [PUBLIC_FLIP_CHECKLIST.md](PUBLIC_FLIP_CHECKLIST.md) + security-smoke |
+| Youth/school legal surface | High if misconfig | Re-verify secrets + PIN tests before school marketing |
+
+## API inventory
+
+Living matrix: [app/api/INDEX.md](../app/api/INDEX.md).
 
 ---
 
 ## Related docs
 
 - [PROTECTION.md](../PROTECTION.md) — implementation log + curl checklist
+- [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) — npm audit accept/fix
 - [ENV.md](../ENV.md) — secret inventory
 - [docs/BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md) — launch gates
+- [PUBLIC_FLIP_CHECKLIST.md](PUBLIC_FLIP_CHECKLIST.md) — post-public smoke
