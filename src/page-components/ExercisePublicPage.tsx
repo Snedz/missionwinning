@@ -13,6 +13,7 @@ import {
   guideChaptersForExercise,
   muscleHubSlug,
 } from '@/lib/exerciseSeo';
+import { templatesUsingExercise } from '@/lib/exerciseUsage';
 import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
 import { PublicSeoHeader } from '@/components/public/PublicSeoHeader';
 import { ExercisePageBeacon } from '@/components/public/ExercisePageBeacon';
@@ -30,6 +31,10 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
   const enrichment = 'enrichment' in exercise ? exercise.enrichment : undefined;
   const guide = getFormGuideOrCues(exercise.id, { exercise });
   const tipLines = enrichment?.formTips;
+  const steps = enrichment?.steps;
+  const mistakes = enrichment?.mistakes;
+  const safety = enrichment?.safety;
+  const usedIn = templatesUsingExercise(exercise.id, 8);
 
   const alternatives = (exercise.alternatives ?? [])
     .map((id) => {
@@ -120,6 +125,56 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               {tipLines.map((line, i) => (
                 <li key={i}>{line}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {steps && steps.length > 0 && (
+          <section>
+            <h2 className="font-semibold mb-2">Step-by-step</h2>
+            <ol className="list-decimal pl-5 text-sm text-muted-foreground space-y-2">
+              {steps.map((line, i) => (
+                <li key={i}>{line}</li>
+              ))}
+            </ol>
+          </section>
+        )}
+
+        {mistakes && mistakes.length > 0 && (
+          <section>
+            <h2 className="font-semibold mb-2">Common mistakes</h2>
+            <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+              {mistakes.map((line, i) => (
+                <li key={i}>{line}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {safety ? (
+          <section className="rounded-xl border border-border/50 bg-muted/20 px-4 py-3 text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">Safety: </span>
+            {safety}
+          </section>
+        ) : null}
+
+        {usedIn.length > 0 && (
+          <section>
+            <h2 className="font-semibold mb-2">
+              Used in {usedIn.length} free template{usedIn.length === 1 ? '' : 's'}
+            </h2>
+            <ul className="space-y-1 text-sm text-muted-foreground">
+              {usedIn.map((hit) => (
+                <li key={`${hit.kind}-${hit.name}`}>
+                  <Link href="/builder" className="text-primary hover:underline">
+                    {hit.name}
+                  </Link>
+                  <span className="text-muted-foreground/80">
+                    {' '}
+                    ({hit.kind === 'starter' ? 'starter' : 'template'})
+                  </span>
+                </li>
               ))}
             </ul>
           </section>

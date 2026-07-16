@@ -44,16 +44,34 @@ export function LearnPathPublicPage({ path }: Props) {
                 <li key={p}>{p}</li>
               ))}
             </ul>
+            {first.body && first.body.length > 0 && (
+              <div className="space-y-2 text-sm text-muted-foreground leading-relaxed pt-2 border-t border-border/40">
+                {first.body.map((para) => (
+                  <p key={para.slice(0, 40)}>{para}</p>
+                ))}
+              </div>
+            )}
           </section>
         )}
 
         <section>
           <h2 className="font-semibold mb-3">Lessons in this path</h2>
-          <ol className="space-y-2 text-sm">
+          <ol className="space-y-4 text-sm">
             {path.lessons.map((lesson, i) => (
-              <li key={lesson.id} className="flex gap-2 text-muted-foreground">
-                <span className="tabular-nums text-foreground/70">{i + 1}.</span>
-                <span>{lesson.title}</span>
+              <li key={lesson.id} className="space-y-1">
+                <div className="flex gap-2 text-foreground">
+                  <span className="tabular-nums text-foreground/70">{i + 1}.</span>
+                  <span className="font-medium">{lesson.title}</span>
+                </div>
+                {lesson.body && lesson.body.length > 0 ? (
+                  <div className="pl-5 space-y-1.5 text-muted-foreground leading-relaxed">
+                    {lesson.body.map((para) => (
+                      <p key={para.slice(0, 40)}>{para}</p>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="pl-5 text-muted-foreground">{lesson.summary}</p>
+                )}
               </li>
             ))}
           </ol>

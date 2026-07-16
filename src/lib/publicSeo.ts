@@ -116,8 +116,12 @@ export function guideChapterJsonLd(chapter: GuideChapter, baseUrl = siteBaseUrl(
   };
 }
 
-export function exerciseHowToJsonLd(exercise: Exercise, baseUrl = siteBaseUrl()) {
-  return {
+export function exerciseHowToJsonLd(
+  exercise: Exercise,
+  baseUrl = siteBaseUrl(),
+  steps?: string[]
+) {
+  const howTo: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: `How to do ${exercise.name}`,
@@ -125,6 +129,15 @@ export function exerciseHowToJsonLd(exercise: Exercise, baseUrl = siteBaseUrl())
     url: `${baseUrl}/exercises/${exercise.id}`,
     inLanguage: 'en',
   };
+  if (steps && steps.length > 0) {
+    howTo.step = steps.map((text, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: `Step ${i + 1}`,
+      text,
+    }));
+  }
+  return howTo;
 }
 
 /** Serialize one or more JSON-LD objects for a <script type="application/ld+json"> tag. */
