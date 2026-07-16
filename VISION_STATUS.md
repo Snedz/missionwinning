@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-15** (build `2026.07-unified.59` + further-improvement track B).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-16** (build `2026.07-unified.75` — H1 eng prep + Lighthouse ≥90).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -15,7 +15,7 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 | **Super Bundle** — primary revenue | 🟡 Code + checkout | `/bundle`, Stripe webhook → `enrollments`; founder wires live links |
 | **Premium depth per pillar** | 🟢 Strong | GPS Track, Fuel Coach, Coach, Mind/Move/Learn premium depth shipped |
 | **AI Coach — personal trainer in pocket** | 🟢 v1 shipped | Mission Coach engine + free taster week; premium regeneration + plan-voice |
-| **PWA offline everywhere** | 🟡 Serwist ready | SW via Serwist when `PRIVATE_MODE=false`; still gated until public launch |
+| **PWA offline everywhere** | 🟡 Serwist ready | Serwist SW when `PRIVATE_MODE=false`; Lighthouse budget routes ≥90; still gated until public launch |
 | **Global i18n** | 🟡 Partial | Tier 1/2 nav chrome; **es + fr + de** body shipped for core surfaces |
 | **Bevel-style metric UI** | 🟢 Good | Unified `ProgressRing`; Mission Score + clinical rings; briefing Today + Victory body delta |
 | **Freeletics journey + streaks** | 🟢 Shipped | I-Day → Commissioned; challenges; leaderboard |

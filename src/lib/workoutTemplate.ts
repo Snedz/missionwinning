@@ -1,15 +1,2 @@
-import type { LoggedSet, SetKind, WorkoutExerciseTemplate } from '@/types';
-
-/** Map builder/coach template sets to active-workout logged sets (preserves per-set reps/weight). */
-export function templateSetsToLogged(
-  template: WorkoutExerciseTemplate,
-  now = Date.now()
-): LoggedSet[] {
-  return template.sets.map((s, i) => ({
-    id: `set-${now}-${i}`,
-    reps: s.reps,
-    weight: s.weight,
-    completed: false,
-    kind: 'normal' as SetKind,
-  }));
-}
+/** @deprecated Import from `@/lib/workout/workoutTemplate` — re-export for compatibility. */
+export * from '@/lib/workout/workoutTemplate';

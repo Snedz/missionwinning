@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — `src/lib/workout/` domain folder (`2026.07-unified.75`)
+
+- Moved logger/merge/rest/PR/victory/pulse helpers into `src/lib/workout/` + INDEX
+- Root `@/lib/*` paths re-export for compatibility
+- ORCHESTRATION / PLAN / VISION_STATUS mark H1 eng prep largely complete
+
+---
+
 ## 2026-07-16 — Today dashboard extract (shared Just Go + accordion) (`2026.07-unified.74`)
 
 - `todayPrimaryAction` + `loadCoachTodayOptional` shared by lean + full Today

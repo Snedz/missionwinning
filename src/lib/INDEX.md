@@ -17,7 +17,7 @@
 | **Mission Coach (weekly)** | `coach/` subfolder | Plan engine — see [coach/INDEX.md](coach/INDEX.md) |
 | **Coach sync** | `coachSync.ts` | Cloud push for coach plan |
 | **Journey** | `missionJourney.ts`, `journeySync.ts`, `journeyGoals.ts`, `journeyAnalytics.ts` | I-Day → Commissioned |
-| **Workouts** | `activeWorkoutHelpers.ts`, `activeWorkoutPulse.ts`, `workoutTemplate.ts`, `workoutMerge.ts`, `historyAnalytics.ts`, `benchmarks.ts`, `nextSetTargets.ts`, `justGoSession.ts`, `workoutVictory.ts`, `restTimer.ts`, `setKind.ts`, `superset.ts`, `workoutPr.ts` | Logger helpers; Just Go; next-set targets; rest/PR/superset |
+| **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, `benchmarks.ts` | Logger helpers; Just Go; next-set targets; rest/PR/superset |
 | **Nutrition / Fuel** | `macroTargets.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; NL + saved presets; Today score protein days |
 | **Today primary CTA** | `todayPrimaryAction.ts`, `coach/loadCoachTodayOptional.ts` | Shared Just Go / journey primary for lean + dashboard |
 | **Fuel Coach** | `fuelCoach/` subfolder | Adaptive meal plan — see [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
@@ -37,6 +37,7 @@
 |--------|-------|
 | `coach/` | [coach/INDEX.md](coach/INDEX.md) |
 | `fuelCoach/` | [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
+| `workout/` | Logger, merge, rest, PR, victory — [workout/INDEX.md](workout/INDEX.md) |
 | `leaderboard/` | Leaderboard compute/sync helpers — [leaderboard/INDEX.md](leaderboard/INDEX.md) |
 
 ## Convention: adding new domains

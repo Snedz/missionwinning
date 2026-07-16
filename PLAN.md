@@ -161,7 +161,7 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 **Long-term sequencing (horizons 0–3, role split, kill criteria):** [ORCHESTRATION.md](ORCHESTRATION.md) — read this before starting a multi-week initiative.
 
-**Next agent eng task (Horizon 0–1 prep):** B1–B4 + logger E2E + Today dashboard extract ✅ (`.74`) · residual: optional `src/lib/workout/` folder; founder still owns H0 secrets/Stripe/beta.
+**Next agent eng task (Horizon 0–1 prep):** B1–B4 + logger E2E + Today extract + `src/lib/workout/` domain ✅ (`.75`) · agent H1 eng prep largely complete; founder still owns H0 secrets/Stripe/beta + public flip.
 
 1. **Horizon 0 — Phase H founder ops** — Vercel secrets + Stripe + recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2–4)
 2. **Hit beta gates** — 10+ users, I-Day ≥80%, BT ≥60% — then `PRIVATE_MODE=false`
