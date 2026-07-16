@@ -7,8 +7,9 @@ import { useTranslation } from 'react-i18next';
 import dynamic from 'next/dynamic';
 import { ChevronDown, Dumbbell } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ALL_NAV, STATIC_PAGE_TITLES, extendedNavSectionsForPhase } from '@/lib/navConfig';
+import { ROUTE_LABELS, STATIC_PAGE_TITLES } from '@/lib/pageTitles';
 import type { JourneyPhase } from '@/lib/missionJourney';
+import type { NavSection } from '@/lib/navConfig';
 
 const HeaderAuthChip = dynamic(
   () => import('@/components/layout/HeaderAuthChip').then((m) => ({ default: m.HeaderAuthChip })),
@@ -37,9 +38,20 @@ export function AppHeader() {
   const { t } = useTranslation();
   const phase = useJourneyPhaseLite();
   const [open, setOpen] = useState(false);
+  const [navSections, setNavSections] = useState<NavSection[] | null>(null);
   const headerRef = useRef<HTMLElement>(null);
 
-  const navSections = extendedNavSectionsForPhase(phase);
+  // Extended menu icons only load when the user opens the dropdown.
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    void import('@/lib/navConfig').then((m) => {
+      if (!cancelled) setNavSections(m.extendedNavSectionsForPhase(phase));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, phase]);
 
   const pageTitle = (() => {
     const normalized = pathname === '/' ? '/log' : pathname;
@@ -53,7 +65,9 @@ export function AppHeader() {
         ? t(staticTitle.labelKey, { defaultValue: staticTitle.label })
         : staticTitle.label;
     }
-    const match = ALL_NAV.find((n) => normalized === n.href || normalized.startsWith(n.href + '/'));
+    const match = ROUTE_LABELS.find(
+      (n) => normalized === n.href || normalized.startsWith(n.href + '/')
+    );
     if (match) return t(match.labelKey, { defaultValue: match.label });
     return t('appName', { defaultValue: 'Mission Winning' });
   })();
@@ -131,57 +145,63 @@ export function AppHeader() {
                   })}
                 </p>
               )}
-              <div
-                className={cn(
-                  'grid gap-6 max-w-5xl mx-auto',
-                  navSections.length === 1
-                    ? 'sm:grid-cols-1'
-                    : navSections.length === 2
-                      ? 'sm:grid-cols-2'
-                      : 'sm:grid-cols-2 lg:grid-cols-4'
-                )}
-              >
-                {navSections.map((section) => (
-                  <div key={section.id}>
-                    <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium mb-2 px-1">
-                      {t(section.titleKey, { defaultValue: section.title })}
-                    </h2>
-                    <ul className="space-y-0.5">
-                      {section.items.map((item) => {
-                        const Icon = item.icon;
-                        const active = pathname === item.href;
-                        const military = item.military;
-                        return (
-                          <li key={item.href}>
-                            <Link
-                              href={item.href}
-                              onClick={close}
-                              className={cn(
-                                'flex items-center gap-2.5 rounded-xl px-3 py-2.5 min-h-[44px] text-sm transition-colors',
-                                active
-                                  ? 'bg-primary/15 text-primary'
-                                  : 'text-foreground/90 hover:bg-muted/60',
-                                military && !active && 'border border-status-warn/20'
-                              )}
-                            >
-                              <Icon
+              {!navSections ? (
+                <p className="text-xs text-muted-foreground max-w-5xl mx-auto py-2">
+                  {t('loading', { defaultValue: 'Loading…' })}
+                </p>
+              ) : (
+                <div
+                  className={cn(
+                    'grid gap-6 max-w-5xl mx-auto',
+                    navSections.length === 1
+                      ? 'sm:grid-cols-1'
+                      : navSections.length === 2
+                        ? 'sm:grid-cols-2'
+                        : 'sm:grid-cols-2 lg:grid-cols-4'
+                  )}
+                >
+                  {navSections.map((section) => (
+                    <div key={section.id}>
+                      <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium mb-2 px-1">
+                        {t(section.titleKey, { defaultValue: section.title })}
+                      </h2>
+                      <ul className="space-y-0.5">
+                        {section.items.map((item) => {
+                          const Icon = item.icon;
+                          const active = pathname === item.href;
+                          const military = item.military;
+                          return (
+                            <li key={item.href}>
+                              <Link
+                                href={item.href}
+                                onClick={close}
                                 className={cn(
-                                  'h-4 w-4 shrink-0',
-                                  military && 'text-status-warn/80'
+                                  'flex items-center gap-2.5 rounded-xl px-3 py-2.5 min-h-[44px] text-sm transition-colors',
+                                  active
+                                    ? 'bg-primary/15 text-primary'
+                                    : 'text-foreground/90 hover:bg-muted/60',
+                                  military && !active && 'border border-status-warn/20'
                                 )}
-                                aria-hidden
-                              />
-                              <span className="font-medium truncate">
-                                {t(item.labelKey, { defaultValue: item.label })}
-                              </span>
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
-              </div>
+                              >
+                                <Icon
+                                  className={cn(
+                                    'h-4 w-4 shrink-0',
+                                    military && 'text-status-warn/80'
+                                  )}
+                                  aria-hidden
+                                />
+                                <span className="font-medium truncate">
+                                  {t(item.labelKey, { defaultValue: item.label })}
+                                </span>
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
               <div className="flex flex-wrap gap-4 mt-5 pt-4 border-t border-border/40 text-xs text-muted-foreground max-w-5xl mx-auto">
                 <Link href="/vision" onClick={close} className="hover:text-primary">
                   {t('navOurMission', { defaultValue: 'Our mission' })}

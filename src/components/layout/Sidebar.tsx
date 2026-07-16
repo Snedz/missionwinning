@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import { useTranslation } from 'react-i18next';
-import { PRIMARY_NAV } from '@/lib/navConfig';
+import { PRIMARY_NAV } from '@/lib/primaryNav';
 
 /** Desktop side rail — primary tabs only. Extended routes live in AppHeader dropdown. */
 export function Sidebar() {

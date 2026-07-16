@@ -1,4 +1,8 @@
-/** Shared nav config — 5 primary tabs + extended routes in header dropdown. */
+/**
+ * Full nav config — extended menu icons + sections.
+ * MobileNav/Sidebar should import `@/lib/primaryNav` only (five icons).
+ * AppHeader titles use `@/lib/pageTitles` on cold path; load this module when the menu opens.
+ */
 import type { LucideIcon } from 'lucide-react';
 import {
   BookOpen,
@@ -7,43 +11,67 @@ import {
   ClipboardList,
   Dumbbell,
   History,
-  Home,
-  MapPin,
   PenTool,
   Shield,
   Sparkles,
   Trophy,
-  User,
-  UtensilsCrossed,
   Wind,
 } from 'lucide-react';
 import type { JourneyPhase } from '@/lib/missionJourney';
+import { PRIMARY_NAV, type PrimaryNavItem, isPrimaryPath } from '@/lib/primaryNav';
+import { STATIC_PAGE_TITLES, pageTitleForPath, ROUTE_LABELS } from '@/lib/pageTitles';
 
-export type NavLinkItem = {
-  href: string;
-  labelKey: string;
-  label: string;
-  icon: LucideIcon;
+export type { PrimaryNavItem };
+export type NavLinkItem = PrimaryNavItem & {
   descriptionKey?: string;
   description?: string;
   military?: boolean;
 };
 
-export const PRIMARY_NAV: NavLinkItem[] = [
-  { href: '/log', labelKey: 'navToday', label: 'Today', icon: Home },
-  { href: '/active', labelKey: 'navTrain', label: 'Train', icon: Dumbbell },
-  { href: '/nutrition', labelKey: 'navFuel', label: 'Fuel', icon: UtensilsCrossed },
-  { href: '/track', labelKey: 'navTrack', label: 'Track', icon: MapPin },
-  { href: '/profile', labelKey: 'navYou', label: 'You', icon: User },
-];
+export { PRIMARY_NAV, isPrimaryPath, STATIC_PAGE_TITLES, pageTitleForPath, ROUTE_LABELS };
 
 /** @deprecated Use EXTENDED_NAV_SECTIONS — kept for grep/migration */
 export const MORE_NAV: NavLinkItem[] = [
-  { href: '/move', labelKey: 'navMove', label: 'Move', icon: Wind, descriptionKey: 'moreMoveDesc', description: 'Mobility flows' },
-  { href: '/mind', labelKey: 'navMind', label: 'Mind', icon: Brain, descriptionKey: 'moreMindDesc', description: 'Breathing & recovery' },
-  { href: '/learn', labelKey: 'navLearn', label: 'Learn', icon: BookOpen, descriptionKey: 'moreLearnDesc', description: 'Education paths' },
-  { href: '/learn/guide', labelKey: 'navGuidebook', label: 'Guidebook', icon: BookOpen, descriptionKey: 'moreGuidebookDesc', description: 'Beyond the Basics — deep reference' },
-  { href: '/builder', labelKey: 'navBuilder', label: 'Builder', icon: PenTool, descriptionKey: 'moreBuilderDesc', description: 'Build workouts' },
+  {
+    href: '/move',
+    labelKey: 'navMove',
+    label: 'Move',
+    icon: Wind,
+    descriptionKey: 'moreMoveDesc',
+    description: 'Mobility flows',
+  },
+  {
+    href: '/mind',
+    labelKey: 'navMind',
+    label: 'Mind',
+    icon: Brain,
+    descriptionKey: 'moreMindDesc',
+    description: 'Breathing & recovery',
+  },
+  {
+    href: '/learn',
+    labelKey: 'navLearn',
+    label: 'Learn',
+    icon: BookOpen,
+    descriptionKey: 'moreLearnDesc',
+    description: 'Education paths',
+  },
+  {
+    href: '/learn/guide',
+    labelKey: 'navGuidebook',
+    label: 'Guidebook',
+    icon: BookOpen,
+    descriptionKey: 'moreGuidebookDesc',
+    description: 'Beyond the Basics — deep reference',
+  },
+  {
+    href: '/builder',
+    labelKey: 'navBuilder',
+    label: 'Builder',
+    icon: PenTool,
+    descriptionKey: 'moreBuilderDesc',
+    description: 'Build workouts',
+  },
   {
     href: '/coach',
     labelKey: 'navCoach',
@@ -52,13 +80,63 @@ export const MORE_NAV: NavLinkItem[] = [
     descriptionKey: 'moreCoachDesc',
     description: 'Mission Coach — adaptive weekly training plan',
   },
-  { href: '/library', labelKey: 'navLibrary', label: 'Library', icon: Dumbbell, descriptionKey: 'moreLibraryDesc', description: 'Exercise catalog' },
-  { href: '/history', labelKey: 'navHistory', label: 'History', icon: History, descriptionKey: 'moreHistoryDesc', description: 'Past sessions' },
-  { href: '/leaderboard', labelKey: 'navLeaderboard', label: 'Leaderboard', icon: Trophy, descriptionKey: 'moreLeaderboardDesc', description: 'Global & regional rankings' },
-  { href: '/benchmarks', labelKey: 'navReadiness', label: 'Readiness tests', icon: Shield, descriptionKey: 'moreReadinessDesc', description: 'Push-ups, pull-ups, strength standards', military: true },
-  { href: '/assessments', labelKey: 'navHealth', label: 'Health screen', icon: ClipboardList, descriptionKey: 'moreHealthDesc', description: 'PAR-Q assessment' },
-  { href: '/calculators', labelKey: 'navCalculators', label: 'Calculators', icon: Calculator, descriptionKey: 'moreCalcDesc', description: 'Macros & tools' },
-  { href: '/bundle', labelKey: 'navBundle', label: 'Super Bundle', icon: Sparkles, descriptionKey: 'moreBundleDesc', description: 'Premium pillars' },
+  {
+    href: '/library',
+    labelKey: 'navLibrary',
+    label: 'Library',
+    icon: Dumbbell,
+    descriptionKey: 'moreLibraryDesc',
+    description: 'Exercise catalog',
+  },
+  {
+    href: '/history',
+    labelKey: 'navHistory',
+    label: 'History',
+    icon: History,
+    descriptionKey: 'moreHistoryDesc',
+    description: 'Past sessions',
+  },
+  {
+    href: '/leaderboard',
+    labelKey: 'navLeaderboard',
+    label: 'Leaderboard',
+    icon: Trophy,
+    descriptionKey: 'moreLeaderboardDesc',
+    description: 'Global & regional rankings',
+  },
+  {
+    href: '/benchmarks',
+    labelKey: 'navReadiness',
+    label: 'Readiness tests',
+    icon: Shield,
+    descriptionKey: 'moreReadinessDesc',
+    description: 'Push-ups, pull-ups, strength standards',
+    military: true,
+  },
+  {
+    href: '/assessments',
+    labelKey: 'navHealth',
+    label: 'Health screen',
+    icon: ClipboardList,
+    descriptionKey: 'moreHealthDesc',
+    description: 'PAR-Q assessment',
+  },
+  {
+    href: '/calculators',
+    labelKey: 'navCalculators',
+    label: 'Calculators',
+    icon: Calculator,
+    descriptionKey: 'moreCalcDesc',
+    description: 'Macros & tools',
+  },
+  {
+    href: '/bundle',
+    labelKey: 'navBundle',
+    label: 'Super Bundle',
+    icon: Sparkles,
+    descriptionKey: 'moreBundleDesc',
+    description: 'Premium pillars',
+  },
 ];
 
 export type NavSection = {
@@ -124,36 +202,3 @@ export function extendedNavSectionsForPhase(phase: JourneyPhase): NavSection[] {
 }
 
 export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];
-
-export const STATIC_PAGE_TITLES: Record<string, { label: string; labelKey?: string }> = {
-  '/about': { label: 'About', labelKey: 'about' },
-  '/terms': { label: 'Terms', labelKey: 'termsOfService' },
-  '/privacy': { label: 'Privacy', labelKey: 'privacyPolicy' },
-  '/vision': { label: 'Vision', labelKey: 'infoVisionTitle' },
-  '/feedback': { label: 'Feedback', labelKey: 'feedback' },
-  '/beta': { label: 'Beta guide', labelKey: 'navBetaGuide' },
-  '/programs': { label: 'Programs', labelKey: 'infoProgramsTitle' },
-  '/coaching': { label: 'Talk to a human coach', labelKey: 'infoCoachingTitle' },
-  '/america': { label: 'National fitness', labelKey: 'americaHeroTitle' },
-  '/calculators': { label: 'Calculators', labelKey: 'calcTitle' },
-  '/welcome': { label: 'Welcome', labelKey: 'welcomeTitle' },
-  '/fitness-test': { label: 'Fitness test', labelKey: 'pftPageTitle' },
-  '/learn/guide': { label: 'Guidebook', labelKey: 'guidebookTitle' },
-  '/assessments': { label: 'Health screen', labelKey: 'assessTitle' },
-};
-
-export function pageTitleForPath(pathname: string): string {
-  const normalized = pathname === '/' ? '/log' : pathname;
-  const staticTitle = STATIC_PAGE_TITLES[normalized];
-  if (staticTitle) return staticTitle.label;
-  if (normalized.startsWith('/learn/guide/')) {
-    return STATIC_PAGE_TITLES['/learn/guide']?.label ?? 'Guidebook';
-  }
-  const match = ALL_NAV.find((n) => normalized === n.href || normalized.startsWith(n.href + '/'));
-  return match?.label ?? 'Mission Winning';
-}
-
-export function isPrimaryPath(pathname: string): boolean {
-  const normalized = pathname === '/' ? '/log' : pathname;
-  return PRIMARY_NAV.some((n) => normalized === n.href);
-}

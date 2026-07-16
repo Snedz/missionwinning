@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Slim app chrome: primary nav split + deferred Today graph (`2026.07-unified.68`)
+
+- `primaryNav` (5 icons) for MobileNav/Sidebar; extended Lucide menu loads only when header opens
+- `pageTitles` for AppHeader titles without icon graph
+- TodayPageHeader drops shadcn Button; lean Today defers score/readiness/analytics
+- Lighthouse mobile: `/` **92**, guide **93**, `/log` **81**, exercises **~89**
+
+---
+
 ## 2026-07-15 — Cut supabase from shell / journey cold path (`2026.07-unified.67`)
 
 - `pillarLog.getPillarWins` no longer static-imports supabase (cloud only on `logPillarWin`)

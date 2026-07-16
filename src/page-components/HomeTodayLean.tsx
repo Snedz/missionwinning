@@ -1,18 +1,15 @@
 'use client';
 /**
  * Lean Today shell for I-Day / Basic Training first paint.
- * Avoids static workoutStore import — history/streak from persist lite; store loads on train.
+ * Avoids static workoutStore, score/readiness, and analytics on the cold path.
  * Full dashboard (rings, accordion, coach) loads only for readiness+ via HomePage code-split.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { getRecommendedFocus } from '@/lib/score';
-import { computeReadinessFromHistory } from '@/lib/readinessIndex';
 import { JourneyHero } from '@/components/journey/JourneyHero';
 import { TodayPageHeader } from '@/components/today/TodayPageHeader';
-import { useUnits } from '@/hooks/useUnits';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import {
   readTrainingStreakFromStorage,
@@ -25,8 +22,6 @@ import {
   type JourneyAction,
   type JourneyState,
 } from '@/lib/missionJourney';
-import { muscleGroupLabel } from '@/lib/readinessDisplay';
-import { track } from '@/lib/analytics';
 import type { CompletedWorkoutLog } from '@/types';
 
 const SSR_ACTION: JourneyAction = {
@@ -78,16 +73,14 @@ export function HomeTodayLean() {
   const [streak, setStreak] = useState(0);
   const [journeyState, setJourneyState] = useState<JourneyState>(() => getDefaultJourneyState());
   const [action, setAction] = useState<JourneyAction>(() => SSR_ACTION);
-  const units = useUnits();
-  const [readiness, setReadiness] = useState(() => computeReadinessFromHistory([]));
-  const recommendedFocus = useMemo(() => getRecommendedFocus(readiness), [readiness]);
   const [todayLabel, setTodayLabel] = useState('');
+  /** Focus label for Just Go — filled after idle import of score/readiness. */
+  const [focusLabel, setFocusLabel] = useState('');
 
   const refreshFromStorage = useCallback(() => {
     const history = readWorkoutHistoryFromStorage();
     setWorkoutHistory(history);
     setStreak(readTrainingStreakFromStorage() || 0);
-    // If streak key empty, derive once history is present (cheap path in challenges).
     if (history.length > 0) {
       void import('@/lib/challenges').then(({ getTrainingStreak }) => {
         setStreak(getTrainingStreak(history));
@@ -96,7 +89,6 @@ export function HomeTodayLean() {
     const next = syncJourneyPhase(history);
     setJourneyState(next);
     setAction(getNextAction(history));
-    setReadiness(computeReadinessFromHistory(history));
   }, []);
 
   useEffect(() => {
@@ -129,8 +121,37 @@ export function HomeTodayLean() {
     );
   }, [i18n.language]);
 
-  const userEquip =
-    typeof window !== 'undefined' ? localStorage.getItem('mw_equipment') || 'full-gym' : 'full-gym';
+  // Defer readiness/score (and muscle labels) until after first paint / idle.
+  useEffect(() => {
+    let cancelled = false;
+    const run = () => {
+      void (async () => {
+        const history = readWorkoutHistoryFromStorage();
+        const [{ computeReadinessFromHistory }, { getRecommendedFocus }, { muscleGroupLabel }] =
+          await Promise.all([
+            import('@/lib/readinessIndex'),
+            import('@/lib/score'),
+            import('@/lib/readinessDisplay'),
+          ]);
+        if (cancelled) return;
+        const readiness = computeReadinessFromHistory(history);
+        const focus = getRecommendedFocus(readiness);
+        setFocusLabel(muscleGroupLabel(focus.group, t));
+      })();
+    };
+    if (typeof requestIdleCallback !== 'undefined') {
+      const id = requestIdleCallback(run, { timeout: 1200 });
+      return () => {
+        cancelled = true;
+        cancelIdleCallback(id);
+      };
+    }
+    const tmr = setTimeout(run, 200);
+    return () => {
+      cancelled = true;
+      clearTimeout(tmr);
+    };
+  }, [t, workoutHistory.length]);
 
   const handleJourneyPrimary = () => {
     if (hasActiveWorkout) {
@@ -141,21 +162,41 @@ export function HomeTodayLean() {
       action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned';
     if (trainReady) {
       void (async () => {
-        const [{ buildJustGoSession }, coachToday] = await Promise.all([
+        const history = readWorkoutHistoryFromStorage();
+        const [
+          { computeReadinessFromHistory },
+          { getRecommendedFocus },
+          { buildJustGoSession },
+          coachToday,
+        ] = await Promise.all([
+          import('@/lib/readinessIndex'),
+          import('@/lib/score'),
           import('@/lib/justGoSession'),
           loadCoachTodayOptional(),
         ]);
+        const readiness = computeReadinessFromHistory(history);
+        const recommendedFocus = getRecommendedFocus(readiness);
+        const units =
+          typeof window !== 'undefined' && localStorage.getItem('mw_units') === 'imperial'
+            ? 'imperial'
+            : 'metric';
+        const userEquip =
+          typeof window !== 'undefined'
+            ? localStorage.getItem('mw_equipment') || 'full-gym'
+            : 'full-gym';
         const session = buildJustGoSession({
           focus: recommendedFocus,
           readiness,
-          history: workoutHistory,
+          history,
           units,
           equipment: userEquip,
           coachToday,
         });
         if (session.exercises.length > 0) {
           await startWorkoutFromStore(session.name, session.exercises);
-          track('just_go_started', { source: session.source, focus: session.focusGroup });
+          void import('@/lib/analytics').then(({ track }) =>
+            track('just_go_started', { source: session.source, focus: session.focusGroup })
+          );
           router.push('/active');
           return;
         }
@@ -190,19 +231,20 @@ export function HomeTodayLean() {
   const justGoMeta =
     !hasActiveWorkout &&
     (action.href === '/active' || !!action.startWorkout || action.phase === 'basic')
-      ? { focusLabel: muscleGroupLabel(recommendedFocus.group, t) }
+      ? {
+          focusLabel:
+            focusLabel ||
+            t('todaySessionFocus', { defaultValue: 'Training' }),
+        }
       : null;
 
   return (
     <div className="space-y-6">
       <TodayPageHeader
         today={todayLabel}
-        recommendedFocus={recommendedFocus}
-        userEquip={userEquip}
         streak={streak}
         userEmail={null}
         action={action}
-        showFocusLine={false}
         showEditToday={false}
       />
       <JourneyHero
