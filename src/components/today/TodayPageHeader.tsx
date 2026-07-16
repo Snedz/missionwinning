@@ -3,31 +3,29 @@
 import { LayoutGrid } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
-import type { RecommendedFocus } from '@/lib/score';
 import { JourneyStrip } from '@/components/journey/JourneyHero';
-import { formatRecommendedFocusLine } from '@/lib/readinessDisplay';
-import { Button } from '@/components/ui/button';
 
 interface Props {
   today: string;
-  recommendedFocus: RecommendedFocus;
-  userEquip: string;
+  /** Optional focus line under the title (full dashboard). */
+  focusLine?: string | null;
   streak: number;
   userEmail: string | null;
   action: JourneyAction;
-  showFocusLine: boolean;
   showEditToday?: boolean;
   onEditToday?: () => void;
 }
 
+/**
+ * Today chrome — no shadcn Button (Radix Slot) on the cold path.
+ * Lean shell passes minimal props; full dashboard can pass focusLine + Edit.
+ */
 export function TodayPageHeader({
   today,
-  recommendedFocus,
-  userEquip,
+  focusLine,
   streak,
   userEmail,
   action,
-  showFocusLine,
   showEditToday,
   onEditToday,
 }: Props) {
@@ -41,26 +39,17 @@ export function TodayPageHeader({
           <h1 className="display-section text-[1.85rem] md:text-[2.35rem]">
             {t('today', { defaultValue: 'Today' })}
           </h1>
-          {showFocusLine && (
-            <p className="text-sm text-muted-foreground">
-              {formatRecommendedFocusLine(recommendedFocus, t)}
-              {userEquip === 'bodyweight'
-                ? ` · ${t('todayBodyweightTag', { defaultValue: 'bodyweight' })}`
-                : ''}
-            </p>
-          )}
+          {focusLine ? <p className="text-sm text-muted-foreground">{focusLine}</p> : null}
         </div>
         {showEditToday && onEditToday && (
-          <Button
+          <button
             type="button"
-            variant="outline"
-            size="sm"
-            className="shrink-0 gap-1.5 min-h-[40px] border-border/60"
+            className="shrink-0 inline-flex items-center gap-1.5 min-h-[40px] rounded-md border border-border/60 bg-background px-3 text-sm font-medium hover:bg-accent"
             onClick={onEditToday}
           >
             <LayoutGrid className="h-4 w-4 text-primary" />
             {t('todayEditToday', { defaultValue: 'Edit Today' })}
-          </Button>
+          </button>
         )}
       </div>
       {streak > 0 && (

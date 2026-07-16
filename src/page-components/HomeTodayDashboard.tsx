@@ -30,7 +30,7 @@ import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { getTodayLayout } from "@/hooks/useTodayLayout";
 import { formatStoredGoal, goalPresetValue } from "@/lib/journeyGoals";
 import { useUnits } from "@/hooks/useUnits";
-import { muscleGroupLabel } from "@/lib/readinessDisplay";
+import { formatRecommendedFocusLine, muscleGroupLabel } from "@/lib/readinessDisplay";
 import { track } from "@/lib/analytics";
 
 const BetaWelcomeBanner = dynamic(
@@ -630,12 +630,18 @@ export function HomeTodayDashboard() {
       node: (
         <TodayPageHeader
           today={todayLabel}
-          recommendedFocus={recommendedFocus}
-          userEquip={userEquip}
+          focusLine={
+            layout.showFocusLine
+              ? `${formatRecommendedFocusLine(recommendedFocus, t)}${
+                  userEquip === 'bodyweight'
+                    ? ` · ${t('todayBodyweightTag', { defaultValue: 'bodyweight' })}`
+                    : ''
+                }`
+              : null
+          }
           streak={streak}
           userEmail={userEmail}
           action={action}
-          showFocusLine={layout.showFocusLine}
           showEditToday={layout.showDetailsAccordion}
           onEditToday={() => setEditTodayOpen(true)}
         />
