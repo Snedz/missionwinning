@@ -225,7 +225,7 @@ export function MacroCalculator() {
               label={t('calcCarbs', { defaultValue: 'Carbs' })}
               value={`${carbs}g`}
               progress={Math.min(100, (carbs / 300) * 100)}
-              tone="amber"
+              tone="warn"
             />
             <ProgressRing
               label={t('calcFat', { defaultValue: 'Fat' })}
@@ -244,7 +244,7 @@ export function MacroCalculator() {
                 {macroSplit.proteinPct > 12 ? `P ${macroSplit.proteinPct}%` : ''}
               </div>
               <div
-                className="bg-amber-500/80 flex items-center justify-center text-white"
+                className="bg-[hsl(var(--status-warn)/0.85)] flex items-center justify-center text-white"
                 style={{ width: `${macroSplit.carbsPct}%` }}
               >
                 {macroSplit.carbsPct > 12 ? `C ${macroSplit.carbsPct}%` : ''}

@@ -27,7 +27,11 @@ export function PillarPageHeader({
 }: PillarPageHeaderProps) {
   return (
     <div className={cn('space-y-2', className)}>
-      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+      {eyebrow ? (
+        <div className="briefing-rule">
+          <span className="eyebrow">{eyebrow}</span>
+        </div>
+      ) : null}
       <h1 className="display-section flex items-center gap-3 text-[1.75rem] md:text-[2.25rem]">
         <Icon
           className={cn('h-7 w-7 shrink-0 text-primary md:h-8 md:w-8', iconClassName)}

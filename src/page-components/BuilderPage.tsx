@@ -287,7 +287,7 @@ export function BuilderPage() {
 
       {step === 1 && (
         <div className="space-y-6">
-          <Card className="content-card">
+          <Card className="card-elevated">
             <CardHeader>
               <CardTitle>{t('builderPickStart', { defaultValue: 'How do you want to start?' })}</CardTitle>
               <CardDescription>

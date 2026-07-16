@@ -58,12 +58,17 @@ export function ActiveSessionChrome({
             <Scale className="h-4 w-4" />
             {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
           </Button>
-          <Card className="px-4 py-2">
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-primary" />
-              <span className="text-2xl font-mono font-bold">{formatDuration(elapsedSeconds)}</span>
-            </div>
-          </Card>
+          <div
+            className="card-elevated card-glow-emerald flex items-center gap-2 px-4 py-2"
+            role="timer"
+            aria-live="polite"
+            aria-label={t('activeSessionTimer', { defaultValue: 'Session timer' })}
+          >
+            <Clock className="h-4 w-4 text-primary" aria-hidden />
+            <span className="text-2xl font-mono font-bold tabular-nums">
+              {formatDuration(elapsedSeconds)}
+            </span>
+          </div>
           <Button variant="destructive" size="sm" onClick={onCancel}>
             <Square className="h-4 w-4" />
             {t('activeCancel', { defaultValue: 'Cancel' })}
@@ -75,7 +80,7 @@ export function ActiveSessionChrome({
         </div>
       </div>
 
-      <Card className="bg-primary/5 border-primary/20">
+      <Card className="content-card border-primary/25 bg-primary/5">
         <CardContent className="py-3 text-sm">
           <div className="font-medium mb-1 flex items-center gap-2">
             {t('activeCoachNotes', { defaultValue: 'Coach Notes' })}
@@ -92,7 +97,7 @@ export function ActiveSessionChrome({
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="content-card">
         <CardHeader className="pb-3">
           <CardTitle className="text-base">
             {t('activeAddExercise', { defaultValue: 'Add Exercise' })}

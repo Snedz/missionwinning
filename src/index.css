@@ -98,10 +98,6 @@
       0 12px 40px -12px rgb(0 0 0 / 0.55);
   }
 
-  .dashboard-panel {
-    @apply rounded-2xl border border-border/50 bg-gradient-to-br from-card via-card to-emerald-950/20 shadow-sm;
-  }
-
   .auth-panel {
     @apply border border-border/60 bg-gradient-to-b from-card/90 to-muted/30;
   }

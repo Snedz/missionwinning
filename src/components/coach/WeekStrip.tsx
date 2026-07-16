@@ -6,6 +6,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Check, Dumbbell, Wind, Zap } from 'lucide-react';
 import type { PlanSession } from '@/lib/coach/types';
 import { cn } from '@/lib/utils';
 
@@ -16,6 +17,27 @@ type Props = {
   sessions: PlanSession[];
   todayOffset: number;
 };
+
+function SessionGlyph({
+  done,
+  kind,
+}: {
+  done: boolean;
+  kind: PlanSession['kind'] | undefined;
+}) {
+  if (done) {
+    return <Check className="mt-1 h-3.5 w-3.5 text-brass" aria-hidden strokeWidth={2.5} />;
+  }
+  if (kind === 'conditioning') {
+    return <Zap className="mt-1 h-3.5 w-3.5 text-primary" aria-hidden />;
+  }
+  if (kind === 'recovery') {
+    return (
+      <Wind className="mt-1 h-3.5 w-3.5 text-[hsl(var(--status-info))]" aria-hidden />
+    );
+  }
+  return <Dumbbell className="mt-1 h-3.5 w-3.5 text-primary" aria-hidden />;
+}
 
 export function WeekStrip({ sessions, todayOffset }: Props) {
   const { t } = useTranslation();
@@ -54,21 +76,21 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
             className={cn(
               'flex flex-col items-center rounded-lg border p-2 text-center text-[10px] transition-colors',
               isToday && 'ring-2 ring-emerald-500/80 border-primary/40',
-              done && 'border-amber-500/40 bg-amber-500/10',
+              done && 'border-brass/40 bg-brass/10',
               pulseOffsets.has(i) && 'week-strip-pulse',
               missed && 'opacity-50 border-border/30',
-              session?.kind === 'recovery' && 'border-indigo-500/30 bg-indigo-500/10',
+              session?.kind === 'recovery' &&
+                !done &&
+                'border-[hsl(var(--status-info)/0.35)] bg-[hsl(var(--status-info)/0.1)]',
               !session && 'border-border/20 opacity-40'
             )}
           >
             <span className="font-medium text-muted-foreground">{label}</span>
             {session ? (
               <>
-                <span className={cn('mt-1 font-semibold', done && 'text-status-warn')}>
-                  {done ? '✓' : session.kind === 'strength' ? '💪' : session.kind === 'conditioning' ? '⚡' : '🧘'}
-                </span>
+                <SessionGlyph done={done} kind={session.kind} />
                 {done && (
-                  <span className="text-[9px] text-status-warn/80">
+                  <span className="text-[9px] text-brass/90">
                     {t('coachSessionDone', { defaultValue: 'Done' })}
                   </span>
                 )}
@@ -78,7 +100,9 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
                   </span>
                 )}
                 {recovery && session.kind === 'recovery' && !done && (
-                  <span className="text-[9px] text-indigo-300">Mobility</span>
+                  <span className="text-[9px] text-[hsl(var(--status-info))]">
+                    {t('coachSessionMobility', { defaultValue: 'Mobility' })}
+                  </span>
                 )}
               </>
             ) : (

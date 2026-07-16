@@ -2,7 +2,7 @@
 
 **Runtime source:** [`src/index.css`](../src/index.css) · [`tailwind.config.js`](../tailwind.config.js) · fonts in [`app/layout.tsx`](../app/layout.tsx)  
 **Research:** [`DESIGN_RESEARCH.md`](DESIGN_RESEARCH.md)  
-**Build:** `2026.07-unified.51`+
+**Build:** `2026.07-unified.83`+ (Wave 4 in-app elevation)
 
 ---
 
@@ -11,8 +11,25 @@
 1. **Mission briefing** — mono eyebrow → display title → one emerald CTA
 2. **Emerald = do it** · **Brass = earned it** · never competitor blue/violet identity
 3. **One boss action** per screen (especially Today)
-4. **Clinical metrics, not gamification** — tabular nums, quiet labels
+4. **Clinical metrics, not gamification** — tabular nums, quiet labels, lucide over emoji
 5. **Match chrome to task** — Train dense; Today sparse; marketing product-in-hero
+
+---
+
+## Card tier ladder (in-app + marketing)
+
+| Tier | Class | Use |
+|------|--------|-----|
+| **Base** | `Card` (`rounded-2xl` + quiet border) | Dense/repeated rows, settings, logger inners, tables |
+| **Content** | `content-card` | Standalone pillar content blocks |
+| **Hero** | `card-elevated` | **≤1** summary/boss panel per screen |
+| **Live** | `card-glow-emerald` | Active timer / Today scorecard only (≤1) |
+| **Honor** | `card-glow-brass` | PRs, victory, premium/founders teasers |
+| **Texture** | `texture-noise` / `texture-grid` | Marketing; **not** dense app screens (victory backdrop OK) |
+
+Hybrid rule: one modest base lift + targeted promotions — no mass Card rewrites. Superset grouping uses `--status-info` (not purple).
+
+**Removed:** `dashboard-panel` (was near-dead; use `content-card` / `card-elevated`).
 
 ---
 
@@ -22,14 +39,14 @@
 |-------|------|
 | `--background` / `--foreground` | Navy canvas / primary text |
 | `--card` / `--border` | Solid content surfaces |
-| `--surface-raised` / `--grid-line` | Marketing elevation + faint grids |
+| `--surface-raised` / `--grid-line` | Elevation + faint grids |
 | `--primary` / `--accent` | Emerald action |
 | `--brass` | Honor, PR, founders, rank |
 | `--status-warn` | Strain / caution (prefer over raw amber) |
-| `--status-info` | Recovery / info (prefer over raw blue) |
+| `--status-info` | Recovery / info / functional grouping (prefer over raw blue/violet) |
 | `--status-danger` / `--status-ok` | Risk / success |
 
-Utility classes: `glass-nav`, `content-card`, `dashboard-panel`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `display-mega`, `section-index`, `briefing-rule`, `pressable-card`, `ring-draw-in`, `score-tick`.
+Utility classes: `glass-nav`, `content-card`, `card-elevated`, `card-glow-emerald`, `card-glow-brass`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `display-mega`, `section-index`, `briefing-rule`, `pressable-card`, `ring-draw-in`, `score-tick`, `section-seam`.
 
 ### Marketing elevation (landing / bundle / SEO)
 

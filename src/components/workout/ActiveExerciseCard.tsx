@@ -17,6 +17,7 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 import { resolveRestSeconds } from '@/lib/restTimer';
 import { suggestNextSetTarget } from '@/lib/nextSetTargets';
 import { supersetLabel } from '@/lib/superset';
+import { cn } from '@/lib/utils';
 import type { UnitsPref } from '@/lib/units';
 import type {
   ActiveExerciseLog,
@@ -126,14 +127,19 @@ export function ActiveExerciseCard({
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
 
   return (
-    <Card className={ssLabel ? 'border-violet-500/30' : undefined}>
+    <Card
+      className={cn(
+        'content-card',
+        ssLabel && 'border-[hsl(var(--status-info)/0.4)]'
+      )}
+    >
       <CardHeader>
         <CardTitle className="text-lg flex flex-wrap items-center gap-2">
           {exercise.name}
           {ssLabel && (
             <Badge
               variant="outline"
-              className="text-[10px] uppercase border-violet-500/40 text-violet-300"
+              className="text-[10px] uppercase border-[hsl(var(--status-info)/0.45)] text-[hsl(var(--status-info))]"
             >
               {ssLabel}
             </Badge>

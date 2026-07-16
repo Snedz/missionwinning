@@ -66,7 +66,7 @@ export function FuelLockedPreview({ baseTargets }: Props) {
   const day = DEMO_DAY;
 
   return (
-    <Card className="content-card border-primary/40">
+    <Card className="card-elevated card-glow-brass border-brass/30">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <UtensilsCrossed className="h-4 w-4 text-primary" />

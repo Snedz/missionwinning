@@ -146,7 +146,7 @@ export function BenchmarksPage() {
       <PresidentialFitnessSection />
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="content-card border-primary/20 bg-primary/5">
+        <Card className="card-elevated card-glow-emerald border-primary/20">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Target className="h-4 w-4 text-primary" />
@@ -155,7 +155,7 @@ export function BenchmarksPage() {
             <CardTitle className="text-3xl">{globalStats.exercisesTracked}</CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="content-card">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
@@ -214,7 +214,7 @@ export function BenchmarksPage() {
       {benchmark && (
         <>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Card>
+            <Card className="content-card">
               <CardHeader className="pb-2">
                 <CardDescription>
                   {t('benchmarksBestEst', { defaultValue: 'Best Estimated 1RM' })}
@@ -225,7 +225,7 @@ export function BenchmarksPage() {
                 </CardTitle>
               </CardHeader>
             </Card>
-            <Card>
+            <Card className="content-card">
               <CardHeader className="pb-2">
                 <CardDescription>
                   {t('benchmarksBestActual', { defaultValue: 'Best Actual 1RM' })}
@@ -244,7 +244,7 @@ export function BenchmarksPage() {
                 </CardTitle>
               </CardHeader>
             </Card>
-            <Card>
+            <Card className="content-card">
               <CardHeader className="pb-2">
                 <CardDescription>
                   {t('benchmarksLatestEst', { defaultValue: 'Latest Session Est.' })}
@@ -255,7 +255,7 @@ export function BenchmarksPage() {
                 </CardTitle>
               </CardHeader>
             </Card>
-            <Card>
+            <Card className="content-card">
               <CardHeader className="pb-2">
                 <CardDescription>
                   {t('benchmarksEstVsActual', { defaultValue: 'Est. vs Actual Gap' })}
@@ -290,7 +290,7 @@ export function BenchmarksPage() {
             </span>
           </div>
 
-          <Card>
+          <Card className="content-card">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <LineChartIcon className="h-5 w-5 text-primary" />
@@ -308,7 +308,7 @@ export function BenchmarksPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="content-card">
             <CardHeader>
               <CardTitle className="text-lg">
                 {t('benchmarksTimeline', { defaultValue: 'Timeline' })}
@@ -384,7 +384,7 @@ export function BenchmarksPage() {
           </Card>
 
           {summaries.length > 1 && (
-            <Card>
+            <Card className="content-card">
               <CardHeader>
                 <CardTitle className="text-lg">
                   {t('benchmarksAllExercises', { defaultValue: 'All Exercises' })}

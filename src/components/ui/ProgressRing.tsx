@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 
-export type ProgressRingTone = 'emerald' | 'amber' | 'blue' | 'brass' | 'warn' | 'info';
+export type ProgressRingTone = 'emerald' | 'brass' | 'warn' | 'info';
 
 export type ProgressRingProps = {
   label: string;
@@ -27,16 +27,6 @@ const TONE_MAP: Record<
     text: 'text-primary',
     track: 'stroke-emerald-950/80',
   },
-  amber: {
-    stroke: 'stroke-amber-400',
-    text: 'text-status-warn',
-    track: 'stroke-amber-950/80',
-  },
-  blue: {
-    stroke: 'stroke-blue-400',
-    text: 'text-blue-400',
-    track: 'stroke-blue-950/80',
-  },
   brass: {
     stroke: 'stroke-brass',
     text: 'text-brass',
@@ -58,7 +48,7 @@ const SIZE_MAP = { sm: 72, md: 96, lg: 120 };
 
 /**
  * Unified progress ring for Today metrics, Fuel macros, and demos.
- * Emerald = action/ready · amber/warn = strain · blue/info = recovery · brass = honor.
+ * Emerald = action/ready · warn = strain · info = recovery · brass = honor.
  */
 export function ProgressRing({
   label,

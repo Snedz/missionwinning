@@ -99,8 +99,8 @@ export function AppHeader() {
   }, [open]);
 
   return (
-    <header ref={headerRef} className="glass-nav shrink-0 z-50 border-b border-border/50">
-      <div className="flex items-center gap-2 px-4 min-h-[56px]">
+    <header ref={headerRef} className="glass-nav section-seam shrink-0 z-50">
+      <div className="relative z-[1] flex items-center gap-2 px-4 min-h-[56px]">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -112,7 +112,9 @@ export function AppHeader() {
             <Dumbbell className="h-5 w-5 text-primary-foreground" />
           </div>
           <div className="flex-1 min-w-0 flex items-center gap-2">
-            <span className="font-semibold tracking-tight truncate">Mission Winning</span>
+            <span className="font-display text-base font-semibold uppercase tracking-wide truncate sm:text-lg">
+              Mission Winning
+            </span>
             <ChevronDown
               className={cn(
                 'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
@@ -129,13 +131,13 @@ export function AppHeader() {
 
       <div
         className={cn(
-          'grid transition-[grid-template-rows] duration-200 ease-out border-t border-border/40',
+          'relative z-[1] grid transition-[grid-template-rows] duration-200 ease-out border-t border-border/40',
           open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
         )}
       >
         <div className="overflow-hidden">
           {open && (
-            <div className="px-4 py-4 bg-card/90 backdrop-blur-xl max-h-[min(70vh,520px)] overflow-y-auto">
+            <div className="max-h-[min(70vh,520px)] overflow-y-auto bg-card/95 px-4 py-4 md:bg-card/90 md:backdrop-blur-xl">
               <p className="text-xs text-muted-foreground mb-4 sm:hidden">{pageTitle}</p>
               {(phase === 'i-day' || phase === 'basic') && (
                 <p className="text-xs text-muted-foreground mb-3 max-w-5xl mx-auto">
@@ -162,7 +164,7 @@ export function AppHeader() {
                 >
                   {navSections.map((section) => (
                     <div key={section.id}>
-                      <h2 className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium mb-2 px-1">
+                      <h2 className="eyebrow mb-2 px-1">
                         {t(section.titleKey, { defaultValue: section.title })}
                       </h2>
                       <ul className="space-y-0.5">

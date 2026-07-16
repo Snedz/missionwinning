@@ -19,7 +19,7 @@ export function MoveLockedPreview() {
   const { t } = useTranslation();
 
   return (
-    <Card className="content-card border-primary/40">
+    <Card className="card-elevated card-glow-brass border-brass/30">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <Wind className="h-4 w-4 text-primary" />

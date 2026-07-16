@@ -108,7 +108,7 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
   };
 
   return (
-    <div className="dashboard-panel p-5 space-y-4 page-enter">
+    <div className="content-card p-5 space-y-4 page-enter">
       <div className="flex items-start gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/15 border border-primary/40">
           <Camera className="h-5 w-5 text-primary" />

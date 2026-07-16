@@ -21,14 +21,16 @@
 
 *Goal: someone who lands on the beautiful marketing page and enters the app should feel zero drop in quality.*
 
-1. **Shell unification audit.** Adopt `PillarPageShell` (or the header pattern: mono eyebrow → display title → subtitle) on every remaining app page. Audit list: `LibraryPage`, `BuilderPage`, `HistoryPage`, `NutritionPage`, `BenchmarksPage`, `AssessmentsPage`, `ProfilePage`, `ActiveWorkoutPage` (header only — the logger internals are class-leading, don't touch). One PR per 2–3 pages, screenshot-verified.
-2. **Today = command briefing.** Recompose `/log` top-to-bottom: journey/coach hero (ONE action) → Coach week strip (`WeekStrip` exists) → Win Score + rings → collapsed accordion. Kill remaining ad-hoc colors in `TodayHealthSection`/`TodayWeekSection`; every card on tokens.
-3. **Library overhaul** (`src/page-components/LibraryPage.tsx`): search-first layout with sticky search + filter chips (muscle · equipment · level — data already on `Exercise`); tap → detail sheet (cues, alternatives with jump-links, personal history sparkline from `workoutHistory`, "Add to today's session" when a workout is active). Reuse `FormGuideSheet` pattern.
-4. **Builder as a 3-step flow** (`BuilderPage.tsx`, 576L): Step 1 pick start (blank / template / saved) → Step 2 arrange (reorder, per-exercise sets editor, drag via `@dnd-kit` or up/down buttons — no new dep preferred) → Step 3 name + save/start. Sticky bottom action bar (`primary-action`). Templates browser gets category/tag chips.
-5. **Motion system pass** (one module: `src/lib/motion.ts` + CSS): standardize press states on all interactive cards; ring draw-in on Today mount; Win Score number tick-up (`requestAnimationFrame` count); week-strip day-complete pulse; Victory sheet brass-medal reveal. Hard rules: CSS-first, 200–450ms, `prefers-reduced-motion` gates everything (pattern exists in `index.css`).
-6. **Empty states as invitations.** Shared `<EmptyState icon title body cta/>` component; apply to History, Library results, Fuel day, Track, Mind, saved routines. Zero-data screens are the first-week experience — they get design attention equal to the hero.
-7. **Fuel quick-log.** Most-used foods row (computed from `mw_nutrition_log` frequency), "repeat yesterday" one-tap, and macro ring consistency with Today's ring language.
-8. **Tests/edge cases:** shell adoption is visual — cover with the e2e screenshot matrix (Phase 4); Builder flow gets store-level tests (reorder, per-set persistence — extend `workoutStore` tests); Library filter logic extracted pure → unit tests; motion respects reduced-motion (Playwright `emulateMedia` check).
+**Wave 4 status (2026-07-16):** card tier ladder + primitives + shell + Today scorecard + Train chrome + pillar sweep elevation shipped. See [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) tier table. Remaining ROADMAP items below stay future work (Library/Builder UX depth, Fuel quick-log).
+
+1. ~~**Shell unification audit.**~~ **Partial ✓** — `PillarPageHeader` briefing-rule; AppHeader/Sidebar polish; pages use `content-card` / elevated heroes. Logger set-table untouched.
+2. ~~**Today = command briefing.**~~ **Partial ✓** — `TodayDashboardHeader` → `card-elevated card-glow-emerald`; single primary CTA preserved; WeekStrip clinical icons + status/brass tokens.
+3. **Library overhaul** (`src/page-components/LibraryPage.tsx`): search-first layout with sticky search + filter chips (muscle · equipment · level — data already on `Exercise`); tap → detail sheet (cues, alternatives with jump-links, personal history sparkline from `workoutHistory`, "Add to today's session" when a workout is active). Reuse `FormGuideSheet` pattern. *(Deferred — structure only elevated.)*
+4. **Builder as a 3-step flow** (`BuilderPage.tsx`): Step 1 pick start → Step 2 arrange → Step 3 name + save/start. *(Deferred — chrome elevated; flow unchanged.)*
+5. ~~**Motion system pass.**~~ **Partial ✓** — existing `ring-draw-in` / score-tick / week-strip-pulse / victory-reveal retained; reduced-motion gates unchanged.
+6. ~~**Empty states as invitations.**~~ **Partial ✓** — shared `EmptyState` mono title treatment.
+7. **Fuel quick-log.** Most-used foods row, "repeat yesterday", macro ring consistency. *(Deferred.)*
+8. **Tests/edge cases:** e2e critical after elevation; Lighthouse `/log` ≥90.
 
 ## Phase 2 — Interactive website (the landing demos itself; 1–2 sessions)
 

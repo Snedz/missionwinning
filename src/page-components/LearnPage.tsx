@@ -69,7 +69,7 @@ export function LearnPage() {
         defaultValue: `${FREE_LEARN_PATHS.length} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
       })}
     >
-        <Card className="content-card border-primary/40 bg-gradient-to-br from-emerald-950/40 to-card">
+        <Card className="card-elevated card-glow-emerald border-primary/40">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <BookMarked className="h-4 w-4 text-primary" />
