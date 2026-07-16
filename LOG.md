@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Exercise detail RSC; all Lighthouse routes ≥90 (`2026.07-unified.70`)
+
+- `ExercisePublicPage` is a Server Component (catalog/form guides/SEO off client)
+- Tiny `ExercisePageBeacon` for view analytics only; CTA is a plain Link
+- Lighthouse mobile: `/` **92**, `/log` **91**, guide **91**, `/exercises/squats` **92** — all ≥90
+
+---
+
 ## 2026-07-16 — Mobile paint cuts; `/log` Lighthouse ≥90 (`2026.07-unified.69`)
 
 - Drop `background-attachment: fixed` + dual gradients; solid mobile `glass-nav` (blur md+)
