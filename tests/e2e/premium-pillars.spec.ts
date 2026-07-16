@@ -15,7 +15,9 @@ test.describe('Premium pillar experiences', () => {
   test('Mind page shows guided session player', async ({ page }) => {
     await page.goto('/mind', { waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('button', { name: /^start$/i }).first()).toBeVisible();
-    await expect(page.getByText(/free guided sessions/i)).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: /^free guided sessions$/i })
+    ).toBeVisible();
   });
 
   test('Move page lists flows and starts player', async ({ page }) => {
@@ -38,7 +40,11 @@ test.describe('Premium pillar experiences', () => {
 
   test('free user sees Fuel Coach locked preview on nutrition', async ({ page }) => {
     await page.goto('/nutrition', { waitUntil: 'domcontentloaded' });
-    await expect(page.getByText(/fuel coach|adaptive meal plan/i).first()).toBeVisible();
+    // Fuel Coach lives under the recipes expand (moreOpen) on Fuel.
+    await page.getByRole('button', { name: /search, barcode & recipes/i }).click();
+    await expect(page.getByText(/fuel coach|adaptive meal plan/i).first()).toBeVisible({
+      timeout: 10_000,
+    });
     await expect(page.getByText(/super bundle|premium/i).first()).toBeVisible();
   });
 });

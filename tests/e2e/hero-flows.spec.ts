@@ -45,10 +45,10 @@ test.describe('Phase H hero flows', () => {
     await page.goto('/active', { waitUntil: 'domcontentloaded' });
     await page.getByRole('button', { name: /start workout/i }).click();
     await expect(page.getByRole('button', { name: /^finish$/i })).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByText(/add exercise/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /^add exercise$/i })).toBeVisible();
 
     await page.getByRole('button', { name: /^finish$/i }).click();
-    await expect(page.getByText(/nothing logged/i)).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText(/nothing logged/i).first()).toBeVisible({ timeout: 10_000 });
 
     await page.getByRole('button', { name: /cancel/i }).click();
     await expect(page).toHaveURL(/\/(log)?$/);
@@ -72,14 +72,14 @@ test.describe('Phase H hero flows', () => {
     const logBtn = page.getByRole('button', { name: /^log$/i }).first();
     await expect(logBtn).toBeVisible({ timeout: 15_000 });
     await logBtn.click();
-    await expect(page.getByText(/set logged|pr!/i)).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('Set logged!', { exact: true })).toBeVisible({ timeout: 10_000 });
 
     await page.getByRole('button', { name: /^finish$/i }).click();
     const backToday = page.getByRole('button', { name: /back to today/i });
     await expect(backToday).toBeVisible({ timeout: 15_000 });
     await backToday.click();
     await expect(page).toHaveURL(/\/log/);
-    await expect(page.getByText(/mission score/i)).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText(/mission score/i).first()).toBeVisible({ timeout: 15_000 });
   });
 
   test('sign-in sync prompt visible on Fuel', async ({ page }) => {
