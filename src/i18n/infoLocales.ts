@@ -71,6 +71,9 @@ type InfoStrings = {
   infoPrivacyChoicesLi4: string;
   infoPrivacyLocalFirst: string;
   infoPrivacyLocalFirstBody: string;
+  infoPrivacyCollectLi5: string;
+  infoPrivacyAiCoach: string;
+  infoPrivacyAiCoachBody: string;
   infoPrivacyNotMedicalBody: string;
   infoPrivacyFoot: string;
   infoAboutMissionP1: string;
@@ -178,13 +181,18 @@ const en: InfoStrings = {
     'Optional product analytics: typed product events (e.g. journey milestones, checkout) only if you allow analytics. No session recording, no autocapture of form fields.',
   infoPrivacyCollectLi4:
     'Local storage: the free core works offline; data stays on your device until you sign in to sync.',
+  infoPrivacyCollectLi5:
+    'Optional AI coach context: only when operators enable the coach LLM — a minimal summary (scores, streak, focus, session names), not full set-by-set workout history.',
   infoPrivacyUseLi1: 'Provide and personalize your training journey (Today hub, recommendations).',
   infoPrivacyUseLi2: 'Sync across devices when signed in (Supabase cloud database).',
   infoPrivacyUseLi3: 'Process premium enrollments and support requests.',
   infoPrivacyUseLi4:
     'Improve the product with aggregate funnel metrics — only when product analytics are allowed on your device.',
+  infoPrivacyAiCoach: 'Optional AI coach',
+  infoPrivacyAiCoachBody:
+    'The free core coach is rules-based and does not require an AI API key or send your data to a model. When operators enable optional LLM coach voice or daily insight, we send a minimal context summary to the configured provider (recommended: SpaceXAI/xAI). Mission Winning does not sell that content or use it for ads. When the provider is xAI and the operator has enabled team Zero Data Retention (ZDR), xAI does not retain API prompts or outputs at rest (see xAI security FAQ on Zero Data Retention). Cloud sync, payments, email, and product analytics remain separate third parties with their own retention policies — ZDR does not replace those.',
   infoPrivacyThirdPartiesBody:
-    'We use Supabase (hosting/auth/database), Vercel (app hosting), and optionally Resend (transactional email), Stripe/PayPal (payments when enabled), and PostHog EU (product analytics only if you allow it). Each has its own privacy terms. Session recording is disabled in our PostHog config.',
+    'We use Supabase (hosting/auth/database), Vercel (app hosting), and optionally Resend (transactional email), Stripe/PayPal (payments when enabled), PostHog EU (product analytics only if you allow it), and — only when operators enable AI coach LLM — an OpenAI-compatible model provider (preferred: SpaceXAI/xAI with team Zero Data Retention). Each has its own privacy terms. Session recording is disabled in our PostHog config.',
   infoPrivacyChoicesLi1: 'Use the free core without an account (local-only).',
   infoPrivacyChoicesLi2: 'Export or restore device data from Profile → Back up your data.',
   infoPrivacyChoicesLi3:

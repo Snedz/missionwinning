@@ -23,6 +23,7 @@ Mission Winning is open source so anyone can inspect how the free core works, im
 | **Security** | [SECURITY.md](SECURITY.md) — private vulnerability reports |
 | **Local-first** | Workouts, nutrition, and journey progress stay on-device until you sign in to sync |
 | **Product analytics** | **Off by default** until you allow them (banner + Profile). No session recording, no autocapture. Do Not Track is respected |
+| **Optional AI coach** | Rules by default (no API key). When operators enable LLM voice/insight, prefer SpaceXAI/xAI with **team Zero Data Retention (ZDR)**; see [ENV.md](ENV.md) and [xAI ZDR FAQ](https://docs.x.ai/developers/faq/security#what-is-zero-data-retention-zdr) |
 | **Free core** | Tracking and foundational tools stay free forever — never paywalled |
 
 We are not a clone of any coding-tool vendor; the parallel is **transparent software + user control over data**. Hosted secrets, Stripe, and production keys stay with operators — they are never committed.

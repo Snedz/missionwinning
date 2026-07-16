@@ -85,42 +85,14 @@ export function coachFromFallback(ctx: DailyCoachContext): DailyCoachResponse {
 }
 
 export async function fetchDailyCoachInsight(ctx: DailyCoachContext): Promise<DailyCoachResponse> {
-  const apiUrl = process.env.COACH_LLM_API_URL;
-  const apiKey = process.env.COACH_LLM_API_KEY;
-  if (!apiUrl || !apiKey) {
-    return coachFromFallback(ctx);
-  }
-
-  const model = process.env.COACH_LLM_MODEL || 'gpt-4o-mini';
-  const body = {
-    model,
-    messages: [
-      { role: 'system', content: 'Reply with valid JSON only.' },
-      { role: 'user', content: buildCoachPrompt(ctx) },
-    ],
-    max_tokens: 180,
+  const { fetchCoachLlmCompletion } = await import('@/lib/coachLlmClient');
+  const result = await fetchCoachLlmCompletion({
+    system: 'Reply with valid JSON only.',
+    user: buildCoachPrompt(ctx),
+    maxTokens: 180,
     temperature: 0.6,
-  };
-
-  try {
-    const res = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(12_000),
-    });
-    if (!res.ok) return coachFromFallback(ctx);
-    const data = (await res.json()) as {
-      choices?: { message?: { content?: string } }[];
-    };
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) return coachFromFallback(ctx);
-    const parsed = parseCoachLlmJson(content);
-    return parsed ?? coachFromFallback(ctx);
-  } catch {
-    return coachFromFallback(ctx);
-  }
+  });
+  if (!result.ok) return coachFromFallback(ctx);
+  const parsed = parseCoachLlmJson(result.content);
+  return parsed ?? coachFromFallback(ctx);
 }
