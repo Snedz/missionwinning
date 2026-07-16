@@ -101,11 +101,15 @@ export function ActiveSessionChrome({
         <CardContent className="flex gap-2 items-start">
           <ExercisePicker value={addExerciseId} onChange={onAddExerciseIdChange} />
           <Button
+            type="button"
             onClick={onAddExercise}
             disabled={!addExerciseId}
             className="min-h-[44px] min-w-[44px] shrink-0"
+            aria-label={t('activeAddSelectedExercise', {
+              defaultValue: 'Add selected exercise',
+            })}
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-4 w-4" aria-hidden />
           </Button>
         </CardContent>
       </Card>
