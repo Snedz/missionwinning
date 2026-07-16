@@ -1,6 +1,5 @@
-'use client';
 /**
- * Page: /exercises/equipment/[slug] — public equipment hub
+ * Page: /exercises/equipment/[slug] — public equipment hub (Server Component).
  */
 
 import Link from 'next/link';

@@ -1,6 +1,5 @@
-'use client';
 /**
- * Page: /exercises/muscle/[group] — public muscle hub
+ * Page: /exercises/muscle/[group] — public muscle hub (Server Component).
  */
 
 import Link from 'next/link';

@@ -44,4 +44,35 @@ describe('mergeJourneyStates', () => {
     assert.equal(m.iDay.acceptedMissionAt, 't2');
     assert.equal(m.iDay.completedAt, 't3');
   });
+
+  it('ORs readiness milestones and keeps earlier commissionedAt', () => {
+    const a = base();
+    a.phase = 'readiness';
+    a.readiness = { parq: true, streakMet: false, winScoreSeen: true };
+    const b = base();
+    b.phase = 'commissioned';
+    b.commissionedAt = '2026-06-01T00:00:00Z';
+    b.readiness = { parq: false, streakMet: true, winScoreSeen: false };
+    const m = mergeJourneyStates(a, b);
+    assert.equal(m.phase, 'commissioned');
+    assert.equal(m.readiness.parq, true);
+    assert.equal(m.readiness.streakMet, true);
+    assert.equal(m.readiness.winScoreSeen, true);
+    assert.equal(m.commissionedAt, '2026-06-01T00:00:00Z');
+  });
+
+  it('is commutative for phase and milestones', () => {
+    const a = base();
+    a.phase = 'basic';
+    a.basic = { workout: true, fuel: true, move: false, mind: false, learn: false };
+    const b = base();
+    b.phase = 'readiness';
+    b.basic = { workout: false, fuel: false, move: true, mind: true, learn: true };
+    b.readiness = { parq: true, streakMet: false, winScoreSeen: true };
+    const ab = mergeJourneyStates(a, b);
+    const ba = mergeJourneyStates(b, a);
+    assert.equal(ab.phase, ba.phase);
+    assert.deepEqual(ab.basic, ba.basic);
+    assert.deepEqual(ab.readiness, ba.readiness);
+  });
 });

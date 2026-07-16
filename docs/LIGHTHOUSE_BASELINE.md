@@ -28,7 +28,8 @@ Mobile, `PRIVATE_MODE=false`, local prod (run variance ±2–3):
 
 1–8. ~~Shell JS + mobile paint cuts~~ — shipped  
 9. ~~Exercise public detail → Server Component~~ — shipped  
-10. Optional: muscle/equipment hubs still client; further CSS purging; field data on real devices
+10. ~~Muscle/equipment hubs → Server Components~~ — shipped (`.71`)  
+11. Optional: further CSS purging; field data on real devices; ActiveWorkout further extract
 
 *CI job `lighthouse-budget` soft-warning. Budget routes all clear ≥90 performance.*
 
