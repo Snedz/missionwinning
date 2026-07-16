@@ -17,6 +17,7 @@ import { MarketingNav } from '@/components/marketing/MarketingNav';
 import { MarketingFooter } from '@/components/marketing/MarketingFooter';
 import { StatBand } from '@/components/marketing/StatBand';
 import { BundleTeaserCard } from '@/components/marketing/BundleTeaserCard';
+import { EmailCaptureBand } from '@/components/marketing/EmailCaptureBand';
 import { Reveal } from '@/components/marketing/Reveal';
 import { ArrowRight, Check, Download, Globe2, WifiOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -513,6 +514,8 @@ export function LandingPage() {
           </Reveal>
         </div>
       </section>
+
+      <EmailCaptureBand />
 
       <MarketingFooter />
     </div>

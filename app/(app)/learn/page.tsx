@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/seoMetadata';
 import { LearnPage } from '@/page-components/LearnPage';
-import { routeMetadata } from '@/lib/routeMetadata';
 
-export const metadata: Metadata = routeMetadata('learn');
+export const metadata: Metadata = publicPageMetadata({
+  title: "Learn",
+  description: "Practical training education and specialist programs.",
+  path: "/learn",
+});
 
 export default function LearnRoute() {
   return <LearnPage />;

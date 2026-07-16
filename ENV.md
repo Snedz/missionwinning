@@ -34,6 +34,8 @@ Add these for **Production** and **Preview**:
 | `SUPABASE_SERVICE_ROLE_KEY` | Beta admin + webhooks | Server only — never `NEXT_PUBLIC_` |
 | `BETA_ADMIN_EMAILS` | Optional | Your email for Profile → beta funnel (all users) |
 | `RESEND_API_KEY` | Optional | Email nudge + receipts |
+| `RESEND_FROM` | Optional | `Mission Winning <hello@missionwinning.com>` — verified domain |
+| `NEXT_PUBLIC_SITE_URL` | Launch | `https://www.missionwinning.com` — canonicals + OG (use www) |
 | `YOUTH_CONSENT_SECRET` | **Yes in prod** | `openssl rand -base64 32` — dedicated; never reuse gate secret |
 | `NUDGE_SECRET` | **Yes in prod** | `openssl rand -base64 32` — journey email nudge HMAC |
 | `UPSTASH_REDIS_REST_URL` | Optional | Distributed rate limits (Vercel serverless) |

@@ -4,11 +4,27 @@
  */
 import { z } from 'zod';
 
+const utmField = z.string().max(200).optional();
+
 export const leadsBodySchema = z.object({
   email: z.string().email().max(320),
   name: z.string().max(120).optional(),
   goals: z.string().max(2000).optional(),
+  /** Preferred attribution channel (e.g. landing-updates, launch-waitlist). */
   source: z.string().max(80).optional(),
+  /** Legacy client field — API maps into package_interest when source missing. */
+  package_interest: z.string().max(80).optional(),
+  referrer: z.string().max(500).optional(),
+  utm: z
+    .object({
+      utm_source: utmField,
+      utm_medium: utmField,
+      utm_campaign: utmField,
+      utm_content: utmField,
+      utm_term: utmField,
+      landing_path: utmField,
+    })
+    .optional(),
 });
 
 export const privateAccessBodySchema = z.object({

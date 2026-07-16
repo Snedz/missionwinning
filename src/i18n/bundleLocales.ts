@@ -258,7 +258,52 @@ const ar: BundleStrings = {
   bundleRowTotal: 'Super Bundle (كل الأركان)',
 };
 
-const LOCALES: Partial<Record<string, BundleStrings>> = { en, es, zh, id, th, ar };
+const pt: BundleStrings = {
+  ...en,
+  bundleHeadline: 'Super Bundle — seis pilares, uma assinatura',
+  bundleSubhead: 'Profundidade premium quando quiser. O núcleo grátis permanece grátis para sempre.',
+  bundleTabMonthly: 'Mensal',
+  bundleTab12mo: '12 meses',
+  bundleTabLifetime: 'Vitalício',
+  bundleUnlockCta: 'Desbloquear Super Bundle',
+  bundleFreeForeverTitle: 'Grátis para sempre',
+  bundleFreeForeverBody:
+    'Cada pilar tem um nível grátis. O Bundle aprofunda Coach e conteúdo premium — nunca é obrigatório para registrar treinos.',
+};
+
+const de: BundleStrings = {
+  ...en,
+  bundleHeadline: 'Super Bundle — sechs Säulen, ein Abo',
+  bundleSubhead: 'Premium-Tiefe wenn du willst. Der Free-Core bleibt für immer gratis.',
+  bundleTabMonthly: 'Monatlich',
+  bundleTab12mo: '12 Monate',
+  bundleTabLifetime: 'Lifetime',
+  bundleUnlockCta: 'Super Bundle freischalten',
+  bundleFreeForeverTitle: 'Für immer gratis',
+};
+
+const fr: BundleStrings = {
+  ...en,
+  bundleHeadline: 'Super Bundle — six piliers, un abonnement',
+  bundleSubhead: 'Profondeur premium quand tu veux. Le cœur gratuit reste gratuit pour toujours.',
+  bundleTabMonthly: 'Mensuel',
+  bundleTab12mo: '12 mois',
+  bundleTabLifetime: 'À vie',
+  bundleUnlockCta: 'Débloquer le Super Bundle',
+  bundleFreeForeverTitle: 'Gratuit pour toujours',
+};
+
+const LOCALES: Partial<Record<string, BundleStrings>> = {
+  en,
+  es,
+  zh,
+  id,
+  th,
+  ar,
+  pt,
+  de,
+  fr,
+};
 
 export function bundleStringsFor(lang: string): BundleStrings {
   const code = lang.split('-')[0];

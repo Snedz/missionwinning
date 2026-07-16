@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/seoMetadata';
 import { notFound } from 'next/navigation';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { exercisesForMuscle, muscleFromSlug, muscleHubSlug } from '@/lib/exerciseSeo';
@@ -16,10 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { group } = await params;
   const muscle = muscleFromSlug(group);
   if (!muscle) return { title: 'Exercises' };
-  return {
+  return publicPageMetadata({
     title: `${muscle} exercises — free cues & tracking`,
     description: `Browse free ${muscle.toLowerCase()} exercises with form cues. Log them offline in Mission Winning — no account required.`,
-  };
+    path: `/exercises/muscle/${group}`,
+  });
 }
 
 export default async function MuscleHubRoute({ params }: Props) {

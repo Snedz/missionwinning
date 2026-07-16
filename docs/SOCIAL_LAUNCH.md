@@ -128,31 +128,40 @@ Link in bio → missionwinning.com
 #fitness #bodyweight #homegym #pwa
 ```
 
-### 6. Waitlist email (Resend / export `leads`)
+### 6. Waitlist email (launch broadcast script)
 
-Sources: `launch-waitlist`, `waitlist-*`
+Sources land in `leads.package_interest` (e.g. `landing-updates`, `launch-waitlist`, `waitlist-*`).
 
-```
-Subject: Mission Winning is live — founders offer
+**Dry-run (default):**
 
-You're on the list — we're public.
-
-Start free (no account needed): https://www.missionwinning.com/welcome
-
-Super Bundle founders pricing is open for early supporters (12-month + lifetime). Free core stays free forever.
-
-If this isn't useful, just ignore — no spam cadence promised beyond this launch note.
-
-— [Your name], Mission Winning
+```bash
+node --env-file=.env.local scripts/send-launch-broadcast.mjs
+# or: npm run launch-broadcast
 ```
 
-Export hint (Supabase SQL Editor):
+**Live smoke (one recipient, redirect):**
+
+```bash
+npm run launch-broadcast -- --send --limit 1 --to you@example.com
+```
+
+**Full send (after Resend DNS + migration applied):**
+
+```bash
+npm run launch-broadcast -- --send --limit 500
+```
+
+Script dedupes by `lower(email)`, skips `unsubscribed_at` / `launch_email_sent_at`, and stamps sent rows. Body matches founders offer copy with per-recipient unsubscribe links.
+
+Manual SQL check (correct column is `package_interest`, not `source`):
 
 ```sql
-select email, source, created_at
+select email, package_interest, created_at, unsubscribed_at, launch_email_sent_at
 from leads
-where source like 'waitlist%' or source = 'launch-waitlist'
-order by created_at desc;
+where package_interest like 'waitlist%'
+   or package_interest in ('landing-updates', 'launch-waitlist')
+order by created_at desc
+limit 50;
 ```
 
 ---

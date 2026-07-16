@@ -94,6 +94,7 @@ export function assertDeployReady(): void {
   }
 
   warnIfEsPlaceholders();
+  warnLaunchEmailAndSiteUrl();
 }
 
 /** Warn (non-blocking) when ES Tier-1 namespaces still mirror EN for many keys. */
@@ -109,4 +110,35 @@ function warnIfEsPlaceholders(): void {
       );
     }
   }
+}
+
+/**
+ * Launch hygiene warnings — never throw.
+ * Call from assertDeployReady so CI/preview logs see misconfig without failing.
+ */
+export function warnLaunchEmailAndSiteUrl(): string[] {
+  const warnings: string[] = [];
+  const from =
+    process.env.RESEND_FROM?.trim() || 'Mission Winning <onboarding@resend.dev>';
+  if (/@resend\.dev\b/i.test(from) && process.env.NODE_ENV === 'production') {
+    const msg =
+      '[email] RESEND_FROM still uses resend.dev — verify a production domain before launch emails';
+    console.warn(msg);
+    warnings.push(msg);
+  }
+  const site = process.env.NEXT_PUBLIC_SITE_URL?.trim() || '';
+  if (!site) {
+    const msg =
+      '[seo] NEXT_PUBLIC_SITE_URL unset — defaulting canonicals to https://www.missionwinning.com';
+    console.warn(msg);
+    warnings.push(msg);
+  } else if (!/^https:\/\/www\.missionwinning\.com\/?$/i.test(site) && site.includes('missionwinning.com')) {
+    if (!site.includes('www.')) {
+      const msg =
+        '[seo] NEXT_PUBLIC_SITE_URL is non-www — prefer https://www.missionwinning.com for canonicals';
+      console.warn(msg);
+      warnings.push(msg);
+    }
+  }
+  return warnings;
 }

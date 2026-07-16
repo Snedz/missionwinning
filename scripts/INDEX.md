@@ -25,3 +25,5 @@
 ## Related (not here)
 
 - `.claude/skills/**/scripts/` — design skill tooling, not app deploy
+
+| `send-launch-broadcast.mjs` | Founder launch email dry-run/send |
