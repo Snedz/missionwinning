@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Logger E2E picker → log → rest (`2026.07-unified.73`)
+
+- `tests/e2e/logger-depth.spec.ts`: empty start, search/add Push-ups, Log, rest timer Skip, Finish
+- Add-exercise control gets `aria-label` “Add selected exercise”
+- `src/lib/INDEX.md` documents full workout helper map
+
+---
+
 ## 2026-07-16 — ActiveWorkout extract + logger E2E depth (`2026.07-unified.72`)
 
 - `activeWorkoutHelpers` (+ unit tests): next set, last session, set stats
