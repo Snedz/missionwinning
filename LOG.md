@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — ActiveWorkout extract + logger E2E depth (`2026.07-unified.72`)
+
+- `activeWorkoutHelpers` (+ unit tests): next set, last session, set stats
+- `ActiveEmptyState` + `ActiveSessionChrome` pulled out of page shell
+- ActiveWorkoutPage ~548 → ~438 lines; handlers stay on page
+- E2E: empty start → finish-without-sets toast → cancel (`hero-flows.spec.ts`)
+
+---
+
 ## 2026-07-16 — Exercise hubs RSC + sync conflict tests (`2026.07-unified.71`)
 
 - Muscle + equipment public hubs are Server Components (no client catalog hydration)

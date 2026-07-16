@@ -1,69 +1,45 @@
 'use client';
 /**
  * Page: /active — live workout logger
+ * Shell + set handlers; UI chrome in `src/components/workout/`.
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Check, Clock, Dumbbell, Plus, Scale, Square, Timer } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
-import { formatDuration } from '@/lib/utils';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { EmptyState } from '@/components/ui/EmptyState';
-import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
-import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
+import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
+import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
 import { resolveRestSeconds } from '@/lib/restTimer';
 import { isPersonalRecord } from '@/lib/workoutPr';
 import { shouldRestAfterLog } from '@/lib/superset';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import { getTrainingStreak } from '@/lib/challenges';
-import { summarizeWorkoutVictory, buildProgressionInsight, type WorkoutVictorySummary } from '@/lib/workoutVictory';
+import {
+  summarizeWorkoutVictory,
+  buildProgressionInsight,
+  type WorkoutVictorySummary,
+} from '@/lib/workoutVictory';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import { suggestNextSetTarget } from '@/lib/nextSetTargets';
 import { computeBodyScores } from '@/lib/score';
-import type { CompletedWorkoutLog } from '@/types';
-
-function findNextSet(exercises: { sets: { completed: boolean }[] }[]) {
-  for (let exIdx = 0; exIdx < exercises.length; exIdx++) {
-    const setIdx = exercises[exIdx].sets.findIndex((s) => !s.completed);
-    if (setIdx >= 0) return { exIdx, setIdx };
-  }
-  return null;
-}
-
-/** All sets from the most recent session containing this exercise. */
-function getLastSessionSets(workoutHistory: CompletedWorkoutLog[], exerciseId: string) {
-  for (const log of workoutHistory) {
-    const ex = log.exercises.find((e) => e.exerciseId === exerciseId);
-    if (ex && ex.sets.length > 0) return ex.sets;
-  }
-  return null;
-}
-
-/** Previous value for the matching set index (Strong/Hevy-style), falling back
- * to the last set when this session plans more sets than last time. */
-function getLastPerformanceForSet(
-  workoutHistory: CompletedWorkoutLog[],
-  exerciseId: string,
-  setIdx: number
-) {
-  const sets = getLastSessionSets(workoutHistory, exerciseId);
-  if (!sets) return null;
-  const match = sets[setIdx] ?? sets[sets.length - 1];
-  return { reps: match.reps, weight: match.weight };
-}
+import {
+  findNextSet,
+  getLastPerformanceForSet,
+  getLastSessionSets,
+  sessionSetStats,
+  setInputKey,
+} from '@/lib/activeWorkoutHelpers';
 
 export function ActiveWorkoutPage() {
   const router = useRouter();
@@ -135,10 +111,8 @@ export function ActiveWorkoutPage() {
     }
   }, [nextSet]);
 
-  const getSetKey = (exIdx: number, setIdx: number) => `${exIdx}-${setIdx}`;
-
   const getSetInput = (exIdx: number, setIdx: number, defaultReps: number, defaultWeight: number) => {
-    const key = getSetKey(exIdx, setIdx);
+    const key = setInputKey(exIdx, setIdx);
     if (setInputs[key]) return setInputs[key];
     const exerciseId = activeWorkout!.exercises[exIdx].exerciseId;
     const lastSets = getLastSessionSets(workoutHistory, exerciseId);
@@ -151,7 +125,7 @@ export function ActiveWorkoutPage() {
   };
 
   const updateSetInput = (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => {
-    const key = getSetKey(exIdx, setIdx);
+    const key = setInputKey(exIdx, setIdx);
     setSetInputs((prev) => ({
       ...prev,
       [key]: {
@@ -171,7 +145,8 @@ export function ActiveWorkoutPage() {
     const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory, setKind);
 
     const next = logSetAndAdvance(exIdx, setIdx, input.reps, input.weight, isPr);
-    const updatedExercises = useWorkoutStore.getState().activeWorkout?.exercises ?? activeWorkout!.exercises;
+    const updatedExercises =
+      useWorkoutStore.getState().activeWorkout?.exercises ?? activeWorkout!.exercises;
     const takeRest = shouldRestAfterLog(updatedExercises, exIdx, setIdx, next);
     if (takeRest) {
       startRestTimer(restSec);
@@ -269,139 +244,60 @@ export function ActiveWorkoutPage() {
     router.push('/');
   };
 
+  const goToday = () => {
+    setVictoryOpen(false);
+    router.push('/log');
+  };
+  const goHistory = () => {
+    setVictoryOpen(false);
+    router.push('/history');
+  };
+
   if (!activeWorkout) {
     return (
-      <div className="space-y-6 py-6">
-        <PillarPageHeader
-          icon={Dumbbell}
-          eyebrow={t('activeEyebrow', { defaultValue: 'Train' })}
-          title={t('activeTitle', { defaultValue: 'Active workout' })}
-          subtitle={t('activeEmptySubtitle', {
-            defaultValue: 'Log sets with rest timers, PRs, and form cues — offline ready.',
-          })}
-        />
-        <EmptyState
-          icon={Timer}
-          title={t('activeNoWorkout', { defaultValue: 'No Active Workout' })}
-          description={t('activeNoWorkoutDesc', {
-            defaultValue: 'Start a quick workout from Today or launch a saved routine from the builder.',
-          })}
-          actionLabel={t('activeStartWorkout', { defaultValue: 'Start Workout' })}
-          onAction={() => startEmptyWorkout()}
-        />
-        <div className="flex flex-wrap gap-3 justify-center text-sm">
-          <Button variant="outline" asChild>
-            <a href="/log">{t('activeGoToday', { defaultValue: 'Today hub' })}</a>
-          </Button>
-          <Button variant="outline" asChild>
-            <a href="/builder">{t('activeGoBuilder', { defaultValue: 'Builder' })}</a>
-          </Button>
-        </div>
-        <WorkoutVictorySheet
-          open={victoryOpen}
-          summary={victorySummary}
-          onOpenChange={setVictoryOpen}
-          onViewToday={() => {
-            setVictoryOpen(false);
-            router.push('/log');
-          }}
-          onViewHistory={() => {
-            setVictoryOpen(false);
-            router.push('/history');
-          }}
-        />
-      </div>
+      <ActiveEmptyState
+        onStart={() => startEmptyWorkout()}
+        victoryOpen={victoryOpen}
+        victorySummary={victorySummary}
+        onVictoryOpenChange={setVictoryOpen}
+        onViewToday={goToday}
+        onViewHistory={goHistory}
+      />
     );
   }
 
-  const completedSets = activeWorkout.exercises.reduce(
-    (sum, ex) => sum + ex.sets.filter((s) => s.completed).length,
-    0
+  const { completed: completedSets, total: totalSets, hardCount } = sessionSetStats(
+    activeWorkout.exercises
   );
-  const totalSets = activeWorkout.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
-  const hardCount = activeWorkout.exercises.flatMap((e) =>
-    e.sets.filter((s) => s.completed && s.rpe === 'hard')
-  ).length;
 
   return (
     <div className={`space-y-6 ${restTimerActive ? 'pb-44 md:pb-32' : 'pb-4'}`}>
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <PillarPageHeader
-          icon={Dumbbell}
-          eyebrow={t('activeEyebrow', { defaultValue: 'Train · Live' })}
-          title={activeWorkout.workoutName}
-          subtitle={t('activeSetsCompleted', {
-            done: completedSets,
-            total: totalSets,
-            defaultValue: `${completedSets}/${totalSets} sets completed`,
-          })}
-          className="flex-1 min-w-0"
-        />
-        <div className="flex items-center gap-3 flex-wrap justify-end">
-          <Button variant="outline" size="sm" onClick={() => setPlateCalcOpen(true)}>
-            <Scale className="h-4 w-4" />
-            {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
-          </Button>
-          <Card className="px-4 py-2">
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-primary" />
-              <span className="text-2xl font-mono font-bold">{formatDuration(elapsedSeconds)}</span>
-            </div>
-          </Card>
-          <Button variant="destructive" size="sm" onClick={handleCancel}>
-            <Square className="h-4 w-4" />
-            {t('activeCancel', { defaultValue: 'Cancel' })}
-          </Button>
-          <Button variant="fitness" onClick={handleComplete}>
-            <Check className="h-4 w-4" />
-            {t('activeFinish', { defaultValue: 'Finish' })}
-          </Button>
-        </div>
-      </div>
-
-      <Card className="bg-primary/5 border-primary/20">
-        <CardContent className="py-3 text-sm">
-          <div className="font-medium mb-1 flex items-center gap-2">
-            {t('activeCoachNotes', { defaultValue: 'Coach Notes' })}
-            <Badge variant="outline" className="text-[10px]">
-              {t('activeCoachProgression', { defaultValue: 'Progression' })}
-            </Badge>
-          </div>
-          <p className="text-muted-foreground">
-            Rate each set Easy/Med/Hard after logging — feeds future smart suggestions.{' '}
-            {hardCount > 2
-              ? 'High effort detected — consider recovery focus or lighter volume next session.'
-              : 'Control the negative. Full ROM for best results.'}
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">{t('activeAddExercise', { defaultValue: 'Add Exercise' })}</CardTitle>
-        </CardHeader>
-        <CardContent className="flex gap-2 items-start">
-          <ExercisePicker value={addExerciseId} onChange={setAddExerciseId} />
-          <Button
-            onClick={() => {
-              if (addExerciseId) {
-                const ex = getExerciseById(addExerciseId);
-                addExerciseToActive(addExerciseId, ex?.muscleGroups);
-                setAddExerciseId('');
-              }
-            }}
-            disabled={!addExerciseId}
-            className="min-h-[44px] min-w-[44px] shrink-0"
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        </CardContent>
-      </Card>
+      <ActiveSessionChrome
+        workoutName={activeWorkout.workoutName}
+        completedSets={completedSets}
+        totalSets={totalSets}
+        hardCount={hardCount}
+        elapsedSeconds={elapsedSeconds}
+        addExerciseId={addExerciseId}
+        onAddExerciseIdChange={setAddExerciseId}
+        onAddExercise={() => {
+          if (addExerciseId) {
+            const ex = getExerciseById(addExerciseId);
+            addExerciseToActive(addExerciseId, ex?.muscleGroups);
+            setAddExerciseId('');
+          }
+        }}
+        onOpenPlateCalc={() => setPlateCalcOpen(true)}
+        onCancel={handleCancel}
+        onFinish={handleComplete}
+      />
 
       {activeWorkout.exercises.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="py-12 text-center text-muted-foreground">
-            {t('activeEmptyExercises', { defaultValue: 'Add exercises above to begin logging sets.' })}
+            {t('activeEmptyExercises', {
+              defaultValue: 'Add exercises above to begin logging sets.',
+            })}
           </CardContent>
         </Card>
       ) : (
@@ -534,14 +430,8 @@ export function ActiveWorkoutPage() {
         open={victoryOpen}
         summary={victorySummary}
         onOpenChange={setVictoryOpen}
-        onViewToday={() => {
-          setVictoryOpen(false);
-          router.push('/log');
-        }}
-        onViewHistory={() => {
-          setVictoryOpen(false);
-          router.push('/history');
-        }}
+        onViewToday={goToday}
+        onViewHistory={goHistory}
       />
     </div>
   );
