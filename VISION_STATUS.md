@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-16** (build `2026.07-unified.76` — H1 eng prep complete; founder H0 is the bottleneck).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-16** (build `2026.07-unified.82` — H1 eng + growth Wave 2–3 done; **founder H0 is the bottleneck**).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -20,7 +20,7 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 | **Bevel-style metric UI** | 🟢 Good | Unified `ProgressRing`; Mission Score + clinical rings; briefing Today + Victory body delta |
 | **Freeletics journey + streaks** | 🟢 Shipped | I-Day → Commissioned; challenges; leaderboard |
 | **Evidence-based, holistic path** | 🟢 Core tone | Learn paths, public `/guide` + `/exercises`, disclaimers |
-| **Public SEO** | 🟡 Growing | Sitemap, JSON-LD, link mesh on guide/exercise/compare pages |
+| **Public SEO** | 🟡 Growing | Canonicals, OG overrides, JSON-LD, marketing landing, waitlist capture |
 
 Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 

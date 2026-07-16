@@ -1,7 +1,7 @@
 # Mission Winning — Long-Term Orchestration
 
 **Audience:** Founder + AI agents  
-**Build baseline:** `2026.07-unified.78`+  
+**Build baseline:** `2026.07-unified.82`+  
 **#1 metric (year one):** week-4 retained weekly loggers — [STRATEGY.md](STRATEGY.md)  
 **Constitution:** [vision.md](vision.md) · **Risk filter:** [REDTEAM.md](REDTEAM.md) · **Build phases:** [PLAN.md](PLAN.md)
 
@@ -12,9 +12,9 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 ## Where we are (2026-07-16)
 
-**Product code is strong.** Free core, six pillars, Mission Coach, Fuel Coach, journey, design system, security perimeter, SEO surfaces, freemium plumbing. S-Tier waves 0–4 shipped. **Agent H1 eng prep mostly complete:** Lighthouse budget routes ≥90, Serwist PWA, sync conflict tests, Active/Today decomp, logger E2E depth, `src/lib/workout/` domain.
+**Product code is strong.** Free core, six pillars, Mission Coach, Fuel Coach, journey, design system, security perimeter, SEO, marketing redesign, privacy+OSS, growth Wave 2 (leads/email/attribution), Wave 3 launch verification. S-Tier waves 0–4 shipped. **Agent H1 eng prep complete.**
 
-**Market is not.** Phase **H** founder-blocked: private mode, beta cohort incomplete, live Stripe env incomplete, PWA offline promise off until public.
+**Market is not.** Phase **H** founder-blocked: private mode, beta cohort incomplete, live Stripe env incomplete, growth migration may be unapplied, PWA offline off until public. **#1 gap = founder ops** — [docs/LAUNCH_READY.md](docs/LAUNCH_READY.md).
 
 ---
 
@@ -74,9 +74,10 @@ flowchart TB
 ### Agent-allowed (Horizon 0 only)
 
 - Hero-flow / gate / premium 403 regressions
-- Beta invite / founder panel / launch-verify clarity
-- Keep CI green; docs match reality (build label, VISION_STATUS)
+- Beta invite / founder panel / launch-verify + **growth-smoke** clarity
+- Keep CI green; docs match reality (build label, VISION_STATUS, LAUNCH_READY)
 - Public-flip offline/SW checklist maintenance
+- Residual polish only if it unblocks launch or week-4 measurement (no new pillars)
 
 **Done when:** 10+ profiles, BT ≥60%, secrets green, ready to flip public.
 

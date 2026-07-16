@@ -23,7 +23,8 @@
     "lighthouse-budget": "node scripts/lighthouse-budget.mjs",
     "sync-vercel-env": "node scripts/sync-vercel-env.mjs",
     "print-beta-invite": "node --env-file=.env.local scripts/print-beta-invite.ts",
-    "launch-broadcast": "node --env-file=.env.local scripts/send-launch-broadcast.mjs"
+    "launch-broadcast": "node --env-file=.env.local scripts/send-launch-broadcast.mjs",
+    "growth-smoke": "node scripts/growth-smoke.mjs"
   },
   "dependencies": {
     "@phantom/browser-sdk": "^2.0.2",

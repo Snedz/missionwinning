@@ -20,4 +20,7 @@ export interface BetaFunnelAggregate {
   };
   launchReady: boolean;
   launchNotes: string[];
+  /** Top package_interest values from leads (waitlist attribution). */
+  leadSourceTop?: Array<{ source: string; count: number }>;
+  leadTotal?: number;
 }

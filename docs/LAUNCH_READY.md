@@ -29,11 +29,34 @@
 
 ### 1. Database
 
-Apply in Supabase SQL editor:
+Apply in Supabase SQL editor (copy file contents):
 
-```bash
-# contents of supabase/migrations/20260716_leads_growth_welcome_email.sql
+```sql
+-- supabase/migrations/20260716_leads_growth_welcome_email.sql
+alter table public.leads add column if not exists utm jsonb;
+alter table public.leads add column if not exists referrer text;
+alter table public.leads add column if not exists confirmed_at timestamptz;
+alter table public.leads add column if not exists launch_email_sent_at timestamptz;
+alter table public.leads add column if not exists unsubscribed_at timestamptz;
+create index if not exists leads_email_lower_idx on public.leads (lower(email));
+alter table public.profiles add column if not exists welcome_email_sent_at timestamptz;
 ```
+
+**Verify columns exist:**
+
+```sql
+select column_name
+from information_schema.columns
+where table_schema = 'public'
+  and table_name in ('leads', 'profiles')
+  and column_name in (
+    'utm', 'referrer', 'confirmed_at', 'launch_email_sent_at',
+    'unsubscribed_at', 'welcome_email_sent_at'
+  )
+order by table_name, column_name;
+```
+
+Expect 6 rows. Until applied, leads still save (`package_interest`); utm/stamps may be ignored.
 
 ### 2. Resend
 
@@ -78,11 +101,30 @@ Use [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) posts only after `PRIVATE_MODE=false`. 
 ```bash
 npm run typecheck && npm run lint && npm test
 npm run check-env -- --launch
-# with server:
+
+# Against a running deploy (local or prod):
+SMOKE_BASE_URL=http://localhost:3000 npm run growth-smoke
+SMOKE_BASE_URL=https://www.missionwinning.com npm run gate-smoke
+
+# JSON-LD:
 # curl -s localhost:3000/bundle | grep -o 'application/ld+json' | head
+
 PRIVATE_MODE=false npm run build   # optional Lighthouse
+# after start: npm run lighthouse-budget
 ```
+
+### Ordered flip day (single sequence)
+
+1. Migration applied + verified (above)  
+2. Resend domain + `RESEND_FROM` not resend.dev  
+3. Vercel: `NEXT_PUBLIC_SITE_URL`, secrets, Stripe webhook  
+4. `LAUNCH_STRICT=true npm run launch-verify` (with prod URL + access)  
+5. `PRIVATE_MODE=false` + redeploy  
+6. PUBLIC_FLIP_CHECKLIST smoke (SW, `/`, Search Console)  
+7. `npm run growth-smoke` against prod  
+8. Broadcast dry-run → smoke `--to` → full send  
+9. Social posts ([SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md))
 
 ---
 
-*Last updated: 2026-07-16 (Wave 2 marketing & growth)*
+*Last updated: 2026-07-16 (Wave 3 launch verification)*
