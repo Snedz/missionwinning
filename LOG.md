@@ -4,6 +4,19 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Wave 6 Mission Experience `/experience` (`2026.07-unified.85`)
+
+**Founder Horizon-0 override:** new frontier dossier route (not app chrome).
+
+- `/experience` static spine: 8 chapters, real mission/pillar/pricing copy, chapter rail + progress
+- `gpuTier` WebGPU→WebGL2→static (+ tests); hero WebGPU/WebGL2 aurora canvas (idle mount)
+- Win Score demo 68→87 + PR (DOM); WGSL compute / WebGL2 TF particles when tier allows
+- Capability matrix live feature detect; commission CTA View Transition when supported
+- Route-scoped Inter variable + `experience.css` (`.xp-*`); no global index.css changes
+- Sitemap, footer Product link, landing quiet link, e2e-smoke route
+
+---
+
 ## 2026-07-16 — Wave 5 content depth & honesty (`2026.07-unified.84`)
 
 - Exercise public depth: steps/mistakes defaults + enrichment; HowTo JSON-LD steps; template usage index

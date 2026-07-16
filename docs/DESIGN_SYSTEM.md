@@ -2,7 +2,7 @@
 
 **Runtime source:** [`src/index.css`](../src/index.css) · [`tailwind.config.js`](../tailwind.config.js) · fonts in [`app/layout.tsx`](../app/layout.tsx)  
 **Research:** [`DESIGN_RESEARCH.md`](DESIGN_RESEARCH.md)  
-**Build:** `2026.07-unified.83`+ (Wave 4 in-app elevation)
+**Build:** `2026.07-unified.85`+ (Wave 6 `/experience` dossier)
 
 ---
 
@@ -97,6 +97,7 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 | **PillarPageShell** | stagger + header + children | In-app pillars |
 | **InfoPageShell** | info/marketing in app chrome | About, legal, etc. |
 | **MarketingNav / Footer** | `src/components/marketing/` | Landing + Bundle chrome |
+| **Experience (`/experience`)** | `src/components/experience/` | Frontier dossier — route-scoped CSS (`.xp-*`), `gpuTier` WebGPU→WebGL2→static, hero aurora + Win Score particles, no global CSS pollution |
 | **PublicSeoHeader / Footer** | `src/components/public/` | Guide, exercises, compare, paths |
 | **Reveal / StatBand** | `src/components/marketing/` | Landing motion + telemetry |
 | **EmptyState** | dashed invite + CTA | First-week empties |

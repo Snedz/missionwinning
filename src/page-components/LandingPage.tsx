@@ -209,6 +209,14 @@ export function LandingPage() {
                 PR
               </div>
               <HeroDemo staticFallback={<HeroDemoFallback />} />
+              <p className="mt-4 text-center">
+                <Link
+                  href="/experience"
+                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+                >
+                  See the mission experience →
+                </Link>
+              </p>
             </div>
           </div>
         </div>
