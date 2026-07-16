@@ -41,6 +41,19 @@ test.describe('Phase H hero flows', () => {
     await expect(page.locator('body')).not.toBeEmpty();
   });
 
+  test('active empty start, finish-without-sets toast, cancel', async ({ page }) => {
+    await page.goto('/active', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: /start workout/i }).click();
+    await expect(page.getByRole('button', { name: /^finish$/i })).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText(/add exercise/i)).toBeVisible();
+
+    await page.getByRole('button', { name: /^finish$/i }).click();
+    await expect(page.getByText(/nothing logged/i)).toBeVisible({ timeout: 10_000 });
+
+    await page.getByRole('button', { name: /cancel/i }).click();
+    await expect(page).toHaveURL(/\/(log)?$/);
+  });
+
   test('workout complete updates Mission Score on Today', async ({ page, context, baseURL }) => {
     if (!baseURL) throw new Error('baseURL required');
     const ok = await unlockGate(page, context, baseURL);
