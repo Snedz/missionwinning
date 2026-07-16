@@ -93,7 +93,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
                     <track kind="captions" srcLang="en" label="Captions" />
                   </video>
                 ) : (
-                  // eslint-disable-next-line @next/next/no-img-element -- static form diagram assets
+                  // Static form diagram under /public — plain img is intentional.
                   <img
                     src={guide.mediaUrl}
                     alt={`${exercise.name} form diagram`}
