@@ -10,9 +10,9 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 ---
 
-## Where we are (2026-07-14)
+## Where we are (2026-07-16)
 
-**Product code is strong.** Free core, six pillars, Mission Coach, Fuel Coach, journey, design system, security perimeter, SEO surfaces, freemium plumbing. S-Tier waves 0–4 shipped (pricing single source, first-hour polish, victory ritual, selective page decomp, token pass).
+**Product code is strong.** Free core, six pillars, Mission Coach, Fuel Coach, journey, design system, security perimeter, SEO surfaces, freemium plumbing. S-Tier waves 0–4 shipped. **Agent H1 eng prep mostly complete:** Lighthouse budget routes ≥90, Serwist PWA, sync conflict tests, Active/Today decomp, logger E2E depth, `src/lib/workout/` domain.
 
 **Market is not.** Phase **H** founder-blocked: private mode, beta cohort incomplete, live Stripe env incomplete, PWA offline promise off until public.
 
@@ -86,7 +86,7 @@ flowchart TB
 |-------|--------|
 | **Public** | `PRIVATE_MODE=false`; offline + `/offline` smoke; Search Console; soft launch ([docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md)); Upstash in prod optional |
 | **Money** | Stripe → `enrollments` E2E; waitlist → founders email; support FAQ |
-| **Eng (bounded)** | Lighthouse `/` + `/log` ≥90; Serwist replace `next-pwa`; sync conflict tests; logger E2E depth; ActiveWorkout extract; `src/lib` domain folders |
+| **Eng (bounded)** | ~~Lighthouse `/` + `/log` ≥90~~ ✅; ~~Serwist~~ ✅; ~~sync conflict tests~~ ✅; ~~logger E2E depth~~ ✅; ~~ActiveWorkout / Today extract~~ ✅; ~~`src/lib/workout/` domain~~ ✅ |
 
 **Done when:** Public without password; offline core works; ≥1 paid path verified; PostHog activation baselined.
 
