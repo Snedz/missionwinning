@@ -32,13 +32,13 @@ export function TodayDashboardHeader({ missionScore, scores, streak, trends, cla
   return (
     <div
       className={cn(
-        'rounded-2xl border border-border/40 bg-gradient-to-br from-card via-card to-emerald-950/20 p-5 space-y-4 ring-draw-in',
+        'card-elevated card-glow-emerald p-5 space-y-4 ring-draw-in',
         className
       )}
     >
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
+          <p className="eyebrow mb-1">
             {t('todayMissionScore', { defaultValue: 'Mission Score' })}
           </p>
           <p className="text-4xl font-bold tabular-nums text-primary tracking-tight score-tick">

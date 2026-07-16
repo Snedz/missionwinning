@@ -266,7 +266,7 @@ export function ProfilePage() {
       }
       footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
     >
-      <Card>
+      <Card className="card-elevated">
         <CardHeader><CardTitle>{t('account', { defaultValue: 'Account & Sign In' })}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
           {email ? (
@@ -298,7 +298,7 @@ export function ProfilePage() {
       </Card>
 
       {email && (
-        <Card>
+        <Card className="content-card">
           <CardHeader>
             <CardTitle>{t('remindersTitle', { defaultValue: 'Training reminders' })}</CardTitle>
           </CardHeader>
@@ -336,7 +336,7 @@ export function ProfilePage() {
       </Card>
 
       {/* Language switcher - same improved native dropdown as Sidebar for discoverability */}
-      <Card>
+      <Card className="content-card">
         <CardHeader><CardTitle>{t('language', { defaultValue: 'Language' })}</CardTitle></CardHeader>
         <CardContent>
           <LanguageSwitcher />
@@ -344,7 +344,7 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="content-card">
         <CardHeader><CardTitle>{t('trainingGoals', { defaultValue: 'Training Goals' })}</CardTitle></CardHeader>
         <CardContent className="space-y-3">
           <textarea 
@@ -359,7 +359,7 @@ export function ProfilePage() {
       </Card>
 
       {/* Last Readiness Assessment (free core, persisted) */}
-      <Card>
+      <Card className="content-card">
         <CardHeader><CardTitle>Readiness Assessment</CardTitle></CardHeader>
         <CardContent className="space-y-3 text-sm">
           {lastAssessment ? (
@@ -453,7 +453,7 @@ export function ProfilePage() {
           </CardContent>
         </Card>
       ) : (
-        <Card>
+        <Card className="content-card">
           <CardHeader><CardTitle>{t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm">
             <p className="text-muted-foreground">
@@ -494,7 +494,7 @@ export function ProfilePage() {
         </Card>
       )}
 
-      <Card>
+      <Card className="content-card">
         <CardHeader><CardTitle>{t('premiumStatus', { defaultValue: 'Premium Status' })}</CardTitle></CardHeader>
         <CardContent>
           {premium ? (
@@ -550,7 +550,7 @@ export function ProfilePage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="content-card">
         <CardHeader><CardTitle>{t('demoAnalytics', { defaultValue: 'Demo Analytics (Events)' })}</CardTitle></CardHeader>
         <CardContent>
           <Button variant="outline" onClick={() => {
@@ -570,9 +570,9 @@ export function ProfilePage() {
 
       <ProfileBackupCard />
 
-      <Card className="content-card">
+      <Card>
         <CardContent className="pt-6">
-          <p className="text-sm font-medium mb-3">
+          <p className="eyebrow mb-3">
             {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}
           </p>
           <LegalNav />

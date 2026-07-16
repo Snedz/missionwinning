@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Wave 4 in-app design elevation (`2026.07-unified.83`)
+
+- Base `Card` → `rounded-2xl`; ProgressRing drop amber/blue; WeekStrip brass/status + lucide
+- Remove `dashboard-panel`; Today scorecard elevated+emerald glow; Active timer live glow
+- Superset → status-info (no purple); premium locked teasers brass glow
+- AppHeader display wordmark + seam; Sidebar emerald rail; PillarPageHeader briefing-rule
+- DESIGN_SYSTEM card tier ladder; ROADMAP v4 Phase 1 partial checkoff
+
+---
+
 ## 2026-07-16 — Wave 3 launch verification (`2026.07-unified.82`)
 
 - `npm run growth-smoke` — leads source, unsub bad token, welcome 401, /guide public

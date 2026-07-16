@@ -28,7 +28,7 @@ export function Sidebar() {
               className={cn(
                 'flex flex-col lg:flex-row items-center lg:items-center gap-1 lg:gap-3 rounded-xl px-2 lg:px-3 py-2.5 min-h-[52px] transition-colors relative',
                 isActive
-                  ? 'bg-primary/20 text-primary'
+                  ? 'bg-primary/20 text-primary shadow-[inset_2px_0_0_0_hsl(var(--primary))]'
                   : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
               )}
             >

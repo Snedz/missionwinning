@@ -165,7 +165,7 @@ export function MovePage() {
       )}
 
       {recentWins.length > 0 ? (
-        <Card className="content-card">
+        <Card className="card-elevated">
           <CardHeader>
             <CardTitle className="text-base">
               {t('moveRecentWins', { defaultValue: 'Recent Move Wins' })}

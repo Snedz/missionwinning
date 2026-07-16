@@ -111,7 +111,7 @@ export function TrackPage() {
 
         <TrackWeeklyInsights locked={!premium} key={refresh} />
 
-      <Card className="content-card">
+      <Card className="card-elevated">
           <CardHeader>
             <CardTitle>{t('trackLogTitle', { defaultValue: 'Log Activity' })}</CardTitle>
             <CardDescription>

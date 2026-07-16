@@ -128,7 +128,7 @@ export function FuelRecipesPanel({
           </CardContent>
         </Card>
       ) : (
-        <Card className="content-card border-primary/30">
+        <Card className="card-elevated card-glow-brass border-brass/30">
           <CardHeader>
             <CardTitle>
               {t('fuelPremiumLockedTitle', {

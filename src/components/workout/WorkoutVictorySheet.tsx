@@ -66,7 +66,7 @@ export function WorkoutVictorySheet({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md border-primary/30 bg-gradient-to-b from-card to-primary/5">
+      <DialogContent className="card-glow-brass sm:max-w-md border-brass/30 bg-gradient-to-b from-card to-brass/5">
         <DialogHeader className="text-center space-y-3 victory-reveal">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brass/20 border border-brass/40 victory-reveal">
             <Trophy className="h-8 w-8 text-brass" />

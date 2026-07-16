@@ -130,7 +130,7 @@ export function MindPage() {
       )}
 
       {recentWins.length > 0 ? (
-        <Card className="content-card">
+        <Card className="card-elevated">
           <CardHeader>
             <CardTitle className="text-base">
               {t('mindRecentWins', { defaultValue: 'Recent Mind Wins' })}

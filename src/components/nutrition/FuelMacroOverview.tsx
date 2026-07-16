@@ -61,7 +61,7 @@ export function FuelMacroOverview({
   ] as const;
 
   return (
-    <Card className="content-card border-primary/20">
+    <Card className="card-elevated card-glow-emerald border-primary/20">
       <CardContent className="pt-6 space-y-4">
         <div className="flex justify-around gap-4">
           <ProgressRing

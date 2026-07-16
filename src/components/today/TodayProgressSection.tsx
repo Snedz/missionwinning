@@ -86,7 +86,7 @@ export function TodayProgressSection({
   return (
       <div className="space-y-4 pt-2">
       {/* Free starters + saved routines — secondary to Journey hero */}
-      <Card className="border-border/60">
+      <Card>
         <CardHeader>
           <CardTitle className="text-base">{t('todayQuickOptions', { defaultValue: 'Quick options' })}</CardTitle>
           <CardDescription>{t('todayQuickOptionsDesc', { defaultValue: 'Free starter programs and saved routines.' })}</CardDescription>

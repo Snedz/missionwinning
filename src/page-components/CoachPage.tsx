@@ -64,7 +64,7 @@ export function CoachPage() {
       )}
 
       {!loading && locked && (
-        <Card className="content-card border-primary/20">
+        <Card className="card-elevated card-glow-brass border-brass/30">
           <CardHeader>
             <CardTitle>{t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}</CardTitle>
             <CardDescription>
