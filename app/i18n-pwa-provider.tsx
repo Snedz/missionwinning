@@ -1,14 +1,22 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { HtmlLangSync } from '@/components/i18n/HtmlLangSync';
 import { LocaleHttpSync } from '@/components/i18n/LocaleHttpSync';
-import { OnlineStatusBanner } from '@/components/layout/OnlineStatusBanner';
 import { identifyUser, initAnalytics, resetAnalyticsIdentity, track } from '@/lib/analytics';
 
 // Bootstrap i18next (minimal EN). Full locale catalogs hydrate after idle.
 // supabase-js is NOT imported here — auth listener loads it after idle.
 import i18n, { hydrateI18nResources } from '@/i18n';
+
+const OnlineStatusBanner = dynamic(
+  () =>
+    import('@/components/layout/OnlineStatusBanner').then((m) => ({
+      default: m.OnlineStatusBanner,
+    })),
+  { ssr: false }
+);
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -61,6 +69,18 @@ if (typeof window !== 'undefined') {
 }
 
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
+  const [showOfflineBanner, setShowOfflineBanner] = useState(false);
+
+  // Offline banner after idle — lucide + banner JS off first paint.
+  useEffect(() => {
+    if (typeof requestIdleCallback !== 'undefined') {
+      const id = requestIdleCallback(() => setShowOfflineBanner(true), { timeout: 3000 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(() => setShowOfflineBanner(true), 500);
+    return () => clearTimeout(t);
+  }, []);
+
   // Hydrate full i18n + start analytics after first interaction or a short delay
   // so LCP/TBT are not competing with multi-language catalogs or posthog-js.
   useEffect(() => {
@@ -152,7 +172,7 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
     <>
       <HtmlLangSync />
       <LocaleHttpSync />
-      <OnlineStatusBanner />
+      {showOfflineBanner ? <OnlineStatusBanner /> : null}
       {children}
     </>
   );

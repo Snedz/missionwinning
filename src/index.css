@@ -47,16 +47,24 @@
     letter-spacing: -0.015em;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
-    background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, hsl(158 64% 42% / 0.08), transparent),
-      radial-gradient(ellipse 60% 40% at 100% 100%, hsl(222 40% 20% / 0.35), transparent);
-    background-attachment: fixed;
+    /* Single gradient, no fixed attachment — fixed bg is a mobile paint tax. */
+    background-image: radial-gradient(
+      ellipse 80% 50% at 50% -20%,
+      hsl(158 64% 42% / 0.08),
+      transparent
+    );
   }
 }
 
 @layer components {
+  /* Solid nav on mobile (no backdrop-filter paint cost); blur on md+. */
   .glass-nav {
-    @apply bg-card/75 backdrop-blur-xl supports-[backdrop-filter]:bg-card/65;
+    @apply bg-card/95;
+  }
+  @media (min-width: 768px) {
+    .glass-nav {
+      @apply bg-card/75 backdrop-blur-xl supports-[backdrop-filter]:bg-card/65;
+    }
   }
 
   .content-card {

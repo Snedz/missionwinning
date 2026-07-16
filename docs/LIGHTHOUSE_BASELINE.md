@@ -13,9 +13,26 @@ Routes checked: `/`, `/log`, `/guide/human-performance`, `/exercises/squats`.
 
 Budget: **≥90** performance, accessibility, best-practices (soft warning in CI — see `.github/workflows/ci.yml`).
 
-## Snapshot (2026-07-16 — primary nav split + deferred Today, build `.68`)
+## Snapshot (2026-07-16 — mobile paint cuts, `/log` ≥90, build `.69`)
 
 Mobile, `PRIVATE_MODE=false`, local prod (run variance ±2–3):
+
+| Route | Performance | Accessibility | Best practices | Notes |
+|-------|-------------|---------------|----------------|-------|
+| `/` | **92** | 94 | 100 | ✅ Meets ≥90 |
+| **`/log`** | **90** | **96** | **100** | ✅ Meets ≥90 (stable ×3 runs) |
+| `/guide/human-performance` | **91** | 100 | 100 | ✅ Meets ≥90 |
+| `/exercises/squats` | **87** | 96 | 100 | Near 90 (± variance) |
+
+### Residual plan
+
+1–7. ~~Shell JS cuts (i18n, store, pulse, supabase, nav, lean Today)~~ — shipped  
+8. ~~Mobile paint: no fixed bg, solid glass-nav mobile, deferred toaster/banner, no first-paint page-enter~~ — shipped  
+9. Optional polish: exercises public page → 90; further CSS purging; field data on real devices
+
+*CI job `lighthouse-budget` remains soft-warning. Primary app route `/log` now clears the ≥90 performance target.*
+
+## Prior snapshot (2026-07-16 — primary nav split + deferred Today, build `.68`)
 
 | Route | Performance | Accessibility | Best practices | Notes |
 |-------|-------------|---------------|----------------|-------|
@@ -23,19 +40,6 @@ Mobile, `PRIVATE_MODE=false`, local prod (run variance ±2–3):
 | **`/log`** | **81** | **96** | **100** | App shell JS/CSS still dominant |
 | `/guide/human-performance` | **93** | 100 | 100 | ✅ Meets ≥90 |
 | `/exercises/squats` | **89** | 96 | 100 | Near 90 (± variance) |
-
-### Residual plan to hit `/log` ≥90
-
-1. ~~Lazy i18n / lean Today / static app layout / deferred analytics~~ — shipped  
-2. ~~workoutStore no longer imports exercise catalog~~ — shipped  
-3. ~~AppHeader phase-lite; auth chip idle~~ — shipped  
-4. ~~MobileNav pulse; HomeTodayLean store deferred~~ — shipped  
-5. ~~Sentry dynamic; supabase deferred from root + pillarLog~~ — shipped  
-6. ~~missionJourney free of challenges/guidebook catalog~~ — shipped  
-7. ~~Primary nav split; header menu deferred; lean Today score/readiness idle~~ — shipped  
-8. Next: CSS budget (~80KB), Toaster/i18n residual, optional lighter AppLayout shell for first paint
-
-*CI job `lighthouse-budget` remains soft-warning. Target `/log` → 90 after CSS/shell residual or field data.*
 
 ## Prior snapshot (2026-07-15 — supabase off shell, journey lite, build `.67`)
 

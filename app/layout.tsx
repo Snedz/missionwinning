@@ -1,15 +1,15 @@
 import type { Metadata, Viewport } from 'next';
 import { Barlow_Condensed, IBM_Plex_Mono, Inter } from 'next/font/google';
 import '../src/index.css';
-import { Toaster } from '@/components/ui/toaster';
+import { DeferredToaster } from '@/components/layout/DeferredToaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
-  // Limit axes for faster first paint (body + medium UI).
-  weight: ['400', '500', '600', '700'],
+  // Three weights only — medium (500) maps to 400/600 in practice for size.
+  weight: ['400', '600', '700'],
 });
 const barlowCondensed = Barlow_Condensed({
   subsets: ['latin'],
@@ -69,7 +69,7 @@ export default function RootLayout({
       <body className="bg-background text-foreground font-sans">
         <I18nPwaProvider>
           {children}
-          <Toaster />
+          <DeferredToaster />
         </I18nPwaProvider>
       </body>
     </html>
