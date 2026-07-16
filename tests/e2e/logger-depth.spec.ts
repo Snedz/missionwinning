@@ -32,20 +32,17 @@ test.describe('Logger depth', () => {
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
     await logBtn.click();
 
-    await expect(page.getByText(/set logged|pr!/i)).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('Set logged!', { exact: true })).toBeVisible({ timeout: 10_000 });
 
     const rest = page.getByRole('timer');
     await expect(rest).toBeVisible({ timeout: 10_000 });
     await expect(rest).toContainText(/rest/i);
 
-    const skip = page.getByRole('button', { name: /skip/i });
-    if (await skip.isVisible()) {
-      await skip.click();
-      await expect(rest).toBeHidden({ timeout: 5_000 });
-    }
+    await page.getByRole('button', { name: /^skip$/i }).click();
+    await expect(rest).toBeHidden({ timeout: 5_000 });
 
     await page.getByRole('button', { name: /^finish$/i }).click();
-    await expect(page.getByRole('button', { name: /back to today|view history|close/i }).first()).toBeVisible({
+    await expect(page.getByRole('button', { name: /back to today/i })).toBeVisible({
       timeout: 15_000,
     });
   });
