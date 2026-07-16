@@ -1,7 +1,7 @@
 # Mission Winning — Long-Term Orchestration
 
 **Audience:** Founder + AI agents  
-**Build baseline:** `2026.07-unified.76`+  
+**Build baseline:** `2026.07-unified.78`+  
 **#1 metric (year one):** week-4 retained weekly loggers — [STRATEGY.md](STRATEGY.md)  
 **Constitution:** [vision.md](vision.md) · **Risk filter:** [REDTEAM.md](REDTEAM.md) · **Build phases:** [PLAN.md](PLAN.md)
 

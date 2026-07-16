@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — API abuse hardening A2 (`2026.07-unified.78`)
+
+- Rate limits: journey/nudge, school class create, unsubscribe
+- Zod: youth consent-notify, journey nudge body
+- Coach/fuel cost routes: Content-Length body caps via `requestBodyLimit`
+- Inventory matrix updated in `app/api/INDEX.md`
+
+---
+
 ## 2026-07-16 — Security red-team agent track S1 (`2026.07-unified.77`)
 
 - Full API auth/rate inventory in `app/api/INDEX.md`

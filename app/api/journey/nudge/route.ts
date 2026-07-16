@@ -1,15 +1,32 @@
 /**
  * Schedule journey email nudge.
- * Auth: session | See: app/api/INDEX.md, src/lib/nudgeServer.ts
+ * Auth: session | Rate: 5/min/user-or-IP | Schema: journeyNudgeBodySchema
+ * See: app/api/INDEX.md, src/lib/nudgeServer.ts
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
+import { clientIp } from '@/lib/clientIp';
+import { rateLimitAsync } from '@/lib/rateLimit';
+import { journeyNudgeBodySchema, parseJsonBody } from '@/lib/apiSchemas';
+import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 
 /** Optional Resend nudge — emails the user's current journey next step. */
 export const POST = withApiLogging('journey/nudge', async(request: NextRequest) => {
+  const oversized = rejectOversizedBody(request, 4 * 1024);
+  if (oversized) return oversized;
+
+  const ip = clientIp(request);
+  const limited = await rateLimitAsync(`journey-nudge:${ip}`, 5, 60_000);
+  if (!limited.ok) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many requests' },
+      { status: 429, headers: { 'Retry-After': String(limited.retryAfterSec ?? 60) } }
+    );
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ ok: false, error: 'Email not configured' }, { status: 503 });
@@ -36,17 +53,17 @@ export const POST = withApiLogging('journey/nudge', async(request: NextRequest) 
     return NextResponse.json({ ok: false, error: 'Invalid session' }, { status: 401 });
   }
 
-  let body: { label?: string; description?: string; href?: string; stepLabel?: string } = {};
-  try {
-    body = await request.json();
-  } catch {
-    // optional body
+  const raw = await request.json().catch(() => ({}));
+  const parsed = parseJsonBody(journeyNudgeBodySchema, raw ?? {});
+  if (!parsed.ok) {
+    return NextResponse.json({ ok: false, error: parsed.error }, { status: 400 });
   }
+  const body = parsed.data;
 
-  const label = String(body.label || 'Continue on Today').slice(0, 120);
-  const description = String(body.description || 'Open the app for your next clear action.').slice(0, 500);
-  const stepLabel = String(body.stepLabel || 'Today').slice(0, 80);
-  let href = String(body.href || '/log');
+  const label = (body.label || 'Continue on Today').slice(0, 120);
+  const description = (body.description || 'Open the app for your next clear action.').slice(0, 500);
+  const stepLabel = (body.stepLabel || 'Today').slice(0, 80);
+  let href = body.href || '/log';
   if (!href.startsWith('/') || href.includes('://')) href = '/log';
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.missionwinning.com';

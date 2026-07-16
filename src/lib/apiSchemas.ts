@@ -87,6 +87,18 @@ export const schoolClassCreateSchema = z.object({
   teacherPin: z.string().min(4).max(32).optional(),
 });
 
+export const youthConsentNotifySchema = z.object({
+  parentEmail: z.string().email().max(320),
+  childAge: z.number().int().min(1).max(17),
+});
+
+export const journeyNudgeBodySchema = z.object({
+  label: z.string().max(120).optional(),
+  description: z.string().max(500).optional(),
+  href: z.string().max(200).optional(),
+  stepLabel: z.string().max(80).optional(),
+});
+
 export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
   | { ok: true; data: T }
   | { ok: false; error: string } {
