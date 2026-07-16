@@ -23,7 +23,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { loadTodayDashboardPrefs, type TodayDashboardPrefs, type TodaySectionId } from "@/lib/todayDashboardPrefs";
+import { loadTodayDashboardPrefs, type TodayDashboardPrefs } from "@/lib/todayDashboardPrefs";
 import { StaggerGroup, StaggerItem } from "@/components/layout/StaggerReveal";
 import { useMissionJourney } from "@/hooks/useMissionJourney";
 import { getTodayLayout } from "@/hooks/useTodayLayout";

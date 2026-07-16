@@ -3,7 +3,6 @@
  * MobileNav/Sidebar should import `@/lib/primaryNav` only (five icons).
  * AppHeader titles use `@/lib/pageTitles` on cold path; load this module when the menu opens.
  */
-import type { LucideIcon } from 'lucide-react';
 import {
   BookOpen,
   Brain,
