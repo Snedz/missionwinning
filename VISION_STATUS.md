@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-16** (build `2026.07-unified.75` — H1 eng prep + Lighthouse ≥90).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-16** (build `2026.07-unified.76` — H1 eng prep complete; founder H0 is the bottleneck).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -59,14 +59,14 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 
 Full sequencing: [ORCHESTRATION.md](ORCHESTRATION.md) (Horizon 0 → 3).
 
-### 1. Horizon 0 — Phase H beta + env (founder)
-Vercel connected; migrations verified. Still need: live Stripe env, service-role on Vercel if missing, **≥10 beta users**. Day-of: [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md).
+### 1. Horizon 0 — Phase H beta + env (founder) — **#1 gap**
+Vercel connected; eng quality ready. Still need: live Stripe env, service-role on Vercel if missing, **≥10 beta users**, then gates. Day-of: [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md) · flip smoke: [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md).
 
 ### 2. Horizon 1 — Live Super Bundle + public (Phase I1)
-Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149**. Then `PRIVATE_MODE=false` + PWA.
+Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149**. Then `PRIVATE_MODE=false` + PWA offline promise.
 
-### 3. Horizon 1 eng — `/log` Lighthouse toward 90
-Landing/guide hit **≥90** (build `.64`). `/log` at **81** — residual app-chrome work remains (`docs/LIGHTHOUSE_BASELINE.md`).
+### 3. Horizon 1 eng — performance / decomp — **done**
+Lighthouse budget routes **≥90** (`/`, `/log`, guide, exercises). Serwist, logger E2E, Active/Today decomp, `src/lib/workout/` shipped. Residual decomp optional only.
 
 ### 4. Horizon 2 — week-4 retention wall metric
 Prove habit loop before scale. See [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md).
@@ -90,4 +90,4 @@ Code shipped; legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
 
 ## Build label
 
-Current: `2026.07-unified.59` — see [`src/lib/buildInfo.ts`](src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after deploy.
+Current: `2026.07-unified.76` — see [`src/lib/buildInfo.ts`](src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after deploy.

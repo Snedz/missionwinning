@@ -1,7 +1,7 @@
 # Mission Winning — Long-Term Orchestration
 
 **Audience:** Founder + AI agents  
-**Build baseline:** `2026.07-unified.58`+  
+**Build baseline:** `2026.07-unified.76`+  
 **#1 metric (year one):** week-4 retained weekly loggers — [STRATEGY.md](STRATEGY.md)  
 **Constitution:** [vision.md](vision.md) · **Risk filter:** [REDTEAM.md](REDTEAM.md) · **Build phases:** [PLAN.md](PLAN.md)
 
@@ -69,12 +69,14 @@ flowchart TB
 | 4 | Gates: I-Day ≥80%, Basic Training ≥60% | Profile beta panel, [PLAN.md](PLAN.md) F4 |
 | 5 | Mobile hero QA: Welcome → Just Go → set → Mission Score | Manual + `npm run e2e:critical` |
 | 6 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
+| 7 | Public flip day (after gates) | [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md) + [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md) |
 
 ### Agent-allowed (Horizon 0 only)
 
 - Hero-flow / gate / premium 403 regressions
 - Beta invite / founder panel / launch-verify clarity
-- Keep CI green
+- Keep CI green; docs match reality (build label, VISION_STATUS)
+- Public-flip offline/SW checklist maintenance
 
 **Done when:** 10+ profiles, BT ≥60%, secrets green, ready to flip public.
 
@@ -84,7 +86,7 @@ flowchart TB
 
 | Track | Tasks |
 |-------|--------|
-| **Public** | `PRIVATE_MODE=false`; offline + `/offline` smoke; Search Console; soft launch ([docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md)); Upstash in prod optional |
+| **Public** | `PRIVATE_MODE=false`; offline + SW smoke ([docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md)); Search Console; soft launch ([docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md)); Upstash in prod optional |
 | **Money** | Stripe → `enrollments` E2E; waitlist → founders email; support FAQ |
 | **Eng (bounded)** | ~~Lighthouse `/` + `/log` ≥90~~ ✅; ~~Serwist~~ ✅; ~~sync conflict tests~~ ✅; ~~logger E2E depth~~ ✅; ~~ActiveWorkout / Today extract~~ ✅; ~~`src/lib/workout/` domain~~ ✅ |
 
