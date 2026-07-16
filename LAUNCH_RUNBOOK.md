@@ -6,6 +6,8 @@
 
 ---
 
+**Wave 2 prep:** see [docs/LAUNCH_READY.md](docs/LAUNCH_READY.md) for greened conversion/SEO/email items before flip.
+
 ## §1 — Regain deploy access (do today, ~30–60 min)
 
 > **2026-07-11:** Vercel is connected via GitHub + Cursor. Skip 2FA recovery unless access breaks again. Confirm Production deploys from `master` and Profile shows the latest build label.

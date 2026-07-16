@@ -71,3 +71,15 @@ CI runs the same script as a **soft warning** (`.github/workflows/ci.yml` → `l
 - Exercise pages → "Track this exercise free" → `/welcome` or `/log`
 - Guide chapters → inline CTAs to app onboarding
 - `/compare` cross-links from marketing pages when expanded
+
+
+---
+
+## Structured data & canonicals (Wave 2)
+
+- **Helper:** [`src/lib/seoMetadata.ts`](../src/lib/seoMetadata.ts) — `publicPageMetadata` sets title, description, relative canonical, and openGraph/twitter overrides (root layout OG is not enough alone).
+- **Host:** `NEXT_PUBLIC_SITE_URL=https://www.missionwinning.com` (www). Non-www defaults break sitewide canonicals.
+- **JSON-LD:** Organization + WebSite (no SearchAction) + SoftwareApplication ($0) + FAQ on `/`; Product offers on `/bundle`; Article/HowTo + Breadcrumb on guide/exercise pages. See `src/lib/publicSeo.ts`.
+- **hreflang:** not emitted — language is client-side on one URL. Add only if locale-prefixed routes ship later.
+- **Attribution:** first-touch UTMs in `localStorage` (`mw_attribution`) attach to leads and, when analytics allowed, PostHog super-properties. Funnel: visit (+utm) → `waitlist_joined` / `iday_*` → `checkout_clicked` → `checkout_completed`. `class_joined` for school join.
+

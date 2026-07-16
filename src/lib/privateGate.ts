@@ -30,6 +30,7 @@ export const PUBLIC_API_PATHS_WHILE_GATED = [
   '/api/stripe-webhook',
   '/api/paypal-webhook',
   '/api/leads',
+  '/api/leads/unsubscribe',
   '/api/cron/nudges',
   '/api/nudges/unsubscribe',
   // Safe anonymous premium probe (returns premium:false without auth)

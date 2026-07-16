@@ -33,7 +33,9 @@ const optional = [
   ['PRIVATE_ALLOW_AUTH_BYPASS', 'Leave unset/false — magic link should not bypass gate'],
   ['DEMO_PREMIUM', 'Must be false (or unset) in production'],
   ['BETA_ADMIN_EMAILS', 'Comma-separated founder emails for beta panel'],
-  ['RESEND_API_KEY', 'Parent consent + nudge emails'],
+  ['RESEND_API_KEY', 'Parent consent + nudge + waitlist emails'],
+  ['RESEND_FROM', 'Mission Winning <hello@missionwinning.com> — verified domain'],
+  ['NEXT_PUBLIC_SITE_URL', 'https://www.missionwinning.com — canonicals + OG'],
   ['CRON_SECRET', 'Vercel cron auth for reminder nudges'],
   ['UPSTASH_REDIS_REST_URL', 'Distributed rate limits (recommended prod)'],
   ['UPSTASH_REDIS_REST_TOKEN', 'Paired with UPSTASH_REDIS_REST_URL'],
@@ -129,6 +131,21 @@ if (process.env.DEMO_PREMIUM === 'true') {
 
 if (launch && process.env.PRIVATE_MODE !== 'false') {
   console.log('  ⚠ PRIVATE_MODE is not false — OK for pre-launch gate verify; set false for §5 go-public');
+  warn++;
+}
+
+const resendFrom = process.env.RESEND_FROM || '';
+if (launch && (!resendFrom || /@resend\.dev\b/i.test(resendFrom))) {
+  console.log('  ⚠ RESEND_FROM — set a verified domain From (not onboarding@resend.dev) for launch mail');
+  warn++;
+}
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
+if (launch && !siteUrl) {
+  console.log('  ⚠ NEXT_PUBLIC_SITE_URL unset — set https://www.missionwinning.com for canonicals/OG');
+  warn++;
+} else if (siteUrl && siteUrl.includes('missionwinning.com') && !siteUrl.includes('www.')) {
+  console.log('  ⚠ NEXT_PUBLIC_SITE_URL is non-www — prefer https://www.missionwinning.com');
   warn++;
 }
 

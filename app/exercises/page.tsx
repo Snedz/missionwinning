@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/seoMetadata';
 import { ExercisesPublicIndexPage } from '@/page-components/ExercisesPublicIndexPage';
 
 export const dynamic = 'force-static';
 
-export const metadata: Metadata = {
-  title: 'Exercise Library — Free',
-  description: 'Browse 200+ exercises with cues and form guides. Track any movement free in Mission Winning.',
-};
+export const metadata: Metadata = publicPageMetadata({
+  title: "Exercise Library",
+  description: "217 free exercise pages with form cues — bodyweight and minimal gear first.",
+  path: "/exercises",
+});
 
 export default function ExercisesIndexRoute() {
   return <ExercisesPublicIndexPage />;

@@ -7,6 +7,8 @@ This is the **agent-prepared** one-pager for the technical smoke after public mo
 
 ---
 
+**Wave 2 prep:** see [docs/LAUNCH_READY.md](LAUNCH_READY.md) for greened conversion/SEO/email items before flip.
+
 ## Pre-flip (gate still on)
 
 - [ ] CI green on `master` (`build-and-test` + `e2e-critical`)

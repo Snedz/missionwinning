@@ -27,7 +27,9 @@ Legend:
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
 | `private-access` | POST | public password | 8/min/IP | password |
-| `leads` | POST | public (gate path) | 5/min/IP | Zod `leadsBodySchema` |
+| `leads` | POST | public (gate path) | 5/min/IP | Zod `leadsBodySchema`; fire-and-forget confirm email |
+| `leads/unsubscribe` | GET | public token | 20/min/IP | HMAC `NUDGE_SECRET` |
+| `journey/welcome` | POST | session | 5/min/IP | one-time welcome email |
 
 ### Coach
 

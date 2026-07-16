@@ -49,7 +49,7 @@ type Props = {
   chapter: GuideChapter;
   prev?: GuideChapter;
   next?: GuideChapter;
-  jsonLd: Record<string, unknown>;
+  jsonLd: Record<string, unknown> | Record<string, unknown>[];
 };
 
 export function GuidePublicChapterPage({ chapter, prev, next, jsonLd }: Props) {

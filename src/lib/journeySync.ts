@@ -170,8 +170,26 @@ export function scheduleJourneyPush(delayMs = 1500): void {
   }, delayMs);
 }
 
+/** Fire-and-forget welcome email for recently signed-up users. */
+function requestWelcomeEmail(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    void fetch('/api/journey/welcome', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+    }).catch(() => {
+      /* non-fatal */
+    });
+  } catch {
+    /* non-fatal */
+  }
+}
+
 /** On sign-in: merge cloud → local, then push merged state back. */
 export async function syncJourneyOnSignIn(): Promise<void> {
   await pullJourneyFromCloud();
-  await pushJourneyToCloud();
+  const pushed = await pushJourneyToCloud();
+  if (pushed) requestWelcomeEmail();
 }

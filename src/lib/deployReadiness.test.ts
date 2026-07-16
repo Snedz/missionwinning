@@ -5,6 +5,7 @@ import {
   assertProductionEnvConfig,
   getDeployReadinessReport,
   validateBuildLabel,
+  warnLaunchEmailAndSiteUrl,
 } from '@/lib/deployReadiness';
 import { restoreEnv, setTestEnv, snapshotEnv } from '@/lib/testEnv.ts';
 
@@ -24,6 +25,20 @@ describe('deployReadiness', () => {
 
   it('assertDeployReady passes on integration branch', () => {
     assert.doesNotThrow(() => assertDeployReady());
+  });
+
+  it('warnLaunchEmailAndSiteUrl warns on test sender and missing site URL', () => {
+    const snap = snapshotEnv();
+    try {
+      setTestEnv('NODE_ENV', 'production');
+      setTestEnv('RESEND_FROM', 'Mission Winning <onboarding@resend.dev>');
+      setTestEnv('NEXT_PUBLIC_SITE_URL', '');
+      const w = warnLaunchEmailAndSiteUrl();
+      assert.ok(w.some((m) => m.includes('resend.dev')));
+      assert.ok(w.some((m) => m.includes('SITE_URL')));
+    } finally {
+      restoreEnv(snap);
+    }
   });
 
   describe('production target', () => {

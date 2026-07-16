@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/seoMetadata';
 import { notFound } from 'next/navigation';
 import {
   EQUIPMENT_HUBS,
@@ -20,10 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const hub = equipmentHubFromSlug(slug);
   if (!hub) return { title: 'Exercises' };
-  return {
+  return publicPageMetadata({
     title: `${hub.label} exercises — free library`,
     description: `Free ${hub.label.toLowerCase()} exercises with cues. Track sets offline — no account, no paywall on the basics.`,
-  };
+    path: `/exercises/equipment/${slug}`,
+  });
 }
 
 export default async function EquipmentHubRoute({ params }: Props) {

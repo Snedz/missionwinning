@@ -16,6 +16,7 @@
  */
 
 import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
+import { attributionAsProps, loadAttribution } from '@/lib/attribution';
 
 type AnalyticsEvent =
   | 'iday_started'
@@ -28,8 +29,7 @@ type AnalyticsEvent =
   | 'checkout_clicked'
   | 'checkout_completed'
   | 'pwa_installed'
-  | 'coach_plan_generated'
-  | 'coach_plan_loaded'
+  | 'class_joined'
   | 'coach_week_generated'
   | 'coach_session_started'
   | 'just_go_started'
@@ -50,6 +50,7 @@ type PostHogClient = {
   capture: (event: string, properties?: Record<string, string | number | boolean>) => void;
   identify: (userId: string) => void;
   reset: () => void;
+  register?: (props: Record<string, string | number | boolean>) => void;
   opt_out_capturing?: () => void;
   opt_in_capturing?: () => void;
 };
@@ -111,6 +112,14 @@ export function initAnalytics(): void {
         persistence: 'localStorage',
         opt_out_capturing_by_default: false,
       });
+      try {
+        const props = attributionAsProps(loadAttribution());
+        if (Object.keys(props).length > 0) {
+          posthog.register?.(props);
+        }
+      } catch {
+        /* non-fatal */
+      }
       ph = posthog;
       initialized = true;
       flushPending();

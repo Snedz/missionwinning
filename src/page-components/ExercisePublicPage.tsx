@@ -20,7 +20,7 @@ import type { Exercise } from '@/types';
 
 type Props = {
   exercise: Exercise;
-  jsonLd: Record<string, unknown>;
+  jsonLd: Record<string, unknown> | Record<string, unknown>[];
 };
 
 export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {

@@ -11,6 +11,7 @@
 | `Reveal.tsx` | Scroll-reveal wrapper (`.reveal`) |
 | `StatBand.tsx` | Mono telemetry strip / ticker |
 | `BundleTeaserCard.tsx` | Landing Super Bundle teaser (price from `BUNDLE_PLANS`) |
+| `EmailCaptureBand.tsx` | Quiet waitlist capture (outline CTA) |
 
 ## Related
 

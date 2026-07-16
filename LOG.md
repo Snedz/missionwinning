@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-16 — Marketing & growth Wave 2 (`2026.07-unified.81`)
+
+- Fix lead source bug (`source` → `package_interest`); utm/referrer schema + migration
+- emailServer, waitlist confirm, leads unsubscribe, welcome email, launch-broadcast script
+- Landing EmailCaptureBand; first-touch attribution + PostHog super-props; `class_joined`
+- SEO: publicPageMetadata canonicals/OG, JSON-LD, per-route OG (bundle/guide/compare)
+- Conversion i18n ES/PT/DE/FR; LAUNCH_READY.md; SOCIAL_LAUNCH §6 fix
+
+---
+
 ## 2026-07-16 — Marketing elevation redesign (`2026.07-unified.80`)
 
 - Design language: hero-field, textures, card-elevated/glow, section seams, reveal/ticker

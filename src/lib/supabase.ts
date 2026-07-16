@@ -261,13 +261,53 @@ export async function getUserNutritionHistory(days = 7) {
 }
 
 /** Submit coaching inquiry or feedback to Supabase leads table (falls back to local-only). */
-export async function submitLead(lead: Lead & { source?: string; message?: string }): Promise<{ ok: boolean; localOnly?: boolean }> {
-  const payload = {
+export async function submitLead(
+  lead: Lead & {
+    source?: string
+    message?: string
+    utm?: Record<string, string>
+    referrer?: string
+  }
+): Promise<{ ok: boolean; localOnly?: boolean }> {
+  const source = lead.source || lead.package_interest || 'general'
+  const payload: Record<string, unknown> = {
     name: lead.name || 'Anonymous',
     email: lead.email,
     goals: lead.goals || lead.message || '',
     current_training: lead.current_training || '',
-    package_interest: lead.package_interest || lead.source || 'general',
+    // API schema prefers `source`; package_interest kept for local fallback shape.
+    source,
+    package_interest: source,
+  }
+
+  if (typeof window !== 'undefined') {
+    try {
+      const raw = localStorage.getItem('mw_attribution')
+      if (raw) {
+        const attr = JSON.parse(raw) as {
+          utm_source?: string
+          utm_medium?: string
+          utm_campaign?: string
+          utm_content?: string
+          utm_term?: string
+          landing_path?: string
+          referrer?: string
+        }
+        payload.utm = {
+          utm_source: attr.utm_source,
+          utm_medium: attr.utm_medium,
+          utm_campaign: attr.utm_campaign,
+          utm_content: attr.utm_content,
+          utm_term: attr.utm_term,
+          landing_path: attr.landing_path,
+        }
+        if (attr.referrer) payload.referrer = attr.referrer
+      }
+    } catch {
+      /* ignore */
+    }
+    if (lead.utm) payload.utm = { ...(payload.utm as object), ...lead.utm }
+    if (lead.referrer) payload.referrer = lead.referrer
   }
 
   if (!supabaseUrl || supabaseUrl.includes('demo')) {

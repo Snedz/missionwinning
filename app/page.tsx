@@ -1,10 +1,21 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { LandingPage } from '@/page-components/LandingPage';
-import { routeMetadata } from '@/lib/routeMetadata';
 import { hasServerPrivateAccess } from '@/lib/privateGateServer';
+import { publicPageMetadata } from '@/lib/seoMetadata';
+import {
+  faqPageJsonLd,
+  organizationJsonLd,
+  softwareApplicationJsonLd,
+  webSiteJsonLd,
+} from '@/lib/publicSeo';
 
-export const metadata: Metadata = routeMetadata('landing');
+export const metadata: Metadata = publicPageMetadata({
+  title: 'Train Anywhere. Win Daily.',
+  description:
+    'The free health everything app: workout tracking, nutrition, mobility, mind, and learning. Free core forever. Works offline, anywhere in the world.',
+  path: '/',
+});
 
 /**
  * Landing stays request-aware for the private gate cookie.
@@ -15,5 +26,20 @@ export default async function MissionWinningLanding() {
     redirect('/private');
   }
 
-  return <LandingPage />;
+  const graph = [
+    organizationJsonLd(),
+    webSiteJsonLd(),
+    softwareApplicationJsonLd(),
+    faqPageJsonLd(),
+  ];
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
+      />
+      <LandingPage />
+    </>
+  );
 }
