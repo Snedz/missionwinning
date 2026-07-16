@@ -1,11 +1,12 @@
 /**
  * Send parent consent notification email.
- * Auth: session | See: app/api/INDEX.md
+ * Auth: optional session | Rate: 3/min/IP | Schema: youthConsentNotifySchema
+ * See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { Resend } from 'resend';
-import { rateLimit } from '@/lib/rateLimit';
+import { rateLimitAsync } from '@/lib/rateLimit';
 import { COPPA_AGE_THRESHOLD } from '@/lib/youthConsent';
 import {
   consentConfirmUrl,
@@ -13,15 +14,17 @@ import {
   generateConsentCode,
 } from '@/lib/youthConsentToken';
 import { getUserFromRequest } from '@/lib/supabaseRequestAuth';
+import { clientIp } from '@/lib/clientIp';
+import { parseJsonBody, youthConsentNotifySchema } from '@/lib/apiSchemas';
+import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 
 /** Email parent/guardian a verification code + confirm link. */
 export const POST = withApiLogging('youth/consent-notify', async(request: NextRequest) => {
-  const ip =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown';
+  const oversized = rejectOversizedBody(request, 4 * 1024);
+  if (oversized) return oversized;
 
-  const limited = rateLimit(`youth-consent:${ip}`, 3, 60_000);
+  const ip = clientIp(request);
+  const limited = await rateLimitAsync(`youth-consent-notify:${ip}`, 3, 60_000);
   if (!limited.ok) {
     return NextResponse.json(
       { error: 'Too many consent requests. Try again shortly.' },
@@ -37,16 +40,21 @@ export const POST = withApiLogging('youth/consent-notify', async(request: NextRe
     return NextResponse.json({ ok: false, error: 'Email not configured' }, { status: 503 });
   }
 
-  let body: { parentEmail?: string; childAge?: number };
+  let raw: unknown;
   try {
-    body = await request.json();
+    raw = await request.json();
   } catch {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  const parentEmail = body.parentEmail?.trim() ?? '';
-  const childAge = Number(body.childAge);
-  if (!parentEmail.includes('@') || !Number.isFinite(childAge) || childAge >= COPPA_AGE_THRESHOLD) {
+  const parsed = parseJsonBody(youthConsentNotifySchema, raw);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
+  }
+
+  const parentEmail = parsed.data.parentEmail.trim();
+  const childAge = parsed.data.childAge;
+  if (childAge >= COPPA_AGE_THRESHOLD) {
     return NextResponse.json({ error: 'Invalid consent payload' }, { status: 400 });
   }
 

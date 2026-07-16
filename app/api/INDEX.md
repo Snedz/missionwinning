@@ -33,8 +33,8 @@ Legend:
 
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
-| `coach/daily-insight` | POST | session or gate app access | 12/min | Zod |
-| `coach/plan-voice` | POST | session or gate app access | 6/min | Zod |
+| `coach/daily-insight` | POST | session or gate app access | 12/min + 32 KiB | Zod |
+| `coach/plan-voice` | POST | session or gate app access + premium | 6/min + 64 KiB | Zod |
 
 ### Premium content
 
@@ -60,7 +60,7 @@ Legend:
 
 | Route | Methods | Auth | Rate | Notes |
 |-------|---------|------|------|-------|
-| `school/class` | POST | session | — | create class |
+| `school/class` | POST | session | 10/min/IP | Zod create schema |
 | `school/class/mine` | GET | session | — | |
 | `school/class/[code]/access` | GET, POST | session + PIN | — | |
 | `school/class/[code]/verify` | GET, POST | gate + PIN | — | |
@@ -73,7 +73,7 @@ Legend:
 | Route | Methods | Auth | Rate | Notes |
 |-------|---------|------|------|-------|
 | `youth/consent-verify` | POST | token HMAC | limited | fail-closed secret |
-| `youth/consent-notify` | POST | session/parent flow | limited | |
+| `youth/consent-notify` | POST | optional session | 3/min/IP | Zod `youthConsentNotifySchema` |
 | `youth/consent-status` | GET | token/session | — | |
 | `youth/consent-confirm` | GET | token | — | |
 
@@ -81,9 +81,9 @@ Legend:
 
 | Route | Methods | Auth | Rate |
 |-------|---------|------|------|
-| `journey/nudge` | POST | session | — |
-| `nudges/unsubscribe` | POST | signed token | — |
-| `cron/nudges` | GET | `Authorization: Bearer CRON_SECRET` | — |
+| `journey/nudge` | POST | session | 5/min/IP + 4 KiB body | Zod `journeyNudgeBodySchema` |
+| `nudges/unsubscribe` | GET | signed token | 20/min/IP | query `u`+`t` |
+| `cron/nudges` | GET | `Authorization: Bearer CRON_SECRET` | — | |
 
 ### Checkout & webhooks
 

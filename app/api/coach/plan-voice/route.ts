@@ -13,8 +13,12 @@ import { clientIp } from '@/lib/clientIp';
 import { hasAppAccess } from '@/lib/requestAccess';
 import { fetchPlanVoice } from '@/lib/coach/planVoiceServer';
 import { coachPlanVoiceSchema, parseJsonBody } from '@/lib/apiSchemas';
+import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 
 export const POST = withApiLogging('coach/plan-voice', async(request: NextRequest) => {
+  const oversized = rejectOversizedBody(request, 64 * 1024);
+  if (oversized) return oversized;
+
   const ip = clientIp(request);
   const limited = await rateLimitAsync(`coach-plan-voice:${ip}`, 6, 60_000);
   if (!limited.ok) {

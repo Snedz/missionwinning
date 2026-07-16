@@ -1,15 +1,25 @@
 /**
  * Unsubscribe from journey nudge emails.
- * Auth: HMAC token | See: app/api/INDEX.md
+ * Auth: HMAC token | Rate: 20/min/IP | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { setRemindersOptOut, verifyUnsubscribeToken } from '@/lib/nudgeServer';
+import { clientIp } from '@/lib/clientIp';
+import { rateLimitAsync } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
 
 /** One-click unsubscribe from training reminder emails (HMAC-signed link). */
 export const GET = withApiLogging('nudges/unsubscribe', async(request: NextRequest) => {
+  const limited = await rateLimitAsync(`nudge-unsub:${clientIp(request)}`, 20, 60_000);
+  if (!limited.ok) {
+    return new NextResponse('Too many requests. Try again shortly.', {
+      status: 429,
+      headers: { 'Retry-After': String(limited.retryAfterSec ?? 60) },
+    });
+  }
+
   const userId = request.nextUrl.searchParams.get('u') ?? '';
   const token = request.nextUrl.searchParams.get('t') ?? '';
 

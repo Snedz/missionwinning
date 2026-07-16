@@ -13,9 +13,13 @@ import {
   fetchDailyCoachInsight,
 } from '@/lib/coachDailyServer';
 import { coachDailyContextSchema, parseJsonBody } from '@/lib/apiSchemas';
+import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 
 /** Daily AI coach insight — uses LLM when COACH_LLM_* env set; else rule keys from client. */
 export const POST = withApiLogging('coach/daily-insight', async(request: NextRequest) => {
+  const oversized = rejectOversizedBody(request);
+  if (oversized) return oversized;
+
   const ip = clientIp(request);
   const limited = await rateLimitAsync(`coach-daily:${ip}`, 12, 60_000);
   if (!limited.ok) {
