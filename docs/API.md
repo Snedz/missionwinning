@@ -69,6 +69,18 @@ curl -X POST "$BASE/api/private-access" \
 | Rate | 6/min/IP |
 | Schema | `coachPlanVoiceSchema` |
 
+### `POST /api/coach/chat`
+
+| | |
+|--|--|
+| Auth | `gate` + `hasAppAccess` + **premium** (402 `premium_required` if free) |
+| Rate | 10/min/IP |
+| Body cap | 32KB |
+| Schema | `coachChatSchema` — message ≤1000, turns ≤12, compact context (scores + optional today session / exerciseId) |
+| Success | `{ message, actionLabel?, actionPath?, source: 'llm' }` |
+| Errors | 503 `coach_offline` (LLM unconfigured / ZDR fail-closed), 502 other LLM fail |
+| Notes | No rules fallback. ZDR one-shot via `coachLlmClient`. Transcript not stored server-side. |
+
 ---
 
 ## Premium (gated content)

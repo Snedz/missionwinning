@@ -8,6 +8,7 @@ import type { BodyScores } from '@/lib/score';
 import type { TodayTrends } from '@/lib/todayTrends';
 import { animateCount } from '@/lib/motion';
 import { cn } from '@/lib/utils';
+import { StreakChip } from '@/components/today/StreakChip';
 
 interface Props {
   missionScore: number;
@@ -45,8 +46,12 @@ export function TodayDashboardHeader({ missionScore, scores, streak, trends, cla
             {displayScore}
           </p>
           {streak > 0 && (
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('todayTrainingStreak', { count: streak, defaultValue: `${streak}-day training streak` })}
+            <p className="mt-1">
+              <StreakChip
+                streak={streak}
+                variant="inline"
+                className="text-muted-foreground"
+              />
             </p>
           )}
         </div>

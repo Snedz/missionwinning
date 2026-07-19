@@ -19,9 +19,11 @@ import { cn } from '@/lib/utils';
 type Props = {
   session: PlanSession;
   className?: string;
+  /** Today’s not-done session only — opens adjust flow. */
+  onAdjust?: () => void;
 };
 
-export function PlanSessionCard({ session, className }: Props) {
+export function PlanSessionCard({ session, className, onAdjust }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const units = useUnits();
@@ -95,9 +97,20 @@ export function PlanSessionCard({ session, className }: Props) {
           })}
         </ul>
         {session.status !== 'done' && (
-          <Button className="w-full primary-action" variant="fitness" onClick={start}>
-            {t('coachStartSession', { defaultValue: 'Start this session' })}
-          </Button>
+          <div className="space-y-2">
+            <Button className="w-full primary-action" variant="fitness" onClick={start}>
+              {t('coachStartSession', { defaultValue: 'Start this session' })}
+            </Button>
+            {onAdjust ? (
+              <button
+                type="button"
+                className="w-full text-sm text-primary min-h-[44px] hover:underline"
+                onClick={onAdjust}
+              >
+                {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
+              </button>
+            ) : null}
+          </div>
         )}
       </CardContent>
     </Card>

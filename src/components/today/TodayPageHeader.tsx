@@ -4,6 +4,7 @@ import { LayoutGrid } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
 import { JourneyStrip } from '@/components/journey/JourneyHero';
+import { StreakChip } from '@/components/today/StreakChip';
 
 interface Props {
   today: string;
@@ -53,9 +54,9 @@ export function TodayPageHeader({
         )}
       </div>
       {streak > 0 && (
-        <p className="text-sm text-muted-foreground">
-          {t('todayDayStreak', { count: streak, defaultValue: `${streak}-day streak` })}
-          {' · '}
+        <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1">
+          <StreakChip streak={streak} variant="inline" />
+          <span aria-hidden>·</span>
           <a href="/leaderboard" className="text-primary hover:underline">
             {t('leaderboardRankings', { defaultValue: 'Rankings' })}
           </a>

@@ -18,8 +18,11 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. C
 | `exercise_page_viewed` | Public exercise page viewed |
 | `public_cta_clicked` | CTA on public SEO pages |
 | `waitlist_joined` | Landing capture / waitlist (`product: landing`) |
-| `iday_started` / `iday_completed` | Journey onboarding |
+| `iday_started` / `iday_mission_accepted` / `iday_profile_completed` / `iday_completed` | I-Day funnel (per-step drop-off) |
 | `first_workout_completed` / `workout_completed` | Train retention |
+| `coach_session_adjusted` | Free “adjust today” coach action |
+| `coach_chat_opened` / `coach_chat_message_sent` | Premium coach chat (never content) |
+| `push_subscribed` | Web push device opt-in |
 | `class_joined` | School class join |
 | `checkout_clicked` | Bundle / Unlock checkout start (inherits UTM super-props) |
 | `coach_taster_locked` | Free Coach week exhausted → upgrade moment |
@@ -36,9 +39,14 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. C
 |------|----------------|
 | 1 | `$pageview` (optional: path = `/` or starts with `/guide`) |
 | 2 | `waitlist_joined` **or** `iday_started` (two funnels if you want split: list vs product) |
-| 3 | `iday_completed` |
-| 4 | `first_workout_completed` |
-| 5 | `workout_completed` (repeat) for retention |
+| 3 | `iday_mission_accepted` |
+| 4 | `iday_profile_completed` |
+| 5 | `iday_completed` |
+| 6 | `first_workout_completed` |
+| 7 | `workout_completed` (repeat) for retention |
+
+**I-Day diagnosis funnel (public-flip gate ≥80% complete):**  
+`iday_started` → `iday_mission_accepted` → `iday_profile_completed` → `iday_completed` → `first_workout_completed`.
 
 **Money funnel (separate):**
 
@@ -49,6 +57,8 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. C
 **Attribution:** first-touch `utm_source` / `utm_medium` / `utm_campaign` / `landing_path` are PostHog super-properties after consent (`attribution.ts`). Breakdown funnels by `utm_source`.
 
 **Retention:** weekly cohort on `workout_completed` (repeat training) — year-one #1 metric.
+
+**Push attribution:** notification open URLs use `?src=push` (e.g. `/log?src=push`). There is no SW-side analytics; PostHog pageviews pick up the query when the user lands after `notificationclick`.
 
 **SEO organic funnel (optional):**
 

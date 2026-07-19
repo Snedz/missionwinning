@@ -6,7 +6,7 @@ import { chooseSplit, mapToCalendar, todayDayOffset } from '@/lib/coach/splitPla
 import { buildSession } from '@/lib/coach/selector';
 import { hashString, mulberry32 } from '@/lib/coach/rng';
 
-function recoverySession(dayOffset: number, weekStart: string): PlanSession {
+export function recoverySession(dayOffset: number, weekStart: string): PlanSession {
   const rng = mulberry32(hashString(`${weekStart}-recovery-${dayOffset}`));
   return buildSession(
     { kind: 'recovery', focusGroups: ['Core', 'Back'], nameKey: 'coachSessionRecovery' },

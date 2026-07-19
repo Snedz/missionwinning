@@ -19,6 +19,7 @@ export function CoachTodayCard() {
   const router = useRouter();
   const { plan, todaySession, loading, locked, generate } = useCoachPlan();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
+  // Adjust lives on CoachPage; deep-link users to the full week for free offline adjust.
 
   if (loading) return null;
 
@@ -91,9 +92,17 @@ export function CoachTodayCard() {
           <>
             <p className="font-medium">{todaySession.name}</p>
             {todaySession.status !== 'done' && (
-              <Button variant="fitness" size="sm" className="w-full" onClick={startToday}>
-                {t('coachStartSession', { defaultValue: 'Start this session' })}
-              </Button>
+              <>
+                <Button variant="fitness" size="sm" className="w-full" onClick={startToday}>
+                  {t('coachStartSession', { defaultValue: 'Start this session' })}
+                </Button>
+                <Link
+                  href="/coach"
+                  className="block text-center text-sm text-primary min-h-[44px] leading-[44px] hover:underline"
+                >
+                  {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
+                </Link>
+              </>
             )}
             {todaySession.status === 'done' && (
               <p className="text-sm text-status-warn">

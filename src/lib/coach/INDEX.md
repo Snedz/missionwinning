@@ -16,15 +16,23 @@
 10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history
 11. `planVoiceServer.ts` — LLM/rules voice for weekly briefing (used by API route)
 12. `rng.ts` — `mulberry32`, `hashString` (deterministic variety)
+13. `adjust.ts` — free offline “adjust today” (time / bodyweight / avoid group)
+14. Related: `src/lib/coachChatServer.ts` — premium chat prompts + parse (API `/api/coach/chat`)
 
 ## Optional LLM + ZDR
 
-Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts`).
+Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` + chat).
 
 - Prefer SpaceXAI/xAI + Console **Zero Data Retention** (team-wide). Header check: `x-zero-data-retention`.
 - **Allowed:** one-shot OpenAI-compatible chat completions.
 - **Forbidden under ZDR ops:** Files, Collections/RAG, Batch, deferred completions, stateful Responses (`store_messages` / `previous_response_id`).
 - Env: `COACH_LLM_*` — see root `ENV.md`.
+
+## Tests
+
+| File | Covers |
+|------|--------|
+| `adjust.test.ts` | Time cap, bodyweight, avoid, revision, determinism |
 
 ## Tests (colocated)
 

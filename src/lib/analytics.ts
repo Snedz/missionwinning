@@ -11,8 +11,9 @@
  * - posthog-js is dynamic-imported so it never ships on first paint when unused.
  *
  * The funnel these events exist to answer (STRATEGY.md #1 metric):
- *   visit → iday_started → iday_completed → first_workout_completed →
- *   workout_completed (repeat) → week-4 retention cohort.
+ *   visit → iday_started → iday_mission_accepted → iday_profile_completed →
+ *   iday_completed → first_workout_completed → workout_completed (repeat) →
+ *   week-4 retention cohort.
  */
 
 import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
@@ -20,6 +21,8 @@ import { attributionAsProps, loadAttribution } from '@/lib/attribution';
 
 type AnalyticsEvent =
   | 'iday_started'
+  | 'iday_mission_accepted'
+  | 'iday_profile_completed'
   | 'iday_completed'
   | 'first_workout_completed'
   | 'workout_completed'
@@ -37,6 +40,10 @@ type AnalyticsEvent =
   | 'coach_plan_regenerated_fatigue'
   | 'coach_taster_locked'
   | 'coach_premium_active'
+  | 'coach_session_adjusted'
+  | 'coach_chat_opened'
+  | 'coach_chat_message_sent'
+  | 'push_subscribed'
   | 'fuel_plan_generated'
   | 'fuel_plan_regenerated'
   | 'backup_exported'

@@ -103,7 +103,7 @@ function pickRecoveryExercises(rng: () => number): PlanExercise[] {
   }));
 }
 
-function estimateMinutes(exercises: PlanExercise[], kind: SplitDay['kind']): number {
+export function estimateMinutes(exercises: PlanExercise[], kind: SplitDay['kind']): number {
   const perEx = kind === 'conditioning' ? 5 : 8;
   const base = exercises.reduce((s, e) => s + e.sets * perEx, 0);
   return Math.max(20, Math.min(60, Math.round(base)));

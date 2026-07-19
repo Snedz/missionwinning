@@ -1,6 +1,9 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { getPillarWins, type PillarType } from '@/lib/pillarLog';
 import { loadGuidebookProgress } from '@/lib/guidebookProgress';
+import { STREAK_KEY, getTrainingStreak } from '@/lib/streaks';
+
+export { STREAK_KEY, getTrainingStreak };
 
 export type ChallengeId =
   | 'train-7'
@@ -80,7 +83,6 @@ export const CHALLENGES: ChallengeDef[] = [
 ];
 
 const STORAGE_KEY = 'mw_challenges';
-const STREAK_KEY = 'mw_streak';
 const LAST_WORKOUT_KEY = 'mw_last_workout_date';
 const PROTEIN_THRESHOLD = 120;
 
@@ -175,28 +177,6 @@ export function syncProteinChallengeFromNutrition() {
   } catch {
     // ignore
   }
-}
-
-export function getTrainingStreak(workoutHistory: CompletedWorkoutLog[]): number {
-  if (typeof window !== 'undefined') {
-    const stored = parseInt(localStorage.getItem(STREAK_KEY) || '0', 10);
-    if (stored > 0) return stored;
-  }
-  if (workoutHistory.length === 0) return 0;
-
-  const dates = [...new Set(
-    workoutHistory.map((w) => new Date(w.completedAt).toISOString().split('T')[0])
-  )].sort().reverse();
-
-  let streak = 1;
-  for (let i = 0; i < dates.length - 1; i++) {
-    const a = new Date(dates[i]);
-    const b = new Date(dates[i + 1]);
-    const diff = Math.floor((a.getTime() - b.getTime()) / (1000 * 3600 * 24));
-    if (diff === 1) streak++;
-    else break;
-  }
-  return streak;
 }
 
 export function getChallengeProgress(): Array<ChallengeDef & { current: number; percent: number }> {

@@ -4,6 +4,17 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-19 — Wave 7: AI Coach depth + retention instrumentation (`2026.07-unified.87`)
+
+- **C** I-Day funnel: `iday_mission_accepted`, `iday_profile_completed` (+ SEO_ANALYTICS steps)
+- **E** Unified `streaks.ts` + `StreakChip` on Today headers
+- **A** Free offline adjust today (`adjust.ts`, sheet, no premium gate)
+- **B** Premium coach chat API + panel (ZDR client, no rules fallback; free locked teaser)
+- **D** Web push dark: migration `push_subscriptions`, VAPID env, SW handlers, cron + email; Profile device toggle
+- e2e `coach-adjust.spec.ts`; events: `coach_session_adjusted`, `coach_chat_*`, `push_subscribed`
+
+---
+
 ## 2026-07-16 — SpaceXAI/xAI Zero Data Retention (ZDR) for optional coach LLM (`2026.07-unified.86`)
 
 - Shared `coachLlmClient`: stateless chat completions only; reads `x-zero-data-retention`; `COACH_LLM_REQUIRE_ZDR` fail-closed

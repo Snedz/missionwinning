@@ -92,6 +92,9 @@ export function ProfilePage() {
   const [premium, setPremium] = useState(false);
   const [reminders, setReminders] = useState(false);
   const [remindersBusy, setRemindersBusy] = useState(false);
+  const [pushSupported, setPushSupported] = useState(false);
+  const [pushOn, setPushOn] = useState(false);
+  const [pushBusy, setPushBusy] = useState(false);
   const [billingBusy, setBillingBusy] = useState(false);
 
   useEffect(() => {
@@ -116,6 +119,11 @@ export function ProfilePage() {
     // Use real premium check (DB if logged in, demo local fallback)
     import("@/lib/supabase").then(({ isPremium }) => {
       isPremium().then(setPremium);
+    });
+    void import('@/lib/pushClient').then(async (m) => {
+      if (!m.isPushSupported()) return;
+      setPushSupported(true);
+      setPushOn(await m.hasLocalPushSubscription());
     });
   }, []);
 
@@ -313,7 +321,7 @@ export function ProfilePage() {
               variant={reminders ? 'default' : 'outline'}
               disabled={remindersBusy}
               onClick={toggleReminders}
-              className="shrink-0"
+              className="shrink-0 min-h-[44px]"
               aria-pressed={reminders}
             >
               {reminders
@@ -321,6 +329,48 @@ export function ProfilePage() {
                 : t('remindersOff', { defaultValue: 'Off' })}
             </Button>
           </CardContent>
+          {reminders && pushSupported ? (
+            <CardContent className="flex items-center justify-between gap-4 border-t border-border/40 pt-4">
+              <p className="text-sm text-muted-foreground">
+                {t('remindersPushDesc', {
+                  defaultValue: 'Also notify on this device (web push).',
+                })}
+              </p>
+              <Button
+                variant={pushOn ? 'default' : 'outline'}
+                disabled={pushBusy}
+                className="shrink-0 min-h-[44px]"
+                aria-pressed={pushOn}
+                onClick={async () => {
+                  setPushBusy(true);
+                  try {
+                    const m = await import('@/lib/pushClient');
+                    if (pushOn) {
+                      await m.unsubscribePush();
+                      setPushOn(false);
+                    } else {
+                      const r = await m.subscribePush();
+                      setPushOn(r === 'ok');
+                      if (r !== 'ok') {
+                        toast({
+                          title: t('remindersPushFailed', {
+                            defaultValue: 'Could not enable device notifications',
+                          }),
+                          variant: 'destructive',
+                        });
+                      }
+                    }
+                  } finally {
+                    setPushBusy(false);
+                  }
+                }}
+              >
+                {pushOn
+                  ? t('remindersOn', { defaultValue: 'On' })
+                  : t('remindersOff', { defaultValue: 'Off' })}
+              </Button>
+            </CardContent>
+          ) : null}
         </Card>
       )}
 

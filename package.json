@@ -59,6 +59,7 @@
     "stripe": "^22.3.2",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
+    "web-push": "^3.6.7",
     "zod": "^4.4.3",
     "zustand": "^5.0.3"
   },
@@ -68,6 +69,7 @@
     "@types/node": "^22.13.5",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/web-push": "^3.6.4",
     "autoprefixer": "^10.4.20",
     "chrome-launcher": "^1.2.1",
     "eslint": "^9.21.0",

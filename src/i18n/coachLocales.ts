@@ -43,6 +43,24 @@ type CoachStrings = {
   coachVoiceDeload: string;
   coachVoiceRecovery: string;
   coachVoiceHighVolume: string;
+  coachWhyConservative: string;
+  coachAdjustTitle: string;
+  coachAdjustToday: string;
+  coachAdjust20: string;
+  coachAdjust30: string;
+  coachAdjustBodyweight: string;
+  coachAdjustHurts: string;
+  coachAdjustNoteTime: string;
+  coachAdjustNoteEquipment: string;
+  coachAdjustNoteAvoid: string;
+  coachAdjustClose: string;
+  coachChatTitle: string;
+  coachChatPlaceholder: string;
+  coachChatSend: string;
+  coachChatLockedTitle: string;
+  coachChatLockedDesc: string;
+  coachChatOffline: string;
+  coachChatOpen: string;
 };
 
 const en: CoachStrings = {
@@ -94,6 +112,25 @@ const en: CoachStrings = {
     'Readiness is lower — prioritize mobility and quality reps. Strength returns when you recover.',
   coachVoiceHighVolume:
     'A full training week ahead. Fuel well, sleep consistently, and trust the progression.',
+  coachWhyConservative: 'Conservative load after an avoid adjustment — quality over ego.',
+  coachAdjustTitle: 'Adjust today’s session',
+  coachAdjustToday: 'Adjust today',
+  coachAdjust20: '20 min',
+  coachAdjust30: '30 min',
+  coachAdjustBodyweight: 'No equipment today',
+  coachAdjustHurts: 'Something hurts',
+  coachAdjustNoteTime: 'Shortened for time — same intent, fewer sets.',
+  coachAdjustNoteEquipment: 'Bodyweight-only version of today’s focus.',
+  coachAdjustNoteAvoid: 'Stepped around a sore group — conservative loads.',
+  coachAdjustClose: 'Done',
+  coachChatTitle: 'Ask your coach',
+  coachChatPlaceholder: 'Ask about today’s session, form, or recovery…',
+  coachChatSend: 'Send',
+  coachChatLockedTitle: 'Coach chat is Super Bundle',
+  coachChatLockedDesc:
+    'Chat with your coach about form, fuel, and recovery. Free core keeps the plan and offline adjustments.',
+  coachChatOffline: 'Coach voice offline — your plan and adjustments still work.',
+  coachChatOpen: 'Ask your coach',
 };
 
 const es: CoachStrings = {
@@ -110,6 +147,25 @@ const es: CoachStrings = {
     'Premium también vigila la carga: si el strain es alto (≥70), las sesiones futuras se aligeran para que recuperes sin abandonar la semana.',
   coachUnlockBundle: 'Desbloquear Super Bundle',
   coachViewLockedPlan: 'Ver la semana pasada y desbloquear',
+  coachWhyConservative: 'Carga conservadora tras evitar un grupo — calidad sobre ego.',
+  coachAdjustTitle: 'Ajustar la sesión de hoy',
+  coachAdjustToday: 'Ajustar hoy',
+  coachAdjust20: '20 min',
+  coachAdjust30: '30 min',
+  coachAdjustBodyweight: 'Sin equipo hoy',
+  coachAdjustHurts: 'Algo me duele',
+  coachAdjustNoteTime: 'Acortada por tiempo — misma intención, menos series.',
+  coachAdjustNoteEquipment: 'Versión solo peso corporal del enfoque de hoy.',
+  coachAdjustNoteAvoid: 'Evitamos un grupo dolorido — cargas conservadoras.',
+  coachAdjustClose: 'Listo',
+  coachChatTitle: 'Pregunta a tu coach',
+  coachChatPlaceholder: 'Pregunta por la sesión, la técnica o la recuperación…',
+  coachChatSend: 'Enviar',
+  coachChatLockedTitle: 'El chat del coach es Super Bundle',
+  coachChatLockedDesc:
+    'Habla con tu coach sobre técnica, nutrición y recuperación. El núcleo gratis mantiene el plan y los ajustes offline.',
+  coachChatOffline: 'Coach offline — tu plan y ajustes siguen funcionando.',
+  coachChatOpen: 'Pregunta a tu coach',
 };
 
 const fr: CoachStrings = {

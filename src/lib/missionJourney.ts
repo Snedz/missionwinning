@@ -4,6 +4,7 @@
  */
 import type { CompletedWorkoutLog } from '@/types';
 import { getPillarWins } from '@/lib/pillarLog';
+import { getTrainingStreak } from '@/lib/streaks';
 
 export type JourneyPhase = 'i-day' | 'basic' | 'readiness' | 'commissioned';
 
@@ -207,32 +208,7 @@ function detectBasicMilestones(workoutHistory: CompletedWorkoutLog[] = []): Jour
   return { workout, fuel, move, mind, learn };
 }
 
-/** Streak without importing challenges (which pulls nutrition/guidebook graph). */
-function trainingStreakLite(workoutHistory: CompletedWorkoutLog[]): number {
-  if (typeof window !== 'undefined') {
-    try {
-      const stored = parseInt(localStorage.getItem('mw_streak') || '0', 10);
-      if (Number.isFinite(stored) && stored > 0) return stored;
-    } catch {
-      /* fall through */
-    }
-  }
-  if (workoutHistory.length === 0) return 0;
-  const dates = [
-    ...new Set(workoutHistory.map((w) => new Date(w.completedAt).toISOString().split('T')[0])),
-  ]
-    .sort()
-    .reverse();
-  let streak = 1;
-  for (let i = 0; i < dates.length - 1; i++) {
-    const a = new Date(dates[i]);
-    const b = new Date(dates[i + 1]);
-    const diff = Math.floor((a.getTime() - b.getTime()) / (1000 * 3600 * 24));
-    if (diff === 1) streak++;
-    else break;
-  }
-  return streak;
-}
+
 
 function detectReadinessMilestones(workoutHistory: CompletedWorkoutLog[]): JourneyReadinessMilestones {
   let parq = false;
@@ -242,7 +218,7 @@ function detectReadinessMilestones(workoutHistory: CompletedWorkoutLog[]): Journ
     parq = false;
   }
 
-  const streak = trainingStreakLite(workoutHistory);
+  const streak = getTrainingStreak(workoutHistory);
   const recent14 = workoutHistory.filter(
     (w) => Date.now() - new Date(w.completedAt).getTime() <= 14 * 86400000
   ).length;
