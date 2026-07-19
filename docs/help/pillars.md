@@ -42,11 +42,13 @@ Recovery and focus — breathing timers and guided sessions. Some sessions requi
 
 Activity and GPS — log runs, walks, and imports. Complements Train for endurance and general movement.
 
+You can import activity files without linking a watch: Apple Health Shortcuts JSON, Google Fit / Takeout export, or a simple CSV (`date`, `type`, `durationMin`, `distanceKm`). Live watch sync (Apple Health, Google Health Connect, Whoop, and others) is planned behind an optional Profile setting when enabled — Mission Score still comes from your logs, not from a wearable.
+
 ## Learn
 
 **Route:** `/learn`, `/learn/guide`
 
-Education — structured paths and the Mission Winning guidebook. Free chapters are public; full guidebook depth may be premium.
+Education — structured paths and the Mission Winning guidebook (**Beyond the Basics**). Free chapters are public at `/guide` without an account. You can also download the magazine PDF from `/guide` or `/learn/guide` (same free chapters, print-friendly). Full specialist depth may be premium.
 
 ## Today — your hub
 

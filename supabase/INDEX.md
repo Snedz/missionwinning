@@ -23,6 +23,7 @@
 | `20260702_security_hardening.sql` | Security |
 | `20260703_reminders_optin.sql` | `reminders_opt_in`, `last_nudge_at` |
 | `20260716_crypto_payment_intents.sql` | Phantom USDC lifetime payment intents |
+| `20260719_wearable_connections.sql` | Wearable OAuth connections + samples |
 
 ## Key tables
 
@@ -31,6 +32,8 @@
 | `profiles` | User prefs, journey, coach plan JSON, locale, units |
 | `enrollments` | Premium subscription records |
 | `crypto_payment_intents` | Solana Pay reference intents for Phantom USDC |
+| `wearable_connections` | OAuth/hub connection tokens (service-role write) |
+| `wearable_samples` | Normalized wearable samples |
 | School/PFT tables | See fitness_test migration |
 | `youth_consent_records` | COPPA |
 

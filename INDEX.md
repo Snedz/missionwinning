@@ -25,6 +25,7 @@
 | Social / launch posts | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [BETA_INVITE.md](BETA_INVITE.md) | — |
 | LLC + Stripe | [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
 | Mobile (deferred) | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Native rewrite |
+| Wearables (Horizon 3) | [docs/WEARABLES.md](docs/WEARABLES.md) | Live OAuth/hubs until retention unlock |
 | Premium / conversion | [REDTEAM.md](REDTEAM.md), [STRATEGY.md](STRATEGY.md) | — |
 | Journey UX (I-Day → Commissioned) | [JOURNEY.md](JOURNEY.md) | Build phases in [PLAN.md](PLAN.md) (different “phase”) |
 | UI unification | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | — |
@@ -99,6 +100,7 @@
 | [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md) | LLC → Stripe checklist |
 | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) | Public flip day |
 | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Deferred Play/iOS shells |
+| [docs/WEARABLES.md](docs/WEARABLES.md) | Multi-vendor wearables (Apple, Google, Whoop, …) |
 | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
 | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |
 | [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |

@@ -13,6 +13,7 @@
 | `RestTimerBar.tsx` | Rest countdown UI |
 | `WorkoutVictorySheet.tsx` | Post-workout summary sheet |
 | `PlateCalculatorSheet.tsx` | Plate math sheet |
+| `LiveHeartRate.tsx` | Optional Web Bluetooth BPM strip (wearables flag) |
 
 ## Related
 

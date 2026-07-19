@@ -102,6 +102,17 @@ Legend:
 | `paypal-webhook` | POST | PayPal REST verify | — | service role enroll |
 | `beta/metrics` | GET | beta admin email **or** `x-beta-admin-secret` | — | service role aggregate |
 
+### Wearables (flag: `NEXT_PUBLIC_WEARABLES`)
+
+| Route | Methods | Auth | Rate | Body |
+|-------|---------|------|------|------|
+| `wearables/status` | GET | session | 30/min | — |
+| `wearables/sync` | POST | session | 8/min | Zod `wearableSyncSchema` |
+| `wearables/disconnect` | POST | session | 10/min | Zod `wearableDisconnectSchema` |
+| `wearables/hub-ingest` | POST | session | 20/min | Zod `wearableHubIngestSchema` |
+| `wearables/oauth/[provider]/start` | GET | session | 10/min | redirect to vendor |
+| `wearables/oauth/[provider]/callback` | GET | signed state | 20/min | code exchange → `/profile` |
+
 ---
 
 ## Red-team quick curls (Wave 1)

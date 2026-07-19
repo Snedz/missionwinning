@@ -54,5 +54,5 @@ Still one product: the web app. Native is distribution packaging.
 ## Explicit non-goals (now)
 
 - Rewriting Train/Fuel in Swift/Kotlin  
-- Wearables / HealthKit / Google Fit as launch blockers  
+- Wearables / HealthKit / Google Fit as launch blockers (strategy + scaffolding: [WEARABLES.md](WEARABLES.md); hubs attach to this shell later)  
 - Separate Android and iOS feature sets
