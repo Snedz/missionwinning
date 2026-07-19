@@ -133,6 +133,13 @@ export const cryptoCheckoutConfirmSchema = z.object({
   signature: z.string().min(32).max(128),
 });
 
+/** Referral redeem — MW- + 5 chars (no I/O/0/1 ambiguity). */
+export const referralRedeemBodySchema = z.object({
+  code: z
+    .string()
+    .regex(/^MW-[A-HJ-NP-Z2-9]{5}$/, 'Invalid referral code format'),
+});
+
 export const schoolClassCreateSchema = z.object({
   code: z.string().min(4).max(16),
   name: z.string().max(120).optional(),

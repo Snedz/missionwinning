@@ -81,9 +81,10 @@ if (typeof window !== 'undefined') {
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
   const [showOfflineBanner, setShowOfflineBanner] = useState(false);
 
-  // First-touch UTM / referrer (local only until lead submit or analytics allow).
+  // First-touch UTM / referrer / ?ref= (local only until lead submit or analytics allow).
   useEffect(() => {
-    captureAttribution();
+    const { referralLanded } = captureAttribution();
+    if (referralLanded) track('referral_landed');
   }, []);
 
   // Offline banner after idle — lucide + banner JS off first paint.

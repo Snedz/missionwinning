@@ -41,6 +41,7 @@ Nothing in this plan works while the app is unreachable. The record so far: mont
 **A11.** i18n breadth pre-launch (nav in 14 languages) drives early growth — almost certainly premature; costs little now that it's paused.
 **A12.** The leaderboard/Pacers mechanic matters to the wedge user at N<1,000 — probably not; it's now honest, so it can idle.
 **A13.** The America/PFT track becomes a school-distribution channel — parked behind a flag; zero cost until reopened deliberately.
+**A14.** Referral growth is net-positive without paid rewards. Wave 8 ships recognition-only invite codes (`MW-XXXXX`). If we ever attach monetary/premium rewards, expect multi-account fraud and support load — require device fingerprinting + manual review first. *Falsifying evidence for recognition-only: zero shares after 1k actives.*
 
 ---
 

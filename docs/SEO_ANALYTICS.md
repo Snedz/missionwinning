@@ -23,6 +23,11 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. C
 | `coach_session_adjusted` | Free “adjust today” coach action |
 | `coach_chat_opened` / `coach_chat_message_sent` | Premium coach chat (never content) |
 | `push_subscribed` | Web push device opt-in |
+| `referral_landed` | `?ref=` stored in first-party attribution |
+| `referral_attributed` | Sign-in redeem succeeded |
+| `referral_link_shared` | Profile invite share/copy |
+| `workout_shared` | Victory sheet share |
+| `mission_shared` | PFT / class / commissioning share |
 | `class_joined` | School class join |
 | `checkout_clicked` | Bundle / Unlock checkout start (inherits UTM super-props) |
 | `coach_taster_locked` | Free Coach week exhausted → upgrade moment |

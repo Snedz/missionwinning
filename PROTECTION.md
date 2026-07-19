@@ -159,6 +159,10 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 - [x] Barcode / food search API for Fuel (`BarcodeLookup.tsx`, Open Food Facts)
 - [x] Audio-guided Mind sessions — premium timed guided sessions (CDN audio optional next)
 
+### Referral fraud note (Wave 8)
+
+Referral **v1 is recognition only** (recruit counts + brass badges at 3/10/25). No Stripe discounts, free months, or premium grants — those create fraud + refund entanglement pre-launch. Codes use service-role writes; a BEFORE UPDATE trigger reverts client spoofing of `referral_code` / `referred_by`. Redeem is limited to accounts ≤7 days old. Revisit monetary rewards only after week-4 retention holds and abuse tooling exists.
+
 ---
 
 ## Environment reference

@@ -15,6 +15,7 @@ import {
 import { formatDuration } from '@/lib/utils';
 import type { WorkoutVictorySummary } from '@/lib/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
+import { track } from '@/lib/analytics';
 
 type Props = {
   open: boolean;
@@ -47,20 +48,36 @@ export function WorkoutVictorySheet({
   });
 
   const handleShare = async () => {
+    let refCode: string | null = null;
+    try {
+      refCode = localStorage.getItem('mw_referral_code');
+    } catch {
+      /* private mode */
+    }
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
+    const shareUrl = refCode
+      ? `${origin}/?ref=${encodeURIComponent(refCode)}`
+      : `${origin}/?utm_source=share&utm_medium=victory`;
+    const fullText = `${shareText} ${shareUrl}`;
+
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
           title: t('victoryTitle', { defaultValue: 'Mission complete' }),
-          text: shareText,
-          url: typeof window !== 'undefined' ? window.location.origin : undefined,
+          text: fullText,
+          url: shareUrl,
         });
+        track('workout_shared', { method: 'shared' });
         return;
       } catch {
         // user cancelled or failed
       }
     }
     if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(fullText);
+      track('workout_shared', { method: 'copied' });
+    } else {
+      track('workout_shared', { method: 'failed' });
     }
   };
 

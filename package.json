@@ -19,7 +19,8 @@
     "verify-premium": "node scripts/verify-stripe-enrollment.mjs --check-gates",
     "security-audit": "npm audit --audit-level=high",
     "e2e": "node scripts/e2e-smoke.mjs",
-    "e2e:critical": "playwright test --config=playwright.config.ts",
+    "e2e:critical": "playwright test --config=playwright.config.ts --grep-invert @a11y",
+    "a11y": "playwright test --config=playwright.config.ts --grep @a11y",
     "lighthouse-budget": "node scripts/lighthouse-budget.mjs",
     "sync-vercel-env": "node scripts/sync-vercel-env.mjs",
     "print-beta-invite": "node --env-file=.env.local scripts/print-beta-invite.ts",
@@ -64,6 +65,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^9.21.0",
     "@playwright/test": "^1.61.1",
     "@types/node": "^22.13.5",

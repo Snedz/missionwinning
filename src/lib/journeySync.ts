@@ -191,5 +191,9 @@ function requestWelcomeEmail(): void {
 export async function syncJourneyOnSignIn(): Promise<void> {
   await pullJourneyFromCloud();
   const pushed = await pushJourneyToCloud();
-  if (pushed) requestWelcomeEmail();
+  if (pushed) {
+    requestWelcomeEmail();
+    // Referral redeem (Wave 8) — fire-and-forget; service-role write via API
+    void import('@/lib/referral').then((m) => m.redeemReferralFromAttribution());
+  }
 }

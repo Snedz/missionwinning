@@ -291,6 +291,53 @@ const fr: BundleStrings = {
   bundleTabLifetime: 'À vie',
   bundleUnlockCta: 'Débloquer le Super Bundle',
   bundleFreeForeverTitle: 'Gratuit pour toujours',
+  bundleFreeForeverBody:
+    'Chaque pilier a un niveau gratuit. Le Bundle approfondit le Coach et le contenu premium — jamais obligatoire pour logger les entraînements.',
+};
+
+/** Batch C — LLM-drafted; founder review before public flip. */
+const it: BundleStrings = {
+  ...en,
+  bundleHeadline: 'Super Bundle — sei pilastri, un abbonamento',
+  bundleSubhead: 'Profondità premium quando vuoi. Il core gratis resta gratis per sempre.',
+  bundleTabMonthly: 'Mensile',
+  bundleTab12mo: '12 mesi',
+  bundleTabLifetime: 'A vita',
+  bundleUnlockCta: 'Sblocca Super Bundle',
+  bundleFreeForeverTitle: 'Gratis per sempre',
+};
+
+const ru: BundleStrings = {
+  ...en,
+  bundleHeadline: 'Super Bundle — шесть столпов, одна подписка',
+  bundleSubhead: 'Премиум-глубина когда нужно. Бесплатное ядро навсегда бесплатно.',
+  bundleTabMonthly: 'Ежемесячно',
+  bundleTab12mo: '12 месяцев',
+  bundleTabLifetime: 'Навсегда',
+  bundleUnlockCta: 'Открыть Super Bundle',
+  bundleFreeForeverTitle: 'Бесплатно навсегда',
+};
+
+const ko: BundleStrings = {
+  ...en,
+  bundleHeadline: 'Super Bundle — 여섯 기둥, 하나의 구독',
+  bundleSubhead: '원할 때 프리미엄 깊이. 무료 코어는 영원히 무료.',
+  bundleTabMonthly: '월간',
+  bundleTab12mo: '12개월',
+  bundleTabLifetime: '평생',
+  bundleUnlockCta: 'Super Bundle 잠금 해제',
+  bundleFreeForeverTitle: '영원히 무료',
+};
+
+const ja: BundleStrings = {
+  ...en,
+  bundleHeadline: 'Super Bundle — 6つの柱、ひとつのサブスク',
+  bundleSubhead: '必要なときにプレミアムの深さ。無料コアは永久無料。',
+  bundleTabMonthly: '月額',
+  bundleTab12mo: '12か月',
+  bundleTabLifetime: '生涯',
+  bundleUnlockCta: 'Super Bundle を解除',
+  bundleFreeForeverTitle: '永久無料',
 };
 
 const LOCALES: Partial<Record<string, BundleStrings>> = {
@@ -303,6 +350,10 @@ const LOCALES: Partial<Record<string, BundleStrings>> = {
   pt,
   de,
   fr,
+  it,
+  ru,
+  ko,
+  ja,
 };
 
 export function bundleStringsFor(lang: string): BundleStrings {

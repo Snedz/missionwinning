@@ -141,3 +141,60 @@ export function isBetaAdminEmail(email: string | null | undefined): boolean {
     .filter(Boolean);
   return allowed.includes(email.toLowerCase());
 }
+
+export type Week4Retention = {
+  cohort_eligible: number;
+  week4_retained: number;
+};
+
+/** Null-safe if migration / RPC missing. */
+export async function computeWeek4Retention(): Promise<Week4Retention | null> {
+  const admin = getSupabaseAdmin();
+  if (!admin) return null;
+  try {
+    const { data, error } = await admin.rpc('mw_week4_retention');
+    if (error || !data) return null;
+    const row = Array.isArray(data) ? data[0] : data;
+    if (!row) return null;
+    return {
+      cohort_eligible: Number(row.cohort_eligible) || 0,
+      week4_retained: Number(row.week4_retained) || 0,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export type ReferralStats = {
+  attributedTotal: number;
+  topCodes: Array<{ code: string; count: number }>;
+};
+
+export async function computeReferralStats(): Promise<ReferralStats | null> {
+  const admin = getSupabaseAdmin();
+  if (!admin) return null;
+  try {
+    const { data, error } = await admin
+      .from('profiles')
+      .select('referred_by')
+      .not('referred_by', 'is', null)
+      .limit(5000);
+    if (error) return null;
+    const counts = new Map<string, number>();
+    for (const row of data ?? []) {
+      const code = String(row.referred_by || '');
+      if (!code) continue;
+      counts.set(code, (counts.get(code) ?? 0) + 1);
+    }
+    const topCodes = [...counts.entries()]
+      .map(([code, count]) => ({ code, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+    return {
+      attributedTotal: data?.length ?? 0,
+      topCodes,
+    };
+  } catch {
+    return null;
+  }
+}

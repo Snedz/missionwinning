@@ -4,32 +4,67 @@ import { classJoinUrl } from '@/lib/schoolClass';
 
 const BASE_URL = 'https://www.missionwinning.com';
 
-export function buildPftShareText(session: FitnessTestSession, classCode?: string | null): string {
+export type ShareLinkOpts = { refCode?: string };
+
+function siteUrl(path: string, opts?: ShareLinkOpts): string {
+  const base = path.startsWith('http') ? path : `${BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+  try {
+    const u = new URL(base);
+    if (opts?.refCode) u.searchParams.set('ref', opts.refCode);
+    else if (!u.searchParams.has('utm_source')) {
+      u.searchParams.set('utm_source', 'share');
+      u.searchParams.set('utm_medium', 'mission');
+    }
+    return u.toString();
+  } catch {
+    return base;
+  }
+}
+
+export function buildPftShareText(
+  session: FitnessTestSession,
+  classCode?: string | null,
+  opts?: ShareLinkOpts
+): string {
   const tier = awardLabel(session.overallTier);
   const mode = session.mode === 'mini' ? 'mini fitness test' : 'Presidential Fitness Test';
   const classLine = classCode ? ` Class: ${classCode}.` : '';
+  const link = siteUrl(showMahaCopy() ? '/america' : '/fitness-test', opts);
 
   if (showMahaCopy()) {
     return (
-      `I earned ${tier} on the ${mode} with Mission Winning — inspiring kids to get moving and restoring a culture of strength, health, and fitness. Let's Make America Healthy Again!${classLine} ${BASE_URL}/america`
+      `I earned ${tier} on the ${mode} with Mission Winning — inspiring kids to get moving and restoring a culture of strength, health, and fitness. Let's Make America Healthy Again!${classLine} ${link}`
     );
   }
 
-  return `I earned ${tier} on the ${mode} with Mission Winning — free fitness for families and schools.${classLine} ${BASE_URL}/fitness-test`;
+  return `I earned ${tier} on the ${mode} with Mission Winning — free fitness for families and schools.${classLine} ${link}`;
 }
 
-export function buildCommissioningShareText(useMaha?: boolean): string {
+export function buildCommissioningShareText(useMaha?: boolean, opts?: ShareLinkOpts): string {
   const maha = useMaha ?? showMahaCopy();
   if (maha) {
     return (
-      `I completed Basic Training on Mission Winning — commissioned and ready to move every day. Let's Make America Healthy Again! ${BASE_URL}/america`
+      `I completed Basic Training on Mission Winning — commissioned and ready to move every day. Let's Make America Healthy Again! ${siteUrl('/america', opts)}`
     );
   }
-  return `I completed Basic Training on Mission Winning — commissioned and on the path to health. ${BASE_URL}`;
+  return `I completed Basic Training on Mission Winning — commissioned and on the path to health. ${siteUrl('/', opts)}`;
 }
 
-export function buildClassInviteShareText(classCode: string, className: string): string {
-  const link = classJoinUrl(classCode, BASE_URL);
+export function buildClassInviteShareText(
+  classCode: string,
+  className: string,
+  opts?: ShareLinkOpts
+): string {
+  let link = classJoinUrl(classCode, BASE_URL);
+  if (opts?.refCode) {
+    try {
+      const u = new URL(link);
+      u.searchParams.set('ref', opts.refCode);
+      link = u.toString();
+    } catch {
+      /* keep */
+    }
+  }
   return `Join our ${className} fitness challenge on Mission Winning — Presidential Fitness Test prep, free for students. Code: ${classCode}. ${link}`;
 }
 

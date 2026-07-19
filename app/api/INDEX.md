@@ -38,6 +38,8 @@ Legend:
 | `coach/daily-insight` | POST | session or gate app access | 12/min + 32 KiB | Zod |
 | `coach/plan-voice` | POST | session or gate app access + premium | 6/min + 64 KiB | Zod |
 | `coach/chat` | POST | app access + premium | 10/min + 32 KiB | Zod `coachChatSchema`; 402 free; 503 offline |
+| `referral` | GET/POST | session | 20/min GET · 5/min POST | Lazy MW-code; redeem ≤7d; service role |
+| `cron/weekly-digest` | GET | CRON_SECRET | — | Monday founder email; dryRun |
 
 ### Premium content
 

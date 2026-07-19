@@ -12,28 +12,16 @@ Profile (while `BETA_ADMIN_EMAILS` matches) → funnel counts. Good for activati
 
 Approximate: users whose first `workout_logs` row is ≥28 days ago and who have ≥1 log in days 22–28 after that first workout.
 
+Shipped as RPC **`mw_week4_retention()`** (migration `20260720_referrals.sql`, service role). Manual equivalent:
+
 ```sql
--- Week-4 retained weekly loggers (signed-in cloud logs)
-with first_workout as (
-  select user_id, min(completed_at) as first_at
-  from workout_logs
-  group by user_id
-),
-week4 as (
-  select f.user_id
-  from first_workout f
-  join workout_logs w on w.user_id = f.user_id
-  where f.first_at < now() - interval '28 days'
-    and w.completed_at >= f.first_at + interval '21 days'
-    and w.completed_at < f.first_at + interval '28 days'
-  group by f.user_id
-)
-select
-  (select count(*) from first_workout where first_at < now() - interval '28 days') as cohort_eligible,
-  (select count(*) from week4) as week4_retained;
+select * from mw_week4_retention();
+-- or the expanded CTE in git history if RPC not applied yet
 ```
 
 Target: **≥10%** of eligible cohort across two cohorts. If below: stop acquisition, 10 interviews ([REDTEAM.md](../REDTEAM.md) A4).
+
+**Automated:** Monday cron `GET /api/cron/weekly-digest` emails funnel + retention + referral stats to `FOUNDER_DIGEST_EMAIL` (dryRun supported).
 
 ### From PostHog
 
@@ -45,7 +33,7 @@ Local-only users (no account) won’t appear in Supabase — interview them manu
 
 ## Weekly (1 hour)
 
-1. Check founder beta panel + Supabase profiles vs gates / retention query above
+1. **Automated:** weekly founder digest (cron) + skim founder beta panel — retention is in the email via `mw_week4_retention`
 2. Talk to 2 users (or read 2 feedback emails)
 3. Fix the #1 confusion within 48h — ship, tell the tester
 4. ≤1 social post if public ([SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) Phase C)
