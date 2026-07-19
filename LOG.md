@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-19 — Horizon 0 launch closeout
+
+- **Production deploy path:** [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) now runs on push to `master` (needs GH secrets `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID`); [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) updated
+- **Resend:** `RESEND_API_KEY` + `RESEND_FROM=Mission Winning <digest@updates.missionwinning.com>` on Production; live digest `{"ok":true,"sent":true}`
+- **Stripe:** `STRIPE_WEBHOOK_SECRET` on Production; signed `--ping-webhook` → `enrollments` for `verify-test@missionwinning.com`; harden UUID / FK fallback in webhook grant; `scripts/setup-stripe-webhook.mjs` for Dashboard `sk_` path
+- **Verify:** `LAUNCH_STRICT` launch-verify green against www; hero e2e partial (Playwright); beta invites deferred to **2026-08-02**
+- Docs: ORCHESTRATION, VISION_STATUS, LAUNCH_RUNBOOK §2/§4, BETA_INVITE
+
+---
+
 ## 2026-07-19 — TrainHeroic inspiration thin slice: % load bridge
 
 - Research: TrainHeroic athlete gym UX steal matrix in `docs/DESIGN_RESEARCH.md` Wave 6 (no coach SaaS)

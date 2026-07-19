@@ -10,17 +10,27 @@ Use when **Vercel 2FA access returns**, or sync env via **GitHub Actions** (see 
 
 Vercel auto-deploys on push to `master` when the GitHub integration is connected and **Production Branch** is set to `master`.
 
-### Preview vs production (2026-07-04)
+### Preview vs production (2026-07-19)
 
-If GitHub PR checks show **Vercel Preview** passing but `www.missionwinning.com` stays on an old build:
+GitHub integration often creates **Preview-only** builds for `master` even when Production Branch = `master`. Then `www.missionwinning.com` stays stale until a promote.
+
+**Canonical fix (repo):** [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) runs on **push to `master`** and `workflow_dispatch`, and deploys with `vercel deploy --prebuilt --prod`.
+
+Required GitHub Actions secrets:
+
+| Secret | Value |
+|--------|--------|
+| `VERCEL_TOKEN` | https://vercel.com/account/tokens |
+| `VERCEL_ORG_ID` | `team_Akwar4ZvbahQp5HR911ebrlW` |
+| `VERCEL_PROJECT_ID` | `prj_yqoUE2ENzRRdeiMdqkqyC49czxxp` |
+
+**Manual fallback** if the workflow is not wired yet:
 
 1. Vercel → Project → **Settings → Git** → confirm Production Branch = `master`
-2. Or trigger production manually:
-   - **Actions → Deploy production** (workflow_dispatch; needs `VERCEL_TOKEN` + `VERCEL_PROJECT_ID`)
-   - Or **Sync Vercel env** with `VERCEL_DEPLOY_HOOK_URL` set
-   - Or local: `npx vercel deploy --prod --yes`
+2. Promote latest Ready Preview: `vercel promote <preview-url> --yes`
+3. Or **Actions → Deploy production** / `npx vercel deploy --prod --yes`
 
-GitHub **Deployments** tab may list only `Preview` — that does not update the production alias.
+GitHub **Deployments** tab may list only `Preview` — that does not update the production alias by itself.
 
 ---
 

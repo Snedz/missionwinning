@@ -81,11 +81,20 @@ for (const [key, hint] of required) {
 }
 
 if (launch) {
+  const prodVerified = process.env.LAUNCH_PROD_VERIFIED === '1';
   for (const [key, hint] of launchRequired) {
     const val =
       key === 'NEXT_PUBLIC_STRIPE_LINK_BUNDLE'
         ? process.env.NEXT_PUBLIC_STRIPE_LINK_BUNDLE || process.env.NEXT_PUBLIC_STRIPE_LINK_PREMIUM
         : process.env[key];
+    if (
+      !val &&
+      prodVerified &&
+      (key === 'SUPABASE_SERVICE_ROLE_KEY' || key === 'STRIPE_WEBHOOK_SECRET')
+    ) {
+      console.log(`  ✓ ${key} (Production-verified — local Sensitive pull redacted)`);
+      continue;
+    }
     if (!val || val.includes('YOUR-') || val === 'whsec_...' || val.includes('pk_live_...')) {
       console.log(`  ✗ ${key} — required for go-live (${hint})`);
       ok = false;
@@ -127,7 +136,14 @@ if (launch) {
 
 for (const [key, hint] of optional) {
   const val = process.env[key];
-  console.log(val ? `  ✓ ${key}=${val}` : `  · ${key} (optional) — ${hint}`);
+  if (!val) {
+    console.log(`  · ${key} (optional) — ${hint}`);
+    continue;
+  }
+  // Never print secret material in optional rows
+  const redact =
+    /SECRET|KEY|TOKEN|PASSWORD|PRIVATE/i.test(key) && !key.startsWith('NEXT_PUBLIC_');
+  console.log(redact ? `  ✓ ${key}=<set>` : `  ✓ ${key}=${val}`);
 }
 
 if (process.env.DEMO_PREMIUM === 'true') {

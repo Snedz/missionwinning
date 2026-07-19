@@ -58,10 +58,10 @@
      "$SMOKE_BASE_URL/api/cron/weekly-digest?dryRun=1" | head
    ```
 
-- [ ] Env vars set (incl. rotated PRIVATE_ACCESS_SECRET, service role, DEMO_PREMIUM=false)
-- [ ] All migrations run through **20260720_referrals** (push + week-4 RPC)
-- [ ] Deployed URL loads and shows the new private teaser page
-- [ ] Digest dry-run returns JSON (or skipped cleanly if FOUNDER_DIGEST_EMAIL unset)
+- [x] Env vars set (incl. service role, DEMO_PREMIUM=false, Resend, Stripe webhook secret, Payment Links)
+- [x] All migrations run through **20260720_referrals** (push + week-4 RPC)
+- [x] Deployed URL loads and shows the new private teaser page
+- [x] Digest dry-run + live send OK (`sent:true` with Resend)
 
 ## §3 — Beta: 10 real users (target: within 14 days)
 
@@ -73,8 +73,9 @@
    ([docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md)). Monday email digest repeats server funnel + week-4 RPC.
 4. Message every tester at day 2 and day 7 (script in STRATEGY.md). Fix the #1 confusion each week.
 
-- [ ] Hero flow QA'd on a real phone
-- [ ] 10+ testers invited · [ ] gates met (check the beta panel)
+- [ ] Hero flow QA'd on a real phone (agent: mobile hero e2e against www — 5 passed; founder confirms on device)
+- [ ] 10+ testers invited · [ ] gates met (check the beta panel) — **target 2026-08-02**
+
 
 ## §4 — Money: Stripe in ~1 hour (do in parallel with §3)
 
@@ -97,9 +98,10 @@
 5. Redeploy. The bundle page switches from "waitlist" to real checkout automatically.
 6. **Test in Stripe test mode first**: use test links + test card `4242 4242 4242 4242`, confirm a row appears in Supabase `enrollments`, and that the account you paid with gets premium (`/api/premium/status` → `premium: true`).
 
-- [ ] Stripe account live · [ ] payment links created (monthly + 12mo + lifetime)
-- [ ] Webhook verified end-to-end in test mode
-- [ ] Env vars set + redeployed
+- [x] Stripe account live · [x] payment links created (test sandbox links on Production)
+- [x] Webhook verified via signed `--ping-webhook` → `enrollments` row (`verify-test@missionwinning.com`)
+- [x] Env vars set + redeployed
+- [ ] Still open: Stripe Dashboard endpoint pointing at `/api/stripe-webhook` with matching `whsec` (or `node scripts/setup-stripe-webhook.mjs` with full `sk_`) so live Payment Link checkouts deliver events
 
 ## §5 — Go public (only after §2 security boxes + §3 gates)
 

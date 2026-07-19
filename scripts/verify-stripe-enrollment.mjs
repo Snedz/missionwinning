@@ -169,15 +169,15 @@ async function pingWebhook() {
     process.exit(1);
   }
 
+  // Email-only enrollment (Payment Links). Omit user_id — enrollments.user_id FK → auth.users.
   const payload = JSON.stringify({
     id: 'evt_verify_test',
     type: 'checkout.session.completed',
     data: {
       object: {
-        id: 'cs_verify_test',
+        id: `cs_verify_test_${Date.now()}`,
         customer_email: 'verify-test@missionwinning.com',
-        client_reference_id: 'verify-user-id',
-        metadata: { product_id: 'super-bundle', user_id: 'verify-user-id', plan_id: 'lifetime' },
+        metadata: { product_id: 'super-bundle', plan_id: 'lifetime' },
       },
     },
   });

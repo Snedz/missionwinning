@@ -79,11 +79,19 @@ export async function grantEnrollmentFromWebhook(payload: {
     provider: payload.provider,
     external_id: payload.external_id,
   };
-  if (payload.user_id) {
-    row.user_id = payload.user_id;
+  const uid = payload.user_id?.trim();
+  // enrollments.user_id references auth.users — only set when it looks like a UUID
+  if (uid && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uid)) {
+    row.user_id = uid;
   }
 
-  const { error } = await admin.from('enrollments').insert(row);
+  let { error } = await admin.from('enrollments').insert(row);
+
+  // Payment Link / test pings may send a UUID that is not an auth user yet — fall back to email-only
+  if (error && row.user_id && (error.code === '23503' || /foreign key|auth\.users/i.test(error.message || ''))) {
+    delete row.user_id;
+    ({ error } = await admin.from('enrollments').insert(row));
+  }
 
   if (error) throw error;
   return { duplicate: false };
