@@ -294,6 +294,23 @@ Wallet pay for **lifetime only** ($149 USDC on Solana) — see [docs/PHANTOM_USD
 
 ---
 
+## Wearables (optional, Horizon 3)
+
+Multi-vendor sync — see [docs/WEARABLES.md](docs/WEARABLES.md). Opt-in; off unless `NEXT_PUBLIC_WEARABLES=true`. Win Score stays log-derived.
+
+| Variable | Purpose |
+|----------|---------|
+| `NEXT_PUBLIC_WEARABLES` | `true` to show Profile wearables + Active live HR |
+| `WEARABLES_OAUTH_REDIRECT_BASE` | Optional absolute origin for OAuth callbacks (defaults to request origin) |
+| `WHOOP_CLIENT_ID` / `WHOOP_CLIENT_SECRET` | Whoop OAuth |
+| `STRAVA_CLIENT_ID` / `STRAVA_CLIENT_SECRET` | Strava OAuth |
+| `OURA_CLIENT_ID` / `OURA_CLIENT_SECRET` | Oura OAuth |
+| `GARMIN_CLIENT_ID` / `GARMIN_CLIENT_SECRET` | Garmin OAuth |
+| `FITBIT_CLIENT_ID` / `FITBIT_CLIENT_SECRET` | Fitbit OAuth |
+| `POLAR_CLIENT_ID` / `POLAR_CLIENT_SECRET` | Polar AccessLink OAuth |
+
+---
+
 ## CI gate-smoke (optional)
 
 In **GitHub → Settings → Secrets**:

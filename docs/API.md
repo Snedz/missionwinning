@@ -174,6 +174,53 @@ curl -X POST "$BASE/api/checkout" \
 
 ---
 
+## Wearables (optional)
+
+Gated by `NEXT_PUBLIC_WEARABLES=true`. See [WEARABLES.md](WEARABLES.md).
+
+### `GET /api/wearables/status`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 30/min/IP |
+| Response | `{ enabled, providers[] }` |
+
+### `POST /api/wearables/sync`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 8/min/IP |
+| Schema | `wearableSyncSchema` — `{ provider, sinceIso? }` |
+| Response | `{ ok, inserted, activityHints }` |
+
+### `POST /api/wearables/disconnect`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 10/min/IP |
+| Schema | `wearableDisconnectSchema` — `{ provider, deleteSamples? }` |
+
+### `POST /api/wearables/hub-ingest`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Rate | 20/min/IP |
+| Schema | `wearableHubIngestSchema` — native shell HealthKit / Health Connect samples |
+
+### `GET /api/wearables/oauth/[provider]/start` · `…/callback`
+
+| | |
+|--|--|
+| Auth | start: `session` · callback: signed `state` |
+| Providers | `whoop`, `strava`, `oura`, `garmin`, `fitbit`, `polar` |
+| Notes | Requires provider `*_CLIENT_ID` / `*_CLIENT_SECRET` |
+
+---
+
 ## Fuel
 
 ### `GET /api/fuel/search-food?q=`

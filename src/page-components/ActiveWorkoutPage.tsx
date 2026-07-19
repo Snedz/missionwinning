@@ -20,6 +20,7 @@ import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet'
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
+import { LiveHeartRate } from '@/components/workout/LiveHeartRate';
 import { resolveRestSeconds } from '@/lib/workout/restTimer';
 import { isPersonalRecord } from '@/lib/workout/workoutPr';
 import { shouldRestAfterLog } from '@/lib/workout/superset';
@@ -291,6 +292,8 @@ export function ActiveWorkoutPage() {
         onCancel={handleCancel}
         onFinish={handleComplete}
       />
+
+      <LiveHeartRate />
 
       {activeWorkout.exercises.length === 0 ? (
         <Card className="border-dashed">

@@ -46,6 +46,7 @@
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Beta + public social copy kit |
 | [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → PayPal later |
 | [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) | Deferred Android TWA / thin iOS |
+| [WEARABLES.md](WEARABLES.md) | Apple / Google / Whoop / Strava wearables strategy + unlock |
 | [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
 | [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe + premium gate |

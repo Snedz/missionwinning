@@ -158,6 +158,33 @@ export const journeyNudgeBodySchema = z.object({
   stepLabel: z.string().max(80).optional(),
 });
 
+export const wearableDisconnectSchema = z.object({
+  provider: z.string().min(2).max(40),
+  deleteSamples: z.boolean().optional().default(true),
+});
+
+export const wearableSyncSchema = z.object({
+  provider: z.string().min(2).max(40),
+  sinceIso: z.string().max(40).optional(),
+});
+
+export const wearableHubIngestSchema = z.object({
+  source: z.enum(['healthkit', 'health_connect', 'google_fit']),
+  samples: z
+    .array(
+      z.object({
+        kind: z.enum(['workout', 'activity', 'sleep', 'hr', 'hrv', 'steps', 'recovery']),
+        startedAt: z.string().min(4).max(40),
+        endedAt: z.string().max(40).optional(),
+        externalId: z.string().min(1).max(200),
+        metrics: z
+          .record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()]))
+          .optional(),
+      })
+    )
+    .max(500),
+});
+
 export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
   | { ok: true; data: T }
   | { ok: false; error: string } {
