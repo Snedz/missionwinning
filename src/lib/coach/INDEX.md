@@ -7,17 +7,18 @@
 1. `types.ts` — `CoachPlan`, `CoachContext`, `PlanSession`, `PlanExercise`
 2. `schedulePrefs.ts` — days per week, preferred days (`mw_days_per_week`)
 3. `equipment.ts` — `equipmentMatches`, `mapStorageEquipment`
-4. `progression.ts` — `nextTargets` (RPE, stall, deload)
+4. `progression.ts` — `nextTargets` (RPE, stall, deload, % of e1RM `loadPct`)
 5. `splitPlanner.ts` — `chooseSplit`, `mapToCalendar`, week start helpers
-6. `selector.ts` — `pickExercises`, `buildSession`
+6. `selector.ts` — `pickExercises`, `buildSession` (passes `loadPct`)
 7. `planEngine.ts` — `generateWeek`, `computeContextHash`
 8. `adapt.ts` — `adaptPlan`, missed sessions, readiness swap, equipment change
 9. `storage.ts` — `loadPlan`, `savePlan`, taster flags, device id
 10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history
 11. `planVoiceServer.ts` — LLM/rules voice for weekly briefing (used by API route)
 12. `rng.ts` — `mulberry32`, `hashString` (deterministic variety)
-13. `adjust.ts` — free offline “adjust today” (time / bodyweight / avoid group)
+13. `adjust.ts` — free offline “adjust today” (time / bodyweight / avoid group; scales `loadPct`)
 14. Related: `src/lib/coachChatServer.ts` — premium chat prompts + parse (API `/api/coach/chat`)
+15. Related load math: `src/lib/workout/percentLoad.ts` — e1RM → weight from `loadPct`
 
 ## Optional LLM + ZDR
 

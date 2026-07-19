@@ -30,6 +30,7 @@ export function CoachTodayCard() {
     const exercises = todaySession.exercises.map((ex) => ({
       exerciseId: ex.exerciseId,
       sets: Array.from({ length: ex.sets }, () => ({ reps: ex.reps, weight: ex.weight })),
+      ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
     }));
     startWorkout(todaySession.name, exercises);
     track('coach_session_started', { kind: todaySession.kind, from: 'home' });

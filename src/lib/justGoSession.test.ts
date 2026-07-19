@@ -53,7 +53,7 @@ describe('justGoSession', () => {
         status: 'planned',
         focusGroups: ['Chest'],
         exercises: [
-          { exerciseId: 'bench-press', sets: 3, reps: 8, weight: 60 },
+          { exerciseId: 'bench-press', sets: 3, reps: 8, weight: 60, loadPct: 80 },
           { exerciseId: 'overhead-press', sets: 3, reps: 8, weight: 40 },
         ],
       },
@@ -62,6 +62,8 @@ describe('justGoSession', () => {
     assert.equal(session.name, 'Coach Upper');
     assert.equal(session.exercises[0].exerciseId, 'bench-press');
     assert.equal(session.exercises[0].sets.length, 3);
+    assert.equal(session.exercises[0].sets[0].weight, 60);
+    assert.equal(session.exercises[0].loadPct, 80);
   });
 
   it('skips done coach sessions', () => {

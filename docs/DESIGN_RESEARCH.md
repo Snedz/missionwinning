@@ -281,6 +281,45 @@ Teardown · PRIVATE_MODE · cmdk · virtualize entire Library · gate free track
 
 ---
 
+## Wave 6 — TrainHeroic athlete inspiration (2026-07-19)
+
+Source: [trainheroic.com/athlete](https://www.trainheroic.com/athlete/) + coach platform marketing.  
+**Thesis:** Steal gym-floor clarity and personal % programming. Do **not** build coach SaaS (teams, marketplace, messaging). Horizon 0: one thin slice now; Wave A/B after public gate.
+
+### Steal / avoid
+
+| Steal | Avoid |
+|-------|--------|
+| % of working max → auto weight on the set row | Cloning TH blue / lime marketing identity |
+| Session intent line above the logger | Coach command-center / team boards |
+| In-session cues without leaving the set (extend form guide) | Video-first IA that buries the set table |
+| AMRAP / EMOM modes on the existing rest chrome | New timer product surface |
+| Cumulative tonnage milestone on Victory / History | “Millionaire club” copy/branding |
+| Soft reschedule on Coach week strip | Full calendar product / team calendars |
+| Personal % + RPE prescriptions on Coach / Builder | Multi-athlete scaling / marketplace |
+
+### Now (shipped thin slice)
+
+| Ship | Path |
+|------|------|
+| `loadPct` on Coach `PlanExercise` + Active chip | [`percentLoad.ts`](../src/lib/workout/percentLoad.ts), [`progression.ts`](../src/lib/coach/progression.ts), [`ActiveExerciseCard.tsx`](../src/components/workout/ActiveExerciseCard.tsx) |
+
+### Post-launch Wave A — athlete gym UX
+
+1. Session brief (intent + note) at top of Active  
+2. In-logger form-cue peek for unfamiliar exercises  
+3. AMRAP / EMOM on `RestTimerBar`  
+4. Tonnage milestone on Victory / History (MW voice)  
+5. Soft reschedule on Coach `WeekStrip`
+
+### Post-launch Wave B — personal programming depth
+
+1. `rpeTarget` on `PlanExercise`  
+2. Multi-week % waves (3–4 week personal block)  
+3. Builder templates store `loadPct` + resolve at start
+
+---
+
 ## Sources folded in
 
 - Internal: UX_UNIFIED_PLAN (Bevel/Freeletics), ROADMAP_V4_EXPERIENCE (no teardown)  
@@ -289,3 +328,4 @@ Teardown · PRIVATE_MODE · cmdk · virtualize entire Library · gate free track
 - Wave 3: Forge Fitness / FORGE Workout OS
 - Wave 4: SEO volume + marketing inspire
 - Wave 5: CTA integrity + list density/search
+- Wave 6: TrainHeroic athlete gym + % load (not coach SaaS)

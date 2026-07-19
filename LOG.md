@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-19 — TrainHeroic inspiration thin slice: % load bridge
+
+- Research: TrainHeroic athlete gym UX steal matrix in `docs/DESIGN_RESEARCH.md` Wave 6 (no coach SaaS)
+- `src/lib/workout/percentLoad.ts` — e1RM working max → weight from `loadPct`
+- Coach `PlanExercise.loadPct` via `progression` / `selector` / `adjust`; Active chip on `ActiveExerciseCard`
+- Coach → Active / Just Go coach path pass `loadPct`; i18n `activeLoadPctChip`
+- Post-launch Wave A/B parked in DESIGN_RESEARCH (session brief, timers, tonnage, calendar, RPE, multi-week, Builder %)
+
+---
+
 ## 2026-07-19 — Prod: Wave 7–8 migrations applied (`tnzauplicgfrozvnowqp`)
 
 - Applied `20260719_push_subscriptions.sql` + `20260720_referrals.sql` on production Supabase

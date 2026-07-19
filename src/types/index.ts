@@ -37,6 +37,8 @@ export interface WorkoutSetTemplate {
 export interface WorkoutExerciseTemplate {
   exerciseId: string;
   sets: WorkoutSetTemplate[];
+  /** Percent of working max when started from Coach % prescription. */
+  loadPct?: number;
 }
 
 export interface SavedWorkout {
@@ -68,6 +70,8 @@ export interface ActiveExerciseLog {
   note?: string;
   /** Snapshot from catalog when exercise was added — avoids store importing EXERCISES. */
   muscleGroups?: MuscleGroup[];
+  /** Percent of working max when session started from Coach % prescription. */
+  loadPct?: number;
 }
 
 export interface ActiveWorkout {

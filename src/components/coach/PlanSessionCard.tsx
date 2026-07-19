@@ -34,6 +34,7 @@ export function PlanSessionCard({ session, className, onAdjust }: Props) {
     const exercises = session.exercises.map((ex) => ({
       exerciseId: ex.exerciseId,
       sets: Array.from({ length: ex.sets }, () => ({ reps: ex.reps, weight: ex.weight })),
+      ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
     }));
     startWorkout(session.name, exercises);
     track('coach_session_started', { kind: session.kind, dayOffset: session.dayOffset });
@@ -80,7 +81,11 @@ export function PlanSessionCard({ session, className, onAdjust }: Props) {
             const data = EXERCISES.find((e) => e.id === ex.exerciseId);
             const name = data?.name ?? ex.exerciseId;
             const load =
-              ex.weight > 0 ? ` @ ${ex.weight}${unit}` : ex.weight === 0 ? '' : '';
+              ex.loadPct != null && ex.loadPct > 0 && ex.weight > 0
+                ? ` · ${ex.loadPct}% · ${ex.weight}${unit}`
+                : ex.weight > 0
+                  ? ` @ ${ex.weight}${unit}`
+                  : '';
             return (
               <li key={ex.exerciseId} className="border-b border-border/30 pb-2 last:border-0">
                 <div className="font-medium">

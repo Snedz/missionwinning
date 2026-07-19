@@ -10,6 +10,7 @@ import { recoverySession } from '@/lib/coach/adapt';
 import { hashString, mulberry32 } from '@/lib/coach/rng';
 import { sessionNameFromKey } from '@/lib/coach/splitPlanner';
 import { weightStep } from '@/lib/units';
+import { scaleLoadPct } from '@/lib/workout/percentLoad';
 
 export type SessionConstraint =
   | { type: 'time'; minutes: 20 | 30 }
@@ -119,12 +120,18 @@ function applyAvoid(
     return { ...rec, id: base.id, status: 'swapped' };
   }
 
-  exercises = exercises.map((e) => ({
-    ...e,
-    sets: Math.max(2, e.sets - 1),
-    weight: roundWeight(e.weight * 0.9, ctx.units),
-    whyKey: 'coachWhyConservative',
-  }));
+  exercises = exercises.map((e) => {
+    const weight = roundWeight(e.weight * 0.9, ctx.units);
+    const loadPct = scaleLoadPct(e.loadPct, 0.9);
+    const { loadPct: _prev, ...rest } = e;
+    return {
+      ...rest,
+      sets: Math.max(2, e.sets - 1),
+      weight,
+      whyKey: 'coachWhyConservative',
+      ...(loadPct != null && weight > 0 ? { loadPct } : {}),
+    };
+  });
 
   return {
     ...session,
