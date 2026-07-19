@@ -1,10 +1,12 @@
 # Production deploy when Vercel Git integration only creates Preview deployments.
 # Auto-runs on push to master so www.missionwinning.com does not fall days behind.
 #
-# Setup (GitHub → Settings → Secrets → Actions):
-#   VERCEL_TOKEN — https://vercel.com/account/tokens
-#   VERCEL_ORG_ID — Team ID (team_Akwar4ZvbahQp5HR911ebrlW)
+# Required GitHub Actions secrets:
+#   VERCEL_TOKEN — https://vercel.com/account/tokens (or CLI auth token)
+#   VERCEL_ORG_ID — team_Akwar4ZvbahQp5HR911ebrlW
 #   VERCEL_PROJECT_ID — prj_yqoUE2ENzRRdeiMdqkqyC49czxxp
+#
+# Builds on Vercel (not locally) so Production Sensitive env vars are available.
 name: Deploy production
 
 on:
@@ -27,8 +29,8 @@ jobs:
           node-version: '22'
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
 
       - name: Deploy to Vercel production
         env:
@@ -36,10 +38,10 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
-            echo "Skipping deploy — set VERCEL_TOKEN and VERCEL_PROJECT_ID in GitHub Secrets"
+          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_PROJECT_ID" ] || [ -z "$VERCEL_ORG_ID" ]; then
+            echo "Missing VERCEL_TOKEN / VERCEL_PROJECT_ID / VERCEL_ORG_ID in GitHub Secrets"
             exit 1
           fi
-          npx vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
-          npx vercel build --prod --token "$VERCEL_TOKEN"
-          npx vercel deploy --prebuilt --prod --yes --token "$VERCEL_TOKEN"
+          mkdir -p .vercel
+          printf '%s\n' "{\"projectId\":\"$VERCEL_PROJECT_ID\",\"orgId\":\"$VERCEL_ORG_ID\",\"projectName\":\"missionwinning\"}" > .vercel/project.json
+          vercel deploy --prod --yes --token "$VERCEL_TOKEN"
