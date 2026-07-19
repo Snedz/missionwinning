@@ -43,6 +43,7 @@ describe('isPublicApiPathWhileGated', () => {
     // cron + unsubscribe carry their own auth (CRON_SECRET bearer / HMAC token).
     assert.equal(isPublicApiPathWhileGated('/api/leads'), true);
     assert.equal(isPublicApiPathWhileGated('/api/cron/nudges'), true);
+    assert.equal(isPublicApiPathWhileGated('/api/cron/weekly-digest'), true);
     assert.equal(isPublicApiPathWhileGated('/api/nudges/unsubscribe'), true);
     // Anonymous premium status probe (premium:false) — no auth required
     assert.equal(isPublicApiPathWhileGated('/api/premium/status'), true);

@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-19 — Prod: Wave 7–8 migrations applied (`tnzauplicgfrozvnowqp`)
+
+- Applied `20260719_push_subscriptions.sql` + `20260720_referrals.sql` on production Supabase
+- Verified: `push_subscriptions` table; `profiles.referral_code` / `referred_by`; trigger `profiles_protect_referral_cols`; `mw_week4_retention()` returns `{0,0}` (no aged cohort yet)
+- Still open (founder/Vercel): redeploy if recent env changed; digest dry-run curl; `STRIPE_WEBHOOK_SECRET` if enrollments should auto-unlock; Resend optional for digest send
+
+---
+
 ## 2026-07-19 — Wave 10 B1: launch unblock packaging (`2026.07-unified.90`)
 
 - LAUNCH_RUNBOOK §2: full migration list through 20260720, digest/cron/PostHog/VAPID env, smoke commands
