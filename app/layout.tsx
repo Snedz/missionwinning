@@ -3,6 +3,7 @@ import { Barlow_Condensed, IBM_Plex_Mono, Inter } from 'next/font/google';
 import '../src/index.css';
 import { DeferredToaster } from '@/components/layout/DeferredToaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
+import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -71,6 +72,7 @@ export default function RootLayout({
           {children}
           <DeferredToaster />
         </I18nPwaProvider>
+        <Analytics />
       </body>
     </html>
   );
