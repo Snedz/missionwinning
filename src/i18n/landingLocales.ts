@@ -281,54 +281,171 @@ const LANDING_PT: Record<string, string> = {
   footerTagline: 'Treine em qualquer lugar. Vença todo dia.',
 };
 
+/** LLM-drafted DE — founder review before public flip. */
 const LANDING_DE: Record<string, string> = {
   ...LANDING_EN,
   landingNavPath: 'Der Weg',
   landingNavPillars: 'Säulen',
   landingNavStart: 'Kostenlos starten',
   landingNavHome: 'Start',
+  landingHeroEyebrow: 'Kostenloser Tracker · Offline-PWA',
   landingHeroTitle1: 'Trainiere überall.',
   landingHeroTitle2: 'Gewinne täglich.',
   landingHeroSubtitle:
-    'Der kostenlose Offline-Workout-Tracker — kein Konto, kein App-Store, keine Paywall bei den Basics.',
+    'Der kostenlose Offline-Workout-Tracker — kein Konto, kein App-Store, keine Paywall bei den Basics. Ernährung, Mobility, Mind und Lernen fließen in denselben Win Score.',
   landingSeeHow: 'So funktioniert’s',
   landingCtaStart: 'Starte deinen Weg',
   landingJourneyTitle: 'Der Member-Pfad',
+  landingJourneyHeadline1: 'Ein klarer Start.',
+  landingJourneyHeadline2: 'Ein Schritt nach dem anderen.',
+  landingFreeEyebrow: 'Der Free Core',
+  landingFreeTitle1: 'Gratis ist die Mission,',
+  landingFreeTitle2: 'nicht die Testphase.',
+  landingPillarsEyebrow: 'Sechs Säulen',
+  landingPillarsTitle: 'Alles verstärkt alles.',
+  landingBundleEyebrow: 'Das Super Bundle',
+  landingBundleTitle1: 'Sechs Premium-Tools.',
+  landingBundleTitle2: 'Ein Abo.',
+  landingBundleCta: 'Bundle ansehen',
+  landingFinalCtaTitle: 'Der Weg beginnt mit einem Workout.',
   landingFinalCtaButton: 'Kostenlos starten — kein Konto',
   landingCaptureEyebrow: 'Launch-Liste',
   landingCaptureTitle: 'Launch-News. Kern für immer gratis.',
   landingCaptureButton: 'Benachrichtigen',
   landingCaptureBody:
     'Eine E-Mail zum Public Launch, plus seltene Free-Core-Tipps. Kein Spam. Jederzeit abmelden.',
+  landingCapturePlaceholder: 'du@email.com',
+  landingCaptureDone: 'Du bist auf der Liste.',
+  landingCapturePrivacy: 'Wir speichern deine E-Mail nur für Launch-Updates.',
   footerGroupProduct: 'Produkt',
   footerGroupLearn: 'Lernen',
   footerGroupCompany: 'Unternehmen',
   footerGroupLegal: 'Rechtliches',
+  footerTagline: 'Trainiere überall. Gewinne täglich.',
 };
 
+/** LLM-drafted FR — founder review before public flip. */
 const LANDING_FR: Record<string, string> = {
   ...LANDING_EN,
   landingNavPath: 'Le parcours',
   landingNavPillars: 'Piliers',
   landingNavStart: 'Commencer gratuit',
   landingNavHome: 'Accueil',
+  landingHeroEyebrow: 'Tracker gratuit · PWA hors ligne',
   landingHeroTitle1: 'Entraîne-toi partout.',
   landingHeroTitle2: 'Gagne chaque jour.',
   landingHeroSubtitle:
-    'Le tracker d’entraînement gratuit qui marche hors ligne — pas de compte, pas de store, pas de paywall sur l’essentiel.',
+    'Le tracker d’entraînement gratuit qui marche hors ligne — pas de compte, pas de store, pas de paywall sur l’essentiel. Nutrition, mobilité, mental et apprentissage dans le même Win Score.',
   landingSeeHow: 'Comment ça marche',
   landingCtaStart: 'Commence ton parcours',
   landingJourneyTitle: 'Le parcours membre',
+  landingJourneyHeadline1: 'Un début clair.',
+  landingJourneyHeadline2: 'Une étape à la fois.',
+  landingFreeEyebrow: 'Le cœur gratuit',
+  landingFreeTitle1: 'Gratuit est la mission,',
+  landingFreeTitle2: 'pas l’essai.',
+  landingPillarsEyebrow: 'Six piliers',
+  landingPillarsTitle: 'Tout renforce tout.',
+  landingBundleEyebrow: 'Le Super Bundle',
+  landingBundleTitle1: 'Six outils premium.',
+  landingBundleTitle2: 'Un abonnement.',
+  landingBundleCta: 'Voir le bundle',
+  landingFinalCtaTitle: 'Le parcours commence par un entraînement.',
   landingFinalCtaButton: 'Commencer gratuit — sans compte',
   landingCaptureEyebrow: 'Liste de lancement',
   landingCaptureTitle: 'Notes de lancement. Cœur gratuit pour toujours.',
   landingCaptureButton: 'Me prévenir',
   landingCaptureBody:
     'Un e-mail au lancement public, plus de rares conseils free core. Pas de spam. Désinscription à tout moment.',
+  landingCapturePlaceholder: 'toi@email.com',
+  landingCaptureDone: 'Tu es sur la liste.',
+  landingCapturePrivacy: 'On garde ton e-mail seulement pour les news de lancement.',
   footerGroupProduct: 'Produit',
   footerGroupLearn: 'Apprendre',
   footerGroupCompany: 'Entreprise',
   footerGroupLegal: 'Légal',
+  footerTagline: 'Entraîne-toi partout. Gagne chaque jour.',
+};
+
+/** Batch C — LLM-drafted conversion surfaces; founder review before public flip. */
+const LANDING_IT: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: 'Il percorso',
+  landingNavPillars: 'Pilastri',
+  landingNavStart: 'Inizia gratis',
+  landingNavHome: 'Home',
+  landingHeroTitle1: 'Allenati ovunque.',
+  landingHeroTitle2: 'Vinci ogni giorno.',
+  landingHeroSubtitle:
+    'Il tracker di allenamento gratuito offline — niente account, niente store, niente paywall sul core. Win Score unisce nutrizione, mobilità, mente e apprendimento.',
+  landingCtaStart: 'Inizia il percorso',
+  landingFinalCtaButton: 'Inizia gratis — senza account',
+  landingCaptureTitle: 'Note di lancio. Core gratis per sempre.',
+  landingCaptureButton: 'Avvisami',
+  footerGroupProduct: 'Prodotto',
+  footerGroupLearn: 'Impara',
+  footerGroupCompany: 'Azienda',
+  footerGroupLegal: 'Legale',
+};
+
+const LANDING_RU: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: 'Путь',
+  landingNavPillars: 'Столпы',
+  landingNavStart: 'Начать бесплатно',
+  landingNavHome: 'Главная',
+  landingHeroTitle1: 'Тренируйся где угодно.',
+  landingHeroTitle2: 'Побеждай каждый день.',
+  landingHeroSubtitle:
+    'Бесплатный офлайн-трекер тренировок — без аккаунта, без магазина, без paywall на ядре. Win Score объединяет питание, мобильность, разум и обучение.',
+  landingCtaStart: 'Начать путь',
+  landingFinalCtaButton: 'Начать бесплатно — без аккаунта',
+  landingCaptureTitle: 'Новости запуска. Ядро бесплатно навсегда.',
+  landingCaptureButton: 'Сообщить мне',
+  footerGroupProduct: 'Продукт',
+  footerGroupLearn: 'Учёба',
+  footerGroupCompany: 'Компания',
+  footerGroupLegal: 'Правовое',
+};
+
+const LANDING_KO: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: '경로',
+  landingNavPillars: '여섯 기둥',
+  landingNavStart: '무료 시작',
+  landingNavHome: '홈',
+  landingHeroTitle1: '어디서나 훈련하세요.',
+  landingHeroTitle2: '매일 이기세요.',
+  landingHeroSubtitle:
+    '오프라인 무료 운동 트래커 — 계정 없음, 스토어 없음, 코어에 페이월 없음. Win Score가 영양·모빌리티·마인드·학습을 하나로.',
+  landingCtaStart: '경로 시작',
+  landingFinalCtaButton: '무료 시작 — 계정 없음',
+  landingCaptureTitle: '출시 알림. 코어는 영원히 무료.',
+  landingCaptureButton: '알림 받기',
+  footerGroupProduct: '제품',
+  footerGroupLearn: '학습',
+  footerGroupCompany: '회사',
+  footerGroupLegal: '법적 고지',
+};
+
+const LANDING_JA: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: 'パス',
+  landingNavPillars: '6つの柱',
+  landingNavStart: '無料で始める',
+  landingNavHome: 'ホーム',
+  landingHeroTitle1: 'どこでもトレーニング。',
+  landingHeroTitle2: '毎日勝つ。',
+  landingHeroSubtitle:
+    'オフライン無料のワークアウトトラッカー — アカウント不要、ストア不要、コアにペイウォールなし。Win Scoreが栄養・モビリティ・マインド・学習をひとつに。',
+  landingCtaStart: 'パスを始める',
+  landingFinalCtaButton: '無料で始める — アカウント不要',
+  landingCaptureTitle: 'ローンチ通知。コアは永久無料。',
+  landingCaptureButton: '通知を受け取る',
+  footerGroupProduct: 'プロダクト',
+  footerGroupLearn: '学ぶ',
+  footerGroupCompany: '会社',
+  footerGroupLegal: '法務',
 };
 
 const BY_LANG: Record<string, Record<string, string>> = {
@@ -337,6 +454,10 @@ const BY_LANG: Record<string, Record<string, string>> = {
   pt: LANDING_PT,
   de: LANDING_DE,
   fr: LANDING_FR,
+  it: LANDING_IT,
+  ru: LANDING_RU,
+  ko: LANDING_KO,
+  ja: LANDING_JA,
 };
 
 export function landingStringsFor(lang: string): Record<string, string> {

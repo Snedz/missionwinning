@@ -41,4 +41,16 @@ describe('shareFitnessMission', () => {
     assert.match(buildCommissioningShareText(false), /commissioned/);
     assert.match(buildClassInviteShareText('MWAB12', '5th Grade PE'), /MWAB12/);
   });
+
+  it('appends ref= when refCode provided', () => {
+    process.env.NEXT_PUBLIC_SHOW_MAHA_COPY = 'false';
+    const session = scoreFitnessTestSession({
+      age: 14,
+      sex: 'male',
+      results: [{ eventId: 'curl_ups', value: 40 }],
+    });
+    const text = buildPftShareText(session, null, { refCode: 'MW-ABC12' });
+    assert.match(text, /ref=MW-ABC12/);
+    assert.match(buildCommissioningShareText(false, { refCode: 'MW-XYZ99' }), /ref=MW-XYZ99/);
+  });
 });

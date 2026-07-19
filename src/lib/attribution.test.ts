@@ -47,7 +47,7 @@ describe('attribution', () => {
   });
 
   it('captures first-touch utm and path', () => {
-    const a = captureAttribution('?utm_source=twitter&utm_campaign=launch', {
+    const { attribution: a } = captureAttribution('?utm_source=twitter&utm_campaign=launch', {
       path: '/?utm_source=twitter',
       referrer: 'https://t.co/x',
     });
@@ -58,19 +58,42 @@ describe('attribution', () => {
     assert.equal(loadAttribution()?.utm_source, 'twitter');
   });
 
-  it('does not overwrite first touch', () => {
+  it('does not overwrite first touch UTMs', () => {
     captureAttribution('?utm_source=twitter');
     captureAttribution('?utm_source=reddit');
     assert.equal(loadAttribution()?.utm_source, 'twitter');
   });
 
+  it('captures ref on first touch', () => {
+    const { attribution: a, referralLanded } = captureAttribution('?ref=MW-ABC12');
+    assert.equal(a?.ref, 'MW-ABC12');
+    assert.equal(referralLanded, true);
+  });
+
+  it('backfills ref onto existing first-touch without clobbering UTMs', () => {
+    captureAttribution('?utm_source=twitter&utm_campaign=launch');
+    const { attribution: a, referralLanded } = captureAttribution('?ref=MW-XYZ99&utm_source=reddit');
+    assert.equal(referralLanded, true);
+    assert.equal(a?.ref, 'MW-XYZ99');
+    assert.equal(a?.utm_source, 'twitter');
+    assert.equal(a?.utm_campaign, 'launch');
+  });
+
+  it('does not overwrite an existing ref', () => {
+    captureAttribution('?ref=MW-FIRST');
+    const { referralLanded } = captureAttribution('?ref=MW-SECOND');
+    assert.equal(referralLanded, false);
+    assert.equal(loadAttribution()?.ref, 'MW-FIRST');
+  });
+
   it('flattens props without captured_at', () => {
     store.set(
       ATTRIBUTION_KEY,
-      JSON.stringify({ utm_source: 'x', captured_at: '2026-01-01' })
+      JSON.stringify({ utm_source: 'x', ref: 'MW-ABC12', captured_at: '2026-01-01' })
     );
     const props = attributionAsProps(loadAttribution());
     assert.equal(props.utm_source, 'x');
+    assert.equal(props.ref, 'MW-ABC12');
     assert.equal(props.captured_at, undefined);
   });
 });

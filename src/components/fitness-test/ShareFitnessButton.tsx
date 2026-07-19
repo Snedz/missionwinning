@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { shareText } from '@/lib/shareFitnessMission';
+import { track } from '@/lib/analytics';
 
 type Props = {
   text: string;
@@ -26,6 +27,7 @@ export function ShareFitnessButton({
 
   const onShare = async () => {
     const result = await shareText(text);
+    track('mission_shared', { surface: 'fitness', method: result });
     if (result === 'shared') setStatus('shared');
     else if (result === 'copied') setStatus('copied');
     setTimeout(() => setStatus('idle'), 2500);

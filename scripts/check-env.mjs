@@ -52,6 +52,7 @@ const optional = [
   ['VAPID_SUBJECT', 'mailto:… for VAPID'],
   ['COACH_LLM_API_URL', 'Optional coach LLM (prefer api.x.ai chat completions)'],
   ['COACH_LLM_REQUIRE_ZDR', 'true recommended when using xAI'],
+  ['FOUNDER_DIGEST_EMAIL', 'Monday founder digest recipient'],
 ];
 
 const PLACEHOLDER_SECRETS = new Set(['done', 'change-me', 'your-secret', 'test-gate-secret-32chars-min!!']);

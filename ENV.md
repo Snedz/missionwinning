@@ -48,6 +48,7 @@ Add these for **Production** and **Preview**:
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Optional | Web push public key (`npx web-push generate-vapid-keys`). SW only active when `PRIVATE_MODE=false` prod build |
 | `VAPID_PRIVATE_KEY` | Optional | Web push private key — server only, never `NEXT_PUBLIC_` |
 | `VAPID_SUBJECT` | Optional | `mailto:support@missionwinning.com` (or site contact URL) |
+| `FOUNDER_DIGEST_EMAIL` | Optional | Monday weekly digest (`/api/cron/weekly-digest`). Skip send if unset |
 
 ### Optional AI Coach + Zero Data Retention (ZDR)
 

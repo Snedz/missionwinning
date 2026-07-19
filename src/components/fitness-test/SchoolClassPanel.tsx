@@ -117,8 +117,16 @@ export function SchoolClassPanel() {
   };
 
   const copyInvite = async (code: string, name: string) => {
-    const text = buildClassInviteShareText(code, name);
+    let refCode: string | undefined;
+    try {
+      refCode = localStorage.getItem('mw_referral_code') || undefined;
+    } catch {
+      /* */
+    }
+    const text = buildClassInviteShareText(code, name, refCode ? { refCode } : undefined);
     const result = await shareText(text);
+    const { track } = await import('@/lib/analytics');
+    track('mission_shared', { surface: 'school_invite', method: result });
     if (result === 'copied') {
       setMessage(t('schoolInviteCopied', { defaultValue: 'Invite link copied.' }));
     }

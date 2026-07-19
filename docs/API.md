@@ -83,6 +83,29 @@ curl -X POST "$BASE/api/private-access" \
 
 ---
 
+## Growth
+
+### `GET /api/referral` / `POST /api/referral`
+
+| | |
+|--|--|
+| Auth | Session (`getUserFromRequest`) |
+| Rate | GET 20/min · POST 5/min · POST body 4KB |
+| GET | `{ code, recruitCount }` — lazy-gen `MW-XXXXX` via service role |
+| POST | Body `{ code }` matching `referralRedeemBodySchema`; attribute `referred_by` for accounts ≤7d; opaque `ignored` on invalid/self/old |
+| Notes | Client cannot spoof columns (DB trigger). Recognition-only rewards. |
+
+### `GET /api/cron/weekly-digest`
+
+| | |
+|--|--|
+| Auth | `Authorization: Bearer $CRON_SECRET` |
+| Schedule | `0 16 * * 1` (Monday) |
+| dryRun | `?dryRun=1` returns composed subject/text + data |
+| Send | `FOUNDER_DIGEST_EMAIL` via Resend; skipped if unset |
+
+---
+
 ## Premium (gated content)
 
 All `GET` — auth `premium` (session + `isPremiumForUser`) except status.

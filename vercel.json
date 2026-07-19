@@ -18,5 +18,8 @@
     }
   ],
   "redirects": [],
-  "crons": [{ "path": "/api/cron/nudges", "schedule": "0 17 * * *" }]
+  "crons": [
+    { "path": "/api/cron/nudges", "schedule": "0 17 * * *" },
+    { "path": "/api/cron/weekly-digest", "schedule": "0 16 * * 1" }
+  ]
 }

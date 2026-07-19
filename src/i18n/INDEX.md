@@ -36,6 +36,7 @@
 | `libraryLocales.ts` | Exercise library |
 | `feedbackLocales.ts` | Feedback |
 | `infoLocales.ts` | About, vision, coaching info |
+| `growthLocales.ts` | Referral / invite / share recognition (Wave 8) |
 | `leaderboardLocales.ts` | Leaderboard |
 | `bundleLocales.ts` | Bundle marketing |
 

@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-19 — Wave 8: Growth mechanics + quality/i18n (`2026.07-unified.88`)
+
+- Referral: migration + protect trigger, `/api/referral`, `?ref=` attribution backfill, redeem on sign-in, Profile invite card (recognition 3/10/25 only)
+- Tracked share: victory + mission/PFT/class analytics; share URLs with ref/utm
+- Weekly founder digest cron + `mw_week4_retention` RPC + compose unit test
+- a11y Playwright suite (`@a11y`, excluded from e2e:critical); experience + growth e2e
+- i18n: growthLocales; landing Batch C it/ru/ko/ja; DE/FR/PT conversion depth; bundle Batch C langs
+
+---
+
 ## 2026-07-19 — Wave 7: AI Coach depth + retention instrumentation (`2026.07-unified.87`)
 
 - **C** I-Day funnel: `iday_mission_accepted`, `iday_profile_completed` (+ SEO_ANALYTICS steps)
