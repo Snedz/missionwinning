@@ -9,7 +9,7 @@ import { FREE_STARTER_PROGRAMS } from '@/data/starterPrograms';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import type { ReadinessInfo, RecommendedFocus } from '@/lib/score';
-import { suggestNextSetTarget } from '@/lib/nextSetTargets';
+import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import type { UnitsPref } from '@/lib/units';
 import type { CompletedWorkoutLog, WorkoutExerciseTemplate } from '@/types';
 

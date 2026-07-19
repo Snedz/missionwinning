@@ -14,7 +14,7 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 **Product code is strong.** Free core, six pillars, Mission Coach, Fuel Coach, journey, design system, security perimeter, SEO, marketing redesign, privacy+OSS, growth Wave 2 (leads/email/attribution), Wave 3 launch verification. S-Tier waves 0–4 shipped. **Agent H1 eng prep complete.**
 
-**Market is not.** Phase **H** founder-blocked: private mode, beta cohort incomplete, live Stripe env incomplete, growth migration may be unapplied, PWA offline off until public. **#1 gap = founder ops** — [docs/LAUNCH_READY.md](docs/LAUNCH_READY.md).
+**Market is not.** Phase **H** founder-blocked: private mode, beta cohort incomplete, live Stripe env incomplete, growth migration may be unapplied, PWA offline off until public. **#1 gap = founder ops** — [docs/archive/LAUNCH_READY.md](docs/archive/LAUNCH_READY.md).
 
 ---
 
@@ -69,7 +69,7 @@ flowchart TB
 | 4 | Gates: I-Day ≥80%, Basic Training ≥60% | Profile beta panel, [PLAN.md](PLAN.md) F4 |
 | 5 | Mobile hero QA: Welcome → Just Go → set → Mission Score | Manual + `npm run e2e:critical` |
 | 6 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
-| 7 | Public flip day (after gates) | [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md) + [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md) |
+| 7 | Public flip day (after gates) | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) + [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) |
 
 ### Agent-allowed (Horizon 0 only)
 
@@ -87,7 +87,7 @@ flowchart TB
 
 | Track | Tasks |
 |-------|--------|
-| **Public** | `PRIVATE_MODE=false`; offline + SW smoke ([docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md)); Search Console; soft launch ([docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md)); Upstash in prod optional |
+| **Public** | `PRIVATE_MODE=false`; offline + SW smoke ([docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md)); Search Console; soft launch ([docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md)); Upstash in prod optional |
 | **Money** | Stripe → `enrollments` E2E; waitlist → founders email; support FAQ |
 | **Eng (bounded)** | ~~Lighthouse `/` + `/log` ≥90~~ ✅; ~~Serwist~~ ✅; ~~sync conflict tests~~ ✅; ~~logger E2E depth~~ ✅; ~~ActiveWorkout / Today extract~~ ✅; ~~`src/lib/workout/` domain~~ ✅ |
 

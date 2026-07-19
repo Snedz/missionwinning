@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { formatDuration } from '@/lib/utils';
-import type { WorkoutVictorySummary } from '@/lib/workoutVictory';
+import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { track } from '@/lib/analytics';
 

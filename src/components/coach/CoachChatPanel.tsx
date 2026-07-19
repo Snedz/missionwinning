@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { track } from '@/lib/analytics';
 import type { PlanSession } from '@/lib/coach/types';
-import { EXERCISES } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { cn } from '@/lib/utils';
 
 type Turn = { role: 'user' | 'coach'; content: string };
@@ -18,6 +18,8 @@ type Props = {
   strain: number;
   recovery: number;
   todaySession: PlanSession | null;
+  /** From /coach?ask= — form Q&A deep link. */
+  askExerciseId?: string;
   className?: string;
 };
 
@@ -27,23 +29,55 @@ export function CoachChatPanel({
   strain,
   recovery,
   todaySession,
+  askExerciseId,
   className,
 }: Props) {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(Boolean(askExerciseId));
   const [turns, setTurns] = useState<Turn[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [offline, setOffline] = useState(false);
+  const [exerciseId, setExerciseId] = useState<string | undefined>(askExerciseId);
   const logRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const trackedOpen = useRef(false);
+  const askBooted = useRef(false);
 
   useEffect(() => {
     if (open && !trackedOpen.current) {
       trackedOpen.current = true;
-      track('coach_chat_opened', { locked: !premium });
+      track('coach_chat_opened', {
+        locked: !premium,
+        surface: askExerciseId ? 'active' : 'coach',
+        grounded: Boolean(askExerciseId),
+      });
     }
-  }, [open, premium]);
+  }, [open, premium, askExerciseId]);
+
+  useEffect(() => {
+    if (!askExerciseId || askBooted.current) return;
+    askBooted.current = true;
+    let cancelled = false;
+    void (async () => {
+      await ensureFullExerciseCatalog();
+      if (cancelled) return;
+      const ex = getExerciseById(askExerciseId) ?? EXERCISES.find((e) => e.id === askExerciseId);
+      const name = ex?.name ?? askExerciseId;
+      setExerciseId(askExerciseId);
+      setOpen(true);
+      setInput(
+        t('coachChatAskFormPrefill', {
+          name,
+          defaultValue: `How should I perform ${name} with good form?`,
+        })
+      );
+      rootRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [askExerciseId, t]);
 
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: 'smooth' });
@@ -51,6 +85,7 @@ export function CoachChatPanel({
 
   if (!premium) {
     return (
+      <div ref={rootRef}>
       <Card className={cn('card-elevated border-brass/25', className)}>
         <CardHeader className="pb-2">
           <CardTitle className="text-base">
@@ -69,6 +104,7 @@ export function CoachChatPanel({
           </Button>
         </CardContent>
       </Card>
+      </div>
     );
   }
 
@@ -81,12 +117,12 @@ export function CoachChatPanel({
     const nextTurns: Turn[] = [...prior, { role: 'user', content: message }];
     setTurns(nextTurns);
 
-    const trainDays14 = 0; // compact; server uses client-provided value
     const context = {
       readiness,
       strain,
       recovery,
-      trainDays14,
+      trainDays14: 0,
+      exerciseId,
       todaySession: todaySession
         ? {
             name: todaySession.name,
@@ -134,7 +170,7 @@ export function CoachChatPanel({
       };
       track('coach_chat_message_sent', {
         turn: nextTurns.length,
-        grounded: false,
+        grounded: Boolean(exerciseId),
       });
       const coachText = data.actionLabel
         ? `${data.message}\n→ ${data.actionLabel}${data.actionPath ? ` (${data.actionPath})` : ''}`
@@ -148,6 +184,7 @@ export function CoachChatPanel({
   };
 
   return (
+    <div ref={rootRef}>
     <Card className={cn('content-card', className)}>
       <CardHeader className="pb-2">
         <button
@@ -227,5 +264,6 @@ export function CoachChatPanel({
         </CardContent>
       ) : null}
     </Card>
+    </div>
   );
 }

@@ -84,6 +84,6 @@ npm run gate-smoke -- https://www.missionwinning.com
 
 ## 5. Before public (`PRIVATE_MODE=false`)
 
-- Beta gates in [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) pass
+- Beta gates in [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) pass
 - I-Day ≥80%, Basic Training ≥60%
 - `DEMO_PREMIUM=false` confirmed on Production

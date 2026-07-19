@@ -5,7 +5,7 @@ import {
   getSuggestedRestSeconds,
   resolveRestSeconds,
   restProgress,
-} from '@/lib/restTimer';
+} from '@/lib/workout/restTimer';
 
 describe('restTimer', () => {
   it('suggests longer rest for compounds', () => {

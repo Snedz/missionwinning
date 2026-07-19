@@ -43,7 +43,7 @@ User guides in plain language (no code paths):
 
 | Doc | Purpose |
 |-----|---------|
-| [BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md) | Founder launch checklist |
+| [BETA_LAUNCH_OPS.md](archive/BETA_LAUNCH_OPS.md) | Founder launch checklist |
 | [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Stripe webhooks + premium |
 | [OWASP_AUDIT.md](OWASP_AUDIT.md) | Security sweep status |
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |

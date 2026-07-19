@@ -1,3 +1,5 @@
+> Superseded by [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
+
 # Beta launch ops — founder checklist
 
 **Code is ready.** This is the critical path from private beta to public launch. Full detail: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md).
@@ -87,7 +89,7 @@ Full detail: [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md).
 
 ## §5 Go public (after gates)
 
-Day-of commands: [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md) (top of file).
+Day-of commands: [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) (top of file).
 
 **Blocked until:** `launchReady` true (10+ profiles, I-Day ≥80%, BT ≥60%) + §2/§4 env complete.
 
@@ -95,4 +97,4 @@ Day-of commands: [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md) (top of file).
 - [ ] Flip `PRIVATE_MODE=false` → redeploy
 - [ ] `SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify`
 - [ ] PWA install + offline smoke on phone
-- [ ] Launch posts + waitlist email — copy in [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md); day checklist [SOFT_LAUNCH_DAY.md](SOFT_LAUNCH_DAY.md)
+- [ ] Launch posts + waitlist email — copy in [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md); day checklist [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md)

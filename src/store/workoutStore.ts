@@ -14,15 +14,15 @@ import type {
   SetKind,
   WorkoutExerciseTemplate,
 } from "@/types";
-import { countsTowardVolume } from "@/lib/setKind";
-import { advanceAfterLog } from "@/lib/superset";
+import { countsTowardVolume } from "@/lib/workout/setKind";
+import { advanceAfterLog } from "@/lib/workout/superset";
 import { saveWorkoutLog, getUserWorkoutHistory, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
-import { mapCloudToLocal, mergeWorkoutHistories } from "@/lib/workoutMerge";
+import { mapCloudToLocal, mergeWorkoutHistories } from "@/lib/workout/workoutMerge";
 import { toast } from "@/hooks/use-toast";
 import { track } from "@/lib/analytics";
-import { setActiveWorkoutFlag } from "@/lib/activeWorkoutPulse";
+import { setActiveWorkoutFlag } from "@/lib/workout/activeWorkoutPulse";
 
 const DEFAULT_REST_SECONDS = 30;
 
@@ -94,7 +94,7 @@ interface WorkoutState {
   syncCurrentHistoryToCloud: () => Promise<void>;
 }
 
-import { templateSetsToLogged } from '@/lib/workoutTemplate';
+import { templateSetsToLogged } from '@/lib/workout/workoutTemplate';
 
 function createLoggedSets(count: number, reps = 10, weight = 0): LoggedSet[] {
   const now = Date.now();

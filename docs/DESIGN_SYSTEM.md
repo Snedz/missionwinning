@@ -2,7 +2,7 @@
 
 **Runtime source:** [`src/index.css`](../src/index.css) · [`tailwind.config.js`](../tailwind.config.js) · fonts in [`app/layout.tsx`](../app/layout.tsx)  
 **Research:** [`DESIGN_RESEARCH.md`](DESIGN_RESEARCH.md)  
-**Build:** `2026.07-unified.85`+ (Wave 6 `/experience` dossier)
+**Build:** `2026.07-unified.89`+ (Wave 9 consolidation)
 
 ---
 
@@ -13,6 +13,11 @@
 3. **One boss action** per screen (especially Today)
 4. **Clinical metrics, not gamification** — tabular nums, quiet labels, lucide over emoji
 5. **Match chrome to task** — Train dense; Today sparse; marketing product-in-hero
+
+### Scoped color exceptions
+
+- **Drop-set kind chip** (`SetLogRow`): keeps `bg-violet-600` so drop sets stay visually distinct from supersets (`--status-info`) and normal sets. Optional future token: `--set-kind-drop`. Not brand identity violet.
+- Long-tail raw Tailwind color classes (~50 remaining outside top files): prefer `--status-*` / brass / primary when touching those files; no mass rewrite (Wave 9).
 
 ---
 

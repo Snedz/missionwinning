@@ -4,6 +4,17 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-19 — Wave 9: consolidation & polish (`2026.07-unified.89`)
+
+- Dead weight: 11 workout shims → `@/lib/workout/*`; delete MetricRing/ScoreRing/src/locales; drop `@phantom/browser-sdk`
+- Form Q&A: Active “Ask about form” → `/coach?ask=`; catalog ensure + prefill; grounded analytics
+- UX: `app/(app)/loading.tsx`; ErrorState on leaderboard + coach voice; TodayQuickLinks semantic colors
+- Bundle analyzer (`ANALYZE=1`) + `docs/LIGHTHOUSE_BASELINE.md`
+- i18n Batch D landing/growth/bundle (hi/id/th/zh/vi/ar) + `npm run i18n:batchd-parity`
+- Docs: archive launch plans → `docs/archive/`; LAUNCH_RUNBOOK is canonical survivor
+
+---
+
 ## 2026-07-19 — Wave 8: Growth mechanics + quality/i18n (`2026.07-unified.88`)
 
 - Referral: migration + protect trigger, `/api/referral`, `?ref=` attribution backfill, redeem on sign-in, Profile invite card (recognition 3/10/25 only)
@@ -127,7 +138,7 @@ Chronological record of shipped work. Newest first.
 
 - Build label → `2026.07-unified.76`
 - VISION_STATUS / PLAN / ORCHESTRATION: H1 eng prep done; founder H0 is bottleneck
-- New [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md) — offline, SW, Search Console, analytics baseline after `PRIVATE_MODE=false`
+- New [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) — offline, SW, Search Console, analytics baseline after `PRIVATE_MODE=false`
 
 ---
 
@@ -294,7 +305,7 @@ Chronological record of shipped work. Newest first.
 
 ## 2026-07-11 — Capital sequence kits (social, LLC, soft launch, TWA)
 
-**Docs only (founder executes):** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md), [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md), expanded [BETA_INVITE.md](BETA_INVITE.md) + [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) week-4 SQL.
+**Docs only (founder executes):** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md), [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md), expanded [BETA_INVITE.md](BETA_INVITE.md) + [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) week-4 SQL.
 
 **Not done by agents (by design):** recruiting 10 users, forming LLC, filming, flipping `PRIVATE_MODE`, native apps.
 
@@ -302,7 +313,7 @@ Chronological record of shipped work. Newest first.
 
 ## 2026-07-11 — Pre-launch quality bar + ops verify
 
-**Docs:** [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md), [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md)  
+**Docs:** [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md), [docs/archive/BETA_LAUNCH_OPS.md](docs/archive/BETA_LAUNCH_OPS.md)  
 **Build:** `2026.07-unified.54`
 
 ### Shipped
@@ -455,7 +466,7 @@ After public: wall metric = week-4 retained weekly loggers; weekly 1h user calls
 - Mind: +5 premium timed sessions (17 total); Move: +3 premium flows (11 total)
 - Coach locked-state + fatigue clarity; French body pass (Today/Fuel/Active/Welcome/Coach)
 - `/log` accordion dynamic imports + memoized scores; post-session Fuel/Mind CTAs
-- Founder ops: local `launch-verify` run; remaining boxes in [docs/BETA_LAUNCH_OPS.md](docs/BETA_LAUNCH_OPS.md)
+- Founder ops: local `launch-verify` run; remaining boxes in [docs/archive/BETA_LAUNCH_OPS.md](docs/archive/BETA_LAUNCH_OPS.md)
 - Fix: `adaptPlan` honors `today` arg (tests were calendar-flaky); build label `2026.07-unified.46`
 
 **Next:** Founder [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) → public flip when beta gates pass.

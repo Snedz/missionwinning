@@ -20,18 +20,18 @@ import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet'
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
 import { ActiveSessionChrome } from '@/components/workout/ActiveSessionChrome';
-import { resolveRestSeconds } from '@/lib/restTimer';
-import { isPersonalRecord } from '@/lib/workoutPr';
-import { shouldRestAfterLog } from '@/lib/superset';
+import { resolveRestSeconds } from '@/lib/workout/restTimer';
+import { isPersonalRecord } from '@/lib/workout/workoutPr';
+import { shouldRestAfterLog } from '@/lib/workout/superset';
 import { useUnits, weightStep, weightUnitLabel } from '@/hooks/useUnits';
 import { getTrainingStreak } from '@/lib/challenges';
 import {
   summarizeWorkoutVictory,
   buildProgressionInsight,
   type WorkoutVictorySummary,
-} from '@/lib/workoutVictory';
+} from '@/lib/workout/workoutVictory';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
-import { suggestNextSetTarget } from '@/lib/nextSetTargets';
+import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { computeBodyScores } from '@/lib/score';
 import {
   findNextSet,
@@ -39,7 +39,7 @@ import {
   getLastSessionSets,
   sessionSetStats,
   setInputKey,
-} from '@/lib/activeWorkoutHelpers';
+} from '@/lib/workout/activeWorkoutHelpers';
 
 export function ActiveWorkoutPage() {
   const router = useRouter();

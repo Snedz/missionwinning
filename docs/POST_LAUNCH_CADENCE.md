@@ -61,4 +61,4 @@ SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify
 - If A4 falsified (&lt;10% week-4): stop acquisition, 10 interviews, fix the loop (likely Coach / Today)
 - **No paid social ads** until week-4 holds
 
-Companion: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) §6 · [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md)
+Companion: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) §6 · [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md)

@@ -65,7 +65,7 @@ Thanks for helping us ship health for everyone.
 2. **Profile → Beta journey progress** (if `BETA_ADMIN_EMAILS` includes your email)
 3. **`journey_events`** — `journey_phase_complete`, `journey_commissioned`
 
-Launch gates (from [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md)): ≥10 users, I-Day ≥80%, Basic Training ≥60% before `PRIVATE_MODE=false`.
+Launch gates (from [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md)): ≥10 users, I-Day ≥80%, Basic Training ≥60% before `PRIVATE_MODE=false`.
 
 ---
 

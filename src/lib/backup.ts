@@ -1,5 +1,5 @@
 import type { CompletedWorkoutLog, SavedWorkout } from '@/types';
-import { mergeWorkoutHistories } from '@/lib/workoutMerge';
+import { mergeWorkoutHistories } from '@/lib/workout/workoutMerge';
 
 /**
  * Full-device backup for users without an account (their only safety net)

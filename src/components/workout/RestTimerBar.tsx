@@ -3,7 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import { SkipForward, Timer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { formatRestClock, restProgress, saveDefaultRestSeconds } from '@/lib/restTimer';
+import { formatRestClock, restProgress, saveDefaultRestSeconds } from '@/lib/workout/restTimer';
 import { cn } from '@/lib/utils';
 
 type Props = {

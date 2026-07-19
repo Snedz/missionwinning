@@ -40,13 +40,13 @@
 
 | File | Purpose |
 |------|---------|
-| [BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md) | Founder checklist — beta, env, QA |
-| [SOFT_LAUNCH_DAY.md](SOFT_LAUNCH_DAY.md) | Flip-day checklist (after gates) |
-| [PUBLIC_FLIP_CHECKLIST.md](PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
+| [BETA_LAUNCH_OPS.md](archive/BETA_LAUNCH_OPS.md) | Founder checklist — beta, env, QA |
+| [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) | Flip-day checklist (after gates) |
+| [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Beta + public social copy kit |
 | [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → PayPal later |
 | [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) | Deferred Android TWA / thin iOS |
-| [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
+| [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
 | [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe + premium gate |
 | [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md) | Lifetime Phantom Solana USDC |
@@ -54,7 +54,7 @@
 | [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) | npm audit high triage (Phantom/Solana) |
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Lighthouse baselines |
-| [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) | Experience build v4 |
+| [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) | Experience build v4 |
 | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing |
 

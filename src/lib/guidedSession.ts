@@ -1,6 +1,6 @@
 /** Headless timed-step session logic — shared by Mind + Move GuidedStepPlayer. */
 
-import { formatRestClock, restProgress } from '@/lib/restTimer';
+import { formatRestClock, restProgress } from '@/lib/workout/restTimer';
 
 export type GuidedStep = {
   label: string;

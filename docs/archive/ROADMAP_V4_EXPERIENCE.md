@@ -1,3 +1,5 @@
+> Superseded by [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
+
 # Roadmap v4 — The Experience Build
 
 **Focus (founder-directed):** best-in-class user interface & website experience · interactive website · SEO growth engine · free guide positioning.

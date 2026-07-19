@@ -23,7 +23,7 @@ import {
   type GuidedSessionState,
   type GuidedStep,
 } from '@/lib/guidedSession';
-import { restProgress } from '@/lib/restTimer';
+import { restProgress } from '@/lib/workout/restTimer';
 import { Check, Pause, Play, SkipForward } from 'lucide-react';
 
 type Props = {

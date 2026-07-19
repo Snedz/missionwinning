@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { suggestNextSetTarget, suggestTargetsForExercise } from '@/lib/nextSetTargets';
+import { suggestNextSetTarget, suggestTargetsForExercise } from '@/lib/workout/nextSetTargets';
 
 describe('nextSetTargets', () => {
   it('adds a rep when last set is below top of range', () => {

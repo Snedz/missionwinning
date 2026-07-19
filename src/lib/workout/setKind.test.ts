@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { countsTowardPr, countsTowardVolume } from '@/lib/setKind';
+import { countsTowardPr, countsTowardVolume } from '@/lib/workout/setKind';
 
 describe('setKind', () => {
   it('warmup sets skip volume and PR', () => {
