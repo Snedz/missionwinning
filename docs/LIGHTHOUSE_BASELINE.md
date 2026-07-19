@@ -1,28 +1,33 @@
-# Bundle / First Load baseline (Wave 9)
+# Bundle / First Load baseline (Wave 9–10)
 
 **Date:** 2026-07-19  
-**Note:** Lazy-merge for extended exercise catalog and ProgramTemplatesPanel `next/dynamic` already address the main dataset concern. Serwist precache covers dynamic chunks when PWA is enabled, so lazy loading stays offline-safe.
+**Build:** `npm run build` (Next 16.2 — route table no longer prints First Load JS; we snapshot **route page chunks** gzipped).
+
+**Note:** Lazy-merge for extended exercise catalog and ProgramTemplatesPanel `next/dynamic` already address the main dataset concern. Serwist precache covers dynamic chunks when PWA is enabled. Shared framework chunks are **not** included in page-only sizes below.
 
 ## How to re-measure
 
 ```bash
-ANALYZE=1 npm run build
-# Inspect webpack report; optional: next build route table for First Load JS
+npm run build
+# optional: ANALYZE=1 npm run build
+gzip -c .next/static/chunks/app/page-*.js | wc -c
+gzip -c .next/static/chunks/app/\(app\)/log/page-*.js | wc -c
+# …active, builder, coach similarly
 ```
 
-## Routes to record (manual after ANALYZE build)
+## Route page chunks (2026-07-19 snapshot)
 
-| Route | First Load JS (record after build) | Notes |
-|-------|-------------------------------------|--------|
-| `/` | — | Marketing + HeroDemo |
-| `/log` | — | Today |
-| `/active` | — | Logger hot path |
-| `/builder` | — | |
-| `/coach` | — | |
+| Route | Page chunk gz | Raw | Notes |
+|-------|---------------|-----|--------|
+| `/` | **9.1 KB** | 31 KB | Marketing + HeroDemo |
+| `/log` | **5.5 KB** | 15 KB | Today |
+| `/active` | **12.1 KB** | 40 KB | Logger hot path (largest of set) |
+| `/builder` | **8.5 KB** | 27 KB | |
+| `/coach` | **9.6 KB** | 31 KB | |
 
-Fill numbers on the next `ANALYZE=1` production build and note any surprise (e.g. enrichment leaking into app chunks).
+No surprise enrichment leaks into these page chunks; `/active` is the largest intentional route chunk.
 
 ## Intentional eagers
 
-- Base exercise catalog (~186 lines) remains eager for offline cold-start logging.
+- Base exercise catalog remains eager for offline cold-start logging.
 - Premium program templates remain server-only.

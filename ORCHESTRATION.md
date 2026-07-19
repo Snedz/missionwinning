@@ -1,20 +1,20 @@
 # Mission Winning — Long-Term Orchestration
 
 **Audience:** Founder + AI agents  
-**Build baseline:** `2026.07-unified.82`+  
+**Build baseline:** `2026.07-unified.90`+  
 **#1 metric (year one):** week-4 retained weekly loggers — [STRATEGY.md](STRATEGY.md)  
-**Constitution:** [vision.md](vision.md) · **Risk filter:** [REDTEAM.md](REDTEAM.md) · **Build phases:** [PLAN.md](PLAN.md)
+**Constitution:** [vision.md](vision.md) · **Risk filter:** [REDTEAM.md](REDTEAM.md) · **Build phases:** [PLAN.md](PLAN.md) · **Launch:** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md)
 
 Use this file to decide **what to work on next** and **what is forbidden until metrics unlock**.  
 Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 ---
 
-## Where we are (2026-07-16)
+## Where we are (2026-07-19)
 
-**Product code is strong.** Free core, six pillars, Mission Coach, Fuel Coach, journey, design system, security perimeter, SEO, marketing redesign, privacy+OSS, growth Wave 2 (leads/email/attribution), Wave 3 launch verification. S-Tier waves 0–4 shipped. **Agent H1 eng prep complete.**
+**Product code is strong.** Waves 1–9 shipped: free core, six pillars, coach adjust/chat/form Q&A, experience, ZDR, referrals, push (dark), founder digest, a11y, Batch C/D i18n, consolidation. **Wave 10 B1** packages launch ops (migration checklist, funnel visibility, chunk baseline).
 
-**Market is not.** Phase **H** founder-blocked: private mode, beta cohort incomplete, live Stripe env incomplete, growth migration may be unapplied, PWA offline off until public. **#1 gap = founder ops** — [docs/archive/LAUNCH_READY.md](docs/archive/LAUNCH_READY.md).
+**Market is not.** Phase **H** founder-blocked: private mode, beta cohort incomplete, live Stripe env incomplete, latest migrations may be unapplied, PWA offline off until public. **#1 gap = founder ops** — [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) (not more features).
 
 ---
 

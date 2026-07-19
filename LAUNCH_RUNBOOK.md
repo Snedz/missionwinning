@@ -31,19 +31,46 @@
    - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase → Project Settings → API)
    - `SUPABASE_SERVICE_ROLE_KEY` (same page — the **service_role** key; never expose in client)
    - `BETA_ADMIN_EMAILS=snowdenzeng@gmail.com`
-   - `RESEND_API_KEY` (only if/when you want consent + nudge emails)
-3. **Supabase migrations**: Supabase Dashboard → SQL Editor → run each file from `supabase/migrations/` in filename order, **finishing with `20260702_security_hardening.sql`** (protects teacher PINs, restricts leaderboard reads). All are idempotent — safe to re-run.
-4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit.
+   - `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated `openssl rand -base64 32` each — do not reuse gate secret)
+   - `RESEND_API_KEY` + `RESEND_FROM` (consent, nudges, welcome, weekly digest)
+   - `CRON_SECRET` (Vercel cron: daily nudges + Monday founder digest)
+   - `FOUNDER_DIGEST_EMAIL=you@…` (Monday digest recipient; skip send if unset)
+   - Optional: `NEXT_PUBLIC_POSTHOG_KEY` (product analytics after user allow)
+   - Optional AI coach: `COACH_LLM_*` + Console ZDR ([ENV.md](ENV.md))
+   - Optional push (dark until public): VAPID keys ([ENV.md](ENV.md))
+3. **Supabase migrations** (SQL Editor, **filename order**, all idempotent):
+   1. Base / early: everything under `supabase/migrations/20250629_*.sql` if not already applied  
+   2. `20260702_security_hardening.sql` — teacher PINs, leaderboard reads  
+   3. `20260703_reminders_optin.sql`  
+   4. `20260704_coach_plan.sql`  
+   5. `20260705_leads_api_only.sql`  
+   6. `20260716_crypto_payment_intents.sql` + `20260716_leads_growth_welcome_email.sql`  
+   7. **`20260719_push_subscriptions.sql`** — web push (Wave 7)  
+   8. **`20260720_referrals.sql`** — referral codes + `mw_week4_retention()` RPC (Wave 8)  
+4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
+5. **Smoke after env** (from a machine with secrets):
+   ```bash
+   npm run check-env
+   npm run gate-smoke          # or security-smoke
+   npm run growth-smoke        # leads/unsub paths
+   # Monday digest dry-run (local or prod with CRON_SECRET):
+   curl -sH "Authorization: Bearer $CRON_SECRET" \
+     "$SMOKE_BASE_URL/api/cron/weekly-digest?dryRun=1" | head
+   ```
 
-- [ ] Env vars set (incl. rotated PRIVATE_ACCESS_SECRET)
-- [ ] All migrations run, including 20260702_security_hardening
+- [ ] Env vars set (incl. rotated PRIVATE_ACCESS_SECRET, service role, DEMO_PREMIUM=false)
+- [ ] All migrations run through **20260720_referrals** (push + week-4 RPC)
 - [ ] Deployed URL loads and shows the new private teaser page
+- [ ] Digest dry-run returns JSON (or skipped cleanly if FOUNDER_DIGEST_EMAIL unset)
 
 ## §3 — Beta: 10 real users (target: within 14 days)
 
 1. Smoke-check the hero flow yourself **on your phone**: teaser → access code → `/welcome` I-Day → first workout → Win Score updates → sign in → Profile shows cloud sync.
 2. Recruit using the scripts in [STRATEGY.md §First 10 users](STRATEGY.md). Send personal invites with the URL + access code.
-3. Track the funnel: Profile page → founder beta panel (visible for `BETA_ADMIN_EMAILS`). Gates from PLAN.md: **10+ users, I-Day ≥80%, Basic Training ≥60%.**
+3. Track the funnel: Profile → founder beta panel (`BETA_ADMIN_EMAILS`). Gates: **10+ users, I-Day ≥80%, Basic Training ≥60%.**  
+   Client drop-off (after analytics allow): PostHog funnel  
+   `iday_started → iday_mission_accepted → iday_profile_completed → iday_completed → first_workout_completed`  
+   ([docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md)). Monday email digest repeats server funnel + week-4 RPC.
 4. Message every tester at day 2 and day 7 (script in STRATEGY.md). Fix the #1 confusion each week.
 
 - [ ] Hero flow QA'd on a real phone

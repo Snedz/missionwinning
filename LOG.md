@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-19 — Wave 10 B1: launch unblock packaging (`2026.07-unified.90`)
+
+- LAUNCH_RUNBOOK §2: full migration list through 20260720, digest/cron/PostHog/VAPID env, smoke commands
+- Digest + beta panel: PostHog I-Day step funnel reminder (client events)
+- LIGHTHOUSE_BASELINE: real page-chunk gz sizes (`/`, `/log`, `/active`, `/builder`, `/coach`)
+- Residual recovery UX: pro templates load error + offline copy on fuel search/barcode
+
+---
+
 ## 2026-07-19 — Wave 9: consolidation & polish (`2026.07-unified.89`)
 
 - Dead weight: 11 workout shims → `@/lib/workout/*`; delete MetricRing/ScoreRing/src/locales; drop `@phantom/browser-sdk`
