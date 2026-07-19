@@ -1,3 +1,5 @@
+> Superseded by [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
+
 # Pre-Launch Plan — Mission Winning
 
 **Purpose:** Single checklist before `PRIVATE_MODE=false` and public launch.  
@@ -122,4 +124,4 @@ Run in SQL Editor in filename order (idempotent):
 
 Verify tables: `profiles`, `workout_logs`, `nutrition_logs`, `enrollments`, `leads`, `journey_events`, `leaderboard_snapshots`, `school_classes`, `fitness_test_results`, `youth_consent_records`.
 
-Day-of: [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md) · Founder path: [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md).
+Day-of: [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md) · Founder path: [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md).

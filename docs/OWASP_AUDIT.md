@@ -116,7 +116,7 @@ curl -sI https://www.missionwinning.com/api/school/class/MWTEST/leaderboard
 | Founder secrets not rotated on prod | Critical if true | Founder S0 checklist |
 | Multi-instance rate-limit bypass | Medium | Upstash env |
 | Crypto checkout less mature than Stripe | Medium | Session + intent ownership + on-chain verify (shipped); keep optional |
-| Public flip expands surface | High if flip without S3 | [PUBLIC_FLIP_CHECKLIST.md](PUBLIC_FLIP_CHECKLIST.md) + security-smoke |
+| Public flip expands surface | High if flip without S3 | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) + security-smoke |
 | Youth/school legal surface | High if misconfig | Re-verify secrets + PIN tests before school marketing |
 
 ## API inventory
@@ -130,5 +130,5 @@ Living matrix: [app/api/INDEX.md](../app/api/INDEX.md).
 - [PROTECTION.md](../PROTECTION.md) — implementation log + curl checklist
 - [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) — npm audit accept/fix
 - [ENV.md](../ENV.md) — secret inventory
-- [docs/BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md) — launch gates
-- [PUBLIC_FLIP_CHECKLIST.md](PUBLIC_FLIP_CHECKLIST.md) — post-public smoke
+- [docs/archive/BETA_LAUNCH_OPS.md](archive/BETA_LAUNCH_OPS.md) — launch gates
+- [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) — post-public smoke

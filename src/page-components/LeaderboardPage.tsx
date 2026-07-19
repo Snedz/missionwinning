@@ -29,6 +29,7 @@ import { LeaderboardScopeTabs } from '@/components/leaderboard/LeaderboardScopeT
 import { LeaderboardTable } from '@/components/leaderboard/LeaderboardTable';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { ErrorState } from '@/components/ui/ErrorState';
 import { getJoinedClassCode, getTeacherPin } from '@/lib/schoolClass';
 
 export function LeaderboardPage() {
@@ -50,10 +51,12 @@ export function LeaderboardPage() {
   const [operatorName, setOperatorName] = useState(loadOperatorName);
   const [squadCode, setSquadCode] = useState(loadSquadCode);
   const [syncing, setSyncing] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [userId, setUserId] = useState<string | undefined>();
 
   const refresh = useCallback(async () => {
     setSyncing(true);
+    setLoadError(false);
     try {
       const u = await getUser();
       setUserId(u?.id);
@@ -91,13 +94,19 @@ export function LeaderboardPage() {
                 score: e.score,
               }))
             );
+          } else {
+            setLoadError(true);
+            setClassRows([]);
           }
         } catch {
+          setLoadError(true);
           setClassRows([]);
         }
       } else if (scope !== 'class') {
         setClassRows([]);
       }
+    } catch {
+      setLoadError(true);
     } finally {
       setSyncing(false);
     }
@@ -203,6 +212,23 @@ export function LeaderboardPage() {
       }
     >
       <LeaderboardBoardPicker boardId={boardId} onBoardChange={handleBoardChange} />
+
+      {loadError ? (
+        <ErrorState
+          title={t('leaderboardLoadError', { defaultValue: 'Could not refresh standings' })}
+          description={
+            typeof navigator !== 'undefined' && !navigator.onLine
+              ? t('leaderboardOffline', {
+                  defaultValue: 'You appear offline. Local ranks still show below when available.',
+                })
+              : t('leaderboardLoadErrorDesc', {
+                  defaultValue: 'Cloud sync failed. Retry when the network is ready.',
+                })
+          }
+          actionLabel={t('retry', { defaultValue: 'Retry' })}
+          onAction={() => void refresh()}
+        />
+      ) : null}
 
       {(you.nightSessions > 0 || you.dawnSessions > 0) && (
         <div className="flex flex-wrap gap-2 text-xs">

@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ErrorState } from '@/components/ui/ErrorState';
 import type { CoachPlan } from '@/lib/coach/types';
 import type { BodyScores } from '@/lib/score';
 
@@ -26,11 +27,12 @@ export function CoachVoiceCard({ plan, bodyScores, premium }: Props) {
   const { t } = useTranslation();
   const [voice, setVoice] = useState<VoiceResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  useEffect(() => {
+  const load = () => {
     if (!plan) return;
-    let cancelled = false;
     setLoading(true);
+    setError(false);
     void fetch('/api/coach/plan-voice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -50,20 +52,27 @@ export function CoachVoiceCard({ plan, bodyScores, premium }: Props) {
         premium,
       }),
     })
-      .then((r) => r.json())
-      .then((data: VoiceResponse) => {
-        if (!cancelled) setVoice(data);
+      .then(async (r) => {
+        if (!r.ok) throw new Error('voice failed');
+        return r.json() as Promise<VoiceResponse>;
+      })
+      .then((data) => {
+        setVoice(data);
       })
       .catch(() => {
-        if (!cancelled) setVoice(null);
+        setVoice(null);
+        setError(true);
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        setLoading(false);
       });
-    return () => {
-      cancelled = true;
-    };
-  }, [plan, bodyScores, premium]);
+  };
+
+  useEffect(() => {
+    if (!plan) return;
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reload on plan identity
+  }, [plan?.weekStart, plan?.revision, bodyScores.readiness, bodyScores.strain, bodyScores.recovery, premium]);
 
   if (!plan) return null;
 
@@ -85,6 +94,20 @@ export function CoachVoiceCard({ plan, bodyScores, premium }: Props) {
           <p className="text-sm text-muted-foreground">
             {t('coachVoiceLoading', { defaultValue: 'Briefing your week…' })}
           </p>
+        ) : error ? (
+          <ErrorState
+            title={t('coachVoiceError', { defaultValue: 'Could not load briefing' })}
+            description={
+              typeof navigator !== 'undefined' && !navigator.onLine
+                ? t('coachVoiceOffline', {
+                    defaultValue: 'You appear offline — try again when connected.',
+                  })
+                : t('coachVoiceErrorDesc', { defaultValue: 'Tap retry to load commander intent.' })
+            }
+            actionLabel={t('retry', { defaultValue: 'Retry' })}
+            onAction={() => load()}
+            className="py-6 border-0 bg-transparent"
+          />
         ) : (
           <p className="text-sm leading-relaxed text-foreground/90">{displayMessage}</p>
         )}

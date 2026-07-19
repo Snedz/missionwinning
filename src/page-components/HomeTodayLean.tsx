@@ -14,7 +14,7 @@ import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import {
   readTrainingStreakFromStorage,
   readWorkoutHistoryFromStorage,
-} from '@/lib/workoutPersistLite';
+} from '@/lib/workout/workoutPersistLite';
 import {
   getDefaultJourneyState,
   getNextAction,

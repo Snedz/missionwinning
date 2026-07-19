@@ -21,7 +21,7 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { Sparkline } from '@/components/today/Sparkline';
 import { useWorkoutStore } from '@/store/workoutStore';
-import { countsTowardVolume } from '@/lib/setKind';
+import { countsTowardVolume } from '@/lib/workout/setKind';
 
 type Props = {
   exercise: Exercise | null;

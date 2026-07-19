@@ -46,7 +46,7 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | Track | Doc | Status |
 |-------|-----|--------|
 | **Build phases A–D, F** | [PLAN.md](PLAN.md) | ✅ Free core, journey, unified UI |
-| **Experience v4** | [docs/ROADMAP_V4_EXPERIENCE.md](docs/ROADMAP_V4_EXPERIENCE.md) | ✅ Shipped PR #73 |
+| **Experience v4** | [docs/archive/ROADMAP_V4_EXPERIENCE.md](docs/archive/ROADMAP_V4_EXPERIENCE.md) | ✅ Shipped PR #73 |
 | **v5 + Phase I depth** | [PLAN.md](PLAN.md) Phase I | 🟡 Engines + Mind/Move/Learn/I5 + de body shipped; live Stripe remaining |
 | **Member journey phases** | [JOURNEY.md](JOURNEY.md) | I-Day → Commissioned (in-app) |
 | **PFT / America G1–G8** | [PLAN.md](PLAN.md) Phase G | ✅ Optional US track; feature-flagged |
@@ -60,7 +60,7 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 Full sequencing: [ORCHESTRATION.md](ORCHESTRATION.md) (Horizon 0 → 3).
 
 ### 1. Horizon 0 — Phase H beta + env (founder) — **#1 gap**
-Vercel connected; eng quality ready. Still need: live Stripe env, service-role on Vercel if missing, **≥10 beta users**, then gates. Day-of: [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md) · flip smoke: [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md).
+Vercel connected; eng quality ready. Still need: live Stripe env, service-role on Vercel if missing, **≥10 beta users**, then gates. Day-of: [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md) · flip smoke: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md).
 
 ### 2. Horizon 1 — Live Super Bundle + public (Phase I1)
 Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149**. Then `PRIVATE_MODE=false` + PWA offline promise.

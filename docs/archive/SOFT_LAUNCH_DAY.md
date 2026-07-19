@@ -1,9 +1,11 @@
+> Superseded by [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
+
 # Soft launch day — ready checklist
 
 **Do not run the flip until beta `launchReady` is true** (10+ profiles, I-Day ≥80%, BT ≥60%).  
 Agents prepare this checklist; **you** flip Vercel env.
 
-Full commands: [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md) · Offline/SW/SEO smoke: [PUBLIC_FLIP_CHECKLIST.md](PUBLIC_FLIP_CHECKLIST.md) · Posts: [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) Phase B
+Full commands: [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) · Offline/SW/SEO smoke: [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) · Posts: [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) Phase B
 
 ---
 

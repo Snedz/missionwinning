@@ -96,4 +96,4 @@ Analytics: `coach_taster_locked`, `coach_week_generated` with `premium` property
 
 ## After beta gates (Phase I)
 
-Per [PLAN.md](../PLAN.md) Phase I — enable live Stripe before scaling invites; keep free core unchanged. Flip-day checklist: [SOFT_LAUNCH_DAY.md](SOFT_LAUNCH_DAY.md).
+Per [PLAN.md](../PLAN.md) Phase I — enable live Stripe before scaling invites; keep free core unchanged. Flip-day checklist: [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md).

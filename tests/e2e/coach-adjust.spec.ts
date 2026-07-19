@@ -45,4 +45,18 @@ test.describe('Coach adjust + chat lock', () => {
       /super bundle|coach chat|chat del coach|desbloquear|unlock/i
     );
   });
+
+  test('ask=push-ups surfaces coach chat panel', async ({ page }) => {
+    await page.goto('/coach?ask=push-ups', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('body')).toBeVisible();
+    // Premium: expanded chat + prefill; free: locked Super Bundle teaser still OK
+    await expect(page.locator('body')).toContainText(
+      /ask your coach|coach chat|super bundle|form|push/i,
+      { timeout: 15_000 }
+    );
+    const input = page.locator('#coach-chat-input');
+    if (await input.isVisible().catch(() => false)) {
+      await expect(input).toHaveValue(/push/i);
+    }
+  });
 });

@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { getBestPriorSet, isPersonalRecord } from '@/lib/workoutPr';
+import { getBestPriorSet, isPersonalRecord } from '@/lib/workout/workoutPr';
 import type { CompletedWorkoutLog } from '@/types';
 
 const history: CompletedWorkoutLog[] = [

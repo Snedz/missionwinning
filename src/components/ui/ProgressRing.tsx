@@ -14,8 +14,6 @@ export type ProgressRingProps = {
   tone?: ProgressRingTone;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
-  /** Optional override for stroke/text (legacy MetricRing accentClassName). */
-  accentClassName?: string;
 };
 
 const TONE_MAP: Record<
@@ -58,7 +56,6 @@ export function ProgressRing({
   tone = 'emerald',
   size = 'md',
   className,
-  accentClassName,
 }: ProgressRingProps) {
   const numericProgress =
     progress ?? (typeof value === 'number' ? value : 0);
@@ -82,8 +79,7 @@ export function ProgressRing({
             r={r}
             fill="none"
             strokeWidth={strokeWidth}
-            className={accentClassName ? 'stroke-muted/40' : c.track}
-            stroke={accentClassName ? 'currentColor' : undefined}
+            className={c.track}
           />
           <circle
             cx={dim / 2}
@@ -92,11 +88,7 @@ export function ProgressRing({
             fill="none"
             strokeWidth={strokeWidth}
             strokeLinecap="round"
-            className={cn(
-              'transition-all duration-700 ease-out',
-              accentClassName ?? c.stroke
-            )}
-            stroke={accentClassName ? 'currentColor' : undefined}
+            className={cn('transition-all duration-700 ease-out', c.stroke)}
             strokeDasharray={circumference}
             strokeDashoffset={offset}
           />
@@ -105,7 +97,7 @@ export function ProgressRing({
           <span
             className={cn(
               'font-bold tabular-nums score-tick leading-none',
-              accentClassName ?? c.text,
+              c.text,
               size === 'lg' ? 'text-3xl' : size === 'md' ? 'text-2xl' : 'text-lg'
             )}
           >

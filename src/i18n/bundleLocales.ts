@@ -340,6 +340,29 @@ const ja: BundleStrings = {
   bundleFreeForeverTitle: '永久無料',
 };
 
+/** Batch D — LLM-drafted; founder review before public flip. */
+const hi: BundleStrings = {
+  ...en,
+  bundleHeadline: 'Super Bundle — छह स्तंभ, एक सदस्यता',
+  bundleSubhead: 'जब चाहें प्रीमियम गहराई। मुफ़्त कोर हमेशा मुफ़्त।',
+  bundleTabMonthly: 'मासिक',
+  bundleTab12mo: '12 महीने',
+  bundleTabLifetime: 'आजीवन',
+  bundleUnlockCta: 'Super Bundle अनलॉक करें',
+  bundleFreeForeverTitle: 'हमेशा मुफ़्त',
+};
+
+const vi: BundleStrings = {
+  ...en,
+  bundleHeadline: 'Super Bundle — sáu trụ, một gói',
+  bundleSubhead: 'Độ sâu premium khi bạn muốn. Lõi miễn phí mãi mãi.',
+  bundleTabMonthly: 'Hàng tháng',
+  bundleTab12mo: '12 tháng',
+  bundleTabLifetime: 'Trọn đời',
+  bundleUnlockCta: 'Mở Super Bundle',
+  bundleFreeForeverTitle: 'Miễn phí mãi mãi',
+};
+
 const LOCALES: Partial<Record<string, BundleStrings>> = {
   en,
   es,
@@ -354,6 +377,8 @@ const LOCALES: Partial<Record<string, BundleStrings>> = {
   ru,
   ko,
   ja,
+  hi,
+  vi,
 };
 
 export function bundleStringsFor(lang: string): BundleStrings {

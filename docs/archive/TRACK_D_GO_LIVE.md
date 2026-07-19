@@ -1,8 +1,10 @@
+> Superseded by [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
+
 # Track D — Go live + earn
 
 Founder-ops checklist wired to scripts. **You** own Vercel, Stripe, and Supabase accounts — agents run the verify commands locally or against prod URLs.
 
-Full narrative: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) · [BETA_LAUNCH_OPS.md](BETA_LAUNCH_OPS.md)
+Full narrative: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) · [BETA_LAUNCH_OPS.md](archive/BETA_LAUNCH_OPS.md)
 
 ---
 

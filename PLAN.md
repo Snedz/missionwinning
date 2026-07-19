@@ -57,7 +57,7 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 
 ## Phase H — Launch & global accessibility ⬜
 
-*Formerly “Phase E” in older docs.* See [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) + [PROTECTION.md](PROTECTION.md).
+*Formerly “Phase E” in older docs.* See [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) + [PROTECTION.md](PROTECTION.md).
 
 > **2026-07-02 — Launch package shipped (code side of Phase H):** security hardening migration
 > (`20260702_security_hardening.sql` — teacher PIN column privileges, authenticated-only leaderboard
@@ -151,7 +151,7 @@ Win Score weighting, bundle page, Supabase schema, cloud merge.
 200+ exercises, program tags, 8 Learn paths.
 
 ### Phase F — Journey & unified UI ✅
-I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages. See [UX_UNIFIED_PLAN.md](UX_UNIFIED_PLAN.md).
+I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages. See [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md).
 
 </details>
 
@@ -161,10 +161,10 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 **Long-term sequencing (horizons 0–3, role split, kill criteria):** [ORCHESTRATION.md](ORCHESTRATION.md) — read this before starting a multi-week initiative.
 
-**Agent H1 eng prep:** complete. **Growth Wave 2–3:** leads/email/SEO + `npm run growth-smoke` + [docs/LAUNCH_READY.md](docs/LAUNCH_READY.md). Flip checklist: [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md).
+**Agent H1 eng prep:** complete. **Growth Wave 2–3:** leads/email/SEO + `npm run growth-smoke` + [docs/archive/LAUNCH_READY.md](docs/archive/LAUNCH_READY.md). Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md).
 
-1. **Horizon 0 — Phase H founder ops** — migration + Vercel secrets + Stripe + recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/LAUNCH_READY.md](docs/LAUNCH_READY.md)) — **current bottleneck**
-2. **Hit beta gates** — 10+ users, I-Day ≥80%, BT ≥60% — then `PRIVATE_MODE=false` ([docs/SOFT_LAUNCH_DAY.md](docs/SOFT_LAUNCH_DAY.md), [docs/PUBLIC_FLIP_CHECKLIST.md](docs/PUBLIC_FLIP_CHECKLIST.md))
+1. **Horizon 0 — Phase H founder ops** — migration + Vercel secrets + Stripe + recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/archive/LAUNCH_READY.md](docs/archive/LAUNCH_READY.md)) — **current bottleneck**
+2. **Hit beta gates** — 10+ users, I-Day ≥80%, BT ≥60% — then `PRIVATE_MODE=false` ([docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md), [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md))
 3. **Horizon 1 — Phase I1** — live Stripe + webhook verify ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)); offline/SW/Search Console smoke
 4. ~~Lighthouse + Serwist + growth smoke~~ — **shipped** ([docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md); `npm run growth-smoke`)
 5. **Horizon 2 — week-4 retention** — measure before new features ([docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md), funnel in [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md))

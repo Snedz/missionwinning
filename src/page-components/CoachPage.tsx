@@ -20,7 +20,12 @@ import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 
-export function CoachPage() {
+type CoachPageProps = {
+  /** From /coach?ask=<exerciseId> — form Q&A entry (Wave 9). */
+  askExerciseId?: string;
+};
+
+export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
   const { t } = useTranslation();
   const {
     plan,
@@ -157,6 +162,7 @@ export function CoachPage() {
             strain={ctx.bodyScores.strain}
             recovery={ctx.bodyScores.recovery}
             todaySession={todaySession}
+            askExerciseId={askExerciseId}
           />
 
           {todaySession && todaySession.status !== 'done' && (

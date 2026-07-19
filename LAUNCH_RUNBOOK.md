@@ -1,12 +1,13 @@
 # LAUNCH RUNBOOK — the founder's critical path
 
-**Everything in this file only YOU can do.** No coding required — copy-paste steps, in order. Each step ends with a checkbox; when all boxes in a section are checked, move on. Companion docs: [STRATEGY.md](STRATEGY.md) (why) · [PRE_LAUNCH_PLAN.md](PRE_LAUNCH_PLAN.md) (detail) · [PROTECTION.md](PROTECTION.md) (security).
+**Everything in this file only YOU can do.** No coding required — copy-paste steps, in order. Each step ends with a checkbox; when all boxes in a section are checked, move on. Companion docs: [STRATEGY.md](STRATEGY.md) (why) · [PROTECTION.md](PROTECTION.md) (security) · [ORCHESTRATION.md](ORCHESTRATION.md) (horizon gates).
 
 > **The honest framing:** the app has been "almost ready" for months. The code is not the bottleneck — the steps below are. Do §1 today.
 
 ---
 
-**Wave 2 prep:** see [docs/LAUNCH_READY.md](docs/LAUNCH_READY.md) for greened conversion/SEO/email items before flip.
+**Social copy kit:** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md).  
+**Archived plans** (soft launch day, flip checklist, track D, etc.): [docs/archive/INDEX.md](docs/archive/INDEX.md).
 
 ## §1 — Regain deploy access (do today, ~30–60 min)
 
@@ -85,7 +86,7 @@ SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ACCESS_SECRET=... npm run la
 SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify
 ```
 
-See [docs/TRACK_D_GO_LIVE.md](docs/TRACK_D_GO_LIVE.md) for Stripe enrollment + Supabase probe commands.
+See [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md) for Stripe enrollment + Supabase probe commands.
 
 1. Final security curls (replace domain if needed):
    ```bash

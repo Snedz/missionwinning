@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { MetricsRow } from '@/components/metrics/MetricsRow';
-import { ScoreRing } from '@/components/metrics/ScoreRing';
+import { ProgressRing } from '@/components/ui/ProgressRing';
 import type { BodyScores } from '@/lib/score';
 import { animateCount, prefersReducedMotion } from '@/lib/motion';
 import { toast } from '@/hooks/use-toast';
@@ -74,11 +74,11 @@ export function HeroDemo({ staticFallback }: Props) {
         <span className="eyebrow">{t('heroDemoToday', { defaultValue: 'Today' })}</span>
       </div>
       <div className="mb-6 flex items-center justify-center">
-        <ScoreRing
+        <ProgressRing
           label={t('heroDemoWinScore', { defaultValue: 'Win Score' })}
           value={winScore}
           subtitle={t('heroDemoAllPillars', { defaultValue: 'All six pillars' })}
-          color="emerald"
+          tone="emerald"
           size="lg"
         />
       </div>
@@ -136,7 +136,7 @@ export function HeroDemoFallback() {
         <span className="eyebrow">Today</span>
       </div>
       <div className="mb-6 flex items-center justify-center">
-        <ScoreRing label="Win Score" value={74} subtitle="All six pillars" color="emerald" size="lg" />
+        <ProgressRing label="Win Score" value={74} subtitle="All six pillars" tone="emerald" size="lg" />
       </div>
       <MetricsRow scores={scores} demo embedded />
     </div>

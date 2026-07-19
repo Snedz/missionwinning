@@ -172,6 +172,67 @@ const ja: GrowthStrings = {
   growthShareFailed: '共有できませんでした',
 };
 
+/** Batch D — LLM-drafted; founder review before public flip. */
+const hi: GrowthStrings = {
+  ...en,
+  growthReferralTitle: 'मित्र को आमंत्रित करें',
+  growthReferralInvite: 'मित्र को आमंत्रित करें',
+  growthReferralCode: 'आपका कोड',
+  growthReferralCount: '{{count}} आमंत्रित',
+  growthReferralSignIn: 'साइन इन',
+  growthShareCopied: 'लिंक कॉपी हुआ',
+};
+
+const id: GrowthStrings = {
+  ...en,
+  growthReferralTitle: 'Undang teman',
+  growthReferralInvite: 'Undang teman',
+  growthReferralCode: 'Kode Anda',
+  growthReferralCount: '{{count}} direkrut',
+  growthReferralSignIn: 'Masuk',
+  growthShareCopied: 'Tautan disalin',
+};
+
+const th: GrowthStrings = {
+  ...en,
+  growthReferralTitle: 'เชิญเพื่อน',
+  growthReferralInvite: 'เชิญเพื่อน',
+  growthReferralCode: 'รหัสของคุณ',
+  growthReferralCount: 'เชิญแล้ว {{count}}',
+  growthReferralSignIn: 'เข้าสู่ระบบ',
+  growthShareCopied: 'คัดลอกลิงก์แล้ว',
+};
+
+const zh: GrowthStrings = {
+  ...en,
+  growthReferralTitle: '邀请好友',
+  growthReferralInvite: '邀请好友',
+  growthReferralCode: '你的代码',
+  growthReferralCount: '已邀请 {{count}} 人',
+  growthReferralSignIn: '登录',
+  growthShareCopied: '链接已复制',
+};
+
+const vi: GrowthStrings = {
+  ...en,
+  growthReferralTitle: 'Mời bạn',
+  growthReferralInvite: 'Mời bạn',
+  growthReferralCode: 'Mã của bạn',
+  growthReferralCount: '{{count}} đã mời',
+  growthReferralSignIn: 'Đăng nhập',
+  growthShareCopied: 'Đã sao chép liên kết',
+};
+
+const ar: GrowthStrings = {
+  ...en,
+  growthReferralTitle: 'ادعُ صديقًا',
+  growthReferralInvite: 'ادعُ صديقًا',
+  growthReferralCode: 'رمزك',
+  growthReferralCount: '{{count}} تمت دعوتهم',
+  growthReferralSignIn: 'تسجيل الدخول',
+  growthShareCopied: 'تم نسخ الرابط',
+};
+
 const BY_LANG: Record<string, GrowthStrings> = {
   en,
   es,
@@ -182,6 +243,12 @@ const BY_LANG: Record<string, GrowthStrings> = {
   ru,
   ko,
   ja,
+  hi,
+  id,
+  th,
+  zh,
+  vi,
+  ar,
 };
 
 export function growthStringsFor(lang: string): Record<string, string> {

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
-import type { WorkoutVictorySummary } from '@/lib/workoutVictory';
+import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 
 type Props = {
   onStart: () => void;

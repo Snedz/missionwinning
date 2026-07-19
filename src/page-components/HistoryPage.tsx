@@ -47,7 +47,7 @@ const HistoryVolumeChart = dynamic(
 import { getExerciseById } from '@/data/exercises';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { cn, formatDate, formatDuration } from '@/lib/utils';
-import { countsTowardVolume, setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/setKind';
+import { countsTowardVolume, setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import {
   build1RMChartData,
   buildMuscleHeatmap,

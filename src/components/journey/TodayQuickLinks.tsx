@@ -37,9 +37,12 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
           <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
         </Link>
 
-        <Link href="/history" className={`${linkClass} border-sky-500/30 bg-sky-950/20`}>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-500/20">
-            <History className="h-5 w-5 text-sky-300" />
+        <Link
+          href="/history"
+          className={`${linkClass} border-[hsl(var(--status-info)/0.3)] bg-[hsl(var(--status-info)/0.08)]`}
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--status-info)/0.15)]">
+            <History className="h-5 w-5 text-[hsl(var(--status-info))]" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-sm">
@@ -49,13 +52,13 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
               {t('todayQuickHistoryDesc', { defaultValue: 'Volume, 1RM & muscle map' })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-sky-300" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-[hsl(var(--status-info))]" />
         </Link>
 
         {!compact && (
-        <Link href="/bundle" className={`${linkClass} border-violet-500/30 bg-violet-950/20`}>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/20">
-            <Sparkles className="h-5 w-5 text-violet-300" />
+        <Link href="/bundle" className={`${linkClass} border-brass/30 bg-brass/10`}>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brass/20">
+            <Sparkles className="h-5 w-5 text-brass" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-sm">
@@ -65,7 +68,7 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
               {t('todayQuickBundleDesc', { defaultValue: 'All six pillars, one subscription' })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-violet-300" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-brass" />
         </Link>
         )}
       </div>
@@ -74,28 +77,28 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Link
           href="/leaderboard?board=under-the-stars"
-          className={`${linkClass} border-indigo-500/30 bg-indigo-950/25`}
+          className={`${linkClass} border-[hsl(var(--status-info)/0.3)] bg-[hsl(var(--status-info)/0.1)]`}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/20">
-            <Moon className="h-5 w-5 text-indigo-300" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--status-info)/0.15)]">
+            <Moon className="h-5 w-5 text-[hsl(var(--status-info))]" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="font-semibold text-sm text-indigo-100">
+            <div className="font-semibold text-sm">
               {t('lbBoardUnderTheStars', { defaultValue: 'Under the Stars' })}
             </div>
-            <div className="text-xs text-indigo-200/60 truncate">
+            <div className="text-xs text-muted-foreground truncate">
               {t('todayQuickNightDesc', { defaultValue: '22:00–05:00 sessions' })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-indigo-300/60 group-hover:text-indigo-300" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-[hsl(var(--status-info))]" />
         </Link>
 
         <Link
           href="/leaderboard?board=dawns-early-light"
-          className={`${linkClass} border-amber-500/30 bg-amber-950/20`}
+          className={`${linkClass} border-[hsl(var(--status-warn)/0.3)] bg-[hsl(var(--status-warn)/0.08)]`}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/20">
-            <Sunrise className="h-5 w-5 text-status-warn" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--status-warn)/0.15)]">
+            <Sunrise className="h-5 w-5 text-[hsl(var(--status-warn))]" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-sm text-amber-100">

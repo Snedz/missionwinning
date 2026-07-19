@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { templateSetsToLogged } from '@/lib/workoutTemplate';
+import { templateSetsToLogged } from '@/lib/workout/workoutTemplate';
 
 describe('templateSetsToLogged', () => {
   it('honors per-set reps and weight from template', () => {

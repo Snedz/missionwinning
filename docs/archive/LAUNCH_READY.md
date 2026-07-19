@@ -1,8 +1,10 @@
+> Superseded by [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
+
 # Launch Ready — prepped items (Wave 2)
 
 **Purpose:** What engineering has greened before public flip.  
 **Does not flip:** `PRIVATE_MODE`, mass email send, social posts — founder-manual only.  
-**Companions:** [PUBLIC_FLIP_CHECKLIST.md](PUBLIC_FLIP_CHECKLIST.md) · [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · [ENV.md](../ENV.md)
+**Companions:** [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) · [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · [ENV.md](../ENV.md)
 
 ---
 

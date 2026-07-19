@@ -1,6 +1,6 @@
 # SEO & analytics — growth loop
 
-Companion to [ROADMAP_V4_EXPERIENCE.md](ROADMAP_V4_EXPERIENCE.md) Phase 3–4. Code ships the routes and events; this doc is the founder setup checklist.
+Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 3–4. Code ships the routes and events; this doc is the founder setup checklist.
 
 ---
 

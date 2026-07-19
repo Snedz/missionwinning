@@ -448,6 +448,127 @@ const LANDING_JA: Record<string, string> = {
   footerGroupLegal: '法務',
 };
 
+/** Batch D — LLM-drafted; founder review before public flip. */
+const LANDING_HI: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: 'मार्ग',
+  landingNavPillars: 'स्तंभ',
+  landingNavStart: 'मुफ़्त शुरू करें',
+  landingNavHome: 'होम',
+  landingHeroTitle1: 'कहीं भी ट्रेन करें।',
+  landingHeroTitle2: 'हर दिन जीतें।',
+  landingHeroSubtitle:
+    'मुफ़्त ऑफ़लाइन वर्कआउट ट्रैकर — बिना खाते, बिना स्टोर, कोर पर कोई paywall नहीं। Win Score पोषण, गतिशीलता, मन और सीख को जोड़ता है।',
+  landingCtaStart: 'अपना मार्ग शुरू करें',
+  landingFinalCtaButton: 'मुफ़्त शुरू — बिना खाते',
+  landingCaptureTitle: 'लॉन्च नोट्स। कोर हमेशा मुफ़्त।',
+  landingCaptureButton: 'मुझे बताएँ',
+  footerGroupProduct: 'उत्पाद',
+  footerGroupLearn: 'सीखें',
+  footerGroupCompany: 'कंपनी',
+  footerGroupLegal: 'कानूनी',
+};
+
+const LANDING_ID: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: 'Jalur',
+  landingNavPillars: 'Enam pilar',
+  landingNavStart: 'Mulai gratis',
+  landingNavHome: 'Beranda',
+  landingHeroTitle1: 'Latihan di mana saja.',
+  landingHeroTitle2: 'Menang setiap hari.',
+  landingHeroSubtitle:
+    'Pelacak latihan gratis offline — tanpa akun, tanpa toko, tanpa paywall di inti. Win Score menyatukan nutrisi, mobilitas, pikiran, dan belajar.',
+  landingCtaStart: 'Mulai jalurmu',
+  landingFinalCtaButton: 'Mulai gratis — tanpa akun',
+  landingCaptureTitle: 'Catatan rilis. Inti gratis selamanya.',
+  landingCaptureButton: 'Kabari saya',
+  footerGroupProduct: 'Produk',
+  footerGroupLearn: 'Belajar',
+  footerGroupCompany: 'Perusahaan',
+  footerGroupLegal: 'Hukum',
+};
+
+const LANDING_TH: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: 'เส้นทาง',
+  landingNavPillars: 'หกเสา',
+  landingNavStart: 'เริ่มฟรี',
+  landingNavHome: 'หน้าแรก',
+  landingHeroTitle1: 'ฝึกได้ทุกที่',
+  landingHeroTitle2: 'ชนะทุกวัน',
+  landingHeroSubtitle:
+    'ตัวติดตามออกกำลังกายฟรีออฟไลน์ — ไม่ต้องมีบัญชี ไม่ต้องร้านค้า ไม่มี paywall ที่คอร์ Win Score รวมโภชนาการ การเคลื่อนไหว จิตใจ และการเรียนรู้',
+  landingCtaStart: 'เริ่มเส้นทางของคุณ',
+  landingFinalCtaButton: 'เริ่มฟรี — ไม่ต้องมีบัญชี',
+  landingCaptureTitle: 'ข่าวเปิดตัว คอร์ฟรีตลอดไป',
+  landingCaptureButton: 'แจ้งฉัน',
+  footerGroupProduct: 'ผลิตภัณฑ์',
+  footerGroupLearn: 'เรียนรู้',
+  footerGroupCompany: 'บริษัท',
+  footerGroupLegal: 'กฎหมาย',
+};
+
+const LANDING_ZH: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: '路径',
+  landingNavPillars: '六大支柱',
+  landingNavStart: '免费开始',
+  landingNavHome: '首页',
+  landingHeroTitle1: '随处训练。',
+  landingHeroTitle2: '每日获胜。',
+  landingHeroSubtitle:
+    '免费离线训练记录器——无需账号、无需应用商店、核心功能无付费墙。Win Score 将营养、活动、心态与学习合而为一。',
+  landingCtaStart: '开始你的路径',
+  landingFinalCtaButton: '免费开始 — 无需账号',
+  landingCaptureTitle: '上线通知。核心永久免费。',
+  landingCaptureButton: '通知我',
+  footerGroupProduct: '产品',
+  footerGroupLearn: '学习',
+  footerGroupCompany: '公司',
+  footerGroupLegal: '法律',
+};
+
+const LANDING_VI: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: 'Lộ trình',
+  landingNavPillars: 'Sáu trụ cột',
+  landingNavStart: 'Bắt đầu miễn phí',
+  landingNavHome: 'Trang chủ',
+  landingHeroTitle1: 'Tập mọi nơi.',
+  landingHeroTitle2: 'Thắng mỗi ngày.',
+  landingHeroSubtitle:
+    'Trình theo dõi tập luyện miễn phí offline — không tài khoản, không cửa hàng, không paywall phần lõi. Win Score gộp dinh dưỡng, vận động, tinh thần và học tập.',
+  landingCtaStart: 'Bắt đầu lộ trình',
+  landingFinalCtaButton: 'Bắt đầu miễn phí — không tài khoản',
+  landingCaptureTitle: 'Tin ra mắt. Lõi miễn phí mãi mãi.',
+  landingCaptureButton: 'Báo cho tôi',
+  footerGroupProduct: 'Sản phẩm',
+  footerGroupLearn: 'Học',
+  footerGroupCompany: 'Công ty',
+  footerGroupLegal: 'Pháp lý',
+};
+
+const LANDING_AR: Record<string, string> = {
+  ...LANDING_EN,
+  landingNavPath: 'المسار',
+  landingNavPillars: 'ستة أعمدة',
+  landingNavStart: 'ابدأ مجانًا',
+  landingNavHome: 'الرئيسية',
+  landingHeroTitle1: 'تدرّب في أي مكان.',
+  landingHeroTitle2: 'انتصِر كل يوم.',
+  landingHeroSubtitle:
+    'متتبع تمارين مجاني يعمل دون اتصال — بلا حساب، بلا متجر، بلا جدار دفع على النواة. Win Score يجمع التغذية والحركة والعقل والتعلم.',
+  landingCtaStart: 'ابدأ مسارك',
+  landingFinalCtaButton: 'ابدأ مجانًا — بلا حساب',
+  landingCaptureTitle: 'ملاحظات الإطلاق. النواة مجانية إلى الأبد.',
+  landingCaptureButton: 'أخبرني',
+  footerGroupProduct: 'المنتج',
+  footerGroupLearn: 'تعلّم',
+  footerGroupCompany: 'الشركة',
+  footerGroupLegal: 'قانوني',
+};
+
 const BY_LANG: Record<string, Record<string, string>> = {
   en: LANDING_EN,
   es: LANDING_ES,
@@ -458,6 +579,12 @@ const BY_LANG: Record<string, Record<string, string>> = {
   ru: LANDING_RU,
   ko: LANDING_KO,
   ja: LANDING_JA,
+  hi: LANDING_HI,
+  id: LANDING_ID,
+  th: LANDING_TH,
+  zh: LANDING_ZH,
+  vi: LANDING_VI,
+  ar: LANDING_AR,
 };
 
 export function landingStringsFor(lang: string): Record<string, string> {

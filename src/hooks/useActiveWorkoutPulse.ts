@@ -5,7 +5,7 @@ import {
   getActiveWorkoutFlag,
   hydrateActiveWorkoutFlagFromStorage,
   subscribeActiveWorkoutFlag,
-} from '@/lib/activeWorkoutPulse';
+} from '@/lib/workout/activeWorkoutPulse';
 
 /** Whether an active workout is in progress — for nav pulse only. */
 export function useActiveWorkoutPulse(): boolean {

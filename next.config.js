@@ -75,6 +75,15 @@ const sentryBuildOptions = {
   disableLogger: true,
 };
 
-module.exports = sentryDsn
+let exported = sentryDsn
   ? withSentryConfig(pwaConfig, sentryBuildOptions)
   : pwaConfig;
+
+// ANALYZE=1 npm run build — webpack bundle report (Wave 9)
+if (process.env.ANALYZE === '1') {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: true });
+  exported = withBundleAnalyzer(exported);
+}
+
+module.exports = exported;

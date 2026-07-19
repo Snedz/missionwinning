@@ -6,6 +6,7 @@
  */
 
 import type { RefObject } from 'react';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Plus, Timer } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -14,9 +15,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { getFormGuideOrCues } from '@/lib/formGuides';
-import { resolveRestSeconds } from '@/lib/restTimer';
-import { suggestNextSetTarget } from '@/lib/nextSetTargets';
-import { supersetLabel } from '@/lib/superset';
+import { resolveRestSeconds } from '@/lib/workout/restTimer';
+import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+import { supersetLabel } from '@/lib/workout/superset';
 import { cn } from '@/lib/utils';
 import type { UnitsPref } from '@/lib/units';
 import type {
@@ -170,6 +171,11 @@ export function ActiveExerciseCard({
               {t('activeFormGuide', { defaultValue: 'Form guide' })}
             </Button>
           )}
+          <Button type="button" variant="ghost" size="sm" className="h-9 text-primary" asChild>
+            <Link href={`/coach?ask=${encodeURIComponent(exercise.id)}`}>
+              {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
+            </Link>
+          </Button>
           {hasNext && !exLog.supersetGroup && (
             <Button type="button" variant="outline" size="sm" onClick={onToggleSuperset}>
               {t('activeSupersetLink', { defaultValue: 'Superset w/ next' })}

@@ -25,10 +25,10 @@
     "sync-vercel-env": "node scripts/sync-vercel-env.mjs",
     "print-beta-invite": "node --env-file=.env.local scripts/print-beta-invite.ts",
     "launch-broadcast": "node --env-file=.env.local scripts/send-launch-broadcast.mjs",
-    "growth-smoke": "node scripts/growth-smoke.mjs"
+    "growth-smoke": "node scripts/growth-smoke.mjs",
+    "i18n:batchd-parity": "node scripts/i18n-batchd-parity.mjs"
   },
   "dependencies": {
-    "@phantom/browser-sdk": "^2.0.2",
     "@phantom/react-sdk": "^2.0.2",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-label": "^2.1.2",
@@ -67,6 +67,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^9.21.0",
+    "@next/bundle-analyzer": "^16.2.10",
     "@playwright/test": "^1.61.1",
     "@types/node": "^22.13.5",
     "@types/react": "^19.0.10",

@@ -1,19 +1,21 @@
+> Superseded by [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
+
 # Public flip checklist — offline, SW, Search Console
 
 **When:** After Horizon 0 gates pass and founder is ready to set `PRIVATE_MODE=false`.  
-**Companion:** [SOFT_LAUNCH_DAY.md](SOFT_LAUNCH_DAY.md) (full flip day) · [SEO_ANALYTICS.md](SEO_ANALYTICS.md) · [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md)
+**Companion:** [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) (full flip day) · [SEO_ANALYTICS.md](SEO_ANALYTICS.md) · [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md)
 
 This is the **agent-prepared** one-pager for the technical smoke after public mode. Founder still owns the Vercel env flip.
 
 ---
 
-**Wave 2–3 prep:** [LAUNCH_READY.md](LAUNCH_READY.md) — conversion, SEO, email, growth smoke, ordered flip sequence.
+**Wave 2–3 prep:** [LAUNCH_READY.md](archive/LAUNCH_READY.md) — conversion, SEO, email, growth smoke, ordered flip sequence.
 
 ## Pre-flip (gate still on)
 
 - [ ] CI green on `master` (`build-and-test` + `e2e-critical`)
 - [ ] Profile footer build label matches [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts)
-- [ ] Growth migration applied (verify 6 columns) — [LAUNCH_READY.md](LAUNCH_READY.md) §1
+- [ ] Growth migration applied (verify 6 columns) — [LAUNCH_READY.md](archive/LAUNCH_READY.md) §1
 - [ ] `NEXT_PUBLIC_SITE_URL=https://www.missionwinning.com` on Production
 - [ ] `RESEND_FROM` is a verified domain (not `resend.dev`) if sending mail
 - [ ] `SMOKE_BASE_URL=… npm run growth-smoke` green against staging/prod
@@ -93,7 +95,7 @@ Checklist:
 
 ### 5. Soft launch distribution
 
-Follow [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) Phase B + [SOFT_LAUNCH_DAY.md](SOFT_LAUNCH_DAY.md) same-day posts.
+Follow [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) Phase B + [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) same-day posts.
 
 ---
 
@@ -111,7 +113,7 @@ If public flip breaks auth, payments, or offline badly:
 
 | Doc | Role |
 |-----|------|
-| [SOFT_LAUNCH_DAY.md](SOFT_LAUNCH_DAY.md) | Full flip-day founder checklist |
+| [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) | Full flip-day founder checklist |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Copy kit |
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Perf budgets (already ≥90 on key routes) |
 | [../ORCHESTRATION.md](../ORCHESTRATION.md) | Horizon sequencing |
