@@ -39,7 +39,13 @@ export function BarcodeLookup({ onSelect }: Props) {
         );
       }
     } catch {
-      setError(t('fuelSearchUnavailable', { defaultValue: 'Lookup unavailable. Try again.' }));
+      setError(
+        typeof navigator !== 'undefined' && !navigator.onLine
+          ? t('fuelSearchOffline', {
+              defaultValue: 'You appear offline — try again when connected.',
+            })
+          : t('fuelSearchUnavailable', { defaultValue: 'Lookup unavailable. Try again.' })
+      );
     } finally {
       setLoading(false);
     }

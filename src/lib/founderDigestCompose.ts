@@ -41,6 +41,12 @@ export function composeFounderDigest(data: FounderDigestData): {
     lines.push('  (funnel metrics unavailable — check service role / profiles)');
   }
 
+  lines.push(
+    '',
+    '  Client I-Day steps (PostHog Insights — only if analytics allowed):',
+    '  iday_started → iday_mission_accepted → iday_profile_completed → iday_completed → first_workout_completed'
+  );
+
   lines.push('', '2) Week-4 retention (signed-in cloud loggers)');
   if (data.retention) {
     const rate =

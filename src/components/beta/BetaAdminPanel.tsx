@@ -71,6 +71,14 @@ export function BetaAdminPanel({ enabled }: Props) {
               Phases: I-Day {metrics.phaseCounts['i-day']} · Basic {metrics.phaseCounts.basic} · Readiness{' '}
               {metrics.phaseCounts.readiness} · Commissioned {metrics.phaseCounts.commissioned}
             </div>
+            <p className="text-[11px] text-muted-foreground leading-relaxed rounded-lg border border-border/40 p-2">
+              <span className="font-medium text-foreground">Client I-Day steps</span> (PostHog, after allow):{' '}
+              <code className="text-[10px]">iday_started</code> →{' '}
+              <code className="text-[10px]">iday_mission_accepted</code> →{' '}
+              <code className="text-[10px]">iday_profile_completed</code> →{' '}
+              <code className="text-[10px]">iday_completed</code> →{' '}
+              <code className="text-[10px]">first_workout_completed</code>
+            </p>
             {metrics.leadSourceTop && metrics.leadSourceTop.length > 0 ? (
               <div className="rounded-lg border border-border/50 p-3 text-xs space-y-1.5">
                 <div className="font-semibold text-foreground">

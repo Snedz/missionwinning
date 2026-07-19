@@ -43,7 +43,13 @@ export function FoodSearchBar({ onSelect }: Props) {
       }
     } catch {
       setItems([]);
-      setError(t('fuelSearchUnavailable', { defaultValue: 'Food search temporarily unavailable.' }));
+      setError(
+        typeof navigator !== 'undefined' && !navigator.onLine
+          ? t('fuelSearchOffline', {
+              defaultValue: 'You appear offline — try again when connected.',
+            })
+          : t('fuelSearchUnavailable', { defaultValue: 'Food search temporarily unavailable.' })
+      );
     } finally {
       setLoading(false);
     }

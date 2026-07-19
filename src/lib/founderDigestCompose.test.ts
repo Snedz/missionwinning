@@ -20,6 +20,7 @@ describe('composeFounderDigest', () => {
     });
     assert.match(subject, /2026-07-19/);
     assert.match(text, /I-Day complete: 10/);
+    assert.match(text, /iday_mission_accepted/);
     assert.match(text, /Week-4 retained: 5/);
     assert.match(text, /12\.5%/);
     assert.match(text, /MW-ABC12: 3/);

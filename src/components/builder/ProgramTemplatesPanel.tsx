@@ -149,16 +149,25 @@ export function ProgramTemplatesPanel({
   const [search, setSearch] = useState("");
   const { premium, loading: premiumLoading } = usePremium();
   const [proPrograms, setProPrograms] = useState<ProgramTemplate[]>([]);
+  const [proLoadError, setProLoadError] = useState(false);
 
   useEffect(() => {
     if (!premium) {
       setProPrograms([]);
+      setProLoadError(false);
       return;
     }
+    setProLoadError(false);
     fetch("/api/premium/programs?category=pro", { credentials: "include" })
-      .then((r) => (r.ok ? r.json() : { programs: [] }))
+      .then((r) => {
+        if (!r.ok) throw new Error("pro programs failed");
+        return r.json();
+      })
       .then((data) => setProPrograms(data.programs ?? []))
-      .catch(() => setProPrograms([]));
+      .catch(() => {
+        setProPrograms([]);
+        setProLoadError(true);
+      });
   }, [premium]);
 
   const basePrograms =
@@ -213,6 +222,38 @@ export function ProgramTemplatesPanel({
 
   return (
     <div className="space-y-4">
+      {proLoadError && category === 'pro' && premium ? (
+        <div
+          role="alert"
+          className="rounded-xl border border-dashed border-status-danger/40 bg-status-danger/5 p-4 text-center text-sm space-y-2"
+        >
+          <p>
+            {typeof navigator !== 'undefined' && !navigator.onLine
+              ? t('builderProOffline', {
+                  defaultValue: 'Offline — premium program list will load when you reconnect.',
+                })
+              : t('builderProLoadFail', {
+                  defaultValue: 'Could not load premium programs. Try again.',
+                })}
+          </p>
+          <button
+            type="button"
+            className="text-primary text-sm underline min-h-[44px]"
+            onClick={() => {
+              setProLoadError(false);
+              fetch('/api/premium/programs?category=pro', { credentials: 'include' })
+                .then((r) => {
+                  if (!r.ok) throw new Error('fail');
+                  return r.json();
+                })
+                .then((data) => setProPrograms(data.programs ?? []))
+                .catch(() => setProLoadError(true));
+            }}
+          >
+            {t('retry', { defaultValue: 'Retry' })}
+          </button>
+        </div>
+      ) : null}
       <p className="text-sm text-muted-foreground">{categoryMeta.description}</p>
       <Input
         type="search"
