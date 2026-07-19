@@ -8,7 +8,9 @@ Chronological record of shipped work. Newest first.
 
 - Applied `20260719_push_subscriptions.sql` + `20260720_referrals.sql` on production Supabase
 - Verified: `push_subscriptions` table; `profiles.referral_code` / `referred_by`; trigger `profiles_protect_referral_cols`; `mw_week4_retention()` returns `{0,0}` (no aged cohort yet)
-- Still open (founder/Vercel): redeploy if recent env changed; digest dry-run curl; `STRIPE_WEBHOOK_SECRET` if enrollments should auto-unlock; Resend optional for digest send
+- Vercel: Production was ~8d behind (master builds were Preview-only); promoted Wave 10 B1 to Production (`www.missionwinning.com`)
+- Prod env present: `SUPABASE_SERVICE_ROLE_KEY`, `CRON_SECRET`, `FOUNDER_DIGEST_EMAIL`, `NEXT_PUBLIC_SITE_URL`, Stripe Payment Links — **missing** `STRIPE_WEBHOOK_SECRET` (and Resend still optional)
+- Fix: allowlist `/api/cron/weekly-digest` in private gate (was 403 under `PRIVATE_MODE`)
 
 ---
 
