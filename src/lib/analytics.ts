@@ -54,6 +54,9 @@ type AnalyticsEvent =
   | 'backup_exported'
   | 'backup_restored'
   | 'guide_read'
+  | 'guide_pdf_download'
+  | 'guide_toc_open'
+  | 'guide_locale_changed'
   | 'exercise_page_viewed'
   | 'public_cta_clicked';
 

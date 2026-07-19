@@ -415,18 +415,564 @@
   }
 }
 
+/* —— Beyond the Basics magazine (/guide/print + PDF) ——
+   Tokens follow design system: emerald = action, brass = honor, navy cover, cool paper body. */
+.magazine-root {
+  --mag-paper: hsl(210 12% 97%);
+  --mag-ink: hsl(222 24% 8%);
+  --mag-muted: hsl(var(--muted-foreground));
+  --mag-rule: hsl(var(--border));
+  --mag-primary: hsl(var(--primary));
+  --mag-brass: hsl(var(--brass));
+  --mag-navy: hsl(var(--background));
+  --mag-fg-on-dark: hsl(210 20% 96%);
+  min-height: 100vh;
+  background: var(--mag-paper);
+  color: var(--mag-ink);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+.magazine-screen-bar {
+  border-bottom: 1px solid var(--mag-rule);
+  background: hsl(0 0% 100%);
+}
+
+.magazine-screen-bar-inner {
+  margin: 0 auto;
+  max-width: 40rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+}
+
+.magazine-screen-link {
+  font-size: 0.875rem;
+  color: var(--mag-primary);
+  text-decoration: none;
+}
+
+.magazine-screen-link:hover {
+  text-decoration: underline;
+}
+
+.magazine-screen-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.magazine-btn-primary {
+  display: inline-flex;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  background: var(--mag-primary);
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(var(--primary-foreground));
+  text-decoration: none;
+}
+
+.magazine-btn-ghost {
+  display: inline-flex;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  border: 1px solid var(--mag-rule);
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--mag-ink);
+  text-decoration: none;
+}
+
+.magazine-document {
+  margin: 0 auto;
+  max-width: 40rem;
+  padding: 0 1.25rem 3rem;
+}
+
+.magazine-root .briefing-rule {
+  color: var(--mag-muted);
+}
+
+.magazine-root .briefing-rule::after {
+  background: var(--mag-rule);
+}
+
+.magazine-root .eyebrow,
+.magazine-root .section-index {
+  color: var(--mag-muted);
+}
+
+.magazine-root .eyebrow-live {
+  color: var(--mag-primary);
+}
+
+.magazine-root .eyebrow-honor {
+  color: var(--mag-brass);
+}
+
+.magazine-h2 {
+  margin: 0 0 1.25rem;
+  color: var(--mag-ink);
+}
+
+.magazine-h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--mag-ink);
+}
+
+.magazine-prose {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--mag-ink);
+}
+
+.magazine-prose-muted {
+  color: var(--mag-muted);
+}
+
+.magazine-ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--mag-ink);
+}
+
+.magazine-ol li {
+  margin-bottom: 0.75rem;
+}
+
+.magazine-toc {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.magazine-toc-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--mag-rule);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.magazine-toc-num {
+  margin-bottom: 0.15rem;
+}
+
+.magazine-toc-title {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--mag-ink);
+}
+
+.magazine-toc-sub {
+  font-size: 0.85rem;
+  color: var(--mag-muted);
+}
+
+.magazine-cover {
+  margin: 0 -1.25rem;
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.magazine-cover-field {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--mag-fg-on-dark);
+}
+
+.magazine-cover-inner {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 1.75rem;
+  max-width: 40rem;
+}
+
+.magazine-cover-eyebrow {
+  margin-bottom: 1.25rem;
+}
+
+.magazine-cover-title {
+  margin: 0;
+  /* display-hero size; keep primary via utility */
+}
+
+.magazine-cover-line {
+  margin: 1rem 0 0;
+  font-size: clamp(1.35rem, 3.5vw, 1.85rem) !important;
+}
+
+.magazine-cover-sub {
+  margin: 1.35rem 0 0;
+  font-size: 1.1rem;
+  color: hsl(210 20% 96% / 0.72);
+}
+
+.magazine-cover-meta {
+  margin: 2.75rem 0 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: hsl(210 20% 96% / 0.5);
+}
+
+.magazine-front,
+.magazine-chapter,
+.magazine-colophon {
+  padding: 2.5rem 0 1rem;
+}
+
+.magazine-chapter-opener {
+  margin-bottom: 2.25rem;
+  padding-bottom: 1.35rem;
+  border-bottom: 2px solid var(--mag-primary);
+}
+
+.magazine-chapter-sub {
+  margin: 0.65rem 0 0;
+  font-size: 1rem;
+  color: var(--mag-muted);
+}
+
+.magazine-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2.15rem;
+}
+
+.magazine-section {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.magazine-lead {
+  margin: 0 0 0.9rem;
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--mag-muted);
+}
+
+.magazine-body {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--mag-ink);
+}
+
+.magazine-body-p {
+  margin: 0 0 0.85rem;
+}
+
+.magazine-body-p:last-child {
+  margin-bottom: 0;
+}
+
+.magazine-body strong {
+  font-weight: 700;
+}
+
+/* Emerald = do it (practice), not brass */
+.magazine-practice {
+  margin: 1.1rem 0 0;
+  padding: 0.7rem 0 0.7rem 0.9rem;
+  border-left: 3px solid var(--mag-primary);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--mag-primary);
+  break-inside: avoid;
+}
+
+.magazine-practice-label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.magazine-colophon-meta {
+  margin-top: 2rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  line-height: 1.55;
+  color: var(--mag-muted);
+}
+
+.magazine-edition-chip {
+  display: inline-block;
+  margin-bottom: 0.65rem;
+}
+
+/* Editorial teaching blocks (v1.3) — magazine print */
+.magazine-extras {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.magazine-callout {
+  padding: 0.85rem 0.95rem;
+  border-left: 3px solid var(--mag-primary);
+  background: hsl(158 64% 42% / 0.06);
+  break-inside: avoid;
+}
+
+.magazine-callout-title {
+  margin: 0 0 0.35rem;
+}
+
+.magazine-callout-body {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--mag-ink);
+}
+
+.magazine-table-wrap {
+  margin: 0;
+  break-inside: avoid;
+}
+
+.magazine-table-caption {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mag-muted);
+}
+
+.magazine-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.magazine-table th,
+.magazine-table td {
+  border: 1px solid var(--mag-rule);
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.magazine-table th {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mag-muted);
+  background: hsl(210 12% 94%);
+}
+
+.magazine-checklist {
+  break-inside: avoid;
+}
+
+.magazine-checklist-title {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mag-muted);
+}
+
+.magazine-checklist ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--mag-ink);
+}
+
+.magazine-checklist li {
+  margin-bottom: 0.3rem;
+}
+
+/* Editorial blocks — dark app / public guide */
+.guide-extras {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.guide-callout {
+  padding: 0.85rem 1rem;
+  border-left: 3px solid hsl(var(--primary));
+  background: hsl(var(--primary) / 0.08);
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.guide-table-wrap {
+  margin: 0;
+}
+
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.guide-table th,
+.guide-table td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.guide-table th {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  background: hsl(var(--muted) / 0.5);
+}
+
+.guide-checklist ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: hsl(var(--foreground) / 0.9);
+}
+
+.guide-checklist li {
+  margin-bottom: 0.3rem;
+}
+
 @media print {
-  body * {
+  @page {
+    size: Letter;
+    margin: 0.65in 0.6in 0.8in 0.6in;
+  }
+
+  @page :first {
+    margin: 0;
+  }
+
+  /* Legacy single-sheet print helpers (non-magazine) */
+  body:has(.print-sheet:not(.magazine-root)) * {
     visibility: hidden;
   }
-  .print-sheet,
-  .print-sheet * {
+  body:has(.print-sheet:not(.magazine-root)) .print-sheet,
+  body:has(.print-sheet:not(.magazine-root)) .print-sheet * {
     visibility: visible;
   }
-  .print-sheet {
+  body:has(.print-sheet:not(.magazine-root)) .print-sheet {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .magazine-page-break {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .magazine-cover.magazine-page-break {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  .magazine-root {
+    background: var(--mag-paper) !important;
+    color: var(--mag-ink) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .magazine-document {
+    max-width: none;
+    padding: 0;
+  }
+
+  .magazine-cover {
+    margin: 0;
+    min-height: 0;
+    height: auto;
+  }
+
+  .magazine-cover-field {
+    min-height: 11in;
+    width: 100%;
+  }
+
+  .magazine-cover-inner {
+    padding: 2.75in 0.85in 1.5in;
+    max-width: none;
+  }
+
+  .magazine-cover-title.display-hero {
+    font-size: 48pt;
+  }
+
+  .magazine-body,
+  .magazine-prose,
+  .magazine-ol,
+  .magazine-lead {
+    font-size: 11.5pt;
+    line-height: 1.55;
+  }
+
+  .magazine-h2.display-section {
+    font-size: 22pt;
+  }
+
+  .magazine-h3 {
+    font-size: 13pt;
+  }
+
+  .magazine-table {
+    font-size: 9pt;
+  }
+
+  .magazine-callout-body,
+  .magazine-checklist li {
+    font-size: 10.5pt;
+  }
+
+  .magazine-section {
+    margin-bottom: 1.35rem;
+  }
+
+  .magazine-front,
+  .magazine-chapter,
+  .magazine-colophon {
+    padding-top: 0.35rem;
+  }
+
+  .magazine-chapter-opener {
+    margin-bottom: 1.75rem;
   }
 }

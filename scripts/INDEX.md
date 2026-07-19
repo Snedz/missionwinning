@@ -21,6 +21,7 @@
 | `generate-premium-programs.ts` | manual `tsx` | Regenerate premium program content |
 | `strip-pro-programs.ts` | manual `tsx` | Strip pro programs from export |
 | `print-beta-invite.ts` | `npm run print-beta-invite` | Beta invite URLs |
+| `build-guidebook-pdf.ts` | `npm run build-guidebook-pdf` | Generate `public/magazine/beyond-the-basics.pdf` from `/guide/print` (app must be serving). Set `GUIDEBOOK_PDF_AUTO_SERVER=1` to spawn `next start` automatically. Asserts ~12–28 pages. |
 | `sync-vercel-env.mjs` | `npm run sync-vercel-env` | Sync env to Vercel |
 
 ## Related (not here)

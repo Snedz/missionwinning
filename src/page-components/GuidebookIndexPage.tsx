@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
+import { MAGAZINE_PDF_PATH } from '@/data/guidebook/magazineMeta';
 import type { GuideChapter } from '@/data/guidebook/types';
 import { localizeGuidebookChapters } from '@/lib/localizeGuidebook';
 import { usePremium } from '@/hooks/usePremium';
@@ -16,10 +17,11 @@ import {
   getGuidebookStats,
   loadGuidebookProgress,
 } from '@/lib/guidebookProgress';
+import { track } from '@/lib/analytics';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookMarked, ChevronRight } from 'lucide-react';
+import { BookMarked, ChevronRight, Download } from 'lucide-react';
 
 export function GuidebookIndexPage() {
   const { t } = useTranslation();
@@ -78,9 +80,21 @@ export function GuidebookIndexPage() {
                 </span>
               </p>
             </div>
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/learn">{t('guidebookQuickPaths', { defaultValue: 'Quick paths →' })}</Link>
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="fitness" size="sm" asChild>
+                <a
+                  href={MAGAZINE_PDF_PATH}
+                  download
+                  onClick={() => track('guide_pdf_download', { surface: 'learn_guide' })}
+                >
+                  <Download className="mr-1.5 h-4 w-4" aria-hidden />
+                  {t('guidebookPdfDownload', { defaultValue: 'Download magazine (PDF)' })}
+                </a>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/learn">{t('guidebookQuickPaths', { defaultValue: 'Quick paths →' })}</Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
 

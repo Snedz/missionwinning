@@ -17,6 +17,7 @@ import { logPillarWin } from '@/lib/pillarLog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
 import { ArrowLeft, BookMarked, Check } from 'lucide-react';
 
 type Props = { chapterId: string };
@@ -113,6 +114,7 @@ export function GuidebookChapterPage({ chapterId }: Props) {
                       )}
                     </p>
                   ))}
+                  <GuideSectionExtras section={section} variant="app" />
                   <div className="flex flex-wrap gap-2 pt-2">
                     <Button size="sm" variant="fitness" asChild>
                       <Link href={section.practiceCTA.href}>{section.practiceCTA.label}</Link>

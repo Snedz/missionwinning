@@ -52,6 +52,9 @@
 | `/compare` | `app/compare/page.tsx` → `ComparePage` (marketing chrome) |
 | `/compare/[slug]` | `CompareStoryPage` — forge / freeletics / spreadsheet |
 | `/guide`, `/exercises` | Public SEO pages |
+| `/guide` (Apex reader) | `GuidePublicIndexPage` — Contents sidebar + language switcher |
+| `/guide/[chapter]` | `GuidePublicChapterPage` — same shell |
+| `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |
 | `/exercises/muscle/[group]`, `/exercises/equipment/[slug]` | Catalog hub indexes |
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |
 | `/private` | `app/private/page.tsx` |

@@ -103,7 +103,8 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 | **InfoPageShell** | info/marketing in app chrome | About, legal, etc. |
 | **MarketingNav / Footer** | `src/components/marketing/` | Landing + Bundle chrome |
 | **Experience (`/experience`)** | `src/components/experience/` | Frontier dossier — route-scoped CSS (`.xp-*`), `gpuTier` WebGPU→WebGL2→static, hero aurora + Win Score particles, no global CSS pollution |
-| **PublicSeoHeader / Footer** | `src/components/public/` | Guide, exercises, compare, paths |
+| **PublicSeoHeader / Footer** | `src/components/public/` | Exercises, compare, paths |
+| **GuideApexShell** | `src/components/learn/GuideApexShell.tsx` | Public `/guide` magazine reader — Contents rail + locale |
 | **Reveal / StatBand** | `src/components/marketing/` | Landing motion + telemetry |
 | **EmptyState** | dashed invite + CTA | First-week empties |
 | **primary-action** | CSS class | Journey / conversion CTAs |
@@ -116,7 +117,8 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 |--------------|--------|
 | In-app pillars | `PillarPageShell` |
 | Today `/log` | Custom command layout (not PillarPageShell) |
-| Landing, Welcome, Guide, Exercises | Standalone marketing chrome |
+| Landing, Welcome, Exercises | Standalone marketing chrome |
+| Public `/guide` | `GuideApexShell` (Contents sidebar + language) |
 | Compare, Bundle | Prefer marketing chrome (out of AppLayout when practical) |
 | Train `/active` | Header + dense logger; keep set-table internals |
 

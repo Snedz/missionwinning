@@ -24,3 +24,27 @@ All guidebook body copy in `src/data/guidebook/chapters.ts` is **original Missio
 | ch6-s3 | ISSA — program adjustment | Mission Winning | 2026-07-03 |
 
 Premium chapters: see `sourceRef` on each section in `premiumChapters.ts`.
+
+## Magazine front matter (`magazineMeta.ts`)
+
+| Section ID | Source ref (topic only) | Writer | Date |
+|------------|-------------------------|--------|------|
+| mag-preface | MW product — experience + read companion (GT Apex framing) | Mission Winning | 2026-07-19 |
+| mag-how-to | MW product — guide practice CTAs | Mission Winning | 2026-07-19 |
+| mag-disclaimer | MW legal / educational scope | Mission Winning | 2026-07-19 |
+
+## Editorial teaching blocks (v1.3)
+
+| Section ID | Block | Source ref (topic only) | Writer | Date |
+|------------|-------|-------------------------|--------|------|
+| ch1-s1 | callout — SAID key idea | foundations — adaptation | Mission Winning | 2026-07-19 |
+| ch1-s2 | table — energy systems | foundations — energy systems | Mission Winning | 2026-07-19 |
+| ch2-s1 | checklist — squat faults | foundations — squat pattern | Mission Winning | 2026-07-19 |
+| ch2-s2 | checklist — hinge faults | foundations — hinge pattern | Mission Winning | 2026-07-19 |
+| ch2-s3 | checklist — pattern balance | foundations — movement patterns | Mission Winning | 2026-07-19 |
+| ch3-s2 | table — RPE scale | foundations — RPE | Mission Winning | 2026-07-19 |
+| ch3-s3 | callout — when to deload | foundations — periodization | Mission Winning | 2026-07-19 |
+| ch4-s2 | table — six pillars | MW product design | Mission Winning | 2026-07-19 |
+| ch5-s1 | callout — macro priority | nutrition science — macros | Mission Winning | 2026-07-19 |
+| ch5-s2 | checklist — recovery basics | foundations — hydration & sleep | Mission Winning | 2026-07-19 |
+| ch6-s3 | callout — stall vs pain vs stress | foundations — program adjustment | Mission Winning | 2026-07-19 |

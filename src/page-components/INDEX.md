@@ -46,6 +46,9 @@
 | `LearnPage.tsx` | `/learn` |
 | `GuidebookIndexPage.tsx` | `/learn/guide` |
 | `GuidebookChapterPage.tsx` | `/learn/guide/[chapterId]` |
+| `GuidePublicIndexPage.tsx` | `/guide` — Apex shell + Contents |
+| `GuidePublicChapterPage.tsx` | `/guide/[chapter]` — Apex shell |
+| `GuideMagazinePrintPage.tsx` | `/guide/print` (PDF source) |
 
 ### Premium & marketing
 
