@@ -1,13 +1,20 @@
-# Manual production deploy when Vercel Git integration only creates Preview deployments.
+# Production deploy when Vercel Git integration only creates Preview deployments.
+# Auto-runs on push to master so www.missionwinning.com does not fall days behind.
 #
 # Setup (GitHub → Settings → Secrets → Actions):
 #   VERCEL_TOKEN — https://vercel.com/account/tokens
-#   VERCEL_ORG_ID — Team ID (optional for personal accounts)
-#   VERCEL_PROJECT_ID — Project → Settings → General
+#   VERCEL_ORG_ID — Team ID (team_Akwar4ZvbahQp5HR911ebrlW)
+#   VERCEL_PROJECT_ID — prj_yqoUE2ENzRRdeiMdqkqyC49czxxp
 name: Deploy production
 
 on:
+  push:
+    branches: [master]
   workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -33,4 +40,6 @@ jobs:
             echo "Skipping deploy — set VERCEL_TOKEN and VERCEL_PROJECT_ID in GitHub Secrets"
             exit 1
           fi
-          npx vercel deploy --prod --yes --token "$VERCEL_TOKEN"
+          npx vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
+          npx vercel build --prod --token "$VERCEL_TOKEN"
+          npx vercel deploy --prebuilt --prod --yes --token "$VERCEL_TOKEN"

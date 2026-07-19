@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-16** (build `2026.07-unified.82` — H1 eng + growth Wave 2–3 done; **founder H0 is the bottleneck**).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-19** (build `2026.07-unified.90` — launch closeout eng done; **beta recruiting is the bottleneck**).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -12,7 +12,7 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 |----------------|--------|-------|
 | **#1 health everything app** — unified, not fragmented | 🟡 Strong scaffold | Six pillars + Today hub + Win Score synergy; cross-pillar coach chips on Today |
 | **Free core forever** — train, log, basics | 🟢 Shipped | Phases A–D; no paywall on core logger/library |
-| **Super Bundle** — primary revenue | 🟡 Code + checkout | `/bundle`, Stripe webhook → `enrollments`; founder wires live links |
+| **Super Bundle** — primary revenue | 🟡 Code + checkout | Webhook secret on prod + enrollment ping OK; Dashboard webhook + live `sk_` still founder |
 | **Premium depth per pillar** | 🟢 Strong | GPS Track, Fuel Coach, Coach, Mind/Move/Learn premium depth shipped |
 | **AI Coach — personal trainer in pocket** | 🟢 v1 shipped | Mission Coach engine + free taster week; premium regeneration + plan-voice |
 | **PWA offline everywhere** | 🟡 Serwist ready | Serwist SW when `PRIVATE_MODE=false`; Lighthouse budget routes ≥90; still gated until public launch |
@@ -50,8 +50,8 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | **v5 + Phase I depth** | [PLAN.md](PLAN.md) Phase I | 🟡 Engines + Mind/Move/Learn/I5 + de body shipped; live Stripe remaining |
 | **Member journey phases** | [JOURNEY.md](JOURNEY.md) | I-Day → Commissioned (in-app) |
 | **PFT / America G1–G8** | [PLAN.md](PLAN.md) Phase G | ✅ Optional US track; feature-flagged |
-| **Launch Phase H** | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | ⬜ Blocked on beta + Vercel secrets |
-| **Premium Phase I** | [PLAN.md](PLAN.md) | 🟡 Code ready; founder wires live Stripe |
+| **Launch Phase H** | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | 🟡 Env/migrations/digest/webhook ping done; blocked on **≥10 beta** |
+| **Premium Phase I** | [PLAN.md](PLAN.md) | 🟡 Code ready; Payment Links + webhook path; Sessions `sk_` optional next |
 
 ---
 
@@ -59,8 +59,8 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 
 Full sequencing: [ORCHESTRATION.md](ORCHESTRATION.md) (Horizon 0 → 3).
 
-### 1. Horizon 0 — Phase H beta + env (founder) — **#1 gap**
-Vercel connected; eng quality ready. Still need: live Stripe env, service-role on Vercel if missing, **≥10 beta users**, then gates. Day-of: [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md) · flip smoke: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md).
+### 1. Horizon 0 — Phase H beta cohort (founder) — **#1 gap**
+Env, migrations, digest, webhook enrollment path, and launch-verify are green. Still need: **phone hero QA + ≥10 beta users** (gates I-Day ≥80% / BT ≥60%), then public flip. Day-of: [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md) · flip smoke: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md).
 
 ### 2. Horizon 1 — Live Super Bundle + public (Phase I1)
 Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149**. Then `PRIVATE_MODE=false` + PWA offline promise.

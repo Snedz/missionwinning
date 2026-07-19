@@ -12,9 +12,11 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 ## Where we are (2026-07-19)
 
-**Product code is strong.** Waves 1–9 shipped: free core, six pillars, coach adjust/chat/form Q&A, experience, ZDR, referrals, push (dark), founder digest, a11y, Batch C/D i18n, consolidation. **Wave 10 B1** packages launch ops (migration checklist, funnel visibility, chunk baseline).
+**Product code is strong.** Waves 1–10 shipped: free core, six pillars, coach adjust/chat/form Q&A, experience, ZDR, referrals, push (dark), founder digest, a11y, Batch C/D i18n, consolidation, launch packaging.
 
-**Market is not.** Phase **H** founder-blocked: private mode, beta cohort incomplete, live Stripe env incomplete, latest migrations may be unapplied, PWA offline off until public. **#1 gap = founder ops** — [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) (not more features).
+**Ops unblocked (same day):** Wave 7–8 migrations on prod; weekly-digest gate allowlist; Production redeploys; `STRIPE_WEBHOOK_SECRET` + signed enrollment ping → `enrollments`; Resend digest live send; `LAUNCH_STRICT` launch-verify green against www.
+
+**Still founder-owned:** ≥10 beta users + phone hero QA ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §3); connect Stripe Dashboard webhook endpoint to the same `whsec` (or rotate via `scripts/setup-stripe-webhook.mjs` with `sk_test`/`sk_live`); set GitHub Actions `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID` so [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) auto-deploys `master` → Production (Git previews alone stay Preview-only). PWA offline waits for public flip. **#1 gap = beta distribution** — not more features.
 
 ---
 

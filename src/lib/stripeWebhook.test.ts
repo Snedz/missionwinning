@@ -41,21 +41,31 @@ describe('stripeWebhook', () => {
   });
 
   it('extracts user_id from metadata or client_reference_id', () => {
+    const meta = '11111111-1111-4111-8111-111111111111';
+    const ref = '22222222-2222-4222-8222-222222222222';
     assert.equal(
       userIdFromCheckoutSession({
         id: 'cs_1',
-        metadata: { user_id: 'uuid-meta' },
-        client_reference_id: 'uuid-ref',
+        metadata: { user_id: meta },
+        client_reference_id: ref,
       }),
-      'uuid-meta'
+      meta
     );
     assert.equal(
       userIdFromCheckoutSession({
         id: 'cs_2',
-        client_reference_id: 'uuid-ref',
+        client_reference_id: ref,
       }),
-      'uuid-ref'
+      ref
     );
     assert.equal(userIdFromCheckoutSession({ id: 'cs_3' }), null);
+    assert.equal(
+      userIdFromCheckoutSession({
+        id: 'cs_4',
+        metadata: { user_id: 'not-a-uuid' },
+        client_reference_id: 'also-bad',
+      }),
+      null
+    );
   });
 });

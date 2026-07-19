@@ -2,7 +2,9 @@
 
 Use this when inviting the first **10 private beta operators**. Prod is live at **https://www.missionwinning.com** (private gate on). Share the access code from Vercel `PRIVATE_ACCESS_SECRET` / `PRIVATE_ACCESS_CODES`.
 
-**Current status (2026-07-11):** 0 signed-in profiles in Supabase — recruiting is the critical path before `PRIVATE_MODE=false`.
+**Current status (2026-07-19):** Launch eng closeout green (migrations, digest, webhook enrollment ping, launch-verify). **Recruiting still the critical path** before `PRIVATE_MODE=false`.
+
+**Deferral:** Cohort of ≥10 invites targeted by **2026-08-02** (Horizon 0 day-14). Founder owns phone hero QA + personal invites; agents fix only #1 confusion from tester feedback.
 
 ---
 
