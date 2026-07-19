@@ -145,6 +145,21 @@ export function ActiveExerciseCard({
               {ssLabel}
             </Badge>
           )}
+          {exLog.loadPct != null &&
+            exLog.loadPct > 0 &&
+            exLog.sets.some((s) => s.weight > 0) && (
+              <Badge
+                variant="outline"
+                className="text-[10px] tabular-nums border-primary/40 text-primary"
+              >
+                {t('activeLoadPctChip', {
+                  pct: exLog.loadPct,
+                  weight: exLog.sets.find((s) => s.weight > 0)?.weight ?? 0,
+                  unit: unitLabel,
+                  defaultValue: '{{pct}}% · {{weight}} {{unit}}',
+                })}
+              </Badge>
+            )}
         </CardTitle>
         <CardDescription className="flex gap-1 flex-wrap">
           {exercise.muscleGroups.map((mg) => (

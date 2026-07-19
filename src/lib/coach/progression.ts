@@ -3,12 +3,20 @@ import type { UnitsPref } from '@/lib/units';
 import { weightStep } from '@/lib/units';
 import { EXERCISES } from '@/data/exercises';
 import type { Rpe } from '@/lib/coach/types';
+import {
+  resolveStartingLoadPct,
+  weightFromLoadPct,
+  workingMaxFromHistory,
+  type LoadPctExperience,
+} from '@/lib/workout/percentLoad';
 
 export interface ProgressionTargets {
   sets: number;
   reps: number;
   weight: number;
   whyKey: string;
+  /** Percent of working max when weight was materialized from e1RM. */
+  loadPct?: number;
 }
 
 interface SessionSnapshot {
@@ -124,6 +132,18 @@ function seedTargets(
   };
 }
 
+function withLoadPct(
+  target: ProgressionTargets,
+  loadPct: number | undefined
+): ProgressionTargets {
+  if (loadPct == null || loadPct <= 0 || target.weight <= 0) return target;
+  return { ...target, loadPct: Math.round(loadPct) };
+}
+
+/**
+ * Weighted compounds with a known max: prescribe via loadPct (TrainHeroic-style).
+ * Bodyweight / no max: absolute last-session progression (unchanged).
+ */
 export function nextTargets(
   exerciseId: string,
   history: CompletedWorkoutLog[],
@@ -135,6 +155,7 @@ export function nextTargets(
   const step = weightStep(units);
   const range = repRangeForGoal(goalId);
   const bodyweight = isBodyweightExercise(exerciseId);
+  const exp = experience as LoadPctExperience;
 
   if (!sessions.length) {
     return seedTargets(exerciseId, goalId, experience);
@@ -146,6 +167,71 @@ export function nextTargets(
   let { reps, weight } = perf;
   const { setCount } = perf;
   let whyKey = 'coachWhyHold';
+
+  const workingMax = !bodyweight ? workingMaxFromHistory(exerciseId, history) : null;
+  const usePct = workingMax != null && workingMax > 0 && weight > 0;
+
+  if (usePct && workingMax) {
+    let loadPct = resolveStartingLoadPct({
+      workingMax,
+      lastWeight: weight,
+      experience: exp,
+      goalId,
+    });
+
+    if (stalled(sessions)) {
+      loadPct *= 0.9;
+      whyKey = 'coachWhyDeload';
+      weight = weightFromLoadPct(workingMax, loadPct, units);
+      return withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct);
+    }
+
+    const latestSets = sessions[0].sets;
+
+    if (allHard(latestSets)) {
+      loadPct *= 0.9;
+      weight = weightFromLoadPct(workingMax, loadPct, units);
+      return withLoadPct(
+        { sets: setCount, reps, weight, whyKey: 'coachWhyDeload' },
+        loadPct
+      );
+    }
+
+    if (anyHardOnTwoPlus(latestSets)) {
+      weight = weightFromLoadPct(workingMax, loadPct, units);
+      return withLoadPct(
+        { sets: setCount, reps, weight, whyKey: 'coachWhyHoldHard' },
+        loadPct
+      );
+    }
+
+    if (allEasy(latestSets)) {
+      loadPct = Math.min(95, loadPct + 2.5);
+      weight = weightFromLoadPct(workingMax, loadPct, units);
+      return withLoadPct(
+        { sets: setCount, reps, weight, whyKey: 'coachWhyLoadUp' },
+        loadPct
+      );
+    }
+
+    if (hasMixedOrMed(latestSets)) {
+      if (reps < range.max) {
+        reps += 1;
+        whyKey = 'coachWhyRepProgress';
+      }
+      weight = weightFromLoadPct(workingMax, loadPct, units);
+      return withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct);
+    }
+
+    // No RPE rated — rep-completion heuristic
+    if (reps >= range.max) {
+      loadPct = Math.min(95, loadPct + 2.5);
+      reps = range.min;
+      whyKey = 'coachWhyLoadUp';
+    }
+    weight = weightFromLoadPct(workingMax, loadPct, units);
+    return withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct);
+  }
 
   if (stalled(sessions)) {
     if (bodyweight) {

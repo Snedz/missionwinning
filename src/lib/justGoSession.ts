@@ -29,6 +29,7 @@ export type CoachSessionLike = {
     sets: number;
     reps: number;
     weight: number;
+    loadPct?: number;
   }[];
 };
 
@@ -120,9 +121,28 @@ export function buildJustGoSession(opts: {
   const { focus, history, units, equipment = 'full-gym', coachToday } = opts;
 
   if (coachToday && coachToday.status !== 'done' && coachToday.exercises.length > 0) {
-    const exercises = coachToday.exercises.map((ex) =>
-      seedExerciseFromHistory(ex.exerciseId, ex.sets, ex.reps, ex.weight, history, units)
-    );
+    const exercises = coachToday.exercises.map((ex) => {
+      const seeded = seedExerciseFromHistory(
+        ex.exerciseId,
+        ex.sets,
+        ex.reps,
+        ex.weight,
+        history,
+        units
+      );
+      return {
+        ...seeded,
+        // Prefer Coach absolute prescription when present; keep loadPct for Active chip.
+        sets:
+          ex.weight > 0
+            ? Array.from({ length: Math.max(1, ex.sets) }, () => ({
+                reps: ex.reps,
+                weight: ex.weight,
+              }))
+            : seeded.sets,
+        ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
+      };
+    });
     return {
       name: coachToday.name,
       focusGroup: coachToday.focusGroups?.[0] ?? focus.group,

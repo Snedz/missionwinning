@@ -18,6 +18,7 @@ type ActiveWorkoutStrings = {
   activeChooseExercise: string;
   activeEmptyExercises: string;
   activeFormGuide: string;
+  activeLoadPctChip: string;
   activeAddSet: string;
   activeStartRest: string;
   activeLogSet: string;
@@ -71,6 +72,7 @@ const en: ActiveWorkoutStrings = {
   activeChooseExercise: 'Choose exercise...',
   activeEmptyExercises: 'Add exercises above to begin logging sets.',
   activeFormGuide: 'Form guide',
+  activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Add Set',
   activeStartRest: '{{seconds}}s Rest',
   activeLogSet: 'Log',
@@ -124,6 +126,7 @@ const es: ActiveWorkoutStrings = {
   activeChooseExercise: 'Elegir ejercicio…',
   activeEmptyExercises: 'Añade ejercicios arriba para registrar series.',
   activeFormGuide: 'Guía de forma',
+  activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Añadir serie',
   activeStartRest: 'Descanso {{seconds}}s',
   activeLogSet: 'Registrar',
@@ -159,6 +162,7 @@ const fr: ActiveWorkoutStrings = {
   activeChooseExercise: 'Choisir un exercice…',
   activeEmptyExercises: 'Ajoutez des exercices ci-dessus pour enregistrer des séries.',
   activeFormGuide: 'Guide de forme',
+  activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Ajouter une série',
   activeStartRest: 'Repos {{seconds}} s',
   activeLogSet: 'Enregistrer',
@@ -252,6 +256,7 @@ const de: ActiveWorkoutStrings = {
   activeChooseExercise: 'Übung wählen…',
   activeEmptyExercises: 'Füge oben Übungen hinzu, um Sätze zu protokollieren.',
   activeFormGuide: 'Form-Guide',
+  activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Satz hinzufügen',
   activeStartRest: 'Pause {{seconds}} s',
   activeLogSet: 'Speichern',

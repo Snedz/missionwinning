@@ -10,13 +10,14 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 2. `restTimer.ts` — rest seconds, clock format, defaults  
 3. `superset.ts` — peer links, advance after log, rest gate  
 4. `nextSetTargets.ts` — Strong/Hevy-style next set suggestions  
-5. `workoutTemplate.ts` — template → logged sets  
-6. `workoutPr.ts` — personal record detection  
-7. `workoutMerge.ts` — local/cloud history fingerprint merge  
-8. `workoutVictory.ts` — post-workout summary + next pillar action  
-9. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats  
-10. `activeWorkoutPulse.ts` — nav pulse flag without store  
-11. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
+5. `percentLoad.ts` — TrainHeroic-style % of e1RM → absolute weight (`loadPct`)  
+6. `workoutTemplate.ts` — template → logged sets  
+7. `workoutPr.ts` — personal record detection  
+8. `workoutMerge.ts` — local/cloud history fingerprint merge  
+9. `workoutVictory.ts` — post-workout summary + next pillar action  
+10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats  
+11. `activeWorkoutPulse.ts` — nav pulse flag without store  
+12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
 
 ## Tests (colocated)
 
@@ -26,6 +27,7 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `restTimer.test.ts` | Clock + defaults |
 | `superset.test.ts` | Advance, rest gate |
 | `nextSetTargets.test.ts` | Progression targets |
+| `percentLoad.test.ts` | e1RM max, % → weight, scale |
 | `workoutTemplate.test.ts` | Template logging |
 | `workoutPr.test.ts` | PR detection |
 | `workoutMerge.test.ts` | Conflict / cap / fingerprint |

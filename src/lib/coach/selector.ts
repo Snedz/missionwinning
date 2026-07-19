@@ -169,6 +169,7 @@ export function pickExercises(
       reps: t.reps,
       weight: t.weight,
       whyKey: t.whyKey,
+      ...(t.loadPct != null ? { loadPct: t.loadPct } : {}),
     };
   });
 

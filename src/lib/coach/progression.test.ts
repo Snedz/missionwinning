@@ -27,6 +27,7 @@ describe('nextTargets', () => {
   it('seeds empty history with find-working-weight for weighted', () => {
     const t = nextTargets('bench-press', [], 'metric', 'strength', 'beginner');
     assert.equal(t.weight, 0);
+    assert.equal(t.loadPct, undefined);
     assert.equal(t.whyKey, 'coachFindWorkingWeight');
     assert.ok(t.reps >= 4 && t.reps <= 6);
   });
@@ -41,6 +42,7 @@ describe('nextTargets', () => {
     const t = nextTargets('bench-press', history, 'metric', 'strength', 'intermediate');
     assert.equal(t.weight, 62.5);
     assert.equal(t.whyKey, 'coachWhyLoadUp');
+    assert.ok(t.loadPct != null && t.loadPct > 0);
   });
 
   it('adds rep on med/mixed RPE', () => {
@@ -53,6 +55,7 @@ describe('nextTargets', () => {
     const t = nextTargets('bench-press', history, 'metric', 'general', 'intermediate');
     assert.equal(t.reps, 9);
     assert.equal(t.weight, 60);
+    assert.ok(t.loadPct != null && t.loadPct > 0);
   });
 
   it('deloads when all hard', () => {
@@ -65,6 +68,7 @@ describe('nextTargets', () => {
     const t = nextTargets('bench-press', history, 'metric', 'strength', 'advanced');
     assert.equal(t.weight, 90);
     assert.equal(t.whyKey, 'coachWhyDeload');
+    assert.ok(t.loadPct != null && t.loadPct > 0);
   });
 
   it('imperial increment is 5', () => {
@@ -73,6 +77,7 @@ describe('nextTargets', () => {
     ];
     const t = nextTargets('bench-press', history, 'imperial', 'strength', 'intermediate');
     assert.equal(t.weight, 105);
+    assert.ok(t.loadPct != null);
   });
 
   it('bodyweight progresses reps on easy', () => {
@@ -81,6 +86,7 @@ describe('nextTargets', () => {
     ];
     const t = nextTargets('push-ups', history, 'metric', 'general', 'beginner');
     assert.equal(t.weight, 0);
+    assert.equal(t.loadPct, undefined);
     assert.ok(t.reps >= 10);
   });
 
@@ -93,5 +99,7 @@ describe('nextTargets', () => {
     const t = nextTargets('bench-press', history, 'metric', 'strength', 'intermediate');
     assert.equal(t.whyKey, 'coachWhyDeload');
     assert.ok(t.weight < 80);
+    assert.ok(t.loadPct != null);
   });
 });
+
