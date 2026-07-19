@@ -47,6 +47,11 @@ const optional = [
   ['NEXT_PUBLIC_COUNCIL_STATUS', 'aspirational | pending | member'],
   ['NEXT_PUBLIC_SHOW_MAHA_COPY', 'true only after legal sign-off'],
   ['NEXT_PUBLIC_AMERICA_TRACK_ENABLED', 'true to enable /america PFT track (default off)'],
+  ['NEXT_PUBLIC_VAPID_PUBLIC_KEY', 'Web push public key (promote required at public flip)'],
+  ['VAPID_PRIVATE_KEY', 'Web push private key (server only)'],
+  ['VAPID_SUBJECT', 'mailto:… for VAPID'],
+  ['COACH_LLM_API_URL', 'Optional coach LLM (prefer api.x.ai chat completions)'],
+  ['COACH_LLM_REQUIRE_ZDR', 'true recommended when using xAI'],
 ];
 
 const PLACEHOLDER_SECRETS = new Set(['done', 'change-me', 'your-secret', 'test-gate-secret-32chars-min!!']);

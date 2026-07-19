@@ -45,6 +45,9 @@ Add these for **Production** and **Preview**:
 | `COACH_LLM_API_KEY` | Optional | Provider API key (e.g. `xai-…` from [console.x.ai](https://console.x.ai/)). **Never** `NEXT_PUBLIC_` |
 | `COACH_LLM_MODEL` | Optional | Model slug (e.g. `grok-4.5` — confirm on [docs.x.ai/developers/models](https://docs.x.ai/developers/models)) |
 | `COACH_LLM_REQUIRE_ZDR` | Optional | `true` recommended in production when using xAI: fail closed unless response header `x-zero-data-retention: true` |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Optional | Web push public key (`npx web-push generate-vapid-keys`). SW only active when `PRIVATE_MODE=false` prod build |
+| `VAPID_PRIVATE_KEY` | Optional | Web push private key — server only, never `NEXT_PUBLIC_` |
+| `VAPID_SUBJECT` | Optional | `mailto:support@missionwinning.com` (or site contact URL) |
 
 ### Optional AI Coach + Zero Data Retention (ZDR)
 

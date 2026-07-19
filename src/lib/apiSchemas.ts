@@ -79,6 +79,42 @@ export const coachPlanVoiceSchema = z.object({
   recovery: z.number().min(0).max(100).optional(),
 });
 
+/** Premium coach chat — compact context only (never raw workout logs). */
+export const coachChatSchema = z.object({
+  message: z.string().min(1).max(1000),
+  turns: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'coach']),
+        content: z.string().max(1000),
+      })
+    )
+    .max(12)
+    .default([]),
+  context: z.object({
+    readiness: z.number().min(0).max(100),
+    strain: z.number().min(0).max(100),
+    recovery: z.number().min(0).max(100),
+    trainDays14: z.number().min(0).max(14),
+    todaySession: z
+      .object({
+        name: z.string().max(120),
+        kind: z.string().max(40),
+        estMinutes: z.number().min(0).max(180),
+        exercises: z
+          .array(
+            z.object({
+              id: z.string().max(80),
+              name: z.string().max(120),
+            })
+          )
+          .max(12),
+      })
+      .optional(),
+    exerciseId: z.string().max(80).optional(),
+  }),
+});
+
 export const fuelSearchQuerySchema = z.object({
   q: z.string().min(2).max(120),
 });

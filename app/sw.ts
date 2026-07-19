@@ -34,3 +34,60 @@ const serwist = new Serwist({
 });
 
 serwist.addEventListeners();
+
+/** Web push (Wave 7) — payload from cron nudges; attribution via ?src=push on open. */
+self.addEventListener('push', (event) => {
+  let title = 'Mission Winning';
+  let body = 'Time to train.';
+  let url = '/log?src=push';
+  try {
+    const data = event.data?.json() as {
+      title?: string;
+      body?: string;
+      data?: { url?: string };
+    } | null;
+    if (data?.title) title = data.title;
+    if (data?.body) body = data.body;
+    if (data?.data?.url) url = data.data.url;
+  } catch {
+    try {
+      const text = event.data?.text();
+      if (text) body = text;
+    } catch {
+      /* default */
+    }
+  }
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body,
+      icon: '/pwa-192x192.png',
+      badge: '/pwa-192x192.png',
+      tag: 'mw-nudge',
+      data: { url },
+    })
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const raw = (event.notification.data as { url?: string } | undefined)?.url || '/log?src=push';
+  const target = new URL(raw, self.location.origin).href;
+  event.waitUntil(
+    (async () => {
+      const clientsList = await self.clients.matchAll({
+        type: 'window',
+        includeUncontrolled: true,
+      });
+      for (const client of clientsList) {
+        if ('focus' in client) {
+          await client.focus();
+          if ('navigate' in client) {
+            await (client as WindowClient).navigate(target);
+          }
+          return;
+        }
+      }
+      await self.clients.openWindow(target);
+    })()
+  );
+});

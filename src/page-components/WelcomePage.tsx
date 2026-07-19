@@ -107,6 +107,7 @@ export function WelcomePage() {
 
   const handleAcceptMission = () => {
     markMissionAccepted();
+    track('iday_mission_accepted');
     setStep('profile');
   };
 
@@ -115,6 +116,11 @@ export function WelcomePage() {
       finish();
       return;
     }
+    track('iday_profile_completed', {
+      experience,
+      equipment,
+      daysPerWeek,
+    });
     setStep('signin');
   };
 

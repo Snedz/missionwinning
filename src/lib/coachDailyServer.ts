@@ -36,7 +36,7 @@ export function buildCoachPrompt(ctx: DailyCoachContext): string {
   ].join('\n');
 }
 
-const VALID_PATHS = new Set([
+export const VALID_PATHS = new Set([
   '/active',
   '/nutrition',
   '/move',

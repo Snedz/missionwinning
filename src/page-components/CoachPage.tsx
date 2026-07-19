@@ -14,15 +14,28 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { WeekStrip } from '@/components/coach/WeekStrip';
 import { PlanSessionCard } from '@/components/coach/PlanSessionCard';
 import { CoachVoiceCard } from '@/components/coach/CoachVoiceCard';
+import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
+import { CoachChatPanel } from '@/components/coach/CoachChatPanel';
 import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 
 export function CoachPage() {
   const { t } = useTranslation();
-  const { plan, loading, premium, locked, todayOffset, weekStart, ctx, generate, todaySession } =
-    useCoachPlan();
+  const {
+    plan,
+    loading,
+    premium,
+    locked,
+    todayOffset,
+    weekStart,
+    ctx,
+    generate,
+    todaySession,
+    adjustToday,
+  } = useCoachPlan();
   const [confirmRegen, setConfirmRegen] = useState(false);
+  const [adjustOpen, setAdjustOpen] = useState(false);
 
   const handleRegenerate = () => {
     if (!confirmRegen) {
@@ -138,12 +151,49 @@ export function CoachPage() {
 
           <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
 
+          <CoachChatPanel
+            premium={premium}
+            readiness={ctx.bodyScores.readiness}
+            strain={ctx.bodyScores.strain}
+            recovery={ctx.bodyScores.recovery}
+            todaySession={todaySession}
+          />
+
+          {todaySession && todaySession.status !== 'done' && (
+            <div className="space-y-2">
+              {!adjustOpen ? (
+                <button
+                  type="button"
+                  className="text-sm text-primary min-h-[44px] hover:underline"
+                  onClick={() => setAdjustOpen(true)}
+                >
+                  {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
+                </button>
+              ) : null}
+              <AdjustSessionSheet
+                open={adjustOpen}
+                onClose={() => setAdjustOpen(false)}
+                onAdjust={(c) => {
+                  adjustToday(c);
+                }}
+              />
+            </div>
+          )}
+
           <div className="space-y-4">
             {plan.sessions
               .slice()
               .sort((a, b) => a.dayOffset - b.dayOffset)
               .map((session) => (
-                <PlanSessionCard key={session.id} session={session} />
+                <PlanSessionCard
+                  key={session.id}
+                  session={session}
+                  onAdjust={
+                    session.dayOffset === todayOffset && session.status !== 'done'
+                      ? () => setAdjustOpen(true)
+                      : undefined
+                  }
+                />
               ))}
           </div>
 

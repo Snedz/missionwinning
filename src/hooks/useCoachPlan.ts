@@ -21,6 +21,7 @@ import {
   getOrCreateDeviceId,
 } from '@/lib/coach/storage';
 import type { CoachPlan } from '@/lib/coach/types';
+import { adjustTodaySession, type SessionConstraint } from '@/lib/coach/adjust';
 import { scheduleCoachPush } from '@/lib/coachSync';
 
 export function useCoachPlan() {
@@ -133,6 +134,25 @@ export function useCoachPlan() {
       ? (plan.sessions.find((s) => s.dayOffset === todayOffset) ?? null)
       : null;
 
+  /** Free offline adjust — no premium/taster gate. */
+  const adjustToday = useCallback(
+    (constraint: SessionConstraint): CoachPlan | null => {
+      if (!plan || plan.weekStart !== weekStart) return null;
+      const next = adjustTodaySession(plan, ctx, todayOffset, constraint);
+      if (!next) return null;
+      savePlan(next);
+      scheduleCoachPush();
+      setPlan(next);
+      const props: Record<string, string | number | boolean> = { type: constraint.type };
+      if (constraint.type === 'time') props.minutes = constraint.minutes;
+      if (constraint.type === 'equipment') props.equipment = constraint.equipment;
+      if (constraint.type === 'avoid') props.group = constraint.group;
+      track('coach_session_adjusted', props);
+      return next;
+    },
+    [plan, weekStart, ctx, todayOffset]
+  );
+
   return {
     plan: plan?.weekStart === weekStart ? plan : locked ? plan : null,
     loading: loading || premiumLoading,
@@ -145,5 +165,6 @@ export function useCoachPlan() {
     ctx,
     generate,
     refresh,
+    adjustToday,
   };
 }

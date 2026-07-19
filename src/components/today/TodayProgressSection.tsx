@@ -28,6 +28,7 @@ import type { computeReadiness } from '@/lib/score';
 import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from '@/types';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { SHOW_TODAY_FOUNDER_TOOLS } from '@/lib/todayFounderTools';
+import { StreakChip } from '@/components/today/StreakChip';
 
 type MwWindow = Window & {
   triggerPwaInstall?: () => Promise<void>;
@@ -219,7 +220,9 @@ export function TodayProgressSection({
               <Flame className="h-4 w-4 text-primary" />
               {t('todayStatStreak', { defaultValue: 'Current Streak' })}
             </CardDescription>
-            <CardTitle className="text-3xl">{streak} <span className="text-lg font-normal text-muted-foreground">{t('todayStatDays', { defaultValue: 'days' })}</span></CardTitle>
+            <CardTitle className="text-3xl">
+              <StreakChip streak={streak} variant="stat" />
+            </CardTitle>
           </CardHeader>
         </Card>
 
