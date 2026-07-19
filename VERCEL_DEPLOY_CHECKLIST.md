@@ -14,13 +14,13 @@ Vercel auto-deploys on push to `master` when the GitHub integration is connected
 
 GitHub integration often creates **Preview-only** builds for `master` even when Production Branch = `master`. Then `www.missionwinning.com` stays stale until a promote.
 
-**Canonical fix (repo):** [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) runs on **push to `master`** and `workflow_dispatch`, and deploys with `vercel deploy --prebuilt --prod`.
+**Canonical fix (repo):** [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) runs on **push to `master`** and `workflow_dispatch`, and deploys with `vercel deploy --prod` (build runs on Vercel so Sensitive env vars work).
 
-Required GitHub Actions secrets:
+Required GitHub Actions secrets (set 2026-07-19):
 
 | Secret | Value |
 |--------|--------|
-| `VERCEL_TOKEN` | https://vercel.com/account/tokens |
+| `VERCEL_TOKEN` | Vercel CLI / account token |
 | `VERCEL_ORG_ID` | `team_Akwar4ZvbahQp5HR911ebrlW` |
 | `VERCEL_PROJECT_ID` | `prj_yqoUE2ENzRRdeiMdqkqyC49czxxp` |
 
