@@ -104,6 +104,8 @@
 | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
 | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |
 | [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |
+| [docs/issa-source-map.md](docs/issa-source-map.md) | ISSA topic map → guidebook |
+| Magazine PDF | `public/magazine/beyond-the-basics.pdf` · print source `/guide/print` |
 | [ENV.md](ENV.md) | Environment variables |
 | [SETUP.md](SETUP.md) | One-time setup |
 | [PROTECTION.md](PROTECTION.md) | Security checklist |

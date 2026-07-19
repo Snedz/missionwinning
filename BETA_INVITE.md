@@ -38,6 +38,7 @@ You're in the first cohort of **Mission Winning** — a free-core fitness app wi
 **What to try:**
 - Tap **Mission Winning** in the top header to open the menu (Move, Mind, Leaderboard, Learn, etc.)
 - Language switch on Profile (Thai, Japanese, Spanish, etc.)
+- Optional read: **Beyond the Basics** magazine PDF — https://www.missionwinning.com/magazine/beyond-the-basics.pdf (or browse `/guide`)
 
 **Feedback:** Reply to this email or use in-app feedback. Confusing steps = exactly what we need to fix.
 

@@ -24,7 +24,7 @@
 | `journey/` | Journey UX — [journey/INDEX.md](journey/INDEX.md) |
 | `layout/` | App shell — [layout/INDEX.md](layout/INDEX.md) |
 | `leaderboard/` | Leaderboard UI |
-| `learn/` | Learn path UI |
+| `learn/` | Learn path UI + `GuideSectionExtras`, `GuideApexShell`, `GuideContentsRail`, `GuideLocaleSelect` (public magazine reader) |
 | `metrics/` | CoachInsightCard, pillar scores (not weekly plan) |
 | `nutrition/` | Fuel UI |
 | `pillars/` | Shared pillar panels, timed flows |

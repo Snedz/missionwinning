@@ -22,6 +22,10 @@ This is why "muscle confusion" is oversold. Variation has a place — especially
 Mission Winning tracks what you actually do. That history is the feedback loop: without logs, you are guessing whether adaptation is happening.`,
         practiceCTA: { label: 'Check readiness on Today', href: '/log' },
         sourceRef: 'foundations — adaptation',
+        callout: {
+          title: 'Key idea',
+          body: 'Adapt to the demand you repeat. Progress the same patterns — load, reps, quality, or range — before chasing novelty.',
+        },
       },
       {
         id: 'ch1-s2',
@@ -40,6 +44,15 @@ Most general fitness blends all three across the week. A lifter who never trains
         practiceCTA: { label: 'Log an activity', href: '/track' },
         relatedLearnPathId: 'strength-basics',
         sourceRef: 'foundations — energy systems',
+        table: {
+          caption: 'Energy systems at a glance',
+          headers: ['System', 'Duration', 'Feel', 'Examples'],
+          rows: [
+            ['ATP-PC', 'Seconds', 'Max power, full rest', 'Heavy singles, jumps, short sprints'],
+            ['Glycolytic', '30s–2 min', 'Hard burn, partial rest', 'Circuits, 400m repeats'],
+            ['Oxidative', 'Minutes+', 'Sustainable pace', 'Easy jog, hike, long bike'],
+          ],
+        },
       },
       {
         id: 'ch1-s3',
@@ -83,6 +96,15 @@ Use the Library form guides and swap to goblet squats or box squats if barbell d
         practiceCTA: { label: 'Browse squat variations', href: '/library' },
         relatedExerciseIds: ['squats', 'goblet-squat', 'air-squat'],
         sourceRef: 'foundations — squat pattern',
+        checklist: {
+          title: 'Squat faults to watch',
+          items: [
+            'Heels lifting off the floor',
+            'Knees collapsing inward',
+            'Excessive forward lean from weak ankles or poor brace',
+            'Bouncing out of the bottom without control',
+          ],
+        },
       },
       {
         id: 'ch2-s2',
@@ -99,6 +121,15 @@ Romanian deadlifts and good mornings teach the hinge with lighter loads. Master 
         practiceCTA: { label: 'View hinge exercises', href: '/library' },
         relatedExerciseIds: ['deadlift', 'romanian-deadlift', 'kettlebell-swing'],
         sourceRef: 'foundations — hinge pattern',
+        checklist: {
+          title: 'Hinge faults to watch',
+          items: [
+            'Squatting the deadlift — knees shoot forward instead of hips back',
+            'Rounding the lower back under load',
+            'Bar drifting away from the legs',
+            'Hyperextending the spine at lockout',
+          ],
+        },
       },
       {
         id: 'ch2-s3',
@@ -115,6 +146,15 @@ Pair patterns across the week rather than cramming everything into one marathon 
         practiceCTA: { label: 'Open workout Builder', href: '/builder' },
         relatedExerciseIds: ['push-ups', 'pull-ups', 'barbell-row'],
         sourceRef: 'foundations — movement patterns',
+        checklist: {
+          title: 'Pattern balance check',
+          items: [
+            'Pull at least as often as you press',
+            'Train horizontal and vertical push/pull angles',
+            'Include at least one loaded carry weekly if equipment allows',
+            'Spread patterns across the week — not one marathon session',
+          ],
+        },
       },
     ],
   },
@@ -153,6 +193,17 @@ Use RPE when sleep was poor, stress is high, or readiness trends down. Maintain 
 In the logger, note how sets felt. Over time you will recognize when to add weight versus when to repeat.`,
         practiceCTA: { label: 'Use program templates', href: '/builder' },
         sourceRef: 'foundations — RPE',
+        table: {
+          caption: 'RPE quick reference',
+          headers: ['RPE', 'Reps in reserve', 'Use when'],
+          rows: [
+            ['10', '0 — failure', 'Rare max tests'],
+            ['9', '1 left', 'Heavy strength sets'],
+            ['8', '2 left', 'Default hard training'],
+            ['7', '3 left', 'Technique / volume days'],
+            ['≤6', '4+ left', 'Recovery / deload'],
+          ],
+        },
       },
       {
         id: 'ch3-s3',
@@ -169,6 +220,10 @@ Program templates in the Builder encode these ideas. Pro templates (premium) add
         practiceCTA: { label: 'Browse templates', href: '/builder' },
         relatedLearnPathId: 'periodization-design',
         sourceRef: 'foundations — periodization',
+        callout: {
+          title: 'When to deload',
+          body: 'If key lifts stall for 2+ weeks, readiness trends down for 5+ days, or sleep and mood are clearly off — cut volume or intensity 40–60% for a week, then rebuild. Deload is a plan, not a failure.',
+        },
       },
     ],
   },
@@ -213,6 +268,18 @@ The journey phases — Basic, Readiness, Commissioned — exist to build habits 
 Each pillar can log a "win" on Today. Basic Training asks for one win in each — a low bar designed to show the whole app, not exhaust you in week one.`,
         practiceCTA: { label: 'Open Today hub', href: '/log' },
         sourceRef: 'MW product design',
+        table: {
+          caption: 'Six pillars — quick reference',
+          headers: ['Pillar', 'What you do', 'Route'],
+          rows: [
+            ['Train', 'Log sets and programs', '/active'],
+            ['Fuel', 'Macros, water, recipes', '/nutrition'],
+            ['Move', 'Timed mobility flows', '/move'],
+            ['Mind', 'Breathing and short sessions', '/mind'],
+            ['Track', 'Runs, walks, activities', '/track'],
+            ['Learn', 'Guidebook and quick paths', '/learn'],
+          ],
+        },
       },
       {
         id: 'ch4-s3',
@@ -251,6 +318,10 @@ Beta testers: see /beta for the start guide and feedback channels.`,
 Log a typical day on Fuel. Use recipes for ideas — free core includes dozens; premium adds meal-prep depth.`,
         practiceCTA: { label: 'Open Fuel log', href: '/nutrition' },
         sourceRef: 'nutrition science — macros',
+        callout: {
+          title: 'Priority order',
+          body: 'Hit protein first, then overall calories, then carbs around hard training. Fats fill the rest — do not zero them out.',
+        },
       },
       {
         id: 'ch5-s2',
@@ -264,6 +335,15 @@ Sleep is when growth hormone peaks and memory consolidates — including motor l
 Mind pillar includes wind-down sessions; Move includes recovery flows. Use them on rest days.`,
         practiceCTA: { label: 'Try a recovery flow', href: '/move' },
         sourceRef: 'foundations — hydration & sleep',
+        checklist: {
+          title: 'Recovery basics',
+          items: [
+            'Drink steadily through the day; extra around training',
+            'Aim for 7–9 hours sleep when life allows',
+            'Use Move recovery flows or Mind wind-downs on rest days',
+            'Treat chronic short sleep as a programming problem, not a willpower test',
+          ],
+        },
       },
       {
         id: 'ch5-s3',
@@ -330,6 +410,10 @@ Leaderboards add optional social motivation. Squad codes let friends compare wit
 History and Win Score trends on Today help you decide. This guidebook is the reference; your log is the truth.`,
         practiceCTA: { label: 'View workout history', href: '/history' },
         sourceRef: 'foundations — program adjustment',
+        callout: {
+          title: 'Stall vs pain vs stress',
+          body: 'Stall → progress one lift or deload. Sharp joint pain → stop and refer out. Life stress → keep the habit at lower RPE. Do not treat every bad week as a cue to push harder.',
+        },
       },
     ],
   },

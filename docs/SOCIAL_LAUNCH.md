@@ -50,6 +50,17 @@ Looking for honest beta testers. DM me.
 #bodyweightfitness #homegym #buildinpublic
 ```
 
+### Magazine angle (optional caption beat)
+
+```
+The booklet that used to come with the game — for training.
+
+Beyond the Basics is free to read (and download as a PDF): what adaptation is, how lifts work, how to tune volume, fuel, and recovery.
+
+App = experience it. Magazine = read it.
+missionwinning.com/guide
+```
+
 ---
 
 ## Phase B — Day of public flip

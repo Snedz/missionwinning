@@ -17,6 +17,8 @@
 | `ISSA Purpose Driven Model.pdf` | Ch 4 (coaching mindset, app journey) |
 | `ISSA-CPT-Workbook-Fillable.pdf` | Cross-reference for section topics |
 
+**Magazine PDF:** `public/magazine/beyond-the-basics.pdf` is generated from free chapters + [`magazineMeta.ts`](../src/data/guidebook/magazineMeta.ts) via `/guide/print`. Same originality rules apply. v1.3+ includes MW-authored callouts, tables, and checklists on sections (teaching aids — not ISSA text).
+
 ## Chapter → topic units
 
 | Ch | Title | ISSA-aligned units (summarized, not copied) |

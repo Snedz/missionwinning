@@ -73,6 +73,7 @@ Start here (2 minutes):
 What to try:
 - Header menu → Move, Mind, Leaderboard, Learn, Super Bundle
 - Profile → Language (Arabic RTL, Thai, Spanish, etc.)
+- Optional: Beyond the Basics magazine PDF — ${base}/magazine/beyond-the-basics.pdf (or ${base}/guide)
 
 Feedback: Reply to this email or use in-app feedback.
 

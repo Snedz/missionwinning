@@ -67,6 +67,7 @@
 |------|---------|
 | [issa-source-map.md](issa-source-map.md) | ISSA PDF → guidebook mapping |
 | [guidebook-originality-log.md](guidebook-originality-log.md) | Originality / legal tracking |
+| Magazine PDF | `public/magazine/beyond-the-basics.pdf` — Beyond the Basics compilation; print source `/guide/print`; meta in `src/data/guidebook/magazineMeta.ts` |
 | [archive/INDEX.md](archive/INDEX.md) | Superseded docs |
 
 ---
