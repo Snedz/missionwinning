@@ -9,15 +9,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -91,12 +82,10 @@ export function ActiveWorkoutPage() {
   const [setInputs, setSetInputs] = useState<Record<string, { reps: number; weight: number }>>({});
   const [swapOpenIdx, setSwapOpenIdx] = useState<number | null>(null);
   const [noteOpenIdx, setNoteOpenIdx] = useState<number | null>(null);
-  const [confirmRemoveIdx, setConfirmRemoveIdx] = useState<number | null>(null);
   const [formGuideId, setFormGuideId] = useState<string | null>(null);
   const [plateCalcOpen, setPlateCalcOpen] = useState(false);
   const [victoryOpen, setVictoryOpen] = useState(false);
   const [victorySummary, setVictorySummary] = useState<WorkoutVictorySummary | null>(null);
-  const [cancelConfirmOpen, setCancelConfirmOpen] = useState(false);
   const nextSetRef = useRef<HTMLDivElement | null>(null);
 
   const nextSet = useMemo(
@@ -232,13 +221,8 @@ export function ActiveWorkoutPage() {
     });
   };
 
-  const handleCancel = () => {
-    setCancelConfirmOpen(true);
-  };
-
-  const confirmCancelWorkout = () => {
+  const discardWorkout = () => {
     cancelActiveWorkout();
-    setCancelConfirmOpen(false);
     router.push('/log');
   };
 
@@ -286,7 +270,7 @@ export function ActiveWorkoutPage() {
           }
         }}
         onOpenPlateCalc={() => setPlateCalcOpen(true)}
-        onCancel={handleCancel}
+        onDiscard={discardWorkout}
         onFinish={handleComplete}
       />
 
@@ -331,7 +315,6 @@ export function ActiveWorkoutPage() {
               nextSetRef={nextSetRef}
               swapOpen={swapOpenIdx === exIdx}
               noteOpen={noteOpenIdx === exIdx}
-              confirmRemove={confirmRemoveIdx === exIdx}
               swapCandidates={swapCandidates}
               getSetInput={getSetInput}
               lastPerformanceForSet={getLastPerformanceForSet}
@@ -342,13 +325,8 @@ export function ActiveWorkoutPage() {
               onUnlinkSuperset={() => unlinkSuperset(exIdx)}
               onToggleNote={() => setNoteOpenIdx(noteOpenIdx === exIdx ? null : exIdx)}
               onToggleSwap={() => setSwapOpenIdx(swapOpenIdx === exIdx ? null : exIdx)}
-              onConfirmRemove={() => {
-                setConfirmRemoveIdx(exIdx);
-                setTimeout(() => setConfirmRemoveIdx((c) => (c === exIdx ? null : c)), 3500);
-              }}
               onRemove={() => {
                 removeExerciseFromActive(exIdx);
-                setConfirmRemoveIdx(null);
                 setSwapOpenIdx(null);
                 setNoteOpenIdx(null);
                 setSetInputs({});
@@ -433,29 +411,6 @@ export function ActiveWorkoutPage() {
         onViewToday={goToday}
         onViewHistory={goHistory}
       />
-
-      <Dialog open={cancelConfirmOpen} onOpenChange={setCancelConfirmOpen}>
-        <DialogContent className="max-w-sm">
-          <DialogHeader>
-            <DialogTitle>
-              {t('activeCancelTitle', { defaultValue: 'Discard workout?' })}
-            </DialogTitle>
-            <DialogDescription>
-              {t('activeCancelBody', {
-                defaultValue: 'Sets logged in this session will not be saved.',
-              })}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="gap-2 sm:gap-0">
-            <Button type="button" variant="outline" onClick={() => setCancelConfirmOpen(false)}>
-              {t('activeCancelKeep', { defaultValue: 'Keep training' })}
-            </Button>
-            <Button type="button" variant="destructive" onClick={confirmCancelWorkout}>
-              {t('activeCancelConfirm', { defaultValue: 'Discard' })}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

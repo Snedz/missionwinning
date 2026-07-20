@@ -5,6 +5,8 @@ import { ChevronDown, Trash2, UtensilsCrossed } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { DangerZone } from '@/components/ui/DangerZone';
+import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import type { MealType } from '@/components/nutrition/FuelLogSheet';
 
 export type FuelLogEntry = {
@@ -59,9 +61,6 @@ export function FuelTodayLogCard({
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{t('fuelTodayLogTitle', { defaultValue: "Today's Log" })}</CardTitle>
         <div className="flex gap-2 flex-wrap justify-end">
-          <Button variant="ghost" size="sm" onClick={onClearDay}>
-            {t('fuelClearDay', { defaultValue: 'Clear day' })}
-          </Button>
           <Button variant="outline" size="sm" onClick={onLoadCloud}>
             {t('fuelLoadCloud', { defaultValue: 'Load from Cloud' })}
           </Button>
@@ -70,7 +69,7 @@ export function FuelTodayLogCard({
           ) : null}
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         {logged.length === 0 ? (
           <EmptyState
             icon={UtensilsCrossed}
@@ -117,16 +116,13 @@ export function FuelTodayLogCard({
                       >
                         {t('fuelSaveMeal', { defaultValue: 'Save' })}
                       </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
+                      <HoldToConfirmButton
                         size="sm"
-                        className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
-                        aria-label={t('fuelRemoveEntry', { defaultValue: 'Remove entry' })}
-                        onClick={() => onRemoveEntry(index)}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
+                        className="h-7 w-7"
+                        label={t('fuelDeleteMealEntry', { defaultValue: 'Delete meal entry' })}
+                        icon={<Trash2 className="h-3.5 w-3.5" />}
+                        onConfirm={() => onRemoveEntry(index)}
+                      />
                     </span>
                   </li>
                 ))}
@@ -134,7 +130,7 @@ export function FuelTodayLogCard({
             </details>
           ))
         )}
-        <div className="mt-4 pt-3 border-t text-sm flex justify-between font-medium">
+        <div className="pt-3 border-t text-sm flex justify-between font-medium">
           <span>{t('fuelTotals', { defaultValue: 'Totals' })}</span>
           <span className="tabular-nums">
             {t('fuelTotalsLine', {
@@ -144,6 +140,20 @@ export function FuelTodayLogCard({
             })}
           </span>
         </div>
+        {logged.length > 0 ? (
+          <DangerZone
+            title={t('fuelDangerZone', { defaultValue: 'Danger zone' })}
+            description={t('fuelClearDayHint', {
+              defaultValue: 'Clears every meal logged today. Hold to confirm.',
+            })}
+          >
+            <HoldToConfirmButton
+              size="sm"
+              label={t('fuelClearTodaysMeals', { defaultValue: "Clear today's meals" })}
+              onConfirm={onClearDay}
+            />
+          </DangerZone>
+        ) : null}
       </CardContent>
     </Card>
   );

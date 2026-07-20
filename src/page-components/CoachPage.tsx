@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { WeekStrip } from '@/components/coach/WeekStrip';
@@ -49,17 +50,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
     todaySession,
     adjustToday,
   } = useCoachPlan();
-  const [confirmRegen, setConfirmRegen] = useState(false);
   const [adjustOpen, setAdjustOpen] = useState(false);
-
-  const handleRegenerate = () => {
-    if (!confirmRegen) {
-      setConfirmRegen(true);
-      return;
-    }
-    setConfirmRegen(false);
-    generate();
-  };
 
   return (
     <PillarPageShell
@@ -210,15 +201,14 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           </div>
 
           {premium && (
-            <Button
-              variant="outline"
+            <HoldToConfirmButton
+              variant="destructive"
               className="w-full"
-              onClick={handleRegenerate}
-            >
-              {confirmRegen
-                ? t('coachRegenerateConfirm', { defaultValue: 'Tap again to confirm' })
-                : t('coachRegenerate', { defaultValue: 'Regenerate week' })}
-            </Button>
+              label={t('coachRegenerateWeekPlan', {
+                defaultValue: 'Regenerate week plan',
+              })}
+              onConfirm={() => generate()}
+            />
           )}
         </div>
       )}

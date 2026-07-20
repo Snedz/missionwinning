@@ -27,6 +27,7 @@ import { TrackWeeklyInsights } from '@/components/track/TrackWeeklyInsights';
 import { ActivityImportPanel } from '@/components/track/ActivityImportPanel';
 import { usePremium } from '@/hooks/usePremium';
 import { MapPin, Trash2 } from 'lucide-react';
+import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 
 export function TrackPage() {
   const { t } = useTranslation();
@@ -212,9 +213,13 @@ export function TrackPage() {
                       )}
                       {a.notes && <div className="text-xs text-muted-foreground">{a.notes}</div>}
                     </div>
-                    <Button variant="ghost" size="sm" onClick={() => handleDelete(a.id)}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <HoldToConfirmButton
+                      size="sm"
+                      className="h-9 w-9"
+                      label={t('trackDeleteActivity', { defaultValue: 'Delete activity' })}
+                      icon={<Trash2 className="h-4 w-4" />}
+                      onConfirm={() => handleDelete(a.id)}
+                    />
                   </li>
                 ))}
               </ul>

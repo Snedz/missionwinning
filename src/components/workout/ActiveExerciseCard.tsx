@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Plus, Timer } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { SetLogRow } from '@/components/workout/SetLogRow';
@@ -43,7 +44,6 @@ type Props = {
   nextSetRef: RefObject<HTMLDivElement | null>;
   swapOpen: boolean;
   noteOpen: boolean;
-  confirmRemove: boolean;
   swapCandidates: Exercise[];
   getSetInput: (
     exIdx: number,
@@ -66,7 +66,6 @@ type Props = {
   onUnlinkSuperset: () => void;
   onToggleNote: () => void;
   onToggleSwap: () => void;
-  onConfirmRemove: () => void;
   onRemove: () => void;
   onSwapTo: (id: string) => void;
   onNoteChange: (note: string) => void;
@@ -94,7 +93,6 @@ export function ActiveExerciseCard({
   nextSetRef,
   swapOpen,
   noteOpen,
-  confirmRemove,
   swapCandidates,
   getSetInput,
   lastPerformanceForSet,
@@ -105,7 +103,6 @@ export function ActiveExerciseCard({
   onUnlinkSuperset,
   onToggleNote,
   onToggleSwap,
-  onConfirmRemove,
   onRemove,
   onSwapTo,
   onNoteChange,
@@ -209,25 +206,17 @@ export function ActiveExerciseCard({
               {t('activeSwap', { defaultValue: 'Swap' })}
             </Button>
           )}
-          {confirmRemove ? (
-            <Button type="button" variant="destructive" size="sm" onClick={onRemove}>
-              {hasCompleted
-                ? t('activeRemoveConfirmLogged', {
-                    defaultValue: 'Remove — discards logged sets',
+          <HoldToConfirmButton
+            size="sm"
+            label={
+              hasCompleted
+                ? t('activeRemoveExerciseLogged', {
+                    defaultValue: 'Remove exercise — discards logged sets',
                   })
-                : t('activeRemoveConfirm', { defaultValue: 'Confirm remove' })}
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground hover:text-destructive"
-              onClick={onConfirmRemove}
-            >
-              {t('activeRemove', { defaultValue: 'Remove' })}
-            </Button>
-          )}
+                : t('activeRemoveExercise', { defaultValue: 'Remove exercise' })
+            }
+            onConfirm={onRemove}
+          />
         </div>
         {swapOpen && !hasCompleted && (
           <div className="mt-2">
