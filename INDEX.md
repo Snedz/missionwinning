@@ -24,12 +24,16 @@
 | Launch / deploy | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md), [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md), [ENV.md](ENV.md), [docs/archive/BETA_LAUNCH_OPS.md](docs/archive/BETA_LAUNCH_OPS.md), [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) | [SETUP.md](SETUP.md) (one-time LLC/domain setup) |
 | Social / launch posts | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [BETA_INVITE.md](BETA_INVITE.md) | — |
 | Brand / press / media kit | [docs/brand-guidelines.md](docs/brand-guidelines.md), `/press`, `public/brand/` | — |
-| LLC + Stripe | [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
+| LLC + Stripe | [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/PRELAUNCH_CAPITAL.md](docs/PRELAUNCH_CAPITAL.md) | Paid ads before week-4; native apps before retention |
 | Legal safety (AI / Terms / DMCA / labels) | [docs/LEGAL_SAFETY.md](docs/LEGAL_SAFETY.md), `/privacy`, `/terms`, `/dmca` | Session chat plans as counsel substitute |
 | Pay-ready legal (six docs) | [docs/PAY_READY_LEGAL.md](docs/PAY_READY_LEGAL.md), `/refunds`, [docs/legal/](docs/legal/) | Claiming enterprise SLAs on consumer Bundle |
-| Mobile (deferred) | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Native rewrite |
+| Mobile / native apps | [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md), [`apps/android`](apps/android) | Expo/TWA as the Android product; starting iOS before Android Phase 1 ([docs/IOS_DEFERRED.md](docs/IOS_DEFERRED.md)) |
+| Mobile (Expo prototype) | [docs/NATIVE_MOBILE.md](docs/NATIVE_MOBILE.md), [`apps/mobile`](apps/mobile) | Shipping Expo to Play as the product |
+| Mobile (TWA optional) | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Using TWA instead of Compose native |
 | Wearables (Horizon 3) | [docs/WEARABLES.md](docs/WEARABLES.md) | Live OAuth/hubs until retention unlock |
 | Premium / conversion | [REDTEAM.md](REDTEAM.md), [STRATEGY.md](STRATEGY.md) | — |
+| **YC / product wedge** | [docs/YC_THESIS.md](docs/YC_THESIS.md), [STRATEGY.md](STRATEGY.md) | Pitching “everything app” as the company; [vision.md](vision.md) is constitution, not the YC one-liner |
+| **Accelerator apps (Jul–Aug 2026)** | [docs/ACCELERATOR_SPRINT.md](docs/ACCELERATOR_SPRINT.md), [docs/applications/INDEX.md](docs/applications/INDEX.md) | Fabricating traction; Cardano pivot; flipping `PRIVATE_MODE` for demos |
 | Journey UX (I-Day → Commissioned) | [JOURNEY.md](JOURNEY.md) | Build phases in [PLAN.md](PLAN.md) (different “phase”) |
 | UI unification | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | — |
 | Experience build (v4) | [docs/archive/ROADMAP_V4_EXPERIENCE.md](docs/archive/ROADMAP_V4_EXPERIENCE.md) | Old chat plans in `~/.cursor/plans/` |
@@ -61,6 +65,9 @@
 | Routes & API | [app/INDEX.md](app/INDEX.md) | Next.js pages and API handlers |
 | Business logic | [src/lib/INDEX.md](src/lib/INDEX.md) | Pure TS domain code |
 | Mission Coach engine | [src/lib/coach/INDEX.md](src/lib/coach/INDEX.md) | Weekly plan prediction |
+| Shared pure TS (web + native) | [packages/mw-core/INDEX.md](packages/mw-core/INDEX.md) | adaptSummary, seed plan, victory |
+| Native Expo app | [apps/mobile/INDEX.md](apps/mobile/INDEX.md) | Flow prototype only (not Play product) |
+| Android Compose app | [apps/android/INDEX.md](apps/android/INDEX.md) | Play product path — Train + Coach |
 | Fuel Coach engine | [src/lib/fuelCoach/INDEX.md](src/lib/fuelCoach/INDEX.md) | Adaptive meal plan |
 | Full-page UI | [src/page-components/INDEX.md](src/page-components/INDEX.md) | Page components |
 | Reusable UI | [src/components/INDEX.md](src/components/INDEX.md) | Feature components |
@@ -101,7 +108,7 @@
 | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | UI unification |
 | [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) | Launch checklist |
 | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) | Social + launch post kit |
-| [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md) | LLC → Stripe checklist |
+| [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md) | LLC → Stripe · trademark · counsel |
 | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) | Public flip day |
 | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Deferred Play/iOS shells |
 | [docs/WEARABLES.md](docs/WEARABLES.md) | Multi-vendor wearables (Apple, Google, Whoop, …) |

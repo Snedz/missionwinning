@@ -34,6 +34,9 @@ User guides in plain language (no code paths):
 | [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW |
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Layers, state, request lifecycle |
+| [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference only) |
+| [ANDROID_NATIVE.md](ANDROID_NATIVE.md) | Android Compose get-started + AI orchestration |
+| [API_MOBILE.md](API_MOBILE.md) | `/api/mobile/*` Coach + workouts |
 | [API.md](API.md) | All API routes — auth, rate limits, schemas |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Setup, PR workflow, where to put code |
 | [../ENV.md](../ENV.md) | Environment variables |

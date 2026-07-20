@@ -4,6 +4,73 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Android-first native (Compose)
+
+- **`docs/ANDROID_NATIVE.md`:** get-started + AI lane orchestration; **`docs/IOS_DEFERRED.md`**
+- **`docs/openapi-mobile.yaml`** + `/api/mobile/coach/plan|adapt` + `/api/mobile/workouts` (mw-core seed/adapt)
+- **`apps/android`:** multi-module Compose (designsystem/data/network/app) — I-Day → Today → Active → Victory → Coach; Room offline; Maestro + PLAY_LISTING
+- Expo demoted to UX prototype; Play product path is Compose (`assembleDebug` green)
+- Founder: emulator QA + Play Internal when ready
+
+---
+
+## 2026-07-20 — Native Android + iOS (Expo)
+
+- **`apps/mobile`:** Expo Router wedge — I-Day → Today → Active logger → Victory → Coach; Account + magic-link auth
+- **`packages/mw-core`:** shared pure TS (adapt summary, seed plan, victory next-action); web `adaptSummary` re-exports
+- **Persistence:** AsyncStorage offline; Supabase sync when `EXPO_PUBLIC_SUPABASE_*` set; Super Bundle via web Stripe Checkout
+- **Stores:** `eas.json` + [docs/NATIVE_MOBILE.md](docs/NATIVE_MOBILE.md) (founder LLC / EAS project id / submit placeholders)
+- Web PWA remains for SEO / Get Selected; TWA playbook demoted to optional packaging
+
+---
+
+## 2026-07-20 — Pre-launch capital focus (unlimited funds)
+
+- **`docs/PRELAUNCH_CAPITAL.md`:** Tier A/B/C — legal/ops/VA yes; paid ads **$0** until week-4
+- **`docs/OUTREACH_VA_BRIEF.md`:** hire script for beta DMs (forbidden: ads, fake users)
+- **`LLC_AND_PAYMENTS`:** §1b counsel review · §1c trademark filing checklist
+- Pointers: INDEX, PAY_READY_LEGAL, BETA_INVITE, ACCELERATOR_SPRINT, SOCIAL_LAUNCH
+- Founder still executes LLC/EIN/bank, Vercel Wave A, and hiring — agents do not flip `PRIVATE_MODE`
+
+---
+
+## 2026-07-20 — Get Selected sprint (Plan v5)
+
+- **`docs/applications/`:** YC / CDL / Elbow Grease / SPC / Residency paste answers + INDEX
+- **`ACCELERATOR_SPRINT.md`:** research table, Get Selected calendar, Wave A pre-flip, demo seed
+- **`npm run seed-coach-adapt-demo`:** DevTools snippet for CoachAdaptBanner film
+- **BetaAdminPanel:** proof summary + Copy/Download real stats only
+- **Landing EN:** hero first sentence = exact YC_THESIS one-liner
+- Agents do not flip `PRIVATE_MODE`
+
+---
+
+## 2026-07-20 — Accelerator application sprint kit
+
+- **`docs/ACCELERATOR_SPRINT.md`:** ranked CDL/YC/Elbow Grease/SPC/Residency; skip Cardano; paste answers; 60s demo; founder calendar
+- **Coach demo UX:** `adaptSummary` + `CoachAdaptBanner` on `/coach` + Today Coach card (miss/swap/revision visible)
+- **Wedge copy:** Coach subtitle + Today eyebrows = adapts from logs / no wearable
+- No `PRIVATE_MODE` flip; no fabricated traction
+
+---
+
+## 2026-07-20 — Victory → Mission Coach (wedge loop)
+
+- **`pickVictoryNextAction`:** first 3 completed workouts (or no coach plan) → `/coach`; else Fuel → Mind → Move
+- **Wire:** `ActiveWorkoutPage` passes `completedWorkouts` + `hasCoachPlan`; EN (+ core locale) victory coach strings
+- No rebuild, no `PRIVATE_MODE` flip — product truth matches YC Train+Coach wedge
+
+---
+
+## 2026-07-20 — YC wedge thesis (Train + Coach)
+
+- **`docs/YC_THESIS.md`:** one-liner, competition vs Hevy/HYBRD, traction bar, cofounder, non-pitch; apply only after retention/paid gates
+- **Routing:** INDEX + STRATEGY positioning + vision “YC wedge vs constitution” note (constitution unchanged)
+- **Copy:** landing / private gate / Bundle EN + social + beta invite → logger + Mission Coach (pillars below fold)
+- **Gates:** ORCHESTRATION + POST_LAUNCH_CADENCE — founder path beta → public → week-4 → YC; agents do not flip `PRIVATE_MODE`
+
+---
+
 ## 2026-07-20 — Pay-ready legal pack (six docs)
 
 - **`/refunds`:** 14-day money-back defaults; Bundle + Terms + help + footers

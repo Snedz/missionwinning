@@ -205,6 +205,37 @@ export const wearableHubIngestSchema = z.object({
     .max(500),
 });
 
+/** Native mobile — generate/seed coach week. */
+export const mobileCoachPlanBodySchema = z.object({
+  equipment: z.enum(['bodyweight', 'dumbbells', 'full-gym']).optional().default('bodyweight'),
+  withAdaptDemo: z.boolean().optional().default(false),
+  revision: z.number().int().min(1).max(999).optional(),
+});
+
+/** Native mobile — mark session done / bump revision. */
+export const mobileCoachAdaptBodySchema = z.object({
+  plan: z.object({
+    revision: z.number().int().min(0),
+    weekStart: z.string().max(20),
+    daysPerWeek: z.number().int().min(1).max(7),
+    sessions: z.array(z.record(z.string(), z.unknown())).max(14),
+    generatedAt: z.string().max(40),
+    contextHash: z.string().max(200),
+    equipmentProfile: z.enum(['bodyweight', 'dumbbells', 'full-gym']),
+  }),
+  sessionId: z.string().min(1).max(80),
+});
+
+/** Native mobile — log completed workout. */
+export const mobileWorkoutLogBodySchema = z.object({
+  workoutName: z.string().min(1).max(120),
+  durationSeconds: z.number().int().min(1).max(86_400),
+  setCount: z.number().int().min(0).max(200),
+  totalVolume: z.number().min(0).max(1_000_000),
+  sessionId: z.string().max(80).optional(),
+  completedAt: z.string().max(40).optional(),
+});
+
 export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
   | { ok: true; data: T }
   | { ok: false; error: string } {
