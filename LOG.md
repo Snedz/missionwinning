@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Pay-ready legal pack (six docs)
+
+- **`/refunds`:** 14-day money-back defaults; Bundle + Terms + help + footers
+- **Terms/Privacy:** premium → refunds; Acceptable Use; 30-day deletion SLA; subprocessors
+- **Templates:** `docs/legal/DPA.md` + `MSA_TEMPLATE.md` (B2B/school, docs-first)
+- **Hub:** `docs/PAY_READY_LEGAL.md` + cyber insurance founder checklist — not legal advice
+
+---
+
 ## 2026-07-20 — Wave 11: competitor-informed features
 
 Build `2026.07-unified.92`.

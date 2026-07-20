@@ -456,6 +456,15 @@ export function BundlePage() {
                   {id === 'lifetime' && (
                     <PhantomLifetimeCheckout className="w-full mt-3" />
                   )}
+                  <p className="text-center text-xs text-muted-foreground mt-3">
+                    {t('bundleRefundNote', {
+                      defaultValue: '14-day money-back on first paid charge — see',
+                    })}{' '}
+                    <Link href="/refunds" className="text-primary hover:underline">
+                      {t('infoRefundsTitle', { defaultValue: 'Refunds' })}
+                    </Link>
+                    .
+                  </p>
                 </CardContent>
               </Card>
             </TabsContent>

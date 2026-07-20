@@ -2,9 +2,9 @@
 
 **Not legal advice.** This doc is operational hygiene for Mission Winning: what we disclose, what data we touch, and founder checklists before relying on arbitration/DMCA language in a dispute. Have counsel review material Terms changes.
 
-**Live pages:** [`/privacy`](https://missionwinning.com/privacy) · [`/terms`](https://missionwinning.com/terms) · [`/dmca`](https://missionwinning.com/dmca)
+**Live pages:** [`/privacy`](https://missionwinning.com/privacy) · [`/terms`](https://missionwinning.com/terms) · [`/dmca`](https://missionwinning.com/dmca) · [`/refunds`](https://missionwinning.com/refunds)
 
-**Related:** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) · [help/privacy-and-data.md](help/privacy-and-data.md) · [COMPLIANCE.md](COMPLIANCE.md) (control monitor — not a certification)
+**Related:** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) · [help/privacy-and-data.md](help/privacy-and-data.md) · [COMPLIANCE.md](COMPLIANCE.md) (control monitor — not a certification) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) (six docs before payments)
 
 ---
 
@@ -47,6 +47,9 @@ Use this table when filling Apple Privacy Nutrition Labels / Google Play Data sa
 - [ ] Confirm formation state in [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) and keep Terms “state of formation” language accurate
 - [ ] CCPA: we do not sell/share for cross-context ads — Privacy California section; respond to access/deletion at `support@missionwinning.com`
 - [ ] At TWA time: fill Play Data safety + App Privacy labels from §2 (not before)
+- [ ] Cyber liability insurance quote (~$200–600/yr ballpark — verify with broker); bind before school/enterprise or data at scale — see [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
+- [ ] Do not claim “we are insured” in Privacy until a policy exists
+- [ ] Support auto-reply: refund requests → `/refunds` + `support@missionwinning.com`
 
 ---
 

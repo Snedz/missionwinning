@@ -32,6 +32,7 @@ const LEGAL: FooterLink[] = [
   { href: '/privacy', labelKey: 'footerLegalPrivacy', defaultValue: 'Privacy' },
   { href: '/terms', labelKey: 'footerLegalTerms', defaultValue: 'Terms' },
   { href: '/dmca', labelKey: 'footerLegalDmca', defaultValue: 'DMCA' },
+  { href: '/refunds', labelKey: 'footerLegalRefunds', defaultValue: 'Refunds' },
 ];
 
 function FooterColumn({

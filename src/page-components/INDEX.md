@@ -83,6 +83,7 @@
 | `PrivacyPage.tsx` | `/privacy` |
 | `TermsPage.tsx` | `/terms` |
 | `DmcaPage.tsx` | `/dmca` |
+| `RefundsPage.tsx` | `/refunds` |
 | `FeedbackPage.tsx` | `/feedback` |
 | `AssessmentsPage.tsx` | `/assessments` |
 | `CalculatorsPage.tsx` | `/calculators` |

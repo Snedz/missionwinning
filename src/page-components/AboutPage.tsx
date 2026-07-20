@@ -101,6 +101,10 @@ export function AboutPage() {
                 {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
               </Link>
               {' · '}
+              <Link href="/refunds" className="text-primary hover:underline">
+                {t('infoRefundsTitle', { defaultValue: 'Refunds' })}
+              </Link>
+              {' · '}
               <Link href="/beta" className="text-primary hover:underline">
                 {t('navBetaGuide', { defaultValue: 'Beta guide' })}
               </Link>

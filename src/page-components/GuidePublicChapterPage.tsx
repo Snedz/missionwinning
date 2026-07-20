@@ -30,6 +30,7 @@ const PUBLIC_SAFE = new Set([
   '/privacy',
   '/terms',
   '/dmca',
+  '/refunds',
   '/coaching',
   '/feedback',
   '/vision',

@@ -43,6 +43,9 @@ export function LegalNav({
       <Link href="/dmca" className={linkClassName}>
         {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
       </Link>
+      <Link href="/refunds" className={linkClassName}>
+        {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
+      </Link>
     </nav>
   );
 }
