@@ -34,9 +34,9 @@
 | Var | Role |
 |-----|------|
 | `NEXT_PUBLIC_CRYPTO_CHECKOUT` | `true` to show UI |
-| `NEXT_PUBLIC_PHANTOM_APP_ID` | Phantom Portal app |
-| `SOLANA_TREASURY_ADDRESS` | Receive USDC |
+| `SOLANA_TREASURY_ADDRESS` | Receive USDC (required server-side) |
 | `SOLANA_RPC_URL` | Preferred Helius/QuickNode |
+| `NEXT_PUBLIC_PHANTOM_APP_ID` | Optional — Portal App ID for Google/Apple/deeplink |
 
 ## UI
 

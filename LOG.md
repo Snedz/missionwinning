@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-19 — Crypto: Phantom Lifetime enabled on Production
+
+- Applied `crypto_payment_intents` on prod Supabase (`tnzauplicgfrozvnowqp`)
+- Vercel Production: `NEXT_PUBLIC_CRYPTO_CHECKOUT=true`, `SOLANA_TREASURY_ADDRESS`, `SOLANA_RPC_URL` (public mainnet for smoke; swap to Helius when ready)
+- Injected Phantom works without Portal App ID; App ID still optional for social/deeplink
+- Stripe Dashboard Crypto/Stablecoins: **deferred** — current Stripe MCP account is sandbox; KYB request is Dashboard-only on live account
+- Treasury pubkey: `57CEga7okiNCVAomW254KUCtj5GquRu8Z2Huj27bdPjM` (secret held offline for founder — fund USDC ATA before accepting pay)
+
+---
+
 ## 2026-07-19 — Founder unlock: full-site i18n parity (15 langs)
 
 - Canonical [`APP_LANGS`](src/i18n/appLangs.ts) (Profile / export / `/guide` / hydrate)

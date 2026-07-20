@@ -26,11 +26,14 @@ Accept **$149 USDC on Solana** for Super Bundle Lifetime via Phantom Connect —
 
 ```
 NEXT_PUBLIC_CRYPTO_CHECKOUT=true
-NEXT_PUBLIC_PHANTOM_APP_ID=...
 SOLANA_TREASURY_ADDRESS=...          # base58 pubkey
-SOLANA_RPC_URL=https://...           # Helius/QuickNode
+SOLANA_RPC_URL=https://...           # Helius/QuickNode preferred; public mainnet works for smoke
+# Optional — enables Google/Apple/deeplink embedded wallets (Portal App ID):
+# NEXT_PUBLIC_PHANTOM_APP_ID=...
 SUPABASE_SERVICE_ROLE_KEY=...        # already required for enrollments
 ```
+
+Injected Phantom extension works **without** `NEXT_PUBLIC_PHANTOM_APP_ID`. Portal App ID is only required for embedded social login.
 
 6. Smoke: `node scripts/verify-stripe-enrollment.mjs --check-crypto-checkout` (expects 401 without session).
 
@@ -52,7 +55,8 @@ SUPABASE_SERVICE_ROLE_KEY=...        # already required for enrollments
 - Intent expires in 30 minutes.
 - Matching uses a unique **reference** pubkey per intent (not amount-only).
 - `tx_signature` is unique; enrollment idempotent on `(provider, external_id)`.
-- UI is hidden unless `NEXT_PUBLIC_CRYPTO_CHECKOUT=true` **and** `NEXT_PUBLIC_PHANTOM_APP_ID` is set; server also requires treasury.
+- UI is shown when `NEXT_PUBLIC_CRYPTO_CHECKOUT=true`; server also requires `SOLANA_TREASURY_ADDRESS`.
+- `NEXT_PUBLIC_PHANTOM_APP_ID` is optional (injected extension). Required for Google/Apple/deeplink.
 
 ---
 
