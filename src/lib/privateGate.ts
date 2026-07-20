@@ -34,7 +34,6 @@ export const PUBLIC_API_PATHS_WHILE_GATED = [
   '/api/leads/unsubscribe',
   '/api/cron/nudges',
   '/api/cron/weekly-digest',
-  '/api/cron/migrate',
   '/api/nudges/unsubscribe',
   // Safe anonymous premium probe (returns premium:false without auth)
   '/api/premium/status',
