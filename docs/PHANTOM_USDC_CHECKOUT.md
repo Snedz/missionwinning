@@ -35,7 +35,7 @@ SUPABASE_SERVICE_ROLE_KEY=...        # already required for enrollments
 
 Injected Phantom extension works **without** `NEXT_PUBLIC_PHANTOM_APP_ID`. Portal App ID is only required for embedded social login.
 
-6. Smoke: `node scripts/verify-stripe-enrollment.mjs --check-crypto-checkout` (expects 401 without session).
+6. Smoke: `SMOKE_BASE_URL=https://www.missionwinning.com node scripts/verify-stripe-enrollment.mjs --check-crypto-checkout` (expects 401 without session). Signed-in Lifetime → Pay with Phantom → confirm `enrollments.provider = phantom` once treasury USDC ATA is funded.
 
 ---
 

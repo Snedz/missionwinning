@@ -6,12 +6,13 @@ Chronological record of shipped work. Newest first.
 
 ## 2026-07-19 — Crypto: Phantom Lifetime enabled on Production
 - Private gate: allowlist `/api/crypto-checkout/*` so intent/confirm return session 401 (not gate 403)
-
 - Applied `crypto_payment_intents` on prod Supabase (`tnzauplicgfrozvnowqp`)
-- Vercel Production: `NEXT_PUBLIC_CRYPTO_CHECKOUT=true`, `SOLANA_TREASURY_ADDRESS`, `SOLANA_RPC_URL` (public mainnet for smoke; swap to Helius when ready)
+- Fixed empty **Sensitive** Vercel env (CLI showed set but value was blank): recreated `SOLANA_*` as encrypted + `NEXT_PUBLIC_CRYPTO_CHECKOUT=true` as plain; verified via `vercel env run`
+- Redeployed Production (`dpl_6KHnaYGpiT16LLkd1m7wedA3RhGx`); smoke `--check-crypto-checkout` → 401 auth on intent/confirm
 - Injected Phantom works without Portal App ID; App ID still optional for social/deeplink
-- Stripe Dashboard Crypto/Stablecoins: **deferred** — current Stripe MCP account is sandbox; KYB request is Dashboard-only on live account
-- Treasury pubkey: `57CEga7okiNCVAomW254KUCtj5GquRu8Z2Huj27bdPjM` (secret held offline for founder — fund USDC ATA before accepting pay)
+- Stripe Dashboard Crypto/Stablecoins: **deferred** — connected account is sandbox (`Mission Winning sandbox`); request Stablecoins in live Dashboard after KYB ([docs](https://docs.stripe.com/payments/accept-stablecoin-payments))
+- Treasury pubkey: `57CEga7okiNCVAomW254KUCtj5GquRu8Z2Huj27bdPjM` (secret in `/tmp/mw_solana_treasury_secret.b58` for founder — fund USDC ATA; one signed-in Lifetime Phantom pay still needed to confirm `enrollments.provider=phantom`)
+- Founder todos added to [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §4 + [ORCHESTRATION.md](ORCHESTRATION.md)
 
 ---
 
