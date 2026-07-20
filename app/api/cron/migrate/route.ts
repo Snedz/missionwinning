@@ -83,8 +83,13 @@ async function applySql(connectionString: string, sql: string, file: string) {
   try {
     // Dynamic import so local typecheck doesn't require pg types in deps if missing
     const { default: pg } = await import('pg');
+    // Strip sslmode from URL so node-pg uses our ssl object (avoids self-signed chain errors)
+    const cs = connectionString
+      .replace(/[?&]sslmode=[^&]*/gi, '')
+      .replace(/\?&/, '?')
+      .replace(/[?&]$/, '');
     const client = new pg.Client({
-      connectionString,
+      connectionString: cs,
       ssl: { rejectUnauthorized: false },
     });
     await client.connect();
