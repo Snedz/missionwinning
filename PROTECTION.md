@@ -153,6 +153,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 
 ### P1 — First 30 days public
 
+- [ ] **Aikido:** connect repo + set GitHub Actions secret `AIKIDO_SECRET_KEY` ([docs/AIKIDO.md](docs/AIKIDO.md)); confirm workflow runs on `master`
 - [x] Split `pro` program templates to server-only module (like recipes)
 - [x] PayPal webhook signature verification (`src/lib/paypalWebhook.ts`)
 - [x] CSP header enforced in production (`next.config.js`; `CSP_ENFORCE=false` for report-only)

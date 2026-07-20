@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Aikido Cursor + CI
+
+- **Docs:** [docs/AIKIDO.md](docs/AIKIDO.md) — MCP playbook, founder CI secret checklist, triage rules
+- **CI:** `.github/workflows/aikido.yml` — CRITICAL dependency gate on `master`/PRs; skips when `AIKIDO_SECRET_KEY` unset
+- **Wired:** INDEX, PROTECTION P1, OWASP, ENV, Vercel checklist
+- **MCP:** signed in; hot-path `aikido_full_scan` — 0 SAST/secrets findings; enable [IDE MCP permissions](https://app.us.aikido.dev/settings/integrations/ide/mcp/permissions) for `aikido_issues_list`
+
+---
+
 ## 2026-07-20 — Cache ladder v1 (L10)
 
 - **Honest docs:** [docs/CACHE_LADDER.md](docs/CACHE_LADDER.md) — not Browser→CDN→Redis→Postgres for premium APIs

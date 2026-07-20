@@ -96,6 +96,7 @@ curl -sI https://www.missionwinning.com/api/school/class/MWTEST/leaderboard
 5. Apply all `supabase/migrations/` including `20260702_security_hardening.sql` and `20260705_leads_api_only.sql`
 6. Run `npm run security-smoke` + `npm run rate-limit-smoke` against production
 7. Submit sitemap in Search Console ([SEO_ANALYTICS.md](SEO_ANALYTICS.md))
+8. Optional but recommended: Aikido CI secret + Cursor login ([AIKIDO.md](AIKIDO.md)) — CRITICAL dependency gate on `master`
 
 ---
 
@@ -106,8 +107,8 @@ curl -sI https://www.missionwinning.com/api/school/class/MWTEST/leaderboard
 | CSP `unsafe-inline` / `unsafe-eval` | Still required by Next.js client runtime; Serwist migration shipped but CSP not fully locked down |
 | In-memory rate limit fallback | **Local/dev only.** Production without Upstash is a Medium risk until Wave A closes it ([PRODUCTION_STACK.md](PRODUCTION_STACK.md)) |
 | Coach taster localStorage reset | Product abuse only — premium LLM server-gated |
-| Solana/Phantom high advisories | Required for lifetime crypto checkout; ownership + amount server-enforced — see [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) |
-| Soft CI dependency audit | Soft until crypto path removed or upstream clean |
+| Solana/Phantom high advisories | Required for lifetime crypto checkout; ownership + amount server-enforced — see [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md); map Aikido SCA hits here |
+| Soft CI dependency audit | Soft until crypto path removed or upstream clean; Aikido CRITICAL-deps gate is separate ([AIKIDO.md](AIKIDO.md)) |
 | No SIEM | A09 partial — rely on Vercel/Supabase logs + weekly enrollment review post-public |
 
 ## Residual risks (2026-07-16 red-team)
