@@ -6,6 +6,7 @@ export const STATIC_PAGE_TITLES: Record<string, { label: string; labelKey?: stri
   '/about': { label: 'About', labelKey: 'about' },
   '/terms': { label: 'Terms', labelKey: 'termsOfService' },
   '/privacy': { label: 'Privacy', labelKey: 'privacyPolicy' },
+  '/dmca': { label: 'DMCA', labelKey: 'infoDmcaTitle' },
   '/vision': { label: 'Vision', labelKey: 'infoVisionTitle' },
   '/feedback': { label: 'Feedback', labelKey: 'feedback' },
   '/beta': { label: 'Beta guide', labelKey: 'navBetaGuide' },

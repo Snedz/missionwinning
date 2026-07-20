@@ -31,6 +31,7 @@ const COMPANY: FooterLink[] = [
 const LEGAL: FooterLink[] = [
   { href: '/privacy', labelKey: 'footerLegalPrivacy', defaultValue: 'Privacy' },
   { href: '/terms', labelKey: 'footerLegalTerms', defaultValue: 'Terms' },
+  { href: '/dmca', labelKey: 'footerLegalDmca', defaultValue: 'DMCA' },
 ];
 
 function FooterColumn({

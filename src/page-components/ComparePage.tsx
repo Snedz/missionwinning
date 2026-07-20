@@ -95,7 +95,7 @@ export function ComparePage() {
         title={t('compareTitle', { defaultValue: 'How we compare' })}
         subtitle={t('compareSubtitle', {
           defaultValue:
-            'Free tiers side by side — Mission Winning leads with the tracker, not the paywall. No AI API key required.',
+            'Free tiers side by side — Mission Winning leads with the tracker, not the paywall. Free core needs no AI key; optional AI coach only when enabled.',
         })}
       />
 
@@ -144,7 +144,7 @@ export function ComparePage() {
             {
               href: '/compare/forge',
               title: 'vs Forge',
-              body: 'No AI API key. Just Go + PRs free.',
+              body: 'Free core, no AI key. Just Go + PRs free.',
             },
             {
               href: '/compare/freeletics',

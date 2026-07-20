@@ -15,7 +15,10 @@ const TERM_SECTIONS = [
   { id: 'educational', key: 'infoTermsEducational', bodyKey: 'infoTermsEducationalBody' },
   { id: 'accounts', key: 'infoTermsAccounts', listKeys: ['infoTermsAccountsLi1', 'infoTermsAccountsLi2', 'infoTermsAccountsLi3'] },
   { id: 'premium', key: 'infoTermsPremium', bodyKey: 'infoTermsPremiumBody' },
+  { id: 'user-content', key: 'infoTermsUserContent', bodyKey: 'infoTermsUserContentBody' },
+  { id: 'dmca', key: 'infoTermsDmca', bodyKey: 'infoTermsDmcaBody' },
   { id: 'liability', key: 'infoTermsLiability', bodyKey: 'infoTermsLiabilityBody' },
+  { id: 'disputes', key: 'infoTermsDisputes', bodyKey: 'infoTermsDisputesBody' },
   { id: 'changes', key: 'infoTermsChanges', bodyKey: 'infoTermsChangesBody' },
 ] as const;
 
@@ -31,7 +34,7 @@ export function TermsPage() {
     <InfoPageShell
       icon={Scale}
       title={t('infoTermsTitle', { defaultValue: 'Terms of Use' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: June 2026' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >
@@ -48,9 +51,18 @@ export function TermsPage() {
               ))}
             </ul>
           ) : (
-            <p className="text-muted-foreground">
-              {t(section.bodyKey, { defaultValue: section.bodyKey })}
-            </p>
+            <>
+              <p className="text-muted-foreground">
+                {t(section.bodyKey, { defaultValue: section.bodyKey })}
+              </p>
+              {section.id === 'dmca' && (
+                <p className="mt-2">
+                  <Link href="/dmca" className="text-primary hover:underline text-sm">
+                    {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })} →
+                  </Link>
+                </p>
+              )}
+            </>
           )}
         </InfoSection>
       ))}
@@ -59,6 +71,10 @@ export function TermsPage() {
         {t('infoTermsFoot', { defaultValue: 'Mission Winning LLC · support@missionwinning.com · See also' })}{' '}
         <Link href="/privacy" className="text-primary hover:underline">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
+        </Link>
+        {' · '}
+        <Link href="/dmca" className="text-primary hover:underline">
+          {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
         </Link>
       </p>
     </InfoPageShell>

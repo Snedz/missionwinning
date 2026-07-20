@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Legal safety shield
+
+- **AI disclosure:** landing proof + Privacy “AI features” — free core needs no key; optional AI when enabled (no absolute “no AI”)
+- **Terms:** User content license/warranties; DMCA pointer; AAA arbitration + class waiver (small-claims / IP carve-outs)
+- **`/dmca`:** public notice page + LegalNav / footer / sitemap / gate public paths; interim agent → founder copyright.gov filing
+- **`docs/LEGAL_SAFETY.md`:** store-ready data inventory + founder checklist; Privacy meal-photo + CCPA “do not sell/share”
+
+---
+
 ## 2026-07-20 — Hero UX friction pass
 
 - **Upload:** reject toasts, in-flight Stop, photo Analyze/Retake gate, aria-live, backup keep-drop-open

@@ -58,7 +58,7 @@ Anonymous usage analytics (e.g. PostHog) may run to improve the product — see 
 - Delete local data by clearing site data in browser settings.
 - Request account deletion via support (cloud rows removed per policy).
 
-**Full legal text:** [/privacy](/privacy) and [/terms](/terms) in the app.
+**Full legal text:** [/privacy](/privacy), [/terms](/terms), and [/dmca](/dmca) in the app. Operator inventory: [LEGAL_SAFETY.md](../LEGAL_SAFETY.md).
 
 ## Security practices
 

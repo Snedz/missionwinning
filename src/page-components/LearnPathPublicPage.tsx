@@ -79,8 +79,8 @@ export function LearnPathPublicPage({ path }: Props) {
 
         <div className="rounded-2xl border border-primary/40 bg-primary/10 p-5 space-y-3">
           <p className="text-sm text-muted-foreground">
-            Start free with I-Day (~2 min), then open this path in Learn. No AI API key. Offline when you
-            install the PWA.
+            Start free with I-Day (~2 min), then open this path in Learn. Free core needs no AI key.
+            Offline when you install the PWA.
           </p>
           <Button asChild variant="fitness" className="primary-action">
             <Link

@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/experience',
     '/terms',
     '/privacy',
+    '/dmca',
     '/welcome',
     '/guide',
     '/exercises',

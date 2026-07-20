@@ -22,9 +22,9 @@ export const COMPARE_STORIES: CompareStory[] = [
   {
     slug: 'forge',
     eyebrow: 'vs Forge Fitness',
-    title: 'No AI API key. Free logger.',
+    title: 'Free core, no AI key required.',
     subtitle:
-      'Forge’s best features lean on bring-your-own AI keys and a Pro paywall. Mission Winning ships Just Go, rest timers, PRs, and progression free — offline, no account.',
+      'Forge’s best features lean on bring-your-own AI keys and a Pro paywall. Mission Winning ships Just Go, rest timers, PRs, and progression free — offline, no account. Optional AI coach exists only when operators enable it.',
     bullets: [
       { label: 'Start today’s workout', mw: 'Just Go — rule-based, free', them: 'AI Just Go (key + Pro)' },
       { label: 'Rest / PRs / progression', mw: 'Included forever', them: 'Often Pro-gated' },

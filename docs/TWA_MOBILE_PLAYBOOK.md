@@ -34,6 +34,7 @@ When evidence clears:
 2. Create Android project with [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) or PWABuilder TWA  
 3. Digital Asset Links: `/.well-known/assetlinks.json` on `www.missionwinning.com`  
 4. Play Console under the LLC; free app listing; link to same privacy/terms  
+   - Fill **Data safety** from [LEGAL_SAFETY.md](LEGAL_SAFETY.md) §2 (do not invent labels before this step)  
 5. Measure: Play installs → I-Day complete → week-4 loggers vs web cohort  
 
 **Do not** fork business logic into Kotlin. TWA should load `https://www.missionwinning.com`.
