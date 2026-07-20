@@ -57,7 +57,13 @@ export function NutritionPage() {
   const [customC, setCustomC] = useState(200);
   const [cloudStatus, setCloudStatus] = useState('');
   const [logSheetOpen, setLogSheetOpen] = useState(false);
-  const [activeMeal, setActiveMeal] = useState<MealType>('lunch');
+  const [activeMeal, setActiveMeal] = useState<MealType>(() => {
+    const h = new Date().getHours();
+    if (h < 10) return 'breakfast';
+    if (h < 15) return 'lunch';
+    if (h < 20) return 'dinner';
+    return 'snack';
+  });
   const [fuelStreak, setFuelStreak] = useState(0);
   const [nlMealText, setNlMealText] = useState('');
   const [nlPreview, setNlPreview] = useState<ReturnType<typeof estimateMealFromDescription>>(null);
@@ -280,6 +286,20 @@ export function NutritionPage() {
           <label className="text-sm font-medium" htmlFor="fuel-nl-meal">
             {t('fuelNlTitle', { defaultValue: 'Describe what you ate' })}
           </label>
+          <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('fuelMealPicker', { defaultValue: 'Meal' })}>
+            {(['breakfast', 'lunch', 'dinner', 'snack'] as MealType[]).map((m) => (
+              <Button
+                key={m}
+                type="button"
+                size="sm"
+                variant={activeMeal === m ? 'fitness' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setActiveMeal(m)}
+              >
+                {mealLabel(m)}
+              </Button>
+            ))}
+          </div>
           <div className="flex flex-col sm:flex-row gap-2">
             <input
               id="fuel-nl-meal"
@@ -485,6 +505,9 @@ export function NutritionPage() {
         onClearDay={() => {
           setLogged([]);
           setWater(0);
+        }}
+        onRemoveEntry={(index) => {
+          setLogged((prev) => prev.filter((_, i) => i !== index));
         }}
         onLoadCloud={async () => {
           setCloudStatus(t('fuelCloudLoading', { defaultValue: 'Loading...' }));

@@ -99,11 +99,14 @@ export function SignInPanel({
   const [loading, setLoading] = useState<OAuthProvider | 'email' | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [linkSent, setLinkSent] = useState(false);
 
   const configured = isSupabaseConfigured();
   const oauthProviders = getEnabledOAuthProviders();
   const showOAuth = configured && oauthProviders.length > 0;
   const oauthLabelList = formatEnabledOAuthLabels(oauthProviders);
+
+  const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 
   useEffect(() => {
     if (hasValidPrivacyConsent()) {
@@ -145,11 +148,12 @@ export function SignInPanel({
     setMessage(null);
 
     if (!email.trim()) {
-      if (allowSkip) {
-        onComplete?.();
-        return;
-      }
       setError('Enter your email or use a sign-in option above.');
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setError('Enter a valid email address.');
       return;
     }
 
@@ -162,9 +166,11 @@ export function SignInPanel({
     setLoading('email');
     try {
       await signInMagic(email.trim(), nextPath);
-      setMessage(`Check ${email.trim()} for a secure sign-in link.`);
+      const sentTo = email.trim();
+      setMessage(`Check ${sentTo} for a secure sign-in link.`);
+      setLinkSent(true);
       setEmail('');
-      onComplete?.();
+      // Do not call onComplete here — Welcome must show the check-email message first.
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       setError(msg);
@@ -172,6 +178,41 @@ export function SignInPanel({
       setLoading(null);
     }
   };
+
+  if (linkSent && message) {
+    return (
+      <div className={compact ? 'space-y-4' : 'space-y-5'}>
+        <p
+          id="signin-message"
+          role="status"
+          className="text-sm text-primary bg-primary/10 border border-primary/40 rounded-lg px-3 py-3"
+        >
+          {message}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Open the link on this device to sync. You can continue exploring meanwhile.
+        </p>
+        <div className="flex flex-col gap-2">
+          {onComplete && (
+            <Button type="button" className="w-full h-12" onClick={() => onComplete()}>
+              Continue
+            </Button>
+          )}
+          <Button
+            type="button"
+            variant="ghost"
+            className="w-full"
+            onClick={() => {
+              setLinkSent(false);
+              setMessage(null);
+            }}
+          >
+            Use a different email
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={compact ? 'space-y-4' : 'space-y-5'}>
@@ -244,30 +285,42 @@ export function SignInPanel({
         <div className="relative">
           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <Input
+            id="signin-email"
             type="email"
             autoComplete="email"
             inputMode="email"
             placeholder="you@email.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError(null);
+            }}
             disabled={!!loading}
+            aria-invalid={!!error}
+            aria-describedby={error ? 'signin-error' : undefined}
             className="pl-10 h-12 bg-background/80"
           />
         </div>
         <Button
           type="submit"
-          disabled={!!loading}
+          disabled={!!loading || !email.trim()}
           className="w-full h-12 text-[15px] font-semibold bg-primary hover:bg-primary"
         >
-          {loading === 'email'
-            ? 'Sending secure link…'
-            : email.trim()
-              ? 'Send magic link'
-              : allowSkip
-                ? skipLabel
-                : 'Send magic link'}
+          {loading === 'email' ? 'Sending secure link…' : 'Send magic link'}
         </Button>
       </form>
+
+      {allowSkip && (
+        <Button
+          type="button"
+          variant="ghost"
+          className="w-full h-11 text-muted-foreground"
+          disabled={!!loading}
+          onClick={() => onComplete?.()}
+        >
+          {skipLabel}
+        </Button>
+      )}
 
       <label className="flex items-start gap-3 text-xs text-muted-foreground leading-relaxed cursor-pointer group">
         <input
@@ -275,6 +328,7 @@ export function SignInPanel({
           checked={consent}
           disabled={consentLocked}
           onChange={(e) => setConsent(e.target.checked)}
+          aria-invalid={!!error && !consent}
           className="mt-0.5 h-4 w-4 rounded border-border accent-emerald-500 shrink-0"
         />
         <span>
@@ -290,13 +344,12 @@ export function SignInPanel({
         </span>
       </label>
 
-      {message && (
-        <p className="text-sm text-primary bg-primary/10 border border-primary/40 rounded-lg px-3 py-2">
-          {message}
-        </p>
-      )}
       {error && (
-        <p className="text-sm text-red-400 bg-red-950/20 border border-red-500/20 rounded-lg px-3 py-2">
+        <p
+          id="signin-error"
+          role="alert"
+          className="text-sm text-red-400 bg-red-950/20 border border-red-500/20 rounded-lg px-3 py-2"
+        >
           {error}
         </p>
       )}

@@ -4,6 +4,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Hero UX friction pass
+
+- **Upload:** reject toasts, in-flight Stop, photo Analyze/Retake gate, aria-live, backup keep-drop-open
+- **Today/Train/Fuel:** hero CTA above metrics; cancel confirm → `/log`; quieter set toasts; default RPE med; meal chips + per-entry delete
+- **Coach chat:** keep failed user turns; typed errors; Try again / Stop; `aria-busy`
+- **Auth:** Welcome check-email before continue; separate Skip; youth notify must succeed before OTP; field-linked errors
+
+---
+
+## 2026-07-20 — Upload UX system
+
+- `FileDropZone` — drag border/glow/copy shift; `FileUploadRow` — thumbnail/type/size + % + ETA + inline retry
+- `useFileUploadQueue` — isolated per-file progress; `uploadFormDataWithProgress` XHR for honest upload %
+- Wired: Fuel photo log (composite %), Track multi-file import, Profile backup restore
+
+---
+
 ## 2026-07-20 — OTP input system (youth consent)
 
 - `src/lib/otpInput.ts` — sanitize/slots helpers + `RESEND_COOLDOWN_MS` (30s)

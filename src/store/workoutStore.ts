@@ -318,7 +318,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr) => {
-        get().logSet(exerciseIndex, setIndex, reps, weight, undefined, isPr);
+        get().logSet(exerciseIndex, setIndex, reps, weight, 'med', isPr);
         const aw = get().activeWorkout;
         if (!aw) return null;
         return advanceAfterLog(aw.exercises, exerciseIndex, setIndex);
