@@ -31,7 +31,7 @@
 | `today/` | Today dashboard — [today/INDEX.md](today/INDEX.md) |
 | `track/` | GPS / activity panels |
 | `profile/` | Profile settings cards (privacy, backup, referral, wearables) |
-| `ui/` | Design system primitives (`ProgressRing`, `EmptyState`, shadcn) |
+| `ui/` | Design system primitives (`ProgressRing`, `EmptyState`, `OtpInput`, shadcn) |
 | `workout/` | Active workout — [workout/INDEX.md](workout/INDEX.md) |
 
 ## Coach UI split

@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import type { WinScoreBreakdown } from '@/lib/score';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const PILLAR_META: {
   key: keyof WinScoreBreakdown['pillars'];
@@ -22,8 +23,23 @@ export function PillarScoreBreakdown({ breakdown }: { breakdown: WinScoreBreakdo
 
   return (
     <div className="space-y-3">
-      <div className="text-xs text-muted-foreground uppercase tracking-widest">
-        {t('todayPillarScoreByPillar', { defaultValue: 'Mission Score by Pillar' })}
+      <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-widest">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              className="cursor-help text-start underline decoration-dotted underline-offset-2 hover:text-foreground"
+            >
+              {t('todayPillarScoreByPillar', { defaultValue: 'Mission Score by Pillar' })}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent className="max-w-xs normal-case tracking-normal">
+            {t('todayMissionScoreTip', {
+              defaultValue:
+                'Daily score from all six pillars. Log training, fuel, move, mind, track, and learn to raise it.',
+            })}
+          </TooltipContent>
+        </Tooltip>
       </div>
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {PILLAR_META.map(({ key, labelKey, href, max }) => {

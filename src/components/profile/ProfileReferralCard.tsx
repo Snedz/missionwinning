@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { getMyReferral } from '@/lib/referral';
 import { shareText } from '@/lib/shareFitnessMission';
 import { track } from '@/lib/analytics';
@@ -98,7 +99,11 @@ export function ProfileReferralCard({ signedIn }: Props) {
             </Button>
           </div>
         ) : loading ? (
-          <p className="text-sm text-muted-foreground">…</p>
+          <div className="space-y-2" role="status" aria-busy="true" aria-label="Loading">
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-10 w-full sm:w-40" />
+          </div>
         ) : (
           <>
             {code ? (

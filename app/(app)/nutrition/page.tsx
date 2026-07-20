@@ -1,6 +1,12 @@
 import type { Metadata } from 'next';
-import { NutritionPage } from '@/page-components/NutritionPage';
+import dynamic from 'next/dynamic';
 import { routeMetadata } from '@/lib/routeMetadata';
+import { RouteLoading } from '@/components/layout/RouteLoading';
+
+const NutritionPage = dynamic(
+  () => import('@/page-components/NutritionPage').then((m) => m.NutritionPage),
+  { loading: () => <RouteLoading label="Fuel" /> }
+);
 
 export const metadata: Metadata = routeMetadata('nutrition');
 

@@ -15,6 +15,7 @@ import {
   saveFuelPlan,
 } from '@/lib/fuelCoach/storage';
 import { mergeAndSaveFuelPlan, pullFuelPlanFromCloud, scheduleFuelPlanPush } from '@/lib/fuelCoach/fuelSync';
+import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
 import { FREE_RECIPES } from '@/data/recipes/freeRecipes';
 import type { FuelPlan } from '@/lib/fuelCoach/types';
 import type { Recipe } from '@/data/recipes/types';
@@ -22,8 +23,12 @@ import type { Recipe } from '@/data/recipes/types';
 export function useFuelPlan() {
   const history = useWorkoutStore((s) => s.workoutHistory);
   const { premium, loading: premiumLoading } = usePremium();
-  const [plan, setPlan] = useState<FuelPlan | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [plan, setPlan] = useState<FuelPlan | null>(() =>
+    typeof window !== 'undefined' ? loadFuelPlan() : null
+  );
+  const [loading, setLoading] = useState(() =>
+    typeof window !== 'undefined' ? !loadFuelPlan() : true
+  );
   const [userId, setUserId] = useState<string | null>(null);
   const [premiumRecipes, setPremiumRecipes] = useState<Recipe[]>([]);
 
@@ -44,11 +49,7 @@ export function useFuelPlan() {
       setPremiumRecipes([]);
       return;
     }
-    fetch('/api/premium/recipes', { credentials: 'include' })
-      .then((r) => {
-        if (!r.ok) throw new Error('premium recipes unavailable');
-        return r.json();
-      })
+    fetchPremiumCatalogJson<{ recipes?: Recipe[] }>('/api/premium/recipes')
       .then((d) => setPremiumRecipes(d.recipes ?? []))
       .catch(() => setPremiumRecipes([]));
   }, [premium]);
@@ -99,7 +100,7 @@ export function useFuelPlan() {
 
   return {
     plan,
-    loading: loading || premiumLoading,
+    loading: plan ? false : loading || premiumLoading,
     premium,
     generate,
     regenerate,

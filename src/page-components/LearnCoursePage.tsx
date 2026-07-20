@@ -9,6 +9,8 @@ import { CourseReader } from '@/components/learn/CourseReader';
 import { LearnLockedPreview } from '@/components/learn/LearnLockedPreview';
 import { usePremium } from '@/hooks/usePremium';
 import { BookOpen } from 'lucide-react';
+import { SkeletonCard } from '@/components/ui/Skeleton';
+import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
 
 export function LearnCoursePage() {
   const { t } = useTranslation();
@@ -22,8 +24,7 @@ export function LearnCoursePage() {
       setChapters([]);
       return;
     }
-    fetch('/api/premium/guidebook', { credentials: 'include' })
-      .then((r) => (r.ok ? r.json() : { chapters: [] }))
+    fetchPremiumCatalogJson<{ chapters?: GuideChapter[] }>('/api/premium/guidebook')
       .then((d) => setChapters(d.chapters ?? []))
       .catch(() => setChapters([]));
   }, [premium]);
@@ -37,7 +38,7 @@ export function LearnCoursePage() {
         defaultValue: 'Premium guidebook chapters — corrective, coaching business, periodization, and more.',
       })}
     >
-      {loading && <p className="text-sm text-muted-foreground">{t('loading', { defaultValue: 'Loading…' })}</p>}
+      {loading && <SkeletonCard />}
       {!loading && !premium && <LearnLockedPreview />}
       {!loading && premium && chapters.length > 0 && (
         <CourseReader chapters={chapters} initialChapterId={initialChapterId} />

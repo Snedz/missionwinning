@@ -8,9 +8,23 @@ import { Check, Minus, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { LoggedSet, SetKind } from '@/types';
 import { SET_KINDS, setKindBadgeClass, setKindCompletedRowClass, setKindDefaultLabel, setKindLabelKey, setKindRowClass } from '@/lib/workout/setKind';
 import { cn } from '@/lib/utils';
+
+const SET_KIND_TIPS: Record<SetKind, { key: string; defaultValue: string }> = {
+  normal: { key: 'activeSetNormalTip', defaultValue: 'Working set — counts toward volume and PRs' },
+  warmup: { key: 'activeSetWarmupTip', defaultValue: 'Warm-up — does not count toward volume or PRs' },
+  failure: { key: 'activeSetFailureTip', defaultValue: 'Taken to failure — still counts as work' },
+  drop: { key: 'activeSetDropTip', defaultValue: 'Drop set — lighter follow-up; not a PR attempt' },
+};
+
+const RPE_TIPS = {
+  easy: { key: 'activeRpeEasyTip', defaultValue: 'Easy — 2+ reps left in the tank' },
+  med: { key: 'activeRpeMedTip', defaultValue: 'Medium — about 1–2 reps left' },
+  hard: { key: 'activeRpeHardTip', defaultValue: 'Hard — near failure (0–1 reps left)' },
+} as const;
 
 type Props = {
   setNumber: number;
@@ -63,37 +77,57 @@ export function SetLogRow({
       >
         <span className="w-7 text-sm font-medium text-muted-foreground">#{setNumber}</span>
         {kind !== 'normal' && (
-          <Badge variant="outline" className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}>
-            {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
-          </Badge>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Badge variant="outline" className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}>
+                {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent>
+              {t(SET_KIND_TIPS[kind].key, { defaultValue: SET_KIND_TIPS[kind].defaultValue })}
+            </TooltipContent>
+          </Tooltip>
         )}
         <Badge variant="secondary" className="gap-1 tabular-nums">
           <Check className="h-3 w-3" />
           {set.reps} × {set.weight}
         </Badge>
         {set.isPr && (
-          <Badge
-            variant="outline"
-            className="border-brass/50 bg-brass/15 text-brass text-[10px] uppercase tracking-wide"
-          >
-            {t('activePrBadge', { defaultValue: 'PR' })}
-          </Badge>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Badge
+                variant="outline"
+                className="border-brass/50 bg-brass/15 text-brass text-[10px] uppercase tracking-wide"
+              >
+                {t('activePrBadge', { defaultValue: 'PR' })}
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent>
+              {t('activePrTip', { defaultValue: 'Personal record for this exercise' })}
+            </TooltipContent>
+          </Tooltip>
         )}
         <div className="ms-auto flex gap-1">
           {!set.rpe ? (
             (['easy', 'med', 'hard'] as const).map((r) => (
-              <Button
-                key={r}
-                variant="outline"
-                size="sm"
-                className="h-8 min-w-[44px] text-xs px-2"
-                onClick={() => onRate(r)}
-              >
-                {t(
-                  r === 'easy' ? 'activeRpeEasy' : r === 'med' ? 'activeRpeMed' : 'activeRpeHard',
-                  { defaultValue: r }
-                )}
-              </Button>
+              <Tooltip key={r}>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 min-w-[44px] text-xs px-2"
+                    onClick={() => onRate(r)}
+                  >
+                    {t(
+                      r === 'easy' ? 'activeRpeEasy' : r === 'med' ? 'activeRpeMed' : 'activeRpeHard',
+                      { defaultValue: r }
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {t(RPE_TIPS[r].key, { defaultValue: RPE_TIPS[r].defaultValue })}
+                </TooltipContent>
+              </Tooltip>
             ))
           ) : (
             <Badge variant="outline" className="text-xs capitalize">
@@ -117,23 +151,29 @@ export function SetLogRow({
           <span className="text-sm font-semibold text-muted-foreground">#{setNumber}</span>
           <div className="flex flex-wrap gap-1">
             {SET_KINDS.map((k) => (
-              <Button
-                key={k}
-                type="button"
-                size="sm"
-                variant={kind === k ? 'default' : 'outline'}
-                className={cn(
-                  'h-7 px-2 text-[10px] min-w-[44px]',
-                  kind === k && k === 'warmup' && 'bg-amber-600 hover:bg-amber-500',
-                  kind === k && k === 'failure' && 'bg-rose-600 hover:bg-rose-500',
-                  kind === k && k === 'drop' && 'bg-violet-600 hover:bg-violet-500'
-                )}
-                onClick={() => onSetKindChange(k)}
-              >
-                {t(setKindLabelKey(k), {
-                  defaultValue: k === 'normal' ? 'Work' : setKindDefaultLabel(k),
-                })}
-              </Button>
+              <Tooltip key={k}>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant={kind === k ? 'default' : 'outline'}
+                    className={cn(
+                      'h-7 px-2 text-[10px] min-w-[44px]',
+                      kind === k && k === 'warmup' && 'bg-amber-600 hover:bg-amber-500',
+                      kind === k && k === 'failure' && 'bg-rose-600 hover:bg-rose-500',
+                      kind === k && k === 'drop' && 'bg-violet-600 hover:bg-violet-500'
+                    )}
+                    onClick={() => onSetKindChange(k)}
+                  >
+                    {t(setKindLabelKey(k), {
+                      defaultValue: k === 'normal' ? 'Work' : setKindDefaultLabel(k),
+                    })}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {t(SET_KIND_TIPS[k].key, { defaultValue: SET_KIND_TIPS[k].defaultValue })}
+                </TooltipContent>
+              </Tooltip>
             ))}
           </div>
         </div>

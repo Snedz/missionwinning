@@ -43,6 +43,13 @@ export function CoachChatPanel({
   const rootRef = useRef<HTMLDivElement>(null);
   const trackedOpen = useRef(false);
   const askBooted = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
 
   useEffect(() => {
     if (open && !trackedOpen.current) {
@@ -114,7 +121,7 @@ export function CoachChatPanel({
     setSending(true);
     setInput('');
     const prior = turns;
-    const nextTurns: Turn[] = [...prior, { role: 'user', content: message }];
+    const nextTurns: Turn[] = [...prior, { role: 'user', content: message }, { role: 'coach', content: '' }];
     setTurns(nextTurns);
 
     const context = {
@@ -136,24 +143,34 @@ export function CoachChatPanel({
         : undefined,
     };
 
+    abortRef.current?.abort();
+    const ac = new AbortController();
+    abortRef.current = ac;
+
     try {
       const res = await fetch('/api/coach/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'text/plain',
+        },
         body: JSON.stringify({
           message,
           turns: prior.slice(-12),
           context,
+          stream: true,
         }),
+        signal: ac.signal,
       });
       if (res.status === 503) {
         setOffline(true);
         setTurns(prior);
         return;
       }
-      if (!res.ok) {
+      if (!res.ok || !res.body) {
         setTurns([
-          ...nextTurns,
+          ...prior,
+          { role: 'user', content: message },
           {
             role: 'coach',
             content: t('coachChatOffline', {
@@ -163,20 +180,55 @@ export function CoachChatPanel({
         ]);
         return;
       }
-      const data = (await res.json()) as {
-        message: string;
-        actionLabel?: string;
-        actionPath?: string;
-      };
+
       track('coach_chat_message_sent', {
-        turn: nextTurns.length,
+        turn: prior.length + 1,
         grounded: Boolean(exerciseId),
       });
-      const coachText = data.actionLabel
-        ? `${data.message}\n→ ${data.actionLabel}${data.actionPath ? ` (${data.actionPath})` : ''}`
-        : data.message;
-      setTurns([...nextTurns, { role: 'coach', content: coachText }]);
-    } catch {
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let coachText = '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        if (chunk.includes('[[error:coach_offline]]')) {
+          setOffline(true);
+          setTurns(prior);
+          return;
+        }
+        if (chunk.includes('[[error:')) {
+          setTurns([
+            ...prior,
+            { role: 'user', content: message },
+            {
+              role: 'coach',
+              content: t('coachChatOffline', {
+                defaultValue: 'Coach voice offline — your plan and adjustments still work.',
+              }),
+            },
+          ]);
+          return;
+        }
+        coachText += chunk;
+        const snapshot = coachText;
+        setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: snapshot }]);
+      }
+      if (!coachText.trim()) {
+        setTurns([
+          ...prior,
+          { role: 'user', content: message },
+          {
+            role: 'coach',
+            content: t('coachChatOffline', {
+              defaultValue: 'Coach voice offline — your plan and adjustments still work.',
+            }),
+          },
+        ]);
+      }
+    } catch (err) {
+      if (err instanceof Error && err.name === 'AbortError') return;
       setTurns(prior);
     } finally {
       setSending(false);
@@ -225,11 +277,14 @@ export function CoachChatPanel({
               <div
                 key={`${turn.role}-${i}`}
                 className={cn(
-                  'rounded-md px-2 py-1.5',
+                  'rounded-md px-2 py-1.5 whitespace-pre-wrap',
                   turn.role === 'user' ? 'bg-primary/10 ml-4' : 'bg-muted/40 mr-4'
                 )}
               >
                 {turn.content}
+                {sending && turn.role === 'coach' && i === turns.length - 1 ? (
+                  <span className="inline-block w-1.5 h-3.5 ms-0.5 align-middle bg-primary/70 animate-pulse" aria-hidden />
+                ) : null}
               </div>
             ))}
           </div>

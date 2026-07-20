@@ -1,6 +1,12 @@
 import type { Metadata } from 'next';
-import { CoachPage } from '@/page-components/CoachPage';
+import dynamic from 'next/dynamic';
 import { routeMetadata } from '@/lib/routeMetadata';
+import { RouteLoading } from '@/components/layout/RouteLoading';
+
+const CoachPage = dynamic(
+  () => import('@/page-components/CoachPage').then((m) => m.CoachPage),
+  { loading: () => <RouteLoading label="Coach" /> }
+);
 
 export const metadata: Metadata = routeMetadata('coach');
 

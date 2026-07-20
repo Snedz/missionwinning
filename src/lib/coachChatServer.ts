@@ -7,7 +7,7 @@ import { EXERCISES } from '@/data/exercises';
 import { EXERCISE_PUBLIC_ENRICHMENT } from '@/data/exercisePublicEnrichment';
 import { withPublicDepth } from '@/lib/exerciseDepthDefaults';
 import { VALID_PATHS } from '@/lib/coachDailyServer';
-import { fetchCoachLlmCompletion } from '@/lib/coachLlmClient';
+import { fetchCoachLlmCompletion, streamCoachLlmCompletion } from '@/lib/coachLlmClient';
 
 export type CoachChatTurn = { role: 'user' | 'coach'; content: string };
 
@@ -72,7 +72,11 @@ function groundingBlock(exerciseId: string): string {
     .join('\n');
 }
 
-export function buildChatSystemPrompt(ctx: CoachChatContext, groundedId: string | null): string {
+export function buildChatSystemPrompt(
+  ctx: CoachChatContext,
+  groundedId: string | null,
+  mode: 'json' | 'plain' = 'json'
+): string {
   const sessionLine = ctx.todaySession
     ? `Today: ${ctx.todaySession.name} (${ctx.todaySession.kind}, ~${ctx.todaySession.estMinutes} min) — ${ctx.todaySession.exercises
         .slice(0, 8)
@@ -80,12 +84,20 @@ export function buildChatSystemPrompt(ctx: CoachChatContext, groundedId: string 
         .join(', ')}.`
     : 'Today: no planned coach session.';
   const ground = groundedId ? groundingBlock(groundedId) : '';
+  const format =
+    mode === 'plain'
+      ? 'Answer in ≤120 words. Plain text only — no JSON, no markdown fences, no action links.'
+      : 'Answer in ≤120 words. Reply JSON only: {"message":"...","actionLabel":"...","actionPath":"/..."}';
+  const actionLine =
+    mode === 'json'
+      ? 'actionPath must be one of: /active /nutrition /move /mind /track /learn /log /builder /history (omit action if none).'
+      : '';
   return [
     'You are Mission Winning coach — evidence-based, concise, mission-briefing tone.',
     'Scope: training, nutrition habits, recovery, and form cues only.',
     'Never diagnose medical conditions. If user reports pain/injury, advise seeing a qualified professional and keep form general.',
-    'Answer in ≤120 words. Reply JSON only: {"message":"...","actionLabel":"...","actionPath":"/..."}',
-    'actionPath must be one of: /active /nutrition /move /mind /track /learn /log /builder /history (omit action if none).',
+    format,
+    actionLine,
     `Readiness ${ctx.readiness}/100, strain ${ctx.strain}/100, recovery ${ctx.recovery}/100, train days last 14: ${ctx.trainDays14}.`,
     sessionLine,
     ground,
@@ -168,4 +180,43 @@ export async function fetchCoachChat(
     source: 'llm',
     grounded: Boolean(groundedId),
   };
+}
+
+/**
+ * Streaming coach chat — plain-text deltas for word-by-word UI.
+ * Caller owns the ReadableStream / HTTP framing.
+ */
+export async function* streamCoachChat(
+  ctx: CoachChatContext,
+  turns: CoachChatTurn[],
+  message: string,
+  signal?: AbortSignal
+): AsyncGenerator<string, { ok: true; grounded: boolean } | CoachChatFail, void> {
+  const groundedId = detectExerciseFromMessage(message, ctx.exerciseId);
+  const system = buildChatSystemPrompt(ctx, groundedId, 'plain');
+  const user = buildChatUserPrompt(turns, message);
+  const gen = streamCoachLlmCompletion(
+    {
+      system,
+      user,
+      maxTokens: 350,
+      temperature: 0.5,
+    },
+    { signal, timeoutMs: 30_000 }
+  );
+
+  let result = await gen.next();
+  while (!result.done) {
+    yield result.value;
+    result = await gen.next();
+  }
+
+  const final = result.value;
+  if (!final.ok) {
+    if (final.reason === 'unconfigured' || final.reason === 'zdr_inactive') {
+      return { ok: false, reason: 'unconfigured' };
+    }
+    return { ok: false, reason: 'unavailable' };
+  }
+  return { ok: true, grounded: Boolean(groundedId) };
 }

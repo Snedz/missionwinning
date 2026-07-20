@@ -1,47 +1,115 @@
 'use client';
 /**
  * Premium enrollment status from /api/premium/status.
+ * Module-level cache avoids gate flicker on every nav.
  * Consumers: CoachPage, BundlePage, gated UI
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
+
+const TTL_MS = 60_000;
+
+type PremiumCache = {
+  premium: boolean;
+  fetchedAt: number;
+};
+
+let cache: PremiumCache | null = null;
+let inflight: Promise<boolean> | null = null;
+const listeners = new Set<() => void>();
+
+function notify() {
+  listeners.forEach((l) => l());
+}
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+function getSnapshot(): PremiumCache | null {
+  return cache;
+}
+
+function getServerSnapshot(): PremiumCache | null {
+  return null;
+}
+
+function demoFallbackPremium(): boolean {
+  return (
+    process.env.NODE_ENV === 'development' &&
+    typeof localStorage !== 'undefined' &&
+    localStorage.getItem('mw_premium') === 'true'
+  );
+}
+
+async function fetchPremiumStatus(): Promise<boolean> {
+  if (inflight) return inflight;
+  inflight = fetch('/api/premium/status', { credentials: 'include' })
+    .then((r) => r.json())
+    .then((data) => {
+      const premium = !!data.premium;
+      cache = { premium, fetchedAt: Date.now() };
+      notify();
+      return premium;
+    })
+    .catch(() => {
+      const premium = demoFallbackPremium();
+      cache = { premium, fetchedAt: Date.now() };
+      notify();
+      return premium;
+    })
+    .finally(() => {
+      inflight = null;
+    });
+  return inflight;
+}
+
+function cacheIsFresh(): boolean {
+  return !!cache && Date.now() - cache.fetchedAt < TTL_MS;
+}
 
 /**
  * Server-verified premium flag. In production, localStorage mw_premium is ignored
  * unless DEMO_PREMIUM is enabled on the server.
  */
 export function usePremium() {
-  const [premium, setPremium] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const [loading, setLoading] = useState(() => !cacheIsFresh());
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const refetch = useCallback(() => setRefreshKey((k) => k + 1), []);
+  const refetch = useCallback(() => {
+    // Expire TTL but keep last known premium to avoid unlock flicker while polling.
+    if (cache) {
+      cache = { premium: cache.premium, fetchedAt: 0 };
+    }
+    notify();
+    setRefreshKey((k) => k + 1);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
+
+    if (cacheIsFresh()) {
+      setLoading(false);
+      void fetchPremiumStatus();
+      return () => {
+        cancelled = true;
+      };
+    }
+
     setLoading(true);
-    fetch('/api/premium/status', { credentials: 'include' })
-      .then((r) => r.json())
-      .then((data) => {
-        if (!cancelled) {
-          setPremium(!!data.premium);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          // Offline fallback: never grant premium from localStorage in production builds
-          const demoOnly =
-            process.env.NODE_ENV === 'development' &&
-            localStorage.getItem('mw_premium') === 'true';
-          setPremium(demoOnly);
-          setLoading(false);
-        }
-      });
+    void fetchPremiumStatus().then(() => {
+      if (!cancelled) setLoading(false);
+    });
+
     return () => {
       cancelled = true;
     };
   }, [refreshKey]);
 
+  const premium = snapshot?.premium ?? false;
   return { premium, loading, refetch };
 }

@@ -6,7 +6,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import dynamic from 'next/dynamic';
@@ -19,6 +18,7 @@ import { StatBand } from '@/components/marketing/StatBand';
 import { BundleTeaserCard } from '@/components/marketing/BundleTeaserCard';
 import { EmailCaptureBand } from '@/components/marketing/EmailCaptureBand';
 import { Reveal } from '@/components/marketing/Reveal';
+import { ArtPicture } from '@/components/marketing/ArtPicture';
 import { ArrowRight, Check, Download, Globe2, WifiOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -195,9 +195,8 @@ export function LandingPage() {
               className="pointer-events-none absolute -inset-6 -z-0 opacity-70"
               aria-hidden
             >
-              <Image
-                src="/art/hero-field.avif"
-                alt=""
+              <ArtPicture
+                base="/art/hero-field"
                 width={640}
                 height={640}
                 priority
@@ -267,14 +266,7 @@ export function LandingPage() {
           className="pointer-events-none absolute inset-0 opacity-30"
           aria-hidden
         >
-          <Image
-            src="/art/topo-brass.avif"
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-            loading="lazy"
-          />
+          <ArtPicture base="/art/topo-brass" fill className="object-cover" />
         </div>
         <div className="relative z-[1] mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:py-20">
           <Reveal>
@@ -405,15 +397,8 @@ export function LandingPage() {
 
       {/* ── Mission ─────────────────────────────────────────────────── */}
       <section className="section-seam relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 opacity-20" aria-hidden>
-          <Image
-            src="/art/topo-brass.avif"
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-            loading="lazy"
-          />
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <ArtPicture base="/art/topo-brass" fill className="object-cover opacity-20" />
         </div>
         <div className="relative z-[1] mx-auto max-w-3xl px-5 py-16 text-center lg:py-24">
           <Reveal>
@@ -487,13 +472,11 @@ export function LandingPage() {
           className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-40"
           aria-hidden
         >
-          <Image
-            src="/art/arc-momentum.avif"
-            alt=""
+          <ArtPicture
+            base="/art/arc-momentum"
             width={480}
             height={320}
             className="object-contain"
-            loading="lazy"
           />
         </div>
         <div className="relative z-[1] mx-auto max-w-3xl px-5 py-20 text-center lg:py-28">

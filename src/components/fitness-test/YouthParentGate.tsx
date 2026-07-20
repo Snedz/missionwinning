@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { OtpInput, type OtpInputHandle, type OtpInputStatus } from '@/components/ui/OtpInput';
+import { RESEND_COOLDOWN_MS } from '@/lib/otpInput';
 import {
   hasYouthConsent,
   hasPendingYouthConsent,
@@ -32,6 +34,12 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
+  const [otpStatus, setOtpStatus] = useState<OtpInputStatus>('idle');
+  const [resendAvailableAt, setResendAvailableAt] = useState(0);
+  const [now, setNow] = useState(() => Date.now());
+  const [verifying, setVerifying] = useState(false);
+  const otpRef = useRef<OtpInputHandle>(null);
+  const verifyingRef = useRef(false);
 
   useEffect(() => {
     void mergeYouthConsentFromServer().then((ok) => {
@@ -39,9 +47,37 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
     });
   }, [onConsented]);
 
+  // Pending verify on load: lock resend so users do not hammer the notify endpoint.
+  useEffect(() => {
+    if (hasPendingYouthConsent()) {
+      setResendAvailableAt(Date.now() + RESEND_COOLDOWN_MS);
+      setNow(Date.now());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (step !== 'verify' || resendAvailableAt <= Date.now()) return;
+    const id = window.setInterval(() => setNow(Date.now()), 250);
+    return () => window.clearInterval(id);
+  }, [step, resendAvailableAt]);
+
+  const startResendCooldown = useCallback(() => {
+    setResendAvailableAt(Date.now() + RESEND_COOLDOWN_MS);
+    setNow(Date.now());
+  }, []);
+
   if (!requiresYouthConsent(childAge) || hasYouthConsent()) {
     return null;
   }
+
+  const sendNotify = async (parentEmail: string) => {
+    const res = await fetch('/api/youth/consent-notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ parentEmail, childAge }),
+    });
+    return res.ok;
+  };
 
   const requestConsent = async () => {
     if (!isValidParentEmail(email)) {
@@ -58,20 +94,52 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
     }
     saveYouthConsent({ parentEmail: email.trim(), childAge, verified: false });
     try {
-      const res = await fetch('/api/youth/consent-notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ parentEmail: email.trim(), childAge }),
-      });
-      if (res.ok) setSent(true);
+      const ok = await sendNotify(email.trim());
+      if (ok) setSent(true);
     } catch {
       /* local consent still saved */
     }
+    startResendCooldown();
     setStep('verify');
+    setCode('');
+    setOtpStatus('idle');
     setError('');
   };
 
-  const verifyCode = async () => {
+  const resendCode = async () => {
+    if (Date.now() < resendAvailableAt) return;
+    const consentEmail = email.trim() || getYouthConsent()?.parentEmail || '';
+    if (!consentEmail) {
+      setError(t('youthEmailInvalid', { defaultValue: 'Enter a valid parent or guardian email.' }));
+      return;
+    }
+    try {
+      const ok = await sendNotify(consentEmail);
+      if (ok) {
+        setSent(true);
+        startResendCooldown();
+        setError('');
+      } else {
+        setError(
+          t('youthResendFailed', {
+            defaultValue: 'Could not resend the code. Try again shortly.',
+          })
+        );
+      }
+    } catch {
+      setError(
+        t('youthResendFailed', {
+          defaultValue: 'Could not resend the code. Try again shortly.',
+        })
+      );
+    }
+  };
+
+  const verifyCode = async (rawCode?: string) => {
+    const trimmed = (rawCode ?? code).trim();
+    if (trimmed.length !== 6 || verifyingRef.current || otpStatus === 'success') return;
+    verifyingRef.current = true;
+    setVerifying(true);
     const consentEmail = email.trim() || getYouthConsent()?.parentEmail || '';
     try {
       const res = await fetch('/api/youth/consent-verify', {
@@ -80,20 +148,40 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
         body: JSON.stringify({
           parentEmail: consentEmail,
           childAge,
-          code: code.trim(),
+          code: trimmed,
         }),
       });
       const data = (await res.json()) as { ok?: boolean };
       if (!res.ok || !data.ok) {
         setError(t('youthCodeInvalid', { defaultValue: 'Incorrect verification code.' }));
+        setOtpStatus('error');
+        setCode('');
+        window.setTimeout(() => {
+          setOtpStatus('idle');
+          otpRef.current?.focusFirst();
+        }, 400);
         return;
       }
+      setOtpStatus('success');
+      setError('');
       markYouthConsentVerified();
-      onConsented();
+      window.setTimeout(() => onConsented(), 450);
     } catch {
       setError(t('youthCodeInvalid', { defaultValue: 'Incorrect verification code.' }));
+      setOtpStatus('error');
+      setCode('');
+      window.setTimeout(() => {
+        setOtpStatus('idle');
+        otpRef.current?.focusFirst();
+      }, 400);
+    } finally {
+      verifyingRef.current = false;
+      setVerifying(false);
     }
   };
+
+  const resendSecondsLeft = Math.max(0, Math.ceil((resendAvailableAt - now) / 1000));
+  const resendLocked = resendSecondsLeft > 0;
 
   if (step === 'verify') {
     return (
@@ -114,27 +202,50 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
                   defaultValue: 'Enter the 6-digit code from the parent consent email.',
                 })}
           </p>
-          <input
-            type="text"
-            inputMode="numeric"
-            maxLength={6}
+          <OtpInput
+            ref={otpRef}
             value={code}
-            onChange={(e) => {
-              setCode(e.target.value);
+            status={otpStatus}
+            autoFocus
+            disabled={verifying}
+            aria-label={t('youthVerifyTitle', { defaultValue: 'Enter verification code' })}
+            onChange={(next) => {
+              setCode(next);
+              if (otpStatus === 'error') setOtpStatus('idle');
               setError('');
             }}
-            className="w-full rounded-md bg-background border border-border px-3 py-2 font-mono text-lg tracking-widest"
-            placeholder="123456"
+            onComplete={(full) => {
+              void verifyCode(full);
+            }}
           />
-          {error && <p className="text-xs text-red-400">{error}</p>}
+          {error && <p className="text-xs text-red-400 text-center">{error}</p>}
           <div className="flex gap-2">
-            <Button className="flex-1" onClick={() => void verifyCode()}>
+            <Button
+              className="flex-1"
+              disabled={code.length !== 6 || verifying || otpStatus === 'success'}
+              onClick={() => void verifyCode()}
+            >
               {t('youthVerifyCta', { defaultValue: 'Verify & continue' })}
             </Button>
             <Button variant="ghost" onClick={() => setStep('request')}>
               {t('pftBack', { defaultValue: 'Back' })}
             </Button>
           </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="w-full text-xs text-muted-foreground"
+            disabled={resendLocked || otpStatus === 'success'}
+            onClick={() => void resendCode()}
+          >
+            {resendLocked
+              ? t('youthResendIn', {
+                  defaultValue: 'Resend code in {{seconds}}s',
+                  seconds: resendSecondsLeft,
+                })
+              : t('youthResendCode', { defaultValue: 'Resend code' })}
+          </Button>
         </CardContent>
       </Card>
     );

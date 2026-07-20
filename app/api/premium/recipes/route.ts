@@ -8,12 +8,14 @@ import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
+const CATALOG_CACHE = { 'Cache-Control': 'private, max-age=60, stale-while-revalidate=300' };
+
 /** Premium recipe library — server-only data, never bundled for free users. */
 export const GET = withApiLogging('premium/recipes', async(request: NextRequest) => {
   const { PREMIUM_RECIPES } = await import('@/data/recipes/premiumRecipes');
 
   if (isDemoPremiumEnabled()) {
-    return NextResponse.json({ recipes: PREMIUM_RECIPES });
+    return NextResponse.json({ recipes: PREMIUM_RECIPES }, { headers: CATALOG_CACHE });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -41,5 +43,5 @@ export const GET = withApiLogging('premium/recipes', async(request: NextRequest)
     return NextResponse.json({ error: 'Premium enrollment required' }, { status: 403 });
   }
 
-  return NextResponse.json({ recipes: PREMIUM_RECIPES });
+  return NextResponse.json({ recipes: PREMIUM_RECIPES }, { headers: CATALOG_CACHE });
 });

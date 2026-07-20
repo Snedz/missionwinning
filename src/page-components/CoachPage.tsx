@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
@@ -13,12 +14,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { WeekStrip } from '@/components/coach/WeekStrip';
 import { PlanSessionCard } from '@/components/coach/PlanSessionCard';
-import { CoachVoiceCard } from '@/components/coach/CoachVoiceCard';
 import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
-import { CoachChatPanel } from '@/components/coach/CoachChatPanel';
 import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { CoachPlanSkeleton, SkeletonCard } from '@/components/ui/Skeleton';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
+
+const CoachVoiceCard = dynamic(
+  () => import('@/components/coach/CoachVoiceCard').then((m) => m.CoachVoiceCard),
+  { ssr: false, loading: () => <SkeletonCard className="min-h-[6rem]" /> }
+);
+
+const CoachChatPanel = dynamic(
+  () => import('@/components/coach/CoachChatPanel').then((m) => m.CoachChatPanel),
+  { ssr: false, loading: () => <SkeletonCard className="min-h-[5rem]" /> }
+);
 
 type CoachPageProps = {
   /** From /coach?ask=<exerciseId> — form Q&A entry (Wave 9). */
@@ -61,11 +71,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
         defaultValue: 'Fatigue-aware weekly plan — one next session, adapted when life happens.',
       })}
     >
-      {loading && (
-        <p className="text-sm text-muted-foreground text-center py-8">
-          {t('coachVoiceLoading', { defaultValue: 'Briefing your week…' })}
-        </p>
-      )}
+      {loading && <CoachPlanSkeleton className="py-2" />}
 
       {!loading && locked && plan && (
         <div className="space-y-4">

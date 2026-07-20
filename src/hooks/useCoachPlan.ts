@@ -27,8 +27,12 @@ import { scheduleCoachPush } from '@/lib/coachSync';
 export function useCoachPlan() {
   const history = useWorkoutStore((s) => s.workoutHistory);
   const { premium, loading: premiumLoading } = usePremium();
-  const [plan, setPlan] = useState<CoachPlan | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [plan, setPlan] = useState<CoachPlan | null>(() =>
+    typeof window !== 'undefined' ? loadPlan() : null
+  );
+  const [loading, setLoading] = useState(() =>
+    typeof window !== 'undefined' ? !loadPlan() : true
+  );
   const [userId, setUserId] = useState<string | null>(null);
 
   const weekStart = currentWeekStart();
@@ -155,7 +159,7 @@ export function useCoachPlan() {
 
   return {
     plan: plan?.weekStart === weekStart ? plan : locked ? plan : null,
-    loading: loading || premiumLoading,
+    loading: plan ? false : loading || premiumLoading,
     premium,
     tasterUsed,
     locked,

@@ -197,3 +197,154 @@ function logCoachLlmMeta(meta: {
     })
   );
 }
+
+export type CoachLlmStreamFail = {
+  ok: false;
+  reason: CoachLlmFail['reason'];
+  status?: number;
+  zeroDataRetention?: boolean | null;
+};
+
+/**
+ * Streaming chat completion (OpenAI-compatible SSE). Yields text deltas.
+ * ZDR-safe one-shot only — no Files/Batch/stateful Responses.
+ */
+export async function* streamCoachLlmCompletion(
+  req: CoachLlmRequest,
+  options?: {
+    env?: CoachLlmEnv;
+    fetchImpl?: FetchLike;
+    timeoutMs?: number;
+    signal?: AbortSignal;
+  }
+): AsyncGenerator<string, CoachLlmStreamFail | { ok: true; zeroDataRetention: boolean | null }, void> {
+  const cfg = options?.env ?? readCoachLlmEnv();
+  if (!cfg.apiUrl || !cfg.apiKey) {
+    return { ok: false, reason: 'unconfigured' };
+  }
+
+  const model = cfg.model || 'grok-4.5';
+  const fetchImpl = options?.fetchImpl ?? fetch;
+  const timeoutMs = options?.timeoutMs ?? 30_000;
+  const t0 = Date.now();
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  if (options?.signal) {
+    if (options.signal.aborted) controller.abort();
+    else {
+      options.signal.addEventListener('abort', () => controller.abort(), { once: true });
+    }
+  }
+  const signal = controller.signal;
+
+  try {
+    const res = await fetchImpl(cfg.apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${cfg.apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: req.system },
+          { role: 'user', content: req.user },
+        ],
+        max_tokens: req.maxTokens ?? 200,
+        temperature: req.temperature ?? 0.6,
+        stream: true,
+      }),
+      signal,
+    });
+    clearTimeout(timeoutId);
+
+    const zdr = parseZeroDataRetentionHeader(
+      res.headers.get('x-zero-data-retention') ??
+        res.headers.get('X-Zero-Data-Retention')
+    );
+
+    if (cfg.requireZdr && zdr !== true) {
+      logCoachLlmMeta({
+        ok: false,
+        reason: 'zdr_inactive',
+        status: res.status,
+        zdr,
+        ms: Date.now() - t0,
+      });
+      return { ok: false, reason: 'zdr_inactive', zeroDataRetention: zdr, status: res.status };
+    }
+
+    if (!res.ok || !res.body) {
+      logCoachLlmMeta({
+        ok: false,
+        reason: 'http_error',
+        status: res.status,
+        zdr,
+        ms: Date.now() - t0,
+      });
+      return {
+        ok: false,
+        reason: 'http_error',
+        zeroDataRetention: zdr,
+        status: res.status,
+      };
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let yielded = false;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() ?? '';
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith('data:')) continue;
+        const payload = trimmed.slice(5).trim();
+        if (payload === '[DONE]') continue;
+        try {
+          const parsed = JSON.parse(payload) as {
+            choices?: { delta?: { content?: string } }[];
+          };
+          const delta = parsed.choices?.[0]?.delta?.content;
+          if (delta) {
+            yielded = true;
+            yield delta;
+          }
+        } catch {
+          /* ignore partial JSON lines */
+        }
+      }
+    }
+
+    if (!yielded) {
+      logCoachLlmMeta({
+        ok: false,
+        reason: 'empty',
+        status: res.status,
+        zdr,
+        ms: Date.now() - t0,
+      });
+      return { ok: false, reason: 'empty', zeroDataRetention: zdr, status: res.status };
+    }
+
+    logCoachLlmMeta({
+      ok: true,
+      reason: 'ok',
+      status: res.status,
+      zdr,
+      ms: Date.now() - t0,
+    });
+    return { ok: true, zeroDataRetention: zdr };
+  } catch (err) {
+    clearTimeout(timeoutId);
+    const name = err instanceof Error ? err.name : '';
+    const reason = name === 'TimeoutError' || name === 'AbortError' ? 'timeout' : 'network';
+    logCoachLlmMeta({ ok: false, reason, ms: Date.now() - t0 });
+    return { ok: false, reason };
+  }
+}

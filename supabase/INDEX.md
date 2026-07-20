@@ -24,6 +24,8 @@
 | `20260703_reminders_optin.sql` | `reminders_opt_in`, `last_nudge_at` |
 | `20260716_crypto_payment_intents.sql` | Phantom USDC lifetime payment intents |
 | `20260719_wearable_connections.sql` | Wearable OAuth connections + samples |
+| `20260720_referrals.sql` | Referrals |
+| `20260720_perf_indexes.sql` | `workout_logs(user_id, completed_at)` + leaderboard board indexes + leads filters |
 
 ## Key tables
 

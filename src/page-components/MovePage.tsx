@@ -17,7 +17,9 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { getPillarWins } from '@/lib/pillarLog';
 import { Clock, Wind, ChevronDown } from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { ErrorState } from '@/components/ui/ErrorState';
 import { useToast } from '@/hooks/use-toast';
+import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
 
 export function MovePage() {
   const { t } = useTranslation();
@@ -36,11 +38,7 @@ export function MovePage() {
       return;
     }
     setPremiumFetchError(false);
-    fetch('/api/premium/mobility')
-      .then((r) => {
-        if (!r.ok) throw new Error('premium mobility unavailable');
-        return r.json();
-      })
+    fetchPremiumCatalogJson<{ flows?: MobilityFlow[] }>('/api/premium/mobility')
       .then((d) => setPremiumFlows(d.flows ?? []))
       .catch(() => {
         setPremiumFlows([]);
@@ -139,11 +137,13 @@ export function MovePage() {
       )}
 
       {premiumFetchError && premium && (
-        <p className="text-xs text-muted-foreground rounded-lg border border-dashed border-border/50 px-3 py-2">
-          {t('movePremiumOffline', {
+        <ErrorState
+          className="py-6"
+          title={t('movePremiumFetchFailed', { defaultValue: 'Could not load premium flows' })}
+          description={t('movePremiumOffline', {
             defaultValue: 'Premium recovery flows unavailable offline — free flows below still work.',
           })}
-        </p>
+        />
       )}
 
       {!premium && (

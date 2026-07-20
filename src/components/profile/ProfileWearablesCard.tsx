@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Watch } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { isWearablesPubliclyEnabled } from '@/lib/wearables/flags';
 import type { WearableConnectionStatus } from '@/lib/wearables/types';
 import { importActivitiesFromJson } from '@/lib/healthImport';
@@ -167,7 +168,11 @@ export function ProfileWearablesCard({ signedIn }: Props) {
             })}
           </p>
         ) : loading && !providers.length ? (
-          <p className="text-muted-foreground">{t('loading', { defaultValue: 'Loading…' })}</p>
+          <div className="space-y-3" role="status" aria-busy="true" aria-label="Loading">
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
         ) : (
           <ul className="space-y-3">
             {providers.map((p) => (

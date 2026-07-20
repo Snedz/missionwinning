@@ -1,5 +1,5 @@
 /**
- * Premium coach chat — ZDR LLM one-shot.
+ * Premium coach chat — ZDR LLM one-shot or token stream.
  * Auth: app access + premium | Rate: 10/min/IP | Body: 32KB
  */
 import { NextRequest, NextResponse } from 'next/server';
@@ -10,7 +10,7 @@ import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { hasAppAccess } from '@/lib/requestAccess';
-import { fetchCoachChat } from '@/lib/coachChatServer';
+import { fetchCoachChat, streamCoachChat } from '@/lib/coachChatServer';
 import { coachChatSchema, parseJsonBody } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 
@@ -55,6 +55,48 @@ export const POST = withApiLogging('coach/chat', async (request: NextRequest) =>
 
   if (!premium) {
     return NextResponse.json({ error: 'premium_required' }, { status: 402 });
+  }
+
+  const wantStream =
+    body.stream === true ||
+    request.headers.get('accept')?.includes('text/event-stream') === true;
+
+  if (wantStream) {
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream<Uint8Array>({
+      async start(controller) {
+        try {
+          const gen = streamCoachChat(
+            body.context,
+            body.turns,
+            body.message,
+            request.signal
+          );
+          let result = await gen.next();
+          while (!result.done) {
+            controller.enqueue(encoder.encode(result.value));
+            result = await gen.next();
+          }
+          const final = result.value;
+          if (!final.ok) {
+            const code = final.reason === 'unconfigured' ? 'coach_offline' : 'coach_unavailable';
+            controller.enqueue(encoder.encode(`\n\n[[error:${code}]]`));
+          }
+        } catch {
+          controller.enqueue(encoder.encode('\n\n[[error:coach_unavailable]]'));
+        } finally {
+          controller.close();
+        }
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-store',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
   }
 
   const result = await fetchCoachChat(body.context, body.turns, body.message);
