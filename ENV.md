@@ -105,11 +105,11 @@ npm run sync-vercel-env
 
 1. **Password:** Go to https://www.missionwinning.com/private and enter `PRIVATE_ACCESS_SECRET`.
 2. **URL shortcut (deprecated):** `/?access=SECRET` is disabled in production unless `PRIVATE_ALLOW_QUERY_ACCESS=true`. Prefer the password form — query strings leak via logs and referrer headers.
-3. **Sign in:** After unlocking, sign in with Apple, Google, or email magic link (Profile or Welcome onboarding).
+3. **Sign in:** After unlocking, sign in with Google, Apple, Microsoft, Facebook, or email magic link (Profile or Welcome onboarding).
 
 ---
 
-## OAuth sign-in (Google + Apple)
+## OAuth sign-in (Google, Apple, Microsoft, Facebook)
 
 In **Supabase → Authentication → URL Configuration**:
 
@@ -119,13 +119,38 @@ In **Supabase → Authentication → URL Configuration**:
 | Redirect URLs | `https://www.missionwinning.com/auth/callback` |
 | Redirect URLs (dev) | `http://localhost:3000/auth/callback` |
 
-### Google (recommended first)
+**Provider callback (all IdPs):** `https://YOUR-PROJECT.supabase.co/auth/v1/callback`  
+(Use this in Google / Apple / Microsoft / Facebook consoles — **not** the app `/auth/callback` URL alone.)
 
-1. [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials → OAuth client (Web).
-2. Authorized redirect URI: `https://YOUR-PROJECT.supabase.co/auth/v1/callback`
-3. Copy **Client ID** + **Client Secret** into Supabase → Authentication → **Google** → Save.
+| App button | Supabase provider | Env flag | Default |
+|------------|-------------------|----------|---------|
+| Google | Google | `NEXT_PUBLIC_OAUTH_GOOGLE` | Shown unless `false` |
+| Apple | Apple | `NEXT_PUBLIC_OAUTH_APPLE` | Hidden until `true` |
+| Microsoft | Azure | `NEXT_PUBLIC_OAUTH_AZURE` | Hidden until `true` |
+| Facebook | Facebook | `NEXT_PUBLIC_OAUTH_FACEBOOK` | Hidden until `true` |
 
-Google sign-in button shows automatically when Supabase keys are set. Hide with `NEXT_PUBLIC_OAUTH_GOOGLE=false` in `.env.local`.
+**Never** set an app flag to `true` before the matching Supabase provider is enabled with valid credentials. Doing so recreates `Unsupported provider: provider is not enabled`.
+
+### Google (recommended first — fixes “provider is not enabled”)
+
+If Profile shows **`Unsupported provider: provider is not enabled`** / `validation_failed`, Google is **off** in Supabase while the app still shows the button.
+
+1. [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials → **OAuth 2.0 Client IDs** → create (or open) a **Web application** client.
+2. Authorized redirect URI: `https://YOUR-PROJECT.supabase.co/auth/v1/callback`  
+   (for this project: `https://tnzauplicgfrozvnowqp.supabase.co/auth/v1/callback`)
+3. In Supabase → Authentication → Providers → **Google**:
+   - **Client IDs** — paste only the Client ID. It must look like a domain:
+     ```
+     123456789012-xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
+     ```
+     Multiple clients (Web + Android + One Tap, etc.) go in the same field as a **comma-separated** list — no spaces, quotes, or newlines.
+   - **Client Secret** — paste the secret in the **Secret** field only (often starts with `GOCSPX-`). Never put the secret in Client IDs.
+4. Enable the provider → Save.
+5. Smoke-test from Profile → Continue with Google → should land on `/auth/callback` then Profile/Today.
+
+**If Supabase says “Invalid characters / domain-like strings”:** you put the wrong value in **Client IDs**. Clear the field and paste only `….apps.googleusercontent.com` (no Client Secret, no JSON download, no URL, no spaces).
+
+Hide the Google button with `NEXT_PUBLIC_OAUTH_GOOGLE=false` only if you intentionally disable it.
 
 ### Apple (optional — requires Apple Developer account)
 
@@ -139,13 +164,40 @@ Supabase error **“At least one Client ID is required when Apple sign-in is ena
    - **Services ID (Client ID)** — from step 1
    - **Secret Key** — contents of the .p8 file
    - **Key ID** and **Team ID**
-4. Save in Supabase, then in `.env.local` set:
+4. Save in Supabase, then set:
    ```bash
    NEXT_PUBLIC_OAUTH_APPLE=true
    ```
-5. Redeploy / restart dev server.
+5. Sync to Vercel (`scripts/sync-vercel-env.mjs` or dashboard) and redeploy / restart dev.
 
-Until step 4, the app **does not show** the Apple button (email + Google only). Do not enable Apple in Supabase until all Client ID fields are filled.
+Until step 4, the app **does not show** the Apple button. Do not enable Apple in Supabase until all Client ID fields are filled.
+
+### Microsoft (Azure / Entra — optional)
+
+Supabase provider id is **`azure`** (UI label: Microsoft).
+
+1. [Microsoft Entra admin center](https://entra.microsoft.com/) → App registrations → New registration.
+2. Add a **Web** redirect URI: `https://YOUR-PROJECT.supabase.co/auth/v1/callback`
+3. Certificates & secrets → create a client secret.
+4. Copy **Application (client) ID** + secret into Supabase → Authentication → **Azure** → enable → Save.
+5. Set `NEXT_PUBLIC_OAUTH_AZURE=true`, sync env, redeploy.
+
+The app requests `email profile openid` scopes so Supabase receives an email for account linking.
+
+### Facebook (Meta — optional)
+
+1. [Meta for Developers](https://developers.facebook.com/) → create an app → add **Facebook Login**.
+2. Valid OAuth Redirect URI: `https://YOUR-PROJECT.supabase.co/auth/v1/callback`
+3. Request **email** permission. For public users, switch the app to **Live** mode (Development mode only allows test users).
+4. Copy **App ID** + **App Secret** into Supabase → Authentication → **Facebook** → enable → Save.
+5. Set `NEXT_PUBLIC_OAUTH_FACEBOOK=true`, sync env, redeploy.
+
+### Enable order (founder checklist)
+
+1. Google in Supabase (unblocks the default button).
+2. Microsoft → then `NEXT_PUBLIC_OAUTH_AZURE=true`.
+3. Facebook → then `NEXT_PUBLIC_OAUTH_FACEBOOK=true`.
+4. Apple (full Services ID + key) → then `NEXT_PUBLIC_OAUTH_APPLE=true`.
 
 Magic link and OAuth both land on `/auth/callback`, then redirect to Today (`/log`) or Profile. Users must accept Terms + Privacy in-app before sign-in.
 
@@ -183,7 +235,7 @@ Your project ref from the saved config: `tnzauplicgfrozvnowqp`
 - URL: `https://tnzauplicgfrozvnowqp.supabase.co`
 - **SQL:** Run `supabase/migrations/20250629_complete_base_schema.sql` in SQL Editor (fresh project). If you already have tables, individual migrations in `supabase/migrations/` are safe to re-run.
 - Enable Email auth → Magic Link
-- Enable **Google** OAuth (see above). Leave **Apple disabled** until Services ID + key are ready.
+- Enable **Google** OAuth (see above). Leave **Apple / Azure / Facebook disabled** in Supabase (and app flags off) until each IdP’s credentials are ready.
 - Add redirect URL `https://YOUR-DOMAIN/auth/callback` (+ localhost for dev)
 - Add the same URL + anon key to Vercel env vars
 

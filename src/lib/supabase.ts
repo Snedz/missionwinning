@@ -37,7 +37,7 @@ export const supabase = createClient(
   }
 )
 
-export type OAuthProvider = 'google' | 'apple'
+export type OAuthProvider = 'google' | 'apple' | 'azure' | 'facebook'
 
 // Types for our tables (match your Supabase schema)
 export type Profile = {
@@ -116,9 +116,16 @@ export async function grantDemoPremium(email: string) {
 
 // Auth helpers — OAuth + magic link (privacy-by-design: no passwords stored)
 export async function signInWithOAuth(provider: OAuthProvider, nextPath = '/log') {
+  const options: { redirectTo: string; scopes?: string } = {
+    redirectTo: getAuthRedirectUrl(nextPath),
+  }
+  // Microsoft/Azure must return email for Supabase Auth account linking
+  if (provider === 'azure') {
+    options.scopes = 'email profile openid'
+  }
   const { error } = await supabase.auth.signInWithOAuth({
     provider,
-    options: { redirectTo: getAuthRedirectUrl(nextPath) },
+    options,
   })
   if (error) throw error
   return true

@@ -174,7 +174,7 @@ const en: InfoStrings = {
   infoPrivacyOverviewBody:
     'Mission Winning ("we", "us") operates the Mission Winning app at missionwinning.com. Privacy is the default: workouts and logs stay on your device until you sign in to sync. Optional product analytics are off until you allow them. This policy explains what we collect, why, and your choices.',
   infoPrivacyCollectLi1:
-    'Account: email address when you sign in (Apple, Google, or magic link).',
+    'Account: email address when you sign in (Apple, Google, Microsoft, Facebook, or magic link).',
   infoPrivacyCollectLi2:
     'Health & fitness data you enter: workouts, nutrition logs, assessments, journey progress, preferences (units, language, goals).',
   infoPrivacyCollectLi3:

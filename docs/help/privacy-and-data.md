@@ -32,7 +32,7 @@ Profile → **Export backup** downloads a JSON file. Restore on a new device by 
 
 ## Sign-in providers
 
-Google, Apple, and magic-link email use standard OAuth — we receive your email and profile name for account linking, not your password.
+Google, Apple, Microsoft, Facebook, and magic-link email use standard OAuth — we receive your email and profile name for account linking, not your password.
 
 ## Youth consent (COPPA)
 
