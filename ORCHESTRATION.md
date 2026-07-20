@@ -16,7 +16,7 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 **Ops unblocked (same day):** Wave 7–8 migrations on prod; weekly-digest gate allowlist; Production redeploys; `STRIPE_WEBHOOK_SECRET` + signed enrollment ping → `enrollments`; Resend digest live send; `LAUNCH_STRICT` launch-verify green against www.
 
-**Still founder-owned:** ≥10 beta users + phone hero QA ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §3); connect Stripe Dashboard webhook endpoint to the same `whsec` (or rotate via `scripts/setup-stripe-webhook.mjs` with `sk_test`/`sk_live`); set GitHub Actions `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID` so [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) auto-deploys `master` → Production (Git previews alone stay Preview-only). PWA offline waits for public flip. **#1 gap = beta distribution** — not more features.
+**Still founder-owned:** ≥10 beta users + phone hero QA ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §3); connect Stripe Dashboard webhook endpoint to the same `whsec` (or rotate via `scripts/setup-stripe-webhook.mjs` with `sk_test`/`sk_live`); **Phantom Lifetime:** fund treasury USDC ATA + one signed-in pay → `enrollments.provider=phantom` ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §4); set GitHub Actions `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID` so [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) auto-deploys `master` → Production (Git previews alone stay Preview-only). PWA offline waits for public flip. **#1 gap = beta distribution** — not more features.
 
 ---
 

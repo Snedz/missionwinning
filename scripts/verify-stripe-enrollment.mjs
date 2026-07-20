@@ -154,9 +154,11 @@ async function checkCryptoCheckout() {
   if (!confirmOk) process.exit(1);
 
   if (process.env.NEXT_PUBLIC_CRYPTO_CHECKOUT === 'true') {
-    console.log('✓ NEXT_PUBLIC_CRYPTO_CHECKOUT=true');
+    console.log('✓ local NEXT_PUBLIC_CRYPTO_CHECKOUT=true');
   } else {
-    console.log('· NEXT_PUBLIC_CRYPTO_CHECKOUT unset — Phantom CTA hidden');
+    console.log(
+      '· local NEXT_PUBLIC_CRYPTO_CHECKOUT unset (UI bake-in is Vercel Production env — not this shell)'
+    );
   }
 
   console.log('\nCrypto checkout routes respond as expected without a session.\n');

@@ -90,7 +90,9 @@ Analytics: `coach_taster_locked`, `coach_week_generated` with `premium` property
 - Subscription cancel / `invoice.payment_failed` do not yet revoke `enrollments` — manage via Customer Portal + support
 - Crypto on **subscriptions** depends on Stripe account eligibility; lifetime (`mode: payment`) is the reliable USDC path
 
-**Optional wallet path:** [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md) — lifetime $149 USDC via Phantom (no Stripe). Production can enable with `NEXT_PUBLIC_CRYPTO_CHECKOUT=true` + treasury; Stripe **Stablecoins and Crypto** in Dashboard requires live KYB approval (not available on sandbox alone).
+**Optional wallet path:** [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md) — lifetime $149 USDC via Phantom (no Stripe). Production is enabled (`NEXT_PUBLIC_CRYPTO_CHECKOUT=true` + treasury).
+
+**Stripe Stablecoins / Crypto (parallel):** Dashboard-only — [Payment methods](https://dashboard.stripe.com/settings/payment_methods) → request **Stablecoins and Crypto**, complete KYB, then enable for Lifetime Checkout Sessions (`mode: payment`). No app code change. **Deferred while the linked Stripe account is sandbox** (`Mission Winning sandbox`); do this on the live account after KYB approval. Do not block Phantom on Stripe crypto eligibility.
 
 ---
 

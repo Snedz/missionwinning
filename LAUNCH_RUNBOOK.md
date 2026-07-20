@@ -103,6 +103,16 @@
 - [x] Env vars set + redeployed
 - [ ] Still open: Stripe Dashboard endpoint pointing at `/api/stripe-webhook` with matching `whsec` (or `node scripts/setup-stripe-webhook.mjs` with full `sk_`) so live Payment Link checkouts deliver events
 
+### Phantom Lifetime USDC (code + Production env on; founder verify)
+
+See [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md). Do **not** market crypto until one end-to-end Lifetime payment is verified.
+
+- [x] `crypto_payment_intents` on prod · Production `NEXT_PUBLIC_CRYPTO_CHECKOUT=true` + treasury + RPC · API smoke 401 without session
+- [ ] Save treasury secret offline (`/tmp/mw_solana_treasury_secret.b58`) and delete the temp file; fund USDC ATA for `57CEga7okiNCVAomW254KUCtj5GquRu8Z2Huj27bdPjM`
+- [ ] Signed-in `/bundle` Lifetime → **Pay with Phantom** → confirm `enrollments.provider = phantom`
+- [ ] Optional: dedicated RPC (Helius/QuickNode); Phantom Portal App ID for social/deeplink
+- [ ] Parallel (when live KYB ready): Dashboard → Payment methods → **Stablecoins and Crypto** for Lifetime Sessions only — [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)
+
 ## §5 — Go public (only after §2 security boxes + §3 gates)
 
 **Automated verify** (after env is set on Vercel):
