@@ -17,7 +17,6 @@ export const CRYPTO_PROVIDER = 'phantom';
 export function isCryptoCheckoutEnabled(): boolean {
   return (
     process.env.NEXT_PUBLIC_CRYPTO_CHECKOUT === 'true' &&
-    Boolean(process.env.NEXT_PUBLIC_PHANTOM_APP_ID?.trim()) &&
     Boolean(process.env.SOLANA_TREASURY_ADDRESS?.trim())
   );
 }
@@ -33,10 +32,11 @@ export function getSolanaRpcUrl(): string {
   );
 }
 
-/** Client-safe flag (NEXT_PUBLIC only). */
+/**
+ * Client-safe flag (NEXT_PUBLIC only).
+ * App ID is optional — injected Phantom extension works without Portal;
+ * google/apple/deeplink need NEXT_PUBLIC_PHANTOM_APP_ID.
+ */
 export function isCryptoCheckoutPubliclyEnabled(): boolean {
-  return (
-    process.env.NEXT_PUBLIC_CRYPTO_CHECKOUT === 'true' &&
-    Boolean(process.env.NEXT_PUBLIC_PHANTOM_APP_ID?.trim())
-  );
+  return process.env.NEXT_PUBLIC_CRYPTO_CHECKOUT === 'true';
 }

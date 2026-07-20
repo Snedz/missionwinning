@@ -340,8 +340,8 @@ Wallet pay for **lifetime only** ($149 USDC on Solana) — see [docs/PHANTOM_USD
 | Variable | Purpose |
 |----------|---------|
 | `NEXT_PUBLIC_CRYPTO_CHECKOUT` | `true` to show Pay with Phantom on `/bundle` lifetime |
-| `NEXT_PUBLIC_PHANTOM_APP_ID` | Phantom Portal app ID |
-| `SOLANA_TREASURY_ADDRESS` | Base58 treasury pubkey (receives USDC) |
+| `NEXT_PUBLIC_PHANTOM_APP_ID` | Optional — Portal App ID for Google/Apple/deeplink (injected works without) |
+| `SOLANA_TREASURY_ADDRESS` | Base58 treasury pubkey (receives USDC) — required when crypto checkout on |
 | `SOLANA_RPC_URL` | Helius/QuickNode (preferred over public RPC) |
 
 ---
