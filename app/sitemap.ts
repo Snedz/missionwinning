@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/vision',
     '/bundle',
     '/compare',
+    '/press',
     '/experience',
     '/terms',
     '/privacy',

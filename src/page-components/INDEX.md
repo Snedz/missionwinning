@@ -63,6 +63,7 @@
 | `ExerciseEquipmentHubPage.tsx` | `/exercises/equipment/[slug]` |
 | `ProgramsPage.tsx` | `/programs` |
 | `AboutPage.tsx` | `/about` |
+| `PressPage.tsx` | `/press` — brand & media kit |
 | `VisionPage.tsx` | `/vision` |
 
 ### School / PFT / America

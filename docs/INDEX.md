@@ -44,6 +44,7 @@
 | [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) | Flip-day checklist (after gates) |
 | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Beta + public social copy kit |
+| [brand-guidelines.md](brand-guidelines.md) | Brand voice, colors, logo rules · public `/press` |
 | [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → PayPal later |
 | [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) | Deferred Android TWA / thin iOS |
 | [WEARABLES.md](WEARABLES.md) | Apple / Google / Whoop / Strava wearables strategy + unlock |
