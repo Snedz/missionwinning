@@ -29,7 +29,9 @@ Build `2026.07-unified.91`.
 - Scopes `activity:read`; `mapStravaActivity` unit-tested; Track + Profile wearables card
 - Env: `STRAVA_*` + `NEXT_PUBLIC_WEARABLES` in ENV.md / check-env optional
 
-**Founder:** apply migration `20260721_beta_invites.sql`; issue invites in panel; uptime → `/api/health`.
+**Founder:** migration **applied on prod** (`beta_invites` + `checkout_recovery` + `profiles.invited_via` verified 2026-07-20). Issue invites in panel; uptime → `/api/health`.
+
+**Note:** GitHub Actions `VERCEL_TOKEN` secret is invalid (deploy-production / apply-migration fail in CI). Local `vercel deploy --prod` works. Rotate the GH secret from https://vercel.com/account/tokens.
 
 ---
 
