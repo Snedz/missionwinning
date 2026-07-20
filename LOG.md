@@ -5,6 +5,7 @@ Chronological record of shipped work. Newest first.
 ---
 
 ## 2026-07-19 — Crypto: Phantom Lifetime enabled on Production
+- Private gate: allowlist `/api/crypto-checkout/*` so intent/confirm return session 401 (not gate 403)
 
 - Applied `crypto_payment_intents` on prod Supabase (`tnzauplicgfrozvnowqp`)
 - Vercel Production: `NEXT_PUBLIC_CRYPTO_CHECKOUT=true`, `SOLANA_TREASURY_ADDRESS`, `SOLANA_RPC_URL` (public mainnet for smoke; swap to Helius when ready)
