@@ -4,7 +4,7 @@
 
 **Live pages:** [`/privacy`](https://missionwinning.com/privacy) · [`/terms`](https://missionwinning.com/terms) · [`/dmca`](https://missionwinning.com/dmca)
 
-**Related:** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) · [help/privacy-and-data.md](help/privacy-and-data.md)
+**Related:** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) · [help/privacy-and-data.md](help/privacy-and-data.md) · [COMPLIANCE.md](COMPLIANCE.md) (control monitor — not a certification)
 
 ---
 

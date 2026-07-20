@@ -1,0 +1,478 @@
+# Mission Winning — compliance control catalog (Vanta-lite)
+#
+# NOT A CERTIFICATION. Operational hygiene + evidence pointers only.
+# Do not claim SOC 2, ISO 27001, or HIPAA compliance in product/marketing.
+# HIPAA rows are technical-safeguard mapping only — we are not a covered entity
+# and do not claim to process PHI under HIPAA.
+#
+# Frameworks: soc2 | iso27001 | hipaa
+# owner: agent (CI/repo) | founder (manual ops)
+# probe: doc_exists | headers | deploy_readiness | dependabot | ci_audit | manual | partial | n_a
+# status seed: automated | manual | partial | n_a
+
+version: 1
+disclaimer: >
+  Control monitoring and evidence pointers only — not a SOC 2, ISO 27001, or HIPAA
+  attestation. Educational fitness product; HIPAA mapped technically only.
+
+controls:
+  # --- Access & authentication ---
+  - id: MW-ACCESS-001
+    title: Private beta gate with signed session cookie
+    frameworks: [soc2, iso27001, hipaa]
+    category: access
+    owner: agent
+    evidence: PROTECTION.md
+    probe: doc_exists
+    status: automated
+    notes: "proxy.ts + privateSession HMAC; SOC2 CC6 / ISO A.8 / HIPAA 164.312(a)"
+
+  - id: MW-ACCESS-002
+    title: Premium content server-gated (no client-only unlock)
+    frameworks: [soc2, iso27001]
+    category: access
+    owner: agent
+    evidence: scripts/gate-smoke.ts
+    probe: doc_exists
+    status: automated
+    notes: "/api/premium/* 403 when unenrolled; CI gate-smoke when SMOKE_BASE_URL set"
+
+  - id: MW-ACCESS-003
+    title: DEMO_PREMIUM refused in production deploy readiness
+    frameworks: [soc2, iso27001]
+    category: access
+    owner: agent
+    evidence: src/lib/deployReadiness.ts
+    probe: deploy_readiness
+    status: automated
+    notes: "assertProductionEnvConfig when DEPLOY_READINESS_TARGET=production"
+
+  - id: MW-ACCESS-004
+    title: Supabase RLS / enrollment read hardening documented
+    frameworks: [soc2, iso27001, hipaa]
+    category: access
+    owner: founder
+    evidence: scripts/verify-supabase-security.mjs
+    probe: doc_exists
+    status: manual
+    notes: "Founder runs probe against prod; HIPAA map-only access control"
+
+  - id: MW-ACCESS-005
+    title: Youth consent / COPPA path secrets required for launch
+    frameworks: [soc2, iso27001]
+    category: access
+    owner: agent
+    evidence: src/lib/deployReadiness.ts
+    probe: deploy_readiness
+    status: automated
+    notes: "YOUTH_CONSENT_SECRET in production env gate"
+
+  # --- Change management ---
+  - id: MW-CHG-001
+    title: CI lint, typecheck, unit tests on master/PRs
+    frameworks: [soc2, iso27001]
+    category: change
+    owner: agent
+    evidence: .github/workflows/ci.yml
+    probe: doc_exists
+    status: automated
+    notes: "SOC2 CC8 change management"
+
+  - id: MW-CHG-002
+    title: Blocking critical-path E2E in CI
+    frameworks: [soc2, iso27001]
+    category: change
+    owner: agent
+    evidence: .github/workflows/ci.yml
+    probe: doc_exists
+    status: automated
+    notes: "e2e-critical job"
+
+  - id: MW-CHG-003
+    title: Deploy readiness asserts build label + locale export
+    frameworks: [soc2, iso27001]
+    category: change
+    owner: agent
+    evidence: src/lib/deployReadiness.ts
+    probe: deploy_readiness
+    status: automated
+    notes: ""
+
+  - id: MW-CHG-004
+    title: Dependabot for npm and GitHub Actions
+    frameworks: [soc2, iso27001]
+    category: change
+    owner: agent
+    evidence: .github/dependabot.yml
+    probe: dependabot
+    status: automated
+    notes: "Continuous dependency risk signal"
+
+  # --- Encryption & transport ---
+  - id: MW-ENC-001
+    title: HSTS and security headers on all routes
+    frameworks: [soc2, iso27001, hipaa]
+    category: encryption
+    owner: agent
+    evidence: vercel.json
+    probe: headers
+    status: automated
+    notes: "HIPAA 164.312(e) transmission security map-only"
+
+  - id: MW-ENC-002
+    title: TLS terminated at Vercel / HTTPS-only production
+    frameworks: [soc2, iso27001, hipaa]
+    category: encryption
+    owner: founder
+    evidence: docs/OWASP_AUDIT.md
+    probe: partial
+    status: partial
+    notes: "Platform-managed TLS; founder verifies custom domain HTTPS"
+
+  - id: MW-ENC-003
+    title: Secrets not committed; .env gitignored
+    frameworks: [soc2, iso27001, hipaa]
+    category: encryption
+    owner: agent
+    evidence: .gitignore
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  # --- Logging & monitoring ---
+  - id: MW-MON-001
+    title: Optional Sentry error monitoring
+    frameworks: [soc2, iso27001, hipaa]
+    category: monitoring
+    owner: founder
+    evidence: docs/OWASP_AUDIT.md
+    probe: partial
+    status: partial
+    notes: "Enable NEXT_PUBLIC_SENTRY_DSN; HIPAA audit controls map-only / partial — no SIEM"
+
+  - id: MW-MON-002
+    title: Perimeter security-smoke in CI (soft)
+    frameworks: [soc2, iso27001]
+    category: monitoring
+    owner: agent
+    evidence: scripts/gate-smoke.ts
+    probe: doc_exists
+    status: automated
+    notes: "Runs when SMOKE_BASE_URL secret set"
+
+  - id: MW-MON-003
+    title: Soft npm audit high in CI
+    frameworks: [soc2, iso27001]
+    category: monitoring
+    owner: agent
+    evidence: .github/workflows/ci.yml
+    probe: ci_audit
+    status: partial
+    notes: "continue-on-error; triage in docs/SECURITY_AUDIT_TRIAGE.md"
+
+  - id: MW-MON-004
+    title: OWASP Top 10 living audit
+    frameworks: [soc2, iso27001]
+    category: monitoring
+    owner: agent
+    evidence: docs/OWASP_AUDIT.md
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-MON-005
+    title: Centralized SIEM / long retention
+    frameworks: [soc2, iso27001, hipaa]
+    category: monitoring
+    owner: founder
+    evidence: docs/OWASP_AUDIT.md
+    probe: n_a
+    status: n_a
+    notes: "Accepted residual (OWASP A09); not claimed"
+
+  # --- Payments & integrity ---
+  - id: MW-PAY-001
+    title: Stripe webhook signature verification
+    frameworks: [soc2, iso27001]
+    category: integrity
+    owner: agent
+    evidence: PROTECTION.md
+    probe: doc_exists
+    status: automated
+    notes: "STRIPE_WEBHOOK_SECRET; gate-smoke 401 without sig"
+
+  - id: MW-PAY-002
+    title: PayPal webhook verification path
+    frameworks: [soc2, iso27001]
+    category: integrity
+    owner: agent
+    evidence: PROTECTION.md
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-PAY-003
+    title: Crypto checkout auth on confirm/intent
+    frameworks: [soc2, iso27001]
+    category: integrity
+    owner: agent
+    evidence: src/lib/cryptoCheckout/confirm.security.test.ts
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  # --- Vendor & privacy ---
+  - id: MW-VEN-001
+    title: Third-party inventory in Privacy + LEGAL_SAFETY
+    frameworks: [soc2, iso27001, hipaa]
+    category: vendor
+    owner: agent
+    evidence: docs/LEGAL_SAFETY.md
+    probe: doc_exists
+    status: automated
+    notes: "HIPAA BAA/org rows are N/A — not a covered entity"
+
+  - id: MW-VEN-002
+    title: No Meta Pixel / GA advertising tags
+    frameworks: [soc2, iso27001]
+    category: vendor
+    owner: agent
+    evidence: docs/LEGAL_SAFETY.md
+    probe: doc_exists
+    status: automated
+    notes: "Stated in LEGAL_SAFETY + Privacy third parties"
+
+  - id: MW-VEN-003
+    title: PostHog opt-in / DNT / no session recording
+    frameworks: [soc2, iso27001]
+    category: vendor
+    owner: agent
+    evidence: docs/help/privacy-and-data.md
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-VEN-004
+    title: Optional LLM ZDR preference documented
+    frameworks: [soc2, iso27001]
+    category: vendor
+    owner: founder
+    evidence: SECURITY.md
+    probe: doc_exists
+    status: manual
+    notes: "Founder enables provider ZDR in console"
+
+  - id: MW-VEN-005
+    title: HIPAA Business Associate Agreements with vendors
+    frameworks: [hipaa]
+    category: vendor
+    owner: founder
+    evidence: docs/LEGAL_SAFETY.md
+    probe: n_a
+    status: n_a
+    notes: "N/A — not a covered entity; map-only catalog row"
+
+  # --- Policies & disclosure ---
+  - id: MW-POL-001
+    title: Public Privacy Policy
+    frameworks: [soc2, iso27001]
+    category: policy
+    owner: agent
+    evidence: src/page-components/PrivacyPage.tsx
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-POL-002
+    title: Public Terms of Use (incl. arbitration / UGC)
+    frameworks: [soc2]
+    category: policy
+    owner: agent
+    evidence: src/page-components/TermsPage.tsx
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-POL-003
+    title: Responsible disclosure (SECURITY.md)
+    frameworks: [soc2, iso27001]
+    category: policy
+    owner: agent
+    evidence: SECURITY.md
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-POL-004
+    title: DMCA designated agent registered at copyright.gov
+    frameworks: [soc2]
+    category: policy
+    owner: founder
+    evidence: docs/LEGAL_SAFETY.md
+    probe: manual
+    status: manual
+    notes: "Interim /dmca placeholder until founder files"
+
+  - id: MW-POL-005
+    title: AI feature disclosure (FTC-facing)
+    frameworks: [soc2]
+    category: policy
+    owner: agent
+    evidence: docs/LEGAL_SAFETY.md
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-POL-006
+    title: Information security policy pack (HR, access reviews)
+    frameworks: [soc2, iso27001]
+    category: policy
+    owner: founder
+    evidence: docs/COMPLIANCE.md
+    probe: manual
+    status: manual
+    notes: "Full policy pack deferred; Probo later"
+
+  # --- Backup & availability ---
+  - id: MW-AVL-001
+    title: Client export / restore for local-first data
+    frameworks: [soc2, iso27001]
+    category: availability
+    owner: agent
+    evidence: docs/help/privacy-and-data.md
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-AVL-002
+    title: Supabase + Vercel managed backups / HA
+    frameworks: [soc2, iso27001]
+    category: availability
+    owner: founder
+    evidence: docs/OWASP_AUDIT.md
+    probe: partial
+    status: partial
+    notes: "Platform defaults; founder reviews retention"
+
+  # --- HIPAA map-only extras ---
+  - id: MW-HIPAA-001
+    title: Unique user identification (auth accounts)
+    frameworks: [hipaa]
+    category: hipaa_map
+    owner: agent
+    evidence: docs/LEGAL_SAFETY.md
+    probe: doc_exists
+    status: automated
+    notes: "164.312(a)(2)(i) map-only — auth via Supabase when signed in"
+
+  - id: MW-HIPAA-002
+    title: Emergency access / break-glass procedure
+    frameworks: [hipaa]
+    category: hipaa_map
+    owner: founder
+    evidence: docs/COMPLIANCE.md
+    probe: n_a
+    status: n_a
+    notes: "Not a covered entity; no PHI emergency access claim"
+
+  - id: MW-HIPAA-003
+    title: Automatic logoff / session controls
+    frameworks: [hipaa, soc2]
+    category: hipaa_map
+    owner: founder
+    evidence: PROTECTION.md
+    probe: partial
+    status: partial
+    notes: "Private gate cookie TTL; browser sessions — partial"
+
+  - id: MW-HIPAA-004
+    title: Encryption of data at rest (database)
+    frameworks: [hipaa, iso27001, soc2]
+    category: hipaa_map
+    owner: founder
+    evidence: docs/OWASP_AUDIT.md
+    probe: partial
+    status: partial
+    notes: "Supabase/platform encryption; founder confirms project settings"
+
+  - id: MW-HIPAA-005
+    title: Claim HIPAA compliance in product marketing
+    frameworks: [hipaa]
+    category: hipaa_map
+    owner: agent
+    evidence: docs/LEGAL_SAFETY.md
+    probe: n_a
+    status: n_a
+    notes: "Must remain N/A / never claim"
+
+  # --- Incident & risk ---
+  - id: MW-INC-001
+    title: Protection checklist + residual risk backlog
+    frameworks: [soc2, iso27001]
+    category: risk
+    owner: agent
+    evidence: PROTECTION.md
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-INC-002
+    title: Security audit triage for known advisory accepts
+    frameworks: [soc2, iso27001]
+    category: risk
+    owner: founder
+    evidence: docs/SECURITY_AUDIT_TRIAGE.md
+    probe: doc_exists
+    status: manual
+    notes: "Quarterly review"
+
+  - id: MW-INC-003
+    title: Compliance status reporter in CI artifact
+    frameworks: [soc2, iso27001]
+    category: risk
+    owner: agent
+    evidence: scripts/compliance-status.ts
+    probe: doc_exists
+    status: automated
+    notes: "This monitor"
+
+  - id: MW-INC-004
+    title: Optional CodeQL workflow enabled on GitHub
+    frameworks: [soc2, iso27001]
+    category: risk
+    owner: founder
+    evidence: .github/workflows/codeql.yml
+    probe: partial
+    status: partial
+    notes: "Workflow may ship; GHAS enablement is founder/org setting"
+
+  # --- ISO-oriented leftovers ---
+  - id: MW-ISO-001
+    title: Asset / data inventory for store labels
+    frameworks: [iso27001]
+    category: inventory
+    owner: agent
+    evidence: docs/LEGAL_SAFETY.md
+    probe: doc_exists
+    status: automated
+    notes: "A.5-ish information inventory lite"
+
+  - id: MW-ISO-002
+    title: Acceptable use policy for software
+    frameworks: [iso27001, soc2]
+    category: policy
+    owner: agent
+    evidence: ACCEPTABLE_USE.md
+    probe: doc_exists
+    status: automated
+    notes: ""
+
+  - id: MW-ISO-003
+    title: Env checklist for production secrets
+    frameworks: [iso27001, soc2]
+    category: access
+    owner: agent
+    evidence: scripts/check-env.mjs
+    probe: doc_exists
+    status: automated
+    notes: "Founder runs --launch before flip"

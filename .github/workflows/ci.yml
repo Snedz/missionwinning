@@ -42,6 +42,19 @@ jobs:
       - name: Deploy readiness
         run: npx tsx -e "import { assertDeployReady } from './src/lib/deployReadiness'; assertDeployReady();"
 
+      - name: Compliance status (soft)
+        continue-on-error: true
+        run: npm run compliance:status -- --ci
+
+      - name: Upload compliance status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-status
+          path: compliance-status.json
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Production build
         run: npm run build
 
