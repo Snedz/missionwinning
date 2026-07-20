@@ -44,6 +44,7 @@
 | `/privacy` | `PrivacyPage.tsx` | Privacy policy |
 | `/terms` | `TermsPage.tsx` | Terms of use |
 | `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
+| `/refunds` | `RefundsPage.tsx` | Refunds & cancellation |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
 
 ### Outside `(app)` group

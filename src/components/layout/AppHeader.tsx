@@ -223,6 +223,9 @@ export function AppHeader() {
                 <Link href="/dmca" onClick={close} className="hover:text-primary">
                   {t('infoDmcaTitle', { defaultValue: 'DMCA' })}
                 </Link>
+                <Link href="/refunds" onClick={close} className="hover:text-primary">
+                  {t('infoRefundsTitle', { defaultValue: 'Refunds' })}
+                </Link>
               </div>
             </div>
           )}

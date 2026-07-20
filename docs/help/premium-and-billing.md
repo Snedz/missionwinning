@@ -44,8 +44,9 @@ Premium ties to your **signed-in account** and the **email used at checkout**:
 
 ## Refunds and cancellation
 
-- **Subscriptions:** Profile → **Manage billing** opens Stripe’s customer portal (cancel / update card).
-- Also follow the policy on `/terms`. Receipt emails from Stripe include manage links when applicable.
+- **Policy:** [/refunds](/refunds) — 14-day money-back on first paid charge (subscriptions); lifetime/USDC rules on the same page.
+- **Subscriptions:** Profile → **Manage billing** opens Stripe’s customer portal (cancel / update card). After the 14-day window, cancel stops future charges; we do not prorate mid-cycle.
+- Also see [/terms](/terms). Receipt emails from Stripe include manage links when applicable.
 
 ## Beta and demo mode
 

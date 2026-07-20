@@ -99,6 +99,21 @@ type InfoStrings = {
   infoDmcaCounter: string;
   infoDmcaCounterBody: string;
   infoDmcaFoot: string;
+  infoRefundsTitle: string;
+  infoRefundsIntro: string;
+  infoRefundsSubs: string;
+  infoRefundsSubsBody: string;
+  infoRefundsLifetime: string;
+  infoRefundsLifetimeBody: string;
+  infoRefundsHow: string;
+  infoRefundsHowBody: string;
+  infoRefundsAbuse: string;
+  infoRefundsAbuseBody: string;
+  infoRefundsFoot: string;
+  infoTermsAcceptableUse: string;
+  infoTermsAcceptableUseBody: string;
+  infoPrivacySubprocessors: string;
+  infoPrivacySubprocessorsBody: string;
   infoAboutMissionP1: string;
   infoAboutMissionP2: string;
   infoAboutAmericaLink: string;
@@ -192,7 +207,10 @@ const en: InfoStrings = {
   infoTermsAccountsLi2: 'Do not abuse the service, attempt unauthorized access, or scrape premium content.',
   infoTermsAccountsLi3: 'Do not use the app for unlawful purposes.',
   infoTermsPremiumBody:
-    'Premium purchases (Super Bundle, specialist programs) are subject to the terms shown at checkout. Refund policies will be stated on the sales page; contact support@missionwinning.com for billing issues.',
+    'Premium purchases (Super Bundle and related paid features) are subject to checkout terms and our Refunds & cancellation policy. Cancel subscriptions anytime via Profile → Manage billing. Contact support@missionwinning.com for billing issues.',
+  infoTermsAcceptableUse: 'Acceptable use',
+  infoTermsAcceptableUseBody:
+    'You must follow our Acceptable Use Policy (repository ACCEPTABLE_USE.md and related rules): no unlawful use, no unauthorized access, no scraping or redistributing premium content, and no abuse of APIs or youth/school features. We may suspend accounts that violate these rules.',
   infoTermsLiabilityBody:
     'To the fullest extent permitted by law, Mission Winning LLC is not liable for injuries, health outcomes, or indirect damages arising from use of the app. The service is provided "as is."',
   infoTermsUserContentBody:
@@ -224,11 +242,14 @@ const en: InfoStrings = {
   infoPrivacyUseLi4:
     'Improve the product with aggregate funnel metrics — only when product analytics are allowed on your device.',
   infoPrivacyThirdPartiesBody:
-    'We use Supabase (hosting/auth/database), Vercel (app hosting), and optionally Resend (transactional email), Stripe/PayPal (payments when enabled), PostHog EU (product analytics only if you allow it), and — only when operators enable AI coach LLM — an OpenAI-compatible model provider (preferred: SpaceXAI/xAI with team Zero Data Retention). We do not use Meta Pixel or Google Analytics advertising tags in the app. Each vendor has its own privacy terms. Session recording is disabled in our PostHog config.',
+    'We use the subprocessors listed below. We do not use Meta Pixel or Google Analytics advertising tags in the app. Each vendor has its own privacy terms. Session recording is disabled in our PostHog config. Payment refunds are described on /refunds.',
+  infoPrivacySubprocessors: 'Subprocessors',
+  infoPrivacySubprocessorsBody:
+    'Supabase (auth/database/hosting); Vercel (app hosting); Stripe and/or PayPal (payments when enabled); Resend (transactional email when enabled); PostHog EU (product analytics only if you allow it); optional OpenAI-compatible LLM provider when operators enable AI coach features (preferred: SpaceXAI/xAI with team Zero Data Retention). We remain the controller for consumer accounts; business customers who need a DPA should request docs/legal/DPA.md via support.',
   infoPrivacyChoicesLi1: 'Use the free core without an account (local-only).',
   infoPrivacyChoicesLi2: 'Export or restore device data from Profile → Back up your data.',
   infoPrivacyChoicesLi3:
-    'Contact us to delete your account and cloud data: support@missionwinning.com',
+    'Request access or deletion of your account and cloud data: support@missionwinning.com — we aim to respond within 30 days.',
   infoPrivacyChoicesLi4:
     'Control product analytics anytime: first-visit banner, or Profile → Privacy & analytics. Browsers with Do Not Track keep analytics off.',
   infoPrivacyLocalFirst: 'Local-first by design',
@@ -262,6 +283,22 @@ const en: InfoStrings = {
     'If your material was removed and you believe it was a mistake or misidentification, you may send a counter-notice to the same agent with the elements required by 17 U.S.C. §512(g). We may restore material consistent with the statute.',
   infoDmcaFoot:
     'This page is an operational notice channel, not legal advice. Registering a designated agent with the U.S. Copyright Office is required for safe-harbor protection.',
+  infoRefundsTitle: 'Refunds & cancellation',
+  infoRefundsIntro:
+    'This policy applies to paid Mission Winning purchases (Super Bundle and related premium). Free core use needs no refund. Educational fitness software only — not a medical device.',
+  infoRefundsSubs: 'Subscriptions',
+  infoRefundsSubsBody:
+    'Monthly and 12-month Super Bundle: request a full refund within 14 days of your first paid charge by emailing support@missionwinning.com. After that window, we do not offer mid-cycle prorated refunds. Cancel anytime in Profile → Manage billing (Stripe Customer Portal) to stop future charges; access continues through the paid period already billed.',
+  infoRefundsLifetime: 'Lifetime / USDC',
+  infoRefundsLifetimeBody:
+    'Lifetime (card or Phantom USDC): request a refund within 14 days of purchase if you have not meaningfully used premium features, by emailing support@missionwinning.com. After 14 days, lifetime purchases are non-refundable. Phantom/USDC refunds are processed manually by support — there is no automated on-chain reverse transfer yet.',
+  infoRefundsHow: 'How to request',
+  infoRefundsHowBody:
+    'Email support@missionwinning.com with the subject “Refund request”, the email used at checkout, plan type (monthly / 12-mo / lifetime), approximate purchase date, and payment method (Stripe or Phantom). We aim to respond within a few business days.',
+  infoRefundsAbuse: 'Abuse & chargebacks',
+  infoRefundsAbuseBody:
+    'We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination.',
+  infoRefundsFoot: 'See also',
   infoAboutMissionP1:
     'Mission Winning is the all-in-one global health and workout app. Free powerful tracker + premium specialist education programs and coaching drawn from elite practical training curricula.',
   infoAboutMissionP2:

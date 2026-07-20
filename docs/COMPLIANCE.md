@@ -4,7 +4,7 @@
 
 **HIPAA:** Framework **mapping only** for technical safeguards that resemble our stack. We are **not** a covered entity and **do not** claim to process PHI under HIPAA. See [LEGAL_SAFETY.md](LEGAL_SAFETY.md).
 
-**Related:** [PROTECTION.md](../PROTECTION.md) · [OWASP_AUDIT.md](OWASP_AUDIT.md) · [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) · [SECURITY.md](../SECURITY.md)
+**Related:** [PROTECTION.md](../PROTECTION.md) · [OWASP_AUDIT.md](OWASP_AUDIT.md) · [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) · [SECURITY.md](../SECURITY.md) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
 
 ---
 

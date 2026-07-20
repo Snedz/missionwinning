@@ -15,6 +15,7 @@ const TERM_SECTIONS = [
   { id: 'educational', key: 'infoTermsEducational', bodyKey: 'infoTermsEducationalBody' },
   { id: 'accounts', key: 'infoTermsAccounts', listKeys: ['infoTermsAccountsLi1', 'infoTermsAccountsLi2', 'infoTermsAccountsLi3'] },
   { id: 'premium', key: 'infoTermsPremium', bodyKey: 'infoTermsPremiumBody' },
+  { id: 'acceptable-use', key: 'infoTermsAcceptableUse', bodyKey: 'infoTermsAcceptableUseBody' },
   { id: 'user-content', key: 'infoTermsUserContent', bodyKey: 'infoTermsUserContentBody' },
   { id: 'dmca', key: 'infoTermsDmca', bodyKey: 'infoTermsDmcaBody' },
   { id: 'liability', key: 'infoTermsLiability', bodyKey: 'infoTermsLiabilityBody' },
@@ -62,6 +63,13 @@ export function TermsPage() {
                   </Link>
                 </p>
               )}
+              {section.id === 'premium' && (
+                <p className="mt-2">
+                  <Link href="/refunds" className="text-primary hover:underline text-sm">
+                    {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })} →
+                  </Link>
+                </p>
+              )}
             </>
           )}
         </InfoSection>
@@ -71,6 +79,10 @@ export function TermsPage() {
         {t('infoTermsFoot', { defaultValue: 'Mission Winning LLC · support@missionwinning.com · See also' })}{' '}
         <Link href="/privacy" className="text-primary hover:underline">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
+        </Link>
+        {' · '}
+        <Link href="/refunds" className="text-primary hover:underline">
+          {t('infoRefundsTitle', { defaultValue: 'Refunds & cancellation' })}
         </Link>
         {' · '}
         <Link href="/dmca" className="text-primary hover:underline">

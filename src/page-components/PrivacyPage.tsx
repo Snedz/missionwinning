@@ -30,6 +30,7 @@ const PRIVACY_SECTIONS = [
   },
   { id: 'ai-coach', key: 'infoPrivacyAiCoach', bodyKey: 'infoPrivacyAiCoachBody' },
   { id: 'third-parties', key: 'infoPrivacyThirdParties', bodyKey: 'infoPrivacyThirdPartiesBody' },
+  { id: 'subprocessors', key: 'infoPrivacySubprocessors', bodyKey: 'infoPrivacySubprocessorsBody' },
   {
     id: 'choices',
     key: 'infoPrivacyChoices',

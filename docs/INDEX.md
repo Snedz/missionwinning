@@ -47,6 +47,9 @@
 | [brand-guidelines.md](brand-guidelines.md) | Brand voice, colors, logo rules · public `/press` |
 | [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → PayPal later |
 | [LEGAL_SAFETY.md](LEGAL_SAFETY.md) | AI disclosure, arbitration, DMCA, store data inventory |
+| [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) | Six docs before payments · refunds · DPA/MSA templates |
+| [legal/DPA.md](legal/DPA.md) | B2B/school DPA draft (docs-only) |
+| [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) | B2B MSA draft (no consumer SLA promises) |
 | [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) | Deferred Android TWA / thin iOS |
 | [WEARABLES.md](WEARABLES.md) | Apple / Google / Whoop / Strava wearables strategy + unlock |
 | [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |

@@ -59,6 +59,7 @@ User guides in plain language (no code paths):
 | Doc | Purpose |
 |-----|---------|
 | [LEGAL_SAFETY.md](LEGAL_SAFETY.md) | AI disclosure, arbitration, DMCA, store data inventory |
+| [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) | Six docs before payments |
 | [issa-source-map.md](issa-source-map.md) | Guidebook source mapping |
 | [guidebook-originality-log.md](guidebook-originality-log.md) | Originality tracking |
 
