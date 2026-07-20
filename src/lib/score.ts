@@ -8,6 +8,8 @@ import {
   computeReadinessFromHistory,
   type ReadinessInfo,
 } from "@/lib/readinessIndex";
+import type { MindCheckIn } from "@/lib/mindCheckIns";
+import { checkInReadinessDelta } from "@/lib/mindCheckIns";
 
 export type { MuscleGroup, ReadinessStatusKey, ReadinessInfo };
 
@@ -177,12 +179,20 @@ function scoreLabelKey(
   return v >= 70 ? high : v >= 40 ? mid : low;
 }
 
+export type BodyScoresOpts = {
+  assessmentRisk?: string;
+  pillarWins?: number;
+  /** Today's subjective check-in — bounded readiness modifier (±15). */
+  checkIn?: Pick<MindCheckIn, 'sleep' | 'mood' | 'stress' | 'energy' | 'soreness'> | null;
+};
+
 /**
  * Aggregate Readiness / Strain / Recovery (0–100) from workout history and optional context.
+ * Subjective check-in only shifts readiness (capped ±15); history path unchanged when omitted.
  */
 export function computeBodyScores(
   workoutHistory: CompletedWorkoutLog[],
-  opts?: { assessmentRisk?: string; pillarWins?: number }
+  opts?: BodyScoresOpts
 ): BodyScores {
   const readinessMap = computeReadiness(workoutHistory);
   const groupScores = Object.values(readinessMap).map((r) =>
@@ -191,6 +201,12 @@ export function computeBodyScores(
   let readiness = Math.round(groupScores.reduce((a, b) => a + b, 0) / groupScores.length);
   if (opts?.assessmentRisk === 'high') readiness = Math.max(20, readiness - 20);
   else if (opts?.assessmentRisk === 'moderate') readiness = Math.max(30, readiness - 10);
+
+  // Wave 11: subjective check-in modifier (pure, capped)
+  readiness = Math.min(
+    100,
+    Math.max(0, readiness + checkInReadinessDelta(opts?.checkIn ?? null))
+  );
 
   const last7 = workoutHistory.filter(
     (w) => (Date.now() - new Date(w.completedAt).getTime()) / 86400000 <= 7

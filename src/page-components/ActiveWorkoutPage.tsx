@@ -34,6 +34,13 @@ import {
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { computeBodyScores } from '@/lib/score';
+import { getTodayCheckIn } from '@/lib/mindCheckIns';
+import {
+  SessionCheckInSheet,
+  shouldOfferSessionCheckIn,
+  markSessionCheckInSkipped,
+} from '@/components/workout/SessionCheckInSheet';
+import { useCoachPlan } from '@/hooks/useCoachPlan';
 import {
   findNextSet,
   getLastPerformanceForSet,
@@ -48,6 +55,7 @@ export function ActiveWorkoutPage() {
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const step = weightStep(units);
+  const { adjustToday, plan } = useCoachPlan();
   const activeWorkout = useWorkoutStore((s) => s.activeWorkout);
   const elapsedSeconds = useWorkoutStore((s) => s.elapsedSeconds);
   const restSecondsRemaining = useWorkoutStore((s) => s.restSecondsRemaining);
@@ -86,7 +94,18 @@ export function ActiveWorkoutPage() {
   const [plateCalcOpen, setPlateCalcOpen] = useState(false);
   const [victoryOpen, setVictoryOpen] = useState(false);
   const [victorySummary, setVictorySummary] = useState<WorkoutVictorySummary | null>(null);
+  const [checkInOpen, setCheckInOpen] = useState(false);
+  const [readinessBefore, setReadinessBefore] = useState<number | null>(null);
+  const [readinessAfter, setReadinessAfter] = useState<number | null>(null);
+  const [offerVolumeTrim, setOfferVolumeTrim] = useState(false);
   const nextSetRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!activeWorkout) return;
+    if (shouldOfferSessionCheckIn()) {
+      setCheckInOpen(true);
+    }
+  }, [activeWorkout?.startedAt, activeWorkout?.workoutName]);
 
   const nextSet = useMemo(
     () => (activeWorkout ? findNextSet(activeWorkout.exercises) : null),
@@ -179,7 +198,8 @@ export function ActiveWorkoutPage() {
 
   const handleComplete = () => {
     const historyBefore = workoutHistory;
-    const beforeScores = computeBodyScores(historyBefore);
+    const checkIn = getTodayCheckIn();
+    const beforeScores = computeBodyScores(historyBefore, { checkIn });
     const log = completeActiveWorkout();
     if (!log) {
       toast({
@@ -191,7 +211,7 @@ export function ActiveWorkoutPage() {
     }
     const historyAfter = [log, ...historyBefore];
     const streak = getTrainingStreak(historyAfter);
-    const afterScores = computeBodyScores(historyAfter);
+    const afterScores = computeBodyScores(historyAfter, { checkIn });
     setVictorySummary(
       summarizeWorkoutVictory(
         log,
@@ -254,6 +274,65 @@ export function ActiveWorkoutPage() {
 
   return (
     <div className={`space-y-6 ${restTimerActive ? 'pb-44 md:pb-32' : 'pb-4'}`}>
+      <SessionCheckInSheet
+        open={checkInOpen}
+        onDismiss={({ completed, checkIn }) => {
+          setCheckInOpen(false);
+          if (!completed) markSessionCheckInSkipped();
+          const base = computeBodyScores(workoutHistory);
+          const adj = computeBodyScores(workoutHistory, { checkIn });
+          setReadinessBefore(base.readiness);
+          setReadinessAfter(adj.readiness);
+          if (completed && adj.readiness < 40) {
+            setOfferVolumeTrim(true);
+          }
+        }}
+      />
+
+      {readinessAfter != null && readinessBefore != null && readinessAfter !== readinessBefore ? (
+        <div className="rounded-lg border border-[hsl(var(--status-info)/0.35)] bg-[hsl(var(--status-info)/0.08)] px-3 py-2 text-xs flex flex-wrap items-center gap-2">
+          <span className="font-medium text-foreground">
+            {t('sessionReadinessDelta', {
+              defaultValue: 'Readiness {{from}} → {{to}}',
+              from: readinessBefore,
+              to: readinessAfter,
+            })}
+          </span>
+          {offerVolumeTrim && plan ? (
+            <button
+              type="button"
+              className="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-primary font-medium hover:bg-primary/20"
+              onClick={() => {
+                const next = adjustToday({ type: 'readiness' });
+                if (next) {
+                  toast({
+                    title: t('sessionVolumeReduced', {
+                      defaultValue: 'Volume reduced',
+                    }),
+                    description: t('sessionVolumeReducedDesc', {
+                      defaultValue: 'One set trimmed from accessories (min 2). Plan marked Adapted.',
+                    }),
+                  });
+                  setOfferVolumeTrim(false);
+                } else {
+                  toast({
+                    title: t('sessionVolumeNoPlan', {
+                      defaultValue: 'No coach session today',
+                    }),
+                    description: t('sessionVolumeNoPlanDesc', {
+                      defaultValue: 'Start from Mission Coach for plan volume cuts. Sets here stay yours.',
+                    }),
+                  });
+                  setOfferVolumeTrim(false);
+                }
+              }}
+            >
+              {t('sessionReduceVolume', { defaultValue: "Reduce today's volume" })}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+
       <ActiveSessionChrome
         workoutName={activeWorkout.workoutName}
         completedSets={completedSets}

@@ -35,6 +35,7 @@ import {
 } from '@/components/ui/table';
 import dynamic from 'next/dynamic';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
+import { AnatomyHeatMap } from '@/components/history/AnatomyHeatMap';
 
 const History1RMChart = dynamic(
   () => import('@/components/history/HistoryCharts').then((m) => m.History1RMChart),
@@ -241,7 +242,8 @@ export function HistoryPage() {
               />
             </div>
           </div>
-          <div className="pt-3">
+          <div className="pt-3 space-y-4">
+            <AnatomyHeatMap cells={heatmapCells} />
             <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
           </div>
         </TodaySection>

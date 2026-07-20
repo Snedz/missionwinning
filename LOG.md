@@ -4,6 +4,28 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Wave 11: competitor-informed features
+
+Build `2026.07-unified.92`.
+
+### A — Pre-session readiness + autoreg
+- Shared `mindCheckIns` store (+ soreness); `computeBodyScores` ±15 subjective modifier
+- `SessionCheckInSheet` on `/active` (skippable); tap-only “Reduce today's volume” (`SessionConstraint: readiness`)
+
+### B — Body metrics + progress photos
+- `bodyMetrics` localStorage + Track UI + Recharts trend (in JSON backup via `mw_*`)
+- Progress photos IndexedDB only — never uploaded; excluded from backup by design; compare view
+
+### C — Weekly Mission Debrief
+- `buildWeeklyDebrief` multi-pillar + focus keys; full card Sun/Mon
+- Optional `POST /api/coach/debrief-voice` (premium / rules fallback)
+
+### D — Vision meals + anatomy map
+- `mealVisionClient` behind estimate-meal; source chip AI vs heuristic
+- `AnatomyHeatMap` on History + Benchmarks
+
+---
+
 ## 2026-07-20 — Wave 10: beta engine + flip ops + polish + Strava
 
 Build `2026.07-unified.91`.

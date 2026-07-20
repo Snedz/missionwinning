@@ -6,6 +6,7 @@ import type { CoachContext } from '@/lib/coach/types';
 import { mapStorageEquipment } from '@/lib/coach/equipment';
 import { getOrCreateDeviceId } from '@/lib/coach/storage';
 import { loadPreferredDays, loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
+import { getTodayCheckIn } from '@/lib/mindCheckIns';
 
 export function buildCoachContextFromInputs(params: {
   history: CompletedWorkoutLog[];
@@ -17,6 +18,8 @@ export function buildCoachContextFromInputs(params: {
   seedId?: string;
   daysPerWeek?: number;
   preferredDays?: number[];
+  /** Pass false to skip reading today's check-in (tests / SSR). Default true on client. */
+  includeCheckIn?: boolean;
 }): CoachContext {
   const experience = (params.experience ?? 'beginner') as CoachContext['experience'];
   const equipment = mapStorageEquipment(params.equipment ?? 'bodyweight');
@@ -25,6 +28,12 @@ export function buildCoachContextFromInputs(params: {
   const units = params.units ?? 'metric';
   const daysPerWeek = params.daysPerWeek ?? loadDaysPerWeek(experience);
   const preferredDays = params.preferredDays ?? loadPreferredDays();
+  const checkIn =
+    params.includeCheckIn === false
+      ? null
+      : typeof window !== 'undefined'
+        ? getTodayCheckIn()
+        : null;
 
   return {
     experience,
@@ -34,7 +43,10 @@ export function buildCoachContextFromInputs(params: {
     preferredDays,
     history: params.history,
     readiness: computeReadiness(params.history),
-    bodyScores: computeBodyScores(params.history, { assessmentRisk: params.assessmentRisk }),
+    bodyScores: computeBodyScores(params.history, {
+      assessmentRisk: params.assessmentRisk,
+      checkIn,
+    }),
     units,
     assessmentRisk: params.assessmentRisk,
     seedId: params.seedId ?? getOrCreateDeviceId(),
@@ -43,7 +55,7 @@ export function buildCoachContextFromInputs(params: {
 
 export function readLocalCoachContext(history: CompletedWorkoutLog[]): CoachContext {
   if (typeof window === 'undefined') {
-    return buildCoachContextFromInputs({ history });
+    return buildCoachContextFromInputs({ history, includeCheckIn: false });
   }
   const experience = localStorage.getItem('mw_experience') ?? 'beginner';
   const equipment = localStorage.getItem('mw_equipment') ?? 'bodyweight';
@@ -64,5 +76,6 @@ export function readLocalCoachContext(history: CompletedWorkoutLog[]): CoachCont
     goal,
     units,
     assessmentRisk,
+    includeCheckIn: true,
   });
 }

@@ -113,4 +113,25 @@ describe('adjustTodaySession', () => {
       b!.sessions.find((s) => s.dayOffset === todayOffset)!.exercises
     );
   });
+
+  it('readiness constraint trims one set from non-first exercises (min 2)', () => {
+    const { ctx, plan, todayOffset } = basePlan();
+    const base = plan.sessions.find((s) => s.dayOffset === todayOffset)!;
+    // Ensure multi-exercise multi-set session for the assertion
+    if (base.exercises.length < 2) {
+      return; // plan fixture may vary — skip soft
+    }
+    const next = adjustTodaySession(plan, ctx, todayOffset, { type: 'readiness' });
+    assert.ok(next);
+    const s = next!.sessions.find((x) => x.dayOffset === todayOffset)!;
+    assert.equal(s.status, 'swapped');
+    assert.equal(s.exercises[0].sets, base.exercises[0].sets);
+    for (let i = 1; i < s.exercises.length; i++) {
+      assert.ok(s.exercises[i].sets >= 2);
+      assert.ok(s.exercises[i].sets <= base.exercises[i].sets);
+      if (base.exercises[i].sets > 2) {
+        assert.equal(s.exercises[i].sets, base.exercises[i].sets - 1);
+      }
+    }
+  });
 });

@@ -26,6 +26,8 @@ import { TrackGpsPanel } from '@/components/track/TrackGpsPanel';
 import { TrackWeeklyInsights } from '@/components/track/TrackWeeklyInsights';
 import { ActivityImportPanel } from '@/components/track/ActivityImportPanel';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
+import { BodyMetricsCard } from '@/components/track/BodyMetricsCard';
+import { ProgressPhotosCard } from '@/components/track/ProgressPhotosCard';
 import { usePremium } from '@/hooks/usePremium';
 import { MapPin, Trash2 } from 'lucide-react';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
@@ -190,6 +192,9 @@ export function TrackPage() {
 
         {/* Flag-gated: NEXT_PUBLIC_WEARABLES — Strava connect/sync/disconnect */}
         <ProfileWearablesCard signedIn={signedIn} />
+
+        <BodyMetricsCard refreshKey={refresh} onChanged={() => setRefresh((r) => r + 1)} />
+        <ProgressPhotosCard />
 
       <Card className="content-card">
           <CardHeader>

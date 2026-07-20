@@ -42,9 +42,39 @@ export const POST = withApiLogging('fuel/estimate-meal', async(request: NextRequ
         ? { palette }
         : undefined;
 
-    // Future: if (process.env.MEAL_VISION_API_URL) { ... }
+    // Vision path when configured; always fall back to heuristic on failure.
+    try {
+      const { isMealVisionConfigured, fetchMealVisionEstimate } = await import(
+        '@/lib/mealVisionClient'
+      );
+      if (isMealVisionConfigured()) {
+        const buf = Buffer.from(await photo.arrayBuffer());
+        const b64 = buf.toString('base64');
+        const vision = await fetchMealVisionEstimate(b64, photo.type || 'image/jpeg');
+        if (vision.ok) {
+          const conf =
+            vision.estimate.confidence >= 0.7
+              ? 'high'
+              : vision.estimate.confidence >= 0.4
+                ? 'medium'
+                : 'low';
+          return NextResponse.json({
+            name: vision.estimate.name,
+            protein: vision.estimate.protein,
+            cals: vision.estimate.cals,
+            carbs: vision.estimate.carbs,
+            fat: vision.estimate.fat,
+            confidence: conf,
+            source: 'vision' as const,
+          });
+        }
+      }
+    } catch {
+      /* fall through to heuristic */
+    }
+
     const estimate = estimateMealFromSignals(photo.name, photo.size, hints);
-    return NextResponse.json(estimate);
+    return NextResponse.json({ ...estimate, source: estimate.source === 'api' ? 'api' : 'heuristic' });
   } catch {
     return NextResponse.json({ error: 'Estimate failed' }, { status: 500 });
   }

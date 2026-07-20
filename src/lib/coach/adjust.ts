@@ -15,12 +15,29 @@ import { scaleLoadPct } from '@/lib/workout/percentLoad';
 export type SessionConstraint =
   | { type: 'time'; minutes: 20 | 30 }
   | { type: 'equipment'; equipment: 'bodyweight' }
-  | { type: 'avoid'; group: MuscleGroup };
+  | { type: 'avoid'; group: MuscleGroup }
+  /** Juggernaut-style accessory volume cut: −1 set on non-first exercises (min 2). */
+  | { type: 'readiness' };
 
 function constraintKey(c: SessionConstraint): string {
   if (c.type === 'time') return `time-${c.minutes}`;
   if (c.type === 'equipment') return `equip-${c.equipment}`;
+  if (c.type === 'readiness') return 'readiness';
   return `avoid-${c.group}`;
+}
+
+/** Trim one set from every exercise after the first; keep at least 2 sets. */
+export function trimVolumeForReadiness(session: PlanSession): PlanSession {
+  const exercises = session.exercises.map((e, i) => {
+    if (i === 0) return { ...e };
+    return { ...e, sets: Math.max(2, e.sets - 1) };
+  });
+  return {
+    ...session,
+    exercises,
+    estMinutes: estimateMinutes(exercises, session.kind),
+    status: 'swapped',
+  };
 }
 
 function roundWeight(w: number, units: CoachContext['units']): number {
@@ -174,6 +191,11 @@ export function adjustTodaySession(
       }),
       id: base.id,
       status: 'swapped',
+    };
+  } else if (constraint.type === 'readiness') {
+    nextSession = {
+      ...trimVolumeForReadiness(base),
+      id: base.id,
     };
   } else {
     nextSession = applyAvoid(base, plan.weekStart, ctx, constraint.group, seed);
