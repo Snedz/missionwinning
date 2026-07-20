@@ -2,8 +2,9 @@
 
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isRtlLang, normalizeAppLang } from '@/i18n/appLangs';
 
-/** Languages that use right-to-left layout. */
+/** @deprecated Use isRtlLang from appLangs */
 export const RTL_LANGS = new Set(['ar', 'he', 'fa', 'ur']);
 
 /** Syncs document lang and text direction with active i18n language. */
@@ -11,9 +12,9 @@ export function HtmlLangSync() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    const lang = i18n.language?.split('-')[0] || 'en';
+    const lang = normalizeAppLang(i18n.language);
     document.documentElement.lang = lang;
-    document.documentElement.dir = RTL_LANGS.has(lang) ? 'rtl' : 'ltr';
+    document.documentElement.dir = isRtlLang(lang) || RTL_LANGS.has(lang) ? 'rtl' : 'ltr';
   }, [i18n.language]);
 
   return null;

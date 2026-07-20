@@ -2,13 +2,39 @@
 
 > One concern: Runtime translation strings merged into i18next `common` namespace.
 
+## Canonical languages
+
+[`appLangs.ts`](appLangs.ts) exports **`APP_LANGS`** (15):  
+`en es fr pt ru de it ko ja th vi hi zh id ar`
+
+Use this list everywhere (Profile, `/guide` locale select, export, CI). Do not invent parallel lang arrays.
+
+## Standard (required)
+
+1. Every user-visible string goes in a `*Locales.ts` key for **all** `APP_LANGS`.
+2. No raw English in JSX except via `t('key', { defaultValue })` where `defaultValue` is EN and matches the `en` pack.
+3. Guidebook long-form uses `guideSection_*` / editorial / `magazine*` keys (built from chapter data in `buildGuidebookLocaleKeys.ts`).
+4. After adding keys: fill packs → `npm run export-locales` → `npm run i18n:parity` must pass.
+5. Brand / proper nouns may stay identical across langs — list them in [`scripts/i18n-allowlist.json`](../scripts/i18n-allowlist.json).
+6. Pack overlays live in [`packs/{lang}.json`](packs/) and merge via [`localePacks.ts`](localePacks.ts) (hydrate + export).
+
+## Commands
+
+```bash
+npm run i18n:fill          # translate EN placeholders → packs/{lang}.json
+npm run i18n:parity        # key-set + non-EN placeholder gate (CI)
+npm run export-locales     # TS + packs → public/locales/
+```
+
 ## Read order
 
-1. `src/i18n.ts` — **bootstrap** minimal EN + detector (first paint)
-2. `bootstrapResources.ts` — lean keys for nav/Today lean
-3. `hydrateResources.ts` — dynamic-imports all `*Locales.ts` after idle
-4. The `*Locales.ts` file for your feature (table below)
-5. `public/locales/README.md` — optional HTTP JSON overrides
+1. `appLangs.ts` — canonical langs
+2. `src/i18n.ts` — **bootstrap** minimal EN + detector (first paint)
+3. `bootstrapResources.ts` — lean keys for nav/Today lean
+4. `hydrateResources.ts` — dynamic-imports all `*Locales.ts` after idle + pack overlays
+5. The `*Locales.ts` file for your feature (table below)
+6. `packs/{lang}.json` — MT/human overlays for full body parity
+7. `public/locales/README.md` — optional HTTP JSON overrides
 
 ## Locale files (`*Locales.ts`)
 
@@ -23,7 +49,8 @@
 | `moveLocales.ts` | Move pillar |
 | `mindLocales.ts` | Mind pillar |
 | `learnLocales.ts` | Learn pillar |
-| `guidebookLocales.ts` | Guidebook |
+| `learnContentLocales.ts` | Learn path lesson overrides |
+| `guidebookLocales.ts` | Guidebook chrome + content keys |
 | `builderLocales.ts` | Workout builder |
 | `historyLocales.ts` | History |
 | `trackLocales.ts` | Track |
@@ -36,15 +63,18 @@
 | `libraryLocales.ts` | Exercise library |
 | `feedbackLocales.ts` | Feedback |
 | `infoLocales.ts` | About, vision, coaching info |
-| `growthLocales.ts` | Referral / invite / share recognition (Wave 8) |
+| `growthLocales.ts` | Referral / invite / share recognition |
 | `leaderboardLocales.ts` | Leaderboard |
-| `bundleLocales.ts` | Bundle marketing |
+| `landingLocales.ts` | Marketing landing |
+| `betaLocales.ts` | Beta gates |
+| `gateLocales.ts` | Private gate |
 
 ## Pattern
 
 Each file exports:
-- `mergeXStrings(target, lang)` — merged in `i18n.ts` loop
+- `mergeXStrings(target, lang)` — merged in hydrate loop
 - English defaults inline; other langs spread `...en` + overrides
+- Pack JSON overlays apply last for remaining placeholders
 
 ## HTTP override (optional)
 
@@ -53,6 +83,7 @@ Each file exports:
 ## Related (not here)
 
 - `public/locales/README.md` — JSON export workflow
+- `scripts/i18n-parity.ts`, `scripts/i18n-fill-missing.ts`
 
 ## Do not open
 

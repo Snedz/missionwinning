@@ -1,31 +1,34 @@
 #!/usr/bin/env npx tsx
 /**
- * Generate public/magazine/beyond-the-basics.pdf from /guide/print.
+ * Generate public/magazine/beyond-the-basics[.lang].pdf from /guide/print.
  *
  * Prerequisites: app serving locally (or GUIDEBOOK_PDF_BASE_URL).
  *   npm run build && npm run start
  *   npm run build-guidebook-pdf
+ *   GUIDEBOOK_PDF_LANGS=en,es,fr npm run build-guidebook-pdf
+ *   GUIDEBOOK_PDF_LANGS=all npm run build-guidebook-pdf
  *
  * Optional:
  *   GUIDEBOOK_PDF_BASE_URL=https://www.missionwinning.com
- *   GUIDEBOOK_PDF_AUTO_SERVER=1  — spawn `next start` on a free port, then shut down
+ *   GUIDEBOOK_PDF_AUTO_SERVER=1
+ *   GUIDEBOOK_PDF_LANGS=en,es  — comma list (default: en)
  */
-import { mkdirSync, readFileSync, statSync } from 'fs';
+import { mkdirSync, readFileSync, statSync, copyFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { spawn, type ChildProcess } from 'child_process';
 import { chromium } from 'playwright';
 import { createServer } from 'net';
+import { APP_LANGS } from '../src/i18n/appLangs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const outPath = join(root, 'public', 'magazine', 'beyond-the-basics.pdf');
+const outDir = join(root, 'public', 'magazine');
 
 const MIN_BYTES = 80_000;
 const MIN_PAGES = 12;
 const MAX_PAGES = 28;
 
 function countPdfPages(buf: Buffer): number {
-  // Count page objects; subtract the /Pages tree node when present as /Type /Pages
   const pageObjs = buf.toString('latin1').match(/\/Type\s*\/Page(?!s)\b/g);
   return pageObjs?.length ?? 0;
 }
@@ -78,11 +81,25 @@ async function maybeStartServer(): Promise<{ base: string; child: ChildProcess |
   return { base: 'http://127.0.0.1:3000', child: null };
 }
 
-async function main() {
-  mkdirSync(dirname(outPath), { recursive: true });
-  const { base, child } = await maybeStartServer();
-  const printUrl = `${base}/guide/print`;
+function resolveLangs(): string[] {
+  const raw = process.env.GUIDEBOOK_PDF_LANGS?.trim();
+  if (!raw) return ['en'];
+  if (raw === 'all') return [...APP_LANGS];
+  return raw
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
 
+function outPathFor(lang: string): string {
+  return lang === 'en'
+    ? join(outDir, 'beyond-the-basics.pdf')
+    : join(outDir, `beyond-the-basics.${lang}.pdf`);
+}
+
+async function renderLang(base: string, lang: string): Promise<void> {
+  const printUrl = `${base}/guide/print?lang=${lang}`;
+  const outPath = outPathFor(lang);
   console.log(`Opening ${printUrl}`);
   const browser = await chromium.launch({ headless: true });
   try {
@@ -94,6 +111,7 @@ async function main() {
       );
     }
     await page.waitForSelector('.magazine-document', { timeout: 30_000 });
+    await page.waitForTimeout(1500);
     await page.emulateMedia({ media: 'print' });
     await page.addStyleTag({
       content: `.no-print { display: none !important; }`,
@@ -104,7 +122,6 @@ async function main() {
       format: 'Letter',
       printBackground: true,
       tagged: true,
-      // Let CSS @page / @page :first control margins (cover full-bleed).
       margin: { top: '0', right: '0', bottom: '0', left: '0' },
       preferCSSPageSize: true,
       displayHeaderFooter: true,
@@ -132,9 +149,27 @@ async function main() {
     }
   } finally {
     await browser.close();
-    if (child) {
-      child.kill('SIGTERM');
+  }
+}
+
+async function main() {
+  mkdirSync(outDir, { recursive: true });
+  const { base, child } = await maybeStartServer();
+  const langs = resolveLangs();
+  try {
+    for (const lang of langs) {
+      await renderLang(base, lang);
     }
+    const enPath = outPathFor('en');
+    try {
+      statSync(enPath);
+    } catch {
+      const first = outPathFor(langs[0]);
+      copyFileSync(first, enPath);
+      console.log(`Copied ${first} → ${enPath}`);
+    }
+  } finally {
+    if (child) child.kill('SIGTERM');
   }
 }
 

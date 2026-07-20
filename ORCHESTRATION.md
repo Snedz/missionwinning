@@ -152,7 +152,7 @@ Unlock **only after** week-4 retention holds.
 |------|--------|
 | New pillars | Vision amendment |
 | Gate free logger | Never |
-| Full locale body parity | Week-4 holds + beachhead locale |
+| Full locale body parity | **Founder unlocked 2026-07-19** — see `APP_LANGS` + `npm run i18n:parity` |
 | Native iOS | TWA/PWA insufficient |
 | Wearables as primary score | Retention + sensor strategy |
 | America/MAHA marketing | Legal + school channel |

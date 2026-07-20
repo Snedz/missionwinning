@@ -36,31 +36,13 @@ import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
 import { SUPER_BUNDLE_PRICE, openBillingPortal } from '@/lib/payments';
+import { APP_LANGS, APP_LANG_NATIVE_NAMES, normalizeAppLang } from '@/i18n/appLangs';
 
 const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
 
-const LANGS = ['en', 'es', 'fr', 'pt', 'ru', 'de', 'it', 'ko', 'ja', 'th', 'vi', 'hi', 'zh', 'id', 'ar'] as const;
-const NATIVE_NAMES: Record<string, string> = {
-  en: 'English',
-  es: 'Español',
-  fr: 'Français',
-  pt: 'Português',
-  ru: 'Русский',
-  de: 'Deutsch',
-  it: 'Italiano',
-  ko: '한국어',
-  ja: '日本語',
-  th: 'ไทย',
-  vi: 'Tiếng Việt',
-  hi: 'हिन्दी',
-  zh: '中文',
-  id: 'Bahasa Indonesia',
-  ar: 'العربية',
-};
-
 function LanguageSwitcher() {
   const { t } = useTranslation();
-  const currentLang = i18n.language.split('-')[0];
+  const currentLang = normalizeAppLang(i18n.language);
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     scheduleJourneyPush();
@@ -73,8 +55,10 @@ function LanguageSwitcher() {
         className="w-full text-sm bg-background border border-border/50 rounded px-3 py-2"
         aria-label={t('changeLanguage', { defaultValue: 'Change language' })}
       >
-        {LANGS.map(l => (
-          <option key={l} value={l}>{NATIVE_NAMES[l]}</option>
+        {APP_LANGS.map((l) => (
+          <option key={l} value={l}>
+            {APP_LANG_NATIVE_NAMES[l]}
+          </option>
         ))}
       </select>
     </div>

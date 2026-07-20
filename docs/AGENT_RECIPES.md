@@ -99,10 +99,15 @@ Define `yourSchema` in `apiSchemas.ts` with max string lengths.
 
 ## 9. New i18n string
 
-1. Add to appropriate `src/i18n/fooLocales.ts` for all `EXPORT_LANGS` if critical namespace
-2. Use `t('key', { defaultValue: 'English fallback' })`
-3. Run `exportLocales.test.ts` via `npm test`
-4. **Do not** use `src/locales/`
+1. Add the key to the appropriate `src/i18n/fooLocales.ts` **English** pack
+2. Ensure every `APP_LANGS` entry can resolve it (spread `...en` + overrides, or pack fill)
+3. Use `t('key', { defaultValue: 'English fallback' })` in UI
+4. Run `npm run i18n:fill` if other langs still show English placeholders
+5. Run `npm run i18n:parity` (must pass) and `npm run export-locales`
+6. Brand / proper nouns that stay identical: add to `scripts/i18n-allowlist.json`
+7. **Do not** use `src/locales/`
+
+Canonical langs: [`src/i18n/appLangs.ts`](../src/i18n/appLangs.ts) (`APP_LANGS`, 15 languages).
 
 ---
 

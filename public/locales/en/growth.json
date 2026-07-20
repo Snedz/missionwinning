@@ -1,0 +1,14 @@
+{
+  "growthReferralTitle": "Invite a friend",
+  "growthReferralDesc": "Share your code. When someone starts their free path with it, you both grow the mission. Recognition only — no paid rewards yet.",
+  "growthReferralInvite": "Invite a friend",
+  "growthReferralCode": "Your code",
+  "growthReferralCount": "{{count}} recruited",
+  "growthReferralSignIn": "Sign in",
+  "growthReferralSignInHint": "Sign in to get your invite code and share the mission.",
+  "growthRecognition3": "Recruiter",
+  "growthRecognition10": "Field Recruiter",
+  "growthRecognition25": "Mission Recruiter",
+  "growthShareCopied": "Link copied",
+  "growthShareFailed": "Could not share"
+}

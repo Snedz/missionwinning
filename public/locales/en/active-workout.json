@@ -16,6 +16,7 @@
   "activeChooseExercise": "Choose exercise...",
   "activeEmptyExercises": "Add exercises above to begin logging sets.",
   "activeFormGuide": "Form guide",
+  "activeLoadPctChip": "{{pct}}% · {{weight}} {{unit}}",
   "activeAddSet": "Add Set",
   "activeStartRest": "{{seconds}}s Rest",
   "activeLogSet": "Log",

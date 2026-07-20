@@ -4,11 +4,14 @@
  * Apex-style magazine shell for public /guide — main column + sticky Contents rail.
  */
 
-import { useState, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { List } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { GuideChapter } from '@/data/guidebook/types';
-import { MAGAZINE_META, MAGAZINE_PDF_PATH } from '@/data/guidebook/magazineMeta';
+import { MAGAZINE_PDF_PATH, magazinePdfPathForLang } from '@/data/guidebook/magazineMeta';
+import { localizeMagazineMeta } from '@/lib/localizeGuidebook';
+import { isRtlLang, normalizeAppLang } from '@/i18n/appLangs';
 import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,9 +36,14 @@ export function GuideApexShell({
   chapters,
   activeChapterId,
   children,
-  eyebrow = MAGAZINE_META.editionLabel,
+  eyebrow,
 }: Props) {
+  const { t, i18n } = useTranslation();
+  const meta = useMemo(() => localizeMagazineMeta(t), [t, i18n.language]);
+  const lang = normalizeAppLang(i18n.language);
+  const pdfHref = magazinePdfPathForLang(lang);
   const [tocOpen, setTocOpen] = useState(false);
+  const rtl = isRtlLang(lang);
 
   const openToc = () => {
     setTocOpen(true);
@@ -53,25 +61,49 @@ export function GuideApexShell({
       <div className="mt-8 space-y-2 border-t border-border/50 pt-6">
         <Button asChild variant="fitness" size="sm" className="w-full">
           <a
-            href={MAGAZINE_PDF_PATH}
+            href={pdfHref}
             download
-            onClick={() => track('guide_pdf_download', { surface: 'public_guide_rail' })}
+            onClick={() =>
+              track('guide_pdf_download', { surface: 'public_guide_rail', locale: lang })
+            }
           >
-            Download PDF
+            {t('magazineDownloadPdf', { defaultValue: 'Download PDF' })}
           </a>
         </Button>
         <p className="text-[11px] text-muted-foreground leading-snug">
-          PDF is English (compilation edition).
+          {lang === 'en'
+            ? t('magazinePdfLocalized', {
+                defaultValue: 'PDF matches your language when available.',
+              })
+            : t('magazinePdfLocalized', {
+                defaultValue: 'PDF matches your language when available.',
+              })}
+          {lang !== 'en' && pdfHref !== MAGAZINE_PDF_PATH ? (
+            <>
+              {' '}
+              (
+              <a className="underline" href={MAGAZINE_PDF_PATH} download>
+                EN
+              </a>
+              )
+            </>
+          ) : null}
         </p>
         <Button asChild variant="outline" size="sm" className="w-full">
-          <Link href="/guide/print">Print view</Link>
+          <Link href={`/guide/print?lang=${lang}`}>
+            {t('magazinePrintView', { defaultValue: 'Print view' })}
+          </Link>
         </Button>
       </div>
     </>
   );
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div
+      className="min-h-screen bg-background text-foreground"
+      dir={rtl ? 'rtl' : 'ltr'}
+      lang={lang}
+    >
       <header className="section-seam hero-field texture-noise relative">
         <div className="relative z-[1] mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
           <Link href="/" className="flex min-w-0 items-center gap-2.5">
@@ -89,26 +121,26 @@ export function GuideApexShell({
               size="sm"
               className="lg:hidden"
               onClick={openToc}
-              aria-label="Open contents"
+              aria-label={t('magazineOpenContents', { defaultValue: 'Open contents' })}
             >
               <List className="h-4 w-4 mr-1.5" aria-hidden />
-              Contents
+              {t('magazineContents', { defaultValue: 'Contents' })}
             </Button>
             <Link
               href="/welcome"
               className="inline-flex min-h-[40px] shrink-0 items-center rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-500"
             >
-              Start free
+              {t('magazineStartFree', { defaultValue: 'Start free' })}
             </Link>
           </div>
         </div>
         <div className="relative z-[1] mx-auto max-w-6xl px-5 pb-8 pt-2">
-          <p className="eyebrow-live mb-2">{eyebrow}</p>
-          <h1 className="display-section text-primary">{MAGAZINE_META.title}</h1>
+          <p className="eyebrow-live mb-2">{eyebrow ?? meta.editionLabel}</p>
+          <h1 className="display-section text-primary">{meta.title}</h1>
           <p className="mt-2 font-display text-lg font-semibold uppercase tracking-wide text-brass md:text-xl">
-            {MAGAZINE_META.magazineLine}
+            {meta.magazineLine}
           </p>
-          <p className="mt-2 max-w-2xl text-muted-foreground">{MAGAZINE_META.subtitle}</p>
+          <p className="mt-2 max-w-2xl text-muted-foreground">{meta.subtitle}</p>
         </div>
       </header>
 
@@ -122,7 +154,9 @@ export function GuideApexShell({
       <Dialog open={tocOpen} onOpenChange={setTocOpen}>
         <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-display uppercase tracking-wide">Contents</DialogTitle>
+            <DialogTitle className="font-display uppercase tracking-wide">
+              {t('magazineContents', { defaultValue: 'Contents' })}
+            </DialogTitle>
           </DialogHeader>
           {rail}
         </DialogContent>

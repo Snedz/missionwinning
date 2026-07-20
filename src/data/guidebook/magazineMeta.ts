@@ -5,6 +5,13 @@
 
 export const MAGAZINE_PDF_PATH = '/magazine/beyond-the-basics.pdf';
 
+/** Prefer localized PDF when present; callers may fall back to MAGAZINE_PDF_PATH. */
+export function magazinePdfPathForLang(lang: string): string {
+  const code = (lang || 'en').split('-')[0]?.toLowerCase() || 'en';
+  if (code === 'en') return MAGAZINE_PDF_PATH;
+  return `/magazine/beyond-the-basics.${code}.pdf`;
+}
+
 export const MAGAZINE_META = {
   title: 'Beyond the Basics',
   magazineLine: 'The Mission Winning Magazine',

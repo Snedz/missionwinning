@@ -48,3 +48,7 @@ Premium chapters: see `sourceRef` on each section in `premiumChapters.ts`.
 | ch5-s1 | callout — macro priority | nutrition science — macros | Mission Winning | 2026-07-19 |
 | ch5-s2 | checklist — recovery basics | foundations — hydration & sleep | Mission Winning | 2026-07-19 |
 | ch6-s3 | callout — stall vs pain vs stress | foundations — program adjustment | Mission Winning | 2026-07-19 |
+
+## Localized editions
+
+Translations in `src/i18n/packs/{lang}.json` and guidebook locale overlays are **translations of Mission Winning original English**, not ISSA text. Regenerated via `npm run i18n:fill`.

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { GuideMagazinePrintPage } from '@/page-components/GuideMagazinePrintPage';
 import { publicPageMetadata } from '@/lib/seoMetadata';
 
@@ -15,5 +16,9 @@ export const metadata: Metadata = {
 };
 
 export default function GuidePrintRoute() {
-  return <GuideMagazinePrintPage />;
+  return (
+    <Suspense fallback={null}>
+      <GuideMagazinePrintPage />
+    </Suspense>
+  );
 }

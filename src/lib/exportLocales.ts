@@ -24,22 +24,36 @@ import { assessmentsStringsFor } from '@/i18n/assessmentsLocales';
 import { feedbackStringsFor } from '@/i18n/feedbackLocales';
 import { programsStringsFor } from '@/i18n/programsLocales';
 import { libraryStringsFor } from '@/i18n/libraryLocales';
+import { landingStringsFor } from '@/i18n/landingLocales';
+import { growthStringsFor } from '@/i18n/growthLocales';
+import { coachStringsFor } from '@/i18n/coachLocales';
+import { betaStringsFor } from '@/i18n/betaLocales';
+import { gateStringsFor } from '@/i18n/gateLocales';
+import { learnContentStringsFor } from '@/i18n/learnContentLocales';
+import { APP_LANGS, type AppLang } from '@/i18n/appLangs';
+import { withLocalePack } from '@/i18n/localePacks';
 
-/** Languages with full or partial pillar-specific translations. */
-export const EXPORT_LANGS = [
-  'en',
-  'es',
-  'zh',
-  'id',
-  'th',
-  'ar',
-  'fr',
-  'pt',
-  'de',
-  'it',
-  'ko',
-] as const;
-export type ExportLang = (typeof EXPORT_LANGS)[number];
+/** @deprecated Prefer APP_LANGS — alias kept for existing imports. */
+export const EXPORT_LANGS = APP_LANGS;
+export type ExportLang = AppLang;
+
+function packWrap(stringsFor: (lang: string) => Record<string, string>) {
+  return (lang: string): Record<string, string> =>
+    withLocalePack(stringsFor(lang) as Record<string, string>, lang);
+}
+
+/** Apply pack only for keys already present in the base map (overlay namespaces). */
+function packWrapIntersect(stringsFor: (lang: string) => Record<string, string>) {
+  return (lang: string): Record<string, string> => {
+    const base = stringsFor(lang) as Record<string, string>;
+    const packed = withLocalePack(base, lang);
+    const out: Record<string, string> = { ...base };
+    for (const key of Object.keys(base)) {
+      if (packed[key] !== undefined) out[key] = packed[key];
+    }
+    return out;
+  };
+}
 
 export type LocaleNamespace =
   | 'welcome'
@@ -63,7 +77,13 @@ export type LocaleNamespace =
   | 'assessments'
   | 'feedback'
   | 'programs'
-  | 'library';
+  | 'library'
+  | 'landing'
+  | 'growth'
+  | 'coach'
+  | 'beta'
+  | 'gate'
+  | 'learnContent';
 
 export type LocaleExportEntry = {
   namespace: LocaleNamespace;
@@ -76,91 +96,91 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
   {
     namespace: 'welcome',
     filename: 'welcome.json',
-    stringsFor: welcomeStringsFor,
+    stringsFor: packWrap(welcomeStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'today',
     filename: 'today.json',
-    stringsFor: todayStringsFor,
+    stringsFor: packWrap(todayStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'fuel',
     filename: 'fuel.json',
-    stringsFor: fuelStringsFor,
+    stringsFor: packWrap(fuelStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'nav',
     filename: 'nav.json',
-    stringsFor: navStringsFor,
+    stringsFor: packWrap(navStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'bundle',
     filename: 'bundle.json',
-    stringsFor: bundleStringsFor,
+    stringsFor: packWrap(bundleStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'history',
     filename: 'history.json',
-    stringsFor: historyStringsFor,
+    stringsFor: packWrap(historyStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'activeWorkout',
     filename: 'active-workout.json',
-    stringsFor: activeWorkoutStringsFor,
+    stringsFor: packWrap(activeWorkoutStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'track',
     filename: 'track.json',
-    stringsFor: trackStringsFor,
+    stringsFor: packWrap(trackStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'move',
     filename: 'move.json',
-    stringsFor: moveStringsFor,
+    stringsFor: packWrap(moveStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'mind',
     filename: 'mind.json',
-    stringsFor: mindStringsFor,
+    stringsFor: packWrap(mindStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'learn',
     filename: 'learn.json',
-    stringsFor: learnStringsFor,
+    stringsFor: packWrap(learnStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'builder',
     filename: 'builder.json',
-    stringsFor: builderStringsFor,
+    stringsFor: packWrap(builderStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'benchmarks',
     filename: 'benchmarks.json',
-    stringsFor: benchmarksStringsFor,
+    stringsFor: packWrap(benchmarksStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'calculators',
     filename: 'calculators.json',
-    stringsFor: calculatorsStringsFor,
+    stringsFor: packWrap(calculatorsStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'info',
     filename: 'info.json',
-    stringsFor: infoStringsFor,
+    stringsFor: packWrap(infoStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
@@ -172,37 +192,73 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
   {
     namespace: 'leaderboard',
     filename: 'leaderboard.json',
-    stringsFor: leaderboardStringsFor,
+    stringsFor: packWrap(leaderboardStringsFor as (l: string) => Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'fitnessTest',
     filename: 'fitness-test.json',
-    stringsFor: (lang) => fitnessTestStringsFor(lang) as Record<string, string>,
+    stringsFor: packWrap((lang) => fitnessTestStringsFor(lang) as Record<string, string>),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'assessments',
     filename: 'assessments.json',
-    stringsFor: assessmentsStringsFor,
+    stringsFor: packWrap(assessmentsStringsFor),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'feedback',
     filename: 'feedback.json',
-    stringsFor: feedbackStringsFor,
+    stringsFor: packWrap(feedbackStringsFor),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'programs',
     filename: 'programs.json',
-    stringsFor: programsStringsFor,
+    stringsFor: packWrap(programsStringsFor),
     langs: EXPORT_LANGS,
   },
   {
     namespace: 'library',
     filename: 'library.json',
-    stringsFor: libraryStringsFor,
+    stringsFor: packWrap(libraryStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'landing',
+    filename: 'landing.json',
+    stringsFor: packWrap(landingStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'growth',
+    filename: 'growth.json',
+    stringsFor: packWrap(growthStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'coach',
+    filename: 'coach.json',
+    stringsFor: packWrap(coachStringsFor as (l: string) => Record<string, string>),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'beta',
+    filename: 'beta.json',
+    stringsFor: packWrap(betaStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'gate',
+    filename: 'gate.json',
+    stringsFor: packWrap(gateStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'learnContent',
+    filename: 'learn-content.json',
+    stringsFor: packWrapIntersect(learnContentStringsFor),
     langs: EXPORT_LANGS,
   },
 ];
@@ -256,19 +312,30 @@ export function localeExportSummary(): {
   };
 }
 
-/** Count ES keys whose value still equals EN (untranslated placeholder heuristic). */
-export function countEsPlaceholderKeys(namespace: LocaleNamespace): {
+/** Count keys whose value still equals EN (untranslated placeholder heuristic). */
+export function countLangPlaceholderKeys(
+  namespace: LocaleNamespace,
+  lang: string
+): {
   total: number;
   placeholders: number;
 } {
   const entry = LOCALE_EXPORTS.find((e) => e.namespace === namespace);
   if (!entry) return { total: 0, placeholders: 0 };
   const en = entry.stringsFor('en') as Record<string, string>;
-  const es = entry.stringsFor('es') as Record<string, string>;
+  const other = entry.stringsFor(lang) as Record<string, string>;
   const keys = Object.keys(en);
   let placeholders = 0;
   for (const key of keys) {
-    if (es[key] === en[key]) placeholders++;
+    if (other[key] === en[key]) placeholders++;
   }
   return { total: keys.length, placeholders };
+}
+
+/** Count ES keys whose value still equals EN (untranslated placeholder heuristic). */
+export function countEsPlaceholderKeys(namespace: LocaleNamespace): {
+  total: number;
+  placeholders: number;
+} {
+  return countLangPlaceholderKeys(namespace, 'es');
 }
