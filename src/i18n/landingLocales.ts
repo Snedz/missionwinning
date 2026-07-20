@@ -16,7 +16,8 @@ const LANDING_EN: Record<string, string> = {
   landingHeroProof: 'Log a set in the demo → Win Score ticks. That’s the loop.',
   landingSeeHow: 'See how it works',
   landingProofChip: '217 exercises · offline · no account',
-  landingProofNoAiKey: 'No AI API key. Free logger.',
+  landingProofNoAiKey:
+    'Free core needs no AI key. Optional AI coach when enabled.',
   landingTrustInstall: 'Installs like an app',
   landingTrustOffline: 'Trains offline',
   landingTrustLang: '14 languages',
@@ -154,7 +155,7 @@ const LANDING_ES: Record<string, string> = {
   landingHeroProof: 'Registra una serie en el demo → el Win Score se mueve. Ese es el bucle.',
   landingSeeHow: 'Cómo funciona',
   landingProofChip: '217 ejercicios · offline · sin cuenta',
-  landingProofNoAiKey: 'Sin API key de IA. Logger gratis.',
+  landingProofNoAiKey: 'El core gratis no necesita clave de IA. Coach IA opcional si está activo.',
   landingTrustInstall: 'Se instala como app',
   landingTrustOffline: 'Entrena offline',
   landingTrustLang: '14 idiomas',

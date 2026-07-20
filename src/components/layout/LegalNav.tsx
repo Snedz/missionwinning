@@ -40,6 +40,9 @@ export function LegalNav({
       <Link href="/privacy" className={linkClassName}>
         {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
       </Link>
+      <Link href="/dmca" className={linkClassName}>
+        {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
+      </Link>
     </nav>
   );
 }

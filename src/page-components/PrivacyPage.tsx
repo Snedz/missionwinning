@@ -20,6 +20,7 @@ const PRIVACY_SECTIONS = [
       'infoPrivacyCollectLi3',
       'infoPrivacyCollectLi4',
       'infoPrivacyCollectLi5',
+      'infoPrivacyCollectLi6',
     ],
   },
   {
@@ -39,6 +40,7 @@ const PRIVACY_SECTIONS = [
       'infoPrivacyChoicesLi4',
     ],
   },
+  { id: 'california', key: 'infoPrivacyCalifornia', bodyKey: 'infoPrivacyCaliforniaBody' },
   { id: 'not-medical', key: 'infoPrivacyNotMedical', bodyKey: 'infoPrivacyNotMedicalBody' },
 ] as const;
 
@@ -54,7 +56,7 @@ export function PrivacyPage() {
     <InfoPageShell
       icon={Shield}
       title={t('infoPrivacyTitle', { defaultValue: 'Privacy Policy' })}
-      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: June 2026' })}
+      lastUpdated={t('infoLastUpdated', { defaultValue: 'Last updated: July 2026' })}
       showLegalFooter
       jumpLinks={jumpLinks}
     >

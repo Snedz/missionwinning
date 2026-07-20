@@ -204,7 +204,7 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
           </div>
           <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
             {t('photoLogDesc', {
-              defaultValue: 'Snap a meal — we estimate macros, then match Open Food Facts when possible.',
+              defaultValue: 'Snap a meal — optional AI estimates macros, then we match Open Food Facts when possible.',
             })}
           </p>
         </div>

@@ -28,12 +28,16 @@ type InfoStrings = {
   infoTermsAccounts: string;
   infoTermsPremium: string;
   infoTermsLiability: string;
+  infoTermsUserContent: string;
+  infoTermsDmca: string;
+  infoTermsDisputes: string;
   infoTermsChanges: string;
   infoPrivacyOverview: string;
   infoPrivacyCollect: string;
   infoPrivacyUse: string;
   infoPrivacyThirdParties: string;
   infoPrivacyChoices: string;
+  infoPrivacyCalifornia: string;
   infoPrivacyNotMedical: string;
   infoAboutMission: string;
   infoAboutNational: string;
@@ -53,6 +57,9 @@ type InfoStrings = {
   infoTermsAccountsLi3: string;
   infoTermsPremiumBody: string;
   infoTermsLiabilityBody: string;
+  infoTermsUserContentBody: string;
+  infoTermsDmcaBody: string;
+  infoTermsDisputesBody: string;
   infoTermsChangesBody: string;
   infoTermsFoot: string;
   infoPrivacyOverviewBody: string;
@@ -60,6 +67,8 @@ type InfoStrings = {
   infoPrivacyCollectLi2: string;
   infoPrivacyCollectLi3: string;
   infoPrivacyCollectLi4: string;
+  infoPrivacyCollectLi5: string;
+  infoPrivacyCollectLi6: string;
   infoPrivacyUseLi1: string;
   infoPrivacyUseLi2: string;
   infoPrivacyUseLi3: string;
@@ -71,11 +80,25 @@ type InfoStrings = {
   infoPrivacyChoicesLi4: string;
   infoPrivacyLocalFirst: string;
   infoPrivacyLocalFirstBody: string;
-  infoPrivacyCollectLi5: string;
   infoPrivacyAiCoach: string;
   infoPrivacyAiCoachBody: string;
+  infoPrivacyCaliforniaBody: string;
   infoPrivacyNotMedicalBody: string;
   infoPrivacyFoot: string;
+  infoDmcaTitle: string;
+  infoDmcaIntro: string;
+  infoDmcaAgent: string;
+  infoDmcaAgentBody: string;
+  infoDmcaNotice: string;
+  infoDmcaNoticeLi1: string;
+  infoDmcaNoticeLi2: string;
+  infoDmcaNoticeLi3: string;
+  infoDmcaNoticeLi4: string;
+  infoDmcaNoticeLi5: string;
+  infoDmcaNoticeLi6: string;
+  infoDmcaCounter: string;
+  infoDmcaCounterBody: string;
+  infoDmcaFoot: string;
   infoAboutMissionP1: string;
   infoAboutMissionP2: string;
   infoAboutAmericaLink: string;
@@ -138,12 +161,16 @@ const en: InfoStrings = {
   infoTermsAccounts: 'Accounts & acceptable use',
   infoTermsPremium: 'Premium & refunds',
   infoTermsLiability: 'Limitation of liability',
+  infoTermsUserContent: 'User content',
+  infoTermsDmca: 'Copyright (DMCA)',
+  infoTermsDisputes: 'Dispute resolution',
   infoTermsChanges: 'Changes',
   infoPrivacyOverview: 'Overview',
   infoPrivacyCollect: 'What we collect',
   infoPrivacyUse: 'How we use data',
   infoPrivacyThirdParties: 'Third parties',
   infoPrivacyChoices: 'Your choices',
+  infoPrivacyCalifornia: 'California privacy (CCPA)',
   infoPrivacyNotMedical: 'Not medical advice',
   infoAboutMission: 'Our mission',
   infoAboutNational: 'National fitness (U.S.)',
@@ -168,6 +195,12 @@ const en: InfoStrings = {
     'Premium purchases (Super Bundle, specialist programs) are subject to the terms shown at checkout. Refund policies will be stated on the sales page; contact support@missionwinning.com for billing issues.',
   infoTermsLiabilityBody:
     'To the fullest extent permitted by law, Mission Winning LLC is not liable for injuries, health outcomes, or indirect damages arising from use of the app. The service is provided "as is."',
+  infoTermsUserContentBody:
+    'You may upload or submit content such as meal photos, activity import files, backups, text, or other materials (“User Content”). You retain ownership of your User Content. You grant Mission Winning LLC a worldwide, non-exclusive, royalty-free license to host, process, and display User Content solely to operate and improve the service. You represent that you have all rights needed to submit User Content and that it does not infringe others’ rights or violate law. Do not upload illegal, harmful, or infringing material.',
+  infoTermsDmcaBody:
+    'If you believe content on Mission Winning infringes your copyright, follow the notice process on our DMCA page. We respond to valid notices under the Digital Millennium Copyright Act. Repeat infringers may have accounts terminated.',
+  infoTermsDisputesBody:
+    'Except for (a) small-claims court actions and (b) claims for injunctive or other equitable relief to protect intellectual property, any dispute arising out of or relating to these terms or the service will be resolved by binding individual arbitration administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules. You and Mission Winning LLC waive any right to a jury trial and to participate in a class, collective, or representative action. This agreement is governed by the laws of the United States and the state of formation of Mission Winning LLC, without regard to conflict-of-law rules. If the class waiver is found unenforceable as to a particular claim, that claim must proceed in court and not arbitration.',
   infoTermsChangesBody:
     'We may update these terms. Continued use after changes constitutes acceptance. Material changes will be noted in the app or via email where appropriate.',
   infoTermsFoot: 'Mission Winning LLC · support@missionwinning.com · See also',
@@ -183,16 +216,15 @@ const en: InfoStrings = {
     'Local storage: the free core works offline; data stays on your device until you sign in to sync.',
   infoPrivacyCollectLi5:
     'Optional AI coach context: only when operators enable the coach LLM — a minimal summary (scores, streak, focus, session names), not full set-by-set workout history.',
+  infoPrivacyCollectLi6:
+    'Optional meal photos: when you use photo meal logging, the image is sent to our estimate API to suggest macros; we do not use meal photos for advertising and do not keep them as a long-term photo library.',
   infoPrivacyUseLi1: 'Provide and personalize your training journey (Today hub, recommendations).',
   infoPrivacyUseLi2: 'Sync across devices when signed in (Supabase cloud database).',
   infoPrivacyUseLi3: 'Process premium enrollments and support requests.',
   infoPrivacyUseLi4:
     'Improve the product with aggregate funnel metrics — only when product analytics are allowed on your device.',
-  infoPrivacyAiCoach: 'Optional AI coach',
-  infoPrivacyAiCoachBody:
-    'The free core coach is rules-based and does not require an AI API key or send your data to a model. When operators enable optional LLM coach voice or daily insight, we send a minimal context summary to the configured provider (recommended: SpaceXAI/xAI). Mission Winning does not sell that content or use it for ads. When the provider is xAI and the operator has enabled team Zero Data Retention (ZDR), xAI does not retain API prompts or outputs at rest (see xAI security FAQ on Zero Data Retention). Cloud sync, payments, email, and product analytics remain separate third parties with their own retention policies — ZDR does not replace those.',
   infoPrivacyThirdPartiesBody:
-    'We use Supabase (hosting/auth/database), Vercel (app hosting), and optionally Resend (transactional email), Stripe/PayPal (payments when enabled), PostHog EU (product analytics only if you allow it), and — only when operators enable AI coach LLM — an OpenAI-compatible model provider (preferred: SpaceXAI/xAI with team Zero Data Retention). Each has its own privacy terms. Session recording is disabled in our PostHog config.',
+    'We use Supabase (hosting/auth/database), Vercel (app hosting), and optionally Resend (transactional email), Stripe/PayPal (payments when enabled), PostHog EU (product analytics only if you allow it), and — only when operators enable AI coach LLM — an OpenAI-compatible model provider (preferred: SpaceXAI/xAI with team Zero Data Retention). We do not use Meta Pixel or Google Analytics advertising tags in the app. Each vendor has its own privacy terms. Session recording is disabled in our PostHog config.',
   infoPrivacyChoicesLi1: 'Use the free core without an account (local-only).',
   infoPrivacyChoicesLi2: 'Export or restore device data from Profile → Back up your data.',
   infoPrivacyChoicesLi3:
@@ -202,9 +234,34 @@ const en: InfoStrings = {
   infoPrivacyLocalFirst: 'Local-first by design',
   infoPrivacyLocalFirstBody:
     'Training logs, nutrition, and journey progress are stored on your device first. Cloud sync is optional and requires sign-in. We do not sell personal health data. The app harness is open source so you can inspect how privacy works.',
+  infoPrivacyAiCoach: 'AI features (disclosure)',
+  infoPrivacyAiCoachBody:
+    'Mission Winning discloses that some features may use artificial intelligence. The free core coach (rules-based weekly plan and offline adjustments) does not require an AI API key and does not send your data to a model. When operators enable optional AI features — such as LLM coach chat/voice, daily insight, or photo meal macro estimates — we process limited inputs with a configured provider (recommended: SpaceXAI/xAI). We do not sell that content or use it for ads. When the provider is xAI with team Zero Data Retention (ZDR), xAI does not retain API prompts or outputs at rest (see xAI security FAQ). Cloud sync, payments, email, and product analytics remain separate third parties — ZDR does not replace those policies.',
+  infoPrivacyCaliforniaBody:
+    'We do not sell or share personal information for cross-context behavioral advertising as those terms are defined under the California Consumer Privacy Act (CCPA/CPRA). California residents may request access or deletion of personal information we hold by emailing support@missionwinning.com. We will verify and respond as required by law.',
   infoPrivacyNotMedicalBody:
     'Mission Winning provides educational fitness tools only. Consult a qualified professional before starting new exercise or nutrition programs.',
   infoPrivacyFoot: 'Questions: support@missionwinning.com',
+  infoDmcaTitle: 'DMCA / Copyright',
+  infoDmcaIntro:
+    'Mission Winning respects intellectual property. If you believe material on our service infringes your copyright, send a notice that complies with 17 U.S.C. §512 to our designated agent.',
+  infoDmcaAgent: 'Designated agent',
+  infoDmcaAgentBody:
+    'Agent (interim until copyright.gov listing is published): Mission Winning LLC, Attn: DMCA Agent, support@missionwinning.com. Postal address: to be published on this page after the Copyright Office designation is filed. Subject line: DMCA Notice.',
+  infoDmcaNotice: 'What your notice must include',
+  infoDmcaNoticeLi1: 'A physical or electronic signature of the copyright owner or authorized agent.',
+  infoDmcaNoticeLi2: 'Identification of the copyrighted work claimed to be infringed.',
+  infoDmcaNoticeLi3: 'Identification of the material that is claimed to be infringing, with enough detail for us to locate it (URL or description).',
+  infoDmcaNoticeLi4: 'Your mailing address, telephone number, and email address.',
+  infoDmcaNoticeLi5:
+    'A statement that you have a good-faith belief that use of the material is not authorized by the copyright owner, its agent, or the law.',
+  infoDmcaNoticeLi6:
+    'A statement that the information in the notice is accurate, and under penalty of perjury, that you are authorized to act on behalf of the owner.',
+  infoDmcaCounter: 'Counter-notice',
+  infoDmcaCounterBody:
+    'If your material was removed and you believe it was a mistake or misidentification, you may send a counter-notice to the same agent with the elements required by 17 U.S.C. §512(g). We may restore material consistent with the statute.',
+  infoDmcaFoot:
+    'This page is an operational notice channel, not legal advice. Registering a designated agent with the U.S. Copyright Office is required for safe-harbor protection.',
   infoAboutMissionP1:
     'Mission Winning is the all-in-one global health and workout app. Free powerful tracker + premium specialist education programs and coaching drawn from elite practical training curricula.',
   infoAboutMissionP2:

@@ -97,6 +97,10 @@ export function AboutPage() {
                 {t('termsOfService', { defaultValue: 'Terms of Use' })}
               </Link>
               {' · '}
+              <Link href="/dmca" className="text-primary hover:underline">
+                {t('infoDmcaTitle', { defaultValue: 'DMCA / Copyright' })}
+              </Link>
+              {' · '}
               <Link href="/beta" className="text-primary hover:underline">
                 {t('navBetaGuide', { defaultValue: 'Beta guide' })}
               </Link>

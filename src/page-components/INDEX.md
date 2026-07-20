@@ -82,6 +82,7 @@
 | `ProfilePage.tsx` | `/profile` |
 | `PrivacyPage.tsx` | `/privacy` |
 | `TermsPage.tsx` | `/terms` |
+| `DmcaPage.tsx` | `/dmca` |
 | `FeedbackPage.tsx` | `/feedback` |
 | `AssessmentsPage.tsx` | `/assessments` |
 | `CalculatorsPage.tsx` | `/calculators` |

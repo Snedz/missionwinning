@@ -220,6 +220,9 @@ export function AppHeader() {
                 <Link href="/privacy" onClick={close} className="hover:text-primary">
                   {t('privacyPolicy', { defaultValue: 'Privacy' })}
                 </Link>
+                <Link href="/dmca" onClick={close} className="hover:text-primary">
+                  {t('infoDmcaTitle', { defaultValue: 'DMCA' })}
+                </Link>
               </div>
             </div>
           )}

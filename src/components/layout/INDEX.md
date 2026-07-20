@@ -15,7 +15,7 @@
 | `InfoPageShell.tsx` | Legal/marketing pages |
 | `InfoPageFooter.tsx` | Info footer links |
 | `AppLegalFooter.tsx` | In-app legal links |
-| `LegalNav.tsx` | Privacy/terms nav |
+| `LegalNav.tsx` | Privacy / terms / DMCA nav |
 | `HeaderAuthChip.tsx` | Sign-in avatar chip |
 | `PageTransition.tsx` | Route transition animation |
 | `StaggerReveal.tsx` | Staggered entrance motion |

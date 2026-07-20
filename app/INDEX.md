@@ -41,6 +41,9 @@
 | `/learn` | `LearnPage.tsx` | Education |
 | `/learn/guide` | `GuidebookIndexPage.tsx` | Guidebook |
 | `/coaching` | `CoachingPage.tsx` | **Human** coaching leads — not AI Coach |
+| `/privacy` | `PrivacyPage.tsx` | Privacy policy |
+| `/terms` | `TermsPage.tsx` | Terms of use |
+| `/dmca` | `DmcaPage.tsx` | DMCA / copyright notices |
 | `/welcome` | `WelcomePage.tsx` | I-Day onboarding (also `app/welcome/`) |
 
 ### Outside `(app)` group

@@ -10,6 +10,7 @@ describe('isPublicPathWhileGated', () => {
     assert.equal(isPublicPathWhileGated('/private'), true);
     assert.equal(isPublicPathWhileGated('/privacy'), true);
     assert.equal(isPublicPathWhileGated('/terms'), true);
+    assert.equal(isPublicPathWhileGated('/dmca'), true);
     assert.equal(isPublicPathWhileGated('/about'), true);
     assert.equal(isPublicPathWhileGated('/america'), true);
     assert.equal(isPublicPathWhileGated('/auth/callback'), true);

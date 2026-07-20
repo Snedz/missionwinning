@@ -29,6 +29,7 @@ const PUBLIC_SAFE = new Set([
   '/press',
   '/privacy',
   '/terms',
+  '/dmca',
   '/coaching',
   '/feedback',
   '/vision',

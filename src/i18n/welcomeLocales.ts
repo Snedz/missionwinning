@@ -94,7 +94,7 @@ const en: WelcomeStrings = {
   welcomeBack: 'Back',
   headerSignIn: 'Sign in',
   photoLogTitle: 'Log from photo',
-  photoLogDesc: 'Snap a meal — we estimate macros (beta coming soon).',
+  photoLogDesc: 'Snap a meal — optional AI estimates macros (beta).',
   photoLogChoose: 'Choose photo',
   photoLogComingSoon: 'Photo logging is in development. Use quick log or recipes for now.',
   photoLogBetaNote: 'Bevel-style meal capture — privacy-first, on-device when possible.',
