@@ -17,6 +17,7 @@
 | `useTodayLayout.ts` | Today sections | `missionJourney.ts` phase flags |
 | `use-toast.ts` | shadcn toast primitive | UI only |
 | `useScrollReveal.ts` | marketing `Reveal` | IntersectionObserver |
+| `useFileUploadQueue.ts` | Track import, Profile backup | per-file progress/retry queue |
 
 ## Conventions
 

@@ -38,6 +38,7 @@ export function CoachChatPanel({
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [offline, setOffline] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
   const [exerciseId, setExerciseId] = useState<string | undefined>(askExerciseId);
   const logRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -115,14 +116,55 @@ export function CoachChatPanel({
     );
   }
 
+  const errorMessageForStatus = (status: number) => {
+    if (status === 429) {
+      return t('coachChatRateLimited', {
+        defaultValue: 'Too many messages — wait a moment and try again.',
+      });
+    }
+    if (status === 401) {
+      return t('coachChatUnauthorized', {
+        defaultValue: 'Sign in again to keep chatting with your coach.',
+      });
+    }
+    if (status === 402) {
+      return t('coachChatPremium', {
+        defaultValue: 'Coach chat needs an active Super Bundle.',
+      });
+    }
+    if (status === 503) {
+      return t('coachChatOffline', {
+        defaultValue: 'Coach voice offline — your plan and adjustments still work.',
+      });
+    }
+    return t('coachChatError', {
+      defaultValue: 'Could not reach the coach. Try again.',
+    });
+  };
+
+  const failWithUserKept = (message: string, prior: Turn[], coachContent: string, markOffline = false) => {
+    if (markOffline) setOffline(true);
+    setSendError(coachContent);
+    setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: coachContent }]);
+  };
+
   const send = async () => {
     const message = input.trim();
-    if (!message || sending || offline) return;
+    if (!message || sending) return;
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      setSendError(
+        t('coachChatBrowserOffline', {
+          defaultValue: 'You appear offline — reconnect and try again.',
+        })
+      );
+      return;
+    }
     setSending(true);
+    setSendError(null);
+    setOffline(false);
     setInput('');
     const prior = turns;
-    const nextTurns: Turn[] = [...prior, { role: 'user', content: message }, { role: 'coach', content: '' }];
-    setTurns(nextTurns);
+    setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: '' }]);
 
     const context = {
       readiness,
@@ -162,22 +204,8 @@ export function CoachChatPanel({
         }),
         signal: ac.signal,
       });
-      if (res.status === 503) {
-        setOffline(true);
-        setTurns(prior);
-        return;
-      }
       if (!res.ok || !res.body) {
-        setTurns([
-          ...prior,
-          { role: 'user', content: message },
-          {
-            role: 'coach',
-            content: t('coachChatOffline', {
-              defaultValue: 'Coach voice offline — your plan and adjustments still work.',
-            }),
-          },
-        ]);
+        failWithUserKept(message, prior, errorMessageForStatus(res.status), res.status === 503);
         return;
       }
 
@@ -194,21 +222,24 @@ export function CoachChatPanel({
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
         if (chunk.includes('[[error:coach_offline]]')) {
-          setOffline(true);
-          setTurns(prior);
+          failWithUserKept(
+            message,
+            prior,
+            t('coachChatOffline', {
+              defaultValue: 'Coach voice offline — your plan and adjustments still work.',
+            }),
+            true
+          );
           return;
         }
         if (chunk.includes('[[error:')) {
-          setTurns([
-            ...prior,
-            { role: 'user', content: message },
-            {
-              role: 'coach',
-              content: t('coachChatOffline', {
-                defaultValue: 'Coach voice offline — your plan and adjustments still work.',
-              }),
-            },
-          ]);
+          failWithUserKept(
+            message,
+            prior,
+            t('coachChatError', {
+              defaultValue: 'Could not reach the coach. Try again.',
+            })
+          );
           return;
         }
         coachText += chunk;
@@ -216,23 +247,34 @@ export function CoachChatPanel({
         setTurns([...prior, { role: 'user', content: message }, { role: 'coach', content: snapshot }]);
       }
       if (!coachText.trim()) {
-        setTurns([
-          ...prior,
-          { role: 'user', content: message },
-          {
-            role: 'coach',
-            content: t('coachChatOffline', {
-              defaultValue: 'Coach voice offline — your plan and adjustments still work.',
-            }),
-          },
-        ]);
+        failWithUserKept(
+          message,
+          prior,
+          t('coachChatError', {
+            defaultValue: 'Could not reach the coach. Try again.',
+          })
+        );
       }
     } catch (err) {
-      if (err instanceof Error && err.name === 'AbortError') return;
-      setTurns(prior);
+      if (err instanceof Error && err.name === 'AbortError') {
+        setTurns([...prior, { role: 'user', content: message }]);
+        setSendError(t('coachChatStopped', { defaultValue: 'Stopped.' }));
+        return;
+      }
+      failWithUserKept(
+        message,
+        prior,
+        t('coachChatError', {
+          defaultValue: 'Could not reach the coach. Try again.',
+        })
+      );
     } finally {
       setSending(false);
     }
+  };
+
+  const stopStreaming = () => {
+    abortRef.current?.abort();
   };
 
   return (
@@ -252,13 +294,28 @@ export function CoachChatPanel({
         </button>
       </CardHeader>
       {open ? (
-        <CardContent className="space-y-3">
-          {offline ? (
-            <p className="text-sm text-status-warn" role="status">
-              {t('coachChatOffline', {
-                defaultValue: 'Coach voice offline — your plan and adjustments still work.',
-              })}
-            </p>
+        <CardContent className="space-y-3" aria-busy={sending}>
+          {offline || sendError ? (
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-sm text-status-warn flex-1" role="status">
+                {sendError ||
+                  t('coachChatOffline', {
+                    defaultValue: 'Coach voice offline — your plan and adjustments still work.',
+                  })}
+              </p>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="min-h-[44px]"
+                onClick={() => {
+                  setOffline(false);
+                  setSendError(null);
+                }}
+              >
+                {t('retry', { defaultValue: 'Try again' })}
+              </Button>
+            </div>
           ) : null}
           <div
             ref={logRef}
@@ -297,7 +354,7 @@ export function CoachChatPanel({
               type="text"
               className="flex-1 min-h-[44px] rounded-md border border-border bg-background px-3 text-sm"
               value={input}
-              disabled={offline || sending}
+              disabled={sending}
               placeholder={t('coachChatPlaceholder', {
                 defaultValue: "Ask about today's session, form, or recovery…",
               })}
@@ -306,15 +363,26 @@ export function CoachChatPanel({
                 if (e.key === 'Enter') void send();
               }}
             />
-            <Button
-              type="button"
-              variant="fitness"
-              className="min-h-[44px] min-w-[44px]"
-              disabled={offline || sending || !input.trim()}
-              onClick={() => void send()}
-            >
-              {t('coachChatSend', { defaultValue: 'Send' })}
-            </Button>
+            {sending ? (
+              <Button
+                type="button"
+                variant="outline"
+                className="min-h-[44px] min-w-[44px]"
+                onClick={stopStreaming}
+              >
+                {t('coachChatStop', { defaultValue: 'Stop' })}
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="fitness"
+                className="min-h-[44px] min-w-[44px]"
+                disabled={!input.trim()}
+                onClick={() => void send()}
+              >
+                {t('coachChatSend', { defaultValue: 'Send' })}
+              </Button>
+            )}
           </div>
         </CardContent>
       ) : null}

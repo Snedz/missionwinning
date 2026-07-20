@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, UtensilsCrossed } from 'lucide-react';
+import { ChevronDown, Trash2, UtensilsCrossed } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -24,6 +24,7 @@ type Props = {
   cloudStatus: string;
   mealLabel: (meal?: MealType) => string;
   onClearDay: () => void;
+  onRemoveEntry: (index: number) => void;
   onLoadCloud: () => void;
   onOpenLogSheet: () => void;
   onSaveMeal: (entry: FuelLogEntry) => void;
@@ -36,18 +37,22 @@ export function FuelTodayLogCard({
   cloudStatus,
   mealLabel,
   onClearDay,
+  onRemoveEntry,
   onLoadCloud,
   onOpenLogSheet,
   onSaveMeal,
 }: Props) {
   const { t } = useTranslation();
 
-  const groupedLog = logged.reduce<Record<string, FuelLogEntry[]>>((acc, entry) => {
-    const key = entry.meal ?? 'other';
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(entry);
-    return acc;
-  }, {});
+  const groupedLog = logged.reduce<Record<string, { entry: FuelLogEntry; index: number }[]>>(
+    (acc, entry, index) => {
+      const key = entry.meal ?? 'other';
+      if (!acc[key]) acc[key] = [];
+      acc[key].push({ entry, index });
+      return acc;
+    },
+    {}
+  );
 
   return (
     <Card className="content-card">
@@ -94,12 +99,12 @@ export function FuelTodayLogCard({
                 <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
               </summary>
               <ul className="space-y-1 text-sm px-3 pb-3 border-t border-border/30 pt-2">
-                {entries.map((l, i) => (
-                  <li key={`${mealKey}-${i}`} className="flex justify-between gap-2 items-center">
+                {entries.map(({ entry: l, index }) => (
+                  <li key={`${mealKey}-${index}`} className="flex justify-between gap-2 items-center">
                     <span className="min-w-0 truncate">
                       {l.time} — {l.name}
                     </span>
-                    <span className="flex items-center gap-2 shrink-0">
+                    <span className="flex items-center gap-1 shrink-0">
                       <span className="text-muted-foreground tabular-nums text-xs">
                         +{l.protein}g P • {l.cals} kcal
                       </span>
@@ -111,6 +116,16 @@ export function FuelTodayLogCard({
                         onClick={() => onSaveMeal(l)}
                       >
                         {t('fuelSaveMeal', { defaultValue: 'Save' })}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                        aria-label={t('fuelRemoveEntry', { defaultValue: 'Remove entry' })}
+                        onClick={() => onRemoveEntry(index)}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
                       </Button>
                     </span>
                   </li>

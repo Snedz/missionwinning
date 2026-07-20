@@ -38,6 +38,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
   const [resendAvailableAt, setResendAvailableAt] = useState(0);
   const [now, setNow] = useState(() => Date.now());
   const [verifying, setVerifying] = useState(false);
+  const [sending, setSending] = useState(false);
   const otpRef = useRef<OtpInputHandle>(null);
   const verifyingRef = useRef(false);
 
@@ -92,18 +93,33 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
       );
       return;
     }
-    saveYouthConsent({ parentEmail: email.trim(), childAge, verified: false });
+    setSending(true);
+    setError('');
     try {
       const ok = await sendNotify(email.trim());
-      if (ok) setSent(true);
+      if (!ok) {
+        setError(
+          t('youthSendFailed', {
+            defaultValue: 'Could not send the verification email. Try again shortly.',
+          })
+        );
+        return;
+      }
+      saveYouthConsent({ parentEmail: email.trim(), childAge, verified: false });
+      setSent(true);
+      startResendCooldown();
+      setStep('verify');
+      setCode('');
+      setOtpStatus('idle');
     } catch {
-      /* local consent still saved */
+      setError(
+        t('youthSendFailed', {
+          defaultValue: 'Could not send the verification email. Try again shortly.',
+        })
+      );
+    } finally {
+      setSending(false);
     }
-    startResendCooldown();
-    setStep('verify');
-    setCode('');
-    setOtpStatus('idle');
-    setError('');
   };
 
   const resendCode = async () => {
@@ -167,7 +183,11 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
       markYouthConsentVerified();
       window.setTimeout(() => onConsented(), 450);
     } catch {
-      setError(t('youthCodeInvalid', { defaultValue: 'Incorrect verification code.' }));
+      setError(
+        t('youthVerifyNetwork', {
+          defaultValue: 'Could not verify right now. Check your connection and try again.',
+        })
+      );
       setOtpStatus('error');
       setCode('');
       window.setTimeout(() => {
@@ -209,6 +229,9 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
             autoFocus
             disabled={verifying}
             aria-label={t('youthVerifyTitle', { defaultValue: 'Enter verification code' })}
+            aria-invalid={otpStatus === 'error' || !!error}
+            aria-describedby={error ? 'youth-otp-error' : undefined}
+            id="youth-otp"
             onChange={(next) => {
               setCode(next);
               if (otpStatus === 'error') setOtpStatus('idle');
@@ -218,7 +241,11 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
               void verifyCode(full);
             }}
           />
-          {error && <p className="text-xs text-red-400 text-center">{error}</p>}
+          {error && (
+            <p id="youth-otp-error" className="text-xs text-red-400 text-center" role="alert">
+              {error}
+            </p>
+          )}
           <div className="flex gap-2">
             <Button
               className="flex-1"
@@ -292,10 +319,16 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
             })}
           </span>
         </label>
-        {error && <p className="text-xs text-red-400">{error}</p>}
+        {error && (
+          <p id="youth-request-error" className="text-xs text-red-400" role="alert">
+            {error}
+          </p>
+        )}
         <div className="flex gap-2">
-          <Button className="flex-1" onClick={() => void requestConsent()}>
-            {t('youthSendCode', { defaultValue: 'Send verification email' })}
+          <Button className="flex-1" disabled={sending} onClick={() => void requestConsent()}>
+            {sending
+              ? t('youthSending', { defaultValue: 'Sending…' })
+              : t('youthSendCode', { defaultValue: 'Send verification email' })}
           </Button>
           {onCancel && (
             <Button variant="ghost" onClick={onCancel}>

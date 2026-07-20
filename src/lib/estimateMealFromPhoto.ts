@@ -172,17 +172,25 @@ export async function sampleMealImageHints(file: File): Promise<MealImageHints> 
 
 export async function estimateMealViaApi(
   file: File,
-  hints?: MealImageHints
+  hints?: MealImageHints,
+  opts?: {
+    onUploadProgress?: (percent: number) => void;
+    signal?: AbortSignal;
+  }
 ): Promise<MealEstimate | null> {
   const form = new FormData();
   form.append('photo', file);
   if (hints?.palette) form.append('palette', hints.palette);
 
   try {
-    const res = await fetch('/api/fuel/estimate-meal', { method: 'POST', body: form });
-    if (!res.ok) return null;
-    const data = (await res.json()) as MealEstimate;
-    return data;
+    const { uploadFormDataWithProgress } = await import('@/lib/uploadWithProgress');
+    const data = await uploadFormDataWithProgress<MealEstimate>({
+      url: '/api/fuel/estimate-meal',
+      formData: form,
+      signal: opts?.signal,
+      onProgress: (e) => opts?.onUploadProgress?.(e.percent),
+    });
+    return data ?? null;
   } catch {
     return null;
   }

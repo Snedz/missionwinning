@@ -466,7 +466,20 @@ export function HomeTodayDashboard() {
     staggerBlocks.push({ key: 'intent', node: <CommandersIntent /> });
   }
 
-  // Daily briefing densification: one insight line before metrics (not a second CTA).
+  // Daily briefing densification: insight/metrics below the boss CTA (above the fold).
+  // One boss CTA above the fold (JOURNEY F2).
+  staggerBlocks.push({
+    key: 'hero',
+    node: (
+      <JourneyHero
+        action={action}
+        onPrimaryClick={handleJourneyPrimary}
+        activeWorkout={!!activeWorkout}
+        justGoMeta={justGoMeta}
+      />
+    ),
+  });
+
   if (layout.showDashboard) {
     staggerBlocks.push({
       key: 'insight',
@@ -495,19 +508,6 @@ export function HomeTodayDashboard() {
       node: <MuscleFreshnessStrip rows={freshnessRows} />,
     });
   }
-
-  // One boss CTA above the fold (JOURNEY F2).
-  staggerBlocks.push({
-    key: 'hero',
-    node: (
-      <JourneyHero
-        action={action}
-        onPrimaryClick={handleJourneyPrimary}
-        activeWorkout={!!activeWorkout}
-        justGoMeta={justGoMeta}
-      />
-    ),
-  });
 
   // After first logged session, surface Mission Coach as the depth path (Basic+).
   if (

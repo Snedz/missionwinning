@@ -4,6 +4,8 @@ import { useRef, useState } from 'react';
 import { Camera, ImagePlus, Loader2, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { FileDropZone } from '@/components/ui/FileDropZone';
+import { FileUploadRow } from '@/components/ui/FileUploadRow';
 import {
   estimateMealFromPhoto,
   estimateMealViaApi,
@@ -11,12 +13,14 @@ import {
   type MealEstimate,
 } from '@/lib/estimateMealFromPhoto';
 import type { FoodSearchItem } from '@/lib/foodSearch';
+import { estimateRemainingMs } from '@/lib/fileUploadUi';
+import { useToast } from '@/hooks/use-toast';
 
 type Props = {
   onLogEstimate: (estimate: MealEstimate) => void;
 };
 
-type Phase = 'idle' | 'processing' | 'estimate' | 'error';
+type Phase = 'idle' | 'preview' | 'processing' | 'estimate' | 'error';
 
 function foodToEstimate(item: FoodSearchItem): MealEstimate {
   return {
@@ -30,28 +34,44 @@ function foodToEstimate(item: FoodSearchItem): MealEstimate {
   };
 }
 
-/** Bevel-style photo meal log — canvas hints + server estimate API with OFF grounding. */
+/** Bevel-style photo meal log — drop zone, honest %, inline retry without re-pick. */
 export function PhotoLogStub({ onLogEstimate }: Props) {
   const { t } = useTranslation();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [phase, setPhase] = useState<Phase>('idle');
+  const [progress, setProgress] = useState(0);
+  const [etaMs, setEtaMs] = useState<number | null>(null);
+  const [progressMsg, setProgressMsg] = useState<string | null>(null);
   const [estimate, setEstimate] = useState<MealEstimate | null>(null);
   const [offMatches, setOffMatches] = useState<FoodSearchItem[]>([]);
   const [offLoading, setOffLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [offLookupFailed, setOffLookupFailed] = useState(false);
+  const startedAtRef = useRef(0);
+
+  const revokePreview = () => {
+    if (preview) URL.revokeObjectURL(preview);
+  };
 
   const reset = () => {
-    if (preview) URL.revokeObjectURL(preview);
+    abortRef.current?.abort();
+    abortRef.current = null;
+    revokePreview();
     setPreview(null);
+    setFile(null);
     setEstimate(null);
     setOffMatches([]);
     setOffLoading(false);
     setError(null);
     setOffLookupFailed(false);
     setPhase('idle');
-    if (inputRef.current) inputRef.current.value = '';
+    setProgress(0);
+    setEtaMs(null);
+    setProgressMsg(null);
   };
 
   const groundWithOff = async (name: string) => {
@@ -80,31 +100,91 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
     }
   };
 
-  const handleFile = async (file: File | null) => {
-    if (!file || !file.type.startsWith('image/')) return;
-    if (preview) URL.revokeObjectURL(preview);
-    const url = URL.createObjectURL(file);
-    setPreview(url);
+  const setBandProgress = (pct: number, message: string, uploadStartedAt?: number) => {
+    const clamped = Math.max(0, Math.min(100, Math.round(pct)));
+    setProgress(clamped);
+    setProgressMsg(message);
+    if (uploadStartedAt != null && clamped < 80) {
+      setEtaMs(estimateRemainingMs(clamped - 20, 60, uploadStartedAt));
+    } else {
+      setEtaMs(null);
+    }
+  };
+
+  const runEstimate = async (target: File) => {
+    abortRef.current?.abort();
+    const ac = new AbortController();
+    abortRef.current = ac;
     setPhase('processing');
     setEstimate(null);
     setOffMatches([]);
     setError(null);
     setOffLookupFailed(false);
+    startedAtRef.current = Date.now();
+    setBandProgress(2, t('photoLogSampling', { defaultValue: 'Reading image…' }));
+
     try {
-      const hints = await sampleMealImageHints(file);
-      const fromApi = await estimateMealViaApi(file, hints);
-      const result = fromApi ?? (await estimateMealFromPhoto(file, hints));
+      const hints = await sampleMealImageHints(target);
+      if (ac.signal.aborted) return;
+      setBandProgress(20, t('photoLogUploading', { defaultValue: 'Uploading…' }));
+      const uploadStarted = Date.now();
+
+      const fromApi = await estimateMealViaApi(target, hints, {
+        signal: ac.signal,
+        onUploadProgress: (uploadPct) => {
+          const composite = 20 + Math.round((uploadPct / 100) * 60);
+          setBandProgress(
+            composite,
+            t('photoLogUploading', { defaultValue: 'Uploading…' }),
+            uploadStarted
+          );
+        },
+      });
+      if (ac.signal.aborted) return;
+
+      setBandProgress(85, t('photoLogProcessing', { defaultValue: 'Analyzing meal…' }));
+      const result = fromApi ?? (await estimateMealFromPhoto(target, hints));
+      if (ac.signal.aborted) return;
+      setBandProgress(100, t('photoLogDone', { defaultValue: 'Done' }));
       setEstimate(result);
       setPhase('estimate');
       void groundWithOff(result.name);
     } catch (err: unknown) {
+      if (ac.signal.aborted) {
+        setPhase('preview');
+        setProgress(0);
+        setProgressMsg(null);
+        return;
+      }
       const msg =
         err instanceof Error
           ? err.message
-          : t('photoLogError', { defaultValue: 'Could not analyze that photo. Try another image.' });
+          : t('photoLogError', { defaultValue: 'Could not analyze that photo. Try again.' });
       setError(msg);
       setPhase('error');
     }
+  };
+
+  const takeFile = (next: File | null) => {
+    if (!next || !next.type.startsWith('image/')) return;
+    revokePreview();
+    const url = URL.createObjectURL(next);
+    setFile(next);
+    setPreview(url);
+    setPhase('preview');
+    setEstimate(null);
+    setError(null);
+    setProgress(0);
+  };
+
+  const rejectWrongType = () => {
+    toast({
+      title: t('uploadWrongType', { defaultValue: 'Wrong file type' }),
+      description: t('photoLogNeedImage', {
+        defaultValue: 'Drop a photo (JPEG, PNG, WebP).',
+      }),
+      variant: 'destructive',
+    });
   };
 
   return (
@@ -130,54 +210,81 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
         </div>
       </div>
 
-      {preview ? (
-        <div className="relative rounded-xl overflow-hidden border border-border/60 aspect-[16/10] bg-muted/30">
-          {/* img preview — next/image not used for blob URLs */}
-          <img src={preview} alt="" className="w-full h-full object-cover" />
-          {phase === 'processing' && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/70 backdrop-blur-sm gap-2">
-              <Loader2 className="h-6 w-6 text-primary animate-spin" />
-              <p className="text-sm text-muted-foreground">
-                {t('photoLogProcessing', { defaultValue: 'Analyzing meal…' })}
-              </p>
+      {!file ? (
+        <FileDropZone
+          accept="image/*"
+          aria-label={t('photoLogDropIdle', {
+            defaultValue: 'Drop a meal photo or click to browse',
+          })}
+          idleLabel={
+            <span className="flex flex-col items-center gap-2 py-10 px-4">
+              <ImagePlus className="h-8 w-8 text-primary/80" />
+              <span className="text-sm font-medium text-foreground">
+                {t('photoLogDropIdle', {
+                  defaultValue: 'Drop a meal photo or click to browse',
+                })}
+              </span>
+            </span>
+          }
+          activeLabel={
+            <span className="flex flex-col items-center gap-2 py-10 px-4">
+              <ImagePlus className="h-8 w-8 text-primary" />
+              <span className="text-sm font-medium text-primary">
+                {t('photoLogDropActive', { defaultValue: 'Drop to analyze' })}
+              </span>
+            </span>
+          }
+          onFiles={(files) => takeFile(files[0] ?? null)}
+          onReject={() => rejectWrongType()}
+        />
+      ) : (
+        <div className="space-y-3">
+          <div className="relative rounded-xl overflow-hidden border border-border/60 aspect-[16/10] bg-muted/30">
+            {preview && (
+              // eslint-disable-next-line @next/next/no-img-element -- blob preview
+              <img src={preview} alt="" className="w-full h-full object-cover" />
+            )}
+          </div>
+          {phase === 'preview' && (
+            <div className="flex flex-wrap gap-2">
+              <Button type="button" size="sm" onClick={() => void runEstimate(file)}>
+                {t('photoLogAnalyze', { defaultValue: 'Analyze' })}
+              </Button>
+              <Button type="button" size="sm" variant="outline" onClick={reset}>
+                {t('photoLogRetake', { defaultValue: 'Choose another photo' })}
+              </Button>
             </div>
           )}
-        </div>
-      ) : (
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          className="w-full rounded-xl border-2 border-dashed border-border/70 hover:border-primary/40 bg-muted/20 hover:bg-muted/35 transition-colors py-10 flex flex-col items-center gap-2 text-muted-foreground"
-        >
-          <ImagePlus className="h-8 w-8 text-primary/80" />
-          <span className="text-sm font-medium text-foreground">
-            {t('photoLogChoose', { defaultValue: 'Choose photo' })}
-          </span>
-        </button>
-      )}
-
-      {phase === 'error' && error && (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 space-y-3">
-          <p className="text-sm text-destructive" role="alert">
-            {error}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              type="button"
-              size="sm"
-              variant="fitness"
-              onClick={() => {
-                setError(null);
-                setPhase('idle');
-                inputRef.current?.click();
-              }}
-            >
-              {t('photoLogRetry', { defaultValue: 'Try another photo' })}
-            </Button>
-            <Button type="button" size="sm" variant="outline" onClick={reset}>
-              {t('photoLogDismiss', { defaultValue: 'Dismiss' })}
-            </Button>
-          </div>
+          {(phase === 'processing' || phase === 'error') && (
+            <FileUploadRow
+              file={file}
+              previewUrl={preview}
+              status={phase === 'error' ? 'error' : progress >= 80 ? 'processing' : 'uploading'}
+              progress={progress}
+              etaMs={etaMs}
+              message={progressMsg}
+              error={error}
+              onCancel={
+                phase === 'processing'
+                  ? () => {
+                      abortRef.current?.abort();
+                      setPhase('preview');
+                      setProgress(0);
+                      setProgressMsg(null);
+                    }
+                  : undefined
+              }
+              onRetry={
+                phase === 'error'
+                  ? () => {
+                      setError(null);
+                      void runEstimate(file);
+                    }
+                  : undefined
+              }
+              onRemove={phase === 'error' ? reset : undefined}
+            />
+          )}
         </div>
       )}
 
@@ -262,32 +369,36 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
       )}
 
       <input
-        ref={inputRef}
+        ref={cameraInputRef}
         type="file"
         accept="image/*"
         capture="environment"
         className="hidden"
-        onChange={(e) => void handleFile(e.target.files?.[0] ?? null)}
+        onChange={(e) => {
+          takeFile(e.target.files?.[0] ?? null);
+          e.target.value = '';
+        }}
       />
 
-      {phase === 'idle' && (
+      {phase === 'idle' && !file && (
         <div className="flex flex-wrap gap-2">
           <Button
             type="button"
             variant="outline"
             size="sm"
             className="rounded-lg"
-            onClick={() => inputRef.current?.click()}
+            onClick={() => cameraInputRef.current?.click()}
           >
             <Camera className="h-4 w-4" />
-            {t('photoLogChoose', { defaultValue: 'Choose photo' })}
+            {t('photoLogCamera', { defaultValue: 'Use camera' })}
           </Button>
         </div>
       )}
 
       <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
         {t('photoLogBetaNote', {
-          defaultValue: 'Privacy-first — photo analyzed via secure API with on-device fallback; matches use Open Food Facts.',
+          defaultValue:
+            'Privacy-first — photo analyzed via secure API with on-device fallback; matches use Open Food Facts.',
         })}
       </p>
     </div>

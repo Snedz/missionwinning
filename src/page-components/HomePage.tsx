@@ -10,6 +10,22 @@ import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import type { JourneyPhase } from '@/lib/missionJourney';
 import { HomeTodayLean } from '@/page-components/HomeTodayLean';
+import { SkeletonCard } from '@/components/ui/Skeleton';
+
+function TodayDashboardLoading() {
+  return (
+    <div
+      className="space-y-4 p-4 max-w-lg mx-auto"
+      role="status"
+      aria-busy="true"
+      aria-label="Loading Today"
+    >
+      <SkeletonCard />
+      <SkeletonCard className="h-28" />
+      <SkeletonCard />
+    </div>
+  );
+}
 
 const HomeTodayDashboard = dynamic(
   () =>
@@ -18,31 +34,34 @@ const HomeTodayDashboard = dynamic(
     })),
   {
     ssr: false,
-    loading: () => <HomeTodayLean />,
+    loading: () => <TodayDashboardLoading />,
   }
 );
 
-/** Journey phase without pulling workoutStore / full mission hook. */
-function useJourneyPhaseLite(): JourneyPhase {
-  const [phase, setPhase] = useState<JourneyPhase>('basic');
+export function HomePage() {
+  const [phase, setPhase] = useState<JourneyPhase | null>(null);
+
   useEffect(() => {
     try {
       const raw = localStorage.getItem('mw_journey_state');
       if (raw) {
         const parsed = JSON.parse(raw) as { phase?: JourneyPhase };
-        if (parsed.phase) setPhase(parsed.phase);
+        if (parsed.phase) {
+          setPhase(parsed.phase);
+          return;
+        }
       }
     } catch {
-      /* keep basic */
+      /* fall through */
     }
+    setPhase('basic');
   }, []);
-  return phase;
-}
 
-export function HomePage() {
-  const phase = useJourneyPhaseLite();
+  if (phase == null) {
+    return <TodayDashboardLoading />;
+  }
+
   const needsFullDashboard = phase === 'readiness' || phase === 'commissioned';
-
   if (!needsFullDashboard) {
     return <HomeTodayLean />;
   }

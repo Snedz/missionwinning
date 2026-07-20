@@ -28,6 +28,7 @@ type Props = {
   id?: string;
   'aria-label'?: string;
   'aria-invalid'?: boolean;
+  'aria-describedby'?: string;
   className?: string;
 };
 
@@ -47,6 +48,7 @@ export const OtpInput = forwardRef<OtpInputHandle, Props>(function OtpInput(
     id,
     'aria-label': ariaLabel = 'One-time code',
     'aria-invalid': ariaInvalid,
+    'aria-describedby': ariaDescribedBy,
     className,
   },
   ref
@@ -157,6 +159,7 @@ export const OtpInput = forwardRef<OtpInputHandle, Props>(function OtpInput(
       role="group"
       aria-label={ariaLabel}
       aria-invalid={ariaInvalid ?? status === 'error'}
+      aria-describedby={ariaDescribedBy}
       className={cn(
         'flex gap-2 justify-center',
         status === 'error' && 'animate-otp-shake',
