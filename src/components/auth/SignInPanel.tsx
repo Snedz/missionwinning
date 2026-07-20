@@ -10,8 +10,12 @@ import {
   savePrivacyConsent,
 } from '@/lib/privacyConsent';
 import {
+  formatEnabledOAuthLabels,
+  formatOAuthError,
   getEnabledOAuthProviders,
   isAppleOAuthEnabled,
+  isAzureOAuthEnabled,
+  isFacebookOAuthEnabled,
   isGoogleOAuthEnabled,
 } from '@/lib/oauthConfig';
 import {
@@ -63,6 +67,25 @@ function AppleIcon({ className }: { className?: string }) {
   );
 }
 
+function MicrosoftIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden>
+      <path fill="#F25022" d="M1 1h10v10H1z" />
+      <path fill="#00A4EF" d="M13 1h10v10H13z" />
+      <path fill="#7FBA00" d="M1 13h10v10H1z" />
+      <path fill="#FFB900" d="M13 13h10v10H13z" />
+    </svg>
+  );
+}
+
+function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="#1877F2" aria-hidden>
+      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.43c0-3.007 1.792-4.668 4.533-4.668 1.312 0 2.686.234 2.686.234v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z" />
+    </svg>
+  );
+}
+
 export function SignInPanel({
   onComplete,
   allowSkip = false,
@@ -80,6 +103,7 @@ export function SignInPanel({
   const configured = isSupabaseConfigured();
   const oauthProviders = getEnabledOAuthProviders();
   const showOAuth = configured && oauthProviders.length > 0;
+  const oauthLabelList = formatEnabledOAuthLabels(oauthProviders);
 
   useEffect(() => {
     if (hasValidPrivacyConsent()) {
@@ -110,7 +134,7 @@ export function SignInPanel({
       await signInWithOAuth(provider, nextPath);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
-      setError(msg);
+      setError(formatOAuthError(msg));
       setLoading(null);
     }
   };
@@ -181,6 +205,30 @@ export function SignInPanel({
             >
               <GoogleIcon className="h-5 w-5" />
               {loading === 'google' ? 'Redirecting…' : 'Continue with Google'}
+            </Button>
+          )}
+          {isAzureOAuthEnabled() && (
+            <Button
+              type="button"
+              variant="outline"
+              className="oauth-btn oauth-btn-azure w-full h-12 text-[15px] font-medium"
+              disabled={!!loading}
+              onClick={() => handleOAuth('azure')}
+            >
+              <MicrosoftIcon className="h-5 w-5" />
+              {loading === 'azure' ? 'Redirecting…' : 'Continue with Microsoft'}
+            </Button>
+          )}
+          {isFacebookOAuthEnabled() && (
+            <Button
+              type="button"
+              variant="outline"
+              className="oauth-btn oauth-btn-facebook w-full h-12 text-[15px] font-medium"
+              disabled={!!loading}
+              onClick={() => handleOAuth('facebook')}
+            >
+              <FacebookIcon className="h-5 w-5" />
+              {loading === 'facebook' ? 'Redirecting…' : 'Continue with Facebook'}
             </Button>
           )}
         </div>
@@ -255,8 +303,8 @@ export function SignInPanel({
 
       <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
         Privacy by design: no password stored.
-        {showOAuth
-          ? ' OAuth uses Apple or Google — we receive your email and name only.'
+        {showOAuth && oauthLabelList
+          ? ` OAuth uses ${oauthLabelList} — we receive your email and name only.`
           : ' Email magic link only — we receive your email to sync your account.'}{' '}
         You can sign out anytime from Profile.
       </p>

@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Shield } from 'lucide-react';
+import { formatOAuthError } from '@/lib/oauthConfig';
 import { supabase } from '@/lib/supabase';
 import { sanitizeNextPath } from '@/lib/safeRedirect';
 
@@ -28,7 +29,7 @@ export function AuthCallbackPage() {
       if (errorDesc) {
         if (!cancelled) {
           setStatus('error');
-          setDetail(decodeURIComponent(errorDesc));
+          setDetail(formatOAuthError(decodeURIComponent(errorDesc)));
         }
         return;
       }
@@ -48,7 +49,11 @@ export function AuthCallbackPage() {
       } catch (e: unknown) {
         if (!cancelled) {
           setStatus('error');
-          setDetail(e instanceof Error ? e.message : 'Sign-in could not be completed.');
+          setDetail(
+            formatOAuthError(
+              e instanceof Error ? e.message : 'Sign-in could not be completed.'
+            )
+          );
         }
       }
     };

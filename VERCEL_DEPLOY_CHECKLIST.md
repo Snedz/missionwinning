@@ -58,7 +58,8 @@ Vercel → Project → Settings → Environment Variables → **Production + Pre
 2. **Actions → Sync Vercel env → Run workflow**.
 3. Optional: set `VERCEL_DEPLOY_HOOK_URL` so the workflow triggers a production redeploy.
 
-OAuth redirect: `https://www.missionwinning.com/auth/callback`
+OAuth redirect: `https://www.missionwinning.com/auth/callback`  
+Also enable each social provider in **Supabase → Authentication → Providers** before setting `NEXT_PUBLIC_OAUTH_*` (see [ENV.md](ENV.md) — Google first; Apple / Azure / Facebook are opt-in flags).
 
 ---
 
