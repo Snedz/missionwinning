@@ -4,6 +4,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — OTP input system (youth consent)
+
+- `src/lib/otpInput.ts` — sanitize/slots helpers + `RESEND_COOLDOWN_MS` (30s)
+- `src/components/ui/OtpInput.tsx` — six slots, one string; paste/autofill/backspace; shake + green lock
+- Wired into `YouthParentGate` verify step with auto-submit, 30s resend lock, instant error/success feedback
+
+---
+
+## 2026-07-20 — Snappy performance pass
+
+- **DB:** `supabase/migrations/20260720_perf_indexes.sql` — composite `workout_logs(user_id, completed_at DESC)`, leaderboard sort indexes, leads partials; `nudgeServer` batches workout lookups (≤2 queries / cron tick)
+- **Stream:** coach chat SSE via `streamCoachLlmCompletion` → `/api/coach/chat` `text/plain` when `stream: true`; `CoachChatPanel` token append + caret; JSON fallback kept
+- **Lists:** Library window 48 + Load more; History default 30 + Show more; `mw_nutrition_log` pruned to 90 days
+- **Lazy:** `dynamic()` + `RouteLoading` on library/leaderboard/track/benchmarks/learn (+ guide/course); Coach chat/voice code-split; `ArtPicture` AVIF+WebP on Landing/Press/Bundle teaser
+
+---
+
 ## 2026-07-19 — Crypto: Phantom Lifetime enabled on Production
 - Private gate: allowlist `/api/crypto-checkout/*` so intent/confirm return session 401 (not gate 403)
 - Applied `crypto_payment_intents` on prod Supabase (`tnzauplicgfrozvnowqp`)

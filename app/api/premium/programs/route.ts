@@ -10,6 +10,8 @@ import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
 import { getPremiumProgramTemplates } from '@/data/premiumProgramTemplates';
 import type { ProgramCategory } from '@/data/programTemplates';
 
+const CATALOG_CACHE = { 'Cache-Control': 'private, max-age=60, stale-while-revalidate=300' };
+
 /** Pro program templates — gated server-side (not in client bundle). */
 export const GET = withApiLogging('premium/programs', async(request: NextRequest) => {
   const category = (request.nextUrl.searchParams.get('category') ?? 'pro') as ProgramCategory;
@@ -19,7 +21,7 @@ export const GET = withApiLogging('premium/programs', async(request: NextRequest
   }
 
   if (isDemoPremiumEnabled()) {
-    return NextResponse.json({ programs: getPremiumProgramTemplates() });
+    return NextResponse.json({ programs: getPremiumProgramTemplates() }, { headers: CATALOG_CACHE });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -47,5 +49,5 @@ export const GET = withApiLogging('premium/programs', async(request: NextRequest
     return NextResponse.json({ error: 'Premium enrollment required' }, { status: 403 });
   }
 
-  return NextResponse.json({ programs: getPremiumProgramTemplates() });
+  return NextResponse.json({ programs: getPremiumProgramTemplates() }, { headers: CATALOG_CACHE });
 });

@@ -1,13 +1,19 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
-import { LeaderboardPage } from '@/page-components/LeaderboardPage';
 import { routeMetadata } from '@/lib/routeMetadata';
+import { RouteLoading } from '@/components/layout/RouteLoading';
+
+const LeaderboardPage = dynamic(
+  () => import('@/page-components/LeaderboardPage').then((m) => m.LeaderboardPage),
+  { loading: () => <RouteLoading label="Leaderboard" /> }
+);
 
 export const metadata: Metadata = routeMetadata('leaderboard');
 
 export default function LeaderboardRoute() {
   return (
-    <Suspense fallback={<div className="min-h-[40vh] animate-pulse rounded-2xl bg-muted/20" />}>
+    <Suspense fallback={<RouteLoading label="Leaderboard" />}>
       <LeaderboardPage />
     </Suspense>
   );

@@ -116,6 +116,9 @@ type FitnessTestStrings = {
   youthVerifyCta: string;
   youthCodeInvalid: string;
   youthSendCode: string;
+  youthResendCode: string;
+  youthResendIn: string;
+  youthResendFailed: string;
   youthConfirmTitle: string;
   youthConfirmLoading: string;
   youthConfirmOk: string;
@@ -258,6 +261,9 @@ const en: FitnessTestStrings = {
   youthVerifyCta: 'Verify & continue',
   youthCodeInvalid: 'Incorrect verification code.',
   youthSendCode: 'Send verification email',
+  youthResendCode: 'Resend code',
+  youthResendIn: 'Resend code in {{seconds}}s',
+  youthResendFailed: 'Could not resend the code. Try again shortly.',
   youthConfirmTitle: 'Parent consent',
   youthConfirmLoading: 'Confirming…',
   youthConfirmOk: 'Consent verified. Redirecting to the fitness test…',

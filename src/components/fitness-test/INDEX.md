@@ -9,7 +9,7 @@
 | `FitnessTestRunner.tsx` | Main PFT flow |
 | `PresidentialFitnessSection.tsx` | PFT entry on fitness test page |
 | `SchoolClassPanel.tsx` | Join/create PE class |
-| `YouthParentGate.tsx` | Under-age consent gate |
+| `YouthParentGate.tsx` | Under-age consent gate (uses `ui/OtpInput` for 6-digit verify) |
 | `ShareFitnessButton.tsx` | Share PFT results text |
 | `PftWeekOnePrintSheet.tsx` | Printable week-one challenge |
 | `TeacherClassPrintSheet.tsx` | Printable class report |

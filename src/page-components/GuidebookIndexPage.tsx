@@ -22,6 +22,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BookMarked, ChevronRight, Download } from 'lucide-react';
+import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
 
 export function GuidebookIndexPage() {
   const { t } = useTranslation();
@@ -34,8 +35,7 @@ export function GuidebookIndexPage() {
       setPremiumChapters([]);
       return;
     }
-    fetch('/api/premium/guidebook')
-      .then((r) => (r.ok ? r.json() : { chapters: [] }))
+    fetchPremiumCatalogJson<{ chapters?: GuideChapter[] }>('/api/premium/guidebook')
       .then((d) => setPremiumChapters(d.chapters ?? []))
       .catch(() => setPremiumChapters([]));
   }, [premium]);

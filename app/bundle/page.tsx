@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { BundlePage } from '@/page-components/BundlePage';
 import { publicPageMetadata } from '@/lib/seoMetadata';
 import { productJsonLd } from '@/lib/publicSeo';
+import { SkeletonCard } from '@/components/ui/Skeleton';
 
 export const metadata: Metadata = publicPageMetadata({
   title: 'Super Bundle',
@@ -19,7 +20,13 @@ export default function SuperBundleRoute() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <Suspense
+        fallback={
+          <div className="flex min-h-screen items-center justify-center bg-background px-5">
+            <SkeletonCard className="w-full max-w-lg" />
+          </div>
+        }
+      >
         <BundlePage />
       </Suspense>
     </>

@@ -9,9 +9,11 @@ import { PREMIUM_GUIDEBOOK_CHAPTERS } from '@/data/guidebook/premiumChapters';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
+const CATALOG_CACHE = { 'Cache-Control': 'private, max-age=60, stale-while-revalidate=300' };
+
 export const GET = withApiLogging('premium/guidebook', async(request: NextRequest) => {
   if (isDemoPremiumEnabled()) {
-    return NextResponse.json({ chapters: PREMIUM_GUIDEBOOK_CHAPTERS });
+    return NextResponse.json({ chapters: PREMIUM_GUIDEBOOK_CHAPTERS }, { headers: CATALOG_CACHE });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -39,5 +41,5 @@ export const GET = withApiLogging('premium/guidebook', async(request: NextReques
     return NextResponse.json({ error: 'Premium enrollment required' }, { status: 403 });
   }
 
-  return NextResponse.json({ chapters: PREMIUM_GUIDEBOOK_CHAPTERS });
+  return NextResponse.json({ chapters: PREMIUM_GUIDEBOOK_CHAPTERS }, { headers: CATALOG_CACHE });
 });

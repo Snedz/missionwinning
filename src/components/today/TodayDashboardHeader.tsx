@@ -9,6 +9,7 @@ import type { TodayTrends } from '@/lib/todayTrends';
 import { animateCount } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 import { StreakChip } from '@/components/today/StreakChip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface Props {
   missionScore: number;
@@ -39,9 +40,19 @@ export function TodayDashboardHeader({ missionScore, scores, streak, trends, cla
     >
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="eyebrow mb-1">
-            {t('todayMissionScore', { defaultValue: 'Mission Score' })}
-          </p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <p className="eyebrow mb-1 cursor-help">
+                {t('todayMissionScore', { defaultValue: 'Mission Score' })}
+              </p>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-xs">
+              {t('todayMissionScoreTip', {
+                defaultValue:
+                  'Daily score from all six pillars. Log training, fuel, move, mind, track, and learn to raise it.',
+              })}
+            </TooltipContent>
+          </Tooltip>
           <p className="text-4xl font-bold tabular-nums text-primary tracking-tight score-tick">
             {displayScore}
           </p>

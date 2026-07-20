@@ -13,6 +13,7 @@ import { syncProteinChallengeFromNutrition } from '@/lib/challenges';
 import { FREE_RECIPES } from '@/data/recipes/freeRecipes';
 import type { Recipe } from '@/data/recipes/types';
 import { usePremium } from '@/hooks/usePremium';
+import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
 import { FuelLogSheet, type MealType } from '@/components/nutrition/FuelLogSheet';
 import { FoodSearchBar } from '@/components/nutrition/FoodSearchBar';
 import { BarcodeLookup } from '@/components/nutrition/BarcodeLookup';
@@ -28,6 +29,7 @@ import {
   getFrequentQuickFoods,
   getYesterdayEntries,
   parseNutritionLog,
+  pruneNutritionLogToDays,
 } from '@/lib/nutritionQuickLog';
 import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from '@/lib/macroTargets';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
@@ -83,7 +85,11 @@ export function NutritionPage() {
 
     const saved = localStorage.getItem('mw_nutrition_log');
     if (saved) {
-      const parsed = parseNutritionLog(saved);
+      const rawParsed = parseNutritionLog(saved);
+      const parsed = pruneNutritionLogToDays(rawParsed, 90);
+      if (parsed.length !== rawParsed.length) {
+        localStorage.setItem('mw_nutrition_log', JSON.stringify(parsed));
+      }
       setAllLogs(parsed);
       setLogged(
         parsed
@@ -131,11 +137,7 @@ export function NutritionPage() {
       return;
     }
     setPremiumFetchError(false);
-    fetch('/api/premium/recipes', { credentials: 'include' })
-      .then((r) => {
-        if (!r.ok) throw new Error('premium recipes unavailable');
-        return r.json();
-      })
+    fetchPremiumCatalogJson<{ recipes?: Recipe[] }>('/api/premium/recipes')
       .then((data) => setPremiumRecipes(data.recipes ?? []))
       .catch(() => {
         setPremiumRecipes([]);
@@ -159,8 +161,15 @@ export function NutritionPage() {
   }, [water]);
 
   useEffect(() => {
-    localStorage.setItem('mw_nutrition_log', JSON.stringify(logged));
-  }, [logged]);
+    // Persist full history (not just today) and keep a 90-day bound.
+    const todayRows = logged.map((l) => ({
+      ...l,
+      date: today,
+    }));
+    const older = allLogs.filter((l) => l.date && l.date !== today);
+    const next = pruneNutritionLogToDays([...older, ...todayRows], 90);
+    localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
+  }, [logged, allLogs, today]);
 
   const mealLabel = (meal?: MealType) => {
     if (!meal) return t('fuelMealOther', { defaultValue: 'Other' });
@@ -186,11 +195,10 @@ export function NutritionPage() {
     };
     setLogged((prev) => {
       const next = [...prev, entry];
-      localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
       return next;
     });
     setAllLogs((prev) => {
-      const next = [...prev, entry];
+      const next = pruneNutritionLogToDays([...prev, entry], 90);
       localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
       return next;
     });

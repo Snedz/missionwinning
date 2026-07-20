@@ -4,17 +4,19 @@
  */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { track } from "@/lib/analytics";
 import { usePremium } from "@/hooks/usePremium";
+import { useToast } from "@/hooks/use-toast";
 import {
   BookOpen,
   Brain,
   Check,
   Dumbbell,
+  Loader2,
   MapPin,
   Sparkles,
   Trophy,
@@ -68,9 +70,12 @@ function planBadgeLabel(
 
 export function BundlePage() {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const searchParams = useSearchParams();
   const { premium, loading: premiumLoading, refetch } = usePremium();
   const [planId, setPlanId] = useState<BundlePlanId>(DEFAULT_BUNDLE_PLAN);
+  const [unlockTimedOut, setUnlockTimedOut] = useState(false);
+  const unlockedToastSent = useRef(false);
   const plan = BUNDLE_PLANS[planId];
   const stripeUrl = getStripeCheckoutUrl("super-bundle");
   const vsSeparateSavings = bundleSavingsPercent();
@@ -93,9 +98,26 @@ export function BundlePage() {
   }, [checkoutSuccess, premium, premiumLoading, refetch]);
 
   useEffect(() => {
+    if (!checkoutSuccess || premium) {
+      setUnlockTimedOut(false);
+      return;
+    }
+    const tId = setTimeout(() => setUnlockTimedOut(true), 90_000);
+    return () => clearTimeout(tId);
+  }, [checkoutSuccess, premium]);
+
+  useEffect(() => {
     if (!checkoutSuccess || premiumLoading || !premium) return;
     track('checkout_completed', { premium: true });
-  }, [checkoutSuccess, premium, premiumLoading]);
+    if (!unlockedToastSent.current) {
+      unlockedToastSent.current = true;
+      toast({
+        title: t('bundleCheckoutSuccess', {
+          defaultValue: 'Premium active — Mission Coach and bundle content are unlocked.',
+        }),
+      });
+    }
+  }, [checkoutSuccess, premium, premiumLoading, t, toast]);
 
   const planTabLabel =
     planId === "monthly"
@@ -166,25 +188,45 @@ export function BundlePage() {
 
     <div className="space-y-10 max-w-4xl mx-auto px-5 pb-12 pt-8">
 
-      {checkoutSuccess && !premiumLoading && (
+      {checkoutSuccess && (
         <Card className="border-primary/40 bg-primary/10">
-          <CardContent className="pt-6">
+          <CardContent className="pt-6 space-y-3">
             {premium ? (
               <p className="text-sm font-medium text-primary">
                 {t('bundleCheckoutSuccess', {
                   defaultValue: 'Premium active — Mission Coach and bundle content are unlocked.',
                 })}
               </p>
+            ) : unlockTimedOut ? (
+              <>
+                <p className="text-sm text-muted-foreground">
+                  {t('bundleCheckoutStillProcessing', {
+                    defaultValue:
+                      'Still processing — refresh this page or check the email you used at checkout. Premium unlocks after payment confirms.',
+                  })}
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setUnlockTimedOut(false);
+                    refetch();
+                  }}
+                >
+                  {t('bundleCheckoutRetry', { defaultValue: 'Check again' })}
+                </Button>
+              </>
             ) : (
-              <p className="text-sm text-muted-foreground">
-                {t('bundleCheckoutPending', {
-                  defaultValue:
-                    'Thanks! If you just paid, premium may take a minute — refresh or sign in with your checkout email.',
+              <p className="flex items-center gap-2 text-sm font-medium text-primary">
+                <Loader2 className="h-4 w-4 animate-spin shrink-0" aria-hidden />
+                {t('bundleCheckoutUnlocking', {
+                  defaultValue: 'Unlocking your Super Bundle…',
                 })}
               </p>
             )}
             {premium && (
-              <Button asChild variant="fitness" size="sm" className="mt-3">
+              <Button asChild variant="fitness" size="sm">
                 <Link href="/coach">{t('coachViewPlan', { defaultValue: 'View full week' })}</Link>
               </Button>
             )}

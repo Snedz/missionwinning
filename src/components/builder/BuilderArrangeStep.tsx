@@ -17,6 +17,7 @@ import {
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { getExerciseById } from '@/data/exercises';
 import type { WorkoutExerciseTemplate } from '@/types';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export type DraftExercise = WorkoutExerciseTemplate & { key: string };
 
@@ -137,9 +138,21 @@ export function BuilderArrangeStep({
                       </div>
                     </div>
                   </div>
-                  <Button variant="ghost" size="icon" onClick={() => onRemoveExercise(ex.key)}>
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label={t('builderRemoveExercise', { defaultValue: 'Remove exercise' })}
+                        onClick={() => onRemoveExercise(ex.key)}
+                      >
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {t('builderRemoveExercise', { defaultValue: 'Remove exercise' })}
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
                 <Table>
                   <TableHeader>
@@ -185,15 +198,23 @@ export function BuilderArrangeStep({
                           />
                         </TableCell>
                         <TableCell>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => onRemoveSet(ex.key, i)}
-                            disabled={ex.sets.length <= 1}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={() => onRemoveSet(ex.key, i)}
+                                disabled={ex.sets.length <= 1}
+                                aria-label={t('builderRemoveSet', { defaultValue: 'Remove set' })}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              {t('builderRemoveSet', { defaultValue: 'Remove set' })}
+                            </TooltipContent>
+                          </Tooltip>
                         </TableCell>
                       </TableRow>
                     ))}

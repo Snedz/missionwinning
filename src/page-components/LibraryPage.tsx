@@ -62,6 +62,7 @@ export function LibraryPage() {
   const [catalogRevision, setCatalogRevision] = useState(0);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [muscleQuery, setMuscleQuery] = useState('');
+  const [visibleCount, setVisibleCount] = useState(48);
 
   useEffect(() => {
     void ensureFullExerciseCatalog().then(() => setCatalogRevision((n) => n + 1));
@@ -87,13 +88,19 @@ export function LibraryPage() {
 
   const setFilter = <K extends keyof LibraryFilterState>(key: K, value: LibraryFilterState[K]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
+    setVisibleCount(48);
   };
 
   const activeFilterCount = [filters.equipment, filters.tag, filters.level, filters.muscle].filter(
     Boolean
   ).length;
 
-  const clearFilters = () => setFilters({ ...DEFAULT_LIBRARY_FILTERS, query: filters.query });
+  const clearFilters = () => {
+    setFilters({ ...DEFAULT_LIBRARY_FILTERS, query: filters.query });
+    setVisibleCount(48);
+  };
+
+  const visibleExercises = filtered.slice(0, visibleCount);
 
   return (
     <PillarPageShell
@@ -282,7 +289,7 @@ export function LibraryPage() {
       </Dialog>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map((ex) => (
+        {visibleExercises.map((ex) => (
           <Card
             key={ex.id}
             className="content-card pressable-card cursor-pointer"
@@ -323,6 +330,22 @@ export function LibraryPage() {
           </Card>
         ))}
       </div>
+
+      {filtered.length > visibleCount ? (
+        <div className="flex justify-center pt-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-[44px]"
+            onClick={() => setVisibleCount((n) => n + 48)}
+          >
+            {t('libraryLoadMore', {
+              remaining: filtered.length - visibleCount,
+              defaultValue: `Load more (${filtered.length - visibleCount} left)`,
+            })}
+          </Button>
+        </div>
+      ) : null}
 
       {filtered.length === 0 && (
         <EmptyState

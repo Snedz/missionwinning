@@ -30,6 +30,21 @@ export function parseNutritionLog(raw: string | null): NutritionLogRow[] {
   }
 }
 
+/** Keep local nutrition log bounded (Today already filters to today). */
+export function pruneNutritionLogToDays(
+  rows: NutritionLogRow[],
+  days = 90,
+  now = new Date()
+): NutritionLogRow[] {
+  const cutoff = new Date(now);
+  cutoff.setUTCDate(cutoff.getUTCDate() - days);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  return rows.filter((row) => {
+    if (!row.date) return true;
+    return row.date >= cutoffStr;
+  });
+}
+
 export function getFrequentQuickFoods(
   logs: NutritionLogRow[],
   defaults: readonly QuickFoodTuple[] = DEFAULT_QUICK,

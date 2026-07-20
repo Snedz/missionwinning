@@ -113,6 +113,7 @@ export const coachChatSchema = z.object({
       .optional(),
     exerciseId: z.string().max(80).optional(),
   }),
+  stream: z.boolean().optional(),
 });
 
 export const fuelSearchQuerySchema = z.object({

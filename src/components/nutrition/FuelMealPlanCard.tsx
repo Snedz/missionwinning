@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FuelLockedPreview } from '@/components/nutrition/FuelLockedPreview';
+import { FuelPlanSkeleton } from '@/components/ui/Skeleton';
 import { useFuelPlan } from '@/hooks/useFuelPlan';
 import { RefreshCw, Sparkles } from 'lucide-react';
 
@@ -16,13 +17,7 @@ export function FuelMealPlanCard() {
   }
 
   if (loading) {
-    return (
-      <Card className="content-card">
-        <CardContent className="py-6 text-sm text-muted-foreground">
-          {t('loading', { defaultValue: 'Loading…' })}
-        </CardContent>
-      </Card>
-    );
+    return <FuelPlanSkeleton />;
   }
 
   if (!plan) {

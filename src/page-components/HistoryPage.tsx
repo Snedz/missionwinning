@@ -80,7 +80,8 @@ export function HistoryPage() {
   const [pillarWins, setPillarWins] = useState<CloudNutritionEntry[]>([]);
   const [chartExerciseId, setChartExerciseId] = useState('');
   const [nameQuery, setNameQuery] = useState('');
-  const [range, setRange] = useState<RangeFilter>('all');
+  const [range, setRange] = useState<RangeFilter>('30');
+  const [visibleCount, setVisibleCount] = useState(30);
 
   const filteredHistory = useMemo(() => {
     const q = nameQuery.trim().toLowerCase();
@@ -94,6 +95,11 @@ export function HistoryPage() {
       return true;
     });
   }, [workoutHistory, nameQuery, range]);
+
+  const visibleHistory = useMemo(
+    () => filteredHistory.slice(0, visibleCount),
+    [filteredHistory, visibleCount]
+  );
 
   const weeklyVolume = useMemo(
     () => buildWeeklyVolumeTimeline(workoutHistory, 12, i18n.language),
@@ -275,7 +281,10 @@ export function HistoryPage() {
                 <button
                   key={value}
                   type="button"
-                  onClick={() => setRange(value)}
+                  onClick={() => {
+                    setRange(value);
+                    setVisibleCount(30);
+                  }}
                   className={
                     range === value
                       ? 'rounded-full border border-primary/50 bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary'
@@ -292,7 +301,8 @@ export function HistoryPage() {
               {t('historyNoMatches', { defaultValue: 'No sessions match these filters.' })}
             </p>
           ) : (
-            filteredHistory.map((log) => (
+            <>
+            {visibleHistory.map((log) => (
               <Card
                 key={log.id}
                 className="content-card hover:border-primary/30 transition-colors cursor-pointer"
@@ -328,7 +338,21 @@ export function HistoryPage() {
                   </Button>
                 </CardContent>
               </Card>
-            ))
+            ))}
+            {filteredHistory.length > visibleCount ? (
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full min-h-[44px]"
+                onClick={() => setVisibleCount((n) => n + 30)}
+              >
+                {t('historyLoadMore', {
+                  remaining: filteredHistory.length - visibleCount,
+                  defaultValue: `Show more (${filteredHistory.length - visibleCount} left)`,
+                })}
+              </Button>
+            ) : null}
+            </>
           )}
         </div>
       )}

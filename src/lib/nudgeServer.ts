@@ -175,25 +175,42 @@ export async function collectNudgeCandidates(now = new Date()): Promise<NudgeRun
 
   const since = new Date(now.getTime() - 14 * 86_400_000).toISOString();
   const candidates: NudgeCandidate[] = [];
+  const eligible = profiles.filter((p): p is typeof p & { email: string } => !!p.email);
+  if (eligible.length === 0) {
+    return { considered: profiles.length, candidates };
+  }
 
-  for (const profile of profiles) {
-    if (!profile.email) continue;
-    const { data: logs } = await admin
-      .from('workout_logs')
-      .select('completed_at, total_volume')
-      .eq('user_id', profile.id)
-      .gte('completed_at', since)
-      .order('completed_at', { ascending: false })
-      .limit(60);
+  const userIds = eligible.map((p) => p.id);
+  // One batched fetch instead of N per-user queries (was O(n) round-trips).
+  const { data: allLogs } = await admin
+    .from('workout_logs')
+    .select('user_id, completed_at, total_volume')
+    .in('user_id', userIds)
+    .gte('completed_at', since)
+    .order('completed_at', { ascending: false })
+    .limit(Math.min(userIds.length * 60, 30_000));
 
-    const workoutDays = [...new Set((logs ?? []).map((l) => utcDay(l.completed_at)))];
+  const logsByUser = new Map<string, { completed_at: string; total_volume: number | null }[]>();
+  for (const row of allLogs ?? []) {
+    const uid = row.user_id as string;
+    const list = logsByUser.get(uid);
+    if (list) {
+      if (list.length < 60) list.push(row);
+    } else {
+      logsByUser.set(uid, [row]);
+    }
+  }
+
+  for (const profile of eligible) {
+    const logs = logsByUser.get(profile.id) ?? [];
+    const workoutDays = [...new Set(logs.map((l) => utcDay(l.completed_at)))];
     const candidate = decideNudge({
       email: profile.email,
       userId: profile.id,
       createdAt: profile.created_at,
       workoutDays,
-      workoutCount14d: (logs ?? []).length,
-      totalVolume14d: (logs ?? []).reduce((s, l) => s + (l.total_volume ?? 0), 0),
+      workoutCount14d: logs.length,
+      totalVolume14d: logs.reduce((s, l) => s + (l.total_volume ?? 0), 0),
       now,
       appUrl,
     });

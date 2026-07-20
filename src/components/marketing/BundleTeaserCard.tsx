@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Check } from 'lucide-react';
@@ -8,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { BUNDLE_PILLARS } from '@/lib/payments';
 import { BUNDLE_PLANS, DEFAULT_BUNDLE_PLAN } from '@/lib/bundleConfig';
 import { Reveal } from '@/components/marketing/Reveal';
+import { ArtPicture } from '@/components/marketing/ArtPicture';
 
 /**
  * Landing Super Bundle teaser — price from BUNDLE_PLANS (not hardcoded).
@@ -28,13 +28,11 @@ export function BundleTeaserCard() {
               className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 opacity-40"
               aria-hidden
             >
-              <Image
-                src="/art/bundle-brass.avif"
-                alt=""
+              <ArtPicture
+                base="/art/bundle-brass"
                 width={160}
                 height={160}
                 className="h-full w-full object-contain"
-                loading="lazy"
               />
             </div>
             <div className="relative z-[1]">

@@ -11,6 +11,7 @@ import { Check, Copy, Download } from 'lucide-react';
 import { MarketingNav } from '@/components/marketing/MarketingNav';
 import { MarketingFooter } from '@/components/marketing/MarketingFooter';
 import { Reveal } from '@/components/marketing/Reveal';
+import { ArtPicture } from '@/components/marketing/ArtPicture';
 import { cn } from '@/lib/utils';
 
 const SHORT_BOILERPLATE =
@@ -77,14 +78,7 @@ export function PressPage() {
 
       <header className="hero-field texture-noise section-seam relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <Image
-            src="/art/hero-field.avif"
-            alt=""
-            fill
-            priority
-            className="object-cover opacity-40"
-            sizes="100vw"
-          />
+          <ArtPicture base="/art/hero-field" fill priority className="object-cover opacity-40" />
         </div>
         <div className="relative z-[1] mx-auto flex min-h-[70vh] max-w-4xl flex-col justify-end gap-6 px-5 pb-16 pt-20 sm:min-h-[60vh] sm:justify-center sm:pb-20">
           <Image

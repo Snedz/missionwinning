@@ -9,9 +9,11 @@ import { PREMIUM_MIND_SESSIONS } from '@/data/premiumMindSessions';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
+const CATALOG_CACHE = { 'Cache-Control': 'private, max-age=60, stale-while-revalidate=300' };
+
 export const GET = withApiLogging('premium/mind', async(request: NextRequest) => {
   if (isDemoPremiumEnabled()) {
-    return NextResponse.json({ sessions: PREMIUM_MIND_SESSIONS });
+    return NextResponse.json({ sessions: PREMIUM_MIND_SESSIONS }, { headers: CATALOG_CACHE });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -39,5 +41,5 @@ export const GET = withApiLogging('premium/mind', async(request: NextRequest) =>
     return NextResponse.json({ error: 'Premium enrollment required' }, { status: 403 });
   }
 
-  return NextResponse.json({ sessions: PREMIUM_MIND_SESSIONS });
+  return NextResponse.json({ sessions: PREMIUM_MIND_SESSIONS }, { headers: CATALOG_CACHE });
 });

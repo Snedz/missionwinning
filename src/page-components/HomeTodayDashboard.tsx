@@ -32,60 +32,70 @@ import { useUnits } from "@/hooks/useUnits";
 import { formatRecommendedFocusLine, muscleGroupLabel } from "@/lib/readinessDisplay";
 import { runTodayPrimaryAction } from "@/lib/todayPrimaryAction";
 import { countHighProteinDaysFromNutritionLog } from "@/lib/nutritionHighProteinDays";
+import { Skeleton, SkeletonCard } from "@/components/ui/Skeleton";
 
 const BetaWelcomeBanner = dynamic(
   () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
-  { ssr: false }
+  { ssr: false, loading: () => null }
 );
 
 const CommandersIntent = dynamic(
   () => import('@/components/journey/CommandersIntent').then((m) => m.CommandersIntent),
-  { ssr: false }
+  { ssr: false, loading: () => <Skeleton className="h-16 w-full" /> }
 );
 
 const MuscleFreshnessStrip = dynamic(
   () => import('@/components/today/MuscleFreshnessStrip').then((m) => m.MuscleFreshnessStrip),
-  { ssr: false }
+  { ssr: false, loading: () => <Skeleton className="h-10 w-full rounded-xl" /> }
 );
 
 const CoachTodayCard = dynamic(
   () => import('@/components/coach/CoachTodayCard').then((m) => m.CoachTodayCard),
-  { ssr: false }
+  { ssr: false, loading: () => <SkeletonCard className="min-h-[7rem]" /> }
 );
 
 const TodayCoachWeekStrip = dynamic(
   () => import('@/components/coach/TodayCoachWeekStrip').then((m) => m.TodayCoachWeekStrip),
-  { ssr: false }
+  { ssr: false, loading: () => <Skeleton className="h-14 w-full rounded-xl" /> }
 );
 
 const GuidebookContinueCard = dynamic(
   () => import('@/components/learn/GuidebookContinueCard').then((m) => m.GuidebookContinueCard),
-  { ssr: false }
+  { ssr: false, loading: () => <Skeleton className="h-20 w-full rounded-xl" /> }
 );
 
 const TodayQuickLinks = dynamic(
   () => import('@/components/journey/TodayQuickLinks').then((m) => m.TodayQuickLinks),
-  { ssr: false }
+  { ssr: false, loading: () => <Skeleton className="h-24 w-full rounded-xl" /> }
 );
 
 const TodayDashboardCustomize = dynamic(
   () => import('@/components/today/TodayDashboardCustomize').then((m) => m.TodayDashboardCustomize),
-  { ssr: false }
+  { ssr: false, loading: () => null }
 );
 
 const TodayWeekRecapCard = dynamic(
   () => import('@/components/today/TodayWeekRecapCard').then((m) => m.TodayWeekRecapCard),
-  { ssr: false }
+  { ssr: false, loading: () => <SkeletonCard /> }
 );
 
 const TodayDashboardAccordion = dynamic(
   () => import('@/components/today/TodayDashboardAccordion').then((m) => m.TodayDashboardAccordion),
-  { ssr: false }
+  { ssr: false, loading: () => <SkeletonCard className="min-h-[12rem]" /> }
 );
 
 const TodayDashboardHeader = dynamic(
   () => import('@/components/today/TodayDashboardHeader').then((m) => m.TodayDashboardHeader),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <div className="card-elevated space-y-4 p-5" role="status" aria-busy="true" aria-label="Loading">
+        <Skeleton className="h-3 w-28" />
+        <Skeleton className="h-10 w-24" />
+        <Skeleton className="h-16 w-full" />
+      </div>
+    ),
+  }
 );
 
 export function HomeTodayDashboard() {
