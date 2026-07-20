@@ -59,6 +59,9 @@ const optional = [
   ['NEXT_PUBLIC_WEARABLES', 'true to enable wearables UI (Profile + Track)'],
   ['STRAVA_CLIENT_ID', 'Strava OAuth (optional; pair with STRAVA_CLIENT_SECRET)'],
   ['STRAVA_CLIENT_SECRET', 'Strava OAuth secret (server only)'],
+  ['MEAL_VISION_API_URL', 'Optional multimodal meal vision API URL'],
+  ['MEAL_VISION_API_KEY', 'Meal vision API key (server only)'],
+  ['MEAL_VISION_MODEL', 'Meal vision model id (optional)'],
 ];
 
 const PLACEHOLDER_SECRETS = new Set(['done', 'change-me', 'your-secret', 'test-gate-secret-32chars-min!!']);

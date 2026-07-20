@@ -114,6 +114,15 @@ curl -X POST "$BASE/api/private-access" \
 | Schema | `coachDailyContextSchema` |
 | Notes | LLM when env set; else rules fallback keys |
 
+### `POST /api/coach/debrief-voice`
+
+| | |
+|--|--|
+| Auth | `gate` + app access + **premium** (rules fallback when free / no LLM) |
+| Rate | 6/min/IP |
+| Body | `{ focusKey, trainSessions?, proteinDays?, weightDelta? }` |
+| Success | `{ message, source: 'llm' \| 'rules' }` |
+
 ### `POST /api/coach/plan-voice`
 
 | | |

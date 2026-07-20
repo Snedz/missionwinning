@@ -7,7 +7,7 @@ export type MealEstimate = {
   carbs: number;
   fat: number;
   confidence: 'low' | 'medium' | 'high';
-  source: 'heuristic' | 'api';
+  source: 'heuristic' | 'api' | 'vision';
 };
 
 export type MealImageHints = {

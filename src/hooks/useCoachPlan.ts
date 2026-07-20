@@ -151,6 +151,7 @@ export function useCoachPlan() {
       if (constraint.type === 'time') props.minutes = constraint.minutes;
       if (constraint.type === 'equipment') props.equipment = constraint.equipment;
       if (constraint.type === 'avoid') props.group = constraint.group;
+      if (constraint.type === 'readiness') props.why = 'readiness_volume_trim';
       track('coach_session_adjusted', props);
       return next;
     },

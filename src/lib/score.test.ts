@@ -93,3 +93,29 @@ describe('getCoachInsight', () => {
     assert.equal(insight.actionPath, '/move');
   });
 });
+
+describe('computeBodyScores check-in modifiers', () => {
+  it('does not change scores when checkIn omitted', () => {
+    const a = computeBodyScores([]);
+    const b = computeBodyScores([], {});
+    assert.equal(a.readiness, b.readiness);
+  });
+
+  it('lowers readiness for poor sleep and high soreness', () => {
+    const base = computeBodyScores([]);
+    const adj = computeBodyScores([], {
+      checkIn: { sleep: 1, mood: 3, stress: 3, energy: 3, soreness: 5 },
+    });
+    assert.ok(adj.readiness < base.readiness);
+    assert.ok(base.readiness - adj.readiness <= 15);
+  });
+
+  it('raises readiness for good sleep and energy', () => {
+    const base = computeBodyScores([]);
+    const adj = computeBodyScores([], {
+      checkIn: { sleep: 5, mood: 4, stress: 2, energy: 5, soreness: 1 },
+    });
+    assert.ok(adj.readiness > base.readiness);
+    assert.ok(adj.readiness - base.readiness <= 15);
+  });
+});

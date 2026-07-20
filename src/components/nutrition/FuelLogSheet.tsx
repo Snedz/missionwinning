@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-const PhotoLogStub = dynamic(
-  () => import('@/components/nutrition/PhotoLogStub').then((m) => m.PhotoLogStub),
+const PhotoMealLogger = dynamic(
+  () => import('@/components/nutrition/PhotoMealLogger').then((m) => m.PhotoMealLogger),
   {
     ssr: false,
     loading: () => (
@@ -203,7 +203,7 @@ export function FuelLogSheet({
           )}
 
           {tab === 'photo' && (
-            <PhotoLogStub
+            <PhotoMealLogger
               onLogEstimate={(est) => {
                 onLog(est.name, est.protein, est.cals, est.carbs, est.fat);
                 onClose();

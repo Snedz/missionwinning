@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useWorkoutStore } from "@/store/workoutStore";
 import { getRecommendedFocus, computeWinScore, computeBodyScores, getCoachInsight } from "@/lib/score";
+import { getTodayCheckIn } from "@/lib/mindCheckIns";
 import type { CoachInsight } from "@/lib/score";
 import { computeReadinessFromHistory } from "@/lib/readinessIndex";
 import { getTrainingStreak } from "@/lib/challenges";
@@ -323,6 +324,7 @@ export function HomeTodayDashboard() {
     return computeBodyScores(workoutHistory, {
       assessmentRisk: lastAssessment?.risk,
       pillarWins: recentPillarWins.length,
+      checkIn: typeof window !== 'undefined' ? getTodayCheckIn() : null,
     });
   }, [belowFoldReady, workoutHistory, lastAssessment?.risk, recentPillarWins.length]);
 

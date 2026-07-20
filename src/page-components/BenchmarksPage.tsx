@@ -52,6 +52,8 @@ import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadin
 import { PresidentialFitnessSection } from "@/components/fitness-test/PresidentialFitnessSection";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
+import { AnatomyHeatMap } from "@/components/history/AnatomyHeatMap";
+import { buildMuscleHeatmap } from "@/lib/historyAnalytics";
 
 export function BenchmarksPage() {
   const { t } = useTranslation();
@@ -59,6 +61,10 @@ export function BenchmarksPage() {
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const heatmapCells = useMemo(
+    () => buildMuscleHeatmap(workoutHistory, 14),
+    [workoutHistory]
+  );
   const exerciseIds = useMemo(
     () => getExercisesWithBenchmarkData(workoutHistory),
     [workoutHistory]
@@ -144,6 +150,22 @@ export function BenchmarksPage() {
     >
       <MilitaryReadinessSection />
       <PresidentialFitnessSection />
+
+      <Card className="content-card">
+        <CardHeader>
+          <CardTitle className="text-base">
+            {t('anatomyMapTitle', { defaultValue: 'Muscle balance' })}
+          </CardTitle>
+          <CardDescription>
+            {t('anatomyMapDesc', {
+              defaultValue: '14-day volume by major group — tap a region for exercises.',
+            })}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AnatomyHeatMap cells={heatmapCells} />
+        </CardContent>
+      </Card>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Card className="card-elevated card-glow-emerald border-primary/20">
