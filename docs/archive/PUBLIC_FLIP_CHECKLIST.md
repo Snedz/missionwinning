@@ -3,24 +3,27 @@
 # Public flip checklist — offline, SW, Search Console
 
 **When:** After Horizon 0 gates pass and founder is ready to set `PRIVATE_MODE=false`.  
-**Companion:** [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) (full flip day) · [SEO_ANALYTICS.md](SEO_ANALYTICS.md) · [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md)
+**Companion:** [SOFT_LAUNCH_DAY.md](SOFT_LAUNCH_DAY.md) · [../SEO_ANALYTICS.md](../SEO_ANALYTICS.md) · [TRACK_D_GO_LIVE.md](TRACK_D_GO_LIVE.md) · [../PRODUCTION_STACK.md](../PRODUCTION_STACK.md) Wave B (L10 PWA)
 
 This is the **agent-prepared** one-pager for the technical smoke after public mode. Founder still owns the Vercel env flip.
 
+**Pre-flip ops:** Upstash + Sentry DSN + rate-limit-smoke green ([../PRODUCTION_STACK.md](../PRODUCTION_STACK.md) Wave A).
+
 ---
 
-**Wave 2–3 prep:** [LAUNCH_READY.md](archive/LAUNCH_READY.md) — conversion, SEO, email, growth smoke, ordered flip sequence.
+**Wave 2–3 prep:** [LAUNCH_READY.md](LAUNCH_READY.md) — conversion, SEO, email, growth smoke, ordered flip sequence.
 
 ## Pre-flip (gate still on)
 
 - [ ] CI green on `master` (`build-and-test` + `e2e-critical`)
 - [ ] Profile footer build label matches [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts)
-- [ ] Growth migration applied (verify 6 columns) — [LAUNCH_READY.md](archive/LAUNCH_READY.md) §1
+- [ ] Growth migration applied (verify 6 columns) — [LAUNCH_READY.md](LAUNCH_READY.md) §1
 - [ ] `NEXT_PUBLIC_SITE_URL=https://www.missionwinning.com` on Production
 - [ ] `RESEND_FROM` is a verified domain (not `resend.dev`) if sending mail
 - [ ] `SMOKE_BASE_URL=… npm run growth-smoke` green against staging/prod
 - [ ] `LAUNCH_STRICT=true npm run launch-verify` against prod (with access secret)
-- [ ] Stripe test path once verified ([STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md))
+- [ ] `SMOKE_BASE_URL=… npm run rate-limit-smoke` sees 429 (Upstash)
+- [ ] Stripe test path once verified ([../STRIPE_PREMIUM_SETUP.md](../STRIPE_PREMIUM_SETUP.md))
 
 ---
 

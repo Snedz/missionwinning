@@ -26,6 +26,9 @@ const launchRecommended = [
   ['STRIPE_PRICE_BUNDLE_LIFETIME', 'Founders lifetime Price ID'],
   ['NEXT_PUBLIC_STRIPE_CHECKOUT', 'true when Sessions are live'],
   ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME', 'Founders lifetime payment link (fallback)'],
+  ['UPSTASH_REDIS_REST_URL', 'Distributed rate limits — required before public (PRODUCTION_STACK L9)'],
+  ['UPSTASH_REDIS_REST_TOKEN', 'Paired with UPSTASH_REDIS_REST_URL'],
+  ['NEXT_PUBLIC_SENTRY_DSN', 'Error monitoring — required before public (PRODUCTION_STACK L12)'],
 ];
 
 const optional = [
@@ -37,12 +40,12 @@ const optional = [
   ['RESEND_FROM', 'Mission Winning <hello@missionwinning.com> — verified domain'],
   ['NEXT_PUBLIC_SITE_URL', 'https://www.missionwinning.com — canonicals + OG'],
   ['CRON_SECRET', 'Vercel cron auth for reminder nudges'],
-  ['UPSTASH_REDIS_REST_URL', 'Distributed rate limits (recommended prod)'],
+  ['UPSTASH_REDIS_REST_URL', 'Distributed rate limits (required before public)'],
   ['UPSTASH_REDIS_REST_TOKEN', 'Paired with UPSTASH_REDIS_REST_URL'],
   ['STRIPE_PRICE_BUNDLE_MONTHLY', 'Monthly Super Bundle Price ID'],
   ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE', 'Payment Link fallback (or NEXT_PUBLIC_STRIPE_LINK_PREMIUM)'],
   ['NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME', 'Founders lifetime checkout link'],
-  ['NEXT_PUBLIC_SENTRY_DSN', 'Error monitoring (optional)'],
+  ['NEXT_PUBLIC_SENTRY_DSN', 'Error monitoring (required before public)'],
   ['NEXT_PUBLIC_POSTHOG_KEY', 'Product analytics (optional)'],
   ['NEXT_PUBLIC_COUNCIL_STATUS', 'aspirational | pending | member'],
   ['NEXT_PUBLIC_SHOW_MAHA_COPY', 'true only after legal sign-off'],
@@ -168,6 +171,15 @@ if (launch && !siteUrl) {
   warn++;
 } else if (siteUrl && siteUrl.includes('missionwinning.com') && !siteUrl.includes('www.')) {
   console.log('  ⚠ NEXT_PUBLIC_SITE_URL is non-www — prefer https://www.missionwinning.com');
+  warn++;
+}
+
+if (launch && !process.env.UPSTASH_REDIS_REST_URL) {
+  console.log('  ⚠ UPSTASH_REDIS_REST_URL unset — required before public (PRODUCTION_STACK L9)');
+  warn++;
+}
+if (launch && !process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  console.log('  ⚠ NEXT_PUBLIC_SENTRY_DSN unset — required before public (PRODUCTION_STACK L12)');
   warn++;
 }
 

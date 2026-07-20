@@ -15,6 +15,7 @@
     "predeploy": "tsx scripts/pre-deploy-smoke.ts",
     "gate-smoke": "tsx scripts/gate-smoke.ts",
     "security-smoke": "tsx scripts/gate-smoke.ts",
+    "rate-limit-smoke": "node scripts/rate-limit-smoke.mjs",
     "launch-verify": "node scripts/launch-verify.mjs",
     "verify-premium": "node scripts/verify-stripe-enrollment.mjs --check-gates",
     "security-audit": "npm audit --audit-level=high",

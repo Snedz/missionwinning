@@ -38,8 +38,8 @@ Add these for **Production** and **Preview**:
 | `NEXT_PUBLIC_SITE_URL` | Launch | `https://www.missionwinning.com` — canonicals + OG (use www) |
 | `YOUTH_CONSENT_SECRET` | **Yes in prod** | `openssl rand -base64 32` — dedicated; never reuse gate secret |
 | `NUDGE_SECRET` | **Yes in prod** | `openssl rand -base64 32` — journey email nudge HMAC |
-| `UPSTASH_REDIS_REST_URL` | Optional | Distributed rate limits (Vercel serverless) |
-| `UPSTASH_REDIS_REST_TOKEN` | Optional | Pair with Upstash URL above |
+| `UPSTASH_REDIS_REST_URL` | **Required before public** | Rate limits (L9) **and** premium enrollment memo (L10 — [docs/CACHE_LADDER.md](docs/CACHE_LADDER.md)). Optional in local/dev — without it, every premium check hits Postgres. |
+| `UPSTASH_REDIS_REST_TOKEN` | **Required before public** | Pair with Upstash URL above |
 | `PRIVATE_ALLOW_QUERY_ACCESS` | Optional | Set `true` only to allow `/?access=` bypass in production (deprecated) |
 | `COACH_LLM_API_URL` | Optional | OpenAI-compatible chat completions URL. Prefer SpaceXAI/xAI: `https://api.x.ai/v1/chat/completions`. Omit for rules-only coach |
 | `COACH_LLM_API_KEY` | Optional | Provider API key (e.g. `xai-…` from [console.x.ai](https://console.x.ai/)). **Never** `NEXT_PUBLIC_` |
@@ -268,13 +268,13 @@ Set `CSP_ENFORCE=false` in Vercel temporarily if you need report-only on a previ
 
 ---
 
-## Error monitoring (Sentry — optional)
+## Error monitoring (Sentry — required before public)
 
-Entirely disabled unless `NEXT_PUBLIC_SENTRY_DSN` is set (local dev stays silent, same pattern as PostHog).
+Disabled unless `NEXT_PUBLIC_SENTRY_DSN` is set (local dev can stay silent, same pattern as PostHog). **Production must set the DSN before `PRIVATE_MODE=false`** ([docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) L12).
 
 | Variable | Required | Notes |
 |----------|----------|-------|
-| `NEXT_PUBLIC_SENTRY_DSN` | **Yes** (to enable) | Project → Settings → Client Keys (DSN) |
+| `NEXT_PUBLIC_SENTRY_DSN` | **Yes in Production (before public)** | Project → Settings → Client Keys (DSN) |
 | `SENTRY_ORG` | For source maps | Organization slug in Sentry |
 | `SENTRY_PROJECT` | For source maps | Project slug (e.g. `mission-winning`) |
 | `SENTRY_AUTH_TOKEN` | For source maps | Auth token with `project:releases` — **server/CI only**, never `NEXT_PUBLIC_` |
@@ -282,6 +282,8 @@ Entirely disabled unless `NEXT_PUBLIC_SENTRY_DSN` is set (local dev stays silent
 Add `SENTRY_AUTH_TOKEN` to **GitHub Secrets** (for sync workflow) and Vercel if builds upload source maps. `next.config.js` wraps with `withSentryConfig` only when the DSN is set.
 
 Thrown API route errors and client error boundaries (`app/error.tsx`, `app/global-error.tsx`) report to Sentry when enabled. API routes use `withApiLogging()` for structured request logs + exception capture.
+
+**Smoke:** with DSN live, force a caught API error (or temporary throw in a logged route) and confirm the event appears in the Sentry project.
 
 ---
 
@@ -363,18 +365,23 @@ Multi-vendor sync — see [docs/WEARABLES.md](docs/WEARABLES.md). Opt-in; off un
 
 ---
 
-## CI gate-smoke (optional)
+## CI gate-smoke + production deploy secrets
 
 In **GitHub → Settings → Secrets**:
 
 | Secret | Purpose |
 |--------|---------|
-| `SMOKE_BASE_URL` | Preview or production URL for `npm run gate-smoke` |
+| `SMOKE_BASE_URL` | Preview or production URL for `npm run gate-smoke` / `rate-limit-smoke` |
 | `SMOKE_ACCESS_SECRET` | Same as `PRIVATE_ACCESS_SECRET` when gate is on |
 | `SMOKE_EXPECT_PWA` | Set `true` after `PRIVATE_MODE=false` to assert `/sw.js` + manifest in gate-smoke |
 | `DEPLOY_READINESS_TARGET` | `production` on Vercel prod builds — enforces launch env in `assertDeployReady()` |
+| `VERCEL_TOKEN` | CLI token for [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) |
+| `VERCEL_ORG_ID` | Vercel team / org id |
+| `VERCEL_PROJECT_ID` | Vercel project id |
 
 CI job `gate-smoke` skips when `SMOKE_BASE_URL` is unset; `continue-on-error: true` until preview URL exists.
+
+**Layer 9 verify:** `SMOKE_BASE_URL=… npm run rate-limit-smoke` — expects HTTP 429 on `/api/leads` burst.
 
 ---
 
@@ -396,5 +403,8 @@ Run through `supabase/migrations/20260703_reminders_optin.sql` (or latest in `su
 - [ ] `STRIPE_WEBHOOK_SECRET` + test Payment Link → enrollment row in Supabase
 - [ ] `DEMO_PREMIUM=false` in Production
 - [ ] Latest Supabase migrations applied
+- [ ] Before public: Upstash + `NEXT_PUBLIC_SENTRY_DSN` ([docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md))
+- [ ] GitHub: `VERCEL_*` + `SMOKE_BASE_URL` for Production deploy + smoke
+- [ ] Profile backup export once ([docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md))
 
 See also: `SETUP.md` (full business + Supabase schema), `README.md` (dev commands).

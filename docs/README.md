@@ -30,6 +30,9 @@ User guides in plain language (no code paths):
 | Doc | Purpose |
 |-----|---------|
 | [../ORCHESTRATION.md](../ORCHESTRATION.md) | Long-term horizons, gates, what to build next |
+| [PRODUCTION_STACK.md](PRODUCTION_STACK.md) | 13-layer production scorecard (ops maturity) |
+| [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW |
+| [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Layers, state, request lifecycle |
 | [API.md](API.md) | All API routes — auth, rate limits, schemas |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Setup, PR workflow, where to put code |

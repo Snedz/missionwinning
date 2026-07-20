@@ -47,6 +47,9 @@ See [ENV.md](ENV.md) and [PROTECTION.md](PROTECTION.md).
 | `SUPABASE_SERVICE_ROLE_KEY` | Webhooks, leads API, beta panel |
 | `BETA_ADMIN_EMAILS` | Founder beta metrics |
 | `DEMO_PREMIUM` | **`false`** in production |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | **Required before public** — [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) L9 |
+| `NEXT_PUBLIC_SENTRY_DSN` | **Required before public** — L12 |
+| `SMOKE_BASE_URL` (GitHub) | Post-deploy `gate-smoke` + `rate-limit-smoke` |
 
 ### Option A — Vercel dashboard
 
@@ -77,10 +80,12 @@ curl -sI https://www.missionwinning.com/ | grep -i location
 curl -sI https://www.missionwinning.com/api/premium/recipes
 # Expected: 403
 
-# Local / CI gate smoke (optional)
-npm run gate-smoke -- https://www.missionwinning.com
+# Local / CI gate smoke
+SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ACCESS_SECRET=… npm run gate-smoke
+SMOKE_BASE_URL=https://www.missionwinning.com npm run rate-limit-smoke
 ```
 
+Ops scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md).
 ---
 
 ## 4. Beta smoke test (mobile)

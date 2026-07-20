@@ -1,7 +1,8 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 const withSerwistInit = require('@serwist/next').default;
 
-/** Disable SW while private gate is on (prevents offline leak of full app). */
+/** Disable SW while private gate is on (prevents offline leak of full app).
+ *  Wave B / public flip: set PRIVATE_MODE=false so Serwist builds (docs/PRODUCTION_STACK.md L10). */
 const pwaDisabled =
   process.env.NODE_ENV === 'development' ||
   process.env.PRIVATE_MODE === 'true' ||
@@ -57,6 +58,16 @@ const nextConfig = {
       {
         source: '/:path*',
         headers: [{ key: cspHeaderKey(), value: CSP_POLICY }],
+      },
+      // Cache Ladder v1 — public static form guides (CDN-safe). Never apply to /api/premium/*.
+      {
+        source: '/form-guides/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
       },
     ];
   },

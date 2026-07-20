@@ -51,6 +51,9 @@
 | [WEARABLES.md](WEARABLES.md) | Apple / Google / Whoop / Strava wearables strategy + unlock |
 | [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
+| [PRODUCTION_STACK.md](PRODUCTION_STACK.md) | 13-layer production scorecard (ops maturity) |
+| [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW v1 |
+| [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery (L13) |
 | [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Live Stripe + premium gate |
 | [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md) | Lifetime Phantom Solana USDC |
 | [OWASP_AUDIT.md](OWASP_AUDIT.md) | OWASP Top 10 sweep |
