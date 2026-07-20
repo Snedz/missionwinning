@@ -29,6 +29,7 @@ export const PUBLIC_API_PATHS_WHILE_GATED = [
   '/api/private-access',
   '/api/stripe-webhook',
   '/api/paypal-webhook',
+  '/api/crypto-checkout',
   '/api/leads',
   '/api/leads/unsubscribe',
   '/api/cron/nudges',
