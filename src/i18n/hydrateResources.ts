@@ -125,7 +125,9 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       mergeGrowthStrings(resources[lang], lang);
     }
 
+    const { applyLocalePack } = await import('@/i18n/localePacks');
     for (const [lang, common] of Object.entries(resources)) {
+      applyLocalePack(common, lang);
       instance.addResourceBundle(lang, 'common', common, true, true);
     }
   })();

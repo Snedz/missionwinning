@@ -18,11 +18,14 @@
 | `verify-supabase-security.mjs` | `node scripts/verify-supabase-security.mjs` | Security migration checklist |
 | `pre-deploy-smoke.ts` | `npm run predeploy` | Before deploy |
 | `check-env.mjs` | `npm run check-env` | Verify `.env.local`; add `--launch` for go-live env |
-| `export-locale-json.ts` | `npm run export-locales` | Export i18n TS → `public/locales/` |
+| `oauth-provider-checklist.mjs` | `node scripts/oauth-provider-checklist.mjs` | Print Google/Apple/Azure/Facebook enable order (see ENV.md) |
+| `export-locale-json.ts` | `npm run export-locales` | Export i18n TS + packs → `public/locales/` |
+| `i18n-parity.ts` | `npm run i18n:parity` | APP_LANGS key-set + non-EN placeholder gate (CI) |
+| `i18n-fill-missing.ts` | `npm run i18n:fill` | Translate EN placeholders into `src/i18n/packs/{lang}.json` |
 | `generate-premium-programs.ts` | manual `tsx` | Regenerate premium program content |
 | `strip-pro-programs.ts` | manual `tsx` | Strip pro programs from export |
 | `print-beta-invite.ts` | `npm run print-beta-invite` | Beta invite URLs |
-| `build-guidebook-pdf.ts` | `npm run build-guidebook-pdf` | Generate `public/magazine/beyond-the-basics.pdf` from `/guide/print` (app must be serving). Set `GUIDEBOOK_PDF_AUTO_SERVER=1` to spawn `next start` automatically. Asserts ~12–28 pages. |
+| `build-guidebook-pdf.ts` | `npm run build-guidebook-pdf` | Generate `public/magazine/beyond-the-basics[.lang].pdf` from `/guide/print?lang=` (app must be serving). Set `GUIDEBOOK_PDF_AUTO_SERVER=1` to spawn `next start`. Set `GUIDEBOOK_PDF_LANGS=all` (or `en,es,fr`) for localized PDFs. Asserts ~12–28 pages. |
 | `sync-vercel-env.mjs` | `npm run sync-vercel-env` | Sync env to Vercel |
 
 ## Related (not here)

@@ -1,33 +1,25 @@
-# Locale JSON (G2 extract)
+# Locale JSON export
 
-English and partial translations exported for translator handoff. Runtime uses inline `src/i18n/*Locales.ts` first; client optionally merges `/locales/{lang}/common.json` when `NEXT_PUBLIC_LOCALE_HTTP` is not `false`.
+English plus pack overlays for all **`APP_LANGS`** (15). Runtime uses inline `src/i18n/*Locales.ts` + [`packs/{lang}.json`](../src/i18n/packs/); client optionally merges `/locales/{lang}/common.json` when `NEXT_PUBLIC_LOCALE_HTTP` is not `false`.
 
 ## Regenerate
 
 ```bash
-npm run export-locales
+npm run i18n:fill       # fill packs for placeholders
+npm run i18n:parity     # must pass
+npm run export-locales  # write public/locales/
 ```
 
-Writes **78 files** per run: 12 namespaces + `common.json` (merged) × 6 languages (`en`, `es`, `zh`, `id`, `th`, `ar`).
+Writes namespace JSON + `common.json` for each of the 15 `APP_LANGS`.
 
 ## HTTP overrides (post-beta translators)
 
 1. Edit JSON under `public/locales/{lang}/` (or deploy updated files only).
-2. Users get merged strings on next load via `LocaleHttpSync` — no app redeploy required for copy-only changes.
+2. Prefer updating `src/i18n/packs/{lang}.json` or `*Locales.ts` as source of truth, then re-export.
+3. Users get merged strings on next load via `LocaleHttpSync` when HTTP overrides are enabled.
 
 Disable: `NEXT_PUBLIC_LOCALE_HTTP=false`
 
-## Files
+## Standard
 
-| File | Source |
-|------|--------|
-| `*/welcome.json` | `welcomeLocales.ts` |
-| `*/today.json` | `todayLocales.ts` |
-| `*/fuel.json` | `fuelLocales.ts` |
-| `*/nav.json` | `navLocales.ts` |
-| `*/bundle.json` | `bundleLocales.ts` |
-| `*/history.json` | `historyLocales.ts` |
-| `*/active-workout.json` | `activeWorkoutLocales.ts` |
-| `*/common.json` | All of the above merged |
-
-Manifest: `src/lib/exportLocales.ts` · loader: `src/lib/localeHttpLoader.ts`
+See [`src/i18n/INDEX.md`](../src/i18n/INDEX.md) — every user-visible string for all `APP_LANGS`.

@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { GuideChapter } from '@/data/guidebook/types';
 import { cn } from '@/lib/utils';
 
@@ -24,6 +25,7 @@ export function GuideContentsRail({
   className,
   onNavigate,
 }: Props) {
+  const { t } = useTranslation();
   const [openId, setOpenId] = useState<string | null>(activeChapterId ?? chapters[0]?.id ?? null);
 
   useEffect(() => {
@@ -31,8 +33,11 @@ export function GuideContentsRail({
   }, [activeChapterId]);
 
   return (
-    <nav className={cn('space-y-1', className)} aria-label="Contents">
-      <p className="eyebrow mb-3">Contents</p>
+    <nav
+      className={cn('space-y-1', className)}
+      aria-label={t('magazineContents', { defaultValue: 'Contents' })}
+    >
+      <p className="eyebrow mb-3">{t('magazineContents', { defaultValue: 'Contents' })}</p>
       <ul className="space-y-1">
         {chapters.map((ch) => {
           const open = openId === ch.id;
@@ -73,7 +78,7 @@ export function GuideContentsRail({
                       )}
                       onClick={onNavigate}
                     >
-                      Chapter overview
+                      {t('magazineChapterOverview', { defaultValue: 'Chapter overview' })}
                     </Link>
                   </li>
                   {ch.sections.map((s) => (

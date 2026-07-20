@@ -4,6 +4,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-19 — Founder unlock: full-site i18n parity (15 langs)
+
+- Canonical [`APP_LANGS`](src/i18n/appLangs.ts) (Profile / export / `/guide` / hydrate)
+- Guidebook bodies + callouts/tables/checklists + magazine meta via `localizeGuidebook` / packs
+- Locale pack overlays [`src/i18n/packs/`](src/i18n/packs/); fill: `npm run i18n:fill`; gate: `npm run i18n:parity` (CI)
+- Multi-lang magazine PDF: `GUIDEBOOK_PDF_LANGS=all npm run build-guidebook-pdf`
+- ORCHESTRATION do-not-build “Full locale body parity” unlocked by founder request
+
+---
+
 ## 2026-07-19 — Horizon 0 launch closeout
 
 - **Production deploy path:** [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) now runs on push to `master` (needs GH secrets `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID`); [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) updated

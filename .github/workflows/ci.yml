@@ -36,6 +36,9 @@ jobs:
       - name: Export locale JSON (smoke)
         run: npm run export-locales
 
+      - name: i18n parity (APP_LANGS)
+        run: npm run i18n:parity
+
       - name: Deploy readiness
         run: npx tsx -e "import { assertDeployReady } from './src/lib/deployReadiness'; assertDeployReady();"
 
