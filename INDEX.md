@@ -38,7 +38,7 @@
 | Phantom USDC lifetime | [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md) | — |
 | Vision scorecard | [VISION_STATUS.md](VISION_STATUS.md) | — |
 | Beta testers | [BETA_INVITE.md](BETA_INVITE.md) | — |
-| Security | [PROTECTION.md](PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md) | — |
+| Security | [PROTECTION.md](PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md) | Certification claims / Vanta substitutes as “done” |
 | Vercel deploy | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | — |
 | Pre-launch checklist | [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) | — |
 | Post-launch cadence | [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) | — |
@@ -111,4 +111,5 @@
 | [ENV.md](ENV.md) | Environment variables |
 | [SETUP.md](SETUP.md) | One-time setup |
 | [PROTECTION.md](PROTECTION.md) | Security checklist |
+| [docs/COMPLIANCE.md](docs/COMPLIANCE.md) | SOC2/ISO/HIPAA map-only control monitor (not a certification) |
 | [VISION_STATUS.md](VISION_STATUS.md) | Vision scorecard |

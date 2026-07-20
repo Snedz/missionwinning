@@ -4,6 +4,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Compliance monitor (Vanta-lite)
+
+- **Catalog:** `docs/compliance/controls.yaml` — SOC 2 / ISO 27001 / HIPAA map-only crosswalk (~45 controls)
+- **Reporter:** `npm run compliance:status` → console + optional `compliance-status.json` / COMPLIANCE.md snapshot
+- **CI:** soft compliance step + 14-day artifact; Dependabot (npm + Actions); optional CodeQL workflow
+- **Docs:** `docs/COMPLIANCE.md` hub + Probo-later appendix — **no** certification / HIPAA claims
+
+---
+
 ## 2026-07-20 — Legal safety shield
 
 - **AI disclosure:** landing proof + Privacy “AI features” — free core needs no key; optional AI when enabled (no absolute “no AI”)

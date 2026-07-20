@@ -29,6 +29,7 @@
 | **Backup** | `backup.ts` | Device backup export/restore |
 | **Analytics** | `analytics.ts`, `analyticsOptOut.ts` | PostHog events; preference off until user allows |
 | **Observability** | `sentryCommon.ts`, `api/withApiLogging.ts` | Sentry (env-gated) + API request logs |
+| **Compliance** | `compliance/` | Vanta-lite control catalog probes — [docs/COMPLIANCE.md](../../docs/COMPLIANCE.md) |
 | **Leaderboard** | `leaderboard/` subfolder | Local + cloud leaderboard |
 
 ## Subfolders (one concern each)
