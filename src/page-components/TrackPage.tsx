@@ -4,7 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,6 +25,7 @@ import { logPillarWin } from '@/lib/pillarLog';
 import { TrackGpsPanel } from '@/components/track/TrackGpsPanel';
 import { TrackWeeklyInsights } from '@/components/track/TrackWeeklyInsights';
 import { ActivityImportPanel } from '@/components/track/ActivityImportPanel';
+import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
 import { usePremium } from '@/hooks/usePremium';
 import { MapPin, Trash2 } from 'lucide-react';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
@@ -37,6 +38,19 @@ export function TrackPage() {
   const [distanceKm, setDistanceKm] = useState('');
   const [notes, setNotes] = useState('');
   const [refresh, setRefresh] = useState(0);
+  const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void import('@/lib/supabase').then(({ supabase }) => {
+      void supabase.auth.getSession().then(({ data }) => {
+        if (!cancelled) setSignedIn(Boolean(data.session?.user));
+      });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const weekActivities = typeof window !== 'undefined' ? getActivitiesForWeek() : [];
   const stats = typeof window !== 'undefined'
@@ -173,6 +187,9 @@ export function TrackPage() {
         </Card>
 
         <ActivityImportPanel onImported={() => setRefresh((r) => r + 1)} />
+
+        {/* Flag-gated: NEXT_PUBLIC_WEARABLES — Strava connect/sync/disconnect */}
+        <ProfileWearablesCard signedIn={signedIn} />
 
       <Card className="content-card">
           <CardHeader>

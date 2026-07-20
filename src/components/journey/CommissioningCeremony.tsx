@@ -73,7 +73,7 @@ export function CommissioningCeremony() {
           <ShareFitnessButton
             text={mahaShare}
             variant="ghost"
-            className="mt-1 w-full text-blue-400"
+            className="mt-1 w-full text-[hsl(var(--status-info))]"
             labelKey="commissionedShareMaha"
             defaultLabel="Share — Make America Healthy Again"
           />

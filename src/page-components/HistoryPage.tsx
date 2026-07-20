@@ -440,9 +440,9 @@ export function HistoryPage() {
                               <TableRow
                                 key={i}
                                 className={cn(
-                                  kind === 'warmup' && 'bg-amber-950/10',
+                                  kind === 'warmup' && 'bg-[hsl(var(--status-warn)/0.08)]',
                                   kind === 'failure' && 'bg-rose-950/10',
-                                  kind === 'drop' && 'bg-violet-950/10'
+                                  kind === 'drop' && 'bg-[hsl(var(--status-info)/0.08)]'
                                 )}
                               >
                                 <TableCell>{i + 1}</TableCell>

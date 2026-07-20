@@ -357,7 +357,7 @@ Multi-vendor sync — see [docs/WEARABLES.md](docs/WEARABLES.md). Opt-in; off un
 | `NEXT_PUBLIC_WEARABLES` | `true` to show Profile wearables + Active live HR |
 | `WEARABLES_OAUTH_REDIRECT_BASE` | Optional absolute origin for OAuth callbacks (defaults to request origin) |
 | `WHOOP_CLIENT_ID` / `WHOOP_CLIENT_SECRET` | Whoop OAuth |
-| `STRAVA_CLIENT_ID` / `STRAVA_CLIENT_SECRET` | Strava OAuth |
+| `STRAVA_CLIENT_ID` / `STRAVA_CLIENT_SECRET` | Strava OAuth (`activity:read`) — dark until keys + `NEXT_PUBLIC_WEARABLES=true` |
 | `OURA_CLIENT_ID` / `OURA_CLIENT_SECRET` | Oura OAuth |
 | `GARMIN_CLIENT_ID` / `GARMIN_CLIENT_SECRET` | Garmin OAuth |
 | `FITBIT_CLIENT_ID` / `FITBIT_CLIENT_SECRET` | Fitbit OAuth |

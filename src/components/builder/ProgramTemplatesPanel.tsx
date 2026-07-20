@@ -289,7 +289,7 @@ export function ProgramTemplatesPanel({
         ))}
       </div>
       {category === "pro" && !premiumLoading && !premium && (
-        <div className="rounded-lg border border-amber-500/40 bg-amber-950/20 p-4 text-sm">
+        <div className="rounded-lg border border-[hsl(var(--status-warn)/0.4)] bg-[hsl(var(--status-warn)/0.1)] p-4 text-sm">
           {t('builderProPremium', { defaultValue: 'Pro cycles require Super Bundle premium.' })}{' '}
           <Link href="/bundle" className="underline text-status-warn">
             {t('builderUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}

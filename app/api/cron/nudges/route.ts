@@ -1,5 +1,5 @@
 /**
- * Cron: send scheduled journey nudges (email + optional web push).
+ * Cron: journey nudges + beta invite day-2/7 + checkout recovery.
  * Auth: CRON_SECRET | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';
@@ -8,14 +8,130 @@ import { Resend } from 'resend';
 import { collectNudgeCandidates, markNudged } from '@/lib/nudgeServer';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { isPushConfigured, sendNudgePush } from '@/lib/pushServer';
+import {
+  day2Body,
+  day7Body,
+  selectInviteFollowupCandidates,
+  type InviteFollowupRow,
+} from '@/lib/inviteFollowups';
+import {
+  recoveryEmailBody,
+  selectCheckoutRecoveryCandidates,
+  type CheckoutRecoveryRow,
+} from '@/lib/checkoutRecovery';
+import {
+  leadUnsubscribeUrl,
+  sendTransactionalEmail,
+  siteUrl,
+} from '@/lib/emailServer';
+import type { JourneyState } from '@/lib/missionJourney';
 
 export const dynamic = 'force-dynamic';
 
+async function loadUnsubscribedEmails(
+  admin: NonNullable<ReturnType<typeof getSupabaseAdmin>>,
+  emails: string[]
+): Promise<Set<string>> {
+  const unsub = new Set<string>();
+  if (!emails.length) return unsub;
+  try {
+    const { data } = await admin
+      .from('leads')
+      .select('email, unsubscribed_at')
+      .in('email', emails)
+      .not('unsubscribed_at', 'is', null)
+      .limit(500);
+    for (const row of data ?? []) {
+      if (row.email) unsub.add(String(row.email).toLowerCase());
+    }
+  } catch {
+    /* leads.unsubscribed_at may be missing — non-fatal */
+  }
+  return unsub;
+}
+
+async function collectInviteCandidates(): Promise<{
+  candidates: ReturnType<typeof selectInviteFollowupCandidates>;
+  considered: number;
+}> {
+  const admin = getSupabaseAdmin();
+  if (!admin) return { candidates: [], considered: 0 };
+
+  const { data: invites, error } = await admin
+    .from('beta_invites')
+    .select(
+      'id, label, email, created_at, signed_up_user_id, day2_sent_at, day7_sent_at'
+    )
+    .not('email', 'is', null)
+    .limit(500);
+
+  if (error || !invites) return { candidates: [], considered: 0 };
+
+  const userIds = invites
+    .map((r) => r.signed_up_user_id as string | null)
+    .filter((id): id is string => Boolean(id));
+
+  const workoutByUser = new Map<string, boolean>();
+  if (userIds.length) {
+    const { data: profiles } = await admin
+      .from('profiles')
+      .select('id, journey_state')
+      .in('id', userIds);
+    for (const p of profiles ?? []) {
+      const js = p.journey_state as JourneyState | null;
+      workoutByUser.set(p.id as string, Boolean(js?.basic?.workout));
+    }
+  }
+
+  const rows: InviteFollowupRow[] = invites.map((r) => ({
+    id: r.id as string,
+    label: (r.label as string) || '',
+    email: (r.email as string | null) ?? null,
+    created_at: r.created_at as string,
+    signed_up_user_id: (r.signed_up_user_id as string | null) ?? null,
+    day2_sent_at: (r.day2_sent_at as string | null) ?? null,
+    day7_sent_at: (r.day7_sent_at as string | null) ?? null,
+    firstWorkout: r.signed_up_user_id
+      ? workoutByUser.get(r.signed_up_user_id as string) ?? false
+      : false,
+  }));
+
+  let candidates = selectInviteFollowupCandidates(rows);
+  const emails = candidates.map((c) => c.email);
+  const unsub = await loadUnsubscribedEmails(admin, emails);
+  candidates = candidates.filter((c) => !unsub.has(c.email));
+
+  return { candidates, considered: rows.length };
+}
+
+async function collectRecoveryCandidates(): Promise<{
+  candidates: ReturnType<typeof selectCheckoutRecoveryCandidates>;
+  considered: number;
+}> {
+  const admin = getSupabaseAdmin();
+  if (!admin) return { candidates: [], considered: 0 };
+
+  const cutoff = new Date(Date.now() - 3600_000).toISOString();
+  const { data, error } = await admin
+    .from('checkout_recovery')
+    .select('id, session_id, email, plan, expired_at, recovery_sent_at')
+    .is('recovery_sent_at', null)
+    .lte('expired_at', cutoff)
+    .limit(100);
+
+  if (error || !data) return { candidates: [], considered: 0 };
+
+  const rows = data as CheckoutRecoveryRow[];
+  const emails = rows.map((r) => r.email.toLowerCase());
+  const unsub = await loadUnsubscribedEmails(admin, emails);
+  const candidates = selectCheckoutRecoveryCandidates(rows, Date.now(), unsub);
+  return { candidates, considered: rows.length };
+}
+
 /**
- * Daily retention nudges (Vercel cron — see vercel.json).
+ * Daily retention + invite follow-ups + checkout recovery (Vercel cron).
  * Auth: `Authorization: Bearer ${CRON_SECRET}`
- * `?dryRun=1` lists candidates without sending or updating anything.
- * Email always runs when Resend is configured; push is additional when VAPID + subscription.
+ * `?dryRun=1` lists candidates without sending.
  */
 export const GET = withApiLogging('cron/nudges', async (request: NextRequest) => {
   const cronSecret = process.env.CRON_SECRET;
@@ -35,6 +151,9 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
     console.error('nudge cron', e);
     return NextResponse.json({ ok: false, error: 'candidate collection failed' }, { status: 500 });
   }
+
+  const inviteResult = await collectInviteCandidates();
+  const recoveryResult = await collectRecoveryCandidates();
 
   const pushReady = isPushConfigured();
   let pushSubscribed = 0;
@@ -60,6 +179,21 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
       dryRun: true,
       considered: result.considered,
       candidates: result.candidates.map((c) => ({ kind: c.kind, subject: c.subject })),
+      inviteFollowups: {
+        considered: inviteResult.considered,
+        candidates: inviteResult.candidates.map((c) => ({
+          kind: c.kind,
+          email: c.email.slice(0, 3) + '…',
+          label: c.label,
+        })),
+      },
+      checkoutRecovery: {
+        considered: recoveryResult.considered,
+        candidates: recoveryResult.candidates.map((c) => ({
+          email: c.email.slice(0, 3) + '…',
+          plan: c.plan,
+        })),
+      },
       pushConfigured: pushReady,
       pushSubscribed,
     });
@@ -71,11 +205,13 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
   }
   const resend = new Resend(apiKey);
   const from = process.env.RESEND_FROM || 'Mission Winning <onboarding@resend.dev>';
+  const site = siteUrl();
 
   const sent: string[] = [];
   const failed: string[] = [];
   let pushed = 0;
-  const admin = pushReady ? getSupabaseAdmin() : null;
+  const admin = getSupabaseAdmin();
+  const pushAdmin = pushReady ? admin : null;
 
   for (const c of result.candidates) {
     const { error } = await resend.emails.send({
@@ -89,9 +225,9 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
       failed.push(c.userId);
     } else {
       sent.push(c.userId);
-      if (admin) {
+      if (pushAdmin) {
         const firstLine = c.body.split('\n').find((l) => l.trim()) || c.subject;
-        const pr = await sendNudgePush(admin, c.userId, {
+        const pr = await sendNudgePush(pushAdmin, c.userId, {
           title: c.subject,
           body: firstLine.slice(0, 140),
           url: '/log?src=push',
@@ -102,11 +238,73 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
   }
   await markNudged(sent);
 
+  let inviteSent = 0;
+  let inviteFailed = 0;
+  for (const c of inviteResult.candidates) {
+    const content = c.kind === 'day2' ? day2Body(c.label, site) : day7Body(c.label, site);
+    const unsub = leadUnsubscribeUrl(c.email);
+    const text = `${content.text}\n\nUnsubscribe: ${unsub}`;
+    const r = await sendTransactionalEmail({
+      to: c.email,
+      subject: content.subject,
+      text,
+      tags: [{ name: 'kind', value: `invite_${c.kind}` }],
+    });
+    if (!r.ok && !r.skipped) {
+      inviteFailed += 1;
+      continue;
+    }
+    if (r.skipped) {
+      // Still mark so we don't hammer when Resend is off? Prefer not mark on skip.
+      continue;
+    }
+    if (admin) {
+      const col = c.kind === 'day2' ? 'day2_sent_at' : 'day7_sent_at';
+      await admin
+        .from('beta_invites')
+        .update({ [col]: new Date().toISOString() })
+        .eq('id', c.id)
+        .is(col, null);
+    }
+    inviteSent += 1;
+  }
+
+  let recoverySent = 0;
+  let recoveryFailed = 0;
+  for (const c of recoveryResult.candidates) {
+    const content = recoveryEmailBody(site, c.plan);
+    const unsub = leadUnsubscribeUrl(c.email);
+    const text = `${content.text}\n\nUnsubscribe: ${unsub}`;
+    const r = await sendTransactionalEmail({
+      to: c.email,
+      subject: content.subject,
+      text,
+      tags: [{ name: 'kind', value: 'checkout_recovery' }],
+    });
+    if (!r.ok && !r.skipped) {
+      recoveryFailed += 1;
+      continue;
+    }
+    if (r.skipped) continue;
+    if (admin) {
+      await admin
+        .from('checkout_recovery')
+        .update({ recovery_sent_at: new Date().toISOString() })
+        .eq('id', c.id)
+        .is('recovery_sent_at', null);
+    }
+    recoverySent += 1;
+  }
+
   return NextResponse.json({
     ok: true,
     considered: result.considered,
     sent: sent.length,
     failed: failed.length,
     pushed,
+    inviteSent,
+    inviteFailed,
+    recoverySent,
+    recoveryFailed,
   });
 });

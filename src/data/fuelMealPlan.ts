@@ -13,9 +13,7 @@ export type MealPlanItem = {
 export type MealPlanDay = {
   dayKey: string;
   label: string;
-  /** @deprecated prefer mealsStructured — kept for string adapters */
-  meals: string[];
-  mealsStructured?: MealPlanItem[];
+  mealsStructured: MealPlanItem[];
 };
 
 function day(
@@ -26,7 +24,6 @@ function day(
   return {
     dayKey,
     label,
-    meals: items.map((m) => m.label),
     mealsStructured: items,
   };
 }
@@ -71,5 +68,5 @@ export const FUEL_MEAL_PLAN: MealPlanDay[] = [
 ];
 
 export function mealPlanDayLabels(dayPlan: MealPlanDay): string[] {
-  return dayPlan.mealsStructured?.map((m) => m.label) ?? dayPlan.meals;
+  return dayPlan.mealsStructured.map((m) => m.label);
 }

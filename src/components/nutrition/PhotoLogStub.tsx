@@ -198,7 +198,7 @@ export function PhotoLogStub({ onLogEstimate }: Props) {
             <h3 className="font-semibold text-base">
               {t('photoLogTitle', { defaultValue: 'Log from photo' })}
             </h3>
-            <span className="text-[10px] uppercase tracking-wider text-status-warn/90 font-medium px-1.5 py-0.5 rounded bg-amber-950/40 border border-amber-500/20">
+            <span className="text-[10px] uppercase tracking-wider text-status-warn/90 font-medium px-1.5 py-0.5 rounded bg-[hsl(var(--status-warn)/0.12)] border border-[hsl(var(--status-warn)/0.2)]">
               Beta
             </span>
           </div>

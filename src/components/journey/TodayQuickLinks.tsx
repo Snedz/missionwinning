@@ -101,10 +101,10 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
             <Sunrise className="h-5 w-5 text-[hsl(var(--status-warn))]" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="font-semibold text-sm text-amber-100">
+            <div className="font-semibold text-sm text-[hsl(var(--status-warn))]">
               {t('lbBoardDawnsEarlyLight', { defaultValue: "By Dawn's Early Light" })}
             </div>
-            <div className="text-xs text-amber-200/60 truncate">
+            <div className="text-xs text-[hsl(var(--status-warn)/0.6)] truncate">
               {t('todayQuickDawnDesc', { defaultValue: '05:00–08:00 sessions' })}
             </div>
           </div>

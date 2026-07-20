@@ -217,7 +217,7 @@ export function SignInPanel({
   return (
     <div className={compact ? 'space-y-4' : 'space-y-5'}>
       {!configured && (
-        <p className="text-xs text-status-warn/90 bg-amber-950/20 border border-amber-500/20 rounded-lg px-3 py-2">
+        <p className="text-xs text-status-warn/90 bg-[hsl(var(--status-warn)/0.1)] border border-[hsl(var(--status-warn)/0.2)] rounded-lg px-3 py-2">
           Demo mode — add Supabase keys to enable cloud sync and social sign-in.
         </p>
       )}

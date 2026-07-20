@@ -56,6 +56,9 @@ const optional = [
   ['COACH_LLM_API_URL', 'Optional coach LLM (prefer api.x.ai chat completions)'],
   ['COACH_LLM_REQUIRE_ZDR', 'true recommended when using xAI'],
   ['FOUNDER_DIGEST_EMAIL', 'Monday founder digest recipient'],
+  ['NEXT_PUBLIC_WEARABLES', 'true to enable wearables UI (Profile + Track)'],
+  ['STRAVA_CLIENT_ID', 'Strava OAuth (optional; pair with STRAVA_CLIENT_SECRET)'],
+  ['STRAVA_CLIENT_SECRET', 'Strava OAuth secret (server only)'],
 ];
 
 const PLACEHOLDER_SECRETS = new Set(['done', 'change-me', 'your-secret', 'test-gate-secret-32chars-min!!']);

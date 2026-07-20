@@ -47,6 +47,7 @@
    6. `20260716_crypto_payment_intents.sql` + `20260716_leads_growth_welcome_email.sql`  
    7. **`20260719_push_subscriptions.sql`** — web push (Wave 7)  
    8. **`20260720_referrals.sql`** — referral codes + `mw_week4_retention()` RPC (Wave 8)  
+   9. **`20260721_beta_invites.sql`** — beta invites + `checkout_recovery` (Wave 10)  
 4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
 5. **Smoke after env** (from a machine with secrets):
    ```bash
@@ -65,7 +66,8 @@
 
 ## §2b — Ops maturity Wave A (before public flip)
 
-Scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md). Recovery: [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md).
+Scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md). Recovery: [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md).  
+**Monitoring (health, Sentry, uptime):** [docs/OPS_MONITORING.md](docs/OPS_MONITORING.md).
 
 1. **Upstash (L9):** create Redis DB → set `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` on Vercel Production → redeploy.
 2. **Sentry (L12):** set `NEXT_PUBLIC_SENTRY_DSN` on Production → redeploy → confirm one error event.

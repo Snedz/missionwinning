@@ -112,13 +112,49 @@ export const whoopAdapter = makeCodeAdapter({
   syncSince: emptySync,
 });
 
-/** Strava — activities for Track. */
+/** Map a raw Strava activity JSON object → WearableSample (unit-tested). */
+export function mapStravaActivity(a: Record<string, unknown>): {
+  source: 'strava';
+  kind: 'activity';
+  startedAt: string;
+  endedAt: string;
+  externalId: string;
+  metrics: {
+    distance_m: number;
+    moving_time_s: number;
+    type: string;
+    name: string;
+  };
+} {
+  const id = String(a.id ?? '');
+  const start = String(a.start_date ?? a.start_date_local ?? new Date().toISOString());
+  const moving = Number(a.moving_time ?? a.elapsed_time ?? 0);
+  const startMs = Date.parse(start);
+  const end = new Date(
+    (Number.isFinite(startMs) ? startMs : Date.now()) + Math.max(0, moving) * 1000
+  ).toISOString();
+  return {
+    source: 'strava',
+    kind: 'activity',
+    startedAt: start,
+    endedAt: end,
+    externalId: `strava:${id}`,
+    metrics: {
+      distance_m: Number(a.distance ?? 0),
+      moving_time_s: moving,
+      type: String(a.type ?? a.sport_type ?? 'other'),
+      name: String(a.name ?? ''),
+    },
+  };
+}
+
+/** Strava — activities for Track. Scopes: activity:read (own activities). */
 export const stravaAdapter = makeCodeAdapter({
   id: 'strava',
   label: 'Strava',
   authorizeUrl: 'https://www.strava.com/oauth/authorize',
   tokenUrl: 'https://www.strava.com/oauth/token',
-  scopes: 'activity:read_all',
+  scopes: 'activity:read',
   extraAuthParams: { approval_prompt: 'auto' },
   syncSince: async ({ accessToken, sinceIso }) => {
     const after = Math.floor(new Date(sinceIso).getTime() / 1000);
@@ -131,25 +167,7 @@ export const stravaAdapter = makeCodeAdapter({
     if (!res.ok) return [];
     const list = (await res.json()) as Array<Record<string, unknown>>;
     if (!Array.isArray(list)) return [];
-    return list.map((a) => {
-      const id = String(a.id ?? '');
-      const start = String(a.start_date ?? a.start_date_local ?? new Date().toISOString());
-      const moving = Number(a.moving_time ?? a.elapsed_time ?? 0);
-      const end = new Date(Date.parse(start) + moving * 1000).toISOString();
-      return {
-        source: 'strava' as const,
-        kind: 'activity' as const,
-        startedAt: start,
-        endedAt: end,
-        externalId: `strava:${id}`,
-        metrics: {
-          distance_m: Number(a.distance ?? 0),
-          moving_time_s: moving,
-          type: String(a.type ?? a.sport_type ?? 'other'),
-          name: String(a.name ?? ''),
-        },
-      };
-    });
+    return list.map(mapStravaActivity);
   },
 });
 

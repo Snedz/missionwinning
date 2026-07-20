@@ -90,14 +90,131 @@ const PROGRAMS_ES: Record<string, string> = {
   programsEquipBodyweight: 'Peso corporal/Mínimo',
   programsEquipGym: 'Gimnasio/Barra',
   programsWhatYouGet: 'Qué incluye',
+  programsBundleNote: 'Intro gratis — completo en Super Bundle',
+  programsDownloadSummary: 'Descargar resumen',
   progPtTitle: 'Educación élite en entrenamiento personal + nutrición',
   progBbTitle: 'Ejercicios y programación de culturismo especializado',
   progCorrTitle: 'Especialista en ejercicio correctivo',
 };
 
+/** UI chrome + titles; long product bullets stay EN until sales pass. */
+function programsUi(
+  partial: Partial<Record<string, string>>
+): Record<string, string> {
+  return { ...PROGRAMS_EN, ...(partial as Record<string, string>) };
+}
+
 const BY_LANG: Record<string, Record<string, string>> = {
   en: PROGRAMS_EN,
   es: PROGRAMS_ES,
+  fr: programsUi({
+    programsFilterGoal: 'Filtrer par objectif :',
+    programsFilterEquip: 'Équipement :',
+    programsGoalAll: 'Tous',
+    programsGoalHypertrophy: 'Hypertrophie',
+    programsGoalCorrective: 'Correctif',
+    programsGoalStrengthBusiness: 'Force/Business',
+    programsGoalConditioning: 'Conditionnement',
+    programsEquipBodyweight: 'Poids du corps/Minimal',
+    programsEquipGym: 'Salle/Barre',
+    programsWhatYouGet: 'Ce que vous obtenez',
+    programsBundleNote: 'Intro gratuite — complet dans Super Bundle',
+    programsDownloadSummary: 'Télécharger le résumé',
+  }),
+  pt: programsUi({
+    programsFilterGoal: 'Filtrar por objetivo:',
+    programsFilterEquip: 'Equipamento:',
+    programsGoalAll: 'Todos',
+    programsGoalHypertrophy: 'Hipertrofia',
+    programsGoalCorrective: 'Corretivo',
+    programsGoalStrengthBusiness: 'Força/Negócio',
+    programsGoalConditioning: 'Condicionamento',
+    programsEquipBodyweight: 'Peso corporal/Mínimo',
+    programsEquipGym: 'Academia/Barra',
+    programsWhatYouGet: 'O que você recebe',
+    programsBundleNote: 'Intro grátis — completo no Super Bundle',
+    programsDownloadSummary: 'Baixar resumo',
+  }),
+  de: programsUi({
+    programsFilterGoal: 'Nach Ziel filtern:',
+    programsFilterEquip: 'Equipment:',
+    programsGoalAll: 'Alle',
+    programsGoalHypertrophy: 'Hypertrophie',
+    programsGoalCorrective: 'Korrektiv',
+    programsGoalStrengthBusiness: 'Kraft/Business',
+    programsGoalConditioning: 'Kondition',
+    programsEquipBodyweight: 'Körpergewicht/Minimal',
+    programsEquipGym: 'Gym/Langhantel',
+    programsWhatYouGet: 'Das bekommst du',
+    programsBundleNote: 'Gratis-Intro — voll im Super Bundle',
+    programsDownloadSummary: 'Zusammenfassung laden',
+  }),
+  it: programsUi({
+    programsFilterGoal: 'Filtra per obiettivo:',
+    programsFilterEquip: 'Attrezzatura:',
+    programsGoalAll: 'Tutti',
+    programsWhatYouGet: 'Cosa ottieni',
+    programsDownloadSummary: 'Scarica riepilogo',
+  }),
+  ru: programsUi({
+    programsFilterGoal: 'Фильтр по цели:',
+    programsFilterEquip: 'Оборудование:',
+    programsGoalAll: 'Все',
+    programsWhatYouGet: 'Что вы получите',
+    programsDownloadSummary: 'Скачать сводку',
+  }),
+  ja: programsUi({
+    programsFilterGoal: '目標で絞り込み:',
+    programsFilterEquip: '器具:',
+    programsGoalAll: 'すべて',
+    programsWhatYouGet: '内容',
+    programsDownloadSummary: '概要をダウンロード',
+  }),
+  ko: programsUi({
+    programsFilterGoal: '목표별 필터:',
+    programsFilterEquip: '장비:',
+    programsGoalAll: '전체',
+    programsWhatYouGet: '포함 내용',
+    programsDownloadSummary: '요약 다운로드',
+  }),
+  zh: programsUi({
+    programsFilterGoal: '按目标筛选：',
+    programsFilterEquip: '器械：',
+    programsGoalAll: '全部',
+    programsWhatYouGet: '你将获得',
+    programsDownloadSummary: '下载摘要',
+  }),
+  th: programsUi({
+    programsFilterGoal: 'กรองตามเป้าหมาย:',
+    programsFilterEquip: 'อุปกรณ์:',
+    programsGoalAll: 'ทั้งหมด',
+    programsWhatYouGet: 'สิ่งที่คุณจะได้',
+  }),
+  vi: programsUi({
+    programsFilterGoal: 'Lọc theo mục tiêu:',
+    programsFilterEquip: 'Thiết bị:',
+    programsGoalAll: 'Tất cả',
+    programsWhatYouGet: 'Bạn nhận được',
+  }),
+  hi: programsUi({
+    programsFilterGoal: 'लक्ष्य से फ़िल्टर:',
+    programsFilterEquip: 'उपकरण:',
+    programsGoalAll: 'सभी',
+    programsWhatYouGet: 'आपको मिलेगा',
+  }),
+  id: programsUi({
+    programsFilterGoal: 'Filter berdasarkan tujuan:',
+    programsFilterEquip: 'Peralatan:',
+    programsGoalAll: 'Semua',
+    programsWhatYouGet: 'Yang Anda dapatkan',
+  }),
+  ar: programsUi({
+    programsFilterGoal: 'تصفية حسب الهدف:',
+    programsFilterEquip: 'المعدات:',
+    programsGoalAll: 'الكل',
+    programsWhatYouGet: 'ما ستحصل عليه',
+    programsDownloadSummary: 'تحميل الملخص',
+  }),
 };
 
 export function programsStringsFor(lang: string): Record<string, string> {

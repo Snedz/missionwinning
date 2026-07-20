@@ -41,9 +41,86 @@ const FEEDBACK_ES: Record<string, string> = {
   feedbackBackToday: 'Volver a Hoy',
 };
 
+function fb(partial: Partial<Record<string, string>>): Record<string, string> {
+  return { ...FEEDBACK_EN, ...(partial as Record<string, string>) };
+}
+
 const BY_LANG: Record<string, Record<string, string>> = {
   en: FEEDBACK_EN,
   es: FEEDBACK_ES,
+  fr: fb({
+    feedbackNameLabel: 'Nom complet (facultatif)',
+    feedbackEmailLabel: 'E-mail (suivi)',
+    feedbackResultsLabel: 'Résultats clés jusqu’ici',
+    feedbackTestimonialLabel: 'Votre témoignage',
+    feedbackRatingLabel: 'Notez vos résultats (1–5)',
+    feedbackActionLabel: 'Plus grande action prise',
+    feedbackSubmit: 'Envoyer le feedback',
+    feedbackSubmitting: 'Envoi…',
+    feedbackBackToday: 'Retour à Aujourd’hui',
+  }),
+  pt: fb({
+    feedbackNameLabel: 'Nome completo (opcional)',
+    feedbackEmailLabel: 'E-mail (para retorno)',
+    feedbackResultsLabel: 'Principais resultados até agora',
+    feedbackTestimonialLabel: 'Seu depoimento',
+    feedbackRatingLabel: 'Avalie seus resultados (1–5)',
+    feedbackActionLabel: 'Maior ação que você tomou',
+    feedbackSubmit: 'Enviar feedback',
+    feedbackSubmitting: 'Enviando…',
+    feedbackBackToday: 'Voltar para Hoje',
+  }),
+  de: fb({
+    feedbackNameLabel: 'Vollständiger Name (optional)',
+    feedbackEmailLabel: 'E-Mail (für Rückfragen)',
+    feedbackResultsLabel: 'Wichtige Ergebnisse bisher',
+    feedbackTestimonialLabel: 'Dein Testimonial',
+    feedbackRatingLabel: 'Ergebnisse bewerten (1–5)',
+    feedbackActionLabel: 'Größte Aktion, die du unternommen hast',
+    feedbackSubmit: 'Feedback senden',
+    feedbackSubmitting: 'Senden…',
+    feedbackBackToday: 'Zurück zu Heute',
+  }),
+  it: fb({
+    feedbackSubmit: 'Invia feedback',
+    feedbackBackToday: 'Torna a Oggi',
+  }),
+  ru: fb({
+    feedbackSubmit: 'Отправить отзыв',
+    feedbackBackToday: 'Назад к Сегодня',
+  }),
+  ja: fb({
+    feedbackSubmit: 'フィードバックを送る',
+    feedbackBackToday: '今日に戻る',
+  }),
+  ko: fb({
+    feedbackSubmit: '피드백 제출',
+    feedbackBackToday: '오늘로 돌아가기',
+  }),
+  zh: fb({
+    feedbackSubmit: '提交反馈',
+    feedbackBackToday: '返回今日',
+  }),
+  th: fb({
+    feedbackSubmit: 'ส่งความคิดเห็น',
+    feedbackBackToday: 'กลับไปวันนี้',
+  }),
+  vi: fb({
+    feedbackSubmit: 'Gửi phản hồi',
+    feedbackBackToday: 'Về Hôm nay',
+  }),
+  hi: fb({
+    feedbackSubmit: 'प्रतिक्रिया भेजें',
+    feedbackBackToday: 'आज पर वापस',
+  }),
+  id: fb({
+    feedbackSubmit: 'Kirim umpan balik',
+    feedbackBackToday: 'Kembali ke Hari Ini',
+  }),
+  ar: fb({
+    feedbackSubmit: 'إرسال الملاحظات',
+    feedbackBackToday: 'العودة إلى اليوم',
+  }),
 };
 
 export function feedbackStringsFor(lang: string): Record<string, string> {

@@ -16,8 +16,8 @@ export function CouncilLeadershipBlock() {
         : 'councilBodyAspirational';
 
   return (
-    <section className="rounded-2xl border border-blue-800/25 bg-blue-950/15 p-6 space-y-3 not-prose">
-      <h2 className="text-xl font-semibold text-blue-200 m-0">
+    <section className="rounded-2xl border border-[hsl(var(--status-info)/0.25)] bg-[hsl(var(--status-info)/0.1)] p-6 space-y-3 not-prose">
+      <h2 className="text-xl font-semibold text-[hsl(var(--status-info))] m-0">
         {t('councilTitle', { defaultValue: 'National fitness mission' })}
       </h2>
       <p className="text-sm text-muted-foreground leading-relaxed m-0">

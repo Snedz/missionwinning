@@ -8,17 +8,28 @@ Use this when inviting the first **10 private beta operators**. Prod is live at 
 
 ---
 
-## Invite link format
+## Invite link format (Wave 10 engine)
 
-Send each tester **one** of these (replace `YOUR_CODE` with the invite code):
+**Preferred:** issue invites in-app — **Profile → Beta funnel → Invites** (requires `BETA_ADMIN_EMAILS`). Each invite gets a unique `MW-B-XXXXX` code and a full link:
+
+```
+https://www.missionwinning.com/?access=<shared_gate_secret>&invite=MW-B-XXXXX
+```
+
+- `access` is the private gate password from env (not stored in DB).
+- `invite` is per-person attribution (`profiles.invited_via` + `beta_invites` funnel).
+
+After the first visit, a 30-day gate cookie is set — they can bookmark `/beta` or `/log` without the query param.
+
+**Fallback (no panel):** shared access only:
 
 ```
 https://www.missionwinning.com/?access=YOUR_CODE
 ```
 
-After the first visit, a 30-day cookie is set — they can bookmark `/beta` or `/log` without the query param.
+Or send them to `/private` and share the access code separately.
 
-Alternative: send them to `/private` and share the access code separately.
+**Copy source for day-2 / day-7 scripts:** still this file (below). Automated email uses the same wording when invite email is set and Resend is configured (`/api/cron/nudges`).
 
 ---
 
@@ -96,20 +107,16 @@ After each reply: fix the #1 confusion within 48h if it's a real bug/UX issue, t
 
 ## Invite tracker (first 10)
 
-| # | Name | Invited | I-Day | Workout | Signed in | Day-2 DM | Day-7 DM | Notes |
-|---|------|---------|-------|---------|-----------|----------|----------|-------|
-| 1 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
-| 2 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
-| 3 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
-| 4 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
-| 5 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
-| 6 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
-| 7 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
-| 8 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
-| 9 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
-| 10 | | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | |
+**Use the in-app Invites panel** (Profile → Beta funnel → Invites) for live status chips: landed · signed up · I-Day · workout · day-2/7 sent. Totals vs the ≥10 signed-up gate are shown there.
 
-Watch for A1 signal: “is there an app?” / won’t install PWA — log in Notes ([REDTEAM.md](REDTEAM.md)).
+Migration: `supabase/migrations/20260721_beta_invites.sql`. Dry-run follow-ups:
+
+```bash
+curl -sH "Authorization: Bearer $CRON_SECRET" \
+  "$SMOKE_BASE_URL/api/cron/nudges?dryRun=1" | jq '.inviteFollowups'
+```
+
+Watch for A1 signal: “is there an app?” / won’t install PWA — log in invite notes or tester feedback ([REDTEAM.md](REDTEAM.md)).
 
 Social/recruiting angle: [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md).
 

@@ -96,7 +96,7 @@ export function BetaStartPage() {
           </Card>
           <Card className="content-card">
             <CardContent className="p-4 flex gap-3">
-              <Trophy className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
+              <Trophy className="h-5 w-5 text-[hsl(var(--status-warn))] shrink-0 mt-0.5" />
               <div>
                 <div className="font-medium">Leaderboard sync</div>
                 <p className="text-muted-foreground mt-1">

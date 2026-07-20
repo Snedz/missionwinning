@@ -17,7 +17,7 @@ import type { CompletedWorkoutLog } from '@/types';
 
 function log(
   exerciseId: string,
-  sets: { reps: number; weight: number; kind?: string }[]
+  sets: { reps: number; weight: number; kind?: 'warmup' | 'normal' | 'drop' | 'failure' }[]
 ): CompletedWorkoutLog {
   return {
     id: 'l1',

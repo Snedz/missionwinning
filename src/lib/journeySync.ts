@@ -195,5 +195,7 @@ export async function syncJourneyOnSignIn(): Promise<void> {
     requestWelcomeEmail();
     // Referral redeem (Wave 8) — fire-and-forget; service-role write via API
     void import('@/lib/referral').then((m) => m.redeemReferralFromAttribution());
+    // Beta invite redeem (Wave 10) — same pattern
+    void import('@/lib/invite').then((m) => m.redeemInviteFromAttribution());
   }
 }
