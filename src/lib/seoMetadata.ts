@@ -39,6 +39,13 @@ export type PublicPageMetaInput = {
   path: string;
 };
 
+const DEFAULT_OG_IMAGE = {
+  url: '/brand/og-default.png',
+  width: 1200,
+  height: 630,
+  alt: 'Mission Winning — Train Anywhere. Win Daily.',
+} as const;
+
 export function publicPageMetadata(input: PublicPageMetaInput): Metadata {
   const path = canonicalPath(input.path);
   const url = `${siteBaseUrl()}${path === '/' ? '' : path}`;
@@ -55,11 +62,13 @@ export function publicPageMetadata(input: PublicPageMetaInput): Metadata {
       siteName: 'Mission Winning',
       type: 'website',
       locale: 'en_US',
+      images: [DEFAULT_OG_IMAGE],
     },
     twitter: {
       card: 'summary_large_image',
       title: input.title,
       description: input.description,
+      images: [DEFAULT_OG_IMAGE.url],
     },
   };
 }

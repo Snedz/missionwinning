@@ -1,6 +1,7 @@
 # Social & launch media kit
 
 **Purpose:** Copy-paste posts, filming shot list, and channel rules for beta → public.  
+**Visual assets:** Brand logos, colors, OG image → [/press](https://www.missionwinning.com/press) · [brand-guidelines.md](brand-guidelines.md)  
 **Rule:** Social gets people into I-Day → first workout. No paid ads until week-4 retention holds.  
 **Companion:** [STRATEGY.md](../STRATEGY.md) · [BETA_INVITE.md](../BETA_INVITE.md) · [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)
 

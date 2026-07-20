@@ -52,6 +52,7 @@
 | `/compare` | `app/compare/page.tsx` → `ComparePage` (marketing chrome) |
 | `/compare/[slug]` | `CompareStoryPage` — forge / freeletics / spreadsheet |
 | `/guide`, `/exercises` | Public SEO pages |
+| `/press` | `app/press/page.tsx` → `PressPage` (brand & media kit) |
 | `/guide` (Apex reader) | `GuidePublicIndexPage` — Contents sidebar + language switcher |
 | `/guide/[chapter]` | `GuidePublicChapterPage` — same shell |
 | `/guide/print` | Magazine print/PDF source (`GuideMagazinePrintPage`) — noindex |

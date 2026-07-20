@@ -40,12 +40,21 @@ export const metadata: Metadata = {
     title: 'Mission Winning — Train Anywhere. Win Daily.',
     description:
       'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline. Mission Coach plans your week.',
+    images: [
+      {
+        url: '/brand/og-default.png',
+        width: 1200,
+        height: 630,
+        alt: 'Mission Winning — Train Anywhere. Win Daily.',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Mission Winning — Train Anywhere. Win Daily.',
     description:
       'Free workout tracking, nutrition, mobility, mind, and learning — one path forward. Works offline.',
+    images: ['/brand/og-default.png'],
   },
   icons: {
     icon: '/favicon.svg',

@@ -26,6 +26,7 @@ const PUBLIC_SAFE = new Set([
   '/exercises',
   '/paths',
   '/about',
+  '/press',
   '/privacy',
   '/terms',
   '/coaching',

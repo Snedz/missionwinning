@@ -11,6 +11,7 @@ describe('publicRoutes', () => {
     assert.equal(isJourneyBypassPath('/about'), true);
     assert.equal(isJourneyBypassPath('/feedback'), true);
     assert.equal(isJourneyBypassPath('/calculators'), true);
+    assert.equal(isJourneyBypassPath('/press'), true);
     assert.equal(isJourneyBypassPath('/join/class/MW-TEST'), true);
     assert.equal(isJourneyBypassPath('/log'), false);
   });
@@ -22,6 +23,7 @@ describe('publicRoutes', () => {
   it('allows private gate public paths', () => {
     assert.equal(isPrivateGatePublicPath('/vision'), true);
     assert.equal(isPrivateGatePublicPath('/beta'), true);
+    assert.equal(isPrivateGatePublicPath('/press'), true);
     assert.equal(isPrivateGatePublicPath('/log'), false);
     assert.equal(isPrivateGatePublicPath('/_next/static/chunk.js'), true);
   });

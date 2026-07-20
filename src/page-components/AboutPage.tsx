@@ -100,6 +100,10 @@ export function AboutPage() {
               <Link href="/beta" className="text-primary hover:underline">
                 {t('navBetaGuide', { defaultValue: 'Beta guide' })}
               </Link>
+              {' · '}
+              <Link href="/press" className="text-primary hover:underline">
+                {t('navPressBrand', { defaultValue: 'Press / Brand' })}
+              </Link>
               {isAmericaTrackEnabled() && (
                 <>
                   {' · '}
