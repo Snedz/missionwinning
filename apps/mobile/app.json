@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Mission Winning",
+    "slug": "mission-winning",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "scheme": "missionwinning",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0c10"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.missionwinning.app",
+      "infoPlist": {
+        "CFBundleDisplayName": "Mission Winning"
+      }
+    },
+    "android": {
+      "package": "com.missionwinning.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0c10",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-web-browser"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "REPLACE_WITH_EAS_PROJECT_ID"
+      },
+      "router": {},
+      "webAppUrl": "https://www.missionwinning.com"
+    },
+    "owner": "missionwinning"
+  }
+}

@@ -1,0 +1,12 @@
+appId: com.missionwinning.app.debug
+---
+- launchApp
+- assertVisible: "Mission Winning"
+- tapOn: "Start mission"
+- assertVisible: "Today"
+- tapOn: "Start workout"
+- assertVisible: "Finish workout"
+- tapOn: "Finish workout"
+- assertVisible: "Session locked"
+- tapOn: "See Mission Coach"
+- assertVisible: "Mission Coach"

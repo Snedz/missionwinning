@@ -1,6 +1,6 @@
 # Android TWA / thin native playbook
 
-**Status:** Deferred until evidence. Do **not** start this while private beta gates are unmet or week-4 retention is unknown.  
+**Status:** Optional packaging only. **Product path is Expo native** — see [NATIVE_MOBILE.md](NATIVE_MOBILE.md) (`apps/mobile`).  
 **Companion:** [REDTEAM.md](../REDTEAM.md) A1 · [STRATEGY.md](../STRATEGY.md) · [docs/POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md)
 
 ---

@@ -31,8 +31,13 @@ Works in Cursor, Claude Code, Grok, Copilot, and other agents — tool-agnostic 
 | Data | `src/data/` | Static catalogs (exercises, recipes, guidebook) |
 | i18n | `src/i18n/` | Translation strings (`*Locales.ts`) |
 | API | `app/api/` | Route handlers — [app/api/INDEX.md](app/api/INDEX.md) |
+| Native apps | `apps/android/` | Compose Play product — [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md) |
+| Shared core | `packages/mw-core/` | Pure TS shared by web + mobile API |
+| Expo prototype | `apps/mobile/` | Flow reference only — not Play |
 
 **Pattern:** `app/(app)/foo/page.tsx` imports `FooPage` from `src/page-components/FooPage.tsx`.
+
+**Android:** `cd apps/android && ./gradlew :app:assembleDebug` — wedge Train + Coach; keep web PWA for SEO. iOS deferred until Android Phase 1 accepted.
 
 **Tests:** `src/lib/**/*.test.ts` — run with `npm test` (`tsx --test`). Critical UI flows: `npm run e2e:critical` (`tests/e2e/`).
 

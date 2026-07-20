@@ -45,15 +45,24 @@
 | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Beta + public social copy kit |
 | [brand-guidelines.md](brand-guidelines.md) | Brand voice, colors, logo rules · public `/press` |
-| [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → PayPal later |
+| [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → trademark/counsel |
+| [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) | Unlimited-funds tiers: legal/ops/VA yes; paid ads no until week-4 |
+| [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md) | Hire script for beta DM help (no ads) |
 | [LEGAL_SAFETY.md](LEGAL_SAFETY.md) | AI disclosure, arbitration, DMCA, store data inventory |
 | [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) | Six docs before payments · refunds · DPA/MSA templates |
 | [legal/DPA.md](legal/DPA.md) | B2B/school DPA draft (docs-only) |
 | [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) | B2B MSA draft (no consumer SLA promises) |
-| [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) | Deferred Android TWA / thin iOS |
+| [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference); product path is Android Compose |
+| [ANDROID_NATIVE.md](ANDROID_NATIVE.md) | Android get-started + AI orchestration · Play |
+| [IOS_DEFERRED.md](IOS_DEFERRED.md) | iOS blocked until Android Phase 1 accepted |
+| [openapi-mobile.yaml](openapi-mobile.yaml) | Mobile client contract (Coach / workouts) |
+| [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) | Optional web PWA packaging (not the product path) |
 | [WEARABLES.md](WEARABLES.md) | Apple / Google / Whoop / Strava wearables strategy + unlock |
 | [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
+| [YC_THESIS.md](YC_THESIS.md) | YC wedge: Train + Coach one-liner, competition, traction bar (apply only after gates) |
+| [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md) | Jul–Aug 2026 apps: CDL/YC/Elbow Grease/SPC ranking, demo seed, Wave A pre-flip |
+| [applications/INDEX.md](applications/INDEX.md) | Paste-ready YC/CDL/Elbow Grease/SPC/Residency answers (honest blanks) |
 | [PRODUCTION_STACK.md](PRODUCTION_STACK.md) | 13-layer production scorecard (ops maturity) |
 | [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW v1 |
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery (L13) |

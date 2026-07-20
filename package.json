@@ -16,6 +16,7 @@
     "gate-smoke": "tsx scripts/gate-smoke.ts",
     "security-smoke": "tsx scripts/gate-smoke.ts",
     "rate-limit-smoke": "node scripts/rate-limit-smoke.mjs",
+    "seed-coach-adapt-demo": "node scripts/seed-coach-adapt-demo.mjs",
     "launch-verify": "node scripts/launch-verify.mjs",
     "verify-premium": "node scripts/verify-stripe-enrollment.mjs --check-gates",
     "security-audit": "npm audit --audit-level=high",
@@ -32,7 +33,10 @@
     "growth-smoke": "node scripts/growth-smoke.mjs",
     "i18n:batchd-parity": "tsx scripts/i18n-parity.ts",
     "i18n:parity": "tsx scripts/i18n-parity.ts",
-    "i18n:fill": "tsx scripts/i18n-fill-missing.ts"
+    "i18n:fill": "tsx scripts/i18n-fill-missing.ts",
+    "mobile": "npm --prefix apps/mobile start",
+    "mobile:typecheck": "npm --prefix apps/mobile run typecheck",
+    "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug"
   },
   "dependencies": {
     "@phantom/react-sdk": "^2.0.2",

@@ -1,0 +1,182 @@
+openapi: 3.0.3
+info:
+  title: Mission Winning Mobile API
+  version: 0.1.0
+  description: |
+    Contract for Android (Compose) and future iOS clients.
+    Coach seed/adapt wraps packages/mw-core — do not reimplement planEngine on device.
+servers:
+  - url: https://www.missionwinning.com
+  - url: http://localhost:3000
+paths:
+  /api/mobile/coach/plan:
+    get:
+      summary: Seed or demo coach week
+      parameters:
+        - name: equipment
+          in: query
+          schema:
+            type: string
+            enum: [bodyweight, dumbbells, full-gym]
+        - name: adaptDemo
+          in: query
+          schema:
+            type: string
+            enum: ['0', '1', 'true', 'false']
+      responses:
+        '200':
+          description: Plan + adapt beats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachPlanResponse'
+        '401':
+          description: Private mode without access
+        '429':
+          description: Rate limited
+    post:
+      summary: Generate seed coach week
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoachPlanRequest'
+      responses:
+        '200':
+          description: Plan + adapt beats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachPlanResponse'
+  /api/mobile/coach/adapt:
+    post:
+      summary: Mark session done and bump plan revision
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoachAdaptRequest'
+      responses:
+        '200':
+          description: Updated plan + adapt beats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoachPlanResponse'
+  /api/mobile/workouts:
+    post:
+      summary: Log workout (cloud sync if Bearer present)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutLogRequest'
+      responses:
+        '200':
+          description: Ack (synced true/false)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutLogResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CoachPlanRequest:
+      type: object
+      properties:
+        equipment:
+          type: string
+          enum: [bodyweight, dumbbells, full-gym]
+        withAdaptDemo:
+          type: boolean
+        revision:
+          type: integer
+    CoachAdaptRequest:
+      type: object
+      required: [plan, sessionId]
+      properties:
+        plan:
+          $ref: '#/components/schemas/CoachPlan'
+        sessionId:
+          type: string
+    CoachPlanResponse:
+      type: object
+      required: [plan, adaptBeats, hasAdaptSignal]
+      properties:
+        plan:
+          $ref: '#/components/schemas/CoachPlan'
+        adaptBeats:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              defaultMessage:
+                type: string
+              count:
+                type: integer
+        hasAdaptSignal:
+          type: boolean
+    CoachPlan:
+      type: object
+      required:
+        [revision, weekStart, daysPerWeek, sessions, generatedAt, contextHash, equipmentProfile]
+      properties:
+        revision:
+          type: integer
+        weekStart:
+          type: string
+        daysPerWeek:
+          type: integer
+        generatedAt:
+          type: string
+        contextHash:
+          type: string
+        equipmentProfile:
+          type: string
+          enum: [bodyweight, dumbbells, full-gym]
+        sessions:
+          type: array
+          items:
+            type: object
+    WorkoutLogRequest:
+      type: object
+      required: [workoutName, durationSeconds, setCount, totalVolume]
+      properties:
+        workoutName:
+          type: string
+        durationSeconds:
+          type: integer
+        setCount:
+          type: integer
+        totalVolume:
+          type: number
+        sessionId:
+          type: string
+        completedAt:
+          type: string
+    WorkoutLogResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        synced:
+          type: boolean
+        id:
+          type: string
+        workoutName:
+          type: string
+        completedAt:
+          type: string
+        syncError:
+          type: string

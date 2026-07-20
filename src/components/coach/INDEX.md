@@ -6,6 +6,7 @@
 
 | File | Purpose |
 |------|---------|
+| `CoachAdaptBanner.tsx` | Demo-critical: adapted from logs / missed / swapped |
 | `CoachTodayCard.tsx` | Today commissioned card → links `/coach` |
 | `WeekStrip.tsx` | Week navigation on Coach page |
 | `TodayCoachWeekStrip.tsx` | Compact week strip on Today |
