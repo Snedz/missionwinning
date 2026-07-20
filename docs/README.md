@@ -49,6 +49,7 @@ User guides in plain language (no code paths):
 | [BETA_LAUNCH_OPS.md](archive/BETA_LAUNCH_OPS.md) | Founder launch checklist |
 | [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) | Stripe webhooks + premium |
 | [OWASP_AUDIT.md](OWASP_AUDIT.md) | Security sweep status |
+| [AIKIDO.md](AIKIDO.md) | Aikido Cursor MCP + CRITICAL-deps CI gate |
 | [COMPLIANCE.md](COMPLIANCE.md) | Control monitor (SOC2/ISO/HIPAA map-only) |
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Performance baselines |

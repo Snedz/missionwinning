@@ -1,0 +1,34 @@
+# Aikido Security — release gate (CRITICAL deps)
+
+# Complements soft npm audit + CodeQL. Skips when AIKIDO_SECRET_KEY is unset.
+# Docs: docs/AIKIDO.md
+
+name: Aikido
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  aikido-security:
+    if: ${{ secrets.AIKIDO_SECRET_KEY != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Detect new vulnerabilities
+        uses: AikidoSec/github-actions-workflow@v1.0.13
+        with:
+          secret-key: ${{ secrets.AIKIDO_SECRET_KEY }}
+          fail-on-timeout: true
+          fail-on-dependency-scan: true
+          fail-on-sast-scan: false
+          fail-on-iac-scan: false
+          minimum-severity: 'CRITICAL'
+          timeout-seconds: 180
+          post-scan-status-comment: 'off'
+          post-sast-review-comments: 'off'
+          github-token: ${{ secrets.GITHUB_TOKEN }}

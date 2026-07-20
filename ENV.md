@@ -378,8 +378,11 @@ In **GitHub → Settings → Secrets**:
 | `VERCEL_TOKEN` | CLI token for [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) |
 | `VERCEL_ORG_ID` | Vercel team / org id |
 | `VERCEL_PROJECT_ID` | Vercel project id |
+| `AIKIDO_SECRET_KEY` | Aikido CI gate (optional until set) — [docs/AIKIDO.md](docs/AIKIDO.md); **not** a Vercel env |
 
 CI job `gate-smoke` skips when `SMOKE_BASE_URL` is unset; `continue-on-error: true` until preview URL exists.
+
+Aikido job skips when `AIKIDO_SECRET_KEY` is unset.
 
 **Layer 9 verify:** `SMOKE_BASE_URL=… npm run rate-limit-smoke` — expects HTTP 429 on `/api/leads` burst.
 

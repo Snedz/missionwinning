@@ -23,6 +23,7 @@ Required GitHub Actions secrets (set 2026-07-19):
 | `VERCEL_TOKEN` | Vercel CLI / account token |
 | `VERCEL_ORG_ID` | `team_Akwar4ZvbahQp5HR911ebrlW` |
 | `VERCEL_PROJECT_ID` | `prj_yqoUE2ENzRRdeiMdqkqyC49czxxp` |
+| `AIKIDO_SECRET_KEY` | Aikido CI (optional) — GitHub Actions only; see [docs/AIKIDO.md](docs/AIKIDO.md) |
 
 **Manual fallback** if the workflow is not wired yet:
 
