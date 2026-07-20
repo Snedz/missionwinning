@@ -4,6 +4,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Hold-to-confirm delete language
+
+- **Primitives:** `HoldToConfirmButton` (300ms ring; release aborts) + `DangerZone`; helpers in `holdToConfirm.ts`
+- **Wired:** discard workout, remove exercise, fuel clear day / meal entry, track activity delete, coach regenerate week
+- **Rules:** named verbs, red budget (Sign Out stays outline), no “Are you sure?” dialog — [docs/DESTRUCTIVE_UX.md](docs/DESTRUCTIVE_UX.md)
+
+---
+
 ## 2026-07-20 — Compliance monitor (Vanta-lite)
 
 - **Catalog:** `docs/compliance/controls.yaml` — SOC 2 / ISO 27001 / HIPAA map-only crosswalk (~45 controls)

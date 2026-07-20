@@ -1,10 +1,11 @@
 'use client';
 
-import { Check, Clock, Dumbbell, Plus, Scale, Square } from 'lucide-react';
+import { Check, Clock, Dumbbell, Plus, Scale } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { formatDuration } from '@/lib/utils';
@@ -19,7 +20,7 @@ type Props = {
   onAddExerciseIdChange: (id: string) => void;
   onAddExercise: () => void;
   onOpenPlateCalc: () => void;
-  onCancel: () => void;
+  onDiscard: () => void;
   onFinish: () => void;
 };
 
@@ -34,7 +35,7 @@ export function ActiveSessionChrome({
   onAddExerciseIdChange,
   onAddExercise,
   onOpenPlateCalc,
-  onCancel,
+  onDiscard,
   onFinish,
 }: Props) {
   const { t } = useTranslation();
@@ -54,6 +55,11 @@ export function ActiveSessionChrome({
           className="flex-1 min-w-0"
         />
         <div className="flex items-center gap-3 flex-wrap justify-end">
+          <HoldToConfirmButton
+            size="sm"
+            label={t('activeDiscardWorkout', { defaultValue: 'Discard workout' })}
+            onConfirm={onDiscard}
+          />
           <Button variant="outline" size="sm" onClick={onOpenPlateCalc}>
             <Scale className="h-4 w-4" />
             {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
@@ -69,10 +75,6 @@ export function ActiveSessionChrome({
               {formatDuration(elapsedSeconds)}
             </span>
           </div>
-          <Button variant="destructive" size="sm" onClick={onCancel}>
-            <Square className="h-4 w-4" />
-            {t('activeCancel', { defaultValue: 'Cancel' })}
-          </Button>
           <Button variant="fitness" onClick={onFinish}>
             <Check className="h-4 w-4" />
             {t('activeFinish', { defaultValue: 'Finish' })}

@@ -98,6 +98,8 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 |-----------|------|-----|
 | **ProgressRing** | `src/components/ui/ProgressRing.tsx` | Today + Fuel + demos (canonical) |
 | ScoreRing / MetricRing | adapters → ProgressRing | Legacy call sites |
+| **HoldToConfirmButton** | `src/components/ui/HoldToConfirmButton.tsx` | Destructive hold-to-confirm — [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) |
+| **DangerZone** | `src/components/ui/DangerZone.tsx` | Geography for destructive actions |
 | **PillarPageHeader** | briefing anatomy (eyebrow optional) | All pillar + info pages |
 | **PillarPageShell** | stagger + header + children | In-app pillars |
 | **InfoPageShell** | info/marketing in app chrome | About, legal, etc. |
