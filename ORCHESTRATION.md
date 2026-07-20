@@ -16,7 +16,7 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 **Ops unblocked (same day):** Wave 7–8 migrations on prod; weekly-digest gate allowlist; Production redeploys; `STRIPE_WEBHOOK_SECRET` + signed enrollment ping → `enrollments`; Resend digest live send; `LAUNCH_STRICT` launch-verify green against www.
 
-**Still founder-owned:** ≥10 beta users + phone hero QA ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §3); connect Stripe Dashboard webhook endpoint to the same `whsec` (or rotate via `scripts/setup-stripe-webhook.mjs` with `sk_test`/`sk_live`); **Phantom Lifetime:** fund treasury USDC ATA + one signed-in pay → `enrollments.provider=phantom` ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §4); set GitHub Actions `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID` so [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) auto-deploys `master` → Production (Git previews alone stay Preview-only). PWA offline waits for public flip. **#1 gap = beta distribution** — not more features.
+**Still founder-owned:** ≥10 beta users + phone hero QA ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §3); connect Stripe Dashboard webhook endpoint to the same `whsec` (or rotate via `scripts/setup-stripe-webhook.mjs` with `sk_test`/`sk_live`); **Phantom Lifetime:** fund treasury USDC ATA + one signed-in pay → `enrollments.provider=phantom` ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §4); set GitHub Actions `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID` so [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) auto-deploys `master` → Production (Git previews alone stay Preview-only). PWA offline waits for public flip. **Ops maturity (not features):** before public, close thin production layers — Upstash rate limits, Production Sentry DSN, backup drill — per [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md). **#1 gap = beta distribution** — not more features.
 
 ---
 
@@ -72,6 +72,7 @@ flowchart TB
 | 5 | Mobile hero QA: Welcome → Just Go → set → Mission Score | Manual + `npm run e2e:critical` |
 | 6 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
 | 7 | Public flip day (after gates) | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) + [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) |
+| 8 | Ops maturity Wave A: Upstash + Sentry DSN + `SMOKE_BASE_URL` / `VERCEL_*` + backup drill | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md) |
 
 ### Agent-allowed (Horizon 0 only)
 
@@ -79,6 +80,7 @@ flowchart TB
 - Beta invite / founder panel / launch-verify + **growth-smoke** clarity
 - Keep CI green; docs match reality (build label, VISION_STATUS, LAUNCH_READY)
 - Public-flip offline/SW checklist maintenance
+- Production-stack scorecard + rate-limit smoke script + backup runbook (no new pillars)
 - Residual polish only if it unblocks launch or week-4 measurement (no new pillars)
 
 **Done when:** 10+ profiles, BT ≥60%, secrets green, ready to flip public.
@@ -89,7 +91,7 @@ flowchart TB
 
 | Track | Tasks |
 |-------|--------|
-| **Public** | `PRIVATE_MODE=false`; offline + SW smoke ([docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md)); Search Console; soft launch ([docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md)); Upstash in prod optional |
+| **Public** | `PRIVATE_MODE=false`; offline + SW smoke ([docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md)); Search Console; soft launch ([docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md)); Upstash + Sentry required in prod ([docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) Wave A/B) |
 | **Money** | Stripe → `enrollments` E2E; waitlist → founders email; support FAQ |
 | **Eng (bounded)** | ~~Lighthouse `/` + `/log` ≥90~~ ✅; ~~Serwist~~ ✅; ~~sync conflict tests~~ ✅; ~~logger E2E depth~~ ✅; ~~ActiveWorkout / Today extract~~ ✅; ~~`src/lib/workout/` domain~~ ✅ |
 

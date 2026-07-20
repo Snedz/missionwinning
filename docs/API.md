@@ -110,6 +110,8 @@ curl -X POST "$BASE/api/private-access" \
 
 All `GET` — auth `premium` (session + `isPremiumForUser`) except status.
 
+Catalog responses use `Cache-Control: private, max-age=60, stale-while-revalidate=300` (browser only — never shared CDN). Enrollment checks are memoized in Upstash when configured (~90s TTL); see [CACHE_LADDER.md](CACHE_LADDER.md).
+
 | Route | Content |
 |-------|---------|
 | `/api/premium/status` | Enrollment boolean |
@@ -118,6 +120,7 @@ All `GET` — auth `premium` (session + `isPremiumForUser`) except status.
 | `/api/premium/mobility` | Mobility flows |
 | `/api/premium/mind` | Mind sessions |
 | `/api/premium/guidebook` | Full guidebook payload |
+| `/api/premium/fuel-plan` | Adaptive Fuel Coach plan |
 
 ```bash
 # Expect 401/403 without session + enrollment

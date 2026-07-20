@@ -4,6 +4,11 @@
  */
 import 'server-only';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
+import {
+  getCachedPremiumFlag,
+  invalidatePremiumEnrollmentCache,
+  setCachedPremiumFlag,
+} from '@/lib/premiumEnrollmentCache';
 
 export function isDemoPremiumEnabled(): boolean {
   if (process.env.NODE_ENV === 'production' && process.env.DEMO_PREMIUM === 'true') {
@@ -23,8 +28,13 @@ export async function isPremiumForUser(
   if (isDemoPremiumEnabled()) return true;
   if (!userId && !email) return false;
 
+  const cached = await getCachedPremiumFlag(userId, email);
+  if (cached !== null) return cached;
+
   const admin = getSupabaseAdmin();
   if (!admin) return false;
+
+  let premium = false;
 
   if (userId) {
     const { data } = await admin
@@ -33,10 +43,10 @@ export async function isPremiumForUser(
       .eq('user_id', userId)
       .or('premium_granted.eq.true,status.eq.active')
       .limit(1);
-    if (data?.length) return true;
+    if (data?.length) premium = true;
   }
 
-  if (email) {
+  if (!premium && email) {
     const normalized = email.trim().toLowerCase();
     const { data } = await admin
       .from('enrollments')
@@ -44,10 +54,11 @@ export async function isPremiumForUser(
       .eq('user_email', normalized)
       .or('premium_granted.eq.true,status.eq.active')
       .limit(1);
-    if (data?.length) return true;
+    if (data?.length) premium = true;
   }
 
-  return false;
+  await setCachedPremiumFlag(userId, email, premium);
+  return premium;
 }
 
 /** Grant enrollment via service role (webhooks only). */
@@ -94,5 +105,11 @@ export async function grantEnrollmentFromWebhook(payload: {
   }
 
   if (error) throw error;
+
+  await invalidatePremiumEnrollmentCache(
+    typeof row.user_id === 'string' ? row.user_id : payload.user_id,
+    payload.user_email
+  );
+
   return { duplicate: false };
 }

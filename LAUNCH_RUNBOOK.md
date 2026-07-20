@@ -63,6 +63,26 @@
 - [x] Deployed URL loads and shows the new private teaser page
 - [x] Digest dry-run + live send OK (`sent:true` with Resend)
 
+## §2b — Ops maturity Wave A (before public flip)
+
+Scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md). Recovery: [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md).
+
+1. **Upstash (L9):** create Redis DB → set `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` on Vercel Production → redeploy.
+2. **Sentry (L12):** set `NEXT_PUBLIC_SENTRY_DSN` on Production → redeploy → confirm one error event.
+3. **CI deploy/smoke (L5/L7):** GitHub Actions secrets `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `SMOKE_BASE_URL`, `SMOKE_ACCESS_SECRET`.
+4. Verify:
+   ```bash
+   SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ACCESS_SECRET=… npm run gate-smoke
+   SMOKE_BASE_URL=https://www.missionwinning.com npm run rate-limit-smoke
+   ```
+5. **Backup drill (L13):** Profile → Export backup once; skim operator restore steps in BACKUP_RESTORE.md.
+
+- [ ] Upstash live · [ ] Sentry DSN live · [ ] `rate-limit-smoke` sees 429
+- [ ] GitHub `VERCEL_*` + `SMOKE_BASE_URL` set
+- [ ] Profile export verified once
+
+---
+
 ## §3 — Beta: 10 real users (target: within 14 days)
 
 1. Smoke-check the hero flow yourself **on your phone**: teaser → access code → `/welcome` I-Day → first workout → Win Score updates → sign in → Profile shows cloud sync.
@@ -113,19 +133,21 @@ See [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md). Do **not** m
 - [ ] Optional: dedicated RPC (Helius/QuickNode); Phantom Portal App ID for social/deeplink
 - [ ] Parallel (when live KYB ready): Dashboard → Payment methods → **Stablecoins and Crypto** for Lifetime Sessions only — [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)
 
-## §5 — Go public (only after §2 security boxes + §3 gates)
+## §5 — Go public (only after §2 / §2b security + ops boxes + §3 gates)
 
 **Automated verify** (after env is set on Vercel):
 
 ```bash
 # Gate still on
 SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ACCESS_SECRET=... npm run launch-verify
+SMOKE_BASE_URL=https://www.missionwinning.com npm run rate-limit-smoke
 
-# After PRIVATE_MODE=false
+# After PRIVATE_MODE=false (Layer 10 PWA enables via next.config.js)
 SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify
 ```
 
-See [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md) for Stripe enrollment + Supabase probe commands.
+See [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md) for Stripe enrollment + Supabase probe commands.  
+Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) (offline + SW spot-check Today/Train).
 
 1. Final security curls (replace domain if needed):
    ```bash

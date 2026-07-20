@@ -91,10 +91,11 @@ curl -sI https://www.missionwinning.com/api/school/class/MWTEST/leaderboard
 
 1. Rotate secrets: `PRIVATE_ACCESS_SECRET`, `YOUTH_CONSENT_SECRET`, `NUDGE_SECRET`, `CRON_SECRET`, `BETA_ADMIN_SECRET`
 2. Vercel Production: `DEMO_PREMIUM=false`, `PRIVATE_ALLOW_AUTH_BYPASS` unset, `PRIVATE_ALLOW_QUERY_ACCESS` unset
-3. Optional: `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` for distributed rate limits
-4. Apply all `supabase/migrations/` including `20260702_security_hardening.sql` and `20260705_leads_api_only.sql`
-5. Run `npm run security-smoke` against production
-6. Submit sitemap in Search Console ([SEO_ANALYTICS.md](SEO_ANALYTICS.md))
+3. **Required before public:** `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` ([PRODUCTION_STACK.md](PRODUCTION_STACK.md) L9)
+4. **Required before public:** `NEXT_PUBLIC_SENTRY_DSN` on Production (L12)
+5. Apply all `supabase/migrations/` including `20260702_security_hardening.sql` and `20260705_leads_api_only.sql`
+6. Run `npm run security-smoke` + `npm run rate-limit-smoke` against production
+7. Submit sitemap in Search Console ([SEO_ANALYTICS.md](SEO_ANALYTICS.md))
 
 ---
 
@@ -103,7 +104,7 @@ curl -sI https://www.missionwinning.com/api/school/class/MWTEST/leaderboard
 | Item | Rationale |
 |------|-----------|
 | CSP `unsafe-inline` / `unsafe-eval` | Still required by Next.js client runtime; Serwist migration shipped but CSP not fully locked down |
-| In-memory rate limit fallback | OK for local/single instance; **production should set Upstash** before public abuse (S0.6) |
+| In-memory rate limit fallback | **Local/dev only.** Production without Upstash is a Medium risk until Wave A closes it ([PRODUCTION_STACK.md](PRODUCTION_STACK.md)) |
 | Coach taster localStorage reset | Product abuse only — premium LLM server-gated |
 | Solana/Phantom high advisories | Required for lifetime crypto checkout; ownership + amount server-enforced — see [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) |
 | Soft CI dependency audit | Soft until crypto path removed or upstream clean |

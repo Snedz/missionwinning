@@ -133,15 +133,23 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 
 ### P0 — Before public (`PRIVATE_MODE=false`)
 
-- [ ] Rotate `PRIVATE_ACCESS_SECRET` (stop using `Done`)
+- [ ] Rotate `PRIVATE_ACCESS_SECRET` (stop using `Done`) — confirm Production value is not the old weak secret
 - [x] Run `supabase/schema.sql` in production Supabase (or `migrations/20250629_complete_base_schema.sql`)
-- [ ] Apply `20260702_security_hardening.sql` + `20260705_leads_api_only.sql`
+- [x] Apply `20260702_security_hardening.sql` + `20260705_leads_api_only.sql` (and later migrations through referrals — see [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2)
 - [ ] Set `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated — not shared with gate secret)
 - [ ] Set `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in Vercel (never `NEXT_PUBLIC_`)
 - [ ] Set `DEMO_PREMIUM=false` explicitly in production
-- [ ] Optional: `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` for distributed rate limits
-- [ ] Verify gate + premium API with `npm run launch-verify` (or `security-smoke`) and curl checklist below
+- [ ] **Required before public:** `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (distributed rate limits — [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) L9)
+- [ ] **Required before public:** `NEXT_PUBLIC_SENTRY_DSN` on Production ([ENV.md](ENV.md), [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) L12)
+- [ ] GitHub Actions: `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID`; `SMOKE_BASE_URL` (+ access secret) for gate-smoke
+- [ ] Verify gate + premium API with `npm run launch-verify` (or `security-smoke`) and `npm run rate-limit-smoke`
+- [ ] Backup drill: Profile export once + skim [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md)
 - [x] Privacy policy + Terms pages linked from `/about`
+
+### Wave B — Flip day (Layer 10)
+
+- [ ] `PRIVATE_MODE=false` redeploy enables Serwist PWA (`next.config.js`); spot-check Today/Train offline ([docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md))
+- [ ] IaC / multi-region / SIEM **deferred** (Layers 6, 11, SIEM) — do not block launch on them
 
 ### P1 — First 30 days public
 
@@ -172,7 +180,8 @@ Referral **v1 is recognition only** (recruit counts + brass badges at 3/10/25). 
 | `PRIVATE_ACCESS_SECRET` | Server only | Pre-launch gate password |
 | `YOUTH_CONSENT_SECRET` | Server only | Parent consent HMAC (required in prod) |
 | `NUDGE_SECRET` | Server only | Journey nudge HMAC (required in prod) |
-| `UPSTASH_REDIS_REST_*` | Server only | Distributed rate limits (recommended prod) |
+| `UPSTASH_REDIS_REST_*` | Server only | Distributed rate limits (**required before public**) |
+| `NEXT_PUBLIC_SENTRY_DSN` | Client (expected) | Error monitoring (**required before public**) |
 | `PRIVATE_ALLOW_QUERY_ACCESS` | Server only | Allow deprecated `?access=` bypass in prod |
 | `PRIVATE_MODE` | Server only | `true` until public launch |
 | `DEMO_PREMIUM` | Server only | Never `true` in production |

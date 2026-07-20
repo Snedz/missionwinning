@@ -4,6 +4,25 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Cache ladder v1 (L10)
+
+- **Honest docs:** [docs/CACHE_LADDER.md](docs/CACHE_LADDER.md) — not Browser→CDN→Redis→Postgres for premium APIs
+- **Redis enrollment memo:** `premiumEnrollmentCache.ts` (~90s TTL) wired into `isPremiumForUser`; invalidate on webhook grant
+- **CDN-safe static:** long-cache `Cache-Control` for `/form-guides/*` (`next.config.js` + `vercel.json`)
+- **Premium APIs stay `private`** — no shared edge cache for paid catalogs
+
+---
+
+## 2026-07-20 — Production stack (13 layers)
+
+- **Scorecard:** [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) — Strong vs Partial vs deferred (L6/L11/SIEM)
+- **L13 runbook:** [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md) — Profile export + Supabase operator path, RPO/RTO
+- **L9 verify:** `npm run rate-limit-smoke` (`scripts/rate-limit-smoke.mjs`)
+- **Wired:** INDEX / ORCHESTRATION Horizon 0 §8 / ENV / PROTECTION P0 / LAUNCH_RUNBOOK §2b / Vercel checklist
+- **Wave B:** PWA stays gated by `PRIVATE_MODE` (`next.config.js`); flip enables Serwist
+
+---
+
 ## 2026-07-20 — Hold-to-confirm delete language
 
 - **Primitives:** `HoldToConfirmButton` (300ms ring; release aborts) + `DangerZone`; helpers in `holdToConfirm.ts`

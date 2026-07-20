@@ -101,6 +101,7 @@ npm run check-env    # verify .env.local
 | Customers | [docs/help/INDEX.md](docs/help/INDEX.md) |
 | Developers | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/API.md](docs/API.md), [CONTRIBUTING.md](CONTRIBUTING.md) |
 | Agents | This file + [INDEX.md](INDEX.md) + [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md) |
+| Ops maturity | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md), [docs/CACHE_LADDER.md](docs/CACHE_LADDER.md) |
 
 When you add or change an API route, update [app/api/INDEX.md](app/api/INDEX.md) and [docs/API.md](docs/API.md).
 When you add a feature folder, add or update its `INDEX.md`.
