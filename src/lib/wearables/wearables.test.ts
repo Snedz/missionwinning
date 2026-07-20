@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { normalizeHubSamples } from './hubs.ts';
 import { buildProviderStatusList } from './status.ts';
 import { samplesToActivityHints } from './mapSamples.ts';
+import { mapStravaActivity } from './oauthProviders.ts';
 import type { WearableSample } from './types.ts';
 
 describe('wearables hubs', () => {
@@ -58,5 +59,26 @@ describe('samplesToActivityHints', () => {
     assert.equal(hints.length, 1);
     assert.equal(hints[0].durationMin, 40);
     assert.equal(hints[0].distanceKm, 5);
+  });
+});
+
+describe('mapStravaActivity', () => {
+  it('maps Strava activity JSON to sample with strava: external id', () => {
+    const sample = mapStravaActivity({
+      id: 12345,
+      name: 'Morning Run',
+      type: 'Run',
+      start_date: '2026-07-01T12:00:00Z',
+      moving_time: 2400,
+      distance: 8000,
+    });
+    assert.equal(sample.source, 'strava');
+    assert.equal(sample.kind, 'activity');
+    assert.equal(sample.externalId, 'strava:12345');
+    assert.equal(sample.metrics.distance_m, 8000);
+    assert.equal(sample.metrics.moving_time_s, 2400);
+    assert.equal(sample.metrics.type, 'Run');
+    assert.equal(sample.metrics.name, 'Morning Run');
+    assert.equal(sample.endedAt, '2026-07-01T12:40:00.000Z');
   });
 });

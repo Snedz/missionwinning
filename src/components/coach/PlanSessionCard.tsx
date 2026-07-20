@@ -45,7 +45,7 @@ export function PlanSessionCard({ session, className, onAdjust }: Props) {
     <Card
       className={cn(
         'content-card',
-        session.status === 'done' && 'border-amber-500/30',
+        session.status === 'done' && 'border-[hsl(var(--status-warn)/0.3)]',
         session.status === 'missed' && 'opacity-60',
         className
       )}

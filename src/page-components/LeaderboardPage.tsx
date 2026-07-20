@@ -239,8 +239,8 @@ export function LeaderboardPage() {
               className={cn(
                 'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 transition-colors',
                 boardId === 'under-the-stars'
-                  ? 'border-indigo-500/50 bg-indigo-950/50 text-indigo-200'
-                  : 'border-border/50 text-muted-foreground hover:border-indigo-500/30'
+                  ? 'border-[hsl(var(--status-info)/0.5)] bg-[hsl(var(--status-info)/0.2)] text-[hsl(var(--status-info))]'
+                  : 'border-border/50 text-muted-foreground hover:border-[hsl(var(--status-info)/0.3)]'
               )}
             >
               <Moon className="h-3.5 w-3.5" />

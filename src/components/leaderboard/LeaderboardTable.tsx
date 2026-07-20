@@ -15,7 +15,7 @@ interface Props {
 function rankDisplay(rank: number) {
   if (rank === 1) return <Medal className="h-4 w-4 text-status-warn" aria-label="1st" />;
   if (rank === 2) return <Medal className="h-4 w-4 text-slate-300" aria-label="2nd" />;
-  if (rank === 3) return <Medal className="h-4 w-4 text-amber-700" aria-label="3rd" />;
+  if (rank === 3) return <Medal className="h-4 w-4 text-[hsl(var(--brass))]" aria-label="3rd" />;
   return <span className="font-mono text-muted-foreground tabular-nums">{rank}</span>;
 }
 
@@ -31,8 +31,8 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
     <div
       className={cn(
         'rounded-2xl border overflow-hidden backdrop-blur-md',
-        theme === 'night' && 'border-indigo-500/25 bg-indigo-950/20',
-        theme === 'dawn' && 'border-amber-500/25 bg-amber-950/15',
+        theme === 'night' && 'border-[hsl(var(--status-info)/0.25)] bg-[hsl(var(--status-info)/0.1)]',
+        theme === 'dawn' && 'border-[hsl(var(--status-warn)/0.25)] bg-[hsl(var(--status-warn)/0.08)]',
         theme === 'default' && 'border-white/10 bg-card/80'
       )}
     >
@@ -50,10 +50,10 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
               key={e.id}
               className={cn(
                 'grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem] gap-2 px-3 py-2.5 items-center text-sm',
-                e.isYou && theme === 'night' && 'bg-indigo-500/20 ring-1 ring-inset ring-indigo-400/40',
-                e.isYou && theme === 'dawn' && 'bg-amber-500/15 ring-1 ring-inset ring-amber-400/40',
+                e.isYou && theme === 'night' && 'bg-[hsl(var(--status-info)/0.2)] ring-1 ring-inset ring-[hsl(var(--status-info)/0.4)]',
+                e.isYou && theme === 'dawn' && 'bg-[hsl(var(--status-warn)/0.15)] ring-1 ring-inset ring-[hsl(var(--status-warn)/0.4)]',
                 e.isYou && theme === 'default' && 'bg-primary/15 ring-1 ring-inset ring-emerald-500/30',
-                rank <= 3 && !e.isYou && 'bg-amber-500/5'
+                rank <= 3 && !e.isYou && 'bg-[hsl(var(--status-warn)/0.05)]'
               )}
             >
               <div className="flex justify-center">{rankDisplay(rank)}</div>

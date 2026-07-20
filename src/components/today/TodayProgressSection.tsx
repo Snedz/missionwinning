@@ -389,7 +389,7 @@ export function TodayProgressSection({
               </span>
             </div>
           ))}
-          <div className={`flex items-start gap-2 ${nightSessions >= 3 ? 'font-medium text-indigo-300' : ''}`}>
+          <div className={`flex items-start gap-2 ${nightSessions >= 3 ? 'font-medium text-[hsl(var(--status-info))]' : ''}`}>
             {nightSessions >= 3 ? (
               <Moon className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
             ) : (
@@ -403,7 +403,7 @@ export function TodayProgressSection({
               {nightSessions > 0 && (
                 <>
                   {' · '}
-                  <a href="/leaderboard?board=under-the-stars" className="text-indigo-400 hover:underline">
+                  <a href="/leaderboard?board=under-the-stars" className="text-[hsl(var(--status-info))] hover:underline">
                     {t('todayRankings', { defaultValue: 'Rankings' })}
                   </a>
                 </>

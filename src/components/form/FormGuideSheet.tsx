@@ -29,7 +29,7 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
           'relative w-full sm:max-w-md max-h-[85vh] overflow-y-auto',
           'rounded-t-2xl sm:rounded-2xl border border-border/60',
           'bg-card shadow-2xl animate-in slide-in-from-bottom duration-200',
-          guide.militaryStyle && 'border-amber-700/40'
+          guide.militaryStyle && 'border-[hsl(var(--status-warn)/0.4)]'
         )}
         role="dialog"
         aria-labelledby="form-guide-title"
@@ -58,7 +58,7 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
             <section>
               <h3 className={cn(
                 'text-sm font-semibold uppercase tracking-wide mb-2',
-                guide.militaryStyle ? 'text-amber-500/90' : 'text-primary'
+                guide.militaryStyle ? 'text-[hsl(var(--status-warn)/0.9)]' : 'text-primary'
               )}>
                 {guide.militaryStyle ? 'Ready position' : guide.readyPosition}
               </h3>

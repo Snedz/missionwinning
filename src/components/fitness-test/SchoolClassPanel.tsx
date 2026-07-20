@@ -135,10 +135,10 @@ export function SchoolClassPanel() {
   const teacherClasses = typeof window !== 'undefined' ? loadTeacherClasses() : [];
 
   return (
-    <Card className="content-card border-blue-800/25">
+    <Card className="content-card border-[hsl(var(--status-info)/0.25)]">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <Users className="h-5 w-5 text-blue-400" />
+          <Users className="h-5 w-5 text-[hsl(var(--status-info))]" />
           {t('schoolTitle', { defaultValue: 'School & PE class' })}
         </CardTitle>
         <CardDescription>
@@ -150,10 +150,10 @@ export function SchoolClassPanel() {
       </CardHeader>
       <CardContent className="space-y-4">
         {joined ? (
-          <div className="rounded-xl border border-blue-500/20 bg-blue-950/15 px-4 py-3 space-y-2">
+          <div className="rounded-xl border border-[hsl(var(--status-info)/0.2)] bg-[hsl(var(--status-info)/0.1)] px-4 py-3 space-y-2">
             <p className="font-medium">
               {t('schoolJoined', { defaultValue: 'Joined class' })}:{' '}
-              <span className="font-mono text-blue-300">{joined}</span>
+              <span className="font-mono text-[hsl(var(--status-info))]">{joined}</span>
             </p>
             <p className="text-xs text-muted-foreground">
               {t('schoolJoinedTeacherNote', {
@@ -203,7 +203,7 @@ export function SchoolClassPanel() {
           {createdCode && (
             <div className="space-y-2">
             <div className="flex items-center justify-between gap-2 text-sm rounded-lg bg-black/20 px-3 py-2">
-              <span className="font-mono text-blue-300">{createdCode}</span>
+              <span className="font-mono text-[hsl(var(--status-info))]">{createdCode}</span>
               <div className="flex gap-1">
                 <Button
                   size="sm"
@@ -248,7 +248,7 @@ export function SchoolClassPanel() {
                 <span>{c.name}</span>
                 <button
                   type="button"
-                  className="text-blue-400 hover:underline"
+                  className="text-[hsl(var(--status-info))] hover:underline"
                   onClick={() => {
                     setJoinInput(c.code);
                     const code = normalizeClassCode(c.code);

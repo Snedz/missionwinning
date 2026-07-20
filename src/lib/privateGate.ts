@@ -37,6 +37,10 @@ export const PUBLIC_API_PATHS_WHILE_GATED = [
   '/api/nudges/unsubscribe',
   // Safe anonymous premium probe (returns premium:false without auth)
   '/api/premium/status',
+  // Liveness (shallow) + deep with CRON_SECRET
+  '/api/health',
+  // Opaque invite land mark (rate-limited, format-gated; no PII return)
+  '/api/beta/invites/landed',
 ] as const;
 
 export function isPublicPathWhileGated(pathname: string): boolean {

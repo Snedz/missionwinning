@@ -4,6 +4,35 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Wave 10: beta engine + flip ops + polish + Strava
+
+Build `2026.07-unified.91`.
+
+### A — Beta recruitment engine
+- Migration `20260721_beta_invites.sql`: `beta_invites` + `profiles.invited_via` protect trigger + `checkout_recovery`
+- Attribution `?invite=MW-B-XXXXX` (first-touch + backfill); land event + `/api/beta/invites/landed`; redeem on sign-in
+- Admin GET/POST `/api/beta/invites` + BetaAdminPanel Invites card (issue, copy link, funnel chips vs ≥10)
+- Day-2 / day-7 follow-ups folded into `/api/cron/nudges` (Resend + lead unsub)
+- [BETA_INVITE.md](BETA_INVITE.md) points at panel; scripts remain copy source
+
+### B — Flip ops
+- `GET /api/health` (+ `?deep=1` with CRON_SECRET) — [docs/OPS_MONITORING.md](docs/OPS_MONITORING.md)
+- Stripe `checkout.session.expired` → recovery row; send via nudges cron
+- Playwright `@visual` suite + CI soft job; `e2e:critical` excludes `@a11y|@visual`
+
+### C — Polish
+- Color long-tail → `--status-*` / brass tokens (SetLogRow drop/warmup exceptions kept)
+- gate/programs/feedback/beta locales → all 15 APP_LANGS; batchd parity extended
+- `fuelMealPlan.meals` dropped; `mealsStructured` only
+
+### D — Strava (flag-dark)
+- Scopes `activity:read`; `mapStravaActivity` unit-tested; Track + Profile wearables card
+- Env: `STRAVA_*` + `NEXT_PUBLIC_WEARABLES` in ENV.md / check-env optional
+
+**Founder:** apply migration `20260721_beta_invites.sql`; issue invites in panel; uptime → `/api/health`.
+
+---
+
 ## 2026-07-20 — Aikido Cursor + CI
 
 - **Docs:** [docs/AIKIDO.md](docs/AIKIDO.md) — MCP playbook, founder CI secret checklist, triage rules

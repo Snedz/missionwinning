@@ -23,9 +23,9 @@ export function PresidentialFitnessSection() {
   if (!isAmericaTrackEnabled()) return null;
 
   return (
-    <Card className="border-blue-800/30 bg-gradient-to-br from-blue-950/25 to-card">
+    <Card className="border-[hsl(var(--status-info)/0.3)] bg-gradient-to-br from-[hsl(var(--status-info)/0.12)] to-card">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-blue-400/90">
+        <CardTitle className="flex items-center gap-2 text-[hsl(var(--status-info))]/90">
           <Flag className="h-5 w-5" />
           {t('pftSectionTitle', { defaultValue: 'Presidential Fitness Test' })}
         </CardTitle>
@@ -41,7 +41,7 @@ export function PresidentialFitnessSection() {
           {PFT_EVENTS.slice(0, 4).map((ev) => (
             <div
               key={ev.id}
-              className="rounded-xl border border-blue-800/20 bg-black/20 px-3 py-2 text-sm"
+              className="rounded-xl border border-[hsl(var(--status-info)/0.2)] bg-black/20 px-3 py-2 text-sm"
             >
               <div className="font-medium">{ev.name}</div>
               <p className="text-xs text-muted-foreground">{ev.description}</p>
@@ -49,7 +49,7 @@ export function PresidentialFitnessSection() {
           ))}
         </div>
         {latest && (
-          <div className="flex items-center gap-2 text-sm text-blue-300/90">
+          <div className="flex items-center gap-2 text-sm text-[hsl(var(--status-info)/0.9)]">
             <Medal className="h-4 w-4 shrink-0" />
             {t('pftLatestResult', {
               defaultValue: 'Last test: {{tier}} · {{date}}',
@@ -59,10 +59,10 @@ export function PresidentialFitnessSection() {
           </div>
         )}
         <div className="flex flex-col sm:flex-row gap-2">
-          <Button asChild className="min-h-[44px] bg-blue-700 hover:bg-blue-600">
+          <Button asChild className="min-h-[44px] bg-[hsl(var(--status-info))] hover:bg-[hsl(var(--status-info)/0.9)]">
             <Link href="/fitness-test">{t('pftTakeFull', { defaultValue: 'Take the full test →' })}</Link>
           </Button>
-          <Button asChild variant="outline" className="min-h-[44px] border-blue-800/30">
+          <Button asChild variant="outline" className="min-h-[44px] border-[hsl(var(--status-info)/0.3)]">
             <Link href={`/fitness-test?mode=mini`}>
               {t('pftTakeMini', {
                 defaultValue: 'Mini test ({{events}})',
@@ -70,7 +70,7 @@ export function PresidentialFitnessSection() {
               })}
             </Link>
           </Button>
-          <Button asChild variant="outline" className="min-h-[44px] border-blue-800/30">
+          <Button asChild variant="outline" className="min-h-[44px] border-[hsl(var(--status-info)/0.3)]">
             <Link href="/leaderboard?board=presidential-fitness">
               {t('pftLeaderboard', { defaultValue: 'PFT leaderboard →' })}
             </Link>

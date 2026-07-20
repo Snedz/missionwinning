@@ -399,7 +399,7 @@ export function BundlePage() {
                       })}
                     </div>
                     <p className="text-xs text-muted-foreground mt-3 flex items-center gap-1.5">
-                      <Trophy className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                      <Trophy className="h-3.5 w-3.5 text-[hsl(var(--status-warn))] shrink-0" />
                       {t("bundleWinScoreNote")}
                     </p>
                   </div>

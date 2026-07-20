@@ -141,6 +141,25 @@ export const referralRedeemBodySchema = z.object({
     .regex(/^MW-[A-HJ-NP-Z2-9]{5}$/, 'Invalid referral code format'),
 });
 
+/** Beta invite land/redeem — MW-B- + 5 chars. */
+export const inviteCodeBodySchema = z.object({
+  code: z
+    .string()
+    .regex(/^MW-B-[A-HJ-NP-Z2-9]{5}$/, 'Invalid invite code format'),
+});
+
+/** Admin issue invite. */
+export const inviteCreateBodySchema = z.object({
+  label: z.string().trim().min(1).max(120),
+  email: z
+    .string()
+    .trim()
+    .max(320)
+    .optional()
+    .refine((v) => !v || v === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), 'Invalid email'),
+  notes: z.string().trim().max(500).optional(),
+});
+
 export const schoolClassCreateSchema = z.object({
   code: z.string().min(4).max(16),
   name: z.string().max(120).optional(),

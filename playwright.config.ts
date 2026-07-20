@@ -10,6 +10,12 @@ export default defineConfig({
   workers: 1,
   reporter: process.env.CI ? 'github' : 'list',
   timeout: 60_000,
+  expect: {
+    // Platform-specific baselines — generate on Linux CI, not macOS-local
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.02,
+    },
+  },
   use: {
     baseURL,
     trace: 'on-first-retry',

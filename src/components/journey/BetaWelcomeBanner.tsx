@@ -16,7 +16,7 @@ export function BetaWelcomeBanner() {
   if (!visible) return null;
 
   return (
-    <div className="relative rounded-2xl border border-primary/40 bg-gradient-to-br from-emerald-950/50 via-slate-950 to-indigo-950/40 p-4 pr-10 shadow-lg shadow-emerald-900/20">
+    <div className="relative rounded-2xl border border-primary/40 bg-gradient-to-br from-emerald-950/50 via-slate-950 to-[hsl(var(--status-info)/0.15)] p-4 pr-10 shadow-lg shadow-emerald-900/20">
       <button
         type="button"
         aria-label="Dismiss"
@@ -48,7 +48,7 @@ export function BetaWelcomeBanner() {
         </Link>
         <Link
           href="/leaderboard?board=under-the-stars"
-          className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/40 bg-indigo-500/10 px-3 py-1.5 text-xs font-medium text-indigo-300 hover:bg-indigo-500/20"
+          className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--status-info)/0.4)] bg-[hsl(var(--status-info)/0.1)] px-3 py-1.5 text-xs font-medium text-[hsl(var(--status-info))] hover:bg-[hsl(var(--status-info)/0.2)]"
         >
           <Moon className="h-3.5 w-3.5" />
           Under the Stars

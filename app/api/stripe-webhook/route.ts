@@ -57,5 +57,36 @@ export const POST = withApiLogging('stripe-webhook', async (req: NextRequest) =>
     }
   }
 
+  // Abandoned checkout — record only; email sent by nudges cron (keep webhook fast).
+  if (event.type === 'checkout.session.expired') {
+    const session = (event.data?.object ?? {}) as StripeCheckoutSession;
+    const email = emailFromCheckoutSession(session);
+    const sessionId = String(session.id ?? '');
+    if (email && sessionId) {
+      try {
+        const { getSupabaseAdmin } = await import('@/lib/supabaseAdmin');
+        const admin = getSupabaseAdmin();
+        if (admin) {
+          const plan =
+            session.metadata?.product_id?.trim() ||
+            session.metadata?.plan_id?.trim() ||
+            'super-bundle';
+          await admin.from('checkout_recovery').upsert(
+            {
+              session_id: sessionId,
+              email: email.trim().toLowerCase(),
+              plan,
+              expired_at: new Date().toISOString(),
+            },
+            { onConflict: 'session_id' }
+          );
+        }
+      } catch (e) {
+        console.error('Stripe checkout.session.expired recovery upsert', e);
+        // Do not 500 — Stripe will retry; missing recovery is non-fatal
+      }
+    }
+  }
+
   return NextResponse.json({ received: true });
 });

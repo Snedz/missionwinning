@@ -14,7 +14,7 @@ type Props = {
 function heatColor(intensity: number, daysSince: number): string {
   if (intensity <= 0 && daysSince >= 99) return 'bg-muted/30 border-border/40';
   if (intensity <= 0) return 'bg-primary/10 border-primary/40';
-  if (intensity >= 0.75) return 'bg-amber-500/35 border-amber-500/50';
+  if (intensity >= 0.75) return 'bg-[hsl(var(--status-warn)/0.35)] border-[hsl(var(--status-warn)/0.5)]';
   if (intensity >= 0.4) return 'bg-primary/25 border-primary/40';
   return 'bg-primary/10 border-primary/40';
 }

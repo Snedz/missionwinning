@@ -18,6 +18,59 @@ HTTP handlers live in `app/api/**/route.ts`. Business logic in `src/lib/`. Inven
 
 ---
 
+## Health
+
+### `GET /api/health`
+
+| | |
+|--|--|
+| Auth | none (shallow) |
+| Response | `{ ok: true, build, time }` — always **200** (liveness) |
+
+### `GET /api/health?deep=1`
+
+| | |
+|--|--|
+| Auth | `Authorization: Bearer $CRON_SECRET` |
+| Response | same + `checks` (Supabase, Redis if configured, env sanity). **503** if hard-fail; **401** if bad bearer |
+
+```bash
+curl -sS "$BASE/api/health"
+curl -sS -H "Authorization: Bearer $CRON_SECRET" "$BASE/api/health?deep=1"
+```
+
+Public while private gate is on. See [OPS_MONITORING.md](OPS_MONITORING.md).
+
+---
+
+## Beta invites
+
+### `POST /api/beta/invites/landed`
+
+| | |
+|--|--|
+| Auth | public (opaque) |
+| Rate | 30/min/IP |
+| Body | `{ code: "MW-B-XXXXX" }` |
+| Notes | Sets `first_landed_at` once; always 200 |
+
+### `POST /api/beta/invites/redeem`
+
+| | |
+|--|--|
+| Auth | `session` |
+| Notes | ≤7-day account; writes `profiles.invited_via` + first `signed_up_user_id` |
+
+### `GET|POST /api/beta/invites`
+
+| | |
+|--|--|
+| Auth | `BETA_ADMIN_EMAILS` session or `x-beta-admin-secret` |
+| GET | invite funnel rows + totals |
+| POST | `{ label, email? }` → issue code + full `?access=&invite=` link |
+
+---
+
 ## Private gate
 
 ### `POST /api/private-access`

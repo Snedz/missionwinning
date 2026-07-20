@@ -7,6 +7,7 @@ import { LocaleHttpSync } from '@/components/i18n/LocaleHttpSync';
 import { identifyUser, initAnalytics, resetAnalyticsIdentity, track } from '@/lib/analytics';
 import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
 import { captureAttribution } from '@/lib/attribution';
+import { markInviteLanded } from '@/lib/invite';
 
 // Bootstrap i18next (minimal EN). Full locale catalogs hydrate after idle.
 // supabase-js is NOT imported here — auth listener loads it after idle.
@@ -81,10 +82,14 @@ if (typeof window !== 'undefined') {
 export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
   const [showOfflineBanner, setShowOfflineBanner] = useState(false);
 
-  // First-touch UTM / referrer / ?ref= (local only until lead submit or analytics allow).
+  // First-touch UTM / referrer / ?ref= / ?invite= (local only until lead submit or analytics allow).
   useEffect(() => {
-    const { referralLanded } = captureAttribution();
+    const { referralLanded, inviteLanded, attribution } = captureAttribution();
     if (referralLanded) track('referral_landed');
+    if (inviteLanded) {
+      track('beta_invite_landed');
+      if (attribution?.invite) markInviteLanded(attribution.invite);
+    }
   }, []);
 
   // Offline banner after idle — lucide + banner JS off first paint.

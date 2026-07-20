@@ -118,6 +118,53 @@ jobs:
           fi
           npm run e2e
 
+  # Visual regression (@visual) — continue-on-error for ~2 weeks post-ship, then promote to blocking.
+  # Baselines must be generated in this Linux environment (not macOS):
+  #   npx playwright test --grep @visual --update-snapshots
+  visual-regression:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Build + start server
+        run: |
+          npm run build
+          npm run start &
+          for i in $(seq 1 40); do
+            curl -sf http://localhost:3000/api/health >/dev/null && break
+            sleep 2
+          done
+
+      - name: Visual regression (@visual, soft)
+        env:
+          SMOKE_BASE_URL: http://localhost:3000
+          PRIVATE_MODE: 'false'
+        run: npm run e2e:visual
+
+      - name: Upload visual diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: |
+            test-results/
+            tests/e2e/**/*-snapshots/
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4

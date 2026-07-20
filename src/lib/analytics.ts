@@ -47,6 +47,8 @@ type AnalyticsEvent =
   | 'referral_landed'
   | 'referral_attributed'
   | 'referral_link_shared'
+  | 'beta_invite_landed'
+  | 'beta_invite_attributed'
   | 'workout_shared'
   | 'mission_shared'
   | 'fuel_plan_generated'

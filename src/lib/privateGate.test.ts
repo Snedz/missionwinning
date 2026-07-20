@@ -50,5 +50,7 @@ describe('isPublicApiPathWhileGated', () => {
     assert.equal(isPublicApiPathWhileGated('/api/nudges/unsubscribe'), true);
     // Anonymous premium status probe (premium:false) — no auth required
     assert.equal(isPublicApiPathWhileGated('/api/premium/status'), true);
+    assert.equal(isPublicApiPathWhileGated('/api/health'), true);
+    assert.equal(isPublicApiPathWhileGated('/api/beta/invites/landed'), true);
   });
 });

@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-19** (build `2026.07-unified.90` — launch closeout eng done; **beta recruiting is the bottleneck**).
+**Living comparison** against [vision.md](vision.md). Updated **2026-07-20** (build `2026.07-unified.91` — Wave 10 beta invite engine + flip ops; **recruiting ≥10 users remains the bottleneck** — use Profile Invites panel).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 

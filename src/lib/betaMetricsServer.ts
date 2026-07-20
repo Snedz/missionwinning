@@ -198,3 +198,138 @@ export async function computeReferralStats(): Promise<ReferralStats | null> {
     return null;
   }
 }
+
+export type InviteFunnelRow = {
+  id: string;
+  code: string;
+  label: string;
+  email: string | null;
+  created_at: string;
+  first_landed_at: string | null;
+  signed_up_user_id: string | null;
+  day2_sent_at: string | null;
+  day7_sent_at: string | null;
+  notes: string | null;
+  /** Full share link with access + invite (access from env, never stored in DB). */
+  link: string;
+  /** Invitee profile journey (when signed up). */
+  iDayDone: boolean;
+  btSessions: number;
+  firstWorkout: boolean;
+};
+
+function buildInviteShareLink(inviteCode: string): string {
+  const access =
+    process.env.PRIVATE_ACCESS_SECRET?.trim() ||
+    process.env.PRIVATE_ACCESS_CODES?.split(',')[0]?.trim() ||
+    '';
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    process.env.NEXT_PUBLIC_APP_URL?.trim() ||
+    'https://www.missionwinning.com';
+  const base = raw.replace(/\/$/, '');
+  const params = new URLSearchParams();
+  if (access) params.set('access', access);
+  params.set('invite', inviteCode);
+  return `${base}/?${params.toString()}`;
+}
+
+export type InviteFunnel = {
+  rows: InviteFunnelRow[];
+  totals: {
+    issued: number;
+    landed: number;
+    signedUp: number;
+    iDayDone: number;
+    withWorkout: number;
+    target: number;
+  };
+};
+
+/** Per-invite funnel for BetaAdminPanel Invites card. */
+export async function computeInviteFunnel(): Promise<InviteFunnel | null> {
+  const admin = getSupabaseAdmin();
+  if (!admin) return null;
+
+  try {
+    const { data: invites, error } = await admin
+      .from('beta_invites')
+      .select(
+        'id, code, label, email, created_at, first_landed_at, signed_up_user_id, day2_sent_at, day7_sent_at, notes'
+      )
+      .order('created_at', { ascending: false })
+      .limit(200);
+
+    if (error) {
+      console.error('computeInviteFunnel invites', error);
+      return null;
+    }
+
+    const userIds = (invites ?? [])
+      .map((r) => r.signed_up_user_id as string | null)
+      .filter((id): id is string => Boolean(id));
+
+    const journeyByUser = new Map<
+      string,
+      { iDayDone: boolean; btSessions: number; firstWorkout: boolean }
+    >();
+
+    if (userIds.length) {
+      const { data: profiles } = await admin
+        .from('profiles')
+        .select('id, journey_state')
+        .in('id', userIds);
+
+      for (const p of profiles ?? []) {
+        const js = p.journey_state as JourneyState | null;
+        const basic = js?.basic;
+        const btSessions = basic
+          ? [basic.workout, basic.fuel, basic.move, basic.mind, basic.learn].filter(Boolean)
+              .length
+          : 0;
+        journeyByUser.set(p.id as string, {
+          iDayDone: Boolean(js?.iDay?.completedAt),
+          btSessions,
+          firstWorkout: Boolean(basic?.workout),
+        });
+      }
+    }
+
+    const rows: InviteFunnelRow[] = (invites ?? []).map((r) => {
+      const j = r.signed_up_user_id
+        ? journeyByUser.get(r.signed_up_user_id as string)
+        : undefined;
+      const code = r.code as string;
+      return {
+        id: r.id as string,
+        code,
+        label: r.label as string,
+        email: (r.email as string | null) ?? null,
+        created_at: r.created_at as string,
+        first_landed_at: (r.first_landed_at as string | null) ?? null,
+        signed_up_user_id: (r.signed_up_user_id as string | null) ?? null,
+        day2_sent_at: (r.day2_sent_at as string | null) ?? null,
+        day7_sent_at: (r.day7_sent_at as string | null) ?? null,
+        notes: (r.notes as string | null) ?? null,
+        link: buildInviteShareLink(code),
+        iDayDone: j?.iDayDone ?? false,
+        btSessions: j?.btSessions ?? 0,
+        firstWorkout: j?.firstWorkout ?? false,
+      };
+    });
+
+    const totals = {
+      issued: rows.length,
+      landed: rows.filter((r) => r.first_landed_at).length,
+      signedUp: rows.filter((r) => r.signed_up_user_id).length,
+      iDayDone: rows.filter((r) => r.iDayDone).length,
+      withWorkout: rows.filter((r) => r.firstWorkout).length,
+      target: 10,
+    };
+
+    return { rows, totals };
+  } catch (e) {
+    console.error('computeInviteFunnel', e);
+    return null;
+  }
+}

@@ -205,7 +205,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
 
   if (step === 'verify') {
     return (
-      <Card className="border-amber-500/30 bg-amber-950/10">
+      <Card className="border-[hsl(var(--status-warn)/0.3)] bg-[hsl(var(--status-warn)/0.08)]">
         <CardHeader>
           <CardTitle className="text-base">
             {t('youthVerifyTitle', { defaultValue: 'Enter verification code' })}
@@ -279,7 +279,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
   }
 
   return (
-    <Card className="border-amber-500/30 bg-amber-950/10">
+    <Card className="border-[hsl(var(--status-warn)/0.3)] bg-[hsl(var(--status-warn)/0.08)]">
       <CardHeader>
         <CardTitle className="text-base">
           {t('youthGateTitle', { defaultValue: 'Parent or guardian approval' })}
