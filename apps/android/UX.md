@@ -34,6 +34,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 | Weight unit | `kg` / `lb` — Today Units card or **tap unit chip** on Active (converts mid-session, snaps to 2.5 kg / 5 lb) |
 | Equipment | I-Day step 2 or Today Equipment chips (reseeds week plan) |
 | Default rest | `45` / `60` / `90` / `120` s — Active rest chips after complete set |
+| Rest alert | Vibrate (default on) / Beep (default off) when rest ends |
 
 ## Logger craft
 
@@ -57,6 +58,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Active uses **LazyColumn** and auto-scrolls to the current set card
 - Today **pull-to-refresh** reloads plan/outbox (prefers network when online)
 - Optional **RPE 6–10** chips on current set (Room v5); Victory **Share session** text
+- Rest end **Vibrate** / **Beep** toggles; completed set rows show RPE when set
 
 ## Verify
 

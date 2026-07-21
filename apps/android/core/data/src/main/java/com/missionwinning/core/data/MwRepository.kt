@@ -37,6 +37,20 @@ class MwRepository(
         dao.setPref(PrefEntity(KEY_DEFAULT_REST, normalizeRestSeconds(seconds).toString()))
     }
 
+    /** Rest-end vibration (default on). */
+    suspend fun restVibrateEnabled(): Boolean = dao.getPref(KEY_REST_VIBRATE) != "0"
+
+    suspend fun setRestVibrateEnabled(enabled: Boolean) {
+        dao.setPref(PrefEntity(KEY_REST_VIBRATE, if (enabled) "1" else "0"))
+    }
+
+    /** Rest-end short beep (default off). */
+    suspend fun restBeepEnabled(): Boolean = dao.getPref(KEY_REST_BEEP) == "1"
+
+    suspend fun setRestBeepEnabled(enabled: Boolean) {
+        dao.setPref(PrefEntity(KEY_REST_BEEP, if (enabled) "1" else "0"))
+    }
+
     suspend fun equipmentProfile(): String =
         LocalCoachSeed.normalizeEquipment(dao.getPref(KEY_EQUIPMENT) ?: "bodyweight")
 
@@ -274,6 +288,8 @@ class MwRepository(
         const val KEY_WEIGHT_UNIT = "weight_unit"
         const val KEY_EQUIPMENT = "equipment_profile"
         const val KEY_DEFAULT_REST = "default_rest_seconds"
+        const val KEY_REST_VIBRATE = "rest_vibrate"
+        const val KEY_REST_BEEP = "rest_beep"
         const val KIND_WORKOUT = "workout"
         const val DEFAULT_API_BASE = "https://www.missionwinning.com"
 
