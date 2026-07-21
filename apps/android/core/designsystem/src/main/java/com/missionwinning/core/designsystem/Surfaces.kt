@@ -30,6 +30,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+// fillMaxWidth fraction overload
 
 /** Spacing tokens */
 object MwSpace {
@@ -340,6 +341,55 @@ fun MwEmptyState(
         if (cta != null && onCta != null) {
             Spacer(Modifier.height(MwSpace.sm))
             MwPrimaryButton(text = cta, onClick = onCta, contentDescription = cta)
+        }
+    }
+}
+
+@Composable
+fun MwLoadingBlock(modifier: Modifier = Modifier, lines: Int = 3) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(MwSpace.sm),
+    ) {
+        repeat(lines) { i ->
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(if (i == lines - 1) 0.65f else 1f)
+                    .height(14.dp)
+                    .clip(RoundedCornerShape(MwRadius.md))
+                    .background(MwColors.NavyElevated)
+                    .border(1.dp, MwColors.Border, RoundedCornerShape(MwRadius.md)),
+            )
+        }
+    }
+}
+
+@Composable
+fun MwConfirmSheet(
+    title: String,
+    body: String,
+    confirmLabel: String,
+    cancelLabel: String = "Cancel",
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(MwRadius.xl))
+            .background(MwColors.NavyElevated)
+            .border(1.dp, MwColors.Border, RoundedCornerShape(MwRadius.xl))
+            .padding(MwSpace.lg),
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
+            Text(title, style = MwTypography.titleLarge, color = MwColors.Text)
+            Text(body, style = MwTypography.bodyMedium, color = MwColors.TextMuted)
+            MwPrimaryButton(
+                text = confirmLabel,
+                contentDescription = confirmLabel,
+                onClick = onConfirm,
+            )
+            MwGhostButton(text = cancelLabel, onClick = onDismiss, contentDescription = cancelLabel)
         }
     }
 }

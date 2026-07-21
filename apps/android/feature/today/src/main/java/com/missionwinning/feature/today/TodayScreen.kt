@@ -25,6 +25,7 @@ import com.missionwinning.core.designsystem.MwEmptyState
 import com.missionwinning.core.designsystem.MwEnterFade
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
+import com.missionwinning.core.designsystem.MwLoadingBlock
 import com.missionwinning.core.designsystem.MwOfflinePill
 import com.missionwinning.core.designsystem.MwPrimaryButton
 import com.missionwinning.core.designsystem.MwScreenScaffold
@@ -82,9 +83,16 @@ fun TodayScreen(
                     color = MwColors.TextMuted,
                 )
 
+                if (state.loading) {
+                    MwCard(elevated = true) {
+                        MwSectionLabel("Loading")
+                        MwLoadingBlock(lines = 4)
+                    }
+                }
+
                 state.plan?.let { CoachAdaptBanner(it) }
 
-                if (next != null) {
+                if (!state.loading && next != null) {
                     HeroSessionCard(
                         session = next,
                         onStart = {

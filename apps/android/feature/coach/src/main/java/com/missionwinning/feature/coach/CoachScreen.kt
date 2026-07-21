@@ -21,6 +21,7 @@ import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwEnterFade
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
+import com.missionwinning.core.designsystem.MwLoadingBlock
 import com.missionwinning.core.designsystem.MwOfflinePill
 import com.missionwinning.core.designsystem.MwScreenScaffold
 import com.missionwinning.core.designsystem.MwSecondaryButton
@@ -68,6 +69,12 @@ fun CoachScreen(
                     ) {
                         MwChip("${planResp?.plan?.daysPerWeek ?: 0} days", tone = MwChipTone.Emerald)
                         MwChip("rev ${planResp?.plan?.revision ?: 0}", tone = MwChipTone.Brass)
+                    }
+                }
+
+                if (state.loading) {
+                    MwCard(elevated = true) {
+                        MwLoadingBlock(lines = 5)
                     }
                 }
 

@@ -2,11 +2,16 @@ appId: com.missionwinning.app.debug
 ---
 - launchApp
 - assertVisible: "Mission Winning"
-- tapOn: "Start mission"
+# I-Day multi-step: skip path is fastest for smoke
+- tapOn: "I already train — skip"
 - assertVisible: "Today"
+- assertVisible: "Start workout"
 - tapOn: "Start workout"
+- assertVisible: "Complete set"
+- tapOn: "Complete set"
 - assertVisible: "Finish workout"
 - tapOn: "Finish workout"
 - assertVisible: "Session locked"
 - tapOn: "See Mission Coach"
 - assertVisible: "Mission Coach"
+- assertVisible: "Coach"
