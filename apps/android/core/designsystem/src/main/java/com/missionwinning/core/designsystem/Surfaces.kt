@@ -121,6 +121,9 @@ fun MwChip(
     } else {
         Modifier
     }
+    // Larger padding when tappable (≈48dp thumb target)
+    val hPad = if (onClick != null) 14.dp else 10.dp
+    val vPad = if (onClick != null) 12.dp else 4.dp
     Text(
         text = text.uppercase(),
         style = MwTypography.labelSmall,
@@ -130,7 +133,7 @@ fun MwChip(
             .background(bg)
             .border(1.dp, border, RoundedCornerShape(999.dp))
             .then(clickableMod)
-            .padding(horizontal = 10.dp, vertical = 4.dp),
+            .padding(horizontal = hPad, vertical = vPad),
     )
 }
 

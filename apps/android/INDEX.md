@@ -36,8 +36,10 @@ cd apps/android
 # Then: emulator -avd <Your_AVD_Name>   OR start from Android Studio
 
 # Wedge smoke (pick one)
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
 maestro test .maestro/wedge.yaml
 python3 scripts/wedge-adb-walk.py
+python3 scripts/wedge-adb-walk.py --screenshots   # → store-assets/*.png (local)
 
 # Release (no keystore.properties → debug-signed smoke; with keystore → upload signing)
 ./gradlew :app:assembleRelease

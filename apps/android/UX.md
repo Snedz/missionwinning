@@ -43,7 +43,10 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 ## Verify
 
 ```bash
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
 ./gradlew :app:assembleDebug
 ./gradlew :feature:active:testDebugUnitTest
 # maestro test .maestro/wedge.yaml
+# python3 scripts/wedge-adb-walk.py
+# python3 scripts/wedge-adb-walk.py --screenshots   # → store-assets/
 ```
