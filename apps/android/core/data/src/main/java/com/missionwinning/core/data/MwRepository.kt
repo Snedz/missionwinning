@@ -128,6 +128,7 @@ class MwRepository(
         totalVolume: Double,
         sessionId: String?,
     ): Int {
+        val unit = weightUnit()
         val synthetic = (0 until setCount).map { i ->
             SetLogEntity(
                 id = UUID.randomUUID().toString(),
@@ -138,6 +139,7 @@ class MwRepository(
                 weight = if (setCount > 0) totalVolume / (setCount * 10.0) else 0.0,
                 completedAt = java.time.Instant.now().toString(),
                 sessionId = sessionId,
+                weightUnit = unit,
             )
         }
         return finishWorkout(workoutName, durationSeconds, synthetic, sessionId)

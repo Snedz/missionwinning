@@ -59,4 +59,19 @@ object ActiveSessionLogic {
     /** Session volume = sum(weight × reps) for completed sets. */
     fun sessionVolume(exercises: List<ActiveExercise>): Double =
         completedSetsForPersist(exercises).sumOf { it.weight * it.reps }
+
+    /**
+     * Convert a stored previous weight into the display unit for this session.
+     * Legacy rows without unit are treated as [storedUnit] default `kg`.
+     */
+    fun previousWeightInUnit(
+        storedWeight: Double?,
+        storedUnit: String?,
+        displayUnit: String,
+    ): Double? {
+        if (storedWeight == null) return null
+        val from = normalizeUnit(storedUnit ?: "kg")
+        val to = normalizeUnit(displayUnit)
+        return convertWeight(storedWeight, from, to)
+    }
 }

@@ -75,6 +75,7 @@ class ActiveViewModel @Inject constructor(
                 sessionExercises = session?.exercises.orEmpty(),
                 workoutName = workoutName,
                 fallbackSets = fallbackSets,
+                displayUnit = unit,
             )
             _state.value = ActiveUiState(
                 workoutName = workoutName,
@@ -209,6 +210,7 @@ class ActiveViewModel @Inject constructor(
                         weight = s.weight,
                         completedAt = now,
                         sessionId = snap.sessionId,
+                        weightUnit = ActiveSessionLogic.normalizeUnit(snap.weightUnit),
                     )
                 }
                 val duration = ActiveSessionLogic.durationSeconds(startedAt)
@@ -239,6 +241,7 @@ class ActiveViewModel @Inject constructor(
         sessionExercises: List<PlanExerciseDto>,
         workoutName: String,
         fallbackSets: Int,
+        displayUnit: String,
     ): List<ActiveExercise> {
         val source = if (sessionExercises.isNotEmpty()) {
             sessionExercises
@@ -249,15 +252,20 @@ class ActiveViewModel @Inject constructor(
             val name = ex.exerciseId.replace('-', ' ').replaceFirstChar { it.uppercase() }
             val sets = (0 until ex.sets.coerceIn(1, 12)).map { idx ->
                 val prev = repository.previousSet(ex.exerciseId, idx)
+                val prevWeight = ActiveSessionLogic.previousWeightInUnit(
+                    storedWeight = prev?.weight,
+                    storedUnit = prev?.weightUnit,
+                    displayUnit = displayUnit,
+                )
                 LoggedSet(
                     id = UUID.randomUUID().toString(),
                     exerciseId = ex.exerciseId,
                     exerciseName = name.ifBlank { workoutName },
                     setIndex = idx,
                     reps = ActiveSessionLogic.defaultReps(ex.reps, prev?.reps),
-                    weight = ActiveSessionLogic.defaultWeight(prev?.weight),
+                    weight = ActiveSessionLogic.defaultWeight(prevWeight),
                     previousReps = prev?.reps,
-                    previousWeight = prev?.weight,
+                    previousWeight = prevWeight,
                 )
             }
             ActiveExercise(exerciseId = ex.exerciseId, name = name.ifBlank { workoutName }, sets = sets)

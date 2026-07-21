@@ -129,4 +129,33 @@ class ActiveUiStateTest {
         )
         assertEquals(1000.0, ActiveSessionLogic.sessionVolume(exercises), 0.0)
     }
+
+    @Test
+    fun sessionLogic_previousWeightInUnit_convertsStoredUnit() {
+        assertNull(ActiveSessionLogic.previousWeightInUnit(null, "kg", "lb"))
+        // 100 kg stored → display lb → 220 (plate step)
+        assertEquals(
+            220.0,
+            ActiveSessionLogic.previousWeightInUnit(100.0, "kg", "lb")!!,
+            0.0,
+        )
+        // 220 lb stored → display kg → 100
+        assertEquals(
+            100.0,
+            ActiveSessionLogic.previousWeightInUnit(220.0, "lb", "kg")!!,
+            0.01,
+        )
+        // same unit, no change
+        assertEquals(
+            100.0,
+            ActiveSessionLogic.previousWeightInUnit(100.0, "kg", "kg")!!,
+            0.0,
+        )
+        // legacy null unit treated as kg
+        assertEquals(
+            220.0,
+            ActiveSessionLogic.previousWeightInUnit(100.0, null, "lb")!!,
+            0.0,
+        )
+    }
 }
