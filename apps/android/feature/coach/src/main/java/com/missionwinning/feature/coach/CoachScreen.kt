@@ -19,14 +19,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import android.app.Activity
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.missionwinning.core.data.BillingConnectionState
+import com.missionwinning.core.data.BillingOffer
 import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
 import com.missionwinning.core.designsystem.MwChipTone
@@ -56,6 +60,8 @@ fun CoachScreen(
     viewModel: CoachViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val activity = context as? Activity
     val planResp = state.plan
     val todayOffset = ((LocalDate.now().dayOfWeek.value + 6) % 7)
     val weekStart = planResp?.plan?.weekStart
@@ -94,12 +100,27 @@ fun CoachScreen(
                         signedIn = state.signedIn,
                         premium = state.premium,
                         premiumSource = state.premiumSource,
+                        billingOffers = state.billing.offers,
+                        billingReady = state.billing.connection is BillingConnectionState.Ready,
+                        billingPurchasing = state.billing.purchasing,
+                        billingError = state.billing.lastError,
                         onSeedAdapt = if (state.premium) {
                             { viewModel.seedAdaptDemo() }
                         } else {
                             null
                         },
+                        onSubscribe = if (!state.premium && state.signedIn && activity != null) {
+                            { viewModel.subscribe(activity) }
+                        } else {
+                            null
+                        },
                     )
+                    state.billing.lastError?.let { err ->
+                        Text(err, style = MwTypography.bodyMedium, color = MwColors.Danger)
+                    }
+                    state.message?.let { msg ->
+                        Text(msg, style = MwTypography.bodyMedium, color = MwColors.Emerald)
+                    }
 
                     MwCard(elevated = true) {
                         MwOfflinePill()
@@ -299,15 +320,20 @@ fun CoachScreen(
 }
 
 /**
- * Entitlement recognition only — no purchase UI, no Stripe/web checkout links
- * (Play policy until founder adopts Play Billing).
+ * Super Bundle access — Play Billing subscribe only on Coach (Phase 15).
+ * Free offline logger is never behind a paywall. No Stripe / web checkout links.
  */
 @Composable
 private fun EntitlementBanner(
     signedIn: Boolean,
     premium: Boolean,
     premiumSource: String,
+    billingOffers: List<BillingOffer>,
+    billingReady: Boolean,
+    billingPurchasing: Boolean,
+    billingError: String?,
     onSeedAdapt: (() -> Unit)?,
+    onSubscribe: (() -> Unit)?,
 ) {
     MwCard(elevated = true) {
         MwSectionLabel("Access")
@@ -318,7 +344,7 @@ private fun EntitlementBanner(
                     MwChip(premiumSource, tone = MwChipTone.Brass)
                 }
                 Text(
-                    "Premium coach depth: full adapt beats, session rationale, move intent. Week plan was already free — logging never requires a plan.",
+                    "Premium coach depth unlocked. Week plan + offline logger stay free forever.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
@@ -333,15 +359,49 @@ private fun EntitlementBanner(
             signedIn -> {
                 MwChip("Free coach", tone = MwChipTone.Neutral)
                 Text(
-                    "Full week plan free forever. Super Bundle (managed outside this app) unlocks deeper insights when active — never gates the logger.",
+                    "Full week plan free forever. Super Bundle unlocks deeper insights only — never the logger.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
+                if (billingOffers.isNotEmpty()) {
+                    Spacer(Modifier.height(6.dp))
+                    billingOffers.take(2).forEach { offer ->
+                        Text(
+                            "${offer.title} · ${offer.priceLabel}",
+                            style = MwTypography.labelMedium,
+                            color = MwColors.Brass,
+                        )
+                    }
+                }
+                if (onSubscribe != null && billingReady) {
+                    Spacer(Modifier.height(8.dp))
+                    MwPrimaryButton(
+                        text = if (billingPurchasing) {
+                            "Processing…"
+                        } else {
+                            "Subscribe Super Bundle"
+                        },
+                        contentDescription = "Subscribe to Super Bundle via Google Play",
+                        onClick = onSubscribe,
+                    )
+                    Text(
+                        "Billed by Google Play. Cancel anytime in Play subscriptions. Refunds: missionwinning.com/refunds",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                } else if (onSubscribe != null && !billingReady) {
+                    Text(
+                        billingError
+                            ?: "Play Billing connecting… Configure products in Play Console if empty.",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                }
             }
             else -> {
                 MwChip("Offline free", tone = MwChipTone.Brass)
                 Text(
-                    "Full week plan + logger work offline. Sign in on Account to recognize Super Bundle depth if you’re enrolled.",
+                    "Full week plan + logger work offline. Sign in on Account to subscribe or restore Super Bundle.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )

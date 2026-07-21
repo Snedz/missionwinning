@@ -65,8 +65,14 @@
 ## Coach premium depth (Phase 14)
 
 - Free forever: full week plan, basic adapt summary, short “why this session”
-- Super Bundle (recognition only): full adapt beats, insight stack, move-level intent
-- Pure `CoachDepth` helpers — no planEngine, no purchase UI
+- Super Bundle: full adapt beats, insight stack, move-level intent
+- Pure `CoachDepth` helpers — no planEngine
+
+## Play Billing (Phase 15)
+
+- Super Bundle subscribe on **Coach** only (Play Billing Library)
+- Server: `POST /api/mobile/premium/play-purchase` → enrollments
+- Free offline logger never paywalled — [PLAY_BILLING.md](PLAY_BILLING.md)
 
 ## Toolchain (Phase 0)
 

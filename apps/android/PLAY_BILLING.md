@@ -1,51 +1,64 @@
-# Play Billing gate — Mission Winning Android
+# Play Billing — Mission Winning Android
 
-**Status (1.7.0 / Phase 7):** entitlement **recognition only**. No Play Billing Library, no in-app purchase UI, no Stripe / web checkout links inside the app.
+**Status (1.14.0 / Phase 15):** Super Bundle via **Google Play Billing** on Coach only. Free offline logger remains permanent.
 
 ## Product rules
 
 | Rule | Why |
 |------|-----|
 | Free offline logger is permanent | Core mission; never gated on Super Bundle |
-| Super Bundle is recognized via `/api/mobile/premium/status` | Server-side enrollment (web / founder), Bearer session |
-| Coach shows adapt depth when `premium == true` | Premium coach UX without sell surfaces |
-| Account shows Free logger / Super Bundle chips + refresh | Status only; copy says purchase is not offered in-app |
-| Zero Buy / Subscribe / Open Stripe CTAs | Play policy: digital goods → Play Billing when sold on Android |
+| Super Bundle deepens coach only | Insights / adapt depth — not sets, history, or routines |
+| Purchase only via Play Billing | Play policy for digital goods in the APK/AAB |
+| Server grants enrollment | Client never trusts a local “unlock” flag alone |
+| No Stripe / PayPal / web checkout links in-app | Web Super Bundle stays on www only |
 
-## What ships in Phase 7
+## SKUs (Play Console)
 
-- `AuthRepository.refreshPremium()` → `GET /api/mobile/premium/status`
-- Account: entitlement chips + “Refresh entitlement”
-- Coach: Access banner (Offline free / Free coach / Super Bundle); product-path adapt preview when premium
-- Lab seed adapt remains debug-only for non-premium QA
+Create **subscription** products (or match aliases):
 
-## What is **blocked** until founder adopts Play Billing
+| Product ID | Suggested plan |
+|------------|----------------|
+| `super_bundle_monthly` | Super Bundle monthly |
+| `super_bundle_yearly` | Super Bundle yearly |
 
-Do **not** implement without an explicit founder decision + Play Console billing setup:
+Package: `com.missionwinning.app` (debug suffix `.debug` accepted by server if base matches).
 
-1. `com.android.billingclient` / Billing Library dependency  
-2. Subscribe / Buy Super Bundle buttons or paywalls  
-3. Deep links to Stripe Checkout, PayPal, or web pricing from product surfaces  
-4. Client-side “unlock premium” toggles that bypass server entitlement  
-5. Declaring paid digital content in Play listing without Billing integration  
+License testers required for Internal testing purchases.
 
-Web Super Bundle (Stripe etc.) remains valid **outside** the Play-distributed APK/AAB. Users enrolled on web refresh entitlement on Android after sign-in.
+## Client
 
-## When to open the gate
+- `PlayBillingGateway` (`:app`) — Billing Library 7, query offers, launch flow, acknowledge
+- After purchase → `POST /api/mobile/premium/play-purchase` → `AuthRepository.refreshPremium()`
+- UI: **Coach** Access card → “Subscribe Super Bundle” (signed-in + free only)
+- Logger / Active / History: **no** paywall
 
-Founder checklist:
+## Server
 
-1. Play Console → Monetize with Play → products / subscriptions configured  
-2. License testers + base plan SKUs for Super Bundle  
-3. Backend maps Play purchase tokens → same premium flag as web (`premium/status`)  
-4. Legal / refunds copy aligned with Play  
-5. Ship a version that adds Billing Library + purchase UI **and** keeps free offline core  
+| Env | Purpose |
+|-----|---------|
+| `GOOGLE_PLAY_PACKAGE_NAME` | e.g. `com.missionwinning.app` |
+| `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` | Service account JSON (Android Publisher API) |
+| `PLAY_BILLING_DEV_GRANT=true` | **Dev only** — grant without Google verify (blocked in production) |
 
-Until then: ship Internal / production as **free app** with optional account sync; Data safety “Payment / purchase history” = **Not in this wedge** ([PLAY_LISTING.md](PLAY_LISTING.md)).
+Endpoint: `POST /api/mobile/premium/play-purchase`  
+Body: `{ productId, purchaseToken, packageName?, orderId? }`  
+On success: enrollment row `provider=play_billing` → same `GET /api/mobile/premium/status` as web.
+
+## Founder checklist
+
+1. Play Console → Monetize → subscriptions with IDs above  
+2. Link service account to Play Console (API access)  
+3. Set env on Vercel (package + service account JSON)  
+4. License testers; Internal track AAB  
+5. Buy with tester → Coach shows Super Bundle depth  
+6. Cancel in Play → after status refresh, free depth only; logger unchanged  
+
+## Data safety
+
+Payment / purchase history: **Yes** when user buys Super Bundle via Play (processed by Google; app stores purchase token only for server verify). See [PLAY_LISTING.md](PLAY_LISTING.md).
 
 ## Related
 
-- [PLAY_LISTING.md](PLAY_LISTING.md) — store copy + data safety  
-- [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — device checks U6 / C8  
-- OpenAPI: `/api/mobile/premium/status`  
-- Vision: free core + Super Bundle (server-side enrollment)
+- [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md)  
+- OpenAPI: `/api/mobile/premium/play-purchase`  
+- Vision: free core + Super Bundle  

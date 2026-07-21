@@ -28,8 +28,8 @@ android {
         applicationId = "com.missionwinning.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 40
-        versionName = "1.13.0"
+        versionCode = 41
+        versionName = "1.14.0"
         // Override via apps/android/local.properties (gitignored):
         //   mw.apiBaseUrl=http://10.0.2.2:3000
         //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
@@ -138,6 +138,7 @@ dependencies {
     implementation(libs.androidx.health.connect)
     implementation(libs.play.services.wearable)
     implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.billing.client)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     testImplementation(libs.junit)
