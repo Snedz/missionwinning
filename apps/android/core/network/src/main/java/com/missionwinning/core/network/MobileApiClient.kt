@@ -36,6 +36,32 @@ class MobileApiClient(
         }
     }
 
+    /**
+     * Privacy-first weekly heartbeat. No workout data, no email.
+     * Server stores opaque install id + ISO week only.
+     */
+    suspend fun postTelemetryHeartbeat(
+        installId: String,
+        weekKey: String,
+        appVersion: String,
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        runCatching {
+            val payload = json.encodeToString(
+                TelemetryHeartbeatDto(
+                    installId = installId,
+                    weekKey = weekKey,
+                    appVersion = appVersion,
+                ),
+            )
+            val req = requestBuilder("/api/mobile/telemetry")
+                .post(payload.toRequestBody(media))
+                .build()
+            client.newCall(req).execute().use { resp ->
+                if (!resp.isSuccessful) error("telemetry ${resp.code}")
+            }
+        }
+    }
+
     suspend fun pushWorkouts(workouts: List<SyncWorkoutDto>): Result<SyncPushResponseDto> =
         withContext(Dispatchers.IO) {
             runCatching {

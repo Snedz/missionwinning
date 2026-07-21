@@ -28,3 +28,7 @@
 -keep class * extends androidx.room.RoomDatabase
 -keep @androidx.room.Entity class *
 -dontwarn androidx.room.paging.**
+
+# Sentry (crash-only)
+-keepattributes SourceFile,LineNumberTable
+-dontwarn io.sentry.**

@@ -23,6 +23,46 @@ class MwRepository(
         dao.setPref(PrefEntity(KEY_IDAY, "1"))
     }
 
+    /** Crash reporting on by default when DSN configured; user can disable in Account. */
+    suspend fun crashReportingEnabled(): Boolean = dao.getPref(KEY_CRASH_REPORTING) != "0"
+
+    suspend fun setCrashReportingEnabled(enabled: Boolean) {
+        dao.setPref(PrefEntity(KEY_CRASH_REPORTING, if (enabled) "1" else "0"))
+    }
+
+    /** Anonymous weekly install pulse — off until I-Day opt-in. */
+    suspend fun telemetryOptIn(): Boolean = dao.getPref(KEY_TELEMETRY_OPT_IN) == "1"
+
+    suspend fun setTelemetryOptIn(enabled: Boolean) {
+        dao.setPref(PrefEntity(KEY_TELEMETRY_OPT_IN, if (enabled) "1" else "0"))
+        if (enabled) ensureInstallId()
+    }
+
+    suspend fun ensureInstallId(): String {
+        val existing = dao.getPref(KEY_INSTALL_ID)
+        if (!existing.isNullOrBlank()) return existing
+        val id = UUID.randomUUID().toString()
+        dao.setPref(PrefEntity(KEY_INSTALL_ID, id))
+        return id
+    }
+
+    /**
+     * Send at most one heartbeat per ISO week when opted in.
+     * @return true if a network call was made successfully.
+     */
+    suspend fun maybeSendWeeklyHeartbeat(appVersion: String): Boolean {
+        if (!telemetryOptIn()) return false
+        val week = currentIsoWeekKey()
+        if (dao.getPref(KEY_LAST_HEARTBEAT_WEEK) == week) return false
+        val client = api ?: return false
+        val installId = ensureInstallId()
+        val ok = client.postTelemetryHeartbeat(installId, week, appVersion).isSuccess
+        if (ok) {
+            dao.setPref(PrefEntity(KEY_LAST_HEARTBEAT_WEEK, week))
+        }
+        return ok
+    }
+
     suspend fun weightUnit(): String = dao.getPref(KEY_WEIGHT_UNIT) ?: "kg"
 
     suspend fun setWeightUnit(unit: String) {
@@ -364,7 +404,19 @@ class MwRepository(
         const val KEY_DEFAULT_REST = "default_rest_seconds"
         const val KEY_REST_VIBRATE = "rest_vibrate"
         const val KEY_REST_BEEP = "rest_beep"
+        const val KEY_CRASH_REPORTING = "crash_reporting"
+        const val KEY_TELEMETRY_OPT_IN = "telemetry_opt_in"
+        const val KEY_INSTALL_ID = "install_id"
+        const val KEY_LAST_HEARTBEAT_WEEK = "telemetry_last_week"
         const val KIND_WORKOUT = "workout"
+
+        fun currentIsoWeekKey(
+            now: java.time.LocalDate = java.time.LocalDate.now(),
+        ): String {
+            val week = now.get(java.time.temporal.WeekFields.ISO.weekOfWeekBasedYear())
+            val year = now.get(java.time.temporal.WeekFields.ISO.weekBasedYear())
+            return "%04d-W%02d".format(year, week)
+        }
         /** Active sessionId prefix when starting a saved routine (not a coach session). */
         const val ROUTINE_SESSION_PREFIX = "routine:"
         /** Empty / freeform log (not tied to a coach day). */

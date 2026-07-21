@@ -12,3 +12,6 @@
 # Optional: Supabase Auth for email OTP (Account screen). Same project as web.
 # mw.supabaseUrl=https://YOUR-PROJECT.supabase.co
 # mw.supabaseAnonKey=your-anon-key
+
+# Optional: Sentry DSN for crash-only reporting (Account can disable).
+# mw.sentryDsn=https://KEY@oORG.ingest.sentry.io/PROJECT

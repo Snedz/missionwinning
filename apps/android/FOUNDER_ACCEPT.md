@@ -169,6 +169,23 @@ Verified green on 1.2.7+ when this section was added. Upload keystore is still *
 ## After accept → Play Internal
 
 1. `./scripts/create-upload-keystore.sh` (once; offline backup)  
-2. Confirm `keystore.properties` exists → `./gradlew :app:bundleRelease`  
+2. Confirm `keystore.properties` exists → `./gradlew :app:bundleRelease -Pmw.requireUploadKeystore=true`  
 3. Upload AAB + screenshots from `store-assets/` (`wedge-adb-walk.py --screenshots`)  
-4. Data safety from `PLAY_LISTING.md`
+4. Data safety from `PLAY_LISTING.md`  
+5. Apply Supabase migrations: `20260721_workout_sync_v2.sql`, `20260721_android_telemetry.sql`  
+6. Set `mw.sentryDsn` in `local.properties` (or CI secret) for crash reporting builds  
+
+### Play Internal release checklist
+
+| # | Check | Result |
+|---|--------|--------|
+| R1 | `targetSdk` 36 (Play 2026 requirement) | |
+| R2 | Upload keystore offline backup exists | |
+| R3 | AAB signed with upload key (not debug) | |
+| R4 | Data safety form matches PLAY_LISTING | |
+| R5 | Screenshots: I-Day, Today, Active, Victory, Coach (≥5) | |
+| R6 | Feature graphic 1024×500 (optional for Internal) | |
+| R7 | Crash reporting DSN set; test crash in Sentry (no email/user) | |
+| R8 | Maestro / `wedge-adb-walk.py` green on AVD | |
+| R9 | Signed-in: finish workout → sets appear in Supabase `exercises` jsonb | |
+| R10 | Sign-out keeps local logs | |

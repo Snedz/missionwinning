@@ -43,6 +43,13 @@ data class PremiumStatusDto(
     val source: String = "anonymous",
 )
 
+@Serializable
+data class TelemetryHeartbeatDto(
+    val installId: String,
+    val weekKey: String,
+    val appVersion: String = "",
+)
+
 /** In-memory session used by AuthRepository / TokenStore. */
 data class AuthSession(
     val accessToken: String,

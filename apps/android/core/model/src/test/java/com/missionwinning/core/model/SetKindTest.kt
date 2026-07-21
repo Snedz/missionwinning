@@ -45,3 +45,4 @@ class SetKindTest {
         assertEquals("Working", SetKind.displayLabel(SetKind.Normal))
     }
 }
+
