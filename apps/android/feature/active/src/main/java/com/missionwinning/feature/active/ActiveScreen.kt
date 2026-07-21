@@ -1,5 +1,6 @@
 package com.missionwinning.feature.active
 
+import android.view.HapticFeedbackConstants
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +17,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -104,12 +105,21 @@ fun ActiveScreen(
     val currentSet = state.exercises.flatMap { it.sets }.find { it.id == currentId }
     var elapsed by remember { mutableLongStateOf(0L) }
     var confirmDiscard by remember { mutableStateOf(false) }
+    val view = LocalView.current
+    var prevRest by remember { mutableStateOf(0) }
     LaunchedEffect(state.sessionId, state.workoutName) {
         elapsed = 0L
         while (true) {
             delay(1000)
             elapsed += 1
         }
+    }
+    // Pulse when rest timer hits zero
+    LaunchedEffect(state.restSeconds) {
+        if (prevRest > 0 && state.restSeconds == 0) {
+            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+        }
+        prevRest = state.restSeconds
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -133,8 +143,10 @@ fun ActiveScreen(
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         MwChip(formatElapsed(elapsed.toInt()), tone = MwChipTone.Brass)
                         MwChip(
-                            state.weightUnit.uppercase(),
+                            text = state.weightUnit.uppercase(),
                             tone = MwChipTone.Emerald,
+                            contentDescription = "Toggle weight unit, currently ${state.weightUnit}",
+                            onClick = { onEvent(ActiveEvent.ToggleWeightUnit) },
                         )
                     }
                 }
@@ -148,23 +160,11 @@ fun ActiveScreen(
                     trackColor = MwColors.Border,
                     strokeCap = StrokeCap.Round,
                 )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        "${state.doneCount} / ${state.totalSets} sets",
-                        style = MwTypography.labelMedium,
-                        color = MwColors.TextMuted,
-                    )
-                    MwGhostButton(
-                        text = "Use ${if (state.weightUnit == "kg") "lb" else "kg"}",
-                        contentDescription = "Toggle weight unit",
-                        onClick = { onEvent(ActiveEvent.ToggleWeightUnit) },
-                        modifier = Modifier.fillMaxWidth(0.4f),
-                    )
-                }
+                Text(
+                    "${state.doneCount} / ${state.totalSets} sets · tap ${state.weightUnit.uppercase()} to switch unit",
+                    style = MwTypography.labelMedium,
+                    color = MwColors.TextMuted,
+                )
 
                 if (state.exercises.isEmpty()) {
                     MwEmptyState(
@@ -179,7 +179,10 @@ fun ActiveScreen(
                     CurrentSetCard(
                         set = currentSet,
                         weightUnit = state.weightUnit,
-                        onComplete = { onEvent(ActiveEvent.ToggleSet(currentSet.id)) },
+                        onComplete = {
+                            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                            onEvent(ActiveEvent.ToggleSet(currentSet.id))
+                        },
                         onRepsDelta = { d ->
                             onEvent(ActiveEvent.UpdateReps(currentSet.id, currentSet.reps + d))
                         },
@@ -234,7 +237,10 @@ fun ActiveScreen(
                     text = if (state.finishing) "Saving…" else "Finish workout",
                     contentDescription = "Finish workout and save sets offline",
                     enabled = !state.finishing && ActiveSessionLogic.canFinish(state.exercises),
-                    onClick = { onEvent(ActiveEvent.Finish) },
+                    onClick = {
+                        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                        onEvent(ActiveEvent.Finish)
+                    },
                 )
                 MwGhostButton(
                     text = "Discard session",

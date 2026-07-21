@@ -102,12 +102,24 @@ fun MwChip(
     text: String,
     modifier: Modifier = Modifier,
     tone: MwChipTone = MwChipTone.Neutral,
+    onClick: (() -> Unit)? = null,
+    contentDescription: String? = null,
 ) {
     val (bg, fg, border) = when (tone) {
         MwChipTone.Neutral -> Triple(MwColors.NavyElevated, MwColors.TextMuted, MwColors.Border)
         MwChipTone.Emerald -> Triple(MwColors.EmeraldDim.copy(alpha = 0.35f), MwColors.Emerald, MwColors.Emerald.copy(alpha = 0.5f))
         MwChipTone.Brass -> Triple(MwColors.BrassDim.copy(alpha = 0.25f), MwColors.Brass, MwColors.Brass.copy(alpha = 0.45f))
         MwChipTone.Danger -> Triple(MwColors.Danger.copy(alpha = 0.15f), MwColors.Danger, MwColors.Danger.copy(alpha = 0.4f))
+    }
+    val clickableMod = if (onClick != null) {
+        Modifier
+            .semantics {
+                role = Role.Button
+                contentDescription?.let { this.contentDescription = it }
+            }
+            .clickable(onClick = onClick)
+    } else {
+        Modifier
     }
     Text(
         text = text.uppercase(),
@@ -117,6 +129,7 @@ fun MwChip(
             .clip(RoundedCornerShape(999.dp))
             .background(bg)
             .border(1.dp, border, RoundedCornerShape(999.dp))
+            .then(clickableMod)
             .padding(horizontal = 10.dp, vertical = 4.dp),
     )
 }
