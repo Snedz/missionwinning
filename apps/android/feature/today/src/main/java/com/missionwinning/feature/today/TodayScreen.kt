@@ -11,11 +11,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
@@ -52,6 +56,14 @@ fun TodayScreen(
     val next = state.next
     val dateLabel = rememberDateLabel()
     val weekDays = rememberWeekDays(state.plan?.plan?.sessions.orEmpty())
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) viewModel.refresh()
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
 
     MwScreenScaffold {
         MwEnterFade {
@@ -114,6 +126,16 @@ fun TodayScreen(
                     MwWeekStrip(days = weekDays)
                 }
 
+                if (state.recent.isNotEmpty()) {
+                    MwCard(elevated = true) {
+                        MwSectionLabel("Recent")
+                        state.recent.forEachIndexed { index, w ->
+                            if (index > 0) Spacer(Modifier.height(MwSpace.sm))
+                            RecentWorkoutRow(w)
+                        }
+                    }
+                }
+
                 MwCard(elevated = true) {
                     MwSectionLabel("Units")
                     Text(
@@ -153,6 +175,36 @@ fun TodayScreen(
                 Spacer(Modifier.height(8.dp))
             }
         }
+    }
+}
+
+@Composable
+private fun RecentWorkoutRow(w: RecentWorkoutUi) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(w.name, style = MwTypography.titleMedium, color = MwColors.Text)
+            Text(
+                buildString {
+                    append(w.whenLabel)
+                    append(" · ")
+                    append(w.sets)
+                    append(if (w.sets == 1) " set" else " sets")
+                    append(" · ")
+                    append(w.durationLabel)
+                    w.volumeLabel?.let {
+                        append(" · ")
+                        append(it)
+                    }
+                },
+                style = MwTypography.bodyMedium,
+                color = MwColors.TextMuted,
+            )
+        }
+        MwChip("DONE", tone = MwChipTone.Emerald)
     }
 }
 

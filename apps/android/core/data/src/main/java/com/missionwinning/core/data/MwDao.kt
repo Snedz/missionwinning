@@ -22,6 +22,9 @@ interface MwDao {
     @Query("SELECT COUNT(*) FROM workout_logs")
     suspend fun workoutCount(): Int
 
+    @Query("SELECT * FROM workout_logs ORDER BY completedAt DESC LIMIT :limit")
+    suspend fun recentWorkouts(limit: Int): List<WorkoutLogEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSetLog(row: SetLogEntity)
 

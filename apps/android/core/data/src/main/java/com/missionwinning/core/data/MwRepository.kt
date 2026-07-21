@@ -147,6 +147,9 @@ class MwRepository(
 
     suspend fun workoutCount(): Int = dao.workoutCount()
 
+    suspend fun recentWorkouts(limit: Int = 5): List<WorkoutLogEntity> =
+        dao.recentWorkouts(limit.coerceIn(1, 20))
+
     suspend fun flushOutbox() {
         val client = api ?: return
         val pending = dao.pendingOutbox()

@@ -5,13 +5,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,6 +35,8 @@ import com.missionwinning.core.designsystem.MwSessionTile
 import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwTypography
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun CoachScreen(
@@ -43,10 +47,12 @@ fun CoachScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val planResp = state.plan
     val todayOffset = ((LocalDate.now().dayOfWeek.value + 6) % 7)
+    val weekStart = planResp?.plan?.weekStart
     val todaySession = planResp?.plan?.sessions?.firstOrNull {
         (it.status == "planned" || it.status == "swapped") &&
             (it.dayOffset == todayOffset || planResp.plan.sessions.none { s -> s.dayOffset == todayOffset })
     } ?: planResp?.plan?.sessions?.firstOrNull { it.status == "planned" || it.status == "swapped" }
+    var showLab by remember { mutableStateOf(false) }
 
     MwScreenScaffold {
         MwEnterFade {
@@ -68,7 +74,7 @@ fun CoachScreen(
                     MwCard(elevated = true) {
                         MwOfflinePill()
                         Text(
-                            "Week of ${planResp?.plan?.weekStart ?: "—"}",
+                            "Week of ${weekStart ?: "—"}",
                             style = MwTypography.titleLarge,
                             color = MwColors.Text,
                         )
@@ -92,10 +98,11 @@ fun CoachScreen(
                         val tone = when (s.status) {
                             "done" -> MwChipTone.Emerald
                             "swapped" -> MwChipTone.Brass
+                            "missed" -> MwChipTone.Danger
                             else -> MwChipTone.Neutral
                         }
                         MwSessionTile(
-                            dayLabel = "DAY +${s.dayOffset}",
+                            dayLabel = weekdayLabel(weekStart, s.dayOffset),
                             title = s.name,
                             subtitle = "${s.estMinutes}m · ${s.exercises.size} exercises · ${s.kind}",
                             statusLabel = s.status,
@@ -110,11 +117,23 @@ fun CoachScreen(
                     }
 
                     Spacer(Modifier.height(4.dp))
-                    MwSecondaryButton(
-                        text = "Seed adapt demo (miss + swap)",
-                        onClick = { viewModel.seedAdaptDemo() },
+                    MwGhostButton(
+                        text = if (showLab) "Hide lab tools" else "Lab tools",
+                        contentDescription = if (showLab) "Hide lab tools" else "Show lab tools",
+                        onClick = { showLab = !showLab },
                     )
-                    MwGhostButton(text = "Refresh plan", onClick = { viewModel.refresh() })
+                    if (showLab) {
+                        Text(
+                            "Founder / QA helpers — not part of the product path.",
+                            style = MwTypography.bodyMedium,
+                            color = MwColors.TextMuted,
+                        )
+                        MwSecondaryButton(
+                            text = "Seed adapt demo (miss + swap)",
+                            onClick = { viewModel.seedAdaptDemo() },
+                        )
+                        MwGhostButton(text = "Refresh plan", onClick = { viewModel.refresh() })
+                    }
                     Spacer(Modifier.height(8.dp))
                 }
 
@@ -131,4 +150,15 @@ fun CoachScreen(
             }
         }
     }
+}
+
+/** MON / TUE / … from plan weekStart + dayOffset; falls back to DAY +n. */
+private fun weekdayLabel(weekStart: String?, dayOffset: Int): String {
+    if (weekStart.isNullOrBlank()) return "DAY +$dayOffset"
+    return runCatching {
+        LocalDate.parse(weekStart)
+            .plusDays(dayOffset.toLong())
+            .format(DateTimeFormatter.ofPattern("EEE", Locale.US))
+            .uppercase(Locale.US)
+    }.getOrDefault("DAY +$dayOffset")
 }
