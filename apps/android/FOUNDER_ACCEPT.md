@@ -55,6 +55,9 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | T9 | **Start empty workout** (Quick log) opens empty Active | |
 | T10 | **Routines** list opens; can start a saved template | |
 | T11 | Progress & PRs / Exercise library open | |
+| T12 | Metric strip: streak · week vol · form score visible | |
+| T13 | Mission insight card shows adapt beat or week status | |
+| T14 | Progress: heat map + weekly volume + body weight save | |
 
 ---
 

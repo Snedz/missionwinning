@@ -41,6 +41,10 @@ class MwRepository(
     suspend fun setRestBeepEnabled(enabled: Boolean) = prefs.setRestBeepEnabled(enabled)
     suspend fun equipmentProfile(): String = prefs.equipmentProfile()
     suspend fun setEquipmentProfile(profile: String) = prefs.setEquipmentProfile(profile)
+    suspend fun bodyWeight(): Double? = prefs.bodyWeight()
+    suspend fun setBodyWeight(value: Double?) = prefs.setBodyWeight(value)
+    suspend fun bodyWeightUnit(): String = prefs.bodyWeightUnit()
+    suspend fun setBodyWeightUnit(unit: String) = prefs.setBodyWeightUnit(unit)
 
     // —— Coach ——
     suspend fun setEquipmentAndReseed(profile: String): CoachPlanResponseDto =
@@ -133,6 +137,8 @@ class MwRepository(
         const val KEY_INSTALL_ID = "install_id"
         const val KEY_LAST_HEARTBEAT_WEEK = "telemetry_last_week"
         const val KEY_HEALTH_CONNECT = "health_connect_export"
+        const val KEY_BODY_WEIGHT = "body_weight"
+        const val KEY_BODY_WEIGHT_UNIT = "body_weight_unit"
         const val KIND_WORKOUT = "workout"
         const val DEFAULT_API_BASE = "https://www.missionwinning.com"
 
