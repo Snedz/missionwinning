@@ -49,4 +49,14 @@ object ActiveSessionLogic {
 
     fun normalizeUnit(unit: String): String =
         com.missionwinning.core.model.WeightUnits.normalize(unit)
+
+    fun formatWeight(value: Double): String =
+        com.missionwinning.core.model.WeightUnits.format(value)
+
+    fun formatWeightWithUnit(value: Double, unit: String): String =
+        com.missionwinning.core.model.WeightUnits.formatWithUnit(value, unit)
+
+    /** Session volume = sum(weight × reps) for completed sets. */
+    fun sessionVolume(exercises: List<ActiveExercise>): Double =
+        completedSetsForPersist(exercises).sumOf { it.weight * it.reps }
 }

@@ -12,6 +12,8 @@ data class VictoryUiState(
     val sets: Int = 0,
     val duration: Int = 0,
     val workouts: Int = 0,
+    val volume: Int = 0,
+    val weightUnit: String = "kg",
 ) {
     val coachFirst: Boolean get() = workouts in 1..3
 }
@@ -21,7 +23,21 @@ class VictoryViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow(VictoryUiState())
     val state: StateFlow<VictoryUiState> = _state.asStateFlow()
 
-    fun bind(name: String, sets: Int, duration: Int, workouts: Int) {
-        _state.value = VictoryUiState(name, sets, duration, workouts)
+    fun bind(
+        name: String,
+        sets: Int,
+        duration: Int,
+        workouts: Int,
+        volume: Int = 0,
+        weightUnit: String = "kg",
+    ) {
+        _state.value = VictoryUiState(
+            workoutName = name,
+            sets = sets,
+            duration = duration,
+            workouts = workouts,
+            volume = volume,
+            weightUnit = weightUnit.ifBlank { "kg" },
+        )
     }
 }

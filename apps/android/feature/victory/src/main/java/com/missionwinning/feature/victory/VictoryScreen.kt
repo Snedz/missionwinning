@@ -23,6 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.missionwinning.core.designsystem.LocalReduceMotion
 import com.missionwinning.core.designsystem.MwBrassRule
 import com.missionwinning.core.designsystem.MwCard
+import com.missionwinning.core.designsystem.MwChip
+import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwMetricCard
@@ -31,6 +33,7 @@ import com.missionwinning.core.designsystem.MwScreenScaffold
 import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwTypography
+import com.missionwinning.core.model.WeightUnits
 
 @Composable
 fun VictoryScreen(
@@ -38,12 +41,14 @@ fun VictoryScreen(
     sets: Int,
     duration: Int,
     workouts: Int,
+    volume: Int = 0,
+    weightUnit: String = "kg",
     onCoach: () -> Unit,
     onToday: () -> Unit,
     viewModel: VictoryViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(workoutName, sets, duration, workouts) {
-        viewModel.bind(workoutName, sets, duration, workouts)
+    LaunchedEffect(workoutName, sets, duration, workouts, volume, weightUnit) {
+        viewModel.bind(workoutName, sets, duration, workouts, volume, weightUnit)
     }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coachFirst = state.coachFirst
@@ -52,6 +57,13 @@ fun VictoryScreen(
     LaunchedEffect(reduceMotion) {
         if (reduceMotion) return@LaunchedEffect
         lockScale.animateTo(1f, tween(420, easing = FastOutSlowInEasing))
+    }
+
+    val unit = WeightUnits.normalize(state.weightUnit)
+    val volumeLabel = if (state.volume > 0) {
+        "${WeightUnits.format(state.volume.toDouble())} $unit"
+    } else {
+        "—"
     }
 
     MwScreenScaffold {
@@ -69,6 +81,11 @@ fun VictoryScreen(
                 Text("Session locked", style = MwTypography.headlineLarge, color = MwColors.Text)
                 MwBrassRule()
                 Text(state.workoutName, style = MwTypography.titleLarge, color = MwColors.Emerald)
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MwChip("${state.sets} sets", tone = MwChipTone.Emerald)
+                    MwChip(formatDuration(state.duration), tone = MwChipTone.Brass)
+                    MwChip("#${state.workouts}", tone = MwChipTone.Neutral)
+                }
                 Text(
                     if (coachFirst) {
                         "Coach adapts your week from this log — no wearable needed."
@@ -86,7 +103,7 @@ fun VictoryScreen(
             ) {
                 MwMetricCard("Sets", state.sets.toString(), Modifier.weight(1f))
                 MwMetricCard("Time", formatDuration(state.duration), Modifier.weight(1f))
-                MwMetricCard("Total", "#${state.workouts}", Modifier.weight(1f))
+                MwMetricCard("Volume", volumeLabel, Modifier.weight(1f))
             }
 
             MwCard(elevated = true, glow = true) {

@@ -7,13 +7,19 @@ object Routes {
     const val COACH = "coach"
     const val AUTH = "auth"
     const val ACTIVE = "active/{sessionId}/{name}/{sets}"
-    const val VICTORY = "victory/{name}/{sets}/{duration}/{workouts}"
+    const val VICTORY = "victory/{name}/{sets}/{duration}/{workouts}/{volume}/{unit}"
 
     fun active(sessionId: String, name: String, sets: Int) =
         "active/${sessionId.encode()}/${name.encode()}/$sets"
 
-    fun victory(name: String, sets: Int, duration: Int, workouts: Int) =
-        "victory/${name.encode()}/$sets/$duration/$workouts"
+    fun victory(
+        name: String,
+        sets: Int,
+        duration: Int,
+        workouts: Int,
+        volume: Int = 0,
+        unit: String = "kg",
+    ) = "victory/${name.encode()}/$sets/$duration/$workouts/$volume/${unit.encode()}"
 
     private fun String.encode() = java.net.URLEncoder.encode(this, Charsets.UTF_8.name())
 }

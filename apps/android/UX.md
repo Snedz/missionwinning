@@ -31,8 +31,13 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 
 | Key | Values |
 |-----|--------|
-| Weight unit | `kg` / `lb` — Today Units card or Active toggle |
+| Weight unit | `kg` / `lb` — Today Units card or Active toggle (converts mid-session, snaps to 2.5 kg / 5 lb) |
 | Equipment | set in I-Day step 2 |
+
+## Logger craft
+
+- Current set card shows **last session** weight×reps + **Use last**
+- Set rows show weight when logged; Victory shows **volume**
 
 ## Verify
 

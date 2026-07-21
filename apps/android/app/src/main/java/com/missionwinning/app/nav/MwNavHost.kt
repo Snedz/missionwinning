@@ -149,8 +149,17 @@ fun MwNavHost() {
                         sessionId = sessionId,
                         workoutName = name,
                         targetSets = sets,
-                        onFinished = { n, s, d, w ->
-                            nav.navigate(Routes.victory(n, s, d, w)) {
+                        onFinished = { n, s, d, w, volume, unit ->
+                            nav.navigate(
+                                Routes.victory(
+                                    name = n,
+                                    sets = s,
+                                    duration = d,
+                                    workouts = w,
+                                    volume = volume.toInt().coerceAtLeast(0),
+                                    unit = unit,
+                                ),
+                            ) {
                                 popUpTo(Routes.TODAY)
                             }
                         },
@@ -164,6 +173,8 @@ fun MwNavHost() {
                         navArgument("sets") { type = NavType.IntType },
                         navArgument("duration") { type = NavType.IntType },
                         navArgument("workouts") { type = NavType.IntType },
+                        navArgument("volume") { type = NavType.IntType },
+                        navArgument("unit") { type = NavType.StringType },
                     ),
                 ) { entry ->
                     VictoryScreen(
@@ -171,6 +182,8 @@ fun MwNavHost() {
                         sets = entry.arguments!!.getInt("sets"),
                         duration = entry.arguments!!.getInt("duration"),
                         workouts = entry.arguments!!.getInt("workouts"),
+                        volume = entry.arguments!!.getInt("volume"),
+                        weightUnit = entry.arguments!!.getString("unit")!!.decode(),
                         onCoach = {
                             nav.navigate(Routes.COACH) {
                                 popUpTo(Routes.TODAY)

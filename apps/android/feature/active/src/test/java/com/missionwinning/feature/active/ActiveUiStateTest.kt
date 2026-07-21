@@ -104,9 +104,29 @@ class ActiveUiStateTest {
         assertEquals("kg", ActiveSessionLogic.normalizeUnit("KG"))
         assertEquals(2.5, ActiveSessionLogic.weightStep("kg"), 0.0)
         assertEquals(5.0, ActiveSessionLogic.weightStep("lb"), 0.0)
+        // 100 kg → ~220.5 lb → snaps to 5 lb plate step
         val lb = ActiveSessionLogic.convertWeight(100.0, "kg", "lb")
-        assertTrue(lb > 220.0 && lb < 221.0)
+        assertEquals(220.0, lb, 0.0)
         val kg = ActiveSessionLogic.convertWeight(lb, "lb", "kg")
         assertEquals(100.0, kg, 0.01)
+        assertEquals("100", ActiveSessionLogic.formatWeight(100.0))
+        assertEquals("2.5", ActiveSessionLogic.formatWeight(2.5))
+        assertEquals("100 kg", ActiveSessionLogic.formatWeightWithUnit(100.0, "kg"))
+    }
+
+    @Test
+    fun sessionLogic_sessionVolume() {
+        val exercises = listOf(
+            ActiveExercise(
+                "a",
+                "Push",
+                listOf(
+                    set("1", done = true, reps = 5, weight = 100.0),
+                    set("2", done = true, reps = 5, weight = 100.0, index = 1),
+                    set("3", done = false, reps = 5, weight = 100.0, index = 2),
+                ),
+            ),
+        )
+        assertEquals(1000.0, ActiveSessionLogic.sessionVolume(exercises), 0.0)
     }
 }
