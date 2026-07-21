@@ -52,3 +52,14 @@ data class PrefEntity(
     @PrimaryKey val key: String,
     val value: String,
 )
+
+/** Saved workout template (Phase 1). Exercise blueprint stored as JSON. */
+@Entity(tableName = "routines")
+data class RoutineEntity(
+    @PrimaryKey val id: String,
+    val name: String,
+    val createdAt: String,
+    val sourceWorkoutId: String? = null,
+    /** JSON list of [RoutineExerciseDto]. */
+    val exercisesJson: String,
+)

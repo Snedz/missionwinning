@@ -38,6 +38,7 @@ import com.missionwinning.feature.iday.IdayScreen
 import com.missionwinning.feature.today.CatalogScreen
 import com.missionwinning.feature.today.HistoryScreen
 import com.missionwinning.feature.today.ProgressScreen
+import com.missionwinning.feature.today.RoutinesScreen
 import com.missionwinning.feature.today.TodayScreen
 import com.missionwinning.feature.victory.VictoryScreen
 import dagger.hilt.EntryPoint
@@ -152,6 +153,7 @@ fun MwNavHost() {
                         },
                         onOpenCatalog = { nav.navigate(Routes.CATALOG) },
                         onOpenProgress = { nav.navigate(Routes.PROGRESS) },
+                        onOpenRoutines = { nav.navigate(Routes.ROUTINES) },
                     )
                 }
                 composable(Routes.CATALOG) {
@@ -159,6 +161,14 @@ fun MwNavHost() {
                 }
                 composable(Routes.PROGRESS) {
                     ProgressScreen(onBack = { nav.popBackStack() })
+                }
+                composable(Routes.ROUTINES) {
+                    RoutinesScreen(
+                        onBack = { nav.popBackStack() },
+                        onStartRoutine = { id, name, sets ->
+                            nav.navigate(Routes.active(id, name, sets))
+                        },
+                    )
                 }
                 composable(
                     Routes.HISTORY,
@@ -169,6 +179,11 @@ fun MwNavHost() {
                     HistoryScreen(
                         workoutId = entry.arguments!!.getString("workoutId")!!.decode(),
                         onBack = { nav.popBackStack() },
+                        onOpenRoutines = {
+                            nav.navigate(Routes.ROUTINES) {
+                                launchSingleTop = true
+                            }
+                        },
                     )
                 }
                 composable(Routes.COACH) {

@@ -177,6 +177,62 @@ class MwRepository(
     suspend fun recentWeightedSets(limit: Int = 500): List<SetLogEntity> =
         dao.recentWeightedSets(limit.coerceIn(1, 2000))
 
+    suspend fun allRoutines(): List<RoutineEntity> = dao.allRoutines()
+
+    suspend fun routineById(id: String): RoutineEntity? = dao.routineById(id)
+
+    suspend fun deleteRoutine(id: String) {
+        dao.deleteRoutine(id)
+    }
+
+    fun parseRoutineExercises(exercisesJson: String): List<RoutineExerciseDto> =
+        runCatching {
+            json.decodeFromString(
+                kotlinx.serialization.builtins.ListSerializer(RoutineExerciseDto.serializer()),
+                exercisesJson,
+            )
+        }.getOrDefault(emptyList())
+
+    /**
+     * Save a routine from a finished workout’s set logs (grouped by exercise).
+     * @return new routine id, or null if no sets to save.
+     */
+    suspend fun saveRoutineFromWorkout(workoutId: String, nameOverride: String? = null): String? {
+        val workout = dao.workoutById(workoutId) ?: return null
+        val sets = dao.setsForWorkout(workoutId)
+        if (sets.isEmpty()) return null
+        val grouped = sets.groupBy { it.exerciseId }
+        val exercises = grouped.map { (exId, rows) ->
+            val ordered = rows.sortedBy { it.setIndex }
+            val last = ordered.last()
+            RoutineExerciseDto(
+                exerciseId = exId,
+                exerciseName = last.exerciseName.ifBlank { exId },
+                sets = ordered.size.coerceIn(1, 12),
+                targetReps = last.reps.coerceIn(1, 99),
+                lastWeight = last.weight.coerceAtLeast(0.0),
+            )
+        }
+        if (exercises.isEmpty()) return null
+        val id = UUID.randomUUID().toString()
+        val now = java.time.Instant.now().toString()
+        val name = nameOverride?.takeIf { it.isNotBlank() }
+            ?: workout.workoutName.ifBlank { "Routine" }
+        dao.upsertRoutine(
+            RoutineEntity(
+                id = id,
+                name = name,
+                createdAt = now,
+                sourceWorkoutId = workoutId,
+                exercisesJson = json.encodeToString(
+                    kotlinx.serialization.builtins.ListSerializer(RoutineExerciseDto.serializer()),
+                    exercises,
+                ),
+            ),
+        )
+        return id
+    }
+
     /** @deprecated Prefer [finishWorkout] */
     suspend fun appendWorkout(
         workoutName: String,
@@ -294,7 +350,18 @@ class MwRepository(
         const val KEY_REST_VIBRATE = "rest_vibrate"
         const val KEY_REST_BEEP = "rest_beep"
         const val KIND_WORKOUT = "workout"
+        /** Active sessionId prefix when starting a saved routine (not a coach session). */
+        const val ROUTINE_SESSION_PREFIX = "routine:"
         const val DEFAULT_API_BASE = "https://www.missionwinning.com"
+
+        fun isRoutineSession(sessionId: String): Boolean =
+            sessionId.startsWith(ROUTINE_SESSION_PREFIX)
+
+        fun routineSessionId(routineId: String): String =
+            ROUTINE_SESSION_PREFIX + routineId
+
+        fun routineIdFromSession(sessionId: String): String? =
+            if (isRoutineSession(sessionId)) sessionId.removePrefix(ROUTINE_SESSION_PREFIX) else null
 
         fun normalizeRestSeconds(seconds: Int): Int = when {
             seconds <= 45 -> 45

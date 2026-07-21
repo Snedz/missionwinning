@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -32,12 +33,17 @@ data class HistoryExerciseGroup(
 data class HistoryUiState(
     val loading: Boolean = true,
     val notFound: Boolean = false,
+    val workoutId: String = "",
     val name: String = "",
     val whenLabel: String = "",
     val durationLabel: String = "",
     val setCount: Int = 0,
     val volumeLabel: String = "—",
     val groups: List<HistoryExerciseGroup> = emptyList(),
+    val canSaveRoutine: Boolean = false,
+    val savingRoutine: Boolean = false,
+    val routineSavedId: String? = null,
+    val saveMessage: String? = null,
 )
 
 @HiltViewModel
@@ -49,10 +55,10 @@ class HistoryViewModel @Inject constructor(
 
     fun load(workoutId: String) {
         viewModelScope.launch {
-            _state.value = HistoryUiState(loading = true)
+            _state.value = HistoryUiState(loading = true, workoutId = workoutId)
             val workout = repository.workoutById(workoutId)
             if (workout == null) {
-                _state.value = HistoryUiState(loading = false, notFound = true)
+                _state.value = HistoryUiState(loading = false, notFound = true, workoutId = workoutId)
                 return@launch
             }
             val unitPref = WeightUnits.normalize(repository.weightUnit())
@@ -83,6 +89,7 @@ class HistoryViewModel @Inject constructor(
                 .sortedBy { it.exerciseName.lowercase(Locale.US) }
             _state.value = HistoryUiState(
                 loading = false,
+                workoutId = workoutId,
                 name = workout.workoutName.ifBlank { "Workout" },
                 whenLabel = formatWhen(workout.completedAt),
                 durationLabel = formatDuration(workout.durationSeconds),
@@ -93,8 +100,40 @@ class HistoryViewModel @Inject constructor(
                     "—"
                 },
                 groups = groups,
+                canSaveRoutine = sets.isNotEmpty(),
             )
         }
+    }
+
+    fun saveAsRoutine() {
+        val workoutId = _state.value.workoutId
+        if (workoutId.isBlank() || _state.value.savingRoutine) return
+        viewModelScope.launch {
+            _state.update {
+                it.copy(savingRoutine = true, saveMessage = null, routineSavedId = null)
+            }
+            val id = runCatching {
+                repository.saveRoutineFromWorkout(workoutId)
+            }.getOrNull()
+            _state.update {
+                if (id != null) {
+                    it.copy(
+                        savingRoutine = false,
+                        routineSavedId = id,
+                        saveMessage = "Saved as routine",
+                    )
+                } else {
+                    it.copy(
+                        savingRoutine = false,
+                        saveMessage = "Could not save routine (no sets)",
+                    )
+                }
+            }
+        }
+    }
+
+    fun clearSaveMessage() {
+        _state.update { it.copy(saveMessage = null) }
     }
 }
 
