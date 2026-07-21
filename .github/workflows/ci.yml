@@ -277,4 +277,13 @@ jobs:
           retention-days: 7
 
       - name: Maestro wedge present
-        run: test -f .maestro/wedge.yaml && head -5 .maestro/wedge.yaml
+        run: |
+          test -f .maestro/wedge.yaml
+          # Structural smoke — full emulator Maestro is founder-device / Phase 3+ hardware
+          grep -q 'Start workout' .maestro/wedge.yaml
+          grep -q 'Complete set' .maestro/wedge.yaml
+          grep -q 'Session locked' .maestro/wedge.yaml
+
+      - name: Unit-test modules that ship logger invariants
+        run: |
+          ./gradlew :feature:active:testDebugUnitTest :core:model:testDebugUnitTest :core:data:testDebugUnitTest --stacktrace

@@ -44,6 +44,7 @@ fun IdayScreen(
 ) {
     var step by remember { mutableIntStateOf(0) }
     var equipment by remember { mutableStateOf("bodyweight") }
+    var telemetryOptIn by remember { mutableStateOf(false) }
 
     MwScreenScaffold {
         MwEnterFade {
@@ -54,7 +55,13 @@ fun IdayScreen(
                     when (step) {
                         0 -> StepMission(
                             onNext = { step = 1 },
-                            onSkip = { viewModel.complete(equipment, onFinished) },
+                            onSkip = {
+                                viewModel.complete(
+                                    equipment = equipment,
+                                    telemetryOptIn = false,
+                                    onDone = onFinished,
+                                )
+                            },
                         )
                         1 -> StepEquipment(
                             selected = equipment,
@@ -64,7 +71,15 @@ fun IdayScreen(
                         )
                         else -> StepReady(
                             equipment = equipment,
-                            onFinish = { viewModel.complete(equipment, onFinished) },
+                            telemetryOptIn = telemetryOptIn,
+                            onTelemetryChange = { telemetryOptIn = it },
+                            onFinish = {
+                                viewModel.complete(
+                                    equipment = equipment,
+                                    telemetryOptIn = telemetryOptIn,
+                                    onDone = onFinished,
+                                )
+                            },
                         )
                     }
                 }
@@ -179,7 +194,12 @@ private fun StepEquipment(
 }
 
 @Composable
-private fun StepReady(equipment: String, onFinish: () -> Unit) {
+private fun StepReady(
+    equipment: String,
+    telemetryOptIn: Boolean,
+    onTelemetryChange: (Boolean) -> Unit,
+    onFinish: () -> Unit,
+) {
     Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
         Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
             MwSectionLabel("I-Day · 3 of 3")
@@ -195,6 +215,24 @@ private fun StepReady(equipment: String, onFinish: () -> Unit) {
                     "Start a session from Today. Logs stay on-device until you sign in.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
+                )
+            }
+            MwCard(elevated = true) {
+                MwSectionLabel("Privacy")
+                Text(
+                    "Optional: send an anonymous weekly pulse (install id + week only). Never workouts or email. Off by default.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+                MwChip(
+                    text = if (telemetryOptIn) "Weekly pulse · on" else "Weekly pulse · off",
+                    tone = if (telemetryOptIn) MwChipTone.Emerald else MwChipTone.Neutral,
+                    contentDescription = if (telemetryOptIn) {
+                        "Weekly pulse on, tap to turn off"
+                    } else {
+                        "Weekly pulse off, tap to turn on"
+                    },
+                    onClick = { onTelemetryChange(!telemetryOptIn) },
                 )
             }
         }

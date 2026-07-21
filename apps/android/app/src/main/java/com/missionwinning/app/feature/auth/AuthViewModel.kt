@@ -26,6 +26,9 @@ data class AuthScreenState(
     val message: String? = null,
     val error: String? = null,
     val session: AuthUiSnapshot = AuthUiSnapshot(),
+    val crashReporting: Boolean = true,
+    val telemetryOptIn: Boolean = false,
+    val sentryConfigured: Boolean = false,
 )
 
 @HiltViewModel
@@ -54,6 +57,22 @@ class AuthViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(5_000),
         AuthScreenState(session = authRepository.state.value),
     )
+
+    init {
+        viewModelScope.launch {
+            refreshPrivacyToggles()
+        }
+    }
+
+    private suspend fun refreshPrivacyToggles() {
+        _local.update {
+            it.copy(
+                crashReporting = repository.crashReportingEnabled(),
+                telemetryOptIn = repository.telemetryOptIn(),
+                sentryConfigured = com.missionwinning.app.crash.CrashReporting.isConfigured(),
+            )
+        }
+    }
 
     fun onEmailChange(value: String) {
         _local.update { it.copy(email = value, error = null, message = null) }
@@ -156,5 +175,32 @@ class AuthViewModel @Inject constructor(
 
     fun clearFeedback() {
         _local.update { it.copy(error = null, message = null) }
+    }
+
+    fun toggleCrashReporting(app: android.app.Application) {
+        viewModelScope.launch {
+            val next = !_local.value.crashReporting
+            repository.setCrashReportingEnabled(next)
+            com.missionwinning.app.crash.CrashReporting.setEnabled(app, next)
+            _local.update {
+                it.copy(
+                    crashReporting = next,
+                    message = if (next) "Crash reports on" else "Crash reports off",
+                )
+            }
+        }
+    }
+
+    fun toggleTelemetry() {
+        viewModelScope.launch {
+            val next = !_local.value.telemetryOptIn
+            repository.setTelemetryOptIn(next)
+            _local.update {
+                it.copy(
+                    telemetryOptIn = next,
+                    message = if (next) "Weekly pulse on" else "Weekly pulse off",
+                )
+            }
+        }
     }
 }

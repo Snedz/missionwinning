@@ -32,6 +32,7 @@ Legend:
 | `mobile/sync/workouts` | POST | Bearer | 30/min | Batch ≤50 full-fidelity upserts (client_id + revision) |
 | `mobile/sync/workouts` | GET | Bearer | 60/min | Cursor pull `?since=&limit=` including tombstones |
 | `mobile/premium/status` | GET | Bearer (or cookie fallback) | 60/min | Super Bundle flag for native Account |
+| `mobile/telemetry` | POST | public (opaque install id only) | 20/min | Privacy-first weekly Android heartbeat |
 
 ### Gate & leads
 

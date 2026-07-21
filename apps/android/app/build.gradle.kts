@@ -27,12 +27,13 @@ android {
     defaultConfig {
         applicationId = "com.missionwinning.app"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 29
-        versionName = "1.3.1"
+        targetSdk = 36
+        versionCode = 30
+        versionName = "1.3.2"
         // Override via apps/android/local.properties (gitignored):
         //   mw.apiBaseUrl=http://10.0.2.2:3000
         //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
+        //   mw.sentryDsn=https://…@….ingest.sentry.io/…
         val localProps = Properties().apply {
             val f = rootProject.file("local.properties")
             if (f.exists()) f.inputStream().use { load(it) }
@@ -41,10 +42,12 @@ android {
         val privateCookie = localProps.getProperty("mw.privateAccessCookie") ?: ""
         val supabaseUrl = localProps.getProperty("mw.supabaseUrl") ?: ""
         val supabaseAnon = localProps.getProperty("mw.supabaseAnonKey") ?: ""
+        val sentryDsn = localProps.getProperty("mw.sentryDsn") ?: ""
         buildConfigField("String", "API_BASE_URL", "\"$apiBase\"")
         buildConfigField("String", "PRIVATE_ACCESS_COOKIE", "\"$privateCookie\"")
         buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
         buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnon\"")
+        buildConfigField("String", "SENTRY_DSN", "\"$sentryDsn\"")
     }
 
     signingConfigs {
@@ -129,6 +132,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    implementation(libs.sentry.android)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     testImplementation(libs.junit)

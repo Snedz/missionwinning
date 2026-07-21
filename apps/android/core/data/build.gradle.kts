@@ -33,4 +33,6 @@ dependencies {
     implementation(libs.androidx.work.runtime)
     implementation(libs.hilt.android)
     // EntryPoint only — no ksp needed for SyncWorker EntryPoint
+
+    testImplementation(libs.junit)
 }

@@ -97,6 +97,30 @@ paths:
                 $ref: '#/components/schemas/PremiumStatus'
         '429':
           description: Rate limited
+  /api/mobile/telemetry:
+    post:
+      summary: Anonymous Android weekly heartbeat (install id + week only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [installId, weekKey]
+              properties:
+                installId:
+                  type: string
+                  format: uuid
+                weekKey:
+                  type: string
+                  example: 2026-W30
+                appVersion:
+                  type: string
+      responses:
+        '200':
+          description: Accepted
+        '429':
+          description: Rate limited
   /api/mobile/sync/workouts:
     post:
       summary: Batch push full-fidelity workouts (≤50)

@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import android.app.Application
 import com.missionwinning.app.BuildConfig
 import com.missionwinning.core.common.NetworkStatus
 import com.missionwinning.core.designsystem.MwCard
@@ -123,6 +124,38 @@ fun AuthScreen(
             }
             state.message?.let {
                 Text(it, style = MwTypography.bodyMedium, color = MwColors.Emerald)
+            }
+
+            MwCard(elevated = true) {
+                MwSectionLabel("Privacy")
+                Text(
+                    "Crash reports (no account data) and optional weekly install pulse. Workouts stay on-device unless you sign in to sync.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+                if (state.sentryConfigured) {
+                    MwChip(
+                        text = if (state.crashReporting) "Crash reports · on" else "Crash reports · off",
+                        tone = if (state.crashReporting) MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = "Toggle crash reporting",
+                        onClick = {
+                            val app = context.applicationContext as Application
+                            viewModel.toggleCrashReporting(app)
+                        },
+                    )
+                } else {
+                    Text(
+                        "Crash reporting DSN not configured on this build.",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                }
+                MwChip(
+                    text = if (state.telemetryOptIn) "Weekly pulse · on" else "Weekly pulse · off",
+                    tone = if (state.telemetryOptIn) MwChipTone.Emerald else MwChipTone.Neutral,
+                    contentDescription = "Toggle weekly pulse",
+                    onClick = viewModel::toggleTelemetry,
+                )
             }
 
             MwCard(elevated = true) {

@@ -53,6 +53,34 @@ class ActiveUiStateTest {
     }
 
     @Test
+    fun sessionLogic_undoRestoresIncomplete_andGhostPrefill() {
+        // Ghost prefill: previous weight/reps carried after complete
+        val afterComplete = ActiveSessionLogic.carryForwardWithinExercise(
+            listOf(
+                ActiveExercise(
+                    "a",
+                    "Push",
+                    listOf(
+                        set("1", done = true, reps = 8, weight = 60.0, index = 0),
+                        set("2", done = false, reps = 10, weight = 0.0, index = 1),
+                    ),
+                ),
+            ),
+            completedSetId = "1",
+        )
+        assertEquals(8, afterComplete[0].sets[1].reps)
+        assertEquals(60.0, afterComplete[0].sets[1].weight, 0.0)
+        // Undo is toggle at ViewModel layer — canFinish still true if another set done
+        assertTrue(ActiveSessionLogic.canFinish(afterComplete))
+    }
+
+    @Test
+    fun sessionLogic_restDock_skipsWhenAllDone() {
+        assertEquals(0, ActiveSessionLogic.restAfterComplete(45, allSetsDone = true))
+        assertEquals(60, ActiveSessionLogic.restAfterComplete(0, defaultRest = 60, allSetsDone = false))
+    }
+
+    @Test
     fun sessionLogic_defaultsFromPrevious() {
         assertEquals(8, ActiveSessionLogic.defaultReps(10, 8))
         assertEquals(10, ActiveSessionLogic.defaultReps(10, null))

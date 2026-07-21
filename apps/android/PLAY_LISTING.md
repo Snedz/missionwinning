@@ -73,7 +73,7 @@ Local smoke (debug-signed, not for Play):
 
 **Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
 
-`versionCode` is `29`, `versionName` is `1.3.1` — Phase 2 sync v2: full set fidelity push/pull, Room v8, WorkManager; apply `supabase/migrations/20260721_workout_sync_v2.sql`.
+`versionCode` is `30`, `versionName` is `1.3.2` — Phase 3: targetSdk 36, Sentry crash-only, privacy telemetry pulse; apply telemetry + sync_v2 Supabase migrations.
 
 ---
 
