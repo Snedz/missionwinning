@@ -174,6 +174,9 @@ class MwRepository(
     suspend fun setsForWorkout(workoutId: String): List<SetLogEntity> =
         dao.setsForWorkout(workoutId)
 
+    suspend fun recentWeightedSets(limit: Int = 500): List<SetLogEntity> =
+        dao.recentWeightedSets(limit.coerceIn(1, 2000))
+
     /** @deprecated Prefer [finishWorkout] */
     suspend fun appendWorkout(
         workoutName: String,

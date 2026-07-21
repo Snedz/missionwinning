@@ -62,6 +62,16 @@ interface MwDao {
     )
     suspend fun latestSetFor(exerciseId: String, setIndex: Int): SetLogEntity?
 
+    @Query(
+        """
+        SELECT * FROM set_logs
+        WHERE weight > 0
+        ORDER BY completedAt DESC
+        LIMIT :limit
+        """,
+    )
+    suspend fun recentWeightedSets(limit: Int = 500): List<SetLogEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun enqueueOutbox(row: SyncOutboxEntity)
 
