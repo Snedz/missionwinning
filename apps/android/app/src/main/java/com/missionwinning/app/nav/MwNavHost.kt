@@ -11,17 +11,32 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.missionwinning.app.feature.active.ActiveScreen
 import com.missionwinning.app.feature.auth.AuthScreen
-import com.missionwinning.app.feature.coach.CoachScreen
-import com.missionwinning.app.feature.iday.IdayScreen
-import com.missionwinning.app.feature.today.TodayScreen
-import com.missionwinning.app.feature.victory.VictoryScreen
+import com.missionwinning.feature.coach.CoachScreen
+import com.missionwinning.feature.iday.IdayScreen
+import com.missionwinning.feature.today.TodayScreen
+import com.missionwinning.feature.victory.VictoryScreen
 import com.missionwinning.core.data.MwRepository
+import com.missionwinning.feature.active.ActiveRoute
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+import androidx.compose.ui.platform.LocalContext
 import java.net.URLDecoder
 
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface RepoEntryPoint {
+    fun repository(): MwRepository
+}
+
 @Composable
-fun MwNavHost(repository: MwRepository) {
+fun MwNavHost() {
+    val context = LocalContext.current.applicationContext
+    val repository = remember {
+        EntryPointAccessors.fromApplication(context, RepoEntryPoint::class.java).repository()
+    }
     val nav = rememberNavController()
     var bootDone by remember { mutableStateOf(false) }
     var start by remember { mutableStateOf(Routes.BOOT) }
@@ -36,7 +51,6 @@ fun MwNavHost(repository: MwRepository) {
     NavHost(navController = nav, startDestination = start) {
         composable(Routes.IDAY) {
             IdayScreen(
-                repository = repository,
                 onFinished = {
                     nav.navigate(Routes.TODAY) {
                         popUpTo(Routes.IDAY) { inclusive = true }
@@ -46,7 +60,6 @@ fun MwNavHost(repository: MwRepository) {
         }
         composable(Routes.TODAY) {
             TodayScreen(
-                repository = repository,
                 onStartWorkout = { id, name, sets ->
                     nav.navigate(Routes.active(id, name, sets))
                 },
@@ -56,7 +69,6 @@ fun MwNavHost(repository: MwRepository) {
         }
         composable(Routes.COACH) {
             CoachScreen(
-                repository = repository,
                 onStartWorkout = { id, name, sets ->
                     nav.navigate(Routes.active(id, name, sets))
                 },
@@ -77,8 +89,7 @@ fun MwNavHost(repository: MwRepository) {
             val sessionId = entry.arguments!!.getString("sessionId")!!.decode()
             val name = entry.arguments!!.getString("name")!!.decode()
             val sets = entry.arguments!!.getInt("sets")
-            ActiveScreen(
-                repository = repository,
+            ActiveRoute(
                 sessionId = sessionId,
                 workoutName = name,
                 targetSets = sets,

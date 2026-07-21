@@ -18,6 +18,13 @@ dependencyResolutionManagement {
 
 rootProject.name = "MissionWinning"
 include(":app")
+include(":core:common")
+include(":core:model")
 include(":core:designsystem")
 include(":core:data")
 include(":core:network")
+include(":feature:active")
+include(":feature:today")
+include(":feature:coach")
+include(":feature:iday")
+include(":feature:victory")

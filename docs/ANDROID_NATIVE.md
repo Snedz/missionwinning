@@ -15,14 +15,16 @@ Web PWA at www stays for SEO / Get Selected. Do **not** ship Expo/TWA as the And
 
 | Layer | Choice |
 |-------|--------|
-| UI | Jetpack Compose + Material 3 |
-| Arch | Multi-module · ViewModel + UiState |
-| Local | Room (workouts, coach plan, sync outbox) |
+| UI | Jetpack Compose + Mw designsystem (Barlow / Inter / Plex Mono) |
+| Presentation | ViewModel + `StateFlow` UiState (UDF) + **Hilt** |
+| Local | Room (SoT) + DataStore prefs + **sync outbox** |
 | Network | OkHttp + Kotlinx Serialization vs OpenAPI |
 | Auth | Supabase (optional); offline works without account |
-| Coach | HTTP `/api/mobile/coach/*` wrapping `src/lib/coach` + mw-core seed — **never** reimplement `planEngine` in Kotlin |
+| Coach | HTTP `/api/mobile/coach/*` + Room seed — **never** reimplement `planEngine` in Kotlin |
 
 **Colors:** navy `#0a0c10` · emerald `#27b07d` · brass `#c7a860`
+
+**Deep dive:** [apps/android/ARCHITECTURE.md](../apps/android/ARCHITECTURE.md)
 
 ---
 
@@ -59,16 +61,30 @@ cd apps/android
 
 ```
 apps/android/
-  settings.gradle.kts
-  app/                 # Application, nav host
-  core/designsystem/   # Color, Type, MW components
-  core/data/           # Room, repositories
+  app/                 # Hilt Application, NavHost
+  core/designsystem/   # Brand, Mw components
+  core/common/         # Result, dispatchers
+  core/model/          # Immutable domain models
+  core/data/           # Room, repos, outbox
   core/network/        # API client
-  feature/iday|today|active|coach|auth/
-  INDEX.md · AGENTS.md
+  feature/active/      # Logger craft (vertical slice)
+  feature/*            # iday|today|victory|coach|auth (packages / modules)
+  ARCHITECTURE.md · INDEX.md · AGENTS.md
   .maestro/wedge.yaml
   PLAY_LISTING.md
 ```
+
+---
+
+## Platform horizons (rebuild)
+
+| Horizon | Done when |
+|---------|-----------|
+| **A — Spine** | Hilt; ViewModels; Room SoT; `:feature:active` extractable |
+| **B — Logger** | Exercise×sets; previous set; rest ±15; keep-screen-on; editable weight/reps |
+| **C — Loop** | Today/Coach/Victory polish; Production `/api/mobile/*` |
+| **D — Velocity** | Maestro + unit tests on CI; one feature per PR |
+| **E — Later** | Wearables, social, plate calc, Fuel, iOS — after founder accepts B |
 
 ---
 
@@ -105,8 +121,9 @@ Acceptance: <bullets>. Run ./gradlew :app:assembleDebug.
 ### Quality gates before Done
 
 - `./gradlew :app:assembleDebug` green  
+- `./gradlew :feature:active:testDebugUnitTest` green (CI `android` job)  
 - No WebView for Train/Coach  
-- Offline workout finish; plan still readable (Room seed if `/api/mobile/*` unavailable)  
+- Offline workout finish (Room + outbox); plan still readable (Room seed if `/api/mobile/*` gated)  
 - Adapt banner with seeded miss/swap/revision  
 - TalkBack on primary CTA  
 - Founder ran once on emulator (prefer mid-range AVD on ≤8GB hosts)  

@@ -6,8 +6,12 @@ plugins {
 
 android {
     namespace = "com.missionwinning.core.designsystem"
-    compileSdk = 35
-    buildToolsVersion = "35.0.0"
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
+    buildToolsVersion = "36.1.0"
 
     defaultConfig {
         minSdk = 26

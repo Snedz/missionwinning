@@ -17,3 +17,6 @@ build-log.txt
 /build
 store-assets/*.png
 !store-assets/README.md
+
+.kotlin/
+

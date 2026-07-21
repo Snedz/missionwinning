@@ -1,14 +1,21 @@
 # apps/android — Mission Winning (Compose)
 
-> Play product path. Read [docs/ANDROID_NATIVE.md](../../docs/ANDROID_NATIVE.md) first.
+> Play product path. Read [docs/ANDROID_NATIVE.md](../../docs/ANDROID_NATIVE.md) + [ARCHITECTURE.md](ARCHITECTURE.md) first.
 
 ## Modules
 
 | Module | Role |
 |--------|------|
-| `:app` | Nav host, feature screens (iday/today/active/coach/auth packages) |
-| `:core:designsystem` | Brand colors, Theme, MW buttons |
-| `:core:data` | Room + repositories (offline coach/workouts) |
+| `:app` | Hilt `MwApp`, NavHost, Auth stub |
+| `:feature:active` | Logger craft — ViewModel UDF, exercise×sets |
+| `:feature:today` | Today next-session hero |
+| `:feature:coach` | Week plan + adapt banner |
+| `:feature:iday` | I-Day onboarding |
+| `:feature:victory` | Session locked metrics |
+| `:core:designsystem` | Brand colors, Theme, Mw* components |
+| `:core:model` | Immutable domain (`LoggedSet`, …) |
+| `:core:common` | Shared Result helpers |
+| `:core:data` | Room SoT + sync outbox + `MwRepository` |
 | `:core:network` | Mobile OpenAPI client |
 
 ## Commands
@@ -21,6 +28,7 @@ cd apps/android
 
 # Debug APK
 ./gradlew :app:assembleDebug
+./gradlew :feature:active:testDebugUnitTest
 ./gradlew :app:installDebug   # needs emulator or device (API 34+ system image)
 
 # Emulator (AVD name is yours — Pixel_10_Pro example is fine)
@@ -39,14 +47,13 @@ python3 scripts/wedge-adb-walk.py
 
 **Emulator tip (8GB Mac):** Prefer a mid-range AVD (e.g. `MW_Phone_API36` / Pixel 6) with ~3GB RAM. `Pixel_10_Pro` suggests 16GB host RAM and may exit under memory pressure.
 
-**Network:** Room seed is the offline source of truth. Optional `local.properties` keys `mw.apiBaseUrl` / `mw.privateAccessCookie` (see [local.properties.example](local.properties.example)). Until `/api/mobile/*` is on Production and `PRIVATE_MODE` is off (or cookie set), the client falls back to Room.
+**Network:** Room is SoT; workout finishes enqueue sync outbox. Optional `local.properties` keys `mw.apiBaseUrl` / `mw.privateAccessCookie`. Production `/api/mobile/*` is live behind the private gate (403 without cookie) — set cookie for network coach; else Room seed.
 
 Signing template: [keystore.properties.example](keystore.properties.example) · create keystore: `scripts/create-upload-keystore.sh` · Play copy: [PLAY_LISTING.md](PLAY_LISTING.md)
 
 Screenshots for Play: [store-assets/README.md](store-assets/README.md)
 
-**UX craft (2026-07-20):** Brand fonts (Barlow Condensed / Inter / IBM Plex Mono), navy atmosphere scaffold, Strong-like Active logger, briefing copy on I-Day → Today → Victory → Coach. Still Train + Coach wedge only.
-
+**Platform rebuild:** Hilt + UDF ViewModels + feature modules + Hevy/Strong-class Active logger. See [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## AI lane
 
