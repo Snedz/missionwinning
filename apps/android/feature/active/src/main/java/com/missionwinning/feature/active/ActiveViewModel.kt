@@ -43,6 +43,7 @@ sealed interface ActiveEvent {
     data class ToggleSet(val setId: String) : ActiveEvent
     data class UpdateReps(val setId: String, val reps: Int) : ActiveEvent
     data class UpdateWeight(val setId: String, val weight: Double) : ActiveEvent
+    data object ToggleWeightUnit : ActiveEvent
     data object RestMinus15 : ActiveEvent
     data object RestPlus15 : ActiveEvent
     data object RestSkip : ActiveEvent
@@ -64,7 +65,7 @@ class ActiveViewModel @Inject constructor(
     fun start(sessionId: String, workoutName: String, fallbackSets: Int) {
         startedAt = System.currentTimeMillis()
         viewModelScope.launch {
-            val unit = repository.weightUnit()
+            val unit = ActiveSessionLogic.normalizeUnit(repository.weightUnit())
             val plan = repository.ensureCoachPlan(preferNetwork = false)
             val session = plan.plan.sessions.find { it.id == sessionId }
             val exercises = buildExercises(
@@ -86,12 +87,37 @@ class ActiveViewModel @Inject constructor(
             is ActiveEvent.ToggleSet -> toggleSet(event.setId)
             is ActiveEvent.UpdateReps -> updateSet(event.setId) { it.copy(reps = event.reps.coerceIn(1, 99)) }
             is ActiveEvent.UpdateWeight -> updateSet(event.setId) { it.copy(weight = event.weight.coerceAtLeast(0.0)) }
+            ActiveEvent.ToggleWeightUnit -> toggleWeightUnit()
             ActiveEvent.RestMinus15 -> adjustRest(-ActiveSessionLogic.REST_STEP)
             ActiveEvent.RestPlus15 -> adjustRest(ActiveSessionLogic.REST_STEP)
             ActiveEvent.RestSkip -> skipRest()
             ActiveEvent.Finish -> finish()
             ActiveEvent.ClearFinished -> _state.update { it.copy(finished = null) }
         }
+    }
+
+    private fun toggleWeightUnit() {
+        val st = _state.value
+        val from = ActiveSessionLogic.normalizeUnit(st.weightUnit)
+        val to = if (from == "kg") "lb" else "kg"
+        _state.update { cur ->
+            cur.copy(
+                weightUnit = to,
+                exercises = cur.exercises.map { ex ->
+                    ex.copy(
+                        sets = ex.sets.map { s ->
+                            s.copy(
+                                weight = ActiveSessionLogic.convertWeight(s.weight, from, to),
+                                previousWeight = s.previousWeight?.let {
+                                    ActiveSessionLogic.convertWeight(it, from, to)
+                                },
+                            )
+                        },
+                    )
+                },
+            )
+        }
+        viewModelScope.launch { repository.setWeightUnit(to) }
     }
 
     private fun toggleSet(setId: String) {

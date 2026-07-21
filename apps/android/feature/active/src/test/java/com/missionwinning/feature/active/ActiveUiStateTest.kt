@@ -97,4 +97,16 @@ class ActiveUiStateTest {
         assertEquals(30, ActiveSessionLogic.durationSeconds(now - 5_000L, now))
         assertEquals(120, ActiveSessionLogic.durationSeconds(now - 120_000L, now))
     }
+
+    @Test
+    fun sessionLogic_weightUnitConvertAndStep() {
+        assertEquals("lb", ActiveSessionLogic.normalizeUnit("lbs"))
+        assertEquals("kg", ActiveSessionLogic.normalizeUnit("KG"))
+        assertEquals(2.5, ActiveSessionLogic.weightStep("kg"), 0.0)
+        assertEquals(5.0, ActiveSessionLogic.weightStep("lb"), 0.0)
+        val lb = ActiveSessionLogic.convertWeight(100.0, "kg", "lb")
+        assertTrue(lb > 220.0 && lb < 221.0)
+        val kg = ActiveSessionLogic.convertWeight(lb, "lb", "kg")
+        assertEquals(100.0, kg, 0.01)
+    }
 }

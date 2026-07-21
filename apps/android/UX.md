@@ -27,6 +27,13 @@
 
 I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 
+## Prefs (on device)
+
+| Key | Values |
+|-----|--------|
+| Weight unit | `kg` / `lb` — Today Units card or Active toggle |
+| Equipment | set in I-Day step 2 |
+
 ## Verify
 
 ```bash

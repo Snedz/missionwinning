@@ -1,5 +1,9 @@
 package com.missionwinning.app.nav
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -70,7 +74,28 @@ fun MwNavHost() {
                 .weight(1f)
                 .fillMaxSize(),
         ) {
-            NavHost(navController = nav, startDestination = start) {
+            NavHost(
+                navController = nav,
+                startDestination = start,
+                enterTransition = {
+                    fadeIn(tween(280)) + slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start,
+                        tween(280),
+                    )
+                },
+                exitTransition = {
+                    fadeOut(tween(220))
+                },
+                popEnterTransition = {
+                    fadeIn(tween(280)) + slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End,
+                        tween(280),
+                    )
+                },
+                popExitTransition = {
+                    fadeOut(tween(220))
+                },
+            ) {
                 composable(Routes.IDAY) {
                     IdayScreen(
                         onFinished = {
