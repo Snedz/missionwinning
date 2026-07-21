@@ -49,6 +49,7 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | T4 | Units KG/LB chips persist | |
 | T5 | Equipment chip reseeds plan (name/moves change) | |
 | T6 | Recent list updates after a finished workout | |
+| T6b | Tap Recent opens history detail with sets | |
 | T7 | Offline / online pill matches network | |
 | T8 | Streak / this-week metrics look sane | |
 

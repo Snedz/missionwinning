@@ -15,7 +15,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         SetLogEntity::class,
         SyncOutboxEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = false,
 )
 abstract class MwDatabase : RoomDatabase() {
@@ -62,6 +62,14 @@ abstract class MwDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "ALTER TABLE set_logs ADD COLUMN workoutId TEXT NOT NULL DEFAULT ''",
+                )
+            }
+        }
+
         fun get(context: Context): MwDatabase =
             instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
@@ -69,7 +77,7 @@ abstract class MwDatabase : RoomDatabase() {
                     MwDatabase::class.java,
                     "mw.db",
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                     .build()
                     .also { instance = it }
             }

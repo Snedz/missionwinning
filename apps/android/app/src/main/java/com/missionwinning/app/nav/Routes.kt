@@ -6,8 +6,11 @@ object Routes {
     const val TODAY = "today"
     const val COACH = "coach"
     const val AUTH = "auth"
+    const val HISTORY = "history/{workoutId}"
     const val ACTIVE = "active/{sessionId}/{name}/{sets}"
     const val VICTORY = "victory/{name}/{sets}/{duration}/{workouts}/{volume}/{unit}"
+
+    fun history(workoutId: String) = "history/${workoutId.encode()}"
 
     fun active(sessionId: String, name: String, sets: Int) =
         "active/${sessionId.encode()}/${name.encode()}/$sets"

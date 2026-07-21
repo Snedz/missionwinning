@@ -53,6 +53,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Streak days + network pill; Active live volume of completed sets
 - Editing weight/reps/**Use last** clears rest timer; Coach empty plan CTA reseeds
 - Coach **week progress** bar; Lab tools only in **debug** builds
+- Tap **Recent** log → history detail (sets by exercise; Room `workoutId` v4)
 
 ## Verify
 

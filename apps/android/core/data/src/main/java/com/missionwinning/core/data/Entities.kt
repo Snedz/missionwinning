@@ -32,6 +32,8 @@ data class SetLogEntity(
     val sessionId: String?,
     /** Unit the weight was logged in (`kg` / `lb`). Used when converting previous performance. */
     val weightUnit: String = "kg",
+    /** Parent [WorkoutLogEntity.id] for history detail (Room v4). */
+    val workoutId: String = "",
 )
 
 @Entity(tableName = "sync_outbox")
