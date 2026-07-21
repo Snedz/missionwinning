@@ -80,6 +80,16 @@ class ActiveUiStateTest {
     }
 
     @Test
+    fun sessionLogic_normalizeDefaultRest() {
+        assertEquals(45, ActiveSessionLogic.normalizeDefaultRest(30))
+        assertEquals(60, ActiveSessionLogic.normalizeDefaultRest(60))
+        assertEquals(90, ActiveSessionLogic.normalizeDefaultRest(80))
+        assertEquals(120, ActiveSessionLogic.normalizeDefaultRest(200))
+        assertEquals(60, ActiveSessionLogic.restAfterComplete(0, defaultRest = 60))
+        assertEquals(90, ActiveSessionLogic.restAfterComplete(0, defaultRest = 90))
+    }
+
+    @Test
     fun sessionLogic_currentExerciseIndex() {
         val exercises = listOf(
             ActiveExercise(

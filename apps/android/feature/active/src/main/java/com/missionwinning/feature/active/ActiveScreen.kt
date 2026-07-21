@@ -175,6 +175,29 @@ fun ActiveScreen(
                     style = MwTypography.labelMedium,
                     color = MwColors.TextMuted,
                 )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        "Rest",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                    listOf(45, 60, 90, 120).forEach { sec ->
+                        MwChip(
+                            text = "${sec}s",
+                            tone = if (state.defaultRestSeconds == sec) {
+                                MwChipTone.Brass
+                            } else {
+                                MwChipTone.Neutral
+                            },
+                            contentDescription = "Default rest $sec seconds",
+                            onClick = { onEvent(ActiveEvent.SetDefaultRest(sec)) },
+                        )
+                    }
+                }
 
                 if (allDone) {
                     MwCard(elevated = true, glow = true) {
@@ -250,8 +273,15 @@ fun ActiveScreen(
                     }
                 }
 
-                state.error?.let {
-                    Text(it, style = MwTypography.bodyMedium, color = MwColors.Danger)
+                state.error?.let { err ->
+                    MwCard(elevated = true) {
+                        Text(err, style = MwTypography.bodyMedium, color = MwColors.Danger)
+                        MwGhostButton(
+                            text = "Dismiss",
+                            contentDescription = "Dismiss error",
+                            onClick = { onEvent(ActiveEvent.ClearError) },
+                        )
+                    }
                 }
 
                 Spacer(Modifier.height(8.dp))

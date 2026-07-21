@@ -25,6 +25,8 @@ data class ActiveUiState(
     val restSeconds: Int = 0,
     /** Anchor for rest progress bar (does not tick down). */
     val restTotalSeconds: Int = 0,
+    /** Preferred rest length after complete set (user pref). */
+    val defaultRestSeconds: Int = ActiveSessionLogic.DEFAULT_REST_SECONDS,
     val weightUnit: String = "kg",
     val finishing: Boolean = false,
     val finished: FinishedPayload? = null,
@@ -53,8 +55,10 @@ sealed interface ActiveEvent {
     data object RestMinus15 : ActiveEvent
     data object RestPlus15 : ActiveEvent
     data object RestSkip : ActiveEvent
+    data class SetDefaultRest(val seconds: Int) : ActiveEvent
     data object Finish : ActiveEvent
     data object ClearFinished : ActiveEvent
+    data object ClearError : ActiveEvent
 }
 
 @HiltViewModel
@@ -72,6 +76,7 @@ class ActiveViewModel @Inject constructor(
         startedAt = System.currentTimeMillis()
         viewModelScope.launch {
             val unit = ActiveSessionLogic.normalizeUnit(repository.weightUnit())
+            val defaultRest = ActiveSessionLogic.normalizeDefaultRest(repository.defaultRestSeconds())
             val plan = repository.ensureCoachPlan(preferNetwork = false)
             val session = plan.plan.sessions.find { it.id == sessionId }
             val exercises = buildExercises(
@@ -85,6 +90,7 @@ class ActiveViewModel @Inject constructor(
                 sessionId = sessionId,
                 exercises = exercises,
                 weightUnit = unit,
+                defaultRestSeconds = defaultRest,
             )
         }
     }
@@ -99,9 +105,17 @@ class ActiveViewModel @Inject constructor(
             ActiveEvent.RestMinus15 -> adjustRest(-ActiveSessionLogic.REST_STEP)
             ActiveEvent.RestPlus15 -> adjustRest(ActiveSessionLogic.REST_STEP)
             ActiveEvent.RestSkip -> skipRest()
+            is ActiveEvent.SetDefaultRest -> setDefaultRest(event.seconds)
             ActiveEvent.Finish -> finish()
             ActiveEvent.ClearFinished -> _state.update { it.copy(finished = null) }
+            ActiveEvent.ClearError -> _state.update { it.copy(error = null) }
         }
+    }
+
+    private fun setDefaultRest(seconds: Int) {
+        val normalized = ActiveSessionLogic.normalizeDefaultRest(seconds)
+        _state.update { it.copy(defaultRestSeconds = normalized) }
+        viewModelScope.launch { repository.setDefaultRestSeconds(normalized) }
     }
 
     private fun applyPrevious(setId: String) {
@@ -157,6 +171,7 @@ class ActiveViewModel @Inject constructor(
             startRest(
                 ActiveSessionLogic.restAfterComplete(
                     currentRest = snap.restSeconds,
+                    defaultRest = snap.defaultRestSeconds,
                     allSetsDone = allDone,
                 ),
             )

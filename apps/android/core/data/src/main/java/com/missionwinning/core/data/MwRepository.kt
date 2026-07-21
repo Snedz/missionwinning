@@ -27,6 +27,16 @@ class MwRepository(
         dao.setPref(PrefEntity(KEY_WEIGHT_UNIT, unit))
     }
 
+    /** Default rest after completing a set (seconds). Allowed: 45, 60, 90, 120. */
+    suspend fun defaultRestSeconds(): Int {
+        val raw = dao.getPref(KEY_DEFAULT_REST)?.toIntOrNull() ?: 60
+        return normalizeRestSeconds(raw)
+    }
+
+    suspend fun setDefaultRestSeconds(seconds: Int) {
+        dao.setPref(PrefEntity(KEY_DEFAULT_REST, normalizeRestSeconds(seconds).toString()))
+    }
+
     suspend fun equipmentProfile(): String =
         LocalCoachSeed.normalizeEquipment(dao.getPref(KEY_EQUIPMENT) ?: "bodyweight")
 
@@ -215,7 +225,15 @@ class MwRepository(
         const val KEY_IDAY = "iday_done"
         const val KEY_WEIGHT_UNIT = "weight_unit"
         const val KEY_EQUIPMENT = "equipment_profile"
+        const val KEY_DEFAULT_REST = "default_rest_seconds"
         const val KIND_WORKOUT = "workout"
         const val DEFAULT_API_BASE = "https://www.missionwinning.com"
+
+        fun normalizeRestSeconds(seconds: Int): Int = when {
+            seconds <= 45 -> 45
+            seconds <= 60 -> 60
+            seconds <= 90 -> 90
+            else -> 120
+        }
     }
 }

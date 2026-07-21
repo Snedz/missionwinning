@@ -54,7 +54,14 @@ object ActiveSessionLogic {
         allSetsDone: Boolean = false,
     ): Int {
         if (allSetsDone) return 0
-        return if (currentRest > 0) currentRest else defaultRest
+        return if (currentRest > 0) currentRest else defaultRest.coerceAtLeast(0)
+    }
+
+    fun normalizeDefaultRest(seconds: Int): Int = when {
+        seconds <= 45 -> 45
+        seconds <= 60 -> 60
+        seconds <= 90 -> 90
+        else -> 120
     }
 
     /**

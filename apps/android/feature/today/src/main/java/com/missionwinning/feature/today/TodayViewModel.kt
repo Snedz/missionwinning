@@ -40,9 +40,14 @@ data class TodayUiState(
     val syncMessage: String? = null,
     val reseeding: Boolean = false,
 ) {
+    /** Prefer today's planned/swapped session, else first open session of the week. */
     val next: PlanSessionDto?
-        get() = plan?.plan?.sessions?.firstOrNull {
-            it.status == "planned" || it.status == "swapped"
+        get() {
+            val sessions = plan?.plan?.sessions.orEmpty()
+            val todayOffset = ((java.time.LocalDate.now().dayOfWeek.value + 6) % 7)
+            val open = { s: PlanSessionDto -> s.status == "planned" || s.status == "swapped" }
+            return sessions.firstOrNull { open(it) && it.dayOffset == todayOffset }
+                ?: sessions.firstOrNull(open)
         }
 }
 
