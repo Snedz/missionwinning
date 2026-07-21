@@ -89,6 +89,11 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | L25 | Save routine → appears after sign-in on second device (after migration) | |
 | L26 | Wear: with phone Active session open, watch shows set; Complete updates phone | |
 | L27 | Wear: rest countdown + Skip rest; haptic at rest end | |
+| L28 | Current set: note field saves with finished workout | |
+| L29 | Add exercise: create custom name offline; appears in session | |
+| L30 | Section ↑/↓ reorders exercises; Superset chip cycles A–D | |
+| L31 | Plate calc opens for weighted set; shows bar + per-side plates | |
+| L32 | Per-exercise rest chips override session default after complete | |
 
 ---
 

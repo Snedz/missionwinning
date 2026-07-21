@@ -244,6 +244,8 @@ class SyncEngine(
                 workoutId = clientId,
                 rpe = s.rpe,
                 setKind = s.setKind.ifBlank { "normal" },
+                note = s.note,
+                supersetGroup = s.supersetGroup,
             )
         }
         db.withTransaction {
@@ -279,6 +281,8 @@ class SyncEngine(
                     weightUnit = s.weightUnit,
                     rpe = s.rpe,
                     setKind = s.setKind,
+                    note = s.note,
+                    supersetGroup = s.supersetGroup,
                 )
             },
         )

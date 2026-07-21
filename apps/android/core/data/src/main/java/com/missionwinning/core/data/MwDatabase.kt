@@ -15,8 +15,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         SetLogEntity::class,
         SyncOutboxEntity::class,
         RoutineEntity::class,
+        CustomExerciseEntity::class,
     ],
-    version = 9,
+    version = 10,
     exportSchema = true,
 )
 abstract class MwDatabase : RoomDatabase() {
@@ -182,6 +183,29 @@ abstract class MwDatabase : RoomDatabase() {
             }
         }
 
+        /** Set notes + superset group + custom exercises (Phase 10 logger craft). */
+        private val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "ALTER TABLE set_logs ADD COLUMN note TEXT NOT NULL DEFAULT ''",
+                )
+                db.execSQL(
+                    "ALTER TABLE set_logs ADD COLUMN supersetGroup TEXT NOT NULL DEFAULT ''",
+                )
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS custom_exercises (
+                        id TEXT NOT NULL PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        createdAt TEXT NOT NULL,
+                        equipment TEXT NOT NULL,
+                        muscleGroups TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+            }
+        }
+
         fun get(context: Context): MwDatabase =
             instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
@@ -198,6 +222,7 @@ abstract class MwDatabase : RoomDatabase() {
                         MIGRATION_6_7,
                         MIGRATION_7_8,
                         MIGRATION_8_9,
+                        MIGRATION_9_10,
                     )
                     .build()
                     .also { instance = it }

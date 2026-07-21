@@ -61,6 +61,11 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Rest end **Vibrate** / **Beep** toggles; completed set rows show RPE when set
 - **Exercise library** (catalog search + BW/DB/Gym filters); Active uses catalog display names
 - **Progress & PRs** — e1RM personal records + last-14 session volume bars
+- **Notes** on current set (optional, synced with workout)
+- **Custom exercises** offline via Add exercise sheet
+- **Reorder** exercises with ↑/↓; **Superset** A–D grouping
+- **Plate calculator** for barbell load (per side)
+- **Per-exercise rest** override (45/60/90/120 or session default)
 
 ## Verify
 

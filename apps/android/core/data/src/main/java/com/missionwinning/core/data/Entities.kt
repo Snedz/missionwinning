@@ -44,6 +44,21 @@ data class SetLogEntity(
     val rpe: Int? = null,
     /** normal | warmup | failure | drop (Room v7). */
     val setKind: String = "normal",
+    /** Optional set note (Room v10). */
+    val note: String = "",
+    /** Superset group letter A–D or empty (Room v10). */
+    val supersetGroup: String = "",
+)
+
+/** User-defined exercises (offline + free forever). Room v10. */
+@Entity(tableName = "custom_exercises")
+data class CustomExerciseEntity(
+    @PrimaryKey val id: String,
+    val name: String,
+    val createdAt: String,
+    /** bodyweight | dumbbells | full-gym | any */
+    val equipment: String = "any",
+    val muscleGroups: String = "",
 )
 
 @Entity(tableName = "sync_outbox")

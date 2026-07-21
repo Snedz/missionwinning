@@ -59,12 +59,17 @@ sealed interface ActiveEvent {
     data class UpdateReps(val setId: String, val reps: Int) : ActiveEvent
     data class UpdateWeight(val setId: String, val weight: Double) : ActiveEvent
     data class UpdateRpe(val setId: String, val rpe: Int?) : ActiveEvent
+    data class UpdateNote(val setId: String, val note: String) : ActiveEvent
     data class CycleSetKind(val setId: String) : ActiveEvent
     data class ApplyPrevious(val setId: String) : ActiveEvent
     data class AddSet(val exerciseId: String) : ActiveEvent
     data class AddExercise(val exerciseId: String, val exerciseName: String) : ActiveEvent
+    data class CreateCustomExercise(val name: String) : ActiveEvent
     data class RemoveSet(val setId: String) : ActiveEvent
     data class RemoveExercise(val exerciseId: String) : ActiveEvent
+    data class MoveExercise(val exerciseId: String, val delta: Int) : ActiveEvent
+    data class CycleSuperset(val exerciseId: String) : ActiveEvent
+    data class SetExerciseRest(val exerciseId: String, val seconds: Int?) : ActiveEvent
     data object ToggleWeightUnit : ActiveEvent
     data object RestMinus15 : ActiveEvent
     data object RestPlus15 : ActiveEvent
@@ -103,6 +108,9 @@ class ActiveViewModel @Inject constructor(
             _state.collect { publishHub(it) }
         }
     }
+
+    suspend fun searchExercises(query: String, equipment: String? = null) =
+        repository.searchExercises(query, equipment)
 
     fun start(sessionId: String, workoutName: String, fallbackSets: Int) {
         startedAt = System.currentTimeMillis()
@@ -186,6 +194,11 @@ class ActiveViewModel @Inject constructor(
                     it.copy(rpe = event.rpe?.coerceIn(6, 10))
                 }
             }
+            is ActiveEvent.UpdateNote -> {
+                updateSet(event.setId) {
+                    it.copy(note = event.note.take(200))
+                }
+            }
             is ActiveEvent.CycleSetKind -> {
                 clearRestIfActive()
                 updateSet(event.setId) { it.copy(kind = SetKind.cycle(it.kind)) }
@@ -202,6 +215,10 @@ class ActiveViewModel @Inject constructor(
                 clearRestIfActive()
                 addExercise(event.exerciseId, event.exerciseName)
             }
+            is ActiveEvent.CreateCustomExercise -> {
+                clearRestIfActive()
+                createCustomAndAdd(event.name)
+            }
             is ActiveEvent.RemoveSet -> {
                 clearRestIfActive()
                 _state.update { st ->
@@ -215,6 +232,44 @@ class ActiveViewModel @Inject constructor(
                 _state.update { st ->
                     st.copy(
                         exercises = ActiveSessionLogic.removeExercise(st.exercises, event.exerciseId),
+                    )
+                }
+            }
+            is ActiveEvent.MoveExercise -> {
+                clearRestIfActive()
+                _state.update { st ->
+                    st.copy(
+                        exercises = ActiveSessionLogic.moveExercise(
+                            st.exercises,
+                            event.exerciseId,
+                            event.delta,
+                        ),
+                    )
+                }
+            }
+            is ActiveEvent.CycleSuperset -> {
+                _state.update { st ->
+                    st.copy(
+                        exercises = st.exercises.map { ex ->
+                            if (ex.exerciseId != event.exerciseId) ex
+                            else ex.copy(
+                                supersetGroup = ActiveSessionLogic.nextSupersetGroup(ex.supersetGroup),
+                            )
+                        },
+                    )
+                }
+            }
+            is ActiveEvent.SetExerciseRest -> {
+                _state.update { st ->
+                    st.copy(
+                        exercises = st.exercises.map { ex ->
+                            if (ex.exerciseId != event.exerciseId) ex
+                            else ex.copy(
+                                defaultRestSeconds = event.seconds?.let {
+                                    ActiveSessionLogic.normalizeDefaultRest(it)
+                                },
+                            )
+                        },
                     )
                 }
             }
@@ -261,7 +316,9 @@ class ActiveViewModel @Inject constructor(
             val seedReps = previousByIndex[0]?.first
             val newIds = List(setCount) { UUID.randomUUID().toString() }
             val name = exerciseName.ifBlank {
-                ExerciseCatalog.displayName(exerciseId).ifBlank { exerciseId }
+                repository.exerciseDisplayName(exerciseId).ifBlank {
+                    ExerciseCatalog.displayName(exerciseId).ifBlank { exerciseId }
+                }
             }
             _state.update { st ->
                 st.copy(
@@ -353,13 +410,27 @@ class ActiveViewModel @Inject constructor(
         if (becomingDone) {
             val snap = _state.value
             val allDone = ActiveSessionLogic.allDone(snap.exercises)
+            val exRest = snap.exercises
+                .find { it.exerciseId == before.exerciseId }
+                ?.defaultRestSeconds
             startRest(
                 ActiveSessionLogic.restAfterComplete(
                     currentRest = snap.restSeconds,
                     defaultRest = snap.defaultRestSeconds,
                     allSetsDone = allDone,
+                    exerciseRest = exRest,
                 ),
             )
+        }
+    }
+
+    private fun createCustomAndAdd(name: String) {
+        viewModelScope.launch {
+            val created = repository.createCustomExercise(name) ?: run {
+                _state.update { it.copy(error = "Name required for custom exercise") }
+                return@launch
+            }
+            addExercise(created.id, created.name)
         }
     }
 
@@ -474,6 +545,7 @@ class ActiveViewModel @Inject constructor(
                 val snap = _state.value
                 val completed = ActiveSessionLogic.completedSetsForPersist(snap.exercises)
                 val now = java.time.Instant.now().toString()
+                val groupByEx = snap.exercises.associate { it.exerciseId to it.supersetGroup }
                 val entities = completed.map { s ->
                     SetLogEntity(
                         id = UUID.randomUUID().toString(),
@@ -487,6 +559,8 @@ class ActiveViewModel @Inject constructor(
                         weightUnit = ActiveSessionLogic.normalizeUnit(snap.weightUnit),
                         rpe = s.rpe?.coerceIn(6, 10),
                         setKind = s.kind.code,
+                        note = s.note,
+                        supersetGroup = groupByEx[s.exerciseId].orEmpty(),
                     )
                 }
                 val duration = ActiveSessionLogic.durationSeconds(startedAt)

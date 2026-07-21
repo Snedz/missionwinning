@@ -38,6 +38,12 @@
 - Pure `SyncMergeRules` + unit tests; Account **Cloud sync** outbox status + Retry
 - Debug designsystem gallery (Account → About); R8 release verified; Baseline Profile via Macrobenchmark later
 
+## Logger elite craft (Phase 10)
+
+- Set **notes**, **custom exercises** (Room), **reorder** exercises, **superset** A–D, per-exercise rest
+- **Plate calculator** (pure domain, free) on current set
+- Room **v10** (`note`, `supersetGroup`, `custom_exercises`); sync payload fields on sets
+
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)

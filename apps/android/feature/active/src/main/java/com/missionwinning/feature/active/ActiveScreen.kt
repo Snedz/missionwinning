@@ -54,6 +54,7 @@ import com.missionwinning.core.designsystem.MwHeroTitle
 import com.missionwinning.core.designsystem.MwPrimaryButton
 import com.missionwinning.core.designsystem.MwRestDock
 import com.missionwinning.core.designsystem.MwScreenScaffold
+import com.missionwinning.core.designsystem.MwSecondaryButton
 import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSetRow
 import com.missionwinning.core.designsystem.MwSpace
@@ -102,6 +103,7 @@ fun ActiveRoute(
         state = state,
         onEvent = viewModel::onEvent,
         onCancel = onCancel,
+        searchExercises = { q, equip -> viewModel.searchExercises(q, equip) },
     )
 }
 
@@ -151,7 +153,13 @@ private sealed class ActiveListRow {
     data object AllDone : ActiveListRow()
     data object Empty : ActiveListRow()
     data object Current : ActiveListRow()
-    data class Section(val exerciseId: String, val name: String) : ActiveListRow()
+    data class Section(
+        val exerciseId: String,
+        val name: String,
+        val index: Int,
+        val total: Int,
+        val supersetGroup: String,
+    ) : ActiveListRow()
     data class SetItem(val set: LoggedSet) : ActiveListRow()
     data class Error(val message: String) : ActiveListRow()
     data object FooterPad : ActiveListRow()
@@ -162,6 +170,9 @@ fun ActiveScreen(
     state: ActiveUiState,
     onEvent: (ActiveEvent) -> Unit,
     onCancel: () -> Unit,
+    searchExercises: suspend (String, String?) -> List<ExerciseDef> = { q, e ->
+        ExerciseCatalog.search(q, e)
+    },
 ) {
     val progress = if (state.totalSets == 0) 0f else state.doneCount.toFloat() / state.totalSets
     val currentId = ActiveSessionLogic.currentSetId(state.exercises)
@@ -171,6 +182,7 @@ fun ActiveScreen(
     var confirmDiscard by remember { mutableStateOf(false) }
     var confirmPartialFinish by remember { mutableStateOf(false) }
     var showAddExercise by remember { mutableStateOf(false) }
+    var showPlates by remember { mutableStateOf(false) }
     var pendingRemoveExerciseId by remember { mutableStateOf<String?>(null) }
     var pendingRemoveExerciseName by remember { mutableStateOf("") }
     val view = LocalView.current
@@ -183,8 +195,22 @@ fun ActiveScreen(
             if (allDone) add(ActiveListRow.AllDone)
             if (state.exercises.isEmpty()) add(ActiveListRow.Empty)
             if (currentSet != null) add(ActiveListRow.Current)
-            state.exercises.forEach { exercise ->
-                add(ActiveListRow.Section(exercise.exerciseId, exercise.name))
+            val total = state.exercises.size
+            state.exercises.forEachIndexed { idx, exercise ->
+                val label = if (exercise.supersetGroup.isNotBlank()) {
+                    "${exercise.supersetGroup}${idx + 1} · ${exercise.name}"
+                } else {
+                    exercise.name
+                }
+                add(
+                    ActiveListRow.Section(
+                        exerciseId = exercise.exerciseId,
+                        name = label,
+                        index = idx,
+                        total = total,
+                        supersetGroup = exercise.supersetGroup,
+                    ),
+                )
                 exercise.sets.forEach { set ->
                     if (set.id != currentId) {
                         add(ActiveListRow.SetItem(set))
@@ -301,6 +327,7 @@ fun ActiveScreen(
                                 val exTotal = ActiveSessionLogic.exerciseCount(state.exercises)
                                 val nextEx = ActiveSessionLogic.nextExerciseName(state.exercises)
                                 val setInEx = ActiveSessionLogic.currentSetInExercise(state.exercises)
+                                val ex = state.exercises.find { it.exerciseId == set.exerciseId }
                                 CurrentSetCard(
                                     set = set,
                                     weightUnit = state.weightUnit,
@@ -325,6 +352,9 @@ fun ActiveScreen(
                                     onRpe = { rpe ->
                                         onEvent(ActiveEvent.UpdateRpe(set.id, rpe))
                                     },
+                                    onNote = { note ->
+                                        onEvent(ActiveEvent.UpdateNote(set.id, note))
+                                    },
                                     onCycleKind = {
                                         onEvent(ActiveEvent.CycleSetKind(set.id))
                                     },
@@ -337,24 +367,69 @@ fun ActiveScreen(
                                     onApplyPrevious = {
                                         onEvent(ActiveEvent.ApplyPrevious(set.id))
                                     },
+                                    onShowPlates = { showPlates = true },
+                                    exerciseRestSeconds = ex?.defaultRestSeconds,
+                                    onExerciseRest = { sec ->
+                                        onEvent(ActiveEvent.SetExerciseRest(set.exerciseId, sec))
+                                    },
                                 )
                             }
                             is ActiveListRow.Section -> {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    MwSectionLabel(row.name)
-                                    MwGhostButton(
-                                        text = "Remove",
-                                        contentDescription = "Remove ${row.name} from session",
-                                        onClick = {
-                                            pendingRemoveExerciseId = row.exerciseId
-                                            pendingRemoveExerciseName = row.name
-                                        },
-                                        modifier = Modifier.fillMaxWidth(0.32f),
-                                    )
+                                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        MwSectionLabel(row.name)
+                                        MwGhostButton(
+                                            text = "Remove",
+                                            contentDescription = "Remove ${row.name} from session",
+                                            onClick = {
+                                                pendingRemoveExerciseId = row.exerciseId
+                                                pendingRemoveExerciseName = row.name
+                                            },
+                                            modifier = Modifier.fillMaxWidth(0.32f),
+                                        )
+                                    }
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        MwChip(
+                                            text = if (row.supersetGroup.isBlank()) {
+                                                "Superset"
+                                            } else {
+                                                "SS ${row.supersetGroup}"
+                                            },
+                                            tone = if (row.supersetGroup.isBlank()) {
+                                                MwChipTone.Neutral
+                                            } else {
+                                                MwChipTone.Brass
+                                            },
+                                            contentDescription = "Cycle superset group",
+                                            onClick = {
+                                                onEvent(ActiveEvent.CycleSuperset(row.exerciseId))
+                                            },
+                                        )
+                                        if (row.index > 0) {
+                                            MwChip(
+                                                text = "↑",
+                                                tone = MwChipTone.Neutral,
+                                                contentDescription = "Move exercise up",
+                                                onClick = {
+                                                    onEvent(ActiveEvent.MoveExercise(row.exerciseId, -1))
+                                                },
+                                            )
+                                        }
+                                        if (row.index < row.total - 1) {
+                                            MwChip(
+                                                text = "↓",
+                                                tone = MwChipTone.Neutral,
+                                                contentDescription = "Move exercise down",
+                                                onClick = {
+                                                    onEvent(ActiveEvent.MoveExercise(row.exerciseId, 1))
+                                                },
+                                            )
+                                        }
+                                    }
                                 }
                             }
                             is ActiveListRow.SetItem -> {
@@ -376,6 +451,10 @@ fun ActiveScreen(
                                     set.rpe?.let {
                                         if (isNotEmpty()) append(" · ")
                                         append("RPE $it")
+                                    }
+                                    if (set.note.isNotBlank()) {
+                                        if (isNotEmpty()) append(" · ")
+                                        append("📝")
                                     }
                                 }.ifBlank { null }
                                 MwSetRow(
@@ -448,11 +527,24 @@ fun ActiveScreen(
         if (showAddExercise) {
             AddExerciseSheet(
                 existingIds = state.exercises.map { it.exerciseId }.toSet(),
+                search = searchExercises,
                 onPick = { def ->
                     onEvent(ActiveEvent.AddExercise(def.id, def.name))
                     showAddExercise = false
                 },
+                onCreateCustom = { name ->
+                    onEvent(ActiveEvent.CreateCustomExercise(name))
+                    showAddExercise = false
+                },
                 onDismiss = { showAddExercise = false },
+            )
+        }
+
+        if (showPlates && currentSet != null) {
+            PlateSheet(
+                weight = currentSet.weight,
+                unit = state.weightUnit,
+                onDismiss = { showPlates = false },
             )
         }
 
@@ -654,10 +746,14 @@ private fun CurrentSetCard(
     onRepsDelta: (Int) -> Unit,
     onWeightDelta: (Int) -> Unit,
     onRpe: (Int?) -> Unit,
+    onNote: (String) -> Unit,
     onCycleKind: () -> Unit,
     onAddSet: () -> Unit,
     onRemoveSet: () -> Unit,
     onApplyPrevious: () -> Unit,
+    onShowPlates: () -> Unit,
+    exerciseRestSeconds: Int? = null,
+    onExerciseRest: (Int?) -> Unit = {},
     exerciseIndex: Int? = null,
     exerciseTotal: Int = 0,
     setInExercise: Int? = null,
@@ -750,6 +846,57 @@ private fun CurrentSetCard(
                 modifier = Modifier.weight(1f),
             )
         }
+        if (set.weight > 0) {
+            MwGhostButton(
+                text = "Plate calc",
+                contentDescription = "Show plate loading for this weight",
+                onClick = onShowPlates,
+            )
+        }
+        Text(
+            "Note (optional)",
+            style = MwTypography.labelSmall,
+            color = MwColors.TextMuted,
+        )
+        OutlinedTextField(
+            value = set.note,
+            onValueChange = onNote,
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            placeholder = { Text("Form cue, pause, etc.") },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = MwColors.Text,
+                unfocusedTextColor = MwColors.Text,
+                focusedContainerColor = MwColors.NavyDeep,
+                unfocusedContainerColor = MwColors.NavyDeep,
+                focusedBorderColor = MwColors.Emerald,
+                unfocusedBorderColor = MwColors.Border,
+                cursorColor = MwColors.Emerald,
+                focusedPlaceholderColor = MwColors.TextMuted,
+                unfocusedPlaceholderColor = MwColors.TextMuted,
+            ),
+        )
+        Text(
+            "Rest for this exercise",
+            style = MwTypography.labelSmall,
+            color = MwColors.TextMuted,
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            MwChip(
+                text = "Default",
+                tone = if (exerciseRestSeconds == null) MwChipTone.Brass else MwChipTone.Neutral,
+                contentDescription = "Use session default rest",
+                onClick = { onExerciseRest(null) },
+            )
+            listOf(45, 60, 90, 120).forEach { sec ->
+                MwChip(
+                    text = "${sec}s",
+                    tone = if (exerciseRestSeconds == sec) MwChipTone.Brass else MwChipTone.Neutral,
+                    contentDescription = "Exercise rest $sec seconds",
+                    onClick = { onExerciseRest(sec) },
+                )
+            }
+        }
         Text(
             "Set type",
             style = MwTypography.labelSmall,
@@ -825,15 +972,57 @@ private fun formatElapsed(seconds: Int): String {
 }
 
 @Composable
+private fun PlateSheet(
+    weight: Double,
+    unit: String,
+    onDismiss: () -> Unit,
+) {
+    val result = remember(weight, unit) {
+        com.missionwinning.core.model.PlateCalculator.platesPerSide(weight, unit)
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.72f))
+            .padding(24.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        MwCard(elevated = true) {
+            MwSectionLabel("Plate calculator")
+            Text(
+                ActiveSessionLogic.formatWeightWithUnit(weight, unit),
+                style = MwTypography.headlineMedium,
+                color = MwColors.Text,
+            )
+            Text(
+                result.summary,
+                style = MwTypography.bodyMedium,
+                color = MwColors.TextMuted,
+            )
+            Text(
+                "Plates listed per side · free forever",
+                style = MwTypography.labelMedium,
+                color = MwColors.Brass,
+            )
+            MwPrimaryButton(text = "Done", onClick = onDismiss, contentDescription = "Close plate calculator")
+        }
+    }
+}
+
+@Composable
 private fun AddExerciseSheet(
     existingIds: Set<String>,
+    search: suspend (String, String?) -> List<ExerciseDef>,
     onPick: (ExerciseDef) -> Unit,
+    onCreateCustom: (String) -> Unit,
     onDismiss: () -> Unit,
 ) {
     var query by remember { mutableStateOf("") }
     var equip by remember { mutableStateOf<String?>(null) }
-    val results = remember(query, equip) {
-        ExerciseCatalog.search(query, equipment = equip)
+    var results by remember { mutableStateOf(ExerciseCatalog.search("")) }
+    var customName by remember { mutableStateOf("") }
+    LaunchedEffect(query, equip) {
+        results = search(query, equip)
     }
 
     Box(
@@ -850,7 +1039,7 @@ private fun AddExerciseSheet(
             ) {
                 MwSectionLabel("Add exercise")
                 Text(
-                    "Offline catalog · adds 3 working sets (or more sets if already in this session).",
+                    "Offline catalog + your custom moves · adds 3 working sets.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
@@ -898,6 +1087,31 @@ private fun AddExerciseSheet(
                         onClick = { equip = "full-gym" },
                     )
                 }
+                OutlinedTextField(
+                    value = customName,
+                    onValueChange = { customName = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    label = { Text("Or create custom name") },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = MwColors.Text,
+                        unfocusedTextColor = MwColors.Text,
+                        focusedContainerColor = MwColors.NavyDeep,
+                        unfocusedContainerColor = MwColors.NavyDeep,
+                        focusedBorderColor = MwColors.Emerald,
+                        unfocusedBorderColor = MwColors.Border,
+                        cursorColor = MwColors.Emerald,
+                        focusedLabelColor = MwColors.TextMuted,
+                        unfocusedLabelColor = MwColors.TextMuted,
+                    ),
+                )
+                if (customName.isNotBlank()) {
+                    MwSecondaryButton(
+                        text = "Add “${customName.trim()}”",
+                        onClick = { onCreateCustom(customName.trim()) },
+                        contentDescription = "Create custom exercise and add to session",
+                    )
+                }
                 LazyColumn(
                     modifier = Modifier
                         .weight(1f)
@@ -914,6 +1128,7 @@ private fun AddExerciseSheet(
                             Text(
                                 buildString {
                                     append(def.muscleGroups.joinToString(" · ").ifBlank { def.id })
+                                    if (def.id.startsWith("custom-")) append(" · custom")
                                     if (already) append(" · in session (+sets)")
                                 },
                                 style = MwTypography.bodyMedium,

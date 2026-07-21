@@ -4,6 +4,7 @@ import android.content.Context
 import com.missionwinning.app.BuildConfig
 import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.CoachPlanRepository
+import com.missionwinning.core.data.CustomExerciseRepository
 import com.missionwinning.core.data.MwDatabase
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.PrefsRepository
@@ -117,13 +118,19 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideCustomExerciseRepository(db: MwDatabase): CustomExerciseRepository =
+        CustomExerciseRepository(db)
+
+    @Provides
+    @Singleton
     fun provideRepository(
         prefs: PrefsRepository,
         coach: CoachPlanRepository,
         workouts: WorkoutRepository,
         routines: RoutineRepository,
         sync: SyncCoordinator,
-    ): MwRepository = MwRepository(prefs, coach, workouts, routines, sync)
+        customExercises: CustomExerciseRepository,
+    ): MwRepository = MwRepository(prefs, coach, workouts, routines, sync, customExercises)
 
     @Provides
     @Singleton

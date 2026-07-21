@@ -75,9 +75,30 @@ class ActiveUiStateTest {
     }
 
     @Test
+    fun sessionLogic_moveExercise() {
+        val list = listOf(
+            ActiveExercise("a", "A", listOf(set("1", done = false, exerciseId = "a"))),
+            ActiveExercise("b", "B", listOf(set("2", done = false, exerciseId = "b"))),
+            ActiveExercise("c", "C", listOf(set("3", done = false, exerciseId = "c"))),
+        )
+        val up = ActiveSessionLogic.moveExercise(list, "c", -1)
+        assertEquals(listOf("a", "c", "b"), up.map { it.exerciseId })
+        val down = ActiveSessionLogic.moveExercise(list, "a", 1)
+        assertEquals(listOf("b", "a", "c"), down.map { it.exerciseId })
+    }
+
+    @Test
+    fun sessionLogic_supersetCycle() {
+        assertEquals("A", ActiveSessionLogic.nextSupersetGroup(""))
+        assertEquals("B", ActiveSessionLogic.nextSupersetGroup("A"))
+        assertEquals("", ActiveSessionLogic.nextSupersetGroup("D"))
+    }
+
+    @Test
     fun sessionLogic_restDock_skipsWhenAllDone() {
         assertEquals(0, ActiveSessionLogic.restAfterComplete(45, allSetsDone = true))
         assertEquals(60, ActiveSessionLogic.restAfterComplete(0, defaultRest = 60, allSetsDone = false))
+        assertEquals(90, ActiveSessionLogic.restAfterComplete(0, defaultRest = 60, exerciseRest = 90))
     }
 
     @Test

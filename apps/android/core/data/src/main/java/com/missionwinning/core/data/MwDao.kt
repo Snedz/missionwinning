@@ -202,4 +202,16 @@ interface MwDao {
         revision: Int,
         updatedAt: String,
     )
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertCustomExercise(row: CustomExerciseEntity)
+
+    @Query("SELECT * FROM custom_exercises ORDER BY name ASC")
+    suspend fun allCustomExercises(): List<CustomExerciseEntity>
+
+    @Query("SELECT * FROM custom_exercises WHERE id = :id LIMIT 1")
+    suspend fun customExerciseById(id: String): CustomExerciseEntity?
+
+    @Query("DELETE FROM custom_exercises WHERE id = :id")
+    suspend fun deleteCustomExercise(id: String)
 }
