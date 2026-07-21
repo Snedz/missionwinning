@@ -16,7 +16,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         SyncOutboxEntity::class,
         RoutineEntity::class,
     ],
-    version = 8,
+    version = 9,
     exportSchema = true,
 )
 abstract class MwDatabase : RoomDatabase() {
@@ -146,6 +146,42 @@ abstract class MwDatabase : RoomDatabase() {
             }
         }
 
+        /** Routine cloud sync fields + re-enqueue all local routines. */
+        private val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "ALTER TABLE routines ADD COLUMN syncStatus TEXT NOT NULL DEFAULT 'pending'",
+                )
+                db.execSQL(
+                    "ALTER TABLE routines ADD COLUMN revision INTEGER NOT NULL DEFAULT 1",
+                )
+                db.execSQL(
+                    "ALTER TABLE routines ADD COLUMN updatedAt TEXT NOT NULL DEFAULT ''",
+                )
+                db.execSQL("ALTER TABLE routines ADD COLUMN deletedAt TEXT")
+                db.execSQL(
+                    """
+                    UPDATE routines
+                    SET updatedAt = createdAt
+                    WHERE updatedAt = '' OR updatedAt IS NULL
+                    """.trimIndent(),
+                )
+                db.execSQL(
+                    """
+                    INSERT INTO sync_outbox (id, kind, payloadJson, createdAt, attempts)
+                    SELECT
+                        'r-' || id,
+                        'routine_ref',
+                        id,
+                        createdAt,
+                        0
+                    FROM routines
+                    WHERE deletedAt IS NULL
+                    """.trimIndent(),
+                )
+            }
+        }
+
         fun get(context: Context): MwDatabase =
             instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
@@ -161,6 +197,7 @@ abstract class MwDatabase : RoomDatabase() {
                         MIGRATION_5_6,
                         MIGRATION_6_7,
                         MIGRATION_7_8,
+                        MIGRATION_8_9,
                     )
                     .build()
                     .also { instance = it }

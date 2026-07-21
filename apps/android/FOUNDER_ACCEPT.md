@@ -85,6 +85,8 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | L21 | Rest shows in notification; Skip rest action works | |
 | L22 | Finish/discard clears notification | |
 | L23 | Home widgets: streak + Quick log start empty session | |
+| L24 | Account: Health Connect toggle; finish writes exercise session when on | |
+| L25 | Save routine → appears after sign-in on second device (after migration) | |
 
 ---
 

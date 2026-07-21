@@ -474,6 +474,15 @@ class ActiveViewModel @Inject constructor(
                 if (MwRepository.isCoachSession(snap.sessionId)) {
                     runCatching { repository.markSessionDone(snap.sessionId) }
                 }
+                // Optional Health Connect write (app module implements via reflection-free callback on repo side later)
+                runCatching {
+                    if (repository.healthConnectExportEnabled()) {
+                        HealthConnectExportBridge.write(
+                            title = snap.workoutName,
+                            durationSeconds = duration,
+                        )
+                    }
+                }
                 _state.update {
                     it.copy(
                         finishing = false,

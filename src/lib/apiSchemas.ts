@@ -270,6 +270,29 @@ export const mobileSyncPushBodySchema = z.object({
   workouts: z.array(mobileSyncWorkoutSchema).min(1).max(50),
 });
 
+export const mobileSyncRoutineExerciseSchema = z.object({
+  exerciseId: z.string().min(1).max(120),
+  exerciseName: z.string().max(200).default(''),
+  sets: z.number().int().min(1).max(12),
+  targetReps: z.number().int().min(1).max(99),
+  lastWeight: z.number().min(0).max(1_000_000).default(0),
+});
+
+export const mobileSyncRoutineSchema = z.object({
+  clientId: z.string().uuid(),
+  name: z.string().min(1).max(120),
+  createdAt: z.string().max(40).optional(),
+  sourceWorkoutId: z.string().max(80).nullable().optional(),
+  exercises: z.array(mobileSyncRoutineExerciseSchema).max(48).default([]),
+  revision: z.number().int().min(1).max(1_000_000).default(1),
+  updatedAt: z.string().max(40).optional(),
+  deletedAt: z.string().max(40).nullable().optional(),
+});
+
+export const mobileSyncRoutinePushBodySchema = z.object({
+  routines: z.array(mobileSyncRoutineSchema).min(1).max(50),
+});
+
 export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
   | { ok: true; data: T }
   | { ok: false; error: string } {

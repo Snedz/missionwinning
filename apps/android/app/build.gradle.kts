@@ -28,8 +28,8 @@ android {
         applicationId = "com.missionwinning.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 31
-        versionName = "1.4.0"
+        versionCode = 32
+        versionName = "1.5.0"
         // Override via apps/android/local.properties (gitignored):
         //   mw.apiBaseUrl=http://10.0.2.2:3000
         //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
@@ -135,6 +135,7 @@ dependencies {
     implementation(libs.sentry.android)
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)
+    implementation(libs.androidx.health.connect)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     testImplementation(libs.junit)

@@ -38,6 +38,14 @@ class MwRepository(
         if (enabled) ensureInstallId()
     }
 
+    /** Health Connect exercise write after finish — off by default. */
+    suspend fun healthConnectExportEnabled(): Boolean =
+        dao.getPref(KEY_HEALTH_CONNECT) == "1"
+
+    suspend fun setHealthConnectExportEnabled(enabled: Boolean) {
+        dao.setPref(PrefEntity(KEY_HEALTH_CONNECT, if (enabled) "1" else "0"))
+    }
+
     suspend fun ensureInstallId(): String {
         val existing = dao.getPref(KEY_INSTALL_ID)
         if (!existing.isNullOrBlank()) return existing
@@ -232,7 +240,19 @@ class MwRepository(
     suspend fun routineById(id: String): RoutineEntity? = dao.routineById(id)
 
     suspend fun deleteRoutine(id: String) {
-        dao.deleteRoutine(id)
+        val existing = dao.routineById(id) ?: return
+        val now = java.time.Instant.now().toString()
+        // Soft-delete so cloud tombstone can propagate
+        dao.upsertRoutine(
+            existing.copy(
+                deletedAt = now,
+                updatedAt = now,
+                revision = existing.revision + 1,
+                syncStatus = SyncEngine.STATUS_PENDING,
+            ),
+        )
+        syncEngine?.enqueueRoutine(id)
+        flushOutbox()
     }
 
     fun parseRoutineExercises(exercisesJson: String): List<RoutineExerciseDto> =
@@ -278,8 +298,14 @@ class MwRepository(
                     kotlinx.serialization.builtins.ListSerializer(RoutineExerciseDto.serializer()),
                     exercises,
                 ),
+                syncStatus = SyncEngine.STATUS_PENDING,
+                revision = 1,
+                updatedAt = now,
+                deletedAt = null,
             ),
         )
+        syncEngine?.enqueueRoutine(id)
+        flushOutbox()
         return id
     }
 
@@ -408,6 +434,7 @@ class MwRepository(
         const val KEY_TELEMETRY_OPT_IN = "telemetry_opt_in"
         const val KEY_INSTALL_ID = "install_id"
         const val KEY_LAST_HEARTBEAT_WEEK = "telemetry_last_week"
+        const val KEY_HEALTH_CONNECT = "health_connect_export"
         const val KIND_WORKOUT = "workout"
 
         fun currentIsoWeekKey(

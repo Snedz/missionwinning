@@ -90,6 +90,34 @@ class MobileApiClient(
             }
         }
 
+    suspend fun pushRoutines(routines: List<SyncRoutineDto>): Result<SyncRoutinePushResponseDto> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val payload = json.encodeToString(SyncRoutinePushRequestDto(routines = routines))
+                val req = requestBuilder("/api/mobile/sync/routines")
+                    .post(payload.toRequestBody(media))
+                    .build()
+                client.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) error("sync routines push ${resp.code}")
+                    json.decodeFromString<SyncRoutinePushResponseDto>(resp.body!!.string())
+                }
+            }
+        }
+
+    suspend fun pullRoutines(since: String, limit: Int = 100): Result<SyncRoutinePullResponseDto> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val q = java.net.URLEncoder.encode(since, Charsets.UTF_8.name())
+                val req = requestBuilder("/api/mobile/sync/routines?since=$q&limit=$limit")
+                    .get()
+                    .build()
+                client.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) error("sync routines pull ${resp.code}")
+                    json.decodeFromString<SyncRoutinePullResponseDto>(resp.body!!.string())
+                }
+            }
+        }
+
     suspend fun fetchCoachPlan(
         equipment: String = "bodyweight",
         adaptDemo: Boolean = false,
