@@ -36,6 +36,40 @@ class MobileApiClient(
         }
     }
 
+    /** Grant Super Bundle after Google Play purchase (server verifies token). */
+    suspend fun postPlayPurchase(
+        productId: String,
+        purchaseToken: String,
+        packageName: String,
+        orderId: String? = null,
+    ): Result<PlayPurchaseResponseDto> = withContext(Dispatchers.IO) {
+        runCatching {
+            val payload = json.encodeToString(
+                PlayPurchaseRequestDto(
+                    productId = productId,
+                    purchaseToken = purchaseToken,
+                    packageName = packageName,
+                    orderId = orderId,
+                ),
+            )
+            val req = requestBuilder("/api/mobile/premium/play-purchase")
+                .post(payload.toRequestBody(media))
+                .build()
+            client.newCall(req).execute().use { resp ->
+                val body = resp.body?.string().orEmpty()
+                val parsed = runCatching {
+                    json.decodeFromString<PlayPurchaseResponseDto>(body)
+                }.getOrElse {
+                    PlayPurchaseResponseDto(ok = false, error = "play-purchase ${resp.code}")
+                }
+                if (!resp.isSuccessful && !parsed.ok) {
+                    error(parsed.error ?: "play-purchase ${resp.code}")
+                }
+                parsed
+            }
+        }
+    }
+
     /**
      * Privacy-first weekly heartbeat. No workout data, no email.
      * Server stores opaque install id + ISO week only.

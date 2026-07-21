@@ -12,8 +12,8 @@ android {
         applicationId = "com.missionwinning.app.wear"
         minSdk = 30
         targetSdk = 36
-        versionCode = 40
-        versionName = "1.13.0"
+        versionCode = 41
+        versionName = "1.14.0"
     }
 
     buildTypes {

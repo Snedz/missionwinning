@@ -44,6 +44,23 @@ data class PremiumStatusDto(
 )
 
 @Serializable
+data class PlayPurchaseRequestDto(
+    val productId: String,
+    val purchaseToken: String,
+    val packageName: String = "com.missionwinning.app",
+    val orderId: String? = null,
+)
+
+@Serializable
+data class PlayPurchaseResponseDto(
+    val ok: Boolean = false,
+    val premium: Boolean = false,
+    val source: String = "",
+    val duplicate: Boolean = false,
+    val error: String? = null,
+)
+
+@Serializable
 data class TelemetryHeartbeatDto(
     val installId: String,
     val weekKey: String,

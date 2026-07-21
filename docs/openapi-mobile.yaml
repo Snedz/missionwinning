@@ -97,6 +97,41 @@ paths:
                 $ref: '#/components/schemas/PremiumStatus'
         '429':
           description: Rate limited
+  /api/mobile/premium/play-purchase:
+    post:
+      summary: Verify Google Play purchase and grant Super Bundle enrollment
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [productId, purchaseToken]
+              properties:
+                productId:
+                  type: string
+                  example: super_bundle_monthly
+                purchaseToken:
+                  type: string
+                packageName:
+                  type: string
+                  example: com.missionwinning.app
+                orderId:
+                  type: string
+                  nullable: true
+      responses:
+        '200':
+          description: premium granted
+        '401':
+          description: Unauthorized
+        '402':
+          description: Purchase not valid
+        '503':
+          description: Play verify not configured
+        '429':
+          description: Rate limited
   /api/mobile/sync/routines:
     post:
       summary: Batch push saved routines (≤50)

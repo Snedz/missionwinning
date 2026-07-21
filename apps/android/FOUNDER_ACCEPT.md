@@ -145,6 +145,9 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | C11 | Free: week plan + ≤1 adapt beat summary; insight stack without Depth badges | |
 | C12 | Premium: full adapt beats + Depth insights + Why this session move hints | |
 | C13 | Free “Why this session” still works (short copy); never blocks start | |
+| C14 | Signed-in free: Subscribe Super Bundle visible on Coach only (not Active) | |
+| C15 | License tester purchase → Super Bundle chip + depth; cancel restores free depth | |
+| C16 | Active logger works offline with no account and no subscription | |
 
 ---
 

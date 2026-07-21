@@ -1,9 +1,13 @@
 package com.missionwinning.feature.coach
 
+import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.missionwinning.core.data.AuthRepository
+import com.missionwinning.core.data.BillingOffer
+import com.missionwinning.core.data.BillingUiSnapshot
 import com.missionwinning.core.data.MwRepository
+import com.missionwinning.core.data.PremiumPurchaseGateway
 import com.missionwinning.core.model.CoachDepth
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.PlanSessionDto
@@ -42,19 +46,22 @@ data class CoachUiState(
     val insights: List<CoachInsightUi> = emptyList(),
     val sessionWhys: Map<String, SessionWhyUi> = emptyMap(),
     val expandedSessionId: String? = null,
+    val billing: BillingUiSnapshot = BillingUiSnapshot(),
 )
 
 @HiltViewModel
 class CoachViewModel @Inject constructor(
     private val repository: MwRepository,
     private val authRepository: AuthRepository,
+    private val billing: PremiumPurchaseGateway,
 ) : ViewModel() {
     private val _local = MutableStateFlow(CoachUiState())
 
     val state: StateFlow<CoachUiState> = combine(
         _local,
         authRepository.state,
-    ) { local, auth ->
+        billing.state,
+    ) { local, auth, bill ->
         val premium = auth.premium
         val enriched = enrich(local.plan, premium)
         local.copy(
@@ -63,6 +70,8 @@ class CoachViewModel @Inject constructor(
             premiumSource = auth.premiumSource,
             insights = enriched.first,
             sessionWhys = enriched.second,
+            billing = bill,
+            message = bill.lastMessage ?: local.message,
         )
     }.stateIn(
         viewModelScope,
@@ -71,6 +80,7 @@ class CoachViewModel @Inject constructor(
     )
 
     init {
+        billing.start()
         refresh()
     }
 
@@ -83,6 +93,7 @@ class CoachViewModel @Inject constructor(
             if (authRepository.accessTokenOrNull() != null) {
                 runCatching { authRepository.refreshPremium() }
             }
+            billing.refreshOffers()
             _local.update {
                 it.copy(plan = plan, loading = false)
             }
@@ -122,6 +133,16 @@ class CoachViewModel @Inject constructor(
                 expandedSessionId = if (st.expandedSessionId == sessionId) null else sessionId,
             )
         }
+    }
+
+    /** Play Billing — Super Bundle only. Logger stays free. */
+    fun subscribe(activity: Activity) {
+        billing.launchSubscribe(activity)
+    }
+
+    fun clearBillingMessages() {
+        billing.clearMessages()
+        _local.update { it.copy(message = null) }
     }
 
     companion object {
