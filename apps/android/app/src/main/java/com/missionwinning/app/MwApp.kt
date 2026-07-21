@@ -2,9 +2,11 @@ package com.missionwinning.app
 
 import android.app.Application
 import com.missionwinning.app.crash.CrashReporting
+import com.missionwinning.app.health.HealthConnectWriter
 import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SyncScheduler
+import com.missionwinning.feature.active.HealthConnectExportBridge
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +25,10 @@ class MwApp : Application() {
     override fun onCreate() {
         super.onCreate()
         syncScheduler.ensurePeriodic()
+        val hc = HealthConnectWriter(this)
+        HealthConnectExportBridge.writer = { title, duration ->
+            hc.writeExerciseSession(title = title, durationSeconds = duration)
+        }
         appScope.launch {
             runCatching {
                 // Crash reporting default ON when DSN present; respect Account toggle

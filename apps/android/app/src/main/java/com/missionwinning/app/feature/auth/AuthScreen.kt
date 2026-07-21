@@ -20,6 +20,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import android.app.Application
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.health.connect.client.PermissionController
 import com.missionwinning.app.BuildConfig
 import com.missionwinning.core.common.NetworkStatus
 import com.missionwinning.core.designsystem.MwCard
@@ -65,6 +67,11 @@ fun AuthScreen(
         focusedLabelColor = MwColors.TextMuted,
         unfocusedLabelColor = MwColors.TextMuted,
     )
+    val hcPermissionLauncher = rememberLauncherForActivityResult(
+        contract = PermissionController.createRequestPermissionResultContract(),
+    ) { granted ->
+        viewModel.onHealthConnectPermissionResult(granted)
+    }
 
     MwScreenScaffold {
         Column(
@@ -156,6 +163,35 @@ fun AuthScreen(
                     contentDescription = "Toggle weekly pulse",
                     onClick = viewModel::toggleTelemetry,
                 )
+                if (state.healthConnectAvailable) {
+                    MwChip(
+                        text = if (state.healthConnectExport) {
+                            "Health Connect · on"
+                        } else {
+                            "Health Connect · off"
+                        },
+                        tone = if (state.healthConnectExport) MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = "Toggle Health Connect export",
+                        onClick = {
+                            if (state.healthConnectExport) {
+                                viewModel.setHealthConnectExport(false)
+                            } else {
+                                hcPermissionLauncher.launch(viewModel.healthConnectPermissions())
+                            }
+                        },
+                    )
+                    Text(
+                        "When on, finished workouts write a strength session to Health Connect (no read).",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                } else {
+                    Text(
+                        "Health Connect not available on this device.",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                }
             }
 
             MwCard(elevated = true) {

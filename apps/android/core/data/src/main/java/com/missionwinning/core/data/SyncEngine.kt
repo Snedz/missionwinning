@@ -2,14 +2,17 @@ package com.missionwinning.core.data
 
 import androidx.room.withTransaction
 import com.missionwinning.core.network.MobileApiClient
+import com.missionwinning.core.network.SyncRoutineDto
+import com.missionwinning.core.network.SyncRoutineExerciseDto
 import com.missionwinning.core.network.SyncSetDto
 import com.missionwinning.core.network.SyncWorkoutDto
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.UUID
 
 /**
- * Full-fidelity workout sync (Phase 2).
- * Push pending workouts (built from Room at send time), then cursor pull-merge.
+ * Full-fidelity workout + routine sync.
+ * Push pending entities (built from Room at send time), then cursor pull-merge.
  */
 class SyncEngine(
     private val db: MwDatabase,
@@ -20,7 +23,7 @@ class SyncEngine(
     private val json = Json { ignoreUnknownKeys = true }
 
     /**
-     * @return remaining unsynced count after attempt.
+     * @return remaining unsynced workout count after attempt.
      */
     suspend fun syncAll(): Int {
         if (api == null) return dao.unsyncedWorkoutCount()
@@ -36,7 +39,22 @@ class SyncEngine(
 
         pushPending()
         pullMerge()
+        pushRoutines()
+        pullRoutines()
         return dao.unsyncedWorkoutCount()
+    }
+
+    suspend fun enqueueRoutine(routineId: String) {
+        val now = java.time.Instant.now().toString()
+        dao.enqueueOutbox(
+            SyncOutboxEntity(
+                id = "r-${UUID.randomUUID()}",
+                kind = KIND_ROUTINE_REF,
+                payloadJson = routineId,
+                createdAt = now,
+                attempts = 0,
+            ),
+        )
     }
 
     suspend fun enqueueWorkout(workoutId: String) {
@@ -57,6 +75,7 @@ class SyncEngine(
         // Drain outbox refs first (cap attempts)
         val outbox = dao.pendingOutbox(limit = 50)
         for (row in outbox) {
+            if (row.kind == KIND_ROUTINE_REF) continue
             if (row.kind != KIND_WORKOUT_REF && row.kind != MwRepository.KIND_WORKOUT) {
                 dao.deleteOutbox(row.id)
                 continue
@@ -296,12 +315,150 @@ class SyncEngine(
             .forEach { deleteOutbox(it.id) }
     }
 
+    private suspend fun pushRoutines() {
+        val client = api ?: return
+        val pending = dao.routinesNeedingPush(50)
+        if (pending.isEmpty()) return
+        val payloads = pending.map { r ->
+            val exercises = runCatching {
+                json.decodeFromString(
+                    kotlinx.serialization.builtins.ListSerializer(RoutineExerciseDto.serializer()),
+                    r.exercisesJson,
+                )
+            }.getOrDefault(emptyList())
+            SyncRoutineDto(
+                clientId = r.id,
+                name = r.name,
+                createdAt = r.createdAt,
+                sourceWorkoutId = r.sourceWorkoutId,
+                exercises = exercises.map {
+                    SyncRoutineExerciseDto(
+                        exerciseId = it.exerciseId,
+                        exerciseName = it.exerciseName,
+                        sets = it.sets,
+                        targetReps = it.targetReps,
+                        lastWeight = it.lastWeight,
+                    )
+                },
+                revision = r.revision.coerceAtLeast(1),
+                updatedAt = r.updatedAt.ifBlank { r.createdAt },
+                deletedAt = r.deletedAt,
+            )
+        }.filter { !it.clientId.isNullOrBlank() }
+
+        client.pushRoutines(payloads).onSuccess { resp ->
+            for (ack in resp.acks) {
+                val id = ack.clientId
+                if (id.isBlank()) continue
+                if (ack.status == "error") continue
+                dao.updateRoutineSync(
+                    id = id,
+                    status = STATUS_SYNCED,
+                    revision = ack.revision.coerceAtLeast(1),
+                    updatedAt = ack.updatedAt.ifBlank { java.time.Instant.now().toString() },
+                )
+                dao.pendingOutbox(100)
+                    .filter { it.kind == KIND_ROUTINE_REF && it.payloadJson.trim() == id }
+                    .forEach { dao.deleteOutbox(it.id) }
+            }
+        }
+    }
+
+    private suspend fun pullRoutines() {
+        val client = api ?: return
+        var cursor = dao.getPref(KEY_ROUTINE_SYNC_CURSOR) ?: "1970-01-01T00:00:00.000Z"
+        var guard = 0
+        while (guard++ < 20) {
+            val page = client.pullRoutines(since = cursor, limit = 100).getOrElse { return }
+            if (page.items.isEmpty()) break
+            for (item in page.items) {
+                mergeRemoteRoutine(item)
+            }
+            val next = page.nextCursor
+            if (next.isNullOrBlank() || next == cursor) {
+                page.items.lastOrNull()?.updatedAt?.let { cursor = it }
+                dao.setPref(PrefEntity(KEY_ROUTINE_SYNC_CURSOR, cursor))
+                break
+            }
+            cursor = next
+            dao.setPref(PrefEntity(KEY_ROUTINE_SYNC_CURSOR, cursor))
+        }
+    }
+
+    private suspend fun mergeRemoteRoutine(item: SyncRoutineDto) {
+        val clientId = item.clientId?.takeIf { it.isNotBlank() } ?: return
+        val local = dao.routineById(clientId)
+        val remoteRev = item.revision.coerceAtLeast(1)
+        val remoteDeleted = !item.deletedAt.isNullOrBlank()
+
+        if (local != null) {
+            if (local.syncStatus == STATUS_PENDING || local.syncStatus == STATUS_FAILED) return
+            if (remoteDeleted) {
+                dao.upsertRoutine(
+                    local.copy(
+                        deletedAt = item.deletedAt,
+                        revision = maxOf(local.revision, remoteRev),
+                        updatedAt = item.updatedAt ?: local.updatedAt,
+                        syncStatus = STATUS_SYNCED,
+                    ),
+                )
+                return
+            }
+            if (remoteRev <= local.revision) return
+        }
+
+        if (remoteDeleted) {
+            dao.upsertRoutine(
+                RoutineEntity(
+                    id = clientId,
+                    name = item.name,
+                    createdAt = item.createdAt ?: item.updatedAt.orEmpty(),
+                    sourceWorkoutId = item.sourceWorkoutId,
+                    exercisesJson = "[]",
+                    syncStatus = STATUS_SYNCED,
+                    revision = remoteRev,
+                    updatedAt = item.updatedAt.orEmpty(),
+                    deletedAt = item.deletedAt,
+                ),
+            )
+            return
+        }
+
+        val exercisesJson = json.encodeToString(
+            kotlinx.serialization.builtins.ListSerializer(RoutineExerciseDto.serializer()),
+            item.exercises.map {
+                RoutineExerciseDto(
+                    exerciseId = it.exerciseId,
+                    exerciseName = it.exerciseName,
+                    sets = it.sets,
+                    targetReps = it.targetReps,
+                    lastWeight = it.lastWeight,
+                )
+            },
+        )
+        dao.upsertRoutine(
+            RoutineEntity(
+                id = clientId,
+                name = item.name,
+                createdAt = item.createdAt ?: item.updatedAt.orEmpty(),
+                sourceWorkoutId = item.sourceWorkoutId,
+                exercisesJson = exercisesJson,
+                syncStatus = STATUS_SYNCED,
+                revision = remoteRev,
+                updatedAt = item.updatedAt ?: java.time.Instant.now().toString(),
+                deletedAt = null,
+            ),
+        )
+    }
+
     companion object {
         const val KIND_WORKOUT_REF = "workout_ref"
+        const val KIND_ROUTINE_REF = "routine_ref"
         const val STATUS_PENDING = "pending"
         const val STATUS_SYNCED = "synced"
         const val STATUS_FAILED = "failed"
         const val MAX_ATTEMPTS = 8
         const val KEY_SYNC_CURSOR = "sync_pull_cursor"
+        const val KEY_ROUTINE_SYNC_CURSOR = "routine_sync_pull_cursor"
     }
 }

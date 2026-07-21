@@ -1,12 +1,17 @@
 package com.missionwinning.app.feature.auth
 
+import android.app.Application
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.missionwinning.app.crash.CrashReporting
+import com.missionwinning.app.health.HealthConnectWriter
 import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.AuthUiSnapshot
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SyncScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -29,6 +34,8 @@ data class AuthScreenState(
     val crashReporting: Boolean = true,
     val telemetryOptIn: Boolean = false,
     val sentryConfigured: Boolean = false,
+    val healthConnectExport: Boolean = false,
+    val healthConnectAvailable: Boolean = false,
 )
 
 @HiltViewModel
@@ -36,7 +43,9 @@ class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val repository: MwRepository,
     private val syncScheduler: SyncScheduler,
+    @ApplicationContext private val appContext: Context,
 ) : ViewModel() {
+    private val healthConnect = HealthConnectWriter(appContext)
     private val _local = MutableStateFlow(AuthScreenState())
     val state: StateFlow<AuthScreenState> = combine(
         _local,
@@ -59,17 +68,19 @@ class AuthViewModel @Inject constructor(
     )
 
     init {
-        viewModelScope.launch {
-            refreshPrivacyToggles()
-        }
+        viewModelScope.launch { refreshPrivacyToggles() }
     }
+
+    fun healthConnectPermissions(): Set<String> = healthConnect.requiredPermissions()
 
     private suspend fun refreshPrivacyToggles() {
         _local.update {
             it.copy(
                 crashReporting = repository.crashReportingEnabled(),
                 telemetryOptIn = repository.telemetryOptIn(),
-                sentryConfigured = com.missionwinning.app.crash.CrashReporting.isConfigured(),
+                sentryConfigured = CrashReporting.isConfigured(),
+                healthConnectExport = repository.healthConnectExportEnabled(),
+                healthConnectAvailable = healthConnect.isAvailable(),
             )
         }
     }
@@ -117,7 +128,6 @@ class AuthViewModel @Inject constructor(
             _local.update { it.copy(busy = true, error = null, message = null) }
             authRepository.verifyOtp(email, code)
                 .onSuccess {
-                    // Pull remote history + push local pending (sync v2)
                     runCatching { repository.syncNow() }
                     syncScheduler.enqueueNow()
                     _local.update {
@@ -125,7 +135,7 @@ class AuthViewModel @Inject constructor(
                             busy = false,
                             step = AuthStep.SignedIn,
                             code = "",
-                            message = "Signed in. Syncing workouts when online…",
+                            message = "Signed in. Syncing workouts & routines…",
                         )
                     }
                 }
@@ -177,11 +187,11 @@ class AuthViewModel @Inject constructor(
         _local.update { it.copy(error = null, message = null) }
     }
 
-    fun toggleCrashReporting(app: android.app.Application) {
+    fun toggleCrashReporting(app: Application) {
         viewModelScope.launch {
             val next = !_local.value.crashReporting
             repository.setCrashReportingEnabled(next)
-            com.missionwinning.app.crash.CrashReporting.setEnabled(app, next)
+            CrashReporting.setEnabled(app, next)
             _local.update {
                 it.copy(
                     crashReporting = next,
@@ -200,6 +210,57 @@ class AuthViewModel @Inject constructor(
                     telemetryOptIn = next,
                     message = if (next) "Weekly pulse on" else "Weekly pulse off",
                 )
+            }
+        }
+    }
+
+    fun setHealthConnectExport(enabled: Boolean) {
+        viewModelScope.launch {
+            repository.setHealthConnectExportEnabled(enabled)
+            _local.update {
+                it.copy(
+                    healthConnectExport = enabled,
+                    message = if (enabled) {
+                        "Health Connect export on — finished workouts write exercise sessions"
+                    } else {
+                        "Health Connect export off"
+                    },
+                )
+            }
+        }
+    }
+
+    fun toggleHealthConnectExport() {
+        viewModelScope.launch {
+            val next = !_local.value.healthConnectExport
+            if (!next) {
+                setHealthConnectExport(false)
+            } else {
+                // Permission grant is requested from UI; enable only after grant or if already held
+                if (healthConnect.hasWritePermission()) {
+                    setHealthConnectExport(true)
+                } else {
+                    _local.update {
+                        it.copy(message = "Grant Health Connect exercise write permission…")
+                    }
+                }
+            }
+        }
+    }
+
+    fun onHealthConnectPermissionResult(granted: Set<String>) {
+        viewModelScope.launch {
+            val ok = healthConnect.requiredPermissions().all { it in granted }
+            if (ok) {
+                setHealthConnectExport(true)
+            } else {
+                repository.setHealthConnectExportEnabled(false)
+                _local.update {
+                    it.copy(
+                        healthConnectExport = false,
+                        message = "Health Connect permission not granted",
+                    )
+                }
             }
         }
     }

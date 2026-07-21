@@ -73,7 +73,7 @@ Local smoke (debug-signed, not for Play):
 
 **Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
 
-`versionCode` is `31`, `versionName` is `1.4.0` — Phase 4: ongoing workout notification + streak/quick-log Glance widgets; monochrome icon; predictive back.
+`versionCode` is `32`, `versionName` is `1.5.0` — Phase 5: Health Connect exercise write (opt-in) + cloud routine sync; apply `20260721_routines_sync.sql`.
 
 ---
 

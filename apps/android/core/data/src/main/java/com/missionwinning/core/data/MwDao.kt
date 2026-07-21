@@ -148,7 +148,13 @@ interface MwDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertRoutine(row: RoutineEntity)
 
-    @Query("SELECT * FROM routines ORDER BY createdAt DESC")
+    @Query(
+        """
+        SELECT * FROM routines
+        WHERE deletedAt IS NULL
+        ORDER BY createdAt DESC
+        """,
+    )
     suspend fun allRoutines(): List<RoutineEntity>
 
     @Query("SELECT * FROM routines WHERE id = :id LIMIT 1")
@@ -156,4 +162,28 @@ interface MwDao {
 
     @Query("DELETE FROM routines WHERE id = :id")
     suspend fun deleteRoutine(id: String)
+
+    @Query(
+        """
+        SELECT * FROM routines
+        WHERE syncStatus IN ('pending', 'failed') AND deletedAt IS NULL
+        ORDER BY createdAt ASC
+        LIMIT :limit
+        """,
+    )
+    suspend fun routinesNeedingPush(limit: Int = 50): List<RoutineEntity>
+
+    @Query(
+        """
+        UPDATE routines
+        SET syncStatus = :status, revision = :revision, updatedAt = :updatedAt
+        WHERE id = :id
+        """,
+    )
+    suspend fun updateRoutineSync(
+        id: String,
+        status: String,
+        revision: Int,
+        updatedAt: String,
+    )
 }

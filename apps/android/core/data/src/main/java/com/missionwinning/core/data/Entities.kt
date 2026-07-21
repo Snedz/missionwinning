@@ -61,7 +61,7 @@ data class PrefEntity(
     val value: String,
 )
 
-/** Saved workout template (Phase 1). Exercise blueprint stored as JSON. */
+/** Saved workout template. Exercise blueprint stored as JSON. */
 @Entity(tableName = "routines")
 data class RoutineEntity(
     @PrimaryKey val id: String,
@@ -70,4 +70,9 @@ data class RoutineEntity(
     val sourceWorkoutId: String? = null,
     /** JSON list of [RoutineExerciseDto]. */
     val exercisesJson: String,
+    /** pending | synced | failed (Room v9). */
+    val syncStatus: String = "pending",
+    val revision: Int = 1,
+    val updatedAt: String = "",
+    val deletedAt: String? = null,
 )

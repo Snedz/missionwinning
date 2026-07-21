@@ -97,6 +97,43 @@ paths:
                 $ref: '#/components/schemas/PremiumStatus'
         '429':
           description: Rate limited
+  /api/mobile/sync/routines:
+    post:
+      summary: Batch push saved routines (≤50)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [routines]
+              properties:
+                routines:
+                  type: array
+                  maxItems: 50
+      responses:
+        '200':
+          description: Per-item acks
+        '401':
+          description: Unauthorized
+    get:
+      summary: Cursor pull routines (includes tombstones)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: since
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: items + nextCursor
   /api/mobile/telemetry:
     post:
       summary: Anonymous Android weekly heartbeat (install id + week only)
