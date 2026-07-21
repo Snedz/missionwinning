@@ -142,6 +142,9 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | C8 | Access banner: offline free / signed-in free coach / Super Bundle when premium | |
 | C9 | Premium: “Preview adapt” product path works; **no Buy / Stripe** controls | |
 | C10 | Free path: logger + basic coach still work without Super Bundle | |
+| C11 | Free: week plan + ≤1 adapt beat summary; insight stack without Depth badges | |
+| C12 | Premium: full adapt beats + Depth insights + Why this session move hints | |
+| C13 | Free “Why this session” still works (short copy); never blocks start | |
 
 ---
 
