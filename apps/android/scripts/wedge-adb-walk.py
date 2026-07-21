@@ -2,17 +2,21 @@
 """
 ADB UIAutomator walk matching apps/android/.maestro/wedge.yaml.
 
-Flow: I-Day → Today → Active → Victory → Coach
+Flow: I-Day (skip) → Today → Active → Victory → Coach
 Does NOT toggle airplane mode (offline core is Room-local; network kill skipped).
 
 Usage:
   export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+  export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
   cd apps/android && ./gradlew :app:installDebug
   python3 scripts/wedge-adb-walk.py
+  # Optional screenshots into store-assets/:
+  python3 scripts/wedge-adb-walk.py --screenshots
 """
 
 from __future__ import annotations
 
+import argparse
 import re
 import subprocess
 import sys
@@ -22,18 +26,27 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 APP_ID = "com.missionwinning.app.debug"
+SCRIPT_DIR = Path(__file__).resolve().parent
+ANDROID_ROOT = SCRIPT_DIR.parent
+STORE_ASSETS = ANDROID_ROOT / "store-assets"
 
 # Texts asserted / tapped in .maestro/wedge.yaml order
 STEPS: list[tuple[str, str]] = [
     ("assert", "Mission Winning"),
-    ("tap", "Start mission"),
+    ("tap", "I already train — skip"),
     ("assert", "Today"),
+    ("screenshot", "02-today.png"),
     ("tap", "Start workout"),
+    ("assert", "Complete set"),
+    ("screenshot", "03-active.png"),
+    ("tap", "Complete set"),
     ("assert", "Finish workout"),
     ("tap", "Finish workout"),
     ("assert", "Session locked"),
+    ("screenshot", "05-victory.png"),
     ("tap", "See Mission Coach"),
     ("assert", "Mission Coach"),
+    ("screenshot", "04-coach.png"),
 ]
 
 DUMP_REMOTE = "/sdcard/mw_ui_dump.xml"
@@ -53,7 +66,11 @@ def ensure_device() -> None:
     out = adb("devices").stdout.strip().splitlines()
     devices = [ln for ln in out[1:] if ln.strip() and "device" in ln.split()[-1:]]
     if not devices:
-        print("No adb device/emulator. Start an AVD (API 34+ system image) first.", file=sys.stderr)
+        print(
+            "No adb device/emulator. Start an AVD (API 34+ system image) first.\n"
+            "  export PATH=\"$PATH:$HOME/Library/Android/sdk/platform-tools\"",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 
@@ -129,12 +146,52 @@ def tap_bounds(bounds: tuple[int, int, int, int]) -> None:
     time.sleep(1.0)
 
 
+def capture_screenshot(filename: str) -> None:
+    STORE_ASSETS.mkdir(parents=True, exist_ok=True)
+    dest = STORE_ASSETS / filename
+    # Slight settle so animations finish
+    time.sleep(0.4)
+    with dest.open("wb") as f:
+        proc = subprocess.run(
+            ["adb", "exec-out", "screencap", "-p"],
+            check=True,
+            capture_output=True,
+        )
+        f.write(proc.stdout)
+    print(f"    screenshot → {dest.relative_to(ANDROID_ROOT)}")
+
+
+def capture_iday_if_needed(screenshots: bool) -> None:
+    """I-Day is first screen after clear; grab before skip if requested."""
+    if not screenshots:
+        return
+    try:
+        wait_for_text("Mission Winning", timeout_s=8.0)
+        capture_screenshot("01-iday.png")
+    except AssertionError:
+        print("    skip 01-iday.png (not on I-Day)")
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(description="ADB wedge walk for Mission Winning")
+    parser.add_argument(
+        "--screenshots",
+        action="store_true",
+        help=f"Write PNGs into {STORE_ASSETS.name}/ (local only; do not commit large binaries)",
+    )
+    args = parser.parse_args()
+
     print("wedge-adb-walk: matching .maestro/wedge.yaml (no airplane mode)")
     ensure_device()
     launch_app()
+    capture_iday_if_needed(args.screenshots)
 
     for action, text in STEPS:
+        if action == "screenshot":
+            if args.screenshots:
+                print(f"  screenshot: {text!r}")
+                capture_screenshot(text)
+            continue
         print(f"  {action}: {text!r}")
         bounds = wait_for_text(text)
         if action == "assert":
@@ -146,6 +203,8 @@ def main() -> int:
             raise ValueError(action)
 
     print("PASS: I-Day → Today → Active → Victory → Coach")
+    if args.screenshots:
+        print(f"Screenshots under {STORE_ASSETS} (gitignored binaries preferred)")
     return 0
 
 
@@ -158,3 +217,10 @@ if __name__ == "__main__":
     except subprocess.CalledProcessError as e:
         print(e.stderr or e.stdout or str(e), file=sys.stderr)
         raise SystemExit(e.returncode or 1)
+    except FileNotFoundError:
+        print(
+            "adb not found. Add platform-tools to PATH:\n"
+            '  export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"',
+            file=sys.stderr,
+        )
+        raise SystemExit(127)
