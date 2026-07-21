@@ -28,15 +28,19 @@ Web PWA at www stays for SEO / Get Selected. Do **not** ship Expo/TWA as the And
 
 ## Machine setup (once)
 
-1. Install [Android Studio](https://developer.android.com/studio) (stable) + SDK 35 + Pixel emulator (API 34+).  
-2. Confirm JDK 17: Studio’s embedded JDK or `brew install --cask temurin@17`.  
-3. Optional: physical phone with USB debugging.  
-4. Play Console (~$25) only when distributing — not required for local run.
+1. Install [Android Studio](https://developer.android.com/studio) (stable) + SDK 35.  
+2. Create a Pixel AVD with an **API 34+ system image** (Google APIs or Play). Installing the platform SDK alone is **not** enough — you need a system image to run the emulator. Example AVD name `Pixel_10_Pro` is fine; any Pixel AVD works.  
+3. JDK: Studio’s embedded JBR **21** is OK for this project (`JAVA_HOME` → `…/Android Studio.app/Contents/jbr/Contents/Home`). Temurin 17 also works.  
+4. Optional: physical phone with USB debugging.  
+5. Play Console (~$25) only when distributing — not required for local run. Signing + Internal track: [apps/android/PLAY_LISTING.md](../apps/android/PLAY_LISTING.md).
 
 ```bash
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 cd apps/android
 ./gradlew :app:assembleDebug
 ./gradlew :app:installDebug
+# Wedge: maestro test .maestro/wedge.yaml   OR   python3 scripts/wedge-adb-walk.py
+# Release smoke (debug-signed if no keystore.properties): ./gradlew :app:bundleRelease
 ```
 
 ---
@@ -102,10 +106,11 @@ Acceptance: <bullets>. Run ./gradlew :app:assembleDebug.
 
 - `./gradlew :app:assembleDebug` green  
 - No WebView for Train/Coach  
-- Offline workout finish; plan still readable  
+- Offline workout finish; plan still readable (Room seed if `/api/mobile/*` unavailable)  
 - Adapt banner with seeded miss/swap/revision  
 - TalkBack on primary CTA  
-- Founder ran once on emulator  
+- Founder ran once on emulator (prefer mid-range AVD on ≤8GB hosts)  
+- `./gradlew :app:bundleRelease` green before Play Internal upload  
 
 ### Anti-patterns
 

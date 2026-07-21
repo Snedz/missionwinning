@@ -1,8 +1,19 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.kotlin.plugin.serialization")
+}
+
+// Optional upload signing: apps/android/keystore.properties (gitignored).
+// If absent, release uses debug signing so local `bundleRelease` / `assembleRelease` still works.
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+val hasReleaseKeystore = keystorePropertiesFile.exists()
+if (hasReleaseKeystore) {
+    keystorePropertiesFile.inputStream().use { keystoreProperties.load(it) }
 }
 
 android {
@@ -14,18 +25,50 @@ android {
         applicationId = "com.missionwinning.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0.0"
-        buildConfigField("String", "API_BASE_URL", "\"https://www.missionwinning.com\"")
+        // Override via apps/android/local.properties (gitignored):
+        //   mw.apiBaseUrl=http://10.0.2.2:3000
+        //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
+        val localProps = Properties().apply {
+            val f = rootProject.file("local.properties")
+            if (f.exists()) f.inputStream().use { load(it) }
+        }
+        val apiBase = localProps.getProperty("mw.apiBaseUrl") ?: "https://www.missionwinning.com"
+        val privateCookie = localProps.getProperty("mw.privateAccessCookie") ?: ""
+        buildConfigField("String", "API_BASE_URL", "\"$apiBase\"")
+        buildConfigField("String", "PRIVATE_ACCESS_COOKIE", "\"$privateCookie\"")
+    }
+
+    signingConfigs {
+        if (hasReleaseKeystore) {
+            create("release") {
+                val storePath = keystoreProperties.getProperty("storeFile")
+                    ?: error("keystore.properties missing storeFile")
+                storeFile = rootProject.file(storePath)
+                storePassword = keystoreProperties.getProperty("storePassword")
+                    ?: error("keystore.properties missing storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                    ?: error("keystore.properties missing keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                    ?: error("keystore.properties missing keyPassword")
+            }
+        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            // Upload keystore when present; otherwise debug signing for local smoke builds.
+            signingConfig = if (hasReleaseKeystore) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
         debug {
             applicationIdSuffix = ".debug"

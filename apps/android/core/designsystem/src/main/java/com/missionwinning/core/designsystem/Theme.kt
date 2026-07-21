@@ -1,10 +1,8 @@
 package com.missionwinning.core.designsystem
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
 private val MwDarkScheme = darkColorScheme(
     primary = MwColors.Emerald,
@@ -17,19 +15,17 @@ private val MwDarkScheme = darkColorScheme(
     onSurface = MwColors.Text,
     onSurfaceVariant = MwColors.TextMuted,
     outline = MwColors.Border,
-    error = Color(0xFFE85D5D),
+    error = MwColors.Danger,
 )
 
 @Composable
 fun MissionWinningTheme(
-    darkTheme: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    // Product is navy-first; ignore light system for wedge v1
-    val scheme = if (darkTheme || isSystemInDarkTheme()) MwDarkScheme else MwDarkScheme
     MaterialTheme(
-        colorScheme = scheme,
+        colorScheme = MwDarkScheme,
         typography = MwTypography,
-        content = content,
-    )
+    ) {
+        ProvideMwMotion(content)
+    }
 }

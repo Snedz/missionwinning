@@ -10,7 +10,11 @@ class MwApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val api = MobileApiClient(baseUrl = BuildConfig.API_BASE_URL)
+        val cookie = BuildConfig.PRIVATE_ACCESS_COOKIE.takeIf { it.isNotBlank() }
+        val api = MobileApiClient(
+            baseUrl = BuildConfig.API_BASE_URL,
+            privateAccessCookie = cookie,
+        )
         repository = MwRepository(this, api)
     }
 }

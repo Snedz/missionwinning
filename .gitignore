@@ -69,3 +69,9 @@ workbox-*.js
 # other
 .cache/
 .env.vercel.production
+
+# Android release signing (never commit secrets)
+apps/android/keystore.properties
+apps/android/*.jks
+apps/android/*.keystore
+apps/android/upload-keystore.jks
