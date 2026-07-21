@@ -171,7 +171,15 @@ fun ActiveScreen(
                     strokeCap = StrokeCap.Round,
                 )
                 Text(
-                    "${state.doneCount} / ${state.totalSets} sets · tap ${state.weightUnit.uppercase()} to switch unit",
+                    buildString {
+                        append("${state.doneCount} / ${state.totalSets} sets")
+                        if (state.liveVolume > 0) {
+                            append(" · ")
+                            append(ActiveSessionLogic.formatWeightWithUnit(state.liveVolume, state.weightUnit))
+                            append(" vol")
+                        }
+                        append(" · tap ${state.weightUnit.uppercase()} to switch unit")
+                    },
                     style = MwTypography.labelMedium,
                     color = MwColors.TextMuted,
                 )

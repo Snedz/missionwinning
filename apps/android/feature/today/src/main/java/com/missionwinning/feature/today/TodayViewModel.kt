@@ -1,13 +1,16 @@
 package com.missionwinning.feature.today
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.missionwinning.core.common.NetworkStatus
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.WorkoutLogEntity
 import com.missionwinning.core.model.WeightUnits
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.PlanSessionDto
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,6 +43,8 @@ data class TodayUiState(
     val workouts: Int = 0,
     val recent: List<RecentWorkoutUi> = emptyList(),
     val weekStats: WeekStatsUi = WeekStatsUi(),
+    val streakDays: Int = 0,
+    val online: Boolean = false,
     val loading: Boolean = true,
     val weightUnit: String = "kg",
     val equipment: String = "bodyweight",
@@ -62,6 +67,7 @@ data class TodayUiState(
 @HiltViewModel
 class TodayViewModel @Inject constructor(
     private val repository: MwRepository,
+    @param:ApplicationContext private val appContext: Context,
 ) : ViewModel() {
     private val _state = MutableStateFlow(TodayUiState())
     val state: StateFlow<TodayUiState> = _state.asStateFlow()
@@ -77,9 +83,13 @@ class TodayViewModel @Inject constructor(
             val equipment = repository.equipmentProfile()
             val rows = repository.recentWorkouts(5)
             val weekStats = buildWeekStats(repository, unit)
+            val streak = repository.workoutStreakDays()
+            val online = NetworkStatus.isOnline(appContext)
             val pendingBefore = repository.pendingSyncCount()
-            val pendingAfter = if (pendingBefore > 0) {
+            val pendingAfter = if (pendingBefore > 0 && online) {
                 repository.flushOutboxAndCount()
+            } else if (pendingBefore > 0) {
+                pendingBefore
             } else {
                 0
             }
@@ -88,13 +98,16 @@ class TodayViewModel @Inject constructor(
                 workouts = repository.workoutCount(),
                 recent = rows.map { it.toUi(unit) },
                 weekStats = weekStats,
+                streakDays = streak,
+                online = online,
                 loading = false,
                 weightUnit = unit,
                 equipment = equipment,
                 pendingSync = pendingAfter,
                 syncMessage = when {
                     pendingBefore > 0 && pendingAfter == 0 -> "Synced $pendingBefore offline log${if (pendingBefore == 1) "" else "s"}."
-                    pendingAfter > 0 -> "On device · $pendingAfter waiting to sync when online."
+                    pendingAfter > 0 && !online -> "Offline · $pendingAfter waiting — will retry when online."
+                    pendingAfter > 0 -> "On device · $pendingAfter waiting to sync."
                     else -> null
                 },
             )
@@ -103,16 +116,27 @@ class TodayViewModel @Inject constructor(
 
     fun retrySync() {
         viewModelScope.launch {
-            _state.update { it.copy(syncing = true, syncMessage = null) }
+            val online = NetworkStatus.isOnline(appContext)
+            if (!online) {
+                _state.update {
+                    it.copy(
+                        online = false,
+                        syncMessage = "You're offline. Logs stay on device until you're back.",
+                    )
+                }
+                return@launch
+            }
+            _state.update { it.copy(syncing = true, syncMessage = null, online = true) }
             val remaining = repository.flushOutboxAndCount()
             _state.update {
                 it.copy(
                     syncing = false,
                     pendingSync = remaining,
+                    online = NetworkStatus.isOnline(appContext),
                     syncMessage = if (remaining == 0) {
                         "All clear — nothing pending."
                     } else {
-                        "Still $remaining pending (need network + private cookie if gated)."
+                        "Still $remaining pending (need private cookie if API is gated)."
                     },
                 )
             }

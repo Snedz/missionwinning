@@ -50,6 +50,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Today **next** prefers today's session; boot shows loading chrome; rest default chips
 - Today **this week** metrics (workouts / sets / volume); Active “Up next” exercise preview
 - Today hero: **Today's session** vs Next; Active **Set N / M**; Victory lifetime milestones
+- Streak days + network pill; Active live volume of completed sets
 
 ## Verify
 
