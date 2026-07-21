@@ -39,6 +39,8 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Current set card shows **last session** weight×reps + **Use last**
 - Set rows show weight when logged; Victory shows **volume**
 - Each set log stores `weightUnit` (Room v3) so previous converts correctly after kg/lb switch
+- Today **Recent** card lists last 5 workouts (refreshes on resume)
+- Coach session tiles use weekday labels (Mon/Tue…) from plan `weekStart`
 
 ## Verify
 
