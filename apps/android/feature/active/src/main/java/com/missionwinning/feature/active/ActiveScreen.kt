@@ -57,7 +57,7 @@ fun ActiveRoute(
     sessionId: String,
     workoutName: String,
     targetSets: Int,
-    onFinished: (name: String, sets: Int, duration: Int, workouts: Int) -> Unit,
+    onFinished: (name: String, sets: Int, duration: Int, workouts: Int, volume: Double, weightUnit: String) -> Unit,
     onCancel: () -> Unit,
     viewModel: ActiveViewModel = hiltViewModel(),
 ) {
@@ -69,7 +69,7 @@ fun ActiveRoute(
 
     LaunchedEffect(state.finished) {
         state.finished?.let { f ->
-            onFinished(f.name, f.sets, f.duration, f.workouts)
+            onFinished(f.name, f.sets, f.duration, f.workouts, f.volume, f.weightUnit)
             viewModel.onEvent(ActiveEvent.ClearFinished)
         }
     }
@@ -187,6 +187,9 @@ fun ActiveScreen(
                             val step = ActiveSessionLogic.weightStep(state.weightUnit)
                             onEvent(ActiveEvent.UpdateWeight(currentSet.id, currentSet.weight + d * step))
                         },
+                        onApplyPrevious = {
+                            onEvent(ActiveEvent.ApplyPrevious(currentSet.id))
+                        },
                     )
                 }
 
@@ -200,6 +203,11 @@ fun ActiveScreen(
                                 reps = set.reps,
                                 done = set.done,
                                 isCurrent = false,
+                                weightLabel = if (set.weight > 0) {
+                                    ActiveSessionLogic.formatWeightWithUnit(set.weight, state.weightUnit)
+                                } else {
+                                    null
+                                },
                                 onToggle = {
                                     if (!set.done) onEvent(ActiveEvent.ToggleSet(set.id))
                                 },
@@ -268,16 +276,48 @@ private fun CurrentSetCard(
     onComplete: () -> Unit,
     onRepsDelta: (Int) -> Unit,
     onWeightDelta: (Int) -> Unit,
+    onApplyPrevious: () -> Unit,
 ) {
+    val hasPrevious = set.previousReps != null || set.previousWeight != null
+    val prevWeight = set.previousWeight ?: 0.0
+    val prevReps = set.previousReps
+    val matchesPrevious =
+        hasPrevious &&
+            set.reps == (prevReps ?: set.reps) &&
+            kotlin.math.abs(set.weight - prevWeight) < 0.01
+
     MwCard(elevated = true, glow = true) {
         MwSectionLabel("Current set · ${set.setIndex + 1}")
         Text(set.exerciseName, style = MwTypography.headlineMedium, color = MwColors.Text)
-        if (set.previousReps != null || set.previousWeight != null) {
-            Text(
-                "Previous  ${set.previousWeight ?: 0.0} $weightUnit × ${set.previousReps ?: "—"}",
-                style = MwTypography.labelMedium,
-                color = MwColors.Brass,
-            )
+        if (hasPrevious) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        "LAST SESSION",
+                        style = MwTypography.labelSmall,
+                        color = MwColors.Brass,
+                    )
+                    Text(
+                        "${ActiveSessionLogic.formatWeightWithUnit(prevWeight, weightUnit)} × ${prevReps ?: "—"}",
+                        style = MwTypography.titleMedium,
+                        color = MwColors.Brass,
+                    )
+                }
+                if (!matchesPrevious) {
+                    MwGhostButton(
+                        text = "Use last",
+                        contentDescription = "Apply previous session reps and weight",
+                        onClick = onApplyPrevious,
+                        modifier = Modifier.fillMaxWidth(0.38f),
+                    )
+                } else {
+                    MwChip("Match", tone = MwChipTone.Brass)
+                }
+            }
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -292,7 +332,7 @@ private fun CurrentSetCard(
             )
             MwStepper(
                 label = weightUnit.uppercase(),
-                value = if (set.weight == 0.0) "0" else trimWeight(set.weight),
+                value = ActiveSessionLogic.formatWeight(set.weight),
                 onMinus = { onWeightDelta(-1) },
                 onPlus = { onWeightDelta(1) },
                 modifier = Modifier.weight(1f),
@@ -311,6 +351,3 @@ private fun formatElapsed(seconds: Int): String {
     val s = seconds % 60
     return "%d:%02d".format(m, s)
 }
-
-private fun trimWeight(w: Double): String =
-    if (w % 1.0 == 0.0) w.toInt().toString() else w.toString()

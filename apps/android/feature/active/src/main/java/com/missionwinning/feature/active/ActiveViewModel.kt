@@ -37,12 +37,15 @@ data class FinishedPayload(
     val sets: Int,
     val duration: Int,
     val workouts: Int,
+    val volume: Double = 0.0,
+    val weightUnit: String = "kg",
 )
 
 sealed interface ActiveEvent {
     data class ToggleSet(val setId: String) : ActiveEvent
     data class UpdateReps(val setId: String, val reps: Int) : ActiveEvent
     data class UpdateWeight(val setId: String, val weight: Double) : ActiveEvent
+    data class ApplyPrevious(val setId: String) : ActiveEvent
     data object ToggleWeightUnit : ActiveEvent
     data object RestMinus15 : ActiveEvent
     data object RestPlus15 : ActiveEvent
@@ -87,12 +90,22 @@ class ActiveViewModel @Inject constructor(
             is ActiveEvent.ToggleSet -> toggleSet(event.setId)
             is ActiveEvent.UpdateReps -> updateSet(event.setId) { it.copy(reps = event.reps.coerceIn(1, 99)) }
             is ActiveEvent.UpdateWeight -> updateSet(event.setId) { it.copy(weight = event.weight.coerceAtLeast(0.0)) }
+            is ActiveEvent.ApplyPrevious -> applyPrevious(event.setId)
             ActiveEvent.ToggleWeightUnit -> toggleWeightUnit()
             ActiveEvent.RestMinus15 -> adjustRest(-ActiveSessionLogic.REST_STEP)
             ActiveEvent.RestPlus15 -> adjustRest(ActiveSessionLogic.REST_STEP)
             ActiveEvent.RestSkip -> skipRest()
             ActiveEvent.Finish -> finish()
             ActiveEvent.ClearFinished -> _state.update { it.copy(finished = null) }
+        }
+    }
+
+    private fun applyPrevious(setId: String) {
+        updateSet(setId) { s ->
+            s.copy(
+                reps = (s.previousReps ?: s.reps).coerceIn(1, 99),
+                weight = (s.previousWeight ?: s.weight).coerceAtLeast(0.0),
+            )
         }
     }
 
@@ -199,13 +212,21 @@ class ActiveViewModel @Inject constructor(
                     )
                 }
                 val duration = ActiveSessionLogic.durationSeconds(startedAt)
+                val volume = ActiveSessionLogic.sessionVolume(snap.exercises)
                 // Room SoT + outbox first; markSessionDone may hit network but local plan updates offline.
                 val total = repository.finishWorkout(snap.workoutName, duration, entities, snap.sessionId)
                 runCatching { repository.markSessionDone(snap.sessionId) }
                 _state.update {
                     it.copy(
                         finishing = false,
-                        finished = FinishedPayload(snap.workoutName, entities.size, duration, total),
+                        finished = FinishedPayload(
+                            name = snap.workoutName,
+                            sets = entities.size,
+                            duration = duration,
+                            workouts = total,
+                            volume = volume,
+                            weightUnit = snap.weightUnit,
+                        ),
                     )
                 }
             }.onFailure { e ->

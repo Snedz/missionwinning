@@ -235,6 +235,7 @@ fun MwSetRow(
     onToggle: () -> Unit,
     modifier: Modifier = Modifier,
     isCurrent: Boolean = false,
+    weightLabel: String? = null,
 ) {
     val view = LocalView.current
     val shape = RoundedCornerShape(16.dp)
@@ -248,10 +249,14 @@ fun MwSetRow(
         isCurrent -> MwColors.Emerald.copy(alpha = 0.55f)
         else -> MwColors.Border
     }
+    val detail = buildString {
+        append("$reps reps")
+        if (!weightLabel.isNullOrBlank()) append(" · $weightLabel")
+    }
     val setLabel = when {
-        done -> "Set ${index + 1}, $reps reps, completed. Double tap to undo"
-        isCurrent -> "Set ${index + 1}, $reps reps, current. Double tap to complete"
-        else -> "Set ${index + 1}, $reps reps. Double tap to complete"
+        done -> "Set ${index + 1}, $detail, completed. Double tap to undo"
+        isCurrent -> "Set ${index + 1}, $detail, current. Double tap to complete"
+        else -> "Set ${index + 1}, $detail. Double tap to complete"
     }
     Row(
         modifier = modifier
@@ -293,13 +298,15 @@ fun MwSetRow(
                 color = MwColors.Text,
             )
             Text(
-                "$reps reps",
+                detail,
                 style = MwTypography.bodyMedium,
                 color = MwColors.TextMuted,
             )
         }
         if (isCurrent && !done) {
             Text("NOW", style = MwTypography.labelSmall, color = MwColors.Emerald)
+        } else if (done) {
+            Text("DONE", style = MwTypography.labelSmall, color = MwColors.Emerald)
         }
     }
 }
