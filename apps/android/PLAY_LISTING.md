@@ -73,7 +73,7 @@ Local smoke (debug-signed, not for Play):
 
 **Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
 
-`versionCode` is `27`, `versionName` is `1.2.8` — Phase 0 foundation: version catalog, compileSdk 36 (no preview), Room schema export, CI without SDK symlink hacks.
+`versionCode` is `28`, `versionName` is `1.3.0` — Phase 1 auth: email 6-digit OTP, Keystore-backed session, Bearer mobile premium/status; offline logger unchanged.
 
 ---
 

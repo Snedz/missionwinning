@@ -28,8 +28,8 @@ android {
         applicationId = "com.missionwinning.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 27
-        versionName = "1.2.8"
+        versionCode = 28
+        versionName = "1.3.0"
         // Override via apps/android/local.properties (gitignored):
         //   mw.apiBaseUrl=http://10.0.2.2:3000
         //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
@@ -39,8 +39,12 @@ android {
         }
         val apiBase = localProps.getProperty("mw.apiBaseUrl") ?: "https://www.missionwinning.com"
         val privateCookie = localProps.getProperty("mw.privateAccessCookie") ?: ""
+        val supabaseUrl = localProps.getProperty("mw.supabaseUrl") ?: ""
+        val supabaseAnon = localProps.getProperty("mw.supabaseAnonKey") ?: ""
         buildConfigField("String", "API_BASE_URL", "\"$apiBase\"")
         buildConfigField("String", "PRIVATE_ACCESS_COOKIE", "\"$privateCookie\"")
+        buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnon\"")
     }
 
     signingConfigs {

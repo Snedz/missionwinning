@@ -9,7 +9,8 @@ Full API table: [docs/API_MOBILE.md](../../docs/API_MOBILE.md) · OpenAPI: [docs
 | Mode | Behavior |
 |------|----------|
 | **Offline (default)** | `LocalCoachSeed` + Room plan cache. No cookie needed. |
-| **Network** | `MobileApiClient` → `GET/POST /api/mobile/coach/*` and workout outbox flush |
+| **Network** | `MobileApiClient` → `GET/POST /api/mobile/coach/*`, workout outbox flush, `GET /api/mobile/premium/status` |
+| **Auth** | Optional email OTP via Supabase; Bearer on mobile APIs when signed in (`AuthRepository`) |
 
 On any API failure (403/network), repository falls back to Room seed/cache.
 

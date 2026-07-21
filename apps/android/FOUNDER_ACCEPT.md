@@ -126,8 +126,12 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 
 | # | Check | Result |
 |---|--------|--------|
-| U1 | Continue offline message | |
+| U1 | Continue offline works without account | |
 | U2 | Version chip shows current versionName | |
+| U3 | With Supabase configured: send code → verify → stays signed in after kill/relaunch | |
+| U4 | Sign out keeps local workouts; tokens cleared | |
+| U5 | Airplane mode logger works signed in and signed out | |
+| U6 | Refresh entitlement returns free/premium source | |
 
 ---
 
