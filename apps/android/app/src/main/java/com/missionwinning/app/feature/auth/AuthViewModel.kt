@@ -24,6 +24,8 @@ import javax.inject.Inject
 
 enum class AuthStep { Email, Code, SignedIn }
 
+enum class ExportFormat { MwCsv, HevyCsv, Json }
+
 data class AuthScreenState(
     val step: AuthStep = AuthStep.Email,
     val email: String = "",
@@ -100,19 +102,20 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             _local.update { it.copy(syncBusy = true, error = null, message = null) }
             runCatching {
-                repository.syncNow()
+                val result = repository.syncNow()
                 syncScheduler.enqueueNow()
-            }.onSuccess {
+                result
+            }.onSuccess { result ->
                 refreshOutbox()
-                val left = _local.value.outbox
+                val conflict = result.lastConflictNote ?: _local.value.outbox.lastConflictNote
                 _local.update {
                     it.copy(
                         syncBusy = false,
-                        message = if (left.needsAttention) {
-                            "Sync attempted — ${left.summaryLine}"
-                        } else {
-                            "Sync complete"
+                        message = buildString {
+                            append(result.summaryLine)
+                            if (conflict != null) append(" · $conflict")
                         },
+                        error = result.error,
                     )
                 }
             }.onFailure { e ->
@@ -123,6 +126,43 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+
+    fun importCsvText(csv: String) {
+        viewModelScope.launch {
+            _local.update { it.copy(busy = true, error = null, message = null) }
+            val unit = repository.weightUnit()
+            runCatching { repository.importWorkoutsCsv(csv, unit) }
+                .onSuccess { summary ->
+                    refreshOutbox()
+                    _local.update {
+                        it.copy(
+                            busy = false,
+                            message = if (summary.imported > 0) {
+                                "Imported ${summary.imported} workout(s) · ${summary.sets} sets (${summary.format})"
+                            } else {
+                                summary.error ?: "No workouts found in file"
+                            },
+                            error = if (summary.imported == 0) summary.error else null,
+                        )
+                    }
+                }
+                .onFailure { e ->
+                    _local.update {
+                        it.copy(busy = false, error = e.message ?: "Import failed")
+                    }
+                }
+        }
+    }
+
+    /** @return file text for share sheet, or null */
+    suspend fun buildExport(format: ExportFormat): String? =
+        runCatching {
+            when (format) {
+                ExportFormat.MwCsv -> repository.exportWorkoutsMwCsv()
+                ExportFormat.HevyCsv -> repository.exportWorkoutsHevyCsv()
+                ExportFormat.Json -> repository.exportWorkoutsJson()
+            }
+        }.getOrNull()
 
     fun onEmailChange(value: String) {
         _local.update { it.copy(email = value, error = null, message = null) }
@@ -167,7 +207,7 @@ class AuthViewModel @Inject constructor(
             _local.update { it.copy(busy = true, error = null, message = null) }
             authRepository.verifyOtp(email, code)
                 .onSuccess {
-                    runCatching { repository.syncNow() }
+                    val syncResult = runCatching { repository.syncNow() }.getOrNull()
                     syncScheduler.enqueueNow()
                     refreshOutbox()
                     _local.update {
@@ -175,7 +215,10 @@ class AuthViewModel @Inject constructor(
                             busy = false,
                             step = AuthStep.SignedIn,
                             code = "",
-                            message = "Signed in. Syncing workouts & routines…",
+                            message = buildString {
+                                append("Signed in. ")
+                                append(syncResult?.summaryLine ?: "Syncing workouts & routines…")
+                            },
                         )
                     }
                 }

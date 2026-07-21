@@ -31,11 +31,16 @@ class SyncCoordinator(
         val failed = dao.failedWorkoutCount()
         val rows = dao.pendingOutboxCount()
         val last = dao.getPref(KEY_LAST_SYNC_SUCCESS)
+        val summary = dao.getPref(SyncEngine.KEY_LAST_SYNC_SUMMARY)
+        val conflict = dao.getPref(SyncEngine.KEY_LAST_CONFLICT_NOTE)
         return OutboxStatus(
             pendingWorkouts = pending,
             failedWorkouts = failed,
             outboxRows = rows,
             lastSuccessAt = last,
+            lastSyncSummary = summary,
+            lastConflictNote = conflict,
+            workoutCount = dao.workoutCount(),
         )
     }
 
@@ -44,17 +49,17 @@ class SyncCoordinator(
         return pendingSyncCount()
     }
 
-    suspend fun flushOutbox() {
+    suspend fun flushOutbox(): SyncRunResult {
         val engine = syncEngine
         if (engine != null) {
-            val remaining = engine.syncAll()
-            if (remaining == 0) {
+            val result = engine.syncDetailed()
+            if (result.remainingUnsynced == 0 && result.error == null) {
                 markSyncSuccess()
             }
-            return
+            return result
         }
         // Fallback: legacy summary push if SyncEngine not wired (widgets / tests)
-        val client = api ?: return
+        val client = api ?: return SyncRunResult(remainingUnsynced = dao.unsyncedWorkoutCount())
         val pending = dao.pendingOutbox()
         var anyOk = false
         for (row in pending) {
@@ -105,13 +110,15 @@ class SyncCoordinator(
                 dao.deleteOutbox(row.id)
             }
         }
-        if (anyOk && dao.unsyncedWorkoutCount() == 0) {
+        val remaining = dao.unsyncedWorkoutCount()
+        if (anyOk && remaining == 0) {
             markSyncSuccess()
         }
+        return SyncRunResult(remainingUnsynced = remaining)
     }
 
     /** Full pull+push for signed-in restore. */
-    suspend fun syncNow(): Int = flushOutboxAndCount()
+    suspend fun syncNow(): SyncRunResult = flushOutbox()
 
     private suspend fun markSyncSuccess() {
         dao.setPref(

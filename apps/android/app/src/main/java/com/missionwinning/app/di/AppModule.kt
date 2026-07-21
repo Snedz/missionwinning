@@ -13,6 +13,7 @@ import com.missionwinning.core.data.SyncCoordinator
 import com.missionwinning.core.data.SyncEngine
 import com.missionwinning.core.data.SyncScheduler
 import com.missionwinning.core.data.TokenStore
+import com.missionwinning.core.data.WorkoutImportRepository
 import com.missionwinning.core.data.WorkoutRepository
 import com.missionwinning.core.network.MobileApiClient
 import com.missionwinning.core.network.SupabaseAuthClient
@@ -123,6 +124,13 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideWorkoutImportRepository(
+        db: MwDatabase,
+        sync: SyncCoordinator,
+    ): WorkoutImportRepository = WorkoutImportRepository(db, sync)
+
+    @Provides
+    @Singleton
     fun provideRepository(
         prefs: PrefsRepository,
         coach: CoachPlanRepository,
@@ -130,7 +138,8 @@ object AppModule {
         routines: RoutineRepository,
         sync: SyncCoordinator,
         customExercises: CustomExerciseRepository,
-    ): MwRepository = MwRepository(prefs, coach, workouts, routines, sync, customExercises)
+        transfer: WorkoutImportRepository,
+    ): MwRepository = MwRepository(prefs, coach, workouts, routines, sync, customExercises, transfer)
 
     @Provides
     @Singleton
