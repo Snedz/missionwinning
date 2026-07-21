@@ -37,10 +37,15 @@ object LocalCoachSeed {
                     kind = "recovery",
                     name = "Recovery (adapted)",
                     status = "swapped",
-                    exercises = listOf(PlanExerciseDto("walk", 1, 20, whyKey = "adapt")),
+                    focusGroups = listOf("recovery", "walk"),
+                    exercises = listOf(
+                        PlanExerciseDto("walk", 1, 20, whyKey = "adapt"),
+                        PlanExerciseDto("plank", 2, 30, whyKey = "recover"),
+                    ),
                     estMinutes = 25,
                 )
             }
+            // Premium-depth beat: equipment intelligence note for demo
         }
         val plan = CoachPlanDto(
             revision = revision,
@@ -76,6 +81,13 @@ object LocalCoachSeed {
                 swapped,
             )
         }
+        if (withAdaptDemo) {
+            beats += AdaptBeatDto(
+                "coachAdaptEquipmentNote",
+                "Equipment profile “$equip” kept moves train-anywhere friendly while recovery days protect the streak.",
+                1,
+            )
+        }
         return CoachPlanResponseDto(
             plan = plan,
             adaptBeats = beats,
@@ -107,8 +119,8 @@ object LocalCoachSeed {
                 },
                 focusGroups = listOf("chest", "shoulders"),
                 exercises = listOf(
-                    PlanExerciseDto(pushA, 3, 10),
-                    PlanExerciseDto(pushB, 3, if (equip == "bodyweight") 40 else 12),
+                    PlanExerciseDto(pushA, 3, 10, whyKey = "main"),
+                    PlanExerciseDto(pushB, 3, if (equip == "bodyweight") 40 else 12, whyKey = "balance"),
                 ),
                 estMinutes = 35,
                 status = if (withAdaptDemo) "missed" else "planned",
@@ -124,8 +136,8 @@ object LocalCoachSeed {
                 },
                 focusGroups = listOf("quads", "glutes"),
                 exercises = listOf(
-                    PlanExerciseDto(legsA, 3, 12),
-                    PlanExerciseDto(legsB, 3, 10),
+                    PlanExerciseDto(legsA, 3, 12, whyKey = "main"),
+                    PlanExerciseDto(legsB, 3, 10, whyKey = "progress"),
                 ),
                 estMinutes = 40,
                 status = if (withAdaptDemo) "swapped" else "planned",
@@ -141,8 +153,8 @@ object LocalCoachSeed {
                 },
                 focusGroups = listOf("back", "biceps"),
                 exercises = listOf(
-                    PlanExerciseDto(pullA, 3, 10),
-                    PlanExerciseDto(pullB, 3, 6),
+                    PlanExerciseDto(pullA, 3, 10, whyKey = "main"),
+                    PlanExerciseDto(pullB, 3, 6, whyKey = "balance"),
                 ),
                 estMinutes = 35,
                 status = "planned",

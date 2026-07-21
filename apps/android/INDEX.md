@@ -62,6 +62,12 @@
 - HC: write exercise + estimated active calories; optional **steps on Today**
 - Widget v2: streak · week volume · live session line
 
+## Coach premium depth (Phase 14)
+
+- Free forever: full week plan, basic adapt summary, short “why this session”
+- Super Bundle (recognition only): full adapt beats, insight stack, move-level intent
+- Pure `CoachDepth` helpers — no planEngine, no purchase UI
+
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)

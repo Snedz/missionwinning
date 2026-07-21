@@ -160,7 +160,14 @@ fun CoachScreen(
                         }
                     }
 
-                    planResp?.let { CoachAdaptBanner(it) }
+                    planResp?.let {
+                        CoachAdaptBanner(resp = it, premium = state.premium)
+                    }
+
+                    CoachInsightStack(
+                        insights = state.insights,
+                        premium = state.premium,
+                    )
 
                     MwSectionLabel("Sessions")
                     val ordered = planResp?.plan?.sessions.orEmpty().sortedBy { it.dayOffset }
@@ -193,6 +200,55 @@ fun CoachScreen(
                                 onStartWorkout(s.id, s.name, sets)
                             },
                         )
+                        // Why this session — free short copy; premium deeper + move hints
+                        val why = state.sessionWhys[s.id]
+                        if (why != null) {
+                            MwGhostButton(
+                                text = if (state.expandedSessionId == s.id) {
+                                    "Hide why"
+                                } else {
+                                    "Why this session"
+                                },
+                                contentDescription = "Toggle why for ${s.name}",
+                                onClick = { viewModel.toggleSessionWhy(s.id) },
+                            )
+                            if (state.expandedSessionId == s.id) {
+                                MwCard(elevated = true) {
+                                    Text(
+                                        why.headline,
+                                        style = MwTypography.titleMedium,
+                                        color = MwColors.Text,
+                                    )
+                                    Text(
+                                        why.focusLine,
+                                        style = MwTypography.labelMedium,
+                                        color = MwColors.Brass,
+                                    )
+                                    Text(
+                                        why.detail,
+                                        style = MwTypography.bodyMedium,
+                                        color = MwColors.TextMuted,
+                                    )
+                                    if (why.moveHints.isNotEmpty()) {
+                                        Spacer(Modifier.height(6.dp))
+                                        MwChip("Move intent", tone = MwChipTone.Emerald)
+                                        why.moveHints.forEach { hint ->
+                                            Text(
+                                                hint,
+                                                style = MwTypography.labelMedium,
+                                                color = MwColors.TextMuted,
+                                            )
+                                        }
+                                    } else if (!state.premium) {
+                                        Text(
+                                            "Super Bundle on this account unlocks move-level intent (no in-app purchase).",
+                                            style = MwTypography.labelMedium,
+                                            color = MwColors.TextMuted,
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     // Lab tools: debug builds only (Track 2B.4 — hide prototype chrome from Internal).
@@ -262,14 +318,14 @@ private fun EntitlementBanner(
                     MwChip(premiumSource, tone = MwChipTone.Brass)
                 }
                 Text(
-                    "Adapt depth unlocked. Missed days and swaps refine your week from real logs.",
+                    "Premium coach depth: full adapt beats, session rationale, move intent. Week plan was already free — logging never requires a plan.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
                 if (onSeedAdapt != null) {
                     Spacer(Modifier.height(8.dp))
                     MwSecondaryButton(
-                        text = "Preview adapt (miss + swap)",
+                        text = "Preview adapt depth",
                         onClick = onSeedAdapt,
                     )
                 }
@@ -277,7 +333,7 @@ private fun EntitlementBanner(
             signedIn -> {
                 MwChip("Free coach", tone = MwChipTone.Neutral)
                 Text(
-                    "You’re signed in. Super Bundle enrollment (managed outside this app) unlocks deeper adapt when active on your account. Free offline logging never requires a plan.",
+                    "Full week plan free forever. Super Bundle (managed outside this app) unlocks deeper insights when active — never gates the logger.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
@@ -285,7 +341,7 @@ private fun EntitlementBanner(
             else -> {
                 MwChip("Offline free", tone = MwChipTone.Brass)
                 Text(
-                    "Train fully offline. Sign in on Account to sync history and recognize Super Bundle if you’re already enrolled.",
+                    "Full week plan + logger work offline. Sign in on Account to recognize Super Bundle depth if you’re enrolled.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )

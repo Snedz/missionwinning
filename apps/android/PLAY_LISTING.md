@@ -73,7 +73,7 @@ Local smoke (debug-signed, not for Play):
 
 **Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
 
-`versionCode` is `39`, `versionName` is `1.12.0` — Phase 13: Wear tile/complication + HC calories/steps + widget v2. See [PLAY_BILLING.md](PLAY_BILLING.md).
+`versionCode` is `40`, `versionName` is `1.13.0` — Phase 14: coach premium depth (insights + session why; free plan forever). See [PLAY_BILLING.md](PLAY_BILLING.md).
 
 ---
 
