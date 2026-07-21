@@ -13,6 +13,8 @@ data class LoggedSet(
     val done: Boolean = false,
     val previousReps: Int? = null,
     val previousWeight: Double? = null,
+    /** Optional RPE 6–10 (local-first coach signal). */
+    val rpe: Int? = null,
 )
 
 @Immutable

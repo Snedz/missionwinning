@@ -118,6 +118,7 @@ object ActiveSessionLogic {
                         s.copy(
                             reps = completed.reps.coerceIn(1, 99),
                             weight = completed.weight.coerceAtLeast(0.0),
+                            rpe = completed.rpe,
                         )
                     } else {
                         s

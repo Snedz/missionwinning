@@ -1,5 +1,6 @@
 package com.missionwinning.feature.victory
 
+import android.content.Intent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -17,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -65,6 +67,15 @@ fun VictoryScreen(
         "${WeightUnits.format(state.volume.toDouble())} $unit"
     } else {
         "—"
+    }
+    val context = LocalContext.current
+    val shareText = buildString {
+        append("Mission Winning · ${state.workoutName.ifBlank { "Workout" }}")
+        append(" · ${state.sets} sets · ${formatDuration(state.duration)}")
+        if (state.volume > 0) {
+            append(" · $volumeLabel vol")
+        }
+        append(" · logged offline (#${state.workouts})")
     }
 
     MwScreenScaffold {
@@ -127,6 +138,19 @@ fun VictoryScreen(
                     text = if (coachFirst) "See Mission Coach" else "Back to Today",
                     contentDescription = if (coachFirst) "See Mission Coach" else "Back to Today",
                     onClick = if (coachFirst) onCoach else onToday,
+                )
+                MwGhostButton(
+                    text = "Share session",
+                    contentDescription = "Share session summary",
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, shareText)
+                        }
+                        context.startActivity(
+                            Intent.createChooser(intent, "Share session"),
+                        )
+                    },
                 )
                 MwGhostButton(text = "Today", onClick = onToday)
             }

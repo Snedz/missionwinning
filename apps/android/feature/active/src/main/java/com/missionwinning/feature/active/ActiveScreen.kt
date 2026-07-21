@@ -255,6 +255,9 @@ fun ActiveScreen(
                                         val step = ActiveSessionLogic.weightStep(state.weightUnit)
                                         onEvent(ActiveEvent.UpdateWeight(set.id, set.weight + d * step))
                                     },
+                                    onRpe = { rpe ->
+                                        onEvent(ActiveEvent.UpdateRpe(set.id, rpe))
+                                    },
                                     onApplyPrevious = {
                                         onEvent(ActiveEvent.ApplyPrevious(set.id))
                                     },
@@ -456,6 +459,7 @@ private fun CurrentSetCard(
     onComplete: () -> Unit,
     onRepsDelta: (Int) -> Unit,
     onWeightDelta: (Int) -> Unit,
+    onRpe: (Int?) -> Unit,
     onApplyPrevious: () -> Unit,
     exerciseIndex: Int? = null,
     exerciseTotal: Int = 0,
@@ -539,6 +543,30 @@ private fun CurrentSetCard(
                 onPlus = { onWeightDelta(1) },
                 modifier = Modifier.weight(1f),
             )
+        }
+        Text(
+            "RPE (optional)",
+            style = MwTypography.labelSmall,
+            color = MwColors.TextMuted,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            (6..10).forEach { value ->
+                MwChip(
+                    text = value.toString(),
+                    tone = if (set.rpe == value) MwChipTone.Brass else MwChipTone.Neutral,
+                    contentDescription = if (set.rpe == value) {
+                        "RPE $value selected, tap to clear"
+                    } else {
+                        "Set RPE $value"
+                    },
+                    onClick = {
+                        onRpe(if (set.rpe == value) null else value)
+                    },
+                )
+            }
         }
         MwPrimaryButton(
             text = "Complete set",

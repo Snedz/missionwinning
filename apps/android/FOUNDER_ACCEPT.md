@@ -70,6 +70,7 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | L9 | All-done banner + Finish locks session | |
 | L10 | System back → discard confirm | |
 | L11 | Keep-screen-on during session | |
+| L12 | Optional RPE chips 6–10 on current set | |
 
 ---
 
@@ -81,6 +82,7 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | V2 | Offline pill / “saved on this device” | |
 | V3 | Milestone line on 1st/3rd session if applicable | |
 | V4 | CTA to Coach (early) or Today | |
+| V5 | Share session opens system share sheet | |
 
 ---
 
