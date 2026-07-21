@@ -40,4 +40,13 @@ object ActiveSessionLogic {
 
     fun durationSeconds(startedAtMs: Long, nowMs: Long = System.currentTimeMillis()): Int =
         ((nowMs - startedAtMs) / 1000).toInt().coerceAtLeast(MIN_DURATION_SECONDS)
+
+    fun convertWeight(value: Double, fromUnit: String, toUnit: String): Double =
+        com.missionwinning.core.model.WeightUnits.convert(value, fromUnit, toUnit)
+
+    fun weightStep(unit: String): Double =
+        com.missionwinning.core.model.WeightUnits.step(unit)
+
+    fun normalizeUnit(unit: String): String =
+        com.missionwinning.core.model.WeightUnits.normalize(unit)
 }

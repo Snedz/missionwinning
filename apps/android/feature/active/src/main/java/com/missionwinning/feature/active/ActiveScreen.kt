@@ -130,7 +130,13 @@ fun ActiveScreen(
                         MwSectionLabel("Train")
                         MwHeroTitle(state.workoutName.ifBlank { "Workout" })
                     }
-                    MwChip(formatElapsed(elapsed.toInt()), tone = MwChipTone.Brass)
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        MwChip(formatElapsed(elapsed.toInt()), tone = MwChipTone.Brass)
+                        MwChip(
+                            state.weightUnit.uppercase(),
+                            tone = MwChipTone.Emerald,
+                        )
+                    }
                 }
 
                 LinearProgressIndicator(
@@ -142,11 +148,23 @@ fun ActiveScreen(
                     trackColor = MwColors.Border,
                     strokeCap = StrokeCap.Round,
                 )
-                Text(
-                    "${state.doneCount} / ${state.totalSets} sets · ${state.weightUnit}",
-                    style = MwTypography.labelMedium,
-                    color = MwColors.TextMuted,
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        "${state.doneCount} / ${state.totalSets} sets",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                    MwGhostButton(
+                        text = "Use ${if (state.weightUnit == "kg") "lb" else "kg"}",
+                        contentDescription = "Toggle weight unit",
+                        onClick = { onEvent(ActiveEvent.ToggleWeightUnit) },
+                        modifier = Modifier.fillMaxWidth(0.4f),
+                    )
+                }
 
                 if (state.exercises.isEmpty()) {
                     MwEmptyState(
@@ -166,7 +184,7 @@ fun ActiveScreen(
                             onEvent(ActiveEvent.UpdateReps(currentSet.id, currentSet.reps + d))
                         },
                         onWeightDelta = { d ->
-                            val step = if (state.weightUnit == "kg") 2.5 else 5.0
+                            val step = ActiveSessionLogic.weightStep(state.weightUnit)
                             onEvent(ActiveEvent.UpdateWeight(currentSet.id, currentSet.weight + d * step))
                         },
                     )

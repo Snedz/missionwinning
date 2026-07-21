@@ -114,6 +114,47 @@ fun TodayScreen(
                     MwWeekStrip(days = weekDays)
                 }
 
+                MwCard(elevated = true) {
+                    MwSectionLabel("Units")
+                    Text(
+                        "Weight unit for logging (saved on device).",
+                        style = MwTypography.bodyMedium,
+                        color = MwColors.TextMuted,
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        if (state.weightUnit == "kg") {
+                            MwPrimaryButton(
+                                text = "KG",
+                                contentDescription = "Kilograms selected",
+                                onClick = { },
+                                modifier = Modifier.weight(1f),
+                            )
+                            MwGhostButton(
+                                text = "LB",
+                                contentDescription = "Switch to pounds",
+                                onClick = { viewModel.setWeightUnit("lb") },
+                                modifier = Modifier.weight(1f),
+                            )
+                        } else {
+                            MwGhostButton(
+                                text = "KG",
+                                contentDescription = "Switch to kilograms",
+                                onClick = { viewModel.setWeightUnit("kg") },
+                                modifier = Modifier.weight(1f),
+                            )
+                            MwPrimaryButton(
+                                text = "LB",
+                                contentDescription = "Pounds selected",
+                                onClick = { },
+                                modifier = Modifier.weight(1f),
+                            )
+                        }
+                    }
+                }
+
                 MwGhostButton(text = "Review week on Coach", onClick = onOpenCoach)
                 MwGhostButton(text = "Account / sign-in", onClick = onOpenAuth)
                 Spacer(Modifier.height(8.dp))
