@@ -17,6 +17,8 @@ data class OutboxStatus(
     val lastSyncSummary: String? = null,
     /** Last local-vs-remote conflict note (routines/workouts). */
     val lastConflictNote: String? = null,
+    /** Recent conflict notes (newest first), for Account inbox. */
+    val conflictInbox: List<String> = emptyList(),
     val workoutCount: Int = 0,
 ) {
     val needsAttention: Boolean get() = failedWorkouts > 0 || pendingWorkouts > 0 || outboxRows > 0

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.missionwinning.core.common.ActiveSessionHub
 import com.missionwinning.core.data.MwRepository
+import com.missionwinning.core.data.SessionDraftRepository
 import com.missionwinning.core.data.SetLogEntity
 import com.missionwinning.core.model.ActiveExercise
 import com.missionwinning.core.model.ExerciseCatalog
@@ -33,6 +34,8 @@ data class ActiveUiState(
     val restVibrate: Boolean = true,
     val restBeep: Boolean = false,
     val weightUnit: String = "kg",
+    /** Barbell empty weight for plate calculator (prefs). */
+    val barWeight: Double = 20.0,
     val finishing: Boolean = false,
     val finished: FinishedPayload? = null,
     val error: String? = null,
@@ -87,6 +90,7 @@ sealed interface ActiveEvent {
 @HiltViewModel
 class ActiveViewModel @Inject constructor(
     private val repository: MwRepository,
+    private val sessionDrafts: SessionDraftRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ActiveUiState())
@@ -96,6 +100,7 @@ class ActiveViewModel @Inject constructor(
     private var restJob: Job? = null
     /** Absolute rest end for notification (screen-off accurate). */
     private var restDeadlineMs: Long? = null
+    private var draftJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -109,10 +114,21 @@ class ActiveViewModel @Inject constructor(
         viewModelScope.launch {
             _state.collect { publishHub(it) }
         }
+        viewModelScope.launch {
+            _state.collect { st ->
+                if (st.sessionId.isBlank() || st.finished != null || st.finishing) return@collect
+                if (st.exercises.isEmpty() && !MwRepository.isFreeformSession(st.sessionId)) return@collect
+                draftJob?.cancel()
+                draftJob = viewModelScope.launch {
+                    delay(250)
+                    persistDraft(st)
+                }
+            }
+        }
     }
 
-    suspend fun searchExercises(query: String, equipment: String? = null) =
-        repository.searchExercises(query, equipment)
+    suspend fun searchExercises(query: String, equipment: String? = null, muscle: String? = null) =
+        repository.searchExercises(query, equipment, muscle)
 
     fun start(sessionId: String, workoutName: String, fallbackSets: Int) {
         startedAt = System.currentTimeMillis()
@@ -123,6 +139,27 @@ class ActiveViewModel @Inject constructor(
             val restVibrate = repository.restVibrateEnabled()
             val restBeep = repository.restBeepEnabled()
             val streak = runCatching { repository.workoutStreakDays() }.getOrDefault(0)
+            val barWeight = if (unit == "lb") repository.barWeightLb() else repository.barWeightKg()
+
+            val draft = sessionDrafts.load()
+            if (draft != null && draft.sessionId == sessionId && draft.exercises.isNotEmpty()) {
+                startedAt = draft.startedAtMs
+                _state.value = ActiveUiState(
+                    workoutName = draft.workoutName.ifBlank { workoutName },
+                    sessionId = sessionId,
+                    exercises = draft.exercises.map { it.toActive() },
+                    weightUnit = draft.weightUnit.ifBlank { unit },
+                    defaultRestSeconds = draft.defaultRestSeconds,
+                    restSeconds = draft.restSeconds,
+                    restTotalSeconds = draft.restSeconds,
+                    restVibrate = restVibrate,
+                    restBeep = restBeep,
+                    streakDays = streak,
+                    barWeight = barWeight,
+                )
+                if (draft.restSeconds > 0) startRest(draft.restSeconds)
+                return@launch
+            }
 
             if (MwRepository.isFreeformSession(sessionId)) {
                 _state.value = ActiveUiState(
@@ -134,6 +171,7 @@ class ActiveViewModel @Inject constructor(
                     restVibrate = restVibrate,
                     restBeep = restBeep,
                     streakDays = streak,
+                    barWeight = barWeight,
                 )
                 return@launch
             }
@@ -157,6 +195,7 @@ class ActiveViewModel @Inject constructor(
                     restVibrate = restVibrate,
                     restBeep = restBeep,
                     streakDays = streak,
+                    barWeight = barWeight,
                 )
                 return@launch
             }
@@ -178,6 +217,7 @@ class ActiveViewModel @Inject constructor(
                 restVibrate = restVibrate,
                 restBeep = restBeep,
                 streakDays = streak,
+                barWeight = barWeight,
             )
         }
     }
@@ -379,24 +419,28 @@ class ActiveViewModel @Inject constructor(
         val st = _state.value
         val from = ActiveSessionLogic.normalizeUnit(st.weightUnit)
         val to = if (from == "kg") "lb" else "kg"
-        _state.update { cur ->
-            cur.copy(
-                weightUnit = to,
-                exercises = cur.exercises.map { ex ->
-                    ex.copy(
-                        sets = ex.sets.map { s ->
-                            s.copy(
-                                weight = ActiveSessionLogic.convertWeight(s.weight, from, to),
-                                previousWeight = s.previousWeight?.let {
-                                    ActiveSessionLogic.convertWeight(it, from, to)
-                                },
-                            )
-                        },
-                    )
-                },
-            )
+        viewModelScope.launch {
+            val bar = if (to == "lb") repository.barWeightLb() else repository.barWeightKg()
+            _state.update { cur ->
+                cur.copy(
+                    weightUnit = to,
+                    barWeight = bar,
+                    exercises = cur.exercises.map { ex ->
+                        ex.copy(
+                            sets = ex.sets.map { s ->
+                                s.copy(
+                                    weight = ActiveSessionLogic.convertWeight(s.weight, from, to),
+                                    previousWeight = s.previousWeight?.let {
+                                        ActiveSessionLogic.convertWeight(it, from, to)
+                                    },
+                                )
+                            },
+                        )
+                    },
+                )
+            }
+            repository.setWeightUnit(to)
         }
-        viewModelScope.launch { repository.setWeightUnit(to) }
     }
 
     private fun toggleSet(setId: String) {
@@ -581,6 +625,7 @@ class ActiveViewModel @Inject constructor(
                 val volume = ActiveSessionLogic.sessionVolume(snap.exercises)
                 // Room SoT + outbox first; markSessionDone may hit network but local plan updates offline.
                 val result = repository.finishWorkout(snap.workoutName, duration, entities, snap.sessionId)
+                sessionDrafts.clear()
                 // Coach week progress only for plan sessions — not routines / freeform.
                 if (MwRepository.isCoachSession(snap.sessionId)) {
                     runCatching { repository.markSessionDone(snap.sessionId) }
@@ -698,4 +743,67 @@ class ActiveViewModel @Inject constructor(
         }
         return ActiveExercise(exerciseId = exerciseId, name = exerciseName, sets = sets)
     }
+
+    private suspend fun persistDraft(st: ActiveUiState) {
+        runCatching {
+            sessionDrafts.save(
+                SessionDraftRepository.DraftPayload(
+                    sessionId = st.sessionId,
+                    workoutName = st.workoutName,
+                    startedAtMs = startedAt,
+                    weightUnit = st.weightUnit,
+                    restSeconds = st.restSeconds,
+                    defaultRestSeconds = st.defaultRestSeconds,
+                    exercises = st.exercises.map { ex ->
+                        SessionDraftRepository.DraftExercise(
+                            exerciseId = ex.exerciseId,
+                            name = ex.name,
+                            supersetGroup = ex.supersetGroup,
+                            defaultRestSeconds = ex.defaultRestSeconds,
+                            sets = ex.sets.map { s ->
+                                SessionDraftRepository.DraftSet(
+                                    id = s.id,
+                                    exerciseId = s.exerciseId,
+                                    exerciseName = s.exerciseName,
+                                    setIndex = s.setIndex,
+                                    reps = s.reps,
+                                    weight = s.weight,
+                                    done = s.done,
+                                    previousReps = s.previousReps,
+                                    previousWeight = s.previousWeight,
+                                    rpe = s.rpe,
+                                    kind = s.kind.code,
+                                    note = s.note,
+                                )
+                            },
+                        )
+                    },
+                ),
+            )
+        }
+    }
+
+    private fun SessionDraftRepository.DraftExercise.toActive(): ActiveExercise =
+        ActiveExercise(
+            exerciseId = exerciseId,
+            name = name,
+            sets = sets.map { s ->
+                LoggedSet(
+                    id = s.id,
+                    exerciseId = s.exerciseId,
+                    exerciseName = s.exerciseName,
+                    setIndex = s.setIndex,
+                    reps = s.reps,
+                    weight = s.weight,
+                    done = s.done,
+                    previousReps = s.previousReps,
+                    previousWeight = s.previousWeight,
+                    rpe = s.rpe,
+                    kind = SetKind.fromCode(s.kind),
+                    note = s.note,
+                )
+            },
+            supersetGroup = supersetGroup,
+            defaultRestSeconds = defaultRestSeconds,
+        )
 }

@@ -140,4 +140,25 @@ class PrefsRepository(
     suspend fun setHealthConnectStepsReadEnabled(enabled: Boolean) {
         dao.setPref(PrefEntity(MwRepository.KEY_HEALTH_CONNECT_STEPS, if (enabled) "1" else "0"))
     }
+
+    suspend fun barWeightKg(): Double =
+        dao.getPref(MwRepository.KEY_BAR_KG)?.toDoubleOrNull()?.takeIf { it > 0 } ?: 20.0
+
+    suspend fun setBarWeightKg(kg: Double) {
+        dao.setPref(PrefEntity(MwRepository.KEY_BAR_KG, kg.coerceAtLeast(0.0).toString()))
+        bumpPrefsRevision()
+    }
+
+    suspend fun barWeightLb(): Double =
+        dao.getPref(MwRepository.KEY_BAR_LB)?.toDoubleOrNull()?.takeIf { it > 0 } ?: 45.0
+
+    suspend fun setBarWeightLb(lb: Double) {
+        dao.setPref(PrefEntity(MwRepository.KEY_BAR_LB, lb.coerceAtLeast(0.0).toString()))
+        bumpPrefsRevision()
+    }
+
+    private suspend fun bumpPrefsRevision() {
+        val rev = (dao.getPref(SyncEngine.KEY_PREFS_REVISION)?.toIntOrNull() ?: 0) + 1
+        dao.setPref(PrefEntity(SyncEngine.KEY_PREFS_REVISION, rev.toString()))
+    }
 }

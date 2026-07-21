@@ -1,6 +1,7 @@
 package com.missionwinning.core.data
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "coach_plan")
@@ -9,7 +10,13 @@ data class CoachPlanEntity(
     val json: String,
 )
 
-@Entity(tableName = "workout_logs")
+@Entity(
+    tableName = "workout_logs",
+    indices = [
+        Index(value = ["syncStatus"]),
+        Index(value = ["updatedAt"]),
+    ],
+)
 data class WorkoutLogEntity(
     @PrimaryKey val id: String,
     val workoutName: String,
@@ -26,7 +33,10 @@ data class WorkoutLogEntity(
     val weightUnit: String = "kg",
 )
 
-@Entity(tableName = "set_logs")
+@Entity(
+    tableName = "set_logs",
+    indices = [Index(value = ["workoutId"])],
+)
 data class SetLogEntity(
     @PrimaryKey val id: String,
     val exerciseId: String,
@@ -50,8 +60,11 @@ data class SetLogEntity(
     val supersetGroup: String = "",
 )
 
-/** User-defined exercises (offline + free forever). Room v10. */
-@Entity(tableName = "custom_exercises")
+/** User-defined exercises (offline + free forever). Room v10; sync fields v11. */
+@Entity(
+    tableName = "custom_exercises",
+    indices = [Index(value = ["syncStatus"])],
+)
 data class CustomExerciseEntity(
     @PrimaryKey val id: String,
     val name: String,
@@ -59,9 +72,16 @@ data class CustomExerciseEntity(
     /** bodyweight | dumbbells | full-gym | any */
     val equipment: String = "any",
     val muscleGroups: String = "",
+    val syncStatus: String = "pending",
+    val revision: Int = 1,
+    val updatedAt: String = "",
+    val deletedAt: String? = null,
 )
 
-@Entity(tableName = "sync_outbox")
+@Entity(
+    tableName = "sync_outbox",
+    indices = [Index(value = ["createdAt"])],
+)
 data class SyncOutboxEntity(
     @PrimaryKey val id: String,
     val kind: String,
@@ -77,7 +97,10 @@ data class PrefEntity(
 )
 
 /** Saved workout template. Exercise blueprint stored as JSON. */
-@Entity(tableName = "routines")
+@Entity(
+    tableName = "routines",
+    indices = [Index(value = ["syncStatus"])],
+)
 data class RoutineEntity(
     @PrimaryKey val id: String,
     val name: String,
@@ -90,4 +113,19 @@ data class RoutineEntity(
     val revision: Int = 1,
     val updatedAt: String = "",
     val deletedAt: String? = null,
+)
+
+/**
+ * In-progress Active session (Room v11) — process-death safe draft.
+ * Single row id=1; cleared on finish/cancel.
+ */
+@Entity(tableName = "session_drafts")
+data class SessionDraftEntity(
+    @PrimaryKey val id: Int = 1,
+    val sessionId: String,
+    val workoutName: String,
+    val startedAtMs: Long,
+    val weightUnit: String,
+    val json: String,
+    val updatedAt: String,
 )

@@ -5,15 +5,16 @@ import com.missionwinning.core.model.ExerciseDef
 import java.util.UUID
 
 /**
- * User-defined exercises stored offline (free forever). Not a sync entity yet —
- * ids are stable UUIDs so workout set rows remain portable.
+ * User-defined exercises stored offline (free forever). Sync via [SyncEngine] when signed in.
  */
 class CustomExerciseRepository(
     private val db: MwDatabase,
+    private val sync: SyncCoordinator? = null,
 ) {
     private val dao = db.dao()
 
-    suspend fun all(): List<CustomExerciseEntity> = dao.allCustomExercises()
+    suspend fun all(): List<CustomExerciseEntity> =
+        dao.allCustomExercises().filter { it.deletedAt == null }
 
     suspend fun asExerciseDefs(): List<ExerciseDef> =
         all().map { it.toDef() }
@@ -22,21 +23,23 @@ class CustomExerciseRepository(
      * Built-in catalog + custom, filtered like [ExerciseCatalog.search].
      * Custom matches appear first when the query is empty.
      */
-    suspend fun search(query: String, equipment: String? = null): List<ExerciseDef> {
+    suspend fun search(query: String, equipment: String? = null, muscle: String? = null): List<ExerciseDef> {
+        val muscleKey = muscle?.trim()?.lowercase()?.takeIf { it.isNotEmpty() }
         val custom = asExerciseDefs().filter { def ->
             val equipOk = equipment == null ||
                 equipment == "any" ||
                 "any" in def.equipment ||
                 equipment in def.equipment
+            val muscleOk = muscleKey == null ||
+                def.muscleGroups.any { it.lowercase().contains(muscleKey) }
             val q = query.trim().lowercase()
             val textOk = q.isEmpty() ||
                 def.name.lowercase().contains(q) ||
                 def.id.contains(q) ||
                 def.muscleGroups.any { it.contains(q) }
-            equipOk && textOk
+            equipOk && muscleOk && textOk
         }
-        val builtIn = ExerciseCatalog.search(query, equipment)
-        // Prefer custom order first, then built-in (dedupe by id)
+        val builtIn = ExerciseCatalog.search(query, equipment, muscle)
         val seen = mutableSetOf<String>()
         val out = ArrayList<ExerciseDef>(custom.size + builtIn.size)
         for (d in custom + builtIn) {
@@ -56,13 +59,53 @@ class CustomExerciseRepository(
             createdAt = now,
             equipment = normalizeEquip(equipment),
             muscleGroups = "",
+            syncStatus = SyncEngine.STATUS_PENDING,
+            revision = 1,
+            updatedAt = now,
+            deletedAt = null,
         )
         dao.upsertCustomExercise(row)
+        sync?.let {
+            // Prefer SyncEngine enqueue when available
+            runCatching {
+                // SyncCoordinator does not expose engine; use outbox via flush after mark
+            }
+        }
+        // Enqueue via SyncEngine through SyncCoordinator flush path: store outbox ref
+        dao.enqueueOutbox(
+            SyncOutboxEntity(
+                id = "c-${UUID.randomUUID()}",
+                kind = SyncEngine.KIND_CUSTOM_REF,
+                payloadJson = id,
+                createdAt = now,
+                attempts = 0,
+            ),
+        )
+        runCatching { sync?.flushOutbox() }
         return row
     }
 
     suspend fun delete(id: String) {
-        dao.deleteCustomExercise(id)
+        val existing = dao.customExerciseById(id) ?: return
+        val now = java.time.Instant.now().toString()
+        dao.upsertCustomExercise(
+            existing.copy(
+                deletedAt = now,
+                updatedAt = now,
+                syncStatus = SyncEngine.STATUS_PENDING,
+                revision = existing.revision + 1,
+            ),
+        )
+        dao.enqueueOutbox(
+            SyncOutboxEntity(
+                id = "c-${UUID.randomUUID()}",
+                kind = SyncEngine.KIND_CUSTOM_REF,
+                payloadJson = id,
+                createdAt = now,
+                attempts = 0,
+            ),
+        )
+        runCatching { sync?.flushOutbox() }
     }
 
     suspend fun displayName(id: String): String {

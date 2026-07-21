@@ -34,6 +34,7 @@ Apply if not already live (order matters where dependent):
 | `supabase/migrations/20260721_workout_sync_v2.sql` | Full-fidelity workout sync |
 | `supabase/migrations/20260721_routines_sync.sql` | Routine cloud sync |
 | `supabase/migrations/20260721_android_telemetry.sql` | Weekly install pulse |
+| `supabase/migrations/20260721_custom_exercises_prefs_sync.sql` | Custom exercises + mobile prefs sync |
 
 Verify: signed-in finish workout → `exercises` jsonb has real sets (not fabricated placeholders).
 
@@ -126,3 +127,8 @@ cd apps/android
 | Keep CI green · docs · FOUNDER_ACCEPT | Keystore · Play Console · production migrations |
 | `assembleRelease` debug-signed smoke | `-Pmw.requireUploadKeystore=true` upload |
 | Screenshots scripts | Data safety form submit |
+
+## targetSdk
+
+Play 2026: `targetSdk = 36` in `app/build.gradle.kts`. Baseline Profile: `:benchmark` stub — wire Macrobenchmark before Production promote.
+

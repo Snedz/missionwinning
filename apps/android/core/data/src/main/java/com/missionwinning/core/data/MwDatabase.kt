@@ -16,8 +16,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         SyncOutboxEntity::class,
         RoutineEntity::class,
         CustomExerciseEntity::class,
+        SessionDraftEntity::class,
     ],
-    version = 10,
+    version = 11,
     exportSchema = true,
 )
 abstract class MwDatabase : RoomDatabase() {
@@ -206,6 +207,43 @@ abstract class MwDatabase : RoomDatabase() {
             }
         }
 
+        /** Indexes + custom sync fields + session draft (F1/F2 orchestration). */
+        private val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_workout_logs_syncStatus ON workout_logs(syncStatus)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_workout_logs_updatedAt ON workout_logs(updatedAt)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_set_logs_workoutId ON set_logs(workoutId)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_sync_outbox_createdAt ON sync_outbox(createdAt)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_routines_syncStatus ON routines(syncStatus)")
+                db.execSQL(
+                    "ALTER TABLE custom_exercises ADD COLUMN syncStatus TEXT NOT NULL DEFAULT 'pending'",
+                )
+                db.execSQL(
+                    "ALTER TABLE custom_exercises ADD COLUMN revision INTEGER NOT NULL DEFAULT 1",
+                )
+                db.execSQL(
+                    "ALTER TABLE custom_exercises ADD COLUMN updatedAt TEXT NOT NULL DEFAULT ''",
+                )
+                db.execSQL("ALTER TABLE custom_exercises ADD COLUMN deletedAt TEXT")
+                db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_custom_exercises_syncStatus ON custom_exercises(syncStatus)",
+                )
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS session_drafts (
+                        id INTEGER NOT NULL PRIMARY KEY,
+                        sessionId TEXT NOT NULL,
+                        workoutName TEXT NOT NULL,
+                        startedAtMs INTEGER NOT NULL,
+                        weightUnit TEXT NOT NULL,
+                        json TEXT NOT NULL,
+                        updatedAt TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+            }
+        }
+
         fun get(context: Context): MwDatabase =
             instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
@@ -223,6 +261,7 @@ abstract class MwDatabase : RoomDatabase() {
                         MIGRATION_7_8,
                         MIGRATION_8_9,
                         MIGRATION_9_10,
+                        MIGRATION_10_11,
                     )
                     .build()
                     .also { instance = it }

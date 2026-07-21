@@ -291,6 +291,10 @@ jobs:
           grep -q 'Complete set' .maestro/wedge.yaml
           grep -q 'Session locked' .maestro/wedge.yaml
 
+      - name: Auth scaffold + Baseline Profile stub
+        run: |
+          ./gradlew :feature:auth:assembleDebug :benchmark:assembleDebug --stacktrace
+
       - name: Logger + sync invariant modules (explicit)
         run: |
           ./gradlew :feature:active:testDebugUnitTest :core:model:testDebugUnitTest :core:data:testDebugUnitTest :core:common:testDebugUnitTest --stacktrace

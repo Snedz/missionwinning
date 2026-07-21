@@ -152,6 +152,60 @@ class MobileApiClient(
             }
         }
 
+    suspend fun pushCustoms(exercises: List<SyncCustomExerciseDto>): Result<SyncCustomPushResponseDto> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val payload = json.encodeToString(SyncCustomPushRequestDto(exercises = exercises))
+                val req = requestBuilder("/api/mobile/sync/customs")
+                    .post(payload.toRequestBody(media))
+                    .build()
+                client.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) error("sync customs push ${resp.code}")
+                    json.decodeFromString<SyncCustomPushResponseDto>(resp.body!!.string())
+                }
+            }
+        }
+
+    suspend fun pullCustoms(since: String, limit: Int = 100): Result<SyncCustomPullResponseDto> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val q = java.net.URLEncoder.encode(since, Charsets.UTF_8.name())
+                val req = requestBuilder("/api/mobile/sync/customs?since=$q&limit=$limit")
+                    .get()
+                    .build()
+                client.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) error("sync customs pull ${resp.code}")
+                    json.decodeFromString<SyncCustomPullResponseDto>(resp.body!!.string())
+                }
+            }
+        }
+
+    suspend fun pushPrefs(prefs: SyncPrefsDto): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val payload = json.encodeToString(SyncPrefsPushRequestDto(prefs = prefs))
+                val req = requestBuilder("/api/mobile/sync/prefs")
+                    .post(payload.toRequestBody(media))
+                    .build()
+                client.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) error("sync prefs push ${resp.code}")
+                }
+            }
+        }
+
+    suspend fun pullPrefs(): Result<SyncPrefsPullResponseDto> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val req = requestBuilder("/api/mobile/sync/prefs")
+                    .get()
+                    .build()
+                client.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) error("sync prefs pull ${resp.code}")
+                    json.decodeFromString<SyncPrefsPullResponseDto>(resp.body!!.string())
+                }
+            }
+        }
+
     suspend fun fetchCoachPlan(
         equipment: String = "bodyweight",
         adaptDemo: Boolean = false,

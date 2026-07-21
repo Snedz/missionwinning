@@ -293,6 +293,35 @@ export const mobileSyncRoutinePushBodySchema = z.object({
   routines: z.array(mobileSyncRoutineSchema).min(1).max(50),
 });
 
+export const mobileSyncCustomSchema = z.object({
+  clientId: z.string().min(1).max(120),
+  name: z.string().min(1).max(120),
+  createdAt: z.string().max(40).optional(),
+  equipment: z.string().max(40).default('any'),
+  muscleGroups: z.string().max(200).default(''),
+  revision: z.number().int().min(1).max(1_000_000).default(1),
+  updatedAt: z.string().max(40).optional(),
+  deletedAt: z.string().max(40).nullable().optional(),
+});
+
+export const mobileSyncCustomPushBodySchema = z.object({
+  exercises: z.array(mobileSyncCustomSchema).min(1).max(50),
+});
+
+export const mobileSyncPrefsSchema = z.object({
+  weightUnit: z.enum(['kg', 'lb']).default('kg'),
+  defaultRestSeconds: z.number().int().min(15).max(600).default(60),
+  equipment: z.enum(['bodyweight', 'dumbbells', 'full-gym']).default('bodyweight'),
+  barWeightKg: z.number().min(0).max(100).default(20),
+  barWeightLb: z.number().min(0).max(200).default(45),
+  revision: z.number().int().min(1).max(1_000_000).default(1),
+  updatedAt: z.string().max(40).optional(),
+});
+
+export const mobileSyncPrefsPushBodySchema = z.object({
+  prefs: mobileSyncPrefsSchema,
+});
+
 export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
   | { ok: true; data: T }
   | { ok: false; error: string } {

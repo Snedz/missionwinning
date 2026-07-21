@@ -116,6 +116,7 @@ dependencies {
     implementation(project(":feature:coach"))
     implementation(project(":feature:iday"))
     implementation(project(":feature:victory"))
+    implementation(project(":feature:auth"))
 
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
