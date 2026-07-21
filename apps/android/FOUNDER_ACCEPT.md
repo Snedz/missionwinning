@@ -146,9 +146,25 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 
 ---
 
+## Release smoke (agent / CI local)
+
+Without upload keystore, release still builds **debug-signed** (Play will reject; local smoke only):
+
+```bash
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+cd apps/android
+./gradlew :app:assembleRelease :app:bundleRelease
+# APK: app/build/outputs/apk/release/app-release.apk
+# AAB: app/build/outputs/bundle/release/app-release.aab
+```
+
+Verified green on 1.2.7+ when this section was added. Upload keystore is still **founder-only** (`keystore.properties` gitignored).
+
+---
+
 ## After accept → Play Internal
 
 1. `./scripts/create-upload-keystore.sh` (once; offline backup)  
-2. `./gradlew :app:bundleRelease`  
-3. Upload AAB + screenshots from `store-assets/`  
+2. Confirm `keystore.properties` exists → `./gradlew :app:bundleRelease`  
+3. Upload AAB + screenshots from `store-assets/` (`wedge-adb-walk.py --screenshots`)  
 4. Data safety from `PLAY_LISTING.md`

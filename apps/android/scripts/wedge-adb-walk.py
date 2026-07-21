@@ -30,22 +30,24 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ANDROID_ROOT = SCRIPT_DIR.parent
 STORE_ASSETS = ANDROID_ROOT / "store-assets"
 
-# Texts asserted / tapped in .maestro/wedge.yaml order
-STEPS: list[tuple[str, str]] = [
+# Texts asserted / tapped in .maestro/wedge.yaml order.
+# Alternate needles (tuple) try each until one matches — UI copy may vary slightly.
+Step = tuple[str, str | tuple[str, ...]]
+STEPS: list[Step] = [
     ("assert", "Mission Winning"),
     ("tap", "I already train — skip"),
     ("assert", "Today"),
     ("screenshot", "02-today.png"),
-    ("tap", "Start workout"),
+    ("tap", ("Start workout", "Start today's workout", "Start empty workout")),
     ("assert", "Complete set"),
     ("screenshot", "03-active.png"),
     ("tap", "Complete set"),
-    ("assert", "Finish workout"),
-    ("tap", "Finish workout"),
+    ("assert", ("Finish workout", "Finish workout · lock session")),
+    ("tap", ("Finish workout", "Finish workout · lock session")),
     ("assert", "Session locked"),
     ("screenshot", "05-victory.png"),
-    ("tap", "See Mission Coach"),
-    ("assert", "Mission Coach"),
+    ("tap", ("See Mission Coach", "Back to Today")),
+    ("assert", ("Mission Coach", "Today")),
     ("screenshot", "04-coach.png"),
 ]
 
@@ -123,20 +125,25 @@ def find_bounds(root: ET.Element, text: str) -> tuple[int, int, int, int] | None
     return None
 
 
-def wait_for_text(text: str, timeout_s: float = 20.0) -> tuple[int, int, int, int]:
+def wait_for_text(
+    text: str | tuple[str, ...],
+    timeout_s: float = 20.0,
+) -> tuple[int, int, int, int]:
+    needles = (text,) if isinstance(text, str) else text
     deadline = time.time() + timeout_s
     last_err = ""
     while time.time() < deadline:
         try:
             root = dump_ui()
-            bounds = find_bounds(root, text)
-            if bounds:
-                return bounds
-            last_err = f"text not in hierarchy: {text!r}"
+            for needle in needles:
+                bounds = find_bounds(root, needle)
+                if bounds:
+                    return bounds
+            last_err = f"none of {needles!r} in hierarchy"
         except Exception as exc:  # noqa: BLE001
             last_err = str(exc)
         time.sleep(0.6)
-    raise AssertionError(f"Timeout waiting for {text!r}: {last_err}")
+    raise AssertionError(f"Timeout waiting for {needles!r}: {last_err}")
 
 
 def tap_bounds(bounds: tuple[int, int, int, int]) -> None:
