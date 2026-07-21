@@ -1,0 +1,10 @@
+## This file is gitignored. Copy to local.properties and edit.
+
+# SDK path (Android Studio usually writes this automatically)
+# sdk.dir=/Users/YOU/Library/Android/sdk
+
+# Optional: point debug builds at local Next.js (emulator → host)
+# mw.apiBaseUrl=http://10.0.2.2:3000
+
+# Optional: PRIVATE_MODE cookie value (mw_private_access token after POST /api/private-access)
+# mw.privateAccessCookie=

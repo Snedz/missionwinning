@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit
 class MobileApiClient(
     private val baseUrl: String,
     private val accessToken: String? = null,
+    /** Optional `mw_private_access` cookie for PRIVATE_MODE www until public flip. */
+    private val privateAccessCookie: String? = null,
 ) {
     private val client: OkHttpClient = OkHttpClient.Builder()
         .connectTimeout(20, TimeUnit.SECONDS)
@@ -100,6 +102,9 @@ class MobileApiClient(
         val b = Request.Builder().url(baseUrl.trimEnd('/') + path)
         if (!accessToken.isNullOrBlank()) {
             b.header("Authorization", "Bearer $accessToken")
+        }
+        if (!privateAccessCookie.isNullOrBlank()) {
+            b.header("Cookie", "mw_private_access=$privateAccessCookie")
         }
         return b
     }

@@ -9,6 +9,11 @@ captures/
 *.apk
 *.aab
 *.keystore
+*.jks
+upload-keystore.jks
+keystore.properties
 google-services.json
 build-log.txt
 /build
+store-assets/*.png
+!store-assets/README.md

@@ -46,7 +46,7 @@ Use this table when filling Apple Privacy Nutrition Labels / Google Play Data sa
 - [ ] Counsel review of Terms arbitration + class waiver (AAA Consumer Rules, governing law = Mission Winning LLC formation state)
 - [ ] Confirm formation state in [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) and keep Terms “state of formation” language accurate
 - [ ] CCPA: we do not sell/share for cross-context ads — Privacy California section; respond to access/deletion at `support@missionwinning.com`
-- [ ] At TWA time: fill Play Data safety + App Privacy labels from §2 (not before)
+- [ ] At native Play Internal time: fill Play Data safety from §2 (Compose wedge answers also in [apps/android/PLAY_LISTING.md](../apps/android/PLAY_LISTING.md)); App Privacy labels when iOS opens
 - [ ] Cyber liability insurance quote (~$200–600/yr ballpark — verify with broker); bind before school/enterprise or data at scale — see [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
 - [ ] Do not claim “we are insured” in Privacy until a policy exists
 - [ ] Support auto-reply: refund requests → `/refunds` + `support@missionwinning.com`
