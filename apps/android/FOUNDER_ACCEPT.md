@@ -71,6 +71,7 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | L10 | System back → discard confirm | |
 | L11 | Keep-screen-on during session | |
 | L12 | Optional RPE chips 6–10 on current set | |
+| L13 | Rest end vibrate/beep toggles work | |
 
 ---
 

@@ -1,5 +1,7 @@
 package com.missionwinning.feature.active
 
+import android.media.AudioManager
+import android.media.ToneGenerator
 import android.view.HapticFeedbackConstants
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -159,7 +161,12 @@ fun ActiveScreen(
     }
     LaunchedEffect(state.restSeconds) {
         if (prevRest > 0 && state.restSeconds == 0) {
-            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            if (state.restVibrate) {
+                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            }
+            if (state.restBeep) {
+                playRestEndBeep()
+            }
         }
         prevRest = state.restSeconds
     }
@@ -266,16 +273,24 @@ fun ActiveScreen(
                             is ActiveListRow.Section -> MwSectionLabel(row.name)
                             is ActiveListRow.SetItem -> {
                                 val set = row.set
+                                val weightPart = if (set.weight > 0) {
+                                    ActiveSessionLogic.formatWeightWithUnit(set.weight, state.weightUnit)
+                                } else {
+                                    null
+                                }
+                                val detail = buildString {
+                                    if (weightPart != null) append(weightPart)
+                                    set.rpe?.let {
+                                        if (isNotEmpty()) append(" · ")
+                                        append("RPE $it")
+                                    }
+                                }.ifBlank { null }
                                 MwSetRow(
                                     index = set.setIndex,
                                     reps = set.reps,
                                     done = set.done,
                                     isCurrent = false,
-                                    weightLabel = if (set.weight > 0) {
-                                        ActiveSessionLogic.formatWeightWithUnit(set.weight, state.weightUnit)
-                                    } else {
-                                        null
-                                    },
+                                    weightLabel = detail,
                                     onToggle = {
                                         onEvent(ActiveEvent.ToggleSet(set.id))
                                     },
@@ -449,6 +464,48 @@ private fun ActiveHeader(
                 )
             }
         }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                "Alert",
+                style = MwTypography.labelMedium,
+                color = MwColors.TextMuted,
+            )
+            MwChip(
+                text = "Vibrate",
+                tone = if (state.restVibrate) MwChipTone.Emerald else MwChipTone.Neutral,
+                contentDescription = if (state.restVibrate) {
+                    "Rest vibrate on"
+                } else {
+                    "Rest vibrate off"
+                },
+                onClick = { onEvent(ActiveEvent.ToggleRestVibrate) },
+            )
+            MwChip(
+                text = "Beep",
+                tone = if (state.restBeep) MwChipTone.Emerald else MwChipTone.Neutral,
+                contentDescription = if (state.restBeep) {
+                    "Rest beep on"
+                } else {
+                    "Rest beep off"
+                },
+                onClick = { onEvent(ActiveEvent.ToggleRestBeep) },
+            )
+        }
+    }
+}
+
+private fun playRestEndBeep() {
+    runCatching {
+        val tone = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 80)
+        tone.startTone(ToneGenerator.TONE_PROP_ACK, 180)
+        // Release after tone; short delay via post is overkill for a one-shot beep.
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            runCatching { tone.release() }
+        }, 250)
     }
 }
 

@@ -27,6 +27,8 @@ data class ActiveUiState(
     val restTotalSeconds: Int = 0,
     /** Preferred rest length after complete set (user pref). */
     val defaultRestSeconds: Int = ActiveSessionLogic.DEFAULT_REST_SECONDS,
+    val restVibrate: Boolean = true,
+    val restBeep: Boolean = false,
     val weightUnit: String = "kg",
     val finishing: Boolean = false,
     val finished: FinishedPayload? = null,
@@ -59,6 +61,8 @@ sealed interface ActiveEvent {
     data object RestPlus15 : ActiveEvent
     data object RestSkip : ActiveEvent
     data class SetDefaultRest(val seconds: Int) : ActiveEvent
+    data object ToggleRestVibrate : ActiveEvent
+    data object ToggleRestBeep : ActiveEvent
     data object Finish : ActiveEvent
     data object ClearFinished : ActiveEvent
     data object ClearError : ActiveEvent
@@ -94,6 +98,8 @@ class ActiveViewModel @Inject constructor(
                 exercises = exercises,
                 weightUnit = unit,
                 defaultRestSeconds = defaultRest,
+                restVibrate = repository.restVibrateEnabled(),
+                restBeep = repository.restBeepEnabled(),
             )
         }
     }
@@ -125,10 +131,24 @@ class ActiveViewModel @Inject constructor(
             ActiveEvent.RestPlus15 -> adjustRest(ActiveSessionLogic.REST_STEP)
             ActiveEvent.RestSkip -> skipRest()
             is ActiveEvent.SetDefaultRest -> setDefaultRest(event.seconds)
+            ActiveEvent.ToggleRestVibrate -> toggleRestVibrate()
+            ActiveEvent.ToggleRestBeep -> toggleRestBeep()
             ActiveEvent.Finish -> finish()
             ActiveEvent.ClearFinished -> _state.update { it.copy(finished = null) }
             ActiveEvent.ClearError -> _state.update { it.copy(error = null) }
         }
+    }
+
+    private fun toggleRestVibrate() {
+        val next = !_state.value.restVibrate
+        _state.update { it.copy(restVibrate = next) }
+        viewModelScope.launch { repository.setRestVibrateEnabled(next) }
+    }
+
+    private fun toggleRestBeep() {
+        val next = !_state.value.restBeep
+        _state.update { it.copy(restBeep = next) }
+        viewModelScope.launch { repository.setRestBeepEnabled(next) }
     }
 
     private fun clearRestIfActive() {
