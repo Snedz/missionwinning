@@ -92,6 +92,10 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | L25 | Save routine → appears after sign-in on second device (after migration) | |
 | L26 | Wear: with phone Active session open, watch shows set; Complete updates phone | |
 | L27 | Wear: rest countdown + Skip rest; haptic at rest end | |
+| L33 | Wear shows Phone linked / offline; complete retries when flaky | |
+| L34 | Wear tile / complication shows streak or live sets (add tile on watch) | |
+| L35 | HC export writes session + estimated calories; steps chip on Today when enabled | |
+| L36 | Home streak widget shows week volume and live session when active | |
 | L28 | Current set: note field saves with finished workout | |
 | L29 | Add exercise: create custom name offline; appears in session | |
 | L30 | Section ↑/↓ reorders exercises; Superset chip cycles A–D | |

@@ -321,9 +321,28 @@ fun AuthScreen(
                         },
                     )
                     Text(
-                        "When on, finished workouts write a strength session to Health Connect (no read).",
+                        "When on, finished workouts write a strength session + estimated active calories.",
                         style = MwTypography.labelMedium,
                         color = MwColors.TextMuted,
+                    )
+                    MwChip(
+                        text = if (state.healthConnectStepsRead) {
+                            "Steps on Today · on"
+                        } else {
+                            "Steps on Today · off"
+                        },
+                        tone = if (state.healthConnectStepsRead) {
+                            MwChipTone.Emerald
+                        } else {
+                            MwChipTone.Neutral
+                        },
+                        contentDescription = "Toggle Health Connect steps on Today",
+                        onClick = {
+                            if (!state.healthConnectStepsRead) {
+                                hcPermissionLauncher.launch(viewModel.healthConnectPermissions())
+                            }
+                            viewModel.setHealthConnectStepsRead(!state.healthConnectStepsRead)
+                        },
                     )
                 } else {
                     Text(

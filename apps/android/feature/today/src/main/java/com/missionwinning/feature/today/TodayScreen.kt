@@ -145,6 +145,12 @@ fun TodayScreen(
                             Modifier.weight(1f),
                         )
                     }
+                    state.stepsToday?.let { steps ->
+                        MwChip(
+                            text = "Steps today · ${"%,d".format(steps)}",
+                            tone = MwChipTone.Neutral,
+                        )
+                    }
                     Text(
                         "Form score is from your logs only — not medical readiness.",
                         style = MwTypography.labelMedium,

@@ -64,6 +64,8 @@ data class TodayUiState(
     val readinessDetail: String = "",
     /** One-liner from coach adapt beats or plan status. */
     val coachInsight: String? = null,
+    /** Optional steps today from Health Connect (null = off / unavailable). */
+    val stepsToday: Long? = null,
 ) {
     /** Prefer today's planned/swapped session, else first open session of the week. */
     val next: PlanSessionDto?
@@ -123,6 +125,11 @@ class TodayViewModel @Inject constructor(
                 daysSinceLastWorkout = daysSince,
             )
             val insight = coachInsightLine(plan, readiness)
+            val steps = if (repository.healthConnectStepsReadEnabled()) {
+                HealthConnectStepsBridge.readStepsToday()
+            } else {
+                null
+            }
             _state.value = TodayUiState(
                 plan = plan,
                 workouts = repository.workoutCount(),
@@ -145,6 +152,7 @@ class TodayViewModel @Inject constructor(
                 readinessLabel = readiness.label,
                 readinessDetail = readiness.detail,
                 coachInsight = insight,
+                stepsToday = steps,
             )
         }
     }

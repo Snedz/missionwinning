@@ -42,4 +42,20 @@ class WearProtocolTest {
         assertEquals(10, triple.second)
         assertEquals(42.5, triple.third, 0.0)
     }
+
+    @Test
+    fun completeAck_roundTrip() {
+        val ack = WearProtocol.decodeCompleteAck(WearProtocol.encodeCompleteAck("s1", true))
+        assertNotNull(ack)
+        assertEquals("s1", ack!!.first)
+        assertTrue(ack.second)
+    }
+
+    @Test
+    fun statusLine_idleShowsStreak() {
+        val line = WearProtocol.statusLine(
+            ActiveSessionHub.Snapshot(active = false, streakDays = 3),
+        )
+        assertTrue(line.contains("3d"))
+    }
 }

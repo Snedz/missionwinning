@@ -36,7 +36,6 @@ import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
-import com.missionwinning.core.common.ActiveSessionHub
 import com.missionwinning.wear.data.WearPhoneClient
 import com.missionwinning.wear.data.WearSessionStore
 import kotlinx.coroutines.delay
@@ -58,14 +57,25 @@ private fun WearLoggerScreen() {
     val context = LocalContext.current
     val client = remember { WearPhoneClient(context) }
     val session by WearSessionStore.session.collectAsStateWithLifecycle()
+    val phoneLinked by WearSessionStore.phoneLinked.collectAsStateWithLifecycle()
+    val sendStatus by WearSessionStore.lastSendStatus.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     var tick by remember { mutableIntStateOf(0) }
     var localReps by remember { mutableIntStateOf(session.reps) }
     var localWeight by remember { mutableDoubleStateOf(session.weight) }
     var lastResting by remember { mutableStateOf(false) }
+    var sending by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         runCatching { client.refreshActiveFromDataLayer() }
+        while (true) {
+            val linked = runCatching { client.phoneConnected() }.getOrDefault(false)
+            WearSessionStore.setPhoneLinked(linked)
+            if (linked) {
+                runCatching { client.refreshActiveFromDataLayer() }
+            }
+            delay(5_000)
+        }
     }
     LaunchedEffect(session.currentSetId, session.reps, session.weight) {
         localReps = session.reps
@@ -89,7 +99,9 @@ private fun WearLoggerScreen() {
 
     val navy = Color(0xFF0A0C10)
     val emerald = Color(0xFF27B07D)
+    val brass = Color(0xFFC7A860)
     val muted = Color(0xFF9AA3B2)
+    val danger = Color(0xFFE85D5D)
     val text = Color(0xFFF2F4F7)
 
     Column(
@@ -101,14 +113,31 @@ private fun WearLoggerScreen() {
         verticalArrangement = Arrangement.Center,
     ) {
         TimeText()
+        Spacer(Modifier.height(2.dp))
+        Text(
+            text = if (phoneLinked) "Phone linked" else "Phone offline",
+            color = if (phoneLinked) muted else brass,
+            textAlign = TextAlign.Center,
+        )
+        sendStatus?.let {
+            Text(it, color = emerald, textAlign = TextAlign.Center)
+        }
         Spacer(Modifier.height(4.dp))
         when {
             !session.active -> {
                 Text(
-                    text = "Start workout\non phone",
+                    text = if (!phoneLinked) {
+                        "Reconnect phone\nthen start workout"
+                    } else {
+                        "Start workout\non phone"
+                    },
                     color = muted,
                     textAlign = TextAlign.Center,
                 )
+                if (session.streakDays > 0) {
+                    Spacer(Modifier.height(6.dp))
+                    Text("${session.streakDays}-day streak", color = brass)
+                }
             }
             restLeft > 0 -> {
                 Text("Rest", color = emerald)
@@ -120,13 +149,20 @@ private fun WearLoggerScreen() {
                 Button(
                     onClick = {
                         scope.launch {
-                            client.sendSkipRest()
+                            sending = true
+                            val result = client.sendSkipRest()
+                            WearSessionStore.setPhoneLinked(result.nodeCount > 0)
+                            WearSessionStore.setSendStatus(
+                                if (result.delivered) "Skip sent" else "Not delivered · retry",
+                            )
                             vibrate(context, long = false)
+                            sending = false
                         }
                     },
+                    enabled = !sending,
                     modifier = Modifier.fillMaxWidth(0.85f),
                 ) {
-                    Text("Skip rest")
+                    Text(if (sending) "…" else "Skip rest")
                 }
             }
             session.currentSetId.isBlank() -> {
@@ -169,13 +205,41 @@ private fun WearLoggerScreen() {
                 Button(
                     onClick = {
                         scope.launch {
-                            client.sendComplete(session.currentSetId, localReps, localWeight)
-                            vibrate(context, long = true)
+                            sending = true
+                            val result = client.sendComplete(
+                                session.currentSetId,
+                                localReps,
+                                localWeight,
+                            )
+                            WearSessionStore.setPhoneLinked(result.nodeCount > 0)
+                            WearSessionStore.setSendStatus(
+                                when {
+                                    result.delivered -> "Sent · waiting phone"
+                                    result.nodeCount == 0 -> "No phone · keep app open"
+                                    else -> "Send failed · retry"
+                                },
+                            )
+                            if (result.delivered) vibrate(context, long = true)
+                            sending = false
                         }
                     },
+                    enabled = !sending && phoneLinked,
                     modifier = Modifier.fillMaxWidth(0.9f),
                 ) {
-                    Text("Complete set")
+                    Text(
+                        when {
+                            sending -> "Sending…"
+                            !phoneLinked -> "Phone offline"
+                            else -> "Complete set"
+                        },
+                    )
+                }
+                if (!phoneLinked) {
+                    Text(
+                        "Open Mission Winning on phone",
+                        color = danger,
+                        textAlign = TextAlign.Center,
+                    )
                 }
             }
         }
