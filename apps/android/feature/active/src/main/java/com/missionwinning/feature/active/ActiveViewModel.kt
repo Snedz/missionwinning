@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SetLogEntity
 import com.missionwinning.core.model.ActiveExercise
+import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.model.LoggedSet
 import com.missionwinning.core.network.PlanExerciseDto
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -338,7 +339,7 @@ class ActiveViewModel @Inject constructor(
             listOf(PlanExerciseDto("main", fallbackSets.coerceIn(3, 12), 10))
         }
         return source.map { ex ->
-            val name = ex.exerciseId.replace('-', ' ').replaceFirstChar { it.uppercase() }
+            val name = ExerciseCatalog.displayName(ex.exerciseId).ifBlank { workoutName }
             val sets = (0 until ex.sets.coerceIn(1, 12)).map { idx ->
                 val prev = repository.previousSet(ex.exerciseId, idx)
                 val prevWeight = ActiveSessionLogic.previousWeightInUnit(
@@ -349,7 +350,7 @@ class ActiveViewModel @Inject constructor(
                 LoggedSet(
                     id = UUID.randomUUID().toString(),
                     exerciseId = ex.exerciseId,
-                    exerciseName = name.ifBlank { workoutName },
+                    exerciseName = name,
                     setIndex = idx,
                     reps = ActiveSessionLogic.defaultReps(ex.reps, prev?.reps),
                     weight = ActiveSessionLogic.defaultWeight(prevWeight),
@@ -357,7 +358,7 @@ class ActiveViewModel @Inject constructor(
                     previousWeight = prevWeight,
                 )
             }
-            ActiveExercise(exerciseId = ex.exerciseId, name = name.ifBlank { workoutName }, sets = sets)
+            ActiveExercise(exerciseId = ex.exerciseId, name = name, sets = sets)
         }
     }
 }
