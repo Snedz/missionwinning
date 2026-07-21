@@ -131,6 +131,8 @@ type TodayStrings = {
   coachActionGoBuilder: string;
   coachActionLogNutrition: string;
   coachActionViewToday: string;
+  victoryNextCoachLabel: string;
+  victoryNextCoachReason: string;
   todayPillarScoreByPillar: string;
   todayPillarTrain: string;
   todayPillarFuel: string;
@@ -311,6 +313,8 @@ const en: TodayStrings = {
   coachActionGoBuilder: 'Go to Builder',
   coachActionLogNutrition: 'Log nutrition',
   coachActionViewToday: 'View Today hub',
+  victoryNextCoachLabel: 'See Mission Coach',
+  victoryNextCoachReason: 'Coach adapts your week from this log — no wearable needed.',
   todayPillarScoreByPillar: 'Mission Score by Pillar',
   todayPillarTrain: 'Train',
   todayPillarFuel: 'Fuel',
@@ -495,6 +499,9 @@ const es: TodayStrings = {
   coachActionGoBuilder: 'Ir al Builder',
   coachActionLogNutrition: 'Registrar nutrición',
   coachActionViewToday: 'Ver hub Today',
+  victoryNextCoachLabel: 'Ver Mission Coach',
+  victoryNextCoachReason:
+    'El Coach adapta tu semana con este registro — sin wearable.',
   todayPillarScoreByPillar: 'Puntuación por pilar',
   todayPillarTrain: 'Entrenar',
   todayPillarFuel: 'Nutrición',
@@ -644,6 +651,8 @@ const zh: TodayStrings = {
   coachActionGoBuilder: '前往构建器',
   coachActionLogNutrition: '记录营养',
   coachActionViewToday: '查看 Today',
+  victoryNextCoachLabel: '查看 Mission Coach',
+  victoryNextCoachReason: '教练根据本次记录调整本周计划 — 无需可穿戴设备。',
   todayPillarScoreByPillar: '各支柱任务分数',
   todayPillarTrain: '训练',
   todayPillarFuel: '营养',
@@ -813,6 +822,9 @@ const id: TodayStrings = {
   coachActionGoBuilder: 'Ke Builder',
   coachActionLogNutrition: 'Catat nutrisi',
   coachActionViewToday: 'Lihat Today',
+  victoryNextCoachLabel: 'Lihat Mission Coach',
+  victoryNextCoachReason:
+    'Coach menyesuaikan minggu Anda dari log ini — tanpa wearable.',
   todayPillarScoreByPillar: 'Skor Misi per Pilar',
   todayPillarTrain: 'Latih',
   todayPillarFuel: 'Fuel',
@@ -973,6 +985,9 @@ const th: TodayStrings = {
   coachActionGoBuilder: 'ไป Builder',
   coachActionLogNutrition: 'บันทึกโภชนาการ',
   coachActionViewToday: 'ดู Today',
+  victoryNextCoachLabel: 'ดู Mission Coach',
+  victoryNextCoachReason:
+    'Coach ปรับสัปดาห์จากล็อกนี้ — ไม่ต้องมี wearable',
   todayPillarScoreByPillar: 'คะแนนภารกิจตามเสาหลัก',
   todayPillarTrain: 'ฝึก',
   todayPillarFuel: 'Fuel',
@@ -1132,6 +1147,9 @@ const ar: TodayStrings = {
   coachActionGoBuilder: 'إلى Builder',
   coachActionLogNutrition: 'تسجيل التغذية',
   coachActionViewToday: 'عرض Today',
+  victoryNextCoachLabel: 'افتح Mission Coach',
+  victoryNextCoachReason:
+    'المدرب يكيّف أسبوعك من هذا السجل — دون جهاز قابل للارتداء.',
   todayPillarScoreByPillar: 'درجة المهمة حسب الركيزة',
   todayPillarTrain: 'تدريب',
   todayPillarFuel: 'Fuel',

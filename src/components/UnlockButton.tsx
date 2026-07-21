@@ -152,7 +152,13 @@ export function UnlockButton({
           )}
         </button>
         <p className="mt-2 text-center text-[11px] text-muted-foreground">
-          Secure checkout by Stripe · Card · Apple Pay · Google Pay · PayPal · USDC · 30-day guarantee
+          Secure checkout by Stripe · Card · Apple Pay · Google Pay · PayPal · USDC
+        </p>
+        <p className="mt-1 text-center text-[11px] text-muted-foreground">
+          14-day money-back on first paid charge —{' '}
+          <Link href="/refunds" className="text-primary hover:underline">
+            Refunds
+          </Link>
         </p>
         {checkoutError && (
           <p className="mt-2 text-center text-xs text-destructive" role="alert">

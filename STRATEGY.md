@@ -32,9 +32,9 @@ Six pillars serve everyone — but *marketing to everyone acquires no one*. The 
 
 ## Positioning statement
 
-> **The free workout tracker that works anywhere — no account, no app store, no paywall on the basics.** And when you want the full path — nutrition, mobility, mind, learning — one honest bundle unlocks all of it.
+> **Adaptive AI coaching for train-anywhere athletes — free offline logging (no account), weekly plans from logs alone (no wearable).** Super Bundle adds Coach depth and the other pillars when you want them — never gates the logger.
 
-Lead with the tracker (concrete, sharp, competitive). The "everything app" story is the *second* sentence, not the first — "everything app" attracts founders, not users.
+Lead with **logger + Mission Coach** (concrete, sharp, competitive). The six-pillar “everything app” story is expansion *after* the wedge wins — second sentence / below the fold, not the company one-liner. Full YC form, competition matrix, and apply-only-after traction bar: [docs/YC_THESIS.md](docs/YC_THESIS.md). Constitution stays [vision.md](vision.md).
 
 ---
 

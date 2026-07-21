@@ -106,7 +106,7 @@ Legend:
 | `billing-portal` | POST | session | 10/min | |
 | `crypto-checkout/intent` | POST | session | 8/min | Phantom USDC lifetime; amount server-fixed |
 | `crypto-checkout/confirm` | POST | session | 10/min | Zod; intent ownership enforced; on-chain verify |
-| `stripe-webhook` | POST | Stripe HMAC sig | — | service role enroll |
+| `stripe-webhook` | POST | Stripe HMAC sig | — | enroll + checkout recovery + dispute founder notify |
 | `paypal-webhook` | POST | PayPal REST verify | — | service role enroll |
 | `beta/metrics` | GET | beta admin email **or** `x-beta-admin-secret` | — | service role aggregate |
 

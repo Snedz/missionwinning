@@ -21,7 +21,7 @@ export function TodayCoachWeekStrip() {
           <span className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" />
             <span className="eyebrow text-[10px]">
-              {t('coachWeekOverview', { defaultValue: 'This week' })}
+              {t('coachWeekOverview', { defaultValue: 'Mission Coach · this week' })}
             </span>
           </span>
           <Link href="/coach" className="text-xs text-primary hover:underline font-normal">

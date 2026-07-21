@@ -113,7 +113,11 @@ This vision is the filter for every decision. If it doesn't serve free global ac
 
 **Mission Winning: Free for the world. The everything app for health. The path forward.**
 
+### YC wedge vs constitution
+
+This file is the **long-term constitution** (six pillars, free forever, global access). Near-term go-to-market and any YC application pitch the **Train + Mission Coach wedge** first — free offline logger + adaptive plans from logs (no wearable) — with Fuel/Move/Mind/Learn as expansion after week-4 retention. Agents: do not tear down this vision to match the pitch; do not pitch “everything app” as the company one-liner. See [docs/YC_THESIS.md](docs/YC_THESIS.md) · [STRATEGY.md](STRATEGY.md).
+
 **Planning:** [PLAN.md](PLAN.md) · **Vision scorecard:** [VISION_STATUS.md](VISION_STATUS.md)
 
 ---
-Last Updated: June 29, 2026. Living document. Reference in all planning, code, marketing, and decisions.
+Last Updated: July 20, 2026. Living document. Reference in all planning, code, marketing, and decisions.

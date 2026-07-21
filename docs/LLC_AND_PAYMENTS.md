@@ -2,7 +2,9 @@
 
 **Purpose:** Founder steps to form an entity and turn on Stripe (PayPal / USDC via Stripe).  
 **Not legal/tax advice** — confirm with a CPA/attorney in your jurisdiction.  
-**Companion:** [SETUP.md](../SETUP.md) · [docs/STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) · [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) §4 · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) (Terms / Privacy / Refunds / DPA / MSA / cyber)
+**Companion:** [SETUP.md](../SETUP.md) · [docs/STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) · [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) §4 · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) (Terms / Privacy / Refunds / DPA / MSA / cyber) · [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) · [legal/ENTITY_RESEARCH.md](legal/ENTITY_RESEARCH.md) · [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md)
+
+**Entity research / OA draft:** [legal/ENTITY_RESEARCH.md](legal/ENTITY_RESEARCH.md) · [legal/OPERATING_AGREEMENT_DRAFT.md](legal/OPERATING_AGREEMENT_DRAFT.md) — do not duplicate Stripe webhook steps here; see §2 and STRIPE_PREMIUM_SETUP.
 
 ---
 
@@ -27,6 +29,32 @@
 - [ ] Cyber liability insurance (optional day one; required before institutional data at scale) — [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
 
 Optional later: Mission Winning Foundation (501(c)(3)) — see [SETUP.md](../SETUP.md). Not required for Stripe launch.
+
+**Capital priority (unlimited funds):** entity + counsel + trademark before ads — [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md).
+
+---
+
+## §1b — Counsel review (pay-ready pack)
+
+Live pages already exist; stamp them before charging at scale. **Not legal advice.**
+
+- [ ] Send counsel: `/terms` `/privacy` `/refunds` (+ `/dmca` if relevant) and [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
+- [ ] Confirm governing law matches LLC formation state
+- [ ] Confirm arbitration / refund language is acceptable for Stripe + your jurisdiction
+- [ ] File / confirm DMCA agent if US ([LEGAL_SAFETY.md](LEGAL_SAFETY.md))
+- [ ] Do **not** claim cyber insurance in Privacy until a policy is bound
+
+---
+
+## §1c — Trademark (“Mission Winning”)
+
+Cheap insurance vs later rebrand. Use a trademark attorney or reputable filing firm.
+
+- [ ] Clearance search (USPTO + common-law / domains / app stores)
+- [ ] File intent-to-use or use-based application for software / fitness coaching app classes (counsel picks classes)
+- [ ] Optional: logo mark if distinct from word mark
+- [ ] Calendar office-action response deadlines; do not DIY after a refusal without counsel
+- [ ] Hold off on large brand spends until clearance is clean enough to proceed
 
 ---
 
@@ -107,7 +135,7 @@ Crypto: complete Stripe USDC eligibility, then lifetime buyers can choose USDC i
 
 - Dual native app builds  
 - Social media agency  
-- Paid ads  
+- Paid ads (until week-4 retention — [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md))  
 - Separate Coinbase Commerce / BitPay stack (Stripe USDC is enough)
 
-Spend here: formation fees, Stripe, bookkeeping, your time on beta invites.
+**Spend here instead:** formation fees, Stripe, bookkeeping, trademark, counsel review, outreach VA ([OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md)), your time on beta invites.

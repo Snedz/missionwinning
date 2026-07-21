@@ -70,14 +70,39 @@ export function buildProgressionInsight(
   return `Next: hold ${target.reps} × ${target.weight} ${unit} on ${name}`;
 }
 
-/**
- * One boss next step after a session — Fuel first (protein), else Mind, else Move.
- * Keeps victory UI focused (not four equal doors).
- */
-export function pickVictoryNextAction(opts?: {
+/** Prefer Mission Coach on victory for the first N completed workouts (wedge habit). */
+export const COACH_VICTORY_EARLY_WORKOUTS = 3;
+
+export type PickVictoryNextActionOpts = {
   proteinLoggedToday?: boolean;
   strainDelta?: number;
-}): VictoryNextAction {
+  /** Workouts completed including the session just finished. */
+  completedWorkouts?: number;
+  /** True when a Mission Coach plan is loaded for the user. */
+  hasCoachPlan?: boolean;
+};
+
+/**
+ * One boss next step after a session.
+ * Early / no-plan: Mission Coach (Train+Coach wedge). Else Fuel → Mind → Move.
+ */
+export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): VictoryNextAction {
+  const coachFirst =
+    (typeof opts?.completedWorkouts === 'number' &&
+      opts.completedWorkouts > 0 &&
+      opts.completedWorkouts <= COACH_VICTORY_EARLY_WORKOUTS) ||
+    opts?.hasCoachPlan === false;
+
+  if (coachFirst) {
+    return {
+      href: '/coach',
+      labelKey: 'victoryNextCoachLabel',
+      defaultLabel: 'See Mission Coach',
+      reasonKey: 'victoryNextCoachReason',
+      defaultReason: 'Coach adapts your week from this log — no wearable needed.',
+    };
+  }
+
   if (!opts?.proteinLoggedToday) {
     return {
       href: '/nutrition',
@@ -110,7 +135,8 @@ export function summarizeWorkoutVictory(
   streak: number,
   bodyDelta?: VictoryBodyDelta,
   progressionInsight?: string,
-  nextAction?: VictoryNextAction
+  nextAction?: VictoryNextAction,
+  pickOpts?: PickVictoryNextActionOpts
 ): WorkoutVictorySummary {
   const setCount = log.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
   return {
@@ -122,6 +148,11 @@ export function summarizeWorkoutVictory(
     streak,
     bodyDelta,
     progressionInsight,
-    nextAction: nextAction ?? pickVictoryNextAction({ strainDelta: bodyDelta?.strain }),
+    nextAction:
+      nextAction ??
+      pickVictoryNextAction({
+        strainDelta: bodyDelta?.strain,
+        ...pickOpts,
+      }),
   };
 }

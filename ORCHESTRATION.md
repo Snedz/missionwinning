@@ -3,7 +3,7 @@
 **Audience:** Founder + AI agents  
 **Build baseline:** `2026.07-unified.90`+  
 **#1 metric (year one):** week-4 retained weekly loggers — [STRATEGY.md](STRATEGY.md)  
-**Constitution:** [vision.md](vision.md) · **Risk filter:** [REDTEAM.md](REDTEAM.md) · **Build phases:** [PLAN.md](PLAN.md) · **Launch:** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md)
+**Constitution:** [vision.md](vision.md) · **YC wedge:** [docs/YC_THESIS.md](docs/YC_THESIS.md) · **Risk filter:** [REDTEAM.md](REDTEAM.md) · **Build phases:** [PLAN.md](PLAN.md) · **Launch:** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md)
 
 Use this file to decide **what to work on next** and **what is forbidden until metrics unlock**.  
 Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
@@ -199,9 +199,29 @@ Unlock **only after** week-4 retention holds.
 
 ---
 
+## YC application gate (Horizon: apply only after retention)
+
+**Do not apply to YC (or claim traction) until all of the below hold.** Thesis + skeleton: [docs/YC_THESIS.md](docs/YC_THESIS.md). Agents never flip `PRIVATE_MODE` or invent numbers.
+
+| Gate | Target |
+|------|--------|
+| Real users | ≥100 completed ≥1 workout |
+| Week-4 retained weekly loggers | ≥10% of activated cohort ([STRATEGY.md](STRATEGY.md)) |
+| Paid signal | ≥10 Super Bundle or lifetime |
+| Demo | 60s: I-Day → log → Coach adapts week |
+| Interviews | 20 written “why I almost quit” notes |
+
+**Founder path (order):** private beta (≥10) → public → week-4 + paid signal → YC only if numbers are rising.  
+Measure: [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md). Flip day: [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md).
+
+Pitch the **Train + Mission Coach wedge** — not “everything app.” Constitution stays [vision.md](vision.md).
+
+---
+
 ## Related
 
 - Build phases A–I detail: [PLAN.md](PLAN.md)  
 - Vision scorecard: [VISION_STATUS.md](VISION_STATUS.md)  
+- YC wedge / apply bar: [docs/YC_THESIS.md](docs/YC_THESIS.md)  
 - Post-launch metric SQL: [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md)  
 - Shipped chronology: [LOG.md](LOG.md)  

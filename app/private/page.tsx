@@ -93,7 +93,7 @@ export default function PrivateTeaser() {
             <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               {t('gateSubtitle', {
                 defaultValue:
-                  'The free health everything app — training, nutrition, mobility, mind, activity, and learning. Launching soon, free core forever.',
+                  'Free offline workout logging + adaptive Mission Coach from your logs (no wearable). Launching soon — free core forever.',
               })}
             </p>
           </div>

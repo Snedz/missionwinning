@@ -6,14 +6,14 @@ const LANDING_EN: Record<string, string> = {
   landingNavBundle: 'Super Bundle',
   landingNavStart: 'Start free',
   landingNavHome: 'Home',
-  landingHeroEyebrow: 'Free workout tracker · Offline PWA',
+  landingHeroEyebrow: 'Free offline logger · Adaptive AI coach',
   landingHeroTitle1: 'Train anywhere.',
   landingHeroTitle2: 'Win daily.',
   landingHeroSubtitle:
-    'The free workout tracker that works offline — no account, no app store, no paywall on the basics. Nutrition, mobility, mind, and learning deepen the same Win Score when you want them.',
+    'We build an adaptive AI training coach for people who train at home or in a park — free offline workout logging with no account, and weekly plans that adapt from logs alone (no wearable required). Nutrition, mobility, mind, and learning deepen the same Win Score when you want them.',
   landingHeroLibrary: 'Library of 217 free exercise pages — form cues, hubs, and a full foundations guide.',
   landingHeroLibraryCta: 'Browse exercises',
-  landingHeroProof: 'Log a set in the demo → Win Score ticks. That’s the loop.',
+  landingHeroProof: 'Log a set → Coach shapes the week → Win Score ticks. That’s the loop.',
   landingSeeHow: 'See how it works',
   landingProofChip: '217 exercises · offline · no account',
   landingProofNoAiKey:
@@ -74,10 +74,10 @@ const LANDING_EN: Record<string, string> = {
   landingPillarsBundle: 'Bundle',
   landingPillarsOpen: 'Open {{name}}',
   landingBundleEyebrow: 'The Super Bundle',
-  landingBundleTitle1: 'Six premium tools.',
+  landingBundleTitle1: 'Coach + depth.',
   landingBundleTitle2: 'One subscription.',
   landingBundleBody:
-    'Coaching-grade training plans, deep nutrition, complete mobility and mind libraries, advanced tracking, and full specialist programs — the depth of six apps, priced like one. Founding members lock in discounted pricing for good.',
+    'Mission Coach weekly plans that adapt from your logs, then deep nutrition, mobility, mind, tracking, and learning — the depth of six tools, priced like one. Free logger stays free. Founding members lock in discounted pricing for good.',
   landingBundlePriceLine: 'From ${{perMonth}}/mo · free core forever',
   landingBundleCta: 'See the bundle',
   landingBundleFoot:

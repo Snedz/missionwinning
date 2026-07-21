@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { track } from '@/lib/analytics';
+import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 
 export function CoachTodayCard() {
   const { t } = useTranslation();
@@ -22,8 +23,6 @@ export function CoachTodayCard() {
   // Adjust lives on CoachPage; deep-link users to the full week for free offline adjust.
 
   if (loading) return null;
-
-  const missedCount = plan?.sessions.filter((s) => s.status === 'missed').length ?? 0;
 
   const startToday = () => {
     if (!todaySession || todaySession.status === 'done') return;
@@ -43,23 +42,18 @@ export function CoachTodayCard() {
         <CardTitle className="text-base flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-primary" />
           <span className="eyebrow text-[10px]">
-            {t('coachTodayMission', { defaultValue: "Today's mission" })}
+            {t('coachTodayMission', { defaultValue: 'Mission Coach · adapts from logs' })}
           </span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {plan && missedCount > 0 && !locked && (
-          <p className="text-xs text-status-warn leading-relaxed rounded-lg border border-status-warn/25 bg-status-warn/5 px-3 py-2">
-            {t('coachAdaptMissedNote', {
-              count: missedCount,
-              defaultValue: `${missedCount} session${missedCount === 1 ? '' : 's'} missed earlier this week — remaining days re-spread so the plan still fits.`,
-            })}
-          </p>
-        )}
+        {plan && !locked && <CoachAdaptBanner plan={plan} compact />}
         {!plan && !locked && (
           <>
             <p className="text-sm text-muted-foreground">
-              {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
+              {t('coachGenerateWeekHint', {
+                defaultValue: 'Generate a weekly plan from your logs — no wearable required.',
+              })}
             </p>
             <Button variant="fitness" size="sm" onClick={() => generate()}>
               {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}

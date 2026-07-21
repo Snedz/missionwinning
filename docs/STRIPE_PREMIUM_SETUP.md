@@ -49,8 +49,10 @@ NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME=https://buy.stripe.com/...
 ```
 
 5. Stripe → Webhooks → `https://www.missionwinning.com/api/stripe-webhook`  
-   - Event: `checkout.session.completed`  
-   - Session metadata includes `user_id`, `product_id`, `plan_id`
+   - Events: `checkout.session.completed`, `checkout.session.expired`, `charge.dispute.created`, `charge.dispute.updated`, `charge.dispute.closed`  
+   - Or: `node scripts/setup-stripe-webhook.mjs` (creates endpoint with those events; existing endpoints: add missing events in Dashboard)  
+   - Session metadata includes `user_id`, `product_id`, `plan_id`  
+   - Dispute events email `FOUNDER_DIGEST_EMAIL` — [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md)
 6. Test (signed-in user → `/bundle` → Unlock):
    - Card `4242…` or USDC in test mode when crypto enabled
    - Supabase `enrollments` row has buyer email + `user_id` when Checkout Sessions used
@@ -60,7 +62,26 @@ NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME=https://buy.stripe.com/...
    - Webhook: `--ping-webhook` with `STRIPE_WEBHOOK_SECRET`
    - Sessions smoke: `--check-checkout` (expects 401 without session when Sessions configured)
 
-Entity + bank before charging at scale: [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md).
+Entity + bank before charging at scale: [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · take-a-dollar gate: [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md).
+
+---
+
+## Refund policy at Checkout (founder Dashboard)
+
+Customers must see `/refunds` before paying (reduces “I didn’t know” chargebacks).
+
+**In-app (shipped):** Bundle CTA + `UnlockButton` microcopy link to `/refunds` (14-day money-back).
+
+**Stripe Dashboard (founder):**
+
+1. **Checkout Sessions** — Settings → Branding / Checkout → **Custom text** (submit button / shipping / after payment as available) — add a short line:  
+   `14-day money-back: https://www.missionwinning.com/refunds`
+2. **Payment Links** (if still used) — edit each link → Description / confirmation message → same URL.
+3. Optional: Customer Portal footer / receipt email custom fields pointing at refunds.
+
+Do not rely only on Payment Link success pages — policy should be visible **before** pay.
+
+Dispute response: [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md) · [legal/STRIPE_DISPUTE_EVIDENCE_PACK.md](legal/STRIPE_DISPUTE_EVIDENCE_PACK.md).
 
 ---
 

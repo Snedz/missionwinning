@@ -57,9 +57,9 @@ type BundleStrings = {
 
 const en: BundleStrings = {
   bundleBadge: 'Super Bundle',
-  bundleHeadline: 'Six pillars. One app. One price.',
+  bundleHeadline: 'Mission Coach + depth. One honest price.',
   bundleSubhead:
-    'Six pillars in one app — not a Freeletics-style multi-app stack. Train, Fuel, Move, Mind, Track, Learn, and one Win Score on Today.',
+    'Adaptive weekly plans from your workout logs — then Fuel, Move, Mind, Track, and Learn depth when you want it. Free logger stays free forever.',
   bundleUrgencyBadge: 'Founders pricing — locked in at launch',
   bundleTab3mo: 'Monthly',
   bundleTabMonthly: 'Monthly',
@@ -74,7 +74,7 @@ const en: BundleStrings = {
   bundleBilledMonthly: '${{price}} billed monthly',
   bundleBilledOnce: '${{price}} one-time',
   bundleHeroTitle: 'Super Bundle',
-  bundleHeroSubtitle: 'All six premium pillars in one install — vs juggling partner apps',
+  bundleHeroSubtitle: 'Coach + pillar depth in one install — vs juggling partner apps',
   bundleUnlockCta: 'Unlock Super Bundle',
   bundleOneAppTitle: 'One app — not seven',
   bundleOneAppDesc:

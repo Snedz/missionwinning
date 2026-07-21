@@ -2,13 +2,21 @@
 
 type CoachStrings = {
   coachPageTitle: string;
+  coachPageSubtitle: string;
   coachWeekEyebrow: string;
   coachGenerateWeek: string;
+  coachGenerateWeekHint: string;
   coachRegenerate: string;
   coachRegenerateConfirm: string;
   coachStartSession: string;
   coachViewPlan: string;
   coachTodayMission: string;
+  coachWeekOverview: string;
+  coachAdaptHeadline: string;
+  coachAdaptMissedNote: string;
+  coachAdaptSwappedNote: string;
+  coachAdaptLoggedNote: string;
+  coachAdaptRevisionNote: string;
   coachNoSessionToday: string;
   coachRestDay: string;
   coachDaysPerWeek: string;
@@ -65,13 +73,26 @@ type CoachStrings = {
 
 const en: CoachStrings = {
   coachPageTitle: 'Mission Coach',
+  coachPageSubtitle:
+    'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
   coachWeekEyebrow: "THIS WEEK'S MISSION",
   coachGenerateWeek: 'Generate this week',
+  coachGenerateWeekHint: 'Generate a weekly plan from your logs — no wearable required.',
   coachRegenerate: 'Regenerate week',
   coachRegenerateConfirm: 'Tap again to confirm',
   coachStartSession: 'Start this session',
   coachViewPlan: 'View full week',
-  coachTodayMission: "Today's mission",
+  coachTodayMission: 'Mission Coach · adapts from logs',
+  coachWeekOverview: 'Mission Coach · this week',
+  coachAdaptHeadline: 'Adapted from your logs — no wearable needed',
+  coachAdaptMissedNote:
+    '{{count}} session(s) missed earlier — remaining days re-spread so the week still fits.',
+  coachAdaptSwappedNote:
+    '{{count}} day(s) swapped to recovery from readiness / strain — from logs, not a wearable.',
+  coachAdaptLoggedNote:
+    'Week updated from workouts you already logged — plan revision bumped, no wearable required.',
+  coachAdaptRevisionNote:
+    'Plan revision {{rev}} — week reshaped from workout history alone.',
   coachNoSessionToday: 'Rest or recovery day — light movement still counts.',
   coachRestDay: 'Rest day',
   coachDaysPerWeek: 'How many days a week?',

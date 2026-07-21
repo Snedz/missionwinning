@@ -4,7 +4,7 @@
 
 **Live consumer pages:** [/terms](https://missionwinning.com/terms) · [/privacy](https://missionwinning.com/privacy) · [/refunds](https://missionwinning.com/refunds) · [/dmca](https://missionwinning.com/dmca)
 
-**Related:** [LEGAL_SAFETY.md](LEGAL_SAFETY.md) · [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [COMPLIANCE.md](COMPLIANCE.md) · [legal/DPA.md](legal/DPA.md) · [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md)
+**Related:** [LEGAL_SAFETY.md](LEGAL_SAFETY.md) · [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) · [COMPLIANCE.md](COMPLIANCE.md) · [legal/DPA.md](legal/DPA.md) · [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) · [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md)
 
 ---
 
@@ -32,10 +32,12 @@
 
 - [ ] Cyber liability quote (~$200–600/yr typical small-SaaS ballpark — verify with broker); bind before school/enterprise or large PII volume
 - [ ] Do **not** add “we are insured” to Privacy until a policy exists
-- [ ] Counsel review of Terms arbitration + refunds
+- [ ] Counsel review of Terms arbitration + refunds ([LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1b)
 - [ ] LLC formation state confirmed in [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) + Terms governing law
+- [ ] Trademark clearance / filing for “Mission Winning” ([LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1c)
 - [ ] DMCA agent filed (see [LEGAL_SAFETY.md](LEGAL_SAFETY.md))
 - [ ] Support mailbox knows refund subject line + `/refunds` link
+- [ ] Pre-launch capital tiers: [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md)
 
 ---
 

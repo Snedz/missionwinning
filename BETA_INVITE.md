@@ -6,6 +6,8 @@ Use this when inviting the first **10 private beta operators**. Prod is live at 
 
 **Deferral:** Cohort of ≥10 invites targeted by **2026-08-02** (Horizon 0 day-14). Founder owns phone hero QA + personal invites; agents fix only #1 confusion from tester feedback.
 
+**Paid help:** Optional outreach VA — [docs/OUTREACH_VA_BRIEF.md](docs/OUTREACH_VA_BRIEF.md). **Zero paid ads** until week-4 ([docs/PRELAUNCH_CAPITAL.md](docs/PRELAUNCH_CAPITAL.md)).
+
 ---
 
 ## Invite link format (Wave 10 engine)
@@ -39,21 +41,22 @@ Or send them to `/private` and share the access code separately.
 
 Hi [Name],
 
-You're in the first cohort of **Mission Winning** — a free-core fitness app with a guided member journey (I-Day → training → rankings).
+You're in the first cohort of **Mission Winning** — free offline workout logging (no account) plus **Mission Coach**: weekly plans that adapt from your logs alone (no wearable). Guided path: I-Day → first workout → rankings.
 
 **Start here (2 minutes):**
 1. Open: `https://www.missionwinning.com/?access=YOUR_CODE`
 2. Read the beta guide: `/beta`
 3. Complete **I-Day** at `/welcome`
 4. Log one workout from **Today**
-5. Optional: sign in on **Profile** for cloud sync
+5. Open **Mission Coach** (`/coach`) after your first log — see how the week adapts
+6. Optional: sign in on **Profile** for cloud sync
 
 **What to try:**
 - Tap **Mission Winning** in the top header to open the menu (Move, Mind, Leaderboard, Learn, etc.)
 - Language switch on Profile (Thai, Japanese, Spanish, etc.)
 - Optional read: **Beyond the Basics** magazine PDF — https://www.missionwinning.com/magazine/beyond-the-basics.pdf (or browse `/guide`)
 
-**Feedback:** Reply to this email or use in-app feedback. Confusing steps = exactly what we need to fix.
+**Feedback:** Reply to this email or use in-app feedback. Confusing steps = exactly what we need to fix. Especially: did Coach feel useful after one workout?
 
 Thanks for helping us ship health for everyone.
 
@@ -68,6 +71,7 @@ Thanks for helping us ship health for everyone.
 | Access code shared securely (not in public repo) | ⬜ |
 | Tester completed I-Day | ⬜ |
 | Tester logged ≥1 workout | ⬜ |
+| Tester opened Mission Coach after first log | ⬜ |
 | Tester signed in (optional) | ⬜ |
 | Feedback captured | ⬜ |
 

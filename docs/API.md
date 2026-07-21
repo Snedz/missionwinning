@@ -416,7 +416,7 @@ curl -sI "$BASE/api/school/class/MWTEST/leaderboard"
 | | |
 |--|--|
 | Auth | `webhook` — Stripe-Signature |
-| Notes | Grants enrollment via `premiumServer.grantEnrollmentFromWebhook` (email + optional `user_id` from Session metadata) |
+| Notes | `checkout.session.completed` → enroll via `premiumServer.grantEnrollmentFromWebhook` (email + optional `user_id`). `checkout.session.expired` → `checkout_recovery` upsert. `charge.dispute.created\|updated\|closed` → founder email via `FOUNDER_DIGEST_EMAIL` (no auto-fight). See [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md). |
 
 ```bash
 curl -X POST "$BASE/api/stripe-webhook" -H 'Content-Type: application/json' -d '{}'
