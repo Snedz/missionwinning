@@ -1,38 +1,35 @@
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 // Optional upload signing: apps/android/keystore.properties (gitignored).
-// If absent, release uses debug signing so local `bundleRelease` / `assembleRelease` still works.
+// Local smoke: release falls back to debug signing unless -Pmw.requireUploadKeystore=true.
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
 val hasReleaseKeystore = keystorePropertiesFile.exists()
 if (hasReleaseKeystore) {
     keystorePropertiesFile.inputStream().use { keystoreProperties.load(it) }
 }
+val requireUploadKeystore =
+    (project.findProperty("mw.requireUploadKeystore") as? String)?.equals("true", ignoreCase = true) == true
 
 android {
     namespace = "com.missionwinning.app"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
-    buildToolsVersion = "36.1.0"
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.missionwinning.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 26
-        versionName = "1.2.7"
+        versionCode = 27
+        versionName = "1.2.8"
         // Override via apps/android/local.properties (gitignored):
         //   mw.apiBaseUrl=http://10.0.2.2:3000
         //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
@@ -69,11 +66,17 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            // Upload keystore when present; otherwise debug signing for local smoke builds.
-            signingConfig = if (hasReleaseKeystore) {
-                signingConfigs.getByName("release")
+            if (hasReleaseKeystore) {
+                signingConfig = signingConfigs.getByName("release")
+            } else if (requireUploadKeystore) {
+                error(
+                    "Play upload requires apps/android/keystore.properties. " +
+                        "Run scripts/create-upload-keystore.sh, or omit -Pmw.requireUploadKeystore=true " +
+                        "for local debug-signed smoke.",
+                )
             } else {
-                signingConfigs.getByName("debug")
+                // Local smoke only — Play Console rejects debug-signed AABs.
+                signingConfig = signingConfigs.getByName("debug")
             }
         }
         debug {
@@ -107,22 +110,22 @@ dependencies {
     implementation(project(":feature:iday"))
     implementation(project(":feature:victory"))
 
-    val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
+    val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.activity:activity-compose:1.9.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
-    implementation("androidx.navigation:navigation-compose:2.8.5")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("com.google.dagger:hilt-android:2.56.2")
-    ksp("com.google.dagger:hilt-compiler:2.56.2")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit)
 }
