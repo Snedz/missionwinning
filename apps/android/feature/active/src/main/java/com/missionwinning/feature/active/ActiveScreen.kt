@@ -107,13 +107,14 @@ fun ActiveScreen(
     val allDone = ActiveSessionLogic.allDone(state.exercises)
     var elapsed by remember { mutableLongStateOf(0L) }
     var confirmDiscard by remember { mutableStateOf(false) }
+    var confirmPartialFinish by remember { mutableStateOf(false) }
     val view = LocalView.current
     var prevRest by remember { mutableStateOf(0) }
     BackHandler {
-        if (confirmDiscard) {
-            confirmDiscard = false
-        } else {
-            confirmDiscard = true
+        when {
+            confirmPartialFinish -> confirmPartialFinish = false
+            confirmDiscard -> confirmDiscard = false
+            else -> confirmDiscard = true
         }
     }
     LaunchedEffect(state.sessionId, state.workoutName) {
@@ -255,6 +256,7 @@ fun ActiveScreen(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 MwRestDock(
                     secondsLeft = state.restSeconds,
+                    totalSeconds = state.restTotalSeconds,
                     onMinus = { onEvent(ActiveEvent.RestMinus15) },
                     onSkip = { onEvent(ActiveEvent.RestSkip) },
                     onPlus = { onEvent(ActiveEvent.RestPlus15) },
@@ -269,7 +271,11 @@ fun ActiveScreen(
                     enabled = !state.finishing && ActiveSessionLogic.canFinish(state.exercises),
                     onClick = {
                         view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                        onEvent(ActiveEvent.Finish)
+                        if (!allDone && state.remainingSets > 0) {
+                            confirmPartialFinish = true
+                        } else {
+                            onEvent(ActiveEvent.Finish)
+                        }
                     },
                 )
                 MwGhostButton(
@@ -299,6 +305,28 @@ fun ActiveScreen(
                         onCancel()
                     },
                     onDismiss = { confirmDiscard = false },
+                )
+            }
+        }
+
+        if (confirmPartialFinish) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.65f))
+                    .padding(24.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                MwConfirmSheet(
+                    title = "Finish with sets left?",
+                    body = "${state.remainingSets} set${if (state.remainingSets == 1) "" else "s"} still open. Only completed sets will be saved offline.",
+                    confirmLabel = "Finish anyway",
+                    cancelLabel = "Keep logging",
+                    onConfirm = {
+                        confirmPartialFinish = false
+                        onEvent(ActiveEvent.Finish)
+                    },
+                    onDismiss = { confirmPartialFinish = false },
                 )
             }
         }

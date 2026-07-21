@@ -44,6 +44,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Complete set **carries** weight/reps to next set of same exercise; all-done skips rest
 - System back on Active opens discard confirm
 - Tap completed set row to **undo**; Today shows pending outbox + Retry sync
+- Finish with open sets asks confirm; rest dock shows brass progress bar
 
 ## Verify
 
