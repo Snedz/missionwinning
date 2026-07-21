@@ -4,16 +4,19 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
@@ -25,7 +28,10 @@ import androidx.navigation.navArgument
 import com.missionwinning.app.feature.auth.AuthScreen
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.designsystem.MwBottomNav
+import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwHubTab
+import com.missionwinning.core.designsystem.MwLoadingBlock
+import com.missionwinning.core.designsystem.MwTypography
 import com.missionwinning.feature.active.ActiveRoute
 import com.missionwinning.feature.coach.CoachScreen
 import com.missionwinning.feature.iday.IdayScreen
@@ -58,7 +64,29 @@ fun MwNavHost() {
         bootDone = true
     }
 
-    if (!bootDone) return
+    if (!bootDone) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MwColors.Navy),
+            contentAlignment = Alignment.Center,
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    "Mission Winning",
+                    style = MwTypography.headlineLarge,
+                    color = MwColors.Text,
+                )
+                Text(
+                    "Loading on this device…",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+                MwLoadingBlock(lines = 2)
+            }
+        }
+        return
+    }
 
     val backStack by nav.currentBackStackEntryAsState()
     val route = backStack?.destination?.route

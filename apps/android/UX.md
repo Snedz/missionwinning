@@ -33,6 +33,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 |-----|--------|
 | Weight unit | `kg` / `lb` — Today Units card or **tap unit chip** on Active (converts mid-session, snaps to 2.5 kg / 5 lb) |
 | Equipment | I-Day step 2 or Today Equipment chips (reseeds week plan) |
+| Default rest | `45` / `60` / `90` / `120` s — Active rest chips after complete set |
 
 ## Logger craft
 
@@ -46,6 +47,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Tap completed set row to **undo**; Today shows pending outbox + Retry sync
 - Finish with open sets asks confirm; rest dock shows brass progress bar
 - Today week strip: tap planned day to start; Active shows exercise N/M
+- Today **next** prefers today's session; boot shows loading chrome; rest default chips
 
 ## Verify
 
