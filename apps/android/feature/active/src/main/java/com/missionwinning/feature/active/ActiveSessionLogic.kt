@@ -20,6 +20,11 @@ object ActiveSessionLogic {
     fun canFinish(exercises: List<ActiveExercise>): Boolean =
         doneCount(exercises) > 0
 
+    fun allDone(exercises: List<ActiveExercise>): Boolean {
+        val total = totalSets(exercises)
+        return total > 0 && doneCount(exercises) == total
+    }
+
     fun currentSetId(exercises: List<ActiveExercise>): String? =
         exercises.flatMap { it.sets }.firstOrNull { !it.done }?.id
 
@@ -29,8 +34,47 @@ object ActiveSessionLogic {
     fun defaultWeight(previousWeight: Double?): Double =
         (previousWeight ?: 0.0).coerceAtLeast(0.0)
 
-    fun restAfterComplete(currentRest: Int, defaultRest: Int = DEFAULT_REST_SECONDS): Int =
-        if (currentRest > 0) currentRest else defaultRest
+    /**
+     * Rest after completing a set. Skip rest when the session is fully logged.
+     * If a rest is already ticking, keep it (unless all done).
+     */
+    fun restAfterComplete(
+        currentRest: Int,
+        defaultRest: Int = DEFAULT_REST_SECONDS,
+        allSetsDone: Boolean = false,
+    ): Int {
+        if (allSetsDone) return 0
+        return if (currentRest > 0) currentRest else defaultRest
+    }
+
+    /**
+     * After a set is marked done, copy its weight/reps onto the next incomplete set
+     * of the same exercise (standard logger carry-forward).
+     */
+    fun carryForwardWithinExercise(
+        exercises: List<ActiveExercise>,
+        completedSetId: String,
+    ): List<ActiveExercise> {
+        val completed = exercises.flatMap { it.sets }.find { it.id == completedSetId } ?: return exercises
+        if (!completed.done) return exercises
+        val next = exercises.flatMap { it.sets }
+            .firstOrNull { !it.done && it.exerciseId == completed.exerciseId }
+            ?: return exercises
+        return exercises.map { ex ->
+            ex.copy(
+                sets = ex.sets.map { s ->
+                    if (s.id == next.id) {
+                        s.copy(
+                            reps = completed.reps.coerceIn(1, 99),
+                            weight = completed.weight.coerceAtLeast(0.0),
+                        )
+                    } else {
+                        s
+                    }
+                },
+            )
+        }
+    }
 
     fun adjustRest(current: Int, delta: Int): Int =
         (current + delta).coerceAtLeast(0)

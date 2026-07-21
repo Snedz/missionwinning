@@ -137,9 +137,26 @@ class ActiveViewModel @Inject constructor(
     private fun toggleSet(setId: String) {
         val before = _state.value.exercises.flatMap { it.sets }.find { it.id == setId } ?: return
         val becomingDone = !before.done
-        updateSet(setId) { it.copy(done = !it.done) }
+        _state.update { st ->
+            var exercises = st.exercises.map { ex ->
+                ex.copy(sets = ex.sets.map { s ->
+                    if (s.id == setId) s.copy(done = !s.done) else s
+                })
+            }
+            if (becomingDone) {
+                exercises = ActiveSessionLogic.carryForwardWithinExercise(exercises, setId)
+            }
+            st.copy(exercises = exercises)
+        }
         if (becomingDone) {
-            startRest(ActiveSessionLogic.restAfterComplete(_state.value.restSeconds))
+            val snap = _state.value
+            val allDone = ActiveSessionLogic.allDone(snap.exercises)
+            startRest(
+                ActiveSessionLogic.restAfterComplete(
+                    currentRest = snap.restSeconds,
+                    allSetsDone = allDone,
+                ),
+            )
         }
     }
 
