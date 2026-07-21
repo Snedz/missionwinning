@@ -18,6 +18,12 @@ data class WorkoutLogEntity(
     val setCount: Int,
     val totalVolume: Double,
     val sessionId: String?,
+    /** pending | synced | failed (Room v8). */
+    val syncStatus: String = "pending",
+    val revision: Int = 1,
+    val updatedAt: String = "",
+    val deletedAt: String? = null,
+    val weightUnit: String = "kg",
 )
 
 @Entity(tableName = "set_logs")

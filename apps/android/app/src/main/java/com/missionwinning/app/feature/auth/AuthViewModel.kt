@@ -4,11 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.AuthUiSnapshot
+import com.missionwinning.core.data.MwRepository
+import com.missionwinning.core.data.SyncScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -30,6 +31,8 @@ data class AuthScreenState(
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    private val repository: MwRepository,
+    private val syncScheduler: SyncScheduler,
 ) : ViewModel() {
     private val _local = MutableStateFlow(AuthScreenState())
     val state: StateFlow<AuthScreenState> = combine(
@@ -95,12 +98,15 @@ class AuthViewModel @Inject constructor(
             _local.update { it.copy(busy = true, error = null, message = null) }
             authRepository.verifyOtp(email, code)
                 .onSuccess {
+                    // Pull remote history + push local pending (sync v2)
+                    runCatching { repository.syncNow() }
+                    syncScheduler.enqueueNow()
                     _local.update {
                         it.copy(
                             busy = false,
                             step = AuthStep.SignedIn,
                             code = "",
-                            message = "Signed in. Logs stay on this device until sync lands.",
+                            message = "Signed in. Syncing workouts when online…",
                         )
                     }
                 }

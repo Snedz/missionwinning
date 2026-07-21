@@ -97,6 +97,51 @@ paths:
                 $ref: '#/components/schemas/PremiumStatus'
         '429':
           description: Rate limited
+  /api/mobile/sync/workouts:
+    post:
+      summary: Batch push full-fidelity workouts (≤50)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [workouts]
+              properties:
+                workouts:
+                  type: array
+                  maxItems: 50
+                  items:
+                    $ref: '#/components/schemas/SyncWorkout'
+      responses:
+        '200':
+          description: Per-item acks
+        '401':
+          description: Missing/invalid Bearer
+        '429':
+          description: Rate limited
+    get:
+      summary: Cursor pull workouts (includes tombstones)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: since
+          in: query
+          schema:
+            type: string
+            description: ISO updated_at cursor (exclusive)
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            maximum: 100
+      responses:
+        '200':
+          description: items + nextCursor
+        '401':
+          description: Missing/invalid Bearer
 components:
   securitySchemes:
     bearerAuth:
@@ -203,3 +248,54 @@ components:
         source:
           type: string
           description: demo | enrollment | free | anonymous | unconfigured | rate_limited | error
+    SyncSet:
+      type: object
+      required: [id, exerciseId, setIndex, reps, weight, completedAt]
+      properties:
+        id:
+          type: string
+        exerciseId:
+          type: string
+        exerciseName:
+          type: string
+        setIndex:
+          type: integer
+        reps:
+          type: integer
+        weight:
+          type: number
+        completedAt:
+          type: string
+        weightUnit:
+          type: string
+        rpe:
+          type: integer
+          nullable: true
+        setKind:
+          type: string
+    SyncWorkout:
+      type: object
+      required: [clientId, workoutName, completedAt, durationSeconds, setCount, totalVolume]
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        workoutName:
+          type: string
+        completedAt:
+          type: string
+        durationSeconds:
+          type: integer
+        setCount:
+          type: integer
+        totalVolume:
+          type: number
+        revision:
+          type: integer
+        sets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncSet'
+        deletedAt:
+          type: string
+          nullable: true

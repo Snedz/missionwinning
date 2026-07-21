@@ -12,6 +12,7 @@ import java.util.UUID
 class MwRepository(
     private val db: MwDatabase,
     private val api: MobileApiClient?,
+    private val syncEngine: SyncEngine? = null,
 ) {
     private val dao = db.dao()
     private val json = Json { ignoreUnknownKeys = true }
@@ -142,6 +143,7 @@ class MwRepository(
             }
         }
         val now = java.time.Instant.now().toString()
+        val unit = weightUnit()
         val stampedSets = sets.map { it.copy(workoutId = id) }
         val workout = WorkoutLogEntity(
             id = id,
@@ -151,22 +153,18 @@ class MwRepository(
             setCount = stampedSets.size,
             totalVolume = volume,
             sessionId = sessionId,
-        )
-        val payload = json.encodeToString(
-            WorkoutLogRequestDto.serializer(),
-            WorkoutLogRequestDto(
-                workoutName = workoutName,
-                durationSeconds = durationSeconds,
-                setCount = stampedSets.size,
-                totalVolume = volume,
-                sessionId = sessionId,
-            ),
+            syncStatus = SyncEngine.STATUS_PENDING,
+            revision = 1,
+            updatedAt = now,
+            deletedAt = null,
+            weightUnit = unit,
         )
         val outbox = SyncOutboxEntity(
             id = UUID.randomUUID().toString(),
-            kind = KIND_WORKOUT,
-            payloadJson = payload,
+            kind = SyncEngine.KIND_WORKOUT_REF,
+            payloadJson = id,
             createdAt = now,
+            attempts = 0,
         )
         db.withTransaction {
             dao.insertWorkout(workout)
@@ -288,40 +286,70 @@ class MwRepository(
         return plan
     }
 
-    suspend fun pendingSyncCount(): Int = dao.pendingOutboxCount()
+    /** Unsynced finished workouts (pending/failed), not outbox row count. */
+    suspend fun pendingSyncCount(): Int = dao.unsyncedWorkoutCount()
 
-    /** Flush outbox; returns remaining pending count after attempt. */
+    /** Flush outbox / sync engine; returns remaining unsynced workout count. */
     suspend fun flushOutboxAndCount(): Int {
         flushOutbox()
         return pendingSyncCount()
     }
 
     suspend fun flushOutbox() {
+        val engine = syncEngine
+        if (engine != null) {
+            engine.syncAll()
+            return
+        }
+        // Fallback: legacy summary push if SyncEngine not wired
         val client = api ?: return
         val pending = dao.pendingOutbox()
         for (row in pending) {
-            val ok = when (row.kind) {
-                KIND_WORKOUT -> {
-                    runCatching {
-                        val req = json.decodeFromString(WorkoutLogRequestDto.serializer(), row.payloadJson)
-                        client.logWorkout(
-                            req.workoutName,
-                            req.durationSeconds,
-                            req.setCount,
-                            req.totalVolume,
-                            req.sessionId,
-                        ).getOrThrow()
-                    }.isSuccess
+            if (row.kind == SyncEngine.KIND_WORKOUT_REF) {
+                val workout = dao.workoutById(row.payloadJson.trim()) ?: run {
+                    dao.deleteOutbox(row.id)
+                    continue
                 }
-                else -> true
-            }
-            if (ok) {
-                dao.deleteOutbox(row.id)
+                val ok = runCatching {
+                    client.logWorkout(
+                        workout.workoutName,
+                        workout.durationSeconds,
+                        workout.setCount,
+                        workout.totalVolume,
+                        workout.sessionId,
+                    ).getOrThrow()
+                }.isSuccess
+                if (ok) {
+                    dao.updateWorkoutSync(
+                        workout.id,
+                        SyncEngine.STATUS_SYNCED,
+                        workout.revision,
+                        java.time.Instant.now().toString(),
+                    )
+                    dao.deleteOutbox(row.id)
+                } else {
+                    dao.bumpOutboxAttempt(row.id)
+                }
+            } else if (row.kind == KIND_WORKOUT) {
+                val ok = runCatching {
+                    val req = json.decodeFromString(WorkoutLogRequestDto.serializer(), row.payloadJson)
+                    client.logWorkout(
+                        req.workoutName,
+                        req.durationSeconds,
+                        req.setCount,
+                        req.totalVolume,
+                        req.sessionId,
+                    ).getOrThrow()
+                }.isSuccess
+                if (ok) dao.deleteOutbox(row.id) else dao.bumpOutboxAttempt(row.id)
             } else {
-                dao.bumpOutboxAttempt(row.id)
+                dao.deleteOutbox(row.id)
             }
         }
     }
+
+    /** Full pull+push for signed-in restore (call after verify OTP). */
+    suspend fun syncNow(): Int = flushOutboxAndCount()
 
     private suspend fun savePlanResponse(resp: CoachPlanResponseDto) {
         dao.upsertCoachPlan(
