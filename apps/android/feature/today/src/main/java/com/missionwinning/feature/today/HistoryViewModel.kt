@@ -3,6 +3,7 @@ package com.missionwinning.feature.today
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.missionwinning.core.data.MwRepository
+import com.missionwinning.core.model.SetKind
 import com.missionwinning.core.model.WeightUnits
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,7 @@ data class HistorySetUi(
     val reps: Int,
     val weightLabel: String,
     val rpeLabel: String? = null,
+    val kindLabel: String? = null,
 )
 
 data class HistoryExerciseGroup(
@@ -75,6 +77,7 @@ class HistoryViewModel @Inject constructor(
                             } else {
                                 WeightUnits.convert(row.weight, unit, unitPref)
                             }
+                            val kind = SetKind.fromCode(row.setKind)
                             HistorySetUi(
                                 id = row.id,
                                 exerciseName = name,
@@ -82,6 +85,7 @@ class HistoryViewModel @Inject constructor(
                                 reps = row.reps,
                                 weightLabel = WeightUnits.formatWithUnit(display, unitPref),
                                 rpeLabel = row.rpe?.let { "RPE $it" },
+                                kindLabel = SetKind.shortLabel(kind).takeIf { it.isNotEmpty() },
                             )
                         },
                     )

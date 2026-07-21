@@ -11,6 +11,7 @@ object Progression {
         val reps: Int,
         val completedAt: String,
         val weightUnit: String = "kg",
+        val kind: SetKind = SetKind.Normal,
     )
 
     data class PersonalRecord(
@@ -42,6 +43,7 @@ object Progression {
     fun personalRecords(sets: List<SetSample>, limit: Int = 20): List<PersonalRecord> {
         val best = linkedMapOf<String, PersonalRecord>()
         for (s in sets) {
+            if (!SetKind.countsTowardPr(s.kind)) continue
             if (s.weight <= 0 || s.reps <= 0) continue
             val e1 = estimated1rm(s.weight, s.reps)
             val prev = best[s.exerciseId]

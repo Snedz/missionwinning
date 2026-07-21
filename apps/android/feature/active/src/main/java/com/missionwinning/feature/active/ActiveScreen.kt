@@ -53,6 +53,7 @@ import com.missionwinning.core.designsystem.MwSetRow
 import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwStepper
 import com.missionwinning.core.designsystem.MwTypography
+import com.missionwinning.core.model.SetKind
 import com.missionwinning.core.model.LoggedSet
 import kotlinx.coroutines.delay
 
@@ -251,6 +252,7 @@ fun ActiveScreen(
                                     setInExercise = setInEx?.first,
                                     setsInExercise = setInEx?.second,
                                     nextExerciseName = nextEx,
+                                    canAddSet = (setInEx?.second ?: 0) < ActiveSessionLogic.MAX_SETS_PER_EXERCISE,
                                     onComplete = {
                                         view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                                         onEvent(ActiveEvent.ToggleSet(set.id))
@@ -265,6 +267,12 @@ fun ActiveScreen(
                                     onRpe = { rpe ->
                                         onEvent(ActiveEvent.UpdateRpe(set.id, rpe))
                                     },
+                                    onCycleKind = {
+                                        onEvent(ActiveEvent.CycleSetKind(set.id))
+                                    },
+                                    onAddSet = {
+                                        onEvent(ActiveEvent.AddSet(set.exerciseId))
+                                    },
                                     onApplyPrevious = {
                                         onEvent(ActiveEvent.ApplyPrevious(set.id))
                                     },
@@ -278,8 +286,15 @@ fun ActiveScreen(
                                 } else {
                                     null
                                 }
+                                val kindShort = SetKind.shortLabel(set.kind)
                                 val detail = buildString {
-                                    if (weightPart != null) append(weightPart)
+                                    if (kindShort.isNotEmpty()) {
+                                        append(kindShort)
+                                    }
+                                    if (weightPart != null) {
+                                        if (isNotEmpty()) append(" · ")
+                                        append(weightPart)
+                                    }
                                     set.rpe?.let {
                                         if (isNotEmpty()) append(" · ")
                                         append("RPE $it")
@@ -517,12 +532,15 @@ private fun CurrentSetCard(
     onRepsDelta: (Int) -> Unit,
     onWeightDelta: (Int) -> Unit,
     onRpe: (Int?) -> Unit,
+    onCycleKind: () -> Unit,
+    onAddSet: () -> Unit,
     onApplyPrevious: () -> Unit,
     exerciseIndex: Int? = null,
     exerciseTotal: Int = 0,
     setInExercise: Int? = null,
     setsInExercise: Int? = null,
     nextExerciseName: String? = null,
+    canAddSet: Boolean = true,
 ) {
     val hasPrevious = set.previousReps != null || set.previousWeight != null
     val prevWeight = set.previousWeight ?: 0.0
@@ -541,6 +559,13 @@ private fun CurrentSetCard(
             append(" · exercise $exerciseIndex/$exerciseTotal")
         }
     }
+    val kindTone = when (set.kind) {
+        SetKind.Warmup -> MwChipTone.Brass
+        SetKind.Failure -> MwChipTone.Danger
+        SetKind.Drop -> MwChipTone.Neutral
+        SetKind.Normal -> MwChipTone.Emerald
+    }
+    val kindChipText = SetKind.displayLabel(set.kind)
 
     MwCard(elevated = true, glow = true) {
         MwSectionLabel(sectionLabel)
@@ -602,6 +627,28 @@ private fun CurrentSetCard(
             )
         }
         Text(
+            "Set type",
+            style = MwTypography.labelSmall,
+            color = MwColors.TextMuted,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            MwChip(
+                text = kindChipText,
+                tone = kindTone,
+                contentDescription = "Set type $kindChipText, tap to change",
+                onClick = onCycleKind,
+            )
+            Text(
+                "Tap to cycle W · F · D",
+                style = MwTypography.bodyMedium,
+                color = MwColors.TextMuted,
+            )
+        }
+        Text(
             "RPE (optional)",
             style = MwTypography.labelSmall,
             color = MwColors.TextMuted,
@@ -630,6 +677,13 @@ private fun CurrentSetCard(
             contentDescription = "Complete set ${set.setIndex + 1}",
             onClick = onComplete,
         )
+        if (canAddSet) {
+            MwGhostButton(
+                text = "Add set",
+                contentDescription = "Add another set to ${set.exerciseName}",
+                onClick = onAddSet,
+            )
+        }
     }
 }
 

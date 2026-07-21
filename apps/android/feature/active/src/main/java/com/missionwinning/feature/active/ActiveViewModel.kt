@@ -7,6 +7,7 @@ import com.missionwinning.core.data.SetLogEntity
 import com.missionwinning.core.model.ActiveExercise
 import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.model.LoggedSet
+import com.missionwinning.core.model.SetKind
 import com.missionwinning.core.network.PlanExerciseDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -56,7 +57,9 @@ sealed interface ActiveEvent {
     data class UpdateReps(val setId: String, val reps: Int) : ActiveEvent
     data class UpdateWeight(val setId: String, val weight: Double) : ActiveEvent
     data class UpdateRpe(val setId: String, val rpe: Int?) : ActiveEvent
+    data class CycleSetKind(val setId: String) : ActiveEvent
     data class ApplyPrevious(val setId: String) : ActiveEvent
+    data class AddSet(val exerciseId: String) : ActiveEvent
     data object ToggleWeightUnit : ActiveEvent
     data object RestMinus15 : ActiveEvent
     data object RestPlus15 : ActiveEvent
@@ -148,9 +151,17 @@ class ActiveViewModel @Inject constructor(
                     it.copy(rpe = event.rpe?.coerceIn(6, 10))
                 }
             }
+            is ActiveEvent.CycleSetKind -> {
+                clearRestIfActive()
+                updateSet(event.setId) { it.copy(kind = SetKind.cycle(it.kind)) }
+            }
             is ActiveEvent.ApplyPrevious -> {
                 clearRestIfActive()
                 applyPrevious(event.setId)
+            }
+            is ActiveEvent.AddSet -> {
+                clearRestIfActive()
+                addSet(event.exerciseId)
             }
             ActiveEvent.ToggleWeightUnit -> toggleWeightUnit()
             ActiveEvent.RestMinus15 -> adjustRest(-ActiveSessionLogic.REST_STEP)
@@ -162,6 +173,18 @@ class ActiveViewModel @Inject constructor(
             ActiveEvent.Finish -> finish()
             ActiveEvent.ClearFinished -> _state.update { it.copy(finished = null) }
             ActiveEvent.ClearError -> _state.update { it.copy(error = null) }
+        }
+    }
+
+    private fun addSet(exerciseId: String) {
+        _state.update { st ->
+            st.copy(
+                exercises = ActiveSessionLogic.addSet(
+                    exercises = st.exercises,
+                    exerciseId = exerciseId,
+                    newSetId = UUID.randomUUID().toString(),
+                ),
+            )
         }
     }
 
@@ -326,6 +349,7 @@ class ActiveViewModel @Inject constructor(
                         sessionId = snap.sessionId,
                         weightUnit = ActiveSessionLogic.normalizeUnit(snap.weightUnit),
                         rpe = s.rpe?.coerceIn(6, 10),
+                        setKind = s.kind.code,
                     )
                 }
                 val duration = ActiveSessionLogic.durationSeconds(startedAt)

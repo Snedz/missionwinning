@@ -36,6 +36,8 @@ data class SetLogEntity(
     val workoutId: String = "",
     /** Optional RPE 6–10 (Room v5). Null = not logged. */
     val rpe: Int? = null,
+    /** normal | warmup | failure | drop (Room v7). */
+    val setKind: String = "normal",
 )
 
 @Entity(tableName = "sync_outbox")
