@@ -51,6 +51,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Today **this week** metrics (workouts / sets / volume); Active “Up next” exercise preview
 - Today hero: **Today's session** vs Next; Active **Set N / M**; Victory lifetime milestones
 - Streak days + network pill; Active live volume of completed sets
+- Editing weight/reps/**Use last** clears rest timer; Coach empty plan CTA reseeds
 
 ## Verify
 

@@ -26,6 +26,7 @@ import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
 import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
+import com.missionwinning.core.designsystem.MwEmptyState
 import com.missionwinning.core.designsystem.MwEnterFade
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
@@ -122,7 +123,16 @@ fun CoachScreen(
                     planResp?.let { CoachAdaptBanner(it) }
 
                     MwSectionLabel("Sessions")
-                    planResp?.plan?.sessions?.forEach { s ->
+                    val ordered = planResp?.plan?.sessions.orEmpty().sortedBy { it.dayOffset }
+                    if (!state.loading && ordered.isEmpty()) {
+                        MwEmptyState(
+                            title = "No sessions this week",
+                            body = "Reseed from Lab tools or change equipment on Today to build a plan.",
+                            cta = "Force reseed",
+                            onCta = { viewModel.forceReseed() },
+                        )
+                    }
+                    ordered.forEach { s ->
                         val actionable = s.status == "planned" || s.status == "swapped"
                         val tone = when (s.status) {
                             "done" -> MwChipTone.Emerald

@@ -13,7 +13,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.missionwinning.app.BuildConfig
+import com.missionwinning.core.common.NetworkStatus
 import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
 import com.missionwinning.core.designsystem.MwChipTone
@@ -36,8 +38,15 @@ import com.missionwinning.core.designsystem.MwTypography
 fun AuthScreen(onClose: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var message by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
+    val online = remember { NetworkStatus.isOnline(context) }
     val versionLabel = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})" +
         if (BuildConfig.DEBUG) " · debug" else ""
+    val apiHost = remember {
+        runCatching {
+            java.net.URI(BuildConfig.API_BASE_URL).host ?: BuildConfig.API_BASE_URL
+        }.getOrDefault(BuildConfig.API_BASE_URL)
+    }
 
     MwScreenScaffold {
         Column(
@@ -47,7 +56,7 @@ fun AuthScreen(onClose: () -> Unit) {
             MwTopBar(title = "Account", onBack = onClose)
             MwSectionLabel("Optional")
             MwHeroTitle("Sign in later")
-            MwOfflinePill()
+            MwOfflinePill(online = online)
             Text(
                 "Train + Coach work fully offline. Sign-in is only for cloud sync across devices.",
                 style = MwTypography.bodyMedium,
@@ -92,6 +101,13 @@ fun AuthScreen(onClose: () -> Unit) {
                     color = MwColors.TextMuted,
                 )
                 MwChip(versionLabel, tone = MwChipTone.Brass)
+                if (BuildConfig.DEBUG) {
+                    Text(
+                        "API · $apiHost",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                }
             }
             MwGhostButton(text = "Close", onClick = onClose, contentDescription = "Close account screen")
         }
