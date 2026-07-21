@@ -1,10 +1,14 @@
 package com.missionwinning.feature.victory
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.missionwinning.core.data.MwRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class VictoryUiState(
@@ -14,8 +18,13 @@ data class VictoryUiState(
     val workouts: Int = 0,
     val volume: Int = 0,
     val weightUnit: String = "kg",
+    val workoutId: String = "",
+    val savingRoutine: Boolean = false,
+    val routineSaved: Boolean = false,
+    val routineMessage: String? = null,
 ) {
     val coachFirst: Boolean get() = workouts in 1..3
+    val canSaveRoutine: Boolean get() = workoutId.isNotBlank() && sets > 0
 
     /** Sparse milestone lines for early lifetime volume. */
     val milestone: String?
@@ -30,7 +39,9 @@ data class VictoryUiState(
 }
 
 @HiltViewModel
-class VictoryViewModel @Inject constructor() : ViewModel() {
+class VictoryViewModel @Inject constructor(
+    private val repository: MwRepository,
+) : ViewModel() {
     private val _state = MutableStateFlow(VictoryUiState())
     val state: StateFlow<VictoryUiState> = _state.asStateFlow()
 
@@ -41,6 +52,7 @@ class VictoryViewModel @Inject constructor() : ViewModel() {
         workouts: Int,
         volume: Int = 0,
         weightUnit: String = "kg",
+        workoutId: String = "",
     ) {
         _state.value = VictoryUiState(
             workoutName = name,
@@ -49,6 +61,32 @@ class VictoryViewModel @Inject constructor() : ViewModel() {
             workouts = workouts,
             volume = volume,
             weightUnit = weightUnit.ifBlank { "kg" },
+            workoutId = workoutId,
         )
+    }
+
+    fun saveAsRoutine() {
+        val id = _state.value.workoutId
+        if (id.isBlank() || _state.value.savingRoutine || _state.value.routineSaved) return
+        viewModelScope.launch {
+            _state.update { it.copy(savingRoutine = true, routineMessage = null) }
+            val routineId = runCatching {
+                repository.saveRoutineFromWorkout(id)
+            }.getOrNull()
+            _state.update {
+                if (routineId != null) {
+                    it.copy(
+                        savingRoutine = false,
+                        routineSaved = true,
+                        routineMessage = "Saved as routine",
+                    )
+                } else {
+                    it.copy(
+                        savingRoutine = false,
+                        routineMessage = "Could not save routine",
+                    )
+                }
+            }
+        }
     }
 }

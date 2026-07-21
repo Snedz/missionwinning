@@ -67,7 +67,15 @@ fun ActiveRoute(
     sessionId: String,
     workoutName: String,
     targetSets: Int,
-    onFinished: (name: String, sets: Int, duration: Int, workouts: Int, volume: Double, weightUnit: String) -> Unit,
+    onFinished: (
+        name: String,
+        sets: Int,
+        duration: Int,
+        workouts: Int,
+        volume: Double,
+        weightUnit: String,
+        workoutId: String,
+    ) -> Unit,
     onCancel: () -> Unit,
     viewModel: ActiveViewModel = hiltViewModel(),
 ) {
@@ -79,7 +87,7 @@ fun ActiveRoute(
 
     LaunchedEffect(state.finished) {
         state.finished?.let { f ->
-            onFinished(f.name, f.sets, f.duration, f.workouts, f.volume, f.weightUnit)
+            onFinished(f.name, f.sets, f.duration, f.workouts, f.volume, f.weightUnit, f.workoutId)
             viewModel.onEvent(ActiveEvent.ClearFinished)
         }
     }
@@ -129,6 +137,8 @@ fun ActiveScreen(
     var confirmDiscard by remember { mutableStateOf(false) }
     var confirmPartialFinish by remember { mutableStateOf(false) }
     var showAddExercise by remember { mutableStateOf(false) }
+    var pendingRemoveExerciseId by remember { mutableStateOf<String?>(null) }
+    var pendingRemoveExerciseName by remember { mutableStateOf("") }
     val view = LocalView.current
     var prevRest by remember { mutableStateOf(0) }
     val listState = rememberLazyListState()
@@ -155,6 +165,7 @@ fun ActiveScreen(
     BackHandler {
         when {
             showAddExercise -> showAddExercise = false
+            pendingRemoveExerciseId != null -> pendingRemoveExerciseId = null
             confirmPartialFinish -> confirmPartialFinish = false
             confirmDiscard -> confirmDiscard = false
             else -> confirmDiscard = true
@@ -305,7 +316,8 @@ fun ActiveScreen(
                                         text = "Remove",
                                         contentDescription = "Remove ${row.name} from session",
                                         onClick = {
-                                            onEvent(ActiveEvent.RemoveExercise(row.exerciseId))
+                                            pendingRemoveExerciseId = row.exerciseId
+                                            pendingRemoveExerciseName = row.name
                                         },
                                         modifier = Modifier.fillMaxWidth(0.32f),
                                     )
@@ -408,6 +420,32 @@ fun ActiveScreen(
                 },
                 onDismiss = { showAddExercise = false },
             )
+        }
+
+        pendingRemoveExerciseId?.let { exerciseId ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.65f))
+                    .padding(24.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                MwConfirmSheet(
+                    title = "Remove ${pendingRemoveExerciseName.ifBlank { "exercise" }}?",
+                    body = "All sets for this exercise leave the session. Completed sets on it will not be saved.",
+                    confirmLabel = "Remove exercise",
+                    cancelLabel = "Keep",
+                    onConfirm = {
+                        onEvent(ActiveEvent.RemoveExercise(exerciseId))
+                        pendingRemoveExerciseId = null
+                        pendingRemoveExerciseName = ""
+                    },
+                    onDismiss = {
+                        pendingRemoveExerciseId = null
+                        pendingRemoveExerciseName = ""
+                    },
+                )
+            }
         }
 
         if (confirmDiscard) {

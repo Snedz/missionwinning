@@ -11,7 +11,7 @@ object Routes {
     const val ROUTINES = "routines"
     const val HISTORY = "history/{workoutId}"
     const val ACTIVE = "active/{sessionId}/{name}/{sets}"
-    const val VICTORY = "victory/{name}/{sets}/{duration}/{workouts}/{volume}/{unit}"
+    const val VICTORY = "victory/{name}/{sets}/{duration}/{workouts}/{volume}/{unit}/{workoutId}"
 
     fun history(workoutId: String) = "history/${workoutId.encode()}"
 
@@ -25,7 +25,8 @@ object Routes {
         workouts: Int,
         volume: Int = 0,
         unit: String = "kg",
-    ) = "victory/${name.encode()}/$sets/$duration/$workouts/$volume/${unit.encode()}"
+        workoutId: String = "_",
+    ) = "victory/${name.encode()}/$sets/$duration/$workouts/$volume/${unit.encode()}/${workoutId.encode()}"
 
     private fun String.encode() = java.net.URLEncoder.encode(this, Charsets.UTF_8.name())
 }

@@ -10,3 +10,10 @@ data class RoutineExerciseDto(
     val targetReps: Int,
     val lastWeight: Double = 0.0,
 )
+
+/** Result of persisting a finished workout (Room SoT). */
+data class FinishWorkoutResult(
+    val workoutId: String,
+    val workoutCount: Int,
+    val totalVolume: Double = 0.0,
+)
