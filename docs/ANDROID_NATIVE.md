@@ -80,11 +80,12 @@ apps/android/
 
 | Horizon | Done when |
 |---------|-----------|
-| **A — Spine** | Hilt; ViewModels; Room SoT; `:feature:active` extractable ✅ |
-| **B — Logger** | Exercise×sets; previous set; rest ±15/skip; keep-screen-on; editable weight/reps; finish requires ≥1 set; TalkBack CTAs — **craft hardening in progress**; founder accept on emulator still required |
-| **C — Loop** | Today/Coach/Victory polish; Production `/api/mobile/*` via cookie ([API_MOBILE.md](API_MOBILE.md)) |
+| **A — Spine** | Hilt; ViewModels; Room SoT; `:feature:active` ✅ |
+| **B — Logger** | Exercise×sets; rest craft; catalog; plate calc; Wear — founder accept still required ([FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md)) |
+| **C — Loop** | Today/Coach/Victory + sync strip; Production `/api/mobile/*` ([API_MOBILE.md](API_MOBILE.md)) |
 | **D — Velocity** | Maestro + unit tests on CI; one feature per PR |
-| **E — Later** | Wearables, social, plate calc, Fuel, iOS — after founder accepts B |
+| **E — Later** | Social, Fuel, wearables-as-score, iOS — after accept B + week-4 |
+| **F1–F4** | Sync scale · session draft · catalog · Play — [BACKLOG.md](../apps/android/BACKLOG.md) |
 
 ---
 

@@ -214,4 +214,64 @@ interface MwDao {
 
     @Query("DELETE FROM custom_exercises WHERE id = :id")
     suspend fun deleteCustomExercise(id: String)
+
+    @Query(
+        """
+        SELECT * FROM custom_exercises
+        WHERE syncStatus IN ('pending', 'failed') AND deletedAt IS NULL
+        ORDER BY createdAt ASC
+        LIMIT :limit
+        """,
+    )
+    suspend fun customsNeedingPush(limit: Int = 50): List<CustomExerciseEntity>
+
+    @Query(
+        """
+        UPDATE custom_exercises
+        SET syncStatus = :status, revision = :revision, updatedAt = :updatedAt
+        WHERE id = :id
+        """,
+    )
+    suspend fun updateCustomSync(
+        id: String,
+        status: String,
+        revision: Int,
+        updatedAt: String,
+    )
+
+    @Query(
+        """
+        UPDATE workout_logs SET syncStatus = 'pending', updatedAt = :now
+        WHERE syncStatus = 'failed' AND deletedAt IS NULL
+        """,
+    )
+    suspend fun resetFailedWorkoutsToPending(now: String)
+
+    @Query(
+        """
+        UPDATE routines SET syncStatus = 'pending', updatedAt = :now
+        WHERE syncStatus = 'failed' AND deletedAt IS NULL
+        """,
+    )
+    suspend fun resetFailedRoutinesToPending(now: String)
+
+    @Query(
+        """
+        UPDATE custom_exercises SET syncStatus = 'pending', updatedAt = :now
+        WHERE syncStatus = 'failed' AND deletedAt IS NULL
+        """,
+    )
+    suspend fun resetFailedCustomsToPending(now: String)
+
+    @Query("UPDATE sync_outbox SET attempts = 0")
+    suspend fun resetAllOutboxAttempts()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertSessionDraft(row: SessionDraftEntity)
+
+    @Query("SELECT * FROM session_drafts WHERE id = 1 LIMIT 1")
+    suspend fun getSessionDraft(): SessionDraftEntity?
+
+    @Query("DELETE FROM session_drafts WHERE id = 1")
+    suspend fun clearSessionDraft()
 }

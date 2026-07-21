@@ -103,7 +103,7 @@ fun ActiveRoute(
         state = state,
         onEvent = viewModel::onEvent,
         onCancel = onCancel,
-        searchExercises = { q, equip -> viewModel.searchExercises(q, equip) },
+        searchExercises = { q, equip, muscle -> viewModel.searchExercises(q, equip, muscle) },
     )
 }
 
@@ -170,8 +170,8 @@ fun ActiveScreen(
     state: ActiveUiState,
     onEvent: (ActiveEvent) -> Unit,
     onCancel: () -> Unit,
-    searchExercises: suspend (String, String?) -> List<ExerciseDef> = { q, e ->
-        ExerciseCatalog.search(q, e)
+    searchExercises: suspend (String, String?, String?) -> List<ExerciseDef> = { q, e, m ->
+        ExerciseCatalog.search(q, e, m)
     },
 ) {
     val progress = if (state.totalSets == 0) 0f else state.doneCount.toFloat() / state.totalSets
@@ -544,6 +544,7 @@ fun ActiveScreen(
             PlateSheet(
                 weight = currentSet.weight,
                 unit = state.weightUnit,
+                barWeight = state.barWeight,
                 onDismiss = { showPlates = false },
             )
         }
@@ -975,10 +976,15 @@ private fun formatElapsed(seconds: Int): String {
 private fun PlateSheet(
     weight: Double,
     unit: String,
+    barWeight: Double,
     onDismiss: () -> Unit,
 ) {
-    val result = remember(weight, unit) {
-        com.missionwinning.core.model.PlateCalculator.platesPerSide(weight, unit)
+    val result = remember(weight, unit, barWeight) {
+        com.missionwinning.core.model.PlateCalculator.platesPerSide(
+            target = weight,
+            unit = unit,
+            barWeight = barWeight,
+        )
     }
     Box(
         modifier = Modifier
@@ -1000,7 +1006,7 @@ private fun PlateSheet(
                 color = MwColors.TextMuted,
             )
             Text(
-                "Plates listed per side · free forever",
+                "Bar ${ActiveSessionLogic.formatWeightWithUnit(barWeight, unit)} · plates per side · free forever",
                 style = MwTypography.labelMedium,
                 color = MwColors.Brass,
             )
@@ -1012,17 +1018,18 @@ private fun PlateSheet(
 @Composable
 private fun AddExerciseSheet(
     existingIds: Set<String>,
-    search: suspend (String, String?) -> List<ExerciseDef>,
+    search: suspend (String, String?, String?) -> List<ExerciseDef>,
     onPick: (ExerciseDef) -> Unit,
     onCreateCustom: (String) -> Unit,
     onDismiss: () -> Unit,
 ) {
     var query by remember { mutableStateOf("") }
     var equip by remember { mutableStateOf<String?>(null) }
+    var muscle by remember { mutableStateOf<String?>(null) }
     var results by remember { mutableStateOf(ExerciseCatalog.search("")) }
     var customName by remember { mutableStateOf("") }
-    LaunchedEffect(query, equip) {
-        results = search(query, equip)
+    LaunchedEffect(query, equip, muscle) {
+        results = search(query, equip, muscle)
     }
 
     Box(
@@ -1086,6 +1093,23 @@ private fun AddExerciseSheet(
                         contentDescription = "Full gym",
                         onClick = { equip = "full-gym" },
                     )
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf(
+                        null to "Any",
+                        "chest" to "Chest",
+                        "back" to "Back",
+                        "quads" to "Legs",
+                        "shoulders" to "Shoulders",
+                        "core" to "Core",
+                    ).forEach { (key, label) ->
+                        MwChip(
+                            text = label,
+                            tone = if (muscle == key) MwChipTone.Emerald else MwChipTone.Neutral,
+                            contentDescription = "Muscle $label",
+                            onClick = { muscle = key },
+                        )
+                    }
                 }
                 OutlinedTextField(
                     value = customName,

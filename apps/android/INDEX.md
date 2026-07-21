@@ -6,7 +6,8 @@
 
 | Module | Role |
 |--------|------|
-| `:app` | Hilt `MwApp`, NavHost, Auth stub |
+| `:app` | Hilt `MwApp`, NavHost (Auth UI in `:app` · `:feature:auth` scaffold) |
+| `:feature:auth` | Supabase OTP Account + cloud sync Retry (or `app/.../feature/auth` until extracted) |
 | `:feature:active` | Logger craft — ViewModel UDF, exercise×sets |
 | `:feature:today` | Today next-session hero |
 | `:feature:coach` | Week plan + adapt banner |
@@ -17,6 +18,7 @@
 | `:core:common` | Shared Result helpers |
 | `:core:data` | Room SoT + sync outbox + `MwRepository` |
 | `:core:network` | Mobile OpenAPI client |
+| `:benchmark` | Baseline Profile / Macrobenchmark stub (F4) |
 
 ## Wear OS (Phase 6)
 
@@ -128,8 +130,10 @@ Signing template: [keystore.properties.example](keystore.properties.example) · 
 Screenshots for Play: [store-assets/README.md](store-assets/README.md)
 
 **Platform rebuild:** Hilt + UDF ViewModels + feature modules + Hevy/Strong-class Active logger. See [ARCHITECTURE.md](ARCHITECTURE.md).  
+**Long-term queue:** [BACKLOG.md](BACKLOG.md) — sync scale, session draft, catalog, Play velocity.  
 **UX overhaul:** [UX.md](UX.md) — bottom nav, cards, Today hero, Active current-set card, Coach tiles.  
-**Founder accept:** [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — device checklist before Play Internal.
+**Founder accept:** [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — device checklist before Play Internal.  
+**Auth:** Supabase email OTP + Bearer sync — not a stub ([NETWORK_COACH.md](NETWORK_COACH.md)).
 
 ## AI lane
 

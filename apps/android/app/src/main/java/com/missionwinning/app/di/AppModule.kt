@@ -11,6 +11,7 @@ import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.PrefsRepository
 import com.missionwinning.core.data.PremiumPurchaseGateway
 import com.missionwinning.core.data.RoutineRepository
+import com.missionwinning.core.data.SessionDraftRepository
 import com.missionwinning.core.data.SyncCoordinator
 import com.missionwinning.core.data.SyncEngine
 import com.missionwinning.core.data.SyncScheduler
@@ -122,8 +123,15 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCustomExerciseRepository(db: MwDatabase): CustomExerciseRepository =
-        CustomExerciseRepository(db)
+    fun provideCustomExerciseRepository(
+        db: MwDatabase,
+        sync: SyncCoordinator,
+    ): CustomExerciseRepository = CustomExerciseRepository(db, sync)
+
+    @Provides
+    @Singleton
+    fun provideSessionDraftRepository(db: MwDatabase): SessionDraftRepository =
+        SessionDraftRepository(db)
 
     @Provides
     @Singleton

@@ -210,6 +210,16 @@ fun AuthScreen(
                         color = MwColors.Brass,
                     )
                 }
+                if (state.outbox.conflictInbox.isNotEmpty()) {
+                    MwSectionLabel("Conflict inbox")
+                    state.outbox.conflictInbox.take(5).forEach { note ->
+                        Text(
+                            "· $note",
+                            style = MwTypography.labelMedium,
+                            color = MwColors.TextMuted,
+                        )
+                    }
+                }
                 Text(
                     "Room is source of truth. Offline logs never require sync. Local pending always wins until pushed. Dead-lettered rows stay until Retry succeeds.",
                     style = MwTypography.labelMedium,

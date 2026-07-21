@@ -46,14 +46,15 @@ UI → ViewModel → MwRepository (façade)
 | ID | Done when |
 |----|-----------|
 | **A** Platform spine | Hilt + ViewModels + Room SoT + feature:active slice |
-| **B** Logger craft | Craft-rich + **ExerciseCatalog** (Phase 1); **founder accept still required** ([FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md)) |
-| **C** Coach/Today loop | Recent logs, equipment reseed, week strip, sync strip, week progress bar; Lab tools **debug-only**; Production API still cookie-gated |
+| **B** Logger craft | Craft-rich + catalog + plate calc + Wear wedge; **founder accept** ([FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md)) |
+| **C** Coach/Today loop | Recent logs, equipment reseed, week strip, sync strip, week progress bar; Lab tools **debug-only** |
 | **D** Velocity | Maestro + unit tests on CI; one-module PR cadence |
-| **E** Later | Wearables, social, plate calc, Fuel, iOS — after founder accepts B |
+| **E** Later | Social feed, Fuel pillar, wearables-as-score, iOS — after founder accepts B + week-4 |
+| **F1–F4** | Sync mutex/indexes/custom sync · session draft · catalog depth · Play Internal — [BACKLOG.md](BACKLOG.md) |
 
 ## Sync outbox
 
-Workout finishes write Room first, enqueue `sync_outbox`, then `flushOutbox()` (also on Today refresh). Failures bump `attempts`; rows stay until API succeeds (private-gate cookie or public mode).
+Workout finishes write Room first, enqueue `sync_outbox`, then `SyncCoordinator.flushOutbox()` (WorkManager + Today/Account Retry). **Single-flight mutex** prevents concurrent Worker/UI races. Failures bump `attempts`; dead-letter after 8; Retry resets attempts. Custom exercises + routines push/pull with workouts.
 
 ```bash
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"

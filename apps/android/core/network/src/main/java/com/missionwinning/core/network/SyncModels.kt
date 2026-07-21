@@ -104,3 +104,54 @@ data class SyncRoutinePullResponseDto(
     val items: List<SyncRoutineDto> = emptyList(),
     val nextCursor: String? = null,
 )
+
+@Serializable
+data class SyncCustomExerciseDto(
+    val clientId: String? = null,
+    val name: String,
+    val createdAt: String? = null,
+    val equipment: String = "any",
+    val muscleGroups: String = "",
+    val revision: Int = 1,
+    val updatedAt: String? = null,
+    val deletedAt: String? = null,
+    val serverId: String? = null,
+)
+
+@Serializable
+data class SyncCustomPushRequestDto(
+    val exercises: List<SyncCustomExerciseDto>,
+)
+
+@Serializable
+data class SyncCustomPushResponseDto(
+    val ok: Boolean = true,
+    val acks: List<SyncAckDto> = emptyList(),
+)
+
+@Serializable
+data class SyncCustomPullResponseDto(
+    val items: List<SyncCustomExerciseDto> = emptyList(),
+    val nextCursor: String? = null,
+)
+
+@Serializable
+data class SyncPrefsDto(
+    val weightUnit: String = "kg",
+    val defaultRestSeconds: Int = 60,
+    val equipment: String = "bodyweight",
+    val barWeightKg: Double = 20.0,
+    val barWeightLb: Double = 45.0,
+    val revision: Int = 1,
+    val updatedAt: String? = null,
+)
+
+@Serializable
+data class SyncPrefsPushRequestDto(
+    val prefs: SyncPrefsDto,
+)
+
+@Serializable
+data class SyncPrefsPullResponseDto(
+    val prefs: SyncPrefsDto? = null,
+)

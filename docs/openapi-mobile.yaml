@@ -169,6 +169,46 @@ paths:
       responses:
         '200':
           description: items + nextCursor
+
+  /api/mobile/sync/customs:
+    post:
+      summary: Batch push custom exercises (≤50)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Per-item acks
+    get:
+      summary: Cursor pull custom exercises
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: since
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: items + nextCursor
+  /api/mobile/sync/prefs:
+    post:
+      summary: Push minimal mobile prefs
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: ok
+    get:
+      summary: Pull mobile prefs
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: prefs or null
   /api/mobile/telemetry:
     post:
       summary: Anonymous Android weekly heartbeat (install id + week only)

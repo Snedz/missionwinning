@@ -38,4 +38,27 @@ class ExerciseCatalogTest {
             assertTrue("missing $id", ExerciseCatalog.get(id) != null)
         }
     }
+
+    @Test
+    fun catalog_hasAtLeast200Exercises() {
+        assertTrue(
+            "expected >= 200 exercises, got ${ExerciseCatalog.all.size}",
+            ExerciseCatalog.all.size >= 200,
+        )
+        assertEquals(
+            "duplicate exercise ids",
+            ExerciseCatalog.all.size,
+            ExerciseCatalog.all.map { it.id }.toSet().size,
+        )
+    }
+
+    @Test
+    fun byMuscle_and_muscleGroups() {
+        val chest = ExerciseCatalog.byMuscle("chest")
+        assertTrue(chest.any { it.id == "pushup" })
+        assertTrue(chest.any { it.id == "bench-press" })
+        val groups = ExerciseCatalog.muscleGroups()
+        assertTrue(groups.contains("chest"))
+        assertTrue(groups == groups.sorted())
+    }
 }

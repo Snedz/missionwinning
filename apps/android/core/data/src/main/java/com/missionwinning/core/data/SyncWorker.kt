@@ -19,7 +19,7 @@ class SyncWorker(
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface SyncEntryPoint {
-        fun syncEngine(): SyncEngine
+        fun syncCoordinator(): SyncCoordinator
         fun authRepository(): AuthRepository
     }
 
@@ -33,7 +33,7 @@ class SyncWorker(
             if (entry.authRepository().accessTokenOrNull().isNullOrBlank()) {
                 return Result.success()
             }
-            entry.syncEngine().syncAll()
+            entry.syncCoordinator().flushOutbox(resetDeadLetters = false)
             Result.success()
         } catch (_: Exception) {
             if (runAttemptCount >= SyncEngine.MAX_ATTEMPTS) {

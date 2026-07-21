@@ -49,6 +49,10 @@ class MwRepository(
     suspend fun healthConnectStepsReadEnabled(): Boolean = prefs.healthConnectStepsReadEnabled()
     suspend fun setHealthConnectStepsReadEnabled(enabled: Boolean) =
         prefs.setHealthConnectStepsReadEnabled(enabled)
+    suspend fun barWeightKg(): Double = prefs.barWeightKg()
+    suspend fun setBarWeightKg(kg: Double) = prefs.setBarWeightKg(kg)
+    suspend fun barWeightLb(): Double = prefs.barWeightLb()
+    suspend fun setBarWeightLb(lb: Double) = prefs.setBarWeightLb(lb)
 
     // —— Coach ——
     suspend fun setEquipmentAndReseed(profile: String): CoachPlanResponseDto =
@@ -98,8 +102,8 @@ class MwRepository(
     suspend fun syncNow(): SyncRunResult = sync.syncNow()
 
     // —— Custom exercises ——
-    suspend fun searchExercises(query: String, equipment: String? = null) =
-        customExercises.search(query, equipment)
+    suspend fun searchExercises(query: String, equipment: String? = null, muscle: String? = null) =
+        customExercises.search(query, equipment, muscle)
 
     suspend fun createCustomExercise(name: String, equipment: String = "any") =
         customExercises.create(name, equipment)
@@ -153,6 +157,8 @@ class MwRepository(
         const val KEY_BODY_WEIGHT = "body_weight"
         const val KEY_BODY_WEIGHT_UNIT = "body_weight_unit"
         const val KEY_HEALTH_CONNECT_STEPS = "health_connect_steps_read"
+        const val KEY_BAR_KG = "plate_bar_kg"
+        const val KEY_BAR_LB = "plate_bar_lb"
         const val KIND_WORKOUT = "workout"
         const val DEFAULT_API_BASE = "https://www.missionwinning.com"
 

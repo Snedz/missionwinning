@@ -453,6 +453,21 @@ When `PRIVATE_MODE=true`, most routes require gate cookie unless listed in `isPu
 
 ---
 
+## Mobile (Android / Compose)
+
+Full contract: [API_MOBILE.md](API_MOBILE.md) · OpenAPI: [openapi-mobile.yaml](openapi-mobile.yaml).
+
+| Path | Auth | Notes |
+|------|------|-------|
+| `/api/mobile/coach/*` | Cookie or Bearer when private; cookie-free coach when not private | Plan + adapt |
+| `/api/mobile/sync/workouts` | Bearer | Push/pull workouts |
+| `/api/mobile/sync/routines` | Bearer | Push/pull routines |
+| `/api/mobile/sync/customs` | Bearer | Custom exercises |
+| `/api/mobile/sync/prefs` | Bearer | Units / rest / equipment / bar |
+| `/api/mobile/telemetry` | Soft | Install heartbeat |
+
+---
+
 ## Related
 
 - [ARCHITECTURE.md](ARCHITECTURE.md)

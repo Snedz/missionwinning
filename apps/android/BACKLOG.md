@@ -1,0 +1,54 @@
+# Android backlog — prioritized queue
+
+> Single source for Android agent/founder Issues. Horizons F0–F5 from long-term orchestration.  
+> Do **not** start F5 until founder accepts F0–F2 and week-4 retention directionally OK.
+
+## F0 — Close the loop
+
+| ID | Item | Status |
+|----|------|--------|
+| F0.1 | Founder device accept ([FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md)) | Founder-owned |
+| F0.2 | Doc truth vs code | Done |
+| F0.3 | This backlog file | Done |
+
+## F1 — Sync platform for scale
+
+| ID | Item | Status |
+|----|------|--------|
+| F1.1 | Sync mutex / single-flight | Done |
+| F1.2 | Room v11 indexes | Done |
+| F1.3 | Dead-letter UX + Retry resets attempts | Done |
+| F1.4 | Custom exercise sync (OpenAPI + server + client) | Done |
+| F1.5 | Minimal prefs cloud sync | Done |
+| F1.6 | Sync telemetry (duration, pages, conflicts) | Done |
+
+## F2 — Native logger craft
+
+| ID | Item | Status |
+|----|------|--------|
+| F2.1 | Active session draft in Room | Done |
+| F2.2 | Catalog ≥200 + muscle/equipment filters | Done |
+| F2.3 | Plate inventory prefs (bar + plates) | Done |
+| F2.4 | Rich rest haptics / PR chip | Queued |
+| F2.5 | Baseline Profile Macrobenchmark | Queued (F4) |
+
+## F3 — Identity & multi-device
+
+| ID | Item | Status |
+|----|------|--------|
+| F3.1 | Extract `:feature:auth` | Scaffolded (UI in :app until HC/Billing moved) |
+| F3.2 | Conflict inbox | Done |
+| F3.3 | Cookie-free coach when not private / Bearer | Done (server already; docs fixed) |
+| F3.4 | Soft-delete history UX | Later |
+
+## F4 — Play ship + velocity
+
+| ID | Item | Status |
+|----|------|--------|
+| F4.1 | SHIP_INTERNAL + targetSdk notes | Done |
+| F4.2 | CI Maestro / assemble gates | Done |
+| F4.3 | Baseline Profile module stub | Done |
+
+## F5 — Explicitly later (gated)
+
+Fuel · Mind · Learn · Social · Wearables-as-score · iOS · Hevy-scale video library · OpenAPI codegen / KMP

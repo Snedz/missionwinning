@@ -33,6 +33,7 @@ class SyncCoordinator(
         val last = dao.getPref(KEY_LAST_SYNC_SUCCESS)
         val summary = dao.getPref(SyncEngine.KEY_LAST_SYNC_SUMMARY)
         val conflict = dao.getPref(SyncEngine.KEY_LAST_CONFLICT_NOTE)
+        val inbox = syncEngine?.conflictInbox().orEmpty()
         return OutboxStatus(
             pendingWorkouts = pending,
             failedWorkouts = failed,
@@ -40,18 +41,22 @@ class SyncCoordinator(
             lastSuccessAt = last,
             lastSyncSummary = summary,
             lastConflictNote = conflict,
+            conflictInbox = inbox,
             workoutCount = dao.workoutCount(),
         )
     }
 
     suspend fun flushOutboxAndCount(): Int {
-        flushOutbox()
+        flushOutbox(resetDeadLetters = false)
         return pendingSyncCount()
     }
 
-    suspend fun flushOutbox(): SyncRunResult {
+    suspend fun flushOutbox(resetDeadLetters: Boolean = false): SyncRunResult {
         val engine = syncEngine
         if (engine != null) {
+            if (resetDeadLetters) {
+                engine.prepareRetry()
+            }
             val result = engine.syncDetailed()
             if (result.remainingUnsynced == 0 && result.error == null) {
                 markSyncSuccess()
@@ -117,8 +122,8 @@ class SyncCoordinator(
         return SyncRunResult(remainingUnsynced = remaining)
     }
 
-    /** Full pull+push for signed-in restore. */
-    suspend fun syncNow(): SyncRunResult = flushOutbox()
+    /** Full pull+push for signed-in restore / Account Retry (resets dead-letters). */
+    suspend fun syncNow(): SyncRunResult = flushOutbox(resetDeadLetters = true)
 
     private suspend fun markSyncSuccess() {
         dao.setPref(

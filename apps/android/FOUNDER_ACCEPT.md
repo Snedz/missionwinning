@@ -176,8 +176,10 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 
 | Decision | Date | Notes |
 |----------|------|-------|
-| Accept B (logger + loop) for Internal | | |
+| Accept B (logger + loop) for Internal | | Founder fills after device QA |
 | Reject (list blockers) | | |
+
+**Agent prep (2026-07-21):** Doc truth + [BACKLOG.md](BACKLOG.md) F0–F4 landed; sync mutex/indexes/session draft/catalog in flight. Founder still owns Pass/Fail on device — run `wedge-adb-walk.py` then walk Active + Account sync.
 
 **Blockers:**
 
