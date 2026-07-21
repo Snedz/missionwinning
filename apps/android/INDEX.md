@@ -56,7 +56,8 @@ Signing template: [keystore.properties.example](keystore.properties.example) · 
 Screenshots for Play: [store-assets/README.md](store-assets/README.md)
 
 **Platform rebuild:** Hilt + UDF ViewModels + feature modules + Hevy/Strong-class Active logger. See [ARCHITECTURE.md](ARCHITECTURE.md).  
-**UX overhaul:** [UX.md](UX.md) — bottom nav, cards, Today hero, Active current-set card, Coach tiles.
+**UX overhaul:** [UX.md](UX.md) — bottom nav, cards, Today hero, Active current-set card, Coach tiles.  
+**Founder accept:** [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — device checklist before Play Internal.
 
 ## AI lane
 

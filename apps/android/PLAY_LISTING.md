@@ -58,7 +58,7 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 
 Without `keystore.properties`, release still builds using **debug signing** so local `bundleRelease` / `assembleRelease` smoke works. Play Internal upload requires a real upload keystore.
 
-`versionCode` is `12`, `versionName` is `1.0.10` for the latest internal upload (rest auto-skip + coach empty).
+`versionCode` is `13`, `versionName` is `1.1.0` for Internal-ready (lab debug-only + week progress + founder checklist).
 
 ---
 

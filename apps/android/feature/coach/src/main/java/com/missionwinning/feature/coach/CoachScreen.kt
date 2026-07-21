@@ -1,12 +1,16 @@
 package com.missionwinning.feature.coach
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -39,6 +44,7 @@ import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSessionTile
 import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwTypography
+import com.missionwinning.feature.coach.BuildConfig
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -111,6 +117,29 @@ fun CoachScreen(
                                     MwChip("$missedN missed", tone = MwChipTone.Danger)
                                 }
                             }
+                            val total = sessions.size.coerceAtLeast(1)
+                            val progress = doneN.toFloat() / total.toFloat()
+                            Spacer(Modifier.height(10.dp))
+                            Text(
+                                "Week progress · $doneN / $total",
+                                style = MwTypography.labelMedium,
+                                color = MwColors.TextMuted,
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(6.dp)
+                                    .clip(RoundedCornerShape(999.dp))
+                                    .background(MwColors.Border),
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth(progress.coerceIn(0f, 1f))
+                                        .height(6.dp)
+                                        .clip(RoundedCornerShape(999.dp))
+                                        .background(MwColors.Emerald),
+                                )
+                            }
                         }
                     }
 
@@ -155,31 +184,34 @@ fun CoachScreen(
                         )
                     }
 
-                    Spacer(Modifier.height(4.dp))
-                    MwGhostButton(
-                        text = if (showLab) "Hide lab tools" else "Lab tools",
-                        contentDescription = if (showLab) "Hide lab tools" else "Show lab tools",
-                        onClick = { showLab = !showLab },
-                    )
-                    if (showLab) {
-                        Text(
-                            "Founder / QA helpers — not part of the product path.",
-                            style = MwTypography.bodyMedium,
-                            color = MwColors.TextMuted,
-                        )
-                        state.message?.let {
-                            Text(it, style = MwTypography.bodyMedium, color = MwColors.Emerald)
-                        }
-                        MwSecondaryButton(
-                            text = "Seed adapt demo (miss + swap)",
-                            onClick = { viewModel.seedAdaptDemo() },
-                        )
-                        MwGhostButton(text = "Refresh plan (cache)", onClick = { viewModel.refresh() })
+                    // Lab tools: debug builds only (Track 2B.4 — hide prototype chrome from Internal).
+                    if (BuildConfig.DEBUG) {
+                        Spacer(Modifier.height(4.dp))
                         MwGhostButton(
-                            text = "Force reseed plan",
-                            contentDescription = "Clear cache and rebuild coach plan",
-                            onClick = { viewModel.forceReseed() },
+                            text = if (showLab) "Hide lab tools" else "Lab tools",
+                            contentDescription = if (showLab) "Hide lab tools" else "Show lab tools",
+                            onClick = { showLab = !showLab },
                         )
+                        if (showLab) {
+                            Text(
+                                "Founder / QA helpers — not part of the product path.",
+                                style = MwTypography.bodyMedium,
+                                color = MwColors.TextMuted,
+                            )
+                            state.message?.let {
+                                Text(it, style = MwTypography.bodyMedium, color = MwColors.Emerald)
+                            }
+                            MwSecondaryButton(
+                                text = "Seed adapt demo (miss + swap)",
+                                onClick = { viewModel.seedAdaptDemo() },
+                            )
+                            MwGhostButton(text = "Refresh plan (cache)", onClick = { viewModel.refresh() })
+                            MwGhostButton(
+                                text = "Force reseed plan",
+                                contentDescription = "Clear cache and rebuild coach plan",
+                                onClick = { viewModel.forceReseed() },
+                            )
+                        }
                     }
                     Spacer(Modifier.height(8.dp))
                 }
