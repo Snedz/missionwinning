@@ -35,6 +35,8 @@ data class ActiveUiState(
     val doneCount: Int get() = exercises.sumOf { ex -> ex.sets.count { it.done } }
     val totalSets: Int get() = exercises.sumOf { it.sets.size }
     val remainingSets: Int get() = (totalSets - doneCount).coerceAtLeast(0)
+    /** Volume of completed sets only (weight × reps). */
+    val liveVolume: Double get() = ActiveSessionLogic.sessionVolume(exercises)
 }
 
 data class FinishedPayload(

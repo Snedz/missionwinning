@@ -27,7 +27,7 @@ class ActiveUiStateTest {
                     "a",
                     "Push",
                     listOf(
-                        set("1", done = true),
+                        set("1", done = true, reps = 5, weight = 100.0),
                         set("2", done = false, index = 1),
                     ),
                 ),
@@ -35,6 +35,7 @@ class ActiveUiStateTest {
         )
         assertEquals(1, state.doneCount)
         assertEquals(2, state.totalSets)
+        assertEquals(500.0, state.liveVolume, 0.0)
     }
 
     @Test

@@ -256,18 +256,38 @@ private fun NavItem(
 }
 
 @Composable
-fun MwOfflinePill(modifier: Modifier = Modifier) {
+fun MwOfflinePill(
+    modifier: Modifier = Modifier,
+    /** When true, show online-ready copy; false/null keeps offline-honest default. */
+    online: Boolean? = null,
+) {
+    val (label, fg, bg, border) = when (online) {
+        true -> Quad(
+            "ONLINE · READY TO SYNC",
+            MwColors.Emerald,
+            MwColors.EmeraldDim.copy(alpha = 0.25f),
+            MwColors.Emerald.copy(alpha = 0.4f),
+        )
+        else -> Quad(
+            "ON DEVICE · SYNC LATER",
+            MwColors.Brass,
+            MwColors.BrassDim.copy(alpha = 0.2f),
+            MwColors.Brass.copy(alpha = 0.35f),
+        )
+    }
     Text(
-        "ON DEVICE · SYNC LATER",
+        label,
         style = MwTypography.labelSmall,
-        color = MwColors.Brass,
+        color = fg,
         modifier = modifier
             .clip(RoundedCornerShape(999.dp))
-            .background(MwColors.BrassDim.copy(alpha = 0.2f))
-            .border(1.dp, MwColors.Brass.copy(alpha = 0.35f), RoundedCornerShape(999.dp))
+            .background(bg)
+            .border(1.dp, border, RoundedCornerShape(999.dp))
             .padding(horizontal = 10.dp, vertical = 4.dp),
     )
 }
+
+private data class Quad<A, B, C, D>(val a: A, val b: B, val c: C, val d: D)
 
 @Composable
 fun MwMetricCard(

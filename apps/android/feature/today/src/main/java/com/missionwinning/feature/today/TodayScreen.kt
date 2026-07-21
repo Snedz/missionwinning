@@ -83,18 +83,33 @@ fun TodayScreen(
                         MwSectionLabel(dateLabel)
                         MwHeroTitle("Today")
                     }
-                    MwOfflinePill()
+                    MwOfflinePill(online = state.online)
                 }
 
                 Text(
                     if (state.workouts == 0) {
                         "Your next session is ready on this device."
                     } else {
-                        "${state.workouts} workout${if (state.workouts == 1) "" else "s"} logged offline."
+                        buildString {
+                            append("${state.workouts} workout${if (state.workouts == 1) "" else "s"} logged offline")
+                            if (state.streakDays > 0) {
+                                append(" · ${state.streakDays}-day streak")
+                            }
+                            append(".")
+                        }
                     },
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
+
+                if (state.streakDays > 0) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        MwChip(
+                            "${state.streakDays} day streak",
+                            tone = MwChipTone.Brass,
+                        )
+                    }
+                }
 
                 if (state.pendingSync > 0 || state.syncMessage != null) {
                     MwCard(elevated = true) {
@@ -107,7 +122,13 @@ fun TodayScreen(
                         )
                         if (state.pendingSync > 0) {
                             MwGhostButton(
-                                text = if (state.syncing) "Syncing…" else "Retry sync",
+                                text = if (state.syncing) {
+                                    "Syncing…"
+                                } else if (!state.online) {
+                                    "Offline — retry later"
+                                } else {
+                                    "Retry sync"
+                                },
                                 contentDescription = "Retry syncing offline workouts",
                                 onClick = { if (!state.syncing) viewModel.retrySync() },
                             )
