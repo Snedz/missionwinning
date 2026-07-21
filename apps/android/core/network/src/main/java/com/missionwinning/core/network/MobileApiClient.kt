@@ -12,7 +12,8 @@ import java.util.concurrent.TimeUnit
 
 class MobileApiClient(
     private val baseUrl: String,
-    private val accessToken: String? = null,
+    /** Live token reader — never caches; AuthRepository owns refresh. */
+    private val tokenProvider: () -> String? = { null },
     /** Optional `mw_private_access` cookie for PRIVATE_MODE www until public flip. */
     private val privateAccessCookie: String? = null,
 ) {
@@ -22,6 +23,18 @@ class MobileApiClient(
         .build()
     private val json = Json { ignoreUnknownKeys = true; isLenient = true }
     private val media = "application/json".toMediaType()
+
+    suspend fun fetchPremiumStatus(): Result<PremiumStatusDto> = withContext(Dispatchers.IO) {
+        runCatching {
+            val req = requestBuilder("/api/mobile/premium/status")
+                .get()
+                .build()
+            client.newCall(req).execute().use { resp ->
+                if (!resp.isSuccessful) error("premium/status ${resp.code}")
+                json.decodeFromString<PremiumStatusDto>(resp.body!!.string())
+            }
+        }
+    }
 
     suspend fun fetchCoachPlan(
         equipment: String = "bodyweight",
@@ -100,8 +113,9 @@ class MobileApiClient(
 
     private fun requestBuilder(path: String): Request.Builder {
         val b = Request.Builder().url(baseUrl.trimEnd('/') + path)
-        if (!accessToken.isNullOrBlank()) {
-            b.header("Authorization", "Bearer $accessToken")
+        val token = tokenProvider()?.takeIf { it.isNotBlank() }
+        if (token != null) {
+            b.header("Authorization", "Bearer $token")
         }
         if (!privateAccessCookie.isNullOrBlank()) {
             b.header("Cookie", "mw_private_access=$privateAccessCookie")

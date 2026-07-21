@@ -83,6 +83,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkoutLogResponse'
+  /api/mobile/premium/status:
+    get:
+      summary: Super Bundle entitlement for native Account
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Premium flag + source
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PremiumStatus'
+        '429':
+          description: Rate limited
 components:
   securitySchemes:
     bearerAuth:
@@ -180,3 +194,12 @@ components:
           type: string
         syncError:
           type: string
+    PremiumStatus:
+      type: object
+      required: [premium, source]
+      properties:
+        premium:
+          type: boolean
+        source:
+          type: string
+          description: demo | enrollment | free | anonymous | unconfigured | rate_limited | error

@@ -29,6 +29,7 @@ Legend:
 | `mobile/coach/plan` | GET, POST | public if not PRIVATE_MODE; else Bearer/cookie/gate | 30/min | Zod `mobileCoachPlanBodySchema` · OpenAPI [openapi-mobile.yaml](../../docs/openapi-mobile.yaml) |
 | `mobile/coach/adapt` | POST | same bootstrap rules | 30/min | Zod `mobileCoachAdaptBodySchema` |
 | `mobile/workouts` | POST | optional Bearer (sync when present) | 40/min | Zod `mobileWorkoutLogBodySchema` |
+| `mobile/premium/status` | GET | Bearer (or cookie fallback) | 60/min | Super Bundle flag for native Account |
 
 ### Gate & leads
 

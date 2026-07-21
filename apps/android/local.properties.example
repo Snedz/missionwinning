@@ -8,3 +8,7 @@
 
 # Optional: PRIVATE_MODE cookie value (mw_private_access token after POST /api/private-access)
 # mw.privateAccessCookie=
+
+# Optional: Supabase Auth for email OTP (Account screen). Same project as web.
+# mw.supabaseUrl=https://YOUR-PROJECT.supabase.co
+# mw.supabaseAnonKey=your-anon-key
