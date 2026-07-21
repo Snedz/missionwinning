@@ -4,7 +4,9 @@ import android.view.HapticFeedbackConstants
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,12 +14,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -95,6 +95,18 @@ private fun KeepScreenOn() {
     }
 }
 
+/** Flat list model for LazyColumn keys + scroll-to-current. */
+private sealed class ActiveListRow {
+    data object Header : ActiveListRow()
+    data object AllDone : ActiveListRow()
+    data object Empty : ActiveListRow()
+    data object Current : ActiveListRow()
+    data class Section(val exerciseId: String, val name: String) : ActiveListRow()
+    data class SetItem(val set: LoggedSet) : ActiveListRow()
+    data class Error(val message: String) : ActiveListRow()
+    data object FooterPad : ActiveListRow()
+}
+
 @Composable
 fun ActiveScreen(
     state: ActiveUiState,
@@ -110,6 +122,27 @@ fun ActiveScreen(
     var confirmPartialFinish by remember { mutableStateOf(false) }
     val view = LocalView.current
     var prevRest by remember { mutableStateOf(0) }
+    val listState = rememberLazyListState()
+
+    val rows = remember(state.exercises, currentId, allDone, state.error) {
+        buildList {
+            add(ActiveListRow.Header)
+            if (allDone) add(ActiveListRow.AllDone)
+            if (state.exercises.isEmpty()) add(ActiveListRow.Empty)
+            if (currentSet != null) add(ActiveListRow.Current)
+            state.exercises.forEach { exercise ->
+                add(ActiveListRow.Section(exercise.exerciseId, exercise.name))
+                exercise.sets.forEach { set ->
+                    if (set.id != currentId) {
+                        add(ActiveListRow.SetItem(set))
+                    }
+                }
+            }
+            state.error?.let { add(ActiveListRow.Error(it)) }
+            add(ActiveListRow.FooterPad)
+        }
+    }
+
     BackHandler {
         when {
             confirmPartialFinish -> confirmPartialFinish = false
@@ -124,215 +157,175 @@ fun ActiveScreen(
             elapsed += 1
         }
     }
-    // Pulse when rest timer hits zero
     LaunchedEffect(state.restSeconds) {
         if (prevRest > 0 && state.restSeconds == 0) {
             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
         }
         prevRest = state.restSeconds
     }
-
-    Box(modifier = Modifier.fillMaxSize()) {
-    MwScreenScaffold {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(MwSpace.md),
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Column(Modifier.weight(1f)) {
-                        MwSectionLabel("Train")
-                        MwHeroTitle(state.workoutName.ifBlank { "Workout" })
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        MwChip(formatElapsed(elapsed.toInt()), tone = MwChipTone.Brass)
-                        MwChip(
-                            text = state.weightUnit.uppercase(),
-                            tone = MwChipTone.Emerald,
-                            contentDescription = "Toggle weight unit, currently ${state.weightUnit}",
-                            onClick = { onEvent(ActiveEvent.ToggleWeightUnit) },
-                        )
-                    }
-                }
-
-                LinearProgressIndicator(
-                    progress = { progress },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(6.dp),
-                    color = MwColors.Emerald,
-                    trackColor = MwColors.Border,
-                    strokeCap = StrokeCap.Round,
-                )
-                Text(
-                    buildString {
-                        append("${state.doneCount} / ${state.totalSets} sets")
-                        if (state.liveVolume > 0) {
-                            append(" · ")
-                            append(ActiveSessionLogic.formatWeightWithUnit(state.liveVolume, state.weightUnit))
-                            append(" vol")
-                        }
-                        append(" · tap ${state.weightUnit.uppercase()} to switch unit")
-                    },
-                    style = MwTypography.labelMedium,
-                    color = MwColors.TextMuted,
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        "Rest",
-                        style = MwTypography.labelMedium,
-                        color = MwColors.TextMuted,
-                    )
-                    listOf(45, 60, 90, 120).forEach { sec ->
-                        MwChip(
-                            text = "${sec}s",
-                            tone = if (state.defaultRestSeconds == sec) {
-                                MwChipTone.Brass
-                            } else {
-                                MwChipTone.Neutral
-                            },
-                            contentDescription = "Default rest $sec seconds",
-                            onClick = { onEvent(ActiveEvent.SetDefaultRest(sec)) },
-                        )
-                    }
-                }
-
-                if (allDone) {
-                    MwCard(elevated = true, glow = true) {
-                        MwSectionLabel("Session complete")
-                        Text(
-                            "All sets logged",
-                            style = MwTypography.headlineMedium,
-                            color = MwColors.Emerald,
-                        )
-                        Text(
-                            "Finish to lock this workout offline. Coach will use it on the next plan refresh.",
-                            style = MwTypography.bodyMedium,
-                            color = MwColors.TextMuted,
-                        )
-                    }
-                }
-
-                if (state.exercises.isEmpty()) {
-                    MwEmptyState(
-                        title = "No exercises",
-                        body = "Cancel and pick another day on Today.",
-                        cta = "Cancel",
-                        onCta = onCancel,
-                    )
-                }
-
-                if (currentSet != null) {
-                    val exIndex = ActiveSessionLogic.currentExerciseIndex(state.exercises)
-                    val exTotal = ActiveSessionLogic.exerciseCount(state.exercises)
-                    val nextEx = ActiveSessionLogic.nextExerciseName(state.exercises)
-                    val setInEx = ActiveSessionLogic.currentSetInExercise(state.exercises)
-                    CurrentSetCard(
-                        set = currentSet,
-                        weightUnit = state.weightUnit,
-                        exerciseIndex = exIndex,
-                        exerciseTotal = exTotal,
-                        setInExercise = setInEx?.first,
-                        setsInExercise = setInEx?.second,
-                        nextExerciseName = nextEx,
-                        onComplete = {
-                            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                            onEvent(ActiveEvent.ToggleSet(currentSet.id))
-                        },
-                        onRepsDelta = { d ->
-                            onEvent(ActiveEvent.UpdateReps(currentSet.id, currentSet.reps + d))
-                        },
-                        onWeightDelta = { d ->
-                            val step = ActiveSessionLogic.weightStep(state.weightUnit)
-                            onEvent(ActiveEvent.UpdateWeight(currentSet.id, currentSet.weight + d * step))
-                        },
-                        onApplyPrevious = {
-                            onEvent(ActiveEvent.ApplyPrevious(currentSet.id))
-                        },
-                    )
-                }
-
-                state.exercises.forEach { exercise ->
-                    MwSectionLabel(exercise.name)
-                    exercise.sets.forEach { set ->
-                        val isCurrent = set.id == currentId
-                        if (!isCurrent) {
-                            MwSetRow(
-                                index = set.setIndex,
-                                reps = set.reps,
-                                done = set.done,
-                                isCurrent = false,
-                                weightLabel = if (set.weight > 0) {
-                                    ActiveSessionLogic.formatWeightWithUnit(set.weight, state.weightUnit)
-                                } else {
-                                    null
-                                },
-                                onToggle = {
-                                    // Allow undo of completed sets (tap DONE row)
-                                    onEvent(ActiveEvent.ToggleSet(set.id))
-                                },
-                            )
-                        }
-                    }
-                }
-
-                state.error?.let { err ->
-                    MwCard(elevated = true) {
-                        Text(err, style = MwTypography.bodyMedium, color = MwColors.Danger)
-                        MwGhostButton(
-                            text = "Dismiss",
-                            contentDescription = "Dismiss error",
-                            onClick = { onEvent(ActiveEvent.ClearError) },
-                        )
-                    }
-                }
-
-                Spacer(Modifier.height(8.dp))
-            }
-
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                MwRestDock(
-                    secondsLeft = state.restSeconds,
-                    totalSeconds = state.restTotalSeconds,
-                    onMinus = { onEvent(ActiveEvent.RestMinus15) },
-                    onSkip = { onEvent(ActiveEvent.RestSkip) },
-                    onPlus = { onEvent(ActiveEvent.RestPlus15) },
-                )
-                MwPrimaryButton(
-                    text = when {
-                        state.finishing -> "Saving…"
-                        allDone -> "Finish workout · lock session"
-                        else -> "Finish workout"
-                    },
-                    contentDescription = "Finish workout and save sets offline",
-                    enabled = !state.finishing && ActiveSessionLogic.canFinish(state.exercises),
-                    onClick = {
-                        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                        if (!allDone && state.remainingSets > 0) {
-                            confirmPartialFinish = true
-                        } else {
-                            onEvent(ActiveEvent.Finish)
-                        }
-                    },
-                )
-                MwGhostButton(
-                    text = "Discard session",
-                    contentDescription = "Cancel workout without saving",
-                    onClick = { confirmDiscard = true },
-                )
-            }
+    // Keep the current set card in view as the logger advances
+    LaunchedEffect(currentId, allDone, rows.size) {
+        val target = when {
+            currentId != null -> rows.indexOfFirst { it is ActiveListRow.Current }
+            allDone -> rows.indexOfFirst { it is ActiveListRow.AllDone }
+            else -> -1
+        }
+        if (target >= 0) {
+            listState.animateScrollToItem(target)
         }
     }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        MwScreenScaffold {
+            Column(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(MwSpace.md),
+                ) {
+                    items(
+                        count = rows.size,
+                        key = { i ->
+                            when (val row = rows[i]) {
+                                ActiveListRow.Header -> "header"
+                                ActiveListRow.AllDone -> "alldone"
+                                ActiveListRow.Empty -> "empty"
+                                ActiveListRow.Current -> "current"
+                                is ActiveListRow.Section -> "sec-${row.exerciseId}"
+                                is ActiveListRow.SetItem -> "set-${row.set.id}"
+                                is ActiveListRow.Error -> "error"
+                                ActiveListRow.FooterPad -> "pad"
+                            }
+                        },
+                    ) { i ->
+                        when (val row = rows[i]) {
+                            ActiveListRow.Header -> ActiveHeader(
+                                state = state,
+                                progress = progress,
+                                elapsed = elapsed.toInt(),
+                                onEvent = onEvent,
+                            )
+                            ActiveListRow.AllDone -> {
+                                MwCard(elevated = true, glow = true) {
+                                    MwSectionLabel("Session complete")
+                                    Text(
+                                        "All sets logged",
+                                        style = MwTypography.headlineMedium,
+                                        color = MwColors.Emerald,
+                                    )
+                                    Text(
+                                        "Finish to lock this workout offline. Coach will use it on the next plan refresh.",
+                                        style = MwTypography.bodyMedium,
+                                        color = MwColors.TextMuted,
+                                    )
+                                }
+                            }
+                            ActiveListRow.Empty -> {
+                                MwEmptyState(
+                                    title = "No exercises",
+                                    body = "Cancel and pick another day on Today.",
+                                    cta = "Cancel",
+                                    onCta = onCancel,
+                                )
+                            }
+                            ActiveListRow.Current -> {
+                                val set = currentSet ?: return@items
+                                val exIndex = ActiveSessionLogic.currentExerciseIndex(state.exercises)
+                                val exTotal = ActiveSessionLogic.exerciseCount(state.exercises)
+                                val nextEx = ActiveSessionLogic.nextExerciseName(state.exercises)
+                                val setInEx = ActiveSessionLogic.currentSetInExercise(state.exercises)
+                                CurrentSetCard(
+                                    set = set,
+                                    weightUnit = state.weightUnit,
+                                    exerciseIndex = exIndex,
+                                    exerciseTotal = exTotal,
+                                    setInExercise = setInEx?.first,
+                                    setsInExercise = setInEx?.second,
+                                    nextExerciseName = nextEx,
+                                    onComplete = {
+                                        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                                        onEvent(ActiveEvent.ToggleSet(set.id))
+                                    },
+                                    onRepsDelta = { d ->
+                                        onEvent(ActiveEvent.UpdateReps(set.id, set.reps + d))
+                                    },
+                                    onWeightDelta = { d ->
+                                        val step = ActiveSessionLogic.weightStep(state.weightUnit)
+                                        onEvent(ActiveEvent.UpdateWeight(set.id, set.weight + d * step))
+                                    },
+                                    onApplyPrevious = {
+                                        onEvent(ActiveEvent.ApplyPrevious(set.id))
+                                    },
+                                )
+                            }
+                            is ActiveListRow.Section -> MwSectionLabel(row.name)
+                            is ActiveListRow.SetItem -> {
+                                val set = row.set
+                                MwSetRow(
+                                    index = set.setIndex,
+                                    reps = set.reps,
+                                    done = set.done,
+                                    isCurrent = false,
+                                    weightLabel = if (set.weight > 0) {
+                                        ActiveSessionLogic.formatWeightWithUnit(set.weight, state.weightUnit)
+                                    } else {
+                                        null
+                                    },
+                                    onToggle = {
+                                        onEvent(ActiveEvent.ToggleSet(set.id))
+                                    },
+                                )
+                            }
+                            is ActiveListRow.Error -> {
+                                MwCard(elevated = true) {
+                                    Text(row.message, style = MwTypography.bodyMedium, color = MwColors.Danger)
+                                    MwGhostButton(
+                                        text = "Dismiss",
+                                        contentDescription = "Dismiss error",
+                                        onClick = { onEvent(ActiveEvent.ClearError) },
+                                    )
+                                }
+                            }
+                            ActiveListRow.FooterPad -> Spacer(Modifier.height(8.dp))
+                        }
+                    }
+                }
+
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MwRestDock(
+                        secondsLeft = state.restSeconds,
+                        totalSeconds = state.restTotalSeconds,
+                        onMinus = { onEvent(ActiveEvent.RestMinus15) },
+                        onSkip = { onEvent(ActiveEvent.RestSkip) },
+                        onPlus = { onEvent(ActiveEvent.RestPlus15) },
+                    )
+                    MwPrimaryButton(
+                        text = when {
+                            state.finishing -> "Saving…"
+                            allDone -> "Finish workout · lock session"
+                            else -> "Finish workout"
+                        },
+                        contentDescription = "Finish workout and save sets offline",
+                        enabled = !state.finishing && ActiveSessionLogic.canFinish(state.exercises),
+                        onClick = {
+                            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                            if (!allDone && state.remainingSets > 0) {
+                                confirmPartialFinish = true
+                            } else {
+                                onEvent(ActiveEvent.Finish)
+                            }
+                        },
+                    )
+                    MwGhostButton(
+                        text = "Discard session",
+                        contentDescription = "Cancel workout without saving",
+                        onClick = { confirmDiscard = true },
+                    )
+                }
+            }
+        }
 
         if (confirmDiscard) {
             Box(
@@ -374,6 +367,82 @@ fun ActiveScreen(
                         onEvent(ActiveEvent.Finish)
                     },
                     onDismiss = { confirmPartialFinish = false },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ActiveHeader(
+    state: ActiveUiState,
+    progress: Float,
+    elapsed: Int,
+    onEvent: (ActiveEvent) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f)) {
+                MwSectionLabel("Train")
+                MwHeroTitle(state.workoutName.ifBlank { "Workout" })
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                MwChip(formatElapsed(elapsed), tone = MwChipTone.Brass)
+                MwChip(
+                    text = state.weightUnit.uppercase(),
+                    tone = MwChipTone.Emerald,
+                    contentDescription = "Toggle weight unit, currently ${state.weightUnit}",
+                    onClick = { onEvent(ActiveEvent.ToggleWeightUnit) },
+                )
+            }
+        }
+
+        LinearProgressIndicator(
+            progress = { progress },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(6.dp),
+            color = MwColors.Emerald,
+            trackColor = MwColors.Border,
+            strokeCap = StrokeCap.Round,
+        )
+        Text(
+            buildString {
+                append("${state.doneCount} / ${state.totalSets} sets")
+                if (state.liveVolume > 0) {
+                    append(" · ")
+                    append(ActiveSessionLogic.formatWeightWithUnit(state.liveVolume, state.weightUnit))
+                    append(" vol")
+                }
+                append(" · tap ${state.weightUnit.uppercase()} to switch unit")
+            },
+            style = MwTypography.labelMedium,
+            color = MwColors.TextMuted,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                "Rest",
+                style = MwTypography.labelMedium,
+                color = MwColors.TextMuted,
+            )
+            listOf(45, 60, 90, 120).forEach { sec ->
+                MwChip(
+                    text = "${sec}s",
+                    tone = if (state.defaultRestSeconds == sec) {
+                        MwChipTone.Brass
+                    } else {
+                        MwChipTone.Neutral
+                    },
+                    contentDescription = "Default rest $sec seconds",
+                    onClick = { onEvent(ActiveEvent.SetDefaultRest(sec)) },
                 )
             }
         }
