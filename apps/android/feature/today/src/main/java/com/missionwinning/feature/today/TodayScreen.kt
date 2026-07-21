@@ -417,7 +417,8 @@ private fun HeroSessionCard(
         )
         Spacer(Modifier.height(4.dp))
         MwPrimaryButton(
-            text = if (isToday) "Start today's workout" else "Start workout",
+            // Stable CTA text for Maestro/adb wedge (section label already says Today’s session).
+            text = "Start workout",
             contentDescription = "Start workout ${session.name}",
             onClick = onStart,
         )

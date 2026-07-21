@@ -9,9 +9,10 @@ appId: com.missionwinning.app.debug
 - tapOn: "Start workout"
 - assertVisible: "Complete set"
 - tapOn: "Complete set"
+# Copy may be "Finish workout" or "Finish workout · lock session" (substring match)
 - assertVisible: "Finish workout"
 - tapOn: "Finish workout"
 - assertVisible: "Session locked"
+# First lifetime sessions show Coach CTA (pm clear → workout #1)
 - tapOn: "See Mission Coach"
 - assertVisible: "Mission Coach"
-- assertVisible: "Coach"
