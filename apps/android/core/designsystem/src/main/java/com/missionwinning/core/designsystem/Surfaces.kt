@@ -499,10 +499,29 @@ fun MwRestDock(
     onSkip: () -> Unit,
     onPlus: () -> Unit,
     modifier: Modifier = Modifier,
+    totalSeconds: Int = 0,
 ) {
     if (secondsLeft <= 0) return
+    val total = totalSeconds.coerceAtLeast(secondsLeft).coerceAtLeast(1)
+    val progress = (secondsLeft.toFloat() / total.toFloat()).coerceIn(0f, 1f)
     MwCard(modifier = modifier, elevated = true, glow = true) {
         MwRestTimer(secondsLeft = secondsLeft)
+        // Remaining rest fraction (ticks down with the timer)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(4.dp)
+                .clip(RoundedCornerShape(999.dp))
+                .background(MwColors.Border),
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(progress)
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(999.dp))
+                    .background(MwColors.Brass),
+            )
+        }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),

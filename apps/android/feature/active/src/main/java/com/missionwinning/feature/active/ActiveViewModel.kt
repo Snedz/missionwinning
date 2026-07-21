@@ -23,6 +23,8 @@ data class ActiveUiState(
     val sessionId: String = "",
     val exercises: List<ActiveExercise> = emptyList(),
     val restSeconds: Int = 0,
+    /** Anchor for rest progress bar (does not tick down). */
+    val restTotalSeconds: Int = 0,
     val weightUnit: String = "kg",
     val finishing: Boolean = false,
     val finished: FinishedPayload? = null,
@@ -30,6 +32,7 @@ data class ActiveUiState(
 ) {
     val doneCount: Int get() = exercises.sumOf { ex -> ex.sets.count { it.done } }
     val totalSets: Int get() = exercises.sumOf { it.sets.size }
+    val remainingSets: Int get() = (totalSets - doneCount).coerceAtLeast(0)
 }
 
 data class FinishedPayload(
@@ -162,7 +165,7 @@ class ActiveViewModel @Inject constructor(
 
     private fun skipRest() {
         restJob?.cancel()
-        _state.update { it.copy(restSeconds = 0) }
+        _state.update { it.copy(restSeconds = 0, restTotalSeconds = 0) }
     }
 
     private fun updateSet(setId: String, transform: (LoggedSet) -> LoggedSet) {
@@ -177,7 +180,11 @@ class ActiveViewModel @Inject constructor(
 
     private fun adjustRest(delta: Int) {
         _state.update {
-            it.copy(restSeconds = ActiveSessionLogic.adjustRest(it.restSeconds, delta))
+            val next = ActiveSessionLogic.adjustRest(it.restSeconds, delta)
+            it.copy(
+                restSeconds = next,
+                restTotalSeconds = maxOf(it.restTotalSeconds, next),
+            )
         }
         if (_state.value.restSeconds > 0 && restJob?.isActive != true) {
             tickRest()
@@ -186,8 +193,14 @@ class ActiveViewModel @Inject constructor(
 
     private fun startRest(seconds: Int) {
         restJob?.cancel()
-        _state.update { it.copy(restSeconds = seconds.coerceAtLeast(0)) }
-        if (seconds > 0) tickRest()
+        val sec = seconds.coerceAtLeast(0)
+        _state.update {
+            it.copy(
+                restSeconds = sec,
+                restTotalSeconds = if (sec > 0) sec else 0,
+            )
+        }
+        if (sec > 0) tickRest()
     }
 
     private fun tickRest() {

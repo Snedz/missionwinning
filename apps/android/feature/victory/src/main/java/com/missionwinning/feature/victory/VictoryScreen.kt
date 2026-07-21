@@ -28,6 +28,7 @@ import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwMetricCard
+import com.missionwinning.core.designsystem.MwOfflinePill
 import com.missionwinning.core.designsystem.MwPrimaryButton
 import com.missionwinning.core.designsystem.MwScreenScaffold
 import com.missionwinning.core.designsystem.MwSectionLabel
@@ -77,7 +78,13 @@ fun VictoryScreen(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
-                MwSectionLabel("Complete")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    MwSectionLabel("Complete")
+                    MwOfflinePill()
+                }
                 Text("Session locked", style = MwTypography.headlineLarge, color = MwColors.Text)
                 MwBrassRule()
                 Text(state.workoutName, style = MwTypography.titleLarge, color = MwColors.Emerald)
@@ -88,9 +95,9 @@ fun VictoryScreen(
                 }
                 Text(
                     if (coachFirst) {
-                        "Coach adapts your week from this log — no wearable needed."
+                        "Saved on this device. Coach adapts your week from this log — no wearable needed."
                     } else {
-                        "Keep logging. Mission Coach has your week."
+                        "Saved on this device. Keep logging — Mission Coach has your week."
                     },
                     style = MwTypography.bodyLarge,
                     color = MwColors.TextMuted,
