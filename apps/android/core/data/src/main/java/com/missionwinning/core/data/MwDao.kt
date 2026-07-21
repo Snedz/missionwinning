@@ -28,6 +28,9 @@ interface MwDao {
     @Query("SELECT * FROM workout_logs ORDER BY completedAt DESC LIMIT :limit")
     suspend fun recentWorkouts(limit: Int): List<WorkoutLogEntity>
 
+    @Query("SELECT * FROM workout_logs WHERE id = :id LIMIT 1")
+    suspend fun workoutById(id: String): WorkoutLogEntity?
+
     @Query(
         """
         SELECT * FROM workout_logs
@@ -39,6 +42,15 @@ interface MwDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSetLog(row: SetLogEntity)
+
+    @Query(
+        """
+        SELECT * FROM set_logs
+        WHERE workoutId = :workoutId
+        ORDER BY exerciseName ASC, setIndex ASC
+        """,
+    )
+    suspend fun setsForWorkout(workoutId: String): List<SetLogEntity>
 
     @Query(
         """

@@ -116,12 +116,13 @@ class MwRepository(
         val id = UUID.randomUUID().toString()
         val volume = sets.sumOf { it.weight * it.reps }
         val now = java.time.Instant.now().toString()
+        val stampedSets = sets.map { it.copy(workoutId = id) }
         val workout = WorkoutLogEntity(
             id = id,
             workoutName = workoutName,
             completedAt = now,
             durationSeconds = durationSeconds,
-            setCount = sets.size,
+            setCount = stampedSets.size,
             totalVolume = volume,
             sessionId = sessionId,
         )
@@ -130,7 +131,7 @@ class MwRepository(
             WorkoutLogRequestDto(
                 workoutName = workoutName,
                 durationSeconds = durationSeconds,
-                setCount = sets.size,
+                setCount = stampedSets.size,
                 totalVolume = volume,
                 sessionId = sessionId,
             ),
@@ -143,12 +144,17 @@ class MwRepository(
         )
         db.withTransaction {
             dao.insertWorkout(workout)
-            sets.forEach { dao.insertSetLog(it) }
+            stampedSets.forEach { dao.insertSetLog(it) }
             dao.enqueueOutbox(outbox)
         }
         flushOutbox()
         return dao.workoutCount()
     }
+
+    suspend fun workoutById(id: String): WorkoutLogEntity? = dao.workoutById(id)
+
+    suspend fun setsForWorkout(workoutId: String): List<SetLogEntity> =
+        dao.setsForWorkout(workoutId)
 
     /** @deprecated Prefer [finishWorkout] */
     suspend fun appendWorkout(

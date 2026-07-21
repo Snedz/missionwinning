@@ -1,5 +1,6 @@
 package com.missionwinning.feature.today
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,10 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -51,6 +56,7 @@ fun TodayScreen(
     onStartWorkout: (sessionId: String, name: String, sets: Int) -> Unit,
     onOpenCoach: () -> Unit,
     onOpenAuth: () -> Unit,
+    onOpenHistory: (workoutId: String) -> Unit = {},
     viewModel: TodayViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -216,9 +222,14 @@ fun TodayScreen(
                 if (state.recent.isNotEmpty()) {
                     MwCard(elevated = true) {
                         MwSectionLabel("Recent")
+                        Text(
+                            "Tap a log for set breakdown.",
+                            style = MwTypography.bodyMedium,
+                            color = MwColors.TextMuted,
+                        )
                         state.recent.forEachIndexed { index, w ->
                             if (index > 0) Spacer(Modifier.height(MwSpace.sm))
-                            RecentWorkoutRow(w)
+                            RecentWorkoutRow(w, onClick = { onOpenHistory(w.id) })
                         }
                     }
                 }
@@ -309,9 +320,15 @@ private fun EquipmentChip(
 }
 
 @Composable
-private fun RecentWorkoutRow(w: RecentWorkoutUi) {
+private fun RecentWorkoutRow(w: RecentWorkoutUi, onClick: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics {
+                role = Role.Button
+                contentDescription = "Open ${w.name} details"
+            }
+            .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -334,7 +351,7 @@ private fun RecentWorkoutRow(w: RecentWorkoutUi) {
                 color = MwColors.TextMuted,
             )
         }
-        MwChip("DONE", tone = MwChipTone.Emerald)
+        MwChip("VIEW", tone = MwChipTone.Emerald)
     }
 }
 

@@ -35,6 +35,7 @@ import com.missionwinning.core.designsystem.MwTypography
 import com.missionwinning.feature.active.ActiveRoute
 import com.missionwinning.feature.coach.CoachScreen
 import com.missionwinning.feature.iday.IdayScreen
+import com.missionwinning.feature.today.HistoryScreen
 import com.missionwinning.feature.today.TodayScreen
 import com.missionwinning.feature.victory.VictoryScreen
 import dagger.hilt.EntryPoint
@@ -144,6 +145,20 @@ fun MwNavHost() {
                             }
                         },
                         onOpenAuth = { nav.navigate(Routes.AUTH) },
+                        onOpenHistory = { workoutId ->
+                            nav.navigate(Routes.history(workoutId))
+                        },
+                    )
+                }
+                composable(
+                    Routes.HISTORY,
+                    arguments = listOf(
+                        navArgument("workoutId") { type = NavType.StringType },
+                    ),
+                ) { entry ->
+                    HistoryScreen(
+                        workoutId = entry.arguments!!.getString("workoutId")!!.decode(),
+                        onBack = { nav.popBackStack() },
                     )
                 }
                 composable(Routes.COACH) {
