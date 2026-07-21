@@ -337,6 +337,44 @@ class ActiveUiStateTest {
     }
 
     @Test
+    fun sessionLogic_removeSet_reindexesAndDropsEmptyExercise() {
+        val base = listOf(
+            ActiveExercise(
+                "a",
+                "Push",
+                listOf(
+                    set("1", done = true, index = 0),
+                    set("2", done = false, index = 1),
+                    set("3", done = false, index = 2),
+                ),
+            ),
+            ActiveExercise("b", "Pull", listOf(set("4", done = false, exerciseId = "b"))),
+        )
+        val mid = ActiveSessionLogic.removeSet(base, "2")
+        assertEquals(2, mid[0].sets.size)
+        assertEquals(0, mid[0].sets[0].setIndex)
+        assertEquals(1, mid[0].sets[1].setIndex)
+        assertEquals("3", mid[0].sets[1].id)
+
+        val gone = ActiveSessionLogic.removeSet(
+            listOf(ActiveExercise("a", "Push", listOf(set("only", done = false)))),
+            "only",
+        )
+        assertTrue(gone.isEmpty())
+    }
+
+    @Test
+    fun sessionLogic_removeExercise() {
+        val base = listOf(
+            ActiveExercise("a", "Push", listOf(set("1", done = false))),
+            ActiveExercise("b", "Pull", listOf(set("2", done = false, exerciseId = "b"))),
+        )
+        val next = ActiveSessionLogic.removeExercise(base, "a")
+        assertEquals(1, next.size)
+        assertEquals("b", next[0].exerciseId)
+    }
+
+    @Test
     fun sessionLogic_previousWeightInUnit_convertsStoredUnit() {
         assertNull(ActiveSessionLogic.previousWeightInUnit(null, "kg", "lb"))
         // 100 kg stored → display lb → 220 (plate step)

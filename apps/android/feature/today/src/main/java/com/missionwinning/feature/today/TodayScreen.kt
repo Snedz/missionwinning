@@ -179,10 +179,32 @@ fun TodayScreen(
                 } else if (!state.loading) {
                     MwEmptyState(
                         title = "No session queued",
-                        body = "Open Mission Coach to review your week or seed a plan.",
+                        body = "Open Mission Coach to review your week, or start a freeform log.",
                         cta = "Open Coach",
                         onCta = onOpenCoach,
                     )
+                }
+
+                if (!state.loading) {
+                    MwCard(elevated = true) {
+                        MwSectionLabel("Quick log")
+                        Text(
+                            "Start empty and add exercises as you train — no coach day required.",
+                            style = MwTypography.bodyMedium,
+                            color = MwColors.TextMuted,
+                        )
+                        MwPrimaryButton(
+                            text = "Start empty workout",
+                            contentDescription = "Start freeform empty workout",
+                            onClick = {
+                                onStartWorkout(
+                                    com.missionwinning.core.data.MwRepository.freeformSessionId(),
+                                    "Quick log",
+                                    0,
+                                )
+                            },
+                        )
+                    }
                 }
 
                 MwCard(elevated = true) {
