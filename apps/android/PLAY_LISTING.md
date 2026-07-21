@@ -73,7 +73,7 @@ Local smoke (debug-signed, not for Play):
 
 **Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
 
-`versionCode` is `37`, `versionName` is `1.10.0` — Phase 11: Progress heat map + Today mission control (form score, coach insight). See [PLAY_BILLING.md](PLAY_BILLING.md).
+`versionCode` is `38`, `versionName` is `1.11.0` — Phase 12: Hevy/MW CSV import-export + sync pull scale + conflict notes. See [PLAY_BILLING.md](PLAY_BILLING.md).
 
 ---
 

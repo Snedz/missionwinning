@@ -22,26 +22,66 @@ class SyncEngine(
     private val dao = db.dao()
     private val json = Json { ignoreUnknownKeys = true }
 
+    private var lastConflicts = 0
+    private var lastConflictNote: String? = null
+    private var lastWorkoutPages = 0
+    private var lastWorkoutsMerged = 0
+    private var lastRoutinePages = 0
+    private var lastRoutinesMerged = 0
+
     /**
      * @return remaining unsynced workout count after attempt.
      */
-    suspend fun syncAll(): Int {
-        if (api == null) return dao.unsyncedWorkoutCount()
-        // Need a session for cloud sync
+    suspend fun syncAll(): Int = syncDetailed().remainingUnsynced
+
+    /** Full push/pull with page + conflict stats for Account UX. */
+    suspend fun syncDetailed(): SyncRunResult {
+        lastConflicts = 0
+        lastConflictNote = null
+        lastWorkoutPages = 0
+        lastWorkoutsMerged = 0
+        lastRoutinePages = 0
+        lastRoutinesMerged = 0
+        if (api == null) {
+            return SyncRunResult(remainingUnsynced = dao.unsyncedWorkoutCount())
+        }
         val token = authRepository?.ensureFreshAccessToken()
         if (token.isNullOrBlank() && authRepository != null) {
-            return dao.unsyncedWorkoutCount()
+            return SyncRunResult(
+                remainingUnsynced = dao.unsyncedWorkoutCount(),
+                error = "Sign in to sync cloud history",
+            )
         }
-        // Anonymous with cookie may still push via legacy; sync v2 requires Bearer
         if (authRepository?.accessTokenOrNull().isNullOrBlank()) {
-            return dao.unsyncedWorkoutCount()
+            return SyncRunResult(
+                remainingUnsynced = dao.unsyncedWorkoutCount(),
+                error = "Sign in to sync cloud history",
+            )
         }
 
-        pushPending()
-        pullMerge()
-        pushRoutines()
-        pullRoutines()
-        return dao.unsyncedWorkoutCount()
+        val pushError = runCatching {
+            pushPending()
+            pullMerge()
+            pushRoutines()
+            pullRoutines()
+        }.exceptionOrNull()?.message
+
+        val remaining = dao.unsyncedWorkoutCount()
+        val result = SyncRunResult(
+            remainingUnsynced = remaining,
+            workoutPagesPulled = lastWorkoutPages,
+            workoutsMerged = lastWorkoutsMerged,
+            routinePagesPulled = lastRoutinePages,
+            routinesMerged = lastRoutinesMerged,
+            conflictsSkipped = lastConflicts,
+            lastConflictNote = lastConflictNote,
+            error = pushError,
+        )
+        dao.setPref(PrefEntity(KEY_LAST_SYNC_SUMMARY, result.summaryLine))
+        if (lastConflictNote != null) {
+            dao.setPref(PrefEntity(KEY_LAST_CONFLICT_NOTE, lastConflictNote!!))
+        }
+        return result
     }
 
     suspend fun enqueueRoutine(routineId: String) {
@@ -146,15 +186,16 @@ class SyncEngine(
         val client = api ?: return
         var cursor = dao.getPref(KEY_SYNC_CURSOR) ?: "1970-01-01T00:00:00.000Z"
         var guard = 0
-        while (guard++ < 20) {
+        // Phase 12: more pages for large histories (5000 workouts @ 100/page)
+        while (guard++ < 50) {
             val page = client.pullWorkouts(since = cursor, limit = 100).getOrElse { return }
+            lastWorkoutPages++
             if (page.items.isEmpty()) break
             for (item in page.items) {
                 mergeRemote(item)
             }
             val next = page.nextCursor
             if (next.isNullOrBlank() || next == cursor) {
-                // Advance to last item updatedAt even if nextCursor null
                 page.items.lastOrNull()?.updatedAt?.let { cursor = it }
                 dao.setPref(PrefEntity(KEY_SYNC_CURSOR, cursor))
                 break
@@ -174,6 +215,9 @@ class SyncEngine(
         if (local != null) {
             // Local pending always wins until acked
             if (SyncMergeRules.shouldSkipRemoteForLocalPending(local.syncStatus)) {
+                lastConflicts++
+                lastConflictNote =
+                    "Kept local “${local.workoutName}” (pending) over cloud rev $remoteRev"
                 return
             }
             if (remoteDeleted) {
@@ -187,6 +231,7 @@ class SyncEngine(
                         ),
                     )
                 }
+                lastWorkoutsMerged++
                 return
             }
             if (SyncMergeRules.isRemoteStale(local.revision, remoteRev)) return
@@ -210,6 +255,7 @@ class SyncEngine(
                     weightUnit = item.weightUnit,
                 ),
             )
+            lastWorkoutsMerged++
             return
         }
 
@@ -253,6 +299,7 @@ class SyncEngine(
             dao.deleteSetsForWorkout(clientId)
             sets.forEach { dao.insertSetLog(it) }
         }
+        lastWorkoutsMerged++
     }
 
     private fun toSyncDto(w: WorkoutLogEntity, sets: List<SetLogEntity>): SyncWorkoutDto =
@@ -370,8 +417,9 @@ class SyncEngine(
         val client = api ?: return
         var cursor = dao.getPref(KEY_ROUTINE_SYNC_CURSOR) ?: "1970-01-01T00:00:00.000Z"
         var guard = 0
-        while (guard++ < 20) {
+        while (guard++ < 50) {
             val page = client.pullRoutines(since = cursor, limit = 100).getOrElse { return }
+            lastRoutinePages++
             if (page.items.isEmpty()) break
             for (item in page.items) {
                 mergeRemoteRoutine(item)
@@ -394,7 +442,12 @@ class SyncEngine(
         val remoteDeleted = SyncMergeRules.isRemoteDeleted(item.deletedAt)
 
         if (local != null) {
-            if (SyncMergeRules.shouldSkipRemoteForLocalPending(local.syncStatus)) return
+            if (SyncMergeRules.shouldSkipRemoteForLocalPending(local.syncStatus)) {
+                lastConflicts++
+                lastConflictNote =
+                    "Kept local routine “${local.name}” (pending) over cloud rev $remoteRev"
+                return
+            }
             if (remoteDeleted) {
                 dao.upsertRoutine(
                     local.copy(
@@ -404,9 +457,15 @@ class SyncEngine(
                         syncStatus = STATUS_SYNCED,
                     ),
                 )
+                lastRoutinesMerged++
                 return
             }
             if (SyncMergeRules.isRemoteStale(local.revision, remoteRev)) return
+            // Remote wins with higher revision while local was synced
+            if (remoteRev > local.revision && !remoteDeleted) {
+                lastConflictNote =
+                    "Updated routine “${item.name}” from cloud (rev $remoteRev > local ${local.revision})"
+            }
         }
 
         if (remoteDeleted) {
@@ -423,6 +482,7 @@ class SyncEngine(
                     deletedAt = item.deletedAt,
                 ),
             )
+            lastRoutinesMerged++
             return
         }
 
@@ -451,6 +511,7 @@ class SyncEngine(
                 deletedAt = null,
             ),
         )
+        lastRoutinesMerged++
     }
 
     companion object {
@@ -462,5 +523,7 @@ class SyncEngine(
         const val MAX_ATTEMPTS = 8
         const val KEY_SYNC_CURSOR = "sync_pull_cursor"
         const val KEY_ROUTINE_SYNC_CURSOR = "routine_sync_pull_cursor"
+        const val KEY_LAST_SYNC_SUMMARY = "sync_last_summary"
+        const val KEY_LAST_CONFLICT_NOTE = "sync_last_conflict"
     }
 }

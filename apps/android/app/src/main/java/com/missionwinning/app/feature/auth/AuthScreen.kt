@@ -1,5 +1,10 @@
 package com.missionwinning.app.feature.auth
 
+import android.app.Application
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,15 +21,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.health.connect.client.PermissionController
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import android.app.Application
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.health.connect.client.PermissionController
 import com.missionwinning.app.BuildConfig
 import com.missionwinning.core.common.NetworkStatus
 import com.missionwinning.core.designsystem.MwCard
@@ -40,6 +44,11 @@ import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwTopBar
 import com.missionwinning.core.designsystem.MwTypography
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 /**
  * Optional account: email 6-digit OTP. Offline logger never requires sign-in.
@@ -75,6 +84,40 @@ fun AuthScreen(
         contract = PermissionController.createRequestPermissionResultContract(),
     ) { granted ->
         viewModel.onHealthConnectPermissionResult(granted)
+    }
+    val scope = rememberCoroutineScope()
+    val importLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+    ) { uri: Uri? ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            val text = withContext(Dispatchers.IO) {
+                runCatching {
+                    context.contentResolver.openInputStream(uri)?.use { stream ->
+                        BufferedReader(InputStreamReader(stream)).readText()
+                    }
+                }.getOrNull()
+            }
+            if (text.isNullOrBlank()) {
+                // ViewModel message via local error path — fire empty import for feedback
+                viewModel.importCsvText("")
+            } else {
+                viewModel.importCsvText(text)
+            }
+        }
+    }
+
+    fun shareExport(format: ExportFormat, mime: String, filename: String) {
+        scope.launch {
+            val body = withContext(Dispatchers.IO) { viewModel.buildExport(format) }
+            if (body.isNullOrBlank()) return@launch
+            val send = Intent(Intent.ACTION_SEND).apply {
+                type = mime
+                putExtra(Intent.EXTRA_SUBJECT, filename)
+                putExtra(Intent.EXTRA_TEXT, body)
+            }
+            context.startActivity(Intent.createChooser(send, "Export workouts"))
+        }
     }
 
     MwScreenScaffold {
@@ -158,15 +201,75 @@ fun AuthScreen(
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
+                state.outbox.lastConflictNote?.let { note ->
+                    Text(
+                        note,
+                        style = MwTypography.labelMedium,
+                        color = MwColors.Brass,
+                    )
+                }
                 Text(
-                    "Room is source of truth. Offline logs never require sync. Dead-lettered rows stay on device until Retry succeeds.",
+                    "Room is source of truth. Offline logs never require sync. Local pending always wins until pushed. Dead-lettered rows stay until Retry succeeds.",
                     style = MwTypography.labelMedium,
                     color = MwColors.TextMuted,
                 )
+                if (state.outbox.workoutCount > 0) {
+                    Text(
+                        "${state.outbox.workoutCount} workout(s) on this device",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                }
                 MwGhostButton(
                     text = if (state.syncBusy) "Syncing…" else "Retry sync now",
                     contentDescription = "Retry cloud sync for pending workouts",
                     onClick = viewModel::retrySync,
+                )
+            }
+
+            MwCard(elevated = true) {
+                MwSectionLabel("Data portability")
+                Text(
+                    "Import Hevy workout CSV or Mission Winning export. Export stays free — your logs, your file. Import never requires an account.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+                MwPrimaryButton(
+                    text = if (state.busy) "Working…" else "Import CSV",
+                    contentDescription = "Import workouts from CSV file",
+                    onClick = {
+                        importLauncher.launch(
+                            arrayOf(
+                                "text/*",
+                                "text/csv",
+                                "text/comma-separated-values",
+                                "application/csv",
+                                "application/vnd.ms-excel",
+                                "*/*",
+                            ),
+                        )
+                    },
+                )
+                MwGhostButton(
+                    text = "Export MW CSV",
+                    contentDescription = "Export workouts as Mission Winning CSV",
+                    onClick = {
+                        shareExport(ExportFormat.MwCsv, "text/csv", "missionwinning-workouts.csv")
+                    },
+                )
+                MwGhostButton(
+                    text = "Export Hevy-format CSV",
+                    contentDescription = "Export workouts as Hevy-compatible CSV",
+                    onClick = {
+                        shareExport(ExportFormat.HevyCsv, "text/csv", "workouts-hevy.csv")
+                    },
+                )
+                MwGhostButton(
+                    text = "Export JSON",
+                    contentDescription = "Export workouts as JSON",
+                    onClick = {
+                        shareExport(ExportFormat.Json, "application/json", "missionwinning-workouts.json")
+                    },
                 )
             }
 

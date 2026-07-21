@@ -13,6 +13,11 @@ data class OutboxStatus(
     val outboxRows: Int = 0,
     /** ISO-8601 of last successful full sync, if known. */
     val lastSuccessAt: String? = null,
+    /** Last pull/push summary line. */
+    val lastSyncSummary: String? = null,
+    /** Last local-vs-remote conflict note (routines/workouts). */
+    val lastConflictNote: String? = null,
+    val workoutCount: Int = 0,
 ) {
     val needsAttention: Boolean get() = failedWorkouts > 0 || pendingWorkouts > 0 || outboxRows > 0
 
@@ -22,6 +27,8 @@ data class OutboxStatus(
                 "$failedWorkouts failed · $pendingWorkouts pending · tap Retry"
             pendingWorkouts > 0 || outboxRows > 0 ->
                 "$pendingWorkouts workout(s) waiting to sync"
+            lastSyncSummary != null ->
+                lastSyncSummary
             lastSuccessAt != null ->
                 "All caught up"
             else ->

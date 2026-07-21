@@ -17,6 +17,7 @@ class MwRepository(
     private val routines: RoutineRepository,
     private val sync: SyncCoordinator,
     private val customExercises: CustomExerciseRepository,
+    private val transfer: WorkoutImportRepository,
 ) {
     // —— Prefs ——
     suspend fun isIdayDone(): Boolean = prefs.isIdayDone()
@@ -90,8 +91,8 @@ class MwRepository(
     suspend fun pendingSyncCount(): Int = sync.pendingSyncCount()
     suspend fun outboxStatus(): OutboxStatus = sync.outboxStatus()
     suspend fun flushOutboxAndCount(): Int = sync.flushOutboxAndCount()
-    suspend fun flushOutbox() = sync.flushOutbox()
-    suspend fun syncNow(): Int = sync.syncNow()
+    suspend fun flushOutbox(): SyncRunResult = sync.flushOutbox()
+    suspend fun syncNow(): SyncRunResult = sync.syncNow()
 
     // —— Custom exercises ——
     suspend fun searchExercises(query: String, equipment: String? = null) =
@@ -103,6 +104,14 @@ class MwRepository(
     suspend fun deleteCustomExercise(id: String) = customExercises.delete(id)
 
     suspend fun exerciseDisplayName(id: String): String = customExercises.displayName(id)
+
+    // —— Import / export (Phase 12) ——
+    suspend fun importWorkoutsCsv(csvText: String, preferUnit: String = "kg") =
+        transfer.importCsv(csvText, preferUnit)
+
+    suspend fun exportWorkoutsMwCsv(): String = transfer.exportMwCsv()
+    suspend fun exportWorkoutsHevyCsv(): String = transfer.exportHevyCsv()
+    suspend fun exportWorkoutsJson(): String = transfer.exportJson()
 
     companion object {
         /**
@@ -123,6 +132,7 @@ class MwRepository(
                 routines = RoutineRepository(db, sync),
                 sync = sync,
                 customExercises = CustomExerciseRepository(db),
+                transfer = WorkoutImportRepository(db, sync),
             )
         }
 

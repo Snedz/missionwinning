@@ -50,6 +50,12 @@
 - Today: metric strip (streak · week vol · form score), **Mission insight** from coach adapt / readiness
 - Pure `Progression` helpers (readiness, heat map, weekly volumes) — not medical advice
 
+## Sync scale + portability (Phase 12)
+
+- Account: **Import CSV** (Hevy + MW), export MW CSV / Hevy CSV / JSON (share sheet)
+- Sync pull up to 50 pages; `SyncRunResult` + conflict notes (local pending wins)
+- Free forever — import/export never gated
+
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)
