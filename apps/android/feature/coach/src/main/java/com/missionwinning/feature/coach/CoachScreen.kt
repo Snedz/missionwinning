@@ -1,34 +1,34 @@
 package com.missionwinning.feature.coach
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.missionwinning.feature.coach.CoachAdaptBanner
+import com.missionwinning.core.designsystem.MwCard
+import com.missionwinning.core.designsystem.MwChip
+import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwEnterFade
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
+import com.missionwinning.core.designsystem.MwOfflinePill
 import com.missionwinning.core.designsystem.MwScreenScaffold
-import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSecondaryButton
+import com.missionwinning.core.designsystem.MwSectionLabel
+import com.missionwinning.core.designsystem.MwSessionTile
+import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwTypography
+import java.time.LocalDate
 
 @Composable
 fun CoachScreen(
@@ -38,6 +38,7 @@ fun CoachScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val planResp = state.plan
+    val todayOffset = ((LocalDate.now().dayOfWeek.value + 6) % 7)
 
     MwScreenScaffold {
         MwEnterFade {
@@ -45,7 +46,7 @@ fun CoachScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
+                verticalArrangement = Arrangement.spacedBy(MwSpace.md),
             ) {
                 MwSectionLabel("Plan")
                 MwHeroTitle("Mission Coach")
@@ -54,72 +55,54 @@ fun CoachScreen(
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
-                planResp?.let { CoachAdaptBanner(it) }
-                Text(
-                    "Week of ${planResp?.plan?.weekStart ?: "—"} · ${planResp?.plan?.daysPerWeek ?: 0} days · rev ${planResp?.plan?.revision ?: 0}",
-                    style = MwTypography.labelMedium,
-                    color = MwColors.TextMuted,
-                )
 
+                MwCard(elevated = true) {
+                    MwOfflinePill()
+                    Text(
+                        "Week of ${planResp?.plan?.weekStart ?: "—"}",
+                        style = MwTypography.titleLarge,
+                        color = MwColors.Text,
+                    )
+                    androidx.compose.foundation.layout.Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        MwChip("${planResp?.plan?.daysPerWeek ?: 0} days", tone = MwChipTone.Emerald)
+                        MwChip("rev ${planResp?.plan?.revision ?: 0}", tone = MwChipTone.Brass)
+                    }
+                }
+
+                planResp?.let { CoachAdaptBanner(it) }
+
+                MwSectionLabel("Sessions")
                 planResp?.plan?.sessions?.forEach { s ->
                     val actionable = s.status == "planned" || s.status == "swapped"
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable(enabled = actionable) {
-                                val sets = s.exercises.sumOf { it.sets }.coerceAtLeast(3)
-                                onStartWorkout(s.id, s.name, sets)
-                            }
-                            .padding(vertical = 12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Top,
-                    ) {
-                        Column(
-                            modifier = Modifier.weight(1f),
-                            verticalArrangement = Arrangement.spacedBy(4.dp),
-                        ) {
-                            Text(
-                                "DAY +${s.dayOffset}",
-                                style = MwTypography.labelSmall,
-                                color = MwColors.Brass,
-                            )
-                            Text(s.name, style = MwTypography.titleLarge, color = MwColors.Text)
-                            Text(
-                                "${s.estMinutes}m · ${s.status}",
-                                style = MwTypography.bodyMedium,
-                                color = MwColors.TextMuted,
-                            )
-                            s.exercises.forEach { e ->
-                                Text(
-                                    "${e.exerciseId}  ${e.sets}×${e.reps}",
-                                    style = MwTypography.labelMedium,
-                                    color = MwColors.TextMuted,
-                                )
-                            }
-                        }
-                        if (actionable) {
-                            Text(
-                                "START",
-                                style = MwTypography.labelSmall,
-                                color = MwColors.Emerald,
-                                modifier = Modifier.padding(start = 12.dp, top = 4.dp),
-                            )
-                        }
+                    val tone = when (s.status) {
+                        "done" -> MwChipTone.Emerald
+                        "swapped" -> MwChipTone.Brass
+                        else -> MwChipTone.Neutral
                     }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(MwColors.Border),
+                    MwSessionTile(
+                        dayLabel = "DAY +${s.dayOffset}",
+                        title = s.name,
+                        subtitle = "${s.estMinutes}m · ${s.exercises.size} exercises · ${s.kind}",
+                        statusLabel = s.status,
+                        statusTone = tone,
+                        highlighted = s.dayOffset == todayOffset,
+                        actionable = actionable,
+                        onClick = {
+                            val sets = s.exercises.sumOf { it.sets }.coerceAtLeast(3)
+                            onStartWorkout(s.id, s.name, sets)
+                        },
                     )
                 }
 
+                Spacer(Modifier.height(4.dp))
                 MwSecondaryButton(
                     text = "Seed adapt demo (miss + swap)",
                     onClick = { viewModel.seedAdaptDemo() },
                 )
-                MwGhostButton(text = "Refresh", onClick = { viewModel.refresh() })
-                MwGhostButton(text = "Back", onClick = onBack)
+                MwGhostButton(text = "Refresh plan", onClick = { viewModel.refresh() })
+                Spacer(Modifier.height(8.dp))
             }
         }
     }

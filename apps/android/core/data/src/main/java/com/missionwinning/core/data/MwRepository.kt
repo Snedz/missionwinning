@@ -27,6 +27,12 @@ class MwRepository(
         dao.setPref(PrefEntity(KEY_WEIGHT_UNIT, unit))
     }
 
+    suspend fun equipmentProfile(): String = dao.getPref(KEY_EQUIPMENT) ?: "bodyweight"
+
+    suspend fun setEquipmentProfile(profile: String) {
+        dao.setPref(PrefEntity(KEY_EQUIPMENT, profile))
+    }
+
     suspend fun ensureCoachPlan(preferNetwork: Boolean = true): CoachPlanResponseDto {
         dao.getCoachPlan()?.let {
             return json.decodeFromString(CoachPlanResponseDto.serializer(), it.json)
@@ -175,6 +181,7 @@ class MwRepository(
     companion object {
         const val KEY_IDAY = "iday_done"
         const val KEY_WEIGHT_UNIT = "weight_unit"
+        const val KEY_EQUIPMENT = "equipment_profile"
         const val KIND_WORKOUT = "workout"
         const val DEFAULT_API_BASE = "https://www.missionwinning.com"
     }

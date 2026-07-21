@@ -11,8 +11,9 @@ import javax.inject.Inject
 class IdayViewModel @Inject constructor(
     private val repository: MwRepository,
 ) : ViewModel() {
-    fun complete(onDone: () -> Unit) {
+    fun complete(equipment: String = "bodyweight", onDone: () -> Unit) {
         viewModelScope.launch {
+            repository.setEquipmentProfile(equipment)
             repository.markIdayDone()
             repository.ensureCoachPlan()
             onDone()
