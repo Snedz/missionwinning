@@ -60,6 +60,7 @@ sealed interface ActiveEvent {
     data class CycleSetKind(val setId: String) : ActiveEvent
     data class ApplyPrevious(val setId: String) : ActiveEvent
     data class AddSet(val exerciseId: String) : ActiveEvent
+    data class AddExercise(val exerciseId: String, val exerciseName: String) : ActiveEvent
     data object ToggleWeightUnit : ActiveEvent
     data object RestMinus15 : ActiveEvent
     data object RestPlus15 : ActiveEvent
@@ -163,6 +164,10 @@ class ActiveViewModel @Inject constructor(
                 clearRestIfActive()
                 addSet(event.exerciseId)
             }
+            is ActiveEvent.AddExercise -> {
+                clearRestIfActive()
+                addExercise(event.exerciseId, event.exerciseName)
+            }
             ActiveEvent.ToggleWeightUnit -> toggleWeightUnit()
             ActiveEvent.RestMinus15 -> adjustRest(-ActiveSessionLogic.REST_STEP)
             ActiveEvent.RestPlus15 -> adjustRest(ActiveSessionLogic.REST_STEP)
@@ -185,6 +190,44 @@ class ActiveViewModel @Inject constructor(
                     newSetId = UUID.randomUUID().toString(),
                 ),
             )
+        }
+    }
+
+    private fun addExercise(exerciseId: String, exerciseName: String) {
+        viewModelScope.launch {
+            val unit = ActiveSessionLogic.normalizeUnit(_state.value.weightUnit)
+            val setCount = ActiveSessionLogic.DEFAULT_NEW_EXERCISE_SETS
+            val previousByIndex = mutableMapOf<Int, Pair<Int?, Double?>>()
+            for (idx in 0 until setCount) {
+                val prev = repository.previousSet(exerciseId, idx)
+                val prevWeight = ActiveSessionLogic.previousWeightInUnit(
+                    storedWeight = prev?.weight,
+                    storedUnit = prev?.weightUnit,
+                    displayUnit = unit,
+                )
+                previousByIndex[idx] = prev?.reps to prevWeight
+            }
+            val seedWeight = previousByIndex[0]?.second
+            val seedReps = previousByIndex[0]?.first
+            val newIds = List(setCount) { UUID.randomUUID().toString() }
+            val name = exerciseName.ifBlank {
+                ExerciseCatalog.displayName(exerciseId).ifBlank { exerciseId }
+            }
+            _state.update { st ->
+                st.copy(
+                    exercises = ActiveSessionLogic.addExercise(
+                        exercises = st.exercises,
+                        exerciseId = exerciseId,
+                        exerciseName = name,
+                        newSetIds = newIds,
+                        setCount = setCount,
+                        defaultReps = ActiveSessionLogic.defaultReps(10, seedReps),
+                        defaultWeight = ActiveSessionLogic.defaultWeight(seedWeight),
+                        previousByIndex = previousByIndex,
+                    ),
+                    error = null,
+                )
+            }
         }
     }
 

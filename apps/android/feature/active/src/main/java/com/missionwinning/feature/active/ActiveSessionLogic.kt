@@ -160,6 +160,9 @@ object ActiveSessionLogic {
             .filter { SetKind.countsTowardVolume(it.kind) }
             .sumOf { it.weight * it.reps }
 
+    const val DEFAULT_NEW_EXERCISE_SETS = 3
+    const val MAX_EXERCISES = 24
+
     /**
      * Append a set to [exerciseId], copying load from the last set when present.
      * Caps at [MAX_SETS_PER_EXERCISE].
@@ -189,6 +192,58 @@ object ActiveSessionLogic {
             )
             ex.copy(sets = ex.sets + added)
         }
+    }
+
+    /**
+     * Append a catalog exercise (or extra sets if it is already in the session).
+     * [newSetIds] must have length ≥ [setCount] (or remaining room for an existing exercise).
+     */
+    fun addExercise(
+        exercises: List<ActiveExercise>,
+        exerciseId: String,
+        exerciseName: String,
+        newSetIds: List<String>,
+        setCount: Int = DEFAULT_NEW_EXERCISE_SETS,
+        defaultReps: Int = 10,
+        defaultWeight: Double = 0.0,
+        previousByIndex: Map<Int, Pair<Int?, Double?>> = emptyMap(),
+    ): List<ActiveExercise> {
+        val existing = exercises.find { it.exerciseId == exerciseId }
+        if (existing != null) {
+            var result = exercises
+            val room = (MAX_SETS_PER_EXERCISE - existing.sets.size).coerceAtLeast(0)
+            val toAdd = setCount.coerceIn(1, room.coerceAtLeast(1)).coerceAtMost(room)
+            if (toAdd <= 0) return exercises
+            newSetIds.take(toAdd).forEach { id ->
+                result = addSet(result, exerciseId, id)
+            }
+            return result
+        }
+        if (exercises.size >= MAX_EXERCISES) return exercises
+        val count = setCount.coerceIn(1, MAX_SETS_PER_EXERCISE)
+        val ids = newSetIds.take(count)
+        if (ids.size < count) return exercises
+        val sets = ids.mapIndexed { idx, id ->
+            val prev = previousByIndex[idx]
+            LoggedSet(
+                id = id,
+                exerciseId = exerciseId,
+                exerciseName = exerciseName,
+                setIndex = idx,
+                reps = (prev?.first ?: defaultReps).coerceIn(1, 99),
+                weight = (prev?.second ?: defaultWeight).coerceAtLeast(0.0),
+                done = false,
+                previousReps = prev?.first,
+                previousWeight = prev?.second,
+                rpe = null,
+                kind = SetKind.Normal,
+            )
+        }
+        return exercises + ActiveExercise(
+            exerciseId = exerciseId,
+            name = exerciseName,
+            sets = sets,
+        )
     }
 
     fun volumeFromSets(weight: Double, reps: Int, kind: SetKind): Double =

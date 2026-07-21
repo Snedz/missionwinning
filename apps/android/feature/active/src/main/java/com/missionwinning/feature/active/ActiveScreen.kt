@@ -17,8 +17,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -53,8 +56,10 @@ import com.missionwinning.core.designsystem.MwSetRow
 import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwStepper
 import com.missionwinning.core.designsystem.MwTypography
-import com.missionwinning.core.model.SetKind
+import com.missionwinning.core.model.ExerciseCatalog
+import com.missionwinning.core.model.ExerciseDef
 import com.missionwinning.core.model.LoggedSet
+import com.missionwinning.core.model.SetKind
 import kotlinx.coroutines.delay
 
 @Composable
@@ -123,6 +128,7 @@ fun ActiveScreen(
     var elapsed by remember { mutableLongStateOf(0L) }
     var confirmDiscard by remember { mutableStateOf(false) }
     var confirmPartialFinish by remember { mutableStateOf(false) }
+    var showAddExercise by remember { mutableStateOf(false) }
     val view = LocalView.current
     var prevRest by remember { mutableStateOf(0) }
     val listState = rememberLazyListState()
@@ -148,6 +154,7 @@ fun ActiveScreen(
 
     BackHandler {
         when {
+            showAddExercise -> showAddExercise = false
             confirmPartialFinish -> confirmPartialFinish = false
             confirmDiscard -> confirmDiscard = false
             else -> confirmDiscard = true
@@ -334,6 +341,13 @@ fun ActiveScreen(
                         onSkip = { onEvent(ActiveEvent.RestSkip) },
                         onPlus = { onEvent(ActiveEvent.RestPlus15) },
                     )
+                    if (state.exercises.size < ActiveSessionLogic.MAX_EXERCISES && !state.finishing) {
+                        MwGhostButton(
+                            text = "Add exercise",
+                            contentDescription = "Add exercise from offline catalog",
+                            onClick = { showAddExercise = true },
+                        )
+                    }
                     MwPrimaryButton(
                         text = when {
                             state.finishing -> "Saving…"
@@ -358,6 +372,17 @@ fun ActiveScreen(
                     )
                 }
             }
+        }
+
+        if (showAddExercise) {
+            AddExerciseSheet(
+                existingIds = state.exercises.map { it.exerciseId }.toSet(),
+                onPick = { def ->
+                    onEvent(ActiveEvent.AddExercise(def.id, def.name))
+                    showAddExercise = false
+                },
+                onDismiss = { showAddExercise = false },
+            )
         }
 
         if (confirmDiscard) {
@@ -691,4 +716,113 @@ private fun formatElapsed(seconds: Int): String {
     val m = seconds / 60
     val s = seconds % 60
     return "%d:%02d".format(m, s)
+}
+
+@Composable
+private fun AddExerciseSheet(
+    existingIds: Set<String>,
+    onPick: (ExerciseDef) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var query by remember { mutableStateOf("") }
+    var equip by remember { mutableStateOf<String?>(null) }
+    val results = remember(query, equip) {
+        ExerciseCatalog.search(query, equipment = equip)
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.72f))
+            .padding(16.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        MwCard(elevated = true, modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(MwSpace.sm),
+            ) {
+                MwSectionLabel("Add exercise")
+                Text(
+                    "Offline catalog · adds 3 working sets (or more sets if already in this session).",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    label = { Text("Search name or muscle") },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = MwColors.Text,
+                        unfocusedTextColor = MwColors.Text,
+                        focusedContainerColor = MwColors.NavyDeep,
+                        unfocusedContainerColor = MwColors.NavyDeep,
+                        focusedBorderColor = MwColors.Emerald,
+                        unfocusedBorderColor = MwColors.Border,
+                        cursorColor = MwColors.Emerald,
+                        focusedLabelColor = MwColors.TextMuted,
+                        unfocusedLabelColor = MwColors.TextMuted,
+                    ),
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MwChip(
+                        text = "All",
+                        tone = if (equip == null) MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = "All equipment",
+                        onClick = { equip = null },
+                    )
+                    MwChip(
+                        text = "BW",
+                        tone = if (equip == "bodyweight") MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = "Bodyweight",
+                        onClick = { equip = "bodyweight" },
+                    )
+                    MwChip(
+                        text = "DB",
+                        tone = if (equip == "dumbbells") MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = "Dumbbells",
+                        onClick = { equip = "dumbbells" },
+                    )
+                    MwChip(
+                        text = "Gym",
+                        tone = if (equip == "full-gym") MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = "Full gym",
+                        onClick = { equip = "full-gym" },
+                    )
+                }
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(MwSpace.sm),
+                ) {
+                    items(results, key = { it.id }) { def ->
+                        val already = def.id in existingIds
+                        MwCard(
+                            elevated = false,
+                            onClick = { onPick(def) },
+                        ) {
+                            Text(def.name, style = MwTypography.titleMedium, color = MwColors.Text)
+                            Text(
+                                buildString {
+                                    append(def.muscleGroups.joinToString(" · ").ifBlank { def.id })
+                                    if (already) append(" · in session (+sets)")
+                                },
+                                style = MwTypography.bodyMedium,
+                                color = MwColors.TextMuted,
+                            )
+                        }
+                    }
+                    item { Spacer(Modifier.height(8.dp)) }
+                }
+                MwGhostButton(
+                    text = "Cancel",
+                    contentDescription = "Close add exercise",
+                    onClick = onDismiss,
+                )
+            }
+        }
+    }
 }
