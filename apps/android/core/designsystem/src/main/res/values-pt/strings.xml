@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mw_tab_today">Hoje</string>
+    <string name="mw_tab_coach">Coach</string>
+    <string name="mw_tab_today_cd">Aba Hoje</string>
+    <string name="mw_tab_coach_cd">Aba Coach</string>
+
+    <string name="mw_hero_today">Hoje</string>
+    <string name="mw_hero_coach">Mission Coach</string>
+    <string name="mw_account">Conta</string>
+    <string name="mw_progress">Progresso</string>
+    <string name="mw_routines">Rotinas</string>
+    <string name="mw_history">Histórico</string>
+    <string name="mw_library">Biblioteca de exercícios</string>
+
+    <string name="mw_start_workout">Começar treino</string>
+    <string name="mw_finish_workout">Terminar treino</string>
+    <string name="mw_complete_set">Completar série</string>
+    <string name="mw_quick_log">Treino vazio</string>
+    <string name="mw_discard_session">Descartar sessão</string>
+    <string name="mw_add_exercise">Adicionar exercício</string>
+    <string name="mw_offline_free">Treine grátis offline</string>
+    <string name="mw_not_medical">Não é aconselhamento médico</string>
+
+    <string name="mw_sync_retry">Tentar sincronizar de novo</string>
+    <string name="mw_subscribe_super_bundle">Assinar Super Bundle</string>
+    <string name="mw_free_forever_logger">O registro offline gratuito nunca exige um plano.</string>
+    <string name="mw_form_score_disclaimer">A pontuação de forma vem só dos seus logs — não é prontidão médica.</string>
+    <string name="mw_coach_tagline">Plano semanal a partir dos seus logs — adapta quando a vida acontece. Grátis offline para sempre.</string>
+    <string name="mw_close">Fechar</string>
+    <string name="mw_done">Pronto</string>
+    <string name="mw_sign_out">Sair</string>
+    <string name="mw_continue_offline">Continuar offline</string>
+</resources>

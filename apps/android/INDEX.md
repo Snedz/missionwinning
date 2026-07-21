@@ -74,6 +74,15 @@
 - Server: `POST /api/mobile/premium/play-purchase` → enrollments
 - Free offline logger never paywalled — [PLAY_BILLING.md](PLAY_BILLING.md)
 
+## Ship Internal (Phase 8 runbook)
+
+- Founder path: [SHIP_INTERNAL.md](SHIP_INTERNAL.md) · device accept [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md)
+
+## i18n foundation (Phase 16)
+
+- Locales: **en** (default) · **es** · **pt** · **fr** — [I18N.md](I18N.md)
+- Shared chrome strings in `:core:designsystem` (`mw_*`); bottom nav + key CTAs wired
+
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)

@@ -196,6 +196,10 @@ fun MwBottomNav(
     onSelect: (MwHubTab) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val todayLabel = androidx.compose.ui.res.stringResource(R.string.mw_tab_today)
+    val coachLabel = androidx.compose.ui.res.stringResource(R.string.mw_tab_coach)
+    val todayCd = androidx.compose.ui.res.stringResource(R.string.mw_tab_today_cd)
+    val coachCd = androidx.compose.ui.res.stringResource(R.string.mw_tab_coach_cd)
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -205,16 +209,16 @@ fun MwBottomNav(
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         NavItem(
-            label = "Today",
+            label = todayLabel,
             selected = selected == MwHubTab.Today,
-            contentDescription = "Today tab",
+            contentDescription = todayCd,
             onClick = { onSelect(MwHubTab.Today) },
             modifier = Modifier.weight(1f),
         )
         NavItem(
-            label = "Coach",
+            label = coachLabel,
             selected = selected == MwHubTab.Coach,
-            contentDescription = "Coach tab",
+            contentDescription = coachCd,
             onClick = { onSelect(MwHubTab.Coach) },
             modifier = Modifier.weight(1f),
         )
