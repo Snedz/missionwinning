@@ -52,6 +52,7 @@ sealed interface ActiveEvent {
     data class ToggleSet(val setId: String) : ActiveEvent
     data class UpdateReps(val setId: String, val reps: Int) : ActiveEvent
     data class UpdateWeight(val setId: String, val weight: Double) : ActiveEvent
+    data class UpdateRpe(val setId: String, val rpe: Int?) : ActiveEvent
     data class ApplyPrevious(val setId: String) : ActiveEvent
     data object ToggleWeightUnit : ActiveEvent
     data object RestMinus15 : ActiveEvent
@@ -108,6 +109,12 @@ class ActiveViewModel @Inject constructor(
             is ActiveEvent.UpdateWeight -> {
                 clearRestIfActive()
                 updateSet(event.setId) { it.copy(weight = event.weight.coerceAtLeast(0.0)) }
+            }
+            is ActiveEvent.UpdateRpe -> {
+                clearRestIfActive()
+                updateSet(event.setId) {
+                    it.copy(rpe = event.rpe?.coerceIn(6, 10))
+                }
             }
             is ActiveEvent.ApplyPrevious -> {
                 clearRestIfActive()
@@ -272,6 +279,7 @@ class ActiveViewModel @Inject constructor(
                         completedAt = now,
                         sessionId = snap.sessionId,
                         weightUnit = ActiveSessionLogic.normalizeUnit(snap.weightUnit),
+                        rpe = s.rpe?.coerceIn(6, 10),
                     )
                 }
                 val duration = ActiveSessionLogic.durationSeconds(startedAt)

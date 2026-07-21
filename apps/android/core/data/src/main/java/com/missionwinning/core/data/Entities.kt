@@ -34,6 +34,8 @@ data class SetLogEntity(
     val weightUnit: String = "kg",
     /** Parent [WorkoutLogEntity.id] for history detail (Room v4). */
     val workoutId: String = "",
+    /** Optional RPE 6–10 (Room v5). Null = not logged. */
+    val rpe: Int? = null,
 )
 
 @Entity(tableName = "sync_outbox")

@@ -21,6 +21,7 @@ data class HistorySetUi(
     val setIndex: Int,
     val reps: Int,
     val weightLabel: String,
+    val rpeLabel: String? = null,
 )
 
 data class HistoryExerciseGroup(
@@ -74,6 +75,7 @@ class HistoryViewModel @Inject constructor(
                                 setIndex = row.setIndex,
                                 reps = row.reps,
                                 weightLabel = WeightUnits.formatWithUnit(display, unitPref),
+                                rpeLabel = row.rpe?.let { "RPE $it" },
                             )
                         },
                     )

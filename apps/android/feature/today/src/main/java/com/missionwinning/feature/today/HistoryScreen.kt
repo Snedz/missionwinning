@@ -113,7 +113,13 @@ fun HistoryScreen(
                                                 color = MwColors.Text,
                                             )
                                             Text(
-                                                "${set.weightLabel} × ${set.reps}",
+                                                buildString {
+                                                    append("${set.weightLabel} × ${set.reps}")
+                                                    set.rpeLabel?.let {
+                                                        append(" · ")
+                                                        append(it)
+                                                    }
+                                                },
                                                 style = MwTypography.bodyMedium,
                                                 color = MwColors.TextMuted,
                                             )

@@ -56,6 +56,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Tap **Recent** log → history detail (sets by exercise; Room `workoutId` v4)
 - Active uses **LazyColumn** and auto-scrolls to the current set card
 - Today **pull-to-refresh** reloads plan/outbox (prefers network when online)
+- Optional **RPE 6–10** chips on current set (Room v5); Victory **Share session** text
 
 ## Verify
 
