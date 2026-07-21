@@ -108,4 +108,28 @@ class PrefsRepository(
             ),
         )
     }
+
+    /** Optional body weight for Progress (free, local-only). */
+    suspend fun bodyWeight(): Double? =
+        dao.getPref(MwRepository.KEY_BODY_WEIGHT)?.toDoubleOrNull()?.takeIf { it > 0 }
+
+    suspend fun setBodyWeight(value: Double?) {
+        if (value == null || value <= 0) {
+            dao.setPref(PrefEntity(MwRepository.KEY_BODY_WEIGHT, ""))
+        } else {
+            dao.setPref(PrefEntity(MwRepository.KEY_BODY_WEIGHT, value.toString()))
+        }
+    }
+
+    suspend fun bodyWeightUnit(): String =
+        dao.getPref(MwRepository.KEY_BODY_WEIGHT_UNIT) ?: weightUnit()
+
+    suspend fun setBodyWeightUnit(unit: String) {
+        dao.setPref(
+            PrefEntity(
+                MwRepository.KEY_BODY_WEIGHT_UNIT,
+                if (unit.equals("lb", true)) "lb" else "kg",
+            ),
+        )
+    }
 }

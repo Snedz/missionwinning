@@ -123,12 +123,52 @@ fun TodayScreen(
                     color = MwColors.TextMuted,
                 )
 
-                if (state.streakDays > 0) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        MwChip(
-                            "${state.streakDays} day streak",
-                            tone = MwChipTone.Brass,
+                // Mission control metric strip (Bevel-inspired, gym-first)
+                if (!state.loading) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        MwMetricCard(
+                            "Streak",
+                            if (state.streakDays > 0) "${state.streakDays}d" else "—",
+                            Modifier.weight(1f),
                         )
+                        MwMetricCard(
+                            "Week vol",
+                            state.weekStats.volumeLabel,
+                            Modifier.weight(1f),
+                        )
+                        MwMetricCard(
+                            state.readinessLabel.ifBlank { "Form" },
+                            if (state.readinessScore > 0) "${state.readinessScore}" else "—",
+                            Modifier.weight(1f),
+                        )
+                    }
+                    Text(
+                        "Form score is from your logs only — not medical readiness.",
+                        style = MwTypography.labelMedium,
+                        color = MwColors.TextMuted,
+                    )
+                }
+
+                state.coachInsight?.let { insight ->
+                    MwCard(elevated = true, glow = true) {
+                        MwSectionLabel("Mission insight")
+                        Text(
+                            insight,
+                            style = MwTypography.bodyMedium,
+                            color = MwColors.Text,
+                        )
+                        if (state.readinessDetail.isNotBlank() &&
+                            state.readinessDetail != insight
+                        ) {
+                            Text(
+                                state.readinessDetail,
+                                style = MwTypography.labelMedium,
+                                color = MwColors.TextMuted,
+                            )
+                        }
                     }
                 }
 

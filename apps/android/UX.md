@@ -66,6 +66,8 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - **Reorder** exercises with ↑/↓; **Superset** A–D grouping
 - **Plate calculator** for barbell load (per side)
 - **Per-exercise rest** override (45/60/90/120 or session default)
+- **Today mission control** — streak / week volume / form score strip + Mission insight
+- **Progress** — 28-day heat map, 8-week volume, PRs, optional body weight (on-device)
 
 ## Verify
 

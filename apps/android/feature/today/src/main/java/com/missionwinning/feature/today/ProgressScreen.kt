@@ -1,26 +1,34 @@
 package com.missionwinning.feature.today
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -33,6 +41,7 @@ import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwEmptyState
 import com.missionwinning.core.designsystem.MwEnterFade
+import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwLoadingBlock
 import com.missionwinning.core.designsystem.MwMetricCard
 import com.missionwinning.core.designsystem.MwOfflinePill
@@ -81,10 +90,11 @@ fun ProgressScreen(
                 } else if (state.workoutCount == 0) {
                     MwEmptyState(
                         title = "No progress yet",
-                        body = "Finish a session with weights to unlock PRs and volume history.",
+                        body = "Finish a session with weights to unlock PRs, heat map, and volume history.",
                         cta = "Back to Today",
                         onCta = onBack,
                     )
+                    BodyWeightCard(state, viewModel)
                 } else {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -93,6 +103,76 @@ fun ProgressScreen(
                         MwMetricCard("Workouts", state.workoutCount.toString(), Modifier.weight(1f))
                         MwMetricCard("PRs", state.prs.size.toString(), Modifier.weight(1f))
                         MwMetricCard("Vol (14)", state.totalVolumeLabel, Modifier.weight(1f))
+                    }
+                    if (state.streakDays > 0 || state.trainedDays28 > 0) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            if (state.streakDays > 0) {
+                                MwChip("${state.streakDays}d streak", tone = MwChipTone.Brass)
+                            }
+                            MwChip(
+                                "${state.trainedDays28}/28 days trained",
+                                tone = MwChipTone.Emerald,
+                            )
+                        }
+                    }
+
+                    MwCard(elevated = true) {
+                        MwSectionLabel("Training heat map")
+                        Text(
+                            "Last 28 days · ${state.heatStartLabel} → ${state.heatEndLabel}. Darker = more volume.",
+                            style = MwTypography.bodyMedium,
+                            color = MwColors.TextMuted,
+                        )
+                        if (state.heatLevels.isEmpty()) {
+                            Text(
+                                "Log sessions to light up the calendar.",
+                                style = MwTypography.bodyMedium,
+                                color = MwColors.TextMuted,
+                            )
+                        } else {
+                            HeatMapGrid(
+                                levels = state.heatLevels,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                            )
+                            Row(
+                                modifier = Modifier.padding(top = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text("Less", style = MwTypography.labelSmall, color = MwColors.TextMuted)
+                                (0..4).forEach { lvl ->
+                                    Box(
+                                        Modifier
+                                            .size(12.dp)
+                                            .clip(RoundedCornerShape(2.dp))
+                                            .background(heatColor(lvl)),
+                                    )
+                                }
+                                Text("More", style = MwTypography.labelSmall, color = MwColors.TextMuted)
+                            }
+                        }
+                    }
+
+                    MwCard(elevated = true) {
+                        MwSectionLabel("Weekly volume")
+                        Text(
+                            "Last 8 weeks (oldest → newest).",
+                            style = MwTypography.bodyMedium,
+                            color = MwColors.TextMuted,
+                        )
+                        if (state.weekBars.isEmpty()) {
+                            Text("—", style = MwTypography.bodyMedium, color = MwColors.TextMuted)
+                        } else {
+                            VolumeBarChart(
+                                fractions = state.weekBars,
+                                labels = state.weekLabels,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(140.dp),
+                            )
+                        }
                     }
 
                     MwCard(elevated = true) {
@@ -165,11 +245,104 @@ fun ProgressScreen(
                             }
                         }
                     }
+
+                    BodyWeightCard(state, viewModel)
                 }
                 Spacer(Modifier.height(12.dp))
             }
         }
     }
+}
+
+@Composable
+private fun BodyWeightCard(state: ProgressUiState, viewModel: ProgressViewModel) {
+    MwCard(elevated = true) {
+        MwSectionLabel("Body weight")
+        Text(
+            "Optional · stays on this device (free). Not medical advice.",
+            style = MwTypography.bodyMedium,
+            color = MwColors.TextMuted,
+        )
+        Text(
+            "Logged · ${state.bodyWeightLabel}",
+            style = MwTypography.titleMedium,
+            color = MwColors.Text,
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            MwChip(
+                text = "KG",
+                tone = if (state.bodyWeightUnit == "kg") MwChipTone.Emerald else MwChipTone.Neutral,
+                onClick = { viewModel.setBodyWeightUnit("kg") },
+            )
+            MwChip(
+                text = "LB",
+                tone = if (state.bodyWeightUnit == "lb") MwChipTone.Emerald else MwChipTone.Neutral,
+                onClick = { viewModel.setBodyWeightUnit("lb") },
+            )
+        }
+        OutlinedTextField(
+            value = state.bodyWeightInput,
+            onValueChange = viewModel::onBodyWeightInput,
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            label = { Text("Weight") },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = MwColors.Text,
+                unfocusedTextColor = MwColors.Text,
+                focusedContainerColor = MwColors.NavyDeep,
+                unfocusedContainerColor = MwColors.NavyDeep,
+                focusedBorderColor = MwColors.Emerald,
+                unfocusedBorderColor = MwColors.Border,
+                cursorColor = MwColors.Emerald,
+                focusedLabelColor = MwColors.TextMuted,
+                unfocusedLabelColor = MwColors.TextMuted,
+            ),
+        )
+        MwGhostButton(
+            text = "Save body weight",
+            contentDescription = "Save body weight on device",
+            onClick = viewModel::saveBodyWeight,
+        )
+    }
+}
+
+@Composable
+private fun HeatMapGrid(
+    levels: List<Int>,
+    modifier: Modifier = Modifier,
+) {
+    // 4 rows × 7 cols ≈ 28 cells
+    val cols = 7
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        levels.chunked(cols).forEach { row ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                row.forEach { level ->
+                    Box(
+                        Modifier
+                            .weight(1f)
+                            .aspectRatio(1f)
+                            .clip(RoundedCornerShape(3.dp))
+                            .background(heatColor(level)),
+                    )
+                }
+                // pad incomplete last row
+                repeat(cols - row.size) {
+                    Spacer(Modifier.weight(1f).aspectRatio(1f))
+                }
+            }
+        }
+    }
+}
+
+private fun heatColor(level: Int): Color = when (level.coerceIn(0, 4)) {
+    0 -> MwColors.Border.copy(alpha = 0.35f)
+    1 -> MwColors.Emerald.copy(alpha = 0.25f)
+    2 -> MwColors.Emerald.copy(alpha = 0.45f)
+    3 -> MwColors.Emerald.copy(alpha = 0.7f)
+    else -> MwColors.Emerald
 }
 
 @Composable

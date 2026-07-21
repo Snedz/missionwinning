@@ -44,6 +44,12 @@
 - **Plate calculator** (pure domain, free) on current set
 - Room **v10** (`note`, `supersetGroup`, `custom_exercises`); sync payload fields on sets
 
+## Progress & Today mission control (Phase 11)
+
+- Progress: 28-day **heat map**, 8-week volume, session volume, PRs, optional **body weight** (local)
+- Today: metric strip (streak · week vol · form score), **Mission insight** from coach adapt / readiness
+- Pure `Progression` helpers (readiness, heat map, weekly volumes) — not medical advice
+
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)
