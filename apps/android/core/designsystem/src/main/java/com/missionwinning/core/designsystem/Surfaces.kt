@@ -414,18 +414,35 @@ fun MwConfirmSheet(
 fun MwWeekStrip(
     days: List<MwWeekDay>,
     modifier: Modifier = Modifier,
+    onDayClick: ((MwWeekDay) -> Unit)? = null,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         days.forEach { day ->
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            val actionable = onDayClick != null && day.sessionId != null &&
+                (day.state == MwWeekDayState.Planned || day.state == MwWeekDayState.Today)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = if (actionable) {
+                    Modifier
+                        .clip(RoundedCornerShape(MwRadius.md))
+                        .clickable { onDayClick?.invoke(day) }
+                        .semantics {
+                            role = Role.Button
+                            contentDescription = "Start ${day.sessionName ?: "session"} on ${day.label}"
+                        }
+                        .padding(horizontal = 4.dp, vertical = 4.dp)
+                } else {
+                    Modifier.padding(horizontal = 4.dp, vertical = 4.dp)
+                },
+            ) {
                 Text(day.label, style = MwTypography.labelSmall, color = MwColors.TextMuted)
                 Spacer(Modifier.height(6.dp))
                 Box(
                     modifier = Modifier
-                        .size(10.dp)
+                        .size(if (day.state == MwWeekDayState.Today) 12.dp else 10.dp)
                         .clip(CircleShape)
                         .background(
                             when (day.state) {
@@ -442,7 +459,14 @@ fun MwWeekStrip(
     }
 }
 
-data class MwWeekDay(val label: String, val state: MwWeekDayState)
+data class MwWeekDay(
+    val label: String,
+    val state: MwWeekDayState,
+    val dayOffset: Int = -1,
+    val sessionId: String? = null,
+    val sessionName: String? = null,
+    val setCount: Int = 0,
+)
 
 enum class MwWeekDayState { Empty, Planned, Today, Done }
 
