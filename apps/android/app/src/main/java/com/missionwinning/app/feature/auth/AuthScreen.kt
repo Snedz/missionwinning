@@ -257,7 +257,7 @@ private fun SignedInCard(
             MwChip(state.session.premiumSource, tone = MwChipTone.Brass)
         }
         Text(
-            "Cloud sync of full set history lands in a later release. Coach already accepts your session Bearer when online.",
+            "Workouts sync with full set detail when online. Sign-out keeps local logs and stops cloud sync.",
             style = MwTypography.bodyMedium,
             color = MwColors.TextMuted,
         )

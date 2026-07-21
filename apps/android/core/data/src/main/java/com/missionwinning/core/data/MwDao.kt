@@ -16,16 +16,23 @@ interface MwDao {
     @Query("DELETE FROM coach_plan")
     suspend fun clearCoachPlan()
 
-    @Query("SELECT * FROM workout_logs ORDER BY completedAt DESC")
+    @Query("SELECT * FROM workout_logs WHERE deletedAt IS NULL ORDER BY completedAt DESC")
     suspend fun allWorkouts(): List<WorkoutLogEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWorkout(row: WorkoutLogEntity)
 
-    @Query("SELECT COUNT(*) FROM workout_logs")
+    @Query("SELECT COUNT(*) FROM workout_logs WHERE deletedAt IS NULL")
     suspend fun workoutCount(): Int
 
-    @Query("SELECT * FROM workout_logs ORDER BY completedAt DESC LIMIT :limit")
+    @Query(
+        """
+        SELECT * FROM workout_logs
+        WHERE deletedAt IS NULL
+        ORDER BY completedAt DESC
+        LIMIT :limit
+        """,
+    )
     suspend fun recentWorkouts(limit: Int): List<WorkoutLogEntity>
 
     @Query("SELECT * FROM workout_logs WHERE id = :id LIMIT 1")
@@ -34,11 +41,46 @@ interface MwDao {
     @Query(
         """
         SELECT * FROM workout_logs
-        WHERE completedAt >= :sinceIso
+        WHERE deletedAt IS NULL AND completedAt >= :sinceIso
         ORDER BY completedAt DESC
         """,
     )
     suspend fun workoutsSince(sinceIso: String): List<WorkoutLogEntity>
+
+    @Query(
+        """
+        SELECT * FROM workout_logs
+        WHERE syncStatus IN ('pending', 'failed') AND deletedAt IS NULL
+        ORDER BY completedAt ASC
+        LIMIT :limit
+        """,
+    )
+    suspend fun workoutsNeedingPush(limit: Int = 50): List<WorkoutLogEntity>
+
+    @Query(
+        """
+        SELECT COUNT(*) FROM workout_logs
+        WHERE syncStatus IN ('pending', 'failed') AND deletedAt IS NULL
+        """,
+    )
+    suspend fun unsyncedWorkoutCount(): Int
+
+    @Query(
+        """
+        UPDATE workout_logs
+        SET syncStatus = :status, revision = :revision, updatedAt = :updatedAt
+        WHERE id = :id
+        """,
+    )
+    suspend fun updateWorkoutSync(
+        id: String,
+        status: String,
+        revision: Int,
+        updatedAt: String,
+    )
+
+    @Query("DELETE FROM set_logs WHERE workoutId = :workoutId")
+    suspend fun deleteSetsForWorkout(workoutId: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSetLog(row: SetLogEntity)
@@ -86,6 +128,16 @@ interface MwDao {
 
     @Query("UPDATE sync_outbox SET attempts = attempts + 1 WHERE id = :id")
     suspend fun bumpOutboxAttempt(id: String)
+
+    @Query("SELECT * FROM sync_outbox WHERE id = :id LIMIT 1")
+    suspend fun outboxById(id: String): SyncOutboxEntity?
+
+    @Query(
+        """
+        UPDATE sync_outbox SET attempts = :attempts WHERE id = :id
+        """,
+    )
+    suspend fun setOutboxAttempts(id: String, attempts: Int)
 
     @Query("SELECT value FROM prefs WHERE `key` = :key LIMIT 1")
     suspend fun getPref(key: String): String?

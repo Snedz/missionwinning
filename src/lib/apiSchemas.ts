@@ -236,6 +236,40 @@ export const mobileWorkoutLogBodySchema = z.object({
   completedAt: z.string().max(40).optional(),
 });
 
+/** Full-fidelity set row (mirrors Android SetLogEntity). */
+export const mobileSyncSetSchema = z.object({
+  id: z.string().min(1).max(80),
+  exerciseId: z.string().min(1).max(120),
+  exerciseName: z.string().max(200).default(''),
+  setIndex: z.number().int().min(0).max(48),
+  reps: z.number().int().min(0).max(999),
+  weight: z.number().min(0).max(1_000_000),
+  completedAt: z.string().max(40),
+  sessionId: z.string().max(120).nullable().optional(),
+  weightUnit: z.string().max(8).default('kg'),
+  rpe: z.number().int().min(6).max(10).nullable().optional(),
+  setKind: z.string().max(20).default('normal'),
+});
+
+export const mobileSyncWorkoutSchema = z.object({
+  clientId: z.string().uuid(),
+  workoutName: z.string().min(1).max(120),
+  completedAt: z.string().max(40),
+  durationSeconds: z.number().int().min(1).max(86_400),
+  setCount: z.number().int().min(0).max(200),
+  totalVolume: z.number().min(0).max(1_000_000),
+  sessionId: z.string().max(120).nullable().optional(),
+  weightUnit: z.string().max(8).default('kg'),
+  revision: z.number().int().min(1).max(1_000_000).default(1),
+  updatedAt: z.string().max(40).optional(),
+  deletedAt: z.string().max(40).nullable().optional(),
+  sets: z.array(mobileSyncSetSchema).max(200).default([]),
+});
+
+export const mobileSyncPushBodySchema = z.object({
+  workouts: z.array(mobileSyncWorkoutSchema).min(1).max(50),
+});
+
 export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
   | { ok: true; data: T }
   | { ok: false; error: string } {

@@ -36,6 +36,34 @@ class MobileApiClient(
         }
     }
 
+    suspend fun pushWorkouts(workouts: List<SyncWorkoutDto>): Result<SyncPushResponseDto> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val payload = json.encodeToString(SyncPushRequestDto(workouts = workouts))
+                val req = requestBuilder("/api/mobile/sync/workouts")
+                    .post(payload.toRequestBody(media))
+                    .build()
+                client.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) error("sync push ${resp.code}")
+                    json.decodeFromString<SyncPushResponseDto>(resp.body!!.string())
+                }
+            }
+        }
+
+    suspend fun pullWorkouts(since: String, limit: Int = 100): Result<SyncPullResponseDto> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val q = java.net.URLEncoder.encode(since, Charsets.UTF_8.name())
+                val req = requestBuilder("/api/mobile/sync/workouts?since=$q&limit=$limit")
+                    .get()
+                    .build()
+                client.newCall(req).execute().use { resp ->
+                    if (!resp.isSuccessful) error("sync pull ${resp.code}")
+                    json.decodeFromString<SyncPullResponseDto>(resp.body!!.string())
+                }
+            }
+        }
+
     suspend fun fetchCoachPlan(
         equipment: String = "bodyweight",
         adaptDemo: Boolean = false,

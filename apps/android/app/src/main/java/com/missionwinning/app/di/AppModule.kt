@@ -5,6 +5,8 @@ import com.missionwinning.app.BuildConfig
 import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.MwDatabase
 import com.missionwinning.core.data.MwRepository
+import com.missionwinning.core.data.SyncEngine
+import com.missionwinning.core.data.SyncScheduler
 import com.missionwinning.core.data.TokenStore
 import com.missionwinning.core.network.MobileApiClient
 import com.missionwinning.core.network.SupabaseAuthClient
@@ -66,8 +68,25 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(db: MwDatabase, api: MobileApiClient): MwRepository =
-        MwRepository(db, api)
+    fun provideSyncEngine(
+        db: MwDatabase,
+        api: MobileApiClient,
+        auth: AuthRepository,
+    ): SyncEngine = SyncEngine(db, api, auth)
+
+    @Provides
+    @Singleton
+    fun provideRepository(
+        db: MwDatabase,
+        api: MobileApiClient,
+        syncEngine: SyncEngine,
+    ): MwRepository = MwRepository(db, api, syncEngine)
+
+    @Provides
+    @Singleton
+    fun provideSyncScheduler(
+        @ApplicationContext context: Context,
+    ): SyncScheduler = SyncScheduler(context)
 }
 
 /** Package of co-constructed auth + mobile API. */

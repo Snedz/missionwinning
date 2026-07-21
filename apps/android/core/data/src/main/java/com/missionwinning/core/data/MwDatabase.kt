@@ -16,7 +16,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         SyncOutboxEntity::class,
         RoutineEntity::class,
     ],
-    version = 7,
+    version = 8,
     exportSchema = true,
 )
 abstract class MwDatabase : RoomDatabase() {
@@ -101,6 +101,51 @@ abstract class MwDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * Sync v2 columns + re-enqueue all local workouts for full-fidelity push
+         * (legacy-claim safe on server).
+         */
+        private val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "ALTER TABLE workout_logs ADD COLUMN syncStatus TEXT NOT NULL DEFAULT 'pending'",
+                )
+                db.execSQL(
+                    "ALTER TABLE workout_logs ADD COLUMN revision INTEGER NOT NULL DEFAULT 1",
+                )
+                db.execSQL(
+                    "ALTER TABLE workout_logs ADD COLUMN updatedAt TEXT NOT NULL DEFAULT ''",
+                )
+                db.execSQL("ALTER TABLE workout_logs ADD COLUMN deletedAt TEXT")
+                db.execSQL(
+                    "ALTER TABLE workout_logs ADD COLUMN weightUnit TEXT NOT NULL DEFAULT 'kg'",
+                )
+                // Backfill updatedAt from completedAt when empty
+                db.execSQL(
+                    """
+                    UPDATE workout_logs
+                    SET updatedAt = completedAt
+                    WHERE updatedAt = '' OR updatedAt IS NULL
+                    """.trimIndent(),
+                )
+                // Clear stale summary outbox rows; re-enqueue workout refs
+                db.execSQL("DELETE FROM sync_outbox")
+                db.execSQL(
+                    """
+                    INSERT INTO sync_outbox (id, kind, payloadJson, createdAt, attempts)
+                    SELECT
+                        id,
+                        'workout_ref',
+                        id,
+                        completedAt,
+                        0
+                    FROM workout_logs
+                    WHERE deletedAt IS NULL
+                    """.trimIndent(),
+                )
+            }
+        }
+
         fun get(context: Context): MwDatabase =
             instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
@@ -115,6 +160,7 @@ abstract class MwDatabase : RoomDatabase() {
                         MIGRATION_4_5,
                         MIGRATION_5_6,
                         MIGRATION_6_7,
+                        MIGRATION_7_8,
                     )
                     .build()
                     .also { instance = it }
