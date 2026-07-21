@@ -46,6 +46,9 @@ class MwRepository(
     suspend fun setBodyWeight(value: Double?) = prefs.setBodyWeight(value)
     suspend fun bodyWeightUnit(): String = prefs.bodyWeightUnit()
     suspend fun setBodyWeightUnit(unit: String) = prefs.setBodyWeightUnit(unit)
+    suspend fun healthConnectStepsReadEnabled(): Boolean = prefs.healthConnectStepsReadEnabled()
+    suspend fun setHealthConnectStepsReadEnabled(enabled: Boolean) =
+        prefs.setHealthConnectStepsReadEnabled(enabled)
 
     // —— Coach ——
     suspend fun setEquipmentAndReseed(profile: String): CoachPlanResponseDto =
@@ -149,6 +152,7 @@ class MwRepository(
         const val KEY_HEALTH_CONNECT = "health_connect_export"
         const val KEY_BODY_WEIGHT = "body_weight"
         const val KEY_BODY_WEIGHT_UNIT = "body_weight_unit"
+        const val KEY_HEALTH_CONNECT_STEPS = "health_connect_steps_read"
         const val KIND_WORKOUT = "workout"
         const val DEFAULT_API_BASE = "https://www.missionwinning.com"
 

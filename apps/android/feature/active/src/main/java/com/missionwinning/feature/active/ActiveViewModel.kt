@@ -36,6 +36,8 @@ data class ActiveUiState(
     val finishing: Boolean = false,
     val finished: FinishedPayload? = null,
     val error: String? = null,
+    /** For Wear tile / complication (phone SoT). */
+    val streakDays: Int = 0,
 ) {
     val doneCount: Int get() = exercises.sumOf { ex -> ex.sets.count { it.done } }
     val totalSets: Int get() = exercises.sumOf { it.sets.size }
@@ -120,6 +122,7 @@ class ActiveViewModel @Inject constructor(
             val defaultRest = ActiveSessionLogic.normalizeDefaultRest(repository.defaultRestSeconds())
             val restVibrate = repository.restVibrateEnabled()
             val restBeep = repository.restBeepEnabled()
+            val streak = runCatching { repository.workoutStreakDays() }.getOrDefault(0)
 
             if (MwRepository.isFreeformSession(sessionId)) {
                 _state.value = ActiveUiState(
@@ -130,6 +133,7 @@ class ActiveViewModel @Inject constructor(
                     defaultRestSeconds = defaultRest,
                     restVibrate = restVibrate,
                     restBeep = restBeep,
+                    streakDays = streak,
                 )
                 return@launch
             }
@@ -152,6 +156,7 @@ class ActiveViewModel @Inject constructor(
                     defaultRestSeconds = defaultRest,
                     restVibrate = restVibrate,
                     restBeep = restBeep,
+                    streakDays = streak,
                 )
                 return@launch
             }
@@ -172,6 +177,7 @@ class ActiveViewModel @Inject constructor(
                 defaultRestSeconds = defaultRest,
                 restVibrate = restVibrate,
                 restBeep = restBeep,
+                streakDays = streak,
             )
         }
     }
@@ -457,7 +463,14 @@ class ActiveViewModel @Inject constructor(
     private fun publishHub(st: ActiveUiState) {
         val active = st.sessionId.isNotBlank() && st.finished == null && !st.finishing
         if (!active) {
-            ActiveSessionHub.clear()
+            // Keep streak on hub for Wear tile when idle between sessions
+            if (st.streakDays > 0) {
+                ActiveSessionHub.publish(
+                    ActiveSessionHub.Snapshot(active = false, streakDays = st.streakDays),
+                )
+            } else {
+                ActiveSessionHub.clear()
+            }
             return
         }
         val currentId = ActiveSessionLogic.currentSetId(st.exercises)
@@ -476,6 +489,7 @@ class ActiveViewModel @Inject constructor(
                 reps = current?.reps ?: 10,
                 weight = current?.weight ?: 0.0,
                 weightUnit = st.weightUnit,
+                streakDays = st.streakDays,
             ),
         )
     }
@@ -577,6 +591,9 @@ class ActiveViewModel @Inject constructor(
                         HealthConnectExportBridge.write(
                             title = snap.workoutName,
                             durationSeconds = duration,
+                            totalVolume = volume,
+                            setCount = entities.size,
+                            weightUnit = snap.weightUnit,
                         )
                     }
                 }

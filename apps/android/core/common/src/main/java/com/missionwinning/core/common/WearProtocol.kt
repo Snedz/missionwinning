@@ -9,6 +9,8 @@ object WearProtocol {
     const val PATH_COMPLETE = "/mw/complete"
     const val PATH_SKIP_REST = "/mw/skip_rest"
     const val PATH_PING = "/mw/ping"
+    /** Phone → watch ack after complete applied. */
+    const val PATH_COMPLETE_ACK = "/mw/complete_ack"
 
     const val CAPABILITY_PHONE = "mw_phone"
     const val CAPABILITY_WATCH = "mw_watch"
@@ -64,6 +66,29 @@ object WearProtocol {
         val reps = map["reps"]?.toIntOrNull() ?: return null
         val weight = map["wt"]?.toDoubleOrNull() ?: 0.0
         return Triple(setId, reps, weight)
+    }
+
+    fun encodeCompleteAck(setId: String, ok: Boolean): ByteArray =
+        "v=1&setId=${enc(setId)}&ok=${if (ok) "1" else "0"}".toByteArray(Charsets.UTF_8)
+
+    fun decodeCompleteAck(bytes: ByteArray?): Pair<String, Boolean>? {
+        if (bytes == null || bytes.isEmpty()) return null
+        val map = parse(String(bytes, Charsets.UTF_8)) ?: return null
+        val setId = map["setId"].orEmpty()
+        if (setId.isBlank()) return null
+        return setId to (map["ok"] == "1")
+    }
+
+    /** One-line status for tile / complication. */
+    fun statusLine(s: ActiveSessionHub.Snapshot): String = when {
+        !s.active -> if (s.streakDays > 0) "${s.streakDays}d streak" else "Open phone"
+        (s.restDeadlineMs ?: 0L) > System.currentTimeMillis() -> {
+            val left = s.restSecondsLeft()
+            "Rest ${left}s"
+        }
+        s.currentSetId.isNotBlank() ->
+            "${s.exerciseName.ifBlank { "Set" }.take(18)} · ${s.doneSets}/${s.totalSets}"
+        else -> s.workoutName.ifBlank { "Workout" }.take(22)
     }
 
     private fun enc(value: String): String =

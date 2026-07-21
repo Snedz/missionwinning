@@ -12,8 +12,8 @@ android {
         applicationId = "com.missionwinning.app.wear"
         minSdk = 30
         targetSdk = 36
-        versionCode = 38
-        versionName = "1.11.0"
+        versionCode = 39
+        versionName = "1.12.0"
     }
 
     buildTypes {
@@ -51,5 +51,14 @@ dependencies {
     implementation("androidx.wear.compose:compose-navigation:1.4.1")
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Tiles + complications (Phase 13)
+    implementation("androidx.wear.tiles:tiles:1.4.1")
+    implementation("androidx.wear.protolayout:protolayout:1.2.1")
+    implementation("androidx.wear.protolayout:protolayout-material:1.2.1")
+    implementation("androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1")
+    implementation("com.google.guava:guava:33.0.0-android")
+    implementation("androidx.concurrent:concurrent-futures:1.2.0")
+
     debugImplementation(libs.androidx.compose.ui.tooling)
 }

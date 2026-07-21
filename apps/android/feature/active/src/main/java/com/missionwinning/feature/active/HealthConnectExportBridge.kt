@@ -5,11 +5,35 @@ package com.missionwinning.feature.active
  * :app registers the real writer at process start.
  */
 object HealthConnectExportBridge {
-    @Volatile
-    var writer: (suspend (title: String, durationSeconds: Int) -> Boolean)? = null
+    data class SessionExport(
+        val title: String,
+        val durationSeconds: Int,
+        val totalVolume: Double = 0.0,
+        val setCount: Int = 0,
+        val weightUnit: String = "kg",
+    )
 
-    suspend fun write(title: String, durationSeconds: Int): Boolean {
+    @Volatile
+    var writer: (suspend (SessionExport) -> Boolean)? = null
+
+    suspend fun write(
+        title: String,
+        durationSeconds: Int,
+        totalVolume: Double = 0.0,
+        setCount: Int = 0,
+        weightUnit: String = "kg",
+    ): Boolean {
         val w = writer ?: return false
-        return runCatching { w(title, durationSeconds) }.getOrDefault(false)
+        return runCatching {
+            w(
+                SessionExport(
+                    title = title,
+                    durationSeconds = durationSeconds,
+                    totalVolume = totalVolume,
+                    setCount = setCount,
+                    weightUnit = weightUnit,
+                ),
+            )
+        }.getOrDefault(false)
     }
 }

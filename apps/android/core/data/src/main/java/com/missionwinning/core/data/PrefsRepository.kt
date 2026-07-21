@@ -132,4 +132,12 @@ class PrefsRepository(
             ),
         )
     }
+
+    /** Optional Health Connect steps read for Today (off by default). */
+    suspend fun healthConnectStepsReadEnabled(): Boolean =
+        dao.getPref(MwRepository.KEY_HEALTH_CONNECT_STEPS) == "1"
+
+    suspend fun setHealthConnectStepsReadEnabled(enabled: Boolean) {
+        dao.setPref(PrefEntity(MwRepository.KEY_HEALTH_CONNECT_STEPS, if (enabled) "1" else "0"))
+    }
 }

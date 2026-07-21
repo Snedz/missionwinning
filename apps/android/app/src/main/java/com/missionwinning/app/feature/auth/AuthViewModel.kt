@@ -39,6 +39,7 @@ data class AuthScreenState(
     val sentryConfigured: Boolean = false,
     val healthConnectExport: Boolean = false,
     val healthConnectAvailable: Boolean = false,
+    val healthConnectStepsRead: Boolean = false,
     val outbox: OutboxStatus = OutboxStatus(),
     val syncBusy: Boolean = false,
 )
@@ -79,7 +80,8 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun healthConnectPermissions(): Set<String> = healthConnect.requiredPermissions()
+    fun healthConnectPermissions(): Set<String> =
+        healthConnect.requiredPermissionsWithSteps()
 
     private suspend fun refreshPrivacyToggles() {
         _local.update {
@@ -89,6 +91,7 @@ class AuthViewModel @Inject constructor(
                 sentryConfigured = CrashReporting.isConfigured(),
                 healthConnectExport = repository.healthConnectExportEnabled(),
                 healthConnectAvailable = healthConnect.isAvailable(),
+                healthConnectStepsRead = repository.healthConnectStepsReadEnabled(),
             )
         }
     }
@@ -304,9 +307,25 @@ class AuthViewModel @Inject constructor(
                 it.copy(
                     healthConnectExport = enabled,
                     message = if (enabled) {
-                        "Health Connect export on — finished workouts write exercise sessions"
+                        "Health Connect export on — sessions + estimated active calories"
                     } else {
                         "Health Connect export off"
+                    },
+                )
+            }
+        }
+    }
+
+    fun setHealthConnectStepsRead(enabled: Boolean) {
+        viewModelScope.launch {
+            repository.setHealthConnectStepsReadEnabled(enabled)
+            _local.update {
+                it.copy(
+                    healthConnectStepsRead = enabled,
+                    message = if (enabled) {
+                        "Steps on Today when Health Connect grants read"
+                    } else {
+                        "Steps hidden on Today"
                     },
                 )
             }

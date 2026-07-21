@@ -56,6 +56,12 @@
 - Sync pull up to 50 pages; `SyncRunResult` + conflict notes (local pending wins)
 - Free forever — import/export never gated
 
+## Wear + Health Connect depth (Phase 13)
+
+- Wear: **tile** + **short-text complication**, phone linked status, complete retry + ACK
+- HC: write exercise + estimated active calories; optional **steps on Today**
+- Widget v2: streak · week volume · live session line
+
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)

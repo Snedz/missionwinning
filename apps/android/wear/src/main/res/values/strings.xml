@@ -6,4 +6,6 @@
     <string name="skip_rest">Skip rest</string>
     <string name="resting">Rest</string>
     <string name="no_sets">No open sets</string>
+    <string name="tile_label">Mission session</string>
+    <string name="complication_label">MW streak / sets</string>
 </resources>

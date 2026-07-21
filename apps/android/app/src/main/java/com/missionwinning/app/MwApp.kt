@@ -8,6 +8,7 @@ import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SyncScheduler
 import com.missionwinning.feature.active.HealthConnectExportBridge
+import com.missionwinning.feature.today.HealthConnectStepsBridge
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,9 +30,16 @@ class MwApp : Application() {
         syncScheduler.ensurePeriodic()
         wearBridge = WearSessionBridge(this).also { it.start() }
         val hc = HealthConnectWriter(this)
-        HealthConnectExportBridge.writer = { title, duration ->
-            hc.writeExerciseSession(title = title, durationSeconds = duration)
+        HealthConnectExportBridge.writer = { exp ->
+            hc.writeExerciseSession(
+                title = exp.title,
+                durationSeconds = exp.durationSeconds,
+                totalVolume = exp.totalVolume,
+                setCount = exp.setCount,
+                weightUnit = exp.weightUnit,
+            )
         }
+        HealthConnectStepsBridge.reader = { hc.readStepsToday() }
         appScope.launch {
             runCatching {
                 // Crash reporting default ON when DSN present; respect Account toggle
