@@ -193,12 +193,23 @@ fun MwGhostButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(48.dp)
-            .clickable(role = Role.Button, onClick = onClick),
+            .clickable(role = Role.Button, onClick = onClick)
+            .then(
+                if (contentDescription != null) {
+                    Modifier.semantics {
+                        this.role = Role.Button
+                        this.contentDescription = contentDescription
+                    }
+                } else {
+                    Modifier
+                },
+            ),
         contentAlignment = Alignment.Center,
     ) {
         Text(text, style = MwTypography.labelLarge, color = MwColors.Emerald)
@@ -226,6 +237,11 @@ fun MwSetRow(
         isCurrent -> MwColors.Emerald.copy(alpha = 0.55f)
         else -> MwColors.Border
     }
+    val setLabel = when {
+        done -> "Set ${index + 1}, $reps reps, completed. Double tap to undo"
+        isCurrent -> "Set ${index + 1}, $reps reps, current. Double tap to complete"
+        else -> "Set ${index + 1}, $reps reps. Double tap to complete"
+    }
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -233,6 +249,10 @@ fun MwSetRow(
             .clip(shape)
             .background(bg)
             .border(1.5.dp, borderColor, shape)
+            .semantics {
+                role = Role.Button
+                contentDescription = setLabel
+            }
             .clickable {
                 if (!done) {
                     view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
