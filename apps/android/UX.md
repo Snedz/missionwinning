@@ -32,7 +32,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 | Key | Values |
 |-----|--------|
 | Weight unit | `kg` / `lb` — Today Units card or **tap unit chip** on Active (converts mid-session, snaps to 2.5 kg / 5 lb) |
-| Equipment | set in I-Day step 2 |
+| Equipment | I-Day step 2 or Today Equipment chips (reseeds week plan) |
 
 ## Logger craft
 

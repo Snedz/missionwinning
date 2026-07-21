@@ -34,9 +34,11 @@ data class TodayUiState(
     val recent: List<RecentWorkoutUi> = emptyList(),
     val loading: Boolean = true,
     val weightUnit: String = "kg",
+    val equipment: String = "bodyweight",
     val pendingSync: Int = 0,
     val syncing: Boolean = false,
     val syncMessage: String? = null,
+    val reseeding: Boolean = false,
 ) {
     val next: PlanSessionDto?
         get() = plan?.plan?.sessions?.firstOrNull {
@@ -59,6 +61,7 @@ class TodayViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { it.copy(loading = it.plan == null) }
             val unit = WeightUnits.normalize(repository.weightUnit())
+            val equipment = repository.equipmentProfile()
             val rows = repository.recentWorkouts(5)
             val pendingBefore = repository.pendingSyncCount()
             val pendingAfter = if (pendingBefore > 0) {
@@ -72,6 +75,7 @@ class TodayViewModel @Inject constructor(
                 recent = rows.map { it.toUi(unit) },
                 loading = false,
                 weightUnit = unit,
+                equipment = equipment,
                 pendingSync = pendingAfter,
                 syncMessage = when {
                     pendingBefore > 0 && pendingAfter == 0 -> "Synced $pendingBefore offline log${if (pendingBefore == 1) "" else "s"}."
@@ -105,6 +109,21 @@ class TodayViewModel @Inject constructor(
         viewModelScope.launch {
             repository.setWeightUnit(normalized)
             _state.update { it.copy(weightUnit = normalized) }
+        }
+    }
+
+    fun setEquipment(profile: String) {
+        viewModelScope.launch {
+            if (profile == _state.value.equipment) return@launch
+            _state.update { it.copy(reseeding = true) }
+            val plan = repository.setEquipmentAndReseed(profile)
+            _state.update {
+                it.copy(
+                    plan = plan,
+                    equipment = repository.equipmentProfile(),
+                    reseeding = false,
+                )
+            }
         }
     }
 }

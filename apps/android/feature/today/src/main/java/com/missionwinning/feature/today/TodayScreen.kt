@@ -189,12 +189,55 @@ fun TodayScreen(
                     }
                 }
 
+                MwCard(elevated = true) {
+                    MwSectionLabel("Equipment")
+                    Text(
+                        if (state.reseeding) {
+                            "Reseeding week for new equipment…"
+                        } else {
+                            "Where you train — reseeds this week’s plan on device."
+                        },
+                        style = MwTypography.bodyMedium,
+                        color = MwColors.TextMuted,
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        EquipmentChip("Bodyweight", "bodyweight", state.equipment, state.reseeding) {
+                            viewModel.setEquipment("bodyweight")
+                        }
+                        EquipmentChip("Dumbbells", "dumbbells", state.equipment, state.reseeding) {
+                            viewModel.setEquipment("dumbbells")
+                        }
+                        EquipmentChip("Full gym", "full-gym", state.equipment, state.reseeding) {
+                            viewModel.setEquipment("full-gym")
+                        }
+                    }
+                }
+
                 MwGhostButton(text = "Review week on Coach", onClick = onOpenCoach)
                 MwGhostButton(text = "Account / sign-in", onClick = onOpenAuth)
                 Spacer(Modifier.height(8.dp))
             }
         }
     }
+}
+
+@Composable
+private fun EquipmentChip(
+    label: String,
+    id: String,
+    selectedId: String,
+    disabled: Boolean,
+    onSelect: () -> Unit,
+) {
+    MwChip(
+        text = label,
+        tone = if (selectedId == id) MwChipTone.Emerald else MwChipTone.Neutral,
+        contentDescription = if (selectedId == id) "$label selected" else "Switch to $label",
+        onClick = { if (!disabled) onSelect() },
+    )
 }
 
 @Composable
