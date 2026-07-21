@@ -87,6 +87,8 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | L23 | Home widgets: streak + Quick log start empty session | |
 | L24 | Account: Health Connect toggle; finish writes exercise session when on | |
 | L25 | Save routine → appears after sign-in on second device (after migration) | |
+| L26 | Wear: with phone Active session open, watch shows set; Complete updates phone | |
+| L27 | Wear: rest countdown + Skip rest; haptic at rest end | |
 
 ---
 

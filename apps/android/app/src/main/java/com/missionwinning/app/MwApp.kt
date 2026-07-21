@@ -3,6 +3,7 @@ package com.missionwinning.app
 import android.app.Application
 import com.missionwinning.app.crash.CrashReporting
 import com.missionwinning.app.health.HealthConnectWriter
+import com.missionwinning.app.wear.WearSessionBridge
 import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SyncScheduler
@@ -21,10 +22,12 @@ class MwApp : Application() {
     @Inject lateinit var repository: MwRepository
 
     private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private lateinit var wearBridge: WearSessionBridge
 
     override fun onCreate() {
         super.onCreate()
         syncScheduler.ensurePeriodic()
+        wearBridge = WearSessionBridge(this).also { it.start() }
         val hc = HealthConnectWriter(this)
         HealthConnectExportBridge.writer = { title, duration ->
             hc.writeExerciseSession(title = title, durationSeconds = duration)

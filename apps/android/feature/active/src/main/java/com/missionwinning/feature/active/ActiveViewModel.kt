@@ -95,6 +95,7 @@ class ActiveViewModel @Inject constructor(
             ActiveSessionHub.commands.collect { cmd ->
                 when (cmd) {
                     ActiveSessionHub.Command.SkipRest -> skipRest()
+                    is ActiveSessionHub.Command.CompleteSet -> completeFromWear(cmd)
                 }
             }
         }
@@ -368,12 +369,28 @@ class ActiveViewModel @Inject constructor(
         _state.update { it.copy(restSeconds = 0, restTotalSeconds = 0) }
     }
 
+    private fun completeFromWear(cmd: ActiveSessionHub.Command.CompleteSet) {
+        val setId = cmd.setId
+        val target = _state.value.exercises.flatMap { it.sets }.find { it.id == setId } ?: return
+        if (target.done) return
+        // Apply load from watch, then mark done
+        updateSet(setId) {
+            it.copy(
+                reps = cmd.reps.coerceIn(1, 99),
+                weight = cmd.weight.coerceAtLeast(0.0),
+            )
+        }
+        toggleSet(setId)
+    }
+
     private fun publishHub(st: ActiveUiState) {
         val active = st.sessionId.isNotBlank() && st.finished == null && !st.finishing
         if (!active) {
             ActiveSessionHub.clear()
             return
         }
+        val currentId = ActiveSessionLogic.currentSetId(st.exercises)
+        val current = st.exercises.flatMap { it.sets }.find { it.id == currentId }
         ActiveSessionHub.publish(
             ActiveSessionHub.Snapshot(
                 active = true,
@@ -382,6 +399,12 @@ class ActiveViewModel @Inject constructor(
                 doneSets = st.doneCount,
                 totalSets = st.totalSets,
                 restDeadlineMs = restDeadlineMs,
+                currentSetId = current?.id.orEmpty(),
+                exerciseName = current?.exerciseName.orEmpty(),
+                setIndex = current?.setIndex ?: 0,
+                reps = current?.reps ?: 10,
+                weight = current?.weight ?: 0.0,
+                weightUnit = st.weightUnit,
             ),
         )
     }
