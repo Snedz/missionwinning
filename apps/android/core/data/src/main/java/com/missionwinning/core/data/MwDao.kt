@@ -13,6 +13,9 @@ interface MwDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertCoachPlan(row: CoachPlanEntity)
 
+    @Query("DELETE FROM coach_plan")
+    suspend fun clearCoachPlan()
+
     @Query("SELECT * FROM workout_logs ORDER BY completedAt DESC")
     suspend fun allWorkouts(): List<WorkoutLogEntity>
 
@@ -24,6 +27,15 @@ interface MwDao {
 
     @Query("SELECT * FROM workout_logs ORDER BY completedAt DESC LIMIT :limit")
     suspend fun recentWorkouts(limit: Int): List<WorkoutLogEntity>
+
+    @Query(
+        """
+        SELECT * FROM workout_logs
+        WHERE completedAt >= :sinceIso
+        ORDER BY completedAt DESC
+        """,
+    )
+    suspend fun workoutsSince(sinceIso: String): List<WorkoutLogEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSetLog(row: SetLogEntity)

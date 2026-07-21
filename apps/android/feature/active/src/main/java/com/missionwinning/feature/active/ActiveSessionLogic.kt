@@ -38,6 +38,27 @@ object ActiveSessionLogic {
 
     fun exerciseCount(exercises: List<ActiveExercise>): Int = exercises.size
 
+    /**
+     * Name of the next exercise after the current incomplete set (when this is the
+     * last incomplete set of the current exercise). Null if none / all done.
+     */
+    fun nextExerciseName(exercises: List<ActiveExercise>): String? {
+        val currentId = currentSetId(exercises) ?: return null
+        val flat = exercises.flatMap { ex -> ex.sets.map { it to ex } }
+        val currentIdx = flat.indexOfFirst { it.first.id == currentId }
+        if (currentIdx < 0) return null
+        val currentExId = flat[currentIdx].first.exerciseId
+        // Remaining incomplete sets in this exercise (including current)
+        val remainingHere = flat.drop(currentIdx).count {
+            !it.first.done && it.first.exerciseId == currentExId
+        }
+        if (remainingHere > 1) return null
+        return flat.drop(currentIdx + 1)
+            .firstOrNull { !it.first.done && it.first.exerciseId != currentExId }
+            ?.second
+            ?.name
+    }
+
     fun defaultReps(planReps: Int, previousReps: Int?): Int =
         (previousReps ?: planReps).coerceIn(1, 99)
 

@@ -227,11 +227,13 @@ fun ActiveScreen(
                 if (currentSet != null) {
                     val exIndex = ActiveSessionLogic.currentExerciseIndex(state.exercises)
                     val exTotal = ActiveSessionLogic.exerciseCount(state.exercises)
+                    val nextEx = ActiveSessionLogic.nextExerciseName(state.exercises)
                     CurrentSetCard(
                         set = currentSet,
                         weightUnit = state.weightUnit,
                         exerciseIndex = exIndex,
                         exerciseTotal = exTotal,
+                        nextExerciseName = nextEx,
                         onComplete = {
                             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                             onEvent(ActiveEvent.ToggleSet(currentSet.id))
@@ -377,6 +379,7 @@ private fun CurrentSetCard(
     onApplyPrevious: () -> Unit,
     exerciseIndex: Int? = null,
     exerciseTotal: Int = 0,
+    nextExerciseName: String? = null,
 ) {
     val hasPrevious = set.previousReps != null || set.previousWeight != null
     val prevWeight = set.previousWeight ?: 0.0
@@ -395,6 +398,13 @@ private fun CurrentSetCard(
     MwCard(elevated = true, glow = true) {
         MwSectionLabel(sectionLabel)
         Text(set.exerciseName, style = MwTypography.headlineMedium, color = MwColors.Text)
+        if (nextExerciseName != null) {
+            Text(
+                "Up next · $nextExerciseName",
+                style = MwTypography.labelMedium,
+                color = MwColors.TextMuted,
+            )
+        }
         if (hasPrevious) {
             Row(
                 modifier = Modifier.fillMaxWidth(),

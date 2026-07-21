@@ -14,6 +14,7 @@ import javax.inject.Inject
 data class CoachUiState(
     val plan: CoachPlanResponseDto? = null,
     val loading: Boolean = true,
+    val message: String? = null,
 )
 
 @HiltViewModel
@@ -35,7 +36,23 @@ class CoachViewModel @Inject constructor(
 
     fun seedAdaptDemo() {
         viewModelScope.launch {
-            _state.value = CoachUiState(plan = repository.seedAdaptDemo(), loading = false)
+            _state.value = CoachUiState(
+                plan = repository.seedAdaptDemo(),
+                loading = false,
+                message = "Adapt demo seeded (miss + swap).",
+            )
+        }
+    }
+
+    fun forceReseed() {
+        viewModelScope.launch {
+            _state.value = CoachUiState(loading = true)
+            val plan = repository.forceReseedPlan()
+            _state.value = CoachUiState(
+                plan = plan,
+                loading = false,
+                message = "Plan reseeded for ${plan.plan.equipmentProfile}.",
+            )
         }
     }
 }

@@ -48,6 +48,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Finish with open sets asks confirm; rest dock shows brass progress bar
 - Today week strip: tap planned day to start; Active shows exercise N/M
 - Today **next** prefers today's session; boot shows loading chrome; rest default chips
+- Today **this week** metrics (workouts / sets / volume); Active “Up next” exercise preview
 
 ## Verify
 

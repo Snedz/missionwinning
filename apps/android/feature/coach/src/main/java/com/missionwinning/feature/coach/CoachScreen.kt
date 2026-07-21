@@ -157,11 +157,19 @@ fun CoachScreen(
                             style = MwTypography.bodyMedium,
                             color = MwColors.TextMuted,
                         )
+                        state.message?.let {
+                            Text(it, style = MwTypography.bodyMedium, color = MwColors.Emerald)
+                        }
                         MwSecondaryButton(
                             text = "Seed adapt demo (miss + swap)",
                             onClick = { viewModel.seedAdaptDemo() },
                         )
-                        MwGhostButton(text = "Refresh plan", onClick = { viewModel.refresh() })
+                        MwGhostButton(text = "Refresh plan (cache)", onClick = { viewModel.refresh() })
+                        MwGhostButton(
+                            text = "Force reseed plan",
+                            contentDescription = "Clear cache and rebuild coach plan",
+                            onClick = { viewModel.forceReseed() },
+                        )
                     }
                     Spacer(Modifier.height(8.dp))
                 }
