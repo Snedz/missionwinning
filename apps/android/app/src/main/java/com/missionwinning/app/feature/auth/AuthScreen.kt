@@ -13,8 +13,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.missionwinning.app.BuildConfig
 import com.missionwinning.core.designsystem.MwCard
+import com.missionwinning.core.designsystem.MwChip
+import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
@@ -34,6 +36,8 @@ import com.missionwinning.core.designsystem.MwTypography
 fun AuthScreen(onClose: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var message by remember { mutableStateOf<String?>(null) }
+    val versionLabel = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})" +
+        if (BuildConfig.DEBUG) " · debug" else ""
 
     MwScreenScaffold {
         Column(
@@ -78,6 +82,16 @@ fun AuthScreen(onClose: () -> Unit) {
                 message?.let {
                     Text(it, style = MwTypography.bodyMedium, color = MwColors.Emerald)
                 }
+            }
+            MwCard(elevated = true) {
+                MwSectionLabel("About")
+                Text("Mission Winning", style = MwTypography.titleMedium, color = MwColors.Text)
+                Text(
+                    "Free offline logger + Mission Coach. Not medical advice.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+                MwChip(versionLabel, tone = MwChipTone.Brass)
             }
             MwGhostButton(text = "Close", onClick = onClose, contentDescription = "Close account screen")
         }

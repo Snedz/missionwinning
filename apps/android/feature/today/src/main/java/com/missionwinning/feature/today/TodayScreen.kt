@@ -95,6 +95,25 @@ fun TodayScreen(
                     color = MwColors.TextMuted,
                 )
 
+                if (state.pendingSync > 0 || state.syncMessage != null) {
+                    MwCard(elevated = true) {
+                        MwSectionLabel("Sync")
+                        Text(
+                            state.syncMessage
+                                ?: "${state.pendingSync} workout${if (state.pendingSync == 1) "" else "s"} waiting to sync.",
+                            style = MwTypography.bodyMedium,
+                            color = MwColors.TextMuted,
+                        )
+                        if (state.pendingSync > 0) {
+                            MwGhostButton(
+                                text = if (state.syncing) "Syncing…" else "Retry sync",
+                                contentDescription = "Retry syncing offline workouts",
+                                onClick = { if (!state.syncing) viewModel.retrySync() },
+                            )
+                        }
+                    }
+                }
+
                 if (state.loading) {
                     MwCard(elevated = true) {
                         MwSectionLabel("Loading")

@@ -44,6 +44,9 @@ interface MwDao {
     @Query("SELECT * FROM sync_outbox ORDER BY createdAt ASC LIMIT :limit")
     suspend fun pendingOutbox(limit: Int = 20): List<SyncOutboxEntity>
 
+    @Query("SELECT COUNT(*) FROM sync_outbox")
+    suspend fun pendingOutboxCount(): Int
+
     @Query("DELETE FROM sync_outbox WHERE id = :id")
     suspend fun deleteOutbox(id: String)
 
