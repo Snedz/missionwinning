@@ -58,7 +58,22 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 
 Without `keystore.properties`, release still builds using **debug signing** so local `bundleRelease` / `assembleRelease` smoke works. Play Internal upload requires a real upload keystore.
 
-`versionCode` is `26`, `versionName` is `1.2.7` — Phase 1 complete logger + release smoke (debug-signed AAB builds without keystore). Play upload still needs founder keystore.
+**Play upload guard:** fail closed when the keystore is missing:
+
+```bash
+./gradlew :app:bundleRelease -Pmw.requireUploadKeystore=true
+# → errors if keystore.properties is absent
+```
+
+Local smoke (debug-signed, not for Play):
+
+```bash
+./gradlew :app:bundleRelease
+```
+
+**Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
+
+`versionCode` is `27`, `versionName` is `1.2.8` — Phase 0 foundation: version catalog, compileSdk 36 (no preview), Room schema export, CI without SDK symlink hacks.
 
 ---
 

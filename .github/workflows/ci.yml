@@ -250,6 +250,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          cache: gradle
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -259,20 +260,21 @@ jobs:
 
       - name: Install platform + build-tools
         run: |
-          sdkmanager "platforms;android-36.1" "build-tools;36.1.0" || true
-          # AGP may look for 36.0.0 / android-36 — alias if needed
-          SDK="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
-          if [ -d "$SDK/build-tools/36.1.0" ] && [ ! -e "$SDK/build-tools/36.0.0" ]; then
-            ln -sfn "$SDK/build-tools/36.1.0" "$SDK/build-tools/36.0.0"
-          fi
-          if [ -d "$SDK/platforms/android-36.1" ] && [ ! -f "$SDK/platforms/android-36/android.jar" ]; then
-            ln -sfn "$SDK/platforms/android-36.1" "$SDK/platforms/android-36"
-          fi
-          sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
+          # Phase 0: plain API 36 — no preview platforms or symlink hacks
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Assemble debug + unit tests
+      - name: Assemble debug + all unit tests
         run: |
-          ./gradlew :app:assembleDebug :feature:active:testDebugUnitTest :core:model:testDebugUnitTest --stacktrace
+          ./gradlew :app:assembleDebug testDebugUnitTest --stacktrace
+
+      - name: Upload debug APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: apps/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Maestro wedge present
         run: test -f .maestro/wedge.yaml && head -5 .maestro/wedge.yaml

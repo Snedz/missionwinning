@@ -17,7 +17,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         RoutineEntity::class,
     ],
     version = 7,
-    exportSchema = false,
+    exportSchema = true,
 )
 abstract class MwDatabase : RoomDatabase() {
     abstract fun dao(): MwDao

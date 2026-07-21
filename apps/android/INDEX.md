@@ -18,6 +18,13 @@
 | `:core:data` | Room SoT + sync outbox + `MwRepository` |
 | `:core:network` | Mobile OpenAPI client |
 
+## Toolchain (Phase 0)
+
+- Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)
+- `compileSdk` / `targetSdk`: 36 / 35 (target 36 in ship phase)
+- Room schemas: `core/data/schemas/` (`exportSchema = true`)
+- Play upload: `-Pmw.requireUploadKeystore=true` fails without `keystore.properties`
+
 ## Commands
 
 ```bash
@@ -28,8 +35,7 @@ cd apps/android
 
 # Debug APK
 ./gradlew :app:assembleDebug
-./gradlew :feature:active:testDebugUnitTest
-./gradlew :core:model:testDebugUnitTest
+./gradlew testDebugUnitTest
 ./gradlew :app:installDebug   # needs emulator or device (API 34+ system image)
 
 # Emulator (AVD name is yours — Pixel_10_Pro example is fine)

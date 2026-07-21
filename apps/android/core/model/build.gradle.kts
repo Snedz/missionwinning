@@ -1,16 +1,11 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     namespace = "com.missionwinning.core.model"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
-    buildToolsVersion = "36.1.0"
+    compileSdk = 36
     defaultConfig { minSdk = 26 }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -20,6 +15,6 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.runtime:runtime:1.7.6")
-    testImplementation("junit:junit:4.13.2")
+    implementation(libs.androidx.compose.runtime)
+    testImplementation(libs.junit)
 }

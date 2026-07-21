@@ -245,31 +245,6 @@ class MwRepository(
         return id
     }
 
-    /** @deprecated Prefer [finishWorkout] */
-    suspend fun appendWorkout(
-        workoutName: String,
-        durationSeconds: Int,
-        setCount: Int,
-        totalVolume: Double,
-        sessionId: String?,
-    ): Int {
-        val unit = weightUnit()
-        val synthetic = (0 until setCount).map { i ->
-            SetLogEntity(
-                id = UUID.randomUUID().toString(),
-                exerciseId = "session",
-                exerciseName = workoutName,
-                setIndex = i,
-                reps = 10,
-                weight = if (setCount > 0) totalVolume / (setCount * 10.0) else 0.0,
-                completedAt = java.time.Instant.now().toString(),
-                sessionId = sessionId,
-                weightUnit = unit,
-            )
-        }
-        return finishWorkout(workoutName, durationSeconds, synthetic, sessionId).workoutCount
-    }
-
     suspend fun workoutCount(): Int = dao.workoutCount()
 
     suspend fun recentWorkouts(limit: Int = 5): List<WorkoutLogEntity> =
