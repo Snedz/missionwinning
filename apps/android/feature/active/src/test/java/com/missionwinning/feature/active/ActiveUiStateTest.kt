@@ -80,6 +80,28 @@ class ActiveUiStateTest {
     }
 
     @Test
+    fun sessionLogic_currentExerciseIndex() {
+        val exercises = listOf(
+            ActiveExercise(
+                "a",
+                "Push",
+                listOf(set("1", done = true), set("2", done = false, index = 1)),
+            ),
+            ActiveExercise(
+                "b",
+                "Pull",
+                listOf(set("3", done = false, index = 0)),
+            ),
+        )
+        assertEquals(1, ActiveSessionLogic.currentExerciseIndex(exercises))
+        assertEquals(2, ActiveSessionLogic.exerciseCount(exercises))
+        val done = listOf(
+            ActiveExercise("a", "Push", listOf(set("1", done = true))),
+        )
+        assertNull(ActiveSessionLogic.currentExerciseIndex(done))
+    }
+
+    @Test
     fun sessionLogic_carryForwardWithinExercise() {
         val exercises = listOf(
             ActiveExercise(

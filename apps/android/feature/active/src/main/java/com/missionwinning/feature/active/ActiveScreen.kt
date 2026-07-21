@@ -202,9 +202,13 @@ fun ActiveScreen(
                 }
 
                 if (currentSet != null) {
+                    val exIndex = ActiveSessionLogic.currentExerciseIndex(state.exercises)
+                    val exTotal = ActiveSessionLogic.exerciseCount(state.exercises)
                     CurrentSetCard(
                         set = currentSet,
                         weightUnit = state.weightUnit,
+                        exerciseIndex = exIndex,
+                        exerciseTotal = exTotal,
                         onComplete = {
                             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                             onEvent(ActiveEvent.ToggleSet(currentSet.id))
@@ -341,6 +345,8 @@ private fun CurrentSetCard(
     onRepsDelta: (Int) -> Unit,
     onWeightDelta: (Int) -> Unit,
     onApplyPrevious: () -> Unit,
+    exerciseIndex: Int? = null,
+    exerciseTotal: Int = 0,
 ) {
     val hasPrevious = set.previousReps != null || set.previousWeight != null
     val prevWeight = set.previousWeight ?: 0.0
@@ -349,9 +355,15 @@ private fun CurrentSetCard(
         hasPrevious &&
             set.reps == (prevReps ?: set.reps) &&
             kotlin.math.abs(set.weight - prevWeight) < 0.01
+    val sectionLabel = buildString {
+        append("Current set · ${set.setIndex + 1}")
+        if (exerciseIndex != null && exerciseTotal > 0) {
+            append(" · exercise $exerciseIndex/$exerciseTotal")
+        }
+    }
 
     MwCard(elevated = true, glow = true) {
-        MwSectionLabel("Current set · ${set.setIndex + 1}")
+        MwSectionLabel(sectionLabel)
         Text(set.exerciseName, style = MwTypography.headlineMedium, color = MwColors.Text)
         if (hasPrevious) {
             Row(

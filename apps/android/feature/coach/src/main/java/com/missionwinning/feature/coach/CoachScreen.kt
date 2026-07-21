@@ -90,9 +90,26 @@ fun CoachScreen(
                             style = MwTypography.titleLarge,
                             color = MwColors.Text,
                         )
+                        val sessions = planResp?.plan?.sessions.orEmpty()
+                        val doneN = sessions.count { it.status == "done" }
+                        val openN = sessions.count { it.status == "planned" || it.status == "swapped" }
+                        val missedN = sessions.count { it.status == "missed" }
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             MwChip("${planResp?.plan?.daysPerWeek ?: 0} days", tone = MwChipTone.Emerald)
                             MwChip("rev ${planResp?.plan?.revision ?: 0}", tone = MwChipTone.Brass)
+                            planResp?.plan?.equipmentProfile?.let { eq ->
+                                MwChip(eq.replace('-', ' '), tone = MwChipTone.Neutral)
+                            }
+                        }
+                        if (sessions.isNotEmpty()) {
+                            Spacer(Modifier.height(8.dp))
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                MwChip("$doneN done", tone = MwChipTone.Emerald)
+                                MwChip("$openN open", tone = MwChipTone.Brass)
+                                if (missedN > 0) {
+                                    MwChip("$missedN missed", tone = MwChipTone.Danger)
+                                }
+                            }
                         }
                     }
 

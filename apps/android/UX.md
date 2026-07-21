@@ -45,6 +45,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - System back on Active opens discard confirm
 - Tap completed set row to **undo**; Today shows pending outbox + Retry sync
 - Finish with open sets asks confirm; rest dock shows brass progress bar
+- Today week strip: tap planned day to start; Active shows exercise N/M
 
 ## Verify
 

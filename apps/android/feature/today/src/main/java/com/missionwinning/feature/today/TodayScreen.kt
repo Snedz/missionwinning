@@ -142,7 +142,20 @@ fun TodayScreen(
 
                 MwCard(elevated = true) {
                     MwSectionLabel("This week")
-                    MwWeekStrip(days = weekDays)
+                    Text(
+                        "Tap a planned day to start that session.",
+                        style = MwTypography.bodyMedium,
+                        color = MwColors.TextMuted,
+                    )
+                    MwWeekStrip(
+                        days = weekDays,
+                        onDayClick = { day ->
+                            val id = day.sessionId ?: return@MwWeekStrip
+                            val name = day.sessionName ?: "Workout"
+                            val sets = day.setCount.coerceAtLeast(3)
+                            onStartWorkout(id, name, sets)
+                        },
+                    )
                 }
 
                 if (state.recent.isNotEmpty()) {
@@ -316,6 +329,15 @@ private fun rememberWeekDays(sessions: List<PlanSessionDto>): List<MwWeekDay> {
             session.status == "planned" || session.status == "swapped" -> MwWeekDayState.Planned
             else -> MwWeekDayState.Empty
         }
-        MwWeekDay(label, state)
+        val actionable = session != null &&
+            (session.status == "planned" || session.status == "swapped")
+        MwWeekDay(
+            label = label,
+            state = state,
+            dayOffset = index,
+            sessionId = if (actionable) session?.id else null,
+            sessionName = if (actionable) session?.name else null,
+            setCount = session?.exercises?.sumOf { it.sets }?.coerceAtLeast(3) ?: 0,
+        )
     }
 }

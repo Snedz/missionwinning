@@ -28,6 +28,16 @@ object ActiveSessionLogic {
     fun currentSetId(exercises: List<ActiveExercise>): String? =
         exercises.flatMap { it.sets }.firstOrNull { !it.done }?.id
 
+    /** 1-based index of the exercise that owns the current set, or null if all done. */
+    fun currentExerciseIndex(exercises: List<ActiveExercise>): Int? {
+        val id = currentSetId(exercises) ?: return null
+        val exId = exercises.flatMap { it.sets }.find { it.id == id }?.exerciseId ?: return null
+        val idx = exercises.indexOfFirst { it.exerciseId == exId }
+        return if (idx >= 0) idx + 1 else null
+    }
+
+    fun exerciseCount(exercises: List<ActiveExercise>): Int = exercises.size
+
     fun defaultReps(planReps: Int, previousReps: Int?): Int =
         (previousReps ?: planReps).coerceIn(1, 99)
 

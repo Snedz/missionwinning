@@ -37,8 +37,8 @@ UI → ViewModel → Repository → Room
 | ID | Done when |
 |----|-----------|
 | **A** Platform spine | Hilt + ViewModels + Room SoT + feature:active slice |
-| **B** Logger craft | Exercise×sets, previous + Use last, rest ±15, keep-screen-on, kg/lb (Room unit), volume on Victory |
-| **C** Coach/Today loop | Product polish + Production mobile API |
+| **B** Logger craft | Exercise×sets, previous + Use last, rest ±15, keep-screen-on, kg/lb (Room unit), volume on Victory ✅ craft-rich |
+| **C** Coach/Today loop | Recent logs, equipment reseed, week strip start, sync strip — Production API still cookie-gated |
 | **D** Velocity | Maestro + unit tests on CI; one-module PR cadence |
 | **E** Later | Wearables, social, plate calc, Fuel, iOS — after founder accepts B |
 
