@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.model.Progression
+import com.missionwinning.core.model.SetKind
 import com.missionwinning.core.model.WeightUnits
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,6 +62,7 @@ class ProgressViewModel @Inject constructor(
                     reps = row.reps,
                     completedAt = row.completedAt,
                     weightUnit = unit,
+                    kind = SetKind.fromCode(row.setKind),
                 )
             }
             val prs = Progression.personalRecords(sets, limit = 12).map { pr ->

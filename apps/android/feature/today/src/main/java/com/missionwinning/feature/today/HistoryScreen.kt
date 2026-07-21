@@ -150,6 +150,10 @@ fun HistoryScreen(
                                             )
                                             Text(
                                                 buildString {
+                                                    set.kindLabel?.let {
+                                                        append(it)
+                                                        append(" · ")
+                                                    }
                                                     append("${set.weightLabel} × ${set.reps}")
                                                     set.rpeLabel?.let {
                                                         append(" · ")

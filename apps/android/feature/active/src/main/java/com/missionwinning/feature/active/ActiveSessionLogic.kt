@@ -2,11 +2,13 @@ package com.missionwinning.feature.active
 
 import com.missionwinning.core.model.ActiveExercise
 import com.missionwinning.core.model.LoggedSet
+import com.missionwinning.core.model.SetKind
 
 /**
  * Pure helpers for Active logger — unit-tested without Android runtime.
  */
 object ActiveSessionLogic {
+    const val MAX_SETS_PER_EXERCISE = 12
     const val DEFAULT_REST_SECONDS = 60
     const val REST_STEP = 15
     const val MIN_DURATION_SECONDS = 30
@@ -152,9 +154,45 @@ object ActiveSessionLogic {
     fun formatWeightWithUnit(value: Double, unit: String): String =
         com.missionwinning.core.model.WeightUnits.formatWithUnit(value, unit)
 
-    /** Session volume = sum(weight × reps) for completed sets. */
+    /** Session volume = sum(weight × reps) for completed non-warmup sets. */
     fun sessionVolume(exercises: List<ActiveExercise>): Double =
-        completedSetsForPersist(exercises).sumOf { it.weight * it.reps }
+        completedSetsForPersist(exercises)
+            .filter { SetKind.countsTowardVolume(it.kind) }
+            .sumOf { it.weight * it.reps }
+
+    /**
+     * Append a set to [exerciseId], copying load from the last set when present.
+     * Caps at [MAX_SETS_PER_EXERCISE].
+     */
+    fun addSet(
+        exercises: List<ActiveExercise>,
+        exerciseId: String,
+        newSetId: String,
+    ): List<ActiveExercise> {
+        return exercises.map { ex ->
+            if (ex.exerciseId != exerciseId) return@map ex
+            if (ex.sets.size >= MAX_SETS_PER_EXERCISE) return@map ex
+            val last = ex.sets.lastOrNull()
+            val nextIndex = ex.sets.size
+            val added = LoggedSet(
+                id = newSetId,
+                exerciseId = ex.exerciseId,
+                exerciseName = ex.name,
+                setIndex = nextIndex,
+                reps = (last?.reps ?: 10).coerceIn(1, 99),
+                weight = (last?.weight ?: 0.0).coerceAtLeast(0.0),
+                done = false,
+                previousReps = last?.previousReps,
+                previousWeight = last?.previousWeight,
+                rpe = null,
+                kind = SetKind.Normal,
+            )
+            ex.copy(sets = ex.sets + added)
+        }
+    }
+
+    fun volumeFromSets(weight: Double, reps: Int, kind: SetKind): Double =
+        if (SetKind.countsTowardVolume(kind)) weight * reps else 0.0
 
     /**
      * Convert a stored previous weight into the display unit for this session.

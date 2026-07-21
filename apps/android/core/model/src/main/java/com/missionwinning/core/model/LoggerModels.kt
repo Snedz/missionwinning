@@ -15,6 +15,8 @@ data class LoggedSet(
     val previousWeight: Double? = null,
     /** Optional RPE 6–10 (local-first coach signal). */
     val rpe: Int? = null,
+    /** Warmup / working / failure / drop (Hevy-style). */
+    val kind: SetKind = SetKind.Normal,
 )
 
 @Immutable

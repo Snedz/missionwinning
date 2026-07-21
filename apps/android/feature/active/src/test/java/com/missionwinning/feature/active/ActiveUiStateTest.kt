@@ -2,6 +2,7 @@ package com.missionwinning.feature.active
 
 import com.missionwinning.core.model.ActiveExercise
 import com.missionwinning.core.model.LoggedSet
+import com.missionwinning.core.model.SetKind
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -17,7 +18,8 @@ class ActiveUiStateTest {
         index: Int = 0,
         exerciseId: String = "a",
         exerciseName: String = "Push",
-    ) = LoggedSet(id, exerciseId, exerciseName, index, reps, weight, done = done)
+        kind: SetKind = SetKind.Normal,
+    ) = LoggedSet(id, exerciseId, exerciseName, index, reps, weight, done = done, kind = kind)
 
     @Test
     fun doneCount_countsCompletedSets() {
@@ -251,6 +253,45 @@ class ActiveUiStateTest {
             ),
         )
         assertEquals(1000.0, ActiveSessionLogic.sessionVolume(exercises), 0.0)
+    }
+
+    @Test
+    fun sessionLogic_sessionVolume_excludesWarmup() {
+        val exercises = listOf(
+            ActiveExercise(
+                "a",
+                "Push",
+                listOf(
+                    set("1", done = true, reps = 10, weight = 40.0, kind = SetKind.Warmup),
+                    set("2", done = true, reps = 5, weight = 100.0, index = 1, kind = SetKind.Normal),
+                ),
+            ),
+        )
+        // warmup 400 excluded; working 500
+        assertEquals(500.0, ActiveSessionLogic.sessionVolume(exercises), 0.0)
+    }
+
+    @Test
+    fun sessionLogic_addSet_copiesLoadAndCaps() {
+        val base = listOf(
+            ActiveExercise(
+                "a",
+                "Push",
+                listOf(set("1", done = true, reps = 8, weight = 50.0)),
+            ),
+        )
+        val next = ActiveSessionLogic.addSet(base, "a", "new")
+        assertEquals(2, next[0].sets.size)
+        assertEquals(8, next[0].sets[1].reps)
+        assertEquals(50.0, next[0].sets[1].weight, 0.0)
+        assertEquals(1, next[0].sets[1].setIndex)
+        assertEquals(SetKind.Normal, next[0].sets[1].kind)
+
+        var many = base
+        repeat(ActiveSessionLogic.MAX_SETS_PER_EXERCISE + 2) { i ->
+            many = ActiveSessionLogic.addSet(many, "a", "n$i")
+        }
+        assertEquals(ActiveSessionLogic.MAX_SETS_PER_EXERCISE, many[0].sets.size)
     }
 
     @Test

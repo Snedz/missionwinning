@@ -34,4 +34,26 @@ class ProgressionTest {
         assertEquals(listOf(0.5f, 1f, 0.25f), Progression.barFractions(listOf(50.0, 100.0, 25.0)))
         assertEquals(listOf(0f, 0f), Progression.barFractions(listOf(0.0, 0.0)))
     }
+
+    @Test
+    fun personalRecords_skipsWarmupAndDrop() {
+        val sets = listOf(
+            Progression.SetSample(
+                "bench-press", "Bench", 140.0, 5, "2026-01-01T00:00:00Z",
+                kind = SetKind.Warmup,
+            ),
+            Progression.SetSample(
+                "bench-press", "Bench", 130.0, 1, "2026-01-02T00:00:00Z",
+                kind = SetKind.Drop,
+            ),
+            Progression.SetSample(
+                "bench-press", "Bench", 100.0, 5, "2026-01-03T00:00:00Z",
+                kind = SetKind.Normal,
+            ),
+        )
+        val prs = Progression.personalRecords(sets)
+        assertEquals(1, prs.size)
+        assertEquals(100.0, prs[0].weight, 0.0)
+        assertEquals(5, prs[0].reps)
+    }
 }

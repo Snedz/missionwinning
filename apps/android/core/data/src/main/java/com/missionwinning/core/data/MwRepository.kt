@@ -1,6 +1,7 @@
 package com.missionwinning.core.data
 
 import androidx.room.withTransaction
+import com.missionwinning.core.model.SetKind
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.MobileApiClient
 import com.missionwinning.core.network.WorkoutLogRequestDto
@@ -132,7 +133,14 @@ class MwRepository(
         sessionId: String?,
     ): Int {
         val id = UUID.randomUUID().toString()
-        val volume = sets.sumOf { it.weight * it.reps }
+        // Warmups do not count toward session volume (Hevy/Strong parity).
+        val volume = sets.sumOf { row ->
+            if (SetKind.countsTowardVolume(SetKind.fromCode(row.setKind))) {
+                row.weight * row.reps
+            } else {
+                0.0
+            }
+        }
         val now = java.time.Instant.now().toString()
         val stampedSets = sets.map { it.copy(workoutId = id) }
         val workout = WorkoutLogEntity(
