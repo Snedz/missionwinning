@@ -73,7 +73,7 @@ Local smoke (debug-signed, not for Play):
 
 **Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
 
-`versionCode` is `33`, `versionName` is `1.6.0` — Phase 6: Wear OS companion logger (phone SoT via Data Layer); install wear APK alongside phone.
+`versionCode` is `34`, `versionName` is `1.7.0` — Phase 7: Super Bundle entitlement recognition only (no IAP / no Stripe links). See [PLAY_BILLING.md](PLAY_BILLING.md).
 
 ---
 
@@ -89,7 +89,7 @@ Fill Play Console **Data safety** for this native wedge (Train + Coach). Offline
 | Nutrition / meal logs | **Not in this wedge** — do not declare until Fuel ships on Android. |
 | Photos | **Not collected** in this wedge. |
 | Product analytics / PostHog | **Not in Compose wedge** unless you add it later — declare No until shipped. |
-| Payment / purchase history | **Not in this wedge** (no IAP yet). |
+| Payment / purchase history | **Not in this wedge** (no IAP; entitlement recognition only — [PLAY_BILLING.md](PLAY_BILLING.md)). |
 | Advertising ID / AAID | **Not collected** (LEGAL_SAFETY §2). |
 | Cross-app tracking / ads SDK | **Not used**. |
 | Data encrypted in transit? | Yes for any HTTPS API / auth when online. |

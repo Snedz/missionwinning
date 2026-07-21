@@ -85,9 +85,20 @@ fun CoachScreen(
                     MwSectionLabel("Plan")
                     MwHeroTitle("Mission Coach")
                     Text(
-                        "Weekly plan from your logs — adapts when life happens.",
+                        "Weekly plan from your logs — adapts when life happens. Free forever offline.",
                         style = MwTypography.bodyMedium,
                         color = MwColors.TextMuted,
+                    )
+
+                    EntitlementBanner(
+                        signedIn = state.signedIn,
+                        premium = state.premium,
+                        premiumSource = state.premiumSource,
+                        onSeedAdapt = if (state.premium) {
+                            { viewModel.seedAdaptDemo() }
+                        } else {
+                            null
+                        },
                     )
 
                     MwCard(elevated = true) {
@@ -226,6 +237,58 @@ fun CoachScreen(
                         },
                     )
                 }
+            }
+        }
+    }
+}
+
+/**
+ * Entitlement recognition only — no purchase UI, no Stripe/web checkout links
+ * (Play policy until founder adopts Play Billing).
+ */
+@Composable
+private fun EntitlementBanner(
+    signedIn: Boolean,
+    premium: Boolean,
+    premiumSource: String,
+    onSeedAdapt: (() -> Unit)?,
+) {
+    MwCard(elevated = true) {
+        MwSectionLabel("Access")
+        when {
+            premium -> {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MwChip("Super Bundle", tone = MwChipTone.Emerald)
+                    MwChip(premiumSource, tone = MwChipTone.Brass)
+                }
+                Text(
+                    "Adapt depth unlocked. Missed days and swaps refine your week from real logs.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+                if (onSeedAdapt != null) {
+                    Spacer(Modifier.height(8.dp))
+                    MwSecondaryButton(
+                        text = "Preview adapt (miss + swap)",
+                        onClick = onSeedAdapt,
+                    )
+                }
+            }
+            signedIn -> {
+                MwChip("Free coach", tone = MwChipTone.Neutral)
+                Text(
+                    "You’re signed in. Super Bundle enrollment (managed outside this app) unlocks deeper adapt when active on your account. Free offline logging never requires a plan.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+            }
+            else -> {
+                MwChip("Offline free", tone = MwChipTone.Brass)
+                Text(
+                    "Train fully offline. Sign in on Account to sync history and recognize Super Bundle if you’re already enrolled.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
             }
         }
     }

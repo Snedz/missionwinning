@@ -24,6 +24,13 @@
 - Phone SoT via Data Layer (`WearProtocol` paths under `/mw/*`)
 - Install: `./gradlew :wear:installDebug` with a Wear emulator/device paired to the phone app
 
+## Monetization readiness (Phase 7)
+
+- Super Bundle via `GET /api/mobile/premium/status` (Bearer) — recognition only
+- Coach Access banner + Account entitlement chips; **no** purchase UI / Stripe links
+- Gate doc: [PLAY_BILLING.md](PLAY_BILLING.md) — do not add Billing Library until founder adopts Play Billing
+- Free offline logger remains permanent
+
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)
@@ -64,7 +71,7 @@ python3 scripts/wedge-adb-walk.py --screenshots   # → store-assets/*.png (loca
 
 **Network:** Room is SoT; workout finishes enqueue sync outbox. Optional `local.properties` keys `mw.apiBaseUrl` / `mw.privateAccessCookie`. Production `/api/mobile/*` is live behind the private gate (403 without cookie) — set cookie for network coach; else Room seed. One-pager: [NETWORK_COACH.md](NETWORK_COACH.md).
 
-Signing template: [keystore.properties.example](keystore.properties.example) · create keystore: `scripts/create-upload-keystore.sh` · Play copy: [PLAY_LISTING.md](PLAY_LISTING.md)
+Signing template: [keystore.properties.example](keystore.properties.example) · create keystore: `scripts/create-upload-keystore.sh` · Play copy: [PLAY_LISTING.md](PLAY_LISTING.md) · Billing gate: [PLAY_BILLING.md](PLAY_BILLING.md)
 
 Screenshots for Play: [store-assets/README.md](store-assets/README.md)
 
