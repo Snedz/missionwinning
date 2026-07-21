@@ -270,9 +270,7 @@ fun MwSetRow(
                 contentDescription = setLabel
             }
             .clickable {
-                if (!done) {
-                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                }
+                view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                 onToggle()
             }
             .padding(horizontal = 16.dp),
@@ -306,7 +304,7 @@ fun MwSetRow(
         if (isCurrent && !done) {
             Text("NOW", style = MwTypography.labelSmall, color = MwColors.Emerald)
         } else if (done) {
-            Text("DONE", style = MwTypography.labelSmall, color = MwColors.Emerald)
+            Text("UNDO", style = MwTypography.labelSmall, color = MwColors.Emerald)
         }
     }
 }

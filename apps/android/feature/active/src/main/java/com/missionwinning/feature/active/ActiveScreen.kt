@@ -237,7 +237,8 @@ fun ActiveScreen(
                                     null
                                 },
                                 onToggle = {
-                                    if (!set.done) onEvent(ActiveEvent.ToggleSet(set.id))
+                                    // Allow undo of completed sets (tap DONE row)
+                                    onEvent(ActiveEvent.ToggleSet(set.id))
                                 },
                             )
                         }

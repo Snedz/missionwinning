@@ -34,6 +34,9 @@ data class TodayUiState(
     val recent: List<RecentWorkoutUi> = emptyList(),
     val loading: Boolean = true,
     val weightUnit: String = "kg",
+    val pendingSync: Int = 0,
+    val syncing: Boolean = false,
+    val syncMessage: String? = null,
 ) {
     val next: PlanSessionDto?
         get() = plan?.plan?.sessions?.firstOrNull {
@@ -57,14 +60,43 @@ class TodayViewModel @Inject constructor(
             _state.update { it.copy(loading = it.plan == null) }
             val unit = WeightUnits.normalize(repository.weightUnit())
             val rows = repository.recentWorkouts(5)
+            val pendingBefore = repository.pendingSyncCount()
+            val pendingAfter = if (pendingBefore > 0) {
+                repository.flushOutboxAndCount()
+            } else {
+                0
+            }
             _state.value = TodayUiState(
                 plan = repository.ensureCoachPlan(),
                 workouts = repository.workoutCount(),
                 recent = rows.map { it.toUi(unit) },
                 loading = false,
                 weightUnit = unit,
+                pendingSync = pendingAfter,
+                syncMessage = when {
+                    pendingBefore > 0 && pendingAfter == 0 -> "Synced $pendingBefore offline log${if (pendingBefore == 1) "" else "s"}."
+                    pendingAfter > 0 -> "On device · $pendingAfter waiting to sync when online."
+                    else -> null
+                },
             )
-            repository.flushOutbox()
+        }
+    }
+
+    fun retrySync() {
+        viewModelScope.launch {
+            _state.update { it.copy(syncing = true, syncMessage = null) }
+            val remaining = repository.flushOutboxAndCount()
+            _state.update {
+                it.copy(
+                    syncing = false,
+                    pendingSync = remaining,
+                    syncMessage = if (remaining == 0) {
+                        "All clear — nothing pending."
+                    } else {
+                        "Still $remaining pending (need network + private cookie if gated)."
+                    },
+                )
+            }
         }
     }
 

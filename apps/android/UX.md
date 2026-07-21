@@ -43,6 +43,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Coach session tiles use weekday labels (Mon/Tue…) from plan `weekStart`
 - Complete set **carries** weight/reps to next set of same exercise; all-done skips rest
 - System back on Active opens discard confirm
+- Tap completed set row to **undo**; Today shows pending outbox + Retry sync
 
 ## Verify
 

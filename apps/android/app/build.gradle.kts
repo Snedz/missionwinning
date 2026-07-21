@@ -31,8 +31,8 @@ android {
         applicationId = "com.missionwinning.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.0.1"
+        versionCode = 4
+        versionName = "1.0.2"
         // Override via apps/android/local.properties (gitignored):
         //   mw.apiBaseUrl=http://10.0.2.2:3000
         //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
