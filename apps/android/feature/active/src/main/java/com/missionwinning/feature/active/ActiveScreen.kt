@@ -228,11 +228,14 @@ fun ActiveScreen(
                     val exIndex = ActiveSessionLogic.currentExerciseIndex(state.exercises)
                     val exTotal = ActiveSessionLogic.exerciseCount(state.exercises)
                     val nextEx = ActiveSessionLogic.nextExerciseName(state.exercises)
+                    val setInEx = ActiveSessionLogic.currentSetInExercise(state.exercises)
                     CurrentSetCard(
                         set = currentSet,
                         weightUnit = state.weightUnit,
                         exerciseIndex = exIndex,
                         exerciseTotal = exTotal,
+                        setInExercise = setInEx?.first,
+                        setsInExercise = setInEx?.second,
                         nextExerciseName = nextEx,
                         onComplete = {
                             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
@@ -379,6 +382,8 @@ private fun CurrentSetCard(
     onApplyPrevious: () -> Unit,
     exerciseIndex: Int? = null,
     exerciseTotal: Int = 0,
+    setInExercise: Int? = null,
+    setsInExercise: Int? = null,
     nextExerciseName: String? = null,
 ) {
     val hasPrevious = set.previousReps != null || set.previousWeight != null
@@ -389,7 +394,11 @@ private fun CurrentSetCard(
             set.reps == (prevReps ?: set.reps) &&
             kotlin.math.abs(set.weight - prevWeight) < 0.01
     val sectionLabel = buildString {
-        append("Current set · ${set.setIndex + 1}")
+        if (setInExercise != null && setsInExercise != null) {
+            append("Set $setInExercise / $setsInExercise")
+        } else {
+            append("Current set · ${set.setIndex + 1}")
+        }
         if (exerciseIndex != null && exerciseTotal > 0) {
             append(" · exercise $exerciseIndex/$exerciseTotal")
         }

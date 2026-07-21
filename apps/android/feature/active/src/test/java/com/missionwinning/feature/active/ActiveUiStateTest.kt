@@ -92,6 +92,27 @@ class ActiveUiStateTest {
     }
 
     @Test
+    fun sessionLogic_currentSetInExercise() {
+        val exercises = listOf(
+            ActiveExercise(
+                "a",
+                "Push",
+                listOf(
+                    set("1", done = true, index = 0, exerciseId = "a"),
+                    set("2", done = false, index = 1, exerciseId = "a"),
+                    set("3", done = false, index = 2, exerciseId = "a"),
+                ),
+            ),
+        )
+        assertEquals(2 to 3, ActiveSessionLogic.currentSetInExercise(exercises))
+        assertNull(
+            ActiveSessionLogic.currentSetInExercise(
+                listOf(ActiveExercise("a", "Push", listOf(set("1", done = true, exerciseId = "a")))),
+            ),
+        )
+    }
+
+    @Test
     fun sessionLogic_nextExerciseName() {
         val exercises = listOf(
             ActiveExercise(

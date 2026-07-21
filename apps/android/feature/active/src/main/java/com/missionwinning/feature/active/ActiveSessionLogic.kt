@@ -39,6 +39,19 @@ object ActiveSessionLogic {
     fun exerciseCount(exercises: List<ActiveExercise>): Int = exercises.size
 
     /**
+     * 1-based position of the current set within its exercise, and that exercise's set count.
+     * Null when the session has no current set.
+     */
+    fun currentSetInExercise(exercises: List<ActiveExercise>): Pair<Int, Int>? {
+        val id = currentSetId(exercises) ?: return null
+        val set = exercises.flatMap { it.sets }.find { it.id == id } ?: return null
+        val ex = exercises.find { it.exerciseId == set.exerciseId } ?: return null
+        val total = ex.sets.size.coerceAtLeast(1)
+        val pos = (set.setIndex + 1).coerceIn(1, total)
+        return pos to total
+    }
+
+    /**
      * Name of the next exercise after the current incomplete set (when this is the
      * last incomplete set of the current exercise). Null if none / all done.
      */

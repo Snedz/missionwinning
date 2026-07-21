@@ -125,8 +125,10 @@ fun TodayScreen(
                 state.plan?.let { CoachAdaptBanner(it) }
 
                 if (!state.loading && next != null) {
+                    val todayOffset = ((LocalDate.now().dayOfWeek.value + 6) % 7)
                     HeroSessionCard(
                         session = next,
+                        isToday = next.dayOffset == todayOffset,
                         onStart = {
                             val sets = next.exercises.sumOf { it.sets }.coerceAtLeast(3)
                             onStartWorkout(next.id, next.name, sets)
@@ -315,12 +317,14 @@ private fun RecentWorkoutRow(w: RecentWorkoutUi) {
 @Composable
 private fun HeroSessionCard(
     session: PlanSessionDto,
+    isToday: Boolean,
     onStart: () -> Unit,
 ) {
     MwCard(elevated = true, glow = true) {
-        MwSectionLabel("Next session")
+        MwSectionLabel(if (isToday) "Today's session" else "Next session")
         Text(session.name, style = MwTypography.displayLarge, color = MwColors.Text)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (isToday) MwChip("Today", tone = MwChipTone.Brass)
             MwChip(session.kind, tone = MwChipTone.Emerald)
             MwChip("${session.estMinutes} min", tone = MwChipTone.Neutral)
             MwChip("${session.exercises.size} moves", tone = MwChipTone.Brass)
@@ -334,7 +338,7 @@ private fun HeroSessionCard(
         )
         Spacer(Modifier.height(4.dp))
         MwPrimaryButton(
-            text = "Start workout",
+            text = if (isToday) "Start today's workout" else "Start workout",
             contentDescription = "Start workout ${session.name}",
             onClick = onStart,
         )
@@ -342,8 +346,17 @@ private fun HeroSessionCard(
 }
 
 @Composable
-private fun rememberDateLabel(): String =
-    LocalDate.now().format(DateTimeFormatter.ofPattern("EEE · MMM d", Locale.US)).uppercase()
+private fun rememberDateLabel(): String {
+    val now = LocalDate.now()
+    val hour = java.time.LocalTime.now().hour
+    val greeting = when {
+        hour < 12 -> "Morning"
+        hour < 17 -> "Afternoon"
+        else -> "Evening"
+    }
+    val date = now.format(DateTimeFormatter.ofPattern("EEE · MMM d", Locale.US)).uppercase()
+    return "$greeting · $date"
+}
 
 @Composable
 private fun rememberWeekDays(sessions: List<PlanSessionDto>): List<MwWeekDay> {

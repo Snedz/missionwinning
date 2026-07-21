@@ -16,6 +16,17 @@ data class VictoryUiState(
     val weightUnit: String = "kg",
 ) {
     val coachFirst: Boolean get() = workouts in 1..3
+
+    /** Sparse milestone lines for early lifetime volume. */
+    val milestone: String?
+        get() = when (workouts) {
+            1 -> "First session locked. You're in the mission."
+            3 -> "Three sessions. Coach has enough signal to adapt."
+            5 -> "Five sessions. Consistency is the product."
+            10 -> "Ten sessions. Mission pace is real."
+            25 -> "Twenty-five sessions. On-device legend."
+            else -> null
+        }
 }
 
 @HiltViewModel

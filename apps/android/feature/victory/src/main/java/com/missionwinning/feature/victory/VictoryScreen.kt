@@ -93,6 +93,9 @@ fun VictoryScreen(
                     MwChip(formatDuration(state.duration), tone = MwChipTone.Brass)
                     MwChip("#${state.workouts}", tone = MwChipTone.Neutral)
                 }
+                state.milestone?.let { line ->
+                    Text(line, style = MwTypography.titleMedium, color = MwColors.Brass)
+                }
                 Text(
                     if (coachFirst) {
                         "Saved on this device. Coach adapts your week from this log — no wearable needed."
