@@ -62,6 +62,7 @@ fun TodayScreen(
     onOpenAuth: () -> Unit,
     onOpenHistory: (workoutId: String) -> Unit = {},
     onOpenCatalog: () -> Unit = {},
+    onOpenProgress: () -> Unit = {},
     viewModel: TodayViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -305,6 +306,7 @@ fun TodayScreen(
                     }
                 }
 
+                MwGhostButton(text = "Progress & PRs", onClick = onOpenProgress)
                 MwGhostButton(text = "Exercise library", onClick = onOpenCatalog)
                 MwGhostButton(text = "Review week on Coach", onClick = onOpenCoach)
                 MwGhostButton(text = "Account / sign-in", onClick = onOpenAuth)

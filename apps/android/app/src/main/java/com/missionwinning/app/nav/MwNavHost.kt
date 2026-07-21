@@ -37,6 +37,7 @@ import com.missionwinning.feature.coach.CoachScreen
 import com.missionwinning.feature.iday.IdayScreen
 import com.missionwinning.feature.today.CatalogScreen
 import com.missionwinning.feature.today.HistoryScreen
+import com.missionwinning.feature.today.ProgressScreen
 import com.missionwinning.feature.today.TodayScreen
 import com.missionwinning.feature.victory.VictoryScreen
 import dagger.hilt.EntryPoint
@@ -150,10 +151,14 @@ fun MwNavHost() {
                             nav.navigate(Routes.history(workoutId))
                         },
                         onOpenCatalog = { nav.navigate(Routes.CATALOG) },
+                        onOpenProgress = { nav.navigate(Routes.PROGRESS) },
                     )
                 }
                 composable(Routes.CATALOG) {
                     CatalogScreen(onBack = { nav.popBackStack() })
+                }
+                composable(Routes.PROGRESS) {
+                    ProgressScreen(onBack = { nav.popBackStack() })
                 }
                 composable(
                     Routes.HISTORY,

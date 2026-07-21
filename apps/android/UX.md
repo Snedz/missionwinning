@@ -60,6 +60,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Optional **RPE 6–10** chips on current set (Room v5); Victory **Share session** text
 - Rest end **Vibrate** / **Beep** toggles; completed set rows show RPE when set
 - **Exercise library** (catalog search + BW/DB/Gym filters); Active uses catalog display names
+- **Progress & PRs** — e1RM personal records + last-14 session volume bars
 
 ## Verify
 
