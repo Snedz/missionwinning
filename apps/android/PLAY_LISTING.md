@@ -73,7 +73,7 @@ Local smoke (debug-signed, not for Play):
 
 **Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
 
-`versionCode` is `34`, `versionName` is `1.7.0` — Phase 7: Super Bundle entitlement recognition only (no IAP / no Stripe links). See [PLAY_BILLING.md](PLAY_BILLING.md).
+`versionCode` is `35`, `versionName` is `1.8.0` — Phase 9: architecture rails (focused repos, SyncCoordinator, outbox status, SyncMergeRules tests, designsystem gallery). See [PLAY_BILLING.md](PLAY_BILLING.md).
 
 ---
 

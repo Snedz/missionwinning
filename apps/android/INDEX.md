@@ -31,6 +31,13 @@
 - Gate doc: [PLAY_BILLING.md](PLAY_BILLING.md) — do not add Billing Library until founder adopts Play Billing
 - Free offline logger remains permanent
 
+## Architecture rails (Phase 9)
+
+- Focused repos: `PrefsRepository`, `CoachPlanRepository`, `WorkoutRepository`, `RoutineRepository`, `SyncCoordinator`
+- `MwRepository` remains the product façade (ViewModels unchanged)
+- Pure `SyncMergeRules` + unit tests; Account **Cloud sync** outbox status + Retry
+- Debug designsystem gallery (Account → About); R8 release verified; Baseline Profile via Macrobenchmark later
+
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)

@@ -29,6 +29,11 @@
 -keep @androidx.room.Entity class *
 -dontwarn androidx.room.paging.**
 
+# Sync / data façade (reflection-free; keep for stack traces)
+-keep class com.missionwinning.core.data.SyncEngine { *; }
+-keep class com.missionwinning.core.data.SyncCoordinator { *; }
+-keep class com.missionwinning.core.data.SyncMergeRules { *; }
+
 # Sentry (crash-only)
 -keepattributes SourceFile,LineNumberTable
 -dontwarn io.sentry.**

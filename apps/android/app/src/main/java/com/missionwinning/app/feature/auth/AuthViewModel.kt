@@ -9,6 +9,7 @@ import com.missionwinning.app.health.HealthConnectWriter
 import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.AuthUiSnapshot
 import com.missionwinning.core.data.MwRepository
+import com.missionwinning.core.data.OutboxStatus
 import com.missionwinning.core.data.SyncScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -36,6 +37,8 @@ data class AuthScreenState(
     val sentryConfigured: Boolean = false,
     val healthConnectExport: Boolean = false,
     val healthConnectAvailable: Boolean = false,
+    val outbox: OutboxStatus = OutboxStatus(),
+    val syncBusy: Boolean = false,
 )
 
 @HiltViewModel
@@ -68,7 +71,10 @@ class AuthViewModel @Inject constructor(
     )
 
     init {
-        viewModelScope.launch { refreshPrivacyToggles() }
+        viewModelScope.launch {
+            refreshPrivacyToggles()
+            refreshOutbox()
+        }
     }
 
     fun healthConnectPermissions(): Set<String> = healthConnect.requiredPermissions()
@@ -82,6 +88,39 @@ class AuthViewModel @Inject constructor(
                 healthConnectExport = repository.healthConnectExportEnabled(),
                 healthConnectAvailable = healthConnect.isAvailable(),
             )
+        }
+    }
+
+    private suspend fun refreshOutbox() {
+        val status = runCatching { repository.outboxStatus() }.getOrDefault(OutboxStatus())
+        _local.update { it.copy(outbox = status) }
+    }
+
+    fun retrySync() {
+        viewModelScope.launch {
+            _local.update { it.copy(syncBusy = true, error = null, message = null) }
+            runCatching {
+                repository.syncNow()
+                syncScheduler.enqueueNow()
+            }.onSuccess {
+                refreshOutbox()
+                val left = _local.value.outbox
+                _local.update {
+                    it.copy(
+                        syncBusy = false,
+                        message = if (left.needsAttention) {
+                            "Sync attempted — ${left.summaryLine}"
+                        } else {
+                            "Sync complete"
+                        },
+                    )
+                }
+            }.onFailure { e ->
+                refreshOutbox()
+                _local.update {
+                    it.copy(syncBusy = false, error = e.message ?: "Sync failed")
+                }
+            }
         }
     }
 
@@ -130,6 +169,7 @@ class AuthViewModel @Inject constructor(
                 .onSuccess {
                     runCatching { repository.syncNow() }
                     syncScheduler.enqueueNow()
+                    refreshOutbox()
                     _local.update {
                         it.copy(
                             busy = false,

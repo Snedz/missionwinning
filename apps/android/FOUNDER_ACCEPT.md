@@ -145,6 +145,8 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | U6 | Refresh entitlement returns free/premium source | |
 | U7 | Signed-in free: “Free logger” chip + no purchase CTA | |
 | U8 | Signed-in premium: “Super Bundle” chip; copy says purchase not in-app | |
+| U9 | Cloud sync card shows pending/failed counts; Retry sync updates status | |
+| U10 | **Debug only:** Design system gallery opens from Account → About | |
 
 ---
 

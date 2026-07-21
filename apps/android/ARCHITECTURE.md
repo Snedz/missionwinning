@@ -15,14 +15,23 @@ X-style **platform** rebuild on Kotlin + Jetpack Compose: faster logger, offline
 | UI | `:core:designsystem`, `:feature:*` | Compose screens; Mw* components only |
 | Presentation | `:feature:*` ViewModels | UDF: `StateFlow<UiState>` + events |
 | Domain | `:core:model` + use cases in feature/data | Immutable models; mark set / finish workout |
-| Data | `:core:data` | Room SoT, sync outbox, repositories |
+| Data | `:core:data` | Room SoT, focused repos, sync outbox |
 | Network | `:core:network` | OkHttp + OpenAPI DTOs |
 
 ```
-UI → ViewModel → Repository → Room
-                      ↓
-                   Outbox → MobileApiClient → www /api/mobile/*
+UI → ViewModel → MwRepository (façade)
+                    ├── PrefsRepository
+                    ├── CoachPlanRepository
+                    ├── WorkoutRepository
+                    ├── RoutineRepository
+                    └── SyncCoordinator → SyncEngine → Outbox → MobileApiClient
+                              ↓
+                            Room SoT
 ```
+
+**Sync policy (pure):** `SyncMergeRules` — local pending/failed wins until ACK; remote revision must be higher; outbox dead-letter after 8 attempts.
+
+**Release:** minify + R8 keep rules for network serializers / SyncEngine. Baseline Profile deferred to a Macrobenchmark module (do not hand-edit invalid `baseline-prof.txt`).
 
 ## Rules
 

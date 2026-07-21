@@ -76,11 +76,11 @@ class SyncEngine(
         val outbox = dao.pendingOutbox(limit = 50)
         for (row in outbox) {
             if (row.kind == KIND_ROUTINE_REF) continue
-            if (row.kind != KIND_WORKOUT_REF && row.kind != MwRepository.KIND_WORKOUT) {
+            if (!SyncMergeRules.isWorkoutOutboxKind(row.kind)) {
                 dao.deleteOutbox(row.id)
                 continue
             }
-            if (row.attempts >= MAX_ATTEMPTS) {
+            if (SyncMergeRules.isDeadLetter(row.attempts, MAX_ATTEMPTS)) {
                 val workoutId = row.payloadJson.trim()
                 if (workoutId.isNotBlank()) {
                     val w = dao.workoutById(workoutId)
@@ -101,7 +101,7 @@ class SyncEngine(
         val pending = dao.workoutsNeedingPush(50)
         if (pending.isEmpty()) {
             // Clear orphan outbox rows
-            outbox.filter { it.kind == KIND_WORKOUT_REF || it.kind == MwRepository.KIND_WORKOUT }
+            outbox.filter { SyncMergeRules.isWorkoutOutboxKind(it.kind) }
                 .forEach { dao.deleteOutbox(it.id) }
             return
         }
@@ -119,7 +119,7 @@ class SyncEngine(
                 if (ack.status == "error") {
                     dao.bumpOutboxForWorkout(id)
                     val w = dao.workoutById(id)
-                    if (w != null && (dao.outboxAttemptsFor(id) >= MAX_ATTEMPTS)) {
+                    if (w != null && SyncMergeRules.isDeadLetter(dao.outboxAttemptsFor(id), MAX_ATTEMPTS)) {
                         dao.updateWorkoutSync(id, STATUS_FAILED, w.revision, w.updatedAt)
                     }
                     continue
@@ -165,17 +165,15 @@ class SyncEngine(
     }
 
     private suspend fun mergeRemote(item: SyncWorkoutDto) {
-        val clientId = item.clientId?.takeIf { it.isNotBlank() }
-            ?: item.serverId?.takeIf { it.isNotBlank() }
-            ?: return
+        val clientId = SyncMergeRules.resolveClientId(item.clientId, item.serverId) ?: return
 
         val local = dao.workoutById(clientId)
         val remoteRev = item.revision.coerceAtLeast(1)
-        val remoteDeleted = !item.deletedAt.isNullOrBlank()
+        val remoteDeleted = SyncMergeRules.isRemoteDeleted(item.deletedAt)
 
         if (local != null) {
             // Local pending always wins until acked
-            if (local.syncStatus == STATUS_PENDING || local.syncStatus == STATUS_FAILED) {
+            if (SyncMergeRules.shouldSkipRemoteForLocalPending(local.syncStatus)) {
                 return
             }
             if (remoteDeleted) {
@@ -191,7 +189,7 @@ class SyncEngine(
                 }
                 return
             }
-            if (remoteRev <= local.revision) return
+            if (SyncMergeRules.isRemoteStale(local.revision, remoteRev)) return
         }
 
         if (remoteDeleted && local == null) {
@@ -389,10 +387,10 @@ class SyncEngine(
         val clientId = item.clientId?.takeIf { it.isNotBlank() } ?: return
         val local = dao.routineById(clientId)
         val remoteRev = item.revision.coerceAtLeast(1)
-        val remoteDeleted = !item.deletedAt.isNullOrBlank()
+        val remoteDeleted = SyncMergeRules.isRemoteDeleted(item.deletedAt)
 
         if (local != null) {
-            if (local.syncStatus == STATUS_PENDING || local.syncStatus == STATUS_FAILED) return
+            if (SyncMergeRules.shouldSkipRemoteForLocalPending(local.syncStatus)) return
             if (remoteDeleted) {
                 dao.upsertRoutine(
                     local.copy(
@@ -404,7 +402,7 @@ class SyncEngine(
                 )
                 return
             }
-            if (remoteRev <= local.revision) return
+            if (SyncMergeRules.isRemoteStale(local.revision, remoteRev)) return
         }
 
         if (remoteDeleted) {

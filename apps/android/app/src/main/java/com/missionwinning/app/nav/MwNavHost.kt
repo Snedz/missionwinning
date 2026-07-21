@@ -25,7 +25,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.missionwinning.app.BuildConfig
 import com.missionwinning.app.feature.auth.AuthScreen
+import com.missionwinning.app.feature.debug.DesignSystemGalleryScreen
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.designsystem.MwBottomNav
 import com.missionwinning.core.designsystem.MwColors
@@ -233,7 +235,18 @@ fun MwNavHost(
                     )
                 }
                 composable(Routes.AUTH) {
-                    AuthScreen(onClose = { nav.popBackStack() })
+                    AuthScreen(
+                        onClose = { nav.popBackStack() },
+                        onOpenGallery = {
+                            if (BuildConfig.DEBUG) {
+                                nav.navigate(Routes.DESIGN_GALLERY)
+                            }
+                        },
+                    )
+                }
+                // Registered always so NavHost routes stay stable; entry only from debug Account.
+                composable(Routes.DESIGN_GALLERY) {
+                    DesignSystemGalleryScreen(onBack = { nav.popBackStack() })
                 }
                 composable(
                     Routes.ACTIVE,
