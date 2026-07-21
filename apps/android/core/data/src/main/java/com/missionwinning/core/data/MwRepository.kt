@@ -27,32 +27,52 @@ class MwRepository(
         dao.setPref(PrefEntity(KEY_WEIGHT_UNIT, unit))
     }
 
-    suspend fun equipmentProfile(): String = dao.getPref(KEY_EQUIPMENT) ?: "bodyweight"
+    suspend fun equipmentProfile(): String =
+        LocalCoachSeed.normalizeEquipment(dao.getPref(KEY_EQUIPMENT) ?: "bodyweight")
 
     suspend fun setEquipmentProfile(profile: String) {
-        dao.setPref(PrefEntity(KEY_EQUIPMENT, profile))
+        dao.setPref(PrefEntity(KEY_EQUIPMENT, LocalCoachSeed.normalizeEquipment(profile)))
+    }
+
+    /**
+     * Change equipment and rebuild the offline (or network) week plan so Today/Coach match.
+     */
+    suspend fun setEquipmentAndReseed(profile: String): CoachPlanResponseDto {
+        val equip = LocalCoachSeed.normalizeEquipment(profile)
+        setEquipmentProfile(equip)
+        val plan = if (api != null) {
+            api.postCoachPlan(equipment = equip, withAdaptDemo = false)
+                .getOrElse { LocalCoachSeed.build(equipment = equip) }
+        } else {
+            LocalCoachSeed.build(equipment = equip)
+        }
+        savePlanResponse(plan)
+        return plan
     }
 
     suspend fun ensureCoachPlan(preferNetwork: Boolean = true): CoachPlanResponseDto {
         dao.getCoachPlan()?.let {
             return json.decodeFromString(CoachPlanResponseDto.serializer(), it.json)
         }
+        val equip = equipmentProfile()
         if (preferNetwork && api != null) {
-            api.fetchCoachPlan().getOrNull()?.let { remote ->
+            api.fetchCoachPlan(equipment = equip).getOrNull()?.let { remote ->
                 savePlanResponse(remote)
                 return remote
             }
         }
-        val local = LocalCoachSeed.build(withAdaptDemo = false)
+        val local = LocalCoachSeed.build(withAdaptDemo = false, equipment = equip)
         savePlanResponse(local)
         return local
     }
 
     suspend fun seedAdaptDemo(): CoachPlanResponseDto {
+        val equip = equipmentProfile()
         val demo = if (api != null) {
-            api.postCoachPlan(withAdaptDemo = true).getOrElse { LocalCoachSeed.build(true) }
+            api.postCoachPlan(equipment = equip, withAdaptDemo = true)
+                .getOrElse { LocalCoachSeed.build(withAdaptDemo = true, equipment = equip) }
         } else {
-            LocalCoachSeed.build(true)
+            LocalCoachSeed.build(withAdaptDemo = true, equipment = equip)
         }
         savePlanResponse(demo)
         return demo

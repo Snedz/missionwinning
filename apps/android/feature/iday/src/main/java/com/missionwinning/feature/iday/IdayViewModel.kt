@@ -13,9 +13,8 @@ class IdayViewModel @Inject constructor(
 ) : ViewModel() {
     fun complete(equipment: String = "bodyweight", onDone: () -> Unit) {
         viewModelScope.launch {
-            repository.setEquipmentProfile(equipment)
+            repository.setEquipmentAndReseed(equipment)
             repository.markIdayDone()
-            repository.ensureCoachPlan()
             onDone()
         }
     }

@@ -16,50 +16,21 @@ object LocalCoachSeed {
         return monday.toString()
     }
 
-    fun build(withAdaptDemo: Boolean = false): CoachPlanResponseDto {
+    fun normalizeEquipment(raw: String): String =
+        when (raw.trim().lowercase()) {
+            "dumbbells", "db", "dumbbell" -> "dumbbells"
+            "full-gym", "full_gym", "gym", "fullgym" -> "full-gym"
+            else -> "bodyweight"
+        }
+
+    fun build(
+        withAdaptDemo: Boolean = false,
+        equipment: String = "bodyweight",
+    ): CoachPlanResponseDto {
+        val equip = normalizeEquipment(equipment)
         val weekStart = weekStartMonday()
         val revision = if (withAdaptDemo) 2 else 1
-        var sessions = listOf(
-            PlanSessionDto(
-                id = "seed-mon",
-                dayOffset = 0,
-                kind = "strength",
-                name = "Push + core",
-                focusGroups = listOf("chest", "shoulders"),
-                exercises = listOf(
-                    PlanExerciseDto("pushup", 3, 10),
-                    PlanExerciseDto("plank", 3, 40),
-                ),
-                estMinutes = 35,
-                status = if (withAdaptDemo) "missed" else "planned",
-            ),
-            PlanSessionDto(
-                id = "seed-wed",
-                dayOffset = 2,
-                kind = "strength",
-                name = "Legs + hinge",
-                focusGroups = listOf("quads", "glutes"),
-                exercises = listOf(
-                    PlanExerciseDto("squat", 3, 12),
-                    PlanExerciseDto("hip-hinge", 3, 10),
-                ),
-                estMinutes = 40,
-                status = if (withAdaptDemo) "swapped" else "planned",
-            ),
-            PlanSessionDto(
-                id = "seed-fri",
-                dayOffset = 4,
-                kind = "strength",
-                name = "Pull + carry",
-                focusGroups = listOf("back", "biceps"),
-                exercises = listOf(
-                    PlanExerciseDto("row", 3, 10),
-                    PlanExerciseDto("chinup", 3, 6),
-                ),
-                estMinutes = 35,
-                status = "planned",
-            ),
-        )
+        var sessions = baseSessions(equip, withAdaptDemo)
         if (withAdaptDemo) {
             sessions = sessions.toMutableList().also {
                 it[1] = it[1].copy(
@@ -77,8 +48,8 @@ object LocalCoachSeed {
             daysPerWeek = 3,
             sessions = sessions,
             generatedAt = java.time.Instant.now().toString(),
-            contextHash = "seed-bodyweight-$revision",
-            equipmentProfile = "bodyweight",
+            contextHash = "seed-$equip-$revision",
+            equipmentProfile = equip,
         )
         val beats = mutableListOf<AdaptBeatDto>()
         val missed = sessions.count { it.status == "missed" }
@@ -111,6 +82,82 @@ object LocalCoachSeed {
             hasAdaptSignal = beats.isNotEmpty() || revision > 1,
         )
     }
+
+    private fun baseSessions(equip: String, withAdaptDemo: Boolean): List<PlanSessionDto> {
+        val (pushA, pushB, legsA, legsB, pullA, pullB) = when (equip) {
+            "dumbbells" -> EquipmentMoves(
+                "db-press", "db-fly", "goblet-squat", "db-rdl", "db-row", "db-curl",
+            )
+            "full-gym" -> EquipmentMoves(
+                "bench-press", "cable-fly", "back-squat", "romanian-deadlift", "lat-pulldown", "barbell-row",
+            )
+            else -> EquipmentMoves(
+                "pushup", "plank", "squat", "hip-hinge", "row", "chinup",
+            )
+        }
+        return listOf(
+            PlanSessionDto(
+                id = "seed-mon",
+                dayOffset = 0,
+                kind = "strength",
+                name = when (equip) {
+                    "full-gym" -> "Push (barbell)"
+                    "dumbbells" -> "Push (DB)"
+                    else -> "Push + core"
+                },
+                focusGroups = listOf("chest", "shoulders"),
+                exercises = listOf(
+                    PlanExerciseDto(pushA, 3, 10),
+                    PlanExerciseDto(pushB, 3, if (equip == "bodyweight") 40 else 12),
+                ),
+                estMinutes = 35,
+                status = if (withAdaptDemo) "missed" else "planned",
+            ),
+            PlanSessionDto(
+                id = "seed-wed",
+                dayOffset = 2,
+                kind = "strength",
+                name = when (equip) {
+                    "full-gym" -> "Legs (barbell)"
+                    "dumbbells" -> "Legs (DB)"
+                    else -> "Legs + hinge"
+                },
+                focusGroups = listOf("quads", "glutes"),
+                exercises = listOf(
+                    PlanExerciseDto(legsA, 3, 12),
+                    PlanExerciseDto(legsB, 3, 10),
+                ),
+                estMinutes = 40,
+                status = if (withAdaptDemo) "swapped" else "planned",
+            ),
+            PlanSessionDto(
+                id = "seed-fri",
+                dayOffset = 4,
+                kind = "strength",
+                name = when (equip) {
+                    "full-gym" -> "Pull (machines)"
+                    "dumbbells" -> "Pull (DB)"
+                    else -> "Pull + carry"
+                },
+                focusGroups = listOf("back", "biceps"),
+                exercises = listOf(
+                    PlanExerciseDto(pullA, 3, 10),
+                    PlanExerciseDto(pullB, 3, 6),
+                ),
+                estMinutes = 35,
+                status = "planned",
+            ),
+        )
+    }
+
+    private data class EquipmentMoves(
+        val pushA: String,
+        val pushB: String,
+        val legsA: String,
+        val legsB: String,
+        val pullA: String,
+        val pullB: String,
+    )
 
     fun markDone(plan: CoachPlanDto, sessionId: String): CoachPlanResponseDto {
         val sessions = plan.sessions.map {
