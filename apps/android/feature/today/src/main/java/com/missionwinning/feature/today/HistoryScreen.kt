@@ -26,6 +26,7 @@ import com.missionwinning.core.designsystem.MwEnterFade
 import com.missionwinning.core.designsystem.MwLoadingBlock
 import com.missionwinning.core.designsystem.MwMetricCard
 import com.missionwinning.core.designsystem.MwOfflinePill
+import com.missionwinning.core.designsystem.MwPrimaryButton
 import com.missionwinning.core.designsystem.MwScreenScaffold
 import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSpace
@@ -36,6 +37,7 @@ import com.missionwinning.core.designsystem.MwTypography
 fun HistoryScreen(
     workoutId: String,
     onBack: () -> Unit,
+    onOpenRoutines: () -> Unit = {},
     viewModel: HistoryViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(workoutId) {
@@ -87,6 +89,40 @@ fun HistoryScreen(
                             MwMetricCard("Sets", state.setCount.toString(), Modifier.weight(1f))
                             MwMetricCard("Time", state.durationLabel, Modifier.weight(1f))
                             MwMetricCard("Volume", state.volumeLabel, Modifier.weight(1f))
+                        }
+
+                        if (state.canSaveRoutine) {
+                            MwCard(elevated = true) {
+                                MwSectionLabel("Template")
+                                Text(
+                                    "Save this workout’s exercises and set structure as a routine you can start anytime offline.",
+                                    style = MwTypography.bodyMedium,
+                                    color = MwColors.TextMuted,
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                if (state.routineSavedId != null) {
+                                    MwChip("Saved as routine", tone = MwChipTone.Emerald)
+                                    Spacer(Modifier.height(8.dp))
+                                    MwPrimaryButton(
+                                        text = "View routines",
+                                        onClick = onOpenRoutines,
+                                        contentDescription = "View routines",
+                                    )
+                                } else {
+                                    MwPrimaryButton(
+                                        text = if (state.savingRoutine) "Saving…" else "Save as routine",
+                                        onClick = { viewModel.saveAsRoutine() },
+                                        contentDescription = "Save as routine",
+                                        enabled = !state.savingRoutine,
+                                    )
+                                }
+                                state.saveMessage?.let { msg ->
+                                    if (state.routineSavedId == null) {
+                                        Spacer(Modifier.height(6.dp))
+                                        Text(msg, style = MwTypography.bodyMedium, color = MwColors.TextMuted)
+                                    }
+                                }
+                            }
                         }
 
                         if (state.groups.isEmpty()) {

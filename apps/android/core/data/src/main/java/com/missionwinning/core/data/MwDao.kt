@@ -92,4 +92,16 @@ interface MwDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun setPref(row: PrefEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertRoutine(row: RoutineEntity)
+
+    @Query("SELECT * FROM routines ORDER BY createdAt DESC")
+    suspend fun allRoutines(): List<RoutineEntity>
+
+    @Query("SELECT * FROM routines WHERE id = :id LIMIT 1")
+    suspend fun routineById(id: String): RoutineEntity?
+
+    @Query("DELETE FROM routines WHERE id = :id")
+    suspend fun deleteRoutine(id: String)
 }

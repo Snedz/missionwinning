@@ -8,6 +8,7 @@ object Routes {
     const val AUTH = "auth"
     const val CATALOG = "catalog"
     const val PROGRESS = "progress"
+    const val ROUTINES = "routines"
     const val HISTORY = "history/{workoutId}"
     const val ACTIVE = "active/{sessionId}/{name}/{sets}"
     const val VICTORY = "victory/{name}/{sets}/{duration}/{workouts}/{volume}/{unit}"

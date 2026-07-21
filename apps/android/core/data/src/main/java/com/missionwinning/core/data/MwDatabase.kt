@@ -14,8 +14,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         PrefEntity::class,
         SetLogEntity::class,
         SyncOutboxEntity::class,
+        RoutineEntity::class,
     ],
-    version = 5,
+    version = 6,
     exportSchema = false,
 )
 abstract class MwDatabase : RoomDatabase() {
@@ -76,6 +77,22 @@ abstract class MwDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS routines (
+                        id TEXT NOT NULL PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        createdAt TEXT NOT NULL,
+                        sourceWorkoutId TEXT,
+                        exercisesJson TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+            }
+        }
+
         fun get(context: Context): MwDatabase =
             instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
@@ -83,7 +100,13 @@ abstract class MwDatabase : RoomDatabase() {
                     MwDatabase::class.java,
                     "mw.db",
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                    .addMigrations(
+                        MIGRATION_1_2,
+                        MIGRATION_2_3,
+                        MIGRATION_3_4,
+                        MIGRATION_4_5,
+                        MIGRATION_5_6,
+                    )
                     .build()
                     .also { instance = it }
             }

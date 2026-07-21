@@ -85,6 +85,31 @@ class ActiveViewModel @Inject constructor(
         viewModelScope.launch {
             val unit = ActiveSessionLogic.normalizeUnit(repository.weightUnit())
             val defaultRest = ActiveSessionLogic.normalizeDefaultRest(repository.defaultRestSeconds())
+            val restVibrate = repository.restVibrateEnabled()
+            val restBeep = repository.restBeepEnabled()
+
+            if (MwRepository.isRoutineSession(sessionId)) {
+                val routineId = MwRepository.routineIdFromSession(sessionId).orEmpty()
+                val routine = repository.routineById(routineId)
+                val name = routine?.name?.takeIf { it.isNotBlank() } ?: workoutName
+                val exercises = buildExercisesFromRoutine(
+                    dtos = routine?.let { repository.parseRoutineExercises(it.exercisesJson) }.orEmpty(),
+                    workoutName = name,
+                    fallbackSets = fallbackSets,
+                    displayUnit = unit,
+                )
+                _state.value = ActiveUiState(
+                    workoutName = name,
+                    sessionId = sessionId,
+                    exercises = exercises,
+                    weightUnit = unit,
+                    defaultRestSeconds = defaultRest,
+                    restVibrate = restVibrate,
+                    restBeep = restBeep,
+                )
+                return@launch
+            }
+
             val plan = repository.ensureCoachPlan(preferNetwork = false)
             val session = plan.plan.sessions.find { it.id == sessionId }
             val exercises = buildExercises(
@@ -99,8 +124,8 @@ class ActiveViewModel @Inject constructor(
                 exercises = exercises,
                 weightUnit = unit,
                 defaultRestSeconds = defaultRest,
-                restVibrate = repository.restVibrateEnabled(),
-                restBeep = repository.restBeepEnabled(),
+                restVibrate = restVibrate,
+                restBeep = restBeep,
             )
         }
     }
@@ -307,7 +332,10 @@ class ActiveViewModel @Inject constructor(
                 val volume = ActiveSessionLogic.sessionVolume(snap.exercises)
                 // Room SoT + outbox first; markSessionDone may hit network but local plan updates offline.
                 val total = repository.finishWorkout(snap.workoutName, duration, entities, snap.sessionId)
-                runCatching { repository.markSessionDone(snap.sessionId) }
+                // Coach week progress only for plan sessions — not saved routines.
+                if (!MwRepository.isRoutineSession(snap.sessionId)) {
+                    runCatching { repository.markSessionDone(snap.sessionId) }
+                }
                 _state.update {
                     it.copy(
                         finishing = false,
@@ -340,25 +368,72 @@ class ActiveViewModel @Inject constructor(
         }
         return source.map { ex ->
             val name = ExerciseCatalog.displayName(ex.exerciseId).ifBlank { workoutName }
-            val sets = (0 until ex.sets.coerceIn(1, 12)).map { idx ->
-                val prev = repository.previousSet(ex.exerciseId, idx)
-                val prevWeight = ActiveSessionLogic.previousWeightInUnit(
-                    storedWeight = prev?.weight,
-                    storedUnit = prev?.weightUnit,
-                    displayUnit = displayUnit,
-                )
-                LoggedSet(
-                    id = UUID.randomUUID().toString(),
-                    exerciseId = ex.exerciseId,
-                    exerciseName = name,
-                    setIndex = idx,
-                    reps = ActiveSessionLogic.defaultReps(ex.reps, prev?.reps),
-                    weight = ActiveSessionLogic.defaultWeight(prevWeight),
-                    previousReps = prev?.reps,
-                    previousWeight = prevWeight,
-                )
-            }
-            ActiveExercise(exerciseId = ex.exerciseId, name = name, sets = sets)
+            buildSetsForExercise(
+                exerciseId = ex.exerciseId,
+                exerciseName = name,
+                setCount = ex.sets,
+                targetReps = ex.reps,
+                seedWeight = null,
+                displayUnit = displayUnit,
+            )
         }
+    }
+
+    private suspend fun buildExercisesFromRoutine(
+        dtos: List<com.missionwinning.core.data.RoutineExerciseDto>,
+        workoutName: String,
+        fallbackSets: Int,
+        displayUnit: String,
+    ): List<ActiveExercise> {
+        if (dtos.isEmpty()) {
+            return buildExercises(emptyList(), workoutName, fallbackSets, displayUnit)
+        }
+        return dtos.map { ex ->
+            val name = ex.exerciseName.ifBlank {
+                ExerciseCatalog.displayName(ex.exerciseId).ifBlank { workoutName }
+            }
+            buildSetsForExercise(
+                exerciseId = ex.exerciseId,
+                exerciseName = name,
+                setCount = ex.sets,
+                targetReps = ex.targetReps,
+                seedWeight = ex.lastWeight.takeIf { it > 0.0 },
+                displayUnit = displayUnit,
+            )
+        }
+    }
+
+    private suspend fun buildSetsForExercise(
+        exerciseId: String,
+        exerciseName: String,
+        setCount: Int,
+        targetReps: Int,
+        seedWeight: Double?,
+        displayUnit: String,
+    ): ActiveExercise {
+        val sets = (0 until setCount.coerceIn(1, 12)).map { idx ->
+            val prev = repository.previousSet(exerciseId, idx)
+            val prevWeight = ActiveSessionLogic.previousWeightInUnit(
+                storedWeight = prev?.weight,
+                storedUnit = prev?.weightUnit,
+                displayUnit = displayUnit,
+            )
+            val weight = when {
+                prevWeight != null && prevWeight > 0.0 -> ActiveSessionLogic.defaultWeight(prevWeight)
+                seedWeight != null -> ActiveSessionLogic.defaultWeight(seedWeight)
+                else -> ActiveSessionLogic.defaultWeight(null)
+            }
+            LoggedSet(
+                id = UUID.randomUUID().toString(),
+                exerciseId = exerciseId,
+                exerciseName = exerciseName,
+                setIndex = idx,
+                reps = ActiveSessionLogic.defaultReps(targetReps, prev?.reps),
+                weight = weight,
+                previousReps = prev?.reps,
+                previousWeight = prevWeight,
+            )
+        }
+        return ActiveExercise(exerciseId = exerciseId, name = exerciseName, sets = sets)
     }
 }
