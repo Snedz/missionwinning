@@ -270,9 +270,9 @@ jobs:
           fi
           sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
 
-      - name: Assemble debug + Active unit tests
+      - name: Assemble debug + unit tests
         run: |
-          ./gradlew :app:assembleDebug :feature:active:testDebugUnitTest --stacktrace
+          ./gradlew :app:assembleDebug :feature:active:testDebugUnitTest :core:model:testDebugUnitTest --stacktrace
 
       - name: Maestro wedge present
         run: test -f .maestro/wedge.yaml && head -5 .maestro/wedge.yaml

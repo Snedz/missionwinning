@@ -21,4 +21,5 @@ android {
 
 dependencies {
     implementation("androidx.compose.runtime:runtime:1.7.6")
+    testImplementation("junit:junit:4.13.2")
 }
