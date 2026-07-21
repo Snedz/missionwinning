@@ -73,7 +73,7 @@ Local smoke (debug-signed, not for Play):
 
 **Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
 
-`versionCode` is `30`, `versionName` is `1.3.2` — Phase 3: targetSdk 36, Sentry crash-only, privacy telemetry pulse; apply telemetry + sync_v2 Supabase migrations.
+`versionCode` is `31`, `versionName` is `1.4.0` — Phase 4: ongoing workout notification + streak/quick-log Glance widgets; monochrome icon; predictive back.
 
 ---
 

@@ -81,6 +81,10 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | L17 | **Add exercise** catalog picker works offline | |
 | L18 | **Remove** exercise asks confirm, drops block | |
 | L19 | Freeform empty: empty state → Add exercise | |
+| L20 | Start workout → notification; swipe away app → notification remains | |
+| L21 | Rest shows in notification; Skip rest action works | |
+| L22 | Finish/discard clears notification | |
+| L23 | Home widgets: streak + Quick log start empty session | |
 
 ---
 

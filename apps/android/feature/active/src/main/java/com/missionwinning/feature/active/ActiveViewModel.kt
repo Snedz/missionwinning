@@ -2,6 +2,7 @@ package com.missionwinning.feature.active
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.missionwinning.core.common.ActiveSessionHub
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SetLogEntity
 import com.missionwinning.core.model.ActiveExercise
@@ -86,9 +87,25 @@ class ActiveViewModel @Inject constructor(
 
     private var startedAt = System.currentTimeMillis()
     private var restJob: Job? = null
+    /** Absolute rest end for notification (screen-off accurate). */
+    private var restDeadlineMs: Long? = null
+
+    init {
+        viewModelScope.launch {
+            ActiveSessionHub.commands.collect { cmd ->
+                when (cmd) {
+                    ActiveSessionHub.Command.SkipRest -> skipRest()
+                }
+            }
+        }
+        viewModelScope.launch {
+            _state.collect { publishHub(it) }
+        }
+    }
 
     fun start(sessionId: String, workoutName: String, fallbackSets: Int) {
         startedAt = System.currentTimeMillis()
+        restDeadlineMs = null
         viewModelScope.launch {
             val unit = ActiveSessionLogic.normalizeUnit(repository.weightUnit())
             val defaultRest = ActiveSessionLogic.normalizeDefaultRest(repository.defaultRestSeconds())
@@ -347,7 +364,26 @@ class ActiveViewModel @Inject constructor(
 
     private fun skipRest() {
         restJob?.cancel()
+        restDeadlineMs = null
         _state.update { it.copy(restSeconds = 0, restTotalSeconds = 0) }
+    }
+
+    private fun publishHub(st: ActiveUiState) {
+        val active = st.sessionId.isNotBlank() && st.finished == null && !st.finishing
+        if (!active) {
+            ActiveSessionHub.clear()
+            return
+        }
+        ActiveSessionHub.publish(
+            ActiveSessionHub.Snapshot(
+                active = true,
+                workoutName = st.workoutName,
+                sessionId = st.sessionId,
+                doneSets = st.doneCount,
+                totalSets = st.totalSets,
+                restDeadlineMs = restDeadlineMs,
+            ),
+        )
     }
 
     private fun updateSet(setId: String, transform: (LoggedSet) -> LoggedSet) {
@@ -376,6 +412,7 @@ class ActiveViewModel @Inject constructor(
     private fun startRest(seconds: Int) {
         restJob?.cancel()
         val sec = seconds.coerceAtLeast(0)
+        restDeadlineMs = if (sec > 0) System.currentTimeMillis() + sec * 1000L else null
         _state.update {
             it.copy(
                 restSeconds = sec,
@@ -407,7 +444,9 @@ class ActiveViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
+            restDeadlineMs = null
             _state.update { it.copy(finishing = true, error = null) }
+            ActiveSessionHub.clear()
             runCatching {
                 val snap = _state.value
                 val completed = ActiveSessionLogic.completedSetsForPersist(snap.exercises)

@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mission Winning</string>
+    <string name="session_channel_name">Active workout</string>
+    <string name="session_channel_desc">Ongoing set logging and rest timer</string>
+    <string name="session_ongoing">Logging</string>
+    <string name="skip_rest">Skip rest</string>
+    <string name="widget_streak_description">Streak and this-week workouts</string>
+    <string name="widget_quick_start_description">Start an empty workout (quick log)</string>
+    <string name="widget_streak_title">Streak</string>
+    <string name="widget_quick_start_title">Quick log</string>
+    <string name="widget_quick_start_cta">Start empty workout</string>
+    <string name="widget_no_streak">Log today</string>
 </resources>
