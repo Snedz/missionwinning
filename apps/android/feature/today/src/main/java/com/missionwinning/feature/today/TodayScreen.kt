@@ -95,6 +95,9 @@ fun TodayScreen(
                             if (state.streakDays > 0) {
                                 append(" · ${state.streakDays}-day streak")
                             }
+                            state.recent.firstOrNull()?.let { last ->
+                                append(" · last ${last.whenLabel.lowercase()}")
+                            }
                             append(".")
                         }
                     },

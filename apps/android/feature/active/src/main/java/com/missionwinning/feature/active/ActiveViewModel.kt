@@ -100,9 +100,19 @@ class ActiveViewModel @Inject constructor(
     fun onEvent(event: ActiveEvent) {
         when (event) {
             is ActiveEvent.ToggleSet -> toggleSet(event.setId)
-            is ActiveEvent.UpdateReps -> updateSet(event.setId) { it.copy(reps = event.reps.coerceIn(1, 99)) }
-            is ActiveEvent.UpdateWeight -> updateSet(event.setId) { it.copy(weight = event.weight.coerceAtLeast(0.0)) }
-            is ActiveEvent.ApplyPrevious -> applyPrevious(event.setId)
+            is ActiveEvent.UpdateReps -> {
+                // Editing load means rest is over — standard logger UX
+                clearRestIfActive()
+                updateSet(event.setId) { it.copy(reps = event.reps.coerceIn(1, 99)) }
+            }
+            is ActiveEvent.UpdateWeight -> {
+                clearRestIfActive()
+                updateSet(event.setId) { it.copy(weight = event.weight.coerceAtLeast(0.0)) }
+            }
+            is ActiveEvent.ApplyPrevious -> {
+                clearRestIfActive()
+                applyPrevious(event.setId)
+            }
             ActiveEvent.ToggleWeightUnit -> toggleWeightUnit()
             ActiveEvent.RestMinus15 -> adjustRest(-ActiveSessionLogic.REST_STEP)
             ActiveEvent.RestPlus15 -> adjustRest(ActiveSessionLogic.REST_STEP)
@@ -112,6 +122,10 @@ class ActiveViewModel @Inject constructor(
             ActiveEvent.ClearFinished -> _state.update { it.copy(finished = null) }
             ActiveEvent.ClearError -> _state.update { it.copy(error = null) }
         }
+    }
+
+    private fun clearRestIfActive() {
+        if (_state.value.restSeconds > 0) skipRest()
     }
 
     private fun setDefaultRest(seconds: Int) {
