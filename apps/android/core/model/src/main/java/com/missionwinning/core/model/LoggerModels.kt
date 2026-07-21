@@ -17,6 +17,8 @@ data class LoggedSet(
     val rpe: Int? = null,
     /** Warmup / working / failure / drop (Hevy-style). */
     val kind: SetKind = SetKind.Normal,
+    /** Optional free-text note for this set (Phase 10). */
+    val note: String = "",
 )
 
 @Immutable
@@ -24,6 +26,13 @@ data class ActiveExercise(
     val exerciseId: String,
     val name: String,
     val sets: List<LoggedSet>,
+    /**
+     * Superset / circuit label: empty, or A–D (A1/A2 style grouping by letter).
+     * Same letter = alternate / superset together in the list.
+     */
+    val supersetGroup: String = "",
+    /** Optional rest override for this exercise after complete (seconds); null = session default. */
+    val defaultRestSeconds: Int? = null,
 )
 
 @Immutable

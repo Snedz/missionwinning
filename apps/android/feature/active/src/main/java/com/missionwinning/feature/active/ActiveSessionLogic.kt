@@ -83,14 +83,38 @@ object ActiveSessionLogic {
     /**
      * Rest after completing a set. Skip rest when the session is fully logged.
      * If a rest is already ticking, keep it (unless all done).
+     * Prefer [exerciseRest] (per-exercise override) over session [defaultRest].
      */
     fun restAfterComplete(
         currentRest: Int,
         defaultRest: Int = DEFAULT_REST_SECONDS,
         allSetsDone: Boolean = false,
+        exerciseRest: Int? = null,
     ): Int {
         if (allSetsDone) return 0
-        return if (currentRest > 0) currentRest else defaultRest.coerceAtLeast(0)
+        if (currentRest > 0) return currentRest
+        val preferred = exerciseRest?.let { normalizeDefaultRest(it) } ?: defaultRest
+        return preferred.coerceAtLeast(0)
+    }
+
+    /** Cycle superset letter: none → A → B → C → D → none. */
+    fun nextSupersetGroup(current: String): String = when (current.uppercase()) {
+        "" -> "A"
+        "A" -> "B"
+        "B" -> "C"
+        "C" -> "D"
+        else -> ""
+    }
+
+    fun moveExercise(exercises: List<ActiveExercise>, exerciseId: String, delta: Int): List<ActiveExercise> {
+        val idx = exercises.indexOfFirst { it.exerciseId == exerciseId }
+        if (idx < 0) return exercises
+        val target = idx + delta
+        if (target !in exercises.indices) return exercises
+        val mutable = exercises.toMutableList()
+        val item = mutable.removeAt(idx)
+        mutable.add(target, item)
+        return mutable
     }
 
     fun normalizeDefaultRest(seconds: Int): Int = when {
@@ -189,6 +213,7 @@ object ActiveSessionLogic {
                 previousWeight = last?.previousWeight,
                 rpe = null,
                 kind = SetKind.Normal,
+                note = "",
             )
             ex.copy(sets = ex.sets + added)
         }
@@ -237,12 +262,15 @@ object ActiveSessionLogic {
                 previousWeight = prev?.second,
                 rpe = null,
                 kind = SetKind.Normal,
+                note = "",
             )
         }
         return exercises + ActiveExercise(
             exerciseId = exerciseId,
             name = exerciseName,
             sets = sets,
+            supersetGroup = "",
+            defaultRestSeconds = null,
         )
     }
 

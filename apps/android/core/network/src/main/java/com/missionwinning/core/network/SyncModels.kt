@@ -15,6 +15,10 @@ data class SyncSetDto(
     val weightUnit: String = "kg",
     val rpe: Int? = null,
     val setKind: String = "normal",
+    /** Optional set note (Phase 10). */
+    val note: String = "",
+    /** Superset group letter A–D or empty. */
+    val supersetGroup: String = "",
 )
 
 @Serializable

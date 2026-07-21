@@ -16,8 +16,8 @@ class MwRepository(
     private val workouts: WorkoutRepository,
     private val routines: RoutineRepository,
     private val sync: SyncCoordinator,
+    private val customExercises: CustomExerciseRepository,
 ) {
-
     // —— Prefs ——
     suspend fun isIdayDone(): Boolean = prefs.isIdayDone()
     suspend fun markIdayDone() = prefs.markIdayDone()
@@ -89,6 +89,17 @@ class MwRepository(
     suspend fun flushOutbox() = sync.flushOutbox()
     suspend fun syncNow(): Int = sync.syncNow()
 
+    // —— Custom exercises ——
+    suspend fun searchExercises(query: String, equipment: String? = null) =
+        customExercises.search(query, equipment)
+
+    suspend fun createCustomExercise(name: String, equipment: String = "any") =
+        customExercises.create(name, equipment)
+
+    suspend fun deleteCustomExercise(id: String) = customExercises.delete(id)
+
+    suspend fun exerciseDisplayName(id: String): String = customExercises.displayName(id)
+
     companion object {
         /**
          * Lightweight construction for widgets / tests without Hilt
@@ -107,6 +118,7 @@ class MwRepository(
                 workouts = WorkoutRepository(db, prefs, sync),
                 routines = RoutineRepository(db, sync),
                 sync = sync,
+                customExercises = CustomExerciseRepository(db),
             )
         }
 
