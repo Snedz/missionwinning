@@ -19,6 +19,34 @@ interface MwDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWorkout(row: WorkoutLogEntity)
 
+    @Query("SELECT COUNT(*) FROM workout_logs")
+    suspend fun workoutCount(): Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSetLog(row: SetLogEntity)
+
+    @Query(
+        """
+        SELECT * FROM set_logs
+        WHERE exerciseId = :exerciseId AND setIndex = :setIndex
+        ORDER BY completedAt DESC
+        LIMIT 1
+        """,
+    )
+    suspend fun latestSetFor(exerciseId: String, setIndex: Int): SetLogEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun enqueueOutbox(row: SyncOutboxEntity)
+
+    @Query("SELECT * FROM sync_outbox ORDER BY createdAt ASC LIMIT :limit")
+    suspend fun pendingOutbox(limit: Int = 20): List<SyncOutboxEntity>
+
+    @Query("DELETE FROM sync_outbox WHERE id = :id")
+    suspend fun deleteOutbox(id: String)
+
+    @Query("UPDATE sync_outbox SET attempts = attempts + 1 WHERE id = :id")
+    suspend fun bumpOutboxAttempt(id: String)
+
     @Query("SELECT value FROM prefs WHERE `key` = :key LIMIT 1")
     suspend fun getPref(key: String): String?
 

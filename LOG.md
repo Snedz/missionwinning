@@ -4,6 +4,18 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-21 — Android platform rebuild (Hilt / UDF / feature modules)
+
+- **Architecture:** [apps/android/ARCHITECTURE.md](apps/android/ARCHITECTURE.md); horizons A–E in [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md)
+- **Spine:** Hilt (`@HiltAndroidApp`, `AppModule`); ViewModels + `StateFlow` UiState; Room v2 (`set_logs`, `sync_outbox`); finish workout atomic + outbox flush
+- **Logger craft (`:feature:active`):** exercise×sets, previous performance row, rest −15/+15, keep-screen-on, editable weight/reps
+- **Modules:** `:feature:{active,today,coach,iday,victory}` + `:core:{common,model,data,network,designsystem}`
+- **CI:** `.github/workflows/ci.yml` `android` job — `assembleDebug` + Active unit tests + Maestro file gate
+- **API:** Production `/api/mobile/*` returns private-gate JSON (routes live); client uses Room when unauthorized
+- Verify: `cd apps/android && ./gradlew :app:assembleDebug :feature:active:testDebugUnitTest`
+
+---
+
 ## 2026-07-20 — Android UX craft pass
 
 - **Design system:** bundled Barlow Condensed / Inter / IBM Plex Mono; `MwScreenScaffold` navy+emerald glow; branded buttons, `MwSetRow`, `MwRestTimer`, enter fade + reduce-motion

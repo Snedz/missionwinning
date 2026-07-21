@@ -10,16 +10,17 @@ import androidx.compose.ui.Modifier
 import com.missionwinning.app.nav.MwNavHost
 import com.missionwinning.core.designsystem.MissionWinningTheme
 import com.missionwinning.core.designsystem.MwColors
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val repo = (application as MwApp).repository
         setContent {
             MissionWinningTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MwColors.Navy) {
-                    MwNavHost(repository = repo)
+                    MwNavHost()
                 }
             }
         }

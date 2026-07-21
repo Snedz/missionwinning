@@ -237,3 +237,42 @@ jobs:
             exit 0
           fi
           npm run security-smoke
+
+  android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/android
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept licenses
+        run: yes | sdkmanager --licenses >/dev/null || true
+
+      - name: Install platform + build-tools
+        run: |
+          sdkmanager "platforms;android-36.1" "build-tools;36.1.0" || true
+          # AGP may look for 36.0.0 / android-36 — alias if needed
+          SDK="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          if [ -d "$SDK/build-tools/36.1.0" ] && [ ! -e "$SDK/build-tools/36.0.0" ]; then
+            ln -sfn "$SDK/build-tools/36.1.0" "$SDK/build-tools/36.0.0"
+          fi
+          if [ -d "$SDK/platforms/android-36.1" ] && [ ! -f "$SDK/platforms/android-36/android.jar" ]; then
+            ln -sfn "$SDK/platforms/android-36.1" "$SDK/platforms/android-36"
+          fi
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
+
+      - name: Assemble debug + Active unit tests
+        run: |
+          ./gradlew :app:assembleDebug :feature:active:testDebugUnitTest --stacktrace
+
+      - name: Maestro wedge present
+        run: test -f .maestro/wedge.yaml && head -5 .maestro/wedge.yaml

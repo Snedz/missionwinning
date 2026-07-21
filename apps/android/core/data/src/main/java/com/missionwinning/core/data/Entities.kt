@@ -20,6 +20,27 @@ data class WorkoutLogEntity(
     val sessionId: String?,
 )
 
+@Entity(tableName = "set_logs")
+data class SetLogEntity(
+    @PrimaryKey val id: String,
+    val exerciseId: String,
+    val exerciseName: String,
+    val setIndex: Int,
+    val reps: Int,
+    val weight: Double,
+    val completedAt: String,
+    val sessionId: String?,
+)
+
+@Entity(tableName = "sync_outbox")
+data class SyncOutboxEntity(
+    @PrimaryKey val id: String,
+    val kind: String,
+    val payloadJson: String,
+    val createdAt: String,
+    val attempts: Int = 0,
+)
+
 @Entity(tableName = "prefs")
 data class PrefEntity(
     @PrimaryKey val key: String,
