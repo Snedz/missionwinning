@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,12 +48,14 @@ fun VictoryScreen(
     workouts: Int,
     volume: Int = 0,
     weightUnit: String = "kg",
+    workoutId: String = "",
     onCoach: () -> Unit,
     onToday: () -> Unit,
+    onOpenRoutines: () -> Unit = {},
     viewModel: VictoryViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(workoutName, sets, duration, workouts, volume, weightUnit) {
-        viewModel.bind(workoutName, sets, duration, workouts, volume, weightUnit)
+    LaunchedEffect(workoutName, sets, duration, workouts, volume, weightUnit, workoutId) {
+        viewModel.bind(workoutName, sets, duration, workouts, volume, weightUnit, workoutId)
     }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coachFirst = state.coachFirst
@@ -82,11 +86,12 @@ fun VictoryScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .graphicsLayer {
                     scaleX = lockScale.value
                     scaleY = lockScale.value
                 },
-            verticalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(MwSpace.md),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
                 Row(
@@ -127,6 +132,38 @@ fun VictoryScreen(
                 MwMetricCard("Volume", volumeLabel, Modifier.weight(1f))
             }
 
+            if (state.canSaveRoutine) {
+                MwCard(elevated = true) {
+                    MwSectionLabel("Template")
+                    Text(
+                        "Save this session’s exercises as a routine you can start anytime offline.",
+                        style = MwTypography.bodyMedium,
+                        color = MwColors.TextMuted,
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    if (state.routineSaved) {
+                        MwChip("Saved as routine", tone = MwChipTone.Emerald)
+                        Spacer(Modifier.height(8.dp))
+                        MwGhostButton(
+                            text = "View routines",
+                            contentDescription = "View routines",
+                            onClick = onOpenRoutines,
+                        )
+                    } else {
+                        MwPrimaryButton(
+                            text = if (state.savingRoutine) "Saving…" else "Save as routine",
+                            contentDescription = "Save workout as routine",
+                            enabled = !state.savingRoutine,
+                            onClick = { viewModel.saveAsRoutine() },
+                        )
+                        state.routineMessage?.let { msg ->
+                            Spacer(Modifier.height(6.dp))
+                            Text(msg, style = MwTypography.bodyMedium, color = MwColors.TextMuted)
+                        }
+                    }
+                }
+            }
+
             MwCard(elevated = true, glow = true) {
                 Text(
                     if (coachFirst) "Next: review Mission Coach" else "Next: rest or open Today",
@@ -154,6 +191,7 @@ fun VictoryScreen(
                 )
                 MwGhostButton(text = "Today", onClick = onToday)
             }
+            Spacer(Modifier.height(8.dp))
         }
     }
 }

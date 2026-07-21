@@ -50,6 +50,7 @@ data class FinishedPayload(
     val workouts: Int,
     val volume: Double = 0.0,
     val weightUnit: String = "kg",
+    val workoutId: String = "",
 )
 
 sealed interface ActiveEvent {
@@ -429,7 +430,7 @@ class ActiveViewModel @Inject constructor(
                 val duration = ActiveSessionLogic.durationSeconds(startedAt)
                 val volume = ActiveSessionLogic.sessionVolume(snap.exercises)
                 // Room SoT + outbox first; markSessionDone may hit network but local plan updates offline.
-                val total = repository.finishWorkout(snap.workoutName, duration, entities, snap.sessionId)
+                val result = repository.finishWorkout(snap.workoutName, duration, entities, snap.sessionId)
                 // Coach week progress only for plan sessions — not routines / freeform.
                 if (MwRepository.isCoachSession(snap.sessionId)) {
                     runCatching { repository.markSessionDone(snap.sessionId) }
@@ -441,9 +442,10 @@ class ActiveViewModel @Inject constructor(
                             name = snap.workoutName,
                             sets = entities.size,
                             duration = duration,
-                            workouts = total,
+                            workouts = result.workoutCount,
                             volume = volume,
                             weightUnit = snap.weightUnit,
+                            workoutId = result.workoutId,
                         ),
                     )
                 }

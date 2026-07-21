@@ -52,6 +52,9 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | T6b | Tap Recent opens history detail with sets | |
 | T7 | Offline / online pill matches network | |
 | T8 | Streak / this-week metrics look sane | |
+| T9 | **Start empty workout** (Quick log) opens empty Active | |
+| T10 | **Routines** list opens; can start a saved template | |
+| T11 | Progress & PRs / Exercise library open | |
 
 ---
 
@@ -72,6 +75,12 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | L11 | Keep-screen-on during session | |
 | L12 | Optional RPE chips 6–10 on current set | |
 | L13 | Rest end vibrate/beep toggles work | |
+| L14 | Set type chip cycles Working / Warmup / Failure / Drop | |
+| L15 | Warmup volume excluded from live volume | |
+| L16 | **Add set** / **Remove set** on current exercise | |
+| L17 | **Add exercise** catalog picker works offline | |
+| L18 | **Remove** exercise asks confirm, drops block | |
+| L19 | Freeform empty: empty state → Add exercise | |
 
 ---
 
@@ -84,6 +93,18 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | V3 | Milestone line on 1st/3rd session if applicable | |
 | V4 | CTA to Coach (early) or Today | |
 | V5 | Share session opens system share sheet | |
+| V6 | **Save as routine** works; View routines opens list | |
+
+---
+
+## History / templates
+
+| # | Check | Result |
+|---|--------|--------|
+| H1 | History detail shows sets, RPE, set-kind badges | |
+| H2 | Save as routine from History | |
+| H3 | Start routine loads template sets into Active | |
+| H4 | Finishing a routine does **not** mark coach day done | |
 
 ---
 

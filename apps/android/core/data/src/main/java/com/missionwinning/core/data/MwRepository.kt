@@ -131,7 +131,7 @@ class MwRepository(
         durationSeconds: Int,
         sets: List<SetLogEntity>,
         sessionId: String?,
-    ): Int {
+    ): FinishWorkoutResult {
         val id = UUID.randomUUID().toString()
         // Warmups do not count toward session volume (Hevy/Strong parity).
         val volume = sets.sumOf { row ->
@@ -174,7 +174,11 @@ class MwRepository(
             dao.enqueueOutbox(outbox)
         }
         flushOutbox()
-        return dao.workoutCount()
+        return FinishWorkoutResult(
+            workoutId = id,
+            workoutCount = dao.workoutCount(),
+            totalVolume = volume,
+        )
     }
 
     suspend fun workoutById(id: String): WorkoutLogEntity? = dao.workoutById(id)
@@ -263,7 +267,7 @@ class MwRepository(
                 weightUnit = unit,
             )
         }
-        return finishWorkout(workoutName, durationSeconds, synthetic, sessionId)
+        return finishWorkout(workoutName, durationSeconds, synthetic, sessionId).workoutCount
     }
 
     suspend fun workoutCount(): Int = dao.workoutCount()

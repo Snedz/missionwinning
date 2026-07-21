@@ -217,7 +217,7 @@ fun MwNavHost() {
                         sessionId = sessionId,
                         workoutName = name,
                         targetSets = sets,
-                        onFinished = { n, s, d, w, volume, unit ->
+                        onFinished = { n, s, d, w, volume, unit, workoutId ->
                             nav.navigate(
                                 Routes.victory(
                                     name = n,
@@ -226,6 +226,7 @@ fun MwNavHost() {
                                     workouts = w,
                                     volume = volume.toInt().coerceAtLeast(0),
                                     unit = unit,
+                                    workoutId = workoutId.ifBlank { "_" },
                                 ),
                             ) {
                                 popUpTo(Routes.TODAY)
@@ -243,8 +244,10 @@ fun MwNavHost() {
                         navArgument("workouts") { type = NavType.IntType },
                         navArgument("volume") { type = NavType.IntType },
                         navArgument("unit") { type = NavType.StringType },
+                        navArgument("workoutId") { type = NavType.StringType },
                     ),
                 ) { entry ->
+                    val rawWorkoutId = entry.arguments!!.getString("workoutId")!!.decode()
                     VictoryScreen(
                         workoutName = entry.arguments!!.getString("name")!!.decode(),
                         sets = entry.arguments!!.getInt("sets"),
@@ -252,6 +255,7 @@ fun MwNavHost() {
                         workouts = entry.arguments!!.getInt("workouts"),
                         volume = entry.arguments!!.getInt("volume"),
                         weightUnit = entry.arguments!!.getString("unit")!!.decode(),
+                        workoutId = rawWorkoutId.takeUnless { it == "_" }.orEmpty(),
                         onCoach = {
                             nav.navigate(Routes.COACH) {
                                 popUpTo(Routes.TODAY)
@@ -260,6 +264,11 @@ fun MwNavHost() {
                         onToday = {
                             nav.navigate(Routes.TODAY) {
                                 popUpTo(Routes.TODAY) { inclusive = true }
+                            }
+                        },
+                        onOpenRoutines = {
+                            nav.navigate(Routes.ROUTINES) {
+                                launchSingleTop = true
                             }
                         },
                     )
