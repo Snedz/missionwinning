@@ -61,6 +61,8 @@ class ActiveUiStateTest {
         assertEquals(0, ActiveSessionLogic.adjustRest(10, -30))
         assertEquals(60, ActiveSessionLogic.restAfterComplete(0))
         assertEquals(45, ActiveSessionLogic.restAfterComplete(45))
+        assertEquals(0, ActiveSessionLogic.restAfterComplete(0, allSetsDone = true))
+        assertEquals(0, ActiveSessionLogic.restAfterComplete(45, allSetsDone = true))
 
         val exercises = listOf(
             ActiveExercise(
@@ -75,6 +77,39 @@ class ActiveUiStateTest {
                 listOf(ActiveExercise("a", "Push", listOf(set("1", done = true)))),
             ),
         )
+    }
+
+    @Test
+    fun sessionLogic_carryForwardWithinExercise() {
+        val exercises = listOf(
+            ActiveExercise(
+                "a",
+                "Push",
+                listOf(
+                    set("1", done = true, reps = 8, weight = 40.0, index = 0),
+                    set("2", done = false, reps = 10, weight = 0.0, index = 1),
+                    set("3", done = false, reps = 10, weight = 0.0, index = 2),
+                ),
+            ),
+            ActiveExercise(
+                "b",
+                "Pull",
+                listOf(set("4", done = false, reps = 12, weight = 0.0, index = 0)),
+            ),
+        )
+        val next = ActiveSessionLogic.carryForwardWithinExercise(exercises, "1")
+        val pushSets = next[0].sets
+        assertEquals(8, pushSets[1].reps)
+        assertEquals(40.0, pushSets[1].weight, 0.0)
+        // only next incomplete of same exercise
+        assertEquals(10, pushSets[2].reps)
+        assertEquals(0.0, pushSets[2].weight, 0.0)
+        // other exercise untouched
+        assertEquals(12, next[1].sets[0].reps)
+        assertTrue(ActiveSessionLogic.allDone(
+            listOf(ActiveExercise("a", "Push", listOf(set("1", done = true)))),
+        ))
+        assertFalse(ActiveSessionLogic.allDone(exercises))
     }
 
     @Test

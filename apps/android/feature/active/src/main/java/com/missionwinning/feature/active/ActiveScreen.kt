@@ -3,6 +3,7 @@ package com.missionwinning.feature.active
 import android.view.HapticFeedbackConstants
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -103,10 +104,18 @@ fun ActiveScreen(
     val progress = if (state.totalSets == 0) 0f else state.doneCount.toFloat() / state.totalSets
     val currentId = ActiveSessionLogic.currentSetId(state.exercises)
     val currentSet = state.exercises.flatMap { it.sets }.find { it.id == currentId }
+    val allDone = ActiveSessionLogic.allDone(state.exercises)
     var elapsed by remember { mutableLongStateOf(0L) }
     var confirmDiscard by remember { mutableStateOf(false) }
     val view = LocalView.current
     var prevRest by remember { mutableStateOf(0) }
+    BackHandler {
+        if (confirmDiscard) {
+            confirmDiscard = false
+        } else {
+            confirmDiscard = true
+        }
+    }
     LaunchedEffect(state.sessionId, state.workoutName) {
         elapsed = 0L
         while (true) {
@@ -165,6 +174,22 @@ fun ActiveScreen(
                     style = MwTypography.labelMedium,
                     color = MwColors.TextMuted,
                 )
+
+                if (allDone) {
+                    MwCard(elevated = true, glow = true) {
+                        MwSectionLabel("Session complete")
+                        Text(
+                            "All sets logged",
+                            style = MwTypography.headlineMedium,
+                            color = MwColors.Emerald,
+                        )
+                        Text(
+                            "Finish to lock this workout offline. Coach will use it on the next plan refresh.",
+                            style = MwTypography.bodyMedium,
+                            color = MwColors.TextMuted,
+                        )
+                    }
+                }
 
                 if (state.exercises.isEmpty()) {
                     MwEmptyState(
@@ -234,7 +259,11 @@ fun ActiveScreen(
                     onPlus = { onEvent(ActiveEvent.RestPlus15) },
                 )
                 MwPrimaryButton(
-                    text = if (state.finishing) "Saving…" else "Finish workout",
+                    text = when {
+                        state.finishing -> "Saving…"
+                        allDone -> "Finish workout · lock session"
+                        else -> "Finish workout"
+                    },
                     contentDescription = "Finish workout and save sets offline",
                     enabled = !state.finishing && ActiveSessionLogic.canFinish(state.exercises),
                     onClick = {
