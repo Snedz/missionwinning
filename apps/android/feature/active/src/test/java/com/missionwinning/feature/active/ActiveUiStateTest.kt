@@ -15,7 +15,9 @@ class ActiveUiStateTest {
         reps: Int = 10,
         weight: Double = 0.0,
         index: Int = 0,
-    ) = LoggedSet(id, "a", "Push", index, reps, weight, done = done)
+        exerciseId: String = "a",
+        exerciseName: String = "Push",
+    ) = LoggedSet(id, exerciseId, exerciseName, index, reps, weight, done = done)
 
     @Test
     fun doneCount_countsCompletedSets() {
@@ -87,6 +89,38 @@ class ActiveUiStateTest {
         assertEquals(120, ActiveSessionLogic.normalizeDefaultRest(200))
         assertEquals(60, ActiveSessionLogic.restAfterComplete(0, defaultRest = 60))
         assertEquals(90, ActiveSessionLogic.restAfterComplete(0, defaultRest = 90))
+    }
+
+    @Test
+    fun sessionLogic_nextExerciseName() {
+        val exercises = listOf(
+            ActiveExercise(
+                "a",
+                "Push",
+                listOf(
+                    set("1", done = true, exerciseId = "a", exerciseName = "Push"),
+                    set("2", done = false, index = 1, exerciseId = "a", exerciseName = "Push"),
+                ),
+            ),
+            ActiveExercise(
+                "b",
+                "Pull",
+                listOf(set("3", done = false, index = 0, exerciseId = "b", exerciseName = "Pull")),
+            ),
+        )
+        assertEquals("Pull", ActiveSessionLogic.nextExerciseName(exercises))
+        // more sets left in same exercise → no next-ex preview
+        val mid = listOf(
+            ActiveExercise(
+                "a",
+                "Push",
+                listOf(
+                    set("1", done = false, exerciseId = "a"),
+                    set("2", done = false, index = 1, exerciseId = "a"),
+                ),
+            ),
+        )
+        assertNull(ActiveSessionLogic.nextExerciseName(mid))
     }
 
     @Test

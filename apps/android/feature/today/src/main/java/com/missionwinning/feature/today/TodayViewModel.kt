@@ -28,10 +28,18 @@ data class RecentWorkoutUi(
     val volumeLabel: String?,
 )
 
+data class WeekStatsUi(
+    val workoutCount: Int = 0,
+    val setCount: Int = 0,
+    val volumeLabel: String = "—",
+    val minutesLabel: String = "—",
+)
+
 data class TodayUiState(
     val plan: CoachPlanResponseDto? = null,
     val workouts: Int = 0,
     val recent: List<RecentWorkoutUi> = emptyList(),
+    val weekStats: WeekStatsUi = WeekStatsUi(),
     val loading: Boolean = true,
     val weightUnit: String = "kg",
     val equipment: String = "bodyweight",
@@ -68,6 +76,7 @@ class TodayViewModel @Inject constructor(
             val unit = WeightUnits.normalize(repository.weightUnit())
             val equipment = repository.equipmentProfile()
             val rows = repository.recentWorkouts(5)
+            val weekStats = buildWeekStats(repository, unit)
             val pendingBefore = repository.pendingSyncCount()
             val pendingAfter = if (pendingBefore > 0) {
                 repository.flushOutboxAndCount()
@@ -78,6 +87,7 @@ class TodayViewModel @Inject constructor(
                 plan = repository.ensureCoachPlan(),
                 workouts = repository.workoutCount(),
                 recent = rows.map { it.toUi(unit) },
+                weekStats = weekStats,
                 loading = false,
                 weightUnit = unit,
                 equipment = equipment,
@@ -131,6 +141,26 @@ class TodayViewModel @Inject constructor(
             }
         }
     }
+}
+
+private suspend fun buildWeekStats(repository: MwRepository, unit: String): WeekStatsUi {
+    val monday = java.time.LocalDate.now()
+        .with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY))
+        .atStartOfDay(ZoneId.systemDefault())
+        .toInstant()
+        .toString()
+    val week = repository.workoutsSince(monday)
+    if (week.isEmpty()) return WeekStatsUi()
+    val sets = week.sumOf { it.setCount }
+    val volume = week.sumOf { it.totalVolume }
+    val seconds = week.sumOf { it.durationSeconds }
+    val minutes = (seconds / 60).coerceAtLeast(0)
+    return WeekStatsUi(
+        workoutCount = week.size,
+        setCount = sets,
+        volumeLabel = if (volume > 0) "${WeightUnits.format(volume)} $unit" else "—",
+        minutesLabel = if (minutes > 0) "${minutes}m" else "—",
+    )
 }
 
 private fun WorkoutLogEntity.toUi(weightUnit: String): RecentWorkoutUi {

@@ -30,6 +30,7 @@ import com.missionwinning.core.designsystem.MwEnterFade
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
 import com.missionwinning.core.designsystem.MwLoadingBlock
+import com.missionwinning.core.designsystem.MwMetricCard
 import com.missionwinning.core.designsystem.MwOfflinePill
 import com.missionwinning.core.designsystem.MwPrimaryButton
 import com.missionwinning.core.designsystem.MwScreenScaffold
@@ -156,6 +157,34 @@ fun TodayScreen(
                             onStartWorkout(id, name, sets)
                         },
                     )
+                    if (state.weekStats.workoutCount > 0) {
+                        Spacer(Modifier.height(MwSpace.sm))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        ) {
+                            MwMetricCard(
+                                "Workouts",
+                                state.weekStats.workoutCount.toString(),
+                                Modifier.weight(1f),
+                            )
+                            MwMetricCard(
+                                "Sets",
+                                state.weekStats.setCount.toString(),
+                                Modifier.weight(1f),
+                            )
+                            MwMetricCard(
+                                "Volume",
+                                state.weekStats.volumeLabel,
+                                Modifier.weight(1f),
+                            )
+                        }
+                        Text(
+                            "Training time this week · ${state.weekStats.minutesLabel}",
+                            style = MwTypography.labelMedium,
+                            color = MwColors.TextMuted,
+                        )
+                    }
                 }
 
                 if (state.recent.isNotEmpty()) {

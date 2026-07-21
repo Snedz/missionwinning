@@ -180,6 +180,29 @@ class MwRepository(
     suspend fun recentWorkouts(limit: Int = 5): List<WorkoutLogEntity> =
         dao.recentWorkouts(limit.coerceIn(1, 20))
 
+    /** Workouts completed on or after [sinceIso] (ISO-8601 instant string). */
+    suspend fun workoutsSince(sinceIso: String): List<WorkoutLogEntity> =
+        dao.workoutsSince(sinceIso)
+
+    /**
+     * Drop cached plan and rebuild from network (if available) or local seed.
+     * Lab/founder tool — also used after equipment change via [setEquipmentAndReseed].
+     */
+    suspend fun forceReseedPlan(): CoachPlanResponseDto {
+        dao.clearCoachPlan()
+        val equip = equipmentProfile()
+        val plan = if (api != null) {
+            api.fetchCoachPlan(equipment = equip).getOrElse {
+                api.postCoachPlan(equipment = equip, withAdaptDemo = false)
+                    .getOrElse { LocalCoachSeed.build(equipment = equip) }
+            }
+        } else {
+            LocalCoachSeed.build(equipment = equip)
+        }
+        savePlanResponse(plan)
+        return plan
+    }
+
     suspend fun pendingSyncCount(): Int = dao.pendingOutboxCount()
 
     /** Flush outbox; returns remaining pending count after attempt. */
