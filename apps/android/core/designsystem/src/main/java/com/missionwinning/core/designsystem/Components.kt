@@ -166,6 +166,7 @@ fun MwSecondaryButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
 ) {
     val shape = RoundedCornerShape(14.dp)
     val interaction = remember { MutableInteractionSource() }
@@ -181,6 +182,16 @@ fun MwSecondaryButton(
                 indication = ripple(color = MwColors.Emerald),
                 role = Role.Button,
                 onClick = onClick,
+            )
+            .then(
+                if (contentDescription != null) {
+                    Modifier.semantics {
+                        this.role = Role.Button
+                        this.contentDescription = contentDescription
+                    }
+                } else {
+                    Modifier
+                },
             ),
         contentAlignment = Alignment.Center,
     ) {

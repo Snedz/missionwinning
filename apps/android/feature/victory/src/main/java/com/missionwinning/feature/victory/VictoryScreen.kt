@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
@@ -23,12 +22,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.missionwinning.core.designsystem.LocalReduceMotion
 import com.missionwinning.core.designsystem.MwBrassRule
+import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwGhostButton
-import com.missionwinning.core.designsystem.MwMetricStyle
+import com.missionwinning.core.designsystem.MwMetricCard
 import com.missionwinning.core.designsystem.MwPrimaryButton
 import com.missionwinning.core.designsystem.MwScreenScaffold
 import com.missionwinning.core.designsystem.MwSectionLabel
+import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwTypography
 
 @Composable
@@ -63,16 +64,9 @@ fun VictoryScreen(
                 },
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.Start,
-            ) {
+            Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
                 MwSectionLabel("Complete")
-                Text(
-                    "Session locked",
-                    style = MwTypography.headlineLarge,
-                    color = MwColors.Text,
-                )
+                Text("Session locked", style = MwTypography.headlineLarge, color = MwColors.Text)
                 MwBrassRule()
                 Text(state.workoutName, style = MwTypography.titleLarge, color = MwColors.Emerald)
                 Text(
@@ -88,30 +82,28 @@ fun VictoryScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                MetricBlock(label = "Sets", value = state.sets.toString())
-                MetricBlock(label = "Time", value = formatDuration(state.duration))
-                MetricBlock(label = "Total", value = "#${state.workouts}")
+                MwMetricCard("Sets", state.sets.toString(), Modifier.weight(1f))
+                MwMetricCard("Time", formatDuration(state.duration), Modifier.weight(1f))
+                MwMetricCard("Total", "#${state.workouts}", Modifier.weight(1f))
             }
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            MwCard(elevated = true, glow = true) {
+                Text(
+                    if (coachFirst) "Next: review Mission Coach" else "Next: rest or open Today",
+                    style = MwTypography.titleMedium,
+                    color = MwColors.Text,
+                )
+                Spacer(Modifier.height(4.dp))
                 MwPrimaryButton(
                     text = if (coachFirst) "See Mission Coach" else "Back to Today",
+                    contentDescription = if (coachFirst) "See Mission Coach" else "Back to Today",
                     onClick = if (coachFirst) onCoach else onToday,
                 )
                 MwGhostButton(text = "Today", onClick = onToday)
             }
         }
-    }
-}
-
-@Composable
-private fun MetricBlock(label: String, value: String) {
-    Column(horizontalAlignment = Alignment.Start) {
-        Text(label.uppercase(), style = MwTypography.labelSmall, color = MwColors.Brass)
-        Spacer(Modifier.height(4.dp))
-        Text(value, style = MwMetricStyle, color = MwColors.Text)
     }
 }
 
