@@ -45,6 +45,7 @@ sealed interface ActiveEvent {
     data class UpdateWeight(val setId: String, val weight: Double) : ActiveEvent
     data object RestMinus15 : ActiveEvent
     data object RestPlus15 : ActiveEvent
+    data object RestSkip : ActiveEvent
     data object Finish : ActiveEvent
     data object ClearFinished : ActiveEvent
 }
@@ -85,8 +86,9 @@ class ActiveViewModel @Inject constructor(
             is ActiveEvent.ToggleSet -> toggleSet(event.setId)
             is ActiveEvent.UpdateReps -> updateSet(event.setId) { it.copy(reps = event.reps.coerceIn(1, 99)) }
             is ActiveEvent.UpdateWeight -> updateSet(event.setId) { it.copy(weight = event.weight.coerceAtLeast(0.0)) }
-            ActiveEvent.RestMinus15 -> adjustRest(-15)
-            ActiveEvent.RestPlus15 -> adjustRest(15)
+            ActiveEvent.RestMinus15 -> adjustRest(-ActiveSessionLogic.REST_STEP)
+            ActiveEvent.RestPlus15 -> adjustRest(ActiveSessionLogic.REST_STEP)
+            ActiveEvent.RestSkip -> skipRest()
             ActiveEvent.Finish -> finish()
             ActiveEvent.ClearFinished -> _state.update { it.copy(finished = null) }
         }
@@ -96,9 +98,14 @@ class ActiveViewModel @Inject constructor(
         val before = _state.value.exercises.flatMap { it.sets }.find { it.id == setId } ?: return
         val becomingDone = !before.done
         updateSet(setId) { it.copy(done = !it.done) }
-        if (becomingDone) startRest(60) else if (_state.value.restSeconds > 0) {
-            // keep rest if other sets still mid-session
+        if (becomingDone) {
+            startRest(ActiveSessionLogic.restAfterComplete(_state.value.restSeconds))
         }
+    }
+
+    private fun skipRest() {
+        restJob?.cancel()
+        _state.update { it.copy(restSeconds = 0) }
     }
 
     private fun updateSet(setId: String, transform: (LoggedSet) -> LoggedSet) {
@@ -112,15 +119,18 @@ class ActiveViewModel @Inject constructor(
     }
 
     private fun adjustRest(delta: Int) {
-        _state.update { it.copy(restSeconds = (it.restSeconds + delta).coerceAtLeast(0)) }
+        _state.update {
+            it.copy(restSeconds = ActiveSessionLogic.adjustRest(it.restSeconds, delta))
+        }
         if (_state.value.restSeconds > 0 && restJob?.isActive != true) {
             tickRest()
         }
     }
 
     private fun startRest(seconds: Int) {
-        _state.update { it.copy(restSeconds = seconds) }
-        tickRest()
+        restJob?.cancel()
+        _state.update { it.copy(restSeconds = seconds.coerceAtLeast(0)) }
+        if (seconds > 0) tickRest()
     }
 
     private fun tickRest() {
@@ -137,12 +147,18 @@ class ActiveViewModel @Inject constructor(
 
     private fun finish() {
         if (_state.value.finishing) return
+        val st = _state.value
+        if (!ActiveSessionLogic.canFinish(st.exercises)) {
+            _state.update {
+                it.copy(error = "Complete at least one set before finishing.")
+            }
+            return
+        }
         viewModelScope.launch {
             _state.update { it.copy(finishing = true, error = null) }
             runCatching {
-                val st = _state.value
-                val completed = st.exercises.flatMap { it.sets }.filter { it.done }
-                    .ifEmpty { st.exercises.flatMap { it.sets }.take(1) }
+                val snap = _state.value
+                val completed = ActiveSessionLogic.completedSetsForPersist(snap.exercises)
                 val now = java.time.Instant.now().toString()
                 val entities = completed.map { s ->
                     SetLogEntity(
@@ -153,16 +169,17 @@ class ActiveViewModel @Inject constructor(
                         reps = s.reps,
                         weight = s.weight,
                         completedAt = now,
-                        sessionId = st.sessionId,
+                        sessionId = snap.sessionId,
                     )
                 }
-                val duration = ((System.currentTimeMillis() - startedAt) / 1000).toInt().coerceAtLeast(30)
-                val total = repository.finishWorkout(st.workoutName, duration, entities, st.sessionId)
-                repository.markSessionDone(st.sessionId)
+                val duration = ActiveSessionLogic.durationSeconds(startedAt)
+                // Room SoT + outbox first; markSessionDone may hit network but local plan updates offline.
+                val total = repository.finishWorkout(snap.workoutName, duration, entities, snap.sessionId)
+                runCatching { repository.markSessionDone(snap.sessionId) }
                 _state.update {
                     it.copy(
                         finishing = false,
-                        finished = FinishedPayload(st.workoutName, entities.size, duration, total),
+                        finished = FinishedPayload(snap.workoutName, entities.size, duration, total),
                     )
                 }
             }.onFailure { e ->
@@ -190,8 +207,8 @@ class ActiveViewModel @Inject constructor(
                     exerciseId = ex.exerciseId,
                     exerciseName = name.ifBlank { workoutName },
                     setIndex = idx,
-                    reps = ex.reps.coerceIn(1, 99),
-                    weight = prev?.weight ?: 0.0,
+                    reps = ActiveSessionLogic.defaultReps(ex.reps, prev?.reps),
+                    weight = ActiveSessionLogic.defaultWeight(prev?.weight),
                     previousReps = prev?.reps,
                     previousWeight = prev?.weight,
                 )

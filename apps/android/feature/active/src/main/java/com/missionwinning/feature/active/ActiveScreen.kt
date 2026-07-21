@@ -120,20 +120,38 @@ fun ActiveScreen(
                 color = MwColors.TextMuted,
             )
 
-            MwRestTimer(secondsLeft = state.restSeconds)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                MwGhostButton(
-                    text = "−15s",
-                    onClick = { onEvent(ActiveEvent.RestMinus15) },
-                    modifier = Modifier.weight(1f),
-                )
-                MwGhostButton(
-                    text = "+15s",
-                    onClick = { onEvent(ActiveEvent.RestPlus15) },
-                    modifier = Modifier.weight(1f),
+            if (state.restSeconds > 0) {
+                MwRestTimer(secondsLeft = state.restSeconds)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    MwGhostButton(
+                        text = "−15s",
+                        contentDescription = "Shorten rest by 15 seconds",
+                        onClick = { onEvent(ActiveEvent.RestMinus15) },
+                        modifier = Modifier.weight(1f),
+                    )
+                    MwGhostButton(
+                        text = "Skip rest",
+                        contentDescription = "Skip rest timer",
+                        onClick = { onEvent(ActiveEvent.RestSkip) },
+                        modifier = Modifier.weight(1f),
+                    )
+                    MwGhostButton(
+                        text = "+15s",
+                        contentDescription = "Extend rest by 15 seconds",
+                        onClick = { onEvent(ActiveEvent.RestPlus15) },
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+            }
+
+            if (state.exercises.isEmpty()) {
+                Text(
+                    "No exercises in this session. Cancel and pick another day on Today.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
                 )
             }
 
@@ -145,7 +163,7 @@ fun ActiveScreen(
                         set = set,
                         weightUnit = state.weightUnit,
                         isCurrent = !set.done &&
-                            state.exercises.flatMap { it.sets }.firstOrNull { !it.done }?.id == set.id,
+                            ActiveSessionLogic.currentSetId(state.exercises) == set.id,
                         onToggle = { onEvent(ActiveEvent.ToggleSet(set.id)) },
                         onReps = { onEvent(ActiveEvent.UpdateReps(set.id, it)) },
                         onWeight = { onEvent(ActiveEvent.UpdateWeight(set.id, it)) },
@@ -160,11 +178,19 @@ fun ActiveScreen(
             Spacer(Modifier.height(8.dp))
             MwPrimaryButton(
                 text = if (state.finishing) "Saving…" else "Finish workout",
-                contentDescription = "Finish workout",
-                enabled = !state.finishing,
+                contentDescription = if (state.finishing) {
+                    "Saving workout"
+                } else {
+                    "Finish workout and save sets offline"
+                },
+                enabled = !state.finishing && ActiveSessionLogic.canFinish(state.exercises),
                 onClick = { onEvent(ActiveEvent.Finish) },
             )
-            MwGhostButton(text = "Cancel", onClick = onCancel)
+            MwGhostButton(
+                text = "Cancel",
+                contentDescription = "Cancel workout without saving",
+                onClick = onCancel,
+            )
         }
     }
 }
