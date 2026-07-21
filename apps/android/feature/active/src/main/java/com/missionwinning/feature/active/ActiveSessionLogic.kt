@@ -250,6 +250,30 @@ object ActiveSessionLogic {
         if (SetKind.countsTowardVolume(kind)) weight * reps else 0.0
 
     /**
+     * Drop a set by id and reindex remaining sets in that exercise.
+     * Removes the exercise entirely when its last set is removed.
+     */
+    fun removeSet(
+        exercises: List<ActiveExercise>,
+        setId: String,
+    ): List<ActiveExercise> {
+        return exercises.mapNotNull { ex ->
+            if (ex.sets.none { it.id == setId }) return@mapNotNull ex
+            val remaining = ex.sets.filter { it.id != setId }
+            if (remaining.isEmpty()) return@mapNotNull null
+            ex.copy(
+                sets = remaining.mapIndexed { idx, s -> s.copy(setIndex = idx) },
+            )
+        }
+    }
+
+    /** Drop an entire exercise block from the session. */
+    fun removeExercise(
+        exercises: List<ActiveExercise>,
+        exerciseId: String,
+    ): List<ActiveExercise> = exercises.filter { it.exerciseId != exerciseId }
+
+    /**
      * Convert a stored previous weight into the display unit for this session.
      * Legacy rows without unit are treated as [storedUnit] default `kg`.
      */

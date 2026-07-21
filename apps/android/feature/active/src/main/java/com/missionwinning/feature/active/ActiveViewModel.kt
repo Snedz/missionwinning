@@ -61,6 +61,8 @@ sealed interface ActiveEvent {
     data class ApplyPrevious(val setId: String) : ActiveEvent
     data class AddSet(val exerciseId: String) : ActiveEvent
     data class AddExercise(val exerciseId: String, val exerciseName: String) : ActiveEvent
+    data class RemoveSet(val setId: String) : ActiveEvent
+    data class RemoveExercise(val exerciseId: String) : ActiveEvent
     data object ToggleWeightUnit : ActiveEvent
     data object RestMinus15 : ActiveEvent
     data object RestPlus15 : ActiveEvent
@@ -91,6 +93,19 @@ class ActiveViewModel @Inject constructor(
             val defaultRest = ActiveSessionLogic.normalizeDefaultRest(repository.defaultRestSeconds())
             val restVibrate = repository.restVibrateEnabled()
             val restBeep = repository.restBeepEnabled()
+
+            if (MwRepository.isFreeformSession(sessionId)) {
+                _state.value = ActiveUiState(
+                    workoutName = workoutName.ifBlank { "Quick log" },
+                    sessionId = sessionId,
+                    exercises = emptyList(),
+                    weightUnit = unit,
+                    defaultRestSeconds = defaultRest,
+                    restVibrate = restVibrate,
+                    restBeep = restBeep,
+                )
+                return@launch
+            }
 
             if (MwRepository.isRoutineSession(sessionId)) {
                 val routineId = MwRepository.routineIdFromSession(sessionId).orEmpty()
@@ -167,6 +182,22 @@ class ActiveViewModel @Inject constructor(
             is ActiveEvent.AddExercise -> {
                 clearRestIfActive()
                 addExercise(event.exerciseId, event.exerciseName)
+            }
+            is ActiveEvent.RemoveSet -> {
+                clearRestIfActive()
+                _state.update { st ->
+                    st.copy(
+                        exercises = ActiveSessionLogic.removeSet(st.exercises, event.setId),
+                    )
+                }
+            }
+            is ActiveEvent.RemoveExercise -> {
+                clearRestIfActive()
+                _state.update { st ->
+                    st.copy(
+                        exercises = ActiveSessionLogic.removeExercise(st.exercises, event.exerciseId),
+                    )
+                }
             }
             ActiveEvent.ToggleWeightUnit -> toggleWeightUnit()
             ActiveEvent.RestMinus15 -> adjustRest(-ActiveSessionLogic.REST_STEP)
@@ -399,8 +430,8 @@ class ActiveViewModel @Inject constructor(
                 val volume = ActiveSessionLogic.sessionVolume(snap.exercises)
                 // Room SoT + outbox first; markSessionDone may hit network but local plan updates offline.
                 val total = repository.finishWorkout(snap.workoutName, duration, entities, snap.sessionId)
-                // Coach week progress only for plan sessions — not saved routines.
-                if (!MwRepository.isRoutineSession(snap.sessionId)) {
+                // Coach week progress only for plan sessions — not routines / freeform.
+                if (MwRepository.isCoachSession(snap.sessionId)) {
                     runCatching { repository.markSessionDone(snap.sessionId) }
                 }
                 _state.update {

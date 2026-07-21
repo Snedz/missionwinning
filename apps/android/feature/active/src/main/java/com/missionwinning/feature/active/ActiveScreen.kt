@@ -239,10 +239,15 @@ fun ActiveScreen(
                             }
                             ActiveListRow.Empty -> {
                                 MwEmptyState(
-                                    title = "No exercises",
-                                    body = "Cancel and pick another day on Today.",
-                                    cta = "Cancel",
-                                    onCta = onCancel,
+                                    title = "No exercises yet",
+                                    body = "Add from the offline catalog to start logging, or cancel.",
+                                    cta = "Add exercise",
+                                    onCta = { showAddExercise = true },
+                                )
+                                MwGhostButton(
+                                    text = "Cancel workout",
+                                    contentDescription = "Cancel workout without saving",
+                                    onClick = { confirmDiscard = true },
                                 )
                             }
                             ActiveListRow.Current -> {
@@ -260,6 +265,7 @@ fun ActiveScreen(
                                     setsInExercise = setInEx?.second,
                                     nextExerciseName = nextEx,
                                     canAddSet = (setInEx?.second ?: 0) < ActiveSessionLogic.MAX_SETS_PER_EXERCISE,
+                                    canRemoveSet = true,
                                     onComplete = {
                                         view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                                         onEvent(ActiveEvent.ToggleSet(set.id))
@@ -280,12 +286,31 @@ fun ActiveScreen(
                                     onAddSet = {
                                         onEvent(ActiveEvent.AddSet(set.exerciseId))
                                     },
+                                    onRemoveSet = {
+                                        onEvent(ActiveEvent.RemoveSet(set.id))
+                                    },
                                     onApplyPrevious = {
                                         onEvent(ActiveEvent.ApplyPrevious(set.id))
                                     },
                                 )
                             }
-                            is ActiveListRow.Section -> MwSectionLabel(row.name)
+                            is ActiveListRow.Section -> {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    MwSectionLabel(row.name)
+                                    MwGhostButton(
+                                        text = "Remove",
+                                        contentDescription = "Remove ${row.name} from session",
+                                        onClick = {
+                                            onEvent(ActiveEvent.RemoveExercise(row.exerciseId))
+                                        },
+                                        modifier = Modifier.fillMaxWidth(0.32f),
+                                    )
+                                }
+                            }
                             is ActiveListRow.SetItem -> {
                                 val set = row.set
                                 val weightPart = if (set.weight > 0) {
@@ -559,6 +584,7 @@ private fun CurrentSetCard(
     onRpe: (Int?) -> Unit,
     onCycleKind: () -> Unit,
     onAddSet: () -> Unit,
+    onRemoveSet: () -> Unit,
     onApplyPrevious: () -> Unit,
     exerciseIndex: Int? = null,
     exerciseTotal: Int = 0,
@@ -566,6 +592,7 @@ private fun CurrentSetCard(
     setsInExercise: Int? = null,
     nextExerciseName: String? = null,
     canAddSet: Boolean = true,
+    canRemoveSet: Boolean = true,
 ) {
     val hasPrevious = set.previousReps != null || set.previousWeight != null
     val prevWeight = set.previousWeight ?: 0.0
@@ -707,6 +734,13 @@ private fun CurrentSetCard(
                 text = "Add set",
                 contentDescription = "Add another set to ${set.exerciseName}",
                 onClick = onAddSet,
+            )
+        }
+        if (canRemoveSet) {
+            MwGhostButton(
+                text = "Remove set",
+                contentDescription = "Remove set ${set.setIndex + 1}",
+                onClick = onRemoveSet,
             )
         }
     }
