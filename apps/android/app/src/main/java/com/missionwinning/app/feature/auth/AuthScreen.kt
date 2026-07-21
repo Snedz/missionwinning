@@ -47,6 +47,7 @@ import com.missionwinning.core.designsystem.MwTypography
 @Composable
 fun AuthScreen(
     onClose: () -> Unit,
+    onOpenGallery: () -> Unit = {},
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -137,6 +138,39 @@ fun AuthScreen(
             }
 
             MwCard(elevated = true) {
+                MwSectionLabel("Cloud sync")
+                Row(horizontalArrangement = Arrangement.spacedBy(MwSpace.sm)) {
+                    val o = state.outbox
+                    MwChip(
+                        "${o.pendingWorkouts} pending",
+                        tone = if (o.pendingWorkouts > 0) MwChipTone.Brass else MwChipTone.Neutral,
+                    )
+                    MwChip(
+                        "${o.failedWorkouts} failed",
+                        tone = if (o.failedWorkouts > 0) MwChipTone.Danger else MwChipTone.Neutral,
+                    )
+                    if (o.outboxRows > 0) {
+                        MwChip("${o.outboxRows} queue", tone = MwChipTone.Brass)
+                    }
+                }
+                Text(
+                    state.outbox.summaryLine,
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+                Text(
+                    "Room is source of truth. Offline logs never require sync. Dead-lettered rows stay on device until Retry succeeds.",
+                    style = MwTypography.labelMedium,
+                    color = MwColors.TextMuted,
+                )
+                MwGhostButton(
+                    text = if (state.syncBusy) "Syncing…" else "Retry sync now",
+                    contentDescription = "Retry cloud sync for pending workouts",
+                    onClick = viewModel::retrySync,
+                )
+            }
+
+            MwCard(elevated = true) {
                 MwSectionLabel("Privacy")
                 Text(
                     "Crash reports (no account data) and optional weekly install pulse. Workouts stay on-device unless you sign in to sync.",
@@ -216,6 +250,11 @@ fun AuthScreen(
                         if (state.session.configured) "Supabase · configured" else "Supabase · set mw.supabaseUrl + mw.supabaseAnonKey",
                         style = MwTypography.labelMedium,
                         color = MwColors.TextMuted,
+                    )
+                    MwGhostButton(
+                        text = "Design system gallery",
+                        contentDescription = "Open debug design system gallery",
+                        onClick = onOpenGallery,
                     )
                 }
             }

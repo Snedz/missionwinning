@@ -3,11 +3,16 @@ package com.missionwinning.app.di
 import android.content.Context
 import com.missionwinning.app.BuildConfig
 import com.missionwinning.core.data.AuthRepository
+import com.missionwinning.core.data.CoachPlanRepository
 import com.missionwinning.core.data.MwDatabase
 import com.missionwinning.core.data.MwRepository
+import com.missionwinning.core.data.PrefsRepository
+import com.missionwinning.core.data.RoutineRepository
+import com.missionwinning.core.data.SyncCoordinator
 import com.missionwinning.core.data.SyncEngine
 import com.missionwinning.core.data.SyncScheduler
 import com.missionwinning.core.data.TokenStore
+import com.missionwinning.core.data.WorkoutRepository
 import com.missionwinning.core.network.MobileApiClient
 import com.missionwinning.core.network.SupabaseAuthClient
 import dagger.Module
@@ -76,11 +81,49 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(
+    fun providePrefsRepository(db: MwDatabase, api: MobileApiClient): PrefsRepository =
+        PrefsRepository(db, api)
+
+    @Provides
+    @Singleton
+    fun provideSyncCoordinator(
         db: MwDatabase,
         api: MobileApiClient,
         syncEngine: SyncEngine,
-    ): MwRepository = MwRepository(db, api, syncEngine)
+    ): SyncCoordinator = SyncCoordinator(db, api, syncEngine)
+
+    @Provides
+    @Singleton
+    fun provideCoachPlanRepository(
+        db: MwDatabase,
+        api: MobileApiClient,
+        prefs: PrefsRepository,
+    ): CoachPlanRepository = CoachPlanRepository(db, api, prefs)
+
+    @Provides
+    @Singleton
+    fun provideWorkoutRepository(
+        db: MwDatabase,
+        prefs: PrefsRepository,
+        sync: SyncCoordinator,
+    ): WorkoutRepository = WorkoutRepository(db, prefs, sync)
+
+    @Provides
+    @Singleton
+    fun provideRoutineRepository(
+        db: MwDatabase,
+        sync: SyncCoordinator,
+    ): RoutineRepository = RoutineRepository(db, sync)
+
+    @Provides
+    @Singleton
+    fun provideRepository(
+        prefs: PrefsRepository,
+        coach: CoachPlanRepository,
+        workouts: WorkoutRepository,
+        routines: RoutineRepository,
+        sync: SyncCoordinator,
+    ): MwRepository = MwRepository(prefs, coach, workouts, routines, sync)
 
     @Provides
     @Singleton

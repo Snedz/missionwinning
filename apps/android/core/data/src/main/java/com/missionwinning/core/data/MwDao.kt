@@ -67,6 +67,22 @@ interface MwDao {
 
     @Query(
         """
+        SELECT COUNT(*) FROM workout_logs
+        WHERE syncStatus = 'pending' AND deletedAt IS NULL
+        """,
+    )
+    suspend fun pendingWorkoutCount(): Int
+
+    @Query(
+        """
+        SELECT COUNT(*) FROM workout_logs
+        WHERE syncStatus = 'failed' AND deletedAt IS NULL
+        """,
+    )
+    suspend fun failedWorkoutCount(): Int
+
+    @Query(
+        """
         UPDATE workout_logs
         SET syncStatus = :status, revision = :revision, updatedAt = :updatedAt
         WHERE id = :id

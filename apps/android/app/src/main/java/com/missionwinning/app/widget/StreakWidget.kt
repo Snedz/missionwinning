@@ -32,11 +32,11 @@ class StreakWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val streak = runCatching {
             val db = MwDatabase.get(context)
-            MwRepository(db, api = null).workoutStreakDays()
+            MwRepository.create(db).workoutStreakDays()
         }.getOrDefault(0)
         val weekWorkouts = runCatching {
             val db = MwDatabase.get(context)
-            val repo = MwRepository(db, api = null)
+            val repo = MwRepository.create(db)
             val since = java.time.LocalDate.now()
                 .minusDays(6)
                 .atStartOfDay(java.time.ZoneId.systemDefault())

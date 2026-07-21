@@ -6,6 +6,8 @@ object Routes {
     const val TODAY = "today"
     const val COACH = "coach"
     const val AUTH = "auth"
+    /** Debug-only designsystem gallery. */
+    const val DESIGN_GALLERY = "debug/design-gallery"
     const val CATALOG = "catalog"
     const val PROGRESS = "progress"
     const val ROUTINES = "routines"

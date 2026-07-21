@@ -263,9 +263,16 @@ jobs:
           # Phase 0: plain API 36 — no preview platforms or symlink hacks
           sdkmanager "platforms;android-36" "build-tools;36.0.0" "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Assemble debug + all unit tests
+      - name: Assemble debug + all-module unit tests
         run: |
+          # Phase 9: full testDebug (all modules) + debug APK
           ./gradlew :app:assembleDebug testDebugUnitTest --stacktrace
+
+      - name: Room schema present (exportSchema discipline)
+        run: |
+          test -d core/data/schemas
+          # Nested: schemas/com.missionwinning.core.data.MwDatabase/{7,8,9}.json
+          test -n "$(find core/data/schemas -name '*.json' | head -1)"
 
       - name: Upload debug APK
         if: success()
@@ -284,6 +291,6 @@ jobs:
           grep -q 'Complete set' .maestro/wedge.yaml
           grep -q 'Session locked' .maestro/wedge.yaml
 
-      - name: Unit-test modules that ship logger invariants
+      - name: Logger + sync invariant modules (explicit)
         run: |
-          ./gradlew :feature:active:testDebugUnitTest :core:model:testDebugUnitTest :core:data:testDebugUnitTest --stacktrace
+          ./gradlew :feature:active:testDebugUnitTest :core:model:testDebugUnitTest :core:data:testDebugUnitTest :core:common:testDebugUnitTest --stacktrace
