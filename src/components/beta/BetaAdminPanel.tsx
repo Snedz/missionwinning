@@ -130,6 +130,64 @@ export function BetaAdminPanel({ enabled }: Props) {
     }
   };
 
+  const [proofCopied, setProofCopied] = useState(false);
+
+  const buildProofText = useCallback(() => {
+    const lines: string[] = [
+      'Mission Winning — beta proof stats (real dashboard only)',
+      `Captured: ${new Date().toISOString()}`,
+      '',
+    ];
+    if (metrics) {
+      lines.push(
+        `Total profiles: ${metrics.totalProfiles}`,
+        `Signed up last 14 days: ${metrics.signedUpLast14Days}`,
+        `I-Day complete: ${metrics.iDayComplete} (${metrics.iDayCompletionPct}%)`,
+        `BT 5/5 complete: ${metrics.basicComplete} (${metrics.basicCompletePct}%)`,
+        `Commissioned: ${metrics.commissioned} (${metrics.commissionedPct}%)`,
+        `Launch ready: ${metrics.launchReady ? 'yes' : 'no'}`,
+        `Launch notes: ${metrics.launchNotes.length ? metrics.launchNotes.join('; ') : 'none'}`,
+        `Phases: i-day=${metrics.phaseCounts['i-day']} basic=${metrics.phaseCounts.basic} readiness=${metrics.phaseCounts.readiness} commissioned=${metrics.phaseCounts.commissioned}`,
+        `Lead total: ${metrics.leadTotal ?? 0}`
+      );
+    } else {
+      lines.push('Metrics: (not loaded)');
+    }
+    if (invites) {
+      lines.push(
+        '',
+        'Invites funnel',
+        `Issued: ${invites.totals.issued}`,
+        `Landed: ${invites.totals.landed}`,
+        `Signed up: ${invites.totals.signedUp} / target ${invites.totals.target}`,
+        `I-Day done: ${invites.totals.iDayDone}`,
+        `With workout: ${invites.totals.withWorkout}`
+      );
+    }
+    lines.push('', 'Do not invent numbers beyond this export.');
+    return lines.join('\n');
+  }, [metrics, invites]);
+
+  const copyProofStats = async () => {
+    try {
+      await navigator.clipboard.writeText(buildProofText());
+      setProofCopied(true);
+      window.setTimeout(() => setProofCopied(false), 2000);
+    } catch {
+      setProofCopied(false);
+    }
+  };
+
+  const downloadProofStats = () => {
+    const blob = new Blob([buildProofText()], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `mw-beta-proof-${new Date().toISOString().slice(0, 10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   if (!enabled) return null;
   if (!loading && !metrics && !error) return null;
 
@@ -140,22 +198,86 @@ export function BetaAdminPanel({ enabled }: Props) {
     <div className="space-y-4">
       <Card className="border-[color:var(--status-warning-border)] bg-[color:var(--status-warning-bg)]">
         <CardHeader>
-          <CardTitle className="flex items-center justify-between gap-2">
+          <CardTitle className="flex flex-wrap items-center justify-between gap-2">
             <span>Beta funnel (all users)</span>
-            <button
-              type="button"
-              onClick={() => void load()}
-              disabled={loading}
-              className="text-xs font-normal text-primary hover:underline disabled:opacity-50"
-            >
-              {loading ? 'Loading…' : 'Refresh'}
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => void copyProofStats()}
+                disabled={!metrics && !invites}
+                className="text-xs font-normal text-primary hover:underline disabled:opacity-50"
+              >
+                {proofCopied ? 'Copied proof' : 'Copy proof stats'}
+              </button>
+              <button
+                type="button"
+                onClick={downloadProofStats}
+                disabled={!metrics && !invites}
+                className="text-xs font-normal text-primary hover:underline disabled:opacity-50"
+              >
+                Download .txt
+              </button>
+              <button
+                type="button"
+                onClick={() => void load()}
+                disabled={loading}
+                className="text-xs font-normal text-primary hover:underline disabled:opacity-50"
+              >
+                {loading ? 'Loading…' : 'Refresh'}
+              </button>
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm">
           {error && <p className="text-destructive text-xs">{error}</p>}
           {metrics && (
             <>
+              <div
+                className="rounded-lg border border-border/60 bg-background/80 p-3 space-y-2"
+                data-testid="beta-proof-summary"
+              >
+                <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium">
+                  Application proof summary (screenshot this)
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    Profiles:{' '}
+                    <span className="font-mono font-semibold text-foreground">
+                      {metrics.totalProfiles}
+                    </span>
+                  </div>
+                  <div>
+                    I-Day:{' '}
+                    <span className="font-mono font-semibold text-foreground">
+                      {metrics.iDayCompletionPct}%
+                    </span>
+                  </div>
+                  <div>
+                    BT complete:{' '}
+                    <span className="font-mono font-semibold text-foreground">
+                      {metrics.basicCompletePct}%
+                    </span>
+                  </div>
+                  <div>
+                    Invites w/ workout:{' '}
+                    <span className="font-mono font-semibold text-foreground">
+                      {invites?.totals.withWorkout ?? '—'}
+                    </span>
+                  </div>
+                  <div>
+                    Signed up / target:{' '}
+                    <span className="font-mono font-semibold text-foreground">
+                      {signedUp} / {gateTarget}
+                    </span>
+                  </div>
+                  <div>
+                    Launch ready:{' '}
+                    <span className="font-mono font-semibold text-foreground">
+                      {metrics.launchReady ? 'yes' : 'no'}
+                    </span>
+                  </div>
+                </div>
+              </div>
               <div className="grid grid-cols-2 gap-2">
                 <Stat label="Total profiles" value={String(metrics.totalProfiles)} />
                 <Stat label="Last 14 days" value={String(metrics.signedUpLast14Days)} />

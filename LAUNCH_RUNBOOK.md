@@ -171,6 +171,7 @@ Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP
 - **Before any deploy**: `npm test` + `npm run gate-smoke` (CI also runs tests).
 - **Monthly**: re-read [REDTEAM.md](REDTEAM.md) §1 and check falsifying evidence; review Stripe → enrollments reconciliation; `npm audit`.
 - **Rule that keeps you honest**: no new features while a LOAD-BEARING assumption is failing its evidence check.
+- **YC:** only after beta → public → week-4 + paid gates — [docs/YC_THESIS.md](docs/YC_THESIS.md) · [ORCHESTRATION.md](ORCHESTRATION.md). Agents never flip `PRIVATE_MODE` or invent traction.
 
 ---
 

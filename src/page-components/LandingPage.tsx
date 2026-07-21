@@ -115,7 +115,7 @@ export function LandingPage() {
         <div className="relative z-[1] mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
           <div className="page-enter">
             <p className="eyebrow-live mb-5">
-              {t('landingHeroEyebrow', { defaultValue: 'Free workout tracker · Offline PWA' })}
+              {t('landingHeroEyebrow', { defaultValue: 'Free offline logger · Adaptive AI coach' })}
             </p>
             <h1 className="display-hero mb-6">
               {t('landingHeroTitle1', { defaultValue: 'Train anywhere.' })}
@@ -125,7 +125,7 @@ export function LandingPage() {
             <p className="mb-4 max-w-md text-lg leading-relaxed text-muted-foreground">
               {t('landingHeroSubtitle', {
                 defaultValue:
-                  'The free workout tracker that works offline — no account, no app store, no paywall on the basics. Nutrition, mobility, mind, and learning deepen the same Win Score when you want them.',
+                  'We build an adaptive AI training coach for people who train at home or in a park — free offline workout logging with no account, and weekly plans that adapt from logs alone (no wearable required). Nutrition, mobility, mind, and learning deepen the same Win Score when you want them.',
               })}
             </p>
             <p className="mb-6 max-w-md text-sm text-muted-foreground">
@@ -143,7 +143,7 @@ export function LandingPage() {
             </p>
             <p className="mb-6 text-sm text-brass/90">
               {t('landingHeroProof', {
-                defaultValue: 'Log a set in the demo → Win Score ticks. That’s the loop.',
+                defaultValue: 'Log a set → Coach shapes the week → Win Score ticks. That’s the loop.',
               })}
             </p>
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:flex-wrap">

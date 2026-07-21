@@ -11,11 +11,16 @@ import {
   type StripeCheckoutSession,
 } from '@/lib/stripeWebhook';
 import { validateStripeWebhookRequest } from '@/lib/api/stripeWebhookAuth';
+import {
+  notifyFounderOfStripeDispute,
+  type StripeDisputeObject,
+} from '@/lib/stripeDisputeNotify';
 
 /**
  * Stripe webhook — requires signature verification before granting premium.
  * Set STRIPE_WEBHOOK_SECRET + SUPABASE_SERVICE_ROLE_KEY in production.
  * Prefer metadata.user_id from Checkout Sessions when present.
+ * Also notifies founder on charge.dispute.* (no auto-fight).
  */
 export const POST = withApiLogging('stripe-webhook', async (req: NextRequest) => {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -85,6 +90,24 @@ export const POST = withApiLogging('stripe-webhook', async (req: NextRequest) =>
         console.error('Stripe checkout.session.expired recovery upsert', e);
         // Do not 500 — Stripe will retry; missing recovery is non-fatal
       }
+    }
+  }
+
+  // Chargebacks — alert founder only; never auto-submit evidence.
+  if (
+    event.type === 'charge.dispute.created' ||
+    event.type === 'charge.dispute.updated' ||
+    event.type === 'charge.dispute.closed'
+  ) {
+    const dispute = (event.data?.object ?? {}) as StripeDisputeObject;
+    try {
+      await notifyFounderOfStripeDispute({
+        eventType: event.type,
+        dispute,
+      });
+    } catch (e) {
+      console.error('Stripe dispute notify error:', e);
+      // Do not 500 — enrollment path must stay healthy; founder may still see Stripe email
     }
   }
 

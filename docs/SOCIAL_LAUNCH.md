@@ -3,7 +3,10 @@
 **Purpose:** Copy-paste posts, filming shot list, and channel rules for beta → public.  
 **Visual assets:** Brand logos, colors, OG image → [/press](https://www.missionwinning.com/press) · [brand-guidelines.md](brand-guidelines.md)  
 **Rule:** Social gets people into I-Day → first workout. No paid ads until week-4 retention holds.  
-**Companion:** [STRATEGY.md](../STRATEGY.md) · [BETA_INVITE.md](../BETA_INVITE.md) · [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)
+**Capital:** [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) · outreach help: [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md)  
+**Companion:** [STRATEGY.md](../STRATEGY.md) · [BETA_INVITE.md](../BETA_INVITE.md) · [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) · [YC_THESIS.md](YC_THESIS.md)
+
+**Wedge line (use everywhere):** Free offline logger + adaptive Mission Coach from logs (no wearable). Six pillars stay below the fold / second sentence — not the hook.
 
 ---
 
@@ -23,28 +26,28 @@ Cadence: **≤1 public post/week** while recruiting. Prefer DMs.
 ### Bio (when you open the account)
 
 ```
-Building Mission Winning — free workout tracker, works offline, no account.
+Building Mission Winning — free offline logger + AI coach that adapts from your logs (no wearable).
 Beta: link in bio → missionwinning.com (ask me for access)
 ```
 
 ### Film once (30–60s) — shot list
 
-Record on phone, portrait, silent UI or soft click sounds.
+Record on phone, portrait, silent UI or soft click sounds. **YC demo variant:** same arc ending on Coach adapting the week.
 
 | Seconds | Screen | Say / caption beat |
 |---------|--------|--------------------|
-| 0–5 | `/welcome` I-Day start | “Free tracker. No account.” |
+| 0–5 | `/welcome` I-Day start | “Free logger. No account.” |
 | 5–20 | Tap through I-Day → Today | “Three minutes to start.” |
 | 20–40 | `/active` — Log one set | “Log a set. Offline works.” |
-| 40–55 | Victory / Today Mission Score | “Win Score updates. That’s the loop.” |
+| 40–55 | `/coach` or Today Coach card | “Coach reshapes the week from logs — no wearable.” |
 | 55–60 | End card | “missionwinning.com — building in public” |
 
-**Do not** say “we’re live / public launch” while `PRIVATE_MODE=true`. Soft caption: “Building a free offline workout tracker — looking for beta testers. DM me.”
+**Do not** say “we’re live / public launch” while `PRIVATE_MODE=true`. Soft caption: “Building a free offline logger + adaptive coach from logs (no wearable) — looking for beta testers. DM me.”
 
 ### Soft post caption (optional, during beta)
 
 ```
-Tired of paywalled trackers. Building a free one that works offline — no account, no app store.
+Tired of paywalled trackers and wearable-only AI coaches. Building a free offline logger + Mission Coach that adapts from your logs alone.
 
 Looking for honest beta testers. DM me.
 
@@ -90,30 +93,30 @@ Founders Super Bundle is live if you want the full path — free core stays free
 ### 2. Product Hunt (tagline + first comment)
 
 **Tagline (≤60 chars):**  
-`Free offline workout tracker — no account, no paywall`
+`Free offline logger + AI coach — no wearable needed`
 
 **Description (short):**  
-Mission Winning is a free PWA fitness tracker for people who train anywhere. Log sets without an account, works offline, install from the browser. Premium Super Bundle unlocks Coach + depth — never gates the logger.
+Mission Winning is a free PWA for people who train at home or in a park. Log sets without an account, works offline. Mission Coach builds weekly plans from your logs alone — no wearable. Super Bundle unlocks Coach depth + pillars — never gates the logger.
 
 **First comment (builder):**  
-I got tired of Strong/Hevy locking basics. So I shipped a free core that works on any phone with spotty signal. Try: open the site → Welcome (I-Day) → log one set → see Mission Score. No email required for the first workout. Honest feedback welcome — especially where you got stuck.
+I got tired of Strong/Hevy locking basics and wearable-first coaches assuming a $300 sensor. So I shipped a free core that works on any phone with spotty signal, plus a coach that adapts from workout logs. Try: open the site → Welcome (I-Day) → log one set → check Mission Coach. No email required for the first workout. Honest feedback welcome — especially where you got stuck.
 
 ### 3. Show HN
 
 **Title:**  
-`Show HN: Free offline workout tracker (PWA, no account required)`
+`Show HN: Free offline workout logger + adaptive coach (no wearable)`
 
 **Body:**
 
 ```
-I built Mission Winning — a free workout logger that works as a PWA without an account.
+I built Mission Winning — a free PWA workout logger with Mission Coach (weekly plans from logs, no wearable required).
 
-Why: most trackers paywall routines or need app-store installs. I train at home / park and wanted something that works offline.
+Why: most trackers paywall routines or need app-store installs; AI coaches assume wearables. I train at home / park and wanted something that works offline on a phone.
 
 Try it: https://www.missionwinning.com
-Path: Welcome → Today → log a set → Mission Score updates.
+Path: Welcome → Today → log a set → Mission Coach adapts the week.
 
-Stack: Next.js + Supabase. Free core forever; optional Super Bundle for Coach/depth.
+Stack: Next.js + Supabase. Free core forever; optional Super Bundle for Coach depth.
 
 Looking for feedback from people who actually log workouts.
 ```
@@ -121,7 +124,7 @@ Looking for feedback from people who actually log workouts.
 ### 4. Community post (Reddit / Discord — check rules)
 
 ```
-I got tired of paywalled trackers so I built a free offline one (PWA, no account to start).
+I got tired of paywalled trackers and wearable-only AI coaches — so I built a free offline logger + coach that adapts from your logs (PWA, no account to start).
 
 https://www.missionwinning.com
 

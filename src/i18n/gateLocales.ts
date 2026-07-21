@@ -5,7 +5,7 @@ const GATE_EN: Record<string, string> = {
   gateTitle1: 'Train anywhere.',
   gateTitle2: 'Win daily.',
   gateSubtitle:
-    'The free health everything app — training, nutrition, mobility, mind, activity, and learning. Launching soon, free core forever.',
+    'Free offline workout logging + adaptive Mission Coach from your logs (no wearable). Launching soon — free core forever.',
   gateWaitlistTitle: 'Get notified at launch',
   gateWaitlistPlaceholder: 'you@example.com',
   gateWaitlistSubmit: 'Notify me',

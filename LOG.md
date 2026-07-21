@@ -16,6 +16,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-20 — Pre-revenue entity + Stripe dispute shield
+
+- **Entity pack:** [docs/legal/ENTITY_RESEARCH.md](docs/legal/ENTITY_RESEARCH.md), [docs/legal/OPERATING_AGREEMENT_DRAFT.md](docs/legal/OPERATING_AGREEMENT_DRAFT.md), [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) (take-a-dollar gate)
+- **Refunds visibility:** `UnlockButton` → 14-day + `/refunds`; Stripe Checkout custom-text steps in [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)
+- **Dispute alerts:** webhook `charge.dispute.*` → `FOUNDER_DIGEST_EMAIL` via `stripeDisputeNotify`; [docs/STRIPE_DISPUTE_OPS.md](docs/STRIPE_DISPUTE_OPS.md); setup script event list updated
+- **Evidence pack:** [docs/legal/STRIPE_DISPUTE_EVIDENCE_PACK.md](docs/legal/STRIPE_DISPUTE_EVIDENCE_PACK.md) — no auto-fight
+- Founder: add dispute events on existing Stripe webhook; set `FOUNDER_DIGEST_EMAIL`; Dashboard Checkout custom text → `/refunds`
+
+---
+
 ## 2026-07-20 — Android UX craft pass
 
 - **Design system:** bundled Barlow Condensed / Inter / IBM Plex Mono; `MwScreenScaffold` navy+emerald glow; branded buttons, `MwSetRow`, `MwRestTimer`, enter fade + reduce-motion
@@ -40,9 +50,6 @@ Chronological record of shipped work. Newest first.
 - Templates/scripts: `keystore.properties.example`, `scripts/create-upload-keystore.sh`, `scripts/wedge-adb-walk.py` (Maestro wedge via adb UIAutomator; no airplane mode)
 - Docs: PLAY_LISTING (Data safety from LEGAL_SAFETY §2, screenshots, founder checklist), INDEX emulator commands, ANDROID_NATIVE API 34+ system image note
 - Founder: create real upload keystore locally → Internal AAB; emulator QA still via installDebug + Maestro/adb walk
-
----
-
 
 ---
 

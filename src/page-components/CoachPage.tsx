@@ -16,6 +16,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { WeekStrip } from '@/components/coach/WeekStrip';
 import { PlanSessionCard } from '@/components/coach/PlanSessionCard';
 import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
+import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { CoachPlanSkeleton, SkeletonCard } from '@/components/ui/Skeleton';
@@ -59,7 +60,8 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       eyebrow={t('coachWeekEyebrow', { defaultValue: "THIS WEEK'S MISSION" })}
       title={t('coachPageTitle', { defaultValue: 'Mission Coach' })}
       subtitle={t('coachPageSubtitle', {
-        defaultValue: 'Fatigue-aware weekly plan — one next session, adapted when life happens.',
+        defaultValue:
+          'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
       })}
     >
       {loading && <CoachPlanSkeleton className="py-2" />}
@@ -141,15 +143,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
           </div>
 
-          {plan.sessions.some((s) => s.status === 'missed') && (
-            <p className="text-sm text-status-warn leading-relaxed rounded-xl border border-status-warn/25 bg-status-warn/5 px-4 py-3">
-              {t('coachAdaptMissedNote', {
-                count: plan.sessions.filter((s) => s.status === 'missed').length,
-                defaultValue:
-                  'Missed sessions earlier this week — remaining days re-spread so the plan still fits life.',
-              })}
-            </p>
-          )}
+          <CoachAdaptBanner plan={plan} />
 
           <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
 

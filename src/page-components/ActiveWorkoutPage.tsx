@@ -221,7 +221,13 @@ export function ActiveWorkoutPage() {
           strain: afterScores.strain - beforeScores.strain,
           recovery: afterScores.recovery - beforeScores.recovery,
         },
-        buildProgressionInsight(log, units)
+        buildProgressionInsight(log, units),
+        undefined,
+        {
+          completedWorkouts: historyAfter.length,
+          hasCoachPlan: !!plan,
+          strainDelta: afterScores.strain - beforeScores.strain,
+        }
       )
     );
     setVictoryOpen(true);

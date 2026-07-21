@@ -157,7 +157,7 @@ export function BundlePage() {
           <p className="text-sm text-muted-foreground max-w-xl">
             {t('bundleHonestNote', {
               defaultValue:
-                'Free tracker stays free. Bundle unlocks Coach, deeper Fuel/Move/Mind/Learn — never required to log workouts.',
+                'Free logger stays free. Bundle unlocks Mission Coach + deeper Fuel/Move/Mind/Learn — never required to log workouts.',
             })}
           </p>
           <ul className="flex flex-wrap gap-2 text-[11px] text-muted-foreground">

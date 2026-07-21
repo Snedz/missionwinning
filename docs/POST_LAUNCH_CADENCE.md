@@ -60,5 +60,20 @@ SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify
 - If A1 falsified (users demand app store): [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) before native
 - If A4 falsified (&lt;10% week-4): stop acquisition, 10 interviews, fix the loop (likely Coach / Today)
 - **No paid social ads** until week-4 holds
+- **No YC application** until the traction bar in [YC_THESIS.md](YC_THESIS.md) / [ORCHESTRATION.md](../ORCHESTRATION.md) § YC gate (week-4 ≥10%, ≥100 activated workouts, ≥10 paid)
 
-Companion: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) §6 · [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md)
+## YC readiness checklist (founder-owned)
+
+Sequence stays: **beta → public → week-4 numbers → apply**. Do not skip.
+
+| Check | Target | Status |
+|-------|--------|--------|
+| Private beta cohort | ≥10, I-Day/BT gates | Horizon 0 |
+| Public flip | `PRIVATE_MODE=false` + PWA smoke | Horizon 1 |
+| Activated workouts | ≥100 users with ≥1 completed workout | Before apply |
+| Week-4 retention | ≥10% activated cohort (two cohorts ideal) | Horizon 2 wall |
+| Paid | ≥10 Super Bundle or lifetime | Before apply |
+| Demo clip | 60s I-Day → log → Coach adapts | Before apply |
+| Insight receipts | 20 “why I almost quit” notes | Before apply |
+
+Companion: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) §6 · [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · [YC_THESIS.md](YC_THESIS.md)

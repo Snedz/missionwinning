@@ -3,6 +3,9 @@
 **See vision.md first** — this is the guiding document. Core mission (tracker + fundamentals) is **free forever for everyone worldwide**. Revenue via premium modules + flagship Super Bundle (inspired by Freeletics: freemium core hook + discounted bundle of synergistic pillars for holistic value, 50% off promos, etc.). "Mainly a free app" serving the mission of global health equity. PWA primary for zero-fee accessibility.
 
 ## 1. Legal / Business Structure (Mission + Sustainable Revenue)
+
+> **Superseded for live payments:** Prefer [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md) + [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md). This section still mentions PayPal-first demo flows; production is Stripe Checkout Sessions + `/refunds`.
+
 - Form **Mission Winning LLC** (for-profit) — use your state or Delaware via attorney/services (~$100-500 + EIN). Owns app IP, runs payments (PayPal), pays owner (salary/draws) for sustainability while pursuing mission.
 - **Optional/Parallel: Mission Winning Foundation (501(c)(3))** for pure mission impact: scholarships for free premium/bundle access in low-resource areas (Africa, etc.), grants, free global education/resources. LLC can donate % of profits or provide at-cost services. Common hybrid for impact orgs.
 - Apple Developer: **Not needed** for PWA launch (primary model — zero $99 fees or 30% cuts). Core is free, so aligns with accessibility. If native iOS companion later (after revenue), pay $99 under LLC. Non-profit waiver only for 100% free apps — use PWA + foundation for mission scale instead.
