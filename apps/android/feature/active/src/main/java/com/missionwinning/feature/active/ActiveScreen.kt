@@ -1,11 +1,14 @@
 package com.missionwinning.feature.active
 
+import android.content.Intent
 import android.media.AudioManager
 import android.media.ToneGenerator
+import android.os.Build
 import android.view.HapticFeedbackConstants
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -93,6 +96,7 @@ fun ActiveRoute(
     }
 
     KeepScreenOn()
+    ActiveSessionForeground()
 
     ActiveScreen(
         state = state,
@@ -108,6 +112,36 @@ private fun KeepScreenOn() {
         val window = activity?.window
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         onDispose { window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
+    }
+}
+
+/**
+ * Starts the ongoing-session foreground service so swipe-away does not kill the log.
+ * Service package lives in :app; resolved by class name to avoid a circular module dep.
+ */
+@Composable
+private fun ActiveSessionForeground() {
+    val context = LocalContext.current.applicationContext
+    DisposableEffect(Unit) {
+        runCatching {
+            val cls = Class.forName("com.missionwinning.app.session.ActiveSessionService")
+            val intent = Intent(context, cls)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intent)
+            } else {
+                context.startService(intent)
+            }
+        }
+        onDispose {
+            runCatching {
+                val cls = Class.forName("com.missionwinning.app.session.ActiveSessionService")
+                val intent = Intent(context, cls).setAction(
+                    "com.missionwinning.app.STOP_SESSION_SERVICE",
+                )
+                context.startService(intent)
+            }
+            com.missionwinning.core.common.ActiveSessionHub.clear()
+        }
     }
 }
 

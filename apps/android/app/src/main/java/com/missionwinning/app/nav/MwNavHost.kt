@@ -53,8 +53,17 @@ interface RepoEntryPoint {
     fun repository(): MwRepository
 }
 
+sealed interface PendingDeepLink {
+    data object QuickLog : PendingDeepLink
+    data class ResumeActive(val sessionId: String, val name: String) : PendingDeepLink
+    data class StartWorkout(val sessionId: String, val name: String, val sets: Int) : PendingDeepLink
+}
+
 @Composable
-fun MwNavHost() {
+fun MwNavHost(
+    pendingDeepLink: PendingDeepLink? = null,
+    onDeepLinkConsumed: () -> Unit = {},
+) {
     val context = LocalContext.current.applicationContext
     val repository = remember {
         EntryPointAccessors.fromApplication(context, RepoEntryPoint::class.java).repository()
@@ -66,6 +75,30 @@ fun MwNavHost() {
     LaunchedEffect(Unit) {
         start = if (repository.isIdayDone()) Routes.TODAY else Routes.IDAY
         bootDone = true
+    }
+
+    LaunchedEffect(bootDone, pendingDeepLink) {
+        val link = pendingDeepLink
+        if (!bootDone || link == null) return@LaunchedEffect
+        when (link) {
+            PendingDeepLink.QuickLog -> {
+                val id = MwRepository.freeformSessionId()
+                nav.navigate(Routes.active(id, "Quick log", 0)) {
+                    launchSingleTop = true
+                }
+            }
+            is PendingDeepLink.ResumeActive -> {
+                nav.navigate(Routes.active(link.sessionId, link.name.ifBlank { "Workout" }, 3)) {
+                    launchSingleTop = true
+                }
+            }
+            is PendingDeepLink.StartWorkout -> {
+                nav.navigate(Routes.active(link.sessionId, link.name, link.sets)) {
+                    launchSingleTop = true
+                }
+            }
+        }
+        onDeepLinkConsumed()
     }
 
     if (!bootDone) {
