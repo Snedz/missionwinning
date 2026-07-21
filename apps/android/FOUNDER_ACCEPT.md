@@ -127,6 +127,9 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | C5 | Adapt banner after finishing a session | |
 | C6 | **Release build:** no Lab tools visible | |
 | C7 | **Debug only:** Lab tools seed / reseed work | |
+| C8 | Access banner: offline free / signed-in free coach / Super Bundle when premium | |
+| C9 | Premium: “Preview adapt” product path works; **no Buy / Stripe** controls | |
+| C10 | Free path: logger + basic coach still work without Super Bundle | |
 
 ---
 
@@ -140,6 +143,8 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | U4 | Sign out keeps local workouts; tokens cleared | |
 | U5 | Airplane mode logger works signed in and signed out | |
 | U6 | Refresh entitlement returns free/premium source | |
+| U7 | Signed-in free: “Free logger” chip + no purchase CTA | |
+| U8 | Signed-in premium: “Super Bundle” chip; copy says purchase not in-app | |
 
 ---
 

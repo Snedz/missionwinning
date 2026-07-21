@@ -3,8 +3,10 @@ package com.missionwinning.app.feature.auth
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -17,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import android.app.Application
@@ -318,15 +321,26 @@ private fun SignedInCard(
             style = MwTypography.titleMedium,
             color = MwColors.Text,
         )
+        MwSectionLabel("Entitlement")
         Row(horizontalArrangement = Arrangement.spacedBy(MwSpace.sm)) {
             MwChip(
-                if (state.session.premium) "Super Bundle" else "Free",
+                if (state.session.premium) "Super Bundle" else "Free logger",
                 tone = if (state.session.premium) MwChipTone.Emerald else MwChipTone.Neutral,
             )
             MwChip(state.session.premiumSource, tone = MwChipTone.Brass)
         }
         Text(
-            "Workouts sync with full set detail when online. Sign-out keeps local logs and stops cloud sync.",
+            if (state.session.premium) {
+                "Super Bundle recognized on this account. Coach adapt depth is unlocked. Purchase is not offered in-app."
+            } else {
+                "Free offline logging is permanent. If you already have Super Bundle on web, refresh entitlement while online — no in-app purchase."
+            },
+            style = MwTypography.bodyMedium,
+            color = MwColors.TextMuted,
+        )
+        Spacer(Modifier.height(8.dp))
+        Text(
+            "Workouts & routines sync when online. Sign-out keeps local logs and stops cloud sync.",
             style = MwTypography.bodyMedium,
             color = MwColors.TextMuted,
         )
