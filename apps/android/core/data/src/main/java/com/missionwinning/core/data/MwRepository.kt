@@ -60,16 +60,20 @@ class MwRepository(
         return plan
     }
 
+    /**
+     * @param preferNetwork when true, try HTTP coach plan first (and cache it); on failure use Room then seed.
+     *                      when false, Room cache / local seed only (Active start path).
+     */
     suspend fun ensureCoachPlan(preferNetwork: Boolean = true): CoachPlanResponseDto {
-        dao.getCoachPlan()?.let {
-            return json.decodeFromString(CoachPlanResponseDto.serializer(), it.json)
-        }
         val equip = equipmentProfile()
         if (preferNetwork && api != null) {
             api.fetchCoachPlan(equipment = equip).getOrNull()?.let { remote ->
                 savePlanResponse(remote)
                 return remote
             }
+        }
+        dao.getCoachPlan()?.let {
+            return json.decodeFromString(CoachPlanResponseDto.serializer(), it.json)
         }
         val local = LocalCoachSeed.build(withAdaptDemo = false, equipment = equip)
         savePlanResponse(local)
@@ -202,18 +206,7 @@ class MwRepository(
                 java.time.Instant.parse(row.completedAt).atZone(zone).toLocalDate()
             }.getOrNull()
         }.toSet()
-        if (days.isEmpty()) return 0
-        var cursor = java.time.LocalDate.now()
-        if (cursor !in days) {
-            cursor = cursor.minusDays(1)
-            if (cursor !in days) return 0
-        }
-        var streak = 0
-        while (cursor in days) {
-            streak++
-            cursor = cursor.minusDays(1)
-        }
-        return streak
+        return com.missionwinning.core.model.WorkoutStats.streakDays(days)
     }
 
     /**

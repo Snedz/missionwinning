@@ -7,6 +7,7 @@ import com.missionwinning.core.common.NetworkStatus
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.WorkoutLogEntity
 import com.missionwinning.core.model.WeightUnits
+import com.missionwinning.core.model.WorkoutStats
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.PlanSessionDto
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,15 +53,18 @@ data class TodayUiState(
     val syncing: Boolean = false,
     val syncMessage: String? = null,
     val reseeding: Boolean = false,
+    val refreshing: Boolean = false,
 ) {
     /** Prefer today's planned/swapped session, else first open session of the week. */
     val next: PlanSessionDto?
         get() {
             val sessions = plan?.plan?.sessions.orEmpty()
-            val todayOffset = ((java.time.LocalDate.now().dayOfWeek.value + 6) % 7)
-            val open = { s: PlanSessionDto -> s.status == "planned" || s.status == "swapped" }
-            return sessions.firstOrNull { open(it) && it.dayOffset == todayOffset }
-                ?: sessions.firstOrNull(open)
+            return WorkoutStats.pickNextSession(
+                sessions = sessions,
+                todayOffset = WorkoutStats.mondayBasedOffset(),
+                dayOffset = { it.dayOffset },
+                status = { it.status },
+            )
         }
 }
 
@@ -76,9 +80,14 @@ class TodayViewModel @Inject constructor(
         refresh()
     }
 
-    fun refresh() {
+    fun refresh(userInitiated: Boolean = false) {
         viewModelScope.launch {
-            _state.update { it.copy(loading = it.plan == null) }
+            _state.update {
+                it.copy(
+                    loading = it.plan == null && !userInitiated,
+                    refreshing = userInitiated,
+                )
+            }
             val unit = WeightUnits.normalize(repository.weightUnit())
             val equipment = repository.equipmentProfile()
             val rows = repository.recentWorkouts(5)
@@ -94,13 +103,14 @@ class TodayViewModel @Inject constructor(
                 0
             }
             _state.value = TodayUiState(
-                plan = repository.ensureCoachPlan(),
+                plan = repository.ensureCoachPlan(preferNetwork = userInitiated),
                 workouts = repository.workoutCount(),
                 recent = rows.map { it.toUi(unit) },
                 weekStats = weekStats,
                 streakDays = streak,
                 online = online,
                 loading = false,
+                refreshing = false,
                 weightUnit = unit,
                 equipment = equipment,
                 pendingSync = pendingAfter,

@@ -55,6 +55,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Coach **week progress** bar; Lab tools only in **debug** builds
 - Tap **Recent** log → history detail (sets by exercise; Room `workoutId` v4)
 - Active uses **LazyColumn** and auto-scrolls to the current set card
+- Today **pull-to-refresh** reloads plan/outbox (prefers network when online)
 
 ## Verify
 
