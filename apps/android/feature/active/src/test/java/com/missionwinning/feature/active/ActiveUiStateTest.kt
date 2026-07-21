@@ -295,6 +295,48 @@ class ActiveUiStateTest {
     }
 
     @Test
+    fun sessionLogic_addExercise_appendsNewBlock() {
+        val base = listOf(
+            ActiveExercise("a", "Push", listOf(set("1", done = false))),
+        )
+        val next = ActiveSessionLogic.addExercise(
+            exercises = base,
+            exerciseId = "bench-press",
+            exerciseName = "Barbell bench press",
+            newSetIds = listOf("s1", "s2", "s3"),
+            setCount = 3,
+            defaultReps = 8,
+            defaultWeight = 60.0,
+            previousByIndex = mapOf(0 to (5 to 55.0)),
+        )
+        assertEquals(2, next.size)
+        assertEquals("bench-press", next[1].exerciseId)
+        assertEquals(3, next[1].sets.size)
+        assertEquals(5, next[1].sets[0].reps) // previous reps preferred
+        assertEquals(55.0, next[1].sets[0].weight, 0.0)
+        assertEquals(8, next[1].sets[1].reps)
+        assertEquals(60.0, next[1].sets[1].weight, 0.0)
+    }
+
+    @Test
+    fun sessionLogic_addExercise_existingAddsSets() {
+        val base = listOf(
+            ActiveExercise("a", "Push", listOf(set("1", done = true, reps = 6, weight = 40.0))),
+        )
+        val next = ActiveSessionLogic.addExercise(
+            exercises = base,
+            exerciseId = "a",
+            exerciseName = "Push",
+            newSetIds = listOf("n1", "n2", "n3"),
+            setCount = 3,
+        )
+        assertEquals(1, next.size)
+        assertEquals(4, next[0].sets.size) // 1 existing + 3
+        assertEquals(6, next[0].sets[1].reps)
+        assertEquals(40.0, next[0].sets[1].weight, 0.0)
+    }
+
+    @Test
     fun sessionLogic_previousWeightInUnit_convertsStoredUnit() {
         assertNull(ActiveSessionLogic.previousWeightInUnit(null, "kg", "lb"))
         // 100 kg stored → display lb → 220 (plate step)
