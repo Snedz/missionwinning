@@ -15,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Manifest uses splash theme for cold start; switch to main before Compose draws.
+        setTheme(R.style.Theme_MissionWinning)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
