@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.health.connect.client.PermissionController
@@ -44,6 +45,7 @@ import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwTopBar
 import com.missionwinning.core.designsystem.MwTypography
+import com.missionwinning.core.designsystem.R as DsR
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -127,7 +129,7 @@ fun AuthScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(MwSpace.md),
         ) {
-            MwTopBar(title = "Account", onBack = onClose)
+            MwTopBar(title = stringResource(DsR.string.mw_account), onBack = onClose)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -221,8 +223,8 @@ fun AuthScreen(
                     )
                 }
                 MwGhostButton(
-                    text = if (state.syncBusy) "Syncing…" else "Retry sync now",
-                    contentDescription = "Retry cloud sync for pending workouts",
+                    text = if (state.syncBusy) "Syncing…" else stringResource(DsR.string.mw_sync_retry),
+                    contentDescription = stringResource(DsR.string.mw_sync_retry),
                     onClick = viewModel::retrySync,
                 )
             }

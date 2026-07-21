@@ -23,8 +23,10 @@ import android.app.Activity
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.missionwinning.core.designsystem.R as DsR
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -89,9 +91,9 @@ fun CoachScreen(
                     verticalArrangement = Arrangement.spacedBy(MwSpace.md),
                 ) {
                     MwSectionLabel("Plan")
-                    MwHeroTitle("Mission Coach")
+                    MwHeroTitle(stringResource(DsR.string.mw_hero_coach))
                     Text(
-                        "Weekly plan from your logs — adapts when life happens. Free forever offline.",
+                        stringResource(DsR.string.mw_coach_tagline),
                         style = MwTypography.bodyMedium,
                         color = MwColors.TextMuted,
                     )
@@ -344,7 +346,7 @@ private fun EntitlementBanner(
                     MwChip(premiumSource, tone = MwChipTone.Brass)
                 }
                 Text(
-                    "Premium coach depth unlocked. Week plan + offline logger stay free forever.",
+                    stringResource(DsR.string.mw_free_forever_logger),
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
@@ -379,9 +381,9 @@ private fun EntitlementBanner(
                         text = if (billingPurchasing) {
                             "Processing…"
                         } else {
-                            "Subscribe Super Bundle"
+                            stringResource(DsR.string.mw_subscribe_super_bundle)
                         },
-                        contentDescription = "Subscribe to Super Bundle via Google Play",
+                        contentDescription = stringResource(DsR.string.mw_subscribe_super_bundle),
                         onClick = onSubscribe,
                     )
                     Text(

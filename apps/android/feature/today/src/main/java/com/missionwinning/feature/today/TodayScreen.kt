@@ -19,12 +19,14 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.missionwinning.core.designsystem.R as DsR
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -99,7 +101,7 @@ fun TodayScreen(
                 ) {
                     Column {
                         MwSectionLabel(dateLabel)
-                        MwHeroTitle("Today")
+                        MwHeroTitle(stringResource(DsR.string.mw_hero_today))
                     }
                     MwOfflinePill(online = state.online)
                 }
@@ -152,7 +154,7 @@ fun TodayScreen(
                         )
                     }
                     Text(
-                        "Form score is from your logs only — not medical readiness.",
+                        stringResource(DsR.string.mw_form_score_disclaimer),
                         style = MwTypography.labelMedium,
                         color = MwColors.TextMuted,
                     )
@@ -240,8 +242,8 @@ fun TodayScreen(
                             color = MwColors.TextMuted,
                         )
                         MwPrimaryButton(
-                            text = "Start empty workout",
-                            contentDescription = "Start freeform empty workout",
+                            text = stringResource(DsR.string.mw_quick_log),
+                            contentDescription = stringResource(DsR.string.mw_quick_log),
                             onClick = {
                                 onStartWorkout(
                                     com.missionwinning.core.data.MwRepository.freeformSessionId(),
@@ -375,11 +377,11 @@ fun TodayScreen(
                     }
                 }
 
-                MwGhostButton(text = "Progress & PRs", onClick = onOpenProgress)
-                MwGhostButton(text = "Routines", onClick = onOpenRoutines)
-                MwGhostButton(text = "Exercise library", onClick = onOpenCatalog)
-                MwGhostButton(text = "Review week on Coach", onClick = onOpenCoach)
-                MwGhostButton(text = "Account / sign-in", onClick = onOpenAuth)
+                MwGhostButton(text = stringResource(DsR.string.mw_progress), onClick = onOpenProgress)
+                MwGhostButton(text = stringResource(DsR.string.mw_routines), onClick = onOpenRoutines)
+                MwGhostButton(text = stringResource(DsR.string.mw_library), onClick = onOpenCatalog)
+                MwGhostButton(text = stringResource(DsR.string.mw_tab_coach), onClick = onOpenCoach)
+                MwGhostButton(text = stringResource(DsR.string.mw_account), onClick = onOpenAuth)
                 Spacer(Modifier.height(8.dp))
             }
             } // PullToRefreshBox

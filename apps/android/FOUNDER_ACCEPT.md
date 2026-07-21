@@ -12,7 +12,8 @@ python3 scripts/wedge-adb-walk.py          # automated smoke
 ```
 
 **Package:** `com.missionwinning.app.debug` (debug) · `com.missionwinning.app` (release)  
-**Current target version:** see `app/build.gradle.kts` (`versionName` / `versionCode`)
+**Current target version:** see `app/build.gradle.kts` (`versionName` / `versionCode`)  
+**Ship runbook:** [SHIP_INTERNAL.md](SHIP_INTERNAL.md) after this checklist is green.
 
 Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix before Internal.
 
@@ -208,8 +209,9 @@ Verified green on 1.2.7+ when this section was added. Upload keystore is still *
 2. Confirm `keystore.properties` exists → `./gradlew :app:bundleRelease -Pmw.requireUploadKeystore=true`  
 3. Upload AAB + screenshots from `store-assets/` (`wedge-adb-walk.py --screenshots`)  
 4. Data safety from `PLAY_LISTING.md`  
-5. Apply Supabase migrations: `20260721_workout_sync_v2.sql`, `20260721_android_telemetry.sql`  
+5. Apply Supabase migrations: `20260721_workout_sync_v2.sql`, `20260721_routines_sync.sql`, `20260721_android_telemetry.sql`  
 6. Set `mw.sentryDsn` in `local.properties` (or CI secret) for crash reporting builds  
+7. Full steps: [SHIP_INTERNAL.md](SHIP_INTERNAL.md) · billing env in [PLAY_BILLING.md](PLAY_BILLING.md)  
 
 ### Play Internal release checklist
 
