@@ -18,6 +18,12 @@
 | `:core:data` | Room SoT + sync outbox + `MwRepository` |
 | `:core:network` | Mobile OpenAPI client |
 
+## Wear OS (Phase 6)
+
+- Module: `:wear` (`com.missionwinning.app.wear`) — companion, not standalone
+- Phone SoT via Data Layer (`WearProtocol` paths under `/mw/*`)
+- Install: `./gradlew :wear:installDebug` with a Wear emulator/device paired to the phone app
+
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MW Logger</string>
+    <string name="waiting_phone">Start a workout on phone</string>
+    <string name="complete_set">Complete</string>
+    <string name="skip_rest">Skip rest</string>
+    <string name="resting">Rest</string>
+    <string name="no_sets">No open sets</string>
+</resources>
