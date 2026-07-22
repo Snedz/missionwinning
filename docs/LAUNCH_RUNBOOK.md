@@ -15,16 +15,16 @@
 >
 > **2026-07-22 (unblock www):** Production was stuck on a Jul 20 CLI deploy (~69 commits behind master). CI and [deploy-production.yml](../.github/workflows/deploy-production.yml) fail in ~2s with **GitHub spending limit / billing** — not a code failure. Agents cannot fix this.
 
-1. **GitHub → Settings → Billing:** clear spending limit / payment method so Actions can run (CI + Deploy production).
+1. **GitHub → Settings → Billing:** clear spending limit / failed payment so Actions can run (CI + Deploy production). **Still required** even though www `.97` was promoted via Vercel CLI — CI/CodeQL remain dead until this is fixed.
 2. **Rotate GH Actions secret `VERCEL_TOKEN`** (and confirm `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` still valid).
-3. **Promote Production:** Actions → **Deploy production** → `workflow_dispatch`, **or** Vercel dashboard → Promote latest successful `master` deployment to Production.
+3. **Promote Production (if www drifts again):** Actions → **Deploy production** → `workflow_dispatch`, **or** `vercel promote <ready-master-dpl> --yes`, **or** Vercel dashboard → Promote.
 4. Confirm you can see the project dashboard and Production deploys from `master`.
 5. After promote, check Profile footer build label matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.97`+**). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
 
 - [ ] GitHub Actions billing cleared (CI jobs no longer die in ~2s)
 - [ ] `VERCEL_TOKEN` rotated in GH secrets
-- [ ] Production promoted; Profile shows `.97`+
-- [x] I can open the Vercel project and deploy (GitHub integration)
+- [x] Production promoted; Profile / `/api/health` shows `.97`+
+- [x] I can open the Vercel project and deploy (GitHub integration / CLI promote)
 
 ## §2 — Environment & database (~45 min, one-time)
 

@@ -6,6 +6,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Web .97 live on www (Vercel promote)
+
+- Promoted ready master deploy `d0aa3ce` → Production via `vercel promote` (GH Actions still billing-blocked).
+- Smoke: `/api/health` → `2026.07-unified.97`; `/welcome` + magazine PDF + `/locales/en/common.json` → 200; `/log` → 307 `/private`.
+- Founder residual: clear GitHub spending limit / failed payment so CI runs again.
+
+---
+
+## 2026-07-22 — Android 1.20.0: CI release packaging + INDEX
+
+- **CI:** android job runs `assembleRelease` + `bundleRelease` (debug-signed); Maestro/smoke greps Account + `release-smoke.sh`.
+- **INDEX:** hub chrome notes; `./scripts/release-smoke.sh` in Commands; Accept B pointers.
+- Version `1.20.0` / versionCode 47. F9 Done; F5 gated. Agent tree ready pending founder Accept B + www promote.
+
+---
+
 ## 2026-07-22 — Android 1.19.0: pre-Internal readiness
 
 - **Release smoke:** `scripts/release-smoke.sh` (assembleRelease + bundleRelease); PLAY_LISTING / SHIP_INTERNAL point at build.gradle + script; check-release-readiness runs release tasks.
@@ -143,11 +159,4 @@ Chronological record of shipped work. Newest first.
 - Verify: `./gradlew :app:assembleDebug` · `python3 apps/android/scripts/wedge-adb-walk.py`
 
 ---
-
-## 2026-07-20 — Android emulator QA + Play path complete (agent)
-
-- Emulator: `assembleDebug` + `installDebug` on `Pixel_10_Pro`; MainActivity launched; adb UIAutomator wedge I-Day→Today→Active→Victory→Coach **passed** (Room offline). Prefer mid-range AVD (`MW_Phone_API36`) on 8GB hosts — Pixel 10 Pro warns for 16GB RAM.
-- Network: www `/api/mobile/*` returns gate 403 / HTML 404 until routes deploy; `MwRepository` Room seed fallback confirmed; optional `mw.apiBaseUrl` / `mw.privateAccessCookie` in `local.properties`; `mobileCoachApi` tests green.
-- Release: `assembleRelease` + `bundleRelease` green (versionCode 2, minify + ProGuard keeps); AAB at `app/build/outputs/bundle/release/app-release.aab` (debug-signed until founder runs `create-upload-keystore.sh`).
-- Play Internal: PLAY_LISTING Data safety + founder checklist; `store-assets/README.md` for screenshots — Console upload remains founder-owned.
 
