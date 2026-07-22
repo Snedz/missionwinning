@@ -6,6 +6,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Android 1.23.0: wedge UX overhaul (founder override)
+
+- **Designsystem:** `MwMotion`, spacing/radius/color tokens, hero cards, stronger hub selected state; debug gallery extended; [UX.md](apps/android/UX.md) principles (one composition, brand-first Today, logger-first Active).
+- **Screens:** Active current-set hero + Now/Up next/Done; Today Start hero above metrics; Victory single ritual card; Coach adapt first + week tiles; I-Day shorter copy; Account Preferences/sync above fold.
+- **Nav:** stack transitions use `MwMotion` durations. Room/sync unchanged. No F5.
+- Version `1.23.0` / versionCode 50. Founder re-walk Accept B before Internal.
+- Verify: `./gradlew :app:assembleDebug :app:testDebugUnitTest` · `./scripts/release-smoke.sh` · `wedge-adb-walk.py`.
+
+---
+
 ## 2026-07-22 — H0 beta sprint packaging (docs)
 
 - **Founder path:** LAUNCH_RUNBOOK §1 billing annotation + §3 sprint to **2026-08-02**; BETA_INVITE sprint checklist; CONTEXT `## Now` framed as beta sprint.

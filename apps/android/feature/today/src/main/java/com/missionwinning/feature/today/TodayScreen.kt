@@ -119,7 +119,32 @@ fun TodayScreen(
                     color = MwColors.TextMuted,
                 )
 
-                // Mission control metric strip (Bevel-inspired, gym-first)
+                // First viewport: one session, one Start (Fitbod-clarity)
+                if (state.loading) {
+                    MwCard(elevated = true) {
+                        MwSectionLabel("Loading")
+                        MwLoadingBlock(lines = 4)
+                    }
+                } else if (next != null) {
+                    val todayOffset = ((LocalDate.now().dayOfWeek.value + 6) % 7)
+                    HeroSessionCard(
+                        session = next,
+                        isToday = next.dayOffset == todayOffset,
+                        onStart = {
+                            val sets = next.exercises.sumOf { it.sets }.coerceAtLeast(3)
+                            onStartWorkout(next.id, next.name, sets)
+                        },
+                    )
+                } else {
+                    MwEmptyState(
+                        title = "No session queued",
+                        body = "Open Mission Coach to review your week, or start a freeform log.",
+                        cta = "Open Coach",
+                        onCta = onOpenCoach,
+                    )
+                }
+
+                // Metrics + insight below the Start hero
                 if (!state.loading) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -199,33 +224,7 @@ fun TodayScreen(
                     }
                 }
 
-                if (state.loading) {
-                    MwCard(elevated = true) {
-                        MwSectionLabel("Loading")
-                        MwLoadingBlock(lines = 4)
-                    }
-                }
-
                 state.plan?.let { CoachAdaptBanner(it) }
-
-                if (!state.loading && next != null) {
-                    val todayOffset = ((LocalDate.now().dayOfWeek.value + 6) % 7)
-                    HeroSessionCard(
-                        session = next,
-                        isToday = next.dayOffset == todayOffset,
-                        onStart = {
-                            val sets = next.exercises.sumOf { it.sets }.coerceAtLeast(3)
-                            onStartWorkout(next.id, next.name, sets)
-                        },
-                    )
-                } else if (!state.loading) {
-                    MwEmptyState(
-                        title = "No session queued",
-                        body = "Open Mission Coach to review your week, or start a freeform log.",
-                        cta = "Open Coach",
-                        onCta = onOpenCoach,
-                    )
-                }
 
                 if (!state.loading) {
                     MwCard(elevated = true) {
@@ -390,7 +389,7 @@ private fun HeroSessionCard(
     isToday: Boolean,
     onStart: () -> Unit,
 ) {
-    MwCard(elevated = true, glow = true) {
+    MwCard(elevated = true, glow = true, hero = true) {
         MwSectionLabel(if (isToday) "Today's session" else "Next session")
         Text(session.name, style = MwTypography.displayLarge, color = MwColors.Text)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

@@ -150,71 +150,9 @@ fun AuthScreen(
             } else {
                 MwTopBar(title = stringResource(DsR.string.mw_account), onBack = onClose)
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                MwSectionLabel("Optional")
-                MwOfflinePill(online = online)
-            }
-            if (!asHubTab) {
-                MwHeroTitle(
-                    when (state.step) {
-                        AuthStep.SignedIn -> "You're signed in"
-                        AuthStep.Code -> "Enter code"
-                        AuthStep.Email -> "Sign in"
-                    },
-                )
-            } else {
-                Text(
-                    when (state.step) {
-                        AuthStep.SignedIn -> "You're signed in"
-                        AuthStep.Code -> "Enter code"
-                        AuthStep.Email -> "Sign in for sync"
-                    },
-                    style = MwTypography.headlineMedium,
-                    color = MwColors.Text,
-                )
-            }
-            Text(
-                "Train + Coach work fully offline. Sign-in unlocks cloud coach access and future sync — never required to log.",
-                style = MwTypography.bodyMedium,
-                color = MwColors.TextMuted,
-            )
 
-            when (state.step) {
-                AuthStep.SignedIn -> SignedInCard(
-                    state = state,
-                    busy = state.busy,
-                    onRefreshPremium = viewModel::refreshPremium,
-                    onSignOut = viewModel::signOut,
-                    onContinue = onClose,
-                )
-                AuthStep.Code -> CodeCard(
-                    state = state,
-                    fieldColors = fieldColors,
-                    onCodeChange = viewModel::onCodeChange,
-                    onVerify = viewModel::verifyCode,
-                    onBack = viewModel::backToEmail,
-                    onContinueOffline = onClose,
-                )
-                AuthStep.Email -> EmailCard(
-                    state = state,
-                    fieldColors = fieldColors,
-                    onEmailChange = viewModel::onEmailChange,
-                    onSendCode = viewModel::sendCode,
-                    onContinueOffline = onClose,
-                )
-            }
-
-            state.error?.let {
-                Text(it, style = MwTypography.bodyMedium, color = MwColors.Danger)
-            }
-            state.message?.let {
-                Text(it, style = MwTypography.bodyMedium, color = MwColors.Emerald)
-            }
-
-            MwCard(elevated = true) {
+            // Preferences above the fold (Accept U0a/U0b)
+            MwCard(elevated = true, glow = true) {
                 MwSectionLabel("Preferences")
                 Text(
                     "Saved on this device. Unit also toggles mid-session on Active.",
@@ -298,7 +236,7 @@ fun AuthScreen(
                 }
             }
 
-            MwCard(elevated = true) {
+            MwCard(elevated = true, glow = true) {
                 MwSectionLabel("Cloud sync")
                 Text(
                     "Pending and failed rows from this device. Retry resets dead-letters.",
@@ -358,6 +296,70 @@ fun AuthScreen(
                     contentDescription = stringResource(DsR.string.mw_sync_retry),
                     onClick = viewModel::retrySync,
                 )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                MwSectionLabel("Optional")
+                MwOfflinePill(online = online)
+            }
+            if (!asHubTab) {
+                MwHeroTitle(
+                    when (state.step) {
+                        AuthStep.SignedIn -> "You're signed in"
+                        AuthStep.Code -> "Enter code"
+                        AuthStep.Email -> "Sign in"
+                    },
+                )
+            } else {
+                Text(
+                    when (state.step) {
+                        AuthStep.SignedIn -> "You're signed in"
+                        AuthStep.Code -> "Enter code"
+                        AuthStep.Email -> "Sign in for sync"
+                    },
+                    style = MwTypography.headlineMedium,
+                    color = MwColors.Text,
+                )
+            }
+            Text(
+                "Train + Coach work fully offline. Sign-in unlocks cloud coach access and future sync — never required to log.",
+                style = MwTypography.bodyMedium,
+                color = MwColors.TextMuted,
+            )
+
+            when (state.step) {
+                AuthStep.SignedIn -> SignedInCard(
+                    state = state,
+                    busy = state.busy,
+                    onRefreshPremium = viewModel::refreshPremium,
+                    onSignOut = viewModel::signOut,
+                    onContinue = onClose,
+                )
+                AuthStep.Code -> CodeCard(
+                    state = state,
+                    fieldColors = fieldColors,
+                    onCodeChange = viewModel::onCodeChange,
+                    onVerify = viewModel::verifyCode,
+                    onBack = viewModel::backToEmail,
+                    onContinueOffline = onClose,
+                )
+                AuthStep.Email -> EmailCard(
+                    state = state,
+                    fieldColors = fieldColors,
+                    onEmailChange = viewModel::onEmailChange,
+                    onSendCode = viewModel::sendCode,
+                    onContinueOffline = onClose,
+                )
+            }
+
+            state.error?.let {
+                Text(it, style = MwTypography.bodyMedium, color = MwColors.Danger)
+            }
+            state.message?.let {
+                Text(it, style = MwTypography.bodyMedium, color = MwColors.Emerald)
             }
 
             MwCard(elevated = true) {
@@ -483,14 +485,14 @@ fun AuthScreen(
                 }
             }
 
-            MwCard(elevated = true) {
-                MwSectionLabel("About")
-                Text("Mission Winning", style = MwTypography.titleMedium, color = MwColors.Text)
-                Text(
-                    "Free offline logger + Mission Coach. Not medical advice.",
-                    style = MwTypography.bodyMedium,
-                    color = MwColors.TextMuted,
-                )
+            MwSectionLabel("About")
+            Text(
+                "Mission Winning · offline logger + Mission Coach. Not medical advice.",
+                style = MwTypography.labelMedium,
+                color = MwColors.TextMuted,
+            )
+            Column(verticalArrangement = Arrangement.spacedBy(MwSpace.sm)) {
+                // Quiet about block (no elevated card)
                 MwChip(versionLabel, tone = MwChipTone.Brass)
                 if (debugBuild) {
                     Text(

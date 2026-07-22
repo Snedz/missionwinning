@@ -32,6 +32,7 @@ import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwMetricCard
+import com.missionwinning.core.designsystem.MwMotion
 import com.missionwinning.core.designsystem.MwOfflinePill
 import com.missionwinning.core.designsystem.MwPrimaryButton
 import com.missionwinning.core.designsystem.MwScreenScaffold
@@ -63,7 +64,7 @@ fun VictoryScreen(
     val lockScale = remember { Animatable(if (reduceMotion) 1f else 0.92f) }
     LaunchedEffect(reduceMotion) {
         if (reduceMotion) return@LaunchedEffect
-        lockScale.animateTo(1f, tween(420, easing = FastOutSlowInEasing))
+        lockScale.animateTo(1f, tween(MwMotion.VictoryLockMs, easing = FastOutSlowInEasing))
     }
 
     val unit = WeightUnits.normalize(state.weightUnit)
@@ -93,7 +94,8 @@ fun VictoryScreen(
                 },
             verticalArrangement = Arrangement.spacedBy(MwSpace.md),
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
+            // One ritual composition: lock + metrics + primary CTA
+            MwCard(elevated = true, glow = true, hero = true) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -114,22 +116,44 @@ fun VictoryScreen(
                 }
                 Text(
                     if (coachFirst) {
-                        "Saved on this device. Coach adapts your week from this log — no wearable needed."
+                        "Saved on this device. Coach adapts your week from this log."
                     } else {
                         "Saved on this device. Keep logging — Mission Coach has your week."
                     },
                     style = MwTypography.bodyLarge,
                     color = MwColors.TextMuted,
                 )
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                MwMetricCard("Sets", state.sets.toString(), Modifier.weight(1f))
-                MwMetricCard("Time", formatDuration(state.duration), Modifier.weight(1f))
-                MwMetricCard("Volume", volumeLabel, Modifier.weight(1f))
+                Spacer(Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    MwMetricCard("Sets", state.sets.toString(), Modifier.weight(1f))
+                    MwMetricCard("Time", formatDuration(state.duration), Modifier.weight(1f))
+                    MwMetricCard("Volume", volumeLabel, Modifier.weight(1f))
+                }
+                Spacer(Modifier.height(8.dp))
+                MwPrimaryButton(
+                    text = if (coachFirst) "See Mission Coach" else "Back to Today",
+                    contentDescription = if (coachFirst) "See Mission Coach" else "Back to Today",
+                    onClick = if (coachFirst) onCoach else onToday,
+                )
+                MwGhostButton(
+                    text = "Share session",
+                    contentDescription = "Share session summary",
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, shareText)
+                        }
+                        context.startActivity(
+                            Intent.createChooser(intent, "Share session"),
+                        )
+                    },
+                )
+                if (coachFirst) {
+                    MwGhostButton(text = "Today", onClick = onToday)
+                }
             }
 
             if (state.canSaveRoutine) {
@@ -162,34 +186,6 @@ fun VictoryScreen(
                         }
                     }
                 }
-            }
-
-            MwCard(elevated = true, glow = true) {
-                Text(
-                    if (coachFirst) "Next: review Mission Coach" else "Next: rest or open Today",
-                    style = MwTypography.titleMedium,
-                    color = MwColors.Text,
-                )
-                Spacer(Modifier.height(4.dp))
-                MwPrimaryButton(
-                    text = if (coachFirst) "See Mission Coach" else "Back to Today",
-                    contentDescription = if (coachFirst) "See Mission Coach" else "Back to Today",
-                    onClick = if (coachFirst) onCoach else onToday,
-                )
-                MwGhostButton(
-                    text = "Share session",
-                    contentDescription = "Share session summary",
-                    onClick = {
-                        val intent = Intent(Intent.ACTION_SEND).apply {
-                            type = "text/plain"
-                            putExtra(Intent.EXTRA_TEXT, shareText)
-                        }
-                        context.startActivity(
-                            Intent.createChooser(intent, "Share session"),
-                        )
-                    },
-                )
-                MwGhostButton(text = "Today", onClick = onToday)
             }
             Spacer(Modifier.height(8.dp))
         }

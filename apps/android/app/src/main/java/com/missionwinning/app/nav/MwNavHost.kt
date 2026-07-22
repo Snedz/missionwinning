@@ -33,6 +33,7 @@ import com.missionwinning.core.designsystem.MwBottomNav
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwHubTab
 import com.missionwinning.core.designsystem.MwLoadingBlock
+import com.missionwinning.core.designsystem.MwMotion
 import com.missionwinning.core.designsystem.MwTypography
 import com.missionwinning.feature.active.ActiveRoute
 import com.missionwinning.feature.coach.CoachScreen
@@ -151,31 +152,31 @@ fun MwNavHost(
                     val fromHub = initialState.destination.route in HUB_ROUTES
                     val toHub = targetState.destination.route in HUB_ROUTES
                     if (fromHub && toHub) {
-                        fadeIn(tween(200))
+                        fadeIn(tween(MwMotion.HubTabMs))
                     } else {
-                        fadeIn(tween(280)) + slideIntoContainer(
+                        fadeIn(tween(MwMotion.RoutePushMs)) + slideIntoContainer(
                             AnimatedContentTransitionScope.SlideDirection.Start,
-                            tween(280),
+                            tween(MwMotion.RoutePushMs),
                         )
                     }
                 },
                 exitTransition = {
-                    fadeOut(tween(180))
+                    fadeOut(tween(MwMotion.RoutePopMs - 100))
                 },
                 popEnterTransition = {
                     val fromHub = initialState.destination.route in HUB_ROUTES
                     val toHub = targetState.destination.route in HUB_ROUTES
                     if (fromHub && toHub) {
-                        fadeIn(tween(200))
+                        fadeIn(tween(MwMotion.HubTabMs))
                     } else {
-                        fadeIn(tween(280)) + slideIntoContainer(
+                        fadeIn(tween(MwMotion.RoutePopMs)) + slideIntoContainer(
                             AnimatedContentTransitionScope.SlideDirection.End,
-                            tween(280),
+                            tween(MwMotion.RoutePopMs),
                         )
                     }
                 },
                 popExitTransition = {
-                    fadeOut(tween(180))
+                    fadeOut(tween(MwMotion.RoutePopMs - 100))
                 },
             ) {
                 composable(Routes.IDAY) {

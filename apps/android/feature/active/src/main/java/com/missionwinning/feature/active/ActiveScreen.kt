@@ -383,13 +383,34 @@ fun ActiveScreen(
                                 )
                             }
                             is ActiveListRow.Section -> {
+                                val currentEx = ActiveSessionLogic.currentExerciseIndex(state.exercises)
+                                val ex = state.exercises.find { it.exerciseId == row.exerciseId }
+                                val allSetsDone = ex?.sets?.isNotEmpty() == true &&
+                                    ex.sets.all { it.done }
+                                val phaseChip = when {
+                                    currentEx != null && row.index + 1 == currentEx ->
+                                        "Now" to MwChipTone.Emerald
+                                    allSetsDone -> "Done" to MwChipTone.Brass
+                                    currentEx != null && row.index + 1 == currentEx + 1 ->
+                                        "Up next" to MwChipTone.Neutral
+                                    else -> null
+                                }
                                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween,
                                         verticalAlignment = Alignment.CenterVertically,
                                     ) {
-                                        MwSectionLabel(row.name)
+                                        Row(
+                                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.weight(1f),
+                                        ) {
+                                            MwSectionLabel(row.name)
+                                            phaseChip?.let { (label, tone) ->
+                                                MwChip(text = label, tone = tone)
+                                            }
+                                        }
                                         MwGhostButton(
                                             text = "Remove",
                                             contentDescription = "Remove ${row.name} from session",
@@ -835,7 +856,7 @@ private fun CurrentSetCard(
     }
     val kindChipText = SetKind.displayLabel(set.kind)
 
-    MwCard(elevated = true, glow = true) {
+    MwCard(elevated = true, glow = true, hero = true) {
         MwSectionLabel(sectionLabel)
         Text(set.exerciseName, style = MwTypography.headlineMedium, color = MwColors.Text)
         if (nextExerciseName != null) {
@@ -894,6 +915,11 @@ private fun CurrentSetCard(
                 modifier = Modifier.weight(1f),
             )
         }
+        MwPrimaryButton(
+            text = "Complete set",
+            contentDescription = "Complete set ${set.setIndex + 1}",
+            onClick = onComplete,
+        )
         if (set.weight > 0) {
             MwGhostButton(
                 text = "Plate calc",
@@ -991,11 +1017,6 @@ private fun CurrentSetCard(
                 )
             }
         }
-        MwPrimaryButton(
-            text = "Complete set",
-            contentDescription = "Complete set ${set.setIndex + 1}",
-            onClick = onComplete,
-        )
         if (canAddSet) {
             MwGhostButton(
                 text = "Add set",

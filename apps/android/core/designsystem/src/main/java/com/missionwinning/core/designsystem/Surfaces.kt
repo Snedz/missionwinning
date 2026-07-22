@@ -49,12 +49,18 @@ object MwSpace {
     val lg = 16.dp
     val xl = 24.dp
     val xxl = 32.dp
+    /** Section break between compositions */
+    val section = 28.dp
+    /** First-viewport breathing room */
+    val hero = 40.dp
 }
 
 object MwRadius {
+    val sm = 8.dp
     val md = 12.dp
     val lg = 16.dp
     val xl = 20.dp
+    val pill = 999.dp
 }
 
 @Composable
@@ -62,10 +68,13 @@ fun MwCard(
     modifier: Modifier = Modifier,
     elevated: Boolean = false,
     glow: Boolean = false,
+    /** Stronger emerald frame for logger current-set / ritual heroes */
+    hero: Boolean = false,
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val shape = RoundedCornerShape(MwRadius.lg)
+    val shape = RoundedCornerShape(if (hero) MwRadius.xl else MwRadius.lg)
+    val pad = if (hero) MwSpace.xl else MwSpace.lg
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -79,11 +88,14 @@ fun MwCard(
                 },
             )
             .then(
-                if (glow) {
+                if (glow || hero) {
                     Modifier.drawBehind {
                         drawCircle(
                             brush = Brush.radialGradient(
-                                colors = listOf(MwColors.EmeraldGlow, Color.Transparent),
+                                colors = listOf(
+                                    if (hero) MwColors.EmeraldGlow else MwColors.EmeraldGlow,
+                                    Color.Transparent,
+                                ),
                                 center = Offset(size.width * 0.2f, size.height * 0.1f),
                                 radius = size.minDimension * 0.9f,
                             ),
@@ -94,13 +106,21 @@ fun MwCard(
                 },
             )
             .clip(shape)
-            .background(if (elevated) MwColors.NavyElevated else MwColors.NavyDeep)
+            .background(if (elevated || hero) MwColors.NavyElevated else MwColors.NavyDeep)
             .border(
-                width = if (glow) 1.5.dp else 1.dp,
-                color = if (glow) MwColors.Emerald.copy(alpha = 0.45f) else MwColors.Border,
+                width = when {
+                    hero -> 2.dp
+                    glow -> 1.5.dp
+                    else -> 1.dp
+                },
+                color = when {
+                    hero -> MwColors.Emerald.copy(alpha = 0.55f)
+                    glow -> MwColors.Emerald.copy(alpha = 0.45f)
+                    else -> MwColors.Border
+                },
                 shape = shape,
             )
-            .padding(MwSpace.lg),
+            .padding(pad),
         verticalArrangement = Arrangement.spacedBy(MwSpace.sm),
         content = content,
     )
@@ -261,6 +281,7 @@ private fun NavItem(
         modifier = modifier
             .heightIn(min = 48.dp)
             .clip(RoundedCornerShape(MwRadius.md))
+            .background(if (selected) MwColors.NavyPressed else Color.Transparent)
             .clickable(onClick = onClick)
             .semantics {
                 role = Role.Tab
@@ -286,8 +307,8 @@ private fun NavItem(
         Spacer(Modifier.height(4.dp))
         Box(
             modifier = Modifier
-                .size(width = 18.dp, height = 3.dp)
-                .clip(RoundedCornerShape(999.dp))
+                .size(width = if (selected) 22.dp else 18.dp, height = 3.dp)
+                .clip(RoundedCornerShape(MwRadius.pill))
                 .background(if (selected) MwColors.Emerald else Color.Transparent),
         )
     }
@@ -586,21 +607,21 @@ fun MwRestDock(
     if (secondsLeft <= 0) return
     val total = totalSeconds.coerceAtLeast(secondsLeft).coerceAtLeast(1)
     val progress = (secondsLeft.toFloat() / total.toFloat()).coerceIn(0f, 1f)
-    MwCard(modifier = modifier, elevated = true, glow = true) {
+    MwCard(modifier = modifier, elevated = true, glow = true, hero = true) {
         MwRestTimer(secondsLeft = secondsLeft)
         // Remaining rest fraction (ticks down with the timer)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(4.dp)
-                .clip(RoundedCornerShape(999.dp))
+                .height(5.dp)
+                .clip(RoundedCornerShape(MwRadius.pill))
                 .background(MwColors.Border),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(progress)
-                    .height(4.dp)
-                    .clip(RoundedCornerShape(999.dp))
+                    .height(5.dp)
+                    .clip(RoundedCornerShape(MwRadius.pill))
                     .background(MwColors.Brass),
             )
         }
