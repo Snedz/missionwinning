@@ -2,7 +2,10 @@
 /**
  * Print beta invite link + email template for founders (local only).
  * Usage: MISSION_BASE_URL=https://www.missionwinning.com npm run print-beta-invite
- * Requires PRIVATE_ACCESS_SECRET in .env.local (never commit).
+ *
+ * Prod blocks `?access=` unless PRIVATE_ALLOW_QUERY_ACCESS=true.
+ * Default: /private?invite=… + share access code out-of-band.
+ * Optional invite code: BETA_INVITE_CODE=MW-B-XXXXX (else placeholder).
  */
 import { readFileSync, existsSync } from 'fs';
 import { dirname, join } from 'path';
@@ -32,6 +35,8 @@ loadEnvFile(envPath);
 
 const base = (process.env.MISSION_BASE_URL || process.env.SMOKE_BASE_URL || '').replace(/\/$/, '');
 const secret = process.env.PRIVATE_ACCESS_SECRET;
+const inviteCode = (process.env.BETA_INVITE_CODE || 'MW-B-XXXXX').trim();
+const allowQuery = process.env.PRIVATE_ALLOW_QUERY_ACCESS === 'true';
 
 if (!base) {
   console.error('Set MISSION_BASE_URL=https://your-deploy-url');
@@ -42,18 +47,33 @@ if (!secret || secret.includes('change-me')) {
   process.exit(1);
 }
 
-const inviteUrl = `${base}/?access=${secret}`;
+const params = new URLSearchParams();
+params.set('invite', inviteCode);
+if (allowQuery) {
+  params.set('access', secret);
+}
+const inviteUrl = `${base}/private?${params.toString()}`;
+const privateUrl = `${base}/private`;
 const betaUrl = `${base}/beta`;
 
 console.log(`
 Mission Winning — Beta invite (founder copy)
 ============================================
 
-Invite link (send securely — do not post publicly):
+Invite link (attribution; access code shared separately):
 ${inviteUrl}
+
+Gate (type access code):
+${privateUrl}
+
+Access code (send in same email/DM — do not put in public posts):
+${secret}
 
 Beta guide:
 ${betaUrl}
+
+Note: Production rejects ?access= unless PRIVATE_ALLOW_QUERY_ACCESS=true.
+Prefer Profile → Beta funnel → Issue invite for unique MW-B- codes.
 
 --- Email template ---
 
@@ -61,21 +81,23 @@ Subject: You're invited — Mission Winning private beta
 
 Hi [Name],
 
-You're in the first cohort of Mission Winning — a free-core fitness app with a guided journey (I-Day → training → rankings).
+You're in the first cohort of Mission Winning — free offline workout logging (no account) plus Mission Coach: weekly plans that adapt from your logs alone (no wearable). Guided path: I-Day → first workout → Mission Coach.
 
 Start here (2 minutes):
 1. Open: ${inviteUrl}
-2. Read the beta guide: ${betaUrl}
-3. Complete I-Day at ${base}/welcome
-4. Log one workout from Today (${base}/log)
-5. Optional: sign in on Profile for cloud sync
+2. Enter access code: (from this email / DM)
+3. Read the beta guide: ${betaUrl}
+4. Complete I-Day at ${base}/welcome
+5. Log one workout from Today (${base}/log)
+6. Open Mission Coach (${base}/coach) after your first log
+7. Optional: sign in on Profile for cloud sync
 
 What to try:
-- Header menu → Move, Mind, Leaderboard, Learn, Super Bundle
-- Profile → Language (Arabic RTL, Thai, Spanish, etc.)
+- Header menu → Train, Fuel, Coach, Learn
+- Profile → Language
 - Optional: Beyond the Basics magazine PDF — ${base}/magazine/beyond-the-basics.pdf (or ${base}/guide)
 
-Feedback: Reply to this email or use in-app feedback.
+Feedback: Reply to this email or use in-app feedback. Especially: did Coach feel useful after one workout?
 
 — Mission Winning team
 `);

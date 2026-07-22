@@ -15,14 +15,25 @@ This is the **agent-prepared** one-pager for the technical smoke after public mo
 
 ## Pre-flip (gate still on)
 
+### Agent-prepped (code / scripts)
+
+- [x] Invite links use `/private?invite=` (no default `?access=`) — `print-beta-invite` + BetaAdminPanel
+- [x] `gate-smoke` asserts invitee `/private?invite=` (`data-mw-invitee=1`) + Profile build label
+- [x] `launch-verify` chains gate + growth + rate-limit (+ week4 when `CRON_SECRET` set)
+- [x] Hero Mission Score e2e fail-closed via Active builder (no Learn soft-skip)
+- [ ] Linux `@visual` baselines committed → then drop `continue-on-error` on `visual-regression`
+- [ ] `SMOKE_BASE_URL=… npm run growth-smoke` green against staging/prod
+- [ ] `LAUNCH_STRICT=true npm run launch-verify` against prod (with access secret)
+- [ ] `SMOKE_BASE_URL=… CRON_SECRET=… npm run week4-smoke` green (digest dryRun)
+
+### Founder / ops
+
 - [ ] CI green on `master` (`build-and-test` + `e2e-critical`)
-- [ ] Profile footer build label matches [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts)
+- [ ] Profile footer build label matches [`src/lib/buildInfo.ts`](../../src/lib/buildInfo.ts)
 - [ ] Growth migration applied (verify 6 columns) — [LAUNCH_READY.md](LAUNCH_READY.md) §1
 - [ ] `NEXT_PUBLIC_SITE_URL=https://www.missionwinning.com` on Production
 - [ ] `RESEND_FROM` is a verified domain (not `resend.dev`) if sending mail
-- [ ] `SMOKE_BASE_URL=… npm run growth-smoke` green against staging/prod
-- [ ] `LAUNCH_STRICT=true npm run launch-verify` against prod (with access secret) — chains gate + growth + rate-limit + e2e
-- [ ] `SMOKE_BASE_URL=… npm run rate-limit-smoke` sees 429 (Upstash) — also required by `LAUNCH_STRICT` launch-verify
+- [ ] `SMOKE_BASE_URL=… npm run rate-limit-smoke` sees 429 (Upstash Wave A)
 - [ ] Stripe test path once verified ([../STRIPE_PREMIUM_SETUP.md](../STRIPE_PREMIUM_SETUP.md))
 
 **One-shot pre-flip (preferred):**
@@ -30,6 +41,7 @@ This is the **agent-prepared** one-pager for the technical smoke after public mo
 ```bash
 SMOKE_BASE_URL=https://www.missionwinning.com \
 SMOKE_ACCESS_SECRET=… \
+CRON_SECRET=… \
 LAUNCH_STRICT=true \
 npm run launch-verify
 ```

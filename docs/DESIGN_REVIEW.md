@@ -59,6 +59,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
 | 2026-07-21 | Agent (Horizon 0) | `/`→gate, Welcome, `/log`, `/active`→Victory, `/coach` | Fixed in-sprint (no separate Issues): invite→`/private` friction; gate invitee expand; beta guide/banner wedge (Train→Coach); Coach empty-state “Unlock” vs Generate mismatch; ES/FR gate “everything app” subtitle → wedge. Deferred post-flip: landing hero proof-chip density; i18n Batch C. |
+| 2026-07-22 | Agent (H0 residual) | Landing hero density; invite smoke SSR; hero Mission Score e2e | Landing chips/trust row collapsed (one subtitle + one CTA). Invitee `data-mw-invitee` SSR for gate-smoke. Mission Score path fail-closed via Active. Still deferred: i18n Batch C; `@visual` baselines commit. |
 
 ### 2026-07-21 pass notes
 

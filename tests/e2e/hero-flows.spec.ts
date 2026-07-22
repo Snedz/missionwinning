@@ -61,20 +61,21 @@ test.describe('Phase H hero flows', () => {
     if (!baseURL) throw new Error('baseURL required');
     const ok = await unlockGate(page, context, baseURL);
     if (gateRequired() && !ok) {
-      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+      throw new Error('SMOKE_ACCESS_SECRET required to unlock private gate for Mission Score path');
     }
     await seedReadinessPhase(page);
 
-    await page.goto('/learn', { waitUntil: 'domcontentloaded' });
-    const sample = page.getByRole('button', { name: /start bodyweight sample|bodyweight sample|sample/i });
-    if (!(await sample.first().isVisible().catch(() => false))) {
-      test.skip(true, 'Learn bodyweight sample CTA not on this build');
-    }
-    await sample.first().click();
-    await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
-    await expect(page.getByRole('heading', { name: /learn sample|sample/i })).toBeVisible({
-      timeout: 15_000,
-    });
+    // Fail-closed: seed via Active builder (do not soft-skip on Learn sample CTA).
+    await page.goto('/active', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: /start workout/i }).click();
+    await expect(page.getByRole('button', { name: /^finish$/i })).toBeVisible({ timeout: 10_000 });
+
+    const search = page.getByPlaceholder(/search exercises/i);
+    await expect(search).toBeVisible({ timeout: 10_000 });
+    await search.fill('push-ups');
+    await page.getByRole('option', { name: /push-ups/i }).first().click();
+    await expect(page.getByText(/selected:\s*push-ups/i)).toBeVisible({ timeout: 5_000 });
+    await page.getByRole('button', { name: /add selected exercise/i }).click();
 
     const logBtn = page.getByRole('button', { name: /^log$/i }).first();
     await expect(logBtn).toBeVisible({ timeout: 15_000 });

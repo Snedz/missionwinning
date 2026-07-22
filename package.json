@@ -31,6 +31,7 @@
     "build-guidebook-pdf": "tsx scripts/build-guidebook-pdf.ts",
     "launch-broadcast": "node --env-file=.env.local scripts/send-launch-broadcast.mjs",
     "growth-smoke": "node scripts/growth-smoke.mjs",
+    "week4-smoke": "node scripts/week4-smoke.mjs",
     "i18n:batchd-parity": "tsx scripts/i18n-parity.ts",
     "i18n:parity": "tsx scripts/i18n-parity.ts",
     "i18n:fill": "tsx scripts/i18n-fill-missing.ts",

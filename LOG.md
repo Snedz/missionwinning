@@ -2,7 +2,28 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md).
+**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22).
+
+---
+
+## 2026-07-22 — Android 1.17.0: hub UX polish (Today · Coach · Account)
+
+- **Hub chrome:** 3-tab bottom nav with icons; Account first-class; peer tabs `launchSingleTop` + `popUpTo(Today) { saveState }`.
+- **Today declutter:** Units/Equipment moved to Account Preferences; one primary Start; Quick log ghost; Progress/Routines/Library in compact More row.
+- **Motion/insets:** tab fade (~200ms) vs stack slide; `MwScreenScaffold(applyNavBarPadding)`; hub screens skip double nav-bar padding; Coach dead `onBack` removed.
+- **Flow:** Victory Coach/Routines/Today hub-safe pops; History soft-delete lands on Today with hub.
+- Version `1.17.0` / versionCode 44. Verify: `./gradlew :app:assembleDebug` (JAVA_HOME=Android Studio JBR). F5 still gated; F6 Done in [apps/android/BACKLOG.md](apps/android/BACKLOG.md).
+
+---
+
+## 2026-07-22 — Horizon 0 residual: invite smoke, hero e2e, landing density, week4-smoke
+
+- **Invite tooling:** `print-beta-invite` → `/private?invite=` + out-of-band code; `/private` SSR `data-mw-invitee`; gate-smoke asserts invitee path + optional `SMOKE_EXPECT_BUILD_LABEL`.
+- **Hero e2e:** Mission Score path fail-closed via Active builder (no Learn sample soft-skip).
+- **Landing:** hero to one short subtitle + one emerald CTA (chips/trust row removed).
+- **Measurement:** `npm run week4-smoke` (digest dryRun + optional `mw_week4_retention`); wired into launch-verify when `CRON_SECRET` set.
+- **CI/flip:** visual soft until Linux snapshots committed; rate-limit exit-2 = Wave A warning; PUBLIC_FLIP agent checklist refreshed.
+- Build: `2026.07-unified.94`. Verify: `npm run typecheck` + `npm test`. Also fixed `PracticeRemap` typing in `publicGuidePracticeCta.ts` (CI green).
 
 ---
 
@@ -136,13 +157,4 @@ Chronological record of shipped work. Newest first.
 - **BetaAdminPanel:** proof summary + Copy/Download real stats only
 - **Landing EN:** hero first sentence = exact YC_THESIS one-liner
 - Agents do not flip `PRIVATE_MODE`
-
----
-
-## 2026-07-20 — Accelerator application sprint kit
-
-- **`docs/ACCELERATOR_SPRINT.md`:** ranked CDL/YC/Elbow Grease/SPC/Residency; skip Cardano; paste answers; 60s demo; founder calendar
-- **Coach demo UX:** `adaptSummary` + `CoachAdaptBanner` on `/coach` + Today Coach card (miss/swap/revision visible)
-- **Wedge copy:** Coach subtitle + Today eyebrows = adapts from logs / no wearable
-- No `PRIVATE_MODE` flip; no fabricated traction
 

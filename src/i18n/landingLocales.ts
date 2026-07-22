@@ -10,10 +10,10 @@ const LANDING_EN: Record<string, string> = {
   landingHeroTitle1: 'Train anywhere.',
   landingHeroTitle2: 'Win daily.',
   landingHeroSubtitle:
-    'We build an adaptive AI training coach for people who train at home or in a park — free offline workout logging with no account, and weekly plans that adapt from logs alone (no wearable required). Nutrition, mobility, mind, and learning deepen the same Win Score when you want them.',
+    'Free offline logging (no account) and weekly plans that adapt from your logs alone — no wearable required.',
   landingHeroLibrary: 'Library of 217 free exercise pages — form cues, hubs, and a full foundations guide.',
   landingHeroLibraryCta: 'Browse exercises',
-  landingHeroProof: 'Log a set → Coach shapes the week → Win Score ticks. That’s the loop.',
+  landingHeroProof: 'Log a set → Coach shapes the week → Win Score ticks.',
   landingSeeHow: 'See how it works',
   landingProofChip: '217 exercises · offline · no account',
   landingProofNoAiKey:

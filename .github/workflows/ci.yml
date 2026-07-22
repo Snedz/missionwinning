@@ -118,9 +118,9 @@ jobs:
           fi
           npm run e2e
 
-  # Visual regression (@visual) — continue-on-error for ~2 weeks post-ship, then promote to blocking.
-  # Baselines must be generated in this Linux environment (not macOS):
-  #   npx playwright test --grep @visual --update-snapshots
+  # Visual regression (@visual) — soft until Linux baselines are committed under
+  # tests/e2e/**/*-snapshots/. Bootstrap: run this job with --update-snapshots once,
+  # commit the artifact snapshots, then remove continue-on-error.
   visual-regression:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -148,11 +148,17 @@ jobs:
             sleep 2
           done
 
-      - name: Visual regression (@visual, soft)
+      - name: Visual regression (@visual, soft until baselines committed)
         env:
           SMOKE_BASE_URL: http://localhost:3000
           PRIVATE_MODE: 'false'
-        run: npm run e2e:visual
+        run: |
+          if [ -z "$(find tests/e2e -type d -name '*-snapshots' 2>/dev/null | head -1)" ]; then
+            echo "No *-snapshots dirs yet — generating baselines (soft job)."
+            npx playwright test --config=playwright.config.ts --grep @visual --update-snapshots || true
+            echo "Commit snapshot files from the visual-diffs / screenshots artifact, then remove continue-on-error."
+          fi
+          npm run e2e:visual
 
       - name: Upload visual diffs
         if: failure()
@@ -263,6 +269,7 @@ jobs:
           npm run growth-smoke
 
   # Soft until Upstash (Wave A) is live on Production — then remove continue-on-error.
+  # Exit 2 from rate-limit-smoke = no 429 (Upstash likely unset) — not a code bug.
   rate-limit-smoke:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -285,7 +292,20 @@ jobs:
             echo "Skipping rate-limit-smoke (SMOKE_BASE_URL not set)"
             exit 0
           fi
+          set +e
           npm run rate-limit-smoke
+          code=$?
+          set -e
+          if [ "$code" -eq 0 ]; then
+            echo "rate-limit-smoke OK (429 seen)"
+            exit 0
+          fi
+          if [ "$code" -eq 2 ]; then
+            echo "::warning::No 429 — Production likely missing UPSTASH_REDIS_REST_* (Wave A). See docs/PRODUCTION_STACK.md L9."
+            exit 0
+          fi
+          echo "rate-limit-smoke hard failure (exit $code)"
+          exit "$code"
 
   android:
     runs-on: ubuntu-latest

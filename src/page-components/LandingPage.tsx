@@ -19,7 +19,7 @@ import { BundleTeaserCard } from '@/components/marketing/BundleTeaserCard';
 import { EmailCaptureBand } from '@/components/marketing/EmailCaptureBand';
 import { Reveal } from '@/components/marketing/Reveal';
 import { ArtPicture } from '@/components/marketing/ArtPicture';
-import { ArrowRight, Check, Download, Globe2, WifiOff } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const HeroDemo = dynamic(
@@ -122,28 +122,10 @@ export function LandingPage() {
               <br />
               {t('landingHeroTitle2', { defaultValue: 'Win daily.' })}
             </h1>
-            <p className="mb-4 max-w-md text-lg leading-relaxed text-muted-foreground">
+            <p className="mb-6 max-w-md text-lg leading-relaxed text-muted-foreground">
               {t('landingHeroSubtitle', {
                 defaultValue:
-                  'We build an adaptive AI training coach for people who train at home or in a park — free offline workout logging with no account, and weekly plans that adapt from logs alone (no wearable required). Nutrition, mobility, mind, and learning deepen the same Win Score when you want them.',
-              })}
-            </p>
-            <p className="mb-6 max-w-md text-sm text-muted-foreground">
-              {t('landingHeroLibrary', {
-                defaultValue:
-                  'Library of 217 free exercise pages — form cues, hubs, and a full foundations guide.',
-              })}{' '}
-              <button
-                type="button"
-                className="text-primary hover:underline"
-                onClick={() => router.push('/exercises')}
-              >
-                {t('landingHeroLibraryCta', { defaultValue: 'Browse exercises' })}
-              </button>
-            </p>
-            <p className="mb-6 text-sm text-brass/90">
-              {t('landingHeroProof', {
-                defaultValue: 'Log a set → Coach shapes the week → Win Score ticks. That’s the loop.',
+                  'Free offline logging (no account) and weekly plans that adapt from your logs alone — no wearable required.',
               })}
             </p>
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:flex-wrap">
@@ -162,33 +144,18 @@ export function LandingPage() {
                 {t('landingSeeHow', { defaultValue: 'See how it works' })}
               </a>
             </div>
-            <div className="mb-6 flex flex-wrap gap-2">
-              <span className="inline-flex items-center rounded-full border border-primary/35 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary tabular-nums">
-                {t('landingProofChip', {
-                  defaultValue: '217 exercises · offline · no account',
-                })}
-              </span>
-              <span className="inline-flex items-center rounded-full border border-border/50 bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted-foreground">
-                {t('landingProofNoAiKey', {
-                  defaultValue:
-                    'Free core needs no AI key. Optional AI coach when enabled.',
-                })}
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5">
-                <Download className="h-3.5 w-3.5 text-primary" />{' '}
-                {t('landingTrustInstall', { defaultValue: 'Installs like an app' })}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <WifiOff className="h-3.5 w-3.5 text-primary" />{' '}
-                {t('landingTrustOffline', { defaultValue: 'Trains offline' })}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Globe2 className="h-3.5 w-3.5 text-primary" />{' '}
-                {t('landingTrustLang', { defaultValue: '14 languages' })}
-              </span>
-            </div>
+            <p className="text-xs text-muted-foreground">
+              {t('landingHeroProof', {
+                defaultValue: 'Log a set → Coach shapes the week → Win Score ticks.',
+              })}{' '}
+              <button
+                type="button"
+                className="text-primary hover:underline"
+                onClick={() => router.push('/exercises')}
+              >
+                {t('landingHeroLibraryCta', { defaultValue: 'Browse exercises' })}
+              </button>
+            </p>
           </div>
 
           <div className="journey-enter relative">
