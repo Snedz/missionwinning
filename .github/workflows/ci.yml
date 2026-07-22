@@ -156,12 +156,13 @@ jobs:
           if [ -z "$(find tests/e2e -type d -name '*-snapshots' 2>/dev/null | head -1)" ]; then
             echo "No *-snapshots dirs yet — generating baselines (soft job)."
             npx playwright test --config=playwright.config.ts --grep @visual --update-snapshots || true
-            echo "Commit snapshot files from the visual-diffs / screenshots artifact, then remove continue-on-error."
+            echo "Baselines written. Download from the visual-diffs artifact, commit them, then remove continue-on-error."
+            exit 0
           fi
           npm run e2e:visual
 
       - name: Upload visual diffs
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: visual-diffs

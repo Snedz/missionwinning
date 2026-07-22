@@ -32,6 +32,13 @@ test.describe('visual regression @visual', () => {
 
   test('home reduced-motion @visual', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
+    // LandingPage defers below-fold sections (JourneyScroll, CoachAdaptDemo, GuideTeaser)
+    // behind requestIdleCallback(timeout: 1800ms). Wait for the belowFoldReady state to
+    // resolve: JourneyScroll replaces the aria-hidden placeholder with <section id="path">.
+    await page.waitForFunction(() => {
+      const el = document.getElementById('path');
+      return el !== null && !el.hasAttribute('aria-hidden');
+    });
     await expect(page).toHaveScreenshot('home-reduced.png', {
       maxDiffPixelRatio: 0.02,
       fullPage: true,
