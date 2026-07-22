@@ -87,9 +87,10 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
    ```
 5. **Backup drill (L13):** Profile → Export backup once; skim operator restore steps in BACKUP_RESTORE.md.
 
-- [ ] Upstash live · [ ] Sentry DSN live · [ ] `rate-limit-smoke` sees 429
-- [ ] GitHub `VERCEL_*` + `SMOKE_BASE_URL` set
+- [ ] Upstash live · [x] rate-limit-smoke sees 429 on www (2026-07-22) · [ ] Sentry DSN live
+- [ ] GitHub `VERCEL_*` + `SMOKE_BASE_URL` set (CI billing still blocks Actions)
 - [ ] Profile export verified once
+- **Also before flip:** Android Accept B Pass — [apps/android/FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) 15-min path → [SHIP_INTERNAL.md](../apps/android/SHIP_INTERNAL.md)
 
 ---
 
@@ -103,8 +104,9 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
    ([docs/SEO_ANALYTICS.md](SEO_ANALYTICS.md)). Monday email digest repeats server funnel + week-4 RPC.
 4. Message every tester at day 2 and day 7 (script in STRATEGY.md). Fix the #1 confusion each week.
 
-- [ ] Hero flow QA'd on a real phone (agent: mobile hero e2e against www — 5 passed; founder confirms on device)
+- [ ] Hero flow QA'd on a real phone (agent: gate-smoke + e2e against www green on `.98`; founder confirms on device)
 - [ ] 10+ testers invited · [ ] gates met (check the beta panel) — **target 2026-08-02**
+- **Invite format:** `/private?invite=MW-B-XXXXX` + access code out-of-band — [BETA_INVITE.md](BETA_INVITE.md)
 
 
 ## §4 — Money: Stripe in ~1 hour (do in parallel with §3)

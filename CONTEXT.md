@@ -16,17 +16,17 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-22 · web `2026.07-unified.97` · Android `1.21.0`)
+## Now (2026-07-22 · web `2026.07-unified.98` · Android `1.21.0`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon 0 (pre-public beta).** Site live behind the `PRIVATE_MODE` gate. Boss metric: week-4 retained weekly loggers.
-- **#1 bottleneck (founder-owned): recruit ≥10 beta users** + phone hero QA — [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3. Beta cohort target 2026-08-02.
-- **www Production:** **`.97` live** (Vercel CLI promote of master `d0aa3ce`). Anonymous `/welcome`, magazine PDF, `/locales/*` → 200; `/log` still gated. **Still founder:** clear GitHub Actions billing (CI/CodeQL still die in ~2s) so future pushes work; rotate `VERCEL_TOKEN` when convenient.
-- Founder queue: Stripe Dashboard webhooks · `FOUNDER_DIGEST_EMAIL` · Checkout custom text → `/refunds` · [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) · Phantom treasury · Android **15-min Accept B** ([FOUNDER_ACCEPT.md](apps/android/FOUNDER_ACCEPT.md)) + Play Internal · customs/prefs migration · Wave A Upstash + Sentry.
-- Agents queue: keep CI green once billing clears · hero bugs · launch scripts/docs (Horizon 0); Android F5 gated ([apps/android/BACKLOG.md](apps/android/BACKLOG.md)).
-- Shipped: **web `.97`** gate allowlist (live on www); Android **1.21.0** Accept enablement (Maestro immersive + CI AAB artifact + 15-min walk); **1.20.0** CI release packaging.
-- In flight: none — **await founder beta recruiting** + GH billing + Accept B Pass.
+- **#1 bottleneck (founder-owned): recruit ≥10 beta users** + phone hero QA by **2026-08-02** — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3.
+- **Founder must do (agents cannot):** (1) clear **GitHub Actions billing** — CI still dies in ~3s; (2) phone hero QA + ≥10 invites; (3) Android **15-min Accept B** ([apps/android/FOUNDER_ACCEPT.md](apps/android/FOUNDER_ACCEPT.md)) → Play Internal; (4) Wave A before public flip; (5) `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in `.env.local`/CI for `LAUNCH_STRICT=true`.
+- **www:** `.97` allowlist live; **`.98`** smoke scripts aligned (promote after this ship). Gate/growth/rate-limit/week4 dry-run green against prod (strict env check still founder-gated).
+- Agents: CI when billing clears · #1 tester confusion only · `vercel promote` until Actions deploy works.
+- Shipped: web **`.98`** smoke alignment; **`.97`** allowlist; Android **1.21.0** Accept enablement.
+- In flight: none — **await founder recruiting + GH billing + Accept B Pass**.
 
 ---
 

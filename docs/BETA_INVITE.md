@@ -2,7 +2,7 @@
 
 Use this when inviting the first **10 private beta operators**. Prod is live at **https://www.missionwinning.com** (private gate on). Share the access code from Vercel `PRIVATE_ACCESS_SECRET` / `PRIVATE_ACCESS_CODES`.
 
-**Current status (2026-07-21):** Launch eng closeout green. **Recruiting still the critical path** before `PRIVATE_MODE=false`.
+**Current status (2026-07-22):** www **`.97`+** live (gate allowlist). **Recruiting still the critical path** before `PRIVATE_MODE=false`. Agent smokes aligned in `.98`.
 
 **Deferral:** Cohort of ≥10 invites targeted by **2026-08-02** (Horizon 0 day-14). Founder owns phone hero QA + personal invites; agents fix only #1 confusion from tester feedback.
 
