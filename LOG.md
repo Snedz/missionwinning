@@ -6,6 +6,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Web .95: public guide practice CTAs + magazine body
+
+- Wire `/guide` chapters through `publicGuidePracticeCta` (anonymous CTAs → `/welcome` / `/exercises`, not gated pillar routes) + shared `renderMagazineBody`.
+- In-app guidebook chapter page uses the same body renderer.
+- Sync CONTEXT after Android 1.17 overwrote `## Now` to stale `.93`; build `2026.07-unified.95`.
+- Verify: `npm run typecheck` + `npm test`.
+
+---
+
+## 2026-07-22 — Horizon 0 residual (.94): invite smoke, hero e2e, landing density, week4-smoke
+
+- Invite printer + gate-smoke invitee SSR (`data-mw-invitee`); Mission Score e2e fail-closed; landing hero density; `npm run week4-smoke`.
+- Build: `2026.07-unified.94` (commit `036cb03`).
+
+---
+
 ## 2026-07-22 — Android 1.17.0: hub UX polish (Today · Coach · Account)
 
 - **Hub chrome:** 3-tab bottom nav with icons; Account first-class; peer tabs `launchSingleTop` + `popUpTo(Today) { saveState }`.
@@ -125,25 +141,4 @@ Chronological record of shipped work. Newest first.
 - **Persistence:** AsyncStorage offline; Supabase sync when `EXPO_PUBLIC_SUPABASE_*` set; Super Bundle via web Stripe Checkout
 - **Stores:** `eas.json` + [docs/NATIVE_MOBILE.md](docs/NATIVE_MOBILE.md) (founder LLC / EAS project id / submit placeholders)
 - Web PWA remains for SEO / Get Selected; TWA playbook demoted to optional packaging
-
----
-
-## 2026-07-20 — Pre-launch capital focus (unlimited funds)
-
-- **`docs/PRELAUNCH_CAPITAL.md`:** Tier A/B/C — legal/ops/VA yes; paid ads **$0** until week-4
-- **`docs/OUTREACH_VA_BRIEF.md`:** hire script for beta DMs (forbidden: ads, fake users)
-- **`LLC_AND_PAYMENTS`:** §1b counsel review · §1c trademark filing checklist
-- Pointers: INDEX, PAY_READY_LEGAL, BETA_INVITE, ACCELERATOR_SPRINT, SOCIAL_LAUNCH
-- Founder still executes LLC/EIN/bank, Vercel Wave A, and hiring — agents do not flip `PRIVATE_MODE`
-
----
-
-## 2026-07-20 — Get Selected sprint (Plan v5)
-
-- **`docs/applications/`:** YC / CDL / Elbow Grease / SPC / Residency paste answers + INDEX
-- **`ACCELERATOR_SPRINT.md`:** research table, Get Selected calendar, Wave A pre-flip, demo seed
-- **`npm run seed-coach-adapt-demo`:** DevTools snippet for CoachAdaptBanner film
-- **BetaAdminPanel:** proof summary + Copy/Download real stats only
-- **Landing EN:** hero first sentence = exact YC_THESIS one-liner
-- Agents do not flip `PRIVATE_MODE`
 

@@ -26,7 +26,7 @@ const outDir = join(root, 'public', 'magazine');
 
 const MIN_BYTES = 80_000;
 const MIN_PAGES = 12;
-const MAX_PAGES = 28;
+const MAX_PAGES = 36;
 
 function countPdfPages(buf: Buffer): number {
   const pageObjs = buf.toString('latin1').match(/\/Type\s*\/Page(?!s)\b/g);

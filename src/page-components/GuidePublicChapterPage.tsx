@@ -10,47 +10,13 @@ import { useTranslation } from 'react-i18next';
 import type { GuideChapter } from '@/data/guidebook/types';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
 import { localizeGuidebookChapters } from '@/lib/localizeGuidebook';
+import { publicGuidePracticeCta } from '@/lib/guidebook/publicGuidePracticeCta';
+import { renderMagazineBody } from '@/lib/guidebook/renderMagazineBody';
 import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
 import { GuideApexShell } from '@/components/learn/GuideApexShell';
 import { GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
 import { exercisesForGuideChapter } from '@/lib/exerciseSeo';
-
-/** In-app pillar routes — anonymous public readers should land on welcome or SEO hubs. */
-const PUBLIC_SAFE = new Set([
-  '/welcome',
-  '/beta',
-  '/bundle',
-  '/compare',
-  '/guide',
-  '/exercises',
-  '/paths',
-  '/about',
-  '/press',
-  '/privacy',
-  '/terms',
-  '/dmca',
-  '/refunds',
-  '/coaching',
-  '/feedback',
-  '/vision',
-]);
-
-function publicPracticeLink(href: string, label: string): { href: string; label: string } {
-  if (
-    PUBLIC_SAFE.has(href) ||
-    href.startsWith('/exercises/') ||
-    href.startsWith('/guide/') ||
-    href.startsWith('/paths/') ||
-    href.startsWith('/compare/')
-  ) {
-    return { href, label };
-  }
-  if (href === '/library' || href.startsWith('/library')) {
-    return { href: '/exercises', label: 'Browse free exercises' };
-  }
-  return { href: '/welcome', label: 'Start free — Begin I-Day' };
-}
 
 type Props = {
   chapter: GuideChapter;
@@ -101,7 +67,7 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
       <div className="space-y-10">
         <header>
           <Link href="/guide" className="text-sm text-primary hover:underline">
-            ← All chapters
+            {t('guidePublicAllChapters', { defaultValue: '← All chapters' })}
           </Link>
           <p className="section-index mt-4 mb-2">
             CH {String(chapter.number).padStart(2, '0')}
@@ -112,14 +78,16 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
 
         {chapter.sections.map((s) => {
           const cta = s.practiceCTA
-            ? publicPracticeLink(s.practiceCTA.href, s.practiceCTA.label)
+            ? publicGuidePracticeCta(s.practiceCTA.href, s.practiceCTA.label, t)
             : null;
           return (
             <article key={s.id} id={s.id} className="scroll-mt-24 prose prose-invert max-w-none">
               <h3 className="text-xl font-semibold">{s.title}</h3>
               <p className="mb-4 text-sm text-muted-foreground">{s.summary}</p>
-              <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">
-                {s.body}
+              <div className="text-sm leading-relaxed text-foreground/90 space-y-3">
+                {renderMagazineBody(s.body, {
+                  paragraphClassName: 'text-sm leading-relaxed text-foreground/90',
+                })}
               </div>
               <GuideSectionExtras section={s} variant="app" />
               {cta && (
@@ -140,7 +108,11 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
 
         {relatedExercises.length > 0 && (
           <section className="space-y-3 rounded-2xl border border-border/50 bg-muted/15 p-5">
-            <h3 className="text-base font-semibold">Practice these free exercises</h3>
+            <h3 className="text-base font-semibold">
+              {t('guidePublicPracticeExercises', {
+                defaultValue: 'Practice these free exercises',
+              })}
+            </h3>
             <div className="flex flex-wrap gap-2">
               {relatedExercises.map((ex) => (
                 <Link
@@ -153,7 +125,9 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
               ))}
             </div>
             <Link href="/exercises" className="inline-block text-sm text-primary hover:underline">
-              Browse all exercises →
+              {t('guidePublicBrowseAllExercises', {
+                defaultValue: 'Browse all exercises →',
+              })}
             </Link>
           </section>
         )}
@@ -178,7 +152,9 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
             </Link>
           ) : (
             <Button asChild variant="fitness">
-              <Link href="/welcome">Start free →</Link>
+              <Link href="/welcome">
+                {t('magazineStartFree', { defaultValue: 'Start free' })} →
+              </Link>
             </Button>
           )}
         </div>

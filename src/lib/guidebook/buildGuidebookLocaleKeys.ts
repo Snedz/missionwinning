@@ -69,6 +69,20 @@ export function buildMagazineMetaLocaleKeys(): Record<string, string> {
     magazineBackToGuide: '← Foundations Guide',
     magazineStartTraining: 'Start training',
     magazineChapterOverview: 'Chapter overview',
+    guidePublicAllChapters: '← All chapters',
+    guidePublicPracticeExercises: 'Practice these free exercises',
+    guidePublicBrowseAllExercises: 'Browse all exercises →',
+    guidePublicBrowseExercises: 'Browse free exercises',
+    guidePublicStartFree: 'Start free — Begin I-Day',
+    guidePublicStartTraining: 'Start free — train in the app',
+    guidePublicStartFuel: 'Start free — open Fuel in the app',
+    guidePublicStartMove: 'Start free — Move flows in the app',
+    guidePublicStartMind: 'Start free — Mind sessions in the app',
+    guidePublicStartTrack: 'Start free — Track activities in the app',
+    guidePublicStartBuilder: 'Start free — Builder in the app',
+    guidePublicStartAssess: 'Start free — health screen in the app',
+    guidePublicStartBenchmarks: 'Start free — benchmarks in the app',
+    guidePublicStartHistory: 'Start free — history in the app',
   };
   MAGAZINE_META.preface.forEach((p, i) => {
     out[`magazinePreface_${i}`] = p;

@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
+import { renderMagazineBody } from '@/lib/guidebook/renderMagazineBody';
 import { ArrowLeft, BookMarked, Check } from 'lucide-react';
 
 type Props = { chapterId: string };
@@ -107,13 +108,11 @@ export function GuidebookChapterPage({ chapterId }: Props) {
                   <p className="text-sm text-muted-foreground">{section.summary}</p>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {section.body.split('\n\n').map((para, i) => (
-                    <p key={i} className="text-sm leading-relaxed text-foreground/90 whitespace-pre-wrap">
-                      {para.split('**').map((chunk, j) =>
-                        j % 2 === 1 ? <strong key={j}>{chunk}</strong> : chunk
-                      )}
-                    </p>
-                  ))}
+                  <div className="space-y-3">
+                    {renderMagazineBody(section.body, {
+                      paragraphClassName: 'text-sm leading-relaxed text-foreground/90',
+                    })}
+                  </div>
                   <GuideSectionExtras section={section} variant="app" />
                   <div className="flex flex-wrap gap-2 pt-2">
                     <Button size="sm" variant="fitness" asChild>
