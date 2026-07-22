@@ -76,6 +76,15 @@
 | F8.3 | AuthPrefsFeedback unit tests + Cloud sync card clarity | Done |
 | F8.4 | Ship 1.19.0 docs (CONTEXT / LOG) | Done |
 
+## F9 — CI release packaging + INDEX (1.20.0)
+
+| ID | Item | Status |
+|----|------|--------|
+| F9.1 | CI android: assembleRelease + bundleRelease smoke | Done |
+| F9.2 | CI Maestro/smoke asserts Account + release-smoke.sh | Done |
+| F9.3 | INDEX hub + release-smoke + Accept pointers | Done |
+| F9.4 | Ship 1.20.0 docs (CONTEXT / LOG) | Done |
+
 ## F5 — Explicitly later (gated)
 
 Fuel · Mind · Learn · Social · Wearables-as-score · iOS · Hevy-scale video library · OpenAPI codegen / KMP
