@@ -23,8 +23,8 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **Horizon 0 — beta sprint through 2026-08-02** (may skip formal beta — founder call). Boss metric: week-4 retained weekly loggers. **#1 bottleneck: recruit ≥10** + phone hero QA — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §1→§3.
 - **Founder override:** Design **D1 + D2 + D-prelaunch + D3** shipped early (excellence-first) — [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md).
 - **Ops:** GitHub Pro / billing unblocked. **Founder still:** rotate `VERCEL_TOKEN`; enable CodeQL; phone hero QA + invites; Android Accept B → Play Internal; Wave A Sentry; secrets for `LAUNCH_STRICT`.
-- **www:** promote **`.103`**. Agents: CI green · **no F5**.
-- Shipped: web **`.103`** craft sprint (Profile/Fuel extract, D3 pillars + token sync + Batch C); Android **1.24.1**. In flight: **Accept B re-walk**.
+- **www:** promote **`.103`**. Agents: e2e-critical Active/Fuel fix **committed/pushed** · **no F5**.
+- Shipped: web **`.103`** craft sprint; Android **1.24.1**; **positioning** Primer + Consumer AI + Team Humanity + **Fall 2026 official RFS sync**. Founder still owns: beta ≥10, phone QA, 60s demo, CDL/YC, Wave A, public flip. In flight: **Accept B re-walk**.
 
 
 ---

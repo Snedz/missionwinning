@@ -1,7 +1,7 @@
 # Accelerator application sprint — Jul 20 – Aug 2, 2026 (Get Selected)
 
 **Audience:** Founder (submits forms, flips public, films demo) · Agents (docs + evidence UX only)  
-**Narrative:** [YC_THESIS.md](YC_THESIS.md) · **Paste answers:** [applications/INDEX.md](applications/INDEX.md)  
+**Narrative:** [YC_THESIS.md](YC_THESIS.md) (Fall 2026 official RFS sync — wedge one-liner + RFS fit matrix + Team Humanity north star — do not collapse layers) · **Paste answers:** [applications/INDEX.md](applications/INDEX.md)  
 **Rules:** Honest traction only. **Agents never** flip `PRIVATE_MODE` or invent metrics. **Skip** Draper × Cardano.
 
 ---

@@ -6,6 +6,39 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Post-RFS next actions (agent slice)
+
+- Positioning done → distribution > features. Agent-allowed: push e2e-critical Active/Fuel unblock; verify `npm run seed-coach-adapt-demo`; refresh [BETA_INVITE.md](docs/BETA_INVITE.md) status to `.103`.
+- **Founder still owns (not marked done):** recruit ≥10, phone hero QA, film 60s demo, CDL Jul 24, Wave A + promote `.103`, public flip, YC Jul 27.
+- No pillars / RFS product / F5.
+
+## 2026-07-22 — Fall 2026 official RFS sync (docs)
+
+- Aligns shipped positioning pack to [ycombinator.com/rfs](https://www.ycombinator.com/rfs): batch intro (healthcare / stay healthy seat), Consumer AI agent+token curve, Primer K-12 product ask vs pattern-only boundary.
+- Updates: [docs/YC_THESIS.md](docs/YC_THESIS.md), [YC_ANSWERS.md](docs/applications/YC_ANSWERS.md), applications INDEX + ACCELERATOR_SPRINT pointers.
+- No product/landing change. Stance unchanged: Primer pattern + Consumer timing; wedge = Train + Coach.
+
+## 2026-07-22 — YC RFS positioning pack (Mission / Vision / Team Humanity)
+
+- Locks three layers: Team Humanity north star · Primer + Consumer AI fundraising narrative · Train+Coach wedge (never collapse).
+- [docs/YC_THESIS.md](docs/YC_THESIS.md): Mission/Vision/Values, Team Humanity pillar map, RFS fit matrix (claim/secondary/non-claim), Consumer AI why-now.
+- [vision.md](vision.md): Mission & Vision header + Team Humanity fronts table; wedge vs constitution note updated.
+- Sync: [YC_ANSWERS.md](docs/applications/YC_ANSWERS.md), [applications/INDEX.md](docs/applications/INDEX.md), [ACCELERATOR_SPRINT.md](docs/ACCELERATOR_SPRINT.md).
+- No product/landing change; no Elon/Primer consumer branding. Horizon 0 unchanged.
+
+## 2026-07-22 — Primer-shaped vision + YC thesis (docs)
+
+- Interprets YC *The Primer* RFS as fundraising craft (privilege → possible → entry → greater ambition); maps to Train+Coach wedge + lifelong adaptive coach.
+- Updates: [docs/YC_THESIS.md](docs/YC_THESIS.md) § Narrative arc + Problem/Solution/Why now; [vision.md](vision.md) “coach that grows with you”; STRATEGY positioning; [YC_ANSWERS.md](docs/applications/YC_ANSWERS.md) paste voice.
+- No product/landing change; no consumer Primer/Stephenson branding. Horizon 0 scope unchanged.
+
+## 2026-07-22 — CI e2e-critical unblock (hero Active + Fuel)
+
+- **Root cause:** `SessionCheckInSheet` overlay + Zustand persist race wiped Start; tests still expected removed `Set logged!` toast; Fuel expand flaky.
+- **Fix:** seed complete today's mind check-in in journey helpers; `startEmptyActiveWorkout` retry helper; assert Rest timer not toast; Fuel Coach expand with `toPass`; FuelMealPlanCard above free recipes; RestTimerBar `transition-[width]`; commit Linux `@visual` baselines.
+- **Still founder-owned:** rotate `VERCEL_TOKEN`; enable CodeQL code scanning.
+- Verify: 16/16 local mobile-chrome hero + logger-depth + premium-pillars.
+
 ## 2026-07-22 — Pre-launch craft sprint (web .103)
 
 - **Track 1:** Ops docs — VERCEL_TOKEN rotate + CodeQL enable; hero quality bar verified (no named #1 phone-QA bug yet).

@@ -34,7 +34,7 @@ Six pillars serve everyone — but *marketing to everyone acquires no one*. The 
 
 > **Adaptive AI coaching for train-anywhere athletes — free offline logging (no account), weekly plans from logs alone (no wearable).** Super Bundle adds Coach depth and the other pillars when you want them — never gates the logger.
 
-Lead with **logger + Mission Coach** (concrete, sharp, competitive). The six-pillar “everything app” story is expansion *after* the wedge wins — second sentence / below the fold, not the company one-liner. Full YC form, competition matrix, and apply-only-after traction bar: [docs/YC_THESIS.md](YC_THESIS.md). Constitution stays [vision.md](../vision.md).
+Lead with **logger + Mission Coach** (concrete, sharp, competitive). The six-pillar “everything app” story is expansion *after* the wedge wins — second sentence / below the fold, not the company one-liner. Below the fold, the ambition is a lifelong adaptive coach on the path (plans, fuel, recovery, learning that grow with the athlete) — not a feature dump. Primer-shaped fundraising arc (privilege → entry → greater ambition) lives in [docs/YC_THESIS.md](YC_THESIS.md) § Narrative arc. Constitution stays [vision.md](../vision.md). Full YC form, competition matrix, and apply-only-after traction bar: [docs/YC_THESIS.md](YC_THESIS.md).
 
 ---
 

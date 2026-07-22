@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](../vision.md). Updated **2026-07-22** (build `2026.07-unified.97` — gate allowlist + Beyond the Basics v1.4; **recruiting ≥10 users + founder Production promote remain the bottleneck**).
+**Living comparison** against [vision.md](../vision.md). Updated **2026-07-22** (build `2026.07-unified.103` — Primer-shaped vision/YC arc in docs; gate allowlist + Beyond the Basics v1.4 prior; **recruiting ≥10 users + founder Production promote remain the bottleneck**).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -10,7 +10,7 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 
 | Vision promise | Status | Notes |
 |----------------|--------|-------|
-| **#1 health everything app** — unified, not fragmented | 🟡 Strong scaffold | Six pillars + Today hub + Win Score synergy; cross-pillar coach chips on Today |
+| **#1 health everything app** — unified, not fragmented | 🟡 Strong scaffold | Six pillars + Today hub + Win Score synergy; cross-pillar coach chips on Today; vision now states “coach that grows with you” ([vision.md](../vision.md)) |
 | **Free core forever** — train, log, basics | 🟢 Shipped | Phases A–D; no paywall on core logger/library |
 | **Super Bundle** — primary revenue | 🟡 Code + checkout | Webhook secret on prod + enrollment ping OK; Dashboard webhook + live `sk_` still founder |
 | **Premium depth per pillar** | 🟢 Strong | GPS Track, Fuel Coach, Coach, Mind/Move/Learn premium depth shipped |

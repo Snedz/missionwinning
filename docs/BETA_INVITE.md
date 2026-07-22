@@ -2,7 +2,7 @@
 
 Use this when inviting the first **10 private beta operators**. Prod is live at **https://www.missionwinning.com** (private gate on). Share the access code from Vercel `PRIVATE_ACCESS_SECRET` / `PRIVATE_ACCESS_CODES`.
 
-**Current status (2026-07-22):** www **`.98` live**. **Recruiting is the critical path** before `PRIVATE_MODE=false` — cohort target **2026-08-02**.
+**Current status (2026-07-22):** www target **`.103`** (promote if not live). **Recruiting is the critical path** before `PRIVATE_MODE=false` — cohort target **2026-08-02**. Demo film: `npm run seed-coach-adapt-demo` → [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md).
 
 **Founder sprint checklist (agents cannot mark these done):**
 

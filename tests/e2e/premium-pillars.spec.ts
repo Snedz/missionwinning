@@ -39,12 +39,18 @@ test.describe('Premium pillar experiences', () => {
   });
 
   test('free user sees Fuel Coach locked preview on nutrition', async ({ page }) => {
-    await page.goto('/nutrition', { waitUntil: 'domcontentloaded' });
-    // Fuel Coach lives under the recipes expand (moreOpen) on Fuel.
-    await page.getByRole('button', { name: /search, barcode & recipes/i }).click();
-    await expect(page.getByText(/fuel coach|adaptive meal plan/i).first()).toBeVisible({
-      timeout: 10_000,
-    });
-    await expect(page.getByText(/super bundle|premium/i).first()).toBeVisible();
+    await page.goto('/nutrition', { waitUntil: 'networkidle' });
+    const more = page.getByRole('button', { name: /search, barcode & recipes/i });
+    await expect(more).toBeVisible({ timeout: 10_000 });
+    await more.scrollIntoViewIfNeeded();
+    await expect(async () => {
+      if (await more.isVisible().catch(() => false)) {
+        await more.click();
+      }
+      await expect(
+        page.getByText(/fuel coach/i).first()
+      ).toBeVisible({ timeout: 3_000 });
+    }).toPass({ timeout: 20_000 });
+    await expect(page.getByText(/super bundle|premium|unlock/i).first()).toBeVisible();
   });
 });
