@@ -6,6 +6,25 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Android 1.18.0: Accept-unblock after hub UX
+
+- **Accept truth:** FOUNDER_ACCEPT hub checks + Preferences U0a/U0b (Units/Equipment off Today); More row paths for Progress/Routines/Library.
+- **Smoke:** `wedge-adb-walk.py` + Maestro Account tab round-trip before Start workout.
+- **Polish:** Account unit/equipment feedback messages; hub tab TalkBack `selected`; localized Account tab strings (ES/PT/FR).
+- Version `1.18.0` / versionCode 45. F7 Done; F5 gated. Verify: `./gradlew :app:assembleDebug`.
+
+---
+
+## 2026-07-22 — Beyond the Basics v1.4 (web `.96`)
+
+- **Editorial:** seven free sections gained callout/table/checklist teaching blocks; all **18** free sections now have ≥1 block. Originality log v1.4 rows; `magazineMeta` → **1.4**.
+- **Reader:** shared `renderMagazineBody` on public + in-app chapters; denser `relatedExerciseIds` / `relatedLearnPathId`; public-safe practice CTAs (`.95` groundwork).
+- **PDF:** `MAX_PAGES` 28→36; regenerated `public/magazine/beyond-the-basics.pdf` (~23 pages / ~610KB).
+- **i18n:** guidebook content keys filled for all APP_LANGS; `i18n:parity` green; `export-locales`.
+- Build: `2026.07-unified.96`. Verify: `npm run typecheck` + `npm run i18n:parity` + PDF page gate.
+
+---
+
 ## 2026-07-22 — Web .95: public guide practice CTAs + magazine body
 
 - Wire `/guide` chapters through `publicGuidePracticeCta` (anonymous CTAs → `/welcome` / `/exercises`, not gated pillar routes) + shared `renderMagazineBody`.
@@ -131,14 +150,4 @@ Chronological record of shipped work. Newest first.
 - **`apps/android`:** multi-module Compose (designsystem/data/network/app) — I-Day → Today → Active → Victory → Coach; Room offline; Maestro + PLAY_LISTING
 - Expo demoted to UX prototype; Play product path is Compose (`assembleDebug` green)
 - Founder: emulator QA + Play Internal when ready
-
----
-
-## 2026-07-20 — Native Android + iOS (Expo)
-
-- **`apps/mobile`:** Expo Router wedge — I-Day → Today → Active logger → Victory → Coach; Account + magic-link auth
-- **`packages/mw-core`:** shared pure TS (adapt summary, seed plan, victory next-action); web `adaptSummary` re-exports
-- **Persistence:** AsyncStorage offline; Supabase sync when `EXPO_PUBLIC_SUPABASE_*` set; Super Bundle via web Stripe Checkout
-- **Stores:** `eas.json` + [docs/NATIVE_MOBILE.md](docs/NATIVE_MOBILE.md) (founder LLC / EAS project id / submit placeholders)
-- Web PWA remains for SEO / Get Selected; TWA playbook demoted to optional packaging
 
