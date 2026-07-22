@@ -1,38 +1,33 @@
-# Implementation Plan - Fix Warnings and Errors
+# Implementation Plan - Fix Startup Crash (Sentry DSN Missing)
 
-This plan addresses several warnings and errors identified in the project's resource files, manifest, and build configuration, as well as an optimization in the data layer.
+The app is crashing at startup because the Sentry Android SDK is attempting to auto-initialize, but it cannot find a valid Data Source Name (DSN). Since the project uses manual initialization to respect user privacy settings, auto-initialization should be disabled.
+
+## User Review Required
+
+> [!IMPORTANT]
+> This change disables Sentry's automatic startup. Crash reporting will still function because it is manually initialized in `MwApp.onCreate` after checking user preferences.
 
 ## Proposed Changes
 
 ### [App Module]
 
 #### [MODIFY] [AndroidManifest.xml](file:///Users/snedz/missionwinning/apps/android/app/src/main/AndroidManifest.xml)
-- Add missing attributes or ensure the schema is correctly interpreted to resolve "Attribute not allowed" errors.
-- Ensure the package-relative class names (`.MwApp`, `.MainActivity`) are correctly resolved by the IDE analyzer.
+- Add meta-data to disable Sentry auto-initialization.
 
-#### [MODIFY] [themes.xml](file:///Users/snedz/missionwinning/apps/android/app/src/main/res/values/themes.xml)
-- Add the missing `xmlns:android="http://schemas.android.com/apk/res/android"` namespace to the `<resources>` tag. This should resolve the unresolved attribute errors for `android:statusBarColor`, etc.
-
-#### [MODIFY] [build.gradle.kts](file:///Users/snedz/missionwinning/apps/android/app/build.gradle.kts)
-- Migrate from the deprecated `kotlinOptions { jvmTarget = "17" }` to the modern `compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) }`.
-
-### [Core Data Module]
-
-#### [MODIFY] [MwDao.kt](file:///Users/snedz/missionwinning/apps/android/core/data/src/main/java/com/missionwinning/core/data/MwDao.kt)
-- Add a new `@Query` method to get the count of workout logs directly from the database:
-  ```kotlin
-  @Query("SELECT COUNT(*) FROM workout_logs")
-  suspend fun getWorkoutCount(): Int
-  ```
-
-#### [MODIFY] [MwRepository.kt](file:///Users/snedz/missionwinning/apps/android/core/data/src/main/java/com/missionwinning/core/data/MwRepository.kt)
-- Update `workoutCount()` to use the new `dao.getWorkoutCount()` method instead of loading all workouts into memory and checking the size of the list.
+```xml
+<application ...>
+    <!-- Disable Sentry auto-init to prevent crash when DSN is missing in local builds -->
+    <meta-data android:name="io.sentry.auto-init" android:value="false" />
+    ...
+</application>
+```
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `analyze_file` on the modified files to confirm that the reported warnings and errors are resolved.
-- If possible, run `./gradlew :app:assembleDebug` to verify the build still succeeds.
+- Run `adb logcat` to ensure the `FATAL EXCEPTION` related to `SentryInitProvider` no longer appears.
+- Deploy the app to the emulator and verify it reaches the main screen.
 
 ### Manual Verification
-- Verify that the IDE no longer shows red squiggles in `AndroidManifest.xml` and `themes.xml`.
+- Deploy to emulator-5554 using `./gradlew :app:installDebug`.
+- Launch the app and confirm it stays open.

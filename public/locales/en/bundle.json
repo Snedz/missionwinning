@@ -1,7 +1,7 @@
 {
   "bundleBadge": "Super Bundle",
-  "bundleHeadline": "Six pillars. One app. One price.",
-  "bundleSubhead": "Six pillars in one app — not a Freeletics-style multi-app stack. Train, Fuel, Move, Mind, Track, Learn, and one Win Score on Today.",
+  "bundleHeadline": "Mission Coach + depth. One honest price.",
+  "bundleSubhead": "Adaptive weekly plans from your workout logs — then Fuel, Move, Mind, Track, and Learn depth when you want it. Free logger stays free forever.",
   "bundleUrgencyBadge": "Founders pricing — locked in at launch",
   "bundleTab3mo": "Monthly",
   "bundleTabMonthly": "Monthly",
@@ -16,7 +16,7 @@
   "bundleBilledMonthly": "${{price}} billed monthly",
   "bundleBilledOnce": "${{price}} one-time",
   "bundleHeroTitle": "Super Bundle",
-  "bundleHeroSubtitle": "All six premium pillars in one install — vs juggling partner apps",
+  "bundleHeroSubtitle": "Coach + pillar depth in one install — vs juggling partner apps",
   "bundleUnlockCta": "Unlock Super Bundle",
   "bundleOneAppTitle": "One app — not seven",
   "bundleOneAppDesc": "Freeletics Super Bundle spans multiple apps. Mission Winning keeps Train, Fuel, Move, Mind, Track, and Learn in one PWA with one Win Score.",

@@ -1,0 +1,3 @@
+- [x] Disable Sentry auto-initialization in `AndroidManifest.xml`
+- [x] Verify fix by deploying to emulator
+- [x] Check logs for any remaining crashes

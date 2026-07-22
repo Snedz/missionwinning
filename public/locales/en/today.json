@@ -129,6 +129,8 @@
   "coachActionGoBuilder": "Go to Builder",
   "coachActionLogNutrition": "Log nutrition",
   "coachActionViewToday": "View Today hub",
+  "victoryNextCoachLabel": "See Mission Coach",
+  "victoryNextCoachReason": "Coach adapts your week from this log — no wearable needed.",
   "todayPillarScoreByPillar": "Mission Score by Pillar",
   "todayPillarTrain": "Train",
   "todayPillarFuel": "Fuel",
