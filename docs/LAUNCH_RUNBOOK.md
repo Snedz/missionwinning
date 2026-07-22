@@ -31,9 +31,9 @@
 6. After promote, check Profile footer / `/api/health` matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.104`+** — do not assume until verified). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
 
 - [x] GitHub Actions billing cleared (CI jobs no longer die in ~2–5s) — **cleared 2026-07-22; re-check if regress**
-- [ ] `VERCEL_TOKEN` confirmed working for Deploy production (agent saw a green Deploy for `.103`; re-verify on `.104`)
-- [ ] CodeQL / code scanning enabled (Settings → Security)
-- [ ] Production shows **`.104`+** on `/api/health` (verify after deploy — not done until you check)
+- [x] `VERCEL_TOKEN` confirmed working for Deploy production (`.104` Deploy green 2026-07-22)
+- [ ] CodeQL / code scanning enabled (Settings → Security) — workflow soft until then
+- [x] Production shows **`.104`+** on `/api/health` (agent-verified 2026-07-22)
 - [x] I can open the Vercel project and deploy (GitHub integration / CLI promote)
 
 ## §2 — Environment & database (~45 min, one-time)
