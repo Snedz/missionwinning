@@ -32,16 +32,48 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
-      - name: Deploy to Vercel production
+      - name: Validate Vercel credentials
+        id: check_vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_PROJECT_ID" ] || [ -z "$VERCEL_ORG_ID" ]; then
-            echo "Missing VERCEL_TOKEN / VERCEL_PROJECT_ID / VERCEL_ORG_ID in GitHub Secrets"
+            echo "::error::Missing VERCEL_TOKEN / VERCEL_PROJECT_ID / VERCEL_ORG_ID in GitHub Secrets"
             exit 1
           fi
+          # Validate token format — Vercel tokens are alphanumeric/dash/underscore only; minimum length 10
+          if [[ ! "$VERCEL_TOKEN" =~ ^[A-Za-z0-9_-]+$ ]] || [ "${#VERCEL_TOKEN}" -lt 10 ]; then
+            echo "::error::VERCEL_TOKEN is malformed. A valid Vercel token must contain only letters, digits, hyphens, or underscores and be at least 10 characters."
+            exit 1
+          fi
+          HTTP=""; CURL_RC=0
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" \
+            --connect-timeout 10 \
+            --max-time 15 \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            https://api.vercel.com/v2/user) || CURL_RC=$?
+          if [ $CURL_RC -ne 0 ]; then
+            echo "::warning title=Vercel API unreachable::curl failed with exit code $CURL_RC (network/DNS/timeout). Cannot verify VERCEL_TOKEN. Deployment skipped; check connectivity or re-run the workflow."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          elif [ -z "$HTTP" ]; then
+            echo "::warning title=Vercel API empty response::Server returned no HTTP status. Deployment skipped; re-run the workflow to retry."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          elif [ "$HTTP" != "200" ]; then
+            echo "::warning title=VERCEL_TOKEN invalid::Vercel API rejected the token (HTTP $HTTP). Rotate VERCEL_TOKEN at https://vercel.com/account/tokens and update the GitHub Secret. See docs/LAUNCH_RUNBOOK.md §1."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy to Vercel production
+        if: steps.check_vercel.outputs.skip != 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
           mkdir -p .vercel
           printf '%s\n' "{\"projectId\":\"$VERCEL_PROJECT_ID\",\"orgId\":\"$VERCEL_ORG_ID\",\"projectName\":\"missionwinning\"}" > .vercel/project.json
           vercel deploy --prod --yes --token "$VERCEL_TOKEN"
