@@ -6,6 +6,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Web .98: launch smokes aligned with gate allowlist
+
+- **gate-smoke:** `/welcome`, magazine PDF, `/locales` expected public while gated; `/log` still gated. Matches `.97` `PRIVATE_GATE_PUBLIC_PATHS`.
+- **growth-smoke:** `/api/journey/welcome` without session accepts **403** (private gate) as well as 401/503.
+- **Prod verify:** gate-smoke + growth-smoke green on www; rate-limit 429 OK; week4 digest dryRun OK. `LAUNCH_STRICT` still fails local check-env without founder `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET`.
+- **Founder residual:** GH Actions billing · recruit ≥10 · Accept B · Wave A.
+- Build: `2026.07-unified.98`.
+
+---
+
 ## 2026-07-22 — Android 1.21.0: Accept enablement (F10)
 
 - **Maestro:** Active immersive `assertNotVisible` Account tab (parity with wedge-adb-walk).

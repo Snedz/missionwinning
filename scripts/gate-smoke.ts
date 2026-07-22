@@ -75,18 +75,16 @@ async function main() {
   }
 
   try {
+    // /welcome is public while gated (.97+) so SEO /guide "Start free" reaches I-Day
     const welcome = await headOrGet('/welcome', { redirect: 'manual' });
     const welcomeLoc = welcome.headers.get('location') || '';
-    const welcomeGated =
-      welcome.status >= 300 &&
-      welcome.status < 400 &&
-      welcomeLoc.includes('/private');
+    const welcomePublic = welcome.status === 200;
     checks.push({
-      name: 'GET /welcome redirects to /private',
-      ok: welcomeGated,
-      detail: welcomeGated
-        ? `${welcome.status} → ${welcomeLoc}`
-        : `status ${welcome.status} (welcome must not bypass gate)`,
+      name: 'GET /welcome public while gated',
+      ok: welcomePublic,
+      detail: welcomePublic
+        ? '200 OK'
+        : `status ${welcome.status}${welcomeLoc ? ` → ${welcomeLoc}` : ''} (expected 200; Today/Train stay gated)`,
     });
   } catch (e) {
     checks.push({ name: 'GET /welcome', ok: false, detail: String(e) });
@@ -104,6 +102,36 @@ async function main() {
     });
   } catch (e) {
     checks.push({ name: 'GET /beta', ok: false, detail: String(e) });
+  }
+
+  try {
+    const pdf = await headOrGet('/magazine/beyond-the-basics.pdf', { redirect: 'manual' });
+    const pdfLoc = pdf.headers.get('location') || '';
+    const pdfOk = pdf.status === 200;
+    checks.push({
+      name: 'GET /magazine PDF public while gated',
+      ok: pdfOk,
+      detail: pdfOk
+        ? '200 OK'
+        : `status ${pdf.status}${pdfLoc ? ` → ${pdfLoc}` : ''}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /magazine PDF', ok: false, detail: String(e) });
+  }
+
+  try {
+    const locales = await headOrGet('/locales/en/common.json', { redirect: 'manual' });
+    const localesLoc = locales.headers.get('location') || '';
+    const localesOk = locales.status === 200;
+    checks.push({
+      name: 'GET /locales JSON public while gated',
+      ok: localesOk,
+      detail: localesOk
+        ? '200 OK'
+        : `status ${locales.status}${localesLoc ? ` → ${localesLoc}` : ''}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /locales', ok: false, detail: String(e) });
   }
 
   try {

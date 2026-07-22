@@ -98,14 +98,14 @@ try {
   checks.push({ name: 'GET /api/leads/unsubscribe', ok: false, detail: String(e) });
 }
 
-// 4) Welcome without session → 401
+// 4) Welcome without session → 401 from route, or 403 from private gate while PRIVATE_MODE
 try {
   const res = await req('/api/journey/welcome', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: '{}',
   });
-  const ok = res.status === 401 || res.status === 503;
+  const ok = res.status === 401 || res.status === 403 || res.status === 503;
   checks.push({
     name: 'POST /api/journey/welcome without session',
     ok,
