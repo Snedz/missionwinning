@@ -179,7 +179,7 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | Accept B (logger + loop) for Internal | | Founder fills after device QA |
 | Reject (list blockers) | | |
 
-**Agent prep (2026-07-21):** Doc truth + [BACKLOG.md](BACKLOG.md) F0–F4 Done (incl. 1.16.0 PR chip / soft-delete / Baseline Profile). **F5 gated.** Founder still owns Pass/Fail on device — run `wedge-adb-walk.py` then walk Active + Account sync. After Pass → mark **Accept B** above, then [SHIP_INTERNAL.md](SHIP_INTERNAL.md) / [PLAY_LISTING.md](PLAY_LISTING.md) (upload keystore + Play Internal are founder-only).
+**Agent prep (2026-07-22):** Doc truth + [BACKLOG.md](BACKLOG.md) F0–F4 + F6 Done (1.17.0 hub UX). **F5 gated.** Founder still owns Pass/Fail on device — run `wedge-adb-walk.py` then walk Active + Account tab. After Pass → mark **Accept B** above, then [SHIP_INTERNAL.md](SHIP_INTERNAL.md) / [PLAY_LISTING.md](PLAY_LISTING.md) (upload keystore + Play Internal are founder-only).
 
 **Blockers:**
 

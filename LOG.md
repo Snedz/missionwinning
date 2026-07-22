@@ -16,17 +16,6 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-07-22 — Horizon 0 residual: invite smoke, hero e2e, landing density, week4-smoke
-
-- **Invite tooling:** `print-beta-invite` → `/private?invite=` + out-of-band code; `/private` SSR `data-mw-invitee`; gate-smoke asserts invitee path + optional `SMOKE_EXPECT_BUILD_LABEL`.
-- **Hero e2e:** Mission Score path fail-closed via Active builder (no Learn sample soft-skip).
-- **Landing:** hero to one short subtitle + one emerald CTA (chips/trust row removed).
-- **Measurement:** `npm run week4-smoke` (digest dryRun + optional `mw_week4_retention`); wired into launch-verify when `CRON_SECRET` set.
-- **CI/flip:** visual soft until Linux snapshots committed; rate-limit exit-2 = Wave A warning; PUBLIC_FLIP agent checklist refreshed.
-- Build: `2026.07-unified.94`. Verify: `npm run typecheck` + `npm test`. Also fixed `PracticeRemap` typing in `publicGuidePracticeCta.ts` (CI green).
-
----
-
 ## 2026-07-21 — Horizon 0 web readiness: invite gate + launch-verify + wedge copy
 
 - **Invite → gate:** links land on `/private?invite=…` (no prod `?access=` unless `PRIVATE_ALLOW_QUERY_ACCESS`); invitee expands access form; admin prefers API `row.link`; [docs/BETA_INVITE.md](docs/BETA_INVITE.md) aligned.

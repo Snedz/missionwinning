@@ -71,6 +71,8 @@ fun ProvideMwMotion(content: @Composable () -> Unit) {
 fun MwScreenScaffold(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp, vertical = 16.dp),
+    /** When false, skip system nav-bar padding (hub screens that own [MwBottomNav]). */
+    applyNavBarPadding: Boolean = true,
     content: @Composable BoxScope.() -> Unit,
 ) {
     Box(
@@ -89,7 +91,7 @@ fun MwScreenScaffold(
                 )
             }
             .statusBarsPadding()
-            .navigationBarsPadding()
+            .then(if (applyNavBarPadding) Modifier.navigationBarsPadding() else Modifier)
             .padding(contentPadding),
         content = content,
     )

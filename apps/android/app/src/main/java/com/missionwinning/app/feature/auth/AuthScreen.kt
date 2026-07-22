@@ -59,6 +59,8 @@ import java.io.InputStreamReader
 fun AuthScreen(
     onClose: () -> Unit,
     onOpenGallery: () -> Unit = {},
+    /** When true (hub tab), hide back chrome and skip double nav-bar padding. */
+    asHubTab: Boolean = false,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -122,14 +124,18 @@ fun AuthScreen(
         }
     }
 
-    MwScreenScaffold {
+    MwScreenScaffold(applyNavBarPadding = !asHubTab) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(MwSpace.md),
         ) {
-            MwTopBar(title = stringResource(DsR.string.mw_account), onBack = onClose)
+            if (asHubTab) {
+                MwHeroTitle(stringResource(DsR.string.mw_account))
+            } else {
+                MwTopBar(title = stringResource(DsR.string.mw_account), onBack = onClose)
+            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -137,13 +143,25 @@ fun AuthScreen(
                 MwSectionLabel("Optional")
                 MwOfflinePill(online = online)
             }
-            MwHeroTitle(
-                when (state.step) {
-                    AuthStep.SignedIn -> "You're signed in"
-                    AuthStep.Code -> "Enter code"
-                    AuthStep.Email -> "Sign in"
-                },
-            )
+            if (!asHubTab) {
+                MwHeroTitle(
+                    when (state.step) {
+                        AuthStep.SignedIn -> "You're signed in"
+                        AuthStep.Code -> "Enter code"
+                        AuthStep.Email -> "Sign in"
+                    },
+                )
+            } else {
+                Text(
+                    when (state.step) {
+                        AuthStep.SignedIn -> "You're signed in"
+                        AuthStep.Code -> "Enter code"
+                        AuthStep.Email -> "Sign in for sync"
+                    },
+                    style = MwTypography.headlineMedium,
+                    color = MwColors.Text,
+                )
+            }
             Text(
                 "Train + Coach work fully offline. Sign-in unlocks cloud coach access and future sync — never required to log.",
                 style = MwTypography.bodyMedium,
@@ -180,6 +198,78 @@ fun AuthScreen(
             }
             state.message?.let {
                 Text(it, style = MwTypography.bodyMedium, color = MwColors.Emerald)
+            }
+
+            MwCard(elevated = true) {
+                MwSectionLabel("Preferences")
+                Text(
+                    "Saved on this device. Unit also toggles mid-session on Active.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
+                Text(
+                    "Weight unit",
+                    style = MwTypography.labelSmall,
+                    color = MwColors.TextMuted,
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    MwChip(
+                        text = "KG",
+                        tone = if (state.weightUnit == "kg") MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = if (state.weightUnit == "kg") {
+                            "Kilograms selected"
+                        } else {
+                            "Switch to kilograms"
+                        },
+                        onClick = { viewModel.setWeightUnit("kg") },
+                    )
+                    MwChip(
+                        text = "LB",
+                        tone = if (state.weightUnit == "lb") MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = if (state.weightUnit == "lb") {
+                            "Pounds selected"
+                        } else {
+                            "Switch to pounds"
+                        },
+                        onClick = { viewModel.setWeightUnit("lb") },
+                    )
+                }
+                Spacer(Modifier.height(MwSpace.sm))
+                Text(
+                    if (state.reseeding) {
+                        "Reseeding week for new equipment…"
+                    } else {
+                        "Equipment — reseeds this week’s plan on device."
+                    },
+                    style = MwTypography.labelSmall,
+                    color = MwColors.TextMuted,
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    MwChip(
+                        text = "Bodyweight",
+                        tone = if (state.equipment == "bodyweight") MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = "Bodyweight equipment",
+                        onClick = { if (!state.reseeding) viewModel.setEquipment("bodyweight") },
+                    )
+                    MwChip(
+                        text = "Dumbbells",
+                        tone = if (state.equipment == "dumbbells") MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = "Dumbbells equipment",
+                        onClick = { if (!state.reseeding) viewModel.setEquipment("dumbbells") },
+                    )
+                    MwChip(
+                        text = "Full gym",
+                        tone = if (state.equipment == "full-gym") MwChipTone.Emerald else MwChipTone.Neutral,
+                        contentDescription = "Full gym equipment",
+                        onClick = { if (!state.reseeding) viewModel.setEquipment("full-gym") },
+                    )
+                }
             }
 
             MwCard(elevated = true) {

@@ -5,11 +5,12 @@
 
 ## Principles
 
-1. **App chrome** — bottom nav on Today / Coach only; Active / Victory / I-Day immersive.  
+1. **App chrome** — 3-tab hub: Today · Coach · Account; Active / Victory / I-Day / stack screens immersive (no hub).  
 2. **Cards over naked text** — navy elevated surfaces, emerald action, brass honor.  
 3. **Logger is the product** — current-set card, steppers, rest dock, one primary complete.  
 4. **Offline honesty** — “ON DEVICE · SYNC LATER” pill; Room is SoT.  
 5. **One thumb** — 48dp targets, TalkBack on primaries.
+6. **Today mission control** — brand/mission strip + next-session hero + one primary Start; prefs and secondary links demoted (Account / More).
 
 ## Typography
 
@@ -31,10 +32,17 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 
 | Key | Values |
 |-----|--------|
-| Weight unit | `kg` / `lb` — Today Units card or **tap unit chip** on Active (converts mid-session, snaps to 2.5 kg / 5 lb) |
-| Equipment | I-Day step 2 or Today Equipment chips (reseeds week plan) |
+| Weight unit | `kg` / `lb` — Account Preferences or **tap unit chip** on Active (converts mid-session, snaps to 2.5 kg / 5 lb) |
+| Equipment | I-Day step 2 or Account Preferences chips (reseeds week plan) |
 | Default rest | `45` / `60` / `90` / `120` s — Active rest chips after complete set |
 | Rest alert | Vibrate (default on) / Beep (default off) when rest ends |
+
+## Hub navigation
+
+- Bottom nav: **Today · Coach · Account** (icons + labels; emerald selected, brass idle).
+- Peer tabs use `launchSingleTop` + `popUpTo(Today) { saveState }` with fade (~200ms); stack pushes (Active, Victory, History, Catalog, Progress, Routines) keep slide.
+- Hub screens pass `MwScreenScaffold(applyNavBarPadding = false)` so `MwBottomNav` owns system inset.
+- Cold open → next session → Start in ≤2 taps; Account is a first-class tab (not buried on Today).
 
 ## Logger craft
 
@@ -66,8 +74,9 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - **Reorder** exercises with ↑/↓; **Superset** A–D grouping
 - **Plate calculator** for barbell load (per side)
 - **Per-exercise rest** override (45/60/90/120 or session default)
-- **Today mission control** — streak / week volume / form score strip + Mission insight
+- **Today mission control** — streak / week volume strip + Mission insight; Quick log secondary; Progress / Routines / Library in compact More row
 - **Progress** — 28-day heat map, 8-week volume, PRs, optional body weight (on-device)
+- Victory → Coach / Routines / Today use hub-safe `popUpTo(Today)`; History soft-delete pops to Today with hub visible
 
 ## Verify
 

@@ -81,7 +81,7 @@ fun TodayScreen(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    MwScreenScaffold {
+    MwScreenScaffold(applyNavBarPadding = false) {
         MwEnterFade {
             PullToRefreshBox(
                 isRefreshing = state.refreshing,
@@ -111,13 +111,7 @@ fun TodayScreen(
                         "Your next session is ready on this device."
                     } else {
                         buildString {
-                            append("${state.workouts} workout${if (state.workouts == 1) "" else "s"} logged offline")
-                            if (state.streakDays > 0) {
-                                append(" · ${state.streakDays}-day streak")
-                            }
-                            state.recent.firstOrNull()?.let { last ->
-                                append(" · last ${last.whenLabel.lowercase()}")
-                            }
+                            append("${state.workouts} workout${if (state.workouts == 1) "" else "s"} logged")
                             append(".")
                         }
                     },
@@ -241,7 +235,7 @@ fun TodayScreen(
                             style = MwTypography.bodyMedium,
                             color = MwColors.TextMuted,
                         )
-                        MwPrimaryButton(
+                        MwGhostButton(
                             text = stringResource(DsR.string.mw_quick_log),
                             contentDescription = stringResource(DsR.string.mw_quick_log),
                             onClick = {
@@ -317,9 +311,9 @@ fun TodayScreen(
                 }
 
                 MwCard(elevated = true) {
-                    MwSectionLabel("Units")
+                    MwSectionLabel(stringResource(DsR.string.mw_more))
                     Text(
-                        "Weight unit for logging (saved on device). Same toggle as the Active chip.",
+                        "Progress, routines, and exercise library.",
                         style = MwTypography.bodyMedium,
                         color = MwColors.TextMuted,
                     )
@@ -328,81 +322,30 @@ fun TodayScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         MwChip(
-                            text = "KG",
-                            tone = if (state.weightUnit == "kg") MwChipTone.Emerald else MwChipTone.Neutral,
-                            contentDescription = if (state.weightUnit == "kg") {
-                                "Kilograms selected"
-                            } else {
-                                "Switch to kilograms"
-                            },
-                            onClick = { viewModel.setWeightUnit("kg") },
+                            text = stringResource(DsR.string.mw_progress),
+                            tone = MwChipTone.Neutral,
+                            contentDescription = stringResource(DsR.string.mw_progress),
+                            onClick = onOpenProgress,
                         )
                         MwChip(
-                            text = "LB",
-                            tone = if (state.weightUnit == "lb") MwChipTone.Emerald else MwChipTone.Neutral,
-                            contentDescription = if (state.weightUnit == "lb") {
-                                "Pounds selected"
-                            } else {
-                                "Switch to pounds"
-                            },
-                            onClick = { viewModel.setWeightUnit("lb") },
+                            text = stringResource(DsR.string.mw_routines),
+                            tone = MwChipTone.Neutral,
+                            contentDescription = stringResource(DsR.string.mw_routines),
+                            onClick = onOpenRoutines,
+                        )
+                        MwChip(
+                            text = "Library",
+                            tone = MwChipTone.Neutral,
+                            contentDescription = stringResource(DsR.string.mw_library),
+                            onClick = onOpenCatalog,
                         )
                     }
                 }
-
-                MwCard(elevated = true) {
-                    MwSectionLabel("Equipment")
-                    Text(
-                        if (state.reseeding) {
-                            "Reseeding week for new equipment…"
-                        } else {
-                            "Where you train — reseeds this week’s plan on device."
-                        },
-                        style = MwTypography.bodyMedium,
-                        color = MwColors.TextMuted,
-                    )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        EquipmentChip("Bodyweight", "bodyweight", state.equipment, state.reseeding) {
-                            viewModel.setEquipment("bodyweight")
-                        }
-                        EquipmentChip("Dumbbells", "dumbbells", state.equipment, state.reseeding) {
-                            viewModel.setEquipment("dumbbells")
-                        }
-                        EquipmentChip("Full gym", "full-gym", state.equipment, state.reseeding) {
-                            viewModel.setEquipment("full-gym")
-                        }
-                    }
-                }
-
-                MwGhostButton(text = stringResource(DsR.string.mw_progress), onClick = onOpenProgress)
-                MwGhostButton(text = stringResource(DsR.string.mw_routines), onClick = onOpenRoutines)
-                MwGhostButton(text = stringResource(DsR.string.mw_library), onClick = onOpenCatalog)
-                MwGhostButton(text = stringResource(DsR.string.mw_tab_coach), onClick = onOpenCoach)
-                MwGhostButton(text = stringResource(DsR.string.mw_account), onClick = onOpenAuth)
                 Spacer(Modifier.height(8.dp))
             }
             } // PullToRefreshBox
         }
     }
-}
-
-@Composable
-private fun EquipmentChip(
-    label: String,
-    id: String,
-    selectedId: String,
-    disabled: Boolean,
-    onSelect: () -> Unit,
-) {
-    MwChip(
-        text = label,
-        tone = if (selectedId == id) MwChipTone.Emerald else MwChipTone.Neutral,
-        contentDescription = if (selectedId == id) "$label selected" else "Switch to $label",
-        onClick = { if (!disabled) onSelect() },
-    )
 }
 
 @Composable
