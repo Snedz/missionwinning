@@ -55,7 +55,7 @@ There is **no** automatic server recovery for users who never sign in and never 
 ### Before you need it
 
 1. Supabase Dashboard → **Project Settings → Database** — note plan and whether **Point-in-Time Recovery (PITR)** is enabled.
-2. Confirm Production env has `SUPABASE_SERVICE_ROLE_KEY` only on the server ([ENV.md](../ENV.md)).
+2. Confirm Production env has `SUPABASE_SERVICE_ROLE_KEY` only on the server ([ENV.md](ENV.md)).
 3. Keep a recent SQL dump or rely on platform backups (document the last manual dump date in your private ops notes — not in git).
 
 ### Restore drill (dry-run annually or before public flip)

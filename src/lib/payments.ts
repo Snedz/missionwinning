@@ -22,7 +22,7 @@ export const PROGRAM_PRICES: Record<string, { price: string; currency: string; t
   'conditioning': { price: '247', currency: 'USD', title: 'Conditioning Specialist' },
 }
 
-// Super Bundle monthly anchor — keep in sync with BUNDLE_PLANS in bundleConfig.ts + STRATEGY.md.
+// Super Bundle monthly anchor — keep in sync with BUNDLE_PLANS in bundleConfig.ts + docs/STRATEGY.md.
 export const SUPER_BUNDLE_PRICE = '11.99'
 export const SUPER_BUNDLE_TITLE = 'Mission Winning Super Bundle (All Premium Pillars)'
 export const BUNDLE_DISCOUNT_NOTE =
@@ -81,7 +81,7 @@ export const BUNDLE_PILLARS = [
 ] as const
 
 /**
- * Stripe Payment Links (legacy / fallback — see LAUNCH_RUNBOOK.md).
+ * Stripe Payment Links (legacy / fallback — see docs/LAUNCH_RUNBOOK.md).
  * Prefer Checkout Sessions via POST /api/checkout when STRIPE_SECRET_KEY + price IDs are set.
  *
  * NOTE: NEXT_PUBLIC_* vars are inlined at build time ONLY for static

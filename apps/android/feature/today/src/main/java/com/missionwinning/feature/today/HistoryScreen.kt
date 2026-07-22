@@ -13,6 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,8 +24,10 @@ import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
 import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
+import com.missionwinning.core.designsystem.MwConfirmSheet
 import com.missionwinning.core.designsystem.MwEmptyState
 import com.missionwinning.core.designsystem.MwEnterFade
+import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwLoadingBlock
 import com.missionwinning.core.designsystem.MwMetricCard
 import com.missionwinning.core.designsystem.MwOfflinePill
@@ -32,6 +37,12 @@ import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwTopBar
 import com.missionwinning.core.designsystem.MwTypography
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.layout.padding
 
 @Composable
 fun HistoryScreen(
@@ -44,6 +55,11 @@ fun HistoryScreen(
         viewModel.load(workoutId)
     }
     val state by viewModel.state.collectAsStateWithLifecycle()
+    var confirmDelete by remember { mutableStateOf(false) }
+
+    LaunchedEffect(state.deleted) {
+        if (state.deleted) onBack()
+    }
 
     MwScreenScaffold {
         MwEnterFade {
@@ -169,8 +185,35 @@ fun HistoryScreen(
                             }
                         }
                         Spacer(Modifier.height(8.dp))
+                        MwGhostButton(
+                            text = if (state.deleting) "Deleting…" else "Delete workout",
+                            onClick = { if (!state.deleting) confirmDelete = true },
+                            contentDescription = "Delete this workout from history",
+                        )
+                        Spacer(Modifier.height(8.dp))
                     }
                 }
+            }
+        }
+        if (confirmDelete) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.65f))
+                    .padding(24.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                MwConfirmSheet(
+                    title = "Delete this workout?",
+                    body = "Removes it from this device. If you're signed in, sync will tombstone the cloud copy.",
+                    confirmLabel = "Delete",
+                    cancelLabel = "Keep",
+                    onConfirm = {
+                        confirmDelete = false
+                        viewModel.softDelete()
+                    },
+                    onDismiss = { confirmDelete = false },
+                )
             }
         }
     }

@@ -46,6 +46,8 @@ data class HistoryUiState(
     val savingRoutine: Boolean = false,
     val routineSavedId: String? = null,
     val saveMessage: String? = null,
+    val deleting: Boolean = false,
+    val deleted: Boolean = false,
 )
 
 @HiltViewModel
@@ -59,7 +61,7 @@ class HistoryViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = HistoryUiState(loading = true, workoutId = workoutId)
             val workout = repository.workoutById(workoutId)
-            if (workout == null) {
+            if (workout == null || !workout.deletedAt.isNullOrBlank()) {
                 _state.value = HistoryUiState(loading = false, notFound = true, workoutId = workoutId)
                 return@launch
             }
@@ -133,6 +135,16 @@ class HistoryViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    fun softDelete() {
+        val workoutId = _state.value.workoutId
+        if (workoutId.isBlank() || _state.value.deleting) return
+        viewModelScope.launch {
+            _state.update { it.copy(deleting = true) }
+            runCatching { repository.softDeleteWorkout(workoutId) }
+            _state.update { it.copy(deleting = false, deleted = true, notFound = true) }
         }
     }
 

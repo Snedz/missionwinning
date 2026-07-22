@@ -68,6 +68,23 @@ class WorkoutRepository(
         )
     }
 
+    suspend fun softDelete(id: String) {
+        val existing = dao.workoutById(id) ?: return
+        val now = java.time.Instant.now().toString()
+        db.withTransaction {
+            dao.insertWorkout(
+                existing.copy(
+                    deletedAt = now,
+                    updatedAt = now,
+                    revision = existing.revision + 1,
+                    syncStatus = SyncEngine.STATUS_PENDING,
+                ),
+            )
+        }
+        sync.enqueueWorkout(id)
+        sync.flushOutbox()
+    }
+
     suspend fun workoutById(id: String): WorkoutLogEntity? = dao.workoutById(id)
 
     suspend fun setsForWorkout(workoutId: String): List<SetLogEntity> =

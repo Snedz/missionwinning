@@ -1,6 +1,6 @@
 # Mission Winning — Build Plan
 
-Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA). Filter every task through [vision.md](vision.md).
+Living roadmap for the **everything app** (Freeletics Super Bundle → one PWA). Filter every task through [vision.md](../vision.md).
 
 **Vision comparison:** [VISION_STATUS.md](VISION_STATUS.md) — pillar scorecard, gaps, priorities.
 
@@ -21,7 +21,7 @@ Mission Winning is **none of these** — one unified super app, free core foreve
 
 | Phase | Focus | Status |
 |-------|-------|--------|
-| **A** | Free core alignment (nutrition, streaks, challenges, today's workout, leads) | ✅ Done — [LOG.md](LOG.md) |
+| **A** | Free core alignment (nutrition, streaks, challenges, today's workout, leads) | ✅ Done — [LOG.md](../LOG.md) |
 | **B** | Six working pillar free tiers (Move, Mind, Learn, Track) | ✅ Done |
 | **C** | Super Bundle synergy + Supabase hardening | ✅ Done |
 | **D** | Content scale (200+ exercises, Learn paths) | ✅ Done |
@@ -57,7 +57,7 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 
 ## Phase H — Launch & global accessibility ⬜
 
-*Formerly “Phase E” in older docs.* See [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) + [PROTECTION.md](PROTECTION.md).
+*Formerly “Phase E” in older docs.* See [PRE_LAUNCH_PLAN.md](archive/PRE_LAUNCH_PLAN.md) + [PROTECTION.md](PROTECTION.md).
 
 > **2026-07-02 — Launch package shipped (code side of Phase H):** security hardening migration
 > (`20260702_security_hardening.sql` — teacher PIN column privileges, authenticated-only leaderboard
@@ -116,11 +116,11 @@ Optional US national-fitness side track (`NEXT_PUBLIC_AMERICA_TRACK_ENABLED`). D
 
 ## Phase I — Premium parity & synergy 🟡
 
-Aligns revenue with [vision.md](vision.md) without gating free core.
+Aligns revenue with [vision.md](../vision.md) without gating free core.
 
 | Sub | Deliverable | Status | Vision link |
 |-----|-------------|--------|-------------|
-| **I1** | Live Stripe bundle + verified webhook → `enrollments` | 🟡 Code ready — founder wires live links ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)) | Super Bundle revenue engine |
+| **I1** | Live Stripe bundle + verified webhook → `enrollments` | 🟡 Code ready — founder wires live links ([docs/STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md)) | Super Bundle revenue engine |
 | **I2** | AI Coach v1 — plan generator, premium-gated Train Coach | ✅ Engine + taster + regen; polish remaining | “Personal trainer in pocket” |
 | **I2b** | Fuel Coach — adaptive meal plans synced to macros / training | ✅ Premium-gated (`src/lib/fuelCoach/`) | Fuel depth |
 | **I3** | Track GPS premium MVP — live recording, pace chart, weekly stats | ✅ Shipped | Track |
@@ -151,7 +151,7 @@ Win Score weighting, bundle page, Supabase schema, cloud merge.
 200+ exercises, program tags, 8 Learn paths.
 
 ### Phase F — Journey & unified UI ✅
-I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages. See [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md).
+I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages. See [UX_UNIFIED_PLAN.md](archive/UX_UNIFIED_PLAN.md).
 
 </details>
 
@@ -159,15 +159,15 @@ I-Day → Commissioned, 5-tab nav, More for everyone, beta metrics, legal pages.
 
 ## Recommended work order (now)
 
-**Long-term sequencing (horizons 0–3, role split, kill criteria):** [ORCHESTRATION.md](ORCHESTRATION.md) — read this before starting a multi-week initiative.
+**Long-term sequencing (horizons 0–3, role split, kill criteria):** [ORCHESTRATION.md](../ORCHESTRATION.md) — read this before starting a multi-week initiative.
 
-**Agent H1 eng prep:** complete. **Growth Wave 2–3:** leads/email/SEO + `npm run growth-smoke` + [docs/archive/LAUNCH_READY.md](docs/archive/LAUNCH_READY.md). Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md).
+**Agent H1 eng prep:** complete. **Growth Wave 2–3:** leads/email/SEO + `npm run growth-smoke` + [docs/archive/LAUNCH_READY.md](archive/LAUNCH_READY.md). Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md).
 
-1. **Horizon 0 — Phase H founder ops** — migration + Vercel secrets + Stripe + recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/archive/LAUNCH_READY.md](docs/archive/LAUNCH_READY.md)) — **current bottleneck**
-2. **Hit beta gates** — 10+ users, I-Day ≥80%, BT ≥60% — then `PRIVATE_MODE=false` ([docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md), [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md))
-3. **Horizon 1 — Phase I1** — live Stripe + webhook verify ([docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)); offline/SW/Search Console smoke
-4. ~~Lighthouse + Serwist + growth smoke~~ — **shipped** ([docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md); `npm run growth-smoke`)
-5. **Horizon 2 — week-4 retention** — measure before new features ([docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md), funnel in [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md))
+1. **Horizon 0 — Phase H founder ops** — migration + Vercel secrets + Stripe + recruit beta ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/archive/LAUNCH_READY.md](archive/LAUNCH_READY.md)) — **current bottleneck**
+2. **Hit beta gates** — 10+ users, I-Day ≥80%, BT ≥60% — then `PRIVATE_MODE=false` ([docs/archive/SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md), [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md))
+3. **Horizon 1 — Phase I1** — live Stripe + webhook verify ([docs/STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md)); offline/SW/Search Console smoke
+4. ~~Lighthouse + Serwist + growth smoke~~ — **shipped** ([docs/LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md); `npm run growth-smoke`)
+5. **Horizon 2 — week-4 retention** — measure before new features ([docs/POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md), funnel in [docs/SEO_ANALYTICS.md](SEO_ANALYTICS.md))
 6. **Horizon 3 — i18n / SEO / TWA** — only after PMF (es/fr/de body already partial)
 7. **Agent idle only** — Profile/Nutrition extract, landing i18n Batch C — not launch-blocking
 
@@ -207,4 +207,4 @@ Last updated: 2026-07-14 (ORCHESTRATION.md horizons; S-Tier build `2026.07-unifi
 | **2** Daily polish | ✅ | ErrorState/Skeleton, MobileNav `aria-current`, Escape menu, token pass |
 | **3** Perf + page splits | ✅ | Fuel sections + BuilderArrange + ProfileBackup; further ActiveWorkout later |
 | **4** Coach + money honesty | ✅ | Victory one next action; week recap; coach invite; Bundle inventory |
-| **5** Launch ops | ⬜ | → Horizon 0 in [ORCHESTRATION.md](ORCHESTRATION.md) |
+| **5** Launch ops | ⬜ | → Horizon 0 in [ORCHESTRATION.md](../ORCHESTRATION.md) |

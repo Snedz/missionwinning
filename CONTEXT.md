@@ -16,15 +16,15 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-21 · web `2026.07-unified.92` · Android `1.16.0`)
+## Now (2026-07-21 · web `2026.07-unified.93` · Android `1.16.0`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon 0 (pre-public beta).** Site live behind the `PRIVATE_MODE` gate. Boss metric: week-4 retained weekly loggers.
 - **#1 bottleneck (founder-owned): recruit ≥10 beta users** + phone hero QA — [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3. Beta cohort target 2026-08-02.
-- Founder queue: Stripe Dashboard webhook events (`checkout.session.*` + `charge.dispute.*`) · `FOUNDER_DIGEST_EMAIL` · Checkout custom text → `/refunds` · [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) · Phantom treasury + one signed pay · Android Accept B + upload keystore + Play Internal · apply customs/prefs Supabase migration · rotate GH Actions `VERCEL_TOKEN`.
+- Founder queue: Stripe Dashboard webhook events (`checkout.session.*` + `charge.dispute.*`) · `FOUNDER_DIGEST_EMAIL` · Checkout custom text → `/refunds` · [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) · Phantom treasury + one signed pay · Android Accept B + upload keystore + Play Internal · apply customs/prefs Supabase migration · rotate GH Actions `VERCEL_TOKEN` · Wave A Upstash + Sentry.
 - Agents queue: keep CI green · hero bugs · launch scripts/docs (Horizon 0); Android F5 gated ([apps/android/BACKLOG.md](apps/android/BACKLOG.md)).
-- Shipped: Android **1.16.0** (PR chip, soft-delete, Baseline Profile); **entity + Stripe dispute shield** on `master` (webhook notify + evidence pack — Dashboard enable remains founder).
+- Shipped: **web `.93`** invite→`/private` + Train→Coach beta copy + `launch-verify` growth/rate-limit chain; Android **1.16.0**; entity + Stripe dispute shield (Dashboard enable remains founder).
 - In flight: none.
 
 ---

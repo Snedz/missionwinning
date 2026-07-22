@@ -4,7 +4,7 @@
 
 **HIPAA:** Framework **mapping only** for technical safeguards that resemble our stack. We are **not** a covered entity and **do not** claim to process PHI under HIPAA. See [LEGAL_SAFETY.md](LEGAL_SAFETY.md).
 
-**Related:** [PROTECTION.md](../PROTECTION.md) · [OWASP_AUDIT.md](OWASP_AUDIT.md) · [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) · [SECURITY.md](../SECURITY.md) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
+**Related:** [PROTECTION.md](PROTECTION.md) · [OWASP_AUDIT.md](OWASP_AUDIT.md) · [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) · [SECURITY.md](../SECURITY.md) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
 
 ---
 
@@ -26,7 +26,7 @@ Logic: [`src/lib/compliance/`](../src/lib/compliance/).
 
 <!-- compliance-snapshot:start -->
 
-_Generated 2026-07-20T05:31:00.834Z (catalog v1). Re-run `npm run compliance:status -- --write-md`._
+_Generated 2026-07-22T01:21:56.769Z (catalog v1). Re-run `npm run compliance:status -- --write-md`._
 
 | Framework | Pass | Partial | Manual | N/A | Fail |
 |-----------|------|---------|--------|-----|------|

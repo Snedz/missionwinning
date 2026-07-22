@@ -4,7 +4,7 @@
 
 **Status:** Template only — not a live public contract. Request signed copy: `support@missionwinning.com`.
 
-**Related:** [LEGAL_SAFETY.md](../LEGAL_SAFETY.md) · [PAY_READY_LEGAL.md](../PAY_READY_LEGAL.md) · [OWASP_AUDIT.md](../OWASP_AUDIT.md) · [PROTECTION.md](../../PROTECTION.md)
+**Related:** [LEGAL_SAFETY.md](../LEGAL_SAFETY.md) · [PAY_READY_LEGAL.md](../PAY_READY_LEGAL.md) · [OWASP_AUDIT.md](../OWASP_AUDIT.md) · [PROTECTION.md](../PROTECTION.md)
 
 ---
 
@@ -66,7 +66,7 @@ Processor will impose data-protection obligations no less protective than this D
 
 ## 8. Security
 
-Processor implements technical and organizational measures appropriate to the risk, including access controls, TLS in transit, platform encryption at rest (host), webhook verification, and practices described in [PROTECTION.md](../../PROTECTION.md) and [OWASP_AUDIT.md](../OWASP_AUDIT.md). No SOC 2 / ISO / HIPAA certification is claimed by this DPA alone.
+Processor implements technical and organizational measures appropriate to the risk, including access controls, TLS in transit, platform encryption at rest (host), webhook verification, and practices described in [PROTECTION.md](../PROTECTION.md) and [OWASP_AUDIT.md](../OWASP_AUDIT.md). No SOC 2 / ISO / HIPAA certification is claimed by this DPA alone.
 
 ## 9. Breach notification
 

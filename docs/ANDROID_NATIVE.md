@@ -5,7 +5,7 @@
 **Contract:** [`docs/openapi-mobile.yaml`](openapi-mobile.yaml)  
 **UX reference (not the product):** [`apps/mobile`](../apps/mobile) Expo  
 **Thesis:** [YC_THESIS.md](YC_THESIS.md) · **Brand:** [brand-guidelines.md](brand-guidelines.md)  
-**iOS:** Deferred until Android Phase 1 is founder-accepted — see [IOS_DEFERRED.md](IOS_DEFERRED.md)
+**iOS:** Deferred until Android Phase 1 is founder-accepted — see [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md)
 
 Web PWA at www stays for SEO / Get Selected. Do **not** ship Expo/TWA as the Android app.
 

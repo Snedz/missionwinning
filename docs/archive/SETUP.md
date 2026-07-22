@@ -1,10 +1,12 @@
+> **ARCHIVED 2026-07-21** — stale PayPal-first setup, kept for historical reference. Live path: [../PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [../LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) + [../STRIPE_PREMIUM_SETUP.md](../STRIPE_PREMIUM_SETUP.md).
+
 # Mission Winning — Setup for the Free Global "Everything App" for Health (Freemium + Super Bundle Model)
 
-**See vision.md first** — this is the guiding document. Core mission (tracker + fundamentals) is **free forever for everyone worldwide**. Revenue via premium modules + flagship Super Bundle (inspired by Freeletics: freemium core hook + discounted bundle of synergistic pillars for holistic value, 50% off promos, etc.). "Mainly a free app" serving the mission of global health equity. PWA primary for zero-fee accessibility.
+**See ../../vision.md first** — this is the guiding document. Core mission (tracker + fundamentals) is **free forever for everyone worldwide**. Revenue via premium modules + flagship Super Bundle (inspired by Freeletics: freemium core hook + discounted bundle of synergistic pillars for holistic value, 50% off promos, etc.). "Mainly a free app" serving the mission of global health equity. PWA primary for zero-fee accessibility.
 
 ## 1. Legal / Business Structure (Mission + Sustainable Revenue)
 
-> **Superseded for live payments:** Prefer [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md) + [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md). This section still mentions PayPal-first demo flows; production is Stripe Checkout Sessions + `/refunds`.
+> **Superseded for live payments:** Prefer [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) + [docs/STRIPE_PREMIUM_SETUP.md](../STRIPE_PREMIUM_SETUP.md). This section still mentions PayPal-first demo flows; production is Stripe Checkout Sessions + `/refunds`.
 
 - Form **Mission Winning LLC** (for-profit) — use your state or Delaware via attorney/services (~$100-500 + EIN). Owns app IP, runs payments (PayPal), pays owner (salary/draws) for sustainability while pursuing mission.
 - **Optional/Parallel: Mission Winning Foundation (501(c)(3))** for pure mission impact: scholarships for free premium/bundle access in low-resource areas (Africa, etc.), grants, free global education/resources. LLC can donate % of profits or provide at-cost services. Common hybrid for impact orgs.
@@ -70,9 +72,9 @@ create table workout_logs (
 
 5. RLS policies: users can only read own profiles/enrollments/logs. Service role for webhooks.
 
-6. Add `NEXT_PUBLIC_SUPABASE_*` to `.env.local` (copy from `.env.example`). See [ENV.md](ENV.md) for the full list including `PRIVATE_ACCESS_SECRET`.
+6. Add `NEXT_PUBLIC_SUPABASE_*` to `.env.local` (copy from `.env.example`). See [ENV.md](../ENV.md) for the full list including `PRIVATE_ACCESS_SECRET`.
 
-**Phase C schema:** For a **fresh** Supabase project, run [supabase/migrations/20250629_complete_base_schema.sql](supabase/migrations/20250629_complete_base_schema.sql) (idempotent — safe if you only have partial tables). Full reference: [supabase/schema.sql](supabase/schema.sql).
+**Phase C schema:** For a **fresh** Supabase project, run [supabase/migrations/20250629_complete_base_schema.sql](../../supabase/migrations/20250629_complete_base_schema.sql) (idempotent — safe if you only have partial tables). Full reference: [supabase/schema.sql](../../supabase/schema.sql).
 
 ## 4. Payments (Temporarily Demo / Request-Based)
 Core mission (tracker + fundamentals) is **free forever for everyone worldwide** (see vision.md).

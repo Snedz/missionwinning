@@ -130,5 +130,5 @@ cd apps/android
 
 ## targetSdk
 
-Play 2026: `targetSdk = 36` in `app/build.gradle.kts`. Baseline Profile: `:benchmark` stub — wire Macrobenchmark before Production promote.
+Play 2026: `targetSdk = 36` in `app/build.gradle.kts`. Baseline Profile: `:benchmark` Macrobenchmark wired — run `./gradlew :app:generateBaselineProfile` on a device/emulator before Production promote.
 

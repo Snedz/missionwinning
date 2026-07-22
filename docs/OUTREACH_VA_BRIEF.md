@@ -2,7 +2,7 @@
 
 **Purpose:** Hire a part-time contractor (10–20h) to multiply DMs and follow-ups.  
 **Not:** Paid ads, fake engagement, waitlist farms, or posting as the founder without approval.  
-**Scripts:** [BETA_INVITE.md](../BETA_INVITE.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · Wedge: [YC_THESIS.md](YC_THESIS.md)  
+**Scripts:** [BETA_INVITE.md](BETA_INVITE.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · Wedge: [YC_THESIS.md](YC_THESIS.md)  
 **Capital policy:** [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) — zero paid ads until week-4 retention.
 
 ---
@@ -38,7 +38,7 @@ Free offline logger + adaptive Mission Coach from your logs (no wearable). Not �
 
 ## Message templates
 
-Use [BETA_INVITE.md](../BETA_INVITE.md) email + day-2/day-7 scripts. Short DM variant:
+Use [BETA_INVITE.md](BETA_INVITE.md) email + day-2/day-7 scripts. Short DM variant:
 
 ```
 Hey [Name] — building Mission Winning: free offline workout logger + AI coach that adapts from your logs (no wearable / no account to start).

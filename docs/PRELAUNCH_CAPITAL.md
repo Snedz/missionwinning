@@ -5,7 +5,7 @@
 **Not legal/tax advice.**  
 **Companions:** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) · [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) · [PRODUCTION_STACK.md](PRODUCTION_STACK.md) · [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md)
 
-Unlimited cash does **not** unlock paid ads before week-4 retention ([SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md), [STRATEGY.md](../STRATEGY.md)). It makes that trap more expensive.
+Unlimited cash does **not** unlock paid ads before week-4 retention ([SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md), [STRATEGY.md](STRATEGY.md)). It makes that trap more expensive.
 
 ```mermaid
 flowchart TB

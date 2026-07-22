@@ -14,7 +14,7 @@ Vercel auto-deploys on push to `master` when the GitHub integration is connected
 
 GitHub integration often creates **Preview-only** builds for `master` even when Production Branch = `master`. Then `www.missionwinning.com` stays stale until a promote.
 
-**Canonical fix (repo):** [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) runs on **push to `master`** and `workflow_dispatch`, and deploys with `vercel deploy --prod` (build runs on Vercel so Sensitive env vars work).
+**Canonical fix (repo):** [`.github/workflows/deploy-production.yml`](../.github/workflows/deploy-production.yml) runs on **push to `master`** and `workflow_dispatch`, and deploys with `vercel deploy --prod` (build runs on Vercel so Sensitive env vars work).
 
 Required GitHub Actions secrets (set 2026-07-19):
 
@@ -23,7 +23,7 @@ Required GitHub Actions secrets (set 2026-07-19):
 | `VERCEL_TOKEN` | Vercel CLI / account token |
 | `VERCEL_ORG_ID` | `team_Akwar4ZvbahQp5HR911ebrlW` |
 | `VERCEL_PROJECT_ID` | `prj_yqoUE2ENzRRdeiMdqkqyC49czxxp` |
-| `AIKIDO_SECRET_KEY` | Aikido CI (optional) — GitHub Actions only; see [docs/AIKIDO.md](docs/AIKIDO.md) |
+| `AIKIDO_SECRET_KEY` | Aikido CI (optional) — GitHub Actions only; see [docs/AIKIDO.md](AIKIDO.md) |
 
 **Manual fallback** if the workflow is not wired yet:
 
@@ -48,7 +48,7 @@ See [ENV.md](ENV.md) and [PROTECTION.md](PROTECTION.md).
 | `SUPABASE_SERVICE_ROLE_KEY` | Webhooks, leads API, beta panel |
 | `BETA_ADMIN_EMAILS` | Founder beta metrics |
 | `DEMO_PREMIUM` | **`false`** in production |
-| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | **Required before public** — [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) L9 |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | **Required before public** — [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md) L9 |
 | `NEXT_PUBLIC_SENTRY_DSN` | **Required before public** — L12 |
 | `SMOKE_BASE_URL` (GitHub) | Post-deploy `gate-smoke` + `rate-limit-smoke` |
 
@@ -86,7 +86,7 @@ SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ACCESS_SECRET=… npm run ga
 SMOKE_BASE_URL=https://www.missionwinning.com npm run rate-limit-smoke
 ```
 
-Ops scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md).
+Ops scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md).
 ---
 
 ## 4. Beta smoke test (mobile)
@@ -101,6 +101,6 @@ Ops scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md).
 
 ## 5. Before public (`PRIVATE_MODE=false`)
 
-- Beta gates in [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) pass
+- Beta gates in [PRE_LAUNCH_PLAN.md](archive/PRE_LAUNCH_PLAN.md) pass
 - I-Day ≥80%, Basic Training ≥60%
 - `DEMO_PREMIUM=false` confirmed on Production

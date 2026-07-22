@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.androidx.baselineprofile)
 }
 
 // Optional upload signing: apps/android/keystore.properties (gitignored).
@@ -28,8 +29,8 @@ android {
         applicationId = "com.missionwinning.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 42
-        versionName = "1.15.0"
+        versionCode = 43
+        versionName = "1.16.0"
         // Override via apps/android/local.properties (gitignored):
         //   mw.apiBaseUrl=http://10.0.2.2:3000
         //   mw.privateAccessCookie=<token from mw_private_access after /api/private-access>
@@ -140,6 +141,8 @@ dependencies {
     implementation(libs.play.services.wearable)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.billing.client)
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":benchmark"))
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     testImplementation(libs.junit)

@@ -1,4 +1,4 @@
-> Superseded by [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
+> Superseded by [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
 
 # Beta launch ops — founder checklist
 

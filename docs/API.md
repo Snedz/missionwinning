@@ -471,5 +471,5 @@ Full contract: [API_MOBILE.md](API_MOBILE.md) · OpenAPI: [openapi-mobile.yaml](
 ## Related
 
 - [ARCHITECTURE.md](ARCHITECTURE.md)
-- [PROTECTION.md](../PROTECTION.md)
+- [PROTECTION.md](PROTECTION.md)
 - Smoke: `npm run security-smoke`

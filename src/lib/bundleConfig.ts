@@ -19,7 +19,7 @@ export const PILLAR_STANDALONE_PRICES: Record<string, string> = {
 };
 
 /**
- * Plan IDs aligned with STRATEGY.md:
+ * Plan IDs aligned with docs/STRATEGY.md:
  * monthly $11.99 · 12-month founders $59 · lifetime $149
  * (`monthly` replaces the old 3-month tier.)
  */
@@ -40,7 +40,7 @@ export interface BundlePlan {
   savingsPercent: number;
 }
 
-/** Single source of truth for Super Bundle merchandising (STRATEGY.md). */
+/** Single source of truth for Super Bundle merchandising (docs/STRATEGY.md). */
 export const BUNDLE_PLANS: Record<BundlePlanId, BundlePlan> = {
   monthly: {
     id: 'monthly',

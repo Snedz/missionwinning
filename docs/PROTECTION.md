@@ -20,7 +20,7 @@ Mission Winning has a strong **free-core vision** and solid pillar scaffolding, 
 | Security headers | Added in `vercel.json` |
 | PWA cache (gated mode) | Disabled while `PRIVATE_MODE` active |
 | School class APIs | Hardened — teacher PIN/creator; redacted athlete ids |
-| OWASP audit | [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md) — 2026-07-05 sweep |
+| OWASP audit | [docs/OWASP_AUDIT.md](OWASP_AUDIT.md) — 2026-07-05 sweep |
 | Competitive product depth | Documented — see § Competitive gap analysis |
 | Simple UI + member journey | Planned — see [JOURNEY.md](JOURNEY.md) |
 
@@ -133,27 +133,27 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 
 ### P0 — Before public (`PRIVATE_MODE=false`)
 
-- [ ] Rotate `PRIVATE_ACCESS_SECRET` (stop using `Done`) — confirm Production value is not the old weak secret
+- [x] Rotate `PRIVATE_ACCESS_SECRET` (stop using weak placeholders) — Production set per [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2
 - [x] Run `supabase/schema.sql` in production Supabase (or `migrations/20250629_complete_base_schema.sql`)
 - [x] Apply `20260702_security_hardening.sql` + `20260705_leads_api_only.sql` (and later migrations through referrals — see [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2)
-- [ ] Set `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated — not shared with gate secret)
-- [ ] Set `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in Vercel (never `NEXT_PUBLIC_`)
-- [ ] Set `DEMO_PREMIUM=false` explicitly in production
-- [ ] **Required before public:** `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (distributed rate limits — [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) L9)
-- [ ] **Required before public:** `NEXT_PUBLIC_SENTRY_DSN` on Production ([ENV.md](ENV.md), [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) L12)
-- [ ] GitHub Actions: `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID`; `SMOKE_BASE_URL` (+ access secret) for gate-smoke
-- [ ] Verify gate + premium API with `npm run launch-verify` (or `security-smoke`) and `npm run rate-limit-smoke`
-- [ ] Backup drill: Profile export once + skim [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md)
+- [x] Set `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated — not shared with gate secret) — per LAUNCH_RUNBOOK §2
+- [x] Set `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in Vercel (never `NEXT_PUBLIC_`) — per LAUNCH_RUNBOOK §2
+- [x] Set `DEMO_PREMIUM=false` explicitly in production — per LAUNCH_RUNBOOK §2
+- [ ] **Required before public:** `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (distributed rate limits — [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md) L9)
+- [ ] **Required before public:** `NEXT_PUBLIC_SENTRY_DSN` on Production ([ENV.md](ENV.md), [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md) L12)
+- [ ] GitHub Actions: `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID`; `SMOKE_BASE_URL` (+ access secret) for gate-smoke — rotate `VERCEL_TOKEN` if stale
+- [ ] Verify gate + growth + rate-limit with `LAUNCH_STRICT=true npm run launch-verify` (and `npm run rate-limit-smoke` sees 429)
+- [ ] Backup drill: Profile export once + skim [docs/BACKUP_RESTORE.md](BACKUP_RESTORE.md)
 - [x] Privacy policy + Terms pages linked from `/about`
 
 ### Wave B — Flip day (Layer 10)
 
-- [ ] `PRIVATE_MODE=false` redeploy enables Serwist PWA (`next.config.js`); spot-check Today/Train offline ([docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md))
+- [ ] `PRIVATE_MODE=false` redeploy enables Serwist PWA (`next.config.js`); spot-check Today/Train offline ([docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md))
 - [ ] IaC / multi-region / SIEM **deferred** (Layers 6, 11, SIEM) — do not block launch on them
 
 ### P1 — First 30 days public
 
-- [ ] **Aikido:** connect repo + set GitHub Actions secret `AIKIDO_SECRET_KEY` ([docs/AIKIDO.md](docs/AIKIDO.md)); confirm workflow runs on `master`
+- [ ] **Aikido:** connect repo + set GitHub Actions secret `AIKIDO_SECRET_KEY` ([docs/AIKIDO.md](AIKIDO.md)); confirm workflow runs on `master`
 - [x] Split `pro` program templates to server-only module (like recipes)
 - [x] PayPal webhook signature verification (`src/lib/paypalWebhook.ts`)
 - [x] CSP header enforced in production (`next.config.js`; `CSP_ENFORCE=false` for report-only)
@@ -194,7 +194,7 @@ Referral **v1 is recognition only** (recruit counts + brass badges at 3/10/25). 
 | `CSP_ENFORCE` | Server/build | `true` to enforce CSP; default enforce in production |
 | `NEXT_PUBLIC_SUPABASE_*` | Client (expected) | Anon key — RLS must protect data |
 
-See [ENV.md](ENV.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), and [.env.example](.env.example).
+See [ENV.md](ENV.md), [docs/OWASP_AUDIT.md](OWASP_AUDIT.md), and [.env.example](../.env.example).
 
 ---
 

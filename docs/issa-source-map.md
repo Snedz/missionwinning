@@ -1,7 +1,7 @@
 # ISSA Source Map — Beyond the Basics Guidebook
 
 **Purpose:** Map guidebook chapters to ISSA reference materials in `~/Downloads`.  
-**Legal:** Original wording only — see [guidebook-originality-log.md](./guidebook-originality-log.md) and [REDTEAM.md](../REDTEAM.md) A9.
+**Legal:** Original wording only — see [guidebook-originality-log.md](./guidebook-originality-log.md) and [REDTEAM.md](REDTEAM.md) A9.
 
 ## Local reference files (not committed to repo)
 

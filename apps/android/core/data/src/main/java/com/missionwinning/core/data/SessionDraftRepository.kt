@@ -27,6 +27,7 @@ class SessionDraftRepository(
         val rpe: Int? = null,
         val kind: String = "normal",
         val note: String = "",
+        val isPr: Boolean = false,
     )
 
     @Serializable

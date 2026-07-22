@@ -120,9 +120,11 @@ export function BetaAdminPanel({ enabled }: Props) {
 
   const copyLink = async (row: InviteRow) => {
     try {
+      // Prefer API link; never invent /?access=… (blocked in prod). Fallback is gate + invite only.
+      const origin =
+        typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
       const link =
-        row.link ||
-        `${typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com'}/?invite=${encodeURIComponent(row.code)}`;
+        row.link || `${origin}/private?invite=${encodeURIComponent(row.code)}`;
       await navigator.clipboard.writeText(link);
       setCopiedId(row.id);
     } catch {
@@ -401,6 +403,11 @@ export function BetaAdminPanel({ enabled }: Props) {
               {issuing ? 'Issuing…' : 'Issue + copy link'}
             </button>
             {issueMsg ? <p className="text-[11px] text-muted-foreground">{issueMsg}</p> : null}
+            <p className="text-[11px] leading-relaxed text-muted-foreground">
+              Copied link opens <code className="text-[10px]">/private?invite=…</code>. Share the
+              gate access code separately (prod does not accept <code className="text-[10px]">?access=</code>{' '}
+              unless you set <code className="text-[10px]">PRIVATE_ALLOW_QUERY_ACCESS=true</code>).
+            </p>
           </form>
 
           {invites && invites.rows.length > 0 ? (

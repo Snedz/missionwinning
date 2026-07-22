@@ -34,16 +34,23 @@ async function authorizeBetaAdmin(request: NextRequest): Promise<boolean> {
   return isBetaAdminEmail(user?.email);
 }
 
+/**
+ * Prod blocks `?access=` unless PRIVATE_ALLOW_QUERY_ACCESS=true.
+ * Default link lands on /private with invite attribution only — share the
+ * gate code out-of-band (or enable query access deliberately).
+ */
 function buildInviteLink(inviteCode: string): string {
+  const base = siteUrl();
+  const params = new URLSearchParams();
+  params.set('invite', inviteCode);
   const access =
     process.env.PRIVATE_ACCESS_SECRET?.trim() ||
     process.env.PRIVATE_ACCESS_CODES?.split(',')[0]?.trim() ||
     '';
-  const base = siteUrl();
-  const params = new URLSearchParams();
-  if (access) params.set('access', access);
-  params.set('invite', inviteCode);
-  return `${base}/?${params.toString()}`;
+  if (process.env.PRIVATE_ALLOW_QUERY_ACCESS === 'true' && access) {
+    params.set('access', access);
+  }
+  return `${base}/private?${params.toString()}`;
 }
 
 export const GET = withApiLogging('beta/invites/list', async (request: NextRequest) => {

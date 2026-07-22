@@ -2,7 +2,7 @@
 
 **Audience:** Founder (application + partner conversations) · Agents (copy/positioning)  
 **Constitution (unchanged):** [vision.md](../vision.md) — long-term everything-app path  
-**Business plan:** [STRATEGY.md](../STRATEGY.md) · **Gates:** [ORCHESTRATION.md](../ORCHESTRATION.md)  
+**Business plan:** [STRATEGY.md](STRATEGY.md) · **Gates:** [ORCHESTRATION.md](../ORCHESTRATION.md)  
 **Rule:** Pitch the **Train + Mission Coach wedge**. Pillars expand *after* week-4 retention — they are not the company one-liner.
 
 ---
@@ -62,7 +62,7 @@ YC rejects “strong interest.” Hit these **before** submitting:
 | Gate | Target | Why |
 |------|--------|-----|
 | Real users | ≥100 completed ≥1 workout | Beyond friends |
-| Week-4 retained weekly loggers | ≥10% of activated cohort | [STRATEGY.md](../STRATEGY.md) #1 metric |
+| Week-4 retained weekly loggers | ≥10% of activated cohort | [STRATEGY.md](STRATEGY.md) #1 metric |
 | Paid signal | ≥10 Super Bundle or lifetime | Willingness to pay |
 | Demo | 60s: I-Day → log → Coach adapts week | Application video |
 | Founder interviews | 20 written notes of “why I almost quit” | Insight receipts |
@@ -93,7 +93,7 @@ Do **not** lead the application (or landing hero) with:
 
 - “#1 health everything app” as the company
 - America / PFT / school as the beachhead
-- Military salutes / commission language as the brand (journey structure can stay; soften if beta confirms alienation — [REDTEAM.md](../REDTEAM.md) A7)
+- Military salutes / commission language as the brand (journey structure can stay; soften if beta confirms alienation — [REDTEAM.md](REDTEAM.md) A7)
 - Genomics / “AI personalized medicine” without clinical data
 - Native iOS/Android before week-4 proof ([TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) only if A1 falsifies)
 
@@ -123,7 +123,7 @@ private beta (≥10, I-Day/BT gates)
   → YC application (only if numbers rising)
 ```
 
-Copy kits: [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · [BETA_INVITE.md](../BETA_INVITE.md).
+Copy kits: [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · [BETA_INVITE.md](BETA_INVITE.md).
 
 ---
 

@@ -9,7 +9,10 @@
  *
  * After PRIVATE_MODE=false (public + PWA):
  *   SMOKE_BASE_URL=... SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify
- *   LAUNCH_STRICT=true npm run launch-verify   # fail on incomplete launch env
+ *   LAUNCH_STRICT=true npm run launch-verify   # fail on incomplete launch env + require growth/rate-limit
+ *
+ * Optional skips (non-strict only recommended):
+ *   SKIP_GROWTH_SMOKE=true SKIP_RATE_LIMIT_SMOKE=true npm run launch-verify
  *
  * Stripe webhook smoke (local or prod):
  *   SMOKE_BASE_URL=... STRIPE_WEBHOOK_SECRET=whsec_... node scripts/verify-stripe-enrollment.mjs --ping-webhook
@@ -71,9 +74,12 @@ if (base) {
 
 if (!base) {
   console.log('3. Gate smoke — SKIPPED (set SMOKE_BASE_URL)');
+  console.log('3b. Growth smoke — SKIPPED (set SMOKE_BASE_URL)');
+  console.log('3c. Rate-limit smoke — SKIPPED (set SMOKE_BASE_URL)');
   console.log('4. Critical E2E — SKIPPED (set SMOKE_BASE_URL)');
   console.log('\nDone (local checklist). Full verify:');
   console.log('  SMOKE_BASE_URL=https://your-domain SMOKE_ACCESS_SECRET=... npm run launch-verify');
+  console.log('  LAUNCH_STRICT=true … npm run launch-verify  # require growth + rate-limit');
   console.log('\nPublic + PWA after PRIVATE_MODE=false:');
   console.log(
     '  SMOKE_BASE_URL=... SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify\n'
@@ -82,6 +88,28 @@ if (!base) {
 }
 
 run(`3. Gate smoke — ${base}`, 'npm', ['run', 'gate-smoke']);
+
+const skipGrowth = process.env.SKIP_GROWTH_SMOKE === 'true';
+if (skipGrowth) {
+  console.log('\n3b. Growth smoke — SKIPPED (SKIP_GROWTH_SMOKE=true)\n');
+} else {
+  run(`3b. Growth smoke — ${base}`, 'npm', ['run', 'growth-smoke'], {
+    optional: !strict,
+  });
+}
+
+const skipRateLimit = process.env.SKIP_RATE_LIMIT_SMOKE === 'true';
+if (skipRateLimit) {
+  console.log('\n3c. Rate-limit smoke — SKIPPED (SKIP_RATE_LIMIT_SMOKE=true)\n');
+} else {
+  const rateOk = run(`3c. Rate-limit smoke — ${base}`, 'npm', ['run', 'rate-limit-smoke'], {
+    optional: !strict,
+  });
+  if (!rateOk && !strict) {
+    console.log('   Tip: Wave A needs Upstash on Production for 429s.');
+    console.log('   Set LAUNCH_STRICT=true to require rate-limit-smoke before flip.\n');
+  }
+}
 
 const e2eOk = run('4. Critical path E2E (Playwright)', 'npm', ['run', 'e2e:critical'], { optional: true });
 if (!e2eOk) {
@@ -95,5 +123,5 @@ console.log('Founder ops still manual:');
 console.log('  • Rotate PRIVATE_ACCESS_SECRET on Vercel (never reuse dev placeholders)');
 console.log('  • Apply all supabase/migrations/ in SQL editor');
 console.log('  • Stripe test purchase → enrollments row → npm run verify-premium');
-console.log('  • Beta gates (PLAN.md) before PRIVATE_MODE=false');
+console.log('  • Beta gates (docs/PLAN.md) before PRIVATE_MODE=false');
 console.log('  • Then: PRIVATE_MODE=false, redeploy, re-run with SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true\n');

@@ -115,9 +115,17 @@ This vision is the filter for every decision. If it doesn't serve free global ac
 
 ### YC wedge vs constitution
 
-This file is the **long-term constitution** (six pillars, free forever, global access). Near-term go-to-market and any YC application pitch the **Train + Mission Coach wedge** first — free offline logger + adaptive plans from logs (no wearable) — with Fuel/Move/Mind/Learn as expansion after week-4 retention. Agents: do not tear down this vision to match the pitch; do not pitch “everything app” as the company one-liner. See [docs/YC_THESIS.md](docs/YC_THESIS.md) · [STRATEGY.md](STRATEGY.md).
+This file is the **long-term constitution** (six pillars, free forever, global access). Near-term go-to-market and any YC application pitch the **Train + Mission Coach wedge** first — free offline logger + adaptive plans from logs (no wearable) — with Fuel/Move/Mind/Learn as expansion after week-4 retention. Agents: do not tear down this vision to match the pitch; do not pitch “everything app” as the company one-liner. See [docs/YC_THESIS.md](docs/YC_THESIS.md) · [docs/STRATEGY.md](docs/STRATEGY.md).
 
-**Planning:** [PLAN.md](PLAN.md) · **Vision scorecard:** [VISION_STATUS.md](VISION_STATUS.md)
+### Decade map (metrics-gated, constitution unchanged)
+
+- **Year 1 — earn the wedge.** Train + Mission Coach: free offline logger, adaptive plans from logs. One boss metric: week-4 retained weekly loggers. Web PWA + Android native; guidebook free chapters as the SEO moat.
+- **Years 2–3 — deepen the pillars.** Fuel/Move/Mind/Track/Learn premium depth, native iOS ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)), full locale body parity, wearables as inputs (never as the score's master).
+- **Years 4+ — the platform.** B2B/schools/teams, human coaching ops, book editions in every supported language, optional Foundation for scholarships. The free core is still free — that is the moat and the mission.
+
+Each stage unlocks only when the previous stage's retention/revenue gates hold ([ORCHESTRATION.md](ORCHESTRATION.md) scorecard). The map extends the constitution; it never overrides it.
+
+**Planning:** [docs/PLAN.md](docs/PLAN.md) · **Vision scorecard:** [docs/VISION_STATUS.md](docs/VISION_STATUS.md)
 
 ---
 Last Updated: July 20, 2026. Living document. Reference in all planning, code, marketing, and decisions.

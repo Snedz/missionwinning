@@ -2,21 +2,17 @@
 
 **Audience:** Founder + AI agents  
 **Build baseline:** `2026.07-unified.90`+  
-**#1 metric (year one):** week-4 retained weekly loggers — [STRATEGY.md](STRATEGY.md)  
-**Constitution:** [vision.md](vision.md) · **YC wedge:** [docs/YC_THESIS.md](docs/YC_THESIS.md) · **Risk filter:** [REDTEAM.md](REDTEAM.md) · **Build phases:** [PLAN.md](PLAN.md) · **Launch:** [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md)
+**#1 metric (year one):** week-4 retained weekly loggers — [docs/STRATEGY.md](docs/STRATEGY.md)  
+**Constitution:** [vision.md](vision.md) · **YC wedge:** [docs/YC_THESIS.md](docs/YC_THESIS.md) · **Risk filter:** [docs/REDTEAM.md](docs/REDTEAM.md) · **Build phases:** [docs/PLAN.md](docs/PLAN.md) · **Launch:** [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md)
 
 Use this file to decide **what to work on next** and **what is forbidden until metrics unlock**.  
 Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 ---
 
-## Where we are (2026-07-19)
+## Where we are
 
-**Product code is strong.** Waves 1–10 shipped: free core, six pillars, coach adjust/chat/form Q&A, experience, ZDR, referrals, push (dark), founder digest, a11y, Batch C/D i18n, consolidation, launch packaging.
-
-**Ops unblocked (same day):** Wave 7–8 migrations on prod; weekly-digest gate allowlist; Production redeploys; `STRIPE_WEBHOOK_SECRET` + signed enrollment ping → `enrollments`; Resend digest live send; `LAUNCH_STRICT` launch-verify green against www.
-
-**Still founder-owned:** ≥10 beta users + phone hero QA ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §3); connect Stripe Dashboard webhook endpoint to the same `whsec` (or rotate via `scripts/setup-stripe-webhook.mjs` with `sk_test`/`sk_live`); **Phantom Lifetime:** fund treasury USDC ATA + one signed-in pay → `enrollments.provider=phantom` ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §4); set GitHub Actions `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID` so [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) auto-deploys `master` → Production (Git previews alone stay Preview-only). PWA offline waits for public flip. **Ops maturity (not features):** before public, close thin production layers — Upstash rate limits, Production Sentry DSN, backup drill — per [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md). **#1 gap = beta distribution** — not more features.
+**Status lives in exactly one place: [CONTEXT.md](CONTEXT.md) `## Now`.** Update it there on every ship (same commit as the LOG entry) — do not restate status here. Founder launch detail: [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md).
 
 ---
 
@@ -65,10 +61,10 @@ flowchart TB
 
 | # | Task | Doc |
 |---|------|-----|
-| 1 | Vercel Production: `SUPABASE_SERVICE_ROLE_KEY`, `DEMO_PREMIUM=false`, rotated `PRIVATE_ACCESS_SECRET` | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2 |
+| 1 | Vercel Production: `SUPABASE_SERVICE_ROLE_KEY`, `DEMO_PREMIUM=false`, rotated `PRIVATE_ACCESS_SECRET` | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 |
 | 2 | Stripe monthly / 12-mo $59 / lifetime $149 links + `STRIPE_WEBHOOK_SECRET` | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) |
-| 3 | Recruit ≥10 beta users | [STRATEGY.md](STRATEGY.md), [BETA_INVITE.md](BETA_INVITE.md) |
-| 4 | Gates: I-Day ≥80%, Basic Training ≥60% | Profile beta panel, [PLAN.md](PLAN.md) F4 |
+| 3 | Recruit ≥10 beta users | [docs/STRATEGY.md](docs/STRATEGY.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) |
+| 4 | Gates: I-Day ≥80%, Basic Training ≥60% | Profile beta panel, [docs/PLAN.md](docs/PLAN.md) F4 |
 | 5 | Mobile hero QA: Welcome → Just Go → set → Mission Score | Manual + `npm run e2e:critical` |
 | 6 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
 | 7 | Public flip day (after gates) | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) + [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) |
@@ -103,7 +99,7 @@ flowchart TB
 
 **Wall metric:** week-4 retained weekly loggers — measure via [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md).
 
-If &lt;10% across two cohorts → **stop acquisition**, 10 interviews, fix or cut ([REDTEAM.md](REDTEAM.md) A4).
+If &lt;10% across two cohorts → **stop acquisition**, 10 interviews, fix or cut ([docs/REDTEAM.md](docs/REDTEAM.md) A4).
 
 | Cadence | Action |
 |---------|--------|
@@ -144,7 +140,7 @@ Unlock **only after** week-4 retention holds.
 - Quality: hero Playwright, premium 403 matrix, sync fuzz, ErrorState, a11y quarterly  
 - Perf: Today/Active/Landing budgets; lazy charts/catalog  
 - Trust: original Learn wording (A9); real quotes only; help FAQ from support  
-- Docs: PLAN / VISION_STATUS / LOG / build label on every ship  
+- Docs: PLAN / VISION_STATUS / LOG / CONTEXT.md `## Now` / build label on every ship  
 
 ---
 
@@ -173,6 +169,23 @@ Unlock **only after** week-4 retention holds.
 | **Both** | Post-call fixes &lt;48h; wall metric review |
 
 **Agent rule:** refuse or escalate feature requests that violate horizon gates unless the founder explicitly overrides with risk acceptance.
+
+### Departments (agent lanes)
+
+The agent half of the role split, refined into lanes. Every task belongs to exactly one lane; a session states its lane up front and stays inside the allowed paths. Cross-lane changes (e.g. an API change for Android) go through the owning lane's entry doc.
+
+| Lane | Owner | Entry doc(s) | Allowed paths |
+|------|-------|--------------|---------------|
+| **Engineering-Web** | agents | [AGENTS.md](AGENTS.md) + `src/*/INDEX.md` | `app/`, `src/`, `packages/`, `scripts/`, `tests/` |
+| **Engineering-Android** | agents | [apps/android/AGENTS.md](apps/android/AGENTS.md) | `apps/android/**` |
+| **Engineering-iOS** | closed until gate | [docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md) | `apps/ios/**` (does not exist yet) |
+| **Design / Brand** | agents, founder approves | [docs/brand-guidelines.md](docs/brand-guidelines.md) + [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) + [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | `src/components/`, `src/index.css`, `public/brand/`, `.claude/skills/` |
+| **Content / Book** | agents; originality log mandatory | [docs/guidebook-originality-log.md](docs/guidebook-originality-log.md) + [docs/issa-source-map.md](docs/issa-source-map.md) | `src/data/guidebook/`, `docs/help/` |
+| **Growth / SEO** | agents | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md) + [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) | `seo/`, `docs/` |
+| **Ops / Security** | founder + agents | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) + [docs/PROTECTION.md](docs/PROTECTION.md) | `.github/`, `scripts/`, `supabase/` |
+| **Data / Analytics** | agents | [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) | `scripts/`, `docs/` |
+
+Founder-only lanes (never delegated): accounts/secrets, pricing, legal filings, launch posts, user interviews, `PRIVATE_MODE`.
 
 ---
 
@@ -206,7 +219,7 @@ Unlock **only after** week-4 retention holds.
 | Gate | Target |
 |------|--------|
 | Real users | ≥100 completed ≥1 workout |
-| Week-4 retained weekly loggers | ≥10% of activated cohort ([STRATEGY.md](STRATEGY.md)) |
+| Week-4 retained weekly loggers | ≥10% of activated cohort ([docs/STRATEGY.md](docs/STRATEGY.md)) |
 | Paid signal | ≥10 Super Bundle or lifetime |
 | Demo | 60s: I-Day → log → Coach adapts week |
 | Interviews | 20 written “why I almost quit” notes |
@@ -220,8 +233,8 @@ Pitch the **Train + Mission Coach wedge** — not “everything app.” Constitu
 
 ## Related
 
-- Build phases A–I detail: [PLAN.md](PLAN.md)  
-- Vision scorecard: [VISION_STATUS.md](VISION_STATUS.md)  
+- Build phases A–I detail: [docs/PLAN.md](docs/PLAN.md)  
+- Vision scorecard: [docs/VISION_STATUS.md](docs/VISION_STATUS.md)  
 - YC wedge / apply bar: [docs/YC_THESIS.md](docs/YC_THESIS.md)  
 - Post-launch metric SQL: [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md)  
 - Shipped chronology: [LOG.md](LOG.md)  

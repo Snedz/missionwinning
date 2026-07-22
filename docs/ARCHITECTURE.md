@@ -161,7 +161,7 @@ Daily insight: `POST /api/coach/daily-insight` → `coachDailyServer.ts` (rules 
 | School access | `schoolClassAccess.ts` |
 | Webhooks | `stripeWebhook.ts`, `paypalWebhook.ts` |
 
-Details: [PROTECTION.md](../PROTECTION.md), [OWASP_AUDIT.md](OWASP_AUDIT.md).
+Details: [PROTECTION.md](PROTECTION.md), [OWASP_AUDIT.md](OWASP_AUDIT.md).
 
 ---
 

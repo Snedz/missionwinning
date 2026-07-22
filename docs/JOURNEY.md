@@ -4,7 +4,7 @@
 
 **Not official DoD product:** Mission Winning is a civilian health PWA. We borrow **structure and discipline** from military onboarding (in-processing → basic training → readiness → duty), not branding, rank, or endorsement.
 
-Related: [vision.md](vision.md) · [PLAN.md](PLAN.md) · [PROTECTION.md](PROTECTION.md)
+Related: [vision.md](../vision.md) · [PLAN.md](PLAN.md) · [PROTECTION.md](PROTECTION.md)
 
 ---
 
@@ -226,7 +226,7 @@ Work **before** `PRIVATE_MODE=false`. Can overlap with PROTECTION P0.
 ### G1 — Global languages
 
 - [x] Tier 1: DE, IT, KO, **JA** + EN/ES/FR/PT/RU (nav, welcome, journey chrome)
-- [x] Tier 2 (started): **TH**, **VI**, **HI** — same core chrome; see [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md)
+- [x] Tier 2 (started): **TH**, **VI**, **HI** — same core chrome; see [PRE_LAUNCH_PLAN.md](archive/PRE_LAUNCH_PLAN.md)
 - [ ] Tier 2 next: zh, ar, id, tr, pl (+ RTL for Arabic)
 - [ ] G2 extract: Today, Welcome, Active, Nutrition → JSON per language
 - [x] Dynamic `<html lang>`

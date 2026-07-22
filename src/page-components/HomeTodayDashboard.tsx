@@ -2,7 +2,7 @@
 /**
  * Full Today dashboard (readiness / commissioned).
  * Loaded dynamically from HomePage so cold Basic users skip this chunk.
- * See: app/INDEX.md, JOURNEY.md
+ * See: app/INDEX.md, docs/JOURNEY.md
  */
 
 import { useRouter } from 'next/navigation';

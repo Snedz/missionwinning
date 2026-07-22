@@ -22,7 +22,7 @@ controls:
     frameworks: [soc2, iso27001, hipaa]
     category: access
     owner: agent
-    evidence: PROTECTION.md
+    evidence: docs/PROTECTION.md
     probe: doc_exists
     status: automated
     notes: "proxy.ts + privateSession HMAC; SOC2 CC6 / ISO A.8 / HIPAA 164.312(a)"
@@ -196,7 +196,7 @@ controls:
     frameworks: [soc2, iso27001]
     category: integrity
     owner: agent
-    evidence: PROTECTION.md
+    evidence: docs/PROTECTION.md
     probe: doc_exists
     status: automated
     notes: "STRIPE_WEBHOOK_SECRET; gate-smoke 401 without sig"
@@ -206,7 +206,7 @@ controls:
     frameworks: [soc2, iso27001]
     category: integrity
     owner: agent
-    evidence: PROTECTION.md
+    evidence: docs/PROTECTION.md
     probe: doc_exists
     status: automated
     notes: ""
@@ -380,7 +380,7 @@ controls:
     frameworks: [hipaa, soc2]
     category: hipaa_map
     owner: founder
-    evidence: PROTECTION.md
+    evidence: docs/PROTECTION.md
     probe: partial
     status: partial
     notes: "Private gate cookie TTL; browser sessions — partial"
@@ -411,7 +411,7 @@ controls:
     frameworks: [soc2, iso27001]
     category: risk
     owner: agent
-    evidence: PROTECTION.md
+    evidence: docs/PROTECTION.md
     probe: doc_exists
     status: automated
     notes: ""
@@ -462,7 +462,7 @@ controls:
     frameworks: [iso27001, soc2]
     category: policy
     owner: agent
-    evidence: ACCEPTABLE_USE.md
+    evidence: docs/legal/ACCEPTABLE_USE.md
     probe: doc_exists
     status: automated
     notes: ""

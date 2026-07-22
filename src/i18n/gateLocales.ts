@@ -18,6 +18,10 @@ const GATE_EN: Record<string, string> = {
   gateAccessPlaceholder: 'Enter code from your invite',
   gateAccessSubmit: 'Enter the beta',
   gateAccessChecking: 'Checking…',
+  gateInviteEyebrow: 'Beta invite',
+  gateInviteHeadline: "You're invited — enter your access code to join the beta.",
+  gateInviteSubtitle:
+    'Enter the access code from your invite email, then complete I-Day and log your first workout.',
   gateBetaGuide: 'beta start guide',
   gateBetaGuideFoot: 'Invited testers: see the',
   offlineEyebrow: 'No connection',
@@ -33,7 +37,7 @@ const GATE_ES: Record<string, string> = {
   gateTitle1: 'Entrena en cualquier lugar.',
   gateTitle2: 'Gana a diario.',
   gateSubtitle:
-    'La app gratuita de salud integral — entrenamiento, nutrición, movilidad, mente, actividad y aprendizaje. Pronto, núcleo gratis para siempre.',
+    'Registro de entrenamientos offline gratis + Mission Coach adaptativo desde tus logs (sin wearable). Pronto — núcleo gratis para siempre.',
   gateWaitlistTitle: 'Avísame en el lanzamiento',
   gateWaitlistPlaceholder: 'tu@correo.com',
   gateWaitlistSubmit: 'Avísame',
@@ -61,7 +65,7 @@ const GATE_FR: Record<string, string> = {
   gateTitle1: 'Entraînez-vous partout.',
   gateTitle2: 'Gagnez chaque jour.',
   gateSubtitle:
-    "L'app santé gratuite — entraînement, nutrition, mobilité, mental, activité et apprentissage. Bientôt, cœur gratuit pour toujours.",
+    'Journal d’entraînement offline gratuit + Mission Coach adaptatif depuis vos logs (sans wearable). Bientôt — cœur gratuit pour toujours.',
   gateWaitlistTitle: 'Être notifié au lancement',
   gateWaitlistSubmit: 'Me prévenir',
   gateWaitlistSubmitting: 'Inscription…',
@@ -82,7 +86,7 @@ const GATE_PT: Record<string, string> = {
   gateTitle1: 'Treine em qualquer lugar.',
   gateTitle2: 'Vença todo dia.',
   gateSubtitle:
-    'O app de saúde completo e gratuito — treino, nutrição, mobilidade, mente, atividade e aprendizado. Em breve, núcleo grátis para sempre.',
+    'Registro de treino offline grátis + Mission Coach adaptativo a partir dos seus logs (sem wearable). Em breve — núcleo grátis para sempre.',
   gateWaitlistTitle: 'Avise-me no lançamento',
   gateWaitlistSubmit: 'Avise-me',
   gateWaitlistSubmitting: 'Entrando…',
@@ -103,7 +107,7 @@ const GATE_DE: Record<string, string> = {
   gateTitle1: 'Überall trainieren.',
   gateTitle2: 'Täglich gewinnen.',
   gateSubtitle:
-    'Die kostenlose All-in-one-Gesundheits-App — Training, Ernährung, Mobilität, Mind, Aktivität und Lernen. Bald live, Kern für immer gratis.',
+    'Kostenloses Offline-Workout-Logging + adaptiver Mission Coach aus deinen Logs (ohne Wearable). Bald — Kern für immer gratis.',
   gateWaitlistTitle: 'Bei Launch benachrichtigen',
   gateWaitlistSubmit: 'Benachrichtigen',
   gateWaitlistSubmitting: 'Beitritt…',

@@ -31,4 +31,14 @@
     <string name="mw_done">Pronto</string>
     <string name="mw_sign_out">Sair</string>
     <string name="mw_continue_offline">Continuar offline</string>
+
+    <string name="mw_rest_skip">Pular descanso</string>
+    <string name="mw_rest_add_15">+15s</string>
+    <string name="mw_set_working">Trabalho</string>
+    <string name="mw_set_warmup">Aquecimento</string>
+    <string name="mw_set_failure">Falha</string>
+    <string name="mw_set_drop">Drop set</string>
+    <string name="mw_plate_calc">Calculadora de anilhas</string>
+    <string name="mw_offline_local_plan">Plano local (offline)</string>
 </resources>
+

@@ -2,7 +2,17 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md).
+**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md).
+
+---
+
+## 2026-07-21 — Horizon 0 web readiness: invite gate + launch-verify + wedge copy
+
+- **Invite → gate:** links land on `/private?invite=…` (no prod `?access=` unless `PRIVATE_ALLOW_QUERY_ACCESS`); invitee expands access form; admin prefers API `row.link`; [docs/BETA_INVITE.md](docs/BETA_INVITE.md) aligned.
+- **Wedge copy:** Beta guide steps + banner + `/beta` cards push I-Day → Train → Mission Coach; Coach empty-state matches Generate CTA; ES/FR/PT/DE gate subtitles drop “everything app”.
+- **Launch tooling:** `launch-verify` chains growth-smoke + rate-limit-smoke (`LAUNCH_STRICT` requires them); CI gate-smoke hard-fails when secrets set; growth + soft rate-limit jobs added.
+- **Docs:** VISION_STATUS build `.93`; PROTECTION P0 synced to LAUNCH_RUNBOOK §2; DESIGN_REVIEW pass logged; removed stray `_probe_sync.ts`.
+- Build: `2026.07-unified.93`. Verify: `npm run typecheck` + `npm test`.
 
 ---
 
@@ -135,52 +145,4 @@ Chronological record of shipped work. Newest first.
 - **Coach demo UX:** `adaptSummary` + `CoachAdaptBanner` on `/coach` + Today Coach card (miss/swap/revision visible)
 - **Wedge copy:** Coach subtitle + Today eyebrows = adapts from logs / no wearable
 - No `PRIVATE_MODE` flip; no fabricated traction
-
----
-
-## 2026-07-20 — Victory → Mission Coach (wedge loop)
-
-- **`pickVictoryNextAction`:** first 3 completed workouts (or no coach plan) → `/coach`; else Fuel → Mind → Move
-- **Wire:** `ActiveWorkoutPage` passes `completedWorkouts` + `hasCoachPlan`; EN (+ core locale) victory coach strings
-- No rebuild, no `PRIVATE_MODE` flip — product truth matches YC Train+Coach wedge
-
----
-
-## 2026-07-20 — YC wedge thesis (Train + Coach)
-
-- **`docs/YC_THESIS.md`:** one-liner, competition vs Hevy/HYBRD, traction bar, cofounder, non-pitch; apply only after retention/paid gates
-- **Routing:** INDEX + STRATEGY positioning + vision “YC wedge vs constitution” note (constitution unchanged)
-- **Copy:** landing / private gate / Bundle EN + social + beta invite → logger + Mission Coach (pillars below fold)
-- **Gates:** ORCHESTRATION + POST_LAUNCH_CADENCE — founder path beta → public → week-4 → YC; agents do not flip `PRIVATE_MODE`
-
----
-
-## 2026-07-20 — Pay-ready legal pack (six docs)
-
-- **`/refunds`:** 14-day money-back defaults; Bundle + Terms + help + footers
-- **Terms/Privacy:** premium → refunds; Acceptable Use; 30-day deletion SLA; subprocessors
-- **Templates:** `docs/legal/DPA.md` + `MSA_TEMPLATE.md` (B2B/school, docs-first)
-- **Hub:** `docs/PAY_READY_LEGAL.md` + cyber insurance founder checklist — not legal advice
-
----
-
-## 2026-07-20 — Wave 11: competitor-informed features
-
-Build `2026.07-unified.92`.
-
-### A — Pre-session readiness + autoreg
-- Shared `mindCheckIns` store (+ soreness); `computeBodyScores` ±15 subjective modifier
-- `SessionCheckInSheet` on `/active` (skippable); tap-only “Reduce today's volume” (`SessionConstraint: readiness`)
-
-### B — Body metrics + progress photos
-- `bodyMetrics` localStorage + Track UI + Recharts trend (in JSON backup via `mw_*`)
-- Progress photos IndexedDB only — never uploaded; excluded from backup by design; compare view
-
-### C — Weekly Mission Debrief
-- `buildWeeklyDebrief` multi-pillar + focus keys; full card Sun/Mon
-- Optional `POST /api/coach/debrief-voice` (premium / rules fallback)
-
-### D — Vision meals + anatomy map
-- `mealVisionClient` behind estimate-meal; source chip AI vs heuristic
-- `AnatomyHeatMap` on History + Benchmarks
 

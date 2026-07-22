@@ -36,7 +36,7 @@ Create `src/lib/{domain}/` + `INDEX.md` (model: `src/lib/coach/`).
 
 ## Do not
 
-- Use `~/.cursor/plans/` as source of truth — use `PLAN.md` / `LOG.md`.
+- Use `~/.cursor/plans/` as source of truth — use `docs/PLAN.md` / `LOG.md`.
 - Open deleted paths listed in INDEX.md §4.
 - Add docs under `src/locales/` — deprecated.
 

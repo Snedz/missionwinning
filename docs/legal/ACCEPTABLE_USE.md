@@ -11,7 +11,7 @@ This Acceptable Use Policy (AUP) applies to the Mission Winning application, API
 You may use Mission Winning to:
 
 - Track workouts, nutrition, mobility, mind, and learning for yourself or people you coach with their consent
-- Run a self-hosted or modified copy under the [AGPL-3.0](LICENSE) license
+- Run a self-hosted or modified copy under the [AGPL-3.0](../../LICENSE) license
 - Contribute improvements that respect privacy, safety, and the free-core mission
 
 ---
@@ -89,7 +89,7 @@ Nothing in this AUP limits rights that cannot be waived under applicable law.
 
 Report abuse, CSAM, security issues, or illegal deepfake misuse:
 
-- **Security / vulnerability reports:** see [SECURITY.md](SECURITY.md)
+- **Security / vulnerability reports:** see [SECURITY.md](../../SECURITY.md)
 - **Abuse / AUP:** support@missionwinning.com (subject: `AUP abuse`)
 - **Legal:** support@missionwinning.com (subject: `Legal`)
 

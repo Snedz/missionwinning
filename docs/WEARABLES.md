@@ -2,7 +2,7 @@
 
 **Status:** Schema + adapters + Settings UI ship behind `NEXT_PUBLIC_WEARABLES=true`. Live OAuth/hub sync unlocks after Horizon 3 (week-4 retention) per [ORCHESTRATION.md](../ORCHESTRATION.md), unless the founder overrides.
 
-**Product rule:** Win Score stays **log-derived** ([REDTEAM.md](../REDTEAM.md) A8). Wearables enrich Track, optional recovery context, and live session HR — they never become Mission Score.
+**Product rule:** Win Score stays **log-derived** ([REDTEAM.md](REDTEAM.md) A8). Wearables enrich Track, optional recovery context, and live session HR — they never become Mission Score.
 
 **Code:** `src/lib/wearables/` · Migration: `supabase/migrations/20260719_wearable_connections.sql` · Manual import: `src/lib/healthImport.ts`
 
@@ -84,4 +84,4 @@ Ship order when unlocked: Whoop → Strava → Oura → Garmin → Fitbit → Po
 
 ## Env
 
-See [ENV.md](../ENV.md) § Wearables. Master client flag: `NEXT_PUBLIC_WEARABLES=true`.
+See [ENV.md](ENV.md) § Wearables. Master client flag: `NEXT_PUBLIC_WEARABLES=true`.

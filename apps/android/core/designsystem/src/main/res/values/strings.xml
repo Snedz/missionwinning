@@ -32,4 +32,14 @@
     <string name="mw_done">Done</string>
     <string name="mw_sign_out">Sign out</string>
     <string name="mw_continue_offline">Continue offline</string>
+
+    <string name="mw_rest_skip">Skip rest</string>
+    <string name="mw_rest_add_15">+15s</string>
+    <string name="mw_set_working">Working</string>
+    <string name="mw_set_warmup">Warmup</string>
+    <string name="mw_set_failure">Failure</string>
+    <string name="mw_set_drop">Drop</string>
+    <string name="mw_plate_calc">Plate Calculator</string>
+    <string name="mw_offline_local_plan">Local Seed Plan (Offline)</string>
 </resources>
+

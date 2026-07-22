@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-10  
 **Purpose:** Competitive steal/avoid matrices + MW gap analysis before the visual system refresh and surface rebuilds.  
-**Companions:** [UX_UNIFIED_PLAN.md](../UX_UNIFIED_PLAN.md) · [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) · [STRATEGY.md](../STRATEGY.md) · [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)
+**Companions:** [UX_UNIFIED_PLAN.md](../UX_UNIFIED_PLAN.md) · [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) · [STRATEGY.md](STRATEGY.md) · [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)
 
 **Brand lock:** Dark navy canvas · emerald = action · brass = honor/PR/rank. Steal structure and behavior — never competitor palettes (Hevy blue, WHOOP violet).
 
@@ -108,7 +108,7 @@
 
 ## 3. Non-negotiable MW differentiators
 
-Per [`STRATEGY.md`](../STRATEGY.md):
+Per [`STRATEGY.md`](STRATEGY.md):
 
 1. **Lead with the free workout tracker** — offline, no account, no store
 2. Six pillars + Win Score are the **second sentence**, not the first

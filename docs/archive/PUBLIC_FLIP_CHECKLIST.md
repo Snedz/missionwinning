@@ -1,4 +1,4 @@
-> Superseded by [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
+> Superseded by [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) as of 2026-07-19 (Wave 9).
 
 # Public flip checklist — offline, SW, Search Console
 
@@ -21,9 +21,18 @@ This is the **agent-prepared** one-pager for the technical smoke after public mo
 - [ ] `NEXT_PUBLIC_SITE_URL=https://www.missionwinning.com` on Production
 - [ ] `RESEND_FROM` is a verified domain (not `resend.dev`) if sending mail
 - [ ] `SMOKE_BASE_URL=… npm run growth-smoke` green against staging/prod
-- [ ] `LAUNCH_STRICT=true npm run launch-verify` against prod (with access secret)
-- [ ] `SMOKE_BASE_URL=… npm run rate-limit-smoke` sees 429 (Upstash)
+- [ ] `LAUNCH_STRICT=true npm run launch-verify` against prod (with access secret) — chains gate + growth + rate-limit + e2e
+- [ ] `SMOKE_BASE_URL=… npm run rate-limit-smoke` sees 429 (Upstash) — also required by `LAUNCH_STRICT` launch-verify
 - [ ] Stripe test path once verified ([../STRIPE_PREMIUM_SETUP.md](../STRIPE_PREMIUM_SETUP.md))
+
+**One-shot pre-flip (preferred):**
+
+```bash
+SMOKE_BASE_URL=https://www.missionwinning.com \
+SMOKE_ACCESS_SECRET=… \
+LAUNCH_STRICT=true \
+npm run launch-verify
+```
 
 ---
 

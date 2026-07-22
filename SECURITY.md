@@ -45,7 +45,7 @@ For confirmed issues affecting users, we will coordinate a fix and disclosure wi
 
 ## Hardening already in place (high level)
 
-See [PROTECTION.md](PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), and [docs/SECURITY_AUDIT_TRIAGE.md](docs/SECURITY_AUDIT_TRIAGE.md):
+See [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), and [docs/SECURITY_AUDIT_TRIAGE.md](docs/SECURITY_AUDIT_TRIAGE.md):
 
 - Private access gate (HMAC cookies, rate limits) while `PRIVATE_MODE` is on
 - Stripe / PayPal webhook signature verification
@@ -62,7 +62,7 @@ Product analytics are **off until the user allows them** (and respect Do Not Tra
 
 ### Optional AI Coach + Zero Data Retention (ZDR)
 
-When operators enable the optional coach LLM (`COACH_LLM_*`), prefer **SpaceXAI/xAI** with **team-level Zero Data Retention** enabled in the [xAI Console](https://console.x.ai/) (see [xAI ZDR FAQ](https://docs.x.ai/developers/faq/security#what-is-zero-data-retention-zdr) and [ENV.md](ENV.md)).
+When operators enable the optional coach LLM (`COACH_LLM_*`), prefer **SpaceXAI/xAI** with **team-level Zero Data Retention** enabled in the [xAI Console](https://console.x.ai/) (see [xAI ZDR FAQ](https://docs.x.ai/developers/faq/security#what-is-zero-data-retention-zdr) and [docs/ENV.md](docs/ENV.md)).
 
 - Production should set `COACH_LLM_REQUIRE_ZDR=true` so the app fails closed to rules-based coach unless the response header `x-zero-data-retention` is `true`.
 - Shared client: `src/lib/coachLlmClient.ts` (stateless chat completions only; no prompt/completion body logging).
