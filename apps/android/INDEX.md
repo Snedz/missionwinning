@@ -137,9 +137,10 @@ Signing template: [keystore.properties.example](keystore.properties.example) · 
 Screenshots for Play: [store-assets/README.md](store-assets/README.md)
 
 **Platform rebuild:** Hilt + UDF ViewModels + feature modules + Hevy/Strong-class Active logger. See [ARCHITECTURE.md](ARCHITECTURE.md).  
-**Long-term queue:** [BACKLOG.md](BACKLOG.md) — F0 Accept B founder-owned; F5 gated; F6–F9 hub/Accept/CI Done.  
+**Long-term queue:** [BACKLOG.md](BACKLOG.md) — F0 Accept B founder-owned; F5 gated; F6–F10 hub/Accept/CI Done.  
 **UX overhaul:** [UX.md](UX.md) — 3-tab hub, Today mission control, Active current-set card, Coach tiles.  
-**Founder accept:** [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — device checklist before Play Internal (`./scripts/release-smoke.sh` first).  
+**Founder accept:** [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — 15-min Accept B short path; device checklist before Play Internal (`./scripts/release-smoke.sh` first).  
+**CI release AAB:** debug-signed artifact on android job — Play upload still needs founder keystore ([SHIP_INTERNAL.md](SHIP_INTERNAL.md)).  
 **Auth:** Supabase email OTP + Bearer sync — not a stub ([NETWORK_COACH.md](NETWORK_COACH.md)).
 
 ## AI lane

@@ -19,12 +19,26 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 
 ---
 
+## 15-minute Accept B (short path)
+
+Ordered smoke before the full tables below. Do **not** skip Fail rows — expand into the matching section if anything fails.
+
+1. **Release packaging:** `./scripts/release-smoke.sh` exits 0 (debug-signed APK/AAB).  
+2. **Install + adb walk:** `./gradlew :app:installDebug` then `python3 scripts/wedge-adb-walk.py` exits 0 (I-Day → Today → Account → Today → Active immersive → Victory → Coach).  
+3. **Manual spot checks (≤5 min):** Account Preferences KG/LB + equipment reseed feedback (U0a/U0b); cold open → Start in ≤2 taps; Active has no bottom hub; Victory → Coach.  
+4. **Decision:** fill **Accept B** Pass/Fail at the bottom of this file. Pass → [SHIP_INTERNAL.md](SHIP_INTERNAL.md).
+
+Optional: `maestro test .maestro/wedge.yaml` (same Account round-trip + Active `assertNotVisible` Account tab).
+
+---
+
 ## Automated smoke
 
 | # | Check | Result |
 |---|--------|--------|
+| A0 | `./scripts/release-smoke.sh` exits 0 | |
 | A1 | `wedge-adb-walk.py` exits 0 | |
-| A2 | Optional: Maestro `maestro test .maestro/wedge.yaml` | |
+| A2 | Optional: Maestro `maestro test .maestro/wedge.yaml` (includes Active `assertNotVisible` Account tab) | |
 
 ---
 

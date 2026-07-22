@@ -11,22 +11,22 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > Adaptive AI coaching for train-anywhere athletes — free offline logging (no account), weekly plans from logs alone (no wearable). Super Bundle adds Coach depth and the other pillars — it never gates the logger.
 
 - Six pillars — Train · Fuel · Move · Mind · Track · Learn — unified by the Mission Score. Constitution: [vision.md](vision.md). Pitch the **Train + Mission Coach wedge**, never "everything app" ([docs/YC_THESIS.md](docs/YC_THESIS.md)).
-- Surfaces: Next.js 16 PWA (repo root) · native Android Compose ([apps/android](apps/android), v1.20.0) · iOS deferred ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) · "Beyond the Basics" guidebook (`/guide` + magazine PDF).
+- Surfaces: Next.js 16 PWA (repo root) · native Android Compose ([apps/android](apps/android), v1.21.0) · iOS deferred ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) · "Beyond the Basics" guidebook (`/guide` + magazine PDF).
 - Solo founder + AI agents. Founder owns users, money, legal, secrets, `PRIVATE_MODE`. Agents own code, tests, perf, docs — inside horizon gates.
 
 ---
 
-## Now (2026-07-22 · web `2026.07-unified.97` · Android `1.20.0`)
+## Now (2026-07-22 · web `2026.07-unified.97` · Android `1.21.0`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon 0 (pre-public beta).** Site live behind the `PRIVATE_MODE` gate. Boss metric: week-4 retained weekly loggers.
 - **#1 bottleneck (founder-owned): recruit ≥10 beta users** + phone hero QA — [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3. Beta cohort target 2026-08-02.
 - **www Production:** **`.97` live** (Vercel CLI promote of master `d0aa3ce`). Anonymous `/welcome`, magazine PDF, `/locales/*` → 200; `/log` still gated. **Still founder:** clear GitHub Actions billing (CI/CodeQL still die in ~2s) so future pushes work; rotate `VERCEL_TOKEN` when convenient.
-- Founder queue: Stripe Dashboard webhooks · `FOUNDER_DIGEST_EMAIL` · Checkout custom text → `/refunds` · [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) · Phantom treasury · Android Accept B + Play Internal · customs/prefs migration · Wave A Upstash + Sentry.
+- Founder queue: Stripe Dashboard webhooks · `FOUNDER_DIGEST_EMAIL` · Checkout custom text → `/refunds` · [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) · Phantom treasury · Android **15-min Accept B** ([FOUNDER_ACCEPT.md](apps/android/FOUNDER_ACCEPT.md)) + Play Internal · customs/prefs migration · Wave A Upstash + Sentry.
 - Agents queue: keep CI green once billing clears · hero bugs · launch scripts/docs (Horizon 0); Android F5 gated ([apps/android/BACKLOG.md](apps/android/BACKLOG.md)).
-- Shipped: **web `.97`** gate allowlist (live on www); Android **1.20.0** CI release packaging + INDEX; **1.19.0** pre-Internal.
-- In flight: none — **await founder beta recruiting** + GH billing + Accept B.
+- Shipped: **web `.97`** gate allowlist (live on www); Android **1.21.0** Accept enablement (Maestro immersive + CI AAB artifact + 15-min walk); **1.20.0** CI release packaging.
+- In flight: none — **await founder beta recruiting** + GH billing + Accept B Pass.
 
 ---
 

@@ -85,6 +85,15 @@
 | F9.3 | INDEX hub + release-smoke + Accept pointers | Done |
 | F9.4 | Ship 1.20.0 docs (CONTEXT / LOG) | Done |
 
+## F10 — Accept enablement (1.21.0)
+
+| ID | Item | Status |
+|----|------|--------|
+| F10.1 | Maestro Active immersive `assertNotVisible` Account tab | Done |
+| F10.2 | CI upload debug-signed release AAB artifact + SHIP_INTERNAL note | Done |
+| F10.3 | FOUNDER_ACCEPT 15-minute Accept B short path | Done |
+| F10.4 | Ship 1.21.0 docs (CONTEXT / LOG) | Done |
+
 ## F5 — Explicitly later (gated)
 
 Fuel · Mind · Learn · Social · Wearables-as-score · iOS · Hevy-scale video library · OpenAPI codegen / KMP
