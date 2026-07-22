@@ -70,7 +70,6 @@ export function FileUploadRow({
     >
       <div className="h-12 w-12 shrink-0 rounded-lg overflow-hidden border border-border/50 bg-muted/40 flex items-center justify-center">
         {previewUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element -- blob preview
           <img src={previewUrl} alt="" className="h-full w-full object-cover" />
         ) : (
           <FileText className="h-5 w-5 text-muted-foreground" />

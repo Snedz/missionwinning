@@ -104,6 +104,8 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
             defaultValue: 'Enter code from your invite',
           })}
           autoComplete="off"
+          // Invitees land with the access form expanded — focus the code field.
+          // eslint-disable-next-line jsx-a11y/no-autofocus -- invite conversion
           autoFocus={isInvitee}
           className="tap-target w-full rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
           disabled={loading}

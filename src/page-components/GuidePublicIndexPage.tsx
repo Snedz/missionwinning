@@ -14,12 +14,12 @@ import { GuideApexShell } from '@/components/learn/GuideApexShell';
 import { Button } from '@/components/ui/button';
 
 export function GuidePublicIndexPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const chapters = useMemo(
     () => localizeGuidebookChapters(BEYOND_THE_BASICS_CHAPTERS, t),
-    [t, i18n.language]
+    [t]
   );
-  const meta = useMemo(() => localizeMagazineMeta(t), [t, i18n.language]);
+  const meta = useMemo(() => localizeMagazineMeta(t), [t]);
 
   useEffect(() => {
     track('guide_read', { page: 'index' });

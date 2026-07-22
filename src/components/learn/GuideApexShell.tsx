@@ -39,7 +39,7 @@ export function GuideApexShell({
   eyebrow,
 }: Props) {
   const { t, i18n } = useTranslation();
-  const meta = useMemo(() => localizeMagazineMeta(t), [t, i18n.language]);
+  const meta = useMemo(() => localizeMagazineMeta(t), [t]);
   const lang = normalizeAppLang(i18n.language);
   const pdfHref = magazinePdfPathForLang(lang);
   const [tocOpen, setTocOpen] = useState(false);

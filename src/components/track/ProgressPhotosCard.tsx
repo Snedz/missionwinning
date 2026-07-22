@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Camera, Download, Images } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileDropZone } from '@/components/ui/FileDropZone';
 import {
@@ -171,7 +170,6 @@ export function ProgressPhotosCard() {
             {photos.slice(0, 9).map((p) => (
               <li key={p.id} className="relative aspect-[3/4] rounded-lg overflow-hidden border border-border/50 bg-muted">
                 {urls[p.id] ? (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img src={urls[p.id]} alt="" className="h-full w-full object-cover" />
                 ) : null}
                 <div className="absolute inset-x-0 bottom-0 flex justify-between bg-black/50 px-1 py-0.5 text-[9px] text-white">

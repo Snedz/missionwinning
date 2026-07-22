@@ -29,7 +29,7 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
   const { t, i18n } = useTranslation();
   const chapters = useMemo(
     () => localizeGuidebookChapters(BEYOND_THE_BASICS_CHAPTERS, t),
-    [t, i18n.language]
+    [t]
   );
   const chapter = useMemo(() => {
     const localized = chapters.find((c) => c.id === chapterProp.id);

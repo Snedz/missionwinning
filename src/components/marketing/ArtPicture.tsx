@@ -28,7 +28,6 @@ export function ArtPicture({
     <picture className={fill ? 'absolute inset-0 block' : undefined}>
       <source srcSet={`${base}.avif`} type="image/avif" />
       <source srcSet={`${base}.webp`} type="image/webp" />
-      {/* eslint-disable-next-line @next/next/no-img-element -- picture fallback for AVIF/WebP */}
       <img
         src={`${base}.webp`}
         alt={alt}

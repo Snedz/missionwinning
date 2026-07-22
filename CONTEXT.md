@@ -16,15 +16,15 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-22 · web `2026.07-unified.98` · Android `1.23.0`)
+## Now (2026-07-22 · web `2026.07-unified.99` · Android `1.23.0`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon 0 — beta sprint through 2026-08-02.** Boss metric: week-4 retained weekly loggers. **#1 bottleneck: recruit ≥10** + phone hero QA — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §1→§3.
-- **Founder must do (agents cannot):** (1) clear **GitHub Actions billing** — CI dies in ~3–5s (*payments failed / spending limit*); (2) phone hero QA + ≥10 invites + day-2/7 follow-ups; (3) Android **Accept B** → Play Internal; (4) Wave A **Sentry DSN** before public flip; (5) `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` (+ Checkout) in `.env.local` for `LAUNCH_STRICT`.
-- **www:** **`.98` live**. Gate/growth/rate-limit/week4 dry-run green. `LAUNCH_STRICT` blocked on founder secrets. Flip checklist updated ([docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md)).
-- Agents: CI when billing clears · named #1 tester confusion only · `vercel promote` until Actions work · **no F5**.
-- Shipped: web **`.98`**; Android **1.23.0** (wedge UX overhaul — founder override). In flight: **await founder billing + recruiting + Accept B re-walk**.
+- **Ops:** GitHub Pro / billing unblocked — CI runs again. **Founder still:** phone hero QA + ≥10 invites; Android Accept B → Play Internal; Wave A Sentry before public flip; `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` for `LAUNCH_STRICT`.
+- **www:** promote **`.99`** (lint CI fix). Gate/growth/rate-limit green on `.98`.
+- Agents: keep CI green · named #1 tester confusion only · **no F5**.
+- Shipped: web **`.99`** eslint cleanup; Android **1.23.0**. In flight: **await founder recruiting + Accept B**.
 
 
 ---
