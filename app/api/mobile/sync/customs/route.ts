@@ -9,11 +9,15 @@ import { clientIp } from '@/lib/clientIp';
 import { bearerAccessToken, hasMobileAppAccess } from '@/lib/mobileAccess';
 import { mobileSyncCustomPushBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 
-type Supabase = ReturnType<typeof createClient>;
+type Supabase = SupabaseClient;
 
-async function requireUser(request: NextRequest) {
+type RequireUserResult =
+  | { error: NextResponse }
+  | { supabase: Supabase; user: User };
+
+async function requireUser(request: NextRequest): Promise<RequireUserResult> {
   const token = bearerAccessToken(request);
   if (!token || !(await hasMobileAppAccess(request))) {
     return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) } as const;

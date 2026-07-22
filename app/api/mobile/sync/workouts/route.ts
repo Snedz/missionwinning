@@ -12,11 +12,15 @@ import {
   parseJsonBody,
 } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 
-type Supabase = ReturnType<typeof createClient>;
+type Supabase = SupabaseClient;
 
-async function requireUser(request: NextRequest) {
+type RequireUserResult =
+  | { error: NextResponse }
+  | { supabase: Supabase; user: User; token: string };
+
+async function requireUser(request: NextRequest): Promise<RequireUserResult> {
   const token = bearerAccessToken(request);
   if (!token || !(await hasMobileAppAccess(request))) {
     return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) } as const;
