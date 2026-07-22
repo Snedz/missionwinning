@@ -15,6 +15,7 @@ Code agents prepare the tree; **only the founder** holds the upload keystore and
 - [ ] `./gradlew :app:assembleDebug testDebugUnitTest` green locally  
 - [ ] `./scripts/release-smoke.sh` green (or `./gradlew :app:assembleRelease :app:bundleRelease`; debug-signed OK without keystore)  
 - [ ] Optional: `python3 scripts/wedge-adb-walk.py` exit 0  
+- [ ] Optional: download CI artifact `app-release-aab` — **debug-signed only**; Play Internal still needs founder upload keystore (`create-upload-keystore.sh`)  
 
 ```bash
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
@@ -22,6 +23,8 @@ cd apps/android
 ./gradlew :app:assembleDebug testDebugUnitTest
 ./scripts/release-smoke.sh
 ```
+
+**CI note:** The android job uploads `app-release.aab` as artifact `app-release-aab` after packaging smoke. That AAB is **not** Play-upload-ready without `keystore.properties`. Use it only to confirm R8 packaging; sign locally for Internal.
 
 ---
 

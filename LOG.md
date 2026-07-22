@@ -6,6 +6,15 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Android 1.21.0: Accept enablement (F10)
+
+- **Maestro:** Active immersive `assertNotVisible` Account tab (parity with wedge-adb-walk).
+- **CI:** upload debug-signed `app-release.aab` artifact (`app-release-aab`, 7d); SHIP_INTERNAL notes Play still needs founder keystore.
+- **Accept:** FOUNDER_ACCEPT **15-minute Accept B** short path (release-smoke → adb walk → manual spot → Pass/Fail table). Do not mark Pass.
+- Version `1.21.0` / versionCode 48. F10 Done; F5 gated. Verify: `./gradlew :app:assembleDebug :app:testDebugUnitTest`.
+
+---
+
 ## 2026-07-22 — Web .97 live on www (Vercel promote)
 
 - Promoted ready master deploy `d0aa3ce` → Production via `vercel promote` (GH Actions still billing-blocked).
