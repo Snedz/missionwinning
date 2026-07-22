@@ -27,6 +27,8 @@
         android:theme="@style/Theme.MissionWinning"
         android:usesCleartextTraffic="false"
         android:localeConfig="@xml/locales_config">
+        <!-- Disable Sentry auto-init to prevent crash when DSN is missing in local builds -->
+        <meta-data android:name="io.sentry.auto-init" android:value="false" />
         <profileable android:shell="true" />
         <activity
             android:name=".MainActivity"
