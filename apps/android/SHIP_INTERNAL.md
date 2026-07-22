@@ -13,14 +13,14 @@ Code agents prepare the tree; **only the founder** holds the upload keystore and
 
 - [ ] On `master`, clean git, CI android job green  
 - [ ] `./gradlew :app:assembleDebug testDebugUnitTest` green locally  
-- [ ] `./gradlew :app:assembleRelease :app:bundleRelease` green (debug-signed OK without keystore)  
+- [ ] `./scripts/release-smoke.sh` green (or `./gradlew :app:assembleRelease :app:bundleRelease`; debug-signed OK without keystore)  
 - [ ] Optional: `python3 scripts/wedge-adb-walk.py` exit 0  
 
 ```bash
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 cd apps/android
 ./gradlew :app:assembleDebug testDebugUnitTest
-./gradlew :app:assembleRelease :app:bundleRelease
+./scripts/release-smoke.sh
 ```
 
 ---

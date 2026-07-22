@@ -6,7 +6,8 @@ Capture on an emulator or device (phone portrait, 1080×1920+):
 |------|--------|
 | `01-iday.png` | I-Day |
 | `02-today.png` | Today with emerald CTA |
-| `03-active.png` | Active logger |
+| `02b-account.png` | Account hub tab (Preferences / Continue offline) |
+| `03-active.png` | Active logger (immersive — no bottom hub) |
 | `04-coach.png` | Coach with sessions |
 | `05-victory.png` | Session locked |
 
@@ -30,4 +31,4 @@ python3 scripts/wedge-adb-walk.py
 
 Prefer AVD `MW_Phone_API36` on 8GB hosts; `Pixel_10_Pro` needs more RAM.
 
-Do **not** commit large PNG binaries unless founder asks — keep this folder for local capture / Play Console upload. `01-iday.png` may already exist from an earlier capture; re-run `--screenshots` to refresh all five.
+Do **not** commit large PNG binaries unless founder asks — keep this folder for local capture / Play Console upload. `01-iday.png` may already exist from an earlier capture; re-run `--screenshots` to refresh the set (includes Account `02b-account.png`).

@@ -73,7 +73,7 @@ Local smoke (debug-signed, not for Play):
 
 **Play App Signing:** prefer Google-managed app signing (Play Console → Setup → App signing). The `upload-keystore.jks` is the *upload* key only; keep an offline backup. Never commit `.jks` or `keystore.properties`.
 
-`versionCode` is `42`, `versionName` is `1.15.0` — Phase 8 ship runbook + Phase 16 i18n foundation (EN/ES/PT/FR). See [SHIP_INTERNAL.md](SHIP_INTERNAL.md) · [I18N.md](I18N.md).
+`versionCode` / `versionName` — see [`app/build.gradle.kts`](app/build.gradle.kts) (do not hardcode here). Phase 8 ship runbook + Phase 16 i18n foundation (EN/ES/PT/FR). See [SHIP_INTERNAL.md](SHIP_INTERNAL.md) · [I18N.md](I18N.md). Local release packaging smoke: `./scripts/release-smoke.sh` (debug-signed without upload keystore).
 
 ---
 

@@ -286,6 +286,11 @@ fun AuthScreen(
 
             MwCard(elevated = true) {
                 MwSectionLabel("Cloud sync")
+                Text(
+                    "Pending and failed rows from this device. Retry resets dead-letters.",
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.TextMuted,
+                )
                 Row(horizontalArrangement = Arrangement.spacedBy(MwSpace.sm)) {
                     val o = state.outbox
                     MwChip(

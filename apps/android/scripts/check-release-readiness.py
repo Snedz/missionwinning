@@ -110,6 +110,14 @@ def main() -> int:
         if not run_gradle_task(":app:assembleDebug"):
             all_passed = False
 
+        # Debug-signed release packaging (same as scripts/release-smoke.sh)
+        if not run_gradle_task(":app:assembleRelease"):
+            all_passed = False
+        if not run_gradle_task(":app:bundleRelease"):
+            all_passed = False
+    else:
+        print_status("Skipped Gradle builds (--skip-build). Run ./scripts/release-smoke.sh before Internal.", "WARN")
+
     print(f"\n=======================================================")
     if all_passed:
         print(f" {GREEN}OVERALL STATUS: READY FOR QA / RELEASE{RESET}")

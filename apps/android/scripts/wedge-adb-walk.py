@@ -47,6 +47,8 @@ STEPS: list[Step] = [
     ("assert", ("Start workout", "Start today's workout", "Start empty workout")),
     ("tap", ("Start workout", "Start today's workout", "Start empty workout")),
     ("assert", "Complete set"),
+    # Active is immersive — hub Account tab must not remain on screen
+    ("assert_absent", "Account tab"),
     ("screenshot", "03-active.png"),
     ("tap", "Complete set"),
     ("assert", ("Finish workout", "Finish workout · lock session")),
@@ -132,6 +134,25 @@ def find_bounds(root: ET.Element, text: str) -> tuple[int, int, int, int] | None
     return None
 
 
+def wait_for_absent(
+    text: str | tuple[str, ...],
+    timeout_s: float = 8.0,
+) -> None:
+    """Fail if any needle remains visible (e.g. hub chrome on Active)."""
+    needles = (text,) if isinstance(text, str) else text
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        try:
+            root = dump_ui()
+            found = any(find_bounds(root, needle) is not None for needle in needles)
+            if not found:
+                return
+        except Exception:  # noqa: BLE001
+            return
+        time.sleep(0.4)
+    raise AssertionError(f"Still visible (expected absent): {needles!r}")
+
+
 def wait_for_text(
     text: str | tuple[str, ...],
     timeout_s: float = 20.0,
@@ -207,6 +228,10 @@ def main() -> int:
                 capture_screenshot(text)
             continue
         print(f"  {action}: {text!r}")
+        if action == "assert_absent":
+            wait_for_absent(text)
+            print("    ok absent")
+            continue
         bounds = wait_for_text(text)
         if action == "assert":
             print(f"    ok visible bounds={bounds}")
