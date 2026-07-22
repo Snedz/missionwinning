@@ -158,7 +158,6 @@ export const OtpInput = forwardRef<OtpInputHandle, Props>(function OtpInput(
     <div
       role="group"
       aria-label={ariaLabel}
-      aria-invalid={ariaInvalid ?? status === 'error'}
       aria-describedby={ariaDescribedBy}
       className={cn(
         'flex gap-2 justify-center',
@@ -182,6 +181,7 @@ export const OtpInput = forwardRef<OtpInputHandle, Props>(function OtpInput(
           disabled={locked}
           readOnly={status === 'success'}
           aria-label={`${ariaLabel}, digit ${i + 1} of ${length}`}
+          aria-invalid={ariaInvalid ?? status === 'error'}
           onChange={(e) => handleChange(i, e.target.value)}
           onKeyDown={(e) => handleKeyDown(i, e)}
           onPaste={(e) => handlePaste(i, e)}

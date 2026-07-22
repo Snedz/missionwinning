@@ -6,6 +6,16 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Web .99: eslint CI cleanup
+
+- Removed obsolete `@next/next/no-img-element` disables (rule not in flat config).
+- Fixed OtpInput `aria-invalid` on `role="group"`; intentional autofocus disables for invite/OTP.
+- Trimmed redundant guide i18n `useMemo` deps; BodyMetrics refresh ticks; unused Button import.
+- GitHub Pro unblocked Actions; lint was the remaining `build-and-test` failure.
+- Build: `2026.07-unified.99`. Verify: `npm run lint` + `npm run typecheck`.
+
+---
+
 ## 2026-07-22 — Android 1.23.0: wedge UX overhaul (founder override)
 
 - **Designsystem:** `MwMotion`, spacing/radius/color tokens, hero cards, stronger hub selected state; debug gallery extended; [UX.md](apps/android/UX.md) principles (one composition, brand-first Today, logger-first Active).

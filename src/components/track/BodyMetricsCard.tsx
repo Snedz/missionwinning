@@ -39,8 +39,16 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
   const [metric, setMetric] = useState<BodyMetricKey>('weightKg');
   const [tick, setTick] = useState(0);
 
-  const last = useMemo(() => latest(), [refreshKey, tick]);
-  const chartData = useMemo(() => series(metric, 30), [metric, refreshKey, tick]);
+  const last = useMemo(() => {
+    void refreshKey;
+    void tick;
+    return latest();
+  }, [refreshKey, tick]);
+  const chartData = useMemo(() => {
+    void refreshKey;
+    void tick;
+    return series(metric, 30);
+  }, [metric, refreshKey, tick]);
 
   const unitLabel = metric === 'weightKg' ? weightUnitLabel(units) : metric === 'bodyFatPct' ? '%' : 'cm';
 

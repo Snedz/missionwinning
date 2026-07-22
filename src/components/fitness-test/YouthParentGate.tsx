@@ -226,6 +226,7 @@ export function YouthParentGate({ childAge, onConsented, onCancel }: Props) {
             ref={otpRef}
             value={code}
             status={otpStatus}
+            // eslint-disable-next-line jsx-a11y/no-autofocus -- OTP entry after consent email
             autoFocus
             disabled={verifying}
             aria-label={t('youthVerifyTitle', { defaultValue: 'Enter verification code' })}

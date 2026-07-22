@@ -37,10 +37,10 @@ export function GuideMagazinePrintPage() {
   }, [langParam]);
 
   const lang = normalizeAppLang(i18nHook.language);
-  const meta = useMemo(() => localizeMagazineMeta(t), [t, i18nHook.language]);
+  const meta = useMemo(() => localizeMagazineMeta(t), [t]);
   const chapters = useMemo(
     () => localizeGuidebookChapters(BEYOND_THE_BASICS_CHAPTERS, t),
-    [t, i18nHook.language]
+    [t]
   );
   const pdfHref = magazinePdfPathForLang(lang);
   const rtl = isRtlLang(lang);

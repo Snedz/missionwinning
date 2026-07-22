@@ -241,7 +241,6 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
         <div className="space-y-3">
           <div className="relative rounded-xl overflow-hidden border border-border/60 aspect-[16/10] bg-muted/30">
             {preview && (
-              // eslint-disable-next-line @next/next/no-img-element -- blob preview
               <img src={preview} alt="" className="w-full h-full object-cover" />
             )}
           </div>

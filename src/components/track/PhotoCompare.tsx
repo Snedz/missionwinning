@@ -47,14 +47,12 @@ export function PhotoCompare({ earliestId, latestId, pose }: Props) {
       </p>
       <div className="grid grid-cols-2 gap-2">
         <figure className="space-y-1">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={left} alt="" className="aspect-[3/4] w-full rounded-lg object-cover border border-border/50" />
           <figcaption className="text-[10px] text-muted-foreground text-center">
             {t('progressEarlier', { defaultValue: 'Earlier' })}
           </figcaption>
         </figure>
         <figure className="space-y-1">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={right} alt="" className="aspect-[3/4] w-full rounded-lg object-cover border border-border/50" />
           <figcaption className="text-[10px] text-muted-foreground text-center">
             {t('progressLatest', { defaultValue: 'Latest' })}
