@@ -5,6 +5,12 @@ appId: com.missionwinning.app.debug
 # I-Day multi-step: skip path is fastest for smoke
 - tapOn: "I already train — skip"
 - assertVisible: "Today"
+- assertVisible: "Account"
+# Hub Account tab round-trip (prefs / continue offline)
+- tapOn: "Account"
+- assertVisible: "Preferences"
+- assertVisible: "Continue offline"
+- tapOn: "Today"
 - assertVisible: "Start workout"
 - tapOn: "Start workout"
 - assertVisible: "Complete set"

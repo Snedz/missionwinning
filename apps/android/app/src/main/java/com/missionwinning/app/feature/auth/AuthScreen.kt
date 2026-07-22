@@ -254,19 +254,31 @@ fun AuthScreen(
                     MwChip(
                         text = "Bodyweight",
                         tone = if (state.equipment == "bodyweight") MwChipTone.Emerald else MwChipTone.Neutral,
-                        contentDescription = "Bodyweight equipment",
+                        contentDescription = if (state.equipment == "bodyweight") {
+                            "Bodyweight equipment selected"
+                        } else {
+                            "Switch to bodyweight equipment"
+                        },
                         onClick = { if (!state.reseeding) viewModel.setEquipment("bodyweight") },
                     )
                     MwChip(
                         text = "Dumbbells",
                         tone = if (state.equipment == "dumbbells") MwChipTone.Emerald else MwChipTone.Neutral,
-                        contentDescription = "Dumbbells equipment",
+                        contentDescription = if (state.equipment == "dumbbells") {
+                            "Dumbbells equipment selected"
+                        } else {
+                            "Switch to dumbbells equipment"
+                        },
                         onClick = { if (!state.reseeding) viewModel.setEquipment("dumbbells") },
                     )
                     MwChip(
                         text = "Full gym",
                         tone = if (state.equipment == "full-gym") MwChipTone.Emerald else MwChipTone.Neutral,
-                        contentDescription = "Full gym equipment",
+                        contentDescription = if (state.equipment == "full-gym") {
+                            "Full gym equipment selected"
+                        } else {
+                            "Switch to full gym equipment"
+                        },
                         onClick = { if (!state.reseeding) viewModel.setEquipment("full-gym") },
                     )
                 }

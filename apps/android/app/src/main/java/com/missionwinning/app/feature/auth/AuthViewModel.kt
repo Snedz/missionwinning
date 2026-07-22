@@ -100,19 +100,36 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             val normalized = if (unit.equals("lb", ignoreCase = true)) "lb" else "kg"
             repository.setWeightUnit(normalized)
-            _local.update { it.copy(weightUnit = normalized) }
+            _local.update {
+                it.copy(
+                    weightUnit = normalized,
+                    message = if (normalized == "lb") "Weight unit: pounds" else "Weight unit: kilograms",
+                    error = null,
+                )
+            }
         }
     }
 
     fun setEquipment(profile: String) {
         viewModelScope.launch {
             if (profile == _local.value.equipment) return@launch
-            _local.update { it.copy(reseeding = true) }
-            runCatching { repository.setEquipmentAndReseed(profile) }
+            _local.update { it.copy(reseeding = true, message = null, error = null) }
+            val result = runCatching { repository.setEquipmentAndReseed(profile) }
+            val label = when (profile) {
+                "dumbbells" -> "Dumbbells"
+                "full-gym" -> "Full gym"
+                else -> "Bodyweight"
+            }
             _local.update {
                 it.copy(
                     equipment = repository.equipmentProfile(),
                     reseeding = false,
+                    message = if (result.isSuccess) {
+                        "Week plan reseeded for $label"
+                    } else {
+                        it.message
+                    },
+                    error = result.exceptionOrNull()?.message,
                 )
             }
         }

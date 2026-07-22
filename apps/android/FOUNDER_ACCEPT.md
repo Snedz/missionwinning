@@ -40,6 +40,14 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 
 ---
 
+## Hub chrome (1.17+)
+
+| # | Check | Result |
+|---|--------|--------|
+| H0 | Bottom nav shows **Today · Coach · Account** with selected emerald state | |
+| H1 | Account tab opens Account (Preferences / Continue offline); no redundant back on hub | |
+| H2 | Active / Victory immersive — hub nav hidden | |
+
 ## Today
 
 | # | Check | Result |
@@ -47,15 +55,13 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | T1 | Hero shows **Today's session** when plan has today | |
 | T2 | **Start today's workout** opens Active | |
 | T3 | Week strip: tap planned day starts that session | |
-| T4 | Units KG/LB chips persist | |
-| T5 | Equipment chip reseeds plan (name/moves change) | |
 | T6 | Recent list updates after a finished workout | |
 | T6b | Tap Recent opens history detail with sets | |
 | T7 | Offline / online pill matches network | |
 | T8 | Streak / this-week metrics look sane | |
 | T9 | **Start empty workout** (Quick log) opens empty Active | |
-| T10 | **Routines** list opens; can start a saved template | |
-| T11 | Progress & PRs / Exercise library open | |
+| T10 | **More → Routines** opens list; can start a saved template | |
+| T11 | **More → Progress** / **Library** open stack screens; back returns to Today | |
 | T12 | Metric strip: streak · week vol · form score visible | |
 | T13 | Mission insight card shows adapt beat or week status | |
 | T14 | Progress: heat map + weekly volume + body weight save | |
@@ -156,6 +162,8 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 
 | # | Check | Result |
 |---|--------|--------|
+| U0a | Preferences: KG/LB chips persist (selected emerald); Active unit chip still toggles mid-session | |
+| U0b | Preferences: Equipment chip reseeds week plan (status feedback; Today hero name/moves can change) | |
 | U1 | Continue offline works without account | |
 | U2 | Version chip shows current versionName | |
 | U3 | With Supabase configured: send code → verify → stays signed in after kill/relaunch | |
@@ -179,7 +187,7 @@ Mark each: **Pass** / **Fail** / **N/A**. Failures → file bug + agent fix befo
 | Accept B (logger + loop) for Internal | | Founder fills after device QA |
 | Reject (list blockers) | | |
 
-**Agent prep (2026-07-22):** Doc truth + [BACKLOG.md](BACKLOG.md) F0–F4 + F6 Done (1.17.0 hub UX). **F5 gated.** Founder still owns Pass/Fail on device — run `wedge-adb-walk.py` then walk Active + Account tab. After Pass → mark **Accept B** above, then [SHIP_INTERNAL.md](SHIP_INTERNAL.md) / [PLAY_LISTING.md](PLAY_LISTING.md) (upload keystore + Play Internal are founder-only).
+**Agent prep (2026-07-22):** Doc truth + [BACKLOG.md](BACKLOG.md) F0–F4 + F6–F7 Done (1.18.0 Accept-unblock). **F5 gated.** Founder still owns Pass/Fail on device — run `wedge-adb-walk.py` (includes Account tab) then walk Active + Preferences. After Pass → mark **Accept B** above, then [SHIP_INTERNAL.md](SHIP_INTERNAL.md) / [PLAY_LISTING.md](PLAY_LISTING.md) (upload keystore + Play Internal are founder-only).
 
 **Blockers:**
 

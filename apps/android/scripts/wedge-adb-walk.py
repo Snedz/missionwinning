@@ -2,7 +2,7 @@
 """
 ADB UIAutomator walk matching apps/android/.maestro/wedge.yaml.
 
-Flow: I-Day (skip) → Today → Active → Victory → Coach
+Flow: I-Day (skip) → Today → Account → Today → Active → Victory → Coach
 Does NOT toggle airplane mode (offline core is Room-local; network kill skipped).
 
 Usage:
@@ -38,6 +38,13 @@ STEPS: list[Step] = [
     ("tap", "I already train — skip"),
     ("assert", "Today"),
     ("screenshot", "02-today.png"),
+    # Hub: Account tab round-trip (content-desc preferred over label)
+    ("assert", ("Account tab", "Account")),
+    ("tap", ("Account tab", "Account")),
+    ("assert", ("Preferences", "Continue offline")),
+    ("screenshot", "02b-account.png"),
+    ("tap", ("Today tab", "Today")),
+    ("assert", ("Start workout", "Start today's workout", "Start empty workout")),
     ("tap", ("Start workout", "Start today's workout", "Start empty workout")),
     ("assert", "Complete set"),
     ("screenshot", "03-active.png"),
@@ -209,7 +216,7 @@ def main() -> int:
         else:
             raise ValueError(action)
 
-    print("PASS: I-Day → Today → Active → Victory → Coach")
+    print("PASS: I-Day → Today → Account → Today → Active → Victory → Coach")
     if args.screenshots:
         print(f"Screenshots under {STORE_ASSETS} (gitignored binaries preferred)")
     return 0

@@ -58,6 +58,15 @@
 | F6.3 | Tab fade vs stack slide; scaffold inset flag; Coach onBack cleanup | Done |
 | F6.4 | Victory/History hub-safe pops + UX.md | Done |
 
+## F7 — Accept-unblock after hub (1.18.0)
+
+| ID | Item | Status |
+|----|------|--------|
+| F7.1 | FOUNDER_ACCEPT hub + Account Preferences (retire Today Units/Equipment) | Done |
+| F7.2 | wedge-adb-walk + Maestro Account tab round-trip | Done |
+| F7.3 | Account Preferences reseed/unit feedback + hub TalkBack selected | Done |
+| F7.4 | Ship 1.18.0 docs (UX / CONTEXT / LOG) | Done |
+
 ## F5 — Explicitly later (gated)
 
 Fuel · Mind · Learn · Social · Wearables-as-score · iOS · Hevy-scale video library · OpenAPI codegen / KMP

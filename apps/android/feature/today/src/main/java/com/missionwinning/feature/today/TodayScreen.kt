@@ -334,7 +334,7 @@ fun TodayScreen(
                             onClick = onOpenRoutines,
                         )
                         MwChip(
-                            text = "Library",
+                            text = stringResource(DsR.string.mw_library),
                             tone = MwChipTone.Neutral,
                             contentDescription = stringResource(DsR.string.mw_library),
                             onClick = onOpenCatalog,
