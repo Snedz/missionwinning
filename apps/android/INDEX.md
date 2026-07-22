@@ -82,6 +82,12 @@
 - Account Preferences: units + equipment (reseeds week); Cloud sync + Continue offline
 - Accept + smoke: [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) · `python3 scripts/wedge-adb-walk.py` · [SHIP_INTERNAL.md](SHIP_INTERNAL.md)
 
+## Wedge UX overhaul (1.23.0)
+
+- Founder override of Horizon-0 “no redesign” for Compose presentation only — [UX.md](UX.md)
+- Tokens / `MwMotion` / hero cards; Active logger-first; Today Start hero; Victory ritual; Coach adapt readable
+- No F5 / Room-sync rewrite; Accept B re-walk before Internal
+
 ## Ship Internal (Phase 8 runbook)
 
 - Founder path: [SHIP_INTERNAL.md](SHIP_INTERNAL.md) · device accept [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md)

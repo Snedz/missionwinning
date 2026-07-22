@@ -125,7 +125,7 @@ private fun IdayProgressDots(step: Int, total: Int) {
 @Composable
 private fun StepMission(onNext: () -> Unit, onSkip: () -> Unit) {
     Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
-        Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
+        Column(verticalArrangement = Arrangement.spacedBy(MwSpace.sm)) {
             MwSectionLabel("I-Day · 1 of 3")
             Text("Mission Winning", style = MwTypography.displayLarge, color = MwColors.Text)
             MwBrassRule()
@@ -135,7 +135,7 @@ private fun StepMission(onNext: () -> Unit, onSkip: () -> Unit) {
                 color = MwColors.Emerald,
             )
             Text(
-                "Free offline logging and a weekly plan that adapts from your workouts — no wearable required.",
+                "Offline logging + a weekly plan from your workouts.",
                 style = MwTypography.bodyLarge,
                 color = MwColors.TextMuted,
             )
@@ -160,11 +160,11 @@ private fun StepEquipment(
         "full-gym" to "Full gym",
     )
     Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
-        Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
+        Column(verticalArrangement = Arrangement.spacedBy(MwSpace.sm)) {
             MwSectionLabel("I-Day · 2 of 3")
             Text("Where do you train?", style = MwTypography.headlineLarge, color = MwColors.Text)
             Text(
-                "We seed your first week from this. Change anytime later.",
+                "Seeds this week. Change anytime in Account.",
                 style = MwTypography.bodyMedium,
                 color = MwColors.TextMuted,
             )
@@ -201,10 +201,10 @@ private fun StepReady(
     onFinish: () -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
-        Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
+        Column(verticalArrangement = Arrangement.spacedBy(MwSpace.sm)) {
             MwSectionLabel("I-Day · 3 of 3")
-            Text("Your first week is ready", style = MwTypography.headlineLarge, color = MwColors.Text)
-            MwCard(elevated = true, glow = true) {
+            Text("Ready", style = MwTypography.headlineLarge, color = MwColors.Text)
+            MwCard(elevated = true, glow = true, hero = true) {
                 Text("Offline · on this device", style = MwTypography.labelMedium, color = MwColors.Brass)
                 Text(
                     "Equipment: ${equipment.replace('-', ' ')}",
@@ -212,7 +212,7 @@ private fun StepReady(
                     color = MwColors.Text,
                 )
                 Text(
-                    "Start a session from Today. Logs stay on-device until you sign in.",
+                    "Start from Today. Logs stay on-device until you sign in.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )
@@ -220,7 +220,7 @@ private fun StepReady(
             MwCard(elevated = true) {
                 MwSectionLabel("Privacy")
                 Text(
-                    "Optional: send an anonymous weekly pulse (install id + week only). Never workouts or email. Off by default.",
+                    "Optional anonymous weekly pulse. Off by default.",
                     style = MwTypography.bodyMedium,
                     color = MwColors.TextMuted,
                 )

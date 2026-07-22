@@ -97,6 +97,10 @@ fun CoachScreen(
                         color = MwColors.TextMuted,
                     )
 
+                    planResp?.let {
+                        CoachAdaptBanner(resp = it, premium = state.premium)
+                    }
+
                     EntitlementBanner(
                         signedIn = state.signedIn,
                         premium = state.premium,
@@ -182,16 +186,12 @@ fun CoachScreen(
                         }
                     }
 
-                    planResp?.let {
-                        CoachAdaptBanner(resp = it, premium = state.premium)
-                    }
-
                     CoachInsightStack(
                         insights = state.insights,
                         premium = state.premium,
                     )
 
-                    MwSectionLabel("Sessions")
+                    MwSectionLabel("This week")
                     val ordered = planResp?.plan?.sessions.orEmpty().sortedBy { it.dayOffset }
                     if (!state.loading && ordered.isEmpty()) {
                         MwEmptyState(

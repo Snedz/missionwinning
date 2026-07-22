@@ -28,12 +28,16 @@ import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
 import com.missionwinning.core.designsystem.MwLoadingBlock
 import com.missionwinning.core.designsystem.MwMetricCard
+import com.missionwinning.core.designsystem.MwMotion
 import com.missionwinning.core.designsystem.MwOfflinePill
 import com.missionwinning.core.designsystem.MwPrimaryButton
+import com.missionwinning.core.designsystem.MwRadius
+import com.missionwinning.core.designsystem.MwRestDock
 import com.missionwinning.core.designsystem.MwScreenScaffold
 import com.missionwinning.core.designsystem.MwSecondaryButton
 import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSpace
+import com.missionwinning.core.designsystem.MwStepper
 import com.missionwinning.core.designsystem.MwTopBar
 import com.missionwinning.core.designsystem.MwTypography
 
@@ -64,10 +68,37 @@ fun DesignSystemGalleryScreen(onBack: () -> Unit) {
                 ColorSwatchRow(
                     "Navy" to MwColors.Navy,
                     "Elevated" to MwColors.NavyElevated,
+                    "Pressed" to MwColors.NavyPressed,
                     "Emerald" to MwColors.Emerald,
                     "Brass" to MwColors.Brass,
-                    "Danger" to MwColors.Danger,
                     "Border" to MwColors.Border,
+                    "BorderStrong" to MwColors.BorderStrong,
+                    "Danger" to MwColors.Danger,
+                )
+            }
+
+            MwSectionLabel("Space · radius")
+            MwCard(elevated = true) {
+                Text(
+                    "Space md=${MwSpace.md} · section=${MwSpace.section} · hero=${MwSpace.hero}",
+                    style = MwTypography.labelMedium,
+                    color = MwColors.TextMuted,
+                )
+                Text(
+                    "Radius sm=${MwRadius.sm} · lg=${MwRadius.lg} · xl=${MwRadius.xl}",
+                    style = MwTypography.labelMedium,
+                    color = MwColors.TextMuted,
+                )
+            }
+
+            MwSectionLabel("Motion (MwMotion)")
+            MwCard(elevated = true) {
+                Text(
+                    "HubTab=${MwMotion.HubTabMs}ms · Push=${MwMotion.RoutePushMs}ms · " +
+                        "Pop=${MwMotion.RoutePopMs}ms · Enter=${MwMotion.EnterFadeMs}ms · " +
+                        "Victory=${MwMotion.VictoryLockMs}ms · Pulse=${MwMotion.PulseMs}ms",
+                    style = MwTypography.labelMedium,
+                    color = MwColors.Brass,
                 )
             }
 
@@ -93,6 +124,28 @@ fun DesignSystemGalleryScreen(onBack: () -> Unit) {
             MwPrimaryButton(text = "Primary CTA", onClick = {})
             MwSecondaryButton(text = "Secondary", onClick = {})
             MwGhostButton(text = "Ghost", onClick = {})
+
+            MwSectionLabel("Hero card")
+            MwCard(elevated = true, glow = true, hero = true) {
+                MwSectionLabel("Current set · 1 / 3")
+                Text("Back squat", style = MwTypography.headlineMedium, color = MwColors.Text)
+                MwStepper(
+                    label = "Reps",
+                    value = "8",
+                    onMinus = {},
+                    onPlus = {},
+                )
+                MwPrimaryButton(text = "Complete set", onClick = {})
+            }
+
+            MwSectionLabel("Rest dock")
+            MwRestDock(
+                secondsLeft = 45,
+                totalSeconds = 90,
+                onMinus = {},
+                onSkip = {},
+                onPlus = {},
+            )
 
             MwSectionLabel("Metrics")
             Row(

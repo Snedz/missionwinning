@@ -25,24 +25,22 @@ fun CoachAdaptBanner(
     modifier: Modifier = Modifier,
 ) {
     if (!resp.hasAdaptSignal && resp.adaptBeats.isEmpty()) return
-    MwCard(modifier = modifier, elevated = true, glow = true) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            MwSectionLabel("Week adapted · rev ${resp.plan.revision}")
-        }
+    MwCard(modifier = modifier, elevated = true, glow = true, hero = true) {
+        MwSectionLabel("Week adapted · rev ${resp.plan.revision}")
         if (premium) {
             MwChip("Super Bundle depth", tone = MwChipTone.Emerald)
         }
         if (resp.adaptBeats.isEmpty()) {
             Text(
                 "Plan revised from your logs — no wearable required.",
-                style = MwTypography.bodyMedium,
+                style = MwTypography.titleMedium,
                 color = MwColors.Text,
             )
         } else {
             // Free: first beat; premium: full list
             val beats = if (premium) resp.adaptBeats else resp.adaptBeats.take(1)
             beats.forEach { beat ->
-                Text(beat.defaultMessage, style = MwTypography.bodyMedium, color = MwColors.Text)
+                Text(beat.defaultMessage, style = MwTypography.titleMedium, color = MwColors.Text)
             }
             if (!premium && resp.adaptBeats.size > 1) {
                 Spacer(Modifier.height(MwSpace.sm))

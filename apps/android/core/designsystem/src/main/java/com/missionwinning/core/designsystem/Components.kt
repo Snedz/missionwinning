@@ -384,11 +384,11 @@ fun MwEnterFade(
 ) {
     val reduceMotion = LocalReduceMotion.current
     val alpha = remember { Animatable(if (reduceMotion) 1f else 0f) }
-    val offsetY = remember { Animatable(if (reduceMotion) 0f else 18f) }
+    val offsetY = remember { Animatable(if (reduceMotion) 0f else 14f) }
     LaunchedEffect(reduceMotion) {
         if (reduceMotion) return@LaunchedEffect
-        alpha.animateTo(1f, tween(520, easing = FastOutSlowInEasing))
-        offsetY.animateTo(0f, tween(520, easing = FastOutSlowInEasing))
+        alpha.animateTo(1f, tween(MwMotion.EnterFadeMs, easing = FastOutSlowInEasing))
+        offsetY.animateTo(0f, tween(MwMotion.EnterFadeMs, easing = FastOutSlowInEasing))
     }
     Box(
         modifier = Modifier.graphicsLayer {
