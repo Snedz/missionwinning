@@ -36,6 +36,8 @@ Serious training tools are paywalled, app-store-gated, or wearable-first. People
 
 LLMs + a shipped coach engine make adaptive plans cheap; smartphones are ubiquitous where gyms and wearables are not; subscription fatigue makes “actually free core” a trust wedge Hevy-class apps can’t match without nuking ARPU.
 
+**Payments rails (not the pitch):** Stablecoins and crypto checkout are spreading as quiet fintech infrastructure. MW already accepts Lifetime USDC beside Stripe fiat — same Super Bundle, invisible to the coach wedge. Interpretation: [CRYPTO_RAILS_THESIS.md](CRYPTO_RAILS_THESIS.md). Do not lead YC or landing with “crypto.”
+
 ## What we understand that others don’t
 
 **Adaptive coaching demand is global; sensor ownership is not.** Wearable-first AI coaches optimize for people who already buy $300 sensors. Most people who need coaching have a phone and a park.
@@ -96,6 +98,7 @@ Do **not** lead the application (or landing hero) with:
 - Military salutes / commission language as the brand (journey structure can stay; soften if beta confirms alienation — [REDTEAM.md](REDTEAM.md) A7)
 - Genomics / “AI personalized medicine” without clinical data
 - Native iOS/Android before week-4 proof ([TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) only if A1 falsifies)
+- “Crypto coach,” on-chain fitness, tokens, or leading with stablecoin/Phantom rails ([CRYPTO_RAILS_THESIS.md](CRYPTO_RAILS_THESIS.md))
 
 [vision.md](../vision.md) remains the long-term constitution. This file is the **YC / go-to-market wedge**.
 

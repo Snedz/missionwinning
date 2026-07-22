@@ -27,6 +27,7 @@
 | Brand / press / media kit | [docs/brand-guidelines.md](docs/brand-guidelines.md), `/press`, `public/brand/` | — |
 | Book / guidebook (Beyond the Basics) | [docs/STRATEGY.md](docs/STRATEGY.md) § book, [docs/guidebook-originality-log.md](docs/guidebook-originality-log.md), `src/data/guidebook/` | Verbatim ISSA text (originality log is mandatory) |
 | LLC + Stripe | [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/PRELAUNCH_CAPITAL.md](docs/PRELAUNCH_CAPITAL.md) | Paid ads before week-4; native apps before retention |
+| Crypto / stablecoin strategy | [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md), [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md) | Pitching MW as a crypto company; new chains/SKUs in Horizon 0 |
 | Pre-revenue entity + take-a-dollar gate | [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md), [docs/legal/ENTITY_RESEARCH.md](docs/legal/ENTITY_RESEARCH.md), [docs/legal/OPERATING_AGREEMENT_DRAFT.md](docs/legal/OPERATING_AGREEMENT_DRAFT.md) | [docs/archive/SETUP.md](docs/archive/SETUP.md) payments section (stale PayPal-first); filing without counsel |
 | Stripe dispute shield | [docs/STRIPE_DISPUTE_OPS.md](docs/STRIPE_DISPUTE_OPS.md), [docs/legal/STRIPE_DISPUTE_EVIDENCE_PACK.md](docs/legal/STRIPE_DISPUTE_EVIDENCE_PACK.md) | Auto-fighting chargebacks; Radar for Platforms (not Connect) |
 | Legal safety (AI / Terms / DMCA / labels) | [docs/LEGAL_SAFETY.md](docs/LEGAL_SAFETY.md), `/privacy`, `/terms`, `/dmca` | Session chat plans as counsel substitute |
@@ -42,10 +43,12 @@
 | UI unification | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | — |
 | Experience build (v4) | [docs/archive/ROADMAP_V4_EXPERIENCE.md](docs/archive/ROADMAP_V4_EXPERIENCE.md) | Old chat plans in `~/.cursor/plans/` |
 | Design research / system | [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md), [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md), [docs/DESTRUCTIVE_UX.md](docs/DESTRUCTIVE_UX.md) | — |
+| **UI excellence / brand program** | [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) (craft waves D0–D3) + [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) + [apps/android/UX.md](apps/android/UX.md) | Landing teardown / new pillars in Horizon 0; old chat plans |
 | UI/UX audit (hero flows) | [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | Landing redesigns while beta gates red |
 | SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md), [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md) | — |
 | Stripe + premium | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
 | Phantom USDC lifetime | [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md) | — |
+| Crypto rails (strategy) | [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) | — |
 | Vision scorecard | [docs/VISION_STATUS.md](docs/VISION_STATUS.md) | — |
 | Beta testers | [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
 | Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md) | Certification claims / Vanta substitutes as “done” |

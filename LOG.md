@@ -6,6 +6,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Crypto rails thesis (docs)
+
+- Added [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md): MW uses stablecoin/Phantom as **payment rails**, not a crypto product pivot (YC/Nemil “best time to build” lens).
+- Wired: YC_THESIS Why now + non-pitch · LAUNCH_RUNBOOK §4 · ORCHESTRATION/CONTEXT · INDEX + docs/INDEX.
+- No product/code changes — rails remain `src/lib/cryptoCheckout/` + Phantom Lifetime verify on launch checklist.
+
+---
+
 ## 2026-07-22 — Web .99: eslint CI cleanup
 
 - Removed obsolete `@next/next/no-img-element` disables (rule not in flat config).

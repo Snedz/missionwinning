@@ -3,7 +3,7 @@
 **Audience:** Founder + AI agents  
 **Build baseline:** `2026.07-unified.90`+  
 **#1 metric (year one):** week-4 retained weekly loggers — [docs/STRATEGY.md](docs/STRATEGY.md)  
-**Constitution:** [vision.md](vision.md) · **YC wedge:** [docs/YC_THESIS.md](docs/YC_THESIS.md) · **Risk filter:** [docs/REDTEAM.md](docs/REDTEAM.md) · **Build phases:** [docs/PLAN.md](docs/PLAN.md) · **Launch:** [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md)
+**Constitution:** [vision.md](vision.md) · **YC wedge:** [docs/YC_THESIS.md](docs/YC_THESIS.md) · **Crypto = rail:** [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md) · **Risk filter:** [docs/REDTEAM.md](docs/REDTEAM.md) · **Build phases:** [docs/PLAN.md](docs/PLAN.md) · **Launch:** [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md)
 
 Use this file to decide **what to work on next** and **what is forbidden until metrics unlock**.  
 Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
@@ -236,5 +236,6 @@ Pitch the **Train + Mission Coach wedge** — not “everything app.” Constitu
 - Build phases A–I detail: [docs/PLAN.md](docs/PLAN.md)  
 - Vision scorecard: [docs/VISION_STATUS.md](docs/VISION_STATUS.md)  
 - YC wedge / apply bar: [docs/YC_THESIS.md](docs/YC_THESIS.md)  
+- Crypto rails (not product): [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md)  
 - Post-launch metric SQL: [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md)  
 - Shipped chronology: [LOG.md](LOG.md)  

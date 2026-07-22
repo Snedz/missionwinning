@@ -4,6 +4,8 @@ Accept **$149 USDC on Solana** for Super Bundle Lifetime via Phantom Connect —
 
 **Not legal advice.** You still need a treasury wallet and normal bookkeeping/AML hygiene.
 
+**Strategy:** Crypto is a payment rail, not the product — [CRYPTO_RAILS_THESIS.md](CRYPTO_RAILS_THESIS.md).
+
 ---
 
 ## Buyer flow

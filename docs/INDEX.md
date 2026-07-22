@@ -66,6 +66,7 @@
 | [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
 | [YC_THESIS.md](YC_THESIS.md) | YC wedge: Train + Coach one-liner, competition, traction bar (apply only after gates) |
+| [CRYPTO_RAILS_THESIS.md](CRYPTO_RAILS_THESIS.md) | Crypto = payment rail (not product); Horizon now/next/never |
 | [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md) | Jul–Aug 2026 apps: CDL/YC/Elbow Grease/SPC ranking, demo seed, Wave A pre-flip |
 | [applications/INDEX.md](applications/INDEX.md) | Paste-ready YC/CDL/Elbow Grease/SPC/Residency answers (honest blanks) |
 | [PRODUCTION_STACK.md](PRODUCTION_STACK.md) | 13-layer production scorecard (ops maturity) |
@@ -80,6 +81,7 @@
 | [SEO_ANALYTICS.md](SEO_ANALYTICS.md) | PostHog + Search Console |
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Lighthouse baselines |
 | [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) | Experience build v4 |
+| [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) | Design excellence OS — emotion arc, quality bars, D0–D3 waves |
 | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
 | [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
