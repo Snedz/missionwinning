@@ -14,16 +14,18 @@
 > **2026-07-11:** Vercel is connected via GitHub + Cursor. Skip 2FA recovery unless access breaks again. Confirm Production deploys from `master` and Profile shows the latest build label.
 >
 > **2026-07-22 (unblock www):** Production was stuck on a Jul 20 CLI deploy (~69 commits behind master). CI and [deploy-production.yml](../.github/workflows/deploy-production.yml) fail in ~2s with **GitHub spending limit / billing** — not a code failure. Agents cannot fix this.
+>
+> **Beta sprint (through 2026-08-02):** Code is not the bottleneck. Do §1 billing **today**, then §3 phone QA + ≥10 invites. Android Accept B + Wave A Sentry before any public flip.
 
-1. **GitHub → Settings → Billing:** clear spending limit / failed payment so Actions can run (CI + Deploy production). **Still required** even though www `.97` was promoted via Vercel CLI — CI/CodeQL remain dead until this is fixed.
+1. **GitHub → Settings → Billing:** clear spending limit / failed payment so Actions can run (CI + Deploy production). **Still required** — annotation as of 2026-07-22: *“recent account payments have failed or your spending limit needs to be increased.”* www `.98` is live via CLI promote; CI remains dead until billing clears.
 2. **Rotate GH Actions secret `VERCEL_TOKEN`** (and confirm `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` still valid).
 3. **Promote Production (if www drifts again):** Actions → **Deploy production** → `workflow_dispatch`, **or** `vercel promote <ready-master-dpl> --yes`, **or** Vercel dashboard → Promote.
 4. Confirm you can see the project dashboard and Production deploys from `master`.
-5. After promote, check Profile footer build label matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.97`+**). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
+5. After promote, check Profile footer / `/api/health` matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.98`+**). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
 
-- [ ] GitHub Actions billing cleared (CI jobs no longer die in ~2s)
+- [ ] GitHub Actions billing cleared (CI jobs no longer die in ~2–5s)
 - [ ] `VERCEL_TOKEN` rotated in GH secrets
-- [x] Production promoted; Profile / `/api/health` shows `.97`+
+- [x] Production promoted; Profile / `/api/health` shows `.98`+
 - [x] I can open the Vercel project and deploy (GitHub integration / CLI promote)
 
 ## §2 — Environment & database (~45 min, one-time)
@@ -94,15 +96,17 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 
 ---
 
-## §3 — Beta: 10 real users (target: within 14 days)
+## §3 — Beta: 10 real users (target: **2026-08-02**)
 
-1. Smoke-check the hero flow yourself **on your phone**: teaser → access code → `/welcome` I-Day → first workout → Win Score updates → sign in → Profile shows cloud sync.
-2. Recruit using the scripts in [STRATEGY.md §First 10 users](STRATEGY.md). Send personal invites with the URL + access code.
+> **Sprint order:** billing (§1) → phone hero QA below → issue 10 invites this week → day-2/day-7 follow-ups. Do not flip `PRIVATE_MODE` until gates pass.
+
+1. Smoke-check the hero flow yourself **on your phone**: teaser → access code → `/welcome` I-Day → first workout → Win Score updates → sign in → Profile shows cloud sync. **Write down the #1 confusion** (agents fix only that).
+2. Recruit using the scripts in [STRATEGY.md §First 10 users](STRATEGY.md). Send personal invites with the URL + access code. Preferred: Profile → Beta panel → `MW-B-…` link.
 3. Track the funnel: Profile → founder beta panel (`BETA_ADMIN_EMAILS`). Gates: **10+ users, I-Day ≥80%, Basic Training ≥60%.**  
    Client drop-off (after analytics allow): PostHog funnel  
    `iday_started → iday_mission_accepted → iday_profile_completed → iday_completed → first_workout_completed`  
    ([docs/SEO_ANALYTICS.md](SEO_ANALYTICS.md)). Monday email digest repeats server funnel + week-4 RPC.
-4. Message every tester at day 2 and day 7 (script in STRATEGY.md). Fix the #1 confusion each week.
+4. Message every tester at day 2 and day 7 (script in STRATEGY.md + [BETA_INVITE.md](BETA_INVITE.md)). Fix the #1 confusion each week.
 
 - [ ] Hero flow QA'd on a real phone (agent: gate-smoke + e2e against www green on `.98`; founder confirms on device)
 - [ ] 10+ testers invited · [ ] gates met (check the beta panel) — **target 2026-08-02**

@@ -21,20 +21,22 @@ This is the **agent-prepared** one-pager for the technical smoke after public mo
 - [x] `gate-smoke` asserts invitee `/private?invite=` (`data-mw-invitee=1`) + Profile build label
 - [x] `launch-verify` chains gate + growth + rate-limit (+ week4 when `CRON_SECRET` set)
 - [x] Hero Mission Score e2e fail-closed via Active builder (no Learn soft-skip)
-- [ ] Linux `@visual` baselines committed → then drop `continue-on-error` on `visual-regression`
-- [ ] `SMOKE_BASE_URL=… npm run growth-smoke` green against staging/prod
-- [ ] `LAUNCH_STRICT=true npm run launch-verify` against prod (with access secret)
-- [ ] `SMOKE_BASE_URL=… CRON_SECRET=… npm run week4-smoke` green (digest dryRun)
+- [ ] Linux `@visual` baselines committed → then drop `continue-on-error` on `visual-regression` (blocked until GH Actions billing clears — needs Linux CI)
+- [x] `SMOKE_BASE_URL=… npm run growth-smoke` green against prod (2026-07-22, `.98`)
+- [ ] `LAUNCH_STRICT=true npm run launch-verify` against prod — **blocked:** founder must add `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` (+ Checkout link or Sessions) to `.env.local`/CI
+- [x] `SMOKE_BASE_URL=… CRON_SECRET=… npm run week4-smoke` green (digest dryRun, 2026-07-22)
 
 ### Founder / ops
 
-- [ ] CI green on `master` (`build-and-test` + `e2e-critical`)
-- [ ] Profile footer build label matches [`src/lib/buildInfo.ts`](../../src/lib/buildInfo.ts)
+- [ ] CI green on `master` (`build-and-test` + `e2e-critical`) — **blocked on GH billing**
+- [x] Profile footer / `/api/health` build label matches [`src/lib/buildInfo.ts`](../../src/lib/buildInfo.ts) (`.98` live)
 - [ ] Growth migration applied (verify 6 columns) — [LAUNCH_READY.md](LAUNCH_READY.md) §1
 - [ ] `NEXT_PUBLIC_SITE_URL=https://www.missionwinning.com` on Production
 - [ ] `RESEND_FROM` is a verified domain (not `resend.dev`) if sending mail
-- [ ] `SMOKE_BASE_URL=… npm run rate-limit-smoke` sees 429 (Upstash Wave A)
+- [x] `SMOKE_BASE_URL=… npm run rate-limit-smoke` sees 429 (2026-07-22)
 - [ ] Stripe test path once verified ([../STRIPE_PREMIUM_SETUP.md](../STRIPE_PREMIUM_SETUP.md))
+- [ ] Wave A: `NEXT_PUBLIC_SENTRY_DSN` on Production (Upstash rate-limit already enforcing)
+- [ ] Android Accept B Pass — [../../apps/android/FOUNDER_ACCEPT.md](../../apps/android/FOUNDER_ACCEPT.md)
 
 **One-shot pre-flip (preferred):**
 

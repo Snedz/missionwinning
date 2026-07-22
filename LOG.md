@@ -6,6 +6,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — H0 beta sprint packaging (docs)
+
+- **Founder path:** LAUNCH_RUNBOOK §1 billing annotation + §3 sprint to **2026-08-02**; BETA_INVITE sprint checklist; CONTEXT `## Now` framed as beta sprint.
+- **Flip prep:** PUBLIC_FLIP_CHECKLIST marks growth/week4/rate-limit/build-label green on prod `.98`; `LAUNCH_STRICT` + Linux visual + CI still founder-blocked (secrets / billing / Sentry).
+- **Agent:** no named tester confusion; `LAUNCH_STRICT` cannot run without `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET`. No product decoration.
+
+---
+
 ## 2026-07-22 — Android 1.22.0: extract `:feature:auth` (F3.1 / F11)
 
 - **Bridges:** `HealthConnectAccountBridge` + `CrashReportingBridge` registered from `MwApp`; HC writer + Sentry stay in `:app`.
