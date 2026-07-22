@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding, seedReadinessPhase } from './helpers/journey';
+import { startEmptyActiveWorkout } from './helpers/active';
 
 test.describe('Phase H hero flows', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
@@ -42,11 +43,7 @@ test.describe('Phase H hero flows', () => {
   });
 
   test('active empty start, finish-without-sets toast returns to empty shell', async ({ page }) => {
-    await page.goto('/active', { waitUntil: 'domcontentloaded' });
-    await page.getByRole('button', { name: /start workout/i }).click();
-    await expect(page.getByRole('button', { name: /finish/i }).first()).toBeVisible({
-      timeout: 10_000,
-    });
+    await startEmptyActiveWorkout(page);
     await expect(page.getByRole('heading', { name: /add exercise/i })).toBeVisible();
 
     await page.getByRole('button', { name: /finish/i }).first().click();
@@ -66,9 +63,7 @@ test.describe('Phase H hero flows', () => {
     await seedReadinessPhase(page);
 
     // Fail-closed: seed via Active builder (do not soft-skip on Learn sample CTA).
-    await page.goto('/active', { waitUntil: 'domcontentloaded' });
-    await page.getByRole('button', { name: /start workout/i }).click();
-    await expect(page.getByRole('button', { name: /^finish$/i })).toBeVisible({ timeout: 10_000 });
+    await startEmptyActiveWorkout(page);
 
     const search = page.getByPlaceholder(/search exercises/i);
     await expect(search).toBeVisible({ timeout: 10_000 });
@@ -80,7 +75,8 @@ test.describe('Phase H hero flows', () => {
     const logBtn = page.getByRole('button', { name: /^log$/i }).first();
     await expect(logBtn).toBeVisible({ timeout: 15_000 });
     await logBtn.click();
-    await expect(page.getByText('Set logged!', { exact: true })).toBeVisible({ timeout: 10_000 });
+    // Routine set feedback = completed row + rest timer (toast removed in D0).
+    await expect(page.getByRole('timer', { name: /rest/i })).toBeVisible({ timeout: 10_000 });
 
     await page.getByRole('button', { name: /finish/i }).first().click();
     const backToday = page.getByRole('button', { name: /back to today/i });

@@ -32,6 +32,9 @@ export function FuelRecipesPanel({
 
   return (
     <>
+      {/* Upsell above the free recipe list so free users see Fuel Coach without scrolling. */}
+      <FuelMealPlanCard />
+
       <Card className="content-card">
         <CardHeader>
           <CardTitle>
@@ -72,8 +75,6 @@ export function FuelRecipesPanel({
           ))}
         </CardContent>
       </Card>
-
-      <FuelMealPlanCard />
 
       {premiumFetchError && premium && (
         <p className="text-xs text-muted-foreground rounded-lg border border-dashed border-border/50 px-3 py-2">

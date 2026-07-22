@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
+import { startEmptyActiveWorkout } from './helpers/active';
 
 /**
  * Deeper /active logger path: empty start → pick exercise → log set → rest chrome.
@@ -17,9 +18,7 @@ test.describe('Logger depth', () => {
   });
 
   test('start empty, add push-ups, log set, rest timer, skip rest, finish', async ({ page }) => {
-    await page.goto('/active', { waitUntil: 'domcontentloaded' });
-    await page.getByRole('button', { name: /start workout/i }).click();
-    await expect(page.getByRole('button', { name: /^finish$/i })).toBeVisible({ timeout: 10_000 });
+    await startEmptyActiveWorkout(page);
 
     const search = page.getByPlaceholder(/search exercises/i);
     await expect(search).toBeVisible();
@@ -32,9 +31,8 @@ test.describe('Logger depth', () => {
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
     await logBtn.click();
 
-    await expect(page.getByText('Set logged!', { exact: true })).toBeVisible({ timeout: 10_000 });
-
-    const rest = page.getByRole('timer');
+    // Routine set feedback = completed row + rest timer (toast removed in D0).
+    const rest = page.getByRole('timer', { name: /rest/i });
     await expect(rest).toBeVisible({ timeout: 10_000 });
     await expect(rest).toContainText(/rest/i);
 

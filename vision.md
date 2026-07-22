@@ -1,5 +1,35 @@
 # Mission Winning - Vision & Product Direction
 
+## Mission & Vision (locked)
+
+| Layer | Statement |
+|-------|-----------|
+| **North star** | Human capability is infrastructure. Mission Winning builds the free, adaptive coaching layer so more of humanity can stay strong, fueled, and on the path — Team Humanity, starting with the body. |
+| **Mission** | Make adaptive coaching and the free core of training available to every human who has a phone — not only those with gyms, trainers, or wearables. |
+| **Vision** | Be the entrance to the path: a lifelong adaptive coach that grows with the athlete across training, fuel, recovery, and learning — free core forever; Super Bundle deepens, never gates. Different pillars, one goal. |
+| **Entry today** | Free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from workout history alone, no wearable required. Train anywhere. Win daily. |
+| **Boundary** | Educational tools and a daily supplement — not medical care, not a replacement for human coaches or clinicians. |
+
+YC / go-to-market wedge (never collapse with north star): [docs/YC_THESIS.md](docs/YC_THESIS.md).
+
+### Team Humanity — different fronts, one goal
+
+Pattern (not Elon/Musk branding): different fronts, one goal — expand what humanity can achieve. Mission Winning is one company; the six pillars and surfaces are the fronts.
+
+| Front | Advances |
+|-------|----------|
+| **Train** | Strength & capacity — free logger + Mission Coach wedge |
+| **Fuel** | Energy & recovery nutrition |
+| **Move** | Longevity of the machine (mobility) |
+| **Mind** | Adherence, stress, sleep — the will to stay on path |
+| **Track** | Truth about what you actually did |
+| **Learn** | Evidence-based mastery (“the right way”) |
+| **Surfaces** | PWA everywhere · Android native · guidebook — access without gym/store/sensor gates |
+
+**One goal:** Make the path of building lifelong health accessible to every human with a phone — so more of humanity can show up strong for everything else. Consumer marketing stays MW’s own voice (the path, Train Anywhere, Win Daily, Mission Coach) — not “Team Humanity™” or civilizational cosplay.
+
+---
+
 ## Bevel-Inspired UI (Visual Layer Only)
 
 **Mission Winning is not becoming Bevel.** Bevel Health is the visual north star for premium dark UI and metric-first layout. All product vision, free-core promise, Super Bundle model, and pillar features below remain unchanged.
@@ -33,6 +63,16 @@ We adopt Bevel's *presentation* philosophy:
 Mission Winning exists to be the entrance to the path — the clear, evidence-based guide to the *right way* to build lifelong health, strength, resilience, and well-being for every human on Earth. It is the alternative to the path of destruction: average habits, excuses, short-term fixes, mediocrity, and the slow decline that comes from inconsistent or misguided approaches to the body and mind.
 
 We are building the everything app for health. Not another fragmented tool, but a unified, synergistic ecosystem where training, nutrition, mobility, mindfulness, activity tracking, and learning reinforce each other. One app. One mission. Accessible to **everyone, everywhere** — regardless of money, location, resources, or background.
+
+## The coach that grows with you
+
+The best training outcomes have always come from a patient coach who knows you — historically a privilege reserved for the few with money, gyms, and trainers. Mission Winning is building the entrance to that path: not a one-week plan generator, but a guide that returns with you as your life and body change — plans, fuel cues, recovery, and learning, reshaping as you grow.
+
+**Entry today:** free forever workout logging (no account) plus Mission Coach — fatigue-aware weekly plans from workout history alone, no wearable required. Train anywhere. Win daily.
+
+**Boundary:** educational tools and a daily supplement — not medical care, not a replacement for human coaches or clinicians.
+
+Free core is how that privilege becomes universal. Super Bundle deepens the path for those who can contribute — it never gates the logger.
 
 ## Core Promise: Free Forever for the Mission
 The fundamentals that make the world healthier must be available to all, with **no money barrier**.
@@ -115,7 +155,7 @@ This vision is the filter for every decision. If it doesn't serve free global ac
 
 ### YC wedge vs constitution
 
-This file is the **long-term constitution** (six pillars, free forever, global access). Near-term go-to-market and any YC application pitch the **Train + Mission Coach wedge** first — free offline logger + adaptive plans from logs (no wearable) — with Fuel/Move/Mind/Learn as expansion after week-4 retention. Agents: do not tear down this vision to match the pitch; do not pitch “everything app” as the company one-liner. See [docs/YC_THESIS.md](docs/YC_THESIS.md) · [docs/STRATEGY.md](docs/STRATEGY.md).
+This file is the **long-term constitution** (Team Humanity north star, six pillars, free forever, global access, the coach that grows with you). Near-term go-to-market and any YC application pitch the **Train + Mission Coach wedge** first — free offline logger + adaptive plans from logs (no wearable) — with Fuel/Move/Mind/Learn as expansion after week-4 retention. The Primer-shaped arc (privilege → entry → lifelong coach) plus Consumer AI market timing **connect** wedge and constitution; they do not replace the wedge one-liner with “everything app” or “civilization.” Agents: do not tear down this vision to match the pitch; do not pitch “everything app” or Team Humanity as the company one-liner. See [docs/YC_THESIS.md](docs/YC_THESIS.md) § Mission / Vision / Values · Team Humanity · RFS fit matrix · Narrative arc · [docs/STRATEGY.md](docs/STRATEGY.md).
 
 ### Decade map (metrics-gated, constitution unchanged)
 
@@ -128,4 +168,4 @@ Each stage unlocks only when the previous stage's retention/revenue gates hold (
 **Planning:** [docs/PLAN.md](docs/PLAN.md) · **Vision scorecard:** [docs/VISION_STATUS.md](docs/VISION_STATUS.md)
 
 ---
-Last Updated: July 20, 2026. Living document. Reference in all planning, code, marketing, and decisions.
+Last Updated: July 22, 2026 (Mission & Vision header · Team Humanity pillar map). Living document. Reference in all planning, code, marketing, and decisions.

@@ -11,7 +11,7 @@ We build an adaptive AI training coach for people who train at home or in a park
 
 ## What is your company going to make?
 
-Mission Winning is a free forever PWA workout logger (no account, offline, bodyweight-first) plus Mission Coach: fatigue-aware weekly plans that adapt when life happens, from workout history alone — no wearable required. Super Bundle (~$59/yr founders via Stripe) unlocks Coach depth and other pillars; logging stays free forever. Long-term we expand Fuel/Move/Mind/Learn after week-4 retention; the company is Train + Coach, not “everything app.”
+Mission Winning is a free forever PWA workout logger (no account, offline, bodyweight-first) plus Mission Coach: fatigue-aware weekly plans that adapt when life happens, from workout history alone — no wearable required. Super Bundle (~$59/yr founders via Stripe) unlocks Coach depth and other pillars; logging stays free forever. A company that nails that entry can build toward a coach that grows with the athlete for years across training, fuel, recovery, and learning — even a fraction of that vision (adaptive coaching without wearables, free core forever) would matter. Near-term the company is Train + Coach, not “everything app.” (Longer ambition — human capability as infrastructure / lifelong path across pillars — lives in vision; we do not lead with it.)
 
 ## Progress
 
@@ -28,7 +28,7 @@ Zeros are OK if still private beta — state stage honestly.
 
 ## What do you understand about your business that others don’t?
 
-**Adaptive coaching demand is global; sensor ownership is not.** Wearable-first AI coaches (e.g. HYBRD-shaped) optimize for people who already buy $300 sensors. Most people who need coaching have a phone and a park. Hevy shows loggers can scale without venture — our venture case is the adaptive Coach layer + free-core trust in markets wearables don’t reach.
+**Adaptive coaching demand is global; sensor ownership is not.** Coaching quality was a privilege; AI + a free logger make daily adaptive coaching consumer-scale. Wearable-first AI coaches (e.g. HYBRD-shaped) optimize for people who already buy $300 sensors. Most people who need coaching have a phone and a park. Hevy shows loggers can scale without venture — our venture case is the adaptive Coach layer + free-core trust in markets wearables don’t reach.
 
 ## Competitors
 
@@ -43,7 +43,7 @@ We do **not** claim “no competitors.” Advantage today: shipping velocity + f
 
 ## Why now?
 
-LLMs + our shipped coach engine make adaptive plans cheap; smartphones are ubiquitous where gyms and wearables are not; subscription fatigue makes “actually free core” a trust wedge Hevy-class apps can’t match without nuking ARPU. YC has funded adjacent AI fitness (FitnessAI, Rex.fit, Cora, HYBRD) — our opening is the opposite constraint: no gym, no wearable, no app-store tax.
+For the first time, a Primer-class coach for train-anywhere athletes is starting to feel possible: LLMs + our shipped coach engine make adaptive plans cheap; smartphones are ubiquitous where gyms and wearables are not; subscription fatigue makes “actually free core” a trust wedge Hevy-class apps can’t match without nuking ARPU. On the Consumer AI curve (YC Fall 2026): intelligence is good enough to treat an agent like a person and getting cheap fast — categories reopen, including **stay healthy**; ChatGPT need not stay the only new home-screen icon forever. YC has funded adjacent AI fitness (FitnessAI, Rex.fit, Cora, HYBRD) — our opening is the opposite constraint: no gym, no wearable, no app-store tax. (Primer = narrative pattern only — YC’s Primer product ask is K-12 literacy; we do not brand as “The Primer.”)
 
 ## How do you make money?
 
@@ -59,7 +59,7 @@ Batch + intros to athletes/creators in train-anywhere niches; capital for Coach 
 
 ## Non-pitch (do not write)
 
-Everything-app as the company · America/PFT as beachhead · military brand · genomics without clinical data · “no competitors.”
+Everything-app as the company · civilization / Team Humanity as the one-liner · America/PFT as beachhead · military brand · genomics without clinical data · “no competitors” · Stephenson / Primer consumer branding · crypto as the company · other YC RFSs (defense, aging-first, etc.)
 
 ## Video (60s)
 

@@ -1,7 +1,8 @@
 # Application answers — INDEX
 
 **Rule:** Fill `_____` blanks only from BetaAdminPanel, PostHog, or Stripe — never invent numbers.  
-**Narrative source:** [YC_THESIS.md](../YC_THESIS.md) · Sprint hub: [ACCELERATOR_SPRINT.md](../ACCELERATOR_SPRINT.md)  
+**Narrative source:** [YC_THESIS.md](../YC_THESIS.md) (Fall 2026 official RFS sync · Mission/Vision/Values · Team Humanity · RFS fit matrix · Primer narrative · Consumer AI why-now) · Sprint hub: [ACCELERATOR_SPRINT.md](../ACCELERATOR_SPRINT.md)  
+**Rule:** Lead every form with the Train + Coach wedge. Ambition (Team Humanity / lifelong path) lives in vision — never as the company one-liner.  
 **Agents never** flip `PRIVATE_MODE` or fabricate traction.
 
 | File | Program | Deadline |
