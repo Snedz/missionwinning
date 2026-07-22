@@ -58,7 +58,6 @@ import java.util.Locale
 @Composable
 fun CoachScreen(
     onStartWorkout: (sessionId: String, name: String, sets: Int) -> Unit,
-    onBack: () -> Unit,
     viewModel: CoachViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -81,7 +80,7 @@ fun CoachScreen(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    MwScreenScaffold {
+    MwScreenScaffold(applyNavBarPadding = false) {
         MwEnterFade {
             Column(modifier = Modifier.fillMaxSize()) {
                 Column(

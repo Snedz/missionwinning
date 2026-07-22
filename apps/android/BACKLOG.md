@@ -1,6 +1,6 @@
 # Android backlog — prioritized queue
 
-> Single source for Android agent/founder Issues. Horizons F0–F5 from long-term orchestration.  
+> Single source for Android agent/founder Issues. Horizons F0–F6 from long-term orchestration.  
 > Do **not** start F5 until founder accepts F0–F2 and week-4 retention directionally OK.
 
 ## F0 — Close the loop
@@ -48,6 +48,15 @@
 | F4.1 | SHIP_INTERNAL + targetSdk notes | Done |
 | F4.2 | CI Maestro / assemble gates | Done |
 | F4.3 | Baseline Profile module stub | Done (wired Macrobenchmark generator) |
+
+## F6 — Hub UX polish (1.17.0)
+
+| ID | Item | Status |
+|----|------|--------|
+| F6.1 | 3-tab hub: Today · Coach · Account + peer-tab NavHost | Done |
+| F6.2 | Today declutter: Units/Equipment → Account; one Start; compact More | Done |
+| F6.3 | Tab fade vs stack slide; scaffold inset flag; Coach onBack cleanup | Done |
+| F6.4 | Victory/History hub-safe pops + UX.md | Done |
 
 ## F5 — Explicitly later (gated)
 

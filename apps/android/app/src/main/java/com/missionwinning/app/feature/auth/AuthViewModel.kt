@@ -42,6 +42,9 @@ data class AuthScreenState(
     val healthConnectStepsRead: Boolean = false,
     val outbox: OutboxStatus = OutboxStatus(),
     val syncBusy: Boolean = false,
+    val weightUnit: String = "kg",
+    val equipment: String = "bodyweight",
+    val reseeding: Boolean = false,
 )
 
 @HiltViewModel
@@ -77,11 +80,43 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             refreshPrivacyToggles()
             refreshOutbox()
+            refreshTrainingPrefs()
         }
     }
 
     fun healthConnectPermissions(): Set<String> =
         healthConnect.requiredPermissionsWithSteps()
+
+    private suspend fun refreshTrainingPrefs() {
+        _local.update {
+            it.copy(
+                weightUnit = repository.weightUnit(),
+                equipment = repository.equipmentProfile(),
+            )
+        }
+    }
+
+    fun setWeightUnit(unit: String) {
+        viewModelScope.launch {
+            val normalized = if (unit.equals("lb", ignoreCase = true)) "lb" else "kg"
+            repository.setWeightUnit(normalized)
+            _local.update { it.copy(weightUnit = normalized) }
+        }
+    }
+
+    fun setEquipment(profile: String) {
+        viewModelScope.launch {
+            if (profile == _local.value.equipment) return@launch
+            _local.update { it.copy(reseeding = true) }
+            runCatching { repository.setEquipmentAndReseed(profile) }
+            _local.update {
+                it.copy(
+                    equipment = repository.equipmentProfile(),
+                    reseeding = false,
+                )
+            }
+        }
+    }
 
     private suspend fun refreshPrivacyToggles() {
         _local.update {

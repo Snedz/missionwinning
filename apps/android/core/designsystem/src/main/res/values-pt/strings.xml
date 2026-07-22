@@ -4,6 +4,9 @@
     <string name="mw_tab_coach">Coach</string>
     <string name="mw_tab_today_cd">Aba Hoje</string>
     <string name="mw_tab_coach_cd">Aba Coach</string>
+    <string name="mw_tab_account">Account</string>
+    <string name="mw_tab_account_cd">Account tab</string>
+    <string name="mw_more">More</string>
 
     <string name="mw_hero_today">Hoje</string>
     <string name="mw_hero_coach">Mission Coach</string>

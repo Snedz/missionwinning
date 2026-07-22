@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -60,6 +60,8 @@ sealed interface PendingDeepLink {
     data class ResumeActive(val sessionId: String, val name: String) : PendingDeepLink
     data class StartWorkout(val sessionId: String, val name: String, val sets: Int) : PendingDeepLink
 }
+
+private val HUB_ROUTES = setOf(Routes.TODAY, Routes.COACH, Routes.AUTH)
 
 @Composable
 fun MwNavHost(
@@ -129,9 +131,10 @@ fun MwNavHost(
 
     val backStack by nav.currentBackStackEntryAsState()
     val route = backStack?.destination?.route
-    val showHubNav = route == Routes.TODAY || route == Routes.COACH
+    val showHubNav = route in HUB_ROUTES
     val selectedTab = when (route) {
         Routes.COACH -> MwHubTab.Coach
+        Routes.AUTH -> MwHubTab.Account
         else -> MwHubTab.Today
     }
 
@@ -145,22 +148,34 @@ fun MwNavHost(
                 navController = nav,
                 startDestination = start,
                 enterTransition = {
-                    fadeIn(tween(280)) + slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start,
-                        tween(280),
-                    )
+                    val fromHub = initialState.destination.route in HUB_ROUTES
+                    val toHub = targetState.destination.route in HUB_ROUTES
+                    if (fromHub && toHub) {
+                        fadeIn(tween(200))
+                    } else {
+                        fadeIn(tween(280)) + slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Start,
+                            tween(280),
+                        )
+                    }
                 },
                 exitTransition = {
-                    fadeOut(tween(220))
+                    fadeOut(tween(180))
                 },
                 popEnterTransition = {
-                    fadeIn(tween(280)) + slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End,
-                        tween(280),
-                    )
+                    val fromHub = initialState.destination.route in HUB_ROUTES
+                    val toHub = targetState.destination.route in HUB_ROUTES
+                    if (fromHub && toHub) {
+                        fadeIn(tween(200))
+                    } else {
+                        fadeIn(tween(280)) + slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.End,
+                            tween(280),
+                        )
+                    }
                 },
                 popExitTransition = {
-                    fadeOut(tween(220))
+                    fadeOut(tween(180))
                 },
             ) {
                 composable(Routes.IDAY) {
@@ -177,12 +192,8 @@ fun MwNavHost(
                         onStartWorkout = { id, name, sets ->
                             nav.navigate(Routes.active(id, name, sets))
                         },
-                        onOpenCoach = {
-                            nav.navigate(Routes.COACH) {
-                                launchSingleTop = true
-                            }
-                        },
-                        onOpenAuth = { nav.navigate(Routes.AUTH) },
+                        onOpenCoach = { nav.navigateHub(Routes.COACH) },
+                        onOpenAuth = { nav.navigateHub(Routes.AUTH) },
                         onOpenHistory = { workoutId ->
                             nav.navigate(Routes.history(workoutId))
                         },
@@ -213,7 +224,11 @@ fun MwNavHost(
                 ) { entry ->
                     HistoryScreen(
                         workoutId = entry.arguments!!.getString("workoutId")!!.decode(),
-                        onBack = { nav.popBackStack() },
+                        onBack = {
+                            if (!nav.popBackStack()) {
+                                nav.navigateHub(Routes.TODAY)
+                            }
+                        },
                         onOpenRoutines = {
                             nav.navigate(Routes.ROUTINES) {
                                 launchSingleTop = true
@@ -226,17 +241,12 @@ fun MwNavHost(
                         onStartWorkout = { id, name, sets ->
                             nav.navigate(Routes.active(id, name, sets))
                         },
-                        onBack = {
-                            nav.navigate(Routes.TODAY) {
-                                launchSingleTop = true
-                                popUpTo(Routes.TODAY) { inclusive = false }
-                            }
-                        },
                     )
                 }
                 composable(Routes.AUTH) {
                     AuthScreen(
-                        onClose = { nav.popBackStack() },
+                        asHubTab = true,
+                        onClose = { nav.navigateHub(Routes.TODAY) },
                         onOpenGallery = {
                             if (BuildConfig.DEBUG) {
                                 nav.navigate(Routes.DESIGN_GALLERY)
@@ -244,7 +254,6 @@ fun MwNavHost(
                         },
                     )
                 }
-                // Registered always so NavHost routes stay stable; entry only from debug Account.
                 composable(Routes.DESIGN_GALLERY) {
                     DesignSystemGalleryScreen(onBack = { nav.popBackStack() })
                 }
@@ -304,7 +313,11 @@ fun MwNavHost(
                         workoutId = rawWorkoutId.takeUnless { it == "_" }.orEmpty(),
                         onCoach = {
                             nav.navigate(Routes.COACH) {
-                                popUpTo(Routes.TODAY)
+                                popUpTo(Routes.TODAY) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
                         },
                         onToday = {
@@ -314,6 +327,9 @@ fun MwNavHost(
                         },
                         onOpenRoutines = {
                             nav.navigate(Routes.ROUTINES) {
+                                popUpTo(Routes.TODAY) {
+                                    saveState = true
+                                }
                                 launchSingleTop = true
                             }
                         },
@@ -327,18 +343,25 @@ fun MwNavHost(
                 selected = selectedTab,
                 onSelect = { tab ->
                     when (tab) {
-                        MwHubTab.Today -> nav.navigate(Routes.TODAY) {
-                            launchSingleTop = true
-                            popUpTo(Routes.TODAY) { inclusive = true }
-                        }
-                        MwHubTab.Coach -> nav.navigate(Routes.COACH) {
-                            launchSingleTop = true
-                        }
+                        MwHubTab.Today -> nav.navigateHub(Routes.TODAY)
+                        MwHubTab.Coach -> nav.navigateHub(Routes.COACH)
+                        MwHubTab.Account -> nav.navigateHub(Routes.AUTH)
                     }
                 },
-                modifier = Modifier.navigationBarsPadding(),
             )
         }
+    }
+}
+
+/** Peer hub tabs: single-top + restore, rooted at Today. */
+private fun NavHostController.navigateHub(route: String) {
+    navigate(route) {
+        popUpTo(Routes.TODAY) {
+            saveState = true
+            inclusive = false
+        }
+        launchSingleTop = true
+        restoreState = true
     }
 }
 

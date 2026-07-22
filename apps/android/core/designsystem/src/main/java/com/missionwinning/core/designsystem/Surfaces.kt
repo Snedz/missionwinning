@@ -11,11 +11,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.FitnessCenter
+import androidx.compose.material.icons.outlined.Today
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +32,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
@@ -188,7 +196,7 @@ fun MwTopBar(
     }
 }
 
-enum class MwHubTab { Today, Coach }
+enum class MwHubTab { Today, Coach, Account }
 
 @Composable
 fun MwBottomNav(
@@ -198,18 +206,22 @@ fun MwBottomNav(
 ) {
     val todayLabel = androidx.compose.ui.res.stringResource(R.string.mw_tab_today)
     val coachLabel = androidx.compose.ui.res.stringResource(R.string.mw_tab_coach)
+    val accountLabel = androidx.compose.ui.res.stringResource(R.string.mw_tab_account)
     val todayCd = androidx.compose.ui.res.stringResource(R.string.mw_tab_today_cd)
     val coachCd = androidx.compose.ui.res.stringResource(R.string.mw_tab_coach_cd)
+    val accountCd = androidx.compose.ui.res.stringResource(R.string.mw_tab_account_cd)
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(MwColors.NavyDeep)
             .border(width = 1.dp, color = MwColors.Border)
-            .padding(horizontal = MwSpace.sm, vertical = MwSpace.sm),
+            .navigationBarsPadding()
+            .padding(horizontal = MwSpace.sm, vertical = MwSpace.xs),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         NavItem(
             label = todayLabel,
+            icon = Icons.Outlined.Today,
             selected = selected == MwHubTab.Today,
             contentDescription = todayCd,
             onClick = { onSelect(MwHubTab.Today) },
@@ -217,9 +229,18 @@ fun MwBottomNav(
         )
         NavItem(
             label = coachLabel,
+            icon = Icons.Outlined.FitnessCenter,
             selected = selected == MwHubTab.Coach,
             contentDescription = coachCd,
             onClick = { onSelect(MwHubTab.Coach) },
+            modifier = Modifier.weight(1f),
+        )
+        NavItem(
+            label = accountLabel,
+            icon = Icons.Outlined.AccountCircle,
+            selected = selected == MwHubTab.Account,
+            contentDescription = accountCd,
+            onClick = { onSelect(MwHubTab.Account) },
             modifier = Modifier.weight(1f),
         )
     }
@@ -228,13 +249,16 @@ fun MwBottomNav(
 @Composable
 private fun NavItem(
     label: String,
+    icon: ImageVector,
     selected: Boolean,
     contentDescription: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val tint = if (selected) MwColors.Emerald else MwColors.Brass.copy(alpha = 0.75f)
     Column(
         modifier = modifier
+            .heightIn(min = 48.dp)
             .clip(RoundedCornerShape(MwRadius.md))
             .clickable(onClick = onClick)
             .semantics {
@@ -243,18 +267,26 @@ private fun NavItem(
             }
             .padding(vertical = MwSpace.sm),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
     ) {
-        Box(
-            modifier = Modifier
-                .size(4.dp)
-                .clip(CircleShape)
-                .background(if (selected) MwColors.Emerald else Color.Transparent),
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = tint,
+            modifier = Modifier.size(22.dp),
         )
         Spacer(Modifier.height(4.dp))
         Text(
             label,
-            style = MwTypography.labelLarge,
+            style = MwTypography.labelMedium,
             color = if (selected) MwColors.Emerald else MwColors.TextMuted,
+        )
+        Spacer(Modifier.height(4.dp))
+        Box(
+            modifier = Modifier
+                .size(width = 18.dp, height = 3.dp)
+                .clip(RoundedCornerShape(999.dp))
+                .background(if (selected) MwColors.Emerald else Color.Transparent),
         )
     }
 }
