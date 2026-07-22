@@ -23,6 +23,18 @@ Target: **≥10%** of eligible cohort across two cohorts. If below: stop acquisi
 
 **Automated:** Monday cron `GET /api/cron/weekly-digest` emails funnel + retention + referral stats to `FOUNDER_DIGEST_EMAIL` (dryRun supported).
 
+**Agent smoke (secrets required):**
+
+```bash
+SMOKE_BASE_URL=https://www.missionwinning.com \
+CRON_SECRET=… \
+SUPABASE_SERVICE_ROLE_KEY=… \
+NEXT_PUBLIC_SUPABASE_URL=… \
+npm run week4-smoke
+```
+
+Exit 2 if `CRON_SECRET` / base unset (skip); exit 1 on auth/RPC failure. PostHog Insight UI remains founder-owned — [SEO_ANALYTICS.md](SEO_ANALYTICS.md).
+
 ### From PostHog
 
 Weekly retention on `workout_completed` / `first_workout_completed` — see [SEO_ANALYTICS.md](SEO_ANALYTICS.md).

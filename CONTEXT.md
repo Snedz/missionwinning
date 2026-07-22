@@ -11,12 +11,12 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > Adaptive AI coaching for train-anywhere athletes — free offline logging (no account), weekly plans from logs alone (no wearable). Super Bundle adds Coach depth and the other pillars — it never gates the logger.
 
 - Six pillars — Train · Fuel · Move · Mind · Track · Learn — unified by the Mission Score. Constitution: [vision.md](vision.md). Pitch the **Train + Mission Coach wedge**, never "everything app" ([docs/YC_THESIS.md](docs/YC_THESIS.md)).
-- Surfaces: Next.js 16 PWA (repo root) · native Android Compose ([apps/android](apps/android), v1.16.0) · iOS deferred ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) · "Beyond the Basics" guidebook (`/guide` + magazine PDF).
+- Surfaces: Next.js 16 PWA (repo root) · native Android Compose ([apps/android](apps/android), v1.17.0) · iOS deferred ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) · "Beyond the Basics" guidebook (`/guide` + magazine PDF).
 - Solo founder + AI agents. Founder owns users, money, legal, secrets, `PRIVATE_MODE`. Agents own code, tests, perf, docs — inside horizon gates.
 
 ---
 
-## Now (2026-07-21 · web `2026.07-unified.93` · Android `1.16.0`)
+## Now (2026-07-22 · web `2026.07-unified.94` · Android `1.17.0`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
@@ -24,7 +24,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **#1 bottleneck (founder-owned): recruit ≥10 beta users** + phone hero QA — [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3. Beta cohort target 2026-08-02.
 - Founder queue: Stripe Dashboard webhook events (`checkout.session.*` + `charge.dispute.*`) · `FOUNDER_DIGEST_EMAIL` · Checkout custom text → `/refunds` · [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) · Phantom treasury + one signed pay · Android Accept B + upload keystore + Play Internal · apply customs/prefs Supabase migration · rotate GH Actions `VERCEL_TOKEN` · Wave A Upstash + Sentry.
 - Agents queue: keep CI green · hero bugs · launch scripts/docs (Horizon 0); Android F5 gated ([apps/android/BACKLOG.md](apps/android/BACKLOG.md)).
-- Shipped: **web `.93`** invite→`/private` + Train→Coach beta copy + `launch-verify` growth/rate-limit chain; Android **1.16.0**; entity + Stripe dispute shield (Dashboard enable remains founder).
+- Shipped: **web `.94`** invite printer + gate-smoke invitee SSR · hero Mission Score e2e fail-closed · landing hero density · `week4-smoke` · flip/CI preflight; Android **1.17.0** hub UX (Today · Coach · Account).
 - In flight: none.
 
 ---

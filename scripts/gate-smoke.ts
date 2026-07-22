@@ -158,6 +158,32 @@ async function main() {
   }
 
   try {
+    // Invitee path: SSR must expose data-mw-invitee="1" (not waitlist-only).
+    const inviteCode = 'MW-B-SMOKE';
+    const invitePage = await headOrGet(`/private?invite=${inviteCode}`);
+    let inviteOk = invitePage.status === 200;
+    let inviteDetail = `status ${invitePage.status}`;
+    if (invitePage.status === 200) {
+      const html = await invitePage.text();
+      const marked = /data-mw-invitee=["']1["']/.test(html);
+      const hasInviteCopy = /you.?re invited|beta invite|enter your access code/i.test(html);
+      inviteOk = marked || hasInviteCopy;
+      inviteDetail = marked
+        ? 'data-mw-invitee=1'
+        : hasInviteCopy
+          ? 'invitee copy present'
+          : 'missing data-mw-invitee=1 — check app/private SSR invite expand';
+    }
+    checks.push({
+      name: 'GET /private?invite=… invitee path',
+      ok: inviteOk,
+      detail: inviteDetail,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /private?invite=', ok: false, detail: String(e) });
+  }
+
+  try {
     const log = await headOrGet('/log', { redirect: 'manual' });
     const logLoc = log.headers.get('location') || '';
     const logGated =
@@ -411,10 +437,18 @@ async function main() {
       if (profile.status === 200) {
         const html = await profile.text();
         const labelMatch = html.match(/20\d{2}\.\d{2}-unified\.\d+/);
-        buildOk = !!labelMatch;
-        buildDetail = labelMatch
-          ? `build label ${labelMatch[0]}`
-          : '200 but APP_BUILD_LABEL pattern not found in HTML';
+        const expected = process.env.SMOKE_EXPECT_BUILD_LABEL?.trim();
+        if (expected) {
+          buildOk = !!labelMatch && labelMatch[0] === expected;
+          buildDetail = labelMatch
+            ? `build label ${labelMatch[0]}${buildOk ? '' : ` (expected ${expected})`}`
+            : `200 but expected build ${expected} not found`;
+        } else {
+          buildOk = !!labelMatch;
+          buildDetail = labelMatch
+            ? `build label ${labelMatch[0]}`
+            : '200 but APP_BUILD_LABEL pattern not found in HTML';
+        }
       }
       checks.push({
         name: 'GET /profile shows build label',

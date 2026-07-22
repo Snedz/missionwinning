@@ -13,6 +13,7 @@
 | `seed-coach-adapt-demo.mjs` | `npm run seed-coach-adapt-demo` | Print DevTools snippet to seed CoachAdaptBanner for 60s demo |
 | `compliance-status.ts` | `npm run compliance:status` | Vanta-lite control report (`--ci`, `--write-md`) |
 | `growth-smoke.mjs` | `npm run growth-smoke` | Leads/unsub/welcome perimeter (Wave 2) |
+| `week4-smoke.mjs` | `npm run week4-smoke` | Weekly-digest dryRun + optional `mw_week4_retention` RPC |
 | `launch-verify.mjs` | `npm run launch-verify` | Track D chain: env + Supabase + Stripe gates + gate-smoke + growth-smoke + rate-limit-smoke + e2e:critical |
 | `lighthouse-budget.mjs` | `LIGHTHOUSE_SNAPSHOT=1 node scripts/lighthouse-budget.mjs` | Mobile Lighthouse budgets (see [docs/LIGHTHOUSE_BASELINE.md](../docs/LIGHTHOUSE_BASELINE.md)) |
 | `verify-stripe-enrollment.mjs` | `node scripts/verify-stripe-enrollment.mjs` | Row shape; `--check-gates`; `--check-checkout`; `--check-crypto-checkout`; `--ping-webhook`; `--verify-enrollment <email>` |
@@ -27,7 +28,7 @@
 | `i18n-fill-missing.ts` | `npm run i18n:fill` | Translate EN placeholders into `src/i18n/packs/{lang}.json` |
 | `generate-premium-programs.ts` | manual `tsx` | Regenerate premium program content |
 | `strip-pro-programs.ts` | manual `tsx` | Strip pro programs from export |
-| `print-beta-invite.ts` | `npm run print-beta-invite` | Beta invite URLs |
+| `print-beta-invite.ts` | `npm run print-beta-invite` | Beta invite: `/private?invite=` + out-of-band access code (no default `?access=`) |
 | `build-guidebook-pdf.ts` | `npm run build-guidebook-pdf` | Generate `public/magazine/beyond-the-basics[.lang].pdf` from `/guide/print?lang=` (app must be serving). Set `GUIDEBOOK_PDF_AUTO_SERVER=1` to spawn `next start`. Set `GUIDEBOOK_PDF_LANGS=all` (or `en,es,fr`) for localized PDFs. Asserts ~12–28 pages. |
 | `sync-vercel-env.mjs` | `npm run sync-vercel-env` | Sync env to Vercel |
 

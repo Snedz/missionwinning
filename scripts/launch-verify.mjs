@@ -111,6 +111,16 @@ if (skipRateLimit) {
   }
 }
 
+if (process.env.CRON_SECRET && process.env.SKIP_WEEK4_SMOKE !== 'true') {
+  run(`3d. Week-4 / digest smoke — ${base}`, 'npm', ['run', 'week4-smoke'], {
+    optional: !strict,
+  });
+} else {
+  console.log(
+    '\n3d. Week-4 smoke — SKIPPED (set CRON_SECRET; SKIP_WEEK4_SMOKE=true to force skip)\n'
+  );
+}
+
 const e2eOk = run('4. Critical path E2E (Playwright)', 'npm', ['run', 'e2e:critical'], { optional: true });
 if (!e2eOk) {
   console.log('   Tip: run against a local prod server:');

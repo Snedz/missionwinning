@@ -35,6 +35,10 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 
 ### Primary funnel (PostHog → Insights → Funnel) — build once post-flip
 
+**Founder-owned:** create the Insight in PostHog UI after `NEXT_PUBLIC_POSTHOG_KEY` is live. Agents do not invent funnel numbers.
+
+**Server retention smoke (agent):** `npm run week4-smoke` (digest dryRun + optional `mw_week4_retention`) — see [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md).
+
 **Setup checklist (&lt;15 min):**
 
 1. Confirm `NEXT_PUBLIC_POSTHOG_KEY` on Production + users can **Allow analytics** (privacy default is off until allow).
