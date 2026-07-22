@@ -36,16 +36,10 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
         {variant === 'full' ? (
           <div className="hidden items-center gap-6 text-sm sm:flex">
             <a
-              href="/#path"
+              href="/#coach"
               className="text-muted-foreground transition-colors hover:text-foreground"
             >
-              {t('landingNavPath', { defaultValue: 'The path' })}
-            </a>
-            <a
-              href="/#pillars"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t('landingNavPillars', { defaultValue: 'Pillars' })}
+              {t('landingNavCoach', { defaultValue: 'Coach' })}
             </a>
             <Link
               href="/bundle"
@@ -64,8 +58,9 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
         )}
 
         <Button
+          variant="ghost"
           onClick={() => router.push('/welcome')}
-          className="tap-target font-semibold"
+          className="tap-target text-sm font-medium text-muted-foreground hover:text-foreground"
         >
           {t('landingNavStart', { defaultValue: 'Start free' })}
         </Button>

@@ -52,8 +52,23 @@ No evidence of `SUPABASE_SERVICE_ROLE_KEY` or webhook secrets in client bundles 
 
 ---
 
+## Aikido mapping (2026-07-22)
+
+When Aikido SCA / `aikido_issues_list` returns Phantom or Solana dependency findings:
+
+| Finding class | Map to | Action |
+|---------------|--------|--------|
+| `@phantom/*` / `@solana/*` high or CRITICAL deps | This doc — accepted while lifetime USDC path ships | Do **not** ignore CRITICAL *leaked secrets*; do **not** `npm audit fix --force` |
+| Non-crypto CRITICAL deps | Fix or upgrade | Block merge once `AIKIDO_SECRET_KEY` CI gate is live |
+| SAST on crypto confirm / intent | Review against `src/lib/cryptoCheckout/` + existing unit tests | Fix if real; else document here |
+
+Feed still needs [IDE MCP permissions](https://app.us.aikido.dev/settings/integrations/ide/mcp/permissions) — [AIKIDO.md](AIKIDO.md).
+
+---
+
 ## Related
 
 - [OWASP_AUDIT.md](OWASP_AUDIT.md)
 - [PROTECTION.md](PROTECTION.md)
+- [AIKIDO.md](AIKIDO.md)
 - `src/lib/cryptoCheckout/INDEX.md`

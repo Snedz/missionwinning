@@ -7,7 +7,7 @@
 ## Principles
 
 1. **One composition per viewport** — first screenful has one job; demote secondary chrome below.
-2. **Brand-first Today** — Mission Winning / mission strip + one hero session + one Start; metrics and More stay secondary.
+2. **Brand-first Today** — Mission Winning / mission strip + one hero session + one Start; metrics and More stay secondary. Secondary blocks (Quick log, week, Recent, More) use base `MwCard` — only the session hero is elevated + glow.
 3. **Logger is the product** — Active current-set hero (weight/reps, Use last, Complete) owns the first viewport; rest dock sticky; exercise list shows Now / Up next / Done.
 4. **App chrome** — 3-tab hub: Today · Coach · Account; Active / Victory / I-Day / stack screens immersive (no hub).
 5. **Cards with purpose** — navy elevated surfaces, emerald action, brass honor; hero cards use stronger emerald frame (`MwCard(hero = true)`).

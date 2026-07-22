@@ -32,7 +32,7 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   welcomeBegin: 'Begin',
   welcomeSkipSignIn: 'Skip — start first session',
   todayBasicEncouragement:
-    'One step at a time. Health for everyone — train, fuel, move, and learn on your path.',
+    'One step at a time. Log a set — Mission Coach shapes the week from your history.',
   todayCoachInviteEyebrow: 'AI weekly plan',
   todayCoachInviteTitle: 'Generate a free taster week of Mission Coach',
   todayCoachInviteBody:

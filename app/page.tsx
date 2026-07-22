@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = publicPageMetadata({
   title: 'Train Anywhere. Win Daily.',
   description:
-    'The free health everything app: workout tracking, nutrition, mobility, mind, and learning. Free core forever. Works offline, anywhere in the world.',
+    'Free offline workout logger + adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere.',
   path: '/',
 });
 

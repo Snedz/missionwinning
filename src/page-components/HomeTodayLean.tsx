@@ -192,7 +192,7 @@ export function HomeTodayLean() {
         <p className="text-center text-sm text-muted-foreground px-4">
           {t('todayBasicEncouragement', {
             defaultValue:
-              'One step at a time. Health for everyone — train, fuel, move, and learn on your path.',
+              'One step at a time. Log a set — Mission Coach shapes the week from your history.',
           })}
         </p>
       )}

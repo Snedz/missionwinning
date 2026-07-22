@@ -2,7 +2,7 @@
 
 **Metaphor:** Like a C-RAM system, we **detect** threats (audit), **track** exposure (competitive gaps), and **intercept** before they reach production (hardening). This document is the inspection checklist and protection status before Phase E (public launch).
 
-Last updated: 2026-07-16 (red-team S1 inventory + smoke expansion; base OWASP sweep 2026-07-05)
+Last updated: 2026-07-22 (red/blue S2 live perimeter + blue harden; S1 2026-07-16; OWASP 2026-07-05)
 
 ---
 
@@ -12,15 +12,17 @@ Mission Winning has a strong **free-core vision** and solid pillar scaffolding, 
 
 | Layer | Status |
 |-------|--------|
-| Private gate (pre-launch) | Hardened — signed cookies, rate limit |
-| Payment webhooks | Hardened — Stripe + PayPal sig verify |
+| Private gate (pre-launch) | Hardened — signed cookies, **Upstash** rate limit (`rateLimitAsync`) |
+| Payment webhooks | Hardened — Stripe + PayPal sig verify (PayPal 503 until webhook id set) |
 | Premium bypass | Hardened — server `/api/premium/status`; no localStorage in prod |
 | Premium content leak | Hardened — recipes + pro programs server-split |
 | Supabase RLS | Improved — enrollment read by email |
-| Security headers | Added in `vercel.json` |
+| Security headers | Added in `vercel.json` / Next config |
 | PWA cache (gated mode) | Disabled while `PRIVATE_MODE` active |
-| School class APIs | Hardened — teacher PIN/creator; redacted athlete ids |
-| OWASP audit | [docs/OWASP_AUDIT.md](OWASP_AUDIT.md) — 2026-07-05 sweep |
+| School class APIs | Hardened — teacher PIN/creator; **GET PIN verify removed** |
+| Fuel meal estimate | Hardened — `hasAppAccess` before vision/heuristic |
+| Crypto confirm | Hardened — pending→confirmed race checks row count |
+| OWASP audit | [docs/OWASP_AUDIT.md](OWASP_AUDIT.md) — S2 refresh 2026-07-22 |
 | Competitive product depth | Documented — see § Competitive gap analysis |
 | Simple UI + member journey | Planned — see [JOURNEY.md](JOURNEY.md) |
 
@@ -35,10 +37,41 @@ Mission Winning has a strong **free-core vision** and solid pillar scaffolding, 
 **Now:**
 - Signed opaque token in `mw_private_access` cookie (HMAC-SHA256, 30-day TTL)
 - Timing-safe password compare on `/api/private-access`
-- Rate limit: 8 attempts / minute / IP
+- Rate limit: 8 attempts / minute / IP via **`rateLimitAsync`** (Upstash when configured; was in-memory-only until S2)
 - Legacy raw-secret cookies still accepted briefly for migration
 
-**Action required:** Rotate `PRIVATE_ACCESS_SECRET` to `openssl rand -base64 32` in Vercel before any wider sharing.
+**Action required:** Rotate `PRIVATE_ACCESS_SECRET` to `openssl rand -base64 32` in Vercel before any wider sharing. Confirm `PRIVATE_ALLOW_QUERY_ACCESS` unset/false.
+
+### Red/blue S2 (2026-07-22) — live www
+
+**Founder S0 (parallel — agents do not own):** rotate GH `VERCEL_TOKEN`; enable CodeQL; promote `.104`+; Wave A Sentry DSN; keep Upstash live (rate-limit-smoke green).
+
+**Red team verified on https://www.missionwinning.com (build `.103` at probe time):**
+
+| Check | Result |
+|-------|--------|
+| `npm run security-smoke` | All checks passed |
+| `npm run rate-limit-smoke` (`/api/leads`) | 429 after 5 |
+| Gate `/` `/log` → `/private`; forged cookie | 307 → `/private` |
+| Premium recipes/programs anonymous | 403 |
+| Premium status anonymous | `premium:false` |
+| Stripe unsigned webhook | 401 |
+| PayPal unsigned | 503 (not configured — fail-closed) |
+| Crypto intent/confirm no session | 401 |
+| Coach LLM / mobile coach / beta redeem | 403 private gate |
+| Private-access wrong password | 401 then 429 |
+| Hero e2e (local) Today→Active→Victory score | 11/11 pass |
+| Coach chat lock teaser (local) | 2 pass / 1 skip (LLM week gen) |
+
+**`LAUNCH_STRICT` launch-verify:** fails on **local** missing `SUPABASE_SERVICE_ROLE_KEY` / `STRIPE_WEBHOOK_SECRET` / Checkout Sessions — founder env on the machine running verify, not a www perimeter hole (leads 429 proves Upstash on prod).
+
+**Blue team shipped (this pass):**
+
+1. `private-access` → `rateLimitAsync`
+2. `fuel/estimate-meal` → `hasAppAccess`
+3. School verify **GET** removed (PIN query leak)
+4. Crypto `markIntentConfirmed` requires pending→confirmed row
+5. `gate-smoke` extended: estimate-meal 401/403; school GET reject
 
 ### 2. Payment webhooks
 

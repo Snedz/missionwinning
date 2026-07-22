@@ -98,5 +98,6 @@ Does **not** replace CodeQL or `npm audit --audit-level=high` (soft) in [`.githu
 | Date | Auth | Scan | Open CRITICAL secrets | Phantom/Solana mapped |
 |------|------|------|----------------------|------------------------|
 | 2026-07-20 | **OK** — Cursor MCP signed in (US region) | `aikido_full_scan` batch 1–2 on hot paths (`private-access`, webhooks, `premiumServer`, `cryptoCheckout/*`, `privateSession`, `rateLimit`) — **0 SAST/secrets findings** | None in scan | `aikido_issues_list` **disabled** — enable [IDE MCP permissions](https://app.us.aikido.dev/settings/integrations/ide/mcp/permissions); dependency SCA via CI once `AIKIDO_SECRET_KEY` is set |
+| 2026-07-22 | MCP still signed in | Re-checked `aikido_issues_list` — **still disabled** (workspace permissions) | n/a from feed | Phantom/Solana SCA accepted risk remains [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md); CI skip-when-unset fixed in `.github/workflows/aikido.yml` |
 
-**Next:** Enable MCP issues feed → retry `aikido_issues_list` (`repo_name: missionwinning`). Set GitHub `AIKIDO_SECRET_KEY` for dependency gate on PRs.
+**Next:** Founder enables MCP issues feed + sets `AIKIDO_SECRET_KEY`. Until then, treat Phantom/Solana advisories per SECURITY_AUDIT_TRIAGE (do not force-upgrade).

@@ -17,21 +17,23 @@
 >
 > **2026-07-22 (billing cleared):** GitHub Pro / billing unblocked — **CI runs for real** again. Agents can rely on green checks; founder still owns secrets and promote.
 >
-> **Still founder-owned:** `VERCEL_TOKEN` remains **invalid** in GH Actions **Deploy production** — rotate in repo Secrets (with `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID`). Enable **CodeQL / code scanning** in repo **Settings → Security** — the CodeQL workflow fails upload until enabled.
+> **Agent-verified 2026-07-22 evening:** www `/api/health` was still **`2026.07-unified.103`** before the `.104` push. **Deploy production** succeeded on master for `.103` (token may already work — confirm after `.104` lands). **CodeQL** still fails upload until Code scanning is enabled (workflow is soft `continue-on-error` so master CI is not blocked). **Aikido** job no longer hard-fails when `AIKIDO_SECRET_KEY` is unset.
 >
-> **Beta sprint (through 2026-08-02):** Code is not the bottleneck. Finish §1 secrets + CodeQL, then §3 phone QA + ≥10 invites. Android Accept B + Wave A Sentry before any public flip.
+> **Still founder-owned:** enable Code scanning; confirm www shows `.104` after deploy; phone QA + ≥10 invites; Android Accept B; Sentry DSN; Aikido MCP permissions + `AIKIDO_SECRET_KEY`.
+>
+> **Beta sprint (through 2026-08-02):** Code is not the bottleneck. Finish §1 CodeQL + verify `.104`, then §3 phone QA + ≥10 invites. Android Accept B + Wave A Sentry before any public flip.
 
 1. **GitHub → Settings → Billing:** spending limit / payment cleared **2026-07-22** — CI no longer dies in ~2s on billing. Re-check if Actions fail again.
-2. **Rotate GH Actions secret `VERCEL_TOKEN`** (still invalid for Deploy production as of 2026-07-22) — and confirm `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` still valid.
-3. **Enable CodeQL:** repo **Settings → Security → Code scanning** — turn on GitHub CodeQL (workflow upload fails until enabled).
+2. **Confirm / rotate GH Actions secret `VERCEL_TOKEN`** if Deploy production fails again — and confirm `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` still valid.
+3. **Enable CodeQL:** repo **Settings → Security → Code scanning** — turn on GitHub CodeQL (upload fails until enabled; workflow soft until then).
 4. **Promote Production (if www drifts again):** Actions → **Deploy production** → `workflow_dispatch`, **or** `vercel promote <ready-master-dpl> --yes`, **or** Vercel dashboard → Promote.
 5. Confirm you can see the project dashboard and Production deploys from `master`.
-6. After promote, check Profile footer / `/api/health` matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.103`+** after next promote — do not assume until verified). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
+6. After promote, check Profile footer / `/api/health` matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.104`+** — do not assume until verified). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
 
-- [ ] GitHub Actions billing cleared (CI jobs no longer die in ~2–5s) — **cleared 2026-07-22; re-check if regress**
-- [ ] `VERCEL_TOKEN` rotated in GH secrets (**still invalid** — Deploy production)
+- [x] GitHub Actions billing cleared (CI jobs no longer die in ~2–5s) — **cleared 2026-07-22; re-check if regress**
+- [ ] `VERCEL_TOKEN` confirmed working for Deploy production (agent saw a green Deploy for `.103`; re-verify on `.104`)
 - [ ] CodeQL / code scanning enabled (Settings → Security)
-- [ ] Production promoted; Profile / `/api/health` shows **`.103`+** (verify after promote — not done until you check)
+- [ ] Production shows **`.104`+** on `/api/health` (verify after deploy — not done until you check)
 - [x] I can open the Vercel project and deploy (GitHub integration / CLI promote)
 
 ## §2 — Environment & database (~45 min, one-time)
@@ -95,10 +97,11 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
    ```
 5. **Backup drill (L13):** Profile → Export backup once; skim operator restore steps in BACKUP_RESTORE.md.
 
-- [ ] Upstash live · [x] rate-limit-smoke sees 429 on www (2026-07-22) · [ ] Sentry DSN live
-- [ ] GitHub `VERCEL_*` + `SMOKE_BASE_URL` set (CI billing still blocks Actions)
+- [x] Upstash live · [x] rate-limit-smoke sees 429 on www (2026-07-22) · [ ] Sentry DSN live
+- [ ] GitHub `SMOKE_BASE_URL` / `SMOKE_ACCESS_SECRET` for gate-smoke in CI (Deploy secrets present)
 - [ ] Profile export verified once
 - **Also before flip:** Android Accept B Pass — [apps/android/FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) 15-min path → [SHIP_INTERNAL.md](../apps/android/SHIP_INTERNAL.md)
+- **Aikido (optional but recommended):** MCP issues permissions + `AIKIDO_SECRET_KEY` — [AIKIDO.md](AIKIDO.md)
 
 ---
 

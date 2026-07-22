@@ -58,6 +58,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-07-22 | Agent (D4 beta composure · .104) | Landing, Gate, Bundle, Today (web), Android Today | Fixed in-sprint: Landing ≤6 bands (cut StatBand/Journey/Guide/pillar bento/email); nav CTA ghost; HeroDemo muted post-demo CTA; wedge metadata/About/Press/brand; Bundle one-offer; Today QuickLinks+accordion under More; Android secondary cards demoted (hero elevated only). Founder: Accept B re-walk + promote `.104`. |
 | 2026-07-22 | Agent (D3 founder override · .103) | Fuel/Move/Mind/Learn; token sync; Batch C IT/RU/KO/JA; Profile/Fuel extract | Fixed in-sprint: one-emerald pillar CTAs; Fuel FAB demoted; `check-token-sync`; danger token aligned; hero bars verified (no named #1 phone-QA bug). |
 | 2026-07-22 | Agent (D-prelaunch) | Today, Active, Victory, Landing, Gate, Beta, Android Today/Rest/Victory | Fixed in-sprint: Today composure; Active intent+oversized rest; Victory one-exit; Landing product plane; gate/beta briefing; Android parity. No separate Issues. |
 | 2026-07-22 | Agent (D1+D2 founder override) | Landing, Welcome, Bundle, Victory, Today, Coach adapt, Android Today/Victory | Fixed in-sprint: Landing V1 density; Welcome ≤3 Q / 3 steps; Bundle thin hero; Victory lock+brass volume; score coach-line; adapt glance. No separate Issues. |

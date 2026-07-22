@@ -13,6 +13,9 @@ on:
 jobs:
   analyze:
     name: Analyze
+    # Soft until founder enables Code scanning (Settings → Security).
+    # Upload fails with a hard error when scanning is disabled — do not block master.
+    continue-on-error: true
     runs-on: ubuntu-latest
     permissions:
       actions: read

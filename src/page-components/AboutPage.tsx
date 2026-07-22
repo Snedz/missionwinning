@@ -22,7 +22,7 @@ export function AboutPage() {
       title={t('infoAboutTitle', { defaultValue: 'About Mission Winning' })}
       subtitle={t('infoAboutSubtitle', {
         defaultValue:
-          "The all-in-one global health and workout app — free core forever, premium depth when you're ready.",
+          'Free offline logger + Mission Coach from your logs — free core forever; Super Bundle adds depth when you are ready.',
       })}
       variant="sections"
       showLegalFooter
@@ -33,7 +33,7 @@ export function AboutPage() {
             <p className="text-muted-foreground">
               {t('infoAboutMissionP1', {
                 defaultValue:
-                  'Mission Winning is the all-in-one global health and workout app. Free powerful tracker + premium specialist education programs and coaching drawn from elite practical training curricula.',
+                  'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
               })}
             </p>
             <p className="text-muted-foreground">

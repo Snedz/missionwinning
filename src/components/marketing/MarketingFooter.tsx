@@ -7,9 +7,7 @@ import { cn } from '@/lib/utils';
 type FooterLink = { href: string; labelKey: string; defaultValue: string };
 
 const PRODUCT: FooterLink[] = [
-  { href: '/#path', labelKey: 'footerProductPath', defaultValue: 'The path' },
-  { href: '/#pillars', labelKey: 'footerProductPillars', defaultValue: 'Pillars' },
-  { href: '/experience', labelKey: 'footerProductExperience', defaultValue: 'The Experience' },
+  { href: '/#coach', labelKey: 'footerProductCoach', defaultValue: 'Coach' },
   { href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' },
   { href: '/compare', labelKey: 'footerProductCompare', defaultValue: 'Compare' },
 ];

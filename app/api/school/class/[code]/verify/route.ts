@@ -55,13 +55,3 @@ export const POST = withApiLogging('school/class/[code]/verify', async(
   }
   return handleVerify(request, raw, parsed.data.pin.trim());
 });
-
-/** @deprecated Use POST with JSON body — PIN in query strings may leak via logs. */
-export const GET = withApiLogging('school/class/[code]/verify', async(
-  request: NextRequest,
-  context: { params: Promise<{ code: string }> }
-) => {
-  const { code: raw } = await context.params;
-  const pin = request.nextUrl.searchParams.get('pin')?.trim() ?? '';
-  return handleVerify(request, raw, pin);
-});

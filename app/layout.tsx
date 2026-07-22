@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: '%s · Mission Winning',
   },
   description:
-    'The free health everything app: workout tracking, nutrition, mobility, mind, activity, and learning. Free core forever. Works offline, anywhere in the world.',
+    'Free offline workout logger + adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline, anywhere.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.missionwinning.com'),
   openGraph: {
     type: 'website',
