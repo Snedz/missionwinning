@@ -67,6 +67,15 @@
 | F7.3 | Account Preferences reseed/unit feedback + hub TalkBack selected | Done |
 | F7.4 | Ship 1.18.0 docs (UX / CONTEXT / LOG) | Done |
 
+## F8 — Pre-Internal readiness (1.19.0)
+
+| ID | Item | Status |
+|----|------|--------|
+| F8.1 | release-smoke.sh + PLAY_LISTING/SHIP_INTERNAL truth | Done |
+| F8.2 | wedge Active immersive assert + store-assets 02b-account | Done |
+| F8.3 | AuthPrefsFeedback unit tests + Cloud sync card clarity | Done |
+| F8.4 | Ship 1.19.0 docs (CONTEXT / LOG) | Done |
+
 ## F5 — Explicitly later (gated)
 
 Fuel · Mind · Learn · Social · Wearables-as-score · iOS · Hevy-scale video library · OpenAPI codegen / KMP
