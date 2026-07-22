@@ -484,17 +484,6 @@ export function HomeTodayDashboard() {
 
   if (layout.showDashboard) {
     staggerBlocks.push({
-      key: 'insight',
-      node: (
-        <p className="text-sm text-muted-foreground leading-relaxed px-0.5">
-          {t(coachInsight.messageKey, {
-            ...coachInsight.messageParams,
-            defaultValue: coachInsight.messageKey,
-          })}
-        </p>
-      ),
-    });
-    staggerBlocks.push({
       key: 'dashboard',
       node: (
         <TodayDashboardHeader
@@ -502,12 +491,30 @@ export function HomeTodayDashboard() {
           scores={bodyScores}
           streak={streak}
           trends={todayTrends}
+          coachLine={t(coachInsight.messageKey, {
+            ...coachInsight.messageParams,
+            defaultValue: coachInsight.messageKey,
+          })}
         />
       ),
     });
     staggerBlocks.push({
       key: 'freshness',
-      node: <MuscleFreshnessStrip rows={freshnessRows} />,
+      node: (
+        <details className="group rounded-xl border border-border/40 bg-muted/10">
+          <summary className="cursor-pointer list-none px-3 py-2.5 text-xs uppercase tracking-wide text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden flex items-center justify-between gap-2">
+            <span>
+              {t('todayMuscleFreshness', { defaultValue: 'Muscle freshness' })}
+            </span>
+            <span className="text-[10px] opacity-60 group-open:rotate-180 transition-transform">
+              ▼
+            </span>
+          </summary>
+          <div className="border-t border-border/30 px-3 pb-3 pt-3">
+            <MuscleFreshnessStrip rows={freshnessRows} />
+          </div>
+        </details>
+      ),
     });
   }
 
@@ -522,12 +529,12 @@ export function HomeTodayDashboard() {
       node: (
         <a
           href="/coach"
-          className="content-card block border-primary/25 bg-primary/5 p-4 pressable-card"
+          className="block px-1 py-2 text-sm text-muted-foreground hover:text-foreground"
         >
-          <p className="eyebrow mb-1">
+          <p className="eyebrow mb-0.5 text-muted-foreground">
             {t('todayCoachInviteEyebrow', { defaultValue: 'AI weekly plan' })}
           </p>
-          <p className="text-sm font-medium">
+          <p className="text-sm font-medium text-foreground">
             {t('todayCoachInviteTitle', {
               defaultValue: 'Generate a free taster week of Mission Coach',
             })}

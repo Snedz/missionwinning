@@ -21,8 +21,8 @@ export function JourneyStrip({ action }: { action: JourneyAction }) {
   if (action.phase === 'commissioned') {
     return (
       <div className="flex items-center justify-between text-xs text-muted-foreground py-2">
-        <span className="text-primary font-medium">{action.stepLabel}</span>
-        <a href="/leaderboard" className="text-primary/80 hover:text-primary hover:underline">
+        <span className="font-medium text-muted-foreground">{action.stepLabel}</span>
+        <a href="/leaderboard" className="text-muted-foreground hover:text-foreground hover:underline">
           {t('todayRankings', { defaultValue: 'Rankings' })} →
         </a>
       </div>
@@ -32,7 +32,7 @@ export function JourneyStrip({ action }: { action: JourneyAction }) {
   return (
     <div className="rounded-2xl border border-border/40 bg-muted/30 p-4 space-y-2">
       <div className="flex items-center justify-between text-xs">
-        <span className="font-medium text-primary uppercase tracking-wide" suppressHydrationWarning>
+        <span className="font-medium text-muted-foreground uppercase tracking-wide" suppressHydrationWarning>
           {mounted ? getPhaseLabel(action.phase) : '\u00a0'}
         </span>
         <span className="text-muted-foreground" suppressHydrationWarning>
@@ -41,7 +41,7 @@ export function JourneyStrip({ action }: { action: JourneyAction }) {
       </div>
       <div className="h-1 bg-muted rounded-full overflow-hidden">
         <div
-          className="h-full bg-primary transition-all duration-500 rounded-full"
+          className="h-full bg-muted-foreground/40 transition-all duration-500 rounded-full"
           style={{ width: mounted ? `${action.progressPct}%` : '0%' }}
           suppressHydrationWarning
         />

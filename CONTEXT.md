@@ -11,20 +11,20 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > Adaptive AI coaching for train-anywhere athletes — free offline logging (no account), weekly plans from logs alone (no wearable). Super Bundle adds Coach depth and the other pillars — it never gates the logger.
 
 - Six pillars — Train · Fuel · Move · Mind · Track · Learn — unified by the Mission Score. Constitution: [vision.md](vision.md). Pitch the **Train + Mission Coach wedge**, never "everything app" ([docs/YC_THESIS.md](docs/YC_THESIS.md)). Crypto is a **payment rail** (Lifetime USDC), not the product ([docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md)).
-- Surfaces: Next.js 16 PWA (repo root) · native Android Compose ([apps/android](apps/android), v1.23.0) · iOS deferred ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) · "Beyond the Basics" guidebook (`/guide` + magazine PDF).
+- Surfaces: Next.js 16 PWA (repo root) · native Android Compose ([apps/android](apps/android), v1.24.1) · iOS deferred ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) · "Beyond the Basics" guidebook (`/guide` + magazine PDF).
 - Solo founder + AI agents. Founder owns users, money, legal, secrets, `PRIVATE_MODE`. Agents own code, tests, perf, docs — inside horizon gates.
 
 ---
 
-## Now (2026-07-22 · web `2026.07-unified.99` · Android `1.23.0`)
+## Now (2026-07-22 · web `2026.07-unified.103` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
-- **Horizon 0 — beta sprint through 2026-08-02.** Boss metric: week-4 retained weekly loggers. **#1 bottleneck: recruit ≥10** + phone hero QA — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §1→§3.
-- **Ops:** GitHub Pro / billing unblocked — CI runs again. **Founder still:** phone hero QA + ≥10 invites; Android Accept B → Play Internal; Wave A Sentry before public flip; `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` for `LAUNCH_STRICT`.
-- **www:** promote **`.99`** (lint CI fix). Gate/growth/rate-limit green on `.98`.
-- Agents: keep CI green · named #1 tester confusion only · **no F5**.
-- Shipped: web **`.99`** eslint cleanup; Android **1.23.0**. In flight: **await founder recruiting + Accept B**.
+- **Horizon 0 — beta sprint through 2026-08-02** (may skip formal beta — founder call). Boss metric: week-4 retained weekly loggers. **#1 bottleneck: recruit ≥10** + phone hero QA — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §1→§3.
+- **Founder override:** Design **D1 + D2 + D-prelaunch + D3** shipped early (excellence-first) — [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md).
+- **Ops:** GitHub Pro / billing unblocked. **Founder still:** rotate `VERCEL_TOKEN`; enable CodeQL; phone hero QA + invites; Android Accept B → Play Internal; Wave A Sentry; secrets for `LAUNCH_STRICT`.
+- **www:** promote **`.103`**. Agents: CI green · **no F5**.
+- Shipped: web **`.103`** craft sprint (Profile/Fuel extract, D3 pillars + token sync + Batch C); Android **1.24.1**. In flight: **Accept B re-walk**.
 
 
 ---

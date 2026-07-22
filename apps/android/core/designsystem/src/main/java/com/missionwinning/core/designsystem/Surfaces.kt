@@ -607,7 +607,7 @@ fun MwRestDock(
     if (secondsLeft <= 0) return
     val total = totalSeconds.coerceAtLeast(secondsLeft).coerceAtLeast(1)
     val progress = (secondsLeft.toFloat() / total.toFloat()).coerceIn(0f, 1f)
-    MwCard(modifier = modifier, elevated = true, glow = true, hero = true) {
+    MwCard(modifier = modifier, elevated = true) {
         MwRestTimer(secondsLeft = secondsLeft)
         // Remaining rest fraction (ticks down with the timer)
         Box(

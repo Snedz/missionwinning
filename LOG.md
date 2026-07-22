@@ -6,11 +6,55 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Pre-launch craft sprint (web .103)
+
+- **Track 1:** Ops docs — VERCEL_TOKEN rotate + CodeQL enable; hero quality bar verified (no named #1 phone-QA bug yet).
+- **Track 2:** ProfilePage → profile cards (~299 lines); NutritionPage → FuelQuickLogPanel/MoreTools; lint hook warnings cleared.
+- **Track 3 (D3 override):** `npm run check-token-sync`; danger token aligned; Fuel FAB demoted; Move/Mind/Learn one-emerald CTA; i18n Batch C IT/RU/KO/JA depth; DESIGN_ORCHESTRATION D3 in-progress→shipped.
+- Build: `2026.07-unified.103` · promote www after CI Ready.
+
+## 2026-07-22 — Design D-prelaunch (web .102 · Android 1.24.1)
+
+- **Today:** Mission Score + coach line above fold; rings/sparklines/muscle in collapsed details.
+- **Active:** mono session brief; readiness chrome demoted below sets; oversized RestTimerBar.
+- **Victory:** one emerald next; History/Share quiet text links.
+- **Landing:** HeroDemo dominant plane (no art wash / inset card).
+- **Gate/Beta:** briefing chrome — forms without content-card stacks; beta steps as mono list.
+- **Android:** Today Form+insight without elevated card; rest clock 80sp Text; Victory duration/sets Neutral (brass = volume honor).
+- Build: `2026.07-unified.102` · Android `1.24.1` / versionCode 53.
+
+---
+
+## 2026-07-22 — Design D1+D2 founder override (web .101 · Android 1.24.0)
+
+- **Override:** Horizon gates waived for conversion + retention emotion craft (excellence before beta/public).
+- **D1 Landing:** brand in hero · one CTA · product proof only (no dual CTAs / PR sticker / experience link).
+- **D1 Welcome:** 3 steps (welcome → profile → signin); mission folded into Begin; 3 questions (no days/week UI); cinematic mono progress.
+- **D1 Bundle:** thin hero (one brass badge); pillar story before tabs; removed duplicate in-tab pillar grid.
+- **D2 Victory:** web lock animation + brass volume + one next; Android volume as brass honor line.
+- **D2 Today:** Mission Score + coach line under number; Android Form score + insight under number.
+- **D2 Coach adapt:** glanceable (≤1 beat compact / ≤3 full).
+- Build: `2026.07-unified.101` · Android `1.24.0` / versionCode 52.
+
+---
+
 ## 2026-07-22 — Crypto rails thesis (docs)
 
 - Added [docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md): MW uses stablecoin/Phantom as **payment rails**, not a crypto product pivot (YC/Nemil “best time to build” lens).
 - Wired: YC_THESIS Why now + non-pitch · LAUNCH_RUNBOOK §4 · ORCHESTRATION/CONTEXT · INDEX + docs/INDEX.
 - No product/code changes — rails remain `src/lib/cryptoCheckout/` + Phantom Lifetime verify on launch checklist.
+
+---
+
+## 2026-07-22 — Design Orchestration D0 (web .100 · Android 1.23.1)
+
+- **OS:** [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) — emotion arc, quality bars, craft waves D0–D3; wired into INDEX + ORCHESTRATION Design lane + Android UX/INDEX.
+- **Research:** Wave 7 steal/avoid/own synthesis in [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md).
+- **Web Today:** Single emerald CTA — demoted coach invite, Rankings QuickLink, Mission Score glow, journey/header primary chrome; muscle REC → brass.
+- **Web Active:** PR = inline brass chip + haptic (no toast); RestTimerBar clock-in-ring; SetLogRow hide Apply/Use last when seeded.
+- **Android:** Mission insight + rest dock glow demoted; floating PR chip removed; VIEW chip Neutral; Accept B agent prep for D0. Founder still owns Pass.
+- **Review:** DESIGN_REVIEW D0 pass logged. D1/D2 horizon-gated (documented, not shipped).
+- Build: `2026.07-unified.100` · Android `1.23.1` / versionCode 51.
 
 ---
 

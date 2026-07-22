@@ -4,22 +4,16 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { User } from 'lucide-react';
-import { formatStoredGoal } from '@/lib/journeyGoals';
-import { supabase, signOut, getUser } from "@/lib/supabase";
-import { SignInPanel } from "@/components/auth/SignInPanel";
-import i18n from "@/i18n";
-import { useWorkoutStore } from "@/store/workoutStore";
-import { useMissionJourney } from "@/hooks/useMissionJourney";
-import { daysSinceCommission } from "@/lib/missionJourney";
-import { getBetaFunnelMetrics, getJourneyEvents } from "@/lib/journeyAnalytics";
-import { BetaAdminPanel } from "@/components/beta/BetaAdminPanel";
-
+import { Card, CardContent } from '@/components/ui/card';
+import { supabase, signOut } from '@/lib/supabase';
+import { useMissionJourney } from '@/hooks/useMissionJourney';
+import { daysSinceCommission } from '@/lib/missionJourney';
+import { getBetaFunnelMetrics } from '@/lib/journeyAnalytics';
+import { BetaAdminPanel } from '@/components/beta/BetaAdminPanel';
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { LegalNav } from '@/components/layout/LegalNav';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
@@ -27,43 +21,20 @@ import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { showOwnerTools } from '@/lib/ownerTools';
 import { useToast } from '@/hooks/use-toast';
-import {
-  loadDaysPerWeek,
-  saveDaysPerWeek,
-} from '@/lib/coach/schedulePrefs';
+import { loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
+import { openBillingPortal } from '@/lib/payments';
+import { ProfileAccountCard } from '@/components/profile/ProfileAccountCard';
+import { ProfileRemindersCard } from '@/components/profile/ProfileRemindersCard';
+import { ProfilePreferencesCard } from '@/components/profile/ProfilePreferencesCard';
+import { ProfileAssessmentCard } from '@/components/profile/ProfileAssessmentCard';
+import { ProfileBetaJourneyCard } from '@/components/profile/ProfileBetaJourneyCard';
+import { ProfileJourneyCard } from '@/components/profile/ProfileJourneyCard';
+import { ProfilePremiumCard } from '@/components/profile/ProfilePremiumCard';
+import { ProfileOwnerTools } from '@/components/profile/ProfileOwnerTools';
 import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
 import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
-import { SUPER_BUNDLE_PRICE, openBillingPortal } from '@/lib/payments';
-import { APP_LANGS, APP_LANG_NATIVE_NAMES, normalizeAppLang } from '@/i18n/appLangs';
-
-const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
-
-function LanguageSwitcher() {
-  const { t } = useTranslation();
-  const currentLang = normalizeAppLang(i18n.language);
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-    scheduleJourneyPush();
-  };
-  return (
-    <div className="space-y-1">
-      <select
-        value={currentLang}
-        onChange={(e) => changeLanguage(e.target.value)}
-        className="w-full text-sm bg-background border border-border/50 rounded px-3 py-2"
-        aria-label={t('changeLanguage', { defaultValue: 'Change language' })}
-      >
-        {APP_LANGS.map((l) => (
-          <option key={l} value={l}>
-            {APP_LANG_NATIVE_NAMES[l]}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -73,8 +44,8 @@ export function ProfilePage() {
   const [email, setEmail] = useState<string | null>(null);
   const [nudgeLoading, setNudgeLoading] = useState(false);
   const [nudgeSent, setNudgeSent] = useState(false);
-  const [units, setUnits] = useState<"metric" | "imperial">("metric");
-  const [goals, setGoals] = useState("Build strength and stay healthy");
+  const [units, setUnits] = useState<'metric' | 'imperial'>('metric');
+  const [goals, setGoals] = useState('Build strength and stay healthy');
   const [premium, setPremium] = useState(false);
   const [reminders, setReminders] = useState(false);
   const [remindersBusy, setRemindersBusy] = useState(false);
@@ -97,13 +68,12 @@ export function ProfilePage() {
           });
       }
     });
-    const savedUnits = localStorage.getItem("mw_units") as "metric" | "imperial" | null;
+    const savedUnits = localStorage.getItem('mw_units') as 'metric' | 'imperial' | null;
     if (savedUnits) setUnits(savedUnits);
-    const savedGoals = localStorage.getItem("mw_goals");
+    const savedGoals = localStorage.getItem('mw_goals');
     if (savedGoals) setGoals(savedGoals);
 
-    // Use real premium check (DB if logged in, demo local fallback)
-    import("@/lib/supabase").then(({ isPremium }) => {
+    import('@/lib/supabase').then(({ isPremium }) => {
       isPremium().then(setPremium);
     });
     void import('@/lib/pushClient').then(async (m) => {
@@ -134,87 +104,63 @@ export function ProfilePage() {
     setRemindersBusy(false);
   };
 
-  const saveUnits = (u: "metric" | "imperial") => {
+  const togglePush = async () => {
+    setPushBusy(true);
+    try {
+      const m = await import('@/lib/pushClient');
+      if (pushOn) {
+        await m.unsubscribePush();
+        setPushOn(false);
+      } else {
+        const r = await m.subscribePush();
+        setPushOn(r === 'ok');
+        if (r !== 'ok') {
+          toast({
+            title: t('remindersPushFailed', {
+              defaultValue: 'Could not enable device notifications',
+            }),
+            variant: 'destructive',
+          });
+        }
+      }
+    } finally {
+      setPushBusy(false);
+    }
+  };
+
+  const saveUnits = (u: 'metric' | 'imperial') => {
     setUnits(u);
-    localStorage.setItem("mw_units", u);
+    localStorage.setItem('mw_units', u);
     scheduleJourneyPush();
   };
 
   const saveGoals = () => {
-    localStorage.setItem("mw_goals", goals);
+    localStorage.setItem('mw_goals', goals);
     scheduleJourneyPush();
   };
 
   const handleSignOut = async () => {
     await signOut();
-    router.push("/");
+    router.push('/');
   };
 
-  // Light onboarding state (SSR-safe — localStorage only in browser)
-  const [experience] = useState(() =>
-    typeof window !== 'undefined' ? localStorage.getItem('mw_experience') || '' : ''
-  );
-  const [equipment] = useState(() =>
-    typeof window !== 'undefined' ? localStorage.getItem('mw_equipment') || '' : ''
-  );
-  const [daysPerWeek, setDaysPerWeek] = useState(() =>
-    loadDaysPerWeek(
-      typeof window !== 'undefined'
-        ? localStorage.getItem('mw_experience') || 'beginner'
-        : 'beginner'
-    )
-  );
-  const [primaryGoal] = useState(() =>
-    typeof window !== 'undefined'
-      ? localStorage.getItem('mw_primary_goal') || goals
-      : goals
-  );
-
-  const isOnboarded = !!(experience && equipment);
-
-  const startWorkout = useWorkoutStore((s) => s.startWorkout);
-
-  const launchFromAssessment = (risk: string) => {
-    let name = "Daily Mobility + Mind Habit";
-    let exs = [
-      { exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },
-      { exerciseId: "bird-dog", sets: [{ reps: 6, weight: 0 }] },
-      { exerciseId: "glute-bridge", sets: [{ reps: 10, weight: 0 }] },
-      { exerciseId: "couch-stretch", sets: [{ reps: 45, weight: 0 }] },
-    ];
-    if (risk === 'low') {
-      name = "Full Body Habit Builder";
-      exs = [
-        { exerciseId: "push-ups", sets: [{ reps: 10, weight: 0 }] },
-        { exerciseId: "squats", sets: [{ reps: 12, weight: 0 }] },
-        { exerciseId: "glute-bridge", sets: [{ reps: 12, weight: 0 }] },
-        { exerciseId: "plank", sets: [{ reps: 25, weight: 0 }] },
-      ];
-    } else if (risk === 'moderate') {
-      name = "Bodyweight Strength Circuit";
-      exs = [
-        { exerciseId: "push-ups", sets: [{ reps: 12, weight: 0 }] },
-        { exerciseId: "squats", sets: [{ reps: 12, weight: 0 }] },
-        { exerciseId: "inverted-row", sets: [{ reps: 8, weight: 0 }] },
-        { exerciseId: "lunges", sets: [{ reps: 10, weight: 0 }] },
-        { exerciseId: "plank", sets: [{ reps: 30, weight: 0 }] },
-      ];
+  const handleManageBilling = async () => {
+    setBillingBusy(true);
+    const result = await openBillingPortal();
+    setBillingBusy(false);
+    if (result.ok) {
+      window.location.href = result.url;
+      return;
     }
-    startWorkout(name, exs);
-    router.push("/active");
+    toast({
+      title: t('billingPortalError', { defaultValue: 'Billing portal' }),
+      description:
+        result.code === 'auth_required'
+          ? t('billingPortalSignIn', { defaultValue: 'Sign in to manage billing.' })
+          : result.message,
+      variant: 'destructive',
+    });
   };
-
-  // Owner analytics / revenue stub (bundle members)
-  const members = typeof window !== 'undefined' ? parseInt(localStorage.getItem('mw_contributors') || '12400') : 12400;
-  const estRevenue = Math.round(members * 12 * 0.3); // rough from bundle subs (demo)
-
-  // Show last assessment (from Assessments free core tool) + quick actions
-  const lastAssessment = typeof window !== 'undefined' ? (() => {
-    try { return JSON.parse(localStorage.getItem('mw_last_assessment') || 'null'); } catch { return null; }
-  })() : null;
-
-  const funnel = getBetaFunnelMetrics(state);
-  const ownerTools = showOwnerTools();
 
   const handleEmailNudge = async () => {
     setNudgeLoading(true);
@@ -246,6 +192,25 @@ export function ProfilePage() {
     }
   };
 
+  const [experience] = useState(() =>
+    typeof window !== 'undefined' ? localStorage.getItem('mw_experience') || '' : ''
+  );
+  const [equipment] = useState(() =>
+    typeof window !== 'undefined' ? localStorage.getItem('mw_equipment') || '' : ''
+  );
+  const [daysPerWeek, setDaysPerWeek] = useState(() =>
+    loadDaysPerWeek(
+      typeof window !== 'undefined' ? localStorage.getItem('mw_experience') || 'beginner' : 'beginner'
+    )
+  );
+  const [primaryGoal] = useState(() =>
+    typeof window !== 'undefined' ? localStorage.getItem('mw_primary_goal') || goals : goals
+  );
+
+  const isOnboarded = !!(experience && equipment);
+  const funnel = getBetaFunnelMetrics(state);
+  const ownerTools = showOwnerTools();
+
   return (
     <PillarPageShell
       icon={User}
@@ -260,347 +225,58 @@ export function ProfilePage() {
       }
       footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
     >
-      <Card className="card-elevated">
-        <CardHeader><CardTitle>{t('account', { defaultValue: 'Account & Sign In' })}</CardTitle></CardHeader>
-        <CardContent className="space-y-3">
-          {email ? (
-            <>
-              <div>Signed in as <span className="font-mono text-primary">{email}</span></div>
-              <Button variant="outline" onClick={handleSignOut}>{t('signOut', { defaultValue: 'Sign Out' })}</Button>
-              <div className="text-xs text-primary/90">
-                {t('cloudSyncActive', { defaultValue: 'Journey synced to cloud' })}
-              </div>
-              <div className="text-xs text-muted-foreground">
-                Journey phase, preferences, and milestones merge across devices on sign-in.
-              </div>
-            </>
-          ) : (
-            <div className="auth-panel rounded-xl p-4">
-              <div className="font-semibold mb-1 text-primary">Sign up or sign in</div>
-              <div className="text-xs text-muted-foreground mb-4">
-                {t('cloudSyncPending', { defaultValue: 'Sign in to sync journey across devices' })}
-              </div>
-              <SignInPanel nextPath="/profile" compact />
-            </div>
-          )}
-          <div className="text-xs text-muted-foreground">
-            {ownerTools
-              ? 'Premium status from Supabase enrollments (demo requests log a lead + grant local access). Full real payments + auth when LLC ready.'
-              : t('premiumStatusFoot', { defaultValue: 'Premium unlocks via Super Bundle subscription.' })}
-          </div>
-        </CardContent>
-      </Card>
+      <ProfileAccountCard email={email} ownerTools={ownerTools} onSignOut={handleSignOut} />
 
       {email && (
-        <Card className="content-card">
-          <CardHeader>
-            <CardTitle>{t('remindersTitle', { defaultValue: 'Training reminders' })}</CardTitle>
-          </CardHeader>
-          <CardContent className="flex items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">
-              {t('remindersDesc', {
-                defaultValue:
-                  'Occasional emails when your streak is at risk or you go quiet — never more than one every two days. One-tap unsubscribe in every email.',
-              })}
-            </p>
-            <Button
-              variant={reminders ? 'default' : 'outline'}
-              disabled={remindersBusy}
-              onClick={toggleReminders}
-              className="shrink-0 min-h-[44px]"
-              aria-pressed={reminders}
-            >
-              {reminders
-                ? t('remindersOn', { defaultValue: 'On' })
-                : t('remindersOff', { defaultValue: 'Off' })}
-            </Button>
-          </CardContent>
-          {reminders && pushSupported ? (
-            <CardContent className="flex items-center justify-between gap-4 border-t border-border/40 pt-4">
-              <p className="text-sm text-muted-foreground">
-                {t('remindersPushDesc', {
-                  defaultValue: 'Also notify on this device (web push).',
-                })}
-              </p>
-              <Button
-                variant={pushOn ? 'default' : 'outline'}
-                disabled={pushBusy}
-                className="shrink-0 min-h-[44px]"
-                aria-pressed={pushOn}
-                onClick={async () => {
-                  setPushBusy(true);
-                  try {
-                    const m = await import('@/lib/pushClient');
-                    if (pushOn) {
-                      await m.unsubscribePush();
-                      setPushOn(false);
-                    } else {
-                      const r = await m.subscribePush();
-                      setPushOn(r === 'ok');
-                      if (r !== 'ok') {
-                        toast({
-                          title: t('remindersPushFailed', {
-                            defaultValue: 'Could not enable device notifications',
-                          }),
-                          variant: 'destructive',
-                        });
-                      }
-                    }
-                  } finally {
-                    setPushBusy(false);
-                  }
-                }}
-              >
-                {pushOn
-                  ? t('remindersOn', { defaultValue: 'On' })
-                  : t('remindersOff', { defaultValue: 'Off' })}
-              </Button>
-            </CardContent>
-          ) : null}
-        </Card>
+        <ProfileRemindersCard
+          reminders={reminders}
+          remindersBusy={remindersBusy}
+          onToggleReminders={toggleReminders}
+          pushSupported={pushSupported}
+          pushOn={pushOn}
+          pushBusy={pushBusy}
+          onTogglePush={togglePush}
+        />
       )}
 
-      <Card className="content-card">
-        <CardHeader><CardTitle>{t('units', { defaultValue: 'Units' })}</CardTitle></CardHeader>
-        <CardContent>
-          <div className="flex gap-2">
-            <Button variant={units === "metric" ? "default" : "outline"} onClick={() => saveUnits("metric")}>{t('metric', { defaultValue: 'Metric (kg, cm)' })}</Button>
-            <Button variant={units === "imperial" ? "default" : "outline"} onClick={() => saveUnits("imperial")}>{t('imperial', { defaultValue: 'Imperial (lbs, in)' })}</Button>
-          </div>
-          <div className="text-xs mt-2 text-muted-foreground">Affects calculators and future logs. (Global default metric for accessibility.)</div>
-        </CardContent>
-      </Card>
+      <ProfilePreferencesCard
+        units={units}
+        onSaveUnits={saveUnits}
+        goals={goals}
+        onGoalsChange={setGoals}
+        onSaveGoals={saveGoals}
+      />
 
-      {/* Language switcher - same improved native dropdown as Sidebar for discoverability */}
-      <Card className="content-card">
-        <CardHeader><CardTitle>{t('language', { defaultValue: 'Language' })}</CardTitle></CardHeader>
-        <CardContent>
-          <LanguageSwitcher />
-          <div className="text-xs mt-2 text-muted-foreground">Switch the app language. Names shown in their native form so it's clear in any language.</div>
-        </CardContent>
-      </Card>
+      <ProfileAssessmentCard />
 
-      <Card className="content-card">
-        <CardHeader><CardTitle>{t('trainingGoals', { defaultValue: 'Training Goals' })}</CardTitle></CardHeader>
-        <CardContent className="space-y-3">
-          <textarea 
-            className="w-full border rounded p-2 bg-background" 
-            value={goals} 
-            onChange={e => setGoals(e.target.value)}
-            rows={3}
-          />
-          <Button onClick={saveGoals}>{t('saveGoals', { defaultValue: 'Save Goals' })}</Button>
-          <div className="text-xs">Used for program recommendations (future personalization).</div>
-        </CardContent>
-      </Card>
-
-      {/* Last Readiness Assessment (free core, persisted) */}
-      <Card className="content-card">
-        <CardHeader><CardTitle>Readiness Assessment</CardTitle></CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          {lastAssessment ? (
-            <>
-              <div>
-                <span className="font-medium">Last result:</span> <span className="uppercase font-semibold">{lastAssessment.risk}</span> risk
-                <span className="text-xs text-muted-foreground ml-2">({lastAssessment.date})</span>
-              </div>
-              <div className="text-muted-foreground">{lastAssessment.notes}</div>
-              <div className="flex gap-2 flex-wrap">
-                <Button size="sm" variant="outline" onClick={() => router.push('/assessments')}>{t('retake', { defaultValue: 'Retake Assessment' })}</Button>
-                <Button size="sm" onClick={() => launchFromAssessment(lastAssessment.risk)}>Start recommended starter for {lastAssessment.risk} risk →</Button>
-                <Button size="sm" variant="ghost" onClick={async () => {
-                  const u = await getUser();
-                  const today = new Date().toISOString().split('T')[0];
-                  if (u) await (await import('@/lib/supabase')).saveNutritionEntry({ date: today, name: 'Assessment Win from Profile', protein: 0, cals: 0 });
-                  alert('Win logged! +1 streak.');
-                }}>Log assessment win (+cloud)</Button>
-              </div>
-            </>
-          ) : (
-            <div>
-              No assessment yet. <Button size="sm" variant="outline" onClick={() => router.push('/assessments')}>{t('takeAssessment', { defaultValue: 'Take the free Readiness Assessment' })}</Button>
-              <div className="text-xs mt-1 text-muted-foreground">ParQ-style screen + stage of change. Results guide safe free starters (always available).</div>
-            </div>
-          )}
-          <div className="text-[10px] text-muted-foreground">Core free forever. Premium adds history, deeper coaching forms, and saved programs.</div>
-        </CardContent>
-      </Card>
-
-      <Card className="content-card border-primary/40 bg-primary/5">
-        <CardHeader>
-          <CardTitle>{t('betaJourneyProgress', { defaultValue: 'Beta journey progress' })}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          <div className="grid grid-cols-2 gap-2">
-            <div className="rounded-lg border border-border/50 p-3">
-              <div className="text-xs text-muted-foreground">Phase</div>
-              <div className="font-semibold capitalize">{funnel.phase.replace('-', ' ')}</div>
-            </div>
-            <div className="rounded-lg border border-border/50 p-3">
-              <div className="text-xs text-muted-foreground">Events</div>
-              <div className="font-semibold">{funnel.eventCount}</div>
-            </div>
-            <div className="rounded-lg border border-border/50 p-3">
-              <div className="text-xs text-muted-foreground">I-Day</div>
-              <div className="font-semibold">{funnel.iDayComplete ? '✓ Done' : '—'}</div>
-            </div>
-            <div className="rounded-lg border border-border/50 p-3">
-              <div className="text-xs text-muted-foreground">Basic Training</div>
-              <div className="font-semibold">{funnel.basicDone}/{funnel.basicTotal}</div>
-            </div>
-          </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Beta targets: I-Day ≥80%, commissioned ≥25% in 14 days. Phase transitions log as{' '}
-            <code className="text-[10px]">journey_phase_complete</code>.
-          </p>
-          {email && !isCommissioned && (
-            <Button
-              variant="outline"
-              className="w-full min-h-[44px]"
-              disabled={nudgeLoading}
-              onClick={handleEmailNudge}
-            >
-              {nudgeLoading
-                ? 'Sending…'
-                : t('emailNextStep', { defaultValue: 'Email my next step' })}
-            </Button>
-          )}
-          {nudgeSent && (
-            <p className="text-xs text-primary">
-              {t('emailNextStepSent', { defaultValue: 'Check your inbox for your next step.' })}
-            </p>
-          )}
-        </CardContent>
-      </Card>
+      <ProfileBetaJourneyCard
+        funnel={funnel}
+        email={email}
+        isCommissioned={isCommissioned}
+        nudgeLoading={nudgeLoading}
+        nudgeSent={nudgeSent}
+        onEmailNudge={handleEmailNudge}
+      />
 
       {ownerTools && <BetaAdminPanel enabled={!!email} />}
 
-      {/* Journey profile — first-time onboarding or edit link */}
-      {!isOnboarded ? (
-        <Card className="content-card border-primary/40 bg-primary/5">
-          <CardHeader><CardTitle>{t('firstTimeSetup', { defaultValue: 'First-time setup' })}</CardTitle></CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <p className="text-muted-foreground">
-              Complete I-Day to personalize workouts and Today recommendations (~2 minutes).
-            </p>
-            <Button className="w-full min-h-[44px]" onClick={() => router.push('/welcome')}>
-              {t('welcomeBegin', { defaultValue: 'Begin I-Day' })}
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <Card className="content-card">
-          <CardHeader><CardTitle>{t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}</CardTitle></CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <p className="text-muted-foreground">
-              Experience: <span className="text-foreground capitalize">{experience || '—'}</span>
-              {' · '}
-              Equipment: <span className="text-foreground capitalize">{equipment?.replace('-', ' ') || '—'}</span>
-            </p>
-            <p className="text-muted-foreground truncate">
-              Goal: {formatStoredGoal(primaryGoal || goals, t)}
-            </p>
-            <div className="space-y-2">
-              <span className="text-muted-foreground">
-                {t('coachDaysPerWeek', { defaultValue: 'How many days a week?' })}
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {DAYS_PER_WEEK_OPTIONS.map((n) => (
-                  <Button
-                    key={n}
-                    type="button"
-                    size="sm"
-                    variant={daysPerWeek === n ? 'default' : 'outline'}
-                    className={daysPerWeek === n ? 'bg-primary hover:bg-primary/90' : ''}
-                    onClick={() => {
-                      setDaysPerWeek(n);
-                      saveDaysPerWeek(n);
-                      scheduleJourneyPush();
-                    }}
-                  >
-                    {n}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <Button variant="outline" className="w-full min-h-[44px]" onClick={() => router.push('/welcome?edit=1')}>
-              {t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}
-            </Button>
-          </CardContent>
-        </Card>
-      )}
+      <ProfileJourneyCard
+        isOnboarded={isOnboarded}
+        experience={experience}
+        equipment={equipment}
+        primaryGoal={primaryGoal}
+        goals={goals}
+        daysPerWeek={daysPerWeek}
+        onDaysPerWeekChange={setDaysPerWeek}
+      />
 
-      <Card className="content-card">
-        <CardHeader><CardTitle>{t('premiumStatus', { defaultValue: 'Premium Status' })}</CardTitle></CardHeader>
-        <CardContent>
-          {premium ? (
-            <div className="space-y-3">
-              <div className="text-primary font-medium">{t('premiumUnlocked', { defaultValue: '✓ Premium unlocked (via Super Bundle or demo request)' })}</div>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={billingBusy}
-                onClick={async () => {
-                  setBillingBusy(true);
-                  const result = await openBillingPortal();
-                  setBillingBusy(false);
-                  if (result.ok) {
-                    window.location.href = result.url;
-                    return;
-                  }
-                  toast({
-                    title: t('billingPortalError', { defaultValue: 'Billing portal' }),
-                    description:
-                      result.code === 'auth_required'
-                        ? t('billingPortalSignIn', { defaultValue: 'Sign in to manage billing.' })
-                        : result.message,
-                    variant: 'destructive',
-                  });
-                }}
-              >
-                {billingBusy
-                  ? t('billingPortalOpening', { defaultValue: 'Opening…' })
-                  : t('manageBilling', { defaultValue: 'Manage billing' })}
-              </Button>
-            </div>
-          ) : (
-            <div>
-              {t('noPremium', { defaultValue: 'Free tier active. Unlock full library cues, deep nutrition, mobility flows, mind sessions, advanced programs, and analytics via the Super Bundle or specialist programs.' })}
-              <Button className="mt-2" onClick={() => router.push('/bundle')}>{t('exploreBundle', { defaultValue: 'Explore Super Bundle' })}</Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <ProfilePremiumCard
+        premium={premium}
+        billingBusy={billingBusy}
+        onManageBilling={handleManageBilling}
+      />
 
-      {ownerTools && (
-      <>
-      {/* Owner Revenue Snapshot - founder view only */}
-      <Card className="content-card border-primary/40 bg-primary/5">
-        <CardHeader><CardTitle>{t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}</CardTitle></CardHeader>
-        <CardContent className="space-y-2 text-sm">
-          <div className="flex justify-between"><span>{t('spotsClaimed', { defaultValue: 'Members' })}:</span> <span className="font-mono text-primary">{members.toLocaleString()}</span></div>
-          <div className="flex justify-between"><span>{t('estRevenue', { defaultValue: 'Est. revenue from bundles' })}:</span> <span className="font-mono text-primary">${estRevenue.toLocaleString()}</span></div>
-          <div className="text-xs text-muted-foreground">{t('avgTicket', { defaultValue: `Avg bundle ~$${SUPER_BUNDLE_PRICE}/mo` })} — Super Bundle sustains the free core for the global mission. Track real via Supabase later.</div>
-          <div className="text-[10px] mt-1">Members who join the bundle help make the free path available worldwide. Share wins → /feedback.</div>
-        </CardContent>
-      </Card>
-
-      <Card className="content-card">
-        <CardHeader><CardTitle>{t('demoAnalytics', { defaultValue: 'Demo Analytics (Events)' })}</CardTitle></CardHeader>
-        <CardContent>
-          <Button variant="outline" onClick={() => {
-            const events = getJourneyEvents();
-            const legacy = Object.keys(localStorage).filter(k => k.startsWith('mw_event_')).map(k => ({ key: k, val: localStorage.getItem(k) }));
-            console.log('Mission Winning Journey Events:', events);
-            console.log('Legacy mw_event_* keys:', legacy);
-            alert(`${events.length} journey events (${events.filter(e => e.name === 'journey_phase_complete').length} phase completes). See console for details.`);
-          }}>{t('viewEvents', { defaultValue: 'View Tracked Events (console)' })}</Button>
-          <div className="text-xs mt-2">Tracks journey phases, milestones, bundle CTAs, feedback, and installs. Syncs to Supabase when signed in.</div>
-        </CardContent>
-      </Card>
-      </>
-      )}
+      {ownerTools && <ProfileOwnerTools />}
 
       <ProfileReferralCard signedIn={Boolean(email)} />
 

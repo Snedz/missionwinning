@@ -75,15 +75,17 @@ export function MovePage() {
 
   const renderFlowGrid = (flows: MobilityFlow[], label: string, accent?: boolean) => (
     <div className="space-y-3">
-      <h3
-        className={`text-sm font-semibold uppercase tracking-wide ${
-          accent ? 'text-primary' : 'text-muted-foreground'
-        }`}
-      >
-        {label}
-      </h3>
+      {label ? (
+        <h3
+          className={`text-sm font-semibold uppercase tracking-wide ${
+            accent ? 'text-primary' : 'text-muted-foreground'
+          }`}
+        >
+          {label}
+        </h3>
+      ) : null}
       <div className="grid gap-4 md:grid-cols-2">
-        {flows.map((flow) => (
+        {flows.map((flow, i) => (
           <Card key={flow.id} className="content-card hover:border-primary/40 transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -93,10 +95,14 @@ export function MovePage() {
               <CardDescription>{flow.focus}</CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-between gap-4">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground tabular-nums">
                 {flow.durationMin} min · {flow.steps.length} steps
               </span>
-              <Button variant="fitness" size="sm" onClick={() => setActiveFlowId(flow.id)}>
+              <Button
+                variant={!accent && i === 0 ? 'fitness' : 'outline'}
+                size="sm"
+                onClick={() => setActiveFlowId(flow.id)}
+              >
                 {t('moveStartFlow', { defaultValue: 'Start Flow' })}
               </Button>
             </CardContent>
@@ -165,7 +171,7 @@ export function MovePage() {
       )}
 
       {recentWins.length > 0 ? (
-        <Card className="card-elevated">
+        <Card className="content-card">
           <CardHeader>
             <CardTitle className="text-base">
               {t('moveRecentWins', { defaultValue: 'Recent Move Wins' })}

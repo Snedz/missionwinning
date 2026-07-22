@@ -144,8 +144,38 @@ fun TodayScreen(
                     )
                 }
 
-                // Metrics + insight below the Start hero
+                // Form score + coach line (composure); metrics demoted below
                 if (!state.loading) {
+                    Column(verticalArrangement = Arrangement.spacedBy(MwSpace.xs)) {
+                        MwSectionLabel(
+                            if (state.readinessLabel.isNotBlank()) {
+                                state.readinessLabel
+                            } else {
+                                "Form"
+                            },
+                        )
+                        Text(
+                            if (state.readinessScore > 0) {
+                                "${state.readinessScore}"
+                            } else {
+                                "—"
+                            },
+                            style = MwTypography.displayLarge,
+                            color = MwColors.Text,
+                        )
+                        state.coachInsight?.let { insight ->
+                            Text(
+                                insight,
+                                style = MwTypography.bodyMedium,
+                                color = MwColors.TextMuted,
+                            )
+                        }
+                        Text(
+                            stringResource(DsR.string.mw_form_score_disclaimer),
+                            style = MwTypography.labelMedium,
+                            color = MwColors.TextMuted,
+                        )
+                    }
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -160,42 +190,12 @@ fun TodayScreen(
                             state.weekStats.volumeLabel,
                             Modifier.weight(1f),
                         )
-                        MwMetricCard(
-                            state.readinessLabel.ifBlank { "Form" },
-                            if (state.readinessScore > 0) "${state.readinessScore}" else "—",
-                            Modifier.weight(1f),
-                        )
                     }
                     state.stepsToday?.let { steps ->
                         MwChip(
                             text = "Steps today · ${"%,d".format(steps)}",
                             tone = MwChipTone.Neutral,
                         )
-                    }
-                    Text(
-                        stringResource(DsR.string.mw_form_score_disclaimer),
-                        style = MwTypography.labelMedium,
-                        color = MwColors.TextMuted,
-                    )
-                }
-
-                state.coachInsight?.let { insight ->
-                    MwCard(elevated = true, glow = true) {
-                        MwSectionLabel("Mission insight")
-                        Text(
-                            insight,
-                            style = MwTypography.bodyMedium,
-                            color = MwColors.Text,
-                        )
-                        if (state.readinessDetail.isNotBlank() &&
-                            state.readinessDetail != insight
-                        ) {
-                            Text(
-                                state.readinessDetail,
-                                style = MwTypography.labelMedium,
-                                color = MwColors.TextMuted,
-                            )
-                        }
                     }
                 }
 
@@ -379,7 +379,7 @@ private fun RecentWorkoutRow(w: RecentWorkoutUi, onClick: () -> Unit) {
                 color = MwColors.TextMuted,
             )
         }
-        MwChip("VIEW", tone = MwChipTone.Emerald)
+        MwChip("VIEW", tone = MwChipTone.Neutral)
     }
 }
 

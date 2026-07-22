@@ -27,21 +27,17 @@ import {
 } from '@/lib/journeyGoals';
 import {
   defaultDaysPerWeek,
-  loadDaysPerWeek,
   saveDaysPerWeek,
 } from '@/lib/coach/schedulePrefs';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { getExerciseById } from '@/data/exercises';
-import { cn } from '@/lib/utils';
-
-const DAYS_PER_WEEK_OPTIONS = [2, 3, 4, 5, 6] as const;
-
-type Step = 'welcome' | 'mission' | 'profile' | 'signin';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
 
-const STEP_ORDER: Step[] = ['welcome', 'mission', 'profile', 'signin'];
+type Step = 'welcome' | 'profile' | 'signin';
+
+const STEP_ORDER: Step[] = ['welcome', 'profile', 'signin'];
 
 export function WelcomePage() {
   const router = useRouter();
@@ -52,7 +48,6 @@ export function WelcomePage() {
   const [experience, setExperience] = useState('beginner');
   const [equipment, setEquipment] = useState('bodyweight');
   const [primaryGoal, setPrimaryGoal] = useState(() => goalPresetValue('strength'));
-  const [daysPerWeek, setDaysPerWeek] = useState(3);
 
   const experienceLabel = (value: string) => {
     if (value === 'beginner') return t('welcomeExpBeginner', { defaultValue: 'New to training' });
@@ -75,7 +70,6 @@ export function WelcomePage() {
         localStorage.getItem('mw_goals') ||
         t('welcomeGoalPlaceholder', { defaultValue: 'Build strength and stay healthy' })
     );
-    setDaysPerWeek(loadDaysPerWeek(localStorage.getItem('mw_experience') || 'beginner'));
     setStep('profile');
   }, [isEdit, t]);
 
@@ -84,7 +78,7 @@ export function WelcomePage() {
     localStorage.setItem('mw_equipment', equipment);
     localStorage.setItem('mw_primary_goal', primaryGoal);
     localStorage.setItem('mw_goals', primaryGoal);
-    saveDaysPerWeek(daysPerWeek);
+    saveDaysPerWeek(defaultDaysPerWeek(experience));
     scheduleJourneyPush();
   };
 
@@ -101,12 +95,8 @@ export function WelcomePage() {
 
   const handleBegin = () => {
     markIDayStarted();
-    track('iday_started');
-    setStep('mission');
-  };
-
-  const handleAcceptMission = () => {
     markMissionAccepted();
+    track('iday_started');
     track('iday_mission_accepted');
     setStep('profile');
   };
@@ -116,10 +106,12 @@ export function WelcomePage() {
       finish();
       return;
     }
+    // Days/week defaults from experience — Coach can refine later (D1: 3 questions max).
+    saveDaysPerWeek(defaultDaysPerWeek(experience));
     track('iday_profile_completed', {
       experience,
       equipment,
-      daysPerWeek,
+      daysPerWeek: defaultDaysPerWeek(experience),
     });
     setStep('signin');
   };
@@ -163,27 +155,13 @@ export function WelcomePage() {
             defaultValue: `I-Day progress, step ${stepIndex + 1} of ${STEP_ORDER.length}`,
           })}
         >
-          <p className="sr-only">
-            {t('welcomeProgressSr', {
-              defaultValue: `Step ${stepIndex + 1} of ${STEP_ORDER.length}: ${step}`,
+          <p className="eyebrow text-muted-foreground">
+            {t('welcomeProgressMono', {
               step: stepIndex + 1,
               total: STEP_ORDER.length,
-              name: step,
+              defaultValue: `${stepIndex + 1} / ${STEP_ORDER.length}`,
             })}
           </p>
-          <div className="flex gap-1.5" aria-hidden>
-            {STEP_ORDER.map((s, i) => (
-              <div
-                key={s}
-                className={cn(
-                  'h-1.5 flex-1 rounded-full transition-all',
-                  i <= stepIndex
-                    ? 'bg-primary shadow-[0_0_12px_-2px_hsl(158_64%_42%_/_0.7)]'
-                    : 'bg-border/50'
-                )}
-              />
-            ))}
-          </div>
         </div>
       )}
 
@@ -204,80 +182,29 @@ export function WelcomePage() {
                   <p className="text-muted-foreground text-base leading-relaxed max-w-md">
                     {t('welcomeSubtitle', {
                       defaultValue:
-                        'Set your path, then log your first session. One step at a time — Today always shows the next action.',
+                        'Free fundamentals forever. Set your path, then log your first session — Today always shows the next action.',
                     })}
                   </p>
                 </div>
 
-                <div className="card-elevated card-glow-emerald p-4 space-y-3">
-                  <p className="text-[10px] uppercase tracking-widest text-primary/90 font-medium">
+                <div className="space-y-2 border-s-2 border-primary/40 ps-4">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium">
                     {t('welcomePreviewLabel', { defaultValue: 'Your first session is ready' })}
                   </p>
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-foreground">
-                      {t('welcomePreviewSessionName', {
-                        defaultValue: firstSession.name,
-                        name: firstSession.name,
-                      })}
-                    </p>
-                    <ul className="text-xs text-muted-foreground space-y-1">
-                      {firstSessionNames.map((name) => (
-                        <li key={name} className="flex items-center gap-2">
-                          <span className="h-1 w-1 rounded-full bg-primary shrink-0" aria-hidden />
-                          {name}
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="text-xs text-muted-foreground pt-1">
-                      {t('welcomePreviewJustGo', {
-                        defaultValue:
-                          'After I-Day, Today → Just Go opens this free session. Log one set — Mission Score starts moving.',
-                      })}
-                    </p>
-                  </div>
+                  <p className="text-sm font-medium text-foreground">
+                    {t('welcomePreviewSessionName', {
+                      defaultValue: firstSession.name,
+                      name: firstSession.name,
+                    })}
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {firstSessionNames.join(' · ')}
+                  </p>
                 </div>
 
                 <button type="button" className="primary-action" onClick={handleBegin}>
                   {t('welcomeBegin', { defaultValue: 'Begin' })}
                 </button>
-              </>
-            )}
-
-            {step === 'mission' && (
-              <>
-                <div className="space-y-3">
-                  <p className="eyebrow">{t('welcomeMissionLead', { defaultValue: 'The mission' })}</p>
-                  <h2 className="display-section text-[1.65rem] md:text-[2rem]">
-                    {t('welcomeMissionTitle', { defaultValue: 'One path. Free fundamentals.' })}
-                  </h2>
-                </div>
-                <div className="space-y-4 text-sm md:text-base text-muted-foreground leading-relaxed">
-                  <p>
-                    {t('welcomeMissionBody1', {
-                      defaultValue:
-                        'Mission Winning is a free workout tracker first — then fuel, move, mind, track, and learn in one place.',
-                    })}
-                  </p>
-                  <p>
-                    {t('welcomeMissionP2', {
-                      defaultValue:
-                        'The fundamentals are free forever. Premium deepens each pillar for those who want more — never required to start.',
-                    })}
-                  </p>
-                  <p>
-                    {t('welcomeMissionP3', {
-                      defaultValue:
-                        'Your job today: complete one step at a time. Today always shows your next single action.',
-                    })}
-                  </p>
-                </div>
-                <button type="button" className="primary-action" onClick={handleAcceptMission}>
-                  {t('welcomeAccept', { defaultValue: 'I accept the path' })}
-                </button>
-                <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('welcome')}>
-                  <ChevronLeft className="h-4 w-4 mr-1" />{' '}
-                  {t('welcomeBack', { defaultValue: 'Back' })}
-                </Button>
               </>
             )}
 
@@ -311,12 +238,7 @@ export function WelcomePage() {
                   </span>
                   <select
                     value={experience}
-                    onChange={(e) => {
-                      setExperience(e.target.value);
-                      if (!isEdit) {
-                        setDaysPerWeek(defaultDaysPerWeek(e.target.value));
-                      }
-                    }}
+                    onChange={(e) => setExperience(e.target.value)}
                     className="w-full rounded-xl bg-background/80 border border-border/60 px-3 py-2.5 min-h-[44px]"
                   >
                     {EXPERIENCE_VALUES.map((value) => (
@@ -379,25 +301,6 @@ export function WelcomePage() {
                     })}
                   />
                 </label>
-                <label className="block space-y-2 text-sm">
-                  <span className="text-muted-foreground">
-                    {t('coachDaysPerWeek', { defaultValue: 'How many days a week?' })}
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {DAYS_PER_WEEK_OPTIONS.map((n) => (
-                      <Button
-                        key={n}
-                        type="button"
-                        size="sm"
-                        variant={daysPerWeek === n ? 'default' : 'outline'}
-                        className={daysPerWeek === n ? 'bg-primary hover:bg-primary/90' : ''}
-                        onClick={() => setDaysPerWeek(n)}
-                      >
-                        {n}
-                      </Button>
-                    ))}
-                  </div>
-                </label>
                 <button type="button" className="primary-action" onClick={handleProfileNext}>
                   {isEdit
                     ? t('saveProfile', { defaultValue: 'Save profile' })
@@ -407,7 +310,7 @@ export function WelcomePage() {
                   variant="ghost"
                   size="sm"
                   className="w-full"
-                  onClick={() => (isEdit ? router.push('/profile') : setStep('mission'))}
+                  onClick={() => (isEdit ? router.push('/profile') : setStep('welcome'))}
                 >
                   <ChevronLeft className="h-4 w-4 mr-1" />{' '}
                   {t('welcomeBack', { defaultValue: 'Back' })}
@@ -431,8 +334,8 @@ export function WelcomePage() {
                     })}
                   </p>
                 </div>
-                <div className="card-elevated card-glow-brass p-4 space-y-2">
-                  <p className="text-[10px] uppercase tracking-widest text-brass font-medium">
+                <div className="space-y-2 border-s-2 border-brass/40 ps-4">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium">
                     {t('welcomeSessionReadyEyebrow', { defaultValue: 'Session ready' })}
                   </p>
                   <p className="text-sm font-medium">
@@ -447,11 +350,6 @@ export function WelcomePage() {
                       count: firstSessionNames.length,
                     })}
                   </p>
-                  <ul className="text-xs text-muted-foreground flex flex-wrap gap-x-3 gap-y-1">
-                    {firstSessionNames.map((name) => (
-                      <li key={name}>{name}</li>
-                    ))}
-                  </ul>
                 </div>
                 <label className="flex cursor-pointer items-start gap-2.5 rounded-xl border border-border/60 bg-muted/20 p-3 text-sm">
                   <input

@@ -9,13 +9,14 @@ import {
 
 type Props = {
   plan: CoachPlan;
-  /** Compact for Today card. */
+  /** Compact for Today card — one beat only. */
   compact?: boolean;
 };
 
 /**
  * Demo-critical: partners must see log/miss → week changed in ≤60s.
  * Surfaces existing adaptPlan outcomes — not a new engine.
+ * D2: glanceable — headline + one beat by default; full list only when not compact.
  */
 export function CoachAdaptBanner({ plan, compact }: Props) {
   const { t } = useTranslation();
@@ -23,8 +24,9 @@ export function CoachAdaptBanner({ plan, compact }: Props) {
   if (!hasCoachAdaptationSignal(plan) && beats.length === 0) return null;
 
   const showHeadline = beats.length > 0 || plan.revision > 1;
-
   if (!showHeadline) return null;
+
+  const visibleBeats = compact ? beats.slice(0, 1) : beats.slice(0, 3);
 
   return (
     <div
@@ -46,9 +48,9 @@ export function CoachAdaptBanner({ plan, compact }: Props) {
           defaultValue: 'Adapted from your logs — no wearable needed',
         })}
       </p>
-      {beats.length > 0 ? (
+      {visibleBeats.length > 0 ? (
         <ul className={compact ? 'space-y-1' : 'space-y-1.5'}>
-          {beats.map((beat) => (
+          {visibleBeats.map((beat) => (
             <li
               key={beat.key}
               className={

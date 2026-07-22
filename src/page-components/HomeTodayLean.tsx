@@ -199,9 +199,9 @@ export function HomeTodayLean() {
       {workoutHistory.length >= 1 && journeyState.phase === 'basic' && (
         <a
           href="/coach"
-          className="content-card block border-primary/25 bg-primary/5 p-4 pressable-card"
+          className="block px-1 py-2 text-sm text-muted-foreground hover:text-foreground mt-2"
         >
-          <p className="eyebrow mb-1">
+          <p className="eyebrow mb-0.5 text-muted-foreground">
             {t('todayCoachInviteEyebrow', { defaultValue: 'AI weekly plan' })}
           </p>
           <p className="text-sm font-medium">

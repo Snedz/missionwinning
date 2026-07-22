@@ -21,10 +21,10 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
       <div className={`grid grid-cols-1 gap-3 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
         <Link
           href="/leaderboard"
-          className={`${linkClass} border-primary/40 bg-primary/10`}
+          className={`${linkClass} border-border/50 bg-muted/20`}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/20">
-            <Trophy className="h-5 w-5 text-primary" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+            <Trophy className="h-5 w-5 text-muted-foreground" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-sm">
@@ -34,7 +34,7 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
               {t('todayQuickRankingsDesc', { defaultValue: 'Mission Score & streaks' })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
         </Link>
 
         <Link

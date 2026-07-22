@@ -42,7 +42,7 @@ export function MuscleFreshnessStrip({ rows, className }: Props) {
             className={cn(
               'shrink-0 rounded-xl border px-2.5 py-1.5 min-w-[4.5rem] text-center',
               row.recommended
-                ? 'border-primary/40 bg-primary/10'
+                ? 'border-brass/40 bg-brass/10'
                 : 'border-border/50 bg-muted/20'
             )}
           >
@@ -52,7 +52,7 @@ export function MuscleFreshnessStrip({ rows, className }: Props) {
             <div
               className={cn(
                 'text-[11px] tabular-nums mt-0.5',
-                row.recommended ? 'text-primary' : 'text-muted-foreground'
+                row.recommended ? 'text-brass' : 'text-muted-foreground'
               )}
             >
               {daysLabel}

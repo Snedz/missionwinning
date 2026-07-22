@@ -39,7 +39,7 @@
 
 | File | Route |
 |------|-------|
-| `NutritionPage.tsx` | `/nutrition` (Fuel) |
+| `NutritionPage.tsx` | `/nutrition` (Fuel) — shell + state; logging UI in `src/components/nutrition/` |
 | `MovePage.tsx` | `/move` |
 | `MindPage.tsx` | `/mind` |
 | `TrackPage.tsx` | `/track` |
@@ -79,7 +79,7 @@
 
 | File | Route |
 |------|-------|
-| `ProfilePage.tsx` | `/profile` |
+| `ProfilePage.tsx` | `/profile` — thin shell; cards in `src/components/profile/` |
 | `PrivacyPage.tsx` | `/privacy` |
 | `TermsPage.tsx` | `/terms` |
 | `DmcaPage.tsx` | `/dmca` |

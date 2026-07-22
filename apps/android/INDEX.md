@@ -82,11 +82,14 @@
 - Account Preferences: units + equipment (reseeds week); Cloud sync + Continue offline
 - Accept + smoke: [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) · `python3 scripts/wedge-adb-walk.py` · [SHIP_INTERNAL.md](SHIP_INTERNAL.md)
 
-## Wedge UX overhaul (1.23.0)
+## Wedge UX overhaul (1.23.0 → 1.24.1)
 
-- Founder override of Horizon-0 “no redesign” for Compose presentation only — [UX.md](UX.md)
-- Tokens / `MwMotion` / hero cards; Active logger-first; Today Start hero; Victory ritual; Coach adapt readable
+- Founder override of Horizon-0 “no redesign” for Compose presentation — [UX.md](UX.md)
+- **1.24.1 D-prelaunch:** Today Form+insight strip; rest clock 80sp Text; Victory duration/sets Neutral
+- **1.24.0 D1/D2:** Today Form score + coach line; Victory brass volume honor
+- **1.23.1 D0:** Mission insight + rest dock glow demoted; PR honor = inline brass only
 - No F5 / Room-sync rewrite; Accept B re-walk before Internal
+- Design excellence OS: [docs/DESIGN_ORCHESTRATION.md](../../docs/DESIGN_ORCHESTRATION.md)
 
 ## Ship Internal (Phase 8 runbook)
 

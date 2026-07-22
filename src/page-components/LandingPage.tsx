@@ -114,81 +114,42 @@ export function LandingPage() {
       <header className="hero-field texture-grid texture-noise section-seam relative overflow-hidden">
         <div className="relative z-[1] mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
           <div className="page-enter">
-            <p className="eyebrow-live mb-5">
-              {t('landingHeroEyebrow', { defaultValue: 'Free offline logger · Adaptive AI coach' })}
+            <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4">
+              Mission Winning
             </p>
             <h1 className="display-hero mb-6">
               {t('landingHeroTitle1', { defaultValue: 'Train anywhere.' })}
               <br />
               {t('landingHeroTitle2', { defaultValue: 'Win daily.' })}
             </h1>
-            <p className="mb-6 max-w-md text-lg leading-relaxed text-muted-foreground">
+            <p className="mb-8 max-w-md text-lg leading-relaxed text-muted-foreground">
               {t('landingHeroSubtitle', {
                 defaultValue:
                   'Free offline logging (no account) and weekly plans that adapt from your logs alone — no wearable required.',
               })}
             </p>
-            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:flex-wrap">
-              <button
-                type="button"
-                className="primary-action max-w-sm sm:max-w-none sm:w-auto sm:px-10"
-                onClick={() => router.push('/welcome')}
-              >
-                {t('landingNavStart', { defaultValue: 'Start free' })}
-                <ArrowRight className="h-5 w-5" />
-              </button>
-              <a
-                href="#path"
-                className="px-1 py-2 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-              >
-                {t('landingSeeHow', { defaultValue: 'See how it works' })}
-              </a>
-            </div>
-            <p className="text-xs text-muted-foreground">
+            <button
+              type="button"
+              className="primary-action max-w-sm sm:max-w-none sm:w-auto sm:px-10"
+              onClick={() => router.push('/welcome')}
+            >
+              {t('landingNavStart', { defaultValue: 'Start free' })}
+              <ArrowRight className="h-5 w-5" />
+            </button>
+            <p className="mt-4 text-xs text-muted-foreground">
               {t('landingHeroProof', {
                 defaultValue: 'Log a set → Coach shapes the week → Win Score ticks.',
-              })}{' '}
-              <button
-                type="button"
-                className="text-primary hover:underline"
-                onClick={() => router.push('/exercises')}
-              >
-                {t('landingHeroLibraryCta', { defaultValue: 'Browse exercises' })}
-              </button>
+              })}
             </p>
           </div>
 
-          <div className="journey-enter relative">
-            <div
-              className="pointer-events-none absolute -inset-6 -z-0 opacity-70"
-              aria-hidden
-            >
-              <ArtPicture
-                base="/art/hero-field"
-                width={640}
-                height={640}
-                priority
-                className="h-full w-full object-cover rounded-3xl opacity-80"
-              />
-            </div>
-            <div className="card-elevated card-glow-emerald relative z-[1] p-1 sm:p-1.5 lg:rotate-1 transition-transform duration-500 hover:rotate-0">
-              <div className="absolute -right-2 -top-2 z-10 rounded-full border border-brass/40 bg-background/90 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-brass shadow-glow-brass">
-                PR
-              </div>
+          <div className="journey-enter relative min-h-[22rem] lg:min-h-[28rem]">
+            <div className="absolute inset-0 overflow-hidden rounded-none lg:rounded-2xl border border-border/30 bg-card/40">
               <HeroDemo staticFallback={<HeroDemoFallback />} />
-              <p className="mt-4 text-center">
-                <Link
-                  href="/experience"
-                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
-                >
-                  See the mission experience →
-                </Link>
-              </p>
             </div>
           </div>
         </div>
       </header>
-
       <StatBand />
 
       {belowFoldReady ? <JourneyScroll /> : <div id="path" className="min-h-[12rem]" aria-hidden />}
