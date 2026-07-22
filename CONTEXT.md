@@ -16,15 +16,15 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-22 · web `2026.07-unified.103` · Android `1.24.1`)
+## Now (2026-07-22 · web `2026.07-unified.104` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon 0 — beta sprint through 2026-08-02** (may skip formal beta — founder call). Boss metric: week-4 retained weekly loggers. **#1 bottleneck: recruit ≥10** + phone hero QA — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §1→§3.
-- **Founder override:** Design **D1 + D2 + D-prelaunch + D3** shipped early (excellence-first) — [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md).
-- **Ops:** GitHub Pro / billing unblocked. **Founder still:** rotate `VERCEL_TOKEN`; enable CodeQL; phone hero QA + invites; Android Accept B → Play Internal; Wave A Sentry; secrets for `LAUNCH_STRICT`.
-- **www:** promote **`.103`**. Agents: e2e-critical Active/Fuel fix **committed/pushed** · **no F5**.
-- Shipped: web **`.103`** craft sprint; Android **1.24.1**; **positioning** Primer + Consumer AI + Team Humanity + **Fall 2026 official RFS sync**. Founder still owns: beta ≥10, phone QA, 60s demo, CDL/YC, Wave A, public flip. In flight: **Accept B re-walk**.
+- **Founder override:** Design **D1–D3** + **D4 beta composure** shipped early — [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md). Landing cut to Train+Coach wedge; Bundle/Today density; Android Today secondary cards demoted.
+- **Ops:** GitHub Pro / billing unblocked. CI soft-gates: CodeQL upload + Aikido skip-when-unset. **Founder still:** enable Code scanning; verify www `.104`; phone hero QA + invites; Android Accept B → Play Internal; Wave A Sentry; Aikido MCP permissions + `AIKIDO_SECRET_KEY`; secrets for `LAUNCH_STRICT`.
+- **www:** ship/deploy **`.104`** (D4 + red/blue S2). Agents: no new pillars · **no F5**.
+- Shipped: web **`.104`** D4 composure + **red/blue S2** (gate Upstash RL, meal authz, school GET PIN removed, crypto confirm race). Android **1.24.1**. Founder still owns: beta ≥10, phone QA, 60s demo, CDL/YC, Wave A, public flip. In flight: **Accept B re-walk**.
 
 
 ---

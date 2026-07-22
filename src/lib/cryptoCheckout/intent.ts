@@ -136,7 +136,7 @@ export async function markIntentConfirmed(input: {
     return { ok: false, error: 'Transaction already used' };
   }
 
-  const { error } = await admin
+  const { data: updated, error } = await admin
     .from('crypto_payment_intents')
     .update({
       status: 'confirmed',
@@ -144,11 +144,16 @@ export async function markIntentConfirmed(input: {
       confirmed_at: new Date().toISOString(),
     })
     .eq('id', input.intentId)
-    .eq('status', 'pending');
+    .eq('status', 'pending')
+    .select('id');
 
   if (error) {
     console.error('markIntentConfirmed error:', error);
     return { ok: false, error: 'Failed to update payment intent' };
+  }
+  // Concurrent double-confirm: only the winner of the pending→confirmed race proceeds.
+  if (!updated?.length) {
+    return { ok: false, error: 'Intent already confirmed or missing' };
   }
   return { ok: true };
 }

@@ -357,6 +357,37 @@ async function main() {
   }
 
   try {
+    const meal = await headOrGet('/api/fuel/estimate-meal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    // Requires gate cookie or session — anonymous must not reach vision/heuristic.
+    const mealOk = meal.status === 401 || meal.status === 403;
+    checks.push({
+      name: 'POST /api/fuel/estimate-meal without access',
+      ok: mealOk,
+      detail: `status ${meal.status}${mealOk ? '' : ' — expected 401/403'}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'POST /api/fuel/estimate-meal', ok: false, detail: String(e) });
+  }
+
+  try {
+    const schoolGet = await headOrGet('/api/school/class/SMOKE/verify?pin=0000');
+    // GET PIN-in-query removed — expect 405 Method Not Allowed (or 404).
+    const schoolGetOk =
+      schoolGet.status === 405 || schoolGet.status === 404 || schoolGet.status === 403;
+    checks.push({
+      name: 'GET /api/school/class/[code]/verify (PIN in query) rejected',
+      ok: schoolGetOk,
+      detail: `status ${schoolGet.status}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /api/school/class/verify', ok: false, detail: String(e) });
+  }
+
+  try {
     const premiumStatus = await headOrGet('/api/premium/status');
     let body: { premium?: boolean; source?: string } = {};
     try {

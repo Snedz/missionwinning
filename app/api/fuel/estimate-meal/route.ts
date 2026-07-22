@@ -8,11 +8,16 @@ import { withApiLogging } from '@/lib/api/withApiLogging';
 import { estimateMealFromSignals, type MealImageHints } from '@/lib/estimateMealFromPhoto';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
+import { hasAppAccess } from '@/lib/requestAccess';
 
 const MAX_BYTES = 6 * 1024 * 1024;
 
 /** POST multipart photo → macro estimate (heuristic; vision API hook when configured). */
 export const POST = withApiLogging('fuel/estimate-meal', async(request: NextRequest) => {
+  if (!(await hasAppAccess(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const ip = clientIp(request);
   const limited = await rateLimitAsync(`fuel-meal:${ip}`, 10, 60_000);
   if (!limited.ok) {

@@ -65,7 +65,9 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
               {t('navBundle', { defaultValue: 'Super Bundle' })}
             </div>
             <div className="text-xs text-muted-foreground truncate">
-              {t('todayQuickBundleDesc', { defaultValue: 'All six pillars, one subscription' })}
+              {t('todayQuickBundleDesc', {
+                defaultValue: 'Coach depth — logger stays free',
+              })}
             </div>
           </div>
           <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-brass" />

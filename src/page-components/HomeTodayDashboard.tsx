@@ -571,13 +571,6 @@ export function HomeTodayDashboard() {
     staggerBlocks.push({ key: 'guidebook', node: <GuidebookContinueCard /> });
   }
 
-  if (belowFoldReady && layout.showQuickLinks) {
-    staggerBlocks.push({
-      key: 'quick-links',
-      node: <TodayQuickLinks compact={state.phase === 'basic'} />,
-    });
-  }
-
   if (!layout.showDashboard && state.phase === 'basic' && streak === 0) {
     staggerBlocks.push({
       key: 'encourage',
@@ -585,46 +578,65 @@ export function HomeTodayDashboard() {
         <p className="text-center text-sm text-muted-foreground px-4">
           {t('todayBasicEncouragement', {
             defaultValue:
-              'One step at a time. Health for everyone — train, fuel, move, and learn on your path.',
+              'One step at a time. Log a set — Mission Coach shapes the week from your history.',
           })}
         </p>
       ),
     });
   }
 
-  if (belowFoldReady && layout.showDetailsAccordion) {
+  // Quick links + accordion live under one collapsed "More" — never compete with JourneyHero.
+  if (
+    belowFoldReady &&
+    (layout.showQuickLinks || layout.showDetailsAccordion)
+  ) {
     staggerBlocks.push({
-      key: 'accordion',
+      key: 'more',
       node: (
-        <TodayDashboardAccordion
-          sectionPrefs={sectionPrefs}
-          coachInsight={coachInsight}
-          scoreBreakdown={scoreBreakdown}
-          bodyScores={bodyScores}
-          score={score}
-          streak={streak}
-          recommendedFocus={recommendedFocus}
-          pillarStats={pillarStats}
-          userGoalRaw={userGoalRaw}
-          userGoalDisplay={userGoal}
-          userEquip={userEquip}
-          journalEntries={journalEntries}
-          locale={i18n.language}
-          challenges={challenges}
-          todaysWorkout={todaysWorkout}
-          savedWorkouts={savedWorkouts}
-          readiness={readiness}
-          totalSessions={totalSessions}
-          totalVolume={totalVolume}
-          highProteinDays={highProteinDays}
-          nightSessions={nightSessions}
-          dawnSessions={dawnSessions}
-          lastAssessment={lastAssessment}
-          recentPillarWins={recentPillarWins}
-          setRecentPillarWins={setRecentPillarWins}
-          recent={recent}
-          onStartStarter={onStartStarter}
-        />
+        <details className="group rounded-xl border border-border/40 px-3 py-2">
+          <summary className="cursor-pointer list-none py-2 text-sm font-medium text-muted-foreground marker:content-none hover:text-foreground">
+            <span className="flex items-center justify-between gap-3">
+              {t('todayMoreSummary', { defaultValue: 'More' })}
+              <span className="transition-transform group-open:rotate-45">+</span>
+            </span>
+          </summary>
+          <div className="space-y-4 border-t border-border/30 pb-2 pt-4">
+            {layout.showQuickLinks ? (
+              <TodayQuickLinks compact={state.phase === 'basic'} />
+            ) : null}
+            {layout.showDetailsAccordion ? (
+              <TodayDashboardAccordion
+                sectionPrefs={sectionPrefs}
+                coachInsight={coachInsight}
+                scoreBreakdown={scoreBreakdown}
+                bodyScores={bodyScores}
+                score={score}
+                streak={streak}
+                recommendedFocus={recommendedFocus}
+                pillarStats={pillarStats}
+                userGoalRaw={userGoalRaw}
+                userGoalDisplay={userGoal}
+                userEquip={userEquip}
+                journalEntries={journalEntries}
+                locale={i18n.language}
+                challenges={challenges}
+                todaysWorkout={todaysWorkout}
+                savedWorkouts={savedWorkouts}
+                readiness={readiness}
+                totalSessions={totalSessions}
+                totalVolume={totalVolume}
+                highProteinDays={highProteinDays}
+                nightSessions={nightSessions}
+                dawnSessions={dawnSessions}
+                lastAssessment={lastAssessment}
+                recentPillarWins={recentPillarWins}
+                setRecentPillarWins={setRecentPillarWins}
+                recent={recent}
+                onStartStarter={onStartStarter}
+              />
+            ) : null}
+          </div>
+        </details>
       ),
     });
   }

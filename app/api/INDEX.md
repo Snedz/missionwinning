@@ -42,7 +42,7 @@ Legend:
 
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
-| `private-access` | POST | public password | 8/min/IP | password |
+| `private-access` | POST | public password | 8/min/IP (Upstash) | password |
 | `leads` | POST | public (gate path) | 5/min/IP | Zod `leadsBodySchema`; fire-and-forget confirm email |
 | `leads/unsubscribe` | GET | public token | 20/min/IP | HMAC `NUDGE_SECRET` |
 | `journey/welcome` | POST | session | 5/min/IP | one-time welcome email |
@@ -75,7 +75,7 @@ Legend:
 |-------|---------|------|------|------|
 | `fuel/search-food` | GET | public/gate | 30/min | query |
 | `fuel/barcode` | GET | public/gate | 30/min | query |
-| `fuel/estimate-meal` | POST | public/gate | 10/min | Zod |
+| `fuel/estimate-meal` | POST | session or gate | 10/min | multipart photo; hasAppAccess |
 
 ### School
 
@@ -84,7 +84,7 @@ Legend:
 | `school/class` | POST | session | 10/min/IP | Zod create schema |
 | `school/class/mine` | GET | session | — | |
 | `school/class/[code]/access` | GET, POST | session + PIN | — | |
-| `school/class/[code]/verify` | GET, POST | gate + PIN | — | |
+| `school/class/[code]/verify` | POST | gate + PIN | 5/min/IP | PIN in body only (GET removed) |
 | `school/class/[code]/stats` | GET | teacher | — | IDOR-closed |
 | `school/class/[code]/leaderboard` | GET | teacher | — | IDOR-closed |
 | `school/class/[code]/export` | GET | teacher | — | redacted ids |

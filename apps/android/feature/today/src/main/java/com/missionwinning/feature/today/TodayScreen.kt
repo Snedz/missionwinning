@@ -200,7 +200,7 @@ fun TodayScreen(
                 }
 
                 if (state.pendingSync > 0 || state.syncMessage != null) {
-                    MwCard(elevated = true) {
+                    MwCard(elevated = false) {
                         MwSectionLabel("Sync")
                         Text(
                             state.syncMessage
@@ -227,7 +227,7 @@ fun TodayScreen(
                 state.plan?.let { CoachAdaptBanner(it) }
 
                 if (!state.loading) {
-                    MwCard(elevated = true) {
+                    MwCard(elevated = false) {
                         MwSectionLabel("Quick log")
                         Text(
                             "Start empty and add exercises as you train — no coach day required.",
@@ -248,7 +248,7 @@ fun TodayScreen(
                     }
                 }
 
-                MwCard(elevated = true) {
+                MwCard(elevated = false) {
                     MwSectionLabel("This week")
                     Text(
                         "Tap a planned day to start that session.",
@@ -295,7 +295,7 @@ fun TodayScreen(
                 }
 
                 if (state.recent.isNotEmpty()) {
-                    MwCard(elevated = true) {
+                    MwCard(elevated = false) {
                         MwSectionLabel("Recent")
                         Text(
                             "Tap a log for set breakdown.",
@@ -309,7 +309,7 @@ fun TodayScreen(
                     }
                 }
 
-                MwCard(elevated = true) {
+                MwCard(elevated = false) {
                     MwSectionLabel(stringResource(DsR.string.mw_more))
                     Text(
                         "Progress, routines, and exercise library.",

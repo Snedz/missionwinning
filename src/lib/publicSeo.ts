@@ -40,7 +40,7 @@ export function softwareApplicationJsonLd(baseUrl = siteBaseUrl()) {
     },
     url: baseUrl,
     description:
-      'Free offline workout tracker PWA with nutrition, mobility, mind, and learning pillars.',
+      'Free offline workout logger PWA with adaptive Mission Coach from your logs — no wearable required.',
   };
 }
 

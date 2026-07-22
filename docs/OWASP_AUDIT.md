@@ -1,6 +1,6 @@
 # OWASP Security Audit — Mission Winning
 
-**Last audit:** 2026-07-05 (full sweep) · **Refresh:** 2026-07-16 (red-team plan + residual risks). Living companion to [PROTECTION.md](PROTECTION.md).
+**Last audit:** 2026-07-05 (full sweep) · **Refresh:** 2026-07-16 (red-team S1) · **S2:** 2026-07-22 (live perimeter + blue harden). Living companion to [PROTECTION.md](PROTECTION.md).
 
 ---
 
@@ -105,18 +105,33 @@ curl -sI https://www.missionwinning.com/api/school/class/MWTEST/leaderboard
 | Item | Rationale |
 |------|-----------|
 | CSP `unsafe-inline` / `unsafe-eval` | Still required by Next.js client runtime; Serwist migration shipped but CSP not fully locked down |
-| In-memory rate limit fallback | **Local/dev only.** Production without Upstash is a Medium risk until Wave A closes it ([PRODUCTION_STACK.md](PRODUCTION_STACK.md)) |
+| In-memory rate limit fallback | **Local/dev only** when Upstash unset. Gate + leads use `rateLimitAsync` (S2). Prod without Upstash remains Medium until Wave A. |
 | Coach taster localStorage reset | Product abuse only — premium LLM server-gated |
 | Solana/Phantom high advisories | Required for lifetime crypto checkout; ownership + amount server-enforced — see [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md); map Aikido SCA hits here |
 | Soft CI dependency audit | Soft until crypto path removed or upstream clean; Aikido CRITICAL-deps gate is separate ([AIKIDO.md](AIKIDO.md)) |
 | No SIEM | A09 partial — rely on Vercel/Supabase logs + weekly enrollment review post-public |
+| Youth consent client localStorage | Medium — server verify fail-closed; client PFT skip is UX-only until consent-status gate |
+| Daily-insight with gate cookie | Medium cost surface — Accepted while PRIVATE_MODE; tighten per-user after flip |
 
-## Residual risks (2026-07-16 red-team)
+## Residual risks (2026-07-22 red/blue S2)
+
+| Risk | Severity | Status |
+|------|----------|--------|
+| Founder GH `VERCEL_TOKEN` / CodeQL / promote | Ops Critical | Founder S0 — not agent-fixable |
+| Gate RL multi-instance | High → Closed | `private-access` uses `rateLimitAsync` (S2) |
+| Meal estimate open after flip | Medium → Closed | `hasAppAccess` on `fuel/estimate-meal` (S2) |
+| School PIN GET query leak | Medium → Closed | GET handler removed (S2) |
+| Crypto double-confirm race | Medium → Closed | Row-count check on pending→confirmed (S2) |
+| Public flip expands surface | High if flip without checklist | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) + security-smoke |
+| Youth client consent skip | Medium Accepted | Server paths fail-closed; product follow-up |
+| Local `LAUNCH_STRICT` secrets incomplete | Ops | Founder: service role + Stripe webhook on verify machine |
+
+## Residual risks (2026-07-16 red-team) — superseded rows kept for history
 
 | Risk | Severity | Mitigation next |
 |------|----------|-----------------|
 | Founder secrets not rotated on prod | Critical if true | Founder S0 checklist |
-| Multi-instance rate-limit bypass | Medium | Upstash env |
+| Multi-instance rate-limit bypass | Medium | Upstash env + S2 gate async RL |
 | Crypto checkout less mature than Stripe | Medium | Session + intent ownership + on-chain verify (shipped); keep optional |
 | Public flip expands surface | High if flip without S3 | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) + security-smoke |
 | Youth/school legal surface | High if misconfig | Re-verify secrets + PIN tests before school marketing |

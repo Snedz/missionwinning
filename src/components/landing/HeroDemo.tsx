@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { MetricsRow } from '@/components/metrics/MetricsRow';
 import { ProgressRing } from '@/components/ui/ProgressRing';
 import type { BodyScores } from '@/lib/score';
@@ -77,7 +76,7 @@ export function HeroDemo({ staticFallback }: Props) {
         <ProgressRing
           label={t('heroDemoWinScore', { defaultValue: 'Win Score' })}
           value={winScore}
-          subtitle={t('heroDemoAllPillars', { defaultValue: 'All six pillars' })}
+          subtitle={t('heroDemoAllPillars', { defaultValue: 'From your logs' })}
           tone="emerald"
           size="lg"
         />
@@ -107,9 +106,13 @@ export function HeroDemo({ staticFallback }: Props) {
         })}
       </div>
       {loggedSets >= 3 && (
-        <Button className="mt-6 w-full primary-action" onClick={() => router.push('/welcome')}>
+        <button
+          type="button"
+          className="mt-6 w-full text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          onClick={() => router.push('/welcome')}
+        >
           {t('heroDemoCta', { defaultValue: "That's the loop. Start free →" })}
-        </Button>
+        </button>
       )}
       {prefersReducedMotion() && loggedSets === 0 && (
         <p className="mt-4 text-xs text-muted-foreground text-center">
@@ -136,7 +139,7 @@ export function HeroDemoFallback() {
         <span className="eyebrow">Today</span>
       </div>
       <div className="mb-6 flex items-center justify-center">
-        <ProgressRing label="Win Score" value={74} subtitle="All six pillars" tone="emerald" size="lg" />
+        <ProgressRing label="Win Score" value={74} subtitle="From your logs" tone="emerald" size="lg" />
       </div>
       <MetricsRow scores={scores} demo embedded />
     </div>

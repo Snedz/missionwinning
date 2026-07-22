@@ -10,7 +10,7 @@ import {
   matchesPrivateAccessPassword,
   PRIVATE_ACCESS_COOKIE,
 } from '@/lib/privateSession';
-import { rateLimit } from '@/lib/rateLimit';
+import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { privateAccessBodySchema, parseJsonBody } from '@/lib/apiSchemas';
 
@@ -28,7 +28,8 @@ export const POST = withApiLogging('private-access', async(request: NextRequest)
   }
 
   const ip = clientIp(request);
-  const limited = rateLimit(`private-access:${ip}`, 8, 60_000);
+  // Upstash when configured — in-memory alone is weak across multi-instance Vercel.
+  const limited = await rateLimitAsync(`private-access:${ip}`, 8, 60_000);
   if (!limited.ok) {
     return NextResponse.json(
       { error: 'Too many attempts. Try again shortly.' },

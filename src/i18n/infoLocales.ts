@@ -144,7 +144,7 @@ const en: InfoStrings = {
   infoLastUpdated: 'Last updated: July 2026',
   infoAboutTitle: 'About Mission Winning',
   infoAboutSubtitle:
-    "The all-in-one global health and workout app — free core forever, premium depth when you're ready.",
+    'Free offline logger + Mission Coach from your logs — free core forever; Super Bundle adds depth when you are ready.',
   infoTermsTitle: 'Terms of Use',
   infoPrivacyTitle: 'Privacy Policy',
   infoVisionTitle: 'Mission Winning Vision',
@@ -300,7 +300,7 @@ const en: InfoStrings = {
     'We may refuse repeat refund requests that appear abusive. Opening a chargeback without contacting support first may delay resolution. Fraudulent payments may result in account termination.',
   infoRefundsFoot: 'See also',
   infoAboutMissionP1:
-    'Mission Winning is the all-in-one global health and workout app. Free powerful tracker + premium specialist education programs and coaching drawn from elite practical training curricula.',
+    'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
   infoAboutMissionP2:
     'Accessible, science-based training and nutrition tools for everyone, everywhere — from city gyms to rural areas with minimal equipment. Train smart. Win daily. No borders.',
   infoAboutAmericaLink: 'Presidential Fitness Test & youth movement →',

@@ -167,7 +167,7 @@ type TodayStrings = {
 
 const en: TodayStrings = {
   todayBasicEncouragement:
-    'One step at a time. Health for everyone — train, fuel, move, and learn on your path.',
+    'One step at a time. Log a set — Mission Coach shapes the week from your history.',
   todaySectionHealth: 'Health scores',
   todaySectionHealthDesc: 'Coach insight and pillar breakdown',
   todaySectionWeek: 'This week',
@@ -337,7 +337,7 @@ const en: TodayStrings = {
   todayJournalViewMind: 'Log check-in →',
   todayQuickRankingsDesc: 'Mission Score & streaks',
   todayQuickHistoryDesc: 'Volume, 1RM & muscle map',
-  todayQuickBundleDesc: 'All six pillars, one subscription',
+  todayQuickBundleDesc: 'Coach depth — logger stays free',
   todayQuickNightDesc: '22:00–05:00 sessions',
   todayQuickDawnDesc: '05:00–08:00 sessions',
   coachPlanTitle: 'AI Coach — weekly plan',

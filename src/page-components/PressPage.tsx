@@ -18,7 +18,7 @@ const SHORT_BOILERPLATE =
   'Free offline workout tracker — no account required to start.';
 
 const MEDIUM_BOILERPLATE =
-  'Mission Winning is the free health everything app: workout tracking, nutrition, mobility, mind, activity, and learning in one path. Free core forever. Works offline as a PWA. Premium Super Bundle unlocks Coach and depth — never gates the logger.';
+  'Mission Winning is a free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline as a PWA. Premium Super Bundle unlocks Coach depth and other pillars — never gates the logger.';
 
 const COLORS = [
   { name: 'Navy', role: 'Canvas', hex: '#0a0c10', hsl: '222 24% 5%', swatch: '#0a0c10', border: true },

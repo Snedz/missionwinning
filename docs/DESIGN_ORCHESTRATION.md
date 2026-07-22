@@ -19,6 +19,7 @@ Product status lives in [CONTEXT.md](../CONTEXT.md) `## Now`. Design craft waves
 | **D2 Retention emotion** | Horizon 2 (founder override) | **Shipped 2026-07-22** — Victory ritual · score coach-line · adapt glance |
 | **D-prelaunch** | Pre-flip (founder excellence) | **Shipped 2026-07-22** — Today composure · Active intent · Victory one-exit · rest · gate · Android parity |
 | **D3 Platform excellence** | Horizon 3 (founder override) | **Shipped 2026-07-22** — token sync · Fuel/Move/Mind/Learn CTA density · Batch C · guide chrome |
+| **D4 Beta composure** | Horizon 0 (founder override) | **Shipped 2026-07-22** — Landing cut (~5–6 bands) · wedge copy · Bundle one-offer · Today More collapse · Android Today secondary demotion |
 
 ---
 
@@ -172,6 +173,18 @@ Every hero surface must pass before ship:
 | **SEO public chrome** | `/guide` briefing hierarchy + Start training CTA |
 | **i18n Batch C** | Landing + Bundle IT/RU/KO/JA conversion depth |
 | **iOS** | **Still deferred** until Android Phase 1 accepted; inherit this file + tokens ([IOS_PLAYBOOK.md](IOS_PLAYBOOK.md)) |
+
+### Wave D4 — Beta composure (Horizon 0 · founder override)
+
+**Founder override 2026-07-22:** investable website + beta-ready density without redesign.
+
+| Track | Work |
+|-------|------|
+| **Landing** | Cut to ~5–6 bands; one emerald CTA (nav ghost); Train+Coach wedge only |
+| **Copy** | Kill “everything app” / “all-in-one” on marketing + About + brand boilerplate |
+| **Bundle** | One story + one offer; compare collapsed; no pillar tile / unlock farms |
+| **Web Today** | QuickLinks + accordion under collapsed More |
+| **Android Today** | Secondary cards base elevation; hero only elevated+glow |
 
 ---
 

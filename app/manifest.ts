@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'Mission Winning — Train Anywhere. Win Daily.',
     short_name: 'Mission Winning',
     description:
-      'The free health everything app: workout tracking, nutrition, mobility, mind, activity, and learning — free core forever, works offline anywhere.',
+      'Free offline workout logger + adaptive Mission Coach from your logs — free core forever, works offline anywhere.',
     id: '/log',
     start_url: '/log',
     scope: '/',

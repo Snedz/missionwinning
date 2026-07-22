@@ -2,6 +2,7 @@
 /**
  * Page: / — marketing landing
  * See: app/INDEX.md, src/page-components/INDEX.md
+ * D4 beta composure: ~5–6 bands, Train+Coach wedge only.
  */
 
 import { useEffect, useState } from 'react';
@@ -9,36 +10,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import dynamic from 'next/dynamic';
-import { BUNDLE_PILLARS } from '@/lib/payments';
 import { LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
 import { HeroDemoFallback } from '@/components/landing/HeroDemo';
 import { MarketingNav } from '@/components/marketing/MarketingNav';
 import { MarketingFooter } from '@/components/marketing/MarketingFooter';
-import { StatBand } from '@/components/marketing/StatBand';
-import { BundleTeaserCard } from '@/components/marketing/BundleTeaserCard';
-import { EmailCaptureBand } from '@/components/marketing/EmailCaptureBand';
 import { Reveal } from '@/components/marketing/Reveal';
 import { ArtPicture } from '@/components/marketing/ArtPicture';
 import { ArrowRight, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 const HeroDemo = dynamic(
   () => import('@/components/landing/HeroDemo').then((m) => m.HeroDemo),
   { ssr: false, loading: () => <HeroDemoFallback /> }
 );
 
-const JourneyScroll = dynamic(
-  () => import('@/components/landing/JourneyScroll').then((m) => m.JourneyScroll),
-  { ssr: false, loading: () => <div id="path" className="min-h-[12rem]" aria-hidden /> }
-);
-
 const CoachAdaptDemo = dynamic(
   () => import('@/components/landing/CoachAdaptDemo').then((m) => m.CoachAdaptDemo),
-  { ssr: false, loading: () => <div className="min-h-[8rem]" aria-hidden /> }
-);
-
-const GuideTeaser = dynamic(
-  () => import('@/components/landing/GuideTeaser').then((m) => m.GuideTeaser),
   { ssr: false, loading: () => <div className="min-h-[8rem]" aria-hidden /> }
 );
 
@@ -63,33 +49,6 @@ const FREE_MANIFEST_KEYS = [
   },
 ] as const;
 
-const FREE_MINI_STATS = [
-  {
-    valueKey: 'landingFreeStatWorkouts',
-    valueDefault: 'Unlimited logs',
-    hintKey: 'landingFreeStatWorkoutsHint',
-    hintDefault: 'Forever free',
-  },
-  {
-    valueKey: 'landingFreeStatLibrary',
-    valueDefault: '217 exercises',
-    hintKey: 'landingFreeStatLibraryHint',
-    hintDefault: 'Form cues included',
-  },
-  {
-    valueKey: 'landingFreeStatOffline',
-    valueDefault: 'Works offline',
-    hintKey: 'landingFreeStatOfflineHint',
-    hintDefault: 'Install as PWA',
-  },
-  {
-    valueKey: 'landingFreeStatScore',
-    valueDefault: 'Win Score',
-    hintKey: 'landingFreeStatScoreHint',
-    hintDefault: 'Six pillars, one number',
-  },
-] as const;
-
 export function LandingPage() {
   const router = useRouter();
   const { t } = useTranslation();
@@ -110,7 +69,7 @@ export function LandingPage() {
     <div className="min-h-screen bg-background text-foreground">
       <MarketingNav variant="full" />
 
-      {/* ── Hero ────────────────────────────────────────────────────── */}
+      {/* 1 · Hero */}
       <header className="hero-field texture-grid texture-noise section-seam relative overflow-hidden">
         <div className="relative z-[1] mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
           <div className="page-enter">
@@ -144,21 +103,18 @@ export function LandingPage() {
           </div>
 
           <div className="journey-enter relative min-h-[22rem] lg:min-h-[28rem]">
-            <div className="absolute inset-0 overflow-hidden rounded-none lg:rounded-2xl border border-border/30 bg-card/40">
+            <div className="absolute inset-0 overflow-hidden rounded-none border border-border/30 bg-card/40 lg:rounded-2xl">
               <HeroDemo staticFallback={<HeroDemoFallback />} />
             </div>
           </div>
         </div>
       </header>
-      <StatBand />
 
-      {belowFoldReady ? <JourneyScroll /> : <div id="path" className="min-h-[12rem]" aria-hidden />}
-
-      {/* ── Coach band ──────────────────────────────────────────────── */}
-      <section className="texture-grid section-seam relative overflow-hidden bg-muted/10">
+      {/* 2 · Coach proof */}
+      <section id="coach" className="texture-grid section-seam relative overflow-hidden bg-muted/10">
         <div className="relative z-[1] mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2 lg:items-center lg:py-20">
           <Reveal>
-            <p className="section-index mb-3">04 · Coach</p>
+            <p className="section-index mb-3">02 · Coach</p>
             <h2 className="display-section mb-6">
               {t('landingCoachDemoTitle', {
                 defaultValue: 'Plans that adapt when life happens',
@@ -187,17 +143,12 @@ export function LandingPage() {
         </div>
       </section>
 
-      {belowFoldReady ? <GuideTeaser /> : <div className="min-h-[8rem]" aria-hidden />}
-
-      {/* ── Free manifesto ───────────────────────────────────────────── */}
+      {/* 3 · Free promise (list only — no card farm) */}
       <section className="section-seam relative overflow-hidden">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-30"
-          aria-hidden
-        >
+        <div className="pointer-events-none absolute inset-0 opacity-20" aria-hidden>
           <ArtPicture base="/art/topo-brass" fill className="object-cover" />
         </div>
-        <div className="relative z-[1] mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:py-20">
+        <div className="relative z-[1] mx-auto max-w-3xl px-5 py-16 lg:py-20">
           <Reveal>
             <div className="briefing-rule mb-4">
               <span className="eyebrow">
@@ -212,12 +163,8 @@ export function LandingPage() {
             <p className="max-w-md leading-relaxed text-muted-foreground">
               {t('landingFreeBody', {
                 defaultValue:
-                  'The fundamentals that make people healthier should have no price of admission — anywhere in the world. That is the founding promise, written into our vision, and it does not expire.',
-              })}{' '}
-              <Link href="/vision" className="underline underline-offset-4 hover:text-foreground">
-                {t('landingFreeVisionLink', { defaultValue: 'our vision' })}
-              </Link>
-              .
+                  'The fundamentals that make people healthier should have no price of admission — anywhere in the world. Logging stays free forever; Super Bundle adds Coach depth — never gates the logger.',
+              })}
             </p>
             <ul className="mt-6 space-y-2.5">
               {FREE_MANIFEST_KEYS.map((item) => (
@@ -227,139 +174,20 @@ export function LandingPage() {
                 </li>
               ))}
             </ul>
-          </Reveal>
-          <Reveal delayMs={80}>
-            <div className="grid grid-cols-2 gap-3 content-center">
-              {FREE_MINI_STATS.map((s) => (
-                <div key={s.valueKey} className="card-elevated p-4 sm:p-5">
-                  <p className="font-display text-xl font-semibold uppercase leading-tight sm:text-2xl">
-                    {t(s.valueKey, { defaultValue: s.valueDefault })}
-                  </p>
-                  <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    {t(s.hintKey, { defaultValue: s.hintDefault })}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Six pillars bento ────────────────────────────────────────── */}
-      <section id="pillars" className="section-seam">
-        <div className="mx-auto max-w-6xl px-5 py-16 lg:py-20">
-          <Reveal>
-            <div className="briefing-rule mb-4">
-              <span className="eyebrow">
-                {t('landingPillarsEyebrow', { defaultValue: 'Six pillars' })}
-              </span>
-            </div>
-            <h2 className="display-section mb-4">
-              {t('landingPillarsTitle', {
-                defaultValue: 'Everything reinforces everything.',
-              })}
-            </h2>
-            <p className="mb-10 max-w-xl text-muted-foreground">
-              {t('landingPillarsBody', {
-                defaultValue:
-                  'Mobility improves training. Mind improves consistency. Fuel powers results. The Win Score weighs all six — one number for the whole self, not another silo.',
-              })}
-            </p>
-          </Reveal>
-          <div className="grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
-            {BUNDLE_PILLARS.map((p, i) => {
-              const isTrain = p.id === 'train';
-              return (
-                <Reveal
-                  key={p.id}
-                  delayMs={i * 50}
-                  className={cn(isTrain && 'sm:col-span-2 sm:row-span-2')}
-                >
-                  <div
-                    className={cn(
-                      'card-elevated flex h-full flex-col p-5',
-                      isTrain && 'card-glow-emerald sm:p-7'
-                    )}
-                  >
-                    <div className="mb-3 flex items-baseline justify-between gap-2">
-                      <h3
-                        className={cn(
-                          'font-display font-semibold uppercase leading-none',
-                          isTrain ? 'text-3xl sm:text-4xl' : 'text-2xl'
-                        )}
-                      >
-                        {p.name}
-                      </h3>
-                      <span className="section-index">{String(i + 1).padStart(2, '0')}</span>
-                    </div>
-                    <p className={cn('mb-1 text-sm text-foreground/90', isTrain && 'sm:text-base')}>
-                      <span className="eyebrow-live mr-2 text-[10px]">
-                        {t('landingPillarsFree', { defaultValue: 'Free' })}
-                      </span>
-                      {p.free}
-                    </p>
-                    <p className={cn('mb-4 text-sm text-muted-foreground', isTrain && 'sm:text-base')}>
-                      <span className="eyebrow-honor mr-2 text-[10px]">
-                        {t('landingPillarsBundle', { defaultValue: 'Bundle' })}
-                      </span>
-                      {p.premium}
-                    </p>
-                    <Link
-                      href={p.route}
-                      className="mt-auto inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80"
-                    >
-                      {t('landingPillarsOpen', {
-                        defaultValue: `Open ${p.name}`,
-                        name: p.name,
-                      })}{' '}
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <BundleTeaserCard />
-
-      {/* ── Mission ─────────────────────────────────────────────────── */}
-      <section className="section-seam relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <ArtPicture base="/art/topo-brass" fill className="object-cover opacity-20" />
-        </div>
-        <div className="relative z-[1] mx-auto max-w-3xl px-5 py-16 text-center lg:py-24">
-          <Reveal>
-            <div className="mb-4 flex justify-center">
-              <span className="eyebrow">
-                {t('landingMissionEyebrow', { defaultValue: 'Why we build' })}
-              </span>
-            </div>
-            <div className="mb-6 font-display text-6xl leading-none text-brass/40" aria-hidden>
-              “
-            </div>
-            <blockquote className="font-display text-3xl font-medium uppercase leading-tight sm:text-4xl">
-              {t('landingMissionQuote', {
-                defaultValue:
-                  '“The right way to build a body and a life should be obvious, doable, and free — for every human on Earth.”',
-              })}
-            </blockquote>
             <p className="mt-6 text-sm text-muted-foreground">
-              {t('landingMissionBody', {
+              {t('landingPillarsQuiet', {
                 defaultValue:
-                  'Mission Winning is the entrance to that path: evidence-based, holistic, habit-first.',
+                  'Fuel, Move, Mind, Track, and Learn deepen the path after Train + Coach — never the pitch.',
               })}{' '}
-              <Link href="/vision" className="underline underline-offset-4 hover:text-foreground">
-                {t('landingMissionLink', { defaultValue: 'Read the full vision' })}
+              <Link href="/about" className="underline underline-offset-4 hover:text-foreground">
+                {t('landingAboutLink', { defaultValue: 'About Mission Winning' })}
               </Link>
-              .
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* ── FAQ ─────────────────────────────────────────────────────── */}
+      {/* 4 · FAQ */}
       <section className="section-seam">
         <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
           <div className="briefing-rule mb-8">
@@ -395,7 +223,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── Final CTA ───────────────────────────────────────────────── */}
+      {/* 5 · Final CTA (sole conversion block) */}
       <section className="hero-field texture-noise relative overflow-hidden">
         <div
           className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-40"
@@ -431,11 +259,18 @@ export function LandingPage() {
                   'Under three minutes to your first session. Nothing to install, nothing to pay.',
               })}
             </p>
+            <p className="mt-6 text-sm text-muted-foreground">
+              <Link href="/bundle" className="underline underline-offset-4 hover:text-foreground">
+                {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
+              </Link>
+              {' · '}
+              <Link href="/vision" className="underline underline-offset-4 hover:text-foreground">
+                {t('landingMissionLink', { defaultValue: 'Read the full vision' })}
+              </Link>
+            </p>
           </Reveal>
         </div>
       </section>
-
-      <EmailCaptureBand />
 
       <MarketingFooter />
     </div>

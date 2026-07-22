@@ -201,7 +201,11 @@ Optional: `maestro test .maestro/wedge.yaml` (same Account round-trip + Active `
 | Accept B (logger + loop) for Internal | | Founder fills after device QA |
 | Reject (list blockers) | | |
 
-**Agent prep (2026-07-22 · Design Orchestration D0):** Align with [docs/DESIGN_ORCHESTRATION.md](../../docs/DESIGN_ORCHESTRATION.md) — Today keeps **one** emerald Start (hero card glow only); Mission insight / rest dock demoted (no competing glow); PR honor = inline brass chip + haptic (no floating PR toast). Re-walk Accept B on device — Preferences above fold; Active immersive; cold open → Start ≤2 taps; Victory → Coach. Maestro/adb strings unchanged (`Complete set`, `Start workout`, Account tab). Do not mark Pass. After Pass → [SHIP_INTERNAL.md](SHIP_INTERNAL.md).
+**Agent prep (2026-07-22 · Horizon 0):** `./scripts/release-smoke.sh` exited **0** on this machine (debug-signed APK/AAB packaging). Device/emulator Accept B (adb walk + manual spot checks) remains **founder-only** — do not mark Pass here.
+
+**Agent prep (2026-07-22 · D4 beta composure):** Today secondary blocks (Quick log / week / Recent / More) use base `MwCard` — only the session hero keeps elevated + glow. Re-walk Accept B on device — Preferences above fold; Active immersive; cold open → Start ≤2 taps; Victory → Coach. Maestro/adb strings unchanged. Do not mark Pass. After Pass → [SHIP_INTERNAL.md](SHIP_INTERNAL.md).
+
+**Prior prep (2026-07-22 · Design Orchestration D0):** Align with [docs/DESIGN_ORCHESTRATION.md](../../docs/DESIGN_ORCHESTRATION.md) — Today keeps **one** emerald Start (hero card glow only); Mission insight / rest dock demoted (no competing glow); PR honor = inline brass chip + haptic (no floating PR toast). Re-walk Accept B on device — Preferences above fold; Active immersive; cold open → Start ≤2 taps; Victory → Coach. Maestro/adb strings unchanged (`Complete set`, `Start workout`, Account tab). Do not mark Pass. After Pass → [SHIP_INTERNAL.md](SHIP_INTERNAL.md).
 
 **Prior prep (2026-07-22 · 1.23.0):** Wedge UX overhaul shipped (presentation only). Preferences still above fold on Account; Active still immersive (no hub).
 

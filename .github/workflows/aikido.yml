@@ -1,6 +1,7 @@
 # Aikido Security — release gate (CRITICAL deps)
-
-# Complements soft npm audit + CodeQL. Skips when AIKIDO_SECRET_KEY is unset.
+#
+# Complements soft npm audit + CodeQL. Skips cleanly when AIKIDO_SECRET_KEY is unset.
+# Note: `if: secrets.X != ''` is unreliable on GitHub Actions — use an env gate step instead.
 # Docs: docs/AIKIDO.md
 
 name: Aikido
@@ -13,13 +14,26 @@ on:
 
 jobs:
   aikido-security:
-    if: ${{ secrets.AIKIDO_SECRET_KEY != '' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Check AIKIDO_SECRET_KEY
+        id: gate
+        env:
+          AIKIDO_SECRET_KEY: ${{ secrets.AIKIDO_SECRET_KEY }}
+        run: |
+          if [ -z "$AIKIDO_SECRET_KEY" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "AIKIDO_SECRET_KEY unset — skipping (founder: docs/AIKIDO.md)."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout code
+        if: steps.gate.outputs.configured == 'true'
         uses: actions/checkout@v4
 
       - name: Detect new vulnerabilities
+        if: steps.gate.outputs.configured == 'true'
         uses: AikidoSec/github-actions-workflow@v1.0.13
         with:
           secret-key: ${{ secrets.AIKIDO_SECRET_KEY }}
