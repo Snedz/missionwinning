@@ -6,7 +6,7 @@ Companion to [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) Phase 
 
 ## PostHog public funnel
 
-**Prerequisite:** `NEXT_PUBLIC_POSTHOG_KEY` set in Vercel Production + Preview ([ENV.md](../ENV.md)).
+**Prerequisite:** `NEXT_PUBLIC_POSTHOG_KEY` set in Vercel Production + Preview ([ENV.md](ENV.md)).
 
 **Privacy default (July 2026):** PostHog only initializes after the user allows product analytics (first-visit banner or Profile → Privacy & analytics). Do Not Track forces off. Undecided = no capture. See `src/lib/analyticsOptOut.ts`.
 

@@ -4,7 +4,7 @@ Thank you for helping build a healthier world. This guide is for developers and 
 
 **License:** contributions are accepted under the [GNU Affero General Public License v3.0](LICENSE). By opening a PR you agree your contribution is licensed under AGPL-3.0.
 
-**Acceptable use:** do not contribute features whose primary purpose violates [ACCEPTABLE_USE.md](ACCEPTABLE_USE.md) (illegal deepfakes, CSAM, fraud, etc.). Security issues → [SECURITY.md](SECURITY.md).
+**Acceptable use:** do not contribute features whose primary purpose violates [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md) (illegal deepfakes, CSAM, fraud, etc.). Security issues → [SECURITY.md](SECURITY.md).
 
 ---
 
@@ -12,12 +12,12 @@ Thank you for helping build a healthier world. This guide is for developers and 
 
 - Node.js 20+ (project tested on current LTS)
 - npm
-- Optional: Supabase project, Stripe test keys (see [ENV.md](ENV.md))
+- Optional: Supabase project, Stripe test keys (see [docs/ENV.md](docs/ENV.md))
 
 ```bash
 git clone <repo>
 cd missionwinning
-cp .env.example .env.local   # if present; else see ENV.md
+cp .env.example .env.local   # if present; else see docs/ENV.md
 npm install
 npm run dev
 ```
@@ -124,7 +124,7 @@ export default function Page() {
 
 ## Security
 
-- Read [PROTECTION.md](PROTECTION.md) before touching auth, premium, or school APIs.
+- Read [docs/PROTECTION.md](docs/PROTECTION.md) before touching auth, premium, or school APIs.
 - Server-only secrets: never `NEXT_PUBLIC_`.
 - Premium checks via `premiumServer.ts` + admin client.
 - School stats/leaderboard require teacher PIN or creator — see `schoolClassAccess.ts`.
@@ -141,7 +141,7 @@ export default function Page() {
 
 ## Agent-specific
 
-- Do not use `~/.cursor/plans/` as source of truth — use `PLAN.md` / `LOG.md`.
+- Do not use `~/.cursor/plans/` as source of truth — use `docs/PLAN.md` / `LOG.md`.
 - Recipes: [docs/AGENT_RECIPES.md](docs/AGENT_RECIPES.md).
 - Cursor rule: `.cursor/rules/documentation.mdc`.
 
@@ -149,4 +149,4 @@ export default function Page() {
 
 ## Questions
 
-See [docs/README.md](docs/README.md) for the full doc hub. Product direction: [vision.md](vision.md), [PLAN.md](PLAN.md).
+See [docs/README.md](docs/README.md) for the full doc hub. Product direction: [vision.md](vision.md), [docs/PLAN.md](docs/PLAN.md).

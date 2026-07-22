@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Moon, Sparkles, Trophy, X } from 'lucide-react';
+import { Dumbbell, Sparkles, Target, X } from 'lucide-react';
 
 const DISMISS_KEY = 'mw_beta_banner_dismissed';
 
@@ -30,34 +30,36 @@ export function BetaWelcomeBanner() {
       </button>
       <div className="flex items-center gap-2 text-primary text-xs uppercase tracking-widest font-medium mb-2">
         <Sparkles className="h-4 w-4" />
-        New in this beta
+        Beta path
       </div>
       <p className="text-sm text-foreground/90 leading-relaxed mb-3">
-        Journey path, rankings with night &amp; dawn boards, 14 languages. Tap the header to browse all tools.{' '}
+        Finish I-Day, log one workout from Today, then open Mission Coach — weekly plans from your
+        logs alone.{' '}
         <Link href="/beta" className="text-primary hover:underline">
           Beta guide →
         </Link>
       </p>
       <div className="flex flex-wrap gap-2">
         <Link
-          href="/leaderboard"
+          href="/welcome"
           className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/20"
         >
-          <Trophy className="h-3.5 w-3.5" />
-          Rankings
+          <Target className="h-3.5 w-3.5" />
+          I-Day
         </Link>
         <Link
-          href="/leaderboard?board=under-the-stars"
-          className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--status-info)/0.4)] bg-[hsl(var(--status-info)/0.1)] px-3 py-1.5 text-xs font-medium text-[hsl(var(--status-info))] hover:bg-[hsl(var(--status-info)/0.2)]"
+          href="/active"
+          className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/20"
         >
-          <Moon className="h-3.5 w-3.5" />
-          Under the Stars
+          <Dumbbell className="h-3.5 w-3.5" />
+          Train
         </Link>
         <Link
-          href="/profile"
+          href="/coach"
           className="inline-flex items-center gap-1.5 rounded-full border border-border/50 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          Language &amp; profile
+          <Sparkles className="h-3.5 w-3.5" />
+          Mission Coach
         </Link>
       </div>
     </div>

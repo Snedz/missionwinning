@@ -57,4 +57,4 @@
 
 ## Supersedes
 
-Payment steps in root [SETUP.md](../SETUP.md) §1 that still mention demo PayPal-first flows — prefer this checklist + [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) for live Stripe Sessions.
+Payment steps in root [SETUP.md](archive/SETUP.md) §1 that still mention demo PayPal-first flows — prefer this checklist + [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) for live Stripe Sessions.

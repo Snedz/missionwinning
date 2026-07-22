@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](vision.md). Updated **2026-07-20** (build `2026.07-unified.92` — Wave 11 readiness/body/debrief/vision; **recruiting ≥10 users remains the bottleneck**).
+**Living comparison** against [vision.md](../vision.md). Updated **2026-07-21** (build `2026.07-unified.93` — Wave 11 readiness/body/debrief/vision; **recruiting ≥10 users remains the bottleneck**).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -46,7 +46,7 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 | Track | Doc | Status |
 |-------|-----|--------|
 | **Build phases A–D, F** | [PLAN.md](PLAN.md) | ✅ Free core, journey, unified UI |
-| **Experience v4** | [docs/archive/ROADMAP_V4_EXPERIENCE.md](docs/archive/ROADMAP_V4_EXPERIENCE.md) | ✅ Shipped PR #73 |
+| **Experience v4** | [docs/archive/ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) | ✅ Shipped PR #73 |
 | **v5 + Phase I depth** | [PLAN.md](PLAN.md) Phase I | 🟡 Engines + Mind/Move/Learn/I5 + de body shipped; live Stripe remaining |
 | **Member journey phases** | [JOURNEY.md](JOURNEY.md) | I-Day → Commissioned (in-app) |
 | **PFT / America G1–G8** | [PLAN.md](PLAN.md) Phase G | ✅ Optional US track; feature-flagged |
@@ -57,10 +57,10 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 
 ## Biggest gaps (priority order)
 
-Full sequencing: [ORCHESTRATION.md](ORCHESTRATION.md) (Horizon 0 → 3).
+Full sequencing: [ORCHESTRATION.md](../ORCHESTRATION.md) (Horizon 0 → 3).
 
 ### 1. Horizon 0 — Phase H beta cohort (founder) — **#1 gap**
-Env, migrations, digest, webhook enrollment path, and launch-verify are green. Still need: **phone hero QA + ≥10 beta users** (gates I-Day ≥80% / BT ≥60%), then public flip. Day-of: [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md) · flip smoke: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md).
+Env, migrations, digest, webhook enrollment path, and launch-verify are green. Still need: **phone hero QA + ≥10 beta users** (gates I-Day ≥80% / BT ≥60%), then public flip. Day-of: [docs/archive/TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) · flip smoke: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md).
 
 ### 2. Horizon 1 — Live Super Bundle + public (Phase I1)
 Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149**. Then `PRIVATE_MODE=false` + PWA offline promise.
@@ -69,7 +69,7 @@ Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Prici
 Lighthouse budget routes **≥90** (`/`, `/log`, guide, exercises). Serwist, logger E2E, Active/Today decomp, `src/lib/workout/` shipped. Residual decomp optional only.
 
 ### 4. Horizon 2 — week-4 retention wall metric
-Prove habit loop before scale. See [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md).
+Prove habit loop before scale. See [docs/POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md).
 
 ### 5. Horizon 3 — Form media / i18n / SEO / TWA (post-PMF only)
 Form media top-20; more locales; SEO compound; TWA if PWA install fails.
@@ -90,4 +90,4 @@ Code shipped; legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
 
 ## Build label
 
-Current: `2026.07-unified.76` — see [`src/lib/buildInfo.ts`](src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after deploy.
+Current: `2026.07-unified.93` — see [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after deploy.

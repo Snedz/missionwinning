@@ -13,7 +13,7 @@
 | `seed-coach-adapt-demo.mjs` | `npm run seed-coach-adapt-demo` | Print DevTools snippet to seed CoachAdaptBanner for 60s demo |
 | `compliance-status.ts` | `npm run compliance:status` | Vanta-lite control report (`--ci`, `--write-md`) |
 | `growth-smoke.mjs` | `npm run growth-smoke` | Leads/unsub/welcome perimeter (Wave 2) |
-| `launch-verify.mjs` | `npm run launch-verify` | Track D chain: env + Supabase + Stripe gates + gate-smoke + e2e:critical |
+| `launch-verify.mjs` | `npm run launch-verify` | Track D chain: env + Supabase + Stripe gates + gate-smoke + growth-smoke + rate-limit-smoke + e2e:critical |
 | `lighthouse-budget.mjs` | `LIGHTHOUSE_SNAPSHOT=1 node scripts/lighthouse-budget.mjs` | Mobile Lighthouse budgets (see [docs/LIGHTHOUSE_BASELINE.md](../docs/LIGHTHOUSE_BASELINE.md)) |
 | `verify-stripe-enrollment.mjs` | `node scripts/verify-stripe-enrollment.mjs` | Row shape; `--check-gates`; `--check-checkout`; `--check-crypto-checkout`; `--ping-webhook`; `--verify-enrollment <email>` |
 | `setup-stripe-webhook.mjs` | `STRIPE_SECRET_KEY=sk_… node scripts/setup-stripe-webhook.mjs` | Create Stripe `checkout.session.completed` webhook; print `whsec` for Vercel |

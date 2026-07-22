@@ -52,4 +52,4 @@ Revisit Delaware if you raise institutional capital or add co-founders who insis
 5. Stripe + support inbox under LLC — [LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md)  
 6. Do **not** take a dollar until [PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) is green  
 
-Optional later: Mission Winning Foundation (501(c)(3)) — [SETUP.md](../../SETUP.md). Not required for Super Bundle.
+Optional later: Mission Winning Foundation (501(c)(3)) — [SETUP.md](../archive/SETUP.md). Not required for Super Bundle.

@@ -3,7 +3,7 @@
  * Page: /log — Today hub entry.
  * Lean shell for I-Day/Basic first paint; full dashboard code-split for readiness+.
  * Phase gate reads localStorage only — no workoutStore on cold path for basic users.
- * See: JOURNEY.md, ORCHESTRATION.md Horizon 1 perf
+ * See: docs/JOURNEY.md, ORCHESTRATION.md Horizon 1 perf
  */
 
 import { useEffect, useState } from 'react';

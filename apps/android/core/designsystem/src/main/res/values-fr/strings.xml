@@ -31,4 +31,14 @@
     <string name="mw_done">OK</string>
     <string name="mw_sign_out">Se déconnecter</string>
     <string name="mw_continue_offline">Continuer hors ligne</string>
+
+    <string name="mw_rest_skip">Passer le repos</string>
+    <string name="mw_rest_add_15">+15s</string>
+    <string name="mw_set_working">Travail</string>
+    <string name="mw_set_warmup">Échauffement</string>
+    <string name="mw_set_failure">Échec</string>
+    <string name="mw_set_drop">Drop set</string>
+    <string name="mw_plate_calc">Calculateur de disques</string>
+    <string name="mw_offline_local_plan">Plan local (hors ligne)</string>
 </resources>
+

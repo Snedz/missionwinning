@@ -117,7 +117,7 @@ Canonical langs: [`src/i18n/appLangs.ts`](../src/i18n/appLangs.ts) (`APP_LANGS`,
 - [ ] Premium check server-side
 - [ ] RLS or service-role pattern documented
 - [ ] Rate limit on brute-force endpoints
-- [ ] Update [PROTECTION.md](../PROTECTION.md) or [OWASP_AUDIT.md](OWASP_AUDIT.md)
+- [ ] Update [PROTECTION.md](PROTECTION.md) or [OWASP_AUDIT.md](OWASP_AUDIT.md)
 - [ ] `npm run security-smoke` if deploy smoke env available
 
 ---

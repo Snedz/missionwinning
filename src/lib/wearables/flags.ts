@@ -1,6 +1,6 @@
 /**
  * Wearables feature flags — opt-in via NEXT_PUBLIC_WEARABLES=true.
- * See docs/WEARABLES.md · ENV.md
+ * See docs/WEARABLES.md · docs/ENV.md
  */
 import type { WearableOAuthProviderId, WearableProviderId } from './types';
 

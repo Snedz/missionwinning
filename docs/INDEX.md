@@ -59,7 +59,7 @@
 | [legal/MSA_TEMPLATE.md](legal/MSA_TEMPLATE.md) | B2B MSA draft (no consumer SLA promises) |
 | [NATIVE_MOBILE.md](NATIVE_MOBILE.md) | Expo prototype (reference); product path is Android Compose |
 | [ANDROID_NATIVE.md](ANDROID_NATIVE.md) | Android get-started + AI orchestration · Play |
-| [IOS_DEFERRED.md](IOS_DEFERRED.md) | iOS blocked until Android Phase 1 accepted |
+| [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md) | iOS playbook — deferred until Android accepted + week-4 retention |
 | [openapi-mobile.yaml](openapi-mobile.yaml) | Mobile client contract (Coach / workouts) |
 | [TWA_MOBILE_PLAYBOOK.md](TWA_MOBILE_PLAYBOOK.md) | Optional web PWA packaging (not the product path) |
 | [WEARABLES.md](WEARABLES.md) | Apple / Google / Whoop / Strava wearables strategy + unlock |
@@ -81,7 +81,8 @@
 | [LIGHTHOUSE_BASELINE.md](LIGHTHOUSE_BASELINE.md) | Lighthouse baselines |
 | [ROADMAP_V4_EXPERIENCE.md](archive/ROADMAP_V4_EXPERIENCE.md) | Experience build v4 |
 | [DESIGN_RESEARCH.md](DESIGN_RESEARCH.md) | Competitive UI research + steal/avoid |
-| [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing |
+| [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | Runtime tokens, shells, ProgressRing, motion |
+| [DESIGN_REVIEW.md](DESIGN_REVIEW.md) | Hero-flow UI/UX audit checklist (quarterly + pre-flip) |
 | [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) | Hold-to-confirm delete language |
 
 ---
@@ -97,9 +98,24 @@
 
 ---
 
-## Product planning (repo root)
+## Product planning (moved here 2026-07-21)
 
-Live at **repo root** — see [INDEX.md](../INDEX.md): `PLAN.md`, `LOG.md`, `JOURNEY.md`, `REDTEAM.md`, etc.
+Root keeps only the spine (README · CONTEXT · AGENTS · INDEX · vision · ORCHESTRATION · LOG). Planning docs live here:
+
+| File | Purpose |
+|------|---------|
+| [STRATEGY.md](STRATEGY.md) | Business plan · pricing · book plan |
+| [PLAN.md](PLAN.md) | Build phases A–I |
+| [REDTEAM.md](REDTEAM.md) | Assumptions audit |
+| [JOURNEY.md](JOURNEY.md) | Mission journey UX (I-Day → Commissioned) |
+| [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
+| [ENV.md](ENV.md) | Environment variables |
+| [PROTECTION.md](PROTECTION.md) | Security checklist |
+| [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |
+| [VISION_STATUS.md](VISION_STATUS.md) | Vision scorecard |
+| [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |
+| [legal/ACCEPTABLE_USE.md](legal/ACCEPTABLE_USE.md) | Acceptable Use Policy |
+| [archive/SETUP.md](archive/SETUP.md) | Archived one-time setup (stale PayPal-first) |
 
 ## Related
 

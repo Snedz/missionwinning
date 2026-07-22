@@ -1,7 +1,7 @@
 'use client';
 /**
  * Journey phase and I-Day completion state.
- * Consumers: journey components, JourneyGuard | See: JOURNEY.md
+ * Consumers: journey components, JourneyGuard | See: docs/JOURNEY.md
  */
 
 import { useCallback, useEffect, useState } from 'react';

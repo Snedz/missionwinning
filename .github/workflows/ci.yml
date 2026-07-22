@@ -213,9 +213,9 @@ jobs:
 
   # Perimeter security smoke (premium 403, webhooks 401, cron/admin, crypto auth).
   # Alias: npm run security-smoke → same script as gate-smoke.
+  # When SMOKE_BASE_URL is set, failures fail the job (no soft-pass). Skip only if secret unset.
   gate-smoke:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
@@ -237,6 +237,55 @@ jobs:
             exit 0
           fi
           npm run security-smoke
+
+  growth-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Remote growth smoke
+        env:
+          SMOKE_BASE_URL: ${{ secrets.SMOKE_BASE_URL }}
+          SMOKE_ACCESS_SECRET: ${{ secrets.SMOKE_ACCESS_SECRET }}
+        run: |
+          if [ -z "$SMOKE_BASE_URL" ]; then
+            echo "Skipping growth-smoke (SMOKE_BASE_URL not set)"
+            exit 0
+          fi
+          npm run growth-smoke
+
+  # Soft until Upstash (Wave A) is live on Production — then remove continue-on-error.
+  rate-limit-smoke:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Remote rate-limit smoke
+        env:
+          SMOKE_BASE_URL: ${{ secrets.SMOKE_BASE_URL }}
+        run: |
+          if [ -z "$SMOKE_BASE_URL" ]; then
+            echo "Skipping rate-limit-smoke (SMOKE_BASE_URL not set)"
+            exit 0
+          fi
+          npm run rate-limit-smoke
 
   android:
     runs-on: ubuntu-latest
@@ -293,7 +342,7 @@ jobs:
 
       - name: Auth scaffold + Baseline Profile stub
         run: |
-          ./gradlew :feature:auth:assembleDebug :benchmark:assembleDebug --stacktrace
+          ./gradlew :feature:auth:assembleDebug :benchmark:assemble --stacktrace
 
       - name: Logger + sync invariant modules (explicit)
         run: |

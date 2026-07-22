@@ -4,7 +4,7 @@
  * Run: node scripts/oauth-provider-checklist.mjs
  *
  * Does not call APIs — prints the enable order and env flags.
- * Full steps: ENV.md § OAuth sign-in
+ * Full steps: docs/ENV.md § OAuth sign-in
  */
 const STEPS = [
   {
@@ -64,4 +64,4 @@ for (const step of STEPS) {
   console.log('');
 }
 console.log('Never flip NEXT_PUBLIC_OAUTH_* before the matching Supabase provider is enabled.');
-console.log('Details: ENV.md');
+console.log('Details: docs/ENV.md');

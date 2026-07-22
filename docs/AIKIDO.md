@@ -1,7 +1,7 @@
 # Aikido Security — Cursor + CI
 
 **Audience:** Founder + agents  
-**Complements:** [PROTECTION.md](../PROTECTION.md), [OWASP_AUDIT.md](OWASP_AUDIT.md), [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md), soft `npm audit` + CodeQL in CI.
+**Complements:** [PROTECTION.md](PROTECTION.md), [OWASP_AUDIT.md](OWASP_AUDIT.md), [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md), soft `npm audit` + CodeQL in CI.
 
 Aikido is **not** a replacement for those tools. Cursor MCP is for day-to-day SAST/secrets triage; GitHub Actions gates **CRITICAL** dependency findings on `master` / PRs when the CI secret is set.
 

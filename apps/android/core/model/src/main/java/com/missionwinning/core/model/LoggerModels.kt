@@ -19,6 +19,8 @@ data class LoggedSet(
     val kind: SetKind = SetKind.Normal,
     /** Optional free-text note for this set (Phase 10). */
     val note: String = "",
+    /** True when this completed set is a new e1RM PR (session-local). */
+    val isPr: Boolean = false,
 )
 
 @Immutable

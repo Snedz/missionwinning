@@ -1,16 +1,17 @@
 # INDEX.md — Mission Winning map
 
-**Agents: read [AGENTS.md](AGENTS.md) first, then this file, then the folder INDEX for your task area.**
+**Agents: read [CONTEXT.md](CONTEXT.md) first (boot file), then [AGENTS.md](AGENTS.md), then this file, then the folder INDEX for your task area.**
 
 ---
 
 ## 1. Read order (new agents)
 
+0. [CONTEXT.md](CONTEXT.md) — **boot file**: current status (`## Now`), trap terms, hard rules
 1. [AGENTS.md](AGENTS.md) — conventions, glossary, commands
 2. [vision.md](vision.md) — product constitution
 3. [ORCHESTRATION.md](ORCHESTRATION.md) — **what to do next** (horizons 0–3, gates, kill criteria)
-4. [PLAN.md](PLAN.md) — build phases A–I detail
-5. [LOG.md](LOG.md) — chronological dev log (newest first)
+4. [docs/PLAN.md](docs/PLAN.md) — build phases A–I detail
+5. [LOG.md](LOG.md) — chronological dev log (newest first; older entries in `docs/archive/log/`)
 6. Everything below — only when your task requires it
 
 ---
@@ -20,33 +21,35 @@
 | If you are… | Read first | Do not use as source of truth |
 |-------------|------------|-------------------------------|
 | **Deciding what to build next** | [ORCHESTRATION.md](ORCHESTRATION.md) | Old chat plans; infinite feature lists |
-| Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [PLAN.md](PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
-| Launch / deploy | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md), [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md), [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md), [ENV.md](ENV.md), [docs/archive/BETA_LAUNCH_OPS.md](docs/archive/BETA_LAUNCH_OPS.md), [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) | [SETUP.md](SETUP.md) (one-time LLC/domain setup) |
-| Social / launch posts | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [BETA_INVITE.md](BETA_INVITE.md) | — |
+| Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [docs/PLAN.md](docs/PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
+| Launch / deploy | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md), [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md), [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md), [docs/ENV.md](docs/ENV.md), [docs/archive/BETA_LAUNCH_OPS.md](docs/archive/BETA_LAUNCH_OPS.md), [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) | [docs/archive/SETUP.md](docs/archive/SETUP.md) (one-time LLC/domain setup) |
+| Social / launch posts | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
 | Brand / press / media kit | [docs/brand-guidelines.md](docs/brand-guidelines.md), `/press`, `public/brand/` | — |
+| Book / guidebook (Beyond the Basics) | [docs/STRATEGY.md](docs/STRATEGY.md) § book, [docs/guidebook-originality-log.md](docs/guidebook-originality-log.md), `src/data/guidebook/` | Verbatim ISSA text (originality log is mandatory) |
 | LLC + Stripe | [docs/LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md), [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/PRELAUNCH_CAPITAL.md](docs/PRELAUNCH_CAPITAL.md) | Paid ads before week-4; native apps before retention |
-| Pre-revenue entity + take-a-dollar gate | [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md), [docs/legal/ENTITY_RESEARCH.md](docs/legal/ENTITY_RESEARCH.md), [docs/legal/OPERATING_AGREEMENT_DRAFT.md](docs/legal/OPERATING_AGREEMENT_DRAFT.md) | [SETUP.md](SETUP.md) payments section (stale PayPal-first); filing without counsel |
+| Pre-revenue entity + take-a-dollar gate | [docs/PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md), [docs/legal/ENTITY_RESEARCH.md](docs/legal/ENTITY_RESEARCH.md), [docs/legal/OPERATING_AGREEMENT_DRAFT.md](docs/legal/OPERATING_AGREEMENT_DRAFT.md) | [docs/archive/SETUP.md](docs/archive/SETUP.md) payments section (stale PayPal-first); filing without counsel |
 | Stripe dispute shield | [docs/STRIPE_DISPUTE_OPS.md](docs/STRIPE_DISPUTE_OPS.md), [docs/legal/STRIPE_DISPUTE_EVIDENCE_PACK.md](docs/legal/STRIPE_DISPUTE_EVIDENCE_PACK.md) | Auto-fighting chargebacks; Radar for Platforms (not Connect) |
 | Legal safety (AI / Terms / DMCA / labels) | [docs/LEGAL_SAFETY.md](docs/LEGAL_SAFETY.md), `/privacy`, `/terms`, `/dmca` | Session chat plans as counsel substitute |
 | Pay-ready legal (six docs) | [docs/PAY_READY_LEGAL.md](docs/PAY_READY_LEGAL.md), `/refunds`, [docs/legal/](docs/legal/) | Claiming enterprise SLAs on consumer Bundle |
-| Mobile / native apps | [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md), [`apps/android`](apps/android), [apps/android/ARCHITECTURE.md](apps/android/ARCHITECTURE.md) | Expo/TWA as the Android product; starting iOS before Android Phase 1 ([docs/IOS_DEFERRED.md](docs/IOS_DEFERRED.md)) |
+| Mobile / native apps | [docs/ANDROID_NATIVE.md](docs/ANDROID_NATIVE.md), [`apps/android`](apps/android), [apps/android/ARCHITECTURE.md](apps/android/ARCHITECTURE.md) | Expo/TWA as the Android product; starting iOS before Android Phase 1 ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) |
 | Mobile (Expo prototype) | [docs/NATIVE_MOBILE.md](docs/NATIVE_MOBILE.md), [`apps/mobile`](apps/mobile) | Shipping Expo to Play as the product |
 | Mobile (TWA optional) | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Using TWA instead of Compose native |
 | Wearables (Horizon 3) | [docs/WEARABLES.md](docs/WEARABLES.md) | Live OAuth/hubs until retention unlock |
-| Premium / conversion | [REDTEAM.md](REDTEAM.md), [STRATEGY.md](STRATEGY.md) | — |
-| **YC / product wedge** | [docs/YC_THESIS.md](docs/YC_THESIS.md), [STRATEGY.md](STRATEGY.md) | Pitching “everything app” as the company; [vision.md](vision.md) is constitution, not the YC one-liner |
+| Premium / conversion | [docs/REDTEAM.md](docs/REDTEAM.md), [docs/STRATEGY.md](docs/STRATEGY.md) | — |
+| **YC / product wedge** | [docs/YC_THESIS.md](docs/YC_THESIS.md), [docs/STRATEGY.md](docs/STRATEGY.md) | Pitching “everything app” as the company; [vision.md](vision.md) is constitution, not the YC one-liner |
 | **Accelerator apps (Jul–Aug 2026)** | [docs/ACCELERATOR_SPRINT.md](docs/ACCELERATOR_SPRINT.md), [docs/applications/INDEX.md](docs/applications/INDEX.md) | Fabricating traction; Cardano pivot; flipping `PRIVATE_MODE` for demos |
-| Journey UX (I-Day → Commissioned) | [JOURNEY.md](JOURNEY.md) | Build phases in [PLAN.md](PLAN.md) (different “phase”) |
+| Journey UX (I-Day → Commissioned) | [docs/JOURNEY.md](docs/JOURNEY.md) | Build phases in [docs/PLAN.md](docs/PLAN.md) (different “phase”) |
 | UI unification | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | — |
 | Experience build (v4) | [docs/archive/ROADMAP_V4_EXPERIENCE.md](docs/archive/ROADMAP_V4_EXPERIENCE.md) | Old chat plans in `~/.cursor/plans/` |
 | Design research / system | [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md), [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md), [docs/DESTRUCTIVE_UX.md](docs/DESTRUCTIVE_UX.md) | — |
+| UI/UX audit (hero flows) | [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | Landing redesigns while beta gates red |
 | SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md), [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md) | — |
 | Stripe + premium | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |
 | Phantom USDC lifetime | [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md) | — |
-| Vision scorecard | [VISION_STATUS.md](VISION_STATUS.md) | — |
-| Beta testers | [BETA_INVITE.md](BETA_INVITE.md) | — |
-| Security | [PROTECTION.md](PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md) | Certification claims / Vanta substitutes as “done” |
-| Vercel deploy | [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | — |
+| Vision scorecard | [docs/VISION_STATUS.md](docs/VISION_STATUS.md) | — |
+| Beta testers | [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
+| Security | [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/AIKIDO.md](docs/AIKIDO.md) | Certification claims / Vanta substitutes as “done” |
+| Vercel deploy | [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) | — |
 | **Production / ops maturity (13 layers)** | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md), [docs/CACHE_LADDER.md](docs/CACHE_LADDER.md) | Feature roadmaps; claiming all 13 “done” |
 | Pre-launch checklist | [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) | — |
 | Post-launch cadence | [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) | — |
@@ -56,7 +59,7 @@
 | **Contributing** | [CONTRIBUTING.md](CONTRIBUTING.md) | — |
 | **Doc hub (all audiences)** | [docs/README.md](docs/README.md) | — |
 
-**Phase naming trap:** Journey “Phase 0–3” ([JOURNEY.md](JOURNEY.md)) ≠ build phases A–I ([PLAN.md](PLAN.md)) ≠ PFT sub-phases G1–G8.
+**Phase naming trap:** Journey “Phase 0–3” ([docs/JOURNEY.md](docs/JOURNEY.md)) ≠ build phases A–I ([docs/PLAN.md](docs/PLAN.md)) ≠ PFT sub-phases G1–G8.
 
 ---
 
@@ -94,19 +97,25 @@
 | `src/locales/` | **Deprecated** — use `src/i18n/` |
 | `app/about/`, `app/vision/`, etc. (empty) | **Removed** — routes live in `app/(app)/` |
 | `~/.cursor/plans/*.plan.md` | Session plans — not repo truth |
+| Root `STRATEGY.md` / `PLAN.md` / `REDTEAM.md` / `JOURNEY.md` / `LAUNCH_RUNBOOK.md` / `ENV.md` / `PROTECTION.md` / `BETA_INVITE.md` / `VISION_STATUS.md` / `VERCEL_DEPLOY_CHECKLIST.md` | **Moved 2026-07-21** → same name under `docs/` |
+| Root `ACCEPTABLE_USE.md` | **Moved** → `docs/legal/ACCEPTABLE_USE.md` |
+| Root `SETUP.md` | **Archived** (stale PayPal-first) → `docs/archive/SETUP.md` |
+| `docs/IOS_DEFERRED.md` | **Renamed** → `docs/IOS_PLAYBOOK.md` |
 
 ---
 
-## 5. Root planning docs (full list)
+## 5. Planning docs (root spine + docs/)
+
+Root keeps only the spine: README · CONTEXT · AGENTS · INDEX · vision · ORCHESTRATION · LOG · CONTRIBUTING · SECURITY (+ CLAUDE/GEMINI tool pointers). Everything else lives under `docs/`.
 
 | File | Purpose |
 |------|---------|
 | [vision.md](vision.md) | Constitution |
-| [STRATEGY.md](STRATEGY.md) | Business plan |
-| [REDTEAM.md](REDTEAM.md) | Assumptions audit |
-| [PLAN.md](PLAN.md) | Build roadmap |
+| [docs/STRATEGY.md](docs/STRATEGY.md) | Business plan |
+| [docs/REDTEAM.md](docs/REDTEAM.md) | Assumptions audit |
+| [docs/PLAN.md](docs/PLAN.md) | Build roadmap |
 | [LOG.md](LOG.md) | Dev log |
-| [JOURNEY.md](JOURNEY.md) | Mission journey UX |
+| [docs/JOURNEY.md](docs/JOURNEY.md) | Mission journey UX |
 | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | UI unification |
 | [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) | Launch checklist |
 | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) | Social + launch post kit |
@@ -116,13 +125,13 @@
 | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) | Public flip day |
 | [docs/TWA_MOBILE_PLAYBOOK.md](docs/TWA_MOBILE_PLAYBOOK.md) | Deferred Play/iOS shells |
 | [docs/WEARABLES.md](docs/WEARABLES.md) | Multi-vendor wearables (Apple, Google, Whoop, …) |
-| [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
-| [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |
-| [BETA_INVITE.md](BETA_INVITE.md) | Beta kit |
+| [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) | Founder critical path |
+| [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) | Deploy steps |
+| [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | Beta kit |
 | [docs/issa-source-map.md](docs/issa-source-map.md) | ISSA topic map → guidebook |
 | Magazine PDF | `public/magazine/beyond-the-basics.pdf` · print source `/guide/print` |
-| [ENV.md](ENV.md) | Environment variables |
-| [SETUP.md](SETUP.md) | One-time setup |
-| [PROTECTION.md](PROTECTION.md) | Security checklist |
+| [docs/ENV.md](docs/ENV.md) | Environment variables |
+| [docs/archive/SETUP.md](docs/archive/SETUP.md) | One-time setup — **archived, stale PayPal-first** |
+| [docs/PROTECTION.md](docs/PROTECTION.md) | Security checklist |
 | [docs/COMPLIANCE.md](docs/COMPLIANCE.md) | SOC2/ISO/HIPAA map-only control monitor (not a certification) |
-| [VISION_STATUS.md](VISION_STATUS.md) | Vision scorecard |
+| [docs/VISION_STATUS.md](docs/VISION_STATUS.md) | Vision scorecard |

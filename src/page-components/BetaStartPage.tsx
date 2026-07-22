@@ -6,7 +6,7 @@
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { CheckCircle2, ChevronRight, Globe, Rocket, Trophy } from 'lucide-react';
+import { CheckCircle2, ChevronRight, Dumbbell, Rocket, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
@@ -23,7 +23,7 @@ export function BetaStartPage() {
       title={t('infoBetaTitle', { defaultValue: 'Start here' })}
       subtitle={t('infoBetaSubtitle', {
         defaultValue:
-          'Mission Winning is in private development. You are among the first Mission Operators helping us validate the journey, Today hub, and rankings before public launch.',
+          'Private beta — help us validate I-Day → first workout → Mission Coach before public launch.',
       })}
       variant="sections"
       footer={
@@ -85,22 +85,22 @@ export function BetaStartPage() {
         <div className="grid sm:grid-cols-2 gap-3 text-sm">
           <Card className="content-card">
             <CardContent className="p-4 flex gap-3">
-              <Globe className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <Dumbbell className="h-5 w-5 text-primary shrink-0 mt-0.5" />
               <div>
-                <div className="font-medium">Languages</div>
+                <div className="font-medium">Train anywhere</div>
                 <p className="text-muted-foreground mt-1">
-                  Nav and welcome work in 12+ languages. Change language on Profile → Language.
+                  Log a full session from Today → Train. Offline works — no account required for the logger.
                 </p>
               </div>
             </CardContent>
           </Card>
           <Card className="content-card">
             <CardContent className="p-4 flex gap-3">
-              <Trophy className="h-5 w-5 text-[hsl(var(--status-warn))] shrink-0 mt-0.5" />
+              <Sparkles className="h-5 w-5 text-primary shrink-0 mt-0.5" />
               <div>
-                <div className="font-medium">Leaderboard sync</div>
+                <div className="font-medium">Mission Coach</div>
                 <p className="text-muted-foreground mt-1">
-                  Sign in and tap Sync on Rankings after workouts. Night and dawn sessions count on themed boards.
+                  After your first log, open Coach for a weekly plan that adapts from your sessions alone.
                 </p>
               </div>
             </CardContent>

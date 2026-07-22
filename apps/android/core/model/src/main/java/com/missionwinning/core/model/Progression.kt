@@ -62,6 +62,29 @@ object Progression {
     }
 
     /**
+     * True when this set beats all [priorSamples] for the same exercise by e1RM.
+     * First weighted working set for an exercise counts as a PR.
+     */
+    fun isPersonalRecord(
+        exerciseId: String,
+        weight: Double,
+        reps: Int,
+        kind: SetKind = SetKind.Normal,
+        priorSamples: List<SetSample>,
+    ): Boolean {
+        if (weight <= 0 || reps <= 0) return false
+        if (!SetKind.countsTowardPr(kind)) return false
+        val newEst = estimated1rm(weight, reps)
+        val priorBest = priorSamples
+            .asSequence()
+            .filter { it.exerciseId == exerciseId }
+            .filter { SetKind.countsTowardPr(it.kind) }
+            .filter { it.weight > 0 && it.reps > 0 }
+            .maxOfOrNull { estimated1rm(it.weight, it.reps) }
+        return priorBest == null || newEst > priorBest + 1e-6
+    }
+
+    /**
      * Best estimated 1RM per exercise from weighted sets.
      * Sorted by e1rm descending.
      */

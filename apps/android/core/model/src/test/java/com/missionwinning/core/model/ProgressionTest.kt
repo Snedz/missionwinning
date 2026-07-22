@@ -1,6 +1,7 @@
 package com.missionwinning.core.model
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -55,5 +56,49 @@ class ProgressionTest {
         assertEquals(1, prs.size)
         assertEquals(100.0, prs[0].weight, 0.0)
         assertEquals(5, prs[0].reps)
+    }
+
+    @Test
+    fun isPersonalRecord_firstWorkingSetIsPr() {
+        assertTrue(
+            Progression.isPersonalRecord(
+                exerciseId = "bench-press",
+                weight = 100.0,
+                reps = 5,
+                priorSamples = emptyList(),
+            ),
+        )
+    }
+
+    @Test
+    fun isPersonalRecord_falseForWarmupAndBelowPrior() {
+        val prior = listOf(
+            Progression.SetSample("bench-press", "Bench", 100.0, 5, "2026-01-01T00:00:00Z"),
+        )
+        assertFalse(
+            Progression.isPersonalRecord(
+                exerciseId = "bench-press",
+                weight = 140.0,
+                reps = 5,
+                kind = SetKind.Warmup,
+                priorSamples = prior,
+            ),
+        )
+        assertFalse(
+            Progression.isPersonalRecord(
+                exerciseId = "bench-press",
+                weight = 90.0,
+                reps = 5,
+                priorSamples = prior,
+            ),
+        )
+        assertTrue(
+            Progression.isPersonalRecord(
+                exerciseId = "bench-press",
+                weight = 110.0,
+                reps = 5,
+                priorSamples = prior,
+            ),
+        )
     }
 }

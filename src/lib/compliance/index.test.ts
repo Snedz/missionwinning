@@ -36,14 +36,14 @@ describe('compliance catalog', () => {
     assert.equal(ev.result, 'n_a');
   });
 
-  it('doc_exists passes for PROTECTION.md', () => {
+  it('doc_exists passes for docs/PROTECTION.md', () => {
     const control: ComplianceControl = {
       id: 'T',
       title: 't',
       frameworks: ['soc2'],
       category: 'test',
       owner: 'agent',
-      evidence: 'PROTECTION.md',
+      evidence: 'docs/PROTECTION.md',
       probe: 'doc_exists',
       status: 'automated',
     };

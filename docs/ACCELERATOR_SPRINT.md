@@ -40,7 +40,7 @@
 
 | When | Action |
 |------|--------|
-| Jul 20–21 | Beta blitz ≥20 [BETA_INVITE.md](../BETA_INVITE.md); phone hero QA; film 60s demo (seed below); open forms |
+| Jul 20–21 | Beta blitz ≥20 [BETA_INVITE.md](BETA_INVITE.md); phone hero QA; film 60s demo (seed below); open forms |
 | Jul 22–23 | Watch BetaAdminPanel; **CDL submit** (may note public launch date) |
 | Jul 24–25 | **Founder** `PRIVATE_MODE=false` after Wave A + gates; `SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify`; soft posts |
 | Jul 25–27 | Capture honest N; **YC + video** |

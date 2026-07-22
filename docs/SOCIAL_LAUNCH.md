@@ -4,7 +4,7 @@
 **Visual assets:** Brand logos, colors, OG image → [/press](https://www.missionwinning.com/press) · [brand-guidelines.md](brand-guidelines.md)  
 **Rule:** Social gets people into I-Day → first workout. No paid ads until week-4 retention holds.  
 **Capital:** [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) · outreach help: [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md)  
-**Companion:** [STRATEGY.md](../STRATEGY.md) · [BETA_INVITE.md](../BETA_INVITE.md) · [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) · [YC_THESIS.md](YC_THESIS.md)
+**Companion:** [STRATEGY.md](STRATEGY.md) · [BETA_INVITE.md](BETA_INVITE.md) · [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) · [YC_THESIS.md](YC_THESIS.md)
 
 **Wedge line (use everywhere):** Free offline logger + adaptive Mission Coach from logs (no wearable). Six pillars stay below the fold / second sentence — not the hook.
 
@@ -16,7 +16,7 @@
 
 | Channel | Action |
 |---------|--------|
-| Warm DMs | Highest ROI — use [BETA_INVITE.md](../BETA_INVITE.md) |
+| Warm DMs | Highest ROI — use [BETA_INVITE.md](BETA_INVITE.md) |
 | 2 communities you already use | Value first, then builder-story beta ask |
 | **One** vertical account | TikTok **or** Instagram Reels (same clips) — you the builder |
 | Skip | LinkedIn company page, daily Twitter, YouTube long-form, Discord server, paid boosts |

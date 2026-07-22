@@ -18,7 +18,7 @@
 | `:core:common` | Shared Result helpers |
 | `:core:data` | Room SoT + sync outbox + `MwRepository` |
 | `:core:network` | Mobile OpenAPI client |
-| `:benchmark` | Baseline Profile / Macrobenchmark stub (F4) |
+| `:benchmark` | Macrobenchmark Baseline Profile generator (F2.5) |
 
 ## Wear OS (Phase 6)
 

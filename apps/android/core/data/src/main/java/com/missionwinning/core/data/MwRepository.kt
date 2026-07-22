@@ -73,6 +73,7 @@ class MwRepository(
         sets: List<SetLogEntity>,
         sessionId: String?,
     ): FinishWorkoutResult = workouts.finishWorkout(workoutName, durationSeconds, sets, sessionId)
+    suspend fun softDeleteWorkout(id: String) = workouts.softDelete(id)
     suspend fun workoutById(id: String): WorkoutLogEntity? = workouts.workoutById(id)
     suspend fun setsForWorkout(workoutId: String): List<SetLogEntity> =
         workouts.setsForWorkout(workoutId)

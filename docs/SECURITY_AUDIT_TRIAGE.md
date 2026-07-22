@@ -55,5 +55,5 @@ No evidence of `SUPABASE_SERVICE_ROLE_KEY` or webhook secrets in client bundles 
 ## Related
 
 - [OWASP_AUDIT.md](OWASP_AUDIT.md)
-- [PROTECTION.md](../PROTECTION.md)
+- [PROTECTION.md](PROTECTION.md)
 - `src/lib/cryptoCheckout/INDEX.md`

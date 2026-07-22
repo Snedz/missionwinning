@@ -125,9 +125,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
         <EmptyState
           icon={Sparkles}
           title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week yet' })}
-          description={t('coachTasterDesc', {
+          description={t('coachGenerateEmptyDesc', {
             defaultValue:
-              'Unlock Mission Coach to regenerate and adapt your plan every week.',
+              'Generate a free taster week from your logs. Premium unlocks regenerate and deeper adaptation.',
           })}
           actionLabel={t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
           onAction={() => generate()}

@@ -2,7 +2,7 @@
 
 **Purpose:** Founder steps to form an entity and turn on Stripe (PayPal / USDC via Stripe).  
 **Not legal/tax advice** — confirm with a CPA/attorney in your jurisdiction.  
-**Companion:** [SETUP.md](../SETUP.md) · [docs/STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) · [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) §4 · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) (Terms / Privacy / Refunds / DPA / MSA / cyber) · [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) · [legal/ENTITY_RESEARCH.md](legal/ENTITY_RESEARCH.md) · [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md)
+**Companion:** [SETUP.md](archive/SETUP.md) · [docs/STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) · [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §4 · [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md) (Terms / Privacy / Refunds / DPA / MSA / cyber) · [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) · [legal/ENTITY_RESEARCH.md](legal/ENTITY_RESEARCH.md) · [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md)
 
 **Entity research / OA draft:** [legal/ENTITY_RESEARCH.md](legal/ENTITY_RESEARCH.md) · [legal/OPERATING_AGREEMENT_DRAFT.md](legal/OPERATING_AGREEMENT_DRAFT.md) — do not duplicate Stripe webhook steps here; see §2 and STRIPE_PREMIUM_SETUP.
 
@@ -15,7 +15,7 @@
 3. Stripe under the business (or sole-prop first, migrate later)  
 4. Live **Checkout Sessions** (or Payment Links) + webhook on Vercel  
 5. Public **refund policy** live at `/refunds` + support path that can issue refunds  
-6. Enable PayPal + Crypto (USDC) in Stripe Dashboard after LLC + support/refund path exists ([ENV.md](../ENV.md))  
+6. Enable PayPal + Crypto (USDC) in Stripe Dashboard after LLC + support/refund path exists ([ENV.md](ENV.md))  
 7. **Before school/enterprise or data at scale:** cyber liability insurance quote (~$200–600/yr ballpark — verify with broker); DPA/MSA from [legal/](legal/)
 
 ---
@@ -28,7 +28,7 @@
 - [ ] Decide support inbox: `support@missionwinning.com` (or `hello@`) — create mailbox before charging anyone
 - [ ] Cyber liability insurance (optional day one; required before institutional data at scale) — [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
 
-Optional later: Mission Winning Foundation (501(c)(3)) — see [SETUP.md](../SETUP.md). Not required for Stripe launch.
+Optional later: Mission Winning Foundation (501(c)(3)) — see [SETUP.md](archive/SETUP.md). Not required for Stripe launch.
 
 **Capital priority (unlimited funds):** entity + counsel + trademark before ads — [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md).
 
@@ -123,7 +123,7 @@ Full detail: [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md).
 ## §3 — PayPal + USDC (after LLC)
 
 Enable **inside Stripe** (Checkout automatic payment methods) — not a separate PayPal button path.  
-Standalone PayPal webhook ([ENV.md](../ENV.md)) remains for a future MoR path; unconfigured returns 503.
+Standalone PayPal webhook ([ENV.md](ENV.md)) remains for a future MoR path; unconfigured returns 503.
 
 Crypto: complete Stripe USDC eligibility, then lifetime buyers can choose USDC in Checkout.
 

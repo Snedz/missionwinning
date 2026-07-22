@@ -1,6 +1,6 @@
 # OWASP Security Audit — Mission Winning
 
-**Last audit:** 2026-07-05 (full sweep) · **Refresh:** 2026-07-16 (red-team plan + residual risks). Living companion to [PROTECTION.md](../PROTECTION.md).
+**Last audit:** 2026-07-05 (full sweep) · **Refresh:** 2026-07-16 (red-team plan + residual risks). Living companion to [PROTECTION.md](PROTECTION.md).
 
 ---
 
@@ -129,8 +129,8 @@ Living matrix: [app/api/INDEX.md](../app/api/INDEX.md).
 
 ## Related docs
 
-- [PROTECTION.md](../PROTECTION.md) — implementation log + curl checklist
+- [PROTECTION.md](PROTECTION.md) — implementation log + curl checklist
 - [SECURITY_AUDIT_TRIAGE.md](SECURITY_AUDIT_TRIAGE.md) — npm audit accept/fix
-- [ENV.md](../ENV.md) — secret inventory
+- [ENV.md](ENV.md) — secret inventory
 - [docs/archive/BETA_LAUNCH_OPS.md](archive/BETA_LAUNCH_OPS.md) — launch gates
 - [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) — post-public smoke

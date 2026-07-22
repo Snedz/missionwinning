@@ -10,7 +10,7 @@
  * - No session recording, no autocapture — only the typed events below.
  * - posthog-js is dynamic-imported so it never ships on first paint when unused.
  *
- * The funnel these events exist to answer (STRATEGY.md #1 metric):
+ * The funnel these events exist to answer (docs/STRATEGY.md #1 metric):
  *   visit → iday_started → iday_mission_accepted → iday_profile_completed →
  *   iday_completed → first_workout_completed → workout_completed (repeat) →
  *   week-4 retention cohort.

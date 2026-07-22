@@ -1,6 +1,6 @@
 /**
  * Which Today sections show per journey phase.
- * Consumers: HomePage | See: JOURNEY.md
+ * Consumers: HomePage | See: docs/JOURNEY.md
  */
 import type { JourneyPhase } from '@/lib/missionJourney';
 

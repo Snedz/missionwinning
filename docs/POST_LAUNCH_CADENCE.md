@@ -1,6 +1,6 @@
 # Post-launch operating cadence
 
-**Wall metric (year one):** week-4 retained weekly loggers — users who log ≥1 workout in week 4 after first workout. Everything else is vanity until this holds. ([STRATEGY.md](../STRATEGY.md))
+**Wall metric (year one):** week-4 retained weekly loggers — users who log ≥1 workout in week 4 after first workout. Everything else is vanity until this holds. ([STRATEGY.md](STRATEGY.md))
 
 ## How to measure week-4 retention
 
@@ -19,7 +19,7 @@ select * from mw_week4_retention();
 -- or the expanded CTE in git history if RPC not applied yet
 ```
 
-Target: **≥10%** of eligible cohort across two cohorts. If below: stop acquisition, 10 interviews ([REDTEAM.md](../REDTEAM.md) A4).
+Target: **≥10%** of eligible cohort across two cohorts. If below: stop acquisition, 10 interviews ([REDTEAM.md](REDTEAM.md) A4).
 
 **Automated:** Monday cron `GET /api/cron/weekly-digest` emails funnel + retention + referral stats to `FOUNDER_DIGEST_EMAIL` (dryRun supported).
 
@@ -49,7 +49,7 @@ SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify
 
 ## Monthly
 
-- Re-read [REDTEAM.md](../REDTEAM.md) §1 against falsifying evidence
+- Re-read [REDTEAM.md](REDTEAM.md) §1 against falsifying evidence
 - Stripe → `enrollments` reconciliation
 - `npm audit`
 
@@ -76,4 +76,4 @@ Sequence stays: **beta → public → week-4 numbers → apply**. Do not skip.
 | Demo clip | 60s I-Day → log → Coach adapts | Before apply |
 | Insight receipts | 20 “why I almost quit” notes | Before apply |
 
-Companion: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) §6 · [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · [YC_THESIS.md](YC_THESIS.md)
+Companion: [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §6 · [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) · [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) · [YC_THESIS.md](YC_THESIS.md)

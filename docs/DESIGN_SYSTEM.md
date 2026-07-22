@@ -126,11 +126,15 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 
 ---
 
-## Motion
+## Motion & interaction
 
 - CSS-first, 200–450ms, `prefers-reduced-motion` gates all entrance animations
+- Duration tiers: **150ms** press/hover feedback · **200–250ms** state changes (toggles, tab switches) · **300–450ms** entrances/reveals. One easing family: `ease-out` for entrances, `ease-in-out` for state changes. No spring/bounce in-app (marketing `/experience` excepted).
 - `score-tick` on ring center values; `ring-draw-in` on ring mount
-- Press: `.pressable-card` / `primary-action` active scale
+- Press: `.pressable-card` / `primary-action` active scale — every tappable surface gives press feedback
+- **No layout shift on data load**: reserve space with skeletons/placeholders; numbers use `tabular-nums` so ticks don't jitter
+- One entrance stagger per screen (PillarPageShell owns it); elements never animate twice on the same mount
+- Android mirrors these values (`core/designsystem` enter-fade + reduce-motion); keep parity when tuning
 
 ---
 

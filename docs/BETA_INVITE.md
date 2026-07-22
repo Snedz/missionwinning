@@ -2,11 +2,11 @@
 
 Use this when inviting the first **10 private beta operators**. Prod is live at **https://www.missionwinning.com** (private gate on). Share the access code from Vercel `PRIVATE_ACCESS_SECRET` / `PRIVATE_ACCESS_CODES`.
 
-**Current status (2026-07-19):** Launch eng closeout green (migrations, digest, webhook enrollment ping, launch-verify). **Recruiting still the critical path** before `PRIVATE_MODE=false`.
+**Current status (2026-07-21):** Launch eng closeout green. **Recruiting still the critical path** before `PRIVATE_MODE=false`.
 
 **Deferral:** Cohort of ≥10 invites targeted by **2026-08-02** (Horizon 0 day-14). Founder owns phone hero QA + personal invites; agents fix only #1 confusion from tester feedback.
 
-**Paid help:** Optional outreach VA — [docs/OUTREACH_VA_BRIEF.md](docs/OUTREACH_VA_BRIEF.md). **Zero paid ads** until week-4 ([docs/PRELAUNCH_CAPITAL.md](docs/PRELAUNCH_CAPITAL.md)).
+**Paid help:** Optional outreach VA — [docs/OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md). **Zero paid ads** until week-4 ([docs/PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md)).
 
 ---
 
@@ -15,21 +15,18 @@ Use this when inviting the first **10 private beta operators**. Prod is live at 
 **Preferred:** issue invites in-app — **Profile → Beta funnel → Invites** (requires `BETA_ADMIN_EMAILS`). Each invite gets a unique `MW-B-XXXXX` code and a full link:
 
 ```
-https://www.missionwinning.com/?access=<shared_gate_secret>&invite=MW-B-XXXXX
+https://www.missionwinning.com/private?invite=MW-B-XXXXX
 ```
 
-- `access` is the private gate password from env (not stored in DB).
-- `invite` is per-person attribution (`profiles.invited_via` + `beta_invites` funnel).
+- Link opens the private gate with invite attribution (`profiles.invited_via` + `beta_invites` funnel).
+- **Access code is shared separately** (email/DM). Production does **not** accept `?access=` in the URL unless you deliberately set `PRIVATE_ALLOW_QUERY_ACCESS=true` ([ENV.md](ENV.md), [PROTECTION.md](PROTECTION.md)).
+- When `?invite=` is present, `/private` expands the access-code form ("You're invited…").
 
-After the first visit, a 30-day gate cookie is set — they can bookmark `/beta` or `/log` without the query param.
+After the first successful gate entry, a 30-day cookie is set — they can bookmark `/beta` or `/log` without query params.
 
-**Fallback (no panel):** shared access only:
+**Fallback (no panel):** send them to `/private` and share the access code in the same message.
 
-```
-https://www.missionwinning.com/?access=YOUR_CODE
-```
-
-Or send them to `/private` and share the access code separately.
+**Optional (founder security tradeoff):** if `PRIVATE_ALLOW_QUERY_ACCESS=true`, issued links may also include `?access=…` for one-tap entry — do not enable casually (query leaks).
 
 **Copy source for day-2 / day-7 scripts:** still this file (below). Automated email uses the same wording when invite email is set and Resend is configured (`/api/cron/nudges`).
 
@@ -41,18 +38,19 @@ Or send them to `/private` and share the access code separately.
 
 Hi [Name],
 
-You're in the first cohort of **Mission Winning** — free offline workout logging (no account) plus **Mission Coach**: weekly plans that adapt from your logs alone (no wearable). Guided path: I-Day → first workout → rankings.
+You're in the first cohort of **Mission Winning** — free offline workout logging (no account) plus **Mission Coach**: weekly plans that adapt from your logs alone (no wearable). Guided path: I-Day → first workout → Mission Coach.
 
 **Start here (2 minutes):**
-1. Open: `https://www.missionwinning.com/?access=YOUR_CODE`
-2. Read the beta guide: `/beta`
-3. Complete **I-Day** at `/welcome`
-4. Log one workout from **Today**
-5. Open **Mission Coach** (`/coach`) after your first log — see how the week adapts
-6. Optional: sign in on **Profile** for cloud sync
+1. Open: `https://www.missionwinning.com/private?invite=MW-B-XXXXX` (or plain `/private`)
+2. Enter access code: `YOUR_CODE` (from this email / DM — not in the URL)
+3. Read the beta guide: `/beta`
+4. Complete **I-Day** at `/welcome`
+5. Log one workout from **Today**
+6. Open **Mission Coach** (`/coach`) after your first log — see how the week adapts
+7. Optional: sign in on **Profile** for cloud sync
 
 **What to try:**
-- Tap **Mission Winning** in the top header to open the menu (Move, Mind, Leaderboard, Learn, etc.)
+- Tap **Mission Winning** in the top header to open the menu (Move, Mind, Learn, etc.)
 - Language switch on Profile (Thai, Japanese, Spanish, etc.)
 - Optional read: **Beyond the Basics** magazine PDF — https://www.missionwinning.com/magazine/beyond-the-basics.pdf (or browse `/guide`)
 
@@ -83,7 +81,7 @@ Thanks for helping us ship health for everyone.
 2. **Profile → Beta journey progress** (if `BETA_ADMIN_EMAILS` includes your email)
 3. **`journey_events`** — `journey_phase_complete`, `journey_commissioned`
 
-Launch gates (from [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md)): ≥10 users, I-Day ≥80%, Basic Training ≥60% before `PRIVATE_MODE=false`.
+Launch gates (from [PRE_LAUNCH_PLAN.md](archive/PRE_LAUNCH_PLAN.md)): ≥10 users, I-Day ≥80%, Basic Training ≥60% before `PRIVATE_MODE=false`.
 
 ---
 
@@ -122,7 +120,7 @@ curl -sH "Authorization: Bearer $CRON_SECRET" \
 
 Watch for A1 signal: “is there an app?” / won’t install PWA — log in invite notes or tester feedback ([REDTEAM.md](REDTEAM.md)).
 
-Social/recruiting angle: [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md).
+Social/recruiting angle: [docs/SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md).
 
 ---
 
@@ -145,5 +143,5 @@ Run in SQL Editor (idempotent):
 | `/private` | Access code gate |
 | `/welcome` | I-Day onboarding |
 | `/log` | Today hub |
-| `/leaderboard` | Rankings |
+| `/coach` | Mission Coach (after first log) |
 | `/profile` | Sign in, language, journey edit |

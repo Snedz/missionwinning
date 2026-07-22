@@ -3,7 +3,7 @@
 **Audience:** founder + whoever holds Vercel/Sentry/Upstash.  
 **Goal:** know within minutes if prod is down, checkout broke, or error rate spiked — before public flip and after.
 
-Companion: [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) · [PRODUCTION_STACK.md](PRODUCTION_STACK.md) · [API.md](API.md) (`GET /api/health`).
+Companion: [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) · [PRODUCTION_STACK.md](PRODUCTION_STACK.md) · [API.md](API.md) (`GET /api/health`).
 
 ---
 

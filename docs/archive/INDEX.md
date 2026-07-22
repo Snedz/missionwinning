@@ -26,6 +26,7 @@ When adding a doc:
 | File | Absorbed by / note |
 |------|---------------------|
 | [log/LOG-2026-06_to_2026-07-20.md](./log/LOG-2026-06_to_2026-07-20.md) | Rotated out of root LOG.md (rotation rule: ≤15 entries at root) |
+| [log/LOG-2026-07-20_tail.md](./log/LOG-2026-07-20_tail.md) | Victory / YC / pay-ready / Wave 11 — rotated 2026-07-21 |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).

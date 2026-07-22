@@ -4,11 +4,13 @@ import android.content.Intent
 import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.view.HapticFeedbackConstants
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -186,6 +188,7 @@ fun ActiveScreen(
     var pendingRemoveExerciseId by remember { mutableStateOf<String?>(null) }
     var pendingRemoveExerciseName by remember { mutableStateOf("") }
     val view = LocalView.current
+    val context = LocalContext.current
     var prevRest by remember { mutableStateOf(0) }
     val listState = rememberLazyListState()
 
@@ -241,13 +244,19 @@ fun ActiveScreen(
     LaunchedEffect(state.restSeconds) {
         if (prevRest > 0 && state.restSeconds == 0) {
             if (state.restVibrate) {
-                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                playPatternedHaptic(context, REST_END_PATTERN_MS)
             }
             if (state.restBeep) {
                 playRestEndBeep()
             }
         }
         prevRest = state.restSeconds
+    }
+    LaunchedEffect(state.lastPrSetId) {
+        if (state.lastPrSetId == null) return@LaunchedEffect
+        if (state.restVibrate) {
+            playPatternedHaptic(context, PR_PATTERN_MS)
+        }
     }
     // Keep the current set card in view as the logger advances
     LaunchedEffect(currentId, allDone, rows.size) {
@@ -339,7 +348,6 @@ fun ActiveScreen(
                                     canAddSet = (setInEx?.second ?: 0) < ActiveSessionLogic.MAX_SETS_PER_EXERCISE,
                                     canRemoveSet = true,
                                     onComplete = {
-                                        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                                         onEvent(ActiveEvent.ToggleSet(set.id))
                                     },
                                     onRepsDelta = { d ->
@@ -456,6 +464,10 @@ fun ActiveScreen(
                                         if (isNotEmpty()) append(" · ")
                                         append("📝")
                                     }
+                                    if (set.isPr) {
+                                        if (isNotEmpty()) append(" · ")
+                                        append("PR")
+                                    }
                                 }.ifBlank { null }
                                 MwSetRow(
                                     index = set.setIndex,
@@ -467,6 +479,13 @@ fun ActiveScreen(
                                         onEvent(ActiveEvent.ToggleSet(set.id))
                                     },
                                 )
+                                if (set.isPr && set.done) {
+                                    MwChip(
+                                        text = "New PR",
+                                        tone = MwChipTone.Brass,
+                                        contentDescription = "New personal record",
+                                    )
+                                }
                             }
                             is ActiveListRow.Error -> {
                                 MwCard(elevated = true) {
@@ -484,6 +503,13 @@ fun ActiveScreen(
                 }
 
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (state.lastPrSetId != null) {
+                        MwChip(
+                            text = "New PR · e1RM",
+                            tone = MwChipTone.Brass,
+                            contentDescription = "New personal record",
+                        )
+                    }
                     MwRestDock(
                         secondsLeft = state.restSeconds,
                         totalSeconds = state.restTotalSeconds,
@@ -724,6 +750,27 @@ private fun ActiveHeader(
                 },
                 onClick = { onEvent(ActiveEvent.ToggleRestBeep) },
             )
+        }
+    }
+}
+
+private val REST_END_PATTERN_MS = longArrayOf(0, 70, 50, 70, 50, 120)
+private val PR_PATTERN_MS = longArrayOf(0, 80, 40, 80, 40, 80)
+
+private fun playPatternedHaptic(context: android.content.Context, patternMs: LongArray) {
+    runCatching {
+        val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            context.getSystemService(VibratorManager::class.java)?.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            context.getSystemService(Vibrator::class.java)
+        } ?: return
+        if (!vibrator.hasVibrator()) return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createWaveform(patternMs, -1))
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(patternMs, -1)
         }
     }
 }

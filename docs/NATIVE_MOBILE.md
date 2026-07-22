@@ -1,6 +1,6 @@
 # Native Android + iOS (Expo)
 
-**Status:** Expo prototype / flow reference only. **Play product path is Kotlin Compose** — see [ANDROID_NATIVE.md](ANDROID_NATIVE.md). iOS deferred: [IOS_DEFERRED.md](IOS_DEFERRED.md).  
+**Status:** Expo prototype / flow reference only. **Play product path is Kotlin Compose** — see [ANDROID_NATIVE.md](ANDROID_NATIVE.md). iOS deferred: [IOS_PLAYBOOK.md](IOS_PLAYBOOK.md).  
 **Code:** [`apps/mobile`](../apps/mobile) · shared pure TS [`packages/mw-core`](../packages/mw-core)  
 **Thesis:** [YC_THESIS.md](YC_THESIS.md) · **Legal:** [LEGAL_SAFETY.md](LEGAL_SAFETY.md) · **LLC:** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md)
 

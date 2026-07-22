@@ -19,23 +19,23 @@ Mission Winning is open source so anyone can inspect how the free core works, im
 | Commitment | Detail |
 |------------|--------|
 | **License** | [AGPL-3.0](LICENSE) — network use requires sharing corresponding source |
-| **Acceptable use** | [ACCEPTABLE_USE.md](ACCEPTABLE_USE.md) — illegal deepfakes, CSAM, fraud, and similar abuse are banned |
+| **Acceptable use** | [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md) — illegal deepfakes, CSAM, fraud, and similar abuse are banned |
 | **Security** | [SECURITY.md](SECURITY.md) — private vulnerability reports |
 | **Local-first** | Workouts, nutrition, and journey progress stay on-device until you sign in to sync |
 | **Product analytics** | **Off by default** until you allow them (banner + Profile). No session recording, no autocapture. Do Not Track is respected |
-| **Optional AI coach** | Rules by default (no API key). When operators enable LLM voice/insight, prefer SpaceXAI/xAI with **team Zero Data Retention (ZDR)**; see [ENV.md](ENV.md) and [xAI ZDR FAQ](https://docs.x.ai/developers/faq/security#what-is-zero-data-retention-zdr) |
+| **Optional AI coach** | Rules by default (no API key). When operators enable LLM voice/insight, prefer SpaceXAI/xAI with **team Zero Data Retention (ZDR)**; see [docs/ENV.md](docs/ENV.md) and [xAI ZDR FAQ](https://docs.x.ai/developers/faq/security#what-is-zero-data-retention-zdr) |
 | **Free core** | Tracking and foundational tools stay free forever — never paywalled |
 
 We are not a clone of any coding-tool vendor; the parallel is **transparent software + user control over data**. Hosted secrets, Stripe, and production keys stay with operators — they are never committed.
 
 **Start here (2026-07 launch package):**
-- [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) — the founder's copy-paste critical path to public launch + revenue
-- [STRATEGY.md](STRATEGY.md) — lean business plan, customer profile, pricing, first-10-users playbook
-- [REDTEAM.md](REDTEAM.md) — assumptions audit, pre-mortem, competitor attack plan (read quarterly)
+- [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) — the founder's copy-paste critical path to public launch + revenue
+- [docs/STRATEGY.md](docs/STRATEGY.md) — lean business plan, customer profile, pricing, first-10-users playbook
+- [docs/REDTEAM.md](docs/REDTEAM.md) — assumptions audit, pre-mortem, competitor attack plan (read quarterly)
 
-**Environment setup:** See [ENV.md](ENV.md) for `.env.local`, Vercel variables, and the private development gate.
+**Environment setup:** See [docs/ENV.md](docs/ENV.md) for `.env.local`, Vercel variables, and the private development gate.
 
-**Build plan & log:** See [PLAN.md](PLAN.md) and [LOG.md](LOG.md).
+**Build plan & log:** See [docs/PLAN.md](docs/PLAN.md) and [LOG.md](LOG.md).
 
 ## Documentation
 
@@ -44,7 +44,7 @@ We are not a clone of any coding-tool vendor; the parallel is **transparent soft
 - **Athletes & teachers** — [docs/help/](docs/help/INDEX.md) user guides
 - **Developers** — [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/API.md](docs/API.md), [CONTRIBUTING.md](CONTRIBUTING.md)
 - **AI agents** — [AGENTS.md](AGENTS.md) + [INDEX.md](INDEX.md)
-- **License & AUP** — [LICENSE](LICENSE), [ACCEPTABLE_USE.md](ACCEPTABLE_USE.md), [SECURITY.md](SECURITY.md)
+- **License & AUP** — [LICENSE](LICENSE), [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md), [SECURITY.md](SECURITY.md)
 
 ## Features (Freemium + Super Bundle Model)
 - **Free Core (Accessible to Everyone, No Money Barrier)**: Full workout logger/tracker (RPE, rests, cues), basic library (M&S-style filters, bodyweight/minimal-equip global focus), basic nutrition logging + accessible recipes, basic assessments/streaks/challenges, 1RM benchmarks, history. Installable PWA — works offline anywhere in the world (Africa, Russia, low-resource areas). Core mission (tracking + fundamentals) is free forever.
@@ -105,7 +105,7 @@ Open http://localhost:3000 in your browser.
 - [Zustand](https://zustand.docs.pmnd.rs/) with localStorage + Supabase sync
 - Supabase (auth, DB, storage)
 - Serwist (`@serwist/next`) for installable offline-first PWA (disabled while `PRIVATE_MODE=true`)
-- Payments: **Stripe Payment Links** → verified webhook → Supabase `enrollments` (see [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)). Pricing source of truth: monthly **$11.99**, founders 12-month **$59**, lifetime **$149** (`src/lib/bundleConfig.ts` + [STRATEGY.md](STRATEGY.md)). Without live Stripe links, `/bundle` uses an honest founders waitlist. PayPal webhook at `/api/paypal-webhook` remains available. `DEMO_PREMIUM` is blocked in production builds.
+- Payments: **Stripe Payment Links** → verified webhook → Supabase `enrollments` (see [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)). Pricing source of truth: monthly **$11.99**, founders 12-month **$59**, lifetime **$149** (`src/lib/bundleConfig.ts` + [docs/STRATEGY.md](docs/STRATEGY.md)). Without live Stripe links, `/bundle` uses an honest founders waitlist. PayPal webhook at `/api/paypal-webhook` remains available. `DEMO_PREMIUM` is blocked in production builds.
 
 ## Data Storage
 
@@ -181,4 +181,4 @@ Production notes:
 - Demo "Request Access" buttons still work for testing the bundle flow.
 - PWA will be installable on the live site (the 404 you saw on /manifest.json only happens in dev mode — normal).
 
-See SETUP.md for more details if needed.
+See docs/archive/SETUP.md for more details if needed.

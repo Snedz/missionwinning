@@ -31,7 +31,7 @@ UI → ViewModel → MwRepository (façade)
 
 **Sync policy (pure):** `SyncMergeRules` — local pending/failed wins until ACK; remote revision must be higher; outbox dead-letter after 8 attempts.
 
-**Release:** minify + R8 keep rules for network serializers / SyncEngine. Baseline Profile deferred to a Macrobenchmark module (do not hand-edit invalid `baseline-prof.txt`).
+**Release:** minify + R8 keep rules for network serializers / SyncEngine. Baseline Profile: `:benchmark` Macrobenchmark + `BaselineProfileGenerator` — run `./gradlew :app:generateBaselineProfile` on device/emulator before Production promote (do not hand-edit invalid `baseline-prof.txt`).
 
 ## Rules
 

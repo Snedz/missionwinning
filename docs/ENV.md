@@ -38,9 +38,9 @@ Add these for **Production** and **Preview**:
 | `NEXT_PUBLIC_SITE_URL` | Launch | `https://www.missionwinning.com` — canonicals + OG (use www) |
 | `YOUTH_CONSENT_SECRET` | **Yes in prod** | `openssl rand -base64 32` — dedicated; never reuse gate secret |
 | `NUDGE_SECRET` | **Yes in prod** | `openssl rand -base64 32` — journey email nudge HMAC |
-| `UPSTASH_REDIS_REST_URL` | **Required before public** | Rate limits (L9) **and** premium enrollment memo (L10 — [docs/CACHE_LADDER.md](docs/CACHE_LADDER.md)). Optional in local/dev — without it, every premium check hits Postgres. |
+| `UPSTASH_REDIS_REST_URL` | **Required before public** | Rate limits (L9) **and** premium enrollment memo (L10 — [docs/CACHE_LADDER.md](CACHE_LADDER.md)). Optional in local/dev — without it, every premium check hits Postgres. |
 | `UPSTASH_REDIS_REST_TOKEN` | **Required before public** | Pair with Upstash URL above |
-| `PRIVATE_ALLOW_QUERY_ACCESS` | Optional | Set `true` only to allow `/?access=` bypass in production (deprecated) |
+| `PRIVATE_ALLOW_QUERY_ACCESS` | Optional | Set `true` only to allow `?access=` bypass in production (deprecated; prefer `/private` form + share code out-of-band) |
 | `COACH_LLM_API_URL` | Optional | OpenAI-compatible chat completions URL. Prefer SpaceXAI/xAI: `https://api.x.ai/v1/chat/completions`. Omit for rules-only coach |
 | `COACH_LLM_API_KEY` | Optional | Provider API key (e.g. `xai-…` from [console.x.ai](https://console.x.ai/)). **Never** `NEXT_PUBLIC_` |
 | `COACH_LLM_MODEL` | Optional | Model slug (e.g. `grok-4.5` — confirm on [docs.x.ai/developers/models](https://docs.x.ai/developers/models)) |
@@ -88,7 +88,7 @@ If you cannot open Vercel yet (e.g. 2FA reset), push env vars from **GitHub Secr
 
 2. **Actions → Sync Vercel env → Run workflow** (manual; does not run until you trigger it).
 
-3. Confirm gate: incognito visit to `/` should redirect to `/private`; unlock with your secret on `/private` or `/?access=SECRET`.
+3. Confirm gate: incognito visit to `/` should redirect to `/private`; unlock with your secret on the `/private` form. Invites use `/private?invite=MW-B-XXXXX` (access code shared separately). `/?access=SECRET` is off in production unless `PRIVATE_ALLOW_QUERY_ACCESS=true`.
 
 Local dry-run (with token in shell):
 
@@ -270,7 +270,7 @@ Set `CSP_ENFORCE=false` in Vercel temporarily if you need report-only on a previ
 
 ## Error monitoring (Sentry — required before public)
 
-Disabled unless `NEXT_PUBLIC_SENTRY_DSN` is set (local dev can stay silent, same pattern as PostHog). **Production must set the DSN before `PRIVATE_MODE=false`** ([docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md) L12).
+Disabled unless `NEXT_PUBLIC_SENTRY_DSN` is set (local dev can stay silent, same pattern as PostHog). **Production must set the DSN before `PRIVATE_MODE=false`** ([docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md) L12).
 
 | Variable | Required | Notes |
 |----------|----------|-------|
@@ -329,7 +329,7 @@ Webhook URL: `https://www.missionwinning.com/api/stripe-webhook`
 
 Event: `checkout.session.completed` → inserts `enrollments` (`premium_granted=true`, `product_id=super-bundle`, `user_id` when Sessions metadata present).
 
-Dashboard: enable Card, Link, wallets, PayPal, Crypto (USDC). Customer Portal for cancel/update. Details: [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md).
+Dashboard: enable Card, Link, wallets, PayPal, Crypto (USDC). Customer Portal for cancel/update. Details: [docs/STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md).
 
 Test in Stripe **test mode** before going live. Profile → premium APIs (`/api/premium/*`) return **403** without enrollment unless `DEMO_PREMIUM=true` (dev only).
 
@@ -337,7 +337,7 @@ Test in Stripe **test mode** before going live. Profile → premium APIs (`/api/
 
 ## Phantom USDC lifetime (optional)
 
-Wallet pay for **lifetime only** ($149 USDC on Solana) — see [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md).
+Wallet pay for **lifetime only** ($149 USDC on Solana) — see [docs/PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md).
 
 | Variable | Purpose |
 |----------|---------|
@@ -350,7 +350,7 @@ Wallet pay for **lifetime only** ($149 USDC on Solana) — see [docs/PHANTOM_USD
 
 ## Wearables (optional, Horizon 3)
 
-Multi-vendor sync — see [docs/WEARABLES.md](docs/WEARABLES.md). Opt-in; off unless `NEXT_PUBLIC_WEARABLES=true`. Win Score stays log-derived.
+Multi-vendor sync — see [docs/WEARABLES.md](WEARABLES.md). Opt-in; off unless `NEXT_PUBLIC_WEARABLES=true`. Win Score stays log-derived.
 
 | Variable | Purpose |
 |----------|---------|
@@ -379,10 +379,10 @@ In **GitHub → Settings → Secrets**:
 | `SMOKE_ACCESS_SECRET` | Same as `PRIVATE_ACCESS_SECRET` when gate is on |
 | `SMOKE_EXPECT_PWA` | Set `true` after `PRIVATE_MODE=false` to assert `/sw.js` + manifest in gate-smoke |
 | `DEPLOY_READINESS_TARGET` | `production` on Vercel prod builds — enforces launch env in `assertDeployReady()` |
-| `VERCEL_TOKEN` | CLI token for [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml) |
+| `VERCEL_TOKEN` | CLI token for [`.github/workflows/deploy-production.yml`](../.github/workflows/deploy-production.yml) |
 | `VERCEL_ORG_ID` | Vercel team / org id |
 | `VERCEL_PROJECT_ID` | Vercel project id |
-| `AIKIDO_SECRET_KEY` | Aikido CI gate (optional until set) — [docs/AIKIDO.md](docs/AIKIDO.md); **not** a Vercel env |
+| `AIKIDO_SECRET_KEY` | Aikido CI gate (optional until set) — [docs/AIKIDO.md](AIKIDO.md); **not** a Vercel env |
 
 CI job `gate-smoke` skips when `SMOKE_BASE_URL` is unset; `continue-on-error: true` until preview URL exists.
 
@@ -410,8 +410,8 @@ Run through `supabase/migrations/20260703_reminders_optin.sql` (or latest in `su
 - [ ] `STRIPE_WEBHOOK_SECRET` + test Payment Link → enrollment row in Supabase
 - [ ] `DEMO_PREMIUM=false` in Production
 - [ ] Latest Supabase migrations applied
-- [ ] Before public: Upstash + `NEXT_PUBLIC_SENTRY_DSN` ([docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md))
+- [ ] Before public: Upstash + `NEXT_PUBLIC_SENTRY_DSN` ([docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md))
 - [ ] GitHub: `VERCEL_*` + `SMOKE_BASE_URL` for Production deploy + smoke
-- [ ] Profile backup export once ([docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md))
+- [ ] Profile backup export once ([docs/BACKUP_RESTORE.md](BACKUP_RESTORE.md))
 
 See also: `SETUP.md` (full business + Supabase schema), `README.md` (dev commands).

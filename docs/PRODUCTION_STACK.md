@@ -15,11 +15,11 @@ Most vibe-coded apps ship **two** layers (UI + database). A real product needs *
 | 1 | Frontend foundations | **Strong** | Agent | Next/React/Zustand, design system, e2e | PWA offline gated until `PRIVATE_MODE=false` |
 | 2 | APIs / backend logic | **Strong** | Agent | `app/api/`, `src/lib/`, Zod, `withApiLogging` | Free-core still local-first by design |
 | 3 | Database / storage | **Strong** | Both | Supabase migrations + selective sync | Anonymous users: client backup only → [BACKUP_RESTORE.md](BACKUP_RESTORE.md) |
-| 4 | Auth / permissions | **Strong** | Both | Supabase auth, private gate, premium server checks | Founder secret hygiene ([PROTECTION.md](../PROTECTION.md)) |
+| 4 | Auth / permissions | **Strong** | Both | Supabase auth, private gate, premium server checks | Founder secret hygiene ([PROTECTION.md](PROTECTION.md)) |
 | 5 | Hosting / deployment | **Strong** | Founder | Vercel + `deploy-production.yml` + launch-verify | GitHub `VERCEL_*` secrets for auto Production |
 | 6 | Cloud / compute | **Partial** | — | PaaS (Vercel/Supabase/Upstash/Resend) | No IaC — deferred until multi-env pain |
 | 7 | CI/CD / version control | **Strong** | Both | `.github/workflows/ci.yml`, CodeQL | Soft smoke unless `SMOKE_BASE_URL` set |
-| 8 | Security / RLS | **Strong** | Both | [PROTECTION.md](../PROTECTION.md), OWASP, RLS migrations | Finish remaining P0s before public |
+| 8 | Security / RLS | **Strong** | Both | [PROTECTION.md](PROTECTION.md), OWASP, RLS migrations | Finish remaining P0s before public |
 | 9 | Rate limiting | **Partial** | Founder | [src/lib/rateLimit.ts](../src/lib/rateLimit.ts) | **Upstash required in Production before public** |
 | 10 | Caching / CDN | **Partial → v1** | Both | [CACHE_LADDER.md](CACHE_LADDER.md): browser private + enrollment Redis + static CDN | SW still gated by `PRIVATE_MODE`; no shared CDN for premium APIs |
 | 11 | Load balancing / scaling | **Partial** | — | Serverless auto-scale | Capacity runbook deferred to Horizon 3 |
@@ -102,7 +102,7 @@ flowchart LR
 | Item | Layer | Action |
 |------|-------|--------|
 | PWA / Serwist | 10 | Set `PRIVATE_MODE=false` → rebuild enables SW (`next.config.js`); smoke with `SMOKE_EXPECT_PWA=true` |
-| Security P0s | 8 | Finish remaining [PROTECTION.md](../PROTECTION.md) P0 boxes (secrets already rotated where LAUNCH_RUNBOOK checked) |
+| Security P0s | 8 | Finish remaining [PROTECTION.md](PROTECTION.md) P0 boxes (secrets already rotated where LAUNCH_RUNBOOK checked) |
 | Offline spot-check | 10 | Today + Train once with network off after install |
 
 ---
@@ -124,9 +124,9 @@ flowchart LR
 |-----|------|
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | L13 user + operator recovery |
 | [CACHE_LADDER.md](CACHE_LADDER.md) | L10 cache ladder — enrollment Redis + private browser cache |
-| [../LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) | Founder critical path |
-| [../PROTECTION.md](../PROTECTION.md) | Security P0–P2 |
-| [../ENV.md](../ENV.md) | Env var reference (Upstash, Sentry, smoke) |
+| [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) | Founder critical path |
+| [PROTECTION.md](PROTECTION.md) | Security P0–P2 |
+| [ENV.md](ENV.md) | Env var reference (Upstash, Sentry, smoke) |
 | [../ORCHESTRATION.md](../ORCHESTRATION.md) | Horizon gates |
-| [../VERCEL_DEPLOY_CHECKLIST.md](../VERCEL_DEPLOY_CHECKLIST.md) | Deploy checklist |
+| [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) | Deploy checklist |
 | [OWASP_AUDIT.md](OWASP_AUDIT.md) | Accepted risks (incl. in-memory rate limit) |

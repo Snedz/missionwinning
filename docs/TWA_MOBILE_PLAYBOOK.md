@@ -1,7 +1,7 @@
 # Android TWA / thin native playbook
 
 **Status:** Optional packaging only. **Product path is Expo native** — see [NATIVE_MOBILE.md](NATIVE_MOBILE.md) (`apps/mobile`).  
-**Companion:** [REDTEAM.md](../REDTEAM.md) A1 · [STRATEGY.md](../STRATEGY.md) · [docs/POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md)
+**Companion:** [REDTEAM.md](REDTEAM.md) A1 · [STRATEGY.md](STRATEGY.md) · [docs/POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md)
 
 ---
 

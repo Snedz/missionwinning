@@ -17,7 +17,7 @@ Working folder for SEO notes, exports, briefs, and reports. Agents: read this fi
 
 `/` (landing) · `/guide/*` · `/exercises/*` · `/compare` · `/paths` · `/press` · `/welcome` · `/youth`
 
-## Goals (from STRATEGY.md, year one)
+## Goals (from docs/STRATEGY.md, year one)
 
 1. **Indexed public URLs** — growth on `/guide/*`, `/exercises/*`, `/compare` (Search Console).
 2. **Weekly organic sessions** — baseline after `PRIVATE_MODE=false`; tracked in PostHog + GSC.

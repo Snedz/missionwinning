@@ -50,7 +50,7 @@ interface MwDao {
     @Query(
         """
         SELECT * FROM workout_logs
-        WHERE syncStatus IN ('pending', 'failed') AND deletedAt IS NULL
+        WHERE syncStatus IN ('pending', 'failed')
         ORDER BY completedAt ASC
         LIMIT :limit
         """,
@@ -182,7 +182,7 @@ interface MwDao {
     @Query(
         """
         SELECT * FROM routines
-        WHERE syncStatus IN ('pending', 'failed') AND deletedAt IS NULL
+        WHERE syncStatus IN ('pending', 'failed')
         ORDER BY createdAt ASC
         LIMIT :limit
         """,
@@ -218,7 +218,7 @@ interface MwDao {
     @Query(
         """
         SELECT * FROM custom_exercises
-        WHERE syncStatus IN ('pending', 'failed') AND deletedAt IS NULL
+        WHERE syncStatus IN ('pending', 'failed')
         ORDER BY createdAt ASC
         LIMIT :limit
         """,

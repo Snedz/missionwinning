@@ -66,4 +66,4 @@ Anonymous usage analytics (e.g. PostHog) may run to improve the product — see 
 - Payment webhooks are verified; we never store full card numbers.
 - Private beta uses a password gate — do not share gate passwords in public channels.
 
-Technical detail for operators: [PROTECTION.md](../../PROTECTION.md) (developers).
+Technical detail for operators: [PROTECTION.md](../PROTECTION.md) (developers).

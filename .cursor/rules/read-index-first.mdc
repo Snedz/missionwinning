@@ -7,7 +7,7 @@ alwaysApply: true
 
 Before searching or opening files in this repository:
 
-1. Read [AGENTS.md](../../AGENTS.md) and [INDEX.md](../../INDEX.md) at the repo root
+1. Read [CONTEXT.md](../../CONTEXT.md) (status + hard rules), then [AGENTS.md](../../AGENTS.md) and [INDEX.md](../../INDEX.md) at the repo root
 2. Read the `INDEX.md` in the folder you are about to edit
 3. Prefer indexed paths over repo-wide grep for planning docs
 4. Use the naming glossary in AGENTS.md for coach / today / fuel routes

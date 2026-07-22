@@ -27,7 +27,7 @@ Shipped Mission Coach engine (generate week, adapt on miss/readiness, adjust tod
 
 ## Honest challenges / moat
 
-**Moat today (honest):** speed and free-core trust — not a defensible IP moat yet ([STRATEGY.md](../../STRATEGY.md)).  
+**Moat today (honest):** speed and free-core trust — not a defensible IP moat yet ([STRATEGY.md](../STRATEGY.md)).  
 **Risks:** PWA adoption (A1), week-4 retention (A4), solo quality bar across pillars (A3) — we cut pillars if retention fails. We will not invent traction.
 
 ## Proposed 8-week objectives (examples — edit with mentors)

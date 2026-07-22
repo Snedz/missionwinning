@@ -29,8 +29,8 @@
 | F2.1 | Active session draft in Room | Done |
 | F2.2 | Catalog ≥200 + muscle/equipment filters | Done |
 | F2.3 | Plate inventory prefs (bar + plates) | Done |
-| F2.4 | Rich rest haptics / PR chip | Queued |
-| F2.5 | Baseline Profile Macrobenchmark | Queued (F4) |
+| F2.4 | Rich rest haptics / PR chip | Done |
+| F2.5 | Baseline Profile Macrobenchmark | Done |
 
 ## F3 — Identity & multi-device
 
@@ -39,7 +39,7 @@
 | F3.1 | Extract `:feature:auth` | Scaffolded (UI in :app until HC/Billing moved) |
 | F3.2 | Conflict inbox | Done |
 | F3.3 | Cookie-free coach when not private / Bearer | Done (server already; docs fixed) |
-| F3.4 | Soft-delete history UX | Later |
+| F3.4 | Soft-delete history UX | Done |
 
 ## F4 — Play ship + velocity
 
@@ -47,7 +47,7 @@
 |----|------|--------|
 | F4.1 | SHIP_INTERNAL + targetSdk notes | Done |
 | F4.2 | CI Maestro / assemble gates | Done |
-| F4.3 | Baseline Profile module stub | Done |
+| F4.3 | Baseline Profile module stub | Done (wired Macrobenchmark generator) |
 
 ## F5 — Explicitly later (gated)
 

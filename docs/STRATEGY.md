@@ -1,6 +1,6 @@
 # STRATEGY — Mission Winning
 
-**The business plan on one page, then the detail.** Written 2026-07-02 as part of the launch package. Companion docs: [REDTEAM.md](REDTEAM.md) (what could kill this) · [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) (the founder's copy-paste critical path) · [vision.md](vision.md) (the constitution — unchanged).
+**The business plan on one page, then the detail.** Written 2026-07-02 as part of the launch package. Companion docs: [REDTEAM.md](REDTEAM.md) (what could kill this) · [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) (the founder's copy-paste critical path) · [vision.md](../vision.md) (the constitution — unchanged).
 
 ---
 
@@ -15,7 +15,7 @@
 | **Moat (today)** | Honesty + accessibility positioning (free-forever PWA, no account, offline) and the unified six-pillar Win Score. **Truth: there is no defensible moat yet — speed and trust are the strategy.** |
 | **First 90 days** | Days 1–14: unblock deploy, 10 beta users, hit journey gates. Days 15–45: public launch (PH/Reddit/communities), 1,000 visitors → measure activation. Days 46–90: wire Stripe, founders offer to the list, build AI Coach v1 only if activation holds. |
 | **#1 metric (year one)** | **Week-4 retained weekly loggers** — users who log ≥1 workout in week 4 after first workout. Everything else (users, sessions, languages, pillars) is vanity until this number holds. |
-| **SEO KPIs (year one)** | **Indexed public URLs** (Search Console) — target growth on `/guide/*`, `/exercises/*`, `/compare`. **Weekly organic sessions** — baseline after `PRIVATE_MODE=false`; track in PostHog + Search Console. See [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md). |
+| **SEO KPIs (year one)** | **Indexed public URLs** (Search Console) — target growth on `/guide/*`, `/exercises/*`, `/compare`. **Weekly organic sessions** — baseline after `PRIVATE_MODE=false`; track in PostHog + Search Console. See [docs/SEO_ANALYTICS.md](SEO_ANALYTICS.md). |
 
 ---
 
@@ -34,7 +34,7 @@ Six pillars serve everyone — but *marketing to everyone acquires no one*. The 
 
 > **Adaptive AI coaching for train-anywhere athletes — free offline logging (no account), weekly plans from logs alone (no wearable).** Super Bundle adds Coach depth and the other pillars when you want them — never gates the logger.
 
-Lead with **logger + Mission Coach** (concrete, sharp, competitive). The six-pillar “everything app” story is expansion *after* the wedge wins — second sentence / below the fold, not the company one-liner. Full YC form, competition matrix, and apply-only-after traction bar: [docs/YC_THESIS.md](docs/YC_THESIS.md). Constitution stays [vision.md](vision.md).
+Lead with **logger + Mission Coach** (concrete, sharp, competitive). The six-pillar “everything app” story is expansion *after* the wedge wins — second sentence / below the fold, not the company one-liner. Full YC form, competition matrix, and apply-only-after traction bar: [docs/YC_THESIS.md](YC_THESIS.md). Constitution stays [vision.md](../vision.md).
 
 ---
 
@@ -63,7 +63,7 @@ Rules: the current `bundleConfig.ts` tiers (3mo/$33, 12mo/$96, lifetime/$149) sh
 - **Days 3–7 — communities you already inhabit (target 5–10)**: pick 2 subreddits + 1 Discord *where you genuinely participate*. Give value first (answer form/programming questions), then use the builder-story angle: *"I got tired of paywalled trackers so I built a free one that works offline — looking for 10 beta testers, honest feedback wanted."* Builder stories are welcomed where ads are banned; read each community's self-promo rules first.
 - **Days 8–14 — follow-up loop**: DM every tester at day 2 and day 7: *"Did you get a workout in? What almost stopped you?"* Watch the Profile beta panel funnel. Fix the top confusion within 48h and tell the tester you fixed it — that converts testers into advocates.
 
-**First 100 (public, days 15–45)**: Product Hunt + Hacker News "Show HN" (the no-account offline demo is the hook — a visitor can try the logger in 30 seconds without signing up), r/InternetIsBeautiful, one honest launch post per community from the beta list, and a 30–60s screen-recording of I-Day → first workout → Win Score for Shorts/TikTok. Measure: visitor → I-Day start → first workout, weekly. **Copy kit:** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md).
+**First 100 (public, days 15–45)**: Product Hunt + Hacker News "Show HN" (the no-account offline demo is the hook — a visitor can try the logger in 30 seconds without signing up), r/InternetIsBeautiful, one honest launch post per community from the beta list, and a 30–60s screen-recording of I-Day → first workout → Win Score for Shorts/TikTok. Measure: visitor → I-Day start → first workout, weekly. **Copy kit:** [docs/SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md).
 
 ---
 
@@ -82,12 +82,25 @@ Rules: the current `bundleConfig.ts` tiers (3mo/$33, 12mo/$96, lifetime/$149) sh
 | Beta metrics | Already automated (`/api/beta/metrics` + Profile panel). Check twice a week, not hourly. |
 | Waitlist → launch emails | Resend broadcast from `leads` export. Template once, reuse. |
 | Support | One `support@` inbox; hold a public FAQ; answer patterns, not individuals — every repeated question becomes app copy. |
-| Content/marketing | Batch: one filming session → month of Shorts. Repurpose Learn content as posts. Kit: [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md). |
+| Content/marketing | Batch: one filming session → month of Shorts. Repurpose Learn content as posts. Kit: [docs/SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md). |
 | Code | CI runs tests (already set up); `gate-smoke` before every deploy; Claude Code sessions for feature work with `/code-review` before merge. |
 
 **Founder-only (cannot delegate)**: talking to users weekly, pricing decisions, the vision filter, legal/entity setup.
 
 ---
+
+## Beyond the Basics — the book
+
+The guidebook is a product line, not just content marketing. Source of truth: `src/data/guidebook/` (chapters.ts, premiumChapters.ts, magazineMeta.ts); legal safety: [guidebook-originality-log.md](guidebook-originality-log.md) + [issa-source-map.md](issa-source-map.md) — all body copy stays original MW wording.
+
+| Stage | What | Gate |
+|-------|------|------|
+| Now | 6 free foundational chapters at `/guide/*`, no email wall — the SEO/acquisition moat. Magazine PDF via `/guide/print` (`npm run build-guidebook-pdf`) | Live |
+| Launch+ | Localized PDF editions (`GUIDEBOOK_PDF_LANGS=all`) for the top app locales; magazine as beta-invite / press artifact | Public flip |
+| Post-retention | Premium specialist chapters cadence tied to `/learn` releases (one chapter per pillar-depth wave) | Week-4 holds |
+| Horizon 3 | Print-on-demand / KDP paperback edition as a revenue + brand artifact (the "field manual"); per-language editions follow locale traction | Retention + demand signal |
+
+Rule unchanged: the foundational chapters are free forever; specialist depth is the premium. The book never becomes an email wall.
 
 ## What we deliberately do NOT do until Week-4 retention holds
 

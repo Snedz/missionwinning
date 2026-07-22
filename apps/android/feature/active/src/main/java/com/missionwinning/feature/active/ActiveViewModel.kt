@@ -9,6 +9,7 @@ import com.missionwinning.core.data.SetLogEntity
 import com.missionwinning.core.model.ActiveExercise
 import com.missionwinning.core.model.ExerciseCatalog
 import com.missionwinning.core.model.LoggedSet
+import com.missionwinning.core.model.Progression
 import com.missionwinning.core.model.SetKind
 import com.missionwinning.core.network.PlanExerciseDto
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,6 +42,8 @@ data class ActiveUiState(
     val error: String? = null,
     /** For Wear tile / complication (phone SoT). */
     val streakDays: Int = 0,
+    /** Transient: last completed set was a PR (drives haptic / toast chip). */
+    val lastPrSetId: String? = null,
 ) {
     val doneCount: Int get() = exercises.sumOf { ex -> ex.sets.count { it.done } }
     val totalSets: Int get() = exercises.sumOf { it.sets.size }
@@ -101,6 +104,9 @@ class ActiveViewModel @Inject constructor(
     /** Absolute rest end for notification (screen-off accurate). */
     private var restDeadlineMs: Long? = null
     private var draftJob: Job? = null
+    /** Best prior e1RM by exerciseId from Room history (loaded on start). */
+    private var priorBestE1rm: Map<String, Double> = emptyMap()
+    private var priorSamples: List<Progression.SetSample> = emptyList()
 
     init {
         viewModelScope.launch {
@@ -140,6 +146,7 @@ class ActiveViewModel @Inject constructor(
             val restBeep = repository.restBeepEnabled()
             val streak = runCatching { repository.workoutStreakDays() }.getOrDefault(0)
             val barWeight = if (unit == "lb") repository.barWeightLb() else repository.barWeightKg()
+            loadPriorPrBaseline()
 
             val draft = sessionDrafts.load()
             if (draft != null && draft.sessionId == sessionId && draft.exercises.isNotEmpty()) {
@@ -446,18 +453,41 @@ class ActiveViewModel @Inject constructor(
     private fun toggleSet(setId: String) {
         val before = _state.value.exercises.flatMap { it.sets }.find { it.id == setId } ?: return
         val becomingDone = !before.done
+        val isPr = if (becomingDone) {
+            Progression.isPersonalRecord(
+                exerciseId = before.exerciseId,
+                weight = before.weight,
+                reps = before.reps,
+                kind = before.kind,
+                priorSamples = priorSamples + inSessionSamplesExcluding(setId),
+            )
+        } else {
+            false
+        }
         _state.update { st ->
             var exercises = st.exercises.map { ex ->
                 ex.copy(sets = ex.sets.map { s ->
-                    if (s.id == setId) s.copy(done = !s.done) else s
+                    when {
+                        s.id == setId && becomingDone -> s.copy(done = true, isPr = isPr)
+                        s.id == setId -> s.copy(done = false, isPr = false)
+                        else -> s
+                    }
                 })
             }
             if (becomingDone) {
                 exercises = ActiveSessionLogic.carryForwardWithinExercise(exercises, setId)
             }
-            st.copy(exercises = exercises)
+            st.copy(
+                exercises = exercises,
+                lastPrSetId = if (becomingDone && isPr) setId else null,
+            )
         }
         if (becomingDone) {
+            if (isPr) {
+                // Raise baseline so a later set in this session must beat this PR.
+                val e1 = Progression.estimated1rm(before.weight, before.reps)
+                priorBestE1rm = priorBestE1rm + (before.exerciseId to maxOf(priorBestE1rm[before.exerciseId] ?: 0.0, e1))
+            }
             val snap = _state.value
             val allDone = ActiveSessionLogic.allDone(snap.exercises)
             val exRest = snap.exercises
@@ -471,6 +501,41 @@ class ActiveViewModel @Inject constructor(
                     exerciseRest = exRest,
                 ),
             )
+        }
+    }
+
+    private suspend fun loadPriorPrBaseline() {
+        val rows = runCatching { repository.recentWeightedSets(800) }.getOrDefault(emptyList())
+        priorSamples = rows.map { row ->
+            Progression.SetSample(
+                exerciseId = row.exerciseId,
+                exerciseName = row.exerciseName,
+                weight = row.weight,
+                reps = row.reps,
+                completedAt = row.completedAt,
+                weightUnit = row.weightUnit,
+                kind = SetKind.fromCode(row.setKind),
+            )
+        }
+        priorBestE1rm = Progression.personalRecords(priorSamples, limit = 500)
+            .associate { it.exerciseId to it.estimated1rm }
+    }
+
+    /** Other completed sets in this session count as priors for multi-set PRs. */
+    private fun inSessionSamplesExcluding(excludeSetId: String): List<Progression.SetSample> {
+        val now = java.time.Instant.now().toString()
+        return _state.value.exercises.flatMap { ex ->
+            ex.sets.filter { it.done && it.id != excludeSetId }.map { s ->
+                Progression.SetSample(
+                    exerciseId = s.exerciseId,
+                    exerciseName = s.exerciseName,
+                    weight = s.weight,
+                    reps = s.reps,
+                    completedAt = now,
+                    weightUnit = _state.value.weightUnit,
+                    kind = s.kind,
+                )
+            }
         }
     }
 
@@ -774,6 +839,7 @@ class ActiveViewModel @Inject constructor(
                                     rpe = s.rpe,
                                     kind = s.kind.code,
                                     note = s.note,
+                                    isPr = s.isPr,
                                 )
                             },
                         )
@@ -801,6 +867,7 @@ class ActiveViewModel @Inject constructor(
                     rpe = s.rpe,
                     kind = SetKind.fromCode(s.kind),
                     note = s.note,
+                    isPr = s.isPr,
                 )
             },
             supersetGroup = supersetGroup,

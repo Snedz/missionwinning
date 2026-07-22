@@ -152,7 +152,7 @@ const en: InfoStrings = {
     'The guiding document for the free global everything app for health. Core mission free for all. Super Bundle for synergy.',
   infoBetaTitle: 'Start here',
   infoBetaSubtitle:
-    'Mission Winning is in private development. You are among the first Mission Operators helping us validate the journey, Today hub, and rankings before public launch.',
+    'Private beta — help us validate I-Day → first workout → Mission Coach before public launch.',
   infoFeedbackTitle: 'Share your wins',
   infoFeedbackSubtitle:
     "Tell us what results you're seeing, what worked, and what to build next. Beta founders shape the roadmap.",
@@ -210,7 +210,7 @@ const en: InfoStrings = {
     'Premium purchases (Super Bundle and related paid features) are subject to checkout terms and our Refunds & cancellation policy. Cancel subscriptions anytime via Profile → Manage billing. Contact support@missionwinning.com for billing issues.',
   infoTermsAcceptableUse: 'Acceptable use',
   infoTermsAcceptableUseBody:
-    'You must follow our Acceptable Use Policy (repository ACCEPTABLE_USE.md and related rules): no unlawful use, no unauthorized access, no scraping or redistributing premium content, and no abuse of APIs or youth/school features. We may suspend accounts that violate these rules.',
+    'You must follow our Acceptable Use Policy (repository docs/legal/ACCEPTABLE_USE.md and related rules): no unlawful use, no unauthorized access, no scraping or redistributing premium content, and no abuse of APIs or youth/school features. We may suspend accounts that violate these rules.',
   infoTermsLiabilityBody:
     'To the fullest extent permitted by law, Mission Winning LLC is not liable for injuries, health outcomes, or indirect damages arising from use of the app. The service is provided "as is."',
   infoTermsUserContentBody:

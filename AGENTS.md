@@ -1,18 +1,19 @@
 # AGENTS.md — Mission Winning
 
-**Read this file first.** Then read [INDEX.md](INDEX.md) before exploring or grepping the repo.
+**Read [CONTEXT.md](CONTEXT.md) first** (one-screen status + hard rules), then this file, then [INDEX.md](INDEX.md) before exploring or grepping the repo.
 
-Works in Cursor, Claude Code, Grok, Copilot, and other agents — tool-agnostic conventions.
+Works in Cursor, Claude Code, Grok, Copilot, Gemini, and other agents — tool-agnostic conventions. `CLAUDE.md` / `GEMINI.md` are thin pointers into this same spine.
 
 ---
 
 ## Start here
 
-1. Read [INDEX.md](INDEX.md) — doc routing, task → file map, stale paths.
-2. Read [ORCHESTRATION.md](ORCHESTRATION.md) — horizon gates (what is allowed *now* vs post-PMF).
-3. Read the `INDEX.md` in the folder you are about to edit.
-4. Prefer indexed paths over repo-wide grep for planning docs.
-5. Do not use old chat plans as source of truth — use `ORCHESTRATION.md`, `PLAN.md`, and `LOG.md`.
+1. Read [CONTEXT.md](CONTEXT.md) — current status (`## Now`), trap terms, hard rules.
+2. Read [INDEX.md](INDEX.md) — doc routing, task → file map, stale paths.
+3. Read [ORCHESTRATION.md](ORCHESTRATION.md) — horizon gates (what is allowed *now* vs post-PMF).
+4. Read the `INDEX.md` in the folder you are about to edit.
+5. Prefer indexed paths over repo-wide grep for planning docs.
+6. Do not use old chat plans as source of truth — use `ORCHESTRATION.md`, `docs/PLAN.md`, and `LOG.md`.
 
 **Horizon rule:** In Horizon 0 (pre-public beta), only hero bugs, launch unblock, and CI. Refuse new pillars/locales/redesigns unless the founder explicitly overrides.
 
@@ -54,8 +55,8 @@ Works in Cursor, Claude Code, Grok, Copilot, and other agents — tool-agnostic 
 | **Today / Home** | Main dashboard | Route `/log`, `HomePage.tsx`, nav label "Today" |
 | **Fuel** | Nutrition pillar | Route `/nutrition`, `NutritionPage.tsx`, nav label "Fuel" |
 | **Train** | Active workout / logger | Route `/active`, `ActiveWorkoutPage.tsx` |
-| **Journey phase** | I-Day → Commissioned UX | `JOURNEY.md`, `missionJourney.ts` — not build phases in `PLAN.md` |
-| **Build phase** | Roadmap A–I | `PLAN.md` — not journey "Phase 0–3" |
+| **Journey phase** | I-Day → Commissioned UX | `docs/JOURNEY.md`, `missionJourney.ts` — not build phases in `docs/PLAN.md` |
+| **Build phase** | Roadmap A–I | `docs/PLAN.md` — not journey "Phase 0–3" |
 
 ---
 
@@ -88,7 +89,7 @@ npm run check-env    # verify .env.local
 1. **New feature domain (>5 lib files):** Create `src/lib/{domain}/` + `INDEX.md` — follow `src/lib/coach/`.
 2. **New route:** Add row to `app/INDEX.md`; thin wrapper in `app/(app)/`, UI in `page-components/`.
 3. **New planning doc:** Add to root `INDEX.md` task routing; if superseded, move to `docs/archive/` and mark stale in INDEX.
-4. **New agent tool:** Point it at `AGENTS.md` + `INDEX.md` (Cursor: `.cursor/rules/read-index-first.mdc`).
+4. **New agent tool:** Point it at `CONTEXT.md` + `AGENTS.md` + `INDEX.md` via a thin root pointer file (model: `CLAUDE.md`, `GEMINI.md`; Cursor: `.cursor/rules/read-index-first.mdc`). Never duplicate spine content into tool files.
 
 ---
 

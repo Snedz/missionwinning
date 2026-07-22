@@ -1,6 +1,6 @@
 /**
  * Private beta gate helpers — public paths, JWT via getUser(), query bypass policy.
- * Consumers: proxy.ts | See: PROTECTION.md
+ * Consumers: proxy.ts | See: docs/PROTECTION.md
  */
 import { createClient } from '@supabase/supabase-js';
 import type { NextRequest } from 'next/server';

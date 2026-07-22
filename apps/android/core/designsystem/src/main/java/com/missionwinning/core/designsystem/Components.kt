@@ -236,6 +236,8 @@ fun MwSetRow(
     modifier: Modifier = Modifier,
     isCurrent: Boolean = false,
     weightLabel: String? = null,
+    setKindLabel: String? = null,
+    rpeLabel: String? = null,
 ) {
     val view = LocalView.current
     val shape = RoundedCornerShape(16.dp)
@@ -252,6 +254,10 @@ fun MwSetRow(
     val detail = buildString {
         append("$reps reps")
         if (!weightLabel.isNullOrBlank()) append(" · $weightLabel")
+        if (!setKindLabel.isNullOrBlank() && setKindLabel != "normal" && setKindLabel != "Working") {
+            append(" · $setKindLabel")
+        }
+        if (!rpeLabel.isNullOrBlank()) append(" · RPE $rpeLabel")
     }
     val setLabel = when {
         done -> "Set ${index + 1}, $detail, completed. Double tap to undo"
@@ -290,11 +296,23 @@ fun MwSetRow(
             }
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(
-                "Set ${index + 1}",
-                style = MwTypography.titleMedium,
-                color = MwColors.Text,
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Text(
+                    "Set ${index + 1}",
+                    style = MwTypography.titleMedium,
+                    color = MwColors.Text,
+                )
+                if (!setKindLabel.isNullOrBlank() && setKindLabel != "normal" && setKindLabel != "Working") {
+                    Text(
+                        setKindLabel.uppercase(),
+                        style = MwTypography.labelSmall,
+                        color = MwColors.Brass,
+                    )
+                }
+            }
             Text(
                 detail,
                 style = MwTypography.bodyMedium,
@@ -308,6 +326,7 @@ fun MwSetRow(
         }
     }
 }
+
 
 @Composable
 fun MwRestTimer(
