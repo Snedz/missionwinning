@@ -1,13 +1,13 @@
 # LAUNCH RUNBOOK — the founder's critical path
 
-**Everything in this file only YOU can do.** No coding required — copy-paste steps, in order. Each step ends with a checkbox; when all boxes in a section are checked, move on. Companion docs: [STRATEGY.md](STRATEGY.md) (why) · [PROTECTION.md](PROTECTION.md) (security) · [ORCHESTRATION.md](ORCHESTRATION.md) (horizon gates).
+**Everything in this file only YOU can do.** No coding required — copy-paste steps, in order. Each step ends with a checkbox; when all boxes in a section are checked, move on. Companion docs: [STRATEGY.md](STRATEGY.md) (why) · [PROTECTION.md](PROTECTION.md) (security) · [ORCHESTRATION.md](../ORCHESTRATION.md) (horizon gates).
 
 > **The honest framing:** the app has been "almost ready" for months. The code is not the bottleneck — the steps below are. Do §1 today.
 
 ---
 
-**Social copy kit:** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md).  
-**Archived plans** (soft launch day, flip checklist, track D, etc.): [docs/archive/INDEX.md](docs/archive/INDEX.md).
+**Social copy kit:** [docs/SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md).  
+**Archived plans** (soft launch day, flip checklist, track D, etc.): [docs/archive/INDEX.md](archive/INDEX.md).
 
 ## §1 — Regain deploy access (do today, ~30–60 min)
 
@@ -34,7 +34,7 @@
    - `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated `openssl rand -base64 32` each — do not reuse gate secret)
    - `RESEND_API_KEY` + `RESEND_FROM` (consent, nudges, welcome, weekly digest)
    - `CRON_SECRET` (Vercel cron: daily nudges + Monday founder digest)
-   - `FOUNDER_DIGEST_EMAIL=you@…` (Monday digest recipient; skip send if unset)
+   - `FOUNDER_DIGEST_EMAIL=you@…` (Monday digest + Stripe `charge.dispute.*` alerts; skip send if unset)
    - Optional: `NEXT_PUBLIC_POSTHOG_KEY` (product analytics after user allow)
    - Optional AI coach: `COACH_LLM_*` + Console ZDR ([ENV.md](ENV.md))
    - Optional push (dark until public): VAPID keys ([ENV.md](ENV.md))
@@ -66,8 +66,8 @@
 
 ## §2b — Ops maturity Wave A (before public flip)
 
-Scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md). Recovery: [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md).  
-**Monitoring (health, Sentry, uptime):** [docs/OPS_MONITORING.md](docs/OPS_MONITORING.md).
+Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACKUP_RESTORE.md](BACKUP_RESTORE.md).  
+**Monitoring (health, Sentry, uptime):** [docs/OPS_MONITORING.md](OPS_MONITORING.md).
 
 1. **Upstash (L9):** create Redis DB → set `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` on Vercel Production → redeploy.
 2. **Sentry (L12):** set `NEXT_PUBLIC_SENTRY_DSN` on Production → redeploy → confirm one error event.
@@ -92,7 +92,7 @@ Scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md). Recovery: [docs
 3. Track the funnel: Profile → founder beta panel (`BETA_ADMIN_EMAILS`). Gates: **10+ users, I-Day ≥80%, Basic Training ≥60%.**  
    Client drop-off (after analytics allow): PostHog funnel  
    `iday_started → iday_mission_accepted → iday_profile_completed → iday_completed → first_workout_completed`  
-   ([docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md)). Monday email digest repeats server funnel + week-4 RPC.
+   ([docs/SEO_ANALYTICS.md](SEO_ANALYTICS.md)). Monday email digest repeats server funnel + week-4 RPC.
 4. Message every tester at day 2 and day 7 (script in STRATEGY.md). Fix the #1 confusion each week.
 
 - [ ] Hero flow QA'd on a real phone (agent: mobile hero e2e against www — 5 passed; founder confirms on device)
@@ -108,7 +108,7 @@ Scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md). Recovery: [docs
    - "Mission Winning Super Bundle — Monthly" · **$11.99/mo** (recurring monthly) → copy link
    - "Mission Winning Super Bundle — 12 months (Founders)" · **$59/year** (recurring yearly) → copy link  **← push this**
    - "Mission Winning Super Bundle — Founders Lifetime" · **$149** one-time → copy link
-3. Webhook: Dashboard → Developers → Webhooks → Add endpoint → URL `https://www.missionwinning.com/api/stripe-webhook` → events: `checkout.session.completed` → copy the **signing secret** (`whsec_…`).
+3. Webhook: Dashboard → Developers → Webhooks → Add endpoint → URL `https://www.missionwinning.com/api/stripe-webhook` → events: `checkout.session.completed`, `checkout.session.expired`, `charge.dispute.created`, `charge.dispute.updated`, `charge.dispute.closed` → copy the **signing secret** (`whsec_…`). Existing endpoint: add any missing events in Dashboard (or re-run `node scripts/setup-stripe-webhook.mjs` after delete).
 4. Add to Vercel env (Production):
    ```
    NEXT_PUBLIC_STRIPE_LINK_BUNDLE=<12-month payment link>   # default checkout
@@ -116,24 +116,29 @@ Scorecard: [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md). Recovery: [docs
    NEXT_PUBLIC_STRIPE_LINK_BUNDLE_12MO=<12-month payment link>
    NEXT_PUBLIC_STRIPE_LINK_BUNDLE_LIFETIME=<lifetime payment link>
    STRIPE_WEBHOOK_SECRET=<whsec_...>
+   FOUNDER_DIGEST_EMAIL=you@…   # Monday digest + charge.dispute.* alerts
    ```
 5. Redeploy. The bundle page switches from "waitlist" to real checkout automatically.
-6. **Test in Stripe test mode first**: use test links + test card `4242 4242 4242 4242`, confirm a row appears in Supabase `enrollments`, and that the account you paid with gets premium (`/api/premium/status` → `premium: true`).
+6. **Refunds at Checkout (Dashboard):** Branding / Checkout **custom text** (and Payment Link description if used) → `14-day money-back: https://www.missionwinning.com/refunds` — [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) · [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md).
+7. **Test in Stripe test mode first**: use test links + test card `4242 4242 4242 4242`, confirm a row appears in Supabase `enrollments`, and that the account you paid with gets premium (`/api/premium/status` → `premium: true`).
+8. Before first live dollar: walk [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md); bookmark [legal/STRIPE_DISPUTE_EVIDENCE_PACK.md](legal/STRIPE_DISPUTE_EVIDENCE_PACK.md).
 
 - [x] Stripe account live · [x] payment links created (test sandbox links on Production)
 - [x] Webhook verified via signed `--ping-webhook` → `enrollments` row (`verify-test@missionwinning.com`)
 - [x] Env vars set + redeployed
 - [ ] Still open: Stripe Dashboard endpoint pointing at `/api/stripe-webhook` with matching `whsec` (or `node scripts/setup-stripe-webhook.mjs` with full `sk_`) so live Payment Link checkouts deliver events
+- [ ] Dispute events enabled on webhook (`charge.dispute.*`) + `FOUNDER_DIGEST_EMAIL` set
+- [ ] Checkout custom text / Payment Link footer → `/refunds`
 
 ### Phantom Lifetime USDC (code + Production env on; founder verify)
 
-See [docs/PHANTOM_USDC_CHECKOUT.md](docs/PHANTOM_USDC_CHECKOUT.md). Do **not** market crypto until one end-to-end Lifetime payment is verified.
+See [docs/PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md). Do **not** market crypto until one end-to-end Lifetime payment is verified.
 
 - [x] `crypto_payment_intents` on prod · Production `NEXT_PUBLIC_CRYPTO_CHECKOUT=true` + treasury + RPC · API smoke 401 without session
 - [ ] Save treasury secret offline (`/tmp/mw_solana_treasury_secret.b58`) and delete the temp file; fund USDC ATA for `57CEga7okiNCVAomW254KUCtj5GquRu8Z2Huj27bdPjM`
 - [ ] Signed-in `/bundle` Lifetime → **Pay with Phantom** → confirm `enrollments.provider = phantom`
 - [ ] Optional: dedicated RPC (Helius/QuickNode); Phantom Portal App ID for social/deeplink
-- [ ] Parallel (when live KYB ready): Dashboard → Payment methods → **Stablecoins and Crypto** for Lifetime Sessions only — [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md)
+- [ ] Parallel (when live KYB ready): Dashboard → Payment methods → **Stablecoins and Crypto** for Lifetime Sessions only — [docs/STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md)
 
 ## §5 — Go public (only after §2 / §2b security + ops boxes + §3 gates)
 
@@ -148,8 +153,8 @@ SMOKE_BASE_URL=https://www.missionwinning.com npm run rate-limit-smoke
 SMOKE_BASE_URL=https://www.missionwinning.com SMOKE_ALLOW_PUBLIC=true SMOKE_EXPECT_PWA=true npm run launch-verify
 ```
 
-See [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md) for Stripe enrollment + Supabase probe commands.  
-Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) (offline + SW spot-check Today/Train).
+See [docs/archive/TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) for Stripe enrollment + Supabase probe commands.  
+Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) (offline + SW spot-check Today/Train).
 
 1. Final security curls (replace domain if needed):
    ```bash
@@ -159,7 +164,7 @@ Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP
    ```
 2. Vercel env: set `PRIVATE_MODE=false` → redeploy. PWA + landing page are now live.
 3. Install the PWA on your own phone from the live site (browser menu → "Install / Add to Home Screen"). Confirm offline logging works in airplane mode.
-4. Launch posts (order): the beta testers ("we're live — share it?") → Product Hunt → Show HN → the 2–3 communities from §3. One honest post each, written as the builder. **Copy kit:** [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md) Phase B.
+4. Launch posts (order): the beta testers ("we're live — share it?") → Product Hunt → Show HN → the 2–3 communities from §3. One honest post each, written as the builder. **Copy kit:** [docs/SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) Phase B.
 5. Email the waitlist (Supabase `leads` where source in `launch-waitlist`, `waitlist-*`): you're live + founders offer. Template in SOCIAL_LAUNCH.md.
 
 - [ ] Curls pass · [ ] PRIVATE_MODE=false · [ ] PWA installs from prod
@@ -171,7 +176,7 @@ Flip checklist: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP
 - **Before any deploy**: `npm test` + `npm run gate-smoke` (CI also runs tests).
 - **Monthly**: re-read [REDTEAM.md](REDTEAM.md) §1 and check falsifying evidence; review Stripe → enrollments reconciliation; `npm audit`.
 - **Rule that keeps you honest**: no new features while a LOAD-BEARING assumption is failing its evidence check.
-- **YC:** only after beta → public → week-4 + paid gates — [docs/YC_THESIS.md](docs/YC_THESIS.md) · [ORCHESTRATION.md](ORCHESTRATION.md). Agents never flip `PRIVATE_MODE` or invent traction.
+- **YC:** only after beta → public → week-4 + paid gates — [docs/YC_THESIS.md](YC_THESIS.md) · [ORCHESTRATION.md](../ORCHESTRATION.md). Agents never flip `PRIVATE_MODE` or invent traction.
 
 ---
 

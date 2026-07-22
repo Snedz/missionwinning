@@ -12,7 +12,7 @@ When adding a doc:
 
 | File | Absorbed by / note |
 |------|---------------------|
-| [PRE_LAUNCH_PLAN.md](./PRE_LAUNCH_PLAN.md) | [LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md) |
+| [PRE_LAUNCH_PLAN.md](./PRE_LAUNCH_PLAN.md) | [LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md) |
 | [UX_UNIFIED_PLAN.md](./UX_UNIFIED_PLAN.md) | Historical UX plan |
 | [LAUNCH_READY.md](./LAUNCH_READY.md) | Greened items → runbook § prep |
 | [SOFT_LAUNCH_DAY.md](./SOFT_LAUNCH_DAY.md) | Gate thresholds → runbook |
@@ -21,4 +21,11 @@ When adding a doc:
 | [TRACK_D_GO_LIVE.md](./TRACK_D_GO_LIVE.md) | Verify commands → runbook appendix |
 | [ROADMAP_V4_EXPERIENCE.md](./ROADMAP_V4_EXPERIENCE.md) | Experience roadmap historical |
 
-Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).
+## Archived (operating-system pass, 2026-07-21)
+
+| File | Absorbed by / note |
+|------|---------------------|
+| [log/LOG-2026-06_to_2026-07-20.md](./log/LOG-2026-06_to_2026-07-20.md) | Rotated out of root LOG.md (rotation rule: ≤15 entries at root) |
+| [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
+
+Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).
