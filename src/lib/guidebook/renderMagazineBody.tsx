@@ -16,12 +16,17 @@ function inlineBold(text: string, keyPrefix: string): ReactNode[] {
 }
 
 /** Split blank-line paragraphs; render **bold** as <strong>. */
-export function renderMagazineBody(body: string): ReactNode {
+export function renderMagazineBody(
+  body: string,
+  options?: { paragraphClassName?: string }
+): ReactNode {
   const paragraphs = body
     .trim()
     .split(/\n\n+/)
     .map((p) => p.trim())
     .filter(Boolean);
+
+  const pClass = options?.paragraphClassName ?? 'magazine-body-p';
 
   return paragraphs.map((para, i) => {
     const lines = para.split('\n');
@@ -32,6 +37,6 @@ export function renderMagazineBody(body: string): ReactNode {
       }
       return nodes;
     });
-    return createElement('p', { key: `p${i}`, className: 'magazine-body-p' }, ...children);
+    return createElement('p', { key: `p${i}`, className: pClass }, ...children);
   });
 }

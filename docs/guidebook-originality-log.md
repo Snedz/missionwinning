@@ -49,6 +49,18 @@ Premium chapters: see `sourceRef` on each section in `premiumChapters.ts`.
 | ch5-s2 | checklist — recovery basics | foundations — hydration & sleep | Mission Winning | 2026-07-19 |
 | ch6-s3 | callout — stall vs pain vs stress | foundations — program adjustment | Mission Winning | 2026-07-19 |
 
+## Editorial teaching blocks (v1.4)
+
+| Section ID | Block | Source ref (topic only) | Writer | Date |
+|------------|-------|-------------------------|--------|------|
+| ch1-s3 | callout — recovery is training | foundations — recovery | Mission Winning | 2026-07-22 |
+| ch3-s1 | table — volume landmarks | foundations — volume & intensity | Mission Winning | 2026-07-22 |
+| ch4-s1 | checklist — first-week actions | foundations — onboarding | Mission Winning | 2026-07-22 |
+| ch4-s3 | callout — score is feedback | MW product design | Mission Winning | 2026-07-22 |
+| ch5-s3 | checklist — around-workout habits | foundations — meal timing | Mission Winning | 2026-07-22 |
+| ch6-s1 | callout — screen before load | PAR-Q screening | Mission Winning | 2026-07-22 |
+| ch6-s2 | table — what to retest and when | foundations — assessments | Mission Winning | 2026-07-22 |
+
 ## Localized editions
 
 Translations in `src/i18n/packs/{lang}.json` and guidebook locale overlays are **translations of Mission Winning original English**, not ISSA text. Regenerated via `npm run i18n:fill`.
