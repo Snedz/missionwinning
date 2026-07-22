@@ -6,6 +6,25 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Android 1.19.0: pre-Internal readiness
+
+- **Release smoke:** `scripts/release-smoke.sh` (assembleRelease + bundleRelease); PLAY_LISTING / SHIP_INTERNAL point at build.gradle + script; check-release-readiness runs release tasks.
+- **Accept buffer:** wedge asserts Active immersive (no `Account tab`); store-assets documents `02b-account.png`.
+- **Auth quality:** `AuthPrefsFeedback` + unit tests; Cloud sync card intro under Preferences.
+- Version `1.19.0` / versionCode 46. F8 Done; F5 gated. Verify: `./gradlew :app:assembleDebug :app:testDebugUnitTest` + `./scripts/release-smoke.sh`.
+
+---
+
+## 2026-07-22 — Web .97: private-gate allowlist (welcome / magazine / locales)
+
+- **Gate:** `/welcome`, `/magazine`, `/locales` added to `PRIVATE_GATE_PUBLIC_PATHS` so SEO “Start free” → I-Day, magazine PDFs, and HTTP i18n overlay work while `PRIVATE_MODE` stays on. `/log` / `/active` still gated.
+- **Proxy:** matcher also skips `.pdf` static assets (belt with `/magazine` allowlist).
+- **Tests:** `privateGate.test.ts` flipped; `/log` stays blocked. `npm run typecheck` + `npm test` (484).
+- **Founder unblock (not agent):** clear GitHub Actions billing/spending limit · rotate `VERCEL_TOKEN` · `workflow_dispatch` Deploy production / Vercel Promote — www was stuck ~69 commits behind. Smoke: Profile `.97`; `/welcome` no 307; PDF + `/locales/*` 200 anonymous.
+- Build: `2026.07-unified.97`.
+
+---
+
 ## 2026-07-22 — Android 1.18.0: Accept-unblock after hub UX
 
 - **Accept truth:** FOUNDER_ACCEPT hub checks + Preferences U0a/U0b (Units/Equipment off Today); More row paths for Progress/Routines/Library.
@@ -131,23 +150,4 @@ Chronological record of shipped work. Newest first.
 - Network: www `/api/mobile/*` returns gate 403 / HTML 404 until routes deploy; `MwRepository` Room seed fallback confirmed; optional `mw.apiBaseUrl` / `mw.privateAccessCookie` in `local.properties`; `mobileCoachApi` tests green.
 - Release: `assembleRelease` + `bundleRelease` green (versionCode 2, minify + ProGuard keeps); AAB at `app/build/outputs/bundle/release/app-release.aab` (debug-signed until founder runs `create-upload-keystore.sh`).
 - Play Internal: PLAY_LISTING Data safety + founder checklist; `store-assets/README.md` for screenshots — Console upload remains founder-owned.
-
----
-
-## 2026-07-20 — Android release signing + Play Internal plumbing
-
-- **`apps/android`:** optional `keystore.properties` → `signingConfigs.release`; release minify on; `versionCode` 2 / `versionName` 1.0.0; debug signing fallback for local `bundleRelease` smoke
-- Templates/scripts: `keystore.properties.example`, `scripts/create-upload-keystore.sh`, `scripts/wedge-adb-walk.py` (Maestro wedge via adb UIAutomator; no airplane mode)
-- Docs: PLAY_LISTING (Data safety from LEGAL_SAFETY §2, screenshots, founder checklist), INDEX emulator commands, ANDROID_NATIVE API 34+ system image note
-- Founder: create real upload keystore locally → Internal AAB; emulator QA still via installDebug + Maestro/adb walk
-
----
-
-## 2026-07-20 — Android-first native (Compose)
-
-- **`docs/ANDROID_NATIVE.md`:** get-started + AI lane orchestration; **`docs/IOS_DEFERRED.md`**
-- **`docs/openapi-mobile.yaml`** + `/api/mobile/coach/plan|adapt` + `/api/mobile/workouts` (mw-core seed/adapt)
-- **`apps/android`:** multi-module Compose (designsystem/data/network/app) — I-Day → Today → Active → Victory → Coach; Room offline; Maestro + PLAY_LISTING
-- Expo demoted to UX prototype; Play product path is Compose (`assembleDebug` green)
-- Founder: emulator QA + Play Internal when ready
 

@@ -17,13 +17,20 @@ describe('isPublicPathWhileGated', () => {
     assert.equal(isPublicPathWhileGated('/auth/callback'), true);
   });
 
-  it('blocks app routes including welcome and beta', () => {
+  it('allows SEO / conversion surfaces while gated (I-Day, magazine, locales)', () => {
+    assert.equal(isPublicPathWhileGated('/welcome'), true);
+    assert.equal(isPublicPathWhileGated('/magazine/beyond-the-basics.pdf'), true);
+    assert.equal(isPublicPathWhileGated('/locales/en/common.json'), true);
+    assert.equal(isPublicPathWhileGated('/locales/es/gate.json'), true);
+  });
+
+  it('blocks app routes; beta and feedback stay public', () => {
     assert.equal(isPublicPathWhileGated('/'), false);
-    assert.equal(isPublicPathWhileGated('/welcome'), false);
     assert.equal(isPublicPathWhileGated('/beta'), true);
     assert.equal(isPublicPathWhileGated('/feedback'), true);
     assert.equal(isPublicPathWhileGated('/today'), false);
     assert.equal(isPublicPathWhileGated('/log'), false);
+    assert.equal(isPublicPathWhileGated('/active'), false);
   });
 });
 

@@ -28,6 +28,7 @@ export const JOURNEY_BYPASS_PATHS = [
 /** Page routes reachable without the private access cookie while gated. */
 export const PRIVATE_GATE_PUBLIC_PATHS = [
   '/private',
+  '/welcome',
   '/privacy',
   '/terms',
   '/dmca',
@@ -47,6 +48,10 @@ export const PRIVATE_GATE_PUBLIC_PATHS = [
   '/learn',
   '/paths',
   '/press',
+  /** Beyond the Basics magazine PDF + assets under public/magazine/ */
+  '/magazine',
+  /** Optional HTTP i18n overlay (LocaleHttpSync) — not /api */
+  '/locales',
 ] as const;
 
 export function isJourneyBypassPath(pathname: string): boolean {
