@@ -1,4 +1,4 @@
-package com.missionwinning.app.feature.auth
+package com.missionwinning.feature.auth
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

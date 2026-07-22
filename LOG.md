@@ -6,6 +6,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Android 1.22.0: extract `:feature:auth` (F3.1 / F11)
+
+- **Bridges:** `HealthConnectAccountBridge` + `CrashReportingBridge` registered from `MwApp`; HC writer + Sentry stay in `:app`.
+- **Move:** `AuthScreen` / `AuthViewModel` / `AuthPrefsFeedback` (+ unit test) into `:feature:auth`; NavHost passes BuildConfig version/API labels.
+- Version `1.22.0` / versionCode 49. F3.1 Done; F5 still gated. Verify: `./gradlew :app:assembleDebug :feature:auth:testDebugUnitTest :app:testDebugUnitTest`.
+
+---
+
 ## 2026-07-22 — Web .98: launch smokes aligned with gate allowlist
 
 - **gate-smoke:** `/welcome`, magazine PDF, `/locales` expected public while gated; `/log` still gated. Matches `.97` `PRIVATE_GATE_PUBLIC_PATHS`.

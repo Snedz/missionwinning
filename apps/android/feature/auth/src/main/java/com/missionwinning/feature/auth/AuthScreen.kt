@@ -1,9 +1,9 @@
-package com.missionwinning.app.feature.auth
+package com.missionwinning.feature.auth
 
-import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,10 +27,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.health.connect.client.PermissionController
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.missionwinning.app.BuildConfig
 import com.missionwinning.core.common.NetworkStatus
 import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
@@ -61,17 +59,21 @@ fun AuthScreen(
     onOpenGallery: () -> Unit = {},
     /** When true (hub tab), hide back chrome and skip double nav-bar padding. */
     asHubTab: Boolean = false,
+    versionName: String,
+    versionCode: Int,
+    debugBuild: Boolean,
+    apiBaseUrl: String,
     viewModel: AuthViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val online = remember { NetworkStatus.isOnline(context) }
-    val versionLabel = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})" +
-        if (BuildConfig.DEBUG) " · debug" else ""
-    val apiHost = remember {
+    val versionLabel = "v$versionName ($versionCode)" +
+        if (debugBuild) " · debug" else ""
+    val apiHost = remember(apiBaseUrl) {
         runCatching {
-            java.net.URI(BuildConfig.API_BASE_URL).host ?: BuildConfig.API_BASE_URL
-        }.getOrDefault(BuildConfig.API_BASE_URL)
+            java.net.URI(apiBaseUrl).host ?: apiBaseUrl
+        }.getOrDefault(apiBaseUrl)
     }
     val fieldColors = OutlinedTextFieldDefaults.colors(
         focusedTextColor = MwColors.Text,
@@ -84,8 +86,20 @@ fun AuthScreen(
         focusedLabelColor = MwColors.TextMuted,
         unfocusedLabelColor = MwColors.TextMuted,
     )
+    val hcPermissionContract = remember {
+        HealthConnectAccountBridge.createPermissionContract?.invoke()
+            ?: object : ActivityResultContract<Set<String>, Set<String>>() {
+                override fun createIntent(
+                    context: android.content.Context,
+                    input: Set<String>,
+                ): Intent = Intent()
+
+                override fun parseResult(resultCode: Int, intent: Intent?): Set<String> =
+                    emptySet()
+            }
+    }
     val hcPermissionLauncher = rememberLauncherForActivityResult(
-        contract = PermissionController.createRequestPermissionResultContract(),
+        contract = hcPermissionContract,
     ) { granted ->
         viewModel.onHealthConnectPermissionResult(granted)
     }
@@ -404,10 +418,7 @@ fun AuthScreen(
                         text = if (state.crashReporting) "Crash reports · on" else "Crash reports · off",
                         tone = if (state.crashReporting) MwChipTone.Emerald else MwChipTone.Neutral,
                         contentDescription = "Toggle crash reporting",
-                        onClick = {
-                            val app = context.applicationContext as Application
-                            viewModel.toggleCrashReporting(app)
-                        },
+                        onClick = viewModel::toggleCrashReporting,
                     )
                 } else {
                     Text(
@@ -481,7 +492,7 @@ fun AuthScreen(
                     color = MwColors.TextMuted,
                 )
                 MwChip(versionLabel, tone = MwChipTone.Brass)
-                if (BuildConfig.DEBUG) {
+                if (debugBuild) {
                     Text(
                         "API · $apiHost",
                         style = MwTypography.labelMedium,
