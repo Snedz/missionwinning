@@ -337,6 +337,13 @@ jobs:
           # Phase 9: full testDebug (all modules) + debug APK
           ./gradlew :app:assembleDebug testDebugUnitTest --stacktrace
 
+      - name: Release packaging smoke (debug-signed)
+        run: |
+          # Same gate as scripts/release-smoke.sh — no upload keystore in CI
+          ./gradlew :app:assembleRelease :app:bundleRelease --stacktrace
+          test -f app/build/outputs/apk/release/app-release.apk
+          test -f app/build/outputs/bundle/release/app-release.aab
+
       - name: Room schema present (exportSchema discipline)
         run: |
           test -d core/data/schemas
@@ -359,6 +366,11 @@ jobs:
           grep -q 'Start workout' .maestro/wedge.yaml
           grep -q 'Complete set' .maestro/wedge.yaml
           grep -q 'Session locked' .maestro/wedge.yaml
+          grep -q 'Account' .maestro/wedge.yaml
+          grep -q 'Preferences' .maestro/wedge.yaml
+          grep -q 'Account tab' scripts/wedge-adb-walk.py
+          grep -q 'assert_absent' scripts/wedge-adb-walk.py
+          test -x scripts/release-smoke.sh
 
       - name: Auth scaffold + Baseline Profile stub
         run: |

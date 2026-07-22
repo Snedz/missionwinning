@@ -76,9 +76,16 @@
 - Server: `POST /api/mobile/premium/play-purchase` → enrollments
 - Free offline logger never paywalled — [PLAY_BILLING.md](PLAY_BILLING.md)
 
+## Hub chrome (1.17+)
+
+- Bottom nav: **Today · Coach · Account** (peer tabs; Active/Victory immersive)
+- Account Preferences: units + equipment (reseeds week); Cloud sync + Continue offline
+- Accept + smoke: [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) · `python3 scripts/wedge-adb-walk.py` · [SHIP_INTERNAL.md](SHIP_INTERNAL.md)
+
 ## Ship Internal (Phase 8 runbook)
 
 - Founder path: [SHIP_INTERNAL.md](SHIP_INTERNAL.md) · device accept [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md)
+- Agent packaging smoke: `./scripts/release-smoke.sh` (debug-signed release APK/AAB; CI runs the same Gradle tasks)
 
 ## i18n foundation (Phase 16)
 
@@ -109,15 +116,15 @@ cd apps/android
 # Device Manager → create Pixel AVD with a Google APIs / Play system image API 34+
 # Then: emulator -avd <Your_AVD_Name>   OR start from Android Studio
 
-# Wedge smoke (pick one)
+# Wedge smoke (pick one) — Account tab + Active immersive asserts
 export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
 maestro test .maestro/wedge.yaml
 python3 scripts/wedge-adb-walk.py
-python3 scripts/wedge-adb-walk.py --screenshots   # → store-assets/*.png (local)
+python3 scripts/wedge-adb-walk.py --screenshots   # → store-assets/*.png (local; includes 02b-account)
 
-# Release (no keystore.properties → debug-signed smoke; with keystore → upload signing)
-./gradlew :app:assembleRelease
-./gradlew :app:bundleRelease
+# Release packaging smoke (no keystore.properties → debug-signed; Play needs upload key)
+./scripts/release-smoke.sh
+# or: ./gradlew :app:assembleRelease :app:bundleRelease
 # AAB: app/build/outputs/bundle/release/app-release.aab
 ```
 
@@ -130,9 +137,9 @@ Signing template: [keystore.properties.example](keystore.properties.example) · 
 Screenshots for Play: [store-assets/README.md](store-assets/README.md)
 
 **Platform rebuild:** Hilt + UDF ViewModels + feature modules + Hevy/Strong-class Active logger. See [ARCHITECTURE.md](ARCHITECTURE.md).  
-**Long-term queue:** [BACKLOG.md](BACKLOG.md) — sync scale, session draft, catalog, Play velocity.  
-**UX overhaul:** [UX.md](UX.md) — bottom nav, cards, Today hero, Active current-set card, Coach tiles.  
-**Founder accept:** [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — device checklist before Play Internal.  
+**Long-term queue:** [BACKLOG.md](BACKLOG.md) — F0 Accept B founder-owned; F5 gated; F6–F9 hub/Accept/CI Done.  
+**UX overhaul:** [UX.md](UX.md) — 3-tab hub, Today mission control, Active current-set card, Coach tiles.  
+**Founder accept:** [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — device checklist before Play Internal (`./scripts/release-smoke.sh` first).  
 **Auth:** Supabase email OTP + Bearer sync — not a stub ([NETWORK_COACH.md](NETWORK_COACH.md)).
 
 ## AI lane
