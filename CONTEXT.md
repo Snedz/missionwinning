@@ -20,13 +20,12 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
-- **Horizon 0 (pre-public beta).** Site live behind the `PRIVATE_MODE` gate. Boss metric: week-4 retained weekly loggers.
-- **#1 bottleneck (founder-owned): recruit ≥10 beta users** + phone hero QA by **2026-08-02** — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3.
-- **Founder must do (agents cannot):** (1) clear **GitHub Actions billing** — CI still dies in ~3s; (2) phone hero QA + ≥10 invites; (3) Android **15-min Accept B** ([apps/android/FOUNDER_ACCEPT.md](apps/android/FOUNDER_ACCEPT.md)) → Play Internal; (4) Wave A before public flip; (5) `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in `.env.local`/CI for `LAUNCH_STRICT=true`.
-- **www:** `.97` allowlist live; **`.98`** smoke scripts aligned (promote after this ship). Gate/growth/rate-limit/week4 dry-run green against prod (strict env check still founder-gated).
-- Agents: CI when billing clears · #1 tester confusion only · `vercel promote` until Actions deploy works · **no F5** (pillars/iOS/KMP) until Accept Pass + week-4 direction.
-- Shipped: web **`.98`** smoke alignment; Android **1.22.0** `:feature:auth` extract (F3.1/F11); **1.21.0** Accept enablement.
-- In flight: none — **await founder recruiting + GH billing + Accept B Pass**. Wedge craft polish only after Internal Fail/tester notes.
+- **Horizon 0 — beta sprint through 2026-08-02.** Boss metric: week-4 retained weekly loggers. **#1 bottleneck: recruit ≥10** + phone hero QA — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §1→§3.
+- **Founder must do (agents cannot):** (1) clear **GitHub Actions billing** — CI dies in ~3–5s (*payments failed / spending limit*); (2) phone hero QA + ≥10 invites + day-2/7 follow-ups; (3) Android **Accept B** → Play Internal; (4) Wave A **Sentry DSN** before public flip; (5) `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` (+ Checkout) in `.env.local` for `LAUNCH_STRICT`.
+- **www:** **`.98` live**. Gate/growth/rate-limit/week4 dry-run green. `LAUNCH_STRICT` blocked on founder secrets. Flip checklist updated ([docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md)).
+- Agents: CI when billing clears · named #1 tester confusion only · `vercel promote` until Actions work · **no F5**.
+- Shipped: web **`.98`**; Android **1.22.0**. In flight: **await founder billing + recruiting + Accept B**.
+
 
 ---
 

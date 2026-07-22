@@ -2,7 +2,15 @@
 
 Use this when inviting the first **10 private beta operators**. Prod is live at **https://www.missionwinning.com** (private gate on). Share the access code from Vercel `PRIVATE_ACCESS_SECRET` / `PRIVATE_ACCESS_CODES`.
 
-**Current status (2026-07-22):** www **`.97`+** live (gate allowlist). **Recruiting still the critical path** before `PRIVATE_MODE=false`. Agent smokes aligned in `.98`.
+**Current status (2026-07-22):** www **`.98` live**. **Recruiting is the critical path** before `PRIVATE_MODE=false` — cohort target **2026-08-02**.
+
+**Founder sprint checklist (agents cannot mark these done):**
+
+1. Clear GitHub Actions billing (CI still fails in ~3–5s with payment/spending-limit annotation).
+2. Phone hero QA: `/private` → access → `/welcome` → workout → Mission Score → sign-in. Note #1 confusion.
+3. Issue ≥10 invites via Profile → Beta panel (`/private?invite=MW-B-…` + access code out-of-band).
+4. Day-2 / day-7 follow-ups (scripts below).
+5. After web hero feels solid: Android [FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) 15-min Accept B → Play Internal.
 
 **Deferral:** Cohort of ≥10 invites targeted by **2026-08-02** (Horizon 0 day-14). Founder owns phone hero QA + personal invites; agents fix only #1 confusion from tester feedback.
 
