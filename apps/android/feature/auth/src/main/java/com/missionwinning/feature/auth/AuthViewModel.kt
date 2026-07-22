@@ -1,18 +1,13 @@
-package com.missionwinning.app.feature.auth
+package com.missionwinning.feature.auth
 
-import android.app.Application
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.missionwinning.app.crash.CrashReporting
-import com.missionwinning.app.health.HealthConnectWriter
 import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.AuthUiSnapshot
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.OutboxStatus
 import com.missionwinning.core.data.SyncScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -52,9 +47,7 @@ class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val repository: MwRepository,
     private val syncScheduler: SyncScheduler,
-    @ApplicationContext private val appContext: Context,
 ) : ViewModel() {
-    private val healthConnect = HealthConnectWriter(appContext)
     private val _local = MutableStateFlow(AuthScreenState())
     val state: StateFlow<AuthScreenState> = combine(
         _local,
@@ -85,7 +78,7 @@ class AuthViewModel @Inject constructor(
     }
 
     fun healthConnectPermissions(): Set<String> =
-        healthConnect.requiredPermissionsWithSteps()
+        HealthConnectAccountBridge.requiredPermissionsWithSteps()
 
     private suspend fun refreshTrainingPrefs() {
         _local.update {
@@ -135,9 +128,9 @@ class AuthViewModel @Inject constructor(
             it.copy(
                 crashReporting = repository.crashReportingEnabled(),
                 telemetryOptIn = repository.telemetryOptIn(),
-                sentryConfigured = CrashReporting.isConfigured(),
+                sentryConfigured = CrashReportingBridge.isConfigured(),
                 healthConnectExport = repository.healthConnectExportEnabled(),
-                healthConnectAvailable = healthConnect.isAvailable(),
+                healthConnectAvailable = HealthConnectAccountBridge.isAvailable(),
                 healthConnectStepsRead = repository.healthConnectStepsReadEnabled(),
             )
         }
@@ -320,11 +313,11 @@ class AuthViewModel @Inject constructor(
         _local.update { it.copy(error = null, message = null) }
     }
 
-    fun toggleCrashReporting(app: Application) {
+    fun toggleCrashReporting() {
         viewModelScope.launch {
             val next = !_local.value.crashReporting
             repository.setCrashReportingEnabled(next)
-            CrashReporting.setEnabled(app, next)
+            CrashReportingBridge.setEnabled?.invoke(next)
             _local.update {
                 it.copy(
                     crashReporting = next,
@@ -385,8 +378,8 @@ class AuthViewModel @Inject constructor(
             if (!next) {
                 setHealthConnectExport(false)
             } else {
-                // Permission grant is requested from UI; enable only after grant or if already held
-                if (healthConnect.hasWritePermission()) {
+                val hasWrite = HealthConnectAccountBridge.hasWritePermission?.invoke() == true
+                if (hasWrite) {
                     setHealthConnectExport(true)
                 } else {
                     _local.update {
@@ -399,7 +392,7 @@ class AuthViewModel @Inject constructor(
 
     fun onHealthConnectPermissionResult(granted: Set<String>) {
         viewModelScope.launch {
-            val ok = healthConnect.requiredPermissions().all { it in granted }
+            val ok = HealthConnectAccountBridge.requiredWritePermissions().all { it in granted }
             if (ok) {
                 setHealthConnectExport(true)
             } else {

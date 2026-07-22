@@ -36,7 +36,7 @@
 
 | ID | Item | Status |
 |----|------|--------|
-| F3.1 | Extract `:feature:auth` | Scaffolded (UI in :app until HC/Billing moved) |
+| F3.1 | Extract `:feature:auth` | Done (1.22.0 — HC/crash bridges; UI in `:feature:auth`) |
 | F3.2 | Conflict inbox | Done |
 | F3.3 | Cookie-free coach when not private / Bearer | Done (server already; docs fixed) |
 | F3.4 | Soft-delete history UX | Done |
@@ -94,6 +94,16 @@
 | F10.3 | FOUNDER_ACCEPT 15-minute Accept B short path | Done |
 | F10.4 | Ship 1.21.0 docs (CONTEXT / LOG) | Done |
 
+## F11 — Extract `:feature:auth` (1.22.0)
+
+| ID | Item | Status |
+|----|------|--------|
+| F11.1 | HealthConnectAccountBridge + CrashReportingBridge | Done |
+| F11.2 | Move AuthScreen / AuthViewModel / AuthPrefsFeedback into `:feature:auth` | Done |
+| F11.3 | Ship 1.22.0 docs (CONTEXT / LOG) | Done |
+
 ## F5 — Explicitly later (gated)
 
 Fuel · Mind · Learn · Social · Wearables-as-score · iOS · Hevy-scale video library · OpenAPI codegen / KMP
+
+**Do not start F5** until founder Accept B Pass ([FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md)) **and** week-4 retention is directionally OK. Wedge craft polish only from Accept Fail rows / Internal tester notes — no invented pillars.

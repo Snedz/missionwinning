@@ -6,8 +6,8 @@
 
 | Module | Role |
 |--------|------|
-| `:app` | Hilt `MwApp`, NavHost (Auth UI in `:app` · `:feature:auth` scaffold) |
-| `:feature:auth` | Supabase OTP Account + cloud sync Retry (or `app/.../feature/auth` until extracted) |
+| `:app` | Hilt `MwApp`, NavHost (registers HC/crash bridges for `:feature:auth`) |
+| `:feature:auth` | Supabase OTP Account + Preferences + cloud sync Retry |
 | `:feature:active` | Logger craft — ViewModel UDF, exercise×sets |
 | `:feature:today` | Today next-session hero |
 | `:feature:coach` | Week plan + adapt banner |
@@ -137,7 +137,7 @@ Signing template: [keystore.properties.example](keystore.properties.example) · 
 Screenshots for Play: [store-assets/README.md](store-assets/README.md)
 
 **Platform rebuild:** Hilt + UDF ViewModels + feature modules + Hevy/Strong-class Active logger. See [ARCHITECTURE.md](ARCHITECTURE.md).  
-**Long-term queue:** [BACKLOG.md](BACKLOG.md) — F0 Accept B founder-owned; F5 gated; F6–F10 hub/Accept/CI Done.  
+**Long-term queue:** [BACKLOG.md](BACKLOG.md) — F0 Accept B founder-owned; F5 gated; F3.1 / F6–F11 Done.  
 **UX overhaul:** [UX.md](UX.md) — 3-tab hub, Today mission control, Active current-set card, Coach tiles.  
 **Founder accept:** [FOUNDER_ACCEPT.md](FOUNDER_ACCEPT.md) — 15-min Accept B short path; device checklist before Play Internal (`./scripts/release-smoke.sh` first).  
 **CI release AAB:** debug-signed artifact on android job — Play upload still needs founder keystore ([SHIP_INTERNAL.md](SHIP_INTERNAL.md)).  

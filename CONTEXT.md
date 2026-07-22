@@ -11,12 +11,12 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > Adaptive AI coaching for train-anywhere athletes — free offline logging (no account), weekly plans from logs alone (no wearable). Super Bundle adds Coach depth and the other pillars — it never gates the logger.
 
 - Six pillars — Train · Fuel · Move · Mind · Track · Learn — unified by the Mission Score. Constitution: [vision.md](vision.md). Pitch the **Train + Mission Coach wedge**, never "everything app" ([docs/YC_THESIS.md](docs/YC_THESIS.md)).
-- Surfaces: Next.js 16 PWA (repo root) · native Android Compose ([apps/android](apps/android), v1.21.0) · iOS deferred ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) · "Beyond the Basics" guidebook (`/guide` + magazine PDF).
+- Surfaces: Next.js 16 PWA (repo root) · native Android Compose ([apps/android](apps/android), v1.22.0) · iOS deferred ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) · "Beyond the Basics" guidebook (`/guide` + magazine PDF).
 - Solo founder + AI agents. Founder owns users, money, legal, secrets, `PRIVATE_MODE`. Agents own code, tests, perf, docs — inside horizon gates.
 
 ---
 
-## Now (2026-07-22 · web `2026.07-unified.98` · Android `1.21.0`)
+## Now (2026-07-22 · web `2026.07-unified.98` · Android `1.22.0`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
@@ -24,9 +24,9 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **#1 bottleneck (founder-owned): recruit ≥10 beta users** + phone hero QA by **2026-08-02** — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §3.
 - **Founder must do (agents cannot):** (1) clear **GitHub Actions billing** — CI still dies in ~3s; (2) phone hero QA + ≥10 invites; (3) Android **15-min Accept B** ([apps/android/FOUNDER_ACCEPT.md](apps/android/FOUNDER_ACCEPT.md)) → Play Internal; (4) Wave A before public flip; (5) `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in `.env.local`/CI for `LAUNCH_STRICT=true`.
 - **www:** `.97` allowlist live; **`.98`** smoke scripts aligned (promote after this ship). Gate/growth/rate-limit/week4 dry-run green against prod (strict env check still founder-gated).
-- Agents: CI when billing clears · #1 tester confusion only · `vercel promote` until Actions deploy works.
-- Shipped: web **`.98`** smoke alignment; **`.97`** allowlist; Android **1.21.0** Accept enablement.
-- In flight: none — **await founder recruiting + GH billing + Accept B Pass**.
+- Agents: CI when billing clears · #1 tester confusion only · `vercel promote` until Actions deploy works · **no F5** (pillars/iOS/KMP) until Accept Pass + week-4 direction.
+- Shipped: web **`.98`** smoke alignment; Android **1.22.0** `:feature:auth` extract (F3.1/F11); **1.21.0** Accept enablement.
+- In flight: none — **await founder recruiting + GH billing + Accept B Pass**. Wedge craft polish only after Internal Fail/tester notes.
 
 ---
 

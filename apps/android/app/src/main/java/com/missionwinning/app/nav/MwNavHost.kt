@@ -26,7 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.missionwinning.app.BuildConfig
-import com.missionwinning.app.feature.auth.AuthScreen
+import com.missionwinning.feature.auth.AuthScreen
 import com.missionwinning.app.feature.debug.DesignSystemGalleryScreen
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.designsystem.MwBottomNav
@@ -246,6 +246,10 @@ fun MwNavHost(
                 composable(Routes.AUTH) {
                     AuthScreen(
                         asHubTab = true,
+                        versionName = BuildConfig.VERSION_NAME,
+                        versionCode = BuildConfig.VERSION_CODE,
+                        debugBuild = BuildConfig.DEBUG,
+                        apiBaseUrl = BuildConfig.API_BASE_URL,
                         onClose = { nav.navigateHub(Routes.TODAY) },
                         onOpenGallery = {
                             if (BuildConfig.DEBUG) {

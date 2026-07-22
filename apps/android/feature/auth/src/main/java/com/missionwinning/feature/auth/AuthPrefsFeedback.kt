@@ -1,4 +1,4 @@
-package com.missionwinning.app.feature.auth
+package com.missionwinning.feature.auth
 
 /**
  * Pure copy helpers for Account Preferences feedback (unit-tested; used by [AuthViewModel]).

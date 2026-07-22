@@ -8,7 +8,10 @@ import com.missionwinning.core.data.AuthRepository
 import com.missionwinning.core.data.MwRepository
 import com.missionwinning.core.data.SyncScheduler
 import com.missionwinning.feature.active.HealthConnectExportBridge
+import com.missionwinning.feature.auth.CrashReportingBridge
+import com.missionwinning.feature.auth.HealthConnectAccountBridge
 import com.missionwinning.feature.today.HealthConnectStepsBridge
+import androidx.health.connect.client.PermissionController
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +43,17 @@ class MwApp : Application() {
             )
         }
         HealthConnectStepsBridge.reader = { hc.readStepsToday() }
+        HealthConnectAccountBridge.isAvailable = { hc.isAvailable() }
+        HealthConnectAccountBridge.requiredWritePermissions = { hc.requiredPermissions() }
+        HealthConnectAccountBridge.requiredPermissionsWithSteps = { hc.requiredPermissionsWithSteps() }
+        HealthConnectAccountBridge.hasWritePermission = { hc.hasWritePermission() }
+        HealthConnectAccountBridge.createPermissionContract = {
+            PermissionController.createRequestPermissionResultContract()
+        }
+        CrashReportingBridge.isConfigured = { CrashReporting.isConfigured() }
+        CrashReportingBridge.setEnabled = { enabled ->
+            CrashReporting.setEnabled(this@MwApp, enabled)
+        }
         appScope.launch {
             runCatching {
                 // Crash reporting default ON when DSN present; respect Account toggle
