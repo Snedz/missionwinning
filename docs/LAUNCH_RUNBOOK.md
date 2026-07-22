@@ -146,13 +146,13 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 
 ### Phantom Lifetime USDC (code + Production env on; founder verify)
 
-See [docs/PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md). Do **not** market crypto until one end-to-end Lifetime payment is verified.
+See [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md). Strategy lens (crypto = rail, not product): [CRYPTO_RAILS_THESIS.md](CRYPTO_RAILS_THESIS.md). Do **not** market crypto until one end-to-end Lifetime payment is verified.
 
 - [x] `crypto_payment_intents` on prod · Production `NEXT_PUBLIC_CRYPTO_CHECKOUT=true` + treasury + RPC · API smoke 401 without session
 - [ ] Save treasury secret offline (`/tmp/mw_solana_treasury_secret.b58`) and delete the temp file; fund USDC ATA for `57CEga7okiNCVAomW254KUCtj5GquRu8Z2Huj27bdPjM`
 - [ ] Signed-in `/bundle` Lifetime → **Pay with Phantom** → confirm `enrollments.provider = phantom`
 - [ ] Optional: dedicated RPC (Helius/QuickNode); Phantom Portal App ID for social/deeplink
-- [ ] Parallel (when live KYB ready): Dashboard → Payment methods → **Stablecoins and Crypto** for Lifetime Sessions only — [docs/STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md)
+- [ ] Parallel (when live KYB ready): Dashboard → Payment methods → **Stablecoins and Crypto** for Lifetime Sessions only — [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md)
 
 ## §5 — Go public (only after §2 / §2b security + ops boxes + §3 gates)
 
