@@ -107,8 +107,8 @@ fun VictoryScreen(
                 MwBrassRule()
                 Text(state.workoutName, style = MwTypography.titleLarge, color = MwColors.Emerald)
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    MwChip("${state.sets} sets", tone = MwChipTone.Emerald)
-                    MwChip(formatDuration(state.duration), tone = MwChipTone.Brass)
+                    MwChip("${state.sets} sets", tone = MwChipTone.Neutral)
+                    MwChip(formatDuration(state.duration), tone = MwChipTone.Neutral)
                     MwChip("#${state.workouts}", tone = MwChipTone.Neutral)
                 }
                 state.milestone?.let { line ->
@@ -130,7 +130,13 @@ fun VictoryScreen(
                 ) {
                     MwMetricCard("Sets", state.sets.toString(), Modifier.weight(1f))
                     MwMetricCard("Time", formatDuration(state.duration), Modifier.weight(1f))
-                    MwMetricCard("Volume", volumeLabel, Modifier.weight(1f))
+                }
+                if (state.volume > 0) {
+                    Text(
+                        "Volume · $volumeLabel",
+                        style = MwTypography.headlineMedium,
+                        color = MwColors.Brass,
+                    )
                 }
                 Spacer(Modifier.height(8.dp))
                 MwPrimaryButton(

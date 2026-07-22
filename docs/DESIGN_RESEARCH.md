@@ -320,6 +320,40 @@ Source: [trainheroic.com/athlete](https://www.trainheroic.com/athlete/) + coach 
 
 ---
 
+## Wave 7 — Design Excellence OS synthesis (2026-07-22)
+
+**Thesis:** Mission Winning already owns the brand lane (mission briefing · navy/emerald/brass · free offline logger · log-based Coach). Excellence is **execution craft**, not a redesign. Operating system: [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md).
+
+### Steal / avoid / own
+
+| Peer | Steal | Avoid | MW owns |
+|------|-------|-------|---------|
+| **Hevy / Strong** | Set table atom, previous-set ghost, 2-tap complete, rest that doesn’t fight the row | Hevy blue, social PR feeds | Free forever + offline PWA/Compose |
+| **Freeletics** | One Start for today; credible plan after light I-Day | 25-step quiz → hard paywall before value | Logger free without Coach lock-in |
+| **Bevel / WHOOP** | Metric hierarchy + one insight line | Ring-dashboard clone; wearable as home hero | Mission Score from **logs**, not sensors |
+| **NTC / Fitness+** | Discovery polish on Learn/Move later | Video/class chrome inside the set row | Train stays table-first |
+| **Linear / Arc** | Chrome recedes; match UI weight to task | Decorative card wallpaper | Briefing density on Today |
+| **RepStack / Forge** | Next-set auto-seed; Just Go | Paywall progression / BYOK as product | Targets + Just Go stay free |
+
+### Emotional arc (product loop)
+
+Composure (Today) → Focus (Active) → Honor (Victory) → Clarity (Coach) → next session.
+
+### Craft waves (horizon-gated)
+
+| Wave | Horizon | Focus |
+|------|---------|--------|
+| **D0** | 0 | Today one-CTA · Active rest/PR craft · Android Accept-blocker · this OS |
+| **D1** | 1 | Landing / Welcome / Bundle conversion craft |
+| **D2** | 2 | Victory ritual · Today coach-line · retention kill criteria |
+| **D3** | 3 | Token sync tooling · pillar polish · iOS inherit |
+
+### Non-goals
+
+Brand palette swap · WHOOP clone · Hevy social · Horizon-0 teardown · gating logger/rest/PRs/Just Go · confetti/XP theater.
+
+---
+
 ## Sources folded in
 
 - Internal: UX_UNIFIED_PLAN (Bevel/Freeletics), ROADMAP_V4_EXPERIENCE (no teardown)  
@@ -329,3 +363,4 @@ Source: [trainheroic.com/athlete](https://www.trainheroic.com/athlete/) + coach 
 - Wave 4: SEO volume + marketing inspire
 - Wave 5: CTA integrity + list density/search
 - Wave 6: TrainHeroic athlete gym + % load (not coach SaaS)
+- Wave 7: Design Excellence OS — steal/avoid/own synthesis + craft waves D0–D3

@@ -51,6 +51,8 @@ Hybrid rule: one modest base lift + targeted promotions — no mass Card rewrite
 | `--status-info` | Recovery / info / functional grouping (prefer over raw blue/violet) |
 | `--status-danger` / `--status-ok` | Risk / success |
 
+**Cross-platform drift:** run `npm run check-token-sync` before ship — compares web `:root` HSL (this file) to Android [`MwColors.kt`](../apps/android/core/designsystem/src/main/java/com/missionwinning/core/designsystem/MwColors.kt) / [`MwMotion.kt`](../apps/android/core/designsystem/src/main/java/com/missionwinning/core/designsystem/MwMotion.kt). Exit 0 = OK. See [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) token sync checklist.
+
 Utility classes: `glass-nav`, `content-card`, `card-elevated`, `card-glow-emerald`, `card-glow-brass`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `display-mega`, `section-index`, `briefing-rule`, `pressable-card`, `ring-draw-in`, `score-tick`, `section-seam`.
 
 ### Marketing elevation (landing / bundle / SEO)

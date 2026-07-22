@@ -13,19 +13,25 @@
 
 > **2026-07-11:** Vercel is connected via GitHub + Cursor. Skip 2FA recovery unless access breaks again. Confirm Production deploys from `master` and Profile shows the latest build label.
 >
-> **2026-07-22 (unblock www):** Production was stuck on a Jul 20 CLI deploy (~69 commits behind master). CI and [deploy-production.yml](../.github/workflows/deploy-production.yml) fail in ~2s with **GitHub spending limit / billing** — not a code failure. Agents cannot fix this.
+> **2026-07-22 (unblock www):** Production was stuck on a Jul 20 CLI deploy (~69 commits behind master). CI and [deploy-production.yml](../.github/workflows/deploy-production.yml) had been failing in ~2s with **GitHub spending limit / billing** — not a code failure.
 >
-> **Beta sprint (through 2026-08-02):** Code is not the bottleneck. Do §1 billing **today**, then §3 phone QA + ≥10 invites. Android Accept B + Wave A Sentry before any public flip.
+> **2026-07-22 (billing cleared):** GitHub Pro / billing unblocked — **CI runs for real** again. Agents can rely on green checks; founder still owns secrets and promote.
+>
+> **Still founder-owned:** `VERCEL_TOKEN` remains **invalid** in GH Actions **Deploy production** — rotate in repo Secrets (with `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID`). Enable **CodeQL / code scanning** in repo **Settings → Security** — the CodeQL workflow fails upload until enabled.
+>
+> **Beta sprint (through 2026-08-02):** Code is not the bottleneck. Finish §1 secrets + CodeQL, then §3 phone QA + ≥10 invites. Android Accept B + Wave A Sentry before any public flip.
 
-1. **GitHub → Settings → Billing:** clear spending limit / failed payment so Actions can run (CI + Deploy production). **Still required** — annotation as of 2026-07-22: *“recent account payments have failed or your spending limit needs to be increased.”* www `.98` is live via CLI promote; CI remains dead until billing clears.
-2. **Rotate GH Actions secret `VERCEL_TOKEN`** (and confirm `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` still valid).
-3. **Promote Production (if www drifts again):** Actions → **Deploy production** → `workflow_dispatch`, **or** `vercel promote <ready-master-dpl> --yes`, **or** Vercel dashboard → Promote.
-4. Confirm you can see the project dashboard and Production deploys from `master`.
-5. After promote, check Profile footer / `/api/health` matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.98`+**). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
+1. **GitHub → Settings → Billing:** spending limit / payment cleared **2026-07-22** — CI no longer dies in ~2s on billing. Re-check if Actions fail again.
+2. **Rotate GH Actions secret `VERCEL_TOKEN`** (still invalid for Deploy production as of 2026-07-22) — and confirm `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` still valid.
+3. **Enable CodeQL:** repo **Settings → Security → Code scanning** — turn on GitHub CodeQL (workflow upload fails until enabled).
+4. **Promote Production (if www drifts again):** Actions → **Deploy production** → `workflow_dispatch`, **or** `vercel promote <ready-master-dpl> --yes`, **or** Vercel dashboard → Promote.
+5. Confirm you can see the project dashboard and Production deploys from `master`.
+6. After promote, check Profile footer / `/api/health` matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.103`+** after next promote — do not assume until verified). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
 
-- [ ] GitHub Actions billing cleared (CI jobs no longer die in ~2–5s)
-- [ ] `VERCEL_TOKEN` rotated in GH secrets
-- [x] Production promoted; Profile / `/api/health` shows `.98`+
+- [ ] GitHub Actions billing cleared (CI jobs no longer die in ~2–5s) — **cleared 2026-07-22; re-check if regress**
+- [ ] `VERCEL_TOKEN` rotated in GH secrets (**still invalid** — Deploy production)
+- [ ] CodeQL / code scanning enabled (Settings → Security)
+- [ ] Production promoted; Profile / `/api/health` shows **`.103`+** (verify after promote — not done until you check)
 - [x] I can open the Vercel project and deploy (GitHub integration / CLI promote)
 
 ## §2 — Environment & database (~45 min, one-time)

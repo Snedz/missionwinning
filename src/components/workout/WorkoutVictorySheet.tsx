@@ -25,6 +25,7 @@ type Props = {
   onViewHistory: () => void;
 };
 
+/** D2 Victory ritual — lock scale + brass volume + one next action. */
 export function WorkoutVictorySheet({
   open,
   summary,
@@ -81,11 +82,13 @@ export function WorkoutVictorySheet({
     }
   };
 
+  const hasCoachNext = summary.nextAction?.href?.includes('/coach');
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="card-glow-brass sm:max-w-md border-brass/30 bg-gradient-to-b from-card to-brass/5">
+      <DialogContent className="victory-lock card-glow-brass sm:max-w-md border-brass/30 bg-gradient-to-b from-card to-brass/5">
         <DialogHeader className="text-center space-y-3 victory-reveal">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brass/20 border border-brass/40 victory-reveal">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brass/20 border border-brass/40">
             <Trophy className="h-8 w-8 text-brass" />
           </div>
           <DialogTitle className="text-2xl">
@@ -97,11 +100,11 @@ export function WorkoutVictorySheet({
         </DialogHeader>
 
         <div className="grid grid-cols-2 gap-3 py-2">
-          <div className="rounded-xl border border-border/50 bg-muted/20 p-3 text-center">
+          <div className="rounded-xl border border-brass/30 bg-brass/10 p-3 text-center">
             <p className="text-xs text-muted-foreground uppercase tracking-wide">
               {t('victoryVolume', { defaultValue: 'Volume' })}
             </p>
-            <p className="text-xl font-bold tabular-nums text-primary">
+            <p className="text-xl font-bold tabular-nums text-brass">
               {summary.totalVolume.toLocaleString()}
             </p>
             <p className="text-[10px] text-muted-foreground">{unitLabel}</p>
@@ -167,13 +170,13 @@ export function WorkoutVictorySheet({
         )}
 
         {summary.progressionInsight && (
-          <p className="text-center text-sm text-primary/90 px-2 leading-relaxed">
+          <p className="text-center text-sm text-muted-foreground px-2 leading-relaxed">
             {summary.progressionInsight}
           </p>
         )}
 
         {summary.streak > 0 && (
-          <p className="text-center text-sm text-primary/90">
+          <p className="text-center text-sm text-brass/90">
             {t('victoryStreak', {
               count: summary.streak,
               defaultValue: `${summary.streak}-day training streak — keep the path alive`,
@@ -201,17 +204,39 @@ export function WorkoutVictorySheet({
           </div>
         )}
 
-        <DialogFooter className="flex-col sm:flex-col gap-2">
-          <Button variant="outline" className="w-full" onClick={onViewToday}>
-            {t('victoryBackToday', { defaultValue: 'Back to Today' })}
-          </Button>
-          <Button variant="ghost" className="w-full" onClick={onViewHistory}>
-            {t('victoryViewHistory', { defaultValue: 'View history & charts' })}
-          </Button>
-          <Button variant="ghost" className="w-full gap-2" onClick={handleShare}>
-            <Share2 className="h-4 w-4" />
-            {t('victoryShare', { defaultValue: 'Share win' })}
-          </Button>
+        <DialogFooter className="flex-col sm:flex-col gap-2 pt-1">
+          {!summary.nextAction && (
+            <Button variant="outline" className="w-full" onClick={onViewToday}>
+              {t('victoryBackToday', { defaultValue: 'Back to Today' })}
+            </Button>
+          )}
+          {hasCoachNext && (
+            <button
+              type="button"
+              className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+              onClick={onViewToday}
+            >
+              {t('victoryBackToday', { defaultValue: 'Back to Today' })}
+            </button>
+          )}
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+            <button
+              type="button"
+              className="hover:text-foreground underline-offset-2 hover:underline"
+              onClick={onViewHistory}
+            >
+              {t('victoryViewHistory', { defaultValue: 'History' })}
+            </button>
+            <span aria-hidden>·</span>
+            <button
+              type="button"
+              className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline"
+              onClick={handleShare}
+            >
+              <Share2 className="h-3 w-3" />
+              {t('victoryShare', { defaultValue: 'Share' })}
+            </button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -48,7 +48,7 @@ export function TodayPageHeader({
             className="shrink-0 inline-flex items-center gap-1.5 min-h-[40px] rounded-md border border-border/60 bg-background px-3 text-sm font-medium hover:bg-accent"
             onClick={onEditToday}
           >
-            <LayoutGrid className="h-4 w-4 text-primary" />
+            <LayoutGrid className="h-4 w-4 text-muted-foreground" />
             {t('todayEditToday', { defaultValue: 'Edit Today' })}
           </button>
         )}
@@ -57,7 +57,7 @@ export function TodayPageHeader({
         <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1">
           <StreakChip streak={streak} variant="inline" />
           <span aria-hidden>·</span>
-          <a href="/leaderboard" className="text-primary hover:underline">
+          <a href="/leaderboard" className="text-muted-foreground hover:text-foreground hover:underline">
             {t('leaderboardRankings', { defaultValue: 'Rankings' })}
           </a>
         </p>
@@ -65,7 +65,7 @@ export function TodayPageHeader({
       <p className="text-sm text-muted-foreground">
         {!userEmail ? (
           <>
-            <a href="/profile" className="text-primary hover:underline">
+            <a href="/profile" className="text-muted-foreground hover:text-foreground hover:underline">
               {t('signInLink', { defaultValue: 'Sign in' })}
             </a>{' '}
             {t('signInOptional', {

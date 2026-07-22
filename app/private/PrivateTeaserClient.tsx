@@ -84,7 +84,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   };
 
   const accessForm = (
-    <form onSubmit={handleSubmit} className="content-card mt-3 space-y-4 p-6">
+    <form onSubmit={handleSubmit} className="mt-6 space-y-4 border-t border-border/40 pt-6">
       {isInvitee ? (
         <p className="text-sm font-medium text-foreground">
           {t('gateInviteHeadline', {
@@ -93,7 +93,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
         </p>
       ) : null}
       <label className="block space-y-2 text-sm">
-        <span className="text-muted-foreground">
+        <span className="eyebrow text-muted-foreground">
           {t('gateAccessLabel', { defaultValue: 'Access code' })}
         </span>
         <input
@@ -127,7 +127,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       )}
       <p className="text-[11px] leading-relaxed text-muted-foreground">
         {t('gateBetaGuideFoot', { defaultValue: 'Invited testers: see the' })}{' '}
-        <Link href="/beta" className="text-primary hover:underline">
+        <Link href="/beta" className="text-muted-foreground underline-offset-2 hover:underline">
           {t('gateBetaGuide', { defaultValue: 'beta start guide' })}
         </Link>
         . If you installed the app before the gate, clear site data or reinstall.
@@ -174,7 +174,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           ) : (
             <>
               {waitDone ? (
-                <div className="content-card p-6 text-center">
+                <div className="mt-6 border-t border-border/40 pt-6 text-center">
                   <p className="inline-flex items-center gap-1.5 font-semibold text-primary">
                     <Check className="h-4 w-4" />{' '}
                     {t('gateWaitlistDone', { defaultValue: "You're on the list." })}
@@ -187,7 +187,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleWaitlist} className="content-card space-y-3 p-6">
+                <form onSubmit={handleWaitlist} className="mt-6 space-y-3 border-t border-border/40 pt-6">
                   <p className="eyebrow">
                     {t('gateWaitlistTitle', { defaultValue: 'Get notified at launch' })}
                   </p>

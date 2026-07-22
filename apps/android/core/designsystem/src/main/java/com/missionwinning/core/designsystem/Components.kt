@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import android.provider.Settings
 
 val LocalReduceMotion = staticCompositionLocalOf { false }
@@ -357,8 +358,8 @@ fun MwRestTimer(
             } else {
                 "0:00"
             },
-            style = MwTimerStyle,
-            color = if (secondsLeft > 0) MwColors.Brass else MwColors.TextMuted,
+            style = MwTimerStyle.copy(fontSize = 80.sp),
+            color = if (secondsLeft > 0) MwColors.Text else MwColors.TextMuted,
             textAlign = TextAlign.Center,
             modifier = Modifier.graphicsLayer {
                 scaleX = pulse.value

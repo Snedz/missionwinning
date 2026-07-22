@@ -524,13 +524,6 @@ fun ActiveScreen(
                 }
 
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (state.lastPrSetId != null) {
-                        MwChip(
-                            text = "New PR · e1RM",
-                            tone = MwChipTone.Brass,
-                            contentDescription = "New personal record",
-                        )
-                    }
                     MwRestDock(
                         secondsLeft = state.restSeconds,
                         totalSeconds = state.restTotalSeconds,

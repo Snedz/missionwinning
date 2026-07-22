@@ -76,7 +76,7 @@ export function FuelTodayLogCard({
             title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
             description={t('fuelNoEntries', {
               defaultValue:
-                'After training, log one meal — protein and calories feed your Win Score. Describe a meal above or tap Log meal.',
+                'Describe what you ate above and tap Log meal — protein and calories feed your Win Score. Use Detailed log for portions and macros.',
             })}
             actionLabel={t('fuelLogFirstMeal', { defaultValue: 'Log first meal' })}
             onAction={onOpenLogSheet}

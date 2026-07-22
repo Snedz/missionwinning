@@ -66,6 +66,14 @@ export function SetLogRow({
 }: Props) {
   const { t } = useTranslation();
   const kind = set.kind ?? 'normal';
+  const seededFromTarget =
+    !!target && reps === target.reps && weight === target.weight;
+  const seededFromLast =
+    !!lastPerformance &&
+    reps === lastPerformance.reps &&
+    weight === lastPerformance.weight;
+  const showApplyTarget = !!onApplyTarget && !!target && !seededFromTarget;
+  const showCopyLast = !!onCopyLast && !!lastPerformance && !seededFromTarget && !seededFromLast;
 
   if (set.completed) {
     return (
@@ -180,19 +188,19 @@ export function SetLogRow({
         <div className="flex items-center gap-2 flex-wrap justify-end">
           {target && (
             <>
-              <span className="rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[10px] font-medium tabular-nums text-primary">
+              <span className="rounded-full border border-border/50 bg-muted/20 px-2 py-0.5 text-[10px] font-medium tabular-nums text-muted-foreground">
                 {t('activeTargetChip', {
                   reps: target.reps,
                   weight: target.weight,
                   defaultValue: `Target ${target.reps} × ${target.weight}`,
                 })}
               </span>
-              {onApplyTarget && (
+              {showApplyTarget && (
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="h-7 px-2 text-[10px] text-primary"
+                  className="h-7 px-2 text-[10px] text-muted-foreground"
                   onClick={onApplyTarget}
                 >
                   {t('activeApplyTarget', { defaultValue: 'Apply' })}
@@ -209,9 +217,9 @@ export function SetLogRow({
                   defaultValue: `Last: ${lastPerformance.reps} × ${lastPerformance.weight}`,
                 })}
               </span>
-              {onCopyLast && (
+              {showCopyLast && (
                 <Button type="button" variant="ghost" size="sm" className="h-7 px-2 text-[10px]" onClick={onCopyLast}>
-                  {t('activeCopyLast', { defaultValue: 'Copy last' })}
+                  {t('activeCopyLast', { defaultValue: 'Use last' })}
                 </Button>
               )}
             </>

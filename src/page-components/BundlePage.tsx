@@ -43,10 +43,6 @@ import {
   type BundlePlanId,
 } from "@/lib/bundleConfig";
 import { BUNDLE_PILLAR_I18N } from "@/i18n/bundleLocales";
-import {
-  PREMIUM_INVENTORY,
-  PREMIUM_RECIPE_COUNT,
-} from "@/data/premiumInventory";
 import { cn } from "@/lib/utils";
 
 const PILLAR_ICONS: Record<string, LucideIcon> = {
@@ -139,15 +135,9 @@ export function BundlePage() {
 
       <div className="hero-field texture-noise section-seam relative">
         <div className="relative z-[1] mx-auto max-w-4xl space-y-3 px-5 pb-10 pt-10">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{t("bundleBadge")}</Badge>
-            <Badge className="border-primary/40 bg-primary/10 text-primary hover:bg-primary/10">
-              {t("bundleExpandedContent", { defaultValue: "Depth when you want it" })}
-            </Badge>
-            <Badge className="border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
-              {t("bundleUrgencyBadge")}
-            </Badge>
-          </div>
+          <Badge className="border-brass/40 bg-brass/15 text-brass hover:bg-brass/15 w-fit">
+            {t("bundleUrgencyBadge")}
+          </Badge>
           <PillarPageHeader
             icon={Sparkles}
             eyebrow={t('bundleEyebrow', { defaultValue: 'Super Bundle' })}
@@ -160,29 +150,6 @@ export function BundlePage() {
                 'Free logger stays free. Bundle unlocks Mission Coach + deeper Fuel/Move/Mind/Learn — never required to log workouts.',
             })}
           </p>
-          <ul className="flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-            <li className="rounded-full border border-border/50 px-2.5 py-1">
-              {t('bundleProofRecipes', {
-                count: PREMIUM_RECIPE_COUNT,
-                defaultValue: `${PREMIUM_RECIPE_COUNT} premium recipes`,
-              })}
-            </li>
-            <li className="rounded-full border border-border/50 px-2.5 py-1">
-              {t('bundleProofMind', {
-                count: PREMIUM_INVENTORY.mindSessions,
-                defaultValue: `${PREMIUM_INVENTORY.mindSessions} Mind sessions`,
-              })}
-            </li>
-            <li className="rounded-full border border-border/50 px-2.5 py-1">
-              {t('bundleProofMove', {
-                count: PREMIUM_INVENTORY.moveFlows,
-                defaultValue: `${PREMIUM_INVENTORY.moveFlows} Move flows`,
-              })}
-            </li>
-            <li className="rounded-full border border-border/50 px-2.5 py-1">
-              {t('bundleProofCoach', { defaultValue: 'AI weekly plan + GPS Track' })}
-            </li>
-          </ul>
         </div>
       </div>
 
@@ -374,35 +341,10 @@ export function BundlePage() {
                     </p>
                   )}
 
-                  {/* Pillar icon grid */}
-                  <div>
-                    <p className="text-sm font-semibold mb-3">{t("bundleOneAppTitle")}</p>
-                    <p className="text-xs text-muted-foreground mb-4">{t("bundleOneAppDesc")}</p>
-                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-                      {BUNDLE_PILLARS.map((pillar) => {
-                        const Icon = PILLAR_ICONS[pillar.id] ?? Sparkles;
-                        const keys = BUNDLE_PILLAR_I18N[pillar.id];
-                        return (
-                          <Link
-                            key={pillar.id}
-                            href={pillar.route}
-                            className="flex flex-col items-center gap-1.5 rounded-lg border border-border/60 bg-background/60 p-3 hover:border-primary/40 hover:bg-primary/5 transition-colors text-center"
-                          >
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                              <Icon className="h-5 w-5 text-primary" aria-hidden />
-                            </div>
-                            <span className="text-xs font-semibold leading-tight">
-                              {keys ? t(keys.nameKey) : pillar.name}
-                            </span>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-3 flex items-center gap-1.5">
-                      <Trophy className="h-3.5 w-3.5 text-[hsl(var(--status-warn))] shrink-0" />
-                      {t("bundleWinScoreNote")}
-                    </p>
-                  </div>
+                  <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                    <Trophy className="h-3.5 w-3.5 text-brass shrink-0" />
+                    {t("bundleWinScoreNote")}
+                  </p>
 
                   <ul className="grid sm:grid-cols-2 gap-2">
                     {BUNDLE_PILLARS.map((pillar) => {

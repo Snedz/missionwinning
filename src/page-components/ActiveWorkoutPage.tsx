@@ -100,12 +100,16 @@ export function ActiveWorkoutPage() {
   const [offerVolumeTrim, setOfferVolumeTrim] = useState(false);
   const nextSetRef = useRef<HTMLDivElement | null>(null);
 
+  const sessionKey = activeWorkout
+    ? `${activeWorkout.startedAt}:${activeWorkout.workoutName}`
+    : null;
+
   useEffect(() => {
-    if (!activeWorkout) return;
+    if (!sessionKey) return;
     if (shouldOfferSessionCheckIn()) {
       setCheckInOpen(true);
     }
-  }, [activeWorkout?.startedAt, activeWorkout?.workoutName]);
+  }, [sessionKey]);
 
   const nextSet = useMemo(
     () => (activeWorkout ? findNextSet(activeWorkout.exercises) : null),
@@ -175,15 +179,7 @@ export function ActiveWorkoutPage() {
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
         navigator.vibrate([80, 40, 80]);
       }
-      toast({
-        title: t('activePrTitle', { defaultValue: 'New PR!' }),
-        description: t('activePrDesc', {
-          reps: input.reps,
-          weight: input.weight,
-          defaultValue: `${input.reps} × ${input.weight} — personal best for this exercise`,
-        }),
-        className: 'border-brass/40 bg-brass/10 text-brass',
-      });
+      // Honor = inline brass PR chip on the set row (Design Orchestration D0).
     }
     // Routine set feedback = row completion + rest timer (no toast spam).
   };
@@ -279,7 +275,7 @@ export function ActiveWorkoutPage() {
   );
 
   return (
-    <div className={`space-y-6 ${restTimerActive ? 'pb-44 md:pb-32' : 'pb-4'}`}>
+    <div className={`space-y-6 ${restTimerActive ? 'pb-44 md:pb-36' : 'pb-4'}`}>
       <SessionCheckInSheet
         open={checkInOpen}
         onDismiss={({ completed, checkIn }) => {
@@ -295,49 +291,14 @@ export function ActiveWorkoutPage() {
         }}
       />
 
-      {readinessAfter != null && readinessBefore != null && readinessAfter !== readinessBefore ? (
-        <div className="rounded-lg border border-[hsl(var(--status-info)/0.35)] bg-[hsl(var(--status-info)/0.08)] px-3 py-2 text-xs flex flex-wrap items-center gap-2">
-          <span className="font-medium text-foreground">
-            {t('sessionReadinessDelta', {
-              defaultValue: 'Readiness {{from}} → {{to}}',
-              from: readinessBefore,
-              to: readinessAfter,
-            })}
-          </span>
-          {offerVolumeTrim && plan ? (
-            <button
-              type="button"
-              className="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-primary font-medium hover:bg-primary/20"
-              onClick={() => {
-                const next = adjustToday({ type: 'readiness' });
-                if (next) {
-                  toast({
-                    title: t('sessionVolumeReduced', {
-                      defaultValue: 'Volume reduced',
-                    }),
-                    description: t('sessionVolumeReducedDesc', {
-                      defaultValue: 'One set trimmed from accessories (min 2). Plan marked Adapted.',
-                    }),
-                  });
-                  setOfferVolumeTrim(false);
-                } else {
-                  toast({
-                    title: t('sessionVolumeNoPlan', {
-                      defaultValue: 'No coach session today',
-                    }),
-                    description: t('sessionVolumeNoPlanDesc', {
-                      defaultValue: 'Start from Mission Coach for plan volume cuts. Sets here stay yours.',
-                    }),
-                  });
-                  setOfferVolumeTrim(false);
-                }
-              }}
-            >
-              {t('sessionReduceVolume', { defaultValue: "Reduce today's volume" })}
-            </button>
-          ) : null}
-        </div>
-      ) : null}
+      <p className="eyebrow text-muted-foreground">
+        {t('activeSessionBrief', {
+          name: activeWorkout.workoutName,
+          done: completedSets,
+          total: totalSets,
+          defaultValue: `${activeWorkout.workoutName} · ${completedSets}/${totalSets} sets`,
+        })}
+      </p>
 
       <ActiveSessionChrome
         workoutName={activeWorkout.workoutName}
@@ -439,6 +400,50 @@ export function ActiveWorkoutPage() {
           );
         })
       )}
+
+      {readinessAfter != null && readinessBefore != null && readinessAfter !== readinessBefore ? (
+        <div className="rounded-lg border border-border/40 bg-muted/15 px-3 py-2 text-xs flex flex-wrap items-center gap-2">
+          <span className="font-medium text-muted-foreground">
+            {t('sessionReadinessDelta', {
+              defaultValue: 'Readiness {{from}} → {{to}}',
+              from: readinessBefore,
+              to: readinessAfter,
+            })}
+          </span>
+          {offerVolumeTrim && plan ? (
+            <button
+              type="button"
+              className="rounded-full border border-border/50 bg-muted/20 px-3 py-1 text-muted-foreground font-medium hover:text-foreground"
+              onClick={() => {
+                const next = adjustToday({ type: 'readiness' });
+                if (next) {
+                  toast({
+                    title: t('sessionVolumeReduced', {
+                      defaultValue: 'Volume reduced',
+                    }),
+                    description: t('sessionVolumeReducedDesc', {
+                      defaultValue: 'One set trimmed from accessories (min 2). Plan marked Adapted.',
+                    }),
+                  });
+                  setOfferVolumeTrim(false);
+                } else {
+                  toast({
+                    title: t('sessionVolumeNoPlan', {
+                      defaultValue: 'No coach session today',
+                    }),
+                    description: t('sessionVolumeNoPlanDesc', {
+                      defaultValue: 'Start from Mission Coach for plan volume cuts. Sets here stay yours.',
+                    }),
+                  });
+                  setOfferVolumeTrim(false);
+                }
+              }}
+            >
+              {t('sessionReduceVolume', { defaultValue: "Reduce today's volume" })}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
 
       <SignInPrompt
         className="mt-6"

@@ -30,7 +30,7 @@ export function TodayWeekRecapCard({ recap, forceFull }: Props) {
       checkIns: typeof window !== 'undefined' ? loadCheckIns() : [],
       bodyMetrics: typeof window !== 'undefined' ? loadBodyMetrics() : [],
     });
-  }, [history, recap.weekStart, recap.sessions]);
+  }, [history]);
 
   const full = forceFull || debrief.isFullDebrief;
 

@@ -69,7 +69,7 @@ export function LearnPage() {
         defaultValue: `${FREE_LEARN_PATHS.length} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
       })}
     >
-        <Card className="card-elevated card-glow-emerald border-primary/40">
+        <Card className="card-elevated border-primary/40">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <BookMarked className="h-4 w-4 text-primary" />
@@ -191,7 +191,7 @@ export function LearnPage() {
           </CardHeader>
           <CardContent>
             <Button
-              variant="fitness"
+              variant="outline"
               size="sm"
               onClick={() => {
                 startWorkout('Learn Sample — Bodyweight', [
@@ -220,7 +220,7 @@ export function LearnPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="fitness" size="sm" asChild>
+              <Button variant="outline" size="sm" asChild>
                 <Link href="/learn/course">
                   {t('learnOpenCourses', { defaultValue: 'Open specialist courses →' })}
                 </Link>

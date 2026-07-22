@@ -201,7 +201,9 @@ Optional: `maestro test .maestro/wedge.yaml` (same Account round-trip + Active `
 | Accept B (logger + loop) for Internal | | Founder fills after device QA |
 | Reject (list blockers) | | |
 
-**Agent prep (2026-07-22 · 1.23.0):** Wedge UX overhaul shipped (presentation only). Re-walk Accept B on device — Preferences still above fold on Account; Active still immersive (no hub); cold open → Start ≤2 taps; Victory → Coach. Maestro/adb strings unchanged (`Complete set`, `Start workout`, Account tab). Do not mark Pass. After Pass → [SHIP_INTERNAL.md](SHIP_INTERNAL.md).
+**Agent prep (2026-07-22 · Design Orchestration D0):** Align with [docs/DESIGN_ORCHESTRATION.md](../../docs/DESIGN_ORCHESTRATION.md) — Today keeps **one** emerald Start (hero card glow only); Mission insight / rest dock demoted (no competing glow); PR honor = inline brass chip + haptic (no floating PR toast). Re-walk Accept B on device — Preferences above fold; Active immersive; cold open → Start ≤2 taps; Victory → Coach. Maestro/adb strings unchanged (`Complete set`, `Start workout`, Account tab). Do not mark Pass. After Pass → [SHIP_INTERNAL.md](SHIP_INTERNAL.md).
+
+**Prior prep (2026-07-22 · 1.23.0):** Wedge UX overhaul shipped (presentation only). Preferences still above fold on Account; Active still immersive (no hub).
 
 **Prior prep (2026-07-22):** Doc truth + [BACKLOG.md](BACKLOG.md) F0–F4 + F6–F9 Done (1.20.0 CI release smoke). **F5 gated.** Founder still owns Pass/Fail on device — `./scripts/release-smoke.sh` then `wedge-adb-walk.py` then walk Active + Preferences. After Pass → mark **Accept B** above, then [SHIP_INTERNAL.md](SHIP_INTERNAL.md) / [PLAY_LISTING.md](PLAY_LISTING.md) (upload keystore + Play Internal are founder-only).
 

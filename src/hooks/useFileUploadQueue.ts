@@ -141,8 +141,9 @@ export function useFileUploadQueue({ process, previewImages = true, autoStart = 
   itemsRef.current = items;
 
   useEffect(() => {
+    const acMap = controllers.current;
     return () => {
-      for (const [, ac] of controllers.current) ac.abort();
+      for (const [, ac] of acMap) ac.abort();
       for (const it of itemsRef.current) {
         if (it.previewUrl) URL.revokeObjectURL(it.previewUrl);
       }

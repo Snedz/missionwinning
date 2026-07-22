@@ -1,21 +1,19 @@
 'use client';
 /**
- * Page: /beta — beta onboarding
+ * Page: /beta — beta onboarding (mission briefing, not card wizard)
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { CheckCircle2, ChevronRight, Dumbbell, Rocket, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { ChevronRight, Rocket } from 'lucide-react';
 import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
-
 import { BETA_STEP_DEFS } from '@/i18n/betaLocales';
 
 export function BetaStartPage() {
   const { t } = useTranslation();
+  const primary = BETA_STEP_DEFS[0];
 
   return (
     <InfoPageShell
@@ -23,7 +21,7 @@ export function BetaStartPage() {
       title={t('infoBetaTitle', { defaultValue: 'Start here' })}
       subtitle={t('infoBetaSubtitle', {
         defaultValue:
-          'Private beta — help us validate I-Day → first workout → Mission Coach before public launch.',
+          'Private beta — I-Day → first workout → Mission Coach. Help us validate the path before public launch.',
       })}
       variant="sections"
       footer={
@@ -34,78 +32,69 @@ export function BetaStartPage() {
         />
       }
     >
-        <Card className="content-card border-primary/30 bg-primary/10">
-          <CardContent className="pt-6 space-y-2">
-            <div className="flex items-center gap-2 text-primary font-medium">
-              <CheckCircle2 className="h-5 w-5" />
-              {t('infoBetaNeedTitle', { defaultValue: 'What we need from you' })}
-            </div>
-            <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
-              <li>{t('betaNeedLi1', { defaultValue: 'Finish I-Day and at least one workout this week' })}</li>
-              <li>
-                {t('betaNeedLi2', {
-                  defaultValue:
-                    'Try journey phases on Today — dashboard unlocks as you progress',
-                })}
-              </li>
-              <li>
-                {t('betaNeedLi3', {
-                  defaultValue:
-                    'Report anything confusing via Profile → feedback or reply to your invite email',
-                })}
-              </li>
-            </ul>
-          </CardContent>
-        </Card>
+      <div className="space-y-8 page-enter">
+        <div className="space-y-3">
+          <p className="eyebrow">
+            {t('infoBetaNeedTitle', { defaultValue: 'What we need from you' })}
+          </p>
+          <ul className="space-y-2 text-sm text-muted-foreground leading-relaxed">
+            <li>
+              {t('betaNeedLi1', { defaultValue: 'Finish I-Day and at least one workout this week' })}
+            </li>
+            <li>
+              {t('betaNeedLi2', {
+                defaultValue:
+                  'Try journey phases on Today — dashboard unlocks as you progress',
+              })}
+            </li>
+            <li>
+              {t('betaNeedLi3', {
+                defaultValue:
+                  'Report anything confusing via Profile → feedback or reply to your invite email',
+              })}
+            </li>
+          </ul>
+        </div>
 
-        <ol className="space-y-3">
-          {BETA_STEP_DEFS.map((step) => (
-            <li key={step.n}>
-              <Card className="content-card">
-                <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center gap-4">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary font-semibold text-sm">
-                    {step.n}
-                  </div>
-                  <div className="flex-1 min-w-0 space-y-1">
-                    <h2 className="font-semibold">{t(step.titleKey)}</h2>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{t(step.bodyKey)}</p>
-                  </div>
-                  <Button asChild size="sm" variant="outline" className="shrink-0">
-                    <Link href={step.href}>
-                      {t(step.ctaKey)}
-                      <ChevronRight className="h-4 w-4 ml-1" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+        {primary ? (
+          <div className="space-y-3">
+            <p className="eyebrow">{t(primary.titleKey)}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">{t(primary.bodyKey)}</p>
+            <Link href={primary.href} className="primary-action inline-flex max-w-sm">
+              {t(primary.ctaKey)}
+              <ChevronRight className="h-5 w-5" />
+            </Link>
+          </div>
+        ) : null}
+
+        <ol className="space-y-4 border-t border-border/40 pt-6">
+          {BETA_STEP_DEFS.slice(1).map((step) => (
+            <li key={step.n} className="flex gap-3">
+              <span className="eyebrow shrink-0 tabular-nums text-muted-foreground pt-0.5">
+                {String(step.n).padStart(2, '0')}
+              </span>
+              <div className="min-w-0 flex-1 space-y-1">
+                <h2 className="text-sm font-medium text-foreground">{t(step.titleKey)}</h2>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t(step.bodyKey)}</p>
+                <Link
+                  href={step.href}
+                  className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+                >
+                  {t(step.ctaKey)}
+                  <ChevronRight className="h-3.5 w-3.5 ms-0.5" />
+                </Link>
+              </div>
             </li>
           ))}
         </ol>
 
-        <div className="grid sm:grid-cols-2 gap-3 text-sm">
-          <Card className="content-card">
-            <CardContent className="p-4 flex gap-3">
-              <Dumbbell className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-              <div>
-                <div className="font-medium">Train anywhere</div>
-                <p className="text-muted-foreground mt-1">
-                  Log a full session from Today → Train. Offline works — no account required for the logger.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="content-card">
-            <CardContent className="p-4 flex gap-3">
-              <Sparkles className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-              <div>
-                <div className="font-medium">Mission Coach</div>
-                <p className="text-muted-foreground mt-1">
-                  After your first log, open Coach for a weekly plan that adapts from your sessions alone.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <p className="text-xs text-muted-foreground leading-relaxed border-t border-border/40 pt-6">
+          {t('betaFootWedge', {
+            defaultValue:
+              'Train anywhere: log from Today offline — no account required. After your first log, open Mission Coach for a week that adapts from sessions alone.',
+          })}
+        </p>
+      </div>
     </InfoPageShell>
   );
 }
