@@ -43,6 +43,7 @@ I-Day (3 steps or skip) → Today → Active → Victory → Coach (or Today).
 - Peer tabs use `launchSingleTop` + `popUpTo(Today) { saveState }` with fade (~200ms); stack pushes (Active, Victory, History, Catalog, Progress, Routines) keep slide.
 - Hub screens pass `MwScreenScaffold(applyNavBarPadding = false)` so `MwBottomNav` owns system inset.
 - Cold open → next session → Start in ≤2 taps; Account is a first-class tab (not buried on Today).
+- Accept B checks Preferences on Account (U0a/U0b); smoke walk covers Account tab round-trip.
 
 ## Logger craft
 
