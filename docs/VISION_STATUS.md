@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](../vision.md). Updated **2026-07-22** (build `2026.07-unified.96` — Beyond the Basics v1.4 + public guide CTAs; **recruiting ≥10 users remains the bottleneck**).
+**Living comparison** against [vision.md](../vision.md). Updated **2026-07-22** (build `2026.07-unified.97` — gate allowlist + Beyond the Basics v1.4; **recruiting ≥10 users + founder Production promote remain the bottleneck**).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -90,4 +90,4 @@ Code shipped; legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
 
 ## Build label
 
-Current: `2026.07-unified.96` — see [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after deploy.
+Current: `2026.07-unified.97` — see [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after founder promote (GH billing + Deploy production).

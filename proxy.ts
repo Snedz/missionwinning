@@ -65,7 +65,8 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
+  // Images + magazine PDFs skip the matcher; /magazine + /locales also allowlisted in publicRoutes.
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|pdf)$).*)',
   ],
 };
