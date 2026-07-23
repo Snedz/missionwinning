@@ -651,13 +651,13 @@ export function HomeTodayDashboard() {
           <TodayDashboardCustomize prefs={sectionPrefs} onChange={setSectionPrefs} />
         </DialogContent>
       </Dialog>
-      <StaggerGroup className="space-y-6">
+      <StaggerGroup className="today-shell space-y-6 max-w-lg mx-auto">
       {staggerBlocks.map(({ key, node }, index) => (
         <StaggerItem key={key} index={index}>
           {node}
         </StaggerItem>
       ))}
-    </StaggerGroup>
+      </StaggerGroup>
     </>
   );
 }

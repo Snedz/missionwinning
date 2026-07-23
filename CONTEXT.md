@@ -16,15 +16,15 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-22 · web `2026.07-unified.105` · Android `1.24.1`)
+## Now (2026-07-22 · web `2026.07-unified.106` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon 0 — beta sprint through 2026-08-02** (may skip formal beta — founder call). Boss metric: week-4 retained weekly loggers. **#1 bottleneck: recruit ≥10** + phone hero QA — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §1→§3.
-- **Founder override:** Design **D1–D4** shipped; **`.105`** hero a11y + Active hydrate race — [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md).
-- **Ops:** GitHub Pro / billing unblocked. CI soft-gates: CodeQL upload + Aikido skip-when-unset. **www:** promote **`.105`**. **Founder still:** enable Code scanning; phone hero QA + ≥10 invites; Android Accept B → Play Internal; Wave A Sentry; Aikido + `LAUNCH_STRICT` secrets.
+- **Founder override:** Design **D1–D4** + **`.106` responsive layout** (landing center + Today rings) — [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md).
+- **Ops:** GitHub Pro / billing unblocked. CI soft-gates: CodeQL upload + Aikido skip-when-unset. **www:** promote **`.106`**. **Founder still:** enable Code scanning; phone hero QA + ≥10 invites; Android Accept B → Play Internal; Wave A Sentry; Aikido + `LAUNCH_STRICT` secrets.
 - Agents: no new pillars · **no F5**.
-- Shipped: web **`.105`** Active hydrate gate, SessionCheckIn a11y, axe `/active`/`/private`/`/nutrition`, 44px targets, reduced-motion rest. Android **1.24.1**. In flight: **Accept B re-walk**.
+- Shipped: web **`.106`** narrow hero centering, landscape compact hero, Today Mission Score rings restored. Android **1.24.1**. In flight: **Accept B re-walk**.
 
 
 ---

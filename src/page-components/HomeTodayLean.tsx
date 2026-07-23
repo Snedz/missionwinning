@@ -174,7 +174,7 @@ export function HomeTodayLean() {
       : null;
 
   return (
-    <div className="space-y-6">
+    <div className="today-shell space-y-6 max-w-lg mx-auto">
       <TodayPageHeader
         today={todayLabel}
         streak={streak}

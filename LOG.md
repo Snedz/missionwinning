@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Responsive layout + Today score presence (`.106`)
+
+- **Landing:** narrow viewports center hero copy/CTA; landscape short-height compact 2-col; `.hero-copy` / `.hero-orient-grid` utilities.
+- **Today:** Mission Score `ProgressRing` + readiness/strain/recovery `MetricsRow` above the fold (parity with HeroDemo); sparklines stay in Trends details; `today-shell` safe-area.
+- Build: `2026.07-unified.106` — promote www after Ready.
+
 ## 2026-07-22 — Hero a11y + logic polish (`.105`)
 
 - **Logic:** `workoutStore.hasHydrated` gates Active Start (persist wipe race); e2e waits for enabled Start + dismisses check-in.

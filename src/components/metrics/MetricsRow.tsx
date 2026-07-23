@@ -9,9 +9,10 @@ interface MetricsRowProps {
   scores: BodyScores;
   demo?: boolean;
   embedded?: boolean;
+  size?: 'sm' | 'md' | 'lg';
 }
 
-export function MetricsRow({ scores, demo, embedded }: MetricsRowProps) {
+export function MetricsRow({ scores, demo, embedded, size = 'md' }: MetricsRowProps) {
   const { t } = useTranslation();
 
   const grid = (
@@ -21,24 +22,27 @@ export function MetricsRow({ scores, demo, embedded }: MetricsRowProps) {
           {t('todayMetricsDemoNote', { defaultValue: 'Preview — your scores update as you train' })}
         </p>
       )}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
         <ProgressRing
           label={t('todayMetricReadiness', { defaultValue: 'Readiness' })}
           value={scores.readiness}
           subtitle={t(scores.readinessLabelKey, { defaultValue: scores.readinessLabelKey })}
           tone="emerald"
+          size={size}
         />
         <ProgressRing
           label={t('todayMetricStrain', { defaultValue: 'Strain' })}
           value={scores.strain}
           subtitle={t(scores.strainLabelKey, { defaultValue: scores.strainLabelKey })}
           tone="warn"
+          size={size}
         />
         <ProgressRing
           label={t('todayMetricRecovery', { defaultValue: 'Recovery' })}
           value={scores.recovery}
           subtitle={t(scores.recoveryLabelKey, { defaultValue: scores.recoveryLabelKey })}
           tone="info"
+          size={size}
         />
       </div>
     </>
