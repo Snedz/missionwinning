@@ -6,6 +6,40 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Google sign-in vs private gate (`.114`)
+
+- After Google OAuth, session lives in localStorage so the proxy never saw auth and bounced to `/private`. Auth callback (+ gate page recovery) now mints `mw_private_access` via `POST /api/private-access/session` after `getUser()`.
+- Build: `2026.07-unified.114`.
+
+## 2026-07-23 — Free Coach week not Bundle paywall (`.113`)
+
+- Victory → `/coach` showed brass “Coach chat is Super Bundle” above the free week. Chat lock demoted to a soft tip; `?ask=` shows free form cues. Session cards come first.
+- Copy: free week (not lifetime taster). Build: `2026.07-unified.113`.
+
+## 2026-07-23 — Logger UX density web+phone (`.112`)
+
+- Active chrome: sticky compact header (timer/Finish), Plates/Discard overflow, coach tip one-liner, inline add-exercise; removed duplicate eyebrow + Coach Notes card.
+- Exercise footer: Add Set + rest icon; Apply/Remove behind More. SetLogRow narrow overflow + md wider weight. Rest dock slightly tighter (`pb-36`).
+- Build: `2026.07-unified.112`.
+
+## 2026-07-23 — Dense mobile set logger (`.111`)
+
+- Active logger phone density: cues off-card (Form guide + Info), overflow for Note/Swap/SS/Ask/Remove, Strong/Hevy nowrap reps × weight × Log, exercise stack `space-y-3`.
+- FormGuideSheet footer: Ask about form → `/coach?ask=`.
+- Build: `2026.07-unified.111`.
+
+## 2026-07-23 — Horizon W wedge excellence (`.110`)
+
+- **Policy:** Replaced H0 agent freeze with Horizon W — build Train→Today→Victory→Coach until founder phone sign-off; ≥10 beta is flip gate only ([ORCHESTRATION.md](ORCHESTRATION.md), [AGENTS.md](AGENTS.md), [CONTEXT.md](CONTEXT.md)).
+- **W1–W4:** I-Day finishes into `/active`; Basic = first workout only; set row “More” disclosure; Victory stays in Coach/train; free weekly Coach (no lifetime taster lock); Today Coach dose line.
+- Build: `2026.07-unified.110`. **Founder:** walk phone path and score excellence before recruiting.
+
+## 2026-07-23 — Exercise as medicine thesis + habit-loop polish (`.109`)
+
+- Docs: [docs/EXERCISE_AS_MEDICINE.md](docs/EXERCISE_AS_MEDICINE.md) (cites + claim table); vision / STRATEGY / YC / brand / LEGAL / social / beta wired; About + soft landing/Learn copy. Wedge unchanged (Train + Coach).
+- Product: Coach week “dose” line; victory 1-tap feel → readiness; shame-free missed-day re-entry CTAs; Coach chat + insight claim hygiene.
+- Build: `2026.07-unified.109` — promote www after Ready. Founder bottleneck still ≥10 beta + phone hero QA.
+
 ## 2026-07-22 — Landing FAQ raw keys (`.108`)
 
 - FAQ used `t(key)` with no `defaultValue` while full catalogs hydrate after interaction/2.8s — showed `landingFaqFreeQ` etc.

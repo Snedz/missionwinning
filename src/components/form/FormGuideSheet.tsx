@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { FormGuide } from '@/types/formGuide';
@@ -7,12 +8,20 @@ import { cn } from '@/lib/utils';
 
 interface FormGuideSheetProps {
   exerciseName: string;
+  /** Used for Ask-about-form deep link into Mission Coach. */
+  exerciseId?: string;
   guide: FormGuide;
   open: boolean;
   onClose: () => void;
 }
 
-export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuideSheetProps) {
+export function FormGuideSheet({
+  exerciseName,
+  exerciseId,
+  guide,
+  open,
+  onClose,
+}: FormGuideSheetProps) {
   const { t } = useTranslation();
   if (!open) return null;
 
@@ -81,14 +90,23 @@ export function FormGuideSheet({ exerciseName, guide, open, onClose }: FormGuide
           )}
         </div>
 
-        <div className="sticky bottom-0 border-t border-border/40 bg-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="sticky bottom-0 border-t border-border/40 bg-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-2">
           <button
             type="button"
             onClick={onClose}
             className="w-full min-h-[44px] rounded-xl bg-primary hover:bg-emerald-700 text-white font-semibold text-[17px] transition-colors"
           >
-          {t('gotItStartSet', { defaultValue: 'Got it — start set' })}
+            {t('gotItStartSet', { defaultValue: 'Got it — start set' })}
           </button>
+          {exerciseId && (
+            <Link
+              href={`/coach?ask=${encodeURIComponent(exerciseId)}`}
+              onClick={onClose}
+              className="flex w-full min-h-[44px] items-center justify-center rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
+            </Link>
+          )}
         </div>
       </div>
     </div>

@@ -215,6 +215,16 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
 /** True when the session sheet should open (no complete check-in today). */
 export function shouldOfferSessionCheckIn(): boolean {
   if (typeof window === 'undefined') return false;
+  // W1: never block the first mission with a Mind questionnaire.
+  try {
+    const hist = JSON.parse(localStorage.getItem('workout-tracker-storage') || '{}') as {
+      state?: { workoutHistory?: unknown[] };
+    };
+    const completed = hist?.state?.workoutHistory?.length ?? 0;
+    if (completed < 1) return false;
+  } catch {
+    return false;
+  }
   try {
     if (sessionStorage.getItem('mw_session_checkin_skipped') === todayKey()) return false;
   } catch {

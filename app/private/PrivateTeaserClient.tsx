@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { grantPrivateAccessFromSession } from '@/lib/grantPrivateAccessFromSession';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
 
@@ -27,6 +28,28 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   const [waitEmail, setWaitEmail] = useState('');
   const [waitDone, setWaitDone] = useState(false);
   const [waitBusy, setWaitBusy] = useState(false);
+  const [sessionUnlocking, setSessionUnlocking] = useState(true);
+
+  // Signed-in (localStorage) but missing gate cookie — typical after Google OAuth.
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const ok = await grantPrivateAccessFromSession();
+      if (cancelled) return;
+      if (ok) {
+        const next = searchParams.get('next')?.trim();
+        const dest =
+          next && next.startsWith('/') && !next.startsWith('//') ? next : '/';
+        router.replace(dest);
+        router.refresh();
+        return;
+      }
+      setSessionUnlocking(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [router, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +67,10 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       });
 
       if (res.ok) {
-        router.push('/');
+        const next = searchParams.get('next')?.trim();
+        const dest =
+          next && next.startsWith('/') && !next.startsWith('//') ? next : '/';
+        router.push(dest);
         router.refresh();
       } else {
         const data = await res.json().catch(() => ({}));
@@ -138,6 +164,17 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       </p>
     </form>
   );
+
+  if (sessionUnlocking) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center bg-background text-muted-foreground text-sm"
+        data-mw-invitee={isInvitee ? '1' : '0'}
+      >
+        {t('gateCheckingSession', { defaultValue: 'Checking sign-in…' })}
+      </div>
+    );
+  }
 
   return (
     <div

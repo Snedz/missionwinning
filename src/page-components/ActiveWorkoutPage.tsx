@@ -281,7 +281,7 @@ export function ActiveWorkoutPage() {
   );
 
   return (
-    <div className={`space-y-6 ${restTimerActive ? 'pb-44 md:pb-36' : 'pb-4'}`}>
+    <div className={`space-y-4 ${restTimerActive ? 'pb-36 md:pb-28' : 'pb-4'}`}>
       <SessionCheckInSheet
         open={checkInOpen}
         onDismiss={({ completed, checkIn }) => {
@@ -296,15 +296,6 @@ export function ActiveWorkoutPage() {
           }
         }}
       />
-
-      <p className="eyebrow text-muted-foreground">
-        {t('activeSessionBrief', {
-          name: activeWorkout.workoutName,
-          done: completedSets,
-          total: totalSets,
-          defaultValue: `${activeWorkout.workoutName} · ${completedSets}/${totalSets} sets`,
-        })}
-      </p>
 
       <ActiveSessionChrome
         workoutName={activeWorkout.workoutName}
@@ -337,74 +328,76 @@ export function ActiveWorkoutPage() {
           </CardContent>
         </Card>
       ) : (
-        activeWorkout.exercises.map((exLog, exIdx) => {
-          const exercise = getExerciseById(exLog.exerciseId);
-          if (!exercise) return null;
-          const swapCandidates =
-            swapOpenIdx === exIdx
-              ? [...EXERCISES]
-                  .filter((e) => e.id !== exLog.exerciseId)
-                  .sort((a, b) => {
-                    const aShared = a.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
-                    const bShared = b.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
-                    if (aShared !== bShared) return aShared ? -1 : 1;
-                    return a.name.localeCompare(b.name);
-                  })
-              : [];
+        <div className="space-y-3">
+          {activeWorkout.exercises.map((exLog, exIdx) => {
+            const exercise = getExerciseById(exLog.exerciseId);
+            if (!exercise) return null;
+            const swapCandidates =
+              swapOpenIdx === exIdx
+                ? [...EXERCISES]
+                    .filter((e) => e.id !== exLog.exerciseId)
+                    .sort((a, b) => {
+                      const aShared = a.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
+                      const bShared = b.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
+                      if (aShared !== bShared) return aShared ? -1 : 1;
+                      return a.name.localeCompare(b.name);
+                    })
+                : [];
 
-          return (
-            <ActiveExerciseCard
-              key={`${exLog.exerciseId}-${exIdx}`}
-              exLog={exLog}
-              exIdx={exIdx}
-              exercises={activeWorkout.exercises}
-              exercise={exercise}
-              workoutHistory={workoutHistory}
-              units={units}
-              unitLabel={unitLabel}
-              weightStep={step}
-              nextSet={nextSet}
-              nextSetRef={nextSetRef}
-              swapOpen={swapOpenIdx === exIdx}
-              noteOpen={noteOpenIdx === exIdx}
-              swapCandidates={swapCandidates}
-              getSetInput={getSetInput}
-              lastPerformanceForSet={getLastPerformanceForSet}
-              lastSessionSets={getLastSessionSets}
-              onRepeatLast={() => handleRepeatLast(exIdx)}
-              onFormGuide={() => setFormGuideId(exercise.id)}
-              onToggleSuperset={() => toggleSupersetWithNext(exIdx)}
-              onUnlinkSuperset={() => unlinkSuperset(exIdx)}
-              onToggleNote={() => setNoteOpenIdx(noteOpenIdx === exIdx ? null : exIdx)}
-              onToggleSwap={() => setSwapOpenIdx(swapOpenIdx === exIdx ? null : exIdx)}
-              onRemove={() => {
-                removeExerciseFromActive(exIdx);
-                setSwapOpenIdx(null);
-                setNoteOpenIdx(null);
-                setSetInputs({});
-              }}
-              onSwapTo={(id) => {
-                const ex = getExerciseById(id);
-                replaceExerciseInActive(exIdx, id, ex?.muscleGroups);
-                setSwapOpenIdx(null);
-                setSetInputs({});
-              }}
-              onNoteChange={(note) => setExerciseNote(exIdx, note)}
-              onRepsChange={(setIdx, v) => updateSetInput(exIdx, setIdx, 'reps', v)}
-              onWeightChange={(setIdx, v) => updateSetInput(exIdx, setIdx, 'weight', v)}
-              onSetKindChange={(setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
-              onLog={(setIdx) => handleLogSet(exIdx, setIdx)}
-              onRate={(setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
-              onApplyAllTargets={() => applyTargetsForExercise(exIdx)}
-              onAddSet={() => addSetToExercise(exIdx)}
-              onRemoveSet={() => {
-                removeLastPlannedSet(exIdx);
-                setSetInputs({});
-              }}
-              onStartRest={(seconds) => startRestTimer(seconds)}
-            />
-          );
-        })
+            return (
+              <ActiveExerciseCard
+                key={`${exLog.exerciseId}-${exIdx}`}
+                exLog={exLog}
+                exIdx={exIdx}
+                exercises={activeWorkout.exercises}
+                exercise={exercise}
+                workoutHistory={workoutHistory}
+                units={units}
+                unitLabel={unitLabel}
+                weightStep={step}
+                nextSet={nextSet}
+                nextSetRef={nextSetRef}
+                swapOpen={swapOpenIdx === exIdx}
+                noteOpen={noteOpenIdx === exIdx}
+                swapCandidates={swapCandidates}
+                getSetInput={getSetInput}
+                lastPerformanceForSet={getLastPerformanceForSet}
+                lastSessionSets={getLastSessionSets}
+                onRepeatLast={() => handleRepeatLast(exIdx)}
+                onFormGuide={() => setFormGuideId(exercise.id)}
+                onToggleSuperset={() => toggleSupersetWithNext(exIdx)}
+                onUnlinkSuperset={() => unlinkSuperset(exIdx)}
+                onToggleNote={() => setNoteOpenIdx(noteOpenIdx === exIdx ? null : exIdx)}
+                onToggleSwap={() => setSwapOpenIdx(swapOpenIdx === exIdx ? null : exIdx)}
+                onRemove={() => {
+                  removeExerciseFromActive(exIdx);
+                  setSwapOpenIdx(null);
+                  setNoteOpenIdx(null);
+                  setSetInputs({});
+                }}
+                onSwapTo={(id) => {
+                  const ex = getExerciseById(id);
+                  replaceExerciseInActive(exIdx, id, ex?.muscleGroups);
+                  setSwapOpenIdx(null);
+                  setSetInputs({});
+                }}
+                onNoteChange={(note) => setExerciseNote(exIdx, note)}
+                onRepsChange={(setIdx, v) => updateSetInput(exIdx, setIdx, 'reps', v)}
+                onWeightChange={(setIdx, v) => updateSetInput(exIdx, setIdx, 'weight', v)}
+                onSetKindChange={(setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
+                onLog={(setIdx) => handleLogSet(exIdx, setIdx)}
+                onRate={(setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
+                onApplyAllTargets={() => applyTargetsForExercise(exIdx)}
+                onAddSet={() => addSetToExercise(exIdx)}
+                onRemoveSet={() => {
+                  removeLastPlannedSet(exIdx);
+                  setSetInputs({});
+                }}
+                onStartRest={(seconds) => startRestTimer(seconds)}
+              />
+            );
+          })}
+        </div>
       )}
 
       {readinessAfter != null && readinessBefore != null && readinessAfter !== readinessBefore ? (
@@ -465,6 +458,7 @@ export function ActiveWorkoutPage() {
           return (
             <FormGuideSheet
               exerciseName={ex.name}
+              exerciseId={ex.id}
               guide={guide}
               open
               onClose={() => setFormGuideId(null)}

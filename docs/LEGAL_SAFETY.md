@@ -16,6 +16,7 @@
 | Arbitration / class waiver | Terms → Dispute resolution |
 | Store privacy labels | Data inventory below (fill Play/App Console when TWA opens — do not invent early) |
 | UGC / DMCA | Terms → User content + Copyright; public `/dmca` notice channel |
+| Medical / mental-health marketing | Educational fitness only; see §3a + [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md) |
 
 ---
 
@@ -50,6 +51,19 @@ Use this table when filling Apple Privacy Nutrition Labels / Google Play Data sa
 - [ ] Cyber liability insurance quote (~$200–600/yr ballpark — verify with broker); bind before school/enterprise or data at scale — see [PAY_READY_LEGAL.md](PAY_READY_LEGAL.md)
 - [ ] Do not claim “we are insured” in Privacy until a policy exists
 - [ ] Support auto-reply: refund requests → `/refunds` + `support@missionwinning.com`
+
+### 3a. Exercise / mood / mental-health marketing checklist
+
+Source of truth: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md). Aligns with Terms/Privacy (“not a medical provider”) in `infoLocales.ts` and [ACCEPTABLE_USE.md](legal/ACCEPTABLE_USE.md).
+
+- [ ] Do **not** claim MW diagnoses, treats, or cures depression or any mental illness
+- [ ] Do **not** advise stopping or changing prescribed medication or therapy
+- [ ] Mood/energy copy framed as outcomes of training or readiness inputs — not clinical outcomes
+- [ ] SSRI / “as effective as” comparisons only with mild–moderate / research-setting context + citation from the thesis doc
+- [ ] “92%” claim uses **mental health professionals** (survey sample), not “doctors,” unless a doctors-only cite exists
+- [ ] Landing hero / Product Hunt lead stays Train + Coach — not clinical depression
+- [ ] Any public evidence angle includes: educational only · not medical advice · not a substitute for care
+- [ ] Coach / insight LLM prompts: never diagnose; reinforce exercise-medicine boundaries ([coachChatServer](../src/lib/coachChatServer.ts))
 
 ---
 

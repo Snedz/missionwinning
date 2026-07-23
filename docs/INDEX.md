@@ -66,6 +66,7 @@
 | [TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) | Go-live verify commands (`launch-verify`, Stripe, Supabase) |
 | [POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md) | Week-4 retention wall + weekly ops |
 | [YC_THESIS.md](YC_THESIS.md) | YC wedge: Train + Coach one-liner, competition, traction bar (apply only after gates) |
+| [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md) | Evidence thesis: structured exercise vs vague advice; claim hygiene (not a depression product) |
 | [CRYPTO_RAILS_THESIS.md](CRYPTO_RAILS_THESIS.md) | Crypto = payment rail (not product); Horizon now/next/never |
 | [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md) | Jul–Aug 2026 apps: CDL/YC/Elbow Grease/SPC ranking, demo seed, Wave A pre-flip |
 | [applications/INDEX.md](applications/INDEX.md) | Paste-ready YC/CDL/Elbow Grease/SPC/Residency answers (honest blanks) |

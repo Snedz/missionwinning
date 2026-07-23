@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Shield } from 'lucide-react';
 import { formatOAuthError } from '@/lib/oauthConfig';
+import { grantPrivateAccessFromSession } from '@/lib/grantPrivateAccessFromSession';
+import { redeemInviteFromAttribution } from '@/lib/invite';
 import { supabase } from '@/lib/supabase';
 import { sanitizeNextPath } from '@/lib/safeRedirect';
 
@@ -45,6 +47,11 @@ export function AuthCallbackPage() {
             throw new Error('No session found. Try signing in again from Profile.');
           }
         }
+
+        // Gate cookie: proxy cannot see localStorage Supabase session.
+        await grantPrivateAccessFromSession();
+        redeemInviteFromAttribution();
+
         if (!cancelled) router.replace(safeNext);
       } catch (e: unknown) {
         if (!cancelled) {

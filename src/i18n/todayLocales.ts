@@ -284,14 +284,14 @@ const en: TodayStrings = {
   coachInsightSolidRecovery:
     'Recovery is solid — good day to push volume on your focus groups or hit a benchmark session.',
   coachInsightLowReadiness:
-    'Readiness is low. Log protein in Fuel, try a Mind breathing stack, or keep today lighter.',
+    'Readiness is low — life happens. Keep today lighter, Just Go for one set, or try a short Mind breath. Getting back on the path beats a perfect week.',
   coachInsightSteady: 'Steady progress. {{focusLine}} when you\'re ready.',
   coachInsightNeedMove:
     'Training load is building — add mobility today to protect joints and stay on the path.',
   coachInsightNeedFuel:
     'You\'re training hard but protein is lagging. Log Fuel today to recover and grow.',
   coachInsightNeedMind:
-    'Recovery is under stress. A short Mind session helps sleep, focus, and consistency.',
+    'Recovery is under stress. A short Mind session can help sleep, focus, and sticking with training — educational habit tools, not clinical care.',
   coachInsightSynergyMove:
     'Strong training week — pair it with mobility so you keep progressing without breakdown.',
   coachInsightNeedTrack:

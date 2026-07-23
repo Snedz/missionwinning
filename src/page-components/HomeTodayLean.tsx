@@ -156,7 +156,7 @@ export function HomeTodayLean() {
         history,
         units,
         equipment: userEquip,
-        includeBasicJustGo: true,
+        includeBasicJustGo: false,
         startWorkout: (name, exercises) => startWorkoutFromStore(name, exercises),
         navigate: (href) => router.push(href),
       });
@@ -164,8 +164,7 @@ export function HomeTodayLean() {
   };
 
   const justGoMeta =
-    !hasActiveWorkout &&
-    (action.href === '/active' || !!action.startWorkout || action.phase === 'basic')
+    !hasActiveWorkout && (action.href === '/active' || !!action.startWorkout)
       ? {
           focusLabel:
             focusLabel ||
@@ -206,7 +205,7 @@ export function HomeTodayLean() {
           </p>
           <p className="text-sm font-medium">
             {t('todayCoachInviteTitle', {
-              defaultValue: 'Generate a free taster week of Mission Coach',
+              defaultValue: 'Generate a free week of Mission Coach',
             })}
           </p>
         </a>

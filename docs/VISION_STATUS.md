@@ -1,6 +1,6 @@
 # Vision vs Reality — Mission Winning
 
-**Living comparison** against [vision.md](../vision.md). Updated **2026-07-22** (build `2026.07-unified.103` — Primer-shaped vision/YC arc in docs; gate allowlist + Beyond the Basics v1.4 prior; **recruiting ≥10 users + founder Production promote remain the bottleneck**).
+**Living comparison** against [vision.md](../vision.md). Updated **2026-07-23** (build `2026.07-unified.109` — exercise-as-medicine thesis + Coach dose / victory feel / re-entry; **recruiting ≥10 users + founder Production promote remain the bottleneck**).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*
 
@@ -20,6 +20,7 @@ Use this doc when prioritizing work. Every feature should pass: *Does it serve f
 | **Bevel-style metric UI** | 🟢 Good | Unified `ProgressRing`; Mission Score + clinical rings; briefing Today + Victory body delta |
 | **Freeletics journey + streaks** | 🟢 Shipped | I-Day → Commissioned; challenges; leaderboard |
 | **Evidence-based, holistic path** | 🟢 Core tone | Learn paths, public `/guide` + `/exercises`, disclaimers |
+| **Exercise as medicine thesis** | 🟢 Documented | [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md) + vision §; wedge unchanged; consumer claim hygiene in brand/LEGAL |
 | **Public SEO** | 🟡 Growing | Canonicals, OG overrides, JSON-LD, marketing landing, waitlist capture |
 
 Legend: 🟢 aligned · 🟡 partial · 🔴 gap
@@ -57,24 +58,27 @@ Legend: 🟢 aligned · 🟡 partial · 🔴 gap
 
 ## Biggest gaps (priority order)
 
-Full sequencing: [ORCHESTRATION.md](../ORCHESTRATION.md) (Horizon 0 → 3).
+Full sequencing: [ORCHESTRATION.md](../ORCHESTRATION.md) (Horizon W → 0 → 3).
 
-### 1. Horizon 0 — Phase H beta cohort (founder) — **#1 gap**
-Env, migrations, digest, webhook enrollment path, and launch-verify are green. Still need: **phone hero QA + ≥10 beta users** (gates I-Day ≥80% / BT ≥60%), then public flip. Day-of: [docs/archive/TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) · flip smoke: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md).
+### 1. Horizon W — Wedge excellence (agents) — **#1 gap**
+Train → Today → Victory → Coach habit loop must pass founder phone criteria before recruiting. Streams W1–W4 in ORCHESTRATION. Do **not** treat ≥10 beta as a substitute for making the product worthy.
 
-### 2. Horizon 1 — Live Super Bundle + public (Phase I1)
+### 2. Horizon 0 — Phase H beta cohort (founder) — **after excellence**
+Env/migrations/digest/webhook path largely green. Then: **phone hero QA + ≥10 beta** (gates I-Day ≥80% / BT ≥60%), public flip. Day-of: [docs/archive/TRACK_D_GO_LIVE.md](archive/TRACK_D_GO_LIVE.md) · flip smoke: [docs/archive/PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md).
+
+### 3. Horizon 1 — Live Super Bundle + public (Phase I1)
 Code path: Stripe checkout → webhook → `enrollments` → `usePremium`. Pricing: monthly **$11.99** / founders 12-mo **$59** / lifetime **$149**. Then `PRIVATE_MODE=false` + PWA offline promise.
 
-### 3. Horizon 1 eng — performance / decomp — **done**
+### 4. Horizon 1 eng — performance / decomp — **done**
 Lighthouse budget routes **≥90** (`/`, `/log`, guide, exercises). Serwist, logger E2E, Active/Today decomp, `src/lib/workout/` shipped. Residual decomp optional only.
 
-### 4. Horizon 2 — week-4 retention wall metric
+### 5. Horizon 2 — week-4 retention wall metric
 Prove habit loop before scale. See [docs/POST_LAUNCH_CADENCE.md](POST_LAUNCH_CADENCE.md).
 
-### 5. Horizon 3 — Form media / i18n / SEO / TWA (post-PMF only)
+### 6. Horizon 3 — Form media / i18n / SEO / TWA (post-PMF only)
 Form media top-20; more locales; SEO compound; TWA if PWA install fails.
 
-### 6. PFT track ops (Phase G ops) — optional channel
+### 7. PFT track ops (Phase G ops) — optional channel
 Code shipped; legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
 
 ---
@@ -90,4 +94,4 @@ Code shipped; legal sign-off before `NEXT_PUBLIC_SHOW_MAHA_COPY=true`.
 
 ## Build label
 
-Current: `2026.07-unified.97` — see [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after founder promote (GH billing + Deploy production).
+Current: `2026.07-unified.110` — see [`src/lib/buildInfo.ts`](../src/lib/buildInfo.ts). Confirm Profile footer matches Vercel production after founder promote.

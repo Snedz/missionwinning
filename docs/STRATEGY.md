@@ -8,8 +8,8 @@
 
 | | |
 |---|---|
-| **Problem** | Serious training tools are paywalled, fragmented across 5+ subscriptions, app-store-gated, and useless offline. Billions of people train with no equipment and no budget — no major tracker is built for them. |
-| **Solution** | One installable web app: complete free workout tracker + nutrition, mobility, mind, activity, and learning basics, scored together (Win Score). Premium bundle adds depth, never gates the core. |
+| **Problem** | Serious training tools are paywalled, fragmented across 5+ subscriptions, app-store-gated, and useless offline. Billions of people train with no equipment and no budget — no major tracker is built for them. Separately: exercise has strong trial support for mild–moderate mood symptoms, yet most mental health professionals never learned to *prescribe* it — so advice stays “just go work out” with no dose or plan ([EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md)). |
+| **Solution** | One installable web app: complete free workout tracker + nutrition, mobility, mind, activity, and learning basics, scored together (Win Score). Mission Coach turns logs into a clear, adaptive weekly “dose.” Premium bundle adds depth, never gates the core. Not a depression app — structured training that sticks. |
 | **Customer** | The *train-anywhere lifter*: trains at home, in a park, or a garage gym; bodyweight or minimal equipment; subscription-fatigued; any country. (Full profile below.) |
 | **Revenue** | Super Bundle subscription (monthly / 12-month / lifetime founders tier) via Stripe Payment Links → verified webhook → enrollments. Later: per-pillar unlocks, B2B/team plans, coaching. |
 | **Moat (today)** | Honesty + accessibility positioning (free-forever PWA, no account, offline) and the unified six-pillar Win Score. **Truth: there is no defensible moat yet — speed and trust are the strategy.** |

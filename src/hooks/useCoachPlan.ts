@@ -44,31 +44,27 @@ export function useCoachPlan() {
     return { ...base, seedId: userId ?? base.seedId ?? getOrCreateDeviceId() };
   }, [history, userId]);
 
-  const locked =
-    !premium && tasterUsed && (!plan || plan.weekStart !== weekStart);
+  // Horizon W: never lock the whole Coach week behind Bundle. Free weekly plan + adapt;
+  // same-week on-demand regen stays premium (see generate()).
+  const locked = false;
 
   const refresh = useCallback(() => {
     let existing = loadPlan();
 
     if (!existing) {
-      if (!tasterUsed || premium) {
-        existing = generateWeek(ctx, weekStart, 1);
-        if (!tasterUsed) markTasterUsed();
-        savePlan(existing);
-        scheduleCoachPush();
-        track('coach_week_generated', { weekStart, premium: !!premium, auto: true });
-        if (premium) track('coach_premium_active', { weekStart });
-      }
+      existing = generateWeek(ctx, weekStart, 1);
+      if (!tasterUsed) markTasterUsed();
+      savePlan(existing);
+      scheduleCoachPush();
+      track('coach_week_generated', { weekStart, premium: !!premium, auto: true });
+      if (premium) track('coach_premium_active', { weekStart });
       setPlan(existing);
       return;
     }
 
     if (existing.weekStart !== weekStart) {
-      if (!premium && tasterUsed) {
-        setPlan(existing);
-        return;
-      }
       const next = generateWeek(ctx, weekStart, existing.revision + 1);
+      if (!tasterUsed) markTasterUsed();
       savePlan(next);
       scheduleCoachPush();
       track('coach_week_generated', { weekStart, premium: !!premium, rollover: true });
@@ -116,11 +112,8 @@ export function useCoachPlan() {
   }, [refresh]);
 
   const generate = useCallback(() => {
-    if (!premium && tasterUsed && plan?.weekStart === weekStart) {
-      track('coach_taster_locked');
-      return null;
-    }
-    if (!premium && tasterUsed) {
+    // Free: first plan for this week anytime. Same-week regen = Bundle.
+    if (!premium && plan?.weekStart === weekStart) {
       track('coach_taster_locked');
       return null;
     }

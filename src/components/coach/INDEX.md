@@ -13,7 +13,7 @@
 | `PlanSessionCard.tsx` | Single session card (exercises, start train, optional adjust) |
 | `CoachVoiceCard.tsx` | Weekly voice briefing display |
 | `AdjustSessionSheet.tsx` | Free offline adjust chips (time / BW / avoid) |
-| `CoachChatPanel.tsx` | Premium chat (locked teaser when free) |
+| `CoachChatPanel.tsx` | Premium chat; free = soft tip or form cues for `?ask=` (not brass paywall) |
 
 ## Related
 

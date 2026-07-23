@@ -28,6 +28,21 @@
 - Free core is a product promise, not a guilt trip about competitors.
 - Avoid gym-bro hype, paywall shame bait, fake testimonials, and “we’re live” claims while private beta is on.
 
+### Exercise, mood, and medical claims
+
+Full thesis + cite table: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md).
+
+| OK | Not OK |
+|----|--------|
+| Energy, mood, resilience as outcomes of **consistent training** | Diagnose, treat, or cure depression (or any mental illness) |
+| “Exercise is medicine” as a **thesis** (structured dose > vague advice) | “Replace your SSRI / therapist” |
+| Mild–moderate / research-setting comparisons with citation | “As good as SSRIs for everyone / severe depression” |
+| “Most mental health professionals never trained to prescribe exercise” | “92% of **doctors**” without a matching citation |
+| Adaptive weekly plan as the product story | Leading landing hero / PH with clinical depression |
+| Educational + “not medical advice” disclaimer | Crisis-as-feature or clinical-care framing |
+
+Consumer hook stays **Train Anywhere / free logger + Mission Coach**. Evidence language belongs in About, Learn, founder narrative — not the company one-liner.
+
 ---
 
 ## Colors

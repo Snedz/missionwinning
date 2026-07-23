@@ -1,5 +1,10 @@
 'use client';
 
+/**
+ * Coach chat — premium. Free users get form cues (?ask=) + soft Bundle tip,
+ * never a brass paywall above the free weekly plan.
+ */
+
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { track } from '@/lib/analytics';
 import type { PlanSession } from '@/lib/coach/types';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
+import { getFormGuideOrCues } from '@/lib/formGuides';
 import { cn } from '@/lib/utils';
 
 type Turn = { role: 'user' | 'coach'; content: string };
@@ -23,6 +29,89 @@ type Props = {
   className?: string;
 };
 
+function FreeFormAskPanel({
+  askExerciseId,
+  className,
+}: {
+  askExerciseId: string;
+  className?: string;
+}) {
+  const { t } = useTranslation();
+  const [name, setName] = useState(askExerciseId);
+  const [cues, setCues] = useState<string[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      await ensureFullExerciseCatalog();
+      if (cancelled) return;
+      const ex = getExerciseById(askExerciseId) ?? EXERCISES.find((e) => e.id === askExerciseId);
+      const guide = getFormGuideOrCues(askExerciseId, { exercise: ex ?? null });
+      setName(ex?.name ?? askExerciseId);
+      setCues(guide?.execute?.slice(0, 4) ?? (ex?.cues ? [ex.cues] : []));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [askExerciseId]);
+
+  return (
+    <Card className={cn('content-card border-primary/30', className)} data-testid="coach-free-form-ask">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">
+          {t('coachFreeFormTitle', {
+            name,
+            defaultValue: `Form cues — ${name}`,
+          })}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {cues.length > 0 ? (
+          <ul className="space-y-1.5 text-sm text-foreground/90">
+            {cues.map((line) => (
+              <li key={line} className="flex gap-2">
+                <span className="text-primary shrink-0">·</span>
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            {t('coachFreeFormFallback', {
+              defaultValue: 'Open Form guide on the logger for setup and execute tips.',
+            })}
+          </p>
+        )}
+        <p className="text-xs text-muted-foreground">
+          {t('coachFreeFormChatHint', {
+            defaultValue: 'Live Q&A chat is Super Bundle — your weekly plan and Adjust today stay free.',
+          })}{' '}
+          <Link href="/bundle" className="text-primary hover:underline">
+            {t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
+          </Link>
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
+
+function SoftBundleChatTip({ className }: { className?: string }) {
+  const { t } = useTranslation();
+  return (
+    <p
+      className={cn('text-center text-xs text-muted-foreground px-1', className)}
+      data-testid="coach-chat-soft-tip"
+    >
+      {t('coachChatSoftTip', {
+        defaultValue: 'Want to ask the coach anything? Chat is Super Bundle.',
+      })}{' '}
+      <Link href="/bundle" className="text-primary hover:underline">
+        {t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
+      </Link>
+    </p>
+  );
+}
+
 export function CoachChatPanel({
   premium,
   readiness,
@@ -33,7 +122,7 @@ export function CoachChatPanel({
   className,
 }: Props) {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(Boolean(askExerciseId));
+  const [open, setOpen] = useState(Boolean(askExerciseId) && premium);
   const [turns, setTurns] = useState<Turn[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
@@ -53,10 +142,10 @@ export function CoachChatPanel({
   }, []);
 
   useEffect(() => {
-    if (open && !trackedOpen.current) {
+    if (open && !trackedOpen.current && premium) {
       trackedOpen.current = true;
       track('coach_chat_opened', {
-        locked: !premium,
+        locked: false,
         surface: askExerciseId ? 'active' : 'coach',
         grounded: Boolean(askExerciseId),
       });
@@ -64,7 +153,7 @@ export function CoachChatPanel({
   }, [open, premium, askExerciseId]);
 
   useEffect(() => {
-    if (!askExerciseId || askBooted.current) return;
+    if (!premium || !askExerciseId || askBooted.current) return;
     askBooted.current = true;
     let cancelled = false;
     void (async () => {
@@ -85,35 +174,17 @@ export function CoachChatPanel({
     return () => {
       cancelled = true;
     };
-  }, [askExerciseId, t]);
+  }, [askExerciseId, premium, t]);
 
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: 'smooth' });
   }, [turns]);
 
   if (!premium) {
-    return (
-      <div ref={rootRef}>
-      <Card className={cn('card-elevated border-brass/25', className)}>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base">
-            {t('coachChatLockedTitle', { defaultValue: 'Coach chat is Super Bundle' })}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <p className="text-sm text-muted-foreground">
-            {t('coachChatLockedDesc', {
-              defaultValue:
-                'Chat with your coach about form, fuel, and recovery. Free core keeps the plan and offline adjustments.',
-            })}
-          </p>
-          <Button asChild variant="fitness" size="sm" className="min-h-[44px]">
-            <Link href="/bundle">{t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}</Link>
-          </Button>
-        </CardContent>
-      </Card>
-      </div>
-    );
+    if (askExerciseId) {
+      return <FreeFormAskPanel askExerciseId={askExerciseId} className={className} />;
+    }
+    return <SoftBundleChatTip className={className} />;
   }
 
   const errorMessageForStatus = (status: number) => {
@@ -192,10 +263,10 @@ export function CoachChatPanel({
     try {
       const res = await fetch('/api/coach/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'text/plain',
-        },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'text/plain',
+          },
         body: JSON.stringify({
           message,
           turns: prior.slice(-12),
@@ -279,114 +350,117 @@ export function CoachChatPanel({
 
   return (
     <div ref={rootRef}>
-    <Card className={cn('content-card', className)}>
-      <CardHeader className="pb-2">
-        <button
-          type="button"
-          className="flex w-full items-center justify-between text-left min-h-[44px]"
-          onClick={() => setOpen((o) => !o)}
-          aria-expanded={open}
-        >
-          <CardTitle className="text-base">
-            {t('coachChatOpen', { defaultValue: 'Ask your coach' })}
-          </CardTitle>
-          <span className="text-xs text-muted-foreground">{open ? '−' : '+'}</span>
-        </button>
-      </CardHeader>
-      {open ? (
-        <CardContent className="space-y-3" aria-busy={sending}>
-          {offline || sendError ? (
-            <div className="flex flex-wrap items-center gap-2">
-              <p className="text-sm text-status-warn flex-1" role="status">
-                {sendError ||
-                  t('coachChatOffline', {
-                    defaultValue: 'Coach voice offline — your plan and adjustments still work.',
-                  })}
-              </p>
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                className="min-h-[44px]"
-                onClick={() => {
-                  setOffline(false);
-                  setSendError(null);
-                }}
-              >
-                {t('retry', { defaultValue: 'Try again' })}
-              </Button>
-            </div>
-          ) : null}
-          <div
-            ref={logRef}
-            role="log"
-            aria-live="polite"
-            className="max-h-56 overflow-y-auto space-y-2 rounded-lg border border-border/40 p-3 text-sm"
+      <Card className={cn('content-card', className)}>
+        <CardHeader className="pb-2">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between text-left min-h-[44px]"
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
           >
-            {turns.length === 0 ? (
-              <p className="text-muted-foreground text-xs">
-                {t('coachChatPlaceholder', {
+            <CardTitle className="text-base">
+              {t('coachChatOpen', { defaultValue: 'Ask your coach' })}
+            </CardTitle>
+            <span className="text-xs text-muted-foreground">{open ? '−' : '+'}</span>
+          </button>
+        </CardHeader>
+        {open ? (
+          <CardContent className="space-y-3" aria-busy={sending}>
+            {offline || sendError ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-sm text-status-warn flex-1" role="status">
+                  {sendError ||
+                    t('coachChatOffline', {
+                      defaultValue: 'Coach voice offline — your plan and adjustments still work.',
+                    })}
+                </p>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  className="min-h-[44px]"
+                  onClick={() => {
+                    setOffline(false);
+                    setSendError(null);
+                  }}
+                >
+                  {t('retry', { defaultValue: 'Try again' })}
+                </Button>
+              </div>
+            ) : null}
+            <div
+              ref={logRef}
+              role="log"
+              aria-live="polite"
+              className="max-h-56 overflow-y-auto space-y-2 rounded-lg border border-border/40 p-3 text-sm"
+            >
+              {turns.length === 0 ? (
+                <p className="text-muted-foreground text-xs">
+                  {t('coachChatPlaceholder', {
+                    defaultValue: "Ask about today's session, form, or recovery…",
+                  })}
+                </p>
+              ) : null}
+              {turns.map((turn, i) => (
+                <div
+                  key={`${turn.role}-${i}`}
+                  className={cn(
+                    'rounded-md px-2 py-1.5 whitespace-pre-wrap',
+                    turn.role === 'user' ? 'bg-primary/10 ml-4' : 'bg-muted/40 mr-4'
+                  )}
+                >
+                  {turn.content}
+                  {sending && turn.role === 'coach' && i === turns.length - 1 ? (
+                    <span
+                      className="inline-block w-1.5 h-3.5 ms-0.5 align-middle bg-primary/70 animate-pulse"
+                      aria-hidden
+                    />
+                  ) : null}
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <label className="sr-only" htmlFor="coach-chat-input">
+                {t('coachChatTitle', { defaultValue: 'Ask your coach' })}
+              </label>
+              <input
+                id="coach-chat-input"
+                type="text"
+                className="flex-1 min-h-[44px] rounded-md border border-border bg-background px-3 text-sm"
+                value={input}
+                disabled={sending}
+                placeholder={t('coachChatPlaceholder', {
                   defaultValue: "Ask about today's session, form, or recovery…",
                 })}
-              </p>
-            ) : null}
-            {turns.map((turn, i) => (
-              <div
-                key={`${turn.role}-${i}`}
-                className={cn(
-                  'rounded-md px-2 py-1.5 whitespace-pre-wrap',
-                  turn.role === 'user' ? 'bg-primary/10 ml-4' : 'bg-muted/40 mr-4'
-                )}
-              >
-                {turn.content}
-                {sending && turn.role === 'coach' && i === turns.length - 1 ? (
-                  <span className="inline-block w-1.5 h-3.5 ms-0.5 align-middle bg-primary/70 animate-pulse" aria-hidden />
-                ) : null}
-              </div>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <label className="sr-only" htmlFor="coach-chat-input">
-              {t('coachChatTitle', { defaultValue: 'Ask your coach' })}
-            </label>
-            <input
-              id="coach-chat-input"
-              type="text"
-              className="flex-1 min-h-[44px] rounded-md border border-border bg-background px-3 text-sm"
-              value={input}
-              disabled={sending}
-              placeholder={t('coachChatPlaceholder', {
-                defaultValue: "Ask about today's session, form, or recovery…",
-              })}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') void send();
-              }}
-            />
-            {sending ? (
-              <Button
-                type="button"
-                variant="outline"
-                className="min-h-[44px] min-w-[44px]"
-                onClick={stopStreaming}
-              >
-                {t('coachChatStop', { defaultValue: 'Stop' })}
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                variant="fitness"
-                className="min-h-[44px] min-w-[44px]"
-                disabled={!input.trim()}
-                onClick={() => void send()}
-              >
-                {t('coachChatSend', { defaultValue: 'Send' })}
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      ) : null}
-    </Card>
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') void send();
+                }}
+              />
+              {sending ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="min-h-[44px] min-w-[44px]"
+                  onClick={stopStreaming}
+                >
+                  {t('coachChatStop', { defaultValue: 'Stop' })}
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  variant="fitness"
+                  className="min-h-[44px] min-w-[44px]"
+                  disabled={!input.trim()}
+                  onClick={() => void send()}
+                >
+                  {t('coachChatSend', { defaultValue: 'Send' })}
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        ) : null}
+      </Card>
     </div>
   );
 }

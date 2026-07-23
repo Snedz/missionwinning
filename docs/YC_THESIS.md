@@ -67,6 +67,10 @@ Primary claim: **The Primer** (narrative pattern) + **AI-Powered Consumer Produc
 
 Optional post-PMF nods only (not pitch, not Horizon 0): Multiplayer AI → shared coach sessions for teams/families; Aging → older train-anywhere users.
 
+### Why now (healthcare / stay healthy)
+
+Medicine already knows structured exercise helps mild–moderate mood symptoms; practice still says “just go work out” because most mental health professionals never trained in exercise prescription. Tokens make adaptive coaching cheap at phone scale — MW’s wedge is the **prescription layer** (logger + fatigue-aware weekly plan), not a psychiatric product. Evidence + claim hygiene: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md). **Do not** lead the YC one-liner with depression.
+
 ---
 
 ## One-liner (YC form)

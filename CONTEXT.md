@@ -10,21 +10,20 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 > Adaptive AI coaching for train-anywhere athletes — free offline logging (no account), weekly plans from logs alone (no wearable). Super Bundle adds Coach depth and the other pillars — it never gates the logger.
 
-- Six pillars — Train · Fuel · Move · Mind · Track · Learn — unified by the Mission Score. Constitution: [vision.md](vision.md). Pitch the **Train + Mission Coach wedge**, never "everything app" ([docs/YC_THESIS.md](docs/YC_THESIS.md)). Crypto is a **payment rail** (Lifetime USDC), not the product ([docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md)).
+- Six pillars — Train · Fuel · Move · Mind · Track · Learn — unified by the Mission Score. Constitution: [vision.md](vision.md). Pitch the **Train + Mission Coach wedge**, never "everything app" ([docs/YC_THESIS.md](docs/YC_THESIS.md)). Evidence thesis (structured exercise vs vague advice — not a depression product): [docs/EXERCISE_AS_MEDICINE.md](docs/EXERCISE_AS_MEDICINE.md). Crypto is a **payment rail** (Lifetime USDC), not the product ([docs/CRYPTO_RAILS_THESIS.md](docs/CRYPTO_RAILS_THESIS.md)).
 - Surfaces: Next.js 16 PWA (repo root) · native Android Compose ([apps/android](apps/android), v1.24.1) · iOS deferred ([docs/IOS_PLAYBOOK.md](docs/IOS_PLAYBOOK.md)) · "Beyond the Basics" guidebook (`/guide` + magazine PDF).
 - Solo founder + AI agents. Founder owns users, money, legal, secrets, `PRIVATE_MODE`. Agents own code, tests, perf, docs — inside horizon gates.
 
 ---
 
-## Now (2026-07-22 · web `2026.07-unified.108` · Android `1.24.1`)
+## Now (2026-07-23 · web `2026.07-unified.114` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
-- **Horizon 0 — beta sprint through 2026-08-02** (may skip formal beta — founder call). Boss metric: week-4 retained weekly loggers. **#1 bottleneck: recruit ≥10** + phone hero QA — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §1→§3.
-- **Founder override:** Design **D1–D4** + layout/glow craft (`.106`–`.107`) — [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md).
-- **Ops:** GitHub Pro / billing unblocked. CI soft-gates: CodeQL upload + Aikido skip-when-unset. **www:** promote **`.108`**. **Founder still:** enable Code scanning; phone hero QA + ≥10 invites; Android Accept B → Play Internal; Wave A Sentry; Aikido + `LAUNCH_STRICT` secrets.
-- Agents: no new pillars · **no F5**.
-- Shipped: web **`.108`** landing FAQ bootstrap defaults (raw keys fix). Android **1.24.1**. In flight: **Accept B re-walk**.
+- **Horizon W — wedge excellence (founder override).** #1 bottleneck: make Train→Today→Victory→Coach **not lame** (W1–W4). ≥10 beta is **after** excellence sign-off — not instead of building. See [ORCHESTRATION.md](ORCHESTRATION.md) § Horizon W.
+- Agents **must** ship wedge habit-loop work. Refuse new pillars / America / locale farms / F5.
+- **Ops (parallel, not blocking wedge):** promote **`.114`** (Google OAuth + gate mint); founder still owns secrets / Code scanning / Accept B / Sentry when ready.
+- Shipped: `.114` Google→gate fix; prior `.113` free Coach week. **Founder:** phone excellence pass/fail before ≥10 beta.
 
 
 ---
@@ -61,7 +60,7 @@ Android: `cd apps/android && ./gradlew :app:assembleDebug`.
 
 ## Hard rules
 
-1. **Horizon rule** — Horizon 0 allows only hero bugs, launch unblock, CI. No new pillars/locales/redesigns without explicit founder override.
+1. **Horizon rule** — Horizon W: build wedge excellence (Train/Today/Victory/Coach). No new pillars/locales/America/F5 without explicit founder override. ≥10 beta only after excellence sign-off.
 2. **The free logger is never gated. Ever.**
 3. Agents never flip `PRIVATE_MODE`, never invent traction numbers, never mark founder tasks done.
 4. Do not open stale/deleted paths — [INDEX.md](INDEX.md) §4.

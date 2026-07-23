@@ -14,13 +14,22 @@ import { useCoachPlan } from '@/hooks/useCoachPlan';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { track } from '@/lib/analytics';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
+import { summarizeWeekDose } from '@/lib/coach/weekDose';
 
 export function CoachTodayCard() {
   const { t } = useTranslation();
   const router = useRouter();
   const { plan, todaySession, loading, locked, generate } = useCoachPlan();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
-  // Adjust lives on CoachPage; deep-link users to the full week for free offline adjust.
+  const weekDose = plan ? summarizeWeekDose(plan) : null;
+  const doseIntent =
+    weekDose?.intent === 'strength'
+      ? t('coachWeekDoseStrength', { defaultValue: 'mostly strength' })
+      : weekDose?.intent === 'conditioning'
+        ? t('coachWeekDoseConditioning', { defaultValue: 'conditioning focus' })
+        : weekDose?.intent === 'recovery'
+          ? t('coachWeekDoseRecovery', { defaultValue: 'recovery-heavy' })
+          : t('coachWeekDoseMixed', { defaultValue: 'mixed strength & recovery' });
 
   if (loading) return null;
 
@@ -48,6 +57,16 @@ export function CoachTodayCard() {
       </CardHeader>
       <CardContent className="space-y-3">
         {plan && !locked && <CoachAdaptBanner plan={plan} compact />}
+        {plan && !locked && weekDose && weekDose.sessionCount > 0 && (
+          <p className="text-xs text-muted-foreground text-center" data-testid="coach-today-dose">
+            {t('coachWeekDose', {
+              count: weekDose.sessionCount,
+              intent: doseIntent,
+              minutes: weekDose.estMinutes,
+              defaultValue: `This week’s dose: ${weekDose.sessionCount} sessions · ${doseIntent} · ~${weekDose.estMinutes} min`,
+            })}
+          </p>
+        )}
         {!plan && !locked && (
           <>
             <p className="text-sm text-muted-foreground">

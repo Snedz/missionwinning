@@ -116,6 +116,8 @@ type InfoStrings = {
   infoPrivacySubprocessorsBody: string;
   infoAboutMissionP1: string;
   infoAboutMissionP2: string;
+  infoAboutEvidence: string;
+  infoAboutEvidenceBody: string;
   infoAboutAmericaLink: string;
   infoAboutBusinessBody: string;
   infoAboutDisclaimerEducational: string;
@@ -188,6 +190,7 @@ const en: InfoStrings = {
   infoPrivacyCalifornia: 'California privacy (CCPA)',
   infoPrivacyNotMedical: 'Not medical advice',
   infoAboutMission: 'Our mission',
+  infoAboutEvidence: 'Exercise as medicine',
   infoAboutNational: 'National fitness (U.S.)',
   infoAboutBusiness: 'Business structure',
   infoAboutDisclaimers: 'Important disclaimers',
@@ -303,6 +306,8 @@ const en: InfoStrings = {
     'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
   infoAboutMissionP2:
     'Accessible, science-based training and nutrition tools for everyone, everywhere — from city gyms to rural areas with minimal equipment. Train smart. Win daily. No borders.',
+  infoAboutEvidenceBody:
+    'Hundreds of clinical trials support exercise for mild to moderate depressive symptoms — often comparable to medication in research settings. Yet most mental health professionals never received formal training in prescribing exercise, so advice stays “just go work out.” Mission Winning turns training into a clear, adaptive weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
   infoAboutAmericaLink: 'Presidential Fitness Test & youth movement →',
   infoAboutBusinessBody:
     'Operated by Mission Winning LLC (for-profit) for the app, programs, and coaching. A separate nonprofit foundation is planned to support free access, scholarships for coaches in underserved regions, and mission-driven initiatives.',

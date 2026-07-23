@@ -196,6 +196,7 @@ export const FREE_LEARN_PATHS: LearnPath[] = [
         actionHref: '/log',
       body: [
         'You become what you repeat — small daily wins compound. Treat it as a briefing: one idea, one action.',
+        'Research often links consistent exercise with better energy and mood for many people — the product job is a plan you can stick to, not a diagnosis. Educational fitness only.',
         'Practice the key points on your next session. Log honestly — what gets measured improves.',
         'When ready, use the action link below to apply streaks & identity inside the free core.',
       ],
