@@ -101,7 +101,7 @@ export function WorkoutVictorySheet({
         onOpenChange(next);
       }}
     >
-      <DialogContent className="victory-lock card-glow-brass sm:max-w-md border-brass/30 bg-gradient-to-b from-card to-brass/5">
+      <DialogContent className="victory-lock card-glow-brass sm:max-w-md md:max-w-lg xl:max-w-xl border-brass/30 bg-gradient-to-b from-card to-brass/5">
         <DialogHeader className="text-center space-y-3 victory-reveal">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brass/20 border border-brass/40">
             <Trophy className="h-8 w-8 text-brass" />

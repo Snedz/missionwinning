@@ -37,7 +37,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <Sidebar />
             </div>
             <main className="flex-1 overflow-y-auto pb-[calc(52px+env(safe-area-inset-bottom))] md:pb-0">
-              <div className="mx-auto max-w-lg md:max-w-2xl lg:max-w-3xl px-4 py-5 md:px-8 md:py-6">
+              <div className="mx-auto max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl px-4 py-5 md:px-8 md:py-6">
                 <PageTransition>{children}</PageTransition>
               </div>
             </main>

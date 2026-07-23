@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { MAJOR_GROUPS, type MuscleGroup } from '@/lib/muscleGroups';
 import type { SessionConstraint } from '@/lib/coach/adjust';
-import { cn } from '@/lib/utils';
 
 type Props = {
   open: boolean;
@@ -14,12 +14,10 @@ type Props = {
   className?: string;
 };
 
-export function AdjustSessionSheet({ open, onClose, onAdjust, className }: Props) {
+export function AdjustSessionSheet({ open, onClose, onAdjust }: Props) {
   const { t } = useTranslation();
   const [hurtMode, setHurtMode] = useState(false);
   const [note, setNote] = useState<string | null>(null);
-
-  if (!open) return null;
 
   const apply = (c: SessionConstraint, noteKey: string) => {
     onAdjust(c);
@@ -27,32 +25,20 @@ export function AdjustSessionSheet({ open, onClose, onAdjust, className }: Props
     setHurtMode(false);
   };
 
-  return (
-    <div
-      className={cn(
-        'rounded-xl border border-border/60 bg-card p-4 space-y-3 shadow-sm',
-        className
-      )}
-      role="dialog"
-      aria-label={t('coachAdjustTitle', { defaultValue: "Adjust today's session" })}
-    >
-      <div className="flex items-center justify-between gap-2">
-        <p className="font-medium text-sm">
-          {t('coachAdjustTitle', { defaultValue: "Adjust today's session" })}
-        </p>
-        <button
-          type="button"
-          className="text-xs text-muted-foreground min-h-[44px] px-2"
-          onClick={() => {
-            setHurtMode(false);
-            setNote(null);
-            onClose();
-          }}
-        >
-          {t('coachAdjustClose', { defaultValue: 'Done' })}
-        </button>
-      </div>
+  const handleClose = () => {
+    setHurtMode(false);
+    setNote(null);
+    onClose();
+  };
 
+  return (
+    <AdaptiveOverlay
+      open={open}
+      onClose={handleClose}
+      size="sm"
+      title={t('coachAdjustTitle', { defaultValue: "Adjust today's session" })}
+      bodyClassName="p-5 space-y-3"
+    >
       {!hurtMode ? (
         <div className="flex flex-wrap gap-2">
           <Button
@@ -118,6 +104,6 @@ export function AdjustSessionSheet({ open, onClose, onAdjust, className }: Props
           {t(note, { defaultValue: note })}
         </p>
       ) : null}
-    </div>
+    </AdaptiveOverlay>
   );
 }

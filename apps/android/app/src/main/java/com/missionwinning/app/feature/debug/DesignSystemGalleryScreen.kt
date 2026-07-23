@@ -40,6 +40,13 @@ import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwStepper
 import com.missionwinning.core.designsystem.MwTopBar
 import com.missionwinning.core.designsystem.MwTypography
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.missionwinning.core.designsystem.MwAdaptiveOverlay
+import com.missionwinning.core.designsystem.MwWidthSizeClass
+import com.missionwinning.core.designsystem.rememberMwWidthSizeClass
 
 /**
  * Debug-only visual catalog of designsystem tokens/components for agents & QA.
@@ -158,6 +165,38 @@ fun DesignSystemGalleryScreen(onBack: () -> Unit) {
                 Box(Modifier.weight(1f)) {
                     MwMetricCard(label = "Volume", value = "12.4k")
                 }
+            }
+
+            MwSectionLabel("Adaptive overlay")
+            val widthClass = rememberMwWidthSizeClass()
+            var overlayOpen by remember { mutableStateOf(false) }
+            MwCard(elevated = true) {
+                Text(
+                    "Window width class: $widthClass " +
+                        "(Compact <600 · Medium 600–839 · Expanded ≥840)",
+                    style = MwTypography.labelMedium,
+                    color = MwColors.TextMuted,
+                )
+                Spacer(Modifier.height(8.dp))
+                MwPrimaryButton(text = "Open adaptive overlay", onClick = { overlayOpen = true })
+            }
+            MwAdaptiveOverlay(
+                open = overlayOpen,
+                onDismiss = { overlayOpen = false },
+                title = "Adaptive overlay",
+                eyebrow = "Size class demo",
+            ) {
+                Text(
+                    when (widthClass) {
+                        MwWidthSizeClass.Compact -> "Compact: bottom sheet (phone / narrow fold)."
+                        MwWidthSizeClass.Medium -> "Medium: centered dialog."
+                        MwWidthSizeClass.Expanded -> "Expanded: wide centered dialog (tablet / unfolded)."
+                    },
+                    style = MwTypography.bodyMedium,
+                    color = MwColors.Text,
+                )
+                Spacer(Modifier.height(12.dp))
+                MwSecondaryButton(text = "Close", onClick = { overlayOpen = false })
             }
 
             MwSectionLabel("States")

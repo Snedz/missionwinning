@@ -468,24 +468,20 @@ fun MwConfirmSheet(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(MwRadius.xl))
-            .background(MwColors.NavyElevated)
-            .border(1.dp, MwColors.Border, RoundedCornerShape(MwRadius.xl))
-            .padding(MwSpace.lg),
+    MwAdaptiveOverlay(
+        open = true,
+        onDismiss = onDismiss,
+        title = title,
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(MwSpace.md)) {
-            Text(title, style = MwTypography.titleLarge, color = MwColors.Text)
-            Text(body, style = MwTypography.bodyMedium, color = MwColors.TextMuted)
-            MwPrimaryButton(
-                text = confirmLabel,
-                contentDescription = confirmLabel,
-                onClick = onConfirm,
-            )
-            MwGhostButton(text = cancelLabel, onClick = onDismiss, contentDescription = cancelLabel)
-        }
+        Text(body, style = MwTypography.bodyMedium, color = MwColors.TextMuted)
+        Spacer(Modifier.height(MwSpace.md))
+        MwPrimaryButton(
+            text = confirmLabel,
+            contentDescription = confirmLabel,
+            onClick = onConfirm,
+        )
+        Spacer(Modifier.height(MwSpace.sm))
+        MwGhostButton(text = cancelLabel, onClick = onDismiss, contentDescription = cancelLabel)
     }
 }
 
