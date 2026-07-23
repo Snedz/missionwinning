@@ -12,6 +12,8 @@ type EmptyStateProps = {
   actionLabel?: string;
   onAction?: () => void;
   href?: string;
+  /** Disable the action CTA (e.g. while store hydrates). */
+  actionDisabled?: boolean;
   className?: string;
 };
 
@@ -22,8 +24,11 @@ export function EmptyState({
   actionLabel,
   onAction,
   href,
+  actionDisabled,
   className,
 }: EmptyStateProps) {
+  const ctaClass = 'mt-5 min-h-[44px] tap-target';
+
   return (
     <div
       className={cn(
@@ -38,13 +43,23 @@ export function EmptyState({
         {title}
       </h3>
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>
-      {actionLabel && href && (
-        <Button variant="fitness" className="mt-5" asChild>
+      {actionLabel && href && !actionDisabled && (
+        <Button variant="fitness" className={ctaClass} asChild>
           <Link href={href}>{actionLabel}</Link>
         </Button>
       )}
       {actionLabel && onAction && !href && (
-        <Button variant="fitness" className="mt-5" onClick={onAction}>
+        <Button
+          variant="fitness"
+          className={ctaClass}
+          onClick={onAction}
+          disabled={actionDisabled}
+        >
+          {actionLabel}
+        </Button>
+      )}
+      {actionLabel && actionDisabled && !onAction && !href && (
+        <Button variant="fitness" className={ctaClass} disabled>
           {actionLabel}
         </Button>
       )}

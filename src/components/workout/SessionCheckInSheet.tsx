@@ -5,7 +5,7 @@
  * Skippable; writes mw_mind_checkins; never auto-trims volume.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useRef, useState, type RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,12 +30,14 @@ function QuickRow({
   onChange,
   lowHint,
   highHint,
+  firstButtonRef,
 }: {
   label: string;
   value: number;
   onChange: (v: number) => void;
   lowHint: string;
   highHint: string;
+  firstButtonRef?: RefObject<HTMLButtonElement | null>;
 }) {
   return (
     <div className="space-y-1.5">
@@ -43,13 +45,15 @@ function QuickRow({
         <span className="font-medium">{label}</span>
         <span className="text-muted-foreground tabular-nums">{value}/5</span>
       </div>
-      <div className="flex gap-1">
-        {[1, 2, 3, 4, 5].map((n) => (
+      <div className="flex gap-1" role="group" aria-label={label}>
+        {[1, 2, 3, 4, 5].map((n, i) => (
           <button
             key={n}
+            ref={i === 0 ? firstButtonRef : undefined}
             type="button"
             onClick={() => onChange(n)}
-            className={`flex-1 min-h-[44px] rounded-md text-sm font-medium transition-colors ${
+            aria-pressed={value >= n}
+            className={`flex-1 min-h-[44px] tap-target rounded-md text-sm font-medium transition-colors ${
               value >= n
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-muted text-muted-foreground hover:bg-muted/80'
@@ -69,9 +73,28 @@ function QuickRow({
 
 export function SessionCheckInSheet({ open, onDismiss }: Props) {
   const { t } = useTranslation();
+  const titleId = useId();
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const firstControlRef = useRef<HTMLButtonElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const [soreness, setSoreness] = useState(3);
   const [sleep, setSleep] = useState(3);
   const [motivation, setMotivation] = useState(3);
+
+  const skip = () => {
+    track('readiness_checkin_completed', { adjusted: false });
+    onDismiss({ completed: false, checkIn: getTodayCheckIn() });
+  };
+
+  const save = () => {
+    const checkIn = upsertTodayPartial({
+      soreness,
+      sleep,
+      energy: motivation,
+    });
+    track('readiness_checkin_completed', { adjusted: true });
+    onDismiss({ completed: true, checkIn });
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -83,36 +106,66 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
     }
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    previousFocusRef.current =
+      typeof document !== 'undefined' ? (document.activeElement as HTMLElement | null) : null;
+    const focusTimer = window.setTimeout(() => {
+      firstControlRef.current?.focus();
+    }, 0);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        skip();
+        return;
+      }
+      if (e.key !== 'Tab' || !panelRef.current) return;
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener('keydown', onKeyDown);
+      previousFocusRef.current?.focus?.();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- open-gated; skip closes sheet
+  }, [open]);
+
   if (!open) return null;
-
-  const save = () => {
-    const checkIn = upsertTodayPartial({
-      soreness,
-      sleep,
-      energy: motivation, // motivation → energy field
-    });
-    track('readiness_checkin_completed', { adjusted: true });
-    onDismiss({ completed: true, checkIn });
-  };
-
-  const skip = () => {
-    track('readiness_checkin_completed', { adjusted: false });
-    onDismiss({ completed: false, checkIn: getTodayCheckIn() });
-  };
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="session-checkin-title"
+      role="presentation"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) skip();
+      }}
     >
-      <div className="w-full max-w-md rounded-2xl border border-border bg-card p-5 shadow-xl space-y-4">
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="w-full max-w-md rounded-2xl border border-border bg-card p-5 shadow-xl space-y-4"
+      >
         <div>
           <p className="eyebrow text-[hsl(var(--status-info))] mb-1">
             {t('sessionCheckInEyebrow', { defaultValue: 'Pre-session' })}
           </p>
-          <h2 id="session-checkin-title" className="text-lg font-semibold text-foreground">
+          <h2 id={titleId} className="text-lg font-semibold text-foreground">
             {t('sessionCheckInTitle', { defaultValue: 'How do you feel?' })}
           </h2>
           <p className="text-xs text-muted-foreground mt-1">
@@ -129,6 +182,7 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
           onChange={setSoreness}
           lowHint={t('sessionCheckInFresh', { defaultValue: 'Fresh' })}
           highHint={t('sessionCheckInBeaten', { defaultValue: 'Beaten up' })}
+          firstButtonRef={firstControlRef}
         />
         <QuickRow
           label={t('sessionCheckInSleep', { defaultValue: 'Sleep last night' })}
@@ -146,10 +200,10 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
         />
 
         <div className="flex flex-col gap-2 pt-1">
-          <Button type="button" variant="fitness" className="w-full min-h-[44px]" onClick={save}>
+          <Button type="button" variant="fitness" className="w-full min-h-[44px] tap-target" onClick={save}>
             {t('sessionCheckInSave', { defaultValue: 'Save & continue' })}
           </Button>
-          <Button type="button" variant="ghost" className="w-full min-h-[44px]" onClick={skip}>
+          <Button type="button" variant="ghost" className="w-full min-h-[44px] tap-target" onClick={skip}>
             {t('sessionCheckInSkip', { defaultValue: 'Not now' })}
           </Button>
         </div>

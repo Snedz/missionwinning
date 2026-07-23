@@ -44,7 +44,7 @@ export function RestTimerBar({
       <div className="px-4 pt-3 pb-2">
         <div className="relative mx-auto flex h-2 w-full max-w-xs overflow-hidden rounded-full bg-muted/40">
           <div
-            className="h-full rounded-full bg-muted-foreground/70 transition-[width] duration-1000 linear"
+            className="h-full rounded-full bg-muted-foreground/70 transition-[width] duration-1000 linear motion-reduce:transition-none"
             style={{ width: `${Math.round(progress * 100)}%` }}
           />
         </div>

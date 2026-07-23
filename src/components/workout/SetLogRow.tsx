@@ -123,7 +123,7 @@ export function SetLogRow({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 min-w-[44px] text-xs px-2"
+                    className="h-11 min-h-[44px] min-w-[44px] text-xs px-2 tap-target"
                     onClick={() => onRate(r)}
                   >
                     {t(
@@ -166,7 +166,7 @@ export function SetLogRow({
                     size="sm"
                     variant={kind === k ? 'default' : 'outline'}
                     className={cn(
-                      'h-7 px-2 text-[10px] min-w-[44px]',
+                      'h-11 min-h-[44px] px-2 text-[10px] min-w-[44px] tap-target',
                       kind === k && k === 'warmup' && 'bg-amber-600 hover:bg-amber-500',
                       kind === k && k === 'failure' && 'bg-rose-600 hover:bg-rose-500',
                       kind === k && k === 'drop' && 'bg-violet-600 hover:bg-violet-500'
@@ -200,7 +200,7 @@ export function SetLogRow({
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="h-7 px-2 text-[10px] text-muted-foreground"
+                  className="h-11 min-h-[44px] px-3 text-xs text-muted-foreground tap-target"
                   onClick={onApplyTarget}
                 >
                   {t('activeApplyTarget', { defaultValue: 'Apply' })}
@@ -218,7 +218,13 @@ export function SetLogRow({
                 })}
               </span>
               {showCopyLast && (
-                <Button type="button" variant="ghost" size="sm" className="h-7 px-2 text-[10px]" onClick={onCopyLast}>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-11 min-h-[44px] px-3 text-xs tap-target"
+                  onClick={onCopyLast}
+                >
                   {t('activeCopyLast', { defaultValue: 'Use last' })}
                 </Button>
               )}

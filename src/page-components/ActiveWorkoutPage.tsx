@@ -48,6 +48,7 @@ import {
   sessionSetStats,
   setInputKey,
 } from '@/lib/workout/activeWorkoutHelpers';
+import { prefersReducedMotion } from '@/lib/motion';
 
 export function ActiveWorkoutPage() {
   const router = useRouter();
@@ -81,6 +82,7 @@ export function ActiveWorkoutPage() {
   const tickElapsed = useWorkoutStore((s) => s.tickElapsed);
   const startRestTimer = useWorkoutStore((s) => s.startRestTimer);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
+  const hasHydrated = useWorkoutStore((s) => s.hasHydrated);
 
   useEffect(() => {
     void ensureFullExerciseCatalog();
@@ -130,7 +132,10 @@ export function ActiveWorkoutPage() {
 
   useEffect(() => {
     if (nextSet && nextSetRef.current) {
-      nextSetRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      nextSetRef.current.scrollIntoView({
+        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+        block: 'nearest',
+      });
     }
   }, [nextSet]);
 
@@ -261,6 +266,7 @@ export function ActiveWorkoutPage() {
     return (
       <ActiveEmptyState
         onStart={() => startEmptyWorkout()}
+        hydrated={hasHydrated}
         victoryOpen={victoryOpen}
         victorySummary={victorySummary}
         onVictoryOpenChange={setVictoryOpen}

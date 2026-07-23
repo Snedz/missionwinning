@@ -46,6 +46,8 @@ interface WorkoutState {
   restTimerActive: boolean;
   restTimerInitialSeconds: number;
   elapsedSeconds: number;
+  /** False until persist finishes merging localStorage (avoids Start wipe race). */
+  hasHydrated: boolean;
 
   addSavedWorkout: (workout: Omit<SavedWorkout, "id" | "createdAt">) => void;
   deleteSavedWorkout: (id: string) => void;
@@ -117,6 +119,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       restTimerActive: false,
       restTimerInitialSeconds: 90,
       elapsedSeconds: 0,
+      hasHydrated: false,
 
       addSavedWorkout: (workout) => {
         const newWorkout: SavedWorkout = {
@@ -546,8 +549,13 @@ export const useWorkoutStore = create<WorkoutState>()(
         activeWorkout: state.activeWorkout,
         elapsedSeconds: state.elapsedSeconds,
       }),
-      onRehydrateStorage: () => (state) => {
+      onRehydrateStorage: () => (state, error) => {
         syncActiveFlag(state?.activeWorkout ?? null);
+        // Always mark hydrated (even on error) so Start is not stuck forever.
+        useWorkoutStore.setState({ hasHydrated: true });
+        if (error) {
+          console.warn('[workoutStore] rehydrate error', error);
+        }
       },
     }
   )

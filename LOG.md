@@ -6,6 +6,13 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Hero a11y + logic polish (`.105`)
+
+- **Logic:** `workoutStore.hasHydrated` gates Active Start (persist wipe race); e2e waits for enabled Start + dismisses check-in.
+- **a11y:** SessionCheckIn focus trap / Escape / Skip 44px; EmptyState + SetLogRow + Beta banner tap targets; rest `motion-reduce`; gate `role="alert"`; axe covers `/active`, `/private`, `/nutrition`.
+- **Craft:** Today e2e asserts one `.primary-action`; BetaWelcomeBanner muted (no competing emerald chips).
+- Build: `2026.07-unified.105` — promote www after Ready.
+
 ## 2026-07-22 — Horizon 0 agent unblock (CI + ship `.104`)
 
 - **Ship:** D4 composure + red/blue S2 + build `2026.07-unified.104` to master (Deploy production should promote www).

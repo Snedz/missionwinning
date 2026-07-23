@@ -30,6 +30,8 @@ test.describe('Phase H hero flows', () => {
     await expect(page.locator('body')).toBeVisible();
     const body = await page.textContent('body');
     expect(body).toMatch(/mission|win score|puntuación|misión/i);
+    // D4 composure: at most one emerald primary CTA on Today.
+    await expect(page.locator('.primary-action')).toHaveCount(1);
   });
 
   test('workout logger entry — active or builder', async ({ page }) => {

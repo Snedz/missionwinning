@@ -17,6 +17,7 @@
 | `activeWorkout` | memory + persist | In-progress session |
 | `restTimer*` | memory | Rest countdown between sets |
 | `elapsedSeconds` | memory | Workout clock |
+| `hasHydrated` | memory | True after persist rehydrate — gate Active Start |
 
 ## Key actions
 

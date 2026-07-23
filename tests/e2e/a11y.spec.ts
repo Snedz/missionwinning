@@ -4,56 +4,73 @@ import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
 
 /**
- * Wave 8 a11y automation — tagged @a11y (excluded from e2e:critical).
+ * a11y automation — tagged @a11y (excluded from e2e:critical).
  * Fail on serious + critical only; moderate/minor console-warned.
  */
 
-const ROUTES = [
+const GATED_ROUTES = [
   '/',
   '/welcome',
   '/log',
   '/coach',
   '/bundle',
+  '/active',
+  '/nutrition',
   '/experience?tier=static',
   '/exercises/push-ups',
 ] as const;
 
-test.describe('Accessibility @a11y', () => {
-  test.beforeEach(async ({ page, context, baseURL }) => {
-    if (!baseURL) throw new Error('baseURL required');
-    const ok = await unlockGate(page, context, baseURL);
-    if (gateRequired() && !ok) {
-      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
-    }
-    await seedLegacyOnboarding(page);
-  });
+async function axeSerious(page: import('@playwright/test').Page, path: string) {
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .analyze();
 
-  for (const path of ROUTES) {
-    test(`axe serious/critical: ${path} @a11y`, async ({ page }) => {
+  const serious = results.violations.filter(
+    (v) => v.impact === 'serious' || v.impact === 'critical'
+  );
+  const soft = results.violations.filter(
+    (v) => v.impact === 'moderate' || v.impact === 'minor'
+  );
+  if (soft.length) {
+    console.warn(
+      `[a11y ${path}] moderate/minor:`,
+      soft.map((v) => `${v.id} (${v.impact})`).join(', ')
+    );
+  }
+
+  expect(
+    serious,
+    serious.map((v) => `${v.id}: ${v.help}`).join('\n')
+  ).toEqual([]);
+}
+
+test.describe('Accessibility @a11y', () => {
+  for (const path of GATED_ROUTES) {
+    test(`axe serious/critical: ${path} @a11y`, async ({ page, context, baseURL }) => {
+      if (!baseURL) throw new Error('baseURL required');
+      const ok = await unlockGate(page, context, baseURL);
+      if (gateRequired() && !ok) {
+        test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+      }
+      await seedLegacyOnboarding(page);
       await page.goto(path, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('body')).toBeVisible();
 
-      const results = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-        .analyze();
-
-      const serious = results.violations.filter(
-        (v) => v.impact === 'serious' || v.impact === 'critical'
-      );
-      const soft = results.violations.filter(
-        (v) => v.impact === 'moderate' || v.impact === 'minor'
-      );
-      if (soft.length) {
-        console.warn(
-          `[a11y ${path}] moderate/minor:`,
-          soft.map((v) => `${v.id} (${v.impact})`).join(', ')
-        );
+      if (path === '/active') {
+        await page
+          .getByRole('button', { name: /start workout|loading session/i })
+          .first()
+          .waitFor({ state: 'visible', timeout: 15_000 });
       }
 
-      expect(
-        serious,
-        serious.map((v) => `${v.id}: ${v.help}`).join('\n')
-      ).toEqual([]);
+      await axeSerious(page, path);
     });
   }
+
+  test('axe serious/critical: /private @a11y', async ({ page, baseURL }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    await page.goto('/private', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('body')).toBeVisible();
+    await axeSerious(page, '/private');
+  });
 });
