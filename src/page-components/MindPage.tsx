@@ -22,6 +22,7 @@ import { GuidedMindSessionRunner } from '@/components/pillars/GuidedMindSessionR
 import { Brain, ChevronDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function MindPage() {
   const { t } = useTranslation();
@@ -65,8 +66,9 @@ export function MindPage() {
       eyebrow={t('mindEyebrow', { defaultValue: 'Mind' })}
       title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
       subtitle={t('mindSubtitle', {
-        defaultValue:
-          '10 free guided sessions, breathing timer, and daily check-in. Premium adds 17 deeper timed sessions (Super Bundle).',
+        defaultValue: isFreeBeta()
+          ? '10 free guided sessions, breathing timer, and daily check-in.'
+          : '10 free guided sessions, breathing timer, and daily check-in. Premium adds 17 deeper timed sessions (Super Bundle).',
       })}
     >
       <div className="grid gap-6 lg:grid-cols-2">

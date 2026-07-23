@@ -16,18 +16,21 @@ import { UnlockButton } from '@/components/UnlockButton';
 import { OneRmCalculator } from '@/components/calculators/OneRmCalculator';
 import { MacroCalculator, MacroCalculatorActions } from '@/components/calculators/MacroCalculator';
 import { PlateCalculatorPanel } from '@/components/calculators/PlateCalculatorPanel';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function CalculatorsPage() {
   const { t } = useTranslation();
   const [e1rm, setE1rm] = useState(0);
+  const freeBeta = isFreeBeta();
 
   return (
     <PillarPageShell
       icon={Calculator}
       title={t('calcTitle', { defaultValue: 'Calculators' })}
       subtitle={t('calcSubtitle', {
-        defaultValue:
-          'Free 1RM, macro, and plate tools. Super Bundle unlocks advanced periodization and client sync.',
+        defaultValue: freeBeta
+          ? 'Free 1RM, macro, and plate tools — no account required.'
+          : 'Free 1RM, macro, and plate tools. Super Bundle unlocks advanced periodization and client sync.',
       })}
       showLegalFooter
     >
@@ -70,6 +73,7 @@ export function CalculatorsPage() {
         })}
       </p>
 
+      {!freeBeta && (
       <Card className="content-card border-primary/30 bg-primary/5">
         <CardContent className="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="space-y-1">
@@ -95,6 +99,7 @@ export function CalculatorsPage() {
           />
         </CardContent>
       </Card>
+      )}
 
       <SignInPrompt
         nextPath="/calculators"

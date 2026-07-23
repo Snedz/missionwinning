@@ -7,12 +7,12 @@ import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { PREMIUM_MIND_SESSIONS } from '@/data/premiumMindSessions';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
 const CATALOG_CACHE = { 'Cache-Control': 'private, max-age=60, stale-while-revalidate=300' };
 
 export const GET = withApiLogging('premium/mind', async(request: NextRequest) => {
-  if (isDemoPremiumEnabled()) {
+  if (isPremiumBypassEnabled()) {
     return NextResponse.json({ sessions: PREMIUM_MIND_SESSIONS }, { headers: CATALOG_CACHE });
   }
 

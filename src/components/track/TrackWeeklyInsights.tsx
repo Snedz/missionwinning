@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getActivitiesForWeek } from '@/lib/activityLog';
 import { formatPaceMinPerKm, summarizeGpsWeek } from '@/lib/trackGps';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type Props = {
   /** When true, show demo weekly stats + unlock CTA instead of hiding the card. */
@@ -16,7 +17,9 @@ export function TrackWeeklyInsights({ locked = false }: Props) {
   const { t } = useTranslation();
   const weekActivities = typeof window !== 'undefined' ? getActivitiesForWeek() : [];
   const stats = summarizeGpsWeek(weekActivities);
+  const freeBeta = isFreeBeta();
 
+  if (locked && freeBeta) return null;
   if (!locked && !stats) return null;
 
   const display = locked

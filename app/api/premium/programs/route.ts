@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 import { getPremiumProgramTemplates } from '@/data/premiumProgramTemplates';
 import type { ProgramCategory } from '@/data/programTemplates';
 
@@ -20,7 +20,7 @@ export const GET = withApiLogging('premium/programs', async(request: NextRequest
     return NextResponse.json({ error: 'Use client templates for non-pro categories' }, { status: 400 });
   }
 
-  if (isDemoPremiumEnabled()) {
+  if (isPremiumBypassEnabled()) {
     return NextResponse.json({ programs: getPremiumProgramTemplates() }, { headers: CATALOG_CACHE });
   }
 

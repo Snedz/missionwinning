@@ -6,6 +6,26 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Pre-EIN interim payments (docs)
+
+- Texas LLC filed (Bizee, ~4 weeks) + EIN pending: document path to take beta payments **without** business Stripe/PayPal.
+- [LLC_AND_PAYMENTS.md](docs/LLC_AND_PAYMENTS.md) §1d — Stripe **individual/sole prop** primary; Phantom list Lifetime parallel; manual Venmo/Zelle escape hatch; migrate when EIN lands.
+- [LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §4 pre-EIN checklist · [PRE_REVENUE_CHECKLIST.md](docs/PRE_REVENUE_CHECKLIST.md) interim exception · [STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) pointer.
+- Founder still owns: open individual Stripe, wire live keys, test purchase, treasury ATA, LLC migration.
+
+---
+
+## 2026-07-23 — Free beta unlocks full depth (`.120`)
+
+- Free-first mute kept; **also** unlock premium depth for everyone (`isPremiumBypassEnabled` / `usePremium` / Android `MwFreeBeta`) — Coach chat, Fuel Coach, catalogs. No credits wallet.
+- Build: `2026.07-unified.120`. Docs: [docs/FREE_BETA.md](docs/FREE_BETA.md).
+
+## 2026-07-23 — Free-first beta mute (`.119`)
+
+- `NEXT_PUBLIC_FREE_BETA` / `isFreeBeta()` (default ON) + Android `MwFreeBeta.ENABLED`: hide Bundle, UnlockButton, LockedPreviews, nav/marketing paid CTAs, Play subscribe, crypto Lifetime.
+- `/bundle` redirects to `/log`. LLC §1d overridden — no individual Stripe until EIN. Docs: [docs/FREE_BETA.md](docs/FREE_BETA.md).
+- Build: `2026.07-unified.119`.
+
 ## 2026-07-23 — Adaptive layouts web + Android (`.118`)
 
 - Web: `AdaptiveOverlay` (compact bottom sheet / md+ centered dialog); Fuel log pilot + two-column xl; SessionCheckIn, PlateCalculator, AdjustSession migrated; Victory dialog widened; AppLayout `xl:max-w-4xl 2xl:max-w-5xl`.

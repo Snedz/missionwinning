@@ -29,6 +29,7 @@ import { PROGRAM_TAG_LABELS } from "@/data/exerciseEnrichment";
 import type { ProgramTag } from "@/types";
 import { usePremium } from "@/hooks/usePremium";
 import Link from "next/link";
+import { isFreeBeta } from "@/lib/freeBeta";
 
 export const TEMPLATE_PROGRAM_COUNT = PROGRAM_TEMPLATES.length;
 /** Pro templates are server-only — fetched via /api/premium/programs when premium. */
@@ -288,12 +289,19 @@ export function ProgramTemplatesPanel({
           </Button>
         ))}
       </div>
-      {category === "pro" && !premiumLoading && !premium && (
+      {category === "pro" && !premiumLoading && !premium && !isFreeBeta() && (
         <div className="rounded-lg border border-[hsl(var(--status-warn)/0.4)] bg-[hsl(var(--status-warn)/0.1)] p-4 text-sm">
           {t('builderProPremium', { defaultValue: 'Pro cycles require Super Bundle premium.' })}{' '}
           <Link href="/bundle" className="underline text-status-warn">
             {t('builderUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
           </Link>
+        </div>
+      )}
+      {category === "pro" && !premiumLoading && !premium && isFreeBeta() && (
+        <div className="rounded-lg border border-border bg-muted/20 p-4 text-sm text-muted-foreground">
+          {t('builderProFreeBeta', {
+            defaultValue: 'Pro cycles are paused during open beta — free templates stay available.',
+          })}
         </div>
       )}
       <ProgramList

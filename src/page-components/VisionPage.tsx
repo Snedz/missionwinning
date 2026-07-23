@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Compass } from 'lucide-react';
 import { InfoPageFooter } from '@/components/layout/InfoPageFooter';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const VISION_CORE_ITEMS = [
   'infoVisionCoreLi1',
@@ -19,6 +20,7 @@ const VISION_CORE_ITEMS = [
 
 export function VisionPage() {
   const { t } = useTranslation();
+  const freeBeta = isFreeBeta();
 
   return (
     <InfoPageShell
@@ -26,10 +28,11 @@ export function VisionPage() {
       eyebrow={t('visionEyebrow', { defaultValue: 'Vision' })}
       title={t('infoVisionTitle', { defaultValue: 'Mission Winning Vision' })}
       subtitle={t('infoVisionSubtitle', {
-        defaultValue:
-          'The guiding document for the free global everything app for health. Core mission free for all. Super Bundle for synergy.',
+        defaultValue: freeBeta
+          ? 'The guiding document for the free global health platform. Core mission free for all.'
+          : 'The guiding document for the free global everything app for health. Core mission free for all. Super Bundle for synergy.',
       })}
-      footer={<InfoPageFooter showLegal showToday showBundle />}
+      footer={<InfoPageFooter showLegal showToday showBundle={!freeBeta} />}
     >
       <p className="text-muted-foreground">
         <strong className="text-foreground">
@@ -84,6 +87,7 @@ export function VisionPage() {
         </p>
       </InfoSection>
 
+      {!freeBeta && (
       <InfoSection title={t('infoVisionSuperBundle', { defaultValue: 'Super Bundle' })}>
         <p className="text-muted-foreground">
           {t('infoVisionSuperBundleBody', {
@@ -92,6 +96,7 @@ export function VisionPage() {
           })}
         </p>
       </InfoSection>
+      )}
 
       <p className="text-xs text-muted-foreground">
         {t('infoVisionFoot', {

@@ -17,6 +17,7 @@ import {
   Wind,
 } from 'lucide-react';
 import type { JourneyPhase } from '@/lib/missionJourney';
+import { isFreeBeta } from '@/lib/freeBeta';
 import { PRIMARY_NAV, type PrimaryNavItem, isPrimaryPath } from '@/lib/primaryNav';
 import { STATIC_PAGE_TITLES, pageTitleForPath, ROUTE_LABELS } from '@/lib/pageTitles';
 
@@ -182,6 +183,9 @@ export const EXTENDED_NAV_SECTIONS: NavSection[] = [
  * stays focused on logging (S-Tier: less surface, better core).
  */
 export function extendedNavSectionsForPhase(phase: JourneyPhase): NavSection[] {
+  const withoutPremium = (sections: NavSection[]) =>
+    isFreeBeta() ? sections.filter((s) => s.id !== 'premium') : sections;
+
   if (phase === 'i-day' || phase === 'basic') {
     return [
       {
@@ -195,9 +199,9 @@ export function extendedNavSectionsForPhase(phase: JourneyPhase): NavSection[] {
     ];
   }
   if (phase === 'readiness') {
-    return EXTENDED_NAV_SECTIONS.filter((s) => s.id !== 'premium');
+    return withoutPremium(EXTENDED_NAV_SECTIONS.filter((s) => s.id !== 'premium'));
   }
-  return EXTENDED_NAV_SECTIONS;
+  return withoutPremium(EXTENDED_NAV_SECTIONS);
 }
 
 export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];

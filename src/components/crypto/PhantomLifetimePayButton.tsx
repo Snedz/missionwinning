@@ -10,6 +10,7 @@ import { Loader2, Wallet } from 'lucide-react';
 import { useModal, usePhantom, useSolana } from '@phantom/react-sdk';
 import { buildLifetimeUsdcTransfer } from '@/lib/cryptoCheckout/buildTransfer';
 import { track } from '@/lib/analytics';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type Phase = 'idle' | 'intent' | 'signing' | 'confirming';
 
@@ -20,6 +21,7 @@ export function PhantomLifetimePayButton({ className = '' }: { className?: strin
   const [phase, setPhase] = useState<Phase>('idle');
   const [error, setError] = useState<string | null>(null);
 
+  if (isFreeBeta()) return null;
   if (!isClient) return null;
 
   const busy = phase !== 'idle';

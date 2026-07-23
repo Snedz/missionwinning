@@ -318,6 +318,7 @@ Set in Vercel:
 | `STRIPE_PRICE_BUNDLE_LIFETIME` | Price ID for $149 lifetime |
 | `STRIPE_WEBHOOK_SECRET` | From Stripe Dashboard → Webhooks → signing secret (`whsec_…`) |
 | `NEXT_PUBLIC_STRIPE_CHECKOUT` | `true` when Sessions are live (UnlockButton prefers `/api/checkout`) |
+| `NEXT_PUBLIC_FREE_BETA` | Free-first mute — default ON; set `false` after business Stripe ([FREE_BETA.md](FREE_BETA.md)) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Required for `grantEnrollmentFromWebhook` |
 | `NEXT_PUBLIC_APP_URL` | Success/cancel + portal return URLs |
 

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type ProfilePremiumCardProps = {
   premium: boolean;
@@ -14,6 +15,9 @@ type ProfilePremiumCardProps = {
 export function ProfilePremiumCard({ premium, billingBusy, onManageBilling }: ProfilePremiumCardProps) {
   const { t } = useTranslation();
   const router = useRouter();
+
+  // Free-first beta: no premium / Bundle pitch.
+  if (isFreeBeta()) return null;
 
   return (
     <Card className="content-card">

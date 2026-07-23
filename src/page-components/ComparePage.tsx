@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { PublicSeoHeader } from '@/components/public/PublicSeoHeader';
 import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type Row = {
   feature: string;
@@ -191,9 +192,11 @@ export function ComparePage() {
           <Button asChild variant="fitness" size="lg" className="min-h-[52px] px-8">
             <Link href="/welcome">{t('welcomeBegin', { defaultValue: 'Begin' })}</Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="min-h-[52px] px-8">
-            <Link href="/bundle">{t('exploreBundle', { defaultValue: 'Explore Super Bundle' })}</Link>
-          </Button>
+          {!isFreeBeta() && (
+            <Button asChild variant="outline" size="lg" className="min-h-[52px] px-8">
+              <Link href="/bundle">{t('exploreBundle', { defaultValue: 'Explore Super Bundle' })}</Link>
+            </Button>
+          )}
         </div>
       </main>
       <PublicSeoFooter />

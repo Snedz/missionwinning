@@ -7,7 +7,8 @@ import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
 import { bearerAccessToken } from '@/lib/mobileAccess';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isDemoPremiumEnabled, isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isFreeBetaPremiumUnlocked } from '@/lib/freeBeta';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 
@@ -21,8 +22,13 @@ export const GET = withApiLogging('mobile/premium/status', async (request: NextR
     );
   }
 
-  if (isDemoPremiumEnabled()) {
-    return NextResponse.json({ premium: true, source: 'demo' });
+  if (isPremiumBypassEnabled()) {
+    const source = isFreeBetaPremiumUnlocked()
+      ? 'free_beta'
+      : isDemoPremiumEnabled()
+        ? 'demo'
+        : 'free_beta';
+    return NextResponse.json({ premium: true, source });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

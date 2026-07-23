@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type MarketingNavProps = {
   /** full = landing anchors + bundle; compact = logo + primary CTA only */
@@ -15,6 +16,7 @@ type MarketingNavProps = {
 export function MarketingNav({ variant = 'full', className }: MarketingNavProps) {
   const { t } = useTranslation();
   const router = useRouter();
+  const freeBeta = isFreeBeta();
 
   return (
     <nav
@@ -41,12 +43,14 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
             >
               {t('landingNavCoach', { defaultValue: 'Coach' })}
             </a>
-            <Link
-              href="/bundle"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
-            </Link>
+            {!freeBeta && (
+              <Link
+                href="/bundle"
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
+              </Link>
+            )}
           </div>
         ) : (
           <Link

@@ -8,7 +8,7 @@ import { createClient } from '@supabase/supabase-js';
 import { FREE_RECIPES } from '@/data/recipes/freeRecipes';
 import { PREMIUM_RECIPES } from '@/data/recipes/premiumRecipes';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 import { buildFuelContext } from '@/lib/fuelCoach/contextBuilder';
 import { recipesFromCatalog } from '@/lib/fuelCoach/mealSelector';
 import { generateFuelPlan } from '@/lib/fuelCoach/planEngine';
@@ -17,7 +17,7 @@ import { currentWeekStart } from '@/lib/coach/splitPlanner';
 export const GET = withApiLogging('premium/fuel-plan', async (request: NextRequest) => {
   const weekStart = request.nextUrl.searchParams.get('weekStart') ?? currentWeekStart();
 
-  if (isDemoPremiumEnabled()) {
+  if (isPremiumBypassEnabled()) {
     const ctx = buildFuelContext({ history: [], seedId: 'demo-fuel' });
     const recipes = recipesFromCatalog([...FREE_RECIPES, ...PREMIUM_RECIPES]);
     return NextResponse.json({ plan: generateFuelPlan(ctx, recipes, weekStart) });

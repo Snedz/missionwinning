@@ -58,6 +58,43 @@ Cheap insurance vs later rebrand. Use a trademark attorney or reputable filing f
 
 ---
 
+## §1d — Pre-EIN interim payments (Texas LLC pending)
+
+**Founder override (2026-07-23):** Free-first beta for ~4 weeks while LLC + EIN clear. **Do not** take individual Stripe / PayPal / crypto checkout until business accounts exist. All Bundle UI is muted — [FREE_BETA.md](FREE_BETA.md). Escape-hatch Venmo only if founder manually grants enrollments offline (rare).
+
+**Situation:** LLC filed (e.g. Bizee → state, ~4 weeks) + EIN service pending. **Business** Stripe/PayPal will not open without EIN.
+
+**Not legal/tax advice.** Do not claim the LLC is formed in `/terms` until the state filing is approved.
+
+### Suspended for this window — Stripe as individual / sole proprietor
+
+~~Primary path was individual Stripe this week.~~ Overridden: free platform first; re-enable Bundle the week EIN + business Stripe land.
+
+### Parallel — Phantom Lifetime USDC
+
+Muted while `NEXT_PUBLIC_FREE_BETA` is on. Re-enable with Bundle after business rails.
+
+### Escape hatch (≤ handful of buyers)
+
+Venmo/Zelle/Cash App → spreadsheet → founder manual `enrollments` grant — only if founder chooses; not marketed in-app.
+
+### Do not
+
+- Show Super Bundle / checkout / founders pricing while FREE_BETA is on.
+- Open PayPal Business as primary until EIN.
+- Add Lemon Squeezy / Paddle / new processors in Horizon 0.
+- Market crypto or add new chains/SKUs during free beta.
+
+### When LLC + EIN land (~4 weeks)
+
+1. Business checking under LLC.
+2. Stripe + PayPal under the LLC.
+3. Set `NEXT_PUBLIC_FREE_BETA=false` and `MwFreeBeta.ENABLED = false`; restore Bundle; grandfather beta testers with founders pricing.
+4. Update [CONTEXT.md](../CONTEXT.md) `## Now`.
+5. Check off [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) entity rows; counsel: governing law = Texas.
+
+---
+
 ## §2 — Stripe (code already ready)
 
 App path: `UnlockButton` → `POST /api/checkout` (Sessions) or Payment Link → `/api/stripe-webhook` → `enrollments` → `usePremium`.  

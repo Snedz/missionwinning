@@ -31,6 +31,7 @@ import { ProgressPhotosCard } from '@/components/track/ProgressPhotosCard';
 import { usePremium } from '@/hooks/usePremium';
 import { MapPin, Trash2 } from 'lucide-react';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function TrackPage() {
   const { t } = useTranslation();
@@ -91,8 +92,9 @@ export function TrackPage() {
       eyebrow={t('trackEyebrow', { defaultValue: 'Track' })}
       title={t('trackTitle', { defaultValue: 'Track Activity' })}
       subtitle={t('trackSubtitle', {
-        defaultValue:
-          'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
+        defaultValue: isFreeBeta()
+          ? 'Free manual activity log — walk, run, bike, hike.'
+          : 'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
       })}
     >
         <div className="grid gap-4 md:grid-cols-3">

@@ -21,6 +21,7 @@ import {
   type GpsPoint,
 } from '@/lib/trackGps';
 import { TrackGpsLockedPreview } from '@/components/track/TrackGpsLockedPreview';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const TrackPaceChart = dynamic(
   () => import('@/components/track/TrackPaceChart').then((m) => m.TrackPaceChart),
@@ -98,6 +99,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
   };
 
   if (!premium) {
+    if (isFreeBeta()) return null;
     return <TrackGpsLockedPreview />;
   }
 

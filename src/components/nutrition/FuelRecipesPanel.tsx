@@ -12,6 +12,7 @@ import {
   PREMIUM_RECIPE_TEASERS,
 } from '@/data/recipes/catalogMeta';
 import type { Recipe } from '@/data/recipes/types';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type Props = {
   freeRecipes: Recipe[];
@@ -29,6 +30,7 @@ export function FuelRecipesPanel({
   onLogRecipe,
 }: Props) {
   const { t } = useTranslation();
+  const freeBeta = isFreeBeta();
 
   return (
     <>
@@ -128,7 +130,7 @@ export function FuelRecipesPanel({
             </div>
           </CardContent>
         </Card>
-      ) : (
+      ) : freeBeta ? null : (
         <Card className="card-elevated card-glow-brass border-brass/30">
           <CardHeader>
             <CardTitle>

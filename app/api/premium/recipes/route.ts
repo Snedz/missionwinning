@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
 const CATALOG_CACHE = { 'Cache-Control': 'private, max-age=60, stale-while-revalidate=300' };
 
@@ -14,7 +14,7 @@ const CATALOG_CACHE = { 'Cache-Control': 'private, max-age=60, stale-while-reval
 export const GET = withApiLogging('premium/recipes', async(request: NextRequest) => {
   const { PREMIUM_RECIPES } = await import('@/data/recipes/premiumRecipes');
 
-  if (isDemoPremiumEnabled()) {
+  if (isPremiumBypassEnabled()) {
     return NextResponse.json({ recipes: PREMIUM_RECIPES }, { headers: CATALOG_CACHE });
   }
 

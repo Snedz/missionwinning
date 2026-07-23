@@ -15,6 +15,19 @@ describe('resolvePremiumContentGate', () => {
     if (r.ok) assert.equal(r.mode, 'demo');
   });
 
+  it('allows free beta without session', () => {
+    const r = resolvePremiumContentGate({
+      demoPremium: false,
+      freeBeta: true,
+      supabaseConfigured: true,
+      hasAccessToken: false,
+      userPresent: false,
+      isPremium: false,
+    });
+    assert.equal(r.ok, true);
+    if (r.ok) assert.equal(r.mode, 'free_beta');
+  });
+
   it('returns 403 without access token when Supabase configured', () => {
     const r = resolvePremiumContentGate({
       demoPremium: false,

@@ -11,20 +11,20 @@ We build an adaptive AI training coach for people who train at home or in a park
 
 ## What is your company going to make?
 
-Mission Winning is a free forever PWA workout logger (no account, offline, bodyweight-first) plus Mission Coach: fatigue-aware weekly plans that adapt when life happens, from workout history alone — no wearable required. Super Bundle (~$59/yr founders via Stripe) unlocks Coach depth and other pillars; logging stays free forever. A company that nails that entry can build toward a coach that grows with the athlete for years across training, fuel, recovery, and learning — even a fraction of that vision (adaptive coaching without wearables, free core forever) would matter. Near-term the company is Train + Coach, not “everything app.” (Longer ambition — human capability as infrastructure / lifelong path across pillars — lives in vision; we do not lead with it.)
+Mission Winning is a free forever PWA workout logger (no account, offline, bodyweight-first) plus Mission Coach: fatigue-aware weekly plans that adapt when life happens, from workout history alone — no wearable required. Near-term the company is Train + Coach — free platform first while Texas LLC + EIN clear; paid Coach depth returns when business Stripe/PayPal are live. Logging stays free forever. (Longer ambition — human capability as infrastructure / lifelong path across pillars — lives in vision; we do not lead with it.)
 
 ## Progress
 
-Solo technical founder. Shipped ~11 product waves (free core, Mission Coach generate/adapt/adjust/chat, readiness autoreg, legal/pay-ready, launch packaging). Site: https://www.missionwinning.com  
+Solo technical founder. Shipped multi-wave product (free core, Mission Coach generate/adapt/adjust, readiness autoreg, legal/pay-ready packaging, free-first beta mute). Site: https://www.missionwinning.com  
 
 - Public launch date (or planned): _____  
 - Profiles / signed-up users: _____  
 - Completed ≥1 workout: _____  
 - I-Day completion %: _____  
-- Paid Super Bundle / lifetime: _____  
-- Stripe → enrollments: live (webhook verified)  
+- Paid Super Bundle / lifetime: **0** (free-first beta — LLC/EIN pending; no checkout shown)  
+- Stripe → enrollments: wired in code; **not taking payments** until business Stripe after EIN  
 
-Zeros are OK if still private beta — state stage honestly.
+Zeros / free-beta are OK — state stage honestly. Do not invent paid traction.
 
 ## What do you understand about your business that others don’t?
 

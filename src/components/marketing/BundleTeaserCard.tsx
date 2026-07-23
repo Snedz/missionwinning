@@ -8,6 +8,7 @@ import { BUNDLE_PILLARS } from '@/lib/payments';
 import { BUNDLE_PLANS, DEFAULT_BUNDLE_PLAN } from '@/lib/bundleConfig';
 import { Reveal } from '@/components/marketing/Reveal';
 import { ArtPicture } from '@/components/marketing/ArtPicture';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 /**
  * Landing Super Bundle teaser — price from BUNDLE_PLANS (not hardcoded).
@@ -18,6 +19,8 @@ export function BundleTeaserCard() {
   const router = useRouter();
   const plan = BUNDLE_PLANS[DEFAULT_BUNDLE_PLAN];
   const perMonth = plan.perMonth ?? plan.price;
+
+  if (isFreeBeta()) return null;
 
   return (
     <section className="section-seam">

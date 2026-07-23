@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { hasAppAccess } from '@/lib/requestAccess';
@@ -37,7 +37,7 @@ export const POST = withApiLogging('coach/plan-voice', async(request: NextReques
   const body = parsed.data;
 
   let useLlm = false;
-  if (isDemoPremiumEnabled()) {
+  if (isPremiumBypassEnabled()) {
     useLlm = true;
   } else {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

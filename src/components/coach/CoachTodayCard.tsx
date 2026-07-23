@@ -15,6 +15,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { track } from '@/lib/analytics';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function CoachTodayCard() {
   const { t } = useTranslation();
@@ -79,7 +80,7 @@ export function CoachTodayCard() {
             </Button>
           </>
         )}
-        {locked && (
+        {locked && !isFreeBeta() && (
           <>
             <p className="text-sm text-muted-foreground">
               {t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}
@@ -94,6 +95,13 @@ export function CoachTodayCard() {
               <Link href="/bundle">{t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}</Link>
             </Button>
           </>
+        )}
+        {locked && isFreeBeta() && (
+          <p className="text-sm text-muted-foreground">
+            {t('coachGenerateWeekHint', {
+              defaultValue: 'Generate a weekly plan from your logs — no wearable required.',
+            })}
+          </p>
         )}
         {plan && !locked && !todaySession && (
           <p className="text-sm text-muted-foreground">

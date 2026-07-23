@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type InfoPageFooterProps = {
   showLegal?: boolean;
@@ -19,6 +20,8 @@ export function InfoPageFooter({
   todayLabel = 'Today',
   className = '',
 }: InfoPageFooterProps) {
+  const bundleVisible = showBundle && !isFreeBeta();
+
   return (
     <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 ${className}`}>
       {showLegal && <AppLegalFooter className="py-0" />}
@@ -28,7 +31,7 @@ export function InfoPageFooter({
             <Link href="/log">{todayLabel}</Link>
           </Button>
         )}
-        {showBundle && (
+        {bundleVisible && (
           <Button asChild variant="fitness" size="sm">
             <Link href="/bundle">Super Bundle</Link>
           </Button>

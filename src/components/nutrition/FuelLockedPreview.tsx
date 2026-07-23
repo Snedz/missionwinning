@@ -6,6 +6,7 @@ import { UtensilsCrossed } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { UnlockButton } from '@/components/UnlockButton';
+import { isFreeBeta } from '@/lib/freeBeta';
 import type { FuelPlanDay } from '@/lib/fuelCoach/types';
 
 const DEMO_DAY: FuelPlanDay = {
@@ -63,6 +64,9 @@ type Props = {
 /** Premium Fuel Coach upsell — one adaptive day teased, rest gated. */
 export function FuelLockedPreview({ baseTargets }: Props) {
   const { t } = useTranslation();
+
+  // Free-first beta: hide paid upsells.
+  if (isFreeBeta()) return null;
   const day = DEMO_DAY;
 
   return (

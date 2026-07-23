@@ -17,6 +17,7 @@ import { MarketingFooter } from '@/components/marketing/MarketingFooter';
 import { Reveal } from '@/components/marketing/Reveal';
 import { ArtPicture } from '@/components/marketing/ArtPicture';
 import { ArrowRight, Check } from 'lucide-react';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const HeroDemo = dynamic(
   () => import('@/components/landing/HeroDemo').then((m) => m.HeroDemo),
@@ -28,7 +29,9 @@ const CoachAdaptDemo = dynamic(
   { ssr: false, loading: () => <div className="min-h-[8rem]" aria-hidden /> }
 );
 
-const FAQ = LANDING_FAQ_KEYS;
+const FAQ = isFreeBeta()
+  ? LANDING_FAQ_KEYS.filter((f) => f.qKey !== 'landingFaqBundleQ')
+  : LANDING_FAQ_KEYS;
 
 const FREE_MANIFEST_KEYS = [
   {
@@ -162,8 +165,9 @@ export function LandingPage() {
             </h2>
             <p className="max-w-md leading-relaxed text-muted-foreground">
               {t('landingFreeBody', {
-                defaultValue:
-                  'The fundamentals that make people healthier should have no price of admission — anywhere in the world. Logging stays free forever; Super Bundle adds Coach depth — never gates the logger.',
+                defaultValue: isFreeBeta()
+                  ? 'The fundamentals that make people healthier should have no price of admission — anywhere in the world. Logging and Mission Coach plans from your logs stay free. No account required.'
+                  : 'The fundamentals that make people healthier should have no price of admission — anywhere in the world. Logging stays free forever; Super Bundle adds Coach depth — never gates the logger.',
               })}
             </p>
             <ul className="mt-6 space-y-2.5">
@@ -261,10 +265,14 @@ export function LandingPage() {
               })}
             </p>
             <p className="mt-6 text-sm text-muted-foreground">
-              <Link href="/bundle" className="underline underline-offset-4 hover:text-foreground">
-                {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
-              </Link>
-              {' · '}
+              {!isFreeBeta() && (
+                <>
+                  <Link href="/bundle" className="underline underline-offset-4 hover:text-foreground">
+                    {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
+                  </Link>
+                  {' · '}
+                </>
+              )}
               <Link href="/vision" className="underline underline-offset-4 hover:text-foreground">
                 {t('landingMissionLink', { defaultValue: 'Read the full vision' })}
               </Link>

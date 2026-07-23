@@ -6,6 +6,7 @@ import { BookOpen } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { UnlockButton } from '@/components/UnlockButton';
+import { isFreeBeta } from '@/lib/freeBeta';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
 
 const PREMIUM_PREVIEW = [
@@ -17,6 +18,9 @@ const PREMIUM_PREVIEW = [
 /** Learn premium upsell — free intro chapter + gated specialist courses teaser. */
 export function LearnLockedPreview() {
   const { t } = useTranslation();
+
+  // Free-first beta: hide paid upsells.
+  if (isFreeBeta()) return null;
   const intro = BEYOND_THE_BASICS_CHAPTERS[0];
 
   return (

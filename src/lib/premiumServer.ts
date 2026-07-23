@@ -4,6 +4,7 @@
  */
 import 'server-only';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
+import { isFreeBetaPremiumUnlocked } from '@/lib/freeBeta';
 import {
   getCachedPremiumFlag,
   invalidatePremiumEnrollmentCache,
@@ -21,11 +22,19 @@ export function isDemoPremiumEnabled(): boolean {
   );
 }
 
+/**
+ * Bypass enrollment for demo (dev) or open free-beta unlock (prod-allowed).
+ * Distinct from DEMO_PREMIUM — free beta is intentional while LLC/EIN clears.
+ */
+export function isPremiumBypassEnabled(): boolean {
+  return isDemoPremiumEnabled() || isFreeBetaPremiumUnlocked();
+}
+
 export async function isPremiumForUser(
   userId: string | null | undefined,
   email: string | null | undefined
 ): Promise<boolean> {
-  if (isDemoPremiumEnabled()) return true;
+  if (isPremiumBypassEnabled()) return true;
   if (!userId && !email) return false;
 
   const cached = await getCachedPremiumFlag(userId, email);

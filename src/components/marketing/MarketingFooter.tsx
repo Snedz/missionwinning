@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type FooterLink = { href: string; labelKey: string; defaultValue: string };
 
@@ -65,6 +66,9 @@ type MarketingFooterProps = {
 export function MarketingFooter({ className }: MarketingFooterProps) {
   const { t } = useTranslation();
   const year = new Date().getFullYear();
+  const productLinks = isFreeBeta()
+    ? PRODUCT.filter((l) => l.href !== '/bundle')
+    : PRODUCT;
 
   return (
     <footer className={cn('section-seam-glow', className)}>
@@ -91,7 +95,7 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
 
           <FooterColumn
             title={t('footerGroupProduct', { defaultValue: 'Product' })}
-            links={PRODUCT}
+            links={productLinks}
             t={t}
           />
           <FooterColumn
