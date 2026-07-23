@@ -49,6 +49,7 @@ import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
 import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
+import com.missionwinning.core.designsystem.MwAdaptiveOverlay
 import com.missionwinning.core.designsystem.MwConfirmSheet
 import com.missionwinning.core.designsystem.MwEmptyState
 import com.missionwinning.core.designsystem.MwGhostButton
@@ -590,73 +591,49 @@ fun ActiveScreen(
         }
 
         pendingRemoveExerciseId?.let { exerciseId ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.65f))
-                    .padding(24.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                MwConfirmSheet(
-                    title = "Remove ${pendingRemoveExerciseName.ifBlank { "exercise" }}?",
-                    body = "All sets for this exercise leave the session. Completed sets on it will not be saved.",
-                    confirmLabel = "Remove exercise",
-                    cancelLabel = "Keep",
-                    onConfirm = {
-                        onEvent(ActiveEvent.RemoveExercise(exerciseId))
-                        pendingRemoveExerciseId = null
-                        pendingRemoveExerciseName = ""
-                    },
-                    onDismiss = {
-                        pendingRemoveExerciseId = null
-                        pendingRemoveExerciseName = ""
-                    },
-                )
-            }
+            MwConfirmSheet(
+                title = "Remove ${pendingRemoveExerciseName.ifBlank { "exercise" }}?",
+                body = "All sets for this exercise leave the session. Completed sets on it will not be saved.",
+                confirmLabel = "Remove exercise",
+                cancelLabel = "Keep",
+                onConfirm = {
+                    onEvent(ActiveEvent.RemoveExercise(exerciseId))
+                    pendingRemoveExerciseId = null
+                    pendingRemoveExerciseName = ""
+                },
+                onDismiss = {
+                    pendingRemoveExerciseId = null
+                    pendingRemoveExerciseName = ""
+                },
+            )
         }
 
         if (confirmDiscard) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.65f))
-                    .padding(24.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                MwConfirmSheet(
-                    title = "Discard session?",
-                    body = "Sets you completed this session will not be saved.",
-                    confirmLabel = "Discard",
-                    cancelLabel = "Keep logging",
-                    onConfirm = {
-                        confirmDiscard = false
-                        onCancel()
-                    },
-                    onDismiss = { confirmDiscard = false },
-                )
-            }
+            MwConfirmSheet(
+                title = "Discard session?",
+                body = "Sets you completed this session will not be saved.",
+                confirmLabel = "Discard",
+                cancelLabel = "Keep logging",
+                onConfirm = {
+                    confirmDiscard = false
+                    onCancel()
+                },
+                onDismiss = { confirmDiscard = false },
+            )
         }
 
         if (confirmPartialFinish) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.65f))
-                    .padding(24.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                MwConfirmSheet(
-                    title = "Finish with sets left?",
-                    body = "${state.remainingSets} set${if (state.remainingSets == 1) "" else "s"} still open. Only completed sets will be saved offline.",
-                    confirmLabel = "Finish anyway",
-                    cancelLabel = "Keep logging",
-                    onConfirm = {
-                        confirmPartialFinish = false
-                        onEvent(ActiveEvent.Finish)
-                    },
-                    onDismiss = { confirmPartialFinish = false },
-                )
-            }
+            MwConfirmSheet(
+                title = "Finish with sets left?",
+                body = "${state.remainingSets} set${if (state.remainingSets == 1) "" else "s"} still open. Only completed sets will be saved offline.",
+                confirmLabel = "Finish anyway",
+                cancelLabel = "Keep logging",
+                onConfirm = {
+                    confirmPartialFinish = false
+                    onEvent(ActiveEvent.Finish)
+                },
+                onDismiss = { confirmPartialFinish = false },
+            )
         }
     }
 }
@@ -1047,32 +1024,31 @@ private fun PlateSheet(
             barWeight = barWeight,
         )
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.72f))
-            .padding(24.dp),
-        contentAlignment = Alignment.Center,
+    MwAdaptiveOverlay(
+        open = true,
+        onDismiss = onDismiss,
+        title = "Plate calculator",
+        eyebrow = "Free forever",
     ) {
-        MwCard(elevated = true) {
-            MwSectionLabel("Plate calculator")
-            Text(
-                ActiveSessionLogic.formatWeightWithUnit(weight, unit),
-                style = MwTypography.headlineMedium,
-                color = MwColors.Text,
-            )
-            Text(
-                result.summary,
-                style = MwTypography.bodyMedium,
-                color = MwColors.TextMuted,
-            )
-            Text(
-                "Bar ${ActiveSessionLogic.formatWeightWithUnit(barWeight, unit)} · plates per side · free forever",
-                style = MwTypography.labelMedium,
-                color = MwColors.Brass,
-            )
-            MwPrimaryButton(text = "Done", onClick = onDismiss, contentDescription = "Close plate calculator")
-        }
+        Text(
+            ActiveSessionLogic.formatWeightWithUnit(weight, unit),
+            style = MwTypography.headlineMedium,
+            color = MwColors.Text,
+        )
+        Spacer(Modifier.height(MwSpace.sm))
+        Text(
+            result.summary,
+            style = MwTypography.bodyMedium,
+            color = MwColors.TextMuted,
+        )
+        Spacer(Modifier.height(MwSpace.xs))
+        Text(
+            "Bar ${ActiveSessionLogic.formatWeightWithUnit(barWeight, unit)} · plates per side",
+            style = MwTypography.labelMedium,
+            color = MwColors.Brass,
+        )
+        Spacer(Modifier.height(MwSpace.md))
+        MwPrimaryButton(text = "Done", onClick = onDismiss, contentDescription = "Close plate calculator")
     }
 }
 

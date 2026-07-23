@@ -18,6 +18,7 @@
 | `LegalNav.tsx` | Privacy / terms / DMCA nav |
 | `HeaderAuthChip.tsx` | Sign-in avatar chip |
 | `PageTransition.tsx` | Route transition animation |
+| `../ui/AdaptiveOverlay.tsx` | Compact bottom sheet / md+ centered dialog |
 | `StaggerReveal.tsx` | Staggered entrance motion |
 | `OnlineStatusBanner.tsx` | Offline/sync banner |
 | `AnalyticsConsentBanner.tsx` | First-visit product analytics choice (private by default) |

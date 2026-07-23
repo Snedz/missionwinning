@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Adaptive layouts web + Android (`.118`)
+
+- Web: `AdaptiveOverlay` (compact bottom sheet / md+ centered dialog); Fuel log pilot + two-column xl; SessionCheckIn, PlateCalculator, AdjustSession migrated; Victory dialog widened; AppLayout `xl:max-w-4xl 2xl:max-w-5xl`.
+- Android: `MwWidthSizeClass` + `MwAdaptiveOverlay`; Active confirms + plate calculator; gallery demo. Docs: [docs/ADAPTIVE_LAYOUT.md](docs/ADAPTIVE_LAYOUT.md).
+- Build: `2026.07-unified.118`.
+
 ## 2026-07-23 — Region defaults for language + units (`.117`)
 
 - First visit: `/api/geo` reads Vercel/Cloudflare country → default language (APP_LANGS) + units (imperial for US/LR/MM). Profile/Guide choices set explicit flags and are never overwritten.

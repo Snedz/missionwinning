@@ -31,12 +31,18 @@
 | `MwSpace` | xs→xxl + `section`, `hero` |
 | `MwRadius` | sm→xl + `pill` |
 | `MwMotion` | HubTabMs, RoutePushMs, RoutePopMs, EnterFadeMs, VictoryLockMs, PulseMs |
+| `MwWidthSizeClass` | Compact <600 / Medium 600–839 / Expanded ≥840 (`rememberMwWidthSizeClass`) |
+| `MwAdaptiveOverlay` | Compact bottom sheet · Medium/Expanded centered dialog |
 
 ## Components
 
-`MwCard` (hero), `MwChip`, `MwTopBar`, `MwBottomNav` (selected wash + indicator), `MwSessionTile`, `MwEmptyState`, `MwLoadingBlock`, `MwOfflinePill`, `MwMetricCard`, `MwStepper`, `MwRestDock`, `MwConfirmSheet`, `MwEnterFade`, plus buttons / set row / rest timer.
+`MwCard` (hero), `MwChip`, `MwTopBar`, `MwBottomNav` (selected wash + indicator), `MwSessionTile`, `MwEmptyState`, `MwLoadingBlock`, `MwOfflinePill`, `MwMetricCard`, `MwStepper`, `MwRestDock`, `MwConfirmSheet`, `MwAdaptiveOverlay`, `MwEnterFade`, plus buttons / set row / rest timer.
 
-**Debug gallery:** Account → About → Design system gallery (debug builds).
+**Debug gallery:** Account → About → Design system gallery (debug builds) — includes adaptive overlay size-class demo.
+
+## Adaptive / fold
+
+Prefer **width size classes** over orientation alone (unfolded Fold → Expanded). Mirror web rules in [docs/ADAPTIVE_LAYOUT.md](../../docs/ADAPTIVE_LAYOUT.md). Do not hardcode phone-width dialogs on tablets.
 
 ## Wedge flow
 

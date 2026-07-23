@@ -44,7 +44,7 @@
 | UI unification | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | — |
 | Experience build (v4) | [docs/archive/ROADMAP_V4_EXPERIENCE.md](docs/archive/ROADMAP_V4_EXPERIENCE.md) | Old chat plans in `~/.cursor/plans/` |
 | Design research / system | [docs/DESIGN_RESEARCH.md](docs/DESIGN_RESEARCH.md), [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md), [docs/DESTRUCTIVE_UX.md](docs/DESTRUCTIVE_UX.md) | — |
-| **UI excellence / brand program** | [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) (craft waves D0–D3) + [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) + [apps/android/UX.md](apps/android/UX.md) | Landing teardown / new pillars in Horizon 0; old chat plans |
+| **UI excellence / brand program** | [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) (craft waves D0–D3) + [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) + [docs/ADAPTIVE_LAYOUT.md](docs/ADAPTIVE_LAYOUT.md) + [apps/android/UX.md](apps/android/UX.md) | Landing teardown / new pillars in Horizon 0; old chat plans |
 | UI/UX audit (hero flows) | [docs/DESIGN_REVIEW.md](docs/DESIGN_REVIEW.md) | Landing redesigns while beta gates red |
 | SEO / growth analytics | [docs/SEO_ANALYTICS.md](docs/SEO_ANALYTICS.md), [docs/LIGHTHOUSE_BASELINE.md](docs/LIGHTHOUSE_BASELINE.md) | — |
 | Stripe + premium | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) | — |

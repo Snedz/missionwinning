@@ -8,6 +8,7 @@
 import { useEffect, useId, useRef, useState, type RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import {
   getTodayCheckIn,
   isTodayCheckInComplete,
@@ -74,9 +75,7 @@ function QuickRow({
 export function SessionCheckInSheet({ open, onDismiss }: Props) {
   const { t } = useTranslation();
   const titleId = useId();
-  const panelRef = useRef<HTMLDivElement | null>(null);
   const firstControlRef = useRef<HTMLButtonElement | null>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
   const [soreness, setSoreness] = useState(3);
   const [sleep, setSleep] = useState(3);
   const [motivation, setMotivation] = useState(3);
@@ -106,109 +105,61 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
     }
   }, [open]);
 
-  useEffect(() => {
-    if (!open) return;
-    previousFocusRef.current =
-      typeof document !== 'undefined' ? (document.activeElement as HTMLElement | null) : null;
-    const focusTimer = window.setTimeout(() => {
-      firstControlRef.current?.focus();
-    }, 0);
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        skip();
-        return;
-      }
-      if (e.key !== 'Tab' || !panelRef.current) return;
-      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      );
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.clearTimeout(focusTimer);
-      document.removeEventListener('keydown', onKeyDown);
-      previousFocusRef.current?.focus?.();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- open-gated; skip closes sheet
-  }, [open]);
-
-  if (!open) return null;
-
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-4"
-      role="presentation"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) skip();
-      }}
+    <AdaptiveOverlay
+      open={open}
+      onClose={skip}
+      size="sm"
+      zClassName="z-50"
+      titleId={titleId}
+      eyebrow={
+        <span className="eyebrow text-[hsl(var(--status-info))]">
+          {t('sessionCheckInEyebrow', { defaultValue: 'Pre-session' })}
+        </span>
+      }
+      title={t('sessionCheckInTitle', { defaultValue: 'How do you feel?' })}
+      initialFocusRef={firstControlRef}
+      bodyClassName="p-5 space-y-4"
     >
-      <div
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        className="w-full max-w-md rounded-2xl border border-border bg-card p-5 shadow-xl space-y-4"
-      >
-        <div>
-          <p className="eyebrow text-[hsl(var(--status-info))] mb-1">
-            {t('sessionCheckInEyebrow', { defaultValue: 'Pre-session' })}
-          </p>
-          <h2 id={titleId} className="text-lg font-semibold text-foreground">
-            {t('sessionCheckInTitle', { defaultValue: 'How do you feel?' })}
-          </h2>
-          <p className="text-xs text-muted-foreground mt-1">
-            {t('sessionCheckInLead', {
-              defaultValue:
-                'Three quick ratings. We nudge readiness (never auto-cut your sets without a tap).',
-            })}
-          </p>
-        </div>
+      <p className="text-xs text-muted-foreground -mt-1">
+        {t('sessionCheckInLead', {
+          defaultValue:
+            'Three quick ratings. We nudge readiness (never auto-cut your sets without a tap).',
+        })}
+      </p>
 
-        <QuickRow
-          label={t('sessionCheckInSoreness', { defaultValue: 'Soreness' })}
-          value={soreness}
-          onChange={setSoreness}
-          lowHint={t('sessionCheckInFresh', { defaultValue: 'Fresh' })}
-          highHint={t('sessionCheckInBeaten', { defaultValue: 'Beaten up' })}
-          firstButtonRef={firstControlRef}
-        />
-        <QuickRow
-          label={t('sessionCheckInSleep', { defaultValue: 'Sleep last night' })}
-          value={sleep}
-          onChange={setSleep}
-          lowHint={t('sessionCheckInPoor', { defaultValue: 'Poor' })}
-          highHint={t('sessionCheckInGreat', { defaultValue: 'Great' })}
-        />
-        <QuickRow
-          label={t('sessionCheckInMotivation', { defaultValue: 'Motivation' })}
-          value={motivation}
-          onChange={setMotivation}
-          lowHint={t('sessionCheckInLow', { defaultValue: 'Low' })}
-          highHint={t('sessionCheckInFired', { defaultValue: 'Fired up' })}
-        />
+      <QuickRow
+        label={t('sessionCheckInSoreness', { defaultValue: 'Soreness' })}
+        value={soreness}
+        onChange={setSoreness}
+        lowHint={t('sessionCheckInFresh', { defaultValue: 'Fresh' })}
+        highHint={t('sessionCheckInBeaten', { defaultValue: 'Beaten up' })}
+        firstButtonRef={firstControlRef}
+      />
+      <QuickRow
+        label={t('sessionCheckInSleep', { defaultValue: 'Sleep last night' })}
+        value={sleep}
+        onChange={setSleep}
+        lowHint={t('sessionCheckInPoor', { defaultValue: 'Poor' })}
+        highHint={t('sessionCheckInGreat', { defaultValue: 'Great' })}
+      />
+      <QuickRow
+        label={t('sessionCheckInMotivation', { defaultValue: 'Motivation' })}
+        value={motivation}
+        onChange={setMotivation}
+        lowHint={t('sessionCheckInLow', { defaultValue: 'Low' })}
+        highHint={t('sessionCheckInFired', { defaultValue: 'Fired up' })}
+      />
 
-        <div className="flex flex-col gap-2 pt-1">
-          <Button type="button" variant="fitness" className="w-full min-h-[44px] tap-target" onClick={save}>
-            {t('sessionCheckInSave', { defaultValue: 'Save & continue' })}
-          </Button>
-          <Button type="button" variant="ghost" className="w-full min-h-[44px] tap-target" onClick={skip}>
-            {t('sessionCheckInSkip', { defaultValue: 'Not now' })}
-          </Button>
-        </div>
+      <div className="flex flex-col gap-2 pt-1">
+        <Button type="button" variant="fitness" className="w-full min-h-[44px] tap-target" onClick={save}>
+          {t('sessionCheckInSave', { defaultValue: 'Save & continue' })}
+        </Button>
+        <Button type="button" variant="ghost" className="w-full min-h-[44px] tap-target" onClick={skip}>
+          {t('sessionCheckInSkip', { defaultValue: 'Not now' })}
+        </Button>
       </div>
-    </div>
+    </AdaptiveOverlay>
   );
 }
 

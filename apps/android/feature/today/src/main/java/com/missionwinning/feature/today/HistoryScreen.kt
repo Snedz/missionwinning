@@ -196,25 +196,17 @@ fun HistoryScreen(
             }
         }
         if (confirmDelete) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.65f))
-                    .padding(24.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                MwConfirmSheet(
-                    title = "Delete this workout?",
-                    body = "Removes it from this device. If you're signed in, sync will tombstone the cloud copy.",
-                    confirmLabel = "Delete",
-                    cancelLabel = "Keep",
-                    onConfirm = {
-                        confirmDelete = false
-                        viewModel.softDelete()
-                    },
-                    onDismiss = { confirmDelete = false },
-                )
-            }
+            MwConfirmSheet(
+                title = "Delete this workout?",
+                body = "Removes it from this device. If you're signed in, sync will tombstone the cloud copy.",
+                confirmLabel = "Delete",
+                cancelLabel = "Keep",
+                onConfirm = {
+                    confirmDelete = false
+                    viewModel.softDelete()
+                },
+                onDismiss = { confirmDelete = false },
+            )
         }
     }
 }

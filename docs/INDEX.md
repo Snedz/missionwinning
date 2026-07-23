@@ -30,6 +30,7 @@
 | File | Purpose |
 |------|---------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System design, layers, state |
+| [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contributor guide |

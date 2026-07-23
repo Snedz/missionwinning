@@ -13,7 +13,7 @@
 | `:feature:coach` | Week plan + adapt banner |
 | `:feature:iday` | I-Day onboarding |
 | `:feature:victory` | Session locked metrics |
-| `:core:designsystem` | Brand colors, Theme, Mw* components |
+| `:core:designsystem` | Brand colors, Theme, Mw* components, `MwWidthSizeClass` / `MwAdaptiveOverlay` |
 | `:core:model` | Immutable domain (`LoggedSet`, …) |
 | `:core:common` | Shared Result helpers |
 | `:core:data` | Room SoT + sync outbox + `MwRepository` |
