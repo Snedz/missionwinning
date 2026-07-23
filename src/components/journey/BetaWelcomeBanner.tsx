@@ -6,6 +6,9 @@ import { Dumbbell, Sparkles, Target, X } from 'lucide-react';
 
 const DISMISS_KEY = 'mw_beta_banner_dismissed';
 
+const chipClass =
+  'inline-flex items-center gap-1.5 rounded-xl border border-border/50 bg-muted/30 px-3 min-h-[44px] text-xs font-medium text-muted-foreground hover:text-foreground hover:border-border tap-target';
+
 export function BetaWelcomeBanner() {
   const [visible, setVisible] = useState(false);
 
@@ -16,11 +19,11 @@ export function BetaWelcomeBanner() {
   if (!visible) return null;
 
   return (
-    <div className="relative rounded-2xl border border-primary/40 bg-gradient-to-br from-emerald-950/50 via-slate-950 to-[hsl(var(--status-info)/0.15)] p-4 pr-10 shadow-lg shadow-emerald-900/20">
+    <div className="relative rounded-2xl border border-border/50 bg-muted/20 p-4 pr-12">
       <button
         type="button"
         aria-label="Dismiss"
-        className="absolute top-3 right-3 text-muted-foreground hover:text-foreground p-1"
+        className="absolute top-2 end-2 flex h-11 w-11 items-center justify-center text-muted-foreground hover:text-foreground tap-target"
         onClick={() => {
           localStorage.setItem(DISMISS_KEY, '1');
           setVisible(false);
@@ -28,7 +31,7 @@ export function BetaWelcomeBanner() {
       >
         <X className="h-4 w-4" />
       </button>
-      <div className="flex items-center gap-2 text-primary text-xs uppercase tracking-widest font-medium mb-2">
+      <div className="flex items-center gap-2 text-muted-foreground text-xs uppercase tracking-widest font-medium mb-2">
         <Sparkles className="h-4 w-4" />
         Beta path
       </div>
@@ -40,24 +43,15 @@ export function BetaWelcomeBanner() {
         </Link>
       </p>
       <div className="flex flex-wrap gap-2">
-        <Link
-          href="/welcome"
-          className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/20"
-        >
+        <Link href="/welcome" className={chipClass}>
           <Target className="h-3.5 w-3.5" />
           I-Day
         </Link>
-        <Link
-          href="/active"
-          className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/20"
-        >
+        <Link href="/active" className={chipClass}>
           <Dumbbell className="h-3.5 w-3.5" />
           Train
         </Link>
-        <Link
-          href="/coach"
-          className="inline-flex items-center gap-1.5 rounded-full border border-border/50 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-        >
+        <Link href="/coach" className={chipClass}>
           <Sparkles className="h-3.5 w-3.5" />
           Mission Coach
         </Link>

@@ -10,6 +10,8 @@ import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 
 type Props = {
   onStart: () => void;
+  /** When false, Start is disabled until Zustand persist rehydrates. */
+  hydrated?: boolean;
   victoryOpen: boolean;
   victorySummary: WorkoutVictorySummary | null;
   onVictoryOpenChange: (open: boolean) => void;
@@ -20,6 +22,7 @@ type Props = {
 /** Empty /active shell — start quick session or jump to Today / Builder. */
 export function ActiveEmptyState({
   onStart,
+  hydrated = true,
   victoryOpen,
   victorySummary,
   onVictoryOpenChange,
@@ -40,18 +43,34 @@ export function ActiveEmptyState({
       />
       <EmptyState
         icon={Timer}
-        title={t('activeNoWorkout', { defaultValue: 'No Active Workout' })}
-        description={t('activeNoWorkoutDesc', {
-          defaultValue: 'Start a quick workout from Today or launch a saved routine from the builder.',
-        })}
-        actionLabel={t('activeStartWorkout', { defaultValue: 'Start Workout' })}
-        onAction={onStart}
+        title={
+          hydrated
+            ? t('activeNoWorkout', { defaultValue: 'No Active Workout' })
+            : t('activeLoadingSession', { defaultValue: 'Loading session…' })
+        }
+        description={
+          hydrated
+            ? t('activeNoWorkoutDesc', {
+                defaultValue:
+                  'Start a quick workout from Today or launch a saved routine from the builder.',
+              })
+            : t('activeLoadingSessionDesc', {
+                defaultValue: 'Restoring your last session from this device.',
+              })
+        }
+        actionLabel={
+          hydrated
+            ? t('activeStartWorkout', { defaultValue: 'Start Workout' })
+            : t('activeLoadingSession', { defaultValue: 'Loading session…' })
+        }
+        onAction={hydrated ? onStart : undefined}
+        actionDisabled={!hydrated}
       />
       <div className="flex flex-wrap gap-3 justify-center text-sm">
-        <Button variant="outline" asChild>
+        <Button variant="outline" className="min-h-[44px]" asChild>
           <a href="/log">{t('activeGoToday', { defaultValue: 'Today hub' })}</a>
         </Button>
-        <Button variant="outline" asChild>
+        <Button variant="outline" className="min-h-[44px]" asChild>
           <a href="/builder">{t('activeGoBuilder', { defaultValue: 'Builder' })}</a>
         </Button>
       </div>

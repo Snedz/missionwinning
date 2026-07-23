@@ -121,7 +121,11 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
           : t('gateAccessSubmit', { defaultValue: 'Enter the beta' })}
       </button>
       {error && (
-        <p className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-red-400">
+        <p
+          role="alert"
+          aria-live="assertive"
+          className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-[hsl(var(--status-danger))]"
+        >
           {error}
         </p>
       )}
