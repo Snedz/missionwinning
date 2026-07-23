@@ -1,4 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient as createSupabaseJsClient, type SupabaseClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
+import { getAuthRedirectUrl as buildAuthRedirectUrl } from '@/lib/authRedirect'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -16,24 +18,32 @@ export function isSupabaseConfigured(): boolean {
   )
 }
 
-import { getAuthRedirectUrl as buildAuthRedirectUrl } from '@/lib/authRedirect'
-
 export function getAuthRedirectUrl(nextPath = '/log'): string {
   return buildAuthRedirectUrl(nextPath)
 }
 
-export const supabase = createClient(
-  supabaseUrl || 'https://demo.supabase.co',
-  supabaseAnonKey || 'demo-anon-key',
-  {
-    auth: {
-      flowType: 'pkce',
-      detectSessionInUrl: true,
-      persistSession: true,
-      autoRefreshToken: true,
-    },
+const url = supabaseUrl || 'https://demo.supabase.co'
+const anon = supabaseAnonKey || 'demo-anon-key'
+
+/**
+ * Browser: @supabase/ssr cookie storage (PKCE verifier survives OAuth redirect).
+ * Server/module init without window: ephemeral JS client (no cookie jar).
+ */
+function createAppSupabaseClient(): SupabaseClient {
+  if (typeof window === 'undefined') {
+    return createSupabaseJsClient(url, anon, {
+      auth: {
+        flowType: 'pkce',
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+    })
   }
-)
+  return createBrowserClient(url, anon)
+}
+
+export const supabase = createAppSupabaseClient()
 
 export type OAuthProvider = 'google' | 'apple' | 'azure' | 'facebook'
 

@@ -9,9 +9,15 @@ type ProfileAccountCardProps = {
   email: string | null;
   ownerTools: boolean;
   onSignOut: () => void;
+  authError?: string | null;
 };
 
-export function ProfileAccountCard({ email, ownerTools, onSignOut }: ProfileAccountCardProps) {
+export function ProfileAccountCard({
+  email,
+  ownerTools,
+  onSignOut,
+  authError,
+}: ProfileAccountCardProps) {
   const { t } = useTranslation();
 
   return (
@@ -20,6 +26,14 @@ export function ProfileAccountCard({ email, ownerTools, onSignOut }: ProfileAcco
         <CardTitle>{t('account', { defaultValue: 'Account & Sign In' })}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
+        {authError ? (
+          <p
+            role="alert"
+            className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-[hsl(var(--status-danger))]"
+          >
+            {authError}
+          </p>
+        ) : null}
         {email ? (
           <>
             <div>

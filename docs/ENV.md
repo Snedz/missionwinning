@@ -201,7 +201,9 @@ The app requests `email profile openid` scopes so Supabase receives an email for
 3. Facebook → then `NEXT_PUBLIC_OAUTH_FACEBOOK=true`.
 4. Apple (full Services ID + key) → then `NEXT_PUBLIC_OAUTH_APPLE=true`.
 
-Magic link and OAuth both land on `/auth/callback`, then redirect to Today (`/log`) or Profile. Users must accept Terms + Privacy in-app before sign-in.
+Magic link and OAuth both land on `/auth/callback` (**Route Handler** using `@supabase/ssr` cookie PKCE), then redirect to Today (`/log`) or Profile. Users must accept Terms + Privacy in-app before sign-in.
+
+**If you see “PKCE code verifier not found in storage”:** the old client stored the verifier in localStorage. Current builds use cookie storage via `@supabase/ssr`. Confirm Site URL is `https://www.missionwinning.com`, promote the latest build, hard-refresh, and try Google again from www (not a `*.vercel.app` link).
 
 ---
 

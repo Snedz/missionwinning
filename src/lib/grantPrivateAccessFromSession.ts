@@ -1,6 +1,6 @@
 /**
  * Client helper — mint private-gate cookie from the current Supabase session.
- * Used after OAuth so proxy.ts can see access (session lives in localStorage).
+ * OAuth callback route also mints this server-side; this covers gate-page recovery.
  */
 
 import { supabase } from '@/lib/supabase';

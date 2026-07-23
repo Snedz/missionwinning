@@ -5,11 +5,12 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { User } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase, signOut } from '@/lib/supabase';
+import { formatOAuthError } from '@/lib/oauthConfig';
 import { useMissionJourney } from '@/hooks/useMissionJourney';
 import { daysSinceCommission } from '@/lib/missionJourney';
 import { getBetaFunnelMetrics } from '@/lib/journeyAnalytics';
@@ -38,6 +39,9 @@ import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard'
 
 export function ProfilePage() {
   const { t } = useTranslation();
+  const searchParams = useSearchParams();
+  const authErrorRaw = searchParams.get('authError');
+  const authError = authErrorRaw ? formatOAuthError(authErrorRaw) : null;
   const router = useRouter();
   const { toast } = useToast();
   const { isCommissioned, state, action } = useMissionJourney();
@@ -225,7 +229,12 @@ export function ProfilePage() {
       }
       footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
     >
-      <ProfileAccountCard email={email} ownerTools={ownerTools} onSignOut={handleSignOut} />
+      <ProfileAccountCard
+        email={email}
+        ownerTools={ownerTools}
+        onSignOut={handleSignOut}
+        authError={authError}
+      />
 
       {email && (
         <ProfileRemindersCard
