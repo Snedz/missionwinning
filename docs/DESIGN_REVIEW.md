@@ -58,6 +58,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-07-22 | Agent (emerald glow · .107) | Landing, Today | Fixed: hero ambient orbs + `card-glow-emerald` demo; Win/Mission Score `.ring-glow-emerald`; stronger `primary-action` bloom; ≤1 glow on landing (hero only). |
 | 2026-07-22 | Agent (responsive layout · .106) | Landing, Today | Fixed: narrow hero centered; landscape compact 2-col; Today ProgressRing + MetricsRow above fold (HeroDemo parity); Trends collapsed. |
 | 2026-07-22 | Agent (hero a11y + logic · .105) | Active, Gate, Today, Fuel | Fixed: hydrate Start gate; SessionCheckIn Escape/focus; axe `/active`/`/private`/`/nutrition`; 44px empties/RPE/Copy/beta chips; reduced-motion rest; Today ≤1 primary-action e2e. Cleared stale Batch C deferred notes. |
 | 2026-07-22 | Agent (D4 beta composure · .104) | Landing, Gate, Bundle, Today (web), Android Today | Fixed in-sprint: Landing ≤6 bands (cut StatBand/Journey/Guide/pillar bento/email); nav CTA ghost; HeroDemo muted post-demo CTA; wedge metadata/About/Press/brand; Bundle one-offer; Today QuickLinks+accordion under More; Android secondary cards demoted (hero elevated only). Founder: Accept B re-walk + promote `.104`. |

@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Emerald glow + homepage craft (`.107`)
+
+- **Landing:** hero ambient orbs + stronger `.hero-field` emerald bloom; demo slot `card-elevated card-glow-emerald`; Win Score ring glow; `primary-action` emerald shadow; brand eyebrow live + emerald title accent; ≤1 glow (hero only).
+- **Today:** Mission Score `ProgressRing` `glow`; shared `.ring-glow-emerald` bloom + SVG drop-shadow.
+- Build: `2026.07-unified.107` — promote www after Ready.
+
 ## 2026-07-22 — Responsive layout + Today score presence (`.106`)
 
 - **Landing:** narrow viewports center hero copy/CTA; landscape short-height compact 2-col; `.hero-copy` / `.hero-orient-grid` utilities.
