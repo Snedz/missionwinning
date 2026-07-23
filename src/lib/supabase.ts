@@ -16,12 +16,10 @@ export function isSupabaseConfigured(): boolean {
   )
 }
 
-import { sanitizeNextPath } from '@/lib/safeRedirect';
+import { getAuthRedirectUrl as buildAuthRedirectUrl } from '@/lib/authRedirect'
 
 export function getAuthRedirectUrl(nextPath = '/log'): string {
-  if (typeof window === 'undefined') return '/auth/callback'
-  const safeNext = sanitizeNextPath(nextPath)
-  return `${window.location.origin}/auth/callback?next=${encodeURIComponent(safeNext)}`
+  return buildAuthRedirectUrl(nextPath)
 }
 
 export const supabase = createClient(

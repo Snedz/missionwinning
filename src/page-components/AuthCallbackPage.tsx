@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Shield } from 'lucide-react';
+import { shouldBounceAuthCallbackToCanonical } from '@/lib/authRedirect';
 import { formatOAuthError } from '@/lib/oauthConfig';
 import { grantPrivateAccessFromSession } from '@/lib/grantPrivateAccessFromSession';
 import { redeemInviteFromAttribution } from '@/lib/invite';
@@ -23,6 +24,18 @@ export function AuthCallbackPage() {
     let cancelled = false;
 
     const finish = async () => {
+      // Wrong Supabase Site URL → Google returns to *.vercel.app. Bounce to www
+      // with the same ?code= so PKCE exchange runs on the host that started OAuth.
+      if (typeof window !== 'undefined') {
+        const canonical = shouldBounceAuthCallbackToCanonical(window.location.hostname);
+        if (canonical) {
+          const target = new URL('/auth/callback', canonical);
+          target.search = window.location.search;
+          window.location.replace(target.toString());
+          return;
+        }
+      }
+
       const next = searchParams.get('next') || '/log';
       const safeNext = sanitizeNextPath(next);
       const code = searchParams.get('code');

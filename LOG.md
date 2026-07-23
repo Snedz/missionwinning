@@ -6,6 +6,11 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — OAuth must not land on *.vercel.app (`.115`)
+
+- Google after www was returning to `*.vercel.app/private` when Supabase Site URL was a Vercel alias. Auth redirect now prefers `NEXT_PUBLIC_SITE_URL` and never uses ephemeral vercel.app; `/auth/callback` on vercel.app bounces to www with the same `?code=`.
+- **Founder:** Supabase → Auth → URL Configuration → Site URL = `https://www.missionwinning.com` (required). Build: `2026.07-unified.115`.
+
 ## 2026-07-23 — Google sign-in vs private gate (`.114`)
 
 - After Google OAuth, session lives in localStorage so the proxy never saw auth and bounced to `/private`. Auth callback (+ gate page recovery) now mints `mw_private_access` via `POST /api/private-access/session` after `getUser()`.

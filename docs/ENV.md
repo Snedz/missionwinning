@@ -115,9 +115,11 @@ In **Supabase → Authentication → URL Configuration**:
 
 | Setting | Value |
 |---------|--------|
-| Site URL | `https://www.missionwinning.com` (or `http://localhost:3000` for dev) |
+| Site URL | **`https://www.missionwinning.com`** — must NOT be a `*.vercel.app` preview URL |
 | Redirect URLs | `https://www.missionwinning.com/auth/callback` |
 | Redirect URLs (dev) | `http://localhost:3000/auth/callback` |
+
+If Google returns you to `something.vercel.app/private`, Supabase **Site URL** (or an allowlisted redirect) is still pointing at a Vercel deployment alias. Change Site URL to www, save, then retry. The app also refuses to use `*.vercel.app` as `redirectTo` and bounces those callbacks back to www.
 
 **Provider callback (all IdPs):** `https://YOUR-PROJECT.supabase.co/auth/v1/callback`  
 (Use this in Google / Apple / Microsoft / Facebook consoles — **not** the app `/auth/callback` URL alone.)
