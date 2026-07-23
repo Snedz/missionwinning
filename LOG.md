@@ -6,6 +6,11 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — PKCE via @supabase/ssr cookies (`.116`)
+
+- “PKCE code verifier not found” after Google: browser client now `createBrowserClient` (cookie verifier); `/auth/callback` is a Route Handler that `exchangeCodeForSession` server-side and mints the private-gate cookie.
+- Build: `2026.07-unified.116`. Still requires Supabase Site URL = www.
+
 ## 2026-07-23 — OAuth must not land on *.vercel.app (`.115`)
 
 - Google after www was returning to `*.vercel.app/private` when Supabase Site URL was a Vercel alias. Auth redirect now prefers `NEXT_PUBLIC_SITE_URL` and never uses ephemeral vercel.app; `/auth/callback` on vercel.app bounces to www with the same `?code=`.

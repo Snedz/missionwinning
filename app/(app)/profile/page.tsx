@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import { routeMetadata } from '@/lib/routeMetadata';
 import { RouteLoading } from '@/components/layout/RouteLoading';
 
@@ -11,5 +12,9 @@ const ProfilePage = dynamic(
 export const metadata: Metadata = routeMetadata('profile');
 
 export default function ProfileRoute() {
-  return <ProfilePage />;
+  return (
+    <Suspense fallback={<RouteLoading label="Profile" />}>
+      <ProfilePage />
+    </Suspense>
+  );
 }

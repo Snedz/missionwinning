@@ -64,7 +64,7 @@
 | `/paths`, `/paths/[id]` | Public Learn path teasers (in-app Learn stays `/learn`) |
 | `/private` | `app/private/page.tsx` |
 | `/offline` | `app/offline/page.tsx` |
-| `/auth/callback` | `app/auth/callback/page.tsx` |
+| `/auth/callback` | `app/auth/callback/route.ts` (PKCE exchange + gate cookie) |
 
 ## API routes (`app/api/`)
 

@@ -88,7 +88,7 @@
 | `AssessmentsPage.tsx` | `/assessments` |
 | `CalculatorsPage.tsx` | `/calculators` |
 | `BetaStartPage.tsx` | `/beta` |
-| `AuthCallbackPage.tsx` | `/auth/callback` |
+| `AuthCallbackPage.tsx` | **Removed** — OAuth is `app/auth/callback/route.ts` |
 | `YouthConsentConfirmPage.tsx` | `/youth/consent/confirm` |
 
 ## Pattern
