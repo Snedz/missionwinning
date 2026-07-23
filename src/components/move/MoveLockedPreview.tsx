@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ProgressRing } from '@/components/ui/ProgressRing';
 import { UnlockButton } from '@/components/UnlockButton';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const DEMO_FLOW = [
   { label: 'Cat-Camel', cue: 'Slow spine waves' },
@@ -17,6 +18,9 @@ const DEMO_FLOW = [
 /** Premium mobility upsell — blurred flow player teaser. */
 export function MoveLockedPreview() {
   const { t } = useTranslation();
+
+  // Free-first beta: hide paid upsells.
+  if (isFreeBeta()) return null;
 
   return (
     <Card className="card-elevated card-glow-brass border-brass/30">

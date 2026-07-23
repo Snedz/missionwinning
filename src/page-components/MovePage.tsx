@@ -20,6 +20,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { useToast } from '@/hooks/use-toast';
 import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function MovePage() {
   const { t } = useTranslation();
@@ -118,8 +119,9 @@ export function MovePage() {
       eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
       title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
       subtitle={t('moveSubtitle', {
-        defaultValue:
-          '10 free guided flows with timers — bodyweight, global-friendly. Premium adds 11 longer recovery flows (Super Bundle).',
+        defaultValue: isFreeBeta()
+          ? '10 free guided flows with timers — bodyweight, global-friendly.'
+          : '10 free guided flows with timers — bodyweight, global-friendly. Premium adds 11 longer recovery flows (Super Bundle).',
       })}
     >
       {renderFlowGrid(freeFlows, t('moveFreeFlows', { defaultValue: 'Free mobility flows' }))}

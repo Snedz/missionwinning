@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight, History, Moon, Sparkles, Sunrise, Trophy } from 'lucide-react';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const linkClass =
   'group flex items-center gap-3 rounded-2xl border p-4 hover:border-primary/40 transition-colors min-h-[72px]';
@@ -15,10 +16,11 @@ interface TodayQuickLinksProps {
 
 export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
   const { t } = useTranslation();
+  const showBundle = !compact && !isFreeBeta();
 
   return (
     <div className="space-y-3">
-      <div className={`grid grid-cols-1 gap-3 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
+      <div className={`grid grid-cols-1 gap-3 ${compact || isFreeBeta() ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
         <Link
           href="/leaderboard"
           className={`${linkClass} border-border/50 bg-muted/20`}
@@ -55,7 +57,7 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
           <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-[hsl(var(--status-info))]" />
         </Link>
 
-        {!compact && (
+        {showBundle && (
         <Link href="/bundle" className={`${linkClass} border-brass/30 bg-brass/10`}>
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brass/20">
             <Sparkles className="h-5 w-5 text-brass" />

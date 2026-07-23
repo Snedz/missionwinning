@@ -30,6 +30,7 @@
 | File | Purpose |
 |------|---------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System design, layers, state |
+| [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
@@ -46,8 +47,8 @@
 | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Beta + public social copy kit |
 | [brand-guidelines.md](brand-guidelines.md) | Brand voice, colors, logo rules · public `/press` |
-| [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → trademark/counsel |
-| [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) | Before first dollar · entity + legal + dispute shield |
+| [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → §1d pre-EIN interim · trademark/counsel |
+| [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) | Before first dollar · interim sole-prop OK · dispute shield |
 | [legal/ENTITY_RESEARCH.md](legal/ENTITY_RESEARCH.md) | Home-state LLC vs DE/WY research memo |
 | [legal/OPERATING_AGREEMENT_DRAFT.md](legal/OPERATING_AGREEMENT_DRAFT.md) | Single-member LLC OA draft (counsel finalize) |
 | [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md) | Dispute webhooks · Radar · thresholds |

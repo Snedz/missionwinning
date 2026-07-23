@@ -39,6 +39,7 @@ import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwEmptyState
 import com.missionwinning.core.designsystem.MwEnterFade
+import com.missionwinning.core.designsystem.MwFreeBeta
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
 import com.missionwinning.core.designsystem.MwLoadingBlock
@@ -101,27 +102,29 @@ fun CoachScreen(
                         CoachAdaptBanner(resp = it, premium = state.premium)
                     }
 
-                    EntitlementBanner(
-                        signedIn = state.signedIn,
-                        premium = state.premium,
-                        premiumSource = state.premiumSource,
-                        billingOffers = state.billing.offers,
-                        billingReady = state.billing.connection is BillingConnectionState.Ready,
-                        billingPurchasing = state.billing.purchasing,
-                        billingError = state.billing.lastError,
-                        onSeedAdapt = if (state.premium) {
-                            { viewModel.seedAdaptDemo() }
-                        } else {
-                            null
-                        },
-                        onSubscribe = if (!state.premium && state.signedIn && activity != null) {
-                            { viewModel.subscribe(activity) }
-                        } else {
-                            null
-                        },
-                    )
-                    state.billing.lastError?.let { err ->
-                        Text(err, style = MwTypography.bodyMedium, color = MwColors.Danger)
+                    if (!MwFreeBeta.ENABLED) {
+                        EntitlementBanner(
+                            signedIn = state.signedIn,
+                            premium = state.premium,
+                            premiumSource = state.premiumSource,
+                            billingOffers = state.billing.offers,
+                            billingReady = state.billing.connection is BillingConnectionState.Ready,
+                            billingPurchasing = state.billing.purchasing,
+                            billingError = state.billing.lastError,
+                            onSeedAdapt = if (state.premium) {
+                                { viewModel.seedAdaptDemo() }
+                            } else {
+                                null
+                            },
+                            onSubscribe = if (!state.premium && state.signedIn && activity != null) {
+                                { viewModel.subscribe(activity) }
+                            } else {
+                                null
+                            },
+                        )
+                        state.billing.lastError?.let { err ->
+                            Text(err, style = MwTypography.bodyMedium, color = MwColors.Danger)
+                        }
                     }
                     state.message?.let { msg ->
                         Text(msg, style = MwTypography.bodyMedium, color = MwColors.Emerald)
@@ -261,7 +264,7 @@ fun CoachScreen(
                                                 color = MwColors.TextMuted,
                                             )
                                         }
-                                    } else if (!state.premium) {
+                                    } else if (!state.premium && !MwFreeBeta.ENABLED) {
                                         Text(
                                             "Super Bundle on this account unlocks move-level intent (no in-app purchase).",
                                             style = MwTypography.labelMedium,

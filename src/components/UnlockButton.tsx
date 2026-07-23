@@ -13,6 +13,7 @@ import {
 } from '@/lib/payments';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 interface Props {
   productId?: string;
@@ -53,6 +54,9 @@ export function UnlockButton({
   const [submitting, setSubmitting] = useState(false);
   const [checkoutBusy, setCheckoutBusy] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  // Free-first beta: no checkout / waitlist / Bundle CTAs.
+  if (isFreeBeta()) return null;
 
   const program = productId ? PROGRAM_PRICES[productId] : null;
   const amount = price || program?.price;

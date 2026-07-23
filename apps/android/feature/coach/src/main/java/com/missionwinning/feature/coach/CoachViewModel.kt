@@ -12,6 +12,7 @@ import com.missionwinning.core.model.CoachDepth
 import com.missionwinning.core.network.CoachPlanResponseDto
 import com.missionwinning.core.network.PlanSessionDto
 import dagger.hilt.android.lifecycle.HiltViewModel
+import com.missionwinning.core.designsystem.MwFreeBeta
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -62,12 +63,16 @@ class CoachViewModel @Inject constructor(
         authRepository.state,
         billing.state,
     ) { local, auth, bill ->
-        val premium = auth.premium
+        val premium = MwFreeBeta.ENABLED || auth.premium
+        val premiumSource = when {
+            MwFreeBeta.ENABLED -> "free_beta"
+            else -> auth.premiumSource
+        }
         val enriched = enrich(local.plan, premium)
         local.copy(
             signedIn = auth.signedIn,
             premium = premium,
-            premiumSource = auth.premiumSource,
+            premiumSource = premiumSource,
             insights = enriched.first,
             sessionWhys = enriched.second,
             billing = bill,

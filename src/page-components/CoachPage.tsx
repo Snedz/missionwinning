@@ -22,6 +22,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { CoachPlanSkeleton, SkeletonCard } from '@/components/ui/Skeleton';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const CoachVoiceCard = dynamic(
   () => import('@/components/coach/CoachVoiceCard').then((m) => m.CoachVoiceCard),
@@ -98,7 +99,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
         </div>
       )}
 
-      {!loading && locked && (
+      {!loading && locked && !isFreeBeta() && (
         <Card className="card-elevated card-glow-brass border-brass/30">
           <CardHeader>
             <CardTitle>{t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}</CardTitle>
@@ -144,8 +145,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           icon={Sparkles}
           title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week yet' })}
           description={t('coachGenerateEmptyDesc', {
-            defaultValue:
-              'Generate this week’s plan from your logs — free every week. Super Bundle unlocks chat and on-demand regenerate.',
+            defaultValue: isFreeBeta()
+              ? 'Generate this week’s plan from your logs — free every week.'
+              : 'Generate this week’s plan from your logs — free every week. Super Bundle unlocks chat and on-demand regenerate.',
           })}
           actionLabel={t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
           onAction={() => generate()}

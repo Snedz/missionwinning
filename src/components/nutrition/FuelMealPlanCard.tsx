@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FuelLockedPreview } from '@/components/nutrition/FuelLockedPreview';
 import { FuelPlanSkeleton } from '@/components/ui/Skeleton';
 import { useFuelPlan } from '@/hooks/useFuelPlan';
+import { isFreeBeta } from '@/lib/freeBeta';
 import { RefreshCw, Sparkles } from 'lucide-react';
 
 export function FuelMealPlanCard() {
@@ -13,6 +14,7 @@ export function FuelMealPlanCard() {
   const { plan, premium, loading, generate, regenerate, baseTargets } = useFuelPlan();
 
   if (!premium) {
+    if (isFreeBeta()) return null;
     return <FuelLockedPreview baseTargets={baseTargets} />;
   }
 

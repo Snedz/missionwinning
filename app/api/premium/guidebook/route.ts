@@ -7,12 +7,12 @@ import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { PREMIUM_GUIDEBOOK_CHAPTERS } from '@/data/guidebook/premiumChapters';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
 const CATALOG_CACHE = { 'Cache-Control': 'private, max-age=60, stale-while-revalidate=300' };
 
 export const GET = withApiLogging('premium/guidebook', async(request: NextRequest) => {
-  if (isDemoPremiumEnabled()) {
+  if (isPremiumBypassEnabled()) {
     return NextResponse.json({ chapters: PREMIUM_GUIDEBOOK_CHAPTERS }, { headers: CATALOG_CACHE });
   }
 

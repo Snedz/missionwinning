@@ -8,9 +8,11 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Receipt } from 'lucide-react';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function RefundsPage() {
   const { t } = useTranslation();
+  const freeBeta = isFreeBeta();
 
   const jumpLinks = [
     { id: 'subscriptions', label: t('infoRefundsSubs', { defaultValue: 'Subscriptions' }) },
@@ -90,10 +92,14 @@ export function RefundsPage() {
         <Link href="/privacy" className="text-primary hover:underline">
           {t('privacyPolicy', { defaultValue: 'Privacy Policy' })}
         </Link>
-        {' · '}
-        <Link href="/bundle" className="text-primary hover:underline">
-          {t('footerProductBundle', { defaultValue: 'Super Bundle' })}
-        </Link>
+        {!freeBeta && (
+          <>
+            {' · '}
+            <Link href="/bundle" className="text-primary hover:underline">
+              {t('footerProductBundle', { defaultValue: 'Super Bundle' })}
+            </Link>
+          </>
+        )}
       </p>
     </InfoPageShell>
   );

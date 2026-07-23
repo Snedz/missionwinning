@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { hasAppAccess } from '@/lib/requestAccess';
@@ -35,7 +35,7 @@ export const POST = withApiLogging('coach/chat', async (request: NextRequest) =>
   }
   const body = parsed.data;
 
-  let premium = isDemoPremiumEnabled();
+  let premium = isPremiumBypassEnabled();
   if (!premium) {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

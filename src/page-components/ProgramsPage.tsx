@@ -19,11 +19,13 @@ import {
 } from '@/i18n/programsLocales';
 import { getCurriculum } from '@/data/programCurricula';
 import { useState } from 'react';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function ProgramsPage() {
   const { t } = useTranslation();
   const [filterGoal, setFilterGoal] = useState<string>('All');
   const [filterEquip, setFilterEquip] = useState<string>('All');
+  const freeBeta = isFreeBeta();
 
   const filteredPrograms = PROGRAM_CATALOG.filter((prog) => {
     const goalMatch = filterGoal === 'All' || prog.goalFilter === filterGoal;
@@ -34,7 +36,7 @@ export function ProgramsPage() {
   const exportProgramPDF = (prog: ProgramCatalogEntry) => {
     const title = t(prog.titleKey);
     const bullets = prog.bulletKeys.map((k) => `- ${t(k)}`).join('\n');
-    const content = `${title}\n${t(prog.durationKey)} • ${t(prog.priceKey)}\n\nWhat You Get:\n${bullets}\n\n${t(prog.disclaimerKey)}\n\nMission Winning — Free Core + Super Bundle.`;
+    const content = `${title}\n${t(prog.durationKey)} • ${t(prog.priceKey)}\n\nWhat You Get:\n${bullets}\n\n${t(prog.disclaimerKey)}\n\nMission Winning — free training platform.`;
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -50,8 +52,9 @@ export function ProgramsPage() {
       eyebrow={t('programsEyebrow', { defaultValue: 'Programs' })}
       title={t('infoProgramsTitle', { defaultValue: 'Learn programs' })}
       subtitle={t('infoProgramsSubtitle', {
-        defaultValue:
-          'Premium practical education as part of the Super Bundle. Free core tools and intros for everyone worldwide.',
+        defaultValue: freeBeta
+          ? 'Free education paths and program intros for everyone worldwide.'
+          : 'Premium practical education as part of the Super Bundle. Free core tools and intros for everyone worldwide.',
       })}
       variant="sections"
       showLegalFooter
@@ -59,16 +62,21 @@ export function ProgramsPage() {
       <Card className="content-card">
         <CardContent className="pt-6 text-sm text-muted-foreground">
           {t('programsCatalogIntro', {
-            defaultValue:
-              'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',
+            defaultValue: freeBeta
+              ? 'Specialist education outlines below. Free core tools live in Learn and the public guide.'
+              : 'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',
           })}{' '}
           <Link href="/learn" className="text-primary hover:underline">
             /learn
           </Link>
-          {' · '}
-          <Link href="/bundle" className="text-primary hover:underline">
-            Super Bundle
-          </Link>
+          {!freeBeta && (
+            <>
+              {' · '}
+              <Link href="/bundle" className="text-primary hover:underline">
+                Super Bundle
+              </Link>
+            </>
+          )}
         </CardContent>
       </Card>
 
@@ -105,19 +113,22 @@ export function ProgramsPage() {
         {filteredPrograms.map((prog) => (
           <Card key={prog.id} className="content-card">
             <CardHeader>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                   <CardTitle className="text-xl">{t(prog.titleKey)}</CardTitle>
                   <div className="text-primary mt-1 text-sm">
-                    {t(prog.durationKey)} • {t(prog.priceKey)} one-time
+                    {t(prog.durationKey)}
+                    {!freeBeta && <> • {t(prog.priceKey)} one-time</>}
                   </div>
                 </div>
+                {!freeBeta && (
                 <UnlockButton
                   productId={prog.productId}
                   price={t(prog.priceKey).replace('$', '')}
                   title={t(prog.titleKey)}
                   className="mt-2"
                 />
+                )}
               </div>
             </CardHeader>
             <CardContent>
@@ -186,7 +197,9 @@ export function ProgramsPage() {
                 </div>
                 <div className="md:col-span-2 rounded-xl border border-border/60 bg-muted/30 p-4 text-sm space-y-3">
                   <div className="font-semibold text-primary text-xs uppercase tracking-wide">
-                    {t('programsBundleNote', { defaultValue: 'Free intro — full in Super Bundle' })}
+                    {freeBeta
+                      ? t('programsFreeNote', { defaultValue: 'Free education path' })
+                      : t('programsBundleNote', { defaultValue: 'Free intro — full in Super Bundle' })}
                   </div>
                   <p className="text-muted-foreground">{t(prog.disclaimerKey)}</p>
                   <div className="flex flex-wrap gap-3">

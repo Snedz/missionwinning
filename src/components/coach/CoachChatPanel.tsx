@@ -15,6 +15,7 @@ import type { PlanSession } from '@/lib/coach/types';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { cn } from '@/lib/utils';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type Turn = { role: 'user' | 'coach'; content: string };
 
@@ -83,12 +84,20 @@ function FreeFormAskPanel({
           </p>
         )}
         <p className="text-xs text-muted-foreground">
-          {t('coachFreeFormChatHint', {
-            defaultValue: 'Live Q&A chat is Super Bundle — your weekly plan and Adjust today stay free.',
-          })}{' '}
-          <Link href="/bundle" className="text-primary hover:underline">
-            {t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
-          </Link>
+          {isFreeBeta()
+            ? t('coachFreeFormChatHintFree', {
+                defaultValue: 'Your weekly plan and Adjust today stay free. Live chat opens later in beta.',
+              })
+            : (
+              <>
+                {t('coachFreeFormChatHint', {
+                  defaultValue: 'Live Q&A chat is Super Bundle — your weekly plan and Adjust today stay free.',
+                })}{' '}
+                <Link href="/bundle" className="text-primary hover:underline">
+                  {t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
+                </Link>
+              </>
+            )}
         </p>
       </CardContent>
     </Card>
@@ -97,6 +106,7 @@ function FreeFormAskPanel({
 
 function SoftBundleChatTip({ className }: { className?: string }) {
   const { t } = useTranslation();
+  if (isFreeBeta()) return null;
   return (
     <p
       className={cn('text-center text-xs text-muted-foreground px-1', className)}

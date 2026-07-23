@@ -6,12 +6,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isDemoPremiumEnabled, isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isFreeBetaPremiumUnlocked } from '@/lib/freeBeta';
 
 /** Server-verified premium status — do not trust localStorage alone in production. */
 export const GET = withApiLogging('premium/status', async(request: NextRequest) => {
-  if (isDemoPremiumEnabled()) {
-    return NextResponse.json({ premium: true, source: 'demo' });
+  if (isPremiumBypassEnabled()) {
+    const source = isFreeBetaPremiumUnlocked()
+      ? 'free_beta'
+      : isDemoPremiumEnabled()
+        ? 'demo'
+        : 'free_beta';
+    return NextResponse.json({ premium: true, source });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

@@ -11,9 +11,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { CouncilLeadershipBlock } from '@/components/america/CouncilLeadershipBlock';
 import { InfoPageShell, InfoSection } from '@/components/layout/InfoPageShell';
 import { isAmericaTrackEnabled } from '@/lib/americaConfig';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function AboutPage() {
   const { t } = useTranslation();
+  const freeBeta = isFreeBeta();
 
   return (
     <InfoPageShell
@@ -21,8 +23,9 @@ export function AboutPage() {
       eyebrow={t('aboutEyebrow', { defaultValue: 'About' })}
       title={t('infoAboutTitle', { defaultValue: 'About Mission Winning' })}
       subtitle={t('infoAboutSubtitle', {
-        defaultValue:
-          'Free offline logger + Mission Coach from your logs — free core forever; Super Bundle adds depth when you are ready.',
+        defaultValue: freeBeta
+          ? 'Free offline logger + Mission Coach from your logs — free core forever. No account required.'
+          : 'Free offline logger + Mission Coach from your logs — free core forever; Super Bundle adds depth when you are ready.',
       })}
       variant="sections"
       showLegalFooter
@@ -32,8 +35,9 @@ export function AboutPage() {
           <InfoSection title={t('infoAboutMission', { defaultValue: 'Our mission' })}>
             <p className="text-muted-foreground">
               {t('infoAboutMissionP1', {
-                defaultValue:
-                  'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
+                defaultValue: freeBeta
+                  ? 'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Logging stays free forever.'
+                  : 'Mission Winning is a free offline workout logger with adaptive Mission Coach plans from your logs — no wearable required. Super Bundle unlocks Coach depth and specialist education; logging stays free forever.',
               })}
             </p>
             <p className="text-muted-foreground">

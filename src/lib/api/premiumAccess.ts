@@ -6,15 +6,19 @@ export type PremiumGateDeny = {
   error: string;
 };
 
-export type PremiumGateResult = { ok: true; mode: 'demo' | 'enrolled' } | PremiumGateDeny;
+export type PremiumGateResult =
+  | { ok: true; mode: 'demo' | 'enrolled' | 'free_beta' }
+  | PremiumGateDeny;
 
 export function resolvePremiumContentGate(input: {
   demoPremium: boolean;
+  freeBeta?: boolean;
   supabaseConfigured: boolean;
   hasAccessToken: boolean;
   userPresent: boolean;
   isPremium: boolean;
 }): PremiumGateResult {
+  if (input.freeBeta) return { ok: true, mode: 'free_beta' };
   if (input.demoPremium) return { ok: true, mode: 'demo' };
   if (!input.supabaseConfigured) {
     return { ok: false, status: 503, error: 'Premium content unavailable' };

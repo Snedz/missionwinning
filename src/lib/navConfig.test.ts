@@ -35,9 +35,29 @@ describe('navConfig', () => {
   });
 
   it('shows full extended nav when commissioned', () => {
-    const full = extendedNavSectionsForPhase('commissioned');
-    assert.equal(full.length, EXTENDED_NAV_SECTIONS.length);
-    assert.ok(full.some((s) => s.id === 'recover'));
-    assert.ok(full.some((s) => s.id === 'premium'));
+    const prev = process.env.NEXT_PUBLIC_FREE_BETA;
+    process.env.NEXT_PUBLIC_FREE_BETA = 'false';
+    try {
+      const full = extendedNavSectionsForPhase('commissioned');
+      assert.equal(full.length, EXTENDED_NAV_SECTIONS.length);
+      assert.ok(full.some((s) => s.id === 'recover'));
+      assert.ok(full.some((s) => s.id === 'premium'));
+    } finally {
+      if (prev === undefined) delete process.env.NEXT_PUBLIC_FREE_BETA;
+      else process.env.NEXT_PUBLIC_FREE_BETA = prev;
+    }
+  });
+
+  it('hides premium nav during free beta', () => {
+    const prev = process.env.NEXT_PUBLIC_FREE_BETA;
+    delete process.env.NEXT_PUBLIC_FREE_BETA; // default ON
+    try {
+      const full = extendedNavSectionsForPhase('commissioned');
+      assert.ok(!full.some((s) => s.id === 'premium'));
+      assert.ok(!full.some((s) => s.items.some((i) => i.href === '/bundle')));
+    } finally {
+      if (prev === undefined) delete process.env.NEXT_PUBLIC_FREE_BETA;
+      else process.env.NEXT_PUBLIC_FREE_BETA = prev;
+    }
   });
 });

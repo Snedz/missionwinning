@@ -7,12 +7,12 @@ import { withApiLogging } from '@/lib/api/withApiLogging';
 import { createClient } from '@supabase/supabase-js';
 import { PREMIUM_MOBILITY_FLOWS } from '@/data/premiumMobilityFlows';
 import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isDemoPremiumEnabled, isPremiumForUser } from '@/lib/premiumServer';
+import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 
 const CATALOG_CACHE = { 'Cache-Control': 'private, max-age=60, stale-while-revalidate=300' };
 
 export const GET = withApiLogging('premium/mobility', async(request: NextRequest) => {
-  if (isDemoPremiumEnabled()) {
+  if (isPremiumBypassEnabled()) {
     return NextResponse.json({ flows: PREMIUM_MOBILITY_FLOWS }, { headers: CATALOG_CACHE });
   }
 

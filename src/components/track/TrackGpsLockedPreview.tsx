@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { DEMO_PACE_SERIES } from '@/lib/trackGps';
 import { UnlockButton } from '@/components/UnlockButton';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const TrackPaceChart = dynamic(
   () => import('@/components/track/TrackPaceChart').then((m) => m.TrackPaceChart),
@@ -17,6 +18,9 @@ const TrackPaceChart = dynamic(
 /** Premium GPS upsell — sample pace chart + weekly stats teaser (not a blank unlock). */
 export function TrackGpsLockedPreview() {
   const { t } = useTranslation();
+
+  // Free-first beta: hide paid upsells.
+  if (isFreeBeta()) return null;
 
   return (
     <Card className="content-card border-primary/40">

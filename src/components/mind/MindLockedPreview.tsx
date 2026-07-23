@@ -7,12 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ProgressRing } from '@/components/ui/ProgressRing';
 import { UnlockButton } from '@/components/UnlockButton';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const DEMO_STEPS = ['Set one intention for this session', 'Box breathing 4-4-4-4', 'Visualize smooth reps'];
 
 /** Premium mind upsell — blurred player teaser (TrackGpsLockedPreview pattern). */
 export function MindLockedPreview() {
   const { t } = useTranslation();
+
+  // Free-first beta: hide paid upsells.
+  if (isFreeBeta()) return null;
 
   return (
     <Card className="card-elevated card-glow-brass border-brass/30">

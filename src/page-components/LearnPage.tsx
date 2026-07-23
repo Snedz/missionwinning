@@ -19,6 +19,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { logPillarWin } from '@/lib/pillarLog';
 import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function LearnPage() {
   const { t } = useTranslation();
@@ -66,7 +67,9 @@ export function LearnPage() {
       title={t('learnTitle', { defaultValue: 'Learn & Master' })}
       subtitle={t('learnSubtitle', {
         count: FREE_LEARN_PATHS.length,
-        defaultValue: `${FREE_LEARN_PATHS.length} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
+        defaultValue: isFreeBeta()
+          ? `${FREE_LEARN_PATHS.length} free education paths — evidence-based foundations plus specialist intros.`
+          : `${FREE_LEARN_PATHS.length} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
       })}
     >
         <Card className="card-elevated border-primary/40">

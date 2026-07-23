@@ -34,6 +34,7 @@ import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
 import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
+import com.missionwinning.core.designsystem.MwFreeBeta
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
 import com.missionwinning.core.designsystem.MwOfflinePill
@@ -615,22 +616,31 @@ private fun SignedInCard(
             color = MwColors.Text,
         )
         MwSectionLabel("Entitlement")
-        Row(horizontalArrangement = Arrangement.spacedBy(MwSpace.sm)) {
-            MwChip(
-                if (state.session.premium) "Super Bundle" else "Free logger",
-                tone = if (state.session.premium) MwChipTone.Emerald else MwChipTone.Neutral,
+        if (MwFreeBeta.ENABLED) {
+            MwChip("Open beta", tone = MwChipTone.Emerald)
+            Text(
+                "Full platform unlocked while we grow with you — logger, Coach depth, and insights. No purchase flow.",
+                style = MwTypography.bodyMedium,
+                color = MwColors.TextMuted,
             )
-            MwChip(state.session.premiumSource, tone = MwChipTone.Brass)
+        } else {
+            Row(horizontalArrangement = Arrangement.spacedBy(MwSpace.sm)) {
+                MwChip(
+                    if (state.session.premium) "Super Bundle" else "Free logger",
+                    tone = if (state.session.premium) MwChipTone.Emerald else MwChipTone.Neutral,
+                )
+                MwChip(state.session.premiumSource, tone = MwChipTone.Brass)
+            }
+            Text(
+                if (state.session.premium) {
+                    "Super Bundle recognized on this account. Coach adapt depth is unlocked. Purchase is not offered in-app."
+                } else {
+                    "Free offline logging is permanent. If you already have Super Bundle on web, refresh entitlement while online — no in-app purchase."
+                },
+                style = MwTypography.bodyMedium,
+                color = MwColors.TextMuted,
+            )
         }
-        Text(
-            if (state.session.premium) {
-                "Super Bundle recognized on this account. Coach adapt depth is unlocked. Purchase is not offered in-app."
-            } else {
-                "Free offline logging is permanent. If you already have Super Bundle on web, refresh entitlement while online — no in-app purchase."
-            },
-            style = MwTypography.bodyMedium,
-            color = MwColors.TextMuted,
-        )
         Spacer(Modifier.height(8.dp))
         Text(
             "Workouts & routines sync when online. Sign-out keeps local logs and stops cloud sync.",
@@ -642,11 +652,13 @@ private fun SignedInCard(
             contentDescription = "Close account and return",
             onClick = onContinue,
         )
-        MwGhostButton(
-            text = if (busy) "Refreshing…" else "Refresh entitlement",
-            contentDescription = "Refresh Super Bundle status",
-            onClick = onRefreshPremium,
-        )
+        if (!MwFreeBeta.ENABLED) {
+            MwGhostButton(
+                text = if (busy) "Refreshing…" else "Refresh entitlement",
+                contentDescription = "Refresh Super Bundle status",
+                onClick = onRefreshPremium,
+            )
+        }
         MwGhostButton(
             text = "Sign out",
             contentDescription = "Sign out and keep local workouts",

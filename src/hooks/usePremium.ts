@@ -6,6 +6,7 @@
  */
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
+import { isFreeBetaPremiumUnlocked } from '@/lib/freeBeta';
 
 const TTL_MS = 60_000;
 
@@ -30,14 +31,23 @@ function subscribe(listener: () => void) {
 }
 
 function getSnapshot(): PremiumCache | null {
-  return cache;
+  if (cache) return cache;
+  if (isFreeBetaPremiumUnlocked()) {
+    return { premium: true, fetchedAt: Date.now() };
+  }
+  return null;
 }
 
 function getServerSnapshot(): PremiumCache | null {
+  // Open beta: treat as premium on SSR so gated UI does not flash locked.
+  if (isFreeBetaPremiumUnlocked()) {
+    return { premium: true, fetchedAt: Date.now() };
+  }
   return null;
 }
 
 function demoFallbackPremium(): boolean {
+  if (isFreeBetaPremiumUnlocked()) return true;
   return (
     process.env.NODE_ENV === 'development' &&
     typeof localStorage !== 'undefined' &&
@@ -46,6 +56,11 @@ function demoFallbackPremium(): boolean {
 }
 
 async function fetchPremiumStatus(): Promise<boolean> {
+  if (isFreeBetaPremiumUnlocked()) {
+    cache = { premium: true, fetchedAt: Date.now() };
+    notify();
+    return true;
+  }
   if (inflight) return inflight;
   inflight = fetch('/api/premium/status', { credentials: 'include' })
     .then((r) => r.json())
@@ -110,6 +125,6 @@ export function usePremium() {
     };
   }, [refreshKey]);
 
-  const premium = snapshot?.premium ?? false;
+  const premium = snapshot?.premium ?? isFreeBetaPremiumUnlocked();
   return { premium, loading, refetch };
 }

@@ -14,6 +14,7 @@ import { WinScoreDemoIsland } from '@/components/experience/WinScoreDemoIsland';
 import { CapabilityMatrix } from '@/components/experience/CapabilityMatrix';
 import { CommissionCta } from '@/components/experience/CommissionCta';
 import { XP, XP_JOURNEY } from '@/components/experience/experienceStrings';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 function KineticQuote({ text }: { text: string }) {
   const words = text.split(/\s+/);
@@ -31,11 +32,14 @@ function KineticQuote({ text }: { text: string }) {
 
 export function ExperiencePage() {
   const exerciseCount = EXERCISES.length;
-  const plans = [
-    { id: 'monthly', label: XP.ch05Monthly, price: BUNDLE_PLANS.monthly.price },
-    { id: '12mo', label: XP.ch05Annual, price: BUNDLE_PLANS['12mo'].price },
-    { id: 'lifetime', label: XP.ch05Lifetime, price: BUNDLE_PLANS.lifetime.price },
-  ] as const;
+  const freeBeta = isFreeBeta();
+  const plans = freeBeta
+    ? []
+    : ([
+        { id: 'monthly', label: XP.ch05Monthly, price: BUNDLE_PLANS.monthly.price },
+        { id: '12mo', label: XP.ch05Annual, price: BUNDLE_PLANS['12mo'].price },
+        { id: 'lifetime', label: XP.ch05Lifetime, price: BUNDLE_PLANS.lifetime.price },
+      ] as const);
 
   return (
     <div className="xp-root">
@@ -100,10 +104,12 @@ export function ExperiencePage() {
             <h2>{XP.ch03Title}</h2>
             <p className="xp-lead">{XP.ch03Body}</p>
             <input type="radio" name="xp-pillar-mode" id="xp-show-free" className="xp-toggle" defaultChecked />
-            <input type="radio" name="xp-pillar-mode" id="xp-show-premium" className="xp-toggle" />
+            {!freeBeta && (
+              <input type="radio" name="xp-pillar-mode" id="xp-show-premium" className="xp-toggle" />
+            )}
             <div className="xp-toggle-ui">
               <label htmlFor="xp-show-free">{XP.ch03ToggleFree}</label>
-              <label htmlFor="xp-show-premium">{XP.ch03TogglePremium}</label>
+              {!freeBeta && <label htmlFor="xp-show-premium">{XP.ch03TogglePremium}</label>}
             </div>
             <div className="xp-pillars">
               {BUNDLE_PILLARS.map((p, i) => (
@@ -114,10 +120,12 @@ export function ExperiencePage() {
                     <span className="eyebrow-live mr-2 text-[10px]">{XP.ch03Free}</span>
                     {p.free}
                   </p>
-                  <p className="xp-premium text-sm text-muted-foreground">
-                    <span className="eyebrow-honor mr-2 text-[10px]">{XP.ch03Bundle}</span>
-                    {p.premium}
-                  </p>
+                  {!freeBeta && (
+                    <p className="xp-premium text-sm text-muted-foreground">
+                      <span className="eyebrow-honor mr-2 text-[10px]">{XP.ch03Bundle}</span>
+                      {p.premium}
+                    </p>
+                  )}
                 </article>
               ))}
             </div>
