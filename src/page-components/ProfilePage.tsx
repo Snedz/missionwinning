@@ -135,6 +135,11 @@ export function ProfilePage() {
   const saveUnits = (u: 'metric' | 'imperial') => {
     setUnits(u);
     localStorage.setItem('mw_units', u);
+    try {
+      localStorage.setItem('mw_units_explicit', '1');
+    } catch {
+      /* private mode */
+    }
     scheduleJourneyPush();
   };
 

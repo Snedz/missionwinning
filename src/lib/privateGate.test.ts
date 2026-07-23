@@ -37,6 +37,7 @@ describe('isPublicPathWhileGated', () => {
 describe('isPublicApiPathWhileGated', () => {
   it('allows only gate and webhook endpoints', () => {
     assert.equal(isPublicApiPathWhileGated('/api/private-access'), true);
+    assert.equal(isPublicApiPathWhileGated('/api/geo'), true);
     assert.equal(isPublicApiPathWhileGated('/api/private-access/session'), true);
     assert.equal(isPublicApiPathWhileGated('/api/stripe-webhook'), true);
     assert.equal(isPublicApiPathWhileGated('/api/paypal-webhook'), true);
