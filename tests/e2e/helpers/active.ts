@@ -7,7 +7,7 @@ import { expect } from '@playwright/test';
  */
 export async function startEmptyActiveWorkout(page: Page): Promise<void> {
   await page.goto('/active', { waitUntil: 'networkidle' });
-  const start = page.getByRole('button', { name: /start workout|loading session/i }).first();
+  const start = page.getByRole('button', { name: /start workout|loading session/i });
   await expect(start).toBeVisible({ timeout: 30_000 });
   await expect(start).toHaveText(/start workout/i, { timeout: 30_000 });
   await expect(start).toBeEnabled({ timeout: 30_000 });
