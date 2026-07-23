@@ -65,6 +65,8 @@ You're in the first cohort of **Mission Winning** — free offline workout loggi
 
 **Feedback:** Reply to this email or use in-app feedback. Confusing steps = exactly what we need to fix. Especially: did Coach feel useful after one workout?
 
+**Optional founder DM angle (not the email subject):** If someone cares about the “exercise as medicine” story, use the evidence script in [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) — keep the invite email on the logger + Coach wedge. Claim rules: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md).
+
 Thanks for helping us ship health for everyone.
 
 — Mission Winning team

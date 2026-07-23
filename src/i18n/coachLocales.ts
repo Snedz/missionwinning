@@ -17,6 +17,14 @@ type CoachStrings = {
   coachAdaptSwappedNote: string;
   coachAdaptLoggedNote: string;
   coachAdaptRevisionNote: string;
+  coachWeekDose: string;
+  coachWeekDoseStrength: string;
+  coachWeekDoseConditioning: string;
+  coachWeekDoseRecovery: string;
+  coachWeekDoseMixed: string;
+  coachAdaptReentryLead: string;
+  coachAdaptJustGo: string;
+  coachAdaptLighterWeek: string;
   coachNoSessionToday: string;
   coachRestDay: string;
   coachDaysPerWeek: string;
@@ -86,13 +94,22 @@ const en: CoachStrings = {
   coachWeekOverview: 'Mission Coach · this week',
   coachAdaptHeadline: 'Adapted from your logs — no wearable needed',
   coachAdaptMissedNote:
-    '{{count}} session(s) missed earlier — remaining days re-spread so the week still fits.',
+    'Life happened — {{count}} session(s) missed. Remaining days are re-spread so the week still fits. No shame; just continue.',
   coachAdaptSwappedNote:
     '{{count}} day(s) swapped to recovery from readiness / strain — from logs, not a wearable.',
   coachAdaptLoggedNote:
     'Week updated from workouts you already logged — plan revision bumped, no wearable required.',
   coachAdaptRevisionNote:
     'Plan revision {{rev}} — week reshaped from workout history alone.',
+  coachWeekDose:
+    'This week’s dose: {{count}} sessions · {{intent}} · ~{{minutes}} min',
+  coachWeekDoseStrength: 'mostly strength',
+  coachWeekDoseConditioning: 'conditioning focus',
+  coachWeekDoseRecovery: 'recovery-heavy',
+  coachWeekDoseMixed: 'mixed strength & recovery',
+  coachAdaptReentryLead: 'Ready to get back on the path?',
+  coachAdaptJustGo: 'Just Go — log one set',
+  coachAdaptLighterWeek: 'Open Today',
   coachNoSessionToday: 'Rest or recovery day — light movement still counts.',
   coachRestDay: 'Rest day',
   coachDaysPerWeek: 'How many days a week?',

@@ -2,17 +2,17 @@
 
 /**
  * One exercise block in the active logger (header + set rows + actions).
- * Extracted from ActiveWorkoutPage — behavior must stay identical.
+ * Dense mobile: cues live in Form guide; actions in overflow.
  */
 
-import type { RefObject } from 'react';
+import { useState, type RefObject } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Plus, Timer } from 'lucide-react';
+import { Info, MoreVertical, Plus, Timer } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { getFormGuideOrCues } from '@/lib/formGuides';
@@ -117,12 +117,21 @@ export function ActiveExerciseCard({
   onStartRest,
 }: Props) {
   const { t } = useTranslation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [footerOpen, setFooterOpen] = useState(false);
   const hasCompleted = exLog.sets.some((s) => s.completed);
   const hasPlanned = exLog.sets.some((s) => !s.completed);
   const restSec = resolveRestSeconds(exercise.name);
   const ssLabel = supersetLabel(exercises, exIdx);
   const hasNext = exIdx < exercises.length - 1;
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
+  const hasFormGuide = !!getFormGuideOrCues(exercise.id, { exercise });
+
+  const nextPlannedIdx = exLog.sets.findIndex((s) => !s.completed);
+  const nextTarget =
+    nextPlannedIdx >= 0 && lastSets
+      ? suggestNextSetTarget(lastSets, nextPlannedIdx, units)
+      : null;
 
   return (
     <Card
@@ -131,95 +140,178 @@ export function ActiveExerciseCard({
         ssLabel && 'border-[hsl(var(--status-info)/0.4)]'
       )}
     >
-      <CardHeader>
-        <CardTitle className="text-lg flex flex-wrap items-center gap-2">
-          {exercise.name}
-          {ssLabel && (
-            <Badge
-              variant="outline"
-              className="text-[10px] uppercase border-[hsl(var(--status-info)/0.45)] text-[hsl(var(--status-info))]"
-            >
-              {ssLabel}
-            </Badge>
-          )}
-          {exLog.loadPct != null &&
-            exLog.loadPct > 0 &&
-            exLog.sets.some((s) => s.weight > 0) && (
+      <CardHeader className="p-3 pb-2 space-y-2">
+        <div className="flex items-start gap-2">
+          <CardTitle className="text-base sm:text-lg flex flex-wrap items-center gap-2 min-w-0 flex-1">
+            <span className="leading-tight">{exercise.name}</span>
+            {ssLabel && (
               <Badge
                 variant="outline"
-                className="text-[10px] tabular-nums border-primary/40 text-primary"
+                className="text-[10px] uppercase border-[hsl(var(--status-info)/0.45)] text-[hsl(var(--status-info))]"
               >
-                {t('activeLoadPctChip', {
-                  pct: exLog.loadPct,
-                  weight: exLog.sets.find((s) => s.weight > 0)?.weight ?? 0,
-                  unit: unitLabel,
-                  defaultValue: '{{pct}}% · {{weight}} {{unit}}',
-                })}
+                {ssLabel}
               </Badge>
             )}
-        </CardTitle>
-        <CardDescription className="flex gap-1 flex-wrap">
-          {exercise.muscleGroups.map((mg) => (
-            <Badge key={mg} variant="muscle">
-              {mg}
-            </Badge>
-          ))}
-        </CardDescription>
-        {exercise.cues && <p className="text-xs text-muted-foreground mt-1">{exercise.cues}</p>}
-        <div className="flex flex-wrap gap-2 mt-2">
-          {hasCompleted && (
-            <Button type="button" variant="outline" size="sm" onClick={onRepeatLast}>
-              {t('activeRepeatLast', { defaultValue: 'Repeat last set' })}
-            </Button>
-          )}
-          {getFormGuideOrCues(exercise.id, { exercise }) && (
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="h-9 text-primary"
-              onClick={onFormGuide}
-            >
-              {t('activeFormGuide', { defaultValue: 'Form guide' })}
-            </Button>
-          )}
-          <Button type="button" variant="ghost" size="sm" className="h-9 text-primary" asChild>
-            <Link href={`/coach?ask=${encodeURIComponent(exercise.id)}`}>
-              {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
-            </Link>
-          </Button>
-          {hasNext && !exLog.supersetGroup && (
-            <Button type="button" variant="outline" size="sm" onClick={onToggleSuperset}>
-              {t('activeSupersetLink', { defaultValue: 'Superset w/ next' })}
-            </Button>
-          )}
-          {exLog.supersetGroup && (
-            <Button type="button" variant="ghost" size="sm" onClick={onUnlinkSuperset}>
-              {t('activeSupersetUnlink', { defaultValue: 'Unlink superset' })}
-            </Button>
-          )}
-          <Button type="button" variant="ghost" size="sm" onClick={onToggleNote}>
-            {t('activeNote', { defaultValue: 'Note' })}
-          </Button>
-          {!hasCompleted && (
-            <Button type="button" variant="ghost" size="sm" onClick={onToggleSwap}>
-              {t('activeSwap', { defaultValue: 'Swap' })}
-            </Button>
-          )}
-          <HoldToConfirmButton
-            size="sm"
-            label={
-              hasCompleted
-                ? t('activeRemoveExerciseLogged', {
-                    defaultValue: 'Remove exercise — discards logged sets',
-                  })
-                : t('activeRemoveExercise', { defaultValue: 'Remove exercise' })
-            }
-            onConfirm={onRemove}
-          />
+            {exLog.loadPct != null &&
+              exLog.loadPct > 0 &&
+              exLog.sets.some((s) => s.weight > 0) && (
+                <Badge
+                  variant="outline"
+                  className="text-[10px] tabular-nums border-primary/40 text-primary"
+                >
+                  {t('activeLoadPctChip', {
+                    pct: exLog.loadPct,
+                    weight: exLog.sets.find((s) => s.weight > 0)?.weight ?? 0,
+                    unit: unitLabel,
+                    defaultValue: '{{pct}}% · {{weight}} {{unit}}',
+                  })}
+                </Badge>
+              )}
+          </CardTitle>
+          <div className="flex shrink-0 items-center gap-0.5">
+            {hasFormGuide && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-11 w-11 tap-target text-primary"
+                aria-label={t('activeFormGuide', { defaultValue: 'Form guide' })}
+                onClick={onFormGuide}
+              >
+                <Info className="h-5 w-5" />
+              </Button>
+            )}
+            <div className="relative">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-11 w-11 tap-target"
+                aria-label={t('activeExerciseMore', { defaultValue: 'More actions' })}
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((v) => !v)}
+              >
+                <MoreVertical className="h-5 w-5" />
+              </Button>
+              {menuOpen && (
+                <>
+                  <button
+                    type="button"
+                    className="fixed inset-0 z-40"
+                    aria-label={t('activeCloseMenu', { defaultValue: 'Close menu' })}
+                    onClick={() => setMenuOpen(false)}
+                  />
+                  <div
+                    role="menu"
+                    className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] rounded-xl border border-border bg-card p-1 shadow-lg"
+                  >
+                    <Link
+                      href={`/coach?ask=${encodeURIComponent(exercise.id)}`}
+                      role="menuitem"
+                      className="flex min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
+                    </Link>
+                    {hasNext && !exLog.supersetGroup && (
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start"
+                        onClick={() => {
+                          onToggleSuperset();
+                          setMenuOpen(false);
+                        }}
+                      >
+                        {t('activeSupersetLink', { defaultValue: 'Superset w/ next' })}
+                      </button>
+                    )}
+                    {exLog.supersetGroup && (
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start"
+                        onClick={() => {
+                          onUnlinkSuperset();
+                          setMenuOpen(false);
+                        }}
+                      >
+                        {t('activeSupersetUnlink', { defaultValue: 'Unlink superset' })}
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start"
+                      onClick={() => {
+                        onToggleNote();
+                        setMenuOpen(false);
+                      }}
+                    >
+                      {t('activeNote', { defaultValue: 'Note' })}
+                    </button>
+                    {!hasCompleted && (
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start"
+                        onClick={() => {
+                          onToggleSwap();
+                          setMenuOpen(false);
+                        }}
+                      >
+                        {t('activeSwap', { defaultValue: 'Swap' })}
+                      </button>
+                    )}
+                    <div className="border-t border-border/50 px-1 pt-1">
+                      <HoldToConfirmButton
+                        size="sm"
+                        className="w-full justify-start"
+                        label={
+                          hasCompleted
+                            ? t('activeRemoveExerciseLogged', {
+                                defaultValue: 'Remove exercise — discards logged sets',
+                              })
+                            : t('activeRemoveExercise', { defaultValue: 'Remove exercise' })
+                        }
+                        onConfirm={() => {
+                          setMenuOpen(false);
+                          onRemove();
+                        }}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </div>
+
+        {nextTarget && (
+          <p className="text-[11px] tabular-nums text-muted-foreground">
+            {t('activeNextTargetLine', {
+              reps: nextTarget.reps,
+              weight: nextTarget.weight,
+              unit: unitLabel,
+              defaultValue: 'Next: {{reps}} × {{weight}} {{unit}}',
+            })}
+          </p>
+        )}
+
+        {hasCompleted && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-9 w-fit"
+            onClick={onRepeatLast}
+          >
+            {t('activeRepeatLast', { defaultValue: 'Repeat last set' })}
+          </Button>
+        )}
+
         {swapOpen && !hasCompleted && (
-          <div className="mt-2">
+          <div>
             <ExercisePicker
               value=""
               exercises={swapCandidates}
@@ -239,11 +331,11 @@ export function ActiveExerciseCard({
               defaultValue: 'Note — "machine 3, seat 4", "left knee tight"…',
             })}
             onChange={(e) => onNoteChange(e.target.value)}
-            className="mt-2 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
         )}
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-2 p-3 pt-0">
         {exLog.sets.map((set, setIdx) => {
           const input = getSetInput(exIdx, setIdx, set.reps, set.weight);
           const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
@@ -289,34 +381,77 @@ export function ActiveExerciseCard({
             </div>
           );
         })}
-        <div className="flex flex-wrap gap-2 pt-1">
-          {lastSets && hasPlanned && (
-            <Button
-              variant="secondary"
-              size="sm"
-              className="text-primary"
-              onClick={onApplyAllTargets}
-            >
-              {t('activeApplyAllTargets', { defaultValue: 'Apply targets' })}
-            </Button>
-          )}
-          <Button variant="outline" size="sm" onClick={onAddSet}>
+        <div className="flex flex-nowrap items-center gap-2 pt-1">
+          <Button variant="outline" size="sm" className="h-9" onClick={onAddSet}>
             <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
           </Button>
-          {hasPlanned && exLog.sets.length > 1 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground"
-              onClick={onRemoveSet}
-            >
-              {t('activeRemoveSet', { defaultValue: 'Remove set' })}
-            </Button>
-          )}
-          <Button variant="ghost" size="sm" onClick={() => onStartRest(restSec)}>
-            <Timer className="h-3 w-3 me-1" />
-            {t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 shrink-0"
+            aria-label={t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}
+            onClick={() => onStartRest(restSec)}
+          >
+            <Timer className="h-4 w-4" />
           </Button>
+          {((lastSets && hasPlanned) || (hasPlanned && exLog.sets.length > 1)) && (
+            <div className="relative ms-auto">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-9 text-muted-foreground"
+                aria-expanded={footerOpen}
+                onClick={() => setFooterOpen((v) => !v)}
+              >
+                {footerOpen
+                  ? t('activeSetLess', { defaultValue: 'Less' })
+                  : t('activeSetMore', { defaultValue: 'More' })}
+              </Button>
+              {footerOpen && (
+                <>
+                  <button
+                    type="button"
+                    className="fixed inset-0 z-40"
+                    aria-label={t('activeCloseMenu', { defaultValue: 'Close menu' })}
+                    onClick={() => setFooterOpen(false)}
+                  />
+                  <div
+                    role="menu"
+                    className="absolute end-0 bottom-full z-50 mb-1 min-w-[10rem] rounded-xl border border-border bg-card p-1 shadow-lg"
+                  >
+                    {lastSets && hasPlanned && (
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start text-primary"
+                        onClick={() => {
+                          onApplyAllTargets();
+                          setFooterOpen(false);
+                        }}
+                      >
+                        {t('activeApplyAllTargets', { defaultValue: 'Apply targets' })}
+                      </button>
+                    )}
+                    {hasPlanned && exLog.sets.length > 1 && (
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start text-muted-foreground"
+                        onClick={() => {
+                          onRemoveSet();
+                          setFooterOpen(false);
+                        }}
+                      >
+                        {t('activeRemoveSet', { defaultValue: 'Remove set' })}
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

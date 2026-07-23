@@ -15,7 +15,7 @@ Works in Cursor, Claude Code, Grok, Copilot, Gemini, and other agents — tool-a
 5. Prefer indexed paths over repo-wide grep for planning docs.
 6. Do not use old chat plans as source of truth — use `ORCHESTRATION.md`, `docs/PLAN.md`, and `LOG.md`.
 
-**Horizon rule:** In Horizon 0 (pre-public beta), only hero bugs, launch unblock, and CI. Refuse new pillars/locales/redesigns unless the founder explicitly overrides.
+**Horizon rule:** **Horizon W (now)** — agents **must** ship Train / Today / Victory / Coach wedge excellence until founder phone sign-off. ≥10 beta is a **public-flip** gate after that — not a build freeze. Refuse new pillars / locales / America / F5 unless the founder explicitly overrides.
 
 ---
 

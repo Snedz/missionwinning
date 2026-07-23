@@ -36,33 +36,33 @@ describe('pickVictoryNextAction', () => {
     assert.equal(a.href, '/coach');
   });
 
-  it('defaults to fuel when protein not logged (established user with plan)', () => {
+  it('prefers Coach when plan exists (wedge stays in Train+Coach)', () => {
     const a = pickVictoryNextAction({
       proteinLoggedToday: false,
       completedWorkouts: 10,
       hasCoachPlan: true,
     });
-    assert.equal(a.href, '/nutrition');
+    assert.equal(a.href, '/coach');
   });
 
-  it('prefers mind when strain is high and protein done', () => {
+  it('sends high strain to Today rest — not Mind tourism', () => {
     const a = pickVictoryNextAction({
       proteinLoggedToday: true,
       strainDelta: 8,
       completedWorkouts: 10,
-      hasCoachPlan: true,
+      // omit hasCoachPlan so we exercise the rest branch
     });
-    assert.equal(a.href, '/mind');
+    assert.equal(a.href, '/log');
   });
 
-  it('falls back to move when fueled and low strain', () => {
+  it('falls back to train when no plan and low strain outside early window', () => {
     const a = pickVictoryNextAction({
       proteinLoggedToday: true,
       strainDelta: 0,
       completedWorkouts: 10,
-      hasCoachPlan: true,
+      hasCoachPlan: undefined,
     });
-    assert.equal(a.href, '/move');
+    assert.equal(a.href, '/active');
   });
 });
 

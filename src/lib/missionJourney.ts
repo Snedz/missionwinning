@@ -5,6 +5,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { getPillarWins } from '@/lib/pillarLog';
 import { getTrainingStreak } from '@/lib/streaks';
+import { previewJustGoForEquipment } from '@/lib/justGoSession';
 
 export type JourneyPhase = 'i-day' | 'basic' | 'readiness' | 'commissioned';
 
@@ -228,7 +229,8 @@ function detectReadinessMilestones(workoutHistory: CompletedWorkoutLog[]): Journ
 }
 
 function allBasicDone(b: JourneyBasicMilestones): boolean {
-  return b.workout && b.fuel && b.move && b.mind && b.learn;
+  // Horizon W: Basic Training = first workout only. Other pillars stay free, not gated chores.
+  return b.workout;
 }
 
 function allReadinessDone(r: JourneyReadinessMilestones): boolean {
@@ -274,35 +276,33 @@ const BASIC_STEPS: { key: keyof JourneyBasicMilestones; label: string; descripti
   {
     key: 'workout',
     label: 'Start your first workout',
-    description: '10-minute bodyweight mission — no equipment required.',
+    description: 'Gear-matched session — log one set to open the path.',
     href: '/active',
-  },
-  {
-    key: 'fuel',
-    label: 'Log your first meal',
-    description: 'One protein entry in Fuel counts.',
-    href: '/nutrition',
-  },
-  {
-    key: 'move',
-    label: 'Complete a Move flow',
-    description: '4-minute mobility — opens hips and shoulders.',
-    href: '/move',
-  },
-  {
-    key: 'mind',
-    label: 'Try one breathing cycle',
-    description: 'One minute of box breathing in Mind.',
-    href: '/mind',
-  },
-  {
-    key: 'learn',
-    label: 'Start the guidebook',
-    description: 'Read one section of Beyond the Basics — about 3 minutes.',
-    href: '/learn/guide',
   },
 ];
 
+function firstWorkoutTemplate(): NonNullable<JourneyAction['startWorkout']> {
+  const fallback = {
+    name: 'First Mission Workout',
+    exercises: [
+      { exerciseId: 'air-squat', sets: [{ reps: 10, weight: 0 }, { reps: 10, weight: 0 }] },
+      { exerciseId: 'push-ups', sets: [{ reps: 8, weight: 0 }, { reps: 8, weight: 0 }] },
+      { exerciseId: 'glute-bridge', sets: [{ reps: 12, weight: 0 }] },
+      { exerciseId: 'plank', sets: [{ reps: 30, weight: 0 }] },
+    ],
+  };
+  if (typeof window === 'undefined') return fallback;
+  try {
+    const equipment = localStorage.getItem('mw_equipment') || 'bodyweight';
+    const session = previewJustGoForEquipment(equipment);
+    if (session.exercises.length === 0) return fallback;
+    return { name: session.name, exercises: session.exercises };
+  } catch {
+    return fallback;
+  }
+}
+
+/** Static BW fallback (tests / SSR). Prefer `firstWorkoutTemplate()` at call sites. */
 const FIRST_WORKOUT = {
   name: 'First Mission Workout',
   exercises: [
@@ -329,17 +329,29 @@ export function getNextAction(workoutHistory: CompletedWorkoutLog[] = []): Journ
 
   if (state.phase === 'basic') {
     const done = BASIC_STEPS.filter((s) => state.basic[s.key]).length;
-    const next = BASIC_STEPS.find((s) => !state.basic[s.key])!;
+    const next = BASIC_STEPS.find((s) => !state.basic[s.key]);
+    if (!next) {
+      // Workout done — sync should have advanced; soft Coach invite as bridge.
+      return {
+        label: 'Open Mission Coach',
+        description: 'Your first log unlocks a weekly plan from history alone.',
+        href: '/coach',
+        phase: 'basic',
+        stepLabel: 'Basic Training · Coach',
+        progressPct: 100,
+      };
+    }
+    const total = BASIC_STEPS.length;
     const action: JourneyAction = {
       label: next.label,
       description: next.description,
       href: next.href,
       phase: 'basic',
-      stepLabel: `Basic Training · Step ${done + 1} of 5`,
-      progressPct: Math.round((done / 5) * 100),
+      stepLabel: `Basic Training · Step ${done + 1} of ${total}`,
+      progressPct: Math.round((done / total) * 100),
     };
     if (next.key === 'workout') {
-      action.startWorkout = FIRST_WORKOUT;
+      action.startWorkout = firstWorkoutTemplate();
     }
     return action;
   }
@@ -381,7 +393,7 @@ export function getNextAction(workoutHistory: CompletedWorkoutLog[] = []): Journ
         phase: 'readiness',
         stepLabel: 'Readiness · Commitment',
         progressPct: 66,
-        startWorkout: FIRST_WORKOUT,
+        startWorkout: firstWorkoutTemplate(),
       };
     }
   }

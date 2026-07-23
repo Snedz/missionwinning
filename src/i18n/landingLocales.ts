@@ -86,7 +86,7 @@ const LANDING_EN: Record<string, string> = {
   landingMissionQuote:
     '“The right way to build a body and a life should be obvious, doable, and free — for every human on Earth.”',
   landingMissionBody:
-    'Mission Winning is the entrance to that path: evidence-based, holistic, habit-first.',
+    'Mission Winning is the entrance to that path: evidence-based, holistic, habit-first. Showing up for training often brings clearer energy and mood — structured plans beat “just go work out.” Educational fitness only — not medical care.',
   landingMissionLink: 'Read the full vision',
   landingFaqEyebrow: 'Straight answers',
   landingFaqFreeQ: 'Is the free version actually complete?',

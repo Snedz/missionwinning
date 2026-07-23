@@ -31,6 +31,7 @@ import {
 } from '@/lib/coach/schedulePrefs';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { getExerciseById } from '@/data/exercises';
+import { useWorkoutStore } from '@/store/workoutStore';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
@@ -88,8 +89,17 @@ export function WelcomePage() {
       router.push('/profile');
       return;
     }
+    saveProfileFields();
     completeIDay({ experience, equipment, primaryGoal });
     track('iday_completed', { experience, equipment });
+    // W1: land in the previewed session — no Today detour before first sweat.
+    const session = previewJustGoForEquipment(equipment);
+    if (session.exercises.length > 0) {
+      useWorkoutStore.getState().startWorkout(session.name, session.exercises);
+      track('just_go_started', { source: session.source, focus: session.focusGroup });
+      router.push('/active');
+      return;
+    }
     router.push('/log');
   };
 
@@ -340,12 +350,12 @@ export function WelcomePage() {
                   </p>
                   <p className="text-sm font-medium">
                     {t('welcomeSessionReadyTitle', {
-                      defaultValue: 'Next: open Today and tap Just Go',
+                      defaultValue: 'Next: your first session starts now',
                     })}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {t('welcomeSessionReadyBody', {
-                      defaultValue: `${firstSession.name} · ${firstSessionNames.length} exercises from your gear. One set logs your first Mission Score.`,
+                      defaultValue: `${firstSession.name} · ${firstSessionNames.length} exercises from your gear. Skip sign-in to log your first set immediately.`,
                       name: firstSession.name,
                       count: firstSessionNames.length,
                     })}
@@ -372,7 +382,7 @@ export function WelcomePage() {
                 </label>
                 <SignInPanel
                   allowSkip
-                  nextPath="/log"
+                  nextPath="/active"
                   skipLabel={t('welcomeSkipSignIn', { defaultValue: 'Skip — start first session' })}
                   onComplete={finish}
                 />

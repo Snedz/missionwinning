@@ -15,7 +15,7 @@ type Props = {
   className?: string;
 };
 
-/** Oversized rest dock — clock dominates; ±15 / Skip secondary (D-prelaunch). */
+/** Rest dock — clock dominates; slightly tighter than D-prelaunch for density. */
 export function RestTimerBar({
   remaining,
   initial,
@@ -41,22 +41,22 @@ export function RestTimerBar({
       aria-live="polite"
       aria-label={`${t('activeRestTitle', { defaultValue: 'Rest' })} ${clock}`}
     >
-      <div className="px-4 pt-3 pb-2">
-        <div className="relative mx-auto flex h-2 w-full max-w-xs overflow-hidden rounded-full bg-muted/40">
+      <div className="px-4 pt-2.5 pb-1.5">
+        <div className="relative mx-auto flex h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-muted/40">
           <div
             className="h-full rounded-full bg-muted-foreground/70 transition-[width] duration-1000 linear motion-reduce:transition-none"
             style={{ width: `${Math.round(progress * 100)}%` }}
           />
         </div>
-        <p className="mt-3 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium">
+        <p className="mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium">
           {t('activeRestTitle', { defaultValue: 'Rest' })}
         </p>
-        <p className="text-center font-mono text-5xl sm:text-6xl font-bold tabular-nums text-foreground tracking-tight leading-none mt-1">
+        <p className="text-center font-mono text-4xl sm:text-5xl font-bold tabular-nums text-foreground tracking-tight leading-none mt-0.5">
           {clock}
         </p>
       </div>
 
-      <div className="flex items-center justify-center gap-2 px-4 pb-2">
+      <div className="flex items-center justify-center gap-2 px-4 pb-1.5">
         <Button variant="outline" size="sm" className="h-11 min-w-[52px]" onClick={() => onAdjust(-15)}>
           {t('activeRestSub15', { defaultValue: '−15s' })}
         </Button>
@@ -69,7 +69,7 @@ export function RestTimerBar({
         </Button>
       </div>
 
-      <div className="flex items-center justify-center gap-1 px-4 pb-3">
+      <div className="flex flex-wrap items-center justify-center gap-1 px-4 pb-2.5">
         <span className="text-[10px] uppercase tracking-wide text-muted-foreground me-1">
           {t('activeRestDefault', { defaultValue: 'Default' })}
         </span>

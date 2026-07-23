@@ -8,6 +8,8 @@
 
 **Wedge line (use everywhere):** Free offline logger + adaptive Mission Coach from logs (no wearable). Six pillars stay below the fold / second sentence — not the hook.
 
+**Evidence angle (second wave only):** Structured exercise has strong trial support for mild–moderate mood symptoms; clinicians rarely get trained to prescribe it — so advice stays vague. MW’s product story is still the logger + Coach (the “dose”), never “we treat depression.” Full rules: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md). Always add: *Not medical advice — not a substitute for clinical care.*
+
 ---
 
 ## Phase A — Private beta (now)
@@ -52,6 +54,18 @@ Tired of paywalled trackers and wearable-only AI coaches. Building a free offlin
 Looking for honest beta testers. DM me.
 
 #bodyweightfitness #homegym #buildinpublic
+```
+
+### Evidence / founder-story caption (optional second wave)
+
+Primary hook remains free offline logger. Use this only when the audience already knows the product; never as the landing hero.
+
+```
+Exercise has strong trial support for mild–moderate mood symptoms — yet most mental health pros never trained to prescribe it, so advice stays “just go work out.”
+
+Building Mission Winning: a clear, adaptive weekly training plan on any phone — free offline logger + Mission Coach. Not a medical product. Not medical advice.
+
+Beta: DM me.
 ```
 
 ### Magazine angle (optional caption beat)

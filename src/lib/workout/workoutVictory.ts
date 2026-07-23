@@ -84,16 +84,17 @@ export type PickVictoryNextActionOpts = {
 
 /**
  * One boss next step after a session.
- * Early / no-plan: Mission Coach (Train+Coach wedge). Else Fuel → Mind → Move.
+ * Prefer Mission Coach / next train — stay in the Train+Coach wedge (Horizon W).
  */
 export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): VictoryNextAction {
-  const coachFirst =
-    (typeof opts?.completedWorkouts === 'number' &&
-      opts.completedWorkouts > 0 &&
-      opts.completedWorkouts <= COACH_VICTORY_EARLY_WORKOUTS) ||
-    opts?.hasCoachPlan === false;
+  const early =
+    typeof opts?.completedWorkouts === 'number' &&
+    opts.completedWorkouts > 0 &&
+    opts.completedWorkouts <= COACH_VICTORY_EARLY_WORKOUTS;
+  // Explicit plan presence (true or false) → Coach. Early workouts → Coach.
+  const wantsCoach = early || opts?.hasCoachPlan === true || opts?.hasCoachPlan === false;
 
-  if (coachFirst) {
+  if (wantsCoach) {
     return {
       href: '/coach',
       labelKey: 'victoryNextCoachLabel',
@@ -103,30 +104,23 @@ export function pickVictoryNextAction(opts?: PickVictoryNextActionOpts): Victory
     };
   }
 
-  if (!opts?.proteinLoggedToday) {
+  // High strain: rest / lighter train — not Mind tourism.
+  if ((opts?.strainDelta ?? 0) >= 5) {
     return {
-      href: '/nutrition',
-      labelKey: 'coachActionLogNutrition',
-      defaultLabel: 'Log protein',
-      reasonKey: 'victoryNextFuelReason',
-      defaultReason: 'Fuel the work — log a meal so Win Score captures recovery nutrition.',
+      href: '/log',
+      labelKey: 'victoryNextRestLabel',
+      defaultLabel: 'Back to Today',
+      reasonKey: 'victoryNextRestReason',
+      defaultReason: 'Strain is up — recover, then hit a lighter session when ready.',
     };
   }
-  if ((opts.strainDelta ?? 0) >= 5) {
-    return {
-      href: '/mind',
-      labelKey: 'coachActionOpenMind',
-      defaultLabel: '3-min Mind',
-      reasonKey: 'victoryNextMindReason',
-      defaultReason: 'Downshift strain with a short breathing session.',
-    };
-  }
+
   return {
-    href: '/move',
-    labelKey: 'coachActionOpenMove',
-    defaultLabel: 'Mobility flow',
-    reasonKey: 'victoryNextMoveReason',
-    defaultReason: 'A short Move flow keeps tomorrow’s readiness high.',
+    href: '/active',
+    labelKey: 'victoryNextTrainLabel',
+    defaultLabel: 'Train again',
+    reasonKey: 'victoryNextTrainReason',
+    defaultReason: 'Keep the path alive — Just Go when you’re ready.',
   };
 }
 

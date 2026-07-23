@@ -44,6 +44,15 @@ export function AboutPage() {
             </p>
           </InfoSection>
 
+          <InfoSection title={t('infoAboutEvidence', { defaultValue: 'Exercise as medicine' })}>
+            <p className="text-muted-foreground">
+              {t('infoAboutEvidenceBody', {
+                defaultValue:
+                  'Hundreds of clinical trials support exercise for mild to moderate depressive symptoms — often comparable to medication in research settings. Yet most mental health professionals never received formal training in prescribing exercise, so advice stays “just go work out.” Mission Winning turns training into a clear, adaptive weekly plan you can follow on any phone. We do not diagnose or treat depression; this is educational fitness, not clinical care.',
+              })}
+            </p>
+          </InfoSection>
+
           {isAmericaTrackEnabled() && (
             <InfoSection title={t('infoAboutNational', { defaultValue: 'National fitness (U.S.)' })}>
               <CouncilLeadershipBlock />

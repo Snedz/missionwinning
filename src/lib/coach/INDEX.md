@@ -13,6 +13,7 @@
 7. `planEngine.ts` — `generateWeek`, `computeContextHash`
 8. `adapt.ts` — `adaptPlan`, missed sessions, readiness swap, equipment change
 8b. `adaptSummary.ts` — re-exports from `packages/mw-core` (shared with Expo)
+8c. `weekDose.ts` — plain-language weekly “dose” (session count · intent · minutes) for Coach UI
 9. `storage.ts` — `loadPlan`, `savePlan`, taster flags, device id
 10. `contextBuilder.ts` — `readLocalCoachContext`, assembles from localStorage + history
 11. `planVoiceServer.ts` — LLM/rules voice for weekly briefing (used by API route)
@@ -35,6 +36,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 | File | Covers |
 |------|--------|
 | `adaptSummary.test.ts` | Missed / swapped / revision beats for demo banner |
+| `weekDose.test.ts` | Session counts + strength/mixed intent labels |
 
 ## Tests (colocated)
 

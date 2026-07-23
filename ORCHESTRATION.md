@@ -18,22 +18,25 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 ## Principles
 
-1. **Distribution before decoration** — no major features while beta gates fail (except hero bugs / launch unblock).
-2. **Train + Fuel + Today are the product** — other pillars free-usable; premium depth expands after week-4 retention holds.
-3. **One boss metric** — week-4 retained weekly loggers. Languages, pillars, stars alone are vanity.
-4. **Two workstreams** — Founder (users, money, legal) and Agents (code, tests, perf, docs) in parallel; agents never mark founder work done.
+1. **Wedge excellence before beta theater** — build Train → Today → Victory → Coach until the founder scores “not lame.” ≥10 invites are a **public-flip** gate, not a code freeze.
+2. **Train + Mission Coach are the product** — other pillars stay free-usable; do not deepen them while the wedge feels weak.
+3. **One boss metric (after public)** — week-4 retained weekly loggers. Languages, pillars, stars alone are vanity.
+4. **Two workstreams** — Founder (users, money, legal, excellence sign-off) and Agents (wedge code, tests, perf, docs) in parallel; agents never mark founder work done.
 5. **Selective rebuild only** — decompose fat modules; no framework rewrite.
 6. **Vision filter** — free core never gated; America/school flag-off until a real channel.
 
 ```mermaid
 flowchart TB
-  subgraph H0 [Horizon 0 - Now]
-    H[Phase H launch ops]
+  subgraph HW [Horizon W - Now]
+    W[Wedge excellence W1-W4]
+    S[Founder signoff]
+  end
+  subgraph H0 [Horizon 0 - Flip prep]
     B[Beta 10 users]
   end
   subgraph H1 [Horizon 1 - Public]
     P[PRIVATE_MODE false]
-    S[Live Stripe]
+    S2[Live Stripe]
     R[Week-4 retention loop]
   end
   subgraph H2 [Horizon 2 - PMF]
@@ -45,7 +48,7 @@ flowchart TB
     I18N[i18n depth]
     TWA[TWA / store]
   end
-  H --> B --> P --> S --> R --> M
+  W --> S --> B --> P --> S2 --> R --> M
   M -->|retention holds| H3
   M -->|retention fails| F
   F --> R
@@ -53,9 +56,37 @@ flowchart TB
 
 ---
 
-## Horizon 0 — Launch unblock (days 0–14)
+## Horizon W — Wedge excellence (NOW · founder override 2026-07-23)
 
-**Owner:** Founder primary · Agents: bugfix + launch docs/scripts only.
+**Owner:** Agents build · Founder scores pass/fail on phone.
+
+**Excellence criteria (all required):**
+1. One-thumb set logging outdoors
+2. One clear next session on Today (train / resume)
+3. Coach week feels earned from logs (dose + adapt visible)
+4. Missed day → re-entry without shame
+5. Phone hero ≤90s feels intentional — not empty dashboard / six-pillar chore list
+
+**Agent-required workstreams**
+
+| Stream | Outcome |
+|--------|---------|
+| W1 Activation | I-Day → `/active` with gear-matched session; no Mind modal on first missions |
+| W2 One boss CTA | Basic = Train (+ soft Coach); Just Go does not lie; Commissioned demotes boards |
+| W3 Logger + Victory | Slim set row; Victory stays in Coach/train loop |
+| W4 Coach continuity | Free weekly generate/adapt; Bundle = voice/chat/regen depth |
+
+**Agent-allowed:** All of the above + hero e2e + CI + LOG/CONTEXT sync.
+
+**Agent-forbidden (unless explicit founder override):** New pillar depth, America/PFT, locale body farms, guidebook expansion, landing redesign, wearables, Android F5, YC thesis churn as daily work.
+
+**Done when:** Founder phone path says pass → then Horizon 0 flip prep (recruit ≥10).
+
+---
+
+## Horizon 0 — Launch unblock (after excellence sign-off)
+
+**Owner:** Founder primary · Agents: hero bugs + launch docs/scripts + residual wedge polish.
 
 ### Founder critical path
 
@@ -63,23 +94,23 @@ flowchart TB
 |---|------|-----|
 | 1 | Vercel Production: `SUPABASE_SERVICE_ROLE_KEY`, `DEMO_PREMIUM=false`, rotated `PRIVATE_ACCESS_SECRET` | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 |
 | 2 | Stripe monthly / 12-mo $59 / lifetime $149 links + `STRIPE_WEBHOOK_SECRET` | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) |
-| 3 | Recruit ≥10 beta users | [docs/STRATEGY.md](docs/STRATEGY.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) |
+| 3 | Recruit ≥10 beta users **(after excellence pass)** | [docs/STRATEGY.md](docs/STRATEGY.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) |
 | 4 | Gates: I-Day ≥80%, Basic Training ≥60% | Profile beta panel, [docs/PLAN.md](docs/PLAN.md) F4 |
-| 5 | Mobile hero QA: Welcome → Just Go → set → Mission Score | Manual + `npm run e2e:critical` |
+| 5 | Mobile hero QA: Welcome → first set → Mission Coach | Manual + `npm run e2e:critical` |
 | 6 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
 | 7 | Public flip day (after gates) | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) + [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) |
 | 8 | Ops maturity Wave A: Upstash + Sentry DSN + `SMOKE_BASE_URL` / `VERCEL_*` + backup drill | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md) |
 
-### Agent-allowed (Horizon 0 only)
+### Agent-allowed (Horizon 0)
 
 - Hero-flow / gate / premium 403 regressions
 - Beta invite / founder panel / launch-verify + **growth-smoke** clarity
 - Keep CI green; docs match reality (build label, VISION_STATUS, LAUNCH_READY)
 - Public-flip offline/SW checklist maintenance
 - Production-stack scorecard + rate-limit smoke script + backup runbook (no new pillars)
-- Residual polish only if it unblocks launch or week-4 measurement (no new pillars)
+- Residual wedge polish
 
-**Done when:** 10+ profiles, BT ≥60%, secrets green, ready to flip public.
+**Done when:** Excellence already passed + 10+ profiles, BT ≥60%, secrets green, ready to flip public.
 
 ---
 

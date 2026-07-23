@@ -536,13 +536,13 @@ export function HomeTodayDashboard() {
           </p>
           <p className="text-sm font-medium text-foreground">
             {t('todayCoachInviteTitle', {
-              defaultValue: 'Generate a free taster week of Mission Coach',
+              defaultValue: 'Generate a free week of Mission Coach',
             })}
           </p>
           <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
             {t('todayCoachInviteBody', {
               defaultValue:
-                'Adaptive plan from your gear and days/week — free taster, no API key required.',
+                'Adaptive plan from your gear and days/week — free every week, no API key required.',
             })}
           </p>
         </a>

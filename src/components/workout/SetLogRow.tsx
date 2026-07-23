@@ -1,16 +1,24 @@
 'use client';
 /**
- * Active workout set logging row.
+ * Active workout set logging row — Strong/Hevy-dense mobile default.
  * See: src/components/workout/INDEX.md
  */
 
+import { useState } from 'react';
 import { Check, Minus, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { LoggedSet, SetKind } from '@/types';
-import { SET_KINDS, setKindBadgeClass, setKindCompletedRowClass, setKindDefaultLabel, setKindLabelKey, setKindRowClass } from '@/lib/workout/setKind';
+import {
+  SET_KINDS,
+  setKindBadgeClass,
+  setKindCompletedRowClass,
+  setKindDefaultLabel,
+  setKindLabelKey,
+  setKindRowClass,
+} from '@/lib/workout/setKind';
 import { cn } from '@/lib/utils';
 
 const SET_KIND_TIPS: Record<SetKind, { key: string; defaultValue: string }> = {
@@ -65,6 +73,7 @@ export function SetLogRow({
   onApplyTarget,
 }: Props) {
   const { t } = useTranslation();
+  const [showMore, setShowMore] = useState(false);
   const kind = set.kind ?? 'normal';
   const seededFromTarget =
     !!target && reps === target.reps && weight === target.weight;
@@ -79,11 +88,11 @@ export function SetLogRow({
     return (
       <div
         className={cn(
-          'flex flex-wrap items-center gap-2 rounded-xl border p-3',
+          'flex flex-wrap items-center gap-2 rounded-xl border p-2.5',
           setKindCompletedRowClass(kind)
         )}
       >
-        <span className="w-7 text-sm font-medium text-muted-foreground">#{setNumber}</span>
+        <span className="w-6 text-sm font-medium text-muted-foreground">#{setNumber}</span>
         {kind !== 'normal' && (
           <Tooltip>
             <TooltipTrigger asChild>
@@ -123,7 +132,7 @@ export function SetLogRow({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-11 min-h-[44px] min-w-[44px] text-xs px-2 tap-target"
+                    className="h-11 min-h-[44px] min-w-[44px] sm:h-10 sm:min-h-[40px] text-xs px-2 tap-target"
                     onClick={() => onRate(r)}
                   >
                     {t(
@@ -150,13 +159,123 @@ export function SetLogRow({
   return (
     <div
       className={cn(
-        'rounded-xl border p-3 space-y-2 transition-colors',
+        'rounded-xl border p-2 space-y-1.5 transition-colors',
         isNext ? setKindRowClass(kind, true) : setKindRowClass(kind, false)
       )}
     >
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm font-semibold text-muted-foreground">#{setNumber}</span>
+      {/* Strong/Hevy: one nowrap band — # · reps · weight · Log */}
+      <div className="overflow-x-auto -mx-0.5 px-0.5">
+        <div className="flex flex-nowrap items-center gap-0.5 sm:gap-1 min-w-0">
+          <span className="w-5 sm:w-6 shrink-0 text-center text-sm font-semibold tabular-nums text-muted-foreground">
+            #{setNumber}
+          </span>
+
+          <div className="flex items-center gap-0.5 shrink-0">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+              aria-label={t('activeDecreaseReps', { defaultValue: 'Decrease reps' })}
+              onClick={() => onRepsChange(Math.max(1, reps - 1))}
+            >
+              <Minus className="h-4 w-4" />
+            </Button>
+            <input
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={reps}
+              aria-label={t('activeReps', { defaultValue: 'Reps' })}
+              onFocus={(e) => e.target.select()}
+              onChange={(e) => {
+                const parsed = parseInt(e.target.value.replace(/\D/g, ''), 10);
+                onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
+              }}
+              className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg border border-input bg-background text-center text-base font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+              aria-label={t('activeIncreaseReps', { defaultValue: 'Increase reps' })}
+              onClick={() => onRepsChange(reps + 1)}
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-0.5 shrink-0">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+              aria-label={t('activeDecreaseWeight', {
+                unit: weightLabel,
+                defaultValue: `Decrease ${weightLabel}`,
+              })}
+              onClick={() => onWeightChange(Math.max(0, weight - weightStep))}
+            >
+              <Minus className="h-4 w-4" />
+            </Button>
+            <input
+              type="text"
+              inputMode="decimal"
+              value={weight}
+              aria-label={weightLabel}
+              onFocus={(e) => e.target.select()}
+              onChange={(e) => {
+                const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
+                const parsed = parseFloat(cleaned);
+                onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
+              }}
+              className="h-9 w-10 sm:h-10 sm:w-11 md:w-14 rounded-lg border border-input bg-background text-center text-base font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+              aria-label={t('activeIncreaseWeight', {
+                unit: weightLabel,
+                defaultValue: `Increase ${weightLabel}`,
+              })}
+              onClick={() => onWeightChange(weight + weightStep)}
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <Button
+            type="button"
+            variant="fitness"
+            className="ms-auto h-11 min-h-[44px] min-w-[3rem] md:min-w-[3.5rem] shrink-0 px-2.5 md:px-3 font-semibold tap-target"
+            aria-label={t('activeLogSet', { defaultValue: 'Log' })}
+            onClick={onLog}
+          >
+            {t('activeLogSet', { defaultValue: 'Log' })}
+          </Button>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        className="text-[11px] font-medium text-muted-foreground hover:text-foreground px-1 min-h-[28px]"
+        aria-expanded={showMore}
+        onClick={() => setShowMore((v) => !v)}
+      >
+        {showMore
+          ? t('activeSetLess', { defaultValue: 'Less' })
+          : t('activeSetMore', { defaultValue: 'More' })}
+        {kind !== 'normal' && !showMore
+          ? ` · ${t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}`
+          : ''}
+      </button>
+
+      {showMore && (
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border/40 pt-2">
           <div className="flex flex-wrap gap-1">
             {SET_KINDS.map((k) => (
               <Tooltip key={k}>
@@ -184,140 +303,32 @@ export function SetLogRow({
               </Tooltip>
             ))}
           </div>
+          <div className="flex items-center gap-2 flex-wrap justify-end">
+            {showApplyTarget && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-11 min-h-[44px] px-3 text-xs text-muted-foreground tap-target"
+                onClick={onApplyTarget}
+              >
+                {t('activeApplyTarget', { defaultValue: 'Apply' })}
+              </Button>
+            )}
+            {showCopyLast && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-11 min-h-[44px] px-3 text-xs tap-target"
+                onClick={onCopyLast}
+              >
+                {t('activeCopyLast', { defaultValue: 'Use last' })}
+              </Button>
+            )}
+          </div>
         </div>
-        <div className="flex items-center gap-2 flex-wrap justify-end">
-          {target && (
-            <>
-              <span className="rounded-full border border-border/50 bg-muted/20 px-2 py-0.5 text-[10px] font-medium tabular-nums text-muted-foreground">
-                {t('activeTargetChip', {
-                  reps: target.reps,
-                  weight: target.weight,
-                  defaultValue: `Target ${target.reps} × ${target.weight}`,
-                })}
-              </span>
-              {showApplyTarget && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="h-11 min-h-[44px] px-3 text-xs text-muted-foreground tap-target"
-                  onClick={onApplyTarget}
-                >
-                  {t('activeApplyTarget', { defaultValue: 'Apply' })}
-                </Button>
-              )}
-            </>
-          )}
-          {lastPerformance && (
-            <>
-              <span className="text-[10px] text-muted-foreground tabular-nums">
-                {t('activeLastPerformance', {
-                  reps: lastPerformance.reps,
-                  weight: lastPerformance.weight,
-                  defaultValue: `Last: ${lastPerformance.reps} × ${lastPerformance.weight}`,
-                })}
-              </span>
-              {showCopyLast && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="h-11 min-h-[44px] px-3 text-xs tap-target"
-                  onClick={onCopyLast}
-                >
-                  {t('activeCopyLast', { defaultValue: 'Use last' })}
-                </Button>
-              )}
-            </>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-1">
-          <span className="text-xs text-muted-foreground w-8">{t('activeReps', { defaultValue: 'Reps' })}</span>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="h-11 w-11 shrink-0"
-            aria-label="Decrease reps"
-            onClick={() => onRepsChange(Math.max(1, reps - 1))}
-          >
-            <Minus className="h-4 w-4" />
-          </Button>
-          <input
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            value={reps}
-            aria-label={t('activeReps', { defaultValue: 'Reps' })}
-            onFocus={(e) => e.target.select()}
-            onChange={(e) => {
-              const parsed = parseInt(e.target.value.replace(/\D/g, ''), 10);
-              onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
-            }}
-            className="h-11 w-12 rounded-lg border border-input bg-background text-center text-lg font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
-          />
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="h-11 w-11 shrink-0"
-            aria-label="Increase reps"
-            onClick={() => onRepsChange(reps + 1)}
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <span className="text-xs text-muted-foreground w-10">{weightLabel}</span>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="h-11 w-11 shrink-0"
-            aria-label="Decrease weight"
-            onClick={() => onWeightChange(Math.max(0, weight - weightStep))}
-          >
-            <Minus className="h-4 w-4" />
-          </Button>
-          <input
-            type="text"
-            inputMode="decimal"
-            value={weight}
-            aria-label={weightLabel}
-            onFocus={(e) => e.target.select()}
-            onChange={(e) => {
-              const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
-              const parsed = parseFloat(cleaned);
-              onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
-            }}
-            className="h-11 w-16 rounded-lg border border-input bg-background text-center text-lg font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
-          />
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="h-11 w-11 shrink-0"
-            aria-label="Increase weight"
-            onClick={() => onWeightChange(weight + weightStep)}
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <Button
-          variant="fitness"
-          size="lg"
-          className="ms-auto h-12 min-w-[88px] gap-2 font-semibold"
-          onClick={onLog}
-        >
-          <Check className="h-5 w-5" />
-          {t('activeLogSet', { defaultValue: 'Log' })}
-        </Button>
-      </div>
+      )}
     </div>
   );
 }

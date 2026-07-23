@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { Share2, Trophy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +17,7 @@ import { formatDuration } from '@/lib/utils';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { track } from '@/lib/analytics';
+import { upsertTodayPartial } from '@/lib/mindCheckIns';
 
 type Props = {
   open: boolean;
@@ -36,6 +38,7 @@ export function WorkoutVictorySheet({
   const { t } = useTranslation();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
+  const [feelSaved, setFeelSaved] = useState(false);
 
   if (!summary) return null;
 
@@ -84,8 +87,20 @@ export function WorkoutVictorySheet({
 
   const hasCoachNext = summary.nextAction?.href?.includes('/coach');
 
+  const saveFeel = (energy: number) => {
+    upsertTodayPartial({ energy, mood: energy });
+    setFeelSaved(true);
+    track('readiness_checkin_completed', { adjusted: true, source: 'victory' });
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        if (!next) setFeelSaved(false);
+        onOpenChange(next);
+      }}
+    >
       <DialogContent className="victory-lock card-glow-brass sm:max-w-md border-brass/30 bg-gradient-to-b from-card to-brass/5">
         <DialogHeader className="text-center space-y-3 victory-reveal">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brass/20 border border-brass/40">
@@ -118,6 +133,42 @@ export function WorkoutVictorySheet({
               {formatDuration(summary.durationSeconds)}
             </p>
           </div>
+        </div>
+
+        <div className="rounded-xl border border-border/40 bg-muted/15 px-3 py-3 space-y-2">
+          <p className="text-center text-xs text-muted-foreground">
+            {feelSaved
+              ? t('victoryFeelSaved', { defaultValue: 'Logged — feeds readiness on Today.' })
+              : t('victoryFeelPrompt', {
+                  defaultValue: 'How do you feel after this session?',
+                })}
+          </p>
+          {!feelSaved && (
+            <>
+              <div
+                className="flex gap-1"
+                role="group"
+                aria-label={t('victoryFeelPrompt', {
+                  defaultValue: 'How do you feel after this session?',
+                })}
+              >
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => saveFeel(n)}
+                    className="flex-1 min-h-[44px] tap-target rounded-md text-sm font-medium bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+              <div className="flex justify-between text-[10px] text-muted-foreground px-0.5">
+                <span>{t('victoryFeelLow', { defaultValue: 'Drained' })}</span>
+                <span>{t('victoryFeelHigh', { defaultValue: 'Energized' })}</span>
+              </div>
+            </>
+          )}
         </div>
 
         {summary.bodyDelta && (

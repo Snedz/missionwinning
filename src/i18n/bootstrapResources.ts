@@ -34,9 +34,9 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
   todayCoachInviteEyebrow: 'AI weekly plan',
-  todayCoachInviteTitle: 'Generate a free taster week of Mission Coach',
+  todayCoachInviteTitle: 'Generate a free week of Mission Coach',
   todayCoachInviteBody:
-    'Adaptive plan from your gear and days/week — free taster, no API key required.',
+    'Adaptive plan from your gear and days/week — free every week, no API key required.',
   landingNavStart: 'Start free',
   landingFaqEyebrow: 'Straight answers',
   landingFaqFreeQ: 'Is the free version actually complete?',

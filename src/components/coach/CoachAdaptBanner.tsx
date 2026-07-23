@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import type { CoachPlan } from '@/lib/coach/types';
 import {
@@ -27,6 +28,8 @@ export function CoachAdaptBanner({ plan, compact }: Props) {
   if (!showHeadline) return null;
 
   const visibleBeats = compact ? beats.slice(0, 1) : beats.slice(0, 3);
+  const missedCount = plan.sessions.filter((s) => s.status === 'missed').length;
+  const showReentry = !compact && missedCount > 0;
 
   return (
     <div
@@ -79,6 +82,29 @@ export function CoachAdaptBanner({ plan, compact }: Props) {
             defaultValue: `Plan revision ${plan.revision} — week reshaped from workout history alone.`,
           })}
         </p>
+      )}
+      {showReentry && (
+        <div className="pt-1 space-y-2">
+          <p className="text-xs text-foreground/90">
+            {t('coachAdaptReentryLead', {
+              defaultValue: 'Ready to get back on the path?',
+            })}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/active"
+              className="inline-flex min-h-[44px] items-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground tap-target"
+            >
+              {t('coachAdaptJustGo', { defaultValue: 'Just Go — log one set' })}
+            </Link>
+            <Link
+              href="/log"
+              className="inline-flex min-h-[44px] items-center rounded-md border border-border px-3 text-sm text-muted-foreground hover:text-foreground tap-target"
+            >
+              {t('coachAdaptLighterWeek', { defaultValue: 'Open Today' })}
+            </Link>
+          </div>
+        </div>
       )}
     </div>
   );

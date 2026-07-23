@@ -66,21 +66,17 @@ Analogous to **In-processing Day → Basic Training → Readiness → Commission
 
 ---
 
-### Phase 1 — Basic Training: *First wins in every pillar*
+### Phase 1 — Basic Training: *First workout (wedge)*
 
-*Like BCT week 1: small achievable tasks, not the whole war.*
+*Horizon W (2026-07-23): Basic Training is **first workout only** — not a six-pillar scavenger hunt. Other pillars stay free and available; they are not journey gates.*
 
 | Milestone | Action | Unlock |
 |-----------|--------|--------|
-| BT-1 | Complete **first workout** (guided 10-min bodyweight) | Train tab confidence badge |
-| BT-2 | Log **protein once** in Fuel | Fuel tab |
-| BT-3 | Finish **one Move flow** (4 min) | Move in “More” |
-| BT-4 | **One breathing cycle** in Mind | Mind in “More” |
-| BT-5 | Mark **one Learn lesson** done | Learn in “More” |
+| BT-1 | Complete **first workout** (gear-matched Just Go / I-Day session) | Advance toward Readiness; soft Coach invite |
 
-**UI:** Today shows **only the next incomplete BT step** as the hero CTA. Other cards collapsed.
+**UI:** Today shows **train / resume** as the hero CTA. Fuel / Move / Mind / Learn are not required to leave Basic.
 
-**Exit criteria:** All BT-1…BT-5 done → Phase 2.
+**Exit criteria:** First workout logged → Phase 2 (Readiness).
 
 ---
 

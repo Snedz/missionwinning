@@ -28,6 +28,14 @@ Pattern (not Elon/Musk branding): different fronts, one goal — expand what hum
 
 **One goal:** Make the path of building lifelong health accessible to every human with a phone — so more of humanity can show up strong for everything else. Consumer marketing stays MW’s own voice (the path, Train Anywhere, Win Daily, Mission Coach) — not “Team Humanity™” or civilizational cosplay.
 
+### Why the body first — exercise as medicine
+
+Human capability starts with a body that can show up. Hundreds of clinical trials support exercise for **mild to moderate** depressive symptoms — often comparable to medication in research settings — and major guidelines already name exercise as a first-line option for mild depression. Yet most mental health professionals never received formal training in **exercise prescription**, so practice collapses to “just go work out”: no dose, no progression, no plan when life happens.
+
+**Mission Winning’s breakthrough is not treating depression.** It is building the missing infrastructure between evidence and real life: **structured, adaptive training people can actually follow** — free logging + Mission Coach (weekly dose, fatigue-aware revisions) on any phone, no gym or wearable required. Energy, mood, and resilience are honest outcomes of showing up; they are not a clinical product line. Full cites and claim hygiene: [docs/EXERCISE_AS_MEDICINE.md](docs/EXERCISE_AS_MEDICINE.md).
+
+**Boundary (unchanged):** Educational tools and a daily supplement — not medical care, not a replacement for human coaches or clinicians. Never diagnose, treat, or claim to replace medication or therapy.
+
 ---
 
 ## Bevel-Inspired UI (Visual Layer Only)

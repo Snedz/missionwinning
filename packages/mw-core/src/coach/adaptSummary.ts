@@ -23,8 +23,8 @@ export function summarizeCoachAdaptations(plan: CoachPlan): CoachAdaptBeat[] {
       count: missed,
       defaultMessage:
         missed === 1
-          ? '1 session missed earlier — remaining days re-spread so the week still fits.'
-          : `${missed} sessions missed earlier — remaining days re-spread so the week still fits.`,
+          ? 'Life happened — 1 session missed. Remaining days are re-spread so the week still fits. No shame; just continue.'
+          : `Life happened — ${missed} sessions missed. Remaining days are re-spread so the week still fits. No shame; just continue.`,
     });
   }
   if (swapped > 0) {

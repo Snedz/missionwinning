@@ -88,6 +88,19 @@ curl -X POST "$BASE/api/private-access" \
   -d '{"password":"YOUR_SECRET"}'
 ```
 
+### `POST /api/private-access/session`
+
+| | |
+|--|--|
+| Auth | Bearer Supabase `access_token` (`getUser`) |
+| Rate | 20/min/IP |
+| Response | Sets httpOnly gate cookie after OAuth — needed because browser sessions live in localStorage and the proxy cannot see them |
+
+```bash
+curl -X POST "$BASE/api/private-access/session" \
+  -H "Authorization: Bearer $ACCESS_TOKEN"
+```
+
 ---
 
 ## Leads

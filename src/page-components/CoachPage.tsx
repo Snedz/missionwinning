@@ -21,6 +21,7 @@ import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { CoachPlanSkeleton, SkeletonCard } from '@/components/ui/Skeleton';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
+import { summarizeWeekDose } from '@/lib/coach/weekDose';
 
 const CoachVoiceCard = dynamic(
   () => import('@/components/coach/CoachVoiceCard').then((m) => m.CoachVoiceCard),
@@ -52,6 +53,23 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
     adjustToday,
   } = useCoachPlan();
   const [adjustOpen, setAdjustOpen] = useState(false);
+  const weekDose = plan ? summarizeWeekDose(plan) : null;
+  const doseIntentKey =
+    weekDose?.intent === 'strength'
+      ? 'coachWeekDoseStrength'
+      : weekDose?.intent === 'conditioning'
+        ? 'coachWeekDoseConditioning'
+        : weekDose?.intent === 'recovery'
+          ? 'coachWeekDoseRecovery'
+          : 'coachWeekDoseMixed';
+  const doseIntentDefault =
+    weekDose?.intent === 'strength'
+      ? 'mostly strength'
+      : weekDose?.intent === 'conditioning'
+        ? 'conditioning focus'
+        : weekDose?.intent === 'recovery'
+          ? 'recovery-heavy'
+          : 'mixed strength & recovery';
 
   return (
     <PillarPageShell
@@ -127,7 +145,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week yet' })}
           description={t('coachGenerateEmptyDesc', {
             defaultValue:
-              'Generate a free taster week from your logs. Premium unlocks regenerate and deeper adaptation.',
+              'Generate this week’s plan from your logs — free every week. Super Bundle unlocks chat and on-demand regenerate.',
           })}
           actionLabel={t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
           onAction={() => generate()}
@@ -141,20 +159,33 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               {t('coachWeekEyebrow', { defaultValue: "THIS WEEK'S MISSION" })}
             </p>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
+            {weekDose && weekDose.sessionCount > 0 && (
+              <p className="mt-3 text-center text-sm text-muted-foreground" data-testid="coach-week-dose">
+                {t('coachWeekDose', {
+                  count: weekDose.sessionCount,
+                  intent: t(doseIntentKey, { defaultValue: doseIntentDefault }),
+                  minutes: weekDose.estMinutes,
+                  defaultValue: `This week’s dose: ${weekDose.sessionCount} sessions · ${doseIntentDefault} · ~${weekDose.estMinutes} min`,
+                })}
+              </p>
+            )}
           </div>
 
           <CoachAdaptBanner plan={plan} />
 
           <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
 
-          <CoachChatPanel
-            premium={premium}
-            readiness={ctx.bodyScores.readiness}
-            strain={ctx.bodyScores.strain}
-            recovery={ctx.bodyScores.recovery}
-            todaySession={todaySession}
-            askExerciseId={askExerciseId}
-          />
+          {/* Form deep-link (?ask=): show free cues / chat near top */}
+          {askExerciseId ? (
+            <CoachChatPanel
+              premium={premium}
+              readiness={ctx.bodyScores.readiness}
+              strain={ctx.bodyScores.strain}
+              recovery={ctx.bodyScores.recovery}
+              todaySession={todaySession}
+              askExerciseId={askExerciseId}
+            />
+          ) : null}
 
           {todaySession && todaySession.status !== 'done' && (
             <div className="space-y-2">
@@ -177,6 +208,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             </div>
           )}
 
+          {/* Free Coach hero: week sessions before any Bundle upsell */}
           <div className="space-y-4">
             {plan.sessions
               .slice()
@@ -194,6 +226,15 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
               ))}
           </div>
 
+          {!askExerciseId ? (
+            <CoachChatPanel
+              premium={premium}
+              readiness={ctx.bodyScores.readiness}
+              strain={ctx.bodyScores.strain}
+              recovery={ctx.bodyScores.recovery}
+              todaySession={todaySession}
+            />
+          ) : null}
           {premium && (
             <HoldToConfirmButton
               variant="destructive"
