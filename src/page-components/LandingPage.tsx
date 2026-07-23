@@ -70,9 +70,9 @@ export function LandingPage() {
       <MarketingNav variant="full" />
 
       {/* 1 · Hero */}
-      <header className="hero-field texture-grid texture-noise section-seam relative overflow-hidden">
-        <div className="relative z-[1] mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
-          <div className="page-enter">
+      <header className="hero-field hero-field--orient texture-grid texture-noise section-seam relative overflow-hidden">
+        <div className="hero-orient-grid relative z-[1] mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-14 sm:gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
+          <div className="hero-copy page-enter">
             <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4">
               Mission Winning
             </p>
@@ -81,7 +81,7 @@ export function LandingPage() {
               <br />
               {t('landingHeroTitle2', { defaultValue: 'Win daily.' })}
             </h1>
-            <p className="mb-8 max-w-md text-lg leading-relaxed text-muted-foreground">
+            <p className="hero-subtitle mb-8 max-w-md text-lg leading-relaxed text-muted-foreground">
               {t('landingHeroSubtitle', {
                 defaultValue:
                   'Free offline logging (no account) and weekly plans that adapt from your logs alone — no wearable required.',
@@ -95,15 +95,15 @@ export function LandingPage() {
               {t('landingNavStart', { defaultValue: 'Start free' })}
               <ArrowRight className="h-5 w-5" />
             </button>
-            <p className="mt-4 text-xs text-muted-foreground">
+            <p className="mt-4 max-w-md text-xs text-muted-foreground">
               {t('landingHeroProof', {
                 defaultValue: 'Log a set → Coach shapes the week → Win Score ticks.',
               })}
             </p>
           </div>
 
-          <div className="journey-enter relative min-h-[22rem] lg:min-h-[28rem]">
-            <div className="absolute inset-0 overflow-hidden rounded-none border border-border/30 bg-card/40 lg:rounded-2xl">
+          <div className="hero-demo-slot journey-enter">
+            <div className="absolute inset-0 overflow-hidden rounded-2xl border border-border/30 bg-card/40 lg:rounded-2xl">
               <HeroDemo staticFallback={<HeroDemoFallback />} />
             </div>
           </div>
