@@ -207,7 +207,7 @@ export function LandingPage() {
                       <span className="section-index mt-0.5 shrink-0">
                         {String(i + 1).padStart(2, '0')}
                       </span>
-                      {t(f.qKey)}
+                      {t(f.qKey, { defaultValue: f.qDefault })}
                     </span>
                     <span className="text-muted-foreground transition-transform group-open:rotate-45">
                       +
@@ -215,7 +215,7 @@ export function LandingPage() {
                   </span>
                 </summary>
                 <p className="mt-3 pl-10 text-sm leading-relaxed text-muted-foreground">
-                  {t(f.aKey)}
+                  {t(f.aKey, { defaultValue: f.aDefault })}
                 </p>
               </details>
             ))}

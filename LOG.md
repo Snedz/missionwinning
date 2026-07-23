@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-22 — Landing FAQ raw keys (`.108`)
+
+- FAQ used `t(key)` with no `defaultValue` while full catalogs hydrate after interaction/2.8s — showed `landingFaqFreeQ` etc.
+- Fix: FAQ defaults on keys + bootstrap EN FAQ strings; hydrate ends with `changeLanguage` so UI refreshes.
+- Build: `2026.07-unified.108` — promote www after Ready.
+
 ## 2026-07-22 — Emerald glow + homepage craft (`.107`)
 
 - **Landing:** hero ambient orbs + stronger `.hero-field` emerald bloom; demo slot `card-elevated card-glow-emerald`; Win Score ring glow; `primary-action` emerald shadow; brand eyebrow live + emerald title accent; ≤1 glow (hero only).

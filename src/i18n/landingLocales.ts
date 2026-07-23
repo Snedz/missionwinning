@@ -908,8 +908,32 @@ export const LANDING_JOURNEY_KEYS = [
 ] as const;
 
 export const LANDING_FAQ_KEYS = [
-  { qKey: 'landingFaqFreeQ', aKey: 'landingFaqFreeA' },
-  { qKey: 'landingFaqOfflineQ', aKey: 'landingFaqOfflineA' },
-  { qKey: 'landingFaqBundleQ', aKey: 'landingFaqBundleA' },
-  { qKey: 'landingFaqWhoQ', aKey: 'landingFaqWhoA' },
+  {
+    qKey: 'landingFaqFreeQ',
+    aKey: 'landingFaqFreeA',
+    qDefault: 'Is the free version actually complete?',
+    aDefault:
+      'Yes. The workout tracker, exercise library, program templates, nutrition log, scores, streaks, and leaderboards are free forever, with no account required.',
+  },
+  {
+    qKey: 'landingFaqOfflineQ',
+    aKey: 'landingFaqOfflineA',
+    qDefault: 'Does it work offline, in my country, in my language?',
+    aDefault:
+      'Mission Winning is an installable web app that runs in any modern browser and keeps the core working offline.',
+  },
+  {
+    qKey: 'landingFaqBundleQ',
+    aKey: 'landingFaqBundleA',
+    qDefault: 'What is the Super Bundle?',
+    aDefault:
+      'One subscription that unlocks premium depth across all six pillars — training plans, deep nutrition, mobility, mind, tracking, and specialist programs.',
+  },
+  {
+    qKey: 'landingFaqWhoQ',
+    aKey: 'landingFaqWhoA',
+    qDefault: 'Who is this for?',
+    aDefault:
+      'Anyone who wants a disciplined, evidence-based path — from a garage gym to a park with only floor space.',
+  },
 ] as const;

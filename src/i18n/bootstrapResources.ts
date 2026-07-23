@@ -38,6 +38,19 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   todayCoachInviteBody:
     'Adaptive plan from your gear and days/week — free taster, no API key required.',
   landingNavStart: 'Start free',
+  landingFaqEyebrow: 'Straight answers',
+  landingFaqFreeQ: 'Is the free version actually complete?',
+  landingFaqFreeA:
+    'Yes. The workout tracker, exercise library, program templates, nutrition log, scores, streaks, and leaderboards are free forever, with no account required.',
+  landingFaqOfflineQ: 'Does it work offline, in my country, in my language?',
+  landingFaqOfflineA:
+    'Mission Winning is an installable web app that runs in any modern browser and keeps the core working offline.',
+  landingFaqBundleQ: 'What is the Super Bundle?',
+  landingFaqBundleA:
+    'One subscription that unlocks premium depth across all six pillars — training plans, deep nutrition, mobility, mind, tracking, and specialist programs.',
+  landingFaqWhoQ: 'Who is this for?',
+  landingFaqWhoA:
+    'Anyone who wants a disciplined, evidence-based path — from a garage gym to a park with only floor space.',
   install: 'Install App (PWA)',
   signOut: 'Sign Out',
   language: 'Language',
