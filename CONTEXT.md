@@ -16,14 +16,14 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-23 · web `2026.07-unified.114` · Android `1.24.1`)
+## Now (2026-07-23 · web `2026.07-unified.115` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon W — wedge excellence (founder override).** #1 bottleneck: make Train→Today→Victory→Coach **not lame** (W1–W4). ≥10 beta is **after** excellence sign-off — not instead of building. See [ORCHESTRATION.md](ORCHESTRATION.md) § Horizon W.
 - Agents **must** ship wedge habit-loop work. Refuse new pillars / America / locale farms / F5.
-- **Ops (parallel, not blocking wedge):** promote **`.114`** (Google OAuth + gate mint); founder still owns secrets / Code scanning / Accept B / Sentry when ready.
-- Shipped: `.114` Google→gate fix; prior `.113` free Coach week. **Founder:** phone excellence pass/fail before ≥10 beta.
+- **Ops (parallel, not blocking wedge):** promote **`.115`**; **founder: set Supabase Site URL to `https://www.missionwinning.com`** (not `*.vercel.app`) or Google keeps bouncing.
+- Shipped: `.115` OAuth canonical host; prior `.114` gate session mint. **Founder:** phone excellence pass/fail before ≥10 beta.
 
 
 ---
