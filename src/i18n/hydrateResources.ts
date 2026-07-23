@@ -130,6 +130,10 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       applyLocalePack(common, lang);
       instance.addResourceBundle(lang, 'common', common, true, true);
     }
+
+    // addResourceBundle emits `added`, not `loaded` — force a refresh so
+    // screens that rendered bootstrap-only keys pick up full catalogs.
+    void instance.changeLanguage(instance.language);
   })();
 
   return hydratePromise;

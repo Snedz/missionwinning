@@ -16,15 +16,15 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-22 · web `2026.07-unified.107` · Android `1.24.1`)
+## Now (2026-07-22 · web `2026.07-unified.108` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon 0 — beta sprint through 2026-08-02** (may skip formal beta — founder call). Boss metric: week-4 retained weekly loggers. **#1 bottleneck: recruit ≥10** + phone hero QA — [docs/BETA_INVITE.md](docs/BETA_INVITE.md) + [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §1→§3.
 - **Founder override:** Design **D1–D4** + layout/glow craft (`.106`–`.107`) — [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md).
-- **Ops:** GitHub Pro / billing unblocked. CI soft-gates: CodeQL upload + Aikido skip-when-unset. **www:** promote **`.107`**. **Founder still:** enable Code scanning; phone hero QA + ≥10 invites; Android Accept B → Play Internal; Wave A Sentry; Aikido + `LAUNCH_STRICT` secrets.
+- **Ops:** GitHub Pro / billing unblocked. CI soft-gates: CodeQL upload + Aikido skip-when-unset. **www:** promote **`.108`**. **Founder still:** enable Code scanning; phone hero QA + ≥10 invites; Android Accept B → Play Internal; Wave A Sentry; Aikido + `LAUNCH_STRICT` secrets.
 - Agents: no new pillars · **no F5**.
-- Shipped: web **`.107`** emerald glow restored (hero demo + Mission Score rings + CTA bloom). Android **1.24.1**. In flight: **Accept B re-walk**.
+- Shipped: web **`.108`** landing FAQ bootstrap defaults (raw keys fix). Android **1.24.1**. In flight: **Accept B re-walk**.
 
 
 ---
