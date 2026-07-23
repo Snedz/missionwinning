@@ -68,9 +68,13 @@ export function HeroDemo({ staticFallback }: Props) {
   if (!mounted && staticFallback) return <>{staticFallback}</>;
 
   return (
-    <div className="content-card p-6 sm:p-8" role="region" aria-label={t('heroDemoRegion', { defaultValue: 'Interactive workout demo' })}>
+    <div
+      className="relative h-full overflow-auto bg-gradient-to-b from-primary/[0.07] to-transparent p-6 sm:p-8"
+      role="region"
+      aria-label={t('heroDemoRegion', { defaultValue: 'Interactive workout demo' })}
+    >
       <div className="briefing-rule mb-6">
-        <span className="eyebrow">{t('heroDemoToday', { defaultValue: 'Today' })}</span>
+        <span className="eyebrow-live">{t('heroDemoToday', { defaultValue: 'Today' })}</span>
       </div>
       <div className="mb-6 flex items-center justify-center">
         <ProgressRing
@@ -79,6 +83,7 @@ export function HeroDemo({ staticFallback }: Props) {
           subtitle={t('heroDemoAllPillars', { defaultValue: 'From your logs' })}
           tone="emerald"
           size="lg"
+          glow
         />
       </div>
       <MetricsRow scores={scores} demo embedded />
@@ -91,11 +96,11 @@ export function HeroDemo({ staticFallback }: Props) {
               type="button"
               onClick={logSet}
               disabled={done || loggedSets !== i}
-              className="flex w-full items-center justify-between rounded-lg border border-border/60 bg-muted/20 px-4 py-3 text-sm transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+              className="flex w-full items-center justify-between rounded-lg border border-border/60 bg-muted/20 px-4 py-3 text-sm transition-colors hover:border-primary/30 hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
             >
               <span>{label}</span>
               {done ? (
-                <Check className="h-4 w-4 text-primary" aria-hidden />
+                <Check className="h-4 w-4 text-primary drop-shadow-[0_0_6px_hsl(158_64%_42%/0.8)]" aria-hidden />
               ) : (
                 <span className="text-xs text-muted-foreground">
                   {t('heroDemoTap', { defaultValue: 'Tap to log' })}
@@ -134,12 +139,12 @@ export function HeroDemoFallback() {
     recoveryLabelKey: 'todayBodyRebuilding',
   };
   return (
-    <div className="content-card p-6 sm:p-8">
+    <div className="relative h-full overflow-auto bg-gradient-to-b from-primary/[0.07] to-transparent p-6 sm:p-8">
       <div className="briefing-rule mb-6">
-        <span className="eyebrow">Today</span>
+        <span className="eyebrow-live">Today</span>
       </div>
       <div className="mb-6 flex items-center justify-center">
-        <ProgressRing label="Win Score" value={74} subtitle="From your logs" tone="emerald" size="lg" />
+        <ProgressRing label="Win Score" value={74} subtitle="From your logs" tone="emerald" size="lg" glow />
       </div>
       <MetricsRow scores={scores} demo embedded />
     </div>

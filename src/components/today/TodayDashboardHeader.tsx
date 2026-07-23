@@ -70,6 +70,7 @@ export function TodayDashboardHeader({
                   subtitle={t('todayMissionScoreFromLogs', { defaultValue: 'From your logs' })}
                   tone="emerald"
                   size={ringSize}
+                  glow
                   className="score-tick"
                 />
               </button>

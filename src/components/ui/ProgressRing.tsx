@@ -13,6 +13,8 @@ export type ProgressRingProps = {
   progress?: number;
   tone?: ProgressRingTone;
   size?: 'sm' | 'md' | 'lg';
+  /** Soft bloom behind the ring (emerald Win / Mission Score). */
+  glow?: boolean;
   className?: string;
 };
 
@@ -55,6 +57,7 @@ export function ProgressRing({
   progress,
   tone = 'emerald',
   size = 'md',
+  glow,
   className,
 }: ProgressRingProps) {
   const numericProgress =
@@ -68,11 +71,23 @@ export function ProgressRing({
   const c = TONE_MAP[tone];
   const display =
     typeof value === 'number' ? String(Math.max(0, Math.min(100, Math.round(value)))) : value;
+  const showGlow = glow ?? (tone === 'emerald' && size === 'lg');
 
   return (
-    <div className={cn('flex flex-col items-center gap-2 ring-draw-in', className)}>
+    <div
+      className={cn(
+        'flex flex-col items-center gap-2 ring-draw-in',
+        showGlow && 'ring-glow-emerald',
+        className
+      )}
+    >
       <div className="relative" style={{ width: dim, height: dim }}>
-        <svg width={dim} height={dim} className="-rotate-90" aria-hidden>
+        <svg
+          width={dim}
+          height={dim}
+          className={cn('-rotate-90', showGlow && 'drop-shadow-[0_0_10px_hsl(158_64%_42%/0.55)]')}
+          aria-hidden
+        >
           <circle
             cx={dim / 2}
             cy={dim / 2}
@@ -88,7 +103,7 @@ export function ProgressRing({
             fill="none"
             strokeWidth={strokeWidth}
             strokeLinecap="round"
-            className={cn('transition-all duration-700 ease-out', c.stroke)}
+            className={cn('transition-all duration-700 ease-out motion-reduce:transition-none', c.stroke)}
             strokeDasharray={circumference}
             strokeDashoffset={offset}
           />

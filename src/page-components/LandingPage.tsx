@@ -71,15 +71,15 @@ export function LandingPage() {
 
       {/* 1 · Hero */}
       <header className="hero-field hero-field--orient texture-grid texture-noise section-seam relative overflow-hidden">
+        <div className="hero-orb hero-orb--primary" aria-hidden />
+        <div className="hero-orb hero-orb--secondary" aria-hidden />
         <div className="hero-orient-grid relative z-[1] mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-14 sm:gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
           <div className="hero-copy page-enter">
-            <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4">
-              Mission Winning
-            </p>
+            <p className="eyebrow-live mb-4">Mission Winning</p>
             <h1 className="display-hero mb-6">
               {t('landingHeroTitle1', { defaultValue: 'Train anywhere.' })}
               <br />
-              {t('landingHeroTitle2', { defaultValue: 'Win daily.' })}
+              <span className="text-primary">{t('landingHeroTitle2', { defaultValue: 'Win daily.' })}</span>
             </h1>
             <p className="hero-subtitle mb-8 max-w-md text-lg leading-relaxed text-muted-foreground">
               {t('landingHeroSubtitle', {
@@ -103,7 +103,7 @@ export function LandingPage() {
           </div>
 
           <div className="hero-demo-slot journey-enter">
-            <div className="absolute inset-0 overflow-hidden rounded-2xl border border-border/30 bg-card/40 lg:rounded-2xl">
+            <div className="absolute inset-0 overflow-hidden rounded-2xl border border-primary/25 bg-card/50 card-elevated card-glow-emerald">
               <HeroDemo staticFallback={<HeroDemoFallback />} />
             </div>
           </div>
@@ -128,9 +128,9 @@ export function LandingPage() {
             </p>
           </Reveal>
           <Reveal delayMs={100}>
-            <div className="card-elevated mx-auto w-full max-w-md border-border/40 p-3 shadow-glow sm:p-4">
+            <div className="card-elevated mx-auto w-full max-w-md border-border/40 p-3 sm:p-4">
               <div className="mb-2 flex items-center justify-center gap-1.5" aria-hidden>
-                <span className="h-1.5 w-1.5 rounded-full bg-border" />
+                <span className="h-1.5 w-1.5 rounded-full bg-primary/50" />
                 <span className="h-1.5 w-8 rounded-full bg-border/80" />
               </div>
               {belowFoldReady ? (
@@ -225,6 +225,7 @@ export function LandingPage() {
 
       {/* 5 · Final CTA (sole conversion block) */}
       <section className="hero-field texture-noise relative overflow-hidden">
+        <div className="hero-orb hero-orb--primary opacity-70" aria-hidden />
         <div
           className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-40"
           aria-hidden
