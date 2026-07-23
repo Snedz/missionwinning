@@ -44,6 +44,7 @@ Legend:
 |-------|---------|------|------|------|
 | `private-access` | POST | public password | 8/min/IP (Upstash) | password |
 | `private-access/session` | POST | Bearer access_token (getUser) | 20/min/IP | mints gate cookie after OAuth |
+| `geo` | GET | public (CDN country headers) | 60/min/IP | first-visit lang/units defaults |
 | `leads` | POST | public (gate path) | 5/min/IP | Zod `leadsBodySchema`; fire-and-forget confirm email |
 | `leads/unsubscribe` | GET | public token | 20/min/IP | HMAC `NUDGE_SECRET` |
 | `journey/welcome` | POST | session | 5/min/IP | one-time welcome email |

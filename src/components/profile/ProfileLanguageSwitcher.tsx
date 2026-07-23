@@ -9,6 +9,11 @@ export function ProfileLanguageSwitcher() {
   const { t } = useTranslation();
   const currentLang = normalizeAppLang(i18n.language);
   const changeLanguage = (lng: string) => {
+    try {
+      localStorage.setItem('mw_lang_explicit', '1');
+    } catch {
+      /* private mode */
+    }
     i18n.changeLanguage(lng);
     scheduleJourneyPush();
   };

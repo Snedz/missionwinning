@@ -6,6 +6,11 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Region defaults for language + units (`.117`)
+
+- First visit: `/api/geo` reads Vercel/Cloudflare country → default language (APP_LANGS) + units (imperial for US/LR/MM). Profile/Guide choices set explicit flags and are never overwritten.
+- Build: `2026.07-unified.117`.
+
 ## 2026-07-23 — PKCE via @supabase/ssr cookies (`.116`)
 
 - “PKCE code verifier not found” after Google: browser client now `createBrowserClient` (cookie verifier); `/auth/callback` is a Route Handler that `exchangeCodeForSession` server-side and mints the private-gate cookie.

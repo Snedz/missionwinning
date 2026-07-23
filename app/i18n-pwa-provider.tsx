@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { HtmlLangSync } from '@/components/i18n/HtmlLangSync';
 import { LocaleHttpSync } from '@/components/i18n/LocaleHttpSync';
+import { RegionDefaultsBoot } from '@/components/i18n/RegionDefaultsBoot';
 import { identifyUser, initAnalytics, resetAnalyticsIdentity, track } from '@/lib/analytics';
 import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
 import { captureAttribution } from '@/lib/attribution';
@@ -193,6 +194,7 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
     <>
       <HtmlLangSync />
       <LocaleHttpSync />
+      <RegionDefaultsBoot />
       {showOfflineBanner ? <OnlineStatusBanner /> : null}
       {children}
       <AnalyticsConsentBanner />

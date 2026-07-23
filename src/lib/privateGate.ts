@@ -27,6 +27,7 @@ export const PUBLIC_PATHS_WHILE_GATED = PRIVATE_GATE_PUBLIC_PATHS;
 
 export const PUBLIC_API_PATHS_WHILE_GATED = [
   '/api/private-access',
+  '/api/geo',
   '/api/stripe-webhook',
   '/api/paypal-webhook',
   '/api/crypto-checkout',

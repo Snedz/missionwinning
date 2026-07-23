@@ -29,6 +29,11 @@ export function GuideLocaleSelect({ className, showLabel = true }: Props) {
   const current = normalizeAppLang(i18n.language);
 
   const onChange = (lng: string) => {
+    try {
+      localStorage.setItem('mw_lang_explicit', '1');
+    } catch {
+      /* private mode */
+    }
     void i18n.changeLanguage(lng);
     track('guide_locale_changed', { locale: lng });
   };
