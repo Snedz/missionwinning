@@ -22,9 +22,9 @@ Payment methods (Dashboard-controlled): **Card**, **Link**, **Apple Pay / Google
 
 ## Production setup (Checkout Sessions)
 
-**Entity first (recommended when funded):** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md).
+**Entity first (recommended when funded):** [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md). **Pre-EIN:** use Stripe as **individual / sole prop** now — [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1d; migrate to LLC after EIN.
 
-1. Stripe Dashboard → Products → create Prices for monthly ($11.99), annual ($59), lifetime ($149)
+1. Stripe Dashboard → Products → create Prices for monthly ($11.99), annual ($59), lifetime ($149) — or honest beta 80% Prices while LLC is pending
 2. Settings → Payment methods → enable Card, Link, wallets, PayPal (after LLC), **Crypto / USDC** (complete Stripe KYB eligibility first)
 3. Settings → Billing → Customer portal → enable cancel / update payment method
 4. Vercel env (Production):

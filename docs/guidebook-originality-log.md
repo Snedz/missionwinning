@@ -74,6 +74,18 @@ Original AI-generated chapter heroes (brand prompt pack) and instructional SVG c
 | `assessments-progress` hero | chapter hero WebP | AI gen → `public/learn/assessments-progress-hero.webp` | 2026-07-23 |
 | ch2-s1 figure | section figure | MW instructional SVG `/form-guides/air-squat.svg` | 2026-07-23 |
 
+## v1.4.1 acquisition polish (media densify)
+
+| Asset / section | Kind | Provenance | Date |
+|-----------------|------|------------|------|
+| `getting-started-mw` hero | chapter hero WebP | AI gen → optimize-inbox → `public/learn/getting-started-mw-hero.webp` | 2026-07-23 |
+| ch2-s2 figure | section figure | MW instructional SVG `/form-guides/romanian-deadlift.svg` | 2026-07-23 |
+| ch2-s3 figure | section figure | MW instructional SVG `/form-guides/push-ups.svg` | 2026-07-23 |
+| ch3-s1 figure | section figure | MW instructional SVG `/form-guides/bench-press.svg` | 2026-07-23 |
+| ch3-s2 figure | section figure | MW instructional SVG `/form-guides/squats.svg` | 2026-07-23 |
+| ch5-s2 figure | section figure | MW instructional SVG `/form-guides/plank.svg` | 2026-07-23 |
+| ch6-s2 figure | section figure | MW instructional SVG `/form-guides/pull-ups.svg` | 2026-07-23 |
+
 ## Localized editions
 
 Translations in `src/i18n/packs/{lang}.json` and guidebook locale overlays are **translations of Mission Winning original English**, not ISSA text. Regenerated via `npm run i18n:fill`.

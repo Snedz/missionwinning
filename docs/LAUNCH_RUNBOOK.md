@@ -126,11 +126,24 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 
 *No LLC required to start in most places — Stripe supports individual/sole-proprietor accounts; you can move to an entity later. This is not legal/tax advice — check your local requirements.*
 
-1. Create the account: https://dashboard.stripe.com/register (individual is fine).
+**Pre-EIN (Texas LLC filed, ~4 weeks / Bizee EIN pending):** open Stripe as **Individual**, not Company — full path [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1d. Do not wait for business Stripe/PayPal.
+
+### Pre-EIN interim checklist
+
+- [ ] Stripe **individual / sole prop** account (SSN) — not LLC/Company
+- [ ] Beta 80% Prices or Payment Links (prefer 12‑mo / Lifetime; keep monthly as anchor)
+- [ ] Production `sk_live_` / links + webhook `whsec` wired; dispute events + `FOUNDER_DIGEST_EMAIL`
+- [ ] One live or test purchase → `enrollments` + `/api/premium/status`
+- [ ] Spreadsheet for any Venmo/Zelle manual grants (stop once Stripe individual is live)
+- [ ] Calendar: migrate Stripe → LLC when EIN + business bank land
+- [ ] Phantom treasury ATA funded (optional parallel; list $149 — no amount change unless approved)
+
+1. Create the account: https://dashboard.stripe.com/register (**individual** is fine — required until EIN).
 2. Create **Products** with **Payment Links** (Dashboard → Product catalog → Add product → "Create payment link"). Pricing source of truth: `src/lib/bundleConfig.ts` + STRATEGY.md:
    - "Mission Winning Super Bundle — Monthly" · **$11.99/mo** (recurring monthly) → copy link
    - "Mission Winning Super Bundle — 12 months (Founders)" · **$59/year** (recurring yearly) → copy link  **← push this**
    - "Mission Winning Super Bundle — Founders Lifetime" · **$149** one-time → copy link
+   - **Beta 80% off:** create separate beta Prices/Links (honest amounts); wire those env vars until founders list pricing returns
 3. Webhook: Dashboard → Developers → Webhooks → Add endpoint → URL `https://www.missionwinning.com/api/stripe-webhook` → events: `checkout.session.completed`, `checkout.session.expired`, `charge.dispute.created`, `charge.dispute.updated`, `charge.dispute.closed` → copy the **signing secret** (`whsec_…`). Existing endpoint: add any missing events in Dashboard (or re-run `node scripts/setup-stripe-webhook.mjs` after delete).
 4. Add to Vercel env (Production):
    ```
@@ -144,7 +157,7 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 5. Redeploy. The bundle page switches from "waitlist" to real checkout automatically.
 6. **Refunds at Checkout (Dashboard):** Branding / Checkout **custom text** (and Payment Link description if used) → `14-day money-back: https://www.missionwinning.com/refunds` — [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md) · [STRIPE_DISPUTE_OPS.md](STRIPE_DISPUTE_OPS.md).
 7. **Test in Stripe test mode first**: use test links + test card `4242 4242 4242 4242`, confirm a row appears in Supabase `enrollments`, and that the account you paid with gets premium (`/api/premium/status` → `premium: true`).
-8. Before first live dollar: walk [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md); bookmark [legal/STRIPE_DISPUTE_EVIDENCE_PACK.md](legal/STRIPE_DISPUTE_EVIDENCE_PACK.md).
+8. Before first live dollar: walk [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) (interim sole-prop allowed — see that doc); bookmark [legal/STRIPE_DISPUTE_EVIDENCE_PACK.md](legal/STRIPE_DISPUTE_EVIDENCE_PACK.md).
 
 - [x] Stripe account live · [x] payment links created (test sandbox links on Production)
 - [x] Webhook verified via signed `--ping-webhook` → `enrollments` row (`verify-test@missionwinning.com`)
@@ -152,6 +165,7 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 - [ ] Still open: Stripe Dashboard endpoint pointing at `/api/stripe-webhook` with matching `whsec` (or `node scripts/setup-stripe-webhook.mjs` with full `sk_`) so live Payment Link checkouts deliver events
 - [ ] Dispute events enabled on webhook (`charge.dispute.*`) + `FOUNDER_DIGEST_EMAIL` set
 - [ ] Checkout custom text / Payment Link footer → `/refunds`
+- [ ] **Live individual Stripe** (pre-EIN) replacing sandbox-only checkout for beta buyers
 
 ### Phantom Lifetime USDC (code + Production env on; founder verify)
 

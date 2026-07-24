@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Share2, Trophy } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -103,8 +104,17 @@ export function WorkoutVictorySheet({
     >
       <DialogContent className="victory-lock card-glow-brass sm:max-w-md md:max-w-lg xl:max-w-xl border-brass/30 bg-gradient-to-b from-card to-brass/5">
         <DialogHeader className="text-center space-y-3 victory-reveal">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brass/20 border border-brass/40">
-            <Trophy className="h-8 w-8 text-brass" />
+          <div className="mx-auto relative h-20 w-20 overflow-hidden rounded-2xl border border-brass/40 bg-[#0a0c10]">
+            <Image
+              src="/brand/mascot/scout-celebrate.webp"
+              alt=""
+              width={80}
+              height={80}
+              className="h-full w-full object-cover"
+            />
+            <span className="sr-only">
+              {t('victoryScoutCue', { defaultValue: 'Set locked. Win logged.' })}
+            </span>
           </div>
           <DialogTitle className="text-2xl">
             {t('victoryTitle', { defaultValue: 'Mission complete' })}

@@ -2,9 +2,13 @@
 
 **Audience:** Agents and founder generating / shipping product imagery.  
 **Brand colors & voice:** [brand-guidelines.md](brand-guidelines.md) · **UI tokens:** [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)  
-**Manifest:** [`media/manifest.json`](../media/manifest.json) — check before regenerating.
+**Manifest:** [`media/manifest.json`](../media/manifest.json) — check before regenerating.  
+**Flow prompts (copy-paste):** [media/FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) · **Drop exports:** [`media/inbox/`](../media/inbox/)
 
-Generation is **offline batch** (Cursor GenerateImage, Higgsfield, Gemini design scripts) → founder approve → commit static files. There is **no** runtime image-gen API in the product.
+Generation is **offline batch** → founder approve → commit static files. There is **no** runtime image-gen API in the product.
+
+**Primary HQ tool for Learn / social / motion:** [Google Flow](https://labs.google/fx/tools/flow) (50 free credits/day on non‑AI plans).  
+**Form guides stay SVG** — do not replace with Flow video or photoreal people.
 
 ---
 
@@ -15,15 +19,18 @@ Generation is **offline batch** (Cursor GenerateImage, Higgsfield, Gemini design
 | `public/form-guides/` | In-app + public exercise teaching | SVG (optional short WebM later) | `{exerciseId}.svg` |
 | `public/art/` | Marketing decorative | AVIF + WebP pairs | `{name}.avif` / `{name}.webp` |
 | `public/learn/` | Guidebook / Learn figures | WebP (+ AVIF when large) | `{chapterId}-hero.webp` or `{sectionId}.webp` |
-| `public/social/` | Launch / invite creatives | PNG/WebP 1080² or 1080×1350 | `{campaign}-{variant}.webp` |
+| `public/social/` | Launch / invite creatives | PNG/WebP 1080² or 1080×1350; short WebM OK | `{campaign}-{variant}.webp` |
 | `public/brand/` | Logos / OG default | SVG / PNG | unchanged — see brand kit |
+| `public/brand/mascot/` | Scout character kit | WebP | `scout-{idle\|invite\|celebrate}.webp` |
+| `media/inbox/` | Raw Flow / Imagine exports (gitignored binaries OK as drafts) | PNG / MP4 / WebM | `{kind}-{id}-raw.*` |
 
 **Size budgets**
 
 - Form SVGs: keep lean (typically &lt;8 KB); long-cached via `/form-guides/*`.
 - Marketing art on `/`: ≤80 KB each, ≤250 KB total ([DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)).
 - Learn heroes: prefer ≤120 KB WebP.
-- Social: ship optimized; do not commit multi‑MB drafts.
+- Social stills: ship optimized; do not commit multi‑MB drafts.
+- Social motion: prefer ≤8s, ≤2 MB WebM when used.
 
 ---
 
@@ -33,11 +40,11 @@ Generation is **offline batch** (Cursor GenerateImage, Higgsfield, Gemini design
 
 | Field | Values |
 |-------|--------|
-| `id` | Stable id (usually exerciseId or chapterId) |
-| `kind` | `form` \| `learn` \| `art` \| `social` |
+| `id` | Stable id (usually exerciseId, chapterId, or `scout-idle`) |
+| `kind` | `form` \| `learn` \| `art` \| `social` \| `mascot` |
 | `path` | Public URL path |
 | `status` | `draft` \| `shipped` |
-| `promptId` | Optional key into prompt pack below |
+| `promptId` | Optional key into [FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md) |
 | `notes` | Short provenance / revision note |
 
 **Rule:** If `status` is `shipped` and the file exists, do not regenerate unless the founder asks for a revision. Add a new manifest entry or bump notes when replacing.
@@ -65,9 +72,9 @@ Do **not** use gym-bro aesthetics, neon glow stacks, or medical claim overlays o
 
 ---
 
-## Brand AI prompt block (raster: Learn / art / social)
+## Brand AI prompt block (raster / video: Learn / art / social)
 
-Paste or prepend when generating marketing or Learn heroes:
+Paste or prepend in Google Flow (and Grok Imagine / Cursor GenerateImage):
 
 ```
 Mission Winning brand imagery. Dark navy canvas #0a0c10, emerald accent #27b07d,
@@ -76,26 +83,62 @@ No logos invented; no competitor blue/violet identity; no cream/terracotta edito
 Atmosphere: mission briefing, train-anywhere athlete, calm competence.
 Decorative or chapter-hero only — not instructional form diagrams (those are SVG stick figures).
 No text in the image unless explicitly requested. No crisis or clinical depression framing.
+No readable UI chrome, no fake app screenshots unless asked.
 ```
 
 Instructional form **concepts** may use AI as a pose reference only; **ship** hand-tuned SVG matching the form language above.
 
 ---
 
-## Daily credit playbook (~50/day)
+## Google Flow — daily 50 free credits (primary HQ path)
 
-1. **Form refs** — pose references for next SVG batch (or skip if hand-drawing from cues).
-2. **Learn heroes** — chapter/section figures into `public/learn/`.
-3. **Social** — invite / Train Anywhere / Coach posts into `public/social/`.
-4. Update `media/manifest.json` + commit approved files only.
+Studio: https://labs.google/fx/tools/flow  
 
-**Tools (agent environment)**
+**Important (free tier):** Daily free Flow credits apply to **Veo 3.1 Lite / Fast / Quality video** generations ([Google Flow Help](https://support.google.com/flow/answer/16526234)). Unused daily credits do **not** roll over. Quality costs **100** credits — skip on free 50/day.
+
+### Credit budget (default day)
+
+| Spend | Model | Credits | Count | Output use |
+|-------|--------|---------|-------|------------|
+| Primary | Veo 3.1 **Lite** (4–8s) | ~10 each | **up to 5**/day | Social motion + **still frames** for Learn heroes |
+| Avoid | Veo 3.1 Quality | 100 | 0 on free day | Needs paid plan |
+| Optional | Veo 3.1 Fast | ~20 each | 0–2 | Only if Lite looks weak |
+
+**Stills from video:** After a good Lite clip, export / scrub the best frame → drop into `media/inbox/` as `{id}-frame.png` → run optimize script → ship WebP to `public/learn/` or `public/social/`. That is how free Flow credits produce high-quality Learn art without a separate still-image credit pool.
+
+### Agent vs founder
+
+| Who | Does what |
+|-----|-----------|
+| **Founder** | Opens Flow, pastes prompts from [FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md), spends ≤50 credits, downloads MP4/PNG into `media/inbox/` |
+| **Agent** | Maintains prompts, runs `npm run media:optimize-inbox`, updates manifest, wires paths, commits approved assets |
+| **Neither** | Puts Flow keys in Vercel / `NEXT_PUBLIC_*` — Flow is not an app API |
+
+**Grok Imagine / SuperGrok:** Same offline rule — generate in product UI → export → `media/inbox/`. Prefer for still portraits / atmosphere when Flow free tier is video-only.
+
+### Fallback tools (when Flow is spent or for quick drafts)
 
 | Tool | Use |
 |------|-----|
-| Cursor `GenerateImage` | One-off concepts / Learn heroes |
-| Higgsfield MCP | Image + short video (auth + credits) |
-| `.claude/skills/design/scripts/` | Gemini logo/CIP scripts when `GEMINI_API_KEY` set |
+| Cursor `GenerateImage` | Fast still drafts (not primary HQ) |
+| Higgsfield MCP | Image + video if authenticated |
+| `.claude/skills/design/scripts/` | Gemini logo/CIP when `GEMINI_API_KEY` set |
+
+---
+
+## Inbox → ship workflow
+
+1. Generate in Flow using [FLOW_PROMPTS.md](../media/FLOW_PROMPTS.md).
+2. Download into `media/inbox/` (name: `learn-{chapterId}-raw.mp4` or `social-{slug}-raw.png`).
+3. Run:
+
+```bash
+npm run media:optimize-inbox
+```
+
+4. Review output under `public/learn/` or `public/social/` (script prints paths).
+5. Update `media/manifest.json` (`status: shipped`, `notes: Google Flow Veo Lite …`).
+6. Commit only approved optimized files — leave huge raws in inbox (gitignored).
 
 ---
 
@@ -115,5 +158,7 @@ Instructional form **concepts** may use AI as a pose reference only; **ship** ha
 
 | Wave | Scope | Status |
 |------|--------|--------|
-| **1** | This doc + manifest + instructional form SVGs + Learn figure slots | Shipped (`.121`) |
-| **2** | Social folder creatives, Android form-guide reuse, cache headers for `/learn` + `/social` | Shipped (`.121`); optional WebM loops still later |
+| **1** | Manifest + instructional form SVGs + Learn figure slots | Shipped (`.121`) |
+| **2** | Social folder + Android form-guide reuse | Shipped (`.121`) |
+| **3** | Google Flow primary HQ path + inbox optimize + prompt pack | Shipped |
+| **4** | Scout mascot bible + kit + History empty + Victory flourish | Shipped |

@@ -252,10 +252,11 @@ export function HistoryPage() {
       {workoutHistory.length === 0 ? (
         <EmptyState
           icon={Dumbbell}
+          illustrationSrc="/brand/mascot/scout-invite.webp"
+          illustrationAlt=""
           title={t('historyEmptyTitle', { defaultValue: 'No workouts logged yet' })}
           description={t('historyEmptyDesc', {
-            defaultValue:
-              'Basic Training step: open Today → Just Go, finish one set. Your first session appears here and Mission Score starts moving.',
+            defaultValue: 'No session yet. Start when ready — open Today → Just Go, finish one set.',
           })}
           actionLabel={t('historyStartWorkout', { defaultValue: 'Go to Today' })}
           href="/log"

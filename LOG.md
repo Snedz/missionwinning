@@ -6,6 +6,24 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Beyond the Basics v1.4.1 (acquisition polish)
+
+- **Media:** `getting-started-mw` chapter hero; section figures on ch2-s2/s3, ch3-s1/s2, ch5-s2, ch6-s2 (7 total with existing ch2-s1); [`media/manifest.json`](media/manifest.json) + originality log.
+- **Links / copy:** denser `relatedExerciseIds` on movement/programming/recovery/benchmark sections; light polish on thin free bodies; meta **1.4.1**.
+- **PDF:** regenerated `public/magazine/beyond-the-basics.pdf` (~27 pages). Still 6 free chapters / 18 sections — no Horizon W expansion.
+
+## 2026-07-23 — Scout brand mascot (Duolingo → MW)
+
+- [docs/MASCOT.md](docs/MASCOT.md): Scout geometric falcon — celebrate logs, never shame; placement matrix.
+- Kit: `public/brand/mascot/` (idle / invite / celebrate + SVG mark) · Flow prompts · `mascot-*` inbox optimize.
+- Phase A social docs · Phase B History empty · Phase C Victory sheet flourish. Not on Train logger.
+
+## 2026-07-23 — Google Flow HQ media path
+
+- Free Flow credits (≈50/day, Veo Lite/Fast/Quality) are the **primary** Learn/social HQ generator; form guides stay SVG.
+- [media/FLOW_PROMPTS.md](media/FLOW_PROMPTS.md) copy-paste queue · `media/inbox/` drop zone · `npm run media:optimize-inbox`.
+- Docs: [MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md) Wave 3. No Flow keys in the product — founder generates in Flow UI.
+
 ## 2026-07-23 — Media asset system (`.121`)
 
 - [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md) + [`media/manifest.json`](media/manifest.json): form / Learn / art / social pipeline (offline gen → approve → static).
