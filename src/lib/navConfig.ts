@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import type { JourneyPhase } from '@/lib/missionJourney';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { isPathEnabled } from '@/lib/surface';
 import { PRIMARY_NAV, type PrimaryNavItem, isPrimaryPath } from '@/lib/primaryNav';
 import { STATIC_PAGE_TITLES, pageTitleForPath, ROUTE_LABELS } from '@/lib/pageTitles';
 
@@ -188,13 +189,20 @@ export function extendedNavSectionsForPhase(phase: JourneyPhase): NavSection[] {
   const withoutPremium = (sections: NavSection[]) =>
     isFreeBeta() ? sections.filter((s) => s.id !== 'premium') : sections;
 
+  // Never advertise a parked surface (src/lib/surface.ts) — a menu entry that
+  // 404s is worse than no entry. Drops sections that end up empty.
+  const withoutParked = (sections: NavSection[]) =>
+    sections
+      .map((section) => ({ ...section, items: section.items.filter((i) => isPathEnabled(i.href)) }))
+      .filter((section) => section.items.length > 0);
+
   // Open beta: expose Recover / Train deeper / Learn — journey focus returns with paid.
   if (isFreeBeta()) {
-    return withoutPremium(EXTENDED_NAV_SECTIONS);
+    return withoutParked(withoutPremium(EXTENDED_NAV_SECTIONS));
   }
 
   if (phase === 'i-day' || phase === 'basic') {
-    return [
+    return withoutParked([
       {
         id: 'train',
         title: 'Train tools',
@@ -203,12 +211,12 @@ export function extendedNavSectionsForPhase(phase: JourneyPhase): NavSection[] {
           ['/builder', '/coach', '/library', '/history', '/calculators'].includes(i.href)
         ),
       },
-    ];
+    ]);
   }
   if (phase === 'readiness') {
-    return withoutPremium(EXTENDED_NAV_SECTIONS.filter((s) => s.id !== 'premium'));
+    return withoutParked(withoutPremium(EXTENDED_NAV_SECTIONS.filter((s) => s.id !== 'premium')));
   }
-  return withoutPremium(EXTENDED_NAV_SECTIONS);
+  return withoutParked(withoutPremium(EXTENDED_NAV_SECTIONS));
 }
 
 export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];

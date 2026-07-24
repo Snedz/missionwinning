@@ -1,4 +1,5 @@
 /** Feature flags for U.S. National Fitness track (optional; global app unchanged). */
+import { isSurfaceEnabled } from '@/lib/surface';
 
 export type CouncilStatus = 'aspirational' | 'pending' | 'member';
 
@@ -9,12 +10,16 @@ export function getCouncilStatus(): CouncilStatus {
 }
 
 /**
- * Opt-in for the global launch: the US/PFT side track stays parked until
- * NEXT_PUBLIC_AMERICA_TRACK_ENABLED=true is set (see docs/STRATEGY.md — focus the
- * core loop first; this track adds COPPA/teacher support surface).
+ * Opt-in for the global launch: the US/PFT side track stays parked until enabled
+ * (see docs/STRATEGY.md — focus the core loop first; this track adds COPPA/teacher
+ * support surface).
+ *
+ * Now a thin alias over the surface registry (`src/lib/surface.ts`) so parking is
+ * expressed one way. The original env var still works.
  */
 export function isAmericaTrackEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_AMERICA_TRACK_ENABLED === 'true';
+  if (process.env.NEXT_PUBLIC_AMERICA_TRACK_ENABLED === 'true') return true;
+  return isSurfaceEnabled('america');
 }
 
 export function showMahaCopy(): boolean {

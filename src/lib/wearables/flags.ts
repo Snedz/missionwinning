@@ -3,9 +3,12 @@
  * See docs/WEARABLES.md · docs/ENV.md
  */
 import type { WearableOAuthProviderId, WearableProviderId } from './types';
+import { isSurfaceEnabled } from '@/lib/surface';
 
 export function isWearablesPubliclyEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_WEARABLES === 'true';
+  // Parking the surface wins over the legacy provider flag, so there is one
+  // switch to reason about (src/lib/surface.ts).
+  return isSurfaceEnabled('wearables') && process.env.NEXT_PUBLIC_WEARABLES === 'true';
 }
 
 /** Server: master flag (same public env; no secrets required to show UI). */

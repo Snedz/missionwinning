@@ -34,11 +34,24 @@ describe('wearables status', () => {
 
   it('includes oauth + hub + ble when flag on', () => {
     const prev = process.env.NEXT_PUBLIC_WEARABLES;
+    const prevSurfaces = process.env.NEXT_PUBLIC_SURFACES;
     process.env.NEXT_PUBLIC_WEARABLES = 'true';
+    // The wearables surface is parked by default (src/lib/surface.ts); the provider
+    // flag alone no longer reaches the UI.
+    process.env.NEXT_PUBLIC_SURFACES = 'wearables';
     const list = buildProviderStatusList([]);
     assert.ok(list.some((p) => p.provider === 'whoop'));
     assert.ok(list.some((p) => p.provider === 'healthkit'));
     assert.ok(list.some((p) => p.provider === 'ble_hr'));
+    process.env.NEXT_PUBLIC_WEARABLES = prev;
+    if (prevSurfaces === undefined) delete process.env.NEXT_PUBLIC_SURFACES;
+    else process.env.NEXT_PUBLIC_SURFACES = prevSurfaces;
+  });
+
+  it('stays empty when the surface is parked, even with the provider flag on', () => {
+    const prev = process.env.NEXT_PUBLIC_WEARABLES;
+    process.env.NEXT_PUBLIC_WEARABLES = 'true';
+    assert.equal(buildProviderStatusList([]).length, 0);
     process.env.NEXT_PUBLIC_WEARABLES = prev;
   });
 });

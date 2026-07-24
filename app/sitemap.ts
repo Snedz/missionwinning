@@ -5,6 +5,7 @@ import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { COMPARE_STORIES } from '@/data/compareStories';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { EQUIPMENT_HUBS, muscleHubSlug } from '@/lib/exerciseSeo';
+import { isPathEnabled } from '@/lib/surface';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.missionwinning.com';
@@ -27,7 +28,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/paths',
   ];
   const now = new Date();
-  const staticEntries = routes.map((path) => ({
+  // A parked surface must not be advertised to crawlers — see src/lib/surface.ts.
+  const staticEntries = routes.filter((path) => isPathEnabled(path || '/')).map((path) => ({
     url: `${base}${path}`,
     lastModified: now,
     changeFrequency: path === '' ? ('weekly' as const) : ('monthly' as const),
@@ -79,10 +81,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticEntries,
     ...compareEntries,
-    ...guideEntries,
+    ...(isPathEnabled('/guide') ? guideEntries : []),
     ...exerciseEntries,
     ...muscleHubs,
     ...equipmentHubs,
-    ...learnEntries,
+    ...(isPathEnabled('/paths') ? learnEntries : []),
   ];
 }

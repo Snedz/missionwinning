@@ -6,6 +6,28 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-24 — Surface parking: one flag to shrink to the wedge (`.124`)
+
+- **`src/lib/surface.ts` + `NEXT_PUBLIC_SURFACES`.** Generalises the pattern from
+  `americaConfig.isAmericaTrackEnabled` / `freeBeta.isFreeBeta` into one registry.
+  Parked by default: **america · school · wearables · leaderboard · cryptoRails ·
+  paypal** — COPPA/teacher, hardware/OAuth and extra payment-rail surface the wedge
+  does not need. Six pillars stay on (vision.md); `NEXT_PUBLIC_SURFACES=wedge` parks
+  them too when the founder wants a wedge-only beta. `all` and `-name` also supported.
+- **Enforced in one place.** `proxy.ts` rewrites parked page paths to `/_not-found`
+  (real 404, styled) and returns JSON 404 for parked APIs. `notFound()` in a route
+  wrapper does **not** work here — the `(app)` layout streams, so the 200 shell has
+  already flushed by the time a page component throws; `surfaceRoute.ts` is now
+  metadata-only (`robots: noindex`). Nav drops parked entries (and sections that
+  become empty), and `app/sitemap.ts` drops parked URLs.
+- **The wedge is not expressible as a surface**, so no flag can switch off the free
+  logger (hard rule 2). `src/lib/surface.test.ts` asserts it, and the 11 `@gate` e2e
+  tests pass with `NEXT_PUBLIC_SURFACES=wedge`.
+- `isWearablesPubliclyEnabled` now also requires the surface; `isAmericaTrackEnabled`
+  delegates to it. Both legacy env vars still work. Build-time var — needs a redeploy.
+- Verified: parked pages and APIs 404, all 18 wedge/default routes 200, sitemap clean,
+  576 unit tests + 11 gate e2e green.
+
 ## 2026-07-24 — Logger reliability: unloseable logs + hero PR gate (`.123`)
 
 - **Fixed: `/active` "Start Workout" was permanently disabled.** zustand runs

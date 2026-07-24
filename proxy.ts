@@ -10,8 +10,24 @@ import {
   queryGrantsAccess,
 } from '@/lib/privateGate';
 import { createPrivateAccessToken, PRIVATE_ACCESS_COOKIE } from '@/lib/privateSession';
+import { isPathEnabled } from '@/lib/surface';
 
 export async function proxy(request: NextRequest) {
+  // Parked surfaces are unreachable before anything else runs, so a parked API is
+  // not an attack surface and parking does not depend on the private gate.
+  //
+  // Enforced here rather than with `notFound()` in each route: the `(app)` layout
+  // streams, so a page component's notFound() throws after the 200 shell has
+  // already flushed and the status can no longer change. This is also one place
+  // instead of one per route, and covers pages and APIs with the same check.
+  if (!isPathEnabled(request.nextUrl.pathname)) {
+    if (request.nextUrl.pathname.startsWith('/api')) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
+    // Serves the app's styled not-found page with a real 404 status.
+    return NextResponse.rewrite(new URL('/_not-found', request.url));
+  }
+
   if (!isPrivateModeEnabled()) {
     return NextResponse.next();
   }

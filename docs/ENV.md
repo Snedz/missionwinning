@@ -353,6 +353,41 @@ Wallet pay for **lifetime only** ($149 USDC on Solana) — see [docs/PHANTOM_USD
 
 ---
 
+## Surface parking (`NEXT_PUBLIC_SURFACES`)
+
+Which non-wedge surfaces are reachable. Parking removes a surface from the nav, makes
+its routes 404 (`notFound()` in the route wrapper), makes its APIs 404 in `proxy.ts`,
+and drops it from the sitemap. **Nothing is deleted** — one env var brings it back.
+Source of truth: [`src/lib/surface.ts`](../src/lib/surface.ts).
+
+**Build-time.** Like every `NEXT_PUBLIC_*` var it is inlined when the app is built,
+including into the middleware — changing it needs a redeploy, not just a restart.
+
+Comma separated, case-insensitive:
+
+| Value | Effect |
+|-------|--------|
+| `<name>` | Turn that surface on — `NEXT_PUBLIC_SURFACES=wearables,leaderboard` |
+| `wedge` | Park every optional surface — Today · Train · Coach · Fuel · You only |
+| `all` | Turn everything on (full-surface QA pass) |
+| `-<name>` | Force a surface off, beating a preset — `all,-school` |
+
+| Surface | Default | Why |
+|---------|---------|-----|
+| `america`, `school` | **off** | COPPA / teacher support / youth-consent surface |
+| `wearables` | **off** | Hardware + OAuth surface; Horizon 3 |
+| `leaderboard` | **off** | Social surface, not the wedge habit loop |
+| `cryptoRails`, `paypal` | **off** | Extra payment rails; Stripe is the one live path |
+| `move`, `mind`, `track`, `learn`, `guidebook`, `benchmarks`, `calculators`, `programs` | on | [vision.md](../vision.md) keeps six pillars free-usable |
+
+`NEXT_PUBLIC_AMERICA_TRACK_ENABLED=true` and `NEXT_PUBLIC_WEARABLES=true` still work as
+legacy aliases; the surface flag wins for wearables.
+
+**The wedge is not expressible here.** `/log`, `/active`, `/coach`, `/nutrition`,
+`/profile`, `/history`, `/library`, `/builder` own no surface, so no flag can switch
+off the free logger ([CONTEXT.md](../CONTEXT.md) hard rule 2). `src/lib/surface.test.ts`
+asserts it.
+
 ## Wearables (optional, Horizon 3)
 
 Multi-vendor sync — see [docs/WEARABLES.md](WEARABLES.md). Opt-in; off unless `NEXT_PUBLIC_WEARABLES=true`. Win Score stays log-derived.
