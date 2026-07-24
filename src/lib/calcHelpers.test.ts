@@ -1,6 +1,13 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { defaultCalcInputs, epley1rm, brzycki1rm, mifflinBmr, proteinTargetGrams } from './calcHelpers';
+import {
+  defaultCalcInputs,
+  epley1rm,
+  brzycki1rm,
+  mifflinBmr,
+  proteinTargetGrams,
+  macroTargetsFromStats,
+} from './calcHelpers';
 
 describe('calcHelpers', () => {
   it('computes epley 1RM', () => {
@@ -32,5 +39,13 @@ describe('calcHelpers', () => {
 
   it('protein target scales by units', () => {
     assert.ok(proteinTargetGrams(82, 'metric') > proteinTargetGrams(180, 'imperial') * 0.4);
+  });
+
+  it('macroTargetsFromStats adjusts by goal', () => {
+    const m = macroTargetsFromStats({ bw: 82, units: 'metric', goal: 'maintain' });
+    const c = macroTargetsFromStats({ bw: 82, units: 'metric', goal: 'cut' });
+    const b = macroTargetsFromStats({ bw: 82, units: 'metric', goal: 'bulk' });
+    assert.ok(c.cals < m.cals && b.cals > m.cals);
+    assert.equal(m.protein, c.protein);
   });
 });
