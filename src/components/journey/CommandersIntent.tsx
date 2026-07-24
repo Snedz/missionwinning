@@ -22,15 +22,15 @@ export function CommandersIntent() {
   if (!goal.trim()) return null;
 
   return (
-    <div className="page-enter rounded-2xl border border-primary/40 bg-gradient-to-r from-emerald-950/30 to-card/80 px-4 py-3 flex items-start gap-3">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 mt-0.5">
+    <div className="rounded-2xl border border-border/50 bg-muted/15 px-4 py-3 flex items-start gap-3">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 mt-0.5">
         <Target className="h-4 w-4 text-primary" />
       </div>
       <div className="min-w-0">
-        <p className="text-[10px] uppercase tracking-widest text-primary/90 font-medium">
+        <p className="text-xs font-medium tracking-wide text-muted-foreground">
           {t('commandersIntent', { defaultValue: "Today's focus" })}
         </p>
-        <p className="text-sm font-medium leading-snug mt-0.5">{goal}</p>
+        <p className="text-sm font-medium leading-snug mt-0.5 text-foreground">{goal}</p>
       </div>
     </div>
   );

@@ -45,7 +45,7 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <p className="section-index mb-3">{title}</p>
+      <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground">{title}</p>
       <ul className="space-y-2 text-sm text-muted-foreground">
         {links.map((link) => (
           <li key={link.href + link.labelKey}>
@@ -71,19 +71,19 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
     : PRODUCT;
 
   return (
-    <footer className={cn('section-seam-glow', className)}>
+    <footer className={cn('border-t border-border/40', className)}>
       <div className="mx-auto max-w-6xl px-5 py-12 lg:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-display text-sm font-bold text-primary-foreground">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
                 MW
               </span>
-              <span className="font-display text-lg font-semibold uppercase tracking-wide">
+              <span className="text-base font-semibold tracking-tight">
                 Mission Winning
               </span>
             </Link>
-            <p className="mt-3 max-w-xs font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
               {t('footerTagline', {
                 defaultValue: 'Train anywhere. Win daily.',
               })}
@@ -115,7 +115,7 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
           />
         </div>
       </div>
-      <div className="border-t border-border/40 px-5 py-4 text-center text-[11px] leading-relaxed text-muted-foreground/70">
+      <div className="border-t border-border/40 px-5 py-4 text-center text-xs leading-relaxed text-muted-foreground/80">
         {t('footerDisclaimer', {
           defaultValue:
             'Educational fitness tools — not medical advice. Consult a physician before starting any training program.',

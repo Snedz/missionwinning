@@ -21,16 +21,16 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
   return (
     <nav
       className={cn(
-        'glass-nav sticky top-0 z-50 section-seam',
+        'sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80',
         className
       )}
     >
-      <div className="relative z-[1] mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary font-display text-lg font-bold text-primary-foreground">
+      <div className="relative z-[1] mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:h-16">
+        <Link href="/" className="flex items-center gap-2.5 min-w-0">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground sm:h-9 sm:w-9">
             MW
           </span>
-          <span className="font-display text-xl font-semibold uppercase tracking-wide">
+          <span className="truncate text-base font-semibold tracking-tight sm:text-lg">
             Mission Winning
           </span>
         </Link>
@@ -64,7 +64,7 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
         <Button
           variant="ghost"
           onClick={() => router.push('/welcome')}
-          className="tap-target text-sm font-medium text-muted-foreground hover:text-foreground"
+          className="tap-target text-sm font-medium text-foreground hover:text-foreground"
         >
           {t('landingNavStart', { defaultValue: 'Start free' })}
         </Button>
