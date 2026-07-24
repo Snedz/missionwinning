@@ -18,7 +18,7 @@
 | **Coach sync** | `coachSync.ts` | Cloud push for coach plan |
 | **Journey** | `missionJourney.ts`, `journeySync.ts`, `journeyGoals.ts`, `journeyAnalytics.ts` | I-Day → Commissioned |
 | **Workouts** | [`workout/`](workout/INDEX.md) subfolder (+ root re-exports); `justGoSession.ts`, `historyAnalytics.ts`, `benchmarks.ts` | Logger helpers; Just Go; next-set targets; rest/PR/superset |
-| **Nutrition / Fuel** | `macroTargets.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; NL + saved presets; Today score protein days |
+| **Nutrition / Fuel** | `macroTargets.ts`, `fuelGoalWizard.ts`, `openFoodFacts.ts`, `nutritionLog.ts`, `nlMealLog.ts`, `savedMeals.ts`, `nutritionHighProteinDays.ts` | Fuel pillar; goal→macros; NL + saved presets; Today score protein days |
 | **Today primary CTA** | `todayPrimaryAction.ts`, `coach/loadCoachTodayOptional.ts` | Shared Just Go / journey primary for lean + dashboard |
 | **Fuel Coach** | `fuelCoach/` subfolder | Adaptive meal plan — see [fuelCoach/INDEX.md](fuelCoach/INDEX.md) |
 | **Payments** | `premiumServer.ts`, `premiumEnrollmentCache.ts`, `payments.ts`, `checkoutServer.ts`, `stripeServer.ts`, `stripeWebhook.ts`, `paypalWebhook.ts`, [`cryptoCheckout/`](cryptoCheckout/INDEX.md) | Stripe + Phantom USDC lifetime; enrollment Redis memo |

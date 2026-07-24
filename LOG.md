@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-24 — Fuel goal wizard + weight strip (Wave T/W)
+
+- **Set from goal:** lose / maintain / gain → Mifflin + activity macros (`fuelGoalWizard`, Fuel UI next to Edit targets).
+- **Weight on Fuel:** log today’s weight + 7d delta/mini trend (`mw_body_metrics`, shared with Track).
+- Help: goal table + weight; tests for goal math.
+
 ## 2026-07-23 — Free beta: full More nav (`.122`)
 
 - `extendedNavSectionsForPhase`: free beta always returns full More minus Bundle (i-day/basic no longer train-only).

@@ -6,7 +6,7 @@ Estimates are **tools**, not medical advice. Always review macros before logging
 
 ## Daily log
 
-1. **Targets** — Edit daily calories, protein, carbs, and fat (stored on this device).
+1. **Targets** — Edit daily calories, protein, carbs, and fat (stored on this device), or **Set from goal** (lose / maintain / gain → Mifflin-style estimate from weight + activity).
 2. **Recent** — one-tap re-log foods from today/yesterday (tap = log; **×** = adjust servings first).
 3. **Describe what you ate** — natural language (`chicken rice broccoli`, `3 eggs`, `50g chicken`). Review the draft, use **Servings** (½–3×), fix numbers, then **Log meal**.
 4. **Frequent / saved** — common and saved meals.
@@ -14,6 +14,7 @@ Estimates are **tools**, not medical advice. Always review macros before logging
 6. **Search / barcode** — Open Food Facts; review draft (servings) before log. **Enter** selects the top search hit.
 7. **Today’s meals** — grouped by breakfast/lunch/dinner/snack; edit (pencil) or delete.
 8. **Past days** — browse recent days and **Copy to today**.
+9. **Weight** — optional daily weight on Fuel (same local body metrics as Track); 7-day delta when you have history.
 
 ## Accuracy tips
 
@@ -26,9 +27,23 @@ Estimates are **tools**, not medical advice. Always review macros before logging
 
 **Low confidence** drafts show a search box so you can replace guess macros with database values.
 
-## Week glance
+## Week glance and weight
 
 A 7-day bar chart shows calories per day vs your target (amber when over). Data comes from local history (last ~90 days).
+
+**Weight** on Fuel shares `mw_body_metrics` with Track (included in JSON backup). Log weight here for a quick trend next to the calorie bars.
+
+## Goal → targets
+
+**Set from goal** estimates daily calories with Mifflin-St Jeor × activity:
+
+| Goal | Adjustment |
+|------|------------|
+| Lose | ~15% under TDEE (cut) |
+| Maintain | ≈ TDEE |
+| Gain | ~10% over TDEE (bulk) |
+
+Protein scales from bodyweight; carbs/fat fill remaining calories. Always editable afterward. Not medical advice.
 
 ## Free vs open beta
 

@@ -20,6 +20,7 @@ import { FuelMoreTools } from '@/components/nutrition/FuelMoreTools';
 import { FuelTodayLogCard, type FuelLogEntry } from '@/components/nutrition/FuelTodayLogCard';
 import { FuelRecipesPanel } from '@/components/nutrition/FuelRecipesPanel';
 import { FuelTargetsEditor } from '@/components/nutrition/FuelTargetsEditor';
+import { FuelGoalWizard } from '@/components/nutrition/FuelGoalWizard';
 import { estimateMealFromDescription } from '@/lib/nlMealLog';
 import { listMealPresets, saveMealPreset, type SavedMealPreset } from '@/lib/savedMeals';
 import { bumpFuelLogStreak, getFuelLogStreak } from '@/lib/fuelStreak';
@@ -33,6 +34,7 @@ import {
   summarizeNutritionDays,
 } from '@/lib/nutritionQuickLog';
 import { FuelWeekGlance } from '@/components/nutrition/FuelWeekGlance';
+import { FuelWeightStrip } from '@/components/nutrition/FuelWeightStrip';
 import { FuelPastDaysCard } from '@/components/nutrition/FuelPastDaysCard';
 import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from '@/lib/macroTargets';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
@@ -436,19 +438,38 @@ export function NutritionPage() {
         fatTarget={fatTarget}
         water={water}
       >
-        <FuelTargetsEditor
-          targetCals={targetCals}
-          targetProtein={targetProtein}
-          targetCarbs={targetCarbs}
-          targetFat={targetFat}
-          onSaved={(next) => {
-            setTargetCals(next.cals);
-            setTargetProtein(next.protein);
-            setTargetCarbs(next.carbs);
-            setTargetFat(next.fat);
-          }}
-        />
+        <div className="space-y-2">
+          <FuelTargetsEditor
+            targetCals={targetCals}
+            targetProtein={targetProtein}
+            targetCarbs={targetCarbs}
+            targetFat={targetFat}
+            onSaved={(next) => {
+              setTargetCals(next.cals);
+              setTargetProtein(next.protein);
+              setTargetCarbs(next.carbs);
+              setTargetFat(next.fat);
+            }}
+          />
+          <FuelGoalWizard
+            onApplied={(next) => {
+              setTargetCals(next.cals);
+              setTargetProtein(next.protein);
+              setTargetCarbs(next.carbs);
+              setTargetFat(next.fat);
+              toast({
+                title: t('fuelGoalApplied', { defaultValue: 'Goal targets applied' }),
+                description: t('fuelGoalAppliedDesc', {
+                  cals: next.cals,
+                  protein: next.protein,
+                  defaultValue: `${next.cals} kcal · ${next.protein}g protein`,
+                }),
+              });
+            }}
+          />
+        </div>
         <FuelWeekGlance days={weekDays} todayIso={today} targetCals={targetCals} />
+        <FuelWeightStrip todayIso={today} />
         <FuelQuickLogPanel
           activeMeal={activeMeal}
           onActiveMealChange={setActiveMeal}
