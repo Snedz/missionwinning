@@ -26,32 +26,32 @@ export function CoachInsightCard({
   const { t } = useTranslation();
 
   return (
-    <Card className="border-border/60 bg-card/80 backdrop-blur-sm border-primary/40">
+    <Card className="border-border/50 bg-card/80 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-base">
+        <CardTitle className="flex items-center gap-2 text-base font-semibold">
           <Sparkles className="h-4 w-4 text-primary" />
-          {t('todayCoachInsightTitle', { defaultValue: 'Coach insight' })}
+          {t('todayCoachInsightTitle', { defaultValue: 'Coach note' })}
           {source === 'llm' && (
-            <span className="text-[10px] font-normal uppercase tracking-wide text-primary/80 border border-primary/40 rounded-full px-2 py-0.5">
-              {t('coachAiBadge', { defaultValue: 'AI' })}
+            <span className="text-[10px] font-medium text-primary/90 border border-primary/30 rounded-full px-2 py-0.5">
+              {t('coachAiBadge', { defaultValue: 'Live' })}
             </span>
           )}
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="leading-relaxed">
           {t('todayCoachInsightDesc', {
-            defaultValue: 'Based on your readiness, strain, recovery, and pillar synergy',
+            defaultValue: 'From your recent training load and recovery',
           })}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col sm:flex-row sm:items-center gap-4">
         <p
           className={cn(
-            'text-sm text-foreground/90 flex-1',
+            'text-sm text-foreground/90 flex-1 leading-relaxed',
             loading && 'animate-pulse text-muted-foreground'
           )}
         >
           {loading
-            ? t('coachLoading', { defaultValue: 'Reading your mission data…' })
+            ? t('coachLoading', { defaultValue: 'Looking at your week…' })
             : message}
         </p>
         <Button

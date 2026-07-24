@@ -71,7 +71,7 @@
   }
 
   .content-card {
-    @apply rounded-2xl border border-border/60 bg-card/95 shadow-lg shadow-black/20;
+    @apply rounded-2xl border border-border/50 bg-card/90 shadow-sm shadow-black/10;
   }
 
   /* Marketing elevation — tier above content-card (landing / bundle / compare). */

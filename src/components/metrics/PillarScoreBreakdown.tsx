@@ -3,6 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import type { WinScoreBreakdown } from '@/lib/score';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 const PILLAR_META: {
   key: keyof WinScoreBreakdown['pillars'];
@@ -20,23 +21,24 @@ const PILLAR_META: {
 
 export function PillarScoreBreakdown({ breakdown }: { breakdown: WinScoreBreakdown }) {
   const { t } = useTranslation();
+  const freeBeta = isFreeBeta();
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-widest">
+      <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
         <Tooltip>
           <TooltipTrigger asChild>
             <button
               type="button"
               className="cursor-help text-start underline decoration-dotted underline-offset-2 hover:text-foreground"
             >
-              {t('todayPillarScoreByPillar', { defaultValue: 'Mission Score by Pillar' })}
+              {t('todayPillarScoreByPillar', { defaultValue: 'How your week adds up' })}
             </button>
           </TooltipTrigger>
           <TooltipContent className="max-w-xs normal-case tracking-normal">
             {t('todayMissionScoreTip', {
               defaultValue:
-                'Daily score from all six pillars. Log training, fuel, move, mind, track, and learn to raise it.',
+                'Training counts most. Fuel, move, mind, track, and learn add smaller pieces when you log them.',
             })}
           </TooltipContent>
         </Tooltip>
@@ -49,7 +51,7 @@ export function PillarScoreBreakdown({ breakdown }: { breakdown: WinScoreBreakdo
             <a
               key={key}
               href={href}
-              className="block p-3 rounded-lg border border-border/60 bg-card/40 hover:border-primary/40 transition-colors"
+              className="block p-3 rounded-xl border border-border/50 bg-card/40 hover:border-border transition-colors"
             >
               <div className="flex justify-between text-sm mb-1">
                 <span className="font-medium">{t(labelKey, { defaultValue: key })}</span>
@@ -62,10 +64,11 @@ export function PillarScoreBreakdown({ breakdown }: { breakdown: WinScoreBreakdo
           );
         })}
       </div>
-      <p className="text-[10px] text-muted-foreground">
+      <p className="text-xs leading-relaxed text-muted-foreground">
         {t('todayPillarScoreFoot', {
-          defaultValue:
-            'Holistic scoring — all six pillars contribute. Super Bundle deepens each route; free core counts for everyone.',
+          defaultValue: freeBeta
+            ? 'Training carries most of the score. Other tools add a little when you use them — nothing is paywalled in open beta.'
+            : 'Training carries most of the score. Other tools add a little when you use them. Logger stays free forever.',
         })}
       </p>
     </div>

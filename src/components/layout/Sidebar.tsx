@@ -18,7 +18,10 @@ export function Sidebar() {
     <aside className="hidden md:flex h-full w-[72px] lg:w-[210px] flex-col border-e border-border/50 bg-card/30 shrink-0">
       <nav className="flex-1 flex flex-col gap-1 p-2 lg:p-3 pt-4">
         {PRIMARY_NAV.map(({ href, labelKey, label, icon: Icon }) => {
-          const isActive = pathname === href || (href === '/log' && pathname === '/');
+          const isActive =
+            href === '/log'
+              ? pathname === '/log' || pathname === '/'
+              : pathname === href || pathname.startsWith(href + '/');
           const showPulse = href === '/active' && hasActiveWorkout;
           const navLabel = t(labelKey, { defaultValue: label });
 
@@ -31,8 +34,8 @@ export function Sidebar() {
                   className={cn(
                     'flex flex-col lg:flex-row items-center lg:items-center gap-1 lg:gap-3 rounded-xl px-2 lg:px-3 py-2.5 min-h-[52px] transition-colors relative',
                     isActive
-                      ? 'bg-primary/20 text-primary shadow-[inset_2px_0_0_0_hsl(var(--primary))]'
-                      : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
+                      ? 'bg-primary/15 text-primary shadow-[inset_2px_0_0_0_hsl(var(--primary))]'
+                      : 'text-muted-foreground hover:bg-muted/40 hover:text-foreground'
                   )}
                 >
                   <Icon className={cn('h-5 w-5 shrink-0', showPulse && 'text-primary')} />

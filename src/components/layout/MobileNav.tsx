@@ -7,16 +7,25 @@ import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import { useTranslation } from 'react-i18next';
 import { PRIMARY_NAV } from '@/lib/primaryNav';
 
+function pathActive(pathname: string, href: string): boolean {
+  if (href === '/log') return pathname === '/log' || pathname === '/';
+  if (href === '/coach') return pathname === '/coach' || pathname.startsWith('/coach/');
+  if (href === '/active') return pathname === '/active' || pathname.startsWith('/active/');
+  if (href === '/nutrition') return pathname === '/nutrition' || pathname.startsWith('/nutrition/');
+  if (href === '/profile') return pathname === '/profile' || pathname.startsWith('/profile/');
+  return pathname === href || pathname.startsWith(href + '/');
+}
+
 export function MobileNav() {
   const pathname = usePathname();
   const { t } = useTranslation();
   const hasActiveWorkout = useActiveWorkoutPulse();
 
   return (
-    <nav className="glass-nav md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
+    <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-border/50 bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md supports-[backdrop-filter]:bg-background/85">
       <div className="flex items-stretch justify-around h-[52px]">
         {PRIMARY_NAV.map(({ href, labelKey, label, icon: Icon }) => {
-          const isActive = pathname === href || (href === '/log' && pathname === '/');
+          const isActive = pathActive(pathname, href);
           const showPulse = href === '/active' && hasActiveWorkout;
 
           return (

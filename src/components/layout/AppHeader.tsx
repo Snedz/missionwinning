@@ -99,20 +99,23 @@ export function AppHeader() {
   }, [open]);
 
   return (
-    <header ref={headerRef} className="glass-nav section-seam shrink-0 z-50">
+    <header
+      ref={headerRef}
+      className="shrink-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80"
+    >
       <div className="relative z-[1] flex items-center gap-2 px-4 min-h-[56px]">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-haspopup="true"
-          className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-white/[0.02] transition-colors rounded-lg -ms-1 ps-1 py-1"
+          className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-muted/40 transition-colors rounded-lg -ms-1 ps-1 py-1"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary shadow-md shadow-emerald-950/30">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/90">
             <Dumbbell className="h-5 w-5 text-primary-foreground" />
           </div>
           <div className="flex-1 min-w-0 flex items-center gap-2">
-            <span className="font-display text-base font-semibold uppercase tracking-wide truncate sm:text-lg">
+            <span className="text-base font-semibold tracking-tight truncate sm:text-lg">
               Mission Winning
             </span>
             <ChevronDown
@@ -124,7 +127,7 @@ export function AppHeader() {
           </div>
         </button>
         <HeaderAuthChip />
-        <span className="text-sm text-muted-foreground shrink-0 hidden sm:inline max-w-[120px] truncate">
+        <span className="text-sm text-muted-foreground shrink-0 hidden sm:inline max-w-[140px] truncate">
           {pageTitle}
         </span>
       </div>
@@ -140,10 +143,10 @@ export function AppHeader() {
             <div className="max-h-[min(70vh,520px)] overflow-y-auto bg-card/95 px-4 py-4 md:bg-card/90 md:backdrop-blur-xl">
               <p className="text-xs text-muted-foreground mb-4 sm:hidden">{pageTitle}</p>
               {(phase === 'i-day' || phase === 'basic') && (
-                <p className="text-xs text-muted-foreground mb-3 max-w-5xl mx-auto">
+                <p className="text-xs text-muted-foreground mb-3 max-w-5xl mx-auto leading-relaxed">
                   {t('navBasicFocusHint', {
                     defaultValue:
-                      'Basic Training focus — train tools first. More pillars unlock as you go.',
+                      'Start with Today, Train, and Coach. More tools live here when you need them.',
                   })}
                 </p>
               )}
@@ -164,7 +167,7 @@ export function AppHeader() {
                 >
                   {navSections.map((section) => (
                     <div key={section.id}>
-                      <h2 className="eyebrow mb-2 px-1">
+                      <h2 className="mb-2 px-1 text-xs font-medium tracking-wide text-muted-foreground">
                         {t(section.titleKey, { defaultValue: section.title })}
                       </h2>
                       <ul className="space-y-0.5">
