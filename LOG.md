@@ -6,6 +6,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Web UX: Log food fix + wedge nav + organic landing
+
+- **AdaptiveOverlay:** portal to `document.body`, body scroll lock, `z-[70]` above MobileNav — fixes clipped Log food sheet inside `AppLayout` overflow shell.
+- **Nav:** primary tabs **Today · Train · Coach · Fuel · You**; Track moved to More menu.
+- **Fuel:** honest free-beta copy (no “paid Nutrition course”); calmer Log food sheet; science notes collapsed by default; human page title.
+- **Landing:** quieter hero (less orbs/texture/glow theater); wedge copy stays Train + Coach.
+- Docs: [ADAPTIVE_LAYOUT.md](docs/ADAPTIVE_LAYOUT.md).
+
 ## 2026-07-23 — Beyond the Basics v1.4.1 (acquisition polish)
 
 - **Media:** `getting-started-mw` chapter hero; section figures on ch2-s2/s3, ch3-s1/s2, ch5-s2, ch6-s2 (7 total with existing ch2-s1); [`media/manifest.json`](media/manifest.json) + originality log.

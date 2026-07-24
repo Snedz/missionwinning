@@ -53,6 +53,7 @@ type FuelStrings = {
   fuelSearchTitle: string;
   fuelEmptyTitle: string;
   fuelLogFirstMeal: string;
+  fuelTitle: string;
   fuelSubtitle: string;
   fuelCoachTitle: string;
   fuelCoachGenerateDesc: string;
@@ -78,7 +79,7 @@ const en: FuelStrings = {
   fuelGlasses: 'glasses',
   fuelHydrationHint: 'Aim for 8+ (adjust for climate/activity)',
   fuelQuickLogTitle: 'Quick Log (common foods)',
-  fuelQuickLogFoot: 'More complete database + recipes in the full Nutrition program. Adjust targets via Calculators page.',
+  fuelQuickLogFoot: 'Tap a food to log it. Search more foods below, or open Log food for photo and custom entries.',
   fuelCustomEntryTitle: 'Custom Entry',
   fuelFoodLabel: 'Food',
   fuelProteinGLabel: 'Protein g',
@@ -93,7 +94,7 @@ const en: FuelStrings = {
   fuelTotals: 'Totals',
   fuelTotalsLine: '{{protein}}g protein • {{cals}} kcal',
   fuelLocalNote:
-    'Data stored locally (synced when you sign in). Full integration + meal plans in the paid Nutrition course.',
+    'Meals stay on this device. Sign in anytime to sync across phones and the web.',
   fuelFreeRecipesTitle: 'Free Recipes ({{count}} — core mission)',
   fuelPremiumRecipesTitle: 'Premium Recipes & Meal Ideas (Super Bundle)',
   fuelPremiumLockedTitle: '+{{count}} Premium Recipes',
@@ -101,7 +102,7 @@ const en: FuelStrings = {
     'Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.',
   fuelExploreBundle: 'Explore Super Bundle',
   fuelLogFab: 'Log food',
-  fuelLogSheetTitle: 'Log to Fuel',
+  fuelLogSheetTitle: 'Log food',
   fuelTabQuick: 'Quick',
   fuelTabCustom: 'Custom',
   fuelTabPhoto: 'Photo',
@@ -123,8 +124,8 @@ const en: FuelStrings = {
   fuelSearchTitle: 'Search foods',
   fuelEmptyTitle: 'No meals logged today',
   fuelLogFirstMeal: 'Log first meal',
-  fuelSubtitle:
-    'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
+  fuelTitle: 'What you ate',
+  fuelSubtitle: 'Log meals, hit protein, keep it simple — works offline on this device.',
   fuelCoachTitle: 'Fuel Coach — adaptive meal plan',
   fuelCoachGenerateDesc:
     'Generate a 7-day plan from your macro targets and this week’s training load.',

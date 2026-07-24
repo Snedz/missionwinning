@@ -10,6 +10,7 @@ import {
   ClipboardList,
   Dumbbell,
   History,
+  MapPin,
   PenTool,
   Shield,
   Sparkles,
@@ -73,12 +74,12 @@ export const MORE_NAV: NavLinkItem[] = [
     description: 'Build workouts',
   },
   {
-    href: '/coach',
-    labelKey: 'navCoach',
-    label: 'AI weekly plan',
-    icon: Sparkles,
-    descriptionKey: 'moreCoachDesc',
-    description: 'Mission Coach — adaptive weekly training plan',
+    href: '/track',
+    labelKey: 'navTrack',
+    label: 'Track',
+    icon: MapPin,
+    descriptionKey: 'moreTrackDesc',
+    description: 'Runs, walks, GPS activities',
   },
   {
     href: '/library',
@@ -159,7 +160,7 @@ export const EXTENDED_NAV_SECTIONS: NavSection[] = [
     title: 'Train deeper',
     titleKey: 'navSectionTrain',
     items: MORE_NAV.filter((i) =>
-      ['/builder', '/coach', '/library', '/history', '/leaderboard'].includes(i.href)
+      ['/builder', '/track', '/library', '/history', '/leaderboard'].includes(i.href)
     ),
   },
   {

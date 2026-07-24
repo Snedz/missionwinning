@@ -16,16 +16,15 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-23 · web `2026.07-unified.121` · Android `1.24.1`)
+## Now (2026-07-23 · web UX · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
-- **Horizon W — wedge excellence (founder override).** #1 bottleneck: make Train→Today→Victory→Coach **not lame** (W1–W4). ≥10 beta is **after** excellence sign-off — not instead of building. See [ORCHESTRATION.md](ORCHESTRATION.md) § Horizon W.
-- **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** (chat/Fuel/GPS) ([docs/FREE_BETA.md](docs/FREE_BETA.md)). No credits. Reintroduce paid when business Stripe/PayPal live.
-- **Media system:** instructional form diagrams + Learn/social HQ via **Google Flow** · **Scout** mascot ([docs/MASCOT.md](docs/MASCOT.md)) — [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md) · [media/FLOW_PROMPTS.md](media/FLOW_PROMPTS.md).
-- Agents **must** ship wedge habit-loop + free acquisition work. Refuse new pillars / America / locale farms / F5.
-- **Ops:** promote **`.121`** (media + prior free unlock); keep Supabase Site URL on www.
-- Shipped: `.121` media system; **Beyond the Basics v1.4.1** acquisition polish (ch4 hero, 7 section figures, denser exercise links, EN PDF regen). **Founder:** phone excellence → invites → YC F26 Jul 27 honest free-beta apply.
+- **Horizon W — wedge excellence.** Web shell primary nav: **Today · Train · Coach · Fuel · You**. Log food overlay portaled (no clip under bottom nav). Landing quieter / more organic.
+- **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** ([docs/FREE_BETA.md](docs/FREE_BETA.md)). Fuel copy no longer claims paid Nutrition course.
+- **Media system:** Google Flow · Scout mascot — [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md).
+- Agents **must** ship wedge habit-loop + free acquisition. Refuse new pillars / America / locale farms / F5.
+- **Ops:** keep Supabase Site URL on www. **Founder:** Accept B on Android + phone excellence → invites → YC F26.
 
 
 ---

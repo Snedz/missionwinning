@@ -13,6 +13,8 @@ Cross-surface rules for web PWA + Android Compose. Prefer **width** over orienta
 ## Web
 
 - Primitive: [`src/components/ui/AdaptiveOverlay.tsx`](../src/components/ui/AdaptiveOverlay.tsx)
+- **Must portal to `document.body`** — AppLayout uses `h-screen overflow-hidden` + scrollable `main`; in-tree `fixed` sheets clip under MobileNav
+- Body scroll lock while open; default z-index above MobileNav (`z-50`) and consent banner (`z-60`) → `z-[70]`
 - Pilots: Fuel log, session check-in, plate calculator, coach adjust
 - Victory uses existing Dialog with wider `md`/`xl` max-width
 - Shell: [`AppLayout`](../src/components/layout/AppLayout.tsx) `xl:max-w-4xl 2xl:max-w-5xl` (readable measure, not magazine sprawl)
