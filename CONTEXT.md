@@ -26,9 +26,9 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **Surface parking (`.124`):** `NEXT_PUBLIC_SURFACES` ([src/lib/surface.ts](src/lib/surface.ts), [docs/ENV.md](docs/ENV.md)) parks non-wedge surfaces — **america · school · wearables · leaderboard · cryptoRails · paypal off by default**; six pillars stay on. `=wedge` parks the secondary pillars too (founder call). Parked = out of nav, 404 in `proxy.ts`, out of sitemap. Nothing deleted. Hero e2e passes in full wedge mode, so **the free logger is provably never gated**.
 - **First 90 seconds (`.125`):** cold visitor → logged set is now a **budget test** (`tests/e2e/first-90.spec.ts`, 6 taps, no interstitial, one primary CTA, every logger control ≥44px — the ± steppers were 36px). Re-entry after a gap is calm and smaller, not a broken streak ([src/lib/reentry.ts](src/lib/reentry.ts)). `first_set_logged` carries `secondsFromStart`.
 - **Media system:** Google Flow · Scout mascot — [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md).
-- **Ops:** lean CI (PR gate only; prod via `deploy-production` / Deploy Hook) — [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md). OSS public-ready (AGPL + CoC) — founder flips GitHub Public — [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md). Promote **`.125`**; keep Supabase Site URL on www.
+- **Ops:** prod ships via **Vercel Deploy Hook + GitHub webhook** (unmetered, no Actions) — [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.1; `deploy-production` is now **manual-only** fallback. **Actions is currently blocked** (every workflow fails in <5s with no logs = billing) → the PR gate is inert, so run `npm run e2e:gate` locally until cleared. OSS public-ready (AGPL + CoC) — founder flips GitHub Public — [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md). Promote **`.125`**; keep Supabase Site URL on www.
 - Agents **must** ship wedge habit-loop + free acquisition. Refuse new pillars / America / locale farms / F5.
-- **Founder:** Accept B on Android + phone excellence → invites → YC F26. Clear Actions billing if deploy still red; optional Deploy Hook.
+- **Founder:** Accept B on Android + phone excellence → invites → YC F26. **Wire the Deploy Hook webhook** ([checklist §1.1](docs/VERCEL_DEPLOY_CHECKLIST.md)) then promote `.125`; clear Actions billing to restore the PR gate.
 
 ---
 

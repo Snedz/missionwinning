@@ -1,5 +1,16 @@
-# Production deploy when Vercel Git integration only creates Preview deployments.
-# Auto-runs on push to master so www.missionwinning.com does not fall days behind.
+# Manual production deploy — the FALLBACK path.
+#
+# Primary path is the Vercel Deploy Hook driven by a GitHub webhook (see
+# docs/VERCEL_DEPLOY_CHECKLIST.md §1.1). Webhooks are not Actions: they are unmetered
+# and keep working when the Actions account is blocked, which is the failure this repo
+# actually hits.
+#
+# The `push: master` trigger was removed deliberately, for two reasons:
+#   1. With the hook wired, a push trigger means two concurrent production builds.
+#   2. While Actions is blocked, every push produced a red run and a failure email —
+#      noise that hides real failures.
+#
+# Run this by hand when the hook is unavailable: Actions → Deploy production → Run workflow.
 #
 # Required GitHub Actions secrets:
 #   VERCEL_TOKEN — https://vercel.com/account/tokens (or CLI auth token)
@@ -10,8 +21,6 @@
 name: Deploy production
 
 on:
-  push:
-    branches: [master]
   workflow_dispatch:
 
 concurrency:

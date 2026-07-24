@@ -12,7 +12,9 @@ Use when **Vercel 2FA access returns**, or sync env via **GitHub Actions** (see 
 
 GitHub↔Vercel integration often creates **Preview-only** builds for `master` even when Production Branch = `master`. Then `www.missionwinning.com` stays stale until a promote.
 
-**Canonical prod path (repo):** [`.github/workflows/deploy-production.yml`](../.github/workflows/deploy-production.yml) runs on **push to `master`** and `workflow_dispatch`, and deploys with `vercel deploy --prod` (build runs on Vercel so Sensitive env vars work).
+**Canonical prod path (2026-07-24 onward): the Vercel Deploy Hook.** A GitHub *webhook* POSTs the hook on every `master` push and Vercel builds production. Webhooks are **not** Actions — they are unmetered and unaffected by a spending limit or failed payment, which is why this is now the primary path rather than a backup. Setup: §1.1 below.
+
+**Fallback:** [`.github/workflows/deploy-production.yml`](../.github/workflows/deploy-production.yml) deploys with `vercel deploy --prod` (build runs on Vercel so Sensitive env vars work). Its **push trigger was removed** so it no longer double-deploys alongside the hook, and so a blocked Actions account stops producing a red run on every push. Run it by hand: Actions → **Deploy production** → Run workflow.
 
 **Lean CI (2026-07-24):** Full CI no longer runs on every `master` push — that burned Actions minutes and blocked production deploys when the spending limit hit. Default gate is [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) on **PRs only**. Heavy jobs live in [`.github/workflows/ci-extended.yml`](../.github/workflows/ci-extended.yml) (manual / weekly). CodeQL is **monthly + dispatch** only.
 
@@ -25,25 +27,54 @@ Required GitHub Actions secrets:
 | `VERCEL_PROJECT_ID` | `prj_yqoUE2ENzRRdeiMdqkqyC49czxxp` |
 | `AIKIDO_SECRET_KEY` | Aikido CI (optional) — GitHub Actions only; see [docs/AIKIDO.md](AIKIDO.md) |
 
-### Founder: when Actions minutes are exhausted
+### 1.1 Deploy Hook → GitHub webhook (one-time, founder)
 
-1. **Billing** — GitHub → Settings → Billing: clear spending limit / failed payment so at least `Deploy production` can run.
-2. **Confirm secrets** — `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` present under repo Actions secrets.
-3. **One-shot unblock** — Actions → **Deploy production** → Run workflow, **or** `vercel promote <preview-url> --yes`.
-4. **Zero-minute path (recommended backup)** — Vercel Deploy Hook → GitHub webhook (no Actions minutes):
-   1. Vercel → Project → **Settings → Git → Deploy Hooks** → create hook for **Production** / `master`
-   2. Copy the hook URL (keep private — treat like a secret)
-   3. GitHub → repo **Settings → Webhooks → Add webhook**
-   4. Payload URL = Deploy Hook URL; Content type `application/json`; events: **Just the push event**
-   5. Optionally restrict delivery (or ignore non-`master` in practice — hook is Production-scoped on Vercel)
+The durable path. No Actions minutes, no billing dependency.
 
-GitHub **Deployments** tab may list only `Preview` from the Git integration — that does not update the production alias by itself.
+1. Vercel → Project → **Settings → Git → Deploy Hooks** → create a hook for **Production** / `master`.
+2. Copy the hook URL. **Treat it as a secret** — anyone holding it can trigger a production
+   build. Do not paste it into a chat, an issue, or this repo.
+3. GitHub → repo **Settings → Webhooks → Add webhook**.
+4. Payload URL = the hook URL · Content type `application/json` · events: **Just the push event**.
+5. Save, then check **Recent Deliveries** for a `201`/`2xx`. Vercel should show a new
+   Production build within a few seconds.
 
-**Manual fallback** if workflows are not wired:
+The hook is Production-scoped on Vercel, so pushes to other branches are harmless.
 
-1. Vercel → Project → **Settings → Git** → confirm Production Branch = `master`
-2. Promote latest Ready Preview: `vercel promote <preview-url> --yes`
-3. Or **Actions → Deploy production** / `npx vercel deploy --prod --yes`
+### 1.2 Shipping a commit that is already on `master`
+
+The webhook only fires on *new* pushes, so a commit merged before setup needs one promote:
+
+1. Vercel → **Deployments** → find the SHA → **Promote to Production**, or
+2. `npx vercel deploy --prod --yes` from a clean checkout, or
+3. `vercel promote <preview-url> --yes`.
+
+### 1.3 Verify what is actually live
+
+`APP_BUILD_LABEL` (`src/lib/buildInfo.ts`) is rendered on Profile, so the deployed label is
+the ground truth — not the Vercel dashboard's "Ready" badge, which can refer to a Preview.
+While `PRIVATE_MODE=true` the gate page is the only unauthenticated surface.
+
+### 1.4 If Actions is blocked
+
+A job that fails in **under ~5 seconds with no downloadable logs** never got a runner — that
+is a billing/spending-limit state, not a code failure. Symptom: *every* workflow fails
+instantly regardless of commit (Deploy production, CI, Aikido together).
+
+1. **Billing** — GitHub → Settings → Billing: clear the spending limit / failed payment.
+2. **Confirm secrets** — `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` under repo Actions secrets.
+3. Note the **PR gate is inert** while Actions is down: `ci.yml` (lint · typecheck · tests ·
+   build · `npm run e2e:gate`) cannot run, so nothing blocks a regression reaching `master`.
+   Run `npm run e2e:gate` locally against a production build until it is back.
+
+Deploys themselves do not depend on any of this once §1.1 is wired.
+
+### 1.5 Preview-only diagnosis
+
+GitHub **Deployments** may list only `Preview` from the Git integration — that does not move
+the production alias by itself. Check Vercel → **Settings → Git → Production Branch = `master`**;
+if it is unset or points elsewhere, that is the root cause and fixing it makes the Actions
+workflow redundant rather than load-bearing.
 
 ---
 

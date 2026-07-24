@@ -6,6 +6,24 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-24 — Prod deploys off GitHub Actions (Deploy Hook primary)
+
+- **Why:** every workflow started failing in under 5s with no downloadable logs — Deploy
+  production, CI and Aikido together, on commits that predate this work. That pattern means
+  the job never got a runner (Actions billing / spending limit), not a code failure.
+- **Deploy Hook + GitHub webhook is now the canonical prod path** — webhooks are not Actions,
+  so they are unmetered and unaffected by the billing state. Checklist §1.1 rewritten from
+  "recommended backup" to primary, plus §1.2 promote-an-existing-SHA, §1.3 verify via
+  `APP_BUILD_LABEL`, §1.4 blocked-Actions diagnosis, §1.5 Preview-only root cause.
+- **`deploy-production.yml` is `workflow_dispatch`-only.** Dropped the `push: master` trigger:
+  with the hook wired it would double-deploy, and while Actions is blocked it produced a red
+  run and a failure email on every push, hiding real failures.
+- **Flagged:** the PR gate (`ci.yml` → lint · typecheck · tests · build · `e2e:gate`) cannot
+  run while Actions is blocked, so nothing currently stops a regression reaching `master`.
+  Run `npm run e2e:gate` against a production build locally until billing clears.
+- Founder-only steps remain founder-only: creating the hook, adding the webhook, promoting
+  `35d5be0`, clearing billing. Agents cannot reach Vercel from CI or this environment.
+
 ## 2026-07-24 — First 90 seconds as a budget (`.125`)
 
 - **`tests/e2e/first-90.spec.ts` (`@gate`)** turns excellence criteria 1/2/5 into
