@@ -12,6 +12,12 @@ Chronological record of shipped work. Newest first.
 - Softened unlocked Super Bundle labels (Fuel recipes title, Learn empty state, Android Coach depth chips).
 - Build: `2026.07-unified.122`.
 
+## 2026-07-23 — Fuel calorie tracker pass 3
+
+- **Targets editor** on Fuel (cals/protein/carbs/fat → `mw_macro_targets`).
+- **Barcode/search** → review draft before log (same `MealEstimateDraft`).
+- **Today’s meals** ordered B/L/D/snack with per-meal protein/kcal subtotals.
+
 ## 2026-07-23 — Fuel calorie tracker accuracy pass 2
 
 - **NL:** more foods; `50g` / cups portion scaling; low-confidence embeds Open Food Facts search into draft.
