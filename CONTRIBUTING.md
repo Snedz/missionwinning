@@ -4,6 +4,8 @@ Thank you for helping build a healthier world. This guide is for developers and 
 
 **License:** contributions are accepted under the [GNU Affero General Public License v3.0](LICENSE). By opening a PR you agree your contribution is licensed under AGPL-3.0.
 
+**Code of conduct:** [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Open-source overview: [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md).
+
 **Acceptable use:** do not contribute features whose primary purpose violates [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md) (illegal deepfakes, CSAM, fraud, etc.). Security issues → [SECURITY.md](SECURITY.md).
 
 ---

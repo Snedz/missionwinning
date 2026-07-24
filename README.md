@@ -1,5 +1,8 @@
 # Mission Winning
 
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
+[![Source](https://img.shields.io/badge/source-GitHub-181717?logo=github)](https://github.com/Snedz/missionwinning)
+
 **AI agents:** read [AGENTS.md](AGENTS.md) then [INDEX.md](INDEX.md) first.
 
 **The Free Global "Everything App" for Health — The Path to a Healthier World for All**
@@ -19,6 +22,8 @@ Mission Winning is open source so anyone can inspect how the free core works, im
 | Commitment | Detail |
 |------------|--------|
 | **License** | [AGPL-3.0](LICENSE) — network use requires sharing corresponding source |
+| **Source** | [github.com/Snedz/missionwinning](https://github.com/Snedz/missionwinning) — see [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md) |
+| **Conduct** | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) |
 | **Acceptable use** | [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md) — illegal deepfakes, CSAM, fraud, and similar abuse are banned |
 | **Security** | [SECURITY.md](SECURITY.md) — private vulnerability reports |
 | **Local-first** | Workouts, nutrition, and journey progress stay on-device until you sign in to sync |
@@ -44,7 +49,7 @@ We are not a clone of any coding-tool vendor; the parallel is **transparent soft
 - **Athletes & teachers** — [docs/help/](docs/help/INDEX.md) user guides
 - **Developers** — [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/API.md](docs/API.md), [CONTRIBUTING.md](CONTRIBUTING.md)
 - **AI agents** — [AGENTS.md](AGENTS.md) + [INDEX.md](INDEX.md)
-- **License & AUP** — [LICENSE](LICENSE), [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md), [SECURITY.md](SECURITY.md)
+- **License & AUP** — [LICENSE](LICENSE), [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md), [SECURITY.md](SECURITY.md)
 
 ## Features (Freemium + Super Bundle Model)
 - **Free Core (Accessible to Everyone, No Money Barrier)**: Full workout logger/tracker (RPE, rests, cues), basic library (M&S-style filters, bodyweight/minimal-equip global focus), basic nutrition logging + accessible recipes, basic assessments/streaks/challenges, 1RM benchmarks, history. Installable PWA — works offline anywhere in the world (Africa, Russia, low-resource areas). Core mission (tracking + fundamentals) is free forever.

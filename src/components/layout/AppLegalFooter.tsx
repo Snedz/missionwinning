@@ -44,6 +44,17 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
         <Link href="/about" className="hover:text-primary transition-colors">
           {t('about', { defaultValue: 'About' })}
         </Link>
+        <span aria-hidden className="text-border">
+          ·
+        </span>
+        <a
+          href="https://github.com/Snedz/missionwinning"
+          className="hover:text-primary transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t('sourceCode', { defaultValue: 'Source' })}
+        </a>
       </nav>
       {showBuild && buildLabel && (
         <p className="text-[10px] text-muted-foreground/50">Build {buildLabel}</p>

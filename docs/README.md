@@ -39,6 +39,7 @@ User guides in plain language (no code paths):
 | [API_MOBILE.md](API_MOBILE.md) | `/api/mobile/*` Coach + workouts |
 | [API.md](API.md) | All API routes — auth, rate limits, schemas |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Setup, PR workflow, where to put code |
+| [OPEN_SOURCE.md](OPEN_SOURCE.md) | AGPL · public flip · operator secrets |
 | [ENV.md](ENV.md) | Environment variables |
 | [../app/INDEX.md](../app/INDEX.md) | Routes and API inventory |
 | [../src/lib/INDEX.md](../src/lib/INDEX.md) | Business logic map |

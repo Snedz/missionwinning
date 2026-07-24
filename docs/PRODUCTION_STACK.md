@@ -18,7 +18,7 @@ Most vibe-coded apps ship **two** layers (UI + database). A real product needs *
 | 4 | Auth / permissions | **Strong** | Both | Supabase auth, private gate, premium server checks | Founder secret hygiene ([PROTECTION.md](PROTECTION.md)) |
 | 5 | Hosting / deployment | **Strong** | Founder | Vercel + `deploy-production.yml` + launch-verify | GitHub `VERCEL_*` secrets for auto Production |
 | 6 | Cloud / compute | **Partial** | — | PaaS (Vercel/Supabase/Upstash/Resend) | No IaC — deferred until multi-env pain |
-| 7 | CI/CD / version control | **Strong** | Both | `.github/workflows/ci.yml`, CodeQL | Soft smoke unless `SMOKE_BASE_URL` set |
+| 7 | CI/CD / version control | **Strong** | Both | `.github/workflows/ci.yml` (PR gate), `ci-extended.yml`, CodeQL monthly, `deploy-production.yml` | Soft smoke in CI extended unless `SMOKE_BASE_URL` set |
 | 8 | Security / RLS | **Strong** | Both | [PROTECTION.md](PROTECTION.md), OWASP, RLS migrations | Finish remaining P0s before public |
 | 9 | Rate limiting | **Partial** | Founder | [src/lib/rateLimit.ts](../src/lib/rateLimit.ts) | **Upstash required in Production before public** |
 | 10 | Caching / CDN | **Partial → v1** | Both | [CACHE_LADDER.md](CACHE_LADDER.md): browser private + enrollment Redis + static CDN | SW still gated by `PRIVATE_MODE`; no shared CDN for premium APIs |

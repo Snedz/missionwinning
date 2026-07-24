@@ -104,7 +104,7 @@ SMOKE_BASE_URL=http://localhost:3000 LIGHTHOUSE_SNAPSHOT=1 node scripts/lighthou
 
 Targets (mobile): performance, accessibility, best-practices ≥ 90 on `/`, `/log`, `/guide/human-performance`, `/exercises/squats`.
 
-CI runs the same script as a **soft warning** (`.github/workflows/ci.yml` → `lighthouse-budget` job).
+CI runs the same script as a **soft warning** (`.github/workflows/ci-extended.yml` → `lighthouse-budget` job, manual/weekly).
 
 ---
 

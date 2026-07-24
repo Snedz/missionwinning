@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-24 — OSS public-ready + lean CI / prod path
+
+- **CI minutes:** `ci.yml` PR-only lean gate; heavy e2e/Android/smokes → `ci-extended.yml` (manual/weekly); CodeQL monthly+dispatch; Aikido PR-only. Master push no longer burns minutes racing production.
+- **Prod:** keep `deploy-production.yml`; checklist adds Deploy Hook webhook (zero Actions minutes) + billing/secrets founder steps.
+- **OSS:** CoC, `docs/OPEN_SOURCE.md`, README badges, Profile footer **Source** → GitHub (AGPL §13). Founder flips repo Public when ready — no `PRIVATE_MODE` change.
+
 ## 2026-07-24 — Fuel train-day targets (Wave A)
 
 - Rings/budget adapt from **workout history** load (heavy/training/rest) via shared fuelCoach rules.

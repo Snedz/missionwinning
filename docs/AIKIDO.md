@@ -14,7 +14,7 @@ flowchart LR
     MCP --> Feed[aikido_issues_list]
   end
   subgraph ci [CI gate]
-    PR[PR or push to master] --> Action[AikidoSec github-actions-workflow]
+    PR[PR to master] --> Action[AikidoSec github-actions-workflow]
     Action --> Cloud[Aikido scan]
   end
 ```
@@ -27,7 +27,7 @@ flowchart LR
 - [ ] Connect GitHub repo **Snedz/missionwinning** in Aikido dashboard
 - [ ] Continuous Integration settings → generate token → copy once
 - [ ] GitHub → Settings → Secrets and variables → Actions → `AIKIDO_SECRET_KEY` = that token (**GitHub only**, not Vercel)
-- [ ] Confirm Actions → **Aikido** workflow runs on next push/PR (or is skipped until secret is set)
+- [ ] Confirm Actions → **Aikido** workflow runs on next PR (or is skipped until secret is set)
 - [ ] Sign in to Cursor Aikido MCP (`aikido_login` / region URL) when an agent asks
 - [ ] **IDE MCP permissions** — [Settings → Integrations → IDE / MCP](https://app.us.aikido.dev/settings/integrations/ide/mcp/permissions) → enable **issues list** (required for `aikido_issues_list`)
 
