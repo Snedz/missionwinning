@@ -1,0 +1,316 @@
+{
+  "version": 1,
+  "updated": "2026-07-23",
+  "assets": [
+    {
+      "id": "push-ups",
+      "kind": "form",
+      "path": "/form-guides/push-ups.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Multi-phase instructional SVG with SMIL elbow cycle"
+    },
+    {
+      "id": "air-squat",
+      "kind": "form",
+      "path": "/form-guides/air-squat.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Multi-phase + light depth animation"
+    },
+    {
+      "id": "squats",
+      "kind": "form",
+      "path": "/form-guides/squats.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "deadlift",
+      "kind": "form",
+      "path": "/form-guides/deadlift.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "pull-ups",
+      "kind": "form",
+      "path": "/form-guides/pull-ups.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "SMIL pull cycle"
+    },
+    {
+      "id": "plank",
+      "kind": "form",
+      "path": "/form-guides/plank.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "glute-bridge",
+      "kind": "form",
+      "path": "/form-guides/glute-bridge.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "lunges",
+      "kind": "form",
+      "path": "/form-guides/lunges.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "overhead-press",
+      "kind": "form",
+      "path": "/form-guides/overhead-press.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "barbell-row",
+      "kind": "form",
+      "path": "/form-guides/barbell-row.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "burpees",
+      "kind": "form",
+      "path": "/form-guides/burpees.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "inverted-row",
+      "kind": "form",
+      "path": "/form-guides/inverted-row.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "bench-press",
+      "kind": "form",
+      "path": "/form-guides/bench-press.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "SMIL bar path"
+    },
+    {
+      "id": "romanian-deadlift",
+      "kind": "form",
+      "path": "/form-guides/romanian-deadlift.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "hip-thrust",
+      "kind": "form",
+      "path": "/form-guides/hip-thrust.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1"
+    },
+    {
+      "id": "hero-field",
+      "kind": "art",
+      "path": "/art/hero-field",
+      "status": "shipped",
+      "notes": "Landing hero AVIF+WebP pair"
+    },
+    {
+      "id": "topo-brass",
+      "kind": "art",
+      "path": "/art/topo-brass",
+      "status": "shipped"
+    },
+    {
+      "id": "arc-momentum",
+      "kind": "art",
+      "path": "/art/arc-momentum",
+      "status": "shipped"
+    },
+    {
+      "id": "bundle-brass",
+      "kind": "art",
+      "path": "/art/bundle-brass",
+      "status": "shipped"
+    },
+    {
+      "id": "lat-pulldown",
+      "kind": "form",
+      "path": "/form-guides/lat-pulldown.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "kettlebell-swing",
+      "kind": "form",
+      "path": "/form-guides/kettlebell-swing.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "face-pull",
+      "kind": "form",
+      "path": "/form-guides/face-pull.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "bicep-curl",
+      "kind": "form",
+      "path": "/form-guides/bicep-curl.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "tricep-pushdown",
+      "kind": "form",
+      "path": "/form-guides/tricep-pushdown.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "bird-dog",
+      "kind": "form",
+      "path": "/form-guides/bird-dog.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "wall-sit",
+      "kind": "form",
+      "path": "/form-guides/wall-sit.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "pike-pushup",
+      "kind": "form",
+      "path": "/form-guides/pike-pushup.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "side-plank",
+      "kind": "form",
+      "path": "/form-guides/side-plank.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "mountain-climbers",
+      "kind": "form",
+      "path": "/form-guides/mountain-climbers.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "dips-chair",
+      "kind": "form",
+      "path": "/form-guides/dips-chair.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "step-ups",
+      "kind": "form",
+      "path": "/form-guides/step-ups.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "front-squat",
+      "kind": "form",
+      "path": "/form-guides/front-squat.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "goblet-squat",
+      "kind": "form",
+      "path": "/form-guides/goblet-squat.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "jump-squats",
+      "kind": "form",
+      "path": "/form-guides/jump-squats.svg",
+      "status": "shipped",
+      "promptId": "form-instructional-v1",
+      "notes": "Expansion batch"
+    },
+    {
+      "id": "human-performance",
+      "kind": "learn",
+      "path": "/learn/human-performance-hero.webp",
+      "status": "shipped",
+      "promptId": "brand-raster-v1",
+      "notes": "Chapter 1 hero"
+    },
+    {
+      "id": "movement-mechanics",
+      "kind": "learn",
+      "path": "/learn/movement-mechanics-hero.webp",
+      "status": "shipped",
+      "promptId": "brand-raster-v1",
+      "notes": "Chapter 2 hero"
+    },
+    {
+      "id": "programming-tuning",
+      "kind": "learn",
+      "path": "/learn/programming-tuning-hero.webp",
+      "status": "shipped",
+      "promptId": "brand-raster-v1",
+      "notes": "Chapter 3 hero"
+    },
+    {
+      "id": "nutrition-recovery",
+      "kind": "learn",
+      "path": "/learn/nutrition-recovery-hero.webp",
+      "status": "shipped",
+      "promptId": "brand-raster-v1",
+      "notes": "Chapter 5 hero"
+    },
+    {
+      "id": "assessments-progress",
+      "kind": "learn",
+      "path": "/learn/assessments-progress-hero.webp",
+      "status": "shipped",
+      "promptId": "brand-raster-v1",
+      "notes": "Chapter 6 hero"
+    },
+    {
+      "id": "invite-square",
+      "kind": "social",
+      "path": "/social/invite-square.webp",
+      "status": "shipped",
+      "promptId": "brand-raster-v1",
+      "notes": "1080 square invite background"
+    },
+    {
+      "id": "coach-story",
+      "kind": "social",
+      "path": "/social/coach-story.webp",
+      "status": "shipped",
+      "promptId": "brand-raster-v1",
+      "notes": "1080x1920 story/reel canvas"
+    }
+  ]
+}

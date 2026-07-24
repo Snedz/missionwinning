@@ -9,6 +9,11 @@ export const BEYOND_THE_BASICS_CHAPTERS: GuideChapter[] = [
     subtitle: 'How your body adapts — evidence over hype',
     icon: '🧬',
     quickPathId: 'strength-basics',
+    heroImage: {
+      src: '/learn/human-performance-hero.webp',
+      alt: 'Abstract athletic field suggesting human performance and adaptation',
+      caption: 'Adaptation follows the demand you repeat',
+    },
     sections: [
       {
         id: 'ch1-s1',
@@ -82,6 +87,11 @@ Readiness on the Today hub is a consistency score from your logs — not a medic
     subtitle: 'How lifts and patterns work — levers, not lore',
     icon: '🦴',
     quickPathId: 'corrective-foundations',
+    heroImage: {
+      src: '/learn/movement-mechanics-hero.webp',
+      alt: 'Abstract movement patterns suggesting squat and hinge mechanics',
+      caption: 'Patterns over lore',
+    },
     sections: [
       {
         id: 'ch2-s1',
@@ -103,6 +113,11 @@ Use the Library form guides and swap to goblet squats or box squats if barbell d
         relatedExerciseIds: ['squats', 'goblet-squat', 'air-squat'],
         relatedLearnPathId: 'corrective-foundations',
         sourceRef: 'foundations — squat pattern',
+        figure: {
+          src: '/form-guides/air-squat.svg',
+          alt: 'Air squat form diagram with stand, depth, and stand phases',
+          caption: 'Air squat — sit hips back, knees track, drive up',
+        },
         checklist: {
           title: 'Squat faults to watch',
           items: [
@@ -174,6 +189,11 @@ Pair patterns across the week rather than cramming everything into one marathon 
     subtitle: 'Volume, intensity, and when to deload — tune your plan',
     icon: '⚙️',
     quickPathId: 'periodization-design',
+    heroImage: {
+      src: '/learn/programming-tuning-hero.webp',
+      alt: 'Abstract progressive overload waveform on a dark mission canvas',
+      caption: 'Progress the plan, then deload',
+    },
     sections: [
       {
         id: 'ch3-s1',
@@ -340,6 +360,11 @@ Beta testers: see /beta for the start guide and feedback channels.`,
     subtitle: 'Fuel and sleep — the other half of adaptation',
     icon: '🥗',
     quickPathId: 'nutrition-101',
+    heroImage: {
+      src: '/learn/nutrition-recovery-hero.webp',
+      alt: 'Calm recovery atmosphere with emerald and brass accents',
+      caption: 'Recovery is part of training',
+    },
     sections: [
       {
         id: 'ch5-s1',
@@ -418,6 +443,11 @@ Log recipes from the Fuel page to pre-fill macros. Weekly challenges can nudge p
     subtitle: 'Screen safely, benchmark honestly, adjust deliberately',
     icon: '📊',
     quickPathId: 'assessments-path',
+    heroImage: {
+      src: '/learn/assessments-progress-hero.webp',
+      alt: 'Abstract readiness and progress telemetry rings',
+      caption: 'Measure to adjust — not to shame',
+    },
     sections: [
       {
         id: 'ch6-s1',

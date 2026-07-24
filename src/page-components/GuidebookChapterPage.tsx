@@ -17,7 +17,7 @@ import { logPillarWin } from '@/lib/pillarLog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
-import { GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
+import { GuideFigureBlock, GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
 import { renderMagazineBody } from '@/lib/guidebook/renderMagazineBody';
 import { ArrowLeft, BookMarked, Check } from 'lucide-react';
 
@@ -87,6 +87,10 @@ export function GuidebookChapterPage({ chapterId }: Props) {
             {t('guidebookQuickVersion', { defaultValue: '5-minute quick path →' })}
           </Link>
         </Button>
+      )}
+
+      {chapter.heroImage && (
+        <GuideFigureBlock figure={chapter.heroImage} variant="app" />
       )}
 
       <div className="space-y-8">

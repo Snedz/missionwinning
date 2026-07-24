@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.missionwinning.core.common.FormGuideMedia
 import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
 import com.missionwinning.core.designsystem.MwChipTone
@@ -52,6 +53,7 @@ import com.missionwinning.core.designsystem.MwColors
 import com.missionwinning.core.designsystem.MwAdaptiveOverlay
 import com.missionwinning.core.designsystem.MwConfirmSheet
 import com.missionwinning.core.designsystem.MwEmptyState
+import com.missionwinning.core.designsystem.MwFormGuideSheet
 import com.missionwinning.core.designsystem.MwGhostButton
 import com.missionwinning.core.designsystem.MwHeroTitle
 import com.missionwinning.core.designsystem.MwPrimaryButton
@@ -186,6 +188,7 @@ fun ActiveScreen(
     var confirmPartialFinish by remember { mutableStateOf(false) }
     var showAddExercise by remember { mutableStateOf(false) }
     var showPlates by remember { mutableStateOf(false) }
+    var showFormGuide by remember { mutableStateOf(false) }
     var pendingRemoveExerciseId by remember { mutableStateOf<String?>(null) }
     var pendingRemoveExerciseName by remember { mutableStateOf("") }
     val view = LocalView.current
@@ -377,6 +380,12 @@ fun ActiveScreen(
                                         onEvent(ActiveEvent.ApplyPrevious(set.id))
                                     },
                                     onShowPlates = { showPlates = true },
+                                    onShowFormGuide = {
+                                        if (FormGuideMedia.hasMedia(set.exerciseId)) {
+                                            showFormGuide = true
+                                        }
+                                    },
+                                    hasFormGuide = FormGuideMedia.hasMedia(set.exerciseId),
                                     exerciseRestSeconds = ex?.defaultRestSeconds,
                                     onExerciseRest = { sec ->
                                         onEvent(ActiveEvent.SetExerciseRest(set.exerciseId, sec))
@@ -590,6 +599,19 @@ fun ActiveScreen(
             )
         }
 
+        if (showFormGuide && currentSet != null) {
+            val formUrl = FormGuideMedia.url(currentSet.exerciseId)
+            if (formUrl != null) {
+                MwFormGuideSheet(
+                    exerciseName = currentSet.exerciseName.ifBlank { currentSet.exerciseId },
+                    svgUrl = formUrl,
+                    onDismiss = { showFormGuide = false },
+                )
+            } else {
+                showFormGuide = false
+            }
+        }
+
         pendingRemoveExerciseId?.let { exerciseId ->
             MwConfirmSheet(
                 title = "Remove ${pendingRemoveExerciseName.ifBlank { "exercise" }}?",
@@ -791,6 +813,8 @@ private fun CurrentSetCard(
     onRemoveSet: () -> Unit,
     onApplyPrevious: () -> Unit,
     onShowPlates: () -> Unit,
+    onShowFormGuide: () -> Unit = {},
+    hasFormGuide: Boolean = false,
     exerciseRestSeconds: Int? = null,
     onExerciseRest: (Int?) -> Unit = {},
     exerciseIndex: Int? = null,
@@ -829,6 +853,13 @@ private fun CurrentSetCard(
     MwCard(elevated = true, glow = true, hero = true) {
         MwSectionLabel(sectionLabel)
         Text(set.exerciseName, style = MwTypography.headlineMedium, color = MwColors.Text)
+        if (hasFormGuide) {
+            MwGhostButton(
+                text = "Form diagram",
+                contentDescription = "Show form diagram for ${set.exerciseName}",
+                onClick = onShowFormGuide,
+            )
+        }
         if (nextExerciseName != null) {
             Text(
                 "Up next · $nextExerciseName",

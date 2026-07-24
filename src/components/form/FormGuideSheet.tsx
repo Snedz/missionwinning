@@ -140,15 +140,18 @@ function FormGuideMedia({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border/40 bg-muted/30">
+    <figure className="overflow-hidden rounded-xl border border-border/40 bg-[#0a0c10]">
       <img
         src={url}
         alt={`${name} form diagram`}
         loading="lazy"
         decoding="async"
-        className="mx-auto w-full max-h-56 object-contain p-3"
+        className="mx-auto w-full max-h-64 object-contain"
       />
-    </div>
+      <figcaption className="border-t border-border/30 px-3 py-1.5 text-center text-xs text-muted-foreground">
+        Form diagram
+      </figcaption>
+    </figure>
   );
 }
 

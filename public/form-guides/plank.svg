@@ -1,11 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="plank form diagram">
-  <title>plank</title>
-  <!-- stick-figure placeholder -->
-  <circle cx="100" cy="28" r="12"/>
-  <line x1="100" y1="40" x2="100" y2="95"/>
-  <line x1="100" y1="55" x2="70" y2="80"/>
-  <line x1="100" y1="55" x2="130" y2="80"/>
-  <line x1="100" y1="95" x2="75" y2="135"/>
-  <line x1="100" y1="95" x2="125" y2="135"/>
-  <text x="100" y="152" text-anchor="middle" fill="#555" stroke="none" font-family="system-ui,sans-serif" font-size="9">plank</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Plank form: setup and hold line">
+  <title>Plank form diagram</title>
+  <rect width="360" height="220" fill="#0a0c10" rx="8"/>
+  <text x="120" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Setup</text>
+  <text x="260" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Hold</text>
+  <line x1="40" y1="175" x2="200" y2="175" stroke="#2a3038" stroke-width="2"/>
+  <line x1="220" y1="175" x2="340" y2="175" stroke="#2a3038" stroke-width="2"/>
+
+  <!-- Side plank view setup -->
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="175" cy="95" r="9"/>
+    <line x1="168" y1="102" x2="90" y2="130"/>
+    <line x1="90" y1="130" x2="70" y2="155"/>
+    <line x1="100" y1="125" x2="90" y2="130"/>
+    <line x1="168" y1="102" x2="55" y2="155"/>
+  </g>
+  <circle cx="90" cy="130" r="3.5" fill="#c7a860"/>
+  <text x="90" y="122" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">elbow</text>
+  <path d="M130 85 L130 115" stroke="#27b07d" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="142" y="100" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">straight</text>
+
+  <!-- Hold with cue arrows against sag -->
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="320" cy="95" r="9"/>
+    <line x1="313" y1="102" x2="250" y2="130"/>
+    <line x1="250" y1="130" x2="235" y2="155"/>
+    <line x1="258" y1="125" x2="250" y2="130"/>
+    <line x1="313" y1="102" x2="225" y2="155"/>
+  </g>
+  <path d="M270 140 L270 125" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="266,125 270,118 274,125" fill="#27b07d"/>
+  <text x="278" y="138" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">no sag</text>
+  <circle cx="280" cy="115" r="3.5" fill="#c7a860"/>
+  <text x="280" y="108" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">glutes</text>
 </svg>

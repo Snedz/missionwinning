@@ -22,6 +22,14 @@ export interface GuideChecklist {
   items: string[];
 }
 
+/** Optional illustration (guidebook / Learn). */
+export interface GuideFigure {
+  /** Public path e.g. `/learn/human-performance-hero.webp`. */
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
 export interface GuideSection {
   id: string;
   title: string;
@@ -37,6 +45,8 @@ export interface GuideSection {
   callout?: GuideCallout;
   table?: GuideTable;
   checklist?: GuideChecklist;
+  /** Optional section figure (MEDIA_SYSTEM). */
+  figure?: GuideFigure;
 }
 
 export interface GuideChapter {
@@ -47,4 +57,6 @@ export interface GuideChapter {
   icon: string;
   sections: GuideSection[];
   quickPathId?: string;
+  /** Optional chapter hero image (MEDIA_SYSTEM). */
+  heroImage?: GuideFigure;
 }
