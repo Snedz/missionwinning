@@ -29,7 +29,9 @@ import {
   getYesterdayEntries,
   parseNutritionLog,
   pruneNutritionLogToDays,
+  summarizeNutritionDays,
 } from '@/lib/nutritionQuickLog';
+import { FuelWeekGlance } from '@/components/nutrition/FuelWeekGlance';
 import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from '@/lib/macroTargets';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { Plus, UtensilsCrossed } from 'lucide-react';
@@ -168,15 +170,25 @@ export function NutritionPage() {
     localStorage.setItem('mw_water', water.toString());
   }, [water]);
 
+  /** Single writer: merge today's list into full history + localStorage. */
   useEffect(() => {
-    const todayRows = logged.map((l) => ({
-      ...l,
-      date: today,
-    }));
-    const older = allLogs.filter((l) => l.date && l.date !== today);
-    const next = pruneNutritionLogToDays([...older, ...todayRows], 90);
-    localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
-  }, [logged, allLogs, today]);
+    setAllLogs((prev) => {
+      const older = prev.filter((l) => l.date && l.date !== today);
+      const todayRows = logged.map((l) => ({
+        name: l.name,
+        protein: l.protein,
+        cals: l.cals,
+        carbs: l.carbs,
+        fat: l.fat,
+        meal: l.meal,
+        time: l.time,
+        date: today,
+      }));
+      const next = pruneNutritionLogToDays([...older, ...todayRows], 90);
+      localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
+      return next;
+    });
+  }, [logged, today]);
 
   const mealLabel = (meal?: MealType) => {
     if (!meal) return t('fuelMealOther', { defaultValue: 'Other' });
@@ -190,22 +202,16 @@ export function NutritionPage() {
   };
 
   const addEntry = (name: string, p: number, c: number, carbs = 0, fat = 0, meal = activeMeal) => {
-    const entry: LogEntry & { date: string } = {
+    const entry: LogEntry = {
       name,
       protein: p,
       cals: c,
       carbs,
       fat,
       meal,
-      date: today,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
     setLogged((prev) => [...prev, entry]);
-    setAllLogs((prev) => {
-      const next = pruneNutritionLogToDays([...prev, entry], 90);
-      localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
-      return next;
-    });
     setFuelStreak(bumpFuelLogStreak());
     syncProteinChallengeFromNutrition();
     getUser().then((u) => {
@@ -239,17 +245,24 @@ export function NutritionPage() {
           : row
       )
     );
+    // Best-effort append of corrected macros for signed-in users (API is insert-only).
+    getUser().then((u) => {
+      if (!u) return;
+      saveNutritionEntry({
+        date: today,
+        name: `${next.name.trim()} (edited)`,
+        protein: next.protein,
+        cals: next.cals,
+        carbs: next.carbs,
+        fat: next.fat,
+      }).catch(() => {});
+    });
     syncProteinChallengeFromNutrition();
   };
 
   const clearDay = () => {
     setLogged([]);
     setWater(0);
-    setAllLogs((prev) => {
-      const next = prev.filter((l) => l.date && l.date !== today);
-      localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
-      return next;
-    });
   };
 
   const handleNlMealTextChange = (text: string) => {
@@ -303,14 +316,15 @@ export function NutritionPage() {
           fat: c.fat,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         }));
-        setLogged((prev) => {
-          const combined = [...prev, ...mapped.filter((m) => !prev.some((p) => p.name === m.name))];
-          localStorage.setItem('mw_nutrition_log', JSON.stringify(combined));
-          return combined;
-        });
+        setLogged((prev) => [
+          ...prev,
+          ...mapped.filter((m) => !prev.some((p) => p.name === m.name)),
+        ]);
       }
     }
   };
+
+  const weekDays = summarizeNutritionDays(allLogs, today, 7);
 
   return (
     <PillarPageShell
@@ -355,6 +369,7 @@ export function NutritionPage() {
             setTargetFat(next.fat);
           }}
         />
+        <FuelWeekGlance days={weekDays} todayIso={today} targetCals={targetCals} />
         <FuelQuickLogPanel
           activeMeal={activeMeal}
           onActiveMealChange={setActiveMeal}

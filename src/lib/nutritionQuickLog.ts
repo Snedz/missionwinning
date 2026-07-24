@@ -89,4 +89,34 @@ export function getYesterdayEntries(logs: NutritionLogRow[], todayIso: string): 
   return logs.filter((l) => l.date === yKey);
 }
 
+export type NutritionDaySummary = {
+  date: string;
+  entries: number;
+  protein: number;
+  cals: number;
+};
+
+/** Last `days` calendar days including today (oldest → newest). */
+export function summarizeNutritionDays(
+  logs: NutritionLogRow[],
+  todayIso: string,
+  days = 7
+): NutritionDaySummary[] {
+  const out: NutritionDaySummary[] = [];
+  const base = new Date(`${todayIso}T12:00:00`);
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(base);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    const rows = logs.filter((l) => l.date === key);
+    out.push({
+      date: key,
+      entries: rows.length,
+      protein: rows.reduce((s, r) => s + (r.protein || 0), 0),
+      cals: rows.reduce((s, r) => s + (r.cals || 0), 0),
+    });
+  }
+  return out;
+}
+
 export { DEFAULT_QUICK as DEFAULT_QUICK_FOODS };
