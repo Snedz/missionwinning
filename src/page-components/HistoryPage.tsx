@@ -172,18 +172,18 @@ export function HistoryPage() {
     <PillarPageShell
       icon={HistoryIcon}
       eyebrow={t('historyEyebrow', { defaultValue: 'History' })}
-      title={t('historyTitle', { defaultValue: 'Workout History' })}
+      title={t('historyTitle', { defaultValue: 'Past sessions' })}
       subtitle={t('historySubtitle', {
-        defaultValue: 'Your history powers the Today Hub readiness and Win Score.',
+        defaultValue: 'What you logged — powers readiness on Today and Coach week plans.',
       })}
     >
-      <div className="rounded-2xl border border-primary/20 bg-primary/10 px-4 py-3 space-y-1 ring-draw-in">
-        <p className="text-[10px] uppercase tracking-widest text-primary/90 font-medium">
-          {t('historyMissionStory', { defaultValue: 'Mission story' })}
+      <div className="rounded-2xl border border-border/50 bg-muted/15 px-4 py-3 space-y-1">
+        <p className="text-xs font-medium tracking-wide text-muted-foreground">
+          {t('historyMissionStory', { defaultValue: 'At a glance' })}
         </p>
-        <p className="text-sm text-foreground leading-snug">{briefingLine}</p>
+        <p className="text-sm text-foreground leading-relaxed">{briefingLine}</p>
         {summary.sessionCount > 0 && (
-          <p className="text-xs text-muted-foreground tabular-nums">
+          <p className="text-xs text-muted-foreground tabular-nums leading-relaxed">
             {t('historyAvgVolume', {
               avg: summary.avgVolume.toLocaleString(),
               unit: unitLabel,

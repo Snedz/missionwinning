@@ -64,26 +64,26 @@ export function LearnPage() {
     <PillarPageShell
       icon={BookOpen}
       eyebrow={t('learnEyebrow', { defaultValue: 'Learn' })}
-      title={t('learnTitle', { defaultValue: 'Learn & Master' })}
+      title={t('learnTitle', { defaultValue: 'Learn' })}
       subtitle={t('learnSubtitle', {
         count: FREE_LEARN_PATHS.length,
         defaultValue: isFreeBeta()
-          ? `${FREE_LEARN_PATHS.length} free education paths — evidence-based foundations plus specialist intros.`
-          : `${FREE_LEARN_PATHS.length} free education paths — evidence-based foundations plus specialist intros. Premium unlocks full programs (Super Bundle).`,
+          ? `${FREE_LEARN_PATHS.length} education paths — foundations first, specialist intros included.`
+          : `${FREE_LEARN_PATHS.length} free education paths. Super Bundle unlocks full programs when paid depth is on.`,
       })}
     >
-        <Card className="card-elevated border-primary/40">
+        <Card className="border-border/50 bg-card/80 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
+            <CardTitle className="text-base flex items-center gap-2 font-semibold">
               <BookMarked className="h-4 w-4 text-primary" />
               {t('learnExpandedBanner', {
-                defaultValue: 'Now with even more content!',
+                defaultValue: 'Beyond the Basics',
               })}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="leading-relaxed">
               {t('learnExpandedDesc', {
                 defaultValue:
-                  'Beyond the Basics guidebook — 6 chapters on performance science, movement, programming, and more. evidence-based, free core.',
+                  'Six free chapters on performance, movement, and programming — practical, not hype.',
               })}
             </CardDescription>
           </CardHeader>

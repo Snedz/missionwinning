@@ -193,8 +193,7 @@ export function LeaderboardPage() {
       eyebrow={t('leaderboardEyebrow', { defaultValue: 'Leaderboard' })}
       title={t('leaderboardTitle', { defaultValue: 'Leaderboard' })}
       subtitle={t('leaderboardSubtitle', {
-        defaultValue:
-          'Compare Mission Operators globally, by region, country, locale, or squad.',
+        defaultValue: 'Optional rankings by region, country, or squad — training first, never required.',
       })}
       showLegalFooter
       className="pb-8"

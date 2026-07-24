@@ -58,22 +58,20 @@ export function FeedbackPage() {
         icon={MessageSquare}
         title={t('infoFeedbackThankTitle', { defaultValue: 'Thank you' })}
         subtitle={t('infoFeedbackThankSubtitle', {
-          defaultValue:
-            'Your feedback helps make the free core and Super Bundle better for the global mission.',
+          defaultValue: 'Thanks — your notes help us improve the free logger and Coach.',
         })}
         variant="sections"
       >
-        <Card className="content-card text-center">
+        <Card className="border-border/50 bg-card/80 shadow-sm text-center">
             <CardContent className="pt-8 pb-8 space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-primary/20 text-primary text-sm border border-primary/40">
-                {t('feedbackThankBadge', { defaultValue: 'Mission Builders' })}
+              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-muted/40 text-foreground text-sm border border-border/50">
+                {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
               </div>
-              <div className="text-left max-w-md mx-auto space-y-2 text-sm">
-                <p className="font-semibold">{t('feedbackThankUnlock', { defaultValue: '✓ Super Bundle premium unlocks' })}</p>
-                <p className="font-semibold">{t('feedbackThankRoadmap', { defaultValue: '✓ Input on roadmap + features' })}</p>
-                <p className="font-semibold">{t('feedbackThankEarly', { defaultValue: '✓ Early access to updates' })}</p>
+              <div className="text-left max-w-md mx-auto space-y-2 text-sm leading-relaxed">
+                <p className="font-medium">{t('feedbackThankRoadmap', { defaultValue: '✓ Your input shapes what we build next' })}</p>
+                <p className="font-medium">{t('feedbackThankEarly', { defaultValue: '✓ We’ll email when something useful ships' })}</p>
                 <p className="text-xs text-muted-foreground mt-4">
-                  {t('feedbackThankEmail', { defaultValue: 'Watch your email for updates + community drops.' })}
+                  {t('feedbackThankEmail', { defaultValue: 'Check your inbox if you left an email.' })}
                 </p>
               </div>
               <Button size="lg" variant="fitness" onClick={() => router.push('/log')}>
@@ -88,17 +86,19 @@ export function FeedbackPage() {
   return (
     <InfoPageShell
       icon={MessageSquare}
-      title={t('infoFeedbackTitle', { defaultValue: 'Share your wins' })}
+      title={t('infoFeedbackTitle', { defaultValue: 'Feedback' })}
       subtitle={t('infoFeedbackSubtitle', {
         defaultValue:
-          "Tell us what results you're seeing, what worked, and what to build next. Beta founders shape the roadmap.",
+          'What worked, what didn’t, and what you want next. We read every note.',
       })}
       variant="sections"
       showLegalFooter
     >
-      <Card className="content-card">
+      <Card className="border-border/50 bg-card/80 shadow-sm">
           <CardHeader>
-            <CardTitle>{t('infoFeedbackFormTitle', { defaultValue: 'Beta founders feedback' })}</CardTitle>
+            <CardTitle className="text-base font-semibold">
+              {t('infoFeedbackFormTitle', { defaultValue: 'Tell us how it’s going' })}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
