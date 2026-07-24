@@ -202,7 +202,15 @@ export function NutritionPage() {
     return map[meal];
   };
 
-  const addEntry = (name: string, p: number, c: number, carbs = 0, fat = 0, meal = activeMeal) => {
+  const addEntry = (
+    name: string,
+    p: number,
+    c: number,
+    carbs = 0,
+    fat = 0,
+    meal = activeMeal,
+    opts?: { quiet?: boolean }
+  ) => {
     const entry: LogEntry = {
       name,
       protein: p,
@@ -215,6 +223,17 @@ export function NutritionPage() {
     setLogged((prev) => [...prev, entry]);
     setFuelStreak(bumpFuelLogStreak());
     syncProteinChallengeFromNutrition();
+    if (!opts?.quiet) {
+      toast({
+        title: t('fuelLoggedToast', { defaultValue: 'Logged' }),
+        description: t('fuelLoggedToastDesc', {
+          name,
+          protein: p,
+          cals: c,
+          defaultValue: `${name} · ${p}g protein · ${c} kcal`,
+        }),
+      });
+    }
     getUser().then((u) => {
       if (u) saveNutritionEntry({ date: today, name, protein: p, cals: c, carbs, fat }).catch(() => {});
     });
@@ -232,12 +251,13 @@ export function NutritionPage() {
     index: number,
     next: { name: string; protein: number; cals: number; carbs: number; fat: number }
   ) => {
+    const label = next.name.trim() || 'Meal';
     setLogged((prev) =>
       prev.map((row, i) =>
         i === index
           ? {
               ...row,
-              name: next.name.trim() || row.name,
+              name: label,
               protein: next.protein,
               cals: next.cals,
               carbs: next.carbs,
@@ -246,12 +266,21 @@ export function NutritionPage() {
           : row
       )
     );
+    toast({
+      title: t('fuelEntryUpdated', { defaultValue: 'Entry updated' }),
+      description: t('fuelLoggedToastDesc', {
+        name: label,
+        protein: next.protein,
+        cals: next.cals,
+        defaultValue: `${label} · ${next.protein}g protein · ${next.cals} kcal`,
+      }),
+    });
     // Best-effort append of corrected macros for signed-in users (API is insert-only).
     getUser().then((u) => {
       if (!u) return;
       saveNutritionEntry({
         date: today,
-        name: `${next.name.trim()} (edited)`,
+        name: `${label} (edited)`,
         protein: next.protein,
         cals: next.cals,
         carbs: next.carbs,
@@ -292,30 +321,55 @@ export function NutritionPage() {
         m.cals,
         m.carbs ?? 0,
         m.fat ?? 0,
-        (m.meal as MealType) ?? activeMeal
+        (m.meal as MealType) ?? activeMeal,
+        { quiet: true }
       );
+    }
+    if (yesterdayMeals.length > 0) {
+      toast({
+        title: t('fuelCopiedDay', { defaultValue: 'Copied to today' }),
+        description: t('fuelCopiedDayDesc', {
+          count: yesterdayMeals.length,
+          defaultValue: `${yesterdayMeals.length} meals added — edit anything that changed.`,
+        }),
+      });
     }
   };
 
   const handleCopyDayToToday = (
     rows: { name: string; protein: number; cals: number; carbs?: number; fat?: number; meal?: string }[]
   ) => {
+    let added = 0;
     for (const m of rows) {
+      const already = logged.some(
+        (l) =>
+          l.name.trim().toLowerCase() === m.name.trim().toLowerCase() &&
+          l.protein === m.protein &&
+          l.cals === m.cals
+      );
+      if (already) continue;
       addEntry(
         m.name,
         m.protein,
         m.cals,
         m.carbs ?? 0,
         m.fat ?? 0,
-        (m.meal as MealType) || activeMeal
+        (m.meal as MealType) || activeMeal,
+        { quiet: true }
       );
+      added += 1;
     }
     toast({
       title: t('fuelCopiedDay', { defaultValue: 'Copied to today' }),
-      description: t('fuelCopiedDayDesc', {
-        count: rows.length,
-        defaultValue: `${rows.length} meals added — edit anything that changed.`,
-      }),
+      description:
+        added === 0
+          ? t('fuelCopiedDayNone', {
+              defaultValue: 'Those meals are already on today.',
+            })
+          : t('fuelCopiedDayDesc', {
+              count: added,
+              defaultValue: `${added} meals added — edit anything that changed.`,
+            }),
     });
   };
 

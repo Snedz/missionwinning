@@ -1,46 +1,58 @@
 # Fuel and nutrition
 
-The **Fuel** tab (`/nutrition`) helps you log what you eat and stay on target for protein and macros.
+The **Fuel** tab (`/nutrition`) helps you log what you eat and stay on target for protein and calories.
+
+Estimates are **tools**, not medical advice. Always review macros before logging when the app asks you to.
 
 ## Daily log
 
-- Set targets from calculators (Profile or Fuel) — calories, protein, carbs, fat, water.
-- Add entries manually or from search.
-- Review today's totals vs targets on the dashboard.
+1. **Targets** — Edit daily calories, protein, carbs, and fat (stored on this device).
+2. **Describe what you ate** — natural language (`chicken rice broccoli`, `3 eggs`, `50g chicken`). Review the draft, fix numbers, then **Log meal**.
+3. **Quick chips** — frequent foods and saved meals.
+4. **Photo & detailed log** — meal chips, custom entry (full macros), or photo estimate.
+5. **Search / barcode** — Open Food Facts database; review draft before log.
+6. **Today’s meals** — grouped by breakfast/lunch/dinner/snack; edit (pencil) or delete entries.
+7. **Past days** — browse recent days and **Copy to today**.
 
-## Food search
+## Accuracy tips
 
-Search by name — results come from Open Food Facts (global database). Tap an item to log macros.
+| Method | Best for | Notes |
+|--------|----------|--------|
+| Database search / barcode | Packaged foods | Most accurate when the product is in Open Food Facts |
+| Describe meal (matched) | Common whole foods | Keyword templates + quantities; always editable |
+| Photo | When you have no label | **Vision AI** only if founder configured `MEAL_VISION_*`; otherwise a rough estimate from color/filename — edit or pick a database match |
+| Custom | Anything | Full P/Cals/C/F by hand |
 
-**Tip:** Short, specific names work best ("chicken breast" vs "food").
+**Low confidence** drafts show a search box so you can replace guess macros with database values.
 
-## Barcode scan
+## Week glance
 
-Use the barcode field on Fuel to look up packaged foods. Enter the digits from the package; unsupported barcodes can still be logged manually.
+A 7-day bar chart shows calories per day vs your target (amber when over). Data comes from local history (last ~90 days).
 
-## Photo meal estimate
+## Free vs open beta
 
-Upload a meal photo for a **heuristic macro estimate** (not medical-grade). Useful for quick logging when you don't have a label.
+| Always free | Open beta (current) | Paid Super Bundle (when re-enabled) |
+|-------------|---------------------|-------------------------------------|
+| Logger, search, barcode, photo path, recipes core | Full depth unlocked | Fuel Coach plans / deeper content |
 
-- Supported: common meal types inferred from image hints
-- Not a replacement for a food scale or dietitian advice
+## Founder: optional photo vision
 
-## Streaks and coach
+Photo estimates can use a multimodal API when set (server only — never `NEXT_PUBLIC_`):
 
-Fuel streaks feed your **Win Score** and **cross-pillar coach** chips on Today ("log protein on training days"). Consistency matters more than perfection.
+| Variable | Purpose |
+|----------|---------|
+| `MEAL_VISION_API_URL` | OpenAI-compatible chat completions URL (multimodal) |
+| `MEAL_VISION_API_KEY` | Bearer key |
+| `MEAL_VISION_MODEL` | Default `gpt-4o-mini` (or provider equivalent) |
+| `MEAL_VISION_REQUIRE_ZDR` | `true` to require zero-data-retention header (same idea as coach LLM) |
 
-## Free vs premium
-
-| Free | Premium |
-|------|---------|
-| Manual log, search, barcode, photo estimate | Advanced meal plans |
-| Basic recipes | Full recipe library |
-| Macro targets | Deeper nutrition coaching content |
+Without these, photo log still works via local heuristics + Open Food Facts matching. See [ENV.md](../ENV.md).
 
 ## Tips
 
-1. Log protein first on training days.
-2. Use water tracking for a simple daily win.
-3. Reuse recent entries from your log history when possible.
+1. Hit protein first on training days.
+2. Prefer barcode/search for packages; describe meal for home cooking.
+3. Copy past days when meals repeat, then edit portions.
+4. Water tracking is a simple daily win.
 
 Questions: [faq.md](faq.md).
