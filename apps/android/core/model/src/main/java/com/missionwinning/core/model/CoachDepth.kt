@@ -84,7 +84,7 @@ object CoachDepth {
         if (premium) {
             cards += InsightCard(
                 key = "premium-depth",
-                title = "Super Bundle depth",
+                title = "Coach depth",
                 body = "Miss / swap beats, session rationale, and equipment intelligence stay unlocked. Logging never requires a plan.",
                 premiumOnly = true,
             )
@@ -142,7 +142,7 @@ object CoachDepth {
             kind.contains("recover", true) ->
                 "Recovery bias session: lower intensity, still movement-positive."
             else ->
-                "Session intent: $focus. Est. $estMinutes min. Super Bundle surfaces why keys on each move."
+                "Session intent: $focus. Est. $estMinutes min. Coach depth surfaces why keys on each move."
         }
         return SessionWhy(
             sessionId = sessionId,

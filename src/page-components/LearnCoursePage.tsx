@@ -11,6 +11,7 @@ import { usePremium } from '@/hooks/usePremium';
 import { BookOpen } from 'lucide-react';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import { fetchPremiumCatalogJson } from '@/lib/premiumCatalogCache';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 export function LearnCoursePage() {
   const { t } = useTranslation();
@@ -46,7 +47,9 @@ export function LearnCoursePage() {
       {!loading && premium && chapters.length === 0 && (
         <p className="text-sm text-muted-foreground">
           {t('learnCourseSignIn', {
-            defaultValue: 'Sign in with your bundle email to load specialist courses.',
+            defaultValue: isFreeBeta()
+              ? 'Courses could not load — check your connection and try again.'
+              : 'Sign in with your bundle email to load specialist courses.',
           })}
         </p>
       )}

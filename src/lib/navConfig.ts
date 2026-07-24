@@ -182,10 +182,16 @@ export const EXTENDED_NAV_SECTIONS: NavSection[] = [
 /**
  * Journey-aware More menu — Basic Training sees train tools only so first week
  * stays focused on logging (S-Tier: less surface, better core).
+ * Free beta: full More (minus Bundle) for every phase so all pillars are discoverable.
  */
 export function extendedNavSectionsForPhase(phase: JourneyPhase): NavSection[] {
   const withoutPremium = (sections: NavSection[]) =>
     isFreeBeta() ? sections.filter((s) => s.id !== 'premium') : sections;
+
+  // Open beta: expose Recover / Train deeper / Learn — journey focus returns with paid.
+  if (isFreeBeta()) {
+    return withoutPremium(EXTENDED_NAV_SECTIONS);
+  }
 
   if (phase === 'i-day' || phase === 'basic') {
     return [

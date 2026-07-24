@@ -96,7 +96,7 @@ const en: FuelStrings = {
   fuelLocalNote:
     'Meals stay on this device. Sign in anytime to sync across phones and the web.',
   fuelFreeRecipesTitle: 'Free Recipes ({{count}} — core mission)',
-  fuelPremiumRecipesTitle: 'Premium Recipes & Meal Ideas (Super Bundle)',
+  fuelPremiumRecipesTitle: 'Premium Recipes & Meal Ideas',
   fuelPremiumLockedTitle: '+{{count}} Premium Recipes',
   fuelPremiumLockedBody:
     'Unlock the full Fuel pillar recipe library, meal timing strategies, and advanced macro coaching via the Super Bundle.',
