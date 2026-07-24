@@ -56,6 +56,8 @@ export function NutritionPage() {
   const [customName, setCustomName] = useState('');
   const [customP, setCustomP] = useState(20);
   const [customC, setCustomC] = useState(200);
+  const [customCarbs, setCustomCarbs] = useState(0);
+  const [customFat, setCustomFat] = useState(0);
   const [cloudStatus, setCloudStatus] = useState('');
   const [logSheetOpen, setLogSheetOpen] = useState(false);
   const [activeMeal, setActiveMeal] = useState<MealType>(() => {
@@ -213,8 +215,41 @@ export function NutritionPage() {
 
   const addCustom = () => {
     if (!customName.trim()) return;
-    addEntry(customName.trim(), customP, customC);
+    addEntry(customName.trim(), customP, customC, customCarbs, customFat);
     setCustomName('');
+    setCustomCarbs(0);
+    setCustomFat(0);
+  };
+
+  const updateEntry = (
+    index: number,
+    next: { name: string; protein: number; cals: number; carbs: number; fat: number }
+  ) => {
+    setLogged((prev) =>
+      prev.map((row, i) =>
+        i === index
+          ? {
+              ...row,
+              name: next.name.trim() || row.name,
+              protein: next.protein,
+              cals: next.cals,
+              carbs: next.carbs,
+              fat: next.fat,
+            }
+          : row
+      )
+    );
+    syncProteinChallengeFromNutrition();
+  };
+
+  const clearDay = () => {
+    setLogged([]);
+    setWater(0);
+    setAllLogs((prev) => {
+      const next = prev.filter((l) => l.date && l.date !== today);
+      localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
+      return next;
+    });
   };
 
   const handleNlMealTextChange = (text: string) => {
@@ -372,13 +407,11 @@ export function NutritionPage() {
         totalCals={totalCals}
         cloudStatus={cloudStatus}
         mealLabel={mealLabel}
-        onClearDay={() => {
-          setLogged([]);
-          setWater(0);
-        }}
+        onClearDay={clearDay}
         onRemoveEntry={(index) => {
           setLogged((prev) => prev.filter((_, i) => i !== index));
         }}
+        onUpdateEntry={updateEntry}
         onLoadCloud={async () => {
           setCloudStatus(t('fuelCloudLoading', { defaultValue: 'Loading...' }));
           await loadCloudNutrition();
@@ -436,9 +469,13 @@ export function NutritionPage() {
         customName={customName}
         customP={customP}
         customC={customC}
+        customCarbs={customCarbs}
+        customFat={customFat}
         onCustomNameChange={setCustomName}
         onCustomPChange={setCustomP}
         onCustomCChange={setCustomC}
+        onCustomCarbsChange={setCustomCarbs}
+        onCustomFatChange={setCustomFat}
         onCustomLog={addCustom}
       />
     </PillarPageShell>
