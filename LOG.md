@@ -12,6 +12,11 @@ Chronological record of shipped work. Newest first.
 - Softened unlocked Super Bundle labels (Fuel recipes title, Learn empty state, Android Coach depth chips).
 - Build: `2026.07-unified.122`.
 
+## 2026-07-24 — Fuel speed logging (competitive Wave S)
+
+- Steal from MacroFactor/Lose It/MFP: **Recent** rail (1-tap re-log), **servings** ½–3× on draft, Enter picks top search hit, larger remaining budget.
+- Compare matrix in plan session; no micros/social. Tests: `getRecentFoods`, `scaleMealMacros`.
+
 ## 2026-07-24 — Fuel calorie tracker pass 7
 
 - **Help + ENV:** accurate Fuel logging guide; `MEAL_VISION_*` founder notes.

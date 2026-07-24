@@ -1,9 +1,11 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { scaleMealMacros } from '@/lib/nutritionQuickLog';
 
 export type MealDraftFields = {
   name: string;
@@ -25,13 +27,22 @@ type Props = {
   logLabel?: string;
 };
 
+const SERVINGS = [0.5, 1, 1.5, 2, 3] as const;
+
 function num(v: string): number {
   const n = parseInt(v, 10);
   return Number.isFinite(n) && n >= 0 ? n : 0;
 }
 
+function servingLabel(s: number): string {
+  if (s === 0.5) return '½';
+  if (s === 1.5) return '1½';
+  return String(s);
+}
+
 /**
  * Editable macro draft before logging — accuracy depends on user correction.
+ * Serving chips scale from a base snapshot (speed logging steal from MFP/MacroFactor).
  */
 export function MealEstimateDraft({
   draft,
@@ -45,6 +56,39 @@ export function MealEstimateDraft({
 }: Props) {
   const { t } = useTranslation();
   const low = confidence === 'low';
+  const baseRef = useRef<MealDraftFields>({ ...draft });
+  const [servings, setServings] = useState(1);
+
+  // When name changes from parent (new food), reset base + servings
+  useEffect(() => {
+    baseRef.current = {
+      name: draft.name,
+      protein: draft.protein,
+      cals: draft.cals,
+      carbs: draft.carbs,
+      fat: draft.fat,
+    };
+    setServings(1);
+    // Only when identity of food changes — parent replaces whole draft
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: name identity
+  }, [draft.name]);
+
+  const applyServings = (s: number) => {
+    setServings(s);
+    const scaled = scaleMealMacros(baseRef.current, s);
+    onChange({
+      name: draft.name,
+      ...scaled,
+    });
+  };
+
+  const onManualField = (patch: Partial<MealDraftFields>) => {
+    const next = { ...draft, ...patch };
+    onChange(next);
+    // Manual edit becomes new base at 1 serving
+    baseRef.current = { ...next };
+    setServings(1);
+  };
 
   return (
     <div
@@ -96,6 +140,26 @@ export function MealEstimateDraft({
         </p>
       )}
 
+      <div className="space-y-1.5">
+        <p className="text-xs text-muted-foreground">
+          {t('fuelServings', { defaultValue: 'Servings' })}
+        </p>
+        <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('fuelServings', { defaultValue: 'Servings' })}>
+          {SERVINGS.map((s) => (
+            <Button
+              key={s}
+              type="button"
+              size="sm"
+              variant={servings === s ? 'fitness' : 'outline'}
+              className="h-8 min-w-[2.5rem] rounded-full px-2.5 text-xs tabular-nums"
+              onClick={() => applyServings(s)}
+            >
+              {servingLabel(s)}
+            </Button>
+          ))}
+        </div>
+      </div>
+
       <div className="space-y-2">
         <label className="text-xs text-muted-foreground" htmlFor="meal-draft-name">
           {t('fuelFoodLabel', { defaultValue: 'Food' })}
@@ -103,7 +167,7 @@ export function MealEstimateDraft({
         <Input
           id="meal-draft-name"
           value={draft.name}
-          onChange={(e) => onChange({ ...draft, name: e.target.value })}
+          onChange={(e) => onManualField({ name: e.target.value })}
           className="h-10"
         />
       </div>
@@ -118,7 +182,7 @@ export function MealEstimateDraft({
             type="number"
             min={0}
             value={draft.protein}
-            onChange={(e) => onChange({ ...draft, protein: num(e.target.value) })}
+            onChange={(e) => onManualField({ protein: num(e.target.value) })}
             className="h-10 mt-0.5"
           />
         </div>
@@ -131,7 +195,7 @@ export function MealEstimateDraft({
             type="number"
             min={0}
             value={draft.cals}
-            onChange={(e) => onChange({ ...draft, cals: num(e.target.value) })}
+            onChange={(e) => onManualField({ cals: num(e.target.value) })}
             className="h-10 mt-0.5"
           />
         </div>
@@ -144,7 +208,7 @@ export function MealEstimateDraft({
             type="number"
             min={0}
             value={draft.carbs}
-            onChange={(e) => onChange({ ...draft, carbs: num(e.target.value) })}
+            onChange={(e) => onManualField({ carbs: num(e.target.value) })}
             className="h-10 mt-0.5"
           />
         </div>
@@ -157,7 +221,7 @@ export function MealEstimateDraft({
             type="number"
             min={0}
             value={draft.fat}
-            onChange={(e) => onChange({ ...draft, fat: num(e.target.value) })}
+            onChange={(e) => onManualField({ fat: num(e.target.value) })}
             className="h-10 mt-0.5"
           />
         </div>
