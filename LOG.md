@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Web UX pass 6: History/Compare + secondary pillars
+
+- **History:** “Past sessions”, calm at-a-glance card.
+- **Compare + PublicSeoHeader:** wedge-accurate rows; no “everything app” pitch; quieter SEO chrome.
+- **Move/Mind/Track/Learn/Leaderboard/Feedback:** human titles; free-beta honest; Today coach invite card.
+
 ## 2026-07-23 — Web UX pass 5: Profile + marketing shell
 
 - **Profile:** human subtitle, account card free-beta foot, quieter journey setup.

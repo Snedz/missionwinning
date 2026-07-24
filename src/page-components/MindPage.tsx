@@ -64,11 +64,11 @@ export function MindPage() {
     <PillarPageShell
       icon={Brain}
       eyebrow={t('mindEyebrow', { defaultValue: 'Mind' })}
-      title={t('mindTitle', { defaultValue: 'Mind & Recovery' })}
+      title={t('mindTitle', { defaultValue: 'Mind' })}
       subtitle={t('mindSubtitle', {
         defaultValue: isFreeBeta()
-          ? '10 free guided sessions, breathing timer, and daily check-in.'
-          : '10 free guided sessions, breathing timer, and daily check-in. Premium adds 17 deeper timed sessions (Super Bundle).',
+          ? 'Breathing, check-in, and short guided sessions — keep recovery simple.'
+          : 'Breathing, check-in, and guided sessions. Super Bundle adds deeper timed sessions when paid depth is on.',
       })}
     >
       <div className="grid gap-6 lg:grid-cols-2">
@@ -77,8 +77,8 @@ export function MindPage() {
       </div>
 
       <div id="mind-guided" className="space-y-3 scroll-mt-20">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-          {t('mindGuidedFree', { defaultValue: 'Free guided sessions' })}
+        <h3 className="text-sm font-medium text-muted-foreground">
+          {t('mindGuidedFree', { defaultValue: 'Guided sessions' })}
         </h3>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {GUIDED_MIND_SESSIONS.map((s) => (

@@ -90,11 +90,11 @@ export function TrackPage() {
     <PillarPageShell
       icon={MapPin}
       eyebrow={t('trackEyebrow', { defaultValue: 'Track' })}
-      title={t('trackTitle', { defaultValue: 'Track Activity' })}
+      title={t('trackTitle', { defaultValue: 'Activity' })}
       subtitle={t('trackSubtitle', {
         defaultValue: isFreeBeta()
-          ? 'Free manual activity log — walk, run, bike, hike.'
-          : 'Free manual activity log — walk, run, bike, hike. Premium adds GPS and advanced stats (MapMy-style, Super Bundle).',
+          ? 'Log walks, runs, and rides — simple weekly totals.'
+          : 'Log walks, runs, and rides. Super Bundle can add GPS depth when paid depth is on.',
       })}
     >
         <div className="grid gap-4 md:grid-cols-3">

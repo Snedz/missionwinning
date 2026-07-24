@@ -60,20 +60,20 @@ const COMPARE_ROWS: Row[] = [
     strong: 'Partial',
   },
   {
-    feature: 'AI weekly coach',
-    mw: 'Mission Coach (1 free week)',
+    feature: 'Weekly coach from logs',
+    mw: 'Mission Coach — free every week',
     hevy: '—',
     strong: '—',
   },
   {
-    feature: 'Nutrition / mobility / mind',
-    mw: 'Six pillars in one app',
+    feature: 'Fuel / move / mind tools',
+    mw: 'Available after Train + Coach',
     hevy: '—',
     strong: '—',
   },
   {
-    feature: 'AI API key required',
-    mw: 'No — Just Go is rule-based & free',
+    feature: 'API key required',
+    mw: 'No — Just Go is free and local',
     hevy: '—',
     strong: '—',
     source: 'vs Forge Fitness BYOK Pro (2026)',
@@ -96,13 +96,13 @@ export function ComparePage() {
         title={t('compareTitle', { defaultValue: 'How we compare' })}
         subtitle={t('compareSubtitle', {
           defaultValue:
-            'Free tiers side by side — Mission Winning leads with the tracker, not the paywall. Free core needs no AI key; optional AI coach only when enabled.',
+            'Free tiers side by side. We lead with the offline logger and Coach from your logs — not a paywall.',
         })}
       />
 
       <main className="mx-auto max-w-4xl space-y-8 px-5 py-10">
-        <div className="card-elevated overflow-hidden">
-          <div className="section-seam px-5 py-4">
+        <div className="overflow-hidden rounded-2xl border border-border/50 bg-card/80 shadow-sm">
+          <div className="border-b border-border/40 px-5 py-4">
             <h2 className="text-base font-semibold">
               {t('compareTableTitle', { defaultValue: 'Free tier at a glance' })}
             </h2>
@@ -150,18 +150,18 @@ export function ComparePage() {
             {
               href: '/compare/freeletics',
               title: 'vs Freeletics',
-              body: 'Six pillars in one app — not a multi-app stack.',
+              body: 'Logger + Coach first — tools deepen later.',
             },
             {
               href: '/compare/spreadsheet',
               title: 'vs spreadsheets',
-              body: 'Auto targets, rest timer, readiness from logs.',
+              body: 'Rest timer, targets, readiness from logs.',
             },
           ].map((c) => (
             <Link
               key={c.href}
               href={c.href}
-              className="card-elevated pressable-card block p-4 transition-shadow hover:shadow-glow"
+              className="block rounded-2xl border border-border/50 bg-card/80 p-4 shadow-sm transition-colors hover:border-border"
             >
               <p className="font-semibold text-sm">{c.title}</p>
               <p className="text-xs text-muted-foreground mt-1">{c.body}</p>
@@ -169,8 +169,8 @@ export function ComparePage() {
           ))}
         </div>
 
-        <div className="rounded-2xl border border-border/40 bg-muted/15 p-5 text-sm text-muted-foreground space-y-2">
-          <p className="font-medium text-foreground">Proof, not vibes</p>
+        <div className="rounded-2xl border border-border/40 bg-muted/15 p-5 text-sm text-muted-foreground space-y-2 leading-relaxed">
+          <p className="font-medium text-foreground">What stays free</p>
           <p>
             Free library:{' '}
             <Link href="/exercises" className="text-primary hover:underline">
@@ -178,19 +178,19 @@ export function ComparePage() {
             </Link>
             {' · '}
             <Link href="/guide" className="text-primary hover:underline">
-              full foundations guide
+              foundations guide
             </Link>
             {' · '}
             <Link href="/paths" className="text-primary hover:underline">
-              10 learning paths
+              learning paths
             </Link>
-            . Rest timers, PRs, and Just Go are free forever — not Pro bait.
+            . Rest timers, PRs, and Just Go are free forever.
           </p>
         </div>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Button asChild variant="fitness" size="lg" className="min-h-[52px] px-8">
-            <Link href="/welcome">{t('welcomeBegin', { defaultValue: 'Begin' })}</Link>
+            <Link href="/welcome">{t('welcomeBegin', { defaultValue: 'Start free' })}</Link>
           </Button>
           {!isFreeBeta() && (
             <Button asChild variant="outline" size="lg" className="min-h-[52px] px-8">

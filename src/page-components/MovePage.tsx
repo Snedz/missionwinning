@@ -117,20 +117,20 @@ export function MovePage() {
     <PillarPageShell
       icon={Wind}
       eyebrow={t('moveEyebrow', { defaultValue: 'Move' })}
-      title={t('moveTitle', { defaultValue: 'Move & Mobility' })}
+      title={t('moveTitle', { defaultValue: 'Mobility' })}
       subtitle={t('moveSubtitle', {
         defaultValue: isFreeBeta()
-          ? '10 free guided flows with timers — bodyweight, global-friendly.'
-          : '10 free guided flows with timers — bodyweight, global-friendly. Premium adds 11 longer recovery flows (Super Bundle).',
+          ? 'Guided mobility flows with timers — mostly bodyweight.'
+          : 'Guided mobility flows with timers. Super Bundle adds longer recovery flows when paid depth is on.',
       })}
     >
-      {renderFlowGrid(freeFlows, t('moveFreeFlows', { defaultValue: 'Free mobility flows' }))}
+      {renderFlowGrid(freeFlows, t('moveFreeFlows', { defaultValue: 'Mobility flows' }))}
 
       {premium && premiumFlows.length > 0 && (
         <details className="group" open>
           <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-2 min-h-[44px] [&::-webkit-details-marker]:hidden">
-            <span className="text-sm font-semibold uppercase tracking-wide text-primary">
-              {t('movePremiumFlows', { defaultValue: 'Premium recovery flows' })}
+            <span className="text-sm font-semibold text-foreground">
+              {t('movePremiumFlows', { defaultValue: 'More recovery flows' })}
             </span>
             <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
           </summary>
