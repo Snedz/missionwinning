@@ -201,6 +201,8 @@ Optional: `maestro test .maestro/wedge.yaml` (same Account round-trip + Active `
 | Accept B (logger + loop) for Internal | | Founder fills after device QA |
 | Reject (list blockers) | | |
 
+**Agent prep (2026-07-23 · pre-launch plan §0):** `./scripts/release-smoke.sh` **PASS** (v1.24.1 / code 53). `testDebugUnitTest` **PASS**. Empty `store-assets/01-iday.png` removed; `wedge-adb-walk.py --screenshots` now rejects empty/truncated PNGs; `check-release-readiness.py` warns on missing/small screenshots + reports Sentry DSN wiring. AVD screenshot capture pending clean emulator boot on this host (qemu mprotect crash earlier). Accept B still **founder-only** — do not mark Pass. Fail rows → agent hotfix.
+
 **Agent prep (2026-07-22 · Horizon 0):** `./scripts/release-smoke.sh` exited **0** on this machine (debug-signed APK/AAB packaging). Device/emulator Accept B (adb walk + manual spot checks) remains **founder-only** — do not mark Pass here.
 
 **Agent prep (2026-07-22 · D4 beta composure):** Today secondary blocks (Quick log / week / Recent / More) use base `MwCard` — only the session hero keeps elevated + glow. Re-walk Accept B on device — Preferences above fold; Active immersive; cold open → Start ≤2 taps; Victory → Coach. Maestro/adb strings unchanged. Do not mark Pass. After Pass → [SHIP_INTERNAL.md](SHIP_INTERNAL.md).

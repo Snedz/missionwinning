@@ -47,8 +47,8 @@ STEPS: list[Step] = [
     ("assert", ("Start workout", "Start today's workout", "Start empty workout")),
     ("tap", ("Start workout", "Start today's workout", "Start empty workout")),
     ("assert", "Complete set"),
-    # Active is immersive — hub Account tab must not remain on screen
-    ("assert_absent", "Account tab"),
+    # Active is immersive — hub tabs must not remain (cd preferred; label fallback)
+    ("assert_absent", ("Account tab", "Today tab", "Coach tab")),
     ("screenshot", "03-active.png"),
     ("tap", "Complete set"),
     ("assert", ("Finish workout", "Finish workout · lock session")),
@@ -182,18 +182,25 @@ def tap_bounds(bounds: tuple[int, int, int, int]) -> None:
 
 
 def capture_screenshot(filename: str) -> None:
+    """Capture a PNG; refuse empty/truncated files (Play rejects 0-byte placeholders)."""
     STORE_ASSETS.mkdir(parents=True, exist_ok=True)
     dest = STORE_ASSETS / filename
     # Slight settle so animations finish
     time.sleep(0.4)
-    with dest.open("wb") as f:
-        proc = subprocess.run(
-            ["adb", "exec-out", "screencap", "-p"],
-            check=True,
-            capture_output=True,
+    proc = subprocess.run(
+        ["adb", "exec-out", "screencap", "-p"],
+        check=True,
+        capture_output=True,
+    )
+    data = proc.stdout
+    # PNG signature + minimal size (emulator frames are typically 100KB+)
+    if len(data) < 8_000 or not data.startswith(b"\x89PNG\r\n\x1a\n"):
+        raise AssertionError(
+            f"screenshot {filename} invalid ({len(data)} bytes) — "
+            "device not ready or screencap failed; retry after boot settles"
         )
-        f.write(proc.stdout)
-    print(f"    screenshot → {dest.relative_to(ANDROID_ROOT)}")
+    dest.write_bytes(data)
+    print(f"    screenshot → {dest.relative_to(ANDROID_ROOT)} ({len(data) // 1024} KiB)")
 
 
 def capture_iday_if_needed(screenshots: bool) -> None:
