@@ -29,26 +29,31 @@ export function VisionPage() {
       title={t('infoVisionTitle', { defaultValue: 'Mission Winning Vision' })}
       subtitle={t('infoVisionSubtitle', {
         defaultValue: freeBeta
-          ? 'The guiding document for the free global health platform. Core mission free for all.'
-          : 'The guiding document for the free global everything app for health. Core mission free for all. Super Bundle for synergy.',
+          ? 'Free offline logger + Mission Coach from your logs — health fundamentals without a paywall.'
+          : 'Free offline logger + Mission Coach from your logs. Super Bundle adds depth — never gates the logger.',
       })}
       footer={<InfoPageFooter showLegal showToday showBundle={!freeBeta} />}
     >
-      <p className="text-muted-foreground">
+      <p className="text-muted-foreground leading-relaxed">
         <strong className="text-foreground">
-          {t('infoVisionLead', { defaultValue: 'The #1 Health "Everything App" for the World' })}
+          {t('infoVisionLead', {
+            defaultValue: freeBeta
+              ? 'Train anywhere. Coach from what you actually logged.'
+              : 'Train anywhere. Coach from what you actually logged.',
+          })}
         </strong>
       </p>
-      <p className="text-muted-foreground">
+      <p className="text-muted-foreground leading-relaxed">
         {t('infoVisionP1', {
           defaultValue:
-            'Mission Winning exists to be the entrance to the path — the clear, evidence-based guide to the right way to build lifelong health, strength, resilience, and well-being for every human on Earth.',
+            'Mission Winning is the entrance to the path — a clear, evidence-based way to build strength and resilience. Start with the free logger; Mission Coach shapes the week from your history.',
         })}
       </p>
-      <p className="text-muted-foreground">
+      <p className="text-muted-foreground leading-relaxed">
         {t('infoVisionP2', {
-          defaultValue:
-            'We are building the everything app for health. One app. One mission. Accessible to everyone, everywhere.',
+          defaultValue: freeBeta
+            ? 'One mission: make the fundamentals free. Fuel, Move, Mind, and Learn deepen the path when you are ready — they are not the pitch.'
+            : 'One mission: free logger forever. Super Bundle funds Coach depth and the other pillars — never a gate on logging.',
         })}
       </p>
 

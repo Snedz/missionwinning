@@ -46,20 +46,23 @@ export function CoachTodayCard() {
     router.push('/active');
   };
 
+  const freeBeta = isFreeBeta();
+
   return (
-    <Card className="content-card border-primary/40">
+    <Card className="content-card border-border/50 shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-base flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-primary" />
-          <span className="eyebrow text-[10px]">
-            {t('coachTodayMission', { defaultValue: 'Mission Coach · adapts from logs' })}
-          </span>
+        <CardTitle className="text-base flex items-center gap-2 font-semibold">
+          <Sparkles className="h-4 w-4 text-primary shrink-0" />
+          {t('coachPageTitle', { defaultValue: 'Mission Coach' })}
         </CardTitle>
+        <p className="text-xs text-muted-foreground font-normal leading-relaxed">
+          {t('coachTodayMission', { defaultValue: 'Built from your logs — no wearable required.' })}
+        </p>
       </CardHeader>
       <CardContent className="space-y-3">
         {plan && !locked && <CoachAdaptBanner plan={plan} compact />}
         {plan && !locked && weekDose && weekDose.sessionCount > 0 && (
-          <p className="text-xs text-muted-foreground text-center" data-testid="coach-today-dose">
+          <p className="text-xs text-muted-foreground text-center leading-relaxed" data-testid="coach-today-dose">
             {t('coachWeekDose', {
               count: weekDose.sessionCount,
               intent: doseIntent,
@@ -70,7 +73,7 @@ export function CoachTodayCard() {
         )}
         {!plan && !locked && (
           <>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               {t('coachGenerateWeekHint', {
                 defaultValue: 'Generate a weekly plan from your logs — no wearable required.',
               })}
@@ -80,15 +83,15 @@ export function CoachTodayCard() {
             </Button>
           </>
         )}
-        {locked && !isFreeBeta() && (
+        {locked && !freeBeta && (
           <>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               {t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               {t('coachTasterFatigueNote', {
                 defaultValue:
-                  'Premium also watches strain: when load runs high (≥70), future sessions auto-shift lighter so you recover without quitting the week.',
+                  'Premium eases later sessions when load runs high so you recover without quitting the week.',
               })}
             </p>
             <Button asChild variant="fitness" size="sm" className="w-full">
@@ -96,12 +99,18 @@ export function CoachTodayCard() {
             </Button>
           </>
         )}
-        {locked && isFreeBeta() && (
-          <p className="text-sm text-muted-foreground">
-            {t('coachGenerateWeekHint', {
-              defaultValue: 'Generate a weekly plan from your logs — no wearable required.',
-            })}
-          </p>
+        {locked && freeBeta && (
+          <>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {t('coachFreeBetaNextWeek', {
+                defaultValue:
+                  'Open beta keeps Coach open. Generate the next week from your latest logs.',
+              })}
+            </p>
+            <Button variant="fitness" size="sm" onClick={() => generate()}>
+              {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
+            </Button>
+          </>
         )}
         {plan && !locked && !todaySession && (
           <p className="text-sm text-muted-foreground">
@@ -133,9 +142,9 @@ export function CoachTodayCard() {
             )}
           </>
         )}
-        <Link href="/coach" className="text-xs text-primary hover:underline block text-center">
-          {locked
-            ? t('coachViewLockedPlan', { defaultValue: 'View last week & unlock' })
+        <Link href="/coach" className="text-xs text-primary hover:underline block text-center min-h-[44px] leading-[44px]">
+          {locked && !freeBeta
+            ? t('coachViewLockedPlan', { defaultValue: 'View last week' })
             : t('coachViewPlan', { defaultValue: 'View full week' })}{' '}
           →
         </Link>

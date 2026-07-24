@@ -30,18 +30,18 @@ export function JourneyStrip({ action }: { action: JourneyAction }) {
   }
 
   return (
-    <div className="rounded-2xl border border-border/40 bg-muted/30 p-4 space-y-2">
-      <div className="flex items-center justify-between text-xs">
-        <span className="font-medium text-muted-foreground uppercase tracking-wide" suppressHydrationWarning>
+    <div className="rounded-xl border border-border/30 bg-muted/20 px-3.5 py-3 space-y-2">
+      <div className="flex items-center justify-between gap-2 text-xs">
+        <span className="font-medium text-muted-foreground" suppressHydrationWarning>
           {mounted ? getPhaseLabel(action.phase) : '\u00a0'}
         </span>
-        <span className="text-muted-foreground" suppressHydrationWarning>
+        <span className="text-muted-foreground text-end" suppressHydrationWarning>
           {mounted ? action.stepLabel : '\u00a0'}
         </span>
       </div>
       <div className="h-1 bg-muted rounded-full overflow-hidden">
         <div
-          className="h-full bg-muted-foreground/40 transition-all duration-500 rounded-full"
+          className="h-full bg-primary/50 transition-all duration-500 rounded-full"
           style={{ width: mounted ? `${action.progressPct}%` : '0%' }}
           suppressHydrationWarning
         />
@@ -73,9 +73,9 @@ export function JourneyHero({
       : action.label;
 
   return (
-    <div className="content-card p-6 space-y-4">
+    <div className="rounded-2xl border border-border/40 bg-card/80 p-6 space-y-4 shadow-sm">
       <div>
-        <p className="eyebrow-live mb-2">
+        <p className="text-xs font-medium tracking-wide text-muted-foreground mb-2">
           {useJustGo
             ? t('justGoEyebrow', { defaultValue: 'Ready to train' })
             : t('yourNextStep', { defaultValue: 'Your next step' })}
@@ -92,7 +92,7 @@ export function JourneyHero({
           {useJustGo
             ? t('justGoDesc', {
                 focus: justGoMeta!.focusLabel,
-                defaultValue: `One tap builds today’s ${justGoMeta!.focusLabel.toLowerCase()} session from your readiness and last lifts — no AI key.`,
+                defaultValue: `One tap builds today’s ${justGoMeta!.focusLabel.toLowerCase()} session from how fresh you are and what you lifted last time.`,
               })
             : action.description}
         </p>
@@ -102,8 +102,10 @@ export function JourneyHero({
         <ChevronRight className="h-5 w-5" />
       </button>
       {action.phase === 'basic' && !useJustGo && (
-        <p className="text-xs text-center text-muted-foreground">
-          {t('journeyBasicFoot', { defaultValue: 'One step at a time. More tools unlock as you progress.' })}
+        <p className="text-sm text-center text-muted-foreground leading-relaxed">
+          {t('journeyBasicFoot', {
+            defaultValue: 'One step at a time. Log a few sets — Coach can shape the week from real history.',
+          })}
         </p>
       )}
     </div>

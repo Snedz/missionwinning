@@ -72,24 +72,27 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           ? 'recovery-heavy'
           : 'mixed strength & recovery';
 
+  const freeBeta = isFreeBeta();
+  const weekEyebrow = t('coachWeekEyebrow', { defaultValue: 'This week' });
+
   return (
     <PillarPageShell
       className="max-w-2xl pb-24"
       icon={Sparkles}
-      eyebrow={t('coachWeekEyebrow', { defaultValue: "THIS WEEK'S MISSION" })}
+      eyebrow={weekEyebrow}
       title={t('coachPageTitle', { defaultValue: 'Mission Coach' })}
       subtitle={t('coachPageSubtitle', {
         defaultValue:
-          'Weekly plans from your workout logs alone — no wearable. Adapts when you miss or crush a session.',
+          'A week of training built from your logs — no wearable. Miss a day or crush a PR, and the plan flexes.',
       })}
     >
       {loading && <CoachPlanSkeleton className="py-2" />}
 
       {!loading && locked && plan && (
         <div className="space-y-4">
-          <p className="eyebrow">{t('coachWeekEyebrow', { defaultValue: "THIS WEEK'S MISSION" })}</p>
+          <p className="text-sm font-medium text-muted-foreground">{weekEyebrow}</p>
           <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
-          <p className="text-sm text-muted-foreground text-center">
+          <p className="text-sm text-muted-foreground text-center leading-relaxed">
             {t('coachLockedWeekSummary', {
               done: plan.sessions.filter((s) => s.status === 'done').length,
               total: plan.sessions.length,
@@ -99,22 +102,38 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
         </div>
       )}
 
-      {!loading && locked && !isFreeBeta() && (
-        <Card className="card-elevated card-glow-brass border-brass/30">
+      {/* Free beta: never hard-lock Coach — offer a fresh week */}
+      {!loading && locked && freeBeta && (
+        <EmptyState
+          icon={Sparkles}
+          title={t('coachGenerateEmptyTitle', { defaultValue: 'Ready for a new week?' })}
+          description={t('coachFreeBetaNextWeek', {
+            defaultValue:
+              'Open beta keeps Coach open. Generate the next week from your latest logs — no payment.',
+          })}
+          actionLabel={t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
+          onAction={() => generate()}
+        />
+      )}
+
+      {!loading && locked && !freeBeta && (
+        <Card className="border-border/50 bg-card/80 shadow-sm">
           <CardHeader>
-            <CardTitle>{t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-lg">
+              {t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}
+            </CardTitle>
+            <CardDescription className="leading-relaxed">
               {t('coachTasterLockedDesc', {
                 defaultValue:
-                  'You got one free Coach week. Super Bundle unlocks a new plan every Monday, on-demand regeneration, and Commander\'s intent tuned to readiness.',
+                  'You got one free Coach week. Super Bundle unlocks a new plan every Monday, on-demand regeneration, and readiness-aware intent.',
               })}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground border border-primary/40 rounded-lg p-3 bg-primary/5">
+            <p className="text-sm text-muted-foreground border border-border/50 rounded-xl p-3 leading-relaxed">
               {t('coachTasterFatigueNote', {
                 defaultValue:
-                  'Premium also watches strain: when load runs high (≥70), future sessions auto-shift lighter so you recover without quitting the week.',
+                  'Premium also watches strain: when load runs high, later sessions ease up so you recover without quitting the week.',
               })}
             </p>
             <ul className="space-y-2 text-sm text-muted-foreground">
@@ -131,9 +150,9 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             <Button asChild variant="outline" className="w-full">
               <Link href="/bundle">{t('coachCompareBundle', { defaultValue: 'Compare Super Bundle' })}</Link>
             </Button>
-            <p className="text-center text-[11px] text-muted-foreground">
+            <p className="text-center text-xs text-muted-foreground leading-relaxed">
               {t('coachFreeCoreNote', {
-                defaultValue: 'Workout logger, library, and Today stay free — premium funds the mission.',
+                defaultValue: 'Workout logger, library, and Today stay free forever.',
               })}
             </p>
           </CardContent>
@@ -145,7 +164,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           icon={Sparkles}
           title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week yet' })}
           description={t('coachGenerateEmptyDesc', {
-            defaultValue: isFreeBeta()
+            defaultValue: freeBeta
               ? 'Generate this week’s plan from your logs — free every week.'
               : 'Generate this week’s plan from your logs — free every week. Super Bundle unlocks chat and on-demand regenerate.',
           })}
@@ -157,9 +176,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {plan && !locked && (
         <div className="space-y-6">
           <div>
-            <p className="eyebrow mb-3">
-              {t('coachWeekEyebrow', { defaultValue: "THIS WEEK'S MISSION" })}
-            </p>
+            <p className="mb-3 text-sm font-medium text-muted-foreground">{weekEyebrow}</p>
             <WeekStrip weekStart={weekStart} sessions={plan.sessions} todayOffset={todayOffset} />
             {weekDose && weekDose.sessionCount > 0 && (
               <p className="mt-3 text-center text-sm text-muted-foreground" data-testid="coach-week-dose">
