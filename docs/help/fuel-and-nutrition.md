@@ -45,6 +45,19 @@ A 7-day bar chart shows calories per day vs your target (amber when over). Data 
 
 Protein scales from bodyweight; carbs/fat fill remaining calories. Always editable afterward. Not medical advice.
 
+## Train-day targets
+
+Fuel can **match today’s training** from your local workout log (same rules as Fuel Coach):
+
+| Load | From logs | Budget tweak |
+|------|-----------|--------------|
+| Heavy | High volume session today | +~200 kcal, more carbs/protein |
+| Training | Any session today | modest carb bump |
+| Recovery | Rest after a heavy day | small bump |
+| Rest | No session | slightly lower carbs |
+
+Rings and “remaining” use the adjusted budget. **Edit targets** still edits your **base**; use **Use base** to turn off the train-day flex. Week bars stay vs base for a stable trend.
+
 ## Free vs open beta
 
 | Always free | Open beta (current) | Paid Super Bundle (when re-enabled) |
