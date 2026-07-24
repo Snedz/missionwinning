@@ -49,4 +49,12 @@ describe('nlMealLog', () => {
     assert.equal(e.source, 'matched');
     assert.ok(e.fat > 20);
   });
+
+  it('scales grams roughly as portion of template', () => {
+    const base = estimateMealFromDescription('chicken');
+    const half = estimateMealFromDescription('50g chicken');
+    assert.ok(base && half);
+    assert.ok(half.protein < base.protein);
+    assert.ok(half.protein >= Math.round(base.protein * 0.4));
+  });
 });

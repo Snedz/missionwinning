@@ -68,6 +68,25 @@ const FOODS: FoodToken[] = [
   { keywords: ['almonds', 'nuts', 'cashews'], label: 'Nuts', protein: 6, cals: 170, carbs: 6, fat: 15 },
   { keywords: ['hummus'], label: 'Hummus', protein: 5, cals: 140, carbs: 12, fat: 8 },
   { keywords: ['ramen'], label: 'Ramen', protein: 14, cals: 450, carbs: 55, fat: 16 },
+  { keywords: ['quinoa'], label: 'Quinoa', protein: 8, cals: 220, carbs: 39, fat: 4 },
+  { keywords: ['cottage cheese'], label: 'Cottage cheese', protein: 24, cals: 180, carbs: 8, fat: 5 },
+  { keywords: ['pancake', 'pancakes', 'waffle'], label: 'Pancakes', protein: 8, cals: 350, carbs: 50, fat: 12 },
+  { keywords: ['cereal'], label: 'Cereal', protein: 4, cals: 200, carbs: 40, fat: 2 },
+  { keywords: ['ice cream', 'icecream'], label: 'Ice cream', protein: 4, cals: 270, carbs: 32, fat: 14 },
+  { keywords: ['chocolate'], label: 'Chocolate', protein: 2, cals: 150, carbs: 17, fat: 9 },
+  { keywords: ['protein bar'], label: 'Protein bar', protein: 20, cals: 220, carbs: 22, fat: 8 },
+  { keywords: ['salad dressing', 'dressing', 'mayo', 'mayonnaise'], label: 'Dressing', protein: 0, cals: 120, carbs: 2, fat: 12 },
+  { keywords: ['butter'], label: 'Butter', protein: 0, cals: 100, carbs: 0, fat: 11 },
+  { keywords: ['rice cakes', 'rice cake'], label: 'Rice cake', protein: 1, cals: 70, carbs: 15, fat: 0 },
+  { keywords: ['edamame'], label: 'Edamame', protein: 17, cals: 180, carbs: 14, fat: 8 },
+  { keywords: ['cod', 'tilapia', 'white fish'], label: 'White fish', protein: 26, cals: 140, carbs: 0, fat: 2 },
+  { keywords: ['lamb'], label: 'Lamb', protein: 28, cals: 290, carbs: 0, fat: 20 },
+  { keywords: ['smoothie bowl', 'acai'], label: 'Smoothie bowl', protein: 8, cals: 380, carbs: 60, fat: 10 },
+  { keywords: ['fried rice'], label: 'Fried rice', protein: 12, cals: 450, carbs: 65, fat: 14 },
+  { keywords: ['pad thai'], label: 'Pad Thai', protein: 18, cals: 520, carbs: 70, fat: 16 },
+  { keywords: ['pho'], label: 'Pho', protein: 22, cals: 400, carbs: 48, fat: 10 },
+  { keywords: ['dumpling', 'dumplings', 'gyoza'], label: 'Dumplings', protein: 12, cals: 280, carbs: 35, fat: 10 },
+  { keywords: ['croissant'], label: 'Croissant', protein: 5, cals: 270, carbs: 30, fat: 14 },
 ];
 
 const WORD_QTY: Record<string, number> = {
@@ -102,6 +121,22 @@ type Hit = {
 
 function findQtyBefore(text: string, kwStart: number): { qty: number; start: number } {
   const before = text.slice(0, kwStart);
+  // 100g chicken ≈ 1 serving template (templates are ~100–150g portions)
+  const grams = before.match(/(\d{2,4})\s*g(?:rams?)?\s*$/i);
+  if (grams) {
+    const g = parseInt(grams[1], 10);
+    if (g >= 20 && g <= 800) {
+      return { qty: Math.round((g / 100) * 10) / 10, start: kwStart - grams[0].length };
+    }
+  }
+  // 1 cup rice / 2 cups oats
+  const cups = before.match(/(\d+(?:\.\d+)?)\s*cups?\s*$/i);
+  if (cups) {
+    const c = parseFloat(cups[1]);
+    if (c > 0 && c <= 8) {
+      return { qty: c, start: kwStart - cups[0].length };
+    }
+  }
   const num = before.match(/(\d{1,2})\s*(?:x\s*)?$/i);
   if (num) {
     const n = parseInt(num[1], 10);
@@ -193,7 +228,7 @@ export function estimateMealFromDescription(raw: string): NlMealEstimate | null 
     cals += hit.food.cals * q;
     carbs += hit.food.carbs * q;
     fat += hit.food.fat * q;
-    labels.push(q > 1 ? `${q}× ${hit.food.label}` : hit.food.label);
+    labels.push(q === 1 ? hit.food.label : `${q}× ${hit.food.label}`);
   }
 
   protein = Math.round(protein * plateScale);

@@ -9,6 +9,7 @@ import {
   MealEstimateDraft,
   type MealDraftFields,
 } from '@/components/nutrition/MealEstimateDraft';
+import { FoodSearchBar } from '@/components/nutrition/FoodSearchBar';
 import type { NlMealEstimate } from '@/lib/nlMealLog';
 import type { NutritionLogRow, QuickFoodTuple } from '@/lib/nutritionQuickLog';
 import type { SavedMealPreset } from '@/lib/savedMeals';
@@ -50,12 +51,15 @@ export function FuelQuickLogPanel({
 }: Props) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState<MealDraftFields | null>(null);
+  const [draftFromDb, setDraftFromDb] = useState(false);
 
   useEffect(() => {
     if (!nlPreview) {
       setDraft(null);
+      setDraftFromDb(false);
       return;
     }
+    setDraftFromDb(false);
     setDraft({
       name: nlPreview.name,
       protein: nlPreview.protein,
@@ -65,11 +69,14 @@ export function FuelQuickLogPanel({
     });
   }, [nlPreview]);
 
-  const sourceLabel = nlPreview
-    ? nlPreview.source === 'matched'
-      ? t('fuelSourceMatched', { defaultValue: 'Matched foods' })
-      : t('fuelSourceRough', { defaultValue: 'Rough estimate' })
-    : undefined;
+  const sourceLabel = draftFromDb
+    ? t('fuelSourceDb', { defaultValue: 'Database' })
+    : nlPreview
+      ? nlPreview.source === 'matched'
+        ? t('fuelSourceMatched', { defaultValue: 'Matched foods' })
+        : t('fuelSourceRough', { defaultValue: 'Rough estimate' })
+      : undefined;
+  const confidence = draftFromDb ? ('high' as const) : nlPreview?.confidence;
 
   return (
     <>
@@ -106,17 +113,46 @@ export function FuelQuickLogPanel({
           className="w-full h-11 rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
         />
         {draft && nlPreview ? (
-          <MealEstimateDraft
-            draft={draft}
-            onChange={setDraft}
-            confidence={nlPreview.confidence}
-            sourceLabel={sourceLabel}
-            onLog={() => onLogNlMeal(draft)}
-            onDismiss={() => {
-              setDraft(null);
-              onNlMealTextChange('');
-            }}
-          />
+          <div className="space-y-3">
+            <MealEstimateDraft
+              draft={draft}
+              onChange={(next) => {
+                setDraft(next);
+                setDraftFromDb(false);
+              }}
+              confidence={confidence}
+              sourceLabel={sourceLabel}
+              onLog={() => onLogNlMeal(draft)}
+              onDismiss={() => {
+                setDraft(null);
+                setDraftFromDb(false);
+                onNlMealTextChange('');
+              }}
+            />
+            {(nlPreview.source === 'rough' || nlPreview.confidence === 'low') && (
+              <div className="rounded-xl border border-border/50 bg-background/50 p-3 space-y-2">
+                <p className="text-xs font-medium text-muted-foreground">
+                  {t('fuelSearchToImprove', {
+                    defaultValue: 'Search the food database for better macros',
+                  })}
+                </p>
+                <FoodSearchBar
+                  compact
+                  initialQuery={nlMealText.trim().length >= 2 ? nlMealText.trim() : draft.name}
+                  onSelect={(item) => {
+                    setDraft({
+                      name: item.brand ? `${item.name} (${item.brand})` : item.name,
+                      protein: item.protein,
+                      cals: item.calories,
+                      carbs: item.carbs,
+                      fat: item.fat,
+                    });
+                    setDraftFromDb(true);
+                  }}
+                />
+              </div>
+            )}
+          </div>
         ) : null}
       </div>
 
