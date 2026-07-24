@@ -363,10 +363,12 @@ Multi-vendor sync — see [docs/WEARABLES.md](WEARABLES.md). Opt-in; off unless 
 | `WEARABLES_OAUTH_REDIRECT_BASE` | Optional absolute origin for OAuth callbacks (defaults to request origin) |
 | `WHOOP_CLIENT_ID` / `WHOOP_CLIENT_SECRET` | Whoop OAuth |
 | `STRAVA_CLIENT_ID` / `STRAVA_CLIENT_SECRET` | Strava OAuth (`activity:read`) — dark until keys + `NEXT_PUBLIC_WEARABLES=true` |
-| `MEAL_VISION_API_URL` | Optional OpenAI-compatible multimodal chat URL for meal photo estimates |
-| `MEAL_VISION_API_KEY` | Bearer key for meal vision (server only) |
-| `MEAL_VISION_MODEL` | Model id (default `gpt-4o-mini`) |
-| `MEAL_VISION_REQUIRE_ZDR` | `true` to require ZDR header like coach LLM |
+| `MEAL_VISION_API_URL` | Optional OpenAI-compatible multimodal chat URL for Fuel **photo** meal estimates (`/api/fuel/estimate-meal`). Prefer same host style as coach (e.g. `https://api.x.ai/v1/chat/completions`) |
+| `MEAL_VISION_API_KEY` | Bearer key for meal vision — **server only**, never `NEXT_PUBLIC_` |
+| `MEAL_VISION_MODEL` | Multimodal model id (default `gpt-4o-mini`; use a vision-capable slug for your provider) |
+| `MEAL_VISION_REQUIRE_ZDR` | `true` to require ZDR response header (same fail-closed pattern as `COACH_LLM_REQUIRE_ZDR`) |
+
+Without `MEAL_VISION_*`, photo logging still works: **rough local heuristic** + Open Food Facts name match. Users always edit macros before log. Help: [help/fuel-and-nutrition.md](help/fuel-and-nutrition.md).
 | `OURA_CLIENT_ID` / `OURA_CLIENT_SECRET` | Oura OAuth |
 | `GARMIN_CLIENT_ID` / `GARMIN_CLIENT_SECRET` | Garmin OAuth |
 | `FITBIT_CLIENT_ID` / `FITBIT_CLIENT_SECRET` | Fitbit OAuth |
