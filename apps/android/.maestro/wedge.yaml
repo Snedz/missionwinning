@@ -14,8 +14,10 @@ appId: com.missionwinning.app.debug
 - assertVisible: "Start workout"
 - tapOn: "Start workout"
 - assertVisible: "Complete set"
-# Active immersive — hub Account tab must not remain (matches wedge-adb-walk assert_absent)
+# Active immersive — hub must not remain (matches wedge-adb-walk assert_absent)
 - assertNotVisible: "Account tab"
+- assertNotVisible: "Today tab"
+- assertNotVisible: "Coach tab"
 - tapOn: "Complete set"
 # Copy may be "Finish workout" or "Finish workout · lock session" (substring match)
 - assertVisible: "Finish workout"

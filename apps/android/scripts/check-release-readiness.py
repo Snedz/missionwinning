@@ -8,6 +8,7 @@ Usage:
 """
 
 import os
+import re
 import sys
 import subprocess
 from pathlib import Path
@@ -71,6 +72,93 @@ def check_target_sdk() -> bool:
         return False
 
 
+# Play listing needs ≥5 phone screenshots (I-Day + hub + logger loop).
+REQUIRED_SCREENSHOTS = (
+    "01-iday.png",
+    "02-today.png",
+    "03-active.png",
+    "04-coach.png",
+    "05-victory.png",
+)
+OPTIONAL_SCREENSHOTS = ("02b-account.png",)
+# Empty placeholder PNGs fail Play upload and confuse capture scripts.
+MIN_SCREENSHOT_BYTES = 8_000
+
+
+def check_store_assets() -> bool:
+    """Warn (not hard-fail) when listing screenshots are missing or empty."""
+    assets = ANDROID_ROOT / "store-assets"
+    readme = assets / "README.md"
+    if not readme.exists():
+        print_status("store-assets/README.md missing", "FAIL")
+        return False
+    print_status("store-assets/README.md present", "PASS")
+
+    ok = True
+    present = 0
+    for name in REQUIRED_SCREENSHOTS:
+        path = assets / name
+        if not path.exists():
+            print_status(f"store-assets/{name} missing — run wedge-adb-walk.py --screenshots", "WARN")
+            ok = False
+            continue
+        size = path.stat().st_size
+        if size < MIN_SCREENSHOT_BYTES:
+            print_status(
+                f"store-assets/{name} is too small ({size} bytes) — delete placeholder and re-capture",
+                "WARN",
+            )
+            ok = False
+        else:
+            print_status(f"store-assets/{name} ({size // 1024} KiB)", "PASS")
+            present += 1
+
+    for name in OPTIONAL_SCREENSHOTS:
+        path = assets / name
+        if path.exists() and path.stat().st_size >= MIN_SCREENSHOT_BYTES:
+            print_status(f"store-assets/{name} optional present", "PASS")
+        elif path.exists():
+            print_status(f"store-assets/{name} present but empty/small — re-capture", "WARN")
+
+    if present >= 5:
+        print_status(f"Play screenshot set complete ({present}/5 required)", "PASS")
+    else:
+        print_status(
+            f"Play screenshot set incomplete ({present}/5) — blocks listing (P0.2), not assembleRelease",
+            "WARN",
+        )
+    # Do not fail overall readiness on missing PNGs (founder/agent capture step).
+    return True
+
+
+def check_sentry_wiring() -> bool:
+    """Confirm release can receive SENTRY_DSN from local.properties (P0.4)."""
+    build_gradle = ANDROID_ROOT / "app" / "build.gradle.kts"
+    content = build_gradle.read_text(encoding="utf-8") if build_gradle.exists() else ""
+    if 'buildConfigField("String", "SENTRY_DSN"' in content or "SENTRY_DSN" in content:
+        print_status("app BuildConfig.SENTRY_DSN wired from mw.sentryDsn", "PASS")
+    else:
+        print_status("SENTRY_DSN BuildConfig wiring not found in app/build.gradle.kts", "FAIL")
+        return False
+
+    local_props = ANDROID_ROOT / "local.properties"
+    if local_props.exists():
+        props = local_props.read_text(encoding="utf-8", errors="replace")
+        if "mw.sentryDsn=" in props and not re.search(
+            r"^mw\.sentryDsn=\s*$", props, flags=re.MULTILINE
+        ):
+            # Value present but do not print DSN
+            print_status("local.properties has mw.sentryDsn set (value not shown)", "PASS")
+        else:
+            print_status(
+                "mw.sentryDsn empty/unset in local.properties — release crash reporting off until founder sets it",
+                "WARN",
+            )
+    else:
+        print_status("local.properties missing (CI/local secrets elsewhere)", "WARN")
+    return True
+
+
 def run_gradle_task(task_name: str) -> bool:
     gradlew = ANDROID_ROOT / "gradlew"
     if not gradlew.exists():
@@ -101,6 +189,10 @@ def main() -> int:
 
     check_keystore()
     if not check_target_sdk():
+        all_passed = False
+
+    check_store_assets()
+    if not check_sentry_wiring():
         all_passed = False
 
     if not skip_build:

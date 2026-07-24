@@ -105,7 +105,9 @@
 ## Toolchain (Phase 0)
 
 - Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)
-- `compileSdk` / `targetSdk`: 36 / 35 (target 36 in ship phase)
+- `compileSdk` / `targetSdk`: **36 / 36** (Play 2026)
+- Preflight: `python3 scripts/check-release-readiness.py` (store-assets + Sentry + smoke tasks)
+- Screenshots: `python3 scripts/wedge-adb-walk.py --screenshots` → [store-assets/](store-assets/)
 - Room schemas: `core/data/schemas/` (`exportSchema = true`)
 - Play upload: `-Pmw.requireUploadKeystore=true` fails without `keystore.properties`
 
