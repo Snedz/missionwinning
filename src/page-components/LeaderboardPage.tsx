@@ -322,7 +322,7 @@ export function LeaderboardPage() {
               void refresh();
             }}
             maxLength={24}
-            placeholder="Mission Operator"
+            placeholder="Your name"
             className="w-full rounded-lg border border-border/50 bg-background px-3 py-2 text-sm"
           />
         </label>
