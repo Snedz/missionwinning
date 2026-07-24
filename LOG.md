@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-24 — Fuel train-day targets (Wave A)
+
+- Rings/budget adapt from **workout history** load (heavy/training/rest) via shared fuelCoach rules.
+- Banner chip + delta; **Use base** / **Match training** toggle (`mw_fuel_adapt_enabled`).
+- Base targets still editable; week glance stays on base. Tests: `fuelDayAdapt`.
+
 ## 2026-07-24 — Fuel goal wizard + weight strip (Wave T/W)
 
 - **Set from goal:** lose / maintain / gain → Mifflin + activity macros (`fuelGoalWizard`, Fuel UI next to Edit targets).

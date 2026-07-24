@@ -4,7 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from '@/lib/supabase';
@@ -21,6 +21,7 @@ import { FuelTodayLogCard, type FuelLogEntry } from '@/components/nutrition/Fuel
 import { FuelRecipesPanel } from '@/components/nutrition/FuelRecipesPanel';
 import { FuelTargetsEditor } from '@/components/nutrition/FuelTargetsEditor';
 import { FuelGoalWizard } from '@/components/nutrition/FuelGoalWizard';
+import { FuelAdaptBanner } from '@/components/nutrition/FuelAdaptBanner';
 import { estimateMealFromDescription } from '@/lib/nlMealLog';
 import { listMealPresets, saveMealPreset, type SavedMealPreset } from '@/lib/savedMeals';
 import { bumpFuelLogStreak, getFuelLogStreak } from '@/lib/fuelStreak';
@@ -37,6 +38,13 @@ import { FuelWeekGlance } from '@/components/nutrition/FuelWeekGlance';
 import { FuelWeightStrip } from '@/components/nutrition/FuelWeightStrip';
 import { FuelPastDaysCard } from '@/components/nutrition/FuelPastDaysCard';
 import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from '@/lib/macroTargets';
+import {
+  adaptDeltaSummary,
+  loadFuelAdaptEnabled,
+  resolveFuelDayTargets,
+  saveFuelAdaptEnabled,
+} from '@/lib/fuelDayAdapt';
+import { useWorkoutStore } from '@/store/workoutStore';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { Plus, UtensilsCrossed } from 'lucide-react';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
@@ -51,12 +59,15 @@ export function NutritionPage() {
   const { t } = useTranslation();
   const { toast } = useToast();
   const { premium } = usePremium();
+  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const [premiumRecipes, setPremiumRecipes] = useState<Recipe[]>([]);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
+  /** Base targets (edited/saved); rings use adapted values when train-match is on. */
   const [targetCals, setTargetCals] = useState(DEFAULT_MACRO_TARGETS.cals);
   const [targetProtein, setTargetProtein] = useState(DEFAULT_MACRO_TARGETS.protein);
   const [targetCarbs, setTargetCarbs] = useState(DEFAULT_MACRO_TARGETS.carbs);
   const [targetFat, setTargetFat] = useState(DEFAULT_MACRO_TARGETS.fat);
+  const [adaptEnabled, setAdaptEnabled] = useState(true);
   const [logged, setLogged] = useState<LogEntry[]>([]);
   const [water, setWater] = useState(0);
   const [customName, setCustomName] = useState('');
@@ -89,7 +100,27 @@ export function NutritionPage() {
   const frequentFoods = getFrequentQuickFoods(allLogs, QUICK_FOODS);
   const yesterdayMeals = getYesterdayEntries(allLogs, today);
 
+  const dayAdapt = useMemo(
+    () =>
+      resolveFuelDayTargets(
+        {
+          cals: targetCals,
+          protein: targetProtein,
+          carbs: targetCarbs,
+          fat: targetFat,
+        },
+        workoutHistory,
+        { todayIso: today, adapt: adaptEnabled }
+      ),
+    [targetCals, targetProtein, targetCarbs, targetFat, workoutHistory, today, adaptEnabled]
+  );
+  const dayTargets = dayAdapt.targets;
+  const adaptDelta = dayAdapt.isAdapted
+    ? adaptDeltaSummary(dayAdapt.base, dayAdapt.targets)
+    : undefined;
+
   useEffect(() => {
+    setAdaptEnabled(loadFuelAdaptEnabled());
     const savedTargets = loadMacroTargets();
     if (savedTargets) {
       setTargetCals(savedTargets.cals);
@@ -381,8 +412,13 @@ export function NutritionPage() {
   const totalCals = logged.reduce((s, l) => s + l.cals, 0);
   const totalCarbs = logged.reduce((s, l) => s + (l.carbs || 0), 0);
   const totalFat = logged.reduce((s, l) => s + (l.fat || 0), 0);
-  const carbsTarget = Math.max(1, targetCarbs);
-  const fatTarget = Math.max(1, targetFat);
+  const carbsTarget = Math.max(1, dayTargets.carbs);
+  const fatTarget = Math.max(1, dayTargets.fat);
+
+  const handleToggleAdapt = (on: boolean) => {
+    setAdaptEnabled(on);
+    saveFuelAdaptEnabled(on);
+  };
 
   const loadCloudNutrition = async () => {
     const u = await getUser();
@@ -429,15 +465,23 @@ export function NutritionPage() {
     >
       <FuelMacroOverview
         totalCals={totalCals}
-        targetCals={targetCals}
+        targetCals={dayTargets.cals}
         totalProtein={totalProtein}
-        targetProtein={targetProtein}
+        targetProtein={dayTargets.protein}
         totalCarbs={totalCarbs}
         carbsTarget={carbsTarget}
         totalFat={totalFat}
         fatTarget={fatTarget}
         water={water}
       >
+        <FuelAdaptBanner
+          load={dayAdapt.load}
+          isAdapted={dayAdapt.isAdapted}
+          note={dayAdapt.note}
+          deltaSummary={adaptDelta}
+          adaptEnabled={adaptEnabled}
+          onToggleAdapt={handleToggleAdapt}
+        />
         <div className="space-y-2">
           <FuelTargetsEditor
             targetCals={targetCals}
