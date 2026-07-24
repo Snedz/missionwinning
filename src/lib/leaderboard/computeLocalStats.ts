@@ -7,24 +7,22 @@ import type { LeaderboardBoardId, LeaderboardSnapshot } from './types';
 import { countSessionsInHourRange } from './types';
 import { loadSquadCode, SQUAD_CODE_KEY } from './boards';
 import { resolveGeoFromLocale } from './regions';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
 const OPERATOR_NAME_KEY = 'mw_operator_name';
 
 export function loadOperatorName(): string {
-  if (typeof window === 'undefined') return 'Mission Operator';
-  return localStorage.getItem(OPERATOR_NAME_KEY)?.trim() || 'Mission Operator';
+  return readRaw(OPERATOR_NAME_KEY)?.trim() || 'Mission Operator';
 }
 
 export function saveOperatorName(name: string): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(OPERATOR_NAME_KEY, name.trim().slice(0, 24));
+  writeRaw(OPERATOR_NAME_KEY, name.trim().slice(0, 24));
 }
 
 export { loadSquadCode, saveSquadCode } from './boards';
 
 function loadLocalPftScore(): { score: number; tier?: string } {
-  if (typeof window === 'undefined') return { score: 0 };
-  const tier = localStorage.getItem('mw_pft_last_tier') ?? undefined;
+  const tier = readRaw('mw_pft_last_tier') ?? undefined;
   if (!tier) return { score: 0 };
   return { score: tierToScore(tier), tier };
 }

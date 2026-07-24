@@ -6,6 +6,38 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-24 — Logger reliability: unloseable logs + hero PR gate (`.123`)
+
+- **Fixed: `/active` "Start Workout" was permanently disabled.** zustand runs
+  `onRehydrateStorage` synchronously *inside* `create()` when storage is synchronous,
+  so `useWorkoutStore.setState` there threw a TDZ `ReferenceError` that the persist
+  thenable swallowed — `hasHydrated` never became true and the empty logger shell sat
+  on "Loading session…". `hasHydrated` is now reconciled after `create()` across all
+  three storage paths (sync, async, unavailable), with a 1.5s last-resort net.
+  Regression covered in `src/store/workoutStore.test.ts`.
+- **Sync v2 on web.** `saveWorkoutLog`'s blind `insert` (no `client_id`) meant every
+  retry could duplicate a session, and those duplicates came back via `loadFromCloud`.
+  Logs now carry `clientId` / `revision` / `updatedAt` / `deletedAt` and go through
+  read-then-write upsert mirroring `app/api/mobile/sync/workouts` — the schema and
+  unique index already existed from Android. `mergeWorkoutHistories` keys on
+  `clientId` (fingerprint only as legacy fallback), honours tombstones, highest
+  revision wins, and reports truncation instead of silently dropping at 200.
+- **Durable outbox** — `src/lib/sync/outbox.ts`. Cloud writes survive the tab closing,
+  retry with jittered backoff, collapse superseded work, and never discard on failure
+  (`stuck` + `retryStuck`). Replaces the single 60s `setTimeout` retry and
+  `syncCurrentHistoryToCloud`'s "last 5 that look local" heuristic. Drained on mount /
+  `online` / tab-visible by `useOutboxDrain`.
+- **Storage layer** — `src/lib/storage/`. Ten files called `localStorage.setItem` with
+  no `try/catch` anywhere (incl. Nutrition / Assessments / Feedback pages), which
+  throws in Safari private mode and on a full disk. All migrated; an eslint ratchet
+  makes new direct calls an **error** with a shrinking legacy allowlist.
+  `SyncStatusRow` on Profile tells the truth about queued and unpersistable writes.
+- **CI:** hero + logger + new **offline** e2e now run on every PR (`npm run e2e:gate`,
+  `@gate` tag) inside the existing build job — no second build, no extra minutes.
+  Also fixed 3 pre-existing lint **errors** that had `npm run lint` red on master.
+- First tests for `workoutStore` (16) plus `safeStorage` (8) and `outbox` (11);
+  `npm test` glob widened to `src/**/*.test.ts`. 560 unit tests green, 11 gate e2e green.
+
 ## 2026-07-24 — OSS public-ready + lean CI / prod path
 
 - **CI minutes:** `ci.yml` PR-only lean gate; heavy e2e/Android/smokes → `ci-extended.yml` (manual/weekly); CodeQL monthly+dispatch; Aikido PR-only. Master push no longer burns minutes racing production.

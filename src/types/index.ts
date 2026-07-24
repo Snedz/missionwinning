@@ -83,6 +83,17 @@ export interface ActiveWorkout {
 
 export interface CompletedWorkoutLog {
   id: string;
+  /**
+   * Stable client-minted UUID — the identity used for cloud sync (sync v2).
+   * Optional only for logs written before the migration in `workoutStore`;
+   * new logs always have one. See `src/lib/sync/workoutSync.ts`.
+   */
+  clientId?: string;
+  /** Monotonic per-log revision; highest wins on merge. */
+  revision?: number;
+  updatedAt?: string;
+  /** Tombstone — set instead of removing so a delete propagates between devices. */
+  deletedAt?: string | null;
   workoutName: string;
   startedAt: string;
   completedAt: string;

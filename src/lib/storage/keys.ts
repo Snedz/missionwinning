@@ -1,0 +1,122 @@
+/**
+ * Registry of every browser-storage key this app owns.
+ *
+ * Purpose is typing + discoverability ("what does the app persist?"), not backup
+ * enumeration — `src/lib/backup.ts` deliberately prefix-scans `mw_*` at runtime so
+ * a stale registry can never silently drop a key from an export.
+ *
+ * Adding a key: add it here and use `safeStorage` to read/write it.
+ */
+
+/** Zustand persist key — not `mw_`-prefixed for historical reasons. */
+export const WORKOUT_STORE_KEY = 'workout-tracker-storage';
+
+/** Prefix for every app-owned key. Backup/restore scans on this. */
+export const MW_PREFIX = 'mw_';
+
+/**
+ * Exact keys, grouped by the surface that owns them.
+ * Wedge groups (train/today/coach/fuel) survive surface parking; the rest may
+ * become unreachable when their surface is parked (see `src/lib/surface.ts`).
+ */
+export const STORAGE_KEYS = {
+  // ── Train / Today (wedge) ──
+  lastWorkoutDate: 'mw_last_workout_date',
+  streak: 'mw_streak',
+  challenges: 'mw_challenges',
+  defaultRestSec: 'mw_default_rest_sec',
+  activityLog: 'mw_activity_log',
+  todaySectionsV1: 'mw_today_sections_v1',
+  todaySectionsV2: 'mw_today_sections_v2',
+  pillarWins: 'mw_pillar_wins',
+  uiMode: 'mw_ui_mode',
+  outbox: 'mw_outbox_v1',
+
+  // ── Coach (wedge) ──
+  coachPlan: 'mw_coach_plan',
+  coachTasterUsed: 'mw_coach_taster_used',
+  daysPerWeek: 'mw_days_per_week',
+  preferredDays: 'mw_preferred_days',
+  equipment: 'mw_equipment',
+  experience: 'mw_experience',
+  primaryGoal: 'mw_primary_goal',
+  goals: 'mw_goals',
+  deviceId: 'mw_device_id',
+
+  // ── Fuel (wedge) ──
+  nutritionLog: 'mw_nutrition_log',
+  macroTargets: 'mw_macro_targets',
+  savedMeals: 'mw_saved_meals',
+  fuelPlan: 'mw_fuel_plan',
+  fuelGoal: 'mw_fuel_goal',
+  fuelStreak: 'mw_fuel_streak',
+  fuelLastLogDate: 'mw_fuel_last_log_date',
+  fuelAdaptEnabled: 'mw_fuel_adapt_enabled',
+  water: 'mw_water',
+  bodyMetrics: 'mw_body_metrics',
+
+  // ── Journey / profile ──
+  journeyState: 'mw_journey_state',
+  journeyEvents: 'mw_journey_events',
+  journeyStarted: 'mw_journey_started',
+  commissionedAt: 'mw_commissioned_at',
+  commissionedCelebrated: 'mw_commissioned_celebrated',
+  operatorName: 'mw_operator_name',
+  units: 'mw_units',
+  unitsExplicit: 'mw_units_explicit',
+  langExplicit: 'mw_lang_explicit',
+  regionDefaults: 'mw_region_defaults_v1',
+  remindersPref: 'mw_reminders_pref',
+  sessionCheckinSkipped: 'mw_session_checkin_skipped',
+
+  // ── Consent / privacy ──
+  privacyConsent: 'mw_privacy_consent_v1',
+  analyticsPref: 'mw_analytics_pref_v1',
+  attribution: 'mw_attribution',
+
+  // ── Access / premium ──
+  privateAccess: 'mw_private_access',
+  premium: 'mw_premium',
+  premiumEmail: 'mw_premium_email',
+  bundleActive: 'mw_bundle_active',
+
+  // ── Learn / guidebook ──
+  learnCompleted: 'mw_learn_completed',
+  guidebookProgress: 'mw_guidebook_progress',
+  premiumCourseProgress: 'mw_premium_course_progress',
+
+  // ── Move / Mind / Track ──
+  mindCheckIns: 'mw_mind_checkins',
+  lastAssessment: 'mw_last_assessment',
+  wearablesHubSamples: 'mw_wearables_hub_samples',
+
+  // ── Beta / growth ──
+  betaBannerDismissed: 'mw_beta_banner_dismissed',
+  betaContributor: 'mw_beta_contributor',
+  betaFeedback: 'mw_beta_feedback',
+  betaSpotsClaimed: 'mw_beta_spots_claimed',
+  contributors: 'mw_contributors',
+  leads: 'mw_leads',
+  referralCode: 'mw_referral_code',
+  squadCode: 'mw_squad_code',
+  week4Retention: 'mw_week4_retention',
+
+  // ── America / PFT / school (parkable) ──
+  pftResults: 'mw_pft_results',
+  pftLastAt: 'mw_pft_last_at',
+  pftLastTier: 'mw_pft_last_tier',
+  classCode: 'mw_class_code',
+  teacherClasses: 'mw_teacher_classes',
+  youthMode: 'mw_youth_mode',
+  youthParentConsent: 'mw_youth_parent_consent',
+} as const;
+
+export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];
+
+/** Keys built at runtime with a suffix — never exhaustively enumerable. */
+export const STORAGE_KEY_PREFIXES = {
+  /** `mw_event_<name>` one-shot analytics de-dupe flags. */
+  event: 'mw_event_',
+  /** `mw_teacher_pin_<code>` hashed teacher PINs. */
+  teacherPin: 'mw_teacher_pin_',
+} as const;

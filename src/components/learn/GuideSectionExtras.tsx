@@ -23,7 +23,7 @@ export function GuideFigureBlock({
   if (variant === 'magazine') {
     return (
       <figure className="magazine-figure">
-        {/* eslint-disable-next-line @next/next/no-img-element -- static guidebook assets */}
+        {/* Plain <img>: static guidebook assets, already sized and optimised at build. */}
         <img src={figure.src} alt={figure.alt} className="magazine-figure-img" />
         {figure.caption && <figcaption className="magazine-figure-caption">{figure.caption}</figcaption>}
       </figure>
@@ -32,7 +32,7 @@ export function GuideFigureBlock({
 
   return (
     <figure className="overflow-hidden rounded-xl border border-border/40 bg-[#0a0c10]">
-      {/* eslint-disable-next-line @next/next/no-img-element -- static guidebook assets */}
+      {/* Plain <img>: static guidebook assets, already sized and optimised at build. */}
       <img
         src={figure.src}
         alt={figure.alt}

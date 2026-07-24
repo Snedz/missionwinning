@@ -33,6 +33,7 @@ import { ProfileJourneyCard } from '@/components/profile/ProfileJourneyCard';
 import { ProfilePremiumCard } from '@/components/profile/ProfilePremiumCard';
 import { ProfileOwnerTools } from '@/components/profile/ProfileOwnerTools';
 import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
+import { SyncStatusRow } from '@/components/profile/SyncStatusRow';
 import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
@@ -300,6 +301,8 @@ export function ProfilePage() {
       <ProfileWearablesCard signedIn={Boolean(email)} />
 
       <ProfilePrivacyCard />
+
+      <SyncStatusRow />
 
       <ProfileBackupCard />
 

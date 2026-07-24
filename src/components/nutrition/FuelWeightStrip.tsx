@@ -168,6 +168,9 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
               value={weightInput}
               onChange={(e) => setWeightInput(e.target.value)}
               className="h-10 mt-0.5 tabular-nums"
+              // Focus on open is the point of this inline editor — the user just
+              // tapped "log weight" and should be able to type immediately.
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
             />
           </div>

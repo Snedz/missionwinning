@@ -1,20 +1,21 @@
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+
 export type UiMode = 'simple' | 'pro';
 
-const STORAGE_KEY = 'mw_ui_mode';
+const STORAGE_KEY = STORAGE_KEYS.uiMode;
 
 /**
  * @deprecated Layout no longer gated by Simple/Pro — journey phase drives disclosure.
  * Kept for cloud sync compatibility; new users default to unified experience.
  */
 export function loadUiMode(): UiMode {
-  if (typeof window === 'undefined') return 'pro';
-  const v = localStorage.getItem(STORAGE_KEY);
-  return v === 'simple' ? 'simple' : 'pro';
+  return readRaw(STORAGE_KEY) === 'simple' ? 'simple' : 'pro';
 }
 
 export function saveUiMode(mode: UiMode): void {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(STORAGE_KEY, mode);
+  writeRaw(STORAGE_KEY, mode);
   window.dispatchEvent(new CustomEvent('mw-ui-mode', { detail: mode }));
   void import('@/lib/journeySync').then((m) => m.scheduleJourneyPush());
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Dumbbell, Sparkles, Target, X } from 'lucide-react';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
 const DISMISS_KEY = 'mw_beta_banner_dismissed';
 
@@ -13,7 +14,7 @@ export function BetaWelcomeBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setVisible(localStorage.getItem(DISMISS_KEY) !== '1');
+    setVisible(readRaw(DISMISS_KEY) !== '1');
   }, []);
 
   if (!visible) return null;
@@ -25,7 +26,7 @@ export function BetaWelcomeBanner() {
         aria-label="Dismiss"
         className="absolute top-2 end-2 flex h-11 w-11 items-center justify-center text-muted-foreground hover:text-foreground tap-target"
         onClick={() => {
-          localStorage.setItem(DISMISS_KEY, '1');
+          writeRaw(DISMISS_KEY, '1');
           setVisible(false);
         }}
       >

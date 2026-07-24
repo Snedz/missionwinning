@@ -7,6 +7,7 @@ import { useMissionJourney } from '@/hooks/useMissionJourney';
 import { ShareFitnessButton } from '@/components/fitness-test/ShareFitnessButton';
 import { buildCommissioningShareText } from '@/lib/shareFitnessMission';
 import { showMahaCopy } from '@/lib/americaConfig';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
 const CELEBRATED_KEY = 'mw_commissioned_celebrated';
 
@@ -17,12 +18,12 @@ export function CommissioningCeremony() {
 
   useEffect(() => {
     if (!isCommissioned || !state.commissionedAt) return;
-    if (localStorage.getItem(CELEBRATED_KEY)) return;
+    if (readRaw(CELEBRATED_KEY)) return;
     setOpen(true);
   }, [isCommissioned, state.commissionedAt]);
 
   const dismiss = () => {
-    localStorage.setItem(CELEBRATED_KEY, '1');
+    writeRaw(CELEBRATED_KEY, '1');
     setOpen(false);
   };
 

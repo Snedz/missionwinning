@@ -16,26 +16,27 @@ import type {
 } from "@/types";
 import { countsTowardVolume } from "@/lib/workout/setKind";
 import { advanceAfterLog } from "@/lib/workout/superset";
-import { saveWorkoutLog, getUserWorkoutHistory, getUser } from "@/lib/supabase";
+import { getUserWorkoutHistory, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
 import { mapCloudToLocal, mergeWorkoutHistories } from "@/lib/workout/workoutMerge";
-import { toast } from "@/hooks/use-toast";
 import { track } from "@/lib/analytics";
 import { setActiveWorkoutFlag } from "@/lib/workout/activeWorkoutPulse";
+import { enqueueWorkoutUpsert } from "@/lib/sync/workoutSync";
+import { flush as flushOutbox } from "@/lib/sync/outbox";
+import { newClientId } from "@/lib/workout/clientId";
 
 const DEFAULT_REST_SECONDS = 30;
 
+/**
+ * Set by `onRehydrateStorage`. Declared before `create()` on purpose: with a
+ * synchronous storage zustand invokes that callback while `create()` is still
+ * running, so anything it touches must already be initialised.
+ */
+let rehydrateSettled = false;
+
 function syncActiveFlag(active: { exercises?: unknown } | null | undefined) {
   setActiveWorkoutFlag(!!active);
-}
-
-/** Honest sync status: the workout is safe locally; the cloud write failed. */
-function notifySyncPending() {
-  toast({
-    title: "Saved on this device",
-    description: "Cloud sync didn't go through — we'll retry automatically.",
-  });
 }
 
 interface WorkoutState {
@@ -215,11 +216,15 @@ export const useWorkoutStore = create<WorkoutState>()(
         }
 
         const allSets = exercises.flatMap((e) => e.sets).filter((s) => countsTowardVolume(s.kind));
+        const completedAt = new Date().toISOString();
         const log: CompletedWorkoutLog = {
           id: `log-${Date.now()}`,
+          clientId: newClientId(),
+          revision: 1,
+          updatedAt: completedAt,
           workoutName: activeWorkout.workoutName,
           startedAt: activeWorkout.startedAt,
-          completedAt: new Date().toISOString(),
+          completedAt,
           durationSeconds: elapsedSeconds,
           exercises,
           totalVolume: calculateVolume(allSets),
@@ -249,31 +254,10 @@ export const useWorkoutStore = create<WorkoutState>()(
         const savedCount = get().savedWorkouts.length;
         scheduleLeaderboardPush(get().workoutHistory, savedCount);
 
-        // Auto sync to cloud if signed in (non-blocking). Local persist already
-        // holds the log — on cloud failure, tell the user honestly and retry once.
-        getUser().then((u) => {
-          if (!u) return;
-          const payload = {
-            workout_name: log.workoutName,
-            started_at: log.startedAt,
-            completed_at: log.completedAt,
-            duration_seconds: log.durationSeconds,
-            exercises: log.exercises,
-            total_volume: log.totalVolume,
-          };
-          saveWorkoutLog(payload).then((saved) => {
-            if (saved) return;
-            notifySyncPending();
-            setTimeout(() => {
-              saveWorkoutLog(payload).catch(() => {});
-            }, 60_000);
-          }).catch(() => {
-            notifySyncPending();
-            setTimeout(() => {
-              saveWorkoutLog(payload).catch(() => {});
-            }, 60_000);
-          });
-        });
+        // Cloud write goes to the durable outbox: it survives this tab closing,
+        // retries with backoff, and cannot duplicate the row (keyed on clientId).
+        // The log is already in local persist, so nothing here can lose it.
+        enqueueWorkoutUpsert(log);
 
         return log;
       },
@@ -526,23 +510,39 @@ export const useWorkoutStore = create<WorkoutState>()(
       syncCurrentHistoryToCloud: async () => {
         const user = await getUser();
         if (!user) return;
-        const { workoutHistory } = get();
-        // Save recent ones not yet in cloud (simple: save last 5 that look local)
-        const toSync = workoutHistory.slice(0, 5).filter(l => !l.id.startsWith('cloud-'));
-        for (const log of toSync) {
-          await saveWorkoutLog({
-            workout_name: log.workoutName,
-            started_at: log.startedAt,
-            completed_at: log.completedAt,
-            duration_seconds: log.durationSeconds,
-            exercises: log.exercises,
-            total_volume: log.totalVolume,
-          });
+        // Queue every locally-owned log, not "the last 5 that look local" — that
+        // heuristic re-inserted rows (duplicates) and silently abandoned anything
+        // older. The outbox de-duplicates by clientId, so re-queueing is free.
+        for (const log of get().workoutHistory) {
+          if (log.id.startsWith('cloud-')) continue;
+          enqueueWorkoutUpsert(log);
         }
+        await flushOutbox();
       },
     }),
     {
       name: "workout-tracker-storage",
+      // v1: backfill sync-v2 identity so pre-existing logs can reach the cloud
+      // without duplicating (they had no stable id the server could key on).
+      version: 1,
+      migrate: (persisted, version) => {
+        const state = persisted as { workoutHistory?: CompletedWorkoutLog[] } | undefined;
+        if (!state) return persisted as never;
+        if (version >= 1) return state as never;
+        return {
+          ...state,
+          workoutHistory: (state.workoutHistory ?? []).map((log) =>
+            log.clientId
+              ? log
+              : {
+                  ...log,
+                  clientId: newClientId(),
+                  revision: log.revision ?? 1,
+                  updatedAt: log.updatedAt ?? log.completedAt,
+                }
+          ),
+        } as never;
+      },
       partialize: (state) => ({
         savedWorkouts: state.savedWorkouts,
         workoutHistory: state.workoutHistory,
@@ -551,8 +551,13 @@ export const useWorkoutStore = create<WorkoutState>()(
       }),
       onRehydrateStorage: () => (state, error) => {
         syncActiveFlag(state?.activeWorkout ?? null);
-        // Always mark hydrated (even on error) so Start is not stuck forever.
-        useWorkoutStore.setState({ hasHydrated: true });
+        // NOTE: with a synchronous storage (i.e. every browser) zustand runs this
+        // callback *inside* create(), before `useWorkoutStore` is assigned. Touching
+        // the store here throws a TDZ ReferenceError that the persist thenable
+        // swallows — which is exactly how `hasHydrated` used to stay false forever
+        // and leave "Start Workout" permanently disabled on /active. Record the
+        // fact and let the reconciliation below own the flag.
+        rehydrateSettled = true;
         if (error) {
           console.warn('[workoutStore] rehydrate error', error);
         }
@@ -560,3 +565,31 @@ export const useWorkoutStore = create<WorkoutState>()(
     }
   )
 );
+
+function markHydrated(): void {
+  if (useWorkoutStore.getState().hasHydrated) return;
+  useWorkoutStore.setState({ hasHydrated: true });
+}
+
+/**
+ * Own `hasHydrated` here, after the store exists.
+ *
+ * `Start` stays disabled until this flips, so every path has to end in `true`:
+ * sync storage (already done), async storage (wait for the listener), and no usable
+ * storage at all (nothing to restore — do not block the logger).
+ */
+const persistApi = useWorkoutStore.persist;
+if (!persistApi) {
+  // Storage unavailable (SSR, or a browser refusing it). There is nothing to wait for.
+  markHydrated();
+} else if (rehydrateSettled || persistApi.hasHydrated()) {
+  markHydrated();
+} else {
+  persistApi.onFinishHydration(markHydrated);
+}
+
+if (typeof window !== 'undefined') {
+  // Last resort: a disabled logger is the worst failure this app has, so never
+  // let an unexpected storage error strand it.
+  setTimeout(markHydrated, 1_500);
+}

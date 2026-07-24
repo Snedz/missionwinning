@@ -7,7 +7,7 @@ import { startEmptyActiveWorkout } from './helpers/active';
  * Deeper /active logger path: empty start → pick exercise → log set → rest chrome.
  * Complements hero-flows (learn sample + empty finish toast).
  */
-test.describe('Logger depth', () => {
+test.describe('Logger depth @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
     if (!baseURL) throw new Error('baseURL required');
     const ok = await unlockGate(page, context, baseURL);

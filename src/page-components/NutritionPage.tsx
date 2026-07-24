@@ -49,6 +49,8 @@ import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { Plus, UtensilsCrossed } from 'lucide-react';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { useToast } from '@/hooks/use-toast';
+import { readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 const freeRecipes = FREE_RECIPES;
 const QUICK_FOODS = DEFAULT_QUICK_FOODS;
@@ -92,7 +94,7 @@ export function NutritionPage() {
     typeof window !== 'undefined' ? listMealPresets() : []
   );
   const [allLogs, setAllLogs] = useState(() =>
-    typeof window !== 'undefined' ? parseNutritionLog(localStorage.getItem('mw_nutrition_log')) : []
+    parseNutritionLog(readRaw(STORAGE_KEYS.nutritionLog))
   );
 
   const today = new Date().toISOString().split('T')[0];
@@ -129,12 +131,12 @@ export function NutritionPage() {
       setTargetFat(savedTargets.fat ?? DEFAULT_MACRO_TARGETS.fat);
     }
 
-    const saved = localStorage.getItem('mw_nutrition_log');
+    const saved = readRaw(STORAGE_KEYS.nutritionLog);
     if (saved) {
       const rawParsed = parseNutritionLog(saved);
       const parsed = pruneNutritionLogToDays(rawParsed, 90);
       if (parsed.length !== rawParsed.length) {
-        localStorage.setItem('mw_nutrition_log', JSON.stringify(parsed));
+        writeJson(STORAGE_KEYS.nutritionLog, parsed);
       }
       setAllLogs(parsed);
       setLogged(
@@ -151,7 +153,7 @@ export function NutritionPage() {
           }))
       );
     }
-    const savedWater = localStorage.getItem('mw_water');
+    const savedWater = readRaw(STORAGE_KEYS.water);
     if (savedWater) setWater(parseInt(savedWater));
 
     getUser().then((u) => {
@@ -203,10 +205,10 @@ export function NutritionPage() {
   }, [logged]);
 
   useEffect(() => {
-    localStorage.setItem('mw_water', water.toString());
+    writeRaw(STORAGE_KEYS.water, water.toString());
   }, [water]);
 
-  /** Single writer: merge today's list into full history + localStorage. */
+  /** Single writer: merge today's list into full history + device storage. */
   useEffect(() => {
     setAllLogs((prev) => {
       const older = prev.filter((l) => l.date && l.date !== today);
@@ -221,7 +223,7 @@ export function NutritionPage() {
         date: today,
       }));
       const next = pruneNutritionLogToDays([...older, ...todayRows], 90);
-      localStorage.setItem('mw_nutrition_log', JSON.stringify(next));
+      writeJson(STORAGE_KEYS.nutritionLog, next);
       return next;
     });
   }, [logged, today]);

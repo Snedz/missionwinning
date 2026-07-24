@@ -1,5 +1,6 @@
 import type { LeaderboardBoard } from './types';
 import { isAmericaTrackEnabled } from '@/lib/americaConfig';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
 export const LEADERBOARD_BOARDS: LeaderboardBoard[] = [
   {
@@ -86,11 +87,9 @@ export function visibleLeaderboardScopes(): typeof LEADERBOARD_SCOPES {
 export const SQUAD_CODE_KEY = 'mw_squad_code';
 
 export function loadSquadCode(): string {
-  if (typeof window === 'undefined') return '';
-  return localStorage.getItem(SQUAD_CODE_KEY)?.trim().toUpperCase().slice(0, 8) || '';
+  return readRaw(SQUAD_CODE_KEY)?.trim().toUpperCase().slice(0, 8) || '';
 }
 
 export function saveSquadCode(code: string): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(SQUAD_CODE_KEY, code.trim().toUpperCase().slice(0, 8));
+  writeRaw(SQUAD_CODE_KEY, code.trim().toUpperCase().slice(0, 8));
 }

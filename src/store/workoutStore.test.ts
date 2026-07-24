@@ -1,0 +1,246 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+
+/**
+ * First tests for the most important module in the repo: everything a user has
+ * ever logged passes through here, and until now none of it was covered.
+ */
+const storageMap = new Map<string, string>();
+(globalThis as { localStorage?: Storage }).localStorage = {
+  getItem: (k: string) => storageMap.get(k) ?? null,
+  setItem: (k: string, v: string) => void storageMap.set(k, v),
+  removeItem: (k: string) => void storageMap.delete(k),
+  clear: () => storageMap.clear(),
+  key: (i: number) => [...storageMap.keys()][i] ?? null,
+  get length() {
+    return storageMap.size;
+  },
+} as unknown as Storage;
+
+const UUID_SHAPE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+test('workoutStore', async (t) => {
+  // Imported dynamically so the localStorage stub above is in place first —
+  // zustand's persist middleware reads storage while the module initialises.
+  const { useWorkoutStore } = await import('@/store/workoutStore');
+  const outbox = await import('@/lib/sync/outbox');
+  const { STORAGE_KEYS } = await import('@/lib/storage/keys');
+
+  function reset() {
+    useWorkoutStore.setState({
+      savedWorkouts: [],
+      workoutHistory: [],
+      activeWorkout: null,
+      restSecondsRemaining: 0,
+      restTimerActive: false,
+      restTimerInitialSeconds: 90,
+      elapsedSeconds: 0,
+      // hasHydrated is deliberately not reset — faking it here would mask the
+      // hydration regression the first assertion below guards.
+    });
+    storageMap.delete(STORAGE_KEYS.outbox);
+  }
+
+  function template(exerciseId = 'push-ups', setCount = 2) {
+    return [
+      {
+        exerciseId,
+        sets: Array.from({ length: setCount }, () => ({ reps: 10, weight: 50 })),
+      },
+    ] as Parameters<ReturnType<typeof useWorkoutStore.getState>['startWorkout']>[1];
+  }
+
+  // Regression: `onRehydrateStorage` used to set this flag, but zustand runs that
+  // callback synchronously inside create() — before the store binding exists — so
+  // the TDZ error was swallowed and the flag stayed false. /active gates
+  // "Start Workout" on it, which left the free logger permanently disabled.
+  await t.test('hydration completes so the logger is never stuck disabled', () => {
+    assert.equal(
+      useWorkoutStore.getState().hasHydrated,
+      true,
+      'hasHydrated must resolve on every storage path — Start depends on it'
+    );
+  });
+
+  t.beforeEach(reset);
+
+  await t.test('starting a workout plans the template sets', () => {
+    useWorkoutStore.getState().startWorkout('Push', template());
+    const active = useWorkoutStore.getState().activeWorkout;
+    assert.ok(active);
+    assert.equal(active?.workoutName, 'Push');
+    assert.equal(active?.exercises.length, 1);
+    assert.equal(active?.exercises[0].sets.length, 2);
+    assert.equal(active?.exercises[0].sets.every((s) => !s.completed), true);
+  });
+
+  await t.test('logging a set records reps, weight and completion', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.logSet(0, 0, 8, 40, 'hard');
+
+    const set = useWorkoutStore.getState().activeWorkout?.exercises[0].sets[0];
+    assert.equal(set?.completed, true);
+    assert.equal(set?.reps, 8);
+    assert.equal(set?.weight, 40);
+    assert.equal(set?.rpe, 'hard');
+  });
+
+  await t.test('a completed workout gets a sync identity', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.logSet(0, 0, 10, 50);
+
+    const log = useWorkoutStore.getState().completeActiveWorkout();
+    assert.ok(log, 'completing with a logged set must produce a log');
+    assert.match(log!.clientId ?? '', UUID_SHAPE, 'sync v2 needs a stable client id');
+    assert.equal(log!.revision, 1);
+    assert.equal(log!.updatedAt, log!.completedAt);
+    assert.equal(log!.totalVolume, 500);
+    assert.equal(useWorkoutStore.getState().activeWorkout, null);
+    assert.equal(useWorkoutStore.getState().workoutHistory.length, 1);
+  });
+
+  await t.test('only completed sets are kept in history', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('push-ups', 3));
+    store.logSet(0, 0, 10, 0);
+    // Sets 1 and 2 were planned but never done.
+    const log = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal(log?.exercises[0].sets.length, 1);
+  });
+
+  await t.test('finishing with nothing logged discards instead of saving an empty session', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    const log = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal(log, null);
+    assert.equal(useWorkoutStore.getState().activeWorkout, null);
+    assert.equal(useWorkoutStore.getState().workoutHistory.length, 0);
+  });
+
+  await t.test('a completed workout is queued for the cloud exactly once', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    store.logSet(0, 0, 10, 50);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    assert.equal(outbox.getState().pending, 1, 'the cloud write must outlive this tab');
+  });
+
+  await t.test('two sessions queue two ops — they must not collapse', () => {
+    const store = useWorkoutStore.getState();
+
+    store.startWorkout('Push', template());
+    useWorkoutStore.getState().logSet(0, 0, 10, 50);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    useWorkoutStore.getState().startWorkout('Pull', template('pull-ups'));
+    useWorkoutStore.getState().logSet(0, 0, 8, 0);
+    useWorkoutStore.getState().completeActiveWorkout();
+
+    assert.equal(outbox.getState().pending, 2);
+  });
+
+  // Note: zustand's persist writes via `window.localStorage`, which does not exist
+  // in this runner. Real persistence is asserted in tests/e2e/offline.spec.ts,
+  // where a browser is available. Here we assert the queued payload is complete.
+  await t.test('the queued cloud write carries the whole session, not a summary', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    useWorkoutStore.getState().logSet(0, 0, 10, 50);
+    useWorkoutStore.getState().logSet(0, 1, 8, 55);
+    const log = useWorkoutStore.getState().completeActiveWorkout();
+
+    const queued = JSON.parse(storageMap.get(STORAGE_KEYS.outbox) as string);
+    assert.equal(queued.length, 1);
+    assert.equal(queued[0].kind, 'workout.upsert');
+    assert.equal(queued[0].dedupeKey, log?.clientId, 'keyed on clientId — a retry cannot duplicate');
+    assert.match(queued[0].payload.clientId, UUID_SHAPE);
+    assert.equal(queued[0].payload.revision, 1);
+    assert.equal(queued[0].payload.setCount, 2);
+    assert.equal(queued[0].payload.exercises[0].sets.length, 2);
+    assert.equal(queued[0].payload.totalVolume, log?.totalVolume);
+  });
+
+  await t.test('cancelling clears the session and the timers', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    useWorkoutStore.getState().startRestTimer(60);
+    useWorkoutStore.getState().cancelActiveWorkout();
+
+    const s = useWorkoutStore.getState();
+    assert.equal(s.activeWorkout, null);
+    assert.equal(s.restTimerActive, false);
+    assert.equal(s.restSecondsRemaining, 0);
+    assert.equal(s.workoutHistory.length, 0);
+  });
+
+  await t.test('rest timer counts down and stops at zero', () => {
+    const store = useWorkoutStore.getState();
+    store.startRestTimer(2);
+    assert.equal(useWorkoutStore.getState().restTimerActive, true);
+
+    useWorkoutStore.getState().tickRestTimer();
+    assert.equal(useWorkoutStore.getState().restSecondsRemaining, 1);
+
+    useWorkoutStore.getState().tickRestTimer();
+    assert.equal(useWorkoutStore.getState().restSecondsRemaining, 0);
+    assert.equal(useWorkoutStore.getState().restTimerActive, false);
+
+    // Ticking an inactive timer must not go negative.
+    useWorkoutStore.getState().tickRestTimer();
+    assert.equal(useWorkoutStore.getState().restSecondsRemaining, 0);
+  });
+
+  await t.test('adjusting rest never goes below zero', () => {
+    const store = useWorkoutStore.getState();
+    store.startRestTimer(30);
+    useWorkoutStore.getState().adjustRestTimer(-100);
+    assert.equal(useWorkoutStore.getState().restSecondsRemaining, 0);
+    assert.equal(useWorkoutStore.getState().restTimerActive, false);
+  });
+
+  await t.test('adding a set copies the last set as the target', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    useWorkoutStore.getState().logSet(0, 0, 12, 60);
+    useWorkoutStore.getState().addSetToExercise(0);
+
+    const sets = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
+    assert.equal(sets.length, 3);
+    assert.equal(sets[2].completed, false);
+  });
+
+  await t.test('removing a planned set never removes completed work', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template('push-ups', 2));
+    useWorkoutStore.getState().logSet(0, 0, 10, 0);
+
+    useWorkoutStore.getState().removeLastPlannedSet(0);
+    let sets = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
+    assert.equal(sets.length, 1);
+    assert.equal(sets[0].completed, true);
+
+    // Nothing planned left — the completed set must survive.
+    useWorkoutStore.getState().removeLastPlannedSet(0);
+    sets = useWorkoutStore.getState().activeWorkout?.exercises[0].sets ?? [];
+    assert.equal(sets.length, 1);
+    assert.equal(sets[0].completed, true);
+  });
+
+  await t.test('swapping an exercise is refused once a set is logged', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    useWorkoutStore.getState().replaceExerciseInActive(0, 'dips');
+    assert.equal(useWorkoutStore.getState().activeWorkout?.exercises[0].exerciseId, 'dips');
+
+    useWorkoutStore.getState().logSet(0, 0, 10, 0);
+    useWorkoutStore.getState().replaceExerciseInActive(0, 'bench-press');
+    assert.equal(
+      useWorkoutStore.getState().activeWorkout?.exercises[0].exerciseId,
+      'dips',
+      'a swap after logging would silently reassign real work'
+    );
+  });
+});

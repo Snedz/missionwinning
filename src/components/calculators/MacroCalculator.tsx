@@ -31,6 +31,8 @@ import {
   proteinTargetGrams,
 } from '@/lib/calcHelpers';
 import { saveMacroTargets } from '@/lib/macroTargets';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 type Goal = 'maintain' | 'cut' | 'bulk';
 
@@ -94,9 +96,9 @@ export function MacroCalculator() {
     saveMacroTargets({ cals: targetCals, protein, carbs, fat });
     const today = new Date().toISOString().split('T')[0];
     const entry = { date: today, name: `Calc target protein ${protein}g`, protein, cals: targetCals };
-    const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]');
+    const logs = readJson<unknown[]>(STORAGE_KEYS.nutritionLog, []);
     logs.unshift(entry);
-    localStorage.setItem('mw_nutrition_log', JSON.stringify(logs.slice(0, 50)));
+    writeJson(STORAGE_KEYS.nutritionLog, logs.slice(0, 50));
     toast({
       title: t('calcToastApplied', { defaultValue: 'Targets applied' }),
       description: t('calcToastAppliedDesc', {

@@ -15,6 +15,8 @@ import { Label } from '@/components/ui/label';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import { submitLead } from '@/lib/supabase';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
+import { readJson, readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 
 export function FeedbackPage() {
   const { t } = useTranslation();
@@ -34,8 +36,8 @@ export function FeedbackPage() {
     e.preventDefault();
     setLoading(true);
     const entry = { ...form, at: new Date().toISOString() };
-    const existing = JSON.parse(localStorage.getItem('mw_beta_feedback') || '[]');
-    localStorage.setItem('mw_beta_feedback', JSON.stringify([...existing, entry]));
+    const existing = readJson<unknown[]>(STORAGE_KEYS.betaFeedback, []);
+    writeJson(STORAGE_KEYS.betaFeedback, [...existing, entry]);
     await submitLead({
       name: form.name || 'Beta Contributor',
       email: form.email,
@@ -44,10 +46,10 @@ export function FeedbackPage() {
       source: 'feedback-page',
       message: form.testimonial,
     });
-    localStorage.setItem('mw_beta_contributor', 'true');
-    localStorage.setItem('mw_event_feedback', Date.now().toString());
-    const claimed = parseInt(localStorage.getItem('mw_beta_spots_claimed') || '347');
-    localStorage.setItem('mw_beta_spots_claimed', Math.min(500, claimed + 1).toString());
+    writeRaw(STORAGE_KEYS.betaContributor, 'true');
+    writeRaw(`${STORAGE_KEY_PREFIXES.event}feedback`, Date.now().toString());
+    const claimed = parseInt(readRaw(STORAGE_KEYS.betaSpotsClaimed) || '347');
+    writeRaw(STORAGE_KEYS.betaSpotsClaimed, Math.min(500, claimed + 1).toString());
     setLoading(false);
     setSubmitted(true);
   };

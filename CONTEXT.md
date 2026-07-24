@@ -16,11 +16,12 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-24 · web `2026.07-unified.122` · Android `1.24.1`)
+## Now (2026-07-24 · web `2026.07-unified.123` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
+- **Logger reliability (`.123`):** fixed `/active` **Start Workout stuck disabled** (zustand ran `onRehydrateStorage` inside `create()` → swallowed TDZ error → `hasHydrated` never true). Web now on **sync v2** (`clientId`/`revision`/tombstones) behind a **durable outbox** — [src/lib/sync/INDEX.md](src/lib/sync/INDEX.md); all device writes go through [src/lib/storage/INDEX.md](src/lib/storage/INDEX.md). Hero + offline e2e now gate every PR.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **Media system:** Google Flow · Scout mascot — [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md).
 - **Ops:** lean CI (PR gate only; prod via `deploy-production` / Deploy Hook) — [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md). OSS public-ready (AGPL + CoC) — founder flips GitHub Public — [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md). Promote **`.122`**; keep Supabase Site URL on www.

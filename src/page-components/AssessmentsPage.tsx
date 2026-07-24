@@ -16,6 +16,8 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { saveNutritionEntry } from '@/lib/supabase';
 import type { WorkoutExerciseTemplate } from '@/types';
+import { readRaw, writeRaw, writeJson } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 interface AssessmentResult {
   riskLevel: 'low' | 'moderate' | 'high';
@@ -121,15 +123,13 @@ export function AssessmentsPage() {
     saveNutritionEntry({ date: today, name: `Assessment: ${risk} risk`, protein: 0, cals: 0 }).catch(() => {});
 
     // Persist last result for profile / history
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('mw_last_assessment', JSON.stringify({ risk, notes, date: today }));
-    }
+    writeJson(STORAGE_KEYS.lastAssessment, { risk, notes, date: today });
   };
 
   const bumpStreak = () => {
-    const cur = parseInt((typeof window !== 'undefined' ? localStorage.getItem('mw_streak') : '0') || '0');
+    const cur = parseInt(readRaw(STORAGE_KEYS.streak) || '0');
     const next = Math.max(1, cur + 1);
-    if (typeof window !== 'undefined') localStorage.setItem('mw_streak', String(next));
+    writeRaw(STORAGE_KEYS.streak, String(next));
   };
 
   const startRecommended = (rec: string) => {

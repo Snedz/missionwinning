@@ -197,6 +197,11 @@ export async function isPremium(): Promise<boolean> {
 export type CloudWorkoutLog = {
   id?: string
   user_id: string
+  /** Sync v2 client identity — see src/lib/sync/workoutSync.ts */
+  client_id?: string | null
+  revision?: number | null
+  updated_at?: string | null
+  deleted_at?: string | null
   workout_name: string
   started_at: string
   completed_at: string
@@ -205,14 +210,11 @@ export type CloudWorkoutLog = {
   total_volume: number
 }
 
-export async function saveWorkoutLog(log: Omit<CloudWorkoutLog, 'user_id'>) {
-  const user = await getUser()
-  if (!user) return null
-  const payload: CloudWorkoutLog = { ...log, user_id: user.id }
-  const { data, error } = await supabase.from('workout_logs').insert(payload).select().single()
-  if (error) { console.error('saveWorkoutLog error', error); return null }
-  return data
-}
+/**
+ * Workout writes go through the outbox (`src/lib/sync/workoutSync.ts`), which owns
+ * idempotency via `client_id`. There is deliberately no bare insert helper here —
+ * one existed and every retry path could duplicate a session.
+ */
 
 export async function getUserWorkoutHistory(limit = 50): Promise<CloudWorkoutLog[]> {
   const user = await getUser()
@@ -224,6 +226,27 @@ export async function getUserWorkoutHistory(limit = 50): Promise<CloudWorkoutLog
     .order('completed_at', { ascending: false })
     .limit(limit)
   if (error) { console.error('getUserWorkoutHistory error', error); return [] }
+  return data || []
+}
+
+/**
+ * Rows touched since `sinceIso` — includes tombstones and edits, which a
+ * completed_at-ordered read cannot see. Backed by workout_logs_user_updated_at_idx.
+ */
+export async function getUserWorkoutsUpdatedSince(
+  sinceIso: string,
+  limit = 200
+): Promise<CloudWorkoutLog[]> {
+  const user = await getUser()
+  if (!user) return []
+  const { data, error } = await supabase
+    .from('workout_logs')
+    .select('*')
+    .eq('user_id', user.id)
+    .gt('updated_at', sinceIso)
+    .order('updated_at', { ascending: false })
+    .limit(limit)
+  if (error) { console.error('getUserWorkoutsUpdatedSince error', error); return [] }
   return data || []
 }
 

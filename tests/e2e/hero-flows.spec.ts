@@ -3,7 +3,7 @@ import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding, seedReadinessPhase } from './helpers/journey';
 import { startEmptyActiveWorkout } from './helpers/active';
 
-test.describe('Phase H hero flows', () => {
+test.describe('Phase H hero flows @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
     if (!baseURL) throw new Error('baseURL required');
     const ok = await unlockGate(page, context, baseURL);
@@ -65,7 +65,9 @@ test.describe('Phase H hero flows', () => {
 
   test('active empty start, finish-without-sets toast returns to empty shell', async ({ page }) => {
     await startEmptyActiveWorkout(page);
-    await expect(page.getByRole('heading', { name: /add exercise/i })).toBeVisible();
+    // The picker is inline on an empty session (no "Add exercise" heading any more).
+    // What matters is that a first exercise is one tap away.
+    await expect(page.getByPlaceholder(/search exercises/i)).toBeVisible();
 
     await page.getByRole('button', { name: /finish/i }).first().click();
     await expect(page.getByText(/nothing logged/i).first()).toBeVisible({ timeout: 10_000 });
