@@ -26,6 +26,7 @@ This is why "muscle confusion" is oversold. Variation has a place — especially
 
 Mission Winning tracks what you actually do. That history is the feedback loop: without logs, you are guessing whether adaptation is happening.`,
         practiceCTA: { label: 'Check readiness on Today', href: '/log' },
+        relatedExerciseIds: ['squats', 'deadlift', 'push-ups'],
         relatedLearnPathId: 'strength-basics',
         sourceRef: 'foundations — adaptation',
         callout: {
@@ -48,6 +49,7 @@ Mission Winning tracks what you actually do. That history is the feedback loop: 
 
 Most general fitness blends all three across the week. A lifter who never trains oxidative capacity may gas out on conditioning tests; a runner who never lifts may lack strength for posture and injury resilience. The six-pillar Win Score nudges balance — not perfection every day.`,
         practiceCTA: { label: 'Log an activity', href: '/track' },
+        relatedExerciseIds: ['jump-squats', 'burpees', 'mountain-climbers'],
         relatedLearnPathId: 'strength-basics',
         sourceRef: 'foundations — energy systems',
         table: {
@@ -71,6 +73,7 @@ Practical recovery levers you can control today: 7–9 hours sleep when possible
 
 Readiness on the Today hub is a consistency score from your logs — not a medical device. Use it as a nudge to push, maintain, or back off — not as an excuse to skip forever.`,
         practiceCTA: { label: 'Open health screen (PAR-Q)', href: '/assessments' },
+        relatedExerciseIds: ['bird-dog', 'plank', 'glute-bridge'],
         relatedLearnPathId: 'sleep-recovery',
         sourceRef: 'foundations — recovery',
         callout: {
@@ -144,6 +147,11 @@ Romanian deadlifts and good mornings teach the hinge with lighter loads. Master 
         relatedExerciseIds: ['deadlift', 'romanian-deadlift', 'kettlebell-swing'],
         relatedLearnPathId: 'corrective-foundations',
         sourceRef: 'foundations — hinge pattern',
+        figure: {
+          src: '/form-guides/romanian-deadlift.svg',
+          alt: 'Romanian deadlift form diagram with hinge and lockout phases',
+          caption: 'Hinge — hips back, bar close, drive to lockout',
+        },
         checklist: {
           title: 'Hinge faults to watch',
           items: [
@@ -167,9 +175,14 @@ Romanian deadlifts and good mornings teach the hinge with lighter loads. Master 
 
 Pair patterns across the week rather than cramming everything into one marathon session. The Builder and program templates encode sane splits for you.`,
         practiceCTA: { label: 'Open workout Builder', href: '/builder' },
-        relatedExerciseIds: ['push-ups', 'pull-ups', 'barbell-row'],
+        relatedExerciseIds: ['push-ups', 'pull-ups', 'barbell-row', 'overhead-press'],
         relatedLearnPathId: 'strength-basics',
         sourceRef: 'foundations — movement patterns',
+        figure: {
+          src: '/form-guides/push-ups.svg',
+          alt: 'Push-up form diagram with setup, mid, and lockout phases',
+          caption: 'Push pattern — brace, lower with control, press away',
+        },
         checklist: {
           title: 'Pattern balance check',
           items: [
@@ -211,6 +224,11 @@ Log sets and reps in Active Workout. Mission Winning history is your programming
         relatedLearnPathId: 'periodization-design',
         relatedExerciseIds: ['squats', 'deadlift', 'bench-press'],
         sourceRef: 'foundations — volume & intensity',
+        figure: {
+          src: '/form-guides/bench-press.svg',
+          alt: 'Bench press form diagram with bar path phases',
+          caption: 'Progress key lifts — log hard sets, not random add-ons',
+        },
         table: {
           caption: 'Volume landmarks (hard sets / week)',
           headers: ['Level', 'Hard sets / muscle / week', 'Intensity cue'],
@@ -226,14 +244,20 @@ Log sets and reps in Active Workout. Mission Winning history is your programming
         title: 'RPE & Auto-Regulation',
         summary:
           'Some days you have 90% of your best; training as if you always have 100% leads to burnout.',
-        body: `Rate of Perceived Exertion (RPE) scales effort: RPE 8 means two reps left in the tank. It lets you train hard without always hitting failure.
+        body: `Rate of Perceived Exertion (RPE) scales how hard a set felt: RPE 8 means about two reps left. It lets you train hard without living at failure.
 
-Use RPE when sleep was poor, stress is high, or readiness trends down. Maintain the movement pattern; adjust load or reps.
+Use RPE when sleep was poor, stress is high, or readiness trends down. Keep the movement pattern; drop load or reps instead of forcing yesterday's numbers.
 
-In the logger, note how sets felt. Over time you will recognize when to add weight versus when to repeat.`,
+In the logger, note how sets felt. Over weeks you will see when to add weight versus when to repeat the same top set.`,
         practiceCTA: { label: 'Use program templates', href: '/builder' },
+        relatedExerciseIds: ['squats', 'bench-press', 'deadlift'],
         relatedLearnPathId: 'periodization-design',
         sourceRef: 'foundations — RPE',
+        figure: {
+          src: '/form-guides/squats.svg',
+          alt: 'Squat form diagram used as a reference lift for RPE training',
+          caption: 'Same lift, honest RPE — progress without maxing every week',
+        },
         table: {
           caption: 'RPE quick reference',
           headers: ['RPE', 'Reps in reserve', 'Use when'],
@@ -259,6 +283,7 @@ In the logger, note how sets felt. Over time you will recognize when to add weig
 
 Program templates in the Builder encode these ideas. Pro templates (premium) add classic strength blocks — Texas Method, 5/3/1 variants, and more — when you are ready for structure beyond starters.`,
         practiceCTA: { label: 'Browse templates', href: '/builder' },
+        relatedExerciseIds: ['squats', 'deadlift', 'overhead-press'],
         relatedLearnPathId: 'periodization-design',
         sourceRef: 'foundations — periodization',
         callout: {
@@ -275,17 +300,22 @@ Program templates in the Builder encode these ideas. Pro templates (premium) add
     subtitle: 'I-Day, six pillars, and your Win Score',
     icon: '🎯',
     quickPathId: 'mindset-habits',
+    heroImage: {
+      src: '/learn/getting-started-mw-hero.webp',
+      alt: 'Abstract dawn path into training — I-Day and the mission ahead',
+      caption: 'Start the path — then show up daily',
+    },
     sections: [
       {
         id: 'ch4-s1',
         title: 'I-Day & Your Mission',
         summary:
           'Onboarding sets experience level, equipment, and goals so Today can recommend sensible next steps.',
-        body: `I-Day takes about three minutes: accept the mission, set your profile, optionally sign in for cloud sync.
+        body: `I-Day takes about three minutes: accept the mission, set your profile (level, equipment, goals), and optionally sign in for cloud sync.
 
-You are not locked into one program forever. Revisit Welcome with ?edit=1 to update equipment or goals.
+You are not locked into one program forever. Open Welcome with ?edit=1 anytime equipment or goals change.
 
-The journey phases — Basic, Readiness, Commissioned — exist to build habits across all six pillars, not just the barbell.`,
+Journey phases — Basic Training, Readiness, Commissioned — exist to build habits across all six pillars, not just the barbell. Finish I-Day, then log one real session this week.`,
         practiceCTA: { label: 'Review Welcome / I-Day', href: '/welcome' },
         relatedLearnPathId: 'mindset-habits',
         sourceRef: 'foundations — onboarding & purpose',
@@ -316,7 +346,7 @@ The journey phases — Basic, Readiness, Commissioned — exist to build habits 
 
 **Learn** — this guidebook and quick education paths.
 
-Each pillar can log a "win" on Today. Basic Training asks for one win in each — a low bar designed to show the whole app, not exhaust you in week one.`,
+Each pillar can log a win on Today. Basic Training asks for one win in each — a low bar meant to show the whole app, not exhaust you in week one.`,
         practiceCTA: { label: 'Open Today hub', href: '/log' },
         relatedLearnPathId: 'mindset-habits',
         sourceRef: 'MW product design',
@@ -338,7 +368,7 @@ Each pillar can log a "win" on Today. Basic Training asks for one win in each �
         title: 'Win Score & Offline Use',
         summary:
           'Mission Score weights pillar consistency. The app works offline as a PWA once installed.',
-        body: `Win Score is a holistic consistency metric — not a medical grade readiness score. It rewards showing up across pillars over time.
+        body: `Win Score (Mission Score) is a holistic consistency metric — not a medical readiness grade. It rewards showing up across pillars over time more than one hero session.
 
 Install from your browser (Add to Home Screen) for offline logging at the park or garage gym. Sync when you sign in on Profile.
 
@@ -371,13 +401,13 @@ Beta testers: see /beta for the start guide and feedback channels.`,
         title: 'Macros Without Obsession',
         summary:
           'Protein, carbohydrates, and fats each play a role. Track enough to learn, not enough to dread meals.',
-        body: `**Protein:** Roughly 1.6–2.2 g/kg bodyweight for most active people building or retaining muscle. Spread across meals.
+        body: `**Protein:** Roughly 1.6–2.2 g/kg bodyweight for most active people building or retaining muscle. Spread it across meals when you can.
 
-**Carbs:** Fuel hard training and recovery; timing matters more for athletes than for general fitness.
+**Carbs:** Fuel hard training and recovery; timing matters more for competitive athletes than for general fitness.
 
-**Fats:** Essential for hormones and satiety; do not eliminate them chasing low numbers.
+**Fats:** Essential for hormones and satiety — do not zero them out chasing low numbers.
 
-Log a typical day on Fuel. Use recipes for ideas — free core includes dozens; premium adds meal-prep depth.`,
+Log a typical day on Fuel. Free recipes cover the basics; premium adds meal-prep depth when you want it.`,
         practiceCTA: { label: 'Open Fuel log', href: '/nutrition' },
         relatedLearnPathId: 'nutrition-101',
         sourceRef: 'nutrition science — macros',
@@ -391,14 +421,20 @@ Log a typical day on Fuel. Use recipes for ideas — free core includes dozens; 
         title: 'Hydration & Sleep',
         summary:
           'Water and sleep move the needle more than most supplements.',
-        body: `Dehydration reduces performance and recovery. A simple habit: drink steadily through the day, extra around training.
+        body: `Dehydration cuts performance and recovery. Drink steadily through the day, and a bit more around training.
 
-Sleep is when growth hormone peaks and memory consolidates — including motor learning from today's lifts. Chronic five-hour nights undermine every program.
+Sleep is when recovery hormones and motor learning consolidate — including today's lifts. Chronic five-hour nights undermine every program, no matter how good the spreadsheet looks.
 
-Mind pillar includes wind-down sessions; Move includes recovery flows. Use them on rest days.`,
+Mind includes wind-down sessions; Move includes recovery flows. Use them on rest days instead of another grind session.`,
         practiceCTA: { label: 'Try a recovery flow', href: '/move' },
+        relatedExerciseIds: ['bird-dog', 'plank', 'glute-bridge'],
         relatedLearnPathId: 'sleep-recovery',
         sourceRef: 'foundations — hydration & sleep',
+        figure: {
+          src: '/form-guides/plank.svg',
+          alt: 'Plank hold form diagram',
+          caption: 'Easy movement and holds count as recovery work',
+        },
         checklist: {
           title: 'Recovery basics',
           items: [
@@ -414,13 +450,13 @@ Mind pillar includes wind-down sessions; Move includes recovery flows. Use them 
         title: 'Meal Timing & Consistency',
         summary:
           'Total daily intake matters most; timing is a tiebreaker for advanced athletes.',
-        body: `For most users, hitting protein and calories across the day beats worrying about the "anabolic window."
+        body: `For most users, hitting protein and calories across the day beats obsessing over a narrow "anabolic window."
 
-Pre-workout: easily digested carbs + protein if training fasted feels bad.
+Pre-workout: easily digested carbs plus protein if training fully fasted feels bad.
 
 Post-workout: protein and carbs within a few hours supports recovery — not a minute-by-minute emergency.
 
-Log recipes from the Fuel page to pre-fill macros. Weekly challenges can nudge protein-day streaks.`,
+Use Fuel recipes to pre-fill macros when planning is hard. Weekly challenges can nudge protein-day streaks.`,
         practiceCTA: { label: 'Browse recipes', href: '/nutrition' },
         relatedLearnPathId: 'nutrition-101',
         sourceRef: 'foundations — meal timing',
@@ -454,7 +490,7 @@ Log recipes from the Fuel page to pre-fill macros. Weekly challenges can nudge p
         title: 'PAR-Q & Health Screening',
         summary:
           'Know when to seek medical clearance before pushing intensity.',
-        body: `The Physical Activity Readiness Questionnaire (PAR-Q) flags cardiovascular, joint, and metabolic risks. A "yes" does not mean never train — it means talk to a qualified professional first.
+        body: `The Physical Activity Readiness Questionnaire (PAR-Q) flags cardiovascular, joint, and metabolic risk flags. A "yes" does not mean never train — it means talk to a qualified professional before you load intensity.
 
 Complete the in-app health screen honestly. Mission Winning is a civilian fitness tool, not medical advice.
 
@@ -472,7 +508,7 @@ Assessments save a summary to your log for your own reference — share with you
         title: 'Benchmarks & Tests',
         summary:
           'Push-ups, pull-ups, and strength standards give objective checkpoints beyond the mirror.',
-        body: `Benchmark tests repeat every few weeks — not daily. They answer: is my training transferring to performance?
+        body: `Benchmark tests belong every few weeks — not every session. They answer a simple question: is training transferring to performance?
 
 Use Readiness tests and history trends together. One bad day is noise; four weeks flat is signal.
 
@@ -481,6 +517,11 @@ Leaderboards add optional social motivation. Squad codes let friends compare wit
         relatedLearnPathId: 'assessments-path',
         relatedExerciseIds: ['push-ups', 'pull-ups', 'squats'],
         sourceRef: 'foundations — assessments',
+        figure: {
+          src: '/form-guides/pull-ups.svg',
+          alt: 'Pull-up form diagram with hang and pull phases',
+          caption: 'Retest bodyweight benchmarks every 3–4 weeks',
+        },
         table: {
           caption: 'What to retest and when',
           headers: ['Check', 'Cadence', 'Signal'],
@@ -499,12 +540,13 @@ Leaderboards add optional social motivation. Squad codes let friends compare wit
           'Stall, pain, or life stress each call for different fixes — not always "push harder."',
         body: `**Stall:** Add volume or intensity on one lift at a time, or deload and rebuild.
 
-**Pain:** Sharp or joint pain — stop aggravating movement, seek qualified help. Dull muscle soreness is different.
+**Pain:** Sharp or joint pain — stop the aggravating movement and seek qualified help. Dull muscle soreness after hard work is different.
 
-**Life stress:** Maintain with lower RPE sessions; consistency beats hero weeks.
+**Life stress:** Keep the habit with lower-RPE sessions; consistency beats hero weeks you cannot recover from.
 
 History and Win Score trends on Today help you decide. This guidebook is the reference; your log is the truth.`,
         practiceCTA: { label: 'View workout history', href: '/history' },
+        relatedExerciseIds: ['squats', 'push-ups', 'deadlift'],
         relatedLearnPathId: 'assessments-path',
         sourceRef: 'foundations — program adjustment',
         callout: {

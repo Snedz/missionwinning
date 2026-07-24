@@ -7,6 +7,7 @@ Free use for press coverage, reviews, and non-misleading promotion of Mission Wi
 - Editorial / news coverage with attribution (“Mission Winning”)
 - Social posts linking to missionwinning.com
 - Unmodified logos from this folder
+- Scout mascot art under `mascot/` per [docs/MASCOT.md](../../docs/MASCOT.md) (companion character — not a logo substitute)
 
 ## Not allowed
 
@@ -14,6 +15,18 @@ Free use for press coverage, reviews, and non-misleading promotion of Mission Wi
 - Altering colors, proportions, or clear space of the logo
 - Using marks on merchandise sold as official Mission Winning products
 - Combining with competitor branding in a confusing way
+- Replacing the MW monogram with Scout without written permission
+
+## Mascot (Scout)
+
+| File | Use |
+|------|-----|
+| `mascot/scout-idle.webp` | Default |
+| `mascot/scout-invite.webp` | Empty / invite |
+| `mascot/scout-celebrate.webp` | Victory |
+| `mascot/scout-mark.svg` | Tiny chrome experiments only |
+
+Full bible: `docs/MASCOT.md`
 
 ## Contact
 

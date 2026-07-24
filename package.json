@@ -36,6 +36,7 @@
     "i18n:batchd-parity": "tsx scripts/i18n-parity.ts",
     "i18n:parity": "tsx scripts/i18n-parity.ts",
     "i18n:fill": "tsx scripts/i18n-fill-missing.ts",
+    "media:optimize-inbox": "node scripts/optimize-media-inbox.mjs",
     "mobile": "npm --prefix apps/mobile start",
     "mobile:typecheck": "npm --prefix apps/mobile run typecheck",
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug"

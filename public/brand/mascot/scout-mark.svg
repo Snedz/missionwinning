@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Scout mascot mark">
+  <title>Scout</title>
+  <!-- Tiny geometric falcon mark  does NOT replace /brand/logo-icon.svg -->
+  <rect width="64" height="64" rx="12" fill="#0a0c10"/>
+  <!-- body -->
+  <ellipse cx="32" cy="36" rx="14" ry="16" fill="#1a1f28" stroke="#e8eaed" stroke-width="1.5"/>
+  <!-- head -->
+  <circle cx="32" cy="20" r="10" fill="#1a1f28" stroke="#e8eaed" stroke-width="1.5"/>
+  <!-- beak -->
+  <path d="M32 24 L38 26 L32 28 Z" fill="#c7a860"/>
+  <!-- eye -->
+  <circle cx="36" cy="18" r="2" fill="#27b07d"/>
+  <!-- brass chevron -->
+  <path d="M26 34 L32 30 L38 34" fill="none" stroke="#c7a860" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- wing hint -->
+  <path d="M18 34 Q22 28 28 32" fill="none" stroke="#27b07d" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

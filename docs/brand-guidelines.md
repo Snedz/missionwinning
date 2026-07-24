@@ -105,11 +105,21 @@ Primary mark: rounded emerald square with white **MW** monogram (same paths as `
 
 ---
 
+## Mascot — Scout
+
+**Full bible:** [MASCOT.md](MASCOT.md) · **Assets:** `/brand/mascot/` · **Flow prompts:** [`media/FLOW_PROMPTS.md`](../media/FLOW_PROMPTS.md)
+
+Scout is a geometric falcon/kestrel companion (mission briefing personality). Celebrates logs; never shame. Social → one empty state → Victory only — not the Train logger, not a logo replacement for the MW monogram.
+
+---
+
 ## AI Image Generation
 
-**Full playbook:** [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · **manifest:** [`media/manifest.json`](../media/manifest.json).
+**Full playbook:** [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · **Flow prompts:** [`media/FLOW_PROMPTS.md`](../media/FLOW_PROMPTS.md) · **manifest:** [`media/manifest.json`](../media/manifest.json).
 
-Use AI tools (Cursor GenerateImage, Higgsfield, Gemini design scripts) for **Learn heroes, marketing art, and social creatives** only. **Form guides** ship as instructional SVG stick figures (joint arrows, phase poses)—AI may supply pose reference, not photoreal athletes as the Train default.
+**Primary HQ for Learn / social / motion:** [Google Flow](https://labs.google/fx/tools/flow) — free tier ≈ 50 credits/day for Veo Lite/Fast/Quality video. Prefer Veo 3.1 Lite (~10 credits) → export best frame for stills. Form guides stay instructional SVG.
+
+Use Cursor GenerateImage / Grok Imagine / Gemini design scripts as fallbacks for still drafts. Generation stays offline → `media/inbox/` → `npm run media:optimize-inbox` → commit `public/`.
 
 ### Prompt block (copy)
 
@@ -129,7 +139,8 @@ No text in the image unless explicitly requested. No crisis or clinical depressi
 | Navy / emerald / brass palette | Purple, violet brand identity, cream+terracotta editorial |
 | Calm mission atmosphere | Gym-bro hype, neon glow stacks |
 | Decorative Learn / landing / social | Fake medical charts or depression framing |
-| Check manifest before regenerating | Commit multi‑MB unoptimized drafts |
+| Check manifest before regenerating | Commit multi‑MB unoptimized drafts / Flow raws |
+| Spend free Flow on Veo Lite | Burn Quality (100) on the free 50/day |
 
 ---
 

@@ -66,6 +66,10 @@ workbox-*.js
 # compliance reporter CI artifact (local)
 /compliance-status.json
 
+# Google Flow / Imagine raw drops (keep README only)
+media/inbox/*
+!media/inbox/README.md
+
 # other
 .cache/
 .env.vercel.production

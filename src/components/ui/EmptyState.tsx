@@ -1,6 +1,7 @@
 'use client';
 
 import type { LucideIcon } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -15,6 +16,12 @@ type EmptyStateProps = {
   /** Disable the action CTA (e.g. while store hydrates). */
   actionDisabled?: boolean;
   className?: string;
+  /**
+   * Optional Scout (or other) illustration — use on at most one empty surface.
+   * See docs/MASCOT.md — never spam Train logger.
+   */
+  illustrationSrc?: string;
+  illustrationAlt?: string;
 };
 
 export function EmptyState({
@@ -26,6 +33,8 @@ export function EmptyState({
   href,
   actionDisabled,
   className,
+  illustrationSrc,
+  illustrationAlt = '',
 }: EmptyStateProps) {
   const ctaClass = 'mt-5 min-h-[44px] tap-target';
 
@@ -36,9 +45,21 @@ export function EmptyState({
         className
       )}
     >
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-        <Icon className="h-7 w-7 text-primary" />
-      </div>
+      {illustrationSrc ? (
+        <div className="mb-4 relative h-28 w-28 overflow-hidden rounded-2xl bg-[#0a0c10]">
+          <Image
+            src={illustrationSrc}
+            alt={illustrationAlt}
+            width={112}
+            height={112}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      ) : (
+        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+          <Icon className="h-7 w-7 text-primary" />
+        </div>
+      )}
       <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-foreground">
         {title}
       </h3>

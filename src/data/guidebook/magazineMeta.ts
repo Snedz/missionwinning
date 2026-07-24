@@ -16,7 +16,7 @@ export const MAGAZINE_META = {
   title: 'Beyond the Basics',
   magazineLine: 'The Mission Winning Magazine',
   subtitle: 'Mission Winning to Read',
-  version: '1.4',
+  version: '1.4.1',
   editionLabel: 'Compilation edition',
   siteOrigin: 'https://www.missionwinning.com',
   howToUse: [

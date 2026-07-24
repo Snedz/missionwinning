@@ -281,6 +281,14 @@
       "notes": "Chapter 3 hero"
     },
     {
+      "id": "getting-started-mw",
+      "kind": "learn",
+      "path": "/learn/getting-started-mw-hero.webp",
+      "status": "shipped",
+      "promptId": "brand-raster-v1",
+      "notes": "Chapter 4 hero — v1.4.1"
+    },
+    {
       "id": "nutrition-recovery",
       "kind": "learn",
       "path": "/learn/nutrition-recovery-hero.webp",
@@ -311,6 +319,38 @@
       "status": "shipped",
       "promptId": "brand-raster-v1",
       "notes": "1080x1920 story/reel canvas"
+    },
+    {
+      "id": "scout-idle",
+      "kind": "mascot",
+      "path": "/brand/mascot/scout-idle.webp",
+      "status": "shipped",
+      "promptId": "flow-mascot-idle",
+      "notes": "GenerateImage geometric falcon v1"
+    },
+    {
+      "id": "scout-invite",
+      "kind": "mascot",
+      "path": "/brand/mascot/scout-invite.webp",
+      "status": "shipped",
+      "promptId": "flow-mascot-invite",
+      "notes": "GenerateImage geometric falcon v1"
+    },
+    {
+      "id": "scout-celebrate",
+      "kind": "mascot",
+      "path": "/brand/mascot/scout-celebrate.webp",
+      "status": "shipped",
+      "promptId": "flow-mascot-celebrate",
+      "notes": "GenerateImage geometric falcon v1"
+    },
+    {
+      "id": "scout-mark",
+      "kind": "mascot",
+      "path": "/brand/mascot/scout-mark.svg",
+      "status": "shipped",
+      "promptId": "flow-mascot-mark",
+      "notes": "Hand SVG tiny mark — not logo replacement"
     }
   ]
 }
