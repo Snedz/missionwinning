@@ -198,14 +198,14 @@ export function HomeTodayLean() {
       {workoutHistory.length >= 1 && journeyState.phase === 'basic' && (
         <a
           href="/coach"
-          className="block px-1 py-2 text-sm text-muted-foreground hover:text-foreground mt-2"
+          className="block rounded-2xl border border-border/40 bg-muted/20 px-4 py-3.5 mt-1 transition-colors hover:bg-muted/35 hover:border-border/60"
         >
-          <p className="eyebrow mb-0.5 text-muted-foreground">
-            {t('todayCoachInviteEyebrow', { defaultValue: 'AI weekly plan' })}
+          <p className="text-xs font-medium text-muted-foreground mb-0.5">
+            {t('todayCoachInviteEyebrow', { defaultValue: 'Mission Coach' })}
           </p>
-          <p className="text-sm font-medium">
+          <p className="text-sm font-medium text-foreground leading-snug">
             {t('todayCoachInviteTitle', {
-              defaultValue: 'Generate a free week of Mission Coach',
+              defaultValue: 'Turn your logs into this week’s plan',
             })}
           </p>
         </a>

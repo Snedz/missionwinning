@@ -20,7 +20,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
-- **Horizon W — wedge excellence.** Web shell primary nav: **Today · Train · Coach · Fuel · You**. Log food overlay portaled (no clip under bottom nav). Landing quieter / more organic.
+- **Horizon W — wedge excellence.** Web: **Today · Train · Coach · Fuel · You**; Log food portaled; Today/Coach/Fuel craft quieter & free-beta honest (Coach regenerates in beta).
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** ([docs/FREE_BETA.md](docs/FREE_BETA.md)). Fuel copy no longer claims paid Nutrition course.
 - **Media system:** Google Flow · Scout mascot — [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md).
 - Agents **must** ship wedge habit-loop + free acquisition. Refuse new pillars / America / locale farms / F5.

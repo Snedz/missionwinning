@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Web UX pass 2: Today + Coach organic + free-beta honesty
+
+- **Coach:** free-beta never hard-locks next week; quieter chrome; no brass glow lock card.
+- **Today:** calmer JourneyHero / journey strip; coach invite card; human Just Go copy.
+- **Fuel macros:** drop emerald card glow; vision page de-emphasizes “everything app”.
+
 ## 2026-07-23 — Web UX: Log food fix + wedge nav + organic landing
 
 - **AdaptiveOverlay:** portal to `document.body`, body scroll lock, `z-[70]` above MobileNav — fixes clipped Log food sheet inside `AppLayout` overflow shell.

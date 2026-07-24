@@ -47,7 +47,7 @@ const FREE_MANIFEST_KEYS = [
   },
   {
     key: 'landingFreeWinScore',
-    defaultValue: 'Win Score from your logs — readiness, strain, recovery',
+    defaultValue: 'A simple weekly picture from what you actually trained',
   },
 ] as const;
 
