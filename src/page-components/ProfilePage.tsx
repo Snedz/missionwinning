@@ -224,12 +224,15 @@ export function ProfilePage() {
     <PillarPageShell
       icon={User}
       eyebrow={t('profileEyebrow', { defaultValue: 'You' })}
-      title={t('profileSettings', { defaultValue: 'Profile & Settings' })}
+      title={t('profileSettings', { defaultValue: 'Profile & settings' })}
       subtitle={
         isCommissioned && state.commissionedAt
-          ? `${t('missionOperator', { defaultValue: 'Mission Operator' })} · Day ${daysSinceCommission(state.commissionedAt)}`
+          ? t('profileCommissionedDay', {
+              day: daysSinceCommission(state.commissionedAt),
+              defaultValue: `Day ${daysSinceCommission(state.commissionedAt)} on the path`,
+            })
           : t('profileSubtitle', {
-              defaultValue: 'Your Mission Winning account. Global preferences. Premium status.',
+              defaultValue: 'Account, units, and preferences. Progress stays on this device unless you sign in.',
             })
       }
       footer={<AppLegalFooter showBuild buildLabel={APP_BUILD_LABEL} />}
@@ -300,9 +303,9 @@ export function ProfilePage() {
 
       <ProfileBackupCard />
 
-      <Card>
+      <Card className="border-border/50 shadow-sm">
         <CardContent className="pt-6">
-          <p className="eyebrow mb-3">
+          <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground">
             {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}
           </p>
           <LegalNav />

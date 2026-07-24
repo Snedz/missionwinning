@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SignInPanel } from '@/components/auth/SignInPanel';
+import { isFreeBeta } from '@/lib/freeBeta';
 
 type ProfileAccountCardProps = {
   email: string | null;
@@ -19,11 +20,14 @@ export function ProfileAccountCard({
   authError,
 }: ProfileAccountCardProps) {
   const { t } = useTranslation();
+  const freeBeta = isFreeBeta();
 
   return (
-    <Card className="card-elevated">
+    <Card className="border-border/50 bg-card/80 shadow-sm">
       <CardHeader>
-        <CardTitle>{t('account', { defaultValue: 'Account & Sign In' })}</CardTitle>
+        <CardTitle className="text-base font-semibold">
+          {t('account', { defaultValue: 'Account' })}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         {authError ? (
@@ -36,33 +40,49 @@ export function ProfileAccountCard({
         ) : null}
         {email ? (
           <>
-            <div>
-              Signed in as <span className="font-mono text-primary">{email}</span>
+            <div className="text-sm leading-relaxed">
+              {t('signedInAs', { defaultValue: 'Signed in as' })}{' '}
+              <span className="font-medium text-foreground">{email}</span>
             </div>
             <Button variant="outline" onClick={onSignOut}>
-              {t('signOut', { defaultValue: 'Sign Out' })}
+              {t('signOut', { defaultValue: 'Sign out' })}
             </Button>
-            <div className="text-xs text-primary/90">
-              {t('cloudSyncActive', { defaultValue: 'Journey synced to cloud' })}
-            </div>
-            <div className="text-xs text-muted-foreground">
-              Journey phase, preferences, and milestones merge across devices on sign-in.
-            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {t('cloudSyncActive', {
+                defaultValue: 'Cloud sync on — workouts and preferences merge across devices.',
+              })}
+            </p>
           </>
         ) : (
-          <div className="auth-panel rounded-xl p-4">
-            <div className="font-semibold mb-1 text-primary">Sign up or sign in</div>
-            <div className="text-xs text-muted-foreground mb-4">
-              {t('cloudSyncPending', { defaultValue: 'Sign in to sync journey across devices' })}
-            </div>
+          <div className="rounded-xl border border-border/40 bg-muted/15 p-4">
+            <p className="font-medium mb-1 text-sm">
+              {t('signInOptional', { defaultValue: 'Sign in (optional)' })}
+            </p>
+            <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+              {t('cloudSyncPending', {
+                defaultValue: 'Sync progress across devices. Logging works offline without an account.',
+              })}
+            </p>
             <SignInPanel nextPath="/profile" compact />
           </div>
         )}
-        <div className="text-xs text-muted-foreground">
-          {ownerTools
-            ? 'Premium status from Supabase enrollments (demo requests log a lead + grant local access). Full real payments + auth when LLC ready.'
-            : t('premiumStatusFoot', { defaultValue: 'Premium unlocks via Super Bundle subscription.' })}
-        </div>
+        {ownerTools ? (
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Owner tools: enrollments + local demo grants. Real payments when LLC is ready.
+          </p>
+        ) : freeBeta ? (
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            {t('profileFreeBetaFoot', {
+              defaultValue: 'Open beta — full tools free while we grow with you. Logger stays free forever.',
+            })}
+          </p>
+        ) : (
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            {t('premiumStatusFoot', {
+              defaultValue: 'Super Bundle unlocks Coach depth. The free logger is never gated.',
+            })}
+          </p>
+        )}
       </CardContent>
     </Card>
   );

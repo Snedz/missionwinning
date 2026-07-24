@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Web UX pass 5: Profile + marketing shell
+
+- **Profile:** human subtitle, account card free-beta foot, quieter journey setup.
+- **Marketing nav/footer:** sentence-case brand, no glass/mono tagline theater; free-beta hides Bundle.
+- **Landing:** hero/section titles sentence-case; CommandersIntent → calm “Today’s focus”.
+
 ## 2026-07-23 — Web UX pass 4: Welcome + Active logger human craft
 
 - **Welcome:** drop texture/ALL CAPS briefing; real progress bar; “Welcome” + quiet session cards.

@@ -54,18 +54,18 @@ export function EmailCaptureBand({ className }: { className?: string }) {
   };
 
   return (
-    <section className={cn('section-seam bg-surface-raised/50', className)}>
+    <section className={cn('border-t border-border/40 bg-muted/10', className)}>
       <div className="mx-auto max-w-xl px-5 py-14 text-center lg:py-16">
-        <p className="eyebrow mb-3">
-          {t('landingCaptureEyebrow', { defaultValue: 'Launch list' })}
+        <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground">
+          {t('landingCaptureEyebrow', { defaultValue: 'Stay in the loop' })}
         </p>
-        <h2 className="display-section mb-3 text-2xl sm:text-3xl">
+        <h2 className="mb-3 text-2xl sm:text-3xl font-semibold tracking-tight leading-tight">
           {t('landingCaptureTitle', { defaultValue: 'Get launch notes. Stay free forever.' })}
         </h2>
-        <p className="mb-6 text-sm text-muted-foreground">
+        <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
           {t('landingCaptureBody', {
             defaultValue:
-              'One email when we go public, plus rare free-core tips. No spam cadence. Unsubscribe anytime.',
+              'One email when we go public, plus rare free-core tips. No spam. Unsubscribe anytime.',
           })}
         </p>
 

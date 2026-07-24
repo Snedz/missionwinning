@@ -34,16 +34,21 @@ export function ProfileJourneyCard({
 
   if (!isOnboarded) {
     return (
-      <Card className="content-card border-primary/40 bg-primary/5">
+      <Card className="border-border/50 bg-card/80 shadow-sm">
         <CardHeader>
-          <CardTitle>{t('firstTimeSetup', { defaultValue: 'First-time setup' })}</CardTitle>
+          <CardTitle className="text-base font-semibold">
+            {t('firstTimeSetup', { defaultValue: 'Get started' })}
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
-          <p className="text-muted-foreground">
-            Complete I-Day to personalize workouts and Today recommendations (~2 minutes).
+          <p className="text-muted-foreground leading-relaxed">
+            {t('profileSetupHint', {
+              defaultValue:
+                'Answer a few questions so sessions match your gear (~2 minutes).',
+            })}
           </p>
           <Button className="w-full min-h-[44px]" onClick={() => router.push('/welcome')}>
-            {t('welcomeBegin', { defaultValue: 'Begin I-Day' })}
+            {t('welcomeBegin', { defaultValue: 'Continue' })}
           </Button>
         </CardContent>
       </Card>
@@ -51,18 +56,20 @@ export function ProfileJourneyCard({
   }
 
   return (
-    <Card className="content-card">
+    <Card className="border-border/50 bg-card/80 shadow-sm">
       <CardHeader>
-        <CardTitle>{t('editJourneyProfile', { defaultValue: 'Edit journey profile' })}</CardTitle>
+        <CardTitle className="text-base font-semibold">
+          {t('editJourneyProfile', { defaultValue: 'Training profile' })}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground leading-relaxed">
           Experience: <span className="text-foreground capitalize">{experience || '—'}</span>
           {' · '}
           Equipment:{' '}
           <span className="text-foreground capitalize">{equipment?.replace('-', ' ') || '—'}</span>
         </p>
-        <p className="text-muted-foreground truncate">
+        <p className="text-muted-foreground truncate leading-relaxed">
           Goal: {formatStoredGoal(primaryGoal || goals, t)}
         </p>
         <div className="space-y-2">

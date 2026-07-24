@@ -76,8 +76,10 @@ export function LandingPage() {
         <div className="hero-orb hero-orb--primary opacity-40" aria-hidden />
         <div className="hero-orient-grid relative z-[1] mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-14 sm:gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
           <div className="hero-copy page-enter">
-            <p className="eyebrow-live mb-4">Mission Winning</p>
-            <h1 className="display-hero mb-6">
+            <p className="mb-4 text-xs font-medium tracking-wide text-primary">
+              Mission Winning
+            </p>
+            <h1 className="mb-6 text-[2.5rem] font-semibold tracking-tight leading-[1.1] sm:text-5xl lg:text-[3.25rem]">
               {t('landingHeroTitle1', { defaultValue: 'Train anywhere.' })}
               <br />
               <span className="text-primary">{t('landingHeroTitle2', { defaultValue: 'Win daily.' })}</span>
@@ -116,7 +118,7 @@ export function LandingPage() {
         <div className="relative z-[1] mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2 lg:items-center lg:py-20">
           <Reveal>
             <p className="section-index mb-3">02 · Coach</p>
-            <h2 className="display-section mb-6">
+            <h2 className="mb-6 text-2xl font-semibold tracking-tight leading-tight sm:text-3xl">
               {t('landingCoachDemoTitle', {
                 defaultValue: 'Plans that adapt when life happens',
               })}
@@ -144,12 +146,10 @@ export function LandingPage() {
       <section className="section-seam relative overflow-hidden">
         <div className="relative z-[1] mx-auto max-w-3xl px-5 py-16 lg:py-20">
           <Reveal>
-            <div className="briefing-rule mb-4">
-              <span className="eyebrow">
-                {t('landingFreeEyebrow', { defaultValue: 'The free core' })}
-              </span>
-            </div>
-            <h2 className="display-section mb-4">
+            <p className="mb-4 text-xs font-medium tracking-wide text-muted-foreground">
+              {t('landingFreeEyebrow', { defaultValue: 'The free core' })}
+            </p>
+            <h2 className="mb-4 text-2xl font-semibold tracking-tight leading-tight sm:text-3xl">
               {t('landingFreeTitle1', { defaultValue: 'Free is the mission,' })}
               <br />
               {t('landingFreeTitle2', { defaultValue: 'not the trial.' })}
@@ -185,11 +185,9 @@ export function LandingPage() {
       {/* 4 · FAQ */}
       <section className="section-seam">
         <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
-          <div className="briefing-rule mb-8">
-            <span className="eyebrow">
-              {t('landingFaqEyebrow', { defaultValue: 'Straight answers' })}
-            </span>
-          </div>
+          <p className="mb-8 text-xs font-medium tracking-wide text-muted-foreground">
+            {t('landingFaqEyebrow', { defaultValue: 'Straight answers' })}
+          </p>
           <div className="space-y-0">
             {FAQ.map((f, i) => (
               <details
@@ -223,7 +221,7 @@ export function LandingPage() {
         <div className="hero-orb hero-orb--primary opacity-25" aria-hidden />
         <div className="relative z-[1] mx-auto max-w-3xl px-5 py-20 text-center lg:py-28">
           <Reveal>
-            <h2 className="display-section mb-6">
+            <h2 className="mb-6 text-2xl font-semibold tracking-tight leading-tight sm:text-3xl">
               {t('landingFinalCtaTitle', {
                 defaultValue: 'The path starts with one workout.',
               })}
