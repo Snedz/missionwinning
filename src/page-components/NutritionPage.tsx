@@ -220,9 +220,15 @@ export function NutritionPage() {
     setNlPreview(estimateMealFromDescription(text));
   };
 
-  const handleLogNlMeal = () => {
-    if (!nlPreview) return;
-    addEntry(nlPreview.name, nlPreview.protein, nlPreview.cals, nlPreview.carbs, nlPreview.fat);
+  const handleLogNlMeal = (draft: {
+    name: string;
+    protein: number;
+    cals: number;
+    carbs: number;
+    fat: number;
+  }) => {
+    if (!draft.name.trim()) return;
+    addEntry(draft.name.trim(), draft.protein, draft.cals, draft.carbs, draft.fat);
     setNlMealText('');
     setNlPreview(null);
   };

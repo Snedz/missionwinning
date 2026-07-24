@@ -7,9 +7,10 @@ describe('nlMealLog', () => {
     const e = estimateMealFromDescription('chicken rice broccoli');
     assert.ok(e);
     assert.equal(e.confidence, 'high');
-    assert.ok(e.matched.includes('Chicken'));
-    assert.ok(e.matched.includes('Rice'));
-    assert.ok(e.matched.includes('Broccoli'));
+    assert.equal(e.source, 'matched');
+    assert.ok(e.matched.some((m) => m.includes('Chicken')));
+    assert.ok(e.matched.some((m) => m.includes('Rice')));
+    assert.ok(e.matched.some((m) => m.includes('Broccoli')));
     assert.equal(e.protein, 35 + 4 + 3);
     assert.equal(e.cals, 220 + 200 + 40);
   });
@@ -21,14 +22,31 @@ describe('nlMealLog', () => {
     assert.ok(large.protein > base.protein);
   });
 
-  it('returns low-confidence fallback for unknown text', () => {
+  it('multiplies quantities like 3 eggs', () => {
+    const one = estimateMealFromDescription('egg');
+    const three = estimateMealFromDescription('3 eggs');
+    assert.ok(one && three);
+    assert.equal(three.protein, one.protein * 3);
+    assert.equal(three.cals, one.cals * 3);
+  });
+
+  it('returns low-confidence rough fallback for unknown text', () => {
     const e = estimateMealFromDescription('mystery platter');
     assert.ok(e);
     assert.equal(e.confidence, 'low');
+    assert.equal(e.source, 'rough');
     assert.equal(e.matched.length, 0);
+    assert.ok(e.cals <= 350);
   });
 
   it('returns null for empty input', () => {
     assert.equal(estimateMealFromDescription('  '), null);
+  });
+
+  it('matches oil + protein without inventing high confidence alone', () => {
+    const e = estimateMealFromDescription('salmon olive oil');
+    assert.ok(e);
+    assert.equal(e.source, 'matched');
+    assert.ok(e.fat > 20);
   });
 });

@@ -1,11 +1,15 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { Camera, ImagePlus, Loader2, Sparkles } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Camera, ImagePlus, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { FileDropZone } from '@/components/ui/FileDropZone';
 import { FileUploadRow } from '@/components/ui/FileUploadRow';
+import {
+  MealEstimateDraft,
+  type MealDraftFields,
+} from '@/components/nutrition/MealEstimateDraft';
 import {
   estimateMealFromPhoto,
   estimateMealViaApi,
@@ -22,15 +26,23 @@ type Props = {
 
 type Phase = 'idle' | 'preview' | 'processing' | 'estimate' | 'error';
 
-function foodToEstimate(item: FoodSearchItem): MealEstimate {
+function foodToDraft(item: FoodSearchItem): MealDraftFields {
   return {
     name: item.brand ? `${item.name} (${item.brand})` : item.name,
     protein: item.protein,
     cals: item.calories,
     carbs: item.carbs,
     fat: item.fat,
-    confidence: 'high',
-    source: 'heuristic',
+  };
+}
+
+function estimateToDraft(e: MealEstimate): MealDraftFields {
+  return {
+    name: e.name,
+    protein: e.protein,
+    cals: e.cals,
+    carbs: e.carbs,
+    fat: e.fat,
   };
 }
 
@@ -47,11 +59,22 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
   const [etaMs, setEtaMs] = useState<number | null>(null);
   const [progressMsg, setProgressMsg] = useState<string | null>(null);
   const [estimate, setEstimate] = useState<MealEstimate | null>(null);
+  const [draft, setDraft] = useState<MealDraftFields | null>(null);
+  const [draftSource, setDraftSource] = useState<'vision' | 'heuristic' | 'database'>('heuristic');
   const [offMatches, setOffMatches] = useState<FoodSearchItem[]>([]);
   const [offLoading, setOffLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [offLookupFailed, setOffLookupFailed] = useState(false);
   const startedAtRef = useRef(0);
+
+  useEffect(() => {
+    if (estimate) {
+      setDraft(estimateToDraft(estimate));
+      setDraftSource(estimate.source === 'vision' ? 'vision' : 'heuristic');
+    } else {
+      setDraft(null);
+    }
+  }, [estimate]);
 
   const revokePreview = () => {
     if (preview) URL.revokeObjectURL(preview);
@@ -64,6 +87,8 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
     setPreview(null);
     setFile(null);
     setEstimate(null);
+    setDraft(null);
+    setDraftSource('heuristic');
     setOffMatches([]);
     setOffLoading(false);
     setError(null);
@@ -74,7 +99,11 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
     setProgressMsg(null);
   };
 
-  const groundWithOff = async (name: string) => {
+  const groundWithOff = async (
+    name: string,
+    preferDbWhenLowConf: boolean,
+    conf: MealEstimate['confidence']
+  ) => {
     const q = name.trim();
     if (q.length < 2) {
       setOffMatches([]);
@@ -91,7 +120,13 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
         return;
       }
       const data = (await res.json()) as { items?: FoodSearchItem[] };
-      setOffMatches((data.items ?? []).slice(0, 3));
+      const items = (data.items ?? []).slice(0, 3);
+      setOffMatches(items);
+      // Prefer database macros when estimate is shaky
+      if (preferDbWhenLowConf && conf !== 'high' && items[0]) {
+        setDraft(foodToDraft(items[0]));
+        setDraftSource('database');
+      }
     } catch {
       setOffMatches([]);
       setOffLookupFailed(true);
@@ -148,7 +183,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
       setBandProgress(100, t('photoLogDone', { defaultValue: 'Done' }));
       setEstimate(result);
       setPhase('estimate');
-      void groundWithOff(result.name);
+      void groundWithOff(result.name, true, result.confidence);
     } catch (err: unknown) {
       if (ac.signal.aborted) {
         setPhase('preview');
@@ -204,7 +239,8 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
           </div>
           <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
             {t('photoLogDesc', {
-              defaultValue: 'Snap a meal — optional AI estimates macros, then we match Open Food Facts when possible.',
+              defaultValue:
+                'Snap a meal for a rough estimate. Prefer database matches and always edit before logging.',
             })}
           </p>
         </div>
@@ -287,45 +323,13 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
         </div>
       )}
 
-      {phase === 'estimate' && estimate && (
-        <div className="rounded-xl border border-primary/40 bg-primary/10 p-4 space-y-3">
-          <div className="flex items-start gap-2">
-            <Sparkles className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-            <div>
-              <p className="text-sm font-medium flex flex-wrap items-center gap-2">
-                <span>
-                  {t('photoLogEstimateTitle', { defaultValue: 'Estimated meal' })}: {estimate.name}
-                </span>
-                <span
-                  className={`text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded border ${
-                    estimate.source === 'vision'
-                      ? 'border-primary/40 bg-primary/10 text-primary'
-                      : 'border-border text-muted-foreground'
-                  }`}
-                >
-                  {estimate.source === 'vision'
-                    ? t('photoLogSourceVision', { defaultValue: 'AI estimate' })
-                    : t('photoLogSourceHeuristic', { defaultValue: 'Heuristic estimate' })}
-                </span>
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                {estimate.protein}g protein · {estimate.cals} kcal · {estimate.carbs}c · {estimate.fat}f
-              </p>
-              {estimate.confidence !== 'high' && (
-                <p className="text-[11px] text-status-warn/90 mt-1">
-                  {t('photoLogEstimateLow', {
-                    defaultValue: 'Review and edit after logging if needed.',
-                  })}
-                </p>
-              )}
-            </div>
-          </div>
-
+      {phase === 'estimate' && estimate && draft && (
+        <div className="space-y-3">
           {(offLoading || offMatches.length > 0 || offLookupFailed) && (
-            <div className="space-y-2 border-t border-border/40 pt-3">
+            <div className="space-y-2 rounded-xl border border-border/50 bg-muted/10 p-3">
               <p className="text-xs font-medium text-muted-foreground">
                 {t('photoLogOffMatches', {
-                  defaultValue: 'Open Food Facts matches — tap to use macros',
+                  defaultValue: 'Database matches — tap to fill macros (more accurate)',
                 })}
               </p>
               {offLoading && (
@@ -337,7 +341,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
               {offLookupFailed && !offLoading && (
                 <p className="text-xs text-muted-foreground">
                   {t('photoLogOffFailed', {
-                    defaultValue: 'Food database lookup unavailable — you can still log the estimate.',
+                    defaultValue: 'Food database lookup unavailable — edit the estimate below.',
                   })}
                 </p>
               )}
@@ -345,10 +349,16 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
                 <button
                   key={item.id}
                   type="button"
-                  className="w-full text-left rounded-lg border border-border/50 bg-background/40 hover:border-primary/40 px-3 py-2 transition-colors"
+                  className="w-full text-left rounded-lg border border-border/50 bg-background/60 hover:border-primary/40 px-3 py-2 transition-colors"
                   onClick={() => {
-                    onLogEstimate(foodToEstimate(item));
-                    reset();
+                    setDraft(foodToDraft(item));
+                    setDraftSource('database');
+                    setEstimate({
+                      ...estimate,
+                      ...foodToDraft(item),
+                      confidence: 'high',
+                      source: 'heuristic',
+                    });
                   }}
                 >
                   <span className="text-sm font-medium block truncate">{item.name}</span>
@@ -361,22 +371,34 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
             </div>
           )}
 
-          <div className="flex flex-wrap gap-2">
-            <Button
-              type="button"
-              size="sm"
-              className="bg-primary hover:bg-primary"
-              onClick={() => {
-                onLogEstimate(estimate);
-                reset();
-              }}
-            >
-              {t('photoLogLogEstimate', { defaultValue: 'Log estimate' })}
-            </Button>
-            <Button type="button" size="sm" variant="outline" onClick={reset}>
-              {t('photoLogRetake', { defaultValue: 'Choose another photo' })}
-            </Button>
-          </div>
+          <MealEstimateDraft
+            draft={draft}
+            onChange={setDraft}
+            confidence={draftSource === 'database' ? 'high' : estimate.confidence}
+            sourceLabel={
+              draftSource === 'vision'
+                ? t('photoLogSourceVision', { defaultValue: 'Vision estimate' })
+                : draftSource === 'database'
+                  ? t('photoLogSourceDb', { defaultValue: 'Database' })
+                  : t('photoLogSourceHeuristic', {
+                      defaultValue: 'Rough estimate (filename / color)',
+                    })
+            }
+            logLabel={t('photoLogLogEstimate', { defaultValue: 'Log meal' })}
+            onLog={() => {
+              onLogEstimate({
+                name: draft.name.trim() || estimate.name,
+                protein: draft.protein,
+                cals: draft.cals,
+                carbs: draft.carbs,
+                fat: draft.fat,
+                confidence: draftSource === 'database' ? 'high' : estimate.confidence,
+                source: draftSource === 'vision' ? 'vision' : 'heuristic',
+              });
+              reset();
+            }}
+            onDismiss={reset}
+          />
         </div>
       )}
 
@@ -410,7 +432,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
       <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
         {t('photoLogBetaNote', {
           defaultValue:
-            'Privacy-first — photo analyzed via secure API with on-device fallback; matches use Open Food Facts.',
+            'Estimates are approximate. Prefer database matches when listed. Not medical advice.',
         })}
       </p>
     </div>
