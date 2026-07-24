@@ -26,6 +26,7 @@ import { bumpFuelLogStreak, getFuelLogStreak } from '@/lib/fuelStreak';
 import {
   DEFAULT_QUICK_FOODS,
   getFrequentQuickFoods,
+  getRecentFoods,
   getYesterdayEntries,
   parseNutritionLog,
   pruneNutritionLogToDays,
@@ -82,6 +83,7 @@ export function NutritionPage() {
   );
 
   const today = new Date().toISOString().split('T')[0];
+  const recentFoods = getRecentFoods(allLogs, today, 6);
   const frequentFoods = getFrequentQuickFoods(allLogs, QUICK_FOODS);
   const yesterdayMeals = getYesterdayEntries(allLogs, today);
 
@@ -455,6 +457,7 @@ export function NutritionPage() {
           onNlMealTextChange={handleNlMealTextChange}
           nlPreview={nlPreview}
           onLogNlMeal={handleLogNlMeal}
+          recentFoods={recentFoods}
           frequentFoods={frequentFoods}
           onQuickLog={addEntry}
           savedMeals={savedMeals}

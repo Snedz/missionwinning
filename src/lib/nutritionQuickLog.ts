@@ -89,6 +89,54 @@ export function getYesterdayEntries(logs: NutritionLogRow[], todayIso: string): 
   return logs.filter((l) => l.date === yKey);
 }
 
+/**
+ * Most recently logged unique foods (today + yesterday first by reverse log order).
+ * MacroFactor/MFP-style recents for one-tap re-log.
+ */
+export function getRecentFoods(
+  logs: NutritionLogRow[],
+  todayIso: string,
+  limit = 6
+): QuickFoodTuple[] {
+  const today = new Date(`${todayIso}T12:00:00`);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yKey = yesterday.toISOString().split('T')[0];
+  const window = logs.filter((l) => l.date === todayIso || l.date === yKey);
+  // Reverse chronological: later entries in array ≈ more recent when appended
+  const seen = new Set<string>();
+  const out: QuickFoodTuple[] = [];
+  for (let i = window.length - 1; i >= 0; i--) {
+    const row = window[i];
+    const key = row.name.trim().toLowerCase();
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    out.push([
+      row.name,
+      row.protein,
+      row.cals,
+      row.carbs ?? 0,
+      row.fat ?? 0,
+    ]);
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
+/** Scale draft macros by serving multiplier (½, 1, 2, …). */
+export function scaleMealMacros(
+  base: { protein: number; cals: number; carbs: number; fat: number },
+  servings: number
+): { protein: number; cals: number; carbs: number; fat: number } {
+  const s = Number.isFinite(servings) && servings > 0 ? servings : 1;
+  return {
+    protein: Math.round(base.protein * s),
+    cals: Math.round(base.cals * s),
+    carbs: Math.round(base.carbs * s),
+    fat: Math.round(base.fat * s),
+  };
+}
+
 export type NutritionDaySummary = {
   date: string;
   entries: number;

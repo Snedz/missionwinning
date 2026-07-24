@@ -82,33 +82,27 @@ export function FuelMacroOverview({
             tone="emerald"
           />
         </div>
-        <div className="grid grid-cols-2 gap-2">
-          <div className="rounded-xl border border-border/40 bg-muted/15 px-3 py-2.5 text-center">
-            <p className="text-xs font-medium text-muted-foreground">
-              {calsOver > 0
-                ? t('fuelCalsOver', { defaultValue: 'Over target' })
-                : t('fuelCalsLeft', { defaultValue: 'Calories left' })}
-            </p>
-            <p
-              className={`text-2xl font-semibold tabular-nums ${
-                calsOver > 0 ? 'text-status-warn' : 'text-foreground'
-              }`}
-            >
-              {calsOver > 0 ? calsOver : calsLeft}
-            </p>
-            <p className="text-[11px] text-muted-foreground tabular-nums">
-              {totalCals} / {targetCals}
-            </p>
-          </div>
-          <div className="rounded-xl border border-border/40 bg-muted/15 px-3 py-2.5 text-center">
-            <p className="text-xs font-medium text-muted-foreground">
-              {t('fuelProteinLeft', { defaultValue: 'Protein left' })}
-            </p>
-            <p className="text-2xl font-semibold tabular-nums text-primary">{proteinLeft}g</p>
-            <p className="text-[11px] text-muted-foreground tabular-nums">
-              {totalProtein}g / {targetProtein}g
-            </p>
-          </div>
+        {/* Lose It–style budget: remaining first */}
+        <div className="rounded-xl border border-border/40 bg-muted/15 px-4 py-3 text-center">
+          <p className="text-xs font-medium text-muted-foreground">
+            {calsOver > 0
+              ? t('fuelCalsOver', { defaultValue: 'Over target' })
+              : t('fuelBudgetLeft', { defaultValue: 'Remaining today' })}
+          </p>
+          <p
+            className={`text-3xl font-semibold tabular-nums tracking-tight ${
+              calsOver > 0 ? 'text-status-warn' : 'text-primary'
+            }`}
+          >
+            {calsOver > 0 ? calsOver : calsLeft}
+            <span className="text-base font-medium text-muted-foreground ms-1">kcal</span>
+          </p>
+          <p className="text-sm text-muted-foreground tabular-nums mt-0.5">
+            {proteinLeft}g {t('fuelProtein', { defaultValue: 'protein' }).toLowerCase()}{' '}
+            {t('fuelLeftWord', { defaultValue: 'left' })}
+            <span className="mx-1.5 text-border">·</span>
+            {totalCals} / {targetCals} kcal
+          </p>
         </div>
         <div className="space-y-2">
           {bars.map((m) => (

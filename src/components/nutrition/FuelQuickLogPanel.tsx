@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus } from 'lucide-react';
+import { Pencil, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { MealType } from '@/components/nutrition/FuelLogSheet';
 import {
@@ -22,8 +22,11 @@ type Props = {
   onNlMealTextChange: (text: string) => void;
   nlPreview: NlMealEstimate | null;
   onLogNlMeal: (draft: MealDraftFields) => void;
+  recentFoods: QuickFoodTuple[];
   frequentFoods: QuickFoodTuple[];
   onQuickLog: (name: string, protein: number, cals: number, carbs?: number, fat?: number) => void;
+  /** Open draft for edit-before-log (speed: chip = log; pencil path = draft). */
+  onOpenFoodDraft?: (name: string, protein: number, cals: number, carbs: number, fat: number) => void;
   savedMeals: SavedMealPreset[];
   onOpenLogSheet: () => void;
   water: number;
@@ -40,8 +43,10 @@ export function FuelQuickLogPanel({
   onNlMealTextChange,
   nlPreview,
   onLogNlMeal,
+  recentFoods,
   frequentFoods,
   onQuickLog,
+  onOpenFoodDraft,
   savedMeals,
   onOpenLogSheet,
   water,
@@ -52,8 +57,10 @@ export function FuelQuickLogPanel({
   const { t } = useTranslation();
   const [draft, setDraft] = useState<MealDraftFields | null>(null);
   const [draftFromDb, setDraftFromDb] = useState(false);
+  const [manualDraft, setManualDraft] = useState(false);
 
   useEffect(() => {
+    if (manualDraft) return;
     if (!nlPreview) {
       setDraft(null);
       setDraftFromDb(false);
@@ -67,19 +74,71 @@ export function FuelQuickLogPanel({
       carbs: nlPreview.carbs,
       fat: nlPreview.fat,
     });
-  }, [nlPreview]);
+  }, [nlPreview, manualDraft]);
 
   const sourceLabel = draftFromDb
     ? t('fuelSourceDb', { defaultValue: 'Database' })
-    : nlPreview
-      ? nlPreview.source === 'matched'
-        ? t('fuelSourceMatched', { defaultValue: 'Matched foods' })
-        : t('fuelSourceRough', { defaultValue: 'Rough estimate' })
-      : undefined;
-  const confidence = draftFromDb ? ('high' as const) : nlPreview?.confidence;
+    : manualDraft
+      ? t('fuelSourceRecent', { defaultValue: 'Recent' })
+      : nlPreview
+        ? nlPreview.source === 'matched'
+          ? t('fuelSourceMatched', { defaultValue: 'Matched foods' })
+          : t('fuelSourceRough', { defaultValue: 'Rough estimate' })
+        : undefined;
+  const confidence = draftFromDb || manualDraft ? ('high' as const) : nlPreview?.confidence;
+
+  const openDraftFromChip = (
+    name: string,
+    p: number,
+    c: number,
+    carbs: number,
+    fat: number
+  ) => {
+    setManualDraft(true);
+    setDraftFromDb(false);
+    setDraft({ name, protein: p, cals: c, carbs, fat });
+    onOpenFoodDraft?.(name, p, c, carbs, fat);
+  };
 
   return (
     <>
+      {recentFoods.length > 0 && (
+        <div className="space-y-1.5">
+          <p className="text-xs font-medium text-muted-foreground">
+            {t('fuelRecents', { defaultValue: 'Recent' })}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {recentFoods.map(([name, p, c, carbs, fat]) => (
+              <div key={`recent-${name}`} className="inline-flex items-center gap-0.5">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="text-xs rounded-full"
+                  onClick={() => onQuickLog(name, p, c, carbs, fat)}
+                >
+                  {name}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0 rounded-full text-muted-foreground"
+                  aria-label={t('fuelEditThenLog', { defaultValue: 'Edit servings then log' })}
+                  onClick={() => openDraftFromChip(name, p, c, carbs, fat)}
+                >
+                  <Pencil className="h-3 w-3" />
+                </Button>
+              </div>
+            ))}
+          </div>
+          <p className="text-[11px] text-muted-foreground">
+            {t('fuelRecentsHint', {
+              defaultValue: 'Tap to log · pencil to adjust servings first',
+            })}
+          </p>
+        </div>
+      )}
+
       <div className="space-y-2">
         <label className="text-sm font-medium" htmlFor="fuel-nl-meal">
           {t('fuelNlTitle', { defaultValue: 'Describe what you ate' })}
@@ -112,24 +171,31 @@ export function FuelQuickLogPanel({
           onChange={(e) => onNlMealTextChange(e.target.value)}
           className="w-full h-11 rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
         />
-        {draft && nlPreview ? (
+        {draft && (nlPreview || manualDraft) ? (
           <div className="space-y-3">
             <MealEstimateDraft
               draft={draft}
               onChange={(next) => {
                 setDraft(next);
-                setDraftFromDb(false);
               }}
               confidence={confidence}
               sourceLabel={sourceLabel}
-              onLog={() => onLogNlMeal(draft)}
+              onLog={() => {
+                onLogNlMeal(draft);
+                setDraft(null);
+                setManualDraft(false);
+                setDraftFromDb(false);
+              }}
               onDismiss={() => {
                 setDraft(null);
                 setDraftFromDb(false);
+                setManualDraft(false);
                 onNlMealTextChange('');
               }}
             />
-            {(nlPreview.source === 'rough' || nlPreview.confidence === 'low') && (
+            {nlPreview &&
+              !manualDraft &&
+              (nlPreview.source === 'rough' || nlPreview.confidence === 'low') && (
               <div className="rounded-xl border border-border/50 bg-background/50 p-3 space-y-2">
                 <p className="text-xs font-medium text-muted-foreground">
                   {t('fuelSearchToImprove', {
@@ -140,6 +206,7 @@ export function FuelQuickLogPanel({
                   compact
                   initialQuery={nlMealText.trim().length >= 2 ? nlMealText.trim() : draft.name}
                   onSelect={(item) => {
+                    setManualDraft(false);
                     setDraft({
                       name: item.brand ? `${item.name} (${item.brand})` : item.name,
                       protein: item.protein,
@@ -156,18 +223,23 @@ export function FuelQuickLogPanel({
         ) : null}
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {frequentFoods.map(([name, p, c, carbs, fat]) => (
-          <Button
-            key={name}
-            variant="outline"
-            size="sm"
-            className="text-xs rounded-full"
-            onClick={() => onQuickLog(name, p, c, carbs, fat)}
-          >
-            {name}
-          </Button>
-        ))}
+      <div className="space-y-1.5">
+        <p className="text-xs font-medium text-muted-foreground">
+          {t('fuelFrequent', { defaultValue: 'Frequent' })}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {frequentFoods.map(([name, p, c, carbs, fat]) => (
+            <Button
+              key={name}
+              variant="outline"
+              size="sm"
+              className="text-xs rounded-full"
+              onClick={() => onQuickLog(name, p, c, carbs, fat)}
+            >
+              {name}
+            </Button>
+          ))}
+        </div>
       </div>
 
       {savedMeals.length > 0 && (

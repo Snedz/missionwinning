@@ -75,6 +75,14 @@ export function FoodSearchBar({ onSelect, initialQuery = '', compact = false }: 
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key !== 'Enter' || items.length === 0) return;
+            e.preventDefault();
+            const first = items[0];
+            onSelect(first);
+            setQuery('');
+            setItems([]);
+          }}
           placeholder={t('fuelSearchPlaceholder', {
             defaultValue: 'Search foods (global database)…',
           })}
@@ -90,11 +98,13 @@ export function FoodSearchBar({ onSelect, initialQuery = '', compact = false }: 
       {error && !loading && <p className="text-xs text-muted-foreground">{error}</p>}
       {items.length > 0 && (
         <ul className="rounded-xl border border-border/50 divide-y divide-border/40 overflow-hidden max-h-56 overflow-y-auto">
-          {items.map((item) => (
+          {items.map((item, idx) => (
             <li key={item.id}>
               <button
                 type="button"
-                className="w-full text-left px-3 py-2.5 hover:bg-primary/10 transition-colors min-h-[44px]"
+                className={`w-full text-left px-3 py-2.5 hover:bg-primary/10 transition-colors min-h-[44px] ${
+                  idx === 0 ? 'bg-primary/5' : ''
+                }`}
                 onClick={() => {
                   onSelect(item);
                   setQuery('');
