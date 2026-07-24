@@ -274,10 +274,9 @@ export function NutritionPage() {
       className="max-w-3xl pb-24"
       icon={UtensilsCrossed}
       eyebrow={t('fuelEyebrow', { defaultValue: 'Fuel' })}
-      title={t('fuelTitle', { defaultValue: 'Nutrition' })}
+      title={t('fuelTitle', { defaultValue: 'What you ate' })}
       subtitle={t('fuelSubtitle', {
-        defaultValue:
-          'Free core: daily macro log, water, targets, and accessible recipes worldwide.',
+        defaultValue: 'Log meals, hit protein, keep it simple — works offline on this device.',
       })}
       headerActions={
         fuelStreak > 0 ? (
@@ -380,10 +379,10 @@ export function NutritionPage() {
         }}
       />
 
-      <div className="text-[10px] text-muted-foreground">
+      <div className="text-xs leading-relaxed text-muted-foreground">
         {t('fuelLocalNote', {
           defaultValue:
-            'Data stored locally (synced when you sign in). Full integration + meal plans in the paid Nutrition course.',
+            'Meals stay on this device. Sign in anytime to sync across phones and the web.',
         })}
       </div>
 
@@ -395,15 +394,17 @@ export function NutritionPage() {
         })}
       />
 
-      <Button
-        variant="outline"
-        size="lg"
-        className="fixed bottom-[calc(52px+env(safe-area-inset-bottom)+12px)] end-4 z-40 h-14 rounded-2xl border-primary gap-2 px-5 md:bottom-6"
-        onClick={() => setLogSheetOpen(true)}
-      >
-        <Plus className="h-5 w-5" />
-        {t('fuelLogFab', { defaultValue: 'Log food' })}
-      </Button>
+      {!logSheetOpen ? (
+        <Button
+          variant="fitness"
+          size="lg"
+          className="fixed bottom-[calc(52px+env(safe-area-inset-bottom)+12px)] end-4 z-40 h-14 rounded-2xl gap-2 px-5 shadow-lg md:bottom-6"
+          onClick={() => setLogSheetOpen(true)}
+        >
+          <Plus className="h-5 w-5" />
+          {t('fuelLogFab', { defaultValue: 'Log food' })}
+        </Button>
+      ) : null}
 
       <FuelLogSheet
         open={logSheetOpen}

@@ -2,6 +2,7 @@
 
 /**
  * Size-class adaptive overlay — compact = bottom sheet, md+ = centered dialog.
+ * Portaled to document.body so AppLayout overflow does not clip the sheet.
  * See docs/ADAPTIVE_LAYOUT.md
  */
 
@@ -9,9 +10,11 @@ import {
   useEffect,
   useId,
   useRef,
+  useState,
   type ReactNode,
   type RefObject,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -33,7 +36,7 @@ type Props = {
   bodyClassName?: string;
   /** Hide the default header chrome (caller supplies title inside children) */
   hideHeader?: boolean;
-  /** z-index layer */
+  /** z-index layer — default above MobileNav (z-50) and consent banner (z-60) */
   zClassName?: string;
   /** Optional id for aria-labelledby when providing custom header */
   titleId?: string;
@@ -57,7 +60,7 @@ export function AdaptiveOverlay({
   className,
   bodyClassName,
   hideHeader = false,
-  zClassName = 'z-[60]',
+  zClassName = 'z-[70]',
   titleId: titleIdProp,
   initialFocusRef,
 }: Props) {
@@ -66,11 +69,20 @@ export function AdaptiveOverlay({
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
     previousFocusRef.current =
       typeof document !== 'undefined' ? (document.activeElement as HTMLElement | null) : null;
+
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     const focusTimer = window.setTimeout(() => {
       const target = initialFocusRef?.current ?? closeRef.current;
       target?.focus();
@@ -101,13 +113,14 @@ export function AdaptiveOverlay({
     return () => {
       window.clearTimeout(focusTimer);
       document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = prevOverflow;
       previousFocusRef.current?.focus?.();
     };
   }, [open, onClose, initialFocusRef]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
-  return (
+  const overlay = (
     <div
       className={cn(
         'fixed inset-0 flex justify-center',
@@ -119,7 +132,7 @@ export function AdaptiveOverlay({
     >
       <button
         type="button"
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/55 backdrop-blur-[2px]"
         aria-label="Close dialog"
         onClick={onClose}
       />
@@ -129,8 +142,8 @@ export function AdaptiveOverlay({
         aria-modal="true"
         aria-labelledby={hideHeader && !title ? undefined : titleId}
         className={cn(
-          'relative w-full max-h-[88vh] overflow-hidden flex flex-col',
-          'border border-border/60 bg-card shadow-2xl',
+          'relative w-full max-h-[min(88vh,100dvh)] overflow-hidden flex flex-col',
+          'border border-border/50 bg-card shadow-2xl',
           /* Compact sheet chrome */
           'rounded-t-2xl pb-[env(safe-area-inset-bottom)]',
           'animate-in slide-in-from-bottom duration-200',
@@ -141,11 +154,18 @@ export function AdaptiveOverlay({
           className
         )}
       >
+        {/* Compact drag affordance — reads as sheet, not floating dialog */}
+        <div
+          className="flex justify-center pt-2 pb-0 md:hidden"
+          aria-hidden
+        >
+          <span className="h-1 w-10 rounded-full bg-muted-foreground/30" />
+        </div>
         {!hideHeader && (
-          <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between border-b border-border/40 bg-card/95 backdrop-blur px-5 py-4">
-            <div className="min-w-0">
+          <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between border-b border-border/30 bg-card/98 px-5 py-3.5 md:py-4">
+            <div className="min-w-0 pe-2">
               {eyebrow ? (
-                <div className="text-xs uppercase tracking-widest text-muted-foreground mb-0.5">
+                <div className="text-xs font-medium tracking-wide text-muted-foreground mb-0.5">
                   {eyebrow}
                 </div>
               ) : null}
@@ -170,8 +190,12 @@ export function AdaptiveOverlay({
             </button>
           </div>
         )}
-        <div className={cn('flex-1 overflow-y-auto', bodyClassName)}>{children}</div>
+        <div className={cn('flex-1 overflow-y-auto overscroll-contain', bodyClassName)}>
+          {children}
+        </div>
       </div>
     </div>
   );
+
+  return createPortal(overlay, document.body);
 }

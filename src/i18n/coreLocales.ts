@@ -7,6 +7,7 @@ type CoreStrings = {
   navToday: string;
   navTrain: string;
   navFuel: string;
+  navCoach: string;
   navTrack: string;
   navYou: string;
   navMore: string;
@@ -66,6 +67,7 @@ const en: CoreStrings = {
   navToday: 'Today',
   navTrain: 'Train',
   navFuel: 'Fuel',
+  navCoach: 'Coach',
   navTrack: 'Track',
   navYou: 'You',
   navMore: 'More tools',

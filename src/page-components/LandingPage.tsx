@@ -15,7 +15,6 @@ import { HeroDemoFallback } from '@/components/landing/HeroDemo';
 import { MarketingNav } from '@/components/marketing/MarketingNav';
 import { MarketingFooter } from '@/components/marketing/MarketingFooter';
 import { Reveal } from '@/components/marketing/Reveal';
-import { ArtPicture } from '@/components/marketing/ArtPicture';
 import { ArrowRight, Check } from 'lucide-react';
 import { isFreeBeta } from '@/lib/freeBeta';
 
@@ -72,10 +71,9 @@ export function LandingPage() {
     <div className="min-h-screen bg-background text-foreground">
       <MarketingNav variant="full" />
 
-      {/* 1 · Hero */}
-      <header className="hero-field hero-field--orient texture-grid texture-noise section-seam relative overflow-hidden">
-        <div className="hero-orb hero-orb--primary" aria-hidden />
-        <div className="hero-orb hero-orb--secondary" aria-hidden />
+      {/* 1 · Hero — quieter field, one soft accent (less AI-SaaS theater) */}
+      <header className="hero-field hero-field--orient section-seam relative overflow-hidden">
+        <div className="hero-orb hero-orb--primary opacity-40" aria-hidden />
         <div className="hero-orient-grid relative z-[1] mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-14 sm:gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
           <div className="hero-copy page-enter">
             <p className="eyebrow-live mb-4">Mission Winning</p>
@@ -87,7 +85,7 @@ export function LandingPage() {
             <p className="hero-subtitle mb-8 max-w-md text-lg leading-relaxed text-muted-foreground">
               {t('landingHeroSubtitle', {
                 defaultValue:
-                  'Free offline logging (no account) and weekly plans that adapt from your logs alone — no wearable required.',
+                  'A free offline workout logger and a coach that builds the week from what you actually logged — no wearable required.',
               })}
             </p>
             <button
@@ -98,15 +96,15 @@ export function LandingPage() {
               {t('landingNavStart', { defaultValue: 'Start free' })}
               <ArrowRight className="h-5 w-5" />
             </button>
-            <p className="mt-4 max-w-md text-xs text-muted-foreground">
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
               {t('landingHeroProof', {
-                defaultValue: 'Log a set → Coach shapes the week → Win Score ticks.',
+                defaultValue: 'Log a set. Coach shapes the week. That is the loop.',
               })}
             </p>
           </div>
 
           <div className="hero-demo-slot journey-enter">
-            <div className="absolute inset-0 overflow-hidden rounded-2xl border border-primary/25 bg-card/50 card-elevated card-glow-emerald">
+            <div className="absolute inset-0 overflow-hidden rounded-2xl border border-border/50 bg-card/80 shadow-sm">
               <HeroDemo staticFallback={<HeroDemoFallback />} />
             </div>
           </div>
@@ -114,7 +112,7 @@ export function LandingPage() {
       </header>
 
       {/* 2 · Coach proof */}
-      <section id="coach" className="texture-grid section-seam relative overflow-hidden bg-muted/10">
+      <section id="coach" className="section-seam relative overflow-hidden bg-muted/15">
         <div className="relative z-[1] mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2 lg:items-center lg:py-20">
           <Reveal>
             <p className="section-index mb-3">02 · Coach</p>
@@ -123,19 +121,15 @@ export function LandingPage() {
                 defaultValue: 'Plans that adapt when life happens',
               })}
             </h2>
-            <p className="max-w-md text-muted-foreground">
+            <p className="max-w-md text-base leading-relaxed text-muted-foreground">
               {t('landingCoachDemoBody', {
                 defaultValue:
-                  'Miss a day, sleep poorly, or crush a PR — Mission Coach reshapes the week without a spreadsheet.',
+                  'Miss a day, sleep poorly, or crush a PR — Mission Coach reshapes the week from your log, not a spreadsheet.',
               })}
             </p>
           </Reveal>
           <Reveal delayMs={100}>
-            <div className="card-elevated mx-auto w-full max-w-md border-border/40 p-3 sm:p-4">
-              <div className="mb-2 flex items-center justify-center gap-1.5" aria-hidden>
-                <span className="h-1.5 w-1.5 rounded-full bg-primary/50" />
-                <span className="h-1.5 w-8 rounded-full bg-border/80" />
-              </div>
+            <div className="mx-auto w-full max-w-md rounded-2xl border border-border/40 bg-card/60 p-3 sm:p-4">
               {belowFoldReady ? (
                 <CoachAdaptDemo />
               ) : (
@@ -148,9 +142,6 @@ export function LandingPage() {
 
       {/* 3 · Free promise (list only — no card farm) */}
       <section className="section-seam relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 opacity-20" aria-hidden>
-          <ArtPicture base="/art/topo-brass" fill className="object-cover" />
-        </div>
         <div className="relative z-[1] mx-auto max-w-3xl px-5 py-16 lg:py-20">
           <Reveal>
             <div className="briefing-rule mb-4">
@@ -163,11 +154,11 @@ export function LandingPage() {
               <br />
               {t('landingFreeTitle2', { defaultValue: 'not the trial.' })}
             </h2>
-            <p className="max-w-md leading-relaxed text-muted-foreground">
+            <p className="max-w-md text-base leading-relaxed text-muted-foreground">
               {t('landingFreeBody', {
                 defaultValue: isFreeBeta()
-                  ? 'The fundamentals that make people healthier should have no price of admission — anywhere in the world. Logging and Mission Coach plans from your logs stay free. No account required.'
-                  : 'The fundamentals that make people healthier should have no price of admission — anywhere in the world. Logging stays free forever; Super Bundle adds Coach depth — never gates the logger.',
+                  ? 'Logging and Mission Coach plans from your logs stay free — no account required. Open beta means full tools while we grow with you.'
+                  : 'Logging stays free forever. Super Bundle adds Coach depth when you want it — it never gates the logger.',
               })}
             </p>
             <ul className="mt-6 space-y-2.5">
@@ -228,19 +219,8 @@ export function LandingPage() {
       </section>
 
       {/* 5 · Final CTA (sole conversion block) */}
-      <section className="hero-field texture-noise relative overflow-hidden">
-        <div className="hero-orb hero-orb--primary opacity-70" aria-hidden />
-        <div
-          className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-40"
-          aria-hidden
-        >
-          <ArtPicture
-            base="/art/arc-momentum"
-            width={480}
-            height={320}
-            className="object-contain"
-          />
-        </div>
+      <section className="hero-field relative overflow-hidden border-t border-border/30">
+        <div className="hero-orb hero-orb--primary opacity-25" aria-hidden />
         <div className="relative z-[1] mx-auto max-w-3xl px-5 py-20 text-center lg:py-28">
           <Reveal>
             <h2 className="display-section mb-6">

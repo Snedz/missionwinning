@@ -76,13 +76,13 @@ export function FuelLogSheet({
   };
 
   const mealTabs = (
-    <div className="flex gap-2 overflow-x-auto pb-1">
+    <div className="flex gap-2 overflow-x-auto pb-1 -mx-0.5 px-0.5">
       {MEALS.map((m) => (
         <Button
           key={m}
           size="sm"
           variant={meal === m ? 'default' : 'outline'}
-          className="shrink-0"
+          className="shrink-0 h-9 rounded-full px-3.5"
           onClick={() => onMealChange(m)}
         >
           {mealLabel(m)}
@@ -92,7 +92,7 @@ export function FuelLogSheet({
   );
 
   const modeTabs = (
-    <div className="flex gap-1 border-b border-border/30 pb-3">
+    <div className="flex gap-1 rounded-xl bg-muted/40 p-1">
       {(
         [
           ['quick', 'fuelTabQuick', Search, 'Quick'],
@@ -104,7 +104,10 @@ export function FuelLogSheet({
           key={id}
           size="sm"
           variant={tab === id ? 'secondary' : 'ghost'}
-          className="flex-1 gap-1"
+          className={cn(
+            'flex-1 gap-1.5 h-9 rounded-lg',
+            tab === id && 'shadow-sm bg-card'
+          )}
           onClick={() => setTab(id)}
         >
           <Icon className="h-3.5 w-3.5" />
@@ -118,50 +121,66 @@ export function FuelLogSheet({
     <>
       {tab === 'quick' && (
         <div className="flex flex-wrap gap-2">
-          {quickFoods.map(([name, p, c, carbs, fat], i) => (
-            <Button
-              key={i}
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onLog(name as string, p as number, c as number, carbs as number, fat as number);
-                onClose();
-              }}
-            >
-              {name as string}
-            </Button>
-          ))}
+          {quickFoods.length === 0 ? (
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {t('fuelNoEntries', {
+                defaultValue: 'No frequent foods yet — try Custom or describe a meal on the page.',
+              })}
+            </p>
+          ) : (
+            quickFoods.map(([name, p, c, carbs, fat], i) => (
+              <Button
+                key={i}
+                variant="outline"
+                size="sm"
+                className="h-10 rounded-full px-3.5 font-normal"
+                onClick={() => {
+                  onLog(name as string, p as number, c as number, carbs as number, fat as number);
+                  onClose();
+                }}
+              >
+                {name as string}
+              </Button>
+            ))
+          )}
         </div>
       )}
 
       {tab === 'custom' && (
-        <div className="space-y-3">
+        <div className="space-y-4">
           <Input
             value={customName}
             onChange={(e) => onCustomNameChange(e.target.value)}
             placeholder={t('fuelFoodLabel', { defaultValue: 'Food' })}
+            className="h-11"
           />
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <div className="flex-1">
-              <div className="text-xs mb-1">{t('fuelProteinGLabel', { defaultValue: 'Protein g' })}</div>
+              <div className="text-xs text-muted-foreground mb-1.5">
+                {t('fuelProteinGLabel', { defaultValue: 'Protein g' })}
+              </div>
               <Input
                 type="number"
                 value={customP}
                 onChange={(e) => onCustomPChange(parseInt(e.target.value) || 0)}
+                className="h-11"
               />
             </div>
             <div className="flex-1">
-              <div className="text-xs mb-1">{t('fuelCalsLabel', { defaultValue: 'Cals' })}</div>
+              <div className="text-xs text-muted-foreground mb-1.5">
+                {t('fuelCalsLabel', { defaultValue: 'Cals' })}
+              </div>
               <Input
                 type="number"
                 value={customC}
                 onChange={(e) => onCustomCChange(parseInt(e.target.value) || 0)}
+                className="h-11"
               />
             </div>
           </div>
           <Button
             variant="fitness"
-            className="w-full"
+            className="w-full h-11"
             onClick={() => {
               onCustomLog();
               onClose();
@@ -188,22 +207,22 @@ export function FuelLogSheet({
       open={open}
       onClose={onClose}
       size="lg"
-      eyebrow={t('fuelLogSheetTitle', { defaultValue: 'Log to Fuel' })}
+      eyebrow={t('fuelLogSheetTitle', { defaultValue: 'Log food' })}
       title={mealLabel(meal)}
       bodyClassName="p-0"
     >
       {/* Compact / medium: stacked. Expanded (xl+): meal+mode left, body right. */}
       <div
         className={cn(
-          'p-5 space-y-4',
+          'p-5 space-y-5',
           'xl:grid xl:grid-cols-[minmax(12rem,16rem)_1fr] xl:gap-6 xl:space-y-0 xl:items-start'
         )}
       >
-        <div className="space-y-3 xl:sticky xl:top-0">
+        <div className="space-y-4 xl:sticky xl:top-0">
           {mealTabs}
           {modeTabs}
         </div>
-        <div className="space-y-4 min-w-0">{tabBody}</div>
+        <div className="space-y-4 min-w-0 min-h-[12rem]">{tabBody}</div>
       </div>
     </AdaptiveOverlay>
   );
