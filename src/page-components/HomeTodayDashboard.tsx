@@ -34,6 +34,10 @@ import { formatRecommendedFocusLine, muscleGroupLabel } from "@/lib/readinessDis
 import { runTodayPrimaryAction } from "@/lib/todayPrimaryAction";
 import { countHighProteinDaysFromNutritionLog } from "@/lib/nutritionHighProteinDays";
 import { Skeleton, SkeletonCard } from "@/components/ui/Skeleton";
+import { readJson, readRaw } from "@/lib/storage/safeStorage";
+import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { computeReentry, type Reentry } from "@/lib/reentry";
+import { TodayReentryCard } from "@/components/today/TodayReentryCard";
 
 const BetaWelcomeBanner = dynamic(
   () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
@@ -111,6 +115,12 @@ export function HomeTodayDashboard() {
   const layout = getTodayLayout(state.phase);
 
   const recent = workoutHistory.slice(0, 3);
+
+  // Coming back after a gap — computed in an effect so the date is client-side only.
+  const [reentry, setReentry] = useState<Reentry | null>(null);
+  useEffect(() => {
+    setReentry(computeReentry(workoutHistory, Date.now()));
+  }, [workoutHistory]);
 
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
@@ -233,10 +243,11 @@ export function HomeTodayDashboard() {
           });
         }
       } catch { /* noop */ }
-      try {
-        const la = localStorage.getItem('mw_last_assessment');
-        if (la) setLastAssessment(JSON.parse(la));
-      } catch { /* noop */ }
+      const la = readJson<{ risk?: string; date?: string } | null>(
+        STORAGE_KEYS.lastAssessment,
+        null
+      );
+      if (la) setLastAssessment(la);
     };
     void load();
   }, [belowFoldReady]);
@@ -408,10 +419,16 @@ export function HomeTodayDashboard() {
   }, [belowFoldReady, workoutHistory, i18n.language]);
 
 
-  // Onboarding via I-Day journey (Profile fields synced from /welcome)
-  const userGoalRaw = typeof window !== 'undefined' ? (localStorage.getItem('mw_primary_goal') || goalPresetValue('strength')) : goalPresetValue('strength');
+  // Onboarding via I-Day journey (Profile fields synced from /welcome).
+  // Read in an effect, not during render: a render-time storage read makes the
+  // server and client markup disagree, and re-reads on every render.
+  const [userGoalRaw, setUserGoalRaw] = useState(() => goalPresetValue('strength'));
+  const [userEquip, setUserEquip] = useState('full-gym');
+  useEffect(() => {
+    setUserGoalRaw(readRaw(STORAGE_KEYS.primaryGoal) || goalPresetValue('strength'));
+    setUserEquip(readRaw(STORAGE_KEYS.equipment) || 'full-gym');
+  }, []);
   const userGoal = formatStoredGoal(userGoalRaw, t);
-  const userEquip = typeof window !== 'undefined' ? (localStorage.getItem('mw_equipment') || 'full-gym') : 'full-gym';
 
   const handleJourneyPrimary = () => {
     void runTodayPrimaryAction({
@@ -481,6 +498,12 @@ export function HomeTodayDashboard() {
       />
     ),
   });
+
+  // Directly under the boss CTA: a returning user should see the smaller ask before
+  // any score, streak or pillar chrome that would read as a scoreboard of the gap.
+  if (reentry?.show) {
+    staggerBlocks.push({ key: 'reentry', node: <TodayReentryCard reentry={reentry} /> });
+  }
 
   if (layout.showDashboard) {
     staggerBlocks.push({

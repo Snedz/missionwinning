@@ -64,7 +64,6 @@ const LEGACY_DIRECT_STORAGE = [
   'src/lib/youthConsent.ts',
   'src/page-components/BenchmarksPage.tsx',
   'src/page-components/HomePage.tsx',
-  'src/page-components/HomeTodayDashboard.tsx',
   'src/page-components/HomeTodayLean.tsx',
   'src/page-components/LearnPage.tsx',
   'src/page-components/ProfilePage.tsx',

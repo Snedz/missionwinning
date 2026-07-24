@@ -12,8 +12,9 @@
  *
  * The funnel these events exist to answer (docs/STRATEGY.md #1 metric):
  *   visit → iday_started → iday_mission_accepted → iday_profile_completed →
- *   iday_completed → first_workout_completed → workout_completed (repeat) →
- *   week-4 retention cohort.
+ *   iday_completed → first_set_logged (with secondsFromStart — the first-90-seconds
+ *   budget) → first_workout_completed → workout_completed (repeat) →
+ *   reentry_shown after a gap → week-4 retention cohort.
  */
 
 import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
@@ -24,7 +25,9 @@ type AnalyticsEvent =
   | 'iday_mission_accepted'
   | 'iday_profile_completed'
   | 'iday_completed'
+  | 'first_set_logged'
   | 'first_workout_completed'
+  | 'reentry_shown'
   | 'workout_completed'
   | 'pillar_win'
   | 'bundle_viewed'

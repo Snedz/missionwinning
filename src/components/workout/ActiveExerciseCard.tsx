@@ -303,7 +303,7 @@ export function ActiveExerciseCard({
             type="button"
             variant="outline"
             size="sm"
-            className="h-9 w-fit"
+            className="min-h-[44px] w-fit"
             onClick={onRepeatLast}
           >
             {t('activeRepeatLast', { defaultValue: 'Repeat last set' })}
@@ -382,14 +382,14 @@ export function ActiveExerciseCard({
           );
         })}
         <div className="flex flex-nowrap items-center gap-2 pt-1">
-          <Button variant="outline" size="sm" className="h-9" onClick={onAddSet}>
+          <Button variant="outline" size="sm" className="min-h-[44px]" onClick={onAddSet}>
             <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
           </Button>
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            className="h-9 w-9 shrink-0"
+            className="h-11 w-11 shrink-0"
             aria-label={t('activeStartRest', { seconds: restSec, defaultValue: `${restSec}s Rest` })}
             onClick={() => onStartRest(restSec)}
           >
@@ -401,7 +401,7 @@ export function ActiveExerciseCard({
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="h-9 text-muted-foreground"
+                className="min-h-[44px] text-muted-foreground"
                 aria-expanded={footerOpen}
                 onClick={() => setFooterOpen((v) => !v)}
               >

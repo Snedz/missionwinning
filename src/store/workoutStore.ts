@@ -25,6 +25,8 @@ import { setActiveWorkoutFlag } from "@/lib/workout/activeWorkoutPulse";
 import { enqueueWorkoutUpsert } from "@/lib/sync/workoutSync";
 import { flush as flushOutbox } from "@/lib/sync/outbox";
 import { newClientId } from "@/lib/workout/clientId";
+import { readRaw } from "@/lib/storage/safeStorage";
+import { STORAGE_KEYS } from "@/lib/storage/keys";
 
 const DEFAULT_REST_SECONDS = 30;
 
@@ -282,6 +284,13 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       logSet: (exerciseIndex, setIndex, reps, weight, rpe, isPr) => {
+        // Time-to-first-set is the one number that says whether the first 90
+        // seconds works. Fire once, on the very first set this device ever logs.
+        const before = get();
+        const isFirstEverSet =
+          before.workoutHistory.length === 0 &&
+          !before.activeWorkout?.exercises.some((ex) => ex.sets.some((x) => x.completed));
+
         set((s) => {
           if (!s.activeWorkout) return s;
           const exercises = [...s.activeWorkout.exercises];
@@ -302,6 +311,17 @@ export const useWorkoutStore = create<WorkoutState>()(
             activeWorkout: { ...s.activeWorkout, exercises },
           };
         });
+
+        if (isFirstEverSet) {
+          const startedAt = readRaw(STORAGE_KEYS.journeyStarted);
+          const started = startedAt ? new Date(startedAt).getTime() : NaN;
+          track(
+            'first_set_logged',
+            Number.isFinite(started)
+              ? { secondsFromStart: Math.max(0, Math.round((Date.now() - started) / 1000)) }
+              : undefined
+          );
+        }
       },
 
       logSetAndAdvance: (exerciseIndex, setIndex, reps, weight, isPr) => {

@@ -54,7 +54,7 @@ export function SignInPrompt({
           type="button"
           variant="outline"
           size="sm"
-          className="rounded-lg"
+          className="min-h-[44px] rounded-lg"
           onClick={() => setExpanded((v) => !v)}
         >
           {expanded

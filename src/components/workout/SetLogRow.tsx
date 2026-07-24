@@ -175,7 +175,7 @@ export function SetLogRow({
               type="button"
               variant="outline"
               size="icon"
-              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+              className="h-11 w-11 sm:h-11 sm:w-11 shrink-0"
               aria-label={t('activeDecreaseReps', { defaultValue: 'Decrease reps' })}
               onClick={() => onRepsChange(Math.max(1, reps - 1))}
             >
@@ -192,13 +192,13 @@ export function SetLogRow({
                 const parsed = parseInt(e.target.value.replace(/\D/g, ''), 10);
                 onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
               }}
-              className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg border border-input bg-background text-center text-base font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
+              className="h-11 w-11 sm:h-11 sm:w-11 rounded-lg border border-input bg-background text-center text-base font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
             />
             <Button
               type="button"
               variant="outline"
               size="icon"
-              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+              className="h-11 w-11 sm:h-11 sm:w-11 shrink-0"
               aria-label={t('activeIncreaseReps', { defaultValue: 'Increase reps' })}
               onClick={() => onRepsChange(reps + 1)}
             >
@@ -211,7 +211,7 @@ export function SetLogRow({
               type="button"
               variant="outline"
               size="icon"
-              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+              className="h-11 w-11 sm:h-11 sm:w-11 shrink-0"
               aria-label={t('activeDecreaseWeight', {
                 unit: weightLabel,
                 defaultValue: `Decrease ${weightLabel}`,
@@ -231,13 +231,13 @@ export function SetLogRow({
                 const parsed = parseFloat(cleaned);
                 onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
               }}
-              className="h-9 w-10 sm:h-10 sm:w-11 md:w-14 rounded-lg border border-input bg-background text-center text-base font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
+              className="h-11 w-12 sm:w-12 md:w-14 rounded-lg border border-input bg-background text-center text-base font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
             />
             <Button
               type="button"
               variant="outline"
               size="icon"
-              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+              className="h-11 w-11 sm:h-11 sm:w-11 shrink-0"
               aria-label={t('activeIncreaseWeight', {
                 unit: weightLabel,
                 defaultValue: `Increase ${weightLabel}`,
@@ -262,7 +262,7 @@ export function SetLogRow({
 
       <button
         type="button"
-        className="text-[11px] font-medium text-muted-foreground hover:text-foreground px-1 min-h-[28px]"
+        className="text-[11px] font-medium text-muted-foreground hover:text-foreground px-2 min-h-[44px]"
         aria-expanded={showMore}
         onClick={() => setShowMore((v) => !v)}
       >

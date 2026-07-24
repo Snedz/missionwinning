@@ -6,6 +6,27 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-24 — First 90 seconds as a budget (`.125`)
+
+- **`tests/e2e/first-90.spec.ts` (`@gate`)** turns excellence criteria 1/2/5 into
+  assertions instead of opinions: a genuinely cold visitor reaches a logged set in
+  **≤6 taps**, no modal may intercept the first session, Today has exactly one
+  `.primary-action`, and every control on the logging surface is **≥44px**.
+- **One-thumb fixes it found.** The reps/weight **± steppers were 36px** — the exact
+  controls you press holding a bar — plus per-set `More` at 28px, `Add Set`, the rest
+  preset, the card `More` and the sign-in prompt at 36px. All raised to the repo's
+  existing 44px convention (`SetLogRow`, `ActiveExerciseCard`, `SignInPrompt`).
+- **Re-entry without shame** — `src/lib/reentry.ts` + `TodayReentryCard`. Under 4 days
+  off is a rest day, not a miss. Beyond that Today leads with a smaller ask (70% dose,
+  50% past two weeks) placed directly under the boss CTA, above any score or streak
+  chrome that would read as a scoreboard of the gap. 12 tests incl. tombstoned
+  sessions, corrupt and future timestamps.
+- **`first_set_logged`** with `secondsFromStart` — the only honest read on whether the
+  first 90 seconds works. Funnel comment in `analytics.ts` updated.
+- `HomeTodayDashboard` no longer reads storage during render (hydration mismatch plus
+  a re-read every render); it is off the eslint storage backlog. 588 unit tests and
+  14 `@gate` e2e green.
+
 ## 2026-07-24 — Surface parking: one flag to shrink to the wedge (`.124`)
 
 - **`src/lib/surface.ts` + `NEXT_PUBLIC_SURFACES`.** Generalises the pattern from
