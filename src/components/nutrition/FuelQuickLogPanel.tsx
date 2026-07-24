@@ -1,9 +1,14 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { MealType } from '@/components/nutrition/FuelLogSheet';
+import {
+  MealEstimateDraft,
+  type MealDraftFields,
+} from '@/components/nutrition/MealEstimateDraft';
 import type { NlMealEstimate } from '@/lib/nlMealLog';
 import type { NutritionLogRow, QuickFoodTuple } from '@/lib/nutritionQuickLog';
 import type { SavedMealPreset } from '@/lib/savedMeals';
@@ -15,7 +20,7 @@ type Props = {
   nlMealText: string;
   onNlMealTextChange: (text: string) => void;
   nlPreview: NlMealEstimate | null;
-  onLogNlMeal: () => void;
+  onLogNlMeal: (draft: MealDraftFields) => void;
   frequentFoods: QuickFoodTuple[];
   onQuickLog: (name: string, protein: number, cals: number, carbs?: number, fat?: number) => void;
   savedMeals: SavedMealPreset[];
@@ -44,6 +49,27 @@ export function FuelQuickLogPanel({
   onRepeatYesterday,
 }: Props) {
   const { t } = useTranslation();
+  const [draft, setDraft] = useState<MealDraftFields | null>(null);
+
+  useEffect(() => {
+    if (!nlPreview) {
+      setDraft(null);
+      return;
+    }
+    setDraft({
+      name: nlPreview.name,
+      protein: nlPreview.protein,
+      cals: nlPreview.cals,
+      carbs: nlPreview.carbs,
+      fat: nlPreview.fat,
+    });
+  }, [nlPreview]);
+
+  const sourceLabel = nlPreview
+    ? nlPreview.source === 'matched'
+      ? t('fuelSourceMatched', { defaultValue: 'Matched foods' })
+      : t('fuelSourceRough', { defaultValue: 'Rough estimate' })
+    : undefined;
 
   return (
     <>
@@ -62,50 +88,36 @@ export function FuelQuickLogPanel({
               type="button"
               size="sm"
               variant={activeMeal === m ? 'fitness' : 'outline'}
-              className="h-8 text-xs"
+              className="h-8 text-xs rounded-full"
               onClick={() => onActiveMealChange(m)}
             >
               {mealLabel(m)}
             </Button>
           ))}
         </div>
-        <div className="flex flex-col sm:flex-row gap-2">
-          <input
-            id="fuel-nl-meal"
-            type="text"
-            value={nlMealText}
-            placeholder={t('fuelNlPlaceholder', {
-              defaultValue: 'chicken rice broccoli…',
-            })}
-            onChange={(e) => onNlMealTextChange(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key !== 'Enter') return;
-              e.preventDefault();
-              if (!nlPreview) return;
-              onLogNlMeal();
+        <input
+          id="fuel-nl-meal"
+          type="text"
+          value={nlMealText}
+          placeholder={t('fuelNlPlaceholder', {
+            defaultValue: 'chicken rice broccoli… or 3 eggs',
+          })}
+          onChange={(e) => onNlMealTextChange(e.target.value)}
+          className="w-full h-11 rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+        />
+        {draft && nlPreview ? (
+          <MealEstimateDraft
+            draft={draft}
+            onChange={setDraft}
+            confidence={nlPreview.confidence}
+            sourceLabel={sourceLabel}
+            onLog={() => onLogNlMeal(draft)}
+            onDismiss={() => {
+              setDraft(null);
+              onNlMealTextChange('');
             }}
-            className="flex-1 h-11 rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
           />
-          <Button
-            variant="fitness"
-            className="h-11 gap-2 shrink-0"
-            disabled={!nlPreview}
-            onClick={onLogNlMeal}
-          >
-            <Plus className="h-4 w-4" />
-            {t('fuelLogMeal', { defaultValue: 'Log meal' })}
-          </Button>
-        </div>
-        {nlPreview && (
-          <p className="text-xs text-muted-foreground tabular-nums">
-            {t('fuelNlPreview', {
-              name: nlPreview.name,
-              protein: nlPreview.protein,
-              cals: nlPreview.cals,
-              defaultValue: `Est. ${nlPreview.name} — ${nlPreview.protein}g P · ${nlPreview.cals} kcal (${nlPreview.confidence})`,
-            })}
-          </p>
-        )}
+        ) : null}
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -114,7 +126,7 @@ export function FuelQuickLogPanel({
             key={name}
             variant="outline"
             size="sm"
-            className="text-xs"
+            className="text-xs rounded-full"
             onClick={() => onQuickLog(name, p, c, carbs, fat)}
           >
             {name}
@@ -124,7 +136,7 @@ export function FuelQuickLogPanel({
 
       {savedMeals.length > 0 && (
         <div className="space-y-1.5">
-          <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
+          <p className="text-xs font-medium text-muted-foreground">
             {t('fuelSavedMeals', { defaultValue: 'Saved meals' })}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -133,7 +145,7 @@ export function FuelQuickLogPanel({
                 key={m.id}
                 variant="secondary"
                 size="sm"
-                className="text-xs"
+                className="text-xs rounded-full"
                 onClick={() => onQuickLog(m.name, m.protein, m.cals, m.carbs, m.fat)}
               >
                 {m.name}
@@ -146,7 +158,7 @@ export function FuelQuickLogPanel({
       <div className="flex flex-wrap gap-2 items-center">
         <Button variant="outline" size="sm" onClick={onOpenLogSheet}>
           <Plus className="h-3.5 w-3.5 me-1" />
-          {t('fuelLogDetailed', { defaultValue: 'Detailed log' })}
+          {t('fuelLogDetailed', { defaultValue: 'Photo & detailed log' })}
         </Button>
         <div className="flex items-center gap-1 ms-auto">
           <Button size="sm" variant="ghost" onClick={() => onWaterChange(Math.max(0, water - 1))}>

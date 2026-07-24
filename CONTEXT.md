@@ -16,15 +16,15 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-23 · web UX · Android `1.24.1`)
+## Now (2026-07-23 · web `2026.07-unified.122` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
-- **Horizon W — wedge excellence.** Web craft pass 1–6: wedge nav, Log food portal, organic landing→Active→Profile→Compare/pillars; free-beta honest.
-- **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** ([docs/FREE_BETA.md](docs/FREE_BETA.md)). Fuel copy no longer claims paid Nutrition course.
+- **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
+- **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **Media system:** Google Flow · Scout mascot — [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md).
 - Agents **must** ship wedge habit-loop + free acquisition. Refuse new pillars / America / locale farms / F5.
-- **Ops:** keep Supabase Site URL on www. **Founder:** Accept B on Android + phone excellence → invites → YC F26.
+- **Ops:** promote **`.122`**; keep Supabase Site URL on www. **Founder:** Accept B on Android + phone excellence → invites → YC F26.
 
 
 ---

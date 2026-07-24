@@ -6,6 +6,18 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Free beta: full More nav (`.122`)
+
+- `extendedNavSectionsForPhase`: free beta always returns full More minus Bundle (i-day/basic no longer train-only).
+- Softened unlocked Super Bundle labels (Fuel recipes title, Learn empty state, Android Coach depth chips).
+- Build: `2026.07-unified.122`.
+
+## 2026-07-23 — Fuel calorie tracker accuracy pass
+
+- **NL meals:** expanded food dictionary, per-item quantities (`3 eggs`), conservative low-confidence fallback; always **edit-before-log**.
+- **Photo:** honest source labels (vision / rough / database); OFF matches fill draft; shared `MealEstimateDraft` for corrections.
+- Tests: `nlMealLog.test.ts` green.
+
 ## 2026-07-23 — Web UX pass 6: History/Compare + secondary pillars
 
 - **History:** “Past sessions”, calm at-a-glance card.
