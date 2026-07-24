@@ -32,6 +32,8 @@ type Props = {
   onSaveMeal: (entry: FuelLogEntry) => void;
 };
 
+const MEAL_ORDER: (MealType | 'other')[] = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
+
 export function FuelTodayLogCard({
   logged,
   totalProtein,
@@ -56,16 +58,20 @@ export function FuelTodayLogCard({
     {}
   );
 
+  const orderedKeys = MEAL_ORDER.filter((k) => (groupedLog[k]?.length ?? 0) > 0);
+
   return (
-    <Card className="content-card">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>{t('fuelTodayLogTitle', { defaultValue: "Today's Log" })}</CardTitle>
+    <Card className="border-border/50 bg-card/80 shadow-sm">
+      <CardHeader className="flex flex-row items-center justify-between gap-2">
+        <CardTitle className="text-base font-semibold">
+          {t('fuelTodayLogTitle', { defaultValue: "Today's meals" })}
+        </CardTitle>
         <div className="flex gap-2 flex-wrap justify-end">
           <Button variant="outline" size="sm" onClick={onLoadCloud}>
-            {t('fuelLoadCloud', { defaultValue: 'Load from Cloud' })}
+            {t('fuelLoadCloud', { defaultValue: 'Load from cloud' })}
           </Button>
           {cloudStatus ? (
-            <span className="text-[10px] text-primary self-center">{cloudStatus}</span>
+            <span className="text-[11px] text-primary self-center">{cloudStatus}</span>
           ) : null}
         </div>
       </CardHeader>
@@ -76,67 +82,78 @@ export function FuelTodayLogCard({
             title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
             description={t('fuelNoEntries', {
               defaultValue:
-                'Describe what you ate above and tap Log meal — protein and calories feed your Win Score. Use Detailed log for portions and macros.',
+                'Describe what you ate above, or use search and barcode — always review macros before logging.',
             })}
             actionLabel={t('fuelLogFirstMeal', { defaultValue: 'Log first meal' })}
             onAction={onOpenLogSheet}
           />
         ) : (
-          Object.entries(groupedLog).map(([mealKey, entries]) => (
-            <details
-              key={mealKey}
-              className="group mb-3 last:mb-0 rounded-lg border border-border/40"
-              open
-            >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 min-h-[44px] [&::-webkit-details-marker]:hidden">
-                <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  {mealKey === 'other' ? mealLabel() : mealLabel(mealKey as MealType)}
-                  <span className="ms-2 normal-case font-normal tabular-nums">
-                    ({entries.length})
+          orderedKeys.map((mealKey) => {
+            const entries = groupedLog[mealKey] ?? [];
+            const mealP = entries.reduce((s, e) => s + e.entry.protein, 0);
+            const mealC = entries.reduce((s, e) => s + e.entry.cals, 0);
+            return (
+              <details
+                key={mealKey}
+                className="group rounded-xl border border-border/40"
+                open
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 min-h-[44px] [&::-webkit-details-marker]:hidden">
+                  <span className="text-sm font-medium text-foreground">
+                    {mealKey === 'other' ? mealLabel() : mealLabel(mealKey as MealType)}
+                    <span className="ms-2 text-xs font-normal text-muted-foreground tabular-nums">
+                      {entries.length} · {mealP}g P · {mealC} kcal
+                    </span>
                   </span>
-                </span>
-                <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
-              </summary>
-              <ul className="space-y-1 text-sm px-3 pb-3 border-t border-border/30 pt-2">
-                {entries.map(({ entry: l, index }) => (
-                  <li key={`${mealKey}-${index}`} className="flex justify-between gap-2 items-center">
-                    <span className="min-w-0 truncate">
-                      {l.time} — {l.name}
-                    </span>
-                    <span className="flex items-center gap-1 shrink-0">
-                      <span className="text-muted-foreground tabular-nums text-xs">
-                        +{l.protein}g P • {l.cals} kcal
+                  <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180 shrink-0" />
+                </summary>
+                <ul className="space-y-1 text-sm px-3 pb-3 border-t border-border/30 pt-2">
+                  {entries.map(({ entry: l, index }) => (
+                    <li
+                      key={`${mealKey}-${index}`}
+                      className="flex justify-between gap-2 items-center py-0.5"
+                    >
+                      <span className="min-w-0 truncate">
+                        <span className="text-muted-foreground tabular-nums text-xs me-1.5">
+                          {l.time}
+                        </span>
+                        {l.name}
                       </span>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 px-2 text-[10px]"
-                        onClick={() => onSaveMeal(l)}
-                      >
-                        {t('fuelSaveMeal', { defaultValue: 'Save' })}
-                      </Button>
-                      <HoldToConfirmButton
-                        size="sm"
-                        className="h-7 w-7"
-                        label={t('fuelDeleteMealEntry', { defaultValue: 'Delete meal entry' })}
-                        icon={<Trash2 className="h-3.5 w-3.5" />}
-                        onConfirm={() => onRemoveEntry(index)}
-                      />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          ))
+                      <span className="flex items-center gap-1 shrink-0">
+                        <span className="text-muted-foreground tabular-nums text-xs">
+                          +{l.protein}g P · {l.cals} kcal
+                        </span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 px-2 text-[11px]"
+                          onClick={() => onSaveMeal(l)}
+                        >
+                          {t('fuelSaveMeal', { defaultValue: 'Save' })}
+                        </Button>
+                        <HoldToConfirmButton
+                          size="sm"
+                          className="h-7 w-7"
+                          label={t('fuelDeleteMealEntry', { defaultValue: 'Delete meal entry' })}
+                          icon={<Trash2 className="h-3.5 w-3.5" />}
+                          onConfirm={() => onRemoveEntry(index)}
+                        />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            );
+          })
         )}
-        <div className="pt-3 border-t text-sm flex justify-between font-medium">
+        <div className="pt-3 border-t border-border/40 text-sm flex justify-between font-medium">
           <span>{t('fuelTotals', { defaultValue: 'Totals' })}</span>
           <span className="tabular-nums">
             {t('fuelTotalsLine', {
               protein: totalProtein,
               cals: totalCals,
-              defaultValue: `${totalProtein}g protein • ${totalCals} kcal`,
+              defaultValue: `${totalProtein}g protein · ${totalCals} kcal`,
             })}
           </span>
         </div>

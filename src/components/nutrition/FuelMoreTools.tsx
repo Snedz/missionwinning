@@ -5,6 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FoodSearchBar } from '@/components/nutrition/FoodSearchBar';
 import { BarcodeLookup } from '@/components/nutrition/BarcodeLookup';
+import {
+  MealEstimateDraft,
+  type MealDraftFields,
+} from '@/components/nutrition/MealEstimateDraft';
 import type { FoodSearchItem } from '@/lib/foodSearch';
 
 type Props = {
@@ -15,17 +19,28 @@ function formatFoodName(item: FoodSearchItem): string {
   return item.brand ? `${item.name} (${item.brand})` : item.name;
 }
 
+function itemToDraft(item: FoodSearchItem): MealDraftFields {
+  return {
+    name: formatFoodName(item),
+    protein: item.protein,
+    cals: item.calories,
+    carbs: item.carbs,
+    fat: item.fat,
+  };
+}
+
 export function FuelMoreTools({ onLogFood }: Props) {
   const { t } = useTranslation();
   const [showScience, setShowScience] = useState(false);
+  const [draft, setDraft] = useState<MealDraftFields | null>(null);
 
   const handleSelect = (item: FoodSearchItem) => {
-    onLogFood(formatFoodName(item), item.protein, item.calories, item.carbs, item.fat);
+    setDraft(itemToDraft(item));
   };
 
   return (
     <>
-      <Card className="content-card border-border/40 shadow-none">
+      <Card className="border-border/40 shadow-none">
         <CardHeader className="pb-2">
           <CardTitle className="text-base font-semibold">
             {t('fuelSearchTitle', { defaultValue: 'Search foods' })}
@@ -34,6 +49,33 @@ export function FuelMoreTools({ onLogFood }: Props) {
         <CardContent className="space-y-4">
           <BarcodeLookup onSelect={handleSelect} />
           <FoodSearchBar onSelect={handleSelect} />
+          {draft ? (
+            <MealEstimateDraft
+              draft={draft}
+              onChange={setDraft}
+              confidence="high"
+              sourceLabel={t('fuelSourceDb', { defaultValue: 'Database' })}
+              logLabel={t('fuelLogMeal', { defaultValue: 'Log meal' })}
+              onLog={() => {
+                if (!draft.name.trim()) return;
+                onLogFood(
+                  draft.name.trim(),
+                  draft.protein,
+                  draft.cals,
+                  draft.carbs,
+                  draft.fat
+                );
+                setDraft(null);
+              }}
+              onDismiss={() => setDraft(null)}
+            />
+          ) : (
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {t('fuelSearchThenEdit', {
+                defaultValue: 'Scan or search, then review macros before logging.',
+              })}
+            </p>
+          )}
         </CardContent>
       </Card>
 

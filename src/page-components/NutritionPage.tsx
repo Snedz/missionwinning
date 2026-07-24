@@ -19,6 +19,7 @@ import { FuelQuickLogPanel } from '@/components/nutrition/FuelQuickLogPanel';
 import { FuelMoreTools } from '@/components/nutrition/FuelMoreTools';
 import { FuelTodayLogCard, type FuelLogEntry } from '@/components/nutrition/FuelTodayLogCard';
 import { FuelRecipesPanel } from '@/components/nutrition/FuelRecipesPanel';
+import { FuelTargetsEditor } from '@/components/nutrition/FuelTargetsEditor';
 import { estimateMealFromDescription } from '@/lib/nlMealLog';
 import { listMealPresets, saveMealPreset, type SavedMealPreset } from '@/lib/savedMeals';
 import { bumpFuelLogStreak, getFuelLogStreak } from '@/lib/fuelStreak';
@@ -46,8 +47,10 @@ export function NutritionPage() {
   const { premium } = usePremium();
   const [premiumRecipes, setPremiumRecipes] = useState<Recipe[]>([]);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
-  const [targetCals, setTargetCals] = useState(2200);
-  const [targetProtein, setTargetProtein] = useState(160);
+  const [targetCals, setTargetCals] = useState(DEFAULT_MACRO_TARGETS.cals);
+  const [targetProtein, setTargetProtein] = useState(DEFAULT_MACRO_TARGETS.protein);
+  const [targetCarbs, setTargetCarbs] = useState(DEFAULT_MACRO_TARGETS.carbs);
+  const [targetFat, setTargetFat] = useState(DEFAULT_MACRO_TARGETS.fat);
   const [logged, setLogged] = useState<LogEntry[]>([]);
   const [water, setWater] = useState(0);
   const [customName, setCustomName] = useState('');
@@ -82,9 +85,8 @@ export function NutritionPage() {
     if (savedTargets) {
       setTargetCals(savedTargets.cals);
       setTargetProtein(savedTargets.protein);
-    } else {
-      setTargetCals(DEFAULT_MACRO_TARGETS.cals);
-      setTargetProtein(DEFAULT_MACRO_TARGETS.protein);
+      setTargetCarbs(savedTargets.carbs ?? DEFAULT_MACRO_TARGETS.carbs);
+      setTargetFat(savedTargets.fat ?? DEFAULT_MACRO_TARGETS.fat);
     }
 
     const saved = localStorage.getItem('mw_nutrition_log');
@@ -250,8 +252,8 @@ export function NutritionPage() {
   const totalCals = logged.reduce((s, l) => s + l.cals, 0);
   const totalCarbs = logged.reduce((s, l) => s + (l.carbs || 0), 0);
   const totalFat = logged.reduce((s, l) => s + (l.fat || 0), 0);
-  const carbsTarget = Math.max(1, Math.round((targetCals * 0.45) / 4));
-  const fatTarget = Math.max(1, Math.round((targetCals * 0.25) / 9));
+  const carbsTarget = Math.max(1, targetCarbs);
+  const fatTarget = Math.max(1, targetFat);
 
   const loadCloudNutrition = async () => {
     const u = await getUser();
@@ -306,6 +308,18 @@ export function NutritionPage() {
         fatTarget={fatTarget}
         water={water}
       >
+        <FuelTargetsEditor
+          targetCals={targetCals}
+          targetProtein={targetProtein}
+          targetCarbs={targetCarbs}
+          targetFat={targetFat}
+          onSaved={(next) => {
+            setTargetCals(next.cals);
+            setTargetProtein(next.protein);
+            setTargetCarbs(next.carbs);
+            setTargetFat(next.fat);
+          }}
+        />
         <FuelQuickLogPanel
           activeMeal={activeMeal}
           onActiveMealChange={setActiveMeal}
