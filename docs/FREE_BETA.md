@@ -7,6 +7,7 @@
 
 - **Mute pay:** no Super Bundle, checkout, founders pricing, Play subscribe, crypto Lifetime CTAs, Unlock CTAs.
 - **Unlock depth:** treat everyone as premium-entitled — Coach chat, Fuel Coach, GPS catalogs, Move/Mind/Learn premium sessions, adapt depth. No $ credits wallet.
+- **Full More nav:** journey i-day/basic train-only focus is deferred — More shows Recover / Train deeper / Learn (still no Bundle) so all pillars are discoverable.
 - Show: logger, Today, Victory, Coach week + depth, free + unlocked pillar tools, Guide.
 - Frame: “Open beta — full platform free while we grow with you.”
 
@@ -38,6 +39,7 @@ Then grandfather early beta users with founders price / enrollment grants — no
 - [`src/lib/freeBeta.ts`](../src/lib/freeBeta.ts) · [`src/lib/premiumServer.ts`](../src/lib/premiumServer.ts) (`isPremiumBypassEnabled`)
 - [`src/hooks/usePremium.ts`](../src/hooks/usePremium.ts) — premium true while free beta
 - `/api/premium/*` + Coach chat/voice — bypass enrollment
+- [`src/lib/navConfig.ts`](../src/lib/navConfig.ts) — `extendedNavSectionsForPhase` full More when free beta
 - [`UnlockButton`](../src/components/UnlockButton.tsx) → `null` when free beta
 - `/bundle` → redirect `/log`
 - Android Coach: `MwFreeBeta.ENABLED || auth.premium`; no Play subscribe banner

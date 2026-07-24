@@ -13,6 +13,7 @@ import com.missionwinning.core.designsystem.MwCard
 import com.missionwinning.core.designsystem.MwChip
 import com.missionwinning.core.designsystem.MwChipTone
 import com.missionwinning.core.designsystem.MwColors
+import com.missionwinning.core.designsystem.MwFreeBeta
 import com.missionwinning.core.designsystem.MwSectionLabel
 import com.missionwinning.core.designsystem.MwSpace
 import com.missionwinning.core.designsystem.MwTypography
@@ -28,7 +29,10 @@ fun CoachAdaptBanner(
     MwCard(modifier = modifier, elevated = true, glow = true, hero = true) {
         MwSectionLabel("Week adapted · rev ${resp.plan.revision}")
         if (premium) {
-            MwChip("Super Bundle depth", tone = MwChipTone.Emerald)
+            MwChip(
+                if (MwFreeBeta.ENABLED) "Open beta depth" else "Coach depth",
+                tone = MwChipTone.Emerald,
+            )
         }
         if (resp.adaptBeats.isEmpty()) {
             Text(
@@ -45,7 +49,7 @@ fun CoachAdaptBanner(
             if (!premium && resp.adaptBeats.size > 1) {
                 Spacer(Modifier.height(MwSpace.sm))
                 Text(
-                    "+${resp.adaptBeats.size - 1} more adapt notes with Super Bundle on this account (no in-app purchase).",
+                    "+${resp.adaptBeats.size - 1} more adapt notes with full coach depth on this account.",
                     style = MwTypography.labelMedium,
                     color = MwColors.TextMuted,
                 )
