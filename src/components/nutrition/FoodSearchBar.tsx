@@ -8,14 +8,22 @@ import type { FoodSearchItem } from '@/lib/foodSearch';
 
 type Props = {
   onSelect: (item: FoodSearchItem) => void;
+  /** Prefill search (e.g. from a rough NL estimate). */
+  initialQuery?: string;
+  /** Hide Open Food Facts credit line for compact embeds. */
+  compact?: boolean;
 };
 
-export function FoodSearchBar({ onSelect }: Props) {
+export function FoodSearchBar({ onSelect, initialQuery = '', compact = false }: Props) {
   const { t } = useTranslation();
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(initialQuery);
   const [items, setItems] = useState<FoodSearchItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (initialQuery.trim()) setQuery(initialQuery);
+  }, [initialQuery]);
 
   const search = useCallback(async (q: string) => {
     if (q.trim().length < 2) {
@@ -104,11 +112,13 @@ export function FoodSearchBar({ onSelect }: Props) {
           ))}
         </ul>
       )}
-      <p className="text-[10px] text-muted-foreground/70">
-        {t('fuelSearchCredit', {
-          defaultValue: 'Powered by Open Food Facts — community database, edit portions after adding.',
-        })}
-      </p>
+      {!compact ? (
+        <p className="text-[10px] text-muted-foreground/70">
+          {t('fuelSearchCredit', {
+            defaultValue: 'Powered by Open Food Facts — community database, edit portions after adding.',
+          })}
+        </p>
+      ) : null}
     </div>
   );
 }

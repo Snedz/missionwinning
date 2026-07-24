@@ -34,7 +34,10 @@ export function FuelMacroOverview({
   const cProgress = Math.min(100, Math.round((totalCals / targetCals) * 100));
   const carbsProgress = Math.min(100, Math.round((totalCarbs / carbsTarget) * 100));
   const fatProgress = Math.min(100, Math.round((totalFat / fatTarget) * 100));
-  const calsLeft = Math.max(0, targetCals - totalCals);
+  const calsDelta = targetCals - totalCals;
+  const calsLeft = Math.max(0, calsDelta);
+  const calsOver = Math.max(0, -calsDelta);
+  const proteinLeft = Math.max(0, targetProtein - totalProtein);
 
   const bars = [
     {
@@ -79,14 +82,33 @@ export function FuelMacroOverview({
             tone="emerald"
           />
         </div>
-        <div className="rounded-xl border border-border/40 bg-muted/15 px-3 py-2 text-center">
-          <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-            {t('fuelCalsLeft', { defaultValue: 'Cal left' })}
-          </p>
-          <p className="text-2xl font-bold tabular-nums text-primary">{calsLeft}</p>
-          <p className="text-[10px] text-muted-foreground tabular-nums">
-            {totalCals} / {targetCals}
-          </p>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="rounded-xl border border-border/40 bg-muted/15 px-3 py-2.5 text-center">
+            <p className="text-xs font-medium text-muted-foreground">
+              {calsOver > 0
+                ? t('fuelCalsOver', { defaultValue: 'Over target' })
+                : t('fuelCalsLeft', { defaultValue: 'Calories left' })}
+            </p>
+            <p
+              className={`text-2xl font-semibold tabular-nums ${
+                calsOver > 0 ? 'text-status-warn' : 'text-foreground'
+              }`}
+            >
+              {calsOver > 0 ? calsOver : calsLeft}
+            </p>
+            <p className="text-[11px] text-muted-foreground tabular-nums">
+              {totalCals} / {targetCals}
+            </p>
+          </div>
+          <div className="rounded-xl border border-border/40 bg-muted/15 px-3 py-2.5 text-center">
+            <p className="text-xs font-medium text-muted-foreground">
+              {t('fuelProteinLeft', { defaultValue: 'Protein left' })}
+            </p>
+            <p className="text-2xl font-semibold tabular-nums text-primary">{proteinLeft}g</p>
+            <p className="text-[11px] text-muted-foreground tabular-nums">
+              {totalProtein}g / {targetProtein}g
+            </p>
+          </div>
         </div>
         <div className="space-y-2">
           {bars.map((m) => (
