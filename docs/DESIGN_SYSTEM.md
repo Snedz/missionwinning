@@ -80,6 +80,8 @@ Tailwind: `surface-raised`, `shadow-glow`, `shadow-glow-brass`.
 
 Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except hero, ≤80 KB each / ≤250 KB total on `/`.
 
+**Form diagrams & Learn figures:** [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · `public/form-guides/` · `public/learn/`.
+
 ---
 
 ## Typography

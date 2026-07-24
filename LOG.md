@@ -6,6 +6,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Media asset system (`.121`)
+
+- [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md) + [`media/manifest.json`](media/manifest.json): form / Learn / art / social pipeline (offline gen → approve → static).
+- Instructional form SVGs: replaced 15 placeholders + 15 expansion movements; FormGuideSheet dark frame + caption; light SMIL on heroes.
+- Guidebook `heroImage` / `figure` → web + magazine print; 5 Learn heroes in `public/learn/`; social stills in `public/social/`.
+- Android: `FormGuideMedia` + `MwFormGuideSheet` on Active (same CDN `/form-guides/{id}.svg`).
+- Build: `2026.07-unified.121`.
+
 ## 2026-07-23 — Pre-EIN interim payments (docs)
 
 - Texas LLC filed (Bizee, ~4 weeks) + EIN pending: document path to take beta payments **without** business Stripe/PayPal.

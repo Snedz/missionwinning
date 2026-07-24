@@ -105,6 +105,34 @@ Primary mark: rounded emerald square with white **MW** monogram (same paths as `
 
 ---
 
+## AI Image Generation
+
+**Full playbook:** [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · **manifest:** [`media/manifest.json`](../media/manifest.json).
+
+Use AI tools (Cursor GenerateImage, Higgsfield, Gemini design scripts) for **Learn heroes, marketing art, and social creatives** only. **Form guides** ship as instructional SVG stick figures (joint arrows, phase poses)—AI may supply pose reference, not photoreal athletes as the Train default.
+
+### Prompt block (copy)
+
+```
+Mission Winning brand imagery. Dark navy canvas #0a0c10, emerald accent #27b07d,
+brass honor #c7a860. Clinical athletic clarity — not gym-bro hype, not medical.
+No logos invented; no competitor blue/violet identity; no cream/terracotta editorial look.
+Atmosphere: mission briefing, train-anywhere athlete, calm competence.
+Decorative or chapter-hero only — not instructional form diagrams (those are SVG stick figures).
+No text in the image unless explicitly requested. No crisis or clinical depression framing.
+```
+
+### Do / don’t (AI)
+
+| Do | Don’t |
+|----|--------|
+| Navy / emerald / brass palette | Purple, violet brand identity, cream+terracotta editorial |
+| Calm mission atmosphere | Gym-bro hype, neon glow stacks |
+| Decorative Learn / landing / social | Fake medical charts or depression framing |
+| Check manifest before regenerating | Commit multi‑MB unoptimized drafts |
+
+---
+
 ## Asset index
 
 | Path | Notes |
@@ -112,6 +140,7 @@ Primary mark: rounded emerald square with white **MW** monogram (same paths as `
 | https://www.missionwinning.com/press | Human-readable media kit |
 | https://www.missionwinning.com/brand/… | Direct SVG/PNG downloads |
 | https://www.missionwinning.com/brand/README.md | Usage license summary |
+| [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) | Form / Learn / art / social generation system |
 
 ---
 

@@ -1,11 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="bench-press form diagram">
-  <title>bench-press</title>
-  <!-- stick-figure placeholder -->
-  <circle cx="100" cy="28" r="12"/>
-  <line x1="100" y1="40" x2="100" y2="95"/>
-  <line x1="100" y1="55" x2="70" y2="80"/>
-  <line x1="100" y1="55" x2="130" y2="80"/>
-  <line x1="100" y1="95" x2="75" y2="135"/>
-  <line x1="100" y1="95" x2="125" y2="135"/>
-  <text x="100" y="152" text-anchor="middle" fill="#555" stroke="none" font-family="system-ui,sans-serif" font-size="9">bench-press</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Bench press form: setup, touch, press">
+  <title>Bench press form diagram</title>
+  <rect width="360" height="220" fill="#0a0c10" rx="8"/>
+  <text x="60" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Setup</text>
+  <text x="180" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Touch</text>
+  <text x="300" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Press</text>
+
+  <!-- Benches -->
+  <rect x="30" y="130" width="60" height="10" rx="2" fill="#2a3038"/>
+  <rect x="150" y="130" width="60" height="10" rx="2" fill="#2a3038"/>
+  <rect x="270" y="130" width="60" height="10" rx="2" fill="#2a3038"/>
+
+  <!-- Setup: arms extended -->
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="118" r="8"/>
+    <line x1="60" y1="126" x2="60" y2="135"/>
+    <line x1="40" y1="95" x2="80" y2="95"/>
+    <line x1="45" y1="95" x2="52" y2="118"/>
+    <line x1="75" y1="95" x2="68" y2="118"/>
+    <line x1="55" y1="135" x2="48" y2="165"/>
+    <line x1="65" y1="135" x2="72" y2="165"/>
+  </g>
+  <circle cx="52" cy="110" r="3" fill="#c7a860"/>
+  <text x="60" y="88" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">bar</text>
+
+  <!-- Touch: bar at chest -->
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="180" cy="118" r="8"/>
+    <line x1="180" y1="126" x2="180" y2="135"/>
+    <line x1="155" y1="125" x2="205" y2="125"/>
+    <line x1="160" y1="125" x2="172" y2="118"/>
+    <line x1="200" y1="125" x2="188" y2="118"/>
+    <line x1="175" y1="135" x2="168" y2="165"/>
+    <line x1="185" y1="135" x2="192" y2="165"/>
+  </g>
+  <path d="M180 70 L180 105" stroke="#27b07d" stroke-width="2" stroke-linecap="round">
+    <animate attributeName="d" values="M180 70 L180 105; M180 85 L180 120; M180 70 L180 105" dur="2.5s" repeatCount="indefinite"/>
+  </path>
+  <polygon points="176,105 180,112 184,105" fill="#27b07d">
+    <animateTransform attributeName="transform" type="translate" values="0 0; 0 15; 0 0" dur="2.5s" repeatCount="indefinite"/>
+  </polygon>
+  <text x="210" y="100" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">~45°</text>
+  <circle cx="165" cy="122" r="3.5" fill="#c7a860"/>
+  <text x="165" y="148" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">elbow</text>
+
+  <!-- Press -->
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="300" cy="118" r="8"/>
+    <line x1="300" y1="126" x2="300" y2="135"/>
+    <line x1="280" y1="95" x2="320" y2="95"/>
+    <line x1="285" y1="95" x2="292" y2="118"/>
+    <line x1="315" y1="95" x2="308" y2="118"/>
+    <line x1="295" y1="135" x2="288" y2="165"/>
+    <line x1="305" y1="135" x2="312" y2="165"/>
+  </g>
+  <path d="M300 120 L300 100" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="296,100 300,93 304,100" fill="#27b07d"/>
+  <text x="300" y="195" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="9">feet flat · slight arch</text>
 </svg>

@@ -3,7 +3,7 @@ import type { Exercise } from '@/types';
 import { getExerciseById } from '@/data/exercises';
 import { EXTENDED_GUIDES } from '@/lib/formGuidesExtended';
 
-/** Hero movements with diagram placeholders under /public/form-guides/. */
+/** Hero movements with instructional diagrams under /public/form-guides/. */
 const FORM_MEDIA_IDS = new Set([
   'push-ups',
   'air-squat',
@@ -20,6 +20,22 @@ const FORM_MEDIA_IDS = new Set([
   'bench-press',
   'romanian-deadlift',
   'hip-thrust',
+  // Expansion (top library / coach movements)
+  'lat-pulldown',
+  'kettlebell-swing',
+  'face-pull',
+  'bicep-curl',
+  'tricep-pushdown',
+  'bird-dog',
+  'wall-sit',
+  'pike-pushup',
+  'side-plank',
+  'mountain-climbers',
+  'dips-chair',
+  'step-ups',
+  'front-squat',
+  'goblet-squat',
+  'jump-squats',
 ]);
 
 function attachFormMedia(exerciseId: string, guide: FormGuide): FormGuide {

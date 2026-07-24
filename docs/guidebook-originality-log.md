@@ -61,6 +61,19 @@ Premium chapters: see `sourceRef` on each section in `premiumChapters.ts`.
 | ch6-s1 | callout — screen before load | PAR-Q screening | Mission Winning | 2026-07-22 |
 | ch6-s2 | table — what to retest and when | foundations — assessments | Mission Winning | 2026-07-22 |
 
+## Chapter / section figures (MEDIA_SYSTEM)
+
+Original AI-generated chapter heroes (brand prompt pack) and instructional SVG cross-links — not ISSA art.
+
+| Asset / section | Kind | Provenance | Date |
+|-----------------|------|------------|------|
+| `human-performance` hero | chapter hero WebP | AI gen → `public/learn/human-performance-hero.webp` | 2026-07-23 |
+| `movement-mechanics` hero | chapter hero WebP | AI gen → `public/learn/movement-mechanics-hero.webp` | 2026-07-23 |
+| `programming-tuning` hero | chapter hero WebP | AI gen → `public/learn/programming-tuning-hero.webp` | 2026-07-23 |
+| `nutrition-recovery` hero | chapter hero WebP | AI gen → `public/learn/nutrition-recovery-hero.webp` | 2026-07-23 |
+| `assessments-progress` hero | chapter hero WebP | AI gen → `public/learn/assessments-progress-hero.webp` | 2026-07-23 |
+| ch2-s1 figure | section figure | MW instructional SVG `/form-guides/air-squat.svg` | 2026-07-23 |
+
 ## Localized editions
 
 Translations in `src/i18n/packs/{lang}.json` and guidebook locale overlays are **translations of Mission Winning original English**, not ISSA text. Regenerated via `npm run i18n:fill`.

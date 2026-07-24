@@ -2,11 +2,21 @@
 
 **Purpose:** Copy-paste posts, filming shot list, and channel rules for beta → public.  
 **Visual assets:** Brand logos, colors, OG image → [/press](https://www.missionwinning.com/press) · [brand-guidelines.md](brand-guidelines.md)  
+**Social creatives:** `public/social/` · playbook [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) · manifest [`media/manifest.json`](../media/manifest.json)  
 **Rule:** Social gets people into I-Day → first workout. No paid ads until week-4 retention holds.  
 **Capital:** [PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md) · outreach help: [OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md)  
 **Companion:** [STRATEGY.md](STRATEGY.md) · [BETA_INVITE.md](BETA_INVITE.md) · [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) · [YC_THESIS.md](YC_THESIS.md)
 
 **Wedge line (use everywhere):** Free offline logger + adaptive Mission Coach from logs (no wearable). Six pillars stay below the fold / second sentence — not the hook.
+
+### Creative stills (`public/social/`)
+
+| File | Size | Use |
+|------|------|-----|
+| [/social/invite-square.webp](https://www.missionwinning.com/social/invite-square.webp) | 1080×1080 | Invite / beta DM share background — overlay copy in editor |
+| [/social/coach-story.webp](https://www.missionwinning.com/social/coach-story.webp) | 1080×1920 | Stories / Reels canvas |
+
+Generate more via [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) daily credit playbook; register in `media/manifest.json`.
 
 **Evidence angle (second wave only):** Structured exercise has strong trial support for mild–moderate mood symptoms; clinicians rarely get trained to prescribe it — so advice stays vague. MW’s product story is still the logger + Coach (the “dose”), never “we treat depression.” Full rules: [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md). Always add: *Not medical advice — not a substitute for clinical care.*
 

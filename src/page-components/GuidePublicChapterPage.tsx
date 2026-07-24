@@ -15,7 +15,7 @@ import { renderMagazineBody } from '@/lib/guidebook/renderMagazineBody';
 import { track } from '@/lib/analytics';
 import { Button } from '@/components/ui/button';
 import { GuideApexShell } from '@/components/learn/GuideApexShell';
-import { GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
+import { GuideFigureBlock, GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
 import { exercisesForGuideChapter } from '@/lib/exerciseSeo';
 
 type Props = {
@@ -74,6 +74,11 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
           </p>
           <h2 className="display-section">{chapter.title}</h2>
           <p className="mt-2 text-muted-foreground">{chapter.subtitle}</p>
+          {chapter.heroImage && (
+            <div className="mt-6">
+              <GuideFigureBlock figure={chapter.heroImage} variant="app" />
+            </div>
+          )}
         </header>
 
         {chapter.sections.map((s) => {

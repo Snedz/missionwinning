@@ -44,6 +44,7 @@
 
 - Set **notes**, **custom exercises** (Room), **reorder** exercises, **superset** A–D, per-exercise rest
 - **Plate calculator** (pure domain, free) on current set
+- **Form diagram** — same `/form-guides/{id}.svg` as web (`FormGuideMedia` + `MwFormGuideSheet`); see [docs/MEDIA_SYSTEM.md](../../docs/MEDIA_SYSTEM.md)
 - Room **v10** (`note`, `supersetGroup`, `custom_exercises`); sync payload fields on sets
 
 ## Progress & Today mission control (Phase 11)

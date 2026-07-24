@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Side plank form: Stack, Lift, Hold">
+  <title>Side plank form diagram</title>
+  <rect width="360" height="220" fill="#0a0c10" rx="8"/>
+  <text x="60" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Stack</text>
+  <text x="180" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Lift</text>
+  <text x="300" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Hold</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#2a3038" stroke-width="2"/>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#2a3038" stroke-width="2"/>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#2a3038" stroke-width="2"/>
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="80" r="8"/>
+<line x1="60" y1="88" x2="60" y2="125"/>
+<line x1="60" y1="100" x2="55" y2="145"/>
+<line x1="60" y1="125" x2="60" y2="165"/>
+<line x1="60" y1="125" x2="78" y2="140"/>
+  </g>
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="180" cy="80" r="8"/>
+<line x1="180" y1="88" x2="180" y2="125"/>
+<line x1="180" y1="100" x2="175" y2="145"/>
+<line x1="180" y1="125" x2="180" y2="165"/>
+<line x1="180" y1="125" x2="198" y2="140"/>
+  </g>
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="300" cy="80" r="8"/>
+<line x1="300" y1="88" x2="300" y2="125"/>
+<line x1="300" y1="100" x2="295" y2="145"/>
+<line x1="300" y1="125" x2="300" y2="165"/>
+<line x1="300" y1="125" x2="318" y2="140"/>
+  </g>
+  <path d="M100 110 L120 110" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/><polygon points="120,106 128,110 120,114" fill="#27b07d"/>
+  <path d="M220 110 L240 110" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/><polygon points="240,106 248,110 240,114" fill="#27b07d"/>
+  <circle cx="180" cy="130" r="3.5" fill="#c7a860"/>
+  <text x="180" y="205" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="9">hips high</text>
+</svg>

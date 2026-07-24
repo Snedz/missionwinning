@@ -46,7 +46,8 @@
 | [SOFT_LAUNCH_DAY.md](archive/SOFT_LAUNCH_DAY.md) | Flip-day checklist (after gates) |
 | [PUBLIC_FLIP_CHECKLIST.md](archive/PUBLIC_FLIP_CHECKLIST.md) | Offline, SW, Search Console smoke after public mode |
 | [SOCIAL_LAUNCH.md](SOCIAL_LAUNCH.md) | Beta + public social copy kit |
-| [brand-guidelines.md](brand-guidelines.md) | Brand voice, colors, logo rules · public `/press` |
+| [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md) | Form / Learn / art / social asset pipeline · [`media/manifest.json`](../media/manifest.json) |
+| [brand-guidelines.md](brand-guidelines.md) | Brand voice, colors, logo rules · public `/press` · AI prompt block |
 | [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) | LLC → Stripe → §1d pre-EIN interim · trademark/counsel |
 | [PRE_REVENUE_CHECKLIST.md](PRE_REVENUE_CHECKLIST.md) | Before first dollar · interim sole-prop OK · dispute shield |
 | [legal/ENTITY_RESEARCH.md](legal/ENTITY_RESEARCH.md) | Home-state LLC vs DE/WY research memo |

@@ -1,11 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" fill="none" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="air-squat form diagram">
-  <title>air-squat</title>
-  <!-- stick-figure placeholder -->
-  <circle cx="100" cy="28" r="12"/>
-  <line x1="100" y1="40" x2="100" y2="95"/>
-  <line x1="100" y1="55" x2="70" y2="80"/>
-  <line x1="100" y1="55" x2="130" y2="80"/>
-  <line x1="100" y1="95" x2="75" y2="135"/>
-  <line x1="100" y1="95" x2="125" y2="135"/>
-  <text x="100" y="152" text-anchor="middle" fill="#555" stroke="none" font-family="system-ui,sans-serif" font-size="9">air-squat</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Air squat form: stand, depth, stand">
+  <title>Air squat form diagram</title>
+  <rect width="360" height="220" fill="#0a0c10" rx="8"/>
+  <text x="60" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Stand</text>
+  <text x="180" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Depth</text>
+  <text x="300" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Stand</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#2a3038" stroke-width="2"/>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#2a3038" stroke-width="2"/>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#2a3038" stroke-width="2"/>
+
+  <!-- Stand -->
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="70" r="9"/>
+    <line x1="60" y1="79" x2="60" y2="125"/>
+    <line x1="60" y1="95" x2="42" y2="115"/>
+    <line x1="60" y1="95" x2="88" y2="100"/>
+    <line x1="60" y1="125" x2="48" y2="175"/>
+    <line x1="60" y1="125" x2="72" y2="175"/>
+  </g>
+  <circle cx="60" cy="125" r="3.5" fill="#c7a860"/>
+  <text x="76" y="128" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">hips</text>
+
+  <!-- Depth -->
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="180" cy="95" r="9"/>
+    <line x1="180" y1="104" x2="168" y2="140"/>
+    <line x1="168" y1="118" x2="148" y2="125"/>
+    <line x1="168" y1="118" x2="198" y2="110"/>
+    <line x1="168" y1="140" x2="150" y2="175"/>
+    <line x1="168" y1="140" x2="190" y2="175"/>
+  </g>
+  <path d="M180 55 L180 75" stroke="#27b07d" stroke-width="2" stroke-linecap="round">
+    <animate attributeName="d" values="M180 55 L180 75; M180 70 L180 90; M180 55 L180 75" dur="2.8s" repeatCount="indefinite"/>
+  </path>
+  <polygon points="176,75 180,82 184,75" fill="#27b07d">
+    <animateTransform attributeName="transform" type="translate" values="0 0; 0 15; 0 0" dur="2.8s" repeatCount="indefinite"/>
+  </polygon>
+  <text x="196" y="68" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">sit</text>
+  <circle cx="160" cy="160" r="3.5" fill="#c7a860"/>
+  <text x="160" y="152" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">knees</text>
+
+  <!-- Stand out -->
+  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="300" cy="70" r="9"/>
+    <line x1="300" y1="79" x2="300" y2="125"/>
+    <line x1="300" y1="95" x2="282" y2="115"/>
+    <line x1="300" y1="95" x2="328" y2="100"/>
+    <line x1="300" y1="125" x2="288" y2="175"/>
+    <line x1="300" y1="125" x2="312" y2="175"/>
+  </g>
+  <path d="M300 150 L300 130" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="296,130 300,123 304,130" fill="#27b07d"/>
+  <text x="312" y="142" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">drive</text>
 </svg>

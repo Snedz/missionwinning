@@ -197,7 +197,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 
 - [x] AI Coach v1 — Mission Coach engine + daily insight + plan-voice (`src/lib/coach/`)
 - [x] GPS / activity import for Track — premium GPS panel (`src/lib/trackGps.ts`)
-- [x] Form cues + static media for hero movements (`FormGuideSheet`, 15 SVGs in `public/form-guides/`; video/GIF for full top-50 later)
+- [x] Form cues + instructional diagrams (`FormGuideSheet`, 30 SVGs in `public/form-guides/`; [MEDIA_SYSTEM.md](MEDIA_SYSTEM.md); WebM loops for top-5 later)
 - [x] Barcode / food search API for Fuel (`BarcodeLookup.tsx`, Open Food Facts)
 - [x] Audio-guided Mind sessions — premium timed guided sessions (CDN audio optional next)
 

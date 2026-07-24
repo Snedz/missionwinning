@@ -19,7 +19,7 @@ import {
 import { localizeGuidebookChapters, localizeMagazineMeta } from '@/lib/localizeGuidebook';
 import { isRtlLang, normalizeAppLang } from '@/i18n/appLangs';
 import { renderMagazineBody } from '@/lib/guidebook/renderMagazineBody';
-import { GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
+import { GuideFigureBlock, GuideSectionExtras } from '@/components/learn/GuideSectionExtras';
 
 function chapterIndex(n: number): string {
   return `CH ${String(n).padStart(2, '0')}`;
@@ -128,6 +128,7 @@ export function GuideMagazinePrintPage() {
               </div>
               <h2 className="display-section magazine-h2">{ch.title}</h2>
               <p className="magazine-chapter-sub">{ch.subtitle}</p>
+              {ch.heroImage && <GuideFigureBlock figure={ch.heroImage} variant="magazine" />}
             </header>
             <div className="magazine-sections">
               {ch.sections.map((s) => (

@@ -16,15 +16,16 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-23 · web `2026.07-unified.120` · Android `1.24.1`)
+## Now (2026-07-23 · web `2026.07-unified.121` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
 - **Horizon W — wedge excellence (founder override).** #1 bottleneck: make Train→Today→Victory→Coach **not lame** (W1–W4). ≥10 beta is **after** excellence sign-off — not instead of building. See [ORCHESTRATION.md](ORCHESTRATION.md) § Horizon W.
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** (chat/Fuel/GPS) ([docs/FREE_BETA.md](docs/FREE_BETA.md)). No credits. Reintroduce paid when business Stripe/PayPal live.
+- **Media system:** instructional form diagrams + Learn heroes + social stills — [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md).
 - Agents **must** ship wedge habit-loop + free acquisition work. Refuse new pillars / America / locale farms / F5.
-- **Ops:** promote **`.120`** (full free unlock); keep Supabase Site URL on www.
-- Shipped: `.120` unlock depth; prior `.119` mute-only. **Founder:** phone excellence → invites → YC F26 Jul 27 honest free-beta apply.
+- **Ops:** promote **`.121`** (media + prior free unlock); keep Supabase Site URL on www.
+- Shipped: `.121` media system; prior `.120` unlock depth. **Founder:** phone excellence → invites → YC F26 Jul 27 honest free-beta apply.
 
 
 ---
