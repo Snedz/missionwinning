@@ -6,6 +6,13 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Web UX pass 3: shell chrome less template-AI
+
+- **In-app headers:** sentence-case PillarPageHeader / Today title (drop briefing mono caps).
+- **Nav:** solid quieter MobileNav + AppHeader; Coach active path matching.
+- **Empty states / coach insight / score foot:** human type + free-beta honest footers.
+- **content-card:** lighter shadow system-wide in app surfaces.
+
 ## 2026-07-23 — Web UX pass 2: Today + Coach organic + free-beta honesty
 
 - **Coach:** free-beta never hard-locks next week; quieter chrome; no brass glow lock card.

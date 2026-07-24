@@ -60,10 +60,8 @@ export function EmptyState({
           <Icon className="h-7 w-7 text-primary" />
         </div>
       )}
-      <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-foreground">
-        {title}
-      </h3>
-      <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>
+      <h3 className="text-base font-semibold tracking-tight text-foreground">{title}</h3>
+      <p className="mt-1.5 max-w-sm text-sm leading-relaxed text-muted-foreground">{description}</p>
       {actionLabel && href && !actionDisabled && (
         <Button variant="fitness" className={ctaClass} asChild>
           <Link href={href}>{actionLabel}</Link>

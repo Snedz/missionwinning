@@ -36,11 +36,13 @@ export function TodayPageHeader({
     <header className="space-y-3">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 space-y-1">
-          <p className="eyebrow-live">{today}</p>
-          <h1 className="display-section text-[1.85rem] md:text-[2.35rem]">
+          <p className="text-xs font-medium tracking-wide text-primary">{today}</p>
+          <h1 className="text-[1.85rem] font-semibold tracking-tight leading-tight md:text-[2.15rem]">
             {t('today', { defaultValue: 'Today' })}
           </h1>
-          {focusLine ? <p className="text-sm text-muted-foreground">{focusLine}</p> : null}
+          {focusLine ? (
+            <p className="text-sm leading-relaxed text-muted-foreground">{focusLine}</p>
+          ) : null}
         </div>
         {showEditToday && onEditToday && (
           <button
