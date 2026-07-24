@@ -3,7 +3,7 @@ import Link from 'next/link';
 /** Shared footer links for public SEO surfaces (guide, exercises, compare). */
 export function PublicSeoFooter() {
   return (
-    <footer className="section-seam-glow mt-12">
+    <footer className="mt-12 border-t border-border/40">
       <nav className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-4 gap-y-2 px-5 py-8 text-sm text-muted-foreground">
         <Link href="/guide" className="transition-colors hover:text-primary">
           Guide
