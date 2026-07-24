@@ -1,12 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, Trash2, UtensilsCrossed } from 'lucide-react';
+import { ChevronDown, Pencil, Trash2, UtensilsCrossed } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { DangerZone } from '@/components/ui/DangerZone';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
+import {
+  MealEstimateDraft,
+  type MealDraftFields,
+} from '@/components/nutrition/MealEstimateDraft';
 import type { MealType } from '@/components/nutrition/FuelLogSheet';
 
 export type FuelLogEntry = {
@@ -27,6 +32,7 @@ type Props = {
   mealLabel: (meal?: MealType) => string;
   onClearDay: () => void;
   onRemoveEntry: (index: number) => void;
+  onUpdateEntry: (index: number, next: MealDraftFields) => void;
   onLoadCloud: () => void;
   onOpenLogSheet: () => void;
   onSaveMeal: (entry: FuelLogEntry) => void;
@@ -42,11 +48,14 @@ export function FuelTodayLogCard({
   mealLabel,
   onClearDay,
   onRemoveEntry,
+  onUpdateEntry,
   onLoadCloud,
   onOpenLogSheet,
   onSaveMeal,
 }: Props) {
   const { t } = useTranslation();
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [editDraft, setEditDraft] = useState<MealDraftFields | null>(null);
 
   const groupedLog = logged.reduce<Record<string, { entry: FuelLogEntry; index: number }[]>>(
     (acc, entry, index) => {
@@ -59,6 +68,17 @@ export function FuelTodayLogCard({
   );
 
   const orderedKeys = MEAL_ORDER.filter((k) => (groupedLog[k]?.length ?? 0) > 0);
+
+  const startEdit = (index: number, entry: FuelLogEntry) => {
+    setEditIndex(index);
+    setEditDraft({
+      name: entry.name,
+      protein: entry.protein,
+      cals: entry.cals,
+      carbs: entry.carbs ?? 0,
+      fat: entry.fat ?? 0,
+    });
+  };
 
   return (
     <Card className="border-border/50 bg-card/80 shadow-sm">
@@ -107,39 +127,67 @@ export function FuelTodayLogCard({
                   </span>
                   <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180 shrink-0" />
                 </summary>
-                <ul className="space-y-1 text-sm px-3 pb-3 border-t border-border/30 pt-2">
+                <ul className="space-y-2 text-sm px-3 pb-3 border-t border-border/30 pt-2">
                   {entries.map(({ entry: l, index }) => (
-                    <li
-                      key={`${mealKey}-${index}`}
-                      className="flex justify-between gap-2 items-center py-0.5"
-                    >
-                      <span className="min-w-0 truncate">
-                        <span className="text-muted-foreground tabular-nums text-xs me-1.5">
-                          {l.time}
-                        </span>
-                        {l.name}
-                      </span>
-                      <span className="flex items-center gap-1 shrink-0">
-                        <span className="text-muted-foreground tabular-nums text-xs">
-                          +{l.protein}g P · {l.cals} kcal
-                        </span>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-7 px-2 text-[11px]"
-                          onClick={() => onSaveMeal(l)}
-                        >
-                          {t('fuelSaveMeal', { defaultValue: 'Save' })}
-                        </Button>
-                        <HoldToConfirmButton
-                          size="sm"
-                          className="h-7 w-7"
-                          label={t('fuelDeleteMealEntry', { defaultValue: 'Delete meal entry' })}
-                          icon={<Trash2 className="h-3.5 w-3.5" />}
-                          onConfirm={() => onRemoveEntry(index)}
+                    <li key={`${mealKey}-${index}`} className="space-y-2">
+                      {editIndex === index && editDraft ? (
+                        <MealEstimateDraft
+                          draft={editDraft}
+                          onChange={setEditDraft}
+                          confidence="high"
+                          sourceLabel={t('fuelEditEntry', { defaultValue: 'Edit entry' })}
+                          logLabel={t('fuelSaveEntry', { defaultValue: 'Save changes' })}
+                          onLog={() => {
+                            onUpdateEntry(index, editDraft);
+                            setEditIndex(null);
+                            setEditDraft(null);
+                          }}
+                          onDismiss={() => {
+                            setEditIndex(null);
+                            setEditDraft(null);
+                          }}
                         />
-                      </span>
+                      ) : (
+                        <div className="flex justify-between gap-2 items-center py-0.5">
+                          <span className="min-w-0 truncate">
+                            <span className="text-muted-foreground tabular-nums text-xs me-1.5">
+                              {l.time}
+                            </span>
+                            {l.name}
+                          </span>
+                          <span className="flex items-center gap-0.5 shrink-0">
+                            <span className="text-muted-foreground tabular-nums text-xs me-1">
+                              +{l.protein}g P · {l.cals} kcal
+                            </span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                              aria-label={t('fuelEditEntry', { defaultValue: 'Edit entry' })}
+                              onClick={() => startEdit(index, l)}
+                            >
+                              <Pencil className="h-3.5 w-3.5" />
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 px-2 text-[11px]"
+                              onClick={() => onSaveMeal(l)}
+                            >
+                              {t('fuelSaveMeal', { defaultValue: 'Save' })}
+                            </Button>
+                            <HoldToConfirmButton
+                              size="sm"
+                              className="h-7 w-7"
+                              label={t('fuelDeleteMealEntry', { defaultValue: 'Delete meal entry' })}
+                              icon={<Trash2 className="h-3.5 w-3.5" />}
+                              onConfirm={() => onRemoveEntry(index)}
+                            />
+                          </span>
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>

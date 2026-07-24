@@ -33,9 +33,13 @@ type Props = {
   customName: string;
   customP: number;
   customC: number;
+  customCarbs: number;
+  customFat: number;
   onCustomNameChange: (v: string) => void;
   onCustomPChange: (v: number) => void;
   onCustomCChange: (v: number) => void;
+  onCustomCarbsChange: (v: number) => void;
+  onCustomFatChange: (v: number) => void;
   onCustomLog: () => void;
 };
 
@@ -51,9 +55,13 @@ export function FuelLogSheet({
   customName,
   customP,
   customC,
+  customCarbs,
+  customFat,
   onCustomNameChange,
   onCustomPChange,
   onCustomCChange,
+  onCustomCarbsChange,
+  onCustomFatChange,
   onCustomLog,
 }: Props) {
   const { t } = useTranslation();
@@ -154,8 +162,8 @@ export function FuelLogSheet({
             placeholder={t('fuelFoodLabel', { defaultValue: 'Food' })}
             className="h-11"
           />
-          <div className="flex gap-3">
-            <div className="flex-1">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
               <div className="text-xs text-muted-foreground mb-1.5">
                 {t('fuelProteinGLabel', { defaultValue: 'Protein g' })}
               </div>
@@ -166,7 +174,7 @@ export function FuelLogSheet({
                 className="h-11"
               />
             </div>
-            <div className="flex-1">
+            <div>
               <div className="text-xs text-muted-foreground mb-1.5">
                 {t('fuelCalsLabel', { defaultValue: 'Cals' })}
               </div>
@@ -177,10 +185,33 @@ export function FuelLogSheet({
                 className="h-11"
               />
             </div>
+            <div>
+              <div className="text-xs text-muted-foreground mb-1.5">
+                {t('fuelCarbsShort', { defaultValue: 'Carbs' })}
+              </div>
+              <Input
+                type="number"
+                value={customCarbs}
+                onChange={(e) => onCustomCarbsChange(parseInt(e.target.value) || 0)}
+                className="h-11"
+              />
+            </div>
+            <div>
+              <div className="text-xs text-muted-foreground mb-1.5">
+                {t('fuelFatShort', { defaultValue: 'Fat' })}
+              </div>
+              <Input
+                type="number"
+                value={customFat}
+                onChange={(e) => onCustomFatChange(parseInt(e.target.value) || 0)}
+                className="h-11"
+              />
+            </div>
           </div>
           <Button
             variant="fitness"
             className="w-full h-11"
+            disabled={!customName.trim()}
             onClick={() => {
               onCustomLog();
               onClose();
