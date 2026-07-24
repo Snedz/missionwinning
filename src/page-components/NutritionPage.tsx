@@ -32,6 +32,7 @@ import {
   summarizeNutritionDays,
 } from '@/lib/nutritionQuickLog';
 import { FuelWeekGlance } from '@/components/nutrition/FuelWeekGlance';
+import { FuelPastDaysCard } from '@/components/nutrition/FuelPastDaysCard';
 import { DEFAULT_MACRO_TARGETS, loadMacroTargets } from '@/lib/macroTargets';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { Plus, UtensilsCrossed } from 'lucide-react';
@@ -296,6 +297,28 @@ export function NutritionPage() {
     }
   };
 
+  const handleCopyDayToToday = (
+    rows: { name: string; protein: number; cals: number; carbs?: number; fat?: number; meal?: string }[]
+  ) => {
+    for (const m of rows) {
+      addEntry(
+        m.name,
+        m.protein,
+        m.cals,
+        m.carbs ?? 0,
+        m.fat ?? 0,
+        (m.meal as MealType) || activeMeal
+      );
+    }
+    toast({
+      title: t('fuelCopiedDay', { defaultValue: 'Copied to today' }),
+      description: t('fuelCopiedDayDesc', {
+        count: rows.length,
+        defaultValue: `${rows.length} meals added — edit anything that changed.`,
+      }),
+    });
+  };
+
   const totalProtein = logged.reduce((s, l) => s + l.protein, 0);
   const totalCals = logged.reduce((s, l) => s + l.cals, 0);
   const totalCarbs = logged.reduce((s, l) => s + (l.carbs || 0), 0);
@@ -411,7 +434,9 @@ export function NutritionPage() {
             premium={premium}
             premiumRecipes={premiumRecipes}
             premiumFetchError={premiumFetchError}
-            onLogRecipe={(r) => addEntry(r.name, r.protein, r.cals, r.carbs, r.fat)}
+            onLogRecipe={(draft) =>
+              addEntry(draft.name, draft.protein, draft.cals, draft.carbs, draft.fat)
+            }
           />
         </>
       )}
@@ -445,6 +470,12 @@ export function NutritionPage() {
             })
           );
         }}
+      />
+
+      <FuelPastDaysCard
+        logs={allLogs}
+        todayIso={today}
+        onCopyDayToToday={handleCopyDayToToday}
       />
 
       <div className="text-xs leading-relaxed text-muted-foreground">

@@ -12,6 +12,11 @@ Chronological record of shipped work. Newest first.
 - Softened unlocked Super Bundle labels (Fuel recipes title, Learn empty state, Android Coach depth chips).
 - Build: `2026.07-unified.122`.
 
+## 2026-07-24 — Fuel calorie tracker pass 6
+
+- **Past days:** browse last 14 logged days + **Copy to today**.
+- **Recipes:** Use → review draft before log (free + premium).
+
 ## 2026-07-24 — Fuel calorie tracker pass 5
 
 - **Persistence:** single merge of today list → 90-day local history (fixes stale allLogs duplicates).

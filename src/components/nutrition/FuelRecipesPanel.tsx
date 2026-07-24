@@ -1,11 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FuelMealPlanCard } from '@/components/nutrition/FuelMealPlanCard';
+import {
+  MealEstimateDraft,
+  type MealDraftFields,
+} from '@/components/nutrition/MealEstimateDraft';
 import {
   FREE_RECIPE_COUNT,
   PREMIUM_RECIPE_COUNT,
@@ -19,8 +24,18 @@ type Props = {
   premium: boolean;
   premiumRecipes: Recipe[];
   premiumFetchError: boolean;
-  onLogRecipe: (r: Recipe) => void;
+  onLogRecipe: (draft: MealDraftFields) => void;
 };
+
+function recipeToDraft(r: Recipe): MealDraftFields {
+  return {
+    name: r.name,
+    protein: r.protein,
+    cals: r.cals,
+    carbs: r.carbs ?? 0,
+    fat: r.fat ?? 0,
+  };
+}
 
 export function FuelRecipesPanel({
   freeRecipes,
@@ -31,29 +46,49 @@ export function FuelRecipesPanel({
 }: Props) {
   const { t } = useTranslation();
   const freeBeta = isFreeBeta();
+  const [draft, setDraft] = useState<MealDraftFields | null>(null);
+
+  const pickRecipe = (r: Recipe) => {
+    setDraft(recipeToDraft(r));
+  };
 
   return (
     <>
       {/* Upsell above the free recipe list so free users see Fuel Coach without scrolling. */}
       <FuelMealPlanCard />
 
-      <Card className="content-card">
+      {draft ? (
+        <MealEstimateDraft
+          draft={draft}
+          onChange={setDraft}
+          confidence="high"
+          sourceLabel={t('fuelSourceRecipe', { defaultValue: 'Recipe' })}
+          logLabel={t('logRecipe', { defaultValue: 'Log recipe' })}
+          onLog={() => {
+            onLogRecipe(draft);
+            setDraft(null);
+          }}
+          onDismiss={() => setDraft(null)}
+        />
+      ) : null}
+
+      <Card className="border-border/50 bg-card/80 shadow-sm">
         <CardHeader>
-          <CardTitle>
+          <CardTitle className="text-base font-semibold">
             {t('fuelFreeRecipesTitle', {
               count: FREE_RECIPE_COUNT,
-              defaultValue: `Free Recipes (${FREE_RECIPE_COUNT} — core mission)`,
+              defaultValue: `Recipes (${FREE_RECIPE_COUNT})`,
             })}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           {freeRecipes.map((r, i) => (
-            <details key={i} className="group border border-border/40 rounded p-3 bg-muted/10">
+            <details key={i} className="group border border-border/40 rounded-xl p-3 bg-muted/10">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-2 [&::-webkit-details-marker]:hidden">
                 <div className="min-w-0">
-                  <div className="font-semibold">{r.name}</div>
-                  <div className="text-xs text-primary">
-                    {r.protein}g protein • {r.cals} kcal
+                  <div className="font-semibold text-sm">{r.name}</div>
+                  <div className="text-xs text-muted-foreground tabular-nums">
+                    {r.protein}g protein · {r.cals} kcal
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
@@ -62,15 +97,15 @@ export function FuelRecipesPanel({
                     variant="fitness"
                     onClick={(e) => {
                       e.preventDefault();
-                      onLogRecipe(r);
+                      pickRecipe(r);
                     }}
                   >
-                    {t('logRecipe', { defaultValue: 'Log Recipe' })}
+                    {t('fuelUseRecipe', { defaultValue: 'Use' })}
                   </Button>
                   <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
                 </div>
               </summary>
-              <div className="text-xs mt-2 pt-2 border-t border-border/30 text-muted-foreground">
+              <div className="text-xs mt-2 pt-2 border-t border-border/30 text-muted-foreground leading-relaxed">
                 {r.ingredients}
               </div>
             </details>
@@ -87,45 +122,52 @@ export function FuelRecipesPanel({
       )}
 
       {premium ? (
-        <Card className="content-card">
+        <Card className="border-border/50 bg-card/80 shadow-sm">
           <CardHeader>
-            <CardTitle>
+            <CardTitle className="text-base font-semibold">
               {t('fuelPremiumRecipesTitle', {
-                defaultValue: 'Premium Recipes & Meal Ideas (Super Bundle)',
+                defaultValue: freeBeta
+                  ? 'More recipes'
+                  : 'Premium recipes',
               })}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {premiumRecipes.map((r, i) => (
-              <details key={i} className="group border border-border/40 rounded p-3 bg-muted/10">
+              <details key={i} className="group border border-border/40 rounded-xl p-3 bg-muted/10">
                 <summary className="flex cursor-pointer list-none items-start justify-between gap-2 [&::-webkit-details-marker]:hidden">
                   <div className="min-w-0">
-                    <div className="font-semibold">{r.name}</div>
-                    <div className="text-xs text-primary">
-                      {r.protein}g protein • {r.cals} kcal • {r.carbs}c {r.fat}f
+                    <div className="font-semibold text-sm">{r.name}</div>
+                    <div className="text-xs text-muted-foreground tabular-nums">
+                      {r.protein}g protein · {r.cals} kcal
                     </div>
                   </div>
-                  <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0 mt-1 transition-transform group-open:rotate-180" />
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Button
+                      size="sm"
+                      variant="fitness"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        pickRecipe(r);
+                      }}
+                    >
+                      {t('fuelUseRecipe', { defaultValue: 'Use' })}
+                    </Button>
+                    <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+                  </div>
                 </summary>
                 <div className="mt-2 pt-2 border-t border-border/30 space-y-1">
-                  <Button
-                    size="sm"
-                    variant="fitness"
-                    className="w-full"
-                    onClick={() => onLogRecipe(r)}
-                  >
-                    {t('logRecipe', { defaultValue: 'Log Entire Recipe + Boost Score' })}
-                  </Button>
-                  <div className="text-xs text-muted-foreground">{r.ingredients}</div>
-                  <div className="text-xs">{r.instructions}</div>
-                  <div className="text-[10px] text-primary italic">{r.tip}</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed">{r.ingredients}</div>
+                  <div className="text-xs leading-relaxed">{r.instructions}</div>
+                  {r.tip ? (
+                    <div className="text-[11px] text-muted-foreground italic">{r.tip}</div>
+                  ) : null}
                 </div>
               </details>
             ))}
-            <div className="text-xs text-muted-foreground">
+            <div className="text-xs text-muted-foreground leading-relaxed">
               {t('fuelPremiumRecipesFoot', {
-                defaultValue:
-                  'Seeded from protein science + DASH/Med principles for global accessibility.',
+                defaultValue: 'Practical plates with protein first — edit macros before logging.',
               })}
             </div>
           </CardContent>
