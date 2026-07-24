@@ -49,7 +49,7 @@ export function WorkoutVictorySheet({
     unit: unitLabel,
     sets: summary.setCount,
     streak: summary.streak,
-    defaultValue: `Mission complete: ${summary.workoutName} — ${summary.totalVolume.toLocaleString()} ${unitLabel}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}. #MissionWinning`,
+    defaultValue: `Session done: ${summary.workoutName} — ${summary.totalVolume.toLocaleString()} ${unitLabel}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}.`,
   });
 
   const handleShare = async () => {
@@ -68,7 +68,7 @@ export function WorkoutVictorySheet({
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
-          title: t('victoryTitle', { defaultValue: 'Mission complete' }),
+          title: t('victoryTitle', { defaultValue: 'Session locked' }),
           text: fullText,
           url: shareUrl,
         });
@@ -102,44 +102,44 @@ export function WorkoutVictorySheet({
         onOpenChange(next);
       }}
     >
-      <DialogContent className="victory-lock card-glow-brass sm:max-w-md md:max-w-lg xl:max-w-xl border-brass/30 bg-gradient-to-b from-card to-brass/5">
+      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-border/50 bg-card shadow-lg">
         <DialogHeader className="text-center space-y-3 victory-reveal">
-          <div className="mx-auto relative h-20 w-20 overflow-hidden rounded-2xl border border-brass/40 bg-[#0a0c10]">
+          <div className="mx-auto relative h-16 w-16 overflow-hidden rounded-2xl border border-border/50 bg-muted/30">
             <Image
               src="/brand/mascot/scout-celebrate.webp"
               alt=""
-              width={80}
-              height={80}
+              width={64}
+              height={64}
               className="h-full w-full object-cover"
             />
             <span className="sr-only">
-              {t('victoryScoutCue', { defaultValue: 'Set locked. Win logged.' })}
+              {t('victoryScoutCue', { defaultValue: 'Session saved.' })}
             </span>
           </div>
-          <DialogTitle className="text-2xl">
-            {t('victoryTitle', { defaultValue: 'Mission complete' })}
+          <DialogTitle className="text-2xl font-semibold tracking-tight">
+            {t('victoryTitle', { defaultValue: 'Session locked' })}
           </DialogTitle>
-          <DialogDescription className="text-base text-foreground/80">
+          <DialogDescription className="text-base text-muted-foreground leading-relaxed">
             {summary.workoutName}
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid grid-cols-2 gap-3 py-2">
-          <div className="rounded-xl border border-brass/30 bg-brass/10 p-3 text-center">
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">
+          <div className="rounded-xl border border-border/50 bg-muted/15 p-3 text-center">
+            <p className="text-xs font-medium text-muted-foreground">
               {t('victoryVolume', { defaultValue: 'Volume' })}
             </p>
-            <p className="text-xl font-bold tabular-nums text-brass">
+            <p className="text-xl font-semibold tabular-nums text-foreground">
               {summary.totalVolume.toLocaleString()}
             </p>
-            <p className="text-[10px] text-muted-foreground">{unitLabel}</p>
+            <p className="text-xs text-muted-foreground">{unitLabel}</p>
           </div>
-          <div className="rounded-xl border border-border/50 bg-muted/20 p-3 text-center">
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">
+          <div className="rounded-xl border border-border/50 bg-muted/15 p-3 text-center">
+            <p className="text-xs font-medium text-muted-foreground">
               {t('victorySets', { defaultValue: 'Sets' })}
             </p>
-            <p className="text-xl font-bold tabular-nums">{summary.setCount}</p>
-            <p className="text-[10px] text-muted-foreground">
+            <p className="text-xl font-semibold tabular-nums">{summary.setCount}</p>
+            <p className="text-xs text-muted-foreground">
               {formatDuration(summary.durationSeconds)}
             </p>
           </div>
@@ -182,8 +182,8 @@ export function WorkoutVictorySheet({
         </div>
 
         {summary.bodyDelta && (
-          <div className="flex flex-wrap items-center justify-center gap-2 rounded-xl border border-border/40 bg-muted/15 px-3 py-2 text-[11px] tabular-nums">
-            <span className="text-muted-foreground uppercase tracking-wide me-1">
+          <div className="flex flex-wrap items-center justify-center gap-2 rounded-xl border border-border/40 bg-muted/15 px-3 py-2 text-xs tabular-nums">
+            <span className="text-muted-foreground me-1">
               {t('victoryBodyDeltaLabel', { defaultValue: 'What changed' })}
             </span>
             <span className="text-status-warn/90">
@@ -237,20 +237,20 @@ export function WorkoutVictorySheet({
         )}
 
         {summary.streak > 0 && (
-          <p className="text-center text-sm text-brass/90">
+          <p className="text-center text-sm text-muted-foreground">
             {t('victoryStreak', {
               count: summary.streak,
-              defaultValue: `${summary.streak}-day training streak — keep the path alive`,
+              defaultValue: `${summary.streak}-day streak — nice consistency`,
             })}
           </p>
         )}
 
         {summary.nextAction && (
-          <div className="rounded-xl border border-primary/30 bg-primary/5 p-3 space-y-2 text-center">
-            <p className="text-[10px] uppercase tracking-widest text-primary font-medium">
-              {t('victoryNextLabel', { defaultValue: 'One next step' })}
+          <div className="rounded-xl border border-border/50 bg-muted/15 p-3 space-y-2 text-center">
+            <p className="text-xs font-medium text-muted-foreground">
+              {t('victoryNextLabel', { defaultValue: 'Next' })}
             </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               {t(summary.nextAction.reasonKey, {
                 defaultValue: summary.nextAction.defaultReason,
               })}

@@ -110,21 +110,16 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
       open={open}
       onClose={skip}
       size="sm"
-      zClassName="z-50"
       titleId={titleId}
-      eyebrow={
-        <span className="eyebrow text-[hsl(var(--status-info))]">
-          {t('sessionCheckInEyebrow', { defaultValue: 'Pre-session' })}
-        </span>
-      }
+      eyebrow={t('sessionCheckInEyebrow', { defaultValue: 'Before you train' })}
       title={t('sessionCheckInTitle', { defaultValue: 'How do you feel?' })}
       initialFocusRef={firstControlRef}
       bodyClassName="p-5 space-y-4"
     >
-      <p className="text-xs text-muted-foreground -mt-1">
+      <p className="text-sm text-muted-foreground leading-relaxed -mt-1">
         {t('sessionCheckInLead', {
           defaultValue:
-            'Three quick ratings. We nudge readiness (never auto-cut your sets without a tap).',
+            'Three quick ratings. We adjust readiness — we never cut your sets without asking.',
         })}
       </p>
 

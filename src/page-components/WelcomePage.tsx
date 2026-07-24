@@ -137,41 +137,44 @@ export function WelcomePage() {
   );
 
   return (
-    <div className="relative min-h-screen text-foreground flex flex-col overflow-hidden">
-      <div
-        className="hero-field texture-noise pointer-events-none absolute inset-0"
-        aria-hidden
-      />
-
-      <header className="relative z-10 section-seam px-4 py-3.5 flex items-center gap-3">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-display text-sm font-bold text-primary-foreground">
+    <div className="relative min-h-screen text-foreground flex flex-col bg-background">
+      <header className="relative z-10 border-b border-border/40 px-4 py-3.5 flex items-center gap-3">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
           MW
         </span>
-        <span className="font-display text-lg font-semibold uppercase tracking-wide">
+        <span className="text-base font-semibold tracking-tight sm:text-lg">
           Mission Winning
         </span>
-        <span className="eyebrow ms-auto">
+        <span className="ms-auto text-xs font-medium text-muted-foreground">
           {isEdit
-            ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' })
-            : t('welcomeIDay', { defaultValue: 'I-Day' })}
+            ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
+            : t('welcomeIDay', { defaultValue: 'Get started' })}
         </span>
       </header>
 
       {!isEdit && (
         <div
-          className="relative z-10 mx-auto w-full max-w-lg px-5 pt-4"
+          className="relative z-10 mx-auto w-full max-w-lg px-5 pt-5"
           role="group"
           aria-label={t('welcomeProgressLabel', {
-            defaultValue: `I-Day progress, step ${stepIndex + 1} of ${STEP_ORDER.length}`,
+            defaultValue: `Progress, step ${stepIndex + 1} of ${STEP_ORDER.length}`,
           })}
         >
-          <p className="eyebrow text-muted-foreground">
-            {t('welcomeProgressMono', {
-              step: stepIndex + 1,
-              total: STEP_ORDER.length,
-              defaultValue: `${stepIndex + 1} / ${STEP_ORDER.length}`,
-            })}
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="h-1 flex-1 rounded-full bg-muted overflow-hidden">
+              <div
+                className="h-full rounded-full bg-primary/70 transition-all duration-300"
+                style={{ width: `${((stepIndex + 1) / STEP_ORDER.length) * 100}%` }}
+              />
+            </div>
+            <p className="text-xs font-medium text-muted-foreground tabular-nums shrink-0">
+              {t('welcomeProgressMono', {
+                step: stepIndex + 1,
+                total: STEP_ORDER.length,
+                defaultValue: `${stepIndex + 1} / ${STEP_ORDER.length}`,
+              })}
+            </p>
+          </div>
         </div>
       )}
 
@@ -183,22 +186,22 @@ export function WelcomePage() {
             {step === 'welcome' && (
               <>
                 <div className="space-y-4">
-                  <p className="eyebrow-live">
-                    {t('welcomeKicker', { defaultValue: 'I-Day · About two minutes' })}
+                  <p className="text-xs font-medium tracking-wide text-primary">
+                    {t('welcomeKicker', { defaultValue: 'About two minutes' })}
                   </p>
-                  <h1 className="display-hero text-[2rem] md:text-[2.75rem] leading-[1.05]">
-                    {t('welcomeTitle', { defaultValue: 'Welcome, Mission Member' })}
+                  <h1 className="text-[1.85rem] md:text-[2.35rem] font-semibold tracking-tight leading-[1.15]">
+                    {t('welcomeTitle', { defaultValue: 'Welcome' })}
                   </h1>
                   <p className="text-muted-foreground text-base leading-relaxed max-w-md">
                     {t('welcomeSubtitle', {
                       defaultValue:
-                        'Free fundamentals forever. Set your path, then log your first session — Today always shows the next action.',
+                        'Free offline logging, forever. Answer a few questions, then log your first session — Today always shows what to do next.',
                     })}
                   </p>
                 </div>
 
-                <div className="space-y-2 border-s-2 border-primary/40 ps-4">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium">
+                <div className="rounded-2xl border border-border/50 bg-muted/15 px-4 py-3.5 space-y-1.5">
+                  <p className="text-xs font-medium text-muted-foreground">
                     {t('welcomePreviewLabel', { defaultValue: 'Your first session is ready' })}
                   </p>
                   <p className="text-sm font-medium text-foreground">
@@ -207,13 +210,13 @@ export function WelcomePage() {
                       name: firstSession.name,
                     })}
                   </p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {firstSessionNames.join(' · ')}
                   </p>
                 </div>
 
                 <button type="button" className="primary-action" onClick={handleBegin}>
-                  {t('welcomeBegin', { defaultValue: 'Begin' })}
+                  {t('welcomeBegin', { defaultValue: 'Continue' })}
                 </button>
               </>
             )}
@@ -221,24 +224,24 @@ export function WelcomePage() {
             {step === 'profile' && (
               <>
                 <div>
-                  <p className="eyebrow mb-2">
+                  <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground">
                     {isEdit
-                      ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' })
-                      : t('welcomeProfileEyebrow', { defaultValue: 'Briefing' })}
+                      ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
+                      : t('welcomeProfileEyebrow', { defaultValue: 'About you' })}
                   </p>
-                  <h2 className="display-section text-[1.5rem] md:text-[1.85rem] mb-1">
+                  <h2 className="text-[1.5rem] md:text-[1.75rem] font-semibold tracking-tight mb-1 leading-tight">
                     {isEdit
-                      ? t('editJourneyProfile', { defaultValue: 'Edit journey profile' })
+                      ? t('editJourneyProfile', { defaultValue: 'Edit profile' })
                       : t('welcomeProfileTitle', { defaultValue: 'Three quick questions' })}
                   </h2>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {isEdit
                       ? t('welcomeProfileEditHint', {
                           defaultValue:
                             'Update experience, equipment, and goal. Changes sync when signed in.',
                         })
                       : t('welcomeProfileHint', {
-                          defaultValue: 'So Today can recommend the right starting point.',
+                          defaultValue: 'So we can suggest a session that matches your gear.',
                         })}
                   </p>
                 </div>
@@ -331,31 +334,31 @@ export function WelcomePage() {
             {step === 'signin' && (
               <>
                 <div>
-                  <p className="eyebrow mb-2">
+                  <p className="mb-2 text-xs font-medium tracking-wide text-muted-foreground">
                     {t('welcomeSignInEyebrow', { defaultValue: 'Optional' })}
                   </p>
-                  <h2 className="display-section text-[1.5rem] md:text-[1.85rem] mb-1">
+                  <h2 className="text-[1.5rem] md:text-[1.75rem] font-semibold tracking-tight mb-1 leading-tight">
                     {t('welcomeSignInTitle', { defaultValue: 'Save progress — your choice' })}
                   </h2>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {t('welcomeSignInSubtitle', {
                       defaultValue:
                         'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
                     })}
                   </p>
                 </div>
-                <div className="space-y-2 border-s-2 border-brass/40 ps-4">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium">
-                    {t('welcomeSessionReadyEyebrow', { defaultValue: 'Session ready' })}
+                <div className="rounded-2xl border border-border/50 bg-muted/15 px-4 py-3.5 space-y-1.5">
+                  <p className="text-xs font-medium text-muted-foreground">
+                    {t('welcomeSessionReadyEyebrow', { defaultValue: 'Up next' })}
                   </p>
                   <p className="text-sm font-medium">
                     {t('welcomeSessionReadyTitle', {
-                      defaultValue: 'Next: your first session starts now',
+                      defaultValue: 'Your first session is ready',
                     })}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {t('welcomeSessionReadyBody', {
-                      defaultValue: `${firstSession.name} · ${firstSessionNames.length} exercises from your gear. Skip sign-in to log your first set immediately.`,
+                      defaultValue: `${firstSession.name} · ${firstSessionNames.length} exercises for your gear. Skip sign-in to start logging right away.`,
                       name: firstSession.name,
                       count: firstSessionNames.length,
                     })}
