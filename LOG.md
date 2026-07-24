@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-23 — Web UX pass 4: Welcome + Active logger human craft
+
+- **Welcome:** drop texture/ALL CAPS briefing; real progress bar; “Welcome” + quiet session cards.
+- **Active:** rest dock labels, quieter Victory (session locked, no brass glow theater), calmer tips/PR.
+- **Session check-in:** default z-index via AdaptiveOverlay portal; human eyebrow copy.
+
 ## 2026-07-23 — Web UX pass 3: shell chrome less template-AI
 
 - **In-app headers:** sentence-case PillarPageHeader / Today title (drop briefing mono caps).

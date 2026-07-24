@@ -47,11 +47,10 @@ export function ActiveSessionChrome({
   const coachTip =
     hardCount > 2
       ? t('activeCoachNotesHighEffort', {
-          defaultValue:
-            'High effort — consider recovery focus or lighter volume next session.',
+          defaultValue: 'Hard sets stacking up — leave a little in the tank if form slips.',
         })
       : t('activeCoachNotesDefault', {
-          defaultValue: 'Rate Easy/Med/Hard after each set — feeds smart suggestions.',
+          defaultValue: 'Rate Easy / Med / Hard after each set so Coach can learn.',
         });
 
   return (

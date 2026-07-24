@@ -114,7 +114,7 @@ export function SetLogRow({
             <TooltipTrigger asChild>
               <Badge
                 variant="outline"
-                className="border-brass/50 bg-brass/15 text-brass text-[10px] uppercase tracking-wide"
+                className="border-brass/40 bg-brass/10 text-brass text-[11px] font-semibold"
               >
                 {t('activePrBadge', { defaultValue: 'PR' })}
               </Badge>

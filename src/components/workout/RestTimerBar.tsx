@@ -34,24 +34,24 @@ export function RestTimerBar({
       className={cn(
         'fixed inset-x-0 z-40 md:max-w-lg md:mx-auto md:bottom-4 md:rounded-2xl',
         'bottom-[calc(52px+env(safe-area-inset-bottom))]',
-        'border-t md:border border-border/50 bg-card/95 backdrop-blur-md shadow-lg',
+        'border-t md:border border-border/50 bg-background/95 backdrop-blur-md shadow-md',
         className
       )}
       role="timer"
       aria-live="polite"
       aria-label={`${t('activeRestTitle', { defaultValue: 'Rest' })} ${clock}`}
     >
-      <div className="px-4 pt-2.5 pb-1.5">
-        <div className="relative mx-auto flex h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-muted/40">
+      <div className="px-4 pt-3 pb-1.5">
+        <div className="relative mx-auto flex h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-muted/50">
           <div
-            className="h-full rounded-full bg-muted-foreground/70 transition-[width] duration-1000 linear motion-reduce:transition-none"
+            className="h-full rounded-full bg-primary/70 transition-[width] duration-1000 linear motion-reduce:transition-none"
             style={{ width: `${Math.round(progress * 100)}%` }}
           />
         </div>
-        <p className="mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium">
+        <p className="mt-2 text-center text-xs font-medium text-muted-foreground">
           {t('activeRestTitle', { defaultValue: 'Rest' })}
         </p>
-        <p className="text-center font-mono text-4xl sm:text-5xl font-bold tabular-nums text-foreground tracking-tight leading-none mt-0.5">
+        <p className="text-center font-mono text-4xl sm:text-5xl font-semibold tabular-nums text-foreground tracking-tight leading-none mt-1">
           {clock}
         </p>
       </div>
@@ -69,8 +69,8 @@ export function RestTimerBar({
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-1 px-4 pb-2.5">
-        <span className="text-[10px] uppercase tracking-wide text-muted-foreground me-1">
+      <div className="flex flex-wrap items-center justify-center gap-1 px-4 pb-3">
+        <span className="text-xs text-muted-foreground me-1">
           {t('activeRestDefault', { defaultValue: 'Default' })}
         </span>
         {[60, 90, 120, 180].map((sec) => (
@@ -78,7 +78,7 @@ export function RestTimerBar({
             key={sec}
             variant="ghost"
             size="sm"
-            className="h-7 px-2 text-[10px] text-muted-foreground"
+            className="h-8 px-2.5 text-xs text-muted-foreground"
             onClick={() => {
               onPreset(sec);
               saveDefaultRestSeconds(sec);
