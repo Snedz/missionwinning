@@ -12,6 +12,8 @@ import {
   heightUnitLabel,
   bodyweightUnitLabel,
 } from '@/lib/units';
+import { readRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 export type { UnitsPref };
 
@@ -19,7 +21,7 @@ export function useUnits(): UnitsPref {
   const [units, setUnits] = useState<UnitsPref>('metric');
 
   useEffect(() => {
-    const saved = localStorage.getItem('mw_units') as UnitsPref | null;
+    const saved = readRaw(STORAGE_KEYS.units) as UnitsPref | null;
     if (saved === 'metric' || saved === 'imperial') setUnits(saved);
 
     const onStorage = (e: StorageEvent) => {

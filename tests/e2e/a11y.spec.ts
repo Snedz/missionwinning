@@ -20,7 +20,46 @@ const GATED_ROUTES = [
   '/exercises/push-ups',
 ] as const;
 
+/**
+ * Wait until the page stops animating before measuring.
+ *
+ * `page-enter` / `journey-enter` / `Reveal` fade opacity in, and a partly-faded
+ * element composites to a lower contrast ratio than its resting state — so axe run
+ * mid-animation reports failures that do not exist once the page settles.
+ *
+ * A one-shot `getAnimations()` check is not enough: these routes mount components
+ * behind `requestIdleCallback` and dynamic imports, so new animations start *after*
+ * the first check and the failure wandered between /welcome, /coach and /nutrition
+ * at roughly one run in two. This waits for two consecutive quiet frames instead,
+ * which is the difference between a gate people trust and one they switch off.
+ */
+async function settle(page: import('@playwright/test').Page) {
+  await page
+    .evaluate(async () => {
+      const quiet = () => document.getAnimations().filter((a) => a.playState === 'running');
+      const deadline = Date.now() + 5_000;
+      let consecutiveQuiet = 0;
+
+      while (Date.now() < deadline && consecutiveQuiet < 2) {
+        const running = quiet();
+        if (running.length === 0) {
+          consecutiveQuiet += 1;
+        } else {
+          consecutiveQuiet = 0;
+          await Promise.race([
+            Promise.allSettled(running.map((a) => a.finished.catch(() => undefined))),
+            new Promise((r) => setTimeout(r, 1_200)),
+          ]);
+        }
+        // A frame plus a beat, so anything mounting on idle has a chance to begin.
+        await new Promise((r) => setTimeout(r, 150));
+      }
+    })
+    .catch(() => undefined);
+}
+
 async function axeSerious(page: import('@playwright/test').Page, path: string) {
+  await settle(page);
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     // The MW monogram is a logotype, which WCAG 1.4.3 exempts from contrast — and it

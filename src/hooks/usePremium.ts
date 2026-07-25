@@ -7,6 +7,8 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 import { isFreeBetaPremiumUnlocked } from '@/lib/freeBeta';
+import { readRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 const TTL_MS = 60_000;
 
@@ -50,8 +52,7 @@ function demoFallbackPremium(): boolean {
   if (isFreeBetaPremiumUnlocked()) return true;
   return (
     process.env.NODE_ENV === 'development' &&
-    typeof localStorage !== 'undefined' &&
-    localStorage.getItem('mw_premium') === 'true'
+    readRaw(STORAGE_KEYS.premium) === 'true'
   );
 }
 

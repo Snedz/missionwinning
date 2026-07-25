@@ -6,6 +6,8 @@ import type { CompletedWorkoutLog } from '@/types';
 import { getPillarWins } from '@/lib/pillarLog';
 import { getTrainingStreak } from '@/lib/streaks';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS, WORKOUT_STORE_KEY } from '@/lib/storage/keys';
 
 export type JourneyPhase = 'i-day' | 'basic' | 'readiness' | 'commissioned';
 
@@ -70,14 +72,14 @@ export function getDefaultJourneyState(): JourneyState {
 
 function hasLegacyOnboarding(): boolean {
   if (typeof window === 'undefined') return false;
-  return !!(localStorage.getItem('mw_experience') && localStorage.getItem('mw_equipment'));
+  return !!(readRaw(STORAGE_KEYS.experience) && readRaw(STORAGE_KEYS.equipment));
 }
 
 export function loadJourneyState(): JourneyState {
   if (typeof window === 'undefined') return { ...DEFAULT_STATE };
 
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = readRaw(STORAGE_KEY);
     if (raw) {
       return { ...DEFAULT_STATE, ...JSON.parse(raw) } as JourneyState;
     }
@@ -89,7 +91,7 @@ export function loadJourneyState(): JourneyState {
     const migrated: JourneyState = {
       ...DEFAULT_STATE,
       phase: 'basic',
-      iDay: { completedAt: localStorage.getItem('mw_journey_started') ?? new Date().toISOString() },
+      iDay: { completedAt: readRaw(STORAGE_KEYS.journeyStarted) ?? new Date().toISOString() },
     };
     saveJourneyState(migrated);
     return migrated;
@@ -103,13 +105,13 @@ export function saveJourneyState(state: JourneyState): void {
 
   let prev: JourneyState = { ...DEFAULT_STATE };
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = readRaw(STORAGE_KEY);
     if (raw) prev = { ...DEFAULT_STATE, ...JSON.parse(raw) } as JourneyState;
   } catch {
     // use default prev
   }
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  writeRaw(STORAGE_KEY, JSON.stringify(state));
   window.dispatchEvent(new CustomEvent('mw-journey-local-change'));
   void import('@/lib/journeySync').then((m) => m.scheduleJourneyPush());
 
@@ -118,7 +120,7 @@ export function saveJourneyState(state: JourneyState): void {
       a.trackJourneyPhaseComplete(prev.phase, state.phase);
     }
     if (!prev.iDay.completedAt && state.iDay.completedAt) {
-      a.trackJourneyEvent('i_day_complete', { experience: localStorage.getItem('mw_experience') });
+      a.trackJourneyEvent('i_day_complete', { experience: readRaw(STORAGE_KEYS.experience) });
     }
     if (!prev.commissionedAt && state.commissionedAt) {
       a.trackJourneyEvent('journey_commissioned', { at: state.commissionedAt });
@@ -137,7 +139,7 @@ export function markIDayStarted(): void {
   const s = loadJourneyState();
   if (!s.iDay.startedAt) {
     s.iDay.startedAt = new Date().toISOString();
-    localStorage.setItem('mw_journey_started', s.iDay.startedAt);
+    writeRaw(STORAGE_KEYS.journeyStarted, s.iDay.startedAt);
     saveJourneyState(s);
   }
 }
@@ -153,10 +155,10 @@ export function completeIDay(profile: {
   equipment: string;
   primaryGoal: string;
 }): void {
-  localStorage.setItem('mw_experience', profile.experience);
-  localStorage.setItem('mw_equipment', profile.equipment);
-  localStorage.setItem('mw_primary_goal', profile.primaryGoal);
-  localStorage.setItem('mw_goals', profile.primaryGoal);
+  writeRaw(STORAGE_KEYS.experience, profile.experience);
+  writeRaw(STORAGE_KEYS.equipment, profile.equipment);
+  writeRaw(STORAGE_KEYS.primaryGoal, profile.primaryGoal);
+  writeRaw(STORAGE_KEYS.goals, profile.primaryGoal);
 
   const s = loadJourneyState();
   s.iDay.completedAt = new Date().toISOString();
@@ -172,7 +174,7 @@ function detectBasicMilestones(workoutHistory: CompletedWorkoutLog[] = []): Jour
   let workout = workoutHistory.length > 0;
   if (!workout) {
     try {
-      const hist = JSON.parse(localStorage.getItem('workout-tracker-storage') || '{}');
+      const hist = JSON.parse(readRaw(WORKOUT_STORE_KEY) || '{}');
       workout = (hist?.state?.workoutHistory?.length ?? 0) > 0;
     } catch {
       workout = false;
@@ -181,7 +183,7 @@ function detectBasicMilestones(workoutHistory: CompletedWorkoutLog[] = []): Jour
 
   let fuel = false;
   try {
-    const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]') as { protein?: number }[];
+    const logs = JSON.parse(readRaw('mw_nutrition_log') || '[]') as { protein?: number }[];
     fuel = logs.some((l) => (l.protein ?? 0) > 0);
   } catch {
     fuel = false;
@@ -191,7 +193,7 @@ function detectBasicMilestones(workoutHistory: CompletedWorkoutLog[] = []): Jour
   const move = wins.some((w) => w.pillar === 'move');
   let mind = wins.some((w) => w.pillar === 'mind');
   try {
-    const checkins = JSON.parse(localStorage.getItem('mw_mind_checkins') || '[]') as unknown[];
+    const checkins = JSON.parse(readRaw('mw_mind_checkins') || '[]') as unknown[];
     if (checkins.length > 0) mind = true;
   } catch {
     // ignore
@@ -199,8 +201,8 @@ function detectBasicMilestones(workoutHistory: CompletedWorkoutLog[] = []): Jour
 
   let learn = false;
   try {
-    const completed = JSON.parse(localStorage.getItem('mw_learn_completed') || '[]') as unknown[];
-    const guideDone = JSON.parse(localStorage.getItem('mw_guidebook_progress') || '[]') as unknown[];
+    const completed = JSON.parse(readRaw('mw_learn_completed') || '[]') as unknown[];
+    const guideDone = JSON.parse(readRaw('mw_guidebook_progress') || '[]') as unknown[];
     learn = completed.length > 0 || guideDone.length > 0;
   } catch {
     learn = false;
@@ -214,7 +216,7 @@ function detectBasicMilestones(workoutHistory: CompletedWorkoutLog[] = []): Jour
 function detectReadinessMilestones(workoutHistory: CompletedWorkoutLog[]): JourneyReadinessMilestones {
   let parq = false;
   try {
-    parq = !!localStorage.getItem('mw_last_assessment');
+    parq = !!readRaw('mw_last_assessment');
   } catch {
     parq = false;
   }
@@ -265,7 +267,7 @@ export function syncJourneyPhase(workoutHistory: CompletedWorkoutLog[] = []): Jo
 
   if (!s.commissionedAt) {
     s.commissionedAt = new Date().toISOString();
-    localStorage.setItem('mw_commissioned_at', s.commissionedAt);
+    writeRaw(STORAGE_KEYS.commissionedAt, s.commissionedAt);
   }
   s.phase = 'commissioned';
   saveJourneyState(s);
@@ -293,7 +295,7 @@ function firstWorkoutTemplate(): NonNullable<JourneyAction['startWorkout']> {
   };
   if (typeof window === 'undefined') return fallback;
   try {
-    const equipment = localStorage.getItem('mw_equipment') || 'bodyweight';
+    const equipment = readRaw(STORAGE_KEYS.equipment) || 'bodyweight';
     const session = previewJustGoForEquipment(equipment);
     if (session.exercises.length === 0) return fallback;
     return { name: session.name, exercises: session.exercises };
@@ -371,7 +373,7 @@ export function getNextAction(workoutHistory: CompletedWorkoutLog[] = []): Journ
       // Avoid guidebook chapter catalog on cold path — generic guide CTA when incomplete.
       let guideSectionsDone = 0;
       try {
-        const raw = JSON.parse(localStorage.getItem('mw_guidebook_progress') || '[]') as unknown[];
+        const raw = JSON.parse(readRaw('mw_guidebook_progress') || '[]') as unknown[];
         guideSectionsDone = Array.isArray(raw) ? raw.length : 0;
       } catch {
         guideSectionsDone = 0;

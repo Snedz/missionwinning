@@ -33,6 +33,8 @@ import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { getExerciseById } from '@/data/exercises';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
+import { readRaw, writeRaw, remove as removeKey } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
@@ -65,21 +67,21 @@ export function WelcomePage() {
 
   useEffect(() => {
     if (!isEdit || typeof window === 'undefined') return;
-    setExperience(localStorage.getItem('mw_experience') || 'beginner');
-    setEquipment(localStorage.getItem('mw_equipment') || 'bodyweight');
+    setExperience(readRaw(STORAGE_KEYS.experience) || 'beginner');
+    setEquipment(readRaw(STORAGE_KEYS.equipment) || 'bodyweight');
     setPrimaryGoal(
-      localStorage.getItem('mw_primary_goal') ||
-        localStorage.getItem('mw_goals') ||
+      readRaw(STORAGE_KEYS.primaryGoal) ||
+        readRaw(STORAGE_KEYS.goals) ||
         t('welcomeGoalPlaceholder', { defaultValue: 'Build strength and stay healthy' })
     );
     setStep('profile');
   }, [isEdit, t]);
 
   const saveProfileFields = () => {
-    localStorage.setItem('mw_experience', experience);
-    localStorage.setItem('mw_equipment', equipment);
-    localStorage.setItem('mw_primary_goal', primaryGoal);
-    localStorage.setItem('mw_goals', primaryGoal);
+    writeRaw(STORAGE_KEYS.experience, experience);
+    writeRaw(STORAGE_KEYS.equipment, equipment);
+    writeRaw(STORAGE_KEYS.primaryGoal, primaryGoal);
+    writeRaw(STORAGE_KEYS.goals, primaryGoal);
     saveDaysPerWeek(defaultDaysPerWeek(experience));
     scheduleJourneyPush();
   };
@@ -370,8 +372,8 @@ export function WelcomePage() {
                     defaultChecked={false}
                     onChange={(e) => {
                       try {
-                        if (e.target.checked) localStorage.setItem('mw_reminders_pref', '1');
-                        else localStorage.removeItem('mw_reminders_pref');
+                        if (e.target.checked) writeRaw(STORAGE_KEYS.remindersPref, '1');
+                        else removeKey(STORAGE_KEYS.remindersPref);
                       } catch { /* noop */ }
                     }}
                   />

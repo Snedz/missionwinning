@@ -7,6 +7,8 @@ import { mapStorageEquipment } from '@/lib/coach/equipment';
 import { getOrCreateDeviceId } from '@/lib/coach/storage';
 import { loadPreferredDays, loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
+import { readRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 export function buildCoachContextFromInputs(params: {
   history: CompletedWorkoutLog[];
@@ -57,14 +59,14 @@ export function readLocalCoachContext(history: CompletedWorkoutLog[]): CoachCont
   if (typeof window === 'undefined') {
     return buildCoachContextFromInputs({ history, includeCheckIn: false });
   }
-  const experience = localStorage.getItem('mw_experience') ?? 'beginner';
-  const equipment = localStorage.getItem('mw_equipment') ?? 'bodyweight';
+  const experience = readRaw(STORAGE_KEYS.experience) ?? 'beginner';
+  const equipment = readRaw(STORAGE_KEYS.equipment) ?? 'bodyweight';
   const goal =
-    localStorage.getItem('mw_primary_goal') ?? localStorage.getItem('mw_goals') ?? 'goal:general';
-  const units = (localStorage.getItem('mw_units') as UnitsPref) ?? 'metric';
+    readRaw(STORAGE_KEYS.primaryGoal) ?? readRaw(STORAGE_KEYS.goals) ?? 'goal:general';
+  const units = (readRaw(STORAGE_KEYS.units) as UnitsPref) ?? 'metric';
   let assessmentRisk: string | undefined;
   try {
-    const raw = localStorage.getItem('mw_last_assessment');
+    const raw = readRaw(STORAGE_KEYS.lastAssessment);
     if (raw) assessmentRisk = (JSON.parse(raw) as { risk?: string }).risk;
   } catch {
     /* ignore */

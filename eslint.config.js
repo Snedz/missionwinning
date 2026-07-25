@@ -21,14 +21,11 @@ const LEGACY_DIRECT_STORAGE = [
   'src/components/today/TodayProgressSection.tsx',
   'src/components/workout/SessionCheckInSheet.tsx',
   'src/components/workout/WorkoutVictorySheet.tsx',
-  'src/hooks/usePremium.ts',
-  'src/hooks/useUnits.ts',
   'src/lib/activityLog.ts',
   'src/lib/analyticsOptOut.ts',
   'src/lib/attribution.ts',
   'src/lib/bodyMetrics.ts',
   'src/lib/challenges.ts',
-  'src/lib/coach/contextBuilder.ts',
   'src/lib/coach/schedulePrefs.ts',
   'src/lib/coach/storage.ts',
   'src/lib/coachSync.ts',
@@ -44,7 +41,6 @@ const LEGACY_DIRECT_STORAGE = [
   'src/lib/learnCourseProgress.ts',
   'src/lib/macroTargets.ts',
   'src/lib/mindCheckIns.ts',
-  'src/lib/missionJourney.ts',
   'src/lib/nutritionHighProteinDays.ts',
   'src/lib/payments.ts',
   'src/lib/pillarLog.ts',
@@ -66,8 +62,6 @@ const LEGACY_DIRECT_STORAGE = [
   'src/page-components/HomePage.tsx',
   'src/page-components/HomeTodayLean.tsx',
   'src/page-components/LearnPage.tsx',
-  'src/page-components/ProfilePage.tsx',
-  'src/page-components/WelcomePage.tsx',
 ];
 
 export default tseslint.config(

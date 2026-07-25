@@ -37,6 +37,8 @@ import { SyncStatusRow } from '@/components/profile/SyncStatusRow';
 import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -73,9 +75,9 @@ export function ProfilePage() {
           });
       }
     });
-    const savedUnits = localStorage.getItem('mw_units') as 'metric' | 'imperial' | null;
+    const savedUnits = readRaw(STORAGE_KEYS.units) as 'metric' | 'imperial' | null;
     if (savedUnits) setUnits(savedUnits);
-    const savedGoals = localStorage.getItem('mw_goals');
+    const savedGoals = readRaw(STORAGE_KEYS.goals);
     if (savedGoals) setGoals(savedGoals);
 
     import('@/lib/supabase').then(({ isPremium }) => {
@@ -135,9 +137,9 @@ export function ProfilePage() {
 
   const saveUnits = (u: 'metric' | 'imperial') => {
     setUnits(u);
-    localStorage.setItem('mw_units', u);
+    writeRaw(STORAGE_KEYS.units, u);
     try {
-      localStorage.setItem('mw_units_explicit', '1');
+      writeRaw(STORAGE_KEYS.unitsExplicit, '1');
     } catch {
       /* private mode */
     }
@@ -145,7 +147,7 @@ export function ProfilePage() {
   };
 
   const saveGoals = () => {
-    localStorage.setItem('mw_goals', goals);
+    writeRaw(STORAGE_KEYS.goals, goals);
     scheduleJourneyPush();
   };
 
@@ -203,18 +205,18 @@ export function ProfilePage() {
   };
 
   const [experience] = useState(() =>
-    typeof window !== 'undefined' ? localStorage.getItem('mw_experience') || '' : ''
+    typeof window !== 'undefined' ? readRaw(STORAGE_KEYS.experience) || '' : ''
   );
   const [equipment] = useState(() =>
-    typeof window !== 'undefined' ? localStorage.getItem('mw_equipment') || '' : ''
+    typeof window !== 'undefined' ? readRaw(STORAGE_KEYS.equipment) || '' : ''
   );
   const [daysPerWeek, setDaysPerWeek] = useState(() =>
     loadDaysPerWeek(
-      typeof window !== 'undefined' ? localStorage.getItem('mw_experience') || 'beginner' : 'beginner'
+      typeof window !== 'undefined' ? readRaw(STORAGE_KEYS.experience) || 'beginner' : 'beginner'
     )
   );
   const [primaryGoal] = useState(() =>
-    typeof window !== 'undefined' ? localStorage.getItem('mw_primary_goal') || goals : goals
+    typeof window !== 'undefined' ? readRaw(STORAGE_KEYS.primaryGoal) || goals : goals
   );
 
   const isOnboarded = !!(experience && equipment);

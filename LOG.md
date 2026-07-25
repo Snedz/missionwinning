@@ -6,6 +6,50 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Quality pass: a11y green, outbox finished, gate runnable (`.127`)
+
+Closing gaps the last week's work left rather than adding to it.
+
+- **`npm run a11y`: 8 failing routes → 10/10, and deterministic.** White on the brand
+  emerald was 2.76:1. No single value fixes it — `--primary` is 7.08:1 as text on navy
+  but 2.77:1 under white text, and a value dark enough for white text falls to 3.57:1 as
+  text. So `--primary` is unchanged and `--primary-fill` (hue 158, L 25%) carries white
+  text at 5.38:1; hover **darkens** because lightening fails again at 4.17:1.
+- Three more contrast defects the audit surfaced, all pre-existing: `--muted-foreground`
+  58%→62% (utilities dim it to /80 and /70, compositing to 4.31:1); `.section-index`
+  un-dimmed (4.48:1 on card surfaces); `WeekStrip` empty/missed days de-emphasised by
+  border instead of a container `opacity` that took the day label to 2.05:1; and
+  `.xp-word` animates transform only, since fading from opacity 0.15 left words at
+  1.25:1 whenever the scroll animation had not run.
+- **The MW monogram keeps the accent** — logotype, WCAG 1.4.3 exempts it, and it must
+  match `/favicon.svg` and the PWA rasters. Its seven inline copies are now one
+  `BrandMonogram` with `data-brand-monogram`, which axe excludes **by selector** rather
+  than by disabling color-contrast everywhere.
+- **The a11y suite was also ~50% flaky**, wandering between `/welcome`, `/coach` and
+  `/nutrition`. Cause: axe ran mid-fade, and a partly-faded element composites lower
+  than its resting state. A one-shot `getAnimations()` check was not enough because those
+  routes mount behind `requestIdleCallback`, so animations started after the check. It
+  now waits for two consecutive quiet frames. 5/5 clean runs.
+- **Every declared `OutboxKind` has a handler now.** Only `workout.upsert` did; the other
+  five would have queued forever while the type claimed support, and their `pushTimer`
+  modules still did the real work on the path the outbox replaced. `fuel.plan` is
+  **removed** rather than wired — `pushFuelPlanToCloud` writes a device-storage key, not
+  a network, so there is nothing to retry. The rest returned `false` when signed out,
+  which the outbox cannot tell from a network failure; they return `true` now.
+  `leaderboard`/`pft` swallowed errors and returned void, silently losing writes.
+- **Cross-device edits and deletes work.** `getUserWorkoutsUpdatedSince` had zero callers
+  since `.123`; `loadFromCloud` now pairs the `completed_at` backfill with an `updated_at`
+  cursor, which is the only way an edit or a tombstone arrives. Also **corrects the `.123`
+  claim** that truncation was reported — `truncated` was computed but only read by a test.
+  It emits `history_truncated` now.
+- **`npm run gate`** ([scripts/gate.mjs](scripts/gate.mjs)) runs lint · typecheck · tests ·
+  i18n · build · hero e2e, starting and stopping the server itself, because Actions is
+  still blocked and nothing else guards `master`. Checks for the chromium binary up front
+  rather than trusting `playwright --version`, which passes with no browser installed.
+- Storage ratchet **59 → 53**: WelcomePage, ProfilePage, missionJourney,
+  coach/contextBuilder, useUnits, usePremium off the legacy list.
+- 590 unit tests, 16 gate e2e, 10 a11y, lint clean, i18n parity green across 15 langs.
+
 ## 2026-07-25 — Homepage rebuilt on its own design system (`.126`)
 
 - **The actual bug: `/` ignored the briefing type system.** `src/index.css` already ships
