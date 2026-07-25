@@ -255,12 +255,12 @@ export function AssessmentsPage() {
               </Button>
             ))}
           </div>
-          <div className="bg-black/30 p-3 rounded">
+          <div className="bg-card p-3 rounded">
             <div className="font-medium text-primary">
               {t('assessCoachFocus', { defaultValue: 'Coach Focus:' })}{' '}
               {t(stages[selectedStage].focusKey, { defaultValue: '' })}
             </div>
-            <ul className="list-disc pl-5 mt-1 text-white/80">
+            <ul className="list-disc pl-5 mt-1 text-muted-foreground">
               {stages[selectedStage].questionKeys.map((qKey) => (
                 <li key={qKey}>{t(qKey, { defaultValue: qKey })}</li>
               ))}

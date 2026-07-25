@@ -1,40 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Tricep pushdown form: Start, Extend, Return">
   <title>Tricep pushdown form diagram</title>
-  <rect width="360" height="220" fill="#0a0c10" rx="8"/>
-  <text x="60" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Start</text>
-  <text x="180" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Extend</text>
-  <text x="300" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Return</text>
-  <line x1="20" y1="185" x2="100" y2="185" stroke="#2a3038" stroke-width="2"/>
-  <line x1="140" y1="185" x2="220" y2="185" stroke="#2a3038" stroke-width="2"/>
-  <line x1="260" y1="185" x2="340" y2="185" stroke="#2a3038" stroke-width="2"/>
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="60" cy="70" r="8"/>
-<line x1="60" y1="78" x2="60" y2="125"/>
-<line x1="60" y1="92" x2="44" y2="108"/>
-<line x1="60" y1="92" x2="76" y2="108"/>
-<line x1="60" y1="125" x2="48" y2="165"/>
-<line x1="60" y1="125" x2="72" y2="165"/>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Start</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Extend</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Return</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="70" r="8"></circle>
+<line x1="60" y1="78" x2="60" y2="125"></line>
+<line x1="60" y1="92" x2="44" y2="108"></line>
+<line x1="60" y1="92" x2="76" y2="108"></line>
+<line x1="60" y1="125" x2="48" y2="165"></line>
+<line x1="60" y1="125" x2="72" y2="165"></line>
   </g>
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="180" cy="70" r="8"/>
-<line x1="180" y1="78" x2="180" y2="125"/>
-<line x1="162" y1="65" x2="198" y2="65"/>
-<line x1="166" y1="65" x2="174" y2="85"/>
-<line x1="194" y1="65" x2="186" y2="85"/>
-<line x1="180" y1="125" x2="168" y2="165"/>
-<line x1="180" y1="125" x2="192" y2="165"/>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="180" cy="70" r="8"></circle>
+<line x1="180" y1="78" x2="180" y2="125"></line>
+<line x1="162" y1="65" x2="198" y2="65"></line>
+<line x1="166" y1="65" x2="174" y2="85"></line>
+<line x1="194" y1="65" x2="186" y2="85"></line>
+<line x1="180" y1="125" x2="168" y2="165"></line>
+<line x1="180" y1="125" x2="192" y2="165"></line>
   </g>
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="300" cy="70" r="8"/>
-<line x1="300" y1="78" x2="300" y2="125"/>
-<line x1="300" y1="92" x2="284" y2="108"/>
-<line x1="300" y1="92" x2="316" y2="108"/>
-<line x1="300" y1="125" x2="288" y2="165"/>
-<line x1="300" y1="125" x2="312" y2="165"/>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="300" cy="70" r="8"></circle>
+<line x1="300" y1="78" x2="300" y2="125"></line>
+<line x1="300" y1="92" x2="284" y2="108"></line>
+<line x1="300" y1="92" x2="316" y2="108"></line>
+<line x1="300" y1="125" x2="288" y2="165"></line>
+<line x1="300" y1="125" x2="312" y2="165"></line>
   </g>
-  <path d="M100 110 L120 110" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/><polygon points="120,106 128,110 120,114" fill="#27b07d"/>
-  <path d="M220 110 L240 110" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/><polygon points="240,106 248,110 240,114" fill="#27b07d"/>
-  <circle cx="180" cy="130" r="3.5" fill="#c7a860"/>
-  <text x="180" y="205" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="9">elbows still</text>
+  <path d="M100 110 L120 110" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path><polygon points="120,106 128,110 120,114" fill="#ec3013"></polygon>
+  <path d="M220 110 L240 110" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path><polygon points="240,106 248,110 240,114" fill="#ec3013"></polygon>
+  <circle cx="180" cy="130" r="3.5" fill="#ec3013"></circle>
+  <text x="180" y="205" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">elbows still</text>
 </svg>

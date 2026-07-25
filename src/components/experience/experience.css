@@ -648,7 +648,7 @@
 }
 
 .xp-ok {
-  color: #10b981;
+  color: hsl(var(--status-ok));
 }
 
 .xp-no {

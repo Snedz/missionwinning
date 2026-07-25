@@ -3,70 +3,86 @@
 @tailwind utilities;
 
 @layer base {
+  /* Modernist tokens (rebrand 2026-07-25, DESIGN_ORCHESTRATION wave D5):
+     ink on paper, ONE red accent, radius 0, 2px rules, light-only.
+     Values from the design handoff token sheet; kept as HSL triplets for
+     scripts/check-token-sync.mjs. */
   :root {
-    --background: 222 24% 5%;
-    --foreground: 210 20% 98%;
-    --card: 222 20% 9%;
-    --card-foreground: 210 20% 98%;
-    --popover: 222 20% 9%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 158 64% 42%;
+    --background: 0 4% 95%; /* paper #f3f2f2 — the only ground, never pure white */
+    --foreground: 20 5% 12%; /* ink #201e1d */
+    --card: 0 2% 92%; /* surface #eae9e9 — subtle panel fill */
+    --card-foreground: 20 5% 12%;
+    --popover: 0 2% 92%;
+    --popover-foreground: 20 5% 12%;
+    /* The red is THREE values because the paper ground inverts the .127 contrast
+       math. Poster red #ec3013 is only 3.78:1 on paper and 4.19:1 under white —
+       fine for fills with large (≥19px/700) labels, chrome, and icons; a WCAG
+       failure for 14px button text and any small colored text. So:
+         --accent-poster  #ec3013 — poster fields, .primary-action, large labels
+         --primary-fill   #dd2b0f — shadcn button fills; white text = 4.74:1 AA
+         --primary        #ae1800 — text/border red; 6.4:1 on paper at any size
+       text-primary (276 call sites) therefore stays AA everywhere without edits. */
+    --primary: 8 100% 34%;
     --primary-foreground: 0 0% 100%;
-    /* Filled surfaces carrying white text. --primary is an *accent* value: it reads
-       at 7.08:1 as text on navy but only 2.77:1 under white text, and no single
-       lightness satisfies both roles. Same brand hue (158), dropped lightness.
-       White on fill = 5.38:1, on fill-hover = 6.94:1 — both clear WCAG AA.
-       Hover darkens rather than lightens, because lightening fails again at 4.17:1. */
-    --primary-fill: 158 92% 25%;
-    --primary-fill-hover: 158 92% 21%;
-    --secondary: 222 16% 16%;
-    --secondary-foreground: 210 20% 96%;
-    --muted: 222 14% 13%;
-    /* 62% not 58%: several utilities dim this further (`text-muted-foreground/80` in
-       .section-index, /70 in .briefing-rule) and at 58% the composited result was
-       4.31:1 on navy — under the 4.5 floor for the 11–12px legal and label text that
-       uses it. 62% gives 7.08:1 full and 4.86:1 at 80% alpha. */
-    --muted-foreground: 215 12% 62%;
-    --accent: 158 45% 38%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 75% 64%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 222 14% 18%;
-    --input: 222 14% 18%;
-    --ring: 158 64% 42%;
-    --radius: 1rem;
-    /* Honors accent — medals, rank, founders. Green = action, brass = honor. */
-    --brass: 42 48% 58%;
-    --brass-foreground: 222 24% 5%;
-    /* Marketing elevation — raised surfaces + faint grid lines */
-    --surface-raised: 222 20% 11%;
-    --grid-line: 222 14% 18%;
-    /* Semantic status — prefer these over ad-hoc amber/blue skins */
-    --status-warn: 38 92% 50%;
-    --status-info: 210 70% 55%;
-    --status-danger: 0 75% 64%;
-    --status-ok: 158 64% 42%;
+    --primary-fill: 8 88% 46%;
+    --primary-fill-hover: 8 100% 34%;
+    --accent-poster: 8 85% 50%;
+    /* Tinted fills — highlighted rows, "today" states, progress tracks. */
+    --accent-tint: 11 100% 97%; /* #fff2ef */
+    --secondary: 0 2% 92%;
+    --secondary-foreground: 20 5% 12%;
+    --muted: 0 2% 92%;
+    /* 28% not 37%: several utilities dim this further (`/80` on the legal footer
+       and .briefing-rule) and at 37% the composited result was 3.75:1 on paper —
+       under the 4.5 floor. 28% (≈ ink at 78%, inside the handoff's 70–78% band)
+       gives 8.4:1 full and 4.66:1 at 80% alpha on the surface fill. */
+    --muted-foreground: 20 1% 28%;
+    --accent: 11 100% 97%;
+    --accent-foreground: 8 92% 25%;
+    --destructive: 8 100% 34%;
+    --destructive-foreground: 0 0% 100%;
+    /* ALL rules are 2px solid this gray (≈ ink 40% on paper) — never hairlines. */
+    --border: 0 1% 62%;
+    --input: 0 1% 62%;
+    --ring: 8 85% 50%;
+    --radius: 0rem; /* zero everywhere, on purpose — see tailwind.config.js */
+    /* Brass is retired on web — the neutral ramp carries hierarchy. Kept as a
+       neutral so the 40 remaining call sites render calmly until Phase 3 recuts
+       their screens. */
+    --brass: 20 1% 37%;
+    --brass-foreground: 0 4% 95%;
+    --surface-raised: 0 2% 92%;
+    --grid-line: 0 1% 62%;
+    /* Semantic status — deep, text-safe values for the light ground. */
+    --status-warn: 35 100% 28%;
+    --status-info: 210 80% 34%;
+    --status-danger: 8 100% 34%;
+    --status-ok: 158 90% 24%;
   }
 }
 
 @layer base {
+  /* One face for everything: app/layout.tsx loads Archivo once and the three
+     legacy font vars alias it, so the 84 font-display/font-mono call sites keep
+     working without edits. */
+  :root {
+    --font-inter: var(--font-archivo);
+    --font-display: var(--font-archivo);
+    --font-mono: var(--font-archivo);
+  }
+
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color-scheme: light;
+    font-family: var(--font-archivo), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 16px;
-    line-height: 1.5;
-    letter-spacing: -0.015em;
+    line-height: 1.55;
     min-height: 100vh;
+    text-wrap: pretty;
     -webkit-font-smoothing: antialiased;
-    /* Single gradient, no fixed attachment — fixed bg is a mobile paint tax. */
-    background-image: radial-gradient(
-      ellipse 80% 50% at 50% -20%,
-      hsl(158 64% 42% / 0.08),
-      transparent
-    );
   }
 
   /**
@@ -85,7 +101,11 @@
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 0;
+  }
+
+  ::selection {
+    background: hsl(var(--accent-poster) / 0.3);
   }
 
   /* Pointer users never see it; keyboard users always do. */
@@ -95,58 +115,35 @@
 }
 
 @layer components {
+  /* Modernist card kit — flat surface fills; rules and alignment organize,
+     nothing floats. The old glow tiers collapse into two states. */
   .content-card {
-    @apply rounded-2xl border border-border/50 bg-card/90 shadow-sm shadow-black/10;
+    @apply bg-card;
   }
 
-  /* Marketing elevation — tier above content-card (landing / bundle / compare). */
+  /* Tier above content-card: surface + a 2px rule border. */
   .card-elevated {
-    @apply rounded-2xl border border-border/50 bg-[hsl(var(--surface-raised))] shadow-lg shadow-black/30;
-    box-shadow:
-      0 1px 0 0 hsl(0 0% 100% / 0.06) inset,
-      0 12px 40px -12px rgb(0 0 0 / 0.55);
+    @apply border-2 border-border bg-card;
   }
 
+  /* The one emphasized card per screen: tint fill + 2px poster-red border
+     (the "selected / today" treatment from the handoff). */
   .card-glow-emerald {
-    box-shadow:
-      0 1px 0 0 hsl(0 0% 100% / 0.06) inset,
-      0 0 0 1px hsl(158 64% 42% / 0.28),
-      0 0 32px -4px hsl(158 64% 42% / 0.45),
-      0 0 72px -8px hsl(158 64% 42% / 0.35),
-      0 12px 40px -12px rgb(0 0 0 / 0.55);
+    @apply border-2 border-[hsl(var(--accent-poster))] bg-[hsl(var(--accent-tint))];
   }
 
+  /* Brass is retired — honor cards read as elevated neutrals now. */
   .card-glow-brass {
-    box-shadow:
-      0 1px 0 0 hsl(0 0% 100% / 0.06) inset,
-      0 0 0 1px hsl(var(--brass) / 0.28),
-      0 0 48px -12px hsl(var(--brass) / 0.3),
-      0 12px 40px -12px rgb(0 0 0 / 0.55);
+    @apply border-2 border-border bg-card;
   }
 
-  /* Soft emerald bloom behind ProgressRing (Win Score / Mission Score). */
+  /* The bloom behind ProgressRing is retired — the ring itself carries it. */
   .ring-glow-emerald {
     position: relative;
   }
 
   .ring-glow-emerald::before {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    left: 50%;
-    top: 42%;
-    width: 78%;
-    height: 78%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      hsl(158 64% 42% / 0.45) 0%,
-      hsl(158 64% 42% / 0.18) 42%,
-      transparent 72%
-    );
-    filter: blur(14px);
-    z-index: 0;
+    content: none;
   }
 
   .ring-glow-emerald > * {
@@ -154,15 +151,8 @@
     z-index: 1;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .ring-glow-emerald::before {
-      filter: blur(10px);
-      opacity: 0.85;
-    }
-  }
-
   .auth-panel {
-    @apply border border-border/60 bg-gradient-to-b from-card/90 to-muted/30;
+    @apply border-2 border-border bg-card;
   }
 
   .auth-divider {
@@ -179,7 +169,7 @@
   }
 
   .oauth-btn {
-    @apply rounded-xl border-border/70 bg-background/60 hover:bg-secondary/80 transition-colors;
+    @apply border-border/70 bg-background/60 hover:bg-secondary/80 transition-colors;
   }
 
   .oauth-btn-apple {
@@ -187,95 +177,85 @@
   }
 
   .oauth-btn-google {
-    @apply hover:border-emerald-500/30;
+    @apply hover:border-foreground/20;
   }
 
   .tap-target {
     @apply min-h-[44px] min-w-[44px];
   }
 
+  /* The primary CTA: poster red, flush-left label (Modernist rule — labels start
+     at the padding edge, never centered). 19px/800 keeps paper-adjacent white on
+     #ec3013 in WCAG large-text territory (3:1) — do not shrink the label. */
   .primary-action {
-    @apply w-full flex items-center justify-center gap-2 min-h-[52px] rounded-2xl bg-primary-fill hover:bg-primary-fill-hover active:scale-[0.98] text-white font-semibold text-[17px] transition-all;
-    box-shadow:
-      0 0 0 1px hsl(158 64% 42% / 0.35),
-      0 0 28px -4px hsl(158 64% 42% / 0.55),
-      0 8px 24px -8px rgb(0 0 0 / 0.5);
+    @apply flex w-full items-center justify-start gap-2 min-h-[52px] bg-[hsl(var(--accent-poster))] px-6 text-left font-extrabold text-[19px] text-primary-foreground transition-colors hover:bg-primary-fill active:bg-primary-fill-hover;
   }
 
-  /* The global ring is emerald, and this button's own bloom is emerald — so the focus
-     indicator here is white, or it disappears into the glow it sits on. */
+  /* The global ring is the poster red, and so is this button's fill — so the focus
+     indicator here is ink, or it disappears into the fill it sits on. */
   .primary-action:focus-visible {
     outline: 3px solid hsl(var(--foreground));
     outline-offset: 3px;
   }
 
-  .primary-action:hover {
-    box-shadow:
-      0 0 0 1px hsl(158 64% 42% / 0.45),
-      0 0 40px -2px hsl(158 64% 42% / 0.65),
-      0 10px 28px -8px rgb(0 0 0 / 0.55);
-  }
-
-  /* ── Briefing-document type system (public pages) ─────────────────
-     Eyebrow (mono, telemetry) → display headline (condensed caps) → body.
-     Green marks actions; brass marks honors. */
+  /* ── Modernist type system (public pages) ─────────────────
+     Kicker (caps telemetry, accent-700) → display headline (Archivo 800,
+     sentence case, flush left) → body. Class names are a contract with
+     scripts/check-display-type.mjs and the e2e suite — recut, never rename. */
 
   .eyebrow {
-    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground;
+    @apply text-[13px] uppercase tracking-[0.08em] text-muted-foreground;
+    font-feature-settings: 'tnum' 1;
   }
 
   .eyebrow-live {
-    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-primary;
+    @apply text-[13px] uppercase tracking-[0.08em] text-primary;
+    font-feature-settings: 'tnum' 1;
   }
 
   .eyebrow-honor {
-    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-brass;
+    @apply text-[13px] uppercase tracking-[0.08em] text-muted-foreground;
+    font-feature-settings: 'tnum' 1;
   }
 
   .display-hero {
-    @apply font-display font-bold uppercase leading-[0.95] tracking-[-0.01em];
-    font-size: clamp(2.75rem, 8vw, 5.5rem);
+    /* Archivo 800, sentence case (no `uppercase` — the caps were Barlow's), tight
+       leading, negative tracking, flush left. clamp() sizes are the contract
+       check-display-type.mjs protects from `text-*` nullification. */
+    @apply font-display font-extrabold leading-[1.06] tracking-[-0.02em];
+    font-size: clamp(2.625rem, 6vw, 4.75rem);
   }
 
   .display-section {
-    /* `font-bold`, not `font-semibold`: app/layout.tsx loads Barlow Condensed at weight
-       700 only, so 600 was being synthesized. A zero-pixel change that stops the class
-       claiming a weight it never had — and it matters now that ~250 SEO h1s use this
-       tier. Size, not weight, is what separates it from `.display-hero`. */
-    @apply font-display font-bold uppercase leading-none tracking-[0.005em];
+    @apply font-display font-extrabold leading-[1.12] tracking-[-0.015em];
     font-size: clamp(1.9rem, 4.5vw, 3rem);
   }
 
   .display-mega {
-    @apply font-display font-bold uppercase leading-none tracking-tight tabular-nums;
+    @apply font-display font-extrabold leading-none tracking-[-0.02em] tabular-nums;
     font-size: clamp(2.5rem, 7vw, 4.5rem);
   }
 
   .section-index {
-    /* Full muted-foreground, not /80: on card surfaces (lighter than the navy
-       canvas) the dimmed value landed at 4.48:1, just under the 4.5 floor for
-       11px text. The mono/uppercase/tracking already makes it read as a label. */
-    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground tabular-nums;
+    @apply text-[13px] uppercase tracking-[0.08em] text-muted-foreground tabular-nums;
+    font-feature-settings: 'tnum' 1;
   }
 
   .briefing-rule {
-    @apply flex items-center gap-3 text-muted-foreground/70;
+    @apply flex items-center gap-3 text-muted-foreground/80;
   }
 
   .briefing-rule::after {
     content: '';
-    @apply h-px flex-1 bg-border/70;
+    /* 2px, full strength — Modernist never draws hairlines. */
+    @apply h-0.5 flex-1 bg-border;
   }
 
   /* ── Marketing field textures (single-paint, mobile-cheap) ───────── */
 
+  /* Flat paper — the gradient field is retired; rules and the grid organize. */
   .hero-field {
     background-color: hsl(var(--background));
-    background-image:
-      radial-gradient(ellipse 80% 60% at 78% 18%, hsl(158 64% 42% / 0.32), transparent 58%),
-      radial-gradient(ellipse 50% 45% at 12% 78%, hsl(var(--brass) / 0.08), transparent 52%),
-      radial-gradient(ellipse 40% 35% at 48% 48%, hsl(158 64% 42% / 0.08), transparent 70%),
-      linear-gradient(180deg, hsl(222 24% 6%) 0%, hsl(var(--background)) 55%, hsl(222 24% 4%) 100%);
     padding-top: env(safe-area-inset-top, 0px);
   }
 
@@ -319,48 +299,21 @@
     opacity: 0.55;
   }
 
+  /* Noise is retired — flat ink on paper. Class kept for call-site stability. */
   .texture-noise {
     position: relative;
   }
 
   .texture-noise::after {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 180px 180px;
+    content: none;
   }
 
-  .section-seam {
-    border-bottom: none;
-    box-shadow: inset 0 -1px 0 0 transparent;
-    background-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      hsl(var(--border) / 0.7) 20%,
-      hsl(var(--border) / 0.7) 80%,
-      transparent 100%
-    );
-    background-size: 100% 1px;
-    background-position: bottom;
-    background-repeat: no-repeat;
-  }
-
+  /* Section seams are honest 2px rules now — full-bleed, no fade, no glow. */
+  .section-seam,
   .section-seam-glow {
     border-bottom: none;
-    background-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      hsl(158 64% 42% / 0.15) 15%,
-      hsl(var(--brass) / 0.2) 50%,
-      hsl(158 64% 42% / 0.15) 85%,
-      transparent 100%
-    );
-    background-size: 100% 1px;
+    background-image: linear-gradient(hsl(var(--border)), hsl(var(--border)));
+    background-size: 100% 2px;
     background-position: bottom;
     background-repeat: no-repeat;
   }
@@ -583,8 +536,10 @@
   --mag-muted: hsl(var(--muted-foreground));
   --mag-rule: hsl(var(--border));
   --mag-primary: hsl(var(--primary));
-  --mag-brass: hsl(var(--brass));
-  --mag-navy: hsl(var(--background));
+  /* Pinned literals: the magazine PDF keeps its own pre-rebrand palette until the
+     Phase 3 cover recut — the global tokens under these went paper/ink/red. */
+  --mag-brass: hsl(42 48% 58%);
+  --mag-navy: hsl(222 24% 5%);
   --mag-fg-on-dark: hsl(210 20% 96%);
   min-height: 100vh;
   background: var(--mag-paper);

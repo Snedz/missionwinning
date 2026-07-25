@@ -140,7 +140,7 @@ function FormGuideMedia({
   }
 
   return (
-    <figure className="overflow-hidden rounded-xl border border-border/40 bg-[#0a0c10]">
+    <figure className="overflow-hidden rounded-xl border-2 border-border bg-card">
       <img
         src={url}
         alt={`${name} form diagram`}
@@ -175,7 +175,7 @@ function GuideSection({
       <ul className="space-y-2">
         {items.map((item) => (
           <li key={item} className="flex gap-2 text-base">
-            <span className="text-emerald-500 shrink-0">{variant === 'error' ? '✗' : '·'}</span>
+            <span className="text-primary shrink-0">{variant === 'error' ? '✗' : '·'}</span>
             <span>{item}</span>
           </li>
         ))}

@@ -6,6 +6,38 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Modernist rebrand Phase 1: the whole app changes uniform (`.131`)
+
+The global token swap. One `:root` block in `src/index.css` now carries paper/ink/red;
+~2,700 token-utility call sites flipped without edits. Archivo (400/600/800) replaces
+Barlow Condensed + Inter + IBM Plex Mono — one `next/font` load, with the three legacy
+font vars aliased to it so all 84 `font-display`/`font-mono` sites resolve unchanged.
+
+- **The red is three tokens** because paper inverts the `.127` contrast math:
+  `--accent-poster` #ec3013 (fills w/ ≥19px/800 labels, chrome, one field per page),
+  `--primary-fill` #dd2b0f (button fills — white text 4.74:1 AA at any size),
+  `--primary` #ae1800 (all small red text/borders, 6.4:1) — so 276 `text-primary`
+  sites stayed AA without edits. Documented in brand-guidelines.md "Which red".
+- **Radius 0 via the whole Tailwind scale** — only `lg/md/sm` were token-wired;
+  `xl` (124), `2xl` (48), `3xl` now collapse too; `full` stays for true circles.
+  Glows, gradient fields, noise, and shadows retired: `.card-glow-emerald` is now the
+  tint+2px-poster-border "selected" card, seams are honest 2px rules.
+- **Guards updated in the same change set:** `check-token-sync.mjs` pins the new web
+  hexes, Android cross-check paused (wave D5 override; motion still enforced);
+  `first-90.spec.ts` font contract Barlow→Archivo (8 sites); display classes recut
+  in place (names are the `check-display-type` contract).
+- **Brand assets:** ink-square mark everywhere — `BrandMonogram`, favicon.svg,
+  apple-touch + PWA 192/512/maskable (sharp-rasterized), `/brand` SVG kit (icon,
+  reversed, red poster, wordmarks), OG generators re-inked flat (5 routes),
+  handoff `og-default.png` + social PNGs dropped in. **All 30 form-guide SVGs were
+  still navy** (exploration had claimed parity — a browser check caught it);
+  replaced with the handoff's re-inked paper set.
+- **Docs:** DESIGN_SYSTEM.md + brand-guidelines.md color/type/logo/AI sections
+  rewritten to Modernist; DESIGN_REVIEW checklist re-pointed; PressPage palette/
+  fonts/downloads recut. Magazine PDF keeps pinned pre-rebrand palette until its
+  Phase 3 cover recut. Beta testers now see restyled-but-not-recut app screens —
+  accepted in planning; the 12 screens follow in Phase 3.
+
 ## 2026-07-25 — Modernist rebrand Phase 0: the gate wears the new uniform (`.130`)
 
 The founder-commissioned **Modernist rebrand** (design handoff 2026-07-25: ink-on-paper

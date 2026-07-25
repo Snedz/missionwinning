@@ -64,7 +64,7 @@ export function FileUploadRow({
       className={cn(
         'rounded-xl border border-border/60 bg-background/50 p-3 flex gap-3 items-start',
         status === 'error' && 'border-destructive/40 bg-destructive/5',
-        status === 'success' && 'border-emerald-500/40 bg-emerald-500/5',
+        status === 'success' && 'border-[hsl(var(--status-ok)/0.4)] bg-[hsl(var(--status-ok)/0.05)]',
         className
       )}
     >
@@ -83,7 +83,7 @@ export function FileUploadRow({
             <p className="text-[11px] text-muted-foreground">
               {typeLabel} · {sizeLabel}
               {status === 'success' && (
-                <span className="ms-2 inline-flex items-center gap-0.5 text-emerald-400">
+                <span className="ms-2 inline-flex items-center gap-0.5 text-[hsl(var(--status-ok))]">
                   <Check className="h-3 w-3" />
                   {t('uploadDone', { defaultValue: 'Done' })}
                 </span>

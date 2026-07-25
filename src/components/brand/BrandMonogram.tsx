@@ -1,24 +1,18 @@
 import { cn } from '@/lib/utils';
 
 /**
- * The MW monogram — rounded emerald square, white letters.
- *
- * Six near-identical copies of this existed inline; this is the single source so the
- * mark stays consistent with `/favicon.svg` and the PWA rasters, all of which use
- * `hsl(158 64% 42%)` (the `--primary` accent, not `--primary-fill`).
- *
- * It deliberately keeps the accent value even though white-on-accent is 2.77:1:
- * WCAG 1.4.3 exempts logotypes from contrast requirements, and darkening only the
- * in-app mark would put it out of step with the icon files it is supposed to match.
- * `data-brand-monogram` marks it so the axe suite can exempt it by selector rather
- * than by blanket-disabling the color-contrast rule — see tests/e2e/a11y.spec.ts.
+ * The MW monogram — Modernist plain ink square, paper letters, zero radius
+ * (rebrand wave D5; the rounded emerald mark is retired everywhere, favicon and
+ * PWA icons included). Ink on paper is ~15:1, but `data-brand-monogram` stays so
+ * the axe exemption in tests/e2e/a11y.spec.ts keeps matching if a reversed or
+ * red poster variant is ever placed on a tinted field.
  */
 export function BrandMonogram({
   className,
   display,
 }: {
   className?: string;
-  /** Use the display face — for the guide/gate shells that set the wordmark in Barlow. */
+  /** Use the display face — for the guide/gate shells that set the wordmark in the display font. */
   display?: boolean;
 }) {
   return (
@@ -26,7 +20,7 @@ export function BrandMonogram({
       data-brand-monogram
       aria-hidden
       className={cn(
-        'flex shrink-0 items-center justify-center rounded-lg bg-primary font-bold text-primary-foreground',
+        'flex shrink-0 items-center justify-center rounded-none bg-foreground font-extrabold tracking-[-0.04em] text-background',
         display && 'font-display',
         className ?? 'h-8 w-8 text-sm'
       )}

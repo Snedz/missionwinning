@@ -58,7 +58,7 @@ export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
                 'text-xs font-semibold leading-tight',
                 active && b.theme === 'night' && 'text-[hsl(var(--status-info))]',
                 active && b.theme === 'dawn' && 'text-[hsl(var(--status-warn))]',
-                active && !themed && 'text-emerald-100'
+                active && !themed && 'text-primary-foreground'
               )}
             >
               {title}

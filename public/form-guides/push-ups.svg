@@ -1,70 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Push-up form: setup plank, mid lower, lockout">
   <title>Push-up form diagram</title>
-  <rect width="360" height="220" fill="#0a0c10" rx="8"/>
-  <!-- Phase labels -->
-  <text x="60" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Setup</text>
-  <text x="180" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Mid</text>
-  <text x="300" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Lockout</text>
-
-  <!-- Floor lines -->
-  <line x1="20" y1="175" x2="100" y2="175" stroke="#2a3038" stroke-width="2"/>
-  <line x1="140" y1="175" x2="220" y2="175" stroke="#2a3038" stroke-width="2"/>
-  <line x1="260" y1="175" x2="340" y2="175" stroke="#2a3038" stroke-width="2"/>
-
-  <!-- SETUP: high plank -->
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="78" cy="88" r="9"/>
-    <line x1="72" y1="95" x2="42" y2="118"/>
-    <line x1="42" y1="118" x2="38" y2="155"/>
-    <line x1="55" y1="108" x2="42" y2="118"/>
-    <line x1="72" y1="95" x2="95" y2="155"/>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="1">SETUP</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="1">MID</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11" letter-spacing="1">LOCKOUT</text>
+  <line x1="20" y1="175" x2="100" y2="175" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="175" x2="220" y2="175" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="175" x2="340" y2="175" stroke="#201e1d" stroke-width="2"></line>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="78" cy="88" r="9"></circle>
+    <line x1="72" y1="95" x2="42" y2="118"></line>
+    <line x1="42" y1="118" x2="38" y2="155"></line>
+    <line x1="55" y1="108" x2="42" y2="118"></line>
+    <line x1="72" y1="95" x2="95" y2="155"></line>
   </g>
-  <circle cx="42" cy="118" r="3.5" fill="#c7a860"/>
-  <text x="42" y="112" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">elbow</text>
-
-  <!-- MID: lowered (animated group mirrors mid pose as reference) -->
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="198" cy="118" r="9"/>
-    <line x1="192" y1="125" x2="162" y2="138"/>
-    <line x1="162" y1="138" x2="158" y2="155"/>
-    <line x1="175" y1="132" x2="162" y2="138"/>
-    <line x1="192" y1="125" x2="215" y2="155"/>
+  <rect x="38.5" y="114.5" width="7" height="7" fill="#ec3013"></rect>
+  <text x="42" y="108" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="8" letter-spacing="0.5">ELBOW</text>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="198" cy="118" r="9"></circle>
+    <line x1="192" y1="125" x2="162" y2="138"></line>
+    <line x1="162" y1="138" x2="158" y2="155"></line>
+    <line x1="175" y1="132" x2="162" y2="138"></line>
+    <line x1="192" y1="125" x2="215" y2="155"></line>
   </g>
-  <path d="M168 100 L168 120" stroke="#27b07d" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
   <defs>
     <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#27b07d"/>
+      <path d="M0,0 L6,3 L0,6 Z" fill="#ec3013"></path>
     </marker>
   </defs>
-  <text x="180" y="96" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">lower</text>
-  <circle cx="162" cy="138" r="3.5" fill="#c7a860"/>
-
-  <!-- LOCKOUT: high again -->
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="318" cy="88" r="9"/>
-    <line x1="312" y1="95" x2="282" y2="118"/>
-    <line x1="282" y1="118" x2="278" y2="155"/>
-    <line x1="295" y1="108" x2="282" y2="118"/>
-    <line x1="312" y1="95" x2="335" y2="155"/>
+  <path d="M168 96 L168 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"></path>
+  <text x="180" y="92" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9" letter-spacing="0.5">LOWER</text>
+  <rect x="158.5" y="134.5" width="7" height="7" fill="#ec3013"></rect>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="318" cy="88" r="9"></circle>
+    <line x1="312" y1="95" x2="282" y2="118"></line>
+    <line x1="282" y1="118" x2="278" y2="155"></line>
+    <line x1="295" y1="108" x2="282" y2="118"></line>
+    <line x1="312" y1="95" x2="335" y2="155"></line>
   </g>
-  <path d="M290 130 L290 110" stroke="#27b07d" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"/>
-  <text x="302" y="124" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">press</text>
-
-  <!-- Animated demo figure (right edge loop) -->
-  <g id="pushAnim" stroke="#e8eaed" stroke-width="2.2" stroke-linecap="round" opacity="0.55">
-    <circle cx="180" cy="200" r="0"/>
-  </g>
-  <!-- Subtle body bob on mid figure -->
-  <g>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 4; 0 0" dur="2.4s" repeatCount="indefinite" href="#midBob"/>
-  </g>
-  <g id="midBob" opacity="0">
-    <circle cx="0" cy="0" r="1"/>
-  </g>
-  <!-- Animate mid figure vertical pulse via opacity flash on arrow -->
-  <g>
-    <path d="M168 100 L168 120" stroke="#27b07d" stroke-width="2.5" stroke-linecap="round" opacity="0.3">
-      <animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite"/>
-    </path>
-  </g>
+  <path d="M290 132 L290 108" stroke="#ec3013" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)"></path>
+  <text x="302" y="124" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9" letter-spacing="0.5">PRESS</text>
 </svg>

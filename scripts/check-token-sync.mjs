@@ -21,19 +21,32 @@ const MOTION_PATH = path.join(
   'apps/android/core/designsystem/src/main/java/com/missionwinning/core/designsystem/MwMotion.kt',
 );
 
+/**
+ * Modernist rebrand (DESIGN_ORCHESTRATION.md wave D5, founder override
+ * 2026-07-25): web tokens are paper/ink/red. The Android cross-check is PAUSED
+ * for the duration of the program — Android deliberately keeps navy/emerald and
+ * gets its own rebrand after web, so web↔Android color parity is not a ship
+ * gate right now. Web values are still pinned below so drift within the web
+ * token block fails the gate. Motion checks remain fully enforced.
+ */
+const ANDROID_COLOR_CHECK_PAUSED = true;
+
 const BRAND_HEX = {
-  navy: '#0a0c10',
-  emerald: '#27b07d',
-  brass: '#c7a860',
-  danger: '#e85d5d',
+  paper: '#f3f2f2',
+  ink: '#201e1d',
+  red700: '#ae1800',
+  red600: '#dd2b0f',
+  poster: '#ec3013',
 };
 
 const COLOR_CHECKS = [
-  { label: 'Navy / background', webVar: '--background', androidKey: 'Navy', target: BRAND_HEX.navy },
-  { label: 'Emerald / primary', webVar: '--primary', androidKey: 'Emerald', target: BRAND_HEX.emerald },
-  { label: 'Brass', webVar: '--brass', androidKey: 'Brass', target: BRAND_HEX.brass },
-  { label: 'Danger (destructive)', webVar: '--destructive', androidKey: 'Danger', target: BRAND_HEX.danger },
-  { label: 'Danger (status)', webVar: '--status-danger', androidKey: 'Danger', target: BRAND_HEX.danger },
+  { label: 'Paper / background', webVar: '--background', androidKey: 'Navy', target: BRAND_HEX.paper },
+  { label: 'Ink / foreground', webVar: '--foreground', androidKey: null, target: BRAND_HEX.ink },
+  { label: 'Red 700 / primary', webVar: '--primary', androidKey: 'Emerald', target: BRAND_HEX.red700 },
+  { label: 'Red 600 / fill', webVar: '--primary-fill', androidKey: null, target: BRAND_HEX.red600 },
+  { label: 'Poster red', webVar: '--accent-poster', androidKey: null, target: BRAND_HEX.poster },
+  { label: 'Danger (destructive)', webVar: '--destructive', androidKey: 'Danger', target: BRAND_HEX.red700 },
+  { label: 'Danger (status)', webVar: '--status-danger', androidKey: 'Danger', target: BRAND_HEX.red700 },
 ];
 
 const MOTION_CHECKS = [
@@ -128,17 +141,17 @@ console.log('\nMission Winning — token sync (web CSS ↔ Android Mw*)\n');
 for (const check of COLOR_CHECKS) {
   const hsl = cssVars[check.webVar];
   const webHex = hsl ? hslToHex(hsl.h, hsl.s, hsl.l) : '(missing)';
-  const androidHex = androidColors[check.androidKey] ?? '(missing)';
+  const androidHex = check.androidKey ? (androidColors[check.androidKey] ?? '(missing)') : '—';
   const target = check.target;
 
   const webOk = webHex !== '(missing)' && colorsWithinTolerance(webHex, target);
+  // Android parity is paused for the Modernist rebrand (see header) — the
+  // Android column stays informational so re-enabling is a one-flag change.
   const androidOk =
-    androidHex !== '(missing)' && colorsWithinTolerance(androidHex, target);
-  const crossOk =
-    webHex !== '(missing)' &&
-    androidHex !== '(missing)' &&
-    colorsWithinTolerance(webHex, androidHex);
-  const ok = webOk && androidOk && crossOk;
+    ANDROID_COLOR_CHECK_PAUSED ||
+    !check.androidKey ||
+    (androidHex !== '(missing)' && colorsWithinTolerance(androidHex, target));
+  const ok = webOk && androidOk;
   if (!ok) drift = true;
 
   rows.push({
@@ -148,6 +161,12 @@ for (const check of COLOR_CHECKS) {
     target,
     result: status(ok),
   });
+}
+
+if (ANDROID_COLOR_CHECK_PAUSED) {
+  console.log(
+    'NOTE: Android color parity paused for the Modernist rebrand (wave D5, founder override 2026-07-25).\n',
+  );
 }
 
 const col = { token: 22, web: 9, android: 9, target: 9, result: 6 };

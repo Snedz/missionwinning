@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: ["class"],
   content: ["./app/**/*.{js,ts,jsx,tsx}", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -34,6 +33,10 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        // Poster red #ec3013 — fills with large labels, chrome, the one red field
+        // per page. NOT for small text (3.78:1 on paper) — that is text-primary.
+        poster: "hsl(var(--accent-poster))",
+        tint: "hsl(var(--accent-tint))",
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -41,12 +44,6 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-        },
-        fitness: {
-          red: "#dc2626",
-          navy: "#0f172a",
-          gold: "#ca8a04",
-          teal: "#2dd4bf",
         },
         brass: {
           DEFAULT: "hsl(var(--brass))",
@@ -61,19 +58,27 @@ export default {
           ok: "hsl(var(--status-ok))",
         },
       },
-      boxShadow: {
-        glow: "0 0 48px -12px hsl(158 64% 42% / 0.4)",
-        "glow-brass": "0 0 48px -12px hsl(42 48% 58% / 0.35)",
-      },
+      // Modernist: --radius is 0 and the WHOLE scale collapses to it — rounded-xl
+      // (124 uses) and rounded-2xl (48) are not token-wired by default, so a bare
+      // --radius change would silently keep them at 12/16px. `full` stays circular
+      // for geometry that is genuinely round (ProgressRing, radio dots, pulse dot).
       borderRadius: {
+        none: "0",
+        sm: "var(--radius)",
+        DEFAULT: "var(--radius)",
+        md: "var(--radius)",
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        xl: "var(--radius)",
+        "2xl": "var(--radius)",
+        "3xl": "var(--radius)",
+        full: "9999px",
       },
+      // Archivo only — the three vars all alias --font-archivo (src/index.css)
+      // so legacy font-display / font-mono call sites keep resolving.
       fontFamily: {
-        sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "Barlow Condensed", "Inter", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "IBM Plex Mono", "ui-monospace", "monospace"],
+        sans: ["var(--font-inter)", "Archivo", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Archivo", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "Archivo", "system-ui", "sans-serif"],
       },
     },
   },

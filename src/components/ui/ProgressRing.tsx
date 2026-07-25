@@ -23,9 +23,9 @@ const TONE_MAP: Record<
   { stroke: string; text: string; track: string }
 > = {
   emerald: {
-    stroke: 'stroke-emerald-400',
+    stroke: 'stroke-[hsl(var(--accent-poster))]',
     text: 'text-primary',
-    track: 'stroke-emerald-950/80',
+    track: 'stroke-[hsl(var(--accent-tint))]',
   },
   brass: {
     stroke: 'stroke-brass',

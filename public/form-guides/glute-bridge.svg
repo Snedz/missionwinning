@@ -1,39 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Glute bridge form: setup, drive, squeeze">
   <title>Glute bridge form diagram</title>
-  <rect width="360" height="220" fill="#0a0c10" rx="8"/>
-  <text x="60" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Setup</text>
-  <text x="180" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Drive</text>
-  <text x="300" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Squeeze</text>
-  <line x1="20" y1="175" x2="340" y2="175" stroke="#2a3038" stroke-width="2"/>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Setup</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Drive</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Squeeze</text>
+  <line x1="20" y1="175" x2="340" y2="175" stroke="#201e1d" stroke-width="2"></line>
 
-  <!-- Setup supine -->
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="40" cy="145" r="8"/>
-    <line x1="48" y1="145" x2="85" y2="155"/>
-    <line x1="85" y1="155" x2="70" y2="175"/>
-    <line x1="85" y1="155" x2="95" y2="175"/>
+  
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="40" cy="145" r="8"></circle>
+    <line x1="48" y1="145" x2="85" y2="155"></line>
+    <line x1="85" y1="155" x2="70" y2="175"></line>
+    <line x1="85" y1="155" x2="95" y2="175"></line>
   </g>
-  <text x="60" y="195" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="8">heels close</text>
+  <text x="60" y="195" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="8">heels close</text>
 
-  <!-- Drive hips up -->
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="150" cy="130" r="8"/>
-    <line x1="158" y1="130" x2="200" y2="115"/>
-    <line x1="200" y1="115" x2="195" y2="175"/>
-    <line x1="200" y1="115" x2="220" y2="175"/>
+  
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="150" cy="130" r="8"></circle>
+    <line x1="158" y1="130" x2="200" y2="115"></line>
+    <line x1="200" y1="115" x2="195" y2="175"></line>
+    <line x1="200" y1="115" x2="220" y2="175"></line>
   </g>
-  <path d="M200 145 L200 125" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/>
-  <polygon points="196,125 200,118 204,125" fill="#27b07d"/>
-  <text x="210" y="140" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">hips up</text>
-  <circle cx="200" cy="115" r="3.5" fill="#c7a860"/>
+  <path d="M200 145 L200 125" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="196,125 200,118 204,125" fill="#ec3013"></polygon>
+  <text x="210" y="140" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">hips up</text>
+  <circle cx="200" cy="115" r="3.5" fill="#ec3013"></circle>
 
-  <!-- Squeeze top -->
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="270" cy="125" r="8"/>
-    <line x1="278" y1="125" x2="320" y2="105"/>
-    <line x1="320" y1="105" x2="315" y2="175"/>
-    <line x1="320" y1="105" x2="340" y2="175"/>
+  
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="270" cy="125" r="8"></circle>
+    <line x1="278" y1="125" x2="320" y2="105"></line>
+    <line x1="320" y1="105" x2="315" y2="175"></line>
+    <line x1="320" y1="105" x2="340" y2="175"></line>
   </g>
-  <circle cx="320" cy="105" r="3.5" fill="#c7a860"/>
-  <text x="320" y="96" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">glutes</text>
+  <circle cx="320" cy="105" r="3.5" fill="#ec3013"></circle>
+  <text x="320" y="96" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">glutes</text>
 </svg>

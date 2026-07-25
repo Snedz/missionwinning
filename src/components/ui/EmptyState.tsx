@@ -46,7 +46,7 @@ export function EmptyState({
       )}
     >
       {illustrationSrc ? (
-        <div className="mb-4 relative h-28 w-28 overflow-hidden rounded-2xl bg-[#0a0c10]">
+        <div className="mb-4 relative h-28 w-28 overflow-hidden rounded-2xl bg-card">
           <Image
             src={illustrationSrc}
             alt={illustrationAlt}

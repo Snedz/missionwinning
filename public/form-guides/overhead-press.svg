@@ -1,46 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Overhead press form: rack, press, lockout">
   <title>Overhead press form diagram</title>
-  <rect width="360" height="220" fill="#0a0c10" rx="8"/>
-  <text x="60" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Rack</text>
-  <text x="180" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Press</text>
-  <text x="300" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Lockout</text>
-  <line x1="20" y1="185" x2="100" y2="185" stroke="#2a3038" stroke-width="2"/>
-  <line x1="140" y1="185" x2="220" y2="185" stroke="#2a3038" stroke-width="2"/>
-  <line x1="260" y1="185" x2="340" y2="185" stroke="#2a3038" stroke-width="2"/>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Rack</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Press</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Lockout</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
 
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="60" cy="75" r="9"/>
-    <line x1="60" y1="84" x2="60" y2="125"/>
-    <line x1="42" y1="100" x2="78" y2="100"/>
-    <line x1="48" y1="100" x2="55" y2="90"/>
-    <line x1="72" y1="100" x2="65" y2="90"/>
-    <line x1="60" y1="125" x2="50" y2="175"/>
-    <line x1="60" y1="125" x2="70" y2="175"/>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="75" r="9"></circle>
+    <line x1="60" y1="84" x2="60" y2="125"></line>
+    <line x1="42" y1="100" x2="78" y2="100"></line>
+    <line x1="48" y1="100" x2="55" y2="90"></line>
+    <line x1="72" y1="100" x2="65" y2="90"></line>
+    <line x1="60" y1="125" x2="50" y2="175"></line>
+    <line x1="60" y1="125" x2="70" y2="175"></line>
   </g>
-  <text x="60" y="95" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">chin</text>
+  <text x="60" y="95" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">chin</text>
 
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="180" cy="75" r="9"/>
-    <line x1="180" y1="84" x2="180" y2="125"/>
-    <line x1="160" y1="70" x2="200" y2="70"/>
-    <line x1="165" y1="70" x2="172" y2="85"/>
-    <line x1="195" y1="70" x2="188" y2="85"/>
-    <line x1="180" y1="125" x2="170" y2="175"/>
-    <line x1="180" y1="125" x2="190" y2="175"/>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="180" cy="75" r="9"></circle>
+    <line x1="180" y1="84" x2="180" y2="125"></line>
+    <line x1="160" y1="70" x2="200" y2="70"></line>
+    <line x1="165" y1="70" x2="172" y2="85"></line>
+    <line x1="195" y1="70" x2="188" y2="85"></line>
+    <line x1="180" y1="125" x2="170" y2="175"></line>
+    <line x1="180" y1="125" x2="190" y2="175"></line>
   </g>
-  <path d="M210 100 L210 75" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/>
-  <polygon points="206,75 210,68 214,75" fill="#27b07d"/>
-  <text x="218" y="90" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">press up</text>
+  <path d="M210 100 L210 75" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="206,75 210,68 214,75" fill="#ec3013"></polygon>
+  <text x="218" y="90" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">press up</text>
 
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="300" cy="75" r="9"/>
-    <line x1="300" y1="84" x2="300" y2="125"/>
-    <line x1="280" y1="50" x2="320" y2="50"/>
-    <line x1="285" y1="50" x2="292" y2="75"/>
-    <line x1="315" y1="50" x2="308" y2="75"/>
-    <line x1="300" y1="125" x2="290" y2="175"/>
-    <line x1="300" y1="125" x2="310" y2="175"/>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="300" cy="75" r="9"></circle>
+    <line x1="300" y1="84" x2="300" y2="125"></line>
+    <line x1="280" y1="50" x2="320" y2="50"></line>
+    <line x1="285" y1="50" x2="292" y2="75"></line>
+    <line x1="315" y1="50" x2="308" y2="75"></line>
+    <line x1="300" y1="125" x2="290" y2="175"></line>
+    <line x1="300" y1="125" x2="310" y2="175"></line>
   </g>
-  <circle cx="300" cy="50" r="3" fill="#c7a860"/>
-  <text x="300" y="42" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">lock</text>
+  <circle cx="300" cy="50" r="3" fill="#ec3013"></circle>
+  <text x="300" y="42" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">lock</text>
 </svg>

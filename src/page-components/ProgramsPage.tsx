@@ -141,7 +141,7 @@ export function ProgramsPage() {
                     <ul className="space-y-2">
                       {prog.bulletKeys.map((key) => (
                         <li key={key} className="flex gap-3 text-sm">
-                          <Check className="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5" />{' '}
+                          <Check className="h-5 w-5 text-[hsl(var(--status-ok))] flex-shrink-0 mt-0.5" />{' '}
                           {t(key)}
                         </li>
                       ))}

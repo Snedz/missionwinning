@@ -31,7 +31,7 @@ export function GuideFigureBlock({
   }
 
   return (
-    <figure className="overflow-hidden rounded-xl border border-border/40 bg-[#0a0c10]">
+    <figure className="overflow-hidden rounded-xl border-2 border-border bg-card">
       {/* Plain <img>: static guidebook assets, already sized and optimised at build. */}
       <img
         src={figure.src}

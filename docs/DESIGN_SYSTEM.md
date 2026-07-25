@@ -8,66 +8,60 @@
 
 ## Principles
 
-1. **Mission briefing** — mono eyebrow → display title → one emerald CTA
-2. **Emerald = do it** · **Brass = earned it** · never competitor blue/violet identity
+**Modernist** (rebrand 2026-07-25, [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) wave D5): flat ink on paper, one red accent, Archivo for everything, zero corner radius, structure drawn with 2px rules, photography in black and white. Light-only — the dark theme is retired.
+
+1. **The field manual** — caps kicker → Archivo 800 display (sentence case, flush left) → body; red spent like attention
+2. **One red field per page** — `--accent-poster` for the primary action / poster close; small red text is always `--primary` (#ae1800)
 3. **One boss action** per screen (especially Today)
 4. **Clinical metrics, not gamification** — tabular nums, quiet labels, lucide over emoji
-5. **Match chrome to task** — Train dense; Today sparse; marketing product-in-hero
+5. **Nothing floats, nothing is decorated** — no shadows, no glows, no gradients; alignment and 2px rules do the organizing; everything flush left (button labels included)
 
 ### Scoped color exceptions
 
-- **Drop-set kind chip** (`SetLogRow`): keeps `bg-violet-600` so drop sets stay visually distinct from supersets (`--status-info`) and normal sets. Optional future token: `--set-kind-drop`. Not brand identity violet.
-- Long-tail raw Tailwind color classes (~50 remaining outside top files): prefer `--status-*` / brass / primary when touching those files; no mass rewrite (Wave 9).
-
----
+- **Drop-set kind chip** (`SetLogRow`): keeps `bg-violet-600` so drop sets stay visually distinct from supersets (`--status-info`) and normal sets. Not brand identity violet.
+- Long-tail raw Tailwind color classes: prefer `--status-*` / `--primary` when touching those files; no mass rewrite.
 
 ## Card tier ladder (in-app + marketing)
 
 | Tier | Class | Use |
 |------|--------|-----|
-| **Base** | `Card` (`rounded-2xl` + quiet border) | Dense/repeated rows, settings, logger inners, tables |
-| **Content** | `content-card` | Standalone pillar content blocks |
-| **Hero** | `card-elevated` | **≤1** summary/boss panel per screen |
-| **Live** | `card-glow-emerald` | Active timer / Today scorecard only (≤1) |
-| **Honor** | `card-glow-brass` | PRs, victory, premium/founders teasers |
-| **Texture** | `texture-noise` / `texture-grid` | Marketing; **not** dense app screens (victory backdrop OK) |
+| **Base** | `Card` (flat surface fill) | Dense/repeated rows, settings, logger inners, tables |
+| **Content** | `content-card` | Standalone pillar content blocks — surface fill, no border |
+| **Hero** | `card-elevated` | **≤1** summary/boss panel per screen — surface + 2px rule border |
+| **Live / selected** | `card-glow-emerald` | Active timer / Today scorecard / selected option (≤1) — tint fill `#fff2ef` + 2px poster-red border |
+| **Honor** | `card-glow-brass` | Legacy honor sites — renders as `card-elevated` (brass retired) |
 
-Hybrid rule: one modest base lift + targeted promotions — no mass Card rewrites. Superset grouping uses `--status-info` (not purple).
-
-**Removed:** `dashboard-panel` (was near-dead; use `content-card` / `card-elevated`).
-
----
+No elevation anywhere — shadows and glows are retired. `card-glow-*` class names survive for call-site stability; Phase 3 renames them.
 
 ## Tokens
 
 | Token | Role |
 |-------|------|
-| `--background` / `--foreground` | Navy canvas / primary text |
-| `--card` / `--border` | Solid content surfaces |
-| `--surface-raised` / `--grid-line` | Elevation + faint grids |
-| `--primary` / `--accent` | Emerald action |
-| `--brass` | Honor, PR, founders, rank |
-| `--status-warn` | Strain / caution (prefer over raw amber) |
-| `--status-info` | Recovery / info / functional grouping (prefer over raw blue/violet) |
-| `--status-danger` / `--status-ok` | Risk / success |
+| `--background` / `--foreground` | Paper `#f3f2f2` / ink `#201e1d` |
+| `--card` / `--border` | Surface `#eae9e9` / rule gray (ALL rules 2px solid) |
+| `--primary` | Red text/border `#ae1800` — safe at any size (6.4:1) |
+| `--primary-fill` (+ `-hover`) | Button fills `#dd2b0f` — white text 4.74:1 AA |
+| `--accent-poster` | Poster red `#ec3013` — fills w/ large labels, chrome, ≤1 field/page |
+| `--accent-tint` | `#fff2ef` — highlighted rows, "today" states, tracks |
+| `--brass` | **Retired** — resolves to a neutral until Phase 3 removes call sites |
+| `--status-warn` / `--status-info` | Deep amber / deep blue (text-safe on paper) |
+| `--status-danger` / `--status-ok` | `#ae1800` / deep green |
 
-**Cross-platform drift:** run `npm run check-token-sync` before ship — compares web `:root` HSL (this file) to Android [`MwColors.kt`](../apps/android/core/designsystem/src/main/java/com/missionwinning/core/designsystem/MwColors.kt) / [`MwMotion.kt`](../apps/android/core/designsystem/src/main/java/com/missionwinning/core/designsystem/MwMotion.kt). Exit 0 = OK. See [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) token sync checklist.
+**Cross-platform drift:** `npm run check-token-sync` pins the web `:root` values. The Android cross-check is **paused** for the rebrand (wave D5 founder override) — Android keeps navy/emerald until its own program. Motion checks still enforced.
 
 Utility classes: `content-card`, `card-elevated`, `card-glow-emerald`, `card-glow-brass`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `display-mega`, `section-index`, `briefing-rule`, `pressable-card`, `ring-draw-in`, `score-tick`, `section-seam`.
 
-### Marketing elevation (landing / bundle / SEO)
+### Marketing surfaces (landing / bundle / SEO)
 
 | Class | Role |
 |-------|------|
-| `hero-field` | Full-bleed emerald + brass radial field on navy |
-| `texture-grid` / `texture-noise` | CSS grid + grain (mobile-cheap) |
-| `card-elevated` | Raised surface above `content-card` |
-| `card-glow-emerald` / `card-glow-brass` | Soft brand glows |
-| `section-seam` / `section-seam-glow` | Gradient hairlines (replace uniform borders) |
+| `hero-field` | Flat paper + safe-area padding (gradient field retired) |
+| `texture-grid` | The visible modular grid — subtle rule-gray lines |
+| `section-seam` / `section-seam-glow` | Honest 2px rules (both render identically now) |
 | `reveal` / `reveal-visible` | Scroll-reveal (pair with `Reveal` / `useScrollReveal`) |
-| `ticker-track` | Mono telemetry marquee (md+) |
+| `ticker-track` | Caps telemetry marquee (md+) |
 
-Tailwind: `surface-raised`, `shadow-glow`, `shadow-glow-brass`.
+Tailwind: `poster`, `tint`, `surface-raised`.
 
 ### Generated art (`public/art/`)
 
@@ -88,25 +82,23 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 
 | Role | Class / font |
 |------|----------------|
-| Hero — `/` only | `.display-hero` — Barlow Condensed, `clamp(2.75rem, 8vw, 5.5rem)` |
+| Hero — `/` only | `.display-hero` — Archivo 800, `clamp(2.625rem, 6vw, 4.75rem)`, lh 1.06, ls −0.02em |
 | Section title **and template page title** | `.display-section`, `clamp(1.9rem, 4.5vw, 3rem)` |
-| Eyebrow / telemetry | `.eyebrow` — IBM Plex Mono |
-| Body | Inter (`font-sans`) |
+| Kicker / telemetry | `.eyebrow` — Archivo caps, 13px, ls 0.08em, `tnum` |
+| Body | Archivo 400 (`font-sans`) — 17/28 marketing, 15/24 app density |
 | Numbers | `tabular-nums` always on weights, reps, timers, scores |
+
+Display type is **sentence case and flush left** — the caps were Barlow's; Archivo 800 carries the weight instead. Archivo loads 400/600/800 only, so use `font-semibold`/`font-extrabold`, never `font-medium`/`font-bold` on display type (500/700 would synthesize).
 
 **Never put a `text-*` utility on a display class.** The display classes live in `@layer
 components` and Tailwind utilities in `@layer utilities`, which comes later — so
 `className="display-section text-2xl"` silently discards the `clamp()` at equal
-specificity. Ten call sites had done this, which is why `.display-section`'s real size
-rendered on exactly one page. `npm run check-display-type` fails the gate on it. If you
+specificity. `npm run check-display-type` fails the gate on it. If you
 need the face at a custom size, use `font-display` directly.
 
 `.display-hero` is reserved for `/`. A template page titled with an exercise name uses
-`.display-section` — the hero tier's 2.75rem floor wraps "Close-Grip Bench Press" to three
-lines at 390px. Barlow Condensed loads **weight 700 only**, so display classes use
-`font-bold`; `font-semibold` gets synthesized.
-
----
+`.display-section` — the hero tier's floor wraps "Close-Grip Bench Press" to three
+lines at 390px.
 
 ## Components
 
@@ -147,11 +139,11 @@ lines at 390px. Barlow Condensed loads **weight 700 only**, so display classes u
 
 ## Motion & interaction
 
-- CSS-first, 200–450ms, `prefers-reduced-motion` gates all entrance animations
+- No decorative animation, no scroll-hijacking, no parallax. Transitions ≤200ms, opacity/transform only; entrances 300–450ms fades gated by `prefers-reduced-motion`
 - Duration tiers: **150ms** press/hover feedback · **200–250ms** state changes (toggles, tab switches) · **300–450ms** entrances/reveals. One easing family: `ease-out` for entrances, `ease-in-out` for state changes. No spring/bounce in-app (marketing `/experience` excepted).
 - `score-tick` on ring center values; `ring-draw-in` on ring mount
 - Press: `.pressable-card` / `primary-action` active scale — every tappable surface gives press feedback
-- **Focus:** one global `:focus-visible` in `src/index.css` `@layer base` — 2px solid `--ring`, offset 2. Do **not** add per-component `focus-visible:ring-*`; that renders two indicators. `.primary-action` overrides to a white outline because its own bloom is emerald. axe does not test focus visibility, so `tests/e2e/a11y.spec.ts` tabs and asserts `outline-style: solid` at ≥2px
+- **Focus:** one global `:focus-visible` in `src/index.css` `@layer base` — 2px solid `--ring`, offset 2. Do **not** add per-component `focus-visible:ring-*`; that renders two indicators. `.primary-action` overrides to an ink outline because its fill is the same red as the ring. axe does not test focus visibility, so `tests/e2e/a11y.spec.ts` tabs and asserts `outline-style: solid` at ≥2px
 - **No layout shift on data load**: reserve space with skeletons/placeholders; numbers use `tabular-nums` so ticks don't jitter
 - One entrance stagger per screen (PillarPageShell owns it); elements never animate twice on the same mount
 - Android mirrors these values (`core/designsystem` enter-fade + reduce-motion); keep parity when tuning
@@ -160,6 +152,10 @@ lines at 390px. Barlow Condensed loads **weight 700 only**, so display classes u
 
 ## Do not
 
-- Cream + serif + terracotta, purple glow, broadsheet hairlines
-- Ad-hoc amber/blue skins without mapping to `--status-*` or brass
+- Round a corner anywhere — `--radius` is 0 on purpose, and the whole Tailwind scale collapses to it
+- Center button labels or hero copy — everything flush left
+- Soften the 2px rules into hairlines, or replace them with whitespace/shadows
+- Revive navy/emerald/brass, gradients, glows, or tinted imagery (photography is b&w via `grayscale`)
+- Put small text in `--accent-poster` — that is what `--primary` is for
+- Ad-hoc amber/blue skins without mapping to `--status-*`
 - Multiple primary CTAs above the fold on Today or Landing

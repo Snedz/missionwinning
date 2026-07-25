@@ -1,27 +1,17 @@
 import type { Metadata, Viewport } from 'next';
-import { Barlow_Condensed, IBM_Plex_Mono, Inter } from 'next/font/google';
+import { Archivo } from 'next/font/google';
 import '../src/index.css';
 import { DeferredToaster } from '@/components/layout/DeferredToaster';
 import { I18nPwaProvider } from './i18n-pwa-provider';
 
-const inter = Inter({
+// Modernist: Archivo is the ONLY face — body 400, emphasis 600, display 800.
+// src/index.css aliases the legacy --font-inter/--font-display/--font-mono vars
+// to this one, so every existing font-sans/font-display/font-mono site resolves
+// to Archivo without edits.
+const archivo = Archivo({
   subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-  // Three weights only — medium (500) maps to 400/600 in practice for size.
-  weight: ['400', '600', '700'],
-});
-const barlowCondensed = Barlow_Condensed({
-  subsets: ['latin'],
-  // Display titles use bold; single weight keeps the display font small.
-  weight: ['700'],
-  variable: '--font-display',
-  display: 'swap',
-});
-const plexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-mono',
+  weight: ['400', '600', '800'],
+  variable: '--font-archivo',
   display: 'swap',
 });
 
@@ -63,9 +53,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Matches `--background` (hsl(222 24% 5%)) exactly. It was #0a0d12, two points off, so
-  // the browser chrome seamed against the page on mobile.
-  themeColor: '#0a0c10',
+  // Matches `--background` (paper #f3f2f2) exactly so the browser chrome never
+  // seams against the page on mobile.
+  themeColor: '#f3f2f2',
   width: 'device-width',
   initialScale: 1,
 };
@@ -76,7 +66,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`dark ${inter.variable} ${barlowCondensed.variable} ${plexMono.variable}`}>
+    <html lang="en" className={archivo.variable}>
       <body className="bg-background text-foreground font-sans">
         <I18nPwaProvider>
           {children}

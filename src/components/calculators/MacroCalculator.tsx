@@ -240,7 +240,7 @@ export function MacroCalculator() {
           <div className="space-y-1">
             <div className="flex h-3 rounded-full overflow-hidden text-[10px] font-medium">
               <div
-                className="bg-sky-500/80 flex items-center justify-center text-white"
+                className="bg-sky-700 flex items-center justify-center text-white"
                 style={{ width: `${macroSplit.proteinPct}%` }}
               >
                 {macroSplit.proteinPct > 12 ? `P ${macroSplit.proteinPct}%` : ''}
@@ -252,7 +252,7 @@ export function MacroCalculator() {
                 {macroSplit.carbsPct > 12 ? `C ${macroSplit.carbsPct}%` : ''}
               </div>
               <div
-                className="bg-rose-500/80 flex items-center justify-center text-white"
+                className="bg-rose-700 flex items-center justify-center text-white"
                 style={{ width: `${macroSplit.fatPct}%` }}
               >
                 {macroSplit.fatPct > 12 ? `F ${macroSplit.fatPct}%` : ''}

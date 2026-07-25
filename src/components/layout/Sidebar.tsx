@@ -43,7 +43,7 @@ export function Sidebar() {
                     {navLabel}
                   </span>
                   {showPulse && (
-                    <span className="absolute top-2 end-2 lg:top-1/2 lg:-translate-y-1/2 lg:end-3 h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="absolute top-2 end-2 lg:top-1/2 lg:-translate-y-1/2 lg:end-3 h-2 w-2 rounded-full bg-poster animate-pulse" />
                   )}
                 </Link>
               </TooltipTrigger>
