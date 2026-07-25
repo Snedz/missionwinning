@@ -5,7 +5,7 @@
  */
 
 import Link from 'next/link';
-import { getExerciseById } from '@/data/exercises';
+import { EXERCISES, getExerciseById } from '@/data/exercises';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import {
   enrichExerciseForPublic,
@@ -14,8 +14,7 @@ import {
   muscleHubSlug,
 } from '@/lib/exerciseSeo';
 import { templatesUsingExercise } from '@/lib/exerciseUsage';
-import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
-import { PublicSeoHeader } from '@/components/public/PublicSeoHeader';
+import { PublicPageShell } from '@/components/public/PublicPageShell';
 import { ExercisePageBeacon } from '@/components/public/ExercisePageBeacon';
 import type { Exercise } from '@/types';
 
@@ -44,46 +43,46 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
     .filter((x): x is { id: string; name: string } => x != null);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <ExercisePageBeacon exerciseId={exercise.id} />
-      <PublicSeoHeader
+      <PublicPageShell
         eyebrow="Free exercise library"
         title={exercise.name}
         subtitle={`${exercise.muscleGroups.join(' · ')} · ${exercise.equipment || 'Various'}${
           exercise.level ? ` · ${exercise.level}` : ''
         }`}
-      />
-      <main className="mx-auto max-w-3xl px-5 py-10 space-y-8">
-        <p className="text-sm">
-          <Link href="/exercises" className="text-primary hover:underline">
-            ← All exercises
-          </Link>
-          {exercise.muscleGroups[0] && (
-            <>
-              {' · '}
-              <Link
-                href={`/exercises/muscle/${muscleHubSlug(exercise.muscleGroups[0])}`}
-                className="text-primary hover:underline"
-              >
-                More {exercise.muscleGroups[0]}
-              </Link>
-            </>
-          )}
-        </p>
-
+        breadcrumb={
+          <>
+            <Link href="/exercises" className="text-primary hover:underline">
+              ← All exercises
+            </Link>
+            {exercise.muscleGroups[0] && (
+              <>
+                {' · '}
+                <Link
+                  href={`/exercises/muscle/${muscleHubSlug(exercise.muscleGroups[0])}`}
+                  className="text-primary hover:underline"
+                >
+                  More {exercise.muscleGroups[0]}
+                </Link>
+              </>
+            )}
+          </>
+        }
+      >
         {exercise.cues && (
           <section>
-            <h2 className="font-semibold mb-2">Key cues</h2>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Key cues</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{exercise.cues}</p>
           </section>
         )}
         {guide && (
           <section>
-            <h2 className="font-semibold mb-2">Form guide</h2>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Form guide</h2>
             {guide.mediaUrl && (
               <div className="mb-4 overflow-hidden rounded-xl border border-border/40 bg-muted/30">
                 {guide.mediaType === 'video' ? (
@@ -121,7 +120,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
         )}
         {!guide && tipLines && tipLines.length > 0 && (
           <section>
-            <h2 className="font-semibold mb-2">Form tips</h2>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Form tips</h2>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               {tipLines.map((line, i) => (
                 <li key={i}>{line}</li>
@@ -132,7 +131,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
 
         {steps && steps.length > 0 && (
           <section>
-            <h2 className="font-semibold mb-2">Step-by-step</h2>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Step-by-step</h2>
             <ol className="list-decimal pl-5 text-sm text-muted-foreground space-y-2">
               {steps.map((line, i) => (
                 <li key={i}>{line}</li>
@@ -143,7 +142,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
 
         {mistakes && mistakes.length > 0 && (
           <section>
-            <h2 className="font-semibold mb-2">Common mistakes</h2>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Common mistakes</h2>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               {mistakes.map((line, i) => (
                 <li key={i}>{line}</li>
@@ -161,7 +160,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
 
         {usedIn.length > 0 && (
           <section>
-            <h2 className="font-semibold mb-2">
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">
               Used in {usedIn.length} free template{usedIn.length === 1 ? '' : 's'}
             </h2>
             <ul className="space-y-1 text-sm text-muted-foreground">
@@ -182,7 +181,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
 
         {alternatives.length > 0 && (
           <section>
-            <h2 className="font-semibold mb-2">Alternatives</h2>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Alternatives</h2>
             <div className="flex flex-wrap gap-2">
               {alternatives.map((alt) => (
                 <Link
@@ -199,7 +198,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
 
         {related.length > 0 && (
           <section>
-            <h2 className="font-semibold mb-2">Related movements</h2>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Related movements</h2>
             <div className="flex flex-wrap gap-2">
               {related.map((ex) => (
                 <Link
@@ -216,7 +215,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
 
         {guides.length > 0 && (
           <section>
-            <h2 className="font-semibold mb-2">Read in the free guide</h2>
+            <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Read in the free guide</h2>
             <ul className="space-y-2 text-sm">
               {guides.map((g) => (
                 <li key={g.id}>
@@ -229,16 +228,16 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           </section>
         )}
 
-        <div className="rounded-2xl border border-primary/30 bg-primary/10 p-5 space-y-3">
+        <div className="space-y-3 rounded-2xl border border-primary/30 bg-primary/10 p-5">
           <p className="text-sm text-muted-foreground">
-            Log sets offline — no account, no AI API key. 217 free exercise pages in the library.
+            Log sets offline — no account, no AI API key. {EXERCISES.length} free exercise pages in
+            the library.
           </p>
           <Link href="/welcome" className="primary-action">
             Track this exercise free →
           </Link>
         </div>
-      </main>
-      <PublicSeoFooter />
-    </div>
+      </PublicPageShell>
+    </>
   );
 }

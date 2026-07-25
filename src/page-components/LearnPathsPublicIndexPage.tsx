@@ -5,18 +5,16 @@
 
 import Link from 'next/link';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
-import { PublicSeoHeader } from '@/components/public/PublicSeoHeader';
-import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
+import { PublicPageShell } from '@/components/public/PublicPageShell';
 
 export function LearnPathsPublicIndexPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <PublicSeoHeader
-        eyebrow="Free learning paths"
-        title="Learn the foundations"
-        subtitle="Ten free paths — progressive overload, protein, mobility, sleep, and more. Open any path in the app with no paywall on the basics."
-      />
-      <main className="mx-auto max-w-3xl px-5 py-10 space-y-4">
+    <PublicPageShell
+      eyebrow="Free learning paths"
+      title="Learn the foundations"
+      subtitle={`${FREE_LEARN_PATHS.length} free paths — progressive overload, protein, mobility, sleep, and more. Open any path in the app with no paywall on the basics.`}
+    >
+      <div className="space-y-4">
         {FREE_LEARN_PATHS.map((path) => (
           <Link
             key={path.id}
@@ -30,15 +28,14 @@ export function LearnPathsPublicIndexPage() {
             </p>
           </Link>
         ))}
-        <p className="text-sm text-muted-foreground pt-4">
-          Prefer the full guidebook?{' '}
-          <Link href="/guide" className="text-primary hover:underline">
-            Read Beyond the Basics free
-          </Link>
-          .
-        </p>
-      </main>
-      <PublicSeoFooter />
-    </div>
+      </div>
+      <p className="text-sm text-muted-foreground">
+        Prefer the full guidebook?{' '}
+        <Link href="/guide" className="text-primary hover:underline">
+          Read Beyond the Basics free
+        </Link>
+        .
+      </p>
+    </PublicPageShell>
   );
 }

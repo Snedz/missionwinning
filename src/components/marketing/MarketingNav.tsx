@@ -1,26 +1,28 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
+import { PublicNavMenu } from '@/components/public/PublicNavMenu';
+import { footerGroups, primaryNavLinks } from '@/components/marketing/footerLinks';
 
 type MarketingNavProps = {
-  /** full = landing anchors + bundle; compact = logo + primary CTA only */
+  /** full = site links + primary CTA; compact = logo + primary CTA only */
   variant?: 'full' | 'compact';
   className?: string;
 };
 
 export function MarketingNav({ variant = 'full', className }: MarketingNavProps) {
   const { t } = useTranslation();
-  const router = useRouter();
-  const freeBeta = isFreeBeta();
+  const navLinks = primaryNavLinks();
+  const legalLinks =
+    footerGroups().find((g) => g.titleKey === 'footerGroupLegal')?.links ?? [];
 
   return (
     <nav
+      aria-label="Site"
       className={cn(
         'sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80',
         className
@@ -34,39 +36,55 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
           </span>
         </Link>
 
-        {variant === 'full' ? (
-          <div className="hidden items-center gap-6 text-sm sm:flex">
-            <a
-              href="/#coach"
-              className="text-muted-foreground transition-colors hover:text-foreground"
+        <div className="flex items-center gap-6">
+          {/* Real wayfinding from md up. This used to be one `/#coach` anchor during the
+              free beta, which meant the ~250-page library had no route from the chrome at
+              any width. Below md it moves into PublicNavMenu. */}
+          {variant === 'full' ? (
+            <ul className="hidden items-center gap-6 text-sm md:flex">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {t(link.labelKey, { defaultValue: link.defaultValue })}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Link
+              href="/"
+              className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground md:inline"
             >
-              {t('landingNavCoach', { defaultValue: 'Coach' })}
-            </a>
-            {!freeBeta && (
-              <Link
-                href="/bundle"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
-              </Link>
-            )}
-          </div>
-        ) : (
-          <Link
-            href="/"
-            className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline"
-          >
-            {t('landingNavHome', { defaultValue: 'Home' })}
-          </Link>
-        )}
+              {t('landingNavHome', { defaultValue: 'Home' })}
+            </Link>
+          )}
 
-        <Button
-          variant="ghost"
-          onClick={() => router.push('/welcome')}
-          className="tap-target text-sm font-medium text-foreground hover:text-foreground"
-        >
-          {t('landingNavStart', { defaultValue: 'Start free' })}
-        </Button>
+          {/* A real anchor, not `onClick={router.push}`: these pages are `force-static`,
+              so an onClick-only CTA does nothing until React hydrates and crawlers see no
+              link at all. Visible at every width — the primary conversion action must not
+              move a tap deeper on the viewport most visitors arrive on. */}
+          <Button asChild variant="ghost" className="tap-target text-sm font-medium">
+            <Link href="/welcome">{t('landingNavStart', { defaultValue: 'Start free' })}</Link>
+          </Button>
+
+          <PublicNavMenu
+            links={navLinks.map((l) => ({
+              ...l,
+              defaultValue: t(l.labelKey, { defaultValue: l.defaultValue }),
+            }))}
+            legalLinks={legalLinks.map((l) => ({
+              ...l,
+              defaultValue: t(l.labelKey, { defaultValue: l.defaultValue }),
+            }))}
+            ctaHref="/welcome"
+            ctaLabel={t('landingNavStart', { defaultValue: 'Start free' })}
+            menuLabel={t('navMenuLabel', { defaultValue: 'Menu' })}
+            closeLabel={t('navMenuClose', { defaultValue: 'Close menu' })}
+          />
+        </div>
       </div>
     </nav>
   );

@@ -5,8 +5,8 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { PublicSeoHeader } from '@/components/public/PublicSeoHeader';
-import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
+import { PublicPageShell } from '@/components/public/PublicPageShell';
+import { EXERCISES } from '@/data/exercises';
 import type { CompareStory } from '@/data/compareStories';
 
 export type { CompareStory };
@@ -14,15 +14,16 @@ export { COMPARE_STORIES, getCompareStory } from '@/data/compareStories';
 
 export function CompareStoryPage({ story }: { story: CompareStory }) {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <PublicSeoHeader eyebrow={story.eyebrow} title={story.title} subtitle={story.subtitle} />
-      <main className="mx-auto max-w-3xl px-5 py-10 space-y-8">
-        <p className="text-sm">
-          <Link href="/compare" className="text-primary hover:underline">
-            ← All comparisons
-          </Link>
-        </p>
-
+    <PublicPageShell
+      eyebrow={story.eyebrow}
+      title={story.title}
+      subtitle={story.subtitle}
+      breadcrumb={
+        <Link href="/compare" className="text-primary hover:underline">
+          ← All comparisons
+        </Link>
+      }
+    >
         <div className="rounded-2xl border border-primary/40 bg-primary/10 px-4 py-3 text-sm text-primary">
           {story.proof}
         </div>
@@ -44,7 +45,9 @@ export function CompareStoryPage({ story }: { story: CompareStory }) {
           <div className="space-y-6">
             {story.body.map((section) => (
               <section key={section.heading}>
-                <h2 className="font-semibold mb-2">{section.heading}</h2>
+                <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">
+                  {section.heading}
+                </h2>
                 <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
                   {section.paragraphs.map((p) => (
                     <p key={p.slice(0, 48)}>{p}</p>
@@ -64,19 +67,22 @@ export function CompareStoryPage({ story }: { story: CompareStory }) {
 
         <p className="text-sm text-muted-foreground">{story.ctaNote}</p>
 
-        <div className="flex flex-wrap gap-3">
-          <Button asChild variant="fitness" className="primary-action">
-            <Link href="/welcome">Start free</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/exercises">Browse 217 exercises</Link>
-          </Button>
-          <Button asChild variant="ghost">
-            <Link href="/guide">Free guidebook</Link>
-          </Button>
+        <div className="space-y-3">
+          {/* `.primary-action` is full-width by design, so it owns its own row rather than
+              being wrapped in a Button and dropped into a flex row — see the same fix in
+              LearnPathPublicPage. */}
+          <Link href="/welcome" className="primary-action sm:w-auto sm:px-10">
+            Start free
+          </Link>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild variant="outline">
+              <Link href="/exercises">Browse {EXERCISES.length} exercises</Link>
+            </Button>
+            <Button asChild variant="ghost">
+              <Link href="/guide">Free guidebook</Link>
+            </Button>
+          </div>
         </div>
-      </main>
-      <PublicSeoFooter />
-    </div>
+    </PublicPageShell>
   );
 }

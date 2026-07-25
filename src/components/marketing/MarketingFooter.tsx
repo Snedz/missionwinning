@@ -3,37 +3,15 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
-
-type FooterLink = { href: string; labelKey: string; defaultValue: string };
-
-const PRODUCT: FooterLink[] = [
-  { href: '/#coach', labelKey: 'footerProductCoach', defaultValue: 'Coach' },
-  { href: '/bundle', labelKey: 'footerProductBundle', defaultValue: 'Super Bundle' },
-  { href: '/compare', labelKey: 'footerProductCompare', defaultValue: 'Compare' },
-];
-
-const LEARN: FooterLink[] = [
-  { href: '/guide', labelKey: 'footerLearnGuide', defaultValue: 'Guide' },
-  { href: '/exercises', labelKey: 'footerLearnExercises', defaultValue: 'Exercises' },
-  { href: '/paths', labelKey: 'footerLearnPaths', defaultValue: 'Paths' },
-  { href: '/beta', labelKey: 'footerLearnBeta', defaultValue: 'Beta guide' },
-];
-
-const COMPANY: FooterLink[] = [
-  { href: '/about', labelKey: 'footerCompanyAbout', defaultValue: 'About' },
-  { href: '/press', labelKey: 'footerCompanyPress', defaultValue: 'Press / Brand' },
-  { href: '/vision', labelKey: 'footerCompanyVision', defaultValue: 'Vision' },
-  { href: '/feedback', labelKey: 'footerCompanyFeedback', defaultValue: 'Feedback' },
-];
-
-const LEGAL: FooterLink[] = [
-  { href: '/privacy', labelKey: 'footerLegalPrivacy', defaultValue: 'Privacy' },
-  { href: '/terms', labelKey: 'footerLegalTerms', defaultValue: 'Terms' },
-  { href: '/dmca', labelKey: 'footerLegalDmca', defaultValue: 'DMCA' },
-  { href: '/refunds', labelKey: 'footerLegalRefunds', defaultValue: 'Refunds' },
-];
+import {
+  FOOTER_DISCLAIMER_DEFAULT,
+  FOOTER_DISCLAIMER_KEY,
+  FOOTER_TAGLINE_DEFAULT,
+  FOOTER_TAGLINE_KEY,
+  footerGroups,
+  type FooterLink,
+} from '@/components/marketing/footerLinks';
 
 function FooterColumn({
   title,
@@ -46,7 +24,10 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground">{title}</p>
+      {/* `.eyebrow` (mono, 0.22em) rather than the hand-rolled Inter `text-xs
+          font-medium tracking-wide` this used to carry — that spelling appeared in 12
+          files and put two different eyebrows on the landing page at once. */}
+      <p className="eyebrow mb-3">{title}</p>
       <ul className="space-y-2 text-sm text-muted-foreground">
         {links.map((link) => (
           <li key={link.href + link.labelKey}>
@@ -67,9 +48,7 @@ type MarketingFooterProps = {
 export function MarketingFooter({ className }: MarketingFooterProps) {
   const { t } = useTranslation();
   const year = new Date().getFullYear();
-  const productLinks = isFreeBeta()
-    ? PRODUCT.filter((l) => l.href !== '/bundle')
-    : PRODUCT;
+  const groups = footerGroups();
 
   return (
     <footer className={cn('border-t border-border/40', className)}>
@@ -83,42 +62,25 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
               </span>
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              {t('footerTagline', {
-                defaultValue: 'Train anywhere. Win daily.',
-              })}
+              {t(FOOTER_TAGLINE_KEY, { defaultValue: FOOTER_TAGLINE_DEFAULT })}
             </p>
             <p className="mt-4 text-xs text-muted-foreground">
               © {year} Mission Winning
             </p>
           </div>
 
-          <FooterColumn
-            title={t('footerGroupProduct', { defaultValue: 'Product' })}
-            links={productLinks}
-            t={t}
-          />
-          <FooterColumn
-            title={t('footerGroupLearn', { defaultValue: 'Learn' })}
-            links={LEARN}
-            t={t}
-          />
-          <FooterColumn
-            title={t('footerGroupCompany', { defaultValue: 'Company' })}
-            links={COMPANY}
-            t={t}
-          />
-          <FooterColumn
-            title={t('footerGroupLegal', { defaultValue: 'Legal' })}
-            links={LEGAL}
-            t={t}
-          />
+          {groups.map((group) => (
+            <FooterColumn
+              key={group.titleKey}
+              title={t(group.titleKey, { defaultValue: group.titleDefault })}
+              links={group.links}
+              t={t}
+            />
+          ))}
         </div>
       </div>
       <div className="border-t border-border/40 px-5 py-4 text-center text-xs leading-relaxed text-muted-foreground/80">
-        {t('footerDisclaimer', {
-          defaultValue:
-            'Educational fitness tools — not medical advice. Consult a physician before starting any training program.',
-        })}
+        {t(FOOTER_DISCLAIMER_KEY, { defaultValue: FOOTER_DISCLAIMER_DEFAULT })}
       </div>
     </footer>
   );

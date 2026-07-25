@@ -51,6 +51,8 @@ const LANDING_EN: Record<string, string> = {
   landingNavBundle: 'Super Bundle',
   landingNavStart: 'Start free',
   landingNavHome: 'Home',
+  navMenuLabel: 'Menu',
+  navMenuClose: 'Close menu',
   landingHeroEyebrow: 'Free offline logger · Adaptive AI coach',
   landingHeroTitle1: 'Train anywhere.',
   landingHeroTitle2: 'Win daily.',

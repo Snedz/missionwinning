@@ -7,8 +7,8 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { PublicSeoHeader } from '@/components/public/PublicSeoHeader';
-import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
+import { PublicPageShell } from '@/components/public/PublicPageShell';
+import { EXERCISES } from '@/data/exercises';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 type Row = {
@@ -90,20 +90,19 @@ export function ComparePage() {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <PublicSeoHeader
-        eyebrow={t('compareEyebrow', { defaultValue: 'Honest comparison' })}
-        title={t('compareTitle', { defaultValue: 'How we compare' })}
-        subtitle={t('compareSubtitle', {
-          defaultValue:
-            'Free tiers side by side. We lead with the offline logger and Coach from your logs — not a paywall.',
-        })}
-      />
-
-      <main className="mx-auto max-w-4xl space-y-8 px-5 py-10">
+    <PublicPageShell
+      eyebrow={t('compareEyebrow', { defaultValue: 'Honest comparison' })}
+      title={t('compareTitle', { defaultValue: 'How we compare' })}
+      subtitle={t('compareSubtitle', {
+        defaultValue:
+          'Free tiers side by side. We lead with the offline logger and Coach from your logs — not a paywall.',
+      })}
+      ctaLabel={t('landingNavStart', { defaultValue: 'Start free' })}
+      maxWidth="4xl"
+    >
         <div className="overflow-hidden rounded-2xl border border-border/50 bg-card/80 shadow-sm">
           <div className="border-b border-border/40 px-5 py-4">
-            <h2 className="text-base font-semibold">
+            <h2 className="font-display text-lg font-semibold uppercase tracking-wide text-foreground">
               {t('compareTableTitle', { defaultValue: 'Free tier at a glance' })}
             </h2>
           </div>
@@ -169,12 +168,12 @@ export function ComparePage() {
           ))}
         </div>
 
-        <div className="rounded-2xl border border-border/40 bg-muted/15 p-5 text-sm text-muted-foreground space-y-2 leading-relaxed">
-          <p className="font-medium text-foreground">What stays free</p>
+        <div className="space-y-2 rounded-2xl border border-border/40 bg-muted/15 p-5 text-sm leading-relaxed text-muted-foreground">
+          <p className="eyebrow">What stays free</p>
           <p>
             Free library:{' '}
             <Link href="/exercises" className="text-primary hover:underline">
-              217 exercise pages
+              {EXERCISES.length} exercise pages
             </Link>
             {' · '}
             <Link href="/guide" className="text-primary hover:underline">
@@ -189,17 +188,19 @@ export function ComparePage() {
         </div>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button asChild variant="fitness" size="lg" className="min-h-[52px] px-8">
-            <Link href="/welcome">{t('welcomeBegin', { defaultValue: 'Start free' })}</Link>
-          </Button>
+          {/* Was `t('welcomeBegin', …)`, whose shipped en value is 'Begin' — so the primary
+              CTA on the highest-intent comparison page read "Begin", matching neither its
+              own defaultValue nor any other Start-free button on the site. `welcomeBegin`
+              belongs to the Welcome flow, where it means "continue". */}
+          <Link href="/welcome" className="primary-action sm:w-auto sm:px-10">
+            {t('landingNavStart', { defaultValue: 'Start free' })}
+          </Link>
           {!isFreeBeta() && (
             <Button asChild variant="outline" size="lg" className="min-h-[52px] px-8">
               <Link href="/bundle">{t('exploreBundle', { defaultValue: 'Explore Super Bundle' })}</Link>
             </Button>
           )}
         </div>
-      </main>
-      <PublicSeoFooter />
-    </div>
+    </PublicPageShell>
   );
 }

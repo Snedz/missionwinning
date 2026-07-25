@@ -20,7 +20,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
+// The full translated footer, not the old five-link row: the guide gives training
+// instruction, so it needs the legal routes and the medical disclaimer too.
+import { MarketingFooter } from '@/components/marketing/MarketingFooter';
 import { GuideContentsRail } from '@/components/learn/GuideContentsRail';
 import { GuideLocaleSelect } from '@/components/learn/GuideLocaleSelect';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
@@ -161,7 +163,7 @@ export function GuideApexShell({
         </DialogContent>
       </Dialog>
 
-      <PublicSeoFooter />
+      <MarketingFooter />
     </div>
   );
 }

@@ -2,45 +2,44 @@
  * Page: /exercises — public exercise catalog
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
+import Link from 'next/link';
 import { ExercisesPublicFilter } from '@/components/public/ExercisesPublicFilter';
-import { PublicSeoHeader } from '@/components/public/PublicSeoHeader';
-import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
+import { PublicPageShell } from '@/components/public/PublicPageShell';
 import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
+import { MAJOR_GROUPS } from '@/lib/muscleGroups';
+import { muscleHubSlug } from '@/lib/exerciseSeo';
 
 export async function ExercisesPublicIndexPage() {
   await ensureFullExerciseCatalog();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <PublicSeoHeader
-        eyebrow="Free to browse"
-        title="Exercise Library"
-        subtitle={`${EXERCISES.length} movements with cues and form guides — free to browse and track in the app.`}
-      />
-      <main className="mx-auto max-w-4xl px-5 py-10 space-y-8">
-        <div className="flex flex-wrap gap-2 text-sm">
-          <span className="text-xs uppercase tracking-wide text-muted-foreground self-center me-1">
-            Hubs
-          </span>
-          {['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'].map((g) => (
-            <a
+    <PublicPageShell
+      eyebrow="Free to browse"
+      title="Exercise library"
+      subtitle={`${EXERCISES.length} movements with cues and form guides — free to browse and track in the app.`}
+      maxWidth="4xl"
+    >
+      <section>
+        <p className="eyebrow mb-3">Hubs</p>
+        <div className="flex flex-wrap gap-2">
+          {MAJOR_GROUPS.map((g) => (
+            <Link
               key={g}
-              href={`/exercises/muscle/${g.toLowerCase()}`}
-              className="px-3 py-1 rounded-full border border-border/60 hover:border-primary/40 text-xs"
+              href={`/exercises/muscle/${muscleHubSlug(g)}`}
+              className="rounded-full border border-border/60 px-3 py-1.5 text-xs transition-colors hover:border-primary/40 hover:bg-primary/10"
             >
               {g}
-            </a>
+            </Link>
           ))}
-          <a
+          <Link
             href="/exercises/equipment/bodyweight"
-            className="px-3 py-1 rounded-full border border-primary/40 text-xs text-primary"
+            className="rounded-full border border-primary/40 px-3 py-1.5 text-xs text-primary transition-colors hover:bg-primary/10"
           >
             Bodyweight
-          </a>
+          </Link>
         </div>
-        <ExercisesPublicFilter />
-      </main>
-      <PublicSeoFooter />
-    </div>
+      </section>
+      <ExercisesPublicFilter />
+    </PublicPageShell>
   );
 }
