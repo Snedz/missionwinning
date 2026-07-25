@@ -6,6 +6,30 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Public calculators: three SEO routes, one honest ladder (`.134`)
+
+The rebrand's Phase 2 asymmetric play: no-auth calculator pages, built now,
+indexed at flip. Not greenfield — the in-app tabbed `/calculators` stays; these
+are public sub-routes on `PublicPageShell`.
+
+- **`/calculators/1rm`** — Epley headline + Brzycki cross-check (existing
+  `calcHelpers`), NEW working-weight table 1–12 as % of the single.
+- **`/calculators/tdee`** — Mifflin-St Jeor × activity, goal −15%/+10%;
+  macros per the handoff (protein **1.8 g/kg** first — deliberately above the
+  in-app Fuel default — fat 25% kcal, carbs remainder), ±10% honesty framing +
+  educational-tool disclaimer.
+- **`/calculators/strength-standards`** — NEW `src/lib/strengthStandards.ts`:
+  bodyweight-multiple ladders per lift/sex from the handoff (Novice→Elite,
+  below-first = "Starting"), unrounded-Epley e1RM so thresholds compare
+  honestly, current rung tinted. 5 unit tests; 599 total pass.
+- Shared Modernist calc UI (`publicCalcUi.tsx`): native-radio segmented
+  control (ink-filled checked state, 44px targets), kg-internal with lb at the
+  display edge (lb whole, kg nearest 0.5).
+- Registered everywhere the gate demands: sitemap (3 URLs → the all-200 @gate
+  test now covers them), `PRIVATE_GATE_PUBLIC_PATHS` (`/calculators` prefix),
+  `SEO_TEMPLATES` (+`/calculators/1rm` design-system contract), gate-smoke
+  reachable-while-gated check. JSON-LD `WebApplication` on each.
+
 ## 2026-07-25 — Modernist rebrand: the landing argues on paper (`.133`)
 
 `/` recut to the Homepage mockup — the argument (log → adapt → anywhere → free →

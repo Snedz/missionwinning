@@ -95,6 +95,8 @@ test.describe('First 90 seconds @gate', () => {
     '/compare',
     '/compare/forge',
     '/paths',
+    // One representative for the public calculators template (Phase 2 rebrand).
+    '/calculators/1rm',
   ] as const;
 
   for (const path of SEO_TEMPLATES) {

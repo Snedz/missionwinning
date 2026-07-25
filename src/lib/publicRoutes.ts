@@ -48,6 +48,8 @@ export const PRIVATE_GATE_PUBLIC_PATHS = [
   '/learn',
   '/paths',
   '/press',
+  /** Public no-auth calculators (prefix also covers /calculators/1rm etc.) */
+  '/calculators',
   /** Beyond the Basics magazine PDF + assets under public/magazine/ */
   '/magazine',
   /** Optional HTTP i18n overlay (LocaleHttpSync) — not /api */

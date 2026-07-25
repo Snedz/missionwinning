@@ -51,6 +51,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/exercises',
     '/learn',
     '/paths',
+    // Public no-auth calculators (rebrand Phase 2) — the in-app tabbed
+    // /calculators page stays gated; only the sub-routes are SEO surfaces.
+    '/calculators/1rm',
+    '/calculators/tdee',
+    '/calculators/strength-standards',
   ];
   const now = new Date();
   // A parked surface must not be advertised to crawlers — see src/lib/surface.ts.
