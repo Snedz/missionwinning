@@ -64,7 +64,7 @@ export function FeedbackPage() {
         })}
         variant="sections"
       >
-        <Card className="border-border/50 bg-card/80 shadow-sm text-center">
+        <Card className="bg-card text-center">
             <CardContent className="pt-8 pb-8 space-y-4">
               <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-muted/40 text-foreground text-sm border border-border/50">
                 {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
@@ -96,7 +96,7 @@ export function FeedbackPage() {
       variant="sections"
       showLegalFooter
     >
-      <Card className="border-border/50 bg-card/80 shadow-sm">
+      <Card className="bg-card">
           <CardHeader>
             <CardTitle className="text-base font-semibold">
               {t('infoFeedbackFormTitle', { defaultValue: 'Tell us how it’s going' })}

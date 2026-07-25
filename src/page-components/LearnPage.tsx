@@ -69,7 +69,7 @@ export function LearnPage() {
           : `${FREE_LEARN_PATHS.length} free education paths. Super Bundle unlocks full programs when paid depth is on.`,
       })}
     >
-        <Card className="border-border/50 bg-card/80 shadow-sm">
+        <Card className="bg-card">
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2 font-semibold">
               <BookMarked className="h-4 w-4 text-primary" />

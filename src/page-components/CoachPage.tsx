@@ -117,7 +117,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       )}
 
       {!loading && locked && !freeBeta && (
-        <Card className="border-border/50 bg-card/80 shadow-sm">
+        <Card className="bg-card">
           <CardHeader>
             <CardTitle className="text-lg">
               {t('coachTasterLocked', { defaultValue: 'Your free week is complete' })}

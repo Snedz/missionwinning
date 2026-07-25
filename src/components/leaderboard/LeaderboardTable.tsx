@@ -30,7 +30,7 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
   return (
     <div
       className={cn(
-        'rounded-2xl border overflow-hidden backdrop-blur-md',
+        'border-2 overflow-hidden',
         theme === 'night' && 'border-[hsl(var(--status-info)/0.25)] bg-[hsl(var(--status-info)/0.1)]',
         theme === 'dawn' && 'border-[hsl(var(--status-warn)/0.25)] bg-[hsl(var(--status-warn)/0.08)]',
         theme === 'default' && 'border-white/10 bg-card/80'

@@ -69,7 +69,7 @@ export function BodyMetricsSheet({ open, onClose, initial, onSave, units }: Prop
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-4">
       <form
         onSubmit={submit}
-        className="w-full max-w-md rounded-2xl border border-border bg-card p-5 space-y-3 shadow-xl"
+        className="w-full max-w-md border-2 border-border bg-card p-5 space-y-3"
       >
         <h2 className="text-lg font-semibold">
           {t('bodyMetricsLogTitle', { defaultValue: 'Log body metrics' })}

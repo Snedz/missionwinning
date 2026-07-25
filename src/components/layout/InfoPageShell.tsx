@@ -77,7 +77,7 @@ export function InfoPageShell({
               <a
                 key={link.id}
                 href={`#${link.id}`}
-                className="shrink-0 rounded-full border border-border/60 bg-muted/40 px-3 py-1.5 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+                className="shrink-0 border border-border bg-card px-3 py-1.5 text-muted-foreground hover:text-primary hover:border-primary transition-colors"
               >
                 {link.label}
               </a>

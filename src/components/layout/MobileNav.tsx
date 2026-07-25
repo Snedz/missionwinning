@@ -22,7 +22,8 @@ export function MobileNav() {
   const hasActiveWorkout = useActiveWorkoutPulse();
 
   return (
-    <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-border/50 bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md supports-[backdrop-filter]:bg-background/85">
+    // Modernist: solid paper under a 2px rule — no translucency, no blur.
+    <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t-2 border-border bg-background pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-stretch justify-around h-[52px]">
         {PRIMARY_NAV.map(({ href, labelKey, label, icon: Icon }) => {
           const isActive = pathActive(pathname, href);
@@ -34,15 +35,18 @@ export function MobileNav() {
               href={href}
               aria-current={isActive ? 'page' : undefined}
               className={cn(
-                'flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-medium min-h-[48px] relative transition-colors',
+                'flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-semibold min-h-[48px] relative transition-colors',
+                // The active tab is marked by a 2px poster-red rule along the top
+                // edge of the tab — it reads as part of the nav's own rule rather
+                // than a floating pill, and the label goes accent-700.
                 isActive
-                  ? 'text-primary after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-primary'
-                  : 'text-muted-foreground hover:text-foreground/80'
+                  ? "text-primary before:absolute before:inset-x-0 before:-top-0.5 before:h-0.5 before:bg-[hsl(var(--accent-poster))] before:content-['']"
+                  : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <Icon className={cn('h-6 w-6', showPulse && 'text-primary')} aria-hidden />
               {showPulse && (
-                <span className="absolute top-1.5 end-[calc(50%-20px)] h-2 w-2 rounded-full bg-primary animate-pulse" />
+                <span className="absolute top-1.5 end-[calc(50%-20px)] h-2 w-2 rounded-full bg-[hsl(var(--accent-poster))] animate-pulse" />
               )}
               {t(labelKey, { defaultValue: label })}
             </Link>

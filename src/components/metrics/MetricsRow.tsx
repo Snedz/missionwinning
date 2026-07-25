@@ -53,7 +53,7 @@ export function MetricsRow({ scores, demo, embedded, size = 'md' }: MetricsRowPr
   }
 
   return (
-    <Card className="border-border/60 bg-card/80 backdrop-blur-sm">
+    <Card className="bg-card">
       <CardContent className="pt-6">{grid}</CardContent>
     </Card>
   );

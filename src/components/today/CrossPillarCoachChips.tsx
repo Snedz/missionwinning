@@ -45,7 +45,7 @@ export function CrossPillarCoachChips({ suggestions, className }: Props) {
           <Link
             key={`${path}-${s.messageKey}`}
             href={path}
-            className="inline-flex items-center rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-xs font-medium text-primary hover:bg-primary/20 transition-colors"
+            className="inline-flex items-center border border-primary bg-tint px-3 py-1 text-xs font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
             title={actionLabel}
           >
             {message} →

@@ -308,7 +308,7 @@ export function ProfilePage() {
 
       <ProfileBackupCard />
 
-      <Card className="border-border/50 shadow-sm">
+      <Card className="bg-card">
         <CardContent className="pt-6">
           <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground">
             {t('infoProfileHelpTitle', { defaultValue: 'Help & legal' })}

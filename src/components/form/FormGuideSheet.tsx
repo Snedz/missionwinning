@@ -29,7 +29,7 @@ export function FormGuideSheet({
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4">
       <button
         type="button"
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-foreground/50"
         aria-label="Close form guide"
         onClick={onClose}
       />
@@ -37,13 +37,13 @@ export function FormGuideSheet({
         className={cn(
           'relative w-full sm:max-w-md max-h-[85vh] overflow-y-auto',
           'rounded-t-2xl sm:rounded-2xl border border-border/60',
-          'bg-card shadow-2xl animate-in slide-in-from-bottom duration-200',
+          'border-2 border-border bg-card animate-in slide-in-from-bottom duration-200',
           guide.militaryStyle && 'border-[hsl(var(--status-warn)/0.4)]'
         )}
         role="dialog"
         aria-labelledby="form-guide-title"
       >
-        <div className="sticky top-0 flex items-center justify-between border-b border-border/40 bg-card/95 backdrop-blur px-5 py-4">
+        <div className="sticky top-0 flex items-center justify-between border-b-2 border-border bg-card px-5 py-4">
           <div>
             <p className="text-xs uppercase tracking-widest text-muted-foreground">{t('formGuideTitle', { defaultValue: 'Form guide' })}</p>
             <h2 id="form-guide-title" className="text-lg font-semibold">{exerciseName}</h2>

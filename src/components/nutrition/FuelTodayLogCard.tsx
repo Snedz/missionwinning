@@ -81,7 +81,7 @@ export function FuelTodayLogCard({
   };
 
   return (
-    <Card className="border-border/50 bg-card/80 shadow-sm">
+    <Card className="bg-card">
       <CardHeader className="flex flex-row items-center justify-between gap-2">
         <CardTitle className="text-base font-semibold">
           {t('fuelTodayLogTitle', { defaultValue: "Today's meals" })}

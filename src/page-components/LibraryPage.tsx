@@ -125,7 +125,7 @@ export function LibraryPage() {
           : t('libraryFreeCatalog', { defaultValue: ' — free core includes the full catalog.' })}
       </p>
 
-      <div className="sticky top-0 z-10 -mx-1 space-y-2 bg-background/95 backdrop-blur-sm py-2">
+      <div className="sticky top-0 z-10 -mx-1 space-y-2 border-b-2 border-border bg-background py-2">
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />

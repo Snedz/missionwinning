@@ -72,7 +72,7 @@ export function FuelRecipesPanel({
         />
       ) : null}
 
-      <Card className="border-border/50 bg-card/80 shadow-sm">
+      <Card className="bg-card">
         <CardHeader>
           <CardTitle className="text-base font-semibold">
             {t('fuelFreeRecipesTitle', {
@@ -122,7 +122,7 @@ export function FuelRecipesPanel({
       )}
 
       {premium ? (
-        <Card className="border-border/50 bg-card/80 shadow-sm">
+        <Card className="bg-card">
           <CardHeader>
             <CardTitle className="text-base font-semibold">
               {t('fuelPremiumRecipesTitle', {

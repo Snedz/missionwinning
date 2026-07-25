@@ -58,7 +58,7 @@ export function ActiveSessionChrome({
       <div
         className={[
           'sticky top-0 z-30 -mx-1 px-1 py-2',
-          'bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/75',
+          'bg-background',
           'border-b border-border/40 md:border-border/60',
         ].join(' ')}
       >
@@ -122,7 +122,7 @@ export function ActiveSessionChrome({
                 />
                 <div
                   role="menu"
-                  className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] rounded-xl border border-border bg-card p-1 shadow-lg"
+                  className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1"
                 >
                   <button
                     type="button"
