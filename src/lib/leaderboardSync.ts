@@ -2,29 +2,46 @@ import { supabase, getUser } from '@/lib/supabase';
 import type { LeaderboardBoardId, LeaderboardSnapshot } from '@/lib/leaderboard/types';
 import type { CompletedWorkoutLog } from '@/types';
 import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
+import { enqueue, registerHandler } from '@/lib/sync/outbox';
 
-let pushTimer: ReturnType<typeof setTimeout> | null = null;
-
+/**
+ * Queue a leaderboard snapshot. `delayMs` is accepted for call-site compatibility
+ * and ignored — the outbox owns timing.
+ *
+ * The snapshot is computed here rather than in the handler on purpose: the payload
+ * has to be persisted, and queuing an entire workout history would bloat device
+ * storage. Latest-state dedupe means only the newest snapshot survives anyway.
+ */
 export function scheduleLeaderboardPush(
   workoutHistory: CompletedWorkoutLog[],
   savedCount: number,
-  delayMs = 2000
+  _delayMs = 2000
 ): void {
   if (typeof window === 'undefined') return;
-  if (pushTimer) clearTimeout(pushTimer);
-  pushTimer = setTimeout(() => {
-    pushTimer = null;
-    void pushLeaderboardSnapshot(workoutHistory, savedCount);
-  }, delayMs);
+  enqueue('leaderboard.push', 'snapshot', { workoutHistory, savedCount });
 }
 
+let registered = false;
+
+/** Idempotent. Called from useOutboxDrain. */
+export function registerLeaderboardSyncHandler(): void {
+  if (registered) return;
+  registered = true;
+  registerHandler('leaderboard.push', async (payload) => {
+    const p = payload as { workoutHistory?: CompletedWorkoutLog[]; savedCount?: number } | null;
+    if (!p?.workoutHistory) return true; // malformed: dropping beats retrying forever
+    return pushLeaderboardSnapshot(p.workoutHistory, p.savedCount ?? 0);
+  });
+}
+
+/** Resolves true when the snapshot is stored (or intentionally skipped). */
 export async function pushLeaderboardSnapshot(
   workoutHistory: CompletedWorkoutLog[],
   savedCount: number
-): Promise<void> {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return;
+): Promise<boolean> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return true;
   const user = await getUser();
-  if (!user) return;
+  if (!user) return true; // signed out — not a failure
 
   const snap = computeLocalLeaderboardSnapshot(workoutHistory, savedCount, user.id);
 
@@ -50,7 +67,11 @@ export async function pushLeaderboardSnapshot(
     { onConflict: 'user_id' }
   );
 
-  if (error) console.warn('leaderboard sync', error.message);
+  if (error) {
+    console.warn('leaderboard sync', error.message);
+    return false; // let the outbox retry instead of losing the snapshot
+  }
+  return true;
 }
 
 export async function fetchCloudLeaderboardSnapshots(

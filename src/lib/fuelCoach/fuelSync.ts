@@ -4,6 +4,12 @@ import type { FuelPlan } from '@/lib/fuelCoach/types';
 
 let pushTimer: ReturnType<typeof setTimeout> | null = null;
 
+/**
+ * NOTE: despite the name this does not reach a cloud — it writes a per-user key in
+ * device storage. There is no network call, so there is nothing for the sync outbox
+ * to retry and `fuel.plan` was deliberately removed from `OutboxKind`. Put it on the
+ * outbox when a real endpoint exists.
+ */
 export async function pushFuelPlanToCloud(): Promise<boolean> {
   const user = await getUser();
   if (!user || typeof localStorage === 'undefined') return false;

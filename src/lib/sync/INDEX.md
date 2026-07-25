@@ -19,6 +19,28 @@ Android already had sync v2 (`client_id`, `revision`, tombstones — see
 | `outbox.ts` | Durable queue: persist → retry with backoff → ack. No handler imports. |
 | `workoutSync.ts` | The `workout.upsert` handler; read-by-`client_id` then update/insert |
 
+## Kinds and their handlers
+
+Every declared `OutboxKind` must have a registered handler, or its ops queue forever
+while the type claims support. Registration happens in `src/hooks/useOutboxDrain.ts`.
+
+| Kind | Handler | dedupeKey | Notes |
+|------|---------|-----------|-------|
+| `workout.upsert` | `sync/workoutSync.ts` | `clientId` | Per-entity — sessions must not collapse |
+| `coach.plan` | `lib/coachSync.ts` | one per kind | Latest-state; handler re-reads storage |
+| `journey.state` | `lib/journeySync.ts` | one per kind | Latest-state; handler re-reads storage |
+| `leaderboard.push` | `lib/leaderboardSync.ts` | one per kind | Snapshot computed at enqueue — queuing a whole history would bloat storage |
+| `pft.push` | `lib/pftSync.ts` | `session.completedAt` | Per-entity. Inactive while the `america` surface is parked |
+
+**Not on the outbox:** `fuelCoach/fuelSync.ts`. Its `pushFuelPlanToCloud` writes a
+per-user key in *device storage*, not a network — there is no transient failure to
+retry. Move it here when a real endpoint exists.
+
+**Signed out is not a failure.** Handlers return `true` when there is no user or no
+Supabase configured: local storage is the source of truth and the op is re-queued on
+sign-in. Returning `false` there would spin the backoff against a condition that
+retrying cannot fix.
+
 ## Contract
 
 | Guarantee | How |

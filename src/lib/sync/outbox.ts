@@ -1,10 +1,11 @@
 /**
  * Durable outbox for every write that leaves this device.
  *
- * Replaces five independent "debounce a push and hope" modules (coachSync,
- * journeySync, leaderboardSync, pftSync, fuelCoach/fuelSync) plus the
- * fire-and-forget cloud write in workoutStore, none of which survived the tab
- * closing. A session logged in a car park with no signal is the normal case here,
+ * Replaces four independent "debounce a push and hope" modules (coachSync,
+ * journeySync, leaderboardSync, pftSync) plus the fire-and-forget cloud write in
+ * workoutStore, none of which survived the tab closing. `fuelCoach/fuelSync` is
+ * deliberately not here: its "push" writes to device storage, not a network, so
+ * there is no transient failure to retry. A session logged in a car park with no signal is the normal case here,
  * so queued work has to outlive the page.
  *
  * Contract:
@@ -23,7 +24,6 @@ export type OutboxKind =
   | 'workout.upsert'
   | 'coach.plan'
   | 'journey.state'
-  | 'fuel.plan'
   | 'leaderboard.push'
   | 'pft.push';
 

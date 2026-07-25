@@ -17,6 +17,7 @@ const PHASE_RANK: Record<JourneyPhase, number> = {
 import { loadPlan, COACH_TASTER_KEY, savePlan } from '@/lib/coach/storage';
 import { mergeCoachPlans } from '@/lib/coachSync';
 import type { CoachPlan } from '@/lib/coach/types';
+import { enqueue, registerHandler } from '@/lib/sync/outbox';
 
 export interface CloudProfileSlice {
   locale?: string | null;
@@ -114,7 +115,8 @@ export async function pullJourneyFromCloud(): Promise<boolean> {
 /** Push local journey + profile prefs to Supabase. */
 export async function pushJourneyToCloud(): Promise<boolean> {
   const user = await getUser();
-  if (!user || !process.env.NEXT_PUBLIC_SUPABASE_URL) return false;
+  // Signed out is not a failure — see coachSync for why this must not return false.
+  if (!user || !process.env.NEXT_PUBLIC_SUPABASE_URL) return true;
 
   const journey = loadJourneyState();
   const locale =
@@ -158,16 +160,20 @@ export async function pushJourneyToCloud(): Promise<boolean> {
   return true;
 }
 
-let pushTimer: ReturnType<typeof setTimeout> | null = null;
-
 /** Debounced cloud push after local journey/prefs change. */
-export function scheduleJourneyPush(delayMs = 1500): void {
+/** Queue the journey snapshot. Latest-state; `delayMs` kept for compatibility. */
+export function scheduleJourneyPush(_delayMs = 1500): void {
   if (typeof window === 'undefined') return;
-  if (pushTimer) clearTimeout(pushTimer);
-  pushTimer = setTimeout(() => {
-    pushTimer = null;
-    void pushJourneyToCloud();
-  }, delayMs);
+  enqueue('journey.state', 'state', null);
+}
+
+let journeyHandlerRegistered = false;
+
+/** Idempotent. Called from useOutboxDrain. */
+export function registerJourneySyncHandler(): void {
+  if (journeyHandlerRegistered) return;
+  journeyHandlerRegistered = true;
+  registerHandler('journey.state', () => pushJourneyToCloud());
 }
 
 /** Fire-and-forget welcome email for recently signed-up users. */

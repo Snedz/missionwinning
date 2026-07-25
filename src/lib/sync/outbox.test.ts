@@ -124,12 +124,12 @@ test('outbox', async (t) => {
     const uninstall = setup();
     try {
       let calls = 0;
-      registerHandler('fuel.plan', async () => {
+      registerHandler('coach.plan', async () => {
         calls += 1;
         throw new Error('network down');
       });
 
-      enqueue('fuel.plan', 'plan', { a: 1 });
+      enqueue('coach.plan', 'plan', { a: 1 });
       await flush();
       assert.equal(calls, 1);
       assert.equal(getState().pending, 1, 'the op is still queued after a throw');

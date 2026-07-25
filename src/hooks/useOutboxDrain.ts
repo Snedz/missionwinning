@@ -3,6 +3,10 @@
 import { useEffect } from 'react';
 import { flush, msUntilNextAttempt, retryStuck } from '@/lib/sync/outbox';
 import { registerWorkoutSyncHandler } from '@/lib/sync/workoutSync';
+import { registerCoachSyncHandler } from '@/lib/coachSync';
+import { registerJourneySyncHandler } from '@/lib/journeySync';
+import { registerLeaderboardSyncHandler } from '@/lib/leaderboardSync';
+import { registerPftSyncHandler } from '@/lib/pftSync';
 
 /**
  * Drives the outbox for the lifetime of the tab.
@@ -14,7 +18,13 @@ import { registerWorkoutSyncHandler } from '@/lib/sync/workoutSync';
  */
 export function useOutboxDrain(): void {
   useEffect(() => {
+    // Every declared OutboxKind needs a handler, or its ops queue forever while the
+    // type claims they are supported.
     registerWorkoutSyncHandler();
+    registerCoachSyncHandler();
+    registerJourneySyncHandler();
+    registerLeaderboardSyncHandler();
+    registerPftSyncHandler();
 
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
