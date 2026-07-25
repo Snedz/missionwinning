@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import dynamic from 'next/dynamic';
-import { ChevronDown, Dumbbell } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { ROUTE_LABELS, STATIC_PAGE_TITLES } from '@/lib/pageTitles';
 import type { JourneyPhase } from '@/lib/missionJourney';
 import type { NavSection } from '@/lib/navConfig';
@@ -106,9 +107,7 @@ export function AppHeader() {
           aria-haspopup="true"
           className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-muted/40 transition-colors rounded-lg -ms-1 ps-1 py-1"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/90">
-            <Dumbbell className="h-5 w-5 text-primary-foreground" />
-          </div>
+          <BrandMonogram className="h-9 w-9 text-sm" />
           <div className="flex-1 min-w-0 flex items-center gap-2">
             <span className="text-base font-semibold tracking-tight truncate sm:text-lg">
               Mission Winning

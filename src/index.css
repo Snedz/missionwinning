@@ -299,6 +299,27 @@
     opacity: 0.55;
   }
 
+  /* The poster close — the ONE red field a page is allowed. Display-grade type,
+     paper on red, flush left. Inside it the .primary-action inverts to paper so
+     the field itself carries the red (and the two-per-page CTA count holds). */
+  .poster-close {
+    background: hsl(var(--accent-poster));
+    color: hsl(var(--background));
+  }
+
+  .poster-close .primary-action {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  .poster-close .primary-action:hover {
+    background: hsl(var(--accent-tint));
+  }
+
+  .poster-close .primary-action:focus-visible {
+    outline-color: hsl(var(--background));
+  }
+
   /* Noise is retired — flat ink on paper. Class kept for call-site stability. */
   .texture-noise {
     position: relative;
