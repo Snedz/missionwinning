@@ -41,7 +41,7 @@
 | Wearables (Horizon 3) | [docs/WEARABLES.md](docs/WEARABLES.md) | Live OAuth/hubs until retention unlock |
 | Premium / conversion | [docs/REDTEAM.md](docs/REDTEAM.md), [docs/STRATEGY.md](docs/STRATEGY.md) | — |
 | **YC / product wedge** | [docs/YC_THESIS.md](docs/YC_THESIS.md), [docs/STRATEGY.md](docs/STRATEGY.md) | Pitching “everything app” as the company; [vision.md](vision.md) is constitution, not the YC one-liner |
-| **Accelerator apps (Jul–Aug 2026)** | [docs/ACCELERATOR_SPRINT.md](docs/ACCELERATOR_SPRINT.md), [docs/applications/INDEX.md](docs/applications/INDEX.md) | Fabricating traction; Cardano pivot; flipping `PRIVATE_MODE` for demos |
+| **Accelerator apps (Jul–Aug 2026)** | [docs/ACCELERATOR_SPRINT.md](docs/ACCELERATOR_SPRINT.md); paste answers local-only — [docs/applications/README.md](docs/applications/README.md) | Fabricating traction; Cardano pivot; flipping `PRIVATE_MODE` for demos; committing paste packs |
 | Journey UX (I-Day → Commissioned) | [docs/JOURNEY.md](docs/JOURNEY.md) | Build phases in [docs/PLAN.md](docs/PLAN.md) (different “phase”) |
 | UI unification | [UX_UNIFIED_PLAN.md](docs/archive/UX_UNIFIED_PLAN.md) | — |
 | Experience build (v4) | [docs/archive/ROADMAP_V4_EXPERIENCE.md](docs/archive/ROADMAP_V4_EXPERIENCE.md) | Old chat plans in `~/.cursor/plans/` |

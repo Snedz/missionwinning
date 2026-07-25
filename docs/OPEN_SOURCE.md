@@ -41,7 +41,7 @@ Also: [ENV.md](ENV.md), [PROTECTION.md](PROTECTION.md).
 Agents never change repository visibility. Full checklist: [SECRETS.md § Pre-public flip](SECRETS.md).
 
 1. `npm run secrets:scan` clean; optional history `gitleaks detect --source . -v`.
-2. Note that accelerator / launch docs under `docs/applications/` become world-readable with the repo.
+2. Accelerator **paste packs** stay local (`docs/applications/*` gitignored — see [applications/README.md](applications/README.md)). Do not re-commit them.
 3. Enable GitHub **Secret scanning** + **Push protection**.
 4. GitHub → Settings → **Change repository visibility → Public**.
 5. Optional: add topics (`agpl-3.0`, `pwa`, `fitness`, `nextjs`) and verify the README license badge.

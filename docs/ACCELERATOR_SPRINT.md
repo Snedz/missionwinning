@@ -1,7 +1,7 @@
 # Accelerator application sprint — Jul 20 – Aug 2, 2026 (Get Selected)
 
 **Audience:** Founder (submits forms, flips public, films demo) · Agents (docs + evidence UX only)  
-**Narrative:** [YC_THESIS.md](YC_THESIS.md) (Fall 2026 official RFS sync — wedge one-liner + RFS fit matrix + Team Humanity north star — do not collapse layers) · **Paste answers:** [applications/INDEX.md](applications/INDEX.md)  
+**Narrative:** [YC_THESIS.md](YC_THESIS.md) (Fall 2026 official RFS sync — wedge one-liner + RFS fit matrix + Team Humanity north star — do not collapse layers) · **Paste answers:** local only — [applications/README.md](applications/README.md) (gitignored packs)  
 **Rules:** Honest traction only. **Agents never** flip `PRIVATE_MODE` or invent metrics. **Skip** Draper × Cardano.
 
 ---
@@ -25,11 +25,11 @@
 
 | Rank | Program | Deadline | Deal | Verdict |
 |------|---------|----------|------|---------|
-| 1 | [CDL](https://creativedestructionlab.com/application-triage/) | **Jul 24** ET | No equity | **Apply** — [CDL_ANSWERS.md](applications/CDL_ANSWERS.md) |
-| 2 | [YC F26](https://www.ycombinator.com/apply) | **Jul 27** 8pm PT | Standard YC | **Apply** — [YC_ANSWERS.md](applications/YC_ANSWERS.md) |
-| 3 | [Elbow Grease](https://elbowgrease.cc/) | **Jul 31** | $300K/9% | **Apply if NYC OK** — [ELBOW_GREASE_ANSWERS.md](applications/ELBOW_GREASE_ANSWERS.md) |
-| 4 | [SPC F26](https://www.southparkcommons.com/news/f26-founder-fellowship/) | **Aug 2** PT | $400K/7% + $600K | **Apply** — [SPC_ANSWERS.md](applications/SPC_ANSWERS.md) |
-| 5 | [The Residency](https://livetheresidency.com/) | Rolling | Housing | **If full-time OK** — [RESIDENCY_ANSWERS.md](applications/RESIDENCY_ANSWERS.md) |
+| 1 | [CDL](https://creativedestructionlab.com/application-triage/) | **Jul 24** ET | No equity | **Apply** — local `applications/CDL_ANSWERS.md` (gitignored) |
+| 2 | [YC F26](https://www.ycombinator.com/apply) | **Jul 27** 8pm PT | Standard YC | **Apply** — local `applications/YC_ANSWERS.md` (gitignored) |
+| 3 | [Elbow Grease](https://elbowgrease.cc/) | **Jul 31** | $300K/9% | **Apply if NYC OK** — local `applications/ELBOW_GREASE_ANSWERS.md` (gitignored) |
+| 4 | [SPC F26](https://www.southparkcommons.com/news/f26-founder-fellowship/) | **Aug 2** PT | $400K/7% + $600K | **Apply** — local `applications/SPC_ANSWERS.md` (gitignored) |
+| 5 | [The Residency](https://livetheresidency.com/) | Rolling | Housing | **If full-time OK** — local `applications/RESIDENCY_ANSWERS.md` (gitignored) |
 | 6 | Draper × Cardano | — | — | **Skip** |
 
 **If multiple funded offers:** pick one check. CDL can stack.
@@ -97,7 +97,7 @@ Agents: same-day hero-bug fixes only. No feature waves this sprint.
 | Profile → BetaAdminPanel | Screenshot + **Copy proof stats** (real metrics only) |
 | `/coach` + Today Coach card | `CoachAdaptBanner` |
 | Landing hero | YC one-liner first sentence |
-| Answer files | [applications/](applications/) |
+| Answer files | Local only — [applications/README.md](applications/README.md) (gitignored packs) |
 
 ---
 

@@ -33,6 +33,7 @@ flowchart TB
 | Deploy credentials | `VERCEL_TOKEN`, Deploy Hook URLs, GitHub PATs |
 | Infra IDs in docs | Real `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID`, Supabase project ref/URL (use placeholders in docs) |
 | Personal PII | Founder personal email, phone, home address |
+| Accelerator paste packs | `docs/applications/*` answers (YC/CDL/SPC/…); only [applications/README.md](applications/README.md) is tracked |
 | Crypto material | Treasury **private** keys / keystore paths (`*.b58`, PEM, Android upload keystore) |
 | User data dumps | Production DB exports, beta email lists |
 
@@ -104,7 +105,7 @@ Agents **never** change repository visibility or flip `PRIVATE_MODE`.
 1. [ ] `npm run secrets:scan` clean on current tree  
 2. [ ] Optional: `gitleaks detect --source . -v` on history  
 3. [ ] Confirm scrub: no personal gmail, real Vercel org/project IDs, Supabase ref, treasury private-key paths in docs  
-4. [ ] Note `docs/applications/` becomes world-readable with the repo  
+4. [ ] Confirm `docs/applications/` paste packs are gitignored (only README tracked) — not world-readable on Public  
 5. [ ] GitHub → Settings → **Code security** → enable **Secret scanning** + **Push protection** (free on public repos)  
 6. [ ] Optional: enable Code scanning (CodeQL workflow is schedule/dispatch only)  
 7. [ ] GitHub → Settings → **Change repository visibility → Public**  

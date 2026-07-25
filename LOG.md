@@ -6,6 +6,10 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Accelerator paste packs gitignored
+
+- `docs/applications/*` answers removed from tracking; only [README.md](docs/applications/README.md) stays public. Files remain on disk for founder paste. History still has old copies until a rewrite.
+
 ## 2026-07-25 — Secrets program + pre-public scrub
 
 - **Program:** [docs/SECRETS.md](docs/SECRETS.md) — vaults (Vercel + GH Actions), never-commit list, rotate-on-leak, Public flip checklist. `npm run secrets:scan` + `.gitleaks.toml` + PR `gitleaks.yml`.

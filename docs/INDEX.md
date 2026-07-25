@@ -75,7 +75,7 @@
 | [EXERCISE_AS_MEDICINE.md](EXERCISE_AS_MEDICINE.md) | Evidence thesis: structured exercise vs vague advice; claim hygiene (not a depression product) |
 | [CRYPTO_RAILS_THESIS.md](CRYPTO_RAILS_THESIS.md) | Crypto = payment rail (not product); Horizon now/next/never |
 | [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md) | Jul–Aug 2026 apps: CDL/YC/Elbow Grease/SPC ranking, demo seed, Wave A pre-flip |
-| [applications/INDEX.md](applications/INDEX.md) | Paste-ready YC/CDL/Elbow Grease/SPC/Residency answers (honest blanks) |
+| [applications/README.md](applications/README.md) | Paste answers are **gitignored** (founder-only); public stub only |
 | [PRODUCTION_STACK.md](PRODUCTION_STACK.md) | 13-layer production scorecard (ops maturity) |
 | [CACHE_LADDER.md](CACHE_LADDER.md) | Browser / CDN / Redis / Postgres — ideal vs MW v1 |
 | [BACKUP_RESTORE.md](BACKUP_RESTORE.md) | User export + Supabase operator recovery (L13) |

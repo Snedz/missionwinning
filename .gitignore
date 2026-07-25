@@ -70,6 +70,10 @@ workbox-*.js
 media/inbox/*
 !media/inbox/README.md
 
+# Accelerator paste answers (founder-only — keep README only)
+docs/applications/*
+!docs/applications/README.md
+
 # other
 .cache/
 .env.vercel.production

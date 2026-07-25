@@ -81,7 +81,7 @@ Medicine already knows structured exercise helps mild–moderate mood symptoms; 
 
 **Product loop:** After finishing a workout, victory CTA prefers Mission Coach for the first 3 completed sessions (or when no coach plan) — see `pickVictoryNextAction` in `src/lib/workout/workoutVictory.ts`. Coach page shows an **adaptation banner** (missed / swapped / revision) for demo videos — see [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md).
 
-**Accelerator sprint (Jul 20 – Aug 2):** [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md) · paste answers in [applications/INDEX.md](applications/INDEX.md) — CDL → YC → Elbow Grease → SPC; skip Draper Cardano; honest traction only.
+**Accelerator sprint (Jul 20 – Aug 2):** [ACCELERATOR_SPRINT.md](ACCELERATOR_SPRINT.md) · paste answers local-only ([applications/README.md](applications/README.md)) — CDL → YC → Elbow Grease → SPC; skip Draper Cardano; honest traction only.
 
 ---
 
