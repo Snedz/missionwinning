@@ -5,7 +5,8 @@ const GATE_EN: Record<string, string> = {
   gateTitle1: 'Train anywhere.',
   gateTitle2: 'Win daily.',
   gateSubtitle:
-    'Free offline workout logging + adaptive Mission Coach from your logs (no wearable). Launching soon — free core forever.',
+    'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Launching soon; the core is free forever.',
+  gateFooterTagline: 'free core forever',
   gateWaitlistTitle: 'Get notified at launch',
   gateWaitlistPlaceholder: 'you@example.com',
   gateWaitlistSubmit: 'Notify me',
@@ -21,7 +22,7 @@ const GATE_EN: Record<string, string> = {
   gateInviteEyebrow: 'Beta invite',
   gateInviteHeadline: "You're invited — enter your access code to join the beta.",
   gateInviteSubtitle:
-    'Enter the access code from your invite email, then complete I-Day and log your first workout.',
+    "You're invited — enter the access code from your invite email, then complete I-Day and log your first workout.",
   gateBetaGuide: 'beta start guide',
   gateBetaGuideFoot: 'Invited testers: see the',
   offlineEyebrow: 'No connection',
@@ -57,6 +58,7 @@ const GATE_ES: Record<string, string> = {
   offlineBody:
     'Esta página aún no está en caché, pero lo que ya usaste sigue funcionando — tus entrenos viven en este dispositivo y se sincronizan al volver.',
   offlineCta: 'Abrir Hoy',
+  gateFooterTagline: 'núcleo gratis para siempre',
 };
 
 const GATE_FR: Record<string, string> = {
@@ -78,6 +80,7 @@ const GATE_FR: Record<string, string> = {
   offlineEyebrow: 'Hors ligne',
   offlineTitle: 'Hors ligne — toujours en mission.',
   offlineCta: 'Ouvrir Aujourd’hui',
+  gateFooterTagline: 'cœur gratuit pour toujours',
 };
 
 const GATE_PT: Record<string, string> = {
@@ -99,6 +102,7 @@ const GATE_PT: Record<string, string> = {
   offlineEyebrow: 'Sem conexão',
   offlineTitle: 'Offline — mas na missão.',
   offlineCta: 'Abrir Hoje',
+  gateFooterTagline: 'núcleo grátis para sempre',
 };
 
 const GATE_DE: Record<string, string> = {
@@ -120,6 +124,7 @@ const GATE_DE: Record<string, string> = {
   offlineEyebrow: 'Offline',
   offlineTitle: 'Offline — Mission läuft weiter.',
   offlineCta: 'Heute öffnen',
+  gateFooterTagline: 'Kern für immer gratis',
 };
 
 const GATE_IT: Record<string, string> = {
@@ -134,6 +139,7 @@ const GATE_IT: Record<string, string> = {
   gateAccessSubmit: 'Entra nella beta',
   offlineTitle: 'Offline — ma in missione.',
   offlineCta: 'Apri Oggi',
+  gateFooterTagline: 'nucleo gratis per sempre',
 };
 
 const GATE_RU: Record<string, string> = {
@@ -148,6 +154,7 @@ const GATE_RU: Record<string, string> = {
   gateAccessSubmit: 'Войти в бету',
   offlineTitle: 'Офлайн — миссия продолжается.',
   offlineCta: 'Открыть Сегодня',
+  gateFooterTagline: 'ядро бесплатно навсегда',
 };
 
 const GATE_JA: Record<string, string> = {
@@ -162,6 +169,7 @@ const GATE_JA: Record<string, string> = {
   gateAccessSubmit: 'ベータに入る',
   offlineTitle: 'オフライン — ミッションは続きます。',
   offlineCta: '今日を開く',
+  gateFooterTagline: 'コア機能はずっと無料',
 };
 
 const GATE_KO: Record<string, string> = {
@@ -176,6 +184,7 @@ const GATE_KO: Record<string, string> = {
   gateAccessSubmit: '베타 입장',
   offlineTitle: '오프라인 — 미션은 계속됩니다.',
   offlineCta: '오늘 열기',
+  gateFooterTagline: '핵심 기능은 영원히 무료',
 };
 
 const GATE_ZH: Record<string, string> = {
@@ -190,6 +199,7 @@ const GATE_ZH: Record<string, string> = {
   gateAccessSubmit: '进入内测',
   offlineTitle: '离线 — 任务仍在继续。',
   offlineCta: '打开今日',
+  gateFooterTagline: '核心功能永久免费',
 };
 
 const GATE_TH: Record<string, string> = {
@@ -204,6 +214,7 @@ const GATE_TH: Record<string, string> = {
   gateAccessSubmit: 'เข้าสู่เบต้า',
   offlineTitle: 'ออฟไลน์ — แต่ยังอยู่ในภารกิจ',
   offlineCta: 'เปิดวันนี้',
+  gateFooterTagline: 'ฟีเจอร์หลักฟรีตลอดไป',
 };
 
 const GATE_VI: Record<string, string> = {
@@ -218,6 +229,7 @@ const GATE_VI: Record<string, string> = {
   gateAccessSubmit: 'Vào beta',
   offlineTitle: 'Ngoại tuyến — vẫn trong nhiệm vụ.',
   offlineCta: 'Mở Hôm nay',
+  gateFooterTagline: 'tính năng cốt lõi miễn phí mãi mãi',
 };
 
 const GATE_HI: Record<string, string> = {
@@ -232,6 +244,7 @@ const GATE_HI: Record<string, string> = {
   gateAccessSubmit: 'बीटा में प्रवेश',
   offlineTitle: 'ऑफ़लाइन — मिशन जारी।',
   offlineCta: 'आज खोलें',
+  gateFooterTagline: 'कोर हमेशा मुफ़्त',
 };
 
 const GATE_ID: Record<string, string> = {
@@ -246,6 +259,7 @@ const GATE_ID: Record<string, string> = {
   gateAccessSubmit: 'Masuk beta',
   offlineTitle: 'Offline — misi tetap jalan.',
   offlineCta: 'Buka Hari Ini',
+  gateFooterTagline: 'fitur inti gratis selamanya',
 };
 
 const GATE_AR: Record<string, string> = {
@@ -260,6 +274,7 @@ const GATE_AR: Record<string, string> = {
   gateAccessSubmit: 'ادخل النسخة التجريبية',
   offlineTitle: 'بدون اتصال — المهمة مستمرة.',
   offlineCta: 'افتح اليوم',
+  gateFooterTagline: 'الأساس مجاني للأبد',
 };
 
 const BY_LANG: Record<string, Record<string, string>> = {

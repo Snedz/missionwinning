@@ -9,7 +9,6 @@ import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { grantPrivateAccessFromSession } from '@/lib/grantPrivateAccessFromSession';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
-import { BrandMonogram } from '@/components/brand/BrandMonogram';
 
 type Props = {
   /** Server-resolved invite so SSR HTML exposes data-mw-invitee for gate-smoke. */
@@ -110,66 +109,42 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
     setWaitBusy(false);
   };
 
-  const accessForm = (
-    <form onSubmit={handleSubmit} className="mt-6 space-y-4 border-t border-border/40 pt-6">
-      {isInvitee ? (
-        <p className="text-sm font-medium text-foreground">
-          {t('gateInviteHeadline', {
-            defaultValue: "You're invited — enter your access code to join the beta.",
-          })}
-        </p>
-      ) : null}
-      <label className="block space-y-2 text-sm">
-        <span className="eyebrow text-muted-foreground">
-          {t('gateAccessLabel', { defaultValue: 'Access code' })}
-        </span>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder={t('gateAccessPlaceholder', {
-            defaultValue: 'Enter code from your invite',
-          })}
-          autoComplete="off"
-          // Invitees land with the access form expanded — focus the code field.
-          // eslint-disable-next-line jsx-a11y/no-autofocus -- invite conversion
-          autoFocus={isInvitee}
-          className="tap-target w-full rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-          disabled={loading}
-        />
-      </label>
-      <button
-        type="submit"
-        disabled={loading || !password}
-        className="primary-action disabled:opacity-50"
-      >
-        {loading
-          ? t('gateAccessChecking', { defaultValue: 'Checking…' })
-          : t('gateAccessSubmit', { defaultValue: 'Enter the beta' })}
-      </button>
-      {error && (
-        <p
-          role="alert"
-          aria-live="assertive"
-          className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-[hsl(var(--status-danger))]"
-        >
-          {error}
-        </p>
-      )}
-      <p className="text-[11px] leading-relaxed text-muted-foreground">
-        {t('gateBetaGuideFoot', { defaultValue: 'Invited testers: see the' })}{' '}
-        <Link href="/beta" className="text-muted-foreground underline-offset-2 hover:underline">
-          {t('gateBetaGuide', { defaultValue: 'beta start guide' })}
-        </Link>
-        . If you installed the app before the gate, clear site data or reinstall.
-      </p>
-    </form>
+  const errorNode = error ? (
+    <p role="alert" aria-live="assertive" className="gate-error">
+      {error}
+    </p>
+  ) : null;
+
+  const codeField = (
+    <label className="gate-field">
+      <span className="gate-label">
+        {t('gateAccessLabel', { defaultValue: 'Access code' })}
+      </span>
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder={t('gateAccessPlaceholder', {
+          defaultValue: 'Enter code from your invite',
+        })}
+        autoComplete="off"
+        // Invitees land with the access form expanded — focus the code field.
+        // eslint-disable-next-line jsx-a11y/no-autofocus -- invite conversion
+        autoFocus={isInvitee}
+        className="gate-input"
+        disabled={loading}
+      />
+    </label>
   );
+
+  const submitLabel = loading
+    ? t('gateAccessChecking', { defaultValue: 'Checking…' })
+    : t('gateAccessSubmit', { defaultValue: 'Enter the beta' });
 
   if (sessionUnlocking) {
     return (
       <div
-        className="min-h-screen flex items-center justify-center bg-background text-muted-foreground text-sm"
+        className="gate-shell gate-center"
         data-mw-invitee={isInvitee ? '1' : '0'}
       >
         {t('gateCheckingSession', { defaultValue: 'Checking sign-in…' })}
@@ -178,60 +153,86 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   }
 
   return (
-    <div
-      className="min-h-screen flex flex-col bg-background text-foreground"
-      data-mw-invitee={isInvitee ? '1' : '0'}
-    >
-      <div className="flex-1 flex items-center justify-center p-6">
-        <div className="w-full max-w-md page-enter">
-          <div className="text-center mb-10">
-            <BrandMonogram display className="mx-auto mb-6 h-12 w-12 rounded-xl text-lg" />
-            <p className="eyebrow-live mb-4">
-              {isInvitee
-                ? t('gateInviteEyebrow', { defaultValue: 'Beta invite' })
-                : t('gateEyebrow', { defaultValue: 'Private beta in progress' })}
-            </p>
-            <h1 className="font-display text-4xl font-bold uppercase leading-none tracking-tight sm:text-5xl">
-              {t('gateTitle1', { defaultValue: 'Train anywhere.' })}
-              <br />
-              {t('gateTitle2', { defaultValue: 'Win daily.' })}
-            </h1>
-            <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              {isInvitee
-                ? t('gateInviteSubtitle', {
-                    defaultValue:
-                      'Enter the access code from your invite email, then complete I-Day and log your first workout.',
-                  })
-                : t('gateSubtitle', {
-                    defaultValue:
-                      'Free offline workout logging + adaptive Mission Coach from your logs (no wearable). Launching soon — free core forever.',
-                  })}
-            </p>
-          </div>
+    <div className="gate-shell page-enter" data-mw-invitee={isInvitee ? '1' : '0'}>
+      <header className="gate-header">
+        <span className="gate-brand">
+          <span className="gate-mark" data-brand-monogram aria-hidden>
+            MW
+          </span>
+          <span className="gate-brandname">Mission Winning</span>
+        </span>
+        <p className="gate-kicker">
+          {t('gateEyebrow', { defaultValue: 'Private beta in progress' })}
+        </p>
+      </header>
+      <hr className="gate-rule" />
+
+      <main className="gate-main">
+        <div className="gate-col">
+          <h1 className="gate-h1">
+            <span>{t('gateTitle1', { defaultValue: 'Train anywhere.' })}</span>
+            <span>{t('gateTitle2', { defaultValue: 'Win daily.' })}</span>
+          </h1>
+          <p className="gate-lede">
+            {t('gateSubtitle', {
+              defaultValue:
+                'Free offline workout logging plus Mission Coach — weekly plans from your logs alone, no wearable. Launching soon; the core is free forever.',
+            })}
+          </p>
 
           {isInvitee ? (
-            accessForm
+            <section className="gate-section">
+              <p className="gate-kicker">
+                {t('gateInviteEyebrow', { defaultValue: 'Beta invite' })}
+              </p>
+              <p className="gate-invite-copy">
+                {t('gateInviteSubtitle', {
+                  defaultValue:
+                    "You're invited — enter the access code from your invite email, then complete I-Day and log your first workout.",
+                })}
+              </p>
+              <form onSubmit={handleSubmit}>
+                {codeField}
+                <div className="gate-actions">
+                  <button
+                    type="submit"
+                    disabled={loading || !password}
+                    className="gate-btn gate-btn-primary"
+                  >
+                    {submitLabel}
+                  </button>
+                </div>
+                {errorNode}
+                <p className="gate-foot">
+                  {t('gateBetaGuideFoot', { defaultValue: 'Invited testers: see the' })}{' '}
+                  <Link href="/beta">
+                    {t('gateBetaGuide', { defaultValue: 'beta start guide' })}
+                  </Link>
+                  . If you installed the app before the gate, clear site data or reinstall.
+                </p>
+              </form>
+            </section>
           ) : (
-            <>
+            <section className="gate-section">
               {waitDone ? (
-                <div className="mt-6 border-t border-border/40 pt-6 text-center">
-                  <p className="inline-flex items-center gap-1.5 font-semibold text-primary">
-                    <Check className="h-4 w-4" />{' '}
+                <>
+                  <p className="gate-done">
+                    <Check className="h-4 w-4" strokeWidth={2} aria-hidden />
                     {t('gateWaitlistDone', { defaultValue: "You're on the list." })}
                   </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <p className="gate-foot">
                     {t('gateWaitlistDoneFoot', {
                       defaultValue: "We'll email you the moment doors open.",
                     })}{' '}
                     {waitEmail}
                   </p>
-                </div>
+                </>
               ) : (
-                <form onSubmit={handleWaitlist} className="mt-6 space-y-3 border-t border-border/40 pt-6">
-                  <p className="eyebrow">
+                <form onSubmit={handleWaitlist}>
+                  <p className="gate-kicker">
                     {t('gateWaitlistTitle', { defaultValue: 'Get notified at launch' })}
                   </p>
-                  <div className="flex flex-col gap-2 sm:flex-row">
+                  <div className="gate-row">
                     <input
                       type="email"
                       required
@@ -241,20 +242,20 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                         defaultValue: 'you@example.com',
                       })}
                       aria-label="Email for the launch waitlist"
-                      className="tap-target w-full flex-1 rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      className="gate-input"
                       disabled={waitBusy}
                     />
                     <button
                       type="submit"
                       disabled={waitBusy || !waitEmail}
-                      className="primary-action sm:w-auto sm:px-6 disabled:opacity-50"
+                      className="gate-btn gate-btn-primary"
                     >
                       {waitBusy
                         ? t('gateWaitlistSubmitting', { defaultValue: 'Joining…' })
                         : t('gateWaitlistSubmit', { defaultValue: 'Notify me' })}
                     </button>
                   </div>
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                  <p className="gate-foot">
                     {t('gateWaitlistFoot', {
                       defaultValue: 'No spam — one email when the beta opens, one at launch.',
                     })}
@@ -262,17 +263,38 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                 </form>
               )}
 
-              <details className="group mt-6" open={false}>
-                <summary className="cursor-pointer list-none text-center text-xs text-muted-foreground hover:text-foreground marker:content-none">
+              <details className="gate-details" open={false}>
+                <summary>
                   {t('gateAccessSummary', { defaultValue: 'Have a beta access code?' })}
                 </summary>
-                {accessForm}
+                <form onSubmit={handleSubmit}>
+                  {codeField}
+                  <div className="gate-actions">
+                    <button
+                      type="submit"
+                      disabled={loading || !password}
+                      className="gate-btn gate-btn-secondary"
+                    >
+                      {submitLabel}
+                    </button>
+                  </div>
+                  {errorNode}
+                </form>
               </details>
-            </>
+            </section>
           )}
         </div>
+      </main>
+
+      <div className="gate-footer">
+        <div className="gate-footer-inner">
+          <span>
+            Mission Winning —{' '}
+            {t('gateFooterTagline', { defaultValue: 'free core forever' })}
+          </span>
+          <AppLegalFooter className="gate-footer-links" />
+        </div>
       </div>
-      <AppLegalFooter className="border-t border-border/30 pb-6" />
     </div>
   );
 }

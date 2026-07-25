@@ -1,0 +1,343 @@
+/**
+ * Modernist gate — Phase 0 of the rebrand ships /private alone, so the system's
+ * tokens live here scoped under `.mw-gate`. The Phase 1 global token swap moves
+ * these values into `src/index.css` and this file is deleted.
+ * Values: design handoff styles.css (the _ds modernist bundle) + Gate Redesign.dc.html.
+ */
+
+.mw-gate {
+  --g-bg: #f3f2f2;
+  --g-surface: #eae9e9;
+  --g-ink: #201e1d;
+  --g-accent: #ec3013;
+  --g-accent-100: #fff2ef;
+  --g-accent-600: #dd2b0f;
+  --g-accent-700: #ae1800;
+  --g-accent-800: #7c1405;
+  --g-divider: color-mix(in srgb, #201e1d 40%, transparent);
+  --g-muted: color-mix(in srgb, #201e1d 70%, transparent);
+  --g-gutter: clamp(20px, 5vw, 72px);
+
+  color-scheme: light;
+  background: var(--g-bg);
+  color: var(--g-ink);
+  font-size: 17px;
+  line-height: 28px;
+  text-wrap: pretty;
+}
+
+/* The global body canvas is navy until Phase 1 — without this, elastic overscroll
+   and unpainted tiles flash near-black around the paper page. */
+html:has(.mw-gate),
+body:has(.mw-gate) {
+  background: #f3f2f2;
+  background-image: none;
+}
+
+/* The global focus ring is emerald until Phase 1 — inside the gate it is the accent. */
+.mw-gate :focus-visible {
+  outline: 2px solid var(--g-accent);
+  outline-offset: 2px;
+}
+.mw-gate ::selection {
+  background: color-mix(in srgb, var(--g-accent) 30%, transparent);
+}
+.mw-gate a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.mw-gate a:hover {
+  color: var(--g-accent-700);
+}
+
+.gate-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--g-bg);
+}
+.gate-center {
+  align-items: center;
+  justify-content: center;
+  color: var(--g-muted);
+  font-size: 15px;
+}
+
+.gate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  max-width: 1120px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 24px var(--g-gutter);
+}
+.gate-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.gate-mark {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  background: var(--g-ink);
+  color: var(--g-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.04em;
+}
+.gate-brandname {
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+.gate-kicker {
+  font-size: 13px;
+  line-height: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--g-accent-700);
+  font-feature-settings: 'tnum' 1;
+  margin: 0;
+}
+
+.gate-rule {
+  height: 2px;
+  border: 0;
+  margin: 0;
+  background: var(--g-divider);
+}
+
+.gate-main {
+  flex: 1;
+  max-width: 1120px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 84px var(--g-gutter);
+}
+.gate-col {
+  max-width: 640px;
+}
+.gate-h1 {
+  font-weight: 800;
+  font-size: clamp(42px, 6vw, 76px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  margin: 0;
+  margin-inline-start: -0.058em; /* optical flush-left for the cap */
+}
+.gate-h1 span {
+  display: block;
+}
+.gate-lede {
+  font-size: 17px;
+  line-height: 28px;
+  max-width: 52ch;
+  margin: 36px 0 0;
+}
+
+.gate-section {
+  border-top: 2px solid var(--g-divider);
+  margin-top: 42px;
+  padding-top: 28px;
+}
+.gate-section .gate-kicker {
+  margin: 0 0 14px;
+}
+.gate-invite-copy {
+  font-size: 15.5px;
+  line-height: 28px;
+  max-width: 52ch;
+  margin: 0 0 21px;
+}
+
+.gate-field {
+  display: block;
+  max-width: 420px;
+}
+.gate-label {
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 5px;
+  color: var(--g-muted);
+}
+.gate-input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 48px;
+  padding: 10px 14px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--g-ink);
+  caret-color: var(--g-accent);
+  background: var(--g-surface);
+  border: 1px solid var(--g-divider);
+  border-radius: 0;
+}
+.gate-input::placeholder {
+  color: var(--g-muted);
+}
+.gate-input:hover {
+  border-color: color-mix(in srgb, var(--g-ink) 45%, transparent);
+}
+.gate-input:focus-visible {
+  border-color: var(--g-accent);
+  outline-offset: 0;
+}
+.gate-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+.gate-row .gate-input {
+  flex: 1;
+  width: auto;
+  min-width: 240px;
+}
+
+/* 19px/800 label: ≥14pt bold is WCAG "large text", so paper-on-accent (3.78:1)
+   passes AA at 3:1. Do not shrink the label without re-doing that math. */
+.gate-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 8px 24px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.2;
+  cursor: pointer;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--g-ink);
+}
+.gate-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.gate-btn-primary {
+  background: var(--g-accent);
+  color: var(--g-bg);
+}
+.gate-btn-primary:hover:not(:disabled) {
+  background: var(--g-accent-600);
+}
+.gate-btn-primary:active:not(:disabled) {
+  background: var(--g-accent-700);
+}
+.gate-btn-secondary {
+  border: 2px solid var(--g-ink);
+}
+.gate-btn-secondary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--g-ink) 7%, transparent);
+}
+.gate-btn-secondary:active:not(:disabled) {
+  background: color-mix(in srgb, var(--g-ink) 14%, transparent);
+}
+
+.gate-foot {
+  font-size: 13px;
+  line-height: 21px;
+  color: var(--g-muted);
+  margin: 21px 0 0;
+}
+.gate-error {
+  margin: 14px 0 0;
+  padding: 10px 14px;
+  max-width: 420px;
+  font-size: 14px;
+  line-height: 21px;
+  border: 2px solid var(--g-accent-700);
+  background: var(--g-accent-100);
+  color: var(--g-accent-800);
+}
+.gate-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  margin: 0;
+}
+.gate-done svg {
+  color: var(--g-accent-700);
+}
+
+.gate-details {
+  margin-top: 42px;
+  border-top: 2px solid var(--g-divider);
+  padding-top: 21px;
+}
+.gate-details summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--g-muted);
+}
+.gate-details summary::-webkit-details-marker {
+  display: none;
+}
+.gate-details summary:hover {
+  color: var(--g-ink);
+}
+.gate-details form {
+  margin-top: 21px;
+}
+.gate-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 21px;
+}
+
+.gate-footer {
+  border-top: 2px solid var(--g-divider);
+}
+.gate-footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 21px var(--g-gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px 28px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  line-height: 28px;
+  color: var(--g-muted);
+}
+
+/* AppLegalFooter carries dark-theme utility classes until Phase 1 — re-seat it. */
+.mw-gate .gate-footer-links {
+  padding: 0;
+  font-size: 13px;
+  color: var(--g-muted);
+  text-align: start;
+}
+.mw-gate .gate-footer-links nav {
+  justify-content: flex-start;
+}
+.mw-gate .gate-footer-links a {
+  color: inherit;
+}
+.mw-gate .gate-footer-links a:hover {
+  color: var(--g-accent-700);
+}
+.mw-gate .gate-footer-links span[aria-hidden] {
+  color: var(--g-divider);
+}
