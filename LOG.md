@@ -6,6 +6,52 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — The storage ratchet is empty: 53 files, one door (`.128`)
+
+Every remaining direct `localStorage` call is gone. `LEGACY_DIRECT_STORAGE` is **deleted**
+from `eslint.config.js` and the rule is now a plain error, so a new bare call fails lint
+instead of joining a backlog. ~200 call sites across 53 files.
+
+- **Why it mattered:** a bare `localStorage.setItem` throws in Safari private mode and on
+  quota exhaustion. Several of these sat in render paths and module-init with no
+  `try/catch` at all — `savedMeals`, `guidebookProgress`, `journeyAnalytics`,
+  `presidentialFitnessStorage`, `schoolClass`, `todayDashboardPrefs` among them. On a
+  product whose promise is offline-first logging without an account, a full disk could
+  blank the page.
+- The migration **deleted guard code rather than adding it**: ~40 hand-rolled
+  `try/catch` blocks and ~35 `typeof window === 'undefined'` / `typeof localStorage ===
+  'undefined'` checks are gone, because `safeStorage` is SSR-safe and never throws. Net
+  effect is less code doing more.
+- **Every key now comes from `STORAGE_KEYS`.** ~90 inline string literals resolved to the
+  registry, which is how three near-duplicate spellings of the same concern surfaced.
+  Dynamic keys got prefixes: `fuelPlanSync`, `premiumCourseSync` join `event` and
+  `teacherPin`. `i18nextLng` is registered as `I18N_LANG_KEY` — owned by i18next, kept
+  deliberately outside `MW_PREFIX` so backup/restore leaves the detector alone.
+- **New `keysWithPrefix()`** in `safeStorage`, the one primitive the migration needed:
+  `ProfileOwnerTools` enumerated `Object.keys(localStorage)` to find `mw_event_*`
+  breadcrumbs. It merges the real backend with the memory fallback, so a private-mode tab
+  can still enumerate what it stored this session. 3 tests.
+- **`bumpTrainingStreak()`** replaces the read-increment-write of `mw_streak` that was
+  hand-copied **ten times** across `TodayProgressSection` and `BenchmarksPage`, each copy
+  with its own `try/catch` and its own off-by-one risk.
+- Three call sites collapsed into helpers that already existed and were being ignored:
+  `WorkoutVictorySheet` and `SchoolClassPanel` re-read the referral code by hand instead
+  of `getCachedReferralCode()`; `SessionCheckInSheet` re-parsed the zustand persist blob
+  instead of `readWorkoutHistoryFromStorage()`; `coachSync` and `journeySync` re-read the
+  taster flag instead of `isTasterUsed()`.
+- Two small fixes found while reading, not while looking: `journeyAnalytics` wrote its
+  per-event breadcrumb **twice** (once in each branch of a `try/catch` where only one
+  could run), and `RegionDefaultsBoot` marked itself applied in a `catch` that a thrown
+  `fetch` skipped — a failing `/api/geo` retried on every mount. Now a `finally`.
+- `src/lib/backup.ts` **stays exempt on purpose**: it prefix-scans `mw_*` at runtime so a
+  stale registry can never silently drop a key from a user's only safety net.
+- Verified: 593 unit tests, 16 gate e2e, 10 a11y, lint clean with the allowlist gone,
+  i18n parity green, `PRIVATE_MODE=false` build clean. The rule was probed with a
+  throwaway file to confirm it errors rather than having gone inert. Seven e2e failures
+  outside the gate tag (`premium-gate`, `premium-pillars`, one `growth`, one
+  `coach-adjust`) reproduce **identically on `58c2191` with no changes applied** — they
+  need Supabase/Stripe env this sandbox does not have.
+
 ## 2026-07-25 — Quality pass: a11y green, outbox finished, gate runnable (`.127`)
 
 Closing gaps the last week's work left rather than adding to it.

@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-25 · web `2026.07-unified.127` · Android `1.24.1`)
+## Now (2026-07-25 · web `2026.07-unified.128` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
@@ -27,10 +27,11 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **First 90 seconds (`.125`):** cold visitor → logged set is now a **budget test** (`tests/e2e/first-90.spec.ts`, 6 taps, no interstitial, one primary CTA, every logger control ≥44px — the ± steppers were 36px). Re-entry after a gap is calm and smaller, not a broken streak ([src/lib/reentry.ts](src/lib/reentry.ts)). `first_set_logged` carries `secondsFromStart`.
 - **Homepage rebuild (`.126`):** `/` was the only page ignoring the briefing type system in `src/index.css`, so its H1 rendered in **Inter not Barlow Condensed**. Now on `.display-hero` / `.eyebrow`, restructured as the product loop (log → adapt → anywhere → free → start). Signature: [`LogToPlanHero`](src/components/landing/LogToPlanHero.tsx) runs the **real** `suggestNextSetTarget` engine — no hardcoded dashboard numbers. `CoachAdaptDemo` is visitor-driven, not an auto-carousel. Audience page at `/compare/test-prep`.
 - **Quality pass (`.127`):** **`npm run a11y` green (10/10, was 8 failing + flaky)** — emerald split into `--primary` (accent on navy, 7.08:1) and `--primary-fill` (white text, 5.38:1) since no single value serves both; `--muted-foreground` 58→62%. Every declared `OutboxKind` now has a handler (`fuel.plan` removed — it writes to device storage, not a cloud). Cross-device **edits and deletes propagate** via the `updated_at` cursor. **`npm run gate`** runs the whole CI gate locally while Actions is blocked. Storage ratchet 59→53.
+- **Storage ratchet empty (`.128`):** all 53 remaining files migrated to [safeStorage](src/lib/storage/INDEX.md) — `LEGACY_DIRECT_STORAGE` **deleted** from `eslint.config.js`, so a bare `localStorage` call is now a plain lint error with no allowlist to join (only `src/lib/backup.ts` stays exempt, since it must prefix-scan `mw_*` at runtime). ~200 call sites; ~40 hand-rolled `try/catch` and ~35 SSR guards **removed** rather than added, because `safeStorage` is SSR-safe and never throws. Every key resolves through `STORAGE_KEYS`.
 - **Media system:** Google Flow · Scout mascot — [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md).
-- **Ops:** prod ships via **Vercel Deploy Hook + GitHub webhook** (unmetered, no Actions) — [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.1; `deploy-production` is now **manual-only** fallback. **Actions is currently blocked** (every workflow fails in <5s with no logs = billing) → the PR gate is inert, so run **`npm run gate`** locally until cleared. OSS public-ready (AGPL + CoC) — founder flips GitHub Public — [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md). Promote **`.127`**; keep Supabase Site URL on www.
+- **Ops:** prod ships via **Vercel Deploy Hook + GitHub webhook** (unmetered, no Actions) — [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.1; `deploy-production` is now **manual-only** fallback. **Actions is currently blocked** (every workflow fails in <5s with no logs = billing) → the PR gate is inert, so run **`npm run gate`** locally until cleared. OSS public-ready (AGPL + CoC) — founder flips GitHub Public — [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md). Promote **`.128`**; keep Supabase Site URL on www.
 - Agents **must** ship wedge habit-loop + free acquisition. Refuse new pillars / America / locale farms / F5.
-- **Founder:** Accept B on Android + phone excellence → invites → YC F26. **Wire the Deploy Hook webhook** ([checklist §1.1](docs/VERCEL_DEPLOY_CHECKLIST.md)) then promote `.127`; clear Actions billing to restore the PR gate.
+- **Founder:** Accept B on Android + phone excellence → invites → YC F26. **Wire the Deploy Hook webhook** ([checklist §1.1](docs/VERCEL_DEPLOY_CHECKLIST.md)) then promote `.128`; clear Actions billing to restore the PR gate.
 
 ---
 
