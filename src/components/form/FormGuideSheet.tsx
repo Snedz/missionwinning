@@ -94,7 +94,7 @@ export function FormGuideSheet({
           <button
             type="button"
             onClick={onClose}
-            className="w-full min-h-[44px] rounded-xl bg-primary hover:bg-emerald-700 text-white font-semibold text-[17px] transition-colors"
+            className="w-full min-h-[44px] rounded-xl bg-primary-fill hover:bg-primary-fill-hover text-white font-semibold text-[17px] transition-colors"
           >
             {t('gotItStartSet', { defaultValue: 'Got it — start set' })}
           </button>

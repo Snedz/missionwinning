@@ -33,7 +33,7 @@ function RatingRow({
             type="button"
             onClick={() => onChange(n)}
             className={`flex-1 py-2 rounded text-sm font-medium transition-colors ${
-              value >= n ? 'bg-primary text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
+              value >= n ? 'bg-primary-fill text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
             {n}

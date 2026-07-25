@@ -13,6 +13,10 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          // Filled surfaces under white text — see src/index.css for why the accent
+          // value cannot double as a fill.
+          fill: "hsl(var(--primary-fill))",
+          "fill-hover": "hsl(var(--primary-fill-hover))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

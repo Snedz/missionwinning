@@ -78,11 +78,13 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
               isToday && 'ring-2 ring-emerald-500/80 border-primary/40',
               done && 'border-brass/40 bg-brass/10',
               pulseOffsets.has(i) && 'week-strip-pulse',
-              missed && 'opacity-50 border-border/30',
+              missed && 'border-border/30 bg-muted/20',
               session?.kind === 'recovery' &&
                 !done &&
                 'border-[hsl(var(--status-info)/0.35)] bg-[hsl(var(--status-info)/0.1)]',
-              !session && 'border-border/20 opacity-40'
+              // Quieter via border + no glyph, not opacity — dimming the
+              // container also dims the day label past 4.5:1 at 10px.
+              !session && 'border-border/20'
             )}
           >
             <span className="font-medium text-muted-foreground">{label}</span>

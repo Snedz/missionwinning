@@ -56,7 +56,7 @@ function QuickRow({
             aria-pressed={value >= n}
             className={`flex-1 min-h-[44px] tap-target rounded-md text-sm font-medium transition-colors ${
               value >= n
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-primary-fill text-primary-foreground'
                 : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >

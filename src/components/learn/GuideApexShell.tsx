@@ -23,6 +23,7 @@ import {
 import { PublicSeoFooter } from '@/components/public/PublicSeoFooter';
 import { GuideContentsRail } from '@/components/learn/GuideContentsRail';
 import { GuideLocaleSelect } from '@/components/learn/GuideLocaleSelect';
+import { BrandMonogram } from '@/components/brand/BrandMonogram';
 
 type Props = {
   chapters: GuideChapter[];
@@ -107,9 +108,7 @@ export function GuideApexShell({
       <header className="section-seam hero-field texture-noise relative">
         <div className="relative z-[1] mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
           <Link href="/" className="flex min-w-0 items-center gap-2.5">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary font-display text-sm font-bold text-primary-foreground">
-              MW
-            </span>
+            <BrandMonogram display />
             <span className="truncate font-display text-lg font-semibold uppercase tracking-wide">
               Mission Winning
             </span>
@@ -128,7 +127,7 @@ export function GuideApexShell({
             </Button>
             <Link
               href="/welcome"
-              className="inline-flex min-h-[40px] shrink-0 items-center rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-500"
+              className="inline-flex min-h-[40px] shrink-0 items-center rounded-xl bg-primary-fill px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-fill-hover"
             >
               {t('magazineStartFree', { defaultValue: 'Start free' })}
             </Link>

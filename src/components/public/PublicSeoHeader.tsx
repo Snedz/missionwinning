@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BrandMonogram } from '@/components/brand/BrandMonogram';
 
 type PublicSeoHeaderProps = {
   eyebrow: string;
@@ -21,16 +22,14 @@ export function PublicSeoHeader({
     <header className="relative border-b border-border/40 bg-background">
       <div className="relative z-[1] mx-auto flex max-w-4xl items-center justify-between gap-4 px-5 py-4">
         <Link href="/" className="flex min-w-0 items-center gap-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-            MW
-          </span>
+          <BrandMonogram />
           <span className="truncate text-base font-semibold tracking-tight sm:text-lg">
             Mission Winning
           </span>
         </Link>
         <Link
           href={ctaHref}
-          className="inline-flex min-h-[40px] shrink-0 items-center rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          className="inline-flex min-h-[40px] shrink-0 items-center rounded-xl bg-primary-fill px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-fill-hover"
         >
           {ctaLabel}
         </Link>

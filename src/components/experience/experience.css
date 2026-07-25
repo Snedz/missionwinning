@@ -70,7 +70,8 @@
   min-height: 44px;
   align-items: center;
   border-radius: 0.75rem;
-  background: #059669;
+  /* Fill under white text — see src/index.css --primary-fill. */
+  background: hsl(var(--primary-fill));
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -80,7 +81,7 @@
 }
 
 .xp-top-cta:hover {
-  background: #10b981;
+  background: hsl(var(--primary-fill-hover));
 }
 
 .xp-layout {
@@ -264,7 +265,9 @@
 @supports (animation-timeline: view()) {
   .xp-word {
     display: inline-block;
-    opacity: 0.15;
+    /* Transform only — no opacity fade. Starting at opacity 0.15 left the words at
+       1.25:1 whenever the scroll animation had not run (and that is the state axe
+       measures). The rise reads the same and the text is never unreadable. */
     transform: translateY(0.4em);
     animation: xp-word-in linear both;
     animation-timeline: view();
@@ -273,7 +276,6 @@
 
   @keyframes xp-word-in {
     to {
-      opacity: 1;
       transform: none;
     }
   }

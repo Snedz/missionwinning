@@ -9,6 +9,7 @@ import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import { grantPrivateAccessFromSession } from '@/lib/grantPrivateAccessFromSession';
 import { submitLead } from '@/lib/supabase';
 import { track } from '@/lib/analytics';
+import { BrandMonogram } from '@/components/brand/BrandMonogram';
 
 type Props = {
   /** Server-resolved invite so SSR HTML exposes data-mw-invitee for gate-smoke. */
@@ -184,9 +185,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="w-full max-w-md page-enter">
           <div className="text-center mb-10">
-            <span className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary font-display text-lg font-bold text-primary-foreground">
-              MW
-            </span>
+            <BrandMonogram display className="mx-auto mb-6 h-12 w-12 rounded-xl text-lg" />
             <p className="eyebrow-live mb-4">
               {isInvitee
                 ? t('gateInviteEyebrow', { defaultValue: 'Beta invite' })

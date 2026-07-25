@@ -167,7 +167,7 @@ export function WorkoutVictorySheet({
                     key={n}
                     type="button"
                     onClick={() => saveFeel(n)}
-                    className="flex-1 min-h-[44px] tap-target rounded-md text-sm font-medium bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="flex-1 min-h-[44px] tap-target rounded-md text-sm font-medium bg-muted text-muted-foreground hover:bg-primary-fill hover:text-primary-foreground transition-colors"
                   >
                     {n}
                   </button>

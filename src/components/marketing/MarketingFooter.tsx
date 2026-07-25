@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { BrandMonogram } from '@/components/brand/BrandMonogram';
 
 type FooterLink = { href: string; labelKey: string; defaultValue: string };
 
@@ -76,9 +77,7 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-                MW
-              </span>
+              <BrandMonogram />
               <span className="text-base font-semibold tracking-tight">
                 Mission Winning
               </span>

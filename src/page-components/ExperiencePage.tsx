@@ -15,6 +15,7 @@ import { CapabilityMatrix } from '@/components/experience/CapabilityMatrix';
 import { CommissionCta } from '@/components/experience/CommissionCta';
 import { XP, XP_JOURNEY } from '@/components/experience/experienceStrings';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { BrandMonogram } from '@/components/brand/BrandMonogram';
 
 function KineticQuote({ text }: { text: string }) {
   const words = text.split(/\s+/);
@@ -46,7 +47,7 @@ export function ExperiencePage() {
       <div className="xp-progress" role="progressbar" aria-label={XP.progressAria} />
       <header className="xp-top">
         <Link href="/" className="xp-mark">
-          <span className="xp-mark-badge">MW</span>
+          <BrandMonogram className="xp-mark-badge" />
           <span className="xp-mark-name">Mission Winning</span>
         </Link>
         <Link href="/welcome" className="xp-top-cta">

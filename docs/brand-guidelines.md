@@ -52,9 +52,29 @@ Emerald = action. Brass = earned / honor. Navy = canvas. Never use competitor bl
 | Role | Token | HSL | Hex |
 |------|-------|-----|-----|
 | Navy canvas | `--background` | `222 24% 5%` | `#0a0c10` |
-| Emerald action | `--primary` | `158 64% 42%` | `#27b07d` |
+| Emerald accent | `--primary` | `158 64% 42%` | `#27b07d` |
+| Emerald fill | `--primary-fill` | `158 92% 25%` | `#057a4f` |
+| Emerald fill hover | `--primary-fill-hover` | `158 92% 21%` | `#046743` |
 | Brass honor | `--brass` | `42 48% 58%` | `#c7a860` |
 | Primary text on dark | — | — | `#ffffff` |
+
+### Which emerald
+
+Two tokens, because **no single value works for both roles**:
+
+| | As text/border on navy | Under white text |
+|---|---|---|
+| `--primary` `#27b07d` | **7.08:1** ✅ | 2.77:1 ❌ |
+| `--primary-fill` `#057a4f` | 3.0:1 ❌ | **5.38:1** ✅ |
+
+- **`--primary`** — emerald *on* the navy canvas: text, borders, icons, and low-alpha
+  tints (`bg-primary/10`), where the text sitting on the tint is foreground, not white.
+- **`--primary-fill`** — any **filled** emerald surface carrying white text: buttons
+  (`.primary-action`, the `default` Button variant), active tabs, badges, chips. Hover
+  **darkens** to `--primary-fill-hover`; lightening drops back to 4.17:1 and fails.
+- **The MW monogram keeps `--primary`.** It is a logotype (WCAG 1.4.3 exempts those) and
+  must match `/favicon.svg` and the PWA icons, which are all `hsl(158 64% 42%)`. Use
+  [`BrandMonogram`](../src/components/brand/BrandMonogram.tsx) rather than re-inlining it.
 
 Foreground on navy is near-white; keep body copy readable (`text-muted-foreground` in product UI).
 

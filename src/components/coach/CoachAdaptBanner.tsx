@@ -93,7 +93,7 @@ export function CoachAdaptBanner({ plan, compact }: Props) {
           <div className="flex flex-wrap gap-2">
             <Link
               href="/active"
-              className="inline-flex min-h-[44px] items-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground tap-target"
+              className="inline-flex min-h-[44px] items-center rounded-md bg-primary-fill px-3 text-sm font-medium text-primary-foreground tap-target"
             >
               {t('coachAdaptJustGo', { defaultValue: 'Just Go — log one set' })}
             </Link>

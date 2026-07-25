@@ -32,6 +32,7 @@ import {
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { getExerciseById } from '@/data/exercises';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { BrandMonogram } from '@/components/brand/BrandMonogram';
 
 const EXPERIENCE_VALUES = ['beginner', 'intermediate', 'advanced'] as const;
 const EQUIPMENT_VALUES = ['bodyweight', 'dumbbells', 'full-gym'] as const;
@@ -139,9 +140,7 @@ export function WelcomePage() {
   return (
     <div className="relative min-h-screen text-foreground flex flex-col bg-background">
       <header className="relative z-10 border-b border-border/40 px-4 py-3.5 flex items-center gap-3">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-          MW
-        </span>
+        <BrandMonogram />
         <span className="text-base font-semibold tracking-tight sm:text-lg">
           Mission Winning
         </span>

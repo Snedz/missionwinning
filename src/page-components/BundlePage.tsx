@@ -272,7 +272,7 @@ export function BundlePage() {
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {badgeText && (
-                          <Badge className="bg-primary text-primary-foreground">{badgeText}</Badge>
+                          <Badge className="bg-primary-fill text-primary-foreground">{badgeText}</Badge>
                         )}
                         {p.savingsPercent > 0 && (
                           <Badge variant="outline" className="border-primary/50 text-primary">

@@ -398,7 +398,7 @@ export function BetaAdminPanel({ enabled }: Props) {
             <button
               type="submit"
               disabled={issuing || !label.trim()}
-              className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-50"
+              className="rounded-md bg-primary-fill px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-50"
             >
               {issuing ? 'Issuing…' : 'Issue + copy link'}
             </button>

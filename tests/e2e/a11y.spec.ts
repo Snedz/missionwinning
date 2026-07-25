@@ -23,6 +23,11 @@ const GATED_ROUTES = [
 async function axeSerious(page: import('@playwright/test').Page, path: string) {
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    // The MW monogram is a logotype, which WCAG 1.4.3 exempts from contrast — and it
+    // has to keep the brand accent to match /favicon.svg and the PWA rasters. Excluded
+    // by selector rather than by disabling color-contrast, so every other white-on-
+    // emerald surface is still checked. See src/components/brand/BrandMonogram.tsx.
+    .exclude('[data-brand-monogram]')
     .analyze();
 
   const serious = results.violations.filter(
