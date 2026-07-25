@@ -6,6 +6,47 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Homepage rebuilt on its own design system (`.126`)
+
+- **The actual bug: `/` ignored the briefing type system.** `src/index.css` already ships
+  `.display-hero` / `.display-section` / `.eyebrow` / `.briefing-rule`, and `/press`,
+  `/bundle`, `/about`, `/vision` all use them — `.eyebrow` alone appears in 50+ files.
+  `LandingPage.tsx` set ad-hoc `text-[2.5rem] font-semibold`, so the largest type on the
+  site rendered in **Inter instead of Barlow Condensed**, against brand-guidelines.md.
+  Nav wordmark had the same problem. Both now on the display face.
+- **Diagnosis, for the record:** the page was not over-designed, it was the residue of
+  twelve subtractive passes (`.103`–`.107`) that cut StatBand, Journey, Guide, the pillar
+  bento and email capture and put nothing back. Five sections, none of which made a
+  visitor believe anything.
+- **Restructured as the loop** — log → adapt → anywhere → free → start. That is a real
+  sequence, so order now carries meaning; the decorative `01 · / 02 ·` markers are gone.
+- **Signature: [`LogToPlanHero`](src/components/landing/LogToPlanHero.tsx).** The visitor
+  logs a set and the next session changes. Every number comes from
+  `suggestNextSetTarget` — the same double-progression function `/active` calls — so the
+  page demonstrates the mechanism instead of asserting it. Replaces `HeroDemo`, which
+  hardcoded `readiness: 72` and `'Set 1 · Squat'`. Verified: `3 × 12 @ 80 kg` →
+  `8 × 82.5 kg` today → `9 × 82.5 kg` next session.
+- **`CoachAdaptDemo` is now visitor-driven.** It auto-cycled 3 frames every 2.8s, so the
+  adapt claim only landed if you were looking at the right moment. Now you press
+  "Miss Wednesday" and the week re-spreads. Reduced motion starts on the outcome.
+- **Evidence without fabrication.** brand-guidelines.md forbids testimonials and there
+  are no users, so the free core is a definition list of checkable facts (217 exercises,
+  offline, no account) instead of a checkmark farm. Real brand art (`/art/hero-field`,
+  the asset `/press` uses) replaces the gradient orbs — **8 KB** of AVIF.
+- **Audience page** `/compare/test-prep` for people with a scored test on a date. Reuses
+  the `COMPARE_STORIES` data pattern, so routing, metadata and sitemap came free. It
+  deliberately claims nothing MW ships: no target-date plan (nothing in `src/lib/coach/`
+  takes a date), no published pass marks, no affiliation — and says so on the page.
+- **Removed dead code:** `HeroDemo.tsx`, `JourneyScroll.tsx`, `GuideTeaser.tsx` (the last
+  two were imported nowhere). Fixed the now-stale `GuideTeaser` pointer in SEO_ANALYTICS.
+- **Gate:** two new `@gate` assertions — the hero H1 must resolve to Barlow Condensed,
+  and logging in the demo must change what the page says. 16/16 gate e2e green, 588 unit
+  tests, lint clean, i18n parity green across 15 langs. FCP 196ms.
+- **Found, not fixed — founder call:** white on emerald `#27b07d` is **2.76:1** where
+  WCAG AA needs 4.5:1. 163 nodes on `/` alone and it fails identically on `/coach` and
+  `/nutrition`, so it predates this work and is a brand-token decision, not a landing
+  one. `npm run a11y` is red on 8 routes because of it.
+
 ## 2026-07-24 — Prod deploys off GitHub Actions (Deploy Hook primary)
 
 - **Why:** every workflow started failing in under 5s with no downloadable logs — Deploy

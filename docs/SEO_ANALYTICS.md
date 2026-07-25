@@ -110,7 +110,7 @@ CI runs the same script as a **soft warning** (`.github/workflows/ci-extended.ym
 
 ## Internal link mesh (ongoing)
 
-- Landing [`GuideTeaser`](../src/components/landing/GuideTeaser.tsx) → `/guide/*`
+- Landing → `/about`, `/vision`, `/compare/*` (the `GuideTeaser` band was cut in `.104` and the component removed in `.126`; `/guide/*` is reached from `/learn` and the footer)
 - Exercise pages → "Track this exercise free" → `/welcome` or `/log`
 - Guide chapters → inline CTAs to app onboarding
 - `/compare` cross-links from marketing pages when expanded

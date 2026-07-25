@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-07-24 · web `2026.07-unified.125` · Android `1.24.1`)
+## Now (2026-07-25 · web `2026.07-unified.126` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 
@@ -25,10 +25,11 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **Surface parking (`.124`):** `NEXT_PUBLIC_SURFACES` ([src/lib/surface.ts](src/lib/surface.ts), [docs/ENV.md](docs/ENV.md)) parks non-wedge surfaces — **america · school · wearables · leaderboard · cryptoRails · paypal off by default**; six pillars stay on. `=wedge` parks the secondary pillars too (founder call). Parked = out of nav, 404 in `proxy.ts`, out of sitemap. Nothing deleted. Hero e2e passes in full wedge mode, so **the free logger is provably never gated**.
 - **First 90 seconds (`.125`):** cold visitor → logged set is now a **budget test** (`tests/e2e/first-90.spec.ts`, 6 taps, no interstitial, one primary CTA, every logger control ≥44px — the ± steppers were 36px). Re-entry after a gap is calm and smaller, not a broken streak ([src/lib/reentry.ts](src/lib/reentry.ts)). `first_set_logged` carries `secondsFromStart`.
+- **Homepage rebuild (`.126`):** `/` was the only page ignoring the briefing type system in `src/index.css`, so its H1 rendered in **Inter not Barlow Condensed**. Now on `.display-hero` / `.eyebrow`, restructured as the product loop (log → adapt → anywhere → free → start). Signature: [`LogToPlanHero`](src/components/landing/LogToPlanHero.tsx) runs the **real** `suggestNextSetTarget` engine — no hardcoded dashboard numbers. `CoachAdaptDemo` is visitor-driven, not an auto-carousel. Audience page at `/compare/test-prep`. **Known, pre-existing:** white on emerald `#27b07d` is 2.76:1 (WCAG AA wants 4.5) — 163 nodes site-wide, brand-token call for the founder.
 - **Media system:** Google Flow · Scout mascot — [docs/MEDIA_SYSTEM.md](docs/MEDIA_SYSTEM.md).
-- **Ops:** prod ships via **Vercel Deploy Hook + GitHub webhook** (unmetered, no Actions) — [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.1; `deploy-production` is now **manual-only** fallback. **Actions is currently blocked** (every workflow fails in <5s with no logs = billing) → the PR gate is inert, so run `npm run e2e:gate` locally until cleared. OSS public-ready (AGPL + CoC) — founder flips GitHub Public — [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md). Promote **`.125`**; keep Supabase Site URL on www.
+- **Ops:** prod ships via **Vercel Deploy Hook + GitHub webhook** (unmetered, no Actions) — [docs/VERCEL_DEPLOY_CHECKLIST.md](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.1; `deploy-production` is now **manual-only** fallback. **Actions is currently blocked** (every workflow fails in <5s with no logs = billing) → the PR gate is inert, so run `npm run e2e:gate` locally until cleared. OSS public-ready (AGPL + CoC) — founder flips GitHub Public — [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md). Promote **`.126`**; keep Supabase Site URL on www.
 - Agents **must** ship wedge habit-loop + free acquisition. Refuse new pillars / America / locale farms / F5.
-- **Founder:** Accept B on Android + phone excellence → invites → YC F26. **Wire the Deploy Hook webhook** ([checklist §1.1](docs/VERCEL_DEPLOY_CHECKLIST.md)) then promote `.125`; clear Actions billing to restore the PR gate.
+- **Founder:** Accept B on Android + phone excellence → invites → YC F26. **Wire the Deploy Hook webhook** ([checklist §1.1](docs/VERCEL_DEPLOY_CHECKLIST.md)) then promote `.126`; clear Actions billing to restore the PR gate.
 
 ---
 

@@ -64,6 +64,35 @@ test.describe('First 90 seconds @gate', () => {
     );
   });
 
+  test('the homepage uses the brand display face and one emerald action', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+    // Regression: the hero H1 rendered in Inter for months because LandingPage set
+    // ad-hoc type instead of `.display-hero`, while every other marketing page used
+    // the briefing system. brand-guidelines.md assigns hero titles to Barlow Condensed.
+    const font = await page
+      .locator('h1')
+      .first()
+      .evaluate((el) => getComputedStyle(el).fontFamily);
+    expect(font, `hero H1 font-family was ${font}`).toContain('Barlow Condensed');
+
+    // Emerald marks the one action. Hero + closing band is the ceiling; a third
+    // competing CTA is the "which button do I press" failure.
+    await expect(page.locator('.primary-action')).toHaveCount(2);
+  });
+
+  test('the hero demo lets a visitor perform the product claim', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'networkidle' });
+
+    // The claim is "your week rewrites itself". If logging a set does not change what
+    // the page says next, the homepage is asserting something it never shows.
+    const logSet = page.getByRole('button', { name: /log set/i });
+    await expect(logSet).toBeVisible({ timeout: 15_000 });
+    for (let i = 0; i < 3; i++) await logSet.click();
+
+    await expect(page.getByText(/next session/i).first()).toBeVisible({ timeout: 10_000 });
+  });
+
   test('Today offers exactly one primary action', async ({ page }) => {
     await page.goto('/log', { waitUntil: 'domcontentloaded' });
     // Two competing emerald CTAs is the "empty dashboard / chore list" failure mode.

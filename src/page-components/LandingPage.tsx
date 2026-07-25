@@ -2,7 +2,18 @@
 /**
  * Page: / — marketing landing
  * See: app/INDEX.md, src/page-components/INDEX.md
- * D4 beta composure: ~5–6 bands, Train+Coach wedge only.
+ *
+ * Structure is the product loop, in order: log → adapt → anywhere → free → start.
+ * That sequence is real, so the page can be read top to bottom as one argument.
+ *
+ * Type comes from the briefing system in src/index.css (`.eyebrow` / `.display-hero`
+ * / `.briefing-rule`) — the same system /press, /bundle, /about and /vision use.
+ * This page was previously the only one in the repo setting ad-hoc type instead, so
+ * its hero rendered in Inter rather than the brand's Barlow Condensed.
+ *
+ * No fabricated proof: brand-guidelines.md § Voice rules out testimonials and
+ * "we're live" claims while the beta is private, so belief has to come from the
+ * product doing the thing (the hero) and facts that are checkable (the library).
  */
 
 import { useEffect, useState } from 'react';
@@ -11,16 +22,17 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import dynamic from 'next/dynamic';
 import { LANDING_FAQ_KEYS } from '@/i18n/landingLocales';
-import { HeroDemoFallback } from '@/components/landing/HeroDemo';
+import { LogToPlanHeroFallback } from '@/components/landing/LogToPlanHero';
 import { MarketingNav } from '@/components/marketing/MarketingNav';
 import { MarketingFooter } from '@/components/marketing/MarketingFooter';
 import { Reveal } from '@/components/marketing/Reveal';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArtPicture } from '@/components/marketing/ArtPicture';
+import { ArrowRight } from 'lucide-react';
 import { isFreeBeta } from '@/lib/freeBeta';
 
-const HeroDemo = dynamic(
-  () => import('@/components/landing/HeroDemo').then((m) => m.HeroDemo),
-  { ssr: false, loading: () => <HeroDemoFallback /> }
+const LogToPlanHero = dynamic(
+  () => import('@/components/landing/LogToPlanHero').then((m) => m.LogToPlanHero),
+  { ssr: false, loading: () => <LogToPlanHeroFallback /> }
 );
 
 const CoachAdaptDemo = dynamic(
@@ -32,29 +44,41 @@ const FAQ = isFreeBeta()
   ? LANDING_FAQ_KEYS.filter((f) => f.qKey !== 'landingFaqBundleQ')
   : LANDING_FAQ_KEYS;
 
-const FREE_MANIFEST_KEYS = [
+/**
+ * What the free core actually is. Each line is checkable — no aspirations, no
+ * traction claims (hard rule 3). Set as a definition list, not a checkmark farm.
+ */
+const FREE_CORE = [
   {
+    termKey: 'landingFreeTermLogger',
+    term: 'The logger',
     key: 'landingFreeLogger',
-    defaultValue: 'Full workout logger — sets, reps, RPE, rest timers',
+    defaultValue: 'Sets, reps, RPE, rest timers, supersets, PRs.',
   },
   {
+    termKey: 'landingFreeTermCoach',
+    term: 'Mission Coach',
+    key: 'landingFreeCoachLine',
+    defaultValue: 'A week built from your logs, regenerated every week.',
+  },
+  {
+    termKey: 'landingFreeTermLibrary',
+    term: '217 exercises',
     key: 'landingFreeLibrary',
-    defaultValue: '217-exercise library — bodyweight and minimal gear first',
+    defaultValue: 'Bodyweight and minimal gear first, with form cues.',
   },
   {
+    termKey: 'landingFreeTermAccount',
+    term: 'No account',
     key: 'landingFreeOffline',
-    defaultValue: 'Offline PWA — no store, no fees, no account required',
-  },
-  {
-    key: 'landingFreeWinScore',
-    defaultValue: 'A simple weekly picture from what you actually trained',
+    defaultValue: 'Works offline. Nothing to install, nothing to sign up for.',
   },
 ] as const;
 
 export function LandingPage() {
   const router = useRouter();
   const { t } = useTranslation();
-  /** Defer interactive demos until idle so first paint stays lean (Lighthouse). */
+  /** Defer below-fold demos until idle so first paint stays lean (Lighthouse ≥90). */
   const [belowFoldReady, setBelowFoldReady] = useState(false);
 
   useEffect(() => {
@@ -71,105 +95,160 @@ export function LandingPage() {
     <div className="min-h-screen bg-background text-foreground">
       <MarketingNav variant="full" />
 
-      {/* 1 · Hero — quieter field, one soft accent (less AI-SaaS theater) */}
-      <header className="hero-field hero-field--orient section-seam relative overflow-hidden">
-        <div className="hero-orb hero-orb--primary opacity-40" aria-hidden />
-        <div className="hero-orient-grid relative z-[1] mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-14 sm:gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24 lg:pt-20">
-          <div className="hero-copy page-enter">
-            <p className="mb-4 text-xs font-medium tracking-wide text-primary">
-              Mission Winning
+      {/* ── LOG ─────────────────────────────────────────────────────────
+          The thesis, stated then performed. No gradient orbs: the field is
+          type and rule, which is what distinguishes this from every other
+          dark landing page with one green accent. */}
+      <header className="section-seam relative overflow-hidden">
+        {/* Existing brand asset, same as /press. Real texture beats a gradient orb,
+            and it keeps the type dominant at this opacity. */}
+        <ArtPicture
+          base="/art/hero-field"
+          fill
+          priority
+          className="object-cover opacity-25"
+        />
+        <div className="relative z-[1] mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-12 sm:gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:pb-24 lg:pt-20">
+          <div className="page-enter">
+            <p className="eyebrow mb-5">
+              {t('landingHeroEyebrowLoop', { defaultValue: 'Free · offline · no account' })}
             </p>
-            <h1 className="mb-6 text-[2.5rem] font-semibold tracking-tight leading-[1.1] sm:text-5xl lg:text-[3.25rem]">
-              {t('landingHeroTitle1', { defaultValue: 'Train anywhere.' })}
+            <h1 className="display-hero mb-6 max-w-[18ch] text-balance text-foreground">
+              {t('landingHeroLine1', { defaultValue: 'Log a set.' })}
               <br />
-              <span className="text-primary">{t('landingHeroTitle2', { defaultValue: 'Win daily.' })}</span>
+              <span className="text-primary">
+                {t('landingHeroLine2', { defaultValue: 'Your week rewrites itself.' })}
+              </span>
             </h1>
-            <p className="hero-subtitle mb-8 max-w-md text-lg leading-relaxed text-muted-foreground">
-              {t('landingHeroSubtitle', {
+            <p className="mb-8 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {t('landingHeroSubtitleLoop', {
                 defaultValue:
-                  'A free offline workout logger and a coach that builds the week from what you actually logged — no wearable required.',
+                  'A workout logger that turns what you actually did into next week’s plan. No wearable, no gym, no subscription to start.',
               })}
             </p>
             <button
               type="button"
-              className="primary-action max-w-sm sm:max-w-none sm:w-auto sm:px-10"
+              className="primary-action max-w-sm sm:w-auto sm:max-w-none sm:px-10"
               onClick={() => router.push('/welcome')}
             >
               {t('landingNavStart', { defaultValue: 'Start free' })}
               <ArrowRight className="h-5 w-5" />
             </button>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-              {t('landingHeroProof', {
-                defaultValue: 'Log a set. Coach shapes the week. That is the loop.',
+              {t('landingHeroProofLoop', {
+                defaultValue: 'Under three minutes to your first logged set.',
               })}
             </p>
           </div>
 
-          <div className="hero-demo-slot journey-enter">
-            <div className="absolute inset-0 overflow-hidden rounded-2xl border border-border/50 bg-card/80 shadow-sm">
-              <HeroDemo staticFallback={<HeroDemoFallback />} />
-            </div>
+          <div className="journey-enter lg:pt-2">
+            <LogToPlanHero staticFallback={<LogToPlanHeroFallback />} />
           </div>
         </div>
       </header>
 
-      {/* 2 · Coach proof */}
-      <section id="coach" className="section-seam relative overflow-hidden bg-muted/15">
-        <div className="relative z-[1] mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2 lg:items-center lg:py-20">
+      {/* ── ADAPT ───────────────────────────────────────────────────── */}
+      <section id="coach" className="section-seam bg-muted/[0.07]">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2 lg:items-center lg:py-24">
           <Reveal>
-            <p className="section-index mb-3">02 · Coach</p>
-            <h2 className="mb-6 text-2xl font-semibold tracking-tight leading-tight sm:text-3xl">
-              {t('landingCoachDemoTitle', {
-                defaultValue: 'Plans that adapt when life happens',
-              })}
+            <p className="eyebrow mb-4">{t('landingAdaptEyebrow', { defaultValue: 'When you miss' })}</p>
+            <h2 className="display-section mb-6 max-w-[24ch] text-balance text-foreground">
+              {t('landingAdaptTitle', { defaultValue: 'A missed day is not a failed plan' })}
             </h2>
             <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-              {t('landingCoachDemoBody', {
+              {t('landingAdaptBody', {
                 defaultValue:
-                  'Miss a day, sleep poorly, or crush a PR — Mission Coach reshapes the week from your log, not a spreadsheet.',
+                  'Sleep badly, travel, lose a week — Mission Coach reshapes what is left instead of leaving you behind a schedule you already broke.',
               })}
             </p>
           </Reveal>
           <Reveal delayMs={100}>
-            <div className="mx-auto w-full max-w-md rounded-2xl border border-border/40 bg-card/60 p-3 sm:p-4">
-              {belowFoldReady ? (
-                <CoachAdaptDemo />
-              ) : (
-                <div className="min-h-[8rem]" aria-hidden />
-              )}
+            <div className="mx-auto w-full max-w-md">
+              {belowFoldReady ? <CoachAdaptDemo /> : <div className="min-h-[16rem]" aria-hidden />}
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* 3 · Free promise (list only — no card farm) */}
-      <section className="section-seam relative overflow-hidden">
-        <div className="relative z-[1] mx-auto max-w-3xl px-5 py-16 lg:py-20">
+      {/* ── ANYWHERE ────────────────────────────────────────────────── */}
+      <section className="section-seam">
+        <div className="mx-auto max-w-5xl px-5 py-16 lg:py-20">
           <Reveal>
-            <p className="mb-4 text-xs font-medium tracking-wide text-muted-foreground">
-              {t('landingFreeEyebrow', { defaultValue: 'The free core' })}
-            </p>
-            <h2 className="mb-4 text-2xl font-semibold tracking-tight leading-tight sm:text-3xl">
-              {t('landingFreeTitle1', { defaultValue: 'Free is the mission,' })}
-              <br />
-              {t('landingFreeTitle2', { defaultValue: 'not the trial.' })}
+            <p className="eyebrow mb-4">{t('landingAnywhereEyebrow', { defaultValue: 'Where you train' })}</p>
+            <h2 className="display-section mb-6 max-w-[26ch] text-balance text-foreground">
+              {t('landingAnywhereTitle', {
+                defaultValue: 'Built for one bar of signal and no rack',
+              })}
             </h2>
-            <p className="max-w-md text-base leading-relaxed text-muted-foreground">
+            <div className="grid gap-8 sm:grid-cols-3">
+              {[
+                {
+                  k: 'landingAnywhereOffline',
+                  h: t('landingAnywhereOfflineH', { defaultValue: 'Offline first' }),
+                  b: t('landingAnywhereOfflineB', {
+                    defaultValue:
+                      'Sets save on the device the moment you log them. Signal is optional; the log is not.',
+                  }),
+                },
+                {
+                  k: 'landingAnywhereGear',
+                  h: t('landingAnywhereGearH', { defaultValue: 'Your gear, not a gym' }),
+                  b: t('landingAnywhereGearB', {
+                    defaultValue:
+                      'Tell it what you have — a bar, two bands, nothing — and the week is built from that.',
+                  }),
+                },
+                {
+                  k: 'landingAnywhereNoSensor',
+                  h: t('landingAnywhereNoSensorH', { defaultValue: 'No wearable' }),
+                  b: t('landingAnywhereNoSensorB', {
+                    defaultValue:
+                      'The plan comes from logged sets, so nothing needs charging for it to work.',
+                  }),
+                },
+              ].map((col) => (
+                <div key={col.k}>
+                  <h3 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">
+                    {col.h}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{col.b}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── FREE ────────────────────────────────────────────────────── */}
+      <section className="section-seam bg-muted/[0.07]">
+        <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
+          <Reveal>
+            <p className="eyebrow mb-4">{t('landingFreeEyebrow', { defaultValue: 'The free core' })}</p>
+            <h2 className="display-section mb-6 max-w-[24ch] text-balance text-foreground">
+              {t('landingFreeTitleLoop', { defaultValue: 'Free is the mission, not the trial' })}
+            </h2>
+            <p className="mb-8 max-w-md text-base leading-relaxed text-muted-foreground">
               {t('landingFreeBody', {
                 defaultValue: isFreeBeta()
                   ? 'Logging and Mission Coach plans from your logs stay free — no account required. Open beta means full tools while we grow with you.'
                   : 'Logging stays free forever. Super Bundle adds Coach depth when you want it — it never gates the logger.',
               })}
             </p>
-            <ul className="mt-6 space-y-2.5">
-              {FREE_MANIFEST_KEYS.map((item) => (
-                <li key={item.key} className="flex items-start gap-2.5 text-sm text-foreground/90">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  {t(item.key, { defaultValue: item.defaultValue })}
-                </li>
+
+            <dl className="divide-y divide-border/40">
+              {FREE_CORE.map((row) => (
+                <div key={row.key} className="grid gap-1 py-4 sm:grid-cols-[10rem_1fr] sm:gap-6">
+                  <dt className="font-mono text-xs uppercase tracking-[0.18em] text-primary">
+                    {t(row.termKey, { defaultValue: row.term })}
+                  </dt>
+                  <dd className="text-sm leading-relaxed text-muted-foreground">
+                    {t(row.key, { defaultValue: row.defaultValue })}
+                  </dd>
+                </div>
               ))}
-            </ul>
-            <p className="mt-6 text-sm text-muted-foreground">
+            </dl>
+
+            <p className="mt-8 text-sm leading-relaxed text-muted-foreground">
               {t('landingPillarsQuiet', {
                 defaultValue:
                   'Fuel, Move, Mind, Track, and Learn deepen the path after Train + Coach — never the pitch.',
@@ -182,32 +261,22 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* 4 · FAQ */}
+      {/* ── QUESTIONS ───────────────────────────────────────────────── */}
       <section className="section-seam">
         <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
-          <p className="mb-8 text-xs font-medium tracking-wide text-muted-foreground">
-            {t('landingFaqEyebrow', { defaultValue: 'Straight answers' })}
-          </p>
-          <div className="space-y-0">
-            {FAQ.map((f, i) => (
-              <details
-                key={f.qKey}
-                className="group section-seam px-1 py-4 first:pt-0 last:border-0 last:bg-none"
-              >
+          <p className="eyebrow mb-8">{t('landingFaqEyebrow', { defaultValue: 'Straight answers' })}</p>
+          <div className="divide-y divide-border/40">
+            {FAQ.map((f) => (
+              <details key={f.qKey} className="group py-4 first:pt-0">
                 <summary className="cursor-pointer list-none text-sm font-semibold marker:content-none">
                   <span className="flex items-center justify-between gap-4">
-                    <span className="flex items-start gap-3">
-                      <span className="section-index mt-0.5 shrink-0">
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
-                      {t(f.qKey, { defaultValue: f.qDefault })}
-                    </span>
-                    <span className="text-muted-foreground transition-transform group-open:rotate-45">
+                    {t(f.qKey, { defaultValue: f.qDefault })}
+                    <span className="shrink-0 text-muted-foreground transition-transform group-open:rotate-45">
                       +
                     </span>
                   </span>
                 </summary>
-                <p className="mt-3 pl-10 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {t(f.aKey, { defaultValue: f.aDefault })}
                 </p>
               </details>
@@ -216,24 +285,19 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* 5 · Final CTA (sole conversion block) */}
-      <section className="hero-field relative overflow-hidden border-t border-border/30">
-        <div className="hero-orb hero-orb--primary opacity-25" aria-hidden />
-        <div className="relative z-[1] mx-auto max-w-3xl px-5 py-20 text-center lg:py-28">
+      {/* ── START ───────────────────────────────────────────────────── */}
+      <section className="border-t border-border/30">
+        <div className="mx-auto max-w-3xl px-5 py-20 text-center lg:py-24">
           <Reveal>
-            <h2 className="mb-6 text-2xl font-semibold tracking-tight leading-tight sm:text-3xl">
-              {t('landingFinalCtaTitle', {
-                defaultValue: 'The path starts with one workout.',
-              })}
+            <h2 className="display-section mb-6 max-w-[24ch] text-balance text-foreground">
+              {t('landingFinalCtaTitleLoop', { defaultValue: 'One set is the whole beginning' })}
             </h2>
             <button
               type="button"
-              className="primary-action mx-auto max-w-sm sm:max-w-none sm:w-auto sm:px-12"
+              className="primary-action mx-auto max-w-sm sm:w-auto sm:max-w-none sm:px-12"
               onClick={() => router.push('/welcome')}
             >
-              {t('landingFinalCtaButton', {
-                defaultValue: 'Start free — no account',
-              })}
+              {t('landingFinalCtaButton', { defaultValue: 'Start free — no account' })}
               <ArrowRight className="h-5 w-5" />
             </button>
             <p className="mt-4 text-xs text-muted-foreground">

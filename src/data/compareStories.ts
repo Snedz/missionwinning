@@ -20,6 +20,64 @@ export type CompareStory = {
 
 export const COMPARE_STORIES: CompareStory[] = [
   {
+    // Audience page, not a competitor page: for people with a scored fitness test on a
+    // fixed date, whose actual incumbent is a printed standards sheet and a stopwatch.
+    //
+    // Deliberately claims nothing MW does not ship today. The Coach has no target-date
+    // or taper concept (nothing in src/lib/coach/ takes a date), and /fitness-test is
+    // parked behind NEXT_PUBLIC_SURFACES — so this page promises neither. It also does
+    // not print pass marks: publishing standards we have not sourced would be wrong,
+    // and getting one number off could cost somebody their test.
+    slug: 'test-prep',
+    eyebrow: 'For a test with a date',
+    title: 'A PDF cannot tell you if you are getting stronger.',
+    subtitle:
+      'If you are training for a scored fitness test — military, police, fire — you were probably handed a sheet of standards and left to it. Mission Winning is the free part in between: log what you actually did, in a park or a barracks gym with no signal, and get next week built from it.',
+    bullets: [
+      {
+        label: 'Where you can train',
+        mw: 'Offline PWA — logs save with no signal, no app store',
+        them: 'Whatever you can remember later',
+      },
+      {
+        label: 'Kit you need',
+        mw: 'Bodyweight and minimal gear first',
+        them: 'A sheet that assumes a full gym',
+      },
+      {
+        label: 'Knowing if it is working',
+        mw: 'Every set kept; progression from your own numbers',
+        them: 'A stopwatch and a guess',
+      },
+      {
+        label: 'When you miss a week',
+        mw: 'The plan reshapes around what is left',
+        them: 'You are behind and it does not care',
+      },
+      { label: 'Cost', mw: 'Free, no account', them: 'Free, and it shows' },
+    ],
+    proof: '217 free exercise pages · offline · no account · nothing to install',
+    ctaNote: 'Start with the free logger. Nothing here is official test guidance.',
+    body: [
+      {
+        heading: 'What this is honestly for',
+        paragraphs: [
+          'The hard part of preparing for a scored test is not knowing the standards — you already have those. It is the eight weeks in between: training somewhere without a rack, losing a week to a shift pattern or a move, and having no idea whether the work is adding up.',
+          'That gap is what a logger closes. Every set stays. The next session is built from the last one instead of from a schedule written before your life happened.',
+        ],
+      },
+      {
+        heading: 'What it does not do',
+        paragraphs: [
+          'It does not know your test date, and it will not taper you towards one — the plan works a week at a time. It does not publish pass marks or score you against an official standard, and it is not affiliated with any service or department.',
+          'If you need those things, keep your standards sheet and your recruiter. Use this for the logging and the progression, which is the part nothing else is giving you for free.',
+        ],
+      },
+    ],
+    verdict:
+      'Bring your own standards. Use Mission Winning to know, week to week, whether you are actually closing the gap.',
+  },
+  {
     slug: 'forge',
     eyebrow: 'vs Forge Fitness',
     title: 'Free core, no AI key required.',

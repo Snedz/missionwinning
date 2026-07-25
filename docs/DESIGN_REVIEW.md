@@ -58,6 +58,7 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 
 | Date | Reviewer | Flows | Issues filed |
 |------|----------|-------|--------------|
+| 2026-07-25 | Agent (homepage rebuild · .126) | Landing | Fixed: `/` moved onto the briefing type system (H1 was rendering in Inter, not Barlow Condensed) + nav wordmark; structure re-cut as the product loop; decorative `section-index` numbering dropped; `LogToPlanHero` signature on the real progression engine; `CoachAdaptDemo` made visitor-driven (was a 2.8s auto-carousel); free-core checkmarks → definition list; `/art/hero-field` replaces gradient orbs; `text-balance` on display headings; dead `HeroDemo`/`JourneyScroll`/`GuideTeaser` removed. New `@gate` assertions for display face + demo causality. **Open (founder):** white-on-emerald contrast 2.76:1 site-wide. |
 | 2026-07-22 | Agent (emerald glow · .107) | Landing, Today | Fixed: hero ambient orbs + `card-glow-emerald` demo; Win/Mission Score `.ring-glow-emerald`; stronger `primary-action` bloom; ≤1 glow on landing (hero only). |
 | 2026-07-22 | Agent (responsive layout · .106) | Landing, Today | Fixed: narrow hero centered; landscape compact 2-col; Today ProgressRing + MetricsRow above fold (HeroDemo parity); Trends collapsed. |
 | 2026-07-22 | Agent (hero a11y + logic · .105) | Active, Gate, Today, Fuel | Fixed: hydrate Start gate; SessionCheckIn Escape/focus; axe `/active`/`/private`/`/nutrition`; 44px empties/RPE/Copy/beta chips; reduced-motion rest; Today ≤1 primary-action e2e. Cleared stale Batch C deferred notes. |

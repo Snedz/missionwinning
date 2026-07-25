@@ -1,19 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+/**
+ * The adapt claim, made demonstrable.
+ *
+ * This used to auto-cycle three frames on a 2.8s interval, which meant the point
+ * only landed if you happened to be looking at the right moment — the strongest
+ * frame was invisible to anyone who scrolled past in under three seconds.
+ *
+ * Now the visitor causes it, the same way the hero works: press "miss Wednesday"
+ * and watch the rest of the week move. Reduced-motion users get the outcome
+ * immediately rather than a control that implies animation.
+ */
+
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { RotateCcw } from 'lucide-react';
 import { WeekStrip } from '@/components/coach/WeekStrip';
 import type { PlanSession } from '@/lib/coach/types';
 import { prefersReducedMotion } from '@/lib/motion';
 
-function demoSession(
+function session(
   dayOffset: number,
   name: string,
   kind: PlanSession['kind'],
   status: PlanSession['status']
 ): PlanSession {
   return {
-    id: `demo-${dayOffset}`,
+    id: `demo-${dayOffset}-${name}`,
     dayOffset,
     name,
     kind,
@@ -24,52 +37,67 @@ function demoSession(
   };
 }
 
-const FULL_WEEK: PlanSession[] = [
-  demoSession(0, 'Lower', 'strength', 'planned'),
-  demoSession(2, 'Upper', 'strength', 'planned'),
-  demoSession(4, 'Conditioning', 'conditioning', 'planned'),
+/** Mon / Wed / Fri — the week as generated. */
+const PLANNED: PlanSession[] = [
+  session(0, 'Lower', 'strength', 'planned'),
+  session(2, 'Upper', 'strength', 'planned'),
+  session(4, 'Conditioning', 'conditioning', 'planned'),
 ];
 
-const MISSED_MON: PlanSession[] = [
-  demoSession(0, 'Lower', 'strength', 'missed'),
-  demoSession(1, 'Upper', 'strength', 'planned'),
-  demoSession(3, 'Conditioning', 'conditioning', 'planned'),
-];
-
+/** Wednesday gone, and the two sessions after it pushed back a day each. */
 const ADAPTED: PlanSession[] = [
-  demoSession(0, 'Lower', 'strength', 'missed'),
-  demoSession(2, 'Upper', 'strength', 'planned'),
-  demoSession(4, 'Conditioning', 'conditioning', 'planned'),
-  demoSession(5, 'Recovery', 'recovery', 'planned'),
+  session(0, 'Lower', 'strength', 'planned'),
+  session(2, 'Upper', 'strength', 'missed'),
+  session(3, 'Upper', 'strength', 'planned'),
+  session(5, 'Conditioning', 'conditioning', 'planned'),
 ];
-
-const FRAMES = [FULL_WEEK, MISSED_MON, ADAPTED];
 
 export function CoachAdaptDemo() {
   const { t } = useTranslation();
-  const [frame, setFrame] = useState(0);
   const reduced = prefersReducedMotion();
+  // Reduced motion: start on the outcome, since there is no transition to watch.
+  const [adapted, setAdapted] = useState(reduced);
 
-  useEffect(() => {
-    if (reduced) return;
-    const id = setInterval(() => setFrame((f) => (f + 1) % FRAMES.length), 2800);
-    return () => clearInterval(id);
-  }, [reduced]);
-
-  const sessions = FRAMES[reduced ? FRAMES.length - 1 : frame];
-  const caption = [
-    t('coachDemoFullWeek', { defaultValue: 'Your week — planned' }),
-    t('coachDemoMissed', { defaultValue: 'Monday missed — plan adapts' }),
-    t('coachDemoRespread', { defaultValue: 'Sessions re-spread automatically' }),
-  ][reduced ? 2 : frame];
+  const toggle = useCallback(() => setAdapted((v) => !v), []);
 
   return (
-    <div className="content-card p-6 max-w-md mx-auto">
-      <p className="eyebrow mb-2 text-center">
-        {t('coachDemoTitle', { defaultValue: 'Mission Coach' })}
+    <div className="content-card p-5 sm:p-6">
+      <p className="eyebrow mb-3">{t('coachDemoTitle', { defaultValue: 'Mission Coach' })}</p>
+
+      <WeekStrip
+        weekStart="2026-01-05"
+        sessions={adapted ? ADAPTED : PLANNED}
+        todayOffset={1}
+      />
+
+      <p
+        className="mt-4 min-h-[2.75rem] text-sm leading-relaxed text-muted-foreground"
+        aria-live="polite"
+      >
+        {adapted
+          ? t('coachDemoAdaptedBody', {
+              defaultValue:
+                'Wednesday is gone, so upper body moved to Thursday and conditioning to Saturday. Same week, same dose.',
+            })
+          : t('coachDemoPlannedBody', {
+              defaultValue: 'Three sessions, spaced from the days you said you can train.',
+            })}
       </p>
-      <WeekStrip weekStart="2026-01-05" sessions={sessions} todayOffset={1} />
-      <p className="mt-4 text-center text-sm text-muted-foreground min-h-[2.5rem]">{caption}</p>
+
+      <button
+        type="button"
+        onClick={toggle}
+        className="tap-target mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-border/60 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-muted/30"
+      >
+        {adapted ? (
+          <>
+            <RotateCcw className="h-4 w-4" aria-hidden />
+            {t('coachDemoReset', { defaultValue: 'Start over' })}
+          </>
+        ) : (
+          t('coachDemoMissCta', { defaultValue: 'Miss Wednesday' })
+        )}
+      </button>
     </div>
   );
 }
