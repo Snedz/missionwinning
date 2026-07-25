@@ -8,6 +8,9 @@
 // Webhooks grant rows in Supabase `enrollments`; usePremium reads /api/premium/status.
 // Without either path, UI falls back to an honest founders waitlist (dev: grantPremiumDemo).
 
+import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
+import { writeRaw } from '@/lib/storage/safeStorage';
+
 /** Super Bundle plan IDs — keep in sync with BUNDLE_PLANS in bundleConfig.ts. */
 export type CheckoutPlanId = 'monthly' | '12mo' | 'lifetime';
 
@@ -205,16 +208,16 @@ export async function openBillingPortal(): Promise<CreateCheckoutForPlanResult> 
 
 // Helper to grant premium immediately (client-side optimistic + analytics)
 // Updated for bundle: supports 'super-bundle' to unlock full access.
-// Demo grant — localStorage only honored in development (production uses Supabase enrollments).
+// Demo grant — device storage only honored in development (production uses Supabase enrollments).
 export function grantPremiumDemo(productId?: string) {
   if (typeof window === 'undefined' || process.env.NODE_ENV !== 'development') {
     return;
   }
-  localStorage.setItem('mw_premium', 'true');
+  writeRaw(STORAGE_KEYS.premium, 'true');
   if (productId) {
-    localStorage.setItem('mw_event_enroll_' + productId, Date.now().toString());
+    writeRaw(`${STORAGE_KEY_PREFIXES.event}enroll_${productId}`, Date.now().toString());
     if (productId === 'super-bundle') {
-      localStorage.setItem('mw_bundle_active', 'true');
+      writeRaw(STORAGE_KEYS.bundleActive, 'true');
     }
   }
 }

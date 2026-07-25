@@ -5,6 +5,7 @@
 
 import { isAppLang, type AppLang, normalizeAppLang } from '@/i18n/appLangs';
 import type { UnitsPref } from '@/lib/units';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 
 /** Liberia, Myanmar, United States — customary imperial for bodyweight/gym. */
 const IMPERIAL_COUNTRIES = new Set(['US', 'LR', 'MM']);
@@ -161,7 +162,7 @@ export function resolveRegionDefaults(opts: {
   return fromCountry;
 }
 
-export const REGION_DEFAULTS_APPLIED_KEY = 'mw_region_defaults_v1';
-export const UNITS_EXPLICIT_KEY = 'mw_units_explicit';
-export const LANG_EXPLICIT_KEY = 'mw_lang_explicit';
-export const UNITS_STORAGE_KEY = 'mw_units';
+export const REGION_DEFAULTS_APPLIED_KEY = STORAGE_KEYS.regionDefaults;
+export const UNITS_EXPLICIT_KEY = STORAGE_KEYS.unitsExplicit;
+export const LANG_EXPLICIT_KEY = STORAGE_KEYS.langExplicit;
+export const UNITS_STORAGE_KEY = STORAGE_KEYS.units;

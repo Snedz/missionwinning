@@ -6,28 +6,24 @@
  * (or re-enables from Profile). Undecided = no capture. Do Not Track = hard off.
  */
 
-const PREF_KEY = 'mw_analytics_pref_v1';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+
+const PREF_KEY = STORAGE_KEYS.analyticsPref;
 
 export type AnalyticsPreference = 'allowed' | 'opted_out';
 
 export function loadAnalyticsPreference(): AnalyticsPreference | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = localStorage.getItem(PREF_KEY);
-    if (raw === 'allowed' || raw === 'opted_out') return raw;
-    return null;
-  } catch {
-    return null;
-  }
+  const raw = readRaw(PREF_KEY);
+  if (raw === 'allowed' || raw === 'opted_out') return raw;
+  return null;
 }
 
 export function saveAnalyticsPreference(pref: AnalyticsPreference): void {
   if (typeof window === 'undefined') return;
-  try {
-    localStorage.setItem(PREF_KEY, pref);
-  } catch {
-    /* private mode / quota — preference is best-effort */
-  }
+  // Best-effort by design: a private-mode user who cannot persist the choice is
+  // treated as undecided next visit, which means no capture. Failing closed.
+  writeRaw(PREF_KEY, pref);
   try {
     if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
       window.dispatchEvent(

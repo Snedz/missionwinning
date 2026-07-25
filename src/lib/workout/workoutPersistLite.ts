@@ -4,8 +4,8 @@
  */
 
 import type { CompletedWorkoutLog } from '@/types';
-
-const STORAGE_KEY = 'workout-tracker-storage';
+import { STORAGE_KEYS, WORKOUT_STORE_KEY } from '@/lib/storage/keys';
+import { readJson, readRaw } from '@/lib/storage/safeStorage';
 
 type PersistShape = {
   state?: {
@@ -15,14 +15,7 @@ type PersistShape = {
 };
 
 function parsePersist(): PersistShape | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as PersistShape;
-  } catch {
-    return null;
-  }
+  return readJson<PersistShape | null>(WORKOUT_STORE_KEY, null);
 }
 
 export function readWorkoutHistoryFromStorage(): CompletedWorkoutLog[] {
@@ -33,11 +26,6 @@ export function readWorkoutHistoryFromStorage(): CompletedWorkoutLog[] {
 
 /** Streak counter written by challenges module — no catalog import. */
 export function readTrainingStreakFromStorage(): number {
-  if (typeof window === 'undefined') return 0;
-  try {
-    const n = parseInt(localStorage.getItem('mw_streak') || '0', 10);
-    return Number.isFinite(n) && n > 0 ? n : 0;
-  } catch {
-    return 0;
-  }
+  const n = parseInt(readRaw(STORAGE_KEYS.streak) || '0', 10);
+  return Number.isFinite(n) && n > 0 ? n : 0;
 }

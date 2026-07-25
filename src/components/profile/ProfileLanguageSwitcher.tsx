@@ -4,16 +4,15 @@ import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 import { scheduleJourneyPush } from '@/lib/journeySync';
 import { APP_LANGS, APP_LANG_NATIVE_NAMES, normalizeAppLang } from '@/i18n/appLangs';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { writeRaw } from '@/lib/storage/safeStorage';
 
 export function ProfileLanguageSwitcher() {
   const { t } = useTranslation();
   const currentLang = normalizeAppLang(i18n.language);
   const changeLanguage = (lng: string) => {
-    try {
-      localStorage.setItem('mw_lang_explicit', '1');
-    } catch {
-      /* private mode */
-    }
+    // Explicit choice blocks RegionDefaultsBoot from overriding it on the next visit.
+    writeRaw(STORAGE_KEYS.langExplicit, '1');
     i18n.changeLanguage(lng);
     scheduleJourneyPush();
   };

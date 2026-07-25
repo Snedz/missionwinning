@@ -1,6 +1,8 @@
 import { createClient as createSupabaseJsClient, type SupabaseClient } from '@supabase/supabase-js'
 import { createBrowserClient } from '@supabase/ssr'
 import { getAuthRedirectUrl as buildAuthRedirectUrl } from '@/lib/authRedirect'
+import { STORAGE_KEYS } from '@/lib/storage/keys'
+import { readJson, readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -85,11 +87,7 @@ export type Lead = {
 
 // Helper: check if user has premium (enrollment — demo only in development)
 export async function checkPremium(email?: string): Promise<boolean> {
-  if (
-    typeof window !== 'undefined' &&
-    process.env.NODE_ENV === 'development' &&
-    localStorage.getItem('mw_premium') === 'true'
-  ) {
+  if (process.env.NODE_ENV === 'development' && readRaw(STORAGE_KEYS.premium) === 'true') {
     return true;
   }
   if (!supabaseUrl) return false
@@ -116,10 +114,8 @@ export async function checkPremium(email?: string): Promise<boolean> {
 // For demo: grant premium locally (development only)
 export async function grantDemoPremium(email: string) {
   if (process.env.NODE_ENV === 'production') return;
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('mw_premium', 'true')
-    localStorage.setItem('mw_premium_email', email)
-  }
+  writeRaw(STORAGE_KEYS.premium, 'true')
+  writeRaw(STORAGE_KEYS.premiumEmail, email)
 }
 
 // Auth helpers — OAuth + magic link (privacy-by-design: no passwords stored)
@@ -164,11 +160,7 @@ export async function getUser() {
 
 // Real premium check (prefers DB enrollment for logged in user, falls back to demo local)
 export async function isPremium(): Promise<boolean> {
-  if (
-    typeof window !== 'undefined' &&
-    process.env.NODE_ENV === 'development' &&
-    localStorage.getItem('mw_premium') === 'true'
-  ) {
+  if (process.env.NODE_ENV === 'development' && readRaw(STORAGE_KEYS.premium) === 'true') {
     return true;
   }
   const user = await getUser()
@@ -318,41 +310,33 @@ export async function submitLead(
     package_interest: source,
   }
 
-  if (typeof window !== 'undefined') {
-    try {
-      const raw = localStorage.getItem('mw_attribution')
-      if (raw) {
-        const attr = JSON.parse(raw) as {
-          utm_source?: string
-          utm_medium?: string
-          utm_campaign?: string
-          utm_content?: string
-          utm_term?: string
-          landing_path?: string
-          referrer?: string
-        }
-        payload.utm = {
-          utm_source: attr.utm_source,
-          utm_medium: attr.utm_medium,
-          utm_campaign: attr.utm_campaign,
-          utm_content: attr.utm_content,
-          utm_term: attr.utm_term,
-          landing_path: attr.landing_path,
-        }
-        if (attr.referrer) payload.referrer = attr.referrer
-      }
-    } catch {
-      /* ignore */
+  const attr = readJson<{
+    utm_source?: string
+    utm_medium?: string
+    utm_campaign?: string
+    utm_content?: string
+    utm_term?: string
+    landing_path?: string
+    referrer?: string
+  } | null>(STORAGE_KEYS.attribution, null)
+  if (attr) {
+    payload.utm = {
+      utm_source: attr.utm_source,
+      utm_medium: attr.utm_medium,
+      utm_campaign: attr.utm_campaign,
+      utm_content: attr.utm_content,
+      utm_term: attr.utm_term,
+      landing_path: attr.landing_path,
     }
-    if (lead.utm) payload.utm = { ...(payload.utm as object), ...lead.utm }
-    if (lead.referrer) payload.referrer = lead.referrer
+    if (attr.referrer) payload.referrer = attr.referrer
   }
+  // Explicit lead fields win over the stored first-touch record.
+  if (lead.utm) payload.utm = { ...(payload.utm as object), ...lead.utm }
+  if (lead.referrer) payload.referrer = lead.referrer
 
   if (!supabaseUrl || supabaseUrl.includes('demo')) {
-    if (typeof window !== 'undefined') {
-      const existing = JSON.parse(localStorage.getItem('mw_leads') || '[]')
-      localStorage.setItem('mw_leads', JSON.stringify([...existing, { ...payload, at: new Date().toISOString() }]))
-    }
+    const existing = readJson<unknown[]>(STORAGE_KEYS.leads, [])
+    writeJson(STORAGE_KEYS.leads, [...existing, { ...payload, at: new Date().toISOString() }])
     return { ok: true, localOnly: true }
   }
 

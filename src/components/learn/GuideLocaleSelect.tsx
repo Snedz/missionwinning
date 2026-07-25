@@ -13,6 +13,8 @@ import {
   normalizeAppLang,
   type AppLang,
 } from '@/i18n/appLangs';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { writeRaw } from '@/lib/storage/safeStorage';
 
 /** @deprecated Use APP_LANGS — kept for callers expecting GuidebookLocale. */
 export const GUIDEBOOK_LOCALES = APP_LANGS;
@@ -29,11 +31,7 @@ export function GuideLocaleSelect({ className, showLabel = true }: Props) {
   const current = normalizeAppLang(i18n.language);
 
   const onChange = (lng: string) => {
-    try {
-      localStorage.setItem('mw_lang_explicit', '1');
-    } catch {
-      /* private mode */
-    }
+    writeRaw(STORAGE_KEYS.langExplicit, '1');
     void i18n.changeLanguage(lng);
     track('guide_locale_changed', { locale: lng });
   };

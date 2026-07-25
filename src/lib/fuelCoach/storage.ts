@@ -1,34 +1,27 @@
 import type { FuelPlan } from '@/lib/fuelCoach/types';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, remove, writeJson } from '@/lib/storage/safeStorage';
 
-export const FUEL_PLAN_KEY = 'mw_fuel_plan';
+export const FUEL_PLAN_KEY = STORAGE_KEYS.fuelPlan;
 
 export { getOrCreateDeviceId } from '@/lib/coach/storage';
 
-function isBrowser(): boolean {
-  return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
-}
-
 export function loadFuelPlan(): FuelPlan | null {
-  if (!isBrowser()) return null;
-  try {
-    const raw = localStorage.getItem(FUEL_PLAN_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as FuelPlan;
-  } catch {
-    return null;
-  }
+  return readJson<FuelPlan | null>(FUEL_PLAN_KEY, null);
 }
 
 export function saveFuelPlan(plan: FuelPlan): void {
-  if (!isBrowser()) return;
-  localStorage.setItem(FUEL_PLAN_KEY, JSON.stringify(plan));
-  window.dispatchEvent(new CustomEvent('mw-fuel-plan-changed'));
+  writeJson(FUEL_PLAN_KEY, plan);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('mw-fuel-plan-changed'));
+  }
 }
 
 export function clearFuelPlan(): void {
-  if (!isBrowser()) return;
-  localStorage.removeItem(FUEL_PLAN_KEY);
-  window.dispatchEvent(new CustomEvent('mw-fuel-plan-changed'));
+  remove(FUEL_PLAN_KEY);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('mw-fuel-plan-changed'));
+  }
 }
 
 export function mergeFuelPlans(a: FuelPlan | null, b: FuelPlan | null): FuelPlan | null {

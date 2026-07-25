@@ -3,6 +3,9 @@
  * (missionJourney / lean Today cold path).
  */
 
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
+
 export type PillarType = 'move' | 'mind' | 'track' | 'learn';
 
 export interface PillarWin {
@@ -13,16 +16,8 @@ export interface PillarWin {
   meta?: Record<string, string | number>;
 }
 
-const WINS_KEY = 'mw_pillar_wins';
-
 export function getPillarWins(limit = 20): PillarWin[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = JSON.parse(localStorage.getItem(WINS_KEY) || '[]') as PillarWin[];
-    return raw.slice(0, limit);
-  } catch {
-    return [];
-  }
+  return readJson<PillarWin[]>(STORAGE_KEYS.pillarWins, []).slice(0, limit);
 }
 
 export async function logPillarWin(
@@ -41,7 +36,7 @@ export async function logPillarWin(
   };
 
   const existing = getPillarWins(100);
-  localStorage.setItem(WINS_KEY, JSON.stringify([win, ...existing].slice(0, 100)));
+  writeJson(STORAGE_KEYS.pillarWins, [win, ...existing].slice(0, 100));
 
   try {
     const { getUser, saveNutritionEntry } = await import('@/lib/supabase');

@@ -15,17 +15,14 @@ import {
   UNITS_STORAGE_KEY,
   type RegionDefaults,
 } from '@/lib/regionDefaults';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
 type GeoResponse = RegionDefaults & { source?: string };
 
 export function RegionDefaultsBoot() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    try {
-      if (localStorage.getItem(REGION_DEFAULTS_APPLIED_KEY) === '1') return;
-    } catch {
-      return;
-    }
+    if (readRaw(REGION_DEFAULTS_APPLIED_KEY) === '1') return;
 
     let cancelled = false;
 
@@ -36,12 +33,12 @@ export function RegionDefaultsBoot() {
         const data = (await res.json()) as GeoResponse;
         if (cancelled) return;
 
-        const unitsExplicit = localStorage.getItem(UNITS_EXPLICIT_KEY) === '1';
-        const langExplicit = localStorage.getItem(LANG_EXPLICIT_KEY) === '1';
-        const hasUnits = localStorage.getItem(UNITS_STORAGE_KEY);
+        const unitsExplicit = readRaw(UNITS_EXPLICIT_KEY) === '1';
+        const langExplicit = readRaw(LANG_EXPLICIT_KEY) === '1';
+        const hasUnits = readRaw(UNITS_STORAGE_KEY);
 
         if (!unitsExplicit && !hasUnits && (data.units === 'metric' || data.units === 'imperial')) {
-          localStorage.setItem(UNITS_STORAGE_KEY, data.units);
+          writeRaw(UNITS_STORAGE_KEY, data.units);
           window.dispatchEvent(
             new StorageEvent('storage', { key: UNITS_STORAGE_KEY, newValue: data.units })
           );
@@ -52,14 +49,11 @@ export function RegionDefaultsBoot() {
           // Override navigator-only first paint with region default.
           await i18n.changeLanguage(lng);
         }
-
-        localStorage.setItem(REGION_DEFAULTS_APPLIED_KEY, '1');
       } catch {
-        try {
-          localStorage.setItem(REGION_DEFAULTS_APPLIED_KEY, '1');
-        } catch {
-          /* private mode */
-        }
+        /* offline or geo unavailable — defaults stay as they are */
+      } finally {
+        // Marked applied either way, so a failing /api/geo does not retry every mount.
+        writeRaw(REGION_DEFAULTS_APPLIED_KEY, '1');
       }
     })();
 

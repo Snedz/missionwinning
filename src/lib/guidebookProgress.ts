@@ -1,19 +1,14 @@
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
-
-const STORAGE_KEY = 'mw_guidebook_progress';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
 
 export function loadGuidebookProgress(): Set<string> {
-  if (typeof window === 'undefined') return new Set();
-  try {
-    return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') as string[]);
-  } catch {
-    return new Set();
-  }
+  return new Set(readJson<string[]>(STORAGE_KEYS.guidebookProgress, []));
 }
 
 export function saveGuidebookProgress(completed: Set<string>): void {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]));
+  writeJson(STORAGE_KEYS.guidebookProgress, [...completed]);
   window.dispatchEvent(new CustomEvent('mw-guidebook-progress'));
 }
 

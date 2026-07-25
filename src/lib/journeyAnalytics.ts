@@ -1,5 +1,7 @@
 import type { JourneyBasicMilestones, JourneyPhase, JourneyReadinessMilestones } from '@/lib/missionJourney';
 import { getUser, supabase } from '@/lib/supabase';
+import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
 
 export interface JourneyAnalyticsEvent {
   name: string;
@@ -7,7 +9,7 @@ export interface JourneyAnalyticsEvent {
   at: string;
 }
 
-const LOG_KEY = 'mw_journey_events';
+const LOG_KEY = STORAGE_KEYS.journeyEvents;
 const MAX_LOCAL_EVENTS = 100;
 
 /** Persist journey analytics locally and push to Supabase when signed in. */
@@ -20,14 +22,12 @@ export function trackJourneyEvent(name: string, payload: Record<string, unknown>
     at: new Date().toISOString(),
   };
 
-  try {
-    const log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]') as JourneyAnalyticsEvent[];
-    log.push(event);
-    localStorage.setItem(LOG_KEY, JSON.stringify(log.slice(-MAX_LOCAL_EVENTS)));
-    localStorage.setItem(`mw_event_${name}_${Date.now()}`, JSON.stringify(event));
-  } catch {
-    localStorage.setItem(`mw_event_${name}_${Date.now()}`, JSON.stringify(event));
-  }
+  const log = readJson<JourneyAnalyticsEvent[]>(LOG_KEY, []);
+  log.push(event);
+  writeJson(LOG_KEY, log.slice(-MAX_LOCAL_EVENTS));
+  // Per-event breadcrumb, read back by the owner tools. Previously written twice (once
+  // per branch of a try/catch that could not both run) — one write is the same thing.
+  writeJson(`${STORAGE_KEY_PREFIXES.event}${name}_${Date.now()}`, event);
 
   window.dispatchEvent(new CustomEvent('mw-journey-event', { detail: event }));
   void pushEventToCloud(event);
@@ -76,12 +76,7 @@ async function pushEventToCloud(event: JourneyAnalyticsEvent): Promise<void> {
 }
 
 export function getJourneyEvents(): JourneyAnalyticsEvent[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    return JSON.parse(localStorage.getItem(LOG_KEY) || '[]') as JourneyAnalyticsEvent[];
-  } catch {
-    return [];
-  }
+  return readJson<JourneyAnalyticsEvent[]>(LOG_KEY, []);
 }
 
 export interface BetaFunnelMetrics {

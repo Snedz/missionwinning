@@ -4,18 +4,17 @@ import { useEffect, useState } from 'react';
 import { Target } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { formatStoredGoal } from '@/lib/journeyGoals';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw } from '@/lib/storage/safeStorage';
 
 export function CommandersIntent() {
   const { t } = useTranslation();
   const [goalRaw, setGoalRaw] = useState('');
 
+  // Read after mount, not during render: the server has no stored goal and a
+  // mismatch here would be a hydration error on every page that shows this.
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    setGoalRaw(
-      localStorage.getItem('mw_primary_goal') ||
-        localStorage.getItem('mw_goals') ||
-        ''
-    );
+    setGoalRaw(readRaw(STORAGE_KEYS.primaryGoal) || readRaw(STORAGE_KEYS.goals) || '');
   }, []);
 
   const goal = formatStoredGoal(goalRaw, t);

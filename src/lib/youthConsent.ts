@@ -1,8 +1,11 @@
 /** COPPA-lite parent consent for athletes under 13. */
 
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
+
 export const COPPA_AGE_THRESHOLD = 13;
 
-const CONSENT_KEY = 'mw_youth_parent_consent';
+const CONSENT_KEY = STORAGE_KEYS.youthParentConsent;
 
 export type YouthConsentRecord = {
   parentEmail: string;
@@ -15,39 +18,18 @@ export function requiresYouthConsent(age: number): boolean {
   return Number.isFinite(age) && age > 0 && age < COPPA_AGE_THRESHOLD;
 }
 
+export function getYouthConsent(): YouthConsentRecord | null {
+  return readJson<YouthConsentRecord | null>(CONSENT_KEY, null);
+}
+
 export function hasYouthConsent(): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    const raw = localStorage.getItem(CONSENT_KEY);
-    if (!raw) return false;
-    const parsed = JSON.parse(raw) as YouthConsentRecord;
-    return Boolean(parsed.parentEmail && parsed.consentedAt && parsed.verified);
-  } catch {
-    return false;
-  }
+  const record = getYouthConsent();
+  return Boolean(record?.parentEmail && record.consentedAt && record.verified);
 }
 
 export function hasPendingYouthConsent(): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    const raw = localStorage.getItem(CONSENT_KEY);
-    if (!raw) return false;
-    const parsed = JSON.parse(raw) as YouthConsentRecord;
-    return Boolean(parsed.parentEmail && !parsed.verified);
-  } catch {
-    return false;
-  }
-}
-
-export function getYouthConsent(): YouthConsentRecord | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = localStorage.getItem(CONSENT_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as YouthConsentRecord;
-  } catch {
-    return null;
-  }
+  const record = getYouthConsent();
+  return Boolean(record?.parentEmail && !record.verified);
 }
 
 export function saveYouthConsent(
@@ -63,9 +45,7 @@ export function saveYouthConsent(
     consentedAt: record.consentedAt ?? existing?.consentedAt ?? new Date().toISOString(),
     verified: record.verified ?? existing?.verified ?? false,
   };
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(CONSENT_KEY, JSON.stringify(full));
-  }
+  writeJson(CONSENT_KEY, full);
   return full;
 }
 

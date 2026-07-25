@@ -1,5 +1,5 @@
 import { supabase, getUser } from '@/lib/supabase';
-import { loadPlan, COACH_TASTER_KEY } from '@/lib/coach/storage';
+import { loadPlan, isTasterUsed } from '@/lib/coach/storage';
 import type { CoachPlan } from '@/lib/coach/types';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
 
@@ -10,7 +10,7 @@ export async function pushCoachToCloud(): Promise<boolean> {
   if (!user || !process.env.NEXT_PUBLIC_SUPABASE_URL) return true;
 
   const plan = loadPlan();
-  const tasterUsed = localStorage.getItem(COACH_TASTER_KEY) === '1';
+  const tasterUsed = isTasterUsed();
 
   const { error } = await supabase.from('profiles').upsert(
     {

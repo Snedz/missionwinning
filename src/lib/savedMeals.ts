@@ -1,9 +1,11 @@
 /**
  * Saved meal presets for Fuel (Forge-style one-tap re-log).
- * localStorage only — free forever.
+ * Device storage only — free forever.
  */
 
 import type { NutritionLogRow } from '@/lib/nutritionQuickLog';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
 
 export type SavedMealPreset = {
   id: string;
@@ -15,19 +17,12 @@ export type SavedMealPreset = {
   savedAt: string;
 };
 
-const STORAGE_KEY = 'mw_saved_meals';
+const STORAGE_KEY = STORAGE_KEYS.savedMeals;
 const MAX_PRESETS = 12;
 
 export function listMealPresets(): SavedMealPreset[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as SavedMealPreset[];
-    return Array.isArray(parsed) ? parsed.slice(0, MAX_PRESETS) : [];
-  } catch {
-    return [];
-  }
+  const parsed = readJson<SavedMealPreset[]>(STORAGE_KEY, []);
+  return Array.isArray(parsed) ? parsed.slice(0, MAX_PRESETS) : [];
 }
 
 export function saveMealPreset(entry: {
@@ -50,13 +45,13 @@ export function saveMealPreset(entry: {
   };
   const prev = listMealPresets().filter((p) => p.name.toLowerCase() !== name.toLowerCase());
   const all = [next, ...prev].slice(0, MAX_PRESETS);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  writeJson(STORAGE_KEY, all);
   return all;
 }
 
 export function removeMealPreset(id: string): SavedMealPreset[] {
   const all = listMealPresets().filter((p) => p.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  writeJson(STORAGE_KEY, all);
   return all;
 }
 

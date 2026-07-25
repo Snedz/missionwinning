@@ -1,5 +1,8 @@
 /** User toggles and order for Today accordion sections (local only). */
 
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
+
 export const TODAY_SECTION_IDS = ['health', 'journal', 'week', 'progress'] as const;
 export type TodaySectionId = (typeof TODAY_SECTION_IDS)[number];
 
@@ -7,8 +10,8 @@ export type TodayDashboardPrefs = Record<TodaySectionId, boolean> & {
   order: TodaySectionId[];
 };
 
-const STORAGE_KEY_V2 = 'mw_today_sections_v2';
-const STORAGE_KEY_V1 = 'mw_today_sections_v1';
+const STORAGE_KEY_V2 = STORAGE_KEYS.todaySectionsV2;
+const STORAGE_KEY_V1 = STORAGE_KEYS.todaySectionsV1;
 
 const DEFAULT_ORDER: TodaySectionId[] = [...TODAY_SECTION_IDS];
 
@@ -30,39 +33,32 @@ function normalizeOrder(order: unknown): TodaySectionId[] {
 }
 
 export function loadTodayDashboardPrefs(): TodayDashboardPrefs {
-  if (typeof window === 'undefined') return { ...DEFAULT, order: [...DEFAULT_ORDER] };
-  try {
-    const rawV2 = localStorage.getItem(STORAGE_KEY_V2);
-    if (rawV2) {
-      const parsed = JSON.parse(rawV2) as Partial<TodayDashboardPrefs>;
-      return {
-        health: parsed.health !== false,
-        journal: parsed.journal !== false,
-        week: parsed.week !== false,
-        progress: parsed.progress !== false,
-        order: normalizeOrder(parsed.order),
-      };
-    }
-    const rawV1 = localStorage.getItem(STORAGE_KEY_V1);
-    if (rawV1) {
-      const parsed = JSON.parse(rawV1) as Partial<Record<TodaySectionId, boolean>>;
-      return {
-        health: parsed.health !== false,
-        journal: parsed.journal !== false,
-        week: parsed.week !== false,
-        progress: parsed.progress !== false,
-        order: [...DEFAULT_ORDER],
-      };
-    }
-    return { ...DEFAULT, order: [...DEFAULT_ORDER] };
-  } catch {
-    return { ...DEFAULT, order: [...DEFAULT_ORDER] };
+  const v2 = readJson<Partial<TodayDashboardPrefs> | null>(STORAGE_KEY_V2, null);
+  if (v2) {
+    return {
+      health: v2.health !== false,
+      journal: v2.journal !== false,
+      week: v2.week !== false,
+      progress: v2.progress !== false,
+      order: normalizeOrder(v2.order),
+    };
   }
+  // v1 predates the reorder feature, so it carries toggles but no order.
+  const v1 = readJson<Partial<Record<TodaySectionId, boolean>> | null>(STORAGE_KEY_V1, null);
+  if (v1) {
+    return {
+      health: v1.health !== false,
+      journal: v1.journal !== false,
+      week: v1.week !== false,
+      progress: v1.progress !== false,
+      order: [...DEFAULT_ORDER],
+    };
+  }
+  return { ...DEFAULT, order: [...DEFAULT_ORDER] };
 }
 
 export function saveTodayDashboardPrefs(prefs: TodayDashboardPrefs): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(prefs));
+  writeJson(STORAGE_KEY_V2, prefs);
 }
 
 export function countVisibleSections(prefs: TodayDashboardPrefs): number {

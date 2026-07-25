@@ -1,9 +1,11 @@
 /** School / PE class codes — local join + optional cloud sync via Supabase. */
 
 import { saveSquadCode } from '@/lib/leaderboard/boards';
+import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
+import { readJson, readRaw, remove, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 
-const JOINED_CLASS_KEY = 'mw_class_code';
-const TEACHER_CLASSES_KEY = 'mw_teacher_classes';
+const JOINED_CLASS_KEY = STORAGE_KEYS.classCode;
+const TEACHER_CLASSES_KEY = STORAGE_KEYS.teacherClasses;
 
 export type TeacherClassRecord = {
   code: string;
@@ -12,7 +14,7 @@ export type TeacherClassRecord = {
   teacherPin: string;
 };
 
-const TEACHER_PIN_PREFIX = 'mw_teacher_pin_';
+const TEACHER_PIN_PREFIX = STORAGE_KEY_PREFIXES.teacherPin;
 
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
@@ -34,35 +36,26 @@ export function generateClassCode(): string {
 }
 
 export function getJoinedClassCode(): string | null {
-  if (typeof window === 'undefined') return null;
-  const raw = localStorage.getItem(JOINED_CLASS_KEY);
+  const raw = readRaw(JOINED_CLASS_KEY);
   if (!raw) return null;
   return normalizeClassCode(raw);
 }
 
 export function joinClass(rawCode: string): string | null {
   const code = normalizeClassCode(rawCode);
-  if (!code || typeof window === 'undefined') return null;
-  localStorage.setItem(JOINED_CLASS_KEY, code);
+  if (!code) return null;
+  writeRaw(JOINED_CLASS_KEY, code);
   saveSquadCode(code);
   return code;
 }
 
 export function leaveClass(): void {
-  if (typeof window === 'undefined') return;
-  localStorage.removeItem(JOINED_CLASS_KEY);
+  remove(JOINED_CLASS_KEY);
 }
 
 export function loadTeacherClasses(): TeacherClassRecord[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(TEACHER_CLASSES_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as TeacherClassRecord[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  const parsed = readJson<TeacherClassRecord[]>(TEACHER_CLASSES_KEY, []);
+  return Array.isArray(parsed) ? parsed : [];
 }
 
 export function generateTeacherPin(): string {
@@ -70,13 +63,11 @@ export function generateTeacherPin(): string {
 }
 
 export function saveTeacherPin(code: string, pin: string): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(`${TEACHER_PIN_PREFIX}${code}`, pin);
+  writeRaw(`${TEACHER_PIN_PREFIX}${code}`, pin);
 }
 
 export function getTeacherPin(code: string): string | null {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem(`${TEACHER_PIN_PREFIX}${code}`);
+  return readRaw(`${TEACHER_PIN_PREFIX}${code}`);
 }
 
 export function saveTeacherClass(name: string, code?: string): TeacherClassRecord {
@@ -88,9 +79,8 @@ export function saveTeacherClass(name: string, code?: string): TeacherClassRecor
     createdAt: new Date().toISOString(),
     teacherPin,
   };
-  if (typeof window === 'undefined') return record;
   const existing = loadTeacherClasses().filter((c) => c.code !== record.code);
-  localStorage.setItem(TEACHER_CLASSES_KEY, JSON.stringify([record, ...existing].slice(0, 10)));
+  writeJson(TEACHER_CLASSES_KEY, [record, ...existing].slice(0, 10));
   saveTeacherPin(record.code, teacherPin);
   return record;
 }
@@ -101,7 +91,7 @@ export function mergeCloudTeacherClass(record: {
   teacherPin: string | null;
   createdAt: string;
 }): void {
-  if (typeof window === 'undefined' || !record.teacherPin) return;
+  if (!record.teacherPin) return;
   const code = normalizeClassCode(record.code);
   if (!code) return;
   saveTeacherPin(code, record.teacherPin);
@@ -112,7 +102,7 @@ export function mergeCloudTeacherClass(record: {
     teacherPin: record.teacherPin,
   };
   const existing = loadTeacherClasses().filter((c) => c.code !== code);
-  localStorage.setItem(TEACHER_CLASSES_KEY, JSON.stringify([local, ...existing].slice(0, 10)));
+  writeJson(TEACHER_CLASSES_KEY, [local, ...existing].slice(0, 10));
 }
 
 export function teacherDashboardUrl(code: string, pin: string, baseUrl?: string): string {

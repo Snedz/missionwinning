@@ -16,6 +16,7 @@ import {
   type MindCheckIn,
 } from '@/lib/mindCheckIns';
 import { track } from '@/lib/analytics';
+import { readWorkoutHistoryFromStorage } from '@/lib/workout/workoutPersistLite';
 
 type Props = {
   open: boolean;
@@ -162,15 +163,7 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
 export function shouldOfferSessionCheckIn(): boolean {
   if (typeof window === 'undefined') return false;
   // W1: never block the first mission with a Mind questionnaire.
-  try {
-    const hist = JSON.parse(localStorage.getItem('workout-tracker-storage') || '{}') as {
-      state?: { workoutHistory?: unknown[] };
-    };
-    const completed = hist?.state?.workoutHistory?.length ?? 0;
-    if (completed < 1) return false;
-  } catch {
-    return false;
-  }
+  if (readWorkoutHistoryFromStorage().length < 1) return false;
   try {
     if (sessionStorage.getItem('mw_session_checkin_skipped') === todayKey()) return false;
   } catch {

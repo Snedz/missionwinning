@@ -8,8 +8,9 @@ import { countSessionsInHourRange } from './types';
 import { loadSquadCode, SQUAD_CODE_KEY } from './boards';
 import { resolveGeoFromLocale } from './regions';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { I18N_LANG_KEY, STORAGE_KEYS } from '@/lib/storage/keys';
 
-const OPERATOR_NAME_KEY = 'mw_operator_name';
+const OPERATOR_NAME_KEY = STORAGE_KEYS.operatorName;
 
 export function loadOperatorName(): string {
   return readRaw(OPERATOR_NAME_KEY)?.trim() || 'Mission Operator';
@@ -22,7 +23,7 @@ export function saveOperatorName(name: string): void {
 export { loadSquadCode, saveSquadCode } from './boards';
 
 function loadLocalPftScore(): { score: number; tier?: string } {
-  const tier = readRaw('mw_pft_last_tier') ?? undefined;
+  const tier = readRaw(STORAGE_KEYS.pftLastTier) ?? undefined;
   if (!tier) return { score: 0 };
   return { score: tierToScore(tier), tier };
 }
@@ -37,8 +38,7 @@ export function computeLocalLeaderboardSnapshot(
   savedCount: number,
   userId?: string
 ): LeaderboardSnapshot {
-  const locale =
-    typeof window !== 'undefined' ? localStorage.getItem('i18nextLng')?.split('-')[0] || 'en' : 'en';
+  const locale = readRaw(I18N_LANG_KEY)?.split('-')[0] || 'en';
   const geo = resolveGeoFromLocale(locale);
   const weekly = gatherWeeklyPillarStats();
   const streak = getTrainingStreak(workoutHistory);

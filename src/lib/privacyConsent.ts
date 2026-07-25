@@ -1,6 +1,9 @@
 /** Privacy-by-design: record explicit Terms + Privacy acceptance before sign-in. */
 
-const CONSENT_KEY = 'mw_privacy_consent_v1';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
+
+const CONSENT_KEY = STORAGE_KEYS.privacyConsent;
 
 export type PrivacyConsent = {
   acceptedAt: string;
@@ -12,14 +15,7 @@ const CURRENT_TERMS_VERSION = '2025-06-29';
 const CURRENT_PRIVACY_VERSION = '2025-06-29';
 
 export function loadPrivacyConsent(): PrivacyConsent | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = localStorage.getItem(CONSENT_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as PrivacyConsent;
-  } catch {
-    return null;
-  }
+  return readJson<PrivacyConsent | null>(CONSENT_KEY, null);
 }
 
 export function savePrivacyConsent(): PrivacyConsent {
@@ -28,9 +24,7 @@ export function savePrivacyConsent(): PrivacyConsent {
     termsVersion: CURRENT_TERMS_VERSION,
     privacyVersion: CURRENT_PRIVACY_VERSION,
   };
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(CONSENT_KEY, JSON.stringify(record));
-  }
+  writeJson(CONSENT_KEY, record);
   return record;
 }
 

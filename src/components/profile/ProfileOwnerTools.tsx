@@ -5,14 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SUPER_BUNDLE_PRICE } from '@/lib/payments';
 import { getJourneyEvents } from '@/lib/journeyAnalytics';
+import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
+import { keysWithPrefix, readRaw } from '@/lib/storage/safeStorage';
 
 export function ProfileOwnerTools() {
   const { t } = useTranslation();
 
-  const members =
-    typeof window !== 'undefined'
-      ? parseInt(localStorage.getItem('mw_contributors') || '12400')
-      : 12400;
+  const members = parseInt(readRaw(STORAGE_KEYS.contributors) || '12400');
   const estRevenue = Math.round(members * 12 * 0.3);
 
   return (
@@ -52,9 +51,10 @@ export function ProfileOwnerTools() {
             variant="outline"
             onClick={() => {
               const events = getJourneyEvents();
-              const legacy = Object.keys(localStorage)
-                .filter((k) => k.startsWith('mw_event_'))
-                .map((k) => ({ key: k, val: localStorage.getItem(k) }));
+              const legacy = keysWithPrefix(STORAGE_KEY_PREFIXES.event).map((k) => ({
+                key: k,
+                val: readRaw(k),
+              }));
               console.log('Mission Winning Journey Events:', events);
               console.log('Legacy mw_event_* keys:', legacy);
               alert(

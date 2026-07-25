@@ -1,3 +1,6 @@
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
+
 export type ActivityType = 'walk' | 'run' | 'bike' | 'hike' | 'swim' | 'other';
 
 export interface ActivityEntry {
@@ -10,20 +13,12 @@ export interface ActivityEntry {
   createdAt: string;
 }
 
-const STORAGE_KEY = 'mw_activity_log';
-
 function loadAll(): ActivityEntry[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') as ActivityEntry[];
-  } catch {
-    return [];
-  }
+  return readJson<ActivityEntry[]>(STORAGE_KEYS.activityLog, []);
 }
 
 function saveAll(entries: ActivityEntry[]) {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  writeJson(STORAGE_KEYS.activityLog, entries);
 }
 
 export function logActivity(entry: Omit<ActivityEntry, 'id' | 'createdAt'>): ActivityEntry {

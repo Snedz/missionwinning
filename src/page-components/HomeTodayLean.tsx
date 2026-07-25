@@ -24,6 +24,8 @@ import {
 } from '@/lib/missionJourney';
 import type { CompletedWorkoutLog } from '@/types';
 import { runTodayPrimaryAction } from '@/lib/todayPrimaryAction';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw } from '@/lib/storage/safeStorage';
 
 const SSR_ACTION: JourneyAction = {
   label: 'Begin I-Day',
@@ -140,14 +142,8 @@ export function HomeTodayLean() {
       ]);
       const readiness = computeReadinessFromHistory(history);
       const recommendedFocus = getRecommendedFocus(readiness);
-      const units =
-        typeof window !== 'undefined' && localStorage.getItem('mw_units') === 'imperial'
-          ? 'imperial'
-          : 'metric';
-      const userEquip =
-        typeof window !== 'undefined'
-          ? localStorage.getItem('mw_equipment') || 'full-gym'
-          : 'full-gym';
+      const units = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
+      const userEquip = readRaw(STORAGE_KEYS.equipment) || 'full-gym';
       await runTodayPrimaryAction({
         hasActiveWorkout,
         action,

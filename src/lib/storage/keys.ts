@@ -11,6 +11,13 @@
 /** Zustand persist key — not `mw_`-prefixed for historical reasons. */
 export const WORKOUT_STORE_KEY = 'workout-tracker-storage';
 
+/**
+ * i18next's own language key. Owned by the library, not by us — it is written by
+ * `i18next-browser-languagedetector` too, so never rename it, and it is deliberately
+ * outside `MW_PREFIX` so backup/restore leaves the detector's state alone.
+ */
+export const I18N_LANG_KEY = 'i18nextLng';
+
 /** Prefix for every app-owned key. Backup/restore scans on this. */
 export const MW_PREFIX = 'mw_';
 
@@ -121,4 +128,8 @@ export const STORAGE_KEY_PREFIXES = {
   event: 'mw_event_',
   /** `mw_teacher_pin_<code>` hashed teacher PINs. */
   teacherPin: 'mw_teacher_pin_',
+  /** `mw_fuel_plan_sync_<userId>` last fuel plan pushed, per signed-in user. */
+  fuelPlanSync: 'mw_fuel_plan_sync_',
+  /** `mw_premium_course_sync_<userId>` last course progress pushed, per signed-in user. */
+  premiumCourseSync: 'mw_premium_course_sync_',
 } as const;

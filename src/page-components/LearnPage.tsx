@@ -20,6 +20,8 @@ import { logPillarWin } from '@/lib/pillarLog';
 import { ChevronDown, ChevronUp, BookOpen, BookMarked } from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
 
 export function LearnPage() {
   const { t } = useTranslation();
@@ -32,14 +34,9 @@ export function LearnPage() {
   );
   const [expandedPath, setExpandedPath] = useState<string | null>(null);
   const [pathQuery, setPathQuery] = useState('');
-  const [completedLessons, setCompletedLessons] = useState<Set<string>>(() => {
-    if (typeof window === 'undefined') return new Set();
-    try {
-      return new Set(JSON.parse(localStorage.getItem('mw_learn_completed') || '[]') as string[]);
-    } catch {
-      return new Set();
-    }
-  });
+  const [completedLessons, setCompletedLessons] = useState<Set<string>>(
+    () => new Set(readJson<string[]>(STORAGE_KEYS.learnCompleted, []))
+  );
 
   const filteredPaths = useMemo(() => {
     const q = pathQuery.trim().toLowerCase();
@@ -56,7 +53,7 @@ export function LearnPage() {
     const next = new Set(completedLessons);
     next.add(lessonId);
     setCompletedLessons(next);
-    localStorage.setItem('mw_learn_completed', JSON.stringify([...next]));
+    writeJson(STORAGE_KEYS.learnCompleted, [...next]);
     logPillarWin('learn', title);
   };
 

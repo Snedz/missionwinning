@@ -6,8 +6,10 @@
 
 import { loadAttribution } from '@/lib/attribution';
 import { track } from '@/lib/analytics';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
-export const REFERRAL_CODE_KEY = 'mw_referral_code';
+export const REFERRAL_CODE_KEY = STORAGE_KEYS.referralCode;
 
 export type MyReferral = { code: string; recruitCount: number };
 
@@ -17,11 +19,7 @@ export async function getMyReferral(): Promise<MyReferral | null> {
     if (!res.ok) return null;
     const data = (await res.json()) as { code?: string; recruitCount?: number };
     if (!data.code) return null;
-    try {
-      localStorage.setItem(REFERRAL_CODE_KEY, data.code);
-    } catch {
-      /* private mode */
-    }
+    writeRaw(REFERRAL_CODE_KEY, data.code);
     return { code: data.code, recruitCount: data.recruitCount ?? 0 };
   } catch {
     return null;
@@ -29,12 +27,7 @@ export async function getMyReferral(): Promise<MyReferral | null> {
 }
 
 export function getCachedReferralCode(): string | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    return localStorage.getItem(REFERRAL_CODE_KEY);
-  } catch {
-    return null;
-  }
+  return readRaw(REFERRAL_CODE_KEY);
 }
 
 /** Fire-and-forget after sign-in push — redeems mw_attribution.ref once. */

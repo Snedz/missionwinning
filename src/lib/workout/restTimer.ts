@@ -1,9 +1,12 @@
 /** Rest timer helpers — Strong/Hevy-style smart defaults. */
 
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+
 export const REST_PRESETS = [60, 90, 120, 180] as const;
 export type RestPreset = (typeof REST_PRESETS)[number];
 
-const DEFAULT_REST_KEY = 'mw_default_rest_sec';
+const DEFAULT_REST_KEY = STORAGE_KEYS.defaultRestSec;
 
 const COMPOUND_KEYWORDS = ['squat', 'deadlift', 'bench', 'press', 'row', 'pullup', 'pull-up', 'clean', 'snatch'];
 
@@ -18,20 +21,14 @@ export function getSuggestedRestSeconds(exerciseName: string): number {
 }
 
 export function loadDefaultRestSeconds(): number {
-  if (typeof window === 'undefined') return 90;
-  try {
-    const raw = localStorage.getItem(DEFAULT_REST_KEY);
-    const n = raw ? parseInt(raw, 10) : NaN;
-    if (Number.isFinite(n) && n >= 15 && n <= 600) return n;
-  } catch {
-    /* ignore */
-  }
+  const raw = readRaw(DEFAULT_REST_KEY);
+  const n = raw ? parseInt(raw, 10) : NaN;
+  if (Number.isFinite(n) && n >= 15 && n <= 600) return n;
   return 90;
 }
 
 export function saveDefaultRestSeconds(seconds: number): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(DEFAULT_REST_KEY, String(Math.max(15, Math.min(600, seconds))));
+  writeRaw(DEFAULT_REST_KEY, String(Math.max(15, Math.min(600, seconds))));
 }
 
 /** Pick rest duration: user default, or exercise-specific if longer. */

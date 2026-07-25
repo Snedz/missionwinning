@@ -1,12 +1,15 @@
 /**
  * First-touch campaign attribution (first-party, functional storage).
  *
- * Captures utm_* + referrer + landing_path into localStorage on first visit.
+ * Captures utm_* + referrer + landing_path into device storage on first visit.
  * Referral `ref` and beta `invite` can backfill onto an existing first-touch record
  * (UTMs never overwritten).
  */
 
-export const ATTRIBUTION_KEY = 'mw_attribution';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
+
+export const ATTRIBUTION_KEY = STORAGE_KEYS.attribution;
 
 export type Attribution = {
   utm_source?: string;
@@ -53,22 +56,11 @@ function parseInviteParam(params: URLSearchParams): string | undefined {
 }
 
 export function loadAttribution(): Attribution | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = localStorage.getItem(ATTRIBUTION_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as Attribution;
-  } catch {
-    return null;
-  }
+  return readJson<Attribution | null>(ATTRIBUTION_KEY, null);
 }
 
 function saveAttribution(next: Attribution): void {
-  try {
-    localStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(next));
-  } catch {
-    /* private mode */
-  }
+  writeJson(ATTRIBUTION_KEY, next);
 }
 
 /**

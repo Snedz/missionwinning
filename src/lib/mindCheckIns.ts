@@ -1,9 +1,12 @@
 /**
- * Daily mind / readiness check-ins — localStorage single source of truth.
+ * Daily mind / readiness check-ins — device storage is the single source of truth.
  * Shared by Mind DailyCheckIn + Active session pre-check sheet.
  */
 
-export const MIND_CHECKINS_KEY = 'mw_mind_checkins';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
+
+export const MIND_CHECKINS_KEY = STORAGE_KEYS.mindCheckIns;
 const MAX_ENTRIES = 30;
 
 export type MindCheckIn = {
@@ -45,16 +48,9 @@ export function normalizeCheckIn(raw: Partial<MindCheckIn> & { date: string }): 
 }
 
 export function loadCheckIns(): MindCheckIn[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const all = JSON.parse(localStorage.getItem(MIND_CHECKINS_KEY) || '[]') as MindCheckIn[];
-    if (!Array.isArray(all)) return [];
-    return all
-      .filter((c) => c && typeof c.date === 'string')
-      .map((c) => normalizeCheckIn(c));
-  } catch {
-    return [];
-  }
+  const all = readJson<MindCheckIn[]>(MIND_CHECKINS_KEY, []);
+  if (!Array.isArray(all)) return [];
+  return all.filter((c) => c && typeof c.date === 'string').map((c) => normalizeCheckIn(c));
 }
 
 export function getTodayCheckIn(now = new Date()): MindCheckIn | null {
@@ -71,12 +67,8 @@ export function isTodayCheckInComplete(now = new Date()): boolean {
 
 export function saveCheckIn(data: MindCheckIn): MindCheckIn {
   const normalized = normalizeCheckIn(data);
-  if (typeof window === 'undefined') return normalized;
   const all = loadCheckIns().filter((c) => c.date !== normalized.date);
-  localStorage.setItem(
-    MIND_CHECKINS_KEY,
-    JSON.stringify([normalized, ...all].slice(0, MAX_ENTRIES))
-  );
+  writeJson(MIND_CHECKINS_KEY, [normalized, ...all].slice(0, MAX_ENTRIES));
   return normalized;
 }
 

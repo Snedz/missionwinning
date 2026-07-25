@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getUser } from '@/lib/supabase';
 import { useWorkoutStore } from '@/store/workoutStore';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson } from '@/lib/storage/safeStorage';
 
 type LastAssessment = {
   risk: string;
@@ -14,12 +16,7 @@ type LastAssessment = {
 };
 
 function getLastAssessment(): LastAssessment | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    return JSON.parse(localStorage.getItem('mw_last_assessment') || 'null');
-  } catch {
-    return null;
-  }
+  return readJson<LastAssessment | null>(STORAGE_KEYS.lastAssessment, null);
 }
 
 export function ProfileAssessmentCard() {

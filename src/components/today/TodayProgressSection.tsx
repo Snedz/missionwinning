@@ -29,6 +29,7 @@ import type { CompletedWorkoutLog, SavedWorkout, WorkoutExerciseTemplate } from 
 import { useWorkoutStore } from '@/store/workoutStore';
 import { SHOW_TODAY_FOUNDER_TOOLS } from '@/lib/todayFounderTools';
 import { StreakChip } from '@/components/today/StreakChip';
+import { bumpTrainingStreak } from '@/lib/streaks';
 
 type MwWindow = Window & {
   triggerPwaInstall?: () => Promise<void>;
@@ -276,8 +277,7 @@ export function TodayProgressSection({
                 const u = await getUser();
                 const today = new Date().toISOString().split('T')[0];
                 if (u) await saveNutritionEntry({ date: today, name: 'Daily Pillar Win (quick log)', protein: 0, cals: 0 });
-                const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-                localStorage.setItem('mw_streak', String(current));
+                const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Daily Pillar Win (quick log)', date: today}, ...prev].slice(0,5));
                 alert(`Daily win logged! +1 streak (${current}). ${u ? 'Saved to cloud.' : 'Sign in for cloud sync.'}`);
               } catch { /* noop */ }
@@ -287,8 +287,7 @@ export function TodayProgressSection({
                 const u = await getUser();
                 const today = new Date().toISOString().split('T')[0];
                 if (u) await saveNutritionEntry({ date: today, name: 'Quick Mind Win from Home', protein: 0, cals: 0 });
-                const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-                localStorage.setItem('mw_streak', String(current));
+                const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Quick Mind Win from Home', date: today}, ...prev].slice(0,5));
                 alert(`Mind win logged! +1 streak (${current}). ${u ? 'Cloud saved.' : ''}`);
               } catch { /* noop */ }
@@ -298,8 +297,7 @@ export function TodayProgressSection({
                 const u = await getUser();
                 const today = new Date().toISOString().split('T')[0];
                 if (u) await saveNutritionEntry({ date: today, name: 'Quick Move Win from Home', protein: 0, cals: 0 });
-                const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-                localStorage.setItem('mw_streak', String(current));
+                const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Quick Move Win from Home', date: today}, ...prev].slice(0,5));
                 alert(`Move win logged! +1 streak (${current}). ${u ? 'Cloud saved.' : ''}`);
               } catch { /* noop */ }
@@ -444,8 +442,7 @@ export function TodayProgressSection({
             {SHOW_TODAY_FOUNDER_TOOLS && (
               <>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
-              const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1; 
-              localStorage.setItem('mw_streak', String(current)); 
+              const current = bumpTrainingStreak();
               alert(`Win logged! Streak now ${current}. Refresh or complete a workout to update.`); 
               router.refresh(); 
             }}>Log a daily win +1 streak</Button>
@@ -456,15 +453,13 @@ export function TodayProgressSection({
                 const u = await getUser();
                 const today = new Date().toISOString().split('T')[0];
                 if (u) await saveNutritionEntry({ date: today, name: 'Mind Win: 5-min breath + gratitude', protein: 0, cals: 0 });
-                const cur = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-                localStorage.setItem('mw_streak', String(cur));
+                const cur = bumpTrainingStreak();
                 alert(`Mind Win logged! +1 streak (${cur}). Check Nutrition for the entry.`);
               } catch { /* noop */ }
             }}>Log Mind Win (+streak + cloud)</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => onStartStarter("Daily Mobility Circuit (Free)", freeStarters.find(s => s.name.includes("Mobility"))?.exercises || [])}>Quick Mobility Win →</Button>
             <Button size="sm" variant="ghost" className="text-xs" onClick={() => {
-              const current = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-              localStorage.setItem('mw_streak', String(current));
+              const current = bumpTrainingStreak();
               alert(`Mobility habit logged! +1 to streak (${current} days). Synergy with Move pillar builds the path.`);
               router.refresh();
             }}>Log Mobility Habit (+streak)</Button>

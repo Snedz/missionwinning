@@ -8,8 +8,10 @@ import { adaptDailyTargets } from '@/lib/fuelCoach/adapt';
 import { trainingLoadForDay } from '@/lib/fuelCoach/contextBuilder';
 import type { DayMacroTotals, TrainingLoad } from '@/lib/fuelCoach/types';
 import type { CompletedWorkoutLog } from '@/types';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
-export const FUEL_ADAPT_ENABLED_KEY = 'mw_fuel_adapt_enabled';
+export const FUEL_ADAPT_ENABLED_KEY = STORAGE_KEYS.fuelAdaptEnabled;
 
 export type FuelDayAdaptResult = {
   load: TrainingLoad;
@@ -24,19 +26,14 @@ export type FuelDayAdaptResult = {
 };
 
 export function loadFuelAdaptEnabled(): boolean {
-  if (typeof localStorage === 'undefined') return true;
-  try {
-    const raw = localStorage.getItem(FUEL_ADAPT_ENABLED_KEY);
-    if (raw === null) return true;
-    return raw !== '0' && raw !== 'false';
-  } catch {
-    return true;
-  }
+  // Absent means on: adapting to training load is the default behaviour.
+  const raw = readRaw(FUEL_ADAPT_ENABLED_KEY);
+  if (raw === null) return true;
+  return raw !== '0' && raw !== 'false';
 }
 
 export function saveFuelAdaptEnabled(on: boolean): void {
-  if (typeof localStorage === 'undefined') return;
-  localStorage.setItem(FUEL_ADAPT_ENABLED_KEY, on ? '1' : '0');
+  writeRaw(FUEL_ADAPT_ENABLED_KEY, on ? '1' : '0');
 }
 
 function macrosEqual(a: DayMacroTotals, b: DayMacroTotals): boolean {

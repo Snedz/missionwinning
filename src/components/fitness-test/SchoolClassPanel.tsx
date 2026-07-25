@@ -24,6 +24,7 @@ import {
 } from '@/lib/schoolClass';
 import { getUser } from '@/lib/supabase';
 import { buildClassInviteShareText, shareText } from '@/lib/shareFitnessMission';
+import { getCachedReferralCode } from '@/lib/referral';
 
 export function SchoolClassPanel() {
   const { t } = useTranslation();
@@ -117,12 +118,7 @@ export function SchoolClassPanel() {
   };
 
   const copyInvite = async (code: string, name: string) => {
-    let refCode: string | undefined;
-    try {
-      refCode = localStorage.getItem('mw_referral_code') || undefined;
-    } catch {
-      /* */
-    }
+    const refCode = getCachedReferralCode() || undefined;
     const text = buildClassInviteShareText(code, name, refCode ? { refCode } : undefined);
     const result = await shareText(text);
     const { track } = await import('@/lib/analytics');

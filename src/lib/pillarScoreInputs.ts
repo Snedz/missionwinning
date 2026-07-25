@@ -2,6 +2,8 @@ import { getChallengeProgress } from '@/lib/challenges';
 import { getPillarWins, type PillarType } from '@/lib/pillarLog';
 import { getActivitiesForWeek } from '@/lib/activityLog';
 import { hasFuelPlanThisWeek, todayFuelSynergyBump } from '@/lib/fuelCoach/synergy';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson } from '@/lib/storage/safeStorage';
 
 export interface WeeklyPillarStats {
   moveFlows: number;
@@ -31,18 +33,11 @@ function countPillarWinsThisWeek(pillar: PillarType): number {
 }
 
 function countLearnLessonsThisWeek(): number {
-  if (typeof window === 'undefined') return 0;
-  try {
-    const completed = JSON.parse(localStorage.getItem('mw_learn_completed') || '[]') as string[];
-    const premium = JSON.parse(
-      localStorage.getItem('mw_premium_course_progress') || '[]'
-    ) as string[];
-    const guide = JSON.parse(localStorage.getItem('mw_guidebook_progress') || '[]') as string[];
-    const total = new Set([...completed, ...premium, ...guide]).size;
-    return Math.min(total, 10);
-  } catch {
-    return 0;
-  }
+  const completed = readJson<string[]>(STORAGE_KEYS.learnCompleted, []);
+  const premium = readJson<string[]>(STORAGE_KEYS.premiumCourseProgress, []);
+  const guide = readJson<string[]>(STORAGE_KEYS.guidebookProgress, []);
+  const total = new Set([...completed, ...premium, ...guide]).size;
+  return Math.min(total, 10);
 }
 
 /** Gather cross-pillar weekly stats from local storage (offline-first). */
@@ -52,17 +47,10 @@ export function gatherWeeklyPillarStats(): WeeklyPillarStats {
   const proteinDays = challenges.find((c) => c.id === 'protein-5')?.current ?? 0;
   const weekVolume = challenges.find((c) => c.id === 'volume-10k')?.current ?? 0;
 
-  const mindCheckIns = typeof window !== 'undefined'
-    ? (() => {
-        try {
-          const all = JSON.parse(localStorage.getItem('mw_mind_checkins') || '[]') as { date: string }[];
-          const start = weekStartIso();
-          return all.filter((c) => c.date >= start).length;
-        } catch {
-          return 0;
-        }
-      })()
-    : 0;
+  const weekStart = weekStartIso();
+  const mindCheckIns = readJson<{ date: string }[]>(STORAGE_KEYS.mindCheckIns, []).filter(
+    (c) => c.date >= weekStart
+  ).length;
 
   return {
     moveFlows: countPillarWinsThisWeek('move'),

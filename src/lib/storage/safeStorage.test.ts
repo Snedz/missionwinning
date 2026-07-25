@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   __resetForTests,
   isPersistent,
+  keysWithPrefix,
   onStorageFailure,
   readJson,
   readRaw,
@@ -159,6 +160,45 @@ test('safeStorage', async (t) => {
       assert.deepEqual(readJson('good', null), { n: 1 });
     } finally {
       stub.uninstall();
+    }
+  });
+
+  await t.test('keysWithPrefix finds runtime-suffixed keys and nothing else', () => {
+    const stub = stubStorage();
+    stub.install();
+    try {
+      writeRaw('mw_event_a', '1');
+      writeRaw('mw_event_b', '2');
+      writeRaw('mw_streak', '3');
+      const found = keysWithPrefix('mw_event_').sort();
+      assert.deepEqual(found, ['mw_event_a', 'mw_event_b']);
+    } finally {
+      stub.uninstall();
+    }
+  });
+
+  await t.test('keysWithPrefix still sees keys held only in memory', () => {
+    // Private mode: writes never reached the backend, but the tab must still be able
+    // to enumerate what it stored this session.
+    const stub = stubStorage({ throwOnSet: 'denied' });
+    stub.install();
+    try {
+      writeRaw('mw_event_x', '1');
+      assert.deepEqual(keysWithPrefix('mw_event_'), ['mw_event_x']);
+    } finally {
+      stub.uninstall();
+    }
+  });
+
+  await t.test('keysWithPrefix returns empty during SSR instead of throwing', () => {
+    const g = globalThis as { localStorage?: Storage };
+    const prev = g.localStorage;
+    delete g.localStorage;
+    try {
+      assert.deepEqual(keysWithPrefix('mw_'), []);
+    } finally {
+      if (prev === undefined) delete g.localStorage;
+      else g.localStorage = prev;
     }
   });
 

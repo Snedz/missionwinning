@@ -5,6 +5,8 @@ import type { UnitsPref } from '@/lib/units';
 import type { CompletedWorkoutLog } from '@/types';
 import type { FuelContext, FuelGoal, TrainingLoad } from '@/lib/fuelCoach/types';
 import { getOrCreateDeviceId } from '@/lib/coach/storage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw } from '@/lib/storage/safeStorage';
 
 const DAY_LABELS = [
   { dayKey: 'mon', label: 'Monday' },
@@ -89,10 +91,9 @@ export function buildFuelContext(params: {
 }): FuelContext {
   const units = params.units ?? 'metric';
   let goal = params.goal;
-  if (!goal && typeof window !== 'undefined') {
-    const raw =
-      localStorage.getItem('mw_primary_goal') ?? localStorage.getItem('mw_goals') ?? '';
-    goal = parseFuelGoal(raw);
+  if (!goal) {
+    const raw = readRaw(STORAGE_KEYS.primaryGoal) ?? readRaw(STORAGE_KEYS.goals) ?? '';
+    if (raw) goal = parseFuelGoal(raw);
   }
   goal ??= 'maintain';
 
@@ -107,9 +108,7 @@ export function buildFuelContext(params: {
 }
 
 export function readLocalFuelContext(history: CompletedWorkoutLog[]): FuelContext {
-  const units = (typeof window !== 'undefined'
-    ? (localStorage.getItem('mw_units') as UnitsPref)
-    : 'metric') ?? 'metric';
+  const units = (readRaw(STORAGE_KEYS.units) as UnitsPref | null) ?? 'metric';
   return buildFuelContext({ history, units });
 }
 

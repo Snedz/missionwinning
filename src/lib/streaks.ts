@@ -6,19 +6,29 @@
 
 import type { CompletedWorkoutLog } from '@/types';
 import { getFuelLogStreak } from '@/lib/fuelStreak';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
-export const STREAK_KEY = 'mw_streak';
+export const STREAK_KEY = STORAGE_KEYS.streak;
 
-/** Consecutive training days — exact prior semantics (localStorage override when > 0). */
+/**
+ * Increment the stored streak override and return the new value.
+ *
+ * The founder tools on Today and Benchmarks each hand-rolled this read-increment-write
+ * a dozen times over, every copy with its own try/catch. One version means one place to
+ * fix when the semantics change.
+ */
+export function bumpTrainingStreak(): number {
+  const current = parseInt(readRaw(STREAK_KEY) || '0', 10);
+  const next = (Number.isFinite(current) ? Math.max(0, current) : 0) + 1;
+  writeRaw(STREAK_KEY, String(next));
+  return next;
+}
+
+/** Consecutive training days — exact prior semantics (stored override when > 0). */
 export function getTrainingStreak(workoutHistory: CompletedWorkoutLog[]): number {
-  if (typeof window !== 'undefined') {
-    try {
-      const stored = parseInt(localStorage.getItem(STREAK_KEY) || '0', 10);
-      if (Number.isFinite(stored) && stored > 0) return stored;
-    } catch {
-      /* fall through */
-    }
-  }
+  const stored = parseInt(readRaw(STREAK_KEY) || '0', 10);
+  if (Number.isFinite(stored) && stored > 0) return stored;
   if (workoutHistory.length === 0) return 0;
 
   const dates = [

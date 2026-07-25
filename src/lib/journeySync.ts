@@ -14,7 +14,9 @@ const PHASE_RANK: Record<JourneyPhase, number> = {
   commissioned: 3,
 };
 
-import { loadPlan, COACH_TASTER_KEY, savePlan } from '@/lib/coach/storage';
+import { loadPlan, isTasterUsed, markTasterUsed, savePlan } from '@/lib/coach/storage';
+import { I18N_LANG_KEY, STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { mergeCoachPlans } from '@/lib/coachSync';
 import type { CoachPlan } from '@/lib/coach/types';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
@@ -60,22 +62,22 @@ export function mergeJourneyStates(a: JourneyState, b: JourneyState): JourneySta
 
 function applyProfileFieldsToLocal(profile: CloudProfileSlice): void {
   if (typeof window === 'undefined') return;
-  if (profile.locale) localStorage.setItem('i18nextLng', profile.locale);
+  if (profile.locale) writeRaw(I18N_LANG_KEY, profile.locale);
   if (profile.units === 'metric' || profile.units === 'imperial') {
-    localStorage.setItem('mw_units', profile.units);
+    writeRaw(STORAGE_KEYS.units, profile.units);
   }
-  if (profile.goals) localStorage.setItem('mw_goals', profile.goals);
-  if (profile.equipment) localStorage.setItem('mw_equipment', profile.equipment);
-  if (profile.experience) localStorage.setItem('mw_experience', profile.experience);
+  if (profile.goals) writeRaw(STORAGE_KEYS.goals, profile.goals);
+  if (profile.equipment) writeRaw(STORAGE_KEYS.equipment, profile.equipment);
+  if (profile.experience) writeRaw(STORAGE_KEYS.experience, profile.experience);
   if (profile.primary_goal) {
-    localStorage.setItem('mw_primary_goal', profile.primary_goal);
-    localStorage.setItem('mw_goals', profile.primary_goal);
+    writeRaw(STORAGE_KEYS.primaryGoal, profile.primary_goal);
+    writeRaw(STORAGE_KEYS.goals, profile.primary_goal);
   }
   if (profile.ui_mode === 'simple' || profile.ui_mode === 'pro') {
     saveUiMode(profile.ui_mode);
   }
   if (profile.coach_taster_used) {
-    localStorage.setItem(COACH_TASTER_KEY, '1');
+    markTasterUsed();
   }
   if (profile.coach_plan && typeof profile.coach_plan === 'object') {
     const local = loadPlan();
@@ -104,7 +106,7 @@ export async function pullJourneyFromCloud(): Promise<boolean> {
     const merged = mergeJourneyStates(local, data.journey_state as JourneyState);
     saveJourneyState(merged);
     if (merged.commissionedAt) {
-      localStorage.setItem('mw_commissioned_at', merged.commissionedAt);
+      writeRaw(STORAGE_KEYS.commissionedAt, merged.commissionedAt);
     }
   }
 
@@ -119,20 +121,15 @@ export async function pushJourneyToCloud(): Promise<boolean> {
   if (!user || !process.env.NEXT_PUBLIC_SUPABASE_URL) return true;
 
   const journey = loadJourneyState();
-  const locale =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('i18nextLng')?.split('-')[0] || 'en'
-      : 'en';
-  const units = typeof window !== 'undefined' ? localStorage.getItem('mw_units') || 'metric' : 'metric';
-  const goals = typeof window !== 'undefined' ? localStorage.getItem('mw_goals') || '' : '';
-  const equipment = typeof window !== 'undefined' ? localStorage.getItem('mw_equipment') || '' : '';
-  const experience = typeof window !== 'undefined' ? localStorage.getItem('mw_experience') || '' : '';
-  const primaryGoal =
-    typeof window !== 'undefined' ? localStorage.getItem('mw_primary_goal') || goals : goals;
+  const locale = readRaw(I18N_LANG_KEY)?.split('-')[0] || 'en';
+  const units = readRaw(STORAGE_KEYS.units) || 'metric';
+  const goals = readRaw(STORAGE_KEYS.goals) || '';
+  const equipment = readRaw(STORAGE_KEYS.equipment) || '';
+  const experience = readRaw(STORAGE_KEYS.experience) || '';
+  const primaryGoal = readRaw(STORAGE_KEYS.primaryGoal) || goals;
   const uiMode: UiMode = loadUiMode();
-  const coachPlan = typeof window !== 'undefined' ? loadPlan() : null;
-  const coachTasterUsed =
-    typeof window !== 'undefined' ? localStorage.getItem(COACH_TASTER_KEY) === '1' : false;
+  const coachPlan = loadPlan();
+  const coachTasterUsed = isTasterUsed();
 
   const { error } = await supabase.from('profiles').upsert(
     {

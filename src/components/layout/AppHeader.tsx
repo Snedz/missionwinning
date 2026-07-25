@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils';
 import { ROUTE_LABELS, STATIC_PAGE_TITLES } from '@/lib/pageTitles';
 import type { JourneyPhase } from '@/lib/missionJourney';
 import type { NavSection } from '@/lib/navConfig';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson } from '@/lib/storage/safeStorage';
 
 const HeaderAuthChip = dynamic(
   () => import('@/components/layout/HeaderAuthChip').then((m) => ({ default: m.HeaderAuthChip })),
@@ -20,15 +22,8 @@ const HeaderAuthChip = dynamic(
 function useJourneyPhaseLite(): JourneyPhase {
   const [phase, setPhase] = useState<JourneyPhase>('basic');
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem('mw_journey_state');
-      if (raw) {
-        const parsed = JSON.parse(raw) as { phase?: JourneyPhase };
-        if (parsed.phase) setPhase(parsed.phase);
-      }
-    } catch {
-      /* keep basic */
-    }
+    const parsed = readJson<{ phase?: JourneyPhase } | null>(STORAGE_KEYS.journeyState, null);
+    if (parsed?.phase) setPhase(parsed.phase);
   }, []);
   return phase;
 }

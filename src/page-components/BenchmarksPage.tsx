@@ -54,6 +54,7 @@ import { PillarPageShell } from "@/components/layout/PillarPageShell";
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { AnatomyHeatMap } from "@/components/history/AnatomyHeatMap";
 import { buildMuscleHeatmap } from "@/lib/historyAnalytics";
+import { bumpTrainingStreak } from "@/lib/streaks";
 
 export function BenchmarksPage() {
   const { t } = useTranslation();
@@ -484,26 +485,25 @@ export function BenchmarksPage() {
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Bench Benchmark", [{ exerciseId: "bench-press", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
-            try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch { /* noop */ }
+            bumpTrainingStreak();
             router.push('/active');
           }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Squat Benchmark", [{ exerciseId: "squats", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
-            try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch { /* noop */ }
+            bumpTrainingStreak();
             router.push('/active');
           }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => {
             const store = useWorkoutStore.getState();
             store.startWorkout("Deadlift Benchmark", [{ exerciseId: "deadlift", sets: [{ reps: 3, weight: 0 }, { reps: 3, weight: 0 }] }]);
-            try { const c = parseInt(localStorage.getItem('mw_streak')||'0'); localStorage.setItem('mw_streak', String(c+1)); } catch { /* noop */ }
+            bumpTrainingStreak();
             router.push('/active');
           }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls →' })}</Button>
           <Button size="sm" variant="outline" onClick={() => router.push('/log')}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today →' })}</Button>
           <Button size="sm" variant="ghost" onClick={() => {
             try {
-              const cur = parseInt(localStorage.getItem('mw_streak') || '0') + 1;
-              localStorage.setItem('mw_streak', String(cur));
+              const cur = bumpTrainingStreak();
               alert(`Benchmark habit logged! Streak +1 (${cur}). Complete the session to update charts.`);
             } catch { /* noop */ }
           }}>{t('benchmarksQuickHabit', { defaultValue: 'Log benchmark habit (+streak)' })}</Button>

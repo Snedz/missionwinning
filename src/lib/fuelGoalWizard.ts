@@ -12,10 +12,12 @@ import {
   type MacroGoal,
 } from '@/lib/calcHelpers';
 import type { UnitsPref } from '@/lib/units';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
 export type FuelGoalChoice = 'lose' | 'maintain' | 'gain';
 
-export const FUEL_GOAL_STORAGE_KEY = 'mw_fuel_goal';
+export const FUEL_GOAL_STORAGE_KEY = STORAGE_KEYS.fuelGoal;
 
 export type FuelGoalInputs = {
   goal: FuelGoalChoice;
@@ -99,21 +101,16 @@ export function computeGoalTargets(params: FuelGoalInputs): FuelGoalTargets {
 }
 
 export function loadFuelGoalChoice(): FuelGoalChoice | null {
-  if (typeof localStorage === 'undefined') return null;
-  try {
-    const raw = localStorage.getItem(FUEL_GOAL_STORAGE_KEY);
-    if (raw === 'lose' || raw === 'maintain' || raw === 'gain') return raw;
-    if (raw === 'cut') return 'lose';
-    if (raw === 'bulk') return 'gain';
-    return null;
-  } catch {
-    return null;
-  }
+  const raw = readRaw(FUEL_GOAL_STORAGE_KEY);
+  if (raw === 'lose' || raw === 'maintain' || raw === 'gain') return raw;
+  // Legacy vocabulary from the fuelCoach goal names.
+  if (raw === 'cut') return 'lose';
+  if (raw === 'bulk') return 'gain';
+  return null;
 }
 
 export function saveFuelGoalChoice(goal: FuelGoalChoice): void {
-  if (typeof localStorage === 'undefined') return;
-  localStorage.setItem(FUEL_GOAL_STORAGE_KEY, goal);
+  writeRaw(FUEL_GOAL_STORAGE_KEY, goal);
 }
 
 /** Suggested starting bodyweight from latest body metrics or unit defaults. */

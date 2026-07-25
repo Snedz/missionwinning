@@ -19,6 +19,7 @@ import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { track } from '@/lib/analytics';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
+import { getCachedReferralCode } from '@/lib/referral';
 
 type Props = {
   open: boolean;
@@ -53,12 +54,7 @@ export function WorkoutVictorySheet({
   });
 
   const handleShare = async () => {
-    let refCode: string | null = null;
-    try {
-      refCode = localStorage.getItem('mw_referral_code');
-    } catch {
-      /* private mode */
-    }
+    const refCode = getCachedReferralCode();
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
     const shareUrl = refCode
       ? `${origin}/?ref=${encodeURIComponent(refCode)}`

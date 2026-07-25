@@ -2,7 +2,7 @@
 /**
  * Page: /log — Today hub entry.
  * Lean shell for I-Day/Basic first paint; full dashboard code-split for readiness+.
- * Phase gate reads localStorage only — no workoutStore on cold path for basic users.
+ * Phase gate reads device storage only — no workoutStore on cold path for basic users.
  * See: docs/JOURNEY.md, ORCHESTRATION.md Horizon 1 perf
  */
 
@@ -11,6 +11,8 @@ import dynamic from 'next/dynamic';
 import type { JourneyPhase } from '@/lib/missionJourney';
 import { HomeTodayLean } from '@/page-components/HomeTodayLean';
 import { SkeletonCard } from '@/components/ui/Skeleton';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson } from '@/lib/storage/safeStorage';
 
 function TodayDashboardLoading() {
   return (
@@ -42,19 +44,8 @@ export function HomePage() {
   const [phase, setPhase] = useState<JourneyPhase | null>(null);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem('mw_journey_state');
-      if (raw) {
-        const parsed = JSON.parse(raw) as { phase?: JourneyPhase };
-        if (parsed.phase) {
-          setPhase(parsed.phase);
-          return;
-        }
-      }
-    } catch {
-      /* fall through */
-    }
-    setPhase('basic');
+    const parsed = readJson<{ phase?: JourneyPhase } | null>(STORAGE_KEYS.journeyState, null);
+    setPhase(parsed?.phase ?? 'basic');
   }, []);
 
   if (phase == null) {

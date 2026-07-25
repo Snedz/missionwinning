@@ -163,6 +163,33 @@ export function writeJson(key: string, value: unknown): boolean {
   return writeRaw(key, serialized);
 }
 
+/**
+ * Every stored key starting with `prefix`, deduped across the real backend and the
+ * memory fallback.
+ *
+ * Only for the handful of places that must discover runtime-suffixed keys they never
+ * wrote (`mw_event_*`, `mw_teacher_pin_*`). Anything with a fixed key should read it
+ * from `STORAGE_KEYS` instead — enumeration is the slow path and it hides typos.
+ */
+export function keysWithPrefix(prefix: string): string[] {
+  const found = new Set<string>();
+  for (const key of memory.keys()) {
+    if (key.startsWith(prefix)) found.add(key);
+  }
+  const store = rawStorage();
+  if (store && !memoryFallbackActive) {
+    try {
+      for (let i = 0; i < store.length; i += 1) {
+        const key = store.key(i);
+        if (key !== null && key.startsWith(prefix)) found.add(key);
+      }
+    } catch (error) {
+      report(classify(error), prefix);
+    }
+  }
+  return [...found];
+}
+
 /** Test-only: clear memory fallback state between cases. */
 export function __resetForTests(): void {
   memory.clear();

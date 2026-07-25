@@ -1,4 +1,6 @@
 import type { CompletedWorkoutLog } from '@/types';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson } from '@/lib/storage/safeStorage';
 
 export type TrendMetricId = 'volume' | 'sessions' | 'protein' | 'active';
 
@@ -41,38 +43,22 @@ export function lastDayBuckets(count: number, locale = 'en'): { key: string; lab
 
 function readNutritionByDay(): Record<string, number> {
   const byDay: Record<string, number> = {};
-  if (typeof window === 'undefined') return byDay;
-  try {
-    const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]') as {
-      protein?: number;
-      date?: string;
-    }[];
-    const today = new Date().toISOString().split('T')[0];
-    logs.forEach((l) => {
-      const d = l.date || today;
-      byDay[d] = (byDay[d] || 0) + (l.protein || 0);
-    });
-  } catch {
-    /* ignore */
-  }
+  const logs = readJson<{ protein?: number; date?: string }[]>(STORAGE_KEYS.nutritionLog, []);
+  const today = new Date().toISOString().split('T')[0];
+  logs.forEach((l) => {
+    const d = l.date || today;
+    byDay[d] = (byDay[d] || 0) + (l.protein || 0);
+  });
   return byDay;
 }
 
 function readActiveMinutesByDay(): Record<string, number> {
   const byDay: Record<string, number> = {};
-  if (typeof window === 'undefined') return byDay;
-  try {
-    const acts = JSON.parse(localStorage.getItem('mw_activity_log') || '[]') as {
-      date: string;
-      durationMin?: number;
-    }[];
-    acts.forEach((a) => {
-      if (!a.date) return;
-      byDay[a.date] = (byDay[a.date] || 0) + (a.durationMin || 0);
-    });
-  } catch {
-    /* ignore */
-  }
+  const acts = readJson<{ date: string; durationMin?: number }[]>(STORAGE_KEYS.activityLog, []);
+  acts.forEach((a) => {
+    if (!a.date) return;
+    byDay[a.date] = (byDay[a.date] || 0) + (a.durationMin || 0);
+  });
   return byDay;
 }
 
@@ -131,93 +117,62 @@ export function gatherJournalEntries(
     });
   }
 
-  if (typeof window !== 'undefined') {
-    try {
-      const today = new Date().toISOString().split('T')[0];
-      const logs = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]') as {
-        name?: string;
-        protein?: number;
-        time?: string;
-        date?: string;
-      }[];
-      logs.forEach((l, i) => {
-        const d = l.date || today;
-        entries.push({
-          id: `fuel-${d}-${i}-${l.name ?? 'meal'}`,
-          at: `${d}T${l.time ? parseTimeToIso(l.time) : '12:00:00'}`,
-          pillar: 'fuel',
-          title: l.name || 'Meal',
-          detail: l.protein ? `${l.protein}g protein` : undefined,
-        });
-      });
-    } catch {
-      /* ignore */
-    }
+  const today = new Date().toISOString().split('T')[0];
 
-    try {
-      const checkins = JSON.parse(localStorage.getItem('mw_mind_checkins') || '[]') as {
-        date: string;
-        mood?: number;
-        sleep?: number;
-        note?: string;
-      }[];
-      checkins.forEach((c) => {
-        entries.push({
-          id: `mind-${c.date}`,
-          at: `${c.date}T20:00:00`,
-          pillar: 'mind',
-          title: c.note?.trim() || 'Daily check-in',
-          detail:
-            c.mood != null && c.sleep != null
-              ? `mood ${c.mood}/5 · sleep ${c.sleep}/5`
-              : undefined,
-        });
-      });
-    } catch {
-      /* ignore */
-    }
+  const logs = readJson<
+    { name?: string; protein?: number; time?: string; date?: string }[]
+  >(STORAGE_KEYS.nutritionLog, []);
+  logs.forEach((l, i) => {
+    const d = l.date || today;
+    entries.push({
+      id: `fuel-${d}-${i}-${l.name ?? 'meal'}`,
+      at: `${d}T${l.time ? parseTimeToIso(l.time) : '12:00:00'}`,
+      pillar: 'fuel',
+      title: l.name || 'Meal',
+      detail: l.protein ? `${l.protein}g protein` : undefined,
+    });
+  });
 
-    try {
-      const wins = JSON.parse(localStorage.getItem('mw_pillar_wins') || '[]') as {
-        id: string;
-        pillar: JournalPillar;
-        title: string;
-        completedAt: string;
-      }[];
-      wins.forEach((w) => {
-        if (w.pillar === 'train') return;
-        entries.push({
-          id: `win-${w.id}`,
-          at: w.completedAt,
-          pillar: w.pillar,
-          title: w.title,
-        });
-      });
-    } catch {
-      /* ignore */
-    }
+  const checkins = readJson<
+    { date: string; mood?: number; sleep?: number; note?: string }[]
+  >(STORAGE_KEYS.mindCheckIns, []);
+  checkins.forEach((c) => {
+    entries.push({
+      id: `mind-${c.date}`,
+      at: `${c.date}T20:00:00`,
+      pillar: 'mind',
+      title: c.note?.trim() || 'Daily check-in',
+      detail:
+        c.mood != null && c.sleep != null ? `mood ${c.mood}/5 · sleep ${c.sleep}/5` : undefined,
+    });
+  });
 
-    try {
-      const acts = JSON.parse(localStorage.getItem('mw_activity_log') || '[]') as {
-        id: string;
-        date: string;
-        type?: string;
-        durationMin?: number;
-        createdAt?: string;
-      }[];
-      acts.forEach((a) => {
-        entries.push({
-          id: `track-${a.id}`,
-          at: a.createdAt || `${a.date}T12:00:00`,
-          pillar: 'track',
-          title: a.type ? `${a.type} activity` : 'Activity',
-          detail: a.durationMin ? `${a.durationMin} min` : undefined,
-        });
-      });
-    } catch {
-      /* ignore */
-    }
-  }
+  const wins = readJson<
+    { id: string; pillar: JournalPillar; title: string; completedAt: string }[]
+  >(STORAGE_KEYS.pillarWins, []);
+  wins.forEach((w) => {
+    // Train wins already came from workoutHistory above — this would double them.
+    if (w.pillar === 'train') return;
+    entries.push({
+      id: `win-${w.id}`,
+      at: w.completedAt,
+      pillar: w.pillar,
+      title: w.title,
+    });
+  });
+
+  const acts = readJson<
+    { id: string; date: string; type?: string; durationMin?: number; createdAt?: string }[]
+  >(STORAGE_KEYS.activityLog, []);
+  acts.forEach((a) => {
+    entries.push({
+      id: `track-${a.id}`,
+      at: a.createdAt || `${a.date}T12:00:00`,
+      pillar: 'track',
+      title: a.type ? `${a.type} activity` : 'Activity',
+      detail: a.durationMin ? `${a.durationMin} min` : undefined,
+    });
+  });
 
   return entries.sort((a, b) => b.at.localeCompare(a.at)).slice(0, limit);
 }

@@ -9,6 +9,8 @@ import { identifyUser, initAnalytics, resetAnalyticsIdentity, track } from '@/li
 import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
 import { captureAttribution } from '@/lib/attribution';
 import { markInviteLanded } from '@/lib/invite';
+import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
+import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
 
 // Bootstrap i18next (minimal EN). Full locale catalogs hydrate after idle.
 // supabase-js is NOT imported here — auth listener loads it after idle.
@@ -58,9 +60,7 @@ if (typeof window !== 'undefined') {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPwaPrompt = e as BeforeInstallPromptEvent;
-    try {
-      localStorage.setItem('mw_event_pwa_prompt_available', new Date().toISOString());
-    } catch { /* noop */ }
+    writeRaw(`${STORAGE_KEY_PREFIXES.event}pwa_prompt_available`, new Date().toISOString());
   });
 
   mw.deferredPwaPrompt = () => deferredPwaPrompt;
@@ -73,9 +73,7 @@ if (typeof window !== 'undefined') {
     }
     promptEvent.prompt();
     const { outcome } = await promptEvent.userChoice;
-    try {
-      localStorage.setItem('mw_event_pwa_install_' + outcome, new Date().toISOString());
-    } catch { /* noop */ }
+    writeRaw(`${STORAGE_KEY_PREFIXES.event}pwa_install_${outcome}`, new Date().toISOString());
     deferredPwaPrompt = null;
   };
 }
@@ -154,18 +152,16 @@ export function I18nPwaProvider({ children }: { children: React.ReactNode }) {
         const { data } = supabase.auth.onAuthStateChange((event, session) => {
           if (event === 'SIGNED_IN' && session?.user?.id) {
             identifyUser(session.user.id);
-            try {
-              if (localStorage.getItem('mw_reminders_pref') === '1') {
-                void supabase
-                  .from('profiles')
-                  .update({ reminders_opt_in: true })
-                  .eq('id', session.user.id)
-                  .then(({ error }) => {
-                    if (!error) localStorage.removeItem('mw_reminders_pref');
-                  });
-              }
-            } catch {
-              /* noop */
+            // A pre-sign-in reminders opt-in follows the user to their profile, and is
+            // only cleared once the write lands — otherwise the choice is lost.
+            if (readRaw(STORAGE_KEYS.remindersPref) === '1') {
+              void supabase
+                .from('profiles')
+                .update({ reminders_opt_in: true })
+                .eq('id', session.user.id)
+                .then(({ error }) => {
+                  if (!error) remove(STORAGE_KEYS.remindersPref);
+                });
             }
           } else if (event === 'SIGNED_OUT') {
             resetAnalyticsIdentity();

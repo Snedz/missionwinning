@@ -2,6 +2,8 @@ import type { CompletedWorkoutLog } from '@/types';
 import { getPillarWins, type PillarType } from '@/lib/pillarLog';
 import { loadGuidebookProgress } from '@/lib/guidebookProgress';
 import { STREAK_KEY, getTrainingStreak } from '@/lib/streaks';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 
 export { STREAK_KEY, getTrainingStreak };
 
@@ -82,8 +84,8 @@ export const CHALLENGES: ChallengeDef[] = [
   },
 ];
 
-const STORAGE_KEY = 'mw_challenges';
-const LAST_WORKOUT_KEY = 'mw_last_workout_date';
+const STORAGE_KEY = STORAGE_KEYS.challenges;
+const LAST_WORKOUT_KEY = STORAGE_KEYS.lastWorkoutDate;
 const PROTEIN_THRESHOLD = 120;
 
 interface ChallengeState {
@@ -102,26 +104,16 @@ function getWeekStart(d = new Date()): string {
 }
 
 function loadState(): ChallengeState {
-  if (typeof window === 'undefined') {
-    return { weekStart: getWeekStart(), trainDays: [], proteinDays: [], weekVolume: 0 };
-  }
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const weekStart = getWeekStart();
-    if (!raw) return { weekStart, trainDays: [], proteinDays: [], weekVolume: 0 };
-    const parsed = JSON.parse(raw) as ChallengeState;
-    if (parsed.weekStart !== weekStart) {
-      return { weekStart, trainDays: [], proteinDays: [], weekVolume: 0 };
-    }
-    return parsed;
-  } catch {
-    return { weekStart: getWeekStart(), trainDays: [], proteinDays: [], weekVolume: 0 };
-  }
+  const weekStart = getWeekStart();
+  const empty: ChallengeState = { weekStart, trainDays: [], proteinDays: [], weekVolume: 0 };
+  const parsed = readJson<ChallengeState | null>(STORAGE_KEY, null);
+  // A stored week that is not this week resets rather than carrying totals forward.
+  if (!parsed || parsed.weekStart !== weekStart) return empty;
+  return parsed;
 }
 
 function saveState(state: ChallengeState) {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  writeJson(STORAGE_KEY, state);
 }
 
 /** Call when a workout is completed. Updates streak + weekly train/volume challenges. */
@@ -129,8 +121,8 @@ export function recordWorkoutCompleted(log: CompletedWorkoutLog) {
   if (typeof window === 'undefined') return;
 
   const today = new Date(log.completedAt).toISOString().split('T')[0];
-  const lastDate = localStorage.getItem(LAST_WORKOUT_KEY);
-  let streak = parseInt(localStorage.getItem(STREAK_KEY) || '0', 10);
+  const lastDate = readRaw(LAST_WORKOUT_KEY);
+  let streak = parseInt(readRaw(STREAK_KEY) || '0', 10);
 
   if (lastDate !== today) {
     if (lastDate) {
@@ -141,8 +133,8 @@ export function recordWorkoutCompleted(log: CompletedWorkoutLog) {
     } else {
       streak = 1;
     }
-    localStorage.setItem(LAST_WORKOUT_KEY, today);
-    localStorage.setItem(STREAK_KEY, String(streak));
+    writeRaw(LAST_WORKOUT_KEY, today);
+    writeRaw(STREAK_KEY, String(streak));
   }
 
   const state = loadState();
@@ -153,30 +145,23 @@ export function recordWorkoutCompleted(log: CompletedWorkoutLog) {
   saveState(state);
 }
 
-/** Recompute protein-day challenge from nutrition log entries in localStorage. */
+/** Recompute protein-day challenge from stored nutrition log entries. */
 export function syncProteinChallengeFromNutrition() {
-  if (typeof window === 'undefined') return;
-  try {
-    const logged = JSON.parse(localStorage.getItem('mw_nutrition_log') || '[]') as {
-      protein?: number;
-      date?: string;
-    }[];
-    const today = new Date().toISOString().split('T')[0];
-    const byDate: Record<string, number> = {};
-    logged.forEach((entry) => {
-      const d = entry.date || today;
-      byDate[d] = (byDate[d] || 0) + (entry.protein || 0);
-    });
+  const logged = readJson<{ protein?: number; date?: string }[]>(STORAGE_KEYS.nutritionLog, []);
+  if (!Array.isArray(logged)) return;
+  const today = new Date().toISOString().split('T')[0];
+  const byDate: Record<string, number> = {};
+  logged.forEach((entry) => {
+    const d = entry.date || today;
+    byDate[d] = (byDate[d] || 0) + (entry.protein || 0);
+  });
 
-    const state = loadState();
-    state.proteinDays = Object.entries(byDate)
-      .filter(([, p]) => p >= PROTEIN_THRESHOLD)
-      .map(([d]) => d)
-      .filter((d) => d >= state.weekStart);
-    saveState(state);
-  } catch {
-    // ignore
-  }
+  const state = loadState();
+  state.proteinDays = Object.entries(byDate)
+    .filter(([, p]) => p >= PROTEIN_THRESHOLD)
+    .map(([d]) => d)
+    .filter((d) => d >= state.weekStart);
+  saveState(state);
 }
 
 export function getChallengeProgress(): Array<ChallengeDef & { current: number; percent: number }> {
@@ -191,14 +176,9 @@ export function getChallengeProgress(): Array<ChallengeDef & { current: number; 
     }).length;
 
   const learnWinsThisWeek = () => {
-    let n = pillarWinsThisWeek('learn');
-    try {
-      const completed = JSON.parse(localStorage.getItem('mw_learn_completed') || '[]') as string[];
-      n = Math.max(n, Math.min(completed.length, 4));
-    } catch {
-      // ignore
-    }
-    return n;
+    const n = pillarWinsThisWeek('learn');
+    const completed = readJson<string[]>(STORAGE_KEYS.learnCompleted, []);
+    return Math.max(n, Math.min(completed.length, 4));
   };
 
   const guideSectionsDone = () => loadGuidebookProgress().size;

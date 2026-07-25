@@ -1,9 +1,12 @@
 /**
  * Local-first body metrics (weight, body fat, circumferences).
- * Storage: localStorage mw_body_metrics. Included in JSON backup.
+ * Storage: device storage under mw_body_metrics. Included in JSON backup.
  */
 
-export const BODY_METRICS_KEY = 'mw_body_metrics';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { readJson, writeJson } from '@/lib/storage/safeStorage';
+
+export const BODY_METRICS_KEY = STORAGE_KEYS.bodyMetrics;
 const MAX_ENTRIES = 200;
 
 export type BodyMetricEntry = {
@@ -53,25 +56,18 @@ export function normalizeEntry(raw: BodyMetricEntry): BodyMetricEntry {
 }
 
 export function loadBodyMetrics(): BodyMetricEntry[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const all = JSON.parse(localStorage.getItem(BODY_METRICS_KEY) || '[]') as BodyMetricEntry[];
-    if (!Array.isArray(all)) return [];
-    return all
-      .filter((e) => e && typeof e.date === 'string')
-      .map(normalizeEntry)
-      .sort((a, b) => b.date.localeCompare(a.date));
-  } catch {
-    return [];
-  }
+  const all = readJson<BodyMetricEntry[]>(BODY_METRICS_KEY, []);
+  if (!Array.isArray(all)) return [];
+  return all
+    .filter((e) => e && typeof e.date === 'string')
+    .map(normalizeEntry)
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export function saveBodyMetric(entry: BodyMetricEntry): BodyMetricEntry {
   const normalized = normalizeEntry(entry);
-  if (typeof window === 'undefined') return normalized;
   const all = loadBodyMetrics().filter((e) => e.date !== normalized.date);
-  const next = [normalized, ...all].slice(0, MAX_ENTRIES);
-  localStorage.setItem(BODY_METRICS_KEY, JSON.stringify(next));
+  writeJson(BODY_METRICS_KEY, [normalized, ...all].slice(0, MAX_ENTRIES));
   return normalized;
 }
 
