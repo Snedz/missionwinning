@@ -24,14 +24,14 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
     <nav
       aria-label="Site"
       className={cn(
-        'sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80',
+        'sticky top-0 z-50 border-b-2 border-border bg-background',
         className
       )}
     >
       <div className="relative z-[1] mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:h-16">
         <Link href="/" className="flex items-center gap-2.5 min-w-0">
           <BrandMonogram className="h-8 w-8 text-sm sm:h-9 sm:w-9" />
-          <span className="truncate font-display text-lg font-bold uppercase tracking-wide sm:text-xl">
+          <span className="truncate font-display text-lg font-extrabold tracking-[-0.01em] sm:text-xl">
             Mission Winning
           </span>
         </Link>

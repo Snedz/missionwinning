@@ -25,7 +25,7 @@ export function PublicSiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border/40">
+    <footer className="border-t-2 border-border">
       <div className="mx-auto max-w-6xl px-5 py-12 lg:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2 lg:col-span-1">
@@ -55,8 +55,10 @@ export function PublicSiteFooter() {
           ))}
         </div>
       </div>
-      <div className="border-t border-border/40 px-5 py-4 text-center text-xs leading-relaxed text-muted-foreground/80">
-        {FOOTER_DISCLAIMER_DEFAULT}
+      <div className="border-t-2 border-border px-5 py-4">
+        <p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-muted-foreground/80">
+          {FOOTER_DISCLAIMER_DEFAULT}
+        </p>
       </div>
     </footer>
   );

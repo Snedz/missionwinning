@@ -51,7 +51,7 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
   const groups = footerGroups();
 
   return (
-    <footer className={cn('border-t border-border/40', className)}>
+    <footer className={cn('border-t-2 border-border', className)}>
       <div className="mx-auto max-w-6xl px-5 py-12 lg:py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2 lg:col-span-1">
@@ -79,8 +79,9 @@ export function MarketingFooter({ className }: MarketingFooterProps) {
           ))}
         </div>
       </div>
-      <div className="border-t border-border/40 px-5 py-4 text-center text-xs leading-relaxed text-muted-foreground/80">
+      <div className="border-t-2 border-border px-5 py-4"><p className="mx-auto max-w-6xl text-left text-xs leading-relaxed text-muted-foreground/80">
         {t(FOOTER_DISCLAIMER_KEY, { defaultValue: FOOTER_DISCLAIMER_DEFAULT })}
+        </p>
       </div>
     </footer>
   );
