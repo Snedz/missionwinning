@@ -1,19 +1,44 @@
 import type { MetadataRoute } from 'next';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
-import { EXERCISES } from '@/data/exercises';
+import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
 import { COMPARE_STORIES } from '@/data/compareStories';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { EQUIPMENT_HUBS, muscleHubSlug } from '@/lib/exerciseSeo';
 import { isPathEnabled } from '@/lib/surface';
+import { isFreeBeta } from '@/lib/freeBeta';
+import { isPrivateGatePublicPath } from '@/lib/publicRoutes';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+/**
+ * Whether the private beta gate is active for this build. Mirrors
+ * `isPrivateModeEnabled()` in `src/lib/privateGate.ts`, which is not imported here
+ * because it pulls in `@supabase/supabase-js`.
+ */
+function privateGateOn(): boolean {
+  const flag = process.env.PRIVATE_MODE;
+  if (flag === 'false' || flag === '0') return false;
+  if (flag === 'true' || flag === '1') return true;
+  return process.env.NODE_ENV === 'production';
+}
+
+/**
+ * Awaited on purpose: `EXERCISES` is the base catalog until
+ * `ensureFullExerciseCatalog()` splices the rest in. This function used to get the full
+ * count by luck — a build worker that had already rendered `/exercises` happened to have
+ * loaded it — which is how the sitemap came to advertise 219 exercise URLs while only
+ * 126 were prerendered. Never read the catalog without awaiting it.
+ */
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  await ensureFullExerciseCatalog();
+  const gateOn = privateGateOn();
   const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.missionwinning.com';
   const routes = [
     '',
     '/about',
     '/vision',
-    '/bundle',
+    // `/bundle` is deliberately absent during the free beta: it 307s to `/`, and a
+    // sitemap should only carry URLs that answer 200. Re-add it with the paid surfaces.
+    ...(isFreeBeta() ? [] : ['/bundle']),
     '/compare',
     '/press',
     '/experience',
@@ -29,7 +54,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const now = new Date();
   // A parked surface must not be advertised to crawlers — see src/lib/surface.ts.
-  const staticEntries = routes.filter((path) => isPathEnabled(path || '/')).map((path) => ({
+  // Nor must a path the private gate will bounce: `/experience` sat in this list while
+  // absent from PRIVATE_GATE_PUBLIC_PATHS, so every crawler hitting the advertised URL
+  // got redirected to /private. Checking the gate here keeps the two in step
+  // automatically instead of relying on someone updating both lists.
+  const staticEntries = routes
+    .filter((path) => isPathEnabled(path || '/'))
+    .filter((path) => !gateOn || isPrivateGatePublicPath(path || '/'))
+    .map((path) => ({
     url: `${base}${path}`,
     lastModified: now,
     changeFrequency: path === '' ? ('weekly' as const) : ('monthly' as const),

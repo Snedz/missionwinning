@@ -8,6 +8,7 @@ import {
   type EquipmentHubSlug,
 } from '@/lib/exerciseSeo';
 import { ExerciseEquipmentHubPage } from '@/page-components/ExerciseEquipmentHubPage';
+import { ensureFullExerciseCatalog } from '@/data/exercises';
 
 export const dynamic = 'force-static';
 
@@ -32,6 +33,8 @@ export default async function EquipmentHubRoute({ params }: Props) {
   const { slug } = await params;
   const hub = equipmentHubFromSlug(slug);
   if (!hub) notFound();
+  // See the muscle hub: the base catalog under-lists every hub without this.
+  await ensureFullExerciseCatalog();
   const exercises = exercisesForEquipment(hub.slug as EquipmentHubSlug);
   return <ExerciseEquipmentHubPage equipmentLabel={hub.label} exercises={exercises} />;
 }
