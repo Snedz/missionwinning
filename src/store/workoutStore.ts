@@ -16,16 +16,16 @@ import type {
 } from "@/types";
 import { countsTowardVolume } from "@/lib/workout/setKind";
 import { advanceAfterLog } from "@/lib/workout/superset";
-import { getUserWorkoutHistory, getUser } from "@/lib/supabase";
+import { getUserWorkoutHistory, getUserWorkoutsUpdatedSince, getUser } from "@/lib/supabase";
 import { recordWorkoutCompleted } from "@/lib/challenges";
 import { scheduleLeaderboardPush } from "@/lib/leaderboardSync";
-import { mapCloudToLocal, mergeWorkoutHistories } from "@/lib/workout/workoutMerge";
+import { mapCloudToLocal, mergeWorkoutHistoriesDetailed } from "@/lib/workout/workoutMerge";
 import { track } from "@/lib/analytics";
 import { setActiveWorkoutFlag } from "@/lib/workout/activeWorkoutPulse";
 import { enqueueWorkoutUpsert } from "@/lib/sync/workoutSync";
 import { flush as flushOutbox } from "@/lib/sync/outbox";
 import { newClientId } from "@/lib/workout/clientId";
-import { readRaw } from "@/lib/storage/safeStorage";
+import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 
 const DEFAULT_REST_SECONDS = 30;
@@ -520,11 +520,36 @@ export const useWorkoutStore = create<WorkoutState>()(
       loadFromCloud: async () => {
         const user = await getUser();
         if (!user) return;
-        const cloudLogs = await getUserWorkoutHistory(100);
+
+        // Two reads, because they see different things. The completed_at read is the
+        // backfill: it finds history this device has never seen. The updated_at cursor
+        // is the only way an *edit* or a tombstone arrives — a completed_at ordering
+        // cannot surface a row whose session date is old but whose contents changed,
+        // which is why edits and deletes never used to propagate between devices.
+        const since = readRaw(STORAGE_KEYS.cloudPullCursor);
+        const [recent, changed] = await Promise.all([
+          getUserWorkoutHistory(100),
+          since ? getUserWorkoutsUpdatedSince(since) : Promise.resolve([]),
+        ]);
+
+        const cloudLogs = [...recent, ...changed];
         const mapped = mapCloudToLocal(cloudLogs);
-        set((s) => ({
-          workoutHistory: mergeWorkoutHistories(s.workoutHistory, mapped),
-        }));
+
+        const { logs, truncated } = mergeWorkoutHistoriesDetailed(get().workoutHistory, mapped);
+        set({ workoutHistory: logs });
+
+        // Advance the cursor to the newest updated_at actually seen, so the next pull
+        // is cheap. Only after the merge succeeded — a thrown merge must not skip rows.
+        const newest = cloudLogs.reduce<string | null>((max, row) => {
+          const u = row.updated_at;
+          return u && (!max || u > max) ? u : max;
+        }, null);
+        if (newest) writeRaw(STORAGE_KEYS.cloudPullCursor, newest);
+
+        // HISTORY_CAP dropping sessions used to be invisible. Say so once per load.
+        if (truncated > 0) {
+          track('history_truncated', { dropped: truncated });
+        }
       },
 
       syncCurrentHistoryToCloud: async () => {

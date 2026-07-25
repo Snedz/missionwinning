@@ -25,6 +25,7 @@ test('workoutStore', async (t) => {
   const { useWorkoutStore } = await import('@/store/workoutStore');
   const outbox = await import('@/lib/sync/outbox');
   const { STORAGE_KEYS } = await import('@/lib/storage/keys');
+  const { mergeWorkoutHistoriesDetailed: mergeDetailed } = await import('@/lib/workout/workoutMerge');
 
   function reset() {
     useWorkoutStore.setState({
@@ -161,6 +162,45 @@ test('workoutStore', async (t) => {
     assert.equal(queued[0].payload.setCount, 2);
     assert.equal(queued[0].payload.exercises[0].sets.length, 2);
     assert.equal(queued[0].payload.totalVolume, log?.totalVolume);
+  });
+
+  // The cursor is why cross-device edits work at all: a completed_at-ordered read
+  // cannot surface a row whose session date is old but whose contents changed, so
+  // before this the second device never saw an edit or a tombstone.
+  await t.test('an edited cloud log replaces the local copy instead of duplicating', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    useWorkoutStore.getState().logSet(0, 0, 10, 50);
+    const local = useWorkoutStore.getState().completeActiveWorkout();
+    assert.ok(local?.clientId);
+
+    // Same session, edited on another device: higher revision, newer updatedAt.
+    const edited = {
+      ...local!,
+      id: `cloud-abc`,
+      revision: 2,
+      updatedAt: new Date(Date.now() + 60_000).toISOString(),
+      workoutName: 'Push (edited elsewhere)',
+    };
+    const { logs } = mergeDetailed(useWorkoutStore.getState().workoutHistory, [edited]);
+    assert.equal(logs.length, 1, 'an edit must not create a second row');
+    assert.equal(logs[0].workoutName, 'Push (edited elsewhere)');
+  });
+
+  await t.test('a tombstone from another device removes the session locally', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push', template());
+    useWorkoutStore.getState().logSet(0, 0, 10, 50);
+    const local = useWorkoutStore.getState().completeActiveWorkout();
+
+    const deleted = {
+      ...local!,
+      id: 'cloud-abc',
+      revision: 2,
+      deletedAt: new Date().toISOString(),
+    };
+    const { logs } = mergeDetailed(useWorkoutStore.getState().workoutHistory, [deleted]);
+    assert.equal(logs.length, 0);
   });
 
   await t.test('cancelling clears the session and the timers', () => {

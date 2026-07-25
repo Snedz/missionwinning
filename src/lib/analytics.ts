@@ -62,6 +62,7 @@ type AnalyticsEvent =
   | 'fuel_plan_regenerated'
   | 'backup_exported'
   | 'backup_restored'
+  | 'history_truncated'
   | 'sync_outbox_drained'
   | 'sync_outbox_stuck'
   | 'storage_write_failed'
