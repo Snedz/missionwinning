@@ -42,7 +42,8 @@ Use this table when filling Apple Privacy Nutrition Labels / Google Play Data sa
 
 ## 3. Founder checklist
 
-- [ ] Register designated DMCA agent at [copyright.gov DMCA directory](https://www.copyright.gov/dmca-directory/) (~$6); put **exact** name, email, and postal address on `/dmca` (replace interim placeholder)
+- [ ] **Business postal address — blocks all list email.** CAN-SPAM §7704(a)(5) requires a valid physical postal address in every commercial email footer. Confirm with **Bizee** (Texas registered agent) whether their RA address may be published as the business mailing address — RA addresses often accept only service of process and state correspondence, and the terms may forbid advertising it. If not permitted, a USPS PO box or a CMRA private mailbox both satisfy the rule. Then set `MAIL_POSTAL_ADDRESS` in Vercel ([ENV.md](ENV.md)) — until it is set, waitlist confirmations drop to text-only and the launch broadcast + beta-invite senders refuse to run by design. **Same address serves the DMCA row below** — decide once.
+- [ ] Register designated DMCA agent at [copyright.gov DMCA directory](https://www.copyright.gov/dmca-directory/) (~$6); put **exact** name, email, and postal address on `/dmca` (replace interim placeholder — same address as the CAN-SPAM row above)
 - [ ] Update support mailbox auto-reply to mention DMCA notices → `/dmca` + agent email
 - [ ] Counsel review of Terms arbitration + class waiver (AAA Consumer Rules, governing law = Mission Winning LLC formation state)
 - [ ] Confirm formation state in [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) and keep Terms “state of formation” language accurate
