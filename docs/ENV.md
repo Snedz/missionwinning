@@ -139,7 +139,7 @@ If Profile shows **`Unsupported provider: provider is not enabled`** / `validati
 
 1. [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials → **OAuth 2.0 Client IDs** → create (or open) a **Web application** client.
 2. Authorized redirect URI: `https://YOUR-PROJECT.supabase.co/auth/v1/callback`  
-   (for this project: `https://tnzauplicgfrozvnowqp.supabase.co/auth/v1/callback`)
+   (callback path: `https://YOUR-PROJECT.supabase.co/auth/v1/callback`)
 3. In Supabase → Authentication → Providers → **Google**:
    - **Client IDs** — paste only the Client ID. It must look like a domain:
      ```
@@ -234,9 +234,9 @@ In a **private/incognito** browser window, visit https://www.missionwinning.com 
 
 ## Supabase project
 
-Your project ref from the saved config: `tnzauplicgfrozvnowqp`
+Your project ref from the saved config: `YOUR_SUPABASE_REF`
 
-- URL: `https://tnzauplicgfrozvnowqp.supabase.co`
+- URL: `https://YOUR-PROJECT.supabase.co`
 - **SQL:** Run `supabase/migrations/20250629_complete_base_schema.sql` in SQL Editor (fresh project). If you already have tables, individual migrations in `supabase/migrations/` are safe to re-run.
 - Enable Email auth → Magic Link
 - Enable **Google** OAuth (see above). Leave **Apple / Azure / Facebook disabled** in Supabase (and app flags off) until each IdP’s credentials are ready.

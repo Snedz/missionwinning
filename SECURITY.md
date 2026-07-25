@@ -43,6 +43,12 @@ For confirmed issues affecting users, we will coordinate a fix and disclosure wi
 
 ---
 
+## Secrets & open source
+
+Operator keys, personal emails, and infra IDs must not enter git. See **[docs/SECRETS.md](docs/SECRETS.md)** (vaults, `npm run secrets:scan`, rotate-on-leak, public-flip checklist) and [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md).
+
+---
+
 ## Hardening already in place (high level)
 
 See [docs/PROTECTION.md](docs/PROTECTION.md), [docs/OWASP_AUDIT.md](docs/OWASP_AUDIT.md), and [docs/SECURITY_AUDIT_TRIAGE.md](docs/SECURITY_AUDIT_TRIAGE.md):

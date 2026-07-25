@@ -48,7 +48,7 @@
    - `DEMO_PREMIUM=false`
    - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase → Project Settings → API)
    - `SUPABASE_SERVICE_ROLE_KEY` (same page — the **service_role** key; never expose in client)
-   - `BETA_ADMIN_EMAILS=snowdenzeng@gmail.com`
+   - `BETA_ADMIN_EMAILS=founder@example.com`
    - `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated `openssl rand -base64 32` each — do not reuse gate secret)
    - `RESEND_API_KEY` + `RESEND_FROM` (consent, nudges, welcome, weekly digest)
    - `CRON_SECRET` (Vercel cron: daily nudges + Monday founder digest)
@@ -172,7 +172,7 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 See [PHANTOM_USDC_CHECKOUT.md](PHANTOM_USDC_CHECKOUT.md). Strategy lens (crypto = rail, not product): [CRYPTO_RAILS_THESIS.md](CRYPTO_RAILS_THESIS.md). Do **not** market crypto until one end-to-end Lifetime payment is verified.
 
 - [x] `crypto_payment_intents` on prod · Production `NEXT_PUBLIC_CRYPTO_CHECKOUT=true` + treasury + RPC · API smoke 401 without session
-- [ ] Save treasury secret offline (`/tmp/mw_solana_treasury_secret.b58`) and delete the temp file; fund USDC ATA for `57CEga7okiNCVAomW254KUCtj5GquRu8Z2Huj27bdPjM`
+- [ ] Save treasury secret offline (never commit; delete any temp keystore file after import); fund USDC ATA for `YOUR_SOLANA_TREASURY_PUBKEY`
 - [ ] Signed-in `/bundle` Lifetime → **Pay with Phantom** → confirm `enrollments.provider = phantom`
 - [ ] Optional: dedicated RPC (Helius/QuickNode); Phantom Portal App ID for social/deeplink
 - [ ] Parallel (when live KYB ready): Dashboard → Payment methods → **Stablecoins and Crypto** for Lifetime Sessions only — [STRIPE_PREMIUM_SETUP.md](STRIPE_PREMIUM_SETUP.md)

@@ -31,6 +31,7 @@
 |------|---------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System design, layers, state |
 | [OPEN_SOURCE.md](OPEN_SOURCE.md) | AGPL posture · public flip · what stays secret |
+| [SECRETS.md](SECRETS.md) | Secrets program · vaults · gitleaks · rotate-on-leak |
 | [FREE_BETA.md](FREE_BETA.md) | Free-first beta mute (LLC/EIN window) — hide all paid UI |
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |

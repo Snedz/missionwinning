@@ -22,6 +22,7 @@
     "launch-verify": "node scripts/launch-verify.mjs",
     "verify-premium": "node scripts/verify-stripe-enrollment.mjs --check-gates",
     "security-audit": "npm audit --audit-level=high",
+    "secrets:scan": "node scripts/secrets-scan.mjs",
     "compliance:status": "tsx scripts/compliance-status.ts",
     "e2e": "node scripts/e2e-smoke.mjs",
     "e2e:critical": "playwright test --config=playwright.config.ts --grep-invert \"@a11y|@visual\"",

@@ -1,0 +1,48 @@
+# Gitleaks config — Mission Winning
+# Docs: https://github.com/gitleaks/gitleaks
+# Allow intentional placeholders, local env files, build artifacts, and i18n key false positives.
+
+title = "Mission Winning"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Local env, build caches, placeholders, brand mail, i18n/storage key false positives"
+paths = [
+  '''(^|/)\.gitleaks\.toml$''',
+  '''(^|/)package-lock\.json$''',
+  '''(^|/)\.env$''',
+  '''(^|/)\.env\.local$''',
+  '''(^|/)\.env\..*\.local$''',
+  '''(^|/)\.env\.local\.save$''',
+  '''(^|/)\.env\.vercel\.production$''',
+  '''(^|/)\.next/''',
+  '''(^|/)node_modules/''',
+  '''(^|/)\.claude/''',
+  '''(^|/)apps/android/\.gradle/''',
+  '''(^|/)apps/android/.*/build/''',
+  '''(^|/)coverage/''',
+  '''(^|/)test-results/''',
+  '''(^|/)playwright-report/''',
+]
+regexes = [
+  '''sk_live_\.\.\.''',
+  '''sk_test_\.\.\.''',
+  '''price_\.\.\.''',
+  '''whsec_\.\.\.''',
+  '''xai-\.\.\.''',
+  '''YOUR-PROJECT''',
+  '''YOUR_TEAM_ID''',
+  '''YOUR_PROJECT_ID''',
+  '''YOUR_SUPABASE_REF''',
+  '''YOUR_SOLANA_TREASURY_PUBKEY''',
+  '''founder@example\.com''',
+  '''support@missionwinning\.com''',
+  '''hello@missionwinning\.com''',
+  '''https://github\.com/Snedz/missionwinning''',
+  '''mw_[a-z0-9_]+''',
+  '''landingJourneyPhase[0-9]Desc''',
+  '''landingJourneyPhase[0-9]Name''',
+  '''magazinePreface_[0-9]''',
+]

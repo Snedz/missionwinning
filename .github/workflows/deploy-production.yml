@@ -14,8 +14,8 @@
 #
 # Required GitHub Actions secrets:
 #   VERCEL_TOKEN — https://vercel.com/account/tokens (or CLI auth token)
-#   VERCEL_ORG_ID — team_Akwar4ZvbahQp5HR911ebrlW
-#   VERCEL_PROJECT_ID — prj_yqoUE2ENzRRdeiMdqkqyC49czxxp
+#   VERCEL_ORG_ID — GitHub secret (team_…); never commit the real value
+#   VERCEL_PROJECT_ID — GitHub secret (prj_…); never commit the real value
 #
 # Builds on Vercel (not locally) so Production Sensitive env vars are available.
 name: Deploy production

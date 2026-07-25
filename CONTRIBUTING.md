@@ -6,7 +6,7 @@ Thank you for helping build a healthier world. This guide is for developers and 
 
 **Code of conduct:** [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Open-source overview: [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md).
 
-**Acceptable use:** do not contribute features whose primary purpose violates [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md) (illegal deepfakes, CSAM, fraud, etc.). Security issues → [SECURITY.md](SECURITY.md).
+**Acceptable use:** do not contribute features whose primary purpose violates [docs/legal/ACCEPTABLE_USE.md](docs/legal/ACCEPTABLE_USE.md) (illegal deepfakes, CSAM, fraud, etc.). Security issues → [SECURITY.md](SECURITY.md). Secrets / keys → [docs/SECRETS.md](docs/SECRETS.md) (`npm run secrets:scan` before PRs that touch env docs).
 
 ---
 

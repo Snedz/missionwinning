@@ -23,8 +23,8 @@ Required GitHub Actions secrets:
 | Secret | Value |
 |--------|--------|
 | `VERCEL_TOKEN` | Vercel CLI / account token |
-| `VERCEL_ORG_ID` | `team_Akwar4ZvbahQp5HR911ebrlW` |
-| `VERCEL_PROJECT_ID` | `prj_yqoUE2ENzRRdeiMdqkqyC49czxxp` |
+| `VERCEL_ORG_ID` | Vercel team / org ID (GitHub secret only — do not paste real IDs into docs) |
+| `VERCEL_PROJECT_ID` | Vercel project ID (GitHub secret only — do not paste real IDs into docs) |
 | `AIKIDO_SECRET_KEY` | Aikido CI (optional) — GitHub Actions only; see [docs/AIKIDO.md](AIKIDO.md) |
 
 ### 1.1 Deploy Hook → GitHub webhook (one-time, founder)

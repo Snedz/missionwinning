@@ -8,14 +8,14 @@ import {
 
 describe('authRedirect', () => {
   it('detects vercel.app hosts', () => {
-    assert.equal(isEphemeralVercelHost('missionwinning-snowdens-projects-668ee871.vercel.app'), true);
+    assert.equal(isEphemeralVercelHost('missionwinning-git-preview-example.vercel.app'), true);
     assert.equal(isEphemeralVercelHost('www.missionwinning.com'), false);
   });
 
   it('never returns vercel.app as OAuth origin', () => {
     const origin = getAuthRedirectOrigin(
-      'https://missionwinning-snowdens-projects-668ee871.vercel.app',
-      'missionwinning-snowdens-projects-668ee871.vercel.app'
+      'https://missionwinning-git-preview-example.vercel.app',
+      'missionwinning-git-preview-example.vercel.app'
     );
     assert.equal(origin, 'https://www.missionwinning.com');
   });
@@ -29,7 +29,7 @@ describe('authRedirect', () => {
 
   it('bounces auth callback from vercel.app to www', () => {
     const dest = shouldBounceAuthCallbackToCanonical(
-      'missionwinning-snowdens-projects-668ee871.vercel.app',
+      'missionwinning-git-preview-example.vercel.app',
       'https://www.missionwinning.com'
     );
     assert.equal(dest, 'https://www.missionwinning.com');

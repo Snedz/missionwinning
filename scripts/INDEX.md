@@ -32,6 +32,7 @@
 | `build-guidebook-pdf.ts` | `npm run build-guidebook-pdf` | Generate `public/magazine/beyond-the-basics[.lang].pdf` from `/guide/print?lang=` (app must be serving). Set `GUIDEBOOK_PDF_AUTO_SERVER=1` to spawn `next start`. Set `GUIDEBOOK_PDF_LANGS=all` (or `en,es,fr`) for localized PDFs. Asserts ~12–28 pages. |
 | `optimize-media-inbox.mjs` | `npm run media:optimize-inbox` | Google Flow / Imagine frames in `media/inbox/` → WebP under `public/learn/` or `public/social/` ([MEDIA_SYSTEM.md](../docs/MEDIA_SYSTEM.md)) |
 | `sync-vercel-env.mjs` | `npm run sync-vercel-env` | Sync env to Vercel |
+| `secrets-scan.mjs` | `npm run secrets:scan` | Gitleaks on working tree ([SECRETS.md](../docs/SECRETS.md)) |
 
 ## Related (not here)
 

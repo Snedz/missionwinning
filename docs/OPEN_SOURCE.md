@@ -29,19 +29,22 @@ Never commit these; they are not part of the public source offer:
 - GitHub Actions secrets (`VERCEL_TOKEN`, deploy hooks, smoke secrets)
 - Production databases and user data
 - Aikido / third-party security dashboard credentials
+- Personal emails, real infra IDs, treasury private keys (see scrub rules)
 
-See [ENV.md](ENV.md) and [PROTECTION.md](PROTECTION.md).
+**Program:** [SECRETS.md](SECRETS.md) — vaults, `npm run secrets:scan`, rotate-on-leak, pre-public checklist.  
+Also: [ENV.md](ENV.md), [PROTECTION.md](PROTECTION.md).
 
 ---
 
 ## Public GitHub flip (founder-only)
 
-Agents never change repository visibility.
+Agents never change repository visibility. Full checklist: [SECRETS.md § Pre-public flip](SECRETS.md).
 
-1. Confirm no secrets in git history for files about to be public (`.env*`, tokens).
+1. `npm run secrets:scan` clean; optional history `gitleaks detect --source . -v`.
 2. Note that accelerator / launch docs under `docs/applications/` become world-readable with the repo.
-3. GitHub → Settings → **Change repository visibility → Public**.
-4. Optional: add topics (`agpl-3.0`, `pwa`, `fitness`, `nextjs`) and verify the README license badge.
+3. Enable GitHub **Secret scanning** + **Push protection**.
+4. GitHub → Settings → **Change repository visibility → Public**.
+5. Optional: add topics (`agpl-3.0`, `pwa`, `fitness`, `nextjs`) and verify the README license badge.
 
 `PRIVATE_MODE` (site gate) is unrelated to GitHub visibility — do not flip it as part of going open source.
 

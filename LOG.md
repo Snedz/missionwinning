@@ -6,6 +6,12 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Secrets program + pre-public scrub
+
+- **Program:** [docs/SECRETS.md](docs/SECRETS.md) — vaults (Vercel + GH Actions), never-commit list, rotate-on-leak, Public flip checklist. `npm run secrets:scan` + `.gitleaks.toml` + PR `gitleaks.yml`.
+- **Scrub:** personal gmail, Vercel org/project IDs, Supabase ref, treasury pubkey/temp path, personal `*.vercel.app` from docs/workflows/tests (placeholders only).
+- Founder still owns: enable secret scanning + push protection, then GitHub **Public** — no `PRIVATE_MODE` flip.
+
 ## 2026-07-25 — The public site is one site now, and 94 pages stopped 404ing (`.129`)
 
 A UI/UX pass on the public site turned up a launch blocker first, so that went first.
