@@ -189,7 +189,7 @@ export function BundlePage() {
         {/* One pillar story — prose only, no tile grid */}
         <section className="space-y-2">
           <p className="eyebrow">{t('bundleStoryEyebrow', { defaultValue: 'One path' })}</p>
-          <h2 className="display-section text-xl md:text-2xl">
+          <h2 className="display-section">
             {t('bundleStoryTitle', { defaultValue: 'Mission Coach depth. Same free logger.' })}
           </h2>
           <p className="max-w-xl text-sm text-muted-foreground">

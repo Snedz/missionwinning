@@ -53,7 +53,7 @@ Hybrid rule: one modest base lift + targeted promotions — no mass Card rewrite
 
 **Cross-platform drift:** run `npm run check-token-sync` before ship — compares web `:root` HSL (this file) to Android [`MwColors.kt`](../apps/android/core/designsystem/src/main/java/com/missionwinning/core/designsystem/MwColors.kt) / [`MwMotion.kt`](../apps/android/core/designsystem/src/main/java/com/missionwinning/core/designsystem/MwMotion.kt). Exit 0 = OK. See [DESIGN_ORCHESTRATION.md](DESIGN_ORCHESTRATION.md) token sync checklist.
 
-Utility classes: `glass-nav`, `content-card`, `card-elevated`, `card-glow-emerald`, `card-glow-brass`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `display-mega`, `section-index`, `briefing-rule`, `pressable-card`, `ring-draw-in`, `score-tick`, `section-seam`.
+Utility classes: `content-card`, `card-elevated`, `card-glow-emerald`, `card-glow-brass`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `display-mega`, `section-index`, `briefing-rule`, `pressable-card`, `ring-draw-in`, `score-tick`, `section-seam`.
 
 ### Marketing elevation (landing / bundle / SEO)
 
@@ -88,11 +88,23 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 
 | Role | Class / font |
 |------|----------------|
-| Hero | `.display-hero` — Barlow Condensed |
-| Section / page title | `.display-section` |
+| Hero — `/` only | `.display-hero` — Barlow Condensed, `clamp(2.75rem, 8vw, 5.5rem)` |
+| Section title **and template page title** | `.display-section`, `clamp(1.9rem, 4.5vw, 3rem)` |
 | Eyebrow / telemetry | `.eyebrow` — IBM Plex Mono |
 | Body | Inter (`font-sans`) |
 | Numbers | `tabular-nums` always on weights, reps, timers, scores |
+
+**Never put a `text-*` utility on a display class.** The display classes live in `@layer
+components` and Tailwind utilities in `@layer utilities`, which comes later — so
+`className="display-section text-2xl"` silently discards the `clamp()` at equal
+specificity. Ten call sites had done this, which is why `.display-section`'s real size
+rendered on exactly one page. `npm run check-display-type` fails the gate on it. If you
+need the face at a custom size, use `font-display` directly.
+
+`.display-hero` is reserved for `/`. A template page titled with an exercise name uses
+`.display-section` — the hero tier's 2.75rem floor wraps "Close-Grip Bench Press" to three
+lines at 390px. Barlow Condensed loads **weight 700 only**, so display classes use
+`font-bold`; `font-semibold` gets synthesized.
 
 ---
 
@@ -109,9 +121,11 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 | **InfoPageShell** | info/marketing in app chrome | About, legal, etc. |
 | **MarketingNav / Footer** | `src/components/marketing/` | Landing + Bundle chrome |
 | **Experience (`/experience`)** | `src/components/experience/` | Frontier dossier — route-scoped CSS (`.xp-*`), `gpuTier` WebGPU→WebGL2→static, hero aurora + Win Score particles, no global CSS pollution |
-| **PublicSeoHeader / Footer** | `src/components/public/` | Exercises, compare, paths |
+| **PublicPageShell** | `src/components/public/PublicPageShell.tsx` | **All SEO surfaces** — exercises, hubs, compare, paths. Server Component; briefing type; `maxWidth` applies to header *and* body so they cannot drift. Replaced `PublicSeoHeader`/`PublicSeoFooter` in `.129` |
+| **PublicNavMenu** | `src/components/public/PublicNavMenu.tsx` | Mobile navigation (Radix Dialog — focus trap/Escape/scroll lock for free). Used by `MarketingNav` and `PublicPageShell` |
+| **PublicSiteFooter** | `src/components/public/PublicSiteFooter.tsx` | Server-side twin of `MarketingFooter`; both read `marketing/footerLinks.ts` |
 | **GuideApexShell** | `src/components/learn/GuideApexShell.tsx` | Public `/guide` magazine reader — Contents rail + locale |
-| **Reveal / StatBand** | `src/components/marketing/` | Landing motion + telemetry |
+| **Reveal** | `src/components/marketing/Reveal.tsx` | Landing scroll-reveal (`StatBand` was listed here and had zero call sites) |
 | **EmptyState** | dashed invite + CTA | First-week empties |
 | **primary-action** | CSS class | Journey / conversion CTAs |
 
@@ -121,6 +135,7 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 
 | Surface type | Shell |
 |--------------|--------|
+| **Public SEO (exercises · hubs · compare · paths)** | **`PublicPageShell`** — English chrome by design: every SEO route is `force-static` and `app/layout.tsx` hardcodes `lang="en"`, so there is exactly one build-time language. Real translation here means `/es/exercises/[id]` + hreflang, which is Horizon 3 i18n depth. Do not "fix" this by making these pages client components — that ships the exercise catalog to the browser and still indexes English. |
 | In-app pillars | `PillarPageShell` |
 | Today `/log` | Custom command layout (not PillarPageShell) |
 | Landing, Welcome, Exercises | Standalone marketing chrome |
@@ -136,6 +151,7 @@ Rules: decorative (`alt=""`, `aria-hidden`), explicit width/height, lazy except 
 - Duration tiers: **150ms** press/hover feedback · **200–250ms** state changes (toggles, tab switches) · **300–450ms** entrances/reveals. One easing family: `ease-out` for entrances, `ease-in-out` for state changes. No spring/bounce in-app (marketing `/experience` excepted).
 - `score-tick` on ring center values; `ring-draw-in` on ring mount
 - Press: `.pressable-card` / `primary-action` active scale — every tappable surface gives press feedback
+- **Focus:** one global `:focus-visible` in `src/index.css` `@layer base` — 2px solid `--ring`, offset 2. Do **not** add per-component `focus-visible:ring-*`; that renders two indicators. `.primary-action` overrides to a white outline because its own bloom is emerald. axe does not test focus visibility, so `tests/e2e/a11y.spec.ts` tabs and asserts `outline-style: solid` at ≥2px
 - **No layout shift on data load**: reserve space with skeletons/placeholders; numbers use `tabular-nums` so ticks don't jitter
 - One entrance stagger per screen (PillarPageShell owns it); elements never animate twice on the same mount
 - Android mirrors these values (`core/designsystem` enter-fade + reduce-motion); keep parity when tuning

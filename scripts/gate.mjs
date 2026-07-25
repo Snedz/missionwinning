@@ -76,6 +76,9 @@ run('Lint', 'npm', ['run', 'lint']);
 run('Typecheck', 'npm', ['run', 'typecheck']);
 run('Unit tests', 'npm', ['test']);
 run('i18n parity', 'npm', ['run', 'i18n:parity']);
+// Both of these existed as npm scripts and neither was in the gate, so nothing ran them.
+run('Display type', 'npm', ['run', 'check-display-type']);
+run('Token sync (web ↔ Android)', 'npm', ['run', 'check-token-sync']);
 run('Production build (PRIVATE_MODE=false)', 'npm', ['run', 'build'], BUILD_ENV);
 
 if (!hasChromium()) {

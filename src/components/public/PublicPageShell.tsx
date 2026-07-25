@@ -151,7 +151,10 @@ export function PublicPageShell({
         </div>
       </header>
 
-      <main id="main" className={`mx-auto ${width} space-y-10 px-5 py-16 lg:py-20`}>
+      {/* Less top padding than bottom: the header already contributes `pb-12` and the
+          `.section-seam` hairline does the separating, so matching `py-16` on both sides
+          left ~110px of dead space above the first section on a 390px screen. */}
+      <main id="main" className={`mx-auto ${width} space-y-10 px-5 pb-16 pt-10 lg:pb-20 lg:pt-12`}>
         {children}
       </main>
 

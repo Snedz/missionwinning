@@ -32,7 +32,7 @@ export function GuidePublicIndexPage() {
           <div className="briefing-rule">
             <span className="eyebrow">{meta.prefaceEyebrow}</span>
           </div>
-          <h2 className="display-section text-2xl md:text-3xl">{meta.prefaceHeading}</h2>
+          <h2 className="display-section">{meta.prefaceHeading}</h2>
           {meta.preface.map((p) => (
             <p key={p.slice(0, 40)} className="text-sm leading-relaxed text-foreground/90">
               {p}
@@ -44,7 +44,7 @@ export function GuidePublicIndexPage() {
           <div className="briefing-rule">
             <span className="eyebrow">{meta.howToEyebrow}</span>
           </div>
-          <h2 className="display-section text-2xl md:text-3xl">{meta.howToHeading}</h2>
+          <h2 className="display-section">{meta.howToHeading}</h2>
           <ol className="list-decimal space-y-2 pl-5 text-sm leading-relaxed text-foreground/90">
             {meta.howToUse.map((item) => (
               <li key={item.slice(0, 32)}>{item}</li>

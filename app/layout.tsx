@@ -63,7 +63,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0a0d12',
+  // Matches `--background` (hsl(222 24% 5%)) exactly. It was #0a0d12, two points off, so
+  // the browser chrome seamed against the page on mobile.
+  themeColor: '#0a0c10',
   width: 'device-width',
   initialScale: 1,
 };

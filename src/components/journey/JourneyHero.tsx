@@ -80,7 +80,7 @@ export function JourneyHero({
             ? t('justGoEyebrow', { defaultValue: 'Ready to train' })
             : t('yourNextStep', { defaultValue: 'Your next step' })}
         </p>
-        <h3 className="display-section text-[1.35rem] md:text-[1.6rem] normal-case tracking-normal">
+        <h3 className="font-display text-[1.35rem] font-bold leading-tight md:text-[1.6rem]">
           {useJustGo
             ? t('justGoTitle', {
                 focus: justGoMeta!.focusLabel,

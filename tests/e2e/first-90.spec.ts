@@ -81,6 +81,100 @@ test.describe('First 90 seconds @gate', () => {
     await expect(page.locator('.primary-action')).toHaveCount(2);
   });
 
+  /**
+   * One page per SEO template. These ~250 URLs are most of the site, and until now the
+   * assertion above covered `/` alone — which is exactly how `.126` fixed the Inter H1 on
+   * one page and left it on 250.
+   */
+  const SEO_TEMPLATES = [
+    '/exercises',
+    '/exercises/push-ups',
+    '/exercises/muscle/chest',
+    '/exercises/equipment/bodyweight',
+    '/compare',
+    '/compare/forge',
+    '/paths',
+  ] as const;
+
+  for (const path of SEO_TEMPLATES) {
+    test(`${path} is on the design system and reachable @gate`, async ({ page }) => {
+      await page.goto(path, { waitUntil: 'domcontentloaded' });
+
+      const h1 = page.locator('h1').first();
+      await expect(h1).toBeVisible();
+
+      const font = await h1.evaluate((el) => getComputedStyle(el).fontFamily);
+      expect(font, `${path} H1 font-family was ${font}`).toContain('Barlow Condensed');
+
+      // Geometry, not class names: the shared header hardcoded `max-w-4xl` while most
+      // bodies were `max-w-3xl`, so the headline sat outdented from its own body copy.
+      // Asserting the edges match survives refactors that a toHaveClass check would not.
+      // Compared against main's *content* edge — both containers carry `px-5`, so the
+      // border boxes coincide while the text sits one padding in.
+      const [h1Left, mainTextLeft] = await Promise.all([
+        h1.evaluate((el) => Math.round(el.getBoundingClientRect().left)),
+        page.locator('main').first().evaluate((el) => {
+          const r = el.getBoundingClientRect();
+          return Math.round(r.left + parseFloat(getComputedStyle(el).paddingLeft));
+        }),
+      ]);
+      expect(
+        Math.abs(h1Left - mainTextLeft),
+        `H1 left ${h1Left} vs main content left ${mainTextLeft}`
+      ).toBeLessThanOrEqual(1);
+
+      // A free product's best pages must have something to press above the fold.
+      const actions = await page.locator('.primary-action').count();
+      expect(actions, `${path} had ${actions} primary actions`).toBeGreaterThanOrEqual(1);
+
+      // Legal has to be reachable from the page a visitor actually landed on, and the
+      // pages that give exercise instructions are the ones that need the disclaimer.
+      await expect(page.locator('footer a[href="/privacy"]')).toHaveCount(1);
+      await expect(page.locator('footer a[href="/terms"]')).toHaveCount(1);
+      await expect(page.getByText(/not medical advice/i).first()).toBeVisible();
+    });
+  }
+
+  test('the content library is reachable on a phone @gate', async ({ page }) => {
+    // MarketingNav hid every link behind `sm:flex` with no menu anywhere in the repo, so
+    // at 390px a visitor could reach `/` and `/welcome` and nothing else.
+    await page.goto('/exercises/push-ups', { waitUntil: 'domcontentloaded' });
+
+    const trigger = page.getByRole('button', { name: /menu/i });
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByRole('link', { name: /exercises/i }).first()).toBeVisible();
+
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+    // Focus must come back to the trigger, or a keyboard user is stranded mid-page.
+    await expect(trigger).toBeFocused();
+  });
+
+  test('every URL in the sitemap resolves @gate', async ({ request }) => {
+    // 94 of the 219 advertised exercise URLs used to 404: generateStaticParams read the
+    // exercise catalog without awaiting the lazy extended modules, so only the base
+    // ~126 prerendered. Nothing caught it because the sitemap got the full count from a
+    // build worker that happened to have loaded them.
+    const xml = await (await request.get('/sitemap.xml')).text();
+    const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) =>
+      m[1].replace(/^https?:\/\/[^/]+/, '')
+    );
+    expect(paths.length, 'sitemap looked empty').toBeGreaterThan(200);
+
+    const broken: string[] = [];
+    for (const p of paths) {
+      const res = await request.get(p || '/', { maxRedirects: 0 });
+      if (res.status() !== 200) broken.push(`${res.status()} ${p}`);
+    }
+    expect(broken, `sitemap advertises URLs that do not answer 200:\n${broken.join('\n')}`).toEqual(
+      []
+    );
+  });
+
   test('the hero demo lets a visitor perform the product claim', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 

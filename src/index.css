@@ -68,19 +68,33 @@
       transparent
     );
   }
+
+  /**
+   * One keyboard focus indicator for the whole app.
+   *
+   * There was none. `focus-visible` appeared only in `button.tsx`, so the 91 raw
+   * `<button>` elements — including `AdaptiveOverlay`'s close button, which the overlay
+   * programmatically focuses on open — and every `<a>`, `<summary>` and `.primary-action`
+   * relied on the browser default, which is close to invisible on this navy.
+   *
+   * axe-core does not reliably test focus visibility, which is why `npm run a11y` was
+   * 10/10 green while WCAG 2.4.7 failed site-wide. Declared here in `@layer base` so a
+   * component can still override it, and using the `--ring` token that already existed
+   * for exactly this and was unused.
+   */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Pointer users never see it; keyboard users always do. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 @layer components {
-  /* Solid nav on mobile (no backdrop-filter paint cost); blur on md+. */
-  .glass-nav {
-    @apply bg-card/95;
-  }
-  @media (min-width: 768px) {
-    .glass-nav {
-      @apply bg-card/75 backdrop-blur-xl supports-[backdrop-filter]:bg-card/65;
-    }
-  }
-
   .content-card {
     @apply rounded-2xl border border-border/50 bg-card/90 shadow-sm shadow-black/10;
   }
@@ -188,6 +202,13 @@
       0 8px 24px -8px rgb(0 0 0 / 0.5);
   }
 
+  /* The global ring is emerald, and this button's own bloom is emerald — so the focus
+     indicator here is white, or it disappears into the glow it sits on. */
+  .primary-action:focus-visible {
+    outline: 3px solid hsl(var(--foreground));
+    outline-offset: 3px;
+  }
+
   .primary-action:hover {
     box-shadow:
       0 0 0 1px hsl(158 64% 42% / 0.45),
@@ -217,7 +238,11 @@
   }
 
   .display-section {
-    @apply font-display font-semibold uppercase leading-none tracking-[0.005em];
+    /* `font-bold`, not `font-semibold`: app/layout.tsx loads Barlow Condensed at weight
+       700 only, so 600 was being synthesized. A zero-pixel change that stops the class
+       claiming a weight it never had — and it matters now that ~250 SEO h1s use this
+       tier. Size, not weight, is what separates it from `.display-hero`. */
+    @apply font-display font-bold uppercase leading-none tracking-[0.005em];
     font-size: clamp(1.9rem, 4.5vw, 3rem);
   }
 
@@ -252,118 +277,6 @@
       radial-gradient(ellipse 40% 35% at 48% 48%, hsl(158 64% 42% / 0.08), transparent 70%),
       linear-gradient(180deg, hsl(222 24% 6%) 0%, hsl(var(--background)) 55%, hsl(222 24% 4%) 100%);
     padding-top: env(safe-area-inset-top, 0px);
-  }
-
-  .hero-orb {
-    pointer-events: none;
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      hsl(158 64% 42% / 0.5) 0%,
-      hsl(158 64% 42% / 0.15) 40%,
-      transparent 70%
-    );
-    filter: blur(40px);
-    z-index: 0;
-  }
-
-  .hero-orb--primary {
-    width: min(28rem, 70vw);
-    height: min(28rem, 70vw);
-    right: -8%;
-    top: 8%;
-    opacity: 0.85;
-  }
-
-  .hero-orb--secondary {
-    width: min(16rem, 45vw);
-    height: min(16rem, 45vw);
-    left: 8%;
-    bottom: 12%;
-    opacity: 0.35;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-orb {
-      filter: blur(28px);
-      opacity: 0.7;
-    }
-  }
-
-  /* Narrow: center hero copy. Desktop (lg+): left-align beside demo. */
-  .hero-copy {
-    @apply flex flex-col items-center text-center;
-  }
-
-  .hero-copy .hero-subtitle {
-    @apply mx-auto;
-  }
-
-  .hero-copy .primary-action {
-    @apply mx-auto tap-target;
-  }
-
-  @media (min-width: 1024px) {
-    .hero-copy {
-      @apply items-start text-left;
-    }
-
-    .hero-copy .hero-subtitle {
-      @apply mx-0;
-    }
-
-    .hero-copy .primary-action {
-      @apply mx-0;
-    }
-  }
-
-  .hero-demo-slot {
-    @apply relative mx-auto w-full max-w-md min-h-[20rem];
-  }
-
-  @media (min-width: 1024px) {
-    .hero-demo-slot {
-      @apply mx-0 max-w-none min-h-[28rem];
-    }
-  }
-
-  /* Phone / short landscape: compact side-by-side, shorter type */
-  @media (orientation: landscape) and (max-height: 500px) {
-    .hero-field.hero-field--orient {
-      padding-bottom: 0.75rem;
-    }
-
-    .hero-orient-grid {
-      grid-template-columns: 1.05fr 0.95fr !important;
-      gap: 1.25rem !important;
-      padding-top: 0.75rem !important;
-      padding-bottom: 0.75rem !important;
-      align-items: center;
-    }
-
-    .hero-orient-grid .hero-copy {
-      align-items: flex-start;
-      text-align: left;
-    }
-
-    .hero-orient-grid .hero-copy .hero-subtitle {
-      margin-inline: 0;
-      font-size: 0.95rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .hero-orient-grid .display-hero {
-      font-size: clamp(1.65rem, 5.5vh, 2.75rem);
-      margin-bottom: 0.5rem;
-    }
-
-    .hero-orient-grid .hero-demo-slot {
-      min-height: 11rem;
-      max-height: min(70vh, 16rem);
-      margin-inline: 0;
-      max-width: none;
-    }
   }
 
   .today-shell {
@@ -502,7 +415,11 @@
     .ring-draw-in,
     .week-strip-pulse,
     .score-tick,
-    .victory-reveal {
+    .victory-reveal,
+    /* A 6px horizontal shake on a failed access code was the one animation here most
+       likely to matter to someone — vestibular triggers are exactly this — and it was
+       the only one not in this block. */
+    .animate-otp-shake {
       animation: none;
       opacity: 1;
       transform: none;

@@ -90,8 +90,8 @@ export function PressPage() {
             className="h-auto w-[min(100%,22rem)] sm:w-[28rem]"
           />
           <div className="space-y-3">
-            <p className="eyebrow text-primary">Press</p>
-            <h1 className="display-hero text-4xl text-foreground sm:text-5xl md:text-6xl">
+            <p className="eyebrow-live">Press</p>
+            <h1 className="display-hero text-foreground">
               Brand &amp; media kit
             </h1>
             <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
@@ -105,7 +105,7 @@ export function PressPage() {
         <section className="section-seam mx-auto max-w-4xl px-5 py-14">
           <Reveal>
             <p className="eyebrow mb-2">01 · Assets</p>
-            <h2 className="display-section mb-8 text-2xl sm:text-3xl">Downloads</h2>
+            <h2 className="display-section mb-8">Downloads</h2>
           </Reveal>
           <div className="grid gap-3 sm:grid-cols-2">
             {DOWNLOADS.map((item, i) => (
@@ -132,7 +132,7 @@ export function PressPage() {
           <div className="mx-auto max-w-4xl px-5">
             <Reveal>
               <p className="eyebrow mb-2">02 · Identity</p>
-              <h2 className="display-section mb-8 text-2xl sm:text-3xl">Palette &amp; type</h2>
+              <h2 className="display-section mb-8">Palette &amp; type</h2>
             </Reveal>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {COLORS.map((c, i) => (
@@ -172,7 +172,7 @@ export function PressPage() {
         <section className="section-seam mx-auto max-w-4xl px-5 py-14">
           <Reveal>
             <p className="eyebrow mb-2">03 · Copy</p>
-            <h2 className="display-section mb-8 text-2xl sm:text-3xl">Boilerplate</h2>
+            <h2 className="display-section mb-8">Boilerplate</h2>
           </Reveal>
           <div className="space-y-4">
             <Reveal>
@@ -208,7 +208,7 @@ export function PressPage() {
           <div className="mx-auto max-w-4xl px-5">
             <Reveal>
               <p className="eyebrow mb-2">04 · Usage</p>
-              <h2 className="display-section mb-8 text-2xl sm:text-3xl">Do / don&apos;t</h2>
+              <h2 className="display-section mb-8">Do / don&apos;t</h2>
             </Reveal>
             <div className="grid gap-6 sm:grid-cols-2">
               <Reveal>
@@ -250,7 +250,7 @@ export function PressPage() {
         <section className="section-seam mx-auto max-w-4xl px-5 py-14">
           <Reveal>
             <p className="eyebrow mb-2">05 · Contact</p>
-            <h2 className="display-section mb-4 text-2xl sm:text-3xl">Get in touch</h2>
+            <h2 className="display-section mb-4">Get in touch</h2>
             <p className="text-sm text-muted-foreground">
               Support:{' '}
               <a

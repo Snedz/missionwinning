@@ -6,6 +6,71 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — The public site is one site now, and 94 pages stopped 404ing (`.129`)
+
+A UI/UX pass on the public site turned up a launch blocker first, so that went first.
+
+**94 of the 219 advertised exercise URLs returned 404.** `generateStaticParams` read
+`EXERCISES` without awaiting `ensureFullExerciseCatalog()`, so only the base ~126
+prerendered; `ExerciseDetailRoute` then missed on a cold process and fell through to
+`notFound()`. `/exercises` displayed the full count and linked to every one of them, so
+the flagship free-library page was a third dead links. The sitemap got 219 *by luck* — it
+ran in a build worker that had already awaited the catalog elsewhere — which is precisely
+why the two numbers disagreed and nothing looked wrong. Verified by fetching every URL in
+`sitemap.xml` against a production build: **273 URLs, 95 non-200 → 273 URLs, 0 non-200.**
+There is now a `@gate` test that does exactly that fetch.
+
+Then the actual UI work. `/` was rebuilt in `.126`; the other ~250 URLs render through
+`PublicSeoHeader`, whose `h1` had no `font-display` — **the same defect `.126` fixed, still
+live on 250 pages.** Zero uses of `.display-section` and zero of `.eyebrow` across all
+eight SEO page components.
+
+- **`PublicPageShell`** replaces `PublicSeoHeader` + `PublicSeoFooter`: briefing type,
+  one `maxWidth` shared by header *and* body (the header hardcoded `max-w-4xl` against
+  `max-w-3xl` bodies, so the headline sat outdented from its own copy), one emerald
+  action above the fold, and the full footer with legal links and the medical disclaimer.
+  A Server Component — four of eight consumers have no `'use client'` and are ~235 of the
+  URLs. Uses `.display-section`, not `.display-hero`: the hero tier's 2.75rem floor wraps
+  "Close-Grip Bench Press" to three lines at 390px.
+- **`PublicNavMenu`** — `MarketingNav` hid every link behind `hidden … sm:flex` with no
+  menu anywhere in the repo, so at 390px a visitor could reach `/` and `/welcome` and
+  nothing else. On Radix Dialog, already a dependency, so the focus trap and Escape are
+  not hand-rolled a sixth time.
+- **The design system was being nullified where it was used.** `.display-section` sits in
+  `@layer components`; utilities come later, so `className="display-section text-2xl"`
+  discarded the `clamp()` — confirmed by byte offset in the built CSS. Ten sites did it,
+  which is why the class's real size rendered on exactly one page. Fixed, and
+  `scripts/check-display-type.mjs` now fails the gate if it returns.
+- **There was no focus indicator.** `src/index.css` had zero `:focus` rules;
+  `focus-visible` appeared only in `button.tsx`, so 91 raw `<button>`s, every link, and
+  `.primary-action` fell back to Chromium's 1px `auto` outline. One rule in `@layer base`
+  on the unused `--ring` token covers all of them; the ring came *out* of `button.tsx` so
+  there is one indicator, not two. **axe does not test focus visibility** — which is how
+  `npm run a11y` sat 10/10 green while WCAG 2.4.7 failed site-wide — so the new test
+  asserts `outline-style: solid` at ≥2px, and was checked against a build with the CSS
+  removed to confirm it actually fails.
+- Also: `/compare`'s primary CTA read **"Begin"** (`t('welcomeBegin')` ships `'Begin'` in
+  en); `MarketingNav`'s CTA was `onClick={router.push}` on force-static pages, so it did
+  nothing pre-hydration and crawlers saw no link; `Button variant="fitness"
+  className="primary-action"` in two files rendered at Button's radius while keeping
+  `w-full`; `/experience` was in the sitemap but absent from `PRIVATE_GATE_PUBLIC_PATHS`;
+  `.animate-otp-shake` was the one animation missing from the reduced-motion block;
+  `themeColor` was two points off `--background`; `.display-section` asked for weight 600
+  when only 700 is loaded; hardcoded "217 exercises" in three places now reads the
+  catalog; ~112 lines of verified-dead hero CSS deleted.
+- Gates widened: `@gate` 16 → 25 (per-template display face, H1/body left-edge geometry,
+  footer legal + disclaimer, mobile menu with Escape and focus restore, sitemap all-200);
+  `@a11y` 10 → 20 (8 new routes + 3 focus-visibility tests). `check-display-type` and
+  `check-token-sync` added to `npm run gate` — neither was in it.
+
+**Deliberately not done:** `viewportFit: 'cover'`. The plan called for it, but no sticky
+header in the repo carries `env(safe-area-inset-top)` and every public container is plain
+`px-5`, so opting into edge-to-edge would put the notch over the nav in landscape —
+creating the bug the inset guards exist to prevent rather than fixing one. Nothing is
+broken today: without `cover` iOS insets the layout viewport itself, so those guards are
+inert, not wrong. It belongs in an in-app pass with the nav and containers guarded and a
+landscape Playwright project.
+
 ## 2026-07-25 — The storage ratchet is empty: 53 files, one door (`.128`)
 
 Every remaining direct `localStorage` call is gone. `LEGACY_DIRECT_STORAGE` is **deleted**
