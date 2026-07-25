@@ -68,6 +68,7 @@ npm run typecheck    # tsc --noEmit (tests + app)
 npm test             # unit tests (src/lib/**/*.test.ts)
 npm run build        # production build
 npm run lint         # eslint
+npm run gate         # FULL local gate: lint + typecheck + tests + i18n + build + hero e2e
 npm run e2e          # Playwright smoke (needs SMOKE_BASE_URL)
 npm run gate-smoke   # curl deploy checks (needs SMOKE_BASE_URL)
 npm run check-env    # verify .env.local

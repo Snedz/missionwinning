@@ -65,7 +65,9 @@ instantly regardless of commit (Deploy production, CI, Aikido together).
 2. **Confirm secrets** — `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` under repo Actions secrets.
 3. Note the **PR gate is inert** while Actions is down: `ci.yml` (lint · typecheck · tests ·
    build · `npm run e2e:gate`) cannot run, so nothing blocks a regression reaching `master`.
-   Run `npm run e2e:gate` locally against a production build until it is back.
+   **Run `npm run gate` before pushing** — it runs the same checks locally and starts and
+   stops the production server itself ([scripts/gate.mjs](../scripts/gate.mjs)). It does not
+   cover `npm run a11y`, `npm run e2e:visual` or Lighthouse; run those separately.
 
 Deploys themselves do not depend on any of this once §1.1 is wired.
 
