@@ -6,6 +6,23 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — The guidebook cover, re-inked (`.137`)
+
+The magazine was the last surface still on a pinned pre-rebrand palette (`.131`
+held it back deliberately until its cover could be recut properly).
+
+- **Magazine palette joins the system**: `--mag-paper`/`--mag-ink`/`--mag-navy`/
+  `--mag-fg-on-dark` now read the global tokens instead of literal navy/cream;
+  `--mag-brass` resolves to the neutral ramp (brass retired).
+- **Cover** per `Guidebook Cover.dc.html`: flat **ink field** with paper type —
+  MW square + wordmark over a 2px rule, caps kicker, Archivo 800 title, subtitle,
+  version/origin meta. The gradient `hero-field` and `texture-grid` are gone.
+- **PDF rebuilt through the real print path**: 27 pages / 4.5 MB, inside the
+  script's own 12–36 page + min-byte validation. `print-color-adjust: exact` on
+  `.magazine-root` is inherited, so the ink field prints rather than dropping out.
+  (No local poppler, so the PDF's rendered cover wasn't eyeballed page-by-page —
+  the on-screen print route was, and print CSS doesn't override the field.)
+
 ## 2026-07-25 — The app stops floating (`.136`)
 
 Phase 3 opens on the signed-in app's shared furniture — the chrome every one of
