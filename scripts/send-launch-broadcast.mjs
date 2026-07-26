@@ -11,6 +11,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { createHmac } from 'node:crypto';
 import { Resend } from 'resend';
+import { readFileSync } from 'node:fs';
 
 const args = process.argv.slice(2);
 const send = args.includes('--send');
@@ -128,6 +129,26 @@ if (!nudgeSecret) {
   console.warn('Warning: NUDGE_SECRET unset — unsubscribe tokens will not verify in prod.');
 }
 
+// Modernist HTML part (design handoff). The plain-text bodyFor() stays the
+// multipart fallback; a missing postal address blocks the send outright rather
+// than mailing "[postal address], USA" to the list (CAN-SPAM 7704(a)(5)).
+const postalAddress = (process.env.MAIL_POSTAL_ADDRESS || '').trim();
+if (!postalAddress) {
+  console.error('MAIL_POSTAL_ADDRESS required for --send (CAN-SPAM physical address). See docs/ENV.md.');
+  process.exit(1);
+}
+const launchTemplate = readFileSync(
+  new URL('../src/emails/templates/launch-day.html', import.meta.url),
+  'utf8'
+);
+function htmlFor(email) {
+  return launchTemplate
+    .split('https://www.missionwinning.com/unsubscribe')
+    .join(unsubUrl(email))
+    .split('[postal address], USA')
+    .join(postalAddress);
+}
+
 const resend = new Resend(resendKey);
 let sent = 0;
 let failed = 0;
@@ -140,6 +161,7 @@ for (const c of slice) {
       to,
       subject: 'Mission Winning is live — founders offer',
       text: bodyFor(c.email),
+      html: htmlFor(c.email),
       tags: [{ name: 'kind', value: 'launch-broadcast' }],
     });
     if (sendErr) {

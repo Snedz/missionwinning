@@ -43,7 +43,8 @@
     "media:optimize-inbox": "node scripts/optimize-media-inbox.mjs",
     "mobile": "npm --prefix apps/mobile start",
     "mobile:typecheck": "npm --prefix apps/mobile run typecheck",
-    "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug"
+    "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",
+    "send-beta-invite": "node --env-file=.env.local scripts/send-beta-invite.ts"
   },
   "dependencies": {
     "@phantom/react-sdk": "^2.0.2",

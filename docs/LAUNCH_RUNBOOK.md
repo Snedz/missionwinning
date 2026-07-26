@@ -51,6 +51,7 @@
    - `BETA_ADMIN_EMAILS=founder@example.com`
    - `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated `openssl rand -base64 32` each — do not reuse gate secret)
    - `RESEND_API_KEY` + `RESEND_FROM` (consent, nudges, welcome, weekly digest)
+   - `MAIL_POSTAL_ADDRESS` — physical address printed in every email footer (CAN-SPAM). **Blocks list mail until set**: waitlist confirmations drop to text-only, launch broadcast + beta invite refuse to send. Confirm the Bizee registered-agent address is usable as a public business address first — see [LEGAL_SAFETY.md](LEGAL_SAFETY.md) §3
    - `CRON_SECRET` (Vercel cron: daily nudges + Monday founder digest)
    - `FOUNDER_DIGEST_EMAIL=you@…` (Monday digest + Stripe `charge.dispute.*` alerts; skip send if unset)
    - Optional: `NEXT_PUBLIC_POSTHOG_KEY` (product analytics after user allow)

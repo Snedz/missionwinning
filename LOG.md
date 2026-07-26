@@ -6,6 +6,29 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Email leaves plain text behind (`.138`)
+
+The last rebrand surface. Every Mission Winning email was a `[...].join('\n')`
+text body; the handoff ships three send-ready Modernist HTML templates.
+
+- **`sendTransactionalEmail` takes `html?`** — sent multipart alongside `text`,
+  which stays mandatory as the fallback, so all six existing senders are
+  untouched.
+- **Templates live in `src/emails/templates/`** byte-for-byte from the handoff
+  (that table markup is what survives Outlook; rebuilding it in JSX would only
+  add risk). `renderEmail()` replaces the four per-send literals: unsubscribe
+  URL, postal address, access code, origin.
+- **Wired:** waitlist-confirm → `app/api/leads/route.ts`; launch-day →
+  `scripts/send-launch-broadcast.mjs`; **beta-invite → `scripts/send-beta-invite.ts`,
+  which did not exist** — the invite was previously text printed to stdout for
+  manual copy-paste. Dry-run by default, `--send` to deliver, and it refuses to
+  send from the `resend.dev` test domain.
+- **`MAIL_POSTAL_ADDRESS` is now required before any list mail** ([docs/ENV.md](docs/ENV.md)).
+  CAN-SPAM §7704(a)(5) requires a physical address; rather than mailing
+  "[postal address], USA" to the waitlist, the renderer refuses (waitlist confirm
+  degrades to text-only and logs why; broadcast and invite exit non-zero). It is
+  founder data and is never invented here.
+
 ## 2026-07-25 — The guidebook cover, re-inked (`.137`)
 
 The magazine was the last surface still on a pinned pre-rebrand palette (`.131`

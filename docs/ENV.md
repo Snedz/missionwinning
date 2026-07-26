@@ -35,6 +35,7 @@ Add these for **Production** and **Preview**:
 | `BETA_ADMIN_EMAILS` | Optional | Your email for Profile → beta funnel (all users) |
 | `RESEND_API_KEY` | Optional | Email nudge + receipts |
 | `RESEND_FROM` | Optional | `Mission Winning <hello@missionwinning.com>` — verified domain |
+| `MAIL_POSTAL_ADDRESS` | **Yes before any list mail** | Physical address printed in every email footer. CAN-SPAM §7704(a)(5) requires it; the HTML emails refuse to render without it (waitlist confirm degrades to text-only, launch broadcast and beta invite refuse to send). Founder-owned — never a placeholder. |
 | `NEXT_PUBLIC_SITE_URL` | Launch | `https://www.missionwinning.com` — canonicals + OG (use www) |
 | `YOUTH_CONSENT_SECRET` | **Yes in prod** | `openssl rand -base64 32` — dedicated; never reuse gate secret |
 | `NUDGE_SECRET` | **Yes in prod** | `openssl rand -base64 32` — journey email nudge HMAC |

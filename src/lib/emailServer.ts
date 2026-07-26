@@ -63,12 +63,17 @@ export function leadUnsubscribeUrl(email: string): string {
 export type SendEmailInput = {
   to: string;
   subject: string;
+  /** Always required — the plain-text part, and the fallback when html is absent. */
   text: string;
+  /** Optional HTML part (see src/emails/renderEmail.ts). Sent multipart with text. */
+  html?: string;
   tags?: Array<{ name: string; value: string }>;
 };
 
 /**
- * Send a plain-text transactional email.
+ * Send a transactional email — plain text, plus an HTML part when supplied.
+ * `text` stays mandatory: it is the multipart fallback for clients that refuse
+ * HTML, and it keeps every existing caller working unchanged.
  * Returns { ok: true, skipped: true } when Resend is not configured.
  */
 export async function sendTransactionalEmail(
@@ -85,6 +90,7 @@ export async function sendTransactionalEmail(
       to: input.to,
       subject: input.subject,
       text: input.text,
+      ...(input.html ? { html: input.html } : {}),
       tags: input.tags,
     });
     if (error) {

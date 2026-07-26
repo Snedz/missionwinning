@@ -9,6 +9,7 @@ import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { leadsBodySchema, parseJsonBody } from '@/lib/apiSchemas';
+import { renderEmail } from '@/emails/renderEmail';
 import {
   leadUnsubscribeUrl,
   sendTransactionalEmail,
@@ -42,9 +43,19 @@ async function maybeSendLeadConfirmation(email: string, source: string): Promise
     if (unsub && unsub.length > 0) return;
 
     const unsubUrl = leadUnsubscribeUrl(email);
+    // Modernist HTML part when the postal address is configured; the plain-text
+    // body below stays the multipart fallback and the behaviour when it is not.
+    const rendered = renderEmail('waitlist-confirm', {
+      unsubscribeUrl: unsubUrl,
+      origin: siteUrl(),
+    });
+    if (!rendered.ok) {
+      console.warn('waitlist-confirm HTML skipped:', rendered.error);
+    }
     const result = await sendTransactionalEmail({
       to: email,
       subject: 'You’re on the Mission Winning list',
+      ...(rendered.ok ? { html: rendered.html } : {}),
       text: [
         'Thanks for joining the Mission Winning list.',
         '',
