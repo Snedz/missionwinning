@@ -16,6 +16,20 @@ const GATED_ROUTES = [
   '/bundle',
   '/active',
   '/nutrition',
+  // The other nine signed-in screens. `railGroupsForNav()` declares thirteen and
+  // this list covered four of them, so the tranche the Modernist rebrand recut
+  // screen-by-screen had no axe coverage at all — the same shape of gap as the
+  // SEO tail below, where one exercise page used to stand for ~250 URLs.
+  // Parked surfaces (/leaderboard, /benchmarks) stay out: they 404 by design.
+  '/history',
+  '/move',
+  '/mind',
+  '/track',
+  '/learn',
+  '/assessments',
+  '/library',
+  '/builder',
+  '/profile',
   '/experience?tier=static',
   '/exercises/push-ups',
   // The SEO tail is most of the site's URLs and one exercise page used to represent all

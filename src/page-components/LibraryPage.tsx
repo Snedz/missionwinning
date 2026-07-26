@@ -290,13 +290,17 @@ export function LibraryPage() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {visibleExercises.map((ex) => (
+          /*
+            No `role="button"` / `tabIndex` on the card. It wrapped a real
+            <Button> in a fake one, which is axe's nested-interactive: a
+            keyboard user hit two stops for one destination and a screen reader
+            announced a button containing a button. The card keeps its pointer
+            click as a convenience; the control inside it is the real one.
+          */
           <Card
             key={ex.id}
             className="content-card pressable-card cursor-pointer"
             onClick={() => setDetailId(ex.id)}
-            onKeyDown={(e) => e.key === 'Enter' && setDetailId(ex.id)}
-            role="button"
-            tabIndex={0}
           >
             <CardHeader className="pb-2">
               <CardTitle className="text-lg">{ex.name}</CardTitle>
@@ -323,7 +327,21 @@ export function LibraryPage() {
                     defaultValue: 'Form cues coming soon for this movement.',
                   })}
               </p>
-              <Button variant="ghost" size="sm" className="mt-2 w-full text-xs">
+              {/* Named for the exercise: forty buttons all reading "View
+                  details" is a list a screen-reader user cannot navigate. */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2 w-full text-xs"
+                aria-label={t('libraryViewDetailsFor', {
+                  name: ex.name,
+                  defaultValue: `View details for ${ex.name}`,
+                })}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDetailId(ex.id);
+                }}
+              >
                 {t('libraryViewDetails', { defaultValue: 'View details →' })}
               </Button>
             </CardContent>

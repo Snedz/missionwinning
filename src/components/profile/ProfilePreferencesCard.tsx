@@ -67,8 +67,15 @@ export function ProfilePreferencesCard({
           <CardTitle>{t('trainingGoals', { defaultValue: 'Training Goals' })}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
+          {/* The card title is not a label — axe is right, and a screen reader
+              reading this field announced nothing at all. 2px rule while here;
+              `border rounded` predates the rebrand. */}
+          <label htmlFor="profile-goals" className="sr-only">
+            {t('trainingGoals', { defaultValue: 'Training Goals' })}
+          </label>
           <textarea
-            className="w-full border rounded p-2 bg-background"
+            id="profile-goals"
+            className="w-full border-2 border-border bg-background p-2"
             value={goals}
             onChange={(e) => onGoalsChange(e.target.value)}
             rows={3}
