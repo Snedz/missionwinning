@@ -6,6 +6,37 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — The visual gate was asserting a design that no longer exists
+
+`e2e:visual`'s three baselines were generated **2026-07-22**, three days before
+the rebrand began. Opening one settled it rather than inferring from the date:
+`exercise-squats-mobile-chrome-linux.png` is the **old dark navy/emerald
+design** — black ground, emerald links and CTA, rounded corners, the pre-rebrand
+mark. Nothing in the product has looked like that since `.131`.
+
+- **Deleted, not refreshed.** They cannot be regenerated here — the spec's own
+  header says baselines must come from Linux CI or the pixels will not match,
+  and Actions is billing-blocked. A known-wrong baseline is worse than none:
+  the first Linux run would have thrown four enormous diffs, and the reflex
+  there is `--update-snapshots` without looking, which launders whatever the app
+  renders that day into the new truth. Starting from nothing forces one
+  deliberate bootstrap.
+- **`home-reduced.png` never had a baseline at all.** That case has been
+  silently self-approving on every first run since it was written — Playwright
+  creates a missing snapshot and passes. So the homepage, the most-linked page
+  in the product, has never been visually guarded. The bootstrap covers it for
+  the first time.
+- Recorded in `CONTEXT.md` as **the one dark gate**, with the bootstrap command,
+  so the next person to see an empty snapshot directory knows it is deliberate.
+
+This is the third instance of the same failure this week, after `.129`'s SEO
+tail (one exercise page standing in for ~250 URLs) and `.157`'s route list
+(four of thirteen app screens scanned): **a green suite only proves something
+about what it was pointed at.** Coverage gaps do not announce themselves — a
+missing baseline passes, an unlisted route passes, an unfetched URL passes.
+
+---
+
 ## 2026-07-26 — The stack lands, and one flaky gate test gets fixed
 
 All 13 PRs **#89–#101** merged to `master` in order: the Modernist rebrand
