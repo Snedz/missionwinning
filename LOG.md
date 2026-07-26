@@ -6,6 +6,34 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — The stack lands, and one flaky gate test gets fixed
+
+All 13 PRs **#89–#101** merged to `master` in order: the Modernist rebrand
+(`.130`–`.138`), the thirteen app screens (`.139`–`.149`), the mobile program
+(`.150`–`.156`) and the a11y coverage pass (`.157`). 39 commits, no conflict
+anywhere — it was one linear chain the whole time.
+
+Verified **on merged master**, not just per branch: gate 29/29, a11y 29/29,
+599 unit tests, `secrets:scan` clean, no `PRIVATE_MODE` or env change in the
+diff.
+
+- **`offline.spec.ts` was flaky — 1 failure in 3 runs, and it surfaced on the
+  first post-merge gate run**, which is the worst possible moment to see a
+  real-looking failure. It was not a merge regression: the merged tree is
+  byte-identical to the branch that had just passed. The cause is a race the
+  test wrote itself — it warmed `/active` with `waitUntil: 'networkidle'` and
+  then went offline on the next line, but Serwist caches the navigation
+  response inside `event.waitUntil`, which outlives the response the page saw.
+  Cutting the network mid-cache aborted the following `goto` with
+  `net::ERR_ABORTED`. It now waits for the entry to actually be in a cache
+  before going offline, tolerantly — if it never appears the assertions still
+  speak, rather than trading a flaky failure for a flaky skip. Three
+  consecutive clean gate runs.
+- Merging deploys nothing. Promotion is still the Vercel Deploy Hook, and
+  `PRIVATE_MODE` is still founder-only.
+
+---
+
 ## 2026-07-26 — Nine screens had no axe coverage; four were broken (`.157`)
 
 `GATED_ROUTES` covered four of the thirteen signed-in screens. The other nine

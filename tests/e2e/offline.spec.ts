@@ -43,6 +43,32 @@ test.describe('Offline logging @gate', () => {
     // Warm the logger route while still online so navigation caching has it.
     await page.goto('/active', { waitUntil: 'networkidle' });
 
+    /**
+     * Wait for the warm to actually be *in* a cache before cutting the network.
+     *
+     * `networkidle` only says the page stopped fetching. Serwist caches the
+     * navigation response inside `event.waitUntil`, which outlives the response
+     * the page saw — so going offline on the next line raced it, and the
+     * follow-up `goto` failed with `net::ERR_ABORTED` roughly one run in three.
+     * That is the worst kind of gate failure: real-looking, unreproducible, and
+     * it teaches people to re-run instead of read.
+     *
+     * Tolerant on purpose. If the entry never appears we carry on and let the
+     * assertions below speak, rather than trading a flaky failure for a flaky
+     * skip.
+     */
+    await page
+      .evaluate(async () => {
+        const deadline = Date.now() + 5_000;
+        while (Date.now() < deadline) {
+          const hit = await caches.match('/active', { ignoreSearch: true, ignoreVary: true });
+          if (hit) return true;
+          await new Promise((r) => setTimeout(r, 150));
+        }
+        return false;
+      })
+      .catch(() => false);
+
     await context.setOffline(true);
 
     // Client-side navigation must keep working with no network.
