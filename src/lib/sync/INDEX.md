@@ -51,6 +51,24 @@ retrying cannot fix.
 | Nothing is dropped for failing | After `MAX_ATTEMPTS` an op goes `stuck` and waits for `retryStuck()` |
 | Edits and deletes propagate | Highest `revision` wins; `deletedAt` is a tombstone, not a removal |
 
+## Reading the queue for display
+
+`getState()` answers *how many* (`{ pending, stuck, oldestCreatedAt }`) and
+`subscribe()` pushes it on change — that is what `OnlineStatusBanner` shows.
+`listPending()` answers *which*, oldest first, for the offline screen's
+waiting-to-sync rows.
+
+**Both are the only readers.** Nothing else may re-parse `STORAGE_KEYS.outbox`:
+a second parser is a second source of truth for the same number. `listPending()`
+returns kind, time and stuck — deliberately **not** payloads, because nothing
+that displays a queue needs to see inside the envelope.
+
+The offline route reads this directly. It is an ordinary same-origin page, not a
+service-worker context, so no bridge is needed — a comment in
+`app/offline/OfflineContent.tsx` claimed otherwise ("needs an outbox read from
+the service-worker fallback context") and deferred the feature on that basis
+until `.156`.
+
 Read-then-write rather than `ON CONFLICT`: the unique index is partial
 (`where client_id is not null`), which Postgres cannot infer from a column-only
 conflict target.
