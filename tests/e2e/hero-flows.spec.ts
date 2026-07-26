@@ -39,7 +39,8 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(skip).toBeVisible({ timeout: 10_000 });
     await skip.click();
     await expect(page).toHaveURL(/\/active/, { timeout: 15_000 });
-    await expect(page.getByRole('button', { name: /^log$/i }).first()).toBeVisible({
+    // Widened with the console recut in `.153` — see the note in first-90.
+    await expect(page.getByRole('button', { name: /^log( set)?$/i }).first()).toBeVisible({
       timeout: 15_000,
     });
   });
@@ -95,7 +96,7 @@ test.describe('Phase H hero flows @gate', () => {
     await expect(page.getByText(/selected:\s*push-ups/i)).toBeVisible({ timeout: 5_000 });
     await page.getByRole('button', { name: /add selected exercise/i }).click();
 
-    const logBtn = page.getByRole('button', { name: /^log$/i }).first();
+    const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
     await expect(logBtn).toBeVisible({ timeout: 15_000 });
     await logBtn.click();
     // Routine set feedback = completed row + rest timer (toast removed in D0).

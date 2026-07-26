@@ -53,7 +53,12 @@ test.describe('First 90 seconds @gate', () => {
       'no modal may intercept the first session'
     ).toHaveCount(0);
 
-    const logBtn = page.getByRole('button', { name: /^log$/i }).first();
+    // `/^log( set)?$/i`, widened deliberately in `.153`: the logger's per-set
+    // control bands collapsed into one docked console whose button reads "Log
+    // set". An `aria-label="Log"` over that visible text would break WCAG 2.5.3
+    // (Label in Name), so the guard moves rather than the label. Still anchored
+    // — it must not start matching "Log food" or "Log weight".
+    const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
     await tap(logBtn, 'Log');
 
     // A logged set is visible progress, not a silent state change.
@@ -211,7 +216,7 @@ test.describe('First 90 seconds @gate', () => {
     await page.getByRole('option', { name: /push-ups/i }).first().click();
     await page.getByRole('button', { name: /add selected exercise/i }).click();
 
-    await expect(page.getByRole('button', { name: /^log$/i }).first()).toBeVisible({
+    await expect(page.getByRole('button', { name: /^log( set)?$/i }).first()).toBeVisible({
       timeout: 10_000,
     });
 
@@ -219,7 +224,13 @@ test.describe('First 90 seconds @gate', () => {
     // boxes rather than trusting a utility class to still be applied. Scoped to the
     // logging surface — the ± steppers and Log are what you press holding a bar.
     const undersized: string[] = [];
-    const buttons = await page.locator('main button, [role="main"] button').all();
+    // `#screen-dock` is in the sweep from `.153`: the ± steppers and Log moved
+    // out of `main` and into the docked console, and a scope of `main` alone
+    // would have quietly stopped covering the exact controls this test is
+    // about. It is also how the rest dock kept 36px presets.
+    const buttons = await page
+      .locator('main button, [role="main"] button, #screen-dock button')
+      .all();
     for (const button of buttons) {
       if (!(await button.isVisible().catch(() => false))) continue;
       const box = await button.boundingBox();

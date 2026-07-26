@@ -81,7 +81,7 @@ const en: ActiveWorkoutStrings = {
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Add Set',
   activeStartRest: '{{seconds}}s Rest',
-  activeLogSet: 'Log',
+  activeLogSet: 'Log set',
   activeRepeatLast: 'Repeat last set',
   activeLastPerformance: 'Last: {{reps}} × {{weight}}',
   activeSetLogged: 'Set logged!',
@@ -138,7 +138,7 @@ const es: ActiveWorkoutStrings = {
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Añadir serie',
   activeStartRest: 'Descanso {{seconds}}s',
-  activeLogSet: 'Registrar',
+  activeLogSet: 'Registrar serie',
   activeRepeatLast: 'Repetir última serie',
   activeLastPerformance: 'Última: {{reps}} × {{weight}}',
   activeSetLogged: '¡Serie registrada!',
@@ -177,7 +177,7 @@ const fr: ActiveWorkoutStrings = {
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Ajouter une série',
   activeStartRest: 'Repos {{seconds}} s',
-  activeLogSet: 'Enregistrer',
+  activeLogSet: 'Enregistrer la série',
   activeRepeatLast: 'Répéter la dernière série',
   activeLastPerformance: 'Dernière : {{reps}} × {{weight}}',
   activeSetLogged: 'Série enregistrée !',
@@ -222,7 +222,7 @@ const zh: ActiveWorkoutStrings = {
   activeFinish: '完成',
   activeRestTitle: '休息',
   activeRestSkip: '跳过',
-  activeLogSet: '记录',
+  activeLogSet: '记录组',
   activeRepeatLast: '重复上一组',
 };
 
@@ -233,7 +233,7 @@ const id: ActiveWorkoutStrings = {
   activeSetsLabel: 'Set',
   activeStartWorkout: 'Mulai latihan',
   activeRestTitle: 'Istirahat',
-  activeLogSet: 'Catat',
+  activeLogSet: 'Catat set',
   activeRepeatLast: 'Ulangi set terakhir',
 };
 
@@ -244,7 +244,7 @@ const th: ActiveWorkoutStrings = {
   activeSetsLabel: 'เซ็ต',
   activeStartWorkout: 'เริ่มฝึก',
   activeRestTitle: 'พัก',
-  activeLogSet: 'บันทึก',
+  activeLogSet: 'บันทึกเซต',
   activeRepeatLast: 'ทำซ้ำเซตล่าสุด',
 };
 
@@ -255,7 +255,7 @@ const ar: ActiveWorkoutStrings = {
   activeSetsLabel: 'المجموعات',
   activeStartWorkout: 'بدء التمرين',
   activeRestTitle: 'راحة',
-  activeLogSet: 'تسجيل',
+  activeLogSet: 'تسجيل المجموعة',
   activeRepeatLast: 'تكرار آخر مجموعة',
   activeRestSkip: 'تخطي',
 };
@@ -286,7 +286,7 @@ const de: ActiveWorkoutStrings = {
   activeLoadPctChip: '{{pct}}% · {{weight}} {{unit}}',
   activeAddSet: 'Satz hinzufügen',
   activeStartRest: 'Pause {{seconds}} s',
-  activeLogSet: 'Speichern',
+  activeLogSet: 'Satz speichern',
   activeRepeatLast: 'Letzten Satz wiederholen',
   activeLastPerformance: 'Zuletzt: {{reps}} × {{weight}}',
   activeSetLogged: 'Satz gespeichert!',

@@ -44,10 +44,21 @@ function QuickRow({
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between text-sm">
-        <span className="font-medium">{label}</span>
+        <span className="font-semibold">{label}</span>
         <span className="text-muted-foreground tabular-nums">{value}/5</span>
       </div>
-      <div className="flex gap-1" role="group" aria-label={label}>
+      {/*
+        One 2px-ruled strip with 1px internal divisions, filling left to right.
+        It was five separate `bg-muted` buttons — `#eae9e9` on a `bg-card`
+        `#eae9e9` sheet ground, which is 1.01:1: four of the five did not exist
+        until you tapped one. MeterBar's own comment documents this exact trap.
+        A tag or a fill inside a sheet needs a rule, not a tint.
+      */}
+      <div
+        className="flex border-2 border-border divide-x divide-border"
+        role="group"
+        aria-label={label}
+      >
         {[1, 2, 3, 4, 5].map((n, i) => (
           <button
             key={n}
@@ -55,10 +66,10 @@ function QuickRow({
             type="button"
             onClick={() => onChange(n)}
             aria-pressed={value >= n}
-            className={`flex-1 min-h-[44px] tap-target rounded-md text-sm font-medium transition-colors ${
+            className={`flex-1 min-h-[44px] tap-target text-sm font-semibold tabular-nums transition-colors ${
               value >= n
                 ? 'bg-primary-fill text-primary-foreground'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                : 'text-muted-foreground hover:bg-muted'
             }`}
           >
             {n}
@@ -116,6 +127,28 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
       title={t('sessionCheckInTitle', { defaultValue: 'How do you feel?' })}
       initialFocusRef={firstControlRef}
       bodyClassName="p-5 space-y-4"
+      footer={
+        /* Pinned, and Skip keeps its full height. The sheet is skippable by
+           design; a shrunken escape route is a dark pattern. */
+        <div className="flex flex-col gap-2">
+          <Button
+            type="button"
+            variant="fitness"
+            className="w-full min-h-[52px] tap-target"
+            onClick={save}
+          >
+            {t('sessionCheckInSave', { defaultValue: 'Save & continue' })}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full min-h-[52px] border-2 border-foreground tap-target"
+            onClick={skip}
+          >
+            {t('sessionCheckInSkip', { defaultValue: 'Not now' })}
+          </Button>
+        </div>
+      }
     >
       <p className="text-sm text-muted-foreground leading-relaxed -mt-1">
         {t('sessionCheckInLead', {
@@ -147,14 +180,6 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
         highHint={t('sessionCheckInFired', { defaultValue: 'Fired up' })}
       />
 
-      <div className="flex flex-col gap-2 pt-1">
-        <Button type="button" variant="fitness" className="w-full min-h-[44px] tap-target" onClick={save}>
-          {t('sessionCheckInSave', { defaultValue: 'Save & continue' })}
-        </Button>
-        <Button type="button" variant="ghost" className="w-full min-h-[44px] tap-target" onClick={skip}>
-          {t('sessionCheckInSkip', { defaultValue: 'Not now' })}
-        </Button>
-      </div>
     </AdaptiveOverlay>
   );
 }

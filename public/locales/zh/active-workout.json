@@ -22,7 +22,7 @@
   "activeLoadPctChip": "{{pct}}% · {{重量}} {{单位}}",
   "activeAddSet": "添加集",
   "activeStartRest": "{{秒}}秒 休息",
-  "activeLogSet": "记录",
+  "activeLogSet": "记录组",
   "activeRepeatLast": "重复上一组",
   "activeLastPerformance": "最后：{{次数}} × {{重量}}",
   "activeSetLogged": "设置已记录！",

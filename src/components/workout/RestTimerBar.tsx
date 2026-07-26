@@ -39,9 +39,9 @@ export function RestTimerBar({
   return (
     <div
       className={cn(
-        'fixed inset-x-0 z-40 border-t-2 border-neutral-900 bg-neutral-900 text-neutral-100',
-        'bottom-[calc(52px+env(safe-area-inset-bottom))]',
-        'md:bottom-4 md:mx-auto md:max-w-lg md:border-2',
+        // In the ScreenDock now — the dock reserves its own height, so this
+        // stops being a fixed panel that has to guess the tab bar's.
+        'border-t-2 border-neutral-900 bg-neutral-900 text-neutral-100',
         className
       )}
       role="timer"
@@ -94,7 +94,10 @@ export function RestTimerBar({
           <button
             key={sec}
             type="button"
-            className="min-h-[36px] px-2.5 text-xs font-semibold text-neutral-300 transition-colors hover:bg-neutral-100/10 hover:text-neutral-100"
+            /* 44px, not 36 — these are pressed one-handed between sets like
+               everything else in the logger. `first-90` sweeps `main`, and the
+               dock is not in `main`, which is why they stayed undersized. */
+            className="min-h-[44px] px-2.5 text-xs font-semibold text-neutral-300 transition-colors hover:bg-neutral-100/10 hover:text-neutral-100"
             onClick={() => {
               onPreset(sec);
               saveDefaultRestSeconds(sec);

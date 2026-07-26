@@ -6,6 +6,259 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Two overlay mechanisms become one; offline stops shouting (`.155`)
+
+Phase 5 — the shared states. **Partial: see "still open" below.**
+
+- **`FormGuideSheet` is on `AdaptiveOverlay`.** It was hand-rolled at `z-[60]`,
+  *below* the shared shell's `z-[70]` — which is exactly why a form guide could
+  open **underneath** a sheet already up, and why the focus trap, Escape handler
+  and scroll lock existed twice with only one of them correct. Its actions moved
+  into the pinned `footer` slot phase 0 added; body stays 17px, the one surface
+  read standing up mid-set. Three overlay mechanisms are now two (Radix
+  `LibraryDetailSheet` is the last).
+- **Session check-in scales were invisible.** Five `bg-muted` buttons — `#eae9e9`
+  on a `bg-card` `#eae9e9` sheet ground, 1.01:1 — so four of the five did not
+  exist until you tapped one. `MeterBar`'s own comment documents this trap. One
+  2px-ruled strip with 1px divisions now, filling left to right. Save and **Skip
+  are pinned in the footer at a full 52px each**: the sheet is skippable by
+  design and a shrunken escape is a dark pattern.
+- **Offline is not an error.** `OnlineStatusBanner` was centred, 1px at 60%, on
+  a `bg-secondary/80` fill, and wrapped to two lines at 390px — pushing the
+  app's chrome down every time it appeared. One line, flush left, **ink under a
+  2px ink rule, never red**, carrying the outbox depth as a count.
+- **The handoff asks for a new storage key for that count; it is already
+  built.** `src/lib/sync/outbox.ts` has persisted to `STORAGE_KEYS.outbox` and
+  published `{ pending, stuck }` through `subscribe()` since sync v2. A second
+  key would have been a second source of truth for one number.
+- **`error.tsx` matches `not-found.tsx`.** It still ran the pre-rebrand pattern:
+  centred `content-card`, `uppercase` on display type (those caps were
+  Barlow's — Archivo sets its own case), `rounded-2xl` 1px secondary. Flush
+  left, `.display-section`, `.eyebrow-live`, 2px rules, `RotateCcw` on Try
+  again. The Sentry digest is a **labelled reference block** rather than the
+  tail of a sentence — it is something you read out or paste into an email.
+
+**Still open from this phase** (paired with the held pillar screens, since each
+belongs to one): the exercise picker is still an inline `max-h-48` list rather
+than a sheet; the plate calculator's per-side squares; Fuel's meal tab strip and
+the missing entry point for `estimateMealFromDescription`; `AdjustSessionSheet`'s
+Applied panel; `LibraryDetailSheet` off Radix; the offline page's "Waiting to
+sync" list (the banner has the count, the list does not exist yet); and the
+per-screen loading states printing their real labels.
+
+---
+
+## 2026-07-26 — First run stops arguing with the promise (`.154`)
+
+Phase 4.
+
+- **I-Day's selects became ruled radio rows.** Two of the three questions were
+  native `<select>`s — a control that shows one option and hides the rest behind
+  an OS wheel, on the screen whose whole job is "tell us what you have so we can
+  pick a session". New [`RuledRadioGroup`](src/components/ui/RuledRadioGroup.tsx):
+  52px rows, 2px rules, selected takes the poster edge + `accent-100` + a
+  trailing `Check`. Native `<input type="radio">` underneath, so arrow keys and
+  group semantics come free instead of being reimplemented on divs.
+- **Step 3's primary action is Skip.** Sign-in had the filled primary and the
+  skip was a **ghost button in muted text** — the weakest thing on screen. "No
+  account required to start" is the product's headline promise and the last
+  onboarding screen was spending its emphasis arguing with it. Sign-in now sits
+  inside a 2px-ruled `--card` panel; Skip is the one `.primary-action`.
+- **And it said the wrong thing.** The label was `Skip — go to Today` in
+  thirteen locales, but `finish()` routes to `/active` with the previewed
+  session. Now `Skip — start training` everywhere. The English default in the
+  component was already right and had been overridden by the locale layer for
+  who knows how long — a reminder that `defaultValue` is not what ships.
+- **Day 0 showed a Readiness of 42 computed from nothing.** `ScoreNumeral` has
+  always rendered `value={null}` as an em-dash, with a comment explaining why
+  ("a 0 reads as failure on day one when the real state is not measured yet") —
+  but `BodyScores` are plain numbers, never null, so **nothing ever passed
+  one**. `MetricsRow` takes a `sessions` prop now: with none logged, all four
+  cells are em-dashes carrying the condition that fills them (`After your first
+  log`, `Not measured`), and **Recovery stays dashed until three sessions**
+  because `computeBodyScores` needs more history than one can give. Omitting
+  the prop keeps the old behaviour, so demos and computed previews are
+  untouched. A number nobody measured is a worse lie than a zero — it looks
+  true.
+- Not done: the mock's empty-but-present week strip on day 0. Today's week
+  strip is still `TodayCoachWeekStrip`, which phase 2 left in place; building a
+  second one for the empty case only would leave two.
+
+---
+
+## 2026-07-26 — One console, two states (`.153`)
+
+Phase 3, the largest change in the mobile program. Horizon W excellence
+criterion 1 is "one-thumb set logging outdoors"; this is the screen where it
+was not true.
+
+- **The Log button was off-screen mid-set.** Every planned set rendered its own
+  control band — `#n`, two 44px steppers around a reps field, two more around a
+  weight field, and Log. That is ~340px inside 326px, so it lived in an
+  `overflow-x-auto` and **you had to drag the row sideways to reach Log**, one
+  -handed, holding a bar. Four planned sets rendered four of them.
+- **`LogConsole`** takes it: ink panel, exercise name + `Set n of m`, the
+  `Last time 8 × 62.5 kg` line, 48 × 52px steppers around 26px/800 numerals,
+  and a full-width poster-red **Log set** at 52px. Poster red is correct here
+  precisely because every line on that button is display-grade — the one case
+  #ec3013 clears.
+- **`SetLogRow` is a record now**, not a control band: `#n · 8 × 60 kg`, kind
+  tag, PR honor badge, RPE, `Check` in `--primary`. Sets still to come read
+  `In the console` or `10 planned`. Six props gone from it and from
+  `ActiveExerciseCard`; lint found every dead one.
+- **Rest takes the same console over** rather than being a second panel
+  floating on the rows it describes. `ScreenDock` renders one or the other,
+  never both, and cannot overlap the list.
+- **Set kind moved into the console**, where the set is being defined, instead
+  of a per-row "More" expander. `Apply` / `Use last` retired: the field is
+  already seeded from `suggestNextSetTarget`, and the target line says what the
+  seed was.
+- Rest presets were **36px** — under the 44px floor, and `first-90`'s sweep
+  scopes `main`, which the dock is not in. Both fixed: the buttons, and **the
+  sweep now includes `#screen-dock`**, or it would have quietly stopped
+  covering the very controls it exists for.
+- Last two "More"s renamed: the exercise footer is **Set options**. Three
+  controls shared that word for three different things and the tab bar now has
+  one that means the ninth screen.
+- The logger's dashed empty card is gone — two rules, flush left, like every
+  other empty state since `.150`.
+- **Test contract, changed deliberately.** `activeLogSet` is "Log set" in every
+  locale now, so `/^log$/i` is widened to `/^log( set)?$/i` in **three** specs —
+  `first-90`, `logger-depth` **and `hero-flows`**, which the plan missed and the
+  gate caught. Still anchored, so it cannot start matching "Log food". An
+  `aria-label="Log"` over the visible "Log set" was the alternative and breaks
+  WCAG 2.5.3 (Label in Name).
+
+---
+
+## 2026-07-26 — Today's action docks, and nothing floats any more (`.152`)
+
+Phase 2. The screen change is small; the layout change under it is not.
+
+- **`.today-shell` was double-padding the most important screen.** `AppLayout`
+  applies `px-4` and this added `max(1rem, …)` on top — 32px of inset, 326px
+  usable, the narrowest screen in the product. Horizontal padding dropped, safe
+  -area insets kept.
+- **`JourneyHero` is a dock.** It was a `p-7` panel carrying a kicker, a 1.6rem
+  title, a description and sometimes a footnote — five lines restating what the
+  button under them said, and it scrolled away. Docked, **the button label is
+  the title**; the description survives as one clamped line, because "why this
+  action" is worth keeping and the paragraph is not worth the fold.
+- **New `ScreenDock`** (`src/components/layout/ScreenDock.tsx`) — screens
+  portal their docked field into a host `AppLayout` renders as a flex sibling
+  of `main`. Two reasons it cannot just be `position: fixed`:
+  `.stagger-enter` animates `transform` with `both`, so the settled frame still
+  has a transform and **a transformed ancestor is the containing block for
+  fixed descendants** — a "fixed" dock inside a `StaggerItem` pins itself to
+  that item. And a flex sibling *reserves its own height*, which no fixed panel
+  can.
+- **`MobileNav` is in flow, not `fixed`.** It is the last child of a
+  `h-screen flex-col` shell, so static puts it in exactly the same place while
+  reserving its height. `main`'s `pb-[calc(56px+…)]` is gone. This is the fix
+  for **drift 10**: `RestTimerBar` was `fixed bottom-[calc(52px+…)]` while
+  `main` padded only for the tab bar, so the rest dock covered the set row it
+  was counting down for. It is in the `ScreenDock` now and cannot.
+- Fuel's floating Log food button was offset from `52px`; the bar has been
+  56px since `.151`.
+- **Muscle freshness** was a sideways chip scroller (`rounded-xl`, 1px border
+  at 50%, `bg-muted/20`) inside a `<details>` that was itself a 1px hairline at
+  40% — three containers around eight facts. Now one ruled row per group: name,
+  state, an 8px meter on a `neutral-300` track, days in `tabular-nums`. The
+  four-day boundary is `muscleFreshnessRows`' own, not a display invention.
+  Eight one-line rows cost less height than the disclosure that hid them, so
+  nothing is hidden.
+- Today's **"More" disclosure is "Today details"** — three disclosures shared
+  that word for three different things, and `.151` added a tab called More.
+- Coach invite off its 1px/40% hairlines and `font-medium`.
+- Deliberately **not** shipped: the mock's `~24 min` on the dock. Nothing in
+  the codebase estimates session duration, and `JourneyAction` carries none —
+  it would be an invented number in the most trusted spot on the screen.
+
+---
+
+## 2026-07-26 — Thirteen tabs become five plus a sheet (`.151`)
+
+Phase 1 of the mobile app redesign. The worst defect in the signed-in app,
+and the one nothing was measuring.
+
+- **The bar was 884px of track in a 390px window.** `MobileNav` flattened
+  `railGroupsForNav()` — all thirteen rail screens at 68px each — onto a
+  horizontal scroller. Seven destinations sat off-screen with no affordance
+  saying they existed, **including the only route to sign-in and settings**.
+  It is now **Today · Train · Coach · Fuel · More**, `flex-1` at 78px each,
+  56px tall, no scroll.
+- **`PRIMARY_NAV` was not rewritten**, which was the first plan and was wrong:
+  the rail resolves `/profile` through it, so dropping the fifth entry makes
+  `railGroupsForNav()` throw. The bar is a **subset** — `MOBILE_TAB_HREFS`,
+  four hrefs resolved through the same registry — and More is a button, not a
+  route, so it could never have lived in a list of routes anyway.
+- **New More sheet** on the recut `AdaptiveOverlay`, built from
+  `railGroupsForNav()`, with the four tab routes filtered out: a row repeating
+  a button two inches below it is dead weight. Nine screens, grouped Mission /
+  Pillars / Toolkit, 52px rows, 2px between groups and 1px between rows.
+- **Rows carry a live figure** where an honest one exists — `4 sessions`,
+  `Checked in`, `3 this week` — so the sheet reads as a status board rather
+  than a menu. Only three figures, deliberately: session count waits on the
+  store's `hasHydrated`, because a persisted store reports an empty history for
+  a frame and "0 sessions" flashing at a user with fifty is the same lie as a
+  zeroed score.
+- **The header's inline nav panel is gone.** The app had two menus over
+  overlapping sets of screens — the header's, grouped by journey phase, and the
+  bar's, grouped by rail. The brand button opens the same sheet the fifth tab
+  does: a bottom sheet on a phone, a centred dialog on a desktop, one source.
+- **The Coach tab shows `Coach`, not `AI weekly plan`.** The live label is
+  right for the screen and was kept on purpose when the bar still scrolled at
+  68px a tab; at 78px a 10px caps label renders it `AI WEEKLY …`, and an
+  ellipsis is not a name. Narrow override in `TAB_LABEL_OVERRIDES`, the same
+  device `RAIL_LABEL_OVERRIDES` already uses for Assess. Screen, rail and sheet
+  are unchanged.
+- `main` now reserves 56px, not 52 — it is the only thing reserving the bar.
+- New `tests/e2e/mobile-nav.spec.ts` (3 `@gate` cases): the track fits inside
+  the bar **at 360px measured, not asserted by class name**; all thirteen
+  screens reachable in ≤2 taps and the sheet repeats no tab; Escape closes and
+  restores focus. Gate 26→29.
+- Two things the tests caught that a screenshot would not: More is the one slot
+  that is a button, so it does nothing until hydration — specs opening it need
+  `networkidle`; and building the groups in an effect gave one frame of an
+  **open sheet with nothing in it**. `railGroupsForNav()` is sync and the whole
+  module is already behind a dynamic import, so it computes during render.
+
+---
+
+## 2026-07-26 — Mobile primitives, before the screens (`.150`)
+
+Phase 0 of the **mobile app redesign** (third handoff,
+`~/Downloads/design_handoff_mobile_app/`, wave D6). Four shared primitives, so
+the phases after this build on corrected parts instead of re-touching them.
+
+- **`AdaptiveOverlay` was still pre-rebrand** — the handoff treats it as the
+  ready sheet shell and it was not: a 1px header rule at 30% alpha, a
+  `font-medium` eyebrow on a 400/600/800 face, an 18px/600 title where the
+  sheet spec says 22px/800, and a `muted-foreground/30` drag pill. It now
+  carries the **2px ink top rule** as its whole sheet affordance, an 11px caps
+  eyebrow over a 22px/800 title, and a 44px 2px-ruled close.
+- **New `footer` prop** — a pinned region for the sheet's one primary action,
+  held out of the scroll. Seven sheets need it in phase 5; adding it here means
+  none of them hand-rolls one. It sits inside the panel, so the panel's
+  safe-area padding already lifts it clear of the home indicator.
+- **`EmptyState` and `ErrorState`** were the two dashed, rounded, centred,
+  tinted-chip surfaces on a flush-left system. Both are two 2px rules now, ink
+  square mark, 22px/800 title. `ErrorState` keeps red — something did fail —
+  but as a 2px `--primary` rule and a filled mark, not a 5% wash that is
+  invisible on paper anyway.
+- **`Skeleton` bars were invisible.** `bg-muted/50` over a `bg-muted` card is
+  `#eae9e9` at half alpha on `#eae9e9`; only `animate-pulse` revealed them, so
+  the animation carried the information and `prefers-reduced-motion` deleted
+  it. `neutral-300`, no pulse.
+- Not done here on purpose: the ~190 `font-medium` and ~107 alpha-border sites
+  across the app. The ones the handoff logs sit on lines phases 2 and 3 rewrite
+  outright, and the rest are on screens with their own phase. Each sweep rides
+  with the phase that owns the file.
+- Correction to the handoff: `ErrorState` is **not** "the last dashed surface"
+  — eight remain, including `ActiveWorkoutPage.tsx:323`, which phase 3 meets.
+
+---
+
 ## 2026-07-26 — You, Welcome, and the last of the old palette (`.149`)
 
 Phase K, and the end of the redesign.

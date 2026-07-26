@@ -1,7 +1,5 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import dynamic from 'next/dynamic';
@@ -11,53 +9,37 @@ import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { Badge } from '@/components/ui/badge';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { ROUTE_LABELS, STATIC_PAGE_TITLES } from '@/lib/pageTitles';
-import type { JourneyPhase } from '@/lib/missionJourney';
-import type { NavSection } from '@/lib/navConfig';
-import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { readJson } from '@/lib/storage/safeStorage';
 
 const HeaderAuthChip = dynamic(
   () => import('@/components/layout/HeaderAuthChip').then((m) => ({ default: m.HeaderAuthChip })),
   { ssr: false }
 );
 
-/** Read journey phase without pulling full missionJourney sync into first paint. */
-function useJourneyPhaseLite(): JourneyPhase {
-  const [phase, setPhase] = useState<JourneyPhase>('basic');
-  useEffect(() => {
-    const parsed = readJson<{ phase?: JourneyPhase } | null>(STORAGE_KEYS.journeyState, null);
-    if (parsed?.phase) setPhase(parsed.phase);
-  }, []);
-  return phase;
-}
-
-export function AppHeader() {
+/**
+ * App chrome header — brand, page title, auth chip.
+ *
+ * The brand button used to expand an inline nav panel inside the header, which
+ * meant the app had two menus describing overlapping sets of screens: this one
+ * (grouped by journey phase) and the tab bar (grouped by rail). It now opens
+ * the same More sheet the fifth tab does, so there is one answer to "where is
+ * everything" at any width — a bottom sheet on a phone, a centred dialog on a
+ * desktop, both from `railGroupsForNav()`.
+ */
+export function AppHeader({
+  onOpenMore,
+  moreOpen = false,
+}: {
+  onOpenMore: () => void;
+  moreOpen?: boolean;
+}) {
   const pathname = usePathname();
   const { t } = useTranslation();
-  const phase = useJourneyPhaseLite();
-  const [open, setOpen] = useState(false);
-  const [navSections, setNavSections] = useState<NavSection[] | null>(null);
-  const headerRef = useRef<HTMLElement>(null);
-
-  // Extended menu icons only load when the user opens the dropdown.
-  useEffect(() => {
-    if (!open) return;
-    let cancelled = false;
-    void import('@/lib/navConfig').then((m) => {
-      if (!cancelled) setNavSections(m.extendedNavSectionsForPhase(phase));
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [open, phase]);
 
   const pageTitle = (() => {
     const normalized = pathname === '/' ? '/log' : pathname;
     const staticTitle =
       STATIC_PAGE_TITLES[normalized] ??
-      (normalized.startsWith('/learn/guide/')
-        ? STATIC_PAGE_TITLES['/learn/guide']
-        : undefined);
+      (normalized.startsWith('/learn/guide/') ? STATIC_PAGE_TITLES['/learn/guide'] : undefined);
     if (staticTitle) {
       return staticTitle.labelKey
         ? t(staticTitle.labelKey, { defaultValue: staticTitle.label })
@@ -70,43 +52,14 @@ export function AppHeader() {
     return t('appName', { defaultValue: 'Mission Winning' });
   })();
 
-  const close = useCallback(() => setOpen(false), []);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!open) return;
-    const onPointerDown = (e: MouseEvent | TouchEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-    document.addEventListener('mousedown', onPointerDown);
-    document.addEventListener('touchstart', onPointerDown);
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('mousedown', onPointerDown);
-      document.removeEventListener('touchstart', onPointerDown);
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [open]);
-
   return (
-    <header
-      ref={headerRef}
-      className="shrink-0 z-50 border-b-2 border-border bg-background"
-    >
+    <header className="shrink-0 z-50 border-b-2 border-border bg-background">
       <div className="relative z-[1] flex items-center gap-2 px-4 min-h-[56px]">
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-haspopup="true"
+          onClick={onOpenMore}
+          aria-expanded={moreOpen}
+          aria-haspopup="dialog"
           className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-foreground/[0.05] transition-colors -ms-1 ps-1 py-1"
         >
           <BrandMonogram className="h-9 w-9 text-sm" />
@@ -125,7 +78,7 @@ export function AppHeader() {
             <ChevronDown
               className={cn(
                 'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
-                open && 'rotate-180 text-primary'
+                moreOpen && 'rotate-180 text-primary'
               )}
             />
           </div>
@@ -134,109 +87,6 @@ export function AppHeader() {
         <span className="text-sm text-muted-foreground shrink-0 hidden sm:inline max-w-[140px] truncate">
           {pageTitle}
         </span>
-      </div>
-
-      <div
-        className={cn(
-          'relative z-[1] grid transition-[grid-template-rows] duration-200 ease-out border-t border-border/40',
-          open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-        )}
-      >
-        <div className="overflow-hidden">
-          {open && (
-            <div className="max-h-[min(70vh,520px)] overflow-y-auto bg-card px-4 py-4">
-              <p className="text-xs text-muted-foreground mb-4 sm:hidden">{pageTitle}</p>
-              {(phase === 'i-day' || phase === 'basic') && (
-                <p className="text-xs text-muted-foreground mb-3 max-w-5xl mx-auto leading-relaxed">
-                  {t('navBasicFocusHint', {
-                    defaultValue:
-                      'Start with Today, Train, and Coach. More tools live here when you need them.',
-                  })}
-                </p>
-              )}
-              {!navSections ? (
-                <p className="text-xs text-muted-foreground max-w-5xl mx-auto py-2">
-                  {t('loading', { defaultValue: 'Loading…' })}
-                </p>
-              ) : (
-                <div
-                  className={cn(
-                    'grid gap-6 max-w-5xl mx-auto',
-                    navSections.length === 1
-                      ? 'sm:grid-cols-1'
-                      : navSections.length === 2
-                        ? 'sm:grid-cols-2'
-                        : 'sm:grid-cols-2 lg:grid-cols-4'
-                  )}
-                >
-                  {navSections.map((section) => (
-                    <div key={section.id}>
-                      <h2 className="mb-2 px-1 text-xs font-medium tracking-wide text-muted-foreground">
-                        {t(section.titleKey, { defaultValue: section.title })}
-                      </h2>
-                      <ul className="space-y-0.5">
-                        {section.items.map((item) => {
-                          const Icon = item.icon;
-                          const active = pathname === item.href;
-                          const military = item.military;
-                          return (
-                            <li key={item.href}>
-                              <Link
-                                href={item.href}
-                                onClick={close}
-                                className={cn(
-                                  'flex items-center gap-2.5 rounded-xl px-3 py-2.5 min-h-[44px] text-sm transition-colors',
-                                  active
-                                    ? 'bg-primary/15 text-primary'
-                                    : 'text-foreground/90 hover:bg-muted/60',
-                                  military && !active && 'border border-status-warn/20'
-                                )}
-                              >
-                                <Icon
-                                  className={cn(
-                                    'h-4 w-4 shrink-0',
-                                    military && 'text-status-warn/80'
-                                  )}
-                                  aria-hidden
-                                />
-                                <span className="font-medium truncate">
-                                  {t(item.labelKey, { defaultValue: item.label })}
-                                </span>
-                              </Link>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="flex flex-wrap gap-4 mt-5 pt-4 border-t border-border/40 text-xs text-muted-foreground max-w-5xl mx-auto">
-                <Link href="/vision" onClick={close} className="hover:text-primary">
-                  {t('navOurMission', { defaultValue: 'Our mission' })}
-                </Link>
-                <Link href="/beta" onClick={close} className="hover:text-primary">
-                  {t('navBetaGuide', { defaultValue: 'Beta guide' })}
-                </Link>
-                <Link href="/about" onClick={close} className="hover:text-primary">
-                  {t('about', { defaultValue: 'About' })}
-                </Link>
-                <Link href="/terms" onClick={close} className="hover:text-primary">
-                  {t('termsOfService', { defaultValue: 'Terms' })}
-                </Link>
-                <Link href="/privacy" onClick={close} className="hover:text-primary">
-                  {t('privacyPolicy', { defaultValue: 'Privacy' })}
-                </Link>
-                <Link href="/dmca" onClick={close} className="hover:text-primary">
-                  {t('infoDmcaTitle', { defaultValue: 'DMCA' })}
-                </Link>
-                <Link href="/refunds" onClick={close} className="hover:text-primary">
-                  {t('infoRefundsTitle', { defaultValue: 'Refunds' })}
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
     </header>
   );

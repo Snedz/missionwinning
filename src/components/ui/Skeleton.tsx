@@ -1,13 +1,16 @@
 import { cn } from '@/lib/utils';
 
-/** Pulse placeholder for route / card loading. */
+/**
+ * Reserved-space placeholder for route / card loading.
+ *
+ * No pulse, and `neutral-300` rather than `bg-muted/50`. The old bars were
+ * `#eae9e9` at half alpha over a `#eae9e9` card — literally invisible until the
+ * pulse dimmed them, which meant the animation *was* the information and
+ * `prefers-reduced-motion` deleted it. A placeholder's job is to hold the shape
+ * the content will take; it does not need to move to say so.
+ */
 export function Skeleton({ className }: { className?: string }) {
-  return (
-    <div
-      className={cn('animate-pulse rounded-lg bg-muted/50', className)}
-      aria-hidden
-    />
-  );
+  return <div className={cn('bg-neutral-300', className)} aria-hidden />;
 }
 
 /** Content-card shaped loading block for route transitions. */
@@ -39,7 +42,7 @@ export function CoachPlanSkeleton({ className }: { className?: string }) {
     >
       <div className="flex gap-2 overflow-hidden">
         {Array.from({ length: 7 }).map((_, i) => (
-          <Skeleton key={i} className="h-14 w-12 shrink-0 rounded-xl" />
+          <Skeleton key={i} className="h-14 w-12 shrink-0" />
         ))}
       </div>
       <SkeletonCard />
@@ -64,7 +67,7 @@ export function FuelPlanSkeleton({ className }: { className?: string }) {
         <Skeleton className="h-8 flex-1" />
       </div>
       {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="space-y-2 rounded-xl border border-border/40 p-3">
+        <div key={i} className="space-y-2 border-2 border-border p-3">
           <Skeleton className="h-4 w-24" />
           <Skeleton className="h-3 w-full" />
           <Skeleton className="h-3 w-2/3" />

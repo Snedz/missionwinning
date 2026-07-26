@@ -39,23 +39,11 @@ type Props = {
   workoutHistory: CompletedWorkoutLog[];
   units: UnitsPref;
   unitLabel: string;
-  weightStep: number;
   nextSet: { exIdx: number; setIdx: number } | null;
   nextSetRef: RefObject<HTMLDivElement | null>;
   swapOpen: boolean;
   noteOpen: boolean;
   swapCandidates: Exercise[];
-  getSetInput: (
-    exIdx: number,
-    setIdx: number,
-    defaultReps: number,
-    defaultWeight: number
-  ) => { reps: number; weight: number };
-  lastPerformanceForSet: (
-    history: CompletedWorkoutLog[],
-    exerciseId: string,
-    setIdx: number
-  ) => { reps: number; weight: number } | null;
   lastSessionSets: (
     history: CompletedWorkoutLog[],
     exerciseId: string
@@ -69,10 +57,6 @@ type Props = {
   onRemove: () => void;
   onSwapTo: (id: string) => void;
   onNoteChange: (note: string) => void;
-  onRepsChange: (setIdx: number, v: number) => void;
-  onWeightChange: (setIdx: number, v: number) => void;
-  onSetKindChange: (setIdx: number, kind: SetKind) => void;
-  onLog: (setIdx: number) => void;
   onRate: (setIdx: number, rpe: NonNullable<LoggedSet['rpe']>) => void;
   onApplyAllTargets: () => void;
   onAddSet: () => void;
@@ -88,14 +72,11 @@ export function ActiveExerciseCard({
   workoutHistory,
   units,
   unitLabel,
-  weightStep,
   nextSet,
   nextSetRef,
   swapOpen,
   noteOpen,
   swapCandidates,
-  getSetInput,
-  lastPerformanceForSet,
   lastSessionSets,
   onRepeatLast,
   onFormGuide,
@@ -106,10 +87,6 @@ export function ActiveExerciseCard({
   onRemove,
   onSwapTo,
   onNoteChange,
-  onRepsChange,
-  onWeightChange,
-  onSetKindChange,
-  onLog,
   onRate,
   onApplyAllTargets,
   onAddSet,
@@ -334,46 +311,15 @@ export function ActiveExerciseCard({
       </CardHeader>
       <CardContent className="space-y-2 p-3 pt-0">
         {exLog.sets.map((set, setIdx) => {
-          const input = getSetInput(exIdx, setIdx, set.reps, set.weight);
           const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
-          const setPerf = lastPerformanceForSet(workoutHistory, exLog.exerciseId, setIdx);
-          const target =
-            !set.completed && lastSets ? suggestNextSetTarget(lastSets, setIdx, units) : null;
           return (
             <div key={set.id} ref={isNext ? nextSetRef : undefined}>
               <SetLogRow
                 setNumber={setIdx + 1}
                 set={set}
-                reps={input.reps}
-                weight={input.weight}
                 isNext={isNext}
                 weightLabel={unitLabel}
-                weightStep={weightStep}
-                lastPerformance={setPerf}
-                target={target}
-                onRepsChange={(v) => onRepsChange(setIdx, v)}
-                onWeightChange={(v) => onWeightChange(setIdx, v)}
-                onSetKindChange={(kind) => {
-                  if (kind) onSetKindChange(setIdx, kind);
-                }}
-                onLog={() => onLog(setIdx)}
                 onRate={(rpe) => onRate(setIdx, rpe)}
-                onApplyTarget={
-                  target
-                    ? () => {
-                        onRepsChange(setIdx, target.reps);
-                        onWeightChange(setIdx, target.weight);
-                      }
-                    : undefined
-                }
-                onCopyLast={
-                  setPerf
-                    ? () => {
-                        onRepsChange(setIdx, setPerf.reps);
-                        onWeightChange(setIdx, setPerf.weight);
-                      }
-                    : undefined
-                }
               />
             </div>
           );
@@ -402,9 +348,13 @@ export function ActiveExerciseCard({
                 aria-expanded={footerOpen}
                 onClick={() => setFooterOpen((v) => !v)}
               >
+                {/* "Set options", not "More" — this was the last of the three
+                    controls in the app labelled More meaning three different
+                    things, and the tab bar now has one that means the ninth
+                    screen. */}
                 {footerOpen
                   ? t('activeSetLess', { defaultValue: 'Less' })
-                  : t('activeSetMore', { defaultValue: 'More' })}
+                  : t('activeSetOptions', { defaultValue: 'Set options' })}
               </Button>
               {footerOpen && (
                 <>

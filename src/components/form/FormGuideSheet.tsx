@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { FormGuide } from '@/types/formGuide';
+import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { cn } from '@/lib/utils';
 
 interface FormGuideSheetProps {
@@ -23,41 +23,44 @@ export function FormGuideSheet({
   onClose,
 }: FormGuideSheetProps) {
   const { t } = useTranslation();
-  if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <button
-        type="button"
-        className="absolute inset-0 bg-foreground/50"
-        aria-label="Close form guide"
-        onClick={onClose}
-      />
-      <div
-        className={cn(
-          'relative w-full sm:max-w-md max-h-[85vh] overflow-y-auto',
-          'rounded-t-2xl sm:rounded-2xl border border-border/60',
-          'border-2 border-border bg-card animate-in slide-in-from-bottom duration-200',
-          guide.militaryStyle && 'border-[hsl(var(--status-warn)/0.4)]'
-        )}
-        role="dialog"
-        aria-labelledby="form-guide-title"
-      >
-        <div className="sticky top-0 flex items-center justify-between border-b-2 border-border bg-card px-5 py-4">
-          <div>
-            <p className="text-xs uppercase tracking-widest text-muted-foreground">{t('formGuideTitle', { defaultValue: 'Form guide' })}</p>
-            <h2 id="form-guide-title" className="text-lg font-semibold">{exerciseName}</h2>
-          </div>
+    /*
+     * On AdaptiveOverlay, like every other sheet. This was hand-rolled at
+     * `z-[60]` — below the shared shell's `z-[70]` — which is why a form guide
+     * could open *underneath* a sheet already up, and why the focus trap,
+     * Escape handler and scroll lock existed twice in the codebase with only
+     * one of the two implementations correct.
+     *
+     * Body stays 17px: this is the one surface read standing up mid-set.
+     */
+    <AdaptiveOverlay
+      open={open}
+      onClose={onClose}
+      size="sm"
+      eyebrow={t('formGuideTitle', { defaultValue: 'Form guide' })}
+      title={exerciseName}
+      footer={
+        <div className="space-y-2">
           <button
             type="button"
             onClick={onClose}
-            className="flex h-11 w-11 items-center justify-center hover:bg-muted transition-colors"
-            aria-label="Close"
+            className="w-full min-h-[52px] bg-primary-fill text-[17px] font-semibold text-white transition-colors hover:bg-primary-fill-hover"
           >
-            <X className="h-5 w-5" />
+            {t('gotItStartSet', { defaultValue: 'Got it — start set' })}
           </button>
+          {exerciseId && (
+            <Link
+              href={`/coach?ask=${encodeURIComponent(exerciseId)}`}
+              onClick={onClose}
+              className="flex w-full min-h-[44px] items-center justify-center text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
+            </Link>
+          )}
         </div>
-
+      }
+    >
         <div className="p-5 space-y-5 text-[17px] leading-relaxed">
           {guide.mediaUrl && (
             <FormGuideMedia url={guide.mediaUrl} type={guide.mediaType ?? 'image'} name={exerciseName} />
@@ -83,33 +86,13 @@ export function FormGuideSheet({
             <GuideSection title={t('avoid', { defaultValue: 'Avoid' })} items={guide.commonErrors} variant="error" />
           )}
           {guide.breathing && (
-            <section className="rounded-xl bg-muted/40 px-4 py-3">
+            <section className="border-2 border-border px-4 py-3">
               <h3 className="text-sm font-semibold text-muted-foreground mb-1">{t('breath', { defaultValue: 'Breath' })}</h3>
               <p>{guide.breathing}</p>
             </section>
           )}
         </div>
-
-        <div className="sticky bottom-0 border-t border-border/40 bg-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full min-h-[44px] rounded-xl bg-primary-fill hover:bg-primary-fill-hover text-white font-semibold text-[17px] transition-colors"
-          >
-            {t('gotItStartSet', { defaultValue: 'Got it — start set' })}
-          </button>
-          {exerciseId && (
-            <Link
-              href={`/coach?ask=${encodeURIComponent(exerciseId)}`}
-              onClick={onClose}
-              className="flex w-full min-h-[44px] items-center justify-center rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
-            </Link>
-          )}
-        </div>
-      </div>
-    </div>
+    </AdaptiveOverlay>
   );
 }
 

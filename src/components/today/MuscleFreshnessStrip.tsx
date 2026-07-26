@@ -1,13 +1,24 @@
 'use client';
 /**
- * Forge-style muscle freshness glance — not a second CTA.
- * See: docs/DESIGN_RESEARCH.md § Wave 3
+ * Muscle freshness — one ruled row per group, not a horizontal chip scroller.
+ *
+ * The chips were `rounded-xl` boxes with a 1px border at 50% alpha on a
+ * `bg-muted/20` fill, scrolling sideways inside a `<details>` that was itself
+ * a 1px hairline at 40%. Three levels of container around eight facts. Rows
+ * read down the page at the width the page already has, and the meter says
+ * "how recovered" in the same visual language as every other budget in the app.
+ *
+ * The four-day boundary is `muscleFreshnessRows`' own (`days >= 4`), not a
+ * threshold invented here for display.
  */
 
 import { useTranslation } from 'react-i18next';
 import { muscleGroupLabel } from '@/lib/readinessDisplay';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { cn } from '@/lib/utils';
+
+/** Days at which `muscleFreshnessRows` calls a group recovered. */
+const FRESH_AT_DAYS = 4;
 
 export type FreshnessRow = {
   group: MuscleGroup;
@@ -24,47 +35,46 @@ export function MuscleFreshnessStrip({ rows, className }: Props) {
   const { t } = useTranslation();
 
   return (
-    <div
-      className={cn('flex gap-2 overflow-x-auto pb-1 -mx-0.5 px-0.5', className)}
-      role="list"
+    <ul
+      className={cn('border-t-2 border-border', className)}
       aria-label={t('todayMuscleFreshness', { defaultValue: 'Muscle freshness' })}
     >
       {rows.map((row) => {
         const label = muscleGroupLabel(row.group, t);
-        const daysLabel =
-          row.days === 99
-            ? t('todayFreshNew', { defaultValue: 'new' })
-            : t('todayFreshDays', { days: row.days, defaultValue: `${row.days}d` });
+        const never = row.days === 99;
+        const pct = never ? 100 : Math.round((Math.min(row.days, FRESH_AT_DAYS) / FRESH_AT_DAYS) * 100);
+        const state = never
+          ? t('todayFreshNew', { defaultValue: 'new' })
+          : row.recommended
+            ? t('todayFreshReady', { defaultValue: 'ready' })
+            : t('todayFreshRecovering', { defaultValue: 'recovering' });
+
         return (
-          <div
+          <li
             key={row.group}
-            role="listitem"
-            className={cn(
-              'shrink-0 rounded-xl border px-2.5 py-1.5 min-w-[4.5rem] text-center',
-              row.recommended
-                ? 'border-border bg-accent-100'
-                : 'border-border/50 bg-muted/20'
-            )}
+            className="flex items-center gap-3 border-b border-border py-2.5"
           >
-            <div className="text-[10px] font-semibold uppercase tracking-wide text-foreground/90">
-              {label}
-            </div>
-            <div
+            <span className="w-24 shrink-0 truncate text-sm font-semibold">{label}</span>
+            <span
               className={cn(
-                'text-[11px] tabular-nums mt-0.5',
-                row.recommended ? 'text-accent-900' : 'text-muted-foreground'
+                'w-24 shrink-0 text-[11px] font-semibold uppercase tracking-[0.06em]',
+                row.recommended ? 'text-primary' : 'text-muted-foreground'
               )}
             >
-              {daysLabel}
-              {row.recommended && row.days !== 99 ? (
-                <span className="ms-1 text-[9px] font-medium uppercase tracking-wider opacity-80">
-                  {t('todayFreshRec', { defaultValue: 'REC' })}
-                </span>
-              ) : null}
-            </div>
-          </div>
+              {state}
+            </span>
+            <span className="h-2 flex-1 bg-neutral-300" aria-hidden>
+              <span
+                className="block h-full bg-primary-fill transition-[width] duration-500 ease-out motion-reduce:transition-none"
+                style={{ width: `${pct}%` }}
+              />
+            </span>
+            <span className="w-8 shrink-0 text-end text-xs tabular-nums text-muted-foreground">
+              {never ? '—' : t('todayFreshDays', { days: row.days, defaultValue: `${row.days}d` })}
+            </span>
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 }

@@ -34,6 +34,13 @@ type Props = {
   className?: string;
   /** Extra classes on the body scroll region */
   bodyClassName?: string;
+  /**
+   * Pinned footer region — the sheet's one primary action, held out of the
+   * scroll so it stays reachable however long the body runs. Sits inside the
+   * panel, so the panel's safe-area padding lifts it clear of the home
+   * indicator.
+   */
+  footer?: ReactNode;
   /** Hide the default header chrome (caller supplies title inside children) */
   hideHeader?: boolean;
   /** z-index layer — default above MobileNav (z-50) and consent banner (z-60) */
@@ -59,6 +66,7 @@ export function AdaptiveOverlay({
   size = 'md',
   className,
   bodyClassName,
+  footer,
   hideHeader = false,
   zClassName = 'z-[70]',
   titleId: titleIdProp,
@@ -143,34 +151,32 @@ export function AdaptiveOverlay({
         aria-labelledby={hideHeader && !title ? undefined : titleId}
         className={cn(
           'relative w-full max-h-[min(88vh,100dvh)] overflow-hidden flex flex-col',
-          'border-2 border-border bg-card',
-          /* Compact sheet chrome */
-          'rounded-t-2xl pb-[env(safe-area-inset-bottom)]',
-          'animate-in slide-in-from-bottom duration-200',
+          'bg-card',
+          /* Compact sheet chrome. The 2px ink rule is the whole top edge — it
+             is what says "sheet" now that the drag pill is gone, and it reads
+             at arm's length where a 30%-alpha pill did not. */
+          'border-t-2 border-foreground pb-[env(safe-area-inset-bottom)]',
+          'animate-in slide-in-from-bottom duration-[250ms] ease-[cubic-bezier(.22,1,.36,1)]',
           /* Medium+ dialog chrome */
-          'md:rounded-2xl md:pb-0 md:max-h-[85vh]',
+          'md:border-2 md:pb-0 md:max-h-[85vh]',
           'md:animate-in md:fade-in md:zoom-in-95 md:slide-in-from-bottom-0',
           SIZE_MAX[size],
           className
         )}
       >
-        {/* Compact drag affordance — reads as sheet, not floating dialog */}
-        <div
-          className="flex justify-center pt-2 pb-0 md:hidden"
-          aria-hidden
-        >
-          <span className="h-1 w-10 bg-muted-foreground/30" />
-        </div>
         {!hideHeader && (
-          <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between border-b border-border/30 bg-card/98 px-5 py-3.5 md:py-4">
-            <div className="min-w-0 pe-2">
+          <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b-2 border-border bg-card p-4">
+            <div className="min-w-0">
               {eyebrow ? (
-                <div className="text-xs font-medium tracking-wide text-muted-foreground mb-0.5">
+                <div className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
                   {eyebrow}
                 </div>
               ) : null}
               {title != null ? (
-                <h2 id={titleId} className="text-lg font-semibold truncate">
+                <h2
+                  id={titleId}
+                  className="truncate text-[22px] font-extrabold leading-tight tracking-[-0.01em]"
+                >
                   {title}
                 </h2>
               ) : (
@@ -183,7 +189,7 @@ export function AdaptiveOverlay({
               ref={closeRef}
               type="button"
               onClick={onClose}
-              className="flex h-11 w-11 shrink-0 items-center justify-center hover:bg-muted transition-colors"
+              className="flex h-11 w-11 shrink-0 items-center justify-center border-2 border-border transition-colors hover:bg-muted"
               aria-label="Close"
             >
               <X className="h-5 w-5" />
@@ -193,6 +199,9 @@ export function AdaptiveOverlay({
         <div className={cn('flex-1 overflow-y-auto overscroll-contain', bodyClassName)}>
           {children}
         </div>
+        {footer ? (
+          <div className="shrink-0 border-t-2 border-border bg-card p-4">{footer}</div>
+        ) : null}
       </div>
     </div>
   );

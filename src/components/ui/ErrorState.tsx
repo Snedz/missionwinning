@@ -14,7 +14,15 @@ type ErrorStateProps = {
   className?: string;
 };
 
-/** In-page fetch/recovery failure — pairs with EmptyState for empty success cases. */
+/**
+ * In-page fetch/recovery failure — pairs with EmptyState for empty success cases.
+ *
+ * Recut with EmptyState: flush left, 2px rules, no dashed border, no tinted
+ * ground, no rounded chip. This one earns red because something actually
+ * failed — but it separates by weight (a 2px `--primary` rule and a filled
+ * mark) rather than washing the whole block in 5% danger, which on paper is
+ * indistinguishable from the ground anyway.
+ */
 export function ErrorState({
   title,
   description,
@@ -24,24 +32,25 @@ export function ErrorState({
   className,
 }: ErrorStateProps) {
   return (
-    <div
-      role="alert"
-      className={cn(
-        'content-card flex flex-col items-center justify-center gap-3 border-dashed border-status-danger/30 bg-status-danger/5 px-6 py-10 text-center',
-        className
-      )}
-    >
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-status-danger/10 text-status-danger">
-        <Icon className="h-6 w-6" aria-hidden />
+    <div role="alert" className={cn('border-y-2 border-primary py-6', className)}>
+      <div className="mb-4 flex h-9 w-9 items-center justify-center bg-primary text-primary-foreground">
+        <Icon className="h-5 w-5" aria-hidden />
       </div>
-      <div className="space-y-1 max-w-sm">
-        <p className="font-medium text-foreground">{title}</p>
-        {description ? (
-          <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
-        ) : null}
-      </div>
+      <p className="text-[22px] font-extrabold leading-tight tracking-[-0.01em] text-foreground">
+        {title}
+      </p>
+      {description ? (
+        <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-muted-foreground">
+          {description}
+        </p>
+      ) : null}
       {actionLabel && onAction ? (
-        <Button type="button" variant="outline" className="mt-1" onClick={onAction}>
+        <Button
+          type="button"
+          variant="outline"
+          className="mt-5 min-h-[44px] border-2 border-foreground"
+          onClick={onAction}
+        >
           {actionLabel}
         </Button>
       ) : null}

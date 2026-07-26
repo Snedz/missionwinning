@@ -85,7 +85,7 @@ const ar: MeaCoreStrings = {
   welcomeSubtitle: 'رحلتك نحو صحة مدى الحياة — خطوة بخطوة. حوالي دقيقتين.',
   welcomeAccept: 'أقبل المسار',
   welcomeContinue: 'متابعة',
-  welcomeSkipSignIn: 'تخطّ — إلى اليوم',
+  welcomeSkipSignIn: 'تخطّ — ابدأ التمرين',
   lang_ar: 'العربية',
   editJourneyProfile: 'تعديل ملف الرحلة',
   cloudSyncActive: 'تمت مزامنة الرحلة مع السحابة',

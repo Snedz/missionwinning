@@ -8,7 +8,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { EXERCISES, ensureFullExerciseCatalog, getExerciseById } from '@/data/exercises';
 import { useWorkoutStore } from '@/store/workoutStore';
@@ -16,6 +15,8 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
+import { LogConsole } from '@/components/workout/LogConsole';
+import { ScreenDock } from '@/components/layout/ScreenDock';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
@@ -162,6 +163,41 @@ export function ActiveWorkoutPage() {
       },
     }));
   };
+
+  /**
+   * Everything the console needs for the one set being entered. Not memoised:
+   * it is a handful of lookups off `nextSet`, and `getSetInput` closes over
+   * `setInputs` so a memo would have to list the whole input map anyway.
+   *
+   * `null` when the session is finished — the dock then has nothing to hold,
+   * which is the correct empty state rather than a console for a set that does
+   * not exist.
+   */
+  const consoleSet = (() => {
+    if (!activeWorkout || !nextSet) return null;
+    const exLog = activeWorkout.exercises[nextSet.exIdx];
+    if (!exLog) return null;
+    const set = exLog.sets[nextSet.setIdx];
+    if (!set) return null;
+    const last = getLastPerformanceForSet(workoutHistory, exLog.exerciseId, nextSet.setIdx);
+    return {
+      exIdx: nextSet.exIdx,
+      setIdx: nextSet.setIdx,
+      exerciseName: getExerciseById(exLog.exerciseId)?.name ?? exLog.exerciseId,
+      totalSets: exLog.sets.length,
+      kind: set.kind ?? ('normal' as const),
+      input: getSetInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
+      // Only when there is a real previous performance — no placeholder line.
+      targetLine: last
+        ? t('activeLastTime', {
+            reps: last.reps,
+            weight: last.weight,
+            unit: unitLabel,
+            defaultValue: `Last time ${last.reps} × ${last.weight} ${unitLabel}`,
+          })
+        : null,
+    };
+  })();
 
   const handleLogSet = (exIdx: number, setIdx: number, override?: { reps: number; weight: number }) => {
     const set = activeWorkout!.exercises[exIdx].sets[setIdx];
@@ -320,13 +356,14 @@ export function ActiveWorkoutPage() {
       <LiveHeartRate />
 
       {activeWorkout.exercises.length === 0 ? (
-        <Card className="border-dashed">
-          <CardContent className="py-12 text-center text-muted-foreground">
-            {t('activeEmptyExercises', {
-              defaultValue: 'Add exercises above to begin logging sets.',
-            })}
-          </CardContent>
-        </Card>
+        /* Was the logger's own dashed box — the system has no dashed borders
+           and nothing centred. Two rules, flush left, like every other empty
+           state since `.150`. */
+        <p className="border-y-2 border-border py-6 text-[15px] leading-relaxed text-muted-foreground">
+          {t('activeEmptyExercises', {
+            defaultValue: 'Add exercises above to begin logging sets.',
+          })}
+        </p>
       ) : (
         <div className="space-y-3">
           {activeWorkout.exercises.map((exLog, exIdx) => {
@@ -354,14 +391,11 @@ export function ActiveWorkoutPage() {
                 workoutHistory={workoutHistory}
                 units={units}
                 unitLabel={unitLabel}
-                weightStep={step}
                 nextSet={nextSet}
                 nextSetRef={nextSetRef}
                 swapOpen={swapOpenIdx === exIdx}
                 noteOpen={noteOpenIdx === exIdx}
                 swapCandidates={swapCandidates}
-                getSetInput={getSetInput}
-                lastPerformanceForSet={getLastPerformanceForSet}
                 lastSessionSets={getLastSessionSets}
                 onRepeatLast={() => handleRepeatLast(exIdx)}
                 onFormGuide={() => setFormGuideId(exercise.id)}
@@ -382,10 +416,6 @@ export function ActiveWorkoutPage() {
                   setSetInputs({});
                 }}
                 onNoteChange={(note) => setExerciseNote(exIdx, note)}
-                onRepsChange={(setIdx, v) => updateSetInput(exIdx, setIdx, 'reps', v)}
-                onWeightChange={(setIdx, v) => updateSetInput(exIdx, setIdx, 'weight', v)}
-                onSetKindChange={(setIdx, kind) => setSetKind(exIdx, setIdx, kind)}
-                onLog={(setIdx) => handleLogSet(exIdx, setIdx)}
                 onRate={(setIdx, rpe) => rateSet(exIdx, setIdx, rpe)}
                 onApplyAllTargets={() => applyTargetsForExercise(exIdx)}
                 onAddSet={() => addSetToExercise(exIdx)}
@@ -466,15 +496,41 @@ export function ActiveWorkoutPage() {
           );
         })()}
 
-      {restTimerActive && (
-        <RestTimerBar
-          remaining={restSecondsRemaining}
-          initial={restTimerInitialSeconds}
-          onSkip={stopRestTimer}
-          onAdjust={adjustRestTimer}
-          onPreset={startRestTimer}
-        />
-      )}
+      {/*
+        One dock, two states, never both. Rest takes the console over rather
+        than being a second fixed panel floating on the set rows it describes —
+        and because the dock is a flex sibling of `main`, neither can overlap
+        the list.
+      */}
+      {restTimerActive ? (
+        <ScreenDock>
+          <RestTimerBar
+            remaining={restSecondsRemaining}
+            initial={restTimerInitialSeconds}
+            onSkip={stopRestTimer}
+            onAdjust={adjustRestTimer}
+            onPreset={startRestTimer}
+          />
+        </ScreenDock>
+      ) : consoleSet ? (
+        <ScreenDock>
+          <LogConsole
+            exerciseName={consoleSet.exerciseName}
+            setNumber={consoleSet.setIdx + 1}
+            totalSets={consoleSet.totalSets}
+            targetLine={consoleSet.targetLine}
+            reps={consoleSet.input.reps}
+            weight={consoleSet.input.weight}
+            weightLabel={unitLabel}
+            weightStep={step}
+            kind={consoleSet.kind}
+            onRepsChange={(v) => updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'reps', v)}
+            onWeightChange={(v) => updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'weight', v)}
+            onKindChange={(kind) => setSetKind(consoleSet.exIdx, consoleSet.setIdx, kind)}
+            onLog={() => handleLogSet(consoleSet.exIdx, consoleSet.setIdx)}
+          />
+        </ScreenDock>
+      ) : null}
 
       <PlateCalculatorSheet
         open={plateCalcOpen}
