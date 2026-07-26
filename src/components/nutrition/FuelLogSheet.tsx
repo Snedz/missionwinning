@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
-import { Camera, Plus, Search } from 'lucide-react';
+import { Camera, PenLine, Plus, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
+import { estimateMealFromDescription } from '@/lib/nlMealLog';
 import { cn } from '@/lib/utils';
 
 const PhotoMealLogger = dynamic(
@@ -65,7 +66,32 @@ export function FuelLogSheet({
   onCustomLog,
 }: Props) {
   const { t } = useTranslation();
-  const [tab, setTab] = useState<'quick' | 'custom' | 'photo'>('quick');
+  const [tab, setTab] = useState<'quick' | 'describe' | 'custom' | 'photo'>('quick');
+  const [description, setDescription] = useState('');
+  const [describeMiss, setDescribeMiss] = useState(false);
+
+  /**
+   * `estimateMealFromDescription` has been in the tree, unit-tested, since the
+   * NL fuel-log wave — referenced by nothing but its own test file. A working
+   * estimator with no way for a user to reach it is the same as no estimator.
+   *
+   * It fills the Custom fields and hands over, rather than growing a second
+   * review-and-log path beside the one that already exists.
+   */
+  const runEstimate = () => {
+    const estimate = estimateMealFromDescription(description);
+    if (!estimate) {
+      setDescribeMiss(true);
+      return;
+    }
+    setDescribeMiss(false);
+    onCustomNameChange(estimate.name);
+    onCustomPChange(estimate.protein);
+    onCustomCChange(estimate.cals);
+    onCustomCarbsChange(estimate.carbs);
+    onCustomFatChange(estimate.fat);
+    setTab('custom');
+  };
 
   const mealLabel = (m: MealType) => {
     const keys: Record<MealType, string> = {
@@ -83,18 +109,23 @@ export function FuelLogSheet({
     return t(keys[m], { defaultValue: defaults[m] });
   };
 
+  // One ruled strip with 1px divisions, not four pills in a sideways scroller.
+  // There are exactly four meals and they always fit.
   const mealTabs = (
-    <div className="flex gap-2 overflow-x-auto pb-1 -mx-0.5 px-0.5">
+    <div className="flex border-2 border-border divide-x divide-border" role="group">
       {MEALS.map((m) => (
-        <Button
+        <button
           key={m}
-          size="sm"
-          variant={meal === m ? 'default' : 'outline'}
-          className="shrink-0 h-9  px-3.5"
+          type="button"
+          aria-pressed={meal === m}
           onClick={() => onMealChange(m)}
+          className={cn(
+            'min-h-[44px] flex-1 text-[13px] font-semibold transition-colors',
+            meal === m ? 'is-active-tab text-primary' : 'text-muted-foreground hover:bg-muted'
+          )}
         >
           {mealLabel(m)}
-        </Button>
+        </button>
       ))}
     </div>
   );
@@ -104,6 +135,7 @@ export function FuelLogSheet({
       {(
         [
           ['quick', 'fuelTabQuick', Search, 'Quick'],
+          ['describe', 'fuelTabDescribe', PenLine, 'Describe'],
           ['custom', 'fuelTabCustom', Plus, 'Custom'],
           ['photo', 'fuelTabPhoto', Camera, 'Photo'],
         ] as const
@@ -151,6 +183,50 @@ export function FuelLogSheet({
               </Button>
             ))
           )}
+        </div>
+      )}
+
+      {tab === 'describe' && (
+        <div className="space-y-3">
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {t('fuelDescribeHint', {
+              defaultValue:
+                'Type what you ate in plain words. We estimate the macros, then you check them before logging.',
+            })}
+          </p>
+          <Input
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              setDescribeMiss(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') runEstimate();
+            }}
+            placeholder={t('fuelDescribePlaceholder', {
+              defaultValue: 'chicken rice broccoli',
+            })}
+            className="h-11"
+          />
+          <Button
+            type="button"
+            variant="fitness"
+            className="w-full min-h-[44px]"
+            disabled={!description.trim()}
+            onClick={runEstimate}
+          >
+            {t('fuelDescribeEstimate', { defaultValue: 'Estimate macros' })}
+          </Button>
+          {describeMiss ? (
+            /* An honest miss, not a fabricated guess: the estimator returns
+               null when it recognises nothing, and inventing numbers there
+               would be worse than saying so. */
+            <p className="border-s-2 border-primary ps-2 text-xs font-semibold text-primary">
+              {t('fuelDescribeMiss', {
+                defaultValue: 'No foods recognised in that — try Custom and enter it yourself.',
+              })}
+            </p>
+          ) : null}
         </div>
       )}
 
