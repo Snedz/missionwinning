@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { MobileNav } from './MobileNav';
 import { AppHeader } from './AppHeader';
+import { SCREEN_DOCK_HOST_ID } from './ScreenDock';
 import { JourneyGuard } from '@/components/journey/JourneyGuard';
 import { PageTransition } from '@/components/layout/PageTransition';
 import { JourneySyncBoot } from '@/components/layout/JourneySyncBoot';
@@ -57,13 +58,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="hidden md:block">
               <Sidebar />
             </div>
-            {/* Tracks the tab bar's 56px — main is the only thing reserving it. */}
-            <main className="flex-1 overflow-y-auto pb-[calc(56px+env(safe-area-inset-bottom))] md:pb-0">
+            {/* No bottom padding for the tab bar any more — the bar and the
+                dock are flex siblings that reserve their own height. */}
+            <main className="flex-1 overflow-y-auto">
               <div className="mx-auto max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl px-4 py-5 md:px-8 md:py-6">
                 <PageTransition>{children}</PageTransition>
               </div>
             </main>
           </div>
+          {/* Screens portal their docked field here — see ScreenDock. A flex
+              sibling of `main`, so `main` shrinks by the dock's height instead
+              of something fixed covering the content it belongs to. */}
+          <div id={SCREEN_DOCK_HOST_ID} className="shrink-0 empty:hidden" />
           <MobileNav onOpenMore={openMore} moreOpen={moreOpen} />
           <MoreSheet open={moreOpen} onClose={closeMore} />
         </div>

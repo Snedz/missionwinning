@@ -348,9 +348,14 @@
     padding-top: env(safe-area-inset-top, 0px);
   }
 
+  /* No horizontal padding: AppLayout already applies `px-4`, and this added
+     another 1rem on top of it — 32px of inset, 326px of usable width, the
+     narrowest screen in the product on the screen that matters most. The
+     safe-area insets stay, since a notched phone in landscape needs them and
+     `max()` makes them a no-op everywhere else. */
   .today-shell {
-    padding-left: max(1rem, env(safe-area-inset-left, 0px));
-    padding-right: max(1rem, env(safe-area-inset-right, 0px));
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
     padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
   }
 

@@ -6,6 +6,51 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Today's action docks, and nothing floats any more (`.152`)
+
+Phase 2. The screen change is small; the layout change under it is not.
+
+- **`.today-shell` was double-padding the most important screen.** `AppLayout`
+  applies `px-4` and this added `max(1rem, …)` on top — 32px of inset, 326px
+  usable, the narrowest screen in the product. Horizontal padding dropped, safe
+  -area insets kept.
+- **`JourneyHero` is a dock.** It was a `p-7` panel carrying a kicker, a 1.6rem
+  title, a description and sometimes a footnote — five lines restating what the
+  button under them said, and it scrolled away. Docked, **the button label is
+  the title**; the description survives as one clamped line, because "why this
+  action" is worth keeping and the paragraph is not worth the fold.
+- **New `ScreenDock`** (`src/components/layout/ScreenDock.tsx`) — screens
+  portal their docked field into a host `AppLayout` renders as a flex sibling
+  of `main`. Two reasons it cannot just be `position: fixed`:
+  `.stagger-enter` animates `transform` with `both`, so the settled frame still
+  has a transform and **a transformed ancestor is the containing block for
+  fixed descendants** — a "fixed" dock inside a `StaggerItem` pins itself to
+  that item. And a flex sibling *reserves its own height*, which no fixed panel
+  can.
+- **`MobileNav` is in flow, not `fixed`.** It is the last child of a
+  `h-screen flex-col` shell, so static puts it in exactly the same place while
+  reserving its height. `main`'s `pb-[calc(56px+…)]` is gone. This is the fix
+  for **drift 10**: `RestTimerBar` was `fixed bottom-[calc(52px+…)]` while
+  `main` padded only for the tab bar, so the rest dock covered the set row it
+  was counting down for. It is in the `ScreenDock` now and cannot.
+- Fuel's floating Log food button was offset from `52px`; the bar has been
+  56px since `.151`.
+- **Muscle freshness** was a sideways chip scroller (`rounded-xl`, 1px border
+  at 50%, `bg-muted/20`) inside a `<details>` that was itself a 1px hairline at
+  40% — three containers around eight facts. Now one ruled row per group: name,
+  state, an 8px meter on a `neutral-300` track, days in `tabular-nums`. The
+  four-day boundary is `muscleFreshnessRows`' own, not a display invention.
+  Eight one-line rows cost less height than the disclosure that hid them, so
+  nothing is hidden.
+- Today's **"More" disclosure is "Today details"** — three disclosures shared
+  that word for three different things, and `.151` added a tab called More.
+- Coach invite off its 1px/40% hairlines and `font-medium`.
+- Deliberately **not** shipped: the mock's `~24 min` on the dock. Nothing in
+  the codebase estimates session duration, and `JourneyAction` carries none —
+  it would be an invented number in the most trusted spot on the screen.
+
+---
+
 ## 2026-07-26 — Thirteen tabs become five plus a sheet (`.151`)
 
 Phase 1 of the mobile app redesign. The worst defect in the signed-in app,

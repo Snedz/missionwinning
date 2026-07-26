@@ -17,6 +17,7 @@ import { computeReadinessFromHistory } from "@/lib/readinessIndex";
 import { getTrainingStreak } from "@/lib/challenges";
 import { getUser, getUserNutritionForDate, type CloudNutritionEntry } from "@/lib/supabase";
 import { JourneyHero } from "@/components/journey/JourneyHero";
+import { ScreenDock } from "@/components/layout/ScreenDock";
 import { TodayPageHeader } from "@/components/today/TodayPageHeader";
 import {
   Dialog,
@@ -485,19 +486,9 @@ export function HomeTodayDashboard() {
     staggerBlocks.push({ key: 'intent', node: <CommandersIntent /> });
   }
 
-  // Daily briefing densification: insight/metrics below the boss CTA (above the fold).
-  // One boss CTA above the fold (JOURNEY F2).
-  staggerBlocks.push({
-    key: 'hero',
-    node: (
-      <JourneyHero
-        action={action}
-        onPrimaryClick={handleJourneyPrimary}
-        activeWorkout={!!activeWorkout}
-        justGoMeta={justGoMeta}
-      />
-    ),
-  });
+  // The hero is no longer a stagger block — it docks above the tab bar (see the
+  // ScreenDock render below). "One boss CTA above the fold" (JOURNEY F2) becomes
+  // "one boss CTA that cannot leave the fold".
 
   // Directly under the boss CTA: a returning user should see the smaller ask before
   // any score, streak or pillar chrome that would read as a scoreboard of the gap.
@@ -523,19 +514,16 @@ export function HomeTodayDashboard() {
     staggerBlocks.push({
       key: 'freshness',
       node: (
-        <details className="group rounded-xl border border-border/40 bg-muted/10">
-          <summary className="cursor-pointer list-none px-3 py-2.5 text-xs uppercase tracking-wide text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden flex items-center justify-between gap-2">
-            <span>
-              {t('todayMuscleFreshness', { defaultValue: 'Muscle freshness' })}
-            </span>
-            <span className="text-[10px] opacity-60 group-open:rotate-180 transition-transform">
-              ▼
-            </span>
-          </summary>
-          <div className="border-t border-border/30 px-3 pb-3 pt-3">
-            <MuscleFreshnessStrip rows={freshnessRows} />
-          </div>
-        </details>
+        /* Was a `<details>` — a 1px hairline at 40% wrapping a 1px hairline at
+           30% wrapping a sideways chip scroller. Eight rows of one line each
+           cost less height than the disclosure that hid them, so nothing is
+           hidden. */
+        <section>
+          <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+            {t('todayMuscleFreshness', { defaultValue: 'Muscle freshness' })}
+          </h2>
+          <MuscleFreshnessStrip rows={freshnessRows} />
+        </section>
       ),
     });
   }
@@ -551,12 +539,12 @@ export function HomeTodayDashboard() {
       node: (
         <a
           href="/coach"
-          className="block rounded-2xl border border-border/40 bg-muted/20 px-4 py-3.5 text-sm transition-colors hover:bg-muted/35 hover:border-border/60"
+          className="block border-y-2 border-border py-3.5 text-sm transition-colors hover:bg-muted"
         >
-          <p className="text-xs font-medium text-muted-foreground mb-0.5">
+          <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
             {t('todayCoachInviteEyebrow', { defaultValue: 'Mission Coach' })}
           </p>
-          <p className="text-sm font-medium text-foreground leading-snug">
+          <p className="text-[15px] font-semibold leading-snug text-foreground">
             {t('todayCoachInviteTitle', {
               defaultValue: 'Turn your logs into this week’s plan',
             })}
@@ -614,14 +602,17 @@ export function HomeTodayDashboard() {
     staggerBlocks.push({
       key: 'more',
       node: (
-        <details className="group rounded-xl border border-border/40 px-3 py-2">
-          <summary className="cursor-pointer list-none py-2 text-sm font-medium text-muted-foreground marker:content-none hover:text-foreground">
+        /* Labelled "More" until the tab bar gained a tab called More. Three
+           disclosures in the app shared that word for three different things;
+           this one holds Today's own detail, so it says so. */
+        <details className="group border-y-2 border-border">
+          <summary className="min-h-[44px] cursor-pointer list-none py-2.5 text-sm font-semibold text-muted-foreground marker:content-none hover:text-foreground">
             <span className="flex items-center justify-between gap-3">
-              {t('todayMoreSummary', { defaultValue: 'More' })}
+              {t('todayMoreSummary', { defaultValue: 'Today details' })}
               <span className="transition-transform group-open:rotate-45">+</span>
             </span>
           </summary>
-          <div className="space-y-4 border-t border-border/30 pb-2 pt-4">
+          <div className="space-y-4 border-t border-border pb-2 pt-4">
             {layout.showQuickLinks ? (
               <TodayQuickLinks compact={state.phase === 'basic'} />
             ) : null}
@@ -679,6 +670,14 @@ export function HomeTodayDashboard() {
         </StaggerItem>
       ))}
       </StaggerGroup>
+      <ScreenDock>
+        <JourneyHero
+          action={action}
+          onPrimaryClick={handleJourneyPrimary}
+          activeWorkout={!!activeWorkout}
+          justGoMeta={justGoMeta}
+        />
+      </ScreenDock>
     </>
   );
 }

@@ -621,7 +621,10 @@ export function NutritionPage() {
         <Button
           variant="fitness"
           size="lg"
-          className="fixed bottom-[calc(52px+env(safe-area-inset-bottom)+12px)] end-4 z-40 h-14 gap-2 px-5 md:bottom-6"
+          /* 56px, not 52 — the tab bar's real height since the five-tab recut.
+             It is in flow now, so this offset clears an element that actually
+             occupies the bottom of the shell rather than one overlaying it. */
+          className="fixed bottom-[calc(56px+env(safe-area-inset-bottom)+12px)] end-4 z-40 h-14 gap-2 px-5 md:bottom-6"
           onClick={() => setLogSheetOpen(true)}
         >
           <Plus className="h-5 w-5" />

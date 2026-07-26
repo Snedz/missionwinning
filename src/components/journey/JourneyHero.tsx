@@ -76,46 +76,50 @@ export function JourneyHero({
       : action.label;
 
   return (
-    // Today's boss panel, and the one red field this screen gets. It was a grey
-    // surface card; the handoff makes the next action the loudest thing on the
-    // page. The nested .primary-action inverts to paper (see .poster-field in
-    // index.css), so the count first-90 asserts on /log is unchanged — one
-    // primary action, just no longer red-on-grey.
-    <div className="poster-field p-7 space-y-4">
-      <div>
-        <p className="poster-kicker mb-2.5 text-[11px] font-semibold uppercase tracking-[0.12em]">
-          {useJustGo
-            ? t('justGoEyebrow', { defaultValue: 'Ready to train' })
-            : t('yourNextStep', { defaultValue: 'Your next step' })}
-        </p>
-        <h3 className="font-display text-[1.6rem] font-extrabold leading-[1.05] md:text-[1.9rem]">
+    /*
+     * Today's one red field, and now a dock rather than a block in the scroll.
+     *
+     * It was a `p-7` panel carrying a kicker, a 1.6rem title, a description and
+     * sometimes a foot note — five lines of the fold spent restating what the
+     * button underneath already said, and it scrolled away. Docked, the button
+     * label *is* the title: everything above it in the scroll region is
+     * read-only status, and the one thing you can do stays under your thumb.
+     *
+     * The nested `.primary-action` inverts to paper (see `.poster-field` in
+     * index.css), so the count `first-90` asserts on /log is unchanged — one
+     * primary action.
+     */
+    <div className="poster-field px-4 pb-4 pt-3.5">
+      <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
+        {useJustGo
+          ? t('justGoEyebrow', { defaultValue: 'Ready to train' })
+          : t('yourNextStep', { defaultValue: 'Your next step' })}
+      </p>
+      {/* One line, clamped. The description is why this action and not another,
+          which is worth keeping; the full paragraph is not worth the fold. */}
+      <p className="poster-sub mb-2.5 line-clamp-1 text-sm leading-relaxed tabular-nums">
+        {useJustGo
+          ? t('justGoDesc', {
+              focus: justGoMeta!.focusLabel,
+              defaultValue: `One tap builds today’s ${justGoMeta!.focusLabel.toLowerCase()} session from how fresh you are and what you lifted last time.`,
+            })
+          : action.description}
+      </p>
+      <button
+        type="button"
+        onClick={onPrimaryClick}
+        className="primary-action min-h-[52px] w-full text-[19px]"
+      >
+        <span className="flex-1 text-start">
           {useJustGo
             ? t('justGoTitle', {
                 focus: justGoMeta!.focusLabel,
                 defaultValue: `${justGoMeta!.focusLabel} — Just Go`,
               })
             : label}
-        </h3>
-        <p className="poster-sub mt-1.5 text-sm leading-relaxed tabular-nums">
-          {useJustGo
-            ? t('justGoDesc', {
-                focus: justGoMeta!.focusLabel,
-                defaultValue: `One tap builds today’s ${justGoMeta!.focusLabel.toLowerCase()} session from how fresh you are and what you lifted last time.`,
-              })
-            : action.description}
-        </p>
-      </div>
-      <button type="button" onClick={onPrimaryClick} className="primary-action">
-        {label}
-        <ChevronRight className="h-5 w-5" />
+        </span>
+        <ChevronRight className="ms-auto h-5 w-5 shrink-0" />
       </button>
-      {action.phase === 'basic' && !useJustGo && (
-        <p className="poster-sub text-sm leading-relaxed">
-          {t('journeyBasicFoot', {
-            defaultValue: 'One step at a time. Log a few sets — Coach can shape the week from real history.',
-          })}
-        </p>
-      )}
     </div>
   );
 }

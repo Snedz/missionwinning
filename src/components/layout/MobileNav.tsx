@@ -47,8 +47,19 @@ export function MobileNav({
   );
 
   return (
-    // Modernist: solid paper under a 2px rule — no translucency, no blur.
-    <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t-2 border-border bg-background pb-[env(safe-area-inset-bottom)]">
+    /*
+     * Modernist: solid paper under a 2px rule — no translucency, no blur.
+     *
+     * In flow, not `fixed`. It is the last child of a `h-screen flex-col`
+     * shell, so static puts it in exactly the same place while *reserving* its
+     * height — which means `main` no longer needs a `pb-[56px]` guess that
+     * every other bottom-anchored panel then has to guess along with, and the
+     * screen dock above it cannot be covered by it.
+     */
+    <nav
+      aria-label="Primary"
+      className="md:hidden shrink-0 z-50 border-t-2 border-border bg-background pb-[env(safe-area-inset-bottom)]"
+    >
       <div className="flex items-stretch">
         {tabs.map(({ href, labelKey, label, icon: Icon }) => {
           const isActive = pathActive(pathname, href);

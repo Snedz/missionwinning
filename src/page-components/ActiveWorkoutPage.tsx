@@ -16,6 +16,7 @@ import { getFormGuideOrCues } from '@/lib/formGuides';
 import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
+import { ScreenDock } from '@/components/layout/ScreenDock';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
@@ -466,14 +467,19 @@ export function ActiveWorkoutPage() {
           );
         })()}
 
+      {/* The rest dock is a dock, not a floating panel. It used to be
+          `fixed bottom-[calc(52px+…)]` while `main` padded only for the tab
+          bar, so it covered the set row it was counting down for. */}
       {restTimerActive && (
-        <RestTimerBar
-          remaining={restSecondsRemaining}
-          initial={restTimerInitialSeconds}
-          onSkip={stopRestTimer}
-          onAdjust={adjustRestTimer}
-          onPreset={startRestTimer}
-        />
+        <ScreenDock>
+          <RestTimerBar
+            remaining={restSecondsRemaining}
+            initial={restTimerInitialSeconds}
+            onSkip={stopRestTimer}
+            onAdjust={adjustRestTimer}
+            onPreset={startRestTimer}
+          />
+        </ScreenDock>
       )}
 
       <PlateCalculatorSheet

@@ -49,7 +49,7 @@ test.describe('Mobile navigation @gate', () => {
     await page.setViewportSize({ width: 360, height: 780 });
     await page.goto('/log', { waitUntil: 'domcontentloaded' });
 
-    const bar = page.locator('nav.fixed.bottom-0');
+    const bar = page.getByRole('navigation', { name: /primary/i });
     await expect(bar).toBeVisible();
 
     // Geometry, not class names: a `overflow-x-auto` that comes back would pass
@@ -78,7 +78,7 @@ test.describe('Mobile navigation @gate', () => {
     // hydrated. See the Escape case below.
     await page.goto('/log', { waitUntil: 'networkidle' });
 
-    const bar = page.locator('nav.fixed.bottom-0');
+    const bar = page.getByRole('navigation', { name: /primary/i });
     const tabHrefs = await bar.locator('a').evaluateAll((els) =>
       els.map((el) => el.getAttribute('href') ?? '')
     );
@@ -111,7 +111,7 @@ test.describe('Mobile navigation @gate', () => {
     // has hydrated and attached its handler.
     await page.goto('/log', { waitUntil: 'networkidle' });
 
-    const trigger = page.locator('nav.fixed.bottom-0').getByRole('button', { name: /more/i });
+    const trigger = page.getByRole('navigation', { name: /primary/i }).getByRole('button', { name: /more/i });
     await expect(trigger).toBeVisible();
     await trigger.click();
     await expect(page.getByRole('dialog')).toBeVisible();

@@ -39,9 +39,9 @@ export function RestTimerBar({
   return (
     <div
       className={cn(
-        'fixed inset-x-0 z-40 border-t-2 border-neutral-900 bg-neutral-900 text-neutral-100',
-        'bottom-[calc(52px+env(safe-area-inset-bottom))]',
-        'md:bottom-4 md:mx-auto md:max-w-lg md:border-2',
+        // In the ScreenDock now — the dock reserves its own height, so this
+        // stops being a fixed panel that has to guess the tab bar's.
+        'border-t-2 border-neutral-900 bg-neutral-900 text-neutral-100',
         className
       )}
       role="timer"
