@@ -6,6 +6,20 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Track, Learn, Library (`.147`)
+
+Phase I. Nineteen files, all the same patterns — radius, hairline borders,
+tinted grounds, one `status-warn`.
+
+- **`bg-black/20` scrims in the two locked previews** (`LearnLockedPreview`,
+  `TrackGpsLockedPreview`) were a dark-theme device: a hole punched in the page
+  to sit a lock on. On paper a locked preview should read as a quiet surface
+  behind the lock, so both are `bg-card` now.
+- Everything else was mechanical: `border-border/40|50|60` to the real 2px
+  rule, `bg-muted/*` and `bg-primary/*` to the surface fill and `accent-100`,
+  `rounded-*` to nothing.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
 ## 2026-07-26 — Fuel, and the runners go to ink (`.146`)
 
 Phase H. Fuel carried 41 off-system class hits — by far the largest remaining

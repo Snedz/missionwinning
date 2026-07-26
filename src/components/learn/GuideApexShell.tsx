@@ -61,7 +61,7 @@ export function GuideApexShell({
         activeChapterId={activeChapterId}
         onNavigate={() => setTocOpen(false)}
       />
-      <div className="mt-8 space-y-2 border-t border-border/50 pt-6">
+      <div className="mt-8 space-y-2 border-t border-border pt-6">
         <Button asChild variant="fitness" size="sm" className="w-full">
           <a
             href={pdfHref}
@@ -129,7 +129,7 @@ export function GuideApexShell({
             </Button>
             <Link
               href="/welcome"
-              className="inline-flex min-h-[40px] shrink-0 items-center rounded-xl bg-primary-fill px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-fill-hover"
+              className="inline-flex min-h-[40px] shrink-0 items-center  bg-primary-fill px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-fill-hover"
             >
               {t('magazineStartFree', { defaultValue: 'Start free' })}
             </Link>

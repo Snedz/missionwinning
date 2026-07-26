@@ -104,7 +104,7 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
                 </div>
 
                 {sessionCount > 0 && (
-                  <div className="content-card rounded-lg p-3 text-sm space-y-2">
+                  <div className="content-card  p-3 text-sm space-y-2">
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-medium">
                         {t('libraryYourHistory', {
@@ -148,7 +148,7 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
                           <button
                             key={id}
                             type="button"
-                            className="text-xs px-2 py-1 rounded-full border border-border/60 hover:bg-muted/50"
+                            className="text-xs px-2 py-1  border-2 border-border hover:bg-card"
                             onClick={() => onSelectExercise?.(id)}
                           >
                             {alt.name}

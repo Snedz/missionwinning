@@ -24,7 +24,7 @@ export function LearnLockedPreview() {
   const intro = BEYOND_THE_BASICS_CHAPTERS[0];
 
   return (
-    <Card className="content-card border-primary/40">
+    <Card className="content-card border-primary">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <BookOpen className="h-4 w-4 text-primary" />
@@ -39,7 +39,7 @@ export function LearnLockedPreview() {
           })}
         </p>
         {intro && (
-          <div className="rounded-lg border border-primary/40 bg-primary/10 p-4 space-y-2">
+          <div className="border border-primary bg-accent-100 p-4 space-y-2">
             <p className="text-xs uppercase tracking-wide text-primary">
               {t('learnFreeIntro', { defaultValue: 'Free — read now' })}
             </p>
@@ -52,10 +52,10 @@ export function LearnLockedPreview() {
             </Button>
           </div>
         )}
-        <div className="relative rounded-lg border border-border/50 bg-black/20 p-3 space-y-2">
+        <div className="relative  border-2 border-border bg-card p-3 space-y-2">
           <div className="pointer-events-none select-none opacity-60 blur-[1px] space-y-2">
             {PREMIUM_PREVIEW.map((ch) => (
-              <div key={ch.title} className="flex items-center gap-2 text-sm border border-border/30 rounded-lg p-2">
+              <div key={ch.title} className="flex items-center gap-2 text-sm border-2 border-border  p-2">
                 <span>{ch.icon}</span>
                 <span>{ch.title}</span>
               </div>

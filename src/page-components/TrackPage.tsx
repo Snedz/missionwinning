@@ -219,7 +219,7 @@ export function TrackPage() {
                 {weekActivities.map((a) => (
                   <li
                     key={a.id}
-                    className="flex items-center justify-between text-sm border-b border-border/50 pb-2"
+                    className="flex items-center justify-between text-sm border-b border-border pb-2"
                   >
                     <div>
                       <span className="font-medium">{ACTIVITY_LABELS[a.type]}</span>

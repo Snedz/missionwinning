@@ -43,7 +43,7 @@ export function GuideContentsRail({
           const open = openId === ch.id;
           const active = activeChapterId === ch.id;
           return (
-            <li key={ch.id} className="border-b border-border/40 last:border-0">
+            <li key={ch.id} className="border-b border-border last:border-0">
               <button
                 type="button"
                 className={cn(
@@ -68,7 +68,7 @@ export function GuideContentsRail({
                 />
               </button>
               {open && (
-                <ul className="mb-3 space-y-1 border-l border-border/50 pl-3 ml-6">
+                <ul className="mb-3 space-y-1 border-l border-border pl-3 ml-6">
                   <li>
                     <Link
                       href={`/guide/${ch.id}`}
