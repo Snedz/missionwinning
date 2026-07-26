@@ -105,6 +105,19 @@ async function main() {
   }
 
   try {
+    // Public calculators are SEO surfaces — reachable while gated (Phase 2 rebrand)
+    const calc = await headOrGet('/calculators/1rm', { redirect: 'manual' });
+    const calcLoc = calc.headers.get('location') || '';
+    checks.push({
+      name: 'GET /calculators/1rm public while gated',
+      ok: calc.status === 200,
+      detail: `${calc.status}${calcLoc ? ` → ${calcLoc}` : ''}`,
+    });
+  } catch (e) {
+    checks.push({ name: 'GET /calculators/1rm', ok: false, detail: String(e) });
+  }
+
+  try {
     const pdf = await headOrGet('/magazine/beyond-the-basics.pdf', { redirect: 'manual' });
     const pdfLoc = pdf.headers.get('location') || '';
     const pdfOk = pdf.status === 200;
