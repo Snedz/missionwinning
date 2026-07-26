@@ -1,23 +1,26 @@
 'use client';
 /**
- * Active workout set logging row — Strong/Hevy-dense mobile default.
+ * One set in the active workout list — a read-only record, not a control band.
+ *
+ * It used to carry the whole input apparatus per set: `#n`, two 44px steppers
+ * around a reps field, two more around a weight field, and a Log button —
+ * ~340px inside 326px, so it lived in an `overflow-x-auto` with Log off-screen,
+ * once per planned set. Entry moved to `LogConsole`; this renders what
+ * happened, and what is still to come.
+ *
  * See: src/components/workout/INDEX.md
  */
 
-import { useState } from 'react';
-import { Check, Minus, Plus } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { LoggedSet, SetKind } from '@/types';
 import {
-  SET_KINDS,
   setKindBadgeClass,
-  setKindCompletedRowClass,
   setKindDefaultLabel,
   setKindLabelKey,
-  setKindRowClass,
 } from '@/lib/workout/setKind';
 import { cn } from '@/lib/utils';
 
@@ -37,92 +40,70 @@ const RPE_TIPS = {
 type Props = {
   setNumber: number;
   set: LoggedSet;
-  reps: number;
-  weight: number;
+  /** The set the console is currently holding. */
   isNext: boolean;
   weightLabel: string;
-  weightStep: number;
-  lastPerformance?: { reps: number; weight: number } | null;
-  /** RepStack-style suggested next target (free forever). */
-  target?: { reps: number; weight: number } | null;
-  onRepsChange: (reps: number) => void;
-  onWeightChange: (weight: number) => void;
-  onSetKindChange: (kind: SetKind) => void;
-  onLog: () => void;
   onRate: (rpe: 'easy' | 'med' | 'hard') => void;
-  onCopyLast?: () => void;
-  onApplyTarget?: () => void;
 };
 
-export function SetLogRow({
-  setNumber,
-  set,
-  reps,
-  weight,
-  isNext,
-  weightLabel,
-  weightStep,
-  lastPerformance,
-  target,
-  onRepsChange,
-  onWeightChange,
-  onSetKindChange,
-  onLog,
-  onRate,
-  onCopyLast,
-  onApplyTarget,
-}: Props) {
+export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props) {
   const { t } = useTranslation();
-  const [showMore, setShowMore] = useState(false);
   const kind = set.kind ?? 'normal';
-  const seededFromTarget =
-    !!target && reps === target.reps && weight === target.weight;
-  const seededFromLast =
-    !!lastPerformance &&
-    reps === lastPerformance.reps &&
-    weight === lastPerformance.weight;
-  const showApplyTarget = !!onApplyTarget && !!target && !seededFromTarget;
-  const showCopyLast = !!onCopyLast && !!lastPerformance && !seededFromTarget && !seededFromLast;
 
-  if (set.completed) {
-    return (
-      <div
-        className={cn(
-          'flex flex-wrap items-center gap-2 border-b border-border p-2.5',
-          setKindCompletedRowClass(kind)
-        )}
-      >
-        <span className="w-6 text-sm font-medium text-muted-foreground">#{setNumber}</span>
-        {kind !== 'normal' && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Badge variant="outline" className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}>
-                {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              {t(SET_KIND_TIPS[kind].key, { defaultValue: SET_KIND_TIPS[kind].defaultValue })}
-            </TooltipContent>
-          </Tooltip>
-        )}
-        <Badge variant="secondary" className="gap-1 tabular-nums">
-          <Check className="h-3 w-3" />
-          {set.reps} × {set.weight}
-        </Badge>
-        {set.isPr && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              {/* The honor tier, and one of only two places it is allowed —
-                  accent-800 fill with the ★ the Badge renders itself. Brass is
-                  retired. */}
-              <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              {t('activePrTip', { defaultValue: 'Personal record for this exercise' })}
-            </TooltipContent>
-          </Tooltip>
-        )}
-        <div className="ms-auto flex gap-1">
+  return (
+    <div
+      className={cn(
+        'flex min-h-[44px] flex-wrap items-center gap-x-3 gap-y-1 border-b border-border px-1 py-2',
+        isNext && 'is-active-row'
+      )}
+    >
+      <span className="w-[22px] shrink-0 text-[13px] font-semibold tabular-nums text-muted-foreground">
+        #{setNumber}
+      </span>
+
+      {set.completed ? (
+        <span className="text-[15px] font-semibold tabular-nums">
+          {set.reps} × {set.weight} {weightLabel}
+        </span>
+      ) : (
+        <span className="text-[15px] tabular-nums text-muted-foreground">
+          {isNext
+            ? t('activeSetInConsole', { defaultValue: 'In the console' })
+            : t('activeSetPlanned', {
+                reps: set.reps,
+                defaultValue: `${set.reps} planned`,
+              })}
+        </span>
+      )}
+
+      {kind !== 'normal' && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Badge variant="outline" className={cn('text-[10px] uppercase', setKindBadgeClass(kind))}>
+              {t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}
+            </Badge>
+          </TooltipTrigger>
+          <TooltipContent>
+            {t(SET_KIND_TIPS[kind].key, { defaultValue: SET_KIND_TIPS[kind].defaultValue })}
+          </TooltipContent>
+        </Tooltip>
+      )}
+
+      {set.isPr && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            {/* The honor tier, and one of only two places it is allowed —
+                accent-800 fill with the ★ the Badge renders itself. */}
+            <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
+          </TooltipTrigger>
+          <TooltipContent>
+            {t('activePrTip', { defaultValue: 'Personal record for this exercise' })}
+          </TooltipContent>
+        </Tooltip>
+      )}
+
+      {set.completed && (
+        <div className="ms-auto flex items-center gap-1">
           {!set.rpe ? (
             (['easy', 'med', 'hard'] as const).map((r) => (
               <Tooltip key={r}>
@@ -130,7 +111,7 @@ export function SetLogRow({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-11 min-h-[44px] min-w-[44px] sm:h-10 sm:min-h-[40px] text-xs px-2 tap-target"
+                    className="h-11 min-h-[44px] min-w-[44px] px-2 text-xs tap-target"
                     onClick={() => onRate(r)}
                   >
                     {t(
@@ -149,179 +130,7 @@ export function SetLogRow({
               {set.rpe}
             </Badge>
           )}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className={cn(
-        'border-b border-border p-2 space-y-1.5 transition-colors',
-        isNext ? setKindRowClass(kind, true) : setKindRowClass(kind, false)
-      )}
-    >
-      {/* Strong/Hevy: one nowrap band — # · reps · weight · Log */}
-      <div className="overflow-x-auto -mx-0.5 px-0.5">
-        <div className="flex flex-nowrap items-center gap-0.5 sm:gap-1 min-w-0">
-          <span className="w-5 sm:w-6 shrink-0 text-center text-sm font-semibold tabular-nums text-muted-foreground">
-            #{setNumber}
-          </span>
-
-          <div className="flex items-center gap-0.5 shrink-0">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className="h-11 w-11 sm:h-11 sm:w-11 shrink-0"
-              aria-label={t('activeDecreaseReps', { defaultValue: 'Decrease reps' })}
-              onClick={() => onRepsChange(Math.max(1, reps - 1))}
-            >
-              <Minus className="h-4 w-4" />
-            </Button>
-            <input
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              value={reps}
-              aria-label={t('activeReps', { defaultValue: 'Reps' })}
-              onFocus={(e) => e.target.select()}
-              onChange={(e) => {
-                const parsed = parseInt(e.target.value.replace(/\D/g, ''), 10);
-                onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
-              }}
-              className="h-11 w-11 border-2 border-input bg-background text-center text-base font-bold tabular-nums"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className="h-11 w-11 sm:h-11 sm:w-11 shrink-0"
-              aria-label={t('activeIncreaseReps', { defaultValue: 'Increase reps' })}
-              onClick={() => onRepsChange(reps + 1)}
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <div className="flex items-center gap-0.5 shrink-0">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className="h-11 w-11 sm:h-11 sm:w-11 shrink-0"
-              aria-label={t('activeDecreaseWeight', {
-                unit: weightLabel,
-                defaultValue: `Decrease ${weightLabel}`,
-              })}
-              onClick={() => onWeightChange(Math.max(0, weight - weightStep))}
-            >
-              <Minus className="h-4 w-4" />
-            </Button>
-            <input
-              type="text"
-              inputMode="decimal"
-              value={weight}
-              aria-label={weightLabel}
-              onFocus={(e) => e.target.select()}
-              onChange={(e) => {
-                const cleaned = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
-                const parsed = parseFloat(cleaned);
-                onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
-              }}
-              className="h-11 w-12 md:w-14 border-2 border-input bg-background text-center text-base font-bold tabular-nums"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className="h-11 w-11 sm:h-11 sm:w-11 shrink-0"
-              aria-label={t('activeIncreaseWeight', {
-                unit: weightLabel,
-                defaultValue: `Increase ${weightLabel}`,
-              })}
-              onClick={() => onWeightChange(weight + weightStep)}
-            >
-              <Plus className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <Button
-            type="button"
-            variant="fitness"
-            className="ms-auto h-11 min-h-[44px] min-w-[3rem] md:min-w-[3.5rem] shrink-0 px-2.5 md:px-3 font-semibold tap-target"
-            aria-label={t('activeLogSet', { defaultValue: 'Log' })}
-            onClick={onLog}
-          >
-            {t('activeLogSet', { defaultValue: 'Log' })}
-          </Button>
-        </div>
-      </div>
-
-      <button
-        type="button"
-        className="text-[11px] font-medium text-muted-foreground hover:text-foreground px-2 min-h-[44px]"
-        aria-expanded={showMore}
-        onClick={() => setShowMore((v) => !v)}
-      >
-        {showMore
-          ? t('activeSetLess', { defaultValue: 'Less' })
-          : t('activeSetMore', { defaultValue: 'More' })}
-        {kind !== 'normal' && !showMore
-          ? ` · ${t(setKindLabelKey(kind), { defaultValue: setKindDefaultLabel(kind) })}`
-          : ''}
-      </button>
-
-      {showMore && (
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-2">
-          <div className="flex flex-wrap gap-1">
-            {SET_KINDS.map((k) => (
-              <Tooltip key={k}>
-                <TooltipTrigger asChild>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant={kind === k ? 'default' : 'outline'}
-                    // Selected is the system fill for every kind — amber /
-                    // rose / violet were four hues saying what the label says.
-                    className="h-11 min-h-[44px] px-2 text-[10px] min-w-[44px] tap-target"
-                    onClick={() => onSetKindChange(k)}
-                  >
-                    {t(setKindLabelKey(k), {
-                      defaultValue: k === 'normal' ? 'Work' : setKindDefaultLabel(k),
-                    })}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  {t(SET_KIND_TIPS[k].key, { defaultValue: SET_KIND_TIPS[k].defaultValue })}
-                </TooltipContent>
-              </Tooltip>
-            ))}
-          </div>
-          <div className="flex items-center gap-2 flex-wrap justify-end">
-            {showApplyTarget && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="h-11 min-h-[44px] px-3 text-xs text-muted-foreground tap-target"
-                onClick={onApplyTarget}
-              >
-                {t('activeApplyTarget', { defaultValue: 'Apply' })}
-              </Button>
-            )}
-            {showCopyLast && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="h-11 min-h-[44px] px-3 text-xs tap-target"
-                onClick={onCopyLast}
-              >
-                {t('activeCopyLast', { defaultValue: 'Use last' })}
-              </Button>
-            )}
-          </div>
+          <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden />
         </div>
       )}
     </div>

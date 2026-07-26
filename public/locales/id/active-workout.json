@@ -22,7 +22,7 @@
   "activeLoadPctChip": "{{pct}}% · {{berat}} {{unit}}",
   "activeAddSet": "Tambahkan Set",
   "activeStartRest": "{{detik}} Istirahat",
-  "activeLogSet": "Catat",
+  "activeLogSet": "Catat set",
   "activeRepeatLast": "Ulangi set terakhir",
   "activeLastPerformance": "Terakhir: {{repetisi}} × {{berat}}",
   "activeSetLogged": "Setel dicatat!",

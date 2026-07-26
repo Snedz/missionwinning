@@ -1216,7 +1216,7 @@
   "activeFormGuide": "Guía de forma",
   "activeAddSet": "Añadir serie",
   "activeStartRest": "Descanso {{seconds}}s",
-  "activeLogSet": "Registrar",
+  "activeLogSet": "Registrar serie",
   "activeRepeatLast": "Repetir última serie",
   "activeLastPerformance": "Última: {{reps}} × {{weight}}",
   "activeSetLogged": "¡Serie registrada!",

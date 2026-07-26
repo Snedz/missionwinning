@@ -669,7 +669,7 @@
   "activeLoadPctChip": "{{pct}}% · {{weight}} {{unit}}",
   "activeAddSet": "Satz hinzufügen",
   "activeStartRest": "Pause {{seconds}} s",
-  "activeLogSet": "Speichern",
+  "activeLogSet": "Satz speichern",
   "activeRepeatLast": "Letzten Satz wiederholen",
   "activeLastPerformance": "Zuletzt: {{reps}} × {{weight}}",
   "activeSetLogged": "Satz gespeichert!",

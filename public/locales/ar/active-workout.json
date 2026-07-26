@@ -22,7 +22,7 @@
   "activeLoadPctChip": "{{pct}}% · {{الوزن}} {{وحدة}}",
   "activeAddSet": "أضف مجموعة",
   "activeStartRest": "راحة لمدة {{ثانية}}",
-  "activeLogSet": "تسجيل",
+  "activeLogSet": "تسجيل المجموعة",
   "activeRepeatLast": "تكرار آخر مجموعة",
   "activeLastPerformance": "الأخير: {{ممثلون}} × {{وزن}}",
   "activeSetLogged": "تم تسجيل تعيين!",

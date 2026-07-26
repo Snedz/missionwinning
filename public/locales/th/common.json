@@ -1199,7 +1199,7 @@
   "activeLoadPctChip": "{{pct}}% · {{weight}} {{unit}}",
   "activeAddSet": "Add Set",
   "activeStartRest": "{{seconds}}s Rest",
-  "activeLogSet": "บันทึก",
+  "activeLogSet": "บันทึกเซต",
   "activeRepeatLast": "ทำซ้ำเซตล่าสุด",
   "activeLastPerformance": "Last: {{reps}} × {{weight}}",
   "activeSetLogged": "Set logged!",

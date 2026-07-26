@@ -1355,7 +1355,7 @@
   "activeLoadPctChip": "{{pct}}% · {{weight}} {{unit}}",
   "activeAddSet": "Add Set",
   "activeStartRest": "{{seconds}}s Rest",
-  "activeLogSet": "Log",
+  "activeLogSet": "Log set",
   "activeRepeatLast": "Repeat last set",
   "activeLastPerformance": "Last: {{reps}} × {{weight}}",
   "activeSetLogged": "Set logged!",

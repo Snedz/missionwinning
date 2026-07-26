@@ -94,7 +94,10 @@ export function RestTimerBar({
           <button
             key={sec}
             type="button"
-            className="min-h-[36px] px-2.5 text-xs font-semibold text-neutral-300 transition-colors hover:bg-neutral-100/10 hover:text-neutral-100"
+            /* 44px, not 36 — these are pressed one-handed between sets like
+               everything else in the logger. `first-90` sweeps `main`, and the
+               dock is not in `main`, which is why they stayed undersized. */
+            className="min-h-[44px] px-2.5 text-xs font-semibold text-neutral-300 transition-colors hover:bg-neutral-100/10 hover:text-neutral-100"
             onClick={() => {
               onPreset(sec);
               saveDefaultRestSeconds(sec);

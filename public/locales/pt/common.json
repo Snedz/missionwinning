@@ -787,7 +787,7 @@
   "activeFinish": "Concluir",
   "activeRestAdd15": "+15s",
   "activeRestSub15": "−15s",
-  "activeLogSet": "Log",
+  "activeLogSet": "Log set",
   "activeSetLogged": "Set logged!",
   "activeSetLoggedDesc": "{{reps}} × {{weight}} — {{rest}}s rest",
   "activeReps": "Reps",

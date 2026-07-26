@@ -22,7 +22,7 @@
   "activeLoadPctChip": "{{pct}}% · {{peso}} {{unidade}}",
   "activeAddSet": "Adicionar conjunto",
   "activeStartRest": "{{segundos}}s de descanso",
-  "activeLogSet": "Log",
+  "activeLogSet": "Log set",
   "activeRepeatLast": "Repita o último conjunto",
   "activeLastPerformance": "Último: {{repetições}} × {{peso}}",
   "activeSetLogged": "Set logged!",

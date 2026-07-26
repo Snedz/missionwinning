@@ -27,7 +27,8 @@ test.describe('Logger depth @gate', () => {
     await expect(page.getByText(/selected:\s*push-ups/i)).toBeVisible({ timeout: 5_000 });
 
     await page.getByRole('button', { name: /add selected exercise/i }).click();
-    const logBtn = page.getByRole('button', { name: /^log$/i }).first();
+    // Widened with the console recut in `.153` — see the note in first-90.
+    const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
     await expect(logBtn).toBeVisible({ timeout: 10_000 });
     await logBtn.click();
 

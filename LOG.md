@@ -6,6 +6,51 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — One console, two states (`.153`)
+
+Phase 3, the largest change in the mobile program. Horizon W excellence
+criterion 1 is "one-thumb set logging outdoors"; this is the screen where it
+was not true.
+
+- **The Log button was off-screen mid-set.** Every planned set rendered its own
+  control band — `#n`, two 44px steppers around a reps field, two more around a
+  weight field, and Log. That is ~340px inside 326px, so it lived in an
+  `overflow-x-auto` and **you had to drag the row sideways to reach Log**, one
+  -handed, holding a bar. Four planned sets rendered four of them.
+- **`LogConsole`** takes it: ink panel, exercise name + `Set n of m`, the
+  `Last time 8 × 62.5 kg` line, 48 × 52px steppers around 26px/800 numerals,
+  and a full-width poster-red **Log set** at 52px. Poster red is correct here
+  precisely because every line on that button is display-grade — the one case
+  #ec3013 clears.
+- **`SetLogRow` is a record now**, not a control band: `#n · 8 × 60 kg`, kind
+  tag, PR honor badge, RPE, `Check` in `--primary`. Sets still to come read
+  `In the console` or `10 planned`. Six props gone from it and from
+  `ActiveExerciseCard`; lint found every dead one.
+- **Rest takes the same console over** rather than being a second panel
+  floating on the rows it describes. `ScreenDock` renders one or the other,
+  never both, and cannot overlap the list.
+- **Set kind moved into the console**, where the set is being defined, instead
+  of a per-row "More" expander. `Apply` / `Use last` retired: the field is
+  already seeded from `suggestNextSetTarget`, and the target line says what the
+  seed was.
+- Rest presets were **36px** — under the 44px floor, and `first-90`'s sweep
+  scopes `main`, which the dock is not in. Both fixed: the buttons, and **the
+  sweep now includes `#screen-dock`**, or it would have quietly stopped
+  covering the very controls it exists for.
+- Last two "More"s renamed: the exercise footer is **Set options**. Three
+  controls shared that word for three different things and the tab bar now has
+  one that means the ninth screen.
+- The logger's dashed empty card is gone — two rules, flush left, like every
+  other empty state since `.150`.
+- **Test contract, changed deliberately.** `activeLogSet` is "Log set" in every
+  locale now, so `/^log$/i` is widened to `/^log( set)?$/i` in **three** specs —
+  `first-90`, `logger-depth` **and `hero-flows`**, which the plan missed and the
+  gate caught. Still anchored, so it cannot start matching "Log food". An
+  `aria-label="Log"` over the visible "Log set" was the alternative and breaks
+  WCAG 2.5.3 (Label in Name).
+
+---
+
 ## 2026-07-26 — Today's action docks, and nothing floats any more (`.152`)
 
 Phase 2. The screen change is small; the layout change under it is not.
