@@ -6,6 +6,44 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Rings come off, the ramps go on (`.139`)
+
+Phase A of the **second** Modernist handoff (`design_handoff_missionwinning_modernist`),
+which covers the 13 signed-in screens the first handoff deliberately left. Its
+token sheet turned out to match what `.131` already shipped — poster `#ec3013`,
+`accent-600` = `--primary-fill`, `accent-700` = `--primary` — so P0 was already
+done and this is the primitives layer instead.
+
+- **Both ramps added** — `--neutral-100…900` and `--accent-100…900`. The screens
+  need steps the semantic roles never covered: ink panels (rest dock, flow
+  runner) are `neutral-900`/`neutral-100`, the honor tier is `accent-800`.
+  **100/600/700 are aliases** of `--accent-tint`/`--primary-fill`/`--primary`, so
+  ramp and roles cannot drift. The indirection points scale → role, which looks
+  backwards, because `check-token-sync.mjs` regex-parses `:root` for literal HSL
+  triplets and a `var()` on `--primary` would blind the gate. Poster red is
+  **not** a ramp step — it sits between 500 and 600.
+- **`ProgressRing` deleted**, and with it the "42% of nothing" problem: the
+  `MacroCalculator` rings drew arcs against invented ceilings (`protein/200`,
+  `carbs/300`). Scores → `ScoreNumeral` (tabular numeral, `value={null}` renders
+  an em-dash so first-run shows "not measured yet", never a 0). Budgets →
+  `MeterBar`. Fuel lost two rings that restated the bars directly beneath them.
+- **`MeterBar` tracks are `neutral-300`, not the sheet's `neutral-200`** — that
+  value assumes the paper ground; on a `--card` panel #eae7e7 is a 1.01:1
+  difference and an empty track vanishes, which is the state a budget bar is in
+  all morning.
+- **Deleted:** `card-glow-emerald`/`-brass`, `ring-glow-emerald`, `ring-draw-in`,
+  `texture-noise` (already a no-op), `texture-grid` and `--grid-line` (zero call
+  sites). Replaced by `card-boss` (≤1 per screen — tint + poster border + the
+  only sanctioned elevation), `card-section`, `is-active-row`/`is-active-tab`,
+  and `seg`/`seg-opt`.
+- **Fixed a pre-existing WCAG 1.4.1 failure** — `npm run a11y` was **18/20, not
+  20/20**, on `/paths` and `/compare`. `text-primary hover:underline` (56 call
+  sites) leaves a red link separated from muted body copy by hue alone at rest:
+  #ad1700 on #484747 is 1.27:1 against a 3:1 floor, and hover is no remedy on
+  touch. One base rule (`p a` underlined at rest, scoped to `<p>` so nav and
+  card links are untouched) beats 56 edits. Now **20/20**.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
 ## 2026-07-25 — Email leaves plain text behind (`.138`)
 
 The last rebrand surface. Every Mission Winning email was a `[...].join('\n')`

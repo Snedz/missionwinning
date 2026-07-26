@@ -119,7 +119,7 @@ export function BundlePage() {
       <MarketingNav variant="compact" />
 
       {/* Thin hero */}
-      <div className="hero-field texture-noise section-seam relative">
+      <div className="hero-field section-seam relative">
         <div className="relative z-[1] mx-auto max-w-4xl space-y-3 px-5 pb-10 pt-10">
           <Badge className="w-fit border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
             {t("bundleUrgencyBadge")}
@@ -260,7 +260,7 @@ export function BundlePage() {
             const badgeText = planBadgeLabel(p.badge, t);
             return (
               <TabsContent key={id} value={id} className="mt-4">
-                <Card className="card-elevated card-glow-emerald overflow-hidden border-primary/30">
+                <Card className="card-boss overflow-hidden">
                   <CardHeader className="pb-2">
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div className="space-y-1">

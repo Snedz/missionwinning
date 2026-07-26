@@ -2,7 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
-import { ProgressRing } from '@/components/ui/ProgressRing';
+import { ScoreNumeral } from '@/components/ui/ScoreNumeral';
 import type { BodyScores } from '@/lib/score';
 
 interface MetricsRowProps {
@@ -14,6 +14,10 @@ interface MetricsRowProps {
 
 export function MetricsRow({ scores, demo, embedded, size = 'md' }: MetricsRowProps) {
   const { t } = useTranslation();
+  // Three numerals never get the 56px treatment — that is reserved for a single
+  // hero figure. The old 'sm' ring maps to the smaller numeral, everything else
+  // to the same 40px, so callers keep their existing size prop.
+  const numeralSize = size === 'lg' ? 'lg' : 'md';
 
   const grid = (
     <>
@@ -22,27 +26,30 @@ export function MetricsRow({ scores, demo, embedded, size = 'md' }: MetricsRowPr
           {t('todayMetricsDemoNote', { defaultValue: 'Preview — your scores update as you train' })}
         </p>
       )}
-      <div className="grid grid-cols-3 gap-2 sm:gap-4">
-        <ProgressRing
+      {/* The score band: three numerals divided by rules, not three rings. The
+          emerald/warn/info tones are gone — hue was carrying meaning the labels
+          already carry, and this system has one colour. */}
+      <div className="grid grid-cols-3 divide-x-2 divide-border border-t-2 border-border">
+        <ScoreNumeral
+          className="px-3 pt-3 first:ps-0"
           label={t('todayMetricReadiness', { defaultValue: 'Readiness' })}
           value={scores.readiness}
-          subtitle={t(scores.readinessLabelKey, { defaultValue: scores.readinessLabelKey })}
-          tone="emerald"
-          size={size}
+          caption={t(scores.readinessLabelKey, { defaultValue: scores.readinessLabelKey })}
+          size={numeralSize}
         />
-        <ProgressRing
+        <ScoreNumeral
+          className="px-3 pt-3"
           label={t('todayMetricStrain', { defaultValue: 'Strain' })}
           value={scores.strain}
-          subtitle={t(scores.strainLabelKey, { defaultValue: scores.strainLabelKey })}
-          tone="warn"
-          size={size}
+          caption={t(scores.strainLabelKey, { defaultValue: scores.strainLabelKey })}
+          size={numeralSize}
         />
-        <ProgressRing
+        <ScoreNumeral
+          className="px-3 pt-3"
           label={t('todayMetricRecovery', { defaultValue: 'Recovery' })}
           value={scores.recovery}
-          subtitle={t(scores.recoveryLabelKey, { defaultValue: scores.recoveryLabelKey })}
-          tone="info"
-          size={size}
+          caption={t(scores.recoveryLabelKey, { defaultValue: scores.recoveryLabelKey })}
+          size={numeralSize}
         />
       </div>
     </>

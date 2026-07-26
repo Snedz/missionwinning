@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MetricsRow } from '@/components/metrics/MetricsRow';
-import { ProgressRing } from '@/components/ui/ProgressRing';
+import { ScoreNumeral } from '@/components/ui/ScoreNumeral';
 import { TodayMetricsSparklineRow } from '@/components/today/TodayMetricsSparklineRow';
 import type { BodyScores } from '@/lib/score';
 import type { TodayTrends } from '@/lib/todayTrends';
@@ -54,23 +54,23 @@ export function TodayDashboardHeader({
     return () => mq.removeEventListener('change', sync);
   }, []);
 
-  const ringSize = compactRings ? 'sm' : 'lg';
+  const numeralSize = compactRings ? 'md' : 'lg';
   const metricsSize = compactRings ? 'sm' : 'md';
 
   return (
-    <div className={cn('space-y-4 ring-draw-in', className)}>
-      <div className="today-score-layout flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:gap-6">
-        <div className="today-score-ring flex flex-col items-center gap-2">
+    <div className={cn('space-y-4', className)}>
+      <div className="today-score-layout flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6">
+        <div className="today-score-ring flex flex-col gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <button type="button" className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <ProgressRing
+              {/* No focus ring classes: the global :focus-visible rule in
+                  index.css covers raw buttons, and a second one draws twice. */}
+              <button type="button" className="text-left">
+                <ScoreNumeral
                   label={t('todayMissionScore', { defaultValue: 'Mission Score' })}
                   value={displayScore}
-                  subtitle={t('todayMissionScoreFromLogs', { defaultValue: 'From your logs' })}
-                  tone="emerald"
-                  size={ringSize}
-                  glow
+                  caption={t('todayMissionScoreFromLogs', { defaultValue: 'From your logs' })}
+                  size={numeralSize}
                   className="score-tick"
                 />
               </button>
@@ -83,7 +83,7 @@ export function TodayDashboardHeader({
             </TooltipContent>
           </Tooltip>
           {coachLine ? (
-            <p className="max-w-xs text-center text-sm leading-relaxed text-muted-foreground sm:max-w-sm">
+            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground sm:max-w-sm">
               {coachLine}
             </p>
           ) : null}

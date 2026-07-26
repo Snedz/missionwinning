@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Brain } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ProgressRing } from '@/components/ui/ProgressRing';
+import { MeterBar } from '@/components/ui/MeterBar';
 import { UnlockButton } from '@/components/UnlockButton';
 import { isFreeBeta } from '@/lib/freeBeta';
 
@@ -19,7 +19,7 @@ export function MindLockedPreview() {
   if (isFreeBeta()) return null;
 
   return (
-    <Card className="card-elevated card-glow-brass border-brass/30">
+    <Card className="card-elevated">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <Brain className="h-4 w-4 text-primary" />
@@ -35,7 +35,7 @@ export function MindLockedPreview() {
         </p>
         <div className="relative rounded-lg border border-border/50 bg-black/20 p-4">
           <div className="pointer-events-none select-none opacity-60 blur-[1px] flex flex-col sm:flex-row items-center gap-4">
-            <ProgressRing label="Progress" value="42%" subtitle="2:30" progress={42} />
+            <MeterBar label="Progress" value={42} readout="42% · 2:30" className="w-full sm:w-48" />
             <ul className="text-sm space-y-2 flex-1">
               {DEMO_STEPS.map((s) => (
                 <li key={s} className="text-muted-foreground">

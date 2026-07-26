@@ -59,7 +59,7 @@ export function ExperiencePage() {
         <ChapterRail />
         <main className="xp-main">
           {/* 00 Signal */}
-          <section id="signal" className="xp-chapter xp-hero hero-field texture-noise">
+          <section id="signal" className="xp-chapter xp-hero hero-field">
             <div className="xp-hero-inner xp-chapter-inner">
               <p className="xp-index">
                 {XP.ch00Index} · {XP.ch00Eyebrow}

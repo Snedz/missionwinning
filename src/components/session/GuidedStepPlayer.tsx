@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ProgressRing } from '@/components/ui/ProgressRing';
+import { MeterBar } from '@/components/ui/MeterBar';
 import { track } from '@/lib/analytics';
 import {
   buildCompletionResult,
@@ -178,15 +178,15 @@ export function GuidedStepPlayer({
         {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className={`flex ${isCompact ? 'flex-col' : 'flex-col sm:flex-row'} items-center gap-4`}>
-          <ProgressRing
+        {/* The bar spans the panel now instead of sitting beside it as a ring —
+            a session's progress is a length, and it reads at a glance. */}
+        <div className="flex flex-col gap-4">
+          <MeterBar
             label={t('guidedSessionProgress', { defaultValue: 'Progress' })}
-            value={`${totalPct}%`}
-            subtitle={formatGuidedClock(state.remainingSec)}
-            progress={totalPct}
-            className="shrink-0"
+            value={totalPct}
+            readout={`${totalPct}% · ${formatGuidedClock(state.remainingSec)}`}
           />
-          <div className="flex-1 w-full min-h-[72px] rounded-xl bg-muted/20 border border-border/40 p-4">
+          <div className="flex-1 w-full min-h-[72px] border-2 border-border bg-card p-4">
             <p className={`leading-relaxed ${isCompact ? 'text-sm' : 'text-base'}`}>{step?.label}</p>
             {step?.cue && (
               <p className="text-sm text-muted-foreground mt-2">{step.cue}</p>
@@ -198,9 +198,12 @@ export function GuidedStepPlayer({
             )}
           </div>
         </div>
-        <div className="h-2 bg-muted rounded overflow-hidden" aria-hidden>
+        {/* Current step, not the session — stays a bare div rather than a
+            MeterBar because it is aria-hidden decoration and MeterBar
+            announces itself as a progressbar. */}
+        <div className="h-1.5 bg-neutral-200 overflow-hidden" aria-hidden>
           <div
-            className="h-2 bg-primary transition-all duration-1000"
+            className="h-full bg-primary-fill transition-all duration-1000"
             style={{ width: `${stepPct}%` }}
           />
         </div>

@@ -169,7 +169,7 @@ export function BenchmarksPage() {
       </Card>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="card-elevated card-glow-emerald border-primary/20">
+        <Card className="card-boss">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Target className="h-4 w-4 text-primary" />

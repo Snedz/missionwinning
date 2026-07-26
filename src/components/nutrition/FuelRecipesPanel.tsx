@@ -173,7 +173,7 @@ export function FuelRecipesPanel({
           </CardContent>
         </Card>
       ) : freeBeta ? null : (
-        <Card className="card-elevated card-glow-brass border-brass/30">
+        <Card className="card-elevated">
           <CardHeader>
             <CardTitle>
               {t('fuelPremiumLockedTitle', {

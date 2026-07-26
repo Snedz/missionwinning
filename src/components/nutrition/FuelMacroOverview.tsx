@@ -2,7 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
-import { ProgressRing } from '@/components/ui/ProgressRing';
+import { MeterBar } from '@/components/ui/MeterBar';
 
 type Props = {
   totalCals: number;
@@ -30,94 +30,69 @@ export function FuelMacroOverview({
   children,
 }: Props) {
   const { t } = useTranslation();
-  const pProgress = Math.min(100, Math.round((totalProtein / targetProtein) * 100));
-  const cProgress = Math.min(100, Math.round((totalCals / targetCals) * 100));
-  const carbsProgress = Math.min(100, Math.round((totalCarbs / carbsTarget) * 100));
-  const fatProgress = Math.min(100, Math.round((totalFat / fatTarget) * 100));
+  // The percentage maths moved into MeterBar, which clamps and handles the
+  // over-budget case itself — these four derived values had four copies of it.
   const calsDelta = targetCals - totalCals;
   const calsLeft = Math.max(0, calsDelta);
   const calsOver = Math.max(0, -calsDelta);
   const proteinLeft = Math.max(0, targetProtein - totalProtein);
 
+  // One fill colour, not three. The status hues these bars used (warn/danger)
+  // are retired: in a one-red system a colour difference between protein and
+  // fat implies a judgement the app is not making.
   const bars = [
     {
       key: 'p',
       label: t('fuelProtein', { defaultValue: 'Protein' }),
-      pct: pProgress,
-      bar: 'bg-primary',
+      value: totalProtein,
+      max: targetProtein,
       line: `${totalProtein}g / ${targetProtein}g`,
     },
     {
       key: 'c',
       label: t('fuelCarbsShort', { defaultValue: 'Carbs' }),
-      pct: carbsProgress,
-      bar: 'bg-status-warn/80',
+      value: totalCarbs,
+      max: carbsTarget,
       line: `${totalCarbs}g / ${carbsTarget}g`,
     },
     {
       key: 'f',
       label: t('fuelFatShort', { defaultValue: 'Fat' }),
-      pct: fatProgress,
-      bar: 'bg-status-danger/70',
+      value: totalFat,
+      max: fatTarget,
       line: `${totalFat}g / ${fatTarget}g`,
     },
   ] as const;
 
   return (
     <Card className="bg-card">
-      <CardContent className="pt-6 space-y-4">
-        <div className="flex justify-around gap-4">
-          <ProgressRing
-            label={t('fuelCalories', { defaultValue: 'Calories' })}
-            value={`${totalCals}`}
-            subtitle={`/ ${targetCals}`}
-            progress={cProgress}
-            tone="brass"
-          />
-          <ProgressRing
-            label={t('fuelProtein', { defaultValue: 'Protein' })}
-            value={`${totalProtein}g`}
-            subtitle={`/ ${targetProtein}g`}
-            progress={pProgress}
-            tone="emerald"
-          />
-        </div>
-        {/* Lose It–style budget: remaining first */}
-        <div className="rounded-xl border border-border/40 bg-muted/15 px-4 py-3 text-center">
-          <p className="text-xs font-medium text-muted-foreground">
+      <CardContent className="pt-6 space-y-5">
+        {/* Remaining-kcal hero. The two rings that used to sit above this said
+            the same thing the bars below already say, so they are gone rather
+            than redrawn as bars. Flush left — nothing in this system centres. */}
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
             {calsOver > 0
               ? t('fuelCalsOver', { defaultValue: 'Over target' })
               : t('fuelBudgetLeft', { defaultValue: 'Remaining today' })}
           </p>
-          <p
-            className={`text-3xl font-semibold tabular-nums tracking-tight ${
-              calsOver > 0 ? 'text-status-warn' : 'text-primary'
-            }`}
-          >
+          <p className="font-extrabold leading-[0.95] tabular-nums text-[56px]">
             {calsOver > 0 ? calsOver : calsLeft}
-            <span className="text-base font-medium text-muted-foreground ms-1">kcal</span>
+            <span className="ms-2 text-base font-semibold text-muted-foreground">kcal</span>
           </p>
-          <p className="text-sm text-muted-foreground tabular-nums mt-0.5">
+          <p className="mt-1 text-[13px] text-muted-foreground tabular-nums">
             {proteinLeft}g {t('fuelProtein', { defaultValue: 'protein' }).toLowerCase()}{' '}
             {t('fuelLeftWord', { defaultValue: 'left' })}
             <span className="mx-1.5 text-border">·</span>
             {totalCals} / {targetCals} kcal
           </p>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-3">
           {bars.map((m) => (
-            <div key={m.key} className="space-y-1">
-              <div className="flex justify-between text-[11px] text-muted-foreground">
-                <span>{m.label}</span>
-                <span className="tabular-nums">{m.line}</span>
-              </div>
-              <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden">
-                <div className={`h-full ${m.bar} transition-all`} style={{ width: `${m.pct}%` }} />
-              </div>
-            </div>
+            <MeterBar key={m.key} label={m.label} value={m.value} max={m.max} readout={m.line} over />
           ))}
         </div>
-        <div className="text-xs text-center text-muted-foreground">
+        <div className="text-xs text-muted-foreground">
           {t('fuelMacrosSummary', {
             carbs: totalCarbs,
             fat: totalFat,

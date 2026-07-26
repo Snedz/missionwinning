@@ -39,6 +39,44 @@
     --muted-foreground: 20 1% 28%;
     --accent: 11 100% 97%;
     --accent-foreground: 8 92% 25%;
+    /* The full ramps from the handoff token sheet (_ds/…/styles.css). Phase A
+       adds them because the per-screen layouts need steps the semantic roles
+       never covered: ink panels (rest dock, flow runner, breathing) are
+       neutral-900 on neutral-100, and the honor tier is accent-800.
+
+       Three steps are ALIASES, and the indirection points the "wrong" way on
+       purpose — scale step → semantic role, not role → step. It has to:
+       scripts/check-token-sync.mjs regex-parses this block for literal HSL
+       triplets on --primary and --primary-fill, so pointing those at a var()
+       would make the gate unable to read them. Aliasing this direction still
+       gets the thing that matters — one value, so the ramp and the roles can
+       never drift apart.
+
+       Rounding: triplets land within 1/255 of the handoff hex, which is the
+       same tolerance colorsWithinTolerance() already allows. */
+    --neutral-100: 0 22.2% 96.5%; /* #f8f4f4 */
+    --neutral-200: 0 6.7% 91.2%; /* #eae7e7 — meter-bar tracks */
+    --neutral-300: 0 4.8% 83.5%; /* #d7d3d3 */
+    --neutral-400: 0 2.8% 72.2%; /* #bab6b6 */
+    --neutral-500: 0 2% 60%; /* #9b9797 — rail group labels */
+    --neutral-600: 0 1.6% 48.2%; /* #7d7979 */
+    --neutral-700: 0 1.6% 37.1%; /* #605d5d */
+    --neutral-800: 0 2.3% 26.1%; /* #444141 */
+    --neutral-900: 0 2.3% 17.3%; /* #2d2b2b — ink panel ground */
+    --accent-100: var(--accent-tint); /* #fff2ef — active rows, today states */
+    --accent-200: 11 100% 92.5%; /* #ffe0d9 */
+    --accent-300: 10 100% 86.1%; /* #ffc4b8 */
+    --accent-400: 10 100% 75.7%; /* #ff9783 — accent ON the ink panels */
+    --accent-500: 8 100% 61.8%; /* #ff563c */
+    --accent-600: var(--primary-fill); /* #dd2b0f */
+    --accent-700: var(--primary); /* #ae1800 */
+    --accent-800: 8 92.2% 25.3%; /* #7c1405 — honor tier ONLY (PRs/victories) */
+    --accent-900: 9 69.2% 17.8%; /* #4d170e — text on accent-100 */
+    /* Flat by default. These exist for dialogs and the ONE boss panel per
+       screen — nothing else may elevate. */
+    --shadow-sm: 0 1px 2px hsl(var(--neutral-900) / 0.14);
+    --shadow-md: 0 3px 10px hsl(var(--neutral-900) / 0.16);
+    --shadow-lg: 0 12px 32px hsl(var(--neutral-900) / 0.22);
     --destructive: 8 100% 34%;
     --destructive-foreground: 0 0% 100%;
     /* ALL rules are 2px solid this gray (≈ ink 40% on paper) — never hairlines. */
@@ -52,7 +90,6 @@
     --brass: 20 1% 37%;
     --brass-foreground: 0 4% 95%;
     --surface-raised: 0 2% 92%;
-    --grid-line: 0 1% 62%;
     /* Semantic status — deep, text-safe values for the light ground. */
     --status-warn: 35 100% 28%;
     --status-info: 210 80% 34%;
@@ -108,6 +145,27 @@
     background: hsl(var(--accent-poster) / 0.3);
   }
 
+  /**
+   * Links inside running text are underlined at rest, not on hover.
+   *
+   * `text-primary hover:underline` is the house idiom (56 call sites) and it
+   * fails WCAG 1.4.1: at rest the only thing separating a red link from the
+   * muted body copy around it is hue, and #ad1700 against #484747 is 1.27:1 —
+   * far under the 3:1 that lets colour be the sole cue. Hovering is not a
+   * remedy for a reader who never hovers, and it does not exist on touch.
+   *
+   * This was failing on /paths and /compare before the redesign started; axe
+   * reports it as `link-in-text-block`.
+   *
+   * Scoped to <p> deliberately. Nav lists, card links and button-shaped links
+   * are not running text, are not flagged by the rule, and should not gain an
+   * underline — so `li a` and bare `a` stay out of it.
+   */
+  p a {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
   /* Pointer users never see it; keyboard users always do. */
   :focus:not(:focus-visible) {
     outline: none;
@@ -126,29 +184,57 @@
     @apply border-2 border-border bg-card;
   }
 
-  /* The one emphasized card per screen: tint fill + 2px poster-red border
-     (the "selected / today" treatment from the handoff). */
-  .card-glow-emerald {
-    @apply border-2 border-[hsl(var(--accent-poster))] bg-[hsl(var(--accent-tint))];
+  /* The boss panel: at most ONE per screen. Tint fill, 2px poster border, and
+     the system's only sanctioned elevation. Named for the job it does — the
+     old `card-glow-emerald` described a colour that no longer exists and a
+     glow that was already deleted. */
+  .card-boss {
+    @apply border-2 border-[hsl(var(--accent-poster))] bg-accent-100 shadow-md;
   }
 
-  /* Brass is retired — honor cards read as elevated neutrals now. */
-  .card-glow-brass {
-    @apply border-2 border-border bg-card;
+  /* Flat ruled section — the default way to separate content once a screen is
+     recut. A 2px top rule and nothing else: no fill, no border box. */
+  .card-section {
+    @apply border-t-2 border-border bg-transparent pt-4;
   }
 
-  /* The bloom behind ProgressRing is retired — the ring itself carries it. */
-  .ring-glow-emerald {
-    position: relative;
+  /* Selected / active row — nav items, the live set row, open detail panels.
+     The inset edge is the system's "you are here" mark; it reads at a glance
+     without the row having to change size. */
+  .is-active-row {
+    @apply bg-accent-100;
+    box-shadow: inset 3px 0 0 0 hsl(var(--accent-poster));
   }
 
-  .ring-glow-emerald::before {
-    content: none;
+  /* Same mark rotated for the mobile tab bar, where the edge runs along the top. */
+  .is-active-tab {
+    @apply bg-accent-100;
+    box-shadow: inset 0 2px 0 0 hsl(var(--accent-poster));
   }
 
-  .ring-glow-emerald > * {
-    position: relative;
-    z-index: 1;
+  /* Segmented control — one ruled strip, the selected cell filled. Square, and
+     divided by 1px hairlines because these are internal divisions, not the 2px
+     section breaks. */
+  .seg {
+    @apply inline-flex overflow-hidden border-2 border-border;
+  }
+
+  .seg-opt {
+    @apply inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 px-3 text-[13px] font-semibold transition-colors;
+  }
+
+  .seg-opt + .seg-opt {
+    @apply border-l border-border;
+  }
+
+  .seg-opt[aria-checked='true'],
+  .seg-opt[data-state='on'],
+  .seg-opt:has(input:checked) {
+    @apply bg-primary-fill text-primary-foreground;
+  }
+
+  .seg-opt:not([aria-checked='true']):not([data-state='on']):not(:has(input:checked)):hover {
+    @apply bg-foreground/[0.07];
   }
 
   .auth-panel {
@@ -280,25 +366,6 @@
     }
   }
 
-  .texture-grid {
-    position: relative;
-  }
-
-  .texture-grid::before {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background-image:
-      linear-gradient(hsl(var(--grid-line) / 0.35) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--grid-line) / 0.35) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, black 20%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, black 20%, transparent 75%);
-    opacity: 0.55;
-  }
-
   /* The poster close — the ONE red field a page is allowed. Display-grade type,
      paper on red, flush left. Inside it the .primary-action inverts to paper so
      the field itself carries the red (and the two-per-page CTA count holds). */
@@ -318,15 +385,6 @@
 
   .poster-close .primary-action:focus-visible {
     outline-color: hsl(var(--background));
-  }
-
-  /* Noise is retired — flat ink on paper. Class kept for call-site stability. */
-  .texture-noise {
-    position: relative;
-  }
-
-  .texture-noise::after {
-    content: none;
   }
 
   /* Section seams are honest 2px rules now — full-bleed, no fade, no glow. */
@@ -386,7 +444,6 @@
     .page-enter,
     .journey-enter,
     .stagger-enter,
-    .ring-draw-in,
     .week-strip-pulse,
     .score-tick,
     .victory-reveal,
@@ -428,9 +485,6 @@
     transform: scale(0.98);
   }
 
-  .ring-draw-in {
-    animation: ring-draw-in 450ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
 
   .score-tick {
     animation: score-tick 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -448,16 +502,6 @@
     animation: victory-lock 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-  @keyframes ring-draw-in {
-    from {
-      opacity: 0;
-      transform: scale(0.92);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
 
   @keyframes score-tick {
     from {

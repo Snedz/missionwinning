@@ -107,7 +107,7 @@ export function GuideApexShell({
       dir={rtl ? 'rtl' : 'ltr'}
       lang={lang}
     >
-      <header className="section-seam hero-field texture-noise relative">
+      <header className="section-seam hero-field relative">
         <div className="relative z-[1] mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
           <Link href="/" className="flex min-w-0 items-center gap-2.5">
             <BrandMonogram display />
