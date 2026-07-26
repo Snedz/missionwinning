@@ -97,13 +97,13 @@ export function FoodSearchBar({ onSelect, initialQuery = '', compact = false }: 
       )}
       {error && !loading && <p className="text-xs text-muted-foreground">{error}</p>}
       {items.length > 0 && (
-        <ul className="rounded-xl border border-border/50 divide-y divide-border/40 overflow-hidden max-h-56 overflow-y-auto">
+        <ul className="border-2 border-border divide-y divide-border overflow-hidden max-h-56 overflow-y-auto">
           {items.map((item, idx) => (
             <li key={item.id}>
               <button
                 type="button"
-                className={`w-full text-left px-3 py-2.5 hover:bg-primary/10 transition-colors min-h-[44px] ${
-                  idx === 0 ? 'bg-primary/5' : ''
+                className={`w-full text-left px-3 py-2.5 hover:bg-accent-100 transition-colors min-h-[44px] ${
+                  idx === 0 ? 'bg-accent-100' : ''
                 }`}
                 onClick={() => {
                   onSelect(item);

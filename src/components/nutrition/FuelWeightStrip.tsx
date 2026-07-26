@@ -95,7 +95,7 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
   const span = Math.max(maxW - minW, 0.5);
 
   return (
-    <div className="rounded-xl border border-border/50 bg-muted/10 px-3 py-3 space-y-2">
+    <div className="border-2 border-border bg-card px-3 py-3 space-y-2">
       {/*
         Actions stack under the readout instead of sitting at the end of the row:
         the Fuel "Log food" FAB is fixed to the viewport's bottom-end corner and
@@ -121,7 +121,7 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
                       weekDelta < 0
                         ? 'text-primary'
                         : weekDelta > 0
-                          ? 'text-status-warn'
+                          ? 'text-primary'
                           : 'text-muted-foreground'
                     )}
                   >
@@ -205,7 +205,7 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
                 <div
                   className={cn(
                     'w-full max-w-[1.25rem] rounded-t-sm',
-                    isToday ? 'bg-primary' : 'bg-primary/40'
+                    isToday ? 'bg-primary-fill' : 'bg-neutral-400'
                   )}
                   style={{ height: h }}
                   title={`${p.date}: ${disp} ${unit}`}

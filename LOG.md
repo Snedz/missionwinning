@@ -6,6 +6,38 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Fuel, and the runners go to ink (`.146`)
+
+Phase H. Fuel carried 41 off-system class hits — by far the largest remaining
+pocket. Move and Mind were already clean of stray colour, so their work was the
+handoff's structural asks rather than a sweep.
+
+- **Fuel**: one systematic pass over 17 files — radius to 0, hairline
+  `border-border/40|50|60` to the real 2px rule, `bg-muted/*` to the surface
+  fill, `bg-primary/*` washes to `accent-100`, and every `status-warn` to the
+  one red. Three two-state cases were decided by hand rather than substituted:
+  the week bars are **poster (over target) · fill (today) · neutral (logged)**,
+  because amber for "over" implied a severity the app does not assign — a day
+  over target is information, not a fault.
+- **Picked up the Fuel FAB overlap fix** (`b5f53548`, from the spawned session)
+  by cherry-pick, so this branch restyles the *fixed* layout. Its e2e spec then
+  guards the restyle: `fuel-floating-action` still passes, so nothing moved back
+  under the FAB.
+- **`GuidedStepPlayer` goes ink while running** — Move flows and Mind guided
+  sessions share it, so one change serves both. Idle stays paper (you are
+  choosing, not running); playing/paused is `neutral-900` with a 44px countdown,
+  accent-400 meter and **step dots**. Same rule as the rest dock: while it runs
+  it is the only thing on screen.
+- **Completion is the red banner** the handoff asks for — `.poster-field`, not
+  poster red, because the hint line under it is 12px.
+- **The breathing anchor is a square**, per the handoff, and ink. It was a
+  `rounded-full` circle with a `border-primary/40` ring — the last round object
+  of any size in the app.
+- New Button variants **`onInk` / `onInkSolid`**: on an ink panel `outline`
+  draws an ink border on ink and `ghost`'s hover is an ink wash on ink, so both
+  vanish. `MeterBar` gained a matching `tone="ink"`.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20, `fuel-floating-action` 1/1.
+
 ## 2026-07-26 — Photography gets a slot, not a stand-in (`.145`)
 
 Phase G, and the last of the approved plan.

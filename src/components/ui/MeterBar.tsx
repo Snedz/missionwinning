@@ -19,6 +19,12 @@ export type MeterBarProps = {
    * a session-progress bar never goes over and can ignore it.
    */
   over?: boolean;
+  /**
+   * Which ground the bar is sitting on. The paper track and the accent fill
+   * both invert on an ink panel — neutral-300 disappears into neutral-900, and
+   * primary-fill is too dark to read against it.
+   */
+  tone?: 'paper' | 'ink';
   size?: 'sm' | 'md';
   className?: string;
 };
@@ -36,9 +42,11 @@ export function MeterBar({
   max = 100,
   readout,
   over = false,
+  tone = 'paper',
   size = 'md',
   className,
 }: MeterBarProps) {
+  const onInk = tone === 'ink';
   const safeMax = max > 0 ? max : 1;
   const clamped = Math.max(0, Math.min(safeMax, value));
   const pct = (clamped / safeMax) * 100;
@@ -49,7 +57,12 @@ export function MeterBar({
       {(label || readout) && (
         <div className="flex items-baseline justify-between gap-3">
           {label && (
-            <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+            <span
+              className={cn(
+                'text-[11px] font-semibold uppercase tracking-[0.08em]',
+                onInk ? 'text-neutral-400' : 'text-muted-foreground'
+              )}
+            >
               {label}
             </span>
           )}
@@ -63,7 +76,11 @@ export function MeterBar({
           is a 1.01:1 difference and the empty track simply vanishes — which is
           exactly the state a budget bar spends its morning in. */}
       <div
-        className={cn('w-full bg-neutral-300', size === 'sm' ? 'h-1.5' : 'h-2')}
+        className={cn(
+          'w-full',
+          onInk ? 'bg-neutral-700' : 'bg-neutral-300',
+          size === 'sm' ? 'h-1.5' : 'h-2'
+        )}
         role="progressbar"
         aria-label={label || undefined}
         aria-valuenow={Math.round(clamped)}
@@ -74,7 +91,7 @@ export function MeterBar({
         <div
           className={cn(
             'h-full transition-[width] duration-500 ease-out motion-reduce:transition-none',
-            isOver ? 'bg-accent-700' : 'bg-primary-fill'
+            isOver ? 'bg-accent-700' : onInk ? 'bg-accent-400' : 'bg-primary-fill'
           )}
           style={{ width: `${isOver ? 100 : pct}%` }}
         />

@@ -90,7 +90,7 @@ export function FuelLogSheet({
           key={m}
           size="sm"
           variant={meal === m ? 'default' : 'outline'}
-          className="shrink-0 h-9 rounded-full px-3.5"
+          className="shrink-0 h-9  px-3.5"
           onClick={() => onMealChange(m)}
         >
           {mealLabel(m)}
@@ -100,7 +100,7 @@ export function FuelLogSheet({
   );
 
   const modeTabs = (
-    <div className="flex gap-1 rounded-xl bg-muted/40 p-1">
+    <div className="flex gap-1  bg-card p-1">
       {(
         [
           ['quick', 'fuelTabQuick', Search, 'Quick'],
@@ -113,7 +113,7 @@ export function FuelLogSheet({
           size="sm"
           variant={tab === id ? 'secondary' : 'ghost'}
           className={cn(
-            'flex-1 gap-1.5 h-9 rounded-lg',
+            'flex-1 gap-1.5 h-9 ',
             tab === id && 'bg-card'
           )}
           onClick={() => setTab(id)}
@@ -141,7 +141,7 @@ export function FuelLogSheet({
                 key={i}
                 variant="outline"
                 size="sm"
-                className="h-10 rounded-full px-3.5 font-normal"
+                className="h-10  px-3.5 font-normal"
                 onClick={() => {
                   onLog(name as string, p as number, c as number, carbs as number, fat as number);
                   onClose();

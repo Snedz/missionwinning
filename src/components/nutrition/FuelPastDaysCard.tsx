@@ -71,7 +71,7 @@ export function FuelPastDaysCard({ logs, todayIso, onCopyDayToToday }: Props) {
             return (
               <details
                 key={date}
-                className="rounded-xl border border-border/40 px-3 py-2"
+                className="border-2 border-border px-3 py-2"
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-2 min-h-[40px] [&::-webkit-details-marker]:hidden">
                   <span className="text-sm font-medium">
@@ -82,7 +82,7 @@ export function FuelPastDaysCard({ logs, todayIso, onCopyDayToToday }: Props) {
                   </span>
                   <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
                 </summary>
-                <ul className="mt-2 space-y-1 border-t border-border/30 pt-2 text-sm">
+                <ul className="mt-2 space-y-1 border-t border-border pt-2 text-sm">
                   {rows.map((r, i) => (
                     <li
                       key={`${date}-${i}-${r.name}`}

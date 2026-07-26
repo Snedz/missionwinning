@@ -131,7 +131,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
   }
 
   return (
-    <div className="rounded-xl border border-border/50 bg-muted/15 p-3 space-y-3">
+    <div className="border-2 border-border bg-card p-3 space-y-3">
       <div className="flex items-start justify-between gap-2">
         <div>
           <p className="text-sm font-medium">
@@ -153,10 +153,10 @@ export function FuelGoalWizard({ onApplied }: Props) {
             type="button"
             onClick={() => setGoal(g)}
             className={cn(
-              'rounded-full px-3 py-1.5 text-xs font-medium border transition-colors',
+              ' px-3 py-1.5 text-xs font-medium border transition-colors',
               goal === g
-                ? 'border-primary bg-primary/15 text-primary'
-                : 'border-border text-muted-foreground hover:bg-muted/40'
+                ? 'border-primary bg-accent-100 text-primary'
+                : 'border-border text-muted-foreground hover:bg-card'
             )}
           >
             {goalLabel(g)}
@@ -191,7 +191,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
             id="fuel-goal-act"
             value={activity}
             onChange={(e) => setActivity(parseFloat(e.target.value))}
-            className="mt-0.5 h-10 w-full rounded-md border border-input bg-background px-2 text-sm"
+            className="mt-0.5 h-10 w-full  border border-input bg-background px-2 text-sm"
           >
             {activityLevelsList().map((a) => (
               <option key={a.key} value={a.value}>
@@ -251,7 +251,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
               id="fuel-goal-sex"
               value={sex}
               onChange={(e) => setSex(e.target.value as CalcSex)}
-              className="mt-0.5 h-10 w-full rounded-md border border-input bg-background px-2 text-sm"
+              className="mt-0.5 h-10 w-full  border border-input bg-background px-2 text-sm"
             >
               <option value="male">{t('calcSexMale', { defaultValue: 'Male' })}</option>
               <option value="female">{t('calcSexFemale', { defaultValue: 'Female' })}</option>
@@ -260,7 +260,7 @@ export function FuelGoalWizard({ onApplied }: Props) {
         </div>
       ) : null}
 
-      <div className="rounded-lg border border-border/40 bg-background/50 px-3 py-2 text-xs space-y-1">
+      <div className="border-2 border-border bg-background px-3 py-2 text-xs space-y-1">
         <p className="font-medium tabular-nums">
           {t('fuelGoalPreview', {
             cals: preview.cals,

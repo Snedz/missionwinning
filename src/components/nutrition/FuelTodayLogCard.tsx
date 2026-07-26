@@ -115,7 +115,7 @@ export function FuelTodayLogCard({
             return (
               <details
                 key={mealKey}
-                className="group rounded-xl border border-border/40"
+                className="group  border-2 border-border"
                 open
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 min-h-[44px] [&::-webkit-details-marker]:hidden">
@@ -127,7 +127,7 @@ export function FuelTodayLogCard({
                   </span>
                   <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180 shrink-0" />
                 </summary>
-                <ul className="space-y-2 text-sm px-3 pb-3 border-t border-border/30 pt-2">
+                <ul className="space-y-2 text-sm px-3 pb-3 border-t border-border pt-2">
                   {entries.map(({ entry: l, index }) => (
                     <li key={`${mealKey}-${index}`} className="space-y-2">
                       {editIndex === index && editDraft ? (
@@ -195,7 +195,7 @@ export function FuelTodayLogCard({
             );
           })
         )}
-        <div className="pt-3 border-t border-border/40 text-sm flex justify-between font-medium">
+        <div className="pt-3 border-t border-border text-sm flex justify-between font-medium">
           <span>{t('fuelTotals', { defaultValue: 'Totals' })}</span>
           <span className="tabular-nums">
             {t('fuelTotalsLine', {

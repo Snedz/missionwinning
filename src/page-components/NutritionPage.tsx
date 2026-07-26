@@ -456,7 +456,7 @@ export function NutritionPage() {
       })}
       headerActions={
         fuelStreak > 0 ? (
-          <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary shrink-0">
+          <span className="border border-primary bg-accent-100 px-3 py-1 text-xs font-medium text-primary shrink-0">
             {t('fuelLogStreak', {
               count: fuelStreak,
               defaultValue: `${fuelStreak}-day log streak`,

@@ -40,7 +40,7 @@ export function FuelMoreTools({ onLogFood }: Props) {
 
   return (
     <>
-      <Card className="border-border/40 shadow-none">
+      <Card className="border-border shadow-none">
         <CardHeader className="pb-2">
           <CardTitle className="text-base font-semibold">
             {t('fuelSearchTitle', { defaultValue: 'Search foods' })}

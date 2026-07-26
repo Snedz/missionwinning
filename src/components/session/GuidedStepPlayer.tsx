@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 import { MeterBar } from '@/components/ui/MeterBar';
 import { track } from '@/lib/analytics';
 import {
@@ -114,35 +115,38 @@ export function GuidedStepPlayer({
     if (e.key === 'Escape') onExit?.();
   };
 
+  // The red completion banner. A finished session is the one moment this screen
+  // earns the field — and .poster-field, not poster red, because the hint line
+  // under it is 12px.
   if (state.status === 'completed') {
     return (
-      <Card className="content-card border-primary/40" tabIndex={0} onKeyDown={onKeyDown}>
-        <CardContent className="py-10 text-center space-y-4">
-          <Check className="h-12 w-12 text-primary mx-auto" aria-hidden />
-          <h3 className="text-xl font-bold">
+      <Card className="poster-field border-0" tabIndex={0} onKeyDown={onKeyDown}>
+        <CardContent className="py-10 space-y-4">
+          <Check className="h-12 w-12" aria-hidden />
+          <h3 className="text-2xl font-extrabold">
             {t('guidedSessionComplete', { defaultValue: 'Session complete' })}
           </h3>
-          <p className="text-sm text-muted-foreground">{title}</p>
-          <p className="text-xs text-muted-foreground px-2">
+          <p className="poster-sub text-sm">{title}</p>
+          <p className="poster-sub text-xs">
             {t('guidedSessionNextHint', {
               defaultValue: 'Next: log protein on Fuel, read a Learn chapter, or return to Today.',
             })}
           </p>
-          <div className="flex gap-2 justify-center flex-wrap">
-            <Button asChild variant="outline" size="sm">
+          <div className="flex gap-2 flex-wrap">
+            <Button asChild variant="onInk" size="sm">
               <Link href="/nutrition">{t('coachActionLogNutrition', { defaultValue: 'Log Fuel' })}</Link>
             </Button>
-            <Button asChild variant="outline" size="sm">
+            <Button asChild variant="onInk" size="sm">
               <Link href="/learn/guide">{t('coachActionOpenLearn', { defaultValue: 'Open Learn' })}</Link>
             </Button>
-            <Button asChild variant="outline" size="sm">
+            <Button asChild variant="onInk" size="sm">
               <Link href="/log">{t('coachActionViewToday', { defaultValue: 'Back to Today' })}</Link>
             </Button>
-            <Button variant="fitness" onClick={handleReset}>
+            <Button variant="onInkSolid" onClick={handleReset}>
               {t('guidedSessionRepeat', { defaultValue: 'Repeat' })}
             </Button>
             {onExit && (
-              <Button variant="outline" onClick={onExit}>
+              <Button variant="onInk" onClick={onExit}>
                 {t('guidedSessionBack', { defaultValue: 'Back' })}
               </Button>
             )}
@@ -153,10 +157,16 @@ export function GuidedStepPlayer({
   }
 
   const isCompact = variant === 'compact';
+  // Ink once it is actually running. Idle is still a card you might start; a
+  // running session is the only thing on screen, same rule as the rest dock.
+  const running = state.status !== 'idle';
 
   return (
     <Card
-      className={`content-card ${isCompact ? 'border-primary/40' : 'border-primary/30'}`}
+      className={cn(
+        'content-card',
+        running && 'border-neutral-900 bg-neutral-900 text-neutral-100'
+      )}
       tabIndex={0}
       onKeyDown={onKeyDown}
       role="region"
@@ -166,7 +176,12 @@ export function GuidedStepPlayer({
         <CardTitle className={`flex justify-between items-start gap-2 ${isCompact ? 'text-base' : ''}`}>
           <span>{title}</span>
           {!isCompact && (
-            <span className="text-sm font-normal text-muted-foreground tabular-nums">
+            <span
+            className={cn(
+              'text-sm font-normal tabular-nums',
+              running ? 'text-neutral-400' : 'text-muted-foreground'
+            )}
+          >
               {t('guidedSessionStepOf', {
                 current: state.stepIndex + 1,
                 total: steps.length,
@@ -175,7 +190,11 @@ export function GuidedStepPlayer({
             </span>
           )}
         </CardTitle>
-        {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
+        {subtitle && (
+          <p className={cn('text-xs', running ? 'text-neutral-400' : 'text-muted-foreground')}>
+            {subtitle}
+          </p>
+        )}
       </CardHeader>
       <CardContent className="space-y-4">
         {/* The bar spans the panel now instead of sitting beside it as a ring —
@@ -184,26 +203,64 @@ export function GuidedStepPlayer({
           <MeterBar
             label={t('guidedSessionProgress', { defaultValue: 'Progress' })}
             value={totalPct}
+            tone={running ? 'ink' : 'paper'}
             readout={`${totalPct}% · ${formatGuidedClock(state.remainingSec)}`}
           />
-          <div className="flex-1 w-full min-h-[72px] border-2 border-border bg-card p-4">
-            <p className={`leading-relaxed ${isCompact ? 'text-sm' : 'text-base'}`}>{step?.label}</p>
-            {step?.cue && (
-              <p className="text-sm text-muted-foreground mt-2">{step.cue}</p>
+          <div
+            className={cn(
+              'flex-1 w-full min-h-[72px] border-2 p-4',
+              running ? 'border-neutral-700 bg-neutral-800' : 'border-border bg-card'
             )}
-            {state.status !== 'idle' && (
-              <p className="text-2xl font-bold tabular-nums text-primary mt-3" aria-live="polite">
+          >
+            <p className={cn('leading-relaxed', isCompact ? 'text-sm' : 'text-base')}>
+              {step?.label}
+            </p>
+            {step?.cue && (
+              <p className={cn('text-sm mt-2', running ? 'text-neutral-400' : 'text-muted-foreground')}>
+                {step.cue}
+              </p>
+            )}
+            {running && (
+              <p
+                className="text-[44px] font-extrabold leading-none tabular-nums mt-3"
+                aria-live="polite"
+              >
                 {formatGuidedClock(state.remainingSec)}
               </p>
             )}
           </div>
+          {/* Step dots: where you are in the flow at a glance, per the handoff.
+              Squares, because nothing here is round. */}
+          {steps.length > 1 && (
+            <div className="flex flex-wrap gap-1" aria-hidden>
+              {steps.map((_, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    'h-1.5 w-4',
+                    i < state.stepIndex
+                      ? running ? 'bg-accent-400' : 'bg-primary-fill'
+                      : i === state.stepIndex
+                        ? running ? 'bg-neutral-100' : 'bg-foreground'
+                        : running ? 'bg-neutral-700' : 'bg-neutral-300'
+                  )}
+                />
+              ))}
+            </div>
+          )}
         </div>
         {/* Current step, not the session — stays a bare div rather than a
             MeterBar because it is aria-hidden decoration and MeterBar
             announces itself as a progressbar. */}
-        <div className="h-1.5 bg-neutral-200 overflow-hidden" aria-hidden>
+        <div
+          className={cn('h-1.5 overflow-hidden', running ? 'bg-neutral-700' : 'bg-neutral-300')}
+          aria-hidden
+        >
           <div
-            className="h-full bg-primary-fill transition-all duration-1000"
+            className={cn(
+              'h-full transition-all duration-1000',
+              running ? 'bg-accent-400' : 'bg-primary-fill'
+            )}
             style={{ width: `${stepPct}%` }}
           />
         </div>
@@ -215,24 +272,24 @@ export function GuidedStepPlayer({
             </Button>
           )}
           {state.status === 'playing' && (
-            <Button variant="outline" size={isCompact ? 'sm' : 'lg'} onClick={handlePause} aria-label={t('guidedSessionPause', { defaultValue: 'Pause' })}>
+            <Button variant="onInk" size={isCompact ? 'sm' : 'lg'} onClick={handlePause} aria-label={t('guidedSessionPause', { defaultValue: 'Pause' })}>
               <Pause className="h-4 w-4 mr-2" aria-hidden />
               {t('guidedSessionPause', { defaultValue: 'Pause' })}
             </Button>
           )}
           {state.status === 'paused' && (
-            <Button variant="fitness" size={isCompact ? 'sm' : 'lg'} onClick={handleResume} aria-label={t('guidedSessionResume', { defaultValue: 'Resume' })}>
+            <Button variant="onInkSolid" size={isCompact ? 'sm' : 'lg'} onClick={handleResume} aria-label={t('guidedSessionResume', { defaultValue: 'Resume' })}>
               <Play className="h-4 w-4 mr-2" aria-hidden />
               {t('guidedSessionResume', { defaultValue: 'Resume' })}
             </Button>
           )}
           {state.status !== 'idle' && (
             <>
-              <Button variant="ghost" size={isCompact ? 'sm' : 'default'} onClick={handleSkip} aria-label={t('guidedSessionSkip', { defaultValue: 'Skip step' })}>
+              <Button variant="onInk" size={isCompact ? 'sm' : 'default'} onClick={handleSkip} aria-label={t('guidedSessionSkip', { defaultValue: 'Skip step' })}>
                 <SkipForward className="h-4 w-4 mr-2" aria-hidden />
                 {t('guidedSessionSkip', { defaultValue: 'Skip' })}
               </Button>
-              <Button variant="ghost" size="sm" onClick={handleReset}>
+              <Button variant="onInk" size="sm" onClick={handleReset}>
                 {t('guidedSessionReset', { defaultValue: 'Reset' })}
               </Button>
             </>

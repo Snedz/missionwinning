@@ -87,7 +87,7 @@ export function FuelTargetsEditor({
   }
 
   return (
-    <div className="rounded-xl border border-border/50 bg-muted/15 p-3 space-y-3">
+    <div className="border-2 border-border bg-card p-3 space-y-3">
       <p className="text-sm font-medium">
         {t('fuelEditTargetsTitle', { defaultValue: 'Daily targets' })}
       </p>
