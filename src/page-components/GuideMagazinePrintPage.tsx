@@ -65,13 +65,22 @@ export function GuideMagazinePrintPage() {
 
       <article className="magazine-document">
         <section className="magazine-cover magazine-page-break" aria-label="Cover">
-          <div className="magazine-cover-field hero-field texture-grid">
+          {/* Modernist cover (Guidebook Cover.dc.html): flat ink field, paper
+              type, the mark and wordmark over a 2px rule. The gradient hero-field
+              and grid texture are retired with the rest of the dark system. */}
+          <div className="magazine-cover-field">
             <div className="magazine-cover-inner">
-              <p className="eyebrow-live magazine-cover-eyebrow">{meta.editionLabel}</p>
-              <h1 className="display-hero magazine-cover-title text-primary">{meta.title}</h1>
-              <p className="display-section magazine-cover-line text-brass">{meta.magazineLine}</p>
+              <div className="magazine-cover-mark">
+                <span className="magazine-cover-monogram" aria-hidden>
+                  MW
+                </span>
+                <span className="magazine-cover-wordmark">Mission Winning</span>
+              </div>
+              <p className="magazine-cover-eyebrow">{meta.editionLabel}</p>
+              <h1 className="display-hero magazine-cover-title">{meta.title}</h1>
+              <p className="display-section magazine-cover-line">{meta.magazineLine}</p>
               <p className="magazine-cover-sub">{meta.subtitle}</p>
-              <p className="magazine-cover-meta font-mono">
+              <p className="magazine-cover-meta">
                 v{meta.version} · {meta.siteOrigin}
               </p>
             </div>

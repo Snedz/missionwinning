@@ -552,16 +552,16 @@
 /* —— Beyond the Basics magazine (/guide/print + PDF) ——
    Tokens follow design system: emerald = action, brass = honor, navy cover, cool paper body. */
 .magazine-root {
-  --mag-paper: hsl(210 12% 97%);
-  --mag-ink: hsl(222 24% 8%);
+  --mag-paper: hsl(var(--background));
+  --mag-ink: hsl(var(--foreground));
   --mag-muted: hsl(var(--muted-foreground));
   --mag-rule: hsl(var(--border));
   --mag-primary: hsl(var(--primary));
-  /* Pinned literals: the magazine PDF keeps its own pre-rebrand palette until the
-     Phase 3 cover recut — the global tokens under these went paper/ink/red. */
-  --mag-brass: hsl(42 48% 58%);
-  --mag-navy: hsl(222 24% 5%);
-  --mag-fg-on-dark: hsl(210 20% 96%);
+  /* Modernist (Phase 3 cover recut): the cover field is ink, not navy, and the
+     honor tone is retired — the ramp does the work. */
+  --mag-brass: hsl(var(--muted-foreground));
+  --mag-navy: hsl(var(--foreground));
+  --mag-fg-on-dark: hsl(var(--background));
   min-height: 100vh;
   background: var(--mag-paper);
   color: var(--mag-ink);
@@ -731,6 +731,7 @@
 }
 
 .magazine-cover-field {
+  background: var(--mag-navy);
   position: relative;
   flex: 1;
   display: flex;
@@ -747,8 +748,42 @@
   max-width: 40rem;
 }
 
+/* Mark + wordmark lockup over the cover's own 2px rule. */
+.magazine-cover-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 2px solid hsl(var(--background) / 0.4);
+}
+
+.magazine-cover-monogram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--mag-paper);
+  color: var(--mag-ink);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: -0.04em;
+}
+
+.magazine-cover-wordmark {
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
 .magazine-cover-eyebrow {
   margin-bottom: 1.25rem;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--background) / 0.75);
+  font-feature-settings: 'tnum' 1;
 }
 
 .magazine-cover-title {
@@ -764,14 +799,14 @@
 .magazine-cover-sub {
   margin: 1.35rem 0 0;
   font-size: 1.1rem;
-  color: hsl(210 20% 96% / 0.72);
+  color: hsl(var(--background) / 0.78);
 }
 
 .magazine-cover-meta {
   margin: 2.75rem 0 0;
   font-size: 0.7rem;
   letter-spacing: 0.04em;
-  color: hsl(210 20% 96% / 0.5);
+  color: hsl(var(--background) / 0.6);
 }
 
 .magazine-front,
