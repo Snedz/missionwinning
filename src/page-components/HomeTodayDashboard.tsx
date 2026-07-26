@@ -503,6 +503,7 @@ export function HomeTodayDashboard() {
         <TodayDashboardHeader
           missionScore={score}
           scores={bodyScores}
+          sessions={totalSessions}
           trends={todayTrends}
           coachLine={t(coachInsight.messageKey, {
             ...coachInsight.messageParams,

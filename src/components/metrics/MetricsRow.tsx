@@ -13,6 +13,11 @@ interface MetricsRowProps {
    * is one row of four, not a hero score sitting beside a row of three.
    */
   missionScore?: number;
+  /**
+   * Logged sessions so far. Drives whether a figure is shown at all — omit it
+   * to keep the old always-show-a-number behaviour (demos, computed previews).
+   */
+  sessions?: number;
   demo?: boolean;
   embedded?: boolean;
   size?: 'sm' | 'md' | 'lg';
@@ -21,6 +26,7 @@ interface MetricsRowProps {
 export function MetricsRow({
   scores,
   missionScore,
+  sessions,
   demo,
   embedded,
   size = 'md',
@@ -29,6 +35,24 @@ export function MetricsRow({
   // A band never gets the 56px treatment — that is for a single hero figure.
   const numeralSize = size === 'lg' ? 'lg' : 'md';
 
+  /*
+   * An em-dash, and the condition that fills it.
+   *
+   * `ScoreNumeral` has always rendered `value={null}` as an em-dash, with a
+   * comment explaining why — "a 0 reads as failure on day one when the real
+   * state is not measured yet". But `BodyScores` are plain numbers, never null,
+   * so nothing ever passed one: on day zero this band showed a Readiness of 42
+   * computed from no history at all. A number nobody measured is a worse lie
+   * than a zero, because it looks true.
+   *
+   * `sessions` undefined keeps the old behaviour for callers that are showing a
+   * demo or a computed figure on purpose.
+   */
+  const measured = sessions === undefined || sessions > 0;
+  // computeBodyScores needs more history than one session can give; a recovery
+  // figure before then is arithmetic on nothing.
+  const recoveryMeasured = sessions === undefined || sessions >= 3;
+
   const cells = [
     ...(missionScore === undefined
       ? []
@@ -36,30 +60,38 @@ export function MetricsRow({
           {
             key: 'mission',
             label: t('todayMissionScore', { defaultValue: 'Mission Score' }),
-            value: missionScore,
-            caption: t('todayMissionScoreFromLogs', { defaultValue: 'From your logs' }),
+            value: measured ? missionScore : null,
+            caption: measured
+              ? t('todayMissionScoreFromLogs', { defaultValue: 'From your logs' })
+              : t('todayScoreAfterFirstLog', { defaultValue: 'After your first log' }),
             emphasis: true,
           },
         ]),
     {
       key: 'readiness',
       label: t('todayMetricReadiness', { defaultValue: 'Readiness' }),
-      value: scores.readiness,
-      caption: t(scores.readinessLabelKey, { defaultValue: scores.readinessLabelKey }),
+      value: measured ? scores.readiness : null,
+      caption: measured
+        ? t(scores.readinessLabelKey, { defaultValue: scores.readinessLabelKey })
+        : t('todayScoreNotMeasured', { defaultValue: 'Not measured' }),
       emphasis: false,
     },
     {
       key: 'strain',
       label: t('todayMetricStrain', { defaultValue: 'Strain' }),
-      value: scores.strain,
-      caption: t(scores.strainLabelKey, { defaultValue: scores.strainLabelKey }),
+      value: measured ? scores.strain : null,
+      caption: measured
+        ? t(scores.strainLabelKey, { defaultValue: scores.strainLabelKey })
+        : t('todayScoreAfterFirstLog', { defaultValue: 'After your first log' }),
       emphasis: false,
     },
     {
       key: 'recovery',
       label: t('todayMetricRecovery', { defaultValue: 'Recovery' }),
-      value: scores.recovery,
-      caption: t(scores.recoveryLabelKey, { defaultValue: scores.recoveryLabelKey }),
+      value: recoveryMeasured ? scores.recovery : null,
+      caption: recoveryMeasured
+        ? t(scores.recoveryLabelKey, { defaultValue: scores.recoveryLabelKey })
+        : t('todayScoreNeedsSessions', { defaultValue: 'Needs 3 sessions' }),
       emphasis: false,
     },
   ];

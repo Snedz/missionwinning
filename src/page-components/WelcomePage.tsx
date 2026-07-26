@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { RuledRadioGroup } from '@/components/ui/RuledRadioGroup';
 import {
   completeIDay,
   markIDayStarted,
@@ -246,38 +247,28 @@ export function WelcomePage() {
                         })}
                   </p>
                 </div>
-                <label className="block space-y-1 text-sm">
-                  <span className="text-muted-foreground">
-                    {t('welcomeExperience', { defaultValue: 'Experience' })}
-                  </span>
-                  <select
-                    value={experience}
-                    onChange={(e) => setExperience(e.target.value)}
-                    className="w-full bg-background border-2 border-border px-3 py-2.5 min-h-[44px]"
-                  >
-                    {EXPERIENCE_VALUES.map((value) => (
-                      <option key={value} value={value}>
-                        {experienceLabel(value)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block space-y-1 text-sm">
-                  <span className="text-muted-foreground">
-                    {t('welcomeGearCheck', { defaultValue: 'Gear check — what do you have today?' })}
-                  </span>
-                  <select
-                    value={equipment}
-                    onChange={(e) => setEquipment(e.target.value)}
-                    className="w-full bg-background border-2 border-border px-3 py-2.5 min-h-[44px]"
-                  >
-                    {EQUIPMENT_VALUES.map((value) => (
-                      <option key={value} value={value}>
-                        {equipmentLabel(value)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <RuledRadioGroup
+                  name="experience"
+                  legend={t('welcomeExperience', { defaultValue: 'Experience' })}
+                  value={experience}
+                  onChange={setExperience}
+                  options={EXPERIENCE_VALUES.map((value) => ({
+                    value,
+                    label: experienceLabel(value),
+                  }))}
+                />
+                <RuledRadioGroup
+                  name="equipment"
+                  legend={t('welcomeGearCheck', {
+                    defaultValue: 'Gear check — what do you have today?',
+                  })}
+                  value={equipment}
+                  onChange={setEquipment}
+                  options={EQUIPMENT_VALUES.map((value) => ({
+                    value,
+                    label: equipmentLabel(value),
+                  }))}
+                />
                 <label className="block space-y-2 text-sm">
                   <span className="text-muted-foreground">
                     {t('welcomePrimaryGoal', { defaultValue: 'Primary goal' })}
@@ -383,12 +374,25 @@ export function WelcomePage() {
                     })}
                   </span>
                 </label>
-                <SignInPanel
-                  allowSkip
-                  nextPath="/active"
-                  skipLabel={t('welcomeSkipSignIn', { defaultValue: 'Skip — start first session' })}
-                  onComplete={finish}
-                />
+                {/*
+                  Sign-in is subordinate here, and structurally so: it sits
+                  inside a ruled panel, and the step's one primary action is
+                  Skip. It used to be the other way round — a filled primary on
+                  "Send magic link" with the skip a ghost button in muted text,
+                  which is the weakest thing on the screen. "No account required
+                  to start" is the product's headline promise; the last
+                  onboarding screen must not spend its emphasis arguing with it.
+                */}
+                <div className="border-2 border-border bg-card p-4">
+                  <SignInPanel nextPath="/active" onComplete={finish} />
+                </div>
+                <button
+                  type="button"
+                  className="primary-action min-h-[52px] w-full text-[19px]"
+                  onClick={finish}
+                >
+                  {t('welcomeSkipSignIn', { defaultValue: 'Skip — start training' })}
+                </button>
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => setStep('profile')}>
                   <ChevronLeft className="h-4 w-4 mr-1" />{' '}
                   {t('welcomeBack', { defaultValue: 'Back' })}

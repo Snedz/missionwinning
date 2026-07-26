@@ -16,6 +16,8 @@ interface Props {
   trends?: TodayTrends;
   /** One coach briefing line under the score (D2). */
   coachLine?: string;
+  /** Logged sessions — an unmeasured score renders an em-dash, not a number. */
+  sessions?: number;
   className?: string;
 }
 
@@ -28,6 +30,7 @@ export function TodayDashboardHeader({
   scores,
   trends,
   coachLine,
+  sessions,
   className,
 }: Props) {
   const { t } = useTranslation();
@@ -66,6 +69,7 @@ export function TodayDashboardHeader({
             <MetricsRow
               scores={scores}
               missionScore={displayScore}
+              sessions={sessions}
               embedded
               size={metricsSize}
             />

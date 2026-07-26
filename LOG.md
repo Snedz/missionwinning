@@ -6,6 +6,44 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — First run stops arguing with the promise (`.154`)
+
+Phase 4.
+
+- **I-Day's selects became ruled radio rows.** Two of the three questions were
+  native `<select>`s — a control that shows one option and hides the rest behind
+  an OS wheel, on the screen whose whole job is "tell us what you have so we can
+  pick a session". New [`RuledRadioGroup`](src/components/ui/RuledRadioGroup.tsx):
+  52px rows, 2px rules, selected takes the poster edge + `accent-100` + a
+  trailing `Check`. Native `<input type="radio">` underneath, so arrow keys and
+  group semantics come free instead of being reimplemented on divs.
+- **Step 3's primary action is Skip.** Sign-in had the filled primary and the
+  skip was a **ghost button in muted text** — the weakest thing on screen. "No
+  account required to start" is the product's headline promise and the last
+  onboarding screen was spending its emphasis arguing with it. Sign-in now sits
+  inside a 2px-ruled `--card` panel; Skip is the one `.primary-action`.
+- **And it said the wrong thing.** The label was `Skip — go to Today` in
+  thirteen locales, but `finish()` routes to `/active` with the previewed
+  session. Now `Skip — start training` everywhere. The English default in the
+  component was already right and had been overridden by the locale layer for
+  who knows how long — a reminder that `defaultValue` is not what ships.
+- **Day 0 showed a Readiness of 42 computed from nothing.** `ScoreNumeral` has
+  always rendered `value={null}` as an em-dash, with a comment explaining why
+  ("a 0 reads as failure on day one when the real state is not measured yet") —
+  but `BodyScores` are plain numbers, never null, so **nothing ever passed
+  one**. `MetricsRow` takes a `sessions` prop now: with none logged, all four
+  cells are em-dashes carrying the condition that fills them (`After your first
+  log`, `Not measured`), and **Recovery stays dashed until three sessions**
+  because `computeBodyScores` needs more history than one can give. Omitting
+  the prop keeps the old behaviour, so demos and computed previews are
+  untouched. A number nobody measured is a worse lie than a zero — it looks
+  true.
+- Not done: the mock's empty-but-present week strip on day 0. Today's week
+  strip is still `TodayCoachWeekStrip`, which phase 2 left in place; building a
+  second one for the empty case only would leave two.
+
+---
+
 ## 2026-07-26 — One console, two states (`.153`)
 
 Phase 3, the largest change in the mobile program. Horizon W excellence

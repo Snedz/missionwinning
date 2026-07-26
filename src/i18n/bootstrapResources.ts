@@ -30,7 +30,7 @@ export const BOOTSTRAP_EN: Record<string, string> = {
   navSectionPremium: 'Premium',
   navBasicFocusHint: 'Basic Training focus — train tools first. More pillars unlock as you go.',
   welcomeBegin: 'Begin',
-  welcomeSkipSignIn: 'Skip — start first session',
+  welcomeSkipSignIn: 'Skip — start training',
   todayBasicEncouragement:
     'One step at a time. Log a set — Mission Coach shapes the week from your history.',
   todayCoachInviteEyebrow: 'AI weekly plan',

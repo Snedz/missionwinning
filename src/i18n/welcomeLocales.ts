@@ -109,7 +109,7 @@ const en: WelcomeStrings = {
   welcomeSignInTitle: 'Save progress — your choice',
   welcomeSignInSubtitle:
     'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
-  welcomeSkipSignIn: 'Skip — go to Today',
+  welcomeSkipSignIn: 'Skip — start training',
   welcomeRemindersOptIn:
     'Email me training reminders (streak at risk, next step). Optional — unsubscribe anytime.',
   editJourneyProfile: 'Edit journey profile',
@@ -326,7 +326,7 @@ const es: WelcomeStrings = {
   welcomeSignInTitle: 'Guardar progreso — tu elección',
   welcomeSignInSubtitle:
     'Inicia sesión con Google o correo para sincronizar. Omite cuando quieras — el progreso local funciona.',
-  welcomeSkipSignIn: 'Omitir — ir a Hoy',
+  welcomeSkipSignIn: 'Omitir — empezar a entrenar',
   welcomeRemindersOptIn:
     'Envíame recordatorios de entrenamiento (racha en riesgo, siguiente paso). Opcional — cancela cuando quieras.',
   editJourneyProfile: 'Editar perfil del viaje',
@@ -372,7 +372,7 @@ const fr: WelcomeStrings = {
   welcomeSignInTitle: 'Sauvegarder la progression — à vous de choisir',
   welcomeSignInSubtitle:
     'Connectez-vous avec Google ou e-mail pour synchroniser. Passez quand vous voulez — le progrès local fonctionne.',
-  welcomeSkipSignIn: 'Passer — aller à Aujourd’hui',
+  welcomeSkipSignIn: 'Passer — commencer l’entraînement',
   welcomeRemindersOptIn:
     'Envoyez-moi des rappels d’entraînement (série en danger, prochaine étape). Optionnel — désabonnement en un clic.',
   editJourneyProfile: 'Modifier le profil de parcours',
@@ -384,7 +384,7 @@ const pt: WelcomeStrings = {
   welcomeTitle: 'Bem-vindo, membro da missão',
   welcomeBegin: 'Começar',
   welcomeContinue: 'Continuar',
-  welcomeSkipSignIn: 'Pular — ir para Hoje',
+  welcomeSkipSignIn: 'Pular — começar a treinar',
 };
 
 const de: WelcomeStrings = {
@@ -426,7 +426,7 @@ const de: WelcomeStrings = {
   welcomeSignInTitle: 'Fortschritt speichern — deine Wahl',
   welcomeSignInSubtitle:
     'Melde dich mit Google oder E-Mail an zum Synchronisieren. Überspringe jederzeit — lokaler Fortschritt funktioniert.',
-  welcomeSkipSignIn: 'Überspringen — zu Heute',
+  welcomeSkipSignIn: 'Überspringen — Training starten',
   welcomeRemindersOptIn:
     'Schick mir Trainingserinnerungen (Serie in Gefahr, nächster Schritt). Optional — Abmeldung mit einem Klick.',
   editJourneyProfile: 'Reiseprofil bearbeiten',
@@ -438,7 +438,7 @@ const it: WelcomeStrings = {
   welcomeTitle: 'Benvenuto, membro della missione',
   welcomeBegin: 'Inizia',
   welcomeContinue: 'Continua',
-  welcomeSkipSignIn: 'Salta — vai a Oggi',
+  welcomeSkipSignIn: 'Salta — inizia ad allenarti',
 };
 
 const ko: WelcomeStrings = {
@@ -446,7 +446,7 @@ const ko: WelcomeStrings = {
   welcomeTitle: '환영합니다, 미션 멤버',
   welcomeBegin: '시작',
   welcomeContinue: '계속',
-  welcomeSkipSignIn: '건너뛰기 — 오늘로',
+  welcomeSkipSignIn: '건너뛰기 — 운동 시작',
 };
 
 const LOCALES: Partial<Record<string, WelcomeStrings>> = {
