@@ -34,7 +34,7 @@ export function RestTimerBar({
       className={cn(
         'fixed inset-x-0 z-40 md:max-w-lg md:mx-auto md:bottom-4 md:rounded-2xl',
         'bottom-[calc(52px+env(safe-area-inset-bottom))]',
-        'border-t md:border border-border/50 bg-background/95 backdrop-blur-md shadow-md',
+        'border-t-2 md:border-2 border-border bg-background',
         className
       )}
       role="timer"

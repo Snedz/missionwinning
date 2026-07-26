@@ -113,7 +113,7 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
               key={key}
               type="button"
               onClick={() => setMetric(key)}
-              className={`rounded-full px-2.5 py-1 text-[11px] border ${
+              className={`px-2.5 py-1 text-[11px] border ${
                 metric === key
                   ? 'border-primary bg-primary/10 text-primary'
                   : 'border-border text-muted-foreground'

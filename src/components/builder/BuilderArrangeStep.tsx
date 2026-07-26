@@ -229,7 +229,7 @@ export function BuilderArrangeStep({
           );
         })}
 
-        <div className="sticky bottom-0 -mx-1 border-t border-border/60 bg-background/95 backdrop-blur py-3 flex gap-2">
+        <div className="sticky bottom-0 -mx-1 border-t-2 border-border bg-background py-3 flex gap-2">
           <Button variant="outline" onClick={onBack}>
             {t('builderBack', { defaultValue: 'Back' })}
           </Button>

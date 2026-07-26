@@ -203,7 +203,7 @@ export function ActiveExerciseCard({
                   />
                   <div
                     role="menu"
-                    className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] rounded-xl border border-border bg-card p-1 shadow-lg"
+                    className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1"
                   >
                     <Link
                       href={`/coach?ask=${encodeURIComponent(exercise.id)}`}
@@ -419,7 +419,7 @@ export function ActiveExerciseCard({
                   />
                   <div
                     role="menu"
-                    className="absolute end-0 bottom-full z-50 mb-1 min-w-[10rem] rounded-xl border border-border bg-card p-1 shadow-lg"
+                    className="absolute end-0 bottom-full z-50 mb-1 min-w-[10rem] border-2 border-border bg-card p-1"
                   >
                     {lastSets && hasPlanned && (
                       <button

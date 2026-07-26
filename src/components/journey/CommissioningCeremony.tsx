@@ -36,12 +36,12 @@ export function CommissioningCeremony() {
     <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
       <button
         type="button"
-        className="absolute inset-0 bg-black/70 backdrop-blur-md"
+        className="absolute inset-0 bg-foreground/60"
         aria-label="Close"
         onClick={dismiss}
       />
       <div
-        className="relative w-full max-w-md rounded-3xl border border-primary/40 bg-card p-8 text-center shadow-2xl animate-in zoom-in-95 duration-300"
+        className="relative w-full max-w-md border-2 border-[hsl(var(--accent-poster))] bg-card p-8 shadow-none animate-in zoom-in-95 duration-300"
         role="dialog"
         aria-labelledby="commissioning-title"
       >

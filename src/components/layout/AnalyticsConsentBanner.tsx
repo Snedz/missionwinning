@@ -45,7 +45,7 @@ export function AnalyticsConsentBanner() {
     <div
       role="dialog"
       aria-label={t('analyticsBannerAria', { defaultValue: 'Product analytics preference' })}
-      className="fixed bottom-0 inset-x-0 z-[60] border-t border-border/80 bg-background/95 backdrop-blur-sm px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-lg sm:px-4"
+      className="fixed bottom-0 inset-x-0 z-[60] border-t-2 border-border bg-background px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-4"
     >
       <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex gap-2 text-xs sm:text-sm text-muted-foreground">

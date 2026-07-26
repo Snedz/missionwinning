@@ -48,7 +48,7 @@ export function ExercisesPublicFilter() {
 
   return (
     <>
-      <div className="sticky top-0 z-10 -mx-1 space-y-3 bg-background/95 backdrop-blur-sm py-3 mb-6">
+      <div className="sticky top-0 z-10 -mx-1 space-y-3 border-b-2 border-border bg-background py-3 mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input

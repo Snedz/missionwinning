@@ -6,6 +6,31 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — The app stops floating (`.136`)
+
+Phase 3 opens on the signed-in app's shared furniture — the chrome every one of
+the twelve screens wears, rather than twelve one-off screen edits.
+
+- **Bottom nav** (`MobileNav`): active tab is now a **2px poster-red rule along
+  the tab's top edge** (it reads as the nav's own rule turning red) + accent-700
+  label, replacing the floating rounded bar. Solid paper, 2px top rule, no blur.
+  The `before:` rule needed `content-['']` — the first cut rendered nothing, which
+  a DOM check caught before it shipped.
+- **Nothing floats, anywhere:** every `backdrop-blur` outside `/experience` is
+  gone (15 sites — app header + its dropdown, active-session chrome, rest timer,
+  library/exercise sticky filters, builder footer, consent banner, sheets), and
+  every elevation utility with it (**28 → 0** `shadow-*`). Translucent
+  `bg-card/80` panels become flat surface fills; modal scrims go ink, not black.
+- **Pills squared** — auth chip, coach chips, metric/photo range toggles, admin
+  status tags, info-page chips. `rounded-full` survives only where the geometry
+  is genuinely circular (ProgressRing, dots, icon buttons, thin tracks).
+- **Coach week strip**: today = 2px poster-red border + tint; a finished session
+  reads as solid ink (brass retired); **a missed day is struck through** — calm,
+  not alarming. The mockup's "→ Thu" reshape note stays out: the plan engine
+  records no reshape target, and inventing one would be a fabricated claim.
+- **Press page** was still telling the public to "use emerald, navy, and brass as
+  specified" — corrected to paper/ink/one-red with the retired palette named.
+
 ## 2026-07-25 — SEO templates on the system's own furniture (`.135`)
 
 The structural fidelity pass on the surfaces the tokens+shell had already

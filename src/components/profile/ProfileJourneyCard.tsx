@@ -34,7 +34,7 @@ export function ProfileJourneyCard({
 
   if (!isOnboarded) {
     return (
-      <Card className="border-border/50 bg-card/80 shadow-sm">
+      <Card className="bg-card">
         <CardHeader>
           <CardTitle className="text-base font-semibold">
             {t('firstTimeSetup', { defaultValue: 'Get started' })}
@@ -56,7 +56,7 @@ export function ProfileJourneyCard({
   }
 
   return (
-    <Card className="border-border/50 bg-card/80 shadow-sm">
+    <Card className="bg-card">
       <CardHeader>
         <CardTitle className="text-base font-semibold">
           {t('editJourneyProfile', { defaultValue: 'Training profile' })}

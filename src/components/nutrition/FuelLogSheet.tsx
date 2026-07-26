@@ -114,7 +114,7 @@ export function FuelLogSheet({
           variant={tab === id ? 'secondary' : 'ghost'}
           className={cn(
             'flex-1 gap-1.5 h-9 rounded-lg',
-            tab === id && 'shadow-sm bg-card'
+            tab === id && 'bg-card'
           )}
           onClick={() => setTab(id)}
         >

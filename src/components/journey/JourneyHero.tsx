@@ -73,7 +73,7 @@ export function JourneyHero({
       : action.label;
 
   return (
-    <div className="rounded-2xl border border-border/40 bg-card/80 p-6 space-y-4 shadow-sm">
+    <div className="bg-card p-6 space-y-4">
       <div>
         <p className="text-xs font-medium tracking-wide text-muted-foreground mb-2">
           {useJustGo

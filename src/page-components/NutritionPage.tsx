@@ -621,7 +621,7 @@ export function NutritionPage() {
         <Button
           variant="fitness"
           size="lg"
-          className="fixed bottom-[calc(52px+env(safe-area-inset-bottom)+12px)] end-4 z-40 h-14 rounded-2xl gap-2 px-5 shadow-lg md:bottom-6"
+          className="fixed bottom-[calc(52px+env(safe-area-inset-bottom)+12px)] end-4 z-40 h-14 gap-2 px-5 md:bottom-6"
           onClick={() => setLogSheetOpen(true)}
         >
           <Plus className="h-5 w-5" />

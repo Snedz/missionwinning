@@ -459,7 +459,7 @@ export function BetaAdminPanel({ enabled }: Props) {
 function Chip({ ok, label }: { ok: boolean; label: string }) {
   return (
     <span
-      className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ${
+      className={`inline-flex px-2 py-0.5 text-[10px] font-semibold ${
         ok
           ? 'bg-primary/15 text-primary border border-primary/30'
           : 'bg-muted text-muted-foreground border border-border/50'

@@ -97,7 +97,7 @@ export function AppHeader() {
   return (
     <header
       ref={headerRef}
-      className="shrink-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80"
+      className="shrink-0 z-50 border-b-2 border-border bg-background"
     >
       <div className="relative z-[1] flex items-center gap-2 px-4 min-h-[56px]">
         <button
@@ -134,7 +134,7 @@ export function AppHeader() {
       >
         <div className="overflow-hidden">
           {open && (
-            <div className="max-h-[min(70vh,520px)] overflow-y-auto bg-card/95 px-4 py-4 md:bg-card/90 md:backdrop-blur-xl">
+            <div className="max-h-[min(70vh,520px)] overflow-y-auto bg-card px-4 py-4">
               <p className="text-xs text-muted-foreground mb-4 sm:hidden">{pageTitle}</p>
               {(phase === 'i-day' || phase === 'basic') && (
                 <p className="text-xs text-muted-foreground mb-3 max-w-5xl mx-auto leading-relaxed">

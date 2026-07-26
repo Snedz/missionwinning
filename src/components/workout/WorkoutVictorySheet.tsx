@@ -98,7 +98,7 @@ export function WorkoutVictorySheet({
         onOpenChange(next);
       }}
     >
-      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-border/50 bg-card shadow-lg">
+      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-2 border-border bg-card">
         <DialogHeader className="text-center space-y-3 victory-reveal">
           <div className="mx-auto relative h-16 w-16 overflow-hidden rounded-2xl border border-border/50 bg-muted/30">
             <Image

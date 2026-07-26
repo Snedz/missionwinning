@@ -147,7 +147,7 @@ export function PressPage() {
                     <p className="font-medium text-foreground">{c.name}</p>
                     <p className="text-xs text-muted-foreground">{c.role}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
-                      <code className="text-[11px] text-brass">{c.hex}</code>
+                      <code className="text-[11px] text-primary">{c.hex}</code>
                       <CopyButton text={c.hex} />
                     </div>
                     <p className="mt-1 font-mono text-[10px] text-muted-foreground">HSL {c.hsl}</p>
@@ -195,7 +195,7 @@ export function PressPage() {
             <Reveal delayMs={90}>
               <p className="text-sm text-muted-foreground">
                 Tagline:{' '}
-                <span className="text-brass">Train Anywhere. Win Daily.</span>
+                <span className="text-primary">Train Anywhere. Win Daily.</span>
                 {' · '}
                 <CopyButton text="Train Anywhere. Win Daily." />
               </p>
@@ -214,7 +214,7 @@ export function PressPage() {
                 <ul className="space-y-3 text-sm text-muted-foreground">
                   <li className="flex gap-2">
                     <span className="text-primary">Do</span>
-                    <span>Use emerald, navy, and brass as specified</span>
+                    <span>Use paper, ink, and the one red as specified</span>
                   </li>
                   <li className="flex gap-2">
                     <span className="text-primary">Do</span>
@@ -229,15 +229,15 @@ export function PressPage() {
               <Reveal delayMs={60}>
                 <ul className="space-y-3 text-sm text-muted-foreground">
                   <li className="flex gap-2">
-                    <span className="text-brass">Don&apos;t</span>
-                    <span>Recolor to blue, violet, or cream/terracotta</span>
+                    <span className="text-primary">Don&apos;t</span>
+                    <span>Recolor the mark, or revive navy/emerald/brass</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-brass">Don&apos;t</span>
-                    <span>Stretch, rotate, or glow the logo</span>
+                    <span className="text-primary">Don&apos;t</span>
+                    <span>Round, stretch, rotate, or shadow the mark</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-brass">Don&apos;t</span>
+                    <span className="text-primary">Don&apos;t</span>
                     <span>Imply partnership without permission</span>
                   </li>
                 </ul>
@@ -269,7 +269,7 @@ export function PressPage() {
             </p>
             <p className="mt-4 text-sm text-muted-foreground">
               Full written guidelines live in the repo at{' '}
-              <code className="text-xs text-brass">docs/brand-guidelines.md</code>
+              <code className="text-xs text-primary">docs/brand-guidelines.md</code>
               .{' '}
               <Link href="/about" className="text-primary hover:underline">
                 About Mission Winning

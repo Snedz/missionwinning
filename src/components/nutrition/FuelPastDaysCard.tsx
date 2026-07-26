@@ -36,7 +36,7 @@ export function FuelPastDaysCard({ logs, todayIso, onCopyDayToToday }: Props) {
   if (byDate.length === 0) return null;
 
   return (
-    <Card className="border-border/50 bg-card/80 shadow-sm">
+    <Card className="bg-card">
       <CardHeader className="py-3">
         <button
           type="button"

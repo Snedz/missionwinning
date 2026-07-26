@@ -127,7 +127,7 @@ export function ProgressPhotosCard() {
               key={p}
               type="button"
               onClick={() => setPose(p)}
-              className={`rounded-full px-2.5 py-1 text-[11px] border capitalize ${
+              className={`px-2.5 py-1 text-[11px] border capitalize ${
                 pose === p
                   ? 'border-primary bg-primary/10 text-primary'
                   : 'border-border text-muted-foreground'

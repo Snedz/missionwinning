@@ -132,7 +132,7 @@ export function AdaptiveOverlay({
     >
       <button
         type="button"
-        className="absolute inset-0 bg-black/55 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-foreground/50"
         aria-label="Close dialog"
         onClick={onClose}
       />
@@ -143,7 +143,7 @@ export function AdaptiveOverlay({
         aria-labelledby={hideHeader && !title ? undefined : titleId}
         className={cn(
           'relative w-full max-h-[min(88vh,100dvh)] overflow-hidden flex flex-col',
-          'border border-border/50 bg-card shadow-2xl',
+          'border-2 border-border bg-card',
           /* Compact sheet chrome */
           'rounded-t-2xl pb-[env(safe-area-inset-bottom)]',
           'animate-in slide-in-from-bottom duration-200',

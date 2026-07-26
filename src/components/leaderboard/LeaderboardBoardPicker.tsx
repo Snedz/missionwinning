@@ -38,9 +38,9 @@ export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
             onClick={() => onBoardChange(b.id)}
             className={cn(
               'rounded-xl border p-3 text-left transition-all min-h-[72px]',
-              active && b.theme === 'night' && 'border-[hsl(var(--status-info)/0.5)] bg-[hsl(var(--status-info)/0.15)] shadow-md',
-              active && b.theme === 'dawn' && 'border-[hsl(var(--status-warn)/0.5)] bg-[hsl(var(--status-warn)/0.12)] shadow-md',
-              active && !themed && 'border-primary/40 bg-primary/10 shadow-md',
+              active && b.theme === 'night' && 'border-[hsl(var(--status-info)/0.5)] bg-[hsl(var(--status-info)/0.15)]',
+              active && b.theme === 'dawn' && 'border-[hsl(var(--status-warn)/0.5)] bg-[hsl(var(--status-warn)/0.12)]',
+              active && !themed && 'border-primary/40 bg-primary/10',
               !active && 'border-border/50 bg-card/50 hover:border-border'
             )}
           >

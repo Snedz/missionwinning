@@ -75,10 +75,13 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
             key={label}
             className={cn(
               'flex flex-col items-center rounded-lg border p-2 text-center text-[10px] transition-colors',
-              isToday && 'ring-2 ring-[hsl(var(--accent-poster))] bg-tint border-primary/40',
-              done && 'border-brass/40 bg-brass/10',
+              isToday && 'border-2 border-[hsl(var(--accent-poster))] bg-tint',
+              // Brass is retired — a finished session reads as solid ink on the
+              // surface fill, which is quieter than the old honor tint and lets
+              // today's red rule be the only marked day.
+              done && 'border-foreground bg-card',
               pulseOffsets.has(i) && 'week-strip-pulse',
-              missed && 'border-border/30 bg-muted/20',
+              missed && 'border-border bg-transparent',
               session?.kind === 'recovery' &&
                 !done &&
                 'border-[hsl(var(--status-info)/0.35)] bg-[hsl(var(--status-info)/0.1)]',
@@ -92,12 +95,16 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
               <>
                 <SessionGlyph done={done} kind={session.kind} />
                 {done && (
-                  <span className="text-[9px] text-brass/90">
+                  <span className="text-[9px] font-semibold text-foreground">
                     {t('coachSessionDone', { defaultValue: 'Done' })}
                   </span>
                 )}
+                {/* Struck through, per the handoff: a missed day is visibly
+                    behind you, not a red alarm. The mockup also annotates where
+                    the volume moved ("→ Thu"); the plan engine does not record a
+                    reshape target, so that stays out rather than being invented. */}
                 {missed && (
-                  <span className="text-[9px] text-muted-foreground">
+                  <span className="text-[9px] text-muted-foreground line-through">
                     {t('coachSessionMissed', { defaultValue: 'Missed' })}
                   </span>
                 )}
