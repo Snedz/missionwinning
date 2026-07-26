@@ -6,6 +6,30 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Photography gets a slot, not a stand-in (`.145`)
+
+Phase G, and the last of the approved plan.
+
+- **[`GrayscalePhoto`](src/components/marketing/GrayscalePhoto.tsx)** owns the
+  ratio and the desaturation (`grayscale(1) contrast(1.08)` — straight
+  desaturation goes flat on paper, and the handoff sheet's own `.grayscale`
+  does the same), so **layout does not move when a real photo arrives**.
+  Filling one is a file swap: drop `/public/photo/<name>.{avif,webp}` and pass
+  `base`.
+- **It renders a placeholder, deliberately.** The rule is real documentary
+  photography or nothing; a neutral block that names the shot is honest about
+  being empty, where a generated gym photo would not be and would be much
+  harder to notice and remove later. The `caption` doubles as the brief —
+  "Phone on a bench, mid-set", "Home rack, bar loaded", "Bare wrist on a
+  barbell".
+- **Placed in section 03, not the hero.** The mock puts a 4:5 photo beside the
+  headline, but that slot is [`LogToPlanHero`](src/components/landing/LogToPlanHero.tsx),
+  which runs the real `suggestNextSetTarget` engine — the product performing its
+  own claim beats a picture of someone else doing it. Section 03 is *about*
+  where you train, so the three photos landed there instead.
+- `.primary-action` on `/` is still exactly 2, which `first-90` asserts.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
 ## 2026-07-26 — The charts were still dark-theme (`.144`)
 
 Phase F: History. The layout needed little; the colour needed a lot, and it was

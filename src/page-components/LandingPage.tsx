@@ -26,6 +26,7 @@ import { LogToPlanHeroFallback } from '@/components/landing/LogToPlanHero';
 import { MarketingNav } from '@/components/marketing/MarketingNav';
 import { MarketingFooter } from '@/components/marketing/MarketingFooter';
 import { Reveal } from '@/components/marketing/Reveal';
+import { GrayscalePhoto } from '@/components/marketing/GrayscalePhoto';
 import { ArrowRight } from 'lucide-react';
 import { isFreeBeta } from '@/lib/freeBeta';
 
@@ -212,6 +213,13 @@ export function LandingPage() {
               })}
             </h2>
             <div className="grid gap-8 sm:grid-cols-3">
+              {/* The handoff's three documentary photos live here — the section
+                  that is literally about where you train. They ship as empty
+                  slots: the rule is real grayscale photography or nothing, so a
+                  neutral block that says what belongs in it beats a stand-in
+                  image that has to be found and removed later. The `shot`
+                  string is the brief; add /public/photo/<name>.{avif,webp} and
+                  pass `base` to fill one. */}
               {[
                 {
                   k: 'landingAnywhereOffline',
@@ -220,6 +228,7 @@ export function LandingPage() {
                     defaultValue:
                       'Sets save on the device the moment you log them. Signal is optional; the log is not.',
                   }),
+                  shot: 'Phone on a bench, mid-set',
                 },
                 {
                   k: 'landingAnywhereGear',
@@ -228,6 +237,7 @@ export function LandingPage() {
                     defaultValue:
                       'Tell it what you have — a bar, two bands, nothing — and the week is built from that.',
                   }),
+                  shot: 'Home rack, bar loaded',
                 },
                 {
                   k: 'landingAnywhereNoSensor',
@@ -236,9 +246,11 @@ export function LandingPage() {
                     defaultValue:
                       'The plan comes from logged sets, so nothing needs charging for it to work.',
                   }),
+                  shot: 'Bare wrist on a barbell',
                 },
               ].map((col) => (
                 <div key={col.k}>
+                  <GrayscalePhoto caption={col.shot} className="mb-4" />
                   <h3 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">
                     {col.h}
                   </h3>
