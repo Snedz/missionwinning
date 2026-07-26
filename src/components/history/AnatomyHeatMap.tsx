@@ -15,7 +15,8 @@ function muscleHubSlug(g: MuscleGroup): string {
 }
 
 function fillFor(intensity: number, overdue: boolean): string {
-  if (overdue) return 'hsl(var(--status-warn) / 0.45)';
+  // Overdue is the one red, not amber — see MuscleHeatmap.
+  if (overdue) return 'hsl(var(--primary) / 0.45)';
   if (intensity >= 0.75) return 'hsl(var(--primary) / 0.55)';
   if (intensity >= 0.45) return 'hsl(var(--primary) / 0.35)';
   if (intensity >= 0.2) return 'hsl(var(--primary) / 0.18)';
@@ -63,7 +64,7 @@ export function AnatomyHeatMap({ cells, className }: Props) {
     <div className={className}>
       <p className="text-xs text-muted-foreground mb-2">
         {t('anatomyMapLead', {
-          defaultValue: 'Tap a region for exercises. Color = recent volume; amber = overdue.',
+          defaultValue: 'Tap a region for exercises. Color = recent volume; red = overdue.',
         })}
       </p>
       <div className="grid grid-cols-2 gap-4">

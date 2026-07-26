@@ -54,8 +54,8 @@ export function HistoryVolumeChart({ data }: Props) {
               <Tooltip
                 contentStyle={{
                   background: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: 8,
+                  border: '2px solid hsl(var(--border))',
+                  borderRadius: 0,
                   fontSize: 12,
                 }}
                 formatter={(value: number, name: string) => [
@@ -69,8 +69,8 @@ export function HistoryVolumeChart({ data }: Props) {
               <Bar
                 dataKey="volume"
                 name="volume"
-                fill="hsl(160 84% 39%)"
-                radius={[4, 4, 0, 0]}
+                fill="hsl(var(--primary-fill))"
+                radius={0}
               />
             </BarChart>
           </ResponsiveContainer>
@@ -110,8 +110,8 @@ export function History1RMChart({ data, exerciseName }: OneRmProps) {
               <Tooltip
                 contentStyle={{
                   background: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: 8,
+                  border: '2px solid hsl(var(--border))',
+                  borderRadius: 0,
                   fontSize: 12,
                 }}
               />
@@ -120,7 +120,7 @@ export function History1RMChart({ data, exerciseName }: OneRmProps) {
                 type="monotone"
                 dataKey="estimated"
                 name={t('historyEst1rm', { defaultValue: 'Estimated' })}
-                stroke="hsl(160 84% 39%)"
+                stroke="hsl(var(--primary-fill))"
                 strokeWidth={2}
                 dot={{ r: 3 }}
               />
@@ -128,7 +128,7 @@ export function History1RMChart({ data, exerciseName }: OneRmProps) {
                 type="monotone"
                 dataKey="actual"
                 name={t('historyAct1rm', { defaultValue: 'Actual (1 rep)' })}
-                stroke="hsl(45 93% 47%)"
+                stroke="hsl(var(--foreground))"
                 strokeWidth={2}
                 connectNulls={false}
                 dot={{ r: 4 }}

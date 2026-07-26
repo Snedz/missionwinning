@@ -6,6 +6,30 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — The charts were still dark-theme (`.144`)
+
+Phase F: History. The layout needed little; the colour needed a lot, and it was
+hiding in the same place `setKind.ts` was — outside `className`, where the
+`.131` sweep could not see it.
+
+- **Three chart files were never rebranded.** Recharts takes colours as
+  **props**, not classes, so `fill="hsl(160 84% 39%)"` (emerald) and
+  `stroke="hsl(45 93% 47%)"` (amber) survived every class-name grep.
+  `Benchmarks1RMChart` was worse than stale — it was still fully **dark
+  theme**: a navy `hsl(222 47% 9%)` tooltip with near-white text, and axis
+  ticks in `hsl(215 20% 65%)`, a light grey sitting at roughly 2:1 on paper.
+  All three now read from tokens.
+- **The muscle heatmap is one hue getting deeper** — accent-100 → accent-400 by
+  14-day volume, which is what "darker = more work" means. It used to jump to
+  amber at the top step, so "trained a lot" looked like a warning instead of
+  the far end of a scale. Cell text flips to `accent-900` on the filled steps.
+- **Two 1RM series, one colour**: the estimate is the accent line, the measured
+  1RM is ink. Distinguishable without a second hue.
+- Range chips are square and thumb-sized (they were 30px `rounded-full` pills);
+  the at-a-glance box is a 2px ruled surface; set-kind row tints are gone from
+  the session detail — the WARMUP/FAILURE tag says it, same call as `.142`.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
 ## 2026-07-26 — Coach reads as a week (`.143`)
 
 Phase E. Coach came out of `.136` mostly clean, so this is the handoff's

@@ -11,12 +11,20 @@ type Props = {
   windowDays: number;
 };
 
+/**
+ * Darker = more 14-day volume, straight up the accent ramp — the handoff reads
+ * the heatmap as one quantity getting stronger, so it is one hue getting
+ * deeper. It used to jump to amber at the top step, which made "trained a lot"
+ * look like a warning rather than the far end of a scale.
+ *
+ * Text flips to paper at 300 and above, where the fill stops carrying ink.
+ */
 function heatColor(intensity: number, daysSince: number): string {
-  if (intensity <= 0 && daysSince >= 99) return 'bg-muted/30 border-border/40';
-  if (intensity <= 0) return 'bg-primary/10 border-primary/40';
-  if (intensity >= 0.75) return 'bg-[hsl(var(--status-warn)/0.35)] border-[hsl(var(--status-warn)/0.5)]';
-  if (intensity >= 0.4) return 'bg-primary/25 border-primary/40';
-  return 'bg-primary/10 border-primary/40';
+  if (intensity <= 0 && daysSince >= 99) return 'bg-transparent border-border';
+  if (intensity >= 0.75) return 'bg-accent-400 border-accent-400 text-accent-900';
+  if (intensity >= 0.4) return 'bg-accent-300 border-accent-300 text-accent-900';
+  if (intensity > 0) return 'bg-accent-200 border-accent-200 text-accent-900';
+  return 'bg-accent-100 border-accent-100 text-accent-900';
 }
 
 export function MuscleHeatmap({ cells, windowDays }: Props) {
@@ -41,7 +49,7 @@ export function MuscleHeatmap({ cells, windowDays }: Props) {
             <div
               key={cell.group}
               className={cn(
-                'rounded-xl border p-3 min-h-[88px] flex flex-col justify-between transition-colors',
+                'border-2 p-3 min-h-[88px] flex flex-col justify-between transition-colors',
                 heatColor(cell.intensity, cell.daysSince)
               )}
             >
@@ -50,12 +58,12 @@ export function MuscleHeatmap({ cells, windowDays }: Props) {
                   {muscleGroupLabel(cell.group, t)}
                 </span>
                 {cell.intensity > 0 && (
-                  <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.08em] opacity-70">
                     {Math.round(cell.intensity * 100)}%
                   </span>
                 )}
               </div>
-              <div className="text-xs text-muted-foreground space-y-0.5 mt-2">
+              <div className="text-xs opacity-80 space-y-0.5 mt-2">
                 <p>
                   {t('historyHeatVolume', {
                     volume: cell.volume.toLocaleString(),
@@ -72,11 +80,11 @@ export function MuscleHeatmap({ cells, windowDays }: Props) {
                 </p>
               </div>
               <div
-                className="mt-2 h-1.5 rounded-full bg-muted/40 overflow-hidden"
+                className="mt-2 h-1.5 bg-neutral-300 overflow-hidden"
                 aria-hidden
               >
                 <div
-                  className="h-full bg-poster rounded-full transition-all"
+                  className="h-full bg-primary-fill transition-all"
                   style={{ width: `${Math.max(cell.intensity * 100, cell.daysSince >= 99 ? 0 : 8)}%` }}
                 />
               </div>

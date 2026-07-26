@@ -35,7 +35,7 @@ export function TrackPaceChart({ data, height = 120 }: Props) {
             contentStyle={{
               background: 'hsl(var(--card))',
               border: '1px solid hsl(var(--border))',
-              borderRadius: 8,
+              borderRadius: 0,
               fontSize: 12,
             }}
             formatter={(value: number) => [`${value} min/km`, 'Pace']}
@@ -44,7 +44,7 @@ export function TrackPaceChart({ data, height = 120 }: Props) {
           <Line
             type="monotone"
             dataKey="pace"
-            stroke="hsl(160 70% 45%)"
+            stroke="hsl(var(--primary-fill))"
             strokeWidth={2}
             dot={false}
             isAnimationActive={false}
