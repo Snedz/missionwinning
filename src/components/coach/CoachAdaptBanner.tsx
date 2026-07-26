@@ -34,17 +34,20 @@ export function CoachAdaptBanner({ plan, compact }: Props) {
   return (
     <div
       className={
+        // The ADAPTED banner: accent-100 fill behind a red edge, per the
+        // handoff. It was a tinted box with a hairline border, which read as
+        // one more panel rather than as the plan telling you it changed.
         compact
-          ? 'rounded-lg border border-primary/30 bg-primary/5 px-3 py-2 space-y-1'
-          : 'rounded-xl border border-primary/35 bg-primary/5 px-4 py-3 space-y-2'
+          ? 'border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-accent-100 px-3 py-2 space-y-1'
+          : 'border-s-[3px] border-s-[hsl(var(--accent-poster))] bg-accent-100 px-4 py-3 space-y-2'
       }
       data-testid="coach-adapt-banner"
     >
       <p
         className={
           compact
-            ? 'text-[10px] uppercase tracking-widest font-medium text-primary'
-            : 'text-xs uppercase tracking-widest font-medium text-primary'
+            ? 'text-[10px] uppercase tracking-[0.12em] font-semibold text-accent-900'
+            : 'text-[11px] uppercase tracking-[0.12em] font-semibold text-accent-900'
         }
       >
         {t('coachAdaptHeadline', {

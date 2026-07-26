@@ -6,6 +6,28 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Coach reads as a week (`.143`)
+
+Phase E. Coach came out of `.136` mostly clean, so this is the handoff's
+specific asks rather than a sweep.
+
+- **The ADAPTED banner** is accent-100 behind a 3px red edge instead of a
+  tinted box with a hairline border — it now reads as the plan telling you it
+  changed, rather than as one more panel.
+- **Sessions are a 2-col grid** from `sm` up; a week is something you scan, not
+  a stack you scroll. **Today** gets the only marked treatment: a red top rule
+  plus the one elevation this screen is allowed. `isToday` is threaded from
+  `CoachPage`, which already knew `todayOffset` and was only using it to decide
+  who could open the adjust flow.
+- **Status hues gone**: done sessions were carrying an amber `--status-warn`
+  border, and the chat/today warnings were amber text. Both are the one red now
+  — in a single-colour system a second hue implies a distinction the app is not
+  making.
+- **Still not shipping the "missed → Thu" annotation.** The mock shows where
+  missed volume moved; the plan engine records no reshape target, so it would
+  be invented. Unchanged from `.136`.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
 ## 2026-07-26 — The logger stops being four colours (`.142`)
 
 Phase D: Train. The wedge's centre, and the screen where "the free logger is
