@@ -26,25 +26,36 @@ export function setKindDefaultLabel(kind: SetKind): string {
   return '—';
 }
 
+/*
+ * Set classification is carried by a tag, not by tinting the row.
+ *
+ * These three functions were the last pre-rebrand colour in the logger — amber,
+ * rose, violet and emerald, all on `*-950` grounds picked for a dark theme.
+ * They survived the `.131` token swap because they live in `lib/`, not
+ * `components/`, so a grep for class names in the component tree never saw
+ * them; on paper the completed-set row was rendering a murky green wash.
+ *
+ * Four hues to say "warm-up / failure / drop / done" is also more colour than
+ * the distinction earns. The label already says it, and this system has one
+ * colour to spend.
+ */
+
 export function setKindBadgeClass(kind: SetKind): string {
-  if (kind === 'warmup') return 'border-amber-500/40 bg-amber-950/30 text-amber-300';
-  if (kind === 'failure') return 'border-rose-500/40 bg-rose-950/30 text-rose-300';
-  if (kind === 'drop') return 'border-violet-500/40 bg-violet-950/30 text-violet-300';
-  return '';
+  // Failure is the one worth catching in a scan, so it gets the outline; the
+  // rest are quiet neutral tags.
+  if (kind === 'failure') return 'border-primary text-primary';
+  if (kind === 'normal') return '';
+  return 'border-transparent bg-neutral-200 text-neutral-800';
 }
 
 export function setKindRowClass(kind: SetKind, isNext: boolean): string {
-  if (isNext) return 'border-emerald-500/50 bg-emerald-950/20 ring-1 ring-emerald-500/30';
-  if (kind === 'warmup') return 'border-amber-500/25 bg-amber-950/10';
-  if (kind === 'failure') return 'border-rose-500/25 bg-rose-950/10';
-  if (kind === 'drop') return 'border-violet-500/25 bg-violet-950/10';
-  return 'border-border bg-card/40';
+  // The live row is the only marked one: accent-100 fill + a 3px red inset edge.
+  if (isNext) return 'is-active-row';
+  return 'bg-transparent';
 }
 
-export function setKindCompletedRowClass(kind: SetKind): string {
-  if (kind === 'warmup') return 'border-amber-500/30 bg-amber-950/15';
-  if (kind === 'failure') return 'border-rose-500/30 bg-rose-950/15';
-  if (kind === 'drop') return 'border-violet-500/30 bg-violet-950/15';
-  // Hevy-style emerald wash on completed working sets
-  return 'border-emerald-500/35 bg-emerald-950/25';
+export function setKindCompletedRowClass(_kind: SetKind): string {
+  // Done reads as the surface fill — quieter than the pending rows above it,
+  // which is the right way round while a session is running.
+  return 'bg-card';
 }

@@ -1,4 +1,7 @@
 {
+  "activeLiveSession": "进行中",
+  "activeElapsed": "已用时",
+  "activeSetsLabel": "组数",
   "activeNoWorkout": "没有进行中的训练",
   "activeNoWorkoutDesc": "从今天开始快速锻炼或从构建器启动保存的例程。",
   "activeStartWorkout": "开始训练",

@@ -1,4 +1,7 @@
 {
+  "activeLiveSession": "Live-Einheit",
+  "activeElapsed": "Verstrichen",
+  "activeSetsLabel": "Sätze",
   "activeNoWorkout": "Kein aktives Training",
   "activeNoWorkoutDesc": "Starte ein Schnelltraining von Heute oder starte eine Routine aus dem Builder.",
   "activeStartWorkout": "Training starten",

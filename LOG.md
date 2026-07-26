@@ -6,6 +6,46 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — The logger stops being four colours (`.142`)
+
+Phase D: Train. The wedge's centre, and the screen where "the free logger is
+never gated" makes every change higher-stakes — so the e2e selectors led the
+work, not the mock.
+
+- **`src/lib/workout/setKind.ts` was the last pre-rebrand colour in the app** —
+  amber, rose, violet and emerald, all on `*-950` grounds picked for a dark
+  theme. It survived the `.131` token swap because it lives in `lib/`, not
+  `components/`, so a grep of the component tree never saw it; on paper the
+  completed-set row was rendering a murky green wash. Classification is a tag
+  now, not a row tint — four hues to say warm-up / failure / drop / done is
+  more colour than the distinction earns, and the label already says it.
+- **Set table**: live row is `is-active-row` (accent-100 + 3px red inset),
+  completed rows are the surface fill, everything divided by 1px rules instead
+  of being individually boxed. PR is the **honor tier** — `Badge variant=honor`,
+  accent-800 with the ★ the component renders itself. Inputs are square 2px.
+- **Session header**: kicker + name + `ELAPSED` / `SETS` as 30px tabular stat
+  pairs + a progress bar. The timer was a bordered chip competing with the
+  workout name. **Plates moved out of the overflow menu onto the header**,
+  where you actually reach for it — mid-set, one-handed — which leaves discard
+  alone in the menu, the right amount for a menu whose only item is destructive.
+- **Rest dock is the ink panel**: full-bleed `neutral-900`, 56/72px countdown,
+  accent-400 meter on a neutral-700 track (accent-400 is the ramp step that
+  reads on ink). No rounding, no paper ground — it is the only thing on screen
+  while it runs.
+- **Superset is a red left edge**, not the blue `--status-info` border it was.
+- **Plate dialog**: square result panel, accent tags for the per-side stack,
+  the closest-loadable warning in `text-primary` with a red edge, and the
+  handoff's **quick target chips** — 135/185/225/275/315 imperial, 60–140
+  metric. Those are the loads that come out even on a standard bar, not round
+  numbers for their own sake.
+- **Kept the repo's copy over the mock's**: the mock labels the log button "Log
+  set"; `logger-depth` matches `/^log$/i`, and the shorter label is also the
+  right one on a dense row.
+- New keys `activeLiveSession` / `activeElapsed` / `activeSetsLabel` across the
+  in-bundle locales; `pt`/`it`/`ko` were inline `{ ...en }` entries and tripped
+  the 40% placeholder threshold until translated.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20, `i18n:parity` OK.
+
 ## 2026-07-26 — Today puts the next action first (`.141`)
 
 Phase C: the first screen recut, and the one that settles the boss-panel

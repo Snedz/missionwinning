@@ -1,4 +1,7 @@
 {
+  "activeLiveSession": "جلسة مباشرة",
+  "activeElapsed": "المنقضي",
+  "activeSetsLabel": "المجموعات",
   "activeNoWorkout": "لا تجريب نشط",
   "activeNoWorkoutDesc": "ابدأ تمرينًا سريعًا من اليوم أو قم بتشغيل روتين محفوظ من المنشئ.",
   "activeStartWorkout": "بدء التمرين",

@@ -1,4 +1,7 @@
 {
+  "activeLiveSession": "Séance en direct",
+  "activeElapsed": "Écoulé",
+  "activeSetsLabel": "Séries",
   "activeNoWorkout": "Aucun entraînement actif",
   "activeNoWorkoutDesc": "Démarrez un entraînement rapide depuis Aujourd’hui ou lancez une routine depuis le Builder.",
   "activeStartWorkout": "Commencer l'entraînement",

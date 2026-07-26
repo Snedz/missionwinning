@@ -6,6 +6,9 @@ type ActiveWorkoutStrings = {
   activeStartWorkout: string;
   activeSetsCompleted: string;
   activeCancel: string;
+  activeLiveSession: string;
+  activeElapsed: string;
+  activeSetsLabel: string;
   activeFinish: string;
   activeCoachNotes: string;
   activeCoachProgression: string;
@@ -55,6 +58,9 @@ type ActiveWorkoutStrings = {
 };
 
 const en: ActiveWorkoutStrings = {
+  activeLiveSession: 'Live session',
+  activeElapsed: 'Elapsed',
+  activeSetsLabel: 'Sets',
   activeNoWorkout: 'No Active Workout',
   activeNoWorkoutDesc: 'Start a quick workout from Today or launch a saved routine from the builder.',
   activeStartWorkout: 'Start Workout',
@@ -110,6 +116,9 @@ const en: ActiveWorkoutStrings = {
 
 const es: ActiveWorkoutStrings = {
   ...en,
+  activeLiveSession: 'Sesión en vivo',
+  activeElapsed: 'Transcurrido',
+  activeSetsLabel: 'Series',
   activeNoWorkout: 'Sin entrenamiento activo',
   activeNoWorkoutDesc:
     'Inicia un entrenamiento rápido desde Hoy o lanza una rutina guardada desde el Builder.',
@@ -144,6 +153,9 @@ const es: ActiveWorkoutStrings = {
 
 const fr: ActiveWorkoutStrings = {
   ...en,
+  activeLiveSession: 'Séance en direct',
+  activeElapsed: 'Écoulé',
+  activeSetsLabel: 'Séries',
   activeNoWorkout: 'Aucun entraînement actif',
   activeNoWorkoutDesc:
     'Démarrez un entraînement rapide depuis Aujourd’hui ou lancez une routine depuis le Builder.',
@@ -200,6 +212,9 @@ const fr: ActiveWorkoutStrings = {
 
 const zh: ActiveWorkoutStrings = {
   ...en,
+  activeLiveSession: '进行中',
+  activeElapsed: '已用时',
+  activeSetsLabel: '组数',
   activeNoWorkout: '没有进行中的训练',
   activeStartWorkout: '开始训练',
   activeSetsCompleted: '已完成 {{done}}/{{total}} 组',
@@ -213,6 +228,9 @@ const zh: ActiveWorkoutStrings = {
 
 const id: ActiveWorkoutStrings = {
   ...en,
+  activeLiveSession: 'Sesi langsung',
+  activeElapsed: 'Berjalan',
+  activeSetsLabel: 'Set',
   activeStartWorkout: 'Mulai latihan',
   activeRestTitle: 'Istirahat',
   activeLogSet: 'Catat',
@@ -221,6 +239,9 @@ const id: ActiveWorkoutStrings = {
 
 const th: ActiveWorkoutStrings = {
   ...en,
+  activeLiveSession: 'เซสชันสด',
+  activeElapsed: 'ผ่านไป',
+  activeSetsLabel: 'เซ็ต',
   activeStartWorkout: 'เริ่มฝึก',
   activeRestTitle: 'พัก',
   activeLogSet: 'บันทึก',
@@ -229,6 +250,9 @@ const th: ActiveWorkoutStrings = {
 
 const ar: ActiveWorkoutStrings = {
   ...en,
+  activeLiveSession: 'جلسة مباشرة',
+  activeElapsed: 'المنقضي',
+  activeSetsLabel: 'المجموعات',
   activeStartWorkout: 'بدء التمرين',
   activeRestTitle: 'راحة',
   activeLogSet: 'تسجيل',
@@ -238,6 +262,9 @@ const ar: ActiveWorkoutStrings = {
 
 const de: ActiveWorkoutStrings = {
   ...en,
+  activeLiveSession: 'Live-Einheit',
+  activeElapsed: 'Verstrichen',
+  activeSetsLabel: 'Sätze',
   activeNoWorkout: 'Kein aktives Training',
   activeNoWorkoutDesc:
     'Starte ein Schnelltraining von Heute oder starte eine Routine aus dem Builder.',
@@ -301,9 +328,30 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
   th,
   ar,
   de,
-  pt: { ...en, activeNoWorkout: 'Nenhum treino ativo', activeFinish: 'Concluir' },
-  it: { ...en, activeNoWorkout: 'Nessun allenamento attivo', activeFinish: 'Fine' },
-  ko: { ...en, activeNoWorkout: '진행 중인 운동 없음', activeFinish: '완료' },
+  pt: {
+    ...en,
+    activeNoWorkout: 'Nenhum treino ativo',
+    activeFinish: 'Concluir',
+    activeLiveSession: 'Sessão ao vivo',
+    activeElapsed: 'Decorrido',
+    activeSetsLabel: 'Séries',
+  },
+  it: {
+    ...en,
+    activeNoWorkout: 'Nessun allenamento attivo',
+    activeFinish: 'Fine',
+    activeLiveSession: 'Sessione dal vivo',
+    activeElapsed: 'Trascorso',
+    activeSetsLabel: 'Serie',
+  },
+  ko: {
+    ...en,
+    activeNoWorkout: '진행 중인 운동 없음',
+    activeFinish: '완료',
+    activeLiveSession: '진행 중인 세션',
+    activeElapsed: '경과',
+    activeSetsLabel: '세트',
+  },
 };
 
 export function activeWorkoutStringsFor(lang: string): ActiveWorkoutStrings {

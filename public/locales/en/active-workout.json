@@ -1,4 +1,7 @@
 {
+  "activeLiveSession": "Live session",
+  "activeElapsed": "Elapsed",
+  "activeSetsLabel": "Sets",
   "activeNoWorkout": "No Active Workout",
   "activeNoWorkoutDesc": "Start a quick workout from Today or launch a saved routine from the builder.",
   "activeStartWorkout": "Start Workout",

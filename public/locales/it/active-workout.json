@@ -1,4 +1,7 @@
 {
+  "activeLiveSession": "Sessione dal vivo",
+  "activeElapsed": "Trascorso",
+  "activeSetsLabel": "Serie",
   "activeNoWorkout": "Nessun allenamento attivo",
   "activeNoWorkoutDesc": "Start a quick workout from Today or launch a saved routine from the builder.",
   "activeStartWorkout": "Start Workout",
