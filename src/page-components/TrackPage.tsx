@@ -155,8 +155,11 @@ export function TrackPage() {
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <Label>{t('trackDurationLabel', { defaultValue: 'Duration (minutes)' })}</Label>
+                <Label htmlFor="track-duration">
+                  {t('trackDurationLabel', { defaultValue: 'Duration (minutes)' })}
+                </Label>
                 <Input
+                  id="track-duration"
                   type="number"
                   min={1}
                   value={durationMin}
@@ -164,8 +167,11 @@ export function TrackPage() {
                 />
               </div>
               <div>
-                <Label>{t('trackDistanceLabel', { defaultValue: 'Distance km (optional)' })}</Label>
+                <Label htmlFor="track-distance">
+                  {t('trackDistanceLabel', { defaultValue: 'Distance km (optional)' })}
+                </Label>
                 <Input
+                  id="track-distance"
                   type="number"
                   step="0.1"
                   placeholder="e.g. 5.2"
@@ -175,8 +181,11 @@ export function TrackPage() {
               </div>
             </div>
             <div>
-              <Label>{t('trackNotesLabel', { defaultValue: 'Notes (optional)' })}</Label>
+              <Label htmlFor="track-notes">
+                {t('trackNotesLabel', { defaultValue: 'Notes (optional)' })}
+              </Label>
               <Input
+                id="track-notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder={t('trackNotesPlaceholder', {

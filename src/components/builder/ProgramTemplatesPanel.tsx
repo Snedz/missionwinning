@@ -306,7 +306,14 @@ export function ProgramTemplatesPanel({
         </Label>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Select value={quickPick} onValueChange={setQuickPick}>
-            <SelectTrigger className="flex-1 bg-background">
+            {/* Radix renders the trigger as a button; a placeholder is not an
+                accessible name, so unselected it announced nothing. */}
+            <SelectTrigger
+              className="flex-1 bg-background"
+              aria-label={t('builderQuickLoadLabel', {
+                defaultValue: 'Quick load (all categories)',
+              })}
+            >
               <SelectValue placeholder={t('builderQuickLoadPlaceholder', {
                   defaultValue: 'Choose program & session…',
                 })}

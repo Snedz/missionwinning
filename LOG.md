@@ -6,6 +6,36 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Nine screens had no axe coverage; four were broken (`.157`)
+
+`GATED_ROUTES` covered four of the thirteen signed-in screens. The other nine
+— the tranche the rebrand recut screen-by-screen — **had never been scanned**.
+Adding them found four failing serious/critical, all shipping today:
+
+- **`/track` and `/profile` — form elements with no labels.** `TrackPage`'s
+  duration, distance and notes fields had `<Label>` without `htmlFor` and
+  `<Input>` without `id`, so nothing associated them; `ProfilePreferencesCard`'s
+  goals `<textarea>` had **no label at all** — a card title is not a label, and
+  a screen reader announced that field as nothing.
+- **`/library` — interactive controls nested.** Every exercise card was a
+  `<div role="button" tabindex="0">` wrapping a real `<Button>`: two keyboard
+  stops for one destination, and a button announced inside a button. The card
+  keeps its pointer click as a convenience; the control inside it is the real
+  one. The forty buttons also all read "View details →" — they carry the
+  exercise name now, because a list of forty identical names is not navigable.
+- **`/builder` — a combobox with no accessible name.** Radix renders
+  `SelectTrigger` as a button and a `placeholder` is not a name, so unselected
+  it announced nothing.
+- **`/profile` also had `link-in-text-block`** — `text-primary hover:underline`
+  on the consent links, distinguished by hue alone at rest (1.27:1). Exactly
+  the defect `.139` fixed in 56 places; `SignInPanel` was missed.
+
+**a11y 20 → 29.** The lesson is the one `.129` already wrote down about the SEO
+tail, where one exercise page stood for ~250 URLs: a suite is only as honest as
+its route list, and a screen nobody scans is a screen nobody has checked.
+
+---
+
 ## 2026-07-26 — The seven that were left (`.156`)
 
 Closes phase 5. Seven commits, cheapest first.

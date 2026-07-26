@@ -333,11 +333,11 @@ export function SignInPanel({
         />
         <span>
           I agree to the{' '}
-          <Link href="/terms" target="_blank" className="text-primary hover:underline">
+          <Link href="/terms" target="_blank" className="text-primary underline">
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link href="/privacy" target="_blank" className="text-primary hover:underline">
+          <Link href="/privacy" target="_blank" className="text-primary underline">
             Privacy Policy
           </Link>
           . We only sync data you choose to save when signed in.
