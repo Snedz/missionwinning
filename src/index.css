@@ -84,9 +84,12 @@
     --input: 0 1% 62%;
     --ring: 8 85% 50%;
     --radius: 0rem; /* zero everywhere, on purpose — see tailwind.config.js */
-    /* Brass is retired on web — the neutral ramp carries hierarchy. Kept as a
-       neutral so the 40 remaining call sites render calmly until Phase 3 recuts
-       their screens. */
+    /* Brass is retired on web — the neutral ramp carries hierarchy, and the
+       honor tier (accent-800) took the one job brass was actually doing. As of
+       `.149` there are ZERO `bg-/text-/border-brass` call sites left; the token
+       stays only because `--brass` is still referenced by the Tailwind colour
+       map, and deleting it there is a separate, wider change. Do not reach for
+       it — anything that wants "earned" wants `Badge variant="honor"`. */
     --brass: 20 1% 37%;
     --brass-foreground: 0 4% 95%;
     --surface-raised: 0 2% 92%;
@@ -983,7 +986,7 @@
 .magazine-callout {
   padding: 0.85rem 0.95rem;
   border-left: 3px solid var(--mag-primary);
-  background: hsl(158 64% 42% / 0.06);
+  background: hsl(var(--accent-tint));
   break-inside: avoid;
 }
 
@@ -1054,7 +1057,7 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--mag-muted);
-  background: hsl(210 12% 94%);
+  background: hsl(var(--card));
 }
 
 .magazine-checklist {

@@ -6,6 +6,37 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — You, Welcome, and the last of the old palette (`.149`)
+
+Phase K, and the end of the redesign.
+
+- **You / Welcome**: ten files. `ProfileReferralCard`'s recruiter badge was
+  still **brass** — the one thing brass was genuinely doing (marking something
+  earned), so it became the honor tier. Welcome's progress meter is a square
+  red bar, not a `rounded-full bg-primary/70` pill.
+- **Then an app-wide finish pass**, because a screen-by-screen sweep leaves a
+  tail. The key realisation: `rounded-sm` … `rounded-3xl` are **no-ops** —
+  `tailwind.config.js` maps the whole scale to `var(--radius)`, which is 0 — so
+  they were never the problem. **`rounded-full` maps to `9999px` and still
+  rendered real circles**, 21 of them. Those are gone; the ~200 dead
+  `rounded-*` classes are left alone as harmless.
+- Cleared across 38 files: every remaining `brass`, `bg-black/*` and
+  `bg-white/*` scrim, `border-white/10`, `status-info` panel, and the last four
+  gradients.
+- **`MacroCalculator`'s macro bar was sky / amber / rose** — three unrelated
+  hues doing the job of one scale. It steps down the accent ramp now
+  (700 → 400 → 200), with labels flipping to ink on the lighter two.
+- The magazine sheet in `index.css` still had an **emerald wash**
+  (`hsl(158 64% 42% / 0.06)`) and two raw greys; all three are tokens now.
+- **Final audit: 0 off-palette colours, 0 gradients, 0 real circles, 0 dark
+  scrims, 0 live brass call sites, 0 hardcoded `hsl()` outside one deliberate
+  print white.** `--brass` survives only as a Tailwind colour-map entry, and its
+  comment now says so instead of claiming 40 call sites.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20, `fuel-floating-action` 1/1.
+  One offline-spec failure mid-phase was flake — it passes isolated and on a
+  clean gate re-run; `playwright.config.ts` has no `webServer`, so a spec run
+  without a server up fails at the first `goto`.
+
 ## 2026-07-26 — Assess and Builder, and the last traffic light (`.148`)
 
 Phase J.

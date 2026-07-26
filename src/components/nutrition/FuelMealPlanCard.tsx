@@ -62,7 +62,7 @@ export function FuelMealPlanCard() {
       </CardHeader>
       <CardContent className="space-y-4">
         {plan.days.map((day) => (
-          <div key={day.dayKey} className="border border-white/10  p-3 bg-black/20 space-y-2">
+          <div key={day.dayKey} className="border border-border p-3 bg-card space-y-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="text-sm font-semibold">{day.label}</div>
               <div className="text-xs text-primary capitalize">{day.trainingLoad} day</div>

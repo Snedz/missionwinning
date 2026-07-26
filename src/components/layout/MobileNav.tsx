@@ -51,7 +51,7 @@ export function MobileNav() {
             >
               <Icon className="h-5 w-5" aria-hidden />
               {showPulse && (
-                <span className="absolute end-[calc(50%-18px)] top-1.5 h-2 w-2 rounded-full bg-[hsl(var(--accent-poster))] animate-pulse" />
+                <span className="absolute end-[calc(50%-18px)] top-1.5 h-2 w-2 bg-[hsl(var(--accent-poster))] animate-pulse" />
               )}
               {t(labelKey, { defaultValue: label })}
             </Link>

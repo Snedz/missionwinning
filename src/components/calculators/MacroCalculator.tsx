@@ -234,21 +234,25 @@ export function MacroCalculator() {
           </div>
 
           <div className="space-y-1">
-            <div className="flex h-3 rounded-full overflow-hidden text-[10px] font-medium">
+            {/* Three segments, one hue: the accent ramp steps dark → light so
+                protein / carbs / fat stay distinguishable without sky, amber
+                and rose — which were three unrelated colours doing the job of
+                one scale. Labels flip to ink on the lighter two steps. */}
+            <div className="flex h-4 overflow-hidden text-[10px] font-semibold">
               <div
-                className="bg-sky-700 flex items-center justify-center text-white"
+                className="bg-accent-700 flex items-center justify-center text-primary-foreground"
                 style={{ width: `${macroSplit.proteinPct}%` }}
               >
                 {macroSplit.proteinPct > 12 ? `P ${macroSplit.proteinPct}%` : ''}
               </div>
               <div
-                className="bg-[hsl(var(--status-warn)/0.85)] flex items-center justify-center text-white"
+                className="bg-accent-400 flex items-center justify-center text-accent-900"
                 style={{ width: `${macroSplit.carbsPct}%` }}
               >
                 {macroSplit.carbsPct > 12 ? `C ${macroSplit.carbsPct}%` : ''}
               </div>
               <div
-                className="bg-rose-700 flex items-center justify-center text-white"
+                className="bg-accent-200 flex items-center justify-center text-accent-900"
                 style={{ width: `${macroSplit.fatPct}%` }}
               >
                 {macroSplit.fatPct > 12 ? `F ${macroSplit.fatPct}%` : ''}

@@ -66,7 +66,7 @@ export function FeedbackPage() {
       >
         <Card className="bg-card text-center">
             <CardContent className="pt-8 pb-8 space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-muted/40 text-foreground text-sm border border-border/50">
+              <div className="inline-flex items-center gap-2 px-4 py-1 bg-muted/40 text-foreground text-sm border border-border/50">
                 {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
               </div>
               <div className="text-left max-w-md mx-auto space-y-2 text-sm leading-relaxed">

@@ -232,7 +232,7 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
       <div className="space-y-6 max-w-3xl mx-auto print:hidden page-enter">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-[hsl(var(--status-info))] mb-1">
+            <div className="flex items-center gap-2 text-muted-foreground mb-1">
               <Flag className="h-5 w-5" />
               <span className="text-xs uppercase tracking-widest font-medium">
                 {t('teacherDashboardKicker', { defaultValue: 'Teacher dashboard' })}

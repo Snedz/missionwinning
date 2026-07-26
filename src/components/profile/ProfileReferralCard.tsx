@@ -107,7 +107,7 @@ export function ProfileReferralCard({ signedIn }: Props) {
         ) : (
           <>
             {code ? (
-              <div className="rounded-lg border border-border/50 bg-muted/20 px-3 py-2">
+              <div className="border-2 border-border bg-card px-3 py-2">
                 <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
                   {t('growthReferralCode', { defaultValue: 'Your code' })}
                 </p>
@@ -123,8 +123,8 @@ export function ProfileReferralCard({ signedIn }: Props) {
             {badge ? (
               <p
                 className={cn(
-                  'inline-flex rounded-full border border-brass/40 bg-brass/10 px-3 py-1',
-                  'text-xs font-medium uppercase tracking-wide text-brass'
+                  'inline-flex  border border-border bg-accent-100 px-3 py-1',
+                  'text-xs font-medium uppercase tracking-wide text-accent-900'
                 )}
               >
                 {t(badge, { defaultValue: 'Recruiter' })}

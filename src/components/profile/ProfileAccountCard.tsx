@@ -33,7 +33,7 @@ export function ProfileAccountCard({
         {authError ? (
           <p
             role="alert"
-            className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-[hsl(var(--status-danger))]"
+            className="border border-destructive bg-accent-100 px-3 py-2 text-sm text-[hsl(var(--status-danger))]"
           >
             {authError}
           </p>
@@ -54,7 +54,7 @@ export function ProfileAccountCard({
             </p>
           </>
         ) : (
-          <div className="rounded-xl border border-border/40 bg-muted/15 p-4">
+          <div className="border-2 border-border bg-card p-4">
             <p className="font-medium mb-1 text-sm">
               {t('signInOptional', { defaultValue: 'Sign in (optional)' })}
             </p>

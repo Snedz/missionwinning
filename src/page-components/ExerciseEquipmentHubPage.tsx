@@ -47,7 +47,7 @@ export function ExerciseEquipmentHubPage({ equipmentLabel, exercises }: Props) {
               <Link
                 key={g}
                 href={`/exercises/muscle/${muscleHubSlug(g)}`}
-                className="rounded-full border border-border/60 px-3 py-1.5 text-xs transition-colors hover:border-primary/40 hover:bg-primary/10"
+                className="border border-border/60 px-3 py-1.5 text-xs transition-colors hover:border-primary/40 hover:bg-primary/10"
               >
                 {g}
               </Link>

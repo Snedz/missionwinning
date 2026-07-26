@@ -146,11 +146,11 @@ export function FitnessTestRunner() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="rounded-xl border border-[hsl(var(--status-info)/0.3)] bg-[hsl(var(--status-info)/0.1)] px-4 py-3 text-center">
-            <p className="text-xs uppercase tracking-widest text-[hsl(var(--status-info))]">
+          <div className="rounded-xl border border-border bg-card px-4 py-3 text-center">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground">
               {t('pftOverallAward', { defaultValue: 'Overall award' })}
             </p>
-            <p className="text-2xl font-bold text-[hsl(var(--status-info))] mt-1">
+            <p className="text-2xl font-bold text-muted-foreground mt-1">
               {awardLabel(session.overallTier)}
             </p>
           </div>
@@ -269,7 +269,7 @@ export function FitnessTestRunner() {
         {step === 'events' && (
           <>
             {eventIds.map((id) => inputForEvent(id))}
-            <Button className="w-full bg-[hsl(var(--status-info))] hover:bg-[hsl(var(--status-info)/0.9)]" onClick={handleScore}>
+            <Button className="w-full bg-[hsl(var(--status-info))] hover:bg-card" onClick={handleScore}>
               {t('pftScore', { defaultValue: 'Score my test' })}
             </Button>
             <Button variant="ghost" className="w-full" onClick={() => setStep('profile')}>

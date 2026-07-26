@@ -122,10 +122,10 @@ export function FileUploadRow({
 
         {showBar && (
           <div className="space-y-1">
-            <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+            <div className="h-1.5 bg-muted overflow-hidden">
               <div
                 className={cn(
-                  'h-full rounded-full bg-primary transition-[width] duration-200',
+                  'h-full  bg-primary transition-[width] duration-200',
                   status === 'queued' && 'w-0 opacity-40'
                 )}
                 style={{ width: status === 'queued' ? undefined : `${pct}%` }}

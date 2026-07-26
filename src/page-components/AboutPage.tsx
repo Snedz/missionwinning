@@ -61,7 +61,7 @@ export function AboutPage() {
             <InfoSection title={t('infoAboutNational', { defaultValue: 'National fitness (U.S.)' })}>
               <CouncilLeadershipBlock />
               <p className="text-muted-foreground">
-                <Link href="/america" className="text-[hsl(var(--status-info))] hover:underline">
+                <Link href="/america" className="text-muted-foreground hover:underline">
                   {t('infoAboutAmericaLink', {
                     defaultValue: 'Presidential Fitness Test & youth movement →',
                   })}
@@ -128,7 +128,7 @@ export function AboutPage() {
               {isAmericaTrackEnabled() && (
                 <>
                   {' · '}
-                  <Link href="/america" className="text-[hsl(var(--status-info))] hover:underline">
+                  <Link href="/america" className="text-muted-foreground hover:underline">
                     {t('infoAboutNationalLink', { defaultValue: 'National fitness' })}
                   </Link>
                 </>

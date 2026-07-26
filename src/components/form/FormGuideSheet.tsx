@@ -51,7 +51,7 @@ export function FormGuideSheet({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-11 w-11 items-center justify-center rounded-full hover:bg-muted transition-colors"
+            className="flex h-11 w-11 items-center justify-center hover:bg-muted transition-colors"
             aria-label="Close"
           >
             <X className="h-5 w-5" />

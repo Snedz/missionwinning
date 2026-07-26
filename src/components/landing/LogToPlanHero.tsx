@@ -98,7 +98,7 @@ export function LogToPlanHero({ staticFallback }: Props) {
               className={[
                 'flex items-center gap-3 rounded-xl border px-3 py-2.5 transition-colors duration-200',
                 set
-                  ? 'border-brass/30 bg-brass/[0.06]'
+                  ? 'border-border bg-card'
                   : isNext
                     ? 'border-primary/40 bg-primary/[0.04]'
                     : 'border-border/40',
@@ -109,12 +109,12 @@ export function LogToPlanHero({ staticFallback }: Props) {
               </span>
               <span
                 className={`font-mono text-sm tabular-nums ${
-                  set || isNext ? 'text-foreground' : 'text-muted-foreground/50'
+ set || isNext ?'text-foreground' : 'text-muted-foreground/50'
                 }`}
               >
                 {fmt(todayTarget)}
               </span>
-              {set ? <Check className="ms-auto h-4 w-4 shrink-0 text-brass" aria-hidden /> : null}
+              {set ? <Check className="ms-auto h-4 w-4 shrink-0 text-accent-900" aria-hidden /> : null}
             </li>
           );
         })}
@@ -199,7 +199,7 @@ export function LogToPlanHeroFallback() {
           <li
             key={i}
             className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 ${
-              i === 0 ? 'border-primary/40 bg-primary/[0.04]' : 'border-border/40'
+ i === 0 ?'border-primary/40 bg-primary/[0.04]' : 'border-border/40'
             }`}
           >
             <span className="w-4 shrink-0 font-mono text-xs tabular-nums text-muted-foreground/70">
@@ -207,7 +207,7 @@ export function LogToPlanHeroFallback() {
             </span>
             <span
               className={`font-mono text-sm tabular-nums ${
-                i === 0 ? 'text-foreground' : 'text-muted-foreground/50'
+ i === 0 ?'text-foreground' : 'text-muted-foreground/50'
               }`}
             >
               8 × 82.5 kg

@@ -90,7 +90,7 @@ export function FuelLockedPreview({ baseTargets }: Props) {
           })}
           : {baseTargets.cals} kcal · {baseTargets.protein}g P · {baseTargets.carbs}g C
         </p>
-        <div className="relative  border-2 border-border bg-black/20 p-3">
+        <div className="relative border-2 border-border bg-card p-3">
           <div className="pointer-events-none select-none opacity-60 blur-[1px] space-y-2">
             <div className="flex justify-between text-sm font-semibold">
               <span>{day.label}</span>

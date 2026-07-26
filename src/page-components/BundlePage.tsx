@@ -121,7 +121,7 @@ export function BundlePage() {
       {/* Thin hero */}
       <div className="hero-field section-seam relative">
         <div className="relative z-[1] mx-auto max-w-4xl space-y-3 px-5 pb-10 pt-10">
-          <Badge className="w-fit border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
+          <Badge className="w-fit border-border bg-accent-100 text-accent-900 hover:bg-accent-100">
             {t("bundleUrgencyBadge")}
           </Badge>
           <PillarPageHeader
@@ -303,7 +303,7 @@ export function BundlePage() {
                     )}
 
                     <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Trophy className="h-3.5 w-3.5 shrink-0 text-brass" />
+                      <Trophy className="h-3.5 w-3.5 shrink-0 text-accent-900" />
                       {t("bundleWinScoreNote")}
                     </p>
 

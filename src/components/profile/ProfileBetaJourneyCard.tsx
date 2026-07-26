@@ -25,25 +25,25 @@ export function ProfileBetaJourneyCard({
   const { t } = useTranslation();
 
   return (
-    <Card className="content-card border-primary/40 bg-primary/5">
+    <Card className="content-card border-primary bg-accent-100">
       <CardHeader>
         <CardTitle>{t('betaJourneyProgress', { defaultValue: 'Beta journey progress' })}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 text-sm">
         <div className="grid grid-cols-2 gap-2">
-          <div className="rounded-lg border border-border/50 p-3">
+          <div className="border-2 border-border p-3">
             <div className="text-xs text-muted-foreground">Phase</div>
             <div className="font-semibold capitalize">{funnel.phase.replace('-', ' ')}</div>
           </div>
-          <div className="rounded-lg border border-border/50 p-3">
+          <div className="border-2 border-border p-3">
             <div className="text-xs text-muted-foreground">Events</div>
             <div className="font-semibold">{funnel.eventCount}</div>
           </div>
-          <div className="rounded-lg border border-border/50 p-3">
+          <div className="border-2 border-border p-3">
             <div className="text-xs text-muted-foreground">I-Day</div>
             <div className="font-semibold">{funnel.iDayComplete ? '✓ Done' : '—'}</div>
           </div>
-          <div className="rounded-lg border border-border/50 p-3">
+          <div className="border-2 border-border p-3">
             <div className="text-xs text-muted-foreground">Basic Training</div>
             <div className="font-semibold">
               {funnel.basicDone}/{funnel.basicTotal}

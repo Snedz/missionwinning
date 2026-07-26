@@ -159,7 +159,7 @@ export function AdaptiveOverlay({
           className="flex justify-center pt-2 pb-0 md:hidden"
           aria-hidden
         >
-          <span className="h-1 w-10 rounded-full bg-muted-foreground/30" />
+          <span className="h-1 w-10 bg-muted-foreground/30" />
         </div>
         {!hideHeader && (
           <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between border-b border-border/30 bg-card/98 px-5 py-3.5 md:py-4">
@@ -183,7 +183,7 @@ export function AdaptiveOverlay({
               ref={closeRef}
               type="button"
               onClick={onClose}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full hover:bg-muted transition-colors"
+              className="flex h-11 w-11 shrink-0 items-center justify-center hover:bg-muted transition-colors"
               aria-label="Close"
             >
               <X className="h-5 w-5" />

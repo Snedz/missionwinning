@@ -74,7 +74,7 @@ export function Sidebar() {
                             {navLabel}
                           </span>
                           {showPulse && (
-                            <span className="absolute end-2 top-2 h-2 w-2 rounded-full bg-[hsl(var(--accent-poster))] animate-pulse lg:end-3 lg:top-1/2 lg:-translate-y-1/2" />
+                            <span className="absolute end-2 top-2 h-2 w-2 bg-[hsl(var(--accent-poster))] animate-pulse lg:end-3 lg:top-1/2 lg:-translate-y-1/2" />
                           )}
                         </Link>
                       </TooltipTrigger>

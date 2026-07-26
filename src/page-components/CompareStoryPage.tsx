@@ -59,8 +59,8 @@ export function CompareStoryPage({ story }: { story: CompareStory }) {
         )}
 
         {story.verdict ? (
-          <p className="rounded-xl border border-brass/30 bg-brass/10 px-4 py-3 text-sm text-foreground/90">
-            <span className="font-medium text-brass">Verdict: </span>
+          <p className="rounded-xl border border-border bg-accent-100 px-4 py-3 text-sm text-foreground/90">
+            <span className="font-medium text-accent-900">Verdict: </span>
             {story.verdict}
           </p>
         ) : null}
