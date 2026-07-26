@@ -6,6 +6,55 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Thirteen tabs become five plus a sheet (`.151`)
+
+Phase 1 of the mobile app redesign. The worst defect in the signed-in app,
+and the one nothing was measuring.
+
+- **The bar was 884px of track in a 390px window.** `MobileNav` flattened
+  `railGroupsForNav()` — all thirteen rail screens at 68px each — onto a
+  horizontal scroller. Seven destinations sat off-screen with no affordance
+  saying they existed, **including the only route to sign-in and settings**.
+  It is now **Today · Train · Coach · Fuel · More**, `flex-1` at 78px each,
+  56px tall, no scroll.
+- **`PRIMARY_NAV` was not rewritten**, which was the first plan and was wrong:
+  the rail resolves `/profile` through it, so dropping the fifth entry makes
+  `railGroupsForNav()` throw. The bar is a **subset** — `MOBILE_TAB_HREFS`,
+  four hrefs resolved through the same registry — and More is a button, not a
+  route, so it could never have lived in a list of routes anyway.
+- **New More sheet** on the recut `AdaptiveOverlay`, built from
+  `railGroupsForNav()`, with the four tab routes filtered out: a row repeating
+  a button two inches below it is dead weight. Nine screens, grouped Mission /
+  Pillars / Toolkit, 52px rows, 2px between groups and 1px between rows.
+- **Rows carry a live figure** where an honest one exists — `4 sessions`,
+  `Checked in`, `3 this week` — so the sheet reads as a status board rather
+  than a menu. Only three figures, deliberately: session count waits on the
+  store's `hasHydrated`, because a persisted store reports an empty history for
+  a frame and "0 sessions" flashing at a user with fifty is the same lie as a
+  zeroed score.
+- **The header's inline nav panel is gone.** The app had two menus over
+  overlapping sets of screens — the header's, grouped by journey phase, and the
+  bar's, grouped by rail. The brand button opens the same sheet the fifth tab
+  does: a bottom sheet on a phone, a centred dialog on a desktop, one source.
+- **The Coach tab shows `Coach`, not `AI weekly plan`.** The live label is
+  right for the screen and was kept on purpose when the bar still scrolled at
+  68px a tab; at 78px a 10px caps label renders it `AI WEEKLY …`, and an
+  ellipsis is not a name. Narrow override in `TAB_LABEL_OVERRIDES`, the same
+  device `RAIL_LABEL_OVERRIDES` already uses for Assess. Screen, rail and sheet
+  are unchanged.
+- `main` now reserves 56px, not 52 — it is the only thing reserving the bar.
+- New `tests/e2e/mobile-nav.spec.ts` (3 `@gate` cases): the track fits inside
+  the bar **at 360px measured, not asserted by class name**; all thirteen
+  screens reachable in ≤2 taps and the sheet repeats no tab; Escape closes and
+  restores focus. Gate 26→29.
+- Two things the tests caught that a screenshot would not: More is the one slot
+  that is a button, so it does nothing until hydration — specs opening it need
+  `networkidle`; and building the groups in an effect gave one frame of an
+  **open sheet with nothing in it**. `railGroupsForNav()` is sync and the whole
+  module is already behind a dynamic import, so it computes during render.
+
+---
+
 ## 2026-07-26 — Mobile primitives, before the screens (`.150`)
 
 Phase 0 of the **mobile app redesign** (third handoff,

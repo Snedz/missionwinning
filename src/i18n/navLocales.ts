@@ -2,6 +2,9 @@
 
 type NavStrings = {
   navAssess: string;
+  navMore: string;
+  navCoachTab: string;
+  navMoreEyebrow: string;
   navOpenBeta: string;
   navGroupMission: string;
   navGroupPillars: string;
@@ -32,6 +35,9 @@ type NavStrings = {
 const en: NavStrings = {
   navOpenBeta: 'Open beta',
   navAssess: 'Assess',
+  navMore: 'More',
+  navCoachTab: 'Coach',
+  navMoreEyebrow: 'All screens',
   navGroupMission: 'Mission',
   navGroupPillars: 'Pillars',
   navGroupToolkit: 'Toolkit',
@@ -64,6 +70,9 @@ const es: NavStrings = {
   ...en,
   navOpenBeta: 'Beta abierta',
   navAssess: 'Evaluar',
+  navMore: 'Más',
+  navCoachTab: 'Coach',
+  navMoreEyebrow: 'Todas las pantallas',
   navGroupMission: 'Misión',
   navGroupPillars: 'Pilares',
   navGroupToolkit: 'Herramientas',
@@ -89,6 +98,9 @@ const es: NavStrings = {
 const zh: Partial<NavStrings> = {
   navOpenBeta: '公开测试',
   navAssess: '评估',
+  navMore: '更多',
+  navCoachTab: '教练',
+  navMoreEyebrow: '全部页面',
   navGroupMission: '任务',
   navGroupPillars: '支柱',
   navGroupToolkit: '工具',
@@ -119,6 +131,9 @@ const zh: Partial<NavStrings> = {
 const id: Partial<NavStrings> = {
   navOpenBeta: 'Beta terbuka',
   navAssess: 'Nilai',
+  navMore: 'Lainnya',
+  navCoachTab: 'Pelatih',
+  navMoreEyebrow: 'Semua layar',
   navGroupMission: 'Misi',
   navGroupPillars: 'Pilar',
   navGroupToolkit: 'Peralatan',
@@ -149,6 +164,9 @@ const id: Partial<NavStrings> = {
 const th: Partial<NavStrings> = {
   navOpenBeta: 'เบต้าเปิด',
   navAssess: 'ประเมิน',
+  navMore: 'เพิ่มเติม',
+  navCoachTab: 'โค้ช',
+  navMoreEyebrow: 'ทุกหน้าจอ',
   navGroupMission: 'ภารกิจ',
   navGroupPillars: 'เสาหลัก',
   navGroupToolkit: 'เครื่องมือ',
@@ -179,6 +197,9 @@ const th: Partial<NavStrings> = {
 const ar: Partial<NavStrings> = {
   navOpenBeta: 'نسخة تجريبية مفتوحة',
   navAssess: 'تقييم',
+  navMore: 'المزيد',
+  navCoachTab: 'المدرب',
+  navMoreEyebrow: 'كل الشاشات',
   navGroupMission: 'المهمة',
   navGroupPillars: 'الركائز',
   navGroupToolkit: 'الأدوات',
@@ -210,6 +231,9 @@ const fr: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Bêta ouverte',
   navAssess: 'Évaluer',
+  navMore: 'Plus',
+  navCoachTab: 'Coach',
+  navMoreEyebrow: 'Tous les écrans',
   navGroupMission: 'Mission',
   navGroupPillars: 'Piliers',
   navGroupToolkit: 'Outils',
@@ -234,6 +258,9 @@ const de: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Offene Beta',
   navAssess: 'Bewerten',
+  navMore: 'Mehr',
+  navCoachTab: 'Coach',
+  navMoreEyebrow: 'Alle Ansichten',
   navGroupMission: 'Mission',
   navGroupPillars: 'Säulen',
   navGroupToolkit: 'Werkzeuge',
@@ -258,6 +285,9 @@ const it: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Beta aperta',
   navAssess: 'Valuta',
+  navMore: 'Altro',
+  navCoachTab: 'Coach',
+  navMoreEyebrow: 'Tutte le schermate',
   navGroupMission: 'Missione',
   navGroupPillars: 'Pilastri',
   navGroupToolkit: 'Strumenti',
@@ -282,6 +312,9 @@ const ko: Partial<NavStrings> = {
   ...en,
   navOpenBeta: '오픈 베타',
   navAssess: '평가',
+  navMore: '더보기',
+  navCoachTab: '코치',
+  navMoreEyebrow: '모든 화면',
   navGroupMission: '미션',
   navGroupPillars: '기둥',
   navGroupToolkit: '도구',
@@ -306,6 +339,9 @@ const ja: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'オープンベータ',
   navAssess: '評価',
+  navMore: 'その他',
+  navCoachTab: 'コーチ',
+  navMoreEyebrow: 'すべての画面',
   navGroupMission: 'ミッション',
   navGroupPillars: '柱',
   navGroupToolkit: 'ツール',
@@ -330,6 +366,9 @@ const pt: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Beta aberto',
   navAssess: 'Avaliar',
+  navMore: 'Mais',
+  navCoachTab: 'Treinador',
+  navMoreEyebrow: 'Todas as telas',
   navGroupMission: 'Missão',
   navGroupPillars: 'Pilares',
   navGroupToolkit: 'Ferramentas',
@@ -354,6 +393,9 @@ const ru: Partial<NavStrings> = {
   ...en,
   navOpenBeta: 'Открытая бета',
   navAssess: 'Оценка',
+  navMore: 'Ещё',
+  navCoachTab: 'Тренер',
+  navMoreEyebrow: 'Все экраны',
   navGroupMission: 'Миссия',
   navGroupPillars: 'Основы',
   navGroupToolkit: 'Инструменты',
