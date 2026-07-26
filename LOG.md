@@ -6,6 +6,22 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Assess and Builder, and the last traffic light (`.148`)
+
+Phase J.
+
+- **The PAR-Q result was a traffic light** — `status-danger` / `status-warn` /
+  `status-ok` borders for high / moderate / low risk. Three ranks now come from
+  one hue: high is the filled red poster the handoff asks for, moderate keeps
+  the red as an edge only, low is a plain ruled card. Beyond the palette rule,
+  a health screen should not render "low risk" in green — the point of the
+  instrument is to send some people to a doctor first, and green means go.
+- **`MilitaryReadinessSection` was amber on amber on a gradient**: an amber
+  border, amber title, amber hint text, a `bg-gradient-to-br` ground and
+  `bg-black/20` rows. Flat surface, ink, one red — same as everything else.
+- Gradients are gone from Builder too (`bg-gradient-to-b` on the draft panel).
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
 ## 2026-07-26 — Track, Learn, Library (`.147`)
 
 Phase I. Nineteen files, all the same patterns — radius, hairline borders,

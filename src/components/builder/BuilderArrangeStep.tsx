@@ -68,7 +68,7 @@ export function BuilderArrangeStep({
       </CardHeader>
       <CardContent className="space-y-4">
         {sessionNotes && (
-          <div className="rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-muted-foreground">
+          <div className="border border-primary bg-accent-100 px-4 py-3 text-sm text-muted-foreground">
             <span className="font-medium text-foreground">
               {t('builderProgramNotes', { defaultValue: 'Program notes:' })}{' '}
             </span>
@@ -79,8 +79,7 @@ export function BuilderArrangeStep({
         <div className="flex gap-2 items-start">
           <ExercisePicker value={selectedExerciseId} onChange={onSelectedChange} />
           <Button
-            onClick={onAddExercise}
-            disabled={!selectedExerciseId}
+            onClick={onAddExercise} disabled={!selectedExerciseId}
             className="min-h-[44px] shrink-0"
           >
             <Plus className="h-4 w-4" />
@@ -101,28 +100,20 @@ export function BuilderArrangeStep({
           const exercise = getExerciseById(ex.exerciseId);
           if (!exercise) return null;
           return (
-            <Card key={ex.key} className="bg-muted/30">
+            <Card key={ex.key} className="bg-card">
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2 min-w-0">
                     <div className="flex flex-col gap-0.5 shrink-0">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7"
-                        disabled={exIndex === 0}
-                        onClick={() => onMoveExercise(exIndex, 'up')}
-                        aria-label="Move up"
+                      <Button variant="ghost" size="icon"
+                        className="h-7 w-7" disabled={exIndex === 0}
+                        onClick={() => onMoveExercise(exIndex, 'up')} aria-label="Move up"
                       >
                         <ChevronUp className="h-4 w-4" />
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7"
-                        disabled={exIndex === exercises.length - 1}
-                        onClick={() => onMoveExercise(exIndex, 'down')}
-                        aria-label="Move down"
+                      <Button variant="ghost" size="icon"
+                        className="h-7 w-7" disabled={exIndex === exercises.length - 1}
+                        onClick={() => onMoveExercise(exIndex, 'down')} aria-label="Move down"
                       >
                         <ChevronDown className="h-4 w-4" />
                       </Button>
@@ -140,10 +131,7 @@ export function BuilderArrangeStep({
                   </div>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        aria-label={t('builderRemoveExercise', { defaultValue: 'Remove exercise' })}
+                      <Button variant="ghost" size="icon" aria-label={t('builderRemoveExercise', { defaultValue: 'Remove exercise' })}
                         onClick={() => onRemoveExercise(ex.key)}
                       >
                         <Trash2 className="h-4 w-4 text-destructive" />
@@ -175,10 +163,7 @@ export function BuilderArrangeStep({
                       <TableRow key={i}>
                         <TableCell>{i + 1}</TableCell>
                         <TableCell>
-                          <Input
-                            type="number"
-                            min={1}
-                            value={set.reps}
+                          <Input type="number" min={1} value={set.reps}
                             onChange={(e) =>
                               onUpdateSet(ex.key, i, 'reps', parseInt(e.target.value) || 0)
                             }
@@ -186,11 +171,7 @@ export function BuilderArrangeStep({
                           />
                         </TableCell>
                         <TableCell>
-                          <Input
-                            type="number"
-                            min={0}
-                            step={2.5}
-                            value={set.weight}
+                          <Input type="number" min={0} step={2.5} value={set.weight}
                             onChange={(e) =>
                               onUpdateSet(ex.key, i, 'weight', parseFloat(e.target.value) || 0)
                             }
@@ -200,13 +181,9 @@ export function BuilderArrangeStep({
                         <TableCell>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="icon"
+                              <Button variant="ghost" size="icon"
                                 className="h-8 w-8"
-                                onClick={() => onRemoveSet(ex.key, i)}
-                                disabled={ex.sets.length <= 1}
-                                aria-label={t('builderRemoveSet', { defaultValue: 'Remove set' })}
+                                onClick={() => onRemoveSet(ex.key, i)} disabled={ex.sets.length <= 1} aria-label={t('builderRemoveSet', { defaultValue: 'Remove set' })}
                               >
                                 <Trash2 className="h-3 w-3" />
                               </Button>
@@ -233,10 +210,8 @@ export function BuilderArrangeStep({
           <Button variant="outline" onClick={onBack}>
             {t('builderBack', { defaultValue: 'Back' })}
           </Button>
-          <Button
-            variant="fitness"
-            className="flex-1 primary-action"
-            disabled={exercises.length === 0}
+          <Button variant="fitness"
+            className="flex-1 primary-action" disabled={exercises.length === 0}
             onClick={onContinue}
           >
             {t('builderContinue', { defaultValue: 'Continue' })}
