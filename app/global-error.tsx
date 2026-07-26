@@ -41,8 +41,8 @@ export default function GlobalError({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#0a0d12',
-          color: '#f5f7f4',
+          background: '#f3f2f2',
+          color: '#201e1d',
           fontFamily: "-apple-system, 'Segoe UI', Roboto, sans-serif",
           padding: '24px',
         }}
@@ -53,7 +53,7 @@ export default function GlobalError({
               fontSize: 11,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: '#8a94a3',
+              color: '#ae1800',
               marginBottom: 16,
             }}
           >
@@ -62,7 +62,7 @@ export default function GlobalError({
           <h1 style={{ fontSize: 28, lineHeight: 1.1, margin: '0 0 12px', textTransform: 'uppercase' }}>
             The app hit a wall.
           </h1>
-          <p style={{ fontSize: 14, lineHeight: 1.6, color: '#a8b0bc', marginBottom: 24 }}>
+          <p style={{ fontSize: 14, lineHeight: 1.6, color: '#5f5e5d', marginBottom: 24 }}>
             Your data is safe on this device. Reload to recover — if this keeps happening, copy the
             error details and email support@missionwinning.com.
           </p>
@@ -71,10 +71,10 @@ export default function GlobalError({
               type="button"
               onClick={reset}
               style={{
-                background: '#26a97c',
+                background: '#dd2b0f',
                 color: '#fff',
                 border: 0,
-                borderRadius: 14,
+                borderRadius: 0,
                 padding: '13px 28px',
                 fontSize: 15,
                 fontWeight: 600,
@@ -88,9 +88,9 @@ export default function GlobalError({
               onClick={copyDetails}
               style={{
                 background: 'transparent',
-                color: '#a8b0bc',
-                border: '1px solid #2a3140',
-                borderRadius: 14,
+                color: '#201e1d',
+                border: '2px solid #201e1d',
+                borderRadius: 0,
                 padding: '13px 20px',
                 fontSize: 14,
                 cursor: 'pointer',
@@ -100,7 +100,7 @@ export default function GlobalError({
             </button>
           </div>
           {error.digest && (
-            <p style={{ fontSize: 11, color: '#5c6675', marginTop: 16 }}>Code: {error.digest}</p>
+            <p style={{ fontSize: 11, color: '#5f5e5d', marginTop: 16 }}>Code: {error.digest}</p>
           )}
         </div>
       </body>

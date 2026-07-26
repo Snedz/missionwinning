@@ -63,7 +63,7 @@ export function OneRmCalculator({ onE1rmChange }: Props) {
             />
           </div>
         </div>
-        <div className="text-5xl font-bold tabular-nums text-emerald-500">
+        <div className="text-5xl font-bold tabular-nums text-poster">
           {e1rm} <span className="text-xl font-normal text-muted-foreground">{unitLabel}</span>
         </div>
         {alt1rm !== e1rm && (

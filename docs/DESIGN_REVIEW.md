@@ -15,17 +15,17 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 ## Checklist (per screen)
 
 ### Brand voice
-- [ ] Mission-briefing anatomy: mono eyebrow → condensed display title → one clear action. No gym-bro hype, no paywall shame bait.
+- [ ] Mission-briefing anatomy (Modernist, 2026-07-25): caps kicker → Archivo 800 display (sentence case, flush left) → one clear action. No gym-bro hype, no paywall shame bait.
 - [ ] Copy leads with the wedge (logger + Mission Coach), pillars below the fold.
 
 ### Color semantics
-- [ ] Emerald = the one "do this now" action; **exactly one primary CTA above the fold**.
-- [ ] Brass = earned things only (PRs, streaks, founders) — never decorative.
-- [ ] Status colors map to `--status-*` tokens; no ad-hoc amber/blue; no competitor blue/violet.
+- [ ] Red = the one "do this now" action; **exactly one primary CTA above the fold**; at most one poster-red field per page.
+- [ ] Small red text is `--primary` (#ae1800), never `--accent-poster` — 3.78:1 fails AA below large-text sizes.
+- [ ] Status colors map to `--status-*` tokens; no ad-hoc amber/blue; brass is retired.
 
 ### Card tier ladder
-- [ ] ≤1 `card-elevated` and ≤1 glow (`card-glow-emerald`/`brass`) per screen.
-- [ ] Dense/repeated rows stay on base `Card`; textures off dense app screens.
+- [ ] ≤1 `card-elevated` and ≤1 tint-highlight (`card-glow-emerald`) per screen; no shadows/glows anywhere.
+- [ ] Dense/repeated rows stay on base `Card`; rules are 2px solid, never hairlines.
 
 ### Metrics & type
 - [ ] All numerals `tabular-nums`; units in mono labels; no jitter on tick.

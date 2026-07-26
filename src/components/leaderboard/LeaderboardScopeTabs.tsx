@@ -25,7 +25,7 @@ export function LeaderboardScopeTabs({ scope, onScopeChange, scopeLabel }: Props
             className={cn(
               'shrink-0 rounded-full px-3.5 py-2 text-xs font-medium transition-colors min-h-[36px]',
               scope === s.id
-                ? 'bg-primary-fill text-white shadow-lg shadow-emerald-900/30'
+                ? 'bg-primary-fill text-white'
                 : 'bg-muted/60 text-muted-foreground hover:bg-muted'
             )}
           >

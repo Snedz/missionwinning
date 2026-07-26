@@ -329,7 +329,7 @@ export function SignInPanel({
           disabled={consentLocked}
           onChange={(e) => setConsent(e.target.checked)}
           aria-invalid={!!error && !consent}
-          className="mt-0.5 h-4 w-4 rounded border-border accent-emerald-500 shrink-0"
+          className="mt-0.5 h-4 w-4 rounded border-border accent-[hsl(var(--primary))] shrink-0"
         />
         <span>
           I agree to the{' '}

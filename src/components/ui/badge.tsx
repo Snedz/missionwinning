@@ -2,15 +2,17 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+// Modernist tags: square, tinted from the ramps. No focus ring — the global
+// :focus-visible outline covers every focusable element.
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-none border px-2.5 py-0.5 text-xs font-semibold transition-colors",
   {
     variants: {
       variant: {
-        default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-        secondary: "border-transparent bg-secondary/20 text-secondary",
-        outline: "text-foreground",
-        muscle: "border-fitness-teal/30 bg-fitness-teal/10 text-fitness-teal",
+        default: "border-transparent bg-accent text-accent-foreground",
+        secondary: "border-transparent bg-secondary text-secondary-foreground",
+        outline: "border-primary text-primary",
+        muscle: "border-transparent bg-secondary text-secondary-foreground",
       },
     },
     defaultVariants: {

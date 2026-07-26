@@ -52,7 +52,7 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
                 'grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem] gap-2 px-3 py-2.5 items-center text-sm',
                 e.isYou && theme === 'night' && 'bg-[hsl(var(--status-info)/0.2)] ring-1 ring-inset ring-[hsl(var(--status-info)/0.4)]',
                 e.isYou && theme === 'dawn' && 'bg-[hsl(var(--status-warn)/0.15)] ring-1 ring-inset ring-[hsl(var(--status-warn)/0.4)]',
-                e.isYou && theme === 'default' && 'bg-primary/15 ring-1 ring-inset ring-emerald-500/30',
+                e.isYou && theme === 'default' && 'bg-tint ring-1 ring-inset ring-primary/30',
                 rank <= 3 && !e.isYou && 'bg-[hsl(var(--status-warn)/0.05)]'
               )}
             >

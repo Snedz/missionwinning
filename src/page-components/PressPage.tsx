@@ -21,26 +21,25 @@ const MEDIUM_BOILERPLATE =
   'Mission Winning is a free offline workout logger plus adaptive Mission Coach from your logs — no wearable required. Free core forever. Works offline as a PWA. Premium Super Bundle unlocks Coach depth and other pillars — never gates the logger.';
 
 const COLORS = [
-  { name: 'Navy', role: 'Canvas', hex: '#0a0c10', hsl: '222 24% 5%', swatch: '#0a0c10', border: true },
-  { name: 'Emerald', role: 'Action', hex: '#27b07d', hsl: '158 64% 42%', swatch: '#27b07d', border: false },
-  { name: 'Brass', role: 'Honor', hex: '#c7a860', hsl: '42 48% 58%', swatch: '#c7a860', border: false },
-  { name: 'White', role: 'On dark', hex: '#ffffff', hsl: '0 0% 100%', swatch: '#ffffff', border: true },
+  { name: 'Paper', role: 'Ground', hex: '#f3f2f2', hsl: '0 4% 95%', swatch: '#f3f2f2', border: true },
+  { name: 'Ink', role: 'Type · rules · mark', hex: '#201e1d', hsl: '20 5% 12%', swatch: '#201e1d', border: false },
+  { name: 'Accent red', role: 'Action · key figures', hex: '#ec3013', hsl: '8 85% 50%', swatch: '#ec3013', border: false },
+  { name: 'Accent 700', role: 'Small red text', hex: '#ae1800', hsl: '8 100% 34%', swatch: '#ae1800', border: false },
 ] as const;
 
 const DOWNLOADS = [
-  { href: '/brand/logo-icon.svg', label: 'Icon (emerald)', hint: 'Primary mark' },
-  { href: '/brand/logo-icon-navy.svg', label: 'Icon (navy)', hint: 'Dark UI / social' },
-  { href: '/brand/logo-wordmark-dark.svg', label: 'Wordmark (dark)', hint: 'For dark backgrounds' },
-  { href: '/brand/logo-wordmark-light.svg', label: 'Wordmark (light)', hint: 'For light backgrounds' },
-  { href: '/brand/logo-icon-mono-light.svg', label: 'Mono light', hint: 'White mark' },
-  { href: '/brand/logo-icon-mono-dark.svg', label: 'Mono dark', hint: 'Navy mark' },
+  { href: '/brand/logo-icon.svg', label: 'Icon (ink)', hint: 'Primary mark' },
+  { href: '/brand/logo-icon-reversed.svg', label: 'Icon (reversed)', hint: 'Paper on ink contexts' },
+  { href: '/brand/logo-icon-red.svg', label: 'Icon (red)', hint: 'Poster variant — sparingly' },
+  { href: '/brand/logo-wordmark-light.svg', label: 'Wordmark (on light)', hint: 'For paper backgrounds' },
+  { href: '/brand/logo-wordmark-dark.svg', label: 'Wordmark (on dark)', hint: 'For ink backgrounds' },
   { href: '/brand/og-default.png', label: 'OG share image', hint: '1200 × 630 PNG' },
 ] as const;
 
 const FONTS = [
-  { name: 'Barlow Condensed', role: 'Display / wordmark' },
-  { name: 'Inter', role: 'Body' },
-  { name: 'IBM Plex Mono', role: 'Eyebrows / telemetry' },
+  { name: 'Archivo 800', role: 'Display / wordmark' },
+  { name: 'Archivo 400', role: 'Body' },
+  { name: 'Archivo 600 caps', role: 'Kickers / telemetry' },
 ] as const;
 
 function CopyButton({ text, className }: { text: string; className?: string }) {

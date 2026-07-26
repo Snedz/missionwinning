@@ -69,14 +69,15 @@ test.describe('First 90 seconds @gate', () => {
 
     // Regression: the hero H1 rendered in Inter for months because LandingPage set
     // ad-hoc type instead of `.display-hero`, while every other marketing page used
-    // the briefing system. brand-guidelines.md assigns hero titles to Barlow Condensed.
+    // the display system. brand-guidelines.md assigns hero titles to Archivo
+    // (Modernist rebrand — was Barlow Condensed).
     const font = await page
       .locator('h1')
       .first()
       .evaluate((el) => getComputedStyle(el).fontFamily);
-    expect(font, `hero H1 font-family was ${font}`).toContain('Barlow Condensed');
+    expect(font, `hero H1 font-family was ${font}`).toContain('Archivo');
 
-    // Emerald marks the one action. Hero + closing band is the ceiling; a third
+    // Red marks the one action. Hero + closing band is the ceiling; a third
     // competing CTA is the "which button do I press" failure.
     await expect(page.locator('.primary-action')).toHaveCount(2);
   });
@@ -104,7 +105,7 @@ test.describe('First 90 seconds @gate', () => {
       await expect(h1).toBeVisible();
 
       const font = await h1.evaluate((el) => getComputedStyle(el).fontFamily);
-      expect(font, `${path} H1 font-family was ${font}`).toContain('Barlow Condensed');
+      expect(font, `${path} H1 font-family was ${font}`).toContain('Archivo');
 
       // Geometry, not class names: the shared header hardcoded `max-w-4xl` while most
       // bodies were `max-w-3xl`, so the headline sat outdented from its own body copy.

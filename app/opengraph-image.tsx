@@ -4,6 +4,7 @@ export const alt = 'Mission Winning — Train Anywhere. Win Daily.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
+// Modernist OG card: flat paper, ink, one red field — no gradients, no glow.
 export default function OpenGraphImage() {
   return new ImageResponse(
     (
@@ -15,9 +16,8 @@ export default function OpenGraphImage() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: 64,
-          background:
-            'radial-gradient(ellipse 70% 55% at 75% 20%, rgba(16,185,129,0.22), transparent 55%), radial-gradient(ellipse 45% 40% at 15% 80%, rgba(201,168,106,0.1), transparent 50%), linear-gradient(180deg, #0b1018 0%, #0a0d12 55%, #070a0e 100%)',
-          color: '#f8fafc',
+          background: '#f3f2f2',
+          color: '#201e1d',
           fontFamily: 'system-ui, sans-serif',
         }}
       >
@@ -26,47 +26,58 @@ export default function OpenGraphImage() {
             style={{
               width: 56,
               height: 56,
-              borderRadius: 12,
-              background: '#059669',
+              background: '#201e1d',
+              color: '#f3f2f2',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 24,
-              fontWeight: 700,
+              fontWeight: 800,
+              letterSpacing: '-0.04em',
             }}
           >
             MW
           </div>
-          <span style={{ fontSize: 28, fontWeight: 600, letterSpacing: 2, textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-0.01em' }}>
             Mission Winning
           </span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ fontSize: 56, fontWeight: 700, lineHeight: 1.1, maxWidth: 900 }}>
-            Train Anywhere. Win Daily.
+          <div
+            style={{
+              width: 760,
+              height: 2,
+              background: 'rgba(32,30,29,0.4)',
+              marginBottom: 28,
+            }}
+          />
+          <div
+            style={{
+              fontSize: 64,
+              fontWeight: 800,
+              lineHeight: 1.06,
+              letterSpacing: '-0.02em',
+              maxWidth: 900,
+            }}
+          >
+            Train anywhere. Win daily.
           </div>
-          <div style={{ marginTop: 20, fontSize: 24, color: '#94a3b8', maxWidth: 800 }}>
+          <div style={{ marginTop: 20, fontSize: 24, color: '#5f5e5d', maxWidth: 800 }}>
             Free core forever · Offline PWA · Mission Coach weekly plans
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          <div
-            style={{
-              width: 88,
-              height: 88,
-              borderRadius: '50%',
-              border: '6px solid #34d399',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 28,
-              fontWeight: 700,
-              color: '#34d399',
-            }}
-          >
-            87
-          </div>
-          <span style={{ fontSize: 18, color: '#64748b' }}>Win Score · Six pillars · One app</span>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: '#ec3013',
+            color: '#f3f2f2',
+            padding: '20px 28px',
+          }}
+        >
+          <span style={{ fontSize: 24, fontWeight: 800 }}>Log a set. Your week rewrites itself.</span>
+          <span style={{ fontSize: 20, fontWeight: 800 }}>missionwinning.com</span>
         </div>
       </div>
     ),

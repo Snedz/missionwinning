@@ -75,7 +75,7 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
             key={label}
             className={cn(
               'flex flex-col items-center rounded-lg border p-2 text-center text-[10px] transition-colors',
-              isToday && 'ring-2 ring-emerald-500/80 border-primary/40',
+              isToday && 'ring-2 ring-[hsl(var(--accent-poster))] bg-tint border-primary/40',
               done && 'border-brass/40 bg-brass/10',
               pulseOffsets.has(i) && 'week-strip-pulse',
               missed && 'border-border/30 bg-muted/20',

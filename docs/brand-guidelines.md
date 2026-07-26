@@ -47,83 +47,82 @@ Consumer hook stays **Train Anywhere / free logger + Mission Coach**. Evidence l
 
 ## Colors
 
-Emerald = action. Brass = earned / honor. Navy = canvas. Never use competitor blue/violet as brand identity.
+Modernist (rebrand 2026-07-25): ink on paper, ONE red accent. Navy `#0a0c10`, emerald `#27b07d`, and brass `#c7a860` are **retired**. No dark mode.
 
 | Role | Token | HSL | Hex |
 |------|-------|-----|-----|
-| Navy canvas | `--background` | `222 24% 5%` | `#0a0c10` |
-| Emerald accent | `--primary` | `158 64% 42%` | `#27b07d` |
-| Emerald fill | `--primary-fill` | `158 92% 25%` | `#057a4f` |
-| Emerald fill hover | `--primary-fill-hover` | `158 92% 21%` | `#046743` |
-| Brass honor | `--brass` | `42 48% 58%` | `#c7a860` |
-| Primary text on dark | — | — | `#ffffff` |
+| Paper ground | `--background` | `0 4% 95%` | `#f3f2f2` |
+| Ink | `--foreground` | `20 5% 12%` | `#201e1d` |
+| Surface panel | `--card` | `0 2% 92%` | `#eae9e9` |
+| Poster red | `--accent-poster` | `8 85% 50%` | `#ec3013` |
+| Red fill | `--primary-fill` | `8 88% 46%` | `#dd2b0f` |
+| Red text | `--primary` | `8 100% 34%` | `#ae1800` |
+| Tint | `--accent-tint` | `11 100% 97%` | `#fff2ef` |
+| Rules / dividers | `--border` | `0 1% 62%` | ink 40% — ALL rules 2px solid |
 
-### Which emerald
+### Which red
 
-Two tokens, because **no single value works for both roles**:
+Three tokens, because **no single value works for every role** (the same lesson the
+emerald split taught, inverted for a light ground):
 
-| | As text/border on navy | Under white text |
-|---|---|---|
-| `--primary` `#27b07d` | **7.08:1** ✅ | 2.77:1 ❌ |
-| `--primary-fill` `#057a4f` | 3.0:1 ❌ | **5.38:1** ✅ |
+| | As small text on paper | Under white text | Large labels / chrome |
+|---|---|---|---|
+| `--accent-poster` `#ec3013` | 3.78:1 ❌ | 4.19:1 ❌ | **3:1+ ✅** |
+| `--primary-fill` `#dd2b0f` | 4.28:1 ❌ | **4.74:1 ✅** | ✅ |
+| `--primary` `#ae1800` | **6.4:1 ✅** | ✅ | ✅ |
 
-- **`--primary`** — emerald *on* the navy canvas: text, borders, icons, and low-alpha
-  tints (`bg-primary/10`), where the text sitting on the tint is foreground, not white.
-- **`--primary-fill`** — any **filled** emerald surface carrying white text: buttons
-  (`.primary-action`, the `default` Button variant), active tabs, badges, chips. Hover
-  **darkens** to `--primary-fill-hover`; lightening drops back to 4.17:1 and fails.
-- **The MW monogram keeps `--primary`.** It is a logotype (WCAG 1.4.3 exempts those) and
-  must match `/favicon.svg` and the PWA icons, which are all `hsl(158 64% 42%)`. Use
-  [`BrandMonogram`](../src/components/brand/BrandMonogram.tsx) rather than re-inlining it.
-
-Foreground on navy is near-white; keep body copy readable (`text-muted-foreground` in product UI).
-
----
+- **`--accent-poster`** — the red people remember: poster fields, `.primary-action`
+  (whose 19px/800 label is WCAG large text), key figures ≥24px, icons, the app
+  icon's poster variant. **At most one red field per page.**
+- **`--primary-fill`** — filled buttons at UI sizes carrying white text.
+- **`--primary`** — every `text-primary` / small red text / red border.
 
 ## Typography
 
-| Role | Font | Use |
+Archivo does every job — Barlow Condensed, Inter, and IBM Plex Mono are retired.
+Display, body, and telemetry are told apart by weight, size, and tracking.
+
+| Role | Face | Use |
 |------|------|-----|
-| Display | **Barlow Condensed** (bold) | Hero titles, wordmark lockups |
-| Body | **Inter** | Paragraphs, UI |
-| Eyebrow / telemetry | **IBM Plex Mono** | Labels, section indexes |
+| Display | **Archivo 800** | Sentence case, flush left, lh ~1.06, ls −0.02em |
+| Body | **Archivo 400** | 17/28 marketing · 15/24 app density |
+| Kicker / telemetry | **Archivo 600 caps** | 13px, ls 0.08em, tabular numerals |
 
-Stack in product: Google Fonts via `app/layout.tsx` (`--font-display`, `--font-inter`, `--font-mono`).
-
----
+Everything sits flush left — headings, copy, and the labels inside wide buttons.
+Tabular numerals (`tnum`) on every aligned figure. Stack in product: one Google
+Fonts load via `app/layout.tsx` (`--font-archivo`; legacy vars alias it).
 
 ## Logo
 
-Primary mark: rounded emerald square with white **MW** monogram (same paths as `/favicon.svg`).
+Primary mark: **plain ink square, zero radius, paper MW monogram** (same letter
+paths as `/favicon.svg`). Three inkings, no more: ink on paper, paper on ink, and
+paper on red — the red one reserved for poster moments, never decoration.
 
 | Asset | Use |
 |-------|-----|
-| `/brand/logo-icon.svg` | Default icon on emerald |
-| `/brand/logo-icon-navy.svg` | Icon on navy (dark UI / social) |
-| `/brand/logo-icon-mono-light.svg` | Light mark on dark backgrounds |
-| `/brand/logo-icon-mono-dark.svg` | Dark mark on light backgrounds |
-| `/brand/logo-wordmark-dark.svg` | Icon + wordmark for dark backgrounds |
-| `/brand/logo-wordmark-light.svg` | Icon + wordmark for light backgrounds |
+| `/brand/logo-icon.svg` | Primary — ink square, paper monogram |
+| `/brand/logo-icon-reversed.svg` | Paper square, ink monogram (on ink grounds) |
+| `/brand/logo-icon-red.svg` | Poster variant — red field only, sparingly |
+| `/brand/logo-wordmark-light.svg` | Icon + wordmark for paper backgrounds |
+| `/brand/logo-wordmark-dark.svg` | Icon + wordmark for ink backgrounds |
 | `/brand/og-default.png` | Default Open Graph / Twitter share (1200×630) |
 
 **App icons (do not duplicate in kit):** `/favicon.svg`, `/apple-touch-icon.png`, `/pwa-512x512.png`, `/pwa-maskable-512x512.png`.
 
 ### Clear space & size
 
-- Clear space around the mark ≈ **¼ of the icon height** on each side.
-- Digital minimum: icon **24px**; full wordmark **120px** wide.
-- Do not stretch, rotate, add drop shadows, or place the mark on busy photos without a solid navy or emerald field.
+- Clear space around the mark ≈ **¼ of the square** on each side.
+- Digital minimum: square **24px**; full lockup **120px** wide.
+- Never rotate, round, shadow, or set the mark on a photograph without an ink or red field under it.
 
-### Do / don’t
+### Do / don't
 
-| Do | Don’t |
+| Do | Don't |
 |----|--------|
-| Use emerald + navy + brass as specified | Recolor the mark to blue, violet, or cream/terracotta |
-| Keep white monogram on emerald or navy | Outline, bevel, or “glow” the logo for decoration |
-| Pair wordmark with Barlow Condensed uppercase | Substitute Inter/Arial as the wordmark face in official lockups |
-| Credit “Mission Winning” in coverage | Imply partnership or endorsement without permission |
-
----
+| Use paper + ink + one red as specified | Recolor the mark, or revive navy/emerald/brass |
+| Keep the square sharp — zero radius | Round, outline, bevel, or "glow" the logo |
+| Pair the wordmark with Archivo 800 | Substitute another face in official lockups |
+| Credit "Mission Winning" in coverage | Imply partnership or endorsement without permission |
 
 ## Mascot — Scout
 
@@ -144,20 +143,22 @@ Use Cursor GenerateImage / Grok Imagine / Gemini design scripts as fallbacks for
 ### Prompt block (copy)
 
 ```
-Mission Winning brand imagery. Dark navy canvas #0a0c10, emerald accent #27b07d,
-brass honor #c7a860. Clinical athletic clarity — not gym-bro hype, not medical.
-No logos invented; no competitor blue/violet identity; no cream/terracotta editorial look.
-Atmosphere: mission briefing, train-anywhere athlete, calm competence.
-Decorative or chapter-hero only — not instructional form diagrams (those are SVG stick figures).
-No text in the image unless explicitly requested. No crisis or clinical depression framing.
+Mission Winning brand imagery. Modernist: paper ground #f3f2f2, ink #201e1d,
+single red accent #ec3013. Photography in pure black and white — phones, parks,
+garage floors; not gym glamour. Clinical athletic clarity — not gym-bro hype,
+not medical. No logos invented; no navy/emerald/brass (retired palette); no
+gradients or glows. Atmosphere: mission briefing, train-anywhere athlete, calm
+competence. Decorative or chapter-hero only — not instructional form diagrams
+(those are SVG line art). No text in the image unless explicitly requested.
+No crisis or clinical depression framing.
 ```
 
 ### Do / don’t (AI)
 
 | Do | Don’t |
 |----|--------|
-| Navy / emerald / brass palette | Purple, violet brand identity, cream+terracotta editorial |
-| Calm mission atmosphere | Gym-bro hype, neon glow stacks |
+| Paper / ink / one-red palette, b&w photography | Navy/emerald/brass (retired), purple/violet, cream+terracotta |
+| Calm mission atmosphere | Gym-bro hype, neon glow stacks, gradients |
 | Decorative Learn / landing / social | Fake medical charts or depression framing |
 | Check manifest before regenerating | Commit multi‑MB unoptimized drafts / Flow raws |
 | Spend free Flow on Veo Lite | Burn Quality (100) on the free 50/day |

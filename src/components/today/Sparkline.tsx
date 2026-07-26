@@ -16,7 +16,7 @@ export function Sparkline({
   width = 112,
   height = 36,
   className,
-  strokeClassName = 'stroke-emerald-400',
+  strokeClassName = 'stroke-[hsl(var(--accent-poster))]',
 }: Props) {
   if (!values.length) {
     return (
@@ -68,7 +68,7 @@ export function Sparkline({
         strokeLinejoin="round"
         points={points}
       />
-      <circle cx={lastX} cy={lastY} r={3} className="fill-emerald-400" />
+      <circle cx={lastX} cy={lastY} r={3} className="fill-[hsl(var(--accent-poster))]" />
     </svg>
   );
 }

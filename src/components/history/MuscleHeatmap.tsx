@@ -76,7 +76,7 @@ export function MuscleHeatmap({ cells, windowDays }: Props) {
                 aria-hidden
               >
                 <div
-                  className="h-full bg-emerald-400 rounded-full transition-all"
+                  className="h-full bg-poster rounded-full transition-all"
                   style={{ width: `${Math.max(cell.intensity * 100, cell.daysSince >= 99 ? 0 : 8)}%` }}
                 />
               </div>

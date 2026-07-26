@@ -231,7 +231,7 @@ export function BundlePage() {
                   key={id}
                   value={id}
                   className={cn(
-                    "flex h-auto flex-col items-start gap-0.5 rounded-xl border border-border/50 bg-card/60 px-3 py-3 text-left data-[state=active]:border-primary/50 data-[state=active]:bg-primary/10 data-[state=active]:shadow-glow"
+                    "flex h-auto flex-col items-start gap-0.5 rounded-xl border-2 border-border bg-card px-3 py-3 text-left data-[state=active]:border-[hsl(var(--accent-poster))] data-[state=active]:bg-tint"
                   )}
                 >
                   <span className="text-xs font-medium sm:text-sm">{label}</span>

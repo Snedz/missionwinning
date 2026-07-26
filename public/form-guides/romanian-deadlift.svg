@@ -1,48 +1,48 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" fill="none" role="img" aria-label="Romanian deadlift form: stand, hinge, return">
   <title>Romanian deadlift form diagram</title>
-  <rect width="360" height="220" fill="#0a0c10" rx="8"/>
-  <text x="60" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Stand</text>
-  <text x="180" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Hinge</text>
-  <text x="300" y="28" text-anchor="middle" fill="#8b919a" font-family="system-ui,sans-serif" font-size="11">Return</text>
-  <line x1="20" y1="185" x2="100" y2="185" stroke="#2a3038" stroke-width="2"/>
-  <line x1="140" y1="185" x2="220" y2="185" stroke="#2a3038" stroke-width="2"/>
-  <line x1="260" y1="185" x2="340" y2="185" stroke="#2a3038" stroke-width="2"/>
+  <rect width="360" height="220" fill="#f3f2f2"></rect>
+  <text x="60" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Stand</text>
+  <text x="180" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Hinge</text>
+  <text x="300" y="28" text-anchor="middle" fill="#6f6b69" font-family="Archivo, system-ui, sans-serif" font-size="11">Return</text>
+  <line x1="20" y1="185" x2="100" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="140" y1="185" x2="220" y2="185" stroke="#201e1d" stroke-width="2"></line>
+  <line x1="260" y1="185" x2="340" y2="185" stroke="#201e1d" stroke-width="2"></line>
 
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="60" cy="65" r="9"/>
-    <line x1="60" y1="74" x2="60" y2="125"/>
-    <line x1="60" y1="95" x2="45" y2="120"/>
-    <line x1="60" y1="95" x2="75" y2="120"/>
-    <line x1="60" y1="125" x2="50" y2="175"/>
-    <line x1="60" y1="125" x2="70" y2="175"/>
-    <line x1="40" y1="120" x2="80" y2="120"/>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="65" r="9"></circle>
+    <line x1="60" y1="74" x2="60" y2="125"></line>
+    <line x1="60" y1="95" x2="45" y2="120"></line>
+    <line x1="60" y1="95" x2="75" y2="120"></line>
+    <line x1="60" y1="125" x2="50" y2="175"></line>
+    <line x1="60" y1="125" x2="70" y2="175"></line>
+    <line x1="40" y1="120" x2="80" y2="120"></line>
   </g>
 
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="195" cy="90" r="9"/>
-    <line x1="190" y1="99" x2="175" y2="140"/>
-    <line x1="175" y1="120" x2="160" y2="145"/>
-    <line x1="175" y1="120" x2="168" y2="155"/>
-    <line x1="175" y1="140" x2="168" y2="175"/>
-    <line x1="175" y1="140" x2="188" y2="175"/>
-    <line x1="150" y1="155" x2="190" y2="155"/>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="195" cy="90" r="9"></circle>
+    <line x1="190" y1="99" x2="175" y2="140"></line>
+    <line x1="175" y1="120" x2="160" y2="145"></line>
+    <line x1="175" y1="120" x2="168" y2="155"></line>
+    <line x1="175" y1="140" x2="168" y2="175"></line>
+    <line x1="175" y1="140" x2="188" y2="175"></line>
+    <line x1="150" y1="155" x2="190" y2="155"></line>
   </g>
-  <path d="M210 100 L225 120" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/>
-  <polygon points="220,120 228,122 224,114" fill="#27b07d"/>
-  <text x="230" y="110" fill="#27b07d" font-family="system-ui,sans-serif" font-size="9">hips back</text>
-  <circle cx="175" cy="140" r="3.5" fill="#c7a860"/>
-  <text x="175" y="132" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">soft knees</text>
-  <text x="170" y="170" text-anchor="middle" fill="#c7a860" font-family="system-ui,sans-serif" font-size="8">bar close</text>
+  <path d="M210 100 L225 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="220,120 228,122 224,114" fill="#ec3013"></polygon>
+  <text x="230" y="110" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="9">hips back</text>
+  <circle cx="175" cy="140" r="3.5" fill="#ec3013"></circle>
+  <text x="175" y="132" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">soft knees</text>
+  <text x="170" y="170" text-anchor="middle" fill="#ec3013" font-family="Archivo, system-ui, sans-serif" font-size="8">bar close</text>
 
-  <g stroke="#e8eaed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="300" cy="65" r="9"/>
-    <line x1="300" y1="74" x2="300" y2="125"/>
-    <line x1="300" y1="95" x2="285" y2="120"/>
-    <line x1="300" y1="95" x2="315" y2="120"/>
-    <line x1="300" y1="125" x2="290" y2="175"/>
-    <line x1="300" y1="125" x2="310" y2="175"/>
-    <line x1="280" y1="120" x2="320" y2="120"/>
+  <g stroke="#201e1d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="300" cy="65" r="9"></circle>
+    <line x1="300" y1="74" x2="300" y2="125"></line>
+    <line x1="300" y1="95" x2="285" y2="120"></line>
+    <line x1="300" y1="95" x2="315" y2="120"></line>
+    <line x1="300" y1="125" x2="290" y2="175"></line>
+    <line x1="300" y1="125" x2="310" y2="175"></line>
+    <line x1="280" y1="120" x2="320" y2="120"></line>
   </g>
-  <path d="M320 140 L320 120" stroke="#27b07d" stroke-width="2" stroke-linecap="round"/>
-  <polygon points="316,120 320,113 324,120" fill="#27b07d"/>
+  <path d="M320 140 L320 120" stroke="#ec3013" stroke-width="2" stroke-linecap="round"></path>
+  <polygon points="316,120 320,113 324,120" fill="#ec3013"></polygon>
 </svg>
