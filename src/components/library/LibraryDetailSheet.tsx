@@ -5,13 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { Badge } from '@/components/ui/badge';
 import { getExerciseById } from '@/data/exercises';
 import type { Exercise } from '@/types';
@@ -78,17 +72,35 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
 
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-md">
+      {/*
+        On AdaptiveOverlay — the last of the three overlay mechanisms this app
+        had. A Radix Dialog here meant a third focus trap, a third scroll lock
+        and a third z-index opinion, and it was the reason a form guide opened
+        from *inside* this sheet had to fight it for the top layer.
+      */}
+      <AdaptiveOverlay
+        open={open && !!exercise}
+        onClose={() => onOpenChange(false)}
+        size="sm"
+        eyebrow={
+          exercise
+            ? `${exercise.muscleGroups.join(' · ')} · ${exercise.equipment || 'Various'}`
+            : undefined
+        }
+        title={exercise?.name}
+        bodyClassName="p-5"
+        footer={
+          exercise ? (
+            <Button variant="fitness" className="w-full min-h-[52px]" onClick={addToSession}>
+              <Plus className="h-4 w-4 mr-2" />
+              {activeWorkout
+                ? t('libraryAddToActive', { defaultValue: "Add to today's session" })
+                : t('libraryQuickAdd', { defaultValue: "Quick Add to Today's Workout" })}
+            </Button>
+          ) : undefined
+        }
+      >
           {exercise && (
-            <>
-              <DialogHeader>
-                <DialogTitle>{exercise.name}</DialogTitle>
-                <DialogDescription>
-                  {exercise.muscleGroups.join(' · ')} · {exercise.equipment || 'Various'}
-                </DialogDescription>
-              </DialogHeader>
-
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-1">
                   {(exercise.tags ?? []).map((tagId) => (
@@ -160,22 +172,17 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
                 )}
 
                 {guide && (
-                  <Button variant="outline" size="sm" onClick={() => setFormGuideOpen(true)}>
+                  <Button
+                    variant="outline"
+                    className="min-h-[44px] border-2"
+                    onClick={() => setFormGuideOpen(true)}
+                  >
                     {t('libraryViewFormGuide', { defaultValue: 'View form guide' })}
                   </Button>
                 )}
-
-                <Button variant="fitness" className="w-full" onClick={addToSession}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  {activeWorkout
-                    ? t('libraryAddToActive', { defaultValue: "Add to today's session" })
-                    : t('libraryQuickAdd', { defaultValue: "Quick Add to Today's Workout" })}
-                </Button>
               </div>
-            </>
           )}
-        </DialogContent>
-      </Dialog>
+      </AdaptiveOverlay>
 
       {exercise && guide && formGuideOpen && (
         <FormGuideSheet

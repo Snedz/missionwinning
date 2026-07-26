@@ -10,7 +10,6 @@ import { Check, MoreVertical, Plus, Scale } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
-import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { formatDuration } from '@/lib/utils';
 
 type Props = {
@@ -19,9 +18,7 @@ type Props = {
   totalSets: number;
   hardCount: number;
   elapsedSeconds: number;
-  addExerciseId: string;
-  onAddExerciseIdChange: (id: string) => void;
-  onAddExercise: () => void;
+  onOpenAddExercise: () => void;
   onOpenPlateCalc: () => void;
   onDiscard: () => void;
   onFinish: () => void;
@@ -33,9 +30,7 @@ export function ActiveSessionChrome({
   totalSets,
   hardCount,
   elapsedSeconds,
-  addExerciseId,
-  onAddExerciseIdChange,
-  onAddExercise,
+  onOpenAddExercise,
   onOpenPlateCalc,
   onDiscard,
   onFinish,
@@ -173,20 +168,17 @@ export function ActiveSessionChrome({
         </div>
       </div>
 
-      <div className="flex gap-2 items-start">
-        <ExercisePicker value={addExerciseId} onChange={onAddExerciseIdChange} />
-        <Button
-          type="button"
-          onClick={onAddExercise}
-          disabled={!addExerciseId}
-          className="min-h-[44px] min-w-[44px] shrink-0"
-          aria-label={t('activeAddSelectedExercise', {
-            defaultValue: 'Add selected exercise',
-          })}
-        >
-          <Plus className="h-4 w-4" aria-hidden />
-        </Button>
-      </div>
+      {/* One trigger, not a search field and forty results competing with the
+          session for height. The picker lives in a sheet now. */}
+      <Button
+        type="button"
+        variant="outline"
+        className="min-h-[44px] w-full justify-start border-2"
+        onClick={onOpenAddExercise}
+      >
+        <Plus className="h-4 w-4 me-2" aria-hidden />
+        {t('activeAddExerciseTitle', { defaultValue: 'Add exercise' })}
+      </Button>
     </div>
   );
 }

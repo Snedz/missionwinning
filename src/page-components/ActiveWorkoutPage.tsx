@@ -16,6 +16,7 @@ import { FormGuideSheet } from '@/components/form/FormGuideSheet';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { LogConsole } from '@/components/workout/LogConsole';
+import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
 import { ScreenDock } from '@/components/layout/ScreenDock';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
@@ -95,6 +96,7 @@ export function ActiveWorkoutPage() {
   const [noteOpenIdx, setNoteOpenIdx] = useState<number | null>(null);
   const [formGuideId, setFormGuideId] = useState<string | null>(null);
   const [plateCalcOpen, setPlateCalcOpen] = useState(false);
+  const [addExerciseOpen, setAddExerciseOpen] = useState(false);
   const [victoryOpen, setVictoryOpen] = useState(false);
   const [victorySummary, setVictorySummary] = useState<WorkoutVictorySummary | null>(null);
   const [checkInOpen, setCheckInOpen] = useState(false);
@@ -339,15 +341,7 @@ export function ActiveWorkoutPage() {
         totalSets={totalSets}
         hardCount={hardCount}
         elapsedSeconds={elapsedSeconds}
-        addExerciseId={addExerciseId}
-        onAddExerciseIdChange={setAddExerciseId}
-        onAddExercise={() => {
-          if (addExerciseId) {
-            const ex = getExerciseById(addExerciseId);
-            addExerciseToActive(addExerciseId, ex?.muscleGroups);
-            setAddExerciseId('');
-          }
-        }}
+        onOpenAddExercise={() => setAddExerciseOpen(true)}
         onOpenPlateCalc={() => setPlateCalcOpen(true)}
         onDiscard={discardWorkout}
         onFinish={handleComplete}
@@ -531,6 +525,19 @@ export function ActiveWorkoutPage() {
           />
         </ScreenDock>
       ) : null}
+
+      <AddExerciseSheet
+        open={addExerciseOpen}
+        onClose={() => setAddExerciseOpen(false)}
+        value={addExerciseId}
+        onChange={setAddExerciseId}
+        onConfirm={() => {
+          if (!addExerciseId) return;
+          const ex = getExerciseById(addExerciseId);
+          addExerciseToActive(addExerciseId, ex?.muscleGroups);
+          setAddExerciseId('');
+        }}
+      />
 
       <PlateCalculatorSheet
         open={plateCalcOpen}

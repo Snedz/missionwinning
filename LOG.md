@@ -6,6 +6,52 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — The seven that were left (`.156`)
+
+Closes phase 5. Seven commits, cheapest first.
+
+- **Waiting to sync** — `OfflineContent`'s own comment deferred a live count as
+  needing "an outbox read from the service-worker fallback context". It does
+  not: `app/offline/page.tsx` is an ordinary same-origin route and reads the
+  queue exactly as the banner does. New `outbox.listPending()` rather than the
+  page re-parsing `STORAGE_KEYS.outbox`, so the queue keeps one reader; it
+  returns kind, time and stuck, **not payloads** — nothing displaying a queue
+  needs to see inside the envelope.
+- **Adjust says what the session became.** It confirmed with a generic note key
+  in 12px grey — which did display, contra the handoff, but never said *which*
+  of the four buttons took effect. An Applied panel names the change. Three
+  labelled groups replace four flat chips, and the hurt-area picker prints
+  `muscleGroupLabel` instead of raw `MuscleGroup` ids.
+- **`LibraryDetailSheet` off Radix** — the last of the three overlay
+  mechanisms, and the reason a form guide opened from inside it had to fight
+  its parent for the top layer. Victory keeps its Dialog on purpose.
+- **Plate stack is a shape.** 52px squares, ink-filled for the heaviest plate
+  size (from `availablePlates()`, not a hardcoded 20/45), outlined below. And
+  `calculatePlatesPerSide` is greedy, so it warned on a miss and said nothing
+  on a hit — silence read the same either way. `Achieved · exact` closes it.
+- **`estimateMealFromDescription` has a way in.** It has been in the tree,
+  unit-tested, since the NL fuel-log wave, **referenced by nothing but its own
+  test file**. Fuel's log sheet gains a Describe mode that fills the existing
+  Custom fields and hands over — no second review-and-log path. When the
+  estimator recognises nothing it returns null, and the UI now says so rather
+  than inventing numbers.
+- **Loading states print what they know.** Day initials, macro names and meal
+  names are static; blanking them made the screen change shape twice.
+- **Exercise picker is a sheet.** It was an inline `max-h-48` list inside the
+  scrolling logger header — forty results in a 192px window, competing for
+  height with the session it was adding to, and choosing did nothing visible
+  until you found a `+` two elements away. Confirmation is in the footer now.
+
+**Test contract, changed deliberately again.** The picker behind a sheet needs
+one extra tap to open, so `logger-depth`, `first-90` **and `hero-flows`** each
+gained one. Everything the specs actually assert on — the placeholder, the
+`option` rows, the `Selected:` line, the `add selected exercise` name — is
+unchanged. **`hero-flows` was the spec `.153` missed too**; this time the check
+was `grep -rn "search exercises" tests/e2e/` before touching anything, which is
+the habit worth keeping.
+
+---
+
 ## 2026-07-26 — Two overlay mechanisms become one; offline stops shouting (`.155`)
 
 Phase 5 — the shared states. **Partial: see "still open" below.**

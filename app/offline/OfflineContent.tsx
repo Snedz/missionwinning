@@ -1,14 +1,51 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { CloudOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { listPending, type OutboxKind, type PendingItem } from '@/lib/sync/outbox';
 
-// Modernist offline fallback (Error Pages.dc.html): the outage is the feature
-// frame — "You're offline. The log isn't." A live waiting-to-sync count needs an
-// outbox read from the service-worker fallback context; deferred to the Phase 3
-// app-screen pass.
+/**
+ * Modernist offline fallback: the outage is the feature frame — "You're
+ * offline. The log isn't."
+ *
+ * The waiting-to-sync list was deferred on the grounds that a live count "needs
+ * an outbox read from the service-worker fallback context". It does not: this
+ * is an ordinary same-origin route, so it reads the queue exactly as the
+ * in-app banner does. The deferral outlived its reason.
+ */
+
+/** What each queued kind is, in words a user recognises. */
+const KIND_LABEL: Record<OutboxKind, { key: string; defaultValue: string }> = {
+  'workout.upsert': { key: 'offlineQueueWorkout', defaultValue: 'Workout' },
+  'coach.plan': { key: 'offlineQueueCoach', defaultValue: 'Coach plan' },
+  'journey.state': { key: 'offlineQueueJourney', defaultValue: 'Progress' },
+  'leaderboard.push': { key: 'offlineQueueLeaderboard', defaultValue: 'Leaderboard entry' },
+  'pft.push': { key: 'offlineQueuePft', defaultValue: 'Fitness test' },
+};
+
+/** Coarse on purpose — a queued write does not need a to-the-minute timestamp. */
+function whenLabel(createdAt: number, now: number): string {
+  const mins = Math.max(0, Math.round((now - createdAt) / 60_000));
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.round(hours / 24)}d ago`;
+}
+
 export function OfflineContent() {
   const { t } = useTranslation();
+  const [pending, setPending] = useState<PendingItem[]>([]);
+  const [now, setNow] = useState(0);
+
+  useEffect(() => {
+    // Read once on mount: this screen exists because the network is gone, so
+    // nothing is going to enqueue while it is up.
+    setPending(listPending());
+    setNow(Date.now());
+  }, []);
 
   const keepsWorking = [
     t('offlineKeeps1', { defaultValue: 'Logging sets on Train' }),
@@ -44,6 +81,36 @@ export function OfflineContent() {
             ))}
           </ul>
         </div>
+        {pending.length > 0 ? (
+          <div className="mb-6 border-t-2 border-foreground pt-4">
+            <p className="eyebrow mb-3">
+              {t('offlineWaitingTitle', { defaultValue: 'Waiting to sync' })}
+            </p>
+            <ul>
+              {pending.map((item, i) => (
+                <li
+                  key={`${item.kind}-${item.createdAt}-${i}`}
+                  className="flex min-h-[44px] items-center gap-3 border-b border-border text-sm"
+                >
+                  <CloudOff className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+                  <span className="flex-1 truncate">
+                    {t(KIND_LABEL[item.kind].key, {
+                      defaultValue: KIND_LABEL[item.kind].defaultValue,
+                    })}
+                  </span>
+                  <span className="shrink-0 tabular-nums text-muted-foreground">
+                    {whenLabel(item.createdAt, now)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+              {t('offlineWaitingNote', {
+                defaultValue: 'Saved on this device. These go up when you reconnect.',
+              })}
+            </p>
+          </div>
+        ) : null}
         <Link href="/log" className="primary-action">
           {t('offlineCta', { defaultValue: 'Open Today' })}
         </Link>

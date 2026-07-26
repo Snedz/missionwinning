@@ -14,6 +14,8 @@ type Props = {
   exercises?: Exercise[];
   placeholder?: string;
   className?: string;
+  /** Override the list's height cap — a sheet gives it the whole body. */
+  listClassName?: string;
   id?: string;
 };
 
@@ -24,6 +26,7 @@ export function ExercisePicker({
   exercises = EXERCISES,
   placeholder,
   className,
+  listClassName,
   id,
 }: Props) {
   const { t } = useTranslation();
@@ -64,7 +67,10 @@ export function ExercisePicker({
       )}
       {(query.trim().length > 0 || !selected) && (
         <ul
-          className="max-h-48 overflow-y-auto  border-2 border-border divide-y divide-border"
+          className={cn(
+            'overflow-y-auto border-2 border-border divide-y divide-border',
+            listClassName ?? 'max-h-48'
+          )}
           role="listbox"
         >
           {filtered.length === 0 ? (
@@ -79,7 +85,7 @@ export function ExercisePicker({
                   role="option"
                   aria-selected={value === ex.id}
                   className={cn(
-                    'w-full text-left px-3 py-2.5 text-sm min-h-[44px] hover:bg-card',
+                    'w-full min-h-[56px] px-3 py-2.5 text-start text-sm hover:bg-card',
                     value === ex.id && 'bg-accent-100 text-primary'
                   )}
                   onClick={() => {
@@ -87,9 +93,11 @@ export function ExercisePicker({
                     setQuery('');
                   }}
                 >
-                  <span className="font-medium">{ex.name}</span>
+                  <span className="font-semibold">{ex.name}</span>
                   <span className="block text-[11px] text-muted-foreground">
-                    {ex.muscleGroups.slice(0, 2).join(' · ')}
+                    {[ex.muscleGroups.slice(0, 2).join(' · '), ex.equipment]
+                      .filter(Boolean)
+                      .join(' · ')}
                   </span>
                 </button>
               </li>

@@ -66,9 +66,14 @@ test.describe('Phase H hero flows @gate', () => {
 
   test('active empty start, finish-without-sets toast returns to empty shell', async ({ page }) => {
     await startEmptyActiveWorkout(page);
-    // The picker is inline on an empty session (no "Add exercise" heading any more).
-    // What matters is that a first exercise is one tap away.
+    // The picker is a sheet as of `.156`. What still matters is what this case
+    // has always been about: a first exercise is one tap away from an empty
+    // session — so assert the trigger is there, then that it opens the picker.
+    const addExercise = page.getByRole('button', { name: /^add exercise$/i });
+    await expect(addExercise).toBeVisible();
+    await addExercise.click();
     await expect(page.getByPlaceholder(/search exercises/i)).toBeVisible();
+    await page.keyboard.press('Escape');
 
     await page.getByRole('button', { name: /finish/i }).first().click();
     await expect(page.getByText(/nothing logged/i).first()).toBeVisible({ timeout: 10_000 });
@@ -88,6 +93,9 @@ test.describe('Phase H hero flows @gate', () => {
 
     // Fail-closed: seed via Active builder (do not soft-skip on Learn sample CTA).
     await startEmptyActiveWorkout(page);
+
+    // One extra tap to open the picker sheet — see `.156`.
+    await page.getByRole('button', { name: /^add exercise$/i }).click();
 
     const search = page.getByPlaceholder(/search exercises/i);
     await expect(search).toBeVisible({ timeout: 10_000 });

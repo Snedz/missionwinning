@@ -39,10 +39,18 @@ test.describe('Coach adjust + chat lock', () => {
     await expect(page.getByText(/adapted|adaptado/i).first()).toBeVisible({ timeout: 10_000 });
   });
 
-  test('free user sees coach chat locked teaser', async ({ page }) => {
+  test('free user sees the coach offer for the current beta state', async ({ page }) => {
     await page.goto('/coach', { waitUntil: 'domcontentloaded' });
+    // Was asserting the Super Bundle teaser unconditionally, and has been red
+    // since free beta went on: `CoachPage` hides that block behind
+    // `!freeBeta` on purpose (docs/FREE_BETA.md — no Bundle UI while the
+    // window is open). The product is right and the assertion was stale. This
+    // is not in the gate, which is why nobody saw it.
+    //
+    // What the case is actually for: Coach states its offer, whichever offer
+    // currently applies.
     await expect(page.locator('body')).toContainText(
-      /super bundle|coach chat|chat del coach|desbloquear|unlock/i
+      /super bundle|coach chat|chat del coach|desbloquear|unlock|open beta|generate this week/i
     );
   });
 

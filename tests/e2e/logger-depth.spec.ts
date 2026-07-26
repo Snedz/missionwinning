@@ -20,6 +20,12 @@ test.describe('Logger depth @gate', () => {
   test('start empty, add push-ups, log set, rest timer, skip rest, finish', async ({ page }) => {
     await startEmptyActiveWorkout(page);
 
+    // The picker is a sheet as of `.156` — it was an inline `max-h-48` list
+    // competing with the session for height. One extra tap to open it; the
+    // placeholder, the `option` rows, the `Selected:` line and the
+    // `add selected exercise` name are all unchanged.
+    await page.getByRole('button', { name: /^add exercise$/i }).click();
+
     const search = page.getByPlaceholder(/search exercises/i);
     await expect(search).toBeVisible();
     await search.fill('push-ups');

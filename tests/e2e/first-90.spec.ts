@@ -210,6 +210,12 @@ test.describe('First 90 seconds @gate', () => {
     await expect(start).toBeEnabled({ timeout: 15_000 });
     await start.click();
 
+    // The picker is a sheet as of `.156` — it was an inline `max-h-48` list
+    // competing with the session for height. One extra tap to open it; the
+    // placeholder, the `option` rows, the `Selected:` line and the
+    // `add selected exercise` name are all unchanged.
+    await page.getByRole('button', { name: /^add exercise$/i }).click();
+
     const search = page.getByPlaceholder(/search exercises/i);
     await expect(search).toBeVisible({ timeout: 10_000 });
     await search.fill('push-ups');

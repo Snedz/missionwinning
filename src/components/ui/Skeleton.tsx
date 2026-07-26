@@ -31,6 +31,18 @@ export function SkeletonCard({ className }: { className?: string }) {
   );
 }
 
+/**
+ * Loading states print what they already know.
+ *
+ * Day initials, macro names and section titles are static — they are known
+ * before any data lands, so blanking them makes the screen change shape twice
+ * (grey box → label → value) instead of once. Only the numerals are reserved.
+ */
+const DAY_INITIALS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+const skeletonLabel =
+  'text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground';
+
 /** Week strip + session cards — matches Coach plan layout. */
 export function CoachPlanSkeleton({ className }: { className?: string }) {
   return (
@@ -40,9 +52,14 @@ export function CoachPlanSkeleton({ className }: { className?: string }) {
       aria-busy="true"
       aria-label="Loading coach plan"
     >
-      <div className="flex gap-2 overflow-hidden">
-        {Array.from({ length: 7 }).map((_, i) => (
-          <Skeleton key={i} className="h-14 w-12 shrink-0" />
+      <div className="grid grid-cols-7 border-y-2 border-border">
+        {DAY_INITIALS.map((d, i) => (
+          <div key={i} className="flex flex-col items-center gap-2 py-2">
+            <span className={skeletonLabel} aria-hidden>
+              {d}
+            </span>
+            <Skeleton className="h-2 w-2" />
+          </div>
         ))}
       </div>
       <SkeletonCard />
@@ -55,20 +72,23 @@ export function CoachPlanSkeleton({ className }: { className?: string }) {
 export function FuelPlanSkeleton({ className }: { className?: string }) {
   return (
     <div
-      className={cn('content-card space-y-4 p-4', className)}
+      className={cn('space-y-4 border-2 border-border p-4', className)}
       role="status"
       aria-busy="true"
       aria-label="Loading meal plan"
     >
-      <Skeleton className="h-5 w-40" />
-      <div className="flex gap-2">
-        <Skeleton className="h-8 flex-1" />
-        <Skeleton className="h-8 flex-1" />
-        <Skeleton className="h-8 flex-1" />
+      <span className={skeletonLabel}>Today&apos;s plan</span>
+      <div className="flex gap-4">
+        {['Protein', 'Carbs', 'Fat'].map((macro) => (
+          <div key={macro} className="flex-1 space-y-1.5">
+            <span className={skeletonLabel}>{macro}</span>
+            <Skeleton className="h-6 w-full" />
+          </div>
+        ))}
       </div>
-      {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="space-y-2 border-2 border-border p-3">
-          <Skeleton className="h-4 w-24" />
+      {['Breakfast', 'Lunch', 'Dinner'].map((meal) => (
+        <div key={meal} className="space-y-2 border-t-2 border-border pt-3">
+          <span className={skeletonLabel}>{meal}</span>
           <Skeleton className="h-3 w-full" />
           <Skeleton className="h-3 w-2/3" />
         </div>

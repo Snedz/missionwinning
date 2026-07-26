@@ -128,6 +128,29 @@ export function getState(): OutboxState {
   return summarize(load());
 }
 
+/** One waiting item, for display. */
+export interface PendingItem {
+  kind: OutboxKind;
+  createdAt: number;
+  stuck: boolean;
+}
+
+/**
+ * The queue as a list, oldest first — for the offline screen's "waiting to
+ * sync" rows. `getState` answers "how many"; this answers "which", and it is
+ * exported here rather than having the page re-parse `STORAGE_KEYS.outbox` so
+ * the queue keeps exactly one reader.
+ *
+ * Payloads are deliberately not returned: they carry user data, and nothing
+ * that displays a queue needs to see inside the envelope.
+ */
+export function listPending(): PendingItem[] {
+  return load()
+    .slice()
+    .sort((a, b) => a.createdAt - b.createdAt)
+    .map((o) => ({ kind: o.kind, createdAt: o.createdAt, stuck: !!o.stuck }));
+}
+
 /** Queue a write. Persists synchronously; safe to call from a store action. */
 export function enqueue(kind: OutboxKind, dedupeKey: string, payload: unknown): void {
   const ops = load();
