@@ -6,6 +6,48 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Two overlay mechanisms become one; offline stops shouting (`.155`)
+
+Phase 5 — the shared states. **Partial: see "still open" below.**
+
+- **`FormGuideSheet` is on `AdaptiveOverlay`.** It was hand-rolled at `z-[60]`,
+  *below* the shared shell's `z-[70]` — which is exactly why a form guide could
+  open **underneath** a sheet already up, and why the focus trap, Escape handler
+  and scroll lock existed twice with only one of them correct. Its actions moved
+  into the pinned `footer` slot phase 0 added; body stays 17px, the one surface
+  read standing up mid-set. Three overlay mechanisms are now two (Radix
+  `LibraryDetailSheet` is the last).
+- **Session check-in scales were invisible.** Five `bg-muted` buttons — `#eae9e9`
+  on a `bg-card` `#eae9e9` sheet ground, 1.01:1 — so four of the five did not
+  exist until you tapped one. `MeterBar`'s own comment documents this trap. One
+  2px-ruled strip with 1px divisions now, filling left to right. Save and **Skip
+  are pinned in the footer at a full 52px each**: the sheet is skippable by
+  design and a shrunken escape is a dark pattern.
+- **Offline is not an error.** `OnlineStatusBanner` was centred, 1px at 60%, on
+  a `bg-secondary/80` fill, and wrapped to two lines at 390px — pushing the
+  app's chrome down every time it appeared. One line, flush left, **ink under a
+  2px ink rule, never red**, carrying the outbox depth as a count.
+- **The handoff asks for a new storage key for that count; it is already
+  built.** `src/lib/sync/outbox.ts` has persisted to `STORAGE_KEYS.outbox` and
+  published `{ pending, stuck }` through `subscribe()` since sync v2. A second
+  key would have been a second source of truth for one number.
+- **`error.tsx` matches `not-found.tsx`.** It still ran the pre-rebrand pattern:
+  centred `content-card`, `uppercase` on display type (those caps were
+  Barlow's — Archivo sets its own case), `rounded-2xl` 1px secondary. Flush
+  left, `.display-section`, `.eyebrow-live`, 2px rules, `RotateCcw` on Try
+  again. The Sentry digest is a **labelled reference block** rather than the
+  tail of a sentence — it is something you read out or paste into an email.
+
+**Still open from this phase** (paired with the held pillar screens, since each
+belongs to one): the exercise picker is still an inline `max-h-48` list rather
+than a sheet; the plate calculator's per-side squares; Fuel's meal tab strip and
+the missing entry point for `estimateMealFromDescription`; `AdjustSessionSheet`'s
+Applied panel; `LibraryDetailSheet` off Radix; the offline page's "Waiting to
+sync" list (the banner has the count, the list does not exist yet); and the
+per-screen loading states printing their real labels.
+
+---
+
 ## 2026-07-26 — First run stops arguing with the promise (`.154`)
 
 Phase 4.
