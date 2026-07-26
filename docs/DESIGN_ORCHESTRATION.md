@@ -22,7 +22,8 @@ Product status lives in [CONTEXT.md](../CONTEXT.md) `## Now`. Design craft waves
 | **D-prelaunch** | Pre-flip (founder excellence) | **Shipped 2026-07-22** — Today composure · Active intent · Victory one-exit · rest · gate · Android parity |
 | **D3 Platform excellence** | Horizon 3 (founder override) | **Shipped 2026-07-22** — token sync · Fuel/Move/Mind/Learn CTA density · Batch C · guide chrome |
 | **D4 Beta composure** | Horizon 0 (founder override) | **Shipped 2026-07-22** — Landing cut (~5–6 bands) · wedge copy · Bundle one-offer · Today More collapse · Android Today secondary demotion |
-| **D5 Modernist rebrand** | Horizon W (founder override 2026-07-25) | **In progress** — Phase 0 gate shipped (`.130`); next: global token/font swap → shell + marketing → calculators + SEO templates → app screens → emails/flip |
+| **D5 Modernist rebrand** | Horizon W (founder override 2026-07-25) | **Build complete** (`.130`–`.149`) — gate → token/font swap → shell + marketing → calculators + SEO templates → emails → the 13 signed-in screens. Awaiting founder review/merge |
+| **D6 Mobile app structure** | Horizon W (founder override 2026-07-26) | **In progress** — the signed-in PWA at 390×844. Phase 0 primitives shipped (`.150`); next: five-tab nav + More sheet → Today dock → logger console → first run → sheets/offline/errors. The eleven pillar screens are specified and **held for founder review** of the wedge |
 
 ---
 

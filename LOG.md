@@ -6,6 +6,40 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Mobile primitives, before the screens (`.150`)
+
+Phase 0 of the **mobile app redesign** (third handoff,
+`~/Downloads/design_handoff_mobile_app/`, wave D6). Four shared primitives, so
+the phases after this build on corrected parts instead of re-touching them.
+
+- **`AdaptiveOverlay` was still pre-rebrand** — the handoff treats it as the
+  ready sheet shell and it was not: a 1px header rule at 30% alpha, a
+  `font-medium` eyebrow on a 400/600/800 face, an 18px/600 title where the
+  sheet spec says 22px/800, and a `muted-foreground/30` drag pill. It now
+  carries the **2px ink top rule** as its whole sheet affordance, an 11px caps
+  eyebrow over a 22px/800 title, and a 44px 2px-ruled close.
+- **New `footer` prop** — a pinned region for the sheet's one primary action,
+  held out of the scroll. Seven sheets need it in phase 5; adding it here means
+  none of them hand-rolls one. It sits inside the panel, so the panel's
+  safe-area padding already lifts it clear of the home indicator.
+- **`EmptyState` and `ErrorState`** were the two dashed, rounded, centred,
+  tinted-chip surfaces on a flush-left system. Both are two 2px rules now, ink
+  square mark, 22px/800 title. `ErrorState` keeps red — something did fail —
+  but as a 2px `--primary` rule and a filled mark, not a 5% wash that is
+  invisible on paper anyway.
+- **`Skeleton` bars were invisible.** `bg-muted/50` over a `bg-muted` card is
+  `#eae9e9` at half alpha on `#eae9e9`; only `animate-pulse` revealed them, so
+  the animation carried the information and `prefers-reduced-motion` deleted
+  it. `neutral-300`, no pulse.
+- Not done here on purpose: the ~190 `font-medium` and ~107 alpha-border sites
+  across the app. The ones the handoff logs sit on lines phases 2 and 3 rewrite
+  outright, and the rest are on screens with their own phase. Each sweep rides
+  with the phase that owns the file.
+- Correction to the handoff: `ErrorState` is **not** "the last dashed surface"
+  — eight remain, including `ActiveWorkoutPage.tsx:323`, which phase 3 meets.
+
+---
+
 ## 2026-07-26 — You, Welcome, and the last of the old palette (`.149`)
 
 Phase K, and the end of the redesign.
