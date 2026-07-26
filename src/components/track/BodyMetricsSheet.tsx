@@ -66,7 +66,7 @@ export function BodyMetricsSheet({ open, onClose, initial, onSave, units }: Prop
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-4">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-card p-4">
       <form
         onSubmit={submit}
         className="w-full max-w-md border-2 border-border bg-card p-5 space-y-3"

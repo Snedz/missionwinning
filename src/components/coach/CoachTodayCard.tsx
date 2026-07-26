@@ -136,7 +136,7 @@ export function CoachTodayCard() {
               </>
             )}
             {todaySession.status === 'done' && (
-              <p className="text-sm text-status-warn">
+              <p className="text-sm text-primary">
                 {t('coachSessionDone', { defaultValue: 'Done' })} ✓
               </p>
             )}

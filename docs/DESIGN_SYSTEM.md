@@ -27,11 +27,24 @@
 |------|--------|-----|
 | **Base** | `Card` (flat surface fill) | Dense/repeated rows, settings, logger inners, tables |
 | **Content** | `content-card` | Standalone pillar content blocks — surface fill, no border |
-| **Hero** | `card-elevated` | **≤1** summary/boss panel per screen — surface + 2px rule border |
-| **Live / selected** | `card-glow-emerald` | Active timer / Today scorecard / selected option (≤1) — tint fill `#fff2ef` + 2px poster-red border |
-| **Honor** | `card-glow-brass` | Legacy honor sites — renders as `card-elevated` (brass retired) |
+| **Section** | `card-section` | Flat ruled divider — 2px top rule, no fill, no box. The default once a screen is recut |
+| **Hero** | `card-elevated` | Summary panel — surface + 2px rule border |
+| **Boss** | `card-boss` | **≤1 per screen.** Tint fill `#fff2ef` + 2px poster border + `shadow-md` — the only sanctioned elevation |
 
-No elevation anywhere — shadows and glows are retired. `card-glow-*` class names survive for call-site stability; Phase 3 renames them.
+`card-glow-emerald` / `card-glow-brass` / `ring-glow-emerald` were **deleted** in `.139`, along with `texture-noise` and `texture-grid` (the first was already a no-op, the second had zero call sites). Elevation exists only on dialogs and `card-boss` — everything else is flat.
+
+**Active / selected:** `is-active-row` (accent-100 fill + 3px inset left edge) for nav items, live set rows and open detail panels; `is-active-tab` (2px inset top edge) for the mobile tab bar.
+
+### The red field — `poster-close` vs `poster-field`
+
+One per page, either way. Both invert a nested `.primary-action` to paper so the field itself carries the red. They differ **only** in ground, and only because of text size:
+
+| Class | Ground | Carries | Why |
+|-------|--------|---------|-----|
+| `poster-close` | `--accent-poster` `#ec3013` | Display type only | Paper on poster is 4.19:1 — clears the 3:1 large text needs, fails the 4.5:1 small text needs |
+| `poster-field` | `--primary` `#ae1800` | Kicker + body + CTA | Paper on it is 6.5:1, so an 11px kicker and 14px sub-line are legible |
+
+Inside a `poster-field` use `.poster-kicker` (full paper) and `.poster-sub` (paper/90%) — `muted-foreground` is an ink value and disappears. **Nothing on `#ec3013` reaches 4.5:1, not even pure white**, so a red panel that carries small text has to be the deeper red. This is the same rule as "never put small text in poster red", applied to a background.
 
 ## Tokens
 
@@ -43,13 +56,18 @@ No elevation anywhere — shadows and glows are retired. `card-glow-*` class nam
 | `--primary-fill` (+ `-hover`) | Button fills `#dd2b0f` — white text 4.74:1 AA |
 | `--accent-poster` | Poster red `#ec3013` — fills w/ large labels, chrome, ≤1 field/page |
 | `--accent-tint` | `#fff2ef` — highlighted rows, "today" states, tracks |
-| `--brass` | **Retired** — resolves to a neutral until Phase 3 removes call sites |
+| `--neutral-100…900` | Handoff neutral ramp. `neutral-900` + `neutral-100` text = the ink panels (rest dock, flow runner); `neutral-200` = meter tracks; `neutral-500` = rail group labels |
+| `--accent-100…900` | Handoff accent ramp. **100/600/700 alias** `--accent-tint` / `--primary-fill` / `--primary`, so ramp and roles cannot drift. `accent-800` is the honor tier and marks **PRs/victories only** |
+| `--shadow-sm/md/lg` | Dialogs and `card-boss` only |
+| `--brass` | **Retired** — resolves to a neutral until the remaining call sites go |
 | `--status-warn` / `--status-info` | Deep amber / deep blue (text-safe on paper) |
 | `--status-danger` / `--status-ok` | `#ae1800` / deep green |
 
+Poster red is **not** a step on the accent ramp — it sits between 500 and 600. The ramp was generated around the brand red, so "just use accent-500" is wrong.
+
 **Cross-platform drift:** `npm run check-token-sync` pins the web `:root` values. The Android cross-check is **paused** for the rebrand (wave D5 founder override) — Android keeps navy/emerald until its own program. Motion checks still enforced.
 
-Utility classes: `content-card`, `card-elevated`, `card-glow-emerald`, `card-glow-brass`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `display-mega`, `section-index`, `briefing-rule`, `pressable-card`, `ring-draw-in`, `score-tick`, `section-seam`.
+Utility classes: `content-card`, `card-elevated`, `card-section`, `card-boss`, `is-active-row`, `is-active-tab`, `seg` / `seg-opt`, `primary-action`, `eyebrow`, `eyebrow-live`, `eyebrow-honor`, `display-hero`, `display-section`, `display-mega`, `section-index`, `briefing-rule`, `pressable-card`, `score-tick`, `section-seam`.
 
 ### Marketing surfaces (landing / bundle / SEO)
 
@@ -104,8 +122,9 @@ lines at 390px.
 
 | Component | Path | Use |
 |-----------|------|-----|
-| **ProgressRing** | `src/components/ui/ProgressRing.tsx` | Today + Fuel + demos (canonical) |
-| ScoreRing / MetricRing | adapters → ProgressRing | Legacy call sites |
+| **ScoreNumeral** | `src/components/ui/ScoreNumeral.tsx` | Scores and results — big tabular numeral (40/56px, 800) + delta line. `value={null}` renders an em-dash for first-run, never a zero |
+| **MeterBar** | `src/components/ui/MeterBar.tsx` | Budgets and progress — square bar, accent fill on a `neutral-200` track. Clamps and handles over-budget itself |
+| ~~ProgressRing~~ | **deleted `.139`** | Rings are retired system-wide. Scores → `ScoreNumeral`, budgets → `MeterBar` |
 | **HoldToConfirmButton** | `src/components/ui/HoldToConfirmButton.tsx` | Destructive hold-to-confirm — [DESTRUCTIVE_UX.md](DESTRUCTIVE_UX.md) |
 | **DangerZone** | `src/components/ui/DangerZone.tsx` | Geography for destructive actions |
 | **PillarPageHeader** | briefing anatomy (eyebrow optional) | All pillar + info pages |
@@ -134,6 +153,16 @@ lines at 390px.
 | Public `/guide` | `GuideApexShell` (Contents sidebar + language) |
 | Compare, Bundle | Prefer marketing chrome (out of AppLayout when practical) |
 | Train `/active` | Header + dense logger; keep set-table internals |
+
+### App navigation (`.140`)
+
+The signed-in rail and mobile tab bar both come from **`railGroupsForNav()`** in `src/lib/navConfig.ts` — the 13 handoff screens grouped **Mission** (Today · Train · Coach · History) / **Pillars** (Fuel · Move · Mind · Track · Learn) / **Toolkit** (Assess · Library · Builder · You), in that order. Groups are declared as hrefs and resolved against `PRIMARY_NAV` + `MORE_NAV`, so label and icon have one definition; parked surfaces are dropped and empty groups disappear.
+
+Anything not one of those 13 screens (`/calculators`, `/leaderboard`, `/learn/guide`, `/bundle`) stays in the header menu — the rail is the screens, not every route.
+
+- **Rail** (`md:` up): `is-active-row` — accent-100 fill + `inset 3px 0 0` poster. Scrolls; icon-only at 72px where group labels are replaced by a 2px rule.
+- **Tabs** (below `md:`): `is-active-tab` — accent-100 fill + `inset 0 2px 0` poster. Scrolls horizontally at `min-w-[68px]`; Mission first, so the wedge is on screen before any scroll.
+- **Two handoff values were overridden for contrast**, both 10px text on paper: group labels `neutral-500` (~2.4:1) and inactive tabs `neutral-600` (3.84:1) both use `muted-foreground` (8.4:1) instead. Same class of problem as poster red on small text — the sheet picked tones, not tested values.
 
 ---
 

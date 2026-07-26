@@ -225,7 +225,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
   return (
     <div className="content-card p-5 space-y-4 page-enter">
       <div className="flex items-start gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/15 border border-primary/40">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center  bg-accent-100 border border-primary">
           <Camera className="h-5 w-5 text-primary" />
         </div>
         <div className="min-w-0 flex-1">
@@ -233,7 +233,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
             <h3 className="font-semibold text-base">
               {t('photoLogTitle', { defaultValue: 'Log from photo' })}
             </h3>
-            <span className="text-[10px] uppercase tracking-wider text-status-warn/90 font-medium px-1.5 py-0.5 rounded bg-[hsl(var(--status-warn)/0.12)] border border-[hsl(var(--status-warn)/0.2)]">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-accent-900 px-1.5 py-0.5 bg-accent-100">
               Beta
             </span>
           </div>
@@ -275,7 +275,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
         />
       ) : (
         <div className="space-y-3">
-          <div className="relative rounded-xl overflow-hidden border border-border/60 aspect-[16/10] bg-muted/30">
+          <div className="relative  overflow-hidden border-2 border-border aspect-[16/10] bg-card">
             {preview && (
               <img src={preview} alt="" className="w-full h-full object-cover" />
             )}
@@ -326,7 +326,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
       {phase === 'estimate' && estimate && draft && (
         <div className="space-y-3">
           {(offLoading || offMatches.length > 0 || offLookupFailed) && (
-            <div className="space-y-2 rounded-xl border border-border/50 bg-muted/10 p-3">
+            <div className="space-y-2  border-2 border-border bg-card p-3">
               <p className="text-xs font-medium text-muted-foreground">
                 {t('photoLogOffMatches', {
                   defaultValue: 'Database matches — tap to fill macros (more accurate)',
@@ -349,7 +349,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
                 <button
                   key={item.id}
                   type="button"
-                  className="w-full text-left rounded-lg border border-border/50 bg-background/60 hover:border-primary/40 px-3 py-2 transition-colors"
+                  className="w-full text-left  border-2 border-border bg-background hover:border-primary px-3 py-2 transition-colors"
                   onClick={() => {
                     setDraft(foodToDraft(item));
                     setDraftSource('database');
@@ -420,7 +420,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
             type="button"
             variant="outline"
             size="sm"
-            className="rounded-lg"
+            className=""
             onClick={() => cameraInputRef.current?.click()}
           >
             <Camera className="h-4 w-4" />

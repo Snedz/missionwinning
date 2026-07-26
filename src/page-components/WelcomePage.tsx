@@ -141,7 +141,7 @@ export function WelcomePage() {
 
   return (
     <div className="relative min-h-screen text-foreground flex flex-col bg-background">
-      <header className="relative z-10 border-b border-border/40 px-4 py-3.5 flex items-center gap-3">
+      <header className="relative z-10 border-b border-border px-4 py-3.5 flex items-center gap-3">
         <BrandMonogram />
         <span className="text-base font-semibold tracking-tight sm:text-lg">
           Mission Winning
@@ -162,9 +162,9 @@ export function WelcomePage() {
           })}
         >
           <div className="flex items-center gap-3">
-            <div className="h-1 flex-1 rounded-full bg-muted overflow-hidden">
+            <div className="h-1 flex-1 bg-muted overflow-hidden">
               <div
-                className="h-full rounded-full bg-primary/70 transition-all duration-300"
+                className="h-full bg-primary-fill transition-all duration-300"
                 style={{ width: `${((stepIndex + 1) / STEP_ORDER.length) * 100}%` }}
               />
             </div>
@@ -201,7 +201,7 @@ export function WelcomePage() {
                   </p>
                 </div>
 
-                <div className="card-glow-emerald px-4 py-3.5 space-y-1.5">
+                <div className="card-boss px-4 py-3.5 space-y-1.5">
                   <p className="text-xs font-medium text-muted-foreground">
                     {t('welcomePreviewLabel', { defaultValue: 'Your first session is ready' })}
                   </p>
@@ -253,7 +253,7 @@ export function WelcomePage() {
                   <select
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
-                    className="w-full rounded-xl bg-background/80 border border-border/60 px-3 py-2.5 min-h-[44px]"
+                    className="w-full bg-background border-2 border-border px-3 py-2.5 min-h-[44px]"
                   >
                     {EXPERIENCE_VALUES.map((value) => (
                       <option key={value} value={value}>
@@ -269,7 +269,7 @@ export function WelcomePage() {
                   <select
                     value={equipment}
                     onChange={(e) => setEquipment(e.target.value)}
-                    className="w-full rounded-xl bg-background/80 border border-border/60 px-3 py-2.5 min-h-[44px]"
+                    className="w-full bg-background border-2 border-border px-3 py-2.5 min-h-[44px]"
                   >
                     {EQUIPMENT_VALUES.map((value) => (
                       <option key={value} value={value}>
@@ -308,7 +308,7 @@ export function WelcomePage() {
                   <input
                     value={isCustomGoal(primaryGoal) ? primaryGoal : ''}
                     onChange={(e) => setPrimaryGoal(e.target.value)}
-                    className="w-full rounded-xl bg-background/80 border border-border/60 px-3 py-2.5 min-h-[44px]"
+                    className="w-full bg-background border-2 border-border px-3 py-2.5 min-h-[44px]"
                     placeholder={t('welcomeGoalPlaceholder', {
                       defaultValue: 'Build strength and stay healthy',
                     })}
@@ -347,7 +347,7 @@ export function WelcomePage() {
                     })}
                   </p>
                 </div>
-                <div className="card-glow-emerald px-4 py-3.5 space-y-1.5">
+                <div className="card-boss px-4 py-3.5 space-y-1.5">
                   <p className="text-xs font-medium text-muted-foreground">
                     {t('welcomeSessionReadyEyebrow', { defaultValue: 'Up next' })}
                   </p>
@@ -364,7 +364,7 @@ export function WelcomePage() {
                     })}
                   </p>
                 </div>
-                <label className="flex cursor-pointer items-start gap-2.5 rounded-xl border border-border/60 bg-muted/20 p-3 text-sm">
+                <label className="flex cursor-pointer items-start gap-2.5 border-2 border-border bg-card p-3 text-sm">
                   <input
                     type="checkbox"
                     className="mt-0.5 h-4 w-4 accent-primary"
@@ -398,7 +398,7 @@ export function WelcomePage() {
         </div>
       </main>
 
-      <AppLegalFooter className="relative z-10 border-t border-border/30" />
+      <AppLegalFooter className="relative z-10 border-t border-border" />
     </div>
   );
 }

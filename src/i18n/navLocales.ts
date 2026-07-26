@@ -1,6 +1,11 @@
 /** Extended nav + header dropdown copy — merged into i18n `common` namespace. */
 
 type NavStrings = {
+  navAssess: string;
+  navOpenBeta: string;
+  navGroupMission: string;
+  navGroupPillars: string;
+  navGroupToolkit: string;
   navSectionRecover: string;
   navSectionTrain: string;
   navSectionLearn: string;
@@ -25,6 +30,11 @@ type NavStrings = {
 };
 
 const en: NavStrings = {
+  navOpenBeta: 'Open beta',
+  navAssess: 'Assess',
+  navGroupMission: 'Mission',
+  navGroupPillars: 'Pillars',
+  navGroupToolkit: 'Toolkit',
   navSectionRecover: 'Recover',
   navSectionTrain: 'Train deeper',
   navSectionLearn: 'Learn & measure',
@@ -52,6 +62,11 @@ const en: NavStrings = {
 
 const es: NavStrings = {
   ...en,
+  navOpenBeta: 'Beta abierta',
+  navAssess: 'Evaluar',
+  navGroupMission: 'Misión',
+  navGroupPillars: 'Pilares',
+  navGroupToolkit: 'Herramientas',
   navSectionRecover: 'Recuperar',
   navSectionTrain: 'Entrenar más',
   navSectionLearn: 'Aprender y medir',
@@ -72,6 +87,11 @@ const es: NavStrings = {
 };
 
 const zh: Partial<NavStrings> = {
+  navOpenBeta: '公开测试',
+  navAssess: '评估',
+  navGroupMission: '任务',
+  navGroupPillars: '支柱',
+  navGroupToolkit: '工具',
   navSectionRecover: '恢复',
   navSectionTrain: '深度训练',
   navSectionLearn: '学习与测量',
@@ -97,6 +117,11 @@ const zh: Partial<NavStrings> = {
 };
 
 const id: Partial<NavStrings> = {
+  navOpenBeta: 'Beta terbuka',
+  navAssess: 'Nilai',
+  navGroupMission: 'Misi',
+  navGroupPillars: 'Pilar',
+  navGroupToolkit: 'Peralatan',
   navSectionRecover: 'Pemulihan',
   navSectionTrain: 'Latihan mendalam',
   navSectionLearn: 'Belajar & ukur',
@@ -122,6 +147,11 @@ const id: Partial<NavStrings> = {
 };
 
 const th: Partial<NavStrings> = {
+  navOpenBeta: 'เบต้าเปิด',
+  navAssess: 'ประเมิน',
+  navGroupMission: 'ภารกิจ',
+  navGroupPillars: 'เสาหลัก',
+  navGroupToolkit: 'เครื่องมือ',
   navSectionRecover: 'ฟื้นตัว',
   navSectionTrain: 'ฝึกเชิงลึก',
   navSectionLearn: 'เรียนรู้และวัด',
@@ -147,6 +177,11 @@ const th: Partial<NavStrings> = {
 };
 
 const ar: Partial<NavStrings> = {
+  navOpenBeta: 'نسخة تجريبية مفتوحة',
+  navAssess: 'تقييم',
+  navGroupMission: 'المهمة',
+  navGroupPillars: 'الركائز',
+  navGroupToolkit: 'الأدوات',
   navSectionRecover: 'استشفاء',
   navSectionTrain: 'تدريب أعمق',
   navSectionLearn: 'تعلّم وقياس',
@@ -173,6 +208,11 @@ const ar: Partial<NavStrings> = {
 
 const fr: Partial<NavStrings> = {
   ...en,
+  navOpenBeta: 'Bêta ouverte',
+  navAssess: 'Évaluer',
+  navGroupMission: 'Mission',
+  navGroupPillars: 'Piliers',
+  navGroupToolkit: 'Outils',
   navSectionRecover: 'Récupération',
   navSectionTrain: 'Entraînement approfondi',
   navSectionLearn: 'Apprendre et mesurer',
@@ -192,6 +232,11 @@ const fr: Partial<NavStrings> = {
 
 const de: Partial<NavStrings> = {
   ...en,
+  navOpenBeta: 'Offene Beta',
+  navAssess: 'Bewerten',
+  navGroupMission: 'Mission',
+  navGroupPillars: 'Säulen',
+  navGroupToolkit: 'Werkzeuge',
   navSectionRecover: 'Erholung',
   navSectionTrain: 'Tiefer trainieren',
   navSectionLearn: 'Lernen & messen',
@@ -211,6 +256,11 @@ const de: Partial<NavStrings> = {
 
 const it: Partial<NavStrings> = {
   ...en,
+  navOpenBeta: 'Beta aperta',
+  navAssess: 'Valuta',
+  navGroupMission: 'Missione',
+  navGroupPillars: 'Pilastri',
+  navGroupToolkit: 'Strumenti',
   navSectionRecover: 'Recupero',
   navSectionTrain: 'Allenamento profondo',
   navSectionLearn: 'Impara e misura',
@@ -230,6 +280,11 @@ const it: Partial<NavStrings> = {
 
 const ko: Partial<NavStrings> = {
   ...en,
+  navOpenBeta: '오픈 베타',
+  navAssess: '평가',
+  navGroupMission: '미션',
+  navGroupPillars: '기둥',
+  navGroupToolkit: '도구',
   navSectionRecover: '회복',
   navSectionTrain: '심화 훈련',
   navSectionLearn: '학습 및 측정',
@@ -249,6 +304,11 @@ const ko: Partial<NavStrings> = {
 
 const ja: Partial<NavStrings> = {
   ...en,
+  navOpenBeta: 'オープンベータ',
+  navAssess: '評価',
+  navGroupMission: 'ミッション',
+  navGroupPillars: '柱',
+  navGroupToolkit: 'ツール',
   navSectionRecover: '回復',
   navSectionTrain: '深いトレーニング',
   navSectionLearn: '学習と測定',
@@ -268,6 +328,11 @@ const ja: Partial<NavStrings> = {
 
 const pt: Partial<NavStrings> = {
   ...en,
+  navOpenBeta: 'Beta aberto',
+  navAssess: 'Avaliar',
+  navGroupMission: 'Missão',
+  navGroupPillars: 'Pilares',
+  navGroupToolkit: 'Ferramentas',
   navSectionRecover: 'Recuperação',
   navSectionTrain: 'Treino profundo',
   navSectionLearn: 'Aprender e medir',
@@ -287,6 +352,11 @@ const pt: Partial<NavStrings> = {
 
 const ru: Partial<NavStrings> = {
   ...en,
+  navOpenBeta: 'Открытая бета',
+  navAssess: 'Оценка',
+  navGroupMission: 'Миссия',
+  navGroupPillars: 'Основы',
+  navGroupToolkit: 'Инструменты',
   navSectionRecover: 'Восстановление',
   navSectionTrain: 'Углублённая тренировка',
   navSectionLearn: 'Обучение и замеры',

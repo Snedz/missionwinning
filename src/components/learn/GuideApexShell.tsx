@@ -61,7 +61,7 @@ export function GuideApexShell({
         activeChapterId={activeChapterId}
         onNavigate={() => setTocOpen(false)}
       />
-      <div className="mt-8 space-y-2 border-t border-border/50 pt-6">
+      <div className="mt-8 space-y-2 border-t border-border pt-6">
         <Button asChild variant="fitness" size="sm" className="w-full">
           <a
             href={pdfHref}
@@ -107,7 +107,7 @@ export function GuideApexShell({
       dir={rtl ? 'rtl' : 'ltr'}
       lang={lang}
     >
-      <header className="section-seam hero-field texture-noise relative">
+      <header className="section-seam hero-field relative">
         <div className="relative z-[1] mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
           <Link href="/" className="flex min-w-0 items-center gap-2.5">
             <BrandMonogram display />
@@ -129,7 +129,7 @@ export function GuideApexShell({
             </Button>
             <Link
               href="/welcome"
-              className="inline-flex min-h-[40px] shrink-0 items-center rounded-xl bg-primary-fill px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-fill-hover"
+              className="inline-flex min-h-[40px] shrink-0 items-center bg-primary-fill px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-fill-hover"
             >
               {t('magazineStartFree', { defaultValue: 'Start free' })}
             </Link>
@@ -138,7 +138,7 @@ export function GuideApexShell({
         <div className="relative z-[1] mx-auto max-w-6xl px-5 pb-8 pt-2">
           <p className="eyebrow-live mb-2">{eyebrow ?? meta.editionLabel}</p>
           <h1 className="display-section text-primary">{meta.title}</h1>
-          <p className="mt-2 font-display text-lg font-semibold uppercase tracking-wide text-brass md:text-xl">
+          <p className="mt-2 font-display text-lg font-semibold uppercase tracking-wide text-accent-900 md:text-xl">
             {meta.magazineLine}
           </p>
           <p className="mt-2 max-w-2xl text-muted-foreground">{meta.subtitle}</p>

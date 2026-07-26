@@ -50,7 +50,7 @@ export function ProfileRemindersCard({
         </Button>
       </CardContent>
       {reminders && pushSupported ? (
-        <CardContent className="flex items-center justify-between gap-4 border-t border-border/40 pt-4">
+        <CardContent className="flex items-center justify-between gap-4 border-t border-border pt-4">
           <p className="text-sm text-muted-foreground">
             {t('remindersPushDesc', {
               defaultValue: 'Also notify on this device (web push).',

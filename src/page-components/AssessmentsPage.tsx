@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ClipboardList } from 'lucide-react';
@@ -178,10 +179,7 @@ export function AssessmentsPage() {
   // No paywall on the mission fundamentals.
 
   return (
-    <PillarPageShell
-      icon={ClipboardList}
-      title={t('assessTitle', { defaultValue: 'Readiness Assessment' })}
-      subtitle={t('assessSubtitle', {
+    <PillarPageShell icon={ClipboardList} title={t('assessTitle', { defaultValue: 'Readiness Assessment' })} subtitle={t('assessSubtitle', {
         defaultValue:
           'Free core tool. Based on standard health history and ParQ-style questions. Answer honestly for personalized guidance.',
       })}
@@ -204,10 +202,7 @@ export function AssessmentsPage() {
                     { opt: 'no', label: t('assessNo', { defaultValue: 'No' }) },
                     { opt: 'unsure', label: t('assessUnsure', { defaultValue: 'Unsure' }) },
                   ].map(({ opt, label }) => (
-                    <Button
-                      key={opt}
-                      size="sm"
-                      variant={answers[item.key] === opt ? 'default' : 'outline'}
+                    <Button key={opt} size="sm" variant={answers[item.key] === opt ? 'default' : 'outline'}
                       onClick={() => handleAnswer(item.key, opt)}
                     >
                       {label}
@@ -215,8 +210,7 @@ export function AssessmentsPage() {
                   ))}
                   {item.key === 'smoke' || item.key === 'sleep' || item.key === 'energy' ? (
                     <input
-                      className="border rounded px-2 text-sm"
-                      placeholder={t('assessDetailsPlaceholder', { defaultValue: 'details' })}
+                      className="border rounded px-2 text-sm" placeholder={t('assessDetailsPlaceholder', { defaultValue: 'details' })}
                       onBlur={(e) =>
                         handleAnswer(item.key, e.target.value || answers[item.key] || '')
                       }
@@ -245,10 +239,7 @@ export function AssessmentsPage() {
         <CardContent className="space-y-3 text-sm">
           <div className="flex flex-wrap gap-2">
             {stages.map((s, i) => (
-              <Button
-                key={s.shortKey}
-                size="sm"
-                variant={selectedStage === i ? 'default' : 'outline'}
+              <Button key={s.shortKey} size="sm" variant={selectedStage === i ? 'default' : 'outline'}
                 onClick={() => setSelectedStage(i)}
               >
                 {t(s.shortKey, { defaultValue: s.shortKey })}
@@ -277,7 +268,20 @@ export function AssessmentsPage() {
 
       {result && (
         <Card
-          className={`content-card border-2 ${result.riskLevel === 'high' ? 'border-status-danger' : result.riskLevel === 'moderate' ? 'border-status-warn' : 'border-status-ok'}`}
+          // Three ranks, one hue. High is the filled red poster the handoff
+          // asks for; moderate keeps the red as an edge only; low is a plain
+          // ruled card. Red/amber/green would have been a traffic light, and
+          // this palette does not have one — nor should a PAR-Q result imply
+          // "green means go" when the whole point is to send some people to a
+          // doctor first.
+          className={cn(
+            'content-card border-2',
+            result.riskLevel === 'high'
+              ? 'border-primary bg-accent-100'
+              : result.riskLevel === 'moderate'
+                ? 'border-primary'
+                : 'border-border'
+          )}
         >
           <CardHeader>
             <CardTitle>
@@ -332,8 +336,7 @@ export function AssessmentsPage() {
 
       <SignInPrompt
         className="mt-2"
-        nextPath="/assessments"
-        description={t('assessSignInFoot', {
+        nextPath="/assessments" description={t('assessSignInFoot', {
           defaultValue: 'Keep assessment history synced when you sign in.',
         })}
       />

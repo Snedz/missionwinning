@@ -6,6 +6,318 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — You, Welcome, and the last of the old palette (`.149`)
+
+Phase K, and the end of the redesign.
+
+- **You / Welcome**: ten files. `ProfileReferralCard`'s recruiter badge was
+  still **brass** — the one thing brass was genuinely doing (marking something
+  earned), so it became the honor tier. Welcome's progress meter is a square
+  red bar, not a `rounded-full bg-primary/70` pill.
+- **Then an app-wide finish pass**, because a screen-by-screen sweep leaves a
+  tail. The key realisation: `rounded-sm` … `rounded-3xl` are **no-ops** —
+  `tailwind.config.js` maps the whole scale to `var(--radius)`, which is 0 — so
+  they were never the problem. **`rounded-full` maps to `9999px` and still
+  rendered real circles**, 21 of them. Those are gone; the ~200 dead
+  `rounded-*` classes are left alone as harmless.
+- Cleared across 38 files: every remaining `brass`, `bg-black/*` and
+  `bg-white/*` scrim, `border-white/10`, `status-info` panel, and the last four
+  gradients.
+- **`MacroCalculator`'s macro bar was sky / amber / rose** — three unrelated
+  hues doing the job of one scale. It steps down the accent ramp now
+  (700 → 400 → 200), with labels flipping to ink on the lighter two.
+- The magazine sheet in `index.css` still had an **emerald wash**
+  (`hsl(158 64% 42% / 0.06)`) and two raw greys; all three are tokens now.
+- **Final audit: 0 off-palette colours, 0 gradients, 0 real circles, 0 dark
+  scrims, 0 live brass call sites, 0 hardcoded `hsl()` outside one deliberate
+  print white.** `--brass` survives only as a Tailwind colour-map entry, and its
+  comment now says so instead of claiming 40 call sites.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20, `fuel-floating-action` 1/1.
+  One offline-spec failure mid-phase was flake — it passes isolated and on a
+  clean gate re-run; `playwright.config.ts` has no `webServer`, so a spec run
+  without a server up fails at the first `goto`.
+
+## 2026-07-26 — Assess and Builder, and the last traffic light (`.148`)
+
+Phase J.
+
+- **The PAR-Q result was a traffic light** — `status-danger` / `status-warn` /
+  `status-ok` borders for high / moderate / low risk. Three ranks now come from
+  one hue: high is the filled red poster the handoff asks for, moderate keeps
+  the red as an edge only, low is a plain ruled card. Beyond the palette rule,
+  a health screen should not render "low risk" in green — the point of the
+  instrument is to send some people to a doctor first, and green means go.
+- **`MilitaryReadinessSection` was amber on amber on a gradient**: an amber
+  border, amber title, amber hint text, a `bg-gradient-to-br` ground and
+  `bg-black/20` rows. Flat surface, ink, one red — same as everything else.
+- Gradients are gone from Builder too (`bg-gradient-to-b` on the draft panel).
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
+## 2026-07-26 — Track, Learn, Library (`.147`)
+
+Phase I. Nineteen files, all the same patterns — radius, hairline borders,
+tinted grounds, one `status-warn`.
+
+- **`bg-black/20` scrims in the two locked previews** (`LearnLockedPreview`,
+  `TrackGpsLockedPreview`) were a dark-theme device: a hole punched in the page
+  to sit a lock on. On paper a locked preview should read as a quiet surface
+  behind the lock, so both are `bg-card` now.
+- Everything else was mechanical: `border-border/40|50|60` to the real 2px
+  rule, `bg-muted/*` and `bg-primary/*` to the surface fill and `accent-100`,
+  `rounded-*` to nothing.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
+## 2026-07-26 — Fuel, and the runners go to ink (`.146`)
+
+Phase H. Fuel carried 41 off-system class hits — by far the largest remaining
+pocket. Move and Mind were already clean of stray colour, so their work was the
+handoff's structural asks rather than a sweep.
+
+- **Fuel**: one systematic pass over 17 files — radius to 0, hairline
+  `border-border/40|50|60` to the real 2px rule, `bg-muted/*` to the surface
+  fill, `bg-primary/*` washes to `accent-100`, and every `status-warn` to the
+  one red. Three two-state cases were decided by hand rather than substituted:
+  the week bars are **poster (over target) · fill (today) · neutral (logged)**,
+  because amber for "over" implied a severity the app does not assign — a day
+  over target is information, not a fault.
+- **Picked up the Fuel FAB overlap fix** (`b5f53548`, from the spawned session)
+  by cherry-pick, so this branch restyles the *fixed* layout. Its e2e spec then
+  guards the restyle: `fuel-floating-action` still passes, so nothing moved back
+  under the FAB.
+- **`GuidedStepPlayer` goes ink while running** — Move flows and Mind guided
+  sessions share it, so one change serves both. Idle stays paper (you are
+  choosing, not running); playing/paused is `neutral-900` with a 44px countdown,
+  accent-400 meter and **step dots**. Same rule as the rest dock: while it runs
+  it is the only thing on screen.
+- **Completion is the red banner** the handoff asks for — `.poster-field`, not
+  poster red, because the hint line under it is 12px.
+- **The breathing anchor is a square**, per the handoff, and ink. It was a
+  `rounded-full` circle with a `border-primary/40` ring — the last round object
+  of any size in the app.
+- New Button variants **`onInk` / `onInkSolid`**: on an ink panel `outline`
+  draws an ink border on ink and `ghost`'s hover is an ink wash on ink, so both
+  vanish. `MeterBar` gained a matching `tone="ink"`.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20, `fuel-floating-action` 1/1.
+
+## 2026-07-26 — Photography gets a slot, not a stand-in (`.145`)
+
+Phase G, and the last of the approved plan.
+
+- **[`GrayscalePhoto`](src/components/marketing/GrayscalePhoto.tsx)** owns the
+  ratio and the desaturation (`grayscale(1) contrast(1.08)` — straight
+  desaturation goes flat on paper, and the handoff sheet's own `.grayscale`
+  does the same), so **layout does not move when a real photo arrives**.
+  Filling one is a file swap: drop `/public/photo/<name>.{avif,webp}` and pass
+  `base`.
+- **It renders a placeholder, deliberately.** The rule is real documentary
+  photography or nothing; a neutral block that names the shot is honest about
+  being empty, where a generated gym photo would not be and would be much
+  harder to notice and remove later. The `caption` doubles as the brief —
+  "Phone on a bench, mid-set", "Home rack, bar loaded", "Bare wrist on a
+  barbell".
+- **Placed in section 03, not the hero.** The mock puts a 4:5 photo beside the
+  headline, but that slot is [`LogToPlanHero`](src/components/landing/LogToPlanHero.tsx),
+  which runs the real `suggestNextSetTarget` engine — the product performing its
+  own claim beats a picture of someone else doing it. Section 03 is *about*
+  where you train, so the three photos landed there instead.
+- `.primary-action` on `/` is still exactly 2, which `first-90` asserts.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
+## 2026-07-26 — The charts were still dark-theme (`.144`)
+
+Phase F: History. The layout needed little; the colour needed a lot, and it was
+hiding in the same place `setKind.ts` was — outside `className`, where the
+`.131` sweep could not see it.
+
+- **Three chart files were never rebranded.** Recharts takes colours as
+  **props**, not classes, so `fill="hsl(160 84% 39%)"` (emerald) and
+  `stroke="hsl(45 93% 47%)"` (amber) survived every class-name grep.
+  `Benchmarks1RMChart` was worse than stale — it was still fully **dark
+  theme**: a navy `hsl(222 47% 9%)` tooltip with near-white text, and axis
+  ticks in `hsl(215 20% 65%)`, a light grey sitting at roughly 2:1 on paper.
+  All three now read from tokens.
+- **The muscle heatmap is one hue getting deeper** — accent-100 → accent-400 by
+  14-day volume, which is what "darker = more work" means. It used to jump to
+  amber at the top step, so "trained a lot" looked like a warning instead of
+  the far end of a scale. Cell text flips to `accent-900` on the filled steps.
+- **Two 1RM series, one colour**: the estimate is the accent line, the measured
+  1RM is ink. Distinguishable without a second hue.
+- Range chips are square and thumb-sized (they were 30px `rounded-full` pills);
+  the at-a-glance box is a 2px ruled surface; set-kind row tints are gone from
+  the session detail — the WARMUP/FAILURE tag says it, same call as `.142`.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
+## 2026-07-26 — Coach reads as a week (`.143`)
+
+Phase E. Coach came out of `.136` mostly clean, so this is the handoff's
+specific asks rather than a sweep.
+
+- **The ADAPTED banner** is accent-100 behind a 3px red edge instead of a
+  tinted box with a hairline border — it now reads as the plan telling you it
+  changed, rather than as one more panel.
+- **Sessions are a 2-col grid** from `sm` up; a week is something you scan, not
+  a stack you scroll. **Today** gets the only marked treatment: a red top rule
+  plus the one elevation this screen is allowed. `isToday` is threaded from
+  `CoachPage`, which already knew `todayOffset` and was only using it to decide
+  who could open the adjust flow.
+- **Status hues gone**: done sessions were carrying an amber `--status-warn`
+  border, and the chat/today warnings were amber text. Both are the one red now
+  — in a single-colour system a second hue implies a distinction the app is not
+  making.
+- **Still not shipping the "missed → Thu" annotation.** The mock shows where
+  missed volume moved; the plan engine records no reshape target, so it would
+  be invented. Unchanged from `.136`.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
+## 2026-07-26 — The logger stops being four colours (`.142`)
+
+Phase D: Train. The wedge's centre, and the screen where "the free logger is
+never gated" makes every change higher-stakes — so the e2e selectors led the
+work, not the mock.
+
+- **`src/lib/workout/setKind.ts` was the last pre-rebrand colour in the app** —
+  amber, rose, violet and emerald, all on `*-950` grounds picked for a dark
+  theme. It survived the `.131` token swap because it lives in `lib/`, not
+  `components/`, so a grep of the component tree never saw it; on paper the
+  completed-set row was rendering a murky green wash. Classification is a tag
+  now, not a row tint — four hues to say warm-up / failure / drop / done is
+  more colour than the distinction earns, and the label already says it.
+- **Set table**: live row is `is-active-row` (accent-100 + 3px red inset),
+  completed rows are the surface fill, everything divided by 1px rules instead
+  of being individually boxed. PR is the **honor tier** — `Badge variant=honor`,
+  accent-800 with the ★ the component renders itself. Inputs are square 2px.
+- **Session header**: kicker + name + `ELAPSED` / `SETS` as 30px tabular stat
+  pairs + a progress bar. The timer was a bordered chip competing with the
+  workout name. **Plates moved out of the overflow menu onto the header**,
+  where you actually reach for it — mid-set, one-handed — which leaves discard
+  alone in the menu, the right amount for a menu whose only item is destructive.
+- **Rest dock is the ink panel**: full-bleed `neutral-900`, 56/72px countdown,
+  accent-400 meter on a neutral-700 track (accent-400 is the ramp step that
+  reads on ink). No rounding, no paper ground — it is the only thing on screen
+  while it runs.
+- **Superset is a red left edge**, not the blue `--status-info` border it was.
+- **Plate dialog**: square result panel, accent tags for the per-side stack,
+  the closest-loadable warning in `text-primary` with a red edge, and the
+  handoff's **quick target chips** — 135/185/225/275/315 imperial, 60–140
+  metric. Those are the loads that come out even on a standard bar, not round
+  numbers for their own sake.
+- **Kept the repo's copy over the mock's**: the mock labels the log button "Log
+  set"; `logger-depth` matches `/^log$/i`, and the shorter label is also the
+  right one on a dense row.
+- New keys `activeLiveSession` / `activeElapsed` / `activeSetsLabel` across the
+  in-bundle locales; `pt`/`it`/`ko` were inline `{ ...en }` entries and tripped
+  the 40% placeholder threshold until translated.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20, `i18n:parity` OK.
+
+## 2026-07-26 — Today puts the next action first (`.141`)
+
+Phase C: the first screen recut, and the one that settles the boss-panel
+question. On Today the boss panel is the **red field** — the next action, not a
+summary.
+
+- **`JourneyHero` → `.poster-field`.** It was a grey surface card carrying the
+  most important thing on the screen. Now it is the one red field Today gets,
+  with the nested `.primary-action` inverting to paper, so the count `first-90`
+  asserts on `/log` is unchanged — one primary action, no longer red-on-grey.
+- **The field is `--primary` #ae1800, not poster #ec3013**, and that is forced.
+  The panel carries an 11px kicker and a 14px sub-line, which need 4.5:1;
+  **nothing on #ec3013 reaches 4.5:1, not even pure white** (4.19). The mock's
+  `.85`-opacity kicker measured 3.04:1 and axe caught it on `/log` and
+  `/bundle`. It is the "never put small text in poster red" rule applied to a
+  background. Visibly a deeper red than the mock; the alternative was deleting
+  the kicker and the sub-line.
+- **One band of four.** `MetricsRow` absorbed the Mission Score as a leading
+  cell in red — it was a hero score in its own column beside a row of three.
+  Two columns on a phone: four 40px numerals across 375px leaves ~90px a cell
+  and the captions shred. Borders are per-index, not `divide-x`, which follows
+  DOM order and would rule the cell that starts row two.
+- **The streak was rendering twice** — `TodayPageHeader` and
+  `TodayDashboardHeader` both drew it. Harmless as two grey sentences,
+  obvious once it became an accent tag, so the dashboard copy is gone and the
+  meta row keeps it (which is where the handoff puts it).
+- **Deltas are muted ink whatever direction they point** — the handoff's own
+  answer, every delta in its score band ships as `text-muted`. `ScoreNumeral`
+  lost `higherIsBetter` and gained `emphasis` (the red numeral, one per band).
+  Colouring a delta would make the app congratulate and scold, and the only
+  colour available to do it with is red.
+- Meta row is one line (streak tag · Rankings · sync state) instead of three
+  stacked blocks that pushed the next action further below the fold. Journal is
+  a ruled table; its empty state is a 2px box keeping the repo's copy, not the
+  mock's.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
+## 2026-07-26 — The rail learns its groups (`.140`)
+
+Phase B of the second Modernist handoff: the app shell. The rail was five wedge
+tabs; the handoff wants the 13 signed-in screens grouped Mission / Pillars /
+Toolkit, and the mobile bar scrollable.
+
+- **One source, `railGroupsForNav()`** (`src/lib/navConfig.ts`). Groups are
+  declared as **hrefs**, resolved against `PRIMARY_NAV` + `MORE_NAV`, so "what
+  is /move called" keeps one answer — a rail and a menu with their own copies
+  is how they start disagreeing. Parked surfaces filter out and empty groups
+  disappear, the rule the header menu already followed.
+- **Rail** scrolls and is grouped; at 72px it is icon-only, so a 2px rule
+  carries the grouping where the label would be unreadable. Active =
+  `is-active-row`. **Tabs** scroll horizontally at `min-w-[68px]`: thirteen tabs
+  at `flex-1` on a 375px screen is ~29px each, well under the 44px this nav has
+  to hold. Mission is first, so Today / Train / Coach / History are on screen
+  before any scroll. Active = `is-active-tab`.
+- **OPEN BETA tag** in the header, `Badge variant="outline"` per the handoff's
+  `tag-outline`, gated on `isFreeBeta()` so it removes itself when the window
+  closes rather than needing a follow-up commit. Hidden under `sm` where the
+  wordmark and auth chip already fill the row.
+- **Two handoff values overridden for contrast**, both 10px on paper: rail group
+  labels `neutral-500` (~2.4:1) and inactive tabs `neutral-600` (3.84:1), now
+  `muted-foreground` (8.4:1). Caught by `npm run a11y`, which went 13/20 on the
+  first pass — 198 nodes, every page carrying the shell. Same class of problem
+  the three-token red solved: the sheet specifies tones, not tested values.
+- **Kept the repo's copy, not the mock's.** The rail mock labels Coach "Coach";
+  the live label is "AI weekly plan" and stays, because the handoff's own brief
+  says routes, i18n keys and copy structure are unchanged. `navAssess` is the
+  one new label (the menu's "Health screen" is too long for a rail).
+- New keys `navGroupMission/Pillars/Toolkit`, `navAssess`, `navOpenBeta` across
+  all 13 in-bundle locales + `npm run export-locales`.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20, `npm run i18n:parity` OK.
+
+## 2026-07-26 — Rings come off, the ramps go on (`.139`)
+
+Phase A of the **second** Modernist handoff (`design_handoff_missionwinning_modernist`),
+which covers the 13 signed-in screens the first handoff deliberately left. Its
+token sheet turned out to match what `.131` already shipped — poster `#ec3013`,
+`accent-600` = `--primary-fill`, `accent-700` = `--primary` — so P0 was already
+done and this is the primitives layer instead.
+
+- **Both ramps added** — `--neutral-100…900` and `--accent-100…900`. The screens
+  need steps the semantic roles never covered: ink panels (rest dock, flow
+  runner) are `neutral-900`/`neutral-100`, the honor tier is `accent-800`.
+  **100/600/700 are aliases** of `--accent-tint`/`--primary-fill`/`--primary`, so
+  ramp and roles cannot drift. The indirection points scale → role, which looks
+  backwards, because `check-token-sync.mjs` regex-parses `:root` for literal HSL
+  triplets and a `var()` on `--primary` would blind the gate. Poster red is
+  **not** a ramp step — it sits between 500 and 600.
+- **`ProgressRing` deleted**, and with it the "42% of nothing" problem: the
+  `MacroCalculator` rings drew arcs against invented ceilings (`protein/200`,
+  `carbs/300`). Scores → `ScoreNumeral` (tabular numeral, `value={null}` renders
+  an em-dash so first-run shows "not measured yet", never a 0). Budgets →
+  `MeterBar`. Fuel lost two rings that restated the bars directly beneath them.
+- **`MeterBar` tracks are `neutral-300`, not the sheet's `neutral-200`** — that
+  value assumes the paper ground; on a `--card` panel #eae7e7 is a 1.01:1
+  difference and an empty track vanishes, which is the state a budget bar is in
+  all morning.
+- **Deleted:** `card-glow-emerald`/`-brass`, `ring-glow-emerald`, `ring-draw-in`,
+  `texture-noise` (already a no-op), `texture-grid` and `--grid-line` (zero call
+  sites). Replaced by `card-boss` (≤1 per screen — tint + poster border + the
+  only sanctioned elevation), `card-section`, `is-active-row`/`is-active-tab`,
+  and `seg`/`seg-opt`.
+- **Fixed a pre-existing WCAG 1.4.1 failure** — `npm run a11y` was **18/20, not
+  20/20**, on `/paths` and `/compare`. `text-primary hover:underline` (56 call
+  sites) leaves a red link separated from muted body copy by hue alone at rest:
+  #ad1700 on #484747 is 1.27:1 against a 3:1 floor, and hover is no remedy on
+  touch. One base rule (`p a` underlined at rest, scoped to `<p>` so nav and
+  card links are untouched) beats 56 edits. Now **20/20**.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
 ## 2026-07-25 — Email leaves plain text behind (`.138`)
 
 The last rebrand surface. Every Mission Winning email was a `[...].join('\n')`

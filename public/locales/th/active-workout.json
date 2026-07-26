@@ -1,4 +1,7 @@
 {
+  "activeLiveSession": "เซสชันสด",
+  "activeElapsed": "ผ่านไป",
+  "activeSetsLabel": "เซ็ต",
   "activeNoWorkout": "No Active Workout",
   "activeNoWorkoutDesc": "Start a quick workout from Today or launch a saved routine from the builder.",
   "activeStartWorkout": "เริ่มฝึก",

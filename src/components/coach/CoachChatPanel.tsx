@@ -378,7 +378,7 @@ export function CoachChatPanel({
           <CardContent className="space-y-3" aria-busy={sending}>
             {offline || sendError ? (
               <div className="flex flex-wrap items-center gap-2">
-                <p className="text-sm text-status-warn flex-1" role="status">
+                <p className="text-sm text-primary flex-1" role="status">
                   {sendError ||
                     t('coachChatOffline', {
                       defaultValue: 'Coach voice offline — your plan and adjustments still work.',
@@ -402,7 +402,7 @@ export function CoachChatPanel({
               ref={logRef}
               role="log"
               aria-live="polite"
-              className="max-h-56 overflow-y-auto space-y-2 rounded-lg border border-border/40 p-3 text-sm"
+              className="max-h-56 overflow-y-auto space-y-2 border-2 border-border p-3 text-sm"
             >
               {turns.length === 0 ? (
                 <p className="text-muted-foreground text-xs">

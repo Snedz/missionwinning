@@ -23,7 +23,7 @@ export function TrackGpsLockedPreview() {
   if (isFreeBeta()) return null;
 
   return (
-    <Card className="content-card border-primary/40">
+    <Card className="content-card border-primary">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <MapPin className="h-4 w-4 text-primary" />
@@ -37,7 +37,7 @@ export function TrackGpsLockedPreview() {
               'Record outdoor walks and runs with live distance — MapMy-style, Super Bundle.',
           })}
         </p>
-        <div className="relative rounded-lg border border-border/50 bg-black/20 p-3">
+        <div className="relative  border-2 border-border bg-card p-3">
           <div className="pointer-events-none select-none opacity-70 blur-[1px]">
             <TrackPaceChart data={DEMO_PACE_SERIES} height={100} />
           </div>
@@ -45,7 +45,7 @@ export function TrackGpsLockedPreview() {
             {t('trackGpsPreviewChart', { defaultValue: 'Live pace chart while you move' })}
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-2 text-center text-sm rounded-lg border border-primary/40 bg-primary/10 p-3">
+        <div className="grid grid-cols-3 gap-2 text-center text-sm  border border-primary bg-accent-100 p-3">
           <div>
             <div className="font-bold tabular-nums">2</div>
             <div className="text-xs text-muted-foreground">

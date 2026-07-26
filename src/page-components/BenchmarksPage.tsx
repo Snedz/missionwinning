@@ -46,7 +46,7 @@ import { useWorkoutStore } from "@/store/workoutStore";
 
 const Benchmarks1RMChart = dynamic(
   () => import('@/components/benchmarks/Benchmarks1RMChart').then((m) => m.Benchmarks1RMChart),
-  { ssr: false, loading: () => <div className="h-72 animate-pulse rounded-lg bg-muted/30" /> }
+  { ssr: false, loading: () => <div className="h-72 animate-pulse  bg-card" /> }
 );
 import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
 import { PresidentialFitnessSection } from "@/components/fitness-test/PresidentialFitnessSection";
@@ -110,11 +110,7 @@ export function BenchmarksPage() {
 
   if (workoutHistory.length === 0 || exerciseIds.length === 0) {
     return (
-      <PillarPageShell
-        icon={Shield}
-        eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })}
-        title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
-        subtitle={t('benchmarksSubtitle', {
+      <PillarPageShell icon={Shield} eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })} title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })} subtitle={t('benchmarksSubtitle', {
           defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
         })}
         showLegalFooter
@@ -140,11 +136,7 @@ export function BenchmarksPage() {
   }
 
   return (
-    <PillarPageShell
-      icon={Shield}
-      eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })}
-      title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })}
-      subtitle={t('benchmarksSubtitle', {
+    <PillarPageShell icon={Shield} eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })} title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })} subtitle={t('benchmarksSubtitle', {
         defaultValue: 'Statistics, rep maxes, estimated vs actual, and progress over time.',
       })}
       showLegalFooter
@@ -169,7 +161,7 @@ export function BenchmarksPage() {
       </Card>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="card-elevated card-glow-emerald border-primary/20">
+        <Card className="card-boss">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Target className="h-4 w-4 text-primary" />
@@ -211,8 +203,7 @@ export function BenchmarksPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <Select value={activeId} onValueChange={setSelectedId}>
           <SelectTrigger className="w-full sm:w-72">
-            <SelectValue
-              placeholder={t('benchmarksSelectExercise', { defaultValue: 'Select exercise…' })}
+            <SelectValue placeholder={t('benchmarksSelectExercise', { defaultValue: 'Select exercise…' })}
             />
           </SelectTrigger>
           <SelectContent>
@@ -435,10 +426,9 @@ export function BenchmarksPage() {
                     {summaries.map((s) => {
                       const ex = getExerciseById(s.exerciseId);
                       return (
-                        <TableRow
-                          key={s.exerciseId}
+                        <TableRow key={s.exerciseId}
                           className={
-                            s.exerciseId === activeId ? "bg-primary/5" : "cursor-pointer"
+                            s.exerciseId === activeId ? "bg-accent-100" : "cursor-pointer"
                           }
                           onClick={() => setSelectedId(s.exerciseId)}
                         >
@@ -469,7 +459,7 @@ export function BenchmarksPage() {
       )}
 
       {/* Free core quick actions to populate benchmarks (functional) */}
-      <Card className="content-card mt-4 border-primary/40">
+      <Card className="content-card mt-4 border-primary">
         <CardHeader>
           <CardTitle className="text-base">
             {t('benchmarksQuickTitle', { defaultValue: 'Quick Benchmark Starters (Free)' })}
@@ -512,8 +502,7 @@ export function BenchmarksPage() {
 
       <SignInPrompt
         className="mt-6"
-        nextPath="/benchmarks"
-        description={t('benchmarksSignInFoot', {
+        nextPath="/benchmarks" description={t('benchmarksSignInFoot', {
           defaultValue: 'Sync benchmark history and PRs across devices.',
         })}
       />

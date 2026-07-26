@@ -132,7 +132,7 @@ export function TodayProgressSection({
               const groupLabel = muscleGroupLabel(g, t);
               const matchingEx = EXERCISES.filter(e => e.muscleGroups.includes(g)).slice(0, 2);
               return (
-                <div key={g} className={`p-3 rounded border ${isPrime ? 'border-primary/40 bg-primary/10' : 'border-border/60'}`}>
+                <div key={g} className={`p-3 rounded border ${isPrime ?'border-primary/40 bg-primary/10' : 'border-border/60'}`}>
                   <div className="font-medium">{groupLabel}</div>
                   <div className={isPrime ? "text-primary" : "text-muted-foreground"}>
                     {r.days === 99
@@ -374,7 +374,7 @@ export function TodayProgressSection({
           ).map((win, i) => (
             <div
               key={i}
-              className={`flex items-start gap-2 ${win.done ? 'font-medium text-primary' : ''}`}
+              className={`flex items-start gap-2 ${win.done ?'font-medium text-primary' : ''}`}
             >
               {win.done ? (
                 <Check className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
@@ -383,11 +383,11 @@ export function TodayProgressSection({
               )}
               <span>
                 {win.label}
-                {win.done && <Medal className="ms-1.5 inline h-3.5 w-3.5 text-brass" aria-label="earned" />}
+                {win.done && <Medal className="ms-1.5 inline h-3.5 w-3.5 text-accent-900" aria-label="earned" />}
               </span>
             </div>
           ))}
-          <div className={`flex items-start gap-2 ${nightSessions >= 3 ? 'font-medium text-[hsl(var(--status-info))]' : ''}`}>
+          <div className={`flex items-start gap-2 ${nightSessions >= 3 ?'font-medium text-muted-foreground' : ''}`}>
             {nightSessions >= 3 ? (
               <Moon className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
             ) : (
@@ -401,14 +401,14 @@ export function TodayProgressSection({
               {nightSessions > 0 && (
                 <>
                   {' · '}
-                  <a href="/leaderboard?board=under-the-stars" className="text-[hsl(var(--status-info))] hover:underline">
+                  <a href="/leaderboard?board=under-the-stars" className="text-muted-foreground hover:underline">
                     {t('todayRankings', { defaultValue: 'Rankings' })}
                   </a>
                 </>
               )}
             </span>
           </div>
-          <div className={`flex items-start gap-2 ${dawnSessions >= 3 ? 'font-medium text-status-warn' : ''}`}>
+          <div className={`flex items-start gap-2 ${dawnSessions >= 3 ?'font-medium text-status-warn' : ''}`}>
             {dawnSessions >= 3 ? (
               <Sunrise className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
             ) : (

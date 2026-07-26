@@ -19,11 +19,13 @@ import { cn } from '@/lib/utils';
 type Props = {
   session: PlanSession;
   className?: string;
+  /** Marks the card for today — red top rule + the one elevation on this screen. */
+  isToday?: boolean;
   /** Today’s not-done session only — opens adjust flow. */
   onAdjust?: () => void;
 };
 
-export function PlanSessionCard({ session, className, onAdjust }: Props) {
+export function PlanSessionCard({ session, className, isToday, onAdjust }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const units = useUnits();
@@ -45,7 +47,11 @@ export function PlanSessionCard({ session, className, onAdjust }: Props) {
     <Card
       className={cn(
         'content-card',
-        session.status === 'done' && 'border-[hsl(var(--status-warn)/0.3)]',
+        // Done is the surface fill; the amber border was a status hue in a
+        // one-colour system. Today keeps the only marked treatment on the grid:
+        // a red top rule and the single elevation this screen is allowed.
+        session.status === 'done' && 'bg-card',
+        isToday && 'border-t-[3px] border-t-[hsl(var(--accent-poster))] shadow-md',
         session.status === 'missed' && 'opacity-60',
         className
       )}

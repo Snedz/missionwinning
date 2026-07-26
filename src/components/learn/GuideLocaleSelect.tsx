@@ -47,7 +47,7 @@ export function GuideLocaleSelect({ className, showLabel = true }: Props) {
         id="guide-locale"
         value={current}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-border/60 bg-background px-3 py-2 text-sm text-foreground"
+        className="w-full  border-2 border-border bg-background px-3 py-2 text-sm text-foreground"
         aria-label={t('guideLanguage', { defaultValue: 'Language' })}
       >
         {APP_LANGS.map((code) => (

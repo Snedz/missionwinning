@@ -97,15 +97,20 @@ export function BreathingTimer() {
 
         <div className="flex flex-col items-center py-6">
           <div
-            className="w-32 h-32 rounded-full border-4 border-primary/40 flex items-center justify-center transition-transform duration-1000 bg-primary/10"
+            // A scaling square, per the handoff — nothing in this system is
+            // round. Ink, because while it is breathing it is the only thing
+            // you should be looking at, same rule as the rest dock.
+            className="flex h-36 w-36 items-center justify-center bg-neutral-900 text-neutral-100 transition-transform duration-1000 motion-reduce:transition-none"
             style={{ transform: `scale(${scale})` }}
           >
             <div className="text-center">
-              <div className="text-2xl font-bold">{remaining}</div>
-              <div className="text-sm text-primary">{phase.label}</div>
+              <div className="text-[40px] font-extrabold leading-none tabular-nums">{remaining}</div>
+              <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                {phase.label}
+              </div>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground mt-4">
+          <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground tabular-nums">
             Cycle {Math.min(cycles + 1, targetCycles)} / {targetCycles}
           </p>
         </div>
@@ -121,7 +126,9 @@ export function BreathingTimer() {
           )}
         </div>
         {cycles >= targetCycles && !running && (
-          <p className="text-center text-primary text-sm">Session complete — logged to Mind pillar.</p>
+          <p className="border-s-2 border-primary ps-2 text-sm font-semibold text-primary">
+            Session complete — logged to Mind pillar.
+          </p>
         )}
       </CardContent>
     </Card>

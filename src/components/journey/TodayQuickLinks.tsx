@@ -20,7 +20,7 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
 
   return (
     <div className="space-y-3">
-      <div className={`grid grid-cols-1 gap-3 ${compact || isFreeBeta() ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
+      <div className={`grid grid-cols-1 gap-3 ${compact || isFreeBeta() ?'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
         <Link
           href="/leaderboard"
           className={`${linkClass} border-border/50 bg-muted/20`}
@@ -41,10 +41,10 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
 
         <Link
           href="/history"
-          className={`${linkClass} border-[hsl(var(--status-info)/0.3)] bg-[hsl(var(--status-info)/0.08)]`}
+          className={`${linkClass} border-border bg-card`}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--status-info)/0.15)]">
-            <History className="h-5 w-5 text-[hsl(var(--status-info))]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card">
+            <History className="h-5 w-5 text-muted-foreground" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-sm">
@@ -54,13 +54,13 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
               {t('todayQuickHistoryDesc', { defaultValue: 'Volume, 1RM & muscle map' })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-[hsl(var(--status-info))]" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-muted-foreground" />
         </Link>
 
         {showBundle && (
-        <Link href="/bundle" className={`${linkClass} border-brass/30 bg-brass/10`}>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brass/20">
-            <Sparkles className="h-5 w-5 text-brass" />
+        <Link href="/bundle" className={`${linkClass} border-border bg-accent-100`}>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-100">
+            <Sparkles className="h-5 w-5 text-accent-900" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-sm">
@@ -72,7 +72,7 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
               })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-brass" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-accent-900" />
         </Link>
         )}
       </div>
@@ -81,10 +81,10 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Link
           href="/leaderboard?board=under-the-stars"
-          className={`${linkClass} border-[hsl(var(--status-info)/0.3)] bg-[hsl(var(--status-info)/0.1)]`}
+          className={`${linkClass} border-border bg-card`}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--status-info)/0.15)]">
-            <Moon className="h-5 w-5 text-[hsl(var(--status-info))]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card">
+            <Moon className="h-5 w-5 text-muted-foreground" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-sm">
@@ -94,7 +94,7 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
               {t('todayQuickNightDesc', { defaultValue: '22:00–05:00 sessions' })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-[hsl(var(--status-info))]" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-muted-foreground" />
         </Link>
 
         <Link

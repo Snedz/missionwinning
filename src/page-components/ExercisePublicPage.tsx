@@ -187,7 +187,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
                 <Link
                   key={alt.id}
                   href={`/exercises/${alt.id}`}
-                  className="text-sm px-3 py-1 rounded-full border border-border/60 hover:bg-muted/50"
+                  className="text-sm px-3 py-1 border border-border/60 hover:bg-muted/50"
                 >
                   {alt.name}
                 </Link>
@@ -204,7 +204,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
                 <Link
                   key={ex.id}
                   href={`/exercises/${ex.id}`}
-                  className="text-sm px-3 py-1 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/15"
+                  className="text-sm px-3 py-1 border border-primary/30 bg-primary/10 hover:bg-primary/15"
                 >
                   {ex.name}
                 </Link>

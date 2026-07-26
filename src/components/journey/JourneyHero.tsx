@@ -30,18 +30,21 @@ export function JourneyStrip({ action }: { action: JourneyAction }) {
   }
 
   return (
-    <div className="rounded-xl border border-border/30 bg-muted/20 px-3.5 py-3 space-y-2">
-      <div className="flex items-center justify-between gap-2 text-xs">
-        <span className="font-medium text-muted-foreground" suppressHydrationWarning>
+    <div className="space-y-2 border-t-2 border-border pt-3">
+      <div className="flex items-center justify-between gap-2 text-[11px] font-semibold uppercase tracking-[0.08em]">
+        <span className="text-muted-foreground" suppressHydrationWarning>
           {mounted ? getPhaseLabel(action.phase) : '\u00a0'}
         </span>
-        <span className="text-muted-foreground text-end" suppressHydrationWarning>
+        <span className="text-end text-muted-foreground" suppressHydrationWarning>
           {mounted ? action.stepLabel : '\u00a0'}
         </span>
       </div>
-      <div className="h-1 bg-muted rounded-full overflow-hidden">
+      {/* Square meter on a neutral track \u2014 same bar the rest of the system uses.
+          Not a MeterBar: this one is decorative alongside the labels above it,
+          and MeterBar announces itself as a progressbar. */}
+      <div className="h-1.5 overflow-hidden bg-neutral-300">
         <div
-          className="h-full bg-primary/50 transition-all duration-500 rounded-full"
+          className="h-full bg-primary-fill transition-all duration-500"
           style={{ width: mounted ? `${action.progressPct}%` : '0%' }}
           suppressHydrationWarning
         />
@@ -73,14 +76,19 @@ export function JourneyHero({
       : action.label;
 
   return (
-    <div className="bg-card p-6 space-y-4">
+    // Today's boss panel, and the one red field this screen gets. It was a grey
+    // surface card; the handoff makes the next action the loudest thing on the
+    // page. The nested .primary-action inverts to paper (see .poster-field in
+    // index.css), so the count first-90 asserts on /log is unchanged — one
+    // primary action, just no longer red-on-grey.
+    <div className="poster-field p-7 space-y-4">
       <div>
-        <p className="text-xs font-medium tracking-wide text-muted-foreground mb-2">
+        <p className="poster-kicker mb-2.5 text-[11px] font-semibold uppercase tracking-[0.12em]">
           {useJustGo
             ? t('justGoEyebrow', { defaultValue: 'Ready to train' })
             : t('yourNextStep', { defaultValue: 'Your next step' })}
         </p>
-        <h3 className="font-display text-[1.35rem] font-bold leading-tight md:text-[1.6rem]">
+        <h3 className="font-display text-[1.6rem] font-extrabold leading-[1.05] md:text-[1.9rem]">
           {useJustGo
             ? t('justGoTitle', {
                 focus: justGoMeta!.focusLabel,
@@ -88,7 +96,7 @@ export function JourneyHero({
               })
             : label}
         </h3>
-        <p className="text-base text-muted-foreground mt-2 leading-relaxed">
+        <p className="poster-sub mt-1.5 text-sm leading-relaxed tabular-nums">
           {useJustGo
             ? t('justGoDesc', {
                 focus: justGoMeta!.focusLabel,
@@ -102,7 +110,7 @@ export function JourneyHero({
         <ChevronRight className="h-5 w-5" />
       </button>
       {action.phase === 'basic' && !useJustGo && (
-        <p className="text-sm text-center text-muted-foreground leading-relaxed">
+        <p className="poster-sub text-sm leading-relaxed">
           {t('journeyBasicFoot', {
             defaultValue: 'One step at a time. Log a few sets — Coach can shape the week from real history.',
           })}

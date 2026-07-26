@@ -88,7 +88,7 @@ export function SetLogRow({
     return (
       <div
         className={cn(
-          'flex flex-wrap items-center gap-2 rounded-xl border p-2.5',
+          'flex flex-wrap items-center gap-2 border-b border-border p-2.5',
           setKindCompletedRowClass(kind)
         )}
       >
@@ -112,12 +112,10 @@ export function SetLogRow({
         {set.isPr && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <Badge
-                variant="outline"
-                className="border-brass/40 bg-brass/10 text-brass text-[11px] font-semibold"
-              >
-                {t('activePrBadge', { defaultValue: 'PR' })}
-              </Badge>
+              {/* The honor tier, and one of only two places it is allowed —
+                  accent-800 fill with the ★ the Badge renders itself. Brass is
+                  retired. */}
+              <Badge variant="honor">{t('activePrBadge', { defaultValue: 'PR' })}</Badge>
             </TooltipTrigger>
             <TooltipContent>
               {t('activePrTip', { defaultValue: 'Personal record for this exercise' })}
@@ -159,7 +157,7 @@ export function SetLogRow({
   return (
     <div
       className={cn(
-        'rounded-xl border p-2 space-y-1.5 transition-colors',
+        'border-b border-border p-2 space-y-1.5 transition-colors',
         isNext ? setKindRowClass(kind, true) : setKindRowClass(kind, false)
       )}
     >
@@ -192,7 +190,7 @@ export function SetLogRow({
                 const parsed = parseInt(e.target.value.replace(/\D/g, ''), 10);
                 onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
               }}
-              className="h-11 w-11 sm:h-11 sm:w-11 rounded-lg border border-input bg-background text-center text-base font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
+              className="h-11 w-11 border-2 border-input bg-background text-center text-base font-bold tabular-nums"
             />
             <Button
               type="button"
@@ -231,7 +229,7 @@ export function SetLogRow({
                 const parsed = parseFloat(cleaned);
                 onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
               }}
-              className="h-11 w-12 sm:w-12 md:w-14 rounded-lg border border-input bg-background text-center text-base font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-ring"
+              className="h-11 w-12 md:w-14 border-2 border-input bg-background text-center text-base font-bold tabular-nums"
             />
             <Button
               type="button"
@@ -275,7 +273,7 @@ export function SetLogRow({
       </button>
 
       {showMore && (
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border/40 pt-2">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-2">
           <div className="flex flex-wrap gap-1">
             {SET_KINDS.map((k) => (
               <Tooltip key={k}>
@@ -284,12 +282,9 @@ export function SetLogRow({
                     type="button"
                     size="sm"
                     variant={kind === k ? 'default' : 'outline'}
-                    className={cn(
-                      'h-11 min-h-[44px] px-2 text-[10px] min-w-[44px] tap-target',
-                      kind === k && k === 'warmup' && 'bg-amber-600 hover:bg-amber-500',
-                      kind === k && k === 'failure' && 'bg-rose-600 hover:bg-rose-500',
-                      kind === k && k === 'drop' && 'bg-violet-600 hover:bg-violet-500'
-                    )}
+                    // Selected is the system fill for every kind — amber /
+                    // rose / violet were four hues saying what the label says.
+                    className="h-11 min-h-[44px] px-2 text-[10px] min-w-[44px] tap-target"
                     onClick={() => onSetKindChange(k)}
                   >
                     {t(setKindLabelKey(k), {

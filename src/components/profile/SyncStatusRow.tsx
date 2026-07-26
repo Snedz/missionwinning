@@ -45,7 +45,7 @@ export function SyncStatusRow() {
   };
 
   return (
-    <div className="rounded-xl border border-border/50 bg-muted/20 p-3 text-sm">
+    <div className="border-2 border-border bg-card p-3 text-sm">
       {failure ? (
         <p className="flex items-start gap-2 text-muted-foreground">
           <CloudOff className="mt-0.5 h-4 w-4 shrink-0" />
@@ -75,7 +75,7 @@ export function SyncStatusRow() {
             })}
           </p>
           <Button type="button" variant="ghost" size="sm" onClick={onRetry} disabled={busy}>
-            <RefreshCw className={`me-1.5 h-3.5 w-3.5 ${busy ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`me-1.5 h-3.5 w-3.5 ${busy ?'animate-spin' : ''}`} />
             {t('syncRetryNow', { defaultValue: 'Retry' })}
           </Button>
         </div>

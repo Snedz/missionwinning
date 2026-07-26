@@ -137,28 +137,25 @@ export function ActiveExerciseCard({
     <Card
       className={cn(
         'content-card',
-        ssLabel && 'border-[hsl(var(--status-info)/0.4)]'
+        // Superset members are tied together by a red left edge, per the
+        // handoff — it was a blue --status-info border, which was the last
+        // non-red hue in the logger.
+        ssLabel && 'border-s-[3px] border-s-[hsl(var(--accent-poster))]'
       )}
     >
       <CardHeader className="p-3 pb-2 space-y-2">
         <div className="flex items-start gap-2">
           <CardTitle className="text-base sm:text-lg flex flex-wrap items-center gap-2 min-w-0 flex-1">
-            <span className="leading-tight">{exercise.name}</span>
+            <span className="leading-tight font-extrabold">{exercise.name}</span>
             {ssLabel && (
-              <Badge
-                variant="outline"
-                className="text-[10px] uppercase border-[hsl(var(--status-info)/0.45)] text-[hsl(var(--status-info))]"
-              >
+              <Badge variant="outline" className="text-[10px]">
                 {ssLabel}
               </Badge>
             )}
             {exLog.loadPct != null &&
               exLog.loadPct > 0 &&
               exLog.sets.some((s) => s.weight > 0) && (
-                <Badge
-                  variant="outline"
-                  className="text-[10px] tabular-nums border-primary/40 text-primary"
-                >
+                <Badge variant="outline" className="text-[10px] tabular-nums">
                   {t('activeLoadPctChip', {
                     pct: exLog.loadPct,
                     weight: exLog.sets.find((s) => s.weight > 0)?.weight ?? 0,
@@ -208,7 +205,7 @@ export function ActiveExerciseCard({
                     <Link
                       href={`/coach?ask=${encodeURIComponent(exercise.id)}`}
                       role="menuitem"
-                      className="flex min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted"
+                      className="flex min-h-[44px] items-center px-3 text-sm hover:bg-accent-100"
                       onClick={() => setMenuOpen(false)}
                     >
                       {t('activeAskAboutForm', { defaultValue: 'Ask about form' })}
@@ -217,7 +214,7 @@ export function ActiveExerciseCard({
                       <button
                         type="button"
                         role="menuitem"
-                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start"
+                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
                         onClick={() => {
                           onToggleSuperset();
                           setMenuOpen(false);
@@ -230,7 +227,7 @@ export function ActiveExerciseCard({
                       <button
                         type="button"
                         role="menuitem"
-                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start"
+                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
                         onClick={() => {
                           onUnlinkSuperset();
                           setMenuOpen(false);
@@ -242,7 +239,7 @@ export function ActiveExerciseCard({
                     <button
                       type="button"
                       role="menuitem"
-                      className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start"
+                      className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
                       onClick={() => {
                         onToggleNote();
                         setMenuOpen(false);
@@ -254,7 +251,7 @@ export function ActiveExerciseCard({
                       <button
                         type="button"
                         role="menuitem"
-                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start"
+                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start"
                         onClick={() => {
                           onToggleSwap();
                           setMenuOpen(false);
@@ -263,7 +260,7 @@ export function ActiveExerciseCard({
                         {t('activeSwap', { defaultValue: 'Swap' })}
                       </button>
                     )}
-                    <div className="border-t border-border/50 px-1 pt-1">
+                    <div className="border-t border-border px-1 pt-1">
                       <HoldToConfirmButton
                         size="sm"
                         className="w-full justify-start"
@@ -425,7 +422,7 @@ export function ActiveExerciseCard({
                       <button
                         type="button"
                         role="menuitem"
-                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start text-primary"
+                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start text-primary"
                         onClick={() => {
                           onApplyAllTargets();
                           setFooterOpen(false);
@@ -438,7 +435,7 @@ export function ActiveExerciseCard({
                       <button
                         type="button"
                         role="menuitem"
-                        className="flex w-full min-h-[44px] items-center rounded-lg px-3 text-sm hover:bg-muted text-start text-muted-foreground"
+                        className="flex w-full min-h-[44px] items-center px-3 text-sm hover:bg-accent-100 text-start text-muted-foreground"
                         onClick={() => {
                           onRemoveSet();
                           setFooterOpen(false);

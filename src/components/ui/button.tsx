@@ -23,12 +23,27 @@ const buttonVariants = cva(
         // Legacy branded-CTA variant (10+ call sites) — now the plain red fill;
         // fold into `default` when Phase 3 recuts the app screens.
         fitness: "bg-primary-fill text-primary-foreground hover:bg-primary-fill-hover",
+        /**
+         * For the ink panels — the rest dock, the guided-session runner. The
+         * paper-ground variants invert badly there: `outline` draws an ink
+         * border on ink, and `ghost`'s hover is an ink wash on ink, so both
+         * disappear entirely.
+         */
+        onInk:
+          "border-2 border-neutral-500 bg-transparent text-neutral-100 hover:bg-neutral-100/10 active:bg-neutral-100/20",
+        onInkSolid:
+          "border-2 border-transparent bg-neutral-100 text-neutral-900 hover:bg-white",
       },
       size: {
         default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        sm: "h-9 px-3",
+        lg: "h-11 px-8",
         icon: "h-10 w-10",
+        // Full-width buttons put their label at the padding edge, never in the
+        // middle — a centred label in a wide button is the single loudest tell
+        // that a layout is not on this system. Overrides the base
+        // `justify-center`, so it must come after it in the class string.
+        block: "h-11 w-full justify-start px-4 text-left",
       },
     },
     defaultVariants: {

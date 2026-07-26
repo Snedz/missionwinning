@@ -18,7 +18,7 @@ export function FuelWeekGlance({ days, todayIso, targetCals }: Props) {
   const maxBar = Math.max(targetCals, ...days.map((d) => d.cals), 1);
 
   return (
-    <div className="rounded-xl border border-border/50 bg-muted/10 px-3 py-3 space-y-2">
+    <div className="border-2 border-border bg-card px-3 py-3 space-y-2">
       <p className="text-xs font-medium text-muted-foreground">
         {t('fuelWeekGlance', { defaultValue: 'Last 7 days' })}
       </p>
@@ -37,14 +37,18 @@ export function FuelWeekGlance({ days, todayIso, targetCals }: Props) {
               </span>
               <div
                 className={cn(
-                  'w-full max-w-[1.75rem] rounded-t-md transition-all',
+                  // Three states, one colour: over target is the full red,
+                  // today is the fill, an ordinary logged day is neutral. Amber
+                  // for "over" implied a severity the app does not assign — a
+                  // day over target is information, not a fault.
+                  'w-full max-w-[1.75rem] transition-all',
                   d.entries === 0
-                    ? 'bg-muted/40'
+                    ? 'bg-neutral-300'
                     : over
-                      ? 'bg-status-warn/70'
+                      ? 'bg-[hsl(var(--accent-poster))]'
                       : isToday
-                        ? 'bg-primary'
-                        : 'bg-primary/50'
+                        ? 'bg-primary-fill'
+                        : 'bg-neutral-400'
                 )}
                 style={{ height: d.entries === 0 ? 4 : h }}
                 title={`${d.date}: ${d.cals} kcal · ${d.protein}g P`}

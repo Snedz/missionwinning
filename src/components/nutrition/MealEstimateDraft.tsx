@@ -93,8 +93,8 @@ export function MealEstimateDraft({
   return (
     <div
       className={cn(
-        'rounded-xl border p-4 space-y-3',
-        low ? 'border-status-warn/40 bg-[hsl(var(--status-warn)/0.08)]' : 'border-border/50 bg-muted/15',
+        ' border p-4 space-y-3',
+        low ? 'border-primary bg-accent-100' : 'border-border bg-card',
         className
       )}
     >
@@ -103,17 +103,17 @@ export function MealEstimateDraft({
           {t('fuelEstimateDraftTitle', { defaultValue: 'Review estimate' })}
         </p>
         {sourceLabel ? (
-          <span className="text-[11px] font-medium text-muted-foreground border border-border/50 rounded-full px-2 py-0.5">
+          <span className="text-[11px] font-medium text-muted-foreground border-2 border-border  px-2 py-0.5">
             {sourceLabel}
           </span>
         ) : null}
         {confidence ? (
           <span
             className={cn(
-              'text-[11px] font-medium rounded-full px-2 py-0.5 border',
+              'text-[11px] font-medium  px-2 py-0.5 border',
               low
-                ? 'border-status-warn/40 text-status-warn'
-                : 'border-border/50 text-muted-foreground'
+                ? 'border-primary text-primary'
+                : 'border-border text-muted-foreground'
             )}
           >
             {confidence === 'high'
@@ -151,7 +151,7 @@ export function MealEstimateDraft({
               type="button"
               size="sm"
               variant={servings === s ? 'fitness' : 'outline'}
-              className="h-8 min-w-[2.5rem] rounded-full px-2.5 text-xs tabular-nums"
+              className="h-8 min-w-[2.5rem]  px-2.5 text-xs tabular-nums"
               onClick={() => applyServings(s)}
             >
               {servingLabel(s)}

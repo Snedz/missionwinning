@@ -36,8 +36,10 @@ export function TodayPageHeader({
     <header className="space-y-3">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 space-y-1">
-          <p className="text-xs font-medium tracking-wide text-primary">{today}</p>
-          <h1 className="text-[1.85rem] font-semibold tracking-tight leading-tight md:text-[2.15rem]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
+            {today}
+          </p>
+          <h1 className="text-[2.1rem] font-extrabold leading-[1.05] tracking-[-0.01em] md:text-[2.5rem]">
             {t('today', { defaultValue: 'Today' })}
           </h1>
           {focusLine ? (
@@ -47,37 +49,41 @@ export function TodayPageHeader({
         {showEditToday && onEditToday && (
           <button
             type="button"
-            className="shrink-0 inline-flex items-center gap-1.5 min-h-[40px] rounded-md border border-border/60 bg-background px-3 text-sm font-medium hover:bg-accent"
+            className="shrink-0 inline-flex items-center gap-1.5 min-h-[44px] border-2 border-foreground bg-transparent px-3 text-sm font-semibold transition-colors hover:bg-foreground/[0.07]"
             onClick={onEditToday}
           >
-            <LayoutGrid className="h-4 w-4 text-muted-foreground" />
+            <LayoutGrid className="h-4 w-4" />
             {t('todayEditToday', { defaultValue: 'Edit Today' })}
           </button>
         )}
       </div>
-      {streak > 0 && (
-        <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1">
-          <StreakChip streak={streak} variant="inline" />
-          <span aria-hidden>·</span>
-          <a href="/leaderboard" className="text-muted-foreground hover:text-foreground hover:underline">
-            {t('leaderboardRankings', { defaultValue: 'Rankings' })}
-          </a>
-        </p>
-      )}
-      <p className="text-sm text-muted-foreground">
-        {!userEmail ? (
+      {/* One meta line, per the handoff: streak tag · Rankings · sync state.
+          These were three stacked blocks, which pushed the next action — the
+          only thing on this screen that matters — further below the fold. */}
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm text-muted-foreground">
+        {streak > 0 && (
           <>
-            <a href="/profile" className="text-muted-foreground hover:text-foreground hover:underline">
-              {t('signInLink', { defaultValue: 'Sign in' })}
-            </a>{' '}
-            {t('signInOptional', {
-              defaultValue: 'optional — progress stays on this device.',
-            })}
+            <StreakChip streak={streak} variant="inline" />
+            <a href="/leaderboard" className="underline underline-offset-2 hover:text-foreground">
+              {t('leaderboardRankings', { defaultValue: 'Rankings' })}
+            </a>
           </>
-        ) : (
-          t('cloudSyncOn', { defaultValue: 'Cloud sync on.' })
         )}
-      </p>
+        <span>
+          {!userEmail ? (
+            <>
+              <a href="/profile" className="underline underline-offset-2 hover:text-foreground">
+                {t('signInLink', { defaultValue: 'Sign in' })}
+              </a>{' '}
+              {t('signInOptional', {
+                defaultValue: 'optional — progress stays on this device.',
+              })}
+            </>
+          ) : (
+            t('cloudSyncOn', { defaultValue: 'Cloud sync on.' })
+          )}
+        </span>
+      </div>
       <JourneyStrip action={action} />
     </header>
   );

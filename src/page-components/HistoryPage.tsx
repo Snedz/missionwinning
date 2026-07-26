@@ -39,11 +39,11 @@ import { AnatomyHeatMap } from '@/components/history/AnatomyHeatMap';
 
 const History1RMChart = dynamic(
   () => import('@/components/history/HistoryCharts').then((m) => m.History1RMChart),
-  { ssr: false, loading: () => <div className="h-48 animate-pulse rounded-lg bg-muted/30" /> }
+  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-card" /> }
 );
 const HistoryVolumeChart = dynamic(
   () => import('@/components/history/HistoryCharts').then((m) => m.HistoryVolumeChart),
-  { ssr: false, loading: () => <div className="h-48 animate-pulse rounded-lg bg-muted/30" /> }
+  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-card" /> }
 );
 import { getExerciseById } from '@/data/exercises';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
@@ -177,7 +177,7 @@ export function HistoryPage() {
         defaultValue: 'What you logged — powers readiness on Today and Coach week plans.',
       })}
     >
-      <div className="rounded-2xl border border-border/50 bg-muted/15 px-4 py-3 space-y-1">
+      <div className="border-2 border-border bg-card px-4 py-3 space-y-1">
         <p className="text-xs font-medium tracking-wide text-muted-foreground">
           {t('historyMissionStory', { defaultValue: 'At a glance' })}
         </p>
@@ -290,8 +290,8 @@ export function HistoryPage() {
                   }}
                   className={
                     range === value
-                      ? 'rounded-full border border-primary/50 bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary'
-                      : 'rounded-full border border-border/50 px-3 py-1.5 text-xs text-muted-foreground'
+                      ? 'min-h-[44px] border-2 border-transparent bg-primary-fill px-3 text-xs font-semibold text-primary-foreground'
+                      : 'min-h-[44px] border-2 border-border px-3 text-xs font-semibold text-muted-foreground hover:bg-foreground/[0.07]'
                   }
                 >
                   {t(`historyRange${value}`, { defaultValue: label })}
@@ -443,9 +443,10 @@ export function HistoryPage() {
                               <TableRow
                                 key={i}
                                 className={cn(
-                                  kind === 'warmup' && 'bg-[hsl(var(--status-warn)/0.08)]',
-                                  kind === 'failure' && 'bg-rose-950/10',
-                                  kind === 'drop' && 'bg-[hsl(var(--status-info)/0.08)]'
+                                  // No per-kind row tint — the WARMUP /
+                                  // FAILURE tag says it, same call as
+                                  // src/lib/workout/setKind.ts.
+                                  kind !== 'normal' && 'bg-card'
                                 )}
                               >
                                 <TableCell>{i + 1}</TableCell>

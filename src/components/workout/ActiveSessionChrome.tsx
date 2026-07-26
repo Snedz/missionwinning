@@ -6,9 +6,8 @@
  */
 
 import { useState } from 'react';
-import { Check, Clock, MoreVertical, Plus, Scale } from 'lucide-react';
+import { Check, MoreVertical, Plus, Scale } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
@@ -62,33 +61,30 @@ export function ActiveSessionChrome({
           'border-b border-border/40 md:border-border/60',
         ].join(' ')}
       >
-        <div className="flex flex-nowrap items-center gap-2 min-w-0">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
+          {t('activeLiveSession', { defaultValue: 'Live session' })}
+        </p>
+        <div className="mt-0.5 flex flex-nowrap items-center gap-2 min-w-0">
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 min-w-0">
-              <h1 className="truncate text-lg font-semibold leading-tight md:text-xl">
-                {workoutName}
-              </h1>
-              <Badge
-                variant="outline"
-                className="shrink-0 tabular-nums text-[10px] text-muted-foreground"
-              >
-                {completedSets}/{totalSets}
-              </Badge>
-            </div>
+            <h1 className="truncate text-[1.4rem] font-extrabold leading-[1.1] md:text-[1.7rem]">
+              {workoutName}
+            </h1>
             <p className="mt-0.5 truncate text-[11px] text-muted-foreground">{coachTip}</p>
           </div>
 
-          <div
-            className="card-elevated flex shrink-0 items-center gap-1.5 px-2.5 py-1.5"
-            role="timer"
-            aria-live="polite"
-            aria-label={t('activeSessionTimer', { defaultValue: 'Session timer' })}
+          {/* Plates was buried in the overflow menu; the handoff puts it on the
+              header, which is where you reach for it — mid-set, one-handed. */}
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-11 min-h-[44px] shrink-0 px-3 tap-target"
+            onClick={onOpenPlateCalc}
           >
-            <Clock className="h-3.5 w-3.5 text-primary" aria-hidden />
-            <span className="font-mono text-lg font-bold tabular-nums md:text-xl">
-              {formatDuration(elapsedSeconds)}
+            <Scale className="h-4 w-4 md:me-1" aria-hidden />
+            <span className="hidden md:inline">
+              {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
             </span>
-          </div>
+          </Button>
 
           <Button
             variant="fitness"
@@ -120,37 +116,60 @@ export function ActiveSessionChrome({
                   aria-label={t('activeCloseMenu', { defaultValue: 'Close menu' })}
                   onClick={() => setMenuOpen(false)}
                 />
+                {/* Plates moved out to the header, so discard is all that is
+                    left in here — which is the right amount for a menu whose
+                    only remaining item is destructive. */}
                 <div
                   role="menu"
                   className="absolute end-0 top-full z-50 mt-1 min-w-[11rem] border-2 border-border bg-card p-1"
                 >
-                  <button
-                    type="button"
-                    role="menuitem"
-                    className="flex w-full min-h-[44px] items-center gap-2 rounded-lg px-3 text-sm hover:bg-muted text-start"
-                    onClick={() => {
-                      onOpenPlateCalc();
+                  <HoldToConfirmButton
+                    size="sm"
+                    className="w-full justify-start"
+                    label={t('activeDiscardWorkout', { defaultValue: 'Discard workout' })}
+                    onConfirm={() => {
                       setMenuOpen(false);
+                      onDiscard();
                     }}
-                  >
-                    <Scale className="h-4 w-4" aria-hidden />
-                    {t('activeOpenPlateCalc', { defaultValue: 'Plates' })}
-                  </button>
-                  <div className="border-t border-border/50 px-1 pt-1">
-                    <HoldToConfirmButton
-                      size="sm"
-                      className="w-full justify-start"
-                      label={t('activeDiscardWorkout', { defaultValue: 'Discard workout' })}
-                      onConfirm={() => {
-                        setMenuOpen(false);
-                        onDiscard();
-                      }}
-                    />
-                  </div>
+                  />
                 </div>
               </>
             )}
           </div>
+        </div>
+
+        {/* Elapsed and sets as a labelled stat pair, per the handoff — the
+            timer was a bordered chip competing with the workout name. */}
+        <div
+          className="mt-2 flex items-end gap-6"
+          role="timer"
+          aria-live="polite"
+          aria-label={t('activeSessionTimer', { defaultValue: 'Session timer' })}
+        >
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+              {t('activeElapsed', { defaultValue: 'Elapsed' })}
+            </p>
+            <p className="text-[30px] font-extrabold leading-none tabular-nums">
+              {formatDuration(elapsedSeconds)}
+            </p>
+          </div>
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+              {t('activeSetsLabel', { defaultValue: 'Sets' })}
+            </p>
+            <p className="text-[30px] font-extrabold leading-none tabular-nums">
+              {completedSets}
+              <span className="text-base text-muted-foreground">/{totalSets}</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-2 h-1.5 overflow-hidden bg-neutral-300">
+          <div
+            className="h-full bg-primary-fill transition-[width] duration-500"
+            style={{ width: `${totalSets > 0 ? Math.round((completedSets / totalSets) * 100) : 0}%` }}
+          />
         </div>
       </div>
 

@@ -24,7 +24,7 @@ export function FuelMealPlanCard() {
 
   if (!plan) {
     return (
-      <Card className="content-card border-primary/40">
+      <Card className="content-card border-primary">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" />
@@ -50,7 +50,7 @@ export function FuelMealPlanCard() {
   }
 
   return (
-    <Card className="content-card border-primary/40">
+    <Card className="content-card border-primary">
       <CardHeader className="flex flex-row items-start justify-between gap-2">
         <CardTitle className="text-base">
           {t('fuelCoachWeekTitle', { defaultValue: 'Your adaptive meal plan' })}
@@ -62,7 +62,7 @@ export function FuelMealPlanCard() {
       </CardHeader>
       <CardContent className="space-y-4">
         {plan.days.map((day) => (
-          <div key={day.dayKey} className="border border-white/10 rounded-lg p-3 bg-black/20 space-y-2">
+          <div key={day.dayKey} className="border border-border p-3 bg-card space-y-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="text-sm font-semibold">{day.label}</div>
               <div className="text-xs text-primary capitalize">{day.trainingLoad} day</div>

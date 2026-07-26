@@ -51,7 +51,7 @@ export function ExercisePicker({
           placeholder ??
           t('exercisePickerSearch', { defaultValue: 'Search exercises…' })
         }
-        className="w-full rounded-xl border border-border/60 bg-background px-3 py-2.5 min-h-[44px] text-sm"
+        className="w-full  border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm"
         autoComplete="off"
       />
       {selected && !query && (
@@ -64,7 +64,7 @@ export function ExercisePicker({
       )}
       {(query.trim().length > 0 || !selected) && (
         <ul
-          className="max-h-48 overflow-y-auto rounded-xl border border-border/50 divide-y divide-border/40"
+          className="max-h-48 overflow-y-auto  border-2 border-border divide-y divide-border"
           role="listbox"
         >
           {filtered.length === 0 ? (
@@ -79,8 +79,8 @@ export function ExercisePicker({
                   role="option"
                   aria-selected={value === ex.id}
                   className={cn(
-                    'w-full text-left px-3 py-2.5 text-sm min-h-[44px] hover:bg-muted/40',
-                    value === ex.id && 'bg-primary/10 text-primary'
+                    'w-full text-left px-3 py-2.5 text-sm min-h-[44px] hover:bg-card',
+                    value === ex.id && 'bg-accent-100 text-primary'
                   )}
                   onClick={() => {
                     onChange(ex.id);

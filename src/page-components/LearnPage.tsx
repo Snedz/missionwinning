@@ -101,7 +101,7 @@ export function LearnPage() {
             placeholder={t('learnSearchPlaceholder', {
               defaultValue: 'Search paths or lessons…',
             })}
-            className="w-full rounded-xl border border-border/60 bg-background px-3 py-2.5 min-h-[44px] text-sm"
+            className="w-full  border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm"
           />
           {filteredPaths.length === 0 && (
             <EmptyState
@@ -141,9 +141,9 @@ export function LearnPage() {
                   </CardHeader>
                 </button>
                 {open && (
-                  <CardContent className="space-y-4 pt-0 border-t border-border/50">
+                  <CardContent className="space-y-4 pt-0 border-t border-border">
                     {path.lessons.map((lesson) => (
-                      <div key={lesson.id} className="p-4 rounded-lg bg-muted/30 space-y-2">
+                      <div key={lesson.id} className="p-4  bg-card space-y-2">
                         <div className="flex items-start justify-between gap-2">
                           <h3 className="font-semibold">{lesson.title}</h3>
                           {completedLessons.has(lesson.id) && (
@@ -183,7 +183,7 @@ export function LearnPage() {
           })}
         </div>
 
-        <Card className="content-card border-primary/40">
+        <Card className="content-card border-primary">
           <CardHeader>
             <CardTitle className="text-base">
               {t('learnSampleTitle', { defaultValue: 'Try it — free sample workout' })}
@@ -208,7 +208,7 @@ export function LearnPage() {
         </Card>
 
         {premium ? (
-          <Card className="content-card border-primary/40">
+          <Card className="content-card border-primary">
             <CardHeader>
               <CardTitle className="text-base">
                 {t('learnPremiumTitle', { defaultValue: 'Premium Specialist Programs' })}

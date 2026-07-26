@@ -281,7 +281,7 @@ export function ActiveWorkoutPage() {
   );
 
   return (
-    <div className={`space-y-4 ${restTimerActive ? 'pb-36 md:pb-28' : 'pb-4'}`}>
+    <div className={`space-y-4 ${restTimerActive ?'pb-36 md:pb-28' : 'pb-4'}`}>
       <SessionCheckInSheet
         open={checkInOpen}
         onDismiss={({ completed, checkIn }) => {
@@ -412,7 +412,7 @@ export function ActiveWorkoutPage() {
           {offerVolumeTrim && plan ? (
             <button
               type="button"
-              className="rounded-full border border-border/50 bg-muted/20 px-3 py-1 text-muted-foreground font-medium hover:text-foreground"
+              className="border border-border/50 bg-muted/20 px-3 py-1 text-muted-foreground font-medium hover:text-foreground"
               onClick={() => {
                 const next = adjustToday({ type: 'readiness' });
                 if (next) {

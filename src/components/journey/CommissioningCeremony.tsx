@@ -45,7 +45,7 @@ export function CommissioningCeremony() {
         role="dialog"
         aria-labelledby="commissioning-title"
       >
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-primary/20">
           <Award className="h-8 w-8 text-primary" />
         </div>
         <p className="text-xs uppercase tracking-widest text-primary mb-2">
@@ -74,7 +74,7 @@ export function CommissioningCeremony() {
           <ShareFitnessButton
             text={mahaShare}
             variant="ghost"
-            className="mt-1 w-full text-[hsl(var(--status-info))]"
+            className="mt-1 w-full text-muted-foreground"
             labelKey="commissionedShareMaha"
             defaultLabel="Share — Make America Healthy Again"
           />

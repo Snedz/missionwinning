@@ -21,7 +21,7 @@ export function ProfileLanguageSwitcher() {
       <select
         value={currentLang}
         onChange={(e) => changeLanguage(e.target.value)}
-        className="w-full text-sm bg-background border border-border/50 rounded px-3 py-2"
+        className="w-full text-sm bg-background border-2 border-border rounded px-3 py-2"
         aria-label={t('changeLanguage', { defaultValue: 'Change language' })}
       >
         {APP_LANGS.map((l) => (

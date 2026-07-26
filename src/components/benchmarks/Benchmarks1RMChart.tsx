@@ -30,24 +30,24 @@ export function Benchmarks1RMChart({ data, unitLabel }: Props) {
     <div className="h-72 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 8, right: 16, left: 0, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(217 33% 20%)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
           <XAxis
             dataKey="date"
-            tick={{ fill: 'hsl(215 20% 65%)', fontSize: 12 }}
-            stroke="hsl(217 33% 25%)"
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+            stroke="hsl(var(--border))"
           />
           <YAxis
-            tick={{ fill: 'hsl(215 20% 65%)', fontSize: 12 }}
-            stroke="hsl(217 33% 25%)"
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+            stroke="hsl(var(--border))"
             unit={` ${unitLabel}`}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: 'hsl(222 47% 9%)',
-              border: '1px solid hsl(217 33% 20%)',
-              borderRadius: '8px',
+              backgroundColor: 'hsl(var(--card))',
+              border: '2px solid hsl(var(--border))',
+              borderRadius: 0,
             }}
-            labelStyle={{ color: 'hsl(210 40% 98%)' }}
+            labelStyle={{ color: 'hsl(var(--foreground))' }}
             formatter={(value: number, name: string) => [
               value != null ? `${value} ${unitLabel}` : '—',
               name === 'estimated'

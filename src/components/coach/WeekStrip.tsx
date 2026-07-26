@@ -25,16 +25,15 @@ function SessionGlyph({
   done: boolean;
   kind: PlanSession['kind'] | undefined;
 }) {
+  // A done cell is an ink fill, so its check has to be light or it disappears.
   if (done) {
-    return <Check className="mt-1 h-3.5 w-3.5 text-brass" aria-hidden strokeWidth={2.5} />;
+    return <Check className="mt-1 h-3.5 w-3.5 text-neutral-100" aria-hidden strokeWidth={2.5} />;
   }
   if (kind === 'conditioning') {
     return <Zap className="mt-1 h-3.5 w-3.5 text-primary" aria-hidden />;
   }
   if (kind === 'recovery') {
-    return (
-      <Wind className="mt-1 h-3.5 w-3.5 text-[hsl(var(--status-info))]" aria-hidden />
-    );
+    return <Wind className="mt-1 h-3.5 w-3.5 text-muted-foreground" aria-hidden />;
   }
   return <Dumbbell className="mt-1 h-3.5 w-3.5 text-primary" aria-hidden />;
 }
@@ -74,28 +73,28 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
           <div
             key={label}
             className={cn(
-              'flex flex-col items-center rounded-lg border p-2 text-center text-[10px] transition-colors',
-              isToday && 'border-2 border-[hsl(var(--accent-poster))] bg-tint',
-              // Brass is retired — a finished session reads as solid ink on the
-              // surface fill, which is quieter than the old honor tint and lets
-              // today's red rule be the only marked day.
-              done && 'border-foreground bg-card',
+              // Seven equal cells. Three states carry everything: ink fill =
+              // done, 2px accent outline = today, surface = rest.
+              'flex flex-col items-center border-2 p-2 text-center text-[10px] transition-colors',
+              'border-transparent bg-card',
+              done && 'bg-neutral-900 text-neutral-100',
+              // Today's outline is drawn last so it still reads on a done cell.
+              isToday && 'border-[hsl(var(--accent-poster))]',
               pulseOffsets.has(i) && 'week-strip-pulse',
               missed && 'border-border bg-transparent',
-              session?.kind === 'recovery' &&
-                !done &&
-                'border-[hsl(var(--status-info)/0.35)] bg-[hsl(var(--status-info)/0.1)]',
               // Quieter via border + no glyph, not opacity — dimming the
               // container also dims the day label past 4.5:1 at 10px.
-              !session && 'border-border/20'
+              !session && 'bg-transparent border-border/20'
             )}
           >
-            <span className="font-medium text-muted-foreground">{label}</span>
+            <span className={cn('font-medium', done ? 'text-neutral-300' : 'text-muted-foreground')}>
+              {label}
+            </span>
             {session ? (
               <>
                 <SessionGlyph done={done} kind={session.kind} />
                 {done && (
-                  <span className="text-[9px] font-semibold text-foreground">
+                  <span className="text-[9px] font-semibold text-neutral-100">
                     {t('coachSessionDone', { defaultValue: 'Done' })}
                   </span>
                 )}
@@ -109,7 +108,7 @@ export function WeekStrip({ sessions, todayOffset }: Props) {
                   </span>
                 )}
                 {recovery && session.kind === 'recovery' && !done && (
-                  <span className="text-[9px] text-[hsl(var(--status-info))]">
+                  <span className="text-[9px] text-muted-foreground">
                     {t('coachSessionMobility', { defaultValue: 'Mobility' })}
                   </span>
                 )}

@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ProgressRing } from '@/components/ui/ProgressRing';
+import { ScoreNumeral } from '@/components/ui/ScoreNumeral';
 import { useToast } from '@/hooks/use-toast';
 import {
   useUnits,
@@ -209,50 +209,50 @@ export function MacroCalculator() {
         </div>
 
         <div className="pt-3 border-t space-y-4">
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-            <ProgressRing
+          {/* These are results, not budgets. The rings they replace drew arcs
+              against invented ceilings (protein/200, carbs/300) — an arc that
+              implied progress toward a target the calculator never set. A
+              numeral states the answer without inventing a denominator. */}
+          <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t-2 border-border pt-4 sm:grid-cols-4">
+            <ScoreNumeral
               label={t('calcTargetCals', { defaultValue: 'Target Calories' })}
-              value={String(targetCals)}
-              subtitle={`BMR ${bmr} · TDEE ${tdee}`}
-              progress={Math.min(100, (targetCals / 3500) * 100)}
-              tone="emerald"
+              value={targetCals}
+              caption={`BMR ${bmr} · TDEE ${tdee}`}
+              size="md"
             />
-            <ProgressRing
+            <ScoreNumeral
               label={t('calcProtein', { defaultValue: 'Protein' })}
               value={`${protein}g`}
-              progress={Math.min(100, (protein / 200) * 100)}
-              tone="info"
+              size="md"
             />
-            <ProgressRing
+            <ScoreNumeral
               label={t('calcCarbs', { defaultValue: 'Carbs' })}
               value={`${carbs}g`}
-              progress={Math.min(100, (carbs / 300) * 100)}
-              tone="warn"
+              size="md"
             />
-            <ProgressRing
-              label={t('calcFat', { defaultValue: 'Fat' })}
-              value={`${fat}g`}
-              progress={Math.min(100, (fat / 100) * 100)}
-              tone="warn"
-            />
+            <ScoreNumeral label={t('calcFat', { defaultValue: 'Fat' })} value={`${fat}g`} size="md" />
           </div>
 
           <div className="space-y-1">
-            <div className="flex h-3 rounded-full overflow-hidden text-[10px] font-medium">
+            {/* Three segments, one hue: the accent ramp steps dark → light so
+                protein / carbs / fat stay distinguishable without sky, amber
+                and rose — which were three unrelated colours doing the job of
+                one scale. Labels flip to ink on the lighter two steps. */}
+            <div className="flex h-4 overflow-hidden text-[10px] font-semibold">
               <div
-                className="bg-sky-700 flex items-center justify-center text-white"
+                className="bg-accent-700 flex items-center justify-center text-primary-foreground"
                 style={{ width: `${macroSplit.proteinPct}%` }}
               >
                 {macroSplit.proteinPct > 12 ? `P ${macroSplit.proteinPct}%` : ''}
               </div>
               <div
-                className="bg-[hsl(var(--status-warn)/0.85)] flex items-center justify-center text-white"
+                className="bg-accent-400 flex items-center justify-center text-accent-900"
                 style={{ width: `${macroSplit.carbsPct}%` }}
               >
                 {macroSplit.carbsPct > 12 ? `C ${macroSplit.carbsPct}%` : ''}
               </div>
               <div
-                className="bg-rose-700 flex items-center justify-center text-white"
+                className="bg-accent-200 flex items-center justify-center text-accent-900"
                 style={{ width: `${macroSplit.fatPct}%` }}
               >
                 {macroSplit.fatPct > 12 ? `F ${macroSplit.fatPct}%` : ''}

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ProgressRing } from '@/components/ui/ProgressRing';
+import { ScoreNumeral } from '@/components/ui/ScoreNumeral';
 import { animateCount } from '@/lib/motion';
 import { gpuTierLabel, resolveGpuTier, type GpuTier } from '@/lib/gpuTier';
 import { ExperienceCanvas } from '@/components/experience/gpu/ExperienceCanvas';
@@ -76,7 +76,7 @@ export function WinScoreDemoIsland() {
           ))}
         </div>
         <div
-          className={`xp-pr${pr ? ' card-glow-brass eyebrow-honor' : ''}`}
+          className={`xp-pr${pr ? ' eyebrow-honor' : ''}`}
           data-show={pr ? 'true' : 'false'}
           role="status"
         >
@@ -102,13 +102,9 @@ export function WinScoreDemoIsland() {
           />
         ) : null}
         <div className="xp-score-ring" data-hidden-gpu={useParticles ? 'true' : 'false'}>
-          <ProgressRing
-            label={XP.ch04ScoreLabel}
-            value={score}
-            progress={score}
-            tone={pr ? 'brass' : 'emerald'}
-            size="lg"
-          />
+          {/* The pr/non-pr distinction was brass vs emerald. Brass is retired,
+              so a PR is marked by the honor tag beside this numeral instead. */}
+          <ScoreNumeral label={XP.ch04ScoreLabel} value={score} size="lg" />
         </div>
         {gpuReady ? (
           <p className="xp-tier-badge xp-score-tier">

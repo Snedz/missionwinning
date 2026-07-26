@@ -178,7 +178,7 @@ export function ProfileWearablesCard({ signedIn }: Props) {
             {providers.map((p) => (
               <li
                 key={p.provider}
-                className="flex flex-col gap-2 border-b border-border/40 pb-3 last:border-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-2 border-b border-border pb-3 last:border-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div>
                   <div className="font-medium text-foreground">{p.label}</div>

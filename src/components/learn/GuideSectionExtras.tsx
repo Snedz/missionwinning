@@ -31,7 +31,7 @@ export function GuideFigureBlock({
   }
 
   return (
-    <figure className="overflow-hidden rounded-xl border-2 border-border bg-card">
+    <figure className="overflow-hidden  border-2 border-border bg-card">
       {/* Plain <img>: static guidebook assets, already sized and optimised at build. */}
       <img
         src={figure.src}
@@ -41,7 +41,7 @@ export function GuideFigureBlock({
         className="mx-auto w-full max-h-64 object-contain object-center"
       />
       {figure.caption && (
-        <figcaption className="border-t border-border/30 px-3 py-1.5 text-center text-xs text-muted-foreground">
+        <figcaption className="border-t border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
           {figure.caption}
         </figcaption>
       )}

@@ -75,7 +75,7 @@ export function PressPage() {
     <div className="min-h-screen bg-background text-foreground">
       <MarketingNav variant="compact" />
 
-      <header className="hero-field texture-noise section-seam relative overflow-hidden">
+      <header className="hero-field section-seam relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <ArtPicture base="/art/hero-field" fill priority className="object-cover opacity-40" />
         </div>

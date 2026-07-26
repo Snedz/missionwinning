@@ -1,4 +1,9 @@
 {
+  "navOpenBeta": "오픈 베타",
+  "navAssess": "평가",
+  "navGroupMission": "미션",
+  "navGroupPillars": "기둥",
+  "navGroupToolkit": "도구",
   "navSectionRecover": "회복",
   "navSectionTrain": "심화 훈련",
   "navSectionLearn": "학습 및 측정",

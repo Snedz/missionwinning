@@ -2,17 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import { useTranslation } from 'react-i18next';
-import { PRIMARY_NAV } from '@/lib/primaryNav';
+import { railGroupsForNav } from '@/lib/navConfig';
 
 function pathActive(pathname: string, href: string): boolean {
   if (href === '/log') return pathname === '/log' || pathname === '/';
-  if (href === '/coach') return pathname === '/coach' || pathname.startsWith('/coach/');
-  if (href === '/active') return pathname === '/active' || pathname.startsWith('/active/');
-  if (href === '/nutrition') return pathname === '/nutrition' || pathname.startsWith('/nutrition/');
-  if (href === '/profile') return pathname === '/profile' || pathname.startsWith('/profile/');
   return pathname === href || pathname.startsWith(href + '/');
 }
 
@@ -20,12 +17,19 @@ export function MobileNav() {
   const pathname = usePathname();
   const { t } = useTranslation();
   const hasActiveWorkout = useActiveWorkoutPulse();
+  // Same source and order as the desktop rail, flattened — the group headers
+  // have nowhere to live in a tab bar, but Mission still comes first, so
+  // Today / Train / Coach / History are the tabs on screen before any scroll.
+  const items = useMemo(() => railGroupsForNav().flatMap((g) => g.items), []);
 
   return (
     // Modernist: solid paper under a 2px rule — no translucency, no blur.
     <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t-2 border-border bg-background pb-[env(safe-area-inset-bottom)]">
-      <div className="flex items-stretch justify-around h-[52px]">
-        {PRIMARY_NAV.map(({ href, labelKey, label, icon: Icon }) => {
+      {/* Scrolls horizontally rather than dividing 375px by thirteen: at flex-1
+          each tab would be ~29px wide, well under the 44px this nav has to
+          stay above. Scrollbar hidden, momentum kept. */}
+      <div className="flex items-stretch overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {items.map(({ href, labelKey, label, icon: Icon }) => {
           const isActive = pathActive(pathname, href);
           const showPulse = href === '/active' && hasActiveWorkout;
 
@@ -35,18 +39,19 @@ export function MobileNav() {
               href={href}
               aria-current={isActive ? 'page' : undefined}
               className={cn(
-                'flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px] font-semibold min-h-[48px] relative transition-colors',
-                // The active tab is marked by a 2px poster-red rule along the top
-                // edge of the tab — it reads as part of the nav's own rule rather
-                // than a floating pill, and the label goes accent-700.
+                'relative flex min-h-[52px] min-w-[68px] shrink-0 flex-col items-center justify-center gap-[3px] px-1 pb-2.5 pt-2 text-[10px] uppercase tracking-[0.04em] transition-colors',
                 isActive
-                  ? "text-primary before:absolute before:inset-x-0 before:-top-0.5 before:h-0.5 before:bg-[hsl(var(--accent-poster))] before:content-['']"
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'is-active-tab font-extrabold text-primary'
+                  : // muted-foreground, not the handoff's neutral-600. #7d7979 on
+                    // paper is 3.84:1 and these labels are 10px, so they need
+                    // 4.5:1 — the sheet's value fails the same way poster red
+                    // failed on small text. muted-foreground is 8.4:1.
+                    'font-semibold text-muted-foreground hover:text-foreground'
               )}
             >
-              <Icon className={cn('h-6 w-6', showPulse && 'text-primary')} aria-hidden />
+              <Icon className="h-5 w-5" aria-hidden />
               {showPulse && (
-                <span className="absolute top-1.5 end-[calc(50%-20px)] h-2 w-2 rounded-full bg-[hsl(var(--accent-poster))] animate-pulse" />
+                <span className="absolute end-[calc(50%-18px)] top-1.5 h-2 w-2 bg-[hsl(var(--accent-poster))] animate-pulse" />
               )}
               {t(labelKey, { defaultValue: label })}
             </Link>

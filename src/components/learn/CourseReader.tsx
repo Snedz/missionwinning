@@ -73,10 +73,10 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
               key={ch.id}
               type="button"
               onClick={() => setChapterId(ch.id)}
-              className={`w-full text-left rounded-lg border px-3 py-2 text-sm transition-colors ${
+              className={`w-full text-left  border px-3 py-2 text-sm transition-colors ${
                 active
-                  ? 'border-primary/40 bg-primary/10'
-                  : 'border-border/50 hover:border-primary/40'
+                  ? 'border-primary bg-accent-100'
+                  : 'border-border hover:border-primary'
               }`}
             >
               <div className="font-medium">
@@ -146,7 +146,7 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
         })}
 
         {allDone && (
-          <Card className="content-card border-primary/40">
+          <Card className="content-card border-primary">
             <CardContent className="py-4 space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-sm text-primary">

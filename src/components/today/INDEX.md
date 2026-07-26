@@ -8,7 +8,7 @@
 |------|---------|
 | `TodayPageHeader.tsx` | Greeting, date, journey phase |
 | `TodayDashboardAccordion.tsx` | Health/journal/week/progress accordion (readiness+) |
-| `TodayDashboardHeader.tsx` | Mission Score ProgressRing + MetricsRow; trends collapsed |
+| `TodayDashboardHeader.tsx` | Mission Score ScoreNumeral + MetricsRow; trends collapsed |
 | `TodayHealthSection.tsx` | Readiness, strain, recovery metrics |
 | `TodayProgressSection.tsx` | Streak, mission score |
 | `TodayWeekSection.tsx` | Week activity summary |

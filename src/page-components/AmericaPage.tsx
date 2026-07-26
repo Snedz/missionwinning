@@ -71,7 +71,7 @@ export function AmericaPage() {
   return (
     <InfoPageShell
       icon={Flag}
-      iconClassName="text-[hsl(var(--status-info))]"
+      iconClassName="text-muted-foreground"
       title={t('americaHeroTitle', { defaultValue: 'Strength for the next generation' })}
       subtitle={heroBody}
       variant="sections"
@@ -83,7 +83,7 @@ export function AmericaPage() {
         <div className="grid gap-4 sm:grid-cols-3">
           <Card className="content-card">
             <CardContent className="pt-6 text-center space-y-2">
-              <Users className="h-8 w-8 mx-auto text-[hsl(var(--status-info))]" />
+              <Users className="h-8 w-8 mx-auto text-muted-foreground" />
               <p className="font-medium text-sm">
                 {t('americaKids', { defaultValue: 'Kids & schools' })}
               </p>
@@ -96,7 +96,7 @@ export function AmericaPage() {
           </Card>
           <Card className="content-card">
             <CardContent className="pt-6 text-center space-y-2">
-              <Flag className="h-8 w-8 mx-auto text-[hsl(var(--status-info))]" />
+              <Flag className="h-8 w-8 mx-auto text-muted-foreground" />
               <p className="font-medium text-sm">
                 {t('americaPft', { defaultValue: 'Presidential Fitness Test' })}
               </p>
@@ -141,7 +141,7 @@ export function AmericaPage() {
         </Card>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button asChild size="lg" className="bg-[hsl(var(--status-info))] hover:bg-[hsl(var(--status-info)/0.9)]">
+          <Button asChild size="lg" className="bg-[hsl(var(--status-info))] hover:bg-card">
             <Link href="/fitness-test">{t('americaCtaTest', { defaultValue: 'Take the fitness test' })}</Link>
           </Button>
           <Button asChild size="lg" variant="outline">

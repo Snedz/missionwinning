@@ -95,8 +95,15 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
   const span = Math.max(maxW - minW, 0.5);
 
   return (
-    <div className="rounded-xl border border-border/50 bg-muted/10 px-3 py-3 space-y-2">
-      <div className="flex flex-wrap items-center justify-between gap-2">
+    <div className="border-2 border-border bg-card px-3 py-3 space-y-2">
+      {/*
+        Actions stack under the readout instead of sitting at the end of the row:
+        the Fuel "Log food" FAB is fixed to the viewport's bottom-end corner and
+        floats over this column, so an end-aligned control here is invisible at
+        the scroll offsets that put it in the FAB's band. Its width comes from a
+        translated label, so there is no breakpoint that is safe in every locale.
+      */}
+      <div className="flex flex-col items-start gap-2">
         <div className="min-w-0">
           <p className="text-xs font-medium text-muted-foreground">
             {t('fuelWeightTitle', { defaultValue: 'Weight' })}
@@ -114,7 +121,7 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
                       weekDelta < 0
                         ? 'text-primary'
                         : weekDelta > 0
-                          ? 'text-status-warn'
+                          ? 'text-primary'
                           : 'text-muted-foreground'
                     )}
                   >
@@ -139,12 +146,12 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
           </p>
         </div>
         {!open ? (
-          <Button type="button" variant="ghost" size="sm" className="h-8 text-xs shrink-0" onClick={openLog}>
+          <Button type="button" variant="ghost" size="sm" className="h-8 text-xs -ms-3" onClick={openLog}>
             {t('fuelWeightLog', { defaultValue: 'Log weight' })}
           </Button>
         ) : null}
         {flash ? (
-          <span className="text-xs text-primary w-full sm:w-auto">
+          <span className="text-xs text-primary">
             {t('fuelWeightSaved', { defaultValue: 'Weight saved' })}
           </span>
         ) : null}
@@ -152,7 +159,8 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
 
       {open ? (
         <div className="flex flex-wrap items-end gap-2">
-          <div className="flex-1 min-w-[7rem]">
+          {/* Full width so Save/Cancel wrap to their own start-aligned line, clear of the FAB. */}
+          <div className="w-full">
             <label className="text-xs text-muted-foreground" htmlFor="fuel-weight-in">
               {t('fuelWeightInput', {
                 unit,
@@ -197,7 +205,7 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
                 <div
                   className={cn(
                     'w-full max-w-[1.25rem] rounded-t-sm',
-                    isToday ? 'bg-primary' : 'bg-primary/40'
+                    isToday ? 'bg-primary-fill' : 'bg-neutral-400'
                   )}
                   style={{ height: h }}
                   title={`${p.date}: ${disp} ${unit}`}

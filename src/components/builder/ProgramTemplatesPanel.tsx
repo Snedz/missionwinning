@@ -66,9 +66,8 @@ function ProgramList({
   return (
     <div className="space-y-3">
       {programs.map((program) => (
-        <details
-          key={program.id}
-          className="group rounded-lg border border-border bg-card"
+        <details key={program.id}
+          className="group  border border-border bg-card"
         >
           <summary className="flex cursor-pointer list-none items-start justify-between gap-2 p-4 min-h-[44px] [&::-webkit-details-marker]:hidden">
             <div className="min-w-0 text-left">
@@ -92,7 +91,7 @@ function ProgramList({
             </div>
             <ChevronDown className="h-5 w-5 text-muted-foreground shrink-0 mt-1 transition-transform group-open:rotate-180" />
           </summary>
-          <div className="px-4 pb-4 space-y-3 border-t border-border/40 pt-3">
+          <div className="px-4 pb-4 space-y-3 border-t border-border pt-3">
             <div className="flex flex-wrap gap-2">
               {onViewDetails && (
                 <Button size="sm" variant="ghost" onClick={() => onViewDetails(program)}>
@@ -108,9 +107,8 @@ function ProgramList({
             </div>
             <div className="space-y-2">
               {program.sessions.map((session) => (
-                <div
-                  key={session.id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border/60 bg-muted/30 px-3 py-2"
+                <div key={session.id}
+                  className="flex flex-wrap items-center justify-between gap-2  border-2 border-border bg-card px-3 py-2"
                 >
                   <div>
                     <p className="text-sm font-medium">{session.name}</p>
@@ -213,7 +211,7 @@ export function ProgramTemplatesPanel({
 
   if (PROGRAM_TEMPLATES.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-destructive/50 bg-destructive/10 p-6 text-center text-sm">
+      <div className="border border-dashed border-primary bg-destructive/10 p-6 text-center text-sm">
         {t('builderTemplateLoadFail', {
           defaultValue: 'Template data failed to load. Restart the dev server.',
         })}
@@ -224,9 +222,8 @@ export function ProgramTemplatesPanel({
   return (
     <div className="space-y-4">
       {proLoadError && category === 'pro' && premium ? (
-        <div
-          role="alert"
-          className="rounded-xl border border-dashed border-status-danger/40 bg-status-danger/5 p-4 text-center text-sm space-y-2"
+        <div role="alert"
+          className="border-2 border-primary bg-accent-100 p-4 text-sm space-y-2"
         >
           <p>
             {typeof navigator !== 'undefined' && !navigator.onLine
@@ -237,8 +234,7 @@ export function ProgramTemplatesPanel({
                   defaultValue: 'Could not load premium programs. Try again.',
                 })}
           </p>
-          <button
-            type="button"
+          <button type="button"
             className="text-primary text-sm underline min-h-[44px]"
             onClick={() => {
               setProLoadError(false);
@@ -256,11 +252,8 @@ export function ProgramTemplatesPanel({
         </div>
       ) : null}
       <p className="text-sm text-muted-foreground">{categoryMeta.description}</p>
-      <Input
-        type="search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder={t('builderTemplateSearch', {
+      <Input type="search" value={search}
+        onChange={(e) => setSearch(e.target.value)} placeholder={t('builderTemplateSearch', {
           defaultValue: 'Search programs or sessions…',
         })}
         className="bg-background"
@@ -278,10 +271,7 @@ export function ProgramTemplatesPanel({
           {t('builderStyleFilter', { defaultValue: 'Style:' })}
         </span>
         {(["", "strength", "hypertrophy", "conditioning", "corrective"] as const).map((tag) => (
-          <Button
-            key={tag || "all"}
-            size="sm"
-            variant={tagFilter === tag ? "default" : "outline"}
+          <Button key={tag || "all"} size="sm" variant={tagFilter === tag ? "default" : "outline"}
             className="h-7 text-xs"
             onClick={() => setTagFilter(tag)}
           >
@@ -290,36 +280,34 @@ export function ProgramTemplatesPanel({
         ))}
       </div>
       {category === "pro" && !premiumLoading && !premium && !isFreeBeta() && (
-        <div className="rounded-lg border border-[hsl(var(--status-warn)/0.4)] bg-[hsl(var(--status-warn)/0.1)] p-4 text-sm">
+        <div className="border-2 border-border bg-card p-4 text-sm">
           {t('builderProPremium', { defaultValue: 'Pro cycles require Super Bundle premium.' })}{' '}
-          <Link href="/bundle" className="underline text-status-warn">
+          <Link href="/bundle" className="underline text-primary">
             {t('builderUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}
           </Link>
         </div>
       )}
       {category === "pro" && !premiumLoading && !premium && isFreeBeta() && (
-        <div className="rounded-lg border border-border bg-muted/20 p-4 text-sm text-muted-foreground">
+        <div className="border border-border bg-card p-4 text-sm text-muted-foreground">
           {t('builderProFreeBeta', {
             defaultValue: 'Pro cycles are paused during open beta — free templates stay available.',
           })}
         </div>
       )}
-      <ProgramList
-        programs={programs}
+      <ProgramList programs={programs}
         onLoadSession={onLoadSession}
         onSaveAllSessions={onSaveAllSessions}
         onViewDetails={onViewDetails}
       />
 
-      <div className="rounded-lg border border-border bg-background/80 p-4 space-y-3">
+      <div className="border border-border bg-background p-4 space-y-3">
         <Label className="text-foreground font-medium">
           {t('builderQuickLoadLabel', { defaultValue: 'Quick load (all categories)' })}
         </Label>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Select value={quickPick} onValueChange={setQuickPick}>
             <SelectTrigger className="flex-1 bg-background">
-              <SelectValue
-                placeholder={t('builderQuickLoadPlaceholder', {
+              <SelectValue placeholder={t('builderQuickLoadPlaceholder', {
                   defaultValue: 'Choose program & session…',
                 })}
               />
@@ -338,9 +326,7 @@ export function ProgramTemplatesPanel({
                     <SelectLabel>{cat.label}</SelectLabel>
                     {catPrograms.flatMap((program, pi) =>
                       program.sessions.map((session, si) => (
-                        <SelectItem
-                          key={`${cat.id}-${program.id}-${session.id}-${pi}-${si}`}
-                          value={`${program.id}::${session.id}`}
+                        <SelectItem key={`${cat.id}-${program.id}-${session.id}-${pi}-${si}`} value={`${program.id}::${session.id}`}
                         >
                           {program.name} — {session.name}
                         </SelectItem>

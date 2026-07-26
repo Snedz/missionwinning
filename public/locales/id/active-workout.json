@@ -1,4 +1,7 @@
 {
+  "activeLiveSession": "Sesi langsung",
+  "activeElapsed": "Berjalan",
+  "activeSetsLabel": "Set",
   "activeNoWorkout": "Tidak Ada Latihan Aktif",
   "activeNoWorkoutDesc": "Mulai latihan cepat dari Hari Ini atau luncurkan rutinitas tersimpan dari pembuatnya.",
   "activeStartWorkout": "Mulai latihan",

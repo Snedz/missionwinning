@@ -107,7 +107,7 @@ export function ProgressPhotosCard() {
           {t('progressPhotosTitle', { defaultValue: 'Progress photos' })}
         </CardTitle>
         <CardDescription className="space-y-1">
-          <span className="block font-medium text-[hsl(var(--status-warn))]">
+          <span className="block font-medium text-primary">
             {t('progressPhotosPrivacy', {
               defaultValue: 'Photos never leave this device.',
             })}
@@ -129,7 +129,7 @@ export function ProgressPhotosCard() {
               onClick={() => setPose(p)}
               className={`px-2.5 py-1 text-[11px] border capitalize ${
                 pose === p
-                  ? 'border-primary bg-primary/10 text-primary'
+                  ? 'border-primary bg-accent-100 text-primary'
                   : 'border-border text-muted-foreground'
               }`}
             >
@@ -168,11 +168,11 @@ export function ProgressPhotosCard() {
         ) : (
           <ul className="grid grid-cols-3 gap-2">
             {photos.slice(0, 9).map((p) => (
-              <li key={p.id} className="relative aspect-[3/4] rounded-lg overflow-hidden border border-border/50 bg-muted">
+              <li key={p.id} className="relative aspect-[3/4]  overflow-hidden border-2 border-border bg-muted">
                 {urls[p.id] ? (
                   <img src={urls[p.id]} alt="" className="h-full w-full object-cover" />
                 ) : null}
-                <div className="absolute inset-x-0 bottom-0 flex justify-between bg-black/50 px-1 py-0.5 text-[9px] text-white">
+                <div className="absolute inset-x-0 bottom-0 flex justify-between bg-card px-1 py-0.5 text-[9px] text-white">
                   <span>{p.date}</span>
                   <button type="button" onClick={() => void download(p.id)} aria-label="Download">
                     <Download className="h-3 w-3" />
@@ -180,7 +180,7 @@ export function ProgressPhotosCard() {
                 </div>
                 <button
                   type="button"
-                  className="absolute top-1 right-1 rounded bg-black/50 px-1 text-[9px] text-white"
+                  className="absolute top-1 right-1 rounded bg-card px-1 text-[9px] text-white"
                   onClick={() => void deleteProgressPhoto(p.id).then(refresh)}
                 >
                   ×

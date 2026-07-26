@@ -130,7 +130,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground border border-border/50 rounded-xl p-3 leading-relaxed">
+            <p className="text-sm text-muted-foreground border-2 border-border p-3 leading-relaxed">
               {t('coachTasterFatigueNote', {
                 defaultValue:
                   'Premium also watches strain: when load runs high, later sessions ease up so you recover without quitting the week.',
@@ -227,8 +227,10 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             </div>
           )}
 
-          {/* Free Coach hero: week sessions before any Bundle upsell */}
-          <div className="space-y-4">
+          {/* Free Coach hero: week sessions before any Bundle upsell.
+              Two columns from sm up, per the handoff — a week of sessions is a
+              grid you scan, not a stack you scroll. */}
+          <div className="grid gap-4 sm:grid-cols-2">
             {plan.sessions
               .slice()
               .sort((a, b) => a.dayOffset - b.dayOffset)
@@ -236,6 +238,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
                 <PlanSessionCard
                   key={session.id}
                   session={session}
+                  isToday={session.dayOffset === todayOffset}
                   onAdjust={
                     session.dayOffset === todayOffset && session.status !== 'done'
                       ? () => setAdjustOpen(true)

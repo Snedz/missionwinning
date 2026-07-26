@@ -44,20 +44,20 @@ export function FuelAdaptBanner({
   return (
     <div
       className={cn(
-        'rounded-xl border px-3 py-2.5 space-y-1.5',
+        ' border px-3 py-2.5 space-y-1.5',
         adaptEnabled && isAdapted
-          ? 'border-primary/30 bg-primary/5'
-          : 'border-border/50 bg-muted/10'
+          ? 'border-primary bg-accent-100'
+          : 'border-border bg-card'
       )}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2 min-w-0">
           <span
             className={cn(
-              'rounded-full px-2 py-0.5 text-[11px] font-medium border',
+              ' px-2 py-0.5 text-[11px] font-medium border',
               load === 'heavy' || load === 'moderate'
-                ? 'border-primary/40 text-primary bg-primary/10'
-                : 'border-border text-muted-foreground bg-muted/30'
+                ? 'border-primary text-primary bg-accent-100'
+                : 'border-border text-muted-foreground bg-card'
             )}
           >
             {t('fuelLoadChip', {

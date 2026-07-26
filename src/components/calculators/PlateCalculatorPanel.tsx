@@ -38,11 +38,16 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
     [target, bar, units]
   );
 
+  // Quick targets, per the handoff. Not arbitrary round numbers: these are the
+  // loads that come out even on a standard bar — 135/185/225 imperial is one,
+  // two and three 45s a side, and the metric set is whole 20s and 10s.
+  const quickTargets = units === 'imperial' ? [135, 185, 225, 275, 315] : [60, 80, 100, 120, 140];
+
   return (
     <>
       {!compact && (
         <CardHeader>
-          <CardTitle className="fitness-text-gradient">
+          <CardTitle>
             {t('calcPlateTitle', { defaultValue: 'Plate loader' })}
           </CardTitle>
           <CardDescription>
@@ -77,16 +82,36 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
           </div>
         </div>
 
-        <div className="rounded-xl border border-primary/40 bg-primary/10 p-4 space-y-3">
-          <div className="text-sm text-muted-foreground">
+        <div className="flex flex-wrap gap-1.5">
+          {quickTargets.map((w) => (
+            <button
+              key={w}
+              type="button"
+              aria-pressed={target === w}
+              onClick={() => setTarget(w)}
+              className={cn(
+                'min-h-[44px] border-2 px-3 text-sm font-semibold tabular-nums transition-colors',
+                target === w
+                  ? 'border-transparent bg-primary-fill text-primary-foreground'
+                  : 'border-border hover:bg-foreground/[0.07]'
+              )}
+            >
+              {w}
+              {unit}
+            </button>
+          ))}
+        </div>
+
+        <div className="space-y-3 border-2 border-border bg-card p-4">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
             {t('calcPlatePerSide', { defaultValue: 'Per side' })}
           </div>
           {result.perSide.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {result.perSide.map((plate, i) => (
                 <span
                   key={`${plate}-${i}`}
-                  className="inline-flex items-center rounded-lg border border-primary/40 bg-primary/10 px-3 py-1.5 text-sm font-semibold tabular-nums text-primary"
+                  className="inline-flex items-center bg-accent-100 px-3 py-1.5 text-sm font-semibold tabular-nums text-accent-900"
                 >
                   {plate}
                   {unit}
@@ -99,7 +124,7 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
           <div className="text-sm tabular-nums text-muted-foreground">
             {formatPlateList(result.perSide, unit)}
           </div>
-          <div className="text-sm tabular-nums">
+          <div className="text-[22px] font-extrabold leading-none tabular-nums">
             {t('calcPlateTotal', {
               weight: result.achievedWeight,
               unit,
@@ -107,7 +132,9 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
             })}
           </div>
           {result.remainder !== 0 && (
-            <div className="text-xs text-status-warn">
+            // The closest-loadable warning. text-primary, not status-warn: this
+            // is the one thing in the panel you must not miss.
+            <div className="border-s-2 border-primary ps-2 text-xs font-semibold text-primary">
               {t('calcPlateRemainder', {
                 remainder: result.remainder,
                 unit,
@@ -120,7 +147,7 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
         {onApplyTarget && (
           <Button
             variant="fitness"
-            className="w-full"
+            size="block"
             onClick={() => onApplyTarget(result.achievedWeight)}
           >
             {t('calcPlateApply', {

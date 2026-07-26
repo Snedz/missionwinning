@@ -119,9 +119,9 @@ export function BundlePage() {
       <MarketingNav variant="compact" />
 
       {/* Thin hero */}
-      <div className="hero-field texture-noise section-seam relative">
+      <div className="hero-field section-seam relative">
         <div className="relative z-[1] mx-auto max-w-4xl space-y-3 px-5 pb-10 pt-10">
-          <Badge className="w-fit border-brass/40 bg-brass/15 text-brass hover:bg-brass/15">
+          <Badge className="w-fit border-border bg-accent-100 text-accent-900 hover:bg-accent-100">
             {t("bundleUrgencyBadge")}
           </Badge>
           <PillarPageHeader
@@ -260,7 +260,7 @@ export function BundlePage() {
             const badgeText = planBadgeLabel(p.badge, t);
             return (
               <TabsContent key={id} value={id} className="mt-4">
-                <Card className="card-elevated card-glow-emerald overflow-hidden border-primary/30">
+                <Card className="card-boss overflow-hidden">
                   <CardHeader className="pb-2">
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div className="space-y-1">
@@ -303,7 +303,7 @@ export function BundlePage() {
                     )}
 
                     <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Trophy className="h-3.5 w-3.5 shrink-0 text-brass" />
+                      <Trophy className="h-3.5 w-3.5 shrink-0 text-accent-900" />
                       {t("bundleWinScoreNote")}
                     </p>
 

@@ -16,7 +16,7 @@ export function ProfileOwnerTools() {
 
   return (
     <>
-      <Card className="content-card border-primary/40 bg-primary/5">
+      <Card className="content-card border-primary bg-accent-100">
         <CardHeader>
           <CardTitle>
             {t('revenueSnapshot', { defaultValue: 'Super Bundle Snapshot (Demo)' })}

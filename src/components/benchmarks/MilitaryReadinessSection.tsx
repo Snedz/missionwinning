@@ -9,9 +9,9 @@ import { MILITARY_READINESS_TESTS } from '@/lib/militaryReadinessTests';
 /** Optional service fitness test prep — military tone scoped to this section only. */
 export function MilitaryReadinessSection() {
   return (
-    <Card className="border-[hsl(var(--status-warn)/0.3)] bg-gradient-to-br from-[hsl(var(--status-warn)/0.12)] to-card">
+    <Card className="border-border bg-card">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-[hsl(var(--status-warn)/0.9)]">
+        <CardTitle className="flex items-center gap-2 text-muted-foreground">
           <Shield className="h-5 w-5" />
           Readiness test prep
         </CardTitle>
@@ -23,16 +23,15 @@ export function MilitaryReadinessSection() {
       </CardHeader>
       <CardContent className="space-y-3">
         {MILITARY_READINESS_TESTS.map((test) => (
-          <div
-            key={test.id}
-            className="rounded-xl border border-[hsl(var(--status-warn)/0.2)] bg-black/20 px-4 py-3 space-y-1"
+          <div key={test.id}
+            className="border border-border bg-card px-4 py-3 space-y-1"
           >
             <div className="font-medium">{test.name}</div>
             <p className="text-sm text-muted-foreground">{test.description}</p>
-            <p className="text-xs text-[hsl(var(--status-warn)/0.7)]">{test.scoringHint}</p>
+            <p className="text-xs text-muted-foreground">{test.scoringHint}</p>
           </div>
         ))}
-        <Button asChild variant="outline" className="w-full min-h-[44px] border-[hsl(var(--status-warn)/0.3)]">
+        <Button asChild variant="outline" className="w-full min-h-[44px] border-border">
           <Link href="/active">Train for standards →</Link>
         </Button>
         <p className="text-[10px] text-muted-foreground text-center pt-1">

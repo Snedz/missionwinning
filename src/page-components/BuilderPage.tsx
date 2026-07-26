@@ -248,11 +248,7 @@ export function BuilderPage() {
   ];
 
   return (
-    <PillarPageShell
-      icon={PenTool}
-      eyebrow={t('builderEyebrow', { defaultValue: 'Builder' })}
-      title={t('builderTitle', { defaultValue: 'Workout Builder' })}
-      subtitle={t('builderSubtitle', {
+    <PillarPageShell icon={PenTool} eyebrow={t('builderEyebrow', { defaultValue: 'Builder' })} title={t('builderTitle', { defaultValue: 'Workout Builder' })} subtitle={t('builderSubtitle', {
         defaultValue:
           'Build a session in three steps — pick a start, arrange exercises, then save or train.',
       })}
@@ -266,17 +262,15 @@ export function BuilderPage() {
           return (
             <div key={label} className="flex items-center gap-2">
               {i > 0 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
-              <button
-                type="button"
+              <button type="button"
                 onClick={() => n < step && setStep(n)}
-                className={`rounded-full px-3 py-1 text-xs font-medium border ${
+                className={` px-3 py-1 text-xs font-medium border ${
                   active
-                    ? 'border-primary bg-primary/15 text-primary'
+                    ? 'border-primary bg-accent-100 text-primary'
                     : done
-                      ? 'border-border/60 text-foreground'
-                      : 'border-border/40 text-muted-foreground'
-                }`}
-                disabled={n > step}
+                      ? 'border-border text-foreground'
+                      : 'border-border text-muted-foreground'
+                }`} disabled={n > step}
               >
                 {n}. {label}
               </button>
@@ -303,9 +297,8 @@ export function BuilderPage() {
             </CardContent>
           </Card>
 
-          <section
-            id="program-templates"
-            className="content-card rounded-xl border border-primary/30 bg-gradient-to-b from-primary/10 to-card p-5 md:p-6 space-y-4"
+          <section id="program-templates"
+            className="content-card  border border-primary  from-primary/10  p-5 md:p-6 space-y-4"
           >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-xl font-bold flex items-center gap-2">
@@ -322,8 +315,7 @@ export function BuilderPage() {
           </span>
         </div>
 
-        <Tabs
-          value={templateCategory}
+        <Tabs value={templateCategory}
           onValueChange={(v) => setTemplateCategory(v as ProgramCategory)}
         >
           <div className="flex flex-wrap gap-2" role="tablist" aria-label="Template categories">
@@ -334,16 +326,12 @@ export function BuilderPage() {
                 ['pro', 'builderTabPro', 'Pro'],
               ] as const
             ).map(([value, key, fallback]) => (
-              <button
-                key={value}
-                type="button"
-                role="tab"
-                aria-selected={templateCategory === value}
+              <button key={value} type="button" role="tab" aria-selected={templateCategory === value}
                 onClick={() => setTemplateCategory(value)}
                 className={
                   templateCategory === value
-                    ? 'rounded-full border border-primary/50 bg-primary/15 px-4 py-2 text-sm font-semibold text-primary'
-                    : 'rounded-full border border-border/50 bg-muted/20 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground'
+                    ? ' border border-primary bg-accent-100 px-4 py-2 text-sm font-semibold text-primary'
+                    : ' border-2 border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground'
                 }
               >
                 {t(key, { defaultValue: fallback })}
@@ -352,8 +340,7 @@ export function BuilderPage() {
           </div>
         </Tabs>
 
-        <ProgramTemplatesPanel
-          category={templateCategory}
+        <ProgramTemplatesPanel category={templateCategory}
           onLoadSession={loadSessionAndAdvance}
           onSaveAllSessions={saveAllProgramSessions}
           onViewDetails={setDetailProgram}
@@ -387,9 +374,7 @@ export function BuilderPage() {
             ))}
           </div>
           {savedWorkouts.length > 6 && (
-            <Button
-              variant="ghost"
-              size="sm"
+            <Button variant="ghost" size="sm"
               className="mt-2 w-full"
               onClick={() => setShowAllSaved((v) => !v)}
             >
@@ -403,10 +388,7 @@ export function BuilderPage() {
           )}
         </div>
       ) : (
-        <EmptyState
-          icon={PenTool}
-          title={t('builderNoSaved', { defaultValue: 'No saved routines yet' })}
-          description={t('builderNoSavedDesc', {
+        <EmptyState icon={PenTool} title={t('builderNoSaved', { defaultValue: 'No saved routines yet' })} description={t('builderNoSavedDesc', {
             defaultValue: 'Build a workout and save it — your routines appear here.',
           })}
           actionLabel={t('builderStartBlank', { defaultValue: 'Blank workout' })}
@@ -418,8 +400,7 @@ export function BuilderPage() {
 
       {step === 2 && (
         <BuilderArrangeStep
-          sessionNotes={sessionNotes}
-          exercises={exercises}
+          sessionNotes={sessionNotes} exercises={exercises}
           selectedExerciseId={selectedExerciseId}
           unitLabel={unitLabel}
           onSelectedChange={setSelectedExerciseId}
@@ -511,10 +492,7 @@ export function BuilderPage() {
             <Label htmlFor="workout-name-finish">
               {t('builderWorkoutName', { defaultValue: 'Workout name' })}
             </Label>
-            <Input
-              id="workout-name-finish"
-              placeholder={t('builderWorkoutNamePlaceholder', { defaultValue: 'e.g. Push Day A' })}
-              value={workoutName}
+            <Input id="workout-name-finish" placeholder={t('builderWorkoutNamePlaceholder', { defaultValue: 'e.g. Push Day A' })} value={workoutName}
               onChange={(e) => setWorkoutName(e.target.value)}
             />
           </div>
@@ -560,7 +538,7 @@ export function BuilderPage() {
               </div>
               <div className="space-y-3">
                 {detailProgram.sessions.map((session) => (
-                  <div key={session.id} className="rounded-lg border p-3 text-sm">
+                  <div key={session.id} className="border p-3 text-sm">
                     <p className="font-medium">{session.name}</p>
                     {session.notes && (
                       <p className="text-muted-foreground mt-1">{session.notes}</p>
@@ -591,8 +569,7 @@ export function BuilderPage() {
 
       <SignInPrompt
         className="mt-6"
-        nextPath="/builder"
-        description={t('builderSignInFoot', {
+        nextPath="/builder" description={t('builderSignInFoot', {
           defaultValue: 'Sign in to sync saved routines across devices.',
         })}
       />

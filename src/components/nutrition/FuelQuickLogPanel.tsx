@@ -113,7 +113,7 @@ export function FuelQuickLogPanel({
                 <Button
                   variant="secondary"
                   size="sm"
-                  className="text-xs rounded-full"
+                  className="text-xs "
                   onClick={() => onQuickLog(name, p, c, carbs, fat)}
                 >
                   {name}
@@ -122,7 +122,7 @@ export function FuelQuickLogPanel({
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 p-0 rounded-full text-muted-foreground"
+                  className="h-8 w-8 p-0  text-muted-foreground"
                   aria-label={t('fuelEditThenLog', { defaultValue: 'Edit servings then log' })}
                   onClick={() => openDraftFromChip(name, p, c, carbs, fat)}
                 >
@@ -154,7 +154,7 @@ export function FuelQuickLogPanel({
               type="button"
               size="sm"
               variant={activeMeal === m ? 'fitness' : 'outline'}
-              className="h-8 text-xs rounded-full"
+              className="h-8 text-xs "
               onClick={() => onActiveMealChange(m)}
             >
               {mealLabel(m)}
@@ -169,7 +169,7 @@ export function FuelQuickLogPanel({
             defaultValue: 'chicken rice broccoli… or 3 eggs',
           })}
           onChange={(e) => onNlMealTextChange(e.target.value)}
-          className="w-full h-11 rounded-xl border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          className="w-full h-11  border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
         />
         {draft && (nlPreview || manualDraft) ? (
           <div className="space-y-3">
@@ -196,7 +196,7 @@ export function FuelQuickLogPanel({
             {nlPreview &&
               !manualDraft &&
               (nlPreview.source === 'rough' || nlPreview.confidence === 'low') && (
-              <div className="rounded-xl border border-border/50 bg-background/50 p-3 space-y-2">
+              <div className="border-2 border-border bg-background p-3 space-y-2">
                 <p className="text-xs font-medium text-muted-foreground">
                   {t('fuelSearchToImprove', {
                     defaultValue: 'Search the food database for better macros',
@@ -233,7 +233,7 @@ export function FuelQuickLogPanel({
               key={name}
               variant="outline"
               size="sm"
-              className="text-xs rounded-full"
+              className="text-xs "
               onClick={() => onQuickLog(name, p, c, carbs, fat)}
             >
               {name}
@@ -253,7 +253,7 @@ export function FuelQuickLogPanel({
                 key={m.id}
                 variant="secondary"
                 size="sm"
-                className="text-xs rounded-full"
+                className="text-xs "
                 onClick={() => onQuickLog(m.name, m.protein, m.cals, m.carbs, m.fat)}
               >
                 {m.name}

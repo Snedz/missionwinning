@@ -115,7 +115,7 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
               onClick={() => setMetric(key)}
               className={`px-2.5 py-1 text-[11px] border ${
                 metric === key
-                  ? 'border-primary bg-primary/10 text-primary'
+                  ? 'border-primary bg-accent-100 text-primary'
                   : 'border-border text-muted-foreground'
               }`}
             >
@@ -180,7 +180,7 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-border/50 p-2.5">
+    <div className="border-2 border-border p-2.5">
       <div className="text-[10px] text-muted-foreground uppercase tracking-wide">{label}</div>
       <div className="font-semibold tabular-nums text-foreground">{value}</div>
     </div>
