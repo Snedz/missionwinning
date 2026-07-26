@@ -60,9 +60,9 @@ export function PublicNavMenu({
       </DialogPrimitive.Trigger>
 
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+        <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-foreground/50 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <DialogPrimitive.Content
-          className="fixed inset-x-0 top-0 z-[61] max-h-[100dvh] overflow-y-auto border-b border-border/40 bg-background pb-8 pt-[max(0.75rem,env(safe-area-inset-top))] shadow-2xl data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top"
+          className="fixed inset-x-0 top-0 z-[61] max-h-[100dvh] overflow-y-auto border-b-2 border-border bg-background pb-8 pt-[max(0.75rem,env(safe-area-inset-top))] data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top"
           aria-describedby={undefined}
         >
           {/* Radix requires a title for the dialog's accessible name; the panel's own
@@ -79,13 +79,13 @@ export function PublicNavMenu({
           </div>
 
           <nav aria-label={menuLabel} className="mx-auto max-w-6xl px-5">
-            <ul className="divide-y divide-border/40 border-y border-border/40">
+            <ul className="divide-y-2 divide-border border-y-2 border-border">
               {links.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="flex min-h-[56px] items-center font-display text-xl font-bold uppercase tracking-wide text-foreground transition-colors hover:text-primary"
+                    className="flex min-h-[56px] items-center font-display text-xl font-extrabold tracking-[-0.01em] text-foreground transition-colors hover:text-primary"
                   >
                     {link.defaultValue}
                   </Link>

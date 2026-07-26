@@ -6,6 +6,24 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Modernist rebrand: the public shell is structural now (`.132`)
+
+The chrome the ~250 SEO URLs share, recut to the system the tokens already speak:
+
+- **Nav** (`PublicPageShell` + `MarketingNav`): solid paper bar under a **2px rule** —
+  translucency + backdrop-blur retired; wordmark drops its uppercase for Archivo 800
+  sentence case. `PublicNavMenu`: ink scrim (no blur), 2px rules between links,
+  sentence-case items. All test contracts intact (focus-restore, skip link, H1
+  alignment).
+- **Footers** (`PublicSiteFooter` + `MarketingFooter`): 2px rules; the medical
+  disclaimer strip goes flush-left (nothing is centered).
+- **404** re-set flush-left and ruled: red kicker, `.display-section`, poster CTA +
+  2px-ink ghost. **Offline** gets the handoff's feature-framing: "You're offline.
+  The log isn't." + a ruled still-works list. Live waiting-to-sync count needs an
+  outbox read from the SW fallback — deferred to the Phase 3 app pass.
+  (`/offline` online-while-gated redirects to `/private` — pre-existing; real
+  offline hits serve from the SW cache before the network.)
+
 ## 2026-07-25 — Modernist rebrand Phase 1: the whole app changes uniform (`.131`)
 
 The global token swap. One `:root` block in `src/index.css` now carries paper/ink/red;

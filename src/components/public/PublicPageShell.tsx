@@ -80,14 +80,15 @@ export function PublicPageShell({
         Skip to content
       </a>
 
+      {/* Modernist: solid paper bar under a 2px rule — no blur, no translucency. */}
       <nav
         aria-label="Site"
-        className="sticky top-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80"
+        className="sticky top-0 z-50 border-b-2 border-border bg-background"
       >
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-5 sm:h-16">
           <Link href="/" className="flex min-w-0 items-center gap-2.5">
             <BrandMonogram className="h-8 w-8 text-sm sm:h-9 sm:w-9" />
-            <span className="truncate font-display text-lg font-bold uppercase tracking-wide sm:text-xl">
+            <span className="truncate font-display text-lg font-extrabold tracking-[-0.01em] sm:text-xl">
               Mission Winning
             </span>
           </Link>

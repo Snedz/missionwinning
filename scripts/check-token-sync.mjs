@@ -199,4 +199,7 @@ for (const check of MOTION_CHECKS) {
 }
 
 console.log(drift ? '\n✗ Token or motion drift detected.\n' : '\n✓ All brand tokens and motion constants in sync.\n');
-process.exit(drift ? 1 : 0);
+// process.exitCode, not process.exit(): on Node 24.7/macOS a hard exit here
+// intermittently segfaults (exit 139) during teardown, failing the gate on a
+// green result. Letting the event loop drain exits cleanly with the same code.
+process.exitCode = drift ? 1 : 0;
