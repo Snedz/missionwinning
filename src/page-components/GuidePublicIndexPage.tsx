@@ -65,7 +65,7 @@ export function GuidePublicIndexPage() {
               onClick={() => track('guide_read', { chapter: ch.id })}
             >
               <p className="section-index mb-2">CH {String(ch.number).padStart(2, '0')}</p>
-              <h2 className="font-display text-xl font-semibold uppercase tracking-wide">
+              <h2 className="font-display text-xl font-semibold tracking-[-0.01em]">
                 {ch.title}
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">{ch.subtitle}</p>

@@ -6,6 +6,24 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — SEO templates on the system's own furniture (`.135`)
+
+The structural fidelity pass on the surfaces the tokens+shell had already
+recolored:
+
+- **`FilterChip`** (Library + all public exercise filters): pill → Modernist
+  square tag; active = tint fill `#fff2ef` + accent-700 text; local focus ring
+  dropped (the global outline covers it). One component edit restyles every
+  chip row on ~250 URLs.
+- **Compare**: the honest table goes 2px-ruled with the Mission Winning column
+  tinted, story cards and the free-stays-free note flatten to 2px-bordered
+  panels — no shadow, no rounding, no translucent fills.
+- **Guide index**: chapter titles drop Barlow's leftover `uppercase` for
+  Archivo sentence case; `CH 01` indexes stay tabular via `.section-index`.
+- Exercise page/hub templates confirmed correct from tokens+shell alone —
+  no per-template edits needed (the mockup's own note: "the template repeats;
+  only the data changes").
+
 ## 2026-07-25 — Public calculators: three SEO routes, one honest ladder (`.134`)
 
 The rebrand's Phase 2 asymmetric play: no-auth calculator pages, built now,

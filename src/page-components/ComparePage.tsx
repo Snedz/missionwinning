@@ -100,29 +100,29 @@ export function ComparePage() {
       ctaLabel={t('landingNavStart', { defaultValue: 'Start free' })}
       maxWidth="4xl"
     >
-        <div className="overflow-hidden rounded-2xl border border-border/50 bg-card/80 shadow-sm">
-          <div className="border-b border-border/40 px-5 py-4">
-            <h2 className="font-display text-lg font-semibold uppercase tracking-wide text-foreground">
+        <div className="border-2 border-border">
+          <div className="border-b-2 border-border px-5 py-4">
+            <h2 className="font-display text-lg font-extrabold tracking-[-0.01em] text-foreground">
               {t('compareTableTitle', { defaultValue: 'Free tier at a glance' })}
             </h2>
           </div>
           <div className="overflow-x-auto px-5 pb-5">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border/50 text-left">
-                  <th className="py-3 pr-4 font-medium text-muted-foreground">Feature</th>
-                  <th className="bg-primary/5 py-3 pr-4 font-semibold text-primary">
+                <tr className="border-b-2 border-border text-left">
+                  <th className="py-3 pr-4 font-semibold text-muted-foreground">Feature</th>
+                  <th className="bg-tint py-3 pr-4 font-semibold text-primary">
                     Mission Winning
                   </th>
-                  <th className="py-3 pr-4">Hevy</th>
-                  <th className="py-3">Strong</th>
+                  <th className="py-3 pr-4 font-semibold">Hevy</th>
+                  <th className="py-3 font-semibold">Strong</th>
                 </tr>
               </thead>
               <tbody>
                 {COMPARE_ROWS.map((row) => (
-                  <tr key={row.feature} className="border-b border-border/30">
+                  <tr key={row.feature} className="border-b border-border">
                     <td className="py-3 pr-4 text-muted-foreground">{row.feature}</td>
-                    <td className="bg-primary/5 py-3 pr-4 font-medium text-foreground">
+                    <td className="bg-tint py-3 pr-4 font-semibold text-foreground">
                       {row.mw}
                     </td>
                     <td className="py-3 pr-4">{row.hevy}</td>
@@ -160,7 +160,7 @@ export function ComparePage() {
             <Link
               key={c.href}
               href={c.href}
-              className="block rounded-2xl border border-border/50 bg-card/80 p-4 shadow-sm transition-colors hover:border-border"
+              className="block border-2 border-border bg-card p-4 transition-colors hover:border-foreground"
             >
               <p className="font-semibold text-sm">{c.title}</p>
               <p className="text-xs text-muted-foreground mt-1">{c.body}</p>
@@ -168,7 +168,7 @@ export function ComparePage() {
           ))}
         </div>
 
-        <div className="space-y-2 rounded-2xl border border-border/40 bg-muted/15 p-5 text-sm leading-relaxed text-muted-foreground">
+        <div className="space-y-2 border-2 border-border p-5 text-sm leading-relaxed text-muted-foreground">
           <p className="eyebrow">What stays free</p>
           <p>
             Free library:{' '}
