@@ -26,7 +26,6 @@ import { LogToPlanHeroFallback } from '@/components/landing/LogToPlanHero';
 import { MarketingNav } from '@/components/marketing/MarketingNav';
 import { MarketingFooter } from '@/components/marketing/MarketingFooter';
 import { Reveal } from '@/components/marketing/Reveal';
-import { ArtPicture } from '@/components/marketing/ArtPicture';
 import { ArrowRight } from 'lucide-react';
 import { isFreeBeta } from '@/lib/freeBeta';
 
@@ -96,34 +95,23 @@ export function LandingPage() {
       <MarketingNav variant="full" />
 
       {/* ── LOG ─────────────────────────────────────────────────────────
-          The thesis, stated then performed. No gradient orbs: the field is
-          type and rule, which is what distinguishes this from every other
-          dark landing page with one green accent. */}
-      <header className="section-seam relative overflow-hidden">
-        {/* Existing brand asset, same as /press. Real texture beats a gradient orb,
-            and it keeps the type dominant at this opacity. */}
-        <ArtPicture
-          base="/art/hero-field"
-          fill
-          priority
-          className="object-cover opacity-25"
-        />
-        <div className="relative z-[1] mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-12 sm:gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:pb-24 lg:pt-20">
+          The thesis, stated then performed. Flat paper: type and the 2px rule
+          are the field — the poster close at the bottom is the page's one red. */}
+      <header className="section-seam">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-12 sm:gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:pb-24 lg:pt-20">
           <div className="page-enter">
-            <p className="eyebrow mb-5">
+            <p className="eyebrow-live mb-5">
               {t('landingHeroEyebrowLoop', { defaultValue: 'Free · offline · no account' })}
             </p>
             <h1 className="display-hero mb-6 max-w-[18ch] text-balance text-foreground">
               {t('landingHeroLine1', { defaultValue: 'Log a set.' })}
               <br />
-              <span className="text-primary">
-                {t('landingHeroLine2', { defaultValue: 'Your week rewrites itself.' })}
-              </span>
+              {t('landingHeroLine2', { defaultValue: 'Your week rewrites itself.' })}
             </h1>
             <p className="mb-8 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
               {t('landingHeroSubtitleLoop', {
                 defaultValue:
-                  'A workout logger that turns what you actually did into next week’s plan. No wearable, no gym, no subscription to start.',
+                  'A workout logger that turns what you actually did into next week’s plan. No wearable, no gym, no account — and the logger is free forever. Works offline, anywhere you train.',
               })}
             </p>
             <button
@@ -147,10 +135,52 @@ export function LandingPage() {
         </div>
       </header>
 
+      {/* ── CHECKABLE FACTS ─────────────────────────────────────────────
+          The stat row from the handoff: figures a visitor can verify, set in
+          tabular numerals on 2px rules. No traction claims (hard rule 3). */}
+      <section className="section-seam" aria-label="At a glance">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-border px-0 sm:grid-cols-4">
+          {[
+            {
+              k: 'landingStatExercisesV',
+              v: '217',
+              lk: 'landingStatExercisesL',
+              l: 'Exercises, bodyweight and minimal gear first',
+            },
+            {
+              k: 'landingStatMinutesV',
+              v: '3min',
+              lk: 'landingStatMinutesL',
+              l: 'From landing to your first logged set',
+            },
+            {
+              k: 'landingStatZeroV',
+              v: '0',
+              lk: 'landingStatZeroL',
+              l: 'Wearables, accounts, or app stores required',
+            },
+            {
+              k: 'landingStatFreeV',
+              v: '$0',
+              lk: 'landingStatFreeL',
+              l: 'The logger, forever — not a trial',
+            },
+          ].map((s) => (
+            <div key={s.k} className="bg-background px-5 py-6">
+              <p className="display-mega text-poster">{t(s.k, { defaultValue: s.v })}</p>
+              <p className="mt-2 text-sm leading-snug text-muted-foreground">
+                {t(s.lk, { defaultValue: s.l })}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ── ADAPT ───────────────────────────────────────────────────── */}
-      <section id="coach" className="section-seam bg-muted/[0.07]">
+      <section id="coach" className="section-seam">
         <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 lg:grid-cols-2 lg:items-center lg:py-24">
           <Reveal>
+            <p className="section-index mb-2">02</p>
             <p className="eyebrow mb-4">{t('landingAdaptEyebrow', { defaultValue: 'When you miss' })}</p>
             <h2 className="display-section mb-6 max-w-[24ch] text-balance text-foreground">
               {t('landingAdaptTitle', { defaultValue: 'A missed day is not a failed plan' })}
@@ -174,6 +204,7 @@ export function LandingPage() {
       <section className="section-seam">
         <div className="mx-auto max-w-5xl px-5 py-16 lg:py-20">
           <Reveal>
+            <p className="section-index mb-2">03</p>
             <p className="eyebrow mb-4">{t('landingAnywhereEyebrow', { defaultValue: 'Where you train' })}</p>
             <h2 className="display-section mb-6 max-w-[26ch] text-balance text-foreground">
               {t('landingAnywhereTitle', {
@@ -220,9 +251,10 @@ export function LandingPage() {
       </section>
 
       {/* ── FREE ────────────────────────────────────────────────────── */}
-      <section className="section-seam bg-muted/[0.07]">
+      <section className="section-seam">
         <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
           <Reveal>
+            <p className="section-index mb-2">04</p>
             <p className="eyebrow mb-4">{t('landingFreeEyebrow', { defaultValue: 'The free core' })}</p>
             <h2 className="display-section mb-6 max-w-[24ch] text-balance text-foreground">
               {t('landingFreeTitleLoop', { defaultValue: 'Free is the mission, not the trial' })}
@@ -235,7 +267,7 @@ export function LandingPage() {
               })}
             </p>
 
-            <dl className="divide-y divide-border/40">
+            <dl className="divide-y-2 divide-border border-y-2 border-border">
               {FREE_CORE.map((row) => (
                 <div key={row.key} className="grid gap-1 py-4 sm:grid-cols-[10rem_1fr] sm:gap-6">
                   <dt className="font-mono text-xs uppercase tracking-[0.18em] text-primary">
@@ -265,7 +297,7 @@ export function LandingPage() {
       <section className="section-seam">
         <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
           <p className="eyebrow mb-8">{t('landingFaqEyebrow', { defaultValue: 'Straight answers' })}</p>
-          <div className="divide-y divide-border/40">
+          <div className="divide-y-2 divide-border border-y-2 border-border">
             {FAQ.map((f) => (
               <details key={f.qKey} className="group py-4 first:pt-0">
                 <summary className="cursor-pointer list-none text-sm font-semibold marker:content-none">
@@ -285,37 +317,37 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── START ───────────────────────────────────────────────────── */}
-      <section className="border-t border-border/30">
-        <div className="mx-auto max-w-3xl px-5 py-20 text-center lg:py-24">
+      {/* ── START — the poster close, the page's ONE red field ────────── */}
+      <section className="poster-close">
+        <div className="mx-auto max-w-6xl px-5 py-20 lg:py-24">
           <Reveal>
-            <h2 className="display-section mb-6 max-w-[24ch] text-balance text-foreground">
+            <h2 className="display-hero mb-8 max-w-[18ch] text-balance">
               {t('landingFinalCtaTitleLoop', { defaultValue: 'One set is the whole beginning' })}
             </h2>
             <button
               type="button"
-              className="primary-action mx-auto max-w-sm sm:w-auto sm:max-w-none sm:px-12"
+              className="primary-action max-w-sm sm:w-auto sm:max-w-none sm:px-12"
               onClick={() => router.push('/welcome')}
             >
               {t('landingFinalCtaButton', { defaultValue: 'Start free — no account' })}
               <ArrowRight className="h-5 w-5" />
             </button>
-            <p className="mt-4 text-xs text-muted-foreground">
+            <p className="mt-4 text-sm text-background/80">
               {t('landingFinalCtaFoot', {
                 defaultValue:
                   'Under three minutes to your first session. Nothing to install, nothing to pay.',
               })}
             </p>
-            <p className="mt-6 text-sm text-muted-foreground">
+            <p className="mt-6 text-sm">
               {!isFreeBeta() && (
                 <>
-                  <Link href="/bundle" className="underline underline-offset-4 hover:text-foreground">
+                  <Link href="/bundle" className="underline underline-offset-4">
                     {t('landingNavBundle', { defaultValue: 'Super Bundle' })}
                   </Link>
                   {' · '}
                 </>
               )}
-              <Link href="/vision" className="underline underline-offset-4 hover:text-foreground">
+              <Link href="/vision" className="underline underline-offset-4">
                 {t('landingMissionLink', { defaultValue: 'Read the full vision' })}
               </Link>
             </p>

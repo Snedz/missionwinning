@@ -6,6 +6,26 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Modernist rebrand: the landing argues on paper (`.133`)
+
+`/` recut to the Homepage mockup — the argument (log → adapt → anywhere → free →
+start) unchanged, the setting new:
+
+- **Hero flat**: gradient art overlay retired; kicker goes accent-700; both H1
+  lines ink (red is spent once, at the close). Subtitle picks up the mockup's
+  full promise ("…free forever. Works offline, anywhere you train.").
+- **Checkable stat row** (new): 217 / 3min / 0 / $0 in poster-red `display-mega`
+  tabular figures on rule separators — facts a visitor can verify, no traction
+  claims (hard rule 3).
+- **`section-index` numbers** (02/03/04) on the argument sections; free-core dl
+  and FAQ on full-strength 2px rules.
+- **Poster close** (new `.poster-close` component class): the page's ONE red
+  field — `display-hero` paper-on-red, flush left; the `.primary-action` inside
+  inverts to paper so first-90's two-CTA count contract holds.
+- Welcome: first-session payoff card gets the tint + 2px poster-border
+  treatment; goal presets use the standard fill. App header's Dumbbell chip →
+  `BrandMonogram` ink square. `public/locales` re-exported for the landing copy.
+
 ## 2026-07-25 — Modernist rebrand: the public shell is structural now (`.132`)
 
 The chrome the ~250 SEO URLs share, recut to the system the tokens already speak:

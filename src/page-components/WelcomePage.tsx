@@ -201,7 +201,7 @@ export function WelcomePage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-border/50 bg-muted/15 px-4 py-3.5 space-y-1.5">
+                <div className="card-glow-emerald px-4 py-3.5 space-y-1.5">
                   <p className="text-xs font-medium text-muted-foreground">
                     {t('welcomePreviewLabel', { defaultValue: 'Your first session is ready' })}
                   </p>
@@ -298,7 +298,6 @@ export function WelcomePage() {
                           type="button"
                           size="sm"
                           variant={selected ? 'default' : 'outline'}
-                          className={selected ? 'bg-primary hover:bg-primary/90' : ''}
                           onClick={() => setPrimaryGoal(value)}
                         >
                           {t(labelKey, { defaultValue: GOAL_PRESET_DEFAULTS[id] })}
@@ -348,7 +347,7 @@ export function WelcomePage() {
                     })}
                   </p>
                 </div>
-                <div className="rounded-2xl border border-border/50 bg-muted/15 px-4 py-3.5 space-y-1.5">
+                <div className="card-glow-emerald px-4 py-3.5 space-y-1.5">
                   <p className="text-xs font-medium text-muted-foreground">
                     {t('welcomeSessionReadyEyebrow', { defaultValue: 'Up next' })}
                   </p>
