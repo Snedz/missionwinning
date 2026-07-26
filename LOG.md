@@ -6,6 +6,31 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-25 — Modernist rebrand Phase 0: the gate wears the new uniform (`.130`)
+
+The founder-commissioned **Modernist rebrand** (design handoff 2026-07-25: ink-on-paper
+`#f3f2f2`/`#201e1d`, one red accent `#ec3013`, Archivo only, radius 0, 2px rules,
+light-only — replaces navy/emerald/brass + Barlow/Inter/Plex Mono) starts at `/private`:
+with `PRIVATE_MODE` on, the gate **is** the public site, so it ships alone. Founder
+override recorded in [docs/DESIGN_ORCHESTRATION.md](docs/DESIGN_ORCHESTRATION.md) (wave
+D5); Android token sync pauses for the program — Android rebrand is a follow-up.
+
+- **Restyle only, plumbing untouched:** `submitLead`, `/api/private-access`, OAuth
+  session unlock, `data-mw-invitee` SSR attr, invitee direct-form + autofocus,
+  open-redirect guard all unchanged. Verified in-browser: cold, invitee, disclosure,
+  mobile 375px.
+- **Tokens locally scoped** under `.mw-gate` in `app/private/gate.css`; Archivo via
+  `next/font` in the route only; per-route `viewport.themeColor` paper. The Phase 1
+  global token swap dissolves this file into `src/index.css`. `html:has(.mw-gate)`
+  forces the canvas paper — the navy body otherwise flashes on overscroll.
+- **Contrast engineering:** paper-on-red is 3.78:1, below AA for normal text — primary
+  button labels are 19px/800 (WCAG large text, ≥3:1 ✓); small red text uses accent-700
+  `#ae1800` (6.4:1). This is the pattern for the whole rebrand.
+- **Copy to handoff finals:** `gateSubtitle` re-cut, invite headline+subtitle merged;
+  new `gateFooterTagline` hand-translated ×15. `public/locales` overlay re-exported —
+  it was stale from `.126`–`.129` ships (separate commit; the overlay was serving old
+  copy over the in-bundle defaults).
+
 ## 2026-07-25 — Accelerator paste packs gitignored
 
 - `docs/applications/*` answers removed from tracking; only [README.md](docs/applications/README.md) stays public. Files remain on disk for founder paste. History still has old copies until a rewrite.

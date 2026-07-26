@@ -6,6 +6,8 @@
 
 Use this file to decide **what design craft ships next** and **what is vanity until retention unlocks**. Do not replace the brand — refine execution.
 
+> **Founder override 2026-07-25 — Modernist rebrand.** The no-brand-replacement rule is superseded by the founder-commissioned Modernist rebrand (design handoff: ink-on-paper `#f3f2f2`/`#201e1d`, one red accent `#ec3013`, Archivo only, radius 0, 2px rules, light-only; plan approved 2026-07-25). Wave D5 below tracks it. Until the token-swap PR rewrites [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) and [brand-guidelines.md](brand-guidelines.md), the lock table below describes the **outgoing** system; the incoming source of truth is the handoff's `_ds` token sheet. **Android:** cross-platform token sync is paused for the program (founder decision 2026-07-25) — Android keeps navy/emerald and gets its own rebrand program after web.
+
 ---
 
 ## Where we are
@@ -20,6 +22,7 @@ Product status lives in [CONTEXT.md](../CONTEXT.md) `## Now`. Design craft waves
 | **D-prelaunch** | Pre-flip (founder excellence) | **Shipped 2026-07-22** — Today composure · Active intent · Victory one-exit · rest · gate · Android parity |
 | **D3 Platform excellence** | Horizon 3 (founder override) | **Shipped 2026-07-22** — token sync · Fuel/Move/Mind/Learn CTA density · Batch C · guide chrome |
 | **D4 Beta composure** | Horizon 0 (founder override) | **Shipped 2026-07-22** — Landing cut (~5–6 bands) · wedge copy · Bundle one-offer · Today More collapse · Android Today secondary demotion |
+| **D5 Modernist rebrand** | Horizon W (founder override 2026-07-25) | **In progress** — Phase 0 gate shipped (`.130`); next: global token/font swap → shell + marketing → calculators + SEO templates → app screens → emails/flip |
 
 ---
 
