@@ -106,17 +106,32 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
           <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
             {t('calcPlatePerSide', { defaultValue: 'Per side' })}
           </div>
+          {/*
+            52px squares rather than text pills, ink-filled for the heaviest
+            plate size and 2px-outlined for everything lighter — so the stack
+            reads as a *shape* you can check against the bar at a glance,
+            instead of a sentence you have to parse mid-lift.
+          */}
           {result.perSide.length > 0 ? (
             <div className="flex flex-wrap gap-1.5">
-              {result.perSide.map((plate, i) => (
-                <span
-                  key={`${plate}-${i}`}
-                  className="inline-flex items-center bg-accent-100 px-3 py-1.5 text-sm font-semibold tabular-nums text-accent-900"
-                >
-                  {plate}
-                  {unit}
-                </span>
-              ))}
+              {result.perSide.map((plate, i) => {
+                const heaviest = availablePlates(units)[0] ?? plate;
+                const solid = plate >= heaviest;
+                return (
+                  <span
+                    key={`${plate}-${i}`}
+                    className={cn(
+                      'inline-flex h-[52px] min-w-[52px] items-center justify-center px-2 text-sm font-semibold tabular-nums',
+                      solid
+                        ? 'bg-foreground text-background'
+                        : 'border-2 border-foreground text-foreground'
+                    )}
+                  >
+                    {plate}
+                    {unit}
+                  </span>
+                );
+              })}
             </div>
           ) : (
             <div className="text-muted-foreground text-sm">—</div>
@@ -131,7 +146,14 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
               defaultValue: `Total on bar: ${result.achievedWeight} ${unit}`,
             })}
           </div>
-          {result.remainder !== 0 && (
+          {/* `calculatePlatesPerSide` is greedy, so it can land short. Say which
+              happened either way — silence after an exact hit reads the same as
+              silence after a miss. */}
+          {result.remainder === 0 ? (
+            <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+              {t('calcPlateExact', { defaultValue: 'Achieved · exact' })}
+            </div>
+          ) : (
             // The closest-loadable warning. text-primary, not status-warn: this
             // is the one thing in the panel you must not miss.
             <div className="border-s-2 border-primary ps-2 text-xs font-semibold text-primary">
