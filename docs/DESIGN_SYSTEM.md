@@ -35,6 +35,17 @@
 
 **Active / selected:** `is-active-row` (accent-100 fill + 3px inset left edge) for nav items, live set rows and open detail panels; `is-active-tab` (2px inset top edge) for the mobile tab bar.
 
+### The red field — `poster-close` vs `poster-field`
+
+One per page, either way. Both invert a nested `.primary-action` to paper so the field itself carries the red. They differ **only** in ground, and only because of text size:
+
+| Class | Ground | Carries | Why |
+|-------|--------|---------|-----|
+| `poster-close` | `--accent-poster` `#ec3013` | Display type only | Paper on poster is 4.19:1 — clears the 3:1 large text needs, fails the 4.5:1 small text needs |
+| `poster-field` | `--primary` `#ae1800` | Kicker + body + CTA | Paper on it is 6.5:1, so an 11px kicker and 14px sub-line are legible |
+
+Inside a `poster-field` use `.poster-kicker` (full paper) and `.poster-sub` (paper/90%) — `muted-foreground` is an ink value and disappears. **Nothing on `#ec3013` reaches 4.5:1, not even pure white**, so a red panel that carries small text has to be the deeper red. This is the same rule as "never put small text in poster red", applied to a background.
+
 ## Tokens
 
 | Token | Role |

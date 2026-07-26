@@ -15,11 +15,8 @@ export type ScoreNumeralProps = {
   delta?: number | null;
   /** Unit or qualifier under the delta — "vs last week". */
   caption?: string;
-  /**
-   * Whether a rising number is a good outcome. True for Mission Score and
-   * volume; false for the metrics where lower is the win (stress, resting HR).
-   */
-  higherIsBetter?: boolean;
+  /** Red numeral. The handoff gives this to the primary score only — one per band. */
+  emphasis?: boolean;
   size?: 'md' | 'lg';
   className?: string;
 };
@@ -35,7 +32,7 @@ export function ScoreNumeral({
   value,
   delta,
   caption,
-  higherIsBetter = true,
+  emphasis = false,
   size = 'lg',
   className,
 }: ScoreNumeralProps) {
@@ -44,44 +41,38 @@ export function ScoreNumeral({
 
   return (
     <div className={cn('flex flex-col gap-1', className)}>
-      <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
         {label}
       </span>
       <span
         className={cn(
-          'font-extrabold leading-[0.95] tabular-nums',
+          'font-extrabold leading-[1] tabular-nums',
           size === 'lg' ? 'text-[56px]' : 'text-[40px]',
+          emphasis && 'text-primary',
           value === null && 'text-muted-foreground'
         )}
       >
         {display}
       </span>
+      {/*
+       * The delta is muted ink whatever direction it points, and that is the
+       * handoff's own answer, not a placeholder: every delta in the Today score
+       * band ships as `class="text-muted"`. Colouring it would make the app
+       * congratulate and scold, and the one colour available to do that with is
+       * red — so "down 3" and "up 3" would both read as alarm. The number and
+       * its sign carry the direction; the tone stays level.
+       */}
       {(hasDelta || caption) && (
-        <span className="flex items-baseline gap-1.5 text-[12px] tabular-nums">
+        <span className="mt-0.5 flex items-baseline gap-1.5 text-[12px] tabular-nums text-muted-foreground">
           {hasDelta && (
-            <span className={cn('font-semibold', deltaToneClass(delta, higherIsBetter))}>
+            <span className="font-semibold">
               {delta > 0 ? '+' : ''}
               {delta}
             </span>
           )}
-          {caption && <span className="text-muted-foreground">{caption}</span>}
+          {caption && <span>{caption}</span>}
         </span>
       )}
     </div>
   );
-}
-
-/**
- * Decide how a delta is coloured.
- *
- * TODO(founder): implement. This is a product-tone call, not a styling detail —
- * see the note in chat. Returns a Tailwind text-colour class.
- *
- * Available: `text-primary` (#ae1800, the AA-safe red — reads as emphasis, and
- * in this system red is the only colour, so it means "notable", not "bad"),
- * `text-foreground` (plain ink), `text-muted-foreground` (recessive).
- * Do NOT introduce green — the palette is one red on paper by design.
- */
-function deltaToneClass(delta: number, higherIsBetter: boolean): string {
-  return 'text-muted-foreground';
 }

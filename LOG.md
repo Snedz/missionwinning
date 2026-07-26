@@ -6,6 +6,43 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Today puts the next action first (`.141`)
+
+Phase C: the first screen recut, and the one that settles the boss-panel
+question. On Today the boss panel is the **red field** — the next action, not a
+summary.
+
+- **`JourneyHero` → `.poster-field`.** It was a grey surface card carrying the
+  most important thing on the screen. Now it is the one red field Today gets,
+  with the nested `.primary-action` inverting to paper, so the count `first-90`
+  asserts on `/log` is unchanged — one primary action, no longer red-on-grey.
+- **The field is `--primary` #ae1800, not poster #ec3013**, and that is forced.
+  The panel carries an 11px kicker and a 14px sub-line, which need 4.5:1;
+  **nothing on #ec3013 reaches 4.5:1, not even pure white** (4.19). The mock's
+  `.85`-opacity kicker measured 3.04:1 and axe caught it on `/log` and
+  `/bundle`. It is the "never put small text in poster red" rule applied to a
+  background. Visibly a deeper red than the mock; the alternative was deleting
+  the kicker and the sub-line.
+- **One band of four.** `MetricsRow` absorbed the Mission Score as a leading
+  cell in red — it was a hero score in its own column beside a row of three.
+  Two columns on a phone: four 40px numerals across 375px leaves ~90px a cell
+  and the captions shred. Borders are per-index, not `divide-x`, which follows
+  DOM order and would rule the cell that starts row two.
+- **The streak was rendering twice** — `TodayPageHeader` and
+  `TodayDashboardHeader` both drew it. Harmless as two grey sentences,
+  obvious once it became an accent tag, so the dashboard copy is gone and the
+  meta row keeps it (which is where the handoff puts it).
+- **Deltas are muted ink whatever direction they point** — the handoff's own
+  answer, every delta in its score band ships as `text-muted`. `ScoreNumeral`
+  lost `higherIsBetter` and gained `emphasis` (the red numeral, one per band).
+  Colouring a delta would make the app congratulate and scold, and the only
+  colour available to do it with is red.
+- Meta row is one line (streak tag · Rankings · sync state) instead of three
+  stacked blocks that pushed the next action further below the fold. Journal is
+  a ruled table; its empty state is a 2px box keeping the repo's copy, not the
+  mock's.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20.
+
 ## 2026-07-26 — The rail learns its groups (`.140`)
 
 Phase B of the second Modernist handoff: the app shell. The rail was five wedge

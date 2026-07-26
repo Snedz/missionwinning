@@ -366,25 +366,59 @@
     }
   }
 
-  /* The poster close — the ONE red field a page is allowed. Display-grade type,
-     paper on red, flush left. Inside it the .primary-action inverts to paper so
-     the field itself carries the red (and the two-per-page CTA count holds). */
+  /* The ONE red field a page is allowed. Display-grade type, paper on red,
+     flush left. Inside it the .primary-action inverts to paper so the field
+     itself carries the red (and the per-page CTA count holds).
+
+     Two names because the grounds differ, and they differ for one reason:
+     `.poster-close` is the marketing sign-off and carries display type only,
+     so poster red is fine — paper on #ec3013 is 4.19:1, which clears the 3:1
+     that large text needs. `.poster-field` is the mid-page version (Today's
+     "your next step") and it carries an 11px kicker and a 14px sub-line, which
+     need 4.5:1. Nothing on #ec3013 reaches that, not even pure white — which
+     is exactly what "never put small text in poster red" means.
+
+     So the field uses --primary #ae1800: still unmistakably the one red, still
+     one of the three sanctioned values, and paper on it is 6.5:1, so every
+     line the panel carries is legible. It is a visibly deeper red than the
+     mock. The alternative was dropping the kicker and the sub-line. */
   .poster-close {
     background: hsl(var(--accent-poster));
     color: hsl(var(--background));
   }
 
-  .poster-close .primary-action {
+  .poster-field {
+    background: hsl(var(--primary));
+    color: hsl(var(--background));
+  }
+
+  .poster-close .primary-action,
+  .poster-field .primary-action {
     background: hsl(var(--background));
     color: hsl(var(--foreground));
   }
 
-  .poster-close .primary-action:hover {
+  .poster-close .primary-action:hover,
+  .poster-field .primary-action:hover {
     background: hsl(var(--accent-tint));
   }
 
-  .poster-close .primary-action:focus-visible {
+  .poster-close .primary-action:focus-visible,
+  .poster-field .primary-action:focus-visible {
     outline-color: hsl(var(--background));
+  }
+
+  /* Secondary text inside the red field. muted-foreground is an ink value and
+     would vanish here, so subordination comes from paper at reduced alpha —
+     but only as far as the contrast budget allows. On #ae1800: 90% paper is
+     ~5.9:1 and full paper is 6.5:1, both clear of 4.5. The mock's .85 kicker
+     was 3.04:1 on poster red, which is what axe caught. */
+  .poster-field .poster-sub {
+    color: hsl(var(--background) / 0.9);
+  }
+
+  .poster-field .poster-kicker {
+    color: hsl(var(--background));
   }
 
   /* Section seams are honest 2px rules now — full-bleed, no fade, no glow. */

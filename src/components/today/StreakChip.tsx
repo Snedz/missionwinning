@@ -26,14 +26,16 @@ export function StreakChip({ streak, variant = 'inline', className }: Props) {
     );
   }
 
+  // A square accent tag, per the handoff's `tag tag-accent` — a streak is a
+  // standing fact about you, and reads better as a label than as a sentence.
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 text-sm text-muted-foreground',
+        'inline-flex items-center gap-1 bg-accent-100 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.06em] tabular-nums text-accent-900',
         className
       )}
     >
-      <Flame className="h-3.5 w-3.5 text-primary" aria-hidden />
+      <Flame className="h-3 w-3" aria-hidden />
       {t('todayDayStreak', { count: streak, defaultValue: `${streak}-day streak` })}
     </span>
   );

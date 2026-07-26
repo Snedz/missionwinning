@@ -3,19 +3,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MetricsRow } from '@/components/metrics/MetricsRow';
-import { ScoreNumeral } from '@/components/ui/ScoreNumeral';
 import { TodayMetricsSparklineRow } from '@/components/today/TodayMetricsSparklineRow';
 import type { BodyScores } from '@/lib/score';
 import type { TodayTrends } from '@/lib/todayTrends';
 import { animateCount } from '@/lib/motion';
 import { cn } from '@/lib/utils';
-import { StreakChip } from '@/components/today/StreakChip';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface Props {
   missionScore: number;
   scores: BodyScores;
-  streak: number;
   trends?: TodayTrends;
   /** One coach briefing line under the score (D2). */
   coachLine?: string;
@@ -23,13 +20,12 @@ interface Props {
 }
 
 /**
- * Mission Score ring + readiness/strain/recovery above the fold (matches landing HeroDemo).
- * Sparklines stay in collapsed Trends (D4 density).
+ * The Today score band — Mission Score + readiness/strain/recovery as one row
+ * of four above the fold. Sparklines stay in collapsed Trends (D4 density).
  */
 export function TodayDashboardHeader({
   missionScore,
   scores,
-  streak,
   trends,
   coachLine,
   className,
@@ -54,58 +50,51 @@ export function TodayDashboardHeader({
     return () => mq.removeEventListener('change', sync);
   }, []);
 
-  const numeralSize = compactRings ? 'md' : 'lg';
   const metricsSize = compactRings ? 'sm' : 'md';
 
   return (
     <div className={cn('space-y-4', className)}>
-      <div className="today-score-layout flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-6">
-        <div className="today-score-ring flex flex-col gap-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              {/* No focus ring classes: the global :focus-visible rule in
-                  index.css covers raw buttons, and a second one draws twice. */}
-              <button type="button" className="text-left">
-                <ScoreNumeral
-                  label={t('todayMissionScore', { defaultValue: 'Mission Score' })}
-                  value={displayScore}
-                  caption={t('todayMissionScoreFromLogs', { defaultValue: 'From your logs' })}
-                  size={numeralSize}
-                  className="score-tick"
-                />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent className="max-w-xs">
-              {t('todayMissionScoreTip', {
-                defaultValue:
-                  'Daily score from all six pillars. Log training, fuel, move, mind, track, and learn to raise it.',
-              })}
-            </TooltipContent>
-          </Tooltip>
-          {coachLine ? (
-            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground sm:max-w-sm">
-              {coachLine}
-            </p>
-          ) : null}
-          {streak > 0 && (
-            <StreakChip streak={streak} variant="inline" className="text-muted-foreground" />
-          )}
-        </div>
-
-        <div className="today-score-metrics w-full min-w-0 flex-1">
-          <MetricsRow scores={scores} embedded size={metricsSize} />
-        </div>
-      </div>
+      {/* One band of four, Mission Score leading in red. It used to be a hero
+          score in its own column beside a row of three; the handoff reads the
+          four as one row of peers, with red — the only colour here — marking
+          which one is the headline. */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          {/* No focus-ring classes: the global :focus-visible rule in index.css
+              already covers raw buttons, and a second one draws twice. */}
+          <button type="button" className="today-score-layout block w-full text-left">
+            <MetricsRow
+              scores={scores}
+              missionScore={displayScore}
+              embedded
+              size={metricsSize}
+            />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent className="max-w-xs">
+          {t('todayMissionScoreTip', {
+            defaultValue:
+              'Daily score from all six pillars. Log training, fuel, move, mind, track, and learn to raise it.',
+          })}
+        </TooltipContent>
+      </Tooltip>
+      {/* The streak used to repeat here. TodayPageHeader already shows it in the
+          meta row under the H1, which is where the handoff puts it — as a grey
+          sentence the repetition was easy to miss, as an accent tag twice on one
+          screen it is not. */}
+      {coachLine ? (
+        <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">{coachLine}</p>
+      ) : null}
 
       {trends ? (
-        <details className="group rounded-xl border border-border/40 bg-muted/10">
-          <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 text-xs uppercase tracking-wide text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+        <details className="group border-b-2 border-border">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
             <span>{t('todayTrendsDetails', { defaultValue: 'Trends' })}</span>
             <span className="text-[10px] opacity-60 transition-transform group-open:rotate-180">
               ▼
             </span>
           </summary>
-          <div className="border-t border-border/30 px-3 pb-3 pt-3">
+          <div className="border-t border-border pb-3 pt-3">
             <TodayMetricsSparklineRow trends={trends} />
           </div>
         </details>
