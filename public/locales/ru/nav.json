@@ -1,4 +1,9 @@
 {
+  "navOpenBeta": "Открытая бета",
+  "navAssess": "Оценка",
+  "navGroupMission": "Миссия",
+  "navGroupPillars": "Основы",
+  "navGroupToolkit": "Инструменты",
   "navSectionRecover": "Восстановление",
   "navSectionTrain": "Углублённая тренировка",
   "navSectionLearn": "Обучение и замеры",

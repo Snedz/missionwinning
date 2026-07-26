@@ -6,6 +6,40 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — The rail learns its groups (`.140`)
+
+Phase B of the second Modernist handoff: the app shell. The rail was five wedge
+tabs; the handoff wants the 13 signed-in screens grouped Mission / Pillars /
+Toolkit, and the mobile bar scrollable.
+
+- **One source, `railGroupsForNav()`** (`src/lib/navConfig.ts`). Groups are
+  declared as **hrefs**, resolved against `PRIMARY_NAV` + `MORE_NAV`, so "what
+  is /move called" keeps one answer — a rail and a menu with their own copies
+  is how they start disagreeing. Parked surfaces filter out and empty groups
+  disappear, the rule the header menu already followed.
+- **Rail** scrolls and is grouped; at 72px it is icon-only, so a 2px rule
+  carries the grouping where the label would be unreadable. Active =
+  `is-active-row`. **Tabs** scroll horizontally at `min-w-[68px]`: thirteen tabs
+  at `flex-1` on a 375px screen is ~29px each, well under the 44px this nav has
+  to hold. Mission is first, so Today / Train / Coach / History are on screen
+  before any scroll. Active = `is-active-tab`.
+- **OPEN BETA tag** in the header, `Badge variant="outline"` per the handoff's
+  `tag-outline`, gated on `isFreeBeta()` so it removes itself when the window
+  closes rather than needing a follow-up commit. Hidden under `sm` where the
+  wordmark and auth chip already fill the row.
+- **Two handoff values overridden for contrast**, both 10px on paper: rail group
+  labels `neutral-500` (~2.4:1) and inactive tabs `neutral-600` (3.84:1), now
+  `muted-foreground` (8.4:1). Caught by `npm run a11y`, which went 13/20 on the
+  first pass — 198 nodes, every page carrying the shell. Same class of problem
+  the three-token red solved: the sheet specifies tones, not tested values.
+- **Kept the repo's copy, not the mock's.** The rail mock labels Coach "Coach";
+  the live label is "AI weekly plan" and stays, because the handoff's own brief
+  says routes, i18n keys and copy structure are unchanged. `navAssess` is the
+  one new label (the menu's "Health screen" is too long for a rail).
+- New keys `navGroupMission/Pillars/Toolkit`, `navAssess`, `navOpenBeta` across
+  all 13 in-bundle locales + `npm run export-locales`.
+- Gates: `npm run gate` 26/26, `npm run a11y` 20/20, `npm run i18n:parity` OK.
+
 ## 2026-07-26 — Rings come off, the ramps go on (`.139`)
 
 Phase A of the **second** Modernist handoff (`design_handoff_missionwinning_modernist`),

@@ -148,6 +148,69 @@ export type NavSection = {
   items: NavLinkItem[];
 };
 
+/**
+ * The side rail, grouped Mission / Pillars / Toolkit — the 13 signed-in screens
+ * from the Modernist handoff, in its order.
+ *
+ * Declared as hrefs rather than duplicated item objects so label and icon keep
+ * coming from PRIMARY_NAV / MORE_NAV; two sources for "what is /move called"
+ * is how a rail and a menu start disagreeing. `railLabel` overrides only where
+ * the handoff names a screen differently from the existing menu entry.
+ *
+ * Not in the rail and deliberately so: /calculators, /leaderboard, /learn/guide
+ * and /bundle stay in the header menu. The rail is the 13 screens, not
+ * everything that has a route.
+ */
+const RAIL_LABEL_OVERRIDES: Record<string, { label: string; labelKey: string }> = {
+  // The handoff calls this screen "Assess"; the menu entry is "Health screen".
+  '/assessments': { label: 'Assess', labelKey: 'navAssess' },
+};
+
+export const RAIL_GROUPS: { id: string; title: string; titleKey: string; hrefs: string[] }[] = [
+  {
+    id: 'mission',
+    title: 'Mission',
+    titleKey: 'navGroupMission',
+    hrefs: ['/log', '/active', '/coach', '/history'],
+  },
+  {
+    id: 'pillars',
+    title: 'Pillars',
+    titleKey: 'navGroupPillars',
+    hrefs: ['/nutrition', '/move', '/mind', '/track', '/learn'],
+  },
+  {
+    id: 'toolkit',
+    title: 'Toolkit',
+    titleKey: 'navGroupToolkit',
+    hrefs: ['/assessments', '/library', '/builder', '/profile'],
+  },
+];
+
+const NAV_BY_HREF = new Map<string, NavLinkItem>(
+  [...PRIMARY_NAV, ...MORE_NAV].map((i) => [i.href, i])
+);
+
+/**
+ * Rail groups resolved to items, with parked surfaces dropped and any group
+ * that empties out removed — same rule the header menu already follows, since
+ * a rail entry that 404s is worse than no entry.
+ */
+export function railGroupsForNav(): NavSection[] {
+  return RAIL_GROUPS.map((group) => ({
+    id: group.id,
+    title: group.title,
+    titleKey: group.titleKey,
+    items: group.hrefs
+      .filter((href) => isPathEnabled(href))
+      .map((href) => {
+        const base = NAV_BY_HREF.get(href);
+        if (!base) throw new Error(`RAIL_GROUPS: no nav item for ${href}`);
+        return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
+      }),
+  })).filter((group) => group.items.length > 0);
+}
+
 /** Full extended navigation — commissioned operators. */
 export const EXTENDED_NAV_SECTIONS: NavSection[] = [
   {

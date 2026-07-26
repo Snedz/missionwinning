@@ -8,6 +8,8 @@ import dynamic from 'next/dynamic';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
+import { Badge } from '@/components/ui/badge';
+import { isFreeBeta } from '@/lib/freeBeta';
 import { ROUTE_LABELS, STATIC_PAGE_TITLES } from '@/lib/pageTitles';
 import type { JourneyPhase } from '@/lib/missionJourney';
 import type { NavSection } from '@/lib/navConfig';
@@ -105,13 +107,21 @@ export function AppHeader() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-haspopup="true"
-          className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-muted/40 transition-colors rounded-lg -ms-1 ps-1 py-1"
+          className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-foreground/[0.05] transition-colors -ms-1 ps-1 py-1"
         >
           <BrandMonogram className="h-9 w-9 text-sm" />
           <div className="flex-1 min-w-0 flex items-center gap-2">
-            <span className="text-base font-semibold tracking-tight truncate sm:text-lg">
+            <span className="text-base font-extrabold tracking-[-0.01em] truncate sm:text-lg">
               Mission Winning
             </span>
+            {/* Bound to the flag, not hardcoded — the tag has to disappear on
+                its own when the beta window closes. Hidden under sm: at 375px
+                the wordmark, chevron and auth chip already fill the row. */}
+            {isFreeBeta() && (
+              <Badge variant="outline" className="hidden shrink-0 sm:inline-flex">
+                {t('navOpenBeta', { defaultValue: 'Open beta' })}
+              </Badge>
+            )}
             <ChevronDown
               className={cn(
                 'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',

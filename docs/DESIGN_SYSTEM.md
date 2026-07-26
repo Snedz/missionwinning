@@ -143,6 +143,16 @@ lines at 390px.
 | Compare, Bundle | Prefer marketing chrome (out of AppLayout when practical) |
 | Train `/active` | Header + dense logger; keep set-table internals |
 
+### App navigation (`.140`)
+
+The signed-in rail and mobile tab bar both come from **`railGroupsForNav()`** in `src/lib/navConfig.ts` — the 13 handoff screens grouped **Mission** (Today · Train · Coach · History) / **Pillars** (Fuel · Move · Mind · Track · Learn) / **Toolkit** (Assess · Library · Builder · You), in that order. Groups are declared as hrefs and resolved against `PRIMARY_NAV` + `MORE_NAV`, so label and icon have one definition; parked surfaces are dropped and empty groups disappear.
+
+Anything not one of those 13 screens (`/calculators`, `/leaderboard`, `/learn/guide`, `/bundle`) stays in the header menu — the rail is the screens, not every route.
+
+- **Rail** (`md:` up): `is-active-row` — accent-100 fill + `inset 3px 0 0` poster. Scrolls; icon-only at 72px where group labels are replaced by a 2px rule.
+- **Tabs** (below `md:`): `is-active-tab` — accent-100 fill + `inset 0 2px 0` poster. Scrolls horizontally at `min-w-[68px]`; Mission first, so the wedge is on screen before any scroll.
+- **Two handoff values were overridden for contrast**, both 10px text on paper: group labels `neutral-500` (~2.4:1) and inactive tabs `neutral-600` (3.84:1) both use `muted-foreground` (8.4:1) instead. Same class of problem as poster red on small text — the sheet picked tones, not tested values.
+
 ---
 
 ## Motion & interaction
