@@ -25,9 +25,19 @@ export const POST = withApiLogging('coach/plan-voice', async(request: NextReques
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
   }
 
-  if (!(await hasAppAccess(request))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  /*
+   * App access decides whether the *LLM* is on the table — not whether a
+   * briefing exists at all.
+   *
+   * This used to 401 here, which meant a signed-out visitor with the gate off
+   * (the product's own default: no account required) could never load
+   * Commander's intent and got a permanent "Could not load briefing" card on
+   * /coach. The cost gate sat in front of the branch that decides whether any
+   * cost is incurred: `fetchPlanVoice(ctx, false)` is pure local rules — no
+   * network, no LLM, nothing to protect. The rate limit above still applies,
+   * and the LLM path below still requires premium or the bypass.
+   */
+  const appAccess = await hasAppAccess(request);
 
   const raw = await request.json().catch(() => null);
   const parsed = parseJsonBody(coachPlanVoiceSchema, raw);
@@ -37,7 +47,10 @@ export const POST = withApiLogging('coach/plan-voice', async(request: NextReques
   const body = parsed.data;
 
   let useLlm = false;
-  if (isPremiumBypassEnabled()) {
+  if (!appAccess) {
+    // Rules briefing only — free, local, and the reason the fallback exists.
+    useLlm = false;
+  } else if (isPremiumBypassEnabled()) {
     useLlm = true;
   } else {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

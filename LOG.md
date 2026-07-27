@@ -6,6 +6,42 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-26 — Two bugs the founder's phone found that no test did (`.158`)
+
+First review of the merged wedge. Verdict was "everything else is good" — and
+the two defects it surfaced were both on `/coach`, both invisible to every suite.
+
+- **Commander's intent could never load for a signed-out visitor.**
+  `/api/coach/plan-voice` returned **401** whenever `hasAppAccess` was false —
+  no private-gate cookie, no Supabase session. That is the product's own default
+  state; "no account required to start" is the headline promise. So a free user
+  got a permanent "Could not load briefing" card.
+  The cost gate sat **in front of** the branch that decides whether any cost is
+  incurred: `fetchPlanVoice(ctx, false)` is pure local rules — no network, no
+  LLM, nothing to protect. App access now governs only the LLM path. The rate
+  limit and the premium check are untouched.
+- **`coachWhyCompound` printed raw under a real set.** `PlanSessionCard` passed
+  `defaultValue: ex.whyKey`, so an unresolved key became its own copy. That key
+  exists **nowhere in the source or the locales** — it is baked into plans
+  persisted by an older build, and plans regenerate weekly, so it would have
+  shown for days.
+  Fixed with `i18n.exists()`, not a falsy `defaultValue`: **i18next treats
+  `defaultValue: ''` as absent and hands back the key**, which is the exact
+  behaviour being fixed. That cost one build to learn — the first attempt looked
+  right and changed nothing.
+- New `tests/e2e/coach-voice.spec.ts` (4 `@gate` cases): a signed-out request
+  gets 200 with `source: "rules"` and a `coachVoice*` key that resolves; a
+  malformed plan still 400s; and **no raw translation key may render** on
+  `/coach`, `/log` or `/active` — asserted by key shape across pages, because
+  `t(key, { defaultValue: key })` is easy to reintroduce anywhere. Gate 31→34.
+- `plan-voice` had **no test at all** before this, signed-out or otherwise.
+
+Also cleared 1.4G of `.next/cache` mid-session: the disk hit `ENOSPC` and took
+the build's manifest stage with it, which presents as a webpack failure rather
+than a disk failure. `test-results/` was **not** the culprit — it is 172K.
+
+---
+
 ## 2026-07-26 — The visual gate was asserting a design that no longer exists
 
 `e2e:visual`'s three baselines were generated **2026-07-22**, three days before
