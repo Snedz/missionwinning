@@ -15,6 +15,10 @@ import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { SetLogRow } from '@/components/workout/SetLogRow';
+import { SetLogTable } from '@/components/workout/SetLogTable';
+import { useIsCompact } from '@/hooks/useIsCompact';
+import { getLastPerformanceForSet } from '@/lib/workout/activeWorkoutHelpers';
+import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
 import { resolveRestSeconds } from '@/lib/workout/restTimer';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
@@ -62,6 +66,14 @@ type Props = {
   onAddSet: () => void;
   onRemoveSet: () => void;
   onStartRest: (seconds: number) => void;
+  /* Desktop only — the table logs in place, so it needs the same input state
+     the docked console gets. Compact ignores all three. */
+  setInput: { reps: number; weight: number };
+  onSetInputChange: (field: 'reps' | 'weight', value: number) => void;
+  onLogSet: (setIdx: number) => void;
+  /** Kind of the set currently being entered, and how to change it. */
+  activeSetKind: SetKind;
+  onSetKindChange: (kind: SetKind) => void;
 };
 
 export function ActiveExerciseCard({
@@ -92,8 +104,14 @@ export function ActiveExerciseCard({
   onAddSet,
   onRemoveSet,
   onStartRest,
+  setInput,
+  onSetInputChange,
+  onLogSet,
+  activeSetKind,
+  onSetKindChange,
 }: Props) {
   const { t } = useTranslation();
+  const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
   const hasCompleted = exLog.sets.some((s) => s.completed);
@@ -101,6 +119,7 @@ export function ActiveExerciseCard({
   const restSec = resolveRestSeconds(exercise.name);
   const ssLabel = supersetLabel(exercises, exIdx);
   const hasNext = exIdx < exercises.length - 1;
+  const holdsActiveSet = nextSet?.exIdx === exIdx;
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
   const hasFormGuide = !!getFormGuideOrCues(exercise.id, { exercise });
 
@@ -310,20 +329,44 @@ export function ActiveExerciseCard({
         )}
       </CardHeader>
       <CardContent className="space-y-2 p-3 pt-0">
-        {exLog.sets.map((set, setIdx) => {
-          const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
-          return (
-            <div key={set.id} ref={isNext ? nextSetRef : undefined}>
-              <SetLogRow
-                setNumber={setIdx + 1}
-                set={set}
-                isNext={isNext}
-                weightLabel={unitLabel}
-                onRate={(rpe) => onRate(setIdx, rpe)}
-              />
-            </div>
-          );
-        })}
+        {isCompact ? (
+          exLog.sets.map((set, setIdx) => {
+            const isNext = nextSet?.exIdx === exIdx && nextSet?.setIdx === setIdx;
+            return (
+              <div key={set.id} ref={isNext ? nextSetRef : undefined}>
+                <SetLogRow
+                  setNumber={setIdx + 1}
+                  set={set}
+                  isNext={isNext}
+                  weightLabel={unitLabel}
+                  onRate={(rpe) => onRate(setIdx, rpe)}
+                />
+              </div>
+            );
+          })
+        ) : (
+          /* Desktop logs in the row, so the ref goes on the table — the
+             scroll-into-view target is the exercise, not one set. */
+          <div ref={nextSet?.exIdx === exIdx ? nextSetRef : undefined}>
+            <SetLogTable
+              sets={exLog.sets}
+              activeSetIdx={nextSet?.exIdx === exIdx ? nextSet.setIdx : -1}
+              weightLabel={unitLabel}
+              prevLabels={exLog.sets.map((_, setIdx) => {
+                const last = getLastPerformanceForSet(
+                  workoutHistory,
+                  exLog.exerciseId,
+                  setIdx
+                );
+                return last ? `${last.reps} × ${last.weight}` : null;
+              })}
+              input={setInput}
+              onInputChange={onSetInputChange}
+              onLog={() => nextSet && onLogSet(nextSet.setIdx)}
+              onRate={onRate}
+            />
+          </div>
+        )}
         <div className="flex flex-nowrap items-center gap-2 pt-1">
           <Button variant="outline" size="sm" className="min-h-[44px]" onClick={onAddSet}>
             <Plus className="h-3 w-3 me-1" /> {t('activeAddSet', { defaultValue: 'Add Set' })}
@@ -338,6 +381,35 @@ export function ActiveExerciseCard({
           >
             <Timer className="h-4 w-4" />
           </Button>
+          {/*
+            Set kind on desktop. It lives in `LogConsole` on compact, and the
+            console does not render at md+ — so without this, a desktop user
+            cannot mark a warm-up or a drop set at all. The mock renders kinds
+            as tags in the row and puts controls in the overflow, which is what
+            this is; it is not an extra feature.
+          */}
+          {!isCompact && holdsActiveSet && (
+            <div className="flex flex-wrap items-center gap-1">
+              {SET_KINDS.map((k) => (
+                <button
+                  key={k}
+                  type="button"
+                  aria-pressed={activeSetKind === k}
+                  onClick={() => onSetKindChange(k)}
+                  className={cn(
+                    'min-h-[32px] border-2 px-2 text-[11px] font-semibold uppercase tracking-[0.06em] transition-colors',
+                    activeSetKind === k
+                      ? 'border-[hsl(var(--accent-poster))] bg-accent-100 text-foreground'
+                      : 'border-border text-muted-foreground hover:bg-accent-100'
+                  )}
+                >
+                  {t(setKindLabelKey(k), {
+                    defaultValue: k === 'normal' ? 'Work' : setKindDefaultLabel(k),
+                  })}
+                </button>
+              ))}
+            </div>
+          )}
           {((lastSets && hasPlanned) || (hasPlanned && exLog.sets.length > 1)) && (
             <div className="relative ms-auto">
               <Button

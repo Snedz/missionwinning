@@ -42,21 +42,27 @@ export function RestTimerBar({
         // In the ScreenDock now — the dock reserves its own height, so this
         // stops being a fixed panel that has to guess the tab bar's.
         'border-t-2 border-neutral-900 bg-neutral-900 text-neutral-100',
-        // Desktop keeps handoff 2's centred panel rather than a full-bleed bar
-        // across a 1440px window. ScreenDock renders inline at md+, so this is
-        // plain layout, not positioning.
-        'md:mx-auto md:max-w-lg md:border-2',
+        // Desktop is the handoff's `#restDock`: `position:sticky; bottom:0`,
+        // full-bleed across the screen's measure, one row. `.159` gave it a
+        // centred `max-w-lg` panel because that is what `.149` had — but
+        // `.149` had already drifted from the mock. This follows the mock.
+        'md:sticky md:bottom-0 md:z-20 md:flex md:items-center md:gap-5 md:px-6 md:py-3',
         className
       )}
       role="timer"
       aria-live="polite"
       aria-label={`${t('activeRestTitle', { defaultValue: 'Rest' })} ${clock}`}
     >
-      <div className="flex items-center gap-3 px-4 pt-3 sm:gap-4">
+      {/* `md:contents` dissolves these wrappers into the root's row, so desktop
+          gets the mock's single line — REST · clock · meter · +15s · Skip —
+          without a second markup tree to keep in step. */}
+      <div className="flex items-center gap-3 px-4 pt-3 sm:gap-4 md:contents">
         <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-400">
           {t('activeRestTitle', { defaultValue: 'Rest' })}
         </span>
-        <span className="font-extrabold leading-none tabular-nums text-[56px] sm:text-[72px]">
+        {/* 30px on desktop, per the mock — the 72px numeral is a phone-at-
+            arm's-length decision, and it is absurd on a 1440px window. */}
+        <span className="font-extrabold leading-none tabular-nums text-[56px] sm:text-[72px] md:text-[30px]">
           {clock}
         </span>
         {/* Accent-400, not poster: on an ink ground the brighter ramp step is
@@ -76,7 +82,7 @@ export function RestTimerBar({
         />
       </div>
 
-      <div className="flex items-center gap-2 px-4 pt-3">
+      <div className="flex items-center gap-2 px-4 pt-3 md:contents">
         <button type="button" className={inkButton} onClick={() => onAdjust(-15)}>
           {t('activeRestSub15', { defaultValue: '−15s' })}
         </button>
@@ -90,7 +96,9 @@ export function RestTimerBar({
         </button>
       </div>
 
-      <div className="flex flex-wrap items-center gap-1 px-4 pb-3 pt-2">
+      {/* Presets are a phone affordance — the mock's rest dock carries only
+          +15s and Skip. Hidden, not removed: compact still needs them. */}
+      <div className="flex flex-wrap items-center gap-1 px-4 pb-3 pt-2 md:hidden">
         <span className="me-1 text-[11px] uppercase tracking-[0.08em] text-neutral-400">
           {t('activeRestDefault', { defaultValue: 'Default' })}
         </span>
