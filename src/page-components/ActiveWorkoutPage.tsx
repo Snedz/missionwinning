@@ -18,6 +18,7 @@ import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { LogConsole } from '@/components/workout/LogConsole';
 import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
 import { ScreenDock } from '@/components/layout/ScreenDock';
+import { useIsCompact } from '@/hooks/useIsCompact';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
 import { ActiveExerciseCard } from '@/components/workout/ActiveExerciseCard';
 import { ActiveEmptyState } from '@/components/workout/ActiveEmptyState';
@@ -55,6 +56,7 @@ import { prefersReducedMotion } from '@/lib/motion';
 export function ActiveWorkoutPage() {
   const router = useRouter();
   const { t } = useTranslation();
+  const isCompact = useIsCompact();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const step = weightStep(units);
@@ -418,6 +420,34 @@ export function ActiveWorkoutPage() {
                   setSetInputs({});
                 }}
                 onStartRest={(seconds) => startRestTimer(seconds)}
+                /* Desktop's table logs in place. Same `setInputs` map the dock
+                   console writes, so switching surface mid-session keeps the
+                   half-typed set. Only meaningful when this exercise holds the
+                   active set — the table ignores it otherwise. */
+                setInput={
+                  nextSet && nextSet.exIdx === exIdx && exLog.sets[nextSet.setIdx]
+                    ? getSetInput(
+                        exIdx,
+                        nextSet.setIdx,
+                        exLog.sets[nextSet.setIdx].reps,
+                        exLog.sets[nextSet.setIdx].weight
+                      )
+                    : { reps: 0, weight: 0 }
+                }
+                onSetInputChange={(field, value) => {
+                  if (!nextSet || nextSet.exIdx !== exIdx) return;
+                  updateSetInput(exIdx, nextSet.setIdx, field, value);
+                }}
+                onLogSet={(setIdx) => handleLogSet(exIdx, setIdx)}
+                activeSetKind={
+                  nextSet && nextSet.exIdx === exIdx
+                    ? (exLog.sets[nextSet.setIdx]?.kind ?? 'normal')
+                    : 'normal'
+                }
+                onSetKindChange={(kind) => {
+                  if (!nextSet || nextSet.exIdx !== exIdx) return;
+                  setSetKind(exIdx, nextSet.setIdx, kind);
+                }}
               />
             );
           })}
@@ -506,7 +536,10 @@ export function ActiveWorkoutPage() {
             onPreset={startRestTimer}
           />
         </ScreenDock>
-      ) : consoleSet ? (
+      ) : consoleSet && isCompact ? (
+        /* Compact only. Desktop enters the set in the row it belongs to
+           (`SetLogTable`), so a console here would be a second, competing
+           place to type the same number. */
         <ScreenDock>
           <LogConsole
             exerciseName={consoleSet.exerciseName}

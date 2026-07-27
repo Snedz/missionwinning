@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { Badge } from '@/components/ui/badge';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { useIsCompact } from '@/hooks/useIsCompact';
 import { ROUTE_LABELS, STATIC_PAGE_TITLES } from '@/lib/pageTitles';
 
 const HeaderAuthChip = dynamic(
@@ -34,6 +35,7 @@ export function AppHeader({
 }) {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const isCompact = useIsCompact();
 
   const pageTitle = (() => {
     const normalized = pathname === '/' ? '/log' : pathname;
@@ -52,37 +54,56 @@ export function AppHeader({
     return t('appName', { defaultValue: 'Mission Winning' });
   })();
 
+  /*
+   * The brand block is a *button* only on compact, where it is the handle for
+   * the More sheet — the sheet that answers "where is everything" when there is
+   * no rail. The desktop handoff's header has neither: no chevron, no menu,
+   * because the sidebar already lists all thirteen screens. So desktop renders
+   * the same brand as plain content.
+   */
+  const brand = (
+    <>
+      <BrandMonogram className="h-9 w-9 text-sm" />
+      <div className="flex-1 min-w-0 flex items-center gap-2">
+        <span className="text-base font-extrabold tracking-[-0.01em] truncate sm:text-lg">
+          Mission Winning
+        </span>
+        {/* Bound to the flag, not hardcoded — the tag has to disappear on
+            its own when the beta window closes. Hidden under sm: at 375px
+            the wordmark, chevron and auth chip already fill the row. */}
+        {isFreeBeta() && (
+          <Badge variant="outline" className="hidden shrink-0 sm:inline-flex">
+            {t('navOpenBeta', { defaultValue: 'Open beta' })}
+          </Badge>
+        )}
+        {isCompact && (
+          <ChevronDown
+            className={cn(
+              'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
+              moreOpen && 'rotate-180 text-primary'
+            )}
+          />
+        )}
+      </div>
+    </>
+  );
+
   return (
     <header className="shrink-0 z-50 border-b-2 border-border bg-background">
       <div className="relative z-[1] flex items-center gap-2 px-4 min-h-[56px]">
-        <button
-          type="button"
-          onClick={onOpenMore}
-          aria-expanded={moreOpen}
-          aria-haspopup="dialog"
-          className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-foreground/[0.05] transition-colors -ms-1 ps-1 py-1"
-        >
-          <BrandMonogram className="h-9 w-9 text-sm" />
-          <div className="flex-1 min-w-0 flex items-center gap-2">
-            <span className="text-base font-extrabold tracking-[-0.01em] truncate sm:text-lg">
-              Mission Winning
-            </span>
-            {/* Bound to the flag, not hardcoded — the tag has to disappear on
-                its own when the beta window closes. Hidden under sm: at 375px
-                the wordmark, chevron and auth chip already fill the row. */}
-            {isFreeBeta() && (
-              <Badge variant="outline" className="hidden shrink-0 sm:inline-flex">
-                {t('navOpenBeta', { defaultValue: 'Open beta' })}
-              </Badge>
-            )}
-            <ChevronDown
-              className={cn(
-                'h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200',
-                moreOpen && 'rotate-180 text-primary'
-              )}
-            />
-          </div>
-        </button>
+        {isCompact ? (
+          <button
+            type="button"
+            onClick={onOpenMore}
+            aria-expanded={moreOpen}
+            aria-haspopup="dialog"
+            className="flex flex-1 min-w-0 items-center gap-3 text-start hover:bg-foreground/[0.05] transition-colors -ms-1 ps-1 py-1"
+          >
+            {brand}
+          </button>
+        ) : (
+          <div className="flex flex-1 min-w-0 items-center gap-3 py-1">{brand}</div>
+        )}
         <HeaderAuthChip />
         <span className="text-sm text-muted-foreground shrink-0 hidden sm:inline max-w-[140px] truncate">
           {pageTitle}
