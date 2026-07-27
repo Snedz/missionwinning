@@ -114,7 +114,10 @@ export function JourneyHero({
           </h3>
           <p className="poster-sub mt-1.5 text-sm leading-relaxed tabular-nums">{description}</p>
         </div>
-        <button type="button" onClick={onPrimaryClick} className="primary-action">
+        {/* `w-auto` beats `.primary-action`'s `w-full` — utilities layer after
+            components. The handoff's `.btn` is `inline-flex`, i.e. sized to its
+            own label; a button stretched across 832px reads as a banner. */}
+        <button type="button" onClick={onPrimaryClick} className="primary-action w-auto">
           {label}
           <ChevronRight className="h-5 w-5" />
         </button>
