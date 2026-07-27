@@ -1,0 +1,36 @@
+# What NOT to upload to Vercel.
+#
+# Why this file exists: the Vercel CLI reads only the ROOT .gitignore. The
+# Android and Expo build output under apps/ is excluded by *nested* .gitignore
+# files it never sees — so a repo git counts at 2,039 files tried to upload
+# 19,614 and hit the CLI's 15,000-file cap:
+#
+#   Error: Invalid request: `files` should NOT have more than 15000 items
+#
+# `--archive=tgz` also gets past the cap, but it uploads the same junk in one
+# blob. Excluding it is the fix; the flag is the symptom.
+#
+# Deliberately NOT excluded:
+#   packages/  — mw-core is a dependency the web app imports
+#   docs/      — src/lib/compliance reads docs/compliance/controls.yaml at
+#                runtime, so removing docs/ breaks the deployment, not the build
+#   seo/, supabase/, scripts/ — small, and cheaper to keep than to be wrong about
+
+# Native surfaces. Nothing in app/ or src/ imports from here; the web build has
+# no use for a Gradle tree (11,159 files, the bulk of the overage). Its build
+# output is excluded by apps/android/.gitignore and apps/mobile/.gitignore —
+# nested files, hence invisible to the CLI, hence the overage.
+apps/
+
+# Agent tooling, including worktrees (115k+ files). Listed explicitly rather
+# than relying on whatever the CLI excludes by default.
+.claude/
+
+# Build output — Vercel builds from source, so shipping ours is pure weight.
+.next/
+out/
+
+# Test and report artefacts, regenerated on every run.
+test-results/
+playwright-report/
+coverage/
