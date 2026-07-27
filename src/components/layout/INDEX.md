@@ -40,6 +40,12 @@ The screenshots in each bundle are **examples, not targets** — each design is
 responsive within its own band. The only fixed number is the boundary: `md`
 (768px), via [`useIsCompact()`](../../hooks/useIsCompact.ts).
 
+**The handoff bundles ship HTML, not only screenshots.** When something looks
+wrong, read the mock's markup — it carries exact numbers. Desktop Today is
+`max-width:960px; padding:36px 44px 64px`, and its `.btn` is `inline-flex`.
+That is how `.160` found Today capping itself at 512px on top of `AppLayout`'s
+container.
+
 **A structural change from one handoff is scoped to that handoff's surface.**
 Tokens, primitives, a11y and bug fixes apply everywhere — those are the system.
 Layout decisions (docking, tab bars, one console vs. per-set inputs, a picker

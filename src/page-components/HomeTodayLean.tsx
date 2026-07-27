@@ -168,8 +168,11 @@ export function HomeTodayLean() {
         }
       : null;
 
+  // `max-w-lg` is a phone measure. The desktop handoff draws Today at
+  // `max-width:960px`, so at md+ this defers to `AppLayout`'s container
+  // (768/896/1024 by breakpoint) instead of capping a second time at 512.
   return (
-    <div className="today-shell space-y-6 max-w-lg mx-auto">
+    <div className="today-shell space-y-6 max-w-lg md:max-w-none mx-auto">
       <TodayPageHeader
         today={todayLabel}
         streak={streak}

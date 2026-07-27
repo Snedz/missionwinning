@@ -664,7 +664,9 @@ export function HomeTodayDashboard() {
           <TodayDashboardCustomize prefs={sectionPrefs} onChange={setSectionPrefs} />
         </DialogContent>
       </Dialog>
-      <StaggerGroup className="today-shell space-y-6 max-w-lg mx-auto">
+      {/* See HomeTodayLean — `max-w-lg` is the phone measure; desktop takes
+          `AppLayout`'s container, which is the handoff's ~960px band. */}
+      <StaggerGroup className="today-shell space-y-6 max-w-lg md:max-w-none mx-auto">
       {staggerBlocks.map(({ key, node }, index) => (
         <StaggerItem key={key} index={index}>
           {node}
