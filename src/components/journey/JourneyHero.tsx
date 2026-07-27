@@ -9,6 +9,7 @@ import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
 import { getPhaseLabel } from '@/lib/missionJourney';
+import { useIsCompact } from '@/hooks/useIsCompact';
 
 export function JourneyStrip({ action }: { action: JourneyAction }) {
   const { t } = useTranslation();
@@ -68,12 +69,66 @@ export function JourneyHero({
   justGoMeta,
 }: JourneyHeroProps) {
   const { t } = useTranslation();
+  const isCompact = useIsCompact();
   const useJustGo = !activeWorkout && !!justGoMeta;
   const label = activeWorkout
     ? t('resumeWorkout', { defaultValue: 'Resume workout' })
     : useJustGo
       ? t('justGoCta', { defaultValue: 'Just Go' })
       : action.label;
+
+  const kicker = useJustGo
+    ? t('justGoEyebrow', { defaultValue: 'Ready to train' })
+    : t('yourNextStep', { defaultValue: 'Your next step' });
+
+  const title = useJustGo
+    ? t('justGoTitle', {
+        focus: justGoMeta!.focusLabel,
+        defaultValue: `${justGoMeta!.focusLabel} — Just Go`,
+      })
+    : label;
+
+  const description = useJustGo
+    ? t('justGoDesc', {
+        focus: justGoMeta!.focusLabel,
+        defaultValue: `One tap builds today’s ${justGoMeta!.focusLabel.toLowerCase()} session from how fresh you are and what you lifted last time.`,
+      })
+    : action.description;
+
+  /*
+   * Desktop keeps the form handoff 2 drew: a full block in the content flow,
+   * with the title and the whole description, and an action sized to its own
+   * label rather than the column. The dock below is a mobile decision — it
+   * exists because 844px of phone cannot spend five lines restating the button
+   * under them, which is not a constraint a 1440px window has.
+   */
+  if (!isCompact) {
+    return (
+      <div className="poster-field p-7 space-y-4">
+        <div>
+          <p className="poster-kicker mb-2.5 text-[11px] font-semibold uppercase tracking-[0.12em]">
+            {kicker}
+          </p>
+          <h3 className="font-display text-[1.6rem] font-extrabold leading-[1.05] md:text-[1.9rem]">
+            {title}
+          </h3>
+          <p className="poster-sub mt-1.5 text-sm leading-relaxed tabular-nums">{description}</p>
+        </div>
+        <button type="button" onClick={onPrimaryClick} className="primary-action">
+          {label}
+          <ChevronRight className="h-5 w-5" />
+        </button>
+        {action.phase === 'basic' && !useJustGo && (
+          <p className="poster-sub text-sm leading-relaxed">
+            {t('journeyBasicFoot', {
+              defaultValue:
+                'One step at a time. Log a few sets — Coach can shape the week from real history.',
+            })}
+          </p>
+        )}
+      </div>
+    );
+  }
 
   return (
     /*
@@ -91,33 +146,19 @@ export function JourneyHero({
      */
     <div className="poster-field px-4 pb-4 pt-3.5">
       <p className="poster-kicker mb-2 text-[11px] font-semibold uppercase tracking-[0.12em]">
-        {useJustGo
-          ? t('justGoEyebrow', { defaultValue: 'Ready to train' })
-          : t('yourNextStep', { defaultValue: 'Your next step' })}
+        {kicker}
       </p>
       {/* One line, clamped. The description is why this action and not another,
           which is worth keeping; the full paragraph is not worth the fold. */}
       <p className="poster-sub mb-2.5 line-clamp-1 text-sm leading-relaxed tabular-nums">
-        {useJustGo
-          ? t('justGoDesc', {
-              focus: justGoMeta!.focusLabel,
-              defaultValue: `One tap builds today’s ${justGoMeta!.focusLabel.toLowerCase()} session from how fresh you are and what you lifted last time.`,
-            })
-          : action.description}
+        {description}
       </p>
       <button
         type="button"
         onClick={onPrimaryClick}
         className="primary-action min-h-[52px] w-full text-[19px]"
       >
-        <span className="flex-1 text-start">
-          {useJustGo
-            ? t('justGoTitle', {
-                focus: justGoMeta!.focusLabel,
-                defaultValue: `${justGoMeta!.focusLabel} — Just Go`,
-              })
-            : label}
-        </span>
+        <span className="flex-1 text-start">{title}</span>
         <ChevronRight className="ms-auto h-5 w-5 shrink-0" />
       </button>
     </div>

@@ -6,7 +6,7 @@
 
 | File | Purpose |
 |------|---------|
-| `JourneyHero.tsx` | Phase hero banner |
+| `JourneyHero.tsx` | Phase hero banner — **two forms**, on `useIsCompact()`: an inline red field with kicker + full title + description at `md+` (desktop handoff), a docked field whose button label *is* the title on compact (mobile handoff) |
 | `JourneyGuard.tsx` | Redirect if I-Day incomplete |
 | `CommandersIntent.tsx` | Goal statement card |
 | `TodaySection.tsx` | Journey block on Today |

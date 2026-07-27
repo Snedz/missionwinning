@@ -15,7 +15,7 @@
 | `TodayJournalStrip.tsx` | Recent workouts journal |
 | `TodayMetricsSparklineRow.tsx` | Sparkline trends |
 | `TodayDashboardCustomize.tsx` | Section visibility prefs |
-| `MuscleFreshnessStrip.tsx` | Forge-style muscle days/REC glance |
+| `MuscleFreshnessStrip.tsx` | Muscle days/REC glance — chips at `md+`, ruled rows with an 8px meter on compact |
 | `CrossPillarCoachChips.tsx` | Move/Fuel/Mind suggestions |
 | `Sparkline.tsx` | Shared mini chart |
 

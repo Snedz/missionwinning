@@ -22,8 +22,30 @@ Product status lives in [CONTEXT.md](../CONTEXT.md) `## Now`. Design craft waves
 | **D-prelaunch** | Pre-flip (founder excellence) | **Shipped 2026-07-22** — Today composure · Active intent · Victory one-exit · rest · gate · Android parity |
 | **D3 Platform excellence** | Horizon 3 (founder override) | **Shipped 2026-07-22** — token sync · Fuel/Move/Mind/Learn CTA density · Batch C · guide chrome |
 | **D4 Beta composure** | Horizon 0 (founder override) | **Shipped 2026-07-22** — Landing cut (~5–6 bands) · wedge copy · Bundle one-offer · Today More collapse · Android Today secondary demotion |
-| **D5 Modernist rebrand** | Horizon W (founder override 2026-07-25) | **Build complete** (`.130`–`.149`) — gate → token/font swap → shell + marketing → calculators + SEO templates → emails → the 13 signed-in screens. Awaiting founder review/merge |
-| **D6 Mobile app structure** | Horizon W (founder override 2026-07-26) | **In progress** — the signed-in PWA at 390×844. Phase 0 primitives shipped (`.150`); next: five-tab nav + More sheet → Today dock → logger console → first run → sheets/offline/errors. The eleven pillar screens are specified and **held for founder review** of the wedge |
+| **D5 Modernist rebrand** | Horizon W (founder override 2026-07-25) | **Build complete** (`.130`–`.149`) — gate → token/font swap → shell + marketing → calculators + SEO templates → emails → **the desktop app's** 13 signed-in screens. Awaiting founder review/merge |
+| **D6 Mobile app structure** | Horizon W (founder override 2026-07-26) | **Wedge complete** (`.150`–`.159`) — primitives → five-tab nav + More sheet → Today dock → logger console → first run → sheets/offline/errors → a11y coverage → **`.159` scoped the whole wave to compact widths**. The eleven pillar screens are specified and **held for founder review** of the wedge |
+
+### Three handoffs = three surfaces
+
+Not three revisions of one product. Getting this wrong is what `.159` repaired.
+
+| Handoff | Surface | Waves |
+|---|---|---|
+| `design_handoff_modernist_rebrand` | Landing / marketing, pre-sign-in | D5 (`.130`–`.138`) |
+| `design_handoff_missionwinning_modernist` | **The desktop app** | D5 (`.139`–`.149`) |
+| `design_handoff_mobile_app` | **The mobile app** | D6 (`.150`–`.158`) |
+
+The bundled screenshots are **examples, not targets** — each design is responsive
+within its own band, and neither is pinned to the width it was drawn at. The one
+fixed number is the boundary between them: `md` (768px), read through
+[`useIsCompact()`](../src/hooks/useIsCompact.ts), which is the line the shell
+already drew (`Sidebar` is `hidden md:block`, `MobileNav` is `md:hidden`).
+
+**Structural decisions from a handoff are scoped to that handoff's surface.**
+Tokens, primitives, a11y fixes and defect repairs are the system and apply
+everywhere. Layout is not: D6 applied at every width silently overwrote D5's
+desktop app, which had been applied correctly. When a wave targets one surface,
+say so in its row above.
 
 ---
 

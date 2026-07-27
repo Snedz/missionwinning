@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { muscleGroupLabel } from '@/lib/readinessDisplay';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { cn } from '@/lib/utils';
+import { useIsCompact } from '@/hooks/useIsCompact';
 
 /** Days at which `muscleFreshnessRows` calls a group recovered. */
 const FRESH_AT_DAYS = 4;
@@ -33,6 +34,59 @@ type Props = {
 
 export function MuscleFreshnessStrip({ rows, className }: Props) {
   const { t } = useTranslation();
+  const isCompact = useIsCompact();
+
+  /*
+   * Desktop keeps handoff 2's chip strip; the ruled rows are a mobile decision,
+   * taken because eight chips scrolling sideways inside a `<details>` is a bad
+   * trade on a 390px column and a fine one in a wide window.
+   *
+   * The chips are NOT restored verbatim: `.149` had them on a 1px border at 50%
+   * with `font-medium` on a 400/600/800 face. That is drift the system forbids
+   * at any width, so the layout comes back and the tokens do not.
+   */
+  if (!isCompact) {
+    return (
+      <div
+        className={cn('flex gap-2 overflow-x-auto pb-1 -mx-0.5 px-0.5', className)}
+        role="list"
+        aria-label={t('todayMuscleFreshness', { defaultValue: 'Muscle freshness' })}
+      >
+        {rows.map((row) => {
+          const label = muscleGroupLabel(row.group, t);
+          const never = row.days === 99;
+          const daysLabel = never
+            ? t('todayFreshNew', { defaultValue: 'new' })
+            : t('todayFreshDays', { days: row.days, defaultValue: `${row.days}d` });
+          return (
+            <div
+              key={row.group}
+              role="listitem"
+              className={cn(
+                'min-w-[4.5rem] shrink-0 border-2 px-2.5 py-1.5 text-center',
+                row.recommended ? 'border-border bg-accent-100' : 'border-border'
+              )}
+            >
+              <div className="text-[10px] font-semibold uppercase tracking-wide">{label}</div>
+              <div
+                className={cn(
+                  'mt-0.5 text-[11px] tabular-nums',
+                  row.recommended ? 'text-primary' : 'text-muted-foreground'
+                )}
+              >
+                {daysLabel}
+                {row.recommended && !never ? (
+                  <span className="ms-1 text-[9px] font-semibold uppercase tracking-wider">
+                    {t('todayFreshRec', { defaultValue: 'REC' })}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <ul
