@@ -11,7 +11,7 @@
 | `Sidebar.tsx` | Desktop nav |
 | `MobileNav.tsx` | Bottom tab bar — **five slots**, in flow (not fixed) so it reserves its own height |
 | `MoreSheet.tsx` | The fifth tab: the nine signed-in screens with no tab, from `railGroupsForNav()` |
-| `ScreenDock.tsx` | The field a screen docks above the tab bar. **Portals to a flex sibling of `main`** — `position: fixed` does not work inside a screen (`.stagger-enter` leaves a transform, and a transformed ancestor becomes the containing block), and a flex sibling reserves its own height |
+| `ScreenDock.tsx` | The field a screen docks above the tab bar. **Compact only** — at `md+` it renders in place (see *Two surfaces* below). On compact it **portals to a flex sibling of `main`**: `position: fixed` does not work inside a screen (`.stagger-enter` leaves a transform, and a transformed ancestor becomes the containing block), and a flex sibling reserves its own height |
 | `PillarPageShell.tsx` | Standard pillar page wrapper |
 | `PillarPageHeader.tsx` | Pillar title + actions |
 | `InfoPageShell.tsx` | Legal/marketing pages |
@@ -24,6 +24,28 @@
 | `StaggerReveal.tsx` | Staggered entrance motion |
 | `OnlineStatusBanner.tsx` | Offline/sync banner |
 | `AnalyticsConsentBanner.tsx` | First-visit product analytics choice (private by default) |
+
+## Two surfaces — read this before changing structure
+
+There are **three design handoffs, and they describe three surfaces, not three
+revisions of one product**:
+
+| Handoff | Surface |
+|---|---|
+| `design_handoff_modernist_rebrand` | Landing / marketing, pre-sign-in (`.130`–`.138`) |
+| `design_handoff_missionwinning_modernist` | **The desktop app** (`.139`–`.149`) |
+| `design_handoff_mobile_app` | **The mobile app** (`.150`–`.158`) |
+
+The screenshots in each bundle are **examples, not targets** — each design is
+responsive within its own band. The only fixed number is the boundary: `md`
+(768px), via [`useIsCompact()`](../../hooks/useIsCompact.ts).
+
+**A structural change from one handoff is scoped to that handoff's surface.**
+Tokens, primitives, a11y and bug fixes apply everywhere — those are the system.
+Layout decisions (docking, tab bars, one console vs. per-set inputs, a picker
+behind a sheet) are not. Applying the mobile handoff at every width in
+`.150`–`.158` overwrote a desktop design that was already correct; `.159` put it
+back. Do not re-flatten them.
 
 ## Related
 

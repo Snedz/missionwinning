@@ -17,31 +17,38 @@
  *    which is the bug `RestTimerBar` has today, floating over the very set row
  *    it describes because only the tab bar was ever padded for.
  *
- * The host renders at every width, so the dock is one DOM node. Rendering it
- * inline on `md+` and fixed on compact would put two copies in the tree, and
- * `first-90` counts `.primary-action` without caring which one is visible.
+ * **Compact only.** Docking is a decision from the mobile handoff; the desktop
+ * app puts its action inline in the content flow, where handoff 2 drew it. At
+ * `md+` this renders `children` in place and never touches the host.
+ *
+ * The branch is on `useIsCompact()`, not on `hidden`/`md:block`. Rendering both
+ * and hiding one would put two copies in the tree, and `first-90` counts
+ * `.primary-action` without caring which is visible.
  */
 
 import { useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { useIsCompact } from '@/hooks/useIsCompact';
 
 export const SCREEN_DOCK_HOST_ID = 'screen-dock';
 
 export function ScreenDock({ children }: { children: ReactNode }) {
+  const isCompact = useIsCompact();
   const [host, setHost] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     setHost(document.getElementById(SCREEN_DOCK_HOST_ID));
   }, []);
 
+  // Desktop: in the flow, exactly where the caller placed it.
+  if (!isCompact) return <>{children}</>;
+
   if (!host) return null;
 
   return createPortal(
     /* Same measure as `main`'s inner container, so the dock's edges line up
        with the content it belongs to instead of running the full window. */
-    <div className="mx-auto w-full max-w-lg px-4 md:max-w-2xl md:px-8 lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
-      {children}
-    </div>,
+    <div className="mx-auto w-full max-w-lg px-4">{children}</div>,
     host
   );
 }

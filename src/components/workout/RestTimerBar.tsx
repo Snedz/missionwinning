@@ -42,6 +42,10 @@ export function RestTimerBar({
         // In the ScreenDock now — the dock reserves its own height, so this
         // stops being a fixed panel that has to guess the tab bar's.
         'border-t-2 border-neutral-900 bg-neutral-900 text-neutral-100',
+        // Desktop keeps handoff 2's centred panel rather than a full-bleed bar
+        // across a 1440px window. ScreenDock renders inline at md+, so this is
+        // plain layout, not positioning.
+        'md:mx-auto md:max-w-lg md:border-2',
         className
       )}
       role="timer"

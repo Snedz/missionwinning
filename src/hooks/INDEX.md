@@ -19,12 +19,24 @@
 | `use-toast.ts` | shadcn toast primitive | UI only |
 | `useScrollReveal.ts` | marketing `Reveal` | IntersectionObserver |
 | `useFileUploadQueue.ts` | Track import, Profile backup | per-file progress/retry queue |
+| `useIsCompact.ts` | `ScreenDock`, `JourneyHero` | `matchMedia('(max-width: 767px)')` — **the line between the two designs**, see below |
 
 ## Conventions
 
 - Hooks may call `fetch` to API routes — never embed premium secrets.
 - Prefer reading pure logic from `src/lib/`; keep hooks thin.
 - No hooks in `src/lib/` — lib stays framework-agnostic.
+
+## Two designs, one boundary
+
+The signed-in app is **two designs, not one responsive design**: the desktop app
+(handoff 2) and the mobile app (handoff 3). `useIsCompact()` is the only line
+between them, and it reuses the one the shell already had — Tailwind's `md`
+(768px), where `Sidebar` appears and `MobileNav` hides.
+
+**Branch on it; never render both and hide one with `md:hidden`.** Two copies in
+the DOM is how `first-90`'s `.primary-action` count breaks — it counts hidden
+nodes too.
 
 ## Related
 
