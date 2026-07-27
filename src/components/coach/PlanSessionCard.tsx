@@ -26,7 +26,7 @@ type Props = {
 };
 
 export function PlanSessionCard({ session, className, isToday, onAdjust }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const units = useUnits();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
@@ -92,17 +92,29 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
                 : ex.weight > 0
                   ? ` @ ${ex.weight}${unit}`
                   : '';
+            // `i18n.exists`, not a falsy `defaultValue`: i18next treats
+            // `defaultValue: ''` as absent and hands back the key, which is the
+            // exact behaviour being fixed here.
+            const why = i18n.exists(ex.whyKey) ? t(ex.whyKey) : '';
             return (
-              <li key={ex.exerciseId} className="border-b border-border/30 pb-2 last:border-0">
-                <div className="font-medium">
+              /*
+               * `defaultValue: ex.whyKey` printed the raw key to the user when it
+               * did not resolve — which is how `coachWhyCompound` ended up on
+               * screen under a real set. That key exists nowhere in the source or
+               * the locales: it is baked into plans persisted by an older build,
+               * and plans only regenerate weekly, so it would have shown for days.
+               *
+               * An empty `defaultValue` lets us tell "no copy for this key" from
+               * "copy that happens to be short", and a missing rationale is
+               * strictly better than machine text. New plans only emit registered
+               * keys, so this is the tail of an old rename, not an ongoing gap.
+               */
+              <li key={ex.exerciseId} className="border-b border-border pb-2 last:border-0">
+                <div className="font-semibold">
                   {name} — {ex.sets}×{ex.reps}
                   {load}
                 </div>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {t(ex.whyKey, {
-                    defaultValue: ex.whyKey,
-                  })}
-                </p>
+                {why ? <p className="text-xs text-muted-foreground mt-0.5">{why}</p> : null}
               </li>
             );
           })}
