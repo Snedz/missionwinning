@@ -173,7 +173,10 @@ export function ActiveSessionChrome({
       <Button
         type="button"
         variant="outline"
-        className="min-h-[44px] w-full justify-start border-2"
+        /* Compact only — desktop adds an exercise inline at the foot of the
+           list, where the handoff puts it, so this would be a second entry
+           point to the same action. */
+        className="min-h-[44px] w-full justify-start border-2 md:hidden"
         onClick={onOpenAddExercise}
       >
         <Plus className="h-4 w-4 me-2" aria-hidden />

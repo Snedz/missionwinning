@@ -17,6 +17,7 @@ import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { RestTimerBar } from '@/components/workout/RestTimerBar';
 import { LogConsole } from '@/components/workout/LogConsole';
 import { AddExerciseSheet } from '@/components/workout/AddExerciseSheet';
+import { ExercisePicker } from '@/components/library/ExercisePicker';
 import { ScreenDock } from '@/components/layout/ScreenDock';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { PlateCalculatorSheet } from '@/components/workout/PlateCalculatorSheet';
@@ -453,6 +454,42 @@ export function ActiveWorkoutPage() {
           })}
         </div>
       )}
+
+        {/*
+          Desktop adds an exercise inline at the foot of the list, as the
+          handoff draws it:
+
+            <input class="input" placeholder="Add exercise — search 300+ movements">
+
+          `.156` moved this into a sheet because an inline `max-h-48` list
+          competed with the session for height — a 390×844 problem. A 1440px
+          window has the height, and a modal to add a second exercise is a
+          step the mock does not ask for. Compact keeps the sheet.
+        */}
+        {!isCompact && (
+          <div className="max-w-[640px] border-t-2 border-border pt-5">
+            <ExercisePicker
+              value={addExerciseId}
+              onChange={setAddExerciseId}
+              placeholder={t('activeAddExerciseInline', {
+                defaultValue: 'Add exercise — search 300+ movements',
+              })}
+            />
+            <button
+              type="button"
+              disabled={!addExerciseId}
+              onClick={() => {
+                if (!addExerciseId) return;
+                const ex = getExerciseById(addExerciseId);
+                addExerciseToActive(addExerciseId, ex?.muscleGroups);
+                setAddExerciseId('');
+              }}
+              className="mt-3 min-h-[40px] border-2 border-border px-4 text-sm font-semibold transition-colors hover:bg-accent-100 disabled:opacity-45"
+            >
+              {t('activeAddSelectedExercise', { defaultValue: 'Add selected exercise' })}
+            </button>
+          </div>
+        )}
 
       {readinessAfter != null && readinessBefore != null && readinessAfter !== readinessBefore ? (
         <div className="rounded-lg border border-border/40 bg-muted/15 px-3 py-2 text-xs flex flex-wrap items-center gap-2">
