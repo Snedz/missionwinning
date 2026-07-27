@@ -42,7 +42,16 @@ export function RuledRadioGroup({
   return (
     <fieldset className={cn('space-y-2', className)}>
       <legend className="mb-2 text-sm text-muted-foreground">{legend}</legend>
-      <div className="space-y-2">
+      {/*
+        Two designs, one DOM. Compact stacks 52px ruled rows — a thumb target
+        on the screen where the options *are* the content. The desktop handoff
+        draws the same choice as wrapping chips, which is what a 1440px window
+        should spend a row on rather than three full-width bars.
+
+        Done in CSS, not `useIsCompact`: the markup is identical either way, so
+        there is nothing to branch and no second tree to keep in step.
+      */}
+      <div className="space-y-2 md:flex md:flex-wrap md:gap-2 md:space-y-0">
         {options.map((option) => {
           const selected = option.value === value;
           return (
@@ -50,8 +59,14 @@ export function RuledRadioGroup({
               key={option.value}
               className={cn(
                 'flex min-h-[52px] cursor-pointer items-center gap-3 border-2 px-4 text-[15px] transition-colors',
+                'md:min-h-0 md:w-auto md:py-2.5 md:text-sm md:font-semibold',
                 selected
-                  ? 'border-[hsl(var(--accent-poster))] bg-accent-100 font-semibold text-primary'
+                  ? // Selected is a filled chip on desktop. `--primary-fill`,
+                    // not poster: white on #ec3013 is 4.19:1 and this label is
+                    // 14px, so poster would fail AA — the same split `.141`
+                    // made for Today's field.
+                    'border-[hsl(var(--accent-poster))] bg-accent-100 font-semibold text-primary ' +
+                    'md:border-[hsl(var(--primary-fill))] md:bg-primary-fill md:text-primary-foreground'
                   : 'border-border hover:bg-muted'
               )}
             >
@@ -63,8 +78,10 @@ export function RuledRadioGroup({
                 onChange={() => onChange(option.value)}
                 className="sr-only"
               />
-              <span className="flex-1">{option.label}</span>
-              {selected ? <Check className="h-5 w-5 shrink-0" aria-hidden /> : null}
+              <span className="flex-1 md:flex-none">{option.label}</span>
+              {/* The tick reads a full-width row; on a chip the fill already
+                  says "selected", and the mock's chips carry no icon. */}
+              {selected ? <Check className="h-5 w-5 shrink-0 md:hidden" aria-hidden /> : null}
             </label>
           );
         })}

@@ -16,6 +16,20 @@ import { startEmptyActiveWorkout } from './helpers/active';
  * These assert *structure*, not pixels — the handoff's screenshots are
  * examples, and each design is responsive within its own band.
  */
+/**
+ * Desktop adds an exercise inline at the foot of the list — the handoff's
+ * `Add exercise — search 300+ movements` input. There is no sheet and no
+ * top-of-screen trigger at md+, so this is deliberately NOT the flow
+ * `logger-depth` drives at 390.
+ */
+async function addPushUpsInline(page: import('@playwright/test').Page) {
+  const search = page.getByPlaceholder(/add exercise — search/i);
+  await expect(search).toBeVisible({ timeout: 10_000 });
+  await search.fill('push-ups');
+  await page.getByRole('option', { name: /push-ups/i }).first().click();
+  await page.getByRole('button', { name: /add selected exercise/i }).click();
+}
+
 test.describe('Desktop surface @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
     if (!baseURL) throw new Error('baseURL required');
@@ -40,6 +54,16 @@ test.describe('Desktop surface @gate', () => {
     await expect(brandButton).toHaveCount(0);
   });
 
+  test('add exercise is inline, not a sheet', async ({ page }) => {
+    await startEmptyActiveWorkout(page);
+
+    // The compact trigger that opens `AddExerciseSheet` is `md:hidden` — on
+    // desktop the picker is already in the page, so a modal would be a second
+    // entry point to the same action.
+    await expect(page.getByRole('button', { name: /^add exercise$/i })).toBeHidden();
+    await expect(page.getByPlaceholder(/add exercise — search/i)).toBeVisible();
+  });
+
   test('Today fills the column instead of a phone measure', async ({ page }) => {
     await page.goto('/log');
     const shell = page.locator('.today-shell').first();
@@ -55,12 +79,7 @@ test.describe('Desktop surface @gate', () => {
   test('logger enters the set in the row, not a docked console', async ({ page }) => {
     await startEmptyActiveWorkout(page);
 
-    await page.getByRole('button', { name: /^add exercise$/i }).click();
-    const search = page.getByPlaceholder(/search exercises/i);
-    await expect(search).toBeVisible();
-    await search.fill('push-ups');
-    await page.getByRole('option', { name: /push-ups/i }).first().click();
-    await page.getByRole('button', { name: /add selected exercise/i }).click();
+    await addPushUpsInline(page);
 
     // The handoff's table: Set · Prev · kg · Reps · (action).
     const table = page.locator('table').first();
@@ -86,10 +105,7 @@ test.describe('Desktop surface @gate', () => {
     // at desktop width.
     await startEmptyActiveWorkout(page);
 
-    await page.getByRole('button', { name: /^add exercise$/i }).click();
-    await page.getByPlaceholder(/search exercises/i).fill('push-ups');
-    await page.getByRole('option', { name: /push-ups/i }).first().click();
-    await page.getByRole('button', { name: /add selected exercise/i }).click();
+    await addPushUpsInline(page);
 
     const warmup = page.getByRole('button', { name: /^warm-?up$/i });
     await expect(warmup).toBeVisible({ timeout: 10_000 });
