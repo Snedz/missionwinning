@@ -19,20 +19,23 @@
 >
 > **Agent-verified 2026-07-22 evening:** www `/api/health` was still **`2026.07-unified.103`** before the `.104` push. **Deploy production** succeeded on master for `.103` (token may already work — confirm after `.104` lands). **CodeQL** still fails upload until Code scanning is enabled (workflow is soft `continue-on-error` so master CI is not blocked). **Aikido** job no longer hard-fails when `AIKIDO_SECRET_KEY` is unset.
 >
-> **Still founder-owned:** enable Code scanning; confirm www shows `.104` after deploy; phone QA + ≥10 invites; Android Accept B; Sentry DSN; Aikido MCP permissions + `AIKIDO_SECRET_KEY`.
+> **2026-07-28 (security settings):** **Code scanning is enabled** — CodeQL **default setup** (`javascript-typescript` + `actions`), running on every PR. The soft `codeql.yml` was deleted: default setup and an advanced workflow conflict, and GitHub honors only one. Also enabled repo-side: secret scanning **push protection**, Dependabot **alerts** + **security updates**, plus a new `dependency-review` PR gate. Branch protection on `master` is **still open** — see the checklist below.
 >
-> **Beta sprint (through 2026-08-02):** Code is not the bottleneck. Finish §1 CodeQL + verify `.104`, then §3 phone QA + ≥10 invites. Android Accept B + Wave A Sentry before any public flip.
+> **Still founder-owned:** protect `master` (see §1.3); confirm www shows `.104` after deploy; phone QA + ≥10 invites; Android Accept B; Sentry DSN; Aikido MCP permissions + `AIKIDO_SECRET_KEY`.
+>
+> **Beta sprint (through 2026-08-02):** Code is not the bottleneck. Verify `.104`, then §3 phone QA + ≥10 invites. Android Accept B + Wave A Sentry before any public flip.
 
 1. **GitHub → Settings → Billing:** spending limit / payment cleared **2026-07-22** — CI no longer dies in ~2s on billing. Re-check if Actions fail again.
 2. **Confirm / rotate GH Actions secret `VERCEL_TOKEN`** if Deploy production fails again — and confirm `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` still valid.
-3. **Enable CodeQL:** repo **Settings → Security → Code scanning** — turn on GitHub CodeQL (upload fails until enabled; workflow soft until then).
+3. **Protect `master`:** repo **Settings → Branches → Add branch protection rule**. Require a pull request and passing `build-and-test` + `gitleaks`; set **0 required approvals** (GitHub forbids self-approval, so requiring 1 would freeze your own merges and Dependabot's while you are the only maintainer); block force-pushes and deletions; leave **"Do not allow bypassing"** *unchecked* so admin access is never locked out. Code scanning is already done (default setup, 2026-07-28).
 4. **Promote Production (if www drifts again):** Actions → **Deploy production** → `workflow_dispatch`, **or** `vercel promote <ready-master-dpl> --yes`, **or** Vercel dashboard → Promote.
 5. Confirm you can see the project dashboard and Production deploys from `master`.
 6. After promote, check Profile footer / `/api/health` matches `src/lib/buildInfo.ts` (expect **`2026.07-unified.104`+** — do not assume until verified). Smoke anonymous: `/guide` → Start free opens `/welcome` (no 307 to `/private`); `/magazine/beyond-the-basics.pdf` downloads; `/locales/en/common.json` returns 200; `/log` still redirects to `/private`.
 
 - [x] GitHub Actions billing cleared (CI jobs no longer die in ~2–5s) — **cleared 2026-07-22; re-check if regress**
 - [x] `VERCEL_TOKEN` confirmed working for Deploy production (`.104` Deploy green 2026-07-22)
-- [ ] CodeQL / code scanning enabled (Settings → Security) — workflow soft until then
+- [x] CodeQL / code scanning enabled — **default setup 2026-07-28** (`javascript-typescript` + `actions`, every PR)
+- [ ] `master` branch protection (Settings → Branches) — PR + `build-and-test` + `gitleaks`, 0 approvals, admin bypass on
 - [x] Production shows **`.104`+** on `/api/health` (agent-verified 2026-07-22)
 - [x] I can open the Vercel project and deploy (GitHub integration / CLI promote)
 

@@ -437,14 +437,14 @@ controls:
     notes: "This monitor"
 
   - id: MW-INC-004
-    title: Optional CodeQL workflow enabled on GitHub
+    title: Code scanning enabled on GitHub (CodeQL default setup)
     frameworks: [soc2, iso27001]
     category: risk
     owner: founder
-    evidence: .github/workflows/codeql.yml
+    evidence: docs/PROTECTION.md
     probe: partial
     status: partial
-    notes: "Workflow may ship; GHAS enablement is founder/org setting"
+    notes: "Enabled 2026-07-28 via CodeQL default setup (javascript-typescript + actions), runs on every PR. No workflow file by design — default setup and an advanced workflow conflict. Remote setting, so it is not locally probeable: verify with `gh api repos/Snedz/missionwinning/code-scanning/default-setup`"
 
   # --- ISO-oriented leftovers ---
   - id: MW-ISO-001

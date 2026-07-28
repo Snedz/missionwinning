@@ -18,7 +18,13 @@ We take security and privacy seriously. Local-first design, private beta gates, 
 
 **Do not** open a public GitHub issue for exploitable security bugs.
 
-Email: **support@missionwinning.com** with subject `SECURITY`
+**Preferred — [report privately on GitHub](https://github.com/Snedz/missionwinning/security/advisories/new)**
+(repo → **Security** → **Report a vulnerability**). The report stays confidential, the
+discussion threads alongside the fix, and we can credit you on the advisory when it is
+published.
+
+**Fallback — email support@missionwinning.com** with subject `SECURITY`, if you would
+rather not use GitHub or do not have an account.
 
 Please include:
 

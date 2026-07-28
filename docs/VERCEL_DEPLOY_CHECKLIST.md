@@ -16,7 +16,7 @@ GitHub↔Vercel integration often creates **Preview-only** builds for `master` e
 
 **Fallback:** [`.github/workflows/deploy-production.yml`](../.github/workflows/deploy-production.yml) deploys with `vercel deploy --prod` (build runs on Vercel so Sensitive env vars work). Its **push trigger was removed** so it no longer double-deploys alongside the hook, and so a blocked Actions account stops producing a red run on every push. Run it by hand: Actions → **Deploy production** → Run workflow.
 
-**Lean CI (2026-07-24):** Full CI no longer runs on every `master` push — that burned Actions minutes and blocked production deploys when the spending limit hit. Default gate is [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) on **PRs only**. Heavy jobs live in [`.github/workflows/ci-extended.yml`](../.github/workflows/ci-extended.yml) (manual / weekly). CodeQL is **monthly + dispatch** only.
+**Lean CI (2026-07-24):** Full CI no longer runs on every `master` push — that burned Actions minutes and blocked production deploys when the spending limit hit. Default gate is [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) on **PRs only**. Heavy jobs live in [`.github/workflows/ci-extended.yml`](../.github/workflows/ci-extended.yml) (manual / weekly). **Code scanning** runs on every PR via CodeQL **default setup** (enabled 2026-07-28; no workflow file), alongside [`dependency-review.yml`](../.github/workflows/dependency-review.yml). Note that Actions minutes are **free and unlimited on public repos** — the lean-CI split is about avoiding duplicate runs, not billing.
 
 Required GitHub Actions secrets:
 

@@ -1,5 +1,7 @@
-# Lean CI — PR + manual only. Master pushes do not run this workflow so
-# remaining Actions minutes go to deploy-production.yml (www updates).
+# Lean CI — PR + manual only. Master pushes do not re-run this workflow because
+# every change reaches master through a PR (enforced by branch protection), so the
+# commit has already been tested green here. This is a duplicate-work choice, not a
+# billing one: standard runners are free and unlimited on public repos.
 # Extended jobs (e2e, Android, lighthouse, smokes): Actions → CI extended.
 name: CI
 

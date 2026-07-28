@@ -1,5 +1,12 @@
-# Secret scan — PR + manual only (lean; do not run on every master push).
-# Local gate while Actions billing is blocked: npm run secrets:scan
+# Secret scan — PR + manual only; every change reaches master through a PR, so a
+# master-push run would re-scan an already-scanned commit. (Not a billing limit:
+# standard runners are free and unlimited on public repos.)
+#
+# Defence in depth: GitHub secret scanning + push protection reject known provider
+# tokens at push time, before the commit lands; this job catches the custom shapes
+# defined in .gitleaks.toml that GitHub does not know about.
+#
+# Local pre-commit gate: npm run secrets:scan
 # Docs: docs/SECRETS.md
 name: Gitleaks
 

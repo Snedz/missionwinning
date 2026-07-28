@@ -63,8 +63,9 @@ One control can list multiple frameworks (crosswalk).
 ## CI evidence
 
 - Workflow: `.github/workflows/ci.yml` → `compliance:status --ci` (soft) + artifact upload
-- Dependabot: `.github/dependabot.yml` (npm + GitHub Actions, weekly)
-- Optional CodeQL: `.github/workflows/codeql.yml` — enable GitHub Advanced Security on the repo if the job no-ops
+- Dependabot: `.github/dependabot.yml` (npm + GitHub Actions, weekly) — plus Dependabot **alerts** and **security updates**, enabled repo-side 2026-07-28
+- Dependency review: `.github/workflows/dependency-review.yml` — fails a PR that adds a dependency with a known high+ vulnerability
+- Code scanning: **CodeQL default setup** (`javascript-typescript` + `actions`), enabled 2026-07-28, runs on every PR. No workflow file — default setup and an advanced workflow conflict, so `codeql.yml` was removed
 
 ---
 

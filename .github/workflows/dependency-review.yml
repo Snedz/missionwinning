@@ -1,0 +1,33 @@
+# Dependency review — blocks a PR that ADDS a vulnerable dependency.
+#
+# Complements, and does not duplicate, the other dependency gates:
+#   - ci.yml `npm audit --audit-level=high` — soft, audits the whole tree
+#   - Dependabot security updates — reactive, opens PRs for existing CVEs
+#   - aikido.yml — release gate, only when AIKIDO_SECRET_KEY is set
+# This one is preventative: it diffs the manifest/lockfile changes in the PR
+# itself, so a bad dependency is caught before it ever reaches master.
+#
+# Threshold matches ci.yml's audit level (high) to avoid two different bars.
+name: Dependency review
+
+on:
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: dependency-review-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high

@@ -106,8 +106,8 @@ Agents **never** change repository visibility or flip `PRIVATE_MODE`.
 2. [ ] Optional: `gitleaks detect --source . -v` on history  
 3. [ ] Confirm scrub: no personal gmail, real Vercel org/project IDs, Supabase ref, treasury private-key paths in docs  
 4. [ ] Confirm `docs/applications/` paste packs are gitignored (only README tracked) — not world-readable on Public  
-5. [ ] GitHub → Settings → **Code security** → enable **Secret scanning** + **Push protection** (free on public repos)  
-6. [ ] Optional: enable Code scanning (CodeQL workflow is schedule/dispatch only)  
+5. [x] GitHub → Settings → **Code security** → **Secret scanning** + **Push protection** (free on public repos) — push protection enabled 2026-07-28  
+6. [x] Code scanning enabled 2026-07-28 — CodeQL **default setup** (`javascript-typescript` + `actions`), runs on every PR  
 7. [ ] GitHub → Settings → **Change repository visibility → Public**  
 8. [ ] Do **not** flip `PRIVATE_MODE` as part of going open source  
 
