@@ -33,17 +33,36 @@ export interface Reentry {
 
 const NONE: Reentry = { daysSince: null, tone: 'none', show: false, doseScale: 1 };
 
-export function daysSinceLastSession(
-  history: CompletedWorkoutLog[],
-  now: number
-): number | null {
+/**
+ * Most recent non-deleted session as an epoch ms, or null when nothing is logged.
+ * Split out so the return channel can send a *date* to the server without sending
+ * any of the history it was derived from.
+ */
+function latestSessionMs(history: CompletedWorkoutLog[]): number | null {
   let latest = -Infinity;
   for (const log of history) {
     if (log.deletedAt) continue;
     const t = new Date(log.completedAt).getTime();
     if (Number.isFinite(t) && t > latest) latest = t;
   }
-  if (latest === -Infinity) return null;
+  return latest === -Infinity ? null : latest;
+}
+
+/**
+ * ISO timestamp of the last session — the single field the server is allowed to hold
+ * about what the athlete did. Sets, exercises and volume never leave the device.
+ */
+export function lastSessionAt(history: CompletedWorkoutLog[]): string | null {
+  const ms = latestSessionMs(history);
+  return ms === null ? null : new Date(ms).toISOString();
+}
+
+export function daysSinceLastSession(
+  history: CompletedWorkoutLog[],
+  now: number
+): number | null {
+  const latest = latestSessionMs(history);
+  if (latest === null) return null;
   // Floor, so "yesterday evening to this morning" is 0 days, not 1.
   return Math.max(0, Math.floor((now - latest) / 86_400_000));
 }

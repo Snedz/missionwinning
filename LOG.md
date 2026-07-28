@@ -6,6 +6,71 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-28 — The athlete we built for had no way back (`.164`)
+
+The boss metric is week-4 retained weekly loggers. The headline promise is no
+account. **Every mechanism that could bring a lapsed athlete back required one** —
+and not as an oversight in one place, but consistently, at five layers:
+
+| Layer | The assumption |
+|-------|----------------|
+| UI | `ProfilePage` rendered the reminders card inside `{email && (…)}` |
+| Client | `pushClient.ts` → `getUser()`, `if (!user) return 'error'` |
+| Schema | `user_id uuid **not null** references auth.users` |
+| RLS | all four policies `auth.uid() = user_id` |
+| Server | `sendNudgePush(admin, userId)`; candidates `from('profiles')` |
+
+Each layer is individually correct. Together they meant someone who logged six
+sessions without signing in and then went quiet was unreachable forever — no
+channel, and no row that knew they existed.
+
+- **Anonymous push, end to end.** `user_id` nullable + `device_id` + a check
+  constraint so a row always has an owner. New `POST|DELETE /api/push/subscribe`
+  runs on the **service role**: anonymous rows have `user_id is null`, so every RLS
+  policy on the table denies them, and the alternative — a public policy — would let
+  anyone enumerate device rows. **Signed in and signed out take the same path**,
+  because two writers to one table is how a device ends up subscribed twice or opted
+  in once and reachable never. `getOrCreateDeviceId()` already existed and was
+  referenced twice; it is the identity, not a new one.
+- **The permission ordering is now structural.** `Notification.requestPermission()`
+  must never be called down a path that cannot use the result — a granted-then-
+  discarded prompt leaves the site marked "notifications allowed" with nothing able
+  to send one, and the browser will not ask again. The old guard was only unreachable
+  because the UI hid the toggle; the UI was the whole thing holding it.
+- **`streak-at-risk` is deleted, not resoftened.** It fired on a consecutive-day
+  premise `reentry.ts` explicitly rejects (`REENTRY_MIN_DAYS = 4`, "rest days are
+  part of training"), so a 3x/week lifter was told a scheduled rest day had cost them
+  something. Thresholds are now **the athlete's own** — two missed slots at their
+  cadence — via `quietThresholdDays()`. A 2x/week athlete is not chased on day four.
+- **The tone contract is executable.** `reentryTone.ts` holds the rules the in-app
+  surface already followed and the email channel did not: no absence lengths, no
+  streak-loss. It shipped `Your N-day streak ends tonight` and `it's been N days` —
+  both verbatim in the test as the regression, not as hypotheticals. Falsified before
+  trusting: reintroducing the old subject fails the suite naming both rules.
+- **`server-only` was why this drifted.** `nudgeServer.ts` carries it, so every
+  symbol in it — including the words sent to someone at the moment they are most
+  likely to quit — was unreachable from a unit test. Pure copy and the which-message
+  decision moved to `nudgeCopy.ts` (no `server-only`, unsubscribe URL passed in so it
+  needs no secret); `nudgeServer.ts` keeps DB and crypto. Same split as
+  `pushPayload.ts` out of `pushServer.ts`.
+- **Anonymous devices get `comeback` only, and that is the privacy contract working.**
+  The server holds a last-session date and a cadence — enough to know someone went
+  quiet, not enough to count this week's sessions or sum volume. `week-behind` and
+  `week1-recap` have nothing to compute from. Sets stay on the device.
+- **Cron ordering fixed while there:** anonymous push now runs *before* the
+  `RESEND_API_KEY` check. Returning 503 first meant a missing email key silenced
+  exactly the athletes who have no other channel.
+- Nothing is sent past 28 days quiet. Continuing to push someone who left is how the
+  channel gets blocked at the vendor.
+- Unit tests **599 → 613**. Plan: [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md).
+
+**Not verified live:** the browser flow needs `PRIVATE_MODE=false` or the access
+secret, both founder-owned. Push is also dark until the public flip by design
+(`isPushSupported()` returns false outside production). The migration has **not**
+been applied to any Supabase project — that is a founder step.
+
+---
+
 ## 2026-07-26 — Two bugs the founder's phone found that no test did (`.158`)
 
 First review of the merged wedge. Verdict was "everything else is good" — and

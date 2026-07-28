@@ -179,6 +179,17 @@ curl -X POST "$BASE/api/private-access/session" \
 | dryRun | `?dryRun=1` returns composed subject/text + data |
 | Send | `FOUNDER_DIGEST_EMAIL` via Resend; skipped if unset |
 
+### `POST /api/push/subscribe` / `DELETE /api/push/subscribe`
+
+| | |
+|--|--|
+| Auth | **Optional session.** Signed out is the supported case, not a fallback |
+| Rate | 10/min/IP · body 4KB (POST) / 2KB (DELETE) |
+| POST | `pushSubscribeBodySchema` — `{ endpoint, p256dh, auth, deviceId, lastSessionAt?, daysPerWeek?, timeZone? }` |
+| DELETE | `pushUnsubscribeBodySchema` — `{ endpoint }`. The endpoint URL is the capability |
+| Returns | `{ ok, linked }` — `linked: true` when a session was present and the row now carries `user_id` |
+| Notes | Service role: anonymous rows have `user_id is null`, so every RLS policy on the table denies them. Cadence fields only — **workout history never leaves the device**. See [RETURN_LOOP_PLAN.md](RETURN_LOOP_PLAN.md) |
+
 ---
 
 ## Premium (gated content)

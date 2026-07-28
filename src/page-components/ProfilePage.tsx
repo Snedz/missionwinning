@@ -39,6 +39,21 @@ import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { useWorkoutStore } from '@/store/workoutStore';
+import { lastSessionAt } from '@/lib/reentry';
+
+/**
+ * Cadence for the push row — read imperatively so the value is always current and
+ * the mount effect keeps an empty dependency list. Deliberately only two fields:
+ * the server learns when the athlete last trained and how often they aim to, and
+ * nothing about what they actually did.
+ */
+function readPushCadence() {
+  return {
+    lastSessionAt: lastSessionAt(useWorkoutStore.getState().workoutHistory),
+    daysPerWeek: loadDaysPerWeek(),
+  };
+}
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -86,7 +101,12 @@ export function ProfilePage() {
     void import('@/lib/pushClient').then(async (m) => {
       if (!m.isPushSupported()) return;
       setPushSupported(true);
-      setPushOn(await m.hasLocalPushSubscription());
+      const on = await m.hasLocalPushSubscription();
+      setPushOn(on);
+      // Re-post silently when one already exists: heals a row lost to a failed POST,
+      // and attaches user_id to a subscription first made signed-out, so nobody is
+      // asked to opt in twice for the same device. Never prompts.
+      if (on) void m.syncPushSubscription(readPushCadence());
     });
   }, []);
 
@@ -119,7 +139,7 @@ export function ProfilePage() {
         await m.unsubscribePush();
         setPushOn(false);
       } else {
-        const r = await m.subscribePush();
+        const r = await m.subscribePush(readPushCadence());
         setPushOn(r === 'ok');
         if (r !== 'ok') {
           toast({
@@ -247,17 +267,19 @@ export function ProfilePage() {
         authError={authError}
       />
 
-      {email && (
-        <ProfileRemindersCard
-          reminders={reminders}
-          remindersBusy={remindersBusy}
-          onToggleReminders={toggleReminders}
-          pushSupported={pushSupported}
-          pushOn={pushOn}
-          pushBusy={pushBusy}
-          onTogglePush={togglePush}
-        />
-      )}
+      {/* Not behind `email &&` — device notifications are the only return channel an
+          anonymous athlete has, and they are the athlete this product is built for.
+          The card renders nothing when it has neither row to offer. */}
+      <ProfileRemindersCard
+        signedIn={Boolean(email)}
+        reminders={reminders}
+        remindersBusy={remindersBusy}
+        onToggleReminders={toggleReminders}
+        pushSupported={pushSupported}
+        pushOn={pushOn}
+        pushBusy={pushBusy}
+        onTogglePush={togglePush}
+      />
 
       <ProfilePreferencesCard
         units={units}

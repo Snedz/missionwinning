@@ -322,6 +322,28 @@ export const mobileSyncPrefsPushBodySchema = z.object({
   prefs: mobileSyncPrefsSchema,
 });
 
+/**
+ * Push subscribe — works with or without a session.
+ *
+ * `deviceId` is required even when signed in: it is what links a subscription made
+ * anonymously to the account created later, so the athlete is not asked to opt in
+ * a second time.
+ */
+export const pushSubscribeBodySchema = z.object({
+  endpoint: z.string().url().max(1000),
+  p256dh: z.string().min(1).max(500),
+  auth: z.string().min(1).max(500),
+  deviceId: z.string().min(1).max(64),
+  /** Cadence only — never workout history. See supabase/migrations/20260728_anonymous_push.sql. */
+  lastSessionAt: z.string().max(40).optional(),
+  daysPerWeek: z.number().int().min(1).max(7).optional(),
+  timeZone: z.string().max(64).optional(),
+});
+
+export const pushUnsubscribeBodySchema = z.object({
+  endpoint: z.string().url().max(1000),
+});
+
 export function parseJsonBody<T>(schema: z.ZodType<T>, body: unknown):
   | { ok: true; data: T }
   | { ok: false; error: string } {
