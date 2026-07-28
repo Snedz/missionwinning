@@ -6,6 +6,46 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-28 — The boss metric counted deleted workouts, and the gate tested the wrong server (`.165`)
+
+Phase 2 of [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md): prove the week-4
+number before there are users to count. Two defects, both found by reading rather
+than by running, because neither has ever had data to run against.
+
+- **`mw_week4_retention()` never excluded tombstones.** It shipped in
+  `20260720_referrals.sql`; `workout_logs.deleted_at` arrived the next day in
+  `20260721_workout_sync_v2.sql`, and nothing reconciled them. Deletes propagate
+  cross-device (`.127`), so this is a live path, and **the error has no sign**: a
+  deleted first session inflates the denominator while a deleted week-4 session
+  inflates the numerator. A number you cannot sign is worse than one you know is
+  high. Fixed in `20260728_week4_exclude_tombstones.sql`.
+- **Three definitions of the window, no two alike.**
+  [POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) line 3 said "week 4", line 13
+  said "days 22–28", the SQL used days 21–27. The SQL is right — first workout is day
+  0, so the blocks are 0–6, 7–13, 14–20, **21–27** — so the doc was corrected to it,
+  not the reverse.
+- **New `supabase/checks/week4_retention_proof.sql`.** Seeds all seven boundary cases
+  (inclusive day 21, exclusive day 28, too-recent cohort, tombstoned-only athlete,
+  tombstoned week-4 session), asserts 5 eligible / 2 retained, and **rolls back** so
+  it is safe to run anywhere. `week4-smoke` proves the RPC *answers*; this proves it
+  answers *correctly*. Against the pre-fix function it fails on purpose.
+- **`npm run gate` was testing whatever happened to be on port 3000.** `GATE_PORT`
+  defaults to 3000; `next start` cannot bind an occupied port, but `waitForServer()`
+  only asks whether *something* answers. A stale dev server left running was enough
+  to run all 39 `@gate` tests against a **pre-`.159` build** — 34 failed, while the
+  identical suite passed against a clean one minutes earlier. Red was the lucky
+  direction: a compatible-but-wrong build goes green. That is the **fourth** time this
+  repo has shipped a suite pointed at the wrong thing (`.129` sitemap,
+  `.157` a11y routes, `.162` viewport, this). `gate.mjs` now refuses to start when the
+  port is occupied, **before** the build rather than after, and names both fixes.
+  Falsified: `GATE_PORT=3000 npm run gate` now exits in 2s instead of 3 wasted minutes.
+- Gate **39/39** on a clean port (2.0 min), including the two offline/service-worker
+  cases that skip whenever the build was not made with `PRIVATE_MODE=false`.
+
+**Founder-owned:** both migrations are unapplied. Run the proof after applying.
+
+---
+
 ## 2026-07-28 — The athlete we built for had no way back (`.164`)
 
 The boss metric is week-4 retained weekly loggers. The headline promise is no

@@ -105,6 +105,22 @@ second identity.
 4. Nothing is sent to a device quiet for 28+ days.
 5. Signing in links the existing device row rather than creating a duplicate.
 
+## Founder setup — the code is inert without these
+
+Shipped `.164`. None of it can fire until the founder does all four; agents own none
+of them. Until then the toggle does not render (`isPushSupported()` is false without
+a VAPID key) and the route answers `503 Sync not configured`.
+
+| # | Step | Where |
+|---|------|-------|
+| 1 | Apply `supabase/migrations/20260728_anonymous_push.sql` | Supabase SQL editor or CLI |
+| 2 | `npx web-push generate-vapid-keys` → set `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Vercel Production + `.env.local` — [ENV.md](ENV.md) |
+| 3 | Set `SUPABASE_SERVICE_ROLE_KEY` in Production (already on the Horizon 0 list) | [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2 |
+| 4 | `PRIVATE_MODE=false` — the service worker never registers while gated, by design | Founder-only (hard rule 3) |
+
+Verify with `GET /api/cron/nudges?dryRun=1` (`Authorization: Bearer $CRON_SECRET`):
+the `anonymous` block reports the device cohort without sending anything.
+
 ## Why this is inside the horizon gate
 
 [ORCHESTRATION.md](../ORCHESTRATION.md) Horizon W excellence criterion **4** is

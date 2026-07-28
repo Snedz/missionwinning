@@ -10,9 +10,13 @@ Profile (while `BETA_ADMIN_EMAILS` matches) → funnel counts. Good for activati
 
 ### From Supabase (signed-in loggers)
 
-Approximate: users whose first `workout_logs` row is ≥28 days ago and who have ≥1 log in days 22–28 after that first workout.
+Users whose first **non-deleted** `workout_logs` row is ≥28 days ago and who have ≥1 non-deleted log in **days 21–27** after that first workout.
 
-Shipped as RPC **`mw_week4_retention()`** (migration `20260720_referrals.sql`, service role). Manual equivalent:
+**Day 21, not 22.** The first workout is day 0, so the four weekly blocks are days 0–6, 7–13, 14–20, **21–27**. This line previously said "22–28", which matched neither the SQL nor the definition above it — three statements of one metric, no two alike.
+
+**Tombstones are excluded** (`deleted_at is null`). Before `20260728_week4_exclude_tombstones.sql` they were not: the RPC shipped in `20260720_referrals.sql`, `deleted_at` arrived in `20260721_workout_sync_v2.sql`, and nothing reconciled them. A deleted first session inflated the denominator while a deleted week-4 session inflated the numerator, so the error had no known sign.
+
+Shipped as RPC **`mw_week4_retention()`** (service role). Manual equivalent:
 
 ```sql
 select * from mw_week4_retention();
