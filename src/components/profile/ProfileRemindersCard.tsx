@@ -75,7 +75,7 @@ export function ProfileRemindersCard({
           <p className="text-sm text-muted-foreground">
             {t('remindersPushDesc', {
               defaultValue:
-                'Notify me on this device when it has been a while. No account needed — the reminder is tied to this browser, not to you.',
+                'Two kinds, on this device only: an evening note after a session that ran hot, and a quiet check-in if it has been a while. No account needed — the subscription is tied to this browser, not to you.',
             })}
           </p>
           <Button

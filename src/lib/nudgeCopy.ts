@@ -24,7 +24,7 @@
 
 import { isCold, quietThresholdDays } from '@/lib/reentryTone';
 
-export type NudgeKind = 'comeback' | 'week1-recap' | 'week-behind';
+export type NudgeKind = 'comeback' | 'week1-recap' | 'week-behind' | 'wind-down';
 
 export interface NudgeCandidate {
   userId: string;
@@ -153,6 +153,22 @@ export function decideNudge(input: NudgeInput): NudgeCandidate | null {
   }
 
   return null;
+}
+
+/**
+ * Wind-down push — the only message here with a time-of-day trigger rather than an
+ * absence trigger, which is why it has no `decideNudge` branch (those gates all select
+ * for someone being away; this one requires they trained today).
+ *
+ * Describes the comparison and prescribes recovery hygiene. It predicts nothing and
+ * names no medical concept — LEGAL_SAFETY §3a, and the same rule `load.ts` sets for
+ * every band sentence.
+ */
+export function windDownPush(): { title: string; body: string } {
+  return {
+    title: 'That one ran hot',
+    body: 'Heavier than your recent usual. Water, food, and an early night buy tomorrow back.',
+  };
 }
 
 /** Push copy for an anonymous device. No email exists, so there is no footer. */

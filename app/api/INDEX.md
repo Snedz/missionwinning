@@ -107,7 +107,8 @@ Legend:
 |-------|---------|------|------|
 | `journey/nudge` | POST | session | 5/min/IP + 4 KiB body | Zod `journeyNudgeBodySchema` |
 | `nudges/unsubscribe` | GET | signed token | 20/min/IP | query `u`+`t` |
-| `cron/nudges` | GET | `Authorization: Bearer CRON_SECRET` | — | |
+| `cron/nudges` | GET | `Authorization: Bearer CRON_SECRET` | — | Daily 17:00 UTC |
+| `cron/wind-down` | GET | `Authorization: Bearer CRON_SECRET` | — | **Hourly, from `.github/workflows/cron-wind-down.yml`** (Vercel Hobby caps crons at daily). Evening (19–22 local) note after a session that ran hot. Push only; own `last_wind_down_at` marker so it never suppresses a comeback. `?dryRun=1` reports `localHour` per candidate |
 
 ### Checkout & webhooks
 
