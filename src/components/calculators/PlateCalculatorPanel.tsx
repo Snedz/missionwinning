@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,7 @@ type Props = {
 
 export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: Props) {
   const { t } = useTranslation();
+  const uid = useId();
   const units = useUnits();
   const unit = weightUnitLabel(units);
   const [target, setTarget] = useState(initialTarget ?? defaultBarWeight(units) + 60);
@@ -59,11 +60,14 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
       )}
       <CardContent className={cn('space-y-4', compact && 'p-0')}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* useId, not literals: this panel also renders inside PlateCalculatorSheet,
+              so a page can hold two instances and static ids would collide. */}
           <div>
-            <Label>
+            <Label htmlFor={`${uid}-target`}>
               {t('calcPlateTarget', { unit, defaultValue: `Target weight (${unit})` })}
             </Label>
             <Input
+              id={`${uid}-target`}
               type="number"
               step={units === 'imperial' ? 2.5 : 1.25}
               value={target}
@@ -72,8 +76,11 @@ export function PlateCalculatorPanel({ initialTarget, onApplyTarget, compact }: 
             />
           </div>
           <div>
-            <Label>{t('calcPlateBar', { unit, defaultValue: `Bar weight (${unit})` })}</Label>
+            <Label htmlFor={`${uid}-bar`}>
+              {t('calcPlateBar', { unit, defaultValue: `Bar weight (${unit})` })}
+            </Label>
             <Input
+              id={`${uid}-bar`}
               type="number"
               value={bar}
               onChange={(e) => setBar(parseFloat(e.target.value) || 0)}

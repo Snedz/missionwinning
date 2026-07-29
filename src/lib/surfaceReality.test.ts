@@ -22,6 +22,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { SURFACE_PATHS, isSurfaceEnabled, type Surface } from '@/lib/surface';
 
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
@@ -78,6 +79,50 @@ test('nothing is queued for a parked surface', () => {
       body.includes(`isSurfaceEnabled('${surface}')`),
       `${fn} in ${file} enqueues without checking isSurfaceEnabled('${surface}')`
     );
+  }
+});
+
+/**
+ * If a surface is on, its pages are reachable, and reachable pages get swept by axe.
+ *
+ * `.157` widened the a11y route list from four signed-in screens to thirteen, but it
+ * was never cross-checked against the surface registry — so four of the eight
+ * surfaces that are ON by default had no axe coverage at all: benchmarks, guidebook,
+ * calculators and programs. `/benchmarks` was excluded by a comment that called it
+ * parked; it is a SECONDARY pillar and serves 200. `/calculators` is public even
+ * while the private gate is up, so anyone could reach a page nothing had ever
+ * checked.
+ *
+ * Deriving this from `SURFACE_PATHS` rather than restating a list is the whole point:
+ * turning a surface on now drags its a11y coverage along with it.
+ */
+test('every enabled surface has at least one page under axe', () => {
+  const spec = read('tests/e2e/a11y.spec.ts');
+  const missing: string[] = [];
+
+  for (const [surface, paths] of Object.entries(SURFACE_PATHS) as [Surface, readonly string[]][]) {
+    if (!isSurfaceEnabled(surface)) continue;
+    if (!paths.some((p) => spec.includes(`'${p}'`))) missing.push(`${surface} (${paths.join(', ')})`);
+  }
+
+  assert.deepEqual(
+    missing,
+    [],
+    `enabled surfaces with no route in tests/e2e/a11y.spec.ts: ${missing.join(' · ')}`
+  );
+});
+
+/** The mirror: a route the suite skips as "parked" must genuinely be parked. */
+test('nothing is excluded from axe on a false parked claim', () => {
+  const spec = read('tests/e2e/a11y.spec.ts');
+  for (const [surface, paths] of Object.entries(SURFACE_PATHS) as [Surface, readonly string[]][]) {
+    if (isSurfaceEnabled(surface)) continue;
+    for (const p of paths) {
+      assert.ok(
+        !spec.includes(`'${p}'`),
+        `${p} is in the a11y list but ${surface} is parked — it would 404 and the sweep would be testing an error page`
+      );
+    }
   }
 });
 

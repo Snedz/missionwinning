@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,7 @@ type Props = {
 
 export function OneRmCalculator({ onE1rmChange }: Props) {
   const { t } = useTranslation();
+  const uid = useId();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const [weight, setWeight] = useState(() => defaultCalcInputs(units).weight);
@@ -42,11 +43,18 @@ export function OneRmCalculator({ onE1rmChange }: Props) {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* htmlFor/id are load-bearing: Radix's Label renders a bare <label> and
+              does not associate itself. Without the pair these read as unlabelled
+              number boxes to a screen reader, while looking perfectly labelled —
+              which is why it survived a rebrand that touched this file.
+              useId, not a literal, because these panels render more than once per
+              page in places and duplicate ids are their own violation. */}
           <div>
-            <Label>
+            <Label htmlFor={`${uid}-weight`}>
               {t('calcWeightLabel', { unit: unitLabel, defaultValue: `Weight (${unitLabel})` })}
             </Label>
             <Input
+              id={`${uid}-weight`}
               type="number"
               value={weight}
               onChange={(e) => setWeight(parseInt(e.target.value) || 0)}
@@ -54,8 +62,9 @@ export function OneRmCalculator({ onE1rmChange }: Props) {
             />
           </div>
           <div>
-            <Label>{t('calcRepsLabel', { defaultValue: 'Reps' })}</Label>
+            <Label htmlFor={`${uid}-reps`}>{t('calcRepsLabel', { defaultValue: 'Reps' })}</Label>
             <Input
+              id={`${uid}-reps`}
               type="number"
               value={reps}
               onChange={(e) => setReps(Math.max(1, Math.min(12, parseInt(e.target.value) || 1)))}

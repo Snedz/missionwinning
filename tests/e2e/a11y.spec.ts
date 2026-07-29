@@ -20,7 +20,13 @@ const GATED_ROUTES = [
   // this list covered four of them, so the tranche the Modernist rebrand recut
   // screen-by-screen had no axe coverage at all — the same shape of gap as the
   // SEO tail below, where one exercise page used to stand for ~250 URLs.
-  // Parked surfaces (/leaderboard, /benchmarks) stay out: they 404 by design.
+  // Only /leaderboard is parked (`PARKED_BY_DEFAULT`), so only it 404s. This comment
+  // used to name /benchmarks too — but that is a SECONDARY pillar, on unless
+  // `NEXT_PUBLIC_SURFACES=wedge`, so it serves 200 and is a nav screen
+  // (`navConfig.ts:110`). It sat excluded from axe on a stated-but-false premise,
+  // inside the very list `.157` widened to close this kind of gap. The claim is now
+  // asserted in `src/lib/surfaceReality.test.ts` instead of trusted in prose.
+  '/benchmarks',
   '/history',
   '/move',
   '/mind',
@@ -41,6 +47,14 @@ const GATED_ROUTES = [
   '/paths',
   '/about',
   '/privacy',
+  // Three more enabled surfaces that had no axe coverage at all. `.157` widened this
+  // list from four signed-in screens to thirteen, but it was never cross-checked
+  // against the surface registry — so four of the eight surfaces that are ON by
+  // default were missing. /calculators is the sharpest: it is public even while the
+  // private gate is up (`PRIVATE_GATE_PUBLIC_PATHS`), so it is reachable by anyone.
+  '/calculators',
+  '/programs',
+  '/guide',
 ] as const;
 
 /**

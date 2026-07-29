@@ -6,6 +6,50 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-28 — Four live pages had never been checked, and two were broken (`.167`)
+
+Started as one wrong comment in the a11y suite and ended in two real WCAG failures
+on pages anyone can reach.
+
+- **`/benchmarks` was excluded from axe as "parked". It is not.** The comment read
+  *"Parked surfaces (/leaderboard, /benchmarks) stay out: they 404 by design."*
+  `/leaderboard` genuinely is parked. `/benchmarks` is a **secondary** pillar — on
+  unless `NEXT_PUBLIC_SURFACES=wedge` — a nav screen (`navConfig.ts:110`) serving
+  **200**. It sat excluded on a stated-but-false premise, inside the very list `.157`
+  widened to close this class of gap.
+- **Cross-checking the whole registry found three more.** Four of the eight surfaces
+  that are ON by default had no axe coverage at all: `benchmarks`, `guidebook`,
+  `programs`, and **`calculators`** — the last being public even while the private
+  gate is up (`PRIVATE_GATE_PUBLIC_PATHS`), so anyone on the internet could reach a
+  page nothing had ever checked.
+- **Two of the four were genuinely broken.**
+  - `/calculators` — **critical, `label`**. Every `<Label>` in the three calculator
+    panels was written without `htmlFor`, and every `<Input>` without `id`. Radix's
+    `Label` renders a bare `<label>` and does not associate itself, so seven inputs
+    read as unlabelled number boxes to a screen reader while *looking* perfectly
+    labelled. That is why it survived a rebrand that edited these files. Fixed with
+    `useId()` rather than literals: `PlateCalculatorPanel` also renders inside
+    `PlateCalculatorSheet`, so a page can hold two instances and static ids would
+    have traded one violation for another.
+  - `/programs` — **serious, `link-in-text-block`**. A `/learn` link inside a
+    `text-muted-foreground` paragraph was `text-primary hover:underline`: at rest,
+    colour was the only cue. Now underlined at rest.
+- **The invariant, not the list.** `surfaceReality.test.ts` gains two assertions
+  derived from `SURFACE_PATHS`: every enabled surface must have a page under axe, and
+  nothing may be skipped on a false parked claim. Both falsified — removing
+  `/calculators` fails the first, adding parked `/leaderboard` fails the second.
+  Turning a surface on now drags its a11y coverage with it.
+- a11y **29 → 33** passing. Unit tests 616.
+
+**The pattern, sixth and seventh sightings.** `.129` sitemap · `.157` a11y routes ·
+`.162` viewport · `.165` gate port · `.166` surface registry · this. And one of my
+own inside this entry: a build monitor grepping for `Compiled successfully` in output
+that had been through `tail -6`, which reported BUILD FAILED on a build that
+succeeded. Every instance is the same shape — a check aimed at a target nobody
+wrote down.
+
+---
+
 ## 2026-07-28 — Parking parked the routes, not the work (`.166`)
 
 Phase 3 of [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md) is a founder call —
