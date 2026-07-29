@@ -310,6 +310,52 @@ describe('workoutMerge', () => {
       assert.equal(mapped[0].updatedAt, '2026-07-02T00:00:00Z');
       assert.equal(mapped[0].deletedAt, undefined);
     });
+
+    /**
+     * Rows written by the Android sync route store a FLAT set array in the same
+     * `exercises` column. Normalizing on read is what heals every such row already
+     * in the table — without it the session reads as zero working sets everywhere.
+     */
+    it('heals an Android-shaped flat row into the nested shape', () => {
+      const mapped = mapCloudToLocal([
+        {
+          id: 'a1',
+          client_id: 'c-android',
+          revision: 1,
+          updated_at: '2026-07-29T10:00:00Z',
+          deleted_at: null,
+          workout_name: 'Push',
+          started_at: '2026-07-29T09:00:00Z',
+          completed_at: '2026-07-29T10:00:00Z',
+          duration_seconds: 3600,
+          total_volume: 1000,
+          exercises: [
+            { id: 's0', exerciseId: 'bench-press', setIndex: 0, reps: 5, weight: 100, rpe: 9, setKind: 'normal' },
+            { id: 's1', exerciseId: 'bench-press', setIndex: 1, reps: 5, weight: 100, rpe: 9, setKind: 'normal' },
+          ] as unknown as CompletedWorkoutLog['exercises'],
+        },
+      ]);
+      assert.equal(mapped[0].exercises.length, 1, 'two flat rows are one exercise');
+      assert.equal(mapped[0].exercises[0].exerciseId, 'bench-press');
+      assert.equal(mapped[0].exercises[0].sets.length, 2);
+      assert.equal(mapped[0].exercises[0].sets[0].rpe, 'hard', 'numeric 9 becomes hard');
+    });
+
+    it('leaves a web-written nested row untouched', () => {
+      const nested = [{ exerciseId: 'squat', sets: [{ reps: 5, weight: 120 }] }];
+      const mapped = mapCloudToLocal([
+        {
+          id: 'w1',
+          workout_name: 'Legs',
+          started_at: '2026-07-29T09:00:00Z',
+          completed_at: '2026-07-29T10:00:00Z',
+          duration_seconds: 3600,
+          total_volume: 600,
+          exercises: nested,
+        },
+      ]);
+      assert.deepEqual(mapped[0].exercises, nested);
+    });
   });
 
   it('prefers cloud when both sides already use cloud- ids for same fingerprint', () => {

@@ -3,28 +3,26 @@
  * Free forever. See docs/DESIGN_RESEARCH.md § Wave 6.
  */
 
-import { epley1rm } from '@/lib/calcHelpers';
+import { estimate1rm } from '@/lib/coach/progress';
 import type { UnitsPref } from '@/lib/units';
 import { weightStep } from '@/lib/units';
+import { loadBearingSets, roundToStep } from '@/lib/workout/setMath';
 import type { CompletedWorkoutLog } from '@/types';
 
 export type LoadPctExperience = 'beginner' | 'intermediate' | 'advanced';
 
-function roundToStep(value: number, step: number): number {
-  if (step <= 0) return value;
-  return Math.round(value / step) * step;
-}
-
-function workingSets(
-  sets: { reps: number; weight: number; kind?: string }[]
-): { reps: number; weight: number }[] {
-  return sets
-    .filter((s) => s.kind !== 'warmup' && s.weight > 0 && s.reps > 0)
-    .map((s) => ({ reps: s.reps, weight: s.weight }));
-}
-
 /**
- * Best working max for an exercise from history (true 1RM or Epley e1RM).
+ * Best working max for an exercise from history.
+ *
+ * Delegates to `estimate1rm` so prescriptions, the /benchmarks cards, the live PR
+ * chip and the debrief all quote the same number. Before `.174` this used uncapped
+ * Epley and **never checked `deletedAt`**, so a single deleted heavy session — or one
+ * 20-rep set, which no 1RM formula is fitted for — inflated an athlete's working max
+ * for the whole 28-day window.
+ *
+ * Returns null when nothing in history can support an estimate (e.g. a lift only ever
+ * trained above 12 reps). Callers must treat null as "prescribe from the last session
+ * instead", which is the correct behaviour for an endurance-rep history anyway.
  */
 export function workingMaxFromHistory(
   exerciseId: string,
@@ -32,11 +30,12 @@ export function workingMaxFromHistory(
 ): number | null {
   let best = 0;
   for (const log of history) {
+    if (log.deletedAt) continue;
     const hit = log.exercises.find((e) => e.exerciseId === exerciseId);
     if (!hit) continue;
-    for (const s of workingSets(hit.sets)) {
-      const est = s.reps === 1 ? s.weight : epley1rm(s.weight, s.reps);
-      if (est > best) best = est;
+    for (const s of loadBearingSets(hit.sets)) {
+      const est = estimate1rm(s.weight, s.reps);
+      if (est !== null && est > best) best = est;
     }
   }
   return best > 0 ? best : null;

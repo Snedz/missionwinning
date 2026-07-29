@@ -5,6 +5,7 @@
 
 import type { UnitsPref } from '@/lib/units';
 import { weightStep } from '@/lib/units';
+import { roundToStep, workingSets } from '@/lib/workout/setMath';
 
 export type SetSnapshot = {
   reps: number;
@@ -21,15 +22,6 @@ export type NextSetTarget = {
 
 const DEFAULT_REP_MIN = 8;
 const DEFAULT_REP_MAX = 12;
-
-function roundToStep(value: number, step: number): number {
-  if (step <= 0) return value;
-  return Math.round(value / step) * step;
-}
-
-function workingSets(sets: SetSnapshot[]): SetSnapshot[] {
-  return sets.filter((s) => s.kind !== 'warmup');
-}
 
 /**
  * Suggest next weight/reps from the matching set index in the last session.

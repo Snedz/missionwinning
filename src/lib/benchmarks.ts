@@ -1,10 +1,15 @@
+import { estimate1rm } from "@/lib/coach/progress";
 import type { CompletedWorkoutLog } from "@/types";
 
-/** Epley formula — estimated 1-rep max from a submaximal set */
+/**
+ * Estimated 1-rep max — delegates to the one estimator.
+ *
+ * This used to re-implement Epley inline, uncapped, which is why a 15-rep set could
+ * fire the live PR chip for a "record" the debrief then refused to confirm. Keeps the
+ * `0`-for-invalid contract its callers rely on rather than returning null.
+ */
 export function estimateOneRepMax(weight: number, reps: number): number {
-  if (weight <= 0 || reps <= 0) return 0;
-  if (reps === 1) return weight;
-  return Math.round(weight * (1 + reps / 30));
+  return estimate1rm(weight, reps) ?? 0;
 }
 
 export interface BenchmarkTimelinePoint {
@@ -46,6 +51,9 @@ export function buildExerciseBenchmark(
   );
 
   for (const log of chronological) {
+    // A deleted session is not evidence. Tombstones propagate cross-device (.127), so
+    // this was silently charting sessions the athlete had removed.
+    if (log.deletedAt) continue;
     const ex = log.exercises.find((e) => e.exerciseId === exerciseId);
     if (!ex || ex.sets.length === 0) continue;
 
@@ -55,7 +63,10 @@ export function buildExerciseBenchmark(
 
     for (const set of ex.sets) {
       if (set.weight <= 0 || set.reps <= 0) continue;
+      // `totalSets` counts what was logged — warmups included, since the label says
+      // "sets logged". Only the *estimate* excludes them.
       totalSets++;
+      if (set.kind === 'warmup' || set.kind === 'failure') continue;
       const est = estimateOneRepMax(set.weight, set.reps);
       if (est > bestEstimated) {
         bestEstimated = est;

@@ -6,6 +6,71 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — One estimator, and Android sessions finally count (`.174`)
+
+Opening PR of the coach-loop sprint. Two defects that made the app disagree with
+itself, both found by reading rather than by anything failing.
+
+### Android sessions were invisible to every engine
+
+`app/api/mobile/sync/workouts/route.ts` stored Android's **flat** set array —
+`[{exerciseId, setIndex, reps, weight}]` — into `workout_logs.exercises`, the same
+jsonb column web fills with **nested** `[{exerciseId, sets: [...]}]`. Nothing
+reconciled them, so on web `sessionLoad` read `ex.sets ?? []`, found nothing, and the
+session counted as **zero working sets** — gone from load, debrief and PRs without a
+single error. Worse, `toSyncPayload` reads `ex.sets.length` and **threw** when a
+pulled flat row was re-enqueued, taking the sync loop with it. And the break ran both
+ways: Android's GET handed web-nested rows to an app expecting flat.
+
+New pure [`normalizeExercises.ts`](src/lib/sync/normalizeExercises.ts) converts at
+**both** boundaries — grouping on write so no new bad rows appear, and normalizing on
+read, which **heals every row already in the table** and needs no backfill migration.
+Android's GET flattens on the way out, so installed builds keep working with no
+release. Android's numeric RPE maps `6 → easy, 7–8 → med, 9–10 → hard`: the
+conventional RPE↔RIR reading, and it brackets web's own anchors (`{easy 5, med 7,
+hard 9}`) so a converted session lands on the same session-RPE it would have got if
+logged on the web. The test asserts exactly that — an Android session and its
+web-logged twin produce **identical** `sessionLoad`.
+
+Engines stay strict. Teaching six call sites to tolerate two shapes would have hidden
+the defect rather than fixed it.
+
+### Four estimators, one number
+
+`estimate1rm` is now the only 1RM estimator. Before this: `percentLoad.ts` prescribed
+weights with **uncapped Epley and no tombstone check**, so one deleted heavy session —
+or a single 20-rep set, which no 1RM formula is fitted for — inflated an athlete's
+working max for 28 days. `benchmarks.ts` re-implemented Epley inline, **counted
+warmups and failure sets as evidence**, and charted deleted sessions; it also backs
+the live PR chip, so a 15-rep set could fire a "record" the debrief then refused to
+confirm.
+
+**Displayed e1RMs move 0–3.4% down** (60×8 reads 74, not 76) and sessions of only
+>12-rep sets no longer chart as strength points. **Prescribed weights barely move** —
+holds and deloads anchor to the last weight, so the max largely cancels out; the `%`
+shown beside them may rise slightly because the max got honest. A lift trained only
+above 12 reps now yields `null`, which routes `nextTargets` to its last-session
+branch — the correct branch for that athlete.
+
+One test change worth naming: `5 × 110` is no longer a PR over `8 × 100`. Both
+estimate **124** — the same strength expressed two ways. Uncapped Epley separated
+them by 1 kg and fired a chip for it, which is congratulating the athlete for
+rounding.
+
+Also folded in: three private copies of `roundToStep`/`workingSets` (which had
+**drifted** — only `percentLoad`'s dropped zero-weight sets) collapse into
+[`setMath.ts`](src/lib/workout/setMath.ts).
+
+**Falsification found two untested fixes.** Re-inlining Epley failed 5 tests
+immediately, but removing the benchmarks tombstone skip failed *nothing* — there was
+no `benchmarks.test.ts` at all. Same for the sync healing: `workoutMerge.test.ts`
+existed with 16 passing cases and none covered it. Both now have tests, both
+falsified.
+
+Unit tests **671 → 690**.
+
+---
+
 ## 2026-07-29 — The coach speaks (`.173`)
 
 Week 2. The `.171` engines become sentences. Verified in a browser against a seeded

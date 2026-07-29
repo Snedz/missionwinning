@@ -66,6 +66,11 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 
 | Term | Path |
 |------|------|
+| Training load / ACWR band | `src/lib/coach/load.ts` — Foster sRPE + EWMA. **Descriptive, never predictive** (LEGAL_SAFETY §3a); ratio is `null` under 14 days |
+| Strength progress | `src/lib/coach/progress.ts` — `estimate1rm` is **the** 1RM estimator (Brzycki ≤10 / Epley 11–12, cap 12); PRs, plateaus |
+| Session debrief | `src/lib/coach/debrief.ts` — rules-composed lines, tone-tested via `reentryTone.ts` |
+| Set arithmetic | `src/lib/workout/setMath.ts` — shared `roundToStep` / `workingSets` / `loadBearingSets` |
+| Cross-platform set shape | `src/lib/sync/normalizeExercises.ts` — Android flat ⇄ web nested |
 | Daily insight | `src/lib/coachDailyServer.ts` |
 | Cross-pillar rules | `src/lib/crossPillarCoach.ts` |
 | Human coaching leads | `/coaching`, `CoachingPage.tsx` |

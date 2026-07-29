@@ -26,8 +26,16 @@ describe('workoutPr', () => {
   });
 
   it('detects PR when beating prior e1RM', () => {
-    assert.equal(isPersonalRecord('bench-press', 5, 110, history), true);
+    // Clear of the prior 8 × 100 (estimates 124): 5 × 125 estimates 141.
+    assert.equal(isPersonalRecord('bench-press', 5, 125, history), true);
     assert.equal(isPersonalRecord('bench-press', 8, 100, history), false);
+  });
+
+  it('an equivalent performance is not a record', () => {
+    // 5 × 110 and the prior 8 × 100 both estimate 124 — the same strength expressed
+    // two ways. Uncapped Epley separated them by 1 kg and fired a PR chip for it;
+    // celebrating that is congratulating the athlete for rounding.
+    assert.equal(isPersonalRecord('bench-press', 5, 110, history), false);
   });
 
   it('warmup sets do not trigger PR', () => {

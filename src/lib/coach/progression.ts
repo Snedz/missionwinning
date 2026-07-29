@@ -1,6 +1,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { weightStep } from '@/lib/units';
+import { roundToStep, workingSets } from '@/lib/workout/setMath';
 import { EXERCISES } from '@/data/exercises';
 import type { Rpe } from '@/lib/coach/types';
 import {
@@ -31,20 +32,11 @@ function repRangeForGoal(goalId: string): { min: number; max: number } {
   return { min: 8, max: 12 };
 }
 
-function workingSets(sets: SessionSnapshot['sets']) {
-  return sets.filter((s) => s.kind !== 'warmup');
-}
-
 function isBodyweightExercise(exerciseId: string): boolean {
   const ex = EXERCISES.find((e) => e.id === exerciseId);
   if (!ex?.equipment) return true;
   const eq = ex.equipment.toLowerCase();
   return eq === 'bodyweight' || eq.startsWith('bodyweight');
-}
-
-function roundToStep(value: number, step: number): number {
-  if (step <= 0) return value;
-  return Math.round(value / step) * step;
 }
 
 function findRecentSessions(
