@@ -45,6 +45,8 @@ type AnalyticsEvent =
   | 'coach_premium_active'
   | 'coach_session_adjusted'
   | 'readiness_checkin_completed'
+  /** Debrief closing question answered — the reply feeds the next plan, not just a count. */
+  | 'debrief_answered'
   | 'body_metric_logged'
   | 'progress_photo_added'
   | 'weekly_debrief_viewed'

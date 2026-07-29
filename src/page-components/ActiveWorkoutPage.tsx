@@ -36,6 +36,8 @@ import {
   type WorkoutVictorySummary,
 } from '@/lib/workout/workoutVictory';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
+import { buildDebrief } from '@/lib/coach/debrief';
+import type { Debrief } from '@/lib/coach/debrief';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { computeBodyScores } from '@/lib/score';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
@@ -102,6 +104,7 @@ export function ActiveWorkoutPage() {
   const [addExerciseOpen, setAddExerciseOpen] = useState(false);
   const [victoryOpen, setVictoryOpen] = useState(false);
   const [victorySummary, setVictorySummary] = useState<WorkoutVictorySummary | null>(null);
+  const [debrief, setDebrief] = useState<Debrief | null>(null);
   const [checkInOpen, setCheckInOpen] = useState(false);
   const [readinessBefore, setReadinessBefore] = useState<number | null>(null);
   const [readinessAfter, setReadinessAfter] = useState<number | null>(null);
@@ -253,6 +256,16 @@ export function ActiveWorkoutPage() {
     }
     const historyAfter = [log, ...historyBefore];
     const streak = getTrainingStreak(historyAfter);
+    // The debrief needs the completed log inside the history so load bands see it,
+    // while compareToBaseline excludes it by date. See lib/coach/debrief.ts.
+    setDebrief(
+      buildDebrief({
+        log,
+        history: historyAfter,
+        checkIn,
+        unit: weightUnitLabel(units),
+      })
+    );
     const afterScores = computeBodyScores(historyAfter, { checkIn });
     setVictorySummary(
       summarizeWorkoutVictory(
@@ -313,6 +326,7 @@ export function ActiveWorkoutPage() {
         onVictoryOpenChange={setVictoryOpen}
         onViewToday={goToday}
         onViewHistory={goHistory}
+        debrief={debrief}
       />
     );
   }

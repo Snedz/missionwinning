@@ -20,6 +20,8 @@ import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { track } from '@/lib/analytics';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
 import { getCachedReferralCode } from '@/lib/referral';
+import { SessionDebriefCard } from '@/components/workout/SessionDebriefCard';
+import type { Debrief } from '@/lib/coach/debrief';
 
 type Props = {
   open: boolean;
@@ -27,6 +29,8 @@ type Props = {
   onOpenChange: (open: boolean) => void;
   onViewToday: () => void;
   onViewHistory: () => void;
+  /** Composed by the caller, which owns history — see buildDebrief. */
+  debrief?: Debrief | null;
 };
 
 /** D2 Victory ritual — lock scale + brass volume + one next action. */
@@ -36,6 +40,7 @@ export function WorkoutVictorySheet({
   onOpenChange,
   onViewToday,
   onViewHistory,
+  debrief,
 }: Props) {
   const { t } = useTranslation();
   const units = useUnits();
@@ -98,7 +103,11 @@ export function WorkoutVictorySheet({
         onOpenChange(next);
       }}
     >
-      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-2 border-border bg-card">
+      {/* The dialog primitive sets no max height, so this grew past the viewport once
+          the debrief was added and the "Back to Today" footer became visible but
+          unreachable — the hero e2e caught it as a click timeout, not a render error.
+          dvh, not vh, so mobile browser chrome does not eat the footer. */}
+      <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-2 border-border bg-card max-h-[90dvh] overflow-y-auto">
         <DialogHeader className="text-center space-y-3 victory-reveal">
           <div className="mx-auto relative h-16 w-16 overflow-hidden rounded-2xl border border-border/50 bg-muted/30">
             <Image
@@ -225,6 +234,8 @@ export function WorkoutVictorySheet({
             </span>
           </div>
         )}
+
+        {debrief && <SessionDebriefCard debrief={debrief} />}
 
         {summary.progressionInsight && (
           <p className="text-center text-sm text-muted-foreground px-2 leading-relaxed">

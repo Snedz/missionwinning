@@ -6,6 +6,63 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The coach speaks (`.173`)
+
+Week 2. The `.171` engines become sentences. Verified in a browser against a seeded
+10-week history, not asserted from types — which is how the one real bug was found.
+
+**What it says, live, after a 140 kg × 5 session on a 100 kg base:**
+
+> 700 kg moved, 1 working set in 76 min — about 63% above your recent average.
+> **Best bench press weight: 140 kg, past 100.**
+> **Estimated bench press 1RM now 158 kg, up from 113.**
+> Your last week is running heavier than your month — worth a lighter session next.
+> You rated sleep 2/5 today, so the next session is scaled to match.
+> Tonight: food, water, and an earlier night than usual.
+> Did that run hotter than planned, or was it the work you wanted?
+
+That is the WHOOP anatomy — number, own baseline, mechanism, one action, a question —
+built from a logbook. No strap, no account, no API key.
+
+- **[`coach/debrief.ts`](src/lib/coach/debrief.ts) is rules over computed values**, not
+  prose generation. Two reasons, both load-bearing: it works offline and free, and it
+  can be **tested for tone**. `reentryTone` now asserts across every debrief line that
+  none names an absence length or leans on a lost streak — you cannot assert that
+  about a sentence a model will generate tomorrow. The LLM voice stays a Bundle-tier
+  *rewrite* of these lines, never their source.
+- **Nothing is said that is not known.** No baseline under three prior sessions, no
+  band under 14 days, no PR without a previous best. A good day gets **no invented
+  concern and no invented action** — the "a good day" test asserts the absence.
+- **The band never predicts.** A test greps every band line for injury/risk/danger
+  wording. Falsified by making it say "raises your injury risk", which it caught.
+- **The reply chips are the point of the question.** Tapping one writes to today's
+  check-in, so "Harder than expected" lowers the next dose the same way a low energy
+  rating does. Verified in the browser: `energy: 2` written, `sleep: 2` preserved.
+
+**Falsification found dead code in my own work.** I wrote a filter to keep the session
+out of its own baseline, with a confident comment. Removing it changed **no test
+outcome** — `compareToBaseline` already excludes same-day sessions by date, so my
+filter guarded something already guarded. Deleted; the comment now points at the real
+guard. Then the replacement test *also* failed to discriminate — with a 35-session
+base, one extra session cannot move the mean. Rebuilt at three priors and +15%, where
+the guard actually decides the sentence, and only then did it catch the regression.
+
+**The browser found what the tests could not.** The first render read
+**"1 working sets"**. Every unit test passed; nothing asserted grammar. Fixed, with
+tests for both branches.
+
+**And the gate caught a regression the browser did not.** The debrief lengthened the
+victory dialog past the viewport, and `DialogContent` sets **no max height** — so
+"Back to Today" was *visible but unreachable*, which surfaced as a click timeout in
+the hero e2e, not a render error. My manual pass missed it because I was reading the
+debrief, not trying to leave the dialog. Constrained to `max-h-[90dvh] overflow-y-auto`
+(dvh, so mobile browser chrome does not eat the footer). The dialog was already close
+to that edge before this change; the debrief only pushed it over.
+
+Unit tests **656 → 668**. Gate 39/39.
+
+---
+
 ## 2026-07-29 — Why the number moved, and a baseline that would have lied (`.172`)
 
 Rest of Week 1. Both halves are the same idea: a number the athlete cannot interrogate
