@@ -108,6 +108,44 @@ export function buildRecapCardData(debrief: WeeklyDebrief, unitLabel: string): S
   };
 }
 
+const FOOTER_BASELINE = SHARE_CARD_HEIGHT - 80;
+const STATS_TOP = 500;
+const STAT_ROW_HEIGHT = 190;
+const COLUMN_X = [72, SHARE_CARD_WIDTH / 2 + 12];
+
+export interface CardLayout {
+  /** Baseline y for each stat's label; value sits 86px below. */
+  stats: { x: number; y: number }[];
+  prY: number | null;
+  footerY: number;
+}
+
+/**
+ * Where everything sits — pure, because the first version of this card computed
+ * positions inline and **overflowed**: four stats plus a PR line put the PR text at
+ * y=1280 with the footer at 1270, so they printed on top of each other. Every unit
+ * test passed, because they all asserted the card's *data*. The bug was only visible
+ * in a rendered PNG, and it appeared exactly in the best case — a streak *and* a
+ * record, i.e. the session most worth sharing.
+ *
+ * Stats lay out in two columns, so four fit in two rows instead of a column that
+ * walks off the bottom. The invariant this exists to make testable: nothing is ever
+ * drawn below `FOOTER_BASELINE`.
+ */
+export function computeCardLayout(statCount: number, hasPr: boolean): CardLayout {
+  const rows = Math.ceil(statCount / 2);
+  const stats = Array.from({ length: statCount }, (_, i) => ({
+    x: COLUMN_X[i % 2],
+    y: STATS_TOP + Math.floor(i / 2) * STAT_ROW_HEIGHT,
+  }));
+  const statsBottom = STATS_TOP + rows * STAT_ROW_HEIGHT;
+  return {
+    stats,
+    prY: hasPr ? statsBottom + 40 : null,
+    footerY: FOOTER_BASELINE,
+  };
+}
+
 /**
  * Paint the card. 1080×1350 (portrait 4:5 — the share-sheet-friendly ratio), paper
  * ground, ink type, one poster-red band. Small text never uses poster red — 3.78:1
@@ -146,30 +184,31 @@ export function renderShareCard(data: ShareCardData): Promise<Blob | null> {
   // Rule under the title — 2px ink, the system's hairline.
   ctx.fillRect(72, 368, SHARE_CARD_WIDTH - 144, 2);
 
-  // Stat rows.
-  let y = 500;
-  for (const stat of data.stats) {
+  // Positions come from the pure layout so overflow is a test failure, not a
+  // surprise in someone's group chat.
+  const layout = computeCardLayout(data.stats.length, data.prLine !== null);
+
+  data.stats.forEach((stat, i) => {
+    const { x, y } = layout.stats[i];
     ctx.fillStyle = MUTED;
     ctx.font = font(38, 600);
-    ctx.fillText(stat.label.toUpperCase(), 72, y);
+    ctx.fillText(stat.label.toUpperCase(), x, y);
     ctx.fillStyle = INK;
     ctx.font = font(72, 800);
-    ctx.fillText(stat.value, 72, y + 86);
-    y += 190;
-  }
+    ctx.fillText(stat.value, x, y + 86);
+  });
 
   // PR line — red-700 (small-text-legal red), only when real.
-  if (data.prLine) {
+  if (data.prLine && layout.prY !== null) {
     ctx.fillStyle = RED_700;
     ctx.font = font(48, 800);
-    ctx.fillText(data.prLine, 72, y + 20);
-    y += 90;
+    ctx.fillText(data.prLine, 72, layout.prY);
   }
 
   // Footer.
   ctx.fillStyle = MUTED;
   ctx.font = font(34, 600);
-  ctx.fillText(data.footer, 72, SHARE_CARD_HEIGHT - 80);
+  ctx.fillText(data.footer, 72, layout.footerY);
 
   return new Promise((resolve) => {
     try {

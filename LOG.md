@@ -40,7 +40,21 @@ so a desktop browser without a share sheet still produces the image.
 
 Brand hexes are duplicated from `check-token-sync`'s `BRAND_HEX` by necessity — a
 detached canvas cannot read CSS custom properties — and that script is the guard if
-the brand ever moves. Tests **766→771**.
+the brand ever moves.
+
+**Then I rendered one, and it was broken.** Four stats plus a PR line put the record
+text at y=1280 against a footer at y=1270: they printed **on top of each other** — in
+exactly the best case, a streak *and* a record, which is the session most worth
+sharing. Every unit test passed the whole time, because all of them asserted the
+card's *data*. This is the eighth sighting of the repo's oldest defect class: a green
+suite only proves something about what it was pointed at.
+
+Fixed by extracting `computeCardLayout` as pure and laying stats out in **two
+columns**, so four fit in two rows instead of a column that walks off the bottom. The
+invariant is now a test: across 1–6 stats × with/without a PR, nothing is ever
+positioned below the footer baseline. Verified by rendering the real bundled source
+in a real browser and **looking at the PNG** — the same way the bug was found.
+Tests **766→774**.
 
 ## 2026-07-29 — The percentages were prose (`.181`)
 
