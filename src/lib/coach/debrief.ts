@@ -30,7 +30,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { compareToBaseline, loadBands, sessionLoad } from '@/lib/coach/load';
 import type { LoadZone, SessionLoad } from '@/lib/coach/load';
-import { personalRecordsFor } from '@/lib/coach/progress';
+import { personalRecordsFor, stallSignal } from '@/lib/coach/progress';
 import type { PersonalRecord } from '@/lib/coach/progress';
 import { checkInReasons } from '@/lib/mindCheckIns';
 import type { MindCheckIn, ReadinessReason } from '@/lib/mindCheckIns';
@@ -39,6 +39,7 @@ export type DebriefLineKind =
   | 'effort'
   | 'record'
   | 'band'
+  | 'plateau'
   | 'readiness'
   | 'action'
   | 'question';
@@ -92,6 +93,23 @@ function recordLine(pr: PersonalRecord, unit: string): string | null {
   if (pr.kind === 'weight') return `Best ${name} weight: ${pr.value} ${unit}, past ${pr.previous}.`;
   if (pr.kind === 'reps') return `Most ${name} reps at a working weight: ${pr.value}.`;
   return `Estimated ${name} 1RM now ${pr.value} ${unit}, up from ${pr.previous}.`;
+}
+
+/**
+ * The plateau sentence, built from the **same** `stallSignal` that decides the deload.
+ *
+ * Before `.178` the engine could quietly program a lighter week while the debrief said
+ * nothing about why, because the two lived on different definitions of "stalled" — and
+ * one of them had no consumers at all. Deriving both from one function is the point:
+ * the sentence the athlete reads and the prescription they receive cannot disagree.
+ *
+ * Only `plateaued` speaks. A three-session stall is an ordinary hold and does not need
+ * narrating; "your best is a month old" is news. Variation is offered, never applied —
+ * silently swapping someone's lift on contested evidence is not the app's call.
+ */
+function plateauLine(exerciseId: string, exposures: number): string {
+  const name = exerciseId.replace(/-/g, ' ');
+  return `No new best on ${name} in ${exposures} sessions — next week programs it lighter. A close variation is worth a try.`;
 }
 
 /**
@@ -152,6 +170,25 @@ export function buildDebrief(input: DebriefInput): Debrief {
 
   const band = bandLine(bands.zone, bands.ratio);
   if (band) lines.push({ kind: 'band', text: band });
+
+  // One line at most, for the exercise furthest past its best — a debrief that lists
+  // every plateaued lift stops being read.
+  // `input.history` is the sessions *before* this one (that is what `personalRecordsFor`
+  // and `compareToBaseline` expect), but a plateau statement has to account for the
+  // session just finished — it is the one exposure the athlete actually remembers, and
+  // omitting it would report a plateau one session stale, disagreeing with the plan.
+  const historyWithThis = [input.log, ...input.history];
+  let worst: { exerciseId: string; exposures: number } | null = null;
+  for (const ex of input.log.exercises ?? []) {
+    const signal = stallSignal(historyWithThis, ex.exerciseId);
+    if (signal.kind !== 'plateaued') continue;
+    if (!worst || signal.exposuresSinceBest > worst.exposures) {
+      worst = { exerciseId: ex.exerciseId, exposures: signal.exposuresSinceBest };
+    }
+  }
+  if (worst) {
+    lines.push({ kind: 'plateau', text: plateauLine(worst.exerciseId, worst.exposures) });
+  }
 
   const readiness = readinessLine(reasons);
   if (readiness) lines.push({ kind: 'readiness', text: readiness });

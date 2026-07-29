@@ -7,6 +7,7 @@ import {
   estimate1rm,
   exerciseProgress,
   personalRecordsFor,
+  stallSignal,
 } from '@/lib/coach/progress';
 import type { CompletedWorkoutLog, Rpe, SetKind } from '@/types';
 
@@ -182,4 +183,95 @@ test('a rep PR at the same weight still counts', () => {
   const prs = personalRecordsFor(today, [older, today]);
   assert.equal(prs.find((p) => p.kind === 'reps')?.value, 8);
   assert.equal(prs.find((p) => p.kind === 'e1rm') !== undefined, true, 'more reps means a higher e1RM');
+});
+
+// --- stallSignal: the one stall truth (.178) ---------------------------------------
+
+test('rising work is never a stall', () => {
+  const history = [
+    log(0, [{ reps: 5, weight: 110 }]),
+    log(3, [{ reps: 5, weight: 105 }]),
+    log(6, [{ reps: 5, weight: 100 }]),
+  ];
+  assert.equal(stallSignal(history, 'bench-press').kind, 'none');
+});
+
+test('three flat exposures are a stall', () => {
+  const history = [
+    log(0, [{ reps: 8, weight: 80 }]),
+    log(2, [{ reps: 8, weight: 80 }]),
+    log(4, [{ reps: 8, weight: 80 }]),
+  ];
+  assert.equal(stallSignal(history, 'bench-press').kind, 'stalled');
+});
+
+test('the same strength expressed two ways is still a stall', () => {
+  // `.174`: 5x110 and 8x100 both estimate **exactly** 124 — the same strength written
+  // two ways. The rule this replaced compared raw reps and weight, saw three different
+  // sessions, and told the athlete to add load.
+  const history = [
+    log(0, [{ reps: 5, weight: 110 }]),
+    log(3, [{ reps: 8, weight: 100 }]),
+    log(6, [{ reps: 5, weight: 110 }]),
+  ];
+  assert.equal(stallSignal(history, 'bench-press').kind, 'stalled');
+});
+
+test('a near-miss inside PR_EPSILON is a stall, not progress', () => {
+  // 100x5 estimates 113.0 and a 112.5 single estimates 112.5 — 0.5 apart, which is
+  // rounding, not strength. Tightening the comparison to exact equality fails here.
+  const history = [
+    log(0, [{ reps: 1, weight: 112.5 }]),
+    log(3, [{ reps: 1, weight: 112.5 }]),
+    log(6, [{ reps: 5, weight: 100 }]),
+  ];
+  assert.equal(stallSignal(history, 'bench-press').kind, 'stalled');
+});
+
+test('a month below an old best is a plateau, even when sessions differ', () => {
+  // The case the old rule could not see: nothing is identical, so an equality check
+  // reports "not stalled" and the engine keeps prescribing increases.
+  const history = [
+    log(0, [{ reps: 5, weight: 102.5 }]),
+    log(3, [{ reps: 5, weight: 100 }]),
+    log(6, [{ reps: 5, weight: 102.5 }]),
+    log(9, [{ reps: 5, weight: 100 }]),
+    log(12, [{ reps: 5, weight: 120 }]),
+  ];
+  const s = stallSignal(history, 'bench-press');
+  assert.equal(s.kind, 'plateaued');
+  assert.ok(s.exposuresSinceBest >= PLATEAU_EXPOSURES);
+});
+
+test('a fresh best then a deliberate back-off is not a stall', () => {
+  const history = [
+    log(0, [{ reps: 5, weight: 90 }]),
+    log(3, [{ reps: 5, weight: 130 }]),
+    log(6, [{ reps: 5, weight: 100 }]),
+    log(9, [{ reps: 5, weight: 100 }]),
+  ];
+  assert.notEqual(stallSignal(history, 'bench-press').kind, 'plateaued');
+});
+
+test('bodyweight athletes are visible to the stall rule', () => {
+  // `estimate1rm` is null at zero weight, so `e1rmSeries` is empty here. Without the
+  // reps fallback this athlete would report `none` forever — invisible, not fine.
+  const history = [
+    log(0, [{ reps: 12, weight: 0 }], 'push-up'),
+    log(2, [{ reps: 12, weight: 0 }], 'push-up'),
+    log(4, [{ reps: 12, weight: 0 }], 'push-up'),
+  ];
+  assert.equal(stallSignal(history, 'push-up').kind, 'stalled');
+
+  const rising = [
+    log(0, [{ reps: 15, weight: 0 }], 'push-up'),
+    log(2, [{ reps: 13, weight: 0 }], 'push-up'),
+    log(4, [{ reps: 12, weight: 0 }], 'push-up'),
+  ];
+  assert.equal(stallSignal(rising, 'push-up').kind, 'none');
+});
+
+test('two exposures are not enough to call a stall', () => {
+  const history = [log(0, [{ reps: 8, weight: 80 }]), log(2, [{ reps: 8, weight: 80 }])];
+  assert.equal(stallSignal(history, 'bench-press').kind, 'none');
 });

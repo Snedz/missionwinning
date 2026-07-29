@@ -6,6 +6,60 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — One stall truth (`.178`)
+
+The app held **two definitions of "stalled" and they could disagree.** `progression.ts`
+had a private `stalled()` — three sessions whose *first working set* matched on reps and
+weight — and `progress.ts` exported `exerciseProgress().plateaued`, "the best is old",
+to **no consumers at all**. So the engine could deload on one definition while the module
+that owns strength truth considered the athlete fine, and the richer signal was computed
+every time and thrown away. `.174` and `.175` were both about the app disagreeing with
+itself. This is the same defect one layer down.
+
+`stallSignal` in `progress.ts` is now the only answer, and it returns two kinds because
+they are two different facts:
+
+- **`stalled`** — the last three exposures went nowhere. Fires the deload that already
+  existed, unchanged.
+- **`plateaued`** — the best is four exposures old, **even if no two sessions matched**.
+  This is what the old rule could not see: an athlete wobbling just under their record
+  for a month reads as "not stalled" to an equality check, and was told to add weight for
+  as long as it lasted.
+
+**One deliberate widening.** Stall is judged on e1RM within `PR_EPSILON` rather than on
+identical numbers, because per `.174` a `5 × 110` and an `8 × 100` both estimate **124** —
+the same strength written two ways. The old rule compared raw reps and weight, saw two
+different sessions, and called it progress.
+
+**The bodyweight fallback is not a nicety.** `estimate1rm` returns null at zero weight and
+above 12 reps, so `e1rmSeries` is *empty* for a calisthenics athlete and for anyone
+training only in high-rep ranges. A rule written purely in e1RM would report `none`
+forever for them — not "no stall detected" but "this athlete is invisible". The replaced
+rule compared raw reps, and dropping that would have been a silent regression for exactly
+the people the free logger exists to serve.
+
+**The debrief now says it, from the same function.** One line at most, for the exercise
+furthest past its best, and only for `plateaued` — a three-session hold is ordinary and
+does not need narrating. Variation is *offered*, never applied: silently swapping
+someone's lift on contested evidence is not the app's call. Because the sentence and the
+prescription derive from one call, `engineConsistency` can assert they never disagree.
+
+**Falsification.** Collapsing `plateaued` into `none` fails 3 tests; deleting the
+bodyweight fallback fails 1; tightening the comparison from `PR_EPSILON` to exact equality
+fails 1. **Every pre-existing stall and deload test passes unmodified** — that was the
+migration contract, and any diff there would have been a stop-and-think rather than a test
+edit.
+
+**Two of my own tests were wrong before the code was.** The first "same strength two ways"
+case asserted epsilon *tolerance* and proved nothing of the sort — `5 × 110` and `8 × 100`
+estimate exactly 124, so the mutant that demanded exact equality survived it; a real
+near-miss pair (a 112.5 single against `100 × 5`, 0.5 apart) was needed. And the debrief
+initially reported a plateau one exposure stale, because `input.history` is the sessions
+*before* the current one — correct for `personalRecordsFor`, wrong for a statement about
+the session the athlete just finished.
+
+Tests **707→719**.
+
 ## 2026-07-29 — Load steers the plan (`.177`)
 
 `.171` built `coach/load.ts` — Foster session-RPE, EWMA ACWR, a `light | steady | high`
@@ -62,7 +116,7 @@ move.
 become a genuinely progressing athlete before there was any rise to hold. Had I "fixed" the
 engine to match my test, I would have deleted the stall deload.
 
-Tests **699→706**.
+Tests **699→707**.
 
 ## 2026-07-29 — The coach was being overruled in the gym (`.175`)
 

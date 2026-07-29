@@ -152,6 +152,115 @@ export function exerciseProgress(
 }
 
 /**
+ * How many exposures of flat work count as a stall. Three, matching the rule this
+ * replaced — long enough not to fire on one ordinary hold, short enough to act before
+ * a month is spent.
+ */
+export const FLAT_EXPOSURES = 3;
+
+export type StallKind = 'none' | 'stalled' | 'plateaued';
+
+export interface StallSignal {
+  kind: StallKind;
+  /** Exposures since the athlete's best e1RM. Zero when no e1RM exists. */
+  exposuresSinceBest: number;
+}
+
+/**
+ * Best reps per session, oldest first — the bodyweight fallback.
+ *
+ * `estimate1rm` returns null at zero weight and above 12 reps, so `e1rmSeries` is
+ * **empty** for a calisthenics athlete and for anyone training only in high-rep
+ * ranges. A stall rule written purely in e1RM would therefore report `none` forever
+ * for them: not "no stall detected" but "this athlete is invisible". The rule this
+ * function replaced compared raw reps, and dropping that would have been a silent
+ * regression for exactly the users the free logger exists to serve.
+ */
+function bestRepsPerSession(
+  history: CompletedWorkoutLog[],
+  exerciseId: string
+): number[] {
+  const bySession = new Map<string, number>();
+  for (const log of history) {
+    if (log.deletedAt) continue;
+    const date = utcDay(log.completedAt);
+    for (const ex of log.exercises ?? []) {
+      if (ex.exerciseId !== exerciseId) continue;
+      for (const set of ex.sets ?? []) {
+        if (!isCountable(set.kind)) continue;
+        const reps = Number.isFinite(set.reps) ? set.reps : 0;
+        const current = bySession.get(date);
+        if (current == null || reps > current) bySession.set(date, reps);
+      }
+    }
+  }
+  return [...bySession.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([, reps]) => reps);
+}
+
+/**
+ * The one stall truth.
+ *
+ * Before this there were two, and they could disagree. `progression.ts` held a private
+ * `stalled()` — three sessions whose *first working set* matched on reps **and** weight
+ * — while `progress.ts` exported `exerciseProgress().plateaued`, "the best is old",
+ * which had **no consumers at all**. So the engine could deload on one definition while
+ * the module that owned strength truth considered the athlete fine, and the richer
+ * signal was computed and thrown away. `.174` and `.175` were both about the app
+ * disagreeing with itself; this is the same defect one layer down.
+ *
+ * Two kinds, because they answer different questions:
+ *
+ * - **`stalled`** — the last three exposures went nowhere. Fires the existing deload.
+ * - **`plateaued`** — the best is `PLATEAU_EXPOSURES` exposures old, *even if* the
+ *   sessions since were not identical. This is the case the old rule could not see: an
+ *   athlete wobbling below their record for a month reads as "not stalled" to an
+ *   equality check, and got told to add weight.
+ *
+ * A fresh best then a deliberate back-off is **not** a stall, and that guard is
+ * inherited rather than re-derived — `exposuresSinceBest` is the same computation
+ * `exerciseProgress` uses.
+ *
+ * One deliberate widening over the rule it replaces: stall is now judged on **e1RM
+ * within `PR_EPSILON`**, not on identical numbers. Per `.174`, `5 × 110` and `8 × 100`
+ * both estimate 124 — the same strength expressed two ways — so an athlete alternating
+ * between them was stalled in fact and progressing on paper.
+ */
+export function stallSignal(
+  history: CompletedWorkoutLog[],
+  exerciseId: string
+): StallSignal {
+  const series = e1rmSeries(history, exerciseId);
+
+  if (series.length === 0) {
+    const reps = bestRepsPerSession(history, exerciseId);
+    const flat =
+      reps.length >= FLAT_EXPOSURES &&
+      reps.slice(-FLAT_EXPOSURES).every((r) => r === reps[reps.length - 1]);
+    return { kind: flat ? 'stalled' : 'none', exposuresSinceBest: 0 };
+  }
+
+  let best = series[0];
+  for (const p of series) if (p.e1rm > best.e1rm) best = p;
+  // Ties resolve to the *earliest* occurrence, so repeating a record does not keep
+  // resetting the clock. Same computation as `exerciseProgress`, deliberately.
+  const exposuresSinceBest = series.length - 1 - series.lastIndexOf(best);
+
+  if (series.length >= PLATEAU_EXPOSURES && exposuresSinceBest >= PLATEAU_EXPOSURES) {
+    return { kind: 'plateaued', exposuresSinceBest };
+  }
+
+  if (series.length >= FLAT_EXPOSURES && exposuresSinceBest >= FLAT_EXPOSURES - 1) {
+    const recent = series.slice(-FLAT_EXPOSURES).map((p) => p.e1rm);
+    const spread = Math.max(...recent) - Math.min(...recent);
+    if (spread <= PR_EPSILON) return { kind: 'stalled', exposuresSinceBest };
+  }
+
+  return { kind: 'none', exposuresSinceBest };
+}
+
+/**
  * Records set by one session — what the debrief congratulates.
  *
  * Compared only against sessions *before* this one, so re-opening an old session does

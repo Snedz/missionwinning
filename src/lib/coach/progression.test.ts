@@ -101,5 +101,36 @@ describe('nextTargets', () => {
     assert.ok(t.weight < 80);
     assert.ok(t.loadPct != null);
   });
+
+  it('deloads a month-old best even when no two sessions match', () => {
+    // The defect `.178` fixes. The private `stalled()` this replaced required three
+    // *identical* sessions, so an athlete wobbling under an old record read as
+    // "not stalled" and was told to add weight for as long as it lasted.
+    const history = [
+      logWithExercise('bench-press', [{ reps: 5, weight: 102.5 }], 0),
+      logWithExercise('bench-press', [{ reps: 5, weight: 100 }], 3),
+      logWithExercise('bench-press', [{ reps: 5, weight: 102.5 }], 6),
+      logWithExercise('bench-press', [{ reps: 5, weight: 100 }], 9),
+      logWithExercise('bench-press', [{ reps: 5, weight: 120 }], 12),
+    ];
+    const t = nextTargets('bench-press', history, 'metric', 'strength', 'intermediate');
+    assert.equal(t.whyKey, 'coachWhyPlateauDeload');
+    assert.ok(t.weight < 102.5, `expected a deload, got ${t.weight}`);
+  });
+
+  it('a plateau deload survives a high load zone — decreases always win', () => {
+    // Pins the `.177` interaction: the cap holds rises, it must never block a deload.
+    const history = [
+      logWithExercise('bench-press', [{ reps: 5, weight: 102.5 }], 0),
+      logWithExercise('bench-press', [{ reps: 5, weight: 100 }], 3),
+      logWithExercise('bench-press', [{ reps: 5, weight: 102.5 }], 6),
+      logWithExercise('bench-press', [{ reps: 5, weight: 100 }], 9),
+      logWithExercise('bench-press', [{ reps: 5, weight: 120 }], 12),
+    ];
+    const capped = nextTargets('bench-press', history, 'metric', 'strength', 'intermediate', 'high');
+    const plain = nextTargets('bench-press', history, 'metric', 'strength', 'intermediate');
+    assert.deepEqual(capped, plain);
+    assert.equal(capped.whyKey, 'coachWhyPlateauDeload');
+  });
 });
 
