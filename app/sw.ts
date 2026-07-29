@@ -40,15 +40,20 @@ self.addEventListener('push', (event) => {
   let title = 'Mission Winning';
   let body = 'Time to train.';
   let url = '/log?src=push';
+  // Per-kind, defaulting to the historical value. A shared tag means the newest
+  // notification REPLACES any unopened one — an evening wind-down would quietly
+  // swallow a comeback the athlete had not seen yet.
+  let tag = 'mw-nudge';
   try {
     const data = event.data?.json() as {
       title?: string;
       body?: string;
-      data?: { url?: string };
+      data?: { url?: string; tag?: string };
     } | null;
     if (data?.title) title = data.title;
     if (data?.body) body = data.body;
     if (data?.data?.url) url = data.data.url;
+    if (data?.data?.tag) tag = data.data.tag;
   } catch {
     try {
       const text = event.data?.text();
@@ -62,7 +67,7 @@ self.addEventListener('push', (event) => {
       body,
       icon: '/pwa-192x192.png',
       badge: '/pwa-192x192.png',
-      tag: 'mw-nudge',
+      tag,
       data: { url },
     })
   );

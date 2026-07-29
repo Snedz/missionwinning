@@ -3,9 +3,18 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
         {
           "key": "Permissions-Policy",
           "value": "camera=(self), microphone=(), geolocation=(self), payment=(self)"
@@ -46,7 +55,13 @@
   ],
   "redirects": [],
   "crons": [
-    { "path": "/api/cron/nudges", "schedule": "0 17 * * *" },
-    { "path": "/api/cron/weekly-digest", "schedule": "0 16 * * 1" }
+    {
+      "path": "/api/cron/nudges",
+      "schedule": "0 17 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-digest",
+      "schedule": "0 16 * * 1"
+    }
   ]
 }

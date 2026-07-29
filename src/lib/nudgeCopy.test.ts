@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   anonymousComebackPush,
+  windDownPush,
   decideNudge,
   type NudgeCandidate,
   type NudgeKind,
@@ -135,4 +136,19 @@ test('week-behind stays quiet for someone who logged nothing this week', () => {
     base(saturday, { workoutDays: [daysAgo(saturday, 6)], workoutCount14d: 2, daysPerWeek: 2 })
   );
   assert.equal(c, null);
+});
+
+test('the wind-down copy obeys the same tone contract', () => {
+  const c = windDownPush();
+  assert.deepEqual(findToneViolations(c.title), []);
+  assert.deepEqual(findToneViolations(c.body), []);
+});
+
+test('the wind-down copy makes no medical claim', () => {
+  // It describes a comparison and prescribes hygiene. LEGAL_SAFETY §3a, and the same
+  // rule load.ts sets for every band sentence: describe, never predict.
+  const text = `${windDownPush().title} ${windDownPush().body}`.toLowerCase();
+  for (const word of ['injur', 'risk', 'prevent', 'pain', 'diagnos', 'overtrain']) {
+    assert.equal(text.includes(word), false, `wind-down must not say "${word}"`);
+  }
 });
