@@ -25,7 +25,8 @@ export type OutboxKind =
   | 'coach.plan'
   | 'journey.state'
   | 'leaderboard.push'
-  | 'pft.push';
+  | 'pft.push'
+  | 'feedback.submit';
 
 export interface OutboxOp {
   id: string;

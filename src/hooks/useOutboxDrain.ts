@@ -7,6 +7,7 @@ import { registerCoachSyncHandler } from '@/lib/coachSync';
 import { registerJourneySyncHandler } from '@/lib/journeySync';
 import { registerLeaderboardSyncHandler } from '@/lib/leaderboardSync';
 import { registerPftSyncHandler } from '@/lib/pftSync';
+import { registerFeedbackSyncHandler } from '@/lib/sync/feedbackSync';
 
 /**
  * Drives the outbox for the lifetime of the tab.
@@ -25,6 +26,7 @@ export function useOutboxDrain(): void {
     registerJourneySyncHandler();
     registerLeaderboardSyncHandler();
     registerPftSyncHandler();
+    registerFeedbackSyncHandler();
 
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;

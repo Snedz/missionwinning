@@ -72,6 +72,7 @@
    12. **`20260721_android_telemetry.sql`** — weekly Android heartbeat  
    13. **`20260728_anonymous_push.sql`** — nullable `user_id` + `device_id`; **without it the anonymous return loop is inert** ([RETURN_LOOP_PLAN.md](RETURN_LOOP_PLAN.md))  
    14. **`20260728_week4_exclude_tombstones.sql`** — **the boss metric counts deleted workouts until this is applied.** Then prove it: `psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/checks/week4_retention_proof.sql`  
+   15. **`20260730_wind_down_nudge.sql`** — `last_session_high` + `last_wind_down_at` on `push_subscriptions`; **the evening wind-down push (`.176`) is inert without it.** Apply after #13 — it extends the table #13 creates.  
 4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
 5. **Smoke after env** (from a machine with secrets):
    ```bash
@@ -85,7 +86,7 @@
 
 - [x] Env vars set (incl. service role, DEMO_PREMIUM=false, Resend, Stripe webhook secret, Payment Links)
 - [x] All migrations run through **20260720_referrals** (push + week-4 RPC)
-- [ ] **Migrations 10–14 above are NOT applied.** The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric; the four `20260721_*` gate Android sync. None of them appeared in any founder checklist until `.170`.
+- [ ] **Migrations 10–15 above are NOT applied.** The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric; the four `20260721_*` gate Android sync; `20260730_wind_down_nudge` gates the `.176` evening push. None of the first five appeared in any founder checklist until `.170`; #15 was in none until `.179`. A CI path exists once the `SUPABASE_DB_URL` repo secret is set — `apply-migration.yml` (fixed in #129 to say why it fails instead of a DNS error).
 - [x] Deployed URL loads and shows the new private teaser page
 - [x] Digest dry-run + live send OK (`sent:true` with Resend)
 

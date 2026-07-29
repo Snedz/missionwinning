@@ -24,7 +24,8 @@ import { Button } from "@/components/ui/button";
 import { PillarPageHeader } from "@/components/layout/PillarPageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UnlockButton } from "@/components/UnlockButton";
-import { PhantomLifetimeCheckout } from "@/components/crypto/PhantomLifetimeCheckout";
+import dynamic from "next/dynamic";
+import { isSurfaceEnabled } from "@/lib/surface";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { BUNDLE_PILLARS } from "@/lib/payments";
@@ -48,6 +49,20 @@ function planBadgeLabel(
   if (badge === "limited") return t("bundleBadgeLimited");
   return null;
 }
+
+// `dynamic()`, not a static import — @phantom/react-sdk is 508K gzipped and carries
+// 19 of the repo's Dependabot alerts. A static import ships all of it to every
+// /bundle visitor whether or not the crypto rail is even enabled; the surface check
+// below means a parked `cryptoRails` costs zero bytes. This page 307s to /log while
+// FREE_BETA is on, so the static version was latent — armed to land in the client
+// bundle the moment payments flip on, which is precisely the wrong moment.
+const PhantomLifetimeCheckout = dynamic(
+  () =>
+    import("@/components/crypto/PhantomLifetimeCheckout").then(
+      (m) => m.PhantomLifetimeCheckout
+    ),
+  { ssr: false }
+);
 
 export function BundlePage() {
   const { t } = useTranslation();
@@ -357,7 +372,7 @@ export function BundlePage() {
                       }
                       className="w-full"
                     />
-                    {id === 'lifetime' && (
+                    {id === 'lifetime' && isSurfaceEnabled('cryptoRails') && (
                       <PhantomLifetimeCheckout className="mt-3 w-full" />
                     )}
                     <p className="mt-3 text-center text-xs text-muted-foreground">
