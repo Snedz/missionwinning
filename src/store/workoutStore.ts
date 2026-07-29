@@ -100,6 +100,7 @@ interface WorkoutState {
 }
 
 import { templateSetsToLogged } from '@/lib/workout/workoutTemplate';
+import { materializeTemplates } from '@/lib/workout/materializeProgram';
 
 function createLoggedSets(count: number, reps = 10, weight = 0): LoggedSet[] {
   const now = Date.now();
@@ -140,11 +141,15 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       startWorkout: (name, exercises, workoutId) => {
+        // %-authored program sets resolve against the athlete's history at start
+        // time, so a saved cycle keeps its percentages and re-anchors each run.
+        const units = readRaw(STORAGE_KEYS.units) === 'imperial' ? 'imperial' : 'metric';
+        const resolved = materializeTemplates(exercises, get().workoutHistory, units);
         const active: ActiveWorkout = {
           workoutId,
           workoutName: name,
           startedAt: new Date().toISOString(),
-          exercises: exercises.map((ex) => ({
+          exercises: resolved.map((ex) => ({
             exerciseId: ex.exerciseId,
             sets: templateSetsToLogged(ex),
             ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),

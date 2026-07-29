@@ -53,6 +53,44 @@ function ex(exerciseId: string, setCount: number, reps: number, weight = 0): Wor
   return { exerciseId, sets: sets(setCount, reps, weight) };
 }
 
+function pctSet(loadPct: number, reps: number): WorkoutExerciseTemplate["sets"][number] {
+  return { reps, weight: 0, loadPct };
+}
+
+/**
+ * One 5/3/1 + BBB session: three main working sets at wave percentages, then 5×10
+ * supplemental at 50% TM. Percentages are authored against the athlete's e1RM with
+ * Wendler's training max (90% of 1RM) already baked in — 85% TM is written 76.5 —
+ * so `materializeProgram.ts` can resolve them with no TM concept anywhere.
+ */
+function w531(
+  mainLift: string,
+  bbbLift: string,
+  pcts: [number, number, number],
+  reps: [number, number, number]
+): WorkoutExerciseTemplate[] {
+  return [
+    {
+      exerciseId: mainLift,
+      sets: [pctSet(pcts[0], reps[0]), pctSet(pcts[1], reps[1]), pctSet(pcts[2], reps[2])],
+    },
+    { exerciseId: bbbLift, sets: Array.from({ length: 5 }, () => pctSet(45, 10)) },
+  ];
+}
+
+const W531_WEEKS: { label: string; pcts: [number, number, number]; reps: [number, number, number] }[] = [
+  { label: "Week 1 — 5s", pcts: [58.5, 67.5, 76.5], reps: [5, 5, 5] },
+  { label: "Week 2 — 3s", pcts: [63, 72, 81], reps: [3, 3, 3] },
+  { label: "Week 3 — 5/3/1", pcts: [67.5, 76.5, 85.5], reps: [5, 3, 1] },
+];
+
+const W531_LIFTS: { id: string; name: string; main: string; bbb: string }[] = [
+  { id: "squat", name: "Squat", main: "squats", bbb: "squats" },
+  { id: "bench", name: "Bench", main: "bench-press", bbb: "bench-press" },
+  { id: "dead", name: "Deadlift", main: "deadlift", bbb: "romanian-deadlift" },
+  { id: "ohp", name: "OHP", main: "overhead-press", bbb: "overhead-press" },
+];
+
 const PROGRAM_TEMPLATES_RAW: ProgramTemplate[] = [
   // ─── Beginner ─────────────────────────────────────────────────────────────
   {
@@ -1076,6 +1114,75 @@ const PROGRAM_TEMPLATES_RAW: ProgramTemplate[] = [
     ],
   },
 
+  // ─── Famous free programs (launch wave `.181`) — never gated ─────────────
+  {
+    id: "free-531-bbb",
+    name: "5/3/1 Boring But Big",
+    category: "advanced",
+    description:
+      "Wendler 5/3/1 — three-week wave on squat, bench, deadlift and press, plus 5×10 supplemental. Percentages resolve against your own logged max the moment you start a session.",
+    duration: "3-week wave + deload",
+    focus: "Strength + hypertrophy",
+    tags: ["strength"],
+    sessions: W531_LIFTS.flatMap((lift) =>
+      W531_WEEKS.map((week) => ({
+        id: `f531-${lift.id}-${week.label.slice(5, 6)}`,
+        name: `${lift.name} — ${week.label}`,
+        weekLabel: week.label,
+        notes:
+          "Top set is the money set — leave a rep in the tank on weeks 1–2, push the last set week 3. Deload week: 40/50/60% before the next wave.",
+        exercises: w531(lift.main, lift.bbb, week.pcts, week.reps),
+      }))
+    ),
+  },
+  {
+    id: "free-gzclp",
+    name: "GZCLP Linear",
+    category: "advanced",
+    description:
+      "Cody Lefever's GZCL linear progression — tier 1 heavy triples, tier 2 volume, tier 3 pump work. The classic post-5×5 novice program.",
+    duration: "Until stalls",
+    focus: "Novice linear",
+    tags: ["strength"],
+    sessions: [
+      {
+        id: "fgzcl-a",
+        name: "Day A — Squat / Bench / Lat",
+        notes: "T1: 5×3+ last set AMRAP. T2: 3×10. T3: 3×15+. Add weight when all reps complete.",
+        exercises: [ex("squats", 5, 3), ex("bench-press", 3, 10), ex("lat-pulldown", 3, 15)],
+      },
+      {
+        id: "fgzcl-b",
+        name: "Day B — OHP / Deadlift / Row",
+        notes: "T1: 5×3+ last set AMRAP. T2: 3×10. T3: 3×15+.",
+        exercises: [ex("overhead-press", 5, 3), ex("deadlift", 3, 5), ex("barbell-row", 3, 15)],
+      },
+    ],
+  },
+  {
+    id: "free-basic-beginner",
+    name: "r/Fitness Basic Beginner",
+    category: "beginner",
+    description:
+      "The r/Fitness Basic Beginner Routine — two alternating full-body days, 3×5+ with an AMRAP last set. The most-recommended first barbell program on the internet.",
+    duration: "8–12 weeks",
+    focus: "First barbell program",
+    tags: ["strength"],
+    sessions: [
+      {
+        id: "fbbr-a",
+        name: "Workout A — Bench / Squat / Row",
+        notes: "3×5+, last set AMRAP (stop 1–2 reps shy of failure). Add 2.5 kg when all reps complete.",
+        exercises: [ex("bench-press", 3, 5), ex("squats", 3, 5), ex("barbell-row", 3, 5)],
+      },
+      {
+        id: "fbbr-b",
+        name: "Workout B — Press / Deadlift / Pull-ups",
+        notes: "3×5+ press and deadlift; pull-ups 3×amrap (or lat pulldown).",
+        exercises: [ex("overhead-press", 3, 5), ex("deadlift", 3, 5), ex("pull-ups", 3, 8)],
+      },
+    ],
+  },
   // ─── Advanced ─────────────────────────────────────────────────────────────
   {
     id: "adv-5x5",
