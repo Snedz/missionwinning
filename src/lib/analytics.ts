@@ -47,6 +47,11 @@ type AnalyticsEvent =
   | 'readiness_checkin_completed'
   /** Debrief closing question answered — the reply feeds the next plan, not just a count. */
   | 'debrief_answered'
+  /** Post-session notification offer: shown -> tapped -> granted, or dismissed. */
+  | 'wind_down_optin_tapped'
+  | 'wind_down_optin_granted'
+  | 'wind_down_optin_dismissed'
+  | 'wind_down_optin_install'
   | 'body_metric_logged'
   | 'progress_photo_added'
   | 'weekly_debrief_viewed'

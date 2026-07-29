@@ -179,6 +179,19 @@ curl -X POST "$BASE/api/private-access/session" \
 | dryRun | `?dryRun=1` returns composed subject/text + data |
 | Send | `FOUNDER_DIGEST_EMAIL` via Resend; skipped if unset |
 
+### `GET /api/cron/wind-down`
+
+| | |
+|--|--|
+| Auth | `Authorization: Bearer $CRON_SECRET` |
+| Schedule | `0 * * * *` — hourly, because a same-evening message needs a local-time window and a daily UTC cron cannot hit 19–22 for everyone |
+| Sends | Web push only. Email at 21:00 trains people to ignore the address, and by morning the message is moot |
+| Window | 19:00–22:00 in the device's stored `time_zone`. **No zone stored → no send** — a guessed zone risks a 03:00 push |
+| Idempotency | `last_wind_down_at` vs `last_session_at`. After a send the marker is newer, so later runs that evening skip; the next hard session re-arms it |
+| Cooldown | Separate from the comeback's 44 h `last_nudge_at`. Sharing it would suppress exactly the success case — an athlete brought back by a morning comeback who then trains hard that evening |
+| dryRun | `?dryRun=1` → `{considered, candidates: [{device, tz, localHour}]}` — never the endpoint |
+| Privacy | Reads one boolean and three timestamps. The zone that set the boolean was computed on the device; no workout content is stored — see `20260730_wind_down_nudge.sql` |
+
 ### `POST /api/push/subscribe` / `DELETE /api/push/subscribe`
 
 | | |

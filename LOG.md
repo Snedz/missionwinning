@@ -6,6 +6,62 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — A notification nobody could have received (`.176`)
+
+The wind-down nudge is the WHOOP move on our terms: after a session that ran heavier
+than the athlete's own recent usual, one note in the evening while they can still act
+on it. *"That one ran hot. Heavier than your recent usual. Water, food, and an early
+night buy tomorrow back."*
+
+**The reach problem came first, and nearly shipped unnoticed.** Push has been
+user-triggerable through exactly one control since it shipped: a toggle buried in
+Profile → Reminders. Build the cron, the copy, the window maths — and it fires for
+approximately nobody, with no error anywhere to say so. So the debrief now offers it
+at the one moment the value is concrete rather than hypothetical: after a **high-zone**
+session, one quiet line, *"Want a heads-up on evenings like this?"*. The button calls
+`subscribePush` **directly** — the ordering contract at the top of `pushClient.ts`
+exists because a granted-then-discarded permission poisons the origin permanently and
+the browser never asks again. On iOS Safari before install there is no `PushManager`
+at all, so that branch offers **Add to Home Screen** instead of a button that cannot
+work. Offered at most once per fortnight.
+
+**Time-of-day is the whole design, and it is where the bugs live.** Every other nudge
+gates on *absence*; this one requires the athlete was present today. So it is hourly,
+not daily — a UTC cron cannot hit 19:00 local for everyone — and it lives in its own
+pure module rather than a `decideNudge` branch:
+
+- **No stored time zone → no send.** A guessed zone risks a 03:00 push, which is worse
+  for the athlete than silence and worse for us than an unsent message.
+- **Session today, judged locally.** A session at 22:00Z is *this evening* in New York
+  and *yesterday* in UTC; a UTC comparison would fall silent on someone who trained
+  five hours ago.
+- **`last_wind_down_at` vs `last_session_at` is the idempotency** — after a send the
+  marker is newer, so later runs that evening skip, and the next hard session re-arms
+  it with no expiry job anywhere.
+- **Its own cooldown, deliberately.** Sharing the comeback's 44 h `last_nudge_at` would
+  suppress exactly the success case: an athlete brought back by a morning comeback who
+  then trains hard that evening. Two pushes that day is correct — the second was earned.
+
+**One bit, not a zone stream.** The device syncs `last_session_high boolean` and
+nothing else. An enum would store states nothing reads; a series of zones is
+reconstructable training content, which the push table's stated contract forbids. The
+bit self-heals on the next sync. The same `handleComplete` call fixes a live defect:
+`last_session_at` only refreshed if the athlete happened to visit Profile, so **comeback
+nudges were already firing on stale data**.
+
+**Two fixes were untestable until they were moved.** Removing the only-present-fields
+rule from the subscribe route broke nothing, because it sat inline in a route handler —
+now `buildSubscriptionRow`, where restoring the `?? null` clobber fails a test, and so
+does swapping `!== undefined` for a truthiness check (which would drop
+`lastSessionHigh: false` and leave the bit stuck on `true` forever). The 14-day offer
+cap had the same shape inside a React component — now `mayOfferWindDown`. This is the
+fourth time this sprint that falsification found the fix, not the bug.
+
+Per-kind tags (`mw-wind-down` vs `mw-nudge`) so an evening note never silently replaces
+a pending comeback. Per-kind *preferences* are deliberately **not** here — they would
+widen a privacy contract stated in the `20260728` migration; the single toggle stays,
+with copy that now names both kinds honestly. Tests **699→725**.
+
 ## 2026-07-29 — The coach was being overruled in the gym (`.175`)
 
 The intelligence shipped in `.171`–`.174` reported honestly *after* a session. It

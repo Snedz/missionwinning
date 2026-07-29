@@ -2,7 +2,8 @@ import 'server-only';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { isCold, quietThresholdDays } from '@/lib/reentryTone';
-import { anonymousComebackPush, decideNudge, utcDay } from '@/lib/nudgeCopy';
+import { anonymousComebackPush, decideNudge, utcDay, windDownPush } from '@/lib/nudgeCopy';
+import { localHourFor, windDownDue } from '@/lib/windDown';
 import type { NudgeCandidate, NudgeKind } from '@/lib/nudgeCopy';
 
 /**
@@ -222,4 +223,88 @@ export async function setRemindersOptOut(userId: string): Promise<boolean> {
     .update({ reminders_opt_in: false })
     .eq('id', userId);
   return !error;
+}
+
+/**
+ * Devices due a wind-down note right now.
+ *
+ * Deliberately **no `user_id` filter**: the device row is the channel for signed-in
+ * and anonymous athletes alike, and the device that synced the "ran hot" bit is the
+ * same device holding the history behind the deep link. Whether an account exists is
+ * irrelevant to this kind.
+ *
+ * Note what is *not* here: no join to `workout_logs`, no tonnage, no zone. The server
+ * reads one boolean and three timestamps. Everything that decided the boolean happened
+ * on the device.
+ */
+export interface WindDownCandidate {
+  endpoint: string;
+  deviceId: string;
+  kind: 'wind-down';
+  title: string;
+  body: string;
+  /** For dryRun only — lets the founder check the window maths from the response. */
+  timeZone: string;
+  localHour: number | null;
+}
+
+export async function collectWindDownCandidates(now = new Date()): Promise<{
+  considered: number;
+  candidates: WindDownCandidate[];
+}> {
+  const admin = getSupabaseAdmin();
+  if (!admin) throw new Error('Supabase admin not configured (SUPABASE_SERVICE_ROLE_KEY)');
+
+  const { data: rows, error } = await admin
+    .from('push_subscriptions')
+    .select('endpoint, device_id, last_session_at, last_session_high, last_wind_down_at, time_zone')
+    .eq('last_session_high', true)
+    .not('last_session_at', 'is', null)
+    .not('time_zone', 'is', null)
+    .limit(500);
+
+  if (error || !rows) {
+    throw new Error(`wind-down query failed: ${error?.message ?? 'no data'}`);
+  }
+
+  const copy = windDownPush();
+  const candidates: WindDownCandidate[] = [];
+
+  for (const row of rows) {
+    const deviceId = row.device_id as string | null;
+    const timeZone = row.time_zone as string | null;
+    if (!deviceId || !timeZone) continue;
+
+    const due = windDownDue(
+      {
+        lastSessionAt: row.last_session_at as string | null,
+        lastSessionHigh: Boolean(row.last_session_high),
+        lastWindDownAt: (row.last_wind_down_at as string | null) ?? null,
+        timeZone,
+      },
+      now
+    );
+    if (!due) continue;
+
+    candidates.push({
+      endpoint: row.endpoint as string,
+      deviceId,
+      kind: 'wind-down',
+      timeZone,
+      localHour: localHourFor(now, timeZone),
+      ...copy,
+    });
+  }
+
+  return { considered: rows.length, candidates };
+}
+
+export async function markWindDownSent(endpoints: string[], now = new Date()): Promise<void> {
+  if (endpoints.length === 0) return;
+  const admin = getSupabaseAdmin();
+  if (!admin) return;
+  await admin
+    .from('push_subscriptions')
+    .update({ last_wind_down_at: now.toISOString() })
+    .in('endpoint', endpoints);
 }

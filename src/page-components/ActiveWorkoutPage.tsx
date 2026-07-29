@@ -288,12 +288,31 @@ export function ActiveWorkoutPage() {
     const streak = getTrainingStreak(historyAfter);
     // The debrief needs the completed log inside the history so load bands see it,
     // while compareToBaseline excludes it by date. See lib/coach/debrief.ts.
-    setDebrief(
-      buildDebrief({
-        log,
-        history: historyAfter,
-        checkIn,
-        unit: weightUnitLabel(units),
+    const sessionDebrief = buildDebrief({
+      log,
+      history: historyAfter,
+      checkIn,
+      unit: weightUnitLabel(units),
+    });
+    setDebrief(sessionDebrief);
+
+    /*
+     * Tell this device's push row what just happened. Two jobs in one call:
+     *
+     *  1. `lastSessionHigh` arms the evening wind-down — ONE BIT, computed here from
+     *     the debrief's zone. The load, the sets and the zone itself never leave the
+     *     device (see the 20260730 migration comment).
+     *  2. `lastSessionAt` was previously only refreshed when the athlete happened to
+     *     open Profile, so the comeback nudge was reading a stale date for anyone who
+     *     did not. This fixes that for every athlete with a subscription.
+     *
+     * Fire-and-forget and never prompts: `syncPushSubscription` no-ops without an
+     * existing browser subscription, so nobody who has not opted in is touched.
+     */
+    void import('@/lib/pushClient').then((m) =>
+      m.syncPushSubscription({
+        lastSessionAt: log.completedAt,
+        lastSessionHigh: sessionDebrief.zone === 'high',
       })
     );
     const afterScores = computeBodyScores(historyAfter, { checkIn });

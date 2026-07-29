@@ -51,6 +51,8 @@ export const STORAGE_KEYS = {
   primaryGoal: 'mw_primary_goal',
   goals: 'mw_goals',
   deviceId: 'mw_device_id',
+  /** Last time the post-session notification offer was shown (or declined). */
+  windDownAskedAt: 'mw_wind_down_asked_at',
 
   // ── Fuel (wedge) ──
   nutritionLog: 'mw_nutrition_log',

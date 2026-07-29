@@ -29,6 +29,11 @@ import { track } from '@/lib/analytics';
 export interface PushCadence {
   lastSessionAt?: string | null;
   daysPerWeek?: number;
+  /**
+   * Did the last session run hot for this athlete. One bit, computed here from the
+   * debrief's zone — the load, the sets and the zone itself never leave the device.
+   */
+  lastSessionHigh?: boolean;
 }
 
 export type PushResult = 'ok' | 'unsupported' | 'denied' | 'error';
@@ -90,6 +95,7 @@ async function postSubscription(
         lastSessionAt: cadence?.lastSessionAt ?? undefined,
         daysPerWeek: cadence?.daysPerWeek ?? loadDaysPerWeek(),
         timeZone: resolvedTimeZone(),
+        lastSessionHigh: cadence?.lastSessionHigh,
       }),
     });
     return res.ok;
