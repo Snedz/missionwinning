@@ -148,6 +148,7 @@ export const useWorkoutStore = create<WorkoutState>()(
             exerciseId: ex.exerciseId,
             sets: templateSetsToLogged(ex),
             ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
+            ...(ex.prescribed ? { prescribed: true } : {}),
           })),
         };
         syncActiveFlag(active);

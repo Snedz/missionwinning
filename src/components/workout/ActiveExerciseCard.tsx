@@ -37,6 +37,8 @@ type TemplateSet = { reps: number; weight: number; kind?: SetKind; rpe?: LoggedS
 
 type Props = {
   exLog: ActiveExerciseLog;
+  /** The athlete's goal rep range, so freestyle suggestions match the plan's philosophy. */
+  goalRange?: { min: number; max: number };
   exIdx: number;
   exercises: ActiveExerciseLog[];
   exercise: Exercise;
@@ -78,6 +80,7 @@ type Props = {
 
 export function ActiveExerciseCard({
   exLog,
+  goalRange,
   exIdx,
   exercises,
   exercise,
@@ -124,10 +127,29 @@ export function ActiveExerciseCard({
   const hasFormGuide = !!getFormGuideOrCues(exercise.id, { exercise });
 
   const nextPlannedIdx = exLog.sets.findIndex((s) => !s.completed);
+  /**
+   * The "Next: N × W" line.
+   *
+   * On a prescribed exercise this echoes the coach's own numbers. It used to render
+   * `suggestNextSetTarget` unconditionally, so the plan's `loadPct` chip and this
+   * line sat inches apart on the same card disagreeing — 6 reps against a strength
+   * plan's 5, or "add weight" during a deload week. A hint that contradicts the
+   * prescription is worse than no hint.
+   */
   const nextTarget =
-    nextPlannedIdx >= 0 && lastSets
-      ? suggestNextSetTarget(lastSets, nextPlannedIdx, units)
-      : null;
+    nextPlannedIdx < 0
+      ? null
+      : exLog.prescribed
+        ? {
+            reps: exLog.sets[nextPlannedIdx].reps,
+            weight: exLog.sets[nextPlannedIdx].weight,
+          }
+        : lastSets
+          ? suggestNextSetTarget(lastSets, nextPlannedIdx, units, {
+              repMin: goalRange?.min,
+              repMax: goalRange?.max,
+            })
+          : null;
 
   return (
     <Card

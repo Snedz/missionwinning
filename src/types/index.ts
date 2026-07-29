@@ -39,6 +39,12 @@ export interface WorkoutExerciseTemplate {
   sets: WorkoutSetTemplate[];
   /** Percent of working max when started from Coach % prescription. */
   loadPct?: number;
+  /**
+   * True when these reps/weights came from the Coach plan rather than being a
+   * generic starting point. The logger must PREFILL a prescription rather than
+   * overwrite it with its own suggestion — see `getSetInput` in ActiveWorkoutPage.
+   */
+  prescribed?: boolean;
 }
 
 export interface SavedWorkout {
@@ -72,6 +78,8 @@ export interface ActiveExerciseLog {
   muscleGroups?: MuscleGroup[];
   /** Percent of working max when session started from Coach % prescription. */
   loadPct?: number;
+  /** These sets were prescribed by the Coach plan; the logger must not override them. */
+  prescribed?: boolean;
 }
 
 export interface ActiveWorkout {

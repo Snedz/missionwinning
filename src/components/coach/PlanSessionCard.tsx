@@ -5,8 +5,9 @@
  */
 
 import { useRouter } from 'next/navigation';
+import { PlanExerciseLine } from '@/components/coach/PlanExerciseLine';
+import { planSessionToTemplates } from '@/lib/coach/planSessionTemplates';
 import { useTranslation } from 'react-i18next';
-import { EXERCISES } from '@/data/exercises';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,19 +27,14 @@ type Props = {
 };
 
 export function PlanSessionCard({ session, className, isToday, onAdjust }: Props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const units = useUnits();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const unit = weightUnitLabel(units);
 
   const start = () => {
-    const exercises = session.exercises.map((ex) => ({
-      exerciseId: ex.exerciseId,
-      sets: Array.from({ length: ex.sets }, () => ({ reps: ex.reps, weight: ex.weight })),
-      ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
-    }));
-    startWorkout(session.name, exercises);
+    startWorkout(session.name, planSessionToTemplates(session));
     track('coach_session_started', { kind: session.kind, dayOffset: session.dayOffset });
     router.push('/active');
   };
@@ -83,41 +79,9 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
       </CardHeader>
       <CardContent className="space-y-3">
         <ul className="space-y-2 text-sm">
-          {session.exercises.map((ex) => {
-            const data = EXERCISES.find((e) => e.id === ex.exerciseId);
-            const name = data?.name ?? ex.exerciseId;
-            const load =
-              ex.loadPct != null && ex.loadPct > 0 && ex.weight > 0
-                ? ` · ${ex.loadPct}% · ${ex.weight}${unit}`
-                : ex.weight > 0
-                  ? ` @ ${ex.weight}${unit}`
-                  : '';
-            // `i18n.exists`, not a falsy `defaultValue`: i18next treats
-            // `defaultValue: ''` as absent and hands back the key, which is the
-            // exact behaviour being fixed here.
-            const why = i18n.exists(ex.whyKey) ? t(ex.whyKey) : '';
-            return (
-              /*
-               * `defaultValue: ex.whyKey` printed the raw key to the user when it
-               * did not resolve — which is how `coachWhyCompound` ended up on
-               * screen under a real set. That key exists nowhere in the source or
-               * the locales: it is baked into plans persisted by an older build,
-               * and plans only regenerate weekly, so it would have shown for days.
-               *
-               * An empty `defaultValue` lets us tell "no copy for this key" from
-               * "copy that happens to be short", and a missing rationale is
-               * strictly better than machine text. New plans only emit registered
-               * keys, so this is the tail of an old rename, not an ongoing gap.
-               */
-              <li key={ex.exerciseId} className="border-b border-border pb-2 last:border-0">
-                <div className="font-semibold">
-                  {name} — {ex.sets}×{ex.reps}
-                  {load}
-                </div>
-                {why ? <p className="text-xs text-muted-foreground mt-0.5">{why}</p> : null}
-              </li>
-            );
-          })}
+          {session.exercises.map((ex) => (
+            <PlanExerciseLine key={ex.exerciseId} ex={ex} unit={unit} />
+          ))}
         </ul>
         {session.status !== 'done' && (
           <div className="space-y-2">

@@ -6,6 +6,57 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The coach was being overruled in the gym (`.175`)
+
+The intelligence shipped in `.171`–`.174` reported honestly *after* a session. It
+never steered one. `ActiveWorkoutPage.getSetInput` used the plan's prescription as a
+**fallback** — behind `suggestNextSetTarget`, an engine that assumes **8–12 reps for
+every athlete**, reads no RPE, and has no concept of a deload.
+
+So, with any history at all:
+
+- A strength plan of **3×5 @ 85 prefilled as 6 reps**.
+- An endurance plan said *13 × 40* while the same card's hint said *8 × 42.5* —
+  rendered inches apart, unlabelled as to which was which.
+- On a stall the coach **deloaded ×0.9** and the logger said *add a rep*. The
+  engine's smartest move, silently countermanded.
+
+**Order is now: what the athlete typed → the coach's prescription → the suggestion
+engine (within the athlete's goal range) → last time → template default.** The
+division of labour is *plan prescribes, logger suggests where no plan exists*, which
+is the only split that leaves both engines doing what they are actually good at.
+
+- A `prescribed` flag rides from `PlanExercise` through the store to
+  `ActiveExerciseLog`, set by one shared
+  [`planSessionToTemplates`](src/lib/coach/planSessionTemplates.ts) — extracted
+  because `CoachTodayCard` and `PlanSessionCard` had byte-identical copies of that
+  map, and a copy that forgot the flag would restore the bug.
+- **`repRangeForGoal` is now exported and actually passed.** `suggestNextSetTarget`
+  has always accepted `opts.repMin/repMax` and **nobody passed it** — every call site
+  in the app took the 8–12 default. Threaded through the logger, "Apply targets",
+  Just Go and the victory insight.
+- The **"Next: N × W"** line on a prescribed exercise now echoes the coach rather
+  than competing with it.
+- **Today shows the work, not just the name** — up to three prescribed exercises with
+  `sets×reps`, load, and the why-line, via a shared
+  [`PlanExerciseLine`](src/components/coach/PlanExerciseLine.tsx) that carries the
+  `i18n.exists` guard with it. Plus one descriptive band sentence, and **silence when
+  the ratio is null** — under 14 days there is nothing true to say.
+
+**Falsification found the headline fix untestable.** Removing the precedence line
+broke **nothing**: the logic lived inside a React component. Extracted as pure
+`resolveSetInput`, which is now covered by five cases — and reversing the order fails
+two of them. Also new: `engineConsistency.test.ts`, the first test that checks the two
+target engines against each other at all.
+
+**Verified in a browser on identical history:** the prescribed session prefills
+**5** and hints `5 × 100`; the freestyle session prefills **6** and hints `6 × 100`
+— double progression inside strength's 4–6.
+
+Unit tests **690 → 699**.
+
+---
+
 ## 2026-07-29 — One estimator, and Android sessions finally count (`.174`)
 
 Opening PR of the coach-loop sprint. Two defects that made the app disagree with

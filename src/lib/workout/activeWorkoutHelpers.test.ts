@@ -4,6 +4,7 @@ import {
   findNextSet,
   getLastPerformanceForSet,
   getLastSessionSets,
+  resolveSetInput,
   sessionSetStats,
   setInputKey,
 } from './activeWorkoutHelpers.ts';
@@ -96,5 +97,64 @@ describe('activeWorkoutHelpers', () => {
       },
     ]);
     assert.deepEqual(stats, { completed: 3, total: 4, hardCount: 2 });
+  });
+});
+
+describe('resolveSetInput', () => {
+  const base = { defaultReps: 5, defaultWeight: 85 };
+
+  it('the coach prescription wins over the logger suggestion', () => {
+    // The bug: a strength plan of 3x5 @ 85 used to prefill as 6 reps, because
+    // suggestNextSetTarget assumed 8-12 for everyone and ran first.
+    const out = resolveSetInput({
+      ...base,
+      prescribed: true,
+      suggestion: { reps: 6, weight: 85 },
+      lastPerformance: { reps: 6, weight: 85 },
+    });
+    assert.deepEqual(out, { reps: 5, weight: 85 });
+  });
+
+  it('a deload prescription is not talked out of', () => {
+    const out = resolveSetInput({
+      defaultReps: 5,
+      defaultWeight: 90,
+      prescribed: true,
+      suggestion: { reps: 5, weight: 100 },
+    });
+    assert.equal(out.weight, 90, 'the back-off weight must survive');
+  });
+
+  it('freestyle work still gets the suggestion', () => {
+    const out = resolveSetInput({
+      ...base,
+      prescribed: false,
+      suggestion: { reps: 9, weight: 80 },
+      lastPerformance: { reps: 8, weight: 80 },
+    });
+    assert.deepEqual(out, { reps: 9, weight: 80 });
+  });
+
+  it('what the athlete typed always wins, prescribed or not', () => {
+    const manual = { reps: 3, weight: 120 };
+    assert.deepEqual(
+      resolveSetInput({ ...base, manual, prescribed: true, suggestion: { reps: 9, weight: 70 } }),
+      manual
+    );
+    assert.deepEqual(
+      resolveSetInput({ ...base, manual, prescribed: false, suggestion: { reps: 9, weight: 70 } }),
+      manual
+    );
+  });
+
+  it('falls back through last performance to the template default', () => {
+    assert.deepEqual(
+      resolveSetInput({ ...base, suggestion: null, lastPerformance: { reps: 7, weight: 75 } }),
+      { reps: 7, weight: 75 }
+    );
+    assert.deepEqual(resolveSetInput({ ...base, suggestion: null, lastPerformance: null }), {
+      reps: 5,
+      weight: 85,
+    });
   });
 });

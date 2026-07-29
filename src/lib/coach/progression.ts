@@ -25,7 +25,14 @@ interface SessionSnapshot {
   sets: { reps: number; weight: number; kind?: string; rpe?: Rpe }[];
 }
 
-function repRangeForGoal(goalId: string): { min: number; max: number } {
+/**
+ * The rep range this athlete's goal actually trains in.
+ *
+ * Exported because `suggestNextSetTarget` has always accepted a range and nobody
+ * passed one — so the logger assumed 8–12 for everyone, contradicting a strength
+ * plan's 4–6 and an endurance plan's 12–15 on the same screen.
+ */
+export function repRangeForGoal(goalId: string): { min: number; max: number } {
   if (goalId === 'strength' || goalId === 'pft') return { min: 4, max: 6 };
   if (goalId === 'endurance' || goalId === 'fat_loss') return { min: 12, max: 15 };
   if (goalId === 'conditioning') return { min: 10, max: 15 };
