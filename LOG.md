@@ -6,6 +6,51 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-28 — The gate that keeps us unlaunched was bypassable (`.169`)
+
+Pushing `.164`–`.168` made GitHub report **45 open Dependabot alerts on `master`**
+(24 high · 19 medium · 2 low). Investigated rather than bulk-bumped, because most of
+them turn out not to matter and one of them matters a great deal.
+
+**Next.js 16.2.7 → 16.2.12.** All **9** `next` alerts are patched in 16.2.11, and
+`package.json` already declared `^16.2.7`, so this was a lockfile move, not a
+migration. One is specific to how this repo is built:
+
+> Next.js: Middleware / Proxy bypass in App Router applications — high,
+> `>= 16.0.0, < 16.2.11`
+
+The private beta gate **is** middleware: [proxy.ts](proxy.ts) calls
+`isPrivateModeEnabled()` and decides what a signed-out visitor may reach. A middleware
+bypass does not degrade that gate, it defeats it — and the gate is the only thing
+keeping an unlaunched product unlaunched. Two SSRF advisories in the same range are
+also closed by the bump.
+
+**19 of the 45 belong to a surface already parked, and are latent rather than live.**
+18 `axios` + 1 `bigint-buffer` all trace through
+`@phantom/react-sdk → @phantom/browser-sdk → @phantom/auth2 → axios`. That is the
+crypto-rails surface, `PARKED_BY_DEFAULT`, whose `/api/crypto-checkout` correctly
+404s. But [BundlePage.tsx:27](src/page-components/BundlePage.tsx) imports
+`PhantomLifetimeCheckout` **statically**, with no `isSurfaceEnabled('cryptoRails')`
+guard and no `dynamic()`, so a **508K** chunk is built into the client.
+
+It is not being served today — checked, not assumed: `/bundle` **307s to `/log`**
+because `isFreeBeta()` defaults to **true** when `NEXT_PUBLIC_FREE_BETA` is unset. So
+the exposure arms itself at exactly the moment FREE_BETA goes off, which is the
+LLC-and-payments milestone already on the roadmap. **Left unfixed on purpose** — that
+is the payments path and a founder call. It is the same shape as `.166`: parking
+parked the API route, not the client bundle.
+
+**The remaining 17 are build-time or low-reachability**: `brace-expansion` (5) and
+`js-yaml` (2) are dev-scope tooling; `postcss` (3) and `@babel/core` (1) are
+build-time; `sharp`, `dompurify`, `uuid`, `fast-uri` are transitive.
+
+**Why none of it was landing:** seven `dependabot/*` branches sit open and unmerged
+and none of them is the Next bump. `npm run gate` exists *because* GitHub Actions is
+blocked, so nothing auto-merges. Same root cause as the `.168` label collision — work
+on branches with no mechanism to converge.
+
+---
+
 ## 2026-07-28 — A version claimed in a commit message is not a version (`.168`)
 
 Hard rule 5 — *"every ship updates LOG.md + `## Now` + build label"* — was prose, so
