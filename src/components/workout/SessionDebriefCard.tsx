@@ -12,11 +12,14 @@
  * will not give.
  */
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { Volume2, Square } from 'lucide-react';
 import { WindDownOptIn } from '@/components/workout/WindDownOptIn';
 import type { Debrief } from '@/lib/coach/debrief';
 import { track } from '@/lib/analytics';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
+import { speakableDebriefText } from '@/lib/speech/speakableLines';
+import { speak, speechSupport, stopSpeaking } from '@/lib/speech/speak';
 
 type Props = {
   debrief: Debrief;
@@ -36,6 +39,26 @@ const CHIP_EFFECT: Record<string, { energy?: number } | undefined> = {
 
 export function SessionDebriefCard({ debrief }: Props) {
   const [answered, setAnswered] = useState<string | null>(null);
+  const [speaking, setSpeaking] = useState(false);
+
+  // On-device speech: the coach reads the lines the rules engine already composed
+  // and `reentryTone` already tested. No network, no key, no LLM in this path.
+  const spokenText = useMemo(() => speakableDebriefText(debrief), [debrief]);
+  const canSpeak = speechSupport() === 'ready' && spokenText.length > 0;
+
+  // Leaving a page mid-sentence should stop the voice, not talk over the next screen.
+  useEffect(() => () => stopSpeaking(), []);
+
+  const toggleSpeech = () => {
+    if (speaking) {
+      stopSpeaking();
+      setSpeaking(false);
+      return;
+    }
+    const started = speak(spokenText, { onEnd: () => setSpeaking(false) });
+    setSpeaking(started);
+    if (started) track('debrief_spoken', { zone: debrief.zone });
+  };
 
   const answer = (chip: string) => {
     setAnswered(chip);
@@ -49,6 +72,18 @@ export function SessionDebriefCard({ debrief }: Props) {
 
   return (
     <section className="border-t border-border pt-4" aria-label="Session debrief">
+      {canSpeak ? (
+        <button
+          type="button"
+          onClick={toggleSpeech}
+          aria-label={speaking ? 'Stop reading the debrief' : 'Read the debrief aloud'}
+          className="mb-3 inline-flex min-h-[44px] items-center gap-2 border border-input px-3 py-2 text-xs font-medium"
+        >
+          {speaking ? <Square className="h-3 w-3" aria-hidden /> : <Volume2 className="h-3 w-3" aria-hidden />}
+          {speaking ? 'Stop' : 'Listen'}
+        </button>
+      ) : null}
+
       <ul className="space-y-2">
         {statements.map((line, i) => (
           <li
