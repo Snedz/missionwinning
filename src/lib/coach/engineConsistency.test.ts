@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { nextTargets, repRangeForGoal } from '@/lib/coach/progression';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { planSessionToTemplates } from '@/lib/coach/planSessionTemplates';
+import { buildDebrief } from '@/lib/coach/debrief';
 import type { PlanSession } from '@/lib/coach/types';
 import type { CompletedWorkoutLog, Rpe } from '@/types';
 
@@ -149,4 +150,48 @@ test('every plan session carries the prescribed flag', () => {
   // Bodyweight work has no loadPct, and must still be prescribed.
   assert.equal(templates[1].loadPct, undefined);
   assert.equal(templates[1].prescribed, true);
+});
+
+/**
+ * The debrief and the prescription must come from one stall truth (`.178`).
+ *
+ * Before this, `progression.ts` held a private `stalled()` (three identical sessions)
+ * while `progress.ts` exported `plateaued` ("the best is old") to **no consumers**. So
+ * the engine could deload on one definition while the module owning strength truth
+ * disagreed, and the richer signal was computed and discarded. Same defect as `.174`
+ * and `.175`, one layer down.
+ */
+test('when the debrief names a plateau, the plan never prescribes an increase', () => {
+  const history = [
+    session(0, [{ reps: 5, weight: 102.5 }]),
+    session(3, [{ reps: 5, weight: 100 }]),
+    session(6, [{ reps: 5, weight: 102.5 }]),
+    session(9, [{ reps: 5, weight: 100 }]),
+    session(12, [{ reps: 5, weight: 120 }]),
+  ];
+
+  const debrief = buildDebrief({ log: history[0], history: history.slice(1), now: NOW });
+  const plateau = debrief.lines.find((l) => l.kind === 'plateau');
+  assert.ok(plateau, 'expected the debrief to name the plateau');
+
+  const t = nextTargets('bench-press', history, 'metric', 'strength', 'intermediate');
+  assert.ok(
+    t.weight < 102.5,
+    `debrief said plateau but the plan prescribed ${t.weight}`
+  );
+  assert.equal(t.whyKey, 'coachWhyPlateauDeload');
+});
+
+test('a plateau deload is never held back by a high load zone', () => {
+  // `.177` caps rises. It must never cap a decrease, or the two engines fight.
+  const history = [
+    session(0, [{ reps: 5, weight: 102.5 }]),
+    session(3, [{ reps: 5, weight: 100 }]),
+    session(6, [{ reps: 5, weight: 102.5 }]),
+    session(9, [{ reps: 5, weight: 100 }]),
+    session(12, [{ reps: 5, weight: 120 }]),
+  ];
+  const high = nextTargets('bench-press', history, 'metric', 'strength', 'intermediate', 'high');
+  const plain = nextTargets('bench-press', history, 'metric', 'strength', 'intermediate');
+  assert.deepEqual(high, plain);
 });

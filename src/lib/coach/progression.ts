@@ -6,6 +6,7 @@ import { EXERCISES } from '@/data/exercises';
 import type { Rpe } from '@/lib/coach/types';
 import type { LoadZone } from '@/lib/coach/load';
 import { capProgressionForZone } from '@/lib/coach/loadGuard';
+import { stallSignal, type StallKind } from '@/lib/coach/progress';
 import {
   resolveStartingLoadPct,
   weightFromLoadPct,
@@ -94,18 +95,6 @@ function hasMixedOrMed(sets: { rpe?: Rpe }[]): boolean {
   return ws.some((s) => s.rpe === 'med' || !s.rpe);
 }
 
-function stalled(sessions: SessionSnapshot[]): boolean {
-  if (sessions.length < 3) return false;
-  const perf = sessions.slice(0, 3).map((s) => {
-    const ws = workingSets(s.sets);
-    if (!ws.length) return null;
-    return { reps: ws[0].reps, weight: ws[0].weight };
-  });
-  if (perf.some((p) => !p)) return false;
-  const [a, b, c] = perf as { reps: number; weight: number }[];
-  return a.reps === b.reps && b.reps === c.reps && a.weight === b.weight && a.weight === c.weight;
-}
-
 function seedTargets(
   exerciseId: string,
   goalId: string,
@@ -176,6 +165,13 @@ export function nextTargets(
   const { setCount } = perf;
   let whyKey = 'coachWhyHold';
 
+  // One stall truth, owned by `progress.ts` — see `stallSignal`. Both kinds deload;
+  // they differ only in what the athlete is told, because "three flat sessions" and
+  // "your best is a month old" are different facts and the second used to be invisible.
+  const stall: StallKind = stallSignal(history, exerciseId).kind;
+  const deloading = stall !== 'none';
+  const stallWhyKey = stall === 'plateaued' ? 'coachWhyPlateauDeload' : 'coachWhyDeload';
+
   const workingMax = !bodyweight ? workingMaxFromHistory(exerciseId, history) : null;
   const usePct = workingMax != null && workingMax > 0 && weight > 0;
 
@@ -201,9 +197,9 @@ export function nextTargets(
       basePct
     );
 
-    if (stalled(sessions)) {
+    if (deloading) {
       loadPct *= 0.9;
-      whyKey = 'coachWhyDeload';
+      whyKey = stallWhyKey;
       weight = weightFromLoadPct(workingMax, loadPct, units);
       return withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct);
     }
@@ -272,15 +268,13 @@ export function nextTargets(
     whyKey: 'coachWhyHold',
   };
 
-  if (stalled(sessions)) {
+  if (deloading) {
     if (bodyweight) {
       reps = Math.max(range.min, Math.round(reps * 0.9));
-      whyKey = 'coachWhyDeload';
     } else {
       weight = roundToStep(Math.max(0, weight * 0.9), step);
-      whyKey = 'coachWhyDeload';
     }
-    return { sets: setCount, reps, weight, whyKey };
+    return { sets: setCount, reps, weight, whyKey: stallWhyKey };
   }
 
   const latestSets = sessions[0].sets;
