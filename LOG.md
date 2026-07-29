@@ -6,6 +6,41 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The switching moment (`.180`)
+
+CSV import, web: a Strong or Hevy export becomes native history. Every would-be
+switcher is holding one of these files — Hevy caps free history at three months and
+the export is how you leave — and until now the web app had no door for it (Android
+has had one since F2). One file in, and `personalRecordsFor`, `e1rmSeries` and
+`loadBands` light up against years of the athlete's own training.
+
+**A real CSV scanner, because Hevy notes contain newlines.** `text.split('\n')` —
+the obvious implementation — imports a 400-session export as garbage the moment one
+note wraps. Records are split by a quote-aware scanner; the falsification run replaced
+it with the naive version and 7 of 11 tests fail.
+
+**The two import paths cannot disagree.** Hevy's numeric RPE goes through
+`rpeNumberToCategory` — the same mapping Android sync uses — and the test asserts it
+the `.174` way: an imported session and its natively logged twin produce **identical**
+`sessionLoad`. Weights convert to the athlete's display unit (kg-as-lb falsified).
+Format is detected from the header, never the filename.
+
+**Matching is never the reason a set is lost.** Catalog match by normalised name with
+the "(Barbell)" parenthetical stripped; anything unmatched becomes a slug id exactly
+like custom exercises. Skipped rows are counted and reported, not swallowed.
+
+**An import is a migration, not an authority.** `mergeImportedLogs` keys identity on
+(completedAt minute, name, set count): re-importing the same file is a no-op, and a
+natively logged session at the same identity always wins. Falsified with id-based
+identity — the no-op test fails.
+
+Surface: one card on Profile under the backup card, mirroring its restore pattern
+(write the persist payload, refresh). The `.128` storage ratchet caught the first
+version's bare `localStorage` calls in review — `safeStorage` now, like everything
+else. Free forever, never gated: the same contract Android's importer states.
+
+Tests **750→761**.
+
 ## 2026-07-29 — The thank-you screen was the third lie (`.179`)
 
 Pre-launch honesty pass II — three flagged items from the sprint record, each one a
