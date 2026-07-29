@@ -22,7 +22,7 @@
 |-------------|------------|-------------------------------|
 | **Deciding what to build next** | [ORCHESTRATION.md](ORCHESTRATION.md) | Old chat plans; infinite feature lists |
 | Implementing a feature | [ORCHESTRATION.md](ORCHESTRATION.md) horizon gate + [docs/PLAN.md](docs/PLAN.md) + `src/*/INDEX.md` | Old chat plans in `~/.cursor/plans/` |
-| Launch / deploy | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md), [docs/archive/TRACK_D_GO_LIVE.md](docs/archive/TRACK_D_GO_LIVE.md), [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md), [docs/ENV.md](docs/ENV.md), [docs/archive/BETA_LAUNCH_OPS.md](docs/archive/BETA_LAUNCH_OPS.md), [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) | [docs/archive/SETUP.md](docs/archive/SETUP.md) (one-time LLC/domain setup) |
+| Launch / deploy | **[docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) — the single source**, then [docs/ENV.md](docs/ENV.md) for what each var means | Everything in `docs/archive/` (`SOFT_LAUNCH_DAY`, `BETA_LAUNCH_OPS`, `PRE_LAUNCH_PLAN`, `LAUNCH_READY`, `TRACK_D_GO_LIVE`, `SETUP`) — all **superseded 2026-07-19** and all still contradicting the runbook |
 | Social / launch posts | [docs/SOCIAL_LAUNCH.md](docs/SOCIAL_LAUNCH.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) | — |
 | Brand / press / media kit | [docs/brand-guidelines.md](docs/brand-guidelines.md), `/press`, `public/brand/` | — |
 | **Brand mascot (Scout)** | [docs/MASCOT.md](docs/MASCOT.md), `public/brand/mascot/`, [media/FLOW_PROMPTS.md](media/FLOW_PROMPTS.md) § Mascot | Duo-style guilt retention; mascot spam on Train logger; replacing MW monogram |
@@ -61,7 +61,7 @@
 | **Open source** | [docs/OPEN_SOURCE.md](docs/OPEN_SOURCE.md), [LICENSE](LICENSE), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [CONTRIBUTING.md](CONTRIBUTING.md) | Flipping `PRIVATE_MODE`; inventing a new license |
 | **Secrets / keys** | [docs/SECRETS.md](docs/SECRETS.md), [docs/ENV.md](docs/ENV.md), [SECURITY.md](SECURITY.md) | Committing `.env.local`; pasting live keys into docs |
 | **Production / ops maturity (13 layers)** | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md), [docs/CACHE_LADDER.md](docs/CACHE_LADDER.md) | Feature roadmaps; claiming all 13 “done” |
-| Pre-launch checklist | [PRE_LAUNCH_PLAN.md](docs/archive/PRE_LAUNCH_PLAN.md) | — |
+| Pre-launch checklist | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) | `docs/archive/PRE_LAUNCH_PLAN.md` — **superseded 2026-07-19**, was routed here until `.170` |
 | Post-launch cadence | [docs/POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) | — |
 | **User help** | [docs/help/INDEX.md](docs/help/INDEX.md) | — |
 | **Architecture** | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | — |

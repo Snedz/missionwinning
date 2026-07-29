@@ -20,6 +20,29 @@ export function getPillarWins(limit = 20): PillarWin[] {
   return readJson<PillarWin[]>(STORAGE_KEYS.pillarWins, []).slice(0, limit);
 }
 
+/** The one place the cloud row name is built. Readers match it via `isNonFoodEntryName`. */
+export function pillarWinEntryName(pillar: PillarType, title: string): string {
+  return `${pillar} win: ${title}`.slice(0, 80);
+}
+
+/**
+ * `nutrition_entries` is doing double duty as a generic "win" table — pillar wins are
+ * written here, and `AssessmentsPage` records assessments the same way with a comment
+ * admitting it is a stopgap ("or extend table later").
+ *
+ * They all arrive with `protein: 0, cals: 0`, and the Fuel diary used to render every
+ * cloud row, so a signed-in athlete who logged a GPS run saw
+ * `track win: GPS 5.20 km — 0g P · 0 kcal` sitting in their food log.
+ *
+ * The predicate lives beside the writer on purpose: a format defined in one file and
+ * matched by a regex in another is exactly how these two drift apart.
+ */
+const NON_FOOD_ENTRY = /^(?:move|mind|track|learn) win: |^Assessment[: ]/i;
+
+export function isNonFoodEntryName(name: string): boolean {
+  return NON_FOOD_ENTRY.test(name.trim());
+}
+
 export async function logPillarWin(
   pillar: PillarType,
   title: string,
@@ -45,7 +68,7 @@ export async function logPillarWin(
       const today = new Date().toISOString().split('T')[0];
       await saveNutritionEntry({
         date: today,
-        name: `${pillar} win: ${title}`.slice(0, 80),
+        name: pillarWinEntryName(pillar, title),
         protein: 0,
         cals: 0,
       });

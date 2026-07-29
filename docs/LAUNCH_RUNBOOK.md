@@ -67,6 +67,11 @@
    7. **`20260719_push_subscriptions.sql`** — web push (Wave 7)  
    8. **`20260720_referrals.sql`** — referral codes + `mw_week4_retention()` RPC (Wave 8)  
    9. **`20260721_beta_invites.sql`** — beta invites + `checkout_recovery` (Wave 10)  
+   10. **`20260721_workout_sync_v2.sql`** — `client_id`/`revision`/**tombstones** (`deleted_at`)  
+   11. **`20260721_routines_sync.sql`** · **`20260721_custom_exercises_prefs_sync.sql`** — Android sync  
+   12. **`20260721_android_telemetry.sql`** — weekly Android heartbeat  
+   13. **`20260728_anonymous_push.sql`** — nullable `user_id` + `device_id`; **without it the anonymous return loop is inert** ([RETURN_LOOP_PLAN.md](RETURN_LOOP_PLAN.md))  
+   14. **`20260728_week4_exclude_tombstones.sql`** — **the boss metric counts deleted workouts until this is applied.** Then prove it: `psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/checks/week4_retention_proof.sql`  
 4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
 5. **Smoke after env** (from a machine with secrets):
    ```bash
@@ -80,6 +85,7 @@
 
 - [x] Env vars set (incl. service role, DEMO_PREMIUM=false, Resend, Stripe webhook secret, Payment Links)
 - [x] All migrations run through **20260720_referrals** (push + week-4 RPC)
+- [ ] **Migrations 10–14 above are NOT applied.** The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric; the four `20260721_*` gate Android sync. None of them appeared in any founder checklist until `.170`.
 - [x] Deployed URL loads and shows the new private teaser page
 - [x] Digest dry-run + live send OK (`sent:true` with Resend)
 
@@ -125,13 +131,24 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 
 ## §4 — Money: Stripe in ~1 hour (do in parallel with §3)
 
-*No LLC required to start in most places — Stripe supports individual/sole-proprietor accounts; you can move to an entity later. This is not legal/tax advice — check your local requirements.*
+> **⚠️ SUPERSEDED by the founder override of 2026-07-23.**
+> This section used to say *"open Stripe as **Individual**, not Company"* and cite
+> [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1d as its authority — but §1d is the doc
+> that **reverses** it: *"**Do not** take individual Stripe / PayPal / crypto checkout
+> until business accounts exist."* Following this section as written would have opened
+> an SSN-based account the current policy forbids, then required migrating it.
+>
+> **Current policy: free-first beta.** No checkout of any kind until LLC + EIN +
+> business bank land. `NEXT_PUBLIC_FREE_BETA` defaults **on** and mutes all Bundle UI —
+> [FREE_BETA.md](FREE_BETA.md).
+>
+> The checklist below is the **post-EIN** path. Work it when the entity clears, not now.
 
-**Pre-EIN (Texas LLC filed, ~4 weeks / Bizee EIN pending):** open Stripe as **Individual**, not Company — full path [LLC_AND_PAYMENTS.md](LLC_AND_PAYMENTS.md) §1d. Do not wait for business Stripe/PayPal.
+*This is not legal/tax advice — check your local requirements.*
 
-### Pre-EIN interim checklist
+### Post-EIN checklist (do NOT start before the entity clears)
 
-- [ ] Stripe **individual / sole prop** account (SSN) — not LLC/Company
+- [ ] Stripe account **under the LLC** (EIN), not individual/sole-prop
 - [ ] Beta 80% Prices or Payment Links (prefer 12‑mo / Lifetime; keep monthly as anchor)
 - [ ] Production `sk_live_` / links + webhook `whsec` wired; dispute events + `FOUNDER_DIGEST_EMAIL`
 - [ ] One live or test purchase → `enrollments` + `/api/premium/status`

@@ -8,6 +8,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { getUser, saveNutritionEntry, getUserNutritionForDate } from '@/lib/supabase';
+import { isNonFoodEntryName } from '@/lib/pillarLog';
 import { syncProteinChallengeFromNutrition } from '@/lib/challenges';
 import { FREE_RECIPES } from '@/data/recipes/freeRecipes';
 import type { Recipe } from '@/data/recipes/types';
@@ -427,7 +428,11 @@ export function NutritionPage() {
     if (u) {
       const cloud = await getUserNutritionForDate(today);
       if (cloud.length > 0) {
-        const mapped = cloud.map((c) => ({
+        // `nutrition_entries` is shared with pillar wins and assessments, which arrive
+        // at 0g / 0 kcal. Without this the food diary listed things like
+        // "track win: GPS 5.20 km" as a meal. See isNonFoodEntryName.
+        const food = cloud.filter((c) => !isNonFoodEntryName(c.name));
+        const mapped = food.map((c) => ({
           name: c.name,
           protein: c.protein,
           cals: c.cals,

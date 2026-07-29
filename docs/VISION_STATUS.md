@@ -1,5 +1,10 @@
 # Vision vs Reality — Mission Winning
 
+> **⚠️ STALE — do not use the per-pillar rows as current status.**
+> Last refreshed at build `.109`; the repo is on `.170`, roughly sixty ships later.
+> **Current status lives in exactly one place: [CONTEXT.md](../CONTEXT.md) `## Now`.**
+> This file is kept for the vision-vs-reality *framing*, not for its status column.
+
 **Living comparison** against [vision.md](../vision.md). Updated **2026-07-23** (build `2026.07-unified.109` — exercise-as-medicine thesis + Coach dose / victory feel / re-entry; **recruiting ≥10 users + founder Production promote remain the bottleneck**).
 
 Use this doc when prioritizing work. Every feature should pass: *Does it serve free global accessibility or the right path?*

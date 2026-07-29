@@ -6,6 +6,97 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — Told the athlete it saved when it hadn't (`.170`)
+
+Asked whether anything needed building before launch. The answer, from the repo's own
+runbook, is no — *"the app has been 'almost ready' for months. **The code is not the
+bottleneck**."* So this ships no features. It fixes five things that would have
+embarrassed us on day one, and makes the founder's critical path executable.
+
+Also worth recording: [REDTEAM.md](docs/REDTEAM.md) **A5** — *"founder actually
+unblocks distribution"* — carries the falsifier *"14 days after this doc lands, still
+no deployed URL or no 10 beta users."* REDTEAM is dated 2026-07-02. That is 27 days.
+Its own prescribed consequence is *"consider a hard rule of no new features until N
+users"* — which is why this entry adds none.
+
+### The two that lost real data
+
+- **The founders waitlist told people it saved when it hadn't.**
+  `submitLead` **never throws** — it reports failure through `{ ok }`
+  (`supabase.ts:354`). `UnlockButton` wrapped it in a `try/catch` (dead — nothing can
+  throw) and **discarded the return**, then unconditionally rendered *"You're on the
+  founders list."* Worse, `track('waitlist_joined')` fired on the same path: the
+  address was lost, the athlete believed otherwise, **and the signup metric counted a
+  row that did not exist.** On the monetization page, at launch.
+  Found the identical bug a second time in `app/private/PrivateTeaserClient.tsx` —
+  the private gate, which while `PRIVATE_MODE` is on is the *only* public capture
+  point we have. Both now honour `{ ok }`, show a retry, and only track on success.
+  (`FeedbackPage` is a third instance but writes to device storage first, so the data
+  survives; that one needs an outbox retry, not a polish fix. Left, flagged.)
+- **The Fuel diary listed GPS runs and Learn chapters as food.** `pillarLog.ts` writes
+  `"{pillar} win: {title}"` at 0g / 0 kcal into `nutrition_entries` — from Learn, Track
+  GPS, activity import, breathing, wearables — and `NutritionPage` mapped **every**
+  cloud row into the visible log, its only filter a dedupe by name. A signed-in athlete
+  who logged a run saw `track win: GPS 5.20 km — 0g P · 0 kcal` in their food diary.
+  `AssessmentsPage` adds two more shapes, its own comment calling the table a stopgap.
+  The predicate now lives **beside the writer** (`isNonFoodEntryName`), because a
+  format defined in one file and matched by a regex in another is how these drift.
+  Falsified: change the writer's format and the test fails.
+
+### Three that were merely dishonest
+
+- `window.alert()` on three **ungated** wedge surfaces (Profile assessment, Today PWA
+  hint, the PWA provider) → `toast`. `toast` is a module-level store, not a hook, so it
+  works in the provider's `window`-hung callback too. The other six alerts in Today are
+  correctly inside `SHOW_TODAY_FOUNDER_TOOLS` (`NODE_ENV === 'development'`) — checked,
+  not assumed.
+- **Deleted the fake 350ms delay** in `estimateMealFromPhoto`. That path is a filename +
+  file-size + average-colour guess; the UI says so honestly, and simulated "thinking"
+  quietly contradicted the label.
+- `/coaching` promised *"we reply personally, usually within 48 hours"* with no queue,
+  notification or SLA behind it. Now says what actually happens.
+
+### The guards, and one I nearly shipped broken
+
+`check-display-type`, `check-token-sync` and `check-build-label` ran in
+`npm run gate` and **in no workflow** — two of them written *because the regression
+already happened once*, while 7 `cursor/`/`copilot/`/`claude/` branches never run the
+local gate. Now in `ci.yml`.
+
+**And `actions/checkout` defaults to a shallow clone**, so `origin/master` would not
+exist and `check-build-label` would have printed *"no base branch — skipping"* and
+exited 0. I proved it with a real `--depth 1` clone before believing it. Added
+`fetch-depth: 0`. Without that I would have shipped a decorative gate — the exact
+defect this file has now recorded seven times.
+
+### Docs the founder could not follow
+
+Six contradictions, reconciled to **`LAUNCH_RUNBOOK.md` as the single source**:
+
+1. §4 said *"open Stripe as **Individual**"* and cited `LLC_AND_PAYMENTS §1d` as its
+   authority — **§1d is the override that forbids it.** Following the runbook would
+   have opened an SSN account the current policy bans. Marked superseded; the checklist
+   is now labelled post-EIN.
+2. Upstash: `[x]` dated in the runbook, `[ ]` "required before public" in PROTECTION —
+   which sends the founder to redo finished work.
+3. "Actions is blocked" in `CONTEXT.md` and `gate.mjs` — **it works**, verified by 8
+   green checks on #121.
+4. The migration list stopped at `20260721_beta_invites`; **five later migrations
+   appeared in no founder checklist**, including the two that gate the return loop and
+   the correctness of the boss metric.
+5. `VISION_STATUS.md` is ~60 builds stale — banner added, status points at CONTEXT.
+6. `ENV.md`'s 13-box checklist duplicated the runbook's and was never ticked.
+
+Plus `INDEX.md` still routed "Pre-launch checklist" at a doc **superseded 2026-07-19**.
+
+`.env.example` gained `MAIL_POSTAL_ADDRESS` (without it `renderEmail` refuses and the
+leads route silently downgrades every confirmation to plain text), the `MEAL_VISION_*`
+set, and `NEXT_PUBLIC_SHOW_OWNER_TOOLS`.
+
+Unit tests **616 → 622**. Gate 39/39.
+
+---
+
 ## 2026-07-28 — The gate that keeps us unlaunched was bypassable (`.169`)
 
 Pushing `.164`–`.168` made GitHub report **45 open Dependabot alerts on `master`**

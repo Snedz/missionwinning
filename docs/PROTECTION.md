@@ -172,7 +172,7 @@ Mission Winning’s **positioning** (free global PWA, six pillars, Super Bundle)
 - [x] Set `YOUTH_CONSENT_SECRET` and `NUDGE_SECRET` (dedicated — not shared with gate secret) — per LAUNCH_RUNBOOK §2
 - [x] Set `SUPABASE_SERVICE_ROLE_KEY` + `STRIPE_WEBHOOK_SECRET` in Vercel (never `NEXT_PUBLIC_`) — per LAUNCH_RUNBOOK §2
 - [x] Set `DEMO_PREMIUM=false` explicitly in production — per LAUNCH_RUNBOOK §2
-- [ ] **Required before public:** `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (distributed rate limits — [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md) L9)
+- [x] **Required before public:** `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` (distributed rate limits — [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md) L9) — done 2026-07-22, `rate-limit-smoke` saw 429 on www. **Status lives in [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) §2b; this row mirrors it.** It sat unticked here for a week after the runbook ticked it, which sends the founder to redo finished work.
 - [ ] **Required before public:** `NEXT_PUBLIC_SENTRY_DSN` on Production ([ENV.md](ENV.md), [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md) L12)
 - [ ] GitHub Actions: `VERCEL_TOKEN` + `VERCEL_ORG_ID` + `VERCEL_PROJECT_ID`; `SMOKE_BASE_URL` (+ access secret) for gate-smoke — rotate `VERCEL_TOKEN` if stale
 - [ ] Verify gate + growth + rate-limit with `LAUNCH_STRICT=true npm run launch-verify` (and `npm run rate-limit-smoke` sees 429)

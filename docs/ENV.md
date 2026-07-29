@@ -443,6 +443,11 @@ Run through `supabase/migrations/20260703_reminders_optin.sql` (or latest in `su
 
 ## Checklist
 
+> **Reference only — [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) holds the live state.**
+> These boxes were never ticked while the runbook ticked the same items, so reading
+> them as status suggests a dozen finished tasks are outstanding. Use this list to
+> know *what* each variable is for; use the runbook to know what is *done*.
+
 - [ ] `PRIVATE_ACCESS_SECRET` set in Vercel Production + Preview
 - [ ] `PRIVATE_MODE=true` in Vercel
 - [ ] Redeployed after env changes

@@ -28,6 +28,7 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
   const [waitEmail, setWaitEmail] = useState('');
   const [waitDone, setWaitDone] = useState(false);
   const [waitBusy, setWaitBusy] = useState(false);
+  const [waitError, setWaitError] = useState<string | null>(null);
   const [sessionUnlocking, setSessionUnlocking] = useState(true);
 
   // Signed-in (localStorage) but missing gate cookie — typical after Google OAuth.
@@ -94,16 +95,31 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
     e.preventDefault();
     if (!waitEmail || waitBusy) return;
     setWaitBusy(true);
-    try {
-      await submitLead({
-        name: '',
-        email: waitEmail,
-        source: 'launch-waitlist',
-        message: 'Private gate waitlist',
-      });
-    } catch {
-      // Best-effort — submissions are reviewed manually during beta.
+    setWaitError(null);
+
+    // Same defect as UnlockButton had: `submitLead` never throws — it reports
+    // failure through `{ ok }` — so the old try/catch was dead and the result was
+    // discarded. This is the private gate, the only public capture point while
+    // PRIVATE_MODE is on, so a silently dropped address here is a launch-day lead
+    // that never existed. `ok` is still true for the local-only fallback, which is
+    // recoverable; only a hard failure shows the error.
+    const result = await submitLead({
+      name: '',
+      email: waitEmail,
+      source: 'launch-waitlist',
+      message: 'Private gate waitlist',
+    });
+
+    if (!result?.ok) {
+      setWaitError(
+        t('gateWaitlistFailed', {
+          defaultValue: 'That did not save. Check your connection and try again.',
+        })
+      );
+      setWaitBusy(false);
+      return;
     }
+
     track('waitlist_joined', { product: 'launch' });
     setWaitDone(true);
     setWaitBusy(false);
@@ -255,6 +271,11 @@ export function PrivateTeaserClient({ initialInvite = '' }: Props) {
                         : t('gateWaitlistSubmit', { defaultValue: 'Notify me' })}
                     </button>
                   </div>
+                  {waitError && (
+                    <p className="gate-foot" role="alert" style={{ color: 'var(--destructive)' }}>
+                      {waitError}
+                    </p>
+                  )}
                   <p className="gate-foot">
                     {t('gateWaitlistFoot', {
                       defaultValue: 'No spam — one email when the beta opens, one at launch.',

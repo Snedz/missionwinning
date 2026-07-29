@@ -54,6 +54,7 @@ export function UnlockButton({
   const [submitting, setSubmitting] = useState(false);
   const [checkoutBusy, setCheckoutBusy] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [waitlistError, setWaitlistError] = useState<string | null>(null);
 
   // Free-first beta: no checkout / waitlist / Bundle CTAs.
   if (isFreeBeta()) return null;
@@ -76,16 +77,24 @@ export function UnlockButton({
     if (!email || submitting) return;
     setSubmitting(true);
 
-    try {
-      await submitLead({
-        name: '',
-        email,
-        source: `waitlist-${productId || (isSubscription ? 'super-bundle' : 'premium')}`,
-        message: `Founders waitlist: ${itemTitle}`,
-      });
-    } catch {
-      // Lead capture is best-effort; the confirmation below is still honest —
-      // the founder reviews waitlist submissions manually during beta.
+    setWaitlistError(null);
+
+    // `submitLead` never throws — it catches internally and reports failure through
+    // `{ ok }` (src/lib/supabase.ts). The old code wrapped it in try/catch and threw
+    // the result away, so a dropped lead rendered as "You're on the founders list."
+    // and still fired `waitlist_joined`: the address was lost, the athlete believed
+    // otherwise, and the signup metric counted a row that did not exist.
+    const result = await submitLead({
+      name: '',
+      email,
+      source: `waitlist-${productId || (isSubscription ? 'super-bundle' : 'premium')}`,
+      message: `Founders waitlist: ${itemTitle}`,
+    });
+
+    if (!result?.ok) {
+      setWaitlistError('That did not save. Check your connection and try again.');
+      setSubmitting(false);
+      return;
     }
 
     track('waitlist_joined', { product: productId || (isSubscription ? 'super-bundle' : 'premium') });
@@ -209,6 +218,11 @@ export function UnlockButton({
           {submitting ? 'Joining…' : 'Join the founders waitlist'}
         </button>
       </div>
+      {waitlistError && (
+        <p className="mt-2 text-center text-xs text-destructive" role="alert">
+          {waitlistError}
+        </p>
+      )}
       <p className="mt-2 text-center text-[11px] leading-relaxed text-muted-foreground">
         Checkout opens soon. Founders get the launch discount first — and the free core stays free
         either way.

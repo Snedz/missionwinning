@@ -30,6 +30,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { SHOW_TODAY_FOUNDER_TOOLS } from '@/lib/todayFounderTools';
 import { StreakChip } from '@/components/today/StreakChip';
 import { bumpTrainingStreak } from '@/lib/streaks';
+import { toast } from '@/hooks/use-toast';
 
 type MwWindow = Window & {
   triggerPwaInstall?: () => Promise<void>;
@@ -485,7 +486,13 @@ export function TodayProgressSection({
             else {
               const p = mw.deferredPwaPrompt?.();
               if (p) p.prompt();
-              else alert(t('todayPwaInstallHint', { defaultValue: 'Use browser menu (⋮ > Add to Home Screen / Install).' }));
+              else
+                toast({
+                  title: t('todayInstallNow', { defaultValue: 'Install Now' }),
+                  description: t('todayPwaInstallHint', {
+                    defaultValue: 'Use browser menu (⋮ > Add to Home Screen / Install).',
+                  }),
+                });
             }
           }}>{t('todayInstallNow', { defaultValue: 'Install Now' })}</Button>
         </div>

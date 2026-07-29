@@ -15,6 +15,7 @@ import { readRaw, remove, writeRaw } from '@/lib/storage/safeStorage';
 // Bootstrap i18next (minimal EN). Full locale catalogs hydrate after idle.
 // supabase-js is NOT imported here — auth listener loads it after idle.
 import i18n, { hydrateI18nResources } from '@/i18n';
+import { toast } from '@/hooks/use-toast';
 
 const OnlineStatusBanner = dynamic(
   () =>
@@ -68,7 +69,13 @@ if (typeof window !== 'undefined') {
   mw.triggerPwaInstall = async () => {
     const promptEvent = deferredPwaPrompt;
     if (!promptEvent) {
-      alert('Use your browser menu (⋮ or Share > Add to Home Screen) to install Mission Winning for offline use anywhere.');
+      // `toast` is a module-level store, not a hook, so it works here even though
+      // this callback is hung off `window` rather than rendered by React.
+      toast({
+        title: 'Install Mission Winning',
+        description:
+          'Use your browser menu (⋮ or Share > Add to Home Screen) to install it for offline use anywhere.',
+      });
       return;
     }
     promptEvent.prompt();

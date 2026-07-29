@@ -8,6 +8,7 @@ import { getUser } from '@/lib/supabase';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
+import { toast } from '@/hooks/use-toast';
 
 type LastAssessment = {
   risk: string;
@@ -91,7 +92,7 @@ export function ProfileAssessmentCard() {
                       protein: 0,
                       cals: 0,
                     });
-                  alert('Win logged! +1 streak.');
+                  toast({ title: 'Win logged', description: '+1 streak.' });
                 }}
               >
                 Log assessment win (+cloud)
