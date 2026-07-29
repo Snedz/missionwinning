@@ -1,0 +1,219 @@
+/**
+ * Share cards: the session or the week as an image the athlete chooses to send.
+ *
+ * This is the growth surface a privacy-first logger is allowed to have. Hevy's loop
+ * is an in-app social feed; ours is share OUT — the workout content stays on this
+ * device, and what leaves is a PNG the athlete deliberately hands to their group
+ * chat, with their referral link riding along. Nothing here talks to a server.
+ *
+ * Split on the same seam as everything else in this repo: the card DATA builders are
+ * pure and tested (what is claimed on the card is exactly the kind of thing that can
+ * quietly lie — an invented PR line is the `.179` counter bug wearing a nicer shirt),
+ * while the canvas renderer is a thin DOM-only painter.
+ *
+ * Brand values duplicate `scripts/check-token-sync.mjs` BRAND_HEX by necessity —
+ * canvas cannot read CSS custom properties from a detached context. If the brand
+ * moves, `check-token-sync` breaks the build and this file is on its grep list.
+ */
+
+import type { PersonalRecord } from '@/lib/coach/progress';
+import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
+import type { WeeklyDebrief } from '@/lib/weeklyDebrief';
+
+/** From BRAND_HEX in scripts/check-token-sync.mjs — paper/ink/poster/red-700. */
+const PAPER = '#f3f2f2';
+const INK = '#201e1d';
+const POSTER = '#ec3013';
+const RED_700 = '#ae1800';
+const MUTED = '#5f5e5d';
+
+export const SHARE_CARD_WIDTH = 1080;
+export const SHARE_CARD_HEIGHT = 1350;
+
+export interface ShareCardStat {
+  label: string;
+  value: string;
+}
+
+export interface ShareCardData {
+  kicker: string;
+  title: string;
+  stats: ShareCardStat[];
+  /** Present only when a genuine record exists — never invented. */
+  prLine: string | null;
+  footer: string;
+}
+
+function formatDuration(seconds: number): string {
+  const mins = Math.max(1, Math.round(seconds / 60));
+  if (mins < 60) return `${mins} min`;
+  const h = Math.floor(mins / 60);
+  return `${h}h ${mins % 60}m`;
+}
+
+function exerciseLabel(id: string): string {
+  return id.replace(/-/g, ' ');
+}
+
+/**
+ * The one PR the card leads with: heaviest-weight record first, else the first
+ * record of any kind. No records → no line. The debrief's rule holds here: nothing
+ * is said that is not known.
+ */
+export function pickHeadlinePr(records: PersonalRecord[], unitLabel: string): string | null {
+  if (records.length === 0) return null;
+  const eligible = records.filter((r) => r.previous !== null);
+  if (eligible.length === 0) return null;
+  const weightPr = eligible.find((r) => r.kind === 'weight');
+  const pr = weightPr ?? eligible[0];
+  const name = exerciseLabel(pr.exerciseId);
+  if (pr.kind === 'weight') return `New best: ${name} ${pr.value} ${unitLabel}`;
+  if (pr.kind === 'reps') return `New best: ${name} × ${pr.value}`;
+  return `New best: ${name} e1RM ${pr.value} ${unitLabel}`;
+}
+
+export function buildVictoryCardData(
+  summary: WorkoutVictorySummary,
+  records: PersonalRecord[],
+  unitLabel: string
+): ShareCardData {
+  const stats: ShareCardStat[] = [
+    { label: 'Volume', value: `${summary.totalVolume.toLocaleString()} ${unitLabel}` },
+    { label: 'Sets', value: String(summary.setCount) },
+    { label: 'Time', value: formatDuration(summary.durationSeconds) },
+  ];
+  if (summary.streak > 1) stats.push({ label: 'Streak', value: `${summary.streak} days` });
+  return {
+    kicker: 'SESSION LOCKED',
+    title: summary.workoutName,
+    stats,
+    prLine: pickHeadlinePr(records, unitLabel),
+    footer: 'missionwinning.com — free logger, no account',
+  };
+}
+
+export function buildRecapCardData(debrief: WeeklyDebrief, unitLabel: string): ShareCardData {
+  const stats: ShareCardStat[] = [
+    { label: 'Sessions', value: String(debrief.train.sessions) },
+    { label: 'Sets', value: String(debrief.train.sets) },
+    { label: 'Volume', value: `${debrief.train.volume.toLocaleString()} ${unitLabel}` },
+  ];
+  return {
+    kicker: 'WEEK IN THE BOOKS',
+    title: `Week of ${debrief.weekStart}`,
+    stats,
+    // The debrief already refuses to invent PRs; zero is silence, not "0 PRs!".
+    prLine: debrief.train.prs > 0 ? `${debrief.train.prs} personal record${debrief.train.prs === 1 ? '' : 's'}` : null,
+    footer: 'missionwinning.com — free logger, no account',
+  };
+}
+
+/**
+ * Paint the card. 1080×1350 (portrait 4:5 — the share-sheet-friendly ratio), paper
+ * ground, ink type, one poster-red band. Small text never uses poster red — 3.78:1
+ * on paper — the same contrast rule the app's stylesheet documents; the red band
+ * carries paper text instead.
+ */
+export function renderShareCard(data: ShareCardData): Promise<Blob | null> {
+  if (typeof document === 'undefined') return Promise.resolve(null);
+  const canvas = document.createElement('canvas');
+  canvas.width = SHARE_CARD_WIDTH;
+  canvas.height = SHARE_CARD_HEIGHT;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return Promise.resolve(null);
+
+  const font = (px: number, weight = 700) =>
+    `${weight} ${px}px Archivo, system-ui, -apple-system, sans-serif`;
+
+  ctx.fillStyle = PAPER;
+  ctx.fillRect(0, 0, SHARE_CARD_WIDTH, SHARE_CARD_HEIGHT);
+
+  // Poster-red kicker band with paper text (large type — poster red is legal here).
+  ctx.fillStyle = POSTER;
+  ctx.fillRect(0, 0, SHARE_CARD_WIDTH, 140);
+  ctx.fillStyle = PAPER;
+  ctx.font = font(44);
+  ctx.textBaseline = 'middle';
+  ctx.fillText(data.kicker, 72, 74);
+
+  // Title — ink, condensed-feel weight.
+  ctx.fillStyle = INK;
+  ctx.font = font(88, 800);
+  ctx.textBaseline = 'alphabetic';
+  const title = data.title.length > 22 ? `${data.title.slice(0, 21)}…` : data.title;
+  ctx.fillText(title, 72, 320);
+
+  // Rule under the title — 2px ink, the system's hairline.
+  ctx.fillRect(72, 368, SHARE_CARD_WIDTH - 144, 2);
+
+  // Stat rows.
+  let y = 500;
+  for (const stat of data.stats) {
+    ctx.fillStyle = MUTED;
+    ctx.font = font(38, 600);
+    ctx.fillText(stat.label.toUpperCase(), 72, y);
+    ctx.fillStyle = INK;
+    ctx.font = font(72, 800);
+    ctx.fillText(stat.value, 72, y + 86);
+    y += 190;
+  }
+
+  // PR line — red-700 (small-text-legal red), only when real.
+  if (data.prLine) {
+    ctx.fillStyle = RED_700;
+    ctx.font = font(48, 800);
+    ctx.fillText(data.prLine, 72, y + 20);
+    y += 90;
+  }
+
+  // Footer.
+  ctx.fillStyle = MUTED;
+  ctx.font = font(34, 600);
+  ctx.fillText(data.footer, 72, SHARE_CARD_HEIGHT - 80);
+
+  return new Promise((resolve) => {
+    try {
+      canvas.toBlob((blob) => resolve(blob), 'image/png');
+    } catch {
+      resolve(null);
+    }
+  });
+}
+
+/**
+ * Share the card: files-capable share sheet when the platform has one, else
+ * download the PNG and put the text on the clipboard. Returns how it went, for
+ * analytics — the caller tracks, this module stays DOM-only.
+ */
+export async function shareCardImage(
+  blob: Blob,
+  text: string,
+  url: string,
+  filename = 'mission-winning.png'
+): Promise<'shared' | 'downloaded' | 'failed'> {
+  const file = new File([blob], filename, { type: 'image/png' });
+  if (
+    typeof navigator !== 'undefined' &&
+    navigator.canShare?.({ files: [file] }) &&
+    navigator.share
+  ) {
+    try {
+      await navigator.share({ files: [file], text: `${text} ${url}` });
+      return 'shared';
+    } catch {
+      /* cancelled — fall through to download */
+    }
+  }
+  try {
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = objectUrl;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(objectUrl);
+    if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(`${text} ${url}`);
+    return 'downloaded';
+  } catch {
+    return 'failed';
+  }
+}

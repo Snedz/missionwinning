@@ -6,6 +6,42 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The growth loop a privacy-first app is allowed to have (`.182`)
+
+Hevy's moat is an in-app social feed. We cannot build that without breaking the one
+promise the product is positioned on — workout content never leaves the device — so
+this is the other half of the loop: **share OUT**. A PNG rendered on this device,
+sent only when the athlete decides to send it, carrying their referral link.
+
+Two cards from data that already existed: the session (`WorkoutVictorySummary` +
+the debrief's `records`) and the week (`WeeklyDebrief.train`, which has counted PRs
+since `.173` with nothing reading the number). 1080×1350 portrait, paper ground,
+ink type, one poster-red band.
+
+**The honesty rules follow the card onto the image**, because a share card is
+exactly where a product starts flattering its user:
+
+- **No records → no line.** A first-ever entry has `previous: null` and is *not* a
+  record broken — the same rule `recordLine` enforces in the debrief. Falsified:
+  counting first-evers fails a test.
+- **Zero PRs is silence**, not "0 personal records!". Falsified: printing the zero
+  fails a test.
+- **A one-day streak is not a streak** worth printing.
+- Contrast carries over too: poster red `#ec3013` is 3.78:1 on paper, so it is used
+  only for the large kicker band with paper text on it; the PR line uses
+  `--primary` `#ae1800`. The rule `index.css` documents is not suspended because the
+  surface is a canvas.
+
+Split on the usual seam — the card *data* builders are pure and tested; the canvas
+painter is a thin DOM-only function, following `progressPhotos.ts`'s
+`canvas.toBlob` pattern (the only client-side image code that already existed).
+Sharing prefers `navigator.canShare({files})` and degrades to download + clipboard,
+so a desktop browser without a share sheet still produces the image.
+
+Brand hexes are duplicated from `check-token-sync`'s `BRAND_HEX` by necessity — a
+detached canvas cannot read CSS custom properties — and that script is the guard if
+the brand ever moves. Tests **766→771**.
+
 ## 2026-07-29 — The percentages were prose (`.181`)
 
 Famous free programs, with the wave maths finally executable. The catalog already

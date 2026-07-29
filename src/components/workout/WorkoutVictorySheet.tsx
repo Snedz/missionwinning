@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Share2 } from 'lucide-react';
+import { ImageIcon, Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,6 +22,11 @@ import { upsertTodayPartial } from '@/lib/mindCheckIns';
 import { getCachedReferralCode } from '@/lib/referral';
 import { SessionDebriefCard } from '@/components/workout/SessionDebriefCard';
 import type { Debrief } from '@/lib/coach/debrief';
+import {
+  buildVictoryCardData,
+  renderShareCard,
+  shareCardImage,
+} from '@/lib/share/shareCard';
 
 type Props = {
   open: boolean;
@@ -85,6 +90,23 @@ export function WorkoutVictorySheet({
     } else {
       track('workout_shared', { method: 'failed' });
     }
+  };
+
+  // The image variant of share: rendered on this device, sent only by choice.
+  const handleShareCard = async () => {
+    const refCode = getCachedReferralCode();
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
+    const shareUrl = refCode
+      ? `${origin}/?ref=${encodeURIComponent(refCode)}`
+      : `${origin}/?utm_source=share&utm_medium=victory-card`;
+    const card = buildVictoryCardData(summary, debrief?.records ?? [], unitLabel);
+    const blob = await renderShareCard(card);
+    if (!blob) {
+      track('share_card_generated', { surface: 'victory', method: 'failed' });
+      return;
+    }
+    const method = await shareCardImage(blob, shareText, shareUrl);
+    track('share_card_generated', { surface: 'victory', method });
   };
 
   const hasCoachNext = summary.nextAction?.href?.includes('/coach');
@@ -303,6 +325,15 @@ export function WorkoutVictorySheet({
             >
               <Share2 className="h-3 w-3" />
               {t('victoryShare', { defaultValue: 'Share' })}
+            </button>
+            <span aria-hidden>·</span>
+            <button
+              type="button"
+              className="inline-flex items-center gap-1 hover:text-foreground underline-offset-2 hover:underline"
+              onClick={handleShareCard}
+            >
+              <ImageIcon className="h-3 w-3" />
+              {t('victoryShareCard', { defaultValue: 'Share card' })}
             </button>
           </div>
         </DialogFooter>
