@@ -13,6 +13,7 @@
  */
 
 import { useState } from 'react';
+import { WindDownOptIn } from '@/components/workout/WindDownOptIn';
 import type { Debrief } from '@/lib/coach/debrief';
 import { track } from '@/lib/analytics';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
@@ -86,6 +87,10 @@ export function SessionDebriefCard({ debrief }: Props) {
           )}
         </div>
       ) : null}
+
+      {/* Only after a session that actually ran hot — that is when "evenings like
+          this" means something. A steady session gets no ask. */}
+      {debrief.zone === 'high' ? <WindDownOptIn /> : null}
     </section>
   );
 }
