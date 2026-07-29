@@ -25,6 +25,12 @@ on:
     # Every hour at :07 — off the top of the hour, where Actions is most contended.
     - cron: '7 * * * *'
 
+# Nothing here touches the repo — no checkout, no comment, no artifact. The job talks
+# to one production URL with its own bearer token, so the GITHUB_TOKEN needs no scope
+# at all. Empty rather than `contents: read` for that reason: this file runs hourly on
+# master and the narrowest grant is the one that cannot be widened by accident.
+permissions: {}
+
 concurrency:
   group: cron-wind-down
   cancel-in-progress: false
