@@ -1,4 +1,5 @@
 import type { CompletedWorkoutLog } from '@/types';
+import { normalizeCloudExercises } from '@/lib/sync/normalizeExercises';
 
 /**
  * Keep enough history for year-over-year comparisons. Truncation is reported
@@ -142,7 +143,10 @@ export function mapCloudToLocal(
     startedAt: cl.started_at,
     completedAt: cl.completed_at,
     durationSeconds: cl.duration_seconds,
-    exercises: cl.exercises,
+    // Rows written by the Android sync route store a FLAT set array in this same
+    // column. Normalizing here (rather than only at write) heals every row already
+    // in the table — no backfill migration. See lib/sync/normalizeExercises.ts.
+    exercises: normalizeCloudExercises(cl.exercises),
     totalVolume: cl.total_volume,
   }));
 }

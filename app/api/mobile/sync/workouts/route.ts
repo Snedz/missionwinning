@@ -3,6 +3,7 @@
  * Auth: Bearer required. Legacy POST /api/mobile/workouts kept for one release.
  */
 import { NextRequest, NextResponse } from 'next/server';
+import { flattenExercises, groupFlatSets, normalizeCloudExercises } from '@/lib/sync/normalizeExercises';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
@@ -161,7 +162,8 @@ async function upsertWorkout(
   const updatedAt = w.updatedAt && w.updatedAt > now ? w.updatedAt : now;
   const completedAt = w.completedAt;
   const started = new Date(new Date(completedAt).getTime() - w.durationSeconds * 1000).toISOString();
-  const exercises = w.sets ?? [];
+  // Store the canonical nested shape so web engines can read what Android logged.
+  const exercises = groupFlatSets(w.sets ?? []);
   const weightUnit = w.weightUnit === 'lb' ? 'lb' : 'kg';
 
   // Existing by client_id
@@ -298,7 +300,14 @@ async function upsertWorkout(
 }
 
 function rowToSyncItem(row: Record<string, unknown>) {
-  const sets = Array.isArray(row.exercises) ? row.exercises : [];
+  // Android's installed builds expect a flat set array. Rows are stored nested, so
+  // flatten on the way out — this keeps old app versions working with no release.
+  const nested = normalizeCloudExercises(row.exercises);
+  const sets = flattenExercises(
+    (row.client_id as string | null) ?? (row.id as string),
+    row.completed_at as string,
+    nested
+  );
   return {
     clientId: (row.client_id as string | null) ?? null,
     serverId: row.id as string,

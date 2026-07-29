@@ -13,6 +13,8 @@ export function getBestPriorSet(
   let bestEst = 0;
 
   for (const log of history) {
+    // A deleted session cannot hold the record it is being compared against.
+    if (log.deletedAt) continue;
     const ex = log.exercises.find((e) => e.exerciseId === exerciseId);
     if (!ex) continue;
     for (const set of ex.sets) {

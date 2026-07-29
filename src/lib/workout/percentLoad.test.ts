@@ -31,12 +31,32 @@ function log(
 }
 
 describe('percentLoad', () => {
-  it('workingMaxFromHistory uses Epley for multi-rep sets', () => {
-    // 60 × 8 → epley = 76
+  it('workingMaxFromHistory uses the one shared estimator', () => {
+    // 60 × 8 → Brzycki 74 (was uncapped Epley 76 before `.174`). Prescriptions,
+    // /benchmarks, the PR chip and the debrief now all quote this number.
     const max = workingMaxFromHistory('bench-press', [
       log('bench-press', [{ reps: 8, weight: 60 }]),
     ]);
-    assert.equal(max, 76);
+    assert.equal(max, 74);
+  });
+
+  it('a deleted session cannot inflate the working max', () => {
+    const heavy = log('bench-press', [{ reps: 5, weight: 200 }]);
+    heavy.deletedAt = new Date().toISOString();
+    const max = workingMaxFromHistory('bench-press', [
+      heavy,
+      log('bench-press', [{ reps: 8, weight: 60 }]),
+    ]);
+    assert.equal(max, 74, 'the tombstoned 200 kg session must not count');
+  });
+
+  it('an endurance-only history yields null rather than a fabricated max', () => {
+    // No 1RM formula is fitted above 12 reps; null tells nextTargets to prescribe
+    // from the last session instead, which is correct for this athlete.
+    const max = workingMaxFromHistory('bench-press', [
+      log('bench-press', [{ reps: 20, weight: 40 }]),
+    ]);
+    assert.equal(max, null);
   });
 
   it('workingMaxFromHistory prefers true 1RM when present', () => {
