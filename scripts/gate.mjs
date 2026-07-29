@@ -105,6 +105,10 @@ function hasChromium() {
   return !!p && existsSync(p);
 }
 
+// Cheap and early, next to the port guard: catching an unbumped label after a
+// three-minute build wastes the build, and an unbumped label is what makes two
+// branches announce the same version.
+run('Build label + hard rule 5', 'npm', ['run', 'check-build-label']);
 run('Lint', 'npm', ['run', 'lint']);
 run('Typecheck', 'npm', ['run', 'typecheck']);
 run('Unit tests', 'npm', ['test']);

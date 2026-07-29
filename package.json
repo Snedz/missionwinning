@@ -14,6 +14,7 @@
     "check-env": "node --env-file=.env.local scripts/check-env.mjs",
     "check-token-sync": "node scripts/check-token-sync.mjs",
     "check-display-type": "node scripts/check-display-type.mjs",
+    "check-build-label": "node scripts/check-build-label.mjs",
     "predeploy": "tsx scripts/pre-deploy-smoke.ts",
     "gate-smoke": "tsx scripts/gate-smoke.ts",
     "security-smoke": "tsx scripts/gate-smoke.ts",

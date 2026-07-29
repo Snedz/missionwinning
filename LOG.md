@@ -6,6 +6,41 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-28 — A version claimed in a commit message is not a version (`.168`)
+
+Hard rule 5 — *"every ship updates LOG.md + `## Now` + build label"* — was prose, so
+it drifted.
+
+`chore/github-security-hardening` carries a commit whose subject reads
+`Turn on the security settings that were only configured on paper (.164)` and which
+touches **none** of `buildInfo.ts`, `CONTEXT.md` or `LOG.md`. Its label is still
+`.163`. So that branch announces a version it never minted — and this session's own
+`.164` was minted independently, meaning two branches were describing themselves with
+the same number for different work.
+
+Why it matters beyond tidiness: `APP_BUILD_LABEL` is what `/profile` renders and what
+[`gate-smoke.ts`](../scripts/gate-smoke.ts) asserts against **production**. Merging a
+branch whose label is stale silently walks the deployed label backwards, and the
+deploy smoke then happily confirms the wrong build shipped.
+
+- New [`scripts/check-build-label.mjs`](scripts/check-build-label.mjs): the label must
+  be **strictly greater than `origin/master`'s** — the remote, not a local `master`
+  that may be stale and would wave through a number already taken upstream — and must
+  be cited in both docs.
+- **It checks each doc the way that doc is actually written.** CONTEXT.md's `## Now`
+  carries the full `2026.07-unified.N`; LOG.md headings carry the short backticked
+  `` (`.N`) ``. My first cut demanded the full label in both and failed on this very
+  branch — a check aimed at a convention nobody had written down, which is the joke
+  of this entire session at my own expense.
+- Skips cleanly when HEAD *is* the base, and when a branch changes no app code — a
+  `.github/`-only change genuinely does not need a label bump, which is why the
+  security branch is not *wrongly* failed by this; its problem is the commit subject.
+- Gate **step 2**, beside the port guard: before the three-minute build, because
+  finding an unbumped label after it is three minutes wasted.
+- Falsified three ways: label not bumped, LOG heading missing, `## Now` not updated.
+
+---
+
 ## 2026-07-28 — Four live pages had never been checked, and two were broken (`.167`)
 
 Started as one wrong comment in the a11y suite and ended in two real WCAG failures
