@@ -65,3 +65,35 @@ export function sessionSetStats(
   }
   return { completed, total, hardCount };
 }
+
+/**
+ * What the reps/weight fields start at for one set — the decision, extracted so it
+ * can be tested.
+ *
+ * This ordering is the fix at the heart of `.175`. It used to live inline in
+ * `ActiveWorkoutPage` with the plan's prescription *last*, behind
+ * `suggestNextSetTarget` — an engine that assumed 8–12 reps for every athlete, reads
+ * no RPE, and has no concept of a deload. A strength plan of 3×5 prefilled as 6, and
+ * on a back-off week the coach said "×0.9" while the logger quietly said "add a rep".
+ *
+ * Order:
+ *  1. What the athlete typed. Always wins.
+ *  2. The coach's prescription, when this exercise came from a plan.
+ *  3. The suggestion engine, for freestyle work, inside the athlete's goal range.
+ *  4. The same set last time, then the template default.
+ */
+export function resolveSetInput(params: {
+  manual?: { reps: number; weight: number };
+  prescribed?: boolean;
+  defaultReps: number;
+  defaultWeight: number;
+  suggestion?: { reps: number; weight: number } | null;
+  lastPerformance?: { reps: number; weight: number } | null;
+}): { reps: number; weight: number } {
+  const { manual, prescribed, defaultReps, defaultWeight, suggestion, lastPerformance } = params;
+  if (manual) return manual;
+  if (prescribed) return { reps: defaultReps, weight: defaultWeight };
+  if (suggestion) return { reps: suggestion.reps, weight: suggestion.weight };
+  if (lastPerformance) return { reps: lastPerformance.reps, weight: lastPerformance.weight };
+  return { reps: defaultReps, weight: defaultWeight };
+}

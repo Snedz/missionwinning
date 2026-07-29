@@ -6,6 +6,10 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { repRangeForGoal } from '@/lib/coach/progression';
+import { parseGoalPresetId } from '@/lib/journeyGoals';
+import { readRaw } from '@/lib/storage/safeStorage';
+import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { toast } from '@/hooks/use-toast';
@@ -51,6 +55,7 @@ import {
   findNextSet,
   getLastPerformanceForSet,
   getLastSessionSets,
+  resolveSetInput,
   sessionSetStats,
   setInputKey,
 } from '@/lib/workout/activeWorkoutHelpers';
@@ -148,17 +153,42 @@ export function ActiveWorkoutPage() {
     }
   }, [nextSet]);
 
+  /**
+   * What the reps/weight fields start at for one set.
+   *
+   * **Order matters, and it used to be wrong.** The plan's prescription arrives as
+   * `defaultReps`/`defaultWeight`, and it used to sit *last* — behind
+   * `suggestNextSetTarget`, which knows nothing about the athlete's goal (it assumed
+   * 8–12 for everyone), nothing about RPE, and has no concept of a deload. So a
+   * strength plan of 3×5 prefilled as 6, and on a back-off week the coach said
+   * "×0.9" while the logger silently said "add a rep".
+   *
+   * Now a prescribed exercise prefills its prescription. The suggestion engine still
+   * runs for freestyle work, where there is no plan to respect — which is the only
+   * division of labour that leaves both engines doing what they are good at.
+   */
+  // Resolved the same way coach/contextBuilder does, so the logger's suggestions and
+  // the plan's prescriptions are talking about the same goal.
+  const goalId =
+    parseGoalPresetId(
+      readRaw(STORAGE_KEYS.primaryGoal) ?? readRaw(STORAGE_KEYS.goals) ?? 'goal:general'
+    ) ?? 'general';
+
   const getSetInput = (exIdx: number, setIdx: number, defaultReps: number, defaultWeight: number) => {
-    const key = setInputKey(exIdx, setIdx);
-    if (setInputs[key]) return setInputs[key];
-    const exerciseId = activeWorkout!.exercises[exIdx].exerciseId;
-    const lastSets = getLastSessionSets(workoutHistory, exerciseId);
-    if (lastSets) {
-      const target = suggestNextSetTarget(lastSets, setIdx, units);
-      if (target) return { reps: target.reps, weight: target.weight };
-    }
-    const last = getLastPerformanceForSet(workoutHistory, exerciseId, setIdx);
-    return { reps: last ? last.reps : defaultReps, weight: last ? last.weight : defaultWeight };
+    const exLog = activeWorkout!.exercises[exIdx];
+    const exerciseId = exLog.exerciseId;
+    const lastSets = exLog.prescribed ? null : getLastSessionSets(workoutHistory, exerciseId);
+    const range = repRangeForGoal(goalId);
+    return resolveSetInput({
+      manual: setInputs[setInputKey(exIdx, setIdx)],
+      prescribed: exLog.prescribed,
+      defaultReps,
+      defaultWeight,
+      suggestion: lastSets
+        ? suggestNextSetTarget(lastSets, setIdx, units, { repMin: range.min, repMax: range.max })
+        : null,
+      lastPerformance: getLastPerformanceForSet(workoutHistory, exerciseId, setIdx),
+    });
   };
 
   const updateSetInput = (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => {
@@ -276,7 +306,7 @@ export function ActiveWorkoutPage() {
           strain: afterScores.strain - beforeScores.strain,
           recovery: afterScores.recovery - beforeScores.recovery,
         },
-        buildProgressionInsight(log, units),
+        buildProgressionInsight(log, units, repRangeForGoal(goalId)),
         undefined,
         {
           completedWorkouts: historyAfter.length,
@@ -288,14 +318,35 @@ export function ActiveWorkoutPage() {
     setVictoryOpen(true);
   };
 
+  /**
+   * "Apply targets" — fill every unlogged set at once.
+   *
+   * On a prescribed exercise this restores the coach's numbers, which is what the
+   * athlete means when they tap it during a plan session. Only freestyle work falls
+   * through to the suggestion engine, and then within the goal's rep range.
+   */
   const applyTargetsForExercise = (exIdx: number) => {
     if (!activeWorkout) return;
     const exLog = activeWorkout.exercises[exIdx];
+
+    if (exLog.prescribed) {
+      exLog.sets.forEach((set, setIdx) => {
+        if (set.completed) return;
+        updateSetInput(exIdx, setIdx, 'reps', set.reps);
+        updateSetInput(exIdx, setIdx, 'weight', set.weight);
+      });
+      return;
+    }
+
     const lastSets = getLastSessionSets(workoutHistory, exLog.exerciseId);
     if (!lastSets) return;
+    const range = repRangeForGoal(goalId);
     exLog.sets.forEach((set, setIdx) => {
       if (set.completed) return;
-      const target = suggestNextSetTarget(lastSets, setIdx, units);
+      const target = suggestNextSetTarget(lastSets, setIdx, units, {
+        repMin: range.min,
+        repMax: range.max,
+      });
       if (!target) return;
       updateSetInput(exIdx, setIdx, 'reps', target.reps);
       updateSetInput(exIdx, setIdx, 'weight', target.weight);
@@ -394,6 +445,7 @@ export function ActiveWorkoutPage() {
 
             return (
               <ActiveExerciseCard
+              goalRange={repRangeForGoal(goalId)}
                 key={`${exLog.exerciseId}-${exIdx}`}
                 exLog={exLog}
                 exIdx={exIdx}

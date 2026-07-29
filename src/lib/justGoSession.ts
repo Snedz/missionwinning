@@ -56,12 +56,17 @@ function seedExerciseFromHistory(
   defaultReps: number,
   defaultWeight: number,
   history: CompletedWorkoutLog[],
-  units: UnitsPref
+  units: UnitsPref,
+  /** The athlete's goal range — without it every Just Go session assumes 8-12. */
+  repRange?: { min: number; max: number }
 ): WorkoutExerciseTemplate {
   const last = lastSessionSets(history, exerciseId);
   const sets = Array.from({ length: Math.max(1, setCount) }, (_, i) => {
     if (last) {
-      const target = suggestNextSetTarget(last, i, units);
+      const target = suggestNextSetTarget(last, i, units, {
+        repMin: repRange?.min,
+        repMax: repRange?.max,
+      });
       if (target) return { reps: target.reps, weight: target.weight };
       const match = last[i] ?? last[last.length - 1];
       return { reps: match.reps, weight: match.weight };

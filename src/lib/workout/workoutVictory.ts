@@ -37,7 +37,9 @@ export interface WorkoutVictorySummary {
 /** Build a short “Next: …” line from the heaviest working set in this log. */
 export function buildProgressionInsight(
   log: CompletedWorkoutLog,
-  units: UnitsPref
+  units: UnitsPref,
+  /** The athlete's goal range; omitted falls back to the generic 8-12. */
+  repRange?: { min: number; max: number }
 ): string | undefined {
   let best: { exerciseId: string; reps: number; weight: number } | null = null;
   for (const ex of log.exercises) {
@@ -53,7 +55,8 @@ export function buildProgressionInsight(
   const target = suggestNextSetTarget(
     [{ reps: best.reps, weight: best.weight }],
     0,
-    units
+    units,
+    { repMin: repRange?.min, repMax: repRange?.max }
   );
   if (!target) return undefined;
 
