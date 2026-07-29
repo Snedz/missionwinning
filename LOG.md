@@ -6,6 +6,44 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The percentages were prose (`.181`)
+
+Famous free programs, with the wave maths finally executable. The catalog already
+held StrongLifts, Texas Method and Madcow free — and 5/3/1 BBB and GZCLP locked in
+the premium server-only file. Meanwhile every percentage in every program lived as
+**prose in `notes`** ("Ramp sets: 40%, 60%, 80%…"), because nothing had ever
+materialized a percent into a weight: a famous program loaded from the catalog
+prescribed `0 kg` and the wave lived in a sentence the logger cannot read.
+
+**Promoted free:** 5/3/1 Boring But Big (new `free-531-bbb`, 4 lifts × 3 wave weeks,
+12 sessions), GZCLP Linear, and the r/Fitness Basic Beginner Routine (net-new — the
+most-recommended first barbell program on the internet). The deep premium catalog
+(nSuns, Smolov, Sheiko) stays paid: famous entry points free, depth paid, which is
+exactly the split that grew Boostcamp. New ids avoid the `pro-` prefix because
+`strip-pro-programs.ts` regex-deletes those blocks from the client file — verified by
+running the script: 52 kept, 0 removed.
+
+**Per-set percentages, structurally.** `WorkoutSetTemplate` gains optional `loadPct`
+— the exercise-level field cannot express 65/75/85 inside one session. 5/3/1's
+training max (90% of 1RM) is **baked into the authored numbers** (85% TM is written
+76.5) rather than adding a TM concept anywhere.
+
+**Materialized at `startWorkout`, deliberately.** New pure `materializeProgram.ts`
+resolves `loadPct` against `workingMaxFromHistory` — the same free e1RM the coach
+uses — at the moment the workout starts, not at save time: a saved cycle keeps its
+percentages, so starting it next month resolves against next month's max. Sets that
+materialize are stamped `prescribed`, so the `.175` precedence holds and the
+suggestion engine stays out of the way. `startWorkout` is the one seam every
+caller — Builder, Today, coach cards — already flows through.
+
+**Three refusals, each falsified:** deleting the materializer leaks `0 kg` into
+prescribed sets (2 tests fail); fabricating a max on empty history — the `.127`
+defect — fails the identity assertion (deepEqual, not absence-of-crash); dropping the
+`prescribed` stamp fails 2. Plain templates come out **byte-identical**.
+
+The pairing is the launch demo: **import your Hevy history (`.180`) → load 5/3/1 →
+week 1 is prescribed in your own weights.** Tests **761→766**.
+
 ## 2026-07-29 — The switching moment (`.180`)
 
 CSV import, web: a Strong or Hevy export becomes native history. Every would-be

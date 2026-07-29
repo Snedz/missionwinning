@@ -32,6 +32,14 @@ export interface Exercise {
 export interface WorkoutSetTemplate {
   reps: number;
   weight: number;
+  /**
+   * Percent of working max for THIS set — how 5/3/1-style waves are authored
+   * (65/75/85 inside one session), which the exercise-level `loadPct` cannot
+   * express. Materialized into `weight` against the athlete's own history at
+   * `startWorkout` time by `lib/workout/materializeProgram.ts`; with no history
+   * the authored weight (usually 0) stands and the logger behaves as today.
+   */
+  loadPct?: number;
 }
 
 export interface WorkoutExerciseTemplate {
