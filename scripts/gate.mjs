@@ -2,9 +2,11 @@
 /**
  * `npm run gate` — everything ci.yml would have checked, on your machine.
  *
- * Exists because GitHub Actions is currently blocked (see
- * docs/VERCEL_DEPLOY_CHECKLIST.md §1.4), so nothing else guards `master`. Run it
- * before pushing.
+ * Originally written because GitHub Actions was billing-blocked and nothing guarded
+ * `master`. **Actions works again as of 2026-07-29** (verified: 8 checks green on
+ * PR #121), so CI is no longer inert — but this stays the faster local pre-push
+ * check, and `check-build-label` / `check-display-type` / `check-token-sync` ran
+ * *only* here until `.170` wired them into ci.yml.
  *
  * It builds with PRIVATE_MODE=false on purpose: that is what compiles the service
  * worker, and tests/e2e/offline.spec.ts needs one. It also starts and stops the

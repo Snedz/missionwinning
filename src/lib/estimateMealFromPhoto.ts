@@ -111,7 +111,10 @@ export async function estimateMealFromPhoto(
   file: File,
   hints?: MealImageHints
 ): Promise<MealEstimate> {
-  await new Promise((r) => setTimeout(r, 350));
+  // No artificial delay. This path is a filename/size/colour heuristic, not a model —
+  // the UI says so ("Rough estimate (filename / color)"), and a simulated 350ms of
+  // "thinking" quietly contradicted that label. When MEAL_VISION_* is configured the
+  // real request supplies its own latency.
   return estimateMealFromSignals(file.name, file.size, hints);
 }
 

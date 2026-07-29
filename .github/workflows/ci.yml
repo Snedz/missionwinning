@@ -23,6 +23,12 @@ jobs:
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history so `origin/master` exists — check-build-label compares the
+          # branch's APP_BUILD_LABEL against the base. Under the default shallow
+          # clone that ref is absent and the check silently skips, which would have
+          # made the step below decorative rather than a gate.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -31,6 +37,20 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # These three ran only in `npm run gate` (local). Two of them exist because the
+      # regression they catch already happened once — .129 shipped 10 sites where a
+      # `text-*` utility nullified a `.display-*` clamp, and .131 pinned the brand
+      # tokens after the rebrand. A guard nobody runs on a PR is not a guard, and
+      # branches from other sessions never run the local gate.
+      - name: Build label + hard rule 5
+        run: npm run check-build-label
+
+      - name: Display type
+        run: npm run check-display-type
+
+      - name: Token sync (web ↔ Android)
+        run: npm run check-token-sync
 
       - name: Lint
         run: npm run lint

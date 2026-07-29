@@ -66,9 +66,12 @@ export function CoachingPage() {
               {t('infoCoachingReceived', { defaultValue: 'Received.' })}
             </h2>
             <p className="mb-6 text-sm text-muted-foreground">
+              {/* Was "we reply personally, usually within 48 hours" — there is no queue,
+                  notification or SLA behind this form, so that was a promise the code
+                  could not keep. Say what actually happens instead. */}
               {t('infoCoachingThanks', {
                 defaultValue:
-                  'Thanks — we read every note and reply personally, usually within 48 hours.',
+                  'Thanks — your note is with the founder, who reads every one. Replies come by email, and it is a one-person shop, so give it a few days.',
               })}
             </p>
             <Button variant="fitness" onClick={() => router.push('/log')}>
