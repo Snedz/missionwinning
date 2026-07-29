@@ -6,6 +6,160 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The coach speaks (`.173`)
+
+Week 2. The `.171` engines become sentences. Verified in a browser against a seeded
+10-week history, not asserted from types — which is how the one real bug was found.
+
+**What it says, live, after a 140 kg × 5 session on a 100 kg base:**
+
+> 700 kg moved, 1 working set in 76 min — about 63% above your recent average.
+> **Best bench press weight: 140 kg, past 100.**
+> **Estimated bench press 1RM now 158 kg, up from 113.**
+> Your last week is running heavier than your month — worth a lighter session next.
+> You rated sleep 2/5 today, so the next session is scaled to match.
+> Tonight: food, water, and an earlier night than usual.
+> Did that run hotter than planned, or was it the work you wanted?
+
+That is the WHOOP anatomy — number, own baseline, mechanism, one action, a question —
+built from a logbook. No strap, no account, no API key.
+
+- **[`coach/debrief.ts`](src/lib/coach/debrief.ts) is rules over computed values**, not
+  prose generation. Two reasons, both load-bearing: it works offline and free, and it
+  can be **tested for tone**. `reentryTone` now asserts across every debrief line that
+  none names an absence length or leans on a lost streak — you cannot assert that
+  about a sentence a model will generate tomorrow. The LLM voice stays a Bundle-tier
+  *rewrite* of these lines, never their source.
+- **Nothing is said that is not known.** No baseline under three prior sessions, no
+  band under 14 days, no PR without a previous best. A good day gets **no invented
+  concern and no invented action** — the "a good day" test asserts the absence.
+- **The band never predicts.** A test greps every band line for injury/risk/danger
+  wording. Falsified by making it say "raises your injury risk", which it caught.
+- **The reply chips are the point of the question.** Tapping one writes to today's
+  check-in, so "Harder than expected" lowers the next dose the same way a low energy
+  rating does. Verified in the browser: `energy: 2` written, `sleep: 2` preserved.
+
+**Falsification found dead code in my own work.** I wrote a filter to keep the session
+out of its own baseline, with a confident comment. Removing it changed **no test
+outcome** — `compareToBaseline` already excludes same-day sessions by date, so my
+filter guarded something already guarded. Deleted; the comment now points at the real
+guard. Then the replacement test *also* failed to discriminate — with a 35-session
+base, one extra session cannot move the mean. Rebuilt at three priors and +15%, where
+the guard actually decides the sentence, and only then did it catch the regression.
+
+**The browser found what the tests could not.** The first render read
+**"1 working sets"**. Every unit test passed; nothing asserted grammar. Fixed, with
+tests for both branches.
+
+**And the gate caught a regression the browser did not.** The debrief lengthened the
+victory dialog past the viewport, and `DialogContent` sets **no max height** — so
+"Back to Today" was *visible but unreachable*, which surfaced as a click timeout in
+the hero e2e, not a render error. My manual pass missed it because I was reading the
+debrief, not trying to leave the dialog. Constrained to `max-h-[90dvh] overflow-y-auto`
+(dvh, so mobile browser chrome does not eat the footer). The dialog was already close
+to that edge before this change; the debrief only pushed it over.
+
+Unit tests **656 → 668**. Gate 39/39.
+
+---
+
+## 2026-07-29 — Why the number moved, and a baseline that would have lied (`.172`)
+
+Rest of Week 1. Both halves are the same idea: a number the athlete cannot interrogate
+is not coaching, and a check that cannot say what it checked is not a gate.
+
+### The check-in explains itself now
+
+`checkInReadinessDelta` has always moved readiness from sleep / soreness / energy /
+stress — and **no component has ever surfaced why**. The plan called this "check-in
+v2, add sleep + soreness"; reading the code first showed both fields already exist
+(`soreness` since Wave 11). The actual gap was the *sentence*, not the schema.
+
+- New `checkInReasons()` returns what fired, with the rating the athlete entered, so
+  the debrief can say **"you rated sleep 2/5"** rather than silently shrinking a session.
+- **Both functions now derive from one rule table.** The delta and its explanation
+  cannot disagree, because there is nothing to disagree with — the alternative is a
+  threshold duplicated in a UI string, which goes on being displayed after the rule
+  beneath it changes. Same lesson as `isNonFoodEntryName` living beside its writer.
+- Ordered by strength of effect, so the lead reason is the real one. A middling day
+  returns **no reasons at all** — inventing "your energy was average!" is noise
+  wearing insight's clothes.
+- Behaviour is provably unchanged: the pre-refactor implementation is inlined in the
+  test as an oracle and checked across **all 900 combinations** of the four inputs.
+  Falsified by re-tuning one threshold, which the oracle catches immediately.
+
+### The visual baseline that would have lied
+
+Bootstrapping the four `@visual` baselines is finally unblocked now Actions works.
+Reading the job first stopped a bad commit: `ci-extended.yml` starts the server with
+`PRIVATE_MODE=false` and sets **nothing** for `NEXT_PUBLIC_FREE_BETA`, which defaults
+**true** — so `/bundle` **307s to `/log`**.
+
+A bootstrap run in that state writes `bundle-reduced.png` **containing the Today
+page**, then compares every future run against it and passes forever. This file's own
+header warns that blind `--update-snapshots` "launders" regressions; this would have
+been the same laundering arriving through the front door, on the first run, before
+anyone had a chance to be lazy.
+
+The test now checks the **landing URL** — not the flag, which could drift — and skips
+with a reason while the redirect is live, resuming automatically the day Bundle ships.
+Proved it against a real server in the CI configuration: `1 skipped`. The other three
+routes were confirmed 200, so a Linux bootstrap will capture the right pages.
+
+**Still founder/CI work:** generating the three baselines needs a Linux runner, and
+they must be *looked at* before being committed.
+
+Unit tests **650 → 656**.
+
+---
+
+## 2026-07-29 — The coach can do arithmetic now (`.171`)
+
+Week 1 of the EIN-window sprint. Two pure engines, no features, no UI yet — the
+numbers the coach will speak, computed from logged sets alone.
+
+**Why this shape.** The brief was a WHOOP screenshot: *"15.3 strain against your 11.8
+upper bound"*. That sentence is not AI, it is a personal baseline plus the nerve to
+say a number. WHOOP needs a strap for it. We need a logbook — which we already have,
+for free, without an account.
+
+- **[`coach/load.ts`](src/lib/coach/load.ts)** — Foster **session-RPE** (RPE ×
+  minutes), not an invented tonnage/density/RPE composite that would look scientific
+  and mean nothing. Tonnage is reported beside it because lifters think in kilos, but
+  the ratio maths runs on the validated metric. **ACWR in its EWMA form**: rolling
+  averages suffer mathematical coupling, and EWMA degrades far better on the gappy
+  history a 3x/week lifter actually produces.
+- **Three refusals, each tested.** The ratio is **null** under 14 days of history —
+  a plausible-looking baseline from one week is the same defect `.127` deleted when it
+  removed a day-zero Readiness of 42. Warmups are not load. Bodyweight sessions have
+  zero tonnage, so tonnage-weighted RPE would have divided by zero and handed a
+  calisthenics athlete `NaN`; it falls back to a plain mean.
+- **What it is not.** ACWR is validated in *team sports*, contested in the literature,
+  and never validated for recreational lifting. It is **descriptive, not predictive** —
+  how this week compares to your own baseline, never a claim about injury. Recorded in
+  the module header so the next person cannot phrase it as medicine
+  ([LEGAL_SAFETY.md](docs/LEGAL_SAFETY.md) §3a).
+- **[`coach/progress.ts`](src/lib/coach/progress.ts)** — e1RM series, PRs, plateaus.
+  Brzycki ≤10 reps, Epley above, each where it is least wrong; capped at 12 reps
+  because an e1RM from a set of 20 is a number about endurance. One session is **one**
+  exposure, not one point per set. A PR must beat the record by more than
+  `PR_EPSILON` — plates come in 2.5 kg jumps, so a 0.2 kg "record" is the app
+  congratulating you for rounding.
+- **A plateau is "the best is old", not "the last few were equal"** — a lifter who
+  sets a PR then deliberately backs off is not stalled, and the test says so.
+
+**One test was wrong and the code was right.** I asserted a session keeps its
+*heaviest* set; 100 kg × 5 estimates 113 and 105 kg × 3 estimates 111, so the heavier
+bar is the weaker showing. The assertion encoded my intuition rather than what e1RM
+means. Rewritten to state the real semantic, with the numbers in the comment.
+
+Every new assertion falsified before being trusted — min-history guard, warmup
+exclusion, divide-by-zero fallback, PR noise floor.
+
+Unit tests **622 → 650**.
+
+---
+
 ## 2026-07-29 — Told the athlete it saved when it hadn't (`.170`)
 
 Asked whether anything needed building before launch. The answer, from the repo's own

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { PillarPageHeader } from '@/components/layout/PillarPageHeader';
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
+import type { Debrief } from '@/lib/coach/debrief';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
   onVictoryOpenChange: (open: boolean) => void;
   onViewToday: () => void;
   onViewHistory: () => void;
+  debrief?: Debrief | null;
 };
 
 /** Empty /active shell — start quick session or jump to Today / Builder. */
@@ -26,6 +28,7 @@ export function ActiveEmptyState({
   victoryOpen,
   victorySummary,
   onVictoryOpenChange,
+  debrief,
   onViewToday,
   onViewHistory,
 }: Props) {
@@ -77,6 +80,7 @@ export function ActiveEmptyState({
       <WorkoutVictorySheet
         open={victoryOpen}
         summary={victorySummary}
+        debrief={debrief}
         onOpenChange={onVictoryOpenChange}
         onViewToday={onViewToday}
         onViewHistory={onViewHistory}
