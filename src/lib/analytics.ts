@@ -71,6 +71,7 @@ type AnalyticsEvent =
   | 'backup_restored'
   | 'csv_imported'
   | 'share_card_generated'
+  | 'debrief_spoken'
   | 'history_truncated'
   | 'sync_outbox_drained'
   | 'sync_outbox_stuck'

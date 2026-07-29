@@ -6,6 +6,43 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The coach reads it out (`.183`)
+
+Phase 0 of voice, and the whole point is what it does **not** add: no API key, no
+vendor, no network, no LLM in the path. `speechSynthesis` reads the debrief lines
+`coach/debrief.ts` already composed and `reentryTone` already tested, so a listener
+and a reader get the same facts and the tone tests that guard the text guard the audio
+for free. The `.173` doctrine holds exactly — **rules are the source, speech is only
+presentation**.
+
+Researching Grok Voice is what produced this. xAI does expose a real voice stack (Voice
+Agent API at $0.05/min, TTS at $4.20/M chars) and the repo is already pointed at
+`grok-4.5` with a ZDR header check that matches xAI's actual contract — but a realtime
+voice coach is ~$1.20/user/month against a $11.99 tier, needs per-user spend metering
+that does not exist yet, and means streaming gym audio to a third party from an app
+whose position is that workout content never leaves the device. On-device TTS delivers
+the "coach speaks" moment for **$0** and ships today. The paid tiers stay on the plan
+behind metering and a founder key.
+
+**Two kinds are deliberately never spoken**, and both refusals are tests:
+
+- **The closing question.** Its answer is a *tap* on a reply chip that writes today's
+  check-in. Speaking a question the voice cannot hear the answer to invites the athlete
+  to talk to a wall.
+- **The action line.** A next step is something to re-read while deciding what to do,
+  not to half-remember mid-rack. It stays on screen.
+
+Order is the debrief's own — effort, record, band, plateau, readiness. Re-ranking for
+the ear would silently escape the tone tests written against that sequence, so the
+reordered variant fails a test. Nothing sayable means **silence**, not filler; the
+invented-encouragement variant fails too. And speaking everything fails four.
+
+Every caller is a button press, because iOS Safari silently drops `speak()` outside a
+user gesture — a timer-driven briefing would appear to work in Chrome and do nothing on
+an iPhone. Verified the whole path in a real browser by intercepting the utterance:
+support detected, question and action absent, punctuation joined so facts do not run
+together. Tests **774→782**.
+
 ## 2026-07-29 — The growth loop a privacy-first app is allowed to have (`.182`)
 
 Hevy's moat is an in-app social feed. We cannot build that without breaking the one
