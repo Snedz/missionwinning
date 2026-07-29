@@ -29,12 +29,19 @@ while the type claims support. Registration happens in `src/hooks/useOutboxDrain
 | `workout.upsert` | `sync/workoutSync.ts` | `clientId` | Per-entity — sessions must not collapse |
 | `coach.plan` | `lib/coachSync.ts` | one per kind | Latest-state; handler re-reads storage |
 | `journey.state` | `lib/journeySync.ts` | one per kind | Latest-state; handler re-reads storage |
-| `leaderboard.push` | `lib/leaderboardSync.ts` | one per kind | Snapshot computed at enqueue — queuing a whole history would bloat storage |
+| `leaderboard.push` | `lib/leaderboardSync.ts` | one per kind | Snapshot computed at enqueue — queuing a whole history would bloat storage. **Not enqueued at all while the `leaderboard` surface is parked** |
 | `pft.push` | `lib/pftSync.ts` | `session.completedAt` | Per-entity. Inactive while the `america` surface is parked |
 
 **Not on the outbox:** `fuelCoach/fuelSync.ts`. Its `pushFuelPlanToCloud` writes a
 per-user key in *device storage*, not a network — there is no transient failure to
 retry. Move it here when a real endpoint exists.
+
+**This table described intent, not behaviour, until `.166`.** The `leaderboard.push`
+row above claimed the snapshot was computed at enqueue "because queuing a whole
+history would bloat storage" — and `scheduleLeaderboardPush` enqueued
+`{ workoutHistory, savedCount }`, doing exactly that, on every completed workout, for
+a surface that 404s. A doc that states a guarantee is not a guarantee; the assertions
+now live in `src/lib/surfaceReality.test.ts`.
 
 **Signed out is not a failure.** Handlers return `true` when there is no user or no
 Supabase configured: local storage is the source of truth and the op is re-queued on

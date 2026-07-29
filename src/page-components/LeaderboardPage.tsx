@@ -60,7 +60,9 @@ export function LeaderboardPage() {
  try {
  const u = await getUser();
  setUserId(u?.id);
- await pushLeaderboardSnapshot(workoutHistory, savedWorkouts.length);
+ await pushLeaderboardSnapshot(
+ computeLocalLeaderboardSnapshot(workoutHistory, savedWorkouts.length)
+ );
  const rows = await fetchCloudLeaderboardSnapshots(boardId);
  setCloud(rows);
  const joined = getJoinedClassCode();

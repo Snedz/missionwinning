@@ -5,9 +5,23 @@ import { Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { MILITARY_READINESS_TESTS } from '@/lib/militaryReadinessTests';
+import { isAmericaTrackEnabled } from '@/lib/americaConfig';
 
-/** Optional service fitness test prep — military tone scoped to this section only. */
+/**
+ * Optional service fitness test prep — military tone scoped to this section only.
+ *
+ * Self-gates on the america surface. It renders on `/benchmarks`, a secondary pillar
+ * that is **on by default**, so without this the america track leaked onto a live
+ * route while `/america` and `/fitness-test` returned 404 — and america is parked for
+ * legal and channel reasons, not tidiness. Its sibling `PresidentialFitnessSection`
+ * on the same page has always checked this flag; this one never did.
+ *
+ * Gated in the component rather than at the call site so a future call site inherits
+ * it, the way the sibling already works.
+ */
 export function MilitaryReadinessSection() {
+  if (!isAmericaTrackEnabled()) return null;
+
   return (
     <Card className="border-border bg-card">
       <CardHeader>

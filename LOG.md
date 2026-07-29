@@ -6,6 +6,48 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-28 — Parking parked the routes, not the work (`.166`)
+
+Phase 3 of [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md) is a founder call —
+keep or cut ~6,200 lines of parked surface. This is the agent half: does parking
+actually park anything? Two leaks, and the reason neither was caught.
+
+- **`scheduleLeaderboardPush` ran on every completed workout while `/leaderboard`
+  404s.** `workoutStore.ts:257` calls it unconditionally. Now gated on
+  `isSurfaceEnabled('leaderboard')`.
+- **It queued the entire workout history.** The function's own comment said the
+  snapshot was computed at enqueue *"because queuing an entire workout history would
+  bloat device storage"* — and the next line enqueued
+  `{ workoutHistory, savedCount }`. [src/lib/sync/INDEX.md](src/lib/sync/INDEX.md)
+  repeated the claim. So every save serialized the athlete's whole log into the
+  outbox, growing without bound, for a surface nobody can reach. `userId` turned out
+  to be a passthrough field on the snapshot, so the documented design was achievable
+  all along: computed at enqueue, stamped with the user in the handler.
+- **`MilitaryReadinessSection` rendered on `/benchmarks` with no america guard.**
+  `/benchmarks` is a secondary pillar, **on by default**, so the america track — parked
+  for legal and channel reasons, not tidiness — was live on it while `/america` and
+  `/fitness-test` returned 404. Its sibling `PresidentialFitnessSection` on the same
+  page has always checked the flag. One of two, for the whole life of the surface
+  registry. Now self-gates, in the component so future call sites inherit it.
+- **Why nothing caught it.** `surface.test.ts` has 14 cases and they are all sound —
+  and every one checks `SURFACE_PATHS` against itself. "every surface declares at
+  least one path" validates the table using the table. Nothing asserted the
+  declaration matched the app. New `src/lib/surfaceReality.test.ts` does: components
+  that must self-gate, enqueues that must check their surface, and the payload shape
+  the comment promised. **All three falsified** — each defect reintroduced, each
+  assertion fails, restored, passes.
+- That is the **fifth** suite in this repo found pointing at its own assumptions
+  rather than at the product: `.129` sitemap, `.157` a11y routes, `.162` viewport,
+  `.165` gate port, this. The shape is always the same — the guard has an implicit
+  target nobody wrote down.
+- Unit tests **613 → 616**. Gate 39/39.
+
+**Not done, founder call:** whether the parked surfaces (73 files, ~6,200 lines,
+20 of 63 API routes) stay or go. Fixing them to honour a decision you already made is
+not the same as making the next one.
+
+---
+
 ## 2026-07-28 — The boss metric counted deleted workouts, and the gate tested the wrong server (`.165`)
 
 Phase 2 of [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md): prove the week-4
