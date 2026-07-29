@@ -10,6 +10,11 @@
  * `lib/windDown.ts` — after a send the marker is newer, so the remaining runs that
  * evening skip, and the next hard session re-arms it with no expiry job.
  *
+ * Scheduled from `.github/workflows/cron-wind-down.yml`, not `vercel.json`: an hourly
+ * entry there fails the whole deployment on Vercel's Hobby plan, which caps crons at
+ * once per day. Nothing in this handler depends on the caller — same path, same
+ * `Bearer $CRON_SECRET`.
+ *
  * Auth: CRON_SECRET | Rate: cron only | See: app/api/INDEX.md
  */
 import { NextRequest, NextResponse } from 'next/server';

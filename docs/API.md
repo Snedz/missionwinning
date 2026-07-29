@@ -184,7 +184,7 @@ curl -X POST "$BASE/api/private-access/session" \
 | | |
 |--|--|
 | Auth | `Authorization: Bearer $CRON_SECRET` |
-| Schedule | `0 * * * *` — hourly, because a same-evening message needs a local-time window and a daily UTC cron cannot hit 19–22 for everyone |
+| Schedule | `7 * * * *` — hourly, because a same-evening message needs a local-time window and a daily UTC cron cannot hit 19–22 for everyone. Scheduled from **`.github/workflows/cron-wind-down.yml`**, not `vercel.json`: Hobby caps crons at once per day and an hourly entry fails the whole *deployment*. Needs repo secrets `CRON_SECRET` + `SMOKE_BASE_URL`; missing either, the job skips rather than fails |
 | Sends | Web push only. Email at 21:00 trains people to ignore the address, and by morning the message is moot |
 | Window | 19:00–22:00 in the device's stored `time_zone`. **No zone stored → no send** — a guessed zone risks a 03:00 push |
 | Idempotency | `last_wind_down_at` vs `last_session_at`. After a send the marker is newer, so later runs that evening skip; the next hard session re-arms it |

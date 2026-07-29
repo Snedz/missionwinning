@@ -38,6 +38,12 @@ pure module rather than a `decideNudge` branch:
 - **`last_wind_down_at` vs `last_session_at` is the idempotency** — after a send the
   marker is newer, so later runs that evening skip, and the next hard session re-arms
   it with no expiry job anywhere.
+- **Scheduled from GitHub Actions, not `vercel.json`.** Vercel's Hobby plan caps crons
+  at once per day, and an hourly entry doesn't degrade — it fails the whole *deployment*.
+  Daily would have meant one UTC hour serving one band of zones, so the schedule moved
+  to `.github/workflows/cron-wind-down.yml` (free, and already how `ci-extended` and
+  `codeql` run) and the route stayed byte-identical: same path, same `Bearer` auth.
+  Moving back on Pro is a three-line entry and a deleted file.
 - **Its own cooldown, deliberately.** Sharing the comeback's 44 h `last_nudge_at` would
   suppress exactly the success case: an athlete brought back by a morning comeback who
   then trains hard that evening. Two pushes that day is correct — the second was earned.

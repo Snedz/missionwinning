@@ -1,0 +1,57 @@
+# Hourly wind-down sweep — scheduled here, not in vercel.json.
+#
+# The feature is time-of-day: 19:00–22:00 in the *athlete's own* zone. A single daily
+# UTC cron can only ever hit that window for one band of zones, so the sweep has to run
+# hourly and let `lib/windDown.ts` decide who is actually inside their evening.
+#
+# Vercel's Hobby plan caps crons at once per day, and an hourly entry in `vercel.json`
+# fails the *deployment* outright — not the cron, the whole deploy. So the schedule
+# lives here (Actions cron is free and already how ci-extended / codeql run) and the
+# route stays exactly as it was: same path, same `Bearer $CRON_SECRET` auth. Moving
+# back to Vercel later is a three-line entry in `vercel.json` and deleting this file.
+#
+# Actions schedules drift under load — a run can land several minutes late. Harmless
+# here: the window is three hours wide and the next hourly run re-checks, while
+# `last_wind_down_at` vs `last_session_at` keeps a double-fire impossible.
+#
+# Needs repo secrets CRON_SECRET and SMOKE_BASE_URL (the production origin, already set
+# for the smoke jobs). Missing either → the job skips loudly rather than failing red,
+# matching the env-gate pattern in ci-extended.yml.
+name: Cron wind-down
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every hour at :07 — off the top of the hour, where Actions is most contended.
+    - cron: '7 * * * *'
+
+concurrency:
+  group: cron-wind-down
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call /api/cron/wind-down
+        env:
+          BASE_URL: ${{ secrets.SMOKE_BASE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$BASE_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "Skipping wind-down sweep (SMOKE_BASE_URL or CRON_SECRET not set)"
+            exit 0
+          fi
+          code=$(curl -sS -o response.json -w '%{http_code}' \
+            --max-time 60 --retry 2 --retry-delay 5 \
+            -H "authorization: Bearer $CRON_SECRET" \
+            "${BASE_URL%/}/api/cron/wind-down")
+          echo "HTTP $code"
+          cat response.json
+          echo
+          # The route answers 503 when push is unconfigured — a real state, not a
+          # failure to page anyone about at 03:00.
+          if [ "$code" != "200" ] && [ "$code" != "503" ]; then
+            exit 1
+          fi
