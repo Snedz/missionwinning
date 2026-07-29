@@ -33,6 +33,7 @@ import { ProfileJourneyCard } from '@/components/profile/ProfileJourneyCard';
 import { ProfilePremiumCard } from '@/components/profile/ProfilePremiumCard';
 import { ProfileOwnerTools } from '@/components/profile/ProfileOwnerTools';
 import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
+import { ProfileImportCard } from '@/components/profile/ProfileImportCard';
 import { SyncStatusRow } from '@/components/profile/SyncStatusRow';
 import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
@@ -329,6 +330,8 @@ export function ProfilePage() {
       <SyncStatusRow />
 
       <ProfileBackupCard />
+
+      <ProfileImportCard />
 
       <Card className="bg-card">
         <CardContent className="pt-6">
