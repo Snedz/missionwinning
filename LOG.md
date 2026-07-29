@@ -6,6 +6,56 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — Why the number moved, and a baseline that would have lied (`.172`)
+
+Rest of Week 1. Both halves are the same idea: a number the athlete cannot interrogate
+is not coaching, and a check that cannot say what it checked is not a gate.
+
+### The check-in explains itself now
+
+`checkInReadinessDelta` has always moved readiness from sleep / soreness / energy /
+stress — and **no component has ever surfaced why**. The plan called this "check-in
+v2, add sleep + soreness"; reading the code first showed both fields already exist
+(`soreness` since Wave 11). The actual gap was the *sentence*, not the schema.
+
+- New `checkInReasons()` returns what fired, with the rating the athlete entered, so
+  the debrief can say **"you rated sleep 2/5"** rather than silently shrinking a session.
+- **Both functions now derive from one rule table.** The delta and its explanation
+  cannot disagree, because there is nothing to disagree with — the alternative is a
+  threshold duplicated in a UI string, which goes on being displayed after the rule
+  beneath it changes. Same lesson as `isNonFoodEntryName` living beside its writer.
+- Ordered by strength of effect, so the lead reason is the real one. A middling day
+  returns **no reasons at all** — inventing "your energy was average!" is noise
+  wearing insight's clothes.
+- Behaviour is provably unchanged: the pre-refactor implementation is inlined in the
+  test as an oracle and checked across **all 900 combinations** of the four inputs.
+  Falsified by re-tuning one threshold, which the oracle catches immediately.
+
+### The visual baseline that would have lied
+
+Bootstrapping the four `@visual` baselines is finally unblocked now Actions works.
+Reading the job first stopped a bad commit: `ci-extended.yml` starts the server with
+`PRIVATE_MODE=false` and sets **nothing** for `NEXT_PUBLIC_FREE_BETA`, which defaults
+**true** — so `/bundle` **307s to `/log`**.
+
+A bootstrap run in that state writes `bundle-reduced.png` **containing the Today
+page**, then compares every future run against it and passes forever. This file's own
+header warns that blind `--update-snapshots` "launders" regressions; this would have
+been the same laundering arriving through the front door, on the first run, before
+anyone had a chance to be lazy.
+
+The test now checks the **landing URL** — not the flag, which could drift — and skips
+with a reason while the redirect is live, resuming automatically the day Bundle ships.
+Proved it against a real server in the CI configuration: `1 skipped`. The other three
+routes were confirmed 200, so a Linux bootstrap will capture the right pages.
+
+**Still founder/CI work:** generating the three baselines needs a Linux runner, and
+they must be *looked at* before being committed.
+
+Unit tests **650 → 656**.
+
+---
+
 ## 2026-07-29 — The coach can do arithmetic now (`.171`)
 
 Week 1 of the EIN-window sprint. Two pure engines, no features, no UI yet — the

@@ -99,24 +99,76 @@ export function upsertTodayPartial(
  * Subjective readiness delta in points, clamped to ±maxAbs.
  * Pure — used by computeBodyScores.
  */
+export type ReadinessFactor = 'sleep' | 'soreness' | 'energy' | 'stress';
+
+/** One rule that fired, with what the athlete actually entered. */
+export interface ReadinessReason {
+  factor: ReadinessFactor;
+  /** Signed contribution to the readiness delta. */
+  points: number;
+  /** The 1–5 they gave — so the UI can say "you rated sleep 2/5". */
+  rating: number;
+}
+
+type Rule = {
+  factor: ReadinessFactor;
+  points: number;
+  when: (c: ReadinessInput) => boolean;
+  rating: (c: ReadinessInput) => number;
+};
+
+type ReadinessInput = Pick<MindCheckIn, 'sleep' | 'stress' | 'energy' | 'soreness'>;
+
+/**
+ * The single rule table behind both the number and the explanation.
+ *
+ * `checkInReadinessDelta` and `checkInReasons` are computed from *this*, rather than
+ * one restating the other. The whole point of surfacing "session trimmed because you
+ * rated sleep 2/5" is that the sentence is true; a threshold duplicated in a UI string
+ * is a sentence that goes on being displayed after the rule beneath it changes.
+ *
+ * Values unchanged from the original inline implementation — this was a refactor to
+ * make the reasoning legible, not a re-tuning of the model.
+ */
+const READINESS_RULES: Rule[] = [
+  { factor: 'sleep', points: -6, when: (c) => c.sleep <= 2, rating: (c) => c.sleep },
+  { factor: 'sleep', points: +3, when: (c) => c.sleep >= 4, rating: (c) => c.sleep },
+  {
+    factor: 'soreness',
+    points: -6,
+    when: (c) => c.soreness != null && c.soreness >= 4,
+    rating: (c) => c.soreness ?? 0,
+  },
+  {
+    factor: 'soreness',
+    points: +2,
+    when: (c) => c.soreness != null && c.soreness <= 2,
+    rating: (c) => c.soreness ?? 0,
+  },
+  { factor: 'energy', points: -4, when: (c) => c.energy <= 2, rating: (c) => c.energy },
+  { factor: 'energy', points: +2, when: (c) => c.energy >= 4, rating: (c) => c.energy },
+  { factor: 'stress', points: -3, when: (c) => c.stress >= 4, rating: (c) => c.stress },
+];
+
+/**
+ * Why readiness moved, strongest effect first.
+ *
+ * Empty when nothing fired — a middling day has no story, and inventing one
+ * ("your energy was average!") is noise dressed as insight.
+ */
+export function checkInReasons(
+  checkIn: ReadinessInput | null | undefined
+): ReadinessReason[] {
+  if (!checkIn) return [];
+  return READINESS_RULES.filter((r) => r.when(checkIn))
+    .map((r) => ({ factor: r.factor, points: r.points, rating: r.rating(checkIn) }))
+    .sort((a, b) => Math.abs(b.points) - Math.abs(a.points));
+}
+
 export function checkInReadinessDelta(
-  checkIn: Pick<MindCheckIn, 'sleep' | 'stress' | 'energy' | 'soreness'> | null | undefined,
+  checkIn: ReadinessInput | null | undefined,
   maxAbs = 15
 ): number {
-  if (!checkIn) return 0;
-  let delta = 0;
-  if (checkIn.sleep <= 2) delta -= 6;
-  else if (checkIn.sleep >= 4) delta += 3;
-
-  if (checkIn.soreness != null) {
-    if (checkIn.soreness >= 4) delta -= 6;
-    else if (checkIn.soreness <= 2) delta += 2;
-  }
-
-  if (checkIn.energy <= 2) delta -= 4;
-  else if (checkIn.energy >= 4) delta += 2;
-
-  if (checkIn.stress >= 4) delta -= 3;
-
+  const delta = checkInReasons(checkIn).reduce((sum, r) => sum + r.points, 0);
   return Math.min(maxAbs, Math.max(-maxAbs, delta));
 }
