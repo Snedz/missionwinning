@@ -13,9 +13,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
-import { submitLead } from '@/lib/supabase';
+import { enqueueFeedback } from '@/lib/sync/feedbackSync';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
-import { readJson, readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
+import { readJson, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 
 export function FeedbackPage() {
@@ -32,24 +32,29 @@ export function FeedbackPage() {
     massiveAction: '',
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const entry = { ...form, at: new Date().toISOString() };
+    const at = new Date().toISOString();
+    const entry = { ...form, at };
     const existing = readJson<unknown[]>(STORAGE_KEYS.betaFeedback, []);
     writeJson(STORAGE_KEYS.betaFeedback, [...existing, entry]);
-    await submitLead({
-      name: form.name || 'Beta Contributor',
-      email: form.email,
-      goals: `Results: ${form.results}\nTestimonial: ${form.testimonial}\nRating: ${form.rating}\nMassive action: ${form.massiveAction}`,
-      package_interest: 'beta-feedback',
-      source: 'feedback-page',
-      message: form.testimonial,
-    });
+    // Through the outbox, not a direct call whose result gets discarded: these notes
+    // are the beta's interview record, and a phone with no signal is the normal case.
+    // The device copy above is the receipt; the outbox owns delivery and retry.
+    enqueueFeedback(
+      {
+        name: form.name || 'Beta Contributor',
+        email: form.email,
+        goals: `Results: ${form.results}\nTestimonial: ${form.testimonial}\nRating: ${form.rating}\nMassive action: ${form.massiveAction}`,
+        package_interest: 'beta-feedback',
+        source: 'feedback-page',
+        message: form.testimonial,
+      },
+      at
+    );
     writeRaw(STORAGE_KEYS.betaContributor, 'true');
     writeRaw(`${STORAGE_KEY_PREFIXES.event}feedback`, Date.now().toString());
-    const claimed = parseInt(readRaw(STORAGE_KEYS.betaSpotsClaimed) || '347');
-    writeRaw(STORAGE_KEYS.betaSpotsClaimed, Math.min(500, claimed + 1).toString());
     setLoading(false);
     setSubmitted(true);
   };

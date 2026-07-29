@@ -6,6 +6,44 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The thank-you screen was the third lie (`.179`)
+
+Pre-launch honesty pass II — three flagged items from the sprint record, each one a
+place the product would have quietly told a launch-week user something false.
+
+**Feedback silently dropped on a dead network.** `.170` fixed two pages that showed
+success over a failed `submitLead` and flagged the third: *"`FeedbackPage` … needs an
+outbox retry, not a polish fix."* It called `submitLead`, discarded the `{ ok }`, and
+showed "Thank you" unconditionally — over the one capture point for the beta's
+"why I almost quit" notes, which are a YC gate. Now `feedback.submit` rides the same
+durable outbox as workouts: per-entity keys (two notes a week apart both arrive; a
+double-tap on Submit collapses to one), and the delivery verdict is a pure exported
+function because the first version of this fix was **unfalsifiable** — the test
+registered its own handler, so gutting the real one changed no outcome. Extracted as
+`feedbackDeliveryDone`, both failure directions now fail a test: swallowing `ok: false`
+re-creates the dropped-note bug, and retrying `localOnly` would strand every op stuck
+on a device with no Supabase configured, where a retry can never improve.
+
+**The 508K time bomb on `/bundle`.** `@phantom/react-sdk` — 19 of the repo's
+Dependabot alerts — was statically imported into `BundlePage`, latent only because
+FREE_BETA 307s the page to `/log`. It was armed to enter the client bundle at the
+exact moment payments flip on. Now `dynamic({ ssr: false })` behind an
+`isSurfaceEnabled('cryptoRails')` check, so a parked crypto rail costs zero bytes and
+the SDK loads only for a visitor who can actually see the Lifetime USDC button.
+
+**The fabricated scarcity counter.** `betaSpotsClaimed` seeded itself from a hardcoded
+`'347'` toward a 500 cap — a number nobody measured, on a product whose positioning is
+that it does not invent numbers. Deleted, key and all. The debrief refuses a baseline
+under 3 sessions; the marketing surface does not get a lower bar.
+
+Also: `LAUNCH_RUNBOOK.md` migration list now includes `20260730_wind_down_nudge`
+(#15 — it was in no founder checklist at all) and points at the CI apply path fixed in
+#129. The compiler earned its keep once: `OfflineContent`'s kind-label map is
+exhaustively typed over `OutboxKind`, so adding the kind without naming it for the
+offline queue screen failed typecheck rather than shipping an unlabeled row.
+
+Tests **745→750**.
+
 ## 2026-07-29 — One stall truth (`.178`)
 
 The app held **two definitions of "stalled" and they could disagree.** `progression.ts`

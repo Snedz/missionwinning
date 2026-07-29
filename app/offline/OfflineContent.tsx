@@ -23,6 +23,7 @@ const KIND_LABEL: Record<OutboxKind, { key: string; defaultValue: string }> = {
   'journey.state': { key: 'offlineQueueJourney', defaultValue: 'Progress' },
   'leaderboard.push': { key: 'offlineQueueLeaderboard', defaultValue: 'Leaderboard entry' },
   'pft.push': { key: 'offlineQueuePft', defaultValue: 'Fitness test' },
+  'feedback.submit': { key: 'offlineQueueFeedback', defaultValue: 'Feedback note' },
 };
 
 /** Coarse on purpose — a queued write does not need a to-the-minute timestamp. */
