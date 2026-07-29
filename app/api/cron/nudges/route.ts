@@ -5,9 +5,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { Resend } from 'resend';
-import { collectNudgeCandidates, markNudged } from '@/lib/nudgeServer';
+import {
+  collectAnonymousNudgeCandidates,
+  collectNudgeCandidates,
+  markAnonymousNudged,
+  markNudged,
+} from '@/lib/nudgeServer';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
-import { isPushConfigured, sendNudgePush } from '@/lib/pushServer';
+import { isPushConfigured, sendAnonymousPush, sendNudgePush } from '@/lib/pushServer';
 import {
   day2Body,
   day7Body,
@@ -156,6 +161,18 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
   const recoveryResult = await collectRecoveryCandidates();
 
   const pushReady = isPushConfigured();
+
+  // Anonymous devices are collected even when push is unconfigured so `dryRun`
+  // reports the real cohort size rather than silently zero.
+  let anonResult: Awaited<ReturnType<typeof collectAnonymousNudgeCandidates>> = {
+    considered: 0,
+    candidates: [],
+  };
+  try {
+    anonResult = await collectAnonymousNudgeCandidates();
+  } catch (e) {
+    console.error('anonymous nudge collection', e);
+  }
   let pushSubscribed = 0;
   if (pushReady) {
     try {
@@ -196,12 +213,43 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
       },
       pushConfigured: pushReady,
       pushSubscribed,
+      anonymous: {
+        considered: anonResult.considered,
+        candidates: anonResult.candidates.map((c) => ({
+          kind: c.kind,
+          device: c.deviceId.slice(0, 8) + '…',
+        })),
+      },
     });
+  }
+
+  // Anonymous push runs BEFORE the Resend check. It needs no email provider, and
+  // returning 503 first would mean the athletes with no account — the ones with no
+  // other channel at all — are the only ones silenced by a missing email key.
+  const admin = getSupabaseAdmin();
+  let anonPushed = 0;
+  if (pushReady && admin && anonResult.candidates.length) {
+    const delivered: string[] = [];
+    for (const c of anonResult.candidates) {
+      const r = await sendAnonymousPush(admin, c.endpoint, {
+        title: c.title,
+        body: c.body,
+        url: '/log?src=push',
+      });
+      if (r === 'sent') {
+        delivered.push(c.endpoint);
+        anonPushed += 1;
+      }
+    }
+    await markAnonymousNudged(delivered);
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    return NextResponse.json({ ok: false, error: 'Email not configured' }, { status: 503 });
+    return NextResponse.json(
+      { ok: false, error: 'Email not configured', anonPushed },
+      { status: 503 }
+    );
   }
   const resend = new Resend(apiKey);
   const from = process.env.RESEND_FROM || 'Mission Winning <onboarding@resend.dev>';
@@ -210,7 +258,6 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
   const sent: string[] = [];
   const failed: string[] = [];
   let pushed = 0;
-  const admin = getSupabaseAdmin();
   const pushAdmin = pushReady ? admin : null;
 
   for (const c of result.candidates) {
@@ -306,5 +353,7 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
     inviteFailed,
     recoverySent,
     recoveryFailed,
+    anonConsidered: anonResult.considered,
+    anonPushed,
   });
 });

@@ -58,6 +58,7 @@ Legend:
 | `coach/chat` | POST | app access + premium | 10/min + 32 KiB | Zod `coachChatSchema`; 402 free; 503 offline |
 | `referral` | GET/POST | session | 20/min GET · 5/min POST | Lazy MW-code; redeem ≤7d; service role |
 | `cron/weekly-digest` | GET | CRON_SECRET | — | Monday founder email; dryRun |
+| `push/subscribe` | POST/DELETE | **optional** session | 10/min + 4 KiB | Service role. Anonymous devices allowed — `deviceId` links to the account made later. See [docs/RETURN_LOOP_PLAN.md](../../docs/RETURN_LOOP_PLAN.md) |
 
 ### Premium content
 

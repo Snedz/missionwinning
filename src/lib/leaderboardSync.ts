@@ -3,14 +3,25 @@ import type { LeaderboardBoardId, LeaderboardSnapshot } from '@/lib/leaderboard/
 import type { CompletedWorkoutLog } from '@/types';
 import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
 import { enqueue, registerHandler } from '@/lib/sync/outbox';
+import { isSurfaceEnabled } from '@/lib/surface';
 
 /**
  * Queue a leaderboard snapshot. `delayMs` is accepted for call-site compatibility
  * and ignored — the outbox owns timing.
  *
- * The snapshot is computed here rather than in the handler on purpose: the payload
- * has to be persisted, and queuing an entire workout history would bloat device
- * storage. Latest-state dedupe means only the newest snapshot survives anyway.
+ * Two things this used to get wrong.
+ *
+ * **It ran for a parked surface.** `workoutStore` calls this on every completed
+ * workout, unconditionally, while `/leaderboard` 404s under the default
+ * `NEXT_PUBLIC_SURFACES`. Parking is supposed to mean the surface costs nothing.
+ *
+ * **It queued the whole history.** The comment here claimed the snapshot was
+ * computed at enqueue precisely so that "queuing an entire workout history would
+ * bloat device storage" — and then enqueued `{ workoutHistory, savedCount }`, doing
+ * the exact thing it described avoiding. `src/lib/sync/INDEX.md` repeated the claim.
+ * Every save serialized the athlete's entire log into the outbox, growing without
+ * bound. `userId` is only a passthrough field on the snapshot, so it can genuinely
+ * be computed here and stamped with the user in the handler.
  */
 export function scheduleLeaderboardPush(
   workoutHistory: CompletedWorkoutLog[],
@@ -18,7 +29,10 @@ export function scheduleLeaderboardPush(
   _delayMs = 2000
 ): void {
   if (typeof window === 'undefined') return;
-  enqueue('leaderboard.push', 'snapshot', { workoutHistory, savedCount });
+  if (!isSurfaceEnabled('leaderboard')) return;
+  enqueue('leaderboard.push', 'snapshot', {
+    snapshot: computeLocalLeaderboardSnapshot(workoutHistory, savedCount),
+  });
 }
 
 let registered = false;
@@ -28,22 +42,17 @@ export function registerLeaderboardSyncHandler(): void {
   if (registered) return;
   registered = true;
   registerHandler('leaderboard.push', async (payload) => {
-    const p = payload as { workoutHistory?: CompletedWorkoutLog[]; savedCount?: number } | null;
-    if (!p?.workoutHistory) return true; // malformed: dropping beats retrying forever
-    return pushLeaderboardSnapshot(p.workoutHistory, p.savedCount ?? 0);
+    const p = payload as { snapshot?: LeaderboardSnapshot } | null;
+    if (!p?.snapshot) return true; // malformed: dropping beats retrying forever
+    return pushLeaderboardSnapshot(p.snapshot);
   });
 }
 
 /** Resolves true when the snapshot is stored (or intentionally skipped). */
-export async function pushLeaderboardSnapshot(
-  workoutHistory: CompletedWorkoutLog[],
-  savedCount: number
-): Promise<boolean> {
+export async function pushLeaderboardSnapshot(snap: LeaderboardSnapshot): Promise<boolean> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return true;
   const user = await getUser();
   if (!user) return true; // signed out — not a failure
-
-  const snap = computeLocalLeaderboardSnapshot(workoutHistory, savedCount, user.id);
 
   const { error } = await supabase.from('leaderboard_snapshots').upsert(
     {

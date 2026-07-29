@@ -1,26 +1,21 @@
 import 'server-only';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
+import { isCold, quietThresholdDays } from '@/lib/reentryTone';
+import { anonymousComebackPush, decideNudge, utcDay } from '@/lib/nudgeCopy';
+import type { NudgeCandidate, NudgeKind } from '@/lib/nudgeCopy';
 
 /**
- * Retention nudge engine (beta-scale: computes candidates in JS over the
- * opted-in cohort — fine for hundreds of users, revisit past that).
+ * Retention nudge IO (beta-scale: computes candidates in JS over the opted-in
+ * cohort — fine for hundreds of users, revisit past that).
  *
- * Rules (first match wins, max one email per user per 44h):
- *  - streak-at-risk: 3+ day streak alive through yesterday, nothing logged today
- *  - comeback:       3–13 days since last workout (or none yet, 3–13 days after joining)
- *  - week-1 recap:   joined 6–8 days ago and trained at least once
+ * The *words* and the rule for which message is due live in `nudgeCopy.ts`, which
+ * carries no `server-only` and is therefore unit-testable. Everything here touches
+ * the database or a secret.
  */
 
-export type NudgeKind = 'streak-at-risk' | 'comeback' | 'week1-recap';
-
-export interface NudgeCandidate {
-  userId: string;
-  email: string;
-  kind: NudgeKind;
-  subject: string;
-  body: string;
-}
+export type { NudgeCandidate, NudgeKind };
+export { decideNudge };
 
 const NUDGE_COOLDOWN_MS = 44 * 60 * 60 * 1000;
 
@@ -40,113 +35,6 @@ export function verifyUnsubscribeToken(userId: string, token: string): boolean {
   const expected = Buffer.from(unsubscribeToken(userId));
   const given = Buffer.from(token);
   return expected.length === given.length && timingSafeEqual(expected, given);
-}
-
-function utcDay(d: string | Date): string {
-  return new Date(d).toISOString().slice(0, 10);
-}
-
-function dayOffset(base: Date, days: number): string {
-  const d = new Date(base);
-  d.setUTCDate(d.getUTCDate() - days);
-  return d.toISOString().slice(0, 10);
-}
-
-/** Consecutive training days counting back from `fromOffset` days ago. */
-function streakThrough(days: Set<string>, now: Date, fromOffset: number): number {
-  let streak = 0;
-  for (let i = fromOffset; ; i++) {
-    if (days.has(dayOffset(now, i))) streak++;
-    else break;
-  }
-  return streak;
-}
-
-export function decideNudge(input: {
-  email: string;
-  userId: string;
-  createdAt: string;
-  workoutDays: string[]; // UTC yyyy-mm-dd of completed workouts, last 14d
-  workoutCount14d: number;
-  totalVolume14d: number;
-  now?: Date;
-  appUrl: string;
-}): NudgeCandidate | null {
-  const now = input.now ?? new Date();
-  const days = new Set(input.workoutDays);
-  const today = utcDay(now);
-  const link = `${input.appUrl}/log`;
-  const unsub = `${input.appUrl}/api/nudges/unsubscribe?u=${input.userId}&t=${unsubscribeToken(input.userId)}`;
-  const footer = [
-    '',
-    'Health for everyone, everywhere. The free core stays free.',
-    `Stop training reminders: ${unsub}`,
-  ].join('\n');
-
-  // Streak at risk: trained yesterday (streak >= 3), nothing yet today.
-  const streak = streakThrough(days, now, 1);
-  if (!days.has(today) && streak >= 3) {
-    return {
-      userId: input.userId,
-      email: input.email,
-      kind: 'streak-at-risk',
-      subject: `Your ${streak}-day streak ends tonight`,
-      body: [
-        `Mission Winning — ${streak} days in a row. That's a real habit forming.`,
-        '',
-        'One short session today keeps it alive — even 10 minutes counts.',
-        '',
-        `Start now: ${link}`,
-        footer,
-      ].join('\n'),
-    };
-  }
-
-  // Week-1 recap: joined 6–8 days ago and actually trained.
-  const joinedDaysAgo = Math.floor((now.getTime() - new Date(input.createdAt).getTime()) / 86_400_000);
-  if (joinedDaysAgo >= 6 && joinedDaysAgo <= 8 && input.workoutCount14d > 0) {
-    return {
-      userId: input.userId,
-      email: input.email,
-      kind: 'week1-recap',
-      subject: `Week one: ${input.workoutCount14d} session${input.workoutCount14d === 1 ? '' : 's'} logged`,
-      body: [
-        'Mission Winning — your first week on the path:',
-        '',
-        `Sessions: ${input.workoutCount14d}`,
-        `Volume moved: ${Math.round(input.totalVolume14d).toLocaleString()}`,
-        '',
-        'Most people quit in week one. You didn’t. Week two is where the habit locks in.',
-        '',
-        `Keep going: ${link}`,
-        footer,
-      ].join('\n'),
-    };
-  }
-
-  // Comeback: 3–13 days quiet (counting from last workout, or from joining if none).
-  const sorted = [...days].sort();
-  const lastDay = sorted[sorted.length - 1];
-  const referenceDay = lastDay ?? utcDay(input.createdAt);
-  const quietDays = Math.floor((now.getTime() - new Date(`${referenceDay}T00:00:00Z`).getTime()) / 86_400_000);
-  if (quietDays >= 3 && quietDays <= 13) {
-    return {
-      userId: input.userId,
-      email: input.email,
-      kind: 'comeback',
-      subject: 'One session gets you back on the path',
-      body: [
-        `Mission Winning — it's been ${quietDays} days. That's nothing; the path is still right where you left it.`,
-        '',
-        'Your next step is one 10-minute session. No catch-up needed, no guilt — just start.',
-        '',
-        `Start now: ${link}`,
-        footer,
-      ].join('\n'),
-    };
-  }
-
-  return null;
 }
 
 export interface NudgeRunResult {
@@ -201,6 +89,21 @@ export async function collectNudgeCandidates(now = new Date()): Promise<NudgeRun
     }
   }
 
+  // Cadence lives on the device row, not on `profiles` — it is the only place the
+  // server learns how often this athlete actually intends to train. Absent (no push
+  // subscription), decideNudge falls back to its own default rather than assuming 7.
+  const cadenceByUser = new Map<string, number>();
+  const { data: cadenceRows } = await admin
+    .from('push_subscriptions')
+    .select('user_id, days_per_week')
+    .in('user_id', userIds)
+    .not('days_per_week', 'is', null);
+  for (const row of cadenceRows ?? []) {
+    const uid = row.user_id as string | null;
+    const dpw = row.days_per_week as number | null;
+    if (uid && dpw) cadenceByUser.set(uid, dpw);
+  }
+
   for (const profile of eligible) {
     const logs = logsByUser.get(profile.id) ?? [];
     const workoutDays = [...new Set(logs.map((l) => utcDay(l.completed_at)))];
@@ -211,13 +114,94 @@ export async function collectNudgeCandidates(now = new Date()): Promise<NudgeRun
       workoutDays,
       workoutCount14d: logs.length,
       totalVolume14d: logs.reduce((s, l) => s + (l.total_volume ?? 0), 0),
+      daysPerWeek: cadenceByUser.get(profile.id),
       now,
       appUrl,
+      unsubscribeUrl: `${appUrl}/api/nudges/unsubscribe?u=${profile.id}&t=${unsubscribeToken(profile.id)}`,
     });
     if (candidate) candidates.push(candidate);
   }
 
   return { considered: profiles.length, candidates };
+}
+
+/**
+ * A device with no account. Reached by web push only — there is no address, and
+ * asking for one is the account we promised not to require.
+ */
+export interface AnonymousNudgeCandidate {
+  endpoint: string;
+  deviceId: string;
+  kind: NudgeKind;
+  title: string;
+  body: string;
+}
+
+/**
+ * Candidates among anonymous devices.
+ *
+ * Only `comeback` is possible here, and that is the privacy contract working as
+ * intended rather than a gap: the server holds a last-session date and a cadence, so
+ * it can tell that someone has gone quiet. It cannot count this week's sessions or
+ * sum volume, so `week-behind` and `week1-recap` have nothing to be computed from.
+ * Sets stay on the device.
+ */
+export async function collectAnonymousNudgeCandidates(now = new Date()): Promise<{
+  considered: number;
+  candidates: AnonymousNudgeCandidate[];
+}> {
+  const admin = getSupabaseAdmin();
+  if (!admin) throw new Error('Supabase admin not configured (SUPABASE_SERVICE_ROLE_KEY)');
+  const cooldownCutoff = new Date(now.getTime() - NUDGE_COOLDOWN_MS).toISOString();
+
+  const { data: rows, error } = await admin
+    .from('push_subscriptions')
+    .select('endpoint, device_id, last_session_at, days_per_week, last_nudge_at')
+    .is('user_id', null)
+    .not('last_session_at', 'is', null)
+    .or(`last_nudge_at.is.null,last_nudge_at.lt.${cooldownCutoff}`)
+    .limit(500);
+
+  if (error || !rows) {
+    throw new Error(`anonymous nudge query failed: ${error?.message ?? 'no data'}`);
+  }
+
+  const candidates: AnonymousNudgeCandidate[] = [];
+  for (const row of rows) {
+    const deviceId = row.device_id as string | null;
+    const lastSession = row.last_session_at as string | null;
+    if (!deviceId || !lastSession) continue;
+
+    const quietDays = Math.floor(
+      (now.getTime() - new Date(lastSession).getTime()) / 86_400_000
+    );
+    if (isCold(quietDays)) continue;
+
+    const cadence = (row.days_per_week as number | null) ?? 3;
+    if (quietDays < quietThresholdDays(cadence)) continue;
+
+    candidates.push({
+      endpoint: row.endpoint as string,
+      deviceId,
+      kind: 'comeback',
+      ...anonymousComebackPush(),
+    });
+  }
+
+  return { considered: rows.length, candidates };
+}
+
+export async function markAnonymousNudged(
+  endpoints: string[],
+  now = new Date()
+): Promise<void> {
+  if (endpoints.length === 0) return;
+  const admin = getSupabaseAdmin();
+  if (!admin) return;
+  await admin
+    .from('push_subscriptions')
+    .update({ last_nudge_at: now.toISOString() })
+    .in('endpoint', endpoints);
 }
 
 export async function markNudged(userIds: string[], now = new Date()): Promise<void> {

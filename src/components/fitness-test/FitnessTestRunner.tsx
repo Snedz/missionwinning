@@ -26,6 +26,7 @@ import { joinClass, getJoinedClassCode } from '@/lib/schoolClass';
 import { buildPftShareText } from '@/lib/shareFitnessMission';
 import { hasYouthConsent, mergeYouthConsentFromServer, requiresYouthConsent } from '@/lib/youthConsent';
 import { pushLeaderboardSnapshot } from '@/lib/leaderboardSync';
+import { computeLocalLeaderboardSnapshot } from '@/lib/leaderboard/computeLocalStats';
 import { useWorkoutStore } from '@/store/workoutStore';
 
 type Step = 'profile' | 'youth' | 'events' | 'results';
@@ -101,7 +102,9 @@ export function FitnessTestRunner() {
     });
     saveFitnessTestSession(scored);
     const store = useWorkoutStore.getState();
-    void pushLeaderboardSnapshot(store.workoutHistory, store.savedWorkouts.length);
+    void pushLeaderboardSnapshot(
+      computeLocalLeaderboardSnapshot(store.workoutHistory, store.savedWorkouts.length)
+    );
     setSession(scored);
     setStep('results');
     const classCode = getJoinedClassCode();

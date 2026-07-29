@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -38,6 +38,7 @@ type Goal = 'maintain' | 'cut' | 'bulk';
 
 export function MacroCalculator() {
   const { t } = useTranslation();
+  const uid = useId();
   const { toast } = useToast();
   const units = useUnits();
   const heightLabel = heightUnitLabel(units);
@@ -124,10 +125,11 @@ export function MacroCalculator() {
       <CardContent className="space-y-4 text-sm">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <div>
-            <Label>
+            <Label htmlFor={`${uid}-bw`}>
               {t('calcBwLabel', { unit: bwLabel, defaultValue: `Bodyweight (${bwLabel})` })}
             </Label>
             <Input
+              id={`${uid}-bw`}
               type="number"
               value={bw}
               onChange={(e) => setBw(+e.target.value || 0)}
@@ -135,10 +137,11 @@ export function MacroCalculator() {
             />
           </div>
           <div>
-            <Label>
+            <Label htmlFor={`${uid}-height`}>
               {t('calcHeightLabel', { unit: heightLabel, defaultValue: `Height (${heightLabel})` })}
             </Label>
             <Input
+              id={`${uid}-height`}
               type="number"
               value={height}
               onChange={(e) => setHeight(+e.target.value || 0)}
@@ -146,8 +149,9 @@ export function MacroCalculator() {
             />
           </div>
           <div>
-            <Label>{t('calcAgeLabel', { defaultValue: 'Age' })}</Label>
+            <Label htmlFor={`${uid}-age`}>{t('calcAgeLabel', { defaultValue: 'Age' })}</Label>
             <Input
+              id={`${uid}-age`}
               type="number"
               value={age}
               onChange={(e) => setAge(+e.target.value || 0)}

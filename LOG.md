@@ -6,6 +6,277 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-28 — The gate that keeps us unlaunched was bypassable (`.169`)
+
+Pushing `.164`–`.168` made GitHub report **45 open Dependabot alerts on `master`**
+(24 high · 19 medium · 2 low). Investigated rather than bulk-bumped, because most of
+them turn out not to matter and one of them matters a great deal.
+
+**Next.js 16.2.7 → 16.2.12.** All **9** `next` alerts are patched in 16.2.11, and
+`package.json` already declared `^16.2.7`, so this was a lockfile move, not a
+migration. One is specific to how this repo is built:
+
+> Next.js: Middleware / Proxy bypass in App Router applications — high,
+> `>= 16.0.0, < 16.2.11`
+
+The private beta gate **is** middleware: [proxy.ts](proxy.ts) calls
+`isPrivateModeEnabled()` and decides what a signed-out visitor may reach. A middleware
+bypass does not degrade that gate, it defeats it — and the gate is the only thing
+keeping an unlaunched product unlaunched. Two SSRF advisories in the same range are
+also closed by the bump.
+
+**19 of the 45 belong to a surface already parked, and are latent rather than live.**
+18 `axios` + 1 `bigint-buffer` all trace through
+`@phantom/react-sdk → @phantom/browser-sdk → @phantom/auth2 → axios`. That is the
+crypto-rails surface, `PARKED_BY_DEFAULT`, whose `/api/crypto-checkout` correctly
+404s. But [BundlePage.tsx:27](src/page-components/BundlePage.tsx) imports
+`PhantomLifetimeCheckout` **statically**, with no `isSurfaceEnabled('cryptoRails')`
+guard and no `dynamic()`, so a **508K** chunk is built into the client.
+
+It is not being served today — checked, not assumed: `/bundle` **307s to `/log`**
+because `isFreeBeta()` defaults to **true** when `NEXT_PUBLIC_FREE_BETA` is unset. So
+the exposure arms itself at exactly the moment FREE_BETA goes off, which is the
+LLC-and-payments milestone already on the roadmap. **Left unfixed on purpose** — that
+is the payments path and a founder call. It is the same shape as `.166`: parking
+parked the API route, not the client bundle.
+
+**The remaining 17 are build-time or low-reachability**: `brace-expansion` (5) and
+`js-yaml` (2) are dev-scope tooling; `postcss` (3) and `@babel/core` (1) are
+build-time; `sharp`, `dompurify`, `uuid`, `fast-uri` are transitive.
+
+**Why none of it was landing:** seven `dependabot/*` branches sit open and unmerged
+and none of them is the Next bump. `npm run gate` exists *because* GitHub Actions is
+blocked, so nothing auto-merges. Same root cause as the `.168` label collision — work
+on branches with no mechanism to converge.
+
+---
+
+## 2026-07-28 — A version claimed in a commit message is not a version (`.168`)
+
+Hard rule 5 — *"every ship updates LOG.md + `## Now` + build label"* — was prose, so
+it drifted.
+
+`chore/github-security-hardening` carries a commit whose subject reads
+`Turn on the security settings that were only configured on paper (.164)` and which
+touches **none** of `buildInfo.ts`, `CONTEXT.md` or `LOG.md`. Its label is still
+`.163`. So that branch announces a version it never minted — and this session's own
+`.164` was minted independently, meaning two branches were describing themselves with
+the same number for different work.
+
+Why it matters beyond tidiness: `APP_BUILD_LABEL` is what `/profile` renders and what
+[`gate-smoke.ts`](../scripts/gate-smoke.ts) asserts against **production**. Merging a
+branch whose label is stale silently walks the deployed label backwards, and the
+deploy smoke then happily confirms the wrong build shipped.
+
+- New [`scripts/check-build-label.mjs`](scripts/check-build-label.mjs): the label must
+  be **strictly greater than `origin/master`'s** — the remote, not a local `master`
+  that may be stale and would wave through a number already taken upstream — and must
+  be cited in both docs.
+- **It checks each doc the way that doc is actually written.** CONTEXT.md's `## Now`
+  carries the full `2026.07-unified.N`; LOG.md headings carry the short backticked
+  `` (`.N`) ``. My first cut demanded the full label in both and failed on this very
+  branch — a check aimed at a convention nobody had written down, which is the joke
+  of this entire session at my own expense.
+- Skips cleanly when HEAD *is* the base, and when a branch changes no app code — a
+  `.github/`-only change genuinely does not need a label bump, which is why the
+  security branch is not *wrongly* failed by this; its problem is the commit subject.
+- Gate **step 2**, beside the port guard: before the three-minute build, because
+  finding an unbumped label after it is three minutes wasted.
+- Falsified three ways: label not bumped, LOG heading missing, `## Now` not updated.
+
+---
+
+## 2026-07-28 — Four live pages had never been checked, and two were broken (`.167`)
+
+Started as one wrong comment in the a11y suite and ended in two real WCAG failures
+on pages anyone can reach.
+
+- **`/benchmarks` was excluded from axe as "parked". It is not.** The comment read
+  *"Parked surfaces (/leaderboard, /benchmarks) stay out: they 404 by design."*
+  `/leaderboard` genuinely is parked. `/benchmarks` is a **secondary** pillar — on
+  unless `NEXT_PUBLIC_SURFACES=wedge` — a nav screen (`navConfig.ts:110`) serving
+  **200**. It sat excluded on a stated-but-false premise, inside the very list `.157`
+  widened to close this class of gap.
+- **Cross-checking the whole registry found three more.** Four of the eight surfaces
+  that are ON by default had no axe coverage at all: `benchmarks`, `guidebook`,
+  `programs`, and **`calculators`** — the last being public even while the private
+  gate is up (`PRIVATE_GATE_PUBLIC_PATHS`), so anyone on the internet could reach a
+  page nothing had ever checked.
+- **Two of the four were genuinely broken.**
+  - `/calculators` — **critical, `label`**. Every `<Label>` in the three calculator
+    panels was written without `htmlFor`, and every `<Input>` without `id`. Radix's
+    `Label` renders a bare `<label>` and does not associate itself, so seven inputs
+    read as unlabelled number boxes to a screen reader while *looking* perfectly
+    labelled. That is why it survived a rebrand that edited these files. Fixed with
+    `useId()` rather than literals: `PlateCalculatorPanel` also renders inside
+    `PlateCalculatorSheet`, so a page can hold two instances and static ids would
+    have traded one violation for another.
+  - `/programs` — **serious, `link-in-text-block`**. A `/learn` link inside a
+    `text-muted-foreground` paragraph was `text-primary hover:underline`: at rest,
+    colour was the only cue. Now underlined at rest.
+- **The invariant, not the list.** `surfaceReality.test.ts` gains two assertions
+  derived from `SURFACE_PATHS`: every enabled surface must have a page under axe, and
+  nothing may be skipped on a false parked claim. Both falsified — removing
+  `/calculators` fails the first, adding parked `/leaderboard` fails the second.
+  Turning a surface on now drags its a11y coverage with it.
+- a11y **29 → 33** passing. Unit tests 616.
+
+**The pattern, sixth and seventh sightings.** `.129` sitemap · `.157` a11y routes ·
+`.162` viewport · `.165` gate port · `.166` surface registry · this. And one of my
+own inside this entry: a build monitor grepping for `Compiled successfully` in output
+that had been through `tail -6`, which reported BUILD FAILED on a build that
+succeeded. Every instance is the same shape — a check aimed at a target nobody
+wrote down.
+
+---
+
+## 2026-07-28 — Parking parked the routes, not the work (`.166`)
+
+Phase 3 of [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md) is a founder call —
+keep or cut ~6,200 lines of parked surface. This is the agent half: does parking
+actually park anything? Two leaks, and the reason neither was caught.
+
+- **`scheduleLeaderboardPush` ran on every completed workout while `/leaderboard`
+  404s.** `workoutStore.ts:257` calls it unconditionally. Now gated on
+  `isSurfaceEnabled('leaderboard')`.
+- **It queued the entire workout history.** The function's own comment said the
+  snapshot was computed at enqueue *"because queuing an entire workout history would
+  bloat device storage"* — and the next line enqueued
+  `{ workoutHistory, savedCount }`. [src/lib/sync/INDEX.md](src/lib/sync/INDEX.md)
+  repeated the claim. So every save serialized the athlete's whole log into the
+  outbox, growing without bound, for a surface nobody can reach. `userId` turned out
+  to be a passthrough field on the snapshot, so the documented design was achievable
+  all along: computed at enqueue, stamped with the user in the handler.
+- **`MilitaryReadinessSection` rendered on `/benchmarks` with no america guard.**
+  `/benchmarks` is a secondary pillar, **on by default**, so the america track — parked
+  for legal and channel reasons, not tidiness — was live on it while `/america` and
+  `/fitness-test` returned 404. Its sibling `PresidentialFitnessSection` on the same
+  page has always checked the flag. One of two, for the whole life of the surface
+  registry. Now self-gates, in the component so future call sites inherit it.
+- **Why nothing caught it.** `surface.test.ts` has 14 cases and they are all sound —
+  and every one checks `SURFACE_PATHS` against itself. "every surface declares at
+  least one path" validates the table using the table. Nothing asserted the
+  declaration matched the app. New `src/lib/surfaceReality.test.ts` does: components
+  that must self-gate, enqueues that must check their surface, and the payload shape
+  the comment promised. **All three falsified** — each defect reintroduced, each
+  assertion fails, restored, passes.
+- That is the **fifth** suite in this repo found pointing at its own assumptions
+  rather than at the product: `.129` sitemap, `.157` a11y routes, `.162` viewport,
+  `.165` gate port, this. The shape is always the same — the guard has an implicit
+  target nobody wrote down.
+- Unit tests **613 → 616**. Gate 39/39.
+
+**Not done, founder call:** whether the parked surfaces (73 files, ~6,200 lines,
+20 of 63 API routes) stay or go. Fixing them to honour a decision you already made is
+not the same as making the next one.
+
+---
+
+## 2026-07-28 — The boss metric counted deleted workouts, and the gate tested the wrong server (`.165`)
+
+Phase 2 of [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md): prove the week-4
+number before there are users to count. Two defects, both found by reading rather
+than by running, because neither has ever had data to run against.
+
+- **`mw_week4_retention()` never excluded tombstones.** It shipped in
+  `20260720_referrals.sql`; `workout_logs.deleted_at` arrived the next day in
+  `20260721_workout_sync_v2.sql`, and nothing reconciled them. Deletes propagate
+  cross-device (`.127`), so this is a live path, and **the error has no sign**: a
+  deleted first session inflates the denominator while a deleted week-4 session
+  inflates the numerator. A number you cannot sign is worse than one you know is
+  high. Fixed in `20260728_week4_exclude_tombstones.sql`.
+- **Three definitions of the window, no two alike.**
+  [POST_LAUNCH_CADENCE.md](docs/POST_LAUNCH_CADENCE.md) line 3 said "week 4", line 13
+  said "days 22–28", the SQL used days 21–27. The SQL is right — first workout is day
+  0, so the blocks are 0–6, 7–13, 14–20, **21–27** — so the doc was corrected to it,
+  not the reverse.
+- **New `supabase/checks/week4_retention_proof.sql`.** Seeds all seven boundary cases
+  (inclusive day 21, exclusive day 28, too-recent cohort, tombstoned-only athlete,
+  tombstoned week-4 session), asserts 5 eligible / 2 retained, and **rolls back** so
+  it is safe to run anywhere. `week4-smoke` proves the RPC *answers*; this proves it
+  answers *correctly*. Against the pre-fix function it fails on purpose.
+- **`npm run gate` was testing whatever happened to be on port 3000.** `GATE_PORT`
+  defaults to 3000; `next start` cannot bind an occupied port, but `waitForServer()`
+  only asks whether *something* answers. A stale dev server left running was enough
+  to run all 39 `@gate` tests against a **pre-`.159` build** — 34 failed, while the
+  identical suite passed against a clean one minutes earlier. Red was the lucky
+  direction: a compatible-but-wrong build goes green. That is the **fourth** time this
+  repo has shipped a suite pointed at the wrong thing (`.129` sitemap,
+  `.157` a11y routes, `.162` viewport, this). `gate.mjs` now refuses to start when the
+  port is occupied, **before** the build rather than after, and names both fixes.
+  Falsified: `GATE_PORT=3000 npm run gate` now exits in 2s instead of 3 wasted minutes.
+- Gate **39/39** on a clean port (2.0 min), including the two offline/service-worker
+  cases that skip whenever the build was not made with `PRIVATE_MODE=false`.
+
+**Founder-owned:** both migrations are unapplied. Run the proof after applying.
+
+---
+
+## 2026-07-28 — The athlete we built for had no way back (`.164`)
+
+The boss metric is week-4 retained weekly loggers. The headline promise is no
+account. **Every mechanism that could bring a lapsed athlete back required one** —
+and not as an oversight in one place, but consistently, at five layers:
+
+| Layer | The assumption |
+|-------|----------------|
+| UI | `ProfilePage` rendered the reminders card inside `{email && (…)}` |
+| Client | `pushClient.ts` → `getUser()`, `if (!user) return 'error'` |
+| Schema | `user_id uuid **not null** references auth.users` |
+| RLS | all four policies `auth.uid() = user_id` |
+| Server | `sendNudgePush(admin, userId)`; candidates `from('profiles')` |
+
+Each layer is individually correct. Together they meant someone who logged six
+sessions without signing in and then went quiet was unreachable forever — no
+channel, and no row that knew they existed.
+
+- **Anonymous push, end to end.** `user_id` nullable + `device_id` + a check
+  constraint so a row always has an owner. New `POST|DELETE /api/push/subscribe`
+  runs on the **service role**: anonymous rows have `user_id is null`, so every RLS
+  policy on the table denies them, and the alternative — a public policy — would let
+  anyone enumerate device rows. **Signed in and signed out take the same path**,
+  because two writers to one table is how a device ends up subscribed twice or opted
+  in once and reachable never. `getOrCreateDeviceId()` already existed and was
+  referenced twice; it is the identity, not a new one.
+- **The permission ordering is now structural.** `Notification.requestPermission()`
+  must never be called down a path that cannot use the result — a granted-then-
+  discarded prompt leaves the site marked "notifications allowed" with nothing able
+  to send one, and the browser will not ask again. The old guard was only unreachable
+  because the UI hid the toggle; the UI was the whole thing holding it.
+- **`streak-at-risk` is deleted, not resoftened.** It fired on a consecutive-day
+  premise `reentry.ts` explicitly rejects (`REENTRY_MIN_DAYS = 4`, "rest days are
+  part of training"), so a 3x/week lifter was told a scheduled rest day had cost them
+  something. Thresholds are now **the athlete's own** — two missed slots at their
+  cadence — via `quietThresholdDays()`. A 2x/week athlete is not chased on day four.
+- **The tone contract is executable.** `reentryTone.ts` holds the rules the in-app
+  surface already followed and the email channel did not: no absence lengths, no
+  streak-loss. It shipped `Your N-day streak ends tonight` and `it's been N days` —
+  both verbatim in the test as the regression, not as hypotheticals. Falsified before
+  trusting: reintroducing the old subject fails the suite naming both rules.
+- **`server-only` was why this drifted.** `nudgeServer.ts` carries it, so every
+  symbol in it — including the words sent to someone at the moment they are most
+  likely to quit — was unreachable from a unit test. Pure copy and the which-message
+  decision moved to `nudgeCopy.ts` (no `server-only`, unsubscribe URL passed in so it
+  needs no secret); `nudgeServer.ts` keeps DB and crypto. Same split as
+  `pushPayload.ts` out of `pushServer.ts`.
+- **Anonymous devices get `comeback` only, and that is the privacy contract working.**
+  The server holds a last-session date and a cadence — enough to know someone went
+  quiet, not enough to count this week's sessions or sum volume. `week-behind` and
+  `week1-recap` have nothing to compute from. Sets stay on the device.
+- **Cron ordering fixed while there:** anonymous push now runs *before* the
+  `RESEND_API_KEY` check. Returning 503 first meant a missing email key silenced
+  exactly the athletes who have no other channel.
+- Nothing is sent past 28 days quiet. Continuing to push someone who left is how the
+  channel gets blocked at the vendor.
+- Unit tests **599 → 613**. Plan: [docs/RETURN_LOOP_PLAN.md](docs/RETURN_LOOP_PLAN.md).
+
+**Not verified live:** the browser flow needs `PRIVATE_MODE=false` or the access
+secret, both founder-owned. Push is also dark until the public flip by design
+(`isPushSupported()` returns false outside production). The migration has **not**
+been applied to any Supabase project — that is a founder step.
+
+---
+
 ## 2026-07-26 — Two bugs the founder's phone found that no test did (`.158`)
 
 First review of the merged wedge. Verdict was "everything else is good" — and

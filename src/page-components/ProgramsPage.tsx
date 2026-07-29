@@ -66,7 +66,11 @@ export function ProgramsPage() {
               ? 'Specialist education outlines below. Free core tools live in Learn and the public guide.'
               : 'Specialist education outlines below. Free core tools live in Learn and the public guide. Super Bundle unlocks full premium depth.',
           })}{' '}
-          <Link href="/learn" className="text-primary hover:underline">
+          {/* Underlined at rest, not only on hover: this link sits inside a
+              muted-foreground paragraph, so colour was the sole cue distinguishing
+              it — WCAG 1.4.1, and axe `link-in-text-block` at serious. Hover-only
+              underline is invisible to keyboard and touch users alike. */}
+          <Link href="/learn" className="text-primary underline underline-offset-2">
             /learn
           </Link>
           {!freeBeta && (

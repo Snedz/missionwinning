@@ -57,6 +57,39 @@ async function waitForServer(timeoutMs = 90_000) {
 }
 
 /**
+ * Refuse to run against a server this script did not start.
+ *
+ * `next start` cannot bind an occupied port, but `waitForServer()` only asks
+ * whether *something* answers on it — so a dev server left running on 3000 was
+ * enough to make the whole @gate suite silently test a stale build. That happened:
+ * 34 tests failed against a pre-`.159` server while the same suite passed against a
+ * clean one. Red was the lucky direction; a compatible-but-wrong build would have
+ * gone green, which is the failure this repo has now hit four times
+ * (`.129` sitemap, `.157` a11y routes, `.162` viewport, this).
+ *
+ * Checked before the build, not after, so the 3-minute compile is not wasted.
+ */
+async function assertPortFree() {
+  step += 1;
+  console.log(`\n\x1b[1m[${step}] Port ${PORT} unoccupied?\x1b[0m`);
+  try {
+    await fetch(BASE, { signal: AbortSignal.timeout(2_000) });
+  } catch {
+    console.log(`  nothing listening on ${PORT} — ok`);
+    return;
+  }
+  console.error(
+    `\n\x1b[31m✗ Something is already listening on ${PORT}.\x1b[0m\n` +
+      `  The gate would test that server instead of the build it just made.\n` +
+      `  Free it:            lsof -ti:${PORT} | xargs kill\n` +
+      `  Or use another:     GATE_PORT=3222 npm run gate`
+  );
+  process.exit(1);
+}
+
+await assertPortFree();
+
+/**
  * `playwright --version` succeeds even when no browser has been downloaded, which
  * turns a missing binary into a wall of cryptic test failures. Check the actual
  * executable so the hint is one clear line instead.
@@ -72,6 +105,10 @@ function hasChromium() {
   return !!p && existsSync(p);
 }
 
+// Cheap and early, next to the port guard: catching an unbumped label after a
+// three-minute build wastes the build, and an unbumped label is what makes two
+// branches announce the same version.
+run('Build label + hard rule 5', 'npm', ['run', 'check-build-label']);
 run('Lint', 'npm', ['run', 'lint']);
 run('Typecheck', 'npm', ['run', 'typecheck']);
 run('Unit tests', 'npm', ['test']);

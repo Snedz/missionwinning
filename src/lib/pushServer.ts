@@ -17,6 +17,30 @@ export function isPushConfigured(): boolean {
   );
 }
 
+/**
+ * Send to one anonymous device by endpoint.
+ *
+ * Anonymous rows have `user_id is null`, so the by-user query below can never reach
+ * them — which was the whole reason a lapsed athlete without an account had no
+ * return channel at all. See docs/RETURN_LOOP_PLAN.md.
+ */
+export async function sendAnonymousPush(
+  admin: SupabaseClient,
+  endpoint: string,
+  payload: PushPayload
+): Promise<PushSendResult> {
+  if (!isPushConfigured()) return 'no_subscription';
+
+  const { data: rows, error } = await admin
+    .from('push_subscriptions')
+    .select('id, endpoint, p256dh, auth')
+    .eq('endpoint', endpoint)
+    .limit(1);
+
+  if (error || !rows?.length) return 'no_subscription';
+  return deliver(admin, rows, payload);
+}
+
 export async function sendNudgePush(
   admin: SupabaseClient,
   userId: string,
@@ -30,7 +54,16 @@ export async function sendNudgePush(
     .eq('user_id', userId);
 
   if (error || !rows?.length) return 'no_subscription';
+  return deliver(admin, rows, payload);
+}
 
+type SubscriptionRow = { id: string; endpoint: string; p256dh: string; auth: string };
+
+async function deliver(
+  admin: SupabaseClient,
+  rows: SubscriptionRow[],
+  payload: PushPayload
+): Promise<PushSendResult> {
   let webpush: typeof import('web-push');
   try {
     webpush = await import('web-push');
