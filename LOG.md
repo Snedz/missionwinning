@@ -6,6 +6,53 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The coach can do arithmetic now (`.171`)
+
+Week 1 of the EIN-window sprint. Two pure engines, no features, no UI yet — the
+numbers the coach will speak, computed from logged sets alone.
+
+**Why this shape.** The brief was a WHOOP screenshot: *"15.3 strain against your 11.8
+upper bound"*. That sentence is not AI, it is a personal baseline plus the nerve to
+say a number. WHOOP needs a strap for it. We need a logbook — which we already have,
+for free, without an account.
+
+- **[`coach/load.ts`](src/lib/coach/load.ts)** — Foster **session-RPE** (RPE ×
+  minutes), not an invented tonnage/density/RPE composite that would look scientific
+  and mean nothing. Tonnage is reported beside it because lifters think in kilos, but
+  the ratio maths runs on the validated metric. **ACWR in its EWMA form**: rolling
+  averages suffer mathematical coupling, and EWMA degrades far better on the gappy
+  history a 3x/week lifter actually produces.
+- **Three refusals, each tested.** The ratio is **null** under 14 days of history —
+  a plausible-looking baseline from one week is the same defect `.127` deleted when it
+  removed a day-zero Readiness of 42. Warmups are not load. Bodyweight sessions have
+  zero tonnage, so tonnage-weighted RPE would have divided by zero and handed a
+  calisthenics athlete `NaN`; it falls back to a plain mean.
+- **What it is not.** ACWR is validated in *team sports*, contested in the literature,
+  and never validated for recreational lifting. It is **descriptive, not predictive** —
+  how this week compares to your own baseline, never a claim about injury. Recorded in
+  the module header so the next person cannot phrase it as medicine
+  ([LEGAL_SAFETY.md](docs/LEGAL_SAFETY.md) §3a).
+- **[`coach/progress.ts`](src/lib/coach/progress.ts)** — e1RM series, PRs, plateaus.
+  Brzycki ≤10 reps, Epley above, each where it is least wrong; capped at 12 reps
+  because an e1RM from a set of 20 is a number about endurance. One session is **one**
+  exposure, not one point per set. A PR must beat the record by more than
+  `PR_EPSILON` — plates come in 2.5 kg jumps, so a 0.2 kg "record" is the app
+  congratulating you for rounding.
+- **A plateau is "the best is old", not "the last few were equal"** — a lifter who
+  sets a PR then deliberately backs off is not stalled, and the test says so.
+
+**One test was wrong and the code was right.** I asserted a session keeps its
+*heaviest* set; 100 kg × 5 estimates 113 and 105 kg × 3 estimates 111, so the heavier
+bar is the weaker showing. The assertion encoded my intuition rather than what e1RM
+means. Rewritten to state the real semantic, with the numbers in the comment.
+
+Every new assertion falsified before being trusted — min-history guard, warmup
+exclusion, divide-by-zero fallback, PR noise floor.
+
+Unit tests **622 → 650**.
+
+---
+
 ## 2026-07-29 — Told the athlete it saved when it hadn't (`.170`)
 
 Asked whether anything needed building before launch. The answer, from the repo's own
