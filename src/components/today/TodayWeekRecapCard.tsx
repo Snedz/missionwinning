@@ -10,6 +10,9 @@ import { loadCheckIns } from '@/lib/mindCheckIns';
 import { loadBodyMetrics } from '@/lib/bodyMetrics';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { track } from '@/lib/analytics';
+import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
+import { getCachedReferralCode } from '@/lib/referral';
+import { buildRecapCardData, renderShareCard, shareCardImage } from '@/lib/share/shareCard';
 
 type Props = {
  recap: WeekRecap;
@@ -33,6 +36,25 @@ export function TodayWeekRecapCard({ recap, forceFull }: Props) {
  }, [history]);
 
  const full = forceFull || debrief.isFullDebrief;
+ const units = useUnits();
+
+ // Week recap as an image — rendered on-device, shared only by choice (.182).
+ const shareRecapCard = async () => {
+ const card = buildRecapCardData(debrief, weightUnitLabel(units));
+ const blob = await renderShareCard(card);
+ if (!blob) {
+ track('share_card_generated', { surface: 'week-recap', method: 'failed' });
+ return;
+ }
+ const refCode = getCachedReferralCode();
+ const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.missionwinning.com';
+ const shareUrl = refCode
+ ? `${origin}/?ref=${encodeURIComponent(refCode)}`
+ : `${origin}/?utm_source=share&utm_medium=week-recap`;
+ const text = `Week of ${debrief.weekStart}: ${debrief.train.sessions} sessions, ${debrief.train.sets} sets.`;
+ const method = await shareCardImage(blob, text, shareUrl);
+ track('share_card_generated', { surface: 'week-recap', method });
+ };
 
  useEffect(() => {
  if (full && !viewed) {
@@ -142,7 +164,17 @@ export function TodayWeekRecapCard({ recap, forceFull }: Props) {
  </p>
  ) : null}
 
+ <div className="flex items-center gap-2">
  <Links />
+ <span className="text-muted-foreground text-xs" aria-hidden>·</span>
+ <button
+ type="button"
+ onClick={shareRecapCard}
+ className="text-xs font-medium text-primary hover:underline underline-offset-4"
+ >
+ {t('todayWeekRecapShareCard', { defaultValue: 'Share card' })}
+ </button>
+ </div>
  </section>
  );
 }

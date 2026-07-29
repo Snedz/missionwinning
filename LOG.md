@@ -6,6 +6,56 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — The growth loop a privacy-first app is allowed to have (`.182`)
+
+Hevy's moat is an in-app social feed. We cannot build that without breaking the one
+promise the product is positioned on — workout content never leaves the device — so
+this is the other half of the loop: **share OUT**. A PNG rendered on this device,
+sent only when the athlete decides to send it, carrying their referral link.
+
+Two cards from data that already existed: the session (`WorkoutVictorySummary` +
+the debrief's `records`) and the week (`WeeklyDebrief.train`, which has counted PRs
+since `.173` with nothing reading the number). 1080×1350 portrait, paper ground,
+ink type, one poster-red band.
+
+**The honesty rules follow the card onto the image**, because a share card is
+exactly where a product starts flattering its user:
+
+- **No records → no line.** A first-ever entry has `previous: null` and is *not* a
+  record broken — the same rule `recordLine` enforces in the debrief. Falsified:
+  counting first-evers fails a test.
+- **Zero PRs is silence**, not "0 personal records!". Falsified: printing the zero
+  fails a test.
+- **A one-day streak is not a streak** worth printing.
+- Contrast carries over too: poster red `#ec3013` is 3.78:1 on paper, so it is used
+  only for the large kicker band with paper text on it; the PR line uses
+  `--primary` `#ae1800`. The rule `index.css` documents is not suspended because the
+  surface is a canvas.
+
+Split on the usual seam — the card *data* builders are pure and tested; the canvas
+painter is a thin DOM-only function, following `progressPhotos.ts`'s
+`canvas.toBlob` pattern (the only client-side image code that already existed).
+Sharing prefers `navigator.canShare({files})` and degrades to download + clipboard,
+so a desktop browser without a share sheet still produces the image.
+
+Brand hexes are duplicated from `check-token-sync`'s `BRAND_HEX` by necessity — a
+detached canvas cannot read CSS custom properties — and that script is the guard if
+the brand ever moves.
+
+**Then I rendered one, and it was broken.** Four stats plus a PR line put the record
+text at y=1280 against a footer at y=1270: they printed **on top of each other** — in
+exactly the best case, a streak *and* a record, which is the session most worth
+sharing. Every unit test passed the whole time, because all of them asserted the
+card's *data*. This is the eighth sighting of the repo's oldest defect class: a green
+suite only proves something about what it was pointed at.
+
+Fixed by extracting `computeCardLayout` as pure and laying stats out in **two
+columns**, so four fit in two rows instead of a column that walks off the bottom. The
+invariant is now a test: across 1–6 stats × with/without a PR, nothing is ever
+positioned below the footer baseline. Verified by rendering the real bundled source
+in a real browser and **looking at the PNG** — the same way the bug was found.
+Tests **766→774**.
+
 ## 2026-07-29 — The percentages were prose (`.181`)
 
 Famous free programs, with the wave maths finally executable. The catalog already

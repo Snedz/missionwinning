@@ -70,6 +70,7 @@ type AnalyticsEvent =
   | 'backup_exported'
   | 'backup_restored'
   | 'csv_imported'
+  | 'share_card_generated'
   | 'history_truncated'
   | 'sync_outbox_drained'
   | 'sync_outbox_stuck'
