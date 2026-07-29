@@ -6,6 +6,64 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-29 — Load steers the plan (`.177`)
+
+`.171` built `coach/load.ts` — Foster session-RPE, EWMA ACWR, a `light | steady | high`
+band. `.172`–`.173` taught the debrief to say it out loud. And then nothing ever fed it
+back. Its only two importers were `debrief.ts` and `CoachTodayCard`; not one line of
+`adapt.ts`, `planEngine.ts` or `progression.ts` read the ratio. The app measured that a
+week had run hot, reported it honestly *after* the session, and then planned the next week
+as though it had never looked. That is the unclosed half of "close the loop around the
+debrief".
+
+**One seam, because there already was one.** Every prescription in the app flows through
+`nextTargets`, and `nextTargets` is reached from exactly one call site — `selector.ts` —
+which serves weekly generate, premium regen, adjust rebuilds and the recovery session
+alike. Steering that one function steers all four deterministically, so the new
+`loadGuard.ts` needed no new plumbing and no second code path to keep in sync.
+
+**Cap-only, and the asymmetry is the entire design.** A high ratio *holds* a rise. It never
+deloads, never cuts sets, never touches session count, and never says anything a reasonable
+person could read as medical advice:
+
+- ACWR is validated in **team sports**, actively contested in the literature, and has
+  **never been validated for recreational lifting** — the header of `load.ts` says so, and
+  LEGAL_SAFETY §3a is why. Declining to *add* weight on that evidence is a defensible
+  coaching call. Taking weight away on it is not.
+- `light` is identity too. Auto-adding volume because a contested ratio dipped is the same
+  error in the flattering direction, and the debrief already *offers* the extra set — an
+  invitation the athlete accepts, not a decision the engine makes for them.
+- `unknown` — every athlete under 14 days of history — is **provably** identity. The test
+  asserts `deepEqual` against the unguarded call rather than trusting the branch to look
+  obviously correct. That is the `.127` principle: no fabricated baseline acts on anything.
+
+**Where it deliberately does not sit.** Not `chooseSplit`, not `adaptPlan`. Session *shape*
+already answers to strain (≥70 trims exercise count) and readiness (<40 swaps to recovery).
+One mechanism per axis: those two own shape, this owns progression rate. A third damper on
+partially-overlapping signals would punish the same hard week three times and leave none of
+the three explainable to the person living it.
+
+The zone is computed **once, at context build**, alongside `computeBodyScores` — so
+`generateWeek` stays deterministic given a context, and the band is fixed when the week is
+generated rather than re-read mid-week. Load shapes the *next* session; it does not pull
+the rug on a plan someone is already three days into.
+
+**Falsification, clause by clause.** Deleting the cap fails 3 tests; clamping decreases as
+well as increases fails 2; letting `light` act fails 1; letting `unknown` act fails 1. The
+guard also *checks* that a proposal is genuinely an increase rather than assuming it —
+`hasMixedOrMed` adds a rep only below the goal's rep ceiling, and at the ceiling it returns
+a plain hold, which must not be relabelled a steady week and blamed on the athlete's load.
+The golden personas come out **byte-identical**, which is the proof the free path did not
+move.
+
+**The test was wrong and the engine was right** — again. My first integration history was
+16 byte-identical sessions, which trips `stalled()` (three identical top sets) and
+*deloads*, so the steady control never rose and the cap was untestable. The history had to
+become a genuinely progressing athlete before there was any rise to hold. Had I "fixed" the
+engine to match my test, I would have deleted the stall deload.
+
+Tests **699→706**.
+
 ## 2026-07-29 — The coach was being overruled in the gym (`.175`)
 
 The intelligence shipped in `.171`–`.174` reported honestly *after* a session. It

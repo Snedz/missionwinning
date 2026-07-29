@@ -162,7 +162,14 @@ export function pickExercises(
   }
 
   const exercises: PlanExercise[] = picked.map((ex) => {
-    const t = nextTargets(ex.id, ctx.history, ctx.units, ctx.goalId, ctx.experience);
+    const t = nextTargets(
+      ex.id,
+      ctx.history,
+      ctx.units,
+      ctx.goalId,
+      ctx.experience,
+      ctx.loadZone
+    );
     return {
       exerciseId: ex.id,
       sets: t.sets,
