@@ -2,6 +2,7 @@ import type { MuscleGroup } from '@/lib/muscleGroups';
 import type { BodyScores, ReadinessInfo } from '@/lib/score';
 import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
+import type { LoadZone } from '@/lib/coach/load';
 
 export type { Rpe } from '@/types';
 
@@ -54,6 +55,13 @@ export interface CoachContext {
   units: UnitsPref;
   assessmentRisk?: string;
   seedId: string;
+  /**
+   * The athlete's acute:chronic load band (`load.ts`), computed once at context build.
+   * Optional so a context without it behaves exactly as it did before `.177` — which
+   * is also what every athlete under 14 days of history gets, since the ratio is null
+   * there and the zone is `unknown`. Only ever holds a rise; see `loadGuard.ts`.
+   */
+  loadZone?: LoadZone;
 }
 
 export interface SplitDay {

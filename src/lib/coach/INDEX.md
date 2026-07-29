@@ -7,9 +7,10 @@
 1. `types.ts` — `CoachPlan`, `CoachContext`, `PlanSession`, `PlanExercise`
 2. `schedulePrefs.ts` — days per week, preferred days (`mw_days_per_week`)
 3. `equipment.ts` — `equipmentMatches`, `mapStorageEquipment`
-4. `progression.ts` — `nextTargets` (RPE, stall, deload, % of e1RM `loadPct`)
+4. `progression.ts` — `nextTargets` (RPE, stall, deload, % of e1RM `loadPct`, optional `loadZone` cap)
+4b. `loadGuard.ts` — `capProgressionForZone`: a **high** ACWR band holds a rise. Cap-only — never deloads, never touches session shape; `light`/`unknown` are identity
 5. `splitPlanner.ts` — `chooseSplit`, `mapToCalendar`, week start helpers
-6. `selector.ts` — `pickExercises`, `buildSession` (passes `loadPct`)
+6. `selector.ts` — `pickExercises`, `buildSession` (passes `loadPct`, `ctx.loadZone`)
 7. `planEngine.ts` — `generateWeek`, `computeContextHash`
 8. `adapt.ts` — `adaptPlan`, missed sessions, readiness swap, equipment change
 8b. `adaptSummary.ts` — re-exports from `packages/mw-core` (shared with Expo)
@@ -66,7 +67,7 @@ Shared client: `src/lib/coachLlmClient.ts` (also used by `coachDailyServer.ts` +
 
 | Term | Path |
 |------|------|
-| Training load / ACWR band | `src/lib/coach/load.ts` — Foster sRPE + EWMA. **Descriptive, never predictive** (LEGAL_SAFETY §3a); ratio is `null` under 14 days |
+| Training load / ACWR band | `src/lib/coach/load.ts` — Foster sRPE + EWMA. **Descriptive, never predictive** (LEGAL_SAFETY §3a); ratio is `null` under 14 days. Reaches the plan only via `loadGuard.ts`, and only to hold a rise |
 | Strength progress | `src/lib/coach/progress.ts` — `estimate1rm` is **the** 1RM estimator (Brzycki ≤10 / Epley 11–12, cap 12); PRs, plateaus |
 | Session debrief | `src/lib/coach/debrief.ts` — rules-composed lines, tone-tested via `reentryTone.ts` |
 | Set arithmetic | `src/lib/workout/setMath.ts` — shared `roundToStep` / `workingSets` / `loadBearingSets` |

@@ -4,6 +4,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import type { CoachContext } from '@/lib/coach/types';
 import { mapStorageEquipment } from '@/lib/coach/equipment';
+import { loadBands } from '@/lib/coach/load';
 import { getOrCreateDeviceId } from '@/lib/coach/storage';
 import { loadPreferredDays, loadDaysPerWeek } from '@/lib/coach/schedulePrefs';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
@@ -52,6 +53,12 @@ export function buildCoachContextFromInputs(params: {
     units,
     assessmentRisk: params.assessmentRisk,
     seedId: params.seedId ?? getOrCreateDeviceId(),
+    // Computed here, once, so `generateWeek` stays deterministic given a context —
+    // the `new Date()` inside `loadBands` lives at context-build time exactly as
+    // `computeBodyScores`' does. It also means the zone is fixed when the week is
+    // generated rather than re-read mid-week: load shapes the *next* session, it does
+    // not pull the rug on a plan the athlete is already working through.
+    loadZone: loadBands(params.history).zone,
   };
 }
 

@@ -4,6 +4,8 @@ import { weightStep } from '@/lib/units';
 import { roundToStep, workingSets } from '@/lib/workout/setMath';
 import { EXERCISES } from '@/data/exercises';
 import type { Rpe } from '@/lib/coach/types';
+import type { LoadZone } from '@/lib/coach/load';
+import { capProgressionForZone } from '@/lib/coach/loadGuard';
 import {
   resolveStartingLoadPct,
   weightFromLoadPct,
@@ -142,13 +144,20 @@ function withLoadPct(
 /**
  * Weighted compounds with a known max: prescribe via loadPct (TrainHeroic-style).
  * Bodyweight / no max: absolute last-session progression (unchanged).
+ *
+ * `loadZone` is the athlete's own acute:chronic band (`load.ts`). It is optional and
+ * omitting it is not a degraded mode — it is exactly today's behaviour, which is what
+ * every caller predating `.177` and every athlete under 14 days of history gets. It
+ * can only ever *hold* a rise; see `loadGuard.ts` for why that asymmetry is the whole
+ * design.
  */
 export function nextTargets(
   exerciseId: string,
   history: CompletedWorkoutLog[],
   units: UnitsPref,
   goalId: string,
-  experience: string
+  experience: string,
+  loadZone?: LoadZone
 ): ProgressionTargets {
   const sessions = findRecentSessions(exerciseId, history);
   const step = weightStep(units);
@@ -171,12 +180,26 @@ export function nextTargets(
   const usePct = workingMax != null && workingMax > 0 && weight > 0;
 
   if (usePct && workingMax) {
-    let loadPct = resolveStartingLoadPct({
+    const basePct = resolveStartingLoadPct({
       workingMax,
       lastWeight: weight,
       experience: exp,
       goalId,
     });
+    let loadPct = basePct;
+
+    // "No rise this week" in this path is the base percentage materialised against the
+    // working max — not literally last session's weight, which can differ once the max
+    // has moved. Built once so every capped branch holds at the same honest number.
+    const hold = withLoadPct(
+      {
+        sets: setCount,
+        reps: perf.reps,
+        weight: weightFromLoadPct(workingMax, basePct, units),
+        whyKey: 'coachWhyHold',
+      },
+      basePct
+    );
 
     if (stalled(sessions)) {
       loadPct *= 0.9;
@@ -207,9 +230,10 @@ export function nextTargets(
     if (allEasy(latestSets)) {
       loadPct = Math.min(95, loadPct + 2.5);
       weight = weightFromLoadPct(workingMax, loadPct, units);
-      return withLoadPct(
-        { sets: setCount, reps, weight, whyKey: 'coachWhyLoadUp' },
-        loadPct
+      return capProgressionForZone(
+        loadZone,
+        withLoadPct({ sets: setCount, reps, weight, whyKey: 'coachWhyLoadUp' }, loadPct),
+        hold
       );
     }
 
@@ -219,7 +243,11 @@ export function nextTargets(
         whyKey = 'coachWhyRepProgress';
       }
       weight = weightFromLoadPct(workingMax, loadPct, units);
-      return withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct);
+      return capProgressionForZone(
+        loadZone,
+        withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct),
+        hold
+      );
     }
 
     // No RPE rated — rep-completion heuristic
@@ -229,8 +257,20 @@ export function nextTargets(
       whyKey = 'coachWhyLoadUp';
     }
     weight = weightFromLoadPct(workingMax, loadPct, units);
-    return withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct);
+    return capProgressionForZone(
+      loadZone,
+      withLoadPct({ sets: setCount, reps, weight, whyKey }, loadPct),
+      hold
+    );
   }
+
+  // Absolute path: "no rise this week" is simply last session's numbers.
+  const hold: ProgressionTargets = {
+    sets: setCount,
+    reps: perf.reps,
+    weight: perf.weight,
+    whyKey: 'coachWhyHold',
+  };
 
   if (stalled(sessions)) {
     if (bodyweight) {
@@ -266,7 +306,7 @@ export function nextTargets(
       weight = roundToStep(weight + step, step);
       whyKey = 'coachWhyLoadUp';
     }
-    return { sets: setCount, reps, weight, whyKey };
+    return capProgressionForZone(loadZone, { sets: setCount, reps, weight, whyKey }, hold);
   }
 
   if (hasMixedOrMed(latestSets)) {
@@ -274,7 +314,7 @@ export function nextTargets(
       reps += 1;
       whyKey = 'coachWhyRepProgress';
     }
-    return { sets: setCount, reps, weight, whyKey };
+    return capProgressionForZone(loadZone, { sets: setCount, reps, weight, whyKey }, hold);
   }
 
   // No RPE rated — rep-completion heuristic
@@ -289,5 +329,5 @@ export function nextTargets(
     }
   }
 
-  return { sets: setCount, reps, weight, whyKey };
+  return capProgressionForZone(loadZone, { sets: setCount, reps, weight, whyKey }, hold);
 }
