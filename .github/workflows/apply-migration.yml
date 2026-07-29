@@ -1,7 +1,23 @@
-# One-shot: apply a SQL migration against production Supabase using Vercel env.
-# Uses Vercel CLI in CI (Sensitive secrets decrypt there; local pull redacts them).
+# One-shot: apply a SQL migration against production Supabase.
 #
-# Required secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+# Connection source, in order:
+#   1. secrets.SUPABASE_DB_URL  — the direct (non-pooling) Postgres URL. Preferred.
+#   2. `vercel env pull`        — legacy path, works ONLY for non-Sensitive vars.
+#
+# Why 1 exists. This workflow originally assumed "Sensitive secrets decrypt in CI".
+# They do not. Vercel Sensitive env vars are **write-only**: `vercel env pull` returns
+# a short redaction placeholder for them everywhere, CI included. Both runs of this
+# workflow before that was understood (2026-07-20, 2026-07-29) died the same way —
+# `pg` was handed an 11-character placeholder as a connection string and asked DNS to
+# resolve a host called `base`, the tail of "supabase". A migration path that has
+# never once succeeded, failing with a DNS error that names no cause, is worse than
+# no migration path at all: it reads as working.
+#
+# So the placeholder is now detected and named before anything connects.
+#
+# Required secrets: SUPABASE_DB_URL (preferred) — or VERCEL_TOKEN + VERCEL_ORG_ID +
+# VERCEL_PROJECT_ID for the legacy path, which only works if POSTGRES_URL_NON_POOLING
+# is NOT marked Sensitive in Vercel.
 name: Apply Supabase migration
 
 on:
@@ -27,7 +43,8 @@ jobs:
           npm install -g vercel@latest
           npm install pg
 
-      - name: Pull production env (decrypted in CI)
+      - name: Pull production env (legacy path — skipped when SUPABASE_DB_URL is set)
+        if: ${{ secrets.SUPABASE_DB_URL == '' }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -35,6 +52,7 @@ jobs:
         run: |
           if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_PROJECT_ID" ] || [ -z "$VERCEL_ORG_ID" ]; then
             echo "Missing VERCEL_TOKEN / VERCEL_PROJECT_ID / VERCEL_ORG_ID"
+            echo "Set secrets.SUPABASE_DB_URL instead — see this workflow's header."
             exit 1
           fi
           mkdir -p .vercel
@@ -54,6 +72,7 @@ jobs:
       - name: Apply migration SQL
         env:
           MIGRATION_FILE: ${{ inputs.migration_file }}
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
         run: |
           node <<'NODE'
           const fs = require('fs');
@@ -76,38 +95,43 @@ jobs:
             env[k] = v;
           }
           const sql = fs.readFileSync(path, 'utf8');
-          // Prefer direct (non-pooling) for DDL
+
+          // A value Vercel refused to hand back is not a connection string. Sensitive
+          // vars come out as a short placeholder with no scheme; passing one to `pg`
+          // produces a DNS error naming a fragment of the real hostname, which sends
+          // whoever reads it looking for a network fault that does not exist.
+          const usable = (v) =>
+            typeof v === 'string' && v.length > 20 && /^postgres(ql)?:\/\//.test(v);
+
+          // Prefer the GitHub secret; fall back to a Vercel value only if it survived.
           const connectionString =
-            env.POSTGRES_URL_NON_POOLING ||
-            env.POSTGRES_URL ||
-            env.DATABASE_URL ||
+            (usable(process.env.SUPABASE_DB_URL) && process.env.SUPABASE_DB_URL) ||
+            [env.POSTGRES_URL_NON_POOLING, env.POSTGRES_URL, env.DATABASE_URL].find(usable) ||
             null;
+
+          if (!connectionString) {
+            const seen = ['POSTGRES_URL_NON_POOLING', 'POSTGRES_URL', 'DATABASE_URL']
+              .map((k) => `${k}: ${env[k] ? `len=${env[k].length}, no usable URL` : 'absent'}`)
+              .join('\n  ');
+            console.error(
+              'No usable Postgres connection string.\n\n' +
+              '  SUPABASE_DB_URL secret: ' +
+              (process.env.SUPABASE_DB_URL ? 'set but not a postgres:// URL' : 'not set') +
+              '\n  ' + seen + '\n\n' +
+              'Vercel Sensitive env vars are write-only — `vercel env pull` returns a\n' +
+              'redaction placeholder for them, in CI too. Set the SUPABASE_DB_URL repo\n' +
+              'secret to the direct (non-pooling) connection string.'
+            );
+            process.exit(1);
+          }
           async function run() {
             let client;
-            if (connectionString) {
-              console.log('Connecting via POSTGRES_URL*');
+            {
+              console.log('Connecting via', process.env.SUPABASE_DB_URL ? 'SUPABASE_DB_URL' : 'Vercel POSTGRES_URL*');
               client = new Client({
                 connectionString,
                 ssl: { rejectUnauthorized: false },
               });
-            } else if (env.POSTGRES_HOST && env.POSTGRES_PASSWORD && env.POSTGRES_USER) {
-              console.log('Connecting via POSTGRES_HOST');
-              client = new Client({
-                host: env.POSTGRES_HOST,
-                user: env.POSTGRES_USER,
-                password: env.POSTGRES_PASSWORD,
-                database: env.POSTGRES_DATABASE || 'postgres',
-                port: 5432,
-                ssl: { rejectUnauthorized: false },
-              });
-            } else if (env.SUPABASE_SERVICE_ROLE_KEY && (env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL)) {
-              // Fall back: Management/SQL not available via service role REST alone.
-              console.error('No Postgres connection string in Vercel env. Have POSTGRES_URL?');
-              console.error('Service role present:', Boolean(env.SUPABASE_SERVICE_ROLE_KEY));
-              process.exit(1);
-            } else {
-              console.error('No database credentials available from vercel env pull');
-              process.exit(1);
             }
             await client.connect();
             try {
