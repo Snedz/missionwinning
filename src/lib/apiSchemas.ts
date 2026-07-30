@@ -249,6 +249,9 @@ export const mobileSyncSetSchema = z.object({
   weightUnit: z.string().max(8).default('kg'),
   rpe: z.number().int().min(6).max(10).nullable().optional(),
   setKind: z.string().max(20).default('normal'),
+  // Dropped by omission before `.184` — Android sent it, zod stripped it, and every
+  // set note died here. 500 chars bounds the jsonb, not the athlete's thought.
+  note: z.string().max(500).optional(),
 });
 
 export const mobileSyncWorkoutSchema = z.object({
