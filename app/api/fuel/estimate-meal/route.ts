@@ -1,14 +1,17 @@
 /**
  * Photo meal macro estimate (heuristic).
- * Auth: gate | Rate: 10/min/IP | Body: multipart photo
+ * Auth: gate; vision branch additionally premium + daily quota | Rate: 10/min/IP | Body: multipart photo
  * See: app/api/INDEX.md
  */
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { estimateMealFromSignals, type MealImageHints } from '@/lib/estimateMealFromPhoto';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { hasAppAccess } from '@/lib/requestAccess';
+import { resolveLlmCaller } from '@/lib/llm/identity';
+import { checkLlmDailyQuota } from '@/lib/llm/quota';
+import { recordLlmUsage } from '@/lib/llm/metering';
 
 const MAX_BYTES = 6 * 1024 * 1024;
 
@@ -47,16 +50,42 @@ export const POST = withApiLogging('fuel/estimate-meal', async(request: NextRequ
         ? { palette }
         : undefined;
 
-    // Vision path when configured; always fall back to heuristic on failure.
+    /*
+     * Vision path when configured; always fall back to heuristic on failure.
+     * Since `.188` the vision branch — the only part that spends money — is
+     * additionally gated on premium (bypass during free beta) and the daily
+     * per-identity quota. Before that, ANY gate-cookie holder could drive paid
+     * vision inference with no premium check at all. Either refusal lands on
+     * `estimateMealFromSignals`, the same heuristic every free athlete gets.
+     */
     try {
       const { isMealVisionConfigured, fetchMealVisionEstimate } = await import(
         '@/lib/mealVisionClient'
       );
-      if (isMealVisionConfigured()) {
+      const rawDeviceId = form.get('deviceId');
+      const caller = await resolveLlmCaller(
+        request,
+        typeof rawDeviceId === 'string' ? rawDeviceId : null
+      );
+      const useVision =
+        isMealVisionConfigured() &&
+        caller.premium &&
+        (await checkLlmDailyQuota('meal_vision', caller)).ok;
+      if (useVision) {
         const buf = Buffer.from(await photo.arrayBuffer());
         const b64 = buf.toString('base64');
+        const t0 = Date.now();
         const vision = await fetchMealVisionEstimate(b64, photo.type || 'image/jpeg');
         if (vision.ok) {
+          after(() =>
+            recordLlmUsage({
+              feature: 'meal_vision',
+              identity: caller,
+              usage: vision.usage,
+              ok: true,
+              durationMs: Date.now() - t0,
+            })
+          );
           const conf =
             vision.estimate.confidence >= 0.7
               ? 'high'

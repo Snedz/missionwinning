@@ -1,9 +1,9 @@
 /**
  * Daily coach one-liner — LLM or rules fallback.
- * Auth: gate + app access | Rate: 12/min/IP
+ * Auth: gate + app access; LLM branch additionally premium + daily quota | Rate: 12/min/IP
  * See: app/api/INDEX.md, src/lib/coachDailyServer.ts
  */
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
@@ -13,10 +13,14 @@ import {
   fetchDailyCoachInsight,
 } from '@/lib/coachDailyServer';
 import { coachDailyContextSchema, parseJsonBody } from '@/lib/apiSchemas';
+import { readCoachLlmEnv } from '@/lib/coachLlmClient';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
+import { resolveLlmCaller } from '@/lib/llm/identity';
+import { checkLlmDailyQuota } from '@/lib/llm/quota';
+import { recordLlmUsage } from '@/lib/llm/metering';
 
 /** Daily AI coach insight — uses LLM when COACH_LLM_* env set; else rule keys from client. */
-export const POST = withApiLogging('coach/daily-insight', async(request: NextRequest) => {
+export const POST = withApiLogging('coach/daily-insight', async (request: NextRequest) => {
   const oversized = rejectOversizedBody(request);
   if (oversized) return oversized;
 
@@ -40,22 +44,55 @@ export const POST = withApiLogging('coach/daily-insight', async(request: NextReq
   }
   const body = parsed.data;
 
-  const result = await fetchDailyCoachInsight(body);
-
-  if (result.source === 'rules') {
-    const fb = coachFromFallback(body);
-    return NextResponse.json({
-      messageKey: fb.message,
-      actionLabelKey: fb.actionLabel,
-      actionPath: fb.actionPath,
-      source: 'rules' as const,
-    });
+  /*
+   * The LLM branch is gated; the rules answer never is. Before `.188` this
+   * route had NO premium check — any holder of the gate cookie could drive
+   * paid inference. Premium (or the free-beta bypass) plus the per-identity
+   * daily quota now decide whether inference is on the table; either refusal
+   * degrades to `coachFromFallback`, the same rules answer a free athlete
+   * gets — never an error.
+   */
+  const llmEnv = readCoachLlmEnv();
+  const caller = await resolveLlmCaller(request, body.deviceId);
+  let quotaExceeded = false;
+  // Dark env → straight to rules without touching the quota (the PR-stays-dark contract).
+  let useLlm = caller.premium && Boolean(llmEnv.apiUrl && llmEnv.apiKey);
+  if (useLlm) {
+    const quota = await checkLlmDailyQuota('daily_insight', caller);
+    if (!quota.ok) {
+      useLlm = false;
+      quotaExceeded = true;
+    }
   }
 
+  if (useLlm) {
+    const t0 = Date.now();
+    const result = await fetchDailyCoachInsight(body);
+    if (result.source === 'llm') {
+      after(() =>
+        recordLlmUsage({
+          feature: 'daily_insight',
+          identity: caller,
+          usage: result.usage,
+          ok: true,
+          durationMs: Date.now() - t0,
+        })
+      );
+      return NextResponse.json({
+        message: result.message,
+        actionLabel: result.actionLabel,
+        actionPath: result.actionPath,
+        source: 'llm' as const,
+      });
+    }
+  }
+
+  const fb = coachFromFallback(body);
   return NextResponse.json({
-    message: result.message,
-    actionLabel: result.actionLabel,
-    actionPath: result.actionPath,
-    source: 'llm' as const,
+    messageKey: fb.message,
+    actionLabelKey: fb.actionLabel,
+    actionPath: fb.actionPath,
+    source: 'rules' as const,
+    ...(quotaExceeded ? { reason: 'quota' as const } : {}),
   });
 });

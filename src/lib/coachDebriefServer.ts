@@ -12,6 +12,8 @@ export type DebriefVoiceContext = {
 export type DebriefVoiceResponse = {
   message: string;
   source: 'llm' | 'rules';
+  /** Token spend when source is 'llm' — threaded up for the route's meter. */
+  usage?: import('@/lib/llm/usage').LlmUsage;
 };
 
 export function debriefVoiceFromRules(ctx: DebriefVoiceContext): DebriefVoiceResponse {
@@ -58,5 +60,6 @@ export async function fetchDebriefVoice(
     temperature: 0.5,
   });
   if (!result.ok) return debriefVoiceFromRules(ctx);
-  return parseDebriefVoiceJson(result.content) ?? debriefVoiceFromRules(ctx);
+  const parsed = parseDebriefVoiceJson(result.content);
+  return parsed ? { ...parsed, usage: result.usage } : debriefVoiceFromRules(ctx);
 }

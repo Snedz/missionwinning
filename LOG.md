@@ -6,6 +6,41 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — The meter exists now (`.188`)
+
+Per-user LLM metering + spend hardening — the PR every paid LLM feature was gated
+on ("per-user spend metering does not exist"). It could not exist: both LLM
+clients discarded the provider's `usage` block, no usage table existed, all rate
+limits were per-IP 60-second windows, and the free-beta premium bypass returned
+**before user resolution** — the exact branch that spends money was the one branch
+that never knew who it was spending on. Worse, two routes spent with **no premium
+check at all**: `daily-insight` and `estimate-meal` would run paid inference for
+any holder of the gate cookie.
+
+What ships: `parseLlmUsage`/`estimateLlmUsage` (provider meter or char estimate,
+*marked* estimated — an estimate presented as a measurement poisons every cost
+decision built on it); both clients return `usage` (stream via
+`stream_options: include_usage`, defensive any-chunk parse + estimate fallback);
+new `llm_usage` migration (dual identity per the anonymous-push precedent, no
+insert policy — a client that can insert its own meter rows can forge its own
+spend); pure `quota.ts` (user > device > **ip floor**, env caps with `'0'` kill
+switch, day window, fail-open — ZDR stays the one fail-closed check);
+`identity.ts` resolves the user *before* the premium answer; all five routes
+record via `after()` and gate their LLM branch on premium + quota. Degrade rules:
+every route except chat falls to its rules/heuristic answer (plan-voice's
+signed-out contract untouched); chat 429s honestly ("daily limit, resets
+tomorrow") because it has no rules engine to lie with.
+
+**Provably dark in prod today**: LLM env unset → `unconfigured` → rules,
+quota never consulted (tested per route decision), nothing recorded; free beta →
+premium branches unchanged. Arms when the founder sets `COACH_LLM_*` /
+`MEAL_VISION_*`, applies `20260731_llm_usage.sql`, sets Upstash env (without it
+daily windows are per-instance memory — soft), and picks real `LLM_DAILY_CAP_*`
+numbers. Falsified: usage-discarded, quota-never-exceeds, anonymous-unmetered,
+minute-window (killed only after pinning the literal — asserting against the
+imported constant let the shrunken window pass), unowned-row-forged,
+ip-in-ledger — all killed. Tests 812→835.
+
 ## 2026-07-30 — Impacts (`.187`)
 
 Final PR of Field Notes — the WHOOP payoff without the strap. The most-loved

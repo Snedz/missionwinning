@@ -1,25 +1,28 @@
 /**
  * Weekly Mission Debrief voice — premium LLM or rules fallback.
- * Auth: gate + app access + premium | Rate: 6/min
+ * Auth: gate + app access + premium (LLM branch) + daily quota | Rate: 6/min
  */
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
-import { createClient } from '@supabase/supabase-js';
-import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { hasAppAccess } from '@/lib/requestAccess';
 import { fetchDebriefVoice } from '@/lib/coachDebriefServer';
+import { readCoachLlmEnv } from '@/lib/coachLlmClient';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { z } from 'zod';
 import { parseJsonBody } from '@/lib/apiSchemas';
+import { resolveLlmCaller } from '@/lib/llm/identity';
+import { checkLlmDailyQuota } from '@/lib/llm/quota';
+import { recordLlmUsage } from '@/lib/llm/metering';
 
 const debriefVoiceSchema = z.object({
   focusKey: z.string().min(1).max(80),
   trainSessions: z.number().int().min(0).max(20).optional(),
   proteinDays: z.number().int().min(0).max(7).optional(),
   weightDelta: z.number().min(-50).max(50).nullable().optional(),
+  /** Metering identity only — counts, never content; see 20260731_llm_usage.sql. */
+  deviceId: z.string().min(1).max(64).optional(),
 });
 
 export const POST = withApiLogging('coach/debrief-voice', async (request: NextRequest) => {
@@ -42,26 +45,16 @@ export const POST = withApiLogging('coach/debrief-voice', async (request: NextRe
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
-  let useLlm = false;
-  if (isPremiumBypassEnabled()) {
-    useLlm = true;
-  } else {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (url && anon) {
-      const accessToken = extractSupabaseAccessToken(request.cookies);
-      if (accessToken) {
-        const supabase = createClient(url, anon);
-        const {
-          data: { user },
-        } = await supabase.auth.getUser(accessToken);
-        if (user) {
-          useLlm = await isPremiumForUser(user.id, user.email ?? null);
-        }
-      }
-    }
-  }
+  // Premium (or bypass) and the daily quota gate the LLM branch only — either
+  // refusal degrades to the rules focus key, the same answer the free path gets.
+  // Dark env → rules without consuming quota (the PR-stays-dark contract).
+  const llmEnv = readCoachLlmEnv();
+  const llmConfigured = Boolean(llmEnv.apiUrl && llmEnv.apiKey);
+  const caller = await resolveLlmCaller(request, parsed.data.deviceId);
+  const useLlm =
+    llmConfigured && caller.premium && (await checkLlmDailyQuota('debrief_voice', caller)).ok;
 
+  const t0 = Date.now();
   const voice = await fetchDebriefVoice(
     {
       focusKey: parsed.data.focusKey,
@@ -72,5 +65,17 @@ export const POST = withApiLogging('coach/debrief-voice', async (request: NextRe
     useLlm
   );
 
-  return NextResponse.json(voice);
+  if (voice.source === 'llm') {
+    after(() =>
+      recordLlmUsage({
+        feature: 'debrief_voice',
+        identity: caller,
+        usage: voice.usage,
+        ok: true,
+        durationMs: Date.now() - t0,
+      })
+    );
+  }
+
+  return NextResponse.json({ message: voice.message, source: voice.source });
 });

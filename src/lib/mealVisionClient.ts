@@ -7,6 +7,14 @@ import {
   isTruthyEnv,
   parseZeroDataRetentionHeader,
 } from '@/lib/coachLlmClient';
+import { estimateLlmUsage, parseLlmUsage, type LlmUsage } from '@/lib/llm/usage';
+
+/**
+ * Prompt-side char stand-in for the image when the provider omits usage — vision
+ * prompts are dominated by image tokens the char heuristic cannot see. Coarse on
+ * purpose; the row is marked `estimated` either way.
+ */
+const VISION_IMAGE_PROMPT_CHARS = 4000;
 
 export type MealVisionEstimate = {
   name: string;
@@ -19,7 +27,12 @@ export type MealVisionEstimate = {
 };
 
 export type MealVisionResult =
-  | { ok: true; estimate: MealVisionEstimate; zeroDataRetention: boolean | null }
+  | {
+      ok: true;
+      estimate: MealVisionEstimate;
+      zeroDataRetention: boolean | null;
+      usage: LlmUsage;
+    }
   | {
       ok: false;
       reason: 'unconfigured' | 'http_error' | 'parse' | 'network' | 'timeout' | 'zdr_inactive';
@@ -140,11 +153,14 @@ export async function fetchMealVisionEstimate(
     }
     const json = (await res.json()) as {
       choices?: Array<{ message?: { content?: string } }>;
+      usage?: unknown;
     };
     const content = json.choices?.[0]?.message?.content ?? '';
     const estimate = parseMealVisionJson(content);
     if (!estimate) return { ok: false, reason: 'parse' };
-    return { ok: true, estimate, zeroDataRetention: zdr };
+    const usage =
+      parseLlmUsage(json.usage) ?? estimateLlmUsage(VISION_IMAGE_PROMPT_CHARS, content.length);
+    return { ok: true, estimate, zeroDataRetention: zdr, usage };
   } catch (e) {
     if (e instanceof Error && e.name === 'AbortError') {
       return { ok: false, reason: 'timeout' };

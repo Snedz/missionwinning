@@ -118,42 +118,44 @@ curl -X POST "$BASE/api/private-access/session" \
 
 ## Coach (LLM)
 
+All LLM branches are metered per identity since `.188`: token counts (never content) recorded to `llm_usage` via the service role, and a per-identity **daily** request quota (`LLM_DAILY_CAP_*`, `src/lib/llm/quota.ts`) on top of the per-IP minute limits. Quota keys prefer signed-in user > `deviceId` (optional in each schema, metering identity only) > IP. On every route except chat, quota exhaustion and non-premium degrade to the rules/heuristic answer — never an error.
+
 ### `POST /api/coach/daily-insight`
 
 | | |
 |--|--|
-| Auth | `gate` + `hasAppAccess` |
-| Rate | 12/min/IP |
-| Schema | `coachDailyContextSchema` |
-| Notes | LLM when env set; else rules fallback keys |
+| Auth | `gate` + `hasAppAccess`; **LLM branch additionally premium + daily quota** (`.188` — previously unguarded) |
+| Rate | 12/min/IP + daily per-identity quota (LLM branch) |
+| Schema | `coachDailyContextSchema` (+ optional `deviceId`) |
+| Notes | LLM when env set + premium + under quota; else rules fallback keys. Quota-exhausted responses add `reason: 'quota'` |
 
 ### `POST /api/coach/debrief-voice`
 
 | | |
 |--|--|
-| Auth | `gate` + app access + **premium** (rules fallback when free / no LLM) |
-| Rate | 6/min/IP |
-| Body | `{ focusKey, trainSessions?, proteinDays?, weightDelta? }` |
+| Auth | `gate` + app access + **premium** (rules fallback when free / no LLM / over quota) |
+| Rate | 6/min/IP + daily per-identity quota (LLM branch) |
+| Body | `{ focusKey, trainSessions?, proteinDays?, weightDelta?, deviceId? }` |
 | Success | `{ message, source: 'llm' \| 'rules' }` |
 
 ### `POST /api/coach/plan-voice`
 
 | | |
 |--|--|
-| Auth | `gate` + `hasAppAccess` |
-| Rate | 6/min/IP |
-| Schema | `coachPlanVoiceSchema` |
+| Auth | `gate` + `hasAppAccess` gates the LLM branch only — signed-out callers always get the rules briefing |
+| Rate | 6/min/IP + daily per-identity quota (LLM branch) |
+| Schema | `coachPlanVoiceSchema` (+ optional `deviceId`) |
 
 ### `POST /api/coach/chat`
 
 | | |
 |--|--|
 | Auth | `gate` + `hasAppAccess` + **premium** (402 `premium_required` if free) |
-| Rate | 10/min/IP |
+| Rate | 10/min/IP + daily per-identity quota |
 | Body cap | 32KB |
-| Schema | `coachChatSchema` — message ≤1000, turns ≤12, compact context (scores + optional today session / exerciseId) |
+| Schema | `coachChatSchema` — message ≤1000, turns ≤12, compact context (scores + optional today session / exerciseId), optional `deviceId` |
 | Success | `{ message, actionLabel?, actionPath?, source: 'llm' }` |
-| Errors | 503 `coach_offline` (LLM unconfigured / ZDR fail-closed), 502 other LLM fail |
+| Errors | 503 `coach_offline` (LLM unconfigured / ZDR fail-closed), 502 other LLM fail, 429 `coach_quota` + `retryAfterSec` (daily limit; stream emits `[[error:coach_quota]]`) |
 | Notes | No rules fallback. ZDR one-shot via `coachLlmClient`. Transcript not stored server-side. |
 
 ---

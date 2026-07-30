@@ -1,21 +1,22 @@
 /**
  * Weekly coach voice briefing — LLM or rules fallback.
- * Auth: gate + app access + premium | Rate: 6/min/IP
+ * Auth: gate + app access + premium (LLM branch only) + daily quota | Rate: 6/min/IP
  * See: app/api/INDEX.md, src/lib/coach/planVoiceServer.ts
  */
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
-import { createClient } from '@supabase/supabase-js';
-import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
-import { isPremiumBypassEnabled, isPremiumForUser } from '@/lib/premiumServer';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { hasAppAccess } from '@/lib/requestAccess';
 import { fetchPlanVoice } from '@/lib/coach/planVoiceServer';
+import { readCoachLlmEnv } from '@/lib/coachLlmClient';
 import { coachPlanVoiceSchema, parseJsonBody } from '@/lib/apiSchemas';
 import { rejectOversizedBody } from '@/lib/requestBodyLimit';
+import { resolveLlmCaller } from '@/lib/llm/identity';
+import { checkLlmDailyQuota } from '@/lib/llm/quota';
+import { recordLlmUsage } from '@/lib/llm/metering';
 
-export const POST = withApiLogging('coach/plan-voice', async(request: NextRequest) => {
+export const POST = withApiLogging('coach/plan-voice', async (request: NextRequest) => {
   const oversized = rejectOversizedBody(request, 64 * 1024);
   if (oversized) return oversized;
 
@@ -35,7 +36,9 @@ export const POST = withApiLogging('coach/plan-voice', async(request: NextReques
    * /coach. The cost gate sat in front of the branch that decides whether any
    * cost is incurred: `fetchPlanVoice(ctx, false)` is pure local rules — no
    * network, no LLM, nothing to protect. The rate limit above still applies,
-   * and the LLM path below still requires premium or the bypass.
+   * and the LLM path below still requires premium or the bypass — and, since
+   * `.188`, the per-identity daily quota. Both refusals land on the same
+   * rules briefing; neither can ever 401 or 429 the free path.
    */
   const appAccess = await hasAppAccess(request);
 
@@ -46,29 +49,16 @@ export const POST = withApiLogging('coach/plan-voice', async(request: NextReques
   }
   const body = parsed.data;
 
+  const llmEnv = readCoachLlmEnv();
+  const llmConfigured = Boolean(llmEnv.apiUrl && llmEnv.apiKey);
   let useLlm = false;
-  if (!appAccess) {
-    // Rules briefing only — free, local, and the reason the fallback exists.
-    useLlm = false;
-  } else if (isPremiumBypassEnabled()) {
-    useLlm = true;
-  } else {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (url && anon) {
-      const accessToken = extractSupabaseAccessToken(request.cookies);
-      if (accessToken) {
-        const supabase = createClient(url, anon);
-        const {
-          data: { user },
-        } = await supabase.auth.getUser(accessToken);
-        if (user) {
-          useLlm = await isPremiumForUser(user.id, user.email ?? null);
-        }
-      }
-    }
+  let caller = null;
+  if (appAccess && llmConfigured) {
+    caller = await resolveLlmCaller(request, body.deviceId);
+    useLlm = caller.premium && (await checkLlmDailyQuota('plan_voice', caller)).ok;
   }
 
+  const t0 = Date.now();
   const voice = await fetchPlanVoice(
     {
       plan: body.plan,
@@ -79,5 +69,18 @@ export const POST = withApiLogging('coach/plan-voice', async(request: NextReques
     useLlm
   );
 
-  return NextResponse.json(voice);
+  if (voice.source === 'llm' && caller) {
+    const identity = caller;
+    after(() =>
+      recordLlmUsage({
+        feature: 'plan_voice',
+        identity,
+        usage: voice.usage,
+        ok: true,
+        durationMs: Date.now() - t0,
+      })
+    );
+  }
+
+  return NextResponse.json({ message: voice.message, source: voice.source });
 });

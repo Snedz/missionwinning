@@ -61,6 +61,8 @@ export const coachDailyContextSchema = z.object({
     actionLabelKey: z.string().max(120),
     actionPath: z.string().max(120),
   }),
+  /** Metering identity only — counts, never content; see 20260731_llm_usage.sql. */
+  deviceId: z.string().min(1).max(64).optional(),
 });
 
 export const coachPlanVoiceSchema = z.object({
@@ -77,6 +79,8 @@ export const coachPlanVoiceSchema = z.object({
   readiness: z.number().min(0).max(100).optional(),
   strain: z.number().min(0).max(100).optional(),
   recovery: z.number().min(0).max(100).optional(),
+  /** Metering identity only — counts, never content; see 20260731_llm_usage.sql. */
+  deviceId: z.string().min(1).max(64).optional(),
 });
 
 /** Premium coach chat — compact context only (never raw workout logs). */
@@ -114,6 +118,8 @@ export const coachChatSchema = z.object({
     exerciseId: z.string().max(80).optional(),
   }),
   stream: z.boolean().optional(),
+  /** Metering identity only — counts, never content; see 20260731_llm_usage.sql. */
+  deviceId: z.string().min(1).max(64).optional(),
 });
 
 export const fuelSearchQuerySchema = z.object({

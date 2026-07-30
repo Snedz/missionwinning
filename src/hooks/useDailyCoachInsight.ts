@@ -61,10 +61,13 @@ export function useDailyCoachInsight(
 
     (async () => {
       try {
+        // deviceId = metering identity for anonymous athletes (counts, never
+        // content) — same contract as anonymous push. See llm/metering.ts.
+        const { getOrCreateDeviceId } = await import('@/lib/coach/storage');
         const res = await fetch('/api/coach/daily-insight', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...context, fallback }),
+          body: JSON.stringify({ ...context, fallback, deviceId: getOrCreateDeviceId() }),
         });
         if (!res.ok) throw new Error('coach_failed');
         const data = (await res.json()) as {
