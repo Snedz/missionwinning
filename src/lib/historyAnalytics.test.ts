@@ -59,3 +59,73 @@ describe('historyAnalytics', () => {
     assert.equal(pickChartExerciseId(history), 'bench-press');
   });
 });
+
+/**
+ * The silent drop.
+ *
+ * `buildMuscleHeatmap` resolved muscles with `EXERCISES.find()` against a
+ * catalog whose extended modules load lazily — only the base set exists at
+ * import time. A session built entirely from extended-catalog movements
+ * therefore contributed nothing, and the athlete saw those muscles reported as
+ * untrained. No error, no warning, no failing test: the fixture had always used
+ * `bench-press`, which is in the base catalog.
+ */
+describe('buildMuscleHeatmap and the extended catalog', () => {
+  const extendedLog = (groups?: string[]): CompletedWorkoutLog => ({
+    id: 'log-ext',
+    workoutName: 'Extended',
+    startedAt: isoDaysAgo(2),
+    completedAt: isoDaysAgo(2),
+    durationSeconds: 1800,
+    totalVolume: 4000,
+    exercises: [
+      {
+        exerciseId: 'not-in-the-base-catalog',
+        ...(groups ? { muscleGroups: groups as never } : {}),
+        sets: [{ reps: 10, weight: 100 }],
+      },
+    ],
+  });
+
+  it('counts an exercise the base catalog has never heard of', () => {
+    const cells = buildMuscleHeatmap([extendedLog(['Back'])], 14);
+    const back = cells.find((c) => c.group === 'Back');
+    assert.ok(
+      back && back.volume > 0,
+      'a session whose exercise is absent from the base catalog still trained a muscle'
+    );
+  });
+
+  it('the log its own record outranks the catalog', () => {
+    // Same id the base catalog knows, but this session recorded Back. The log is
+    // what actually happened; the catalog is a default.
+    const relabelled: CompletedWorkoutLog = {
+      ...sampleLog(2, 5000),
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          muscleGroups: ['Back'] as never,
+          sets: [{ reps: 8, weight: 625 }],
+        },
+      ],
+    };
+    const cells = buildMuscleHeatmap([relabelled], 14);
+    assert.ok(cells.find((c) => c.group === 'Back')!.volume > 0);
+    assert.equal(cells.find((c) => c.group === 'Chest')!.volume, 0);
+  });
+
+  it('a pre-muscleGroups log still resolves through the catalog', () => {
+    // The fallback exists for logs written before the snapshot was stored.
+    const cells = buildMuscleHeatmap([sampleLog(2, 5000)], 14);
+    assert.ok(cells.find((c) => c.group === 'Chest')!.volume > 0);
+  });
+
+  it('an unknown exercise with no stored groups is skipped, not counted as zero-volume noise', () => {
+    const cells = buildMuscleHeatmap([extendedLog()], 14);
+    assert.equal(
+      cells.reduce((s, c) => s + c.volume, 0),
+      0,
+      'nothing can be attributed, so nothing is'
+    );
+  });
+});

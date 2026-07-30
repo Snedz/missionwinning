@@ -1,5 +1,6 @@
 import { EXERCISES } from '@/data/exercises';
 import { buildExerciseBenchmark, getExercisesWithBenchmarkData } from '@/lib/benchmarks';
+import { resolveMajorMuscleGroups } from '@/lib/exerciseMuscleMap';
 import { computeReadiness } from '@/lib/score';
 import {
   MAJOR_GROUPS,
@@ -111,13 +112,31 @@ export function buildMuscleHeatmap(
   for (const log of windowLogs) {
     const groupsHit = new Set<MuscleGroup>();
     for (const ex of log.exercises) {
-      const exData = EXERCISES.find((e) => e.id === ex.exerciseId);
-      if (!exData) continue;
+      /*
+       * Stored groups first, exactly as `readinessIndex` does.
+       *
+       * This was `EXERCISES.find()` alone, against a catalog whose extended
+       * modules load lazily: only the ~126 base exercises exist at import time,
+       * so every session built from the extended catalog contributed **zero** to
+       * the heatmap. An athlete who trains only extended-catalog movements saw
+       * those muscles reported as untrained — silently, with no error anywhere.
+       *
+       * The catalog lookup stays as the fallback rather than being deleted,
+       * because logs written before `muscleGroups` was snapshotted onto the entry
+       * have nothing else to resolve from, and `exerciseMuscleMap`'s map is only
+       * populated when something has seeded it. Two sources, in priority order,
+       * is the correct shape here — not the `.178` two-definitions smell, since
+       * one is the log's own record and the other is a backfill for logs that
+       * predate it.
+       */
+      const stored = resolveMajorMuscleGroups(ex.exerciseId, ex.muscleGroups);
+      const groups = stored.length
+        ? stored
+        : (EXERCISES.find((e) => e.id === ex.exerciseId)?.muscleGroups ?? []).filter(
+            (mg): mg is MuscleGroup => (MAJOR_GROUPS as readonly string[]).includes(mg)
+          );
       const vol = ex.sets.reduce((s, set) => s + set.reps * set.weight, 0);
       const setCount = ex.sets.length;
-      const groups = exData.muscleGroups.filter((mg): mg is MuscleGroup =>
-        (MAJOR_GROUPS as readonly string[]).includes(mg)
-      );
       if (!groups.length) continue;
       const share = 1 / groups.length;
       groups.forEach((g) => {

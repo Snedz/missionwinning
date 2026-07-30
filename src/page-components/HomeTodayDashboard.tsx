@@ -40,6 +40,7 @@ import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { computeReentry, type Reentry } from "@/lib/reentry";
 import { TodayReentryCard } from "@/components/today/TodayReentryCard";
 import { dayReviewMayMount } from "@/lib/today/dayReviewMount";
+import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
 
 const BetaWelcomeBanner = dynamic(
   () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
@@ -174,10 +175,16 @@ export function HomeTodayDashboard() {
 
   // Freeletics-inspired free core note (per vision.md): Generous basics for everyone; premium for "awesome" depth + bundle synergy.
   const totalSessions = workoutHistory.length;
-  const totalVolume = workoutHistory.reduce((sum, w) => sum + w.totalVolume, 0);
+  // Both of these walk the entire history and both ran on every render — every
+  // keystroke in the customise dialog, every idle-callback state flip. History
+  // only changes when a session is logged, which is what the dependency says.
+  const totalVolume = useMemo(
+    () => workoutHistory.reduce((sum, w) => sum + w.totalVolume, 0),
+    [workoutHistory]
+  );
 
   // Training streak (light) — needed for hero rings/score. Heavy week tools deferred.
-  const streak = getTrainingStreak(workoutHistory);
+  const streak = useMemo(() => getTrainingStreak(workoutHistory), [workoutHistory]);
   const [nightSessions, setNightSessions] = useState(0);
   const [dawnSessions, setDawnSessions] = useState(0);
   const [todaysWorkout, setTodaysWorkout] = useState<ReturnType<
@@ -461,10 +468,25 @@ export function HomeTodayDashboard() {
       ? { focusLabel: muscleGroupLabel(recommendedFocus.group, t) }
       : null;
 
-  const staggerBlocks: { key: string; node: React.ReactNode }[] = [
-    { key: 'beta', node: <BetaWelcomeBanner /> },
+  /*
+   * Every block declares what it costs the screen.
+   *
+   * `pinned` blocks are the ones an athlete navigates by — spilling the header
+   * into a disclosure on the page would hide the page. Everything else carries a
+   * priority, and `planTodayBlocks` spills the least important past
+   * TODAY_MAX_TOP_LEVEL_BLOCKS into the "Today details" disclosure that already
+   * exists. Nothing is deleted; the long version is one tap away.
+   *
+   * Declaring the cost here rather than counting cards at review time is the
+   * point: every feature since `.170` added a permanent +1 and no PR was ever
+   * the one that made Today long.
+   */
+  const staggerBlocks: TodayBlockCandidate<React.ReactNode>[] = [
+    { key: 'beta', priority: 0, pinned: true, node: <BetaWelcomeBanner /> },
     {
       key: 'header',
+      priority: 1,
+      pinned: true,
       node: (
         <TodayPageHeader
           today={todayLabel}
@@ -488,7 +510,7 @@ export function HomeTodayDashboard() {
   ];
 
   if (state.phase === 'commissioned') {
-    staggerBlocks.push({ key: 'intent', node: <CommandersIntent /> });
+    staggerBlocks.push({ key: 'intent', priority: 20, node: <CommandersIntent /> });
   }
 
   // The hero is no longer a stagger block — it docks above the tab bar (see the
@@ -498,12 +520,13 @@ export function HomeTodayDashboard() {
   // Directly under the boss CTA: a returning user should see the smaller ask before
   // any score, streak or pillar chrome that would read as a scoreboard of the gap.
   if (reentry?.show) {
-    staggerBlocks.push({ key: 'reentry', node: <TodayReentryCard reentry={reentry} /> });
+    staggerBlocks.push({ key: 'reentry', priority: 2, pinned: true, node: <TodayReentryCard reentry={reentry} /> });
   }
 
   if (layout.showDashboard) {
     staggerBlocks.push({
       key: 'dashboard',
+      priority: 10,
       node: (
         <TodayDashboardHeader
           missionScore={score}
@@ -519,6 +542,7 @@ export function HomeTodayDashboard() {
     });
     staggerBlocks.push({
       key: 'freshness',
+      priority: 60,
       node: (
         /* Was a `<details>` — a 1px hairline at 40% wrapping a 1px hairline at
            30% wrapping a sideways chip scroller. Eight rows of one line each
@@ -542,6 +566,7 @@ export function HomeTodayDashboard() {
   ) {
     staggerBlocks.push({
       key: 'coach-invite',
+      priority: 25,
       node: (
         <a
           href="/coach"
@@ -570,33 +595,35 @@ export function HomeTodayDashboard() {
   // lives there rather than inside the card, so the chunk is never fetched in
   // the morning just to render null.
   if (belowFoldReady && dayReviewMayMount({ hour: new Date().getHours(), phase: state.phase })) {
-    staggerBlocks.push({ key: 'day-review', node: <TodayDayReviewCard /> });
+    staggerBlocks.push({ key: 'day-review', priority: 15, node: <TodayDayReviewCard /> });
   }
 
   // Week recap — Sunday ceremony or mid-week pulse when active.
   if (belowFoldReady && weekRecap && (weekRecap.hasActivity || weekRecap.isWeekEnd)) {
     staggerBlocks.push({
       key: 'week-recap',
+      priority: 30,
       node: <TodayWeekRecapCard recap={weekRecap} />,
     });
   }
 
   // Secondary surfaces only after idle — never compete with JourneyHero.
   if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
-    staggerBlocks.push({ key: 'coach-week', node: <TodayCoachWeekStrip /> });
+    staggerBlocks.push({ key: 'coach-week', priority: 45, node: <TodayCoachWeekStrip /> });
   }
 
   if (belowFoldReady && state.phase === 'commissioned') {
-    staggerBlocks.push({ key: 'coach-today', node: <CoachTodayCard /> });
+    staggerBlocks.push({ key: 'coach-today', priority: 35, node: <CoachTodayCard /> });
   }
 
   if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
-    staggerBlocks.push({ key: 'guidebook', node: <GuidebookContinueCard /> });
+    staggerBlocks.push({ key: 'guidebook', priority: 70, node: <GuidebookContinueCard /> });
   }
 
   if (!layout.showDashboard && state.phase === 'basic' && streak === 0) {
     staggerBlocks.push({
       key: 'encourage',
+      priority: 50,
       node: (
         <p className="text-center text-sm text-muted-foreground px-4">
           {t('todayBasicEncouragement', {
@@ -608,13 +635,27 @@ export function HomeTodayDashboard() {
     });
   }
 
+  /*
+   * The budget, applied. Everything past TODAY_MAX_TOP_LEVEL_BLOCKS spills into
+   * the disclosure below rather than being dropped — the athlete who wants the
+   * long version is one tap away, and the one who does not gets a screen instead
+   * of a feed.
+   *
+   * `more` is planned separately because it is the overflow container: counting
+   * it against the budget it enforces would be circular.
+   */
+  const plan = planTodayBlocks(staggerBlocks);
+
   // Quick links + accordion live under one collapsed "More" — never compete with JourneyHero.
+  // Also renders whenever the budget spilled something, since the spill has to land here.
   if (
     belowFoldReady &&
-    (layout.showQuickLinks || layout.showDetailsAccordion)
+    (layout.showQuickLinks || layout.showDetailsAccordion || plan.inMore.length > 0)
   ) {
-    staggerBlocks.push({
+    plan.top.push({
       key: 'more',
+      priority: Number.MAX_SAFE_INTEGER,
+      pinned: true,
       node: (
         /* Labelled "More" until the tab bar gained a tab called More. Three
            disclosures in the app shared that word for three different things;
@@ -627,6 +668,9 @@ export function HomeTodayDashboard() {
             </span>
           </summary>
           <div className="space-y-4 border-t border-border pb-2 pt-4">
+            {plan.inMore.map(({ key, node }) => (
+              <div key={key}>{node}</div>
+            ))}
             {layout.showQuickLinks ? (
               <TodayQuickLinks compact={state.phase === 'basic'} />
             ) : null}
@@ -680,7 +724,7 @@ export function HomeTodayDashboard() {
       {/* See HomeTodayLean — `max-w-lg` is the phone measure; desktop takes
           `AppLayout`'s container, which is the handoff's ~960px band. */}
       <StaggerGroup className="today-shell space-y-6 max-w-lg md:max-w-none mx-auto">
-      {staggerBlocks.map(({ key, node }, index) => (
+      {plan.top.map(({ key, node }, index) => (
         <StaggerItem key={key} index={index}>
           {node}
         </StaggerItem>

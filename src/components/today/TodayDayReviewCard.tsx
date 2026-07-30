@@ -13,45 +13,25 @@
  * bed time.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Moon } from 'lucide-react';
-import { useWorkoutStore } from '@/store/workoutStore';
-import { loadCheckIns, upsertTodayPartial } from '@/lib/mindCheckIns';
-import { computeSleepConsistency } from '@/lib/sleepConsistency';
-import { computeBehaviorImpacts } from '@/lib/journal/behaviorImpacts';
-import { composeDayReview, type DayReview } from '@/lib/dayReview';
+import { upsertTodayPartial } from '@/lib/mindCheckIns';
+import { useTodayDigest } from '@/hooks/useTodayDigest';
 import { roundToQuarterHour } from '@/lib/behaviors';
 import { track } from '@/lib/analytics';
 import { DayReviewOptIn } from '@/components/today/DayReviewOptIn';
 
 export function TodayDayReviewCard() {
-  const history = useWorkoutStore((s) => s.workoutHistory);
-  const [review, setReview] = useState<DayReview | null>(null);
   const [logged, setLogged] = useState(false);
 
-  // Held in state rather than a memo because device storage is not a React
-  // input: a quick-log write has to trigger the re-read explicitly.
-  const refresh = useCallback(() => {
-    if (typeof window === 'undefined') return;
-    const now = new Date();
-    // No hour test here: `dayReviewMayMount` decides at the mount site in both
-    // Today shells, so this component is never rendered before the evening —
-    // and its chunk is never downloaded to produce a null.
-    const checkIns = loadCheckIns();
-    setReview(
-      composeDayReview({
-        history,
-        checkIns,
-        consistency: computeSleepConsistency(checkIns, now),
-        impacts: computeBehaviorImpacts(history, checkIns),
-        now,
-      })
-    );
-  }, [history]);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  // No hour test here: `dayReviewMayMount` decides at the mount site in both
+  // Today shells, so this component is never rendered before the evening — and
+  // its chunk is never downloaded to produce a null.
+  //
+  // The day is read once, by the digest. This card used to run its own
+  // `loadCheckIns` + `computeSleepConsistency` + `computeBehaviorImpacts`, and
+  // `TodayWeekRecapCard` ran the identical correlation pass on the same render.
+  const { review, refresh } = useTodayDigest();
 
   if (!review) return null;
 

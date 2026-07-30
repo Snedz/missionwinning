@@ -1,67 +1,62 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { CalendarDays, ChevronDown, ChevronUp } from 'lucide-react';
 import type { WeekRecap } from '@/lib/weekRecap';
-import { buildWeeklyDebrief, type WeeklyDebrief } from '@/lib/weeklyDebrief';
-import { loadCheckIns } from '@/lib/mindCheckIns';
-import { loadBodyMetrics } from '@/lib/bodyMetrics';
-import { computeImpacts, impactLine } from '@/lib/journal/impacts';
-import {
-  behaviorImpactLine,
-  collectingLine,
-  computeBehaviorImpacts,
-} from '@/lib/journal/behaviorImpacts';
-import { useWorkoutStore } from '@/store/workoutStore';
+import { impactLine } from '@/lib/journal/impacts';
+import { behaviorImpactLine, collectingLine } from '@/lib/journal/behaviorImpacts';
+import { useTodayDigest } from '@/hooks/useTodayDigest';
 import { track } from '@/lib/analytics';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { getCachedReferralCode } from '@/lib/referral';
-import { buildRecapCardData, renderShareCard, shareCardImage } from '@/lib/share/shareCard';
 
 type Props = {
  recap: WeekRecap;
- /** Force full debrief layout (dev / QA). */
- forceFull?: boolean;
 };
 
 /** End-of-week debrief + mid-week pulse — retention surface. */
-export function TodayWeekRecapCard({ recap, forceFull }: Props) {
+export function TodayWeekRecapCard({ recap }: Props) {
  const { t } = useTranslation();
- const history = useWorkoutStore((s) => s.workoutHistory);
  const [expanded, setExpanded] = useState(false);
  const [viewed, setViewed] = useState(false);
 
- const debrief: WeeklyDebrief = useMemo(() => {
- return buildWeeklyDebrief({
- history,
- checkIns: typeof window !== 'undefined' ? loadCheckIns() : [],
- bodyMetrics: typeof window !== 'undefined' ? loadBodyMetrics() : [],
- });
- }, [history]);
+ /*
+  * One read of the day, shared with every other Today card.
+  *
+  * This component used to call `loadCheckIns()` three times in one render and
+  * run `computeBehaviorImpacts` over the result — the same call, with the same
+  * arguments, that `TodayDayReviewCard` was making beside it. Per-card memos
+  * cached each of those correctly and still ran all of them.
+  *
+  * `debrief` is null on any day that is not Sunday or Monday: the hook decides
+  * that from the date and never imports `weeklyDebrief` otherwise, so a Tuesday
+  * no longer downloads and runs the whole module to be told it is not the weekend.
+  */
+ const { debrief, impacts, establishedBehaviorImpacts, behaviorImpacts } = useTodayDigest();
 
- const full = forceFull || debrief.isFullDebrief;
+ /*
+  * A `forceFull` prop lived here for dev/QA and had **zero callers anywhere** —
+  * the `.195` orphan class, so it is gone rather than carried. `isFullDebrief`
+  * is now redundant with `debrief` being non-null at all (the digest only builds
+  * it on a debrief day), but it stays read here so the card keeps agreeing with
+  * the debrief's own answer rather than inferring it.
+  */
+ const full = !!debrief?.isFullDebrief;
  const units = useUnits();
 
- // On-device check-in ↔ session-load correlations. Empty until the data can
- // honestly support a sentence (≥8 pairs, ≥3 each side, ≥5% — impacts.ts).
- const impacts = useMemo(
- () => (typeof window !== 'undefined' ? computeImpacts(history, loadCheckIns()) : []),
- [history]
- );
-
- // Behavior impacts are a separate engine with a stricter bar (10 flagged and
- // 10 unflagged) and its own "still collecting" state — see behaviorImpacts.ts.
- const behaviorImpacts = useMemo(
- () => (typeof window !== 'undefined' ? computeBehaviorImpacts(history, loadCheckIns()) : []),
- [history]
- );
- const established = behaviorImpacts.filter((i) => i.kind === 'established');
+ const established = establishedBehaviorImpacts;
  const collecting = behaviorImpacts.filter((i) => i.kind === 'collecting');
 
  // Week recap as an image — rendered on-device, shared only by choice (.182).
+ // The canvas renderer is imported inside the handler: it is one of the largest
+ // modules the app has, and nobody pays for it until they tap Share.
  const shareRecapCard = async () => {
+ if (!debrief) return;
+ const { buildRecapCardData, renderShareCard, shareCardImage } = await import(
+ '@/lib/share/shareCard'
+ );
  const card = buildRecapCardData(debrief, weightUnitLabel(units));
  const blob = await renderShareCard(card);
  if (!blob) {
@@ -87,7 +82,10 @@ export function TodayWeekRecapCard({ recap, forceFull }: Props) {
 
  if (!recap.hasActivity && !recap.isWeekEnd && !full) return null;
 
- if (!full) {
+ // `!debrief` is the same condition as `!full` — the digest only builds it on a
+ // debrief day — but stating it separately is what lets the full layout below
+ // read `debrief.train` without a non-null assertion on every line.
+ if (!full || !debrief) {
  return (
  <section className="content-card border-border bg-accent-100 p-4 space-y-3">
  <div className="flex items-start gap-3">

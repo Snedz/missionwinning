@@ -2,9 +2,84 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.191`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
+**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.193`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
 
 ---
+
+## 2026-07-30 — One pass over the day (`.197`)
+
+Today grew a card at a time, and each card read the day for itself. By `.196` a
+single render ran `loadCheckIns()` **five times**, computed
+`computeBehaviorImpacts(history, checkIns)` **twice with byte-identical
+arguments**, and built the entire weekly debrief on a Tuesday in order to read
+`isFullDebrief` off it and discover it was not the weekend.
+
+**The fix is deliberately not per-card memoisation** — that is what produced
+this. Four correct caches over four identical computations is still four
+computations, and each one hides its cost inside a component where the
+duplication is invisible. New [`todayDigest.ts`](src/lib/today/todayDigest.ts)
+owns the day and the cards read fields off it; new
+[`useTodayDigest`](src/hooks/useTodayDigest.ts) reads storage once, holds it in
+state (device storage is not a React input — a quick-log write has to trigger
+the re-read explicitly) and exposes `refresh()`.
+
+`isFullDebriefDay` is pure date arithmetic and **is** the debrief's own test,
+not a heuristic that could drift from it — pinned by a test that runs both
+across a whole week. So `buildWeeklyDebrief` is now imported dynamically and
+only on Sunday or Monday. It is injected rather than imported into the digest
+for one reason: *"it ran zero times"* is a property a test can assert, and a
+comment claiming "we skip this midweek" is not.
+
+New [`todayBlockBudget.ts`](src/lib/today/todayBlockBudget.ts):
+`TODAY_MAX_TOP_LEVEL_BLOCKS = 7` and `planTodayBlocks`. Every feature since
+`.170` added a permanent `+1` to this screen and none removed anything, because
+no PR is ever the one that made Today long — a commissioned athlete on a Sunday
+evening with a re-entry card saw eleven top-level blocks, which is a feed, not a
+dashboard. Overflow is **not deletion**: blocks past the budget spill into the
+"Today details" disclosure that already exists. Pinned blocks (header, beta
+banner, re-entry) never spill, because a budget that can hide the page header is
+a bug wearing a constraint's hat. Priority decides *what spills*, never *what
+order things read in* — sorting the visible screen would make cards jump between
+renders as their conditions flip. The number is **a judgement, not a
+measurement**, and it lives alone in one file precisely so it can be argued with.
+
+**A silent correctness bug, found while pulling the catalog off the Today
+chain.** `buildMuscleHeatmap` resolved muscles with `EXERCISES.find()` against a
+catalog whose extended modules load lazily — only the base set exists at import
+time — so **every session built from an extended-catalog exercise contributed
+zero**, and the athlete saw those muscles reported as untrained. No error, no
+warning, and no failing test, because the fixture had always used `bench-press`.
+Now stored groups first (`resolveMajorMuscleGroups`, as `readinessIndex` already
+did), catalog as the fallback for logs written before the snapshot existed. The
+first attempt at this deleted the fallback and regressed those old logs; the
+existing test caught it, which is the system working.
+
+Also: `shareCard` moved to `await import()` inside the handler (canvas
+rendering, paid for only by someone who taps Share); `totalVolume` and
+`getTrainingStreak` memoised — both walk the whole history and both ran on every
+render, including every keystroke in the customise dialog; `StaggerReveal`
+70→50ms with the index capped at 6, so the last block fades in at 340ms instead
+of **740ms** — past roughly 400ms a delay stops reading as motion and starts
+reading as waiting. `TodayWeekRecapCard`'s `forceFull` prop had **zero callers
+anywhere** and is deleted under the `.195` rule.
+
+Guards: [`todayPerf.test.ts`](src/lib/todayPerf.test.ts) — no static import of
+`shareCard` or `weeklyDebrief` from the Today path, `loadCheckIns` called
+**only** in the digest hook, and each correlation with exactly one call site.
+Plus a 32-combination budget matrix over the conditional cards, and a heatmap
+fixture whose exercise the base catalog has never heard of.
+
+Seven mutants; **one survived first run.** `two-identical-impact-passes`
+recomputed `computeBehaviorImpacts` for the evening review and walked through the
+behavioural test, because "ran exactly once" is *not observable through the
+return value* — a second pass over the same arrays produces an equal result. The
+property lives in the number of call sites, so that is now what is asserted, and
+the guard says plainly that it is a shape rule and why injection was not the
+answer here. Killed on first run: `tuesday-pays-for-sunday`,
+`budget-as-suggestion`, `header-spilled-into-more`, `catalog-static-again`,
+`card-reads-storage-again`, `heatmap-forgets-the-log`.
+
+Tests 961→988.
 
 ## 2026-07-30 — The hour the athlete picked (`.196`)
 
@@ -208,98 +283,3 @@ the migration, the keys, and arming the workflow. Tests 906→923.
 **The wave is complete** (`.190`–`.194`): twelve evidence-graded behaviors →
 sleep consistency → a digest that cannot lie → impacts correlated to the barbell
 → an evening doorbell that knows nothing about you.
-
-## 2026-07-30 — Correlate to the barbell (`.193`)
-
-The thesis of the whole wave, and the part no competitor can copy.
-
-Every behavior-correlation product on the market resolves to HRV, resting heart
-rate, or a proprietary recovery score. Those are proxies — no lifter's coach has
-ever asked what their HRV did. This app already logs the thing they *would* ask
-about, so [`behaviorImpacts.ts`](src/lib/journal/behaviorImpacts.ts) correlates
-behaviors to **session load**. WHOOP can tell you alcohol cost you four
-milliseconds of HRV; we can tell you your sessions ran twelve percent lighter,
-and WHOOP cannot, because they do not have your sets.
-
-**Statistical honesty, structurally rather than statistically.** WHOOP shows an
-impact at five yes and five no observations; across ten behaviors and six
-outcomes that is sixty comparisons per athlete, which is why their most repeated
-review complaint is that everything appeared to hurt. Three defences: **one
-pre-registered outcome per behavior**, declared in `behaviors.ts` before any data
-exists, so you cannot fish for the metric that moved; **ten flagged and ten
-unflagged** sessions, double their bar; and **"collecting" as a first-class
-designed state** — an athlete seven sessions in sees "7 of 10", not silence and
-not a premature claim. Most products hide that state. It is the most credible
-thing we can show.
-
-A day the athlete did not log is **excluded, never counted as a "no"**. The
-absence of an answer is not an answer, and treating it as a control arm would
-manufacture findings out of forgetfulness (`unlogged-counted-as-unflagged`).
-
-**Deliberately a separate module with a disjoint union.** Widening
-`ReadinessFactor` so caffeine could ride along would let the readiness engine
-start firing off a coffee count — the exact one-word-two-definitions failure
-`.178` was written to prevent. `impacts.ts` is untouched, and the separation is
-proven twice: a `@ts-expect-error` that behavior factors are not assignable to
-readiness factors, and a runtime assertion that `computeImpacts` returns
-byte-identical output with and without behavior data present.
-
-**`next-day-lag-pairs-same-day` survived its first run.** The alcohol fixture had
-check-ins on every day, so same-day pairing found matches too and the assertion
-could not tell the two apart. Rebuilt decisively — check-ins only on even days,
-sessions only on odd — so same-day pairing finds nothing at all and any result
-can only have come from the lag. Third time this wave a mutant found a hole in a
-test rather than the code.
-
-Also killed: `impact-under-threshold-speaks`, `n-missing-from-line`,
-`noise-as-insight`, `causal-language`, `tombstones-count`,
-`collecting-state-hidden`. Surfaces as a Behaviors row on the weekly recap, and
-an established finding can become the Day in Review's reason — collecting states
-deliberately cannot, because the digest reports findings, not progress bars.
-Tests 891→906. Next: `.194` evening push.
-
-## 2026-07-30 — A digest that cannot lie (`.192`)
-
-The evening **Day in Review** — the direct answer to the founder's screenshot,
-built the opposite way from the thing it answers.
-
-WHOOP's evening narrative is currently their most-attacked feature: their AI
-coach has been caught fabricating a statistic and then discussing it as fact.
-That is not a bug you patch out of a generated narrative — it is what generation
-is. So every sentence in [`dayReview.ts`](src/lib/dayReview.ts) is a template
-slot filled from local state. It **cannot hallucinate a number**, it renders
-offline in a gym basement with no signal, and the code that writes it is code
-you can read. A cloud-narrative competitor cannot make that claim, and it costs
-us nothing we wanted.
-
-**One fact, one reason, one option** — not a wall of metrics. The fact is what
-happened today, the reason is context the athlete supplied, the option is one
-thing they might do, phrased as an offer they can decline. And `null` when the
-day holds nothing true: a card that appears every evening regardless is exactly
-how a competitor's no-input commentary became a running joke
-(`digest-speaks-with-nothing-to-say`).
-
-The refusals are the feature. It shares the **push tone contract** through
-`findToneViolations` — one contract rather than a second one that can drift, so
-no absence length and no streak-loss language (streak-protection in a lifting app
-means training when you should not). No prescriptions or medical framing, no
-invented precision, and **no "strain floor"**: the screenshot's phrase comes from
-a personalized daily target we do not compute, over a ratio contested enough that
-`.177` already made our own ACWR low end deliberately inert. The module header
-names *both* things called "strain" in this codebase, because `.178` was caused
-by exactly that kind of one-word-two-definitions drift. It never reads
-`getTrainingStreak` — that value is localStorage-overridable and so unfit for a
-factual sentence, proven by a purity test that sets the override and asserts the
-output is byte-identical.
-
-**`strain-floor-claim` survived its first run.** No fixture produced a
-below-average session, because session load is RPE × duration and every fixture
-shared a duration — so the branch where that claim would live never rendered.
-Fixtures now vary minutes, plus an explicit branch-coverage guard asserting both
-comparison sentences appear. Second time this wave a mutant found a hole in the
-tests rather than the code, which is the point of running them.
-
-Also killed: `digest-names-absence-length`, `seconds-precision`,
-`option-becomes-an-order`, `medical-causal-framing`, `tombstone-counts-as-today`.
-The card doubles as a capture surface (one tap logs tonight's bed time, rounded
-to the quarter hour). Tests 877→891. Next: `.193` behavior impacts.
