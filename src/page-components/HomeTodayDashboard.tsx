@@ -80,6 +80,10 @@ const TodayDashboardCustomize = dynamic(
   { ssr: false, loading: () => null }
 );
 
+const TodayDayReviewCard = dynamic(
+  () => import('@/components/today/TodayDayReviewCard').then((m) => m.TodayDayReviewCard),
+  { ssr: false }
+);
 const TodayWeekRecapCard = dynamic(
   () => import('@/components/today/TodayWeekRecapCard').then((m) => m.TodayWeekRecapCard),
   { ssr: false, loading: () => <SkeletonCard /> }
@@ -558,6 +562,12 @@ export function HomeTodayDashboard() {
         </a>
       ),
     });
+  }
+
+  // Day in review — evenings only, and the card removes itself when the day
+  // holds nothing true to say (see composeDayReview).
+  if (belowFoldReady) {
+    staggerBlocks.push({ key: 'day-review', node: <TodayDayReviewCard /> });
   }
 
   // Week recap — Sunday ceremony or mid-week pulse when active.

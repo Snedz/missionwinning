@@ -6,6 +6,52 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — A digest that cannot lie (`.192`)
+
+The evening **Day in Review** — the direct answer to the founder's screenshot,
+built the opposite way from the thing it answers.
+
+WHOOP's evening narrative is currently their most-attacked feature: their AI
+coach has been caught fabricating a statistic and then discussing it as fact.
+That is not a bug you patch out of a generated narrative — it is what generation
+is. So every sentence in [`dayReview.ts`](src/lib/dayReview.ts) is a template
+slot filled from local state. It **cannot hallucinate a number**, it renders
+offline in a gym basement with no signal, and the code that writes it is code
+you can read. A cloud-narrative competitor cannot make that claim, and it costs
+us nothing we wanted.
+
+**One fact, one reason, one option** — not a wall of metrics. The fact is what
+happened today, the reason is context the athlete supplied, the option is one
+thing they might do, phrased as an offer they can decline. And `null` when the
+day holds nothing true: a card that appears every evening regardless is exactly
+how a competitor's no-input commentary became a running joke
+(`digest-speaks-with-nothing-to-say`).
+
+The refusals are the feature. It shares the **push tone contract** through
+`findToneViolations` — one contract rather than a second one that can drift, so
+no absence length and no streak-loss language (streak-protection in a lifting app
+means training when you should not). No prescriptions or medical framing, no
+invented precision, and **no "strain floor"**: the screenshot's phrase comes from
+a personalized daily target we do not compute, over a ratio contested enough that
+`.177` already made our own ACWR low end deliberately inert. The module header
+names *both* things called "strain" in this codebase, because `.178` was caused
+by exactly that kind of one-word-two-definitions drift. It never reads
+`getTrainingStreak` — that value is localStorage-overridable and so unfit for a
+factual sentence, proven by a purity test that sets the override and asserts the
+output is byte-identical.
+
+**`strain-floor-claim` survived its first run.** No fixture produced a
+below-average session, because session load is RPE × duration and every fixture
+shared a duration — so the branch where that claim would live never rendered.
+Fixtures now vary minutes, plus an explicit branch-coverage guard asserting both
+comparison sentences appear. Second time this wave a mutant found a hole in the
+tests rather than the code, which is the point of running them.
+
+Also killed: `digest-names-absence-length`, `seconds-precision`,
+`option-becomes-an-order`, `medical-causal-framing`, `tombstone-counts-as-today`.
+The card doubles as a capture surface (one tap logs tonight's bed time, rounded
+to the quarter hour). Tests 877→891. Next: `.193` behavior impacts.
+
 ## 2026-07-30 — The number we will not print (`.191`)
 
 The screenshot that started this wave said *"sleep debt is now 2h 7m 48s."*
