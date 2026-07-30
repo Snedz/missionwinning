@@ -6,6 +6,7 @@ import {
   listJournalEntries,
   saveJournalEntry,
   setJournalFeel,
+  updateJournalFragments,
   type SessionJournalEntry,
 } from '@/lib/journal/journalStore';
 import { __resetForTests as resetStorage } from '@/lib/storage/safeStorage';
@@ -79,6 +80,44 @@ describe('journalStore', () => {
       assert.equal(listJournalEntries().length, JOURNAL_MAX_ENTRIES);
       assert.equal(getJournalEntry('w0'), null, 'oldest dropped');
       assert.ok(getJournalEntry(`w${JOURNAL_MAX_ENTRIES + 4}`), 'newest kept');
+    } finally {
+      uninstall();
+    }
+  });
+
+  it('fragments and the check-in strip round-trip with the entry', () => {
+    const uninstall = installStorage();
+    resetStorage();
+    try {
+      saveJournalEntry({
+        ...entry('w1'),
+        fragments: ['knee twinge set 3', 'bench press: tuck elbows'],
+        checkIn: { sleep: 2, energy: 4 },
+      });
+      const back = getJournalEntry('w1');
+      assert.deepEqual(back?.fragments, ['knee twinge set 3', 'bench press: tuck elbows']);
+      assert.deepEqual(back?.checkIn, { sleep: 2, energy: 4 });
+    } finally {
+      uninstall();
+    }
+  });
+
+  it('a post-hoc edit rewrites only the target entry\'s fragments, never the lines', () => {
+    const uninstall = installStorage();
+    resetStorage();
+    try {
+      saveJournalEntry({ ...entry('w1'), fragments: ['original words'] });
+      saveJournalEntry({ ...entry('w2'), fragments: ['untouched'] });
+      updateJournalFragments('w1', ['  edited words  ', '', 'second line']);
+      assert.deepEqual(getJournalEntry('w1')?.fragments, ['edited words', 'second line']);
+      assert.deepEqual(getJournalEntry('w1')?.lines, [{ kind: 'effort', text: '700 kg moved' }]);
+      assert.deepEqual(getJournalEntry('w2')?.fragments, ['untouched']);
+      // Clearing every line removes the athlete-words block instead of storing husks.
+      updateJournalFragments('w1', ['   ']);
+      assert.equal(getJournalEntry('w1')?.fragments, undefined);
+      // Editing a session that has no entry must not mint one.
+      updateJournalFragments('missing', ['ghost']);
+      assert.equal(getJournalEntry('missing'), null);
     } finally {
       uninstall();
     }

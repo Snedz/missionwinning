@@ -42,6 +42,8 @@ import {
 import { WorkoutVictorySheet } from '@/components/workout/WorkoutVictorySheet';
 import { buildDebrief } from '@/lib/coach/debrief';
 import type { Debrief } from '@/lib/coach/debrief';
+import { collectFragments, composeSessionEntry } from '@/lib/journal/composeEntry';
+import { SessionJotField } from '@/components/workout/SessionJotField';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { computeBodyScores } from '@/lib/score';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
@@ -88,6 +90,7 @@ export function ActiveWorkoutPage() {
   const removeExerciseFromActive = useWorkoutStore((s) => s.removeExerciseFromActive);
   const replaceExerciseInActive = useWorkoutStore((s) => s.replaceExerciseInActive);
   const setExerciseNote = useWorkoutStore((s) => s.setExerciseNote);
+  const setSessionNote = useWorkoutStore((s) => s.setSessionNote);
   const tickRestTimer = useWorkoutStore((s) => s.tickRestTimer);
   const stopRestTimer = useWorkoutStore((s) => s.stopRestTimer);
   const adjustRestTimer = useWorkoutStore((s) => s.adjustRestTimer);
@@ -110,6 +113,7 @@ export function ActiveWorkoutPage() {
   const [victoryOpen, setVictoryOpen] = useState(false);
   const [victorySummary, setVictorySummary] = useState<WorkoutVictorySummary | null>(null);
   const [debrief, setDebrief] = useState<Debrief | null>(null);
+  const [entryFragments, setEntryFragments] = useState<string[]>([]);
   const [checkInOpen, setCheckInOpen] = useState(false);
   const [readinessBefore, setReadinessBefore] = useState<number | null>(null);
   const [readinessAfter, setReadinessAfter] = useState<number | null>(null);
@@ -275,6 +279,8 @@ export function ActiveWorkoutPage() {
     const historyBefore = workoutHistory;
     const checkIn = getTodayCheckIn();
     const beforeScores = computeBodyScores(historyBefore, { checkIn });
+    // Journal content — read before completeActiveWorkout clears the session.
+    const sessionNote = activeWorkout?.sessionNote ?? '';
     const log = completeActiveWorkout();
     if (!log) {
       toast({
@@ -296,6 +302,16 @@ export function ActiveWorkoutPage() {
     });
     setDebrief(sessionDebrief);
 
+    // The session entry (`.185`): the athlete's fragments — the jot field plus
+    // per-exercise notes — open the entry in their own words; the debrief follows.
+    // No fragments → the entry is exactly the debrief (composeEntry's contract).
+    const entry = composeSessionEntry(
+      sessionDebrief,
+      collectFragments(log, sessionNote, (id) => getExerciseById(id)?.name ?? id.replace(/-/g, ' ')),
+      checkIn
+    );
+    setEntryFragments(entry.fragments);
+
     // Keep what the coach said. Before `.184` the debrief evaporated when the victory
     // sheet closed — History could never show the entry a session was given.
     void import('@/lib/journal/journalStore').then((m) =>
@@ -304,7 +320,9 @@ export function ActiveWorkoutPage() {
         date: log.completedAt,
         workoutName: log.workoutName,
         zone: sessionDebrief.zone,
-        lines: sessionDebrief.lines.map((l) => ({ kind: l.kind, text: l.text })),
+        lines: entry.lines,
+        ...(entry.fragments.length > 0 ? { fragments: entry.fragments } : {}),
+        ...(entry.checkIn ? { checkIn: entry.checkIn } : {}),
         savedAt: new Date().toISOString(),
       })
     );
@@ -410,6 +428,7 @@ export function ActiveWorkoutPage() {
         onViewToday={goToday}
         onViewHistory={goHistory}
         debrief={debrief}
+        fragments={entryFragments}
       />
     );
   }
@@ -448,6 +467,8 @@ export function ActiveWorkoutPage() {
       />
 
       <LiveHeartRate />
+
+      <SessionJotField value={activeWorkout.sessionNote ?? ''} onChange={setSessionNote} />
 
       {activeWorkout.exercises.length === 0 ? (
         /* Was the logger's own dashed box — the system has no dashed borders

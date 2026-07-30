@@ -19,6 +19,8 @@ type Props = {
   onViewToday: () => void;
   onViewHistory: () => void;
   debrief?: Debrief | null;
+  /** The athlete's journal fragments from the just-finished session. */
+  fragments?: string[];
 };
 
 /** Empty /active shell — start quick session or jump to Today / Builder. */
@@ -29,6 +31,7 @@ export function ActiveEmptyState({
   victorySummary,
   onVictoryOpenChange,
   debrief,
+  fragments,
   onViewToday,
   onViewHistory,
 }: Props) {
@@ -81,6 +84,7 @@ export function ActiveEmptyState({
         open={victoryOpen}
         summary={victorySummary}
         debrief={debrief}
+        fragments={fragments}
         onOpenChange={onVictoryOpenChange}
         onViewToday={onViewToday}
         onViewHistory={onViewHistory}

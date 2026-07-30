@@ -95,6 +95,13 @@ export interface ActiveWorkout {
   workoutName: string;
   startedAt: string;
   exercises: ActiveExerciseLog[];
+  /**
+   * Session-level field note, jotted in the rest window ("knee twinge set 3").
+   * Journal content in the Day One sense: at finish it becomes fragments in the
+   * device-only journal — it is deliberately NOT copied onto CompletedWorkoutLog,
+   * which syncs to the cloud. Exercise notes sync; the journal never leaves.
+   */
+  sessionNote?: string;
 }
 
 export interface CompletedWorkoutLog {

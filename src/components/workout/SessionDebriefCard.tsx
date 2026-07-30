@@ -23,6 +23,12 @@ import { speak, speechSupport, stopSpeaking } from '@/lib/speech/speak';
 
 type Props = {
   debrief: Debrief;
+  /**
+   * The athlete's journal fragments — their own words, rendered FIRST and verbatim
+   * (`composeSessionEntry` already attributed exercise notes). The entry reads as
+   * theirs, augmented; never the machine's, decorated. Absent → plain debrief.
+   */
+  fragments?: string[];
 };
 
 /**
@@ -37,7 +43,7 @@ const CHIP_EFFECT: Record<string, { energy?: number } | undefined> = {
   'Too easy': { energy: 5 },
 };
 
-export function SessionDebriefCard({ debrief }: Props) {
+export function SessionDebriefCard({ debrief, fragments }: Props) {
   const [answered, setAnswered] = useState<string | null>(null);
   const [speaking, setSpeaking] = useState(false);
 
@@ -72,6 +78,16 @@ export function SessionDebriefCard({ debrief }: Props) {
 
   return (
     <section className="border-t border-border pt-4" aria-label="Session debrief">
+      {fragments && fragments.length > 0 ? (
+        <ul className="mb-3 space-y-1.5 border-l-2 border-poster pl-3" aria-label="Your field notes">
+          {fragments.map((fragment, i) => (
+            <li key={i} className="text-sm italic text-foreground">
+              {fragment}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
       {canSpeak ? (
         <button
           type="button"
@@ -122,6 +138,12 @@ export function SessionDebriefCard({ debrief }: Props) {
           )}
         </div>
       ) : null}
+
+      {/* Honest by the time it renders: handleComplete saved the entry before
+          opening this sheet. Points at the journal without adding a second CTA. */}
+      <p className="mt-4 text-xs text-muted-foreground" role="status">
+        Saved to your journal — edit any time from History.
+      </p>
 
       {/* Only after a session that actually ran hot — that is when "evenings like
           this" means something. A steady session gets no ask. */}

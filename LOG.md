@@ -6,6 +6,42 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — The session entry (`.185`)
+
+The Granola moment of the Field Notes plan: the athlete's scrappy fragments steer,
+the machine's context fills, one step fuses them — and the entry still reads as the
+athlete's own.
+
+**The jot field.** The logger gains a collapsed one-row "Field note"
+([`SessionJotField`](src/components/workout/SessionJotField.tsx)) — the rest window
+is dead air, and "knee twinge set 3" is five words that are only true while they are
+true. It lives on `ActiveWorkout.sessionNote`, so it survives a refresh with the
+session, and it is deliberately NOT copied onto `CompletedWorkoutLog` — exercise
+notes sync as workout content; the journal never leaves the device.
+
+**The compose step.** Pure [`composeEntry.ts`](src/lib/journal/composeEntry.ts):
+`collectFragments` gathers the session jot plus per-exercise notes (attributed by
+exercise name, one fragment per line — `.184`'s per-set fold arrives multi-line),
+`composeSessionEntry` puts the athlete's words **first and verbatim**, the debrief
+after, the check-in strip as footer. The binding rule, tested as a named mutant:
+**empty fragments → the entry is exactly the debrief.** Strava's Athlete
+Intelligence became a meme by generating reflection where the athlete offered none;
+the variant that invents a line here fails `composeEntry.test.ts`, as do the ones
+that reword a fragment, drop attribution, or reorder the athlete behind the machine.
+
+**The journal surface.** `/history` splits into **Sessions | Journal**.
+[`JournalTimeline`](src/components/history/JournalTimeline.tsx) interleaves session
+entries with mind check-in notes by date, searchable by text, privacy said out loud
+on the surface ("stays on this device — never uploaded"). Fragments are editable
+after the fact (Granola's post-hoc edit) via `updateJournalFragments` — the
+machine's lines are not, because an edited debrief would claim the rules said
+something they did not; editing a session with no entry mints nothing. The victory
+sheet renders fragments above the debrief and says "Saved to your journal."
+
+Tests 787→797 (falsification: invented-reflection, reworded-fragment,
+lost-attribution, order-flip — all killed). Next: `.186` cue memory ("Last note on
+bench: 'tuck elbows'"), `.187` on-device Impacts.
+
 ## 2026-07-30 — Notes stop vanishing (`.184`)
 
 First PR of the Field Notes plan — the Granola of training journals: the athlete's
