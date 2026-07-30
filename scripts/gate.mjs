@@ -148,6 +148,16 @@ run('Display type', 'npm', ['run', 'check-display-type']);
 run('Token sync (web ↔ Android)', 'npm', ['run', 'check-token-sync']);
 run('Production build (PRIVATE_MODE=false)', 'npm', ['run', 'build'], BUILD_ENV);
 
+/*
+ * `.209` — the step that would have caught 306 KB.
+ *
+ * The gate had every kind of check except a byte count, and that is exactly how
+ * all fifteen locale packs ended up as a `<script async>` on `/`, `/log` and
+ * `/active`. Runs straight after the build, off the prerendered HTML, and costs
+ * about a second.
+ */
+run('Bundle budget (gzipped initial JS)', 'npm', ['run', 'bundle-budget']);
+
 if (!hasChromium()) {
   console.error('\n[31m✗ Playwright is unavailable — run: npx playwright install chromium[0m');
   process.exit(1);
