@@ -56,9 +56,12 @@ export function TodayJournalStrip({ entries, locale, className }: Props) {
               'Nothing logged yet — train, fuel, or check in on Mind to start your strip.',
           })}
         </p>
+        {/* Outline, not a red fill. Today docks exactly one red action and this
+            is a secondary route into Mind — found by `check-display-type` the
+            day that rule was written, which is the rule working. */}
         <Link
           href="/mind"
-          className="inline-flex min-h-[44px] items-center bg-primary-fill px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-fill-hover"
+          className="inline-flex min-h-[44px] items-center border-2 border-border px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
         >
           {t('todayJournalViewMind', { defaultValue: 'Log check-in →' })}
         </Link>

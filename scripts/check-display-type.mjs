@@ -52,6 +52,84 @@ function walk(dir, files = []) {
   return files;
 }
 
+/**
+ * `.198` — the second rule this file enforces, for the same reason as the first.
+ *
+ * Today docks exactly one red action. `.194` added a second one by using a
+ * default-variant `Button` (which renders `bg-primary-fill`, poster red) inside
+ * a Today card. The one-primary-action e2e test stayed green because it counts
+ * elements carrying `.primary-action`, and that button had the colour without
+ * the class — a rule enforced against a class name rather than against the
+ * design.
+ *
+ * The e2e appearance check (`tests/e2e/helpers/redActions.ts`) is the real
+ * guard, since it reads computed colour. This one is the cheap version that runs
+ * in a second and names the file, so the failure arrives at the moment the line
+ * is written rather than at the end of a browser run.
+ */
+const TODAY_DIRS = ['src/components/today'];
+/** Class-level red fills. `variant="default"` is checked separately below. */
+const RED_FILL = /\b(primary-action|bg-primary-fill|bg-accent-poster)\b/;
+/**
+ * Deliberate exceptions, each with a reason. Empty is the goal; a row here is a
+ * design decision on the record, not a way to quiet the check.
+ */
+const RED_ALLOWED = [
+  {
+    file: 'src/components/today/MuscleFreshnessStrip.tsx',
+    match: 'transition-[width]',
+    why: 'A progress-bar fill inside an aria-hidden span, not an action — nothing to press, so it cannot compete with the docked CTA.',
+  },
+];
+
+function defaultVariantButtons(source) {
+  const out = [];
+  // `<Button ...>` with no `variant=` before the closing bracket. shadcn's
+  // default variant is the poster-red fill, so omitting it is a choice to be red.
+  const re = /<Button\b([^>]*)>/g;
+  let m;
+  while ((m = re.exec(source)) !== null) {
+    if (!/\bvariant\s*=/.test(m[1])) out.push({ index: m.index, value: m[0].replace(/\s+/g, ' ') });
+  }
+  return out;
+}
+
+const redViolations = [];
+for (const dir of TODAY_DIRS) {
+  const full = path.join(root, dir);
+  if (!fs.existsSync(full)) continue;
+  for (const file of walk(full)) {
+    const rel = path.relative(root, file);
+    const source = fs.readFileSync(file, 'utf8');
+    const allowed = RED_ALLOWED.filter((a) => a.file === rel);
+    for (const { value, index } of classStrings(source)) {
+      if (!RED_FILL.test(value)) continue;
+      // Matched on the class string, not the whole file: an exemption for a
+      // progress bar must not also excuse a button added later in the same file.
+      if (allowed.some((a) => value.includes(a.match))) continue;
+      redViolations.push({
+        file: rel,
+        line: source.slice(0, index).split('\n').length,
+        value: value.replace(/\s+/g, ' ').trim(),
+      });
+    }
+    for (const { index, value } of defaultVariantButtons(source)) {
+      redViolations.push({
+        file: rel,
+        line: source.slice(0, index).split('\n').length,
+        value: `${value} — default variant is bg-primary-fill (poster red)`,
+      });
+    }
+  }
+}
+
+for (const a of RED_ALLOWED) {
+  if (!a.why || !a.why.trim()) {
+    console.error(`RED_ALLOWED entry for ${a.file} has no reason — an exception without one is a disabled check.`);
+    process.exit(1);
+  }
+}
+
 const violations = [];
 for (const r of ROOTS) {
   const dir = path.join(root, r);
@@ -70,8 +148,21 @@ for (const r of ROOTS) {
   }
 }
 
+if (redViolations.length > 0) {
+  console.error(`\n${redViolations.length} red action(s) in src/components/today — Today docks exactly one:\n`);
+  for (const v of redViolations) {
+    console.error(`  ${v.file}:${v.line}`);
+    console.error(`    ${v.value}\n`);
+  }
+  console.error(
+    'Use variant="outline" (or "ghost") for anything that is not the one docked action.\n' +
+      'If a second red action is genuinely right, add a reasoned RED_ALLOWED row.\n'
+  );
+  process.exit(1);
+}
+
 if (violations.length === 0) {
-  console.log('display type OK — no size utility overrides a display class.');
+  console.log('display type OK — no size utility overrides a display class, and Today docks one red action.');
   process.exit(0);
 }
 

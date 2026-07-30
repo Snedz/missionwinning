@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
-import { seedLegacyOnboarding } from './helpers/journey';
+import { seedLegacyOnboarding, seedEveningReview } from './helpers/journey';
+import { expectThumbSized } from './helpers/thumbSweep';
+import { expectOneRedAction } from './helpers/redActions';
+import { TODAY_MAX_TOP_LEVEL_BLOCKS } from '../../src/lib/today/todayBlockBudget';
 
 /**
  * The first 90 seconds, as a budget rather than an opinion.
@@ -197,9 +200,54 @@ test.describe('First 90 seconds @gate', () => {
 
   test('Today offers exactly one primary action', async ({ page }) => {
     await page.goto('/log', { waitUntil: 'domcontentloaded' });
-    // Two competing emerald CTAs is the "empty dashboard / chore list" failure mode.
+    // Two competing CTAs is the "empty dashboard / chore list" failure mode.
+    // This counts the *class*; the appearance check below is what actually
+    // enforces the rule — see `helpers/redActions.ts` for why both exist.
     await expect(page.locator('.primary-action')).toHaveCount(1);
   });
+
+  /**
+   * The same rule, measured by colour instead of class name — and at both hours.
+   *
+   * `.194` shipped a second poster-red button onto Today and the assertion above
+   * stayed green, because that button never carried `.primary-action`; it only
+   * had the colour. The 18:00-only nature of the card is the other half of why
+   * nothing caught it, so this runs at 09:00 and 19:00.
+   */
+  for (const hour of [9, 19]) {
+    test(`Today shows one red action at ${hour}:00 @gate`, async ({ page }) => {
+      await seedEveningReview(page);
+      await page.clock.setFixedTime(new Date(`2026-07-30T${String(hour).padStart(2, '0')}:30:00`));
+      await page.goto('/log', { waitUntil: 'networkidle' });
+
+      /*
+       * The guard asserts its own preconditions, in full.
+       *
+       * Three separate times while writing this test it passed with the bug
+       * still in place, each time because the surface was not on screen: the
+       * day-review card needs data to render at all (`composeDayReview` returns
+       * null by design), the push opt-in inside it needs a VAPID public key
+       * (unset in CI until now — see `gate.mjs`), and the opt-in mounts only
+       * after an `await import('@/lib/pushClient')` resolves. A colour
+       * assertion against an absent element is green and meaningless.
+       *
+       * So both are waited for explicitly. If either stops rendering, this test
+       * fails on the precondition rather than quietly stopping measuring.
+       */
+      if (hour >= 18) {
+        await expect(
+          page.getByRole('region', { name: /day in review/i }),
+          'the evening card must be on screen, or this test is asserting about nothing'
+        ).toBeVisible({ timeout: 15_000 });
+        await expect(
+          page.getByRole('button', { name: /turn on/i }),
+          'the push opt-in must be mounted — it is the control this test is about'
+        ).toBeVisible({ timeout: 15_000 });
+      }
+
+      await expectOneRedAction(page, `/log at ${hour}:00`);
+    });
+  }
 
   test('every control on the logger is thumb-sized', async ({ page }) => {
     // JourneyGuard sends a cold visitor to /welcome; this case is about an
@@ -226,27 +274,59 @@ test.describe('First 90 seconds @gate', () => {
       timeout: 10_000,
     });
 
-    // 44px is the floor for one-thumb use outdoors. Checked on the real rendered
-    // boxes rather than trusting a utility class to still be applied. Scoped to the
-    // logging surface — the ± steppers and Log are what you press holding a bar.
-    const undersized: string[] = [];
-    // `#screen-dock` is in the sweep from `.153`: the ± steppers and Log moved
-    // out of `main` and into the docked console, and a scope of `main` alone
-    // would have quietly stopped covering the exact controls this test is
-    // about. It is also how the rest dock kept 36px presets.
-    const buttons = await page
-      .locator('main button, [role="main"] button, #screen-dock button')
-      .all();
-    for (const button of buttons) {
-      if (!(await button.isVisible().catch(() => false))) continue;
-      const box = await button.boundingBox();
-      if (!box) continue;
-      // Ignore genuinely inline affordances with no independent hit area.
-      if (box.width === 0 || box.height === 0) continue;
-      if (box.height < 44) {
-        undersized.push(`${(await button.textContent())?.trim().slice(0, 24)} h=${Math.round(box.height)}`);
-      }
-    }
-    expect(undersized, `controls under 44px tall: ${undersized.join(', ')}`).toEqual([]);
+    // Body extracted to `helpers/thumbSweep.ts` so other screens can run the
+    // same sweep — it was inline and scoped here alone, which is exactly how a
+    // 36px button on Today went unnoticed by a test called "every control is
+    // thumb-sized".
+    await expectThumbSized(page, '/active');
   });
+
+  /**
+   * The budget, from outside the process that computes it.
+   *
+   * `todayBlockBudget.test.ts` proves `planTodayBlocks` respects the cap. That is
+   * a claim about a function, not about the screen — the dashboard could stop
+   * calling it, or call it and render `staggerBlocks` anyway, and the unit test
+   * would stay green. This counts what actually rendered.
+   *
+   * `TODAY_MAX_TOP_LEVEL_BLOCKS` is imported rather than restated so the unit
+   * bound and the rendered bound cannot drift apart.
+   */
+  for (const hour of [9, 19]) {
+    test(`Today renders within its block budget at ${hour}:00 @gate`, async ({ page }) => {
+      await seedLegacyOnboarding(page);
+      await page.clock.setFixedTime(new Date(`2026-07-30T${String(hour).padStart(2, '0')}:30:00`));
+      await page.goto('/log', { waitUntil: 'networkidle' });
+      const shell = page.locator('.today-shell').first();
+      await expect(shell).toBeVisible({ timeout: 15_000 });
+      const blocks = await shell.locator(':scope > *').count();
+      expect(
+        blocks,
+        `Today rendered ${blocks} top-level blocks at ${hour}:00; the budget is ${TODAY_MAX_TOP_LEVEL_BLOCKS}`
+      ).toBeLessThanOrEqual(TODAY_MAX_TOP_LEVEL_BLOCKS);
+    });
+  }
+
+  /**
+   * The screens the sweep never reached.
+   *
+   * `.194` put a `size="sm"` (36px) button on Today and nothing failed, because
+   * this sweep only ever visited `/active`. Today is also where the sweep has to
+   * run **in the evening** — the day-review card and its opt-in do not exist
+   * before 18:00, so a daytime run sees neither.
+   */
+  for (const { path, hour, what } of [
+    { path: '/log', hour: 9, what: '/log (morning)' },
+    { path: '/log', hour: 19, what: '/log (evening — day review visible)' },
+    { path: '/mind', hour: 19, what: '/mind (behavior strip)' },
+  ]) {
+    test(`every control on ${what} is thumb-sized @gate`, async ({ page }) => {
+      await seedLegacyOnboarding(page);
+      // Fixed clock: the evening surfaces are the ones that were never swept,
+      // and "run the suite after 18:00" is not a test strategy.
+      await page.clock.setFixedTime(new Date(`2026-07-30T${String(hour).padStart(2, '0')}:30:00`));
+      await page.goto(path, { waitUntil: 'networkidle' });
+      await expectThumbSized(page, what);
+    });
+  }
 });

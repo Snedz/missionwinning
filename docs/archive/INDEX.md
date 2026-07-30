@@ -28,7 +28,7 @@ When adding a doc:
 | [log/LOG-2026-06_to_2026-07-20.md](./log/LOG-2026-06_to_2026-07-20.md) | Rotated out of root LOG.md (rotation rule: ≤15 entries at root) |
 | [log/LOG-2026-07-20_tail.md](./log/LOG-2026-07-20_tail.md) | Victory / YC / pay-ready / Wave 11 — rotated 2026-07-21 |
 | [log/LOG-2026-07-20_to_2026-07-29.md](./log/LOG-2026-07-20_to_2026-07-29.md) | 131 entries (`.179` and earlier, incl. the Modernist rebrand and coach-loop sprints) — rotated 2026-07-30 |
-| [log/LOG-2026-07-29_to_2026-07-30.md](./log/LOG-2026-07-29_to_2026-07-30.md) | 14 entries (`.180`–`.193`: switching moment, growth loop, Field Notes journaling, LLM metering, behavior journal, sleep consistency) — rotated 2026-07-30 |
+| [log/LOG-2026-07-29_to_2026-07-30.md](./log/LOG-2026-07-29_to_2026-07-30.md) | 16 entries (`.180`–`.195`: switching moment, growth loop, Field Notes journaling, LLM metering, behavior journal, sleep consistency) — rotated 2026-07-30 |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).
