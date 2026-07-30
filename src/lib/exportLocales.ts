@@ -32,6 +32,7 @@ import { gateStringsFor } from '@/i18n/gateLocales';
 import { learnContentStringsFor } from '@/i18n/learnContentLocales';
 import { APP_LANGS, type AppLang } from '@/i18n/appLangs';
 import { withLocalePack } from '@/i18n/localePacks';
+import { LOCALE_FILES, type LocaleNamespace } from '@/i18n/localeExportManifest';
 
 /** @deprecated Prefer APP_LANGS — alias kept for existing imports. */
 export const EXPORT_LANGS = APP_LANGS;
@@ -55,35 +56,11 @@ function packWrapIntersect(stringsFor: (lang: string) => Record<string, string>)
   };
 }
 
-export type LocaleNamespace =
-  | 'welcome'
-  | 'today'
-  | 'fuel'
-  | 'nav'
-  | 'bundle'
-  | 'history'
-  | 'activeWorkout'
-  | 'track'
-  | 'move'
-  | 'mind'
-  | 'learn'
-  | 'builder'
-  | 'benchmarks'
-  | 'calculators'
-  | 'info'
-  | 'guidebook'
-  | 'leaderboard'
-  | 'fitnessTest'
-  | 'assessments'
-  | 'feedback'
-  | 'programs'
-  | 'library'
-  | 'landing'
-  | 'growth'
-  | 'coach'
-  | 'beta'
-  | 'gate'
-  | 'learnContent';
+/**
+ * `.209` — re-exported from the manifest so the list exists once. Declaring it
+ * here as well is how a namespace gets added to one and not the other.
+ */
+export type { LocaleNamespace };
 
 export type LocaleExportEntry = {
   namespace: LocaleNamespace;

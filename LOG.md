@@ -6,6 +6,83 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — 306 KB of translations on every route (`.209`)
+
+Measured, not estimated, and the largest user-visible win in the wave.
+
+`localeHttpLoader.ts` needed exactly two facts per namespace — its name and its
+filename — and got them by importing `LOCALE_EXPORTS` from
+`@/lib/exportLocales`. That module imports 28 `*Locales.ts` files **and**
+`@/i18n/localePacks`, which imports 14 `packs/*.json` totalling 1.1 MB on disk.
+And `localeHttpLoader` is reached from the **root layout**:
+
+```
+app/layout.tsx → I18nPwaProvider → LocaleHttpSync → localeHttpLoader
+               → exportLocales → localePacks → 14 × packs/*.json
+```
+
+Every link static. The result was one `chunks/7660-…js` at **1,053,845 B raw /
+313,839 B gzipped**, loaded as a plain `<script async>` on `/`, `/log` **and**
+`/active` — 44 % of the initial JS on the logger. An English user in Nairobi on
+3G downloaded Thai, Vietnamese and Hindi before first paint.
+
+That silently defeated the design `i18n/hydrateResources.ts` documents in its own
+header (*"dynamic imports keep ~8k LOC of `*Locales.ts` out of first paint"*) and
+`src/i18n.ts`'s *"minimal EN first paint"*. **Both were true of the source and
+false of the build**, which is the whole reason a byte budget is worth more than
+a comment.
+
+The fix is a new [`localeExportManifest.ts`](src/i18n/localeExportManifest.ts)
+with **zero imports** — 28 `{namespace, filename}` rows and nothing else.
+`localeHttpLoader` reads that; `exportLocales` reads it too and derives
+`LocaleNamespace` from the array rather than declaring the union a second time,
+so the list exists once. The remaining `import type { ExportLang }` is erased at
+compile time.
+
+**Measured after, same method as before:**
+
+| route | gzipped initial JS |
+|---|---|
+| `/` (gated teaser) | **164.0 KB** |
+| `/log` | **262.8 KB** (was 44 % locale pack) |
+| `/active` | **418.8 KB** |
+
+The megachunk no longer exists in the build, and a byte-level scan of every
+chunk still referenced from `/log` finds **no locale-pack strings at all** —
+checked for `Platos` (es), `ครั้ง` (th) and `तकरार` (hi) rather than trusting the
+chunk name.
+
+**The step that would have caught it.** `todayPerf.test.ts` says so in its own
+words — *"a bundle-size assertion would be better and does not exist here."* New
+[`scripts/bundle-budget.mjs`](scripts/bundle-budget.mjs) is that assertion, wired
+into `npm run gate` straight after the build. It reads the **prerendered HTML**,
+not the build manifest, because the question is not which chunks the graph
+contains but which `<script>` tags the browser actually fetches — the only form
+of the question a user experiences. Ratcheted the `.202` way: caps move down
+only, with the high-water marks checked into
+[`bundleBudget.test.ts`](src/lib/bundleBudget.test.ts) so a raise cannot pass
+unnoticed. It also refuses to pass when `.next/` is missing, rather than
+reporting green for a measurement it did not take.
+
+A second, cheaper rule runs in the unit lane and needs no build: nothing on the
+root-layout path may **value**-import `@/lib/exportLocales` or
+`@/i18n/localePacks`, and the manifest itself must import nothing.
+
+**The budget failed on its own first gate run**, and the reason is worth
+recording. I calibrated it against a default `npm run build`, where `/` is the
+six-chunk `/private` teaser at 164 KB. `gate.mjs` builds `PRIVATE_MODE=false`,
+where `/` is the real landing page — 20 chunks, 247.4 KB. That is the `.204`
+asymmetry in a new place: **the gate measures a configuration production does not
+currently serve.** The caps are now set against what the gate builds, because a
+cap the gate cannot check is not a cap, and the note at the constant says so.
+
+Killed: `locale-packs-back-on-the-critical-path`,
+`byte-budget-raised-instead-of-lowered`, `budget-not-in-gate`.
+
+Tests 1061→1066.
+
+---
+
 ## 2026-07-30 — Numbers the product overstates (`.208`)
 
 Two celebrations the app could not support.

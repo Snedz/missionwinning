@@ -1,4 +1,16 @@
-import { LOCALE_EXPORTS, type ExportLang } from '@/lib/exportLocales';
+/*
+ * `.209` — the manifest, not the modules.
+ *
+ * This line used to import `LOCALE_EXPORTS` from `@/lib/exportLocales` for the
+ * two metadata fields read below, and dragged 28 `*Locales.ts` modules plus
+ * 1.1 MB of locale packs onto the critical path of every route through the root
+ * layout. 306 KB gzipped, on `/`, `/log` and `/active`.
+ *
+ * `ExportLang` is a `type` import — erased at compile time, so it costs nothing
+ * at runtime and `isExportLang` below already hardcodes its own list anyway.
+ */
+import { LOCALE_FILES } from '@/i18n/localeExportManifest';
+import type { ExportLang } from '@/lib/exportLocales';
 
 /** Normalize i18n language code (e.g. en-US → en). */
 export function normalizeLocaleCode(lang: string): string {
@@ -23,7 +35,7 @@ export type LocaleHttpFile = {
 
 export function localeHttpFallbackFiles(lang: string): LocaleHttpFile[] {
   const code = normalizeLocaleCode(lang);
-  return LOCALE_EXPORTS.map((entry) => ({
+  return LOCALE_FILES.map((entry) => ({
     path: `/locales/${code}/${entry.filename}`,
     namespace: entry.namespace,
   }));

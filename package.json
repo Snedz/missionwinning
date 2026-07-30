@@ -29,6 +29,7 @@
     "e2e": "node scripts/e2e-smoke.mjs",
     "e2e:critical": "playwright test --config=playwright.config.ts --grep-invert \"@a11y|@visual\"",
     "e2e:gate": "playwright test --config=playwright.config.ts --grep @gate",
+    "bundle-budget": "node scripts/bundle-budget.mjs",
     "gate": "node scripts/gate.mjs",
     "a11y": "playwright test --config=playwright.config.ts --grep @a11y",
     "e2e:visual": "playwright test --config=playwright.config.ts --grep @visual",
