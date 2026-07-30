@@ -2,9 +2,82 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.195`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
+**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.196`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
 
 ---
+
+## 2026-07-30 — The guards that never ran (`.200`)
+
+`.195`–`.199` closed one defect class: *a thing was built and nothing asserted
+anyone could reach it.* This is that class applied to the checks themselves, and
+the repo had two live instances.
+
+**`npm run a11y` executed nowhere.** 33 tests over 30 routes — excluded from
+`npm run gate`, whose own closing line said so, and absent from every workflow,
+while [`ci.yml`](.github/workflows/ci.yml) carried a comment claiming a11y
+"stays in CI extended". `grep -rn a11y .github/workflows/` returned **zero
+hits**. The suite has existed since `.157`.
+
+Run for the first time, it found **one real serious violation**: `/compare`'s
+comparison table scrolls horizontally with no keyboard access
+(`scrollable-region-focusable`), so every column past the fold existed only for
+people with a pointer. Fixed with `tabIndex` + a named region. **32 of 33 passed
+on the first run** — the suite was in far better shape than "never executed"
+suggested, which is its own small lesson about assuming rot.
+
+`a11y` now runs **inside the gate**, reusing the server the hero lane already
+started, so the marginal cost is the run and not another build. Gate: 46 e2e +
+33 a11y.
+
+`eslint`'s `jsx-a11y/no-noninteractive-tabindex` and axe genuinely disagree
+here, and **axe is right** — the lint rule is a static heuristic about element
+types, axe measures the rendered box. One narrow disable, with that reasoning
+written at the call site.
+
+**The visual-regression job passed vacuously.** With no committed baselines it
+ran `--update-snapshots || true` and then re-ran `e2e:visual`, which found the
+snapshots it had just written. Green on every run, over zero baselines — the job
+could not fail. Now the absence of baselines is a loud failure with bootstrap
+instructions, because `visual.spec.ts` argues at length that a known-wrong
+baseline is worse than none and bootstrapping is a deliberate act. **Baselines
+were deliberately not generated here**: this container runs Chromium 1194
+against a repo pinning 1228, and at 2% tolerance those would likely diff on a
+correctly-provisioned runner — founder call, recorded.
+
+**One fact, one home.** `gate.mjs`'s header asserted *"Actions works again as of
+2026-07-29"* while `CONTEXT.md` recorded it re-blocked on the 30th; the repo
+contradicted itself about its own CI in two files. The gate now points at
+CONTEXT rather than restating it. Same shape: `ci.yml` inlined
+`npm audit --audit-level=high` while `package.json` already defined
+`security-audit` — two spellings of one check, now one.
+
+Guard — [`ciTruth.test.ts`](src/lib/ciTruth.test.ts): every npm script this repo
+treats as a check runs in the gate or a workflow, or sits in `NOT_RUN` with a
+written reason; the reverse (no stale exemptions); a11y specifically in the
+**gate**, not merely in some schedule; and the visual step must not write its own
+baselines, must not swallow its exit code, and must `exit 1` when baselines are
+missing. *A guard nobody runs is a guard that does not exist* — PR #142's
+discarded baselines and this a11y orphan stated as one rule.
+
+**Three things this suite caught on its own first run**, all of them mine:
+
+1. `secrets:scan` looked like it ran in CI because `gitleaks.yml`'s *header
+   comment* mentions `npm run secrets:scan`. A guard reading a comment as
+   execution is the `.195` header-menu defect again. Workflow YAML is now
+   comment-stripped before matching, and the `NOT_RUN` reason was rewritten —
+   it had been wrong about how the scan runs.
+2. The visual check flagged **its own help text**, because the step now *tells*
+   the reader to run `--update-snapshots`. `echo` lines are excluded: the rule is
+   about what a step runs, not what it says.
+3. Changing ci.yml to `npm run security-audit` broke compliance control
+   **MW-MON-003**, which grepped for the literal string `npm audit` — a third
+   place encoding the same fact, measuring a spelling rather than the thing it is
+   about. The probe now accepts either.
+
+Killed on first run: `a11y-dropped-from-gate`, `visual-passes-with-no-baseline`,
+`not-run-table-without-a-reason`, `script-not-run-anywhere`.
+
+Tests 999→1003. Gate 3.7→5.7 min.
 
 ## 2026-07-30 — One week, one answer (`.199`)
 
@@ -242,75 +315,3 @@ answer here. Killed on first run: `tuesday-pays-for-sunday`,
 `card-reads-storage-again`, `heatmap-forgets-the-log`.
 
 Tests 961→988.
-
-## 2026-07-30 — The hour the athlete picked (`.196`)
-
-`.176`, closed. `.194` shipped a `day_review_hour` column, a migration, a cron
-that selects on it, an hourly workflow and a tone-tested push — and exactly one
-writer: [`DayReviewOptIn`](src/components/today/DayReviewOptIn.tsx), which
-**returned early whenever a push subscription already existed**. That is every
-athlete who had turned on the wind-down note, which is precisely the population
-that would want an evening review. `day_review_hour` stayed NULL, `dayReviewDue`
-was always false, and the feature fired for nobody. Every test passed, because
-every test asked whether the decision was *correct* and none asked whether the
-input could ever arrive.
-
-**The fix is one row of a truth table.** New pure
-[`dayReviewPrefs.ts`](src/lib/dayReviewPrefs.ts) makes `dayReviewOfferState` a
-total function over its input, and the row is `hasPush: true, storedHour: null →
-'offer'`. Having push and having an evening hour are different facts: a device
-with push was asked about the *wind-down* note, and nothing had ever asked it
-about this. Written as a function rather than a chain of early returns for a
-plain reason — a decision spelled `if (…) return;` can only be read by
-re-deriving it, while a decision spelled as a function over an input can be
-enumerated by a test, and this one now is, across all 32 combinations.
-
-`readDayReviewHour` never throws and never guesses: it reads whatever is on the
-device, including values from an older build, and **anything unparseable means
-not opted in rather than a default hour**. An unrequested nightly notification is
-the one failure this feature cannot have.
-
-**A one-time offer is not a setting.** The other half of the `.176` shape was
-that the picker lived inside a card which remembers it already asked — dismiss it
-once and the column was unreachable for good; choose 20:00 and you could never
-move it to 21:00. New
-[`ProfileDayReviewRow`](src/components/profile/ProfileDayReviewRow.tsx) gives it
-a permanent home next to the other push preferences, gated on `pushSupported`
-rather than `pushOn` so that choosing an hour is itself how the review gets
-turned on — gating it behind push already being enabled would rebuild the dead
-end from the other side.
-
-**`null` and `undefined` stay distinguishable, and that distinction is the
-safety property.** `null` is the athlete choosing Off and must reach the column
-as a NULL, or the note keeps arriving after they said stop. `undefined` is an
-unrelated sync — a Profile mount, a finished session — which knows nothing about
-this preference and must leave it standing. Collapsing them is a real defect in
-either direction: one way the athlete cannot turn it off, the other way any
-passive page mount silently turns it off for them. `apiSchemas` gained
-`.nullable()`; `buildSubscriptionRow` already omitted `undefined` and now carries
-a note saying why it must keep doing so.
-
-Guard: [`pushPrefsReachable.test.ts`](src/lib/pushPrefsReachable.test.ts) walks
-the chain every preference must survive — type → row builder → client → cadence
-sync → **a named control the athlete can actually operate**, wired into a screen
-rather than only into a card that remembers it asked. *A server column the user
-cannot set is a column that stays NULL forever*, as one executable rule.
-`control: null` is a legitimate answer for a field the app derives, and costs a
-written reason.
-
-Seven mutants; **two survived first run, both holes in the guards rather than in
-the code.** `cadence-clobbers-hour` walked through a source-text check because
-grepping for a field name cannot tell `{ dayReviewHour: storedHour }` from
-`...(storedHour !== null ? {…} : {})` — and those two differ by whether opening
-Profile on a laptop silently clears the hour set on a phone. The rule became
-`cadenceHourPatch`, a function whose output a test can hold instead of its
-spelling. `hour-never-leaves-the-device` walked through because the guard sliced
-from `readPushCadence` to the *end of the file* and matched a different function
-two hundred lines below — a guard against an omission that could not see the
-omission. Both now kill. Killed on the first run:
-`optin-hidden-when-push-on` (the `.176` recurrence itself),
-`hour-out-of-band-accepted`, `garbage-falls-back-to-a-default-hour`,
-`off-is-just-undefined`, `no-control-for-the-column`.
-
-Tests 939→961. **Ships dark** — VAPID unset, so nothing sends; the setting is
-stored and synced, and the doorbell rings when the founder adds the keys.

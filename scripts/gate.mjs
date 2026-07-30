@@ -3,10 +3,15 @@
  * `npm run gate` — everything ci.yml would have checked, on your machine.
  *
  * Originally written because GitHub Actions was billing-blocked and nothing guarded
- * `master`. **Actions works again as of 2026-07-29** (verified: 8 checks green on
- * PR #121), so CI is no longer inert — but this stays the faster local pre-push
- * check, and `check-build-label` / `check-display-type` / `check-token-sync` ran
- * *only* here until `.170` wired them into ci.yml.
+ * `master`. **Whether Actions is currently running is recorded in one place —
+ * `CONTEXT.md` `## Now`** — and not restated here: this header claimed "Actions
+ * works again as of 2026-07-29" while CONTEXT recorded it re-blocked on the 30th,
+ * so the repo contradicted itself about its own CI in two files. One fact, one
+ * home.
+ *
+ * Either way this stays the faster local pre-push check, and `check-build-label` /
+ * `check-display-type` / `check-token-sync` ran *only* here until `.170` wired
+ * them into ci.yml.
  *
  * It builds with PRIVATE_MODE=false on purpose: that is what compiles the service
  * worker, and tests/e2e/offline.spec.ts needs one. It also starts and stops the
@@ -178,13 +183,40 @@ const e2e = spawnSync('npm', ['run', 'e2e:gate'], {
   env: { ...BUILD_ENV, SMOKE_BASE_URL: BASE },
   shell: process.platform === 'win32',
 });
-stopServer();
 
 if (e2e.status !== 0) {
+  stopServer();
   console.error('\n[31m✗ Hero e2e failed[0m');
   process.exit(e2e.status ?? 1);
 }
 
+/*
+ * `.200` — a11y, on the same server rather than in a workflow that never ran.
+ *
+ * `npm run a11y` is 33 tests over 30 routes and it executed **nowhere**: not in
+ * this gate, whose own closing line said so, and not in any workflow — despite
+ * `ci.yml` claiming it "stays in CI extended", while
+ * `grep -rn a11y .github/workflows/` returned zero hits. The first time it was
+ * ever run it found a real serious violation: a scrollable comparison table no
+ * keyboard could reach.
+ *
+ * It reuses the server the hero lane just started, so the marginal cost is the
+ * run itself rather than another build.
+ */
+step += 1;
+console.log(`\n[1m[${step}] Accessibility (@a11y)[0m`);
+const a11y = spawnSync('npm', ['run', 'a11y'], {
+  stdio: 'inherit',
+  env: { ...BUILD_ENV, SMOKE_BASE_URL: BASE },
+  shell: process.platform === 'win32',
+});
+stopServer();
+
+if (a11y.status !== 0) {
+  console.error('\n[31m✗ Accessibility failed[0m');
+  process.exit(a11y.status ?? 1);
+}
+
 const mins = ((Date.now() - started) / 60_000).toFixed(1);
 console.log(`\n[32m✓ Gate passed in ${mins} min[0m`);
-console.log('  Not covered here: npm run a11y, npm run e2e:visual, Lighthouse (needs Chrome).');
+console.log('  Not covered here: npm run e2e:visual (needs deliberate baselines), Lighthouse (needs Chrome).');
