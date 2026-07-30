@@ -188,8 +188,3 @@ export function composeDayReview(input: DayReviewInput): DayReview | null {
     option: optionFor(input, now),
   };
 }
-
-/** Convenience for tests and callers that want the whole thing as text. */
-export function dayReviewLines(review: DayReview): string[] {
-  return [review.fact, review.reason, review.option].filter((l): l is string => !!l);
-}

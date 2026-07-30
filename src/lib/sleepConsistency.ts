@@ -21,7 +21,7 @@
  */
 
 import type { MindCheckIn } from '@/lib/mindCheckIns';
-import { normalizeBehaviors } from '@/lib/behaviors';
+import { normalizeBehaviors, roundToQuarterHour } from '@/lib/behaviors';
 
 /** Fewer nights than this in the window and there is nothing to say. */
 export const MIN_NIGHTS = 5;
@@ -65,18 +65,43 @@ function median(xs: number[]): number {
   return sorted.length % 2 === 0 ? Math.round((sorted[mid - 1] + sorted[mid]) / 2) : sorted[mid];
 }
 
-/** Minutes-since-noon back to a wall-clock "HH:MM". */
+/**
+ * Minutes-since-noon back to a wall-clock "HH:MM", at quarter-hour resolution.
+ *
+ * The rounding is `roundToQuarterHour`'s, not a second copy of it. This file
+ * carried its own `Math.round(total / 15) * 15` — a third definition of one
+ * rule, and the one place a midnight wrap could have been got wrong
+ * independently of the other two.
+ */
 export function bedClock(minutesSinceNoon: number): string {
-  const total = (minutesSinceNoon + 12 * 60) % (24 * 60);
-  const rounded = Math.round(total / 15) * 15 % (24 * 60);
-  const h = Math.floor(rounded / 60);
-  const m = rounded % 60;
-  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  const day = 24 * 60;
+  const total = (((minutesSinceNoon + 12 * 60) % day) + day) % day;
+  const h = String(Math.floor(total / 60)).padStart(2, '0');
+  const m = String(total % 60).padStart(2, '0');
+  // Non-null: `total` is always a well-formed in-range clock time by construction.
+  return roundToQuarterHour(`${h}:${m}`)!;
 }
 
 function dateKey(iso: string): number {
   const t = Date.parse(`${iso}T00:00:00`);
   return Number.isFinite(t) ? t : NaN;
+}
+
+type LoggedNight = { at: number; minutes: number };
+
+/** Usable bed times inside the window, newest first. */
+function loggedNights(checkIns: MindCheckIn[], now: Date): LoggedNight[] {
+  const cutoff = now.getTime() - WINDOW_DAYS * 86_400_000;
+  return checkIns
+    .map((c) => {
+      const bed = normalizeBehaviors(c.behaviors)?.bedTime;
+      const at = dateKey(c.date);
+      if (!bed || !Number.isFinite(at) || at < cutoff) return null;
+      const minutes = bedMinutes(bed);
+      return minutes === null ? null : { at, minutes };
+    })
+    .filter((n): n is LoggedNight => n !== null)
+    .sort((a, b) => b.at - a.at);
 }
 
 /**
@@ -87,17 +112,7 @@ export function computeSleepConsistency(
   checkIns: MindCheckIn[],
   now: Date = new Date()
 ): SleepConsistency | null {
-  const cutoff = now.getTime() - WINDOW_DAYS * 86_400_000;
-  const nights = checkIns
-    .map((c) => {
-      const bed = normalizeBehaviors(c.behaviors)?.bedTime;
-      const at = dateKey(c.date);
-      if (!bed || !Number.isFinite(at) || at < cutoff) return null;
-      const minutes = bedMinutes(bed);
-      return minutes === null ? null : { at, minutes };
-    })
-    .filter((n): n is { at: number; minutes: number } => n !== null)
-    .sort((a, b) => b.at - a.at);
+  const nights = loggedNights(checkIns, now);
 
   if (nights.length < MIN_NIGHTS) return null;
 
@@ -139,4 +154,36 @@ export function consistencyLine(c: SleepConsistency): string {
   if (c.laterThanUsualOf7 === 0) return head;
   const nights = c.laterThanUsualOf7 === 1 ? 'night was' : 'nights were';
   return `${head} ${c.laterThanUsualOf7} of your last ${c.loggedOf7} ${nights} later than that.`;
+}
+
+export interface SleepCollecting {
+  /** Usable bed times logged inside the window. */
+  nights: number;
+  /** How many the band needs before there is anything to say. */
+  needed: number;
+}
+
+/**
+ * The nights-so-far, for the stretch where `computeSleepConsistency` is still
+ * silent — the same courtesy `behaviorImpacts` extends with its `collecting`
+ * state. An athlete who has logged four nights should be told the fifth is what
+ * unlocks the sentence, not left to wonder whether the feature is broken.
+ *
+ * Null in both directions: nothing logged yet is not a progress bar to nag at
+ * (mirroring the `flagged + unflagged > 0` rule), and a window that already
+ * clears `MIN_NIGHTS` has a real line to show instead.
+ */
+export function sleepConsistencyProgress(
+  checkIns: MindCheckIn[],
+  now: Date = new Date()
+): SleepCollecting | null {
+  const nights = loggedNights(checkIns, now).length;
+  if (nights === 0 || nights >= MIN_NIGHTS) return null;
+  return { nights, needed: MIN_NIGHTS };
+}
+
+/** States the count and stops. No target bed time, no encouragement. */
+export function sleepCollectingLine(p: SleepCollecting): string {
+  const nights = p.nights === 1 ? 'night' : 'nights';
+  return `Bed time: ${p.nights} of ${p.needed} ${nights} logged — the pattern needs ${p.needed} before it says anything.`;
 }

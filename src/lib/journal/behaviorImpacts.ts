@@ -37,7 +37,7 @@
 
 import type { CompletedWorkoutLog } from '@/types';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
-import { BEHAVIORS, normalizeBehaviors, type BehaviorId } from '@/lib/behaviors';
+import { behaviorById, normalizeBehaviors, type BehaviorId } from '@/lib/behaviors';
 import { sessionLoad } from '@/lib/coach/load';
 
 /** Structurally disjoint from `ReadinessFactor` — see the module header. */
@@ -136,7 +136,7 @@ export function computeBehaviorImpacts(
   const out: BehaviorImpact[] = [];
 
   for (const rule of RULES) {
-    const def = BEHAVIORS.find((b) => b.id === rule.factor);
+    const def = behaviorById(rule.factor);
     if (!def) continue;
 
     const flagged: number[] = [];

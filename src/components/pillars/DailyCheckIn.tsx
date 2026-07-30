@@ -13,7 +13,12 @@ import {
 import { BehaviorStrip } from '@/components/pillars/BehaviorStrip';
 import type { BehaviorEntry } from '@/lib/behaviors';
 import { loadCheckIns } from '@/lib/mindCheckIns';
-import { computeSleepConsistency, consistencyLine } from '@/lib/sleepConsistency';
+import {
+  computeSleepConsistency,
+  consistencyLine,
+  sleepCollectingLine,
+  sleepConsistencyProgress,
+} from '@/lib/sleepConsistency';
 
 function RatingRow({
   label,
@@ -60,8 +65,16 @@ export function DailyCheckIn() {
   const [consistency, setConsistency] = useState<string | null>(null);
 
   const refreshConsistency = () => {
-    const c = computeSleepConsistency(loadCheckIns());
-    setConsistency(c ? consistencyLine(c) : null);
+    const checkIns = loadCheckIns();
+    const c = computeSleepConsistency(checkIns);
+    if (c) {
+      setConsistency(consistencyLine(c));
+      return;
+    }
+    // Four nights in, "nothing to say yet" and "this feature does not exist"
+    // look identical. The progress line is the difference.
+    const collecting = sleepConsistencyProgress(checkIns);
+    setConsistency(collecting ? sleepCollectingLine(collecting) : null);
   };
 
   useEffect(() => {
@@ -135,8 +148,9 @@ export function DailyCheckIn() {
             Saved for today — adjusts readiness (within honest bounds).
           </p>
         )}
-        {/* Silent until five nights of bed times exist — regularity, not a
-            duration, and never a debt figure we cannot honestly measure. */}
+        {/* Regularity, not a duration, and never a debt figure we cannot
+            honestly measure. Silent only until the first bed time is logged;
+            after that it counts up to the five nights the band needs. */}
         {consistency && (
           <p className="text-xs leading-relaxed text-muted-foreground">{consistency}</p>
         )}

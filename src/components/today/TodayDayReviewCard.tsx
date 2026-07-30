@@ -19,7 +19,8 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { loadCheckIns, upsertTodayPartial } from '@/lib/mindCheckIns';
 import { computeSleepConsistency } from '@/lib/sleepConsistency';
 import { computeBehaviorImpacts } from '@/lib/journal/behaviorImpacts';
-import { composeDayReview, DAY_REVIEW_START_HOUR, type DayReview } from '@/lib/dayReview';
+import { composeDayReview, type DayReview } from '@/lib/dayReview';
+import { roundToQuarterHour } from '@/lib/behaviors';
 import { track } from '@/lib/analytics';
 import { DayReviewOptIn } from '@/components/today/DayReviewOptIn';
 
@@ -33,10 +34,9 @@ export function TodayDayReviewCard() {
   const refresh = useCallback(() => {
     if (typeof window === 'undefined') return;
     const now = new Date();
-    if (now.getHours() < DAY_REVIEW_START_HOUR) {
-      setReview(null);
-      return;
-    }
+    // No hour test here: `dayReviewMayMount` decides at the mount site in both
+    // Today shells, so this component is never rendered before the evening —
+    // and its chunk is never downloaded to produce a null.
     const checkIns = loadCheckIns();
     setReview(
       composeDayReview({
@@ -57,11 +57,13 @@ export function TodayDayReviewCard() {
 
   const logBedTime = () => {
     const now = new Date();
-    const minutes = Math.round(now.getMinutes() / 15) * 15;
-    const at = new Date(now);
-    at.setMinutes(minutes % 60, 0, 0);
-    if (minutes >= 60) at.setHours(at.getHours() + 1);
-    const hhmm = `${String(at.getHours()).padStart(2, '0')}:${String(at.getMinutes()).padStart(2, '0')}`;
+    // `roundToQuarterHour` already existed in behaviors.ts when this shipped and
+    // this re-implemented it inline — the two-definitions-one-concept shape
+    // `.178` was written about. One rounding rule, one place.
+    const hhmm = roundToQuarterHour(
+      `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
+    );
+    if (!hhmm) return;
     upsertTodayPartial({ behaviors: { bedTime: hhmm } });
     setLogged(true);
     refresh();

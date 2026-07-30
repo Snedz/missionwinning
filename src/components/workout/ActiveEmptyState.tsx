@@ -21,6 +21,8 @@ type Props = {
   debrief?: Debrief | null;
   /** The athlete's journal fragments from the just-finished session. */
   fragments?: string[];
+  /** Finished session id — lets a feel tap annotate that session's journal entry. */
+  workoutId?: string;
 };
 
 /** Empty /active shell — start quick session or jump to Today / Builder. */
@@ -32,6 +34,7 @@ export function ActiveEmptyState({
   onVictoryOpenChange,
   debrief,
   fragments,
+  workoutId,
   onViewToday,
   onViewHistory,
 }: Props) {
@@ -85,6 +88,7 @@ export function ActiveEmptyState({
         summary={victorySummary}
         debrief={debrief}
         fragments={fragments}
+        workoutId={workoutId}
         onOpenChange={onVictoryOpenChange}
         onViewToday={onViewToday}
         onViewHistory={onViewHistory}

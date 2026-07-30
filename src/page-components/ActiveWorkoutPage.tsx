@@ -114,6 +114,8 @@ export function ActiveWorkoutPage() {
   const [victorySummary, setVictorySummary] = useState<WorkoutVictorySummary | null>(null);
   const [debrief, setDebrief] = useState<Debrief | null>(null);
   const [entryFragments, setEntryFragments] = useState<string[]>([]);
+  /** Id of the session the victory sheet is showing — the journal entry's key. */
+  const [victoryWorkoutId, setVictoryWorkoutId] = useState<string | null>(null);
   const [checkInOpen, setCheckInOpen] = useState(false);
   const [readinessBefore, setReadinessBefore] = useState<number | null>(null);
   const [readinessAfter, setReadinessAfter] = useState<number | null>(null);
@@ -365,6 +367,7 @@ export function ActiveWorkoutPage() {
         }
       )
     );
+    setVictoryWorkoutId(log.id);
     setVictoryOpen(true);
   };
 
@@ -429,6 +432,7 @@ export function ActiveWorkoutPage() {
         onViewHistory={goHistory}
         debrief={debrief}
         fragments={entryFragments}
+        workoutId={victoryWorkoutId ?? undefined}
       />
     );
   }
@@ -752,6 +756,9 @@ export function ActiveWorkoutPage() {
         onOpenChange={setVictoryOpen}
         onViewToday={goToday}
         onViewHistory={goHistory}
+        debrief={debrief}
+        fragments={entryFragments}
+        workoutId={victoryWorkoutId ?? undefined}
       />
     </div>
   );
