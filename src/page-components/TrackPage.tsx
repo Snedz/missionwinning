@@ -32,6 +32,7 @@ import { usePremium } from '@/hooks/usePremium';
 import { MapPin, Trash2 } from 'lucide-react';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { localDateKey } from '@/lib/time/localDate';
 
 export function TrackPage() {
   const { t } = useTranslation();
@@ -62,7 +63,7 @@ export function TrackPage() {
 
   const handleLog = () => {
     if (durationMin < 1) return;
-    const today = new Date().toISOString().split('T')[0];
+    const today = localDateKey();
     logActivity({
       date: today,
       type,

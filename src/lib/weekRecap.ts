@@ -4,9 +4,10 @@
 
 import type { CompletedWorkoutLog } from '@/types';
 import { getTrainingStreak } from '@/lib/challenges';
+import { startOfLocalWeek } from '@/lib/time/localDate';
 
 export type WeekRecap = {
-  /** ISO date of week start (Monday UTC-ish local Monday). */
+  /** Local Monday as `YYYY-MM-DD` — see `time/localDate.ts`. */
   weekStart: string;
   sessions: number;
   totalVolume: number;
@@ -17,15 +18,6 @@ export type WeekRecap = {
   /** True when user has at least one session this week. */
   hasActivity: boolean;
 };
-
-function startOfLocalWeek(d = new Date()): Date {
-  const day = d.getDay(); // 0 Sun … 6 Sat
-  const mondayOffset = day === 0 ? -6 : 1 - day;
-  const start = new Date(d);
-  start.setHours(0, 0, 0, 0);
-  start.setDate(start.getDate() + mondayOffset);
-  return start;
-}
 
 export function buildWeekRecap(history: CompletedWorkoutLog[], now = new Date()): WeekRecap {
   const weekStart = startOfLocalWeek(now);

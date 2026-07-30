@@ -8,6 +8,7 @@ import { buildMuscleHeatmap } from '@/lib/historyAnalytics';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
 import type { BodyMetricEntry } from '@/lib/bodyMetrics';
 import type { MuscleGroup } from '@/lib/muscleGroups';
+import { startOfLocalWeek } from '@/lib/time/localDate';
 
 export type WeeklyDebrief = {
   weekStart: string;
@@ -34,15 +35,6 @@ export type WeeklyDebrief = {
   focusParams?: Record<string, string>;
   undertrainedGroup?: MuscleGroup;
 };
-
-function startOfLocalWeek(d = new Date()): Date {
-  const day = d.getDay();
-  const mondayOffset = day === 0 ? -6 : 1 - day;
-  const start = new Date(d);
-  start.setHours(0, 0, 0, 0);
-  start.setDate(start.getDate() + mondayOffset);
-  return start;
-}
 
 export function buildWeeklyDebrief(input: {
   history: CompletedWorkoutLog[];

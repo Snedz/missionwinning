@@ -31,6 +31,7 @@ import { SHOW_TODAY_FOUNDER_TOOLS } from '@/lib/todayFounderTools';
 import { StreakChip } from '@/components/today/StreakChip';
 import { bumpTrainingStreak } from '@/lib/streaks';
 import { toast } from '@/hooks/use-toast';
+import { localDateKey } from '@/lib/time/localDate';
 
 type MwWindow = Window & {
   triggerPwaInstall?: () => Promise<void>;
@@ -276,7 +277,7 @@ export function TodayProgressSection({
             <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
               try {
                 const u = await getUser();
-                const today = new Date().toISOString().split('T')[0];
+                const today = localDateKey();
                 if (u) await saveNutritionEntry({ date: today, name: 'Daily Pillar Win (quick log)', protein: 0, cals: 0 });
                 const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Daily Pillar Win (quick log)', date: today}, ...prev].slice(0,5));
@@ -286,7 +287,7 @@ export function TodayProgressSection({
             <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
               try {
                 const u = await getUser();
-                const today = new Date().toISOString().split('T')[0];
+                const today = localDateKey();
                 if (u) await saveNutritionEntry({ date: today, name: 'Quick Mind Win from Home', protein: 0, cals: 0 });
                 const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Quick Mind Win from Home', date: today}, ...prev].slice(0,5));
@@ -296,7 +297,7 @@ export function TodayProgressSection({
             <Button size="sm" variant="ghost" className="text-xs mt-1" onClick={async () => {
               try {
                 const u = await getUser();
-                const today = new Date().toISOString().split('T')[0];
+                const today = localDateKey();
                 if (u) await saveNutritionEntry({ date: today, name: 'Quick Move Win from Home', protein: 0, cals: 0 });
                 const current = bumpTrainingStreak();
                 setRecentPillarWins(prev => [{name: 'Quick Move Win from Home', date: today}, ...prev].slice(0,5));
@@ -307,7 +308,7 @@ export function TodayProgressSection({
               try {
                 const u = await getUser();
                 if (u) {
-                  const today = new Date().toISOString().split('T')[0];
+                  const today = localDateKey();
                   const cloud = await getUserNutritionForDate(today);
                   const wins = cloud.filter((w: CloudNutritionEntry) => /win|assessment|mobility|mind/i.test(w.name || ''));
                   setRecentPillarWins(wins.slice(0, 5));
@@ -452,7 +453,7 @@ export function TodayProgressSection({
               try {
                 const { getUser, saveNutritionEntry } = await import('@/lib/supabase');
                 const u = await getUser();
-                const today = new Date().toISOString().split('T')[0];
+                const today = localDateKey();
                 if (u) await saveNutritionEntry({ date: today, name: 'Mind Win: 5-min breath + gratitude', protein: 0, cals: 0 });
                 const cur = bumpTrainingStreak();
                 alert(`Mind Win logged! +1 streak (${cur}). Check Nutrition for the entry.`);

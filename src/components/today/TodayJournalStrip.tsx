@@ -13,6 +13,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import type { JournalEntry, JournalPillar } from '@/lib/todayTrends';
 import { cn } from '@/lib/utils';
+import { localDateKey } from '@/lib/time/localDate';
 
 const PILLAR_META: Record<
   JournalPillar,
@@ -35,7 +36,7 @@ type Props = {
 function formatWhen(at: string, locale: string): string {
   const d = new Date(at);
   if (Number.isNaN(d.getTime())) return at.split('T')[0] ?? at;
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDateKey();
   const day = at.split('T')[0];
   const time = d.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
   if (day === today) return time;

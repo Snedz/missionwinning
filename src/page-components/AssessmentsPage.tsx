@@ -19,6 +19,7 @@ import { saveNutritionEntry } from '@/lib/supabase';
 import type { WorkoutExerciseTemplate } from '@/types';
 import { readRaw, writeRaw, writeJson } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { localDateKey } from '@/lib/time/localDate';
 
 interface AssessmentResult {
   riskLevel: 'low' | 'moderate' | 'high';
@@ -120,7 +121,7 @@ export function AssessmentsPage() {
     setResult(res);
 
     // Save a note to nutrition logs as demo assessment record (or extend table later)
-    const today = new Date().toISOString().split('T')[0];
+    const today = localDateKey();
     saveNutritionEntry({ date: today, name: `Assessment: ${risk} risk`, protein: 0, cals: 0 }).catch(() => {});
 
     // Persist last result for profile / history

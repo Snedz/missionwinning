@@ -52,6 +52,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { useToast } from '@/hooks/use-toast';
 import { readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { localDateKey } from '@/lib/time/localDate';
 
 const freeRecipes = FREE_RECIPES;
 const QUICK_FOODS = DEFAULT_QUICK_FOODS;
@@ -98,7 +99,7 @@ export function NutritionPage() {
     parseNutritionLog(readRaw(STORAGE_KEYS.nutritionLog))
   );
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDateKey();
   const recentFoods = getRecentFoods(allLogs, today, 6);
   const frequentFoods = getFrequentQuickFoods(allLogs, QUICK_FOODS);
   const yesterdayMeals = getYesterdayEntries(allLogs, today);

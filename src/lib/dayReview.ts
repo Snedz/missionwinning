@@ -51,6 +51,7 @@ import { normalizeBehaviors } from '@/lib/behaviors';
 import { sessionLoad, compareToBaseline } from '@/lib/coach/load';
 import { consistencyLine, type SleepConsistency } from '@/lib/sleepConsistency';
 import { behaviorImpactLine, type BehaviorImpact } from '@/lib/journal/behaviorImpacts';
+import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 
 /** Evenings only — a "day in review" at 09:00 is reviewing nothing. */
 export const DAY_REVIEW_START_HOUR = 18;
@@ -74,29 +75,15 @@ export interface DayReview {
   option: string | null;
 }
 
-function localDate(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${m}-${day}`;
-}
-
-function todayKey(now: Date): string {
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
-  return `${now.getFullYear()}-${m}-${d}`;
-}
-
 /**
  * The fact: what today actually was. A finished session leads; otherwise the
  * behaviors the athlete logged are themselves the news, because logging is the
  * habit this feature is trying to be worth.
  */
 function factFor(input: DayReviewInput, now: Date): string | null {
-  const today = todayKey(now);
+  const today = localDateKey(now);
   const todaysSessions = input.history.filter(
-    (log) => !log.deletedAt && localDate(log.completedAt) === today
+    (log) => !log.deletedAt && localDateKeyFromIso(log.completedAt) === today
   );
 
   if (todaysSessions.length > 0) {
@@ -132,7 +119,7 @@ function factFor(input: DayReviewInput, now: Date): string | null {
 
 /** The reason: context the athlete gave us, said back to them. */
 function reasonFor(input: DayReviewInput, now: Date): string | null {
-  const today = todayKey(now);
+  const today = localDateKey(now);
   const logged = input.checkIns.find((c) => c.date === today);
   const behaviors = normalizeBehaviors(logged?.behaviors);
 
@@ -161,7 +148,7 @@ function reasonFor(input: DayReviewInput, now: Date): string | null {
  * without the app having implied anything about their health.
  */
 function optionFor(input: DayReviewInput, now: Date): string | null {
-  const today = todayKey(now);
+  const today = localDateKey(now);
   const logged = input.checkIns.find((c) => c.date === today);
   const behaviors = normalizeBehaviors(logged?.behaviors);
 

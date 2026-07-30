@@ -33,6 +33,7 @@ import {
 import { saveMacroTargets } from '@/lib/macroTargets';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { localDateKey } from '@/lib/time/localDate';
 
 type Goal = 'maintain' | 'cut' | 'bulk';
 
@@ -95,7 +96,7 @@ export function MacroCalculator() {
 
   const applyTargets = () => {
     saveMacroTargets({ cals: targetCals, protein, carbs, fat });
-    const today = new Date().toISOString().split('T')[0];
+    const today = localDateKey();
     const entry = { date: today, name: `Calc target protein ${protein}g`, protein, cals: targetCals };
     const logs = readJson<unknown[]>(STORAGE_KEYS.nutritionLog, []);
     logs.unshift(entry);

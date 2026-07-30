@@ -3,6 +3,7 @@ import { createBrowserClient } from '@supabase/ssr'
 import { getAuthRedirectUrl as buildAuthRedirectUrl } from '@/lib/authRedirect'
 import { STORAGE_KEYS } from '@/lib/storage/keys'
 import { readJson, readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage'
+import { localDateKey } from '@/lib/time/localDate';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -284,7 +285,7 @@ export async function getUserNutritionHistory(days = 7) {
     .from('nutrition_logs')
     .select('*')
     .eq('user_id', user.id)
-    .gte('date', since.toISOString().split('T')[0])
+    .gte('date', localDateKey(since))
     .order('date', { ascending: false })
   if (error) { console.error('getUserNutritionHistory error', error); return [] }
   return data || []

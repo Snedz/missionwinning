@@ -1,6 +1,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
+import { localDateKey } from '@/lib/time/localDate';
 
 export type TrendMetricId = 'volume' | 'sessions' | 'protein' | 'active';
 
@@ -34,7 +35,7 @@ export function lastDayBuckets(count: number, locale = 'en'): { key: string; lab
     d.setHours(12, 0, 0, 0);
     d.setDate(d.getDate() - i);
     days.push({
-      key: d.toISOString().split('T')[0],
+      key: localDateKey(d),
       label: d.toLocaleDateString(locale, { weekday: 'narrow' }),
     });
   }
@@ -44,7 +45,7 @@ export function lastDayBuckets(count: number, locale = 'en'): { key: string; lab
 function readNutritionByDay(): Record<string, number> {
   const byDay: Record<string, number> = {};
   const logs = readJson<{ protein?: number; date?: string }[]>(STORAGE_KEYS.nutritionLog, []);
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDateKey();
   logs.forEach((l) => {
     const d = l.date || today;
     byDay[d] = (byDay[d] || 0) + (l.protein || 0);
@@ -117,7 +118,7 @@ export function gatherJournalEntries(
     });
   }
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDateKey();
 
   const logs = readJson<
     { name?: string; protein?: number; time?: string; date?: string }[]

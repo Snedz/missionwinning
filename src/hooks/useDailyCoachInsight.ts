@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CoachInsight } from '@/lib/score';
 import type { DailyCoachContext } from '@/lib/coachDailyServer';
+import { localDateKey } from '@/lib/time/localDate';
 
 type CoachDisplay = {
   message: string;
@@ -18,7 +19,7 @@ type CoachDisplay = {
 };
 
 function cacheKey() {
-  return `mw_coach_${new Date().toISOString().split('T')[0]}`;
+  return `mw_coach_${localDateKey()}`;
 }
 
 export function useDailyCoachInsight(

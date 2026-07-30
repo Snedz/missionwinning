@@ -8,6 +8,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import { getFuelLogStreak } from '@/lib/fuelStreak';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 
 export const STREAK_KEY = STORAGE_KEYS.streak;
 
@@ -32,7 +33,7 @@ export function getTrainingStreak(workoutHistory: CompletedWorkoutLog[]): number
   if (workoutHistory.length === 0) return 0;
 
   const dates = [
-    ...new Set(workoutHistory.map((w) => new Date(w.completedAt).toISOString().split('T')[0])),
+    ...new Set(workoutHistory.map((w) => localDateKeyFromIso(w.completedAt))),
   ]
     .sort()
     .reverse();
