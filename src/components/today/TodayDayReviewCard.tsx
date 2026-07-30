@@ -18,6 +18,7 @@ import { Moon } from 'lucide-react';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { loadCheckIns, upsertTodayPartial } from '@/lib/mindCheckIns';
 import { computeSleepConsistency } from '@/lib/sleepConsistency';
+import { computeBehaviorImpacts } from '@/lib/journal/behaviorImpacts';
 import { composeDayReview, DAY_REVIEW_START_HOUR, type DayReview } from '@/lib/dayReview';
 import { track } from '@/lib/analytics';
 
@@ -41,6 +42,7 @@ export function TodayDayReviewCard() {
         history,
         checkIns,
         consistency: computeSleepConsistency(checkIns, now),
+        impacts: computeBehaviorImpacts(history, checkIns),
         now,
       })
     );

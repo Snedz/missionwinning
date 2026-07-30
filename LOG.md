@@ -6,6 +6,55 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — Correlate to the barbell (`.193`)
+
+The thesis of the whole wave, and the part no competitor can copy.
+
+Every behavior-correlation product on the market resolves to HRV, resting heart
+rate, or a proprietary recovery score. Those are proxies — no lifter's coach has
+ever asked what their HRV did. This app already logs the thing they *would* ask
+about, so [`behaviorImpacts.ts`](src/lib/journal/behaviorImpacts.ts) correlates
+behaviors to **session load**. WHOOP can tell you alcohol cost you four
+milliseconds of HRV; we can tell you your sessions ran twelve percent lighter,
+and WHOOP cannot, because they do not have your sets.
+
+**Statistical honesty, structurally rather than statistically.** WHOOP shows an
+impact at five yes and five no observations; across ten behaviors and six
+outcomes that is sixty comparisons per athlete, which is why their most repeated
+review complaint is that everything appeared to hurt. Three defences: **one
+pre-registered outcome per behavior**, declared in `behaviors.ts` before any data
+exists, so you cannot fish for the metric that moved; **ten flagged and ten
+unflagged** sessions, double their bar; and **"collecting" as a first-class
+designed state** — an athlete seven sessions in sees "7 of 10", not silence and
+not a premature claim. Most products hide that state. It is the most credible
+thing we can show.
+
+A day the athlete did not log is **excluded, never counted as a "no"**. The
+absence of an answer is not an answer, and treating it as a control arm would
+manufacture findings out of forgetfulness (`unlogged-counted-as-unflagged`).
+
+**Deliberately a separate module with a disjoint union.** Widening
+`ReadinessFactor` so caffeine could ride along would let the readiness engine
+start firing off a coffee count — the exact one-word-two-definitions failure
+`.178` was written to prevent. `impacts.ts` is untouched, and the separation is
+proven twice: a `@ts-expect-error` that behavior factors are not assignable to
+readiness factors, and a runtime assertion that `computeImpacts` returns
+byte-identical output with and without behavior data present.
+
+**`next-day-lag-pairs-same-day` survived its first run.** The alcohol fixture had
+check-ins on every day, so same-day pairing found matches too and the assertion
+could not tell the two apart. Rebuilt decisively — check-ins only on even days,
+sessions only on odd — so same-day pairing finds nothing at all and any result
+can only have come from the lag. Third time this wave a mutant found a hole in a
+test rather than the code.
+
+Also killed: `impact-under-threshold-speaks`, `n-missing-from-line`,
+`noise-as-insight`, `causal-language`, `tombstones-count`,
+`collecting-state-hidden`. Surfaces as a Behaviors row on the weekly recap, and
+an established finding can become the Day in Review's reason — collecting states
+deliberately cannot, because the digest reports findings, not progress bars.
+Tests 891→906. Next: `.194` evening push.
+
 ## 2026-07-30 — A digest that cannot lie (`.192`)
 
 The evening **Day in Review** — the direct answer to the founder's screenshot,
