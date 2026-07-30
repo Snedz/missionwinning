@@ -2,9 +2,59 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.198`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
+**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
 
 ---
+
+## 2026-07-30 — State the repo can be trusted about (`.203`)
+
+Documentation as an executable contract. Every finding here is the wave's defect
+class one more time: *a thing exists, and nothing asserts anyone can act on it.*
+
+**Four migrations were on disk and in no founder checklist.** The audit found two;
+[`migrationLedger.test.ts`](src/lib/migrationLedger.test.ts) found two more on its
+first run. `20260731_llm_usage.sql` (the `.188` spend ledger) had one parenthetical
+in `ENV.md`; `20260801_day_review_push.sql` (`.194`/`.196`) had **nothing**;
+`20260719_wearable_connections.sql` and `20260720_perf_indexes.sql` had nothing
+either. All four gate merged, shipping features. A migration nobody wrote down is
+a migration nobody applies — and this is a repo where **9 of 28 are already
+recorded as pending**.
+
+The guard asserts three things: every file on disk appears in the runbook, the
+runbook names nothing that no longer exists, and **every entry says what breaks
+without it**. That last one caught three older entries — `push_subscriptions`,
+`referrals`, `beta_invites` — that named their contents but not their
+consequence. `ls` gives you a filename; the runbook's whole value is the
+sentence saying what stays broken until you run it.
+
+**`CONTEXT.md` had 79 bullets and 103KB in a block whose own header calls it
+"One screen of truth for any AI tool or human joining cold."** It is the first
+thing `CLAUDE.md` tells an agent to read, so every cold boot paid 103KB of
+mostly-superseded context before touching code. Same `+1`-per-feature pattern
+`.197` fixed on the Today screen, and no PR is ever the one that made it long —
+**I added seven of those bullets in a single day.** `.123`–`.189` rotated to
+[docs/archive/CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md);
+79 → 21 bullets, 103KB → 33KB. Nothing deleted, everything archived, and the full
+record was always LOG.md. Budget of 25 stated in the block itself and enforced by
+[`contextBudget.test.ts`](src/lib/contextBudget.test.ts) — a cap nobody can see
+is a cap nobody keeps.
+
+**Two more `.184`-class findings closed.** `ProfileOwnerTools` read
+`mw_contributors`, which **nothing writes** — so "Members: 12,400" and the
+revenue derived from it were constants dressed as stored data, on a card whose
+title said "(Demo)" while its figures did not. Founder-gated, so the blast radius
+is one person: the one making decisions from it. Now named illustrative, the fake
+read is gone, and the key is deleted (no reader, no writer, nothing left).
+
+`restorePremiumCourseProgressForUser` had **zero callers** while
+`markPremiumSectionComplete` wrote its mirror on every completion — written
+forever, read never. Wired into sign-in, where the parallel fuel mirror is
+already read from. The learn path was the one left half-connected.
+
+Killed: `migration-not-in-the-ledger`, `ledger-entry-with-no-reason`,
+`context-now-unbounded`.
+
+Tests 1016→1022. **This closes the `.199`–`.203` plan.**
 
 ## 2026-07-30 — Measured, and it can only shrink (`.202`)
 
@@ -182,94 +232,3 @@ Killed on first run: `a11y-dropped-from-gate`, `visual-passes-with-no-baseline`,
 `not-run-table-without-a-reason`, `script-not-run-anywhere`.
 
 Tests 999→1003. Gate 3.7→5.7 min.
-
-## 2026-07-30 — One week, one answer (`.199`)
-
-Two live bugs. Not hygiene — wrong numbers on screen, and a coach feature that
-could never fire.
-
-### The week started on different days depending on which file you asked
-
-Monday-offset arithmetic was re-derived **eight times across seven files**, and
-**four of those derivations were wrong**, each in a different band of the world:
-
-- `activityLog`, `challenges` and `pillarScoreInputs` called `toISOString()` on a
-  local date. `toISOString()` is UTC by definition, so east of UTC the answer was
-  the previous day for most of the evening. Reproduced under `TZ=Asia/Tokyo`:
-  the week began **Sunday 07-26** when the correct Monday was **07-27**.
-- `coach/splitPlanner` anchored to local noon first — which reads as a fix, and
-  covers every offset strictly inside ±12. Not UTC+13 or UTC+14. Reproduced
-  under `TZ=Pacific/Kiritimati`: same off-by-one-week, at every hour of the day.
-- `historyAnalytics` held **two more** the audit had not found, and they bucket
-  and label the weekly volume chart. Both noon-anchored, both UTC-derived.
-
-So `getWeeklyStats()`, the weekly challenge state, the pillar-win counter and the
-volume chart disagreed with the coach plan and the week recap about which week it
-was. Timezone- **and** time-of-day-dependent, which is exactly why a suite that
-runs near UTC midday never saw it.
-
-Pulling that thread found the same mistake in its smaller form: `const today =
-new Date().toISOString().split('T')[0]` — a **UTC** date written into records
-keyed by **local** dates. **36 call sites across 24 files**, including the
-training streak (`streaks.ts`), pillar wins, macro targets, assessments, GPS
-activities and the daily coach-insight cache key. A Tokyo athlete training at
-08:00 local was writing yesterday's date.
-
-New [`src/lib/time/localDate.ts`](src/lib/time/localDate.ts) is the one
-implementation: `localDateKey`, `localDateKeyFromIso`, `startOfLocalWeek`,
-`localWeekKey`. **The rule is that a calendar date is a local fact and
-`toISOString()` is an instant in UTC** — the two coincide only for a narrow band
-of longitudes, which is not a property to build on. Five duplicate local-date
-formatters collapsed into it as well.
-
-**A comment I wrote and could not defend.** The first draft justified the
-`setHours`/`setDate` ordering as a DST guard. A mutant that swapped the order
-survived, so I swept 2026 across nine DST-heavy zones (Santiago, Beirut, Havana,
-Lord Howe, Chatham …) at six hours a day: **zero** dates where the two orders
-disagree. The claim was false. It is deleted rather than tested — a comment
-asserting a mechanism nobody verified is the `.195` header-menu defect in prose,
-and I had just written a whole PR about that.
-
-### The coach branch that could never run
-
-`savePreferredDays` (`coach/schedulePrefs.ts`) had **zero callers**. It was the
-only writer of `mw_preferred_days`, so `loadPreferredDays()` always returned
-`[]`, so `mapToCalendar`'s `preferredDays.length >= count` was never true and the
-even-spread fallback always ran. Its sibling `saveDaysPerWeek` *is* wired, which
-is why the pair read as finished. `.176`/`.196` a third time.
-
-Sharpest detail: `splitPlanner.test.ts` **already had** a test called *"honors
-preferredDays"* — and it passes them in directly. It proved the branch worked
-while nothing on earth could reach it. That is the `.195` shape stated as
-precisely as it gets.
-
-Fixed by wiring the control it never had, into the existing training-profile card
-next to days-per-week. The stored numbers are **offsets from Monday**, not
-`getDay()` values — same space as `defaultPreferredOffsets`, and getting it wrong
-would shift a whole plan by a day with no error, so the module says so.
-
-### Guards
-
-`reachability.test.ts` gains: start-of-local-week and local-date-formatting as
-`SINGLE_DEFINITION` concepts, `schedulePrefs` in `WAVE_MODULES`, and a standalone
-rule that **no calendar date is derived from `toISOString()`** anywhere in
-product source. `time/localDate.test.ts` runs every hour of a week through nine
-zones from UTC+14 to UTC−11, including a non-integer offset (Chatham, +12:45),
-and asserts they all name the same Monday.
-
-### Falsification
-
-Killed: `week-start-utc-date`, `noon-anchor-instead`, `sunday-off-by-one`,
-`seventh-week-definition`, `utc-date-returns`, `preferred-days-never-written`,
-and `feel-written-nowhere` re-run as a regression check.
-
-**Two survived first run.** `setdate-before-sethours` survived because the hazard
-it modelled does not exist — that is the false comment above, and the response
-was to delete the claim, not to invent a test for it. `preferred-days-never-written`
-survived because deleting the call left the *import* behind, and `mentions()`
-counted it: **the identical importing-is-not-using hole `.198` hit with
-`dynamic(() => import('…/TodayDayReviewCard'))`.** Third appearance of that hole
-in two PRs. Fixed once, in the helper — `mentions()` now strips import statements
-before counting — rather than a third time at a call site.
-
-Tests 988→999. LOG rotated (`.196`).

@@ -64,15 +64,19 @@
    4. `20260704_coach_plan.sql`  
    5. `20260705_leads_api_only.sql`  
    6. `20260716_crypto_payment_intents.sql` + `20260716_leads_growth_welcome_email.sql`  
-   7. **`20260719_push_subscriptions.sql`** — web push (Wave 7)  
-   8. **`20260720_referrals.sql`** — referral codes + `mw_week4_retention()` RPC (Wave 8)  
-   9. **`20260721_beta_invites.sql`** — beta invites + `checkout_recovery` (Wave 10)  
+   7. **`20260719_push_subscriptions.sql`** — web push (Wave 7). **Creates the table all three push features write to**; without it every subscribe call fails and the comeback nudge, wind-down and day-review pushes are all inert.  
+   7b. `20260719_wearable_connections.sql` — OAuth connections + normalized samples. **The `wearables` surface is parked by default, so this is only required if `NEXT_PUBLIC_SURFACES` turns it on**; recorded here so turning that surface on is not a silent 500. ([WEARABLES.md](WEARABLES.md))  
+   7c. `20260720_perf_indexes.sql` — composite indexes for workout history, the week-4 retention RPC and leaderboard board sorts. Nothing breaks without it; **queries degrade as history grows**, which is the failure mode you notice last and at the worst time.  
+   8. **`20260720_referrals.sql`** — referral codes + `mw_week4_retention()` RPC (Wave 8). **The week-4 retention number is the boss metric and cannot be computed at all without this RPC**, so the Horizon 2 gate has nothing to read.  
+   9. **`20260721_beta_invites.sql`** — beta invites + `checkout_recovery` (Wave 10). **Without it the invite sender has nowhere to record who was invited**, so the beta panel cannot show progress toward the ten-tester gate.  
    10. **`20260721_workout_sync_v2.sql`** — `client_id`/`revision`/**tombstones** (`deleted_at`)  
    11. **`20260721_routines_sync.sql`** · **`20260721_custom_exercises_prefs_sync.sql`** — Android sync  
    12. **`20260721_android_telemetry.sql`** — weekly Android heartbeat  
    13. **`20260728_anonymous_push.sql`** — nullable `user_id` + `device_id`; **without it the anonymous return loop is inert** ([RETURN_LOOP_PLAN.md](RETURN_LOOP_PLAN.md))  
    14. **`20260728_week4_exclude_tombstones.sql`** — **the boss metric counts deleted workouts until this is applied.** Then prove it: `psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/checks/week4_retention_proof.sql`  
-   15. **`20260730_wind_down_nudge.sql`** — `last_session_high` + `last_wind_down_at` on `push_subscriptions`; **the evening wind-down push (`.176`) is inert without it.** Apply after #13 — it extends the table #13 creates.  
+   15. **`20260730_wind_down_nudge.sql`** — `last_session_high` + `last_wind_down_at` on `push_subscriptions`; **the evening wind-down push (`.176`) is inert without it.** Apply after #13 — it extends the table #13 creates.
+   16. **`20260731_llm_usage.sql`** — the `llm_usage` ledger; **per-user LLM spend metering (`.188`) records nothing without it**, so the quota gates cannot bind and the cost ceiling is unenforced.
+   17. **`20260801_day_review_push.sql`** — `day_review_hour` + `last_day_review_at` on `push_subscriptions`; **the evening day-review push (`.194`/`.196`) is inert without it.** Apply after #13, and after #15 for ordering clarity — all three extend the same table.  
 4. Redeploy, then verify on the Profile page in-app: build label matches the latest commit (`src/lib/buildInfo.ts`).
 5. **Smoke after env** (from a machine with secrets):
    ```bash
@@ -86,7 +90,7 @@
 
 - [x] Env vars set (incl. service role, DEMO_PREMIUM=false, Resend, Stripe webhook secret, Payment Links)
 - [x] All migrations run through **20260720_referrals** (push + week-4 RPC)
-- [ ] **Migrations 10–15 above are NOT applied.** The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric; the four `20260721_*` gate Android sync; `20260730_wind_down_nudge` gates the `.176` evening push. None of the first five appeared in any founder checklist until `.170`; #15 was in none until `.179`. A CI path exists once the `SUPABASE_DB_URL` repo secret is set — `apply-migration.yml` (fixed in #129 to say why it fails instead of a DNS error).
+- [ ] **Migrations 10–17 above are NOT applied.** The two `20260728_*` gate the anonymous return loop and the correctness of the boss metric; the four `20260721_*` gate Android sync; `20260730_wind_down_nudge` gates the `.176` evening push; `20260731_llm_usage` gates LLM spend metering; `20260801_day_review_push` gates the `.194` day-review push. **#16 and #17 appeared in no checklist at all until `.203` — they were on disk and recorded nowhere**, which is the failure `migrationLedger.test.ts` now makes impossible. None of the first five appeared in any founder checklist until `.170`; #15 was in none until `.179`. A CI path exists once the `SUPABASE_DB_URL` repo secret is set — `apply-migration.yml` (fixed in #129 to say why it fails instead of a DNS error).
 - [x] Deployed URL loads and shows the new private teaser page
 - [x] Digest dry-run + live send OK (`sent:true` with Resend)
 
