@@ -41,6 +41,7 @@ import { computeReentry, type Reentry } from "@/lib/reentry";
 import { TodayReentryCard } from "@/components/today/TodayReentryCard";
 import { dayReviewMayMount } from "@/lib/today/dayReviewMount";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
+import { localDateKey } from '@/lib/time/localDate';
 
 const BetaWelcomeBanner = dynamic(
   () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
@@ -238,7 +239,7 @@ export function HomeTodayDashboard() {
       if (u) {
         await loadFromCloud();
         try {
-          const today = new Date().toISOString().split('T')[0];
+          const today = localDateKey();
           const cloudWins = await getUserNutritionForDate(today);
           const wins = cloudWins.filter((w: CloudNutritionEntry) =>
             /win|assessment|mobility|mind|track|learn|move/i.test(w.name || '')

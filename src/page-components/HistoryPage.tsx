@@ -66,6 +66,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TodaySection } from '@/components/journey/TodaySection';
 import { Input } from '@/components/ui/input';
+import { localDateKey } from '@/lib/time/localDate';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
@@ -149,7 +150,7 @@ export function HistoryPage() {
         await loadFromCloud();
         setCloudSynced(true);
         try {
-          const today = new Date().toISOString().split('T')[0];
+          const today = localDateKey();
           const cloud = await getUserNutritionForDate(today);
           const wins = cloud.filter((c: CloudNutritionEntry) =>
             /win|assessment|mobility|mind|track|learn|move/i.test(c.name || '')

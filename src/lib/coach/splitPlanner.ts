@@ -1,6 +1,7 @@
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import type { SplitDay } from '@/lib/coach/types';
+import { localWeekKey } from '@/lib/time/localDate';
 
 const ALL_GROUPS: MuscleGroup[] = [...MAJOR_GROUPS];
 
@@ -188,13 +189,16 @@ export function sessionNameFromKey(nameKey: string, focusGroups: MuscleGroup[]):
   return labels[nameKey] ?? `${focusGroups[0] ?? 'Training'} Session`;
 }
 
+/**
+ * Local Monday key.
+ *
+ * This anchored to local noon before calling `toISOString()`, which reads as a
+ * fix and covers every offset strictly inside ±12 — but not UTC+13 or UTC+14.
+ * Verified under `TZ=Pacific/Kiritimati`: it returned the previous Monday at
+ * every hour of the day.
+ */
 export function currentWeekStart(): string {
-  const d = new Date();
-  d.setHours(12, 0, 0, 0);
-  const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  return d.toISOString().split('T')[0];
+  return localWeekKey();
 }
 
 export function todayDayOffset(weekStart: string, todayIso?: string): number {

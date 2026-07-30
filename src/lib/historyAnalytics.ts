@@ -9,6 +9,7 @@ import {
   type ReadinessStatusKey,
 } from '@/lib/muscleGroups';
 import type { CompletedWorkoutLog } from '@/types';
+import { localDateKey, localWeekKey, startOfLocalWeek } from '@/lib/time/localDate';
 
 export interface WeeklyVolumePoint {
   weekStart: string;
@@ -28,28 +29,21 @@ export interface MuscleHeatCell {
   statusKey: ReadinessStatusKey;
 }
 
-/** Monday-based week start (YYYY-MM-DD). */
+/** Monday-based week start (local YYYY-MM-DD) — buckets the volume timeline. */
 export function weekStartKey(iso: string): string {
   const d = new Date(iso);
-  d.setHours(12, 0, 0, 0);
-  const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  return d.toISOString().split('T')[0];
+  return Number.isNaN(d.getTime()) ? '' : localWeekKey(d);
 }
 
 function recentWeekStarts(count: number, locale = 'en'): { key: string; label: string }[] {
   const weeks: { key: string; label: string }[] = [];
-  const now = new Date();
-  now.setHours(12, 0, 0, 0);
-  const day = now.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  now.setDate(now.getDate() + diff);
+  // Must bucket identically to `weekStartKey` or bars land in the wrong column.
+  const now = startOfLocalWeek();
 
   for (let i = count - 1; i >= 0; i--) {
     const d = new Date(now);
     d.setDate(d.getDate() - i * 7);
-    const key = d.toISOString().split('T')[0];
+    const key = localDateKey(d);
     weeks.push({
       key,
       label: d.toLocaleDateString(locale, { month: 'short', day: 'numeric' }),

@@ -51,8 +51,24 @@ function stripComments(src: string): string {
   return src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
 }
 
+/**
+ * Import statements, removed.
+ *
+ * Importing a symbol is not using it, and this suite has now been fooled by
+ * that three separate times: `.198`'s shell guard counted a component name
+ * inside `dynamic(() => import('…'))`, and `.199`'s orphan rule counted
+ * `savePreferredDays` in the very import line of the file that had stopped
+ * calling it. Both mutants walked straight through. Stripping imports before
+ * counting is the fix in one place instead of three.
+ */
+function stripImports(src: string): string {
+  return src.replace(/^import\s[\s\S]*?;$/gm, '');
+}
+
+/** Real references — not comments, not imports. */
 function mentions(src: string, name: string): number {
-  return (stripComments(src).match(new RegExp(`\\b${name}\\b`, 'g')) ?? []).length;
+  const code = stripImports(stripComments(src));
+  return (code.match(new RegExp(`\\b${name}\\b`, 'g')) ?? []).length;
 }
 
 /* ------------------------------------------------------------------ *
@@ -72,6 +88,12 @@ const WAVE_MODULES = [
   'src/lib/journal/behaviorImpacts.ts',
   'src/lib/journal/composeEntry.ts',
   'src/lib/today/dayReviewMount.ts',
+  // `.199` — `savePreferredDays` lived here with zero callers, so
+  // `loadPreferredDays()` always returned `[]` and `mapToCalendar`'s
+  // athlete's-chosen-days branch was permanently dead. `splitPlanner.test.ts`
+  // passes `preferredDays` in directly, so it proved the branch worked while
+  // nothing on earth could reach it — the `.195` shape exactly.
+  'src/lib/coach/schedulePrefs.ts',
 ];
 
 /**
@@ -260,7 +282,44 @@ const SINGLE_DEFINITION: { concept: string; pattern: RegExp; home: string; use: 
     home: 'src/lib/behaviors.ts',
     use: 'behaviorById',
   },
+  {
+    // `.199` — this one had SIX definitions and four of them were wrong, each in
+    // a different band of the world. Three called `toISOString()` on a local
+    // date; the fourth anchored to noon first, which covers |offset| < 12 and
+    // fails at UTC+13/+14.
+    concept: 'start of the local week',
+    pattern: /day\s*===\s*0\s*\?\s*-6\s*:\s*1\s*-\s*day/,
+    home: 'src/lib/time/localDate.ts',
+    use: 'startOfLocalWeek / localWeekKey',
+  },
+  {
+    // Five copies, differing only in whether they guarded NaN.
+    concept: 'local YYYY-MM-DD formatting',
+    pattern: /getMonth\(\)\s*\+\s*1\)\.padStart/,
+    home: 'src/lib/time/localDate.ts',
+    use: 'localDateKey / localDateKeyFromIso',
+  },
 ];
+
+/**
+ * A calendar date is a local fact; `toISOString()` is an instant in UTC. Mixing
+ * them is what produced the `.199` bug, and the mistake is invisible in review
+ * because the code reads as if it were formatting a date.
+ */
+test('no calendar date is derived from toISOString()', () => {
+  const offenders: string[] = [];
+  for (const file of PRODUCT_SOURCE) {
+    const src = stripComments(read(file));
+    if (/toISOString\(\)\s*\.\s*split\(\s*'T'\s*\)\s*\[\s*0\s*\]/.test(src)) {
+      offenders.push(file);
+    }
+  }
+  assert.deepEqual(
+    offenders,
+    [],
+    `these build a calendar date out of a UTC instant — use localDateKey():\n  ${offenders.join('\n  ')}`
+  );
+});
 
 test('one concept has one definition', () => {
   for (const { concept, pattern, home, use } of SINGLE_DEFINITION) {

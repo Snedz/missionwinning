@@ -1,13 +1,14 @@
 /** Consecutive-day fuel logging streak. */
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { localDateKey } from '@/lib/time/localDate';
 
 export function getFuelLogStreak(): number {
   return parseInt(readRaw(STORAGE_KEYS.fuelStreak) || '0', 10) || 0;
 }
 
 export function bumpFuelLogStreak(): number {
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDateKey();
   const last = readRaw(STORAGE_KEYS.fuelLastLogDate);
   let count = getFuelLogStreak();
 
@@ -15,7 +16,7 @@ export function bumpFuelLogStreak(): number {
 
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = yesterday.toISOString().split('T')[0];
+  const yesterdayStr = localDateKey(yesterday);
 
   if (last === yesterdayStr) count += 1;
   else count = 1;

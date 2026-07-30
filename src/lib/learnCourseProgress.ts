@@ -1,6 +1,7 @@
 import { getUser } from '@/lib/supabase';
 import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
+import { localDateKey } from '@/lib/time/localDate';
 
 const STORAGE_KEY = STORAGE_KEYS.premiumCourseProgress;
 
@@ -38,7 +39,7 @@ async function syncPremiumCourseProgressToCloud(sectionIds: string[]): Promise<v
   try {
     const u = await getUser();
     if (!u) return;
-    const today = new Date().toISOString().split('T')[0];
+    const today = localDateKey();
     writeJson(syncKey(u.id), { sectionIds, updatedAt: today });
   } catch {
     // offline-first — local progress is source of truth

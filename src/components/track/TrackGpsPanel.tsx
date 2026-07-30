@@ -22,6 +22,7 @@ import {
 } from '@/lib/trackGps';
 import { TrackGpsLockedPreview } from '@/components/track/TrackGpsLockedPreview';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { localDateKey } from '@/lib/time/localDate';
 
 const TrackPaceChart = dynamic(
   () => import('@/components/track/TrackPaceChart').then((m) => m.TrackPaceChart),
@@ -84,7 +85,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
     const durationMin = Math.max(1, Math.round((end - start) / 60_000));
     const distanceKm = totalTrackDistanceKm(points);
     const avgPace = paceMinPerKm(distanceKm, durationMin);
-    const today = new Date().toISOString().split('T')[0];
+    const today = localDateKey();
     logActivity({
       date: today,
       type: gpsType,

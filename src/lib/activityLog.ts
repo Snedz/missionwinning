@@ -1,5 +1,6 @@
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
+import { localWeekKey } from '@/lib/time/localDate';
 
 export type ActivityType = 'walk' | 'run' | 'bike' | 'hike' | 'swim' | 'other';
 
@@ -34,12 +35,10 @@ export function logActivity(entry: Omit<ActivityEntry, 'id' | 'createdAt'>): Act
 
 export function getActivitiesForWeek(): ActivityEntry[] {
   const all = loadAll();
-  const weekStart = new Date();
-  const day = weekStart.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  weekStart.setDate(weekStart.getDate() + diff);
-  weekStart.setHours(0, 0, 0, 0);
-  const startStr = weekStart.toISOString().split('T')[0];
+  // `entry.date` is a local YYYY-MM-DD, so the boundary must be one too. This
+  // used `toISOString()`, which is UTC — east of UTC it returned the previous
+  // Sunday all evening and pulled a day from the prior week into "this week".
+  const startStr = localWeekKey();
   return all.filter((a) => a.date >= startStr);
 }
 

@@ -4,6 +4,7 @@ import { getActivitiesForWeek } from '@/lib/activityLog';
 import { hasFuelPlanThisWeek, todayFuelSynergyBump } from '@/lib/fuelCoach/synergy';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
+import { localWeekKey } from '@/lib/time/localDate';
 
 export interface WeeklyPillarStats {
   moveFlows: number;
@@ -17,12 +18,9 @@ export interface WeeklyPillarStats {
   fuelCoachCarbBump: number;
 }
 
+/** Local Monday key. Named `Iso` historically; it is a calendar date, not an instant. */
 function weekStartIso(): string {
-  const date = new Date();
-  const day = date.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  date.setDate(date.getDate() + diff);
-  return date.toISOString().split('T')[0];
+  return localWeekKey();
 }
 
 function countPillarWinsThisWeek(pillar: PillarType): number {

@@ -30,6 +30,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { sessionLoad } from '@/lib/coach/load';
 import type { MindCheckIn, ReadinessFactor } from '@/lib/mindCheckIns';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 
 export const MIN_PAIRED_OBSERVATIONS = 8;
 export const MIN_GROUP_SESSIONS = 3;
@@ -65,15 +66,6 @@ const FACTOR_RULES: FactorRule[] = [
   },
 ];
 
-/** Local calendar date of an ISO timestamp — check-in dates are written local. */
-function localDate(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${m}-${day}`;
-}
-
 function mean(xs: number[]): number {
   return xs.reduce((a, b) => a + b, 0) / xs.length;
 }
@@ -93,7 +85,7 @@ export function computeImpacts(
   const pairs: { checkIn: MindCheckIn; load: number }[] = [];
   for (const log of history) {
     if (log.deletedAt) continue;
-    const checkIn = checkInByDate.get(localDate(log.completedAt));
+    const checkIn = checkInByDate.get(localDateKeyFromIso(log.completedAt));
     if (!checkIn) continue;
     const load = sessionLoad(log).load;
     if (load > 0) pairs.push({ checkIn, load });

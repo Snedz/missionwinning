@@ -9,6 +9,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
 import { toast } from '@/hooks/use-toast';
+import { localDateKey } from '@/lib/time/localDate';
 
 type LastAssessment = {
   risk: string;
@@ -82,7 +83,7 @@ export function ProfileAssessmentCard() {
                 variant="ghost"
                 onClick={async () => {
                   const u = await getUser();
-                  const today = new Date().toISOString().split('T')[0];
+                  const today = localDateKey();
                   if (u)
                     await (
                       await import('@/lib/supabase')

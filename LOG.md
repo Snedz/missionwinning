@@ -6,6 +6,97 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — One week, one answer (`.199`)
+
+Two live bugs. Not hygiene — wrong numbers on screen, and a coach feature that
+could never fire.
+
+### The week started on different days depending on which file you asked
+
+Monday-offset arithmetic was re-derived **eight times across seven files**, and
+**four of those derivations were wrong**, each in a different band of the world:
+
+- `activityLog`, `challenges` and `pillarScoreInputs` called `toISOString()` on a
+  local date. `toISOString()` is UTC by definition, so east of UTC the answer was
+  the previous day for most of the evening. Reproduced under `TZ=Asia/Tokyo`:
+  the week began **Sunday 07-26** when the correct Monday was **07-27**.
+- `coach/splitPlanner` anchored to local noon first — which reads as a fix, and
+  covers every offset strictly inside ±12. Not UTC+13 or UTC+14. Reproduced
+  under `TZ=Pacific/Kiritimati`: same off-by-one-week, at every hour of the day.
+- `historyAnalytics` held **two more** the audit had not found, and they bucket
+  and label the weekly volume chart. Both noon-anchored, both UTC-derived.
+
+So `getWeeklyStats()`, the weekly challenge state, the pillar-win counter and the
+volume chart disagreed with the coach plan and the week recap about which week it
+was. Timezone- **and** time-of-day-dependent, which is exactly why a suite that
+runs near UTC midday never saw it.
+
+Pulling that thread found the same mistake in its smaller form: `const today =
+new Date().toISOString().split('T')[0]` — a **UTC** date written into records
+keyed by **local** dates. **36 call sites across 24 files**, including the
+training streak (`streaks.ts`), pillar wins, macro targets, assessments, GPS
+activities and the daily coach-insight cache key. A Tokyo athlete training at
+08:00 local was writing yesterday's date.
+
+New [`src/lib/time/localDate.ts`](src/lib/time/localDate.ts) is the one
+implementation: `localDateKey`, `localDateKeyFromIso`, `startOfLocalWeek`,
+`localWeekKey`. **The rule is that a calendar date is a local fact and
+`toISOString()` is an instant in UTC** — the two coincide only for a narrow band
+of longitudes, which is not a property to build on. Five duplicate local-date
+formatters collapsed into it as well.
+
+**A comment I wrote and could not defend.** The first draft justified the
+`setHours`/`setDate` ordering as a DST guard. A mutant that swapped the order
+survived, so I swept 2026 across nine DST-heavy zones (Santiago, Beirut, Havana,
+Lord Howe, Chatham …) at six hours a day: **zero** dates where the two orders
+disagree. The claim was false. It is deleted rather than tested — a comment
+asserting a mechanism nobody verified is the `.195` header-menu defect in prose,
+and I had just written a whole PR about that.
+
+### The coach branch that could never run
+
+`savePreferredDays` (`coach/schedulePrefs.ts`) had **zero callers**. It was the
+only writer of `mw_preferred_days`, so `loadPreferredDays()` always returned
+`[]`, so `mapToCalendar`'s `preferredDays.length >= count` was never true and the
+even-spread fallback always ran. Its sibling `saveDaysPerWeek` *is* wired, which
+is why the pair read as finished. `.176`/`.196` a third time.
+
+Sharpest detail: `splitPlanner.test.ts` **already had** a test called *"honors
+preferredDays"* — and it passes them in directly. It proved the branch worked
+while nothing on earth could reach it. That is the `.195` shape stated as
+precisely as it gets.
+
+Fixed by wiring the control it never had, into the existing training-profile card
+next to days-per-week. The stored numbers are **offsets from Monday**, not
+`getDay()` values — same space as `defaultPreferredOffsets`, and getting it wrong
+would shift a whole plan by a day with no error, so the module says so.
+
+### Guards
+
+`reachability.test.ts` gains: start-of-local-week and local-date-formatting as
+`SINGLE_DEFINITION` concepts, `schedulePrefs` in `WAVE_MODULES`, and a standalone
+rule that **no calendar date is derived from `toISOString()`** anywhere in
+product source. `time/localDate.test.ts` runs every hour of a week through nine
+zones from UTC+14 to UTC−11, including a non-integer offset (Chatham, +12:45),
+and asserts they all name the same Monday.
+
+### Falsification
+
+Killed: `week-start-utc-date`, `noon-anchor-instead`, `sunday-off-by-one`,
+`seventh-week-definition`, `utc-date-returns`, `preferred-days-never-written`,
+and `feel-written-nowhere` re-run as a regression check.
+
+**Two survived first run.** `setdate-before-sethours` survived because the hazard
+it modelled does not exist — that is the false comment above, and the response
+was to delete the claim, not to invent a test for it. `preferred-days-never-written`
+survived because deleting the call left the *import* behind, and `mentions()`
+counted it: **the identical importing-is-not-using hole `.198` hit with
+`dynamic(() => import('…/TodayDayReviewCard'))`.** Third appearance of that hole
+in two PRs. Fixed once, in the helper — `mentions()` now strips import statements
+before counting — rather than a third time at a call site.
+
+Tests 988→999. LOG rotated (`.196`).
+
 ## 2026-07-30 — The rule the test was not measuring (`.198`)
 
 The fix is two words. The deliverable is what had to happen before those two

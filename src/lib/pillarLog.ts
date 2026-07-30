@@ -5,6 +5,7 @@
 
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
+import { localDateKey } from '@/lib/time/localDate';
 
 export type PillarType = 'move' | 'mind' | 'track' | 'learn';
 
@@ -65,7 +66,7 @@ export async function logPillarWin(
     const { getUser, saveNutritionEntry } = await import('@/lib/supabase');
     const u = await getUser();
     if (u) {
-      const today = new Date().toISOString().split('T')[0];
+      const today = localDateKey();
       await saveNutritionEntry({
         date: today,
         name: pillarWinEntryName(pillar, title),

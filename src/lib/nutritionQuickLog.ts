@@ -1,3 +1,5 @@
+import { localDateKey } from '@/lib/time/localDate';
+
 export type NutritionLogRow = {
   name: string;
   protein: number;
@@ -85,7 +87,7 @@ export function getYesterdayEntries(logs: NutritionLogRow[], todayIso: string): 
   const today = new Date(`${todayIso}T12:00:00`);
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
-  const yKey = yesterday.toISOString().split('T')[0];
+  const yKey = localDateKey(yesterday);
   return logs.filter((l) => l.date === yKey);
 }
 
@@ -101,7 +103,7 @@ export function getRecentFoods(
   const today = new Date(`${todayIso}T12:00:00`);
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
-  const yKey = yesterday.toISOString().split('T')[0];
+  const yKey = localDateKey(yesterday);
   const window = logs.filter((l) => l.date === todayIso || l.date === yKey);
   // Reverse chronological: later entries in array ≈ more recent when appended
   const seen = new Set<string>();
@@ -155,7 +157,7 @@ export function summarizeNutritionDays(
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(base);
     d.setDate(d.getDate() - i);
-    const key = d.toISOString().split('T')[0];
+    const key = localDateKey(d);
     const rows = logs.filter((l) => l.date === key);
     out.push({
       date: key,

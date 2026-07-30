@@ -4,6 +4,7 @@ import { loadGuidebookProgress } from '@/lib/guidebookProgress';
 import { STREAK_KEY, getTrainingStreak } from '@/lib/streaks';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, readRaw, writeJson, writeRaw } from '@/lib/storage/safeStorage';
+import { localDateKey, localDateKeyFromIso, localWeekKey } from '@/lib/time/localDate';
 
 export { STREAK_KEY, getTrainingStreak };
 
@@ -95,12 +96,9 @@ interface ChallengeState {
   weekVolume: number;
 }
 
+/** Local Monday key — see `time/localDate.ts` for why this is not `toISOString()`. */
 function getWeekStart(d = new Date()): string {
-  const date = new Date(d);
-  const day = date.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  date.setDate(date.getDate() + diff);
-  return date.toISOString().split('T')[0];
+  return localWeekKey(d);
 }
 
 function loadState(): ChallengeState {
@@ -120,7 +118,7 @@ function saveState(state: ChallengeState) {
 export function recordWorkoutCompleted(log: CompletedWorkoutLog) {
   if (typeof window === 'undefined') return;
 
-  const today = new Date(log.completedAt).toISOString().split('T')[0];
+  const today = localDateKeyFromIso(log.completedAt);
   const lastDate = readRaw(LAST_WORKOUT_KEY);
   let streak = parseInt(readRaw(STREAK_KEY) || '0', 10);
 
@@ -149,7 +147,7 @@ export function recordWorkoutCompleted(log: CompletedWorkoutLog) {
 export function syncProteinChallengeFromNutrition() {
   const logged = readJson<{ protein?: number; date?: string }[]>(STORAGE_KEYS.nutritionLog, []);
   if (!Array.isArray(logged)) return;
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDateKey();
   const byDate: Record<string, number> = {};
   logged.forEach((entry) => {
     const d = entry.date || today;

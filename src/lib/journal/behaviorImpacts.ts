@@ -39,6 +39,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
 import { behaviorById, normalizeBehaviors, type BehaviorId } from '@/lib/behaviors';
 import { sessionLoad } from '@/lib/coach/load';
+import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 
 /** Structurally disjoint from `ReadinessFactor` — see the module header. */
 export type BehaviorFactor = BehaviorId;
@@ -94,23 +95,13 @@ const RULES: BehaviorRule[] = [
   { factor: 'lateMeal', condition: 'late-meal nights', value: (b) => b.lateMeal },
 ];
 
-function localDate(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${m}-${day}`;
-}
-
 /** The day whose check-in this session should be read against, honoring lag. */
 function pairedCheckInDate(sessionDate: string, lag: 'same-day' | 'next-day'): string {
   if (lag === 'same-day') return sessionDate;
   const d = new Date(`${sessionDate}T00:00:00`);
   if (Number.isNaN(d.getTime())) return sessionDate;
   d.setDate(d.getDate() - 1);
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${d.getFullYear()}-${m}-${day}`;
+  return localDateKey(d);
 }
 
 function mean(xs: number[]): number {
@@ -130,7 +121,7 @@ export function computeBehaviorImpacts(
 
   const sessions = history
     .filter((log) => !log.deletedAt)
-    .map((log) => ({ date: localDate(log.completedAt), load: sessionLoad(log).load }))
+    .map((log) => ({ date: localDateKeyFromIso(log.completedAt), load: sessionLoad(log).load }))
     .filter((s) => s.date && s.load > 0);
 
   const out: BehaviorImpact[] = [];
