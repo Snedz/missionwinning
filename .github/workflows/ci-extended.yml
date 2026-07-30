@@ -115,12 +115,19 @@ jobs:
           if [ -z "$(find tests/e2e -type d -name '*-snapshots' 2>/dev/null | head -1)" ]; then
             echo "No *-snapshots dirs yet — generating baselines (soft job)."
             npx playwright test --config=playwright.config.ts --grep @visual --update-snapshots || true
-            echo "Commit snapshot files from the visual-diffs / screenshots artifact, then remove continue-on-error."
+            echo "Download the visual-diffs artifact, LOOK at each PNG, commit them, then remove continue-on-error."
           fi
           npm run e2e:visual
 
-      - name: Upload visual diffs
-        if: failure()
+      # `always()`, not `failure()`, and that is the whole point of this step.
+      # The bootstrap path above generates baselines and then passes (the soft
+      # `|| true`, plus a re-run that now finds the snapshots it just wrote), so
+      # under `failure()` the artifact never uploaded and the baselines died
+      # with the runner — the instruction one line up could never be followed.
+      # Verified against run 30263001081 (2026-07-27): visual-regression
+      # succeeded, "Upload visual diffs" skipped, nothing retrievable.
+      - name: Upload visual baselines + diffs
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: visual-diffs
