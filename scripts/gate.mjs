@@ -29,6 +29,22 @@ const BUILD_ENV = {
     process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ci-placeholder.supabase.co',
   NEXT_PUBLIC_SUPABASE_ANON_KEY:
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'ci-placeholder-anon-key',
+  /*
+   * `.198` — a placeholder so push-opt-in UI renders under test.
+   *
+   * `isPushSupported()` returns false without a VAPID public key, so every
+   * component behind it — the wind-down offer, the day-review opt-in — rendered
+   * *nothing* in every e2e run this repo has ever done. A guard written about
+   * those surfaces passes vacuously, which is exactly how a second red CTA
+   * shipped past a green suite.
+   *
+   * Safe: this is the public half of a keypair and only gates whether the UI
+   * draws. Nothing can subscribe — the server has no private key, and no test
+   * grants notification permission.
+   */
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY:
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ||
+    'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U',
 };
 
 let step = 0;

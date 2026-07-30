@@ -87,6 +87,7 @@ export function BreathingTimer() {
             <Button
               key={p}
               size="sm"
+              className="min-h-[44px]"
               variant={pattern === p ? 'default' : 'outline'}
               onClick={() => setPattern(p)}
             >
@@ -116,11 +117,14 @@ export function BreathingTimer() {
         </div>
 
         <div className="flex justify-center gap-2">
-          <Button variant="fitness" onClick={() => setRunning(!running)}>
+          {/* `min-h-[44px]`: the Button default is `h-10` (40px), under the 44px
+              floor `.125` set for one-thumb use. Applied here rather than to the
+              primitive — see LOG `.198` for why that is a founder call. */}
+          <Button variant="fitness" className="min-h-[44px]" onClick={() => setRunning(!running)}>
             {running ? 'Pause' : cycles >= targetCycles ? 'Restart' : 'Start'}
           </Button>
           {running && (
-            <Button variant="ghost" onClick={() => { setRunning(false); setPhaseIdx(0); setRemaining(config.phases[0].sec); setCycles(0); }}>
+            <Button variant="ghost" className="min-h-[44px]" onClick={() => { setRunning(false); setPhaseIdx(0); setRemaining(config.phases[0].sec); setCycles(0); }}>
               Reset
             </Button>
           )}

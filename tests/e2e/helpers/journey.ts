@@ -69,3 +69,30 @@ export async function seedReadinessPhase(page: Page): Promise<void> {
     );
   });
 }
+
+/**
+ * Everything the evening day-review card needs to actually render.
+ *
+ * `composeDayReview` returns null when the day holds nothing true to say — by
+ * design (`.192`). So a test that opens `/log` at 19:00 on an empty device sees
+ * **no card**, and any assertion about that card's contents passes vacuously.
+ *
+ * That is how the first version of the red-action guard came to pass with the
+ * bug it was written for still in place: the surface was never on screen. Tests
+ * using this must assert the card is present before asserting anything about it.
+ */
+export async function seedEveningReview(page: Page): Promise<void> {
+  await seedLegacyOnboarding(page);
+  await page.evaluate(() => {
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    // A logged behavior is itself the news when no session happened — it is the
+    // habit the feature exists to be worth, so it is enough for a fact.
+    localStorage.setItem(
+      'mw_mind_checkins',
+      JSON.stringify([
+        { date: today, sleep: 3, mood: 3, stress: 3, energy: 3, behaviors: { bedTime: '23:00' } },
+      ])
+    );
+  });
+}

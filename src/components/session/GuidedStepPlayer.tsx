@@ -266,19 +266,19 @@ export function GuidedStepPlayer({
         </div>
         <div className="flex gap-2 flex-wrap">
           {state.status === 'idle' && (
-            <Button variant="fitness" size={isCompact ? 'sm' : 'lg'} onClick={handleStart} aria-label={t('guidedSessionStart', { defaultValue: 'Start session' })}>
+            <Button variant="fitness" size={isCompact ? 'sm' : 'lg'} className="min-h-[44px]" onClick={handleStart} aria-label={t('guidedSessionStart', { defaultValue: 'Start session' })}>
               <Play className="h-4 w-4 mr-2" aria-hidden />
               {t('guidedSessionStart', { defaultValue: 'Start' })}
             </Button>
           )}
           {state.status === 'playing' && (
-            <Button variant="onInk" size={isCompact ? 'sm' : 'lg'} onClick={handlePause} aria-label={t('guidedSessionPause', { defaultValue: 'Pause' })}>
+            <Button variant="onInk" size={isCompact ? 'sm' : 'lg'} className="min-h-[44px]" onClick={handlePause} aria-label={t('guidedSessionPause', { defaultValue: 'Pause' })}>
               <Pause className="h-4 w-4 mr-2" aria-hidden />
               {t('guidedSessionPause', { defaultValue: 'Pause' })}
             </Button>
           )}
           {state.status === 'paused' && (
-            <Button variant="onInkSolid" size={isCompact ? 'sm' : 'lg'} onClick={handleResume} aria-label={t('guidedSessionResume', { defaultValue: 'Resume' })}>
+            <Button variant="onInkSolid" size={isCompact ? 'sm' : 'lg'} className="min-h-[44px]" onClick={handleResume} aria-label={t('guidedSessionResume', { defaultValue: 'Resume' })}>
               <Play className="h-4 w-4 mr-2" aria-hidden />
               {t('guidedSessionResume', { defaultValue: 'Resume' })}
             </Button>

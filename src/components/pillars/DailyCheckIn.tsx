@@ -41,7 +41,7 @@ function RatingRow({
             key={n}
             type="button"
             onClick={() => onChange(n)}
-            className={`flex-1 py-2 rounded text-sm font-medium transition-colors ${
+            className={`min-h-[44px] flex-1 py-2 rounded text-sm font-medium transition-colors ${
               value >= n ? 'bg-primary-fill text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
@@ -140,7 +140,7 @@ export function DailyCheckIn() {
             placeholder="One line — what helped or what you need tomorrow"
           />
         </div>
-        <Button variant="fitness" className="w-full" onClick={handleSave}>
+        <Button variant="fitness" className="min-h-[44px] w-full" onClick={handleSave}>
           {saved ? "Update Today's Check-In" : 'Save Check-In'}
         </Button>
         {saved && (
