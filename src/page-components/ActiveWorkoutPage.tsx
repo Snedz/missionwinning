@@ -57,6 +57,7 @@ import {
   findNextSet,
   getLastPerformanceForSet,
   getLastSessionSets,
+  nextSetInput,
   resolveSetInput,
   sessionSetStats,
   setInputKey,
@@ -211,12 +212,21 @@ export function ActiveWorkoutPage() {
 
   const updateSetInput = (exIdx: number, setIdx: number, field: 'reps' | 'weight', value: number) => {
     const key = setInputKey(exIdx, setIdx);
+    /*
+     * `.206` — the set's own numbers, not `10, 0`.
+     *
+     * Every other `getSetInput` call site passes `set.reps, set.weight`; this one
+     * passed hardcoded defaults, and `resolveSetInput` returns them verbatim for a
+     * prescribed exercise. So editing reps on a coached 3×5 @ 100kg silently
+     * rewrote the weight to 0.
+     */
+    const set = activeWorkout?.exercises[exIdx]?.sets[setIdx];
+    const resolved = getSetInput(exIdx, setIdx, set?.reps ?? 10, set?.weight ?? 0);
     setSetInputs((prev) => ({
       ...prev,
-      [key]: {
-        ...getSetInput(exIdx, setIdx, 10, 0),
-        [field]: value,
-      },
+      // `prev[key]`, never the render closure — "Apply targets" fires two
+      // synchronous calls per set and the second must see the first.
+      [key]: nextSetInput({ prevManual: prev[key], resolved, field, value }),
     }));
   };
 

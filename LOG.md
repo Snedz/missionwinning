@@ -6,6 +6,62 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — Two controls that write a number nobody asked for (`.206`)
+
+Both bugs are the same shape: a control the athlete touches for one reason
+quietly writes a second value they never entered.
+
+**Editing reps zeroed the prescribed weight.** `updateSetInput` rebuilt the whole
+`{reps, weight}` pair on every keystroke from `getSetInput(exIdx, setIdx, 10, 0)`,
+and `resolveSetInput` returns those defaults *verbatim* for a **prescribed**
+exercise. So a coached bench 3×5 @ 100kg, tapped once on reps, became
+`{reps: 6, weight: 0}` and logged **6 × 0kg** — zero volume on the lift the coach
+asked for, and then `getLastSessionSets` and `suggestNextSetTarget` computed next
+week's prescription from a set the athlete never did. Every other `getSetInput`
+call site passes `set.reps, set.weight`; this one alone passed `10, 0`, which is
+exactly why the console *displayed* the prescription correctly right up to the
+moment it was edited.
+
+The second half was the base. `updateSetInput` read `setInputs` from the render
+closure instead of the updater's `prev`, and "Apply targets" fires two
+synchronous calls per set — so the weight call rebuilt from a base that did not
+yet contain the reps the first call had just set, and a 3×5 prefilled as **10
+reps**. That is verbatim the `.175` bug the surrounding comment claims was fixed.
+
+The rule is now [`nextSetInput`](src/lib/workout/activeWorkoutHelpers.ts), a
+function rather than an inline spread, because the defect is a *shape* — which
+base, which field survives — and `.196` is the standing reminder that a rule
+spelled as a shape can only be checked as one.
+`activeWorkoutHelpers.test.ts` covered `resolveSetInput` thoroughly and **it was
+never wrong**: what broke was the arguments a caller handed it, which no test of
+a correct function can see.
+
+**Fuel logged your goal as your lunch.** `MacroCalculator.applyTargets` called
+`saveMacroTargets(...)` — the whole job — and then also unshifted
+`{ name: 'Calc target protein 180g', protein, cals }` into `mw_nutrition_log`.
+`NutritionPage` sums every row dated today into the day's **consumed** totals, so
+setting a 2400 kcal / 180g target made Fuel report 2400 kcal already eaten before
+a single meal, and fed `countHighProteinDaysFromNutritionLog` (threshold 150g),
+inflating the Mission Score's Fuel pillar off a number the athlete had only
+wished for. `.127` broken at the source: nothing said on thin data, least of all
+a score.
+
+And it wrote `logs.slice(0, 50)` — the only row cap in the codebase, where every
+other writer keeps **90 days** via `pruneNutritionLogToDays`. At ~4 entries a day
+that is under two weeks, so one tap of "Apply targets" deleted months of real
+meals and `NutritionPage`'s own next write persisted the truncated array back.
+`.170` already ruled non-food rows out of the Fuel diary; this is the same rule
+one layer down, on the device log rather than the cloud table. **Deleting the
+write fixes both**, and the guard is stated repo-wide — the food log is pruned by
+age, never by row count — so the next writer that invents its own retention fails.
+
+Four mutants killed: `reps-edit-zeroes-weight`, `apply-targets-stale-closure`,
+`targets-logged-as-food`, `fuel-log-truncated-to-50`.
+
+Tests 1041→1049.
+
+---
+
 ## 2026-07-30 — The restore the app forgets, then destroys (`.205`)
 
 The worst defect the `.204`–`.213` audits found, because it destroys the data an
