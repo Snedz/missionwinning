@@ -5,6 +5,7 @@ import {
   isTruthyEnv,
   parseZeroDataRetentionHeader,
   readCoachLlmEnv,
+  streamCoachLlmCompletion,
 } from '@/lib/coachLlmClient';
 
 describe('parseZeroDataRetentionHeader', () => {
@@ -142,5 +143,151 @@ describe('fetchCoachLlmCompletion', () => {
     );
     assert.equal(out.ok, false);
     if (!out.ok) assert.equal(out.reason, 'network');
+  });
+});
+
+/**
+ * `.188` — token usage capture. Every paid feature was gated on "metering does
+ * not exist"; it could not exist while both paths dropped the provider's usage
+ * block on the floor. The `usage-discarded` mutant (reverting the client to
+ * ignoring `data.usage`) fails these.
+ */
+describe('usage capture', () => {
+  const baseEnv = {
+    apiUrl: 'https://api.x.ai/v1/chat/completions',
+    apiKey: 'xai-test',
+    model: 'grok-4.5',
+    requireZdr: false,
+  };
+
+  it('non-stream: the provider usage block is returned, not discarded', async () => {
+    const fetchImpl = async () =>
+      new Response(
+        JSON.stringify({
+          choices: [{ message: { content: 'Steady week.' } }],
+          usage: { prompt_tokens: 30, completion_tokens: 12, total_tokens: 42 },
+        }),
+        { status: 200 }
+      );
+    const out = await fetchCoachLlmCompletion(
+      { system: 's', user: 'u' },
+      { env: baseEnv, fetchImpl: fetchImpl as typeof fetch }
+    );
+    assert.equal(out.ok, true);
+    if (out.ok) {
+      assert.deepEqual(out.usage, {
+        promptTokens: 30,
+        completionTokens: 12,
+        totalTokens: 42,
+        estimated: false,
+      });
+    }
+  });
+
+  it('non-stream: a provider that omits usage yields a char estimate, marked estimated', async () => {
+    const fetchImpl = async () =>
+      new Response(
+        JSON.stringify({ choices: [{ message: { content: 'abcdefgh' } }] }),
+        { status: 200 }
+      );
+    const out = await fetchCoachLlmCompletion(
+      { system: '1234', user: '5678' },
+      { env: baseEnv, fetchImpl: fetchImpl as typeof fetch }
+    );
+    assert.equal(out.ok, true);
+    if (out.ok) {
+      // ceil(8/4)=2 prompt chars-side, ceil(8/4)=2 completion.
+      assert.deepEqual(out.usage, {
+        promptTokens: 2,
+        completionTokens: 2,
+        totalTokens: 4,
+        estimated: true,
+      });
+    }
+  });
+
+  function sseResponse(lines: string[]): Response {
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) {
+        const encoder = new TextEncoder();
+        for (const line of lines) controller.enqueue(encoder.encode(`${line}\n`));
+        controller.close();
+      },
+    });
+    return new Response(body, { status: 200 });
+  }
+
+  it('stream: requests include_usage and carries the final usage chunk home', async () => {
+    let sentBody = '';
+    const fetchImpl = async (_url: RequestInfo | URL, init?: RequestInit) => {
+      sentBody = String(init?.body ?? '');
+      return sseResponse([
+        'data: {"choices":[{"delta":{"content":"Hel"}}]}',
+        'data: {"choices":[{"delta":{"content":"lo"}}]}',
+        // include_usage final chunk: empty choices, usage present.
+        'data: {"choices":[],"usage":{"prompt_tokens":50,"completion_tokens":9,"total_tokens":59}}',
+        'data: [DONE]',
+      ]);
+    };
+    const gen = streamCoachLlmCompletion(
+      { system: 's', user: 'u' },
+      { env: baseEnv, fetchImpl: fetchImpl as typeof fetch }
+    );
+    let text = '';
+    let result = await gen.next();
+    while (!result.done) {
+      text += result.value;
+      result = await gen.next();
+    }
+    assert.equal(text, 'Hello');
+    const final = result.value;
+    assert.equal(final.ok, true);
+    if (final.ok) {
+      assert.deepEqual(final.usage, {
+        promptTokens: 50,
+        completionTokens: 9,
+        totalTokens: 59,
+        estimated: false,
+      });
+    }
+    assert.ok(sentBody.includes('"include_usage":true'), 'stream must ask for usage');
+  });
+
+  it('stream: no usage chunk → char estimate from streamed deltas, marked estimated', async () => {
+    const fetchImpl = async () =>
+      sseResponse([
+        'data: {"choices":[{"delta":{"content":"abcd"}}]}',
+        'data: {"choices":[{"delta":{"content":"efgh"}}]}',
+        'data: [DONE]',
+      ]);
+    const gen = streamCoachLlmCompletion(
+      { system: '12', user: '34' },
+      { env: baseEnv, fetchImpl: fetchImpl as typeof fetch }
+    );
+    let result = await gen.next();
+    while (!result.done) result = await gen.next();
+    const final = result.value;
+    assert.equal(final.ok, true);
+    if (final.ok) {
+      assert.equal(final.usage.estimated, true);
+      assert.equal(final.usage.completionTokens, 2); // ceil(8/4)
+    }
+  });
+
+  it('stream: the empty-choices usage chunk does not count as content', async () => {
+    const fetchImpl = async () =>
+      sseResponse([
+        // ONLY a usage chunk — no deltas. Must be reason:"empty", not ok.
+        'data: {"choices":[],"usage":{"prompt_tokens":5,"completion_tokens":0,"total_tokens":5}}',
+        'data: [DONE]',
+      ]);
+    const gen = streamCoachLlmCompletion(
+      { system: 's', user: 'u' },
+      { env: baseEnv, fetchImpl: fetchImpl as typeof fetch }
+    );
+    let result = await gen.next();
+    while (!result.done) result = await gen.next();
+    assert.equal(result.value.ok, false);
+    if (!result.value.ok) assert.equal(result.value.reason, 'empty');
   });
 });

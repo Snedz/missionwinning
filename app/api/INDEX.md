@@ -53,9 +53,10 @@ Legend:
 
 | Route | Methods | Auth | Rate | Body |
 |-------|---------|------|------|------|
-| `coach/daily-insight` | POST | session or gate app access | 12/min + 32 KiB | Zod |
-| `coach/plan-voice` | POST | session or gate app access + premium | 6/min + 64 KiB | Zod |
-| `coach/chat` | POST | app access + premium | 10/min + 32 KiB | Zod `coachChatSchema`; 402 free; 503 offline |
+| `coach/daily-insight` | POST | session or gate app access; **LLM branch: premium + daily quota** (`.188`) | 12/min + 32 KiB + daily quota | Zod |
+| `coach/plan-voice` | POST | session or gate app access + premium (LLM branch only) + daily quota | 6/min + 64 KiB | Zod |
+| `coach/chat` | POST | app access + premium | 10/min + 32 KiB + daily quota | Zod `coachChatSchema`; 402 free; 503 offline; 429 `coach_quota` |
+| `coach/debrief-voice` | POST | app access + premium (LLM branch) + daily quota | 6/min + 16 KiB | Zod; rules fallback when free / dark / over quota |
 | `referral` | GET/POST | session | 20/min GET · 5/min POST | Lazy MW-code; redeem ≤7d; service role |
 | `cron/weekly-digest` | GET | CRON_SECRET | — | Monday founder email; dryRun |
 | `push/subscribe` | POST/DELETE | **optional** session | 10/min + 4 KiB | Service role. Anonymous devices allowed — `deviceId` links to the account made later. See [docs/RETURN_LOOP_PLAN.md](../../docs/RETURN_LOOP_PLAN.md) |
@@ -78,7 +79,7 @@ Legend:
 |-------|---------|------|------|------|
 | `fuel/search-food` | GET | public/gate | 30/min | query |
 | `fuel/barcode` | GET | public/gate | 30/min | query |
-| `fuel/estimate-meal` | POST | session or gate | 10/min | multipart photo; hasAppAccess |
+| `fuel/estimate-meal` | POST | session or gate; **vision branch: premium + daily quota** (`.188`) | 10/min | multipart photo; hasAppAccess; heuristic never gated |
 
 ### School
 

@@ -21,6 +21,8 @@ export interface DailyCoachResponse {
   actionLabel: string;
   actionPath: string;
   source: 'llm' | 'rules';
+  /** Token spend when source is 'llm' — threaded up for the route's meter. */
+  usage?: import('@/lib/llm/usage').LlmUsage;
 }
 
 export function buildCoachPrompt(ctx: DailyCoachContext): string {
@@ -94,5 +96,5 @@ export async function fetchDailyCoachInsight(ctx: DailyCoachContext): Promise<Da
   });
   if (!result.ok) return coachFromFallback(ctx);
   const parsed = parseCoachLlmJson(result.content);
-  return parsed ?? coachFromFallback(ctx);
+  return parsed ? { ...parsed, usage: result.usage } : coachFromFallback(ctx);
 }

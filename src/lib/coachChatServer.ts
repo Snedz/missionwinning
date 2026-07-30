@@ -32,6 +32,8 @@ export type CoachChatOk = {
   actionPath?: string;
   source: 'llm';
   grounded: boolean;
+  /** Token spend for this call — threaded up so the route can meter it. */
+  usage?: import('@/lib/llm/usage').LlmUsage;
 };
 
 export type CoachChatFail = {
@@ -180,6 +182,7 @@ export async function fetchCoachChat(
     actionPath: parsed.actionPath,
     source: 'llm',
     grounded: Boolean(groundedId),
+    usage: result.usage,
   };
 }
 
@@ -192,7 +195,11 @@ export async function* streamCoachChat(
   turns: CoachChatTurn[],
   message: string,
   signal?: AbortSignal
-): AsyncGenerator<string, { ok: true; grounded: boolean } | CoachChatFail, void> {
+): AsyncGenerator<
+  string,
+  { ok: true; grounded: boolean; usage?: import('@/lib/llm/usage').LlmUsage } | CoachChatFail,
+  void
+> {
   const groundedId = detectExerciseFromMessage(message, ctx.exerciseId);
   const system = buildChatSystemPrompt(ctx, groundedId, 'plain');
   const user = buildChatUserPrompt(turns, message);
@@ -219,5 +226,5 @@ export async function* streamCoachChat(
     }
     return { ok: false, reason: 'unavailable' };
   }
-  return { ok: true, grounded: Boolean(groundedId) };
+  return { ok: true, grounded: Boolean(groundedId), usage: final.usage };
 }

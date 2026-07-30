@@ -11,6 +11,8 @@ export interface PlanVoiceContext {
 export interface PlanVoiceResponse {
   message: string;
   source: 'llm' | 'rules';
+  /** Token spend when source is 'llm' — threaded up for the route's meter. */
+  usage?: import('@/lib/llm/usage').LlmUsage;
 }
 
 export function buildPlanVoicePrompt(ctx: PlanVoiceContext): string {
@@ -70,5 +72,5 @@ export async function fetchPlanVoice(
   });
   if (!result.ok) return planVoiceFromRules(ctx);
   const parsed = parsePlanVoiceJson(result.content);
-  return parsed ?? planVoiceFromRules(ctx);
+  return parsed ? { ...parsed, usage: result.usage } : planVoiceFromRules(ctx);
 }

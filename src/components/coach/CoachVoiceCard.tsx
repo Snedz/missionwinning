@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ErrorState } from '@/components/ui/ErrorState';
 import type { CoachPlan } from '@/lib/coach/types';
 import type { BodyScores } from '@/lib/score';
+import { getOrCreateDeviceId } from '@/lib/coach/storage';
 
 type VoiceResponse = {
   message: string;
@@ -50,6 +51,8 @@ export function CoachVoiceCard({ plan, bodyScores, premium }: Props) {
         strain: bodyScores.strain,
         recovery: bodyScores.recovery,
         premium,
+        // Metering identity for anonymous athletes — counts, never content.
+        deviceId: getOrCreateDeviceId(),
       }),
     })
       .then(async (r) => {

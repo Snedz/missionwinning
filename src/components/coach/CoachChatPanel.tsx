@@ -282,6 +282,8 @@ export function CoachChatPanel({
           turns: prior.slice(-12),
           context,
           stream: true,
+          // Metering identity for anonymous athletes — counts, never content.
+          deviceId: (await import('@/lib/coach/storage')).getOrCreateDeviceId(),
         }),
         signal: ac.signal,
       });
@@ -308,6 +310,18 @@ export function CoachChatPanel({
             prior,
             t('coachChatOffline', {
               defaultValue: 'Coach voice offline — your plan and adjustments still work.',
+            }),
+            true
+          );
+          return;
+        }
+        if (chunk.includes('[[error:coach_quota]]')) {
+          // Honest, not apologetic: the limit is real and it resets.
+          failWithUserKept(
+            message,
+            prior,
+            t('coachChatQuota', {
+              defaultValue: "Today's chat limit reached — resets tomorrow. Your plan and logger are unaffected.",
             }),
             true
           );

@@ -184,6 +184,13 @@ export async function estimateMealViaApi(
   const form = new FormData();
   form.append('photo', file);
   if (hints?.palette) form.append('palette', hints.palette);
+  try {
+    // Metering identity for anonymous athletes — counts, never content.
+    const { getOrCreateDeviceId } = await import('@/lib/coach/storage');
+    form.append('deviceId', getOrCreateDeviceId());
+  } catch {
+    /* metering identity is best-effort — the estimate never depends on it */
+  }
 
   try {
     const { uploadFormDataWithProgress } = await import('@/lib/uploadWithProgress');

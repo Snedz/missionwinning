@@ -9,6 +9,8 @@
  * deferred completions, or stateful Responses store_messages / previous_response_id.
  */
 
+import { estimateLlmUsage, parseLlmUsage, type LlmUsage } from '@/lib/llm/usage';
+
 export type CoachLlmRequest = {
   system: string;
   user: string;
@@ -20,6 +22,8 @@ export type CoachLlmOk = {
   ok: true;
   content: string;
   zeroDataRetention: boolean | null;
+  /** Provider-reported when available, char-estimate otherwise (`estimated`). */
+  usage: LlmUsage;
 };
 
 export type CoachLlmFail = {
@@ -149,6 +153,7 @@ export async function fetchCoachLlmCompletion(
 
     const data = (await res.json()) as {
       choices?: { message?: { content?: string } }[];
+      usage?: unknown;
     };
     const content = data.choices?.[0]?.message?.content?.trim();
     if (!content) {
@@ -162,14 +167,18 @@ export async function fetchCoachLlmCompletion(
       return { ok: false, reason: 'empty', zeroDataRetention: zdr, status: res.status };
     }
 
+    const usage =
+      parseLlmUsage(data.usage) ??
+      estimateLlmUsage(req.system.length + req.user.length, content.length);
     logCoachLlmMeta({
       ok: true,
       reason: 'ok',
       status: res.status,
       zdr,
       ms: Date.now() - t0,
+      usage,
     });
-    return { ok: true, content, zeroDataRetention: zdr };
+    return { ok: true, content, zeroDataRetention: zdr, usage };
   } catch (err) {
     const name = err instanceof Error ? err.name : '';
     const reason = name === 'TimeoutError' || name === 'AbortError' ? 'timeout' : 'network';
@@ -184,8 +193,10 @@ function logCoachLlmMeta(meta: {
   status?: number;
   zdr?: boolean | null;
   ms: number;
+  usage?: LlmUsage;
 }): void {
-  // Structured meta only — never prompt/completion content.
+  // Structured meta only — never prompt/completion content. Token counts ride
+  // along so stdout gives spend visibility even before llm_usage is applied.
   console.info(
     JSON.stringify({
       type: 'coach_llm',
@@ -194,6 +205,13 @@ function logCoachLlmMeta(meta: {
       status: meta.status,
       zeroDataRetention: meta.zdr ?? null,
       durationMs: meta.ms,
+      ...(meta.usage
+        ? {
+            promptTokens: meta.usage.promptTokens,
+            completionTokens: meta.usage.completionTokens,
+            estimated: meta.usage.estimated,
+          }
+        : {}),
     })
   );
 }
@@ -217,7 +235,11 @@ export async function* streamCoachLlmCompletion(
     timeoutMs?: number;
     signal?: AbortSignal;
   }
-): AsyncGenerator<string, CoachLlmStreamFail | { ok: true; zeroDataRetention: boolean | null }, void> {
+): AsyncGenerator<
+  string,
+  CoachLlmStreamFail | { ok: true; zeroDataRetention: boolean | null; usage: LlmUsage },
+  void
+> {
   const cfg = options?.env ?? readCoachLlmEnv();
   if (!cfg.apiUrl || !cfg.apiKey) {
     return { ok: false, reason: 'unconfigured' };
@@ -253,6 +275,10 @@ export async function* streamCoachLlmCompletion(
         max_tokens: req.maxTokens ?? 200,
         temperature: req.temperature ?? 0.6,
         stream: true,
+        // OpenAI-compatible: ask for a final usage chunk. xAI honors this; a
+        // provider that 400s on it lands in the existing http_error degrade
+        // path, and one that ignores it falls back to the char estimate below.
+        stream_options: { include_usage: true },
       }),
       signal,
     });
@@ -294,6 +320,8 @@ export async function* streamCoachLlmCompletion(
     const decoder = new TextDecoder();
     let buffer = '';
     let yielded = false;
+    let completionChars = 0;
+    let providerUsage: LlmUsage | null = null;
 
     while (true) {
       const { done, value } = await reader.read();
@@ -309,10 +337,15 @@ export async function* streamCoachLlmCompletion(
         try {
           const parsed = JSON.parse(payload) as {
             choices?: { delta?: { content?: string } }[];
+            usage?: unknown;
           };
+          // Usage may arrive on any chunk (xAI: interim and final); last wins.
+          const parsedUsage = parseLlmUsage(parsed.usage);
+          if (parsedUsage) providerUsage = parsedUsage;
           const delta = parsed.choices?.[0]?.delta?.content;
           if (delta) {
             yielded = true;
+            completionChars += delta.length;
             yield delta;
           }
         } catch {
@@ -332,14 +365,18 @@ export async function* streamCoachLlmCompletion(
       return { ok: false, reason: 'empty', zeroDataRetention: zdr, status: res.status };
     }
 
+    const usage =
+      providerUsage ??
+      estimateLlmUsage(req.system.length + req.user.length, completionChars);
     logCoachLlmMeta({
       ok: true,
       reason: 'ok',
       status: res.status,
       zdr,
       ms: Date.now() - t0,
+      usage,
     });
-    return { ok: true, zeroDataRetention: zdr };
+    return { ok: true, zeroDataRetention: zdr, usage };
   } catch (err) {
     clearTimeout(timeoutId);
     const name = err instanceof Error ? err.name : '';
