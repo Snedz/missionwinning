@@ -6,6 +6,37 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — The untestable half, tested (`.189`)
+
+`.188` shipped with an honest gap in its own PR body: the spend routes
+transitively import `server-only`, which throws under plain `tsx`, so the
+*wiring* went untested while only the pure decisions were falsified. That gap
+was in the worst possible place — the difference between "quota refuses" and
+"quota refuses **and the athlete still gets the free product**" is invisible to
+every pure test in the repo.
+
+Node's own exports map had the answer: `server-only` resolves to an empty module
+under the `react-server` condition. New lane `npm run test:routes`
+(`tsx --conditions=react-server`), wired into `gate.mjs` and `ci.yml` beside the
+unit tests; `*.routetest.ts` deliberately does not match the `*.test.ts` glob, so
+the two lanes stay separate (835 unit, 7 route).
+
+Seven contracts pinned, all on the degrade path: an exhausted daily-insight quota
+still answers **200 with the rules insight** (not 429); a dark LLM env never
+consults the quota and never says "quota"; a signed-out visitor always gets the
+plan-voice rules briefing; chat's 429 `coach_quota` is the deliberate exception
+(no rules engine to answer with) and unconfigured still reads `coach_offline`,
+because a founder who never set keys must never be told they hit a spending limit
+they never had. Determinism without a network or a shared bucket: caps driven to
+`0`, whose kill switch refuses before the limiter is consulted, and a unique IP
+per case.
+
+**The mutant `.188` could not run now runs and dies**: `quota-blocks-rules-path`
+(wire the quota as a route-wide 429) passes every pure test in the repo and fails
+here. Also killed: `plan-voice-gate-moved-up` (cost gate back in front of the free
+briefing — the exact defect the route's comment exists to prevent) and
+`dark-env-reads-as-quota`. Tests 835→842.
+
 ## 2026-07-30 — The meter exists now (`.188`)
 
 Per-user LLM metering + spend hardening — the PR every paid LLM feature was gated

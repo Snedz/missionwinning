@@ -114,6 +114,10 @@ run('Build label + hard rule 5', 'npm', ['run', 'check-build-label']);
 run('Lint', 'npm', ['run', 'lint']);
 run('Typecheck', 'npm', ['run', 'typecheck']);
 run('Unit tests', 'npm', ['test']);
+// Route handlers import `server-only`, which throws under plain tsx — this lane
+// resolves it to a no-op via node's own `react-server` export condition, so the
+// spend gates (`.188`) can be tested as wiring, not just as pure decisions.
+run('Route contract tests', 'npm', ['run', 'test:routes']);
 run('i18n parity', 'npm', ['run', 'i18n:parity']);
 // Both of these existed as npm scripts and neither was in the gate, so nothing ran them.
 run('Display type', 'npm', ['run', 'check-display-type']);
