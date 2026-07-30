@@ -140,6 +140,9 @@ run('Unit tests', 'npm', ['test']);
 // spend gates (`.188`) can be tested as wiring, not just as pure decisions.
 run('Route contract tests', 'npm', ['run', 'test:routes']);
 run('i18n parity', 'npm', ['run', 'i18n:parity']);
+// `i18n:parity` compares locale packs to each other and never opens a `.tsx`, so
+// it is structurally blind to a key that exists in no pack at all. `.202`.
+run('i18n coverage', 'npm', ['run', 'i18n:coverage']);
 // Both of these existed as npm scripts and neither was in the gate, so nothing ran them.
 run('Display type', 'npm', ['run', 'check-display-type']);
 run('Token sync (web ↔ Android)', 'npm', ['run', 'check-token-sync']);

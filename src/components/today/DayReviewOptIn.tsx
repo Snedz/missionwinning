@@ -25,6 +25,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
@@ -41,6 +42,7 @@ import {
 type Mode = 'hidden' | 'offer' | 'install' | 'done';
 
 export function DayReviewOptIn() {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<Mode>('hidden');
   const [hour, setHour] = useState(DAY_REVIEW_DEFAULT_HOUR);
 
@@ -86,15 +88,20 @@ export function DayReviewOptIn() {
       writeRaw(STORAGE_KEYS.dayReviewHour, String(hour));
       setMode('done');
       toast({
-        title: 'Evening review on',
-        description: `One note at ${String(hour).padStart(2, '0')}:00. The recap itself opens on this device.`,
+        title: t('dayReviewOptInOnTitle', { defaultValue: 'Evening review on' }),
+        description: t('dayReviewOptInOnBody', {
+          hour: String(hour).padStart(2, '0'),
+          defaultValue: `One note at ${String(hour).padStart(2, '0')}:00. The recap itself opens on this device.`,
+        }),
       });
       return;
     }
     setMode('hidden');
     toast({
-      title: 'Not enabled',
-      description: 'Notifications stayed off. Everything else works exactly as before.',
+      title: t('dayReviewOptInOffTitle', { defaultValue: 'Not enabled' }),
+      description: t('dayReviewOptInOffBody', {
+        defaultValue: 'Notifications stayed off. Everything else works exactly as before.',
+      }),
     });
   };
 
@@ -104,23 +111,32 @@ export function DayReviewOptIn() {
     return (
       <div className="border-2 border-border px-3 py-2">
         <p className="text-sm">
-          Add Mission Winning to your home screen and an evening review can find you here.
+          {t('dayReviewOptInInstall', {
+            defaultValue:
+              'Add Mission Winning to your home screen and an evening review can find you here.',
+          })}
         </p>
-        <p className="mt-1 text-xs text-muted-foreground">Share → Add to Home Screen.</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          {t('dayReviewOptInInstallHow', { defaultValue: 'Share → Add to Home Screen.' })}
+        </p>
       </div>
     );
   }
 
   return (
     <div className="border-2 border-border px-3 py-2">
-      <p className="text-sm">Want your day in review as an evening note?</p>
+      <p className="text-sm">
+        {t('dayReviewOptInAsk', { defaultValue: 'Want your day in review as an evening note?' })}
+      </p>
       <p className="mt-1 text-xs text-muted-foreground">
-        One a day, at an hour you pick. The note carries no numbers — the recap opens on this
-        device.
+        {t('dayReviewOptInDetail', {
+          defaultValue:
+            'One a day, at an hour you pick. The note carries no numbers — the recap opens on this device.',
+        })}
       </p>
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <label className="text-xs text-muted-foreground" htmlFor="day-review-hour">
-          At
+          {t('dayReviewOptInAt', { defaultValue: 'At' })}
         </label>
         <select
           id="day-review-hour"
@@ -144,7 +160,7 @@ export function DayReviewOptIn() {
             sweep was scoped to `/active`. Two tests, both green, neither
             measuring what it was named for. */}
         <Button variant="outline" size="sm" className="min-h-[44px]" onClick={enable}>
-          Turn on
+          {t('dayReviewOptInEnable', { defaultValue: 'Turn on' })}
         </Button>
         <Button
           variant="ghost"
@@ -155,7 +171,7 @@ export function DayReviewOptIn() {
             setMode('hidden');
           }}
         >
-          Not now
+          {t('dayReviewOptInDismiss', { defaultValue: 'Not now' })}
         </Button>
       </div>
     </div>

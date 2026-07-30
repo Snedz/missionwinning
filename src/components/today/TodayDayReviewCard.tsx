@@ -14,6 +14,7 @@
  */
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Moon } from 'lucide-react';
 import { upsertTodayPartial } from '@/lib/mindCheckIns';
 import { useTodayDigest } from '@/hooks/useTodayDigest';
@@ -22,6 +23,7 @@ import { track } from '@/lib/analytics';
 import { DayReviewOptIn } from '@/components/today/DayReviewOptIn';
 
 export function TodayDayReviewCard() {
+  const { t } = useTranslation();
   const [logged, setLogged] = useState(false);
 
   // No hour test here: `dayReviewMayMount` decides at the mount site in both
@@ -51,13 +53,13 @@ export function TodayDayReviewCard() {
   };
 
   return (
-    <section className="content-card border-border p-4 space-y-3" aria-label="Day in review">
+    <section className="content-card border-border p-4 space-y-3" aria-label={t('todayDayReviewTitle', { defaultValue: 'Day in review' })}>
       <div className="flex items-start gap-3">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-accent-100 text-accent-900">
           <Moon className="h-5 w-5" aria-hidden />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="eyebrow-honor">Day in review</p>
+          <p className="eyebrow-honor">{t('todayDayReviewTitle', { defaultValue: 'Day in review' })}</p>
           <p className="mt-0.5 text-sm font-medium text-foreground">{review.fact}</p>
         </div>
       </div>
@@ -77,7 +79,9 @@ export function TodayDayReviewCard() {
       <div className="flex flex-wrap items-center gap-2">
         {logged ? (
           <p className="text-xs text-primary" role="status">
-            Bed time logged — stays on this device.
+            {t('todayDayReviewBedLogged', {
+              defaultValue: 'Bed time logged — stays on this device.',
+            })}
           </p>
         ) : (
           <button
@@ -85,7 +89,7 @@ export function TodayDayReviewCard() {
             onClick={logBedTime}
             className="min-h-[44px] border-2 border-border px-3 text-xs font-semibold"
           >
-            Log bed time now
+            {t('todayDayReviewLogBed', { defaultValue: 'Log bed time now' })}
           </button>
         )}
       </div>

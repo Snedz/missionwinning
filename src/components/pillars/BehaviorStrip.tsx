@@ -14,6 +14,7 @@
  */
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Info } from 'lucide-react';
 import {
   behaviorById,
@@ -28,10 +29,10 @@ type Props = {
   onChange: (next: BehaviorEntry) => void;
 };
 
-const TIER_LABEL: Record<EvidenceTier, string> = {
-  A: 'Strong evidence',
-  B: 'Moderate evidence',
-  C: 'Emerging evidence',
+const TIER_LABEL: Record<EvidenceTier, { key: string; en: string }> = {
+  A: { key: 'behaviorTierA', en: 'Strong evidence' },
+  B: { key: 'behaviorTierB', en: 'Moderate evidence' },
+  C: { key: 'behaviorTierC', en: 'Emerging evidence' },
 };
 
 /** Quarter-hour options, 24h — the resolution self-report can honestly support. */
@@ -42,10 +43,11 @@ const TIME_OPTIONS = Array.from({ length: 96 }, (_, i) => {
 });
 
 function Receipt({ tier, text }: { tier: EvidenceTier; text: string }) {
+  const { t } = useTranslation();
   return (
     <div className="mt-2 border-l-2 border-border pl-3">
       <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-        {TIER_LABEL[tier]}
+        {t(TIER_LABEL[tier].key, { defaultValue: TIER_LABEL[tier].en })}
       </p>
       <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{text}</p>
     </div>
@@ -53,10 +55,24 @@ function Receipt({ tier, text }: { tier: EvidenceTier; text: string }) {
 }
 
 export function BehaviorStrip({ value, onChange }: Props) {
+  const { t } = useTranslation();
   const [openReceipt, setOpenReceipt] = useState<string | null>(null);
   const set = (patch: Partial<BehaviorEntry>) => onChange({ ...value, ...patch });
 
-  const row = (id: string, label: string, tier: EvidenceTier, receipt: string, control: React.ReactNode) => (
+  /*
+   * Labels and receipts come from the registry's `labelKey`/`receiptKey` pairs.
+   *
+   * `behaviors.ts` has shipped those four fields since `.190` and **nothing had
+   * ever read them** — every consumer took the `*Default` English strings, so
+   * the library was built i18n-ready and the only component that renders it
+   * ignored that entirely. Resolving them here is what makes the twelve
+   * questions translatable at all.
+   */
+  const row = (id: BehaviorId, control: React.ReactNode) => {
+    const meta = def(id);
+    const label = t(meta.labelKey, { defaultValue: meta.labelDefault });
+    const receipt = t(meta.receiptKey, { defaultValue: meta.receiptDefault });
+    return (
     <div key={id} className="border-b border-border py-2 last:border-b-0">
       <div className="flex items-center gap-2">
         <span className="min-w-0 flex-1 text-sm">{label}</span>
@@ -64,22 +80,23 @@ export function BehaviorStrip({ value, onChange }: Props) {
         <button
           type="button"
           onClick={() => setOpenReceipt(openReceipt === id ? null : id)}
-          aria-label={`Why we track ${label}`}
+          aria-label={t('behaviorWhyWeTrack', { label, defaultValue: `Why we track ${label}` })}
           aria-expanded={openReceipt === id}
           className="flex h-11 w-11 shrink-0 items-center justify-center text-muted-foreground"
         >
           <Info className="h-4 w-4" aria-hidden />
         </button>
       </div>
-      {openReceipt === id ? <Receipt tier={tier} text={receipt} /> : null}
+      {openReceipt === id ? <Receipt tier={meta.tier} text={receipt} /> : null}
     </div>
-  );
+    );
+  };
 
   const toggle = (on: boolean | undefined, onPick: (v: boolean) => void, label: string) => (
     <div className="flex shrink-0 gap-1" role="group" aria-label={label}>
       {[
-        ['No', false],
-        ['Yes', true],
+        [t('behaviorNo', { defaultValue: 'No' }), false],
+        [t('behaviorYes', { defaultValue: 'Yes' }), true],
       ].map(([text, v]) => (
         <button
           key={String(v)}
@@ -102,7 +119,7 @@ export function BehaviorStrip({ value, onChange }: Props) {
     <div className="flex shrink-0 items-center gap-1" role="group" aria-label={label}>
       <button
         type="button"
-        aria-label={`Fewer ${label}`}
+        aria-label={t('behaviorFewer', { label, defaultValue: `Fewer ${label}` })}
         onClick={() => onPick(Math.max(0, (n ?? 0) - 1))}
         className="min-h-[44px] w-11 border-2 border-border text-sm font-semibold"
       >
@@ -113,7 +130,7 @@ export function BehaviorStrip({ value, onChange }: Props) {
       </span>
       <button
         type="button"
-        aria-label={`More ${label}`}
+        aria-label={t('behaviorMore', { label, defaultValue: `More ${label}` })}
         onClick={() => onPick(Math.min(MAX_SERVINGS, (n ?? 0) + 1))}
         className="min-h-[44px] w-11 border-2 border-border text-sm font-semibold"
       >
@@ -145,53 +162,46 @@ export function BehaviorStrip({ value, onChange }: Props) {
   const def = (id: BehaviorId) => behaviorById(id)!;
 
   return (
-    <section aria-label="Behavior journal" className="border-2 border-border px-3 py-2">
+    <section aria-label={t('behaviorStripTitle', { defaultValue: 'Behavior journal' })} className="border-2 border-border px-3 py-2">
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Behaviors — all optional
+        {t('behaviorStripHeading', { defaultValue: 'Behaviors — all optional' })}
       </p>
       <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-        Stays on this device. Tap the info icon on any row to see what the research actually says.
+        {t('behaviorStripNote', {
+          defaultValue:
+            'Stays on this device. Tap the info icon on any row to see what the research actually says.',
+        })}
       </p>
       <div className="mt-2">
         {row(
           'bedTime',
-          def('bedTime').labelDefault,
-          def('bedTime').tier,
-          def('bedTime').receiptDefault,
-          timeSelect(value.bedTime, (s) => set({ bedTime: s || undefined }), 'In bed around')
+          timeSelect(value.bedTime, (s) => set({ bedTime: s || undefined }), t('behaviorBedTimeAria', { defaultValue: 'In bed around' }))
         )}
         {row(
           'wakeTime',
-          def('wakeTime').labelDefault,
-          def('wakeTime').tier,
-          def('wakeTime').receiptDefault,
-          timeSelect(value.wakeTime, (s) => set({ wakeTime: s || undefined }), 'Up around')
+          timeSelect(value.wakeTime, (s) => set({ wakeTime: s || undefined }), t('behaviorWakeTimeAria', { defaultValue: 'Up around' }))
         )}
         {row(
           'caffeine',
-          def('caffeine').labelDefault,
-          def('caffeine').tier,
-          def('caffeine').receiptDefault,
-          stepper(value.caffeineServings, (n) => set({ caffeineServings: n }), 'caffeine servings')
+          stepper(value.caffeineServings, (n) => set({ caffeineServings: n }), t('behaviorCaffeineAria', { defaultValue: 'caffeine servings' }))
         )}
         {value.caffeineServings ? (
           <div className="border-b border-border py-2 ps-4">
             <div className="flex items-center gap-2">
-              <span className="min-w-0 flex-1 text-sm text-muted-foreground">Last serving</span>
+              <span className="min-w-0 flex-1 text-sm text-muted-foreground">
+                {t('behaviorCaffeineLastServing', { defaultValue: 'Last serving' })}
+              </span>
               {timeSelect(
                 value.caffeineLastAt,
                 (s) => set({ caffeineLastAt: s || undefined }),
-                'Last caffeine serving'
+                t('behaviorCaffeineLastAria', { defaultValue: 'Last caffeine serving' })
               )}
             </div>
           </div>
         ) : null}
         {row(
           'alcohol',
-          def('alcohol').labelDefault,
-          def('alcohol').tier,
-          def('alcohol').receiptDefault,
-          stepper(value.alcoholServings, (n) => set({ alcoholServings: n }), 'alcoholic drinks')
+          stepper(value.alcoholServings, (n) => set({ alcoholServings: n }), t('behaviorAlcoholAria', { defaultValue: 'alcoholic drinks' }))
         )}
         {(
           [
@@ -205,10 +215,11 @@ export function BehaviorStrip({ value, onChange }: Props) {
         ).map(([id, key]) =>
           row(
             id,
-            def(id).labelDefault,
-            def(id).tier,
-            def(id).receiptDefault,
-            toggle(value[key], (v) => set({ [key]: v } as Partial<BehaviorEntry>), def(id).labelDefault)
+            toggle(
+              value[key],
+              (v) => set({ [key]: v } as Partial<BehaviorEntry>),
+              t(def(id).labelKey, { defaultValue: def(id).labelDefault })
+            )
           )
         )}
       </div>

@@ -41,6 +41,7 @@
     "week4-smoke": "node scripts/week4-smoke.mjs",
     "i18n:batchd-parity": "tsx scripts/i18n-parity.ts",
     "i18n:parity": "tsx scripts/i18n-parity.ts",
+    "i18n:coverage": "tsx scripts/i18n-coverage.ts",
     "i18n:fill": "tsx scripts/i18n-fill-missing.ts",
     "media:optimize-inbox": "node scripts/optimize-media-inbox.mjs",
     "mobile": "npm --prefix apps/mobile start",

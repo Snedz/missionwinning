@@ -1,4 +1,5 @@
 'use client';
+import { useTranslation } from 'react-i18next';
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -54,6 +55,7 @@ function RatingRow({
 }
 
 export function DailyCheckIn() {
+  const { t } = useTranslation();
   const [sleep, setSleep] = useState(3);
   const [mood, setMood] = useState(3);
   const [stress, setStress] = useState(3);
@@ -79,15 +81,17 @@ export function DailyCheckIn() {
 
   useEffect(() => {
     refreshConsistency();
-    const t = getTodayCheckIn();
-    if (t) {
-      setSleep(t.sleep);
-      setMood(t.mood);
-      setStress(t.stress);
-      setEnergy(t.energy);
-      setSoreness(t.soreness ?? 3);
-      setBehaviors(t.behaviors ?? {});
-      setNote(t.note || '');
+    // Named `today`, not `t` — `t` is the translator now, and a shadow that
+    // compiles is exactly the kind that survives review.
+    const today = getTodayCheckIn();
+    if (today) {
+      setSleep(today.sleep);
+      setMood(today.mood);
+      setStress(today.stress);
+      setEnergy(today.energy);
+      setSoreness(today.soreness ?? 3);
+      setBehaviors(today.behaviors ?? {});
+      setNote(today.note || '');
       setSaved(true);
     }
   }, []);
@@ -115,37 +119,45 @@ export function DailyCheckIn() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Daily Check-In</CardTitle>
+        <CardTitle>{t('mindCheckInTitle', { defaultValue: 'Daily Check-In' })}</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Sleep, mood, stress, energy, soreness — 1 (low) to 5 (great). Feeds readiness on Today and
-          Active. Free for all.
+          {t('mindCheckInSubtitle', {
+            defaultValue:
+              'Sleep, mood, stress, energy, soreness — 1 (low) to 5 (great). Feeds readiness on Today and Active. Free for all.',
+          })}
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <RatingRow label="Sleep quality last night" value={sleep} onChange={setSleep} />
-        <RatingRow label="Mood today" value={mood} onChange={setMood} />
-        <RatingRow label="Stress level" value={stress} onChange={setStress} />
-        <RatingRow label="Energy" value={energy} onChange={setEnergy} />
-        <RatingRow label="Muscle soreness" value={soreness} onChange={setSoreness} />
+        <RatingRow label={t('mindCheckInSleep', { defaultValue: 'Sleep quality last night' })} value={sleep} onChange={setSleep} />
+        <RatingRow label={t('mindCheckInMood', { defaultValue: 'Mood today' })} value={mood} onChange={setMood} />
+        <RatingRow label={t('mindCheckInStress', { defaultValue: 'Stress level' })} value={stress} onChange={setStress} />
+        <RatingRow label={t('mindCheckInEnergy', { defaultValue: 'Energy' })} value={energy} onChange={setEnergy} />
+        <RatingRow label={t('mindCheckInSoreness', { defaultValue: 'Muscle soreness' })} value={soreness} onChange={setSoreness} />
         <BehaviorStrip value={behaviors} onChange={setBehaviors} />
         <div>
           <label htmlFor="daily-checkin-note" className="text-sm">
-            Optional note
+            {t('mindCheckInNoteLabel', { defaultValue: 'Optional note' })}
           </label>
           <textarea
             id="daily-checkin-note"
             value={note}
             onChange={(e) => setNote(e.target.value)}
             className="w-full mt-1 min-h-[60px] rounded border border-border bg-background px-3 py-2 text-sm"
-            placeholder="One line — what helped or what you need tomorrow"
+            placeholder={t('mindCheckInNotePlaceholder', {
+              defaultValue: 'One line — what helped or what you need tomorrow',
+            })}
           />
         </div>
         <Button variant="fitness" className="min-h-[44px] w-full" onClick={handleSave}>
-          {saved ? "Update Today's Check-In" : 'Save Check-In'}
+          {saved
+            ? t('mindCheckInUpdate', { defaultValue: "Update Today's Check-In" })
+            : t('mindCheckInSave', { defaultValue: 'Save Check-In' })}
         </Button>
         {saved && (
           <p className="text-xs text-primary text-center">
-            Saved for today — adjusts readiness (within honest bounds).
+            {t('mindCheckInSaved', {
+              defaultValue: 'Saved for today — adjusts readiness (within honest bounds).',
+            })}
           </p>
         )}
         {/* Regularity, not a duration, and never a debt figure we cannot

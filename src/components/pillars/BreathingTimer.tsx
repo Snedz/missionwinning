@@ -1,4 +1,5 @@
 'use client';
+import { useTranslation } from 'react-i18next';
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -35,6 +36,7 @@ const PATTERNS: Record<BreathingPattern, { name: string; phases: { label: string
 };
 
 export function BreathingTimer() {
+  const { t } = useTranslation();
   const [pattern, setPattern] = useState<BreathingPattern>('box');
   const [running, setRunning] = useState(false);
   const [phaseIdx, setPhaseIdx] = useState(0);
@@ -78,8 +80,13 @@ export function BreathingTimer() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Breathing Timer</CardTitle>
-        <p className="text-sm text-muted-foreground">Free guided patterns — no audio required. {targetCycles} cycles.</p>
+        <CardTitle>{t('mindBreathingTitle', { defaultValue: 'Breathing Timer' })}</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          {t('mindBreathingSubtitle', {
+            count: targetCycles,
+            defaultValue: `Free guided patterns — no audio required. ${targetCycles} cycles.`,
+          })}
+        </p>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex gap-2 flex-wrap">
