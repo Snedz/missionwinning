@@ -11,8 +11,8 @@
  * picker and the report.
  */
 
+import { reloadAfterRestore } from '@/lib/storage/reloadAfterRestore';
 import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { FileSpreadsheet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,7 +24,6 @@ import { importWorkoutCsvText } from '@/lib/workout/importCsvRestore';
 
 export function ProfileImportCard() {
   const { t } = useTranslation();
-  const router = useRouter();
   const { toast } = useToast();
   const [showDrop, setShowDrop] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -65,12 +64,12 @@ export function ProfileImportCard() {
             duplicates: result.duplicates ?? 0,
           }),
         });
-        setTimeout(() => router.refresh(), 1200);
+        reloadAfterRestore();
       } finally {
         setBusy(false);
       }
     },
-    [busy, router, t, toast]
+    [busy, t, toast]
   );
 
   return (

@@ -6,6 +6,60 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — The restore the app forgets, then destroys (`.205`)
+
+The worst defect the `.204`–`.213` audits found, because it destroys the data an
+athlete deliberately asked the app to protect.
+
+[`backup.ts`](src/lib/backup.ts) and
+[`importCsvRestore.ts`](src/lib/workout/importCsvRestore.ts) write the zustand
+persist payload straight to `WORKOUT_STORE_KEY` and, by explicit design, leave the
+refresh to the caller — the pure merge stays testable, the browser half stays
+thin. That seam is right; what the callers did with it was not. Both ran
+`setTimeout(() => router.refresh(), 1200)`, and **`router.refresh()` preserves
+client-side React state by design**. The store was already hydrated. `persist`
+re-reads storage only on rehydrate. Nothing asked it to rehydrate.
+
+    New phone → restore a backup of 300 workouts → toast says "300 workouts
+    merged, 12 settings restored. Reloading…" → nothing reloads → History and
+    Today still show empty → the athlete logs one set → `persist` serialises its
+    in-memory state over the file → **all 300 workouts are gone, permanently.**
+
+Identical for Strong/Hevy CSV import. Both toasts end *"Reloading…"*, so the
+athlete waits, sees the old history, and concludes the restore failed — which is
+the more merciful reading of what happened.
+
+[`backup.test.ts`](src/lib/backup.test.ts) covers `mergeBackup` thoroughly and
+could not see this: **the merge was always correct.** The defect lived entirely in
+the sentence after it. That is why the new guard reads call sites rather than
+merge results — "which function did you call after writing storage" is a fact
+about the code, not about a return value.
+
+New [`reloadAfterRestore.ts`](src/lib/storage/reloadAfterRestore.ts) gives the
+rule a name and one home: *a function that writes storage behind a live store
+must say how the store learns.* A full document reload, not
+`persist.rehydrate()` — rehydrating repopulates the store, but every other module
+that cached a read at mount (history analytics, the Today digest, challenges)
+would still hold pre-restore values, and the copy has been promising a reload the
+whole time.
+
+The guard also pins the copy: a toast that says "Reloading…" must be attached to
+something that reloads.
+
+Two mutants, both killed with three failures each: `restore-without-rehydrate`,
+`csv-import-without-rehydrate`.
+
+**Process note, recorded because it is the second occurrence.** My mutant cleanup
+used `git checkout --` on files holding *uncommitted* work, which silently
+reverted the fix itself — exactly what happened in `.202`. The new guard caught it
+on the next run, which is the guard doing its job, but the rule is now explicit:
+**commit before mutating, every time.** A falsification run that can destroy the
+thing it is verifying is not a safe procedure.
+
+Tests 1035→1041.
+
+---
+
 ## 2026-07-30 — The invite that discarded its own code (`.204`)
 
 The beta gate is red because there are fewer than 10 users. The mechanism for
