@@ -61,6 +61,9 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      - name: Route contract tests
+        run: npm run test:routes
+
       - name: Dependency audit (high)
         run: npm audit --audit-level=high
         continue-on-error: true
