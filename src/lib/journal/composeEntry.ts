@@ -23,6 +23,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import type { Debrief, DebriefLine } from '@/lib/coach/debrief';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
+import { formatBehaviorFooter } from '@/lib/behaviors';
 
 export interface EntryFragment {
   /** 'session' = the whole-session jot field; 'exercise' = a per-exercise note. */
@@ -39,6 +40,12 @@ export interface SessionEntryCheckIn {
   stress?: number;
   energy?: number;
   soreness?: number;
+  /**
+   * `.190` behaviors, pre-formatted ("Caffeine 2", "Creatine yes"). Strings
+   * rather than the raw entry because these are counts and times, not ratings —
+   * the `/5` treatment the fields above get would misreport them.
+   */
+  behaviors?: string[];
 }
 
 export interface ComposedSessionEntry {
@@ -87,7 +94,10 @@ export function collectFragments(
 }
 
 function checkInStrip(
-  checkIn: Pick<MindCheckIn, 'sleep' | 'mood' | 'stress' | 'energy' | 'soreness'> | null | undefined
+  checkIn:
+    | Pick<MindCheckIn, 'sleep' | 'mood' | 'stress' | 'energy' | 'soreness' | 'behaviors'>
+    | null
+    | undefined
 ): SessionEntryCheckIn | undefined {
   if (!checkIn) return undefined;
   const rated = (n: number | undefined): n is number => typeof n === 'number' && n >= 1 && n <= 5;
@@ -97,13 +107,20 @@ function checkInStrip(
   if (rated(checkIn.stress)) strip.stress = checkIn.stress;
   if (rated(checkIn.energy)) strip.energy = checkIn.energy;
   if (rated(checkIn.soreness)) strip.soreness = checkIn.soreness;
+  // Behaviors bypass the 1–5 gate entirely — it would drop every boolean and
+  // read a count of zero servings as "not answered".
+  const behaviors = formatBehaviorFooter(checkIn.behaviors);
+  if (behaviors.length > 0) strip.behaviors = behaviors;
   return Object.keys(strip).length > 0 ? strip : undefined;
 }
 
 export function composeSessionEntry(
   debrief: Pick<Debrief, 'lines'>,
   fragments: EntryFragment[],
-  checkIn?: Pick<MindCheckIn, 'sleep' | 'mood' | 'stress' | 'energy' | 'soreness'> | null
+  checkIn?: Pick<
+    MindCheckIn,
+    'sleep' | 'mood' | 'stress' | 'energy' | 'soreness' | 'behaviors'
+  > | null
 ): ComposedSessionEntry {
   return {
     fragments: fragments

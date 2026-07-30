@@ -37,8 +37,19 @@ export interface SessionJournalEntry {
    * Exercise-note fragments arrive prefixed "exercise name: " (see composeEntry).
    */
   fragments?: string[];
-  /** Check-in strip captured at finish — only fields the athlete rated. */
-  checkIn?: { sleep?: number; mood?: number; stress?: number; energy?: number; soreness?: number };
+  /**
+   * Check-in strip captured at finish — only fields the athlete rated, plus
+   * (`.190`) pre-formatted behavior strings, which are counts and times rather
+   * than 1–5 ratings and so are kept apart from them.
+   */
+  checkIn?: {
+    sleep?: number;
+    mood?: number;
+    stress?: number;
+    energy?: number;
+    soreness?: number;
+    behaviors?: string[];
+  };
   /** 1–5 from the victory sheet's feel buttons, when the athlete tapped one. */
   feel?: number;
   savedAt: string;

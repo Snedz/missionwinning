@@ -125,3 +125,40 @@ describe('composeSessionEntry', () => {
     );
   });
 });
+
+/**
+ * `.190` — behaviors reach the journal entry. The 1–5 gate that guards the
+ * rating fields would drop every one of them, so they take a separate path.
+ */
+describe('behaviors on the entry strip', () => {
+  it('counts, times and yes/no answers survive the ratings-only gate', () => {
+    const entry = composeSessionEntry(DEBRIEF, [], {
+      sleep: 4,
+      mood: 0,
+      stress: 0,
+      energy: 0,
+      behaviors: { caffeineServings: 2, creatine: true, bedTime: '23:00' },
+    });
+    assert.equal(entry.checkIn?.sleep, 4);
+    assert.ok(entry.checkIn?.behaviors?.includes('Caffeine 2'));
+    assert.ok(entry.checkIn?.behaviors?.includes('Creatine yes'));
+    assert.ok(entry.checkIn?.behaviors?.includes('Bed 23:00'));
+  });
+
+  it('zero servings is carried, not read as "not answered"', () => {
+    const entry = composeSessionEntry(DEBRIEF, [], {
+      sleep: 0,
+      mood: 0,
+      stress: 0,
+      energy: 0,
+      behaviors: { alcoholServings: 0 },
+    });
+    // No ratings at all, but the day still said something.
+    assert.deepEqual(entry.checkIn?.behaviors, ['Alcohol 0']);
+  });
+
+  it('a day with no behaviors adds no behavior lines', () => {
+    const entry = composeSessionEntry(DEBRIEF, [], { sleep: 3, mood: 3, stress: 3, energy: 3 });
+    assert.equal(entry.checkIn?.behaviors, undefined);
+  });
+});

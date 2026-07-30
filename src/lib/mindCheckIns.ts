@@ -5,9 +5,19 @@
 
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
+import { mergeBehaviors, normalizeBehaviors, type BehaviorEntry } from '@/lib/behaviors';
 
 export const MIND_CHECKINS_KEY = STORAGE_KEYS.mindCheckIns;
-const MAX_ENTRIES = 30;
+/**
+ * Ninety days, not thirty.
+ *
+ * Behavior correlations need paired observations on both sides of a split, and
+ * at three or four sessions a week a thirty-day window can never reach the
+ * threshold — the feature would have silently promised something the storage
+ * cap made impossible. Local-only data; the cost of the larger window is a few
+ * kilobytes.
+ */
+const MAX_ENTRIES = 90;
 
 export type MindCheckIn = {
   date: string; // YYYY-MM-DD local
@@ -17,6 +27,11 @@ export type MindCheckIn = {
   energy: number;
   /** Optional muscle soreness 1–5 (Wave 11). */
   soreness?: number;
+  /**
+   * The behavior journal for this day (`.190`) — counts, times and yes/no
+   * answers, which is why it cannot live among the 1–5 ratings above.
+   */
+  behaviors?: BehaviorEntry;
   note?: string;
 };
 
@@ -32,6 +47,14 @@ function clampRating(n: number): number {
   return Math.min(5, Math.max(1, Math.round(n)));
 }
 
+/**
+ * Rebuilds a check-in field by field — and that is the hazard worth naming.
+ *
+ * This is a **whitelist**, not a spread, and `loadCheckIns` maps every stored
+ * entry through it. A field that exists in storage but is not named here is
+ * destroyed on the next read, with no error anywhere. `upsertTodayPartial`
+ * below has the same property. Adding a field means editing both.
+ */
 export function normalizeCheckIn(raw: Partial<MindCheckIn> & { date: string }): MindCheckIn {
   return {
     date: raw.date,
@@ -43,6 +66,9 @@ export function normalizeCheckIn(raw: Partial<MindCheckIn> & { date: string }): 
       raw.soreness != null && Number.isFinite(raw.soreness)
         ? clampRating(raw.soreness)
         : undefined,
+    // Not clampRating: behaviors are counts, times and booleans. Zero servings
+    // is a real answer, and the 1–5 clamp would rewrite it to 1.
+    behaviors: normalizeBehaviors(raw.behaviors),
     note: raw.note?.trim() || undefined,
   };
 }
@@ -75,6 +101,11 @@ export function saveCheckIn(data: MindCheckIn): MindCheckIn {
 /**
  * Merge partial fields into today's check-in (creates if missing).
  * Session sheet uses this for soreness/sleep/motivation without wiping mood/stress.
+ *
+ * Same whitelist hazard as `normalizeCheckIn`: this enumerates every field it
+ * preserves. A victory-sheet reply chip writes one energy rating through here,
+ * so an unlisted field would be erased by a tap the athlete makes hours after
+ * logging it.
  */
 export function upsertTodayPartial(
   partial: Partial<Omit<MindCheckIn, 'date'>>,
@@ -90,6 +121,7 @@ export function upsertTodayPartial(
       stress: partial.stress ?? existing?.stress ?? 3,
       energy: partial.energy ?? existing?.energy ?? 3,
       soreness: partial.soreness ?? existing?.soreness,
+      behaviors: mergeBehaviors(partial.behaviors, existing?.behaviors),
       note: partial.note !== undefined ? partial.note : existing?.note,
     })
   );
