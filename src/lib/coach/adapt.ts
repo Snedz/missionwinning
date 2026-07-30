@@ -167,11 +167,54 @@ export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): Co
 
   sessions = markSessionsFromExternalWorkouts({ ...plan, sessions }, ctx.history, weekStart).sessions;
 
+  /*
+   * `.207` — the revision is a claim, so it must be earned.
+   *
+   * This used to return `plan.revision + 1` unconditionally, and
+   * `useCoachPlan` guards its save with `next.revision !== existing.revision`
+   * — which was therefore always true. Every mount rewrote the plan and called
+   * `scheduleCoachPush()`.
+   *
+   * Downstream the damage is a trust claim: `hasCoachAdaptationSignal` is
+   * `revision > 1`, so `CoachAdaptBanner` told **every athlete, on every visit,
+   * always** that the coach had adapted their week — including when nothing had
+   * changed. `.127`: nothing said on thin data.
+   *
+   * An unchanged week is not an adaptation. Comparing the sessions is the only
+   * honest test, because that is the entire output this function produces.
+   */
+  if (sessionsEqual(plan.sessions, sessions)) return plan;
+
   return {
     ...plan,
     revision: plan.revision + 1,
     sessions,
   };
+}
+
+/**
+ * Did the week actually change?
+ *
+ * Field-wise rather than `JSON.stringify`, because key order is not a fact about
+ * the plan and a reordered spread would read as an adaptation.
+ */
+function sessionsEqual(a: PlanSession[], b: PlanSession[]): boolean {
+  if (a.length !== b.length) return false;
+  return a.every((s, i) => {
+    const o = b[i];
+    return (
+      s.id === o.id &&
+      s.dayOffset === o.dayOffset &&
+      s.status === o.status &&
+      s.kind === o.kind &&
+      s.name === o.name &&
+      s.estMinutes === o.estMinutes &&
+      // The recovery swap replaces a session's whole exercise list, so comparing
+      // only the header would call a changed week unchanged.
+      s.exercises.length === o.exercises.length &&
+      s.exercises.every((ex, j) => ex.exerciseId === o.exercises[j].exerciseId)
+    );
+  });
 }
 
 export function regenerateFutureSessions(plan: CoachPlan, ctx: CoachContext, todayOffset: number): CoachPlan {
