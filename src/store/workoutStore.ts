@@ -610,6 +610,26 @@ export const useWorkoutStore = create<WorkoutState>()(
         elapsedSeconds: state.elapsedSeconds,
       }),
       onRehydrateStorage: () => (state, error) => {
+        /*
+         * `.201` — drop an `activeWorkout` that is not a usable session.
+         *
+         * `partialize` persists whatever shape the store held, and what comes
+         * back is whatever is in device storage — an older build's shape, a
+         * half-written record, a value edited by hand. Every consumer then did
+         * `activeWorkout.exercises[i]`, so a non-object or a missing
+         * `exercises` array threw on the render path, and with no nested
+         * `error.tsx` boundary the whole route became the global error screen.
+         *
+         * Verified by the `@gate` cases in `logger-depth.spec.ts`: before this,
+         * `activeWorkout: 42` and `{ id: 'x' }` both blanked `/active` — the
+         * logger, which is the product.
+         *
+         * Sanitising here rather than at each read site is the point: one check
+         * covers every consumer, including the ones written next year.
+         */
+        if (state && !isUsableActiveWorkout(state.activeWorkout)) {
+          state.activeWorkout = null;
+        }
         syncActiveFlag(state?.activeWorkout ?? null);
         // NOTE: with a synchronous storage (i.e. every browser) zustand runs this
         // callback *inside* create(), before `useWorkoutStore` is assigned. Touching
@@ -625,6 +645,25 @@ export const useWorkoutStore = create<WorkoutState>()(
     }
   )
 );
+
+/**
+ * Is this something the logger can actually render?
+ *
+ * Deliberately structural rather than exhaustive: the screens index
+ * `exercises[i].sets[j]`, so an array of exercises each with an array of sets is
+ * what "usable" means here. Anything else is dropped rather than repaired —
+ * a half-restored session that silently loses sets would be worse than a clean
+ * empty state, and the athlete can start again in one tap.
+ */
+export function isUsableActiveWorkout(value: unknown): boolean {
+  if (value === null || value === undefined) return true; // no session is fine
+  if (typeof value !== 'object') return false;
+  const w = value as { exercises?: unknown };
+  if (!Array.isArray(w.exercises)) return false;
+  return w.exercises.every(
+    (ex) => !!ex && typeof ex === 'object' && Array.isArray((ex as { sets?: unknown }).sets)
+  );
+}
 
 function markHydrated(): void {
   if (useWorkoutStore.getState().hasHydrated) return;

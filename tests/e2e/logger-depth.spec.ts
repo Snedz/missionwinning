@@ -52,3 +52,48 @@ test.describe('Logger depth @gate', () => {
     });
   });
 });
+
+/**
+ * The logger is the product. It must not blank.
+ *
+ * `.201` removed a `throw` from `MobileNav`'s render path and six
+ * `activeWorkout!` assertions from `/active`'s handlers. Both were "safe" in the
+ * sense that no known path reached them — but the app is fully client-rendered
+ * with no nested `error.tsx` segment boundaries (`app/error.tsx:8-10`), so any
+ * render throw blanks the whole route rather than degrading one component.
+ *
+ * Corrupt-storage resilience was unit-tested per parser and never end to end.
+ * This is the outside view: whatever is in device storage, the logger renders
+ * something a person can use.
+ */
+test.describe('Logger resilience @gate', () => {
+  for (const [what, value] of [
+    ['unparseable JSON', '{ not json at all'],
+    ['valid JSON of the wrong shape', '{"state":{"activeWorkout":42},"version":0}'],
+    ['a null active workout', '{"state":{"activeWorkout":null},"version":0}'],
+    ['an active workout with no exercises array', '{"state":{"activeWorkout":{"id":"x"}},"version":0}'],
+  ] as const) {
+    test(`/active survives ${what} in persisted storage @gate`, async ({ page }) => {
+      await seedLegacyOnboarding(page);
+      await page.evaluate((raw) => {
+        localStorage.setItem('workout-tracker-storage', raw);
+      }, value);
+
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+
+      await page.goto('/active', { waitUntil: 'networkidle' });
+
+      // Something usable rendered — not the generic error screen, and not a blank.
+      await expect(page.locator('main, [role="main"]').first()).toBeVisible({ timeout: 15_000 });
+      await expect(
+        page.getByText(/something went wrong|unexpected error/i)
+      ).toHaveCount(0);
+
+      // And the bottom bar, which is the thing that used to take the app down.
+      await expect(page.locator('nav[aria-label="Primary"]')).toBeVisible();
+
+      expect(errors, `uncaught page errors: ${errors.join(' · ')}`).toEqual([]);
+    });
+  }
+});

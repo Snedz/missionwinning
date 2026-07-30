@@ -183,7 +183,11 @@ export function ProgramTemplatesPanel({
     if (p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)) return true;
     return p.sessions.some((s) => s.name.toLowerCase().includes(q));
   });
-  const categoryMeta = PROGRAM_CATEGORIES.find((c) => c.id === category)!;
+  // `?? PROGRAM_CATEGORIES[0]`, not `!`: the assertion was dereferenced unguarded
+  // at `categoryMeta.description` below, so a category id outgrowing the catalog
+  // threw on the render path rather than falling back to a real category.
+  const categoryMeta =
+    PROGRAM_CATEGORIES.find((c) => c.id === category) ?? PROGRAM_CATEGORIES[0];
 
   const quickOptions = useMemo(() => {
     const source =

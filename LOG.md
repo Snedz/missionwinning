@@ -2,9 +2,61 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.196`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
+**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.197`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
 
 ---
+
+## 2026-07-30 — The screen that must not break (`.201`)
+
+The app is fully client-rendered and has **no nested `error.tsx` segment
+boundaries** — `app/error.tsx:8-10` says so outright. That single fact is what
+makes every finding here severe: a throw anywhere on a render path does not
+degrade one component, it replaces the entire route with the global error
+screen.
+
+**`MobileNav` threw inside `useMemo`.** A `MOBILE_TAB_HREFS` entry missing from
+`PRIMARY_NAV` blanked *every mobile screen* — the bar is on all of them. A typo
+in a list of five strings would have taken out the product on phones. It now
+drops the unresolvable href (four tabs beat zero screens) and
+[`mobileNavTabs.test.ts`](src/lib/mobileNavTabs.test.ts) catches the mismatch
+where failing is free. A render-path throw is not a safety net; it *is* the
+failure.
+
+**Six `activeWorkout!` assertions on the logger.** Each was true in practice —
+the handlers only fire from a rendered session — but this is the one screen the
+product promises never breaks, and an assertion is a promise the compiler stops
+checking. Narrowed once per handler, returning the values the callers already
+handle.
+
+**Then the e2e guard found something neither audit had.** A `@gate` case that
+loads `/active` with four kinds of corrupt persisted storage: two of them
+**blanked the screen**. `activeWorkout: 42` and `{ id: 'x' }` — valid JSON, wrong
+shape — both produced *"That wasn't supposed to happen."* Every consumer did
+`activeWorkout.exercises[i].sets[j]`, and `partialize` persists whatever shape
+the store held while what comes *back* is whatever is on the device: an older
+build's shape, a half-written record, a quota-truncated string.
+
+Fixed at rehydration with `isUsableActiveWorkout` — one check covering every
+consumer, including the ones written next year, rather than a guard at each read
+site. It **rejects the whole session when any exercise is unusable** rather than
+filtering: a half-restored session that silently loses sets is worse than a clean
+empty state, because the athlete can start again in one tap but cannot recover
+data the app quietly dropped.
+
+Also: `healthImport.ts` parsed JSON with no guard, contained only because its one
+caller happens to sit inside an upload queue's catch — a property of the caller,
+not the function. And `ProgramTemplatesPanel`'s `.find(…)!` was dereferenced
+unguarded twenty lines later.
+
+Corrupt-storage resilience had been unit-tested per parser and **never end to
+end**, which is exactly why the two store failures survived: the parsers were all
+fine, and the crash was in what happened to the parsed value afterwards.
+
+Killed: `nav-tab-with-no-item`, `shape-check-accepts-anything`,
+`sets-not-checked`. No mutant survived — but the e2e guard found two real
+defects during construction, which is the same thing arriving earlier.
+
+Tests 1003→1012; `@gate` e2e 46→50, plus 33 a11y. Gate 6.1 min.
 
 ## 2026-07-30 — The guards that never ran (`.200`)
 
@@ -240,78 +292,3 @@ the widened sweep found thirty real offenders the `/active`-only version never
 saw, and at 09:00 `dayReviewMayMount` means there is no card to measure.
 
 Gate e2e 39→46. Tests 988, unchanged — this PR is e2e and script guards.
-
-## 2026-07-30 — One pass over the day (`.197`)
-
-Today grew a card at a time, and each card read the day for itself. By `.196` a
-single render ran `loadCheckIns()` **five times**, computed
-`computeBehaviorImpacts(history, checkIns)` **twice with byte-identical
-arguments**, and built the entire weekly debrief on a Tuesday in order to read
-`isFullDebrief` off it and discover it was not the weekend.
-
-**The fix is deliberately not per-card memoisation** — that is what produced
-this. Four correct caches over four identical computations is still four
-computations, and each one hides its cost inside a component where the
-duplication is invisible. New [`todayDigest.ts`](src/lib/today/todayDigest.ts)
-owns the day and the cards read fields off it; new
-[`useTodayDigest`](src/hooks/useTodayDigest.ts) reads storage once, holds it in
-state (device storage is not a React input — a quick-log write has to trigger
-the re-read explicitly) and exposes `refresh()`.
-
-`isFullDebriefDay` is pure date arithmetic and **is** the debrief's own test,
-not a heuristic that could drift from it — pinned by a test that runs both
-across a whole week. So `buildWeeklyDebrief` is now imported dynamically and
-only on Sunday or Monday. It is injected rather than imported into the digest
-for one reason: *"it ran zero times"* is a property a test can assert, and a
-comment claiming "we skip this midweek" is not.
-
-New [`todayBlockBudget.ts`](src/lib/today/todayBlockBudget.ts):
-`TODAY_MAX_TOP_LEVEL_BLOCKS = 7` and `planTodayBlocks`. Every feature since
-`.170` added a permanent `+1` to this screen and none removed anything, because
-no PR is ever the one that made Today long — a commissioned athlete on a Sunday
-evening with a re-entry card saw eleven top-level blocks, which is a feed, not a
-dashboard. Overflow is **not deletion**: blocks past the budget spill into the
-"Today details" disclosure that already exists. Pinned blocks (header, beta
-banner, re-entry) never spill, because a budget that can hide the page header is
-a bug wearing a constraint's hat. Priority decides *what spills*, never *what
-order things read in* — sorting the visible screen would make cards jump between
-renders as their conditions flip. The number is **a judgement, not a
-measurement**, and it lives alone in one file precisely so it can be argued with.
-
-**A silent correctness bug, found while pulling the catalog off the Today
-chain.** `buildMuscleHeatmap` resolved muscles with `EXERCISES.find()` against a
-catalog whose extended modules load lazily — only the base set exists at import
-time — so **every session built from an extended-catalog exercise contributed
-zero**, and the athlete saw those muscles reported as untrained. No error, no
-warning, and no failing test, because the fixture had always used `bench-press`.
-Now stored groups first (`resolveMajorMuscleGroups`, as `readinessIndex` already
-did), catalog as the fallback for logs written before the snapshot existed. The
-first attempt at this deleted the fallback and regressed those old logs; the
-existing test caught it, which is the system working.
-
-Also: `shareCard` moved to `await import()` inside the handler (canvas
-rendering, paid for only by someone who taps Share); `totalVolume` and
-`getTrainingStreak` memoised — both walk the whole history and both ran on every
-render, including every keystroke in the customise dialog; `StaggerReveal`
-70→50ms with the index capped at 6, so the last block fades in at 340ms instead
-of **740ms** — past roughly 400ms a delay stops reading as motion and starts
-reading as waiting. `TodayWeekRecapCard`'s `forceFull` prop had **zero callers
-anywhere** and is deleted under the `.195` rule.
-
-Guards: [`todayPerf.test.ts`](src/lib/todayPerf.test.ts) — no static import of
-`shareCard` or `weeklyDebrief` from the Today path, `loadCheckIns` called
-**only** in the digest hook, and each correlation with exactly one call site.
-Plus a 32-combination budget matrix over the conditional cards, and a heatmap
-fixture whose exercise the base catalog has never heard of.
-
-Seven mutants; **one survived first run.** `two-identical-impact-passes`
-recomputed `computeBehaviorImpacts` for the evening review and walked through the
-behavioural test, because "ran exactly once" is *not observable through the
-return value* — a second pass over the same arrays produces an equal result. The
-property lives in the number of call sites, so that is now what is asserted, and
-the guard says plainly that it is a shape rule and why injection was not the
-answer here. Killed on first run: `tuesday-pays-for-sunday`,
-`budget-as-suggestion`, `header-spilled-into-more`, `catalog-static-again`,
-`card-reads-storage-again`, `heatmap-forgets-the-log`.
-
-Tests 961→988.

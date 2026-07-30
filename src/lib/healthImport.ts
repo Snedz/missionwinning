@@ -196,7 +196,20 @@ export function parseHealthImportFile(text: string): HealthImportRow[] {
     return parseHealthImportCsv(trimmed);
   }
 
-  const parsed = JSON.parse(trimmed) as unknown;
+  /*
+   * `.201` — this parsed without a guard.
+   *
+   * It was contained only because its one caller happens to sit inside an upload
+   * queue's catch. That is a property of the caller, not of this function, and
+   * the next direct caller gets an uncaught throw on whatever path it is on.
+   * Malformed input is the normal case for a file a user chose off their phone.
+   */
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(trimmed);
+  } catch {
+    throw new Error('That file is not valid JSON or CSV.');
+  }
   const rawRows = extractRowArray(parsed);
   const rows: HealthImportRow[] = [];
   for (const raw of rawRows) {
