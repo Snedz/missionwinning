@@ -24,6 +24,7 @@
  * Pure and dependency-free: same numbers on web, Android and iOS.
  */
 
+import { countsTowardStrengthEstimate } from '@/lib/workout/setKind';
 import { brzycki1rm, epley1rm } from '@/lib/calcHelpers';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -86,9 +87,9 @@ function utcDay(d: string | Date): string {
   return new Date(d).toISOString().slice(0, 10);
 }
 
-/** Sets that count as evidence of strength. */
+/** Sets that count as evidence of strength — one definition, in `setKind.ts` (`.208`). */
 function isCountable(kind: string | undefined): boolean {
-  return kind !== 'warmup' && kind !== 'failure';
+  return countsTowardStrengthEstimate(kind);
 }
 
 /**

@@ -10,6 +10,7 @@
  * Pure, no imports beyond types.
  */
 
+import { countsTowardStrengthEstimate } from '@/lib/workout/setKind';
 export interface CountableSet {
   reps: number;
   weight: number;
@@ -37,6 +38,6 @@ export function workingSets<T extends CountableSet>(sets: T[]): T[] {
 /** Working sets that can support a load estimate: real weight, real reps, not to failure. */
 export function loadBearingSets<T extends CountableSet>(sets: T[]): T[] {
   return sets.filter(
-    (s) => s.kind !== 'warmup' && s.kind !== 'failure' && s.weight > 0 && s.reps > 0
+    (s) => countsTowardStrengthEstimate(s.kind) && s.weight > 0 && s.reps > 0
   );
 }

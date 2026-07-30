@@ -293,6 +293,19 @@ const SINGLE_DEFINITION: { concept: string; pattern: RegExp; home: string; use: 
     use: 'startOfLocalWeek / localWeekKey',
   },
   {
+    /*
+     * `.208` — four filters for one quantity, and `percentLoad.ts` claimed in
+     * prose that they all "quote the same number". The PR chip included sets
+     * taken to failure while the chart, the debrief and the prescribed load all
+     * excluded them, so the celebration fired on a number the rest of the app
+     * refused to confirm.
+     */
+    concept: 'sets that support a strength estimate',
+    pattern: /kind\s*!==\s*'warmup'\s*&&\s*s?\.?kind\s*!==\s*'failure'/,
+    home: 'src/lib/workout/setKind.ts',
+    use: 'countsTowardStrengthEstimate',
+  },
+  {
     // Five copies, differing only in whether they guarded NaN.
     concept: 'local YYYY-MM-DD formatting',
     pattern: /getMonth\(\)\s*\+\s*1\)\.padStart/,
