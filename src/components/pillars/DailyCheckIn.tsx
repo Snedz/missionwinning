@@ -12,6 +12,8 @@ import {
 } from '@/lib/mindCheckIns';
 import { BehaviorStrip } from '@/components/pillars/BehaviorStrip';
 import type { BehaviorEntry } from '@/lib/behaviors';
+import { loadCheckIns } from '@/lib/mindCheckIns';
+import { computeSleepConsistency, consistencyLine } from '@/lib/sleepConsistency';
 
 function RatingRow({
   label,
@@ -55,8 +57,15 @@ export function DailyCheckIn() {
   const [behaviors, setBehaviors] = useState<BehaviorEntry>({});
   const [note, setNote] = useState('');
   const [saved, setSaved] = useState(false);
+  const [consistency, setConsistency] = useState<string | null>(null);
+
+  const refreshConsistency = () => {
+    const c = computeSleepConsistency(loadCheckIns());
+    setConsistency(c ? consistencyLine(c) : null);
+  };
 
   useEffect(() => {
+    refreshConsistency();
     const t = getTodayCheckIn();
     if (t) {
       setSleep(t.sleep);
@@ -86,6 +95,8 @@ export function DailyCheckIn() {
     // data and have no business riding a win record that other surfaces read.
     logPillarWin('mind', 'Daily check-in', { sleep, mood, stress, energy, soreness });
     setSaved(true);
+    // Tonight's bed time can change the picture, so recompute after the write.
+    refreshConsistency();
   };
 
   return (
@@ -123,6 +134,11 @@ export function DailyCheckIn() {
           <p className="text-xs text-primary text-center">
             Saved for today — adjusts readiness (within honest bounds).
           </p>
+        )}
+        {/* Silent until five nights of bed times exist — regularity, not a
+            duration, and never a debt figure we cannot honestly measure. */}
+        {consistency && (
+          <p className="text-xs leading-relaxed text-muted-foreground">{consistency}</p>
         )}
       </CardContent>
     </Card>

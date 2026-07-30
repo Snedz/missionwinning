@@ -6,6 +6,42 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — The number we will not print (`.191`)
+
+The screenshot that started this wave said *"sleep debt is now 2h 7m 48s."*
+This ships the honest version of that, and the interesting work was deciding
+what **not** to build.
+
+We cannot compute sleep debt. There is no HealthKit web API on iOS and no
+background sync in a PWA, so the only sleep signal available is what the athlete
+taps — and self-reported sleep timing disagrees with measured sleep by an hour
+or more, which makes seconds of resolution theatre rather than confidence. A
+quantified physiological deficit is also the shape of output that reads as a
+device claim rather than a wellness feature, and the FDA's 2026 guidance is
+explicit that UI outputs count as claims.
+
+So [`sleepConsistency.ts`](src/lib/sleepConsistency.ts) reports **regularity**,
+which is the better metric anyway: in a 60,000-person accelerometry study, how
+consistent sleep timing was predicted outcomes more strongly than how long
+people slept. Two taps a day produce it, and no wearable company owns it.
+
+Banded, never a stopwatch: `steady | drifting | scattered` from the median
+absolute deviation of bed times, plus "N of your last 7 nights were later than
+that." Silent under five logged nights in a fortnight. The midnight problem is
+handled by anchoring the day at noon — on raw clock minutes, 23:45 and 00:15
+look 23½ hours apart, which would label every ordinary sleeper scattered
+(`midnight-wrap`).
+
+Refusals, each a killed mutant: `under-min-nights-speaks`, `seconds-precision`,
+`sleep-debt-number`, `sri-score-leaks` (bands only, never a score out of a
+hundred), `missing-night-counts-as-zero`, `prescriptive-line`. That last one
+**survived its first run** — the tone test only covered the short form of the
+sentence, so a "you should fix that" planted in the late-nights clause went
+unnoticed. The test now asserts over both shapes the line can take; a copy
+constitution that only reads half the copy is not one.
+
+Tests 862→877. Next: `.192` Day in Review.
+
 ## 2026-07-30 — Twelve questions, each with its receipts (`.190`)
 
 First PR of the behavior-journal wave. WHOOP's journal offers 300+ trackable
