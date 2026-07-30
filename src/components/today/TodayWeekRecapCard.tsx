@@ -8,6 +8,7 @@ import type { WeekRecap } from '@/lib/weekRecap';
 import { buildWeeklyDebrief, type WeeklyDebrief } from '@/lib/weeklyDebrief';
 import { loadCheckIns } from '@/lib/mindCheckIns';
 import { loadBodyMetrics } from '@/lib/bodyMetrics';
+import { computeImpacts, impactLine } from '@/lib/journal/impacts';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { track } from '@/lib/analytics';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
@@ -37,6 +38,13 @@ export function TodayWeekRecapCard({ recap, forceFull }: Props) {
 
  const full = forceFull || debrief.isFullDebrief;
  const units = useUnits();
+
+ // On-device check-in ↔ session-load correlations. Empty until the data can
+ // honestly support a sentence (≥8 pairs, ≥3 each side, ≥5% — impacts.ts).
+ const impacts = useMemo(
+ () => (typeof window !== 'undefined' ? computeImpacts(history, loadCheckIns()) : []),
+ [history]
+ );
 
  // Week recap as an image — rendered on-device, shared only by choice (.182).
  const shareRecapCard = async () => {
@@ -134,6 +142,19 @@ export function TodayWeekRecapCard({ recap, forceFull }: Props) {
  }
  />
  </div>
+
+ {impacts.length > 0 ? (
+ <div className="space-y-1">
+ <p className="eyebrow text-[9px] text-muted-foreground">
+ {t('debriefImpacts', { defaultValue: 'Impacts' })}
+ </p>
+ {impacts.slice(0, 2).map((impact) => (
+ <p key={impact.factor} className="text-xs text-muted-foreground tabular-nums leading-relaxed">
+ {impactLine(impact)}
+ </p>
+ ))}
+ </div>
+ ) : null}
 
  {debrief.train.prs > 0 ? (
  <p className="text-xs text-accent-900 font-medium">
