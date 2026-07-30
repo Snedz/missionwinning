@@ -1,7 +1,7 @@
 'use client';
 
+import { reloadAfterRestore } from '@/lib/storage/reloadAfterRestore';
 import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { FileJson } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +16,6 @@ import { useToast } from '@/hooks/use-toast';
 /** Export / restore device data — drop zone + file proof + inline retry. */
 export function ProfileBackupCard() {
   const { t } = useTranslation();
-  const router = useRouter();
   const { toast } = useToast();
   const [showDrop, setShowDrop] = useState(false);
 
@@ -56,9 +55,9 @@ export function ProfileBackupCard() {
           keys: result.keysRestored ?? 0,
         }),
       });
-      setTimeout(() => router.refresh(), 1200);
+      reloadAfterRestore();
     },
-    [router, t, toast]
+    [t, toast]
   );
 
   const { items, addFiles, retry, remove, clear } = useFileUploadQueue({
