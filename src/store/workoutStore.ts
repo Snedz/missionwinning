@@ -4,7 +4,7 @@
  * See: src/store/INDEX.md
  */
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { calculateVolume } from "@/lib/utils";
 import type {
   ActiveWorkout,
@@ -27,6 +27,7 @@ import { flush as flushOutbox } from "@/lib/sync/outbox";
 import { newClientId } from "@/lib/workout/clientId";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
+import { browserStorage, dedupeWrites, elapsedSecondsFrom } from "@/store/persistDedupe";
 
 const DEFAULT_REST_SECONDS = 30;
 
@@ -525,7 +526,10 @@ export const useWorkoutStore = create<WorkoutState>()(
       },
 
       tickElapsed: () => {
-        set((s) => ({ elapsedSeconds: s.elapsedSeconds + 1 }));
+        const next = elapsedSecondsFrom(get().activeWorkout?.startedAt);
+        // Only touch state when the displayed second actually changes: every
+        // `set()` is a persist write, even when the value is unchanged.
+        if (next !== get().elapsedSeconds) set({ elapsedSeconds: next });
       },
 
       getRecentHistory: (limit = 5) => {
@@ -582,6 +586,12 @@ export const useWorkoutStore = create<WorkoutState>()(
     }),
     {
       name: "workout-tracker-storage",
+      /*
+       * `.210` — skip a write whose bytes are already on disk. Never defers a
+       * real write; see `persistDedupe.ts` for why throttling was deliberately
+       * not added to the path that holds the athlete's sessions.
+       */
+      storage: createJSONStorage(() => dedupeWrites(browserStorage())),
       // v1: backfill sync-v2 identity so pre-existing logs can reach the cloud
       // without duplicating (they had no stable id the server could key on).
       version: 1,
@@ -607,7 +617,16 @@ export const useWorkoutStore = create<WorkoutState>()(
         savedWorkouts: state.savedWorkouts,
         workoutHistory: state.workoutHistory,
         activeWorkout: state.activeWorkout,
-        elapsedSeconds: state.elapsedSeconds,
+        /*
+         * `.210` — `elapsedSeconds` used to live here, and `tickElapsed` runs
+         * `set()` once a second. Zustand's persist writes after **every**
+         * `set()` without diffing the partialized slice, so a running session
+         * serialised the whole history to localStorage every second: ~3.5 ms of
+         * `JSON.stringify` on a 200-session history, plus a synchronous disk
+         * write, plus a 4–6x mobile penalty. It is derived from
+         * `activeWorkout.startedAt` now, which is also more correct — the
+         * counter did not advance while the tab was closed.
+         */
       }),
       onRehydrateStorage: () => (state, error) => {
         /*

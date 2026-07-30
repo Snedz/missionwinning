@@ -6,6 +6,67 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — The logger wrote your whole history every second (`.210`)
+
+`tickElapsed` and `tickRestTimer` each call `set()` on a one-second interval,
+and zustand's persist middleware calls `setItem()` after **every** `set()` — it
+does not diff the partialized slice. `elapsedSeconds` was in `partialize`, so
+every tick ran `partialize` + `JSON.stringify` + a synchronous
+`localStorage.setItem` of `savedWorkouts + workoutHistory + activeWorkout`.
+
+Benchmarked on realistic 6-exercise/4-set logs:
+
+| history | payload | `JSON.stringify` |
+|---|---|---|
+| 50 sessions | 163 KB | 0.85 ms |
+| 200 sessions | 647 KB | 3.45 ms |
+| 500 sessions | 1,616 KB | 9.64 ms |
+
+A mid-tier Android is 4–6× slower and the synchronous disk write costs about as
+much again, so a 200-session athlete lost roughly **30–50 ms of main thread per
+second while logging, 60–100 ms/s during rest**. On the wedge screen, mid-set,
+on the cheapest phone in the target market — and at 1.6 MB it walks toward the
+5 MB localStorage ceiling.
+
+**Two halves, because either alone leaves the write in place.**
+`elapsedSeconds` leaves `partialize` and is **derived from
+`activeWorkout.startedAt`** instead of counted — which is also more correct: the
+counter only advanced while the tab was open, so a session resumed after twenty
+minutes away reported the time the *tab* had been open rather than the time the
+athlete had been training. And [`dedupeWrites`](src/store/persistDedupe.ts)
+skips any `setItem` whose bytes are already on disk. Together a tick now
+produces an identical payload and is skipped outright.
+
+**Throttling was deliberately not added.** The obvious companion fix is to
+coalesce writes to ~1/2 s with a trailing flush on `pagehide`. This is the path
+that holds sessions nobody can reproduce from memory — `.205` was the last
+defect here — and a deferred write that fails to flush is data loss, while the
+browser events that would flush it are exactly the ones that fire unreliably on
+mobile. **Skipping a byte-identical write cannot lose anything**, because the
+value on disk is already the value being written. That asymmetry is the whole
+argument, and it is recorded at the function.
+
+Killed: `elapsed-back-in-partialize`, `dedupe-removed`, `dedupe-always-writes`,
+`elapsed-counted-not-derived`.
+
+**Two self-inflicted misses worth recording.** The SSR fallback shipped as
+`undefined!` and every store test died on `Cannot read properties of undefined
+(reading 'setItem')` — `browserStorage()` now gives an in-memory stand-in, the
+same promise `safeStorage` makes for `mw_*` keys. And the wiring guard bounded
+its slice with `indexOf('getRecentHistory:')` from position 0, which found the
+`WorkoutState` **interface** 400 lines *above* `tickElapsed` and produced a
+backwards slice — vacuously true. The first correction still matched
+`tickElapsed: () => void;`; only anchoring on the implementation's brace worked.
+Sixth and seventh vacuous-guard instances in this programme, both in a guard
+written minutes earlier.
+
+Tests 1066→1078. **`/active` render cost — the per-set history scan, the two
+`localStorage` reads in render, the `localeCompare` sort per tick — is not in
+this PR.** Those are re-render work, not disk writes, and belong with a
+`React.memo` pass rather than bolted onto a persistence change. Carried forward.
+
+---
+
 ## 2026-07-30 — 306 KB of translations on every route (`.209`)
 
 Measured, not estimated, and the largest user-visible win in the wave.
