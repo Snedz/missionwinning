@@ -20,6 +20,11 @@ export interface WindDownRow {
   lastSessionAt: string | null;
   lastSessionHigh: boolean;
   lastWindDownAt: string | null;
+  /**
+   * `.194` — the day-review push shares this evening. Optional so existing
+   * callers and older rows keep working unchanged.
+   */
+  lastDayReviewAt?: string | null;
   timeZone: string | null;
 }
 
@@ -87,6 +92,16 @@ export function windDownDue(row: WindDownRow, now: Date): boolean {
   if (row.lastWindDownAt) {
     const sent = new Date(row.lastWindDownAt);
     if (!Number.isNaN(sent.getTime()) && sent >= sessionAt) return false;
+  }
+
+  // One push per evening, enforced from both sides (`dayReviewNudge.ts` carries
+  // the mirror of this). Wind-down normally wins because it is time-critical,
+  // but if the review already went out tonight the athlete has had their one.
+  if (row.lastDayReviewAt) {
+    const review = new Date(row.lastDayReviewAt);
+    if (!Number.isNaN(review.getTime()) && isSameLocalDay(review, now, row.timeZone)) {
+      return false;
+    }
   }
   return true;
 }

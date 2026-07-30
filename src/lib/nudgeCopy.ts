@@ -24,7 +24,7 @@
 
 import { isCold, quietThresholdDays } from '@/lib/reentryTone';
 
-export type NudgeKind = 'comeback' | 'week1-recap' | 'week-behind' | 'wind-down';
+export type NudgeKind = 'comeback' | 'week1-recap' | 'week-behind' | 'wind-down' | 'day-review';
 
 export interface NudgeCandidate {
   userId: string;
@@ -168,6 +168,22 @@ export function windDownPush(): { title: string; body: string } {
   return {
     title: 'That one ran hot',
     body: 'Heavier than your recent usual. Water, food, and an early night buy tomorrow back.',
+  };
+}
+
+/**
+ * The evening day-review doorbell.
+ *
+ * Deliberately carries **no numbers**. The server row this is sent from holds
+ * no behavior data, no sleep figure and no session load — by contract — so any
+ * digit here would either be invented or would mean we had started storing
+ * things we promised not to. The review is composed on the device when the
+ * athlete opens it.
+ */
+export function dayReviewPush(): { title: string; body: string } {
+  return {
+    title: 'Your day in review',
+    body: 'Tonight’s recap is ready when you are — it opens on this device.',
   };
 }
 

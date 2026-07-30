@@ -2,8 +2,15 @@ import 'server-only';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { isCold, quietThresholdDays } from '@/lib/reentryTone';
-import { anonymousComebackPush, decideNudge, utcDay, windDownPush } from '@/lib/nudgeCopy';
+import {
+  anonymousComebackPush,
+  dayReviewPush,
+  decideNudge,
+  utcDay,
+  windDownPush,
+} from '@/lib/nudgeCopy';
 import { localHourFor, windDownDue } from '@/lib/windDown';
+import { dayReviewDue } from '@/lib/dayReviewNudge';
 import type { NudgeCandidate, NudgeKind } from '@/lib/nudgeCopy';
 
 /**
@@ -237,10 +244,11 @@ export async function setRemindersOptOut(userId: string): Promise<boolean> {
  * reads one boolean and three timestamps. Everything that decided the boolean happened
  * on the device.
  */
+/** Shared by both evening kinds — same row shape, different due-rule and marker. */
 export interface WindDownCandidate {
   endpoint: string;
   deviceId: string;
-  kind: 'wind-down';
+  kind: 'wind-down' | 'day-review';
   title: string;
   body: string;
   /** For dryRun only — lets the founder check the window maths from the response. */
@@ -306,5 +314,77 @@ export async function markWindDownSent(endpoints: string[], now = new Date()): P
   await admin
     .from('push_subscriptions')
     .update({ last_wind_down_at: now.toISOString() })
+    .in('endpoint', endpoints);
+}
+
+/**
+ * Candidates for the evening day-review doorbell.
+ *
+ * Selects only rows that opted in (`day_review_hour` non-null), and reads
+ * `last_wind_down_at` purely so the one-push-per-evening precedence can be
+ * evaluated — wind-down wins, see `dayReviewNudge.ts`.
+ *
+ * The selected columns are the whole story: a chosen hour, two markers and a
+ * zone. Nothing about what the athlete logged travels here, because nothing
+ * about what they logged is stored here.
+ */
+export async function collectDayReviewCandidates(now = new Date()): Promise<{
+  considered: number;
+  candidates: WindDownCandidate[];
+}> {
+  const admin = getSupabaseAdmin();
+  if (!admin) throw new Error('Supabase admin not configured (SUPABASE_SERVICE_ROLE_KEY)');
+
+  const { data: rows, error } = await admin
+    .from('push_subscriptions')
+    .select('endpoint, device_id, day_review_hour, last_day_review_at, last_wind_down_at, time_zone')
+    .not('day_review_hour', 'is', null)
+    .not('time_zone', 'is', null)
+    .limit(500);
+
+  if (error || !rows) {
+    throw new Error(`day-review query failed: ${error?.message ?? 'no data'}`);
+  }
+
+  const copy = dayReviewPush();
+  const candidates: WindDownCandidate[] = [];
+
+  for (const row of rows) {
+    const deviceId = row.device_id as string | null;
+    const timeZone = row.time_zone as string | null;
+    if (!deviceId || !timeZone) continue;
+
+    const due = dayReviewDue(
+      {
+        dayReviewHour: (row.day_review_hour as number | null) ?? null,
+        lastDayReviewAt: (row.last_day_review_at as string | null) ?? null,
+        lastWindDownAt: (row.last_wind_down_at as string | null) ?? null,
+        timeZone,
+      },
+      now
+    );
+    if (!due) continue;
+
+    candidates.push({
+      endpoint: row.endpoint as string,
+      deviceId,
+      kind: 'day-review',
+      timeZone,
+      localHour: localHourFor(now, timeZone),
+      ...copy,
+    });
+  }
+
+  return { considered: rows.length, candidates };
+}
+
+/** Own marker column — sharing one would let a kind silently suppress the other. */
+export async function markDayReviewSent(endpoints: string[], now = new Date()): Promise<void> {
+  if (endpoints.length === 0) return;
+  const admin = getSupabaseAdmin();
+  if (!admin) return;
+  await admin
+    .from('push_subscriptions')
+    .update({ last_day_review_at: now.toISOString() })
     .in('endpoint', endpoints);
 }

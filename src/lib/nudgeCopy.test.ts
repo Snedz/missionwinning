@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   anonymousComebackPush,
+  dayReviewPush,
   windDownPush,
   decideNudge,
   type NudgeCandidate,
@@ -151,4 +152,19 @@ test('the wind-down copy makes no medical claim', () => {
   for (const word of ['injur', 'risk', 'prevent', 'pain', 'diagnos', 'overtrain']) {
     assert.equal(text.includes(word), false, `wind-down must not say "${word}"`);
   }
+});
+
+test('the day-review doorbell carries no numbers at all', () => {
+  // The row it is sent from holds no behavior data, no sleep figure and no
+  // session load — by contract. A digit here would either be invented or would
+  // mean we had started storing what we promised not to.
+  const p = dayReviewPush();
+  assert.ok(!/\d/.test(p.title), p.title);
+  assert.ok(!/\d/.test(p.body), p.body);
+});
+
+test('the day-review copy obeys the same tone contract as every other kind', () => {
+  const p = dayReviewPush();
+  assert.deepEqual(findToneViolations(p.title), []);
+  assert.deepEqual(findToneViolations(p.body), []);
 });

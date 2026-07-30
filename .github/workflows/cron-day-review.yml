@@ -1,0 +1,55 @@
+# Hourly day-review sweep — scheduled here, not in vercel.json.
+#
+# Same reasoning as cron-wind-down.yml, and the same constraint: the trigger is a
+# time-of-day the *athlete* chose (18:00–22:00 in their own zone), so a single daily
+# UTC cron could only ever serve one band of zones. The sweep runs hourly and
+# `lib/dayReviewNudge.ts` decides who is actually at their chosen hour.
+#
+# Vercel's Hobby plan caps crons at once per day, and an hourly entry in `vercel.json`
+# fails the whole deployment, so the schedule lives here.
+#
+# Offset to :11 rather than :07 so the two evening sweeps do not contend for the same
+# minute — they read the same table, and the precedence between them (wind-down wins
+# the evening) is cleaner to reason about when they are not racing.
+#
+# Needs repo secrets CRON_SECRET and SMOKE_BASE_URL. Missing either → skip loudly
+# rather than fail red, matching every other env-gated job here.
+name: Cron day review
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '11 * * * *'
+
+# Touches nothing in the repo — one production URL with its own bearer token.
+permissions: {}
+
+concurrency:
+  group: cron-day-review
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call /api/cron/day-review
+        env:
+          BASE_URL: ${{ secrets.SMOKE_BASE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$BASE_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "Skipping day-review sweep (SMOKE_BASE_URL or CRON_SECRET not set)"
+            exit 0
+          fi
+          code=$(curl -sS -o response.json -w '%{http_code}' \
+            --max-time 60 --retry 2 --retry-delay 5 \
+            -H "authorization: Bearer $CRON_SECRET" \
+            "${BASE_URL%/}/api/cron/day-review")
+          echo "HTTP $code"
+          cat response.json
+          echo
+          # 503 means push is unconfigured — a real state, not a page-someone failure.
+          if [ "$code" != "200" ] && [ "$code" != "503" ]; then
+            exit 1
+          fi
