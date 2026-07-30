@@ -7,6 +7,7 @@
 import { useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { pullJourneyFromCloud, scheduleJourneyPush, syncJourneyOnSignIn } from '@/lib/journeySync';
+import { restorePremiumCourseProgressForUser } from '@/lib/learnCourseProgress';
 
 /** Keeps journey state in sync with Supabase profiles when signed in. */
 export function useJourneySync() {
@@ -14,6 +15,17 @@ export function useJourneySync() {
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
         void syncJourneyOnSignIn();
+        /*
+         * `.203` — the other half of a mirror that was only ever written.
+         *
+         * `markPremiumSectionComplete` has been writing a per-user copy of
+         * course progress on every completion, and
+         * `restorePremiumCourseProgressForUser` — its only reader — had **zero
+         * callers anywhere**. Sign-in is when a restore is meaningful, and it is
+         * where the parallel fuel mirror is already read from
+         * (`useFuelPlan.ts:64`). The learn path was the one left half-connected.
+         */
+        restorePremiumCourseProgressForUser(session.user.id);
       }
       if (event === 'TOKEN_REFRESHED' && session?.user) {
         void pullJourneyFromCloud();

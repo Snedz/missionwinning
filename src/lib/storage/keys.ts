@@ -115,7 +115,6 @@ export const STORAGE_KEYS = {
   betaBannerDismissed: 'mw_beta_banner_dismissed',
   betaContributor: 'mw_beta_contributor',
   betaFeedback: 'mw_beta_feedback',
-  contributors: 'mw_contributors',
   leads: 'mw_leads',
   referralCode: 'mw_referral_code',
   squadCode: 'mw_squad_code',

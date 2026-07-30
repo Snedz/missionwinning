@@ -11,8 +11,20 @@ import { keysWithPrefix, readRaw } from '@/lib/storage/safeStorage';
 export function ProfileOwnerTools() {
   const { t } = useTranslation();
 
-  const members = parseInt(readRaw(STORAGE_KEYS.contributors) || '12400');
-  const estRevenue = Math.round(members * 12 * 0.3);
+  /*
+   * `.203` — these were constants dressed as stored data.
+   *
+   * `mw_contributors` is **read here and written nowhere** — repo-wide grep
+   * returns this line and the key's declaration, nothing else. So "Members:
+   * 12,400" and the revenue derived from it were fixed numbers that looked like
+   * state, on a card whose title says "(Demo)" while its figures did not.
+   *
+   * Founder-gated, so the blast radius is one person — but that person is the
+   * one making decisions from it, which is worse than showing a stranger a wrong
+   * number. Named as illustrative, and the fake read is gone.
+   */
+  const DEMO_MEMBERS = 12_400;
+  const estRevenue = Math.round(DEMO_MEMBERS * 12 * 0.3);
 
   return (
     <>
@@ -25,7 +37,7 @@ export function ProfileOwnerTools() {
         <CardContent className="space-y-2 text-sm">
           <div className="flex justify-between">
             <span>{t('spotsClaimed', { defaultValue: 'Members' })}:</span>{' '}
-            <span className="font-mono text-primary">{members.toLocaleString()}</span>
+            <span className="font-mono text-primary">{DEMO_MEMBERS.toLocaleString()}</span>
           </div>
           <div className="flex justify-between">
             <span>{t('estRevenue', { defaultValue: 'Est. revenue from bundles' })}:</span>{' '}
