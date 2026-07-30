@@ -180,8 +180,20 @@ export function ActiveWorkoutPage() {
       readRaw(STORAGE_KEYS.primaryGoal) ?? readRaw(STORAGE_KEYS.goals) ?? 'goal:general'
     ) ?? 'general';
 
+  /*
+   * `.201` — these handlers used `activeWorkout!` six times.
+   *
+   * Every one was true in practice (they only fire from a rendered session), but
+   * this is the one screen the product promises never breaks, and an assertion
+   * is a promise the compiler stops checking. A store cleared by a sync, a
+   * tombstone or a second tab arriving mid-tap turns `!` into a TypeError on the
+   * render path — and with no nested `error.tsx`, that blanks the whole route.
+   * Narrowed once per handler, returning the same values the callers already
+   * handle.
+   */
   const getSetInput = (exIdx: number, setIdx: number, defaultReps: number, defaultWeight: number) => {
-    const exLog = activeWorkout!.exercises[exIdx];
+    const exLog = activeWorkout?.exercises[exIdx];
+    if (!exLog) return { reps: defaultReps, weight: defaultWeight };
     const exerciseId = exLog.exerciseId;
     const lastSets = exLog.prescribed ? null : getLastSessionSets(workoutHistory, exerciseId);
     const range = repRangeForGoal(goalId);
@@ -244,17 +256,19 @@ export function ActiveWorkoutPage() {
   })();
 
   const handleLogSet = (exIdx: number, setIdx: number, override?: { reps: number; weight: number }) => {
-    const set = activeWorkout!.exercises[exIdx].sets[setIdx];
+    const exLog = activeWorkout?.exercises[exIdx];
+    const set = exLog?.sets[setIdx];
+    if (!exLog || !set) return;
     const input = override ?? getSetInput(exIdx, setIdx, set.reps, set.weight);
-    const exercise = getExerciseById(activeWorkout!.exercises[exIdx].exerciseId);
+    const exercise = getExerciseById(exLog.exerciseId);
     const restSec = exercise ? resolveRestSeconds(exercise.name) : 90;
-    const exerciseId = activeWorkout!.exercises[exIdx].exerciseId;
+    const exerciseId = exLog.exerciseId;
     const setKind = set.kind ?? 'normal';
     const isPr = isPersonalRecord(exerciseId, input.reps, input.weight, workoutHistory, setKind);
 
     const next = logSetAndAdvance(exIdx, setIdx, input.reps, input.weight, isPr);
     const updatedExercises =
-      useWorkoutStore.getState().activeWorkout?.exercises ?? activeWorkout!.exercises;
+      useWorkoutStore.getState().activeWorkout?.exercises ?? activeWorkout.exercises;
     const takeRest = shouldRestAfterLog(updatedExercises, exIdx, setIdx, next);
     if (takeRest) {
       startRestTimer(restSec);
@@ -270,7 +284,8 @@ export function ActiveWorkoutPage() {
   };
 
   const handleRepeatLast = (exIdx: number) => {
-    const ex = activeWorkout!.exercises[exIdx];
+    const ex = activeWorkout?.exercises[exIdx];
+    if (!ex) return;
     const lastCompleted = [...ex.sets].reverse().find((s) => s.completed);
     const nextIdx = ex.sets.findIndex((s) => !s.completed);
     if (!lastCompleted || nextIdx < 0) return;

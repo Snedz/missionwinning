@@ -36,13 +36,27 @@ export function MobileNav({
    * there, including the only route to sign-in and settings. Five at `flex-1`
    * is 78px each, which clears the 44px floor with room to spare.
    */
+  /*
+   * `.201` — this threw, on the render path of the persistent bottom nav.
+   *
+   * A `MOBILE_TAB_HREFS` entry missing from `PRIMARY_NAV` did not degrade one
+   * tab: it threw inside `useMemo`, and the app has no nested `error.tsx`
+   * segment boundaries (`app/error.tsx:8-10` says so), so the whole route
+   * blanked to the generic error screen. Every mobile screen, from a typo in a
+   * list of five strings.
+   *
+   * Dropping the unknown href is strictly better in production — four tabs beat
+   * zero screens — and the mismatch is caught in development by
+   * `mobileNavTabs.test.ts`, which pins the two lists against each other. A
+   * render-path throw is not a safety net; it is the failure.
+   */
   const tabs = useMemo(
     () =>
       MOBILE_TAB_HREFS.map((href) => {
         const item = PRIMARY_NAV.find((n) => n.href === href);
-        if (!item) throw new Error(`MOBILE_TAB_HREFS: no nav item for ${href}`);
+        if (!item) return null;
         return { ...item, ...(TAB_LABEL_OVERRIDES[href] ?? {}) };
-      }),
+      }).filter((tab): tab is NonNullable<typeof tab> => tab !== null),
     []
   );
 
