@@ -6,6 +6,34 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — Impacts (`.187`)
+
+Final PR of Field Notes — the WHOOP payoff without the strap. The most-loved
+element of WHOOP's journal is the "your data shows" report; this delivers it free,
+on-device, from data both stores already hold: mind check-ins joined to session
+load by local date. *"Sessions on sleep ≤ 2 days: load −33% vs your other days
+(4 vs 6 sessions)."* Surfaces as a dense Impacts row in the weekly Mission Debrief.
+
+Pure [`impacts.ts`](src/lib/journal/impacts.ts). The refusals carry the feature,
+each a killed mutant: **minimum 8 paired observations or silence** (the `.127`
+principle) plus ≥3 sessions on each side of the split (min-pairs-2); effects under
+5% are noise, not insight (noise-as-insight); a field the athlete does not fill
+never speaks — absence is not a rating (absent-field-speaks); stress flags HIGH
+ratings per the readiness rule direction (stress-direction-flip); the line
+describes and stops, no injury/risk/causal words per LEGAL_SAFETY §3a
+(causal-wording, the band-line grep pattern); tombstoned logs are deleted content
+(tombstones-count).
+
+One rule table: "flagged day" thresholds are identical to `READINESS_RULES`
+(sleep ≤2, energy ≤2, stress ≥4, soreness ≥4) — the `.178` lesson again: the
+sentence the athlete reads and the adjustment the engine makes must not sit on
+different definitions of the same word. Session counts print in the line so the
+athlete can weigh the evidence themselves.
+
+Tests 803→812. **Field Notes plan complete** (`.184`–`.187`): notes persist and
+sync, the session entry composes, the coach remembers cues, and the journal pays
+the athlete back.
+
 ## 2026-07-30 — Cue & tweak memory (`.186`)
 
 PR 3 of Field Notes — the coach remembers. Paper-logbook lifters flip back pages
