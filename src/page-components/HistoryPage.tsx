@@ -35,6 +35,7 @@ import {
 } from '@/components/ui/table';
 import dynamic from 'next/dynamic';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
+import { getJournalEntry } from '@/lib/journal/journalStore';
 import { AnatomyHeatMap } from '@/components/history/AnatomyHeatMap';
 
 const History1RMChart = dynamic(
@@ -413,6 +414,30 @@ export function HistoryPage() {
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 mt-2">
+                {/* What the coach said when this session finished — persisted by
+                    `.184`; sessions completed before then simply have no entry. */}
+                {(() => {
+                  const entry = getJournalEntry(selected.id);
+                  if (!entry || entry.lines.length === 0) return null;
+                  return (
+                    <div className="border-l-2 border-primary/40 pl-3 space-y-1">
+                      {entry.lines
+                        .filter((l) => l.kind !== 'question')
+                        .map((l, i) => (
+                          <p
+                            key={`${l.kind}-${i}`}
+                            className={
+                              l.kind === 'record'
+                                ? 'text-sm font-semibold text-poster'
+                                : 'text-sm text-muted-foreground'
+                            }
+                          >
+                            {l.text}
+                          </p>
+                        ))}
+                    </div>
+                  );
+                })()}
                 {selected.exercises.map((ex) => {
                   const exercise = getExerciseById(ex.exerciseId);
                   return (
@@ -425,6 +450,14 @@ export function HistoryPage() {
                           </Badge>
                         ))}
                       </div>
+                      {/* The note the athlete typed mid-session. It was written and
+                          synced from day one — and never displayed anywhere until
+                          `.184`. A note nobody can re-read is a note nobody writes. */}
+                      {ex.note?.trim() ? (
+                        <p className="text-sm italic text-muted-foreground border-l-2 border-border pl-3">
+                          {ex.note}
+                        </p>
+                      ) : null}
                       <Table>
                         <TableHeader>
                           <TableRow>

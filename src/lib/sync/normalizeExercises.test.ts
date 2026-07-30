@@ -162,3 +162,34 @@ test('flatten and group are inverses over the fields Android carries', () => {
   const round = groupFlatSets(flattenExercises('w', '2026-07-29T11:00:00Z', original));
   assert.deepEqual(round, original);
 });
+
+test('notes survive both directions across the Android boundary (.184)', () => {
+  // Before .184 both conversions dropped `note`: flattenExercises omitted it and the
+  // grouped rebuild never read it — every note died silently at this seam.
+  const flat = [
+    { exerciseId: 'bench-press', setIndex: 0, reps: 5, weight: 100, note: 'tuck elbows' },
+    { exerciseId: 'bench-press', setIndex: 1, reps: 5, weight: 100 },
+    { exerciseId: 'squats', setIndex: 0, reps: 5, weight: 140, note: 'knee twinge set 3' },
+  ];
+  const nested = groupFlatSets(flat);
+  assert.equal(nested[0].note, 'tuck elbows');
+  assert.equal(nested[1].note, 'knee twinge set 3');
+
+  // Two distinct set notes on one exercise both arrive, on separate lines.
+  const twoNotes = groupFlatSets([
+    { exerciseId: 'bench-press', setIndex: 0, reps: 5, weight: 100, note: 'first' },
+    { exerciseId: 'bench-press', setIndex: 1, reps: 3, weight: 105, note: 'second' },
+  ]);
+  assert.equal(twoNotes[0].note, 'first\nsecond');
+
+  // Web → Android: the exercise note rides the first set.
+  const rows = flattenExercises('w1', '2026-07-30T18:00:00Z', [
+    { exerciseId: 'bench-press', note: 'tuck elbows', sets: [{ reps: 5, weight: 100 }, { reps: 5, weight: 100 }] },
+  ]);
+  assert.equal(rows[0].note, 'tuck elbows');
+  assert.equal(rows[1].note, undefined, 'only the first set carries it');
+
+  // And no note means no field — absent, not empty string.
+  const clean = groupFlatSets([{ exerciseId: 'squats', setIndex: 0, reps: 5, weight: 140 }]);
+  assert.equal(clean[0].note, undefined);
+});

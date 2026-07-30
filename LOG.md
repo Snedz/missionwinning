@@ -6,6 +6,45 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — Notes stop vanishing (`.184`)
+
+First PR of the Field Notes plan — the Granola of training journals: the athlete's
+scrappy fragments steer, the machine's context fills, and the entry stays the
+athlete's own. Before any of that can exist, the notes that already exist have to
+stop dying, and they were dying in three places.
+
+**The note nobody could re-read.** The logger has had a per-exercise note field since
+the beginning ("felt heavy", "machine 3, seat pos 4"). It was written into the
+completed log, synced to the cloud — and then never displayed again anywhere:
+`grep note` on HistoryPage returned zero hits. A note nobody can re-read is a note
+nobody writes. History's detail dialog now shows it.
+
+**The boundary that ate notes in both directions.** Android stores a note per set;
+web stores one per exercise; and the seam between them dropped the field both ways —
+`flattenExercises` never emitted it (web notes never reached the phone) and
+`mobileSyncSetSchema` never declared it, so zod stripped what Android sent (its set
+notes never reached the cloud). Now per-set notes fold into the exercise note
+(distinct, first-seen order, newline-joined — two different notes both arrive), and
+the exercise note rides the first set on the way out. Reverting either direction
+fails the round-trip test.
+
+**The debrief that evaporated.** `buildDebrief` composes tone-tested prose at finish,
+the victory sheet shows it once, and nothing persisted it — re-opening a session could
+never show the entry it was given. New device-only `journal/journalStore.ts`
+(`mw_session_journal`, capped 200, upsert by workout id so re-completing replaces
+rather than duplicates, swept into device backup free via the `mw_` prefix scan)
+saves it, and History renders it. This is the machine half of every future journal
+entry — in the Granola analogy, the transcript — and it no longer evaporates when the
+sheet closes.
+
+**Device-only, deliberately.** Journal content is the data class users have
+historically 1-starred apps over (Day One shipped E2EE after years of exactly that).
+Workout data already syncs; the composed journal does not, and if it ever does it
+will be its own decision with its own encryption, not a side effect of a storage key.
+
+Falsified: dropping the note in either boundary direction fails 1 test each;
+removing persistence fails all 4 store tests. Tests **782→787**.
+
 ## 2026-07-29 — The coach reads it out (`.183`)
 
 Phase 0 of voice, and the whole point is what it does **not** add: no API key, no

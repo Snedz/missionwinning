@@ -38,6 +38,7 @@ export const STORAGE_KEYS = {
   pillarWins: 'mw_pillar_wins',
   uiMode: 'mw_ui_mode',
   outbox: 'mw_outbox_v1',
+  sessionJournal: 'mw_session_journal',
   /** Newest workout_logs.updated_at pulled — cursor for incremental sync. */
   cloudPullCursor: 'mw_cloud_pull_cursor',
 

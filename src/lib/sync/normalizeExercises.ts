@@ -40,6 +40,10 @@ export interface FlatSetRow {
   weightUnit?: string;
   rpe?: number | null;
   setKind?: string;
+  /** Android stores a note per set; web stores one per exercise. See the mapping notes
+   *  on `groupFlatSets` / `flattenExercises` — before `.184` this field was dropped in
+   *  BOTH directions, so every note silently died at this boundary. */
+  note?: string;
 }
 
 /**
@@ -125,7 +129,17 @@ export function groupFlatSets(rows: readonly unknown[]): NestedExercises {
       if (rpe) set.rpe = rpe;
       return set;
     });
-    return { exerciseId, sets };
+    // Android's per-set notes fold into web's per-exercise note: distinct non-empty
+    // notes, first-seen order, newline-joined. Lossy only when two sets of the same
+    // exercise carry different notes — they still both arrive, on separate lines.
+    const noteParts: string[] = [];
+    for (const { row } of entries) {
+      const n = typeof row.note === 'string' ? row.note.trim() : '';
+      if (n && !noteParts.includes(n)) noteParts.push(n);
+    }
+    const ex: NestedExercises[number] = { exerciseId, sets };
+    if (noteParts.length > 0) ex.note = noteParts.join('\n');
+    return ex;
   });
 }
 
@@ -180,7 +194,7 @@ export function flattenExercises(
   let n = 0;
   for (const ex of exercises ?? []) {
     (ex.sets ?? []).forEach((set, setIndex) => {
-      rows.push({
+      const row: FlatSetRow = {
         id: `${workoutKey}-s${n++}`,
         exerciseId: ex.exerciseId,
         exerciseName: '',
@@ -190,7 +204,11 @@ export function flattenExercises(
         completedAt,
         setKind: set.kind ?? 'normal',
         rpe: rpeCategoryToNumber(set.rpe) ?? null,
-      });
+      };
+      // Web's exercise-level note travels on the first set — the slot Android's
+      // per-set schema has for it. Before `.184` it was omitted here entirely.
+      if (setIndex === 0 && ex.note?.trim()) row.note = ex.note.trim();
+      rows.push(row);
     });
   }
   return rows;

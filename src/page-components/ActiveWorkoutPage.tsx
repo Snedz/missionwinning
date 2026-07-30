@@ -296,6 +296,19 @@ export function ActiveWorkoutPage() {
     });
     setDebrief(sessionDebrief);
 
+    // Keep what the coach said. Before `.184` the debrief evaporated when the victory
+    // sheet closed — History could never show the entry a session was given.
+    void import('@/lib/journal/journalStore').then((m) =>
+      m.saveJournalEntry({
+        workoutId: log.id,
+        date: log.completedAt,
+        workoutName: log.workoutName,
+        zone: sessionDebrief.zone,
+        lines: sessionDebrief.lines.map((l) => ({ kind: l.kind, text: l.text })),
+        savedAt: new Date().toISOString(),
+      })
+    );
+
     /*
      * Tell this device's push row what just happened. Two jobs in one call:
      *
