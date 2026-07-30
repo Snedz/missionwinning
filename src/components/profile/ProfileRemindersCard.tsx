@@ -3,6 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { ProfileDayReviewRow } from '@/components/profile/ProfileDayReviewRow';
 
 /**
  * Two independent channels, not one nested inside the other.
@@ -21,6 +22,9 @@ type ProfileRemindersCardProps = {
   pushOn: boolean;
   pushBusy: boolean;
   onTogglePush: () => void;
+  /** The evening-review hour on this device, or null for off. */
+  dayReviewHour: number | null;
+  onChangeDayReviewHour: (hour: number | null) => void;
 };
 
 export function ProfileRemindersCard({
@@ -32,6 +36,8 @@ export function ProfileRemindersCard({
   pushOn,
   pushBusy,
   onTogglePush,
+  dayReviewHour,
+  onChangeDayReviewHour,
 }: ProfileRemindersCardProps) {
   const { t } = useTranslation();
 
@@ -90,6 +96,18 @@ export function ProfileRemindersCard({
               : t('remindersOff', { defaultValue: 'Off' })}
           </Button>
         </CardContent>
+      ) : null}
+
+      {/* Under `pushSupported`, not under `pushOn`: choosing the hour is how an
+          athlete turns the evening review on, so gating it behind push already
+          being enabled would recreate the `.176` dead end from the other side. */}
+      {pushSupported ? (
+        <ProfileDayReviewRow
+          hour={dayReviewHour}
+          busy={pushBusy}
+          onChange={onChangeDayReviewHour}
+          separated
+        />
       ) : null}
     </Card>
   );

@@ -2,9 +2,81 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.188`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
+**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.191`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
 
 ---
+
+## 2026-07-30 — The hour the athlete picked (`.196`)
+
+`.176`, closed. `.194` shipped a `day_review_hour` column, a migration, a cron
+that selects on it, an hourly workflow and a tone-tested push — and exactly one
+writer: [`DayReviewOptIn`](src/components/today/DayReviewOptIn.tsx), which
+**returned early whenever a push subscription already existed**. That is every
+athlete who had turned on the wind-down note, which is precisely the population
+that would want an evening review. `day_review_hour` stayed NULL, `dayReviewDue`
+was always false, and the feature fired for nobody. Every test passed, because
+every test asked whether the decision was *correct* and none asked whether the
+input could ever arrive.
+
+**The fix is one row of a truth table.** New pure
+[`dayReviewPrefs.ts`](src/lib/dayReviewPrefs.ts) makes `dayReviewOfferState` a
+total function over its input, and the row is `hasPush: true, storedHour: null →
+'offer'`. Having push and having an evening hour are different facts: a device
+with push was asked about the *wind-down* note, and nothing had ever asked it
+about this. Written as a function rather than a chain of early returns for a
+plain reason — a decision spelled `if (…) return;` can only be read by
+re-deriving it, while a decision spelled as a function over an input can be
+enumerated by a test, and this one now is, across all 32 combinations.
+
+`readDayReviewHour` never throws and never guesses: it reads whatever is on the
+device, including values from an older build, and **anything unparseable means
+not opted in rather than a default hour**. An unrequested nightly notification is
+the one failure this feature cannot have.
+
+**A one-time offer is not a setting.** The other half of the `.176` shape was
+that the picker lived inside a card which remembers it already asked — dismiss it
+once and the column was unreachable for good; choose 20:00 and you could never
+move it to 21:00. New
+[`ProfileDayReviewRow`](src/components/profile/ProfileDayReviewRow.tsx) gives it
+a permanent home next to the other push preferences, gated on `pushSupported`
+rather than `pushOn` so that choosing an hour is itself how the review gets
+turned on — gating it behind push already being enabled would rebuild the dead
+end from the other side.
+
+**`null` and `undefined` stay distinguishable, and that distinction is the
+safety property.** `null` is the athlete choosing Off and must reach the column
+as a NULL, or the note keeps arriving after they said stop. `undefined` is an
+unrelated sync — a Profile mount, a finished session — which knows nothing about
+this preference and must leave it standing. Collapsing them is a real defect in
+either direction: one way the athlete cannot turn it off, the other way any
+passive page mount silently turns it off for them. `apiSchemas` gained
+`.nullable()`; `buildSubscriptionRow` already omitted `undefined` and now carries
+a note saying why it must keep doing so.
+
+Guard: [`pushPrefsReachable.test.ts`](src/lib/pushPrefsReachable.test.ts) walks
+the chain every preference must survive — type → row builder → client → cadence
+sync → **a named control the athlete can actually operate**, wired into a screen
+rather than only into a card that remembers it asked. *A server column the user
+cannot set is a column that stays NULL forever*, as one executable rule.
+`control: null` is a legitimate answer for a field the app derives, and costs a
+written reason.
+
+Seven mutants; **two survived first run, both holes in the guards rather than in
+the code.** `cadence-clobbers-hour` walked through a source-text check because
+grepping for a field name cannot tell `{ dayReviewHour: storedHour }` from
+`...(storedHour !== null ? {…} : {})` — and those two differ by whether opening
+Profile on a laptop silently clears the hour set on a phone. The rule became
+`cadenceHourPatch`, a function whose output a test can hold instead of its
+spelling. `hour-never-leaves-the-device` walked through because the guard sliced
+from `readPushCadence` to the *end of the file* and matched a different function
+two hundred lines below — a guard against an omission that could not see the
+omission. Both now kill. Killed on the first run:
+`optin-hidden-when-push-on` (the `.176` recurrence itself),
+`hour-out-of-band-accepted`, `garbage-falls-back-to-a-default-hour`,
+`off-is-just-undefined`, `no-control-for-the-column`.
+
+Tests 939→961. **Ships dark** — VAPID unset, so nothing sends; the setting is
+stored and synced, and the doorbell rings when the founder adds the keys.
 
 ## 2026-07-30 — Reachable, or deleted (`.195`)
 
@@ -231,114 +303,3 @@ Also killed: `digest-names-absence-length`, `seconds-precision`,
 `option-becomes-an-order`, `medical-causal-framing`, `tombstone-counts-as-today`.
 The card doubles as a capture surface (one tap logs tonight's bed time, rounded
 to the quarter hour). Tests 877→891. Next: `.193` behavior impacts.
-
-## 2026-07-30 — The number we will not print (`.191`)
-
-The screenshot that started this wave said *"sleep debt is now 2h 7m 48s."*
-This ships the honest version of that, and the interesting work was deciding
-what **not** to build.
-
-We cannot compute sleep debt. There is no HealthKit web API on iOS and no
-background sync in a PWA, so the only sleep signal available is what the athlete
-taps — and self-reported sleep timing disagrees with measured sleep by an hour
-or more, which makes seconds of resolution theatre rather than confidence. A
-quantified physiological deficit is also the shape of output that reads as a
-device claim rather than a wellness feature, and the FDA's 2026 guidance is
-explicit that UI outputs count as claims.
-
-So [`sleepConsistency.ts`](src/lib/sleepConsistency.ts) reports **regularity**,
-which is the better metric anyway: in a 60,000-person accelerometry study, how
-consistent sleep timing was predicted outcomes more strongly than how long
-people slept. Two taps a day produce it, and no wearable company owns it.
-
-Banded, never a stopwatch: `steady | drifting | scattered` from the median
-absolute deviation of bed times, plus "N of your last 7 nights were later than
-that." Silent under five logged nights in a fortnight. The midnight problem is
-handled by anchoring the day at noon — on raw clock minutes, 23:45 and 00:15
-look 23½ hours apart, which would label every ordinary sleeper scattered
-(`midnight-wrap`).
-
-Refusals, each a killed mutant: `under-min-nights-speaks`, `seconds-precision`,
-`sleep-debt-number`, `sri-score-leaks` (bands only, never a score out of a
-hundred), `missing-night-counts-as-zero`, `prescriptive-line`. That last one
-**survived its first run** — the tone test only covered the short form of the
-sentence, so a "you should fix that" planted in the late-nights clause went
-unnoticed. The test now asserts over both shapes the line can take; a copy
-constitution that only reads half the copy is not one.
-
-Tests 862→877. Next: `.192` Day in Review.
-
-## 2026-07-30 — Twelve questions, each with its receipts (`.190`)
-
-First PR of the behavior-journal wave. WHOOP's journal offers 300+ trackable
-behaviors and then advises tracking no more than ten; that tension is their
-defect, and their loudest review complaint — "every positive action seemed to
-have negative impacts" — is what a low significance bar over dozens of
-behavior×outcome pairs produces. So this ships **twelve**, chosen on evidence,
-each carrying a tier (A/B/C) and a one-sentence receipt the athlete can open.
-
-New pure [`behaviors.ts`](src/lib/behaviors.ts): nine new fields (bed/wake time
-at quarter-hour resolution, protein target, caffeine servings + time of last,
-creatine, hydration, alcohol servings, screen-in-bed, late meal, rest day) —
-sleep quality, soreness and stress already exist as 1–5 ratings and stay where
-they are. Two things in the registry exist to make the correlations honest
-later: **one pre-registered outcome per behavior** (you cannot fish for the
-metric that happens to move) and **a declared lag** (alcohol tonight is a claim
-about tomorrow's session). The C-tier receipt on late meals says outright that
-the research is unsettled — grading our own questions is the point.
-
-**The dangerous half was the storage.** `normalizeCheckIn` and
-`upsertTodayPartial` are whitelist reconstructions: they rebuild a check-in
-field by field, and every read passes through the first while every
-victory-sheet reply chip passes through the second. A field added to one and not
-the other is destroyed with no error anywhere. Both were edited together, and
-both mutants are killed (`field-dropped-on-read`,
-`partial-upsert-wipes-behaviors` — the latter is the real scenario: log
-behaviors in the morning, tap a reply chip that evening, lose the morning).
-`MAX_ENTRIES` 30→90, because a thirty-day window could never fill a correlation
-that needs paired observations on both sides — the cap would have quietly capped
-the feature (`history-truncated-at-30`).
-
-Counts are not ratings: zero servings is a real answer, eight is eight, and the
-1–5 clamp guarding the rating fields would have rewritten both
-(`count-clamped-to-five`). The journal footer renders them as "Caffeine 2", never
-"2/5" (`count-rendered-as-N-of-5`). Also killed: `bad-time-string-throws`,
-`receipt-missing-for-behavior`, `weak-evidence-relabelled-strong`.
-
-Everything is optional, free, and device-only; the pre-session sheet is
-deliberately untouched — an athlete standing at a barbell is not asked how much
-coffee they drank. Deliberately absent: medication, reproductive and
-recreational-substance categories, which are special-category data and a surface
-this app has no reason to hold. Tests 835→862. Next: `.191` sleep consistency.
-
-## 2026-07-30 — The untestable half, tested (`.189`)
-
-`.188` shipped with an honest gap in its own PR body: the spend routes
-transitively import `server-only`, which throws under plain `tsx`, so the
-*wiring* went untested while only the pure decisions were falsified. That gap
-was in the worst possible place — the difference between "quota refuses" and
-"quota refuses **and the athlete still gets the free product**" is invisible to
-every pure test in the repo.
-
-Node's own exports map had the answer: `server-only` resolves to an empty module
-under the `react-server` condition. New lane `npm run test:routes`
-(`tsx --conditions=react-server`), wired into `gate.mjs` and `ci.yml` beside the
-unit tests; `*.routetest.ts` deliberately does not match the `*.test.ts` glob, so
-the two lanes stay separate (835 unit, 7 route).
-
-Seven contracts pinned, all on the degrade path: an exhausted daily-insight quota
-still answers **200 with the rules insight** (not 429); a dark LLM env never
-consults the quota and never says "quota"; a signed-out visitor always gets the
-plan-voice rules briefing; chat's 429 `coach_quota` is the deliberate exception
-(no rules engine to answer with) and unconfigured still reads `coach_offline`,
-because a founder who never set keys must never be told they hit a spending limit
-they never had. Determinism without a network or a shared bucket: caps driven to
-`0`, whose kill switch refuses before the limiter is consulted, and a unique IP
-per case.
-
-**The mutant `.188` could not run now runs and dies**: `quota-blocks-rules-path`
-(wire the quota as a route-wide 429) passes every pure test in the repo and fails
-here. Also killed: `plan-voice-gate-moved-up` (cost gate back in front of the free
-briefing — the exact defect the route's comment exists to prevent) and
-`dark-env-reads-as-quota`. Tests 835→842.
-

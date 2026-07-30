@@ -14,6 +14,14 @@
  * push fatigue is blunt — a third of users uninstall past six notifications, and
  * a single weekly push already costs about a tenth of them — so this is one
  * notification a day at a time the athlete named, or none.
+ *
+ * `.196` — this is now a thin adapter over `dayReviewOfferState`. It used to
+ * decide with a chain of early returns, one of which (`hasLocalPushSubscription`
+ * → return) meant **every athlete with the wind-down note already on could never
+ * set an hour**, so `day_review_hour` stayed NULL and the feature fired for
+ * nobody. Having push and having an evening hour are different facts; the
+ * decision moved to a pure total function so a test can enumerate the table
+ * rather than re-derive a control flow.
  */
 
 import { useEffect, useState } from 'react';
@@ -22,40 +30,38 @@ import { toast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { mayOfferDayReview } from '@/lib/dayReviewNudge';
 import {
-  DAY_REVIEW_MAX_HOUR,
-  DAY_REVIEW_MIN_HOUR,
-  mayOfferDayReview,
-} from '@/lib/dayReviewNudge';
+  DAY_REVIEW_DEFAULT_HOUR,
+  DAY_REVIEW_HOURS,
+  dayReviewOfferState,
+  readDayReviewHour,
+} from '@/lib/dayReviewPrefs';
 
 type Mode = 'hidden' | 'offer' | 'install' | 'done';
 
-const HOURS = Array.from(
-  { length: DAY_REVIEW_MAX_HOUR - DAY_REVIEW_MIN_HOUR + 1 },
-  (_, i) => DAY_REVIEW_MIN_HOUR + i
-);
-
 export function DayReviewOptIn() {
   const [mode, setMode] = useState<Mode>('hidden');
-  const [hour, setHour] = useState(20);
+  const [hour, setHour] = useState(DAY_REVIEW_DEFAULT_HOUR);
 
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      if (!mayOfferDayReview(readRaw(STORAGE_KEYS.dayReviewAskedAt), Date.now())) return;
       const m = await import('@/lib/pushClient');
-      if (await m.hasLocalPushSubscription()) return;
+      const hasPush = await m.hasLocalPushSubscription();
       if (cancelled) return;
-
-      if (m.isPushSupported()) {
-        setMode('offer');
-        return;
-      }
-      const iosLike =
-        typeof navigator !== 'undefined' &&
-        /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-        !('PushManager' in window);
-      if (iosLike) setMode('install');
+      setMode(
+        dayReviewOfferState({
+          hasPush,
+          supported: m.isPushSupported(),
+          iosNeedsInstall:
+            typeof navigator !== 'undefined' &&
+            /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+            !('PushManager' in window),
+          storedHour: readDayReviewHour(readRaw(STORAGE_KEYS.dayReviewHour)),
+          dismissed: !mayOfferDayReview(readRaw(STORAGE_KEYS.dayReviewAskedAt), Date.now()),
+        })
+      );
     })();
     return () => {
       cancelled = true;
@@ -68,8 +74,16 @@ export function DayReviewOptIn() {
     remember();
     track('day_review_optin_tapped');
     const m = await import('@/lib/pushClient');
-    const result = await m.subscribePush({ dayReviewHour: hour });
-    if (result === 'ok') {
+    // A device that already has a subscription only needs the hour synced onto
+    // its row; asking it to subscribe again would re-prompt for a permission it
+    // has already granted.
+    const ok = (await m.hasLocalPushSubscription())
+      ? await m.syncPushSubscription({ dayReviewHour: hour })
+      : (await m.subscribePush({ dayReviewHour: hour })) === 'ok';
+    if (ok) {
+      // Stored here as well as on the row so Profile opens showing the real
+      // setting, and so this card knows it has been answered.
+      writeRaw(STORAGE_KEYS.dayReviewHour, String(hour));
       setMode('done');
       toast({
         title: 'Evening review on',
@@ -114,7 +128,7 @@ export function DayReviewOptIn() {
           onChange={(e) => setHour(Number(e.target.value))}
           className="min-h-[44px] border-2 border-border bg-background px-2 text-sm tabular-nums"
         >
-          {HOURS.map((h) => (
+          {DAY_REVIEW_HOURS.map((h) => (
             <option key={h} value={h}>
               {String(h).padStart(2, '0')}:00
             </option>

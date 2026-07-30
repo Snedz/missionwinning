@@ -56,6 +56,13 @@ export const STORAGE_KEYS = {
   windDownAskedAt: 'mw_wind_down_asked_at',
   /** Last time the evening day-review offer was shown (or declined). */
   dayReviewAskedAt: 'mw_day_review_asked_at',
+  /**
+   * The hour the athlete chose for the evening review, as a string, or absent.
+   * Kept on the device as well as the server row so Profile can show the
+   * current setting without a round trip — and so the offer knows it has
+   * already been answered.
+   */
+  dayReviewHour: 'mw_day_review_hour',
 
   // ── Fuel (wedge) ──
   nutritionLog: 'mw_nutrition_log',
