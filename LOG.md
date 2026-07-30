@@ -2,9 +2,61 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.197`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
+**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.198`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
 
 ---
+
+## 2026-07-30 — Measured, and it can only shrink (`.202`)
+
+**`i18n-parity.ts` never opens a `.tsx`.** Its only filesystem read is its own
+allowlist; everything else compares locale packs **to each other**. That is a
+real check — it catches a key present in EN and missing in Japanese — but it is
+structurally blind to the bigger problem: a key a component *uses* that exists in
+**no pack at all**. All fifteen languages agree they don't have it, so parity is
+trivially satisfied.
+
+Measured for the first time: **665 of 1538 literal keys (43%) exist in no EN
+pack.** Because every call site is `t('key', { defaultValue: 'English' })`,
+nobody sees raw key names — they see **English**, silently, in fourteen
+non-English languages. The `@gate` test asserting no raw keys leak has always
+passed, and always will. The app looks translated and is not.
+
+Founder call was **measure and ratchet, no translation work**. So
+[`i18n-coverage.ts`](scripts/i18n-coverage.ts) counts the gap, fails on any
+**new** uncovered key, and its cap can only ever be lowered. In the gate, because
+`i18n:parity` cannot see these keys by construction and so nothing else would.
+
+**The cap shipped at 710, not 665, and that is worth understanding.** Five
+components — `TodayDayReviewCard`, `DayReviewOptIn`, `BehaviorStrip`,
+`DailyCheckIn`, `BreathingTimer` — had **no `useTranslation` at all**. Giving
+them one added 42 keys and the count went *up*. That is measurement widening, not
+debt growing: those strings were previously hardcoded English with **no key**,
+invisible to the counter and impossible for anyone to translate. Now translating
+them is a data change rather than a code change. It is the only legitimate reason
+this number rises, it is documented at the constant, and
+[`i18nCoverage.test.ts`](src/lib/i18nCoverage.test.ts) pins a checked-in
+high-water mark so the next raise has to edit two files with the reason in the
+diff.
+
+**`BehaviorStrip` now uses the key pairs the library always shipped.**
+`behaviors.ts` has carried `labelKey`/`receiptKey` beside `labelDefault`/
+`receiptDefault` since `.190`, and **nothing had ever read them** — every
+consumer took the English. The library was built i18n-ready and its only renderer
+ignored that for eleven builds. Twelve behavior questions and their evidence
+receipts are translatable for the first time.
+
+Killed: `ratchet-raised-instead-of-lowered`, `key-never-added-to-a-pack`,
+`component-with-no-t`, `coverage-script-not-in-gate`, `raw-default-over-the-key`.
+
+**Two process notes, both mine.** `key-never-added-to-a-pack` survived its first
+run because I wrote it as a *swap* — one uncovered key for another — which leaves
+a total-count ratchet unmoved. A real regression *adds* a key; rewritten that
+way, it kills. And my mutant cleanup used `git checkout --` on two files whose
+`.202` work was **uncommitted**, silently reverting them. The coverage check
+caught it on the next run, which is the first time in this wave a guard I had
+just written caught me destroying my own work rather than shipping a defect.
+
+Tests 1012→1016.
 
 ## 2026-07-30 — The screen that must not break (`.201`)
 
@@ -221,74 +273,3 @@ in two PRs. Fixed once, in the helper — `mentions()` now strips import stateme
 before counting — rather than a third time at a call site.
 
 Tests 988→999. LOG rotated (`.196`).
-
-## 2026-07-30 — The rule the test was not measuring (`.198`)
-
-The fix is two words. The deliverable is what had to happen before those two
-words could be trusted.
-
-`.194` put a **second poster-red button on Today** — a default-variant shadcn
-`Button` renders `bg-primary-fill`, and the design docks exactly one red action.
-Two tests should have caught it. Neither did:
-
-- *"Today offers exactly one primary action"* counts elements carrying the
-  **`.primary-action` class**. The offending button had the colour without the
-  class. The test measured the implementation, not the design.
-- *"every control on the logger is thumb-sized"* is scoped to **`/active`**.
-  The button was 36px (`size="sm"`) on `/log`.
-
-Two green tests, neither measuring the thing it is named for.
-
-**Guard 1 — appearance, not class name.** `helpers/redActions.ts` reads each
-control's **computed background** and matches it against the three reds the
-system defines. The rule is stated as *the dock owns red, the cards do not*,
-rather than "at most one red button": the hero renders a grey Just Go variant in
-some states, so a page-wide count of one was satisfied by the offending card
-button alone while the real CTA was not even red.
-
-**Guard 2 — the sweep reaches more than one screen.** The 44px body moved to
-`helpers/thumbSweep.ts` and now runs on `/active`, `/log` (09:00 and 19:00) and
-`/mind`. **On its first run it found roughly thirty undersized controls** — the
-breathing pattern chips, every 1–5 rating button in the check-in, and each
-guided-session transport control, all 36px. All fixed here. It also surfaced
-something systemic and **not** fixed: the Button primitive's *default* size is
-`h-10`, 40px, under the 44px floor `.125` set. Raising it changes every button
-in the app, so it is named here as a founder call rather than made quietly.
-
-**Guard 3 — the budget from outside.** `todayBlockBudget.test.ts` proves
-`planTodayBlocks` respects the cap; that is a claim about a function. The
-dashboard could stop calling it and stay green. An e2e case counts what actually
-rendered, importing `TODAY_MAX_TOP_LEVEL_BLOCKS` so the two bounds cannot drift.
-
-**Guard 4 — the cheap version, in `check-display-type`.** A script that runs in
-a second and names the file, so the failure arrives when the line is written
-rather than at the end of a browser run. **It found a second red CTA on its
-first run** — a red-filled `Log check-in →` link in `TodayJournalStrip` — now
-outline. The one exemption (`MuscleFreshnessStrip`'s progress-bar fill, inside
-an `aria-hidden` span) matches on the class string rather than the file, so it
-cannot also excuse a button added to that file later, and costs a written reason.
-
-**The part worth recording.** Guard 1 passed with the bug still in place **three
-times** while being written, each time because the surface was not on screen:
-the day-review card returns null without data to review (by design, `.192`); the
-push opt-in needs a VAPID public key, **unset in every e2e run this repo has ever
-done**, so every push surface has always rendered nothing under test; and the
-opt-in mounts only after an `await import('@/lib/pushClient')` resolves. A colour
-assertion against an absent element is green and meaningless. The test now waits
-for both the card and the button explicitly and fails on the precondition if
-either stops rendering — and `gate.mjs` injects a placeholder VAPID public key,
-the same shape as the placeholder Supabase keys already there. That is a
-genuinely new hole closed: it was not just this guard that was blind.
-
-The falsification proof, run end to end: with the red button restored, the legacy
-`.primary-action` assertion **passes** while Guard 1 **fails**, naming the
-button and its colour — `card surfaces must not use the docked action's red —
-found 1: Turn on [rgb(221, 42, 14)]`.
-
-Killed: `second-red-cta` (both guards), `budget-drifts-in-css`,
-`allowlist-without-a-reason`. `sweep-scoped-back-to-active` and
-`evening-untested` are established by construction rather than by a mutant run —
-the widened sweep found thirty real offenders the `/active`-only version never
-saw, and at 09:00 `dayReviewMayMount` means there is no card to measure.
-
-Gate e2e 39→46. Tests 988, unchanged — this PR is e2e and script guards.
