@@ -17,8 +17,6 @@ import {
   Trophy,
   Wind,
 } from 'lucide-react';
-import type { JourneyPhase } from '@/lib/missionJourney';
-import { isFreeBeta } from '@/lib/freeBeta';
 import { isPathEnabled } from '@/lib/surface';
 import { PRIMARY_NAV, type PrimaryNavItem, isPrimaryPath } from '@/lib/primaryNav';
 import { STATIC_PAGE_TITLES, pageTitleForPath, ROUTE_LABELS } from '@/lib/pageTitles';
@@ -32,7 +30,12 @@ export type NavLinkItem = PrimaryNavItem & {
 
 export { PRIMARY_NAV, isPrimaryPath, STATIC_PAGE_TITLES, pageTitleForPath, ROUTE_LABELS };
 
-/** @deprecated Use EXTENDED_NAV_SECTIONS — kept for grep/migration */
+/**
+ * Label, icon and description for every non-primary screen. Not a menu — the
+ * rail (`RAIL_GROUPS`) and `MoreSheet`'s QUIET_LINKS both resolve their hrefs
+ * through `NAV_BY_HREF`, which is built from this list. One place answers
+ * "what is /move called", so a rail and a sheet cannot disagree.
+ */
 export const MORE_NAV: NavLinkItem[] = [
   {
     href: '/move',
@@ -158,8 +161,10 @@ export type NavSection = {
  * the handoff names a screen differently from the existing menu entry.
  *
  * Not in the rail and deliberately so: /calculators, /leaderboard, /learn/guide
- * and /bundle stay in the header menu. The rail is the 13 screens, not
- * everything that has a route.
+ * and /bundle live in `MoreSheet`'s QUIET_LINKS. There is no header menu — that
+ * comment described one for months after it stopped existing, which is how
+ * `/benchmarks` ended up reachable from nowhere. The rail is the 13 screens,
+ * not everything that has a route.
  */
 const RAIL_LABEL_OVERRIDES: Record<string, { label: string; labelKey: string }> = {
   // The handoff calls this screen "Assess"; the menu entry is "Health screen".
@@ -209,77 +214,6 @@ export function railGroupsForNav(): NavSection[] {
         return { ...base, ...(RAIL_LABEL_OVERRIDES[href] ?? {}) };
       }),
   })).filter((group) => group.items.length > 0);
-}
-
-/** Full extended navigation — commissioned operators. */
-export const EXTENDED_NAV_SECTIONS: NavSection[] = [
-  {
-    id: 'recover',
-    title: 'Recover',
-    titleKey: 'navSectionRecover',
-    items: MORE_NAV.filter((i) => ['/move', '/mind'].includes(i.href)),
-  },
-  {
-    id: 'train',
-    title: 'Train deeper',
-    titleKey: 'navSectionTrain',
-    items: MORE_NAV.filter((i) =>
-      ['/builder', '/track', '/library', '/history', '/leaderboard'].includes(i.href)
-    ),
-  },
-  {
-    id: 'learn',
-    title: 'Learn & measure',
-    titleKey: 'navSectionLearn',
-    items: MORE_NAV.filter((i) =>
-      ['/learn', '/learn/guide', '/benchmarks', '/assessments', '/calculators'].includes(i.href)
-    ),
-  },
-  {
-    id: 'premium',
-    title: 'Premium',
-    titleKey: 'navSectionPremium',
-    items: MORE_NAV.filter((i) => i.href === '/bundle'),
-  },
-];
-
-/**
- * Journey-aware More menu — Basic Training sees train tools only so first week
- * stays focused on logging (S-Tier: less surface, better core).
- * Free beta: full More (minus Bundle) for every phase so all pillars are discoverable.
- */
-export function extendedNavSectionsForPhase(phase: JourneyPhase): NavSection[] {
-  const withoutPremium = (sections: NavSection[]) =>
-    isFreeBeta() ? sections.filter((s) => s.id !== 'premium') : sections;
-
-  // Never advertise a parked surface (src/lib/surface.ts) — a menu entry that
-  // 404s is worse than no entry. Drops sections that end up empty.
-  const withoutParked = (sections: NavSection[]) =>
-    sections
-      .map((section) => ({ ...section, items: section.items.filter((i) => isPathEnabled(i.href)) }))
-      .filter((section) => section.items.length > 0);
-
-  // Open beta: expose Recover / Train deeper / Learn — journey focus returns with paid.
-  if (isFreeBeta()) {
-    return withoutParked(withoutPremium(EXTENDED_NAV_SECTIONS));
-  }
-
-  if (phase === 'i-day' || phase === 'basic') {
-    return withoutParked([
-      {
-        id: 'train',
-        title: 'Train tools',
-        titleKey: 'navSectionTrain',
-        items: MORE_NAV.filter((i) =>
-          ['/builder', '/coach', '/library', '/history', '/calculators'].includes(i.href)
-        ),
-      },
-    ]);
-  }
-  if (phase === 'readiness') {
-    return withoutParked(withoutPremium(EXTENDED_NAV_SECTIONS.filter((s) => s.id !== 'premium')));
-  }
-  return withoutParked(withoutPremium(EXTENDED_NAV_SECTIONS));
 }
 
 export const ALL_NAV = [...PRIMARY_NAV, ...MORE_NAV];

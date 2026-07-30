@@ -15,7 +15,13 @@
 
 import { useState } from 'react';
 import { Info } from 'lucide-react';
-import { BEHAVIORS, MAX_SERVINGS, type BehaviorEntry, type EvidenceTier } from '@/lib/behaviors';
+import {
+  behaviorById,
+  MAX_SERVINGS,
+  type BehaviorEntry,
+  type BehaviorId,
+  type EvidenceTier,
+} from '@/lib/behaviors';
 
 type Props = {
   value: BehaviorEntry;
@@ -132,7 +138,11 @@ export function BehaviorStrip({ value, onChange }: Props) {
     </select>
   );
 
-  const def = (id: string) => BEHAVIORS.find((b) => b.id === id)!;
+  // Non-null sugar over the shared lookup, not a second one: every id below is
+  // a literal from `BehaviorId`, so a miss is a compile-time impossibility.
+  // This file used to run its own `BEHAVIORS.find` — the `.178` two-definitions
+  // shape, and the reason `behaviorById` had no callers.
+  const def = (id: BehaviorId) => behaviorById(id)!;
 
   return (
     <section aria-label="Behavior journal" className="border-2 border-border px-3 py-2">

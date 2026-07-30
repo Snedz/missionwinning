@@ -6,9 +6,11 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
+import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
 import { TodayPageHeader } from '@/components/today/TodayPageHeader';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import {
@@ -26,6 +28,17 @@ import type { CompletedWorkoutLog } from '@/types';
 import { runTodayPrimaryAction } from '@/lib/todayPrimaryAction';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw } from '@/lib/storage/safeStorage';
+
+/**
+ * The evening card reaches the lean shell too — `.192` shipped it dashboard-only,
+ * so it rendered for nobody below `readiness`. Dynamic + `ssr: false` because it
+ * reads device storage, and mounted only past `dayReviewMayMount` so the chunk is
+ * never fetched in the morning.
+ */
+const TodayDayReviewCard = dynamic(
+  () => import('@/components/today/TodayDayReviewCard').then((m) => m.TodayDayReviewCard),
+  { ssr: false }
+);
 
 const SSR_ACTION: JourneyAction = {
   label: 'Begin I-Day',
@@ -56,6 +69,18 @@ export function HomeTodayLean() {
   const [todayLabel, setTodayLabel] = useState('');
   /** Focus label for Just Go — filled after idle import of score/readiness. */
   const [focusLabel, setFocusLabel] = useState('');
+  /**
+   * Set in an effect, never during render: the decision reads the device clock,
+   * and a server render has no evening. Starting false also keeps the card off
+   * the cold path entirely.
+   */
+  const [mayShowDayReview, setMayShowDayReview] = useState(false);
+
+  useEffect(() => {
+    setMayShowDayReview(
+      dayReviewMayMount({ hour: new Date().getHours(), phase: journeyState.phase })
+    );
+  }, [journeyState.phase]);
 
   const refreshFromStorage = useCallback(() => {
     const history = readWorkoutHistoryFromStorage();
@@ -194,6 +219,7 @@ export function HomeTodayLean() {
           })}
         </p>
       )}
+      {mayShowDayReview && <TodayDayReviewCard />}
       {workoutHistory.length >= 1 && journeyState.phase === 'basic' && (
         <a
           href="/coach"

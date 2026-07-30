@@ -38,6 +38,13 @@ type Props = {
   debrief?: Debrief | null;
   /** The athlete's own journal fragments — rendered before the debrief lines. */
   fragments?: string[];
+  /**
+   * `CompletedWorkoutLog.id` of the session this sheet is celebrating, so a feel
+   * tap lands on that session's journal entry. Without it `setJournalFeel` had no
+   * caller and the "Feel N/5" badge in History could never be populated — the
+   * `.184` write-only defect, live again.
+   */
+  workoutId?: string;
 };
 
 /** D2 Victory ritual — lock scale + brass volume + one next action. */
@@ -49,6 +56,7 @@ export function WorkoutVictorySheet({
   onViewHistory,
   debrief,
   fragments,
+  workoutId,
 }: Props) {
   const { t } = useTranslation();
   const units = useUnits();
@@ -116,6 +124,11 @@ export function WorkoutVictorySheet({
 
   const saveFeel = (energy: number) => {
     upsertTodayPartial({ energy, mood: energy });
+    // The journal entry for THIS session, not just today's check-in. Both are
+    // wanted: the check-in steers the next plan, the feel annotates the entry.
+    if (workoutId) {
+      void import('@/lib/journal/journalStore').then((m) => m.setJournalFeel(workoutId, energy));
+    }
     setFeelSaved(true);
     track('readiness_checkin_completed', { adjusted: true, source: 'victory' });
   };

@@ -1,9 +1,19 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { composeDayReview, dayReviewLines } from '@/lib/dayReview';
+import { composeDayReview, type DayReview } from '@/lib/dayReview';
 import { findToneViolations } from '@/lib/reentryTone';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
 import type { CompletedWorkoutLog } from '@/types';
+
+/**
+ * Flattens a review to its prose. Lives here rather than in `dayReview.ts`
+ * because nothing but these tests ever wanted it — a helper only tests use is
+ * a test helper, and shipping it as a library export made the module look
+ * larger than its real surface.
+ */
+function dayReviewLines(review: DayReview): string[] {
+  return [review.fact, review.reason, review.option].filter((l): l is string => !!l);
+}
 
 const NOW = new Date('2026-07-30T20:00:00');
 const TODAY = '2026-07-30';

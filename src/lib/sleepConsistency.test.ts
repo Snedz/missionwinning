@@ -6,7 +6,10 @@ import {
   bedMinutes,
   computeSleepConsistency,
   consistencyLine,
+  sleepCollectingLine,
+  sleepConsistencyProgress,
 } from '@/lib/sleepConsistency';
+import { roundToQuarterHour } from '@/lib/behaviors';
 import type { MindCheckIn } from '@/lib/mindCheckIns';
 
 const NOW = new Date('2026-07-30T12:00:00');
@@ -179,5 +182,75 @@ describe('consistencyLine — what it will not say', () => {
     const c = computeSleepConsistency(same, NOW)!;
     assert.equal(c.laterThanUsualOf7, 0);
     assert.ok(!/later than/.test(consistencyLine(c)));
+  });
+});
+
+/**
+ * The stretch before there is anything to say. `computeSleepConsistency`
+ * correctly returns null under `MIN_NIGHTS`, but null renders as nothing, and
+ * to an athlete four nights in "nothing" is indistinguishable from a feature
+ * that does not work. `behaviorImpacts` already extends this courtesy with its
+ * `collecting` state; this is the same courtesy for sleep.
+ */
+describe('sleepConsistencyProgress', () => {
+  it('says nothing before the first bed time is logged', () => {
+    assert.equal(sleepConsistencyProgress([], NOW), null);
+    // A check-in with no bed time is not a night — it is a check-in.
+    const noBed: MindCheckIn = { date: '2026-07-29', sleep: 3, mood: 3, stress: 3, energy: 3 };
+    assert.equal(sleepConsistencyProgress([noBed], NOW), null);
+  });
+
+  it('counts up from the first night to the last one before the band speaks', () => {
+    for (let n = 1; n < MIN_NIGHTS; n++) {
+      const nights = Array.from({ length: n }, (_, i) => night(i + 1, '23:00'));
+      const p = sleepConsistencyProgress(nights, NOW);
+      assert.deepEqual(p, { nights: n, needed: MIN_NIGHTS }, `${n} logged`);
+    }
+  });
+
+  it('stands down the moment the real line exists', () => {
+    const nights = Array.from({ length: MIN_NIGHTS }, (_, i) => night(i + 1, '23:00'));
+    assert.equal(sleepConsistencyProgress(nights, NOW), null);
+    assert.notEqual(computeSleepConsistency(nights, NOW), null);
+  });
+
+  it('ignores nights outside the window, exactly as the band does', () => {
+    const nights = [night(1, '23:00'), night(40, '23:00'), night(60, '23:15')];
+    assert.deepEqual(sleepConsistencyProgress(nights, NOW), { nights: 1, needed: MIN_NIGHTS });
+  });
+
+  it('reports the count and nothing else — no target, no encouragement', () => {
+    const line = sleepCollectingLine({ nights: 3, needed: MIN_NIGHTS });
+    assert.ok(line.includes(`3 of ${MIN_NIGHTS}`), line);
+    for (const word of ['should', 'try', 'keep it up', 'goal', 'target', 'debt', 'good', 'bad']) {
+      assert.ok(!line.toLowerCase().includes(word), `collecting line prescribes: ${line}`);
+    }
+  });
+
+  it('counts one night in the singular', () => {
+    assert.ok(sleepCollectingLine({ nights: 1, needed: MIN_NIGHTS }).includes('1 of'));
+    assert.ok(!/1 of \d+ nights logged/.test(sleepCollectingLine({ nights: 1, needed: MIN_NIGHTS })));
+  });
+});
+
+/**
+ * `bedClock` carried its own `Math.round(total / 15) * 15` — a third copy of a
+ * rule that already lived in `behaviors.ts`, and the only one of the three
+ * where a midnight wrap could have been got wrong independently.
+ */
+describe('bedClock rounds by the shared rule', () => {
+  it('agrees with roundToQuarterHour across the whole day', () => {
+    for (let minutes = 0; minutes < 24 * 60; minutes++) {
+      const h = String(Math.floor(minutes / 60)).padStart(2, '0');
+      const m = String(minutes % 60).padStart(2, '0');
+      // `bedMinutes` is the inverse of bedClock's anchor, so this round-trips
+      // every wall-clock minute through the noon-anchored representation.
+      const viaClock = bedClock(bedMinutes(`${h}:${m}`)!);
+      assert.equal(viaClock, roundToQuarterHour(`${h}:${m}`), `${h}:${m}`);
+    }
+  });
+
+  it('wraps 23:53 to 00:00 rather than inventing a 24th hour', () => {
+    assert.equal(bedClock(bedMinutes('23:53')!), '00:00');
   });
 });

@@ -39,6 +39,7 @@ import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { computeReentry, type Reentry } from "@/lib/reentry";
 import { TodayReentryCard } from "@/components/today/TodayReentryCard";
+import { dayReviewMayMount } from "@/lib/today/dayReviewMount";
 
 const BetaWelcomeBanner = dynamic(
   () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
@@ -564,9 +565,11 @@ export function HomeTodayDashboard() {
     });
   }
 
-  // Day in review — evenings only, and the card removes itself when the day
-  // holds nothing true to say (see composeDayReview).
-  if (belowFoldReady) {
+  // Day in review — the same mount decision the lean shell asks, so "who sees
+  // the evening card" cannot drift between the two Today shells. The hour test
+  // lives there rather than inside the card, so the chunk is never fetched in
+  // the morning just to render null.
+  if (belowFoldReady && dayReviewMayMount({ hour: new Date().getHours(), phase: state.phase })) {
     staggerBlocks.push({ key: 'day-review', node: <TodayDayReviewCard /> });
   }
 
