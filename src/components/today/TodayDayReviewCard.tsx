@@ -21,6 +21,7 @@ import { computeSleepConsistency } from '@/lib/sleepConsistency';
 import { computeBehaviorImpacts } from '@/lib/journal/behaviorImpacts';
 import { composeDayReview, DAY_REVIEW_START_HOUR, type DayReview } from '@/lib/dayReview';
 import { track } from '@/lib/analytics';
+import { DayReviewOptIn } from '@/components/today/DayReviewOptIn';
 
 export function TodayDayReviewCard() {
   const history = useWorkoutStore((s) => s.workoutHistory);
@@ -86,6 +87,10 @@ export function TodayDayReviewCard() {
       {review.option ? (
         <p className="text-xs leading-relaxed text-muted-foreground">{review.option}</p>
       ) : null}
+
+      {/* Offered here rather than in Profile: this is the moment the value of an
+          evening note is concrete rather than hypothetical. */}
+      <DayReviewOptIn />
 
       <div className="flex flex-wrap items-center gap-2">
         {logged ? (

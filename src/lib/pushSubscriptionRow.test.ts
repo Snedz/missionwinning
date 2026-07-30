@@ -53,3 +53,65 @@ test('the post-session twofer writes the timestamp and the bit together', () => 
   assert.equal(row.last_session_at, '2026-07-29T18:00:00.000Z');
   assert.equal(row.last_session_high, true);
 });
+
+/**
+ * `.194` — the privacy contract, asserted as a column allowlist.
+ *
+ * The row may carry timestamps, a cadence integer, an IANA zone and one-bit
+ * results of device-side computation. It may never carry a behavior count, a
+ * sleep figure, a session load or any part of a review. The 20260730 migration
+ * already refused a three-value load zone on that reasoning; anything from the
+ * behavior journal is categorically worse.
+ */
+test('the row can only ever contain allowlisted columns', () => {
+  const row = buildSubscriptionRow({
+    userId: null,
+    deviceId: 'dev-1',
+    endpoint: 'https://push.example/abc',
+    p256dh: 'key',
+    auth: 'auth',
+    lastSessionAt: '2026-07-30T18:00:00.000Z',
+    daysPerWeek: 4,
+    timeZone: 'America/New_York',
+    lastSessionHigh: true,
+    dayReviewHour: 20,
+  });
+  const allowed = new Set([
+    'user_id',
+    'device_id',
+    'endpoint',
+    'p256dh',
+    'auth',
+    'last_session_at',
+    'days_per_week',
+    'time_zone',
+    'last_session_high',
+    'day_review_hour',
+  ]);
+  for (const key of Object.keys(row)) {
+    assert.ok(allowed.has(key), `unallowlisted column reached the push row: ${key}`);
+  }
+});
+
+test('no behavior-shaped field can be serialized onto the row', () => {
+  const row = buildSubscriptionRow({
+    userId: null,
+    deviceId: 'dev-1',
+    endpoint: 'https://push.example/abc',
+    p256dh: 'key',
+    auth: 'auth',
+    dayReviewHour: 20,
+    // Fields a future careless caller might try to pass through.
+    ...({
+      caffeineServings: 4,
+      bedTime: '23:00',
+      alcoholServings: 2,
+      sleepDebtMinutes: 127,
+      reviewText: 'four days under your strain floor',
+    } as Record<string, unknown>),
+  });
+  const serialized = JSON.stringify(row);
+  for (const leak of ['caffeine', 'bedTime', 'alcohol', 'sleepDebt', 'strain floor', '127']) {
+    assert.ok(!serialized.includes(leak), `behavior data leaked to the server: ${leak}`);
+  }
+});

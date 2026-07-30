@@ -347,6 +347,8 @@ export const pushSubscribeBodySchema = z.object({
   lastSessionAt: z.string().max(40).optional(),
   daysPerWeek: z.number().int().min(1).max(7).optional(),
   timeZone: z.string().max(64).optional(),
+  /** Chosen evening hour for the day-review push (`.194`). Never behavior data. */
+  dayReviewHour: z.number().int().min(18).max(22).optional(),
   /**
    * One bit: did the last session run above this athlete's own band. Computed on the
    * device from history the server never sees — the zone and the sets stay local.

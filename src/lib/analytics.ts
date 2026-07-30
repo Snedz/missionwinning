@@ -73,6 +73,7 @@ type AnalyticsEvent =
   | 'share_card_generated'
   | 'debrief_spoken'
   | 'day_review_quick_log'
+  | 'day_review_optin_tapped'
   | 'history_truncated'
   | 'sync_outbox_drained'
   | 'sync_outbox_stuck'

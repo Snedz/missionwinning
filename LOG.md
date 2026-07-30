@@ -6,6 +6,48 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — The doorbell, not the letter (`.194`)
+
+Last PR of the behavior-journal wave: the opt-in evening day-review push.
+
+**The push carries no numbers, because the row it is sent from carries none.**
+[`20260801_day_review_push.sql`](supabase/migrations/20260801_day_review_push.sql)
+adds exactly two columns — a chosen hour (a preference integer of the same class
+as `days_per_week`) and its own send marker. The `20260730` migration already
+refused to store a three-value load zone, on the reasoning that a per-session
+stream of zones is reconstructable training history through the back door; a
+caffeine count or a sleep figure is categorically worse than that. So the server
+knows only *when* to ring. The review itself is composed on the device, from
+data that never left it, when the athlete opens the app.
+
+Pure [`dayReviewNudge.ts`](src/lib/dayReviewNudge.ts) decides: only at the hour
+the athlete chose (18–22, strictly opt-in — no hour means no push, ever), only
+once per local day, never without a time zone, and **never on a night the
+wind-down note already spoke**. `windDownDue` carries the mirror of that clause,
+so the one-push-per-evening rule holds from both directions rather than one. The
+push-fatigue research is blunt about why: roughly a third of users uninstall past
+six notifications, and even a single weekly push costs about a tenth of them. One
+a day, at a named hour, or none.
+
+Its own cron route and hourly workflow (at :11, offset from wind-down's :07 so
+the two evening sweeps do not race on the same table), and its own
+`mw-day-review` tag — a shared tag would let one kind replace the other's
+unopened notification.
+
+Falsified: `second-push-same-evening` in **both** directions,
+`behaviors-on-push-row` (a column-allowlist test proving no behavior-shaped
+field can serialize onto the row, plus a leak check for caffeine, bed time,
+alcohol, sleep-debt and review text), `push-copy-contains-numbers`,
+`hour-null-fires`, `no-timezone-sends`, `marker-same-day-resends`.
+
+**Ships dark**, exactly as wind-down did: VAPID unset means nothing sends, and
+the workflow skips loudly without `CRON_SECRET`/`SMOKE_BASE_URL`. Founder owns
+the migration, the keys, and arming the workflow. Tests 906→923.
+
+**The wave is complete** (`.190`–`.194`): twelve evidence-graded behaviors →
+sleep consistency → a digest that cannot lie → impacts correlated to the barbell
+→ an evening doorbell that knows nothing about you.
+
 ## 2026-07-30 — Correlate to the barbell (`.193`)
 
 The thesis of the whole wave, and the part no competitor can copy.

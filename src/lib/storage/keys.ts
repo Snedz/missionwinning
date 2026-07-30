@@ -54,6 +54,8 @@ export const STORAGE_KEYS = {
   deviceId: 'mw_device_id',
   /** Last time the post-session notification offer was shown (or declined). */
   windDownAskedAt: 'mw_wind_down_asked_at',
+  /** Last time the evening day-review offer was shown (or declined). */
+  dayReviewAskedAt: 'mw_day_review_asked_at',
 
   // ── Fuel (wedge) ──
   nutritionLog: 'mw_nutrition_log',

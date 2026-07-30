@@ -34,6 +34,8 @@ export interface PushCadence {
    * debrief's zone — the load, the sets and the zone itself never leave the device.
    */
   lastSessionHigh?: boolean;
+  /** Chosen evening hour for the day-review push (`.194`), 18–22. */
+  dayReviewHour?: number;
 }
 
 export type PushResult = 'ok' | 'unsupported' | 'denied' | 'error';
@@ -96,6 +98,7 @@ async function postSubscription(
         daysPerWeek: cadence?.daysPerWeek ?? loadDaysPerWeek(),
         timeZone: resolvedTimeZone(),
         lastSessionHigh: cadence?.lastSessionHigh,
+        dayReviewHour: cadence?.dayReviewHour,
       }),
     });
     return res.ok;

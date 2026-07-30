@@ -23,6 +23,12 @@ export interface SubscriptionRowInput {
   daysPerWeek?: number;
   timeZone?: string;
   lastSessionHigh?: boolean;
+  /**
+   * `.194` — the local hour the athlete chose for the evening review, 18–22.
+   * A preference integer of the same class as `daysPerWeek`; no behavior data,
+   * no review content, ever.
+   */
+  dayReviewHour?: number;
 }
 
 export type SubscriptionRow = {
@@ -36,6 +42,7 @@ export type SubscriptionRow = {
   days_per_week: number;
   time_zone: string;
   last_session_high: boolean;
+  day_review_hour: number;
 }>;
 
 export function buildSubscriptionRow(input: SubscriptionRowInput): SubscriptionRow {
@@ -51,5 +58,6 @@ export function buildSubscriptionRow(input: SubscriptionRowInput): SubscriptionR
     ...(input.lastSessionHigh !== undefined
       ? { last_session_high: input.lastSessionHigh }
       : {}),
+    ...(input.dayReviewHour !== undefined ? { day_review_hour: input.dayReviewHour } : {}),
   };
 }
