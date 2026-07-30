@@ -107,15 +107,29 @@ jobs:
             sleep 2
           done
 
-      - name: Visual regression (@visual, soft until baselines committed)
+      # `.200` — this job used to pass while guarding nothing.
+      #
+      # With no baselines it ran `--update-snapshots || true` and then re-ran
+      # `e2e:visual`, which found the snapshots it had just written. Green, every
+      # time, on a suite with zero committed baselines. That is the same defect
+      # this repo keeps finding in its own tests: a check that cannot fail.
+      #
+      # Bootstrapping baselines is a deliberate act — `visual.spec.ts` argues at
+      # length that a known-wrong baseline is worse than none, and the previous
+      # set was deleted for depicting the pre-Modernist design. So the absence of
+      # baselines is now a loud failure with instructions, not a silent pass.
+      - name: Visual regression (@visual)
         env:
           SMOKE_BASE_URL: http://localhost:3000
           PRIVATE_MODE: 'false'
         run: |
           if [ -z "$(find tests/e2e -type d -name '*-snapshots' 2>/dev/null | head -1)" ]; then
-            echo "No *-snapshots dirs yet — generating baselines (soft job)."
-            npx playwright test --config=playwright.config.ts --grep @visual --update-snapshots || true
-            echo "Download the visual-diffs artifact, LOOK at each PNG, commit them, then remove continue-on-error."
+            echo "::error::No committed visual baselines — this job is guarding nothing."
+            echo ""
+            echo "Bootstrap them deliberately, on a Linux runner:"
+            echo "  npx playwright test --config=playwright.config.ts --grep @visual --update-snapshots"
+            echo "Then LOOK at every PNG before committing. See tests/e2e/visual.spec.ts."
+            exit 1
           fi
           npm run e2e:visual
 

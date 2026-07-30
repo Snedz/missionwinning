@@ -65,7 +65,9 @@ jobs:
         run: npm run test:routes
 
       - name: Dependency audit (high)
-        run: npm audit --audit-level=high
+        # `npm run security-audit`, not the raw command: package.json already
+        # defines it, and two spellings of one check is how they drift.
+        run: npm run security-audit
         continue-on-error: true
 
       - name: Export locale JSON (smoke)

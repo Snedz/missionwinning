@@ -129,8 +129,18 @@ export function probeCiAudit(repoRoot: string): { ok: boolean; detail: string } 
   const path = join(repoRoot, '.github/workflows/ci.yml');
   if (!existsSync(path)) return { ok: false, detail: 'ci.yml missing' };
   const text = readFileSync(path, 'utf8');
-  if (!text.includes('npm audit')) {
-    return { ok: false, detail: 'npm audit step not found in ci.yml' };
+  /*
+   * Either spelling counts.
+   *
+   * `.200` moved ci.yml from the raw `npm audit --audit-level=high` to
+   * `npm run security-audit`, so that package.json holds the one definition of
+   * what the audit *is*. This probe grepped for the raw form and reported the
+   * control as failing while the audit still ran — a control that measures a
+   * spelling rather than the fact it is about.
+   */
+  const runsAudit = text.includes('npm audit') || text.includes('npm run security-audit');
+  if (!runsAudit) {
+    return { ok: false, detail: 'no dependency-audit step found in ci.yml' };
   }
   const soft = text.includes('continue-on-error: true');
   return {

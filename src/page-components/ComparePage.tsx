@@ -106,7 +106,24 @@ export function ComparePage() {
               {t('compareTableTitle', { defaultValue: 'Free tier at a glance' })}
             </h2>
           </div>
-          <div className="overflow-x-auto px-5 pb-5">
+          {/*
+            `tabIndex={0}` + a name: a region that scrolls must be reachable by
+            keyboard, or the columns past the fold exist only for people with a
+            pointer. axe calls this `scrollable-region-focusable` (serious), and
+            it was the single failure the a11y suite found the first time it was
+            ever run — the suite has existed since `.157` and executed in no
+            workflow and no gate until `.200`.
+
+            The lint disable below is deliberate: `jsx-a11y/no-noninteractive-tabindex`
+            is a static heuristic about element types, while axe tests the
+            rendered box. They genuinely disagree here, and axe is the one
+            measuring what a keyboard user experiences.
+          */}
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+          <div tabIndex={0} role="region"
+            className="overflow-x-auto px-5 pb-5"
+            aria-label={t('compareTableTitle', { defaultValue: 'Free tier at a glance' })}
+          >
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b-2 border-border text-left">
