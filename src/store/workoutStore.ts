@@ -89,6 +89,8 @@ interface WorkoutState {
     muscleGroups?: import('@/types').MuscleGroup[]
   ) => void;
   setExerciseNote: (exerciseIndex: number, note: string) => void;
+  /** Session-level jot — becomes journal fragments at finish, never syncs. */
+  setSessionNote: (note: string) => void;
   startRestTimer: (seconds?: number) => void;
   adjustRestTimer: (delta: number) => void;
   tickRestTimer: () => void;
@@ -474,6 +476,13 @@ export const useWorkoutStore = create<WorkoutState>()(
           if (!ex) return s;
           exercises[exerciseIndex] = { ...ex, note };
           return { activeWorkout: { ...s.activeWorkout, exercises } };
+        });
+      },
+
+      setSessionNote: (note) => {
+        set((s) => {
+          if (!s.activeWorkout) return s;
+          return { activeWorkout: { ...s.activeWorkout, sessionNote: note } };
         });
       },
 

@@ -36,6 +36,7 @@ import {
 import dynamic from 'next/dynamic';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
 import { getJournalEntry } from '@/lib/journal/journalStore';
+import { JournalTimeline } from '@/components/history/JournalTimeline';
 import { AnatomyHeatMap } from '@/components/history/AnatomyHeatMap';
 
 const History1RMChart = dynamic(
@@ -69,6 +70,7 @@ import { Input } from '@/components/ui/input';
 const HEATMAP_WINDOW_DAYS = 14;
 
 type RangeFilter = '7' | '30' | 'all';
+type HistoryTab = 'sessions' | 'journal';
 
 export function HistoryPage() {
   const { t, i18n } = useTranslation();
@@ -84,6 +86,7 @@ export function HistoryPage() {
   const [nameQuery, setNameQuery] = useState('');
   const [range, setRange] = useState<RangeFilter>('30');
   const [visibleCount, setVisibleCount] = useState(30);
+  const [tab, setTab] = useState<HistoryTab>('sessions');
 
   const filteredHistory = useMemo(() => {
     const q = nameQuery.trim().toLowerCase();
@@ -264,6 +267,35 @@ export function HistoryPage() {
         />
       ) : (
         <div className="space-y-3">
+          {/* Sessions = the numbers; Journal = the words (fragments + debriefs +
+              check-in notes, device-only). Same style as the range filter row. */}
+          <div className="flex gap-1.5" role="tablist" aria-label={t('historyTabsLabel', { defaultValue: 'History view' })}>
+            {(
+              [
+                ['sessions', t('historyTabSessions', { defaultValue: 'Sessions' })],
+                ['journal', t('historyTabJournal', { defaultValue: 'Journal' })],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                role="tab"
+                aria-selected={tab === value}
+                onClick={() => setTab(value)}
+                className={
+                  tab === value
+                    ? 'min-h-[44px] border-2 border-transparent bg-primary-fill px-4 text-xs font-semibold text-primary-foreground'
+                    : 'min-h-[44px] border-2 border-border px-4 text-xs font-semibold text-muted-foreground hover:bg-foreground/[0.07]'
+                }
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          {tab === 'journal' ? (
+            <JournalTimeline />
+          ) : (
+          <>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Input
               type="search"
@@ -358,6 +390,8 @@ export function HistoryPage() {
             ) : null}
             </>
           )}
+          </>
+          )}
         </div>
       )}
 
@@ -418,9 +452,15 @@ export function HistoryPage() {
                     `.184`; sessions completed before then simply have no entry. */}
                 {(() => {
                   const entry = getJournalEntry(selected.id);
-                  if (!entry || entry.lines.length === 0) return null;
+                  if (!entry || (entry.lines.length === 0 && !entry.fragments?.length)) return null;
                   return (
                     <div className="border-l-2 border-primary/40 pl-3 space-y-1">
+                      {/* The athlete's fragments open the entry — their words, verbatim. */}
+                      {entry.fragments?.map((fragment, i) => (
+                        <p key={`f-${i}`} className="text-sm italic text-foreground">
+                          {fragment}
+                        </p>
+                      ))}
                       {entry.lines
                         .filter((l) => l.kind !== 'question')
                         .map((l, i) => (

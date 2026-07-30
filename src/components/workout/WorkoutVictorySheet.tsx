@@ -36,6 +36,8 @@ type Props = {
   onViewHistory: () => void;
   /** Composed by the caller, which owns history — see buildDebrief. */
   debrief?: Debrief | null;
+  /** The athlete's own journal fragments — rendered before the debrief lines. */
+  fragments?: string[];
 };
 
 /** D2 Victory ritual — lock scale + brass volume + one next action. */
@@ -46,6 +48,7 @@ export function WorkoutVictorySheet({
   onViewToday,
   onViewHistory,
   debrief,
+  fragments,
 }: Props) {
   const { t } = useTranslation();
   const units = useUnits();
@@ -257,7 +260,7 @@ export function WorkoutVictorySheet({
           </div>
         )}
 
-        {debrief && <SessionDebriefCard debrief={debrief} />}
+        {debrief && <SessionDebriefCard debrief={debrief} fragments={fragments} />}
 
         {summary.progressionInsight && (
           <p className="text-center text-sm text-muted-foreground px-2 leading-relaxed">

@@ -32,6 +32,13 @@ export interface SessionJournalEntry {
   workoutName: string;
   zone: LoadZone;
   lines: { kind: DebriefLineKind; text: string }[];
+  /**
+   * `.185` — the athlete's own words, verbatim, shown before the machine's lines.
+   * Exercise-note fragments arrive prefixed "exercise name: " (see composeEntry).
+   */
+  fragments?: string[];
+  /** Check-in strip captured at finish — only fields the athlete rated. */
+  checkIn?: { sleep?: number; mood?: number; stress?: number; energy?: number; soreness?: number };
   /** 1–5 from the victory sheet's feel buttons, when the athlete tapped one. */
   feel?: number;
   savedAt: string;
@@ -59,6 +66,26 @@ export function getJournalEntry(workoutId: string): SessionJournalEntry | null {
 /** Newest first. */
 export function listJournalEntries(limit = JOURNAL_MAX_ENTRIES): SessionJournalEntry[] {
   return load().slice(0, limit);
+}
+
+/**
+ * Post-hoc edit (Granola's second half): replace an entry's fragments with what
+ * the athlete typed in the journal editor. Their words only — the machine's lines
+ * are not editable, because an edited debrief would claim the rules said something
+ * they did not. No entry → no-op; editing must never mint one.
+ */
+export function updateJournalFragments(workoutId: string, fragments: string[]): void {
+  const entries = load();
+  if (!entries.some((e) => e.workoutId === workoutId)) return;
+  const cleaned = fragments.map((f) => f.trim()).filter((f) => f.length > 0);
+  writeJson(
+    STORAGE_KEYS.sessionJournal,
+    entries.map((e) =>
+      e.workoutId === workoutId
+        ? { ...e, fragments: cleaned.length > 0 ? cleaned : undefined }
+        : e
+    )
+  );
 }
 
 /** Record the athlete's feel tap onto an already-saved entry. */
