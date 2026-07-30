@@ -6,6 +6,25 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — Cue & tweak memory (`.186`)
+
+PR 3 of Field Notes — the coach remembers. Paper-logbook lifters flip back pages
+for exactly this: "machine 3, seat 4", "tuck elbows". Notes have been stored on the
+completed log (and synced — an Android note surfaces here too) since day one; `.184`
+made them readable, this makes them useful. Opening an exercise the athlete has
+noted before shows **Last note (date): "tuck elbows"** right in the logger card.
+
+Pure [`cueMemory.ts`](src/lib/journal/cueMemory.ts): `lastNotesFor(exerciseId,
+history, n)` — newest first with a defensive sort (a cloud merge can perturb array
+order, and a stale cue presented as current is a silent lie), tombstoned logs are
+silent, text returned verbatim. Refusals kept as named mutants, all killed:
+another exercise's note never appears (any-exercise-note), oldest-as-newest fails
+(stale-note-first), empty history is silence not a placeholder
+(placeholder-on-empty), deleted logs do not speak (deleted-log-speaks).
+
+Every note written now raises the value of the next session — the retention loop
+this feature exists for. Tests 797→803. Next: `.187` Impacts.
+
 ## 2026-07-30 — The session entry (`.185`)
 
 The Granola moment of the Field Notes plan: the athlete's scrappy fragments steer,

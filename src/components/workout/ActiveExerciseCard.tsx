@@ -20,10 +20,11 @@ import { useIsCompact } from '@/hooks/useIsCompact';
 import { getLastPerformanceForSet } from '@/lib/workout/activeWorkoutHelpers';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import { getFormGuideOrCues } from '@/lib/formGuides';
+import { lastNotesFor } from '@/lib/journal/cueMemory';
 import { resolveRestSeconds } from '@/lib/workout/restTimer';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { supersetLabel } from '@/lib/workout/superset';
-import { cn } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 import type { UnitsPref } from '@/lib/units';
 import type {
   ActiveExerciseLog,
@@ -125,6 +126,9 @@ export function ActiveExerciseCard({
   const holdsActiveSet = nextSet?.exIdx === exIdx;
   const lastSets = lastSessionSets(workoutHistory, exLog.exerciseId);
   const hasFormGuide = !!getFormGuideOrCues(exercise.id, { exercise });
+  // The cue the athlete wrote last time this lift came up — what a paper
+  // logbook gets flipped back for. Verbatim from history; absent is silence.
+  const lastNote = lastNotesFor(exLog.exerciseId, workoutHistory)[0] ?? null;
 
   const nextPlannedIdx = exLog.sets.findIndex((s) => !s.completed);
   /**
@@ -336,6 +340,15 @@ export function ActiveExerciseCard({
               onChange={onSwapTo}
             />
           </div>
+        )}
+        {lastNote && (
+          <p className="text-[11px] text-muted-foreground">
+            {t('activeLastNoteLine', {
+              date: formatDate(lastNote.date),
+              defaultValue: `Last note (${formatDate(lastNote.date)}):`,
+            })}{' '}
+            <span className="italic text-foreground">&ldquo;{lastNote.text}&rdquo;</span>
+          </p>
         )}
         {(noteOpen || exLog.note) && (
           <input
