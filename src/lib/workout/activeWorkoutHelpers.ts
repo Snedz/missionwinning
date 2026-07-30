@@ -97,3 +97,44 @@ export function resolveSetInput(params: {
   if (lastPerformance) return { reps: lastPerformance.reps, weight: lastPerformance.weight };
   return { reps: defaultReps, weight: defaultWeight };
 }
+
+/**
+ * Editing one field must not invent the other.
+ *
+ * `.206` — `updateSetInput` rebuilt the whole `{reps, weight}` pair on every
+ * keystroke from `getSetInput(exIdx, setIdx, 10, 0)`. For a **prescribed**
+ * exercise `resolveSetInput` returns those defaults verbatim, so:
+ *
+ *     coach prescribes bench 3×5 @ 100kg
+ *     athlete taps reps + once, meaning 6
+ *     stored input becomes { reps: 6, weight: 0 }
+ *     the set logs 6 × 0kg
+ *
+ * Zero volume on a prescribed lift, and it poisons `getLastSessionSets` and
+ * `suggestNextSetTarget` for the next session — the athlete's next prescription
+ * is computed from a set they never did. Every other `getSetInput` call site
+ * passes `set.reps, set.weight`; this one alone passed `10, 0`, which is why the
+ * console *displayed* the prescription correctly right up until it was edited.
+ *
+ * The second half is the base. `updateSetInput` read `setInputs` from the render
+ * closure rather than the updater's `prev`, so "Apply targets" — which fires two
+ * synchronous calls per set — had its reps clobbered by its own weight call. A
+ * 3×5 prescription prefilled as **10 reps**, which is verbatim the `.175` bug
+ * the surrounding comment says was fixed.
+ *
+ * Written as a function rather than inline so a test can hold its output: the
+ * defect is a *shape* (which base, which field survives), and `.196` is the
+ * standing reminder that a rule spelled as a shape can only be checked as one.
+ */
+export function nextSetInput(params: {
+  /** The athlete's own earlier edit, from the updater's `prev` — never a closure. */
+  prevManual?: { reps: number; weight: number };
+  /** What the row currently displays, resolved with the set's own reps/weight. */
+  resolved: { reps: number; weight: number };
+  field: 'reps' | 'weight';
+  value: number;
+}): { reps: number; weight: number } {
+  const { prevManual, resolved, field, value } = params;
+  const base = prevManual ?? resolved;
+  return { reps: base.reps, weight: base.weight, [field]: value };
+}

@@ -1,9 +1,12 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import {
   findNextSet,
   getLastPerformanceForSet,
   getLastSessionSets,
+  nextSetInput,
   resolveSetInput,
   sessionSetStats,
   setInputKey,
@@ -156,5 +159,94 @@ describe('resolveSetInput', () => {
       reps: 5,
       weight: 85,
     });
+  });
+});
+
+/**
+ * `.206` — the composition, which is where the bug lived.
+ *
+ * `resolveSetInput` above is thoroughly covered and was never wrong. What broke
+ * was what `updateSetInput` fed it: `getSetInput(exIdx, setIdx, 10, 0)`, so a
+ * prescribed set resolved to the hardcoded defaults and one edited field
+ * silently rewrote the other. A unit test of a correct function cannot see a
+ * caller passing it the wrong arguments — that is the whole reason these exist.
+ */
+describe('nextSetInput', () => {
+  it('changes only the edited field', () => {
+    const out = nextSetInput({
+      resolved: { reps: 5, weight: 100 },
+      field: 'reps',
+      value: 6,
+    });
+    assert.deepEqual(
+      out,
+      { reps: 6, weight: 100 },
+      'editing reps on a prescribed 3x5 @ 100kg must not zero the weight'
+    );
+  });
+
+  it('changes only the edited field the other way round', () => {
+    const out = nextSetInput({
+      resolved: { reps: 5, weight: 100 },
+      field: 'weight',
+      value: 102.5,
+    });
+    assert.deepEqual(out, { reps: 5, weight: 102.5 });
+  });
+
+  /**
+   * The stale-closure half. "Apply targets" fires two synchronous calls per set
+   * — reps then weight — and the second used to read `setInputs` from the render
+   * closure, so it rebuilt from a base that did not yet contain the reps the
+   * first call had just set. A 3x5 prescription prefilled as 10 reps, which is
+   * verbatim the `.175` bug its own comment claims was fixed.
+   */
+  it('builds on the athlete\'s previous edit, not on the resolved default', () => {
+    const first = nextSetInput({
+      resolved: { reps: 10, weight: 0 },
+      field: 'reps',
+      value: 5,
+    });
+    const second = nextSetInput({
+      prevManual: first,
+      resolved: { reps: 10, weight: 0 },
+      field: 'weight',
+      value: 100,
+    });
+    assert.deepEqual(
+      second,
+      { reps: 5, weight: 100 },
+      'the second of two synchronous updates must see the first'
+    );
+  });
+
+  it('never returns a partial pair', () => {
+    const out = nextSetInput({ resolved: { reps: 8, weight: 60 }, field: 'reps', value: 0 });
+    assert.equal(typeof out.reps, 'number');
+    assert.equal(typeof out.weight, 'number');
+    assert.equal(out.weight, 60, 'a zero in one field is an edit, not a reason to drop the other');
+  });
+});
+
+/**
+ * And the call site, because the defect was an argument list. `getSetInput`'s
+ * other four call sites all pass `set.reps, set.weight`; only `updateSetInput`
+ * passed `10, 0`, and that single disagreement is the entire bug.
+ */
+describe('the updateSetInput call site', () => {
+  it('resolves against the set, not against hardcoded defaults', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    const body = src.slice(src.indexOf('const updateSetInput ='), src.indexOf('const consoleSet'));
+    assert.doesNotMatch(
+      body,
+      /getSetInput\([^)]*,\s*10\s*,\s*0\s*\)/,
+      'updateSetInput resolves with hardcoded 10/0 — for a prescribed exercise resolveSetInput ' +
+        'returns those verbatim, so editing one field zeroes the other'
+    );
+    assert.match(body, /set\?\.reps/, 'the base must come from the set being edited');
+    assert.match(body, /prevManual:\s*prev\[key\]/, 'the base must come from `prev`, not the render closure');
   });
 });

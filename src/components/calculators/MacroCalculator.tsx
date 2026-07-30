@@ -31,9 +31,6 @@ import {
   proteinTargetGrams,
 } from '@/lib/calcHelpers';
 import { saveMacroTargets } from '@/lib/macroTargets';
-import { readJson, writeJson } from '@/lib/storage/safeStorage';
-import { STORAGE_KEYS } from '@/lib/storage/keys';
-import { localDateKey } from '@/lib/time/localDate';
 
 type Goal = 'maintain' | 'cut' | 'bulk';
 
@@ -95,12 +92,31 @@ export function MacroCalculator() {
   };
 
   const applyTargets = () => {
+    /*
+     * `.206` — a target is not a meal.
+     *
+     * `saveMacroTargets` above is the whole job: it is what Fuel reads to draw
+     * the day's targets. This used to *also* unshift a
+     * `Calc target protein 180g` row into `mw_nutrition_log`, which caused two
+     * separate failures:
+     *
+     *   1. `NutritionPage` sums every row dated today into the day's *consumed*
+     *      totals, so setting a 2400 kcal / 180g target made Fuel report 2400
+     *      kcal already eaten before a single meal — and fed
+     *      `countHighProteinDaysFromNutritionLog` (threshold 150g), inflating
+     *      the Mission Score's Fuel pillar off a number the athlete only wished
+     *      for.
+     *   2. It wrote `logs.slice(0, 50)`. Every other writer keeps **90 days**
+     *      via `pruneNutritionLogToDays`. At ~4 entries a day that cap is under
+     *      two weeks, so one tap of "Apply targets" silently deleted months of
+     *      real meals — and `NutritionPage`'s own next write persisted the
+     *      truncated array back.
+     *
+     * `.170` already ruled that non-food rows do not belong in the Fuel diary;
+     * this is the same rule one layer down, on the device log rather than the
+     * cloud table. Deleting the write fixes both.
+     */
     saveMacroTargets({ cals: targetCals, protein, carbs, fat });
-    const today = localDateKey();
-    const entry = { date: today, name: `Calc target protein ${protein}g`, protein, cals: targetCals };
-    const logs = readJson<unknown[]>(STORAGE_KEYS.nutritionLog, []);
-    logs.unshift(entry);
-    writeJson(STORAGE_KEYS.nutritionLog, logs.slice(0, 50));
     toast({
       title: t('calcToastApplied', { defaultValue: 'Targets applied' }),
       description: t('calcToastAppliedDesc', {
