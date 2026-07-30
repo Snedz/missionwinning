@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
+import { betaBannerMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
+import { computeReentry } from '@/lib/reentry';
 import { TodayPageHeader } from '@/components/today/TodayPageHeader';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
 import {
@@ -37,6 +39,24 @@ import { readRaw } from '@/lib/storage/safeStorage';
  */
 const TodayDayReviewCard = dynamic(
   () => import('@/components/today/TodayDayReviewCard').then((m) => m.TodayDayReviewCard),
+  { ssr: false }
+);
+
+/**
+ * `.204` — both were mounted in the dashboard shell only, and `HomePage` sends
+ * `i-day` and `basic` here. The beta path card therefore appeared only after the
+ * athlete had already done what it instructs, and a `basic` athlete who lapsed
+ * got no re-entry card — `basic` requires all five pillars, so history can be
+ * long before the phase advances. Same `dynamic()` + mount-gate shape as the
+ * evening card above, so neither chunk is fetched when it cannot render.
+ */
+const BetaWelcomeBanner = dynamic(
+  () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
+  { ssr: false }
+);
+
+const TodayReentryCard = dynamic(
+  () => import('@/components/today/TodayReentryCard').then((m) => m.TodayReentryCard),
   { ssr: false }
 );
 
@@ -81,6 +101,16 @@ export function HomeTodayLean() {
       dayReviewMayMount({ hour: new Date().getHours(), phase: journeyState.phase })
     );
   }, [journeyState.phase]);
+
+  /**
+   * Same rule, same reason: computed in an effect because `computeReentry` reads
+   * the clock, and starting null keeps the chunk off the cold path.
+   */
+  const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
+
+  useEffect(() => {
+    setReentry(computeReentry(workoutHistory, Date.now()));
+  }, [workoutHistory]);
 
   const refreshFromStorage = useCallback(() => {
     const history = readWorkoutHistoryFromStorage();
@@ -205,12 +235,19 @@ export function HomeTodayLean() {
         action={action}
         showEditToday={false}
       />
+      {betaBannerMayMount(journeyState.phase) && <BetaWelcomeBanner />}
       <JourneyHero
         action={action}
         onPrimaryClick={handleJourneyPrimary}
         activeWorkout={hasActiveWorkout}
         justGoMeta={justGoMeta}
       />
+      {/* Directly under the boss CTA, as in the dashboard shell: a returning
+          athlete sees the smaller ask before anything that reads as a
+          scoreboard of the gap. */}
+      {reentry && reentryCardMayMount({ phase: journeyState.phase, show: reentry.show }) && (
+        <TodayReentryCard reentry={reentry} />
+      )}
       {journeyState.phase === 'basic' && streak === 0 && (
         <p className="text-center text-sm text-muted-foreground px-4">
           {t('todayBasicEncouragement', {

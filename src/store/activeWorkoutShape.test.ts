@@ -1,6 +1,8 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { isUsableActiveWorkout } from '@/store/workoutStore';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { isUsableActiveWorkout, hasLoggedWork } from '@/store/workoutStore';
 
 /**
  * What comes back from device storage is not what `partialize` wrote.
@@ -59,6 +61,79 @@ describe('isUsableActiveWorkout', () => {
         exercises: [{ exerciseId: 'a', sets: [] }, { exerciseId: 'b' }],
       }),
       false
+    );
+  });
+});
+
+/**
+ * `.204` — onboarding must not take a session away.
+ *
+ * `startWorkout` replaces `activeWorkout` outright, which is correct at its
+ * seventeen other call sites: each is an athlete tapping "start this workout".
+ * `WelcomePage.finish()` is the exception — there the call is a side effect of
+ * finishing I-Day, and a returning athlete reaches it by accident, because `/`
+ * renders marketing for anyone past the gate and its only prominent CTA leads
+ * back into onboarding.
+ *
+ * The line is a **completed set**, not the existence of a session. A session
+ * started and abandoned with nothing logged is noise, and refusing to replace it
+ * would strand the athlete on a stale screen; a completed set is the first thing
+ * the app holds that the athlete cannot reproduce from memory.
+ */
+describe('hasLoggedWork', () => {
+  const set = (completed: boolean) => ({ id: 's1', reps: 5, weight: 100, completed });
+
+  it('is false for nothing at all', () => {
+    assert.equal(hasLoggedWork(null), false);
+    assert.equal(hasLoggedWork(undefined), false);
+    assert.equal(hasLoggedWork(42), false);
+  });
+
+  it('is false for a session nobody has logged into yet', () => {
+    assert.equal(hasLoggedWork({ exercises: [] }), false);
+    assert.equal(hasLoggedWork({ exercises: [{ exerciseId: 'a', sets: [] }] }), false);
+    assert.equal(hasLoggedWork({ exercises: [{ exerciseId: 'a', sets: [set(false)] }] }), false);
+  });
+
+  it('is true as soon as one set anywhere is completed', () => {
+    assert.equal(hasLoggedWork({ exercises: [{ exerciseId: 'a', sets: [set(true)] }] }), true);
+    // Deep in the session, not just the first exercise or the first set.
+    assert.equal(
+      hasLoggedWork({
+        exercises: [
+          { exerciseId: 'a', sets: [set(false)] },
+          { exerciseId: 'b', sets: [set(false), set(true)] },
+        ],
+      }),
+      true
+    );
+  });
+
+  it('survives the same malformed storage isUsableActiveWorkout defends against', () => {
+    assert.equal(hasLoggedWork({ exercises: 'nope' }), false);
+    assert.equal(hasLoggedWork({ exercises: [null] }), false);
+    assert.equal(hasLoggedWork({ exercises: [{ sets: [null] }] }), false);
+  });
+});
+
+/**
+ * And the predicate has to be consulted where the damage happened. A pure
+ * function nobody calls is `.195` again — this is the fourth wave in which a
+ * correct decision shipped with no caller.
+ */
+describe('the onboarding call site', () => {
+  it('checks for logged work before starting the preview session', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', 'page-components', 'WelcomePage.tsx'),
+      'utf8'
+    );
+    const finish = src.slice(src.indexOf('const finish ='), src.indexOf('const handleBegin'));
+    const guard = finish.indexOf('hasLoggedWork');
+    const start = finish.indexOf('startWorkout(');
+    assert.ok(guard !== -1, 'WelcomePage.finish() must ask whether there is work to protect');
+    assert.ok(
+      guard < start,
+      'the check must run before startWorkout(), or it protects nothing'
     );
   });
 });

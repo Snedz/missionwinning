@@ -39,6 +39,7 @@ import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { computeReentry, type Reentry } from "@/lib/reentry";
 import { TodayReentryCard } from "@/components/today/TodayReentryCard";
+import { betaBannerMayMount, reentryCardMayMount } from "@/lib/today/todayGuidanceMount";
 import { dayReviewMayMount } from "@/lib/today/dayReviewMount";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
 import { localDateKey } from '@/lib/time/localDate';
@@ -483,7 +484,9 @@ export function HomeTodayDashboard() {
    * the one that made Today long.
    */
   const staggerBlocks: TodayBlockCandidate<React.ReactNode>[] = [
-    { key: 'beta', priority: 0, pinned: true, node: <BetaWelcomeBanner /> },
+    ...(betaBannerMayMount(state.phase)
+      ? [{ key: 'beta', priority: 0, pinned: true, node: <BetaWelcomeBanner /> }]
+      : []),
     {
       key: 'header',
       priority: 1,
@@ -520,7 +523,7 @@ export function HomeTodayDashboard() {
 
   // Directly under the boss CTA: a returning user should see the smaller ask before
   // any score, streak or pillar chrome that would read as a scoreboard of the gap.
-  if (reentry?.show) {
+  if (reentry && reentryCardMayMount({ phase: state.phase, show: reentry.show })) {
     staggerBlocks.push({ key: 'reentry', priority: 2, pinned: true, node: <TodayReentryCard reentry={reentry} /> });
   }
 

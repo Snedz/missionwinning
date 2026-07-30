@@ -32,7 +32,7 @@ import {
 } from '@/lib/coach/schedulePrefs';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { getExerciseById } from '@/data/exercises';
-import { useWorkoutStore } from '@/store/workoutStore';
+import { useWorkoutStore, hasLoggedWork } from '@/store/workoutStore';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { readRaw, writeRaw, remove as removeKey } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
@@ -96,6 +96,23 @@ export function WelcomePage() {
     saveProfileFields();
     completeIDay({ experience, equipment, primaryGoal });
     track('iday_completed', { experience, equipment });
+    /*
+     * `.204` — never let onboarding take a session away.
+     *
+     * `startWorkout` replaces `activeWorkout` outright, and its other seventeen
+     * call sites are all a user tapping "start this workout", where replacing is
+     * exactly what was asked for. This one is not: it is a side effect of
+     * finishing I-Day, and a returning athlete can reach it by accident —
+     * `/` renders marketing for anyone past the gate, its only prominent CTA is
+     * "Start free", and that leads here.
+     *
+     * So the preview session is a courtesy, not a mandate. If there is real work
+     * on the device, send them to it instead of over it.
+     */
+    if (hasLoggedWork(useWorkoutStore.getState().activeWorkout)) {
+      router.push('/active');
+      return;
+    }
     // W1: land in the previewed session — no Today detour before first sweat.
     const session = previewJustGoForEquipment(equipment);
     if (session.exercises.length > 0) {
