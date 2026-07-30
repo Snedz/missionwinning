@@ -6,6 +6,49 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — Twelve questions, each with its receipts (`.190`)
+
+First PR of the behavior-journal wave. WHOOP's journal offers 300+ trackable
+behaviors and then advises tracking no more than ten; that tension is their
+defect, and their loudest review complaint — "every positive action seemed to
+have negative impacts" — is what a low significance bar over dozens of
+behavior×outcome pairs produces. So this ships **twelve**, chosen on evidence,
+each carrying a tier (A/B/C) and a one-sentence receipt the athlete can open.
+
+New pure [`behaviors.ts`](src/lib/behaviors.ts): nine new fields (bed/wake time
+at quarter-hour resolution, protein target, caffeine servings + time of last,
+creatine, hydration, alcohol servings, screen-in-bed, late meal, rest day) —
+sleep quality, soreness and stress already exist as 1–5 ratings and stay where
+they are. Two things in the registry exist to make the correlations honest
+later: **one pre-registered outcome per behavior** (you cannot fish for the
+metric that happens to move) and **a declared lag** (alcohol tonight is a claim
+about tomorrow's session). The C-tier receipt on late meals says outright that
+the research is unsettled — grading our own questions is the point.
+
+**The dangerous half was the storage.** `normalizeCheckIn` and
+`upsertTodayPartial` are whitelist reconstructions: they rebuild a check-in
+field by field, and every read passes through the first while every
+victory-sheet reply chip passes through the second. A field added to one and not
+the other is destroyed with no error anywhere. Both were edited together, and
+both mutants are killed (`field-dropped-on-read`,
+`partial-upsert-wipes-behaviors` — the latter is the real scenario: log
+behaviors in the morning, tap a reply chip that evening, lose the morning).
+`MAX_ENTRIES` 30→90, because a thirty-day window could never fill a correlation
+that needs paired observations on both sides — the cap would have quietly capped
+the feature (`history-truncated-at-30`).
+
+Counts are not ratings: zero servings is a real answer, eight is eight, and the
+1–5 clamp guarding the rating fields would have rewritten both
+(`count-clamped-to-five`). The journal footer renders them as "Caffeine 2", never
+"2/5" (`count-rendered-as-N-of-5`). Also killed: `bad-time-string-throws`,
+`receipt-missing-for-behavior`, `weak-evidence-relabelled-strong`.
+
+Everything is optional, free, and device-only; the pre-session sheet is
+deliberately untouched — an athlete standing at a barbell is not asked how much
+coffee they drank. Deliberately absent: medication, reproductive and
+recreational-substance categories, which are special-category data and a surface
+this app has no reason to hold. Tests 835→862. Next: `.191` sleep consistency.
+
 ## 2026-07-30 — The untestable half, tested (`.189`)
 
 `.188` shipped with an honest gap in its own PR body: the spend routes

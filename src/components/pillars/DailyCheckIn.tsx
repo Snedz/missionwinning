@@ -10,6 +10,8 @@ import {
   todayCheckInDate,
   type MindCheckIn,
 } from '@/lib/mindCheckIns';
+import { BehaviorStrip } from '@/components/pillars/BehaviorStrip';
+import type { BehaviorEntry } from '@/lib/behaviors';
 
 function RatingRow({
   label,
@@ -50,6 +52,7 @@ export function DailyCheckIn() {
   const [stress, setStress] = useState(3);
   const [energy, setEnergy] = useState(3);
   const [soreness, setSoreness] = useState(3);
+  const [behaviors, setBehaviors] = useState<BehaviorEntry>({});
   const [note, setNote] = useState('');
   const [saved, setSaved] = useState(false);
 
@@ -61,6 +64,7 @@ export function DailyCheckIn() {
       setStress(t.stress);
       setEnergy(t.energy);
       setSoreness(t.soreness ?? 3);
+      setBehaviors(t.behaviors ?? {});
       setNote(t.note || '');
       setSaved(true);
     }
@@ -74,9 +78,12 @@ export function DailyCheckIn() {
       stress,
       energy,
       soreness,
+      behaviors,
       note: note.trim() || undefined,
     };
     saveCheckIn(data);
+    // The pillar-win payload stays ratings-only: behaviors are journal-class
+    // data and have no business riding a win record that other surfaces read.
     logPillarWin('mind', 'Daily check-in', { sleep, mood, stress, energy, soreness });
     setSaved(true);
   };
@@ -96,6 +103,7 @@ export function DailyCheckIn() {
         <RatingRow label="Stress level" value={stress} onChange={setStress} />
         <RatingRow label="Energy" value={energy} onChange={setEnergy} />
         <RatingRow label="Muscle soreness" value={soreness} onChange={setSoreness} />
+        <BehaviorStrip value={behaviors} onChange={setBehaviors} />
         <div>
           <label htmlFor="daily-checkin-note" className="text-sm">
             Optional note

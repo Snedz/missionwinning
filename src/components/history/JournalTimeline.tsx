@@ -202,11 +202,20 @@ export function JournalTimeline() {
                   ))}
               </div>
 
+              {/* Ratings are out of five; behaviors are counts, times and
+                  yes/no answers. Rendering the second set with a `/5` suffix
+                  would misreport what the athlete actually entered. */}
               {row.entry.checkIn ? (
                 <p className="mt-2 text-xs tabular-nums text-muted-foreground">
                   {Object.entries(row.entry.checkIn)
+                    .filter(([k]) => k !== 'behaviors')
                     .map(([k, v]) => `${CHECKIN_LABEL[k] ?? k} ${v}/5`)
                     .join(' · ')}
+                </p>
+              ) : null}
+              {row.entry.checkIn?.behaviors?.length ? (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {row.entry.checkIn.behaviors.join(' · ')}
                 </p>
               ) : null}
             </div>

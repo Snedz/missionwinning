@@ -10,6 +10,7 @@ import {
   todayCheckInDate,
   upsertTodayPartial,
 } from './mindCheckIns.ts';
+import { __resetForTests as resetStorage } from '@/lib/storage/safeStorage';
 
 describe('mindCheckIns', () => {
   const store = new Map<string, string>();
@@ -17,6 +18,9 @@ describe('mindCheckIns', () => {
 
   beforeEach(() => {
     store.clear();
+    // safeStorage keeps its own memory map as a denied-storage fallback; without
+    // this, one test's entries leak into the next one's counts.
+    resetStorage();
     hadWindow = typeof globalThis.window !== 'undefined';
     if (!hadWindow) {
       (globalThis as unknown as { window: typeof globalThis }).window = globalThis;
@@ -154,5 +158,114 @@ describe('checkInReadinessDelta', () => {
       const reasons = checkInReasons({ sleep: 3, stress: 3, energy: 3 });
       assert.equal(reasons.some((r) => r.factor === 'soreness'), false);
     });
+  });
+
+});
+
+
+/**
+ * `.190` — the behavior journal rides on this store, and both write paths are
+ * whitelist reconstructions. These are the tests that catch a field being
+ * destroyed with no error, which is the only way this feature can fail
+ * silently.
+ */
+describe('behaviors survive both write paths', () => {
+  const store = new Map<string, string>();
+
+  beforeEach(() => {
+    store.clear();
+    resetStorage();
+    (globalThis as unknown as { window: typeof globalThis }).window = globalThis;
+    Object.defineProperty(globalThis, 'localStorage', {
+      configurable: true,
+      writable: true,
+      value: {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => {
+          store.set(k, v);
+        },
+        removeItem: (k: string) => {
+          store.delete(k);
+        },
+      },
+    });
+  });
+
+  it('what was logged is what comes back — a read must not drop the field', () => {
+    const date = todayCheckInDate();
+    saveCheckIn({
+      date,
+      sleep: 4,
+      mood: 3,
+      stress: 2,
+      energy: 4,
+      behaviors: { bedTime: '23:00', caffeineServings: 2, creatine: true },
+    });
+    // A fresh read maps every entry through normalizeCheckIn. Removing the
+    // behaviors line there turns this into undefined and the feature into vapor.
+    const back = getTodayCheckIn();
+    assert.equal(back?.behaviors?.bedTime, '23:00');
+    assert.equal(back?.behaviors?.caffeineServings, 2);
+    assert.equal(back?.behaviors?.creatine, true);
+  });
+
+  it('a reply-chip tap hours later does not erase the morning log', () => {
+    // This is the exact WorkoutVictorySheet path: one energy rating written
+    // through upsertTodayPartial, which rebuilds the whole check-in.
+    const date = todayCheckInDate();
+    saveCheckIn({
+      date,
+      sleep: 4,
+      mood: 3,
+      stress: 3,
+      energy: 3,
+      behaviors: { caffeineServings: 3, proteinHit: true },
+    });
+    upsertTodayPartial({ energy: 2 });
+    const after = getTodayCheckIn();
+    assert.equal(after?.energy, 2, 'the chip still writes what it meant to');
+    assert.equal(after?.behaviors?.caffeineServings, 3, 'and takes nothing with it');
+    assert.equal(after?.behaviors?.proteinHit, true);
+  });
+
+  it('a partial behavior write merges rather than replaces', () => {
+    upsertTodayPartial({ behaviors: { bedTime: '22:45' } });
+    upsertTodayPartial({ behaviors: { hydration: true } });
+    const t = getTodayCheckIn();
+    assert.equal(t?.behaviors?.bedTime, '22:45');
+    assert.equal(t?.behaviors?.hydration, true);
+  });
+
+  it('zero servings survives the 1–5 rating clamp that guards the other fields', () => {
+    upsertTodayPartial({ behaviors: { alcoholServings: 0, caffeineServings: 8 } });
+    const t = getTodayCheckIn();
+    assert.equal(t?.behaviors?.alcoholServings, 0, 'none is an answer, not an absence');
+    assert.equal(t?.behaviors?.caffeineServings, 8, 'counts are not ratings');
+  });
+
+  it('history reaches far enough back for correlations to be possible', () => {
+    // At 30 entries a correlation needing paired observations on both sides
+    // could never fill; the cap would have quietly capped the feature.
+    for (let i = 0; i < 60; i++) {
+      const d = new Date(2026, 0, 1);
+      d.setDate(d.getDate() + i);
+      saveCheckIn({
+        date: todayCheckInDate(d),
+        sleep: 3,
+        mood: 3,
+        stress: 3,
+        energy: 3,
+        behaviors: { creatine: true },
+      });
+    }
+    const all = loadCheckIns();
+    if (all.length !== 60) console.error('DATES:', all.map((c) => c.date).join(' '));
+    assert.equal(all.length, 60);
+  });
+
+  it('a day with no behaviors logged stays undefined, not an empty object', () => {
+    const date = todayCheckInDate();
+    saveCheckIn({ date, sleep: 3, mood: 3, stress: 3, energy: 3 });
+    assert.equal(getTodayCheckIn()?.behaviors, undefined);
   });
 });
