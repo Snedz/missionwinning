@@ -50,6 +50,7 @@ import type { MindCheckIn } from '@/lib/mindCheckIns';
 import { normalizeBehaviors } from '@/lib/behaviors';
 import { sessionLoad, compareToBaseline } from '@/lib/coach/load';
 import { consistencyLine, type SleepConsistency } from '@/lib/sleepConsistency';
+import { behaviorImpactLine, type BehaviorImpact } from '@/lib/journal/behaviorImpacts';
 
 /** Evenings only — a "day in review" at 09:00 is reviewing nothing. */
 export const DAY_REVIEW_START_HOUR = 18;
@@ -58,6 +59,12 @@ export interface DayReviewInput {
   history: CompletedWorkoutLog[];
   checkIns: MindCheckIn[];
   consistency?: SleepConsistency | null;
+  /**
+   * Established behavior impacts only. A "still collecting" result is honest on
+   * the weekly card but has no business in an evening one-liner — the digest
+   * reports findings, not progress bars.
+   */
+  impacts?: BehaviorImpact[];
   now?: Date;
 }
 
@@ -136,6 +143,9 @@ function reasonFor(input: DayReviewInput, now: Date): string | null {
   if (logged && typeof logged.sleep === 'number' && logged.sleep <= 2) {
     return `You rated sleep ${logged.sleep}/5 today.`;
   }
+  // A finding the athlete's own logging earned, stated with its sample sizes.
+  const established = input.impacts?.find((i) => i.kind === 'established');
+  if (established?.kind === 'established') return behaviorImpactLine(established);
   if (input.consistency) return consistencyLine(input.consistency);
   if (behaviors?.alcoholServings) {
     const drinks = behaviors.alcoholServings === 1 ? 'drink' : 'drinks';

@@ -243,3 +243,59 @@ describe('the comparison branches actually render', () => {
     assert.match(r!.fact, /lighter than your recent average/);
   });
 });
+
+describe('citing an established impact', () => {
+  const established = {
+    kind: 'established' as const,
+    factor: 'creatine' as const,
+    condition: 'creatine days',
+    flaggedSessions: 14,
+    otherSessions: 11,
+    loadDeltaPct: 12,
+  };
+
+  it('a finding the athlete earned can be the reason, with its sample sizes', () => {
+    const r = composeDayReview({
+      history: [log(`${TODAY}T18:00:00`), ...history()],
+      checkIns: [checkIn(TODAY)],
+      impacts: [established],
+      now: NOW,
+    });
+    assert.match(r!.reason!, /creatine days/);
+    assert.match(r!.reason!, /\(14 vs 11 sessions\)/);
+  });
+
+  it('a still-collecting result never reaches the evening card', () => {
+    // Progress bars belong on the weekly card. The digest reports findings.
+    const r = composeDayReview({
+      history: [log(`${TODAY}T18:00:00`), ...history()],
+      checkIns: [checkIn(TODAY)],
+      impacts: [
+        {
+          kind: 'collecting',
+          factor: 'creatine',
+          condition: 'creatine days',
+          flagged: 7,
+          unflagged: 3,
+          neededFlagged: 10,
+          neededUnflagged: 10,
+        },
+      ],
+      now: NOW,
+    });
+    assert.ok(!/not enough data|7 of 10/.test(r?.reason ?? ''), r?.reason ?? '');
+  });
+
+  it('an impact-cited line still obeys the copy constitution', () => {
+    const r = composeDayReview({
+      history: [log(`${TODAY}T18:00:00`), ...history()],
+      checkIns: [checkIn(TODAY)],
+      impacts: [established],
+      now: NOW,
+    });
+    for (const line of dayReviewLines(r!)) {
+      assert.deepEqual(findToneViolations(line), [], line);
+      assert.ok(!/because|cause|risk|injury|you should/i.test(line), line);
+    }
+  });
+});

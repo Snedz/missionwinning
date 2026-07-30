@@ -9,6 +9,11 @@ import { buildWeeklyDebrief, type WeeklyDebrief } from '@/lib/weeklyDebrief';
 import { loadCheckIns } from '@/lib/mindCheckIns';
 import { loadBodyMetrics } from '@/lib/bodyMetrics';
 import { computeImpacts, impactLine } from '@/lib/journal/impacts';
+import {
+  behaviorImpactLine,
+  collectingLine,
+  computeBehaviorImpacts,
+} from '@/lib/journal/behaviorImpacts';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { track } from '@/lib/analytics';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
@@ -45,6 +50,15 @@ export function TodayWeekRecapCard({ recap, forceFull }: Props) {
  () => (typeof window !== 'undefined' ? computeImpacts(history, loadCheckIns()) : []),
  [history]
  );
+
+ // Behavior impacts are a separate engine with a stricter bar (10 flagged and
+ // 10 unflagged) and its own "still collecting" state — see behaviorImpacts.ts.
+ const behaviorImpacts = useMemo(
+ () => (typeof window !== 'undefined' ? computeBehaviorImpacts(history, loadCheckIns()) : []),
+ [history]
+ );
+ const established = behaviorImpacts.filter((i) => i.kind === 'established');
+ const collecting = behaviorImpacts.filter((i) => i.kind === 'collecting');
 
  // Week recap as an image — rendered on-device, shared only by choice (.182).
  const shareRecapCard = async () => {
@@ -153,6 +167,27 @@ export function TodayWeekRecapCard({ recap, forceFull }: Props) {
  {impactLine(impact)}
  </p>
  ))}
+ </div>
+ ) : null}
+
+ {established.length > 0 || collecting.length > 0 ? (
+ <div className="space-y-1">
+ <p className="eyebrow text-[9px] text-muted-foreground">
+ {t('debriefBehaviorImpacts', { defaultValue: 'Behaviors' })}
+ </p>
+ {established.slice(0, 2).map((impact) => (
+ <p key={impact.factor} className="text-xs text-muted-foreground tabular-nums leading-relaxed">
+ {impact.kind === 'established' ? behaviorImpactLine(impact) : null}
+ </p>
+ ))}
+ {/* One "still collecting" line at most. Showing the progress rather than
+ hiding it is the credibility — it says what the claim will be built
+ from, before any claim exists. */}
+ {established.length === 0 && collecting[0]?.kind === 'collecting' ? (
+ <p className="text-xs text-muted-foreground tabular-nums leading-relaxed">
+ {collectingLine(collecting[0])}
+ </p>
+ ) : null}
  </div>
  ) : null}
 
