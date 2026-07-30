@@ -665,6 +665,32 @@ export function isUsableActiveWorkout(value: unknown): boolean {
   );
 }
 
+/**
+ * Has the athlete actually put work into this session?
+ *
+ * `.204` — `startWorkout` overwrites `activeWorkout` unconditionally, and
+ * `WelcomePage.finish()` calls it. `/` renders the marketing landing for anyone
+ * past the gate with no "you have journey state, go to /log" branch, so a
+ * returning tester opening the site from history sees marketing, taps its only
+ * prominent CTA, re-runs onboarding — and the session they had in progress is
+ * gone with no prompt.
+ *
+ * A session that exists is not the same as a session worth protecting: one
+ * started and abandoned without a single logged set is noise, and refusing to
+ * replace it would strand the athlete on a stale screen. A **completed set** is
+ * the line, because that is the first moment the app holds something the
+ * athlete cannot reproduce from memory.
+ */
+export function hasLoggedWork(value: unknown): boolean {
+  if (!value || typeof value !== 'object') return false;
+  const w = value as { exercises?: unknown };
+  if (!Array.isArray(w.exercises)) return false;
+  return w.exercises.some((ex) => {
+    const sets = (ex as { sets?: unknown } | null)?.sets;
+    return Array.isArray(sets) && sets.some((s) => !!(s as { completed?: unknown })?.completed);
+  });
+}
+
 function markHydrated(): void {
   if (useWorkoutStore.getState().hasHydrated) return;
   useWorkoutStore.setState({ hasHydrated: true });

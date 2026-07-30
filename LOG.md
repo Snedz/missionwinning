@@ -6,6 +6,88 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — The invite that discarded its own code (`.204`)
+
+The beta gate is red because there are fewer than 10 users. The mechanism for
+getting users had a one-line bug that silently threw the invite code away.
+
+`src/emails/templates/beta-invite.html` linked to
+`https://www.missionwinning.com/?invite=MW-ALPHA-2026`. `proxy.ts` redirected
+every gated request with `NextResponse.redirect(new URL('/private', request.url))`
+— and the `URL` constructor replaces the path **and the query**:
+
+```
+new URL('/private', 'https://x.com/?invite=MW-B-ABC12')  →  'https://x.com/private'
+```
+
+`PrivateTeaserClient` reads `?invite=` to decide whether the invitee screen
+renders at all. So every invited tester arrived with the code stripped,
+`isInvitee` false, and was shown the **public waitlist form** with the code field
+folded inside a `<details>`. The one screen written for an invited tester was
+unreachable from the one email that exists to send them there. `docs/BETA_INVITE.md`
+says the link should be `/private?invite=…` and `print-beta-invite.ts` emits that;
+only the shipped HTML disagreed, so a doc, a script and a template described one
+URL and one of them was wrong.
+
+The same line dropped `?next=`, which the gate also reads (`:41`, `:71`) — and
+nothing in the repo ever set it, because this redirect was the only route to that
+page. It was dead code guarding the return path for every bookmark, push URL and
+share link. **Cloning instead of constructing fixes both**, and turns `?next=`
+from a dead parameter into the thing it was written to be.
+
+**Why nine waves missed it.** `scripts/gate.mjs` builds with `PRIVATE_MODE=false`
+— deliberately, since that is what compiles the service worker `offline.spec.ts`
+needs. So all 50 e2e cases and all 33 a11y cases run against a configuration **no
+beta user will ever load**, and the first code path every invited tester touches
+had never been executed by a test. That is `.200`'s thesis — *a guard nobody runs
+is a guard that does not exist* — applied to the deployed configuration. New
+[`privateGateRedirect.routetest.ts`](src/lib/privateGateRedirect.routetest.ts)
+calls `proxy()` directly under `PRIVATE_MODE=true` and asserts on the `Location`
+header a browser would follow: 18ms, against ~3 minutes for a second gated build.
+
+**Onboarding could take a session away.** `startWorkout` replaces `activeWorkout`
+outright, which is right at its seventeen other call sites — each is an athlete
+tapping "start this workout". `WelcomePage.finish()` is the exception: there the
+call is a side effect of finishing I-Day, and a returning athlete reaches it by
+accident, because `/` renders marketing for anyone past the gate and its only
+prominent CTA leads back into onboarding. New `hasLoggedWork` draws the line at a
+**completed set** — a session started and abandoned is noise, but a logged set is
+the first thing the app holds that the athlete cannot reproduce from memory. The
+guard sits at the one call site rather than in the store, because changing the
+store's contract would break the seventeen calls that mean exactly what they say.
+
+**Two cards reached the athletes who no longer needed them.** `BetaWelcomeBanner`
+— *"Finish I-Day, log one workout, then open Mission Coach"* — was mounted in
+`HomeTodayDashboard` only, and `HomePage` sends `i-day` and `basic` to the lean
+shell. `detectBasicMilestones` requires all five pillars, so an athlete stays
+`basic` well past their first workout: the instructions appeared only after the
+thing they instruct was done. `TodayReentryCard` had the same mount and the same
+consequence, and a `basic` athlete can accumulate real history and lapse. Both now
+gate on shared [`todayGuidanceMount.ts`](src/lib/today/todayGuidanceMount.ts),
+the `.195` `dayReviewMount` pattern — `i-day` still excluded, because the first
+run is the one screen that must stay bare.
+
+One claim from the audit was **refuted rather than fixed**: the lapsed-before-first-workout
+cohort does not need a re-entry card, because `computeReentry` returns `NONE` for
+zero history on purpose — *"Never logged: that is onboarding, not re-entry."* The
+mount rule defers to that rather than overriding it.
+
+Four mutants, all killed, none survived first run: `invite-code-dropped-again`
+(2 unit + 3 route failures), `welcome-dead-ends`, `onboarding-clobbers-active-session`,
+`banner-only-in-one-shell`. The redirect guard **did** fail its own first run —
+it matched the broken spelling inside the explanatory comment shipped with the
+fix, which is `ciTruth`'s workflow-header trap again. Comments are not code, and
+a guard that reads prose as behaviour will eventually be satisfied by an apology
+for the bug.
+
+Tests 1022→1035, routes 7→12. Opens the `.204`–`.213` wave.
+
+**Still founder-owned:** `MAIL_POSTAL_ADDRESS` is unset, and
+`scripts/send-beta-invite.ts` hard-exits without it while `renderEmail.ts` refuses
+to render. This PR fixes the link; the email still cannot be sent until that is set.
+
+---
+
 ## 2026-07-30 — State the repo can be trusted about (`.203`)
 
 Documentation as an executable contract. Every finding here is the wave's defect

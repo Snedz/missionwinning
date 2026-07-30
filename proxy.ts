@@ -76,8 +76,34 @@ export async function proxy(request: NextRequest) {
     return applyPrivateGateHeaders(NextResponse.next());
   }
 
-  const redirectRes = NextResponse.redirect(new URL('/private', request.url));
-  return applyPrivateGateHeaders(redirectRes);
+  /*
+   * `.204` — clone, do not construct.
+   *
+   * `new URL('/private', request.url)` replaces the path **and the query**, and
+   * the gate reads two params off that query:
+   *
+   *   - `?invite=` (`PrivateTeaserClient.tsx:22`) decides whether the invitee
+   *     screen renders at all. The shipped beta-invite email links to
+   *     `/?invite=CODE`, so every invited tester was redirected here with the
+   *     code stripped and shown the **public waitlist form** instead — the one
+   *     screen written for them was unreachable from the one email that exists
+   *     to send them to it.
+   *   - `?next=` (`:41`, `:71`) is where the gate returns you after you enter a
+   *     code. Nothing set it, because this line was the only redirect to the
+   *     gate — so it was dead code, and every deep link (bookmark, push URL,
+   *     share link) landed on marketing instead of its destination.
+   *
+   * Cloning keeps the query; setting `next` gives the gate the destination it
+   * was already written to honour. `next` is only trusted if it is a
+   * same-origin absolute path — that check lives at the read sites, which also
+   * see the value a user could have typed.
+   */
+  const gate = request.nextUrl.clone();
+  gate.pathname = '/private';
+  if (!gate.searchParams.has('next') && pathname !== '/') {
+    gate.searchParams.set('next', pathname);
+  }
+  return applyPrivateGateHeaders(NextResponse.redirect(gate));
 }
 
 export const config = {
