@@ -6,6 +6,68 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — The coach that thinks it is always Monday (`.207`)
+
+Three defects at one call site, and the test that should have caught them was
+the reason they survived.
+
+`useCoachPlan` called `adaptPlan(existing, ctx, weekStart)` — passing the start
+of the week as **today**. So `todayDayOffset(weekStart, today)` was always `0`:
+
+- `dayOffset < todayOffset` never matched, so **no session was ever marked
+  missed** on the automatic path, and the "life happened — N sessions missed,
+  remaining days re-spread" adaptation could not fire at all.
+- The low-readiness recovery swap targets `dayOffset === todayOffset`. On a
+  Thursday with readiness 30 the coach swapped **Monday's** session — a day
+  already gone — and left Thursday's heavy squat day exactly where it was. The
+  athlete asked for a lighter day and got one retroactively, on a day they had
+  already trained.
+
+The real date was in scope the whole time: `todayOffset` sits three lines above,
+derived from the clock, and is passed to `adaptForEquipmentChange` on the very
+next line.
+
+**The revision was a claim nobody had to earn.** `adaptPlan` returned
+`plan.revision + 1` unconditionally, and `useCoachPlan` guards its save with
+`next.revision !== existing.revision` — always true. Every mount rewrote the plan
+and called `scheduleCoachPush()`. Downstream `hasCoachAdaptationSignal` is
+`revision > 1`, so `CoachAdaptBanner` told **every athlete, on every visit** that
+the coach had adapted their week, including when nothing had changed. `.127`:
+nothing said on thin data. An unchanged week now returns the same object.
+
+**The cycle.** `savePlan` dispatches `mw-coach-plan-changed`; `useCoachPlan`
+listens and calls `refresh()`, which called `savePlan` again — and
+`dispatchEvent` is synchronous, so this recurses on one stack.
+`HomeTodayDashboard` mounts two `useCoachPlan()` consumers. **I did not execute
+it** — that needs a browser and a mounted React tree — so rather than claim a
+reproduction I did not run, the new
+[`adaptTermination.test.ts`](src/lib/coach/adaptTermination.test.ts) pins the
+property that closes the cycle: `adaptPlan` is idempotent, on **every day of the
+week**, so the `!==` guard is false on the second pass and `savePlan` is not
+called again. Worth having regardless — an adapt that is not idempotent means the
+plan an athlete sees depends on how many times a component happened to mount.
+
+**The vacuous assertion.** `adapt.test.ts`'s "marks past planned sessions as
+missed" passed `today = weekStart` and then asserted `missed.length >= 0`, which
+is true of every array ever created. It was green for the entire life of the bug
+it was named after. Rewritten to a real Thursday and a real count, plus the
+opposite direction (nothing is missed on Monday).
+
+**One mutant survived first run**, and it was my own new guard:
+`recovery-swap-hits-the-wrong-day`. The test read
+`if (session?.kind !== 'strength') return;` — and the fixture has **no session on
+day 3 at all**, so it returned without asserting anything. Fifth vacuous guard in
+this programme, same shape every time. Preconditions are now asserted, never
+skipped past, and the days either side are marked done so the missed-session
+re-spread cannot move the session under test.
+
+Killed: `today-is-always-monday`, `revision-always-bumps`,
+`recovery-swap-hits-the-wrong-day`.
+
+Tests 1049→1058.
+
+---
+
 ## 2026-07-30 — Two controls that write a number nobody asked for (`.206`)
 
 Both bugs are the same shape: a control the athlete touches for one reason

@@ -13,6 +13,7 @@ import { readLocalCoachContext } from '@/lib/coach/contextBuilder';
 import { generateWeek } from '@/lib/coach/planEngine';
 import { adaptPlan, adaptForEquipmentChange, regenerateFutureSessions } from '@/lib/coach/adapt';
 import { currentWeekStart, todayDayOffset } from '@/lib/coach/splitPlanner';
+import { localDateKey } from '@/lib/time/localDate';
 import {
   loadPlan,
   savePlan,
@@ -72,7 +73,22 @@ export function useCoachPlan() {
       return;
     }
 
-    let next = adaptPlan(existing, ctx, weekStart);
+    /*
+     * `.207` — a real today, not the start of the week.
+     *
+     * This passed `weekStart`, so `adaptPlan`'s `todayDayOffset(weekStart, today)`
+     * was always 0 and the coach believed every day was Monday. Two live
+     * consequences: `dayOffset < todayOffset` never matched, so **missed
+     * sessions were never marked missed** and the "life happened, days
+     * re-spread" adaptation could not fire from the automatic path at all; and
+     * the low-readiness recovery swap targets `dayOffset === todayOffset`, so on
+     * a Thursday with readiness 30 it swapped **Monday's** session and left
+     * Thursday's heavy squat day standing.
+     *
+     * `todayOffset` above was already derived from the real clock and used three
+     * lines down — the date was in scope the whole time.
+     */
+    let next = adaptPlan(existing, ctx, localDateKey());
     next = adaptForEquipmentChange(next, ctx, todayOffset);
 
     if (premium && ctx.bodyScores.strain >= 70 && todayOffset < 6) {
