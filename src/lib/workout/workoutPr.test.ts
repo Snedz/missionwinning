@@ -46,3 +46,54 @@ describe('workoutPr', () => {
     assert.equal(isPersonalRecord('bench-press', 10, 120, history, 'drop'), false);
   });
 });
+
+/**
+ * `.208` — the PR that could never not happen.
+ *
+ * `estimateOneRepMax` returns 0 above 12 reps, because no 1RM formula is fitted
+ * there. So `getBestPriorSet` can only ever return a set of 12 reps or fewer,
+ * and for an athlete who trains high-rep only it returned **null forever** —
+ * while `isPersonalRecord` answered `if (!prior) return true`.
+ *
+ * Goblet squats at 20kg x 20: a PR on set one, and a PR on set two hundred, with
+ * the brass chip and the haptic every time, and `isPr` written into the log so it
+ * is on the record too. A celebration that cannot fail to happen carries no
+ * information.
+ */
+describe('high-rep histories', () => {
+  const highRepLog = (id: string, reps: number): CompletedWorkoutLog =>
+    ({
+      id,
+      name: 'Session',
+      startedAt: '2026-07-01T10:00:00.000Z',
+      completedAt: '2026-07-01T11:00:00.000Z',
+      exercises: [
+        { exerciseId: 'goblet-squat', sets: [{ id: `${id}-s1`, reps, weight: 20, completed: true }] },
+      ],
+    }) as unknown as CompletedWorkoutLog;
+
+  it('does not call every high-rep set a record', () => {
+    const history = [highRepLog('w1', 20), highRepLog('w2', 20)];
+    assert.equal(
+      isPersonalRecord('goblet-squat', 20, 20, history),
+      false,
+      'no 1RM formula covers a 20-rep set, so the app cannot know it is a record — ' +
+        'and it used to say so on every single set, forever'
+    );
+  });
+
+  it('still calls the first estimable set a record', () => {
+    assert.equal(
+      isPersonalRecord('bench-press', 5, 100, []),
+      true,
+      'a first set the app *can* estimate genuinely beats everything it can compare to'
+    );
+  });
+
+  it('a high-rep history does not make a real lift a record by default', () => {
+    // The prior 20-rep sets are invisible to the estimator, so the 5x100 below is
+    // the first thing the app can measure — which is a real record, not a bug.
+    const history = [highRepLog('w1', 20)];
+    assert.equal(isPersonalRecord('goblet-squat', 5, 60, history), true);
+  });
+});

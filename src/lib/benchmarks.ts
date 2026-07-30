@@ -1,5 +1,6 @@
 import { estimate1rm } from "@/lib/coach/progress";
 import type { CompletedWorkoutLog } from "@/types";
+import { countsTowardStrengthEstimate } from "@/lib/workout/setKind";
 
 /**
  * Estimated 1-rep max — delegates to the one estimator.
@@ -66,7 +67,7 @@ export function buildExerciseBenchmark(
       // `totalSets` counts what was logged — warmups included, since the label says
       // "sets logged". Only the *estimate* excludes them.
       totalSets++;
-      if (set.kind === 'warmup' || set.kind === 'failure') continue;
+      if (!countsTowardStrengthEstimate(set.kind)) continue;
       const est = estimateOneRepMax(set.weight, set.reps);
       if (est > bestEstimated) {
         bestEstimated = est;

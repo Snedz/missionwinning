@@ -41,9 +41,29 @@ export function isPersonalRecord(
 ): boolean {
   if (weight <= 0 || reps <= 0) return false;
   if (!countsTowardPr(kind)) return false;
+
+  /*
+   * `.208` — a set no formula covers cannot be a record.
+   *
+   * `estimateOneRepMax` returns 0 above 12 reps, because no 1RM formula is
+   * fitted there (`percentLoad.ts` says so explicitly). `getBestPriorSet` can
+   * therefore only ever return a set of 12 reps or fewer — so for an athlete who
+   * only trains high-rep, `prior` is **permanently null**, and `if (!prior)
+   * return true` fired the brass chip and the haptic on **every set, forever**.
+   *
+   * Goblet squats at 20kg × 20: a PR on set one, a PR on set two hundred. A
+   * celebration that cannot fail to happen carries no information, and this one
+   * also writes `isPr` into the log, so it is on the record too.
+   *
+   * Checking the *new* set first is what fixes it: no estimate, no claim. The
+   * genuine first-estimable-set case still reads as a PR, which is correct — it
+   * beats everything the app can compare it to.
+   */
+  const newEst = estimateOneRepMax(weight, reps);
+  if (newEst <= 0) return false;
+
   const prior = getBestPriorSet(exerciseId, history);
   if (!prior) return true;
-  const newEst = estimateOneRepMax(weight, reps);
   const priorEst = estimateOneRepMax(prior.weight, prior.reps);
   return newEst > priorEst;
 }

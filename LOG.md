@@ -6,6 +6,65 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-30 — Numbers the product overstates (`.208`)
+
+Two celebrations the app could not support.
+
+**Four filters for one quantity.** [`percentLoad.ts`](src/lib/workout/percentLoad.ts)
+says in prose that the prescriptions, the /benchmarks cards, the live PR chip and
+the debrief "all quote the same number". They did not:
+
+| site | warmup | failure | drop |
+|---|---|---|---|
+| `countsTowardPr` — **the live PR chip** | excl | **incl** | excl |
+| `benchmarks.ts` — 1RM chart | excl | excl | incl |
+| `coach/progress.ts` `isCountable` | excl | excl | incl |
+| `setMath.ts` `loadBearingSets` — prescribed load | excl | excl | incl |
+
+Prior best bench 100×6 (e1RM 116.1); log 100×8 marked **failure** → 124.1 → the
+brass chip fires and `isPr` is written into the log, while the chart, the debrief
+and next session's prescribed load all skip that set and still say 116.1.
+Verbatim the failure `benchmarks.ts:4-9` claims was already fixed.
+
+The majority is also the defensible answer: a set to failure gives the highest
+and least repeatable e1RM reading, which is exactly why the three estimate
+consumers refuse it — so the celebration was firing on the one kind of set the
+rest of the app declines to trust.
+
+**The `drop` disagreement was left standing, deliberately.** It is a taste
+judgement, not a numeric one: a drop set is evidence (it should feed e1RM) but
+the burnout at the end of the work is not a moment to celebrate. So `.208` splits
+the two reasons into two names — `countsTowardStrengthEstimate` for what the app
+*believes*, `countsTowardPr` for what it *celebrates* — rather than flattening a
+deliberate choice to make a table look tidy. Three consumers now delegate;
+`reachability.test.ts` fails a fifth copy.
+
+**The PR that could never not happen.** `estimateOneRepMax` returns 0 above 12
+reps, because no 1RM formula is fitted there. So `getBestPriorSet` can only ever
+return a set of 12 reps or fewer — and for an athlete who trains high-rep only it
+returned **null forever**, while `isPersonalRecord` answered `if (!prior) return
+true`. Goblet squats at 20kg × 20: a PR on set one, and a PR on set two hundred,
+with the chip and the haptic every time, and `isPr` written into the log so it is
+on the record too. A celebration that cannot fail to happen carries no
+information. Checking the *new* set first is the fix: no estimate, no claim — and
+the genuine first-estimable-set case still reads as a PR, correctly.
+
+**Two existing tests encoded the old behaviour** (`failure sets count toward
+volume and PR`, `drop sets skip PR`) with no stated rationale. The first was the
+bug written down; it now says what it means and why. The second was a real
+decision and survives, restated.
+
+Killed: `pr-chip-counts-failure-sets`, `high-rep-permanent-pr`,
+`fifth-countable-definition`.
+
+Tests 1058→1061. **The streak-decay item planned for `.208` is not in this PR** —
+it is a separate wrong number with its own blast radius (`StreakChip`,
+`WorkoutVictorySheet`, `computeWinScore`, the leaderboard snapshot) and folding
+it in would have made the falsification of these two harder to read. Carried
+forward, still open.
+
+---
+
 ## 2026-07-30 — The coach that thinks it is always Monday (`.207`)
 
 Three defects at one call site, and the test that should have caught them was
