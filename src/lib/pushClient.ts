@@ -34,8 +34,12 @@ export interface PushCadence {
    * debrief's zone — the load, the sets and the zone itself never leave the device.
    */
   lastSessionHigh?: boolean;
-  /** Chosen evening hour for the day-review push (`.194`), 18–22. */
-  dayReviewHour?: number;
+  /**
+   * Chosen evening hour for the day-review push (`.194`), 18–22 — or `null` to
+   * turn it off. Absent means this sync has nothing to say about the setting
+   * and must not disturb it; see `SubscriptionRowInput.dayReviewHour`.
+   */
+  dayReviewHour?: number | null;
 }
 
 export type PushResult = 'ok' | 'unsupported' | 'denied' | 'error';

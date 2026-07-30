@@ -38,21 +38,30 @@ import { SyncStatusRow } from '@/components/profile/SyncStatusRow';
 import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
-import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
+import { readRaw, writeRaw, remove as removeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
+import { cadenceHourPatch, readDayReviewHour } from '@/lib/dayReviewPrefs';
 import { useWorkoutStore } from '@/store/workoutStore';
 import { lastSessionAt } from '@/lib/reentry';
 
 /**
  * Cadence for the push row — read imperatively so the value is always current and
- * the mount effect keeps an empty dependency list. Deliberately only two fields:
- * the server learns when the athlete last trained and how often they aim to, and
- * nothing about what they actually did.
+ * the mount effect keeps an empty dependency list. Deliberately narrow: the server
+ * learns when the athlete last trained, how often they aim to, and the hour they
+ * chose for the evening review — and nothing about what they actually did.
+ *
+ * `.196` added the hour. Leaving it out is what made `day_review_hour` NULL for
+ * every athlete who already had push: the only writer was an opt-in card that
+ * skipped itself in exactly that case, and no other sync carried the field. Note
+ * the field is only included when the device actually has a stored hour —
+ * `buildSubscriptionRow` omits `undefined`, so a cadence sync from a device that
+ * has never chosen one can never clear a hour chosen elsewhere.
  */
 function readPushCadence() {
   return {
     lastSessionAt: lastSessionAt(useWorkoutStore.getState().workoutHistory),
     daysPerWeek: loadDaysPerWeek(),
+    ...cadenceHourPatch(readDayReviewHour(readRaw(STORAGE_KEYS.dayReviewHour))),
   };
 }
 
@@ -75,6 +84,7 @@ export function ProfilePage() {
   const [pushSupported, setPushSupported] = useState(false);
   const [pushOn, setPushOn] = useState(false);
   const [pushBusy, setPushBusy] = useState(false);
+  const [dayReviewHour, setDayReviewHour] = useState<number | null>(null);
   const [billingBusy, setBillingBusy] = useState(false);
 
   useEffect(() => {
@@ -95,6 +105,7 @@ export function ProfilePage() {
     if (savedUnits) setUnits(savedUnits);
     const savedGoals = readRaw(STORAGE_KEYS.goals);
     if (savedGoals) setGoals(savedGoals);
+    setDayReviewHour(readDayReviewHour(readRaw(STORAGE_KEYS.dayReviewHour)));
 
     import('@/lib/supabase').then(({ isPremium }) => {
       isPremium().then(setPremium);
@@ -151,6 +162,47 @@ export function ProfilePage() {
           });
         }
       }
+    } finally {
+      setPushBusy(false);
+    }
+  };
+
+  /**
+   * Choosing an hour is how the evening review is turned on, so this subscribes
+   * when the device has no subscription yet rather than requiring the athlete to
+   * flip device notifications first and then find this row. Turning it off sends
+   * an explicit `null` — the one place the field must reach the column as NULL
+   * instead of being omitted, or the note keeps arriving after they said stop.
+   */
+  const changeDayReviewHour = async (next: number | null) => {
+    setPushBusy(true);
+    const previous = dayReviewHour;
+    setDayReviewHour(next);
+    try {
+      if (next === null) removeRaw(STORAGE_KEYS.dayReviewHour);
+      else writeRaw(STORAGE_KEYS.dayReviewHour, String(next));
+
+      const m = await import('@/lib/pushClient');
+      const cadence = { ...readPushCadence(), dayReviewHour: next };
+      const ok = (await m.hasLocalPushSubscription())
+        ? await m.syncPushSubscription(cadence)
+        : (await m.subscribePush(cadence)) === 'ok';
+
+      if (!ok) {
+        // Put the device back where it was: a stored hour the server never
+        // learned about would show the athlete a setting that does nothing.
+        setDayReviewHour(previous);
+        if (previous === null) removeRaw(STORAGE_KEYS.dayReviewHour);
+        else writeRaw(STORAGE_KEYS.dayReviewHour, String(previous));
+        toast({
+          title: t('remindersDayReviewFailed', {
+            defaultValue: 'Could not save the evening review time',
+          }),
+          variant: 'destructive',
+        });
+        return;
+      }
+      setPushOn(await m.hasLocalPushSubscription());
     } finally {
       setPushBusy(false);
     }
@@ -280,6 +332,8 @@ export function ProfilePage() {
         pushOn={pushOn}
         pushBusy={pushBusy}
         onTogglePush={togglePush}
+        dayReviewHour={dayReviewHour}
+        onChangeDayReviewHour={changeDayReviewHour}
       />
 
       <ProfilePreferencesCard

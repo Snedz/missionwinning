@@ -27,8 +27,17 @@ export interface SubscriptionRowInput {
    * `.194` — the local hour the athlete chose for the evening review, 18–22.
    * A preference integer of the same class as `daysPerWeek`; no behavior data,
    * no review content, ever.
+   *
+   * `.196` — the only field where `null` and `undefined` must stay distinct.
+   * `null` is the athlete turning the evening review **off**, and it has to
+   * reach the column as a NULL or the notification keeps arriving after they
+   * said stop. `undefined` is an unrelated sync — a Profile mount, a finished
+   * session — which knows nothing about this preference and must leave it
+   * standing. Collapsing the two in either direction is a real defect: one way
+   * the athlete cannot turn it off, the other way any cadence sync silently
+   * turns it off for them.
    */
-  dayReviewHour?: number;
+  dayReviewHour?: number | null;
 }
 
 export type SubscriptionRow = {
@@ -42,7 +51,7 @@ export type SubscriptionRow = {
   days_per_week: number;
   time_zone: string;
   last_session_high: boolean;
-  day_review_hour: number;
+  day_review_hour: number | null;
 }>;
 
 export function buildSubscriptionRow(input: SubscriptionRowInput): SubscriptionRow {
