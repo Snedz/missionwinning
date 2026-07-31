@@ -6,6 +6,78 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The status doc that archived the governing fact (`.213`)
+
+Last of the `.204`–`.213` wave, and it closes a defect I introduced in `.203`.
+
+**`CONTEXT.md` stopped saying the beta gates were red.** `ORCHESTRATION.md`
+§Do-not-build bars features while they are — *"Only hero bugs / launch
+unblock"* — and what makes them red is REDTEAM **A5**'s falsifier having fired.
+That fact lived in `## Now` **only inside the `.170` ship bullet**, and `.203`
+rotated `.123`–`.189` to the archive. For ten builds an agent booting cold read
+CONTEXT, saw no red gate, and would have concluded features were allowed.
+
+`contextBudget.test.ts` — which I wrote in the same PR — counted bullets,
+checked the archive existed, and checked the budget was stated. It asserted
+**nothing about which facts survive**. *A budget guard that counts without
+checking content will happily let you archive the truth.*
+
+The fix is not "never rotate". It is that these facts do not belong in ship
+bullets at all: `## Now` now opens with a standing **Status table** — gate state,
+`PRIVATE_MODE`, `MAIL_POSTAL_ADDRESS`, Actions, VAPID/cron/Sentry/Upstash,
+pending migrations, gitleaks — and a `MUST_STATE` list fails the build naming
+**the question `## Now` can no longer answer** rather than a missing string.
+
+**`ciTruth` counted dead workflows as coverage.** `.200`'s rule accepts a check
+that appears in any workflow YAML. Every workflow here is billing-blocked — jobs
+die in seconds with `runner_id: 0`. So the guard I wrote to catch *checks that do
+not run* was satisfied by workflows that **cannot run**: the same defect, one
+level up, inside the guard against it. The proof is `npm run security-audit`,
+which **exits 1 today** (48 advisories, 17 high) and lives only in `ci.yml`, so
+it has been red-by-omission for this suite's entire life.
+
+Honest scope, because overstating it would be its own failure: the worst
+advisories (axios CVSS 8.7, `bigint-buffer` 7.5) enter solely through
+`@phantom`/`@solana`, and that path is unreachable today — `/bundle` 307s during
+free beta, `PhantomLifetimePayButton` returns null, the SDK is already
+`dynamic()`. **CI truth and maintenance debt, not live exposure.** `next` and
+`sharp` are the reachable ones.
+
+**And the eighth vacuous guard, in the guard I had just written for that.** My
+first version opened `if (CI_CAN_RUN) return;`, so the mutant that flips one
+boolean disabled the entire assertion and survived. A guard switched off by a
+flag nothing checks is a comment with a semicolon. `CI_CAN_RUN` is now pinned to
+what `CONTEXT.md` records, so flipping it requires also saying, where a human
+reads, that Actions works again.
+
+**Two more checks that reported passes they had not measured.** `gate-smoke.ts`
+pushed `ok: true` with detail *"skipped"* for the PWA probe **and** the
+unlocked-`/welcome` probe, so "All gate checks passed" counted two things that
+never ran — the same shape `ci-extended.yml` documents for the visual job. They
+go to a separate `skipped` list now, printed and counted apart. **No policy
+changed**: the service worker stays deliberately off while `PRIVATE_MODE=true`.
+
+**Lint budget ratcheted 10 → 0**, and both outstanding warnings cleared — one
+`STORAGE_KEYS` leftover I left in `.203`, one unused `LOCALE_FILES` import I left
+in `.212`. The budget had allowed ten warnings since it was introduced while the
+real count was one, which is exactly the slack a `.202`-style ratchet exists to
+remove.
+
+Killed: `now-block-drops-the-gate-state`, `dead-workflow-counts-as-running`
+(survived first run — see above), `pwa-check-green-when-skipped`.
+
+Tests 1092→1097. **This closes the `.204`–`.213` plan.**
+
+**Not done, and named rather than quietly dropped:** the **8 open Dependabot
+PRs** (#110–#118) plus #120. `postcss`, `js-yaml` and `fast-uri` clear three high
+advisories directly. They are stuck because CI cannot verify them and the local
+gate is the substitute — but landing eight dependency bumps is a different kind
+of change from this wave, each wanting its own build and its own falsification,
+and folding them into a documentation PR would have been the wrong shape.
+Founder-visible in the Status table now.
+
+---
+
 ## 2026-07-31 — A guard that measured a spelling (`.212`)
 
 **This is a defect in my own `.199` work, and it is the fourth appearance of the
