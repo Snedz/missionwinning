@@ -52,7 +52,9 @@ export const POST = withApiLogging('mobile/telemetry', async (request: NextReque
   );
 
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    // `.211` — opaque to the client, detailed in the server log.
+    console.error('[mobile/telemetry] %s', error.message);
+    return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, stored: true });

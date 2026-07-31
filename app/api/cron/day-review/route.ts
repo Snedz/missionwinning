@@ -27,6 +27,14 @@ import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { collectDayReviewCandidates, markDayReviewSent } from '@/lib/nudgeServer';
 import { isPushConfigured, sendAnonymousPush } from '@/lib/pushServer';
 
+/*
+ * `.211` — Vercel's default is 10s (Hobby) / 15s (Pro), and this route sends
+ * emails serially. At ~300ms per Resend call, 50 candidates blows the limit; the
+ * function is killed, `markNudged` never runs, and the next daily run re-sends to
+ * everyone already emailed. Each timeout widens the duplicate window.
+ */
+export const maxDuration = 300;
+
 export const GET = withApiLogging('cron/day-review', async (request: NextRequest) => {
   const secret = process.env.CRON_SECRET?.trim();
   if (!secret) {

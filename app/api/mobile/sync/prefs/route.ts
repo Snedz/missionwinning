@@ -82,7 +82,16 @@ export const POST = withApiLogging('mobile/sync/prefs', async (request: NextRequ
     updated_at: p.updatedAt ?? now,
   });
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    /*
+     * `.211` — an opaque code, not the database's own words.
+     *
+     * These returned `error.message` from a Supabase failure straight to the
+     * client, which leaks table names, column names and constraint identifiers
+     * — a free schema map for anyone probing the mobile sync surface. The
+     * detail still reaches the server log, where the person debugging it is.
+     */
+    console.error('[mobile/sync] %s', error.message);
+    return NextResponse.json({ error: 'sync_failed' }, { status: 500 });
   }
   return NextResponse.json({ ok: true, revision: p.revision });
 });
@@ -110,7 +119,16 @@ export const GET = withApiLogging('mobile/sync/prefs', async (request: NextReque
     .maybeSingle();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    /*
+     * `.211` — an opaque code, not the database's own words.
+     *
+     * These returned `error.message` from a Supabase failure straight to the
+     * client, which leaks table names, column names and constraint identifiers
+     * — a free schema map for anyone probing the mobile sync surface. The
+     * detail still reaches the server log, where the person debugging it is.
+     */
+    console.error('[mobile/sync] %s', error.message);
+    return NextResponse.json({ error: 'sync_failed' }, { status: 500 });
   }
   if (!data) {
     return NextResponse.json({ prefs: null });

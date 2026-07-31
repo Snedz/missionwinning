@@ -5,7 +5,7 @@
  */
 import { defaultCache } from '@serwist/next/worker';
 import type { PrecacheEntry, SerwistGlobalConfig } from 'serwist';
-import { Serwist } from 'serwist';
+import { NetworkOnly, Serwist } from 'serwist';
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -20,7 +20,37 @@ const serwist = new Serwist({
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  runtimeCaching: defaultCache,
+  /*
+   * `.211` — authenticated API responses must not sit in CacheStorage.
+   *
+   * `defaultCache`'s `/api/*` entry is `NetworkFirst` with
+   * `cacheName: "apis"` and `maxAgeSeconds: 86400`. Passing it unmodified put
+   * **24 hours of authenticated responses on the device**, surviving sign-out
+   * and served to the next person to use a shared phone while it is offline.
+   * That includes `/api/premium/status`, `/api/wearables/status` and —
+   * on a product with a `/api/youth/consent-*` surface —
+   * `/api/school/class/[code]/export`, which returns a CSV of student names and
+   * scores.
+   *
+   * Serwist's own auth exemption matches `/api/auth/*`; this app's callback is
+   * `app/auth/callback/route.ts` → **`/auth/callback`**, which fell through to
+   * the catch-all `NetworkFirst` bucket instead.
+   *
+   * `NetworkOnly` costs nothing here: the offline story is localStorage plus
+   * the outbox, and nothing offline reads an API response. These go **before**
+   * the spread — serwist takes the first matching strategy.
+   */
+  runtimeCaching: [
+    {
+      matcher: ({ url }: { url: URL }) => url.pathname.startsWith('/auth/'),
+      handler: new NetworkOnly(),
+    },
+    {
+      matcher: ({ url }: { url: URL }) => url.pathname.startsWith('/api/'),
+      handler: new NetworkOnly(),
+    },
+    ...defaultCache,
+  ],
   fallbacks: {
     entries: [
       {
