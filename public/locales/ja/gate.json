@@ -103,7 +103,7 @@
   "assessUnsure": "わからない",
   "assessYes": "はい",
   "benchmarks1rmProgress": "1RMの進捗状況",
-  "benchmarks1rmProgressDesc": "すべてのセットからの推定 (青) · 1 回の試行のみからの実際 (緑)",
+  "benchmarks1rmProgressDesc": "すべてのセットからの推定 (破線) · 1 回の試行のみからの実際 (実線)",
   "benchmarksActLegend": "実質1RM",
   "benchmarksAllExercises": "すべての演習",
   "benchmarksAllExercisesDesc": "記録された動き全体を簡単に比較",

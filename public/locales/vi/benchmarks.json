@@ -16,7 +16,7 @@
   "benchmarksSessionsLogged": "Đã ghi lại {{count}} phiên",
   "benchmarksTotalSets": "Tổng cộng {{count}} bộ",
   "benchmarks1rmProgress": "Tiến độ 1RM",
-  "benchmarks1rmProgressDesc": "Ước tính (màu xanh) từ tất cả các bộ · Thực tế (màu xanh lá cây) chỉ từ lần thử 1 lần",
+  "benchmarks1rmProgressDesc": "Ước tính (nét đứt) từ tất cả các bộ · Thực tế (nét liền) chỉ từ lần thử 1 lần",
   "benchmarksEstLegend": "Ước tính 1RM",
   "benchmarksActLegend": "1RM thực tế",
   "benchmarksTimeline": "Dòng thời gian",

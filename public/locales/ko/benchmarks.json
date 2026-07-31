@@ -16,7 +16,7 @@
   "benchmarksSessionsLogged": "{{count}} 세션이 기록되었습니다.",
   "benchmarksTotalSets": "총 {{count}} 세트",
   "benchmarks1rmProgress": "1RM 진행",
-  "benchmarks1rmProgressDesc": "모든 세트의 추정치(파란색) · 1회 시도에서만 실제(녹색)",
+  "benchmarks1rmProgressDesc": "모든 세트의 추정치(점선) · 1회 시도에서만 실제(실선)",
   "benchmarksEstLegend": "예상 1RM",
   "benchmarksActLegend": "실제 1RM",
   "benchmarksTimeline": "타임라인",

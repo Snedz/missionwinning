@@ -108,7 +108,7 @@
   "assessUnsure": "Không chắc chắn",
   "assessYes": "Đúng",
   "benchmarks1rmProgress": "Tiến độ 1RM",
-  "benchmarks1rmProgressDesc": "Ước tính (màu xanh) từ tất cả các bộ · Thực tế (màu xanh lá cây) chỉ từ lần thử 1 lần",
+  "benchmarks1rmProgressDesc": "Ước tính (nét đứt) từ tất cả các bộ · Thực tế (nét liền) chỉ từ lần thử 1 lần",
   "benchmarksActLegend": "1RM thực tế",
   "benchmarksAllExercises": "Tất cả các bài tập",
   "benchmarksAllExercisesDesc": "So sánh nhanh giữa các chuyển động được ghi lại",

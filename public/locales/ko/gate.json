@@ -104,7 +104,7 @@
   "assessUnsure": "불안정한",
   "assessYes": "예",
   "benchmarks1rmProgress": "1RM 진행",
-  "benchmarks1rmProgressDesc": "모든 세트의 추정치(파란색) · 1회 시도에서만 실제(녹색)",
+  "benchmarks1rmProgressDesc": "모든 세트의 추정치(점선) · 1회 시도에서만 실제(실선)",
   "benchmarksActLegend": "실제 1RM",
   "benchmarksAllExercises": "모든 운동",
   "benchmarksAllExercisesDesc": "기록된 움직임에 대한 빠른 비교",

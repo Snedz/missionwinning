@@ -16,7 +16,7 @@
   "benchmarksSessionsLogged": "تم تسجيل {{count}} من الجلسات",
   "benchmarksTotalSets": "{{count}} total sets",
   "benchmarks1rmProgress": "تقدم 1RM",
-  "benchmarks1rmProgressDesc": "المقدرة (الأزرق) من جميع المجموعات · الفعلية (الأخضر) من محاولات تكرار واحد فقط",
+  "benchmarks1rmProgressDesc": "المقدرة (متقطع) من جميع المجموعات · الفعلية (متصل) من محاولات تكرار واحد فقط",
   "benchmarksEstLegend": "يقدر بـ 1RM",
   "benchmarksActLegend": "Actual 1RM",
   "benchmarksTimeline": "الجدول الزمني",

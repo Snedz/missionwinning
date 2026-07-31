@@ -16,7 +16,7 @@
   "benchmarksSessionsLogged": "记录了 {{count}} 个会话",
   "benchmarksTotalSets": "总共 {{count}} 组",
   "benchmarks1rmProgress": "1RM 进展",
-  "benchmarks1rmProgressDesc": "所有组次的估计值（蓝色）·仅 1 次尝试的实际值（绿色）",
+  "benchmarks1rmProgressDesc": "所有组次的估计值（虚线）·仅 1 次尝试的实际值（实线）",
   "benchmarksEstLegend": "预计1RM",
   "benchmarksActLegend": "实际1RM",
   "benchmarksTimeline": "时间轴",

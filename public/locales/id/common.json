@@ -866,7 +866,7 @@
   "benchmarksNo1Rep": "No 1-rep sets",
   "benchmarksEstVsActual": "Est. vs Actual Gap",
   "benchmarksSessionsLogged": "{{count}} sessions logged",
-  "benchmarks1rmProgressDesc": "Estimated (blue) from all sets · Actual (green) from 1-rep attempts only",
+  "benchmarks1rmProgressDesc": "Estimated (dashed) from all sets · Actual (solid) from 1-rep attempts only",
   "benchmarksEstLegend": "Estimated 1RM",
   "benchmarksActLegend": "Actual 1RM",
   "benchmarksTimelineDesc": "Per-session best estimated and actual rep maxes",

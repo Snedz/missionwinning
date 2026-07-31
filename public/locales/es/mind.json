@@ -93,7 +93,7 @@
   "assessStageTitle": "Etapa de cambio + indicaciones de coaching",
   "assessStartPrefix": "Comenzar",
   "assessUnsure": "Insegura",
-  "benchmarks1rmProgressDesc": "Estimado (azul) de todas las series · Real (verde) solo de intentos de 1 repetición",
+  "benchmarks1rmProgressDesc": "Estimado (discontinua) de todas las series · Real (continua) solo de intentos de 1 repetición",
   "benchmarksActLegend": "1RM real",
   "benchmarksAllExercises": "Todos los ejercicios",
   "benchmarksAllExercisesDesc": "Comparación rápida entre movimientos registrados",

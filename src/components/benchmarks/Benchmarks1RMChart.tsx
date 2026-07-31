@@ -56,22 +56,37 @@ export function Benchmarks1RMChart({ data, unitLabel }: Props) {
             ]}
           />
           <Legend />
+          {/*
+            `.221` — these two lines were `#3b82f6` and `#22c55e`: Tailwind
+            blue-500 and green-500, survivors of the pre-rebrand palette. Every
+            other part of this chart — grid, axes, tooltip, its `borderRadius: 0`
+            — was re-inked in `.136`. The series colours were not, presumably
+            because they read as "data colours" rather than brand ones. They are
+            the same thing on a paper/ink/one-red system.
+
+            The palette gives one hue, not two, so the series cannot be told
+            apart by colour alone — which WCAG 1.4.1 asks for anyway. They are
+            distinguished by **dash** as well, and the split carries meaning:
+            the measured lift is solid and takes the one accent; the derived
+            estimate is dashed and quiet.
+          */}
           <Line
             type="monotone"
             dataKey="estimated"
             name={t('benchmarksEstLegend', { defaultValue: 'Estimated 1RM' })}
-            stroke="#3b82f6"
+            stroke="hsl(var(--muted-foreground))"
             strokeWidth={2}
-            dot={{ fill: '#3b82f6', r: 4 }}
+            strokeDasharray="5 4"
+            dot={{ fill: 'hsl(var(--muted-foreground))', r: 3 }}
             activeDot={{ r: 6 }}
           />
           <Line
             type="monotone"
             dataKey="actual"
             name={t('benchmarksActLegend', { defaultValue: 'Actual 1RM' })}
-            stroke="#22c55e"
+            stroke="hsl(var(--accent-poster))"
             strokeWidth={2}
-            dot={{ fill: '#22c55e', r: 4 }}
+            dot={{ fill: 'hsl(var(--accent-poster))', r: 4 }}
             connectNulls={false}
           />
         </LineChart>

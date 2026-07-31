@@ -313,7 +313,7 @@ export function BenchmarksPage() {
               <CardDescription>
                 {t('benchmarks1rmProgressDesc', {
                   defaultValue:
-                    'Estimated (blue) from all sets · Actual (green) from 1-rep attempts only',
+                    'Estimated (dashed) from all sets · Actual (solid) from 1-rep attempts only',
                 })}
               </CardDescription>
             </CardHeader>
