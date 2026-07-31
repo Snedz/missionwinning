@@ -153,9 +153,71 @@ function walk(dir, out = []) {
 const RULES = [
   {
     id: 'off-palette-colour',
-    // `#fff`/`#000` shorthand included: three- and six-digit both bypass tokens.
-    pattern: /#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b/g,
+    /*
+     * `#fff`/`#000` shorthand included: three- and six-digit both bypass tokens.
+     *
+     * `.224` — the functional forms were added after this rule proved **blind to
+     * every one of them**. It matched hex only, so `rgba(255,255,255,0.06)` in
+     * `TrackPaceChart` — the pre-rebrand dark theme drawing white grid lines and
+     * white axis labels onto a paper ground, both invisible — passed the guard
+     * written to catch exactly that survival. So did a sixth `hsl(0 0% 100%)`
+     * leftover in the guidebook block `.221` had already been through, under a
+     * token whose own comment reads *"the only ground, never pure white"*.
+     *
+     * `\(\s*[0-9.]` is what separates a literal from a token: `hsl(var(--card))`
+     * starts with `v` and is the correct spelling, `hsl(0 0% 100%)` starts with a
+     * digit and is not. Widened **before** any call site was touched — the run
+     * returned five hits, three of them live drift and two already allowlisted
+     * under this same rule id. That ordering is `.212`'s rule: a guard keyed to
+     * one spelling of a defect has only ever tested that spelling.
+     */
+    pattern: /#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b|\b(?:rgba?|hsla?)\(\s*[0-9.]/g,
     why: 'paper/ink/one-red comes from the tokens in src/index.css — use hsl(var(--…))',
+  },
+  {
+    id: 'unstyled-chart-tooltip',
+    /*
+     * `.224` — the hole no colour scan can cover: styling that is **absent**.
+     *
+     * `BodyMetricsCard`'s `<Tooltip>` had no `contentStyle` at all, so recharts
+     * drew its stock white box with a `#ccc` border and the library's own radius
+     * — three rebrand rules broken at once, with nothing in the file for a
+     * pattern to match. Every rule above asks "is this value wrong?"; a missing
+     * prop has no value to be wrong.
+     *
+     * The stronger fix would make it unrepresentable, and recharts forbids it:
+     * `findAllByType` matches chart children on `displayName || name` and reads
+     * props off that element, so a `<ChartTooltip>` wrapper is either ignored or
+     * matched with its defaults unread (`recharts/lib/util/ReactUtils.js:96,127`,
+     * checked in the installed 2.15.4). So the guard carries it instead.
+     */
+    /*
+     * Window-based rather than a lookahead, and that is not a style choice. The
+     * first draft was `<Tooltip(?![^>]*\{\.\.\.CHART_TOOLTIP\})` — and `[^>]`
+     * stops dead at the `>` in `=>`, which every one of these tooltips has in
+     * its `formatter` arrow. So the rule's answer depended on whether the spread
+     * happened to sit before or after the first arrow function: correct code
+     * with the spread second would have been reported. The same backtracking
+     * shape `.221` hit on `border-radius: 0` and `.212` wrote the rule for.
+     *
+     * Instead: take the text from the tag up to the next JSX element and ask
+     * whether the spread is in it.
+     *
+     * ## `Tooltip` means two different components in this repo
+     *
+     * Running the first version turned up eight hits in files with no chart in
+     * them — `SetLogRow`, `TodayDashboardHeader`, `PillarScoreBreakdown` — all
+     * using the Radix/shadcn `<Tooltip><TooltipTrigger>` from
+     * `@/components/ui/tooltip`, which has nothing to do with recharts and takes
+     * no `contentStyle`. A `.178` collision in the *tag name*: same word, two
+     * components, and a guard keyed to the word would have demanded a chart prop
+     * on a hover hint. Keyed to the **import** instead, so the rule asks its
+     * question only where the word means the chart one.
+     */
+    appliesTo: (src) => /from\s+'recharts'/.test(src),
+    pattern: /<Tooltip\b([\s\S]{0,400})/g,
+    ok: (v) => /\{\.\.\.CHART_TOOLTIP\}/.test(v.split(/<\/?[A-Z]/)[0]),
+    why: 'chart tooltips spread {...CHART_TOOLTIP} — a bare one renders recharts’ stock white/#ccc/rounded box',
   },
   {
     id: 'raw-border-radius',
@@ -196,6 +258,7 @@ export function scan(files, readFile, ignoreExemptions = false) {
   for (const file of files) {
     const src = stripComments(readFile(file));
     for (const rule of RULES) {
+      if (rule.appliesTo && !rule.appliesTo(src)) continue;
       for (const m of src.matchAll(rule.pattern)) {
         if (rule.ok && rule.ok(m[1] ?? m[0])) continue;
         if (!ignoreExemptions && isExempt(file, rule.id)) continue;

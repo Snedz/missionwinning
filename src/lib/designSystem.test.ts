@@ -20,12 +20,22 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { ALLOWLIST, scan } from '../../scripts/check-design-system.mjs';
 
 const root = path.join(import.meta.dirname, '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
+
+/** Every component source under `src/`, so the guards below discover rather than enumerate. */
+function walkSrc(dir = 'src', out: string[] = []): string[] {
+  for (const entry of readdirSync(path.join(root, dir), { withFileTypes: true })) {
+    const rel = `${dir}/${entry.name}`;
+    if (entry.isDirectory()) walkSrc(rel, out);
+    else if (/\.tsx$/.test(entry.name) && !/\.test\.tsx$/.test(entry.name)) out.push(rel);
+  }
+  return out;
+}
 
 /** Run the scanner over an in-memory fixture rather than the repo. */
 function scanText(file: string, text: string) {
@@ -38,6 +48,72 @@ test('an off-palette colour is caught, in either hex length', () => {
   assert.equal(scanText('src/x.tsx', 'stroke="#3b82f6"').length, 1, 'six-digit');
   assert.equal(scanText('src/x.tsx', 'color: #111;').length, 1, 'three-digit shorthand');
   assert.equal(scanText('src/x.tsx', 'stroke="hsl(var(--accent-poster))"').length, 0);
+});
+
+test('a colour is caught in its functional forms too, not only hex', () => {
+  /*
+   * `.224` — the rule matched hex **only**, so every `rgb()`/`hsl()` literal in
+   * the repo was invisible to the guard written to catch exactly this survival.
+   * Two live cases sat behind it: `TrackPaceChart` drawing
+   * `rgba(255,255,255,…)` grid lines and axis labels — the pre-rebrand dark
+   * theme, still painting white onto a paper ground — and a sixth
+   * `hsl(0 0% 100%)` leftover in the guidebook block `.221` had already been
+   * through, under a token whose comment reads *"never pure white"*.
+   *
+   * The discriminator is the first character inside the paren: a token spells
+   * `hsl(var(--…))`, a literal spells a digit.
+   */
+  assert.equal(scanText('src/x.tsx', "stroke='rgba(255,255,255,0.06)'").length, 1, 'rgba');
+  assert.equal(scanText('src/x.tsx', "fill: 'rgb(12, 12, 12)'").length, 1, 'rgb');
+  assert.equal(scanText('src/x.css', 'background: hsl(0 0% 100%);').length, 1, 'bare hsl');
+  assert.equal(scanText('src/x.css', 'color: hsla(0, 0%, 100%, 0.4);').length, 1, 'hsla');
+  // …and the correct spelling stays correct.
+  assert.equal(scanText('src/x.css', 'background: hsl(var(--card));').length, 0);
+  assert.equal(scanText('src/x.tsx', "stroke='hsl(var(--accent-poster))'").length, 0);
+});
+
+test('a chart tooltip with no styling at all is caught', () => {
+  /*
+   * The hole no colour scan can cover: styling that is **absent**. Every other
+   * rule asks "is this value wrong?" — a missing prop has no value to be wrong,
+   * and `BodyMetricsCard` rendered recharts' stock white/`#ccc`/rounded box for
+   * the whole life of the rebrand with nothing in the file to match on.
+   */
+  const chart = (body: string) => `import { Tooltip } from 'recharts';\n${body}`;
+  assert.equal(scanText('src/x.tsx', chart('<Tooltip />')).length, 1, 'bare');
+  assert.equal(scanText('src/x.tsx', chart('<Tooltip {...CHART_TOOLTIP} />')).length, 0);
+});
+
+test('the spread is found even when an arrow function precedes it', () => {
+  /*
+   * The draft that would have made this rule worse than nothing. It was
+   * `<Tooltip(?![^>]*\{\.\.\.CHART_TOOLTIP\})`, and `[^>]` stops at the `>` in
+   * `=>` — which every one of these tooltips has in its `formatter`. So the
+   * verdict depended on whether the spread happened to sit before or after the
+   * first arrow, and correct code with it second would have been reported.
+   * `.221` hit this backtracking shape on `border-radius: 0`; `.212` wrote the
+   * rule that a guard keyed to one spelling has only tested that spelling.
+   */
+  const src = `import { Tooltip } from 'recharts';
+    <Tooltip
+      formatter={(v: number) => [v, '']}
+      {...CHART_TOOLTIP}
+    />`;
+  assert.equal(scanText('src/x.tsx', src).length, 0, 'spread after an arrow is still a spread');
+});
+
+test('the Radix tooltip is not a chart tooltip', () => {
+  /*
+   * `Tooltip` names two different components in this repo. Running the first
+   * version of the rule turned up eight hits in files with no chart in them —
+   * `SetLogRow`, `TodayDashboardHeader`, `PillarScoreBreakdown` — all using the
+   * shadcn `<Tooltip><TooltipTrigger>`, which takes no `contentStyle` at all.
+   * A `.178` collision in the tag name, and a guard keyed to the word would
+   * have demanded a chart prop on a hover hint. It keys on the import instead.
+   */
+  const radix = `import { Tooltip, TooltipTrigger } from '@/components/ui/tooltip';
+    <Tooltip><TooltipTrigger asChild><button /></TooltipTrigger></Tooltip>`;
+  assert.equal(scanText('src/x.tsx', radix).length, 0);
 });
 
 test('a raw border-radius is caught, and zero is not', () => {
@@ -175,6 +251,61 @@ test('the share card carries the current brand, not last season’s', () => {
   assert.equal(cardConst('INK'), brand.ink, 'share card ink drifted from BRAND_HEX');
   assert.equal(cardConst('POSTER'), brand.poster, 'share card poster red drifted from BRAND_HEX');
   assert.equal(cardConst('RED_700'), brand.red700, 'share card red-700 drifted from BRAND_HEX');
+});
+
+/* ── One accent, one meaning ─────────────────────────────────────────────── */
+
+test('every chart draws “actual” and “estimated” the same way', () => {
+  /*
+   * `.224` — `History1RMChart` and `Benchmarks1RMChart` plot the **same two
+   * series** and had assigned them opposite colours: red was *estimated* on
+   * History and *actual* on Benchmarks. `.221` re-inked the second file (it was
+   * still drawing Tailwind blue-500/green-500) and nothing pointed at the first,
+   * so the fix landed on one screen and the drift stayed on the other.
+   *
+   * A palette with one hue cannot separate two series by colour, so the split is
+   * by **dash** — which WCAG 1.4.1 asks for anyway — and the meaning rides with
+   * it: solid accent for what the athlete lifted, dashed and quiet for what the
+   * app inferred.
+   *
+   * **Discovered, not enumerated** (`.220`): naming the two files I had already
+   * looked at is the twelfth-vacuous-guard shape, and the whole defect here is
+   * that a third chart can be written tomorrow and pick the assignment afresh.
+   */
+  const files = walkSrc().filter((f) => read(f).includes('CHART_SERIES.'));
+  assert.ok(files.length >= 2, 'expected at least the two 1RM charts — did they move?');
+
+  const wrong: string[] = [];
+  for (const file of files) {
+    const src = read(file);
+    for (const m of src.matchAll(/dataKey="(estimated|actual)"([\s\S]{0,300})/g)) {
+      const [, key, after] = m;
+      const block = after.split(/\/>/)[0];
+      const want = key === 'actual' ? 'measured' : 'derived';
+      if (!block.includes(`CHART_SERIES.${want}`)) {
+        wrong.push(`${file}: "${key}" must use CHART_SERIES.${want}`);
+      }
+    }
+  }
+  assert.deepEqual(wrong, [], 'the one accent must not change meaning between screens');
+});
+
+test('the shared chart chrome is the only definition of it', () => {
+  /*
+   * Four recharts files each re-declared grid, axes and tooltip. That is the
+   * duplication the drift above grew in — so the guard closes it rather than
+   * trusting the next author to notice `chartTheme.ts` exists.
+   */
+  const charts = walkSrc().filter((f) => read(f).includes("from 'recharts'"));
+  assert.ok(charts.length >= 4, 'chart files moved — re-read this guard');
+
+  const rogue = charts.filter((f) => {
+    const src = read(f);
+    // A chart that renders a grid or an axis must take them from the shared module.
+    const draws = /<(CartesianGrid|XAxis|YAxis)\b/.test(src);
+    return draws && !src.includes('@/components/charts/chartTheme');
+  });
+  assert.deepEqual(rogue, [], 'these charts re-declare chrome instead of importing chartTheme');
 });
 
 /* ── The check has to actually run ───────────────────────────────────────── */

@@ -11,6 +11,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { CHART_AXIS_STROKE, CHART_GRID, CHART_SERIES, CHART_TOOLTIP } from '@/components/charts/chartTheme';
 
 type Point = {
   date: string;
@@ -30,24 +31,19 @@ export function Benchmarks1RMChart({ data, unitLabel }: Props) {
     <div className="h-72 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 8, right: 16, left: 0, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+          <CartesianGrid {...CHART_GRID} />
           <XAxis
             dataKey="date"
             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-            stroke="hsl(var(--border))"
+            stroke={CHART_AXIS_STROKE}
           />
           <YAxis
             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-            stroke="hsl(var(--border))"
+            stroke={CHART_AXIS_STROKE}
             unit={` ${unitLabel}`}
           />
           <Tooltip
-            contentStyle={{
-              backgroundColor: 'hsl(var(--card))',
-              border: '2px solid hsl(var(--border))',
-              borderRadius: 0,
-            }}
-            labelStyle={{ color: 'hsl(var(--foreground))' }}
+            {...CHART_TOOLTIP}
             formatter={(value: number, name: string) => [
               value != null ? `${value} ${unitLabel}` : '—',
               name === 'estimated'
@@ -74,19 +70,14 @@ export function Benchmarks1RMChart({ data, unitLabel }: Props) {
             type="monotone"
             dataKey="estimated"
             name={t('benchmarksEstLegend', { defaultValue: 'Estimated 1RM' })}
-            stroke="hsl(var(--muted-foreground))"
-            strokeWidth={2}
-            strokeDasharray="5 4"
-            dot={{ fill: 'hsl(var(--muted-foreground))', r: 3 }}
+            {...CHART_SERIES.derived}
             activeDot={{ r: 6 }}
           />
           <Line
             type="monotone"
             dataKey="actual"
             name={t('benchmarksActLegend', { defaultValue: 'Actual 1RM' })}
-            stroke="hsl(var(--accent-poster))"
-            strokeWidth={2}
-            dot={{ fill: 'hsl(var(--accent-poster))', r: 4 }}
+            {...CHART_SERIES.measured}
             connectNulls={false}
           />
         </LineChart>

@@ -665,7 +665,12 @@
 
 .magazine-screen-bar {
   border-bottom: 1px solid var(--mag-rule);
-  background: hsl(0 0% 100%);
+  /* `.224` — was `hsl(0 0% 100%)`. The `--background` token says it outright:
+     "paper #f3f2f2 — the only ground, never pure white". A sixth leftover in
+     the block `.221` cleaned, and it survived that pass for the same reason
+     the chart whites did: the rule matched hex, and this is `hsl()`. Chrome
+     over paper reads as the card surface, not as a brighter paper. */
+  background: hsl(var(--card));
 }
 
 .magazine-screen-bar-inner {
