@@ -5,7 +5,7 @@
  */
 
 import { loadAttribution } from '@/lib/attribution';
-import { track } from '@/lib/analytics';
+import { enqueueReferralRedeem } from '@/lib/sync/attributionSync';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
@@ -30,27 +30,16 @@ export function getCachedReferralCode(): string | null {
   return readRaw(REFERRAL_CODE_KEY);
 }
 
-/** Fire-and-forget after sign-in push — redeems mw_attribution.ref once. */
+/**
+ * Queue the referral redeem after sign-in push — redeems mw_attribution.ref once.
+ *
+ * `.218` moved this onto the durable outbox. It was a one-shot `fetch` with a
+ * swallowing catch, so a redeem lost to a flaky signal was lost permanently.
+ */
 export function redeemReferralFromAttribution(): void {
   if (typeof window === 'undefined') return;
   const attr = loadAttribution();
   const code = attr?.ref?.trim();
   if (!code || !/^MW-[A-HJ-NP-Z2-9]{5}$/.test(code)) return;
-
-  void fetch('/api/referral', {
-    method: 'POST',
-    credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code }),
-  })
-    .then(async (res) => {
-      if (!res.ok) return;
-      const data = (await res.json().catch(() => null)) as { status?: string } | null;
-      if (data?.status === 'attributed') {
-        track('referral_attributed');
-      }
-    })
-    .catch(() => {
-      /* non-fatal */
-    });
+  enqueueReferralRedeem(code);
 }

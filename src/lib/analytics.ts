@@ -20,7 +20,7 @@
 import { isAnalyticsAllowed } from '@/lib/analyticsOptOut';
 import { attributionAsProps, loadAttribution } from '@/lib/attribution';
 
-type AnalyticsEvent =
+export type AnalyticsEvent =
   | 'iday_started'
   | 'iday_mission_accepted'
   | 'iday_profile_completed'

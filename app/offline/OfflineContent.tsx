@@ -24,6 +24,12 @@ const KIND_LABEL: Record<OutboxKind, { key: string; defaultValue: string }> = {
   'leaderboard.push': { key: 'offlineQueueLeaderboard', defaultValue: 'Leaderboard entry' },
   'pft.push': { key: 'offlineQueuePft', defaultValue: 'Fitness test' },
   'feedback.submit': { key: 'offlineQueueFeedback', defaultValue: 'Feedback note' },
+  // `.218` — an invite that has not reached the server yet is exactly the thing
+  // a beta tester would want to know is still pending, and the founder panel
+  // reads its result.
+  'invite.landed': { key: 'offlineQueueInviteLanded', defaultValue: 'Invite visit' },
+  'invite.redeem': { key: 'offlineQueueInviteRedeem', defaultValue: 'Invite code' },
+  'referral.redeem': { key: 'offlineQueueReferral', defaultValue: 'Referral code' },
 };
 
 /** Coarse on purpose — a queued write does not need a to-the-minute timestamp. */

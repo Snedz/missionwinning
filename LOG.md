@@ -6,6 +6,86 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The invite that could silently never redeem (`.218`)
+
+`.170`'s bug, **fourth instance**, on the one path the beta gate measures.
+
+### Three one-shot calls
+
+```ts
+void fetch('/api/beta/invites/redeem', { ... })
+  .then(...)
+  .catch(() => { /* non-fatal */ });
+```
+
+`markInviteLanded`, `redeemInviteFromAttribution` and
+`redeemReferralFromAttribution`. Each fired once — `redeemInviteFromAttribution`
+from `syncJourneyOnSignIn` and **never again** — so a tester signing in on a
+train, in a lift, or on gym wifi lost the redemption permanently. The
+attribution sat in `localStorage` and nothing retried it.
+
+### The lost row is not the damage
+
+`first_landed_at` and `signed_up_user_id` are what the founder invite panel
+reads. A dropped redeem makes that dashboard report **a tester who never arrived
+and never converted** — while they are sitting there using the app.
+
+That is the instrument a private beta is steered by, reporting the opposite of
+what happened, on the exact metric REDTEAM A5 fires on: *"14 days… still no 10
+beta users."*
+
+### The answer already existed
+
+`.179` built it and `.170` named it — *"that one needs an outbox retry, not a
+polish fix."* Six kinds ride the durable outbox: `workout.upsert`, `coach.plan`,
+`journey.state`, `leaderboard.push`, `pft.push`, `feedback.submit`. They retry,
+dedupe, survive a reload, and appear on the offline screen. The three on the
+critical path did not.
+
+All three now do, through
+[`attributionSync.ts`](src/lib/sync/attributionSync.ts). No new transport, no new
+retry logic, no new endpoint.
+
+### Which failures are final — the part that needed care
+
+**4xx is done, not retried.** An invalid or already-redeemed code cannot become
+valid by asking again, so retrying would burn `MAX_ATTEMPTS` and then sit in the
+queue marked `stuck` — permanently visible on the offline screen, and alarming
+for something that actually worked.
+
+**Except 429 and 408, and that is not theoretical.** All three routes rate-limit
+at **5/min/IP** (`referral/route.ts:91`, `invites/redeem/route.ts:19`,
+`invites/landed/route.ts:18`), and beta testers behind one gym's wifi, one
+office, or one carrier NAT share an IP. My first draft mapped every 4xx to
+"done", which would have silently discarded exactly the redemptions this module
+exists to save — **the original bug, reintroduced by the fix for it.** Caught by
+reading the routes rather than assuming their behaviour.
+
+`OfflineContent`'s `KIND_LABEL` is `Record<OutboxKind, …>`, so adding the kinds
+made the compiler demand labels for them. A pending invite is now visible rather
+than silent, enforced by the type system rather than by remembering.
+
+### Falsification — eight mutants, two survivors, both about the tests
+
+`network-throw-marks-done` survived: turning `post()`'s `catch` into
+`return true` broke nothing, because **every delivery test registered its own
+stub handler and none of them ever called `post()`**. The module's core error
+handling — the thing this entire PR is about — had no test. Eleventh
+vacuous-coverage finding in this run of work, and a new shape: not a guard
+measuring the wrong thing, but a suite that exercised the queue and never the
+thing being queued. Two cases now register the **real** handlers and stub
+`fetch`.
+
+`kinds-share-a-dedupe-key` survived, and here the honest answer was that the
+mutant is not a defect. The outbox dedupes on `(kind, dedupeKey)`, so a shared
+key string across kinds is harmless by construction. The test's name promised
+more than it measured; it now says what it actually proves — that each helper
+enqueues at all.
+
+Killed: `redeem-fire-and-forget`, `4xx-retries-forever`, `rate-limit-dropped`,
+`double-signin-double-redeems`, `landed-never-enqueued`,
+`handlers-never-registered`, plus both survivors after the fixes.
+
 ## 2026-07-31 — The streak that never breaks (`.217`)
 
 The app's most-visible number could not go down.
