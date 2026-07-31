@@ -1,13 +1,15 @@
 import 'server-only';
-import type { JourneyBasicMilestones, JourneyPhase, JourneyState } from '@/lib/missionJourney';
+import type { JourneyPhase, JourneyState } from '@/lib/missionJourney';
+/*
+ * `.223` — imported, not redefined. This file carried its own `allBasicDone`
+ * requiring all five pillars while the client had narrowed to `b.workout`, and it
+ * is this copy that computes the launch gate. See `journey/basicComplete.ts`.
+ */
+import { allBasicDone } from '@/lib/journey/basicComplete';
 import type { BetaFunnelAggregate } from '@/types/betaMetrics';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 
 export type { BetaFunnelAggregate };
-
-function allBasicDone(b: JourneyBasicMilestones): boolean {
-  return b.workout && b.fuel && b.move && b.mind && b.learn;
-}
 
 function emptyPhaseCounts(): Record<JourneyPhase, number> {
   return { 'i-day': 0, basic: 0, readiness: 0, commissioned: 0 };

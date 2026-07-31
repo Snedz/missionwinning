@@ -8,6 +8,8 @@ import { getTrainingStreak } from '@/lib/streaks';
 import { previewJustGoForEquipment } from '@/lib/justGoSession';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS, WORKOUT_STORE_KEY } from '@/lib/storage/keys';
+/* `.223` — the one definition, shared with `betaMetricsServer`. See that module. */
+import { allBasicDone } from '@/lib/journey/basicComplete';
 
 export type JourneyPhase = 'i-day' | 'basic' | 'readiness' | 'commissioned';
 
@@ -228,11 +230,6 @@ function detectReadinessMilestones(workoutHistory: CompletedWorkoutLog[]): Journ
   const streakMet = streak >= 7 || recent14 >= 5;
 
   return { parq, streakMet, winScoreSeen: true };
-}
-
-function allBasicDone(b: JourneyBasicMilestones): boolean {
-  // Horizon W: Basic Training = first workout only. Other pillars stay free, not gated chores.
-  return b.workout;
 }
 
 function allReadinessDone(r: JourneyReadinessMilestones): boolean {

@@ -189,14 +189,12 @@ export function TodayWeekRecapCard({ recap }: Props) {
  </div>
  ) : null}
 
- {debrief.train.prs > 0 ? (
- <p className="text-xs text-accent-900 font-medium">
- {t('debriefPrs', {
- count: debrief.train.prs,
- defaultValue: `${debrief.train.prs} PR marks this week`,
- })}
- </p>
- ) : null}
+ {/*
+  * `.223` — the "N PR marks this week" row is gone. It read `debrief.train.prs`,
+  * sourced from a field nothing has ever written, so the condition was
+  * permanently false and this row has never rendered for anyone. It comes back
+  * when `isPr` survives session completion — `CompletedWorkoutLog` drops it today.
+  */}
 
  <button
  type="button"

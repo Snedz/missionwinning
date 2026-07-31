@@ -102,8 +102,17 @@ export function buildRecapCardData(debrief: WeeklyDebrief, unitLabel: string): S
     kicker: 'WEEK IN THE BOOKS',
     title: `Week of ${debrief.weekStart}`,
     stats,
-    // The debrief already refuses to invent PRs; zero is silence, not "0 PRs!".
-    prLine: debrief.train.prs > 0 ? `${debrief.train.prs} personal record${debrief.train.prs === 1 ? '' : 's'}` : null,
+    /*
+     * `.223` — no PR line on the recap card.
+     *
+     * This read `debrief.train.prs`, which was sourced from a field nothing has
+     * ever written, so the line could not render for anyone. The victory card's
+     * `prLine` is unaffected: it comes from `pickHeadlinePr` over real records.
+     *
+     * It comes back when `isPr` survives session completion — today
+     * `CompletedWorkoutLog` drops it, so a week's records are not on the record.
+     */
+    prLine: null,
     footer: 'missionwinning.com — free logger, no account',
   };
 }
