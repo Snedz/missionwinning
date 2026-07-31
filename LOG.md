@@ -6,6 +6,118 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The gate that could not go green (`.223`)
+
+The brief was four product references — WHOOP's AI charts and voice journaling,
+a member story built on 1,146 days of data, Tesla's live VPP dashboard. Research
+into what each would build on here found something worth shipping ahead of any of
+them: **the surfaces they point at are already broken, and one of the breaks is
+the launch gate itself.**
+
+### One name, two answers, and the launch decision paid for it
+
+```ts
+// src/lib/missionJourney.ts — what the product implements
+// Horizon W: Basic Training = first workout only. Other pillars stay free, not gated chores.
+return b.workout;
+
+// src/lib/betaMetricsServer.ts — what the founder dashboard measured
+return b.workout && b.fuel && b.move && b.mind && b.learn;
+```
+
+Horizon W narrowed Basic Training to the first workout. The client followed. The
+server copy did not — and it is the one that computes `basicCompletePct`, which
+`launchReady` gates on at **≥60**.
+
+So a tester who did everything the product asks of them registered as
+*Basic-incomplete*. The gate used to decide whether ten beta users are ready to
+launch was scoring them against a rule the app had stopped implementing, and it
+could not go green regardless of how well the beta went.
+
+`.178` at its most expensive. A word meaning two things costs whoever trusts the
+number, and here that is the launch decision.
+
+One definition now, in a new dependency-free `src/lib/journey/basicComplete.ts`
+that both sides import. Not an export from `missionJourney.ts`: importing that
+module drags `safeStorage`, `pillarLog`, `streaks` and `justGoSession` into a
+`server-only` bundle to reach one predicate that reads its argument and nothing
+else. The type import is erased at compile time, so the new module has no runtime
+dependencies at all.
+
+### A deleted session still counted, on a card meant for a public feed
+
+`weekRecap.ts` filtered workout history by date and nothing else, while
+`dayReview.ts:86` and `behaviorImpacts.ts:123` both drop `deletedAt` rows. Those
+three numbers — sessions, sets, volume — are not confined to a screen:
+`buildRecapCardData` prints them onto the PNG an athlete shares publicly.
+
+`.208`, the same shape as the PR chip that fired on the one set kind the rest of
+the app declines to trust: a celebration the app cannot support.
+
+### A PR line nothing could ever have supplied
+
+`buildWeeklyDebrief` counted records like this:
+
+```ts
+if ((log as { personalRecords?: number }).personalRecords) {
+```
+
+`personalRecords` exists **nowhere else in the repo**. Nothing writes it. So `prs`
+was structurally always 0, and two surfaces were dead on arrival — the recap
+card's PR line and the Today card's *"N PR marks this week"*. The hand-written
+`as` cast is precisely what stopped the compiler from pointing at it (`.195`, with
+the type system silenced on purpose).
+
+Counting it honestly turned out not to be available, and the reason is the real
+finding: `isPersonalRecord` — the definition `.208` hardened, which refuses sets
+to failure — runs at log time and `logSet` stores `isPr` on the **active** set.
+But `CompletedWorkoutLog.exercises[].sets` is `{ reps, weight, kind?, rpe? }`.
+**The flag is discarded the moment the session is saved.** The brass chip an
+athlete earns is off the record five seconds later.
+
+Reviving the line therefore means persisting `isPr` through completion, and that
+type syncs to `workout_logs` — a schema change with sync-v2 merge and revision
+consequences, which is a different PR from one about numbers that lie. Deleted,
+with the condition for its return written into a test.
+
+### The guard that proved the formatting of a dead feature
+
+`shareCard.test.ts` built a `WeeklyDebrief` by hand with `train.prs: 2`, then
+asserted the card said *"2 personal records"*. Green for the whole life of the
+bug. It proved the formatting worked and could not notice that no debrief the app
+can produce has ever carried a nonzero `prs` — a fixture supplying the very thing
+production cannot.
+
+### The guards, and two of them were wrong first
+
+New `src/lib/launchTruth.test.ts`, seven rules, discovering rather than
+enumerating (`.220`): no domain rule stated twice with two answers; the dashboard
+imports the basic-complete rule rather than restating it; every reader that
+windows workout history drops tombstones; no cast invents a field nothing writes;
+and the recap card's PR claim is cross-checked against whether `isPr` survives
+completion — so when that changes, the test fails and the line may come back.
+
+Running them is what caught two mistakes of my own:
+
+- The duplicate-name rule returned **18 hits**, nearly all legitimate — `clamp`,
+  `num`, `formatDuration`, and Next's `generateStaticParams`/`generateMetadata`,
+  which every dynamic route is *required* to define. A guard needing an
+  eighteen-entry allowlist is an allowlist wearing a guard's name. Narrowed to
+  what actually bit: both copies must answer about the same **project** type.
+- `/prLine:\s*(?!null)/` matched `prLine: null`, because `\s*` backtracks to zero
+  width and the lookahead is then tested against a space. The identical backtrack
+  `.221` hit on `border-radius: 0` and wrote down — reproduced anyway. The value
+  is captured and tested in code now.
+
+The cast rule's exemptions are all one thing: shapes this repo receives and never
+produces (xAI completions, Open Food Facts, PayPal, Play Billing, Apple Health).
+Each carries `why` + `fixWhen`, and a stale-entry check fails if a file stops
+casting.
+
+Tests 1178→1186.
+
+---
+
 ## 2026-07-31 — Take the weight out (`.222`)
 
 The brief was the "product excellence at the edges" thesis: capabilities keep

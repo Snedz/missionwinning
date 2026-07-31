@@ -17,7 +17,6 @@ export type WeeklyDebrief = {
     sessions: number;
     sets: number;
     volume: number;
-    prs: number;
   };
   fuel: {
     logDays: number;
@@ -54,17 +53,29 @@ export function buildWeeklyDebrief(input: {
   const day = now.getDay(); // 0 Sun, 1 Mon
   const isFullDebrief = day === 0 || day === 1;
 
-  // PRs: sessions with any personal-record style flag if present; else 0
-  let prs = 0;
-  const weekStartMs = startOfLocalWeek(now).getTime();
-  for (const log of input.history) {
-    const t = new Date(log.completedAt || log.startedAt).getTime();
-    if (t < weekStartMs) continue;
-    // Heuristic: count logs with totalVolume spike vs prior same name — keep simple: 0 unless notes
-    if ((log as { personalRecords?: number }).personalRecords) {
-      prs += Number((log as { personalRecords?: number }).personalRecords) || 0;
-    }
-  }
+  /*
+   * `.223` — `prs` is gone, because nothing could ever have supplied it.
+   *
+   * This block read `(log as { personalRecords?: number }).personalRecords`. That
+   * field exists **nowhere else in the repo** — nothing has ever written it — so
+   * `prs` was structurally always 0, and the two surfaces spending it were dead on
+   * arrival: the recap share card's PR line and the "N PR marks this week" row on
+   * the Today recap card. The hand-written `as` cast is precisely what stopped the
+   * compiler from pointing at it. `.195`, with the type system silenced on purpose.
+   *
+   * Counting it honestly is not available here, and the reason is worth recording:
+   * `isPersonalRecord` (`workout/workoutPr.ts`, the definition `.208` hardened)
+   * runs at log time and `logSet` stores `isPr` on the **active** set — but
+   * `CompletedWorkoutLog.exercises[].sets` is a narrower type, `{ reps, weight,
+   * kind?, rpe? }`, so **the flag is discarded the moment the session is saved**.
+   * The brass chip an athlete earns is not on the record five seconds later.
+   *
+   * Reviving the line therefore means persisting `isPr` through completion, and
+   * that type syncs to `workout_logs` — a schema change with sync-v2 merge and
+   * revision consequences, which is a different PR from one about numbers that
+   * lie. Deleting is the `.195` default: the recap keeps sessions, sets and
+   * volume, all of which are real.
+   */
 
   const heat = buildMuscleHeatmap(input.history, 14);
   let undertrained: MuscleGroup | undefined;
@@ -111,7 +122,6 @@ export function buildWeeklyDebrief(input: {
       sessions: recap.sessions,
       sets: recap.totalSets,
       volume: recap.totalVolume,
-      prs,
     },
     fuel: {
       logDays: input.fuelLogDays ?? 0,

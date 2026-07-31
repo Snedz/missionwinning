@@ -23,7 +23,7 @@ const SUMMARY: WorkoutVictorySummary = {
 const DEBRIEF: WeeklyDebrief = {
   weekStart: '2026-07-27',
   isFullDebrief: true,
-  train: { sessions: 4, sets: 62, volume: 21000, prs: 2 },
+  train: { sessions: 4, sets: 62, volume: 21000 },
   fuel: { logDays: 5, proteinDays: 4 },
   moveMind: { flows: 1, sessions: 2 },
   focusKey: 'focusKeepGoing',
@@ -64,13 +64,31 @@ describe('shareCard data builders', () => {
     assert.ok(!card.stats.some((s) => s.label === 'Streak'));
   });
 
-  it('recap card uses the debrief PR count, and zero is silence', () => {
-    assert.equal(buildRecapCardData(DEBRIEF, 'kg').prLine, '2 personal records');
-    const quiet = buildRecapCardData(
-      { ...DEBRIEF, train: { ...DEBRIEF.train, prs: 0 } },
-      'kg'
-    );
-    assert.equal(quiet.prLine, null, 'zero PRs is silence, not "0 PRs!"');
+  /*
+   * `.223` — what this test used to assert, and why that was worse than useless.
+   *
+   * It built a `WeeklyDebrief` by hand with `train.prs: 2`, then checked the card
+   * said "2 personal records". Green, forever — and blind, because no debrief the
+   * app can actually produce has ever carried a nonzero `prs`. `buildWeeklyDebrief`
+   * sourced it from `(log as { personalRecords?: number }).personalRecords`, a
+   * field nothing in the repo writes. The test proved the *formatting* worked and
+   * could not notice the input never existed.
+   *
+   * That is this repo's recurring defect wearing a share card: a guard whose
+   * fixture supplies the very thing production cannot. So the assertion now
+   * follows the fact rather than the format.
+   */
+  it('the recap card carries no PR line — nothing can supply one', () => {
+    assert.equal(buildRecapCardData(DEBRIEF, 'kg').prLine, null);
+  });
+
+  it('the victory card still prints a real record', () => {
+    // The deletion above is scoped to the recap. `pickHeadlinePr` reads genuine
+    // records off the session just finished, and that path is untouched.
+    const records: PersonalRecord[] = [
+      { exerciseId: 'squats', kind: 'weight', value: 142.5, date: '2026-07-29', previous: 140 },
+    ];
+    assert.ok(buildVictoryCardData(SUMMARY, records, 'kg').prLine, 'a real record must still reach the card');
   });
 });
 
