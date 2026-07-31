@@ -17,6 +17,7 @@ describe('composeFounderDigest', () => {
         attributedTotal: 8,
         topCodes: [{ code: 'MW-ABC12', count: 3 }],
       },
+      feedback: [],
     });
     assert.match(subject, /2026-07-19/);
     assert.match(text, /I-Day complete: 10/);
@@ -33,6 +34,7 @@ describe('composeFounderDigest', () => {
       funnel: null,
       retention: null,
       referrals: null,
+      feedback: null,
     });
     assert.match(text, /unavailable/i);
   });

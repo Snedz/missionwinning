@@ -8,21 +8,21 @@
  * (`feedback-page  7`) while the rating, the testimonial and the "why I almost
  * quit" prose sat in a column no code has ever named.
  *
- * Meanwhile `founderDigestCompose.ts` has been instructing the founder to
- * *"read 2 feedback emails"* that have never existed.
- *
  * This is the read path. Founder-only, service-role, newest first.
  *
  * `leads` has RLS enabled and **zero policies** (`20260705_leads_api_only.sql`
  * dropped the last one), so there is no client-side read to build on and this
  * route is the only way the prose can reach a human.
+ *
+ * `.216` moved the query itself into `feedbackServer.ts`: the Monday digest now
+ * needs the same rows, and a panel and a digest that disagree about what the
+ * inbox holds is a defect neither of them could show you.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { authorizeBetaAdmin } from '@/lib/api/betaAdminAuth';
-import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
-import { FEEDBACK_SOURCE_TAG, type FeedbackNote } from '@/lib/feedbackSource';
+import { readFeedbackNotes } from '@/lib/feedbackServer';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,8 +37,9 @@ export const GET = withApiLogging('beta/feedback', async (request: NextRequest) 
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  const admin = getSupabaseAdmin();
-  if (!admin) {
+  const result = await readFeedbackNotes(MAX_NOTES);
+
+  if (result.error === 'no_service_role') {
     /*
      * Distinguishable from "no feedback yet", deliberately. An empty list on a
      * misconfigured server would read as silence from users, which is the most
@@ -49,25 +50,13 @@ export const GET = withApiLogging('beta/feedback', async (request: NextRequest) 
       { status: 503 }
     );
   }
-
-  const { data, error } = await admin
-    .from('leads')
-    .select('created_at, name, email, goals')
-    .eq('package_interest', FEEDBACK_SOURCE_TAG)
-    .order('created_at', { ascending: false })
-    .limit(MAX_NOTES);
-
-  if (error) {
-    console.error('[beta/feedback] %s', error.message);
+  if (result.error) {
     return NextResponse.json({ ok: false, error: 'query_failed' }, { status: 500 });
   }
 
-  const notes: FeedbackNote[] = (data ?? []).map((row) => ({
-    at: String(row.created_at ?? ''),
-    name: String(row.name ?? '').trim(),
-    email: String(row.email ?? '').trim(),
-    text: String(row.goals ?? '').trim(),
-  }));
-
-  return NextResponse.json({ ok: true, notes, truncated: notes.length === MAX_NOTES });
+  return NextResponse.json({
+    ok: true,
+    notes: result.notes ?? [],
+    truncated: result.truncated,
+  });
 });

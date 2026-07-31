@@ -6,6 +6,105 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The instruction that pointed at nothing (`.216`)
+
+Closes the loop the feedback wave opened. `.214` gave the notes a reader, `.215`
+gave athletes a way to write them. This makes the weekly ritual performable.
+
+### The line
+
+`POST_LAUNCH_CADENCE` §3 is the constitution's one qualitative loop: *"Talk to 2
+users (or read 2 feedback emails) → fix the #1 confusion within 48h — ship, tell
+the tester."* `founderDigestCompose.ts` faithfully emitted it every Monday:
+
+```
+  - Talk to 2 users or read 2 feedback emails
+```
+
+**No feedback email has ever been sent to anyone.** There is no feedback template
+in `emailServer`, `RESEND_API_KEY` is unset, and the notes land in `public.leads`
+where — until `.214` — nothing in the repository read them. The digest's single
+qualitative action pointed at an inbox that does not exist.
+
+It survived for the same reason the notes did: **the digest cannot send either.**
+`weekly-digest/route.ts` returns 503 without `CRON_SECRET` and skips without
+`FOUNDER_DIGEST_EMAIL`, and both are unset. A dead instruction inside a dead
+channel — nobody was reading the thing that was wrong.
+
+### Not a reword
+
+Rewriting the line to point at the panel would have been a one-word fix and the
+wrong one. The digest now **carries the notes**: newest five inline, each with
+its date, sender and prose, and a count of how many more are waiting.
+
+A digest that says *go read your feedback* asks you to remember where it lives. A
+digest that carries the prose **is** the ritual.
+
+Three things had to be true for that to be honest.
+
+**One definition of the inbox.** `.214` put the query inline in
+`app/api/beta/feedback/route.ts`; the digest needs the same rows. Two copies of a
+filter is two chances to drift, and drift here is **silent** — the wrong
+`package_interest` returns zero rows, which is indistinguishable from nobody
+having written in. [`feedbackServer.ts`](src/lib/feedbackServer.ts) now owns it
+and both callers go through it. `.178` again: one definition per word. The guard
+asserts neither caller says `.from('leads')`.
+
+**A failed read never prints as an empty inbox.** Those are opposite facts
+prescribing opposite actions — one says check a key, the other says go find
+users. And an empty inbox now says what it means rather than shrugging:
+
+```
+  No notes yet.
+  Nobody has written in. That is the beta gate, not a quiet week —
+  REDTEAM A5 fires at 14 days with fewer than 10 users.
+```
+
+**The digest reads past what it prints.** It fetches 50 and prints 5, because
+"+N more" can only be truthful if the read went beyond the print limit. Fetching
+exactly the print limit would make that line permanently absent — a silent
+"that is all of it" that never measured anything. The guard compares the two
+constants rather than trusting them.
+
+### The count that makes "#1" a real question
+
+*"Fix the #1 confusion"* is not a property of a list. It is a property of what is
+**new since you last looked**, and a panel showing 40 notes newest-first looks
+identical on the Monday three arrived and the Monday none did.
+
+[`feedbackUnread.ts`](src/lib/feedbackUnread.ts) marks where you stopped. Two
+decisions in it are load-bearing:
+
+- **By timestamp, not by count.** A count-based mark ("I had read 12") reports
+  zero new the moment one note arrives and one falls off the 100-row cap — the
+  length is unchanged and the new note is invisible. `.202`'s rule: a measurement
+  that can be satisfied without measuring is not a measurement.
+- **Marking read stamps the newest loaded note, not `Date.now()`.** The wall
+  clock would also bury anything that arrived between the fetch and the click —
+  a note provably unseen, hidden by the act of dismissing a different one.
+
+Never-read returns **everything**, not zero. Unparseable timestamps count as
+unread. Both err toward "look at this", which costs a glance; the other direction
+hides a real note forever, because nothing ever moves it back above the mark.
+
+Device-local on purpose: a reading position is not data, `leads` has RLS with
+zero policies so there is no client-writable surface anyway, and syncing it would
+need a table and a migration for a fact exactly one person holds.
+
+### What still does not work, stated rather than implied
+
+The digest **cannot be delivered today**. Section 5 is verified through
+`?dryRun=1`; the **in-app panel is the path that works**. Writing the section
+anyway is deliberate — the composer is pure and tested, so the content is correct
+on the day the secrets are set rather than discovered broken then.
+
+**Falsification.** Twelve mutants, **none survived**:
+`digest-still-points-at-nothing`, `digest-omits-feedback`,
+`broken-read-prints-as-empty`, `truncation-silent`,
+`fetch-limit-equals-print-limit`, `second-query-definition`,
+`multiline-note-flattened`, `unread-count-never-advances`, `unread-by-length`,
+`unparseable-note-hidden`, `mark-read-stamps-now`, `panel-shows-no-unread`.
+
 ## 2026-07-31 — The button in You (`.215`)
 
 The half the founder actually asked for, shipped **second** on purpose. `.214`
