@@ -95,16 +95,46 @@ test('no domain rule is stated twice with two different answers', () => {
         .map((s) => s.replace(/^\s*type\s+/, '').trim())
         .filter((s) => /^[A-Z]/.test(s))
     );
-    const re = /(?:export\s+)?function\s+([A-Za-z_$][\w$]*)\s*\(([^)]*)\)[^{]*\{/g;
+    /*
+     * A type can reach a signature without ever appearing in an import statement:
+     * `b: import('@/lib/missionJourney').JourneyBasicMilestones` is a project type
+     * with no `import … from` line to harvest. The second falsification mutant used
+     * exactly that and walked past the first two versions of this rule.
+     */
+    for (const m of src.matchAll(/import\('@\/[^']*'\)\.([A-Za-z_$][\w$]*)/g)) {
+      domainTypes.add(m[1]);
+    }
+    /*
+     * Parameters are read by balancing parentheses, not by `\(([^)]*)\)`.
+     *
+     * A falsification mutant escaped that version by writing the type inline:
+     * `function allBasicDone(b: import('@/lib/missionJourney').JourneyBasicMilestones)`.
+     * The `)` closing `import(` ended the capture early, the domain type never
+     * appeared in the truncated string, and the fork went unnoticed. A guard that
+     * a legal way of spelling the same signature can walk past is not a guard.
+     */
+    const re = /(?:export\s+)?function\s+([A-Za-z_$][\w$]*)\s*\(/g;
     let m: RegExpExecArray | null;
     while ((m = re.exec(src))) {
       const name = m[1];
-      const params = m[2];
+      let p = m.index + m[0].length - 1;
+      let pDepth = 0;
+      const pStart = p;
+      for (; p < src.length; p++) {
+        if (src[p] === '(') pDepth++;
+        else if (src[p] === ')') {
+          pDepth--;
+          if (pDepth === 0) break;
+        }
+      }
+      const params = src.slice(pStart + 1, p);
+      const brace = src.indexOf('{', p);
+      if (brace === -1) continue;
       const touchesDomain = [...domainTypes].some((t) => new RegExp(`\\b${t}\\b`).test(params));
       if (!touchesDomain) continue;
-      // Balance braces from the opening one to capture the body exactly.
+      // Balance braces from the body's opening one to capture it exactly.
       let depth = 0;
-      let i = m.index + m[0].length - 1;
+      let i = brace;
       const start = i;
       for (; i < src.length; i++) {
         if (src[i] === '{') depth++;
