@@ -22,6 +22,32 @@ const FEEDBACK_EN: Record<string, string> = {
   feedbackThankEmail: 'Watch your email for updates + community drops.',
   feedbackBackToday: 'Back to Today',
   feedbackSignInDesc: 'Sign in to link feedback to your journey and sync across devices.',
+
+  /*
+   * `.215` — the Profile card and its sheet. Separate keys from the `/feedback`
+   * form above on purpose: that form collects testimonials and ratings, this one
+   * asks a single friction question. Sharing strings between them would make one
+   * instrument's copy drift into the other's.
+   */
+  feedbackCardTitle: 'Tell us what broke',
+  feedbackCardLead:
+    'A bug, a confusing screen, or something you wish it did. One box, no account, and it sends even if you write it with no signal.',
+  feedbackCardOpen: 'Send feedback',
+  feedbackSheetEyebrow: 'Beta',
+  feedbackSheetTitle: 'What got in your way?',
+  feedbackSheetPlaceholder: 'What broke, what confused you, or what you wish it did.',
+  // `left`, not `count`: i18next treats `count` as a plural selector and would
+  // look for `_one`/`_other` variants that do not exist, resolving to nothing.
+  feedbackSheetRemaining: '{{left}} characters left',
+  feedbackSheetEmailLabel: 'Email (optional)',
+  feedbackSheetEmailHelp: 'Only so we can reply. Leave it blank and send anyway.',
+  feedbackSheetContext:
+    'Sent with your app version and where you have been ({{screens}}), so we can find it.',
+  feedbackSheetSend: 'Send',
+  feedbackSheetSentTitle: 'Got it',
+  feedbackSheetSentBody: 'Queued. It sends when you have a connection — you can close the app.',
+  feedbackSheetSentAnon: 'No email, so there is no way to reply — but it was read.',
+  feedbackSheetDone: 'Close',
 };
 
 const FEEDBACK_ES: Record<string, string> = {

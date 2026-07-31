@@ -14,6 +14,10 @@ import { expect, type Page } from '@playwright/test';
  */
 export const MIN_TAP_HEIGHT = 44;
 
+/** Controls inside an open overlay panel, which lives outside `main`. */
+export const DIALOG_CONTROL_SELECTOR =
+  '[role="dialog"] button, [role="dialog"] select, [role="dialog"] input, [role="dialog"] textarea';
+
 /**
  * `#screen-dock` is in the scope from `.153`: the ± steppers and Log moved out
  * of `main` into the docked console, and a scope of `main` alone would have
@@ -22,9 +26,19 @@ export const MIN_TAP_HEIGHT = 44;
 const CONTROL_SELECTOR =
   'main button, [role="main"] button, #screen-dock button, main select, #screen-dock select';
 
-export async function expectThumbSized(page: Page, where: string): Promise<void> {
+/**
+ * Overlays are portaled to `document.body` (see `AdaptiveOverlay`), so they sit
+ * outside every scope above. A sweep that only knows about `main` reports green
+ * on a screen whose sheet is entirely untouched — the `.194` gap again, one
+ * layer up. Callers that open an overlay pass its scope explicitly.
+ */
+export async function expectThumbSized(
+  page: Page,
+  where: string,
+  scope = CONTROL_SELECTOR
+): Promise<void> {
   const undersized: string[] = [];
-  for (const control of await page.locator(CONTROL_SELECTOR).all()) {
+  for (const control of await page.locator(scope).all()) {
     if (!(await control.isVisible().catch(() => false))) continue;
     const box = await control.boundingBox();
     if (!box) continue;

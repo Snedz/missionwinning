@@ -72,14 +72,24 @@ export function ProfileAssessmentCard() {
             </div>
             <div className="text-muted-foreground">{lastAssessment.notes}</div>
             <div className="flex gap-2 flex-wrap">
-              <Button size="sm" variant="outline" onClick={() => router.push('/assessments')}>
+              <Button
+                size="sm"
+                className="min-h-[44px]"
+                variant="outline"
+                onClick={() => router.push('/assessments')}
+              >
                 {t('retake', { defaultValue: 'Retake Assessment' })}
               </Button>
-              <Button size="sm" onClick={() => launchFromAssessment(lastAssessment.risk)}>
+              <Button
+                size="sm"
+                className="min-h-[44px]"
+                onClick={() => launchFromAssessment(lastAssessment.risk)}
+              >
                 Start recommended starter for {lastAssessment.risk} risk →
               </Button>
               <Button
                 size="sm"
+                className="min-h-[44px]"
                 variant="ghost"
                 onClick={async () => {
                   const u = await getUser();
@@ -103,7 +113,12 @@ export function ProfileAssessmentCard() {
         ) : (
           <div>
             No assessment yet.{' '}
-            <Button size="sm" variant="outline" onClick={() => router.push('/assessments')}>
+            <Button
+              size="sm"
+              className="min-h-[44px]"
+              variant="outline"
+              onClick={() => router.push('/assessments')}
+            >
               {t('takeAssessment', { defaultValue: 'Take the free Readiness Assessment' })}
             </Button>
             <div className="text-xs mt-1 text-muted-foreground">

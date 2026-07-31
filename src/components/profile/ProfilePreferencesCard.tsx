@@ -31,12 +31,14 @@ export function ProfilePreferencesCard({
         <CardContent>
           <div className="flex gap-2">
             <Button
+              className="min-h-[44px]"
               variant={units === 'metric' ? 'default' : 'outline'}
               onClick={() => onSaveUnits('metric')}
             >
               {t('metric', { defaultValue: 'Metric (kg, cm)' })}
             </Button>
             <Button
+              className="min-h-[44px]"
               variant={units === 'imperial' ? 'default' : 'outline'}
               onClick={() => onSaveUnits('imperial')}
             >
@@ -80,7 +82,7 @@ export function ProfilePreferencesCard({
             onChange={(e) => onGoalsChange(e.target.value)}
             rows={3}
           />
-          <Button onClick={onSaveGoals}>{t('saveGoals', { defaultValue: 'Save Goals' })}</Button>
+          <Button className="min-h-[44px]" onClick={onSaveGoals}>{t('saveGoals', { defaultValue: 'Save Goals' })}</Button>
           <div className="text-xs">Used for program recommendations (future personalization).</div>
         </CardContent>
       </Card>

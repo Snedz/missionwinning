@@ -74,7 +74,14 @@ export function SyncStatusRow() {
                   : `${queued} sessions saved here, waiting to reach your account.`,
             })}
           </p>
-          <Button type="button" variant="ghost" size="sm" onClick={onRetry} disabled={busy}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="min-h-[44px]"
+            onClick={onRetry}
+            disabled={busy}
+          >
             <RefreshCw className={`me-1.5 h-3.5 w-3.5 ${busy ?'animate-spin' : ''}`} />
             {t('syncRetryNow', { defaultValue: 'Retry' })}
           </Button>

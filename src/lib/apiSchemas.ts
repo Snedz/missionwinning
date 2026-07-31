@@ -7,7 +7,16 @@ import { z } from 'zod';
 const utmField = z.string().max(200).optional();
 
 export const leadsBodySchema = z.object({
-  email: z.string().email().max(320),
+  /*
+   * `.215` — optional, because a feedback note must not require an account.
+   *
+   * The whole product thesis is "no account required to log", and requiring an
+   * email address to report that something is broken is the same barrier in a
+   * smaller place. The route still *requires* it for every non-feedback source,
+   * so the waitlist is unchanged: a signup with no address is meaningless, and
+   * a bug report with no address is merely unanswerable.
+   */
+  email: z.string().email().max(320).optional(),
   name: z.string().max(120).optional(),
   goals: z.string().max(2000).optional(),
   /** Preferred attribution channel (e.g. landing-updates, launch-waitlist). */

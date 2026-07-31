@@ -6,6 +6,134 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The button in You (`.215`)
+
+The half the founder actually asked for, shipped **second** on purpose. `.214`
+gave the notes a reader first, because pointing more people at a column nobody
+could read is not an improvement — it is a louder version of the same defect.
+
+### What was wrong with the way in
+
+Before this, the only route from an athlete to a human ran through `/feedback`,
+linked from [`LegalNav`](src/components/layout/LegalNav.tsx) in **muted 14px,
+between "Beta guide" and "Terms of Service"**, behind an `includeFeedback` flag.
+The primary listening channel of a private beta was styled as a disclaimer.
+
+And the instrument behind the link is the wrong one. It asks for key results, a
+testimonial, a 1–5 rating and "the biggest action you took" — it collects
+**proof for a launch page**. Nobody reaches for that when the timer jumped or a
+button did nothing. It also **requires an email address**, in a product whose
+whole thesis is that logging needs no account.
+
+### The card
+
+[`ProfileFeedbackCard`](src/components/profile/ProfileFeedbackCard.tsx) renders
+on Profile for **every** user. Not behind `showOwnerTools()` — which is exactly
+how `BetaAdminPanel` and `ProfileOwnerTools` are gated two lines away on the same
+page, so the wrong spelling is one character off and would read as correct in
+review. It would also be undetectable in testing: the founder is the one account
+that always sees it. `feedbackReachable.test.ts` asserts against both that
+spelling and the `email &&` variant, because the anonymous athlete is both the
+one this product is built for and the one with no other way to reach us.
+
+It takes an `outline` button, not a second poster-red fill. `ProfileDayReviewRow`
+set that precedent and `.194`/`.198` are the reason it exists.
+
+### The sheet
+
+On the shared `AdaptiveOverlay`, not a route: someone reporting that the timer
+jumped is mid-session, and sending them to `/feedback` asks them to abandon the
+thing they are complaining about. One question. **Email optional**, with copy
+that states what leaving it blank costs rather than nagging.
+
+Optional turned out to mean changing three layers, each of which rejected a
+blank address on its own:
+
+- [`apiSchemas.ts`](src/lib/apiSchemas.ts) — `email` was `z.string().email()`,
+  required.
+- [`app/api/leads/route.ts`](app/api/leads/route.ts) — now requires an address
+  **per source**: the waitlist still needs one, a bug report does not.
+- [`supabase.ts`](src/lib/supabase.ts) — omits the field rather than sending
+  `''`, which `z.string().email().optional()` rejects.
+
+Any one of those reverting puts the barrier back **with the sheet's copy still
+promising it is optional** — the app lying about itself, which is the `.170`
+class this repo keeps finding. So the guard reads all three.
+
+Delivery reuses `.179`'s durable outbox verbatim — `enqueueFeedback`, already
+registered, already retrying, already dedupe-keyed per note, and already labelled
+"Feedback note" on the offline screen. No second transport.
+
+### Two things a form does not do
+
+**It counts down against the real limit.** `goals` caps at 2000 in the schema and
+the route re-slices to 2000 again, both silently — and the context block is packed
+into that same field. A note written to the limit would lose its tail, which is
+the part written last and cared about most. `MAX_NOTE_CHARS` is the column limit
+minus a worst-case context reserve, the textarea enforces it, and the test
+composes a deliberately worst-case note and asserts the total still fits.
+
+**It attaches where you were.** This is the part that needed new code. The sheet
+lives on Profile, so `usePathname()` alone would tag every note `/profile` —
+context that *looks* like a fact and answers nothing. [`screenTrail.ts`](src/lib/screenTrail.ts)
+keeps a four-entry session-scoped breadcrumb written by `AppLayout`, and the note
+carries `Screen` **and** `Came from`. Both, not one chosen by a heuristic: the
+athlete may equally be reporting something about Profile itself, and guessing
+would discard the right answer half the time. When there is no previous screen the
+line is **omitted** rather than written as `none` — an absent line reads as "we
+don't know", which is true.
+
+### The guards, and two that were nominal
+
+Nine unit tests in
+[`feedbackReachable.test.ts`](src/lib/feedbackReachable.test.ts), split across the
+two shapes this wave keeps re-learning: **reachability** (`.195`) and **vacuity**
+(`.204`, `.207`, `.210`, `.213`).
+
+Two e2e guards had to be widened rather than merely added, because as written they
+would have reported green on untouched code:
+
+- The **thumb sweep** had never visited `/profile`. `.194` put a 36px button on
+  Today and nothing failed because the sweep only knew `/active`; the sweep is a
+  helper now, and this is the same gap one screen over. `/profile` joins the list,
+  and `expectThumbSized` takes a scope — the sheet is portaled to `document.body`,
+  so a selector rooted at `main` cannot see a single one of its controls.
+
+  **It failed on its first run, on fourteen controls this PR did not write.** The
+  units pair, Save Goals, the backup/restore/import row and the language `<select>`
+  at 37–40px; four assessment buttons, the five days-per-week chips and sync Retry
+  at 36px. Every one of them on the settings screen every athlete uses, none of
+  them ever measured. They are fixed here rather than exempted — a guard widened
+  and then narrowed around what it found is the vacuous-guard pattern wearing a
+  different hat.
+- **axe** already covered `/profile`, with the sheet closed. A route passing says
+  nothing about an overlay that is not open, so there is now a run that opens it.
+
+### Falsification, and the ninth vacuous guard
+
+Twelve named mutants. Eleven were caught. **One survived, and it was mine.**
+
+`sheet-requires-email (schema)` reverted `leadsBodySchema.email` to required and
+the suite stayed green. The guard searched `apiSchemas.ts` file-wide for an
+`email` field carrying `.optional()` — and matched `inviteCreateBodySchema.email`
+**150 lines below**, a different schema that is optional for its own unrelated
+reasons. So the check reported that a note with no address was accepted while the
+schema rejected it.
+
+This is the **ninth** guard in the `.204`–`.215` wave that measured nothing, and
+the fourth I wrote myself inside the PR about that exact defect class. The shape
+is always the same: a source-text assertion whose search is wider than the thing
+it names. The fix is always the same too — anchor the slice. The guard now
+extracts `leadsBodySchema`'s own body and matches inside it, and the mutant fails
+it.
+
+Caught: `feedback-card-not-rendered`, `card-gated-to-owner`,
+`sheet-requires-email` (route), `sheet-requires-email` (Send button),
+`sheet-requires-email` (schema, after the fix), `context-not-attached`,
+`trail-never-recorded`, `previous-screen-falls-back-to-current`,
+`oversized-note-silently-trimmed` (reserve), `oversized-note-silently-trimmed`
+(textarea), `sheet-fetches-directly`, `trail-repeats-not-collapsed`.
+
 ## 2026-07-31 — The note nobody could read (`.214`)
 
 Opens the `.214`–`.218` feedback wave. The founder asked for a Submit-feedback

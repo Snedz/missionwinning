@@ -149,6 +149,29 @@ test.describe('Accessibility @a11y', () => {
   }
 
   /**
+   * `/profile` is in the list above, but the feedback sheet is closed on load —
+   * so the route passing says nothing about the overlay. `.215` adds a textarea,
+   * a labelled input and a dialog to the app's most-used settings screen; axe
+   * has to see them open or the coverage is nominal.
+   */
+  test('axe serious/critical: /profile with the feedback sheet open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/profile', { waitUntil: 'domcontentloaded' });
+    await page.getByRole('button', { name: /send feedback/i }).click();
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await axeSerious(page, '/profile (feedback sheet)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at
