@@ -163,6 +163,15 @@ run('Dependency advisories', 'npm', ['run', 'security-audit']);
  * Tailwind blue through a full-app rebrand.
  */
 run('Design system', 'npm', ['run', 'check-design-system']);
+/*
+ * `.222` — the packs stay split.
+ *
+ * English was split correctly and no other language was, so 2.0 MB of content
+ * shipped as 30.8 MB. `split-locale-packs.mjs` restores it; this asserts a
+ * re-run would be a no-op, because a cleanup that cannot be repeated undoes
+ * itself the next time the fill tool runs.
+ */
+run('Locale split', 'npm', ['run', 'check-locale-split']);
 // Both of these existed as npm scripts and neither was in the gate, so nothing ran them.
 run('Display type', 'npm', ['run', 'check-display-type']);
 run('Token sync (web ↔ Android)', 'npm', ['run', 'check-token-sync']);
