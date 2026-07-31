@@ -110,7 +110,21 @@ export const POST = withApiLogging('leads', async (req: NextRequest) => {
   const source = String(
     parsed.data.source || parsed.data.package_interest || 'general'
   ).slice(0, 100);
-  const email = parsed.data.email.trim().slice(0, 320);
+  const email = (parsed.data.email ?? '').trim().slice(0, 320);
+
+  /*
+   * `.215` — a waitlist signup with no address is meaningless; a feedback note
+   * with no address is merely unanswerable. So the requirement lives here,
+   * per-source, rather than in the schema.
+   *
+   * The empty string is stored rather than a fabricated placeholder: `leads.email`
+   * is `not null`, and inventing `anonymous@…` would be a constant dressed as
+   * data — the `.203` defect. Empty means exactly what happened: they did not
+   * leave one.
+   */
+  if (!email && !isFeedbackSource(source)) {
+    return NextResponse.json({ error: 'email is required' }, { status: 400 });
+  }
 
   const payload: Record<string, unknown> = {
     name: String(parsed.data.name || 'Anonymous').slice(0, 200),

@@ -303,7 +303,15 @@ export async function submitLead(
   const source = lead.source || lead.package_interest || 'general'
   const payload: Record<string, unknown> = {
     name: lead.name || 'Anonymous',
-    email: lead.email,
+    /*
+     * `.215` — omitted, not empty, when there is no address.
+     *
+     * `leadsBodySchema` types this `z.string().email().optional()`, and an
+     * optional field rejects `''` (it is a string, so it is validated). Sending
+     * the key with an empty value would 400 every anonymous feedback note while
+     * looking, at the call site, exactly like sending nothing.
+     */
+    ...(lead.email ? { email: lead.email } : {}),
     goals: lead.goals || lead.message || '',
     current_training: lead.current_training || '',
     // API schema prefers `source`; package_interest kept for local fallback shape.

@@ -36,6 +36,7 @@ import { ProfileBackupCard } from '@/components/profile/ProfileBackupCard';
 import { ProfileImportCard } from '@/components/profile/ProfileImportCard';
 import { SyncStatusRow } from '@/components/profile/SyncStatusRow';
 import { ProfilePrivacyCard } from '@/components/profile/ProfilePrivacyCard';
+import { ProfileFeedbackCard } from '@/components/profile/ProfileFeedbackCard';
 import { ProfileReferralCard } from '@/components/profile/ProfileReferralCard';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
 import { readRaw, writeRaw, remove as removeRaw } from '@/lib/storage/safeStorage';
@@ -378,6 +379,12 @@ export function ProfilePage() {
       <ProfileReferralCard signedIn={Boolean(email)} />
 
       <ProfileWearablesCard signedIn={Boolean(email)} />
+
+      {/* Not behind `ownerTools` and not behind `email`. `.204`'s lesson was
+          that a control mounted in one shell is a control half the athletes
+          cannot see; a feedback button only the founder can reach is the same
+          defect with the stakes inverted. */}
+      <ProfileFeedbackCard />
 
       <ProfilePrivacyCard />
 

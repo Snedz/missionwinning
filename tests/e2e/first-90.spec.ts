@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding, seedEveningReview } from './helpers/journey';
-import { expectThumbSized } from './helpers/thumbSweep';
+import { DIALOG_CONTROL_SELECTOR, expectThumbSized } from './helpers/thumbSweep';
 import { expectOneRedAction } from './helpers/redActions';
 import { TODAY_MAX_TOP_LEVEL_BLOCKS } from '../../src/lib/today/todayBlockBudget';
 
@@ -338,6 +338,8 @@ test.describe('First 90 seconds @gate', () => {
     { path: '/log', hour: 9, what: '/log (morning)' },
     { path: '/log', hour: 19, what: '/log (evening — day review visible)' },
     { path: '/mind', hour: 19, what: '/mind (behavior strip)' },
+    // `.215` added a control here and the sweep had never visited the screen.
+    { path: '/profile', hour: 9, what: '/profile (settings + feedback)' },
   ]) {
     test(`every control on ${what} is thumb-sized @gate`, async ({ page }) => {
       await seedLegacyOnboarding(page);
@@ -348,4 +350,18 @@ test.describe('First 90 seconds @gate', () => {
       await expectThumbSized(page, what);
     });
   }
+
+  /**
+   * The sheet is portaled to `document.body`, so the loop above cannot see it
+   * however many routes it visits. A note written one-handed in a gym is the
+   * whole point of this control existing offline; its own controls have to be
+   * pressable there.
+   */
+  test('every control in the feedback sheet is thumb-sized @gate', async ({ page }) => {
+    await seedLegacyOnboarding(page);
+    await page.goto('/profile', { waitUntil: 'networkidle' });
+    await page.getByRole('button', { name: /send feedback/i }).click();
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await expectThumbSized(page, 'feedback sheet', DIALOG_CONTROL_SELECTOR);
+  });
 });

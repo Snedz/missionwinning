@@ -14,6 +14,7 @@ import { JourneyGuard } from '@/components/journey/JourneyGuard';
 import { PageTransition } from '@/components/layout/PageTransition';
 import { JourneySyncBoot } from '@/components/layout/JourneySyncBoot';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { recordScreen } from '@/lib/screenTrail';
 
 const Sidebar = dynamic(() => import('./Sidebar').then((m) => ({ default: m.Sidebar })), {
   ssr: false,
@@ -45,6 +46,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMoreOpen(false);
+    // `.215` — a breadcrumb for the feedback sheet, which lives on Profile and
+    // would otherwise only ever be able to say "this happened on /profile".
+    recordScreen(pathname);
   }, [pathname]);
 
   return (
