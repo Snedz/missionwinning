@@ -6,6 +6,127 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The design rules nothing checked (`.221`)
+
+You asked for a plan to improve the web design. I measured before proposing, and
+the honest headline is that **the design system is in good shape** — the
+Modernist rebrand is coherent, the tokens are well built, and the contrast
+reasoning is documented at the call sites rather than assumed. `src/index.css`
+holds **zero** hex literals outside comments and routes every `font-family`
+through a token.
+
+So this is one PR, not a wave. Padding it would have been inventing work.
+
+### What was actually wrong
+
+`scripts/check-token-sync.mjs` pins token *values* against `index.css` and two
+Android Kotlin files. **It never opens a `.tsx`.**
+
+That is structurally the blind spot `.202` found in `i18n-parity`: a checker that
+compares definitions to each other cannot see what components do. Component drift
+was invisible **by construction**.
+
+Which is how [`Benchmarks1RMChart`](src/components/benchmarks/Benchmarks1RMChart.tsx)
+kept drawing **Tailwind blue-500 and green-500** through a full-app rebrand, on a
+live nav surface, while the grid, axes, tooltip and `borderRadius: 0` in that
+same file were all correctly re-inked. The series colours read as "data colours"
+rather than brand ones. On a paper/ink/one-red system they are the same thing.
+
+### The three drifts
+
+- **The chart.** `#3b82f6` / `#22c55e` → tokens. The palette gives one hue, not
+  two, so the series are distinguished by **dash** as well — which WCAG 1.4.1
+  asks for regardless — and the split carries meaning: the measured lift is solid
+  and takes the accent, the derived estimate is dashed and quiet.
+- **The drop zone.** `FileDropZone`'s drag-over state was
+  `shadow-[0_0_0_1px_…,0_0_28px_-4px_…]` plus `scale-[1.01]` — **a 28px red
+  glow**, the pre-rebrand idiom recoloured, while `.131` says glows were retired
+  and `.136` claims blur and shadow reached zero. Now a poster-red border on the
+  same tinted fill, like every other active surface.
+- **The guidebook.** Four raw `border-radius` values and `#0a0c10` — the
+  pre-rebrand navy — in a block whose every other value already aliased
+  paper/ink. Raw CSS bypasses the Tailwind radius collapse entirely, so `/guide`
+  kept rounded buttons and a dark figure placeholder through the whole re-ink.
+  Plus one more the scanner found: `border-radius: 8px` in the printable teacher
+  report.
+
+### The guard, and the requirement that nearly sank it
+
+`scripts/check-design-system.mjs` is **gate step 16** — `.200`, `.213` and `.219`
+all turned on the same fact, that a check living only in a billing-blocked
+workflow has never run.
+
+**Its hardest requirement is not firing on comments.** A naive scan of this repo
+reports ~35 hex colours and 6 shadows, and *almost all are prose* — `MobileNav`
+explaining a 3.84:1 contrast choice, `PressPage`'s own brand guidance *"Don't:
+Round, stretch, rotate, or shadow the mark"*. Explaining a colour decision at the
+call site is exactly the habit this codebase should keep. A guard that punishes
+it gets switched off inside a week.
+
+Three bugs in my own first draft, each caught by running it:
+
+1. **It flagged `border-radius: 0`** — the thing it exists to ask for. The
+   lookahead `\s*(?!0\b|…)` fails because `\s*` backtracks to zero width and the
+   test is then applied to a space. Values are captured and checked in code now.
+2. **Every line number was wrong**, because stripping comments deleted their
+   lines. Comments are blanked in place, newlines preserved.
+3. **It missed inline `//` comments** — the `MobileNav` one sits after a ternary
+   (`: // muted-foreground …`), so a comment was being read as code. Handled,
+   with a `[^:]` guard so `https://` survives.
+
+Exemptions are **per rule, not per file**: the press kit may hold raw swatches —
+they are its content — but it may not grow a glow. Ten entries, each stating why
+and what would change it, none stale (asserted with exemptions off, so the
+question is "would this file fail without its entry?").
+
+### The cross-check the scanner surfaced
+
+Worth more than the rule that found it. [`shareCard.ts`](src/lib/share/shareCard.ts)
+draws to a canvas, where CSS variables do not exist, so its five colours are a
+**hand-copy of `BRAND_HEX`**. Its own comment says so.
+
+That is a second definition of the palette (`.178`) on the app's most public
+artifact. If the palette moves and the card does not, every share posted
+afterwards carries last season's brand and nothing in the repo would say so. The
+two are now asserted equal.
+
+### And the backlog was lying
+
+`CONTEXT.md`'s `.155` entry listed seven design items as *"Still open"*. **Five
+had already shipped** — `LibraryDetailSheet` is on `AdaptiveOverlay` and says so
+in its own comment, the offline "Waiting to sync" list landed in `.211`/`.216`,
+the plate squares are 2px-outlined, the Adjust "Applied" panel has its keys, and
+`estimateMealFromDescription` is wired into `FuelLogSheet` and `NutritionPage`.
+
+A backlog that sends the next agent to redo finished work is `.213`'s defect
+inverted: a status doc asserting a state that is not true.
+
+### The copy named the colours
+
+Caught by rendering the screen rather than trusting the diff. The chart's own
+card description read:
+
+> *Estimated (blue) from all sets · Actual (green) from 1-rep attempts only*
+
+Changing the lines would have made that sentence **false** — the app describing
+its chart in colours it no longer draws. The string was duplicated across **221
+files** (the locale packs plus the source default) in eight languages.
+
+All of them now describe the **stroke** instead — *"Estimated (dashed) · Actual
+(solid)"* and the equivalent in each language — which is also the accessible
+form, since naming a colour is a colour-only reference of exactly the kind WCAG
+1.4.1 asks you to avoid. The chart change and the copy change fix the same
+problem from two directions.
+
+No guard would have caught this: it is prose, not a token. Rendering the page
+did.
+
+**Falsification.** Verified by re-introducing each drift: `glow-reintroduced`,
+`off-palette-hex-passes`, `raw-border-radius-passes`, `second-typeface-passes`,
+`comment-counted-as-violation` (the guard must **not** fire on documented
+reasoning), `allowlist-without-reason`, `stale-allowlist-entry`,
+`check-not-in-gate`, `share-card-drifts-from-brand`.
+
 ## 2026-07-31 — The streak, the other three (`.220`)
 
 `.217` fixed **one writer and one reader**. There were three and four.

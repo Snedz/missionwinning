@@ -154,6 +154,15 @@ run('i18n coverage', 'npm', ['run', 'i18n:coverage']);
  * advisory was invisible behind the permanent red.
  */
 run('Dependency advisories', 'npm', ['run', 'security-audit']);
+/*
+ * `.221` — the Modernist rules, checked rather than stated.
+ *
+ * `check-token-sync` pins token values and never opens a `.tsx`, which is the
+ * blind spot `.202` found in `i18n-parity`: a checker that compares definitions
+ * to each other cannot see what components do. That is how a chart kept drawing
+ * Tailwind blue through a full-app rebrand.
+ */
+run('Design system', 'npm', ['run', 'check-design-system']);
 // Both of these existed as npm scripts and neither was in the gate, so nothing ran them.
 run('Display type', 'npm', ['run', 'check-display-type']);
 run('Token sync (web ↔ Android)', 'npm', ['run', 'check-token-sync']);

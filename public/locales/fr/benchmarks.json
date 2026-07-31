@@ -16,7 +16,7 @@
   "benchmarksSessionsLogged": "{{count}} sessions enregistrées",
   "benchmarksTotalSets": "{{count}} ensembles au total",
   "benchmarks1rmProgress": "Progrès du 1RM",
-  "benchmarks1rmProgressDesc": "Estimé (bleu) à partir de toutes les séries · Réel (vert) à partir de tentatives à 1 répétition uniquement",
+  "benchmarks1rmProgressDesc": "Estimé (pointillés) à partir de toutes les séries · Réel (trait plein) à partir de tentatives à 1 répétition uniquement",
   "benchmarksEstLegend": "Estimé 1RM",
   "benchmarksActLegend": "1RM réel",
   "benchmarksTimeline": "Chronologie",

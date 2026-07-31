@@ -117,7 +117,7 @@
   "activeSupersetUnlink": "取消链接超集",
   "activeWeight": "磅",
   "activeWorkoutComplete": "锻炼完成！",
-  "benchmarks1rmProgressDesc": "所有组次的估计值（蓝色）·仅 1 次尝试的实际值（绿色）",
+  "benchmarks1rmProgressDesc": "所有组次的估计值（虚线）·仅 1 次尝试的实际值（实线）",
   "benchmarksActLegend": "实际1RM",
   "benchmarksAllExercises": "所有练习",
   "benchmarksAllExercisesDesc": "快速比较记录的运动",

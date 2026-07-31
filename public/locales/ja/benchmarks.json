@@ -16,7 +16,7 @@
   "benchmarksSessionsLogged": "{{count}} セッションが記録されました",
   "benchmarksTotalSets": "合計 {{count}} セット",
   "benchmarks1rmProgress": "1RMの進捗状況",
-  "benchmarks1rmProgressDesc": "すべてのセットからの推定 (青) · 1 回の試行のみからの実際 (緑)",
+  "benchmarks1rmProgressDesc": "すべてのセットからの推定 (破線) · 1 回の試行のみからの実際 (実線)",
   "benchmarksEstLegend": "推定1RM",
   "benchmarksActLegend": "実質1RM",
   "benchmarksTimeline": "タイムライン",

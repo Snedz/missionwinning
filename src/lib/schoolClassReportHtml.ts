@@ -39,7 +39,9 @@ export function formatClassReportHtml(
     h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
     .meta { color: #555; font-size: 0.875rem; margin-bottom: 1.5rem; }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
-    .stat { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; text-align: center; }
+    /* .221 — was border-radius 8px. Radius is 0 across the brand, and a
+       printable report is still the brand on someone else's desk. */
+    .stat { border: 1px solid #ccc; border-radius: 0; padding: 1rem; text-align: center; }
     .stat strong { display: block; font-size: 1.75rem; }
     table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     th, td { border-bottom: 1px solid #ddd; padding: 0.5rem 0.75rem; text-align: left; }

@@ -700,7 +700,10 @@
   height: 2.25rem;
   align-items: center;
   justify-content: center;
-  border-radius: 0.375rem;
+  /* `.221` — was 0.375rem. `--radius: 0` is the rebrand's central rule and the
+     Tailwind scale collapses to it, but raw CSS bypasses that entirely, so the
+     guidebook kept rounded buttons through the whole re-ink. */
+  border-radius: 0;
   background: var(--mag-primary);
   padding: 0 1rem;
   font-size: 0.875rem;
@@ -714,7 +717,7 @@
   height: 2.25rem;
   align-items: center;
   justify-content: center;
-  border-radius: 0.375rem;
+  border-radius: 0;
   border: 1px solid var(--mag-rule);
   padding: 0 1rem;
   font-size: 0.875rem;
@@ -1025,8 +1028,11 @@
   width: 100%;
   max-height: 220px;
   object-fit: cover;
-  border-radius: 6px;
-  background: #0a0c10;
+  border-radius: 0;
+  /* `.221` — was `#0a0c10`, the pre-rebrand navy, and the one literal left in a
+     block whose every other value aliases the paper/ink tokens above. A dark
+     placeholder behind a figure on a paper ground read as a hole in the page. */
+  background: hsl(var(--muted));
 }
 
 .magazine-figure-caption {
@@ -1111,7 +1117,7 @@
   padding: 0.85rem 1rem;
   border-left: 3px solid hsl(var(--primary));
   background: hsl(var(--primary) / 0.08);
-  border-radius: 0 0.5rem 0.5rem 0;
+  border-radius: 0;
 }
 
 .guide-table-wrap {

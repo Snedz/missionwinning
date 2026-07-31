@@ -113,7 +113,7 @@
   "activeWeight": "رطل",
   "activeWorkoutComplete": "اكتمل التمرين!",
   "benchmarks1rmProgress": "تقدم 1RM",
-  "benchmarks1rmProgressDesc": "المقدرة (الأزرق) من جميع المجموعات · الفعلية (الأخضر) من محاولات تكرار واحد فقط",
+  "benchmarks1rmProgressDesc": "المقدرة (متقطع) من جميع المجموعات · الفعلية (متصل) من محاولات تكرار واحد فقط",
   "benchmarksAllExercisesDesc": "مقارنة سريعة عبر الحركات المسجلة",
   "benchmarksAvgGap": "متوسط ​​التقديرات - فعلي",
   "benchmarksBestActual": "أفضل 1RM حقيقي",

@@ -101,7 +101,7 @@
   "assessUnsure": "Incertaine",
   "assessYes": "Oui",
   "benchmarks1rmProgress": "Progrès du 1RM",
-  "benchmarks1rmProgressDesc": "Estimé (bleu) à partir de toutes les séries · Réel (vert) à partir de tentatives à 1 répétition uniquement",
+  "benchmarks1rmProgressDesc": "Estimé (pointillés) à partir de toutes les séries · Réel (trait plein) à partir de tentatives à 1 répétition uniquement",
   "benchmarksActLegend": "1RM réel",
   "benchmarksAllExercises": "Tous les exercices",
   "benchmarksAllExercisesDesc": "Comparaison rapide des mouvements enregistrés",

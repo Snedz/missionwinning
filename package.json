@@ -48,7 +48,8 @@
     "mobile": "npm --prefix apps/mobile start",
     "mobile:typecheck": "npm --prefix apps/mobile run typecheck",
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",
-    "send-beta-invite": "node --env-file=.env.local scripts/send-beta-invite.ts"
+    "send-beta-invite": "node --env-file=.env.local scripts/send-beta-invite.ts",
+    "check-design-system": "node scripts/check-design-system.mjs"
   },
   "dependencies": {
     "@phantom/react-sdk": "^2.0.2",
