@@ -1,6 +1,7 @@
 'use client';
 
 import type { FeedbackNote } from '@/lib/feedbackSource';
+import { loadReviewedAt, markReviewed, unreadCount } from '@/lib/feedbackUnread';
 import { localDateKey } from '@/lib/time/localDate';
 import { useCallback, useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -57,6 +58,18 @@ export function BetaAdminPanel({ enabled }: Props) {
    */
   const [feedback, setFeedback] = useState<FeedbackNote[] | null>(null);
   const [feedbackError, setFeedbackError] = useState<string | null>(null);
+
+  /*
+   * `.216` — where the founder stopped reading. Read in an effect rather than a
+   * lazy initialiser: this panel renders on Profile, which is server-rendered
+   * first, and a value that differs between the server pass and the first client
+   * pass is a hydration mismatch.
+   */
+  const [reviewedAt, setReviewedAt] = useState<string | null>(null);
+  useEffect(() => {
+    setReviewedAt(loadReviewedAt());
+  }, []);
+  const unread = feedback ? unreadCount(feedback, reviewedAt) : 0;
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -340,8 +353,28 @@ export function BetaAdminPanel({ enabled }: Props) {
                 "read all of them".
               */}
               <div className="rounded-lg border border-border/50 p-3 text-xs space-y-2">
-                <div className="font-semibold text-foreground">
-                  Feedback{feedback ? ` (${feedback.length})` : ''}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="font-semibold text-foreground">
+                    Feedback{feedback ? ` (${feedback.length})` : ''}
+                    {/*
+                      The count that makes the ritual possible. "Read 2 and fix
+                      the #1 confusion" is a question about what is NEW — a list
+                      of 40 newest-first looks identical on the Monday three
+                      arrived and the Monday none did.
+                    */}
+                    {unread > 0 ? (
+                      <span className="ms-2 text-[color:var(--accent-poster)]">{unread} new</span>
+                    ) : null}
+                  </div>
+                  {unread > 0 && feedback ? (
+                    <button
+                      type="button"
+                      className="min-h-[44px] shrink-0 border-2 border-border px-2 text-[11px] hover:bg-muted"
+                      onClick={() => setReviewedAt(markReviewed(feedback))}
+                    >
+                      Mark read
+                    </button>
+                  ) : null}
                 </div>
 
                 {feedbackError ? (

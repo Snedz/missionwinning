@@ -115,6 +115,12 @@ export const STORAGE_KEYS = {
   betaBannerDismissed: 'mw_beta_banner_dismissed',
   betaContributor: 'mw_beta_contributor',
   betaFeedback: 'mw_beta_feedback',
+  /**
+   * `.216` — founder's reading position in the feedback inbox. Device-local by
+   * design: a reading position is not data, and syncing it would need a table
+   * and a migration for a fact exactly one person holds.
+   */
+  feedbackReviewedAt: 'mw_feedback_reviewed_at',
   leads: 'mw_leads',
   referralCode: 'mw_referral_code',
   squadCode: 'mw_squad_code',

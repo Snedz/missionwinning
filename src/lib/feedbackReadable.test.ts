@@ -40,6 +40,7 @@ const READ_ROUTE = 'app/api/beta/feedback/route.ts';
 const PANEL = 'src/components/beta/BetaAdminPanel.tsx';
 const FORM = 'src/page-components/FeedbackPage.tsx';
 const LEADS = 'app/api/leads/route.ts';
+const READER = 'src/lib/feedbackServer.ts';
 
 test('the source tag has one definition, and writer and reader share it', () => {
   assert.equal(isFeedbackSource(FEEDBACK_SOURCE_TAG), true);
@@ -61,19 +62,35 @@ test('the source tag has one definition, and writer and reader share it', () => 
 });
 
 test('the prose column is actually selected somewhere', () => {
-  const route = stripComments(read(READ_ROUTE));
+  /*
+   * `.216` moved the query out of the route into `feedbackServer.ts` so the
+   * Monday digest could read the same rows. This guard follows it rather than
+   * being relaxed: the claim was never "the route contains a SELECT", it was
+   * **the prose column is read by something**. Asserting on the route after the
+   * extraction would have been a guard pinned to a location instead of a fact —
+   * the `.212` lesson, one file over.
+   *
+   * The route's own obligation (that it delegates rather than re-implementing)
+   * is asserted in `feedbackTriage.test.ts`.
+   */
+  const reader = stripComments(read(READER));
   assert.match(
-    route,
+    reader,
     /\.select\([^)]*goals/,
     'nothing selects `leads.goals`. That was true of the entire repository for the whole life ' +
       'of the feedback form: the note arrived and no human could read it.'
   );
-  assert.match(route, /FEEDBACK_SOURCE_TAG/, 'the read must filter on the shared tag');
+  assert.match(reader, /FEEDBACK_SOURCE_TAG/, 'the read must filter on the shared tag');
   assert.match(
-    route,
+    reader,
     /ascending:\s*false/,
     'newest first — the weekly ritual is "read 2 and fix the #1 confusion", not "read all"'
   );
+
+  // And the route must still be the thing that exposes it, or the reader is dead
+  // code and the panel has nothing to call.
+  const route = stripComments(read(READ_ROUTE));
+  assert.match(route, /readFeedbackNotes\(/, 'the founder route must actually perform the read');
 });
 
 test('the read path is founder-only and fails closed', () => {
