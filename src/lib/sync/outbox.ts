@@ -60,6 +60,44 @@ const changeListeners = new Set<(state: OutboxState) => void>();
 let clock: () => number = () => Date.now();
 let jitter: () => number = () => Math.random();
 let flushing = false;
+/** When the in-flight flush began — lets a wedged flag expire (`.211`). */
+let flushStartedAt = 0;
+
+/**
+ * How long one handler may take before the flush treats it as failed. Generous:
+ * a slow gym connection should retry, not be abandoned, and a real request that
+ * needs longer than this has already lost the athlete's attention.
+ */
+const HANDLER_TIMEOUT_MS = 20_000;
+
+/**
+ * How long the `flushing` guard may be held before a new flush overrides it.
+ * Comfortably longer than a full pass of timed-out handlers, so this only ever
+ * fires for a flush that genuinely never returned.
+ */
+const FLUSH_STUCK_MS = 120_000;
+
+/**
+ * Resolve `false` rather than hang. Deliberately not `AbortSignal`: the six
+ * handlers reach different clients (supabase-js, fetch, a queue) and threading a
+ * signal through all of them is a larger change than the defect warrants —
+ * whereas losing the race is observable at exactly the place that cares.
+ */
+function withTimeout(promise: Promise<boolean>, ms: number): Promise<boolean> {
+  return new Promise<boolean>((resolve) => {
+    const timer = setTimeout(() => resolve(false), ms);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      () => {
+        clearTimeout(timer);
+        resolve(false);
+      }
+    );
+  });
+}
 
 export interface OutboxState {
   pending: number;
@@ -90,8 +128,50 @@ function load(): OutboxOp[] {
   );
 }
 
+/**
+ * `.211` — the cap used to drop the newest work it had just been handed.
+ *
+ * `save()` did `ops.slice(0, MAX_QUEUE)` while `enqueue` **pushes to the end**.
+ * So at 500 ops, every new `workout.upsert` was truncated away by the same call
+ * that added it — directly against this module's own contract at the top of the
+ * file: *"Nothing is ever dropped for failing… losing a workout is not an
+ * option."*
+ *
+ * Reaching 500 needs a long offline stretch or a persistently failing handler,
+ * so this was real but unlikely. The fix is still worth stating precisely,
+ * because "which end do we drop from" is the kind of decision that reads as
+ * arbitrary later:
+ *
+ *   1. a logged workout is the one thing the athlete cannot reproduce, so
+ *      `workout.upsert` is never dropped while anything else could go;
+ *   2. among the rest, the **oldest** goes first — a superseded coach plan or
+ *      leaderboard push has already been overtaken by newer state;
+ *   3. only if the queue is *all* workouts does the oldest workout go, and by
+ *      then the device is far past any recoverable state.
+ */
+export function capQueue(ops: OutboxOp[], max: number = MAX_QUEUE): OutboxOp[] {
+  if (ops.length <= max) return ops;
+
+  const excess = ops.length - max;
+  const droppable: number[] = [];
+  // Oldest-first among non-workout ops.
+  ops.forEach((op, i) => {
+    if (op.kind !== 'workout.upsert') droppable.push(i);
+  });
+  const dropping = new Set(droppable.slice(0, excess));
+
+  // Still over: the queue is (nearly) all workouts. Shed the oldest of those.
+  if (dropping.size < excess) {
+    for (let i = 0; i < ops.length && dropping.size < excess; i++) {
+      if (!dropping.has(i)) dropping.add(i);
+    }
+  }
+
+  return ops.filter((_, i) => !dropping.has(i));
+}
+
 function save(ops: OutboxOp[]): void {
-  writeJson(STORAGE_KEYS.outbox, ops.slice(0, MAX_QUEUE));
+  writeJson(STORAGE_KEYS.outbox, capQueue(ops, MAX_QUEUE));
 }
 
 function summarize(ops: OutboxOp[]): OutboxState {
@@ -186,8 +266,26 @@ function backoffDelay(attempts: number): number {
  * Returns the number of ops that completed.
  */
 export async function flush(): Promise<number> {
-  if (flushing) return 0;
+  /*
+   * `.211` — a hung fetch used to kill the outbox for the life of the tab.
+   *
+   * `flushing` is cleared in a `finally`, and `finally` runs on **settle**. A
+   * promise that never settles never runs it, so every later `flush()` returned
+   * 0 forever — including the `online` and `visibilitychange` paths in
+   * `useOutboxDrain`. The queue kept accepting work, the UI kept saying
+   * "pending", and nothing left the device until a reload.
+   *
+   * That is this product's own stated scenario: captive-portal gym wifi, or a
+   * TCP connection that goes dead-air without an RST. `supabase-js` uses `fetch`
+   * with no default timeout, and none of the six handlers passes a signal.
+   *
+   * Two independent belts, because either alone can be defeated: each handler
+   * races a timeout below, and the flag itself expires so a flush that somehow
+   * escapes the race cannot wedge the queue permanently.
+   */
+  if (flushing && clock() - flushStartedAt < FLUSH_STUCK_MS) return 0;
   flushing = true;
+  flushStartedAt = clock();
   let completed = 0;
   try {
     const due = load().filter((op) => !op.stuck && op.nextAttemptAt <= clock());
@@ -198,7 +296,9 @@ export async function flush(): Promise<number> {
       let ok = false;
       let error: string | undefined;
       try {
-        ok = await handler(op.payload);
+        // A timeout is a failure, not a special case: `false` already schedules
+        // a retry with backoff, so this needs no new semantics anywhere else.
+        ok = await withTimeout(handler(op.payload), HANDLER_TIMEOUT_MS);
       } catch (e) {
         error = e instanceof Error ? e.message : 'handler threw';
       }

@@ -98,7 +98,9 @@ export const POST = withApiLogging('youth/consent-notify', async(request: NextRe
 
   if (error) {
     console.error('youth consent notify', error);
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    // `.211` — opaque to the client, detailed in the server log.
+    console.error('[youth/consent-notify] %s', error.message);
+    return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, codeSent: true });

@@ -31,6 +31,14 @@ import {
 } from '@/lib/emailServer';
 import type { JourneyState } from '@/lib/missionJourney';
 
+/*
+ * `.211` — Vercel's default is 10s (Hobby) / 15s (Pro), and this route sends
+ * emails serially. At ~300ms per Resend call, 50 candidates blows the limit; the
+ * function is killed, `markNudged` never runs, and the next daily run re-sends to
+ * everyone already emailed. Each timeout widens the duplicate window.
+ */
+export const maxDuration = 300;
+
 export const dynamic = 'force-dynamic';
 
 async function loadUnsubscribedEmails(

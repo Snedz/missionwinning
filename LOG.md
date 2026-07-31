@@ -6,6 +6,81 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The queue that stops forever, and the cache that keeps your data (`.211`)
+
+Four defects on the offline path, in the module whose own header promises
+*"Nothing is ever dropped for failing… losing a workout is not an option."*
+
+**A hung fetch killed the outbox for the life of the tab.** `flushing` is cleared
+in a `finally`, and `finally` runs on **settle** — a promise that never settles
+never runs it. So every later `flush()` returned 0 forever, including the
+`online` and `visibilitychange` paths in `useOutboxDrain`. The queue kept
+accepting work, the UI kept saying "pending", and nothing left the device until a
+reload. No handler passes a signal, and `supabase-js` sets no default timeout.
+This is the product's own stated scenario: captive-portal gym wifi, or a TCP
+connection that goes dead-air without an RST.
+
+Two independent belts, because either alone can be defeated: each handler now
+races a **20s** timeout, and the `flushing` flag itself expires after 120s so a
+flush that somehow escapes the race cannot wedge the queue permanently. A
+timeout resolves `false`, which is already an ordinary failure — the existing
+backoff handles it, and no new state appears anywhere.
+
+**The cap dropped the work it had just been handed.** `save()` did
+`ops.slice(0, MAX_QUEUE)` while `enqueue` pushes to the **end**, so at 500 ops
+every new `workout.upsert` was truncated away by the same call that added it.
+New pure [`capQueue`](src/lib/sync/outbox.ts) states the order plainly: a logged
+workout is never dropped while anything else could go instead; among the rest the
+**oldest** goes first, because a superseded coach plan or leaderboard push has
+already been overtaken; and only a queue that is *all* workouts sheds its oldest
+workout, by which point the device is far past any recoverable state.
+
+**Authenticated API responses sat in CacheStorage for 24 hours.** `app/sw.ts`
+passed serwist's `defaultCache` unmodified, whose `/api/*` entry is
+`NetworkFirst` with `maxAgeSeconds: 86400`. That stored `/api/premium/status`,
+`/api/wearables/status` and — on a product with a `/api/youth/consent-*` surface
+— `/api/school/class/[code]/export`, a CSV of student names and scores. It
+survived sign-out and was served to the next user of a shared phone while
+offline. Serwist's own auth exemption matches `/api/auth/*`; this app's callback
+is **`/auth/callback`**, which fell through to the catch-all bucket. Explicit
+`NetworkOnly` matchers for both, **before** the spread — nothing offline reads an
+API response, so this costs nothing.
+
+**The teacher PIN was brute-forceable through the routes that did not limit it.**
+`/api/school/class/[code]/verify` caps PIN attempts at 5/minute; its siblings
+`stats`, `leaderboard` and `export` authenticate with the same PIN and had **no
+limit at all**. The limit now lives inside `resolveTeacherClassAccess`, so every
+consumer inherits it and the next route added does too. Only PIN attempts are
+counted — a signed-in creator should not be throttled by someone else guessing at
+their class code.
+
+**Also:** six routes returned `error.message` from a Supabase failure straight to
+the client, naming tables, columns and constraints — a free schema map for anyone
+probing the mobile sync surface. Opaque codes now; the detail goes to the server
+log, where the person debugging it is. And the four cron routes declare
+`maxDuration`: they send email serially and call `markNudged` only after the
+loop, so at Vercel's 10–15s default the function was killed mid-loop, the batch
+was never marked, and the next daily run **re-sent to everyone already emailed** —
+each timeout widening the duplicate window.
+
+**A test with a date literal in it is a test with an expiry date.** Three
+`first-90.spec.ts` cases pinned `page.clock.setFixedTime(new Date('2026-07-30T…'))`
+while `seedEveningReview` writes its check-in under the **real** current date.
+They passed all evening and failed the moment the clock rolled past midnight,
+because the day-review card looked for a day the fixture had not seeded and
+`composeDayReview` correctly returned null. New `fixedTimeAt(hour)` derives the
+day from the same clock the fixtures use, so "at 19:00" means the evening *of the
+seeded day* rather than of one particular Thursday. Not a `.211` regression —
+found by it.
+
+Six mutants killed: `newest-op-dropped`, `handler-can-hang-forever`,
+`flush-flag-sticks`, `api-response-cached`, `pin-brute-forceable`,
+`cron-resends`. None survived.
+
+Tests 1078→1091.
+
+---
+
 ## 2026-07-30 — The logger wrote your whole history every second (`.210`)
 
 `tickElapsed` and `tickRestTimer` each call `set()` on a one-second interval,

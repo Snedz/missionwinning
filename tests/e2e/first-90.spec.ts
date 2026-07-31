@@ -17,6 +17,25 @@ import { TODAY_MAX_TOP_LEVEL_BLOCKS } from '../../src/lib/today/todayBlockBudget
 /** Taps from a cold /welcome to a set on the board. Lower is better; never raise this. */
 const TAP_BUDGET = 6;
 
+/**
+ * The pinned clock must land on the day the fixtures were seeded.
+ *
+ * `.211` — these three cases hardcoded `2026-07-30` while `seedEveningReview`
+ * writes its check-in under the **real** current date. They passed all evening
+ * and failed the moment the clock rolled past midnight, because the day-review
+ * card looked for a day the fixture had not seeded and `composeDayReview`
+ * correctly returned null.
+ *
+ * A test with a date literal in it is a test with an expiry date. Deriving the
+ * day from the same clock the fixtures use is what makes "at 19:00" mean the
+ * evening *of the seeded day* rather than of one particular Thursday.
+ */
+function fixedTimeAt(hour: number): Date {
+  const d = new Date();
+  d.setHours(hour, 30, 0, 0);
+  return d;
+}
+
 test.describe('First 90 seconds @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
     if (!baseURL) throw new Error('baseURL required');
@@ -217,7 +236,7 @@ test.describe('First 90 seconds @gate', () => {
   for (const hour of [9, 19]) {
     test(`Today shows one red action at ${hour}:00 @gate`, async ({ page }) => {
       await seedEveningReview(page);
-      await page.clock.setFixedTime(new Date(`2026-07-30T${String(hour).padStart(2, '0')}:30:00`));
+      await page.clock.setFixedTime(fixedTimeAt(hour));
       await page.goto('/log', { waitUntil: 'networkidle' });
 
       /*
@@ -295,7 +314,7 @@ test.describe('First 90 seconds @gate', () => {
   for (const hour of [9, 19]) {
     test(`Today renders within its block budget at ${hour}:00 @gate`, async ({ page }) => {
       await seedLegacyOnboarding(page);
-      await page.clock.setFixedTime(new Date(`2026-07-30T${String(hour).padStart(2, '0')}:30:00`));
+      await page.clock.setFixedTime(fixedTimeAt(hour));
       await page.goto('/log', { waitUntil: 'networkidle' });
       const shell = page.locator('.today-shell').first();
       await expect(shell).toBeVisible({ timeout: 15_000 });
@@ -324,7 +343,7 @@ test.describe('First 90 seconds @gate', () => {
       await seedLegacyOnboarding(page);
       // Fixed clock: the evening surfaces are the ones that were never swept,
       // and "run the suite after 18:00" is not a test strategy.
-      await page.clock.setFixedTime(new Date(`2026-07-30T${String(hour).padStart(2, '0')}:30:00`));
+      await page.clock.setFixedTime(fixedTimeAt(hour));
       await page.goto(path, { waitUntil: 'networkidle' });
       await expectThumbSized(page, what);
     });
