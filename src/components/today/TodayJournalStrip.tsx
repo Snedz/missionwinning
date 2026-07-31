@@ -13,7 +13,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import type { JournalEntry, JournalPillar } from '@/lib/todayTrends';
 import { cn } from '@/lib/utils';
-import { localDateKey } from '@/lib/time/localDate';
+import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 
 const PILLAR_META: Record<
   JournalPillar,
@@ -35,9 +35,13 @@ type Props = {
 
 function formatWhen(at: string, locale: string): string {
   const d = new Date(at);
-  if (Number.isNaN(d.getTime())) return at.split('T')[0] ?? at;
+  // Unparseable: there is no local day to derive, and truncating to ten
+  // characters only makes a malformed value look like a date. Show it as-is.
+  if (Number.isNaN(d.getTime())) return at;
   const today = localDateKey();
-  const day = at.split('T')[0];
+  // `.225` — a UTC date compared against a local `today` showed this
+  // morning's entry as "Jul 31" instead of its time, east of UTC.
+  const day = localDateKeyFromIso(at);
   const time = d.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
   if (day === today) return time;
   return d.toLocaleDateString(locale, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });

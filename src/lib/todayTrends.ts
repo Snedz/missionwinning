@@ -1,7 +1,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
-import { localDateKey } from '@/lib/time/localDate';
+import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 
 export type TrendMetricId = 'volume' | 'sessions' | 'protein' | 'active';
 
@@ -73,7 +73,15 @@ export function buildTodayTrends(
   const sessionsByDay: Record<string, number> = {};
 
   for (const w of workoutHistory) {
-    const d = w.completedAt.split('T')[0];
+    /*
+     * `.225` — was `w.completedAt.split('T')[0]`, the **UTC** date, while
+     * `lastDayBuckets` keys the buckets with `localDateKey`. Proved in
+     * Pacific/Auckland: a session at 10:00 on 1 Aug is stored as
+     * `2026-07-31T21:00:00Z` and was counted on 31 Jul. East of UTC that is
+     * the whole morning landing one bar to the left, with today's own column
+     * reading zero on the Today trend strip.
+     */
+    const d = localDateKeyFromIso(w.completedAt);
     volumeByDay[d] = (volumeByDay[d] || 0) + w.totalVolume;
     sessionsByDay[d] = (sessionsByDay[d] || 0) + 1;
   }

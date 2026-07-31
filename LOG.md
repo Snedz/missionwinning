@@ -6,6 +6,84 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The day a session lands on (`.225`)
+
+Opening `.225` — the "ask for a trend" registry — meant reading the function
+every trend would be built from. [`buildTodayTrends`](src/lib/todayTrends.ts)
+keys its buckets with `localDateKey` and keyed the **workouts** with
+`completedAt.split('T')[0]`. Those are not the same day.
+
+```
+completedAt (stored) : 2026-07-31T21:00:00.000Z
+UTC bucket  (before) : 2026-07-31
+local day   (buckets): 2026-08-01   ← MISMATCH
+```
+
+Proved in `Pacific/Auckland` before anything was touched: an athlete training at
+**10:00 on 1 August** had that session counted on **31 July**. East of UTC that
+is the entire morning — most of when people train — landing one bar to the left,
+with **today's own column reading zero** on the Today trend strip.
+
+A query surface over that would have shipped wrong answers behind a nicer
+interface, so the foundation went first.
+
+### `.212`'s lesson, the fourth time
+
+`.199` shipped a guard matching `split('T')[0]` and nothing else; `.212` widened
+it to four spellings and fixed fifteen sites. Both versions require a literal
+`toISOString()` **call** adjacent to the slice — and an ISO instant does not have
+to be produced on the spot to be sliced. It is usually read back out of storage,
+where it is already a plain string:
+
+```ts
+w.completedAt.split('T')[0]   // byte-for-byte the same bug, invisible to the guard
+```
+
+Widening it **before touching any call site** turned it red on eight files. Two
+were false positives of a kind the rule cannot resolve by shape — `schoolClass.ts`
+and `ExercisesPublicFilter.tsx` slice an **array**, not a date — so those carry
+exemptions that state the value being sliced, plus a staleness check in the
+`.219`/`.220` shape that fails when an exemption stops being true.
+
+Six were real, and the two that matter most are not the trend strip:
+
+- [`pillarScoreInputs`](src/lib/pillarScoreInputs.ts) compares a UTC date against
+  `localWeekKey()`, so a Monday-morning pillar win east of UTC dated to Sunday
+  and **fell outside the week it belonged to** — and this one feeds the
+  **Mission Score**.
+- [`challenges`](src/lib/challenges.ts) makes the identical comparison against
+  `weekStart`, dropping the same wins from the weekly challenge.
+
+Also fixed: `TodayJournalStrip` (a UTC day compared to a local `today` decided
+whether an entry showed its *time* or its *date*, so this morning's entry read
+"Jul 31"), `founderDigestCompose`, `backup`'s filename and the founder panel's
+date column.
+
+### The suite could not have caught it
+
+Every existing case in `todayTrends.test.ts` builds its ISO strings from a local
+wall-clock time and then runs in **UTC**, where both spellings agree. It proved
+the aggregation while being structurally blind to which day anything landed on.
+`.211`'s lesson with the sign flipped — there a fixture drifted and went red,
+here it agreed with the code because both were evaluated in the one zone that
+hides the difference.
+
+The new sweep runs five zones, and the control values are the point: with the
+defect restored, **UTC, Los Angeles, Midway and even Tokyo all still pass**.
+Only Auckland (UTC+13) fails at 10:00 local. A single-zone test was never going
+to see this.
+
+**Verification.** One mutant — restoring `split('T')[0]` — killed by the
+Auckland case. Tests 1192 → 1201.
+
+**Deferred, with the reason.** The `TREND_METRICS` registry and the offline
+`parseTrendQuery` are **not** in this entry. They are the feature `.225` was
+opened for, and they belong on buckets that name the right day; shipping them
+together would have buried a correctness fix inside a feature diff and made the
+"which day is this" change impossible to review on its own.
+
+---
+
 ## 2026-07-31 — The charts the guard could not see (`.224`)
 
 `.221` built [`check-design-system.mjs`](scripts/check-design-system.mjs) so

@@ -362,6 +362,103 @@ test('no calendar date is derived from toISOString()', () => {
   );
 });
 
+/**
+ * The same defect, one spelling further out — and `.212`'s lesson for the
+ * **fourth** time.
+ *
+ * `UTC_DATE_SPELLINGS` above requires a literal `toISOString()` **call** next to
+ * the slice. But an ISO instant does not have to be produced on the spot to be
+ * sliced: it is usually read back out of storage, where it is already a plain
+ * string. `w.completedAt.split('T')[0]` is byte-for-byte the same bug and the
+ * guard could not see any of it.
+ *
+ * What that hid, proved in `Pacific/Auckland` before anything was touched:
+ * [`buildTodayTrends`](todayTrends.ts) keys its buckets with `localDateKey`
+ * and keyed the workouts with the **UTC** date, so an athlete training at
+ * 10:00 on 1 Aug (`2026-07-31T21:00:00Z`) had that session counted on **31
+ * Jul**. East of UTC that is the entire morning — most of when people train —
+ * landing one bar to the left, and today's own column reading zero on the
+ * Today trend strip. The same comparison decides whether a pillar win falls
+ * inside the current week in [`pillarScoreInputs`](pillarScoreInputs.ts),
+ * which feeds the **Mission Score**.
+ *
+ * ## Why this one needs an allowlist and the rule above does not
+ *
+ * `toISOString().slice(0, 10)` is *always* wrong for a calendar date. Slicing a
+ * bare variable is not: `normalizeEntry` in `bodyMetrics.ts` truncates a field
+ * that is **already** `YYYY-MM-DD`, which is defensive, not a timezone bug. And
+ * `schoolClass.ts` writes `[record, ...existing].slice(0, 10)` — an **array**
+ * cap that has nothing to do with dates at all, and which a pattern keyed to
+ * `.slice(0, 10)` cannot tell apart from the real thing.
+ *
+ * So each exemption states the value being sliced and why UTC cannot enter,
+ * and `no exempted date-slice is stale` below fails when one stops being true —
+ * the `.219`/`.220` shape, applied in both directions.
+ */
+const DATE_SLICE_EXEMPT: { file: string; why: string }[] = [
+  {
+    file: 'src/lib/bodyMetrics.ts',
+    why: '`raw.date` is already a `YYYY-MM-DD` key, not an instant — the slice is defensive truncation and no timezone is involved.',
+  },
+  {
+    file: 'src/lib/progressPhotos.ts',
+    why: '`input.date` is already a `YYYY-MM-DD` key supplied by the caller — same defensive truncation as bodyMetrics.',
+  },
+  {
+    file: 'src/lib/schoolClass.ts',
+    why: 'Not a date at all — `[record, ...existing].slice(0, 10)` caps an **array** at ten entries. A rule keyed to `.slice(0, 10)` cannot distinguish this from a date by shape.',
+  },
+  {
+    file: 'src/components/public/ExercisesPublicFilter.tsx',
+    why: 'Not a date either — `uniqueMuscleGroups(EXERCISES).slice(0, 10)` caps the muscle-group filter chips at ten. Same array-versus-date ambiguity as schoolClass.',
+  },
+];
+
+/** A stored ISO string sliced into a calendar date, without a `toISOString()` in sight. */
+const STORED_ISO_SLICE =
+  /(?<!toISOString\(\))\s*\.\s*(?:split\(\s*'T'\s*\)\s*\[\s*0\s*\]|slice\(\s*0\s*,\s*10\s*\))/;
+
+function slicesAStoredIso(src: string): boolean {
+  return src
+    .split('\n')
+    .some((line) => STORED_ISO_SLICE.test(line) && !/toISOString\(\)\s*\./.test(line));
+}
+
+test('no calendar date is sliced off a stored ISO string either', () => {
+  // `PRODUCT_SOURCE` holds paths already relative to root — `walk` returns
+  // `path.relative(root, abs)` and `read` re-joins root. Relativising again
+  // only worked because cwd happened to equal root.
+  const exempt = new Set(DATE_SLICE_EXEMPT.map((e) => e.file));
+  const offenders = PRODUCT_SOURCE.filter(
+    (file) => !exempt.has(file) && slicesAStoredIso(stripComments(read(file)))
+  );
+
+  assert.deepEqual(
+    offenders,
+    [],
+    'these slice a calendar date out of a stored UTC instant — use localDateKeyFromIso():\n  ' +
+      offenders.join('\n  ')
+  );
+});
+
+test('no exempted date-slice is stale', () => {
+  /*
+   * `.220`'s correction applied in the other direction: an exemption naming a
+   * file that no longer slices anything makes the list look more considered
+   * than it is, and the next reader inherits a rule nobody re-checked.
+   */
+  const stale = DATE_SLICE_EXEMPT.filter(
+    (e) => !slicesAStoredIso(stripComments(read(e.file)))
+  ).map((e) => e.file);
+  assert.deepEqual(stale, [], 'these no longer need their exemption — remove them');
+});
+
+test('every date-slice exemption states why UTC cannot enter', () => {
+  for (const e of DATE_SLICE_EXEMPT) {
+    assert.ok(e.why.trim().length > 40, `${e.file}: "${e.why}" is not a reason`);
+  }
+});
+
 test('one concept has one definition', () => {
   for (const { concept, pattern, home, use } of SINGLE_DEFINITION) {
     const offenders = PRODUCT_SOURCE.filter(

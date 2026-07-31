@@ -4,7 +4,7 @@ import { getActivitiesForWeek } from '@/lib/activityLog';
 import { hasFuelPlanThisWeek, todayFuelSynergyBump } from '@/lib/fuelCoach/synergy';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
-import { localWeekKey } from '@/lib/time/localDate';
+import { localDateKeyFromIso, localWeekKey } from '@/lib/time/localDate';
 
 export interface WeeklyPillarStats {
   moveFlows: number;
@@ -26,7 +26,8 @@ function weekStartIso(): string {
 function countPillarWinsThisWeek(pillar: PillarType): number {
   const start = weekStartIso();
   return getPillarWins(100).filter(
-    (w) => w.pillar === pillar && w.completedAt.split('T')[0] >= start
+    // `.225` — same UTC-vs-local week edge, and this one feeds the Mission Score.
+    (w) => w.pillar === pillar && localDateKeyFromIso(w.completedAt) >= start
   ).length;
 }
 
