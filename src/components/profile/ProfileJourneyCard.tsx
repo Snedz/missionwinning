@@ -117,7 +117,7 @@ export function ProfileJourneyCard({
                 type="button"
                 size="sm"
                 variant={daysPerWeek === n ? 'default' : 'outline'}
-                className={daysPerWeek === n ? 'bg-primary hover:bg-primary-fill-hover' : ''}
+                className={`min-h-[44px] min-w-[44px] ${daysPerWeek === n ? 'bg-primary hover:bg-primary-fill-hover' : ''}`}
                 onClick={() => {
                   onDaysPerWeekChange(n);
                   saveDaysPerWeek(n);

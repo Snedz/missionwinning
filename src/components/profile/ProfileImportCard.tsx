@@ -87,7 +87,7 @@ export function ProfileImportCard() {
           })}
         </p>
         {!showDrop ? (
-          <Button variant="outline" onClick={() => setShowDrop(true)}>
+          <Button variant="outline" className="min-h-[44px]" onClick={() => setShowDrop(true)}>
             {t('csvImportCta', { defaultValue: 'Import CSV (Strong / Hevy)' })}
           </Button>
         ) : (

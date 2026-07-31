@@ -98,12 +98,41 @@ would have reported green on untouched code:
   helper now, and this is the same gap one screen over. `/profile` joins the list,
   and `expectThumbSized` takes a scope — the sheet is portaled to `document.body`,
   so a selector rooted at `main` cannot see a single one of its controls.
+
+  **It failed on its first run, on fourteen controls this PR did not write.** The
+  units pair, Save Goals, the backup/restore/import row and the language `<select>`
+  at 37–40px; four assessment buttons, the five days-per-week chips and sync Retry
+  at 36px. Every one of them on the settings screen every athlete uses, none of
+  them ever measured. They are fixed here rather than exempted — a guard widened
+  and then narrowed around what it found is the vacuous-guard pattern wearing a
+  different hat.
 - **axe** already covered `/profile`, with the sheet closed. A route passing says
   nothing about an overlay that is not open, so there is now a run that opens it.
 
-**Falsification.** `feedback-card-not-rendered`, `card-gated-to-owner`,
-`sheet-requires-email`, `context-not-attached`, `trail-never-recorded`,
-`oversized-note-silently-trimmed`, `sheet-fetches-directly`.
+### Falsification, and the ninth vacuous guard
+
+Twelve named mutants. Eleven were caught. **One survived, and it was mine.**
+
+`sheet-requires-email (schema)` reverted `leadsBodySchema.email` to required and
+the suite stayed green. The guard searched `apiSchemas.ts` file-wide for an
+`email` field carrying `.optional()` — and matched `inviteCreateBodySchema.email`
+**150 lines below**, a different schema that is optional for its own unrelated
+reasons. So the check reported that a note with no address was accepted while the
+schema rejected it.
+
+This is the **ninth** guard in the `.204`–`.215` wave that measured nothing, and
+the fourth I wrote myself inside the PR about that exact defect class. The shape
+is always the same: a source-text assertion whose search is wider than the thing
+it names. The fix is always the same too — anchor the slice. The guard now
+extracts `leadsBodySchema`'s own body and matches inside it, and the mutant fails
+it.
+
+Caught: `feedback-card-not-rendered`, `card-gated-to-owner`,
+`sheet-requires-email` (route), `sheet-requires-email` (Send button),
+`sheet-requires-email` (schema, after the fix), `context-not-attached`,
+`trail-never-recorded`, `previous-screen-falls-back-to-current`,
+`oversized-note-silently-trimmed` (reserve), `oversized-note-silently-trimmed`
+(textarea), `sheet-fetches-directly`, `trail-repeats-not-collapsed`.
 
 ## 2026-07-31 — The note nobody could read (`.214`)
 

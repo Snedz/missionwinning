@@ -165,11 +165,21 @@ test('a note with no email is sendable end to end', () => {
    * own validator rejects it). Any one reverting puts the barrier back with the
    * sheet's copy still promising it is optional — the app lying about itself.
    */
+  /*
+   * Scoped to `leadsBodySchema`'s own body, not searched file-wide. `.215`'s
+   * first draft of this guard matched `inviteCreateBodySchema.email` 150 lines
+   * below — a different schema, already optional for its own reasons — and so
+   * reported green with the lead schema reverted to required. Ninth vacuous
+   * guard in this wave, found by the mutant it exists to catch.
+   */
   const schema = stripComments(read(SCHEMA));
+  const open = schema.indexOf('export const leadsBodySchema = z.object({');
+  assert.ok(open !== -1, 'leadsBodySchema was renamed — re-read this guard');
+  const body = schema.slice(open, schema.indexOf('export const', open + 1));
   assert.match(
-    schema,
-    /email:\s*z\s*\n?\s*\.string\(\)[\s\S]{0,80}?\.optional\(\)/,
-    'the shared schema must allow a lead with no email'
+    body,
+    /email:\s*z\.string\(\)[^,\n]*\.optional\(\)/,
+    'the lead schema must allow a note with no email'
   );
 
   const route = stripComments(read(LEADS_ROUTE));
