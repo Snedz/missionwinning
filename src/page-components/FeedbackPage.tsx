@@ -4,6 +4,7 @@
  * See: app/INDEX.md, src/page-components/INDEX.md
  */
 
+import { FEEDBACK_SOURCE_TAG } from '@/lib/feedbackSource';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
@@ -47,8 +48,15 @@ export function FeedbackPage() {
         name: form.name || 'Beta Contributor',
         email: form.email,
         goals: `Results: ${form.results}\nTestimonial: ${form.testimonial}\nRating: ${form.rating}\nMassive action: ${form.massiveAction}`,
-        package_interest: 'beta-feedback',
-        source: 'feedback-page',
+        /*
+         * `.214` — one tag, because there has only ever been one.
+         * `submitLead` computes `source = lead.source || lead.package_interest`
+         * and writes that single value to both columns, so the old
+         * `'beta-feedback'` was discarded on every submission ever made. The
+         * founder read path filters on this constant.
+         */
+        package_interest: FEEDBACK_SOURCE_TAG,
+        source: FEEDBACK_SOURCE_TAG,
         message: form.testimonial,
       },
       at

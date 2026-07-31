@@ -6,6 +6,74 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The note nobody could read (`.214`)
+
+Opens the `.214`–`.218` feedback wave. The founder asked for a Submit-feedback
+button; exploring first changed the answer, because **feedback already works.**
+
+`.179` did the hard half properly — a note rides the durable outbox, retries
+offline, dedupes, and has tests. Its own header calls these notes *"the 'why I
+almost quit' interview record the beta exists to collect."* They land in
+`public.leads`.
+
+**And nothing has ever read them.** `betaMetricsServer.ts:98` selects
+`package_interest` and nothing else, so the founder panel displayed one line —
+`feedback-page  7` — while the rating, the testimonial and the prose sat in a
+column **no code in the repository has ever named.** Repo-wide, no SELECT of
+`leads.goals` existed.
+
+Two more facts that make it worse. `founderDigestCompose.ts:87` instructs the
+founder to *"read 2 feedback emails"* that have never existed. And
+`app/api/leads/route.ts:157` fired `maybeSendLeadConfirmation` on **every**
+insert, so a beta tester who wrote a testimonial received *"You're on the
+Mission Winning list — Your interest tag: feedback-page"* with an unsubscribe
+link, and got `confirmed_at` stamped as though they had joined the launch list.
+On the one interaction where a user did us a favour, we replied with a marketing
+receipt.
+
+So this is `.195` turned around: that wave asked *"was it built, and can anyone
+get to it?"* about what the app **shows**. This asks it about what a user
+**sends**. New [`feedbackReadable.test.ts`](src/lib/feedbackReadable.test.ts)
+states the rule — *an inbound channel needs a named reader, and the path from
+arrival to a human must be assertable.*
+
+**The read path.** New `app/api/beta/feedback/route.ts`: founder-only,
+service-role, newest-first, capped at 100. `leads` has RLS enabled and **zero
+policies** (`20260705_leads_api_only.sql` dropped the last), so there is no
+client read to build on — this route is the only way the prose can reach a
+human. `BetaAdminPanel` renders it with `whitespace-pre-wrap`, because the form
+packs four answers into one newline-separated field and collapsing them runs the
+whole note into a single paragraph.
+
+**A misconfigured server must not look like silence.** No service role returns
+**503**, not `[]`; the panel keeps `null` (not loaded / not permitted) and `[]`
+(genuinely none) visually distinct. An empty list on a broken read would invite
+the single most expensive wrong conclusion this panel can produce.
+
+**One definition of "is this the founder".** `authorizeBetaAdmin` was written
+inline in the invites route and again in the metrics route, and this needed a
+third — so it moved to [`api/betaAdminAuth.ts`](src/lib/api/betaAdminAuth.ts)
+and both existing routes now call it. Three copies of an authorization predicate
+is how one ends up quietly more permissive (`.178`). It fails closed on missing
+configuration, which is correct: an unconfigured admin check defaulting to open
+would expose every tester's feedback to anonymous traffic on deploy.
+
+**And one tag, because there has only ever been one.** The form set
+`package_interest: 'beta-feedback'` **and** `source: 'feedback-page'`, which
+reads as a two-level taxonomy. It never was — `supabase.ts:303,310-311` computes
+`source = source || package_interest` and writes that single value to both
+columns, so `'beta-feedback'` was discarded on **every submission ever made**.
+Now [`FEEDBACK_SOURCE_TAG`](src/lib/feedbackSource.ts), shared by the writer, the
+email skip and the reader; a literal in three files is a literal that drifts, and
+when it drifts here the panel silently shows nothing.
+
+Killed: `feedback-prose-unreadable`, `panel-shows-counts-only`,
+`tester-gets-waitlist-email`, `tag-drifts-from-reader`.
+
+Tests 1097→1103. Next: `.215` the button in You, on a context-aware sheet.
+
+---
+
 ## 2026-07-31 — The status doc that archived the governing fact (`.213`)
 
 Last of the `.204`–`.213` wave, and it closes a defect I introduced in `.203`.
