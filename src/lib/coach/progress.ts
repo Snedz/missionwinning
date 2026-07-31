@@ -24,6 +24,7 @@
  * Pure and dependency-free: same numbers on web, Android and iOS.
  */
 
+import { localDateKey } from '@/lib/time/localDate';
 import { countsTowardStrengthEstimate } from '@/lib/workout/setKind';
 import { brzycki1rm, epley1rm } from '@/lib/calcHelpers';
 import type { CompletedWorkoutLog } from '@/types';
@@ -84,7 +85,7 @@ export function estimate1rm(weight: number, reps: number): number | null {
 }
 
 function utcDay(d: string | Date): string {
-  return new Date(d).toISOString().slice(0, 10);
+  return localDateKey(new Date(d));
 }
 
 /** Sets that count as evidence of strength — one definition, in `setKind.ts` (`.208`). */

@@ -1,3 +1,4 @@
+import { localDateKey } from '@/lib/time/localDate';
 import type { WearableSample } from './types';
 
 /** Map activity-kind samples into Track-friendly rows (client applies logActivity). */
@@ -31,7 +32,7 @@ export function samplesToActivityHints(samples: WearableSample[]): Array<{
     }
     const distanceM = Number(s.metrics?.distance_m ?? 0);
     out.push({
-      date: new Date(Number.isFinite(start) ? start : Date.now()).toISOString().slice(0, 10),
+      date: localDateKey(new Date(Number.isFinite(start) ? start : Date.now())),
       type: String(s.metrics?.type ?? 'other'),
       durationMin,
       distanceKm: distanceM > 0 ? distanceM / 1000 : undefined,

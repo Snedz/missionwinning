@@ -1,5 +1,6 @@
 'use client';
 
+import { localDateKey } from '@/lib/time/localDate';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Camera, Download, Images } from 'lucide-react';
@@ -78,7 +79,7 @@ export function ProgressPhotosCard() {
       const blob = await downscaleImageFile(file, 1600);
       await addProgressPhoto({
         blob,
-        date: new Date().toISOString().slice(0, 10),
+        date: localDateKey(),
         pose,
       });
       track('progress_photo_added', { pose });

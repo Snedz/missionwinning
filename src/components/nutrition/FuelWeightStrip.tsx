@@ -1,5 +1,6 @@
 'use client';
 
+import { localDateKey } from '@/lib/time/localDate';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -47,7 +48,7 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
     // Last 7 calendar days with values (or sparse points in range)
     const cutoff = new Date(`${todayIso}T12:00:00`);
     cutoff.setDate(cutoff.getDate() - 6);
-    const start = cutoff.toISOString().slice(0, 10);
+    const start = localDateKey(cutoff);
     return s.filter((p) => p.date >= start && p.date <= todayIso);
   }, [refreshKey, tick, todayIso]);
 
