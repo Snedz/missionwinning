@@ -17,7 +17,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { SignInPrompt } from '@/components/auth/SignInPrompt';
 import { saveNutritionEntry } from '@/lib/supabase';
 import type { WorkoutExerciseTemplate } from '@/types';
-import { readRaw, writeRaw, writeJson } from '@/lib/storage/safeStorage';
+import { writeJson } from '@/lib/storage/safeStorage';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { localDateKey } from '@/lib/time/localDate';
 
@@ -128,14 +128,23 @@ export function AssessmentsPage() {
     writeJson(STORAGE_KEYS.lastAssessment, { risk, notes, date: today });
   };
 
-  const bumpStreak = () => {
-    const cur = parseInt(readRaw(STORAGE_KEYS.streak) || '0');
-    const next = Math.max(1, cur + 1);
-    writeRaw(STORAGE_KEYS.streak, String(next));
-  };
-
+  /*
+   * `.220` — `bumpStreak()` used to live here: a bare read-increment-write of
+   * `mw_streak` with no date, no same-day guard and no recency, fired by an
+   * ungated button on *starting* a recommended session.
+   *
+   * Three things wrong with it, and they compound. It counted taps rather than
+   * days, so pressing the button five times added five. It credited a **training**
+   * streak for a workout that had not happened yet — the `.206` class, where a
+   * control touched for one reason quietly writes a value the athlete never
+   * earned. And it wrote the override without the date `.217` made mandatory, so
+   * the number it produced was displayed raw by `HomeTodayLean` for anyone with
+   * no history at all.
+   *
+   * Nothing replaces it. Completing the workout is what earns the streak, and
+   * `recordWorkoutCompleted` already records that from the history.
+   */
   const startRecommended = (rec: string) => {
-    bumpStreak();
     let name = "Daily Mobility + Mind Habit";
     let exs: WorkoutExerciseTemplate[] = [
       { exerciseId: "cat-camel", sets: [{ reps: 8, weight: 0 }] },

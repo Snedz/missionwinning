@@ -119,20 +119,24 @@ export function recordWorkoutCompleted(log: CompletedWorkoutLog) {
   if (typeof window === 'undefined') return;
 
   const today = localDateKeyFromIso(log.completedAt);
-  const lastDate = readRaw(LAST_WORKOUT_KEY);
-  let streak = parseInt(readRaw(STREAK_KEY) || '0', 10);
 
-  if (lastDate !== today) {
-    if (lastDate) {
-      const last = new Date(lastDate);
-      const curr = new Date(today);
-      const diffDays = Math.floor((curr.getTime() - last.getTime()) / (1000 * 3600 * 24));
-      streak = diffDays === 1 ? streak + 1 : 1;
-    } else {
-      streak = 1;
-    }
+  /*
+   * `.220` — this used to be the repo's **third** derivation of "consecutive
+   * days": a read-increment-write of `mw_streak` with its own
+   * `new Date(a) - new Date(b)` millisecond arithmetic, which is the spelling
+   * `.199` and `.212` were both about and `.217` replaced everywhere else.
+   *
+   * It is gone rather than corrected. Post-`.217` the workout **history** is the
+   * authority for the training streak — `getTrainingStreak` derives it, and this
+   * write never carried the date the override now requires, so the value it
+   * produced was already unreadable. Keeping a dateless writer alive is worse
+   * than useless: it is a loaded gun for anyone who later "restores" the
+   * override branch and silently reintroduces the streak that never breaks.
+   *
+   * `mw_last_workout_date` is still written — it is the only thing that reads it.
+   */
+  if (readRaw(LAST_WORKOUT_KEY) !== today) {
     writeRaw(LAST_WORKOUT_KEY, today);
-    writeRaw(STREAK_KEY, String(streak));
   }
 
   const state = loadState();
