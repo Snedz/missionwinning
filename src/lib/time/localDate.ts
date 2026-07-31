@@ -46,6 +46,28 @@ export function localDateKeyFromIso(iso: string): string {
 }
 
 /**
+ * The calendar day before `key` (`YYYY-MM-DD` in, `YYYY-MM-DD` out).
+ *
+ * Built from local fields, **never** from `Date.parse(key)`. Parsing a bare
+ * `YYYY-MM-DD` yields UTC midnight, so `new Date('2026-03-29')` in Berlin is
+ * 01:00 local — subtract a day across a DST boundary from that and the answer
+ * drifts. Constructing from the parts keeps every step in local time, the same
+ * discipline `startOfLocalWeek` follows.
+ *
+ * `.217` added this because "yesterday" was being derived in two places with two
+ * spellings (`fuelStreak` did it correctly inline, `streaks` diffed UTC
+ * milliseconds), and a calendar fact with two derivations is `.178` waiting to
+ * happen — which is the entire reason this module exists.
+ */
+export function previousLocalDateKey(key: string): string {
+  const [y, m, d] = key.split('-').map(Number);
+  if (!y || !m || !d) return '';
+  const date = new Date(y, m - 1, d);
+  date.setDate(date.getDate() - 1);
+  return localDateKey(date);
+}
+
+/**
  * Midnight local on the Monday of `d`'s week.
  *
  * The `setHours`/`setDate` order is **not** load-bearing — an earlier draft of
