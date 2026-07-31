@@ -2,7 +2,6 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   fetchLocaleHttpOverrides,
-  localeCommonJsonPath,
   mergeLocaleRecords,
   normalizeLocaleCode,
   shouldLoadLocaleHttp,
@@ -14,9 +13,12 @@ describe('localeHttpLoader', () => {
     assert.equal(normalizeLocaleCode('ar'), 'ar');
   });
 
-  it('builds common.json path', () => {
-    assert.equal(localeCommonJsonPath('zh-CN'), '/locales/zh/common.json');
-  });
+  /*
+   * `.222` removed `localeCommonJsonPath` and its test. `common.json` was every
+   * key again — the fourth copy of the catalogue — and once it was deleted the
+   * helper had exactly one reference left: this assertion. A function kept alive
+   * only by the test that checks it is a part, and the best part is no part.
+   */
 
   it('mergeLocaleRecords combines objects', () => {
     const merged = mergeLocaleRecords([{ a: '1' }, { b: '2' }]);
