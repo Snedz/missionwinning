@@ -16,7 +16,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { isStreakLive, streakFromDates } from '@/lib/streakRecency';
 import { previousLocalDateKey } from '@/lib/time/localDate';
@@ -131,6 +131,81 @@ test('every consumer reads through the recency-checked reader', () => {
       src,
       /readRaw\(\s*STREAK_KEY|readRaw\(\s*STORAGE_KEYS\.streak\b/,
       `${file} must not read the raw override and bypass the decay — ${why}`
+    );
+  }
+});
+
+/**
+ * Every file that touches the streak key, discovered rather than listed.
+ *
+ * `.220` — `.217`'s version of this guard opened
+ * `for (const file of ['src/lib/streaks.ts', 'src/lib/fuelStreak.ts'])` under
+ * the name *"both streak readers apply the recency rule"*. There were **four
+ * readers and three writers**. The two it did not know about were the two that
+ * mattered: `workoutPersistLite` fed the streak on Today's lean shell straight
+ * from raw storage, and an ungated button on `/assessments` incremented it on
+ * every tap.
+ *
+ * Twelfth vacuous guard in this run of work, and the same shape as all of them —
+ * a check whose *name* claims a scope wider than its *enumeration*. The fix is
+ * the one `.219` used for advisories: stop hardcoding the list, discover the set,
+ * and make an unreviewed entry a failure.
+ */
+const STREAK_KEY_TOUCHERS: Record<string, string> = {
+  'src/lib/streaks.ts': 'the reader and the day-guarded writer — the one definition',
+  'src/lib/challenges.ts': 're-exports STREAK_KEY and getTrainingStreak; reads and writes neither',
+};
+
+function walk(dir: string, out: string[] = []): string[] {
+  for (const entry of readdirSync(path.join(root, dir), { withFileTypes: true })) {
+    const rel = `${dir}/${entry.name}`;
+    if (entry.isDirectory()) walk(rel, out);
+    else if (/\.tsx?$/.test(entry.name) && !/\.(test|routetest)\.tsx?$/.test(entry.name)) {
+      out.push(rel);
+    }
+  }
+  return out;
+}
+
+test('no unreviewed file touches the streak key', () => {
+  const touching = walk('src').filter((f) => {
+    const src = stripComments(read(f));
+    return /STORAGE_KEYS\.streak\b|STREAK_KEY/.test(src);
+  });
+
+  const unreviewed = touching.filter((f) => !(f in STREAK_KEY_TOUCHERS)).sort();
+  assert.deepEqual(
+    unreviewed,
+    [],
+    'a file reads or writes `mw_streak` without being reviewed for the recency rule. ' +
+      'That is exactly how `.217` shipped a decay fix while Today\'s lean shell and an ' +
+      '/assessments button kept the old behaviour. Add it to STREAK_KEY_TOUCHERS with a ' +
+      'reason, or route it through `getTrainingStreak`.'
+  );
+
+  /*
+   * And the other direction. An allowlist entry for a file that no longer touches
+   * the key is dead weight that makes the list look more considered than it is —
+   * the slow decay every ratchet in this repo is written to resist.
+   */
+  const stale = Object.keys(STREAK_KEY_TOUCHERS).filter((f) => !touching.includes(f)).sort();
+  assert.deepEqual(stale, [], 'these no longer touch the key — remove them from STREAK_KEY_TOUCHERS');
+});
+
+test('nothing outside streaks.ts writes the streak key', () => {
+  /*
+   * A writer that does not record the day produces an override no reader can
+   * trust — and `.217` made the reader ignore it, so such a write is dead code
+   * that looks live. Worse, it is a loaded gun: restore the override branch and
+   * the streak that never breaks comes straight back.
+   */
+  for (const file of Object.keys(STREAK_KEY_TOUCHERS)) {
+    if (file === 'src/lib/streaks.ts') continue;
+    const src = stripComments(read(file));
+    assert.doesNotMatch(
+      src,
+      /writeRaw\(\s*(STREAK_KEY|STORAGE_KEYS\.streak\b)/,
+      `${file} must not write the streak override — only bumpTrainingStreak records the day`
     );
   }
 });

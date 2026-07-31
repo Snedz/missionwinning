@@ -6,6 +6,95 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The streak, the other three (`.220`)
+
+`.217` fixed **one writer and one reader**. There were three and four.
+
+### The guard that let them through
+
+`.217` shipped this, named *"both streak readers apply the recency rule"*:
+
+```ts
+for (const file of ['src/lib/streaks.ts', 'src/lib/fuelStreak.ts']) {
+```
+
+Those are the two files I had already looked at. **Twelfth vacuous guard in this
+run of work**, and the same shape as every one before it — a check whose *name*
+claims a scope wider than its *enumeration*.
+
+The two it missed were the two that mattered.
+
+### An athlete with no workouts, showing a streak
+
+`readTrainingStreakFromStorage` in
+[`workoutPersistLite.ts`](src/lib/workout/workoutPersistLite.ts) was a bare
+`parseInt` of `mw_streak` — no history, no recency. It feeds **Today's lean
+shell**.
+
+`HomeTodayLean` does overwrite that value from history — but only
+`if (history.length > 0)`, which is precisely the case where the raw number is
+wrong. So an athlete with **zero workouts** and a non-zero `mw_streak` saw a
+training streak they had never earned.
+
+Where did a non-zero `mw_streak` come from with no workouts? An **ungated button
+on `/assessments`**:
+
+```ts
+const bumpStreak = () => {
+  const cur = parseInt(readRaw(STORAGE_KEYS.streak) || '0');
+  writeRaw(STORAGE_KEYS.streak, String(Math.max(1, cur + 1)));
+};
+```
+
+Fired by `startRecommended` — on **starting** a suggested session, not finishing
+one. No date, no same-day guard, no recency. Five taps, five days of "streak",
+for a workout that had not happened. That is `.206`'s class: a control touched
+for one reason quietly writing a value the athlete never entered.
+
+**And the two compound into a hero-path defect.** `HomeTodayLean:251` reads:
+
+```tsx
+{journeyState.phase === 'basic' && streak === 0 && ( … 'Log a set — Mission Coach shapes the week …' )}
+```
+
+So the invented streak **suppressed the one prompt that screen exists to give
+someone who has never trained.** The app told a new user they were on a run, and
+hid the nudge to start.
+
+### A third derivation of "consecutive days"
+
+`recordWorkoutCompleted` in [`challenges.ts`](src/lib/challenges.ts) had its own:
+
+```ts
+const diffDays = Math.floor((curr.getTime() - last.getTime()) / (1000 * 3600 * 24));
+streak = diffDays === 1 ? streak + 1 : 1;
+```
+
+The millisecond arithmetic `.199` and `.212` were both about, and `.217`
+replaced everywhere else. It also wrote the override **without** the date `.217`
+made mandatory — so the value was already unreadable, dead code that looked live.
+Worse than dead: a loaded gun for anyone who later "restores" the override branch
+and silently brings back the streak that never breaks.
+
+All three are gone. The workout **history** is the authority, and
+`getTrainingStreak` derives from it.
+
+### The real deliverable is the guard
+
+Listing files is what failed. So the guard now **discovers** them: it walks
+`src/`, finds every file referencing `STORAGE_KEYS.streak` or `STREAK_KEY`, and
+fails on any that is not in a reviewed allowlist — the shape `.219` used for
+advisories, one day later.
+
+It also fails on a **stale** allowlist entry, because a list naming files that no
+longer touch the key looks more considered than it is. That direction caught
+something immediately: `workoutPersistLite` was in my first draft of the
+allowlist and no longer references the key at all.
+
+**Falsification.** Reverting each of the three fixed paths turns the discovering
+guard red: `cold-path-reads-raw-override`, `assessments-button-inflates-streak`,
+`challenges-writes-dateless-override`.
+
 ## 2026-07-31 — A security check that can actually fail (`.219`)
 
 Two defects. The second is the one worth reading.
