@@ -6,6 +6,117 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — The streak that never breaks (`.217`)
+
+The app's most-visible number could not go down.
+
+### The defect
+
+[`getTrainingStreak`](src/lib/streaks.ts) had two branches and **neither asked
+when the athlete last trained**:
+
+```ts
+const stored = parseInt(readRaw(STREAK_KEY) || '0', 10);
+if (Number.isFinite(stored) && stored > 0) return stored;   // forever
+...
+const dates = [...new Set(history.map(localDateKeyFromIso))].sort().reverse();
+let streak = 1;                                              // from dates[0],
+for (...) { if (diff === 1) streak++; else break; }          // whenever that was
+```
+
+Train five consecutive days, stop for three months, still see **"5-day streak"**.
+The loop walks backwards correctly. It simply never asks *when* `dates[0]` was.
+
+### Why this is not a chip on Today
+
+| Consumer | What the overstatement did |
+|---|---|
+| [`weekRecap.ts`](src/lib/weekRecap.ts) | Shared debrief text **and the share-card title** — publicly visible |
+| [`missionJourney.ts:224`](src/lib/missionJourney.ts) | `streak >= 7 \|\| recent14 >= 5` — a stale 7 **permanently satisfied a commissioning milestone** |
+| [`computeLocalStats.ts`](src/lib/leaderboard/computeLocalStats.ts) | `computeWinScore` and the **public leaderboard** |
+
+Look at the shape of `missionJourney:224`. `recent14` **is** date-bounded. The
+author knew to bound by recency in the second half of that expression and not the
+first.
+
+**And the repo already knew.** `dayReview.ts:43` says in prose:
+
+> *Deliberately does **not** read `getTrainingStreak`: that value can be
+> overridden by a localStorage key, so it is unfit for a factual sentence.*
+
+One consumer noticed the number was untrustworthy and routed around it locally.
+Three others kept consuming it as fact.
+
+### Two streaks, one correct half each
+
+`fuelStreak` **wrote** correctly and had all along — same-day is a no-op,
+yesterday increments, a gap resets to 1 — and then **read** a bare `parseInt` of
+the stored number, so it never decayed. Log protein Monday, open Nutrition
+Friday, still Monday's count. It needed no new storage: `fuelLastLogDate` was
+already written on every bump; the reader just never asked for it.
+
+`streaks` had neither half — while the correct writer sat one file over.
+
+So both now share [`streakRecency.ts`](src/lib/streakRecency.ts):
+
+- **live = today or yesterday, else 0.** Founder call, recorded: hard truth, no
+  grace period. Yesterday counts because someone who trained last night and opens
+  the app at 07:00 has broken nothing — and a rule that punished them would make
+  the number depend on what time you looked at it.
+- The walk moves by **expected calendar day**, not by differencing UTC
+  milliseconds. The old arithmetic happened to work because both sides parse to
+  UTC midnight, but it is the spelling `.199` and `.212` were both about.
+- New `previousLocalDateKey` in [`localDate.ts`](src/lib/time/localDate.ts),
+  because "yesterday" had two derivations — one correct inline in `fuelStreak`,
+  one implicit in `streaks`' millisecond diff. A calendar fact with two
+  derivations is `.178` waiting to happen, which is why that module exists.
+- The override gained the **date it never had**. It was a counter with no
+  timestamp, so nothing could distinguish a run of 5 ending today from one ending
+  in April — and nothing stopped three pillar-win taps in one afternoon adding
+  +3 to a *day* streak.
+
+### The tests asserted the defect
+
+Six cases, all green, all pinning `2026-07-10` against code that reads the real
+clock. One of them — `prefers positive localStorage override` — set a stored `9`
+against a single ancient workout and asserted `9`.
+
+That is `.211`'s date bomb with the sign flipped. There the fixture drifted away
+from the clock and the suite went red overnight; here it drifted away and the
+suite **stayed green**, because the code under test had no opinion about time. A
+test that pins a calendar date to check a rule *about* calendar dates is testing
+the fixture.
+
+All twelve are now derived from the same clock the code reads.
+
+### Falsification — nine mutants, two survivors, both resolved honestly
+
+`writer-loses-the-date` survived, and the guard was mine. It asserted
+`/streakLastBump/` appeared in `bumpTrainingStreak`'s body — but the body
+**reads** that key as well as writing it, so deleting the write left the check
+green while every override silently stopped being honoured. **Tenth vacuous guard
+in this run of work**, and the same shape as `.215`'s survivor: a search wider
+than the thing it names. Replaced with a behavioural round-trip — bump, read
+back, bump twice on one day, bump after a gap.
+
+`unparseable-day-breaks-walk` also survived, and here the honest answer was the
+opposite: the `.filter(Boolean)` genuinely is **not** load-bearing. `''` sorts
+before every real date, so after the reverse it is always last and can only
+terminate a walk it would never have continued. The filter stays as
+belt-and-braces and the comment now says so, rather than claiming a protection no
+test backs.
+
+The DST guard was checked for vacuity before being trusted: reverting
+`previousLocalDateKey` to a `Date.parse` implementation turns it red under
+`Europe/Berlin`, so it responds to the timezone it claims to test — `.212`'s
+requirement.
+
+Killed: `stale-streak-survives`, `override-ignores-recency`,
+`fuel-streak-never-decays`, `yesterday-counts-as-broken`,
+`leaderboard-reads-raw-streak`, `same-day-taps-increment`,
+`bump-continues-stale-run`, `writer-loses-the-date` (after the fix),
+`previous-day-via-Date.parse`.
+
 ## 2026-07-31 — The instruction that pointed at nothing (`.216`)
 
 Closes the loop the feedback wave opened. `.214` gave the notes a reader, `.215`

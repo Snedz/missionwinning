@@ -30,6 +30,13 @@ export const STORAGE_KEYS = {
   // ── Train / Today (wedge) ──
   lastWorkoutDate: 'mw_last_workout_date',
   streak: 'mw_streak',
+  /**
+   * `.217` — the day `mw_streak` was last incremented. The override was a
+   * counter with **no date**, so nothing could tell a streak of 5 ending today
+   * from one ending three months ago, and nothing stopped three taps in one
+   * afternoon adding +3 to a "day streak".
+   */
+  streakLastBump: 'mw_streak_last_bump',
   challenges: 'mw_challenges',
   defaultRestSec: 'mw_default_rest_sec',
   activityLog: 'mw_activity_log',
