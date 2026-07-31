@@ -37,6 +37,7 @@
  * Android and iOS, and every one of them is unit-testable.
  */
 
+import { localDateKey } from '@/lib/time/localDate';
 import type { CompletedWorkoutLog, Rpe } from '@/types';
 
 /**
@@ -87,7 +88,7 @@ export interface LoadBands {
 }
 
 function utcDay(d: string | Date): string {
-  return new Date(d).toISOString().slice(0, 10);
+  return localDateKey(new Date(d));
 }
 
 /** Working sets only: warmups are not load the athlete is meant to recover from. */
@@ -158,7 +159,7 @@ function ewma(dailyLoad: Map<string, number>, from: Date, to: Date, days: number
   let value = 0;
   const cursor = new Date(from);
   while (cursor <= to) {
-    const today = dailyLoad.get(cursor.toISOString().slice(0, 10)) ?? 0;
+    const today = dailyLoad.get(localDateKey(cursor)) ?? 0;
     value = today * lambda + value * (1 - lambda);
     cursor.setUTCDate(cursor.getUTCDate() + 1);
   }
@@ -224,7 +225,7 @@ export function compareToBaseline(
 ): { baseline: number | null; deltaPct: number | null } {
   const cutoff = new Date(now);
   cutoff.setUTCDate(cutoff.getUTCDate() - CHRONIC_DAYS);
-  const cutoffDay = cutoff.toISOString().slice(0, 10);
+  const cutoffDay = localDateKey(cutoff);
 
   const prior = loadSeries(history).filter(
     (s) => s.date >= cutoffDay && s.date < session.date

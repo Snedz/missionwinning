@@ -1,3 +1,4 @@
+import { localDateKey } from '@/lib/time/localDate';
 import type { ActivityType } from '@/lib/activityLog';
 import { logActivity } from '@/lib/activityLog';
 
@@ -52,7 +53,7 @@ function toDateOnly(isoOrDate: string): string | null {
   if (isValidDate(trimmed)) return trimmed;
   const ms = Date.parse(trimmed);
   if (!Number.isNaN(ms)) {
-    return new Date(ms).toISOString().slice(0, 10);
+    return localDateKey(new Date(ms));
   }
   return null;
 }
@@ -85,7 +86,7 @@ export function coerceHealthImportRow(raw: unknown): HealthImportRow | null {
   const startMs = Number(o.startTimeMillis ?? o.startTimeMs ?? o.start_time_millis);
   const endMs = Number(o.endTimeMillis ?? o.endTimeMs ?? o.end_time_millis);
   if (Number.isFinite(startMs) && startMs > 0) {
-    const date = new Date(startMs).toISOString().slice(0, 10);
+    const date = localDateKey(new Date(startMs));
     const durationMin =
       Number(o.durationMin) ||
       (Number.isFinite(endMs) ? durationFromMs(startMs, endMs) : Math.round(Number(o.duration) || 0));

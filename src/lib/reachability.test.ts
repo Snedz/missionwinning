@@ -319,11 +319,39 @@ const SINGLE_DEFINITION: { concept: string; pattern: RegExp; home: string; use: 
  * them is what produced the `.199` bug, and the mistake is invisible in review
  * because the code reads as if it were formatting a date.
  */
+/**
+ * `.212` — this rule only ever knew one spelling of its own defect.
+ *
+ * `.199` shipped it matching `toISOString().split('T')[0]` and nothing else. It
+ * could not see `.slice(0, 10)`, and it passed `.199`'s own falsification
+ * because my mutants used the spelling the regex knew. **Fifteen live call sites
+ * used the other one**, including `weekRecap.ts`, which serialised a correct
+ * *local* Monday through `toISOString()` and shared the wrong week with every
+ * athlete east of UTC.
+ *
+ * The general rule, since this is its fourth appearance in this programme:
+ * *a guard keyed to one spelling of a defect has only ever tested that
+ * spelling.* Where a parsed shape can be asserted, assert that. Where only
+ * source text is available — as here — enumerate the spellings **explicitly**
+ * and say why the list is closed.
+ *
+ * The list is closed because these are the only three ways JavaScript has to
+ * take the date half of an ISO string: split on the separator, or slice/substring
+ * the first ten characters. `substr` is included because it is deprecated, not
+ * removed, and a copy-paste from an old file would still compile.
+ */
+const UTC_DATE_SPELLINGS = [
+  /toISOString\(\)\s*\.\s*split\(\s*'T'\s*\)\s*\[\s*0\s*\]/,
+  /toISOString\(\)\s*\.\s*slice\(\s*0\s*,\s*10\s*\)/,
+  /toISOString\(\)\s*\.\s*substring\(\s*0\s*,\s*10\s*\)/,
+  /toISOString\(\)\s*\.\s*substr\(\s*0\s*,\s*10\s*\)/,
+];
+
 test('no calendar date is derived from toISOString()', () => {
   const offenders: string[] = [];
   for (const file of PRODUCT_SOURCE) {
     const src = stripComments(read(file));
-    if (/toISOString\(\)\s*\.\s*split\(\s*'T'\s*\)\s*\[\s*0\s*\]/.test(src)) {
+    if (UTC_DATE_SPELLINGS.some((re) => re.test(src))) {
       offenders.push(file);
     }
   }

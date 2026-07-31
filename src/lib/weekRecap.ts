@@ -4,7 +4,7 @@
 
 import type { CompletedWorkoutLog } from '@/types';
 import { getTrainingStreak } from '@/lib/challenges';
-import { startOfLocalWeek } from '@/lib/time/localDate';
+import { localDateKey, startOfLocalWeek } from '@/lib/time/localDate';
 
 export type WeekRecap = {
   /** Local Monday as `YYYY-MM-DD` — see `time/localDate.ts`. */
@@ -32,7 +32,7 @@ export function buildWeekRecap(history: CompletedWorkoutLog[], now = new Date())
     0
   );
   return {
-    weekStart: weekStart.toISOString().slice(0, 10),
+    weekStart: localDateKey(weekStart),
     sessions: weekLogs.length,
     totalVolume,
     totalSets,

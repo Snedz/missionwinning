@@ -22,6 +22,7 @@
  * something.
  */
 
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { isCold, quietThresholdDays } from '@/lib/reentryTone';
 
 export type NudgeKind = 'comeback' | 'week1-recap' | 'week-behind' | 'wind-down' | 'day-review';
@@ -51,7 +52,7 @@ export interface NudgeInput {
 }
 
 export function utcDay(d: string | Date): string {
-  return new Date(d).toISOString().slice(0, 10);
+  return localDateKeyFromIso(typeof d === 'string' ? d : new Date(d).toISOString());
 }
 
 /** Days remaining in the current UTC week (Mon-start), today included. */

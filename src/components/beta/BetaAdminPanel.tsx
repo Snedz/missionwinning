@@ -1,5 +1,6 @@
 'use client';
 
+import { localDateKey } from '@/lib/time/localDate';
 import { useCallback, useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BetaFunnelAggregate } from '@/types/betaMetrics';
@@ -185,7 +186,7 @@ export function BetaAdminPanel({ enabled }: Props) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `mw-beta-proof-${new Date().toISOString().slice(0, 10)}.txt`;
+    a.download = `mw-beta-proof-${localDateKey()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };

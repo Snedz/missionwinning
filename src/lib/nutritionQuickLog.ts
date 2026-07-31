@@ -40,7 +40,7 @@ export function pruneNutritionLogToDays(
 ): NutritionLogRow[] {
   const cutoff = new Date(now);
   cutoff.setUTCDate(cutoff.getUTCDate() - days);
-  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  const cutoffStr = localDateKey(cutoff);
   return rows.filter((row) => {
     if (!row.date) return true;
     return row.date >= cutoffStr;

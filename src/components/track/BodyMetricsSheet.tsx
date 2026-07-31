@@ -1,5 +1,6 @@
 'use client';
 
+import { localDateKey } from '@/lib/time/localDate';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ type Props = {
 
 export function BodyMetricsSheet({ open, onClose, initial, onSave, units }: Props) {
   const { t } = useTranslation();
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localDateKey();
   const [date, setDate] = useState(today);
   const [weight, setWeight] = useState('');
   const [bodyFat, setBodyFat] = useState('');

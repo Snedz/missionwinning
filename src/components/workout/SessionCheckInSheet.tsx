@@ -5,6 +5,7 @@
  * Skippable; writes mw_mind_checkins; never auto-trims volume.
  */
 
+import { localDateKey } from '@/lib/time/localDate';
 import { useEffect, useId, useRef, useState, type RefObject } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -198,7 +199,7 @@ export function shouldOfferSessionCheckIn(): boolean {
 }
 
 function todayKey(): string {
-  return new Date().toISOString().slice(0, 10);
+  return localDateKey();
 }
 
 export function markSessionCheckInSkipped(): void {

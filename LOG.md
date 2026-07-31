@@ -6,6 +6,55 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — A guard that measured a spelling (`.212`)
+
+**This is a defect in my own `.199` work, and it is the fourth appearance of the
+same lesson in this programme.**
+
+`.199` shipped a rule — *no calendar date is derived from `toISOString()`* — that
+matched `toISOString().split('T')[0]` **and nothing else**. It passed `.199`'s
+own falsification because my mutants used the spelling the regex knew.
+
+**Fifteen live call sites used the other one.** Widening the regex first, before
+touching any of them, turned it red on **twelve files** — which is the only
+evidence that a guard can see the defect it claims to prevent.
+
+The one that mattered: **`weekRecap.ts` shared the wrong week.**
+`weekStart.toISOString().slice(0, 10)` applied to a correct *local* Monday from
+`startOfLocalWeek()`. East of UTC, local Monday 00:00 is still Sunday in UTC, so
+the field whose own JSDoc says *"Local Monday as `YYYY-MM-DD`"* reported a
+Sunday — and it is not internal: it reaches `weeklyDebrief` →
+`TodayWeekRecapCard`'s **shared text** and the share-card title, while
+`useCoachPlan().weekStart` said the correct Monday. Two answers for the same week,
+in the same product, in the same evening.
+
+`weekRecap.test.ts`'s assertion was `typeof recap.weekStart === 'string'`, which
+is why `.199` — the PR about exactly this class of bug — did not catch it. It now
+sweeps **six timezones × four hours**, including UTC+14 and UTC−11, and asserts
+the value is both the right date and an actual Monday. Verified to respond to
+`TZ`: reverting `weekRecap.ts` alone turns it red, which a timezone test that
+silently ignored `process.env.TZ` would not.
+
+The other fourteen — `coach/load.ts` (ACWR, feeds Coach and readiness),
+`coach/progress.ts`, `nutritionQuickLog`, `healthImport`, `wearables/mapSamples`,
+`SessionCheckInSheet`, `BodyMetricsSheet`, `ProgressPhotosCard`,
+`FuelWeightStrip`, `nudgeCopy`, `BetaAdminPanel` — all now call `localDateKey`.
+
+**The rule, written down because it keeps recurring:** *a guard keyed to one
+spelling of a defect has only ever tested that spelling.* Where a parsed shape
+can be asserted, assert that. Where only source text is available — as here —
+enumerate the spellings **explicitly** and say why the list is closed. It is
+closed here because `split('T')`, `slice(0,10)`, `substring(0,10)` and
+`substr(0,10)` are the only ways JavaScript has to take the date half of an ISO
+string; `substr` is included because it is deprecated, not removed.
+
+Killed: `slice-spelled-utc-date`, `substring-spelled-utc-date`,
+`week-recap-shares-the-wrong-week`.
+
+Tests 1091→1092.
+
+---
+
 ## 2026-07-31 — The queue that stops forever, and the cache that keeps your data (`.211`)
 
 Four defects on the offline path, in the module whose own header promises
