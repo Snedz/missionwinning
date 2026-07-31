@@ -6,6 +6,80 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — Ask for a trend, get a chart (`.226`)
+
+The feature `.225` was opened for, now that the buckets underneath it name the
+right day. `TREND_METRICS` + `parseTrendQuery` + `resolveTrendSeries`, and a
+card on `/track` that turns *"volume over 30 days"* into a chart.
+
+### Rules, not a model — because the model is dark
+
+`COACH_LLM_API_URL`/`_API_KEY`/`_MODEL` are all unset, so a model-backed parser
+would answer **nothing** for every current user. Free beta already unlocks full
+depth for everyone, so a 402 was never the obstacle either. Whatever ships has
+to work with no network, no key and no account — which is the logger's own
+promise. If a model is wired up later it resolves the phrasings these rules
+decline; it does not become the thing that answers.
+
+### It answers or it asks — it never guesses
+
+The failure mode worth designing against is a chart of the **wrong** metric,
+because it looks exactly like a right answer, and this repo has paid for
+"confident number, wrong quantity" in `.208`, `.217`, `.220` and `.223`. So an
+unmatched query returns `no-metric` and names what the app *can* chart, and an
+ambiguous one returns its **candidates** as tappable choices.
+
+"Weight" is the ambiguity that matters and it is not a corner case: in a
+training app it is the scale or the bar, and the app measures both. Resolving
+it by table order would answer half those queries wrong. `"my weight"` resolves
+(English possessive means the scale); a bare `"weight"` refuses.
+
+### Training, not health
+
+No HRV, no resting heart rate, no sleep — and their absence is a decision. This
+is a PWA with no wearable, and `sleepConsistency.ts` is already an explicit
+refusal to print a sleep number it cannot compute. A registry offering them
+would make the *asking* surface promise what the *measuring* surface refuses —
+`.195` in reverse. A guard asserts no metric answers to one of those words.
+
+### Two of my own guards were vacuous, and mutation is what said so
+
+- A test that "fat" inside "fatigue" must not match proved **nothing**: no
+  metric answers to a bare "fat", so no matching strategy could have failed it.
+  Swapping whole-word matching for `includes()` walked straight through. It now
+  uses `"inactive"` against the real `active` entry.
+- The parser ranked matches by phrase length so a longer phrase would win.
+  Removing that ranking changed **no** result — the situation it arbitrated
+  cannot arise, because phrases are unique to one metric. So the ranking is
+  **deleted** and the overlap is forbidden in the table instead: a new guard
+  fails if one metric's phrase sits inside another's. Unrepresentable beats
+  handled, and it removes code no test could exercise.
+
+### Rendering settled the mark, again
+
+Drawn as a `monotone` line, daily volume swept smooth humps between 0 and
+5,000 — implying the volume built and decayed *within* each day. A daily bucket
+is a **discrete total**: you trained on the 14th or you did not, and a rest day
+is a real zero. Those are bars now. Body metrics stay a line, because a
+bodyweight between two weigh-ins genuinely did vary continuously. A chart is a
+claim, and the first one was interpolating.
+
+Also honest about coverage: `resolveTrendSeries` returns body metrics at their
+**real** length rather than padding to the window, so asking for ninety days
+with three weigh-ins cannot draw a flat line back to an invented zero.
+
+**Verification.** Six mutants: ambiguity-by-table-order, the bare-weight
+refusal, substring matching, the phrase-collision invariant and `windowAssumed`
+all killed; the sixth deleted the code it targeted. Three states screenshotted
+at 390px against a built server (answer, refusal, ambiguity) — which is what
+found the mark. Tests 1201 → 1220.
+
+**Recorded.** `trend_asked` reports the **outcome** (`volume`, `no-metric`,
+`ambiguous`) and never the query text: what someone types about their own body
+is not telemetry. The refusal rate is the number worth watching.
+
+---
+
 ## 2026-07-31 — The day a session lands on (`.225`)
 
 Opening `.225` — the "ask for a trend" registry — meant reading the function
@@ -80,7 +154,7 @@ Auckland case. Tests 1192 → 1201.
 `parseTrendQuery` are **not** in this entry. They are the feature `.225` was
 opened for, and they belong on buckets that name the right day; shipping them
 together would have buried a correctness fix inside a feature diff and made the
-"which day is this" change impossible to review on its own.
+"which day is this" change impossible to review on its own. **Shipped in `.226`.**
 
 ---
 

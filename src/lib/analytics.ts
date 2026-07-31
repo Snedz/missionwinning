@@ -45,6 +45,14 @@ export type AnalyticsEvent =
   | 'coach_premium_active'
   | 'coach_session_adjusted'
   | 'readiness_checkin_completed'
+  /**
+   * `.225` — a trend was asked for. The property is the **outcome**
+   * (`volume`, `no-metric`, `ambiguous`), never the query text: what someone
+   * types into a box about their own body is not telemetry. The refusal rate
+   * is the number worth watching — it says which phrasings the offline rules
+   * do not cover yet.
+   */
+  | 'trend_asked'
   /** Debrief closing question answered — the reply feeds the next plan, not just a count. */
   | 'debrief_answered'
   /** Post-session notification offer: shown -> tapped -> granted, or dismissed. */
