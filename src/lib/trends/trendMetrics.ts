@@ -52,8 +52,14 @@ export interface TrendMetricDef {
   /** The body-metric key, when this metric is one. */
   bodyMetric?: BodyMetricKey;
   /**
-   * Words that select this metric. Matched whole-word against a normalised
-   * query, longest phrase first, so "body fat" beats "fat".
+   * Words that select this metric, matched **whole-word** against a normalised
+   * query — "active" must not fire on "inactive".
+   *
+   * Order carries no meaning. `parseTrendQuery` once ranked matches by phrase
+   * length, and mutation testing showed that ranking changed no result: a
+   * phrase belongs to exactly one metric, so which of its phrases matched
+   * cannot change the answer. The overlap is forbidden by
+   * `no phrase of one metric is contained in another metric's` instead.
    */
   match: string[];
 }
@@ -89,13 +95,6 @@ export const TREND_METRICS: TrendMetricDef[] = [
     label: 'Active minutes',
     unit: 'minutes',
     source: 'buildTodayTrends → active (activityLog)',
-    /*
-     * Deliberately **not** hand-ordered longest-first. `matchMetrics` sorts by
-     * phrase length itself, and a table that was already in the right order
-     * made that sort untestable: removing it changed nothing, so a mutation
-     * removing it survived. Data should not quietly satisfy the code's
-     * invariants — the code should.
-     */
     match: ['active', 'activity', 'active minutes', 'movement', 'cardio'],
   },
   {
