@@ -143,6 +143,17 @@ run('i18n parity', 'npm', ['run', 'i18n:parity']);
 // `i18n:parity` compares locale packs to each other and never opens a `.tsx`, so
 // it is structurally blind to a key that exists in no pack at all. `.202`.
 run('i18n coverage', 'npm', ['run', 'i18n:coverage']);
+/*
+ * `.219` — the check that had never run.
+ *
+ * `security-audit` lived only in `ci.yml`, where every job dies at
+ * `runner_id: 0`, so it had never executed on any PR. `.200` fixed exactly this
+ * for the a11y suite and `.213` found it again here. And it could not have
+ * failed usefully anyway: the old script was a bare `npm audit --audit-level=high`
+ * that exits 1 unconditionally while any unfixable advisory exists, so a *new*
+ * advisory was invisible behind the permanent red.
+ */
+run('Dependency advisories', 'npm', ['run', 'security-audit']);
 // Both of these existed as npm scripts and neither was in the gate, so nothing ran them.
 run('Display type', 'npm', ['run', 'check-display-type']);
 run('Token sync (web ↔ Android)', 'npm', ['run', 'check-token-sync']);

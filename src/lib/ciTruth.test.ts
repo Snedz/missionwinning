@@ -196,16 +196,21 @@ test('the visual job fails when it has no baselines', () => {
  * run* is presently satisfied by workflows that **cannot run** — the same
  * defect, one level up, inside the guard against it.
  *
- * The proof is `npm run security-audit`. It **exits 1 today** — 48 advisories,
- * 17 of them high — and appears only in `ci.yml`, so `ciTruth` passes it while
- * nothing has ever executed it. It has been red-by-omission for this suite's
- * entire life.
+ * The proof was `npm run security-audit`: it appeared only in `ci.yml`, so
+ * `ciTruth` passed it while nothing had ever executed it — red-by-omission for
+ * this suite's entire life.
  *
- * Honest scope: the worst advisories (axios CVSS 8.7, `bigint-buffer` 7.5)
- * enter solely through `@phantom`/`@solana`, and that path is unreachable today
- * — `/bundle` 307s during free beta, `PhantomLifetimePayButton` returns null,
- * and the SDK is already `dynamic()`. **This is CI truth and maintenance debt,
- * not live exposure.** `next` and `sharp` are the reachable ones.
+ * **`.219` closed it**, and the list below is now empty. Every check this repo
+ * declares runs in `npm run gate`. That is worth stating rather than quietly
+ * deleting the rule: the expected value is `[]` precisely so the next check that
+ * lands in a workflow and nowhere else fails this test on arrival.
+ *
+ * A correction to what `.213` recorded here, since it was planned around: the
+ * advisories were said to enter "solely through @phantom/@solana". They do not.
+ * `postcss`, `sharp`, `brace-expansion`, `fast-uri` and `js-yaml` all have
+ * direct roots outside that subtree, and postcss/sharp sit in the build and
+ * image paths. `.219` cleared four of them and recorded the rest with reasons in
+ * `scripts/security-audit.mjs`.
  *
  * This does not try to fix billing. It makes the dependency explicit, so a check
  * whose only home is a dead workflow is *named* as unrun rather than counted as
@@ -228,7 +233,7 @@ test('a check whose only home is a workflow is named, not counted as covered', (
 
   assert.deepEqual(
     workflowOnly,
-    ['security-audit'],
+    [],
     'While Actions is billing-blocked, this list is the honest answer to "what is not being ' +
       'checked at all". It changed — update it deliberately, or move the check into ' +
       '`npm run gate`, which is the only thing that actually runs.\n' +
@@ -237,10 +242,13 @@ test('a check whose only home is a workflow is named, not counted as covered', (
 });
 
 /**
- * And the audit's state is recorded rather than assumed. `npm run security-audit`
- * uses `--audit-level=high` and exits 1 today, so the moment billing clears CI
- * goes red on it — joining gitleaks. Better known now than discovered as a
- * surprise on the first green-runner day.
+ * And the audit's state is recorded rather than assumed.
+ *
+ * `.213` noted that the audit would turn CI red the moment billing cleared,
+ * because `--audit-level=high` exits 1 unconditionally while unfixable
+ * advisories exist. `.219` replaced it with a check that fails only on an
+ * advisory nobody has reviewed — so it is green today, and a *new* one still
+ * turns it red. The Actions state itself remains the fact `CI_CAN_RUN` encodes.
  */
 test('the failing-and-unrun audit is stated where the next reader will look', () => {
   assert.match(

@@ -6,6 +6,78 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-07-31 — A security check that can actually fail (`.219`)
+
+Two defects. The second is the one worth reading.
+
+### It had never run
+
+`npm run security-audit` appeared in exactly one place —
+`.github/workflows/ci.yml` — and every job in that workflow dies in seconds at
+`runner_id: 0`. It was absent from `scripts/gate.mjs`.
+
+`.200` fixed precisely this for the a11y suite (*"the guards that never ran"*).
+`.213` found it again for this check, said so, and deferred the fix. It is now
+**gate step 15**.
+
+### And it could not have failed usefully if it had
+
+The old script was `npm audit --audit-level=high`. That exits 1 for as long as
+**any** unfixable advisory exists — and four of them have no published fix at
+all. So the check was permanently red, which means **a new high advisory landing
+tomorrow would have been invisible**.
+
+A check that always fails measures exactly as much as one that always passes.
+That is this wave's own defect class one level up, and it is why nine vacuous
+guards were worth finding.
+
+The rule is therefore not *"no advisories"*. It is **no advisory we have not
+looked at**, with the count only ever allowed to fall.
+
+### The unit nearly cost a real improvement
+
+`npm audit fix` cleared **four high advisories with no breaking change**:
+`GHSA-3jxr-9vmj-r5cp`, `GHSA-4c8g-83qw-93j6`, `GHSA-52cp-r559-cp3m`,
+`GHSA-v2hh-gcrm-f6hx`.
+
+But npm's own headline went from **17 high packages to 23**, and I very nearly
+reverted the lockfile on that basis. Distinct high **advisories** had actually
+fallen from 17 to 13. The package tally rose because the fix reshaped eslint's
+subtree, so more packages inherited the same advisory.
+
+**Counting the wrong unit made a real improvement look like a regression** —
+which is exactly the failure the new script exists to prevent, encountered while
+writing it. `security-audit.mjs` counts advisory IDs, and a unit test pins the
+distinction with a fixture of one advisory across three packages.
+
+### Recorded, not silenced
+
+The remaining 13 are allowlisted, and every entry must carry **why it is
+accepted** and **what would change that** — asserted by the test, because an
+allowlist of bare identifiers is a mute button while one that has to state its
+reasoning is a decision someone can disagree with later.
+
+| Advisory | Why accepted |
+|---|---|
+| postcss ×2 | No published fix. Runs at build time over our own stylesheets; no path by which a user supplies CSS. |
+| sharp | No published fix. Optimises only local assets committed to the repo — re-check if remote image sources are ever enabled. |
+| brace-expansion | Reached only through eslint, glob and lighthouse — tooling that runs on our own repository. |
+| axios ×8, bigint-buffer | Fixable only by a breaking downgrade of the payment SDK, behind a `dynamic()` import on `/bundle`. |
+
+The count is a ratchet that only moves down — `.202` (i18n coverage) and `.209`
+(bundle budget) are the same shape, and the same rule applies: a cap that follows
+reality is not a cap.
+
+### Falsification
+
+Removing one entry from the allowlist turns the check **red**, naming the
+advisory and the packages carrying it. That mattered more than usual here: a
+security gate nobody has ever seen fail is indistinguishable from one that cannot.
+
+Killed: `new-high-advisory-passes` (verified by dropping `sharp` from ACCEPTED),
+`ratchet-moves-up`, `allowlist-without-reason`, `check-not-in-gate`,
+`packages-counted-instead-of-advisories`.
+
 ## 2026-07-31 — The invite that could silently never redeem (`.218`)
 
 `.170`'s bug, **fourth instance**, on the one path the beta gate measures.
