@@ -32,7 +32,7 @@ import { gateStringsFor } from '@/i18n/gateLocales';
 import { learnContentStringsFor } from '@/i18n/learnContentLocales';
 import { APP_LANGS, type AppLang } from '@/i18n/appLangs';
 import { withLocalePack } from '@/i18n/localePacks';
-import { LOCALE_FILES, type LocaleNamespace } from '@/i18n/localeExportManifest';
+import type { LocaleNamespace } from '@/i18n/localeExportManifest';
 
 /** @deprecated Prefer APP_LANGS — alias kept for existing imports. */
 export const EXPORT_LANGS = APP_LANGS;

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SUPER_BUNDLE_PRICE } from '@/lib/payments';
 import { getJourneyEvents } from '@/lib/journeyAnalytics';
-import { STORAGE_KEYS, STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
+import { STORAGE_KEY_PREFIXES } from '@/lib/storage/keys';
 import { keysWithPrefix, readRaw } from '@/lib/storage/safeStorage';
 
 export function ProfileOwnerTools() {

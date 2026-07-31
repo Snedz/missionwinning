@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint app src --max-warnings 10",
+    "lint": "eslint app src --max-warnings 0",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test \"src/**/*.test.ts\"",
     "test:routes": "tsx --conditions=react-server --test \"src/**/*.routetest.ts\"",

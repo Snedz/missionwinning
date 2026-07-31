@@ -41,6 +41,8 @@ async function headOrGet(path: string, init?: RequestInit): Promise<Response> {
 async function main() {
   console.log(`\nGate smoke — ${base}\n`);
   const checks: Check[] = [];
+  /** Checks that did not run. Counted separately so "passed" means measured (`.213`). */
+  const skipped: string[] = [];
 
   try {
     const home = await headOrGet('/', { redirect: 'manual' });
@@ -464,11 +466,20 @@ async function main() {
       checks.push({ name: 'PWA assets', ok: false, detail: String(e) });
     }
   } else {
-    checks.push({
-      name: 'PWA assets',
-      ok: true,
-      detail: 'skipped — set SMOKE_EXPECT_PWA=true after PRIVATE_MODE=false',
-    });
+    /*
+     * `.213` — a skipped check is not a passed check.
+     *
+     * This pushed `ok: true` with detail "skipped", so the summary counted a
+     * PWA check that never ran. That is the same defect `ci-extended.yml`
+     * documents at length for the visual job and `.200` was written about: a
+     * check that reports success while measuring nothing.
+     *
+     * Reporting it as *skipped* rather than *passed* keeps the count honest.
+     * Note this does not change the PWA policy — the service worker is
+     * deliberately off while `PRIVATE_MODE=true` (do not offline-cache a
+     * private app). It only stops the check lying about itself.
+     */
+    skipped.push('PWA assets — set SMOKE_EXPECT_PWA=true after PRIVATE_MODE=false');
   }
 
   const accessSecret = process.env.SMOKE_ACCESS_SECRET;
@@ -531,11 +542,8 @@ async function main() {
       checks.push({ name: 'GET /welcome unlocked', ok: false, detail: String(e) });
     }
   } else {
-    checks.push({
-      name: 'GET /welcome (unlocked)',
-      ok: true,
-      detail: 'skipped — set SMOKE_ACCESS_SECRET to probe gated welcome route',
-    });
+    // `.213` — same shape as the PWA check above: skipped is not passed.
+    skipped.push('GET /welcome (unlocked) — set SMOKE_ACCESS_SECRET to probe the gated route');
   }
 
   try {
@@ -559,7 +567,11 @@ async function main() {
     if (!c.ok) failed++;
   }
 
-  console.log(failed ? `\n${failed} check(s) failed.\n` : '\nAll gate checks passed.\n');
+  for (const s of skipped) console.log(`  – ${s}`);
+  const tail = skipped.length ? ` (${skipped.length} skipped — not measured)` : '';
+  console.log(
+    failed ? `\n${failed} check(s) failed.${tail}\n` : `\nAll gate checks passed.${tail}\n`
+  );
   process.exit(failed ? 1 : 0);
 }
 

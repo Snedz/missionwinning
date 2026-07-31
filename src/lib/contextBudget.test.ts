@@ -70,3 +70,60 @@ test('the rotation archive exists and is listed', () => {
     'the Now block must link where its rotated entries went'
   );
 });
+
+/**
+ * Counting bullets is not the same as keeping the truth.
+ *
+ * `.213` — `.203` rotated `.123`–`.189` to the archive and, with them, the
+ * `.170` bullet that was the **only** place `## Now` recorded REDTEAM **A5**'s
+ * falsifier as fired. That fact is what makes the beta gates red, and
+ * `ORCHESTRATION.md` §Do-not-build keys off exactly it: *"Features while beta
+ * gates red | Only hero bugs / launch unblock."*
+ *
+ * So for ten builds an agent booting cold read `CONTEXT.md`, saw no red gate,
+ * and would have concluded features were allowed. The budget guard I wrote in
+ * the same PR counted bullets, checked the archive existed, and checked the
+ * budget was stated — and asserted **nothing about which facts survive**. A
+ * budget guard that counts without checking content will happily let you
+ * archive the truth.
+ *
+ * The fix is not "never rotate". It is that these facts do not live in ship
+ * bullets at all — they are standing status lines, which is what makes them
+ * rotatable-proof, and this list is what keeps them there.
+ */
+const MUST_STATE: { question: string; pattern: RegExp }[] = [
+  { question: 'Are the beta gates red, and what does that permit?', pattern: /A5|falsifier/i },
+  { question: 'Is PRIVATE_MODE on?', pattern: /PRIVATE_MODE/ },
+  { question: 'Can an invite email be sent?', pattern: /MAIL_POSTAL_ADDRESS/ },
+  { question: 'Does CI run?', pattern: /Actions/ },
+  { question: 'Does push work?', pattern: /VAPID/ },
+  { question: 'How many migrations are pending?', pattern: /[Mm]igrations?/ },
+];
+
+test('the Now block still answers the questions that govern what may be built', () => {
+  const block = nowBlock();
+  const unanswered = MUST_STATE.filter((m) => !m.pattern.test(block)).map((m) => m.question);
+  assert.deepEqual(
+    unanswered,
+    [],
+    'CONTEXT.md `## Now` no longer answers:\n  ' +
+      unanswered.join('\n  ') +
+      '\nThese decide what an agent is allowed to do. If one was rotated out with a ship ' +
+      'bullet, it was in the wrong place — put it in the standing Status table, not in prose ' +
+      'about a build.'
+  );
+});
+
+/**
+ * And the facts must be *standing*, not incidental. A mention that only exists
+ * because some recent PR happened to discuss it disappears the moment that
+ * bullet rotates — which is precisely how the gate state was lost.
+ */
+test('the governing facts live in a table, not in a ship bullet', () => {
+  const block = nowBlock();
+  assert.match(
+    block,
+    /> \*\*Status — the facts that decide what may be built\.\*\*/,
+    'the standing Status block is gone; the facts above are one rotation from vanishing again'
+  );
+});
