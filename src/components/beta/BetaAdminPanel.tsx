@@ -1,5 +1,6 @@
 'use client';
 
+import type { FeedbackNote } from '@/lib/feedbackSource';
 import { localDateKey } from '@/lib/time/localDate';
 import { useCallback, useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -47,14 +48,24 @@ export function BetaAdminPanel({ enabled }: Props) {
   const [issuing, setIssuing] = useState(false);
   const [issueMsg, setIssueMsg] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  /*
+   * `.214` — the notes themselves, which nothing has ever shown.
+   * `null` means "not loaded / not permitted"; `[]` means "genuinely none yet".
+   * Those must stay distinguishable: an empty list rendered for a failed fetch
+   * would read as silence from users, which is the most expensive wrong
+   * conclusion this panel could invite.
+   */
+  const [feedback, setFeedback] = useState<FeedbackNote[] | null>(null);
+  const [feedbackError, setFeedbackError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const [metricsRes, invitesRes] = await Promise.all([
+      const [metricsRes, invitesRes, feedbackRes] = await Promise.all([
         fetch('/api/beta/metrics', { credentials: 'include' }),
         fetch('/api/beta/invites', { credentials: 'include' }),
+        fetch('/api/beta/feedback', { credentials: 'include' }),
       ]);
       if (metricsRes.status === 403) {
         setMetrics(null);
@@ -70,6 +81,22 @@ export function BetaAdminPanel({ enabled }: Props) {
       } else if (invitesRes.status !== 403) {
         // Soft-fail invites if table missing pre-migration
         setInvites(null);
+      }
+
+      // Reported separately: feedback failing must not blank the funnel above
+      // it, and a funnel failure must not be mistaken for "no one wrote in".
+      if (feedbackRes.ok) {
+        const body = (await feedbackRes.json()) as { notes?: FeedbackNote[] };
+        setFeedback(body.notes ?? []);
+        setFeedbackError(null);
+      } else {
+        setFeedback(null);
+        const body = await feedbackRes.json().catch(() => ({}));
+        setFeedbackError(
+          feedbackRes.status === 403
+            ? 'Not authorised — set BETA_ADMIN_EMAILS or send x-beta-admin-secret.'
+            : (body as { error?: string }).error || `Could not load feedback (${feedbackRes.status})`
+        );
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Failed to load');
@@ -302,6 +329,51 @@ export function BetaAdminPanel({ enabled }: Props) {
                 <code className="text-[10px]">iday_completed</code> →{' '}
                 <code className="text-[10px]">first_workout_completed</code>
               </p>
+              {/*
+                `.214` — what people actually wrote.
+
+                This panel showed `feedback-page  7` and nothing else for the
+                whole life of the feedback form: `betaMetricsServer` selects
+                `package_interest` only, so the prose sat in a column no code
+                ever named. Newest first, because the weekly ritual in
+                POST_LAUNCH_CADENCE is "read 2 and fix the #1 confusion" — not
+                "read all of them".
+              */}
+              <div className="rounded-lg border border-border/50 p-3 text-xs space-y-2">
+                <div className="font-semibold text-foreground">
+                  Feedback{feedback ? ` (${feedback.length})` : ''}
+                </div>
+
+                {feedbackError ? (
+                  <p className="text-[color:var(--status-warning-fg)]">{feedbackError}</p>
+                ) : feedback === null ? (
+                  <p className="text-muted-foreground">Loading…</p>
+                ) : feedback.length === 0 ? (
+                  <p className="text-muted-foreground">
+                    No notes yet. The form is at <code className="text-[10px]">/feedback</code>.
+                  </p>
+                ) : (
+                  <ul className="space-y-3">
+                    {feedback.map((note) => (
+                      <li key={`${note.at}-${note.email}`} className="border-t border-border/40 pt-2 first:border-0 first:pt-0">
+                        <div className="flex justify-between gap-2 text-[11px] text-muted-foreground">
+                          <span className="truncate">{note.name || 'Anonymous'}</span>
+                          <span className="tabular-nums shrink-0">{note.at.slice(0, 10)}</span>
+                        </div>
+                        {note.email ? (
+                          <div className="text-[11px] text-muted-foreground truncate">{note.email}</div>
+                        ) : null}
+                        {/* `whitespace-pre-wrap`: the form packs four answers into
+                            one field separated by newlines, so collapsing them
+                            would run the whole note into a single paragraph. */}
+                        <p className="mt-1 whitespace-pre-wrap leading-relaxed text-foreground">
+                          {note.text}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
               {metrics.leadSourceTop && metrics.leadSourceTop.length > 0 ? (
                 <div className="rounded-lg border border-border/50 p-3 text-xs space-y-1.5">
                   <div className="font-semibold text-foreground">

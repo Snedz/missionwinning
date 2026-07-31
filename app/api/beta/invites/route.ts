@@ -4,12 +4,8 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
-import { createClient } from '@supabase/supabase-js';
-import {
-  computeInviteFunnel,
-  isBetaAdminEmail,
-} from '@/lib/betaMetricsServer';
-import { extractSupabaseAccessToken } from '@/lib/supabaseAuthCookies';
+import { computeInviteFunnel } from '@/lib/betaMetricsServer';
+import { authorizeBetaAdmin } from '@/lib/api/betaAdminAuth';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { generateInviteCode } from '@/lib/inviteCode';
 import { parseJsonBody, inviteCreateBodySchema } from '@/lib/apiSchemas';
@@ -17,22 +13,6 @@ import { rejectOversizedBody } from '@/lib/requestBodyLimit';
 import { rateLimitAsync } from '@/lib/rateLimit';
 import { clientIp } from '@/lib/clientIp';
 import { siteUrl } from '@/lib/emailServer';
-
-async function authorizeBetaAdmin(request: NextRequest): Promise<boolean> {
-  const secret = request.headers.get('x-beta-admin-secret');
-  if (secret && secret === process.env.BETA_ADMIN_SECRET) return true;
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const token = extractSupabaseAccessToken(request.cookies);
-  if (!url || !anon || !token) return false;
-
-  const supabase = createClient(url, anon);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser(token);
-  return isBetaAdminEmail(user?.email);
-}
 
 /**
  * Prod blocks `?access=` unless PRIVATE_ALLOW_QUERY_ACCESS=true.

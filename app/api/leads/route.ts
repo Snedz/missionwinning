@@ -3,6 +3,7 @@
  * Auth: gate | Rate: 5/min/IP | Schema: leadsBodySchema
  * See: app/api/INDEX.md
  */
+import { isFeedbackSource } from '@/lib/feedbackSource';
 import { NextRequest, NextResponse } from 'next/server';
 import { withApiLogging } from '@/lib/api/withApiLogging';
 import { rateLimitAsync } from '@/lib/rateLimit';
@@ -153,8 +154,21 @@ export const POST = withApiLogging('leads', async (req: NextRequest) => {
     }
   }
 
-  // Never block the HTTP response on email.
-  void maybeSendLeadConfirmation(email, source);
+  /*
+   * `.214` — a feedback note is not a mailing-list signup.
+   *
+   * This fired for every insert, so a beta tester who wrote a testimonial
+   * received *"You're on the Mission Winning list — Your interest tag:
+   * feedback-page"* with an unsubscribe link, and got `confirmed_at` stamped
+   * as though they had opted into the launch list. On the one interaction
+   * where a user did us a favour, we replied with a marketing receipt.
+   *
+   * Waitlist signups still get their confirmation; that is what it is for.
+   */
+  if (!isFeedbackSource(source)) {
+    // Never block the HTTP response on email.
+    void maybeSendLeadConfirmation(email, source);
+  }
 
   return NextResponse.json({ ok: true });
 });
