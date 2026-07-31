@@ -26,7 +26,13 @@ export type OutboxKind =
   | 'journey.state'
   | 'leaderboard.push'
   | 'pft.push'
-  | 'feedback.submit';
+  | 'feedback.submit'
+  // `.218` — attribution on the beta-critical path. These were raw
+  // fire-and-forget fetches, so a redeem lost to a flaky signal made the founder
+  // panel report a tester who never arrived and never converted.
+  | 'invite.landed'
+  | 'invite.redeem'
+  | 'referral.redeem';
 
 export interface OutboxOp {
   id: string;
