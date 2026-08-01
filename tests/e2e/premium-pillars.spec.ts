@@ -15,9 +15,21 @@ test.describe('Premium pillar experiences', () => {
   test('Mind page shows guided session player', async ({ page }) => {
     await page.goto('/mind', { waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('button', { name: /^start$/i }).first()).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: /^free guided sessions$/i })
-    ).toBeVisible();
+    /*
+     * `.237` — the heading is **"Guided sessions"**. This asserted an anchored
+     * `/^free guided sessions$/i`, which the page has not rendered since the
+     * word "Free" moved out of the heading and into the body copy beneath it
+     * ("Free guided patterns — no audio required"). The player assertion above
+     * passed the whole time; only the exact string failed, and it failed the
+     * first time this spec was ever executed.
+     *
+     * Still anchored rather than loosened to a substring: `/guided/` would also
+     * match "Browse guided sessions" and "Try a guided session", both of which
+     * are links elsewhere on the page, and an assertion that cannot tell a
+     * section heading from a call to action is not asserting the section
+     * exists.
+     */
+    await expect(page.getByRole('heading', { name: /^guided sessions$/i })).toBeVisible();
   });
 
   test('Move page lists flows and starts player', async ({ page }) => {

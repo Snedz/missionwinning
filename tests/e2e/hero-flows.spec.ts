@@ -175,7 +175,20 @@ test.describe('Wave 5 public CTA integrity', () => {
     const res = await page.goto('/exercises/squats', { waitUntil: 'domcontentloaded' });
     expect(res?.status()).toBe(200);
     await expect(page.getByRole('link', { name: /start free|track|welcome|begin/i }).first()).toBeVisible();
-    const welcome = page.locator('a[href="/welcome"]').first();
+    /*
+     * `.237` — `:visible`, and the missing filter is the entire bug.
+     *
+     * The page has three `/welcome` links and the first in DOM order is the
+     * desktop nav's, `class="hidden … md:inline"`. Every project in
+     * `playwright.config.ts` is mobile-chrome at 375px, so that one is
+     * `display: none` and `.first()` selected a link no phone user can see —
+     * then asserted it was visible. It failed the first time this spec ran.
+     *
+     * Filtering rather than indexing also makes the assertion say what it means:
+     * an athlete on the page this test is about must have a reachable route to
+     * /welcome, not merely a `/welcome` string somewhere in the markup.
+     */
+    const welcome = page.locator('a[href="/welcome"]:visible').first();
     await expect(welcome).toBeVisible();
   });
 });
