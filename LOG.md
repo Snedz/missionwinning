@@ -6,6 +6,77 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-08-01 — The gate CI could not pass (`.228`–`.229`)
+
+Actions billing cleared at **00:12 UTC** and the PR gate ran for the first time
+in this programme. It found two things nobody could have seen while every job
+was dying at `runner_id: 0` — and one of them had been latent since `.198`.
+
+### gitleaks was never reporting a secret (`.228`)
+
+It failed **before scanning anything**:
+
+    GET /repos/Snedz/missionwinning/pulls/178/commits  ->  403
+    'Resource not accessible by integration'
+    'x-accepted-github-permissions': 'pull_requests=read'
+
+`gitleaks-action@v2` lists a PR's commits to work out its scan range. The
+workflow declared **no `permissions:` block**, so the job inherited a
+contents-only token. The secret gate could not scan a pull request at all, and
+the red it produced said nothing about whether the diff holds a secret.
+
+CONTEXT recorded that red as the known finding in `8ea3527a` — a real Solana
+treasury address in history, deliberately not allowlisted. Still true of
+`master`; **not** why the check was failing. Both causes are now stated
+separately, and the workflow declares least privilege explicitly.
+
+### The local gate and CI built different apps (`.229`)
+
+`Today shows one red action at 19:00` failed on CI — on the retry too, so not
+flaky — while passing locally. 51 passed, 1 failed.
+
+`.198` found that `isPushSupported()` returns false without a VAPID public key,
+so every component behind it rendered **nothing** in every e2e run this repo had
+ever done, and the guards over those surfaces passed vacuously. Its fix was a
+placeholder key in `BUILD_ENV`.
+
+That went into [`gate.mjs`](scripts/gate.mjs) and **not** into
+[`ci.yml`](.github/workflows/ci.yml). One fact, two homes, drifted
+immediately (`.178`) — and invisible for as long as CI could not run.
+
+**Proved, not assumed.** Rebuilt locally with the key removed: the test fails,
+reproducing CI exactly. Rebuilt with it: passes. Causation, not correlation.
+
+This is `.209`'s lesson pointed the other way. There, the gate measured a
+configuration production does not serve. Here **CI measured a configuration the
+local gate does not serve** — and the local gate is what every agent runs before
+pushing, so a green local gate meant nothing about CI.
+
+[`gateEnvParity.test.ts`](src/lib/gateEnvParity.test.ts) now compares the two
+lists: every variable the local gate sets must be set in CI, **to the same
+value**, because a placeholder that differs between lanes is the same defect
+with extra steps. Both mutants — deleting the CI entry, and changing its value —
+turn it red.
+
+**The guard's own parser was wrong first.** One regex read both
+`NAME: 'x',` and `NAME:\n  process.env.NAME || 'x',`, and its cross-line branch
+let `PRIVATE_MODE: 'false',` reach past its own line to the *next* variable's
+literal — reporting a disagreement that did not exist. Split into bounded
+segments per declaration. `.212`'s rule holds for the tools as much as the code.
+
+### What CI settled about the flakiness
+
+Three local gate runs had failed on three *different* timing-sensitive tests,
+each passing standalone, and `.224` recorded that as container flakiness. **CI
+passed all three.** So that attribution was right — and it was also hiding a
+fourth failure that was entirely real and entirely deterministic. A suite that
+fails differently every run trains you to discount the next failure, which is
+what nearly happened here.
+
+Tests 1229 → 1232.
+
+---
+
 ## 2026-08-01 — Days logged, and the caps they outlive (`.227`)
 
 The "1,146 days of data" number from the member story — and it **cannot be

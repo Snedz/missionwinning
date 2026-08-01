@@ -17,10 +17,23 @@ jobs:
     runs-on: ubuntu-latest
     # Hero e2e runs in this job so the production build happens exactly once.
     # PRIVATE_MODE=false compiles the service worker, which the offline spec needs.
+    # Must stay in step with `BUILD_ENV` in scripts/gate.mjs — enforced by
+    # `gateEnvParity.test.ts`. `.229`: these two drifted, and nobody could see
+    # it while Actions was billing-blocked.
     env:
       PRIVATE_MODE: 'false'
       NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+      # `.198` added this to the local gate and not here, so `isPushSupported()`
+      # returned false on CI and every component behind it — the wind-down
+      # offer, the day-review opt-in — rendered nothing. `Today shows one red
+      # action at 19:00` asserts that control is mounted, so it failed on CI and
+      # passed locally for as long as CI could not run.
+      #
+      # Safe: this is the public half of a keypair and only gates whether the UI
+      # draws. Nothing can subscribe — the server has no private key, and no
+      # test grants notification permission.
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
     steps:
       - uses: actions/checkout@v4
         with:
