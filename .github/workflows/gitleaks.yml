@@ -8,6 +8,34 @@ on:
     branches: [master]
   workflow_dispatch:
 
+# Least privilege, stated rather than inherited.
+#
+# Actions billing cleared on 2026-08-01 and gitleaks ran for the first time. It
+# did not report a secret: it **crashed with a 403** before scanning anything.
+#
+#   GET /repos/Snedz/missionwinning/pulls/179/commits  →  403
+#   'Resource not accessible by integration'
+#   'x-accepted-github-permissions': 'pull_requests=read'
+#
+# gitleaks-action@v2 lists the PR's commits to work out its scan range, and with
+# no `permissions:` block the job inherits the repository default — which grants
+# `contents` only. So the secret gate could never scan a pull request, and the
+# red it produced said nothing about whether the diff holds a secret.
+#
+# CONTEXT records that red as the known finding in commit 8ea3527a (a real Solana
+# treasury address, deliberately not allowlisted — founder call). Still true of
+# `master`'s history, and **not** why this check was failing. The action scans the
+# **PR's commits only**, so a finding in history cannot fire on a pull request.
+#
+# Verified on #178, where the same change turned this green: "10 commits scanned,
+# ~30.32 MB, no leaks found" — the first real scan in this repo's history.
+#
+# Note for whoever merges second: #178 carries an identical block. The conflict
+# is textual, not semantic — take either side.
+permissions:
+  contents: read
+  pull-requests: read
+
 concurrency:
   group: gitleaks-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
