@@ -129,6 +129,33 @@ Overlap is stated rather than left to be discovered: when #178 lands, its two en
 tests are subsumed here and should be deleted; its step-parity and ordering tests
 are a different question and stay. One concept, one home — `.178`.
 
+### The secret scanner crashed on the first run of every PR
+
+Found while driving this PR to green, and it is the same defect one layer over.
+
+```
+RequestError [HttpError]: Resource not accessible by integration
+  at async Object.ScanPullRequest (…/gitleaks-action/v2/dist/index.js)
+  url: https://api.github.com/repos/Snedz/missionwinning/pulls/181/commits
+  status: 403
+  x-accepted-github-permissions: pull_requests=read
+```
+
+Identical on #181 (run 30684203909) and #182 (run 30719575181), with the same
+first-run failure on `feat/locale-export-split` and `feat/a11y-settle`. On a
+`pull_request` event `gitleaks-action` lists the PR's commits so it scans only
+what the PR adds; `gitleaks.yml` declared no `permissions:` block, so the job
+inherited the repository default, which does not include `pull_requests`.
+
+Every one of those failures went green on a later push and was left there. A
+check people re-run until it passes is a check they have stopped reading — and
+this one is the secret scanner, so the run being skipped is the one that scans a
+new branch's first commits.
+
+Fixed with least privilege stated rather than inherited: `contents: read` and
+`pull-requests: read`, nothing written. No guard: unlike the silent defects
+above, this one crashes loudly — it needed reading, not catching.
+
 ### Process
 
 Third occurrence after `.202` and `.205`: I mutated `workflowBuildEnv.test.ts`
