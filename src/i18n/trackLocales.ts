@@ -28,6 +28,26 @@ type TrackStrings = {
   trackGpsRecording: string;
   trackGpsIdle: string;
   trackGpsStart: string;
+  /** `.226` — the ask-for-a-trend card. */
+  trendAskTitle: string;
+  trendAskLead: string;
+  trendAskLabel: string;
+  trendAskPlaceholder: string;
+  trendAskGo: string;
+  trendAskAmbiguous: string;
+  trendAskNoMetric: string;
+  trendAskOffer: string;
+  trendAskWindow: string;
+  trendAskAssumed: string;
+  trendAskShort: string;
+  /** Metric names, resolved through `TREND_METRICS[].labelKey`. */
+  trendVolume: string;
+  trendSessions: string;
+  trendProtein: string;
+  trendActive: string;
+  trendBodyweight: string;
+  trendBodyfat: string;
+  trendWaist: string;
   trackGpsStop: string;
   trackGpsSave: string;
   trackGpsHint: string;
@@ -73,6 +93,25 @@ const en: TrackStrings = {
   trackGpsRecording: 'Recording… {{count}} points',
   trackGpsIdle: 'Start when you begin your walk or run.',
   trackGpsStart: 'Start GPS',
+  trendAskTitle: 'Chart your trends',
+  trendAskLead:
+    'Ask in your own words — "protein this week", "volume over 30 days". Answered on this device, offline.',
+  trendAskLabel: 'Ask for a trend',
+  trendAskPlaceholder: 'volume over 30 days',
+  trendAskGo: 'Chart',
+  trendAskAmbiguous: 'Which one did you mean?',
+  trendAskNoMetric: 'This app does not measure that — no wearable, no guessing.',
+  trendAskOffer: 'It can chart:',
+  trendAskWindow: 'last {{days}} days',
+  trendAskAssumed: 'last {{days}} days (assumed)',
+  trendAskShort: 'Not enough logged in that window to draw a trend. Log a few more and ask again.',
+  trendVolume: 'Training volume',
+  trendSessions: 'Sessions',
+  trendProtein: 'Protein',
+  trendActive: 'Active minutes',
+  trendBodyweight: 'Bodyweight',
+  trendBodyfat: 'Body fat',
+  trendWaist: 'Waist',
   trackGpsStop: 'Stop',
   trackGpsSave: 'Save to log',
   trackGpsHint: 'Allow location when prompted. Works best outdoors with clear sky.',

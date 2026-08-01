@@ -17,6 +17,9 @@ type HistoryStrings = {
   historyVolumeDesc: string;
   historyVolumeLabel: string;
   historySessionsLabel: string;
+  /** `.227` — days logged, and the day the record starts. */
+  historyDaysLogged: string;
+  historyDaysSince: string;
   history1rmTitle: string;
   historyEst1rm: string;
   historyAct1rm: string;
@@ -55,6 +58,8 @@ const en: HistoryStrings = {
   historyVolumeDesc: 'Total {{unit}} × reps per week (last 12 weeks)',
   historyVolumeLabel: 'Volume',
   historySessionsLabel: 'Sessions',
+  historyDaysLogged: '{{count}} days logged',
+  historyDaysSince: 'since {{date}}',
   history1rmTitle: 'Estimated 1RM',
   historyEst1rm: 'Estimated',
   historyAct1rm: 'Actual (1 rep)',

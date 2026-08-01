@@ -6,6 +6,82 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-08-01 — I ran the fill tool and committed it (`.230`)
+
+Three findings, and the first is mine.
+
+### 394 regenerated locale files, committed by accident
+
+While checking which CI steps passed locally I ran `npm run export-locales`,
+then committed with `git add -A`. That swept **394 regenerated locale files**
+into a commit whose stated purpose was a one-line LOG heading fix.
+
+`.222` cut `public/locales` from 30.8 MB to 2.1 MB and built the splitter as a
+**re-runnable** script with a `--check` gate step for exactly one reason: *"a
+cleanup that cannot be repeated undoes itself the next time the fill tool
+runs."* I ran the fill tool. It undid itself.
+
+Caught because CI's unit step went red on `.222`'s own three guards — *no
+namespace file carries keys from another namespace*, *common.json does not come
+back*, *the footprint stays down*. Reverted by restoring the path from the
+parent commit; `public/locales` is byte-identical to its pre-accident tree.
+
+**`git add -A` after running a generator is the whole defect.** The generator is
+supposed to be runnable; committing its output is what breaks the invariant.
+
+### Bare `npm test` does not run every test
+
+The reason it reached CI at all. Locally `npm test` reports **1232** tests;
+under the CI environment it reports **1235** — three of `.222`'s guards only
+register with `PRIVATE_MODE`/`NEXT_PUBLIC_*` set. So "1232 passing" was true and
+meaningless: the suite that would have caught this never ran on my machine.
+
+Every check in this entry was therefore verified with the CI env exported, not
+bare.
+
+### Five guards ran only in the lane an agent can skip
+
+`check-design-system` (`.221`, widened in `.224`), `bundle-budget` (`.209`),
+`check-locale-split` (`.222`), `i18n:coverage` and `a11y` (`.200`) existed
+**only** in `scripts/gate.mjs`. `ci.yml` already states the principle above its
+first check — *"a guard nobody runs on a PR is not a guard, and branches from
+other sessions never run the local gate"* — and five guards contradicted it.
+
+That is `.200`/`.213`/`.219` with the lanes swapped: those waves found checks
+living only in a billing-blocked workflow, so `npm run gate` became the real
+gate. CI runs again now and is the enforcing lane, and the drift reversed
+silently.
+
+Four are added; `a11y` is exempted **with its reason** — it needs a running
+server and its one local run flaked on axe measuring skeleton text at 1.05
+contrast before the page settled. A step that can go red for a render race
+makes CI a coin flip, and a check people re-run until green teaches them to
+ignore it. Fix the settle race first.
+
+**Ordering is load-bearing and now guarded.** `check-locale-split` must run
+*before* `export-locales`, because the export recreates the unsplit shape —
+verified by running it: "15 languages, all split" becomes "392 files carry keys
+outside their namespace". A reorder is a one-line diff nobody would think twice
+about.
+
+**And my own comment broke my own guard.** The first ordering test used
+`indexOf('npm run export-locales')` and failed instantly — on the **comment**
+above the split step, which names that command while explaining the ordering.
+Matched on the `run:` line instead. Prose is not execution; `check-design-system`
+strips comments for the same reason.
+
+### The keys my own features never translated
+
+`i18n:coverage` is a ratchet at 710 and `.226`/`.227` pushed it to **722**:
+thirteen `t('…')` literals with a `defaultValue` and no EN pack entry, which
+renders English in all fifteen languages. Added to `trackLocales` and
+`historyLocales`; the count is now **709**, one below the cap rather than twelve
+above it.
+
+Tests 1232 → 1236 (1235 under CI env before this entry's additions).
+
+---
+
 ## 2026-08-01 — The gate CI could not pass (`.229`)
 
 Actions billing cleared at **00:12 UTC** and the PR gate ran for the first time

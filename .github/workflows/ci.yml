@@ -65,6 +65,24 @@ jobs:
       - name: Token sync (web ↔ Android)
         run: npm run check-token-sync
 
+      # `.230` — these four ran **only** in scripts/gate.mjs, so they were
+      # advisory in the one lane an agent can forget and absent from the lane
+      # that blocks the PR. That is the defect the comment above names, with the
+      # lanes swapped: `.221`'s design-system guard, `.209`'s byte budget and
+      # `.222`'s locale-split check were all invisible to CI.
+      - name: Design system (paper/ink · one red · radius 0)
+        run: npm run check-design-system
+
+      # MUST run before "Export locale JSON (smoke)". `npm run export-locales`
+      # regenerates public/locales/** in the pre-`.222` unsplit shape — verified
+      # by running it — so this check fails for certain if it comes after.
+      # `.222` built the splitter as re-runnable precisely because "a cleanup
+      # that cannot be repeated undoes itself the next time the fill tool runs";
+      # `.230` then had that happen for real and committed 394 regenerated files
+      # by accident.
+      - name: Locale split
+        run: npm run check-locale-split
+
       - name: Lint
         run: npm run lint
 
@@ -89,6 +107,9 @@ jobs:
       - name: i18n parity (APP_LANGS)
         run: npm run i18n:parity
 
+      - name: i18n coverage
+        run: npm run i18n:coverage
+
       - name: Deploy readiness
         run: npx tsx -e "import { assertDeployReady } from './src/lib/deployReadiness'; assertDeployReady();"
 
@@ -107,6 +128,10 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      # Reads the prerendered HTML, so it has to follow the build.
+      - name: Bundle budget (gzipped initial JS)
+        run: npm run bundle-budget
 
       # The logger is the product — a PR that breaks it must not go green.
       # Chromium only, @gate-tagged specs only; a11y / visual / Lighthouse stay in CI extended.
