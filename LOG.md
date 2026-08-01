@@ -81,10 +81,57 @@ snapshot a page under the wrong name. It resumes automatically the day Bundle
 ships. So this produces `guide-human-performance`, `exercise-squats` and
 `home-reduced`.
 
-**The baselines are the next commit, not this one.** Dispatching the run and
-reviewing each PNG by eye — paper ground, one red, radius 0, Archivo, no navy or
-emerald, and each image actually being the page its filename claims — is the
-deliverable. A wrong baseline is worse than none.
+### The review found something, which is the point
+
+The three pages were rendered and **looked at**, against the Modernist rules:
+paper ground, one red, radius 0, Archivo, no navy or emerald, and each image
+actually the page its filename claims.
+
+`exercise-squats` and `home-reduced` pass. Paper `#f3f2f2`, poster red on the
+CTAs, square corners, Archivo throughout. The homepage's grey photo blocks are
+`GrayscalePhoto`'s deliberate no-`base` state ("PHONE ON A BENCH, MID-SET"), not
+missing assets.
+
+**`guide-human-performance` does not.** Its chapter hero is a near-black render
+with a teal/emerald glow — a silhouette against a green ring — which is the
+navy/emerald palette `.131` retired, sitting on a paper page. Measured across
+the whole set rather than judged from one image:
+
+| Chapter hero | dark | green/teal | red |
+|---|---|---|---|
+| assessments-progress | 96% | 5% | 0% |
+| getting-started-mw | 89% | 0% | 1% |
+| human-performance | 89% | 6% | 0% |
+| movement-mechanics | 99% | 1% | 0% |
+| nutrition-recovery | 98% | 3% | 0% |
+| programming-tuning | 97% | 4% | 0% |
+
+All six, 89–99% dark, essentially zero red. `.137` re-inked the guidebook
+**cover** and rebuilt the PDF; the six chapter heroes were not in that pass, and
+nothing could have said so — `check-design-system` reads source, and these are
+`.webp` files in `public/`. A palette rule that scans code cannot see a palette
+baked into an asset. That is `.221`'s finding one layer out.
+
+So `guide-human-performance.png` **is not a baseline to commit**. The image is
+not wrong about what the page renders; it is wrong to enshrine, because the
+approved truth would then be the off-brand state, and the PR that re-inks those
+heroes would read as a regression. That is the laundering `.221` deleted the old
+baselines to avoid. Recorded as its own item.
+
+### Blocked, and named
+
+Committing the CI-generated PNGs needs the `visual-diffs` artifact, and this
+session's token cannot read Actions (`403 Resource not accessible by
+integration` on the run endpoint, so also on artifacts). The images reviewed
+above were rendered locally at the same viewport and `reducedMotion: 'reduce'`
+— which answers every question in the review list, since all of them are about
+design and content — but they are **not** committable baselines: local font
+hinting and antialiasing differ from the runner, which is the entire reason the
+suite requires CI-generated files.
+
+The mechanism ships here and the run is dispatched. Downloading the artifact and
+committing the two good baselines is founder-owned until this session has
+Actions read access.
 
 ## 2026-07-31 — The gate that could not go green (`.223`)
 
