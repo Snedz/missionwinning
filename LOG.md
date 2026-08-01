@@ -100,16 +100,42 @@ three files and eight jobs, and a guard that enumerates cannot notice the fourth
 place this app gets built — which is exactly *a name that claims more than its
 enumeration*.
 
-New `src/lib/workflowBuildEnv.test.ts` globs `.github/workflows/*.yml`,
-**discovers** every job that runs `npm run build`, and requires that job to set
-what `gate.mjs` sets, to the same values. Deliberately **job-level env only**:
-accepting env declared anywhere in the file would have passed on two of tonight's
-three failures. It also asserts its own parser is not returning an empty set,
-since a guard about vacuous checks is a poor place to ship one.
+New `src/lib/workflowBuildEnv.test.ts` globs `.github/workflows/*.yml` and
+requires every job that runs this app to set what `gate.mjs` sets, to the same
+values. Deliberately **job-level env only**: accepting env declared anywhere in
+the file would have passed on two of tonight's three failures. It also asserts
+its own parser is not returning an empty set, since a guard about vacuous checks
+is a poor place to ship one.
+
+Its first draft had the defect it was written about, and a mutant found it. It
+decided scope by testing `/\bnpm run build\b/` against the job block, so a job
+running `npx next build` with no env at all **passed** — the detector was keyed
+to one spelling, which is `.212`, inside a guard written about `.220`, a few
+tests after the sentence *"a guard that enumerates cannot notice a fourth"*.
+
+So the rule is inverted: every job is in scope unless `NOT_THIS_APP` names it
+with a reason. Twelve entries — the three scanners, the two cron HTTP pokes,
+`apply-migration` and `sync-vercel-env` (which must **never** receive the
+ci-placeholder values, so their exemption is load-bearing rather than
+housekeeping), `deploy-production` (Vercel builds remotely from the real project
+environment, which is correct), the three remote smokes, and the Android Gradle
+job. Two tests keep the list honest: a reason has to be one, and an entry naming
+a job that no longer exists fails.
+
+A pattern list is silent about what it misses. An exemption list is covered by
+default and makes leaving a thing a reviewer can disagree with.
 
 Overlap is stated rather than left to be discovered: when #178 lands, its two env
 tests are subsumed here and should be deleted; its step-parity and ordering tests
 are a different question and stay. One concept, one home — `.178`.
+
+### Process
+
+Third occurrence after `.202` and `.205`: I mutated `workflowBuildEnv.test.ts`
+while the rework inside it was uncommitted, and `git checkout HEAD --` threw the
+rework away. The rule is *commit before mutating*, and it applies to the guard
+being hardened exactly as much as to the code underneath it. Twelve mutants
+killed after that, all from committed states.
 
 ### Not fixed here
 
