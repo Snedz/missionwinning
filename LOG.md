@@ -82,6 +82,27 @@ invariant and a layout consequence of it. Two failures in `hero-flows` (public
 exercise-page CTA) and `premium-pillars` (Mind guided-session player) reproduce
 unchanged on a clean tree — pre-existing, neither on the Fuel path.
 
+### Carried, not authored: two CI blocks
+
+Actions is running again, and both of its checks were red on this PR for reasons
+that have nothing to do with a Fuel column.
+
+`build-and-test` failed on `first-90`'s *"Today shows one red action at 19:00"* —
+the push opt-in is not mounted, because `ci.yml`'s build env omits
+`NEXT_PUBLIC_VAPID_PUBLIC_KEY` while `scripts/gate.mjs` sets it (`.198`). Same
+controlled experiment either way: a local build without the key reproduces the
+failure exactly, and with it all 53 pass. `gitleaks` never scanned anything — it
+403s on `ScanPullRequest` listing the PR's commits, because that job declares no
+`permissions:` block and inherits a repository default without `pull_requests`.
+Identical failure on #185, an unrelated diff.
+
+Both already have correct fixes on `fix/ci-extended-env-parity` (`.235`), which
+is open and unmerged, and whose own note reads *"#178, #179, #180 and #181 all
+carry an identical block. The conflict is textual, not semantic — take either
+side."* So both blocks are carried here **verbatim** rather than re-authored:
+identical text merges as a no-op instead of a conflict. Neither is my finding —
+the diagnosis was reached independently, the fix was not.
+
 ---
 
 ## 2026-07-31 — The gate that could not go green (`.223`)
