@@ -6,6 +6,159 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-08-01 — The coverage number that measured a third of the repo (`.224`)
+
+The ask was to analyse test coverage and propose where to improve it. The analysis
+came first and changed what was worth building, because the headline number turned
+out to be the finding.
+
+`npm test` is **1,186 tests, 230 suites, green in 29s**, and `src/lib` is genuinely
+well covered — 185 test files against 285 sources. Run the suite under
+`node --test --experimental-test-coverage` and it answers **92.0% lines**. Both
+facts are true and together they mislead, because **V8 can only report a file it
+loaded**. The report reached **271 of 657** source files. The other **386 are absent
+from it — not scored zero, absent** — so the average is taken over the reached 41%.
+
+That is `.213`'s defect one level up. There, `ciTruth` accepted any check appearing
+in a workflow, and every workflow was billing-blocked, so the guard against *checks
+that do not run* was satisfied by workflows that **could not run**. Here a metric
+whose name claims the codebase has as its denominator whatever happened to get
+imported. Neither is visible from inside a green run, and this one is worse for
+being quoted.
+
+### The denominator, fixed
+
+[`scripts/coverage.mjs`](scripts/coverage.mjs) re-runs both lanes with lcov
+reporters, enumerates every `.ts`/`.tsx` under `src/` and `packages/mw-core/`, and
+**counts a file no test loads as untested, by name**. It reports reach per area and
+ratchets three floors: `untestedFiles` may only fall, the two percentages may only
+rise. `coverageBudget.test.ts` pins the high-water marks separately, the `.202`
+shape — a floor that follows reality is not a floor, it is a changelog of the debt.
+
+It is **gate step 7 and a `ci.yml` step**, both. `.213` found the gate and CI had
+silently diverged; `.200` and `.219` were each a check that existed, was documented,
+and executed nowhere. Being in the local gate and being in CI are different
+guarantees, and only one of them survives a human forgetting.
+
+Two things it deliberately does *not* measure with a percentage. `src/components`,
+`src/page-components` and `src/hooks` are **295 files / 42,090 lines with no unit
+tests at all** — Playwright is the net there, which is a real choice and still
+leaves them invisible to this number, so they show as reach 0% rather than being
+excluded into invisibility. And `packages/mw-core` is walked explicitly, because it
+is excluded from `tsconfig.json`, from `npm run lint` and from `npm test`'s own glob
+— a dropped file there is invisible to every other check in the repo.
+
+**The esbuild filter is load-bearing.** `tsx` transforms through esbuild, whose CJS
+banner (`__name`, `__export`, `__copyProps`, …) lcov reports as functions — always
+called, so they only inflate. On `fuelStreak.ts` they are 6 of 10 reported functions:
+80% where the real answer is 1 of 2. Deleting the filter would raise function
+coverage everywhere without a line of test being written, which is why a guard pins
+it: `.212`'s shape, a check keyed to an artifact of the tooling rather than to the
+thing it claims to see.
+
+### Why the ratchet is on functions
+
+Line % is the metric that produced the two numbers this was built to catch.
+
+[`apiSchemas.ts`](src/lib/apiSchemas.ts) measured **98.23% lines / 23.91%
+functions**. It is Zod: `z.object({…})` executes at module load, so anything that
+imports the file "covers" nearly every line of it while the refinements, the bounds
+and the parse paths never run. **35 schemas exported; three were named anywhere in
+the suite** — and this is the input validation for all **67 API routes**.
+`payments.ts` is the same shape at **73.54% lines / 33.33% functions**: the covered
+part is the price constants, and `createCheckoutForPlan`, `getStripeCheckoutUrl` and
+`openBillingPortal` are unexecuted. The file reads three-quarters covered because
+something imports `SUPER_BUNDLE_PRICE`.
+
+So the script prints, every run, the files where line % and function % disagree
+most. That is the one thing a single coverage percentage structurally cannot say.
+
+### The schemas, fed
+
+[`apiSchemas.test.ts`](src/lib/apiSchemas.test.ts) takes that file to **100% lines /
+100% functions**. One valid fixture and at least one invalid per schema, and the
+invalid ones target the bound that actually matters rather than a generic type
+error: `childAge: 18` (the COPPA line), `dayReviewHour: 23` (`.194`'s evening
+window), `rpe: 5` against a 6–10 scale, an invite code carrying the `1` its alphabet
+excludes precisely so it cannot be read as `I`, and a referral code in the invite
+format — the two must not be interchangeable, or `.218`'s funnel gets credited
+twice. The schema list is **discovered from the module**, so schema 36 fails this
+file until it has fixtures (`.220`: a guard whose name claims a scope wider than its
+list has only ever tested the list).
+
+**My first version of the field-survival rule was vacuous, and the mutant is what
+said so.** Rule 2 exists for `.184`: `mobileSyncSetSchema.note` was missing from the
+schema while Android sent it on every set, and zod strips unknown keys silently — so
+the request succeeded, returned 200, and the athlete's note was gone. A stripping
+validator **fails open**, which is why the round trip has to be asserted rather than
+the rejection. My draft read the declared keys off `schema.shape` and asked whether
+each came back. Delete `note` from the shape and it is no longer declared, so the
+loop no longer asks about it: the guard took its expectations from the code under
+test, and removing the code removed the assertion. **The `.184` regression survived
+the test written for it.** Comparing the fixture's key set against the schema's
+closes it in both directions (`.219`'s shape) — a field dropped leaves the fixture
+over-supplying, a field added leaves it under-supplying, and either way a human
+decides which side was right.
+
+Defaults are pinned separately, because a removed `.default()` changes what lands in
+the column and fails no parse.
+
+### Falsification
+
+**12 mutants on the schemas**, all killed after the rule-2 fix: dropping `note`
+(`.184`), `dayReviewHour` 22→23, the `deleteSamples` default, `childAge` 17→18 and
+its upper bound removed entirely, a new unfixtured schema, a new field on an
+existing one, the referral alphabet loosened to include `0/1/I/O`, the 12-turn chat
+cap, the 50-workout sync cap, `parseJsonBody` returning an empty error,
+`parseQuery` never rejecting.
+
+**Two of the mutants were themselves wrong**, which is the `.221` lesson repeating:
+one Perl substitution interpolated `$/` inside `\Q…\E` and silently matched nothing,
+so a "surviving" mutant had never been applied; a second replaced a quote character
+and produced a syntax error rather than a behaviour change, which reads as a kill
+and is not one. Both were re-run properly. *A mutant that did not apply is a green
+you have not earned.*
+
+**7 mutants on the ratchet** — the gate step removed, the CI step removed, the
+esbuild filter emptied, `mw-core` dropped from the walk, a floor lowered, a floor
+raised, a floor deleted — all killed. And one end to end: **adding a source file
+with no test turns `npm run coverage` red** with exit 1 and an actionable message,
+which is the only evidence the mechanism does the job it was built for.
+
+Tests **1186 → 1199**. Typecheck, lint, unit and route lanes all green.
+
+### Not done, and named
+
+Every one of these is a file no test currently loads, found by the script rather
+than asserted by it:
+
+- **The revenue path** — `checkoutServer.ts`, `premiumServer.ts`, `stripeServer.ts`,
+  `stripeDisputeNotify.ts`, `paypalWebhook.ts` and all three of
+  `cryptoCheckout/{intent,confirm,buildTransfer}.ts`. ~750 lines of entitlement and
+  payment handling. The e2e that would cover it — `premium-gate.spec.ts`,
+  `premium-pillars.spec.ts` — is in `e2e:critical`, which runs **only** on
+  `ci-extended.yml`'s Monday cron, so a checkout regression can merge and sit for
+  seven days.
+- **Authorization helpers** — `api/betaAdminAuth.ts`, `schoolClassAccess.ts`,
+  `mobileAccess.ts`, `supabaseRequestAuth.ts`, `youthConsentServer.ts`,
+  `wearables/oauthState.ts`. `.211` moved the teacher-PIN rate limit into
+  `resolveTeacherClassAccess`; nothing asserts it is still there.
+- **`betaMetricsServer.ts`** — 337 lines, zero. It computes `basicCompletePct` and
+  gates `launchReady` at ≥60, and it is the file `.223` found holding a private
+  `allBasicDone` that disagreed with `missionJourney.ts`. The fix gave
+  `journey/basicComplete.ts` a test; the consumer making the launch decision still
+  has none.
+- **Route contracts** — 67 routes, 2 `.routetest.ts` files. The lane works
+  (`llmRoutesQuota.routetest.ts` is the model); it wants one table-driven pass for
+  unauth → 401/403, missing service role → **503 not `[]`** (`.214`'s rule, asserted
+  nowhere), over-limit → 429, and Zod rejection shape.
+- **`packages/mw-core`** — 7 files, 0 test files, and a test written there would not
+  run: the glob is `src/**/*.test.ts`. `victory.ts` sits at 54.55% lines / 55.56%
+  functions, reached only through a barrel, and it is shared with Android.
+- **`ci.yml:99`** still claims `a11y / visual / Lighthouse stay in CI extended`.
+  `ci-extended.yml` has no a11y job — the 34 a11y tests run in `npm run gate` and
+  nowhere else. `gate.mjs`'s own header calls out this exact false comment.
+
 ## 2026-07-31 — The gate that could not go green (`.223`)
 
 The brief was four product references — WHOOP's AI charts and voice journaling,

@@ -6,6 +6,7 @@
 
 | Script | Command | When to run |
 |--------|---------|-------------|
+| `coverage.mjs` | `npm run coverage` | **Coverage over every source file, not only the imported ones.** V8 reports 92% because it reaches 271/657; this counts the other 386 as untested and ratchets on *function* % — the metric that caught `apiSchemas.ts` at 98% lines / 24% functions. Gate step 7 + `ci.yml`. `--list` prints every untested file |
 | `e2e-smoke.mjs` | `npm run e2e` | Extended smoke + screenshots (runs `e2e:critical` first) |
 | `e2e:critical` (npm) | `npm run e2e:critical` | Blocking Playwright specs in `tests/e2e/` |
 | `gate-smoke.ts` | `npm run gate-smoke` | Post-deploy HTTP checks (P0 perimeter) |

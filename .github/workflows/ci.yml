@@ -64,6 +64,14 @@ jobs:
       - name: Route contract tests
         run: npm run test:routes
 
+      # `.224` — the two lanes above report pass/fail; this reports how much of the
+      # codebase they touched, over every source file rather than only the ones
+      # something imported. Here as well as in `npm run gate` on purpose: `.213`
+      # found the two had silently diverged, and `.200`/`.219` were both checks
+      # that existed and ran nowhere.
+      - name: Coverage floors
+        run: npm run coverage
+
       - name: Dependency audit (high)
         # `npm run security-audit`, not the raw command: package.json already
         # defines it, and two spellings of one check is how they drift.
