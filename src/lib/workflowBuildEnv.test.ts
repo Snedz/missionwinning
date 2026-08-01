@@ -86,8 +86,81 @@ type Job = {
   name: string;
   /** Job-level `env:` only. Step env does not reach the build — that is the bug. */
   env: Map<string, string>;
-  builds: boolean;
+  /** `workflow.yml:job-name` — how an exemption names it. */
+  id: string;
 };
+
+/**
+ * Jobs that do **not** run this web app, each with the reason.
+ *
+ * In scope by default, out of scope only in writing. The first draft of this
+ * file did the opposite — it tested `/\bnpm run build\b/` against a job block
+ * and treated everything else as irrelevant — and a mutant killed it: a job
+ * running `npx next build` with no env at all passed, silently, because the
+ * detector was keyed to one spelling of "builds". That is `.212` reproduced
+ * inside a guard written about `.220`, a few tests after the sentence *"a guard
+ * that enumerates cannot notice a fourth"*.
+ *
+ * An exemption list has its failure mode pointing the safe way: a new job is
+ * covered on the day it is written, and getting out requires an entry a
+ * reviewer can disagree with. A pattern list is silent about what it misses.
+ *
+ * Entries are `workflow.yml:job`, or `workflow.yml:*` for a whole file.
+ */
+const NOT_THIS_APP: { id: string; why: string }[] = [
+  {
+    id: 'aikido.yml:*',
+    why: 'Third-party security scanner. It reads the repository and never builds or serves the app, so app env would only be a credential-shaped thing sitting in a scanner job.',
+  },
+  {
+    id: 'codeql.yml:*',
+    why: 'GitHub CodeQL static analysis. It builds its own database from source; nothing it produces is served, and its findings do not depend on runtime configuration.',
+  },
+  {
+    id: 'gitleaks.yml:*',
+    why: 'Secret scanner over git history. Adding placeholder credentials to the job whose purpose is hunting credentials would be an actively bad idea.',
+  },
+  {
+    id: 'apply-migration.yml:*',
+    why: 'Runs SQL against the real Supabase project using founder-held secrets. It must NOT receive the ci-placeholder URL — pointing a migration at a placeholder host is the exact failure this exemption prevents.',
+  },
+  {
+    id: 'sync-vercel-env.yml:*',
+    why: 'Pushes environment variables into Vercel through its API. It configures the app rather than running it, and handing it CI placeholders is how placeholders reach production.',
+  },
+  {
+    id: 'cron-day-review.yml:*',
+    why: 'Calls a scheduled endpoint on the deployed site over HTTP. Nothing is built here, and the configuration that matters is the deployment\u2019s rather than this runner\u2019s.',
+  },
+  {
+    id: 'cron-wind-down.yml:*',
+    why: 'Same shape as cron-day-review — an HTTP poke at the deployed site, with no build and no server on the runner.',
+  },
+  {
+    id: 'deploy-production.yml:*',
+    why: 'Runs `vercel deploy --prod`, which builds remotely from the project\u2019s real Vercel environment. This is the one lane that must never see CI placeholders: production reads the founder\u2019s dashboard config, and that is correct.',
+  },
+  {
+    id: 'ci-extended.yml:gate-smoke',
+    why: 'Hits a remote SMOKE_BASE_URL with secrets and skips entirely when that is unset. It builds nothing and serves nothing on the runner.',
+  },
+  {
+    id: 'ci-extended.yml:growth-smoke',
+    why: 'Same as gate-smoke — a remote smoke against the deployed site, guarded by SMOKE_BASE_URL, with no local build.',
+  },
+  {
+    id: 'ci-extended.yml:rate-limit-smoke',
+    why: 'Same as gate-smoke. It probes the deployed rate limiter for a 429; a locally built app would tell it nothing.',
+  },
+  {
+    id: 'ci-extended.yml:android',
+    why: 'Builds the native Compose app under apps/android with Gradle. A different application with its own configuration — NEXT_PUBLIC_* means nothing to it.',
+  },
+];
+
+function isExempt(job: Job): boolean {
+  return NOT_THIS_APP.some((e) => e.id === job.id || e.id === `${job.workflow}:*`);
+}
 
 /**
  * Every job in every workflow, with its job-level env and whether it builds.
@@ -133,63 +206,82 @@ function jobs(): Job[] {
         }
       }
 
-      found.push({
-        workflow: file,
-        name: h.name,
-        env,
-        builds: /\bnpm run build\b/.test(block),
-      });
+      found.push({ workflow: file, name: h.name, env, id: `${file}:${h.name}` });
     });
   }
 
   return found;
 }
 
-test('the workflow parser reads real jobs, real env and real builds', () => {
+test('the workflow parser reads real jobs and real env', () => {
   /*
    * A parser that silently returns nothing turns every assertion below into a
    * vacuous pass — which is the exact defect this file exists to catch, so it
-   * would be a poor joke to ship it here. These numbers are the floor as of
-   * `.235`: 2 workflows, 8 building jobs across ci.yml + ci-extended.yml.
+   * would be a poor joke to ship one here. Floors as of `.235`: 10 workflow
+   * files, 16 jobs, 4 of them in scope.
    */
   const all = jobs();
-  assert.ok(all.length >= 6, `parsed only ${all.length} jobs — the parser broke`);
+  assert.ok(all.length >= 12, `parsed only ${all.length} jobs — the parser broke`);
 
-  const building = all.filter((j) => j.builds);
-  assert.ok(building.length >= 4, `found only ${building.length} building jobs — the parser broke`);
+  const inScope = all.filter((j) => !isExempt(j));
+  assert.ok(inScope.length >= 4, `only ${inScope.length} jobs are in scope — the parser broke`);
 
   const withEnv = all.filter((j) => j.env.size > 0);
   assert.ok(withEnv.length >= 4, `read env on only ${withEnv.length} jobs — the parser broke`);
 
   // Named, so a rename that empties the set fails here rather than passing quietly.
-  const ids = new Set(building.map((j) => `${j.workflow}:${j.name}`));
+  const ids = new Set(inScope.map((j) => j.id));
   for (const id of [
     'ci.yml:build-and-test',
     'ci-extended.yml:e2e-critical',
     'ci-extended.yml:lighthouse-budget',
     'ci-extended.yml:visual-regression',
   ]) {
-    assert.ok(ids.has(id), `${id} no longer parses as a building job — re-read this guard`);
+    assert.ok(ids.has(id), `${id} is no longer an in-scope job — re-read this guard`);
   }
 });
 
-test('every job that builds the app sets everything the local gate sets', () => {
+test('every exemption states a reason', () => {
+  for (const e of NOT_THIS_APP) {
+    assert.ok(e.why.trim().length > 60, `${e.id}: "${e.why}" is not a reason`);
+  }
+});
+
+test('no exemption is stale', () => {
+  /*
+   * `.220`'s direction: an entry for a job that no longer exists makes the list
+   * look more considered than it is, and hides the day a real job inherits the
+   * name.
+   */
+  const all = jobs();
+  const files = new Set(all.map((j) => j.workflow));
+  const ids = new Set(all.map((j) => j.id));
+
+  const stale = NOT_THIS_APP.filter((e) =>
+    e.id.endsWith(':*') ? !files.has(e.id.slice(0, -2)) : !ids.has(e.id)
+  ).map((e) => e.id);
+
+  assert.deepEqual(stale, [], 'these exemptions name jobs or workflows that no longer exist');
+});
+
+test('every job that runs this app sets everything the local gate sets', () => {
   const gate = gateEnv();
   assert.ok(gate.size >= 4, `parsed only ${gate.size} vars from gate.mjs — the parser broke`);
 
   const problems: string[] = [];
-  for (const job of jobs().filter((j) => j.builds)) {
+  for (const job of jobs().filter((j) => !isExempt(j))) {
     const missing = [...gate.keys()].filter((k) => !job.env.has(k));
     if (missing.length) {
-      problems.push(`${job.workflow} → ${job.name}: missing ${missing.join(', ')}`);
+      problems.push(`${job.id}: missing ${missing.join(', ')}`);
     }
   }
 
   assert.deepEqual(
     problems,
     [],
-    'these jobs build the app with less configuration than `npm run gate` does, so a green ' +
-      'local gate says nothing about them:\n  ' + problems.join('\n  ')
+    'these jobs run this app with less configuration than `npm run gate` does, so a green ' +
+      'local gate says nothing about them. If a job does not run the app, add it to ' +
+      'NOT_THIS_APP with the reason:\n  ' + problems.join('\n  ')
   );
 });
 
@@ -202,11 +294,11 @@ test('and sets them to the same values', () => {
   const gate = gateEnv();
 
   const problems: string[] = [];
-  for (const job of jobs().filter((j) => j.builds)) {
+  for (const job of jobs().filter((j) => !isExempt(j))) {
     for (const [k, v] of gate) {
       const got = job.env.get(k);
       if (got !== undefined && got !== v) {
-        problems.push(`${job.workflow} → ${job.name}: ${k} is "${got}", gate uses "${v}"`);
+        problems.push(`${job.id}: ${k} is "${got}", gate uses "${v}"`);
       }
     }
   }
@@ -226,8 +318,8 @@ test('no building job leaves the private gate to its default', () => {
    * `/private`. Anything measured or photographed there is measuring the teaser.
    */
   const unset = jobs()
-    .filter((j) => j.builds && !j.env.has('PRIVATE_MODE'))
-    .map((j) => `${j.workflow} → ${j.name}`);
+    .filter((j) => !isExempt(j) && !j.env.has('PRIVATE_MODE'))
+    .map((j) => j.id);
 
   assert.deepEqual(
     unset,
@@ -248,14 +340,14 @@ test('the VAPID placeholder is present everywhere, and is only the public half',
    * push surface and makes the guards over them vacuous again, which is the
    * `.198` defect this placeholder exists to prevent.
    */
-  for (const job of jobs().filter((j) => j.builds)) {
+  for (const job of jobs().filter((j) => !isExempt(j))) {
     const key = job.env.get('NEXT_PUBLIC_VAPID_PUBLIC_KEY');
-    assert.ok(key, `${job.workflow} → ${job.name} lost the VAPID placeholder`);
+    assert.ok(key, `${job.id} lost the VAPID placeholder`);
     // Public VAPID keys are 65-byte P-256 points, base64url — never a private key.
     assert.match(
       key,
       /^B[A-Za-z0-9_-]{80,}$/,
-      `${job.workflow} → ${job.name}: not a public VAPID key — do not put a secret here`
+      `${job.id}: not a public VAPID key — do not put a secret here`
     );
   }
 });
