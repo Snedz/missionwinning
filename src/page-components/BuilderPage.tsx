@@ -18,7 +18,7 @@ const ProgramTemplatesPanel = dynamic(
     })),
   {
     loading: () => (
-      <p className="text-sm text-muted-foreground py-6 text-center">Loading program templates…</p>
+      <p className="text-sm text-muted-foreground py-6 text-center" role="status" aria-busy="true">Loading program templates…</p>
     ),
   }
 );

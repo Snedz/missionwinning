@@ -41,7 +41,23 @@ export function ActiveEmptyState({
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-6 py-6">
+    /*
+     * `aria-busy` while persist rehydrates, because this screen *is* busy.
+     *
+     * The Start button is disabled and relabelled "Loading session…" until
+     * Zustand hands back the last workout, but nothing in the DOM said so: a
+     * screen reader announced a disabled button with no explanation, and any
+     * automated wait keyed on the semantic marker saw a settled page.
+     *
+     * `.233` — `a11y.spec.ts` carried a route special-case for exactly this
+     * state (`if (path === '/active') await …getByRole('button', { name:
+     * /start workout|loading session/i })`), which is `.220`'s shape: a rule
+     * written as a list of the routes someone happened to hit, matched on the
+     * button's *copy*, so changing that string silently removed the wait.
+     * Declaring the state here makes `/active` a case of the general rule
+     * rather than an exception beside it.
+     */
+    <div className="space-y-6 py-6" aria-busy={hydrated ? undefined : true}>
       <PillarPageHeader
         icon={Dumbbell}
         eyebrow={t('activeEyebrow', { defaultValue: 'Train' })}

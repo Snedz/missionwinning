@@ -13,6 +13,40 @@ export function Skeleton({ className }: { className?: string }) {
   return <div className={cn('bg-neutral-300', className)} aria-hidden />;
 }
 
+/**
+ * A single placeholder that **announces itself**, for `dynamic()` fallbacks.
+ *
+ * `Skeleton` is `aria-hidden`: it is a shape, deliberately not content, and every
+ * composite below wraps a group of them in one `role="status" aria-busy="true"`
+ * so the screen says "loading" once rather than five times. That contract breaks
+ * the moment a bare `Skeleton` is used *as* a fallback with no wrapper — which is
+ * what `HomeTodayDashboard` did for five lazily-mounted widgets on `/`. The
+ * result was a loading state invisible twice over: assistive tech was told to
+ * skip it, and nothing in the DOM said the region was busy.
+ *
+ * `.233` — the second half of that mattered more than expected. `a11y.spec.ts`
+ * settles by waiting for `getAnimations()` to go quiet, and these placeholders
+ * deliberately do not animate (see above), so the page read as *finished* while
+ * five of them were still on screen. The better the loading design got, the
+ * blinder the wait became.
+ *
+ * So: `aria-busy` is the one marker both the athlete's screen reader and the
+ * gate read, and a placeholder that stands alone has to carry it.
+ */
+export function SkeletonBlock({
+  className,
+  label = 'Loading',
+}: {
+  className?: string;
+  label?: string;
+}) {
+  return (
+    <div role="status" aria-busy="true" aria-label={label}>
+      <Skeleton className={className} />
+    </div>
+  );
+}
+
 /** Content-card shaped loading block for route transitions. */
 export function SkeletonCard({ className }: { className?: string }) {
   return (

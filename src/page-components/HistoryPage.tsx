@@ -34,6 +34,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import dynamic from 'next/dynamic';
+import { SkeletonBlock } from '@/components/ui/Skeleton';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
 import { getJournalEntry } from '@/lib/journal/journalStore';
 import { JournalTimeline } from '@/components/history/JournalTimeline';
@@ -41,11 +42,11 @@ import { AnatomyHeatMap } from '@/components/history/AnatomyHeatMap';
 
 const History1RMChart = dynamic(
   () => import('@/components/history/HistoryCharts').then((m) => m.History1RMChart),
-  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-card" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-48" label="Loading 1RM chart" /> }
 );
 const HistoryVolumeChart = dynamic(
   () => import('@/components/history/HistoryCharts').then((m) => m.HistoryVolumeChart),
-  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-card" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-48" label="Loading volume chart" /> }
 );
 import { getExerciseById } from '@/data/exercises';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';

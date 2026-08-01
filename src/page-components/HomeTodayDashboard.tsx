@@ -34,7 +34,7 @@ import { useUnits } from "@/hooks/useUnits";
 import { formatRecommendedFocusLine, muscleGroupLabel } from "@/lib/readinessDisplay";
 import { runTodayPrimaryAction } from "@/lib/todayPrimaryAction";
 import { countHighProteinDaysFromNutritionLog } from "@/lib/nutritionHighProteinDays";
-import { Skeleton, SkeletonCard } from "@/components/ui/Skeleton";
+import { Skeleton, SkeletonBlock, SkeletonCard } from "@/components/ui/Skeleton";
 import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { computeReentry, type Reentry } from "@/lib/reentry";
@@ -51,12 +51,12 @@ const BetaWelcomeBanner = dynamic(
 
 const CommandersIntent = dynamic(
   () => import('@/components/journey/CommandersIntent').then((m) => m.CommandersIntent),
-  { ssr: false, loading: () => <Skeleton className="h-16 w-full" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-16 w-full" /> }
 );
 
 const MuscleFreshnessStrip = dynamic(
   () => import('@/components/today/MuscleFreshnessStrip').then((m) => m.MuscleFreshnessStrip),
-  { ssr: false, loading: () => <Skeleton className="h-10 w-full rounded-xl" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-10 w-full rounded-xl" /> }
 );
 
 const CoachTodayCard = dynamic(
@@ -66,17 +66,17 @@ const CoachTodayCard = dynamic(
 
 const TodayCoachWeekStrip = dynamic(
   () => import('@/components/coach/TodayCoachWeekStrip').then((m) => m.TodayCoachWeekStrip),
-  { ssr: false, loading: () => <Skeleton className="h-14 w-full rounded-xl" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-14 w-full rounded-xl" /> }
 );
 
 const GuidebookContinueCard = dynamic(
   () => import('@/components/learn/GuidebookContinueCard').then((m) => m.GuidebookContinueCard),
-  { ssr: false, loading: () => <Skeleton className="h-20 w-full rounded-xl" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-20 w-full rounded-xl" /> }
 );
 
 const TodayQuickLinks = dynamic(
   () => import('@/components/journey/TodayQuickLinks').then((m) => m.TodayQuickLinks),
-  { ssr: false, loading: () => <Skeleton className="h-24 w-full rounded-xl" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-24 w-full rounded-xl" /> }
 );
 
 const TodayDashboardCustomize = dynamic(

@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import dynamic from 'next/dynamic';
+import { SkeletonBlock } from '@/components/ui/Skeleton';
 import {
   BarChart3,
   LineChart as LineChartIcon,
@@ -46,7 +47,7 @@ import { useWorkoutStore } from "@/store/workoutStore";
 
 const Benchmarks1RMChart = dynamic(
   () => import('@/components/benchmarks/Benchmarks1RMChart').then((m) => m.Benchmarks1RMChart),
-  { ssr: false, loading: () => <div className="h-72 animate-pulse  bg-card" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-72" label="Loading 1RM chart" /> }
 );
 import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
 import { PresidentialFitnessSection } from "@/components/fitness-test/PresidentialFitnessSection";
