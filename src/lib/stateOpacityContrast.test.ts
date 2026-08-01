@@ -199,9 +199,21 @@ test('the two components this was written about are fixed, not exempted', () => 
     assert.ok(!exempt.has(file), `${file} was exempted rather than fixed`);
   }
 
+  /*
+   * `stripComments`, and it is not a nicety.
+   *
+   * A mutant that deleted the `<Badge>` rendering `coachSessionMissed` left this
+   * test **green**, because the comment sitting directly above the badge quotes
+   * the key by name — the assertion matched the prose explaining the code
+   * instead of the code. Third time in this programme (`.221`, `.233`, `.235`),
+   * always in a guard whose own commentary is thorough enough to satisfy it.
+   */
+  const card = stripComments(
+    readFileSync(path.join(root, 'src/components/coach/PlanSessionCard.tsx'), 'utf8')
+  );
+
   // The missed card must still be distinguishable, or "fixed the contrast" just
   // means the state stopped being visible at all.
-  const card = readFileSync(path.join(root, 'src/components/coach/PlanSessionCard.tsx'), 'utf8');
   assert.match(
     card,
     /status === 'missed' && '[^']*border/,
