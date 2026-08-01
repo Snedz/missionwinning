@@ -24,13 +24,71 @@
  * Note also that `home-reduced.png` **never had a baseline at all**, so that
  * case has been silently self-approving on every first run since it was
  * written: the homepage, the most-linked page in the product, was never
- * visually guarded. Bootstrapping now covers it for the first time.
+ * visually guarded.
+ *
+ * The first bootstrap did **not** cover it, and this paragraph said it would.
+ * The runner was serving the gated build, so what got written under that name
+ * was `/private`. See the `.235` note on `shoot()` below. The homepage is still
+ * unguarded, and will be until a bootstrap runs with the workflow env fixed.
  *
  * `npm run gate` does not include this suite (it prints so at the end) — it
  * needs a Linux container, and Actions is billing-blocked. This is the one
  * gate that is genuinely dark until that clears.
  */
 import { test, expect } from '@playwright/test';
+
+/**
+ * `.235` — the landing-URL check is no longer optional, because the case that
+ * had it was the only one that survived.
+ *
+ * `/bundle` checked where it actually landed and refused to snapshot a redirect
+ * (see its note below). The other three did not, and the first bootstrap run
+ * proved why that mattered: `visual-regression` set `PRIVATE_MODE: 'false'` on
+ * the *assertion* step, so the build and the server never saw it, the private
+ * gate defaulted on (`NODE_ENV=production` + unset — `privateGate.ts:23`), and
+ * `/` is not in `PRIVATE_GATE_PUBLIC_PATHS`. `home-reduced.png` was a picture
+ * of `/private`, under the name of the most-linked page in the product.
+ *
+ * The workflow env is fixed. This is here because fixing the env only fixes the
+ * cause we found: any future redirect — a flag flip, a new gate, a locale
+ * prefix — puts the wrong page under the right name again, and a baseline is
+ * exactly the artifact nobody re-reads. So every case states where it must land
+ * and none of them can skip the check, which is the difference between this and
+ * a convention.
+ */
+type VisualCase = {
+  path: string;
+  name: string;
+  /**
+   * Set only when the route legitimately redirects *today* and the case should
+   * resume by itself when that stops being true. A redirect with no stated
+   * reason is a failure: silently skipping is `.200`'s check that cannot fail.
+   */
+  skipWhenRedirected?: string;
+};
+
+async function shoot(page: import('@playwright/test').Page, c: VisualCase) {
+  await page.goto(c.path, { waitUntil: 'networkidle' });
+  const landed = new URL(page.url()).pathname;
+
+  if (landed !== c.path) {
+    test.skip(
+      !!c.skipWhenRedirected,
+      `${c.path} redirects to ${landed} — ${c.skipWhenRedirected ?? ''}`
+    );
+    expect(
+      landed,
+      `${c.path} redirected to ${landed}, so this would save ${landed} under the name ` +
+        `"${c.name}". Refusing. If the runner is serving the gated build, that is the ` +
+        `workflow's env block, not this test — see .github/workflows/ci-extended.yml.`
+    ).toBe(c.path);
+  }
+
+  await expect(page).toHaveScreenshot(c.name, {
+    maxDiffPixelRatio: 0.02,
+    fullPage: true,
+  });
+}
 
 test.describe('visual regression @visual', () => {
   test.beforeEach(async ({ page }) => {
@@ -39,27 +97,15 @@ test.describe('visual regression @visual', () => {
   });
 
   test('guide human-performance @visual', async ({ page }) => {
-    await page.goto('/guide/human-performance', { waitUntil: 'networkidle' });
-    await expect(page).toHaveScreenshot('guide-human-performance.png', {
-      maxDiffPixelRatio: 0.02,
-      fullPage: true,
-    });
+    await shoot(page, { path: '/guide/human-performance', name: 'guide-human-performance.png' });
   });
 
   test('exercise squats @visual', async ({ page }) => {
-    await page.goto('/exercises/squats', { waitUntil: 'networkidle' });
-    await expect(page).toHaveScreenshot('exercise-squats.png', {
-      maxDiffPixelRatio: 0.02,
-      fullPage: true,
-    });
+    await shoot(page, { path: '/exercises/squats', name: 'exercise-squats.png' });
   });
 
   test('home reduced-motion @visual', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
-    await expect(page).toHaveScreenshot('home-reduced.png', {
-      maxDiffPixelRatio: 0.02,
-      fullPage: true,
-    });
+    await shoot(page, { path: '/', name: 'home-reduced.png' });
   });
 
   /**
@@ -77,15 +123,11 @@ test.describe('visual regression @visual', () => {
    * ships. Verified, not assumed — the check is the landing URL, not the flag.
    */
   test('bundle reduced-motion @visual', async ({ page }) => {
-    await page.goto('/bundle', { waitUntil: 'networkidle' });
-    const landed = new URL(page.url()).pathname;
-    test.skip(
-      landed !== '/bundle',
-      `/bundle redirects to ${landed} while FREE_BETA is on — refusing to snapshot a page under the wrong name`
-    );
-    await expect(page).toHaveScreenshot('bundle-reduced.png', {
-      maxDiffPixelRatio: 0.02,
-      fullPage: true,
+    await shoot(page, {
+      path: '/bundle',
+      name: 'bundle-reduced.png',
+      skipWhenRedirected:
+        'FREE_BETA is on, so Bundle is not a page yet. Refusing to snapshot it under the wrong name; this resumes by itself when Bundle ships.',
     });
   });
 });
