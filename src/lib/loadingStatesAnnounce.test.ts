@@ -252,6 +252,21 @@ test('the a11y settle rule reads aria-busy, and names no route', () => {
     'settle() must wait for loading regions, not only animations'
   );
   /*
+   * And the count must **gate the loop**, not merely be computed.
+   *
+   * The first draft asserted only that the selector appeared somewhere in the
+   * file, and a mutant that deleted `&& loading() === 0` from the quiet condition
+   * sailed through it: the query still ran, its answer was discarded, and the
+   * guard reported green while `settle()` was exactly as blind as before. That is
+   * `.220` — a check whose name claims more than what it actually looks at —
+   * appearing inside the fix for `.220`.
+   */
+  assert.match(
+    spec,
+    /running\.length === 0 && loading\(\) === 0/,
+    'the aria-busy count must be part of settle()’s quiet condition, not just computed'
+  );
+  /*
    * `[aria-busy="true"]`, not `[aria-busy]`. `HoldToConfirmButton` and
    * `CoachChatPanel` bind the attribute to state, so a fully settled page still
    * carries `aria-busy="false"` nodes; the looser selector would never clear and
