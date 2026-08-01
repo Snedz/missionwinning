@@ -102,9 +102,44 @@ test.describe('Offline logging @gate', () => {
     });
     expect(persistedOffline).toBe(true);
 
-    // Reconnecting must not discard local state.
+    /**
+     * Reconnecting must not discard local state.
+     *
+     * The same race as the cache-warm above, at the other boundary — and this
+     * file already carries the fix for one direction and not the other, which is
+     * why CI found it and three local runs did not.
+     *
+     * Restoring the network wakes work the service worker parked in
+     * `event.waitUntil` while it was down, and `useOutboxDrain`'s `online`
+     * handler calls `retryStuck()` on the same tick. Neither navigates — checked,
+     * because an app that reloads itself on reconnect would be a real defect
+     * rather than a test one — but the fetches they start can abort or supersede
+     * the navigation issued on the very next line. On a loaded runner that showed
+     * up twice, differently: `net::ERR_ABORTED`, then *"interrupted by another
+     * navigation to the same URL"*. Two spellings of one race.
+     *
+     * So: let the worker come back to rest before navigating, then navigate once
+     * more if the first attempt was cut off. Deliberately **not** a blanket
+     * retry — the second `goto` is unguarded, so a genuinely broken `/active`
+     * still fails the test rather than being papered over.
+     */
     await context.setOffline(false);
-    await page.goto('/active', { waitUntil: 'domcontentloaded' });
+    await page
+      .evaluate(async () => {
+        if (!('serviceWorker' in navigator)) return;
+        await navigator.serviceWorker.ready;
+        // One macrotask past `online`, so the outbox drain has been scheduled.
+        await new Promise((r) => setTimeout(r, 0));
+      })
+      .catch(() => undefined);
+
+    const reconnected = await page
+      .goto('/active', { waitUntil: 'domcontentloaded' })
+      .then(() => true)
+      .catch(() => false);
+    if (!reconnected) {
+      await page.goto('/active', { waitUntil: 'domcontentloaded' });
+    }
     await expect(page.getByRole('button', { name: /finish/i }).first()).toBeVisible({
       timeout: 15_000,
     });
