@@ -6,31 +6,13 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-01 — The gate CI could not pass (`.228`–`.229`)
+## 2026-08-01 — The gate CI could not pass (`.229`)
 
 Actions billing cleared at **00:12 UTC** and the PR gate ran for the first time
 in this programme. It found two things nobody could have seen while every job
 was dying at `runner_id: 0` — and one of them had been latent since `.198`.
 
-### gitleaks was never reporting a secret (`.228`)
-
-It failed **before scanning anything**:
-
-    GET /repos/Snedz/missionwinning/pulls/178/commits  ->  403
-    'Resource not accessible by integration'
-    'x-accepted-github-permissions': 'pull_requests=read'
-
-`gitleaks-action@v2` lists a PR's commits to work out its scan range. The
-workflow declared **no `permissions:` block**, so the job inherited a
-contents-only token. The secret gate could not scan a pull request at all, and
-the red it produced said nothing about whether the diff holds a secret.
-
-CONTEXT recorded that red as the known finding in `8ea3527a` — a real Solana
-treasury address in history, deliberately not allowlisted. Still true of
-`master`; **not** why the check was failing. Both causes are now stated
-separately, and the workflow declares least privilege explicitly.
-
-### The local gate and CI built different apps (`.229`)
+### The local gate and CI built different apps
 
 `Today shows one red action at 19:00` failed on CI — on the retry too, so not
 flaky — while passing locally. 51 passed, 1 failed.
@@ -74,6 +56,36 @@ fails differently every run trains you to discount the next failure, which is
 what nearly happened here.
 
 Tests 1229 → 1232.
+
+---
+
+## 2026-08-01 — Give gitleaks the permission it needs to scan (`.228`)
+
+Actions billing cleared at **00:12 UTC** and gitleaks ran for the first time.
+It did not report a secret: it failed **before scanning anything**.
+
+    GET /repos/Snedz/missionwinning/pulls/178/commits  ->  403
+    'Resource not accessible by integration'
+    'x-accepted-github-permissions': 'pull_requests=read'
+
+`gitleaks-action@v2` lists a PR's commits to work out its scan range, and the
+workflow declared **no `permissions:` block**, so the job inherited a
+contents-only token. The secret gate could not scan a pull request at all, and
+the red it produced said nothing about whether the diff holds a secret. Now
+declares least privilege: `contents: read` + `pull-requests: read`.
+
+CONTEXT recorded that red as the known finding in `8ea3527a` — a real Solana
+treasury address in history, deliberately not allowlisted (founder call). Still
+true of `master`; **not** why the check was failing. Both causes are now stated
+separately.
+
+Also corrects the Actions status, which this file had wrong in **both**
+directions within one night: it claimed "cleared" while jobs were dying at
+`runner_id: 0`, and the correction claimed "blocked" an hour before billing came
+back. The Ops bullet no longer describes CI at all — two places describing one
+fact is `.178`, and the fix is not a better sentence but **no** sentence. The
+Status table now says to read `runner_id` before recording anything: **0 means
+it never ran; non-zero means it ran and something is genuinely wrong.**
 
 ---
 
