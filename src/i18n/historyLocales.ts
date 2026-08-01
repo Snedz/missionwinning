@@ -20,6 +20,13 @@ type HistoryStrings = {
   /** `.227` — days logged, and the day the record starts. */
   historyDaysLogged: string;
   historyDaysSince: string;
+  /** `.231` — the one-day replay. */
+  historyDayEyebrow: string;
+  historyDayPosition: string;
+  historyDayEmpty: string;
+  historyDayBadDate: string;
+  historyDayBack: string;
+  historyDayToday: string;
   history1rmTitle: string;
   historyEst1rm: string;
   historyAct1rm: string;
@@ -60,6 +67,12 @@ const en: HistoryStrings = {
   historySessionsLabel: 'Sessions',
   historyDaysLogged: '{{count}} days logged',
   historyDaysSince: 'since {{date}}',
+  historyDayEyebrow: 'On this day',
+  historyDayPosition: 'Day {{index}} of {{total}} logged',
+  historyDayEmpty: 'Nothing was recorded on this day.',
+  historyDayBadDate: 'That is not a date. Pick a day from your history.',
+  historyDayBack: 'Back to history',
+  historyDayToday: 'replay today',
   history1rmTitle: 'Estimated 1RM',
   historyEst1rm: 'Estimated',
   historyAct1rm: 'Actual (1 rep)',

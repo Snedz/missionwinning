@@ -239,6 +239,19 @@ export function HistoryPage() {
               count: dayStats.count,
               defaultValue: `${dayStats.count.toLocaleString()} days logged`,
             })}
+            {dayStats.count > 0 && (
+              <>
+                {' · '}
+                {/*
+                  `.231` — the count is now a way in. Without this the day
+                  replay would be a route nothing links to, which is `.195`:
+                  built, and nobody can reach it.
+                */}
+                <Link href={`/history/${localDateKey()}`} className="text-primary underline">
+                  {t('historyDayToday', { defaultValue: 'replay today' })}
+                </Link>
+              </>
+            )}
             {dayStats.first && (
               <span className="text-muted-foreground">
                 {' · '}
