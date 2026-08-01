@@ -6,6 +6,84 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-08-01 — The column that hid four more controls (`.224`)
+
+`.223` shipped `tests/e2e/fuel-floating-action.spec.ts` after "Log weight" was
+found **100% occluded** by the Fuel FAB at 375px. It guards that one control and
+leaves the rest of the column as a `TODO(founder)` with three options and one
+instruction: *tag the describe block `@gate` only if it passes.*
+
+This is the decision, and what the decision found.
+
+### The policy
+
+**A control may share the column; it may not *be* the column** — `overlapPx < width`.
+
+The other two options are both unavailable rather than merely stricter or looser:
+
+- *Zero overlap* cannot pass. The FAB is 121px wide in a 295px content column, and
+  the meal-description input is 295px. Every full-width control on the page fails
+  by construction, so the rule could only ever be a ratchet, never a gate — which
+  is what the TODO said, and measuring agrees.
+- *Guard only the named control* re-guards one bug and none of its siblings. The
+  reported defect was never specific to "Log weight"; it is specific to being a
+  short control in the end corner, and the page had four more of those.
+
+The line the surviving rule draws is the line the bug is actually on. A wide
+control clipped at one edge stays visible and reachable at every scroll offset. A
+control narrower than its own overlap is somewhere inside the FAB's x-range
+*entirely*, so the offset that brings it level with the FAB hides all of it.
+
+### Four live ones, and they were all alignment
+
+Measured at 375px, FAB at `x=[238,359]`:
+
+| Control | x | width | overlap |
+|---|---|---|---|
+| "Use base" (`FuelAdaptBanner`) | `[251,322]` | 71 | 71 |
+| "Edit targets" (`FuelTargetsEditor`) | `[248,335]` | 87 | 87 |
+| "Snack" meal tab (`FuelQuickLogPanel`) | `[266,325]` | 59 | 59 |
+| water stepper "+" (`FuelQuickLogPanel`) | `[302,335]` | 33 | 33 |
+
+None of these is about what the control *says*. Three are `justify-between` or
+`ms-auto` — an end-aligned short button, which on a phone means the bottom-end
+corner, which is the corner a viewport-fixed FAB owns. The fourth is four
+left-packed meal chips, where the fourth chip lands there by arithmetic.
+
+So the fixes are alignment: `flex-col items-start` until `sm` on the two rows that
+end-align a small button, `sm:ms-auto` on the water stepper, and a two-up grid for
+the meal tabs.
+
+**`grid-cols-4` would have moved that chip without fixing it** — four equal
+columns across 295px is ~69px each and the last one still ends at the container
+edge, still inside a 121px FAB, still fully occluded. Half-width tabs clear the
+FAB's left edge whatever the label says in any locale, which is the property
+worth having rather than a width that happens to work in English.
+
+### The guard was checked against the bug it is named after
+
+A guard whose failure mode has never been observed is `.204`'s defect. Reverting
+one fix — `sm:ms-auto` back to `ms-auto` — fails the spec with
+
+```
++     "label": "+",
++     "overlapPx": 33,
++     "width": 33,
+```
+
+which is the control, the number, and the reason, without opening a screenshot.
+
+One narrowing the first draft needed: `overlapPx >= width` holds vacuously for a
+zero-width element (`0 >= 0`), reporting a control that cannot be hidden because
+it is not drawn. The filter requires `width > 0`.
+
+`@gate` e2e 52→53. No unit tests changed; this is entirely a browser-measured
+invariant and a layout consequence of it. Two failures in `hero-flows` (public
+exercise-page CTA) and `premium-pillars` (Mind guided-session player) reproduce
+unchanged on a clean tree — pre-existing, neither on the Fuel path.
+
+---
+
 ## 2026-07-31 — The gate that could not go green (`.223`)
 
 The brief was four product references — WHOOP's AI charts and voice journaling,
