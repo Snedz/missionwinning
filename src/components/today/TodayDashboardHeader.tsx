@@ -94,7 +94,18 @@ export function TodayDashboardHeader({
         <details className="group border-b-2 border-border">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
             <span>{t('todayTrendsDetails', { defaultValue: 'Trends' })}</span>
-            <span className="text-[10px] opacity-60 transition-transform group-open:rotate-180">
+            {/*
+              `.236` — `opacity-60` here was **3.04:1**, on the app's most-visited
+              screen. `▼` is a text node, so the summary's `text-muted-foreground`
+              (#484747, 8.29:1 on paper) composited down to #999 and change.
+              Invisible to axe because this block renders only when `trends`
+              exists, and the a11y suite seeds no history.
+
+              The quiet already comes from `text-muted-foreground` and 10px. The
+              opacity was buying a second helping of the same idea at the cost of
+              two thirds of the contrast.
+            */}
+            <span className="text-[10px] transition-transform group-open:rotate-180">
               ▼
             </span>
           </summary>

@@ -57,13 +57,31 @@ export function MuscleHeatmap({ cells, windowDays }: Props) {
                 <span className="text-sm font-semibold">
                   {muscleGroupLabel(cell.group, t)}
                 </span>
+                {/*
+                  `.236` — `opacity-70` here failed WCAG 1.4.3 on the *hottest*
+                  cell. `heatColor` puts `text-accent-900` (#4d170e) on
+                  `bg-accent-400` (#ff9783) at intensity ≥ 0.75; at full strength
+                  that is 6.93:1, and at 70% it composites to **3.76:1**. The
+                  busiest muscle group — the one an athlete most wants to read —
+                  was the one below the line.
+
+                  axe never saw it: this span only renders when
+                  `cell.intensity > 0`, and the a11y suite seeds onboarding with
+                  no history, so /history passes with the element absent. A route
+                  in the list is not the same as the states on it being covered.
+
+                  Hierarchy comes from size and weight, which cost no contrast.
+                */}
                 {cell.intensity > 0 && (
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.08em] opacity-70">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.08em]">
                     {Math.round(cell.intensity * 100)}%
                   </span>
                 )}
               </div>
-              <div className="text-xs opacity-80 space-y-0.5 mt-2">
+              {/* 4.62:1 at `bg-accent-400` — inside the rule by 0.12, which is
+                  not a margin so much as a rounding error. Same reasoning as
+                  above; there is nothing this opacity buys. */}
+              <div className="text-xs space-y-0.5 mt-2">
                 <p>
                   {t('historyHeatVolume', {
                     volume: cell.volume.toLocaleString(),

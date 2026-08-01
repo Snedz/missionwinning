@@ -48,7 +48,19 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
         // a red top rule and the single elevation this screen is allowed.
         session.status === 'done' && 'bg-card',
         isToday && 'border-t-[3px] border-t-[hsl(var(--accent-poster))] shadow-md',
-        session.status === 'missed' && 'opacity-60',
+        // `.236` — this was `opacity-60`, and it failed WCAG 1.4.3 on the one
+        // page it renders: axe measured the muscle badges at **2.97:1**
+        // (`#8a8888` on `#eeebeb`, 10px). Container opacity composites every
+        // descendant toward the ground, so dimming a card dims its text, and
+        // `bg-neutral-200 text-neutral-800` — fine on its own — lands under
+        // half the required ratio.
+        //
+        // `WeekStrip.tsx:85` had already worked this out and written the rule
+        // down for its own missed cell: *"Quieter via border + no glyph, not
+        // opacity — dimming the container also dims the day label past 4.5:1
+        // at 10px."* Two components, one concept, opposite treatments, three
+        // files apart (`.178`). This is now the same treatment as the strip.
+        session.status === 'missed' && 'border-2 border-border bg-transparent',
         className
       )}
     >
@@ -66,6 +78,17 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
           {session.status === 'swapped' && (
             <Badge variant="secondary" className="text-[10px]">
               {t('coachSessionSwapped', { defaultValue: 'Adapted' })}
+            </Badge>
+          )}
+          {/*
+            The status was carried by opacity alone, which is nothing at all to a
+            screen reader — "missed" was visual-only on the card, while
+            `WeekStrip` has said it in words (`coachSessionMissed`) since it was
+            written. Same key, so this costs no translation.
+          */}
+          {session.status === 'missed' && (
+            <Badge variant="secondary" className="text-[10px]">
+              {t('coachSessionMissed', { defaultValue: 'Missed' })}
             </Badge>
           )}
         </div>
