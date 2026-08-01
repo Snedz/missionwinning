@@ -21,6 +21,21 @@ jobs:
       PRIVATE_MODE: 'false'
       NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+      # `isPushSupported()` returns false without a VAPID public key, so every
+      # component behind it — the wind-down offer, the day-review opt-in —
+      # renders *nothing*, and "Today shows one red action at 19:00" asserts that
+      # control is mounted. scripts/gate.mjs sets this placeholder (`.198`) and
+      # ci.yml did not, so that test passed locally and failed on CI for as long
+      # as CI could not run. Proved causal: a local build with the key removed
+      # reproduces the failure exactly; with it, the test passes.
+      #
+      # Safe: this is the public half of a keypair and only gates whether the UI
+      # draws. Nothing can subscribe — the server has no private key, and no test
+      # grants notification permission.
+      #
+      # Note for whoever merges second: #178 carries an identical block. The
+      # conflict is textual, not semantic — take either side.
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
     steps:
       - uses: actions/checkout@v4
         with:
