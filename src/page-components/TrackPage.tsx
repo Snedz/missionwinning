@@ -149,7 +149,7 @@ export function TrackPage() {
                   <Button
                     key={act}
                     size="sm"
-                    variant={type === act ? 'default' : 'outline'}
+                    variant={type === act ? 'selected' : 'outline'}
                     onClick={() => setType(act)}
                   >
                     {ACTIVITY_LABELS[act]}

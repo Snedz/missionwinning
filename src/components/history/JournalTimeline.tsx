@@ -26,7 +26,7 @@ import {
   type SessionJournalEntry,
 } from '@/lib/journal/journalStore';
 import { loadCheckIns } from '@/lib/mindCheckIns';
-import { formatDate } from '@/lib/utils';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 
 type TimelineRow =
   | { type: 'session'; date: string; entry: SessionJournalEntry }
@@ -62,6 +62,7 @@ const CHECKIN_LABEL: Record<string, string> = {
 
 export function JournalTimeline() {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const [query, setQuery] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState('');
@@ -122,7 +123,7 @@ export function JournalTimeline() {
           row.type === 'checkin' ? (
             <div key={`c-${row.date}`} className="border-2 border-border bg-card px-4 py-3">
               <p className="text-xs font-medium tracking-wide text-muted-foreground">
-                {formatDate(row.date)} ·{' '}
+                {fmt.longDate(row.date)} ·{' '}
                 {t('journalCheckInTag', { defaultValue: 'Check-in note' })}
               </p>
               <p className="mt-1 text-sm italic text-foreground">{row.note}</p>
@@ -133,7 +134,7 @@ export function JournalTimeline() {
                 <div>
                   <p className="font-semibold">{row.entry.workoutName}</p>
                   <p className="text-xs text-muted-foreground">
-                    {formatDate(row.entry.date)}
+                    {fmt.longDate(row.entry.date)}
                     {typeof row.entry.feel === 'number' ? ` · Feel ${row.entry.feel}/5` : ''}
                   </p>
                 </div>

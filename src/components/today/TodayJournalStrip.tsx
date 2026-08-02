@@ -39,8 +39,9 @@ function formatWhen(at: string, locale: string): string {
   // characters only makes a malformed value look like a date. Show it as-is.
   if (Number.isNaN(d.getTime())) return at;
   const today = localDateKey();
-  // `.245` — a UTC date compared against a local `today` showed this
-  // morning's entry as "Jul 31" instead of its time, east of UTC.
+  // `.241` — `today` is a local key, so the comparison needs one too. The UTC
+  // date half made an evening entry east of UTC read as another day, printing a
+  // date where the athlete should have seen a time.
   const day = localDateKeyFromIso(at);
   const time = d.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
   if (day === today) return time;

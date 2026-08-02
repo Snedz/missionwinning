@@ -9,6 +9,7 @@ import {
   verifyTeacherPinValue,
 } from '@/lib/teacherPinCrypto';
 import { redactUserId } from '@/lib/userIdRedact';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 
 export { formatClassStandingsCsv };
 
@@ -258,7 +259,7 @@ export async function fetchClassPftLeaderboard(code: string): Promise<ClassPftEn
         lastTestAt: best.lastTestAt,
       };
     })
-    .sort((a, b) => b.score - a.score || a.athleteLabel.localeCompare(b.athleteLabel));
+    .sort((a, b) => b.score - a.score || compareKeys(a.athleteLabel, b.athleteLabel));
 
   return sorted.map((row, i) => ({ rank: i + 1, ...row }));
 }

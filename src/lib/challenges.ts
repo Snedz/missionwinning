@@ -173,8 +173,7 @@ export function getChallengeProgress(): Array<ChallengeDef & { current: number; 
 
   const pillarWinsThisWeek = (pillar: PillarType) =>
     getPillarWins(100).filter((w) => {
-      // `.245` — UTC date vs a local `weekStart`: a Monday-morning win east
-      // of UTC dated to Sunday and fell outside the week it belonged to.
+      // `.241` — same frame mismatch as pillarScoreInputs: `weekStart` is local.
       const d = localDateKeyFromIso(w.completedAt);
       return w.pillar === pillar && d >= weekStart;
     }).length;

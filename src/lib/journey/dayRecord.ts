@@ -27,6 +27,7 @@
 
 import type { CompletedWorkoutLog } from '@/types';
 import { gatherJournalEntries, type JournalEntry } from '@/lib/todayTrends';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { listDaysWithData } from '@/lib/journey/daysWithData';
 
@@ -80,7 +81,7 @@ export function buildDayRecord(day: string, history: CompletedWorkoutLog[]): Day
   const entries = isDayKey(day)
     ? gatherJournalEntries(history, GATHER_CEILING)
         .filter((e) => localDateKeyFromIso(e.at) === day)
-        .sort((a, b) => a.at.localeCompare(b.at))
+        .sort((a, b) => compareKeys(a.at, b.at))
     : [];
 
   return {

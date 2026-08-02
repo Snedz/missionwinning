@@ -2,6 +2,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { compareKeys, EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
 
 export type TrendMetricId = 'volume' | 'sessions' | 'protein' | 'active';
 
@@ -72,9 +73,25 @@ export function buildTodayTrends(
   const volumeByDay: Record<string, number> = {};
   const sessionsByDay: Record<string, number> = {};
 
+  /*
+   * `.241` — two defects in three lines, both already swept for elsewhere.
+   *
+   * `w.completedAt.split('T')[0]` is the exact spelling `.212` banned and fixed
+   * at fifteen sites: an ISO string is UTC, a calendar date is local, so east of
+   * UTC an evening session landed on the previous day's bar and west of it a
+   * morning session landed on the next. These four series feed Today's sparkline
+   * row, and `.199`/`.212` exist because this keeps coming back in a spelling the
+   * last guard did not know.
+   *
+   * And nothing dropped tombstones, so a session the athlete deliberately deleted
+   * kept its volume in the trend — `.223`'s defect, which reached a public share
+   * card the last time it went unnoticed. `dayReview.ts` and `behaviorImpacts.ts`
+   * both filter; this is the fourth reader found not doing so.
+   */
   for (const w of workoutHistory) {
+    if (w.deletedAt) continue;
     /*
-     * `.245` — was `w.completedAt.split('T')[0]`, the **UTC** date, while
+     * `.241` — was `w.completedAt.split('T')[0]`, the **UTC** date, while
      * `lastDayBuckets` keys the buckets with `localDateKey`. Proved in
      * Pacific/Auckland: a session at 10:00 on 1 Aug is stored as
      * `2026-07-31T21:00:00Z` and was counted on 31 Jul. East of UTC that is
@@ -82,6 +99,7 @@ export function buildTodayTrends(
      * reading zero on the Today trend strip.
      */
     const d = localDateKeyFromIso(w.completedAt);
+    if (!d) continue;
     volumeByDay[d] = (volumeByDay[d] || 0) + w.totalVolume;
     sessionsByDay[d] = (sessionsByDay[d] || 0) + 1;
   }
@@ -122,7 +140,7 @@ export function gatherJournalEntries(
       at: w.completedAt,
       pillar: 'train',
       title: w.workoutName,
-      detail: `${Math.round(w.totalVolume).toLocaleString()} vol`,
+      detail: `${formatLocalNumber(Math.round(w.totalVolume), EN_ONLY_SURFACE)} vol`,
     });
   }
 
@@ -183,7 +201,7 @@ export function gatherJournalEntries(
     });
   });
 
-  return entries.sort((a, b) => b.at.localeCompare(a.at)).slice(0, limit);
+  return entries.sort((a, b) => compareKeys(b.at, a.at)).slice(0, limit);
 }
 
 /** Best-effort parse of locale time string to HH:MM:SS for sorting. */

@@ -67,9 +67,14 @@ function QuickRow({
             type="button"
             onClick={() => onChange(n)}
             aria-pressed={value >= n}
+            /* `.241` — ink fill, not red, matching `DailyCheckIn`'s scale. The
+               two are the same control implemented twice (`.178`, recorded not
+               fixed: extracting it is a refactor, painting one of them a
+               different colour from the other is a defect). Red belongs to this
+               sheet's Save. */
             className={`flex-1 min-h-[44px] tap-target text-sm font-semibold tabular-nums transition-colors ${
               value >= n
-                ? 'bg-primary-fill text-primary-foreground'
+                ? 'bg-foreground text-background'
                 : 'text-muted-foreground hover:bg-muted'
             }`}
           >

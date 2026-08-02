@@ -46,6 +46,7 @@
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 
 /** `YYYY-MM-DD` local day keys, newest first. Never capped — see the header. */
 const KEY = STORAGE_KEYS.daysWithData;
@@ -112,7 +113,7 @@ function persist(days: Set<string>): string[] {
    * hour earlier. Uniqueness is now the *type's* job, so a caller that could
    * pass duplicates does not compile.
    */
-  const sorted = [...days].filter(isDayKey).sort((a, b) => b.localeCompare(a));
+  const sorted = [...days].filter(isDayKey).sort((a, b) => compareKeys(b, a));
   writeJson(KEY, sorted);
   return sorted;
 }

@@ -39,13 +39,16 @@ import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { computeReentry, type Reentry } from "@/lib/reentry";
 import { TodayReentryCard } from "@/components/today/TodayReentryCard";
-import { betaBannerMayMount, reentryCardMayMount } from "@/lib/today/todayGuidanceMount";
+import { firstStepsMayMount, reentryCardMayMount } from "@/lib/today/todayGuidanceMount";
+import { FIRST_STEPS_DISMISS_KEY } from "@/lib/today/firstStepsDismissed";
+import { TODAY_BLOCK_PRIORITY as P } from "@/lib/today/todayBlockPriority";
+import { useDismissed } from "@/hooks/useDismissed";
 import { dayReviewMayMount } from "@/lib/today/dayReviewMount";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
 import { localDateKey } from '@/lib/time/localDate';
 
-const BetaWelcomeBanner = dynamic(
-  () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
+const FirstStepsCard = dynamic(
+  () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
   { ssr: false, loading: () => null }
 );
 
@@ -142,6 +145,7 @@ export function HomeTodayDashboard() {
       : { health: true, journal: true, week: true, progress: true, order: ['health', 'journal', 'week', 'progress'] }
   );
   const [editTodayOpen, setEditTodayOpen] = useState(false);
+  const { dismissed: betaDismissed } = useDismissed(FIRST_STEPS_DISMISS_KEY);
   const [todayLabel, setTodayLabel] = useState('');
   const [belowFoldReady, setBelowFoldReady] = useState(false);
 
@@ -482,14 +486,28 @@ export function HomeTodayDashboard() {
    * Declaring the cost here rather than counting cards at review time is the
    * point: every feature since `.170` added a permanent +1 and no PR was ever
    * the one that made Today long.
+   *
+   * **`.240` — what wins the slots, not how many there are.** The prices below
+   * used to read `dashboard` 10, `day-review` 15, `intent` 20, `coach-invite`
+   * 25 … `coach-today` 35, `coach-week` 45. With the four spillable slots a
+   * commissioned athlete actually has, that ordering put the Mission Score, the
+   * evening digest and *a link inviting you to Mission Coach* on the screen
+   * while **today's prescribed session and this week's plan** went into the
+   * disclosure. Horizon W criterion 2 is "one clear next session on Today", and
+   * the screen was answering "here is how you are doing" first.
+   *
+   * The rule now: **what to do beats how you did.** Session, then the week it
+   * belongs to, then the numbers. `TODAY_MAX_TOP_LEVEL_BLOCKS` is untouched —
+   * this is a re-pricing, and the budget stays a separate argument in the one
+   * file that exists to hold it.
    */
   const staggerBlocks: TodayBlockCandidate<React.ReactNode>[] = [
-    ...(betaBannerMayMount(state.phase)
-      ? [{ key: 'beta', priority: 0, pinned: true, node: <BetaWelcomeBanner /> }]
+    ...(firstStepsMayMount({ phase: state.phase, dismissed: betaDismissed })
+      ? [{ key: 'beta', priority: P.beta, pinned: true, node: <FirstStepsCard state={state} /> }]
       : []),
     {
       key: 'header',
-      priority: 1,
+      priority: P.header,
       pinned: true,
       node: (
         <TodayPageHeader
@@ -514,7 +532,7 @@ export function HomeTodayDashboard() {
   ];
 
   if (state.phase === 'commissioned') {
-    staggerBlocks.push({ key: 'intent', priority: 20, node: <CommandersIntent /> });
+    staggerBlocks.push({ key: 'intent', priority: P.intent, node: <CommandersIntent /> });
   }
 
   // The hero is no longer a stagger block — it docks above the tab bar (see the
@@ -524,13 +542,13 @@ export function HomeTodayDashboard() {
   // Directly under the boss CTA: a returning user should see the smaller ask before
   // any score, streak or pillar chrome that would read as a scoreboard of the gap.
   if (reentry && reentryCardMayMount({ phase: state.phase, show: reentry.show })) {
-    staggerBlocks.push({ key: 'reentry', priority: 2, pinned: true, node: <TodayReentryCard reentry={reentry} /> });
+    staggerBlocks.push({ key: 'reentry', priority: P.reentry, pinned: true, node: <TodayReentryCard reentry={reentry} /> });
   }
 
   if (layout.showDashboard) {
     staggerBlocks.push({
       key: 'dashboard',
-      priority: 10,
+      priority: P.dashboard,
       node: (
         <TodayDashboardHeader
           missionScore={score}
@@ -546,7 +564,7 @@ export function HomeTodayDashboard() {
     });
     staggerBlocks.push({
       key: 'freshness',
-      priority: 60,
+      priority: P.freshness,
       node: (
         /* Was a `<details>` — a 1px hairline at 40% wrapping a 1px hairline at
            30% wrapping a sideways chip scroller. Eight rows of one line each
@@ -562,15 +580,19 @@ export function HomeTodayDashboard() {
     });
   }
 
-  // After first logged session, surface Mission Coach as the depth path (Basic+).
-  if (
-    belowFoldReady &&
-    totalSessions >= 1 &&
-    (state.phase === 'basic' || state.phase === 'readiness')
-  ) {
+  /*
+   * After the first logged session, surface Mission Coach as the depth path —
+   * but only while there is nothing better to show.
+   *
+   * `.240`: this ran for `basic` *and* `readiness`, and `coach-week` mounts from
+   * `readiness` up. So a readiness athlete got the real week strip **and** a
+   * card inviting them to go and get a week. An invitation is what you show
+   * instead of the thing, never beside it.
+   */
+  if (belowFoldReady && totalSessions >= 1 && state.phase === 'basic') {
     staggerBlocks.push({
       key: 'coach-invite',
-      priority: 25,
+      priority: P['coach-invite'],
       node: (
         <a
           href="/coach"
@@ -599,35 +621,39 @@ export function HomeTodayDashboard() {
   // lives there rather than inside the card, so the chunk is never fetched in
   // the morning just to render null.
   if (belowFoldReady && dayReviewMayMount({ hour: new Date().getHours(), phase: state.phase })) {
-    staggerBlocks.push({ key: 'day-review', priority: 15, node: <TodayDayReviewCard /> });
+    staggerBlocks.push({ key: 'day-review', priority: P['day-review'], node: <TodayDayReviewCard /> });
   }
 
   // Week recap — Sunday ceremony or mid-week pulse when active.
   if (belowFoldReady && weekRecap && (weekRecap.hasActivity || weekRecap.isWeekEnd)) {
     staggerBlocks.push({
       key: 'week-recap',
-      priority: 30,
+      priority: P['week-recap'],
       node: <TodayWeekRecapCard recap={weekRecap} />,
     });
   }
 
   // Secondary surfaces only after idle — never compete with JourneyHero.
+  // The week the session belongs to, directly under it — the two halves of one
+  // answer, so neither can be on screen without the other for want of a slot.
   if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
-    staggerBlocks.push({ key: 'coach-week', priority: 45, node: <TodayCoachWeekStrip /> });
+    staggerBlocks.push({ key: 'coach-week', priority: P['coach-week'], node: <TodayCoachWeekStrip /> });
   }
 
+  // Today's prescribed session. The highest-priority spillable block on the
+  // screen: it is the one thing Today exists to answer.
   if (belowFoldReady && state.phase === 'commissioned') {
-    staggerBlocks.push({ key: 'coach-today', priority: 35, node: <CoachTodayCard /> });
+    staggerBlocks.push({ key: 'coach-today', priority: P['coach-today'], node: <CoachTodayCard /> });
   }
 
   if (belowFoldReady && (state.phase === 'readiness' || state.phase === 'commissioned')) {
-    staggerBlocks.push({ key: 'guidebook', priority: 70, node: <GuidebookContinueCard /> });
+    staggerBlocks.push({ key: 'guidebook', priority: P.guidebook, node: <GuidebookContinueCard /> });
   }
 
   if (!layout.showDashboard && state.phase === 'basic' && streak === 0) {
     staggerBlocks.push({
       key: 'encourage',
-      priority: 50,
+      priority: P.encourage,
       node: (
         <p className="text-center text-sm text-muted-foreground px-4">
           {t('todayBasicEncouragement', {

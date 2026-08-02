@@ -1,3 +1,11 @@
+/**
+ * Radix tabs, on the Modernist system.
+ *
+ * `.240` — this drew a `bg-muted` pill track with a **red-filled** active
+ * trigger, which is one of the four answers the app used to have for "what does
+ * a selected segment look like". It is now `.seg` / `.seg-opt`, the same as
+ * `SegmentedControl` and the same tint-plus-2px-rule the tab bar draws.
+ */
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn } from "@/lib/utils";
@@ -11,7 +19,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex h-12 w-full items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
+      "seg flex w-full text-muted-foreground",
       className
     )}
     {...props}
@@ -26,7 +34,7 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-md px-3 py-2 text-sm font-semibold transition-all disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-primary-fill data-[state=active]:text-primary-foreground",
+      "seg-opt flex-1 justify-center whitespace-nowrap disabled:pointer-events-none disabled:opacity-50",
       className
     )}
     {...props}

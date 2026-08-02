@@ -12,11 +12,21 @@
  * sheet reads as a status board rather than a menu. Where there is no honest
  * figure the row carries none — an invented "0 sessions" on day one is the same
  * lie as a zeroed score, which is why `ScoreNumeral` renders an em-dash.
+ *
+ * **First Steps lives here too, and that is a fix rather than a feature.**
+ * `.240` gave the checklist one mount — a Today card — with a Dismiss that
+ * writes a flag nothing ever clears, and a card that also retires itself on
+ * completion. So both endings were terminal: dismissed or finished, the
+ * checklist and the sheet behind it were unreachable for the life of the
+ * install. `.243` makes this sheet the surface that survives, which turns
+ * Dismiss from *gone* into *moved off Today* — the thing it should always have
+ * meant. Being a status board already, the sheet is where an athlete would look.
  */
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
@@ -24,6 +34,10 @@ import { MOBILE_TAB_HREFS } from '@/lib/primaryNav';
 import { railGroupsForNav, MORE_NAV } from '@/lib/navConfig';
 import { isPathEnabled } from '@/lib/surface';
 import { isFreeBeta } from '@/lib/freeBeta';
+import { MeterBar } from '@/components/ui/MeterBar';
+import { FirstStepsSheet } from '@/components/journey/FirstStepsSheet';
+import { getFirstSteps, summarizeFirstSteps } from '@/lib/journey/firstSteps';
+import { syncJourneyPhase } from '@/lib/missionJourney';
 
 /** Quiet links below the groups — reachable, but not screens the rail counts. */
 const QUIET_LINKS: { href: string; labelKey: string; label: string }[] = [
@@ -111,6 +125,27 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
     []
   );
 
+  /**
+   * The checklist, read when the sheet opens.
+   *
+   * `syncJourneyPhase` rather than `loadJourneyState`: the milestones are
+   * detected from live storage, and a stale snapshot here would show a step
+   * unticked that the athlete finished a minute ago on another screen. Same
+   * open-gated timing as `useMoreFigures` — off-screen work for a sheet nobody
+   * opened is the `.210` shape.
+   */
+  const [firstSteps, setFirstSteps] = useState<ReturnType<typeof getFirstSteps>>([]);
+  useEffect(() => {
+    if (!open) return;
+    try {
+      setFirstSteps(getFirstSteps(syncJourneyPhase()));
+    } catch {
+      setFirstSteps([]);
+    }
+  }, [open]);
+  const [stepsOpen, setStepsOpen] = useState(false);
+  const stepProgress = useMemo(() => summarizeFirstSteps(firstSteps), [firstSteps]);
+
   const bundle = MORE_NAV.find((i) => i.href === '/bundle');
   const showBundle = !isFreeBeta() && isPathEnabled('/bundle') && bundle;
   const quiet = QUIET_LINKS.filter((l) => isPathEnabled(l.href));
@@ -124,6 +159,50 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
       title={t('appName', { defaultValue: 'Mission Winning' })}
       bodyClassName="pb-2"
     >
+      {/*
+        Above the groups because it is the one row that is about *you* rather
+        than about a screen. Hidden once complete — a finished checklist on a
+        permanent surface is a permanent row saying nothing, which is the
+        reference app's notification-centre defect in miniature.
+      */}
+      {!stepProgress.complete && stepProgress.total > 0 ? (
+        <div className="border-b-2 border-border">
+          <button
+            type="button"
+            onClick={() => setStepsOpen(true)}
+            className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-muted"
+          >
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+                {t('firstStepsEyebrow', { defaultValue: 'Your first steps' })}
+              </p>
+              <p className="mt-0.5 truncate text-[15px] font-extrabold leading-snug">
+                {stepProgress.next
+                  ? t(stepProgress.next.titleKey, { defaultValue: stepProgress.next.title })
+                  : t('firstStepsEyebrow', { defaultValue: 'Your first steps' })}
+              </p>
+              <div className="mt-2">
+                <MeterBar
+                  label={t('firstStepsProgressLabel', { defaultValue: 'Progress' })}
+                  value={stepProgress.done}
+                  max={stepProgress.total}
+                  segments={stepProgress.total}
+                  size="sm"
+                  readout={`${stepProgress.done} / ${stepProgress.total}`}
+                />
+              </div>
+            </div>
+            <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
+          </button>
+          <FirstStepsSheet
+            open={stepsOpen}
+            onClose={() => setStepsOpen(false)}
+            steps={firstSteps}
+            progress={stepProgress}
+          />
+        </div>
+      ) : null}
+
       {groups.map((group) => (
         <div key={group.id} className="border-b-2 border-border">
           <h3 className="px-4 pt-4 pb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">

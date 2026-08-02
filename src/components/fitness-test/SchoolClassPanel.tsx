@@ -228,7 +228,7 @@ export function SchoolClassPanel() {
               </Link>
             </Button>
             {createdPin && (
-              <p className="text-xs text-status-warn/90 font-mono">
+              <p className="text-xs text-status-warn font-mono">
                 {t('schoolPinLabel', { defaultValue: 'Teacher PIN' })}: {createdPin}
               </p>
             )}

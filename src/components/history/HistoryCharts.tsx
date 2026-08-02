@@ -20,6 +20,7 @@ import {
   CHART_TICK,
   CHART_TOOLTIP,
 } from '@/components/charts/chartTheme';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import type { WeeklyVolumePoint } from '@/lib/historyAnalytics';
@@ -30,6 +31,7 @@ type Props = {
 
 export function HistoryVolumeChart({ data }: Props) {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const hasData = data.some((d) => d.volume > 0);
@@ -66,8 +68,13 @@ export function HistoryVolumeChart({ data }: Props) {
                 screen. Naming the series once fixes both readers — and it
                 retired a dead branch, since this chart has no sessions series
                 for `t('historySessionsLabel')` to have ever labelled.
+
+                `fmt.num` rather than `value.toLocaleString()`: the latter reads
+                the *browser* locale, which is not the app's — a Spanish UI on an
+                en-US device printed `1,234` beside `1.234` elsewhere on the same
+                screen.
               */}
-              <Tooltip {...CHART_TOOLTIP} formatter={(value: number) => value.toLocaleString()} />
+              <Tooltip {...CHART_TOOLTIP} formatter={(value: number) => fmt.num(value)} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               <Bar
                 dataKey="volume"

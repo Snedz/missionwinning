@@ -26,7 +26,9 @@ function weekStartIso(): string {
 function countPillarWinsThisWeek(pillar: PillarType): number {
   const start = weekStartIso();
   return getPillarWins(100).filter(
-    // `.245` — same UTC-vs-local week edge, and this one feeds the Mission Score.
+    // `.241` — `localDateKeyFromIso`, not `.split('T')[0]`. `start` is a *local*
+    // Monday; the split takes the **UTC** date half of a stored instant, so the two
+    // sides were in different frames and the week boundary moved with longitude.
     (w) => w.pillar === pillar && localDateKeyFromIso(w.completedAt) >= start
   ).length;
 }

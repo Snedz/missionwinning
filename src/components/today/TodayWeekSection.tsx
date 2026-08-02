@@ -72,7 +72,13 @@ export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTod
           <CardDescription>{todaysWorkout.description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <Button variant="fitness" onClick={onStartTodaysWorkout}>
+          {/* `outline`, not `fitness`. Today docks exactly one red action in
+              `ScreenDock`; this card lives inside the "Today details"
+              disclosure, and a second red fill in `main` is the competing-CTA
+              failure the quality bar names. `redActions.ts` allows zero red
+              controls in `main` — it never caught this because the disclosure
+              only mounts from `readiness` up, and the hero e2e stops earlier. */}
+          <Button variant="outline" onClick={onStartTodaysWorkout}>
             <Play className="h-4 w-4 mr-2" />
             {t('todayStartWorkout', { defaultValue: "Start Today's Workout" })}
           </Button>
