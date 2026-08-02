@@ -66,6 +66,7 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TodaySection } from '@/components/journey/TodaySection';
 import { Input } from '@/components/ui/input';
+import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { localDateKey } from '@/lib/time/localDate';
 
 const HEATMAP_WINDOW_DAYS = 14;
@@ -269,30 +270,16 @@ export function HistoryPage() {
       ) : (
         <div className="space-y-3">
           {/* Sessions = the numbers; Journal = the words (fragments + debriefs +
-              check-in notes, device-only). Same style as the range filter row. */}
-          <div className="flex gap-1.5" role="tablist" aria-label={t('historyTabsLabel', { defaultValue: 'History view' })}>
-            {(
-              [
-                ['sessions', t('historyTabSessions', { defaultValue: 'Sessions' })],
-                ['journal', t('historyTabJournal', { defaultValue: 'Journal' })],
-              ] as const
-            ).map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                role="tab"
-                aria-selected={tab === value}
-                onClick={() => setTab(value)}
-                className={
-                  tab === value
-                    ? 'min-h-[44px] border-2 border-transparent bg-primary-fill px-4 text-xs font-semibold text-primary-foreground'
-                    : 'min-h-[44px] border-2 border-border px-4 text-xs font-semibold text-muted-foreground hover:bg-foreground/[0.07]'
-                }
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+              check-in notes, device-only). */}
+          <SegmentedControl
+            options={[
+              { value: 'sessions' as const, label: t('historyTabSessions', { defaultValue: 'Sessions' }) },
+              { value: 'journal' as const, label: t('historyTabJournal', { defaultValue: 'Journal' }) },
+            ]}
+            value={tab}
+            onChange={setTab}
+            ariaLabel={t('historyTabsLabel', { defaultValue: 'History view' })}
+          />
           {tab === 'journal' ? (
             <JournalTimeline />
           ) : (

@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { estimateMealFromDescription } from '@/lib/nlMealLog';
 import { cn } from '@/lib/utils';
+import { SegmentedControl } from '@/components/ui/SegmentedControl';
 
 const PhotoMealLogger = dynamic(
   () => import('@/components/nutrition/PhotoMealLogger').then((m) => m.PhotoMealLogger),
@@ -112,49 +113,32 @@ export function FuelLogSheet({
   // One ruled strip with 1px divisions, not four pills in a sideways scroller.
   // There are exactly four meals and they always fit.
   const mealTabs = (
-    <div className="flex border-2 border-border divide-x divide-border" role="group">
-      {MEALS.map((m) => (
-        <button
-          key={m}
-          type="button"
-          aria-pressed={meal === m}
-          onClick={() => onMealChange(m)}
-          className={cn(
-            'min-h-[44px] flex-1 text-[13px] font-semibold transition-colors',
-            meal === m ? 'is-active-tab text-primary' : 'text-muted-foreground hover:bg-muted'
-          )}
-        >
-          {mealLabel(m)}
-        </button>
-      ))}
-    </div>
+    <SegmentedControl
+      options={MEALS.map((m) => ({ value: m, label: mealLabel(m) }))}
+      value={meal}
+      onChange={onMealChange}
+      ariaLabel={t('fuelMealStripLabel', { defaultValue: 'Meal' })}
+      fill
+    />
   );
 
   const modeTabs = (
-    <div className="flex gap-1  bg-card p-1">
-      {(
-        [
-          ['quick', 'fuelTabQuick', Search, 'Quick'],
-          ['describe', 'fuelTabDescribe', PenLine, 'Describe'],
-          ['custom', 'fuelTabCustom', Plus, 'Custom'],
-          ['photo', 'fuelTabPhoto', Camera, 'Photo'],
-        ] as const
-      ).map(([id, key, Icon, def]) => (
-        <Button
-          key={id}
-          size="sm"
-          variant={tab === id ? 'secondary' : 'ghost'}
-          className={cn(
-            'flex-1 gap-1.5 h-9 ',
-            tab === id && 'bg-card'
-          )}
-          onClick={() => setTab(id)}
-        >
-          <Icon className="h-3.5 w-3.5" />
-          {t(key, { defaultValue: def })}
-        </Button>
-      ))}
-    </div>
+    /* `.224` — was four `Button`s whose active state was `bg-card` on a
+       `bg-card` parent: 1.01:1, the same invisible-control trap `.155` found on
+       the check-in scales. Now the one segmented control, where selected is a
+       tint ground under a 2px poster rule. */
+    <SegmentedControl
+      options={[
+        { value: 'quick' as const, label: t('fuelTabQuick', { defaultValue: 'Quick' }), icon: Search },
+        { value: 'describe' as const, label: t('fuelTabDescribe', { defaultValue: 'Describe' }), icon: PenLine },
+        { value: 'custom' as const, label: t('fuelTabCustom', { defaultValue: 'Custom' }), icon: Plus },
+        { value: 'photo' as const, label: t('fuelTabPhoto', { defaultValue: 'Photo' }), icon: Camera },
+      ]}
+      value={tab}
+      onChange={setTab}
+      ariaLabel={t('fuelModeStripLabel', { defaultValue: 'Log method' })}
+      fill
+    />
   );
 
   const tabBody = (
