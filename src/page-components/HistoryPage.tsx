@@ -60,6 +60,11 @@ import {
   historySummaryStats,
   pickChartExerciseId,
 } from '@/lib/historyAnalytics';
+import {
+  daysWithDataCount,
+  firstDayWithData,
+  sweepDaysWithData,
+} from '@/lib/journey/daysWithData';
 import { getExercisesWithBenchmarkData } from '@/lib/benchmarks';
 import { useWorkoutStore } from '@/store/workoutStore';
 import type { CompletedWorkoutLog } from '@/types';
@@ -75,6 +80,24 @@ const HEATMAP_WINDOW_DAYS = 14;
 
 type RangeFilter = '7' | '30' | 'all';
 type HistoryTab = 'calendar' | 'sessions' | 'journal';
+
+/**
+ * `YYYY-MM-DD` → a readable date, built from **local** fields.
+ *
+ * Deliberately not `new Date(key)`: a bare date string parses as UTC midnight,
+ * so west of UTC it renders as the previous day — the mirror of the `.245`
+ * defect, and `localDate.ts` already carries the same note about why
+ * `previousLocalDateKey` is built this way.
+ */
+function formatDayKey(key: string, locale: string): string {
+  const [y, m, d] = key.split('-').map(Number);
+  if (!y || !m || !d) return key;
+  return new Date(y, m - 1, d, 12).toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
 
 export function HistoryPage() {
   const { t, i18n } = useTranslation();
@@ -147,6 +170,21 @@ export function HistoryPage() {
   );
   const summary = useMemo(() => historySummaryStats(workoutHistory), [workoutHistory]);
 
+  /*
+   * `.247` — the day set is swept on load rather than written at each log site.
+   * Six writers is six chances to miss the seventh, and the failure is silent
+   * (`.220`). Depends on `workoutHistory` so a session logged this visit counts
+   * without a reload.
+   */
+  const [dayStats, setDayStats] = useState<{ count: number; first: string | null }>({
+    count: 0,
+    first: null,
+  });
+  useEffect(() => {
+    sweepDaysWithData(workoutHistory.map((w) => w.completedAt));
+    setDayStats({ count: daysWithDataCount(), first: firstDayWithData() });
+  }, [workoutHistory]);
+
   const briefingLine = useMemo(() => {
     if (workoutHistory.length === 0) {
       return t('historyBriefingEmpty', {
@@ -207,6 +245,44 @@ export function HistoryPage() {
           {t('historyMissionStory', { defaultValue: 'At a glance' })}
         </p>
         <p className="text-sm text-foreground leading-relaxed">{briefingLine}</p>
+        {dayStats.count > 0 && (
+          /*
+            `.247` — **"days logged", not "days on mission"**. For an athlete
+            already past a cap when this shipped, the sweep can only see what
+            survived, so this is a lower bound. "Days logged" is true either
+            way; "days since you started" would imply a continuity nothing here
+            can prove, and inventing that is `.208` on the most emotive number
+            in the product.
+          */
+          <p className="text-sm text-foreground tabular-nums leading-relaxed">
+            {t('historyDaysLogged', {
+              count: dayStats.count,
+              defaultValue: `${fmt.num(dayStats.count)} days logged`,
+            })}
+            {dayStats.count > 0 && (
+              <>
+                {' · '}
+                {/*
+                  `.251` — the count is now a way in. Without this the day
+                  replay would be a route nothing links to, which is `.195`:
+                  built, and nobody can reach it.
+                */}
+                <Link href={`/history/${localDateKey()}`} className="text-primary underline">
+                  {t('historyDayToday', { defaultValue: 'replay today' })}
+                </Link>
+              </>
+            )}
+            {dayStats.first && (
+              <span className="text-muted-foreground">
+                {' · '}
+                {t('historyDaysSince', {
+                  date: formatDayKey(dayStats.first, i18n.language),
+                  defaultValue: `since ${formatDayKey(dayStats.first, i18n.language)}`,
+                })}
+              </span>
+            )}
+          </p>
+        )}
         {summary.sessionCount > 0 && (
           <p className="text-xs text-muted-foreground tabular-nums leading-relaxed">
             {t('historyAvgVolume', {

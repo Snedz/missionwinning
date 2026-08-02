@@ -1,11 +1,10 @@
 import { getChallengeProgress } from '@/lib/challenges';
-import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { getPillarWins, type PillarType } from '@/lib/pillarLog';
 import { getActivitiesForWeek } from '@/lib/activityLog';
 import { hasFuelPlanThisWeek, todayFuelSynergyBump } from '@/lib/fuelCoach/synergy';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
-import { localWeekKey } from '@/lib/time/localDate';
+import { localDateKeyFromIso, localWeekKey } from '@/lib/time/localDate';
 
 export interface WeeklyPillarStats {
   moveFlows: number;

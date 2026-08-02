@@ -10,6 +10,592 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-01 — Replay a day (`.251`)
+
+The other half of `.247`, and the last of the four product references. Tesla's
+VPP dashboard lets you go back to a specific grid event and see what the fleet
+actually did; `/history/[date]` is that pointed at a day the athlete lived —
+every pillar, in order, with the neighbouring logged days a tap away.
+
+`.247` built the index this reads from, so the route is a lookup rather than a
+scan.
+
+### It collects nothing of its own
+
+`gatherJournalEntries` already walks every pillar store and returns one shape.
+Writing a second cross-pillar collector — even a slightly better one — is
+`.178`, which this repo has paid for six times in thirty builds. So
+`buildDayRecord` **filters what that returns** and never re-derives it: when a
+new pillar starts logging, both the Today strip and the replay gain it at once
+or neither does.
+
+### A day reads forwards
+
+`gatherJournalEntries` is newest-first, which is right for a *feed* — the Today
+strip has no end and recency is the point. A **bounded day being replayed** is
+the opposite, and rendering it showed why: the 8pm check-in sat above the 7am
+session, so the page described the evening before the morning. Sorted ascending,
+it reads as the day was lived — the walk, the session, breakfast, the check-in.
+
+Fourth time this run that rendering a screen caught what the diff could not.
+
+### The two ways a replay lies
+
+- **Empty when it should be full.** `gatherJournalEntries` takes a limit and
+  sorts newest-first, so a small ceiling silently drops the *oldest* days — and
+  a day rendering empty reads as *"you did nothing"* rather than *"this page
+  could not see it."* `.208`'s shape. The ceiling is deliberately far above any
+  real day and a test puts an old day behind 300 newer rows.
+- **The wrong calendar day.** Bucketing goes through `localDateKeyFromIso`
+  (`.245`), and the entries arrive with two timestamp shapes — real instants
+  from workouts and wins, synthesised `${date}T12:00:00` strings from meals and
+  check-ins. Both are correct through that function; slicing either would put an
+  Auckland morning on the previous day. Pinned in `Pacific/Auckland`.
+
+The date is user input straight off the URL, so a malformed one renders an empty
+record rather than throwing, and `/history` links to the replay so the route is
+not built-and-unreachable (`.195`).
+
+**And the CI status is finally true.** `ad101b34` ran all **25** steps green —
+Hero E2E included, which settles `.249` — and gitleaks scanned for the first
+time in this repo's history: *10 commits, 30.32 MB, no leaks found*. Both
+CONTEXT rows are corrected, including the long-standing claim that gitleaks was
+red because of `8ea3527a`: the action scans **the PR's commits only**, so that
+finding was never going to fire on a pull request.
+
+Tests 1236 → 1243.
+
+---
+
+## 2026-08-01 — I ran the fill tool and committed it (`.250`)
+
+Three findings, and the first is mine.
+
+### 394 regenerated locale files, committed by accident
+
+While checking which CI steps passed locally I ran `npm run export-locales`,
+then committed with `git add -A`. That swept **394 regenerated locale files**
+into a commit whose stated purpose was a one-line LOG heading fix.
+
+`.222` cut `public/locales` from 30.8 MB to 2.1 MB and built the splitter as a
+**re-runnable** script with a `--check` gate step for exactly one reason: *"a
+cleanup that cannot be repeated undoes itself the next time the fill tool
+runs."* I ran the fill tool. It undid itself.
+
+Caught because CI's unit step went red on `.222`'s own three guards — *no
+namespace file carries keys from another namespace*, *common.json does not come
+back*, *the footprint stays down*. Reverted by restoring the path from the
+parent commit; `public/locales` is byte-identical to its pre-accident tree.
+
+**`git add -A` after running a generator is the whole defect.** The generator is
+supposed to be runnable; committing its output is what breaks the invariant.
+
+### Bare `npm test` does not run every test
+
+The reason it reached CI at all. Locally `npm test` reports **1232** tests;
+under the CI environment it reports **1235** — three of `.222`'s guards only
+register with `PRIVATE_MODE`/`NEXT_PUBLIC_*` set. So "1232 passing" was true and
+meaningless: the suite that would have caught this never ran on my machine.
+
+Every check in this entry was therefore verified with the CI env exported, not
+bare.
+
+### Five guards ran only in the lane an agent can skip
+
+`check-design-system` (`.221`, widened in `.244`), `bundle-budget` (`.209`),
+`check-locale-split` (`.222`), `i18n:coverage` and `a11y` (`.200`) existed
+**only** in `scripts/gate.mjs`. `ci.yml` already states the principle above its
+first check — *"a guard nobody runs on a PR is not a guard, and branches from
+other sessions never run the local gate"* — and five guards contradicted it.
+
+That is `.200`/`.213`/`.219` with the lanes swapped: those waves found checks
+living only in a billing-blocked workflow, so `npm run gate` became the real
+gate. CI runs again now and is the enforcing lane, and the drift reversed
+silently.
+
+Four are added; `a11y` is exempted **with its reason** — it needs a running
+server and its one local run flaked on axe measuring skeleton text at 1.05
+contrast before the page settled. A step that can go red for a render race
+makes CI a coin flip, and a check people re-run until green teaches them to
+ignore it. Fix the settle race first.
+
+**Ordering is load-bearing and now guarded.** `check-locale-split` must run
+*before* `export-locales`, because the export recreates the unsplit shape —
+verified by running it: "15 languages, all split" becomes "392 files carry keys
+outside their namespace". A reorder is a one-line diff nobody would think twice
+about.
+
+**And my own comment broke my own guard.** The first ordering test used
+`indexOf('npm run export-locales')` and failed instantly — on the **comment**
+above the split step, which names that command while explaining the ordering.
+Matched on the `run:` line instead. Prose is not execution; `check-design-system`
+strips comments for the same reason.
+
+### The keys my own features never translated
+
+`i18n:coverage` is a ratchet at 710 and `.246`/`.247` pushed it to **722**:
+thirteen `t('…')` literals with a `defaultValue` and no EN pack entry, which
+renders English in all fifteen languages. Added to `trackLocales` and
+`historyLocales`; the count is now **709**, one below the cap rather than twelve
+above it.
+
+Tests 1232 → 1236 (1235 under CI env before this entry's additions).
+
+---
+
+## 2026-08-01 — The gate CI could not pass (`.249`)
+
+Actions billing cleared at **00:12 UTC** and the PR gate ran for the first time
+in this programme. It found two things nobody could have seen while every job
+was dying at `runner_id: 0` — and one of them had been latent since `.198`.
+
+### The local gate and CI built different apps
+
+`Today shows one red action at 19:00` failed on CI — on the retry too, so not
+flaky — while passing locally. 51 passed, 1 failed.
+
+`.198` found that `isPushSupported()` returns false without a VAPID public key,
+so every component behind it rendered **nothing** in every e2e run this repo had
+ever done, and the guards over those surfaces passed vacuously. Its fix was a
+placeholder key in `BUILD_ENV`.
+
+That went into [`gate.mjs`](scripts/gate.mjs) and **not** into
+[`ci.yml`](.github/workflows/ci.yml). One fact, two homes, drifted
+immediately (`.178`) — and invisible for as long as CI could not run.
+
+**Proved, not assumed.** Rebuilt locally with the key removed: the test fails,
+reproducing CI exactly. Rebuilt with it: passes. Causation, not correlation.
+
+This is `.209`'s lesson pointed the other way. There, the gate measured a
+configuration production does not serve. Here **CI measured a configuration the
+local gate does not serve** — and the local gate is what every agent runs before
+pushing, so a green local gate meant nothing about CI.
+
+[`gateEnvParity.test.ts`](src/lib/gateEnvParity.test.ts) now compares the two
+lists: every variable the local gate sets must be set in CI, **to the same
+value**, because a placeholder that differs between lanes is the same defect
+with extra steps. Both mutants — deleting the CI entry, and changing its value —
+turn it red.
+
+**The guard's own parser was wrong first.** One regex read both
+`NAME: 'x',` and `NAME:\n  process.env.NAME || 'x',`, and its cross-line branch
+let `PRIVATE_MODE: 'false',` reach past its own line to the *next* variable's
+literal — reporting a disagreement that did not exist. Split into bounded
+segments per declaration. `.212`'s rule holds for the tools as much as the code.
+
+### What CI settled about the flakiness
+
+Three local gate runs had failed on three *different* timing-sensitive tests,
+each passing standalone, and `.244` recorded that as container flakiness. **CI
+passed all three.** So that attribution was right — and it was also hiding a
+fourth failure that was entirely real and entirely deterministic. A suite that
+fails differently every run trains you to discount the next failure, which is
+what nearly happened here.
+
+Tests 1229 → 1232.
+
+---
+
+## 2026-08-01 — Give gitleaks the permission it needs to scan (`.248`)
+
+Actions billing cleared at **00:12 UTC** and gitleaks ran for the first time.
+It did not report a secret: it failed **before scanning anything**.
+
+    GET /repos/Snedz/missionwinning/pulls/178/commits  ->  403
+    'Resource not accessible by integration'
+    'x-accepted-github-permissions': 'pull_requests=read'
+
+`gitleaks-action@v2` lists a PR's commits to work out its scan range, and the
+workflow declared **no `permissions:` block**, so the job inherited a
+contents-only token. The secret gate could not scan a pull request at all, and
+the red it produced said nothing about whether the diff holds a secret. Now
+declares least privilege: `contents: read` + `pull-requests: read`.
+
+CONTEXT recorded that red as the known finding in `8ea3527a` — a real Solana
+treasury address in history, deliberately not allowlisted (founder call). Still
+true of `master`; **not** why the check was failing. Both causes are now stated
+separately.
+
+Also corrects the Actions status, which this file had wrong in **both**
+directions within one night: it claimed "cleared" while jobs were dying at
+`runner_id: 0`, and the correction claimed "blocked" an hour before billing came
+back. The Ops bullet no longer describes CI at all — two places describing one
+fact is `.178`, and the fix is not a better sentence but **no** sentence. The
+Status table now says to read `runner_id` before recording anything: **0 means
+it never ran; non-zero means it ran and something is genuinely wrong.**
+
+---
+
+## 2026-08-01 — Days logged, and the caps they outlive (`.247`)
+
+The "1,146 days of data" number from the member story — and it **cannot be
+derived from what is stored**, because every store in this app is capped:
+
+| Store | Cap |
+|---|---|
+| `workoutHistory` | `HISTORY_CAP` = 1000 |
+| `sessionJournal` | 200 |
+| `bodyMetrics` | 200 |
+
+Those caps are right — `localStorage` is finite and `.210` measured what an
+unbounded write path costs mid-set on the logger. But they mean a long-running
+athlete's first months are **deleted**, so a count derived from surviving rows
+would *shrink as they trained more*. The day **keys** are therefore kept
+separately: ten bytes a day, ~3.6 KB per decade.
+
+### One sweeper, not a writer at every call site
+
+The obvious design is `recordDayWithData()` called wherever something is
+logged — which is `.220`'s defect waiting to happen. That wave found a guard
+named *"both streak readers apply the recency rule"* that opened two files when
+there were four, and the two it missed were the two that mattered. Six log
+sites is six chances to miss the seventh, and the failure is **silent**: the
+day just never counts.
+
+So nothing writes on log. `sweepDaysWithData` reads every dated store, unions
+what it finds into the persisted set, and runs on load — idempotent, and a
+sweep finding nothing new produces byte-identical content, which `.210`'s
+`dedupeWrites` then skips without touching disk. A guard asks the question the
+other way round: *of the keys holding dated rows, which does the sweep not
+read?*
+
+### `.245`'s guard caught `.247` on its first run
+
+The first version carried `isInstant: boolean` per source and sliced ten
+characters when it was false. `no calendar date is sliced off a stored ISO
+string either` — written six hours earlier — went red on the new file, and it
+was right twice over:
+
+1. A blind `.slice(0, 10)` on something that turns out to be an instant yields
+   the **UTC** date. The `.245` defect, reintroduced in the file that cites it.
+2. The flag is a second, hand-maintained description of the data's shape
+   (`.178`). Set it wrong on a new source and every day from that store lands
+   one off, silently, east of UTC.
+
+An ISO instant always contains `T`; a `YYYY-MM-DD` key never does. `dayKeyOf`
+asks the **value**, so nothing has to remember to declare it. The exemption I
+was about to write would have been the wrong fix.
+
+### What the number is allowed to claim
+
+**"Days logged", never "days on mission".** For an athlete already past a cap
+when this shipped, the sweep can only see what survived, so the count is a
+**lower bound**. "N days logged" is true either way; "days since you started"
+would imply a continuity nothing here can prove, and inventing that is `.208`
+on the most emotive number in the product.
+
+### Verification
+
+Six mutants: dropping the union with stored days, slicing an instant, dropping
+day-key validation, inverting `firstDayWithData`, and re-introducing the
+`.245` slice — all killed. The sixth, removing a redundant `new Set()`,
+**survived**, because both callers already pass a set; `persist` now takes
+`Set<string>` so duplicates cannot be expressed rather than being filtered by
+code no test could reach — the same call `.246` made an hour earlier.
+
+Rendered against a built server: 12 workout days ∪ 11 nutrition days =
+**23 days logged**, genuinely distinct from the 12 sessions beside it. That
+also caught the date printing as a raw `2026-07-10`; it is now formatted from
+**local** fields, never `new Date(key)`, which parses as UTC midnight and
+renders the previous day west of UTC.
+
+Tests 1220 → 1229.
+
+**Not done, named.** `/history/[date]` — Tesla's "replay a specific grid event"
+pointed at a day the athlete actually lived — is the other half of `.247` and
+is not here. `listDaysWithData()` is the index it needs and now exists.
+
+---
+
+## 2026-07-31 — Ask for a trend, get a chart (`.246`)
+
+The feature `.245` was opened for, now that the buckets underneath it name the
+right day. `TREND_METRICS` + `parseTrendQuery` + `resolveTrendSeries`, and a
+card on `/track` that turns *"volume over 30 days"* into a chart.
+
+### Rules, not a model — because the model is dark
+
+`COACH_LLM_API_URL`/`_API_KEY`/`_MODEL` are all unset, so a model-backed parser
+would answer **nothing** for every current user. Free beta already unlocks full
+depth for everyone, so a 402 was never the obstacle either. Whatever ships has
+to work with no network, no key and no account — which is the logger's own
+promise. If a model is wired up later it resolves the phrasings these rules
+decline; it does not become the thing that answers.
+
+### It answers or it asks — it never guesses
+
+The failure mode worth designing against is a chart of the **wrong** metric,
+because it looks exactly like a right answer, and this repo has paid for
+"confident number, wrong quantity" in `.208`, `.217`, `.220` and `.223`. So an
+unmatched query returns `no-metric` and names what the app *can* chart, and an
+ambiguous one returns its **candidates** as tappable choices.
+
+"Weight" is the ambiguity that matters and it is not a corner case: in a
+training app it is the scale or the bar, and the app measures both. Resolving
+it by table order would answer half those queries wrong. `"my weight"` resolves
+(English possessive means the scale); a bare `"weight"` refuses.
+
+### Training, not health
+
+No HRV, no resting heart rate, no sleep — and their absence is a decision. This
+is a PWA with no wearable, and `sleepConsistency.ts` is already an explicit
+refusal to print a sleep number it cannot compute. A registry offering them
+would make the *asking* surface promise what the *measuring* surface refuses —
+`.195` in reverse. A guard asserts no metric answers to one of those words.
+
+### Two of my own guards were vacuous, and mutation is what said so
+
+- A test that "fat" inside "fatigue" must not match proved **nothing**: no
+  metric answers to a bare "fat", so no matching strategy could have failed it.
+  Swapping whole-word matching for `includes()` walked straight through. It now
+  uses `"inactive"` against the real `active` entry.
+- The parser ranked matches by phrase length so a longer phrase would win.
+  Removing that ranking changed **no** result — the situation it arbitrated
+  cannot arise, because phrases are unique to one metric. So the ranking is
+  **deleted** and the overlap is forbidden in the table instead: a new guard
+  fails if one metric's phrase sits inside another's. Unrepresentable beats
+  handled, and it removes code no test could exercise.
+
+### Rendering settled the mark, again
+
+Drawn as a `monotone` line, daily volume swept smooth humps between 0 and
+5,000 — implying the volume built and decayed *within* each day. A daily bucket
+is a **discrete total**: you trained on the 14th or you did not, and a rest day
+is a real zero. Those are bars now. Body metrics stay a line, because a
+bodyweight between two weigh-ins genuinely did vary continuously. A chart is a
+claim, and the first one was interpolating.
+
+Also honest about coverage: `resolveTrendSeries` returns body metrics at their
+**real** length rather than padding to the window, so asking for ninety days
+with three weigh-ins cannot draw a flat line back to an invented zero.
+
+**Verification.** Six mutants: ambiguity-by-table-order, the bare-weight
+refusal, substring matching, the phrase-collision invariant and `windowAssumed`
+all killed; the sixth deleted the code it targeted. Three states screenshotted
+at 390px against a built server (answer, refusal, ambiguity) — which is what
+found the mark. Tests 1201 → 1220.
+
+**Recorded.** `trend_asked` reports the **outcome** (`volume`, `no-metric`,
+`ambiguous`) and never the query text: what someone types about their own body
+is not telemetry. The refusal rate is the number worth watching.
+
+---
+
+## 2026-07-31 — The day a session lands on (`.245`)
+
+> **Merge correction, written when this branch landed.** `.241` reached `master`
+> first and fixed **the same defect in four of these files** — `todayTrends`,
+> `pillarScoreInputs`, `challenges`, `TodayJournalStrip` — from the other end of
+> the wave. Two sessions found one bug independently, which is worth recording
+> rather than tidying away: it was reachable from both the trend work and the
+> empty-state work, so the two lanes converged on it.
+>
+> `master`'s attribution stands in the code comments, because it shipped first.
+> What is **this** entry's own is the part `.241` did not do: **widening the
+> guard**, so the next instance is caught instead of found. `.241` fixed call
+> sites; `DATE_SLICE_EXEMPT` and the sliced-from-storage rule below are why there
+> is no fifth time. Three sites `.241` never reached — `backup`'s filename,
+> `founderDigestCompose` and the founder panel's date column — came with it.
+>
+> The merge also **emptied `UTC_IS_CORRECT`**: `.241` exempted two files whose
+> matching sites this branch had already rewritten, and the staleness rule caught
+> both. First time either direction of that rule has fired on real work.
+
+Opening `.245` — the "ask for a trend" registry — meant reading the function
+every trend would be built from. [`buildTodayTrends`](src/lib/todayTrends.ts)
+keys its buckets with `localDateKey` and keyed the **workouts** with
+`completedAt.split('T')[0]`. Those are not the same day.
+
+```
+completedAt (stored) : 2026-07-31T21:00:00.000Z
+UTC bucket  (before) : 2026-07-31
+local day   (buckets): 2026-08-01   ← MISMATCH
+```
+
+Proved in `Pacific/Auckland` before anything was touched: an athlete training at
+**10:00 on 1 August** had that session counted on **31 July**. East of UTC that
+is the entire morning — most of when people train — landing one bar to the left,
+with **today's own column reading zero** on the Today trend strip.
+
+A query surface over that would have shipped wrong answers behind a nicer
+interface, so the foundation went first.
+
+### `.212`'s lesson, the fourth time
+
+`.199` shipped a guard matching `split('T')[0]` and nothing else; `.212` widened
+it to four spellings and fixed fifteen sites. Both versions require a literal
+`toISOString()` **call** adjacent to the slice — and an ISO instant does not have
+to be produced on the spot to be sliced. It is usually read back out of storage,
+where it is already a plain string:
+
+```ts
+w.completedAt.split('T')[0]   // byte-for-byte the same bug, invisible to the guard
+```
+
+Widening it **before touching any call site** turned it red on eight files. Two
+were false positives of a kind the rule cannot resolve by shape — `schoolClass.ts`
+and `ExercisesPublicFilter.tsx` slice an **array**, not a date — so those carry
+exemptions that state the value being sliced, plus a staleness check in the
+`.219`/`.220` shape that fails when an exemption stops being true.
+
+Six were real, and the two that matter most are not the trend strip:
+
+- [`pillarScoreInputs`](src/lib/pillarScoreInputs.ts) compares a UTC date against
+  `localWeekKey()`, so a Monday-morning pillar win east of UTC dated to Sunday
+  and **fell outside the week it belonged to** — and this one feeds the
+  **Mission Score**.
+- [`challenges`](src/lib/challenges.ts) makes the identical comparison against
+  `weekStart`, dropping the same wins from the weekly challenge.
+
+Also fixed: `TodayJournalStrip` (a UTC day compared to a local `today` decided
+whether an entry showed its *time* or its *date*, so this morning's entry read
+"Jul 31"), `founderDigestCompose`, `backup`'s filename and the founder panel's
+date column.
+
+### The suite could not have caught it
+
+Every existing case in `todayTrends.test.ts` builds its ISO strings from a local
+wall-clock time and then runs in **UTC**, where both spellings agree. It proved
+the aggregation while being structurally blind to which day anything landed on.
+`.211`'s lesson with the sign flipped — there a fixture drifted and went red,
+here it agreed with the code because both were evaluated in the one zone that
+hides the difference.
+
+The new sweep runs five zones, and the control values are the point: with the
+defect restored, **UTC, Los Angeles, Midway and even Tokyo all still pass**.
+Only Auckland (UTC+13) fails at 10:00 local. A single-zone test was never going
+to see this.
+
+**Verification.** One mutant — restoring `split('T')[0]` — killed by the
+Auckland case. Tests 1192 → 1201.
+
+**Deferred, with the reason.** The `TREND_METRICS` registry and the offline
+`parseTrendQuery` are **not** in this entry. They are the feature `.245` was
+opened for, and they belong on buckets that name the right day; shipping them
+together would have buried a correctness fix inside a feature diff and made the
+"which day is this" change impossible to review on its own. **Shipped in `.246`.**
+
+---
+
+## 2026-07-31 — The charts the guard could not see (`.244`)
+
+`.221` built [`check-design-system.mjs`](scripts/check-design-system.mjs) so
+the Modernist rules — paper/ink, **one red**, radius 0 — would be checked instead
+of merely stated. It caught `Benchmarks1RMChart` still drawing Tailwind blue-500
+and green-500 through a full-app rebrand.
+
+It also had two holes, and both were occupied.
+
+### The rule matched hex, so every other spelling of a colour was invisible
+
+```tsx
+// src/components/track/TrackPaceChart.tsx — the pre-rebrand dark theme, on paper
+<CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+<YAxis tick={{ fontSize: 10, fill: 'rgba(255,255,255,0.45)' }} />
+```
+
+White grid lines and white tick labels on a **paper** ground — `#f3f2f2`. Not
+subtly off-brand: *invisible*. The chart had been drawing an unreadable Y axis
+since the rebrand, and the guard written to catch exactly that survival could not
+see it, because `rgba()` is not `#`.
+
+Widening the pattern to the functional forms — **before touching any call site**,
+which is `.212`'s rule — returned five hits. Three were live drift; two were
+already allowlisted under this same rule id. One of the three was a **sixth
+leftover in the guidebook block `.221` had already cleaned**:
+
+```css
+.magazine-screen-bar { background: hsl(0 0% 100%); }
+/* …under a token whose own comment reads: */
+--background: 0 4% 95%; /* paper #f3f2f2 — the only ground, never pure white */
+```
+
+`.221` fixed four raw radii and a `#0a0c10` navy in that same block. This one
+survived the pass for precisely the reason the chart whites did.
+
+### And a rule cannot match styling that is *absent*
+
+```tsx
+// src/components/track/BodyMetricsCard.tsx
+<Tooltip formatter={…} />   // no contentStyle at all
+```
+
+recharts' stock white box, `#ccc` border, its own radius — three rebrand rules
+broken at once with **nothing in the file for a pattern to match**. Every rule
+above asks *"is this value wrong?"*; a missing prop has no value to be wrong.
+
+The stronger fix would make it unrepresentable, and recharts forbids it:
+`findAllByType` matches chart children on `displayName || name` and reads props
+off **that** element, so a `<ChartTooltip>` wrapper is either ignored outright or
+— with a faked `displayName` — matched with its defaults sitting unread in the
+inner element. Checked against the installed 2.15.4 source rather than assumed.
+So the guard carries it: `unstyled-chart-tooltip` fails any `<Tooltip>` that does
+not spread `CHART_TOOLTIP`.
+
+**`Tooltip` names two different components here.** The first version returned
+eight hits in files with no chart in them — `SetLogRow`, `TodayDashboardHeader`,
+`PillarScoreBreakdown` — all the Radix `<Tooltip><TooltipTrigger>`, which takes
+no `contentStyle`. A `.178` collision in the *tag name*, and a guard keyed to the
+word would have demanded a chart prop on a hover hint. Keyed to the **import**
+instead.
+
+### The one accent meant two different things
+
+`History1RMChart` and `Benchmarks1RMChart` plot the **same two series** and had
+assigned them opposite colours: red was *estimated* on History and *actual* on
+Benchmarks. `.221` re-inked the second file and nothing pointed at the first, so
+the fix landed on one screen and the drift stayed on the other.
+
+New [`chartTheme.ts`](src/components/charts/chartTheme.ts) exports the pair by
+**meaning** — `measured` (solid, one accent) and `derived` (dashed, quiet) —
+because naming them `red`/`grey` is what lets the next chart pick afresh. The
+dash is not decoration: a one-hue palette cannot separate two series by colour,
+which is what WCAG 1.4.1 asks you to avoid anyway. Four recharts files now take
+their grid, axes and tooltip from one place.
+
+The guards **discover rather than enumerate** (`.220`): every file importing
+`CHART_SERIES` must map `actual → measured` and `estimated → derived`, and every
+chart drawing an axis must import the shared chrome. Naming the two files I had
+already looked at is the vacuous-guard shape this programme keeps paying for.
+
+### Rendering it found two more the scan never could
+
+`.221` noted that a screenshot caught what static analysis could not. It did
+again, twice, both in charts I was already fixing:
+
+- The body-metrics tooltip read **`: 80.8 kg`**. recharts renders the separator
+  whenever `name` is non-nil, and this single-series formatter returns `''` —
+  so a stray leading colon had been sitting there, unreadable until the box
+  behind it was styled enough to read.
+- The volume chart's legend read **`volume`** — the raw `dataKey`, lowercase and
+  untranslated, in all eight languages. The formatter translated it for the
+  *tooltip*; nothing did for the legend. Naming the series once fixes both
+  readers and retires a dead branch, since that chart has no sessions series for
+  `t('historySessionsLabel')` to have ever labelled.
+
+### A failure message that read as a pass
+
+Chasing a flaky gate failure cost a full run and turned up
+[`thumbSweep.ts`](tests/e2e/helpers/thumbSweep.ts) reporting
+`Math.round(box.height)` while asserting on the raw float — so a control
+measuring 43.99 failed with *"controls under 44px tall: (no text) h=44"*. A
+number that reads as passing, printed by the guard that just failed. `.219`'s
+lesson — counting the wrong thing makes the truth unreadable — applied to a
+message rather than a metric.
+
+**Verification.** Five mutants, all killed: the rgba white, the pure-white bar,
+the stripped tooltip spread, a swapped `measured`/`derived`, and a dropped
+`chartTheme` import. Three charts screenshotted at 390px against a built server.
+Tests 1186 → 1192.
+
+**Not done, recorded.** `historySessionsLabel` is now unused but still declared
+in the type, the English defaults and eight locale packs — removing a key across
+all of them is a ripple this PR should not carry. And the e2e suite is **flaky in
+CI-class containers**: three full gate runs failed on three *different*
+timing-sensitive tests (thumb sweep, axe on `/profile` measuring skeleton text at
+1.05 contrast, offline reconnect), each of which passes standalone. Gate steps
+1–16 were green on every run.
+
 ## 2026-08-02 — The notification that says nothing (`.243`)
 
 A third batch of Pump Club screenshots, and the notification centre in it is the
@@ -590,6 +1176,7 @@ via `defaultValue` — `npm run i18n:fill` has not been run for the ~14 new keys
 Verified at 390×844 in a real browser, not inferred: Today's order, the card and
 sheet, the segmented control's computed colours and keyboard, and axe clean with
 the sheet **open** (`.215`).
+
 ## 2026-08-01 — The column that hid four more controls (`.224`)
 
 `.223` shipped `tests/e2e/fuel-floating-action.spec.ts` after "Log weight" was
@@ -972,769 +1559,3 @@ it. Both went. The best part is no part.
 `http-sync-fetches-by-default`, `kill-switch-loses-to-opt-in`,
 `pack-regrows-full-catalogue`, `common-json-returns`,
 `footprint-ratchet-raised`, `copies-drift`, `new-namespace-collision`.
-
-## 2026-07-31 — The design rules nothing checked (`.221`)
-
-You asked for a plan to improve the web design. I measured before proposing, and
-the honest headline is that **the design system is in good shape** — the
-Modernist rebrand is coherent, the tokens are well built, and the contrast
-reasoning is documented at the call sites rather than assumed. `src/index.css`
-holds **zero** hex literals outside comments and routes every `font-family`
-through a token.
-
-So this is one PR, not a wave. Padding it would have been inventing work.
-
-### What was actually wrong
-
-`scripts/check-token-sync.mjs` pins token *values* against `index.css` and two
-Android Kotlin files. **It never opens a `.tsx`.**
-
-That is structurally the blind spot `.202` found in `i18n-parity`: a checker that
-compares definitions to each other cannot see what components do. Component drift
-was invisible **by construction**.
-
-Which is how [`Benchmarks1RMChart`](src/components/benchmarks/Benchmarks1RMChart.tsx)
-kept drawing **Tailwind blue-500 and green-500** through a full-app rebrand, on a
-live nav surface, while the grid, axes, tooltip and `borderRadius: 0` in that
-same file were all correctly re-inked. The series colours read as "data colours"
-rather than brand ones. On a paper/ink/one-red system they are the same thing.
-
-### The three drifts
-
-- **The chart.** `#3b82f6` / `#22c55e` → tokens. The palette gives one hue, not
-  two, so the series are distinguished by **dash** as well — which WCAG 1.4.1
-  asks for regardless — and the split carries meaning: the measured lift is solid
-  and takes the accent, the derived estimate is dashed and quiet.
-- **The drop zone.** `FileDropZone`'s drag-over state was
-  `shadow-[0_0_0_1px_…,0_0_28px_-4px_…]` plus `scale-[1.01]` — **a 28px red
-  glow**, the pre-rebrand idiom recoloured, while `.131` says glows were retired
-  and `.136` claims blur and shadow reached zero. Now a poster-red border on the
-  same tinted fill, like every other active surface.
-- **The guidebook.** Four raw `border-radius` values and `#0a0c10` — the
-  pre-rebrand navy — in a block whose every other value already aliased
-  paper/ink. Raw CSS bypasses the Tailwind radius collapse entirely, so `/guide`
-  kept rounded buttons and a dark figure placeholder through the whole re-ink.
-  Plus one more the scanner found: `border-radius: 8px` in the printable teacher
-  report.
-
-### The guard, and the requirement that nearly sank it
-
-`scripts/check-design-system.mjs` is **gate step 16** — `.200`, `.213` and `.219`
-all turned on the same fact, that a check living only in a billing-blocked
-workflow has never run.
-
-**Its hardest requirement is not firing on comments.** A naive scan of this repo
-reports ~35 hex colours and 6 shadows, and *almost all are prose* — `MobileNav`
-explaining a 3.84:1 contrast choice, `PressPage`'s own brand guidance *"Don't:
-Round, stretch, rotate, or shadow the mark"*. Explaining a colour decision at the
-call site is exactly the habit this codebase should keep. A guard that punishes
-it gets switched off inside a week.
-
-Three bugs in my own first draft, each caught by running it:
-
-1. **It flagged `border-radius: 0`** — the thing it exists to ask for. The
-   lookahead `\s*(?!0\b|…)` fails because `\s*` backtracks to zero width and the
-   test is then applied to a space. Values are captured and checked in code now.
-2. **Every line number was wrong**, because stripping comments deleted their
-   lines. Comments are blanked in place, newlines preserved.
-3. **It missed inline `//` comments** — the `MobileNav` one sits after a ternary
-   (`: // muted-foreground …`), so a comment was being read as code. Handled,
-   with a `[^:]` guard so `https://` survives.
-
-Exemptions are **per rule, not per file**: the press kit may hold raw swatches —
-they are its content — but it may not grow a glow. Ten entries, each stating why
-and what would change it, none stale (asserted with exemptions off, so the
-question is "would this file fail without its entry?").
-
-### The cross-check the scanner surfaced
-
-Worth more than the rule that found it. [`shareCard.ts`](src/lib/share/shareCard.ts)
-draws to a canvas, where CSS variables do not exist, so its five colours are a
-**hand-copy of `BRAND_HEX`**. Its own comment says so.
-
-That is a second definition of the palette (`.178`) on the app's most public
-artifact. If the palette moves and the card does not, every share posted
-afterwards carries last season's brand and nothing in the repo would say so. The
-two are now asserted equal.
-
-### And the backlog was lying
-
-`CONTEXT.md`'s `.155` entry listed seven design items as *"Still open"*. **Five
-had already shipped** — `LibraryDetailSheet` is on `AdaptiveOverlay` and says so
-in its own comment, the offline "Waiting to sync" list landed in `.211`/`.216`,
-the plate squares are 2px-outlined, the Adjust "Applied" panel has its keys, and
-`estimateMealFromDescription` is wired into `FuelLogSheet` and `NutritionPage`.
-
-A backlog that sends the next agent to redo finished work is `.213`'s defect
-inverted: a status doc asserting a state that is not true.
-
-### The copy named the colours
-
-Caught by rendering the screen rather than trusting the diff. The chart's own
-card description read:
-
-> *Estimated (blue) from all sets · Actual (green) from 1-rep attempts only*
-
-Changing the lines would have made that sentence **false** — the app describing
-its chart in colours it no longer draws. The string was duplicated across **221
-files** (the locale packs plus the source default) in eight languages.
-
-All of them now describe the **stroke** instead — *"Estimated (dashed) · Actual
-(solid)"* and the equivalent in each language — which is also the accessible
-form, since naming a colour is a colour-only reference of exactly the kind WCAG
-1.4.1 asks you to avoid. The chart change and the copy change fix the same
-problem from two directions.
-
-No guard would have caught this: it is prose, not a token. Rendering the page
-did.
-
-**Falsification.** Verified by re-introducing each drift: `glow-reintroduced`,
-`off-palette-hex-passes`, `raw-border-radius-passes`, `second-typeface-passes`,
-`comment-counted-as-violation` (the guard must **not** fire on documented
-reasoning), `allowlist-without-reason`, `stale-allowlist-entry`,
-`check-not-in-gate`, `share-card-drifts-from-brand`.
-
-## 2026-07-31 — The streak, the other three (`.220`)
-
-`.217` fixed **one writer and one reader**. There were three and four.
-
-### The guard that let them through
-
-`.217` shipped this, named *"both streak readers apply the recency rule"*:
-
-```ts
-for (const file of ['src/lib/streaks.ts', 'src/lib/fuelStreak.ts']) {
-```
-
-Those are the two files I had already looked at. **Twelfth vacuous guard in this
-run of work**, and the same shape as every one before it — a check whose *name*
-claims a scope wider than its *enumeration*.
-
-The two it missed were the two that mattered.
-
-### An athlete with no workouts, showing a streak
-
-`readTrainingStreakFromStorage` in
-[`workoutPersistLite.ts`](src/lib/workout/workoutPersistLite.ts) was a bare
-`parseInt` of `mw_streak` — no history, no recency. It feeds **Today's lean
-shell**.
-
-`HomeTodayLean` does overwrite that value from history — but only
-`if (history.length > 0)`, which is precisely the case where the raw number is
-wrong. So an athlete with **zero workouts** and a non-zero `mw_streak` saw a
-training streak they had never earned.
-
-Where did a non-zero `mw_streak` come from with no workouts? An **ungated button
-on `/assessments`**:
-
-```ts
-const bumpStreak = () => {
-  const cur = parseInt(readRaw(STORAGE_KEYS.streak) || '0');
-  writeRaw(STORAGE_KEYS.streak, String(Math.max(1, cur + 1)));
-};
-```
-
-Fired by `startRecommended` — on **starting** a suggested session, not finishing
-one. No date, no same-day guard, no recency. Five taps, five days of "streak",
-for a workout that had not happened. That is `.206`'s class: a control touched
-for one reason quietly writing a value the athlete never entered.
-
-**And the two compound into a hero-path defect.** `HomeTodayLean:251` reads:
-
-```tsx
-{journeyState.phase === 'basic' && streak === 0 && ( … 'Log a set — Mission Coach shapes the week …' )}
-```
-
-So the invented streak **suppressed the one prompt that screen exists to give
-someone who has never trained.** The app told a new user they were on a run, and
-hid the nudge to start.
-
-### A third derivation of "consecutive days"
-
-`recordWorkoutCompleted` in [`challenges.ts`](src/lib/challenges.ts) had its own:
-
-```ts
-const diffDays = Math.floor((curr.getTime() - last.getTime()) / (1000 * 3600 * 24));
-streak = diffDays === 1 ? streak + 1 : 1;
-```
-
-The millisecond arithmetic `.199` and `.212` were both about, and `.217`
-replaced everywhere else. It also wrote the override **without** the date `.217`
-made mandatory — so the value was already unreadable, dead code that looked live.
-Worse than dead: a loaded gun for anyone who later "restores" the override branch
-and silently brings back the streak that never breaks.
-
-All three are gone. The workout **history** is the authority, and
-`getTrainingStreak` derives from it.
-
-### The real deliverable is the guard
-
-Listing files is what failed. So the guard now **discovers** them: it walks
-`src/`, finds every file referencing `STORAGE_KEYS.streak` or `STREAK_KEY`, and
-fails on any that is not in a reviewed allowlist — the shape `.219` used for
-advisories, one day later.
-
-It also fails on a **stale** allowlist entry, because a list naming files that no
-longer touch the key looks more considered than it is. That direction caught
-something immediately: `workoutPersistLite` was in my first draft of the
-allowlist and no longer references the key at all.
-
-**Falsification.** Reverting each of the three fixed paths turns the discovering
-guard red: `cold-path-reads-raw-override`, `assessments-button-inflates-streak`,
-`challenges-writes-dateless-override`.
-
-## 2026-07-31 — A security check that can actually fail (`.219`)
-
-Two defects. The second is the one worth reading.
-
-### It had never run
-
-`npm run security-audit` appeared in exactly one place —
-`.github/workflows/ci.yml` — and every job in that workflow dies in seconds at
-`runner_id: 0`. It was absent from `scripts/gate.mjs`.
-
-`.200` fixed precisely this for the a11y suite (*"the guards that never ran"*).
-`.213` found it again for this check, said so, and deferred the fix. It is now
-**gate step 15**.
-
-### And it could not have failed usefully if it had
-
-The old script was `npm audit --audit-level=high`. That exits 1 for as long as
-**any** unfixable advisory exists — and four of them have no published fix at
-all. So the check was permanently red, which means **a new high advisory landing
-tomorrow would have been invisible**.
-
-A check that always fails measures exactly as much as one that always passes.
-That is this wave's own defect class one level up, and it is why nine vacuous
-guards were worth finding.
-
-The rule is therefore not *"no advisories"*. It is **no advisory we have not
-looked at**, with the count only ever allowed to fall.
-
-### The unit nearly cost a real improvement
-
-`npm audit fix` cleared **four high advisories with no breaking change**:
-`GHSA-3jxr-9vmj-r5cp`, `GHSA-4c8g-83qw-93j6`, `GHSA-52cp-r559-cp3m`,
-`GHSA-v2hh-gcrm-f6hx`.
-
-But npm's own headline went from **17 high packages to 23**, and I very nearly
-reverted the lockfile on that basis. Distinct high **advisories** had actually
-fallen from 17 to 13. The package tally rose because the fix reshaped eslint's
-subtree, so more packages inherited the same advisory.
-
-**Counting the wrong unit made a real improvement look like a regression** —
-which is exactly the failure the new script exists to prevent, encountered while
-writing it. `security-audit.mjs` counts advisory IDs, and a unit test pins the
-distinction with a fixture of one advisory across three packages.
-
-### Recorded, not silenced
-
-The remaining 13 are allowlisted, and every entry must carry **why it is
-accepted** and **what would change that** — asserted by the test, because an
-allowlist of bare identifiers is a mute button while one that has to state its
-reasoning is a decision someone can disagree with later.
-
-| Advisory | Why accepted |
-|---|---|
-| postcss ×2 | No published fix. Runs at build time over our own stylesheets; no path by which a user supplies CSS. |
-| sharp | No published fix. Optimises only local assets committed to the repo — re-check if remote image sources are ever enabled. |
-| brace-expansion | Reached only through eslint, glob and lighthouse — tooling that runs on our own repository. |
-| axios ×8, bigint-buffer | Fixable only by a breaking downgrade of the payment SDK, behind a `dynamic()` import on `/bundle`. |
-
-The count is a ratchet that only moves down — `.202` (i18n coverage) and `.209`
-(bundle budget) are the same shape, and the same rule applies: a cap that follows
-reality is not a cap.
-
-### Falsification
-
-Removing one entry from the allowlist turns the check **red**, naming the
-advisory and the packages carrying it. That mattered more than usual here: a
-security gate nobody has ever seen fail is indistinguishable from one that cannot.
-
-Killed: `new-high-advisory-passes` (verified by dropping `sharp` from ACCEPTED),
-`ratchet-moves-up`, `allowlist-without-reason`, `check-not-in-gate`,
-`packages-counted-instead-of-advisories`.
-
-## 2026-07-31 — The invite that could silently never redeem (`.218`)
-
-`.170`'s bug, **fourth instance**, on the one path the beta gate measures.
-
-### Three one-shot calls
-
-```ts
-void fetch('/api/beta/invites/redeem', { ... })
-  .then(...)
-  .catch(() => { /* non-fatal */ });
-```
-
-`markInviteLanded`, `redeemInviteFromAttribution` and
-`redeemReferralFromAttribution`. Each fired once — `redeemInviteFromAttribution`
-from `syncJourneyOnSignIn` and **never again** — so a tester signing in on a
-train, in a lift, or on gym wifi lost the redemption permanently. The
-attribution sat in `localStorage` and nothing retried it.
-
-### The lost row is not the damage
-
-`first_landed_at` and `signed_up_user_id` are what the founder invite panel
-reads. A dropped redeem makes that dashboard report **a tester who never arrived
-and never converted** — while they are sitting there using the app.
-
-That is the instrument a private beta is steered by, reporting the opposite of
-what happened, on the exact metric REDTEAM A5 fires on: *"14 days… still no 10
-beta users."*
-
-### The answer already existed
-
-`.179` built it and `.170` named it — *"that one needs an outbox retry, not a
-polish fix."* Six kinds ride the durable outbox: `workout.upsert`, `coach.plan`,
-`journey.state`, `leaderboard.push`, `pft.push`, `feedback.submit`. They retry,
-dedupe, survive a reload, and appear on the offline screen. The three on the
-critical path did not.
-
-All three now do, through
-[`attributionSync.ts`](src/lib/sync/attributionSync.ts). No new transport, no new
-retry logic, no new endpoint.
-
-### Which failures are final — the part that needed care
-
-**4xx is done, not retried.** An invalid or already-redeemed code cannot become
-valid by asking again, so retrying would burn `MAX_ATTEMPTS` and then sit in the
-queue marked `stuck` — permanently visible on the offline screen, and alarming
-for something that actually worked.
-
-**Except 429 and 408, and that is not theoretical.** All three routes rate-limit
-at **5/min/IP** (`referral/route.ts:91`, `invites/redeem/route.ts:19`,
-`invites/landed/route.ts:18`), and beta testers behind one gym's wifi, one
-office, or one carrier NAT share an IP. My first draft mapped every 4xx to
-"done", which would have silently discarded exactly the redemptions this module
-exists to save — **the original bug, reintroduced by the fix for it.** Caught by
-reading the routes rather than assuming their behaviour.
-
-`OfflineContent`'s `KIND_LABEL` is `Record<OutboxKind, …>`, so adding the kinds
-made the compiler demand labels for them. A pending invite is now visible rather
-than silent, enforced by the type system rather than by remembering.
-
-### Falsification — eight mutants, two survivors, both about the tests
-
-`network-throw-marks-done` survived: turning `post()`'s `catch` into
-`return true` broke nothing, because **every delivery test registered its own
-stub handler and none of them ever called `post()`**. The module's core error
-handling — the thing this entire PR is about — had no test. Eleventh
-vacuous-coverage finding in this run of work, and a new shape: not a guard
-measuring the wrong thing, but a suite that exercised the queue and never the
-thing being queued. Two cases now register the **real** handlers and stub
-`fetch`.
-
-`kinds-share-a-dedupe-key` survived, and here the honest answer was that the
-mutant is not a defect. The outbox dedupes on `(kind, dedupeKey)`, so a shared
-key string across kinds is harmless by construction. The test's name promised
-more than it measured; it now says what it actually proves — that each helper
-enqueues at all.
-
-Killed: `redeem-fire-and-forget`, `4xx-retries-forever`, `rate-limit-dropped`,
-`double-signin-double-redeems`, `landed-never-enqueued`,
-`handlers-never-registered`, plus both survivors after the fixes.
-
-## 2026-07-31 — The streak that never breaks (`.217`)
-
-The app's most-visible number could not go down.
-
-### The defect
-
-[`getTrainingStreak`](src/lib/streaks.ts) had two branches and **neither asked
-when the athlete last trained**:
-
-```ts
-const stored = parseInt(readRaw(STREAK_KEY) || '0', 10);
-if (Number.isFinite(stored) && stored > 0) return stored;   // forever
-...
-const dates = [...new Set(history.map(localDateKeyFromIso))].sort().reverse();
-let streak = 1;                                              // from dates[0],
-for (...) { if (diff === 1) streak++; else break; }          // whenever that was
-```
-
-Train five consecutive days, stop for three months, still see **"5-day streak"**.
-The loop walks backwards correctly. It simply never asks *when* `dates[0]` was.
-
-### Why this is not a chip on Today
-
-| Consumer | What the overstatement did |
-|---|---|
-| [`weekRecap.ts`](src/lib/weekRecap.ts) | Shared debrief text **and the share-card title** — publicly visible |
-| [`missionJourney.ts:224`](src/lib/missionJourney.ts) | `streak >= 7 \|\| recent14 >= 5` — a stale 7 **permanently satisfied a commissioning milestone** |
-| [`computeLocalStats.ts`](src/lib/leaderboard/computeLocalStats.ts) | `computeWinScore` and the **public leaderboard** |
-
-Look at the shape of `missionJourney:224`. `recent14` **is** date-bounded. The
-author knew to bound by recency in the second half of that expression and not the
-first.
-
-**And the repo already knew.** `dayReview.ts:43` says in prose:
-
-> *Deliberately does **not** read `getTrainingStreak`: that value can be
-> overridden by a localStorage key, so it is unfit for a factual sentence.*
-
-One consumer noticed the number was untrustworthy and routed around it locally.
-Three others kept consuming it as fact.
-
-### Two streaks, one correct half each
-
-`fuelStreak` **wrote** correctly and had all along — same-day is a no-op,
-yesterday increments, a gap resets to 1 — and then **read** a bare `parseInt` of
-the stored number, so it never decayed. Log protein Monday, open Nutrition
-Friday, still Monday's count. It needed no new storage: `fuelLastLogDate` was
-already written on every bump; the reader just never asked for it.
-
-`streaks` had neither half — while the correct writer sat one file over.
-
-So both now share [`streakRecency.ts`](src/lib/streakRecency.ts):
-
-- **live = today or yesterday, else 0.** Founder call, recorded: hard truth, no
-  grace period. Yesterday counts because someone who trained last night and opens
-  the app at 07:00 has broken nothing — and a rule that punished them would make
-  the number depend on what time you looked at it.
-- The walk moves by **expected calendar day**, not by differencing UTC
-  milliseconds. The old arithmetic happened to work because both sides parse to
-  UTC midnight, but it is the spelling `.199` and `.212` were both about.
-- New `previousLocalDateKey` in [`localDate.ts`](src/lib/time/localDate.ts),
-  because "yesterday" had two derivations — one correct inline in `fuelStreak`,
-  one implicit in `streaks`' millisecond diff. A calendar fact with two
-  derivations is `.178` waiting to happen, which is why that module exists.
-- The override gained the **date it never had**. It was a counter with no
-  timestamp, so nothing could distinguish a run of 5 ending today from one ending
-  in April — and nothing stopped three pillar-win taps in one afternoon adding
-  +3 to a *day* streak.
-
-### The tests asserted the defect
-
-Six cases, all green, all pinning `2026-07-10` against code that reads the real
-clock. One of them — `prefers positive localStorage override` — set a stored `9`
-against a single ancient workout and asserted `9`.
-
-That is `.211`'s date bomb with the sign flipped. There the fixture drifted away
-from the clock and the suite went red overnight; here it drifted away and the
-suite **stayed green**, because the code under test had no opinion about time. A
-test that pins a calendar date to check a rule *about* calendar dates is testing
-the fixture.
-
-All twelve are now derived from the same clock the code reads.
-
-### Falsification — nine mutants, two survivors, both resolved honestly
-
-`writer-loses-the-date` survived, and the guard was mine. It asserted
-`/streakLastBump/` appeared in `bumpTrainingStreak`'s body — but the body
-**reads** that key as well as writing it, so deleting the write left the check
-green while every override silently stopped being honoured. **Tenth vacuous guard
-in this run of work**, and the same shape as `.215`'s survivor: a search wider
-than the thing it names. Replaced with a behavioural round-trip — bump, read
-back, bump twice on one day, bump after a gap.
-
-`unparseable-day-breaks-walk` also survived, and here the honest answer was the
-opposite: the `.filter(Boolean)` genuinely is **not** load-bearing. `''` sorts
-before every real date, so after the reverse it is always last and can only
-terminate a walk it would never have continued. The filter stays as
-belt-and-braces and the comment now says so, rather than claiming a protection no
-test backs.
-
-The DST guard was checked for vacuity before being trusted: reverting
-`previousLocalDateKey` to a `Date.parse` implementation turns it red under
-`Europe/Berlin`, so it responds to the timezone it claims to test — `.212`'s
-requirement.
-
-Killed: `stale-streak-survives`, `override-ignores-recency`,
-`fuel-streak-never-decays`, `yesterday-counts-as-broken`,
-`leaderboard-reads-raw-streak`, `same-day-taps-increment`,
-`bump-continues-stale-run`, `writer-loses-the-date` (after the fix),
-`previous-day-via-Date.parse`.
-
-## 2026-07-31 — The instruction that pointed at nothing (`.216`)
-
-Closes the loop the feedback wave opened. `.214` gave the notes a reader, `.215`
-gave athletes a way to write them. This makes the weekly ritual performable.
-
-### The line
-
-`POST_LAUNCH_CADENCE` §3 is the constitution's one qualitative loop: *"Talk to 2
-users (or read 2 feedback emails) → fix the #1 confusion within 48h — ship, tell
-the tester."* `founderDigestCompose.ts` faithfully emitted it every Monday:
-
-```
-  - Talk to 2 users or read 2 feedback emails
-```
-
-**No feedback email has ever been sent to anyone.** There is no feedback template
-in `emailServer`, `RESEND_API_KEY` is unset, and the notes land in `public.leads`
-where — until `.214` — nothing in the repository read them. The digest's single
-qualitative action pointed at an inbox that does not exist.
-
-It survived for the same reason the notes did: **the digest cannot send either.**
-`weekly-digest/route.ts` returns 503 without `CRON_SECRET` and skips without
-`FOUNDER_DIGEST_EMAIL`, and both are unset. A dead instruction inside a dead
-channel — nobody was reading the thing that was wrong.
-
-### Not a reword
-
-Rewriting the line to point at the panel would have been a one-word fix and the
-wrong one. The digest now **carries the notes**: newest five inline, each with
-its date, sender and prose, and a count of how many more are waiting.
-
-A digest that says *go read your feedback* asks you to remember where it lives. A
-digest that carries the prose **is** the ritual.
-
-Three things had to be true for that to be honest.
-
-**One definition of the inbox.** `.214` put the query inline in
-`app/api/beta/feedback/route.ts`; the digest needs the same rows. Two copies of a
-filter is two chances to drift, and drift here is **silent** — the wrong
-`package_interest` returns zero rows, which is indistinguishable from nobody
-having written in. [`feedbackServer.ts`](src/lib/feedbackServer.ts) now owns it
-and both callers go through it. `.178` again: one definition per word. The guard
-asserts neither caller says `.from('leads')`.
-
-**A failed read never prints as an empty inbox.** Those are opposite facts
-prescribing opposite actions — one says check a key, the other says go find
-users. And an empty inbox now says what it means rather than shrugging:
-
-```
-  No notes yet.
-  Nobody has written in. That is the beta gate, not a quiet week —
-  REDTEAM A5 fires at 14 days with fewer than 10 users.
-```
-
-**The digest reads past what it prints.** It fetches 50 and prints 5, because
-"+N more" can only be truthful if the read went beyond the print limit. Fetching
-exactly the print limit would make that line permanently absent — a silent
-"that is all of it" that never measured anything. The guard compares the two
-constants rather than trusting them.
-
-### The count that makes "#1" a real question
-
-*"Fix the #1 confusion"* is not a property of a list. It is a property of what is
-**new since you last looked**, and a panel showing 40 notes newest-first looks
-identical on the Monday three arrived and the Monday none did.
-
-[`feedbackUnread.ts`](src/lib/feedbackUnread.ts) marks where you stopped. Two
-decisions in it are load-bearing:
-
-- **By timestamp, not by count.** A count-based mark ("I had read 12") reports
-  zero new the moment one note arrives and one falls off the 100-row cap — the
-  length is unchanged and the new note is invisible. `.202`'s rule: a measurement
-  that can be satisfied without measuring is not a measurement.
-- **Marking read stamps the newest loaded note, not `Date.now()`.** The wall
-  clock would also bury anything that arrived between the fetch and the click —
-  a note provably unseen, hidden by the act of dismissing a different one.
-
-Never-read returns **everything**, not zero. Unparseable timestamps count as
-unread. Both err toward "look at this", which costs a glance; the other direction
-hides a real note forever, because nothing ever moves it back above the mark.
-
-Device-local on purpose: a reading position is not data, `leads` has RLS with
-zero policies so there is no client-writable surface anyway, and syncing it would
-need a table and a migration for a fact exactly one person holds.
-
-### What still does not work, stated rather than implied
-
-The digest **cannot be delivered today**. Section 5 is verified through
-`?dryRun=1`; the **in-app panel is the path that works**. Writing the section
-anyway is deliberate — the composer is pure and tested, so the content is correct
-on the day the secrets are set rather than discovered broken then.
-
-**Falsification.** Twelve mutants, **none survived**:
-`digest-still-points-at-nothing`, `digest-omits-feedback`,
-`broken-read-prints-as-empty`, `truncation-silent`,
-`fetch-limit-equals-print-limit`, `second-query-definition`,
-`multiline-note-flattened`, `unread-count-never-advances`, `unread-by-length`,
-`unparseable-note-hidden`, `mark-read-stamps-now`, `panel-shows-no-unread`.
-
-## 2026-07-31 — The button in You (`.215`)
-
-The half the founder actually asked for, shipped **second** on purpose. `.214`
-gave the notes a reader first, because pointing more people at a column nobody
-could read is not an improvement — it is a louder version of the same defect.
-
-### What was wrong with the way in
-
-Before this, the only route from an athlete to a human ran through `/feedback`,
-linked from [`LegalNav`](src/components/layout/LegalNav.tsx) in **muted 14px,
-between "Beta guide" and "Terms of Service"**, behind an `includeFeedback` flag.
-The primary listening channel of a private beta was styled as a disclaimer.
-
-And the instrument behind the link is the wrong one. It asks for key results, a
-testimonial, a 1–5 rating and "the biggest action you took" — it collects
-**proof for a launch page**. Nobody reaches for that when the timer jumped or a
-button did nothing. It also **requires an email address**, in a product whose
-whole thesis is that logging needs no account.
-
-### The card
-
-[`ProfileFeedbackCard`](src/components/profile/ProfileFeedbackCard.tsx) renders
-on Profile for **every** user. Not behind `showOwnerTools()` — which is exactly
-how `BetaAdminPanel` and `ProfileOwnerTools` are gated two lines away on the same
-page, so the wrong spelling is one character off and would read as correct in
-review. It would also be undetectable in testing: the founder is the one account
-that always sees it. `feedbackReachable.test.ts` asserts against both that
-spelling and the `email &&` variant, because the anonymous athlete is both the
-one this product is built for and the one with no other way to reach us.
-
-It takes an `outline` button, not a second poster-red fill. `ProfileDayReviewRow`
-set that precedent and `.194`/`.198` are the reason it exists.
-
-### The sheet
-
-On the shared `AdaptiveOverlay`, not a route: someone reporting that the timer
-jumped is mid-session, and sending them to `/feedback` asks them to abandon the
-thing they are complaining about. One question. **Email optional**, with copy
-that states what leaving it blank costs rather than nagging.
-
-Optional turned out to mean changing three layers, each of which rejected a
-blank address on its own:
-
-- [`apiSchemas.ts`](src/lib/apiSchemas.ts) — `email` was `z.string().email()`,
-  required.
-- [`app/api/leads/route.ts`](app/api/leads/route.ts) — now requires an address
-  **per source**: the waitlist still needs one, a bug report does not.
-- [`supabase.ts`](src/lib/supabase.ts) — omits the field rather than sending
-  `''`, which `z.string().email().optional()` rejects.
-
-Any one of those reverting puts the barrier back **with the sheet's copy still
-promising it is optional** — the app lying about itself, which is the `.170`
-class this repo keeps finding. So the guard reads all three.
-
-Delivery reuses `.179`'s durable outbox verbatim — `enqueueFeedback`, already
-registered, already retrying, already dedupe-keyed per note, and already labelled
-"Feedback note" on the offline screen. No second transport.
-
-### Two things a form does not do
-
-**It counts down against the real limit.** `goals` caps at 2000 in the schema and
-the route re-slices to 2000 again, both silently — and the context block is packed
-into that same field. A note written to the limit would lose its tail, which is
-the part written last and cared about most. `MAX_NOTE_CHARS` is the column limit
-minus a worst-case context reserve, the textarea enforces it, and the test
-composes a deliberately worst-case note and asserts the total still fits.
-
-**It attaches where you were.** This is the part that needed new code. The sheet
-lives on Profile, so `usePathname()` alone would tag every note `/profile` —
-context that *looks* like a fact and answers nothing. [`screenTrail.ts`](src/lib/screenTrail.ts)
-keeps a four-entry session-scoped breadcrumb written by `AppLayout`, and the note
-carries `Screen` **and** `Came from`. Both, not one chosen by a heuristic: the
-athlete may equally be reporting something about Profile itself, and guessing
-would discard the right answer half the time. When there is no previous screen the
-line is **omitted** rather than written as `none` — an absent line reads as "we
-don't know", which is true.
-
-### The guards, and two that were nominal
-
-Nine unit tests in
-[`feedbackReachable.test.ts`](src/lib/feedbackReachable.test.ts), split across the
-two shapes this wave keeps re-learning: **reachability** (`.195`) and **vacuity**
-(`.204`, `.207`, `.210`, `.213`).
-
-Two e2e guards had to be widened rather than merely added, because as written they
-would have reported green on untouched code:
-
-- The **thumb sweep** had never visited `/profile`. `.194` put a 36px button on
-  Today and nothing failed because the sweep only knew `/active`; the sweep is a
-  helper now, and this is the same gap one screen over. `/profile` joins the list,
-  and `expectThumbSized` takes a scope — the sheet is portaled to `document.body`,
-  so a selector rooted at `main` cannot see a single one of its controls.
-
-  **It failed on its first run, on fourteen controls this PR did not write.** The
-  units pair, Save Goals, the backup/restore/import row and the language `<select>`
-  at 37–40px; four assessment buttons, the five days-per-week chips and sync Retry
-  at 36px. Every one of them on the settings screen every athlete uses, none of
-  them ever measured. They are fixed here rather than exempted — a guard widened
-  and then narrowed around what it found is the vacuous-guard pattern wearing a
-  different hat.
-- **axe** already covered `/profile`, with the sheet closed. A route passing says
-  nothing about an overlay that is not open, so there is now a run that opens it.
-
-### Falsification, and the ninth vacuous guard
-
-Twelve named mutants. Eleven were caught. **One survived, and it was mine.**
-
-`sheet-requires-email (schema)` reverted `leadsBodySchema.email` to required and
-the suite stayed green. The guard searched `apiSchemas.ts` file-wide for an
-`email` field carrying `.optional()` — and matched `inviteCreateBodySchema.email`
-**150 lines below**, a different schema that is optional for its own unrelated
-reasons. So the check reported that a note with no address was accepted while the
-schema rejected it.
-
-This is the **ninth** guard in the `.204`–`.215` wave that measured nothing, and
-the fourth I wrote myself inside the PR about that exact defect class. The shape
-is always the same: a source-text assertion whose search is wider than the thing
-it names. The fix is always the same too — anchor the slice. The guard now
-extracts `leadsBodySchema`'s own body and matches inside it, and the mutant fails
-it.
-
-Caught: `feedback-card-not-rendered`, `card-gated-to-owner`,
-`sheet-requires-email` (route), `sheet-requires-email` (Send button),
-`sheet-requires-email` (schema, after the fix), `context-not-attached`,
-`trail-never-recorded`, `previous-screen-falls-back-to-current`,
-`oversized-note-silently-trimmed` (reserve), `oversized-note-silently-trimmed`
-(textarea), `sheet-fetches-directly`, `trail-repeats-not-collapsed`.
-
-## 2026-07-31 — The note nobody could read (`.214`)
-
-Opens the `.214`–`.218` feedback wave. The founder asked for a Submit-feedback
-button; exploring first changed the answer, because **feedback already works.**
-
-`.179` did the hard half properly — a note rides the durable outbox, retries
-offline, dedupes, and has tests. Its own header calls these notes *"the 'why I
-almost quit' interview record the beta exists to collect."* They land in
-`public.leads`.
-
-**And nothing has ever read them.** `betaMetricsServer.ts:98` selects
-`package_interest` and nothing else, so the founder panel displayed one line —
-`feedback-page  7` — while the rating, the testimonial and the prose sat in a
-column **no code in the repository has ever named.** Repo-wide, no SELECT of
-`leads.goals` existed.
-
-Two more facts that make it worse. `founderDigestCompose.ts:87` instructs the
-founder to *"read 2 feedback emails"* that have never existed. And
-`app/api/leads/route.ts:157` fired `maybeSendLeadConfirmation` on **every**
-insert, so a beta tester who wrote a testimonial received *"You're on the
-Mission Winning list — Your interest tag: feedback-page"* with an unsubscribe
-link, and got `confirmed_at` stamped as though they had joined the launch list.
-On the one interaction where a user did us a favour, we replied with a marketing
-receipt.
-
-So this is `.195` turned around: that wave asked *"was it built, and can anyone
-get to it?"* about what the app **shows**. This asks it about what a user
-**sends**. New [`feedbackReadable.test.ts`](src/lib/feedbackReadable.test.ts)
-states the rule — *an inbound channel needs a named reader, and the path from
-arrival to a human must be assertable.*
-
-**The read path.** New `app/api/beta/feedback/route.ts`: founder-only,
-service-role, newest-first, capped at 100. `leads` has RLS enabled and **zero
-policies** (`20260705_leads_api_only.sql` dropped the last), so there is no
-client read to build on — this route is the only way the prose can reach a
-human. `BetaAdminPanel` renders it with `whitespace-pre-wrap`, because the form
-packs four answers into one newline-separated field and collapsing them runs the
-whole note into a single paragraph.
-
-**A misconfigured server must not look like silence.** No service role returns
-**503**, not `[]`; the panel keeps `null` (not loaded / not permitted) and `[]`
-(genuinely none) visually distinct. An empty list on a broken read would invite
-the single most expensive wrong conclusion this panel can produce.
-
-**One definition of "is this the founder".** `authorizeBetaAdmin` was written
-inline in the invites route and again in the metrics route, and this needed a
-third — so it moved to [`api/betaAdminAuth.ts`](src/lib/api/betaAdminAuth.ts)
-and both existing routes now call it. Three copies of an authorization predicate
-is how one ends up quietly more permissive (`.178`). It fails closed on missing
-configuration, which is correct: an unconfigured admin check defaulting to open
-would expose every tester's feedback to anonymous traffic on deploy.
-
-**And one tag, because there has only ever been one.** The form set
-`package_interest: 'beta-feedback'` **and** `source: 'feedback-page'`, which
-reads as a two-level taxonomy. It never was — `supabase.ts:303,310-311` computes
-`source = source || package_interest` and writes that single value to both
-columns, so `'beta-feedback'` was discarded on **every submission ever made**.
-Now [`FEEDBACK_SOURCE_TAG`](src/lib/feedbackSource.ts), shared by the writer, the
-email skip and the reader; a literal in three files is a literal that drifts, and
-when it drifts here the panel silently shows nothing.
-
-Killed: `feedback-prose-unreadable`, `panel-shows-counts-only`,
-`tester-gets-waitlist-email`, `tag-drifts-from-reader`.
-
-Tests 1097→1103. Next: `.215` the button in You, on a context-aware sheet.

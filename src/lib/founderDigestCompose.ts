@@ -28,6 +28,7 @@
  */
 
 import type { FeedbackNote } from '@/lib/feedbackSource';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 
 export type FounderDigestData = {
   generatedAt: string;
@@ -72,7 +73,7 @@ export const DIGEST_NOTE_CHARS = 400;
  */
 export function formatDigestNote(note: FeedbackNote): string[] {
   const who = note.email || note.name || 'anonymous';
-  const day = note.at.slice(0, 10);
+  const day = localDateKeyFromIso(note.at);
   const body = note.text.length > DIGEST_NOTE_CHARS
     ? `${note.text.slice(0, DIGEST_NOTE_CHARS)}…`
     : note.text;
@@ -90,7 +91,7 @@ export function composeFounderDigest(data: FounderDigestData): {
   subject: string;
   text: string;
 } {
-  const day = data.generatedAt.slice(0, 10);
+  const day = localDateKeyFromIso(data.generatedAt);
   const subject = `Mission Winning weekly — ${day}`;
 
   const lines: string[] = [

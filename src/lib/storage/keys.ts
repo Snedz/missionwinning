@@ -46,6 +46,12 @@ export const STORAGE_KEYS = {
   uiMode: 'mw_ui_mode',
   outbox: 'mw_outbox_v1',
   sessionJournal: 'mw_session_journal',
+  /**
+   * `.247` — every local day that holds data, `YYYY-MM-DD`, newest first.
+   * **Deliberately uncapped**: it is the one store that must outlive the
+   * caps on every other one, at ~10 bytes a day. See `journey/daysWithData`.
+   */
+  daysWithData: 'mw_days_with_data',
   /** Newest workout_logs.updated_at pulled — cursor for incremental sync. */
   cloudPullCursor: 'mw_cloud_pull_cursor',
 

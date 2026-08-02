@@ -90,6 +90,14 @@ export function buildTodayTrends(
    */
   for (const w of workoutHistory) {
     if (w.deletedAt) continue;
+    /*
+     * `.241` — was `w.completedAt.split('T')[0]`, the **UTC** date, while
+     * `lastDayBuckets` keys the buckets with `localDateKey`. Proved in
+     * Pacific/Auckland: a session at 10:00 on 1 Aug is stored as
+     * `2026-07-31T21:00:00Z` and was counted on 31 Jul. East of UTC that is
+     * the whole morning landing one bar to the left, with today's own column
+     * reading zero on the Today trend strip.
+     */
     const d = localDateKeyFromIso(w.completedAt);
     if (!d) continue;
     volumeByDay[d] = (volumeByDay[d] || 0) + w.totalVolume;

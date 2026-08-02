@@ -35,6 +35,8 @@ type Props = {
 
 function formatWhen(at: string, locale: string): string {
   const d = new Date(at);
+  // Unparseable: there is no local day to derive, and truncating to ten
+  // characters only makes a malformed value look like a date. Show it as-is.
   if (Number.isNaN(d.getTime())) return at;
   const today = localDateKey();
   // `.241` — `today` is a local key, so the comparison needs one too. The UTC
