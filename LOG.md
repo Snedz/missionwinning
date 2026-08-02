@@ -10,6 +10,110 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-02 — The workflow that failed on every push (`.261`)
+
+A pass over the six free GitHub security settings. The repo scored well on file
+presence — `SECURITY.md`, `dependabot.yml` and `codeql.yml` all exist and are
+thorough — and the finding is that **four of the six became unavailable eight
+minutes before the audit started.**
+
+### The repo went private, and took four checks with it
+
+`missionwinning` flipped public → private at **2026-08-02 00:49Z**, between one
+reconnaissance pass and the next. Measured on both sides:
+
+| Feature | While public | Now |
+|---|---|---|
+| Secret scanning + push protection | scanning **on** | `secret-scanning/alerts` → **404, disabled** |
+| Code scanning | default setup readable | `code-scanning/default-setup` → **403** |
+| Private vulnerability reporting | `{"enabled":true}` | → **404** |
+| Dependency Review API | — | `dependency-graph/compare` → **403** |
+| Dependabot alerts | — | **204, unaffected** (3 open, all high) |
+
+All four are Advanced Security entitlements on a private repo. None is a config
+error and none is fixable in this repo — they are platform state, which is why
+they now live as a Status row in `CONTEXT.md` rather than as a doc that asserts
+they are on. `gitleaks` is left as the only secret gate.
+
+It also re-dates a premise several workflow headers argue from: Actions minutes
+are free only on **public** repos, so the "lean CI" comments in `ci.yml` and
+`gitleaks.yml` — which read as stale while the repo was public — are load-bearing
+again.
+
+### The workflow that had been failing on every push
+
+`apply-migration.yml` declares `on: workflow_dispatch` and nothing else. It had
+**five runs on `push`** since the flip — `master` and every open branch — each
+reported as `.github/workflows/apply-migration.yml` rather than by its `name:`,
+with *"This run likely failed because of a workflow file issue."*
+
+A workflow cannot run on an event it does not declare. Both symptoms are the same
+one: the file does not parse, so GitHub can read neither `on:` nor `name:`, and
+surfaces the failure against the push instead. The cause is one line:
+
+```yaml
+if: ${{ secrets.SUPABASE_DB_URL == '' }}
+```
+
+`secrets` is not an available context in a step-level `if:`. It does not evaluate
+false — it invalidates the file. `aikido.yml`'s header has documented this exact
+trap since it was written (*"`if: secrets.X != ''` is unreliable on GitHub Actions
+— use an env gate step instead"*), and uses the env-gate pattern this one now
+copies.
+
+### Underneath it, the preferred path had never worked
+
+Fixing the parse error made a second defect reachable. The SQL step reads
+`.env.production` unconditionally, but only the legacy Vercel step writes it — and
+that step is skipped exactly when `SUPABASE_DB_URL` is set, which is the path the
+header calls *preferred*. Every preferred-path run would have died on `ENOENT`
+before a connection string was ever chosen.
+
+That is the third distinct way this workflow has failed to apply a migration, and
+its own header names the first two and the lesson: *"A migration path that has
+never once succeeded … is worse than no migration path at all: it reads as
+working."* **Not falsified by execution** — the workflow needs production
+credentials — so it is reasoned from the code path and stated as such.
+
+### CodeQL's cron now buys a guaranteed failure
+
+`codeql.yml` last genuinely succeeded **2026-08-01** (run 30693504626), while
+public. On a private repo the analyze step's upload 403s, and the job carries
+`continue-on-error: true` — so the monthly cron would spend ~5 minutes of a
+now-metered quota to produce a hidden failure. Cron commented out with a restore
+note; `workflow_dispatch` kept, so the config survives a flip back.
+
+### Not done, named
+
+- **PR #120** (`chore/github-security-hardening`, open since 2026-07-28) is an
+  earlier pass at this same checklist, written while public. **100 commits
+  behind**, conflicts in three of its eleven files, and every doc change now
+  asserts a false state: `SECRETS.md` ticks `[x]` for push protection and code
+  scanning, `controls.yaml` records CodeQL default setup as compliance evidence,
+  `VERCEL_DEPLOY_CHECKLIST.md` asserts Actions are free, and `SECURITY.md` makes a
+  404ing advisory link the *preferred* reporting channel. It also adds a
+  `dependency-review.yml` that cannot run here. **Recommend closing, not
+  rebasing** — the compliance docs are its most stale part, not its most valuable.
+- **Branch protection** on `master` — still none, no rulesets. Protected branches
+  need GitHub Pro or higher on a private repo; the plan is not readable without
+  the `user` scope.
+- **Aikido is a green no-op.** `AIKIDO_SECRET_KEY` is unset, so the gate returns
+  `configured=false` and every real step skips — runs pass in 7–9s having scanned
+  nothing. `ci.yml`'s `npm audit --audit-level=high` is `continue-on-error: true`
+  and cannot fail. Both are the shape `.224` was named for; neither is fixed here,
+  because one needs a credential and the other is a policy call.
+- **LOG.md is over its own rotation rule** — 25 entries / 108KB against ≤15 /
+  ≤20KB. Pre-existing; not rotated here.
+
+### Carried, not authored
+
+`gitleaks.yml`'s `permissions:` block was already on `master` (`.224` carrying
+`.235`). Reached independently here from the same 403 and **dropped as redundant**
+— and `.224`'s diagnosis corrects mine: the failures predate the flip (#181, #182)
+and hit the **first run of every PR**, so visibility was never the cause.
+
+---
+
 ## 2026-08-02 — The system that kept generating the wrong palette (`.259`)
 
 `.258` found six off-brand guidebook heroes. This is **why they existed**, and it
@@ -1260,98 +1364,3 @@ is not telemetry. The refusal rate is the number worth watching.
 
 ---
 
-## 2026-07-31 — The day a session lands on (`.245`)
-
-> **Merge correction, written when this branch landed.** `.241` reached `master`
-> first and fixed **the same defect in four of these files** — `todayTrends`,
-> `pillarScoreInputs`, `challenges`, `TodayJournalStrip` — from the other end of
-> the wave. Two sessions found one bug independently, which is worth recording
-> rather than tidying away: it was reachable from both the trend work and the
-> empty-state work, so the two lanes converged on it.
->
-> `master`'s attribution stands in the code comments, because it shipped first.
-> What is **this** entry's own is the part `.241` did not do: **widening the
-> guard**, so the next instance is caught instead of found. `.241` fixed call
-> sites; `DATE_SLICE_EXEMPT` and the sliced-from-storage rule below are why there
-> is no fifth time. Three sites `.241` never reached — `backup`'s filename,
-> `founderDigestCompose` and the founder panel's date column — came with it.
->
-> The merge also **emptied `UTC_IS_CORRECT`**: `.241` exempted two files whose
-> matching sites this branch had already rewritten, and the staleness rule caught
-> both. First time either direction of that rule has fired on real work.
-
-Opening `.245` — the "ask for a trend" registry — meant reading the function
-every trend would be built from. [`buildTodayTrends`](src/lib/todayTrends.ts)
-keys its buckets with `localDateKey` and keyed the **workouts** with
-`completedAt.split('T')[0]`. Those are not the same day.
-
-```
-completedAt (stored) : 2026-07-31T21:00:00.000Z
-UTC bucket  (before) : 2026-07-31
-local day   (buckets): 2026-08-01   ← MISMATCH
-```
-
-Proved in `Pacific/Auckland` before anything was touched: an athlete training at
-**10:00 on 1 August** had that session counted on **31 July**. East of UTC that
-is the entire morning — most of when people train — landing one bar to the left,
-with **today's own column reading zero** on the Today trend strip.
-
-A query surface over that would have shipped wrong answers behind a nicer
-interface, so the foundation went first.
-
-### `.212`'s lesson, the fourth time
-
-`.199` shipped a guard matching `split('T')[0]` and nothing else; `.212` widened
-it to four spellings and fixed fifteen sites. Both versions require a literal
-`toISOString()` **call** adjacent to the slice — and an ISO instant does not have
-to be produced on the spot to be sliced. It is usually read back out of storage,
-where it is already a plain string:
-
-```ts
-w.completedAt.split('T')[0]   // byte-for-byte the same bug, invisible to the guard
-```
-
-Widening it **before touching any call site** turned it red on eight files. Two
-were false positives of a kind the rule cannot resolve by shape — `schoolClass.ts`
-and `ExercisesPublicFilter.tsx` slice an **array**, not a date — so those carry
-exemptions that state the value being sliced, plus a staleness check in the
-`.219`/`.220` shape that fails when an exemption stops being true.
-
-Six were real, and the two that matter most are not the trend strip:
-
-- [`pillarScoreInputs`](src/lib/pillarScoreInputs.ts) compares a UTC date against
-  `localWeekKey()`, so a Monday-morning pillar win east of UTC dated to Sunday
-  and **fell outside the week it belonged to** — and this one feeds the
-  **Mission Score**.
-- [`challenges`](src/lib/challenges.ts) makes the identical comparison against
-  `weekStart`, dropping the same wins from the weekly challenge.
-
-Also fixed: `TodayJournalStrip` (a UTC day compared to a local `today` decided
-whether an entry showed its *time* or its *date*, so this morning's entry read
-"Jul 31"), `founderDigestCompose`, `backup`'s filename and the founder panel's
-date column.
-
-### The suite could not have caught it
-
-Every existing case in `todayTrends.test.ts` builds its ISO strings from a local
-wall-clock time and then runs in **UTC**, where both spellings agree. It proved
-the aggregation while being structurally blind to which day anything landed on.
-`.211`'s lesson with the sign flipped — there a fixture drifted and went red,
-here it agreed with the code because both were evaluated in the one zone that
-hides the difference.
-
-The new sweep runs five zones, and the control values are the point: with the
-defect restored, **UTC, Los Angeles, Midway and even Tokyo all still pass**.
-Only Auckland (UTC+13) fails at 10:00 local. A single-zone test was never going
-to see this.
-
-**Verification.** One mutant — restoring `split('T')[0]` — killed by the
-Auckland case. Tests 1192 → 1201.
-
-**Deferred, with the reason.** The `TREND_METRICS` registry and the offline
-`parseTrendQuery` are **not** in this entry. They are the feature `.245` was
-opened for, and they belong on buckets that name the right day; shipping them
-together would have buried a correctness fix inside a feature diff and made the
-"which day is this" change impossible to review on its own. **Shipped in `.246`.**
-
----
