@@ -63,8 +63,21 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  * proposals in the coverage analysis get paid off one at a time.
  */
 const FLOORS = {
-  /** Source files that no test loads, directly or transitively. Must not rise. */
-  untestedFiles: 381,
+  /**
+   * Source files that no test loads, directly or transitively. Must not rise.
+   *
+   * Raised 381 → 389 when master merged in, and the escape hatch this floor's own
+   * failure message describes is what it was raised through: of the twelve new
+   * source files, **ten are UI** — components, a page-component and two hooks,
+   * all covered by Playwright rather than unit tests, which is a deliberate
+   * choice and still leaves them invisible here. The other **two were logic and
+   * got tests instead** (`today/firstStepsDismissed.ts`,
+   * `trends/resolveTrendSeries.ts`), which is why this is 389 and not 391.
+   *
+   * That split is the point of the ratchet: it does not stop the number moving,
+   * it makes somebody look at what moved it.
+   */
+  untestedFiles: 389,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
@@ -80,7 +93,7 @@ const FLOORS = {
    */
   linePct: 91.5,
   /** Function % across the files that are loaded — the one that catches Zod. */
-  funcPct: 67.3,
+  funcPct: 68.8,
 };
 
 /**

@@ -322,6 +322,52 @@ that mutant would pin the implementation rather than the rule.
 Reach **42.1% → 42.4%**, untested files **382 → 381**, functions **67.10 → 67.36**.
 Tests **1229 → 1253**, route lane **32 → 38**. Floors tightened to match.
 
+### The ratchet caught master, which is the point
+
+Merging master in turned `npm run coverage` **red**: 381 → 391 untested files.
+Twelve new source files had landed with no tests, and CI failed on the coverage
+step before anyone read the diff.
+
+The floor's own failure message describes the escape hatch, and this is what
+going through it honestly looks like — **look at what moved the number, then
+split it**:
+
+- **Ten are UI** — seven components, a page-component and two hooks. Playwright
+  is the net there, which is a deliberate choice and still leaves them invisible
+  to this measurement. Floor raised for these, with the reason recorded at the
+  constant rather than in a commit message nobody re-reads.
+- **Two were logic, and got tests instead.**
+  [`today/firstStepsDismissed.ts`](src/lib/today/firstStepsDismissed.ts) — whose
+  own header explains that a dismissed card still consumes a `pinned` slot
+  forever, so the screen is quietly one block shorter than the budget intends —
+  and [`trends/resolveTrendSeries.ts`](src/lib/trends/resolveTrendSeries.ts),
+  which holds one honest sentence implemented two opposite ways: body metrics are
+  **entries** and must never be padded (two weigh-ins padded to ninety days is a
+  body-fat chart plunging to 0% and back), while daily buckets **are** buckets and
+  a rest day genuinely reads zero. Swap them and nothing errors; the chart just
+  lies.
+
+So the floor is 389, not 391 — a ratchet that does not stop the number moving, it
+makes somebody look at what moved it.
+
+**A guard I wrote wrong, then wrote again.** The first version of the
+"every askable metric has a source" rule asserted that resolved points came back
+numeric and full-length — and **deleting an entire series from `buildTodayTrends`
+did not turn it red**, because `values[i] ?? 0` dutifully produced fourteen zeroes
+of the right type. Downstream, a metric with no source is indistinguishable from a
+metric with no data. It now asserts at the seam instead, comparing the registry's
+non-body ids against what `buildTodayTrends` actually emits — and both
+falsifications fire: removing a series names it, truncating one names it.
+
+Worth recording on the way past: `TrendMetricId` is declared **twice** with
+genuinely different unions — everything askable in `trends/trendMetrics.ts`, only
+what is emitted in `todayTrends.ts` — which is precisely what lets that seam
+drift, and why the guard compares strings rather than letting the compiler
+pretend the two are one type.
+
+Eight mutants on the two new tests; one survivor, equivalent, and it is the one
+that produced the guard above.
+
 ### Not done, and named
 
 Every one of these is a file no test currently loads, found by the script rather
