@@ -5,7 +5,7 @@ import type { JourneyState } from '@/lib/missionJourney';
  * requiring all five pillars while the client had narrowed to `b.workout`, and it
  * is this copy that computes the launch gate. See `journey/basicComplete.ts`.
  *
- * `.224` — and the arithmetic that turns that predicate into `launchReady` now
+ * `.225` — and the arithmetic that turns that predicate into `launchReady` now
  * lives in `beta/funnelAggregate.ts` for the same reason one step on: this
  * function reaches Supabase on its first line, so the gate itself had never been
  * executed by a test.
@@ -32,7 +32,7 @@ export async function computeBetaFunnelAggregate(): Promise<BetaFunnelAggregate 
   }
 
   // The maths lives in `beta/funnelAggregate.ts` so the launch gate can be
-  // asserted without a service-role client. `.224`.
+  // asserted without a service-role client. `.225`.
   const funnel = aggregateBetaFunnel(profiles as BetaProfileRow[] | null);
 
   const { count: journeyEventCount } = await admin

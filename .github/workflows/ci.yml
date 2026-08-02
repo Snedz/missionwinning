@@ -79,7 +79,7 @@ jobs:
       - name: Route contract tests
         run: npm run test:routes
 
-      # `.224` — the two lanes above report pass/fail; this reports how much of the
+      # `.225` — the two lanes above report pass/fail; this reports how much of the
       # codebase they touched, over every source file rather than only the ones
       # something imported. Here as well as in `npm run gate` on purpose: `.213`
       # found the two had silently diverged, and `.200`/`.219` were both checks
@@ -121,7 +121,7 @@ jobs:
       # The logger is the product — a PR that breaks it must not go green.
       # Chromium only, @gate-tagged specs only.
       #
-      # `.224` — this line used to claim "a11y / visual / Lighthouse stay in CI
+      # `.225` — this line used to claim "a11y / visual / Lighthouse stay in CI
       # extended". Visual and Lighthouse do. **a11y does not**: `ci-extended.yml`
       # has no such job, so those 34 tests run in `npm run gate` and nowhere else.
       # `gate.mjs`'s header already called this comment out as false and it was

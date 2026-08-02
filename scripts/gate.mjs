@@ -140,7 +140,7 @@ run('Unit tests', 'npm', ['test']);
 // spend gates (`.188`) can be tested as wiring, not just as pure decisions.
 run('Route contract tests', 'npm', ['run', 'test:routes']);
 /*
- * `.224` — how much of the codebase did those two lanes actually execute?
+ * `.225` — how much of the codebase did those two lanes actually execute?
  *
  * `node --test --experimental-test-coverage` answered 92%, over the 271 of 657
  * source files it happened to load; the other 386 were absent from the report

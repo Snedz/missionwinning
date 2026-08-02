@@ -171,7 +171,7 @@ test('the founder dashboard imports the basic-complete rule rather than restatin
    * own copy at all, so the two could drift without anything noticing. This checks
    * the structural fix, because the value check below cannot see a future re-fork.
    *
-   * `.224` — it used to assert one literal import line in `betaMetricsServer.ts`,
+   * `.225` — it used to assert one literal import line in `betaMetricsServer.ts`,
    * and legitimately extracting the aggregation into `beta/funnelAggregate.ts`
    * turned it red: the rule was still imported exactly once, just one hop further
    * along. That is this repo's own `.212`/`.220` shape appearing in a guard —

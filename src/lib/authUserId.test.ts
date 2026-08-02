@@ -1,7 +1,7 @@
 /**
  * The predicate that decides what may be written to an `auth.users` foreign key.
  *
- * `.224` — it existed twice on the revenue path, byte-identical: `stripeWebhook.ts`
+ * `.225` — it existed twice on the revenue path, byte-identical: `stripeWebhook.ts`
  * picking an id off a Checkout Session, and an inline copy in
  * `premiumServer.grantEnrollmentFromWebhook` deciding whether to put that id in the
  * `INSERT`. Two definitions of one rule (`.178`), on the two files that turn a

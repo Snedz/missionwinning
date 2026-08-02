@@ -71,7 +71,7 @@ const FLOORS = {
    * Deliberately looser than the others, because **reaching a new file usually
    * lowers this number**: a 400-line server module that no test imported
    * contributed nothing to either side of the fraction, and the moment one test
-   * touches it, all its unexecuted branches join the denominator. `.224`'s
+   * touches it, all its unexecuted branches join the denominator. `.225`'s
    * revenue-path work moved reach 41.2% → 42.1% and line % 91.84 → 91.80.
    *
    * Ratcheting this tightly would therefore punish the exact change the other two

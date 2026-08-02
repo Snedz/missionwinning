@@ -36,7 +36,7 @@ const SCRIPT = 'scripts/coverage.mjs';
 const HIGH_WATER = {
   /**
    * 381 of 662 source files are loaded by no test. Lower it by writing one.
-   * `.224` took this from 386 — the revenue path, then the launch gate.
+   * `.225` took this from 386 — the revenue path, then the launch gate.
    */
   untestedFiles: 381,
   /**

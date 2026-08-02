@@ -2,7 +2,7 @@
  * The row a paid webhook writes to `enrollments` — the moment a payment becomes
  * an entitlement.
  *
- * `.224` — lifted out of `premiumServer.grantEnrollmentFromWebhook`, which reaches
+ * `.225` — lifted out of `premiumServer.grantEnrollmentFromWebhook`, which reaches
  * Supabase on its first line, so every decision in here was only reachable through
  * a service-role client and none of it had ever been executed by a test. Nothing
  * about the shape changed; it is the same object, in a file that can be called.

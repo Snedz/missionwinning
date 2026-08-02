@@ -1,7 +1,7 @@
 /**
  * The invite link the founder copies out of the admin panel.
  *
- * `.224` — lifted out of `betaMetricsServer.ts`, which reaches Supabase before it
+ * `.225` — lifted out of `betaMetricsServer.ts`, which reaches Supabase before it
  * gets here, so this had never been executed by a test. It matters more than its
  * fifteen lines suggest: **it puts `PRIVATE_ACCESS_SECRET` into a URL**. That is
  * the whole point (the row's own comment: *"access from env, never stored in

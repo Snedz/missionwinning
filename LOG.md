@@ -6,7 +6,7 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-01 — The coverage number that measured a third of the repo (`.224`)
+## 2026-08-02 — The coverage number that measured a third of the repo (`.225`)
 
 The ask was to analyse test coverage and propose where to improve it. The analysis
 came first and changed what was worth building, because the headline number turned
@@ -344,6 +344,184 @@ than asserted by it:
 - **`ci.yml:99`** still claims `a11y / visual / Lighthouse stay in CI extended`.
   `ci-extended.yml` has no a11y job — the 34 a11y tests run in `npm run gate` and
   nowhere else. `gate.mjs`'s own header calls out this exact false comment.
+## 2026-08-01 — The column that hid four more controls (`.224`)
+
+`.223` shipped `tests/e2e/fuel-floating-action.spec.ts` after "Log weight" was
+found **100% occluded** by the Fuel FAB at 375px. It guards that one control and
+leaves the rest of the column as a `TODO(founder)` with three options and one
+instruction: *tag the describe block `@gate` only if it passes.*
+
+This is the decision, and what the decision found.
+
+### The policy
+
+**A control may share the column; it may not *be* the column** — `overlapPx < width`.
+
+The other two options are both unavailable rather than merely stricter or looser:
+
+- *Zero overlap* cannot pass. The FAB is 121px wide in a 295px content column, and
+  the meal-description input is 295px. Every full-width control on the page fails
+  by construction, so the rule could only ever be a ratchet, never a gate — which
+  is what the TODO said, and measuring agrees.
+- *Guard only the named control* re-guards one bug and none of its siblings. The
+  reported defect was never specific to "Log weight"; it is specific to being a
+  short control in the end corner, and the page had four more of those.
+
+The line the surviving rule draws is the line the bug is actually on. A wide
+control clipped at one edge stays visible and reachable at every scroll offset. A
+control narrower than its own overlap is somewhere inside the FAB's x-range
+*entirely*, so the offset that brings it level with the FAB hides all of it.
+
+### Four live ones, and they were all alignment
+
+Measured at 375px, FAB at `x=[238,359]`:
+
+| Control | x | width | overlap |
+|---|---|---|---|
+| "Use base" (`FuelAdaptBanner`) | `[251,322]` | 71 | 71 |
+| "Edit targets" (`FuelTargetsEditor`) | `[248,335]` | 87 | 87 |
+| "Snack" meal tab (`FuelQuickLogPanel`) | `[266,325]` | 59 | 59 |
+| water stepper "+" (`FuelQuickLogPanel`) | `[302,335]` | 33 | 33 |
+
+None of these is about what the control *says*. Three are `justify-between` or
+`ms-auto` — an end-aligned short button, which on a phone means the bottom-end
+corner, which is the corner a viewport-fixed FAB owns. The fourth is four
+left-packed meal chips, where the fourth chip lands there by arithmetic.
+
+So the fixes are alignment: `flex-col items-start` until `sm` on the two rows that
+end-align a small button, `sm:ms-auto` on the water stepper, and a two-up grid for
+the meal tabs.
+
+**`grid-cols-4` would have moved that chip without fixing it** — four equal
+columns across 295px is ~69px each and the last one still ends at the container
+edge, still inside a 121px FAB, still fully occluded. Half-width tabs clear the
+FAB's left edge whatever the label says in any locale, which is the property
+worth having rather than a width that happens to work in English.
+
+### The guard was checked against the bug it is named after
+
+A guard whose failure mode has never been observed is `.204`'s defect. Reverting
+one fix — `sm:ms-auto` back to `ms-auto` — fails the spec with
+
+```
++     "label": "+",
++     "overlapPx": 33,
++     "width": 33,
+```
+
+which is the control, the number, and the reason, without opening a screenshot.
+
+One narrowing the first draft needed: `overlapPx >= width` holds vacuously for a
+zero-width element (`0 >= 0`), reporting a control that cannot be hidden because
+it is not drawn. The filter requires `width > 0`.
+
+`@gate` e2e 52→53. No unit tests changed; this is entirely a browser-measured
+invariant and a layout consequence of it. Two failures in `hero-flows` (public
+exercise-page CTA) and `premium-pillars` (Mind guided-session player) reproduce
+unchanged on a clean tree — pre-existing, neither on the Fuel path.
+
+### Carried, not authored: one CI block (it was two)
+
+Actions is running again, and both of its checks were red on this PR for reasons
+that have nothing to do with a Fuel column.
+
+`build-and-test` failed on `first-90`'s *"Today shows one red action at 19:00"* —
+the push opt-in is not mounted, because `ci.yml`'s build env omitted
+`NEXT_PUBLIC_VAPID_PUBLIC_KEY` while `scripts/gate.mjs` sets it (`.198`). Same
+controlled experiment either way: a local build without the key reproduces the
+failure exactly, and with it all 53 pass. `gitleaks` never scanned anything — it
+403s on `ScanPullRequest` listing the PR's commits, because that job declares no
+`permissions:` block and inherits a repository default without `pull_requests`.
+Identical failure on #185, an unrelated diff, while PRs opened directly are green.
+
+Both already had correct fixes on `fix/ci-extended-env-parity` (`.235`), open at
+the time, whose own note reads *"#178, #179, #180 and #181 all carry an identical
+block. The conflict is textual, not semantic — take either side."* So both were
+carried here **verbatim** rather than re-authored, on the theory that identical
+text merges as a no-op.
+
+**Then #185 merged the `ci.yml` half to master with a different comment**, which
+is the conflict that note predicted, and this branch took master's side whole —
+so `ci.yml` is no longer part of this ship at all. `gitleaks.yml` still is:
+master does not have that block yet. Neither is my finding; the diagnosis was
+reached independently, the fix was not.
+
+### The gate that went green on a retry
+
+With `ci.yml` fixed the job passed — and its summary read **`1 flaky`, 52
+passed**. `offline.spec.ts`'s *"a set logged offline survives, and reconnecting
+does not lose it"* had failed and passed on retry, so the checkmark was green
+and the spec guarding **the offline promise** had not actually held. That is the
+`.235` complaint one file over: a check people re-run until it passes is a check
+they have stopped reading.
+
+The cause is in the product, not the test:
+
+```ts
+// @serwist/next sw-entry.ts
+if (self.__SERWIST_SW_ENTRY.reloadOnOnline) {
+  window.addEventListener("online", () => location.reload());
+}
+```
+
+`next.config.js` sets `reloadOnOnline: true`, so **the app reloads itself the
+moment connectivity returns** — and the spec's next line was
+`page.goto('/active')`, against a page already at `/active`. Two navigations,
+same URL, started microseconds apart: *"Navigation to /active is interrupted by
+another navigation to /active"*.
+
+**The race was never 50/50, and measuring said so.** With the `goto` removed
+entirely, reconnecting fires **two** main-frame navigations and wipes a marker
+stamped on `window` — the reload always happens; the `goto` only sometimes got
+there first. Ten local runs of the unfixed spec passed, which is exactly why
+this survived: it is a CI-timing coin flip, not a local one.
+
+So the spec now waits for the reload the product performs instead of driving a
+competing one. Deterministic, and a truer assertion — that reload is what a
+returning athlete actually gets. **Awaited, not assumed**: `reloadOnOnline: false`
++ rebuild kills it with `page.waitForEvent: Timeout 15000ms exceeded while
+waiting for event "framenavigated"`, so it cannot go vacuous if that option is
+ever turned off. One mutant, killed.
+
+### One flake reported rather than fixed
+
+`first-90`'s *"every control in the feedback sheet is thumb-sized"* failed once,
+in the first full-suite run after the merge, and has not reproduced since —
+three full `@gate` suites and a run in isolation, all green.
+
+The obvious hypothesis is **wrong**: `boundingBox()` does report the transformed
+rectangle, so a control measured mid-animation would measure short — but
+`AdaptiveOverlay`'s entrance is `slide-in-from-bottom`, a *translate*, which does
+not change height, and the `zoom-in-95` that would is `md:` only while this suite
+runs at 390px. No cause established, so no fix: a speculative change here would
+be a guard written about a defect nobody has characterised, which is how this
+repo gets tests that cannot fail. Written down instead, with what is ruled out.
+
+### The status doc that contradicted itself about its own CI
+
+`CONTEXT.md` `## Now` answered *"does CI run?"* **twice, with opposite answers** —
+the standing Status table said *"billing-blocked. Every job dies in seconds with
+`runner_id: 0`"*, while the Ops bullet twelve lines down said *"cleared; Actions
+works again"*. `CLAUDE.md` states the rule this breaks: *whether Actions is
+currently running is recorded in exactly one place — do not restate it
+elsewhere.* `gate.mjs`'s header records the repo paying for this exact
+contradiction once already, across two files; it had since moved inside one.
+
+Measured today, both rows are now true rather than merely current: Actions ran
+`build-and-test` to completion in 7m22s on this PR, and gitleaks is green. The
+gitleaks row also attributed its redness to the `8ea3527a` Solana address, which
+was never the cause — on a `pull_request` event the action scans only the PR's
+own commits, so that history is not in scope at all. The finding stands and stays
+un-allowlisted; the row now says what actually made the check red.
+
+The Ops bullet no longer restates the Actions fact. **No guard written for this
+one**, deliberately: the only mechanical rule available is "the word Actions
+appears in one place", and existing ship bullets narrate CI history legitimately
+(`.213` does), so that check would fail on correct content. A guard keyed to a
+spelling of *"is it blocked"* is the shape this repo has already paid for four
+times.
+
+---
 
 ## 2026-07-31 — The gate that could not go green (`.223`)
 
