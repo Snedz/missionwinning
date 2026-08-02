@@ -1,3 +1,4 @@
+import { compareKeys } from '@/lib/i18n/formatLocale';
 /**
  * On-device progress photos — IndexedDB only (never uploaded).
  * DB: mw-photos / store: photos
@@ -118,7 +119,7 @@ export async function listProgressPhotos(): Promise<ProgressPhotoMeta[]> {
     await txDone(tx);
     return rows
       .map(({ blob: _b, ...meta }) => meta)
-      .sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt));
+      .sort((a, b) => compareKeys(b.date, a.date) || compareKeys(b.createdAt, a.createdAt));
   } finally {
     db.close();
   }
@@ -160,7 +161,7 @@ export async function comparePair(
   if (pose) list = list.filter((p) => p.pose === pose);
   if (!list.length) return { earliest: null, latest: null };
   const chronological = [...list].sort(
-    (a, b) => a.date.localeCompare(b.date) || a.createdAt.localeCompare(b.createdAt)
+    (a, b) => compareKeys(a.date, b.date) || compareKeys(a.createdAt, b.createdAt)
   );
   return {
     earliest: chronological[0] ?? null,

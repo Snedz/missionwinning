@@ -7,6 +7,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Trophy, RefreshCw, Moon, Sunrise } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -34,6 +35,7 @@ import { getJoinedClassCode, getTeacherPin } from '@/lib/schoolClass';
 
 export function LeaderboardPage() {
  const { t } = useTranslation();
+ const fmt = useLocaleFormat();
  const router = useRouter();
  const searchParams = useSearchParams();
  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
@@ -299,7 +301,7 @@ export function LeaderboardPage() {
  scopeLabel={ranked.scopeLabel}
  />
  <div className="text-xs text-muted-foreground sm:text-right shrink-0">
- {ranked.totalPlayers.toLocaleString()} {t('leaderboardOperators', { defaultValue: 'operators' })}
+ {fmt.num(ranked.totalPlayers)} {t('leaderboardOperators', { defaultValue: 'operators' })}
  {ranked.yourRank != null && (
  <>
  {' · '}

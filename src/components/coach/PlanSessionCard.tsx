@@ -48,7 +48,18 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
         // a red top rule and the single elevation this screen is allowed.
         session.status === 'done' && 'bg-card',
         isToday && 'border-t-[3px] border-t-[hsl(var(--accent-poster))] shadow-md',
-        session.status === 'missed' && 'opacity-60',
+        /*
+         * `.240` — de-emphasised by border, never by opacity.
+         *
+         * `opacity-60` dims the *text* along with the container: axe measured
+         * #747372 on #eeeded (4.04:1) and #8c8b8b on #eeeded (2.9:1) here, both
+         * serious. `.127` fixed exactly this in `WeekStrip` — "missed days
+         * de-emphasised by border not opacity, because dimming the container
+         * also dims the day label past 4.5:1" — and this file was missed in
+         * that pass. A missed session still has to be readable; it is behind
+         * you, not hidden from you (Horizon W criterion 4).
+         */
+        session.status === 'missed' && 'border-2 border-dashed border-border bg-transparent',
         className
       )}
     >

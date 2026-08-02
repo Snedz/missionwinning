@@ -92,3 +92,55 @@ export function startOfLocalWeek(d: Date = new Date()): Date {
 export function localWeekKey(d: Date = new Date()): string {
   return localDateKey(startOfLocalWeek(d));
 }
+
+/**
+ * `YYYY-MM` for the month `d` falls in — the month grid's addressing key.
+ *
+ * Same discipline as everything above: local fields, no `toISOString()`.
+ */
+export function localMonthKey(d: Date = new Date()): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+/**
+ * The month `delta` months from `monthKey`, clamped by JS `Date` rollover.
+ *
+ * `new Date(y, m, 1)` handles `m = -1` and `m = 12` correctly by construction, so
+ * December→January needs no special case. Built from parts rather than by
+ * mutating a parsed date: parsing a bare `YYYY-MM` gives UTC midnight, which is
+ * the previous month for anyone west of Greenwich on the 1st.
+ */
+export function shiftLocalMonth(monthKey: string, delta: number): string {
+  const [y, m] = monthKey.split('-').map(Number);
+  if (!y || !m) return monthKey;
+  return localMonthKey(new Date(y, m - 1 + delta, 1));
+}
+
+/**
+ * Every local date in `monthKey`, in order, as `YYYY-MM-DD`.
+ *
+ * Length comes from the calendar, not from a table: `new Date(y, m, 0)` is the
+ * last day of month `m-1`, so February 2028 answers 29 without a leap-year rule
+ * anyone has to remember to write.
+ */
+export function localMonthDays(monthKey: string): string[] {
+  const [y, m] = monthKey.split('-').map(Number);
+  if (!y || !m) return [];
+  const days = new Date(y, m, 0).getDate();
+  return Array.from({ length: days }, (_, i) => localDateKey(new Date(y, m - 1, i + 1)));
+}
+
+/**
+ * How many blank cells precede the 1st in a Monday-first grid.
+ *
+ * Monday-first because this repo already is, everywhere — `startOfLocalWeek`,
+ * `WeekStrip`, `challenges`, `weekRecap`, `historyAnalytics`. A month grid that
+ * introduced a locale-aware week start would be the *seventh* derivation of
+ * "when does a week begin", which is the defect `localDate.ts` was created to end.
+ */
+export function localMonthLeadingBlanks(monthKey: string): number {
+  const [y, m] = monthKey.split('-').map(Number);
+  if (!y || !m) return 0;
+  const firstDow = new Date(y, m - 1, 1).getDay(); // 0 Sun … 6 Sat
+  return firstDow === 0 ? 6 : firstDow - 1;
+}

@@ -2,6 +2,15 @@
 /**
  * Today card linking to Mission Coach weekly plan.
  * See: src/components/coach/INDEX.md
+ *
+ * **Its buttons are `outline`, not red.** `.240` raised this card to the top of
+ * Today's block budget, and it can render up to two actions ("Start this
+ * session", "Generate this week") while `JourneyHero` already docks the
+ * screen's one red action below. Three red fills on one screen is the competing-
+ * CTA failure the quality bar names, and `redActions.ts` allows **zero** red
+ * controls inside `main`. The guard had never caught it because the card mounts
+ * only at `commissioned`, a phase the hero e2e never reaches — so this was a
+ * latent break that promotion would have made live.
  */
 
 import Link from 'next/link';
@@ -20,6 +29,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { track } from '@/lib/analytics';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
+import { sessionContinuity } from '@/lib/coach/programContinuity';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 export function CoachTodayCard() {
@@ -51,6 +61,11 @@ export function CoachTodayCard() {
           : t('coachTodayBandSteady', {
               defaultValue: 'Your week is tracking with your month.',
             });
+
+  const continuity = useMemo(
+    () => sessionContinuity(workoutHistory, plan),
+    [workoutHistory, plan]
+  );
 
   const weekDose = plan ? summarizeWeekDose(plan) : null;
   const doseIntent =
@@ -103,7 +118,7 @@ export function CoachTodayCard() {
                 defaultValue: 'Generate a weekly plan from your logs — no wearable required.',
               })}
             </p>
-            <Button variant="fitness" size="sm" onClick={() => generate()}>
+            <Button variant="outline" size="sm" onClick={() => generate()}>
               {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
             </Button>
           </>
@@ -119,7 +134,7 @@ export function CoachTodayCard() {
                   'Premium eases later sessions when load runs high so you recover without quitting the week.',
               })}
             </p>
-            <Button asChild variant="fitness" size="sm" className="w-full">
+            <Button asChild variant="outline" size="sm" className="w-full">
               <Link href="/bundle">{t('coachUnlockBundle', { defaultValue: 'Unlock Super Bundle' })}</Link>
             </Button>
           </>
@@ -132,7 +147,7 @@ export function CoachTodayCard() {
                   'Open beta keeps Coach open. Generate the next week from your latest logs.',
               })}
             </p>
-            <Button variant="fitness" size="sm" onClick={() => generate()}>
+            <Button variant="outline" size="sm" onClick={() => generate()}>
               {t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
             </Button>
           </>
@@ -146,7 +161,15 @@ export function CoachTodayCard() {
         )}
         {plan && !locked && todaySession && (
           <>
-            <p className="font-medium">{todaySession.name}</p>
+            {/* Where this sits in the athlete's own history. Silent when there
+                is nothing true to say — see programContinuity.ts for why there
+                is no week number here. */}
+            {continuity.line && (
+              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground tabular-nums">
+                {continuity.line}
+              </p>
+            )}
+            <p className="font-semibold">{todaySession.name}</p>
 
             {/* What the coach actually prescribed, before the athlete walks to the
                 gym. The data has always existed on PlanExercise; Today only ever
@@ -174,7 +197,7 @@ export function CoachTodayCard() {
             {bandLine && <p className="text-[11px] text-muted-foreground">{bandLine}</p>}
             {todaySession.status !== 'done' && (
               <>
-                <Button variant="fitness" size="sm" className="w-full" onClick={startToday}>
+                <Button variant="outline" size="sm" className="w-full" onClick={startToday}>
                   {t('coachStartSession', { defaultValue: 'Start this session' })}
                 </Button>
                 <Link

@@ -86,8 +86,9 @@ export const GET = withApiLogging('cron/wind-down', async (request: NextRequest)
       title: c.title,
       body: c.body,
       url: '/log?debrief=last&src=push',
-      // Its own tag: a wind-down must never replace an unopened comeback.
-      tag: 'mw-wind-down',
+      // Its own tag — a wind-down must never replace an unopened comeback.
+      // Defined once, in `windDownPush()`, and carried on the candidate.
+      tag: c.tag,
     });
     if (r === 'sent') delivered.push(c.endpoint);
   }

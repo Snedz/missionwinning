@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Watch } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +23,7 @@ type Props = {
  */
 export function ProfileWearablesCard({ signedIn }: Props) {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const enabled = isWearablesPubliclyEnabled();
   const [providers, setProviders] = useState<WearableConnectionStatus[]>([]);
   const [loading, setLoading] = useState(false);
@@ -198,10 +200,10 @@ export function ProfileWearablesCard({ signedIn }: Props) {
                           : p.connected
                             ? t('wearablesStatusConnected', {
                                 at: p.lastSyncAt
-                                  ? new Date(p.lastSyncAt).toLocaleString()
+                                  ? fmt.dateTime(p.lastSyncAt)
                                   : '—',
                                 defaultValue: `Connected · last sync ${
-                                  p.lastSyncAt ? new Date(p.lastSyncAt).toLocaleString() : '—'
+                                  p.lastSyncAt ? fmt.dateTime(p.lastSyncAt) : '—'
                                 }`,
                               })
                             : t('wearablesStatusAvailable', { defaultValue: 'Ready to connect' })}
