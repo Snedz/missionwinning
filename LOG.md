@@ -20,7 +20,7 @@ choosing the big file.
 
 `.222` cut this directory 30.8 MB → 2.1 MB and built the splitter to be
 **re-runnable** for exactly one stated reason: *"a cleanup that cannot be
-repeated undoes itself the next time the fill tool runs."* It did. `.230` ran the
+repeated undoes itself the next time the fill tool runs."* It did. `.250` ran the
 exporter while checking which CI steps passed locally, committed the 394
 regenerated files with `git add -A`, and CI caught it on `.222`'s own guards.
 

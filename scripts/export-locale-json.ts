@@ -14,7 +14,7 @@
  * all split"* into *"392 files carry keys outside their namespace"*. `.222` cut
  * this directory 30.8 MB → 2.1 MB and wrote the splitter to be **re-runnable**
  * precisely because *"a cleanup that cannot be repeated undoes itself the next
- * time the fill tool runs."* It did: `.230` ran this script while checking which
+ * time the fill tool runs."* It did: `.250` ran this script while checking which
  * CI steps passed locally, committed the 394 regenerated files with `git add -A`,
  * and CI caught it on `.222`'s own guards.
  *

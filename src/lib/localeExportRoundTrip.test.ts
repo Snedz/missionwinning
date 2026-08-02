@@ -8,7 +8,7 @@
  * `check-locale-split` was permanently one `npm run export-locales` away from
  * red.
  *
- * That is not hypothetical. `.230` ran the exporter while checking which CI
+ * That is not hypothetical. `.250` ran the exporter while checking which CI
  * steps passed locally, committed 394 regenerated files with `git add -A`, and
  * CI went red on `.222`'s three footprint guards.
  *
