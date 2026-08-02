@@ -24,7 +24,8 @@ import { lastNotesFor } from '@/lib/journal/cueMemory';
 import { resolveRestSeconds } from '@/lib/workout/restTimer';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { supersetLabel } from '@/lib/workout/superset';
-import { cn, formatDate } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import type { UnitsPref } from '@/lib/units';
 import type {
   ActiveExerciseLog,
@@ -115,6 +116,7 @@ export function ActiveExerciseCard({
   onSetKindChange,
 }: Props) {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const isCompact = useIsCompact();
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerOpen, setFooterOpen] = useState(false);
@@ -344,8 +346,8 @@ export function ActiveExerciseCard({
         {lastNote && (
           <p className="text-[11px] text-muted-foreground">
             {t('activeLastNoteLine', {
-              date: formatDate(lastNote.date),
-              defaultValue: `Last note (${formatDate(lastNote.date)}):`,
+              date: fmt.longDate(lastNote.date),
+              defaultValue: `Last note (${fmt.longDate(lastNote.date)}):`,
             })}{' '}
             <span className="italic text-foreground">&ldquo;{lastNote.text}&rdquo;</span>
           </p>

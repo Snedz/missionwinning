@@ -7,7 +7,9 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { useLocaleFormat } from "@/hooks/useLocaleFormat";
 import dynamic from 'next/dynamic';
+import { SkeletonBlock } from '@/components/ui/Skeleton';
 import {
   BarChart3,
   LineChart as LineChartIcon,
@@ -40,17 +42,17 @@ import {
   buildExerciseBenchmark,
   getExercisesWithBenchmarkData,
 } from "@/lib/benchmarks";
-import { formatDate } from "@/lib/utils";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { useWorkoutStore } from "@/store/workoutStore";
 
 const Benchmarks1RMChart = dynamic(
   () => import('@/components/benchmarks/Benchmarks1RMChart').then((m) => m.Benchmarks1RMChart),
-  { ssr: false, loading: () => <div className="h-72 animate-pulse  bg-card" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-72" label="Loading 1RM chart" /> }
 );
 import { MilitaryReadinessSection } from "@/components/benchmarks/MilitaryReadinessSection";
 import { PresidentialFitnessSection } from "@/components/fitness-test/PresidentialFitnessSection";
 import { PillarPageShell } from "@/components/layout/PillarPageShell";
+import { EmptyState } from '@/components/ui/EmptyState';
 import { SignInPrompt } from "@/components/auth/SignInPrompt";
 import { AnatomyHeatMap } from "@/components/history/AnatomyHeatMap";
 import { buildMuscleHeatmap } from "@/lib/historyAnalytics";
@@ -58,6 +60,7 @@ import { bumpTrainingStreak } from "@/lib/streaks";
 
 export function BenchmarksPage() {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const router = useRouter();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
@@ -86,11 +89,14 @@ export function BenchmarksPage() {
   const chartData = useMemo(() => {
     if (!benchmark) return [];
     return benchmark.timeline.map((point) => ({
-      date: point.dateLabel,
+      date: fmt.axisDate(point.date),
       estimated: point.estimated1RM,
       actual: point.actual1RM,
     }));
-  }, [benchmark]);
+    // `fmt` and not just `benchmark`: `.242` — the axis label is built here now
+    // that `dateLabel` is gone from the data, so the memo has to invalidate when
+    // the language does or the chart keeps the previous one.
+  }, [benchmark, fmt]);
 
   const globalStats = useMemo(() => {
     const withActual = summaries.filter((s) => s.bestActual1RM !== null);
@@ -108,6 +114,58 @@ export function BenchmarksPage() {
     };
   }, [summaries]);
 
+  /*
+   * `.241` — the starters render in **both** branches.
+   *
+   * These four one-tap session launchers sat inside the has-data `else` only, so
+   * they were visible exclusively to athletes who already had benchmark data —
+   * and hidden from the only person the screen's empty state is addressed to.
+   * The empty copy said "complete workouts with logged sets" while the buttons
+   * that do exactly that were behind the condition it described.
+   */
+  const quickStarters = (
+    <Card className="content-card mt-4 border-primary">
+      <CardHeader>
+        <CardTitle className="text-base">
+          {t('benchmarksQuickTitle', { defaultValue: 'Quick Benchmark Starters (Free)' })}
+        </CardTitle>
+        <CardDescription>
+          {t('benchmarksQuickDesc', {
+            defaultValue:
+              'Start a short session focused on common benchmark lifts. Log sets → see progress here next time. Bumps streak on launch.',
+          })}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-wrap gap-2">
+        <Button size="sm" variant="outline" onClick={() => {
+          const store = useWorkoutStore.getState();
+          store.startWorkout("Bench Benchmark", [{ exerciseId: "bench-press", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
+          bumpTrainingStreak();
+          router.push('/active');
+        }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style →' })}</Button>
+        <Button size="sm" variant="outline" onClick={() => {
+          const store = useWorkoutStore.getState();
+          store.startWorkout("Squat Benchmark", [{ exerciseId: "squats", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
+          bumpTrainingStreak();
+          router.push('/active');
+        }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets →' })}</Button>
+        <Button size="sm" variant="outline" onClick={() => {
+          const store = useWorkoutStore.getState();
+          store.startWorkout("Deadlift Benchmark", [{ exerciseId: "deadlift", sets: [{ reps: 3, weight: 0 }, { reps: 3, weight: 0 }] }]);
+          bumpTrainingStreak();
+          router.push('/active');
+        }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls →' })}</Button>
+        <Button size="sm" variant="outline" onClick={() => router.push('/log')}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today →' })}</Button>
+        <Button size="sm" variant="ghost" onClick={() => {
+          try {
+            const cur = bumpTrainingStreak();
+            alert(`Benchmark habit logged! Streak +1 (${cur}). Complete the session to update charts.`);
+          } catch { /* noop */ }
+        }}>{t('benchmarksQuickHabit', { defaultValue: 'Log benchmark habit (+streak)' })}</Button>
+      </CardContent>
+    </Card>
+  );
+
   if (workoutHistory.length === 0 || exerciseIds.length === 0) {
     return (
       <PillarPageShell icon={Shield} eyebrow={t('benchmarksEyebrow', { defaultValue: 'Benchmarks' })} title={t('benchmarksTitle', { defaultValue: 'Benchmarks' })} subtitle={t('benchmarksSubtitle', {
@@ -115,20 +173,15 @@ export function BenchmarksPage() {
         })}
         showLegalFooter
       >
-        <Card className="content-card border-dashed">
-          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <BarChart3 className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="font-medium">
-              {t('benchmarksEmptyTitle', { defaultValue: 'No benchmark data yet' })}
-            </p>
-            <p className="text-sm text-muted-foreground mt-1 max-w-md">
-              {t('benchmarksEmptyDesc', {
-                defaultValue:
-                  'Complete workouts with logged sets to build estimated 1RMs. Log a set at 1 rep to record an actual 1RM for comparison.',
-              })}
-            </p>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={BarChart3}
+          title={t('benchmarksEmptyTitle', { defaultValue: 'No benchmark data yet' })}
+          description={t('benchmarksEmptyDesc', {
+            defaultValue:
+              'Complete workouts with logged sets to build estimated 1RMs. Log a set at 1 rep to record an actual 1RM for comparison.',
+          })}
+        />
+        {quickStarters}
         <MilitaryReadinessSection />
         <PresidentialFitnessSection />
       </PillarPageShell>
@@ -354,7 +407,7 @@ export function BenchmarksPage() {
                     return (
                       <TableRow key={point.workoutId}>
                         <TableCell className="whitespace-nowrap">
-                          {formatDate(point.date)}
+                          {fmt.longDate(point.date)}
                         </TableCell>
                         <TableCell>{point.workoutName}</TableCell>
                         <TableCell>
@@ -458,47 +511,7 @@ export function BenchmarksPage() {
         </>
       )}
 
-      {/* Free core quick actions to populate benchmarks (functional) */}
-      <Card className="content-card mt-4 border-primary">
-        <CardHeader>
-          <CardTitle className="text-base">
-            {t('benchmarksQuickTitle', { defaultValue: 'Quick Benchmark Starters (Free)' })}
-          </CardTitle>
-          <CardDescription>
-            {t('benchmarksQuickDesc', {
-              defaultValue:
-                'Start a short session focused on common benchmark lifts. Log sets → see progress here next time. Bumps streak on launch.',
-            })}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-wrap gap-2">
-          <Button size="sm" variant="outline" onClick={() => {
-            const store = useWorkoutStore.getState();
-            store.startWorkout("Bench Benchmark", [{ exerciseId: "bench-press", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
-            bumpTrainingStreak();
-            router.push('/active');
-          }}>{t('benchmarksQuickBench', { defaultValue: 'Bench 5/3/1 style →' })}</Button>
-          <Button size="sm" variant="outline" onClick={() => {
-            const store = useWorkoutStore.getState();
-            store.startWorkout("Squat Benchmark", [{ exerciseId: "squats", sets: [{ reps: 5, weight: 0 }, { reps: 5, weight: 0 }, { reps: 3, weight: 0 }] }]);
-            bumpTrainingStreak();
-            router.push('/active');
-          }}>{t('benchmarksQuickSquat', { defaultValue: 'Squat working sets →' })}</Button>
-          <Button size="sm" variant="outline" onClick={() => {
-            const store = useWorkoutStore.getState();
-            store.startWorkout("Deadlift Benchmark", [{ exerciseId: "deadlift", sets: [{ reps: 3, weight: 0 }, { reps: 3, weight: 0 }] }]);
-            bumpTrainingStreak();
-            router.push('/active');
-          }}>{t('benchmarksQuickDeadlift', { defaultValue: 'Deadlift pulls →' })}</Button>
-          <Button size="sm" variant="outline" onClick={() => router.push('/log')}>{t('benchmarksQuickStarters', { defaultValue: 'All free starters in Today →' })}</Button>
-          <Button size="sm" variant="ghost" onClick={() => {
-            try {
-              const cur = bumpTrainingStreak();
-              alert(`Benchmark habit logged! Streak +1 (${cur}). Complete the session to update charts.`);
-            } catch { /* noop */ }
-          }}>{t('benchmarksQuickHabit', { defaultValue: 'Log benchmark habit (+streak)' })}</Button>
-        </CardContent>
-      </Card>
+      {quickStarters}
 
       <SignInPrompt
         className="mt-6"

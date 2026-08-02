@@ -74,7 +74,6 @@ Utility classes: `content-card`, `card-elevated`, `card-section`, `card-boss`, `
 | Class | Role |
 |-------|------|
 | `hero-field` | Flat paper + safe-area padding (gradient field retired) |
-| `texture-grid` | The visible modular grid — subtle rule-gray lines |
 | `section-seam` / `section-seam-glow` | Honest 2px rules (both render identically now) |
 | `reveal` / `reveal-visible` | Scroll-reveal (pair with `Reveal` / `useScrollReveal`) |
 | `ticker-track` | Caps telemetry marquee (md+) |

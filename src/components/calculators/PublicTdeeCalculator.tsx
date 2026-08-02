@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { mifflinBmr, ACTIVITY_LEVELS, type CalcSex } from '@/lib/calcHelpers';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import {
   CalcField,
   Seg,
@@ -26,6 +27,7 @@ type Goal = 'cut' | 'maintain' | 'bulk';
  * than the in-app Fuel default). Metric internally; live recompute.
  */
 export function PublicTdeeCalculator() {
+  const fmt = useLocaleFormat();
   const [units, setUnits] = useState<CalcUnits>('kg');
   const [sex, setSex] = useState<CalcSex>('male');
   const [age, setAge] = useState(28);
@@ -123,10 +125,10 @@ export function PublicTdeeCalculator() {
       <div aria-live="polite">
         <p className="eyebrow-live mb-2">Daily target</p>
         <p className="display-mega text-poster tabular-nums">
-          {cals.toLocaleString()} <span className="text-2xl text-muted-foreground">kcal</span>
+          {fmt.num(cals)} <span className="text-2xl text-muted-foreground">kcal</span>
         </p>
         <p className="mt-3 text-sm tabular-nums text-muted-foreground">
-          Maintenance {tdee.toLocaleString()} kcal · BMR {bmr.toLocaleString()} kcal
+          Maintenance {fmt.num(tdee)} kcal · BMR {fmt.num(bmr)} kcal
         </p>
         <table className="mt-7 w-full text-sm">
           <thead>

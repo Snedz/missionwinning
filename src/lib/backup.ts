@@ -1,5 +1,6 @@
 import type { CompletedWorkoutLog, SavedWorkout } from '@/types';
 import { mergeWorkoutHistories } from '@/lib/workout/workoutMerge';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 
 /**
  * Full-device backup for users without an account (their only safety net)
@@ -130,7 +131,7 @@ export function downloadBackup(): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `mission-winning-backup-${backup.exportedAt.slice(0, 10)}.json`;
+  a.download = `mission-winning-backup-${localDateKeyFromIso(backup.exportedAt)}.json`;
   a.click();
   URL.revokeObjectURL(url);
 }
