@@ -58,7 +58,7 @@ export function MuscleHeatmap({ cells, windowDays }: Props) {
                   {muscleGroupLabel(cell.group, t)}
                 </span>
                 {/*
-                  `.236` — `opacity-70` here failed WCAG 1.4.3 on the *hottest*
+                  `.256` — `opacity-70` here failed WCAG 1.4.3 on the *hottest*
                   cell. `heatColor` puts `text-accent-900` (#4d170e) on
                   `bg-accent-400` (#ff9783) at intensity ≥ 0.75; at full strength
                   that is 6.93:1, and at 70% it composites to **3.76:1**. The

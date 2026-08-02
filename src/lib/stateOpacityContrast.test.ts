@@ -1,7 +1,7 @@
 /**
  * Opacity is not a state treatment. It is a contrast reduction.
  *
- * `.236` — `/coach` failed the a11y gate at **2.97:1**, and the cause was one
+ * `.256` — `/coach` failed the a11y gate at **2.97:1**, and the cause was one
  * class:
  *
  * ```tsx

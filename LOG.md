@@ -6,7 +6,7 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-01 — Opacity is not a state, it is a contrast reduction (`.236`)
+## 2026-08-01 — Opacity is not a state, it is a contrast reduction (`.256`)
 
 `npm run gate` went red on `/coach`:
 

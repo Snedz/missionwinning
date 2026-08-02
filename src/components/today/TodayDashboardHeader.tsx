@@ -95,7 +95,7 @@ export function TodayDashboardHeader({
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
             <span>{t('todayTrendsDetails', { defaultValue: 'Trends' })}</span>
             {/*
-              `.236` — `opacity-60` here was **3.04:1**, on the app's most-visited
+              `.256` — `opacity-60` here was **3.04:1**, on the app's most-visited
               screen. `▼` is a text node, so the summary's `text-muted-foreground`
               (#484747, 8.29:1 on paper) composited down to #999 and change.
               Invisible to axe because this block renders only when `trends`

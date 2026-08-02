@@ -48,7 +48,7 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
         // a red top rule and the single elevation this screen is allowed.
         session.status === 'done' && 'bg-card',
         isToday && 'border-t-[3px] border-t-[hsl(var(--accent-poster))] shadow-md',
-        // `.236` — this was `opacity-60`, and it failed WCAG 1.4.3 on the one
+        // `.256` — this was `opacity-60`, and it failed WCAG 1.4.3 on the one
         // page it renders: axe measured the muscle badges at **2.97:1**
         // (`#8a8888` on `#eeebeb`, 10px). Container opacity composites every
         // descendant toward the ground, so dimming a card dims its text, and
