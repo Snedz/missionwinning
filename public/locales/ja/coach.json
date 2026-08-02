@@ -45,6 +45,8 @@
   "coachWhyRepProgress": "重量を増やす前に回数を増やします。",
   "coachWhyHold": "担当者がしっかりしていると感じるまでこの負荷を続けます。",
   "coachWhyHoldHard": "ハードセット — 荷重を保持し、強化します。",
+  "coachWhySteadyWeek": "Big week against your own recent average — holding here.",
+  "coachWhyPlateauDeload": "No new best in a month — lighter week to rebuild from.",
   "coachWhyDeload": "回復週間 - 負荷は軽く、同じパターン。",
   "coachWhyRecovery": "より良いトレーニングのための可動性と活性化。",
   "coachWhyBodyweightReps": "セットが難しいと感じるまで繰り返しを追加します。",

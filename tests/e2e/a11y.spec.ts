@@ -58,7 +58,7 @@ const GATED_ROUTES = [
 ] as const;
 
 /**
- * Wait until the page stops animating before measuring.
+ * Wait until the page stops animating **and stops loading** before measuring.
  *
  * `page-enter` / `journey-enter` / `Reveal` fade opacity in, and a partly-faded
  * element composites to a lower contrast ratio than its resting state — so axe run
@@ -69,17 +69,45 @@ const GATED_ROUTES = [
  * the first check and the failure wandered between /welcome, /coach and /nutrition
  * at roughly one run in two. This waits for two consecutive quiet frames instead,
  * which is the difference between a gate people trust and one they switch off.
+ *
+ * ## Why animations alone were the wrong question (`.253`)
+ *
+ * Asking only `getAnimations()` made this wait **structurally blind to loading**.
+ * `src/components/ui/Skeleton.tsx` says so in its own header: the placeholders
+ * deliberately do not pulse, because the old ones were invisible until the
+ * animation dimmed them and `prefers-reduced-motion` then deleted the only cue.
+ * That is the right call for the athlete — and it means a page mid-load has zero
+ * running animations. The better the loading design got, the blinder this became.
+ *
+ * Measured rather than argued: `/profile` under a 40× CPU throttle reached this
+ * point with **two `aria-busy` regions still on screen and zero running
+ * animations** — settle declared it quiet and axe measured placeholders.
+ *
+ * So the condition is both, and the marker is `aria-busy`, which the app already
+ * sets on every loading region (`RouteLoading`, `SkeletonCard`, `CoachPlanSkeleton`,
+ * `FuelPlanSkeleton`, the profile cards). That is not a coincidence to lean on:
+ * `src/lib/loadingStatesAnnounce.test.ts` asserts it, and the eight placeholders
+ * that were *not* marked were found by writing it down.
+ *
+ * Honest scope: this closes a real, measurable blind spot. It is **not** a proven
+ * fix for the single `/profile` skeleton-contrast violation seen once in `.250` —
+ * that failure did not reproduce in ~30 throttled runs, and calling it fixed would
+ * be a guess dressed as a result.
  */
 async function settle(page: import('@playwright/test').Page) {
   await page
     .evaluate(async () => {
-      const quiet = () => document.getAnimations().filter((a) => a.playState === 'running');
-      const deadline = Date.now() + 5_000;
+      const animating = () => document.getAnimations().filter((a) => a.playState === 'running');
+      // `[aria-busy="true"]` and not `[aria-busy]`: `HoldToConfirmButton` and
+      // `CoachChatPanel` bind the attribute to state, so a resting page carries
+      // `aria-busy="false"` nodes that would never clear.
+      const loading = () => document.querySelectorAll('[aria-busy="true"]').length;
+      const deadline = Date.now() + 8_000;
       let consecutiveQuiet = 0;
 
       while (Date.now() < deadline && consecutiveQuiet < 2) {
-        const running = quiet();
-        if (running.length === 0) {
+        const running = animating();
+        if (running.length === 0 && loading() === 0) {
           consecutiveQuiet += 1;
         } else {
           consecutiveQuiet = 0;
@@ -136,14 +164,7 @@ test.describe('Accessibility @a11y', () => {
       await seedLegacyOnboarding(page);
       await page.goto(path, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('body')).toBeVisible();
-
-      if (path === '/active') {
-        await page
-          .getByRole('button', { name: /start workout|loading session/i })
-          .first()
-          .waitFor({ state: 'visible', timeout: 15_000 });
-      }
-
+      // No route special-case here. `/active` used to have one — see `settle()`.
       await axeSerious(page, path);
     });
   }

@@ -4,6 +4,13 @@ name: CI extended
 
 on:
   workflow_dispatch:
+    inputs:
+      bootstrap_baselines:
+        description: >-
+          Generate visual baselines instead of checking against them. Download
+          the visual-diffs artifact and LOOK at every PNG before committing.
+        type: boolean
+        default: false
   schedule:
     # Weekly Android + critical e2e (UTC Monday 08:17)
     - cron: '17 8 * * 1'
@@ -163,6 +170,31 @@ jobs:
       # length that a known-wrong baseline is worse than none, and the previous
       # set was deleted for depicting the pre-Modernist design. So the absence of
       # baselines is now a loud failure with instructions, not a silent pass.
+      #
+      # `.254` — that failure told you to run a command, and there was **no way
+      # to run it**. This job is the only Linux/Chromium environment this project
+      # has; baselines generated anywhere else differ by font hinting and
+      # antialiasing alone, which is how the pixel comparison stops meaning
+      # anything. So the instructions named a command nobody could execute, and
+      # the suite has had zero baselines ever since — `home-reduced.png` has
+      # never had one at all, so `/`, the most-linked page in the product, has
+      # been silently self-approving on every run since the case was written.
+      #
+      # `bootstrap_baselines` is a named, opt-in `workflow_dispatch` input rather
+      # than a shell flag or an auto-fallback, and it defaults **false**: the
+      # normal path stays a loud failure, and generating baselines stays a thing
+      # a person decides to do. It is deliberately not wired to the schedule —
+      # a weekly run that regenerates its own baselines is `.200`'s check that
+      # cannot fail, rebuilt.
+      #
+      # The generate does not assert. It writes the PNGs, the step below uploads
+      # them, and the actual gate is a human opening every file. `.221` deleted
+      # the previous baselines rather than refresh them precisely because *"the
+      # obvious response to four huge visual diffs is `--update-snapshots`
+      # without looking, which launders whatever the app happens to render that
+      # day into the new truth."* Committing unreviewed output is that same
+      # failure arriving through the front door.
+      #
       # `PRIVATE_MODE` used to be repeated here. It is on the job now — see the
       # note there. Leaving it in both places would suggest this step is where
       # it matters, and this step is exactly where it does *not*.
@@ -170,23 +202,36 @@ jobs:
         env:
           SMOKE_BASE_URL: http://localhost:3000
         run: |
+          if [ "${{ inputs.bootstrap_baselines }}" = "true" ]; then
+            echo "::notice::Generating visual baselines. Nothing is asserted here."
+            echo "Download the visual-diffs artifact, LOOK at every PNG, then commit."
+            npx playwright test --config=playwright.config.ts --grep @visual --update-snapshots
+            find tests/e2e -name '*.png' -path '*-snapshots*' -print
+            exit 0
+          fi
           if [ -z "$(find tests/e2e -type d -name '*-snapshots' 2>/dev/null | head -1)" ]; then
             echo "::error::No committed visual baselines — this job is guarding nothing."
             echo ""
-            echo "Bootstrap them deliberately, on a Linux runner:"
-            echo "  npx playwright test --config=playwright.config.ts --grep @visual --update-snapshots"
-            echo "Then LOOK at every PNG before committing. See tests/e2e/visual.spec.ts."
+            echo "Bootstrap them deliberately: re-run this workflow from the Actions tab"
+            echo "with the 'bootstrap_baselines' input set to true, then download the"
+            echo "visual-diffs artifact and LOOK at every PNG before committing."
+            echo "See tests/e2e/visual.spec.ts."
             exit 1
           fi
           npm run e2e:visual
 
       # `always()`, not `failure()`, and that is the whole point of this step.
-      # The bootstrap path above generates baselines and then passes (the soft
-      # `|| true`, plus a re-run that now finds the snapshots it just wrote), so
-      # under `failure()` the artifact never uploaded and the baselines died
-      # with the runner — the instruction one line up could never be followed.
+      # The bootstrap path above generates baselines and then exits 0, so under
+      # `failure()` the artifact would never upload and the baselines would die
+      # with the runner — the instruction one step up could never be followed.
       # Verified against run 30263001081 (2026-07-27): visual-regression
       # succeeded, "Upload visual diffs" skipped, nothing retrievable.
+      #
+      # `.254` rewrote *why* that path passes — it used to be a soft `|| true`
+      # plus a re-run that found the snapshots it had just written (`.200`'s
+      # check that cannot fail), and is now an explicit opt-in that asserts
+      # nothing on purpose. `always()` matters for the same reason either way,
+      # so the condition stands and only its justification changed.
       - name: Upload visual baselines + diffs
         if: always()
         uses: actions/upload-artifact@v4
