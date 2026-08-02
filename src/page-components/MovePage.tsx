@@ -31,6 +31,9 @@ export function MovePage() {
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
+  // `.225` — a retry trigger. ErrorState renders no action unless it is handed
+  // one, so an unrecoverable error state was a dead end wearing a component.
+  const [premiumRetry, setPremiumRetry] = useState(0);
 
   useEffect(() => {
     if (!premium) {
@@ -52,7 +55,7 @@ export function MovePage() {
           variant: 'destructive',
         });
       });
-  }, [premium, t, toast]);
+  }, [premium, premiumRetry, t, toast]);
 
   const freeFlows = MOBILITY_FLOWS;
   const activeFlow = [...freeFlows, ...premiumFlows].find((f) => f.id === activeFlowId);
@@ -147,6 +150,8 @@ export function MovePage() {
       {premiumFetchError && premium && (
         <ErrorState
           className="py-6"
+          actionLabel={t('movePremiumRetry', { defaultValue: 'Try again' })}
+          onAction={() => setPremiumRetry((n) => n + 1)}
           title={t('movePremiumFetchFailed', { defaultValue: 'Could not load premium flows' })}
           description={t('movePremiumOffline', {
             defaultValue: 'Premium recovery flows unavailable offline — free flows below still work.',

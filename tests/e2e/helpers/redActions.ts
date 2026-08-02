@@ -65,6 +65,40 @@ export async function expectOneRedAction(page: Page, where: string): Promise<voi
   ).toBeLessThanOrEqual(1);
 }
 
+/**
+ * The general rule, for every screen that is not Today.
+ *
+ * `expectOneRedAction` above encodes Today's *stricter* form — zero red in
+ * `main`, because Today has a dock and the dock owns red. Applying that verbatim
+ * to `/history` or `/move` would be wrong rather than strict: those screens have
+ * no dock, so their one legitimate red action lives in `main`.
+ *
+ * So this counts red across the card surfaces and the dock together and allows
+ * one. `.225` — until then the colour rule ran on `/log` alone, and
+ * `check-display-type`'s static half only scans `src/components/today`, so a
+ * shared component could put a second red fill on any of the other fifteen
+ * routes and nothing would say so. `EmptyState` was doing exactly that on nine.
+ */
+export async function expectAtMostOneRedAction(page: Page, where: string): Promise<void> {
+  const red = await redControls(
+    page,
+    'main button, main a[role="button"], main select, #screen-dock button'
+  );
+  expect(
+    red.length,
+    `${where}: at most one red action per screen, found ${red.length}: ${red.join(' · ')}`
+  ).toBeLessThanOrEqual(1);
+}
+
+/** The same measurement, as a number, for the `.225` per-route ratchet. */
+export async function redActionCount(page: Page): Promise<number> {
+  const red = await redControls(
+    page,
+    'main button, main a[role="button"], main select, #screen-dock button'
+  );
+  return red.length;
+}
+
 async function redControls(page: Page, selector: string): Promise<string[]> {
   const red: string[] = [];
   for (const control of await page.locator(selector).all()) {

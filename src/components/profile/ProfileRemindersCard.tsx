@@ -59,7 +59,7 @@ export function ProfileRemindersCard({
             })}
           </p>
           <Button
-            variant={reminders ? 'default' : 'outline'}
+            variant={reminders ? 'selected' : 'outline'}
             disabled={remindersBusy}
             onClick={onToggleReminders}
             className="shrink-0 min-h-[44px]"
@@ -85,7 +85,7 @@ export function ProfileRemindersCard({
             })}
           </p>
           <Button
-            variant={pushOn ? 'default' : 'outline'}
+            variant={pushOn ? 'selected' : 'outline'}
             disabled={pushBusy}
             className="shrink-0 min-h-[44px]"
             aria-pressed={pushOn}

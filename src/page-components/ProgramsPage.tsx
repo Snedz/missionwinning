@@ -8,7 +8,8 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Check } from 'lucide-react';
+import { BookOpen, Check, SearchX } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { UnlockButton } from '@/components/UnlockButton';
 import { InfoPageShell } from '@/components/layout/InfoPageShell';
 import {
@@ -92,7 +93,7 @@ export function ProgramsPage() {
           <Button
             key={g.value}
             size="sm"
-            variant={filterGoal === g.value ? 'default' : 'outline'}
+            variant={filterGoal === g.value ? 'selected' : 'outline'}
             onClick={() => setFilterGoal(g.value)}
           >
             {t(g.labelKey, { defaultValue: g.value })}
@@ -105,13 +106,32 @@ export function ProgramsPage() {
           <Button
             key={e.value}
             size="sm"
-            variant={filterEquip === e.value ? 'default' : 'outline'}
+            variant={filterEquip === e.value ? 'selected' : 'outline'}
             onClick={() => setFilterEquip(e.value)}
           >
             {t(e.labelKey, { defaultValue: e.value })}
           </Button>
         ))}
       </div>
+
+      {/* `.225` — a filter miss used to render an empty `div`: a filter row above
+          a lone footnote, with nothing saying why. `LibraryPage` already solved
+          the identical case with an EmptyState and a clear-filters action. */}
+      {filteredPrograms.length === 0 && (
+        <EmptyState
+          icon={SearchX}
+          title={t('programsNoMatchTitle', { defaultValue: 'No programs match those filters' })}
+          description={t('programsNoMatchBody', {
+            defaultValue:
+              'Nothing in the catalog fits that combination of goal and equipment yet. Clear the filters to see all programs.',
+          })}
+          actionLabel={t('programsClearFilters', { defaultValue: 'Clear filters' })}
+          onAction={() => {
+            setFilterGoal('All');
+            setFilterEquip('All');
+          }}
+        />
+      )}
 
       <div className="space-y-6">
         {filteredPrograms.map((prog) => (

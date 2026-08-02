@@ -305,7 +305,7 @@ export function WelcomePage() {
                           key={id}
                           type="button"
                           size="sm"
-                          variant={selected ? 'default' : 'outline'}
+                          variant={selected ? 'selected' : 'outline'}
                           onClick={() => setPrimaryGoal(value)}
                         >
                           {t(labelKey, { defaultValue: GOAL_PRESET_DEFAULTS[id] })}

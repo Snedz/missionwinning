@@ -33,6 +33,9 @@ export function MindPage() {
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
+  // `.225` — a retry trigger. ErrorState renders no action unless it is handed
+  // one, so an unrecoverable error state was a dead end wearing a component.
+  const [premiumRetry, setPremiumRetry] = useState(0);
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));
@@ -58,7 +61,7 @@ export function MindPage() {
           variant: 'destructive',
         });
       });
-  }, [premium, t, toast]);
+  }, [premium, premiumRetry, t, toast]);
 
   return (
     <PillarPageShell
@@ -90,6 +93,8 @@ export function MindPage() {
       {premiumFetchError && premium && (
         <ErrorState
           className="py-6"
+          actionLabel={t('mindPremiumRetry', { defaultValue: 'Try again' })}
+          onAction={() => setPremiumRetry((n) => n + 1)}
           title={t('mindPremiumFetchFailed', { defaultValue: 'Could not load premium sessions' })}
           description={t('mindPremiumOffline', {
             defaultValue: 'Premium sessions unavailable offline — free tools above still work.',

@@ -27,6 +27,12 @@ type EmptyStateProps = {
 /**
  * Empty success state — two 2px rules, flush left, on the paper ground.
  *
+ * **Its CTA is `outline`, not red.** `.225` — this rendered `variant="fitness"`
+ * on nine routes, several of which already had their own red action, so the
+ * primitive whose whole job is "here is the one thing to do" was manufacturing
+ * second ones. The zero-state sweep measured it. Founder call: demote here once
+ * rather than move nine call sites into their screens' docks.
+ *
  * Was a dashed rounded box on a `bg-muted/20` fill with a 10%-opacity red icon
  * chip and centred copy: four things the system does not do. Nothing here is
  * decorative, so nothing here is a container.
@@ -76,13 +82,13 @@ export function EmptyState({
         {description}
       </p>
       {actionLabel && href && !actionDisabled && (
-        <Button variant="fitness" className={ctaClass} asChild>
+        <Button variant="outline" className={ctaClass} asChild>
           <Link href={href}>{actionLabel}</Link>
         </Button>
       )}
       {actionLabel && onAction && !href && (
         <Button
-          variant="fitness"
+          variant="outline"
           className={ctaClass}
           onClick={onAction}
           disabled={actionDisabled}
@@ -91,7 +97,7 @@ export function EmptyState({
         </Button>
       )}
       {actionLabel && actionDisabled && !onAction && !href && (
-        <Button variant="fitness" className={ctaClass} disabled>
+        <Button variant="outline" className={ctaClass} disabled>
           {actionLabel}
         </Button>
       )}

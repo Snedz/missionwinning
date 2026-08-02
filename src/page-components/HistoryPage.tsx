@@ -7,7 +7,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Calendar, Dumbbell, History as HistoryIcon, Timer, Trophy } from 'lucide-react';
+import { Calendar, Dumbbell, History as HistoryIcon, SearchX, Timer, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -321,9 +321,23 @@ export function HistoryPage() {
             </div>
           </div>
           {filteredHistory.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-4 text-center">
-              {t('historyNoMatches', { defaultValue: 'No sessions match these filters.' })}
-            </p>
+            /* `.225` — was a centred muted sentence with no way out, while
+               `LibraryPage:369` solved the identical case with an EmptyState and
+               a clear-filters action. A filter miss the user cannot undo without
+               guessing which control caused it is a dead end. */
+            <EmptyState
+              icon={SearchX}
+              title={t('historyNoMatches', { defaultValue: 'No sessions match these filters' })}
+              description={t('historyNoMatchesDesc', {
+                defaultValue:
+                  'Nothing in this range matches that search. Widen the range or clear the search to see everything you have logged.',
+              })}
+              actionLabel={t('historyClearFilters', { defaultValue: 'Clear filters' })}
+              onAction={() => {
+                setNameQuery('');
+                setRange('all');
+              }}
+            />
           ) : (
             <>
             {visibleHistory.map((log) => (
@@ -414,9 +428,15 @@ export function HistoryPage() {
             ))}
           </div>
         ) : (
-          <div className="text-xs text-muted-foreground">
-            No pillar wins logged today yet. Use /move or /mind, or complete Assessment.
-          </div>
+          /* `.225` — was hardcoded English (so it stayed English in all fifteen
+             locales) and it spoke in raw URLs: "Use /move or /mind". A path is
+             not a sentence, and the athlete cannot tap it. */
+          <p className="text-xs text-muted-foreground">
+            {t('historyNoPillarWins', {
+              defaultValue:
+                'No pillar wins logged today yet — a mobility flow, a check-in or an assessment all count.',
+            })}
+          </p>
         )}
       </div>
 

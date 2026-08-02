@@ -40,9 +40,11 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 - [ ] No layout shift on data load — skeletons reserve space.
 
 ### States
-- [ ] Empty state = dashed invite + CTA (`EmptyState`), not a blank void.
-- [ ] Error state is recoverable and phrased as a briefing, not a stack trace.
+- [ ] Empty state = **ruled** invite + CTA (`EmptyState`), not a blank void. Two 2px rules, flush left, ink square mark — **not dashed**. This line said "dashed" until `.225`, describing a treatment `.139` deliberately deleted (*"a dashed rounded box on a `bg-muted/20` fill with a 10%-opacity red icon chip and centred copy: four things the system does not do"* — `EmptyState.tsx`), so a checklist-driven fix would have rebuilt it.
+- [ ] Error state is recoverable — **`ErrorState` renders no retry unless it is passed an `onAction`**, so "recoverable" means passing one, not reaching for the component. Phrased as a briefing, not a stack trace.
+- [ ] **A CTA has somewhere to go.** An action that scrolls the user back to content they already passed is a dead end wearing a button.
 - [ ] Loading, offline, and unauthorized each render intentionally (PWA offline shell).
+- [ ] Both state rules are swept at runtime with **no seeded data** by `tests/e2e/zero-state.spec.ts`, because a blank screen passes axe perfectly.
 
 ### i18n & a11y
 - [ ] Longest locale strings (de, pt) don't overflow or wrap-break the layout.

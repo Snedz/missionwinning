@@ -25,6 +25,7 @@ Product status lives in [CONTEXT.md](../CONTEXT.md) `## Now`. Design craft waves
 | **D5 Modernist rebrand** | Horizon W (founder override 2026-07-25) | **Build complete** (`.130`–`.149`) — gate → token/font swap → shell + marketing → calculators + SEO templates → emails → **the desktop app's** 13 signed-in screens. Awaiting founder review/merge |
 | **D6 Mobile app structure** | Horizon W (founder override 2026-07-26) | **Wedge complete** (`.150`–`.159`) — primitives → five-tab nav + More sheet → Today dock → logger console → first run → sheets/offline/errors → a11y coverage → **`.159` scoped the whole wave to compact widths**. The eleven pillar screens are specified and **held for founder review** of the wedge |
 | **D7 Daily-screen structure** | Horizon W (founder override 2026-08-02) | Reference: five screenshots of Arnold's Pump Club (iOS). **Not a restyle** — the Modernist system stands. Takes the *shape of the daily screen* and the *first-run contract*: Today orders session-before-scores, one Today shell instead of two, a resumable First Steps checklist, display-only program continuity, one segmented control, and an honest status bar on the public shells |
+| **D8 The screens with nothing on them** | Horizon W (founder override 2026-08-02) | Five more reference screenshots, all one subject: what a screen says with **no data**. Two written state rules made executable at runtime (no void; ≤1 red action) across every signed-in route, the voids they catch, and a `/history` month calendar that marks **only what happened** |
 
 ### Three handoffs = three surfaces
 
@@ -243,6 +244,30 @@ countdowns, and the "70% more likely to succeed" stat (invented number —
 **Surface scope:** structural changes are **compact-only**, behind `useIsCompact()`.
 The screenshots are a *mobile app* reference and `.159` already paid for applying one
 handoff at every width.
+
+### Wave D8 — The screens with nothing on them (Horizon W · founder override 2026-08-02)
+
+**Reference:** five more Pump Club screens, and they are one subject seen five
+times — a month calendar of red ✕, a headed void reading `ALL GROUPS (0)`, and two
+zero-states that explain themselves and offer one action.
+
+**The rule already existed and nothing checked it.** `DESIGN_REVIEW.md` has said
+*"not a blank void"* since it was written; `EmptyState` appears in no script and no
+test. `a11y.spec.ts` renders all 16 signed-in routes with **zero data** every gate
+run and asserts only accessibility — and a blank screen is maximally accessible.
+
+| Track | Work |
+|-------|------|
+| **Floor** | `zero-state.spec.ts` — every route offers ≥1 enabled control, and ≤1 red action. The ceiling (`expectOneRedAction`) previously ran on `/log` alone |
+| **Voids** | `LeaderboardTable`'s headed empty `<ul>`, `/programs` filter-miss, `/benchmarks` (which hid its own one-tap starters behind the has-data branch), `/learn/course` fetch failure as a whisper |
+| **Primitive** | `EmptyState`'s CTA stops being `variant="fitness"` — a red fill on 9 routes, any of which could already have its own |
+| **Calendar** | `/history` gains a month grid that marks **trained** and **logged**, and leaves everything else blank paper |
+
+**Refused:** the red ✕ (again — and here it is also the only *honest* option: one
+plan is persisted and overwritten weekly, so "missed" is not reconstructable for a
+past date), community as a pillar, serving-based Fuel targets (`MeterBar` carries a
+written ruling against segmenting a proportion), and the reference's Programs IA,
+which presumes an enrolment model the wedge deliberately does not have.
 
 ---
 

@@ -14,19 +14,42 @@ interface Props {
 
 function rankDisplay(rank: number) {
   if (rank === 1) return <Medal className="h-4 w-4 text-status-warn" aria-label="1st" />;
-  if (rank === 2) return <Medal className="h-4 w-4 text-slate-300" aria-label="2nd" />;
-  if (rank === 3) return <Medal className="h-4 w-4 text-[hsl(var(--brass))]" aria-label="3rd" />;
+  // `.225` — was `text-slate-300`, stock Tailwind. Rank is already carried by
+  // position and the aria-label; the medals differ by tier, not by hue.
+  if (rank === 2) return <Medal className="h-4 w-4 text-muted-foreground" aria-label="2nd" />;
+  // Brass is retired (`.131`); this resolved to a neutral anyway.
+  if (rank === 3) return <Medal className="h-4 w-4 text-muted-foreground/70" aria-label="3rd" />;
   return <span className="font-mono text-muted-foreground tabular-nums">{rank}</span>;
 }
 
 function deltaDisplay(delta?: number) {
   if (delta == null || delta === 0) return <span className="text-muted-foreground">—</span>;
   if (delta > 0) return <span className="text-primary">▲{delta}</span>;
-  return <span className="text-red-400/90">▼{Math.abs(delta)}</span>;
+  // `.225` — was `text-red-400/90`, a raw Tailwind palette red. `check-design-system`
+  // forbids raw hex but not palette classes, so this survived the rebrand the same way
+  // `.221`'s blue/green chart did. Direction is carried by the ▼ glyph, not colour
+  // (WCAG 1.4.1), so muted ink is enough and red stays the one action colour.
+  return <span className="text-muted-foreground">▼{Math.abs(delta)}</span>;
 }
 
 export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }: Props) {
   const { t } = useTranslation();
+
+  /*
+   * `.225` — nothing to list means no list.
+   *
+   * This rendered unconditionally: the bordered box, then the four-column header
+   * strip (`# / Operator / Score / Δ`), then an empty `<ul>`. On the class scope
+   * pacers are deliberately excluded (`rank.ts:74`), so a class with nothing
+   * synced got a heading, a column header and a void — under a line reading
+   * **"0 operators"**. That is the reference screenshot this wave is named after,
+   * shipped, on a real route.
+   *
+   * The caller already renders an `EmptyState` above; drawing furniture beneath
+   * it said the data was merely late rather than absent.
+   */
+  if (entries.length === 0) return null;
+
   return (
     <div
       className={cn(

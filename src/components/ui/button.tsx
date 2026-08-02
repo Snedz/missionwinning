@@ -24,6 +24,20 @@ const buttonVariants = cva(
         // fold into `default` when Phase 3 recuts the app screens.
         fitness: "bg-primary-fill text-primary-foreground hover:bg-primary-fill-hover",
         /**
+         * A chosen option — a filter chip, a unit toggle, a days-per-week pick.
+         *
+         * `.225` — this existed only as the default variant at ~20 sites
+         * (`selected ? 'default' : 'outline'`), which paints a *selection* in the screen's one
+         * do-this-now colour. The zero-state sweep measured the result: nine of
+         * fifteen routes over the one-red-action rule, `/profile` and `/programs`
+         * entirely because of chips nobody would call actions.
+         *
+         * Same treatment `.224` settled for the segmented control and the tab
+         * bar draw: tint ground under a 2px poster rule. Selected reads as
+         * selected; red stays the thing you do next.
+         */
+        selected: "is-active-tab border-2 border-border text-primary",
+        /**
          * For the ink panels — the rest dock, the guided-session runner. The
          * paper-ground variants invert badly there: `outline` draws an ink
          * border on ink, and `ghost`'s hover is an ink wash on ink, so both
