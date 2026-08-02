@@ -59,6 +59,28 @@ const MAX_LOG_ENTRIES = 15;
  */
 const MAX_LOG_BYTES = 95_000;
 
+/**
+ * Label ranges that never reached `master`, so nothing was ever rotated for them.
+ *
+ * Module scope on purpose: the boundary check *uses* it and the staleness test
+ * below *derives from* it. An earlier draft hardcoded `225..239` in the
+ * staleness test while the boundary check read this list, so widening a gap
+ * over a label that really shipped went unnoticed — a guard keyed to a literal
+ * instead of to the thing it guards, which is `.220` in miniature and was found
+ * by mutating the range rather than by reading it.
+ */
+const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
+  {
+    from: 225,
+    to: 239,
+    why:
+      'Minted by concurrent branches (#178 as `.224`–`.231`, plus #187 and #190) that were ' +
+      'renumbered above master before landing — #178 shipped as `.244`–`.251`. No commit on ' +
+      'master ever carried these, so there is nothing to rotate and nothing to archive.',
+  },
+];
+const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
+
 const entryHeadings = (src: string) => src.split('\n').filter((l) => l.startsWith('## '));
 
 test('LOG.md keeps only the live record', () => {
@@ -94,7 +116,21 @@ test('every rotated entry is in an archive, not gone', () => {
   const archives = readdirSync(dir).filter((f) => f.endsWith('.md'));
   assert.ok(archives.length > 0, 'docs/archive/log/ is empty — rotation must archive');
 
-  const archived = archives.map((f) => readFileSync(path.join(dir, f), 'utf8')).join('\n');
+  /*
+   * `.254` — **headings**, not raw text. This was `archives.map(read).join()` and
+   * the boundary check below asked `archived.includes('`.224`')`, which any
+   * passing mention of `.224` in another entry's prose satisfied. Deleting the
+   * `.224` section outright left the guard green, because this file's own house
+   * style is to cite neighbouring labels constantly — so the citation *was* the
+   * evidence. Substring where a parsed shape was available: the defect `.212`
+   * named and `.199` shipped.
+   */
+  const archivedEntries = new Set(
+    archives
+      .flatMap((f) => entryHeadings(readFileSync(path.join(dir, f), 'utf8')))
+      .map((h) => /\(`\.(\d+)`\)/.exec(h)?.[1])
+      .filter((x): x is string => !!x)
+  );
   const index = read('docs/archive/INDEX.md');
 
   for (const f of archives) {
@@ -104,19 +140,65 @@ test('every rotated entry is in an archive, not gone', () => {
     );
   }
 
-  // Spot-check the boundary: the entry immediately older than LOG.md's oldest
-  // must exist in an archive. Derived from the files rather than hardcoded, so it
-  // keeps checking the *current* boundary after the next rotation.
+  /*
+   * Spot-check the boundary: the entry immediately older than LOG.md's oldest
+   * must exist in an archive, so a rotation that *deleted* a section instead of
+   * filing it goes red.
+   *
+   * `.254` — the first version asserted `.${n - 1}` and assumed the labels run
+   * contiguously. They do not. `.225`–`.239` were minted by branches that were
+   * later renumbered, so `master` goes `.224` → `.240` and **those labels never
+   * shipped at all**. The check passed for as long as the live window's bottom
+   * edge sat away from that hole, and went red the moment a rotation put `.240`
+   * at the bottom — reporting a missing rotation when nothing was missing.
+   *
+   * A guard that fires on a fact about the numbering rather than on the
+   * property it protects is the `.200` shape: it stops being read. So the gap
+   * is declared, with a reason, and `no declared gap is stale` below fails if
+   * one of these labels ever turns up — which is what would happen if somebody
+   * resurrected a renumbered branch without renumbering it.
+   */
   const live = entryHeadings(read('LOG.md'));
   const oldestLive = live[live.length - 1];
   assert.ok(oldestLive, 'LOG.md has no entries at all');
   const n = /\(`\.(\d+)`\)/.exec(oldestLive)?.[1];
   assert.ok(n, `could not read a build label out of ${JSON.stringify(oldestLive)}`);
+
+  // Walk down past declared gaps to the first label that should really exist.
+  let prev = Number(n) - 1;
+  while (prev > 0 && neverShipped(prev)) prev--;
   assert.ok(
-    archived.includes(`\`.${Number(n) - 1}\``),
-    `LOG.md's oldest entry is \`.${n}\`, but \`.${Number(n) - 1}\` is in no archive — ` +
+    archivedEntries.has(String(prev)),
+    `LOG.md's oldest entry is \`.${n}\`, but \`.${prev}\` has no \`##\` entry in any archive — ` +
       'the history has a hole where a rotation should be'
   );
+});
+
+/**
+ * The gap is real, and it has to stay real.
+ *
+ * An allowlist that outlives its reason is the failure this repo keeps paying
+ * for (`.219`, `.220`, and `UTC_IS_CORRECT` emptying itself on the `.251`
+ * merge). If one of these labels ever appears in `LOG.md` or an archive, the
+ * declared gap is a lie and the boundary check above is skipping a real entry.
+ */
+test('no declared never-shipped label actually shipped', () => {
+  const everything = [read('LOG.md'), ...readdirSync(path.join(root, 'docs/archive/log'))
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => readFileSync(path.join(root, 'docs/archive/log', f), 'utf8'))].join('\n');
+  const headings = everything.split('\n').filter((l) => l.startsWith('## '));
+
+  for (const gap of NEVER_SHIPPED) {
+    assert.ok(gap.why.trim().length > 0, `NEVER_SHIPPED ${gap.from}-${gap.to} has no reason`);
+    for (let x = gap.from; x <= gap.to; x++) {
+      const hit = headings.find((h) => h.includes(`(\`.${x}\`)`));
+      assert.ok(
+        !hit,
+        `\`.${x}\` is declared never-shipped in NEVER_SHIPPED, but an entry exists: ${hit} — ` +
+          'either the label really shipped (narrow the gap) or a renumbered branch landed unrenumbered'
+      );
+    }
+  }
 });
 
 /**
