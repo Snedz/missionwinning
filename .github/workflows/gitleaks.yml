@@ -15,7 +15,7 @@ concurrency:
 jobs:
   gitleaks:
     runs-on: ubuntu-latest
-    # `.235` (also on #182) — the secret scanner crashed on the **first run of every pull
+    # `.235` — the secret scanner crashed on the **first run of every pull
     # request**, and had done for as long as there are runs to read.
     #
     #   RequestError [HttpError]: Resource not accessible by integration
