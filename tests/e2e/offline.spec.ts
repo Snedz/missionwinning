@@ -105,41 +105,34 @@ test.describe('Offline logging @gate', () => {
     /**
      * Reconnecting must not discard local state.
      *
-     * The same race as the cache-warm above, at the other boundary — and this
-     * file already carries the fix for one direction and not the other, which is
-     * why CI found it and three local runs did not.
+     * The app reloads *itself* on this line. `next.config.js` sets Serwist's
+     * `reloadOnOnline`, which registers
+     * `window.addEventListener("online", () => location.reload())`
+     * (`@serwist/next` `sw-entry.ts`). So a `page.goto('/active')` here races a
+     * navigation the product already started — and when the reload wins, the
+     * goto dies with *"Navigation to /active is interrupted by another
+     * navigation to /active"*. That is exactly how this `@gate` spec reported
+     * `1 flaky` in CI (run 30727582011) while the job still went green.
      *
-     * Restoring the network wakes work the service worker parked in
-     * `event.waitUntil` while it was down, and `useOutboxDrain`'s `online`
-     * handler calls `retryStuck()` on the same tick. Neither navigates — checked,
-     * because an app that reloads itself on reconnect would be a real defect
-     * rather than a test one — but the fetches they start can abort or supersede
-     * the navigation issued on the very next line. On a loaded runner that showed
-     * up twice, differently: `net::ERR_ABORTED`, then *"interrupted by another
-     * navigation to the same URL"*. Two spellings of one race.
+     * Measured rather than assumed: with no `goto` at all, reconnecting fires
+     * two main-frame navigations and wipes a marker stamped on `window`. The
+     * race was never 50/50 — the reload always happens, and the goto only
+     * sometimes gets there first.
      *
-     * So: let the worker come back to rest before navigating, then navigate once
-     * more if the first attempt was cut off. Deliberately **not** a blanket
-     * retry — the second `goto` is unguarded, so a genuinely broken `/active`
-     * still fails the test rather than being papered over.
+     * So wait for the product's reload instead of driving one. It is
+     * deterministic, and it is the truer assertion: this is the reload a
+     * returning athlete actually gets. **Awaited, not assumed** — if
+     * `reloadOnOnline` is ever turned off this fails loudly rather than quietly
+     * asserting that a page nobody reloaded still shows what it already showed.
      */
+    const reloadOnReconnect = page.waitForEvent('framenavigated', {
+      predicate: (frame) => frame === page.mainFrame(),
+      timeout: 15_000,
+    });
     await context.setOffline(false);
-    await page
-      .evaluate(async () => {
-        if (!('serviceWorker' in navigator)) return;
-        await navigator.serviceWorker.ready;
-        // One macrotask past `online`, so the outbox drain has been scheduled.
-        await new Promise((r) => setTimeout(r, 0));
-      })
-      .catch(() => undefined);
+    await reloadOnReconnect;
+    await page.waitForLoadState('domcontentloaded');
 
-    const reconnected = await page
-      .goto('/active', { waitUntil: 'domcontentloaded' })
-      .then(() => true)
-      .catch(() => false);
-    if (!reconnected) {
-      await page.goto('/active', { waitUntil: 'domcontentloaded' });
-    }
     await expect(page.getByRole('button', { name: /finish/i }).first()).toBeVisible({
       timeout: 15_000,
     });

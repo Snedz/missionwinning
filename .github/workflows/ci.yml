@@ -21,20 +21,20 @@ jobs:
       PRIVATE_MODE: 'false'
       NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
-      # `isPushSupported()` returns false without a VAPID public key, so every
-      # component behind it — the wind-down offer, the day-review opt-in —
-      # renders *nothing*, and "Today shows one red action at 19:00" asserts that
-      # control is mounted. scripts/gate.mjs sets this placeholder (`.198`) and
-      # ci.yml did not, so that test passed locally and failed on CI for as long
-      # as CI could not run. Proved causal: a local build with the key removed
-      # reproduces the failure exactly; with it, the test passes.
+      # `.198` added this placeholder to `scripts/gate.mjs` and not here, and
+      # first-90.spec.ts's own comment says the key was "unset in CI until now —
+      # see gate.mjs", which reads as though this lane was covered. It was not:
+      # gate.mjs is the *local* gate. So the two lanes built different
+      # configurations, and the one test that depends on it passed locally and
+      # failed here — invisibly, because Actions was billing-blocked and this job
+      # died at `runner_id: 0` before it could run. A guard nobody runs is a
+      # guard that does not exist (`ciTruth.test.ts`).
       #
-      # Safe: this is the public half of a keypair and only gates whether the UI
-      # draws. Nothing can subscribe — the server has no private key, and no test
-      # grants notification permission.
-      #
-      # Note for whoever merges second: #178 carries an identical block. The
-      # conflict is textual, not semantic — take either side.
+      # `isPushSupported()` returns false without a VAPID public key, so the push
+      # opt-in renders *nothing* and the evening day-review assertion has no
+      # element to measure. Safe: this is the public half of a keypair and only
+      # gates whether the UI draws. Nothing can subscribe — the server has no
+      # private key, and no test grants notification permission.
       NEXT_PUBLIC_VAPID_PUBLIC_KEY: BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
     steps:
       - uses: actions/checkout@v4
