@@ -19,5 +19,20 @@
   "feedbackThankEarly": "✓ 업데이트 조기 액세스",
   "feedbackThankEmail": "업데이트와 커뮤니티 소식을 이메일로 확인하세요.",
   "feedbackBackToday": "오늘로 돌아가기",
-  "feedbackSignInDesc": "피드백을 여정에 연결하고 여러 장치에서 동기화하려면 로그인하세요."
+  "feedbackSignInDesc": "피드백을 여정에 연결하고 여러 장치에서 동기화하려면 로그인하세요.",
+  "feedbackCardTitle": "Tell us what broke",
+  "feedbackCardLead": "A bug, a confusing screen, or something you wish it did. One box, no account, and it sends even if you write it with no signal.",
+  "feedbackCardOpen": "Send feedback",
+  "feedbackSheetEyebrow": "Beta",
+  "feedbackSheetTitle": "What got in your way?",
+  "feedbackSheetPlaceholder": "What broke, what confused you, or what you wish it did.",
+  "feedbackSheetRemaining": "{{left}} characters left",
+  "feedbackSheetEmailLabel": "Email (optional)",
+  "feedbackSheetEmailHelp": "Only so we can reply. Leave it blank and send anyway.",
+  "feedbackSheetContext": "Sent with your app version and where you have been ({{screens}}), so we can find it.",
+  "feedbackSheetSend": "Send",
+  "feedbackSheetSentTitle": "Got it",
+  "feedbackSheetSentBody": "Queued. It sends when you have a connection — you can close the app.",
+  "feedbackSheetSentAnon": "No email, so there is no way to reply — but it was read.",
+  "feedbackSheetDone": "Close"
 }

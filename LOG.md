@@ -128,6 +128,71 @@ turned the next run red for a reason that had nothing to do with the code.
 
 Tests 1186→1192.
 
+## 2026-08-01 — The exporter that undid the splitter (`.252`)
+
+`npm run export-locales` and `npm run check-locale-split` disagreed **by
+construction**, and the second could never survive the first.
+
+The exporter wrote, per language, every namespace **plus a merged
+`common.json`**. `split-locale-packs.mjs` enforces the opposite: each namespace
+trimmed to the keys English puts in it, and `common.json` deleted as
+`REDUNDANT` — it was the entire 1,687-key catalogue repeated fifteen times, and
+`fetchLocaleHttpOverrides` *preferred* it, so leaving it meant the loader kept
+choosing the big file.
+
+`.222` cut this directory 30.8 MB → 2.1 MB and built the splitter to be
+**re-runnable** for exactly one stated reason: *"a cleanup that cannot be
+repeated undoes itself the next time the fill tool runs."* It did. `.250` ran the
+exporter while checking which CI steps passed locally, committed the 394
+regenerated files with `git add -A`, and CI caught it on `.222`'s own guards.
+
+The mitigations were ordering — `check-locale-split` before `export-locales` in
+`ci.yml` — and remembering. Both worked *around* the conflict rather than
+removing it, which meant the shipped translator files had also quietly drifted
+behind the source, because nobody could safely re-export.
+
+**The fix is that the producer emits what the checker wants.** Each namespace is
+trimmed to `Object.keys(entry.stringsFor('en'))` and iterated in that order,
+which drops foreign keys and stabilises key order in one pass — the same two
+effects, from the same rule, as the splitter. No `common.json`.
+`buildMergedCommonStrings` stays exported: `i18n-fill-missing` uses it to find
+gaps, which is a different job from shipping a file to a browser.
+
+The splitter reads its schema from `public/locales/en/*.json`, which *is* this
+script's output, so the two now agree by construction rather than by a copied
+rule. A guard pins that: if the splitter stops deriving from English, the
+exporter's assumption is silently void.
+
+**252,286 out-of-namespace keys** were being written. `export-locales` is now
+safe to run at any point, and the round-trip passes in the order that used to
+break it.
+
+### What re-exporting exposed
+
+Fifteen `feedbackCard*`/`feedbackSheet*` keys from `.215` existed in the source
+modules and had never reached `public/locales` — the drift the conflict caused.
+Additive, and now shipped.
+
+And two keys went the other way. `coachWhySteadyWeek` and
+`coachWhyPlateauDeload` sat in the committed `en/coach.json` but **in no source
+module at all** — while `loadGuard.ts:42` and `progression.ts:173` still emit
+them. [`PlanExerciseLine`](../src/components/coach/PlanExerciseLine.tsx) renders
+`i18n.exists(whyKey) ? t(whyKey) : ''`, so nothing broke loudly: the coach
+decided a week was a plateau deload, wrote down why, and showed the athlete a
+**blank line** — in all fifteen languages, for as long as those keys have been
+missing.
+
+The tests made it worse. `progression.test.ts:117` and `loadGuard.test.ts:51`
+both assert the engine picks the right `whyKey`, and were green throughout —
+proving the *choice* while nothing proved the *string*. `.184` one layer down
+into i18n.
+
+Restored, with a guard that **discovers** rather than enumerates (`.220`): every
+`coachWhy*` literal scraped out of `src/lib/coach/` must have an English entry,
+so the next reason added is covered without anyone remembering to list it.
+
+Tests 1186 → 1191.
+
 ## 2026-08-01 — Replay a day (`.251`)
 
 The other half of `.247`, and the last of the four product references. Tesla's
@@ -1471,117 +1536,5 @@ appears in one place", and existing ship bullets narrate CI history legitimately
 (`.213` does), so that check would fail on correct content. A guard keyed to a
 spelling of *"is it blocked"* is the shape this repo has already paid for four
 times.
-
----
-
-## 2026-07-31 — The gate that could not go green (`.223`)
-
-The brief was four product references — WHOOP's AI charts and voice journaling,
-a member story built on 1,146 days of data, Tesla's live VPP dashboard. Research
-into what each would build on here found something worth shipping ahead of any of
-them: **the surfaces they point at are already broken, and one of the breaks is
-the launch gate itself.**
-
-### One name, two answers, and the launch decision paid for it
-
-```ts
-// src/lib/missionJourney.ts — what the product implements
-// Horizon W: Basic Training = first workout only. Other pillars stay free, not gated chores.
-return b.workout;
-
-// src/lib/betaMetricsServer.ts — what the founder dashboard measured
-return b.workout && b.fuel && b.move && b.mind && b.learn;
-```
-
-Horizon W narrowed Basic Training to the first workout. The client followed. The
-server copy did not — and it is the one that computes `basicCompletePct`, which
-`launchReady` gates on at **≥60**.
-
-So a tester who did everything the product asks of them registered as
-*Basic-incomplete*. The gate used to decide whether ten beta users are ready to
-launch was scoring them against a rule the app had stopped implementing, and it
-could not go green regardless of how well the beta went.
-
-`.178` at its most expensive. A word meaning two things costs whoever trusts the
-number, and here that is the launch decision.
-
-One definition now, in a new dependency-free `src/lib/journey/basicComplete.ts`
-that both sides import. Not an export from `missionJourney.ts`: importing that
-module drags `safeStorage`, `pillarLog`, `streaks` and `justGoSession` into a
-`server-only` bundle to reach one predicate that reads its argument and nothing
-else. The type import is erased at compile time, so the new module has no runtime
-dependencies at all.
-
-### A deleted session still counted, on a card meant for a public feed
-
-`weekRecap.ts` filtered workout history by date and nothing else, while
-`dayReview.ts:86` and `behaviorImpacts.ts:123` both drop `deletedAt` rows. Those
-three numbers — sessions, sets, volume — are not confined to a screen:
-`buildRecapCardData` prints them onto the PNG an athlete shares publicly.
-
-`.208`, the same shape as the PR chip that fired on the one set kind the rest of
-the app declines to trust: a celebration the app cannot support.
-
-### A PR line nothing could ever have supplied
-
-`buildWeeklyDebrief` counted records like this:
-
-```ts
-if ((log as { personalRecords?: number }).personalRecords) {
-```
-
-`personalRecords` exists **nowhere else in the repo**. Nothing writes it. So `prs`
-was structurally always 0, and two surfaces were dead on arrival — the recap
-card's PR line and the Today card's *"N PR marks this week"*. The hand-written
-`as` cast is precisely what stopped the compiler from pointing at it (`.195`, with
-the type system silenced on purpose).
-
-Counting it honestly turned out not to be available, and the reason is the real
-finding: `isPersonalRecord` — the definition `.208` hardened, which refuses sets
-to failure — runs at log time and `logSet` stores `isPr` on the **active** set.
-But `CompletedWorkoutLog.exercises[].sets` is `{ reps, weight, kind?, rpe? }`.
-**The flag is discarded the moment the session is saved.** The brass chip an
-athlete earns is off the record five seconds later.
-
-Reviving the line therefore means persisting `isPr` through completion, and that
-type syncs to `workout_logs` — a schema change with sync-v2 merge and revision
-consequences, which is a different PR from one about numbers that lie. Deleted,
-with the condition for its return written into a test.
-
-### The guard that proved the formatting of a dead feature
-
-`shareCard.test.ts` built a `WeeklyDebrief` by hand with `train.prs: 2`, then
-asserted the card said *"2 personal records"*. Green for the whole life of the
-bug. It proved the formatting worked and could not notice that no debrief the app
-can produce has ever carried a nonzero `prs` — a fixture supplying the very thing
-production cannot.
-
-### The guards, and two of them were wrong first
-
-New `src/lib/launchTruth.test.ts`, seven rules, discovering rather than
-enumerating (`.220`): no domain rule stated twice with two answers; the dashboard
-imports the basic-complete rule rather than restating it; every reader that
-windows workout history drops tombstones; no cast invents a field nothing writes;
-and the recap card's PR claim is cross-checked against whether `isPr` survives
-completion — so when that changes, the test fails and the line may come back.
-
-Running them is what caught two mistakes of my own:
-
-- The duplicate-name rule returned **18 hits**, nearly all legitimate — `clamp`,
-  `num`, `formatDuration`, and Next's `generateStaticParams`/`generateMetadata`,
-  which every dynamic route is *required* to define. A guard needing an
-  eighteen-entry allowlist is an allowlist wearing a guard's name. Narrowed to
-  what actually bit: both copies must answer about the same **project** type.
-- `/prLine:\s*(?!null)/` matched `prLine: null`, because `\s*` backtracks to zero
-  width and the lookahead is then tested against a space. The identical backtrack
-  `.221` hit on `border-radius: 0` and wrote down — reproduced anyway. The value
-  is captured and tested in code now.
-
-The cast rule's exemptions are all one thing: shapes this repo receives and never
-produces (xAI completions, Open Food Facts, PayPal, Play Billing, Apple Health).
-Each carries `why` + `fixWhen`, and a stale-entry check fails if a file stops
-casting.
-
-Tests 1178→1186.
 
 ---
