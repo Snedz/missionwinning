@@ -1,4 +1,5 @@
 import { getChallengeProgress } from '@/lib/challenges';
+import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { getPillarWins, type PillarType } from '@/lib/pillarLog';
 import { getActivitiesForWeek } from '@/lib/activityLog';
 import { hasFuelPlanThisWeek, todayFuelSynergyBump } from '@/lib/fuelCoach/synergy';
@@ -26,7 +27,10 @@ function weekStartIso(): string {
 function countPillarWinsThisWeek(pillar: PillarType): number {
   const start = weekStartIso();
   return getPillarWins(100).filter(
-    (w) => w.pillar === pillar && w.completedAt.split('T')[0] >= start
+    // `.225` — `localDateKeyFromIso`, not `.split('T')[0]`. `start` is a *local*
+    // Monday; the split takes the **UTC** date half of a stored instant, so the two
+    // sides were in different frames and the week boundary moved with longitude.
+    (w) => w.pillar === pillar && localDateKeyFromIso(w.completedAt) >= start
   ).length;
 }
 

@@ -345,11 +345,73 @@ const UTC_DATE_SPELLINGS = [
   /toISOString\(\)\s*\.\s*slice\(\s*0\s*,\s*10\s*\)/,
   /toISOString\(\)\s*\.\s*substring\(\s*0\s*,\s*10\s*\)/,
   /toISOString\(\)\s*\.\s*substr\(\s*0\s*,\s*10\s*\)/,
+  /*
+   * `.225` — **fifth appearance, and the list above was closed on the wrong axis.**
+   *
+   * `.212` widened this from one slicing spelling to four and wrote that the list
+   * was closed "because these are the only three ways JavaScript has to take the
+   * date half of an ISO string". True — and it examined only the *slicing* half of
+   * the expression. Every pattern above requires a literal `toISOString()` call,
+   * so none of them could see the same defect performed on an ISO string that was
+   * **already stored**:
+   *
+   *     w.completedAt.split('T')[0] >= weekStart   // pillarScoreInputs, challenges
+   *     const day = at.split('T')[0];              // TodayJournalStrip
+   *
+   * `completedAt` is a UTC instant. Its date half is the UTC date, and all three
+   * sites compared it against a *local* key — `weekStartIso()`, `state.weekStart`,
+   * `localDateKey()`. Exactly the frame mismatch `.212` found in `weekRecap`,
+   * three more times, surviving the sweep that was written for it because the
+   * guard was keyed to how the date was produced rather than to what it was.
+   *
+   * The rule generalises: *the defect is comparing a UTC-derived date to a local
+   * one, so match the shape, not the constructor.* These field names are the ISO
+   * timestamps this app stores; a new one must be added here when it is added to
+   * a type.
+   */
+  /\b(?:completedAt|startedAt|updatedAt|createdAt|deletedAt|generatedAt|at)\s*\.\s*split\(\s*'T'\s*\)\s*\[\s*0\s*\]/,
+  /\b(?:completedAt|startedAt|updatedAt|createdAt|deletedAt|generatedAt|at)\s*\.\s*slice\(\s*0\s*,\s*10\s*\)/,
+];
+
+/**
+ * Surfaces where UTC *is* the right frame, each with the reason on the record.
+ *
+ * `.225` — the widened patterns caught three sites that are not defects: a
+ * founder admin panel and a server-composed email. There is no athlete and no
+ * device timezone in either; the server's own frame is the only one available,
+ * and `localDateKeyFromIso` there would resolve to UTC anyway while implying a
+ * localisation that is not happening.
+ *
+ * An entry needs a reason, the way `check-design-system`'s allowlist does — a
+ * bare list of exempt files is how a rule quietly stops applying.
+ */
+const UTC_IS_CORRECT: { file: string; why: string }[] = [
+  {
+    file: 'src/components/beta/BetaAdminPanel.tsx',
+    why: 'Founder-only panel listing server rows. The timestamps are the server\'s, shown to one person who reads them alongside server logs; a device-local rendering would disagree with the log it is checked against.',
+  },
+  {
+    file: 'src/lib/founderDigestCompose.ts',
+    why: 'Composed on the server for an email. There is no client timezone at compose time, so UTC is not a shortcut here — it is the only frame that exists.',
+  },
 ];
 
 test('no calendar date is derived from toISOString()', () => {
+  const exempt = new Set(UTC_IS_CORRECT.map((e) => e.file));
+  for (const { file, why } of UTC_IS_CORRECT) {
+    assert.ok(why.trim().length > 40, `${file}: an exemption needs a real reason, not a note`);
+    assert.ok(PRODUCT_SOURCE.includes(file), `${file} is exempt but no longer exists — drop the entry`);
+    // A stale exemption is a rule that has quietly stopped applying (`.219`,
+    // `.220`): if the file would pass anyway, the entry must go.
+    assert.ok(
+      UTC_DATE_SPELLINGS.some((re) => re.test(stripComments(read(file)))),
+      `${file} no longer derives a UTC date — remove it from UTC_IS_CORRECT`
+    );
+  }
+
   const offenders: string[] = [];
   for (const file of PRODUCT_SOURCE) {
+    if (exempt.has(file)) continue;
     const src = stripComments(read(file));
     if (UTC_DATE_SPELLINGS.some((re) => re.test(src))) {
       offenders.push(file);

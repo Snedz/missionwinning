@@ -13,7 +13,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import type { JournalEntry, JournalPillar } from '@/lib/todayTrends';
 import { cn } from '@/lib/utils';
-import { localDateKey } from '@/lib/time/localDate';
+import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 
 const PILLAR_META: Record<
   JournalPillar,
@@ -35,9 +35,12 @@ type Props = {
 
 function formatWhen(at: string, locale: string): string {
   const d = new Date(at);
-  if (Number.isNaN(d.getTime())) return at.split('T')[0] ?? at;
+  if (Number.isNaN(d.getTime())) return at;
   const today = localDateKey();
-  const day = at.split('T')[0];
+  // `.225` — `today` is a local key, so the comparison needs one too. The UTC
+  // date half made an evening entry east of UTC read as another day, printing a
+  // date where the athlete should have seen a time.
+  const day = localDateKeyFromIso(at);
   const time = d.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' });
   if (day === today) return time;
   return d.toLocaleDateString(locale, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });

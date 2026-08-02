@@ -1,7 +1,7 @@
 import type { CompletedWorkoutLog } from '@/types';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
-import { localDateKey } from '@/lib/time/localDate';
+import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 
 export type TrendMetricId = 'volume' | 'sessions' | 'protein' | 'active';
 
@@ -72,8 +72,25 @@ export function buildTodayTrends(
   const volumeByDay: Record<string, number> = {};
   const sessionsByDay: Record<string, number> = {};
 
+  /*
+   * `.225` — two defects in three lines, both already swept for elsewhere.
+   *
+   * `w.completedAt.split('T')[0]` is the exact spelling `.212` banned and fixed
+   * at fifteen sites: an ISO string is UTC, a calendar date is local, so east of
+   * UTC an evening session landed on the previous day's bar and west of it a
+   * morning session landed on the next. These four series feed Today's sparkline
+   * row, and `.199`/`.212` exist because this keeps coming back in a spelling the
+   * last guard did not know.
+   *
+   * And nothing dropped tombstones, so a session the athlete deliberately deleted
+   * kept its volume in the trend — `.223`'s defect, which reached a public share
+   * card the last time it went unnoticed. `dayReview.ts` and `behaviorImpacts.ts`
+   * both filter; this is the fourth reader found not doing so.
+   */
   for (const w of workoutHistory) {
-    const d = w.completedAt.split('T')[0];
+    if (w.deletedAt) continue;
+    const d = localDateKeyFromIso(w.completedAt);
+    if (!d) continue;
     volumeByDay[d] = (volumeByDay[d] || 0) + w.totalVolume;
     sessionsByDay[d] = (sessionsByDay[d] || 0) + 1;
   }

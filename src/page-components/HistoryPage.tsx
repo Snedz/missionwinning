@@ -37,6 +37,7 @@ import dynamic from 'next/dynamic';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
 import { getJournalEntry } from '@/lib/journal/journalStore';
 import { JournalTimeline } from '@/components/history/JournalTimeline';
+import { HistoryCalendar } from '@/components/history/HistoryCalendar';
 import { AnatomyHeatMap } from '@/components/history/AnatomyHeatMap';
 
 const History1RMChart = dynamic(
@@ -67,12 +68,12 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { TodaySection } from '@/components/journey/TodaySection';
 import { Input } from '@/components/ui/input';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
-import { localDateKey } from '@/lib/time/localDate';
+import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
 type RangeFilter = '7' | '30' | 'all';
-type HistoryTab = 'sessions' | 'journal';
+type HistoryTab = 'calendar' | 'sessions' | 'journal';
 
 export function HistoryPage() {
   const { t, i18n } = useTranslation();
@@ -89,6 +90,22 @@ export function HistoryPage() {
   const [range, setRange] = useState<RangeFilter>('30');
   const [visibleCount, setVisibleCount] = useState(30);
   const [tab, setTab] = useState<HistoryTab>('sessions');
+
+  /*
+   * Days the athlete used the app without lifting.
+   *
+   * Read from the pillar-win rows this page already loads rather than opening
+   * five more stores — `.178`: the calendar and the "Pillar Wins" list below it
+   * must not be able to disagree about what happened on a day.
+   */
+  const loggedDayKeys = useMemo(() => {
+    const keys = new Set<string>();
+    for (const w of pillarWins) {
+      const key = localDateKeyFromIso(w.date ?? '');
+      if (key) keys.add(key);
+    }
+    return keys;
+  }, [pillarWins]);
 
   const filteredHistory = useMemo(() => {
     const q = nameQuery.trim().toLowerCase();
@@ -273,6 +290,7 @@ export function HistoryPage() {
               check-in notes, device-only). */}
           <SegmentedControl
             options={[
+              { value: 'calendar' as const, label: t('historyTabCalendar', { defaultValue: 'Calendar' }) },
               { value: 'sessions' as const, label: t('historyTabSessions', { defaultValue: 'Sessions' }) },
               { value: 'journal' as const, label: t('historyTabJournal', { defaultValue: 'Journal' }) },
             ]}
@@ -280,7 +298,9 @@ export function HistoryPage() {
             onChange={setTab}
             ariaLabel={t('historyTabsLabel', { defaultValue: 'History view' })}
           />
-          {tab === 'journal' ? (
+          {tab === 'calendar' ? (
+            <HistoryCalendar history={workoutHistory} loggedKeys={loggedDayKeys} />
+          ) : tab === 'journal' ? (
             <JournalTimeline />
           ) : (
           <>
