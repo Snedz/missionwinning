@@ -1,7 +1,7 @@
 /**
  * How many days this athlete has actually logged something.
  *
- * `.227` — the "1,146 days of data" number, and it **cannot be derived** from
+ * `.247` — the "1,146 days of data" number, and it **cannot be derived** from
  * what is stored. Every store in this app is capped:
  *
  * | Store | Cap |
@@ -71,10 +71,10 @@ const SOURCES: { key: string; field: string }[] = [
  *
  * The first version carried `isInstant: boolean` per source and sliced the
  * first ten characters when it was false. Two things were wrong with that, and
- * `.225`'s own guard caught it on the first run:
+ * `.245`'s own guard caught it on the first run:
  *
  * 1. A blind `.slice(0, 10)` on something that turns out to be an instant
- *    yields the **UTC** date — the exact defect `.225` fixed across six files,
+ *    yields the **UTC** date — the exact defect `.245` fixed across six files,
  *    reintroduced in the file that cites it.
  * 2. The flag is a second, hand-maintained description of the data's shape
  *    (`.178`). Set it wrong on a new source and every day from that store
@@ -108,7 +108,7 @@ function persist(days: Set<string>): string[] {
    * `Set`, not `Iterable`. The first version took an iterable and re-wrapped it
    * in a `new Set()` to de-duplicate — and a mutation removing that wrap
    * survived every test, because both callers already pass a set. Defensive
-   * code no test can reach is the shape `.226` deleted in the trend parser an
+   * code no test can reach is the shape `.246` deleted in the trend parser an
    * hour earlier. Uniqueness is now the *type's* job, so a caller that could
    * pass duplicates does not compile.
    */

@@ -74,7 +74,7 @@ export function buildTodayTrends(
 
   for (const w of workoutHistory) {
     /*
-     * `.225` — was `w.completedAt.split('T')[0]`, the **UTC** date, while
+     * `.245` — was `w.completedAt.split('T')[0]`, the **UTC** date, while
      * `lastDayBuckets` keys the buckets with `localDateKey`. Proved in
      * Pacific/Auckland: a session at 10:00 on 1 Aug is stored as
      * `2026-07-31T21:00:00Z` and was counted on 31 Jul. East of UTC that is

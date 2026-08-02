@@ -1,9 +1,9 @@
 /**
  * Everything one day held, and the days either side of it.
  *
- * `.231` — the other half of `.227`. Tesla's VPP dashboard lets you go back to
+ * `.251` — the other half of `.247`. Tesla's VPP dashboard lets you go back to
  * a specific grid event and see what the fleet actually did; the equivalent
- * here is a day the athlete actually lived. `.227` built the index
+ * here is a day the athlete actually lived. `.247` built the index
  * ({@link listDaysWithData}); this reads a single entry out of it.
  *
  * ## It collects nothing of its own
@@ -17,7 +17,7 @@
  *
  * ## Local days, not UTC ones
  *
- * Bucketing goes through `localDateKeyFromIso`, which is `.225`'s rule. The
+ * Bucketing goes through `localDateKeyFromIso`, which is `.245`'s rule. The
  * entries arrive with two timestamp shapes — real ISO instants from workouts
  * and pillar wins, and `${date}T12:00:00` strings synthesised for meals and
  * check-ins — and both are correct through that function: a bare local datetime
@@ -51,7 +51,7 @@ export interface DayRecord {
   next: string | null;
   /** Position in the record, 1-based and counting from the earliest day. */
   index: number | null;
-  /** How many days hold data in total — the `.227` count. */
+  /** How many days hold data in total — the `.247` count. */
   total: number;
 }
 

@@ -1,7 +1,7 @@
 /**
  * "How has my volume been over the last 30 days" → `{ volume, 30 }`.
  *
- * `.225` — rules, offline, deterministic. **The LLM is a garnish, not the
+ * `.245` — rules, offline, deterministic. **The LLM is a garnish, not the
  * mechanism.**
  *
  * That is not a stylistic preference. `COACH_LLM_API_URL`/`_API_KEY`/`_MODEL`

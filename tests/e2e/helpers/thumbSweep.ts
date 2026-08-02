@@ -47,7 +47,7 @@ export async function expectThumbSized(
     if (box.height < MIN_TAP_HEIGHT) {
       const label = (await control.textContent())?.trim().slice(0, 24) || '(no text)';
       /*
-       * `.224` — reported unrounded. The assertion compares the raw float
+       * `.244` — reported unrounded. The assertion compares the raw float
        * against 44 while this message used to `Math.round` it, so a control
        * measuring 43.99 mid-layout failed with the text *"controls under 44px
        * tall: (no text) h=44"* — a number that reads as passing, on the guard

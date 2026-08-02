@@ -1,7 +1,7 @@
 /**
  * The number that has to survive the caps.
  *
- * `.227` — "days logged" is the one figure in this app that cannot be derived
+ * `.247` — "days logged" is the one figure in this app that cannot be derived
  * from stored rows, because every store is capped and the oldest rows are gone.
  * The tests below spend most of their weight on the two ways it could lie:
  * counting a day twice, and losing a day when the store it came from is
@@ -100,7 +100,7 @@ test('sweeping repeatedly changes nothing', () => {
 
 test('an instant is read as a local day, not a UTC one', () => {
   /*
-   * `.225`'s defect, which this file must not reintroduce: `pillarWins` and
+   * `.245`'s defect, which this file must not reintroduce: `pillarWins` and
    * workout logs store ISO **instants**, and slicing one gives the UTC date.
    * East of UTC that is a different calendar day for the whole morning.
    */

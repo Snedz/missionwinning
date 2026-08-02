@@ -6,14 +6,14 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-01 — Replay a day (`.231`)
+## 2026-08-01 — Replay a day (`.251`)
 
-The other half of `.227`, and the last of the four product references. Tesla's
+The other half of `.247`, and the last of the four product references. Tesla's
 VPP dashboard lets you go back to a specific grid event and see what the fleet
 actually did; `/history/[date]` is that pointed at a day the athlete lived —
 every pillar, in order, with the neighbouring logged days a tap away.
 
-`.227` built the index this reads from, so the route is a lookup rather than a
+`.247` built the index this reads from, so the route is a lookup rather than a
 scan.
 
 ### It collects nothing of its own
@@ -43,7 +43,7 @@ Fourth time this run that rendering a screen caught what the diff could not.
   could not see it."* `.208`'s shape. The ceiling is deliberately far above any
   real day and a test puts an old day behind 300 newer rows.
 - **The wrong calendar day.** Bucketing goes through `localDateKeyFromIso`
-  (`.225`), and the entries arrive with two timestamp shapes — real instants
+  (`.245`), and the entries arrive with two timestamp shapes — real instants
   from workouts and wins, synthesised `${date}T12:00:00` strings from meals and
   check-ins. Both are correct through that function; slicing either would put an
   Auckland morning on the previous day. Pinned in `Pacific/Auckland`.
@@ -53,7 +53,7 @@ record rather than throwing, and `/history` links to the replay so the route is
 not built-and-unreachable (`.195`).
 
 **And the CI status is finally true.** `ad101b34` ran all **25** steps green —
-Hero E2E included, which settles `.229` — and gitleaks scanned for the first
+Hero E2E included, which settles `.249` — and gitleaks scanned for the first
 time in this repo's history: *10 commits, 30.32 MB, no leaks found*. Both
 CONTEXT rows are corrected, including the long-standing claim that gitleaks was
 red because of `8ea3527a`: the action scans **the PR's commits only**, so that
@@ -63,7 +63,7 @@ Tests 1236 → 1243.
 
 ---
 
-## 2026-08-01 — I ran the fill tool and committed it (`.230`)
+## 2026-08-01 — I ran the fill tool and committed it (`.250`)
 
 Three findings, and the first is mine.
 
@@ -98,7 +98,7 @@ bare.
 
 ### Five guards ran only in the lane an agent can skip
 
-`check-design-system` (`.221`, widened in `.224`), `bundle-budget` (`.209`),
+`check-design-system` (`.221`, widened in `.244`), `bundle-budget` (`.209`),
 `check-locale-split` (`.222`), `i18n:coverage` and `a11y` (`.200`) existed
 **only** in `scripts/gate.mjs`. `ci.yml` already states the principle above its
 first check — *"a guard nobody runs on a PR is not a guard, and branches from
@@ -129,7 +129,7 @@ strips comments for the same reason.
 
 ### The keys my own features never translated
 
-`i18n:coverage` is a ratchet at 710 and `.226`/`.227` pushed it to **722**:
+`i18n:coverage` is a ratchet at 710 and `.246`/`.247` pushed it to **722**:
 thirteen `t('…')` literals with a `defaultValue` and no EN pack entry, which
 renders English in all fifteen languages. Added to `trackLocales` and
 `historyLocales`; the count is now **709**, one below the cap rather than twelve
@@ -139,7 +139,7 @@ Tests 1232 → 1236 (1235 under CI env before this entry's additions).
 
 ---
 
-## 2026-08-01 — The gate CI could not pass (`.229`)
+## 2026-08-01 — The gate CI could not pass (`.249`)
 
 Actions billing cleared at **00:12 UTC** and the PR gate ran for the first time
 in this programme. It found two things nobody could have seen while every job
@@ -182,7 +182,7 @@ segments per declaration. `.212`'s rule holds for the tools as much as the code.
 ### What CI settled about the flakiness
 
 Three local gate runs had failed on three *different* timing-sensitive tests,
-each passing standalone, and `.224` recorded that as container flakiness. **CI
+each passing standalone, and `.244` recorded that as container flakiness. **CI
 passed all three.** So that attribution was right — and it was also hiding a
 fourth failure that was entirely real and entirely deterministic. A suite that
 fails differently every run trains you to discount the next failure, which is
@@ -192,7 +192,7 @@ Tests 1229 → 1232.
 
 ---
 
-## 2026-08-01 — Give gitleaks the permission it needs to scan (`.228`)
+## 2026-08-01 — Give gitleaks the permission it needs to scan (`.248`)
 
 Actions billing cleared at **00:12 UTC** and gitleaks ran for the first time.
 It did not report a secret: it failed **before scanning anything**.
@@ -222,7 +222,7 @@ it never ran; non-zero means it ran and something is genuinely wrong.**
 
 ---
 
-## 2026-08-01 — Days logged, and the caps they outlive (`.227`)
+## 2026-08-01 — Days logged, and the caps they outlive (`.247`)
 
 The "1,146 days of data" number from the member story — and it **cannot be
 derived from what is stored**, because every store in this app is capped:
@@ -255,7 +255,7 @@ sweep finding nothing new produces byte-identical content, which `.210`'s
 other way round: *of the keys holding dated rows, which does the sweep not
 read?*
 
-### `.225`'s guard caught `.227` on its first run
+### `.245`'s guard caught `.247` on its first run
 
 The first version carried `isInstant: boolean` per source and sliced ten
 characters when it was false. `no calendar date is sliced off a stored ISO
@@ -263,7 +263,7 @@ string either` — written six hours earlier — went red on the new file, and i
 was right twice over:
 
 1. A blind `.slice(0, 10)` on something that turns out to be an instant yields
-   the **UTC** date. The `.225` defect, reintroduced in the file that cites it.
+   the **UTC** date. The `.245` defect, reintroduced in the file that cites it.
 2. The flag is a second, hand-maintained description of the data's shape
    (`.178`). Set it wrong on a new source and every day from that store lands
    one off, silently, east of UTC.
@@ -284,10 +284,10 @@ on the most emotive number in the product.
 
 Six mutants: dropping the union with stored days, slicing an instant, dropping
 day-key validation, inverting `firstDayWithData`, and re-introducing the
-`.225` slice — all killed. The sixth, removing a redundant `new Set()`,
+`.245` slice — all killed. The sixth, removing a redundant `new Set()`,
 **survived**, because both callers already pass a set; `persist` now takes
 `Set<string>` so duplicates cannot be expressed rather than being filtered by
-code no test could reach — the same call `.226` made an hour earlier.
+code no test could reach — the same call `.246` made an hour earlier.
 
 Rendered against a built server: 12 workout days ∪ 11 nutrition days =
 **23 days logged**, genuinely distinct from the 12 sessions beside it. That
@@ -298,14 +298,14 @@ renders the previous day west of UTC.
 Tests 1220 → 1229.
 
 **Not done, named.** `/history/[date]` — Tesla's "replay a specific grid event"
-pointed at a day the athlete actually lived — is the other half of `.227` and
+pointed at a day the athlete actually lived — is the other half of `.247` and
 is not here. `listDaysWithData()` is the index it needs and now exists.
 
 ---
 
-## 2026-07-31 — Ask for a trend, get a chart (`.226`)
+## 2026-07-31 — Ask for a trend, get a chart (`.246`)
 
-The feature `.225` was opened for, now that the buckets underneath it name the
+The feature `.245` was opened for, now that the buckets underneath it name the
 right day. `TREND_METRICS` + `parseTrendQuery` + `resolveTrendSeries`, and a
 card on `/track` that turns *"volume over 30 days"* into a chart.
 
@@ -377,9 +377,9 @@ is not telemetry. The refusal rate is the number worth watching.
 
 ---
 
-## 2026-07-31 — The day a session lands on (`.225`)
+## 2026-07-31 — The day a session lands on (`.245`)
 
-Opening `.225` — the "ask for a trend" registry — meant reading the function
+Opening `.245` — the "ask for a trend" registry — meant reading the function
 every trend would be built from. [`buildTodayTrends`](src/lib/todayTrends.ts)
 keys its buckets with `localDateKey` and keyed the **workouts** with
 `completedAt.split('T')[0]`. Those are not the same day.
@@ -448,14 +448,14 @@ to see this.
 Auckland case. Tests 1192 → 1201.
 
 **Deferred, with the reason.** The `TREND_METRICS` registry and the offline
-`parseTrendQuery` are **not** in this entry. They are the feature `.225` was
+`parseTrendQuery` are **not** in this entry. They are the feature `.245` was
 opened for, and they belong on buckets that name the right day; shipping them
 together would have buried a correctness fix inside a feature diff and made the
-"which day is this" change impossible to review on its own. **Shipped in `.226`.**
+"which day is this" change impossible to review on its own. **Shipped in `.246`.**
 
 ---
 
-## 2026-07-31 — The charts the guard could not see (`.224`)
+## 2026-07-31 — The charts the guard could not see (`.244`)
 
 `.221` built [`check-design-system.mjs`](scripts/check-design-system.mjs) so
 the Modernist rules — paper/ink, **one red**, radius 0 — would be checked instead

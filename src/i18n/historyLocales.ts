@@ -17,10 +17,10 @@ type HistoryStrings = {
   historyVolumeDesc: string;
   historyVolumeLabel: string;
   historySessionsLabel: string;
-  /** `.227` — days logged, and the day the record starts. */
+  /** `.247` — days logged, and the day the record starts. */
   historyDaysLogged: string;
   historyDaysSince: string;
-  /** `.231` — the one-day replay. */
+  /** `.251` — the one-day replay. */
   historyDayEyebrow: string;
   historyDayPosition: string;
   historyDayEmpty: string;

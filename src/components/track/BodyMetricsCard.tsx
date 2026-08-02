@@ -147,7 +147,7 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
                   }
                 />
                 {/*
-                  `.224` — this `<Tooltip>` carried no `contentStyle`, so it
+                  `.244` — this `<Tooltip>` carried no `contentStyle`, so it
                   rendered recharts' stock white box with a `#ccc` border and
                   the library's own radius. Styling that is *absent* rather
                   than wrong: no colour scan can see it, which is why

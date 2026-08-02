@@ -1,7 +1,7 @@
 /**
  * The parser answers or asks — it never guesses.
  *
- * `.225` — the failure mode worth designing against is a chart of the *wrong*
+ * `.245` — the failure mode worth designing against is a chart of the *wrong*
  * metric, because it looks exactly like a right answer. This repo has paid for
  * "confident number, wrong quantity" in `.208`, `.217`, `.220` and `.223`, so
  * the tests below spend most of their weight on the refusals rather than on

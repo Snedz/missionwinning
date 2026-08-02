@@ -8,7 +8,7 @@ on:
     branches: [master]
   workflow_dispatch:
 
-# `.228` — least privilege, stated rather than inherited.
+# `.248` — least privilege, stated rather than inherited.
 #
 # Actions billing cleared on 2026-08-01 and gitleaks ran for the first time.
 # It did not report a secret: it **crashed with a 403** before scanning anything.

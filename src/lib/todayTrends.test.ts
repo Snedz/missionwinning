@@ -80,7 +80,7 @@ describe('todayTrends', () => {
 });
 
 /**
- * `.225` — the bug the rest of this file could not see.
+ * `.245` — the bug the rest of this file could not see.
  *
  * `buildTodayTrends` keyed its buckets with `localDateKey` and keyed the
  * workouts with `completedAt.split('T')[0]`, the **UTC** date. Every test above

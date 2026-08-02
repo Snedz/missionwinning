@@ -1,7 +1,7 @@
 /**
  * The local gate and CI must build the same app.
  *
- * `.229` — they did not, and it stayed invisible for as long as Actions was
+ * `.249` — they did not, and it stayed invisible for as long as Actions was
  * billing-blocked.
  *
  * `.198` discovered that `isPushSupported()` returns false without a VAPID
@@ -141,10 +141,10 @@ test('the VAPID placeholder is present in both, and is only the public half', ()
 /* ── Step parity ─────────────────────────────────────────────────────────── */
 
 /**
- * `.230` — env parity was only half the question.
+ * `.250` — env parity was only half the question.
  *
  * Five checks ran **only** in `scripts/gate.mjs`: `check-design-system`
- * (`.221`, widened in `.224`), `bundle-budget` (`.209`), `check-locale-split`
+ * (`.221`, widened in `.244`), `bundle-budget` (`.209`), `check-locale-split`
  * (`.222`), `i18n:coverage` and `a11y` (`.200`). So they were advisory in the
  * one lane an agent can forget, and absent from the lane that actually blocks
  * a pull request.
@@ -212,7 +212,7 @@ test('no exemption is stale', () => {
 
 test('the locale-split check runs before the locale export', () => {
   /*
-   * `.230` — ordering is load-bearing here, and nothing else says so.
+   * `.250` — ordering is load-bearing here, and nothing else says so.
    *
    * `npm run export-locales` regenerates `public/locales/**` in the pre-`.222`
    * unsplit shape. Verified, not assumed: running it turns

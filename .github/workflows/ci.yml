@@ -18,7 +18,7 @@ jobs:
     # Hero e2e runs in this job so the production build happens exactly once.
     # PRIVATE_MODE=false compiles the service worker, which the offline spec needs.
     # Must stay in step with `BUILD_ENV` in scripts/gate.mjs — enforced by
-    # `gateEnvParity.test.ts`. `.229`: these two drifted, and nobody could see
+    # `gateEnvParity.test.ts`. `.249`: these two drifted, and nobody could see
     # it while Actions was billing-blocked.
     env:
       PRIVATE_MODE: 'false'
@@ -65,7 +65,7 @@ jobs:
       - name: Token sync (web ↔ Android)
         run: npm run check-token-sync
 
-      # `.230` — these four ran **only** in scripts/gate.mjs, so they were
+      # `.250` — these four ran **only** in scripts/gate.mjs, so they were
       # advisory in the one lane an agent can forget and absent from the lane
       # that blocks the PR. That is the defect the comment above names, with the
       # lanes swapped: `.221`'s design-system guard, `.209`'s byte budget and
@@ -78,7 +78,7 @@ jobs:
       # by running it — so this check fails for certain if it comes after.
       # `.222` built the splitter as re-runnable precisely because "a cleanup
       # that cannot be repeated undoes itself the next time the fill tool runs";
-      # `.230` then had that happen for real and committed 394 regenerated files
+      # `.250` then had that happen for real and committed 394 regenerated files
       # by accident.
       - name: Locale split
         run: npm run check-locale-split

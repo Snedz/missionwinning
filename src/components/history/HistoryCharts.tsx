@@ -59,7 +59,7 @@ export function HistoryVolumeChart({ data }: Props) {
               <XAxis dataKey="label" tick={CHART_TICK} interval="preserveStartEnd" />
               <YAxis tick={CHART_TICK} width={48} />
               {/*
-                `.224` — the legend printed **"volume"**: the raw `dataKey`,
+                `.244` — the legend printed **"volume"**: the raw `dataKey`,
                 lowercase and untranslated, in all eight languages. The
                 formatter translated it for the *tooltip* and nothing did for
                 the legend, so the series carried its variable name onto the
@@ -113,7 +113,7 @@ export function History1RMChart({ data, exerciseName }: OneRmProps) {
               <Tooltip {...CHART_TOOLTIP} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               {/*
-                `.224` — this chart and `Benchmarks1RMChart` plot the **same two
+                `.244` — this chart and `Benchmarks1RMChart` plot the **same two
                 series** and had assigned them opposite colours: red was
                 *estimated* here and *actual* there, so the one accent changed
                 meaning between two screens. Both now take the shared

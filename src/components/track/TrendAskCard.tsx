@@ -3,7 +3,7 @@
 /**
  * Ask for a trend, get a chart.
  *
- * `.225` — the answering is done by `parseTrendQuery`, which is pure, offline
+ * `.245` — the answering is done by `parseTrendQuery`, which is pure, offline
  * and rule-based. That is deliberate: `COACH_LLM_*` is unset, so a model-backed
  * version would answer *nothing* for every current user, and the logger's whole
  * promise is that it works with no network and no account.
@@ -201,7 +201,7 @@ export function TrendAskCard({ history, locale = 'en' }: Props) {
             ) : (
               <div className="h-48 w-full">
                 {/*
-                  `.225` — the mark follows the data, and rendering it is what
+                  `.245` — the mark follows the data, and rendering it is what
                   settled which. A daily bucket is a **discrete total**: you
                   either trained on the 14th or you did not, and a rest day is a
                   real zero. Drawn as a `monotone` line, the spline swept smooth

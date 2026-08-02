@@ -82,7 +82,7 @@ type HistoryTab = 'sessions' | 'journal';
  * `YYYY-MM-DD` → a readable date, built from **local** fields.
  *
  * Deliberately not `new Date(key)`: a bare date string parses as UTC midnight,
- * so west of UTC it renders as the previous day — the mirror of the `.225`
+ * so west of UTC it renders as the previous day — the mirror of the `.245`
  * defect, and `localDate.ts` already carries the same note about why
  * `previousLocalDateKey` is built this way.
  */
@@ -151,7 +151,7 @@ export function HistoryPage() {
   const summary = useMemo(() => historySummaryStats(workoutHistory), [workoutHistory]);
 
   /*
-   * `.227` — the day set is swept on load rather than written at each log site.
+   * `.247` — the day set is swept on load rather than written at each log site.
    * Six writers is six chances to miss the seventh, and the failure is silent
    * (`.220`). Depends on `workoutHistory` so a session logged this visit counts
    * without a reload.
@@ -227,7 +227,7 @@ export function HistoryPage() {
         <p className="text-sm text-foreground leading-relaxed">{briefingLine}</p>
         {dayStats.count > 0 && (
           /*
-            `.227` — **"days logged", not "days on mission"**. For an athlete
+            `.247` — **"days logged", not "days on mission"**. For an athlete
             already past a cap when this shipped, the sweep can only see what
             survived, so this is a lower bound. "Days logged" is true either
             way; "days since you started" would imply a continuity nothing here
@@ -243,7 +243,7 @@ export function HistoryPage() {
               <>
                 {' · '}
                 {/*
-                  `.231` — the count is now a way in. Without this the day
+                  `.251` — the count is now a way in. Without this the day
                   replay would be a route nothing links to, which is `.195`:
                   built, and nobody can reach it.
                 */}

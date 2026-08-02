@@ -1,7 +1,7 @@
 /**
  * The metrics an athlete can ask for a trend of.
  *
- * `.225` — one registry over series this app **already computes**, so asking
+ * `.245` — one registry over series this app **already computes**, so asking
  * for a trend cannot invent a quantity the product does not measure.
  *
  * ## Training, not health

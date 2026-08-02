@@ -47,7 +47,7 @@ export const STORAGE_KEYS = {
   outbox: 'mw_outbox_v1',
   sessionJournal: 'mw_session_journal',
   /**
-   * `.227` — every local day that holds data, `YYYY-MM-DD`, newest first.
+   * `.247` — every local day that holds data, `YYYY-MM-DD`, newest first.
    * **Deliberately uncapped**: it is the one store that must outlive the
    * caps on every other one, at ~10 bytes a day. See `journey/daysWithData`.
    */

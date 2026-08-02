@@ -3,7 +3,7 @@
 /**
  * One day, replayed.
  *
- * `.231` — Tesla's VPP dashboard lets you go back to a specific grid event and
+ * `.251` — Tesla's VPP dashboard lets you go back to a specific grid event and
  * see what the fleet actually did. This is that pointed at a day the athlete
  * lived: everything logged on it, across every pillar, with the neighbouring
  * days a tap away.
@@ -38,7 +38,7 @@ const PILLAR_LABEL: Record<JournalPillar, string> = {
  * `YYYY-MM-DD` → a readable date, built from **local** fields.
  *
  * Never `new Date(key)`: a bare date string parses as UTC midnight, so west of
- * UTC it renders as the previous day — the mirror of `.225`.
+ * UTC it renders as the previous day — the mirror of `.245`.
  */
 function formatDay(key: string, locale: string): string {
   const [y, m, d] = key.split('-').map(Number);
@@ -57,7 +57,7 @@ export function HistoryDayPage({ date }: Props) {
   const [tick, setTick] = useState(0);
 
   // Sweep first: a session logged this visit should be navigable without a
-  // reload, and the sweep is idempotent (`.227`).
+  // reload, and the sweep is idempotent (`.247`).
   useEffect(() => {
     sweepDaysWithData(workoutHistory.map((w) => w.completedAt));
     setTick((n) => n + 1);

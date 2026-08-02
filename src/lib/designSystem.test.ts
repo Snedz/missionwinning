@@ -52,7 +52,7 @@ test('an off-palette colour is caught, in either hex length', () => {
 
 test('a colour is caught in its functional forms too, not only hex', () => {
   /*
-   * `.224` — the rule matched hex **only**, so every `rgb()`/`hsl()` literal in
+   * `.244` — the rule matched hex **only**, so every `rgb()`/`hsl()` literal in
    * the repo was invisible to the guard written to catch exactly this survival.
    * Two live cases sat behind it: `TrackPaceChart` drawing
    * `rgba(255,255,255,…)` grid lines and axis labels — the pre-rebrand dark
@@ -257,7 +257,7 @@ test('the share card carries the current brand, not last season’s', () => {
 
 test('every chart draws “actual” and “estimated” the same way', () => {
   /*
-   * `.224` — `History1RMChart` and `Benchmarks1RMChart` plot the **same two
+   * `.244` — `History1RMChart` and `Benchmarks1RMChart` plot the **same two
    * series** and had assigned them opposite colours: red was *estimated* on
    * History and *actual* on Benchmarks. `.221` re-inked the second file (it was
    * still drawing Tailwind blue-500/green-500) and nothing pointed at the first,

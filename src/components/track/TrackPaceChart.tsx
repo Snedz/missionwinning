@@ -31,7 +31,7 @@ export function TrackPaceChart({ data, height = 120 }: Props) {
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           {/*
-            `.224` — the grid was `rgba(255,255,255,0.06)` and the tick labels
+            `.244` — the grid was `rgba(255,255,255,0.06)` and the tick labels
             `rgba(255,255,255,0.45)`: the pre-rebrand dark theme, still drawing
             white onto a paper ground. Both were effectively invisible, and the
             design-system guard matched hex only so neither ever reported.

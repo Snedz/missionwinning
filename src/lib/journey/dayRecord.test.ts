@@ -1,7 +1,7 @@
 /**
  * Replaying one day.
  *
- * `.231` — the weight here is on the two ways a replay lies: showing a day as
+ * `.251` — the weight here is on the two ways a replay lies: showing a day as
  * **empty** when it merely fell off a limit, and putting an entry on the wrong
  * calendar day east of UTC.
  */

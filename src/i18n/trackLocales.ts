@@ -28,7 +28,7 @@ type TrackStrings = {
   trackGpsRecording: string;
   trackGpsIdle: string;
   trackGpsStart: string;
-  /** `.226` — the ask-for-a-trend card. */
+  /** `.246` — the ask-for-a-trend card. */
   trendAskTitle: string;
   trendAskLead: string;
   trendAskLabel: string;

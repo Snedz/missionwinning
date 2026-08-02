@@ -156,7 +156,7 @@ const RULES = [
     /*
      * `#fff`/`#000` shorthand included: three- and six-digit both bypass tokens.
      *
-     * `.224` — the functional forms were added after this rule proved **blind to
+     * `.244` — the functional forms were added after this rule proved **blind to
      * every one of them**. It matched hex only, so `rgba(255,255,255,0.06)` in
      * `TrackPaceChart` — the pre-rebrand dark theme drawing white grid lines and
      * white axis labels onto a paper ground, both invisible — passed the guard
@@ -177,7 +177,7 @@ const RULES = [
   {
     id: 'unstyled-chart-tooltip',
     /*
-     * `.224` — the hole no colour scan can cover: styling that is **absent**.
+     * `.244` — the hole no colour scan can cover: styling that is **absent**.
      *
      * `BodyMetricsCard`'s `<Tooltip>` had no `contentStyle` at all, so recharts
      * drew its stock white box with a `#ccc` border and the library's own radius

@@ -1,7 +1,7 @@
 /**
  * One definition of chart chrome.
  *
- * `.224` — four recharts files each re-declared their own grid, axes and
+ * `.244` — four recharts files each re-declared their own grid, axes and
  * tooltip, and they had already drifted three ways:
  *
  * - `TrackPaceChart` drew `rgba(255,255,255,…)` grid lines and axis labels —

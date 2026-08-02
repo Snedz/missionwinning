@@ -1,7 +1,7 @@
 /**
  * A parsed question → the numbers that answer it.
  *
- * `.225` — the registry says *what* can be asked for and this says *where the
+ * `.245` — the registry says *what* can be asked for and this says *where the
  * series comes from*. Every branch below delegates to a function that already
  * exists (`buildTodayTrends`, `bodyMetrics.series`) rather than re-deriving the
  * quantity, because a second definition of "weekly volume" is `.178` and this
@@ -23,7 +23,7 @@ import { trendMetric, type TrendMetricDef } from './trendMetrics';
 import type { TrendQuery } from './parseTrendQuery';
 
 export interface TrendPoint {
-  /** `YYYY-MM-DD`, the local day — never a UTC one. See `.225` in todayTrends. */
+  /** `YYYY-MM-DD`, the local day — never a UTC one. See `.245` in todayTrends. */
   key: string;
   label: string;
   value: number;
