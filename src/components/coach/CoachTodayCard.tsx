@@ -29,6 +29,7 @@ import { useWorkoutStore } from '@/store/workoutStore';
 import { track } from '@/lib/analytics';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
 import { summarizeWeekDose } from '@/lib/coach/weekDose';
+import { sessionContinuity } from '@/lib/coach/programContinuity';
 import { isFreeBeta } from '@/lib/freeBeta';
 
 export function CoachTodayCard() {
@@ -60,6 +61,11 @@ export function CoachTodayCard() {
           : t('coachTodayBandSteady', {
               defaultValue: 'Your week is tracking with your month.',
             });
+
+  const continuity = useMemo(
+    () => sessionContinuity(workoutHistory, plan),
+    [workoutHistory, plan]
+  );
 
   const weekDose = plan ? summarizeWeekDose(plan) : null;
   const doseIntent =
@@ -155,7 +161,15 @@ export function CoachTodayCard() {
         )}
         {plan && !locked && todaySession && (
           <>
-            <p className="font-medium">{todaySession.name}</p>
+            {/* Where this sits in the athlete's own history. Silent when there
+                is nothing true to say — see programContinuity.ts for why there
+                is no week number here. */}
+            {continuity.line && (
+              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground tabular-nums">
+                {continuity.line}
+              </p>
+            )}
+            <p className="font-semibold">{todaySession.name}</p>
 
             {/* What the coach actually prescribed, before the athlete walks to the
                 gym. The data has always existed on PlanExercise; Today only ever
