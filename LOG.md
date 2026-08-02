@@ -243,6 +243,70 @@ the denominator. Ratcheting line % tightly would punish exactly the change the
 other two floors exist to reward, so it is held as a collapse guard and
 `untestedFiles` is the primary ratchet. Noted at both constants.
 
+### And then the launch gate, which had been wrong once already
+
+`betaMetricsServer.ts` — **337 lines, loaded by no test**, computing the figure
+[ORCHESTRATION.md](ORCHESTRATION.md) keys the launch decision off. `.223` already
+found a defect in it and it was this exact shape: a private `allBasicDone`
+demanding all five pillars while the product had narrowed to the first workout, so
+`basicCompletePct` scored testers against a rule the app no longer implemented and
+the gate could not go green no matter how well the beta went. **That fix gave the
+predicate a test. It did not give one to the consumer that turns the predicate into
+the decision.**
+
+Same treatment, third time: the maths moved to dependency-free
+[`beta/funnelAggregate.ts`](src/lib/beta/funnelAggregate.ts), with `now` injected
+so the 14-day window can be asserted rather than left to rot (`.211`/`.212`). What
+is pinned is a set of numbers that are wrong quietly and in one direction — a gate
+that cannot open, or one that opens early — where the dashboard cannot tell you,
+because the dashboard *is* the thing that is wrong: the 10-user floor, I-Day ≥80,
+Basic ≥**60** (the launch gate, not the softer 40 target that sits beside it in the
+same object), commissioning reported but deliberately never gating, rounding rather
+than truncation, and the boundary day of the signup window.
+
+**One real fix went in with it.** `phaseCounts[js.phase] = (…) + 1` mints a key for
+any string, and `journey_state` is a jsonb column — the TypeScript type is a claim
+about the writer, not a guarantee about the row. `phaseCounts` renders as a fixed
+four-row breakdown, so a legacy phase value is a bucket the panel cannot show and a
+total that stops matching the rows above it. Unknown phases are now counted in the
+total and given no bucket.
+
+Two smaller ones alongside. [`beta/inviteShareLink.ts`](src/lib/beta/inviteShareLink.ts)
+puts `PRIVATE_ACCESS_SECRET` into a URL on purpose, which makes the empty case the
+one that matters: `params.set('access', '')` yields a link that *looks* gated and
+opens nothing, and with `MAIL_POSTAL_ADDRESS` still unset these are pasted into
+messages by hand, with no send-time validation in between. And
+[`betaMetrics.routetest.ts`](src/lib/betaMetrics.routetest.ts) covers
+`isBetaAdminEmail` — the allowlist between an arbitrary signed-in account and every
+invitee's email address — plus `.214`'s rule on the read side: with no service role
+every panel query returns **null, not an empty aggregate**, because a zeroed
+dashboard reads as a failed beta when the truth is a missing key.
+
+**A guard I had to repair rather than satisfy.** `launchTruth.test.ts`'s
+*"the founder dashboard imports the basic-complete rule rather than restating it"*
+went red on the extraction — the rule was still imported exactly once, one hop
+further along. That guard asserted a literal import line in one named file, which is
+this repo's own `.212`/`.220` shape appearing *inside* a guard: keyed to a spelling
+rather than to the property it names. It now **follows the import chain** and
+**discovers** redefinitions across `src/` and `app/` instead of watching the single
+file that forked last time. Confirmed stronger, not weaker: re-forking the rule
+inside the *new* module turns it red, which the original could not have seen.
+
+**22 mutants, one survivor, and the survivor is equivalent.** The twelve on the gate
+include the `.223` regression itself (Basic requiring all five pillars), the gate
+dropping the headcount floor, the gate quoting the soft 40 target instead of the 60
+launch gate, truncation instead of rounding, a 7-day window, an exclusive boundary,
+and a null profile list reading as launch-ready. The survivor is
+`.filter(Boolean)` on the admin allowlist: removing it leaves `allowed = ['']`,
+which looks alarming and is inert, because the only address it could match is the
+empty string and `if (!email) return false` has already refused it. **Checked rather
+than argued** — 81 combinations of nine env values against nine emails, zero
+behavioural differences — and recorded at the test, because a test written to kill
+that mutant would pin the implementation rather than the rule.
+
+Reach **42.1% → 42.4%**, untested files **382 → 381**, functions **67.10 → 67.36**.
+Tests **1229 → 1253**, route lane **32 → 38**. Floors tightened to match.
+
 ### Not done, and named
 
 Every one of these is a file no test currently loads, found by the script rather
@@ -259,12 +323,7 @@ than asserted by it:
   `mobileAccess.ts`, `supabaseRequestAuth.ts`, `youthConsentServer.ts`,
   `wearables/oauthState.ts`. `.211` moved the teacher-PIN rate limit into
   `resolveTeacherClassAccess`; nothing asserts it is still there.
-- **`betaMetricsServer.ts`** — 337 lines, zero. It computes `basicCompletePct` and
-  gates `launchReady` at ≥60, and it is the file `.223` found holding a private
-  `allBasicDone` that disagreed with `missionJourney.ts`. The fix gave
-  `journey/basicComplete.ts` a test; the consumer making the launch decision still
-  has none.
-- **Route contracts** — 67 routes, 2 `.routetest.ts` files. The lane works
+- **Route contracts** — 67 routes, 4 `.routetest.ts` files. The lane works
   (`llmRoutesQuota.routetest.ts` is the model); it wants one table-driven pass for
   unauth → 401/403, missing service role → **503 not `[]`** (`.214`'s rule, asserted
   nowhere), over-limit → 429, and Zod rejection shape.

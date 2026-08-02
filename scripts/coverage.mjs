@@ -64,7 +64,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  */
 const FLOORS = {
   /** Source files that no test loads, directly or transitively. Must not rise. */
-  untestedFiles: 382,
+  untestedFiles: 381,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
@@ -80,7 +80,7 @@ const FLOORS = {
    */
   linePct: 91.5,
   /** Function % across the files that are loaded — the one that catches Zod. */
-  funcPct: 67.0,
+  funcPct: 67.3,
 };
 
 /**

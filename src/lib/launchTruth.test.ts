@@ -170,13 +170,64 @@ test('the founder dashboard imports the basic-complete rule rather than restatin
    * The defect was not that the server was wrong — it was that the server had its
    * own copy at all, so the two could drift without anything noticing. This checks
    * the structural fix, because the value check below cannot see a future re-fork.
+   *
+   * `.224` — it used to assert one literal import line in `betaMetricsServer.ts`,
+   * and legitimately extracting the aggregation into `beta/funnelAggregate.ts`
+   * turned it red: the rule was still imported exactly once, just one hop further
+   * along. That is this repo's own `.212`/`.220` shape appearing in a guard —
+   * keyed to a spelling rather than to the property it names — so it now **follows
+   * the path** instead, and separately **discovers** redefinitions across the
+   * whole tree rather than checking the one file that forked last time.
    */
-  const src = stripComments(read('src/lib/betaMetricsServer.ts'));
-  assert.match(src, /import\s*\{[^}]*allBasicDone[^}]*\}\s*from\s*'@\/lib\/journey\/basicComplete'/);
-  assert.doesNotMatch(
-    src,
-    /function\s+allBasicDone/,
-    'a local redefinition is how the launch gate started measuring a rule the app had dropped'
+  const LOCAL_IMPORT = /from\s+'(@\/lib\/[^']+)'/g;
+  const IMPORTS_RULE = /import\s*\{[^}]*\ballBasicDone\b[^}]*\}\s*from\s*'@\/lib\/journey\/basicComplete'/;
+
+  const resolve = (spec: string) => `src/lib/${spec.replace('@/lib/', '')}.ts`;
+
+  /** Does this module reach the one true rule directly, or through one it imports? */
+  function reachesRule(file: string, depth = 0): boolean {
+    let src: string;
+    try {
+      src = stripComments(read(file));
+    } catch {
+      return false;
+    }
+    if (IMPORTS_RULE.test(src)) return true;
+    if (depth >= 3) return false;
+    for (const m of src.matchAll(LOCAL_IMPORT)) {
+      if (reachesRule(resolve(m[1]), depth + 1)) return true;
+    }
+    return false;
+  }
+
+  assert.ok(
+    reachesRule('src/lib/betaMetricsServer.ts'),
+    "the founder dashboard's Basic-complete answer no longer traces to " +
+      '@/lib/journey/basicComplete — that is how `.223` happened: the gate scored testers ' +
+      'against a rule the app had stopped implementing.'
+  );
+
+  // And nobody anywhere gets to answer the question a second time.
+  const offenders: string[] = [];
+  const walk = (dir: string) => {
+    for (const e of readdirSync(path.join(root, dir), { withFileTypes: true })) {
+      const rel = path.posix.join(dir, e.name);
+      if (e.isDirectory()) walk(rel);
+      else if (/\.tsx?$/.test(e.name) && !/\.(test|routetest)\.tsx?$/.test(e.name)) {
+        if (/function\s+allBasicDone|const\s+allBasicDone\s*=/.test(stripComments(read(rel)))) {
+          offenders.push(rel);
+        }
+      }
+    }
+  };
+  walk('src');
+  walk('app');
+
+  assert.deepEqual(
+    offenders,
+    ['src/lib/journey/basicComplete.ts'],
+    'allBasicDone must be defined in exactly one place. A local redefinition is how the ' +
+      'launch gate started measuring a rule the app had dropped:\n  ' + offenders.join('\n  ')
   );
 });
 

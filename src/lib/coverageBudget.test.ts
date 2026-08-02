@@ -35,10 +35,10 @@ const SCRIPT = 'scripts/coverage.mjs';
  */
 const HIGH_WATER = {
   /**
-   * 382 of 660 source files are loaded by no test. Lower it by writing one.
-   * `.224` took this from 386 with the revenue path.
+   * 381 of 662 source files are loaded by no test. Lower it by writing one.
+   * `.224` took this from 386 — the revenue path, then the launch gate.
    */
-  untestedFiles: 382,
+  untestedFiles: 381,
   /**
    * Held at its original value on purpose — see the note at `FLOORS.linePct`.
    * Reaching a previously-unloaded file *lowers* this, because its unexecuted
@@ -46,7 +46,7 @@ const HIGH_WATER = {
    * other two floors reward. This one is a collapse guard, not a high-water mark.
    */
   linePct: 91.5,
-  funcPct: 67.0,
+  funcPct: 67.3,
 };
 
 function declaredFloors(): Record<string, number> {
