@@ -6,7 +6,7 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-02 — The coverage number that measured a third of the repo (`.225`)
+## 2026-08-02 — The coverage number that measured a third of the repo (`.226`)
 
 The ask was to analyse test coverage and propose where to improve it. The analysis
 came first and changed what was worth building, because the headline number turned
