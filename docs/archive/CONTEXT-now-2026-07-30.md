@@ -1,7 +1,7 @@
-# `## Now` archive — shipped work `.123`–`.205` (rotated 2026-07-30 onward)
+# `## Now` archive — shipped work `.123`–`.207` (rotated 2026-07-30 onward)
 
 Rotated out of [CONTEXT.md](../../CONTEXT.md) `## Now` by `.203` (`.123`–`.189`),
-`.207` (`.190`–`.193`), `.211` (`.194`–`.197`), `.215` (`.198`), `.216` (`.200`), `.217` (`.199`), `.218` (`.201`), `.219` (`.202`), `.220` (`.203`), `.221` (`.204`) and `.222` (`.205`).
+`.207` (`.190`–`.193`), `.211` (`.194`–`.197`), `.215` (`.198`), `.216` (`.200`), `.217` (`.199`), `.218` (`.201`), `.219` (`.202`), `.220` (`.203`), `.221` (`.204`), `.222` (`.205`), `.223` (`.206`) and `.224` (`.207`).
 
 `CONTEXT.md` calls itself *"One screen of truth for any AI tool or human joining
 cold"*, and every PR had been adding a bullet to it — the same `+1`-per-feature
