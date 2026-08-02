@@ -102,9 +102,37 @@ test.describe('Offline logging @gate', () => {
     });
     expect(persistedOffline).toBe(true);
 
-    // Reconnecting must not discard local state.
+    /**
+     * Reconnecting must not discard local state.
+     *
+     * The app reloads *itself* on this line. `next.config.js` sets Serwist's
+     * `reloadOnOnline`, which registers
+     * `window.addEventListener("online", () => location.reload())`
+     * (`@serwist/next` `sw-entry.ts`). So a `page.goto('/active')` here races a
+     * navigation the product already started — and when the reload wins, the
+     * goto dies with *"Navigation to /active is interrupted by another
+     * navigation to /active"*. That is exactly how this `@gate` spec reported
+     * `1 flaky` in CI (run 30727582011) while the job still went green.
+     *
+     * Measured rather than assumed: with no `goto` at all, reconnecting fires
+     * two main-frame navigations and wipes a marker stamped on `window`. The
+     * race was never 50/50 — the reload always happens, and the goto only
+     * sometimes gets there first.
+     *
+     * So wait for the product's reload instead of driving one. It is
+     * deterministic, and it is the truer assertion: this is the reload a
+     * returning athlete actually gets. **Awaited, not assumed** — if
+     * `reloadOnOnline` is ever turned off this fails loudly rather than quietly
+     * asserting that a page nobody reloaded still shows what it already showed.
+     */
+    const reloadOnReconnect = page.waitForEvent('framenavigated', {
+      predicate: (frame) => frame === page.mainFrame(),
+      timeout: 15_000,
+    });
     await context.setOffline(false);
-    await page.goto('/active', { waitUntil: 'domcontentloaded' });
+    await reloadOnReconnect;
+    await page.waitForLoadState('domcontentloaded');
+
     await expect(page.getByRole('button', { name: /finish/i }).first()).toBeVisible({
       timeout: 15_000,
     });

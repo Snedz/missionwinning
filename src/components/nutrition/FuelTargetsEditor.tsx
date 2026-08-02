@@ -65,8 +65,11 @@ export function FuelTargetsEditor({
   };
 
   if (!open) {
+    /* Start-aligned until `sm`: end-aligning a short button on a phone parks it
+       under the Fuel FAB's column, where it is 100% hidden at some scroll offset
+       (tests/e2e/fuel-floating-action.spec.ts). */
     return (
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+      <div className="flex flex-col items-start gap-2 text-xs text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <span className="tabular-nums">
           {t('fuelTargetsSummary', {
             cals: targetCals,
