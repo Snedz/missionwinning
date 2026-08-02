@@ -50,7 +50,10 @@ export function FuelAdaptBanner({
           : 'border-border bg-card'
       )}
     >
-      <div className="flex flex-wrap items-center justify-between gap-2">
+      {/* Start-aligned until `sm`: end-aligning a short button on a phone parks it
+          under the Fuel FAB's column, where it is 100% hidden at some scroll
+          offset (tests/e2e/fuel-floating-action.spec.ts). */}
+      <div className="flex flex-col items-start gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-2 min-w-0">
           <span
             className={cn(
