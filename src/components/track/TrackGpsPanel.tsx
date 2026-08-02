@@ -127,7 +127,7 @@ export function TrackGpsPanel({ onLogged }: { onLogged?: () => void }) {
                 key={act}
                 type="button"
                 size="sm"
-                variant={gpsType === act ? 'default' : 'outline'}
+                variant={gpsType === act ? 'selected' : 'outline'}
                 disabled={tracking}
                 onClick={() => setGpsType(act)}
               >

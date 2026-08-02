@@ -9,6 +9,7 @@ import type { MindCheckIn } from '@/lib/mindCheckIns';
 import type { BodyMetricEntry } from '@/lib/bodyMetrics';
 import type { MuscleGroup } from '@/lib/muscleGroups';
 import { startOfLocalWeek } from '@/lib/time/localDate';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 
 export type WeeklyDebrief = {
   weekStart: string;
@@ -89,7 +90,7 @@ export function buildWeeklyDebrief(input: {
 
   let weightDelta: number | null | undefined;
   if (input.bodyMetrics?.length) {
-    const sorted = [...input.bodyMetrics].sort((a, b) => a.date.localeCompare(b.date));
+    const sorted = [...input.bodyMetrics].sort((a, b) => compareKeys(a.date, b.date));
     const withW = sorted.filter((e) => e.weightKg != null);
     if (withW.length >= 2) {
       const a = withW[withW.length - 1].weightKg!;

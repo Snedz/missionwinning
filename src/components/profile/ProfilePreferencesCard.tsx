@@ -32,14 +32,14 @@ export function ProfilePreferencesCard({
           <div className="flex gap-2">
             <Button
               className="min-h-[44px]"
-              variant={units === 'metric' ? 'default' : 'outline'}
+              variant={units === 'metric' ? 'selected' : 'outline'}
               onClick={() => onSaveUnits('metric')}
             >
               {t('metric', { defaultValue: 'Metric (kg, cm)' })}
             </Button>
             <Button
               className="min-h-[44px]"
-              variant={units === 'imperial' ? 'default' : 'outline'}
+              variant={units === 'imperial' ? 'selected' : 'outline'}
               onClick={() => onSaveUnits('imperial')}
             >
               {t('imperial', { defaultValue: 'Imperial (lbs, in)' })}
