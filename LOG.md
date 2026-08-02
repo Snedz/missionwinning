@@ -158,6 +158,17 @@ nowhere else. `gate.mjs`'s own header already called this line out as false and 
 was still here. Whether to spend PR minutes on the a11y lane is a founder call, so
 the comment now states what is true rather than the lane being silently added.
 
+**Found twice, independently.** While this branch was in flight, PR #185 landed
+the same VAPID fix on `master` (`dafc8e8`) — reached from the other direction, and
+it also carried the key into `ci-extended.yml`, which `e2e:critical` needs for the
+same reason. The merge here takes **master's wording** and drops this branch's
+duplicate comment: one fix, one explanation, since two prose accounts of one env
+var is the `.178` shape in the documentation rather than the code. Worth recording
+because a defect surfacing in two sessions on the same night is evidence about the
+defect, not about either session — it was reachable from both the coverage angle
+and the CI-hygiene angle because it had been sitting in the gate/CI seam since
+`.211`.
+
 `gitleaks` remains red — the pre-existing finding recorded in `CONTEXT.md`
 (commit `8ea3527a`, a real Solana treasury address scrubbed from the working file
 but still in history). Founder call, deliberately not allowlisted; unrelated to

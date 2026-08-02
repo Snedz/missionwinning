@@ -21,24 +21,20 @@ jobs:
       PRIVATE_MODE: 'false'
       NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
-      # `.224` — the same placeholder `gate.mjs` has carried since `.198`, which
-      # this file never got.
+      # `.198` added this placeholder to `scripts/gate.mjs` and not here, and
+      # first-90.spec.ts's own comment says the key was "unset in CI until now —
+      # see gate.mjs", which reads as though this lane was covered. It was not:
+      # gate.mjs is the *local* gate. So the two lanes built different
+      # configurations, and the one test that depends on it passed locally and
+      # failed here — invisibly, because Actions was billing-blocked and this job
+      # died at `runner_id: 0` before it could run. A guard nobody runs is a
+      # guard that does not exist (`ciTruth.test.ts`).
       #
-      # `isPushSupported()` returns false without a VAPID public key, so every
-      # component behind it renders nothing. `.198` set it in the local gate and
-      # first-90.spec.ts's own comment says the key was "unset in CI until now" —
-      # but the key never reached this env block, so `Today shows one red action
-      # at 19:00 @gate` could pass under `npm run gate` and **never** here. Not
-      # flaky: deterministic, and red on every PR since `.211`.
-      #
-      # Which is this PR's subject arriving in its own CI run — `.213` found the
-      # gate and ci.yml had silently diverged, and the comment claiming otherwise
-      # is what kept it invisible.
-      #
-      # Safe, for the reason recorded at the same constant in `gate.mjs`: this is
-      # the public half of a keypair and only gates whether the UI draws. Nothing
-      # can subscribe — the server has no private key, and no test grants
-      # notification permission.
+      # `isPushSupported()` returns false without a VAPID public key, so the push
+      # opt-in renders *nothing* and the evening day-review assertion has no
+      # element to measure. Safe: this is the public half of a keypair and only
+      # gates whether the UI draws. Nothing can subscribe — the server has no
+      # private key, and no test grants notification permission.
       NEXT_PUBLIC_VAPID_PUBLIC_KEY: BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
     steps:
       - uses: actions/checkout@v4
