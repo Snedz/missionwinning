@@ -1,7 +1,7 @@
 /**
  * Empty-state, error-recovery and calendar strings — merged into `common`.
  *
- * `.225`. English-first `Record<string, string>` per language, the
+ * `.226`. English-first `Record<string, string>` per language, the
  * [`feedbackLocales`](./feedbackLocales.ts) / [`firstStepsLocales`](./firstStepsLocales.ts)
  * shape, so a language can carry the lines that matter to it without a
  * fifteen-way pass blocking the wave. Every lookup falls back to `EN`.

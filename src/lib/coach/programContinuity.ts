@@ -2,7 +2,7 @@
  * Where this session sits in the athlete's own history — "SESSION 14 · PUSH /
  * PULL / LEGS".
  *
- * The reference app for `.224` shows "WORKOUT #2 · Foundation: Advanced
+ * The reference app for `.225` shows "WORKOUT #2 · Foundation: Advanced
  * Bodyweight Program · Phase 1", and continuity is the strongest idea in it: a
  * session that knows its place in a progression is a different object from a
  * workout that happens to be today's. Mission Winning had none of that on

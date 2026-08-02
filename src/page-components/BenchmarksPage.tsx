@@ -110,7 +110,7 @@ export function BenchmarksPage() {
   }, [summaries]);
 
   /*
-   * `.225` — the starters render in **both** branches.
+   * `.226` — the starters render in **both** branches.
    *
    * These four one-tap session launchers sat inside the has-data `else` only, so
    * they were visible exclusively to athletes who already had benchmark data —

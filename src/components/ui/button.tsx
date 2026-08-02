@@ -26,13 +26,13 @@ const buttonVariants = cva(
         /**
          * A chosen option — a filter chip, a unit toggle, a days-per-week pick.
          *
-         * `.225` — this existed only as the default variant at ~20 sites
+         * `.226` — this existed only as the default variant at ~20 sites
          * (`selected ? 'default' : 'outline'`), which paints a *selection* in the screen's one
          * do-this-now colour. The zero-state sweep measured the result: nine of
          * fifteen routes over the one-red-action rule, `/profile` and `/programs`
          * entirely because of chips nobody would call actions.
          *
-         * Same treatment `.224` settled for the segmented control and the tab
+         * Same treatment `.225` settled for the segmented control and the tab
          * bar draw: tint ground under a 2px poster rule. Selected reads as
          * selected; red stays the thing you do next.
          */

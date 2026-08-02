@@ -232,7 +232,7 @@ export function HomeTodayLean() {
   /*
    * The same budget the dashboard shell runs, at the same prices.
    *
-   * `.224` — this shell had none. It stacked whatever mounted, in source order,
+   * `.225` — this shell had none. It stacked whatever mounted, in source order,
    * with no ceiling, while the other Today applied `planTodayBlocks` and spilled
    * the excess into a disclosure. Two screens for one product, degrading two
    * different ways, and the lean one belongs to the cohort least able to absorb
@@ -345,7 +345,7 @@ export function HomeTodayLean() {
         )}
       </div>
       {/*
-       * `.224` — the hero docks here too.
+       * `.225` — the hero docks here too.
        *
        * It was inline in this shell and docked in the other, so the athletes who
        * have never completed a workout — the entire `i-day`/`basic` cohort, the

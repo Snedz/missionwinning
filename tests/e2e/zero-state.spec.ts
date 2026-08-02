@@ -27,7 +27,7 @@ import { redActionCount } from './helpers/redActions';
  * `{filteredPrograms.map(…)}` with no fallback branch, but reaching it needs a
  * filter interaction, and a sweep that pretends to cover states it never visits is
  * the vacuity this file exists to prevent. Those were found by reading and fixed
- * by hand; see the `.225` LOG entry for the list.
+ * by hand; see the `.226` LOG entry for the list.
  */
 
 /**
@@ -68,12 +68,12 @@ const APP_ROUTES = [
  * ratchet, because the untranslated-by-default behaviour is what produced 665 in
  * the first place."*
  *
- * Two distinct classes hide in these numbers, and only one is fixed in `.225`:
+ * Two distinct classes hide in these numbers, and only one is fixed in `.226`:
  *
  *  1. **Red as a *selected* state.** `variant="default"` on a chosen filter chip
  *     (`ProgramsPage:95,108`), `bg-primary-fill` on a 1–5 rating scale
  *     (`DailyCheckIn:46`), on a unit toggle, on a days-per-week chip. A selection
- *     is not an action, and `.224` already settled what selected looks like —
+ *     is not an action, and `.225` already settled what selected looks like —
  *     `is-active-tab`: tint ground under a 2px poster rule. These are fixed here
  *     and the caps below drop accordingly.
  *

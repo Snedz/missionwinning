@@ -217,7 +217,7 @@ export function SignInPanel({
   return (
     <div className={compact ? 'space-y-4' : 'space-y-5'}>
       {/*
-        `.224` — a 2px rule, not a tinted pill.
+        `.225` — a 2px rule, not a tinted pill.
         Two compounding failures, both from fading a token picked for its
         contrast. `text-status-warn/90` composited to #976115 on the amber tint
         (3.79:1, axe serious). Restoring full strength got #8f5300 on #e2dbd3 —

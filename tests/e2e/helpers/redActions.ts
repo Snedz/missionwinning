@@ -74,7 +74,7 @@ export async function expectOneRedAction(page: Page, where: string): Promise<voi
  * no dock, so their one legitimate red action lives in `main`.
  *
  * So this counts red across the card surfaces and the dock together and allows
- * one. `.225` — until then the colour rule ran on `/log` alone, and
+ * one. `.226` — until then the colour rule ran on `/log` alone, and
  * `check-display-type`'s static half only scans `src/components/today`, so a
  * shared component could put a second red fill on any of the other fifteen
  * routes and nothing would say so. `EmptyState` was doing exactly that on nine.
@@ -90,7 +90,7 @@ export async function expectAtMostOneRedAction(page: Page, where: string): Promi
   ).toBeLessThanOrEqual(1);
 }
 
-/** The same measurement, as a number, for the `.225` per-route ratchet. */
+/** The same measurement, as a number, for the `.226` per-route ratchet. */
 export async function redActionCount(page: Page): Promise<number> {
   const red = await redControls(
     page,

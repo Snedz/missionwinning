@@ -27,7 +27,7 @@ type EmptyStateProps = {
 /**
  * Empty success state — two 2px rules, flush left, on the paper ground.
  *
- * **Its CTA is `outline`, not red.** `.225` — this rendered `variant="fitness"`
+ * **Its CTA is `outline`, not red.** `.226` — this rendered `variant="fitness"`
  * on nine routes, several of which already had their own red action, so the
  * primitive whose whole job is "here is the one thing to do" was manufacturing
  * second ones. The zero-state sweep measured it. Founder call: demote here once

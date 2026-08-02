@@ -1,7 +1,7 @@
 /**
  * Radix tabs, on the Modernist system.
  *
- * `.224` — this drew a `bg-muted` pill track with a **red-filled** active
+ * `.225` — this drew a `bg-muted` pill track with a **red-filled** active
  * trigger, which is one of the four answers the app used to have for "what does
  * a selected segment look like". It is now `.seg` / `.seg-opt`, the same as
  * `SegmentedControl` and the same tint-plus-2px-rule the tab bar draws.

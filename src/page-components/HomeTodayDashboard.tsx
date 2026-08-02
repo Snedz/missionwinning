@@ -487,7 +487,7 @@ export function HomeTodayDashboard() {
    * point: every feature since `.170` added a permanent +1 and no PR was ever
    * the one that made Today long.
    *
-   * **`.224` — what wins the slots, not how many there are.** The prices below
+   * **`.225` — what wins the slots, not how many there are.** The prices below
    * used to read `dashboard` 10, `day-review` 15, `intent` 20, `coach-invite`
    * 25 … `coach-today` 35, `coach-week` 45. With the four spillable slots a
    * commissioned athlete actually has, that ordering put the Mission Score, the
@@ -584,7 +584,7 @@ export function HomeTodayDashboard() {
    * After the first logged session, surface Mission Coach as the depth path —
    * but only while there is nothing better to show.
    *
-   * `.224`: this ran for `basic` *and* `readiness`, and `coach-week` mounts from
+   * `.225`: this ran for `basic` *and* `readiness`, and `coach-week` mounts from
    * `readiness` up. So a readiness athlete got the real week strip **and** a
    * card inviting them to go and get a week. An invitation is what you show
    * instead of the thing, never beside it.

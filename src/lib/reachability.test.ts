@@ -346,7 +346,7 @@ const UTC_DATE_SPELLINGS = [
   /toISOString\(\)\s*\.\s*substring\(\s*0\s*,\s*10\s*\)/,
   /toISOString\(\)\s*\.\s*substr\(\s*0\s*,\s*10\s*\)/,
   /*
-   * `.225` — **fifth appearance, and the list above was closed on the wrong axis.**
+   * `.226` — **fifth appearance, and the list above was closed on the wrong axis.**
    *
    * `.212` widened this from one slicing spelling to four and wrote that the list
    * was closed "because these are the only three ways JavaScript has to take the
@@ -376,7 +376,7 @@ const UTC_DATE_SPELLINGS = [
 /**
  * Surfaces where UTC *is* the right frame, each with the reason on the record.
  *
- * `.225` — the widened patterns caught three sites that are not defects: a
+ * `.226` — the widened patterns caught three sites that are not defects: a
  * founder admin panel and a server-composed email. There is no athlete and no
  * device timezone in either; the server's own frame is the only one available,
  * and `localDateKeyFromIso` there would resolve to UTC anyway while implying a

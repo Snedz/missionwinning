@@ -50,7 +50,7 @@ function DayCell({ day, label }: { day: MonthDay; label: string }) {
         /*
          * Future days are muted, **not faded**. The first draft used
          * `text-muted-foreground/50`, which axe measured at 2.42:1 (#9e9d9d on
-         * paper) — the same alpha-on-a-contrast-token defect `.224` fixed three
+         * paper) — the same alpha-on-a-contrast-token defect `.225` fixed three
          * times in one wave and `.127` before it. `--muted-foreground` at full
          * strength is 8.4:1 and reads as quieter than ink on its own.
          */

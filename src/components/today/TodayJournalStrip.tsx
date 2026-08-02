@@ -37,7 +37,7 @@ function formatWhen(at: string, locale: string): string {
   const d = new Date(at);
   if (Number.isNaN(d.getTime())) return at;
   const today = localDateKey();
-  // `.225` — `today` is a local key, so the comparison needs one too. The UTC
+  // `.226` — `today` is a local key, so the comparison needs one too. The UTC
   // date half made an evening entry east of UTC read as another day, printing a
   // date where the athlete should have seen a time.
   const day = localDateKeyFromIso(at);

@@ -14,7 +14,7 @@ interface Props {
 
 function rankDisplay(rank: number) {
   if (rank === 1) return <Medal className="h-4 w-4 text-status-warn" aria-label="1st" />;
-  // `.225` — was `text-slate-300`, stock Tailwind. Rank is already carried by
+  // `.226` — was `text-slate-300`, stock Tailwind. Rank is already carried by
   // position and the aria-label; the medals differ by tier, not by hue.
   if (rank === 2) return <Medal className="h-4 w-4 text-muted-foreground" aria-label="2nd" />;
   // Brass is retired (`.131`); this resolved to a neutral anyway.
@@ -25,7 +25,7 @@ function rankDisplay(rank: number) {
 function deltaDisplay(delta?: number) {
   if (delta == null || delta === 0) return <span className="text-muted-foreground">—</span>;
   if (delta > 0) return <span className="text-primary">▲{delta}</span>;
-  // `.225` — was `text-red-400/90`, a raw Tailwind palette red. `check-design-system`
+  // `.226` — was `text-red-400/90`, a raw Tailwind palette red. `check-design-system`
   // forbids raw hex but not palette classes, so this survived the rebrand the same way
   // `.221`'s blue/green chart did. Direction is carried by the ▼ glyph, not colour
   // (WCAG 1.4.1), so muted ink is enough and red stays the one action colour.
@@ -36,7 +36,7 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
   const { t } = useTranslation();
 
   /*
-   * `.225` — nothing to list means no list.
+   * `.226` — nothing to list means no list.
    *
    * This rendered unconditionally: the bordered box, then the four-column header
    * strip (`# / Operator / Score / Δ`), then an empty `<ul>`. On the class scope

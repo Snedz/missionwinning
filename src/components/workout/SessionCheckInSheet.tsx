@@ -67,7 +67,7 @@ function QuickRow({
             type="button"
             onClick={() => onChange(n)}
             aria-pressed={value >= n}
-            /* `.225` — ink fill, not red, matching `DailyCheckIn`'s scale. The
+            /* `.226` — ink fill, not red, matching `DailyCheckIn`'s scale. The
                two are the same control implemented twice (`.178`, recorded not
                fixed: extracting it is a refactor, painting one of them a
                different colour from the other is a defect). Red belongs to this

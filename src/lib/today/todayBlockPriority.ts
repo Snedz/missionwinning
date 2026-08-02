@@ -9,7 +9,7 @@
  *
  * **The rule the numbers encode: what to do outranks how you did.**
  *
- * Before `.224` the prices were `dashboard` 10, `day-review` 15, `intent` 20,
+ * Before `.225` the prices were `dashboard` 10, `day-review` 15, `intent` 20,
  * `coach-invite` 25, `week-recap` 30, `coach-today` 35, `coach-week` 45 — and
  * replaying `planTodayBlocks` over the blocks a real athlete mounts showed a
  * readiness evening screen carrying `coach-invite`, a card asking them to go and

@@ -123,7 +123,7 @@ export function FuelLogSheet({
   );
 
   const modeTabs = (
-    /* `.224` — was four `Button`s whose active state was `bg-card` on a
+    /* `.225` — was four `Button`s whose active state was `bg-card` on a
        `bg-card` parent: 1.01:1, the same invisible-control trap `.155` found on
        the check-in scales. Now the one segmented control, where selected is a
        tint ground under a 2px poster rule. */

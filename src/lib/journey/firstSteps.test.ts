@@ -9,7 +9,7 @@
  * founder dashboard, and the gate deciding "are ten beta users ready" could not
  * go green however well the beta went.
  *
- * `.224` puts a six-item checklist on Today, five of whose items are exactly the
+ * `.225` puts a six-item checklist on Today, five of whose items are exactly the
  * pillars that decision said are not gates. That is safe only for as long as
  * *complete* keeps meaning one thing. These rules say so executably, because the
  * pull to make a visible checklist into a requirement is the whole reason the

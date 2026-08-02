@@ -22,7 +22,7 @@ export function LearnCoursePage() {
   const { premium, loading } = usePremium();
   const [chapters, setChapters] = useState<GuideChapter[]>([]);
   /*
-   * `.225` — a failure and an empty catalogue are different facts.
+   * `.226` — a failure and an empty catalogue are different facts.
    *
    * The catch swallowed the error into `setChapters([])`, so the two states were
    * indistinguishable downstream — which is why the one muted `<p>` that

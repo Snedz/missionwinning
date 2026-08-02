@@ -1,7 +1,7 @@
 /**
  * The board draws no furniture over an empty result set.
  *
- * `.225` — `LeaderboardTable` rendered unconditionally: a bordered box, a
+ * `.226` — `LeaderboardTable` rendered unconditionally: a bordered box, a
  * four-column header strip (`# / Operator / Score / Δ`), then an empty `<ul>`.
  * On the class scope that is the *normal* state, not an edge case — `rank.ts`
  * builds class entries from `classRows` alone and pacers are deliberately

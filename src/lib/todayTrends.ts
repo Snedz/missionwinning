@@ -73,7 +73,7 @@ export function buildTodayTrends(
   const sessionsByDay: Record<string, number> = {};
 
   /*
-   * `.225` — two defects in three lines, both already swept for elsewhere.
+   * `.226` — two defects in three lines, both already swept for elsewhere.
    *
    * `w.completedAt.split('T')[0]` is the exact spelling `.212` banned and fixed
    * at fifteen sites: an ISO string is UTC, a calendar date is local, so east of

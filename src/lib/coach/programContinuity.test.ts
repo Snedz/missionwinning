@@ -4,7 +4,7 @@
  * `.195`: `weeklyDebrief` read `(log as { personalRecords?: number }).personalRecords`
  * — a field existing nowhere else in the repo — so the recap card's PR line was
  * always 0 and dead on arrival, and the hand-written cast is precisely what
- * stopped the compiler from saying so. `.224` adds an eyebrow that says where a
+ * stopped the compiler from saying so. `.225` adds an eyebrow that says where a
  * session sits in a progression, which is the same temptation with a nicer
  * label: a week number would look right and be unbacked, because
  * `useCoachPlan` overwrites the previous plan every Monday.

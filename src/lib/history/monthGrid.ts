@@ -1,7 +1,7 @@
 /**
  * A month of days, and what the app can honestly say about each one.
  *
- * The reference design for `.225` marks every non-training day with a red ✕ —
+ * The reference design for `.226` marks every non-training day with a red ✕ —
  * thirty of them for a month you did not train. Mission Winning refuses that
  * twice over.
  *

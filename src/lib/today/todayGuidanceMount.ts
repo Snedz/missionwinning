@@ -4,7 +4,7 @@
  * `.195` fixed this shape for the Day in Review; `dayReviewMount.ts` is the
  * pattern. Two more cards had it and were missed:
  *
- *   - **the first-run guidance card** (`BetaWelcomeBanner` then, `FirstStepsCard` since `.224`) — the card that tells a new athlete the path
+ *   - **the first-run guidance card** (`BetaWelcomeBanner` then, `FirstStepsCard` since `.225`) — the card that tells a new athlete the path
  *     ("Finish I-Day, log one workout, then open Mission Coach") — is mounted
  *     only in `HomeTodayDashboard`. `HomePage` sends `i-day` and `basic` to the
  *     lean shell, and a new tester stays `basic` until they *complete* a

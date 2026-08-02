@@ -114,7 +114,7 @@ export function ProgramsPage() {
         ))}
       </div>
 
-      {/* `.225` — a filter miss used to render an empty `div`: a filter row above
+      {/* `.226` — a filter miss used to render an empty `div`: a filter row above
           a lone footnote, with nothing saying why. `LibraryPage` already solved
           the identical case with an EmptyState and a clear-filters action. */}
       {filteredPrograms.length === 0 && (
