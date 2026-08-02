@@ -10,6 +10,133 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-01 — The bootstrap the visual gate could not run (`.254`)
+
+The visual suite has four cases and **zero committed baselines**.
+`home-reduced.png` never had one at all, so `/` — the most-linked page in the
+product — has been silently self-approving on every run since the case was
+written. The other three were deleted in `.221` for depicting the pre-Modernist
+navy/emerald design.
+
+`.200` had already fixed the worse half. The job used to run
+`--update-snapshots || true` and then re-run against the files it had just
+written, so it was green every time over nothing. It now fails loudly with
+instructions instead.
+
+**The instructions named a command nobody could run.**
+
+    Bootstrap them deliberately, on a Linux runner:
+      npx playwright test --config=playwright.config.ts --grep @visual --update-snapshots
+
+This job is the only Linux/Chromium environment the project has. Baselines
+generated anywhere else differ by font hinting and antialiasing alone, which is
+exactly how a pixel comparison stops meaning anything. So the loud failure was
+correct **and terminal**: the only way out of it was a command that could not be
+executed, and the suite has had no baselines since.
+
+### An input, not a flag
+
+`bootstrap_baselines` is a named `workflow_dispatch` input, **defaulting false**,
+that generates instead of checking. Deliberately not a shell flag and not an
+auto-fallback:
+
+- the normal path stays a loud failure;
+- the weekly schedule supplies no inputs, so it can never reach the generate —
+  a scheduled run that regenerates its own baselines is `.200`'s check that
+  cannot fail, rebuilt;
+- bootstrapping stays something a person decides to do.
+
+The generate **asserts nothing**, on purpose. It writes the PNGs, the existing
+`always()` upload carries them off the runner, and the real gate is a human
+opening every file. `.221` deleted the old baselines rather than refresh them
+precisely because *"the obvious response to four huge visual diffs is
+`--update-snapshots` without looking, which launders whatever the app happens to
+render that day into the new truth."* A pass/fail on freshly written files would
+be that laundering with a green tick on it.
+
+### The guard, narrowed rather than weakened
+
+`ciTruth`'s *"the visual job fails when it has no baselines"* forbade
+`--update-snapshots` anywhere in the step, and this change trips it.
+
+The rule was blunter than its own reasoning. What made the old behaviour a
+defect was never the flag — it was that the **default path** wrote its own
+baselines and then re-read them. The rule is now about reachability: a generate
+may exist, but only behind an explicit default-false input, and it must not
+assert.
+
+Six mutants, all killed: the generate moved onto the default path; the input
+defaulting `true`; the generate asserting instead of exiting 0; `exit 1`
+softened to `exit 0`; the exit code swallowed with `|| true`; and the input
+renamed away while the generate stays.
+
+### Near-miss, third of its kind
+
+The block-extraction regex ended on `\n\s*fi` — which matched the `fi` inside
+`find` on the next line. The guard read one line of the block it was judging and
+failed on a fragment. That is the third time in this programme a lazy quantifier
+has stopped somewhere plausible and wrong, after `.221`'s `border-radius: 0` and
+`.223`'s `prLine: null`. Anchored to `\n\s*fi\n`.
+
+### Three baselines, not four
+
+`/bundle` self-skips while FREE_BETA redirects it to `/log`, refusing to
+snapshot a page under the wrong name. It resumes automatically the day Bundle
+ships. So this produces `guide-human-performance`, `exercise-squats` and
+`home-reduced`.
+
+### The review found something, which is the point
+
+The three pages were rendered and **looked at**, against the Modernist rules:
+paper ground, one red, radius 0, Archivo, no navy or emerald, and each image
+actually the page its filename claims.
+
+`exercise-squats` and `home-reduced` pass. Paper `#f3f2f2`, poster red on the
+CTAs, square corners, Archivo throughout. The homepage's grey photo blocks are
+`GrayscalePhoto`'s deliberate no-`base` state ("PHONE ON A BENCH, MID-SET"), not
+missing assets.
+
+**`guide-human-performance` does not.** Its chapter hero is a near-black render
+with a teal/emerald glow — a silhouette against a green ring — which is the
+navy/emerald palette `.131` retired, sitting on a paper page. Measured across
+the whole set rather than judged from one image:
+
+| Chapter hero | dark | green/teal | red |
+|---|---|---|---|
+| assessments-progress | 96% | 5% | 0% |
+| getting-started-mw | 89% | 0% | 1% |
+| human-performance | 89% | 6% | 0% |
+| movement-mechanics | 99% | 1% | 0% |
+| nutrition-recovery | 98% | 3% | 0% |
+| programming-tuning | 97% | 4% | 0% |
+
+All six, 89–99% dark, essentially zero red. `.137` re-inked the guidebook
+**cover** and rebuilt the PDF; the six chapter heroes were not in that pass, and
+nothing could have said so — `check-design-system` reads source, and these are
+`.webp` files in `public/`. A palette rule that scans code cannot see a palette
+baked into an asset. That is `.221`'s finding one layer out.
+
+So `guide-human-performance.png` **is not a baseline to commit**. The image is
+not wrong about what the page renders; it is wrong to enshrine, because the
+approved truth would then be the off-brand state, and the PR that re-inks those
+heroes would read as a regression. That is the laundering `.221` deleted the old
+baselines to avoid. Recorded as its own item.
+
+### Blocked, and named
+
+Committing the CI-generated PNGs needs the `visual-diffs` artifact, and this
+session's token cannot read Actions (`403 Resource not accessible by
+integration` on the run endpoint, so also on artifacts). The images reviewed
+above were rendered locally at the same viewport and `reducedMotion: 'reduce'`
+— which answers every question in the review list, since all of them are about
+design and content — but they are **not** committable baselines: local font
+hinting and antialiasing differ from the runner, which is the entire reason the
+suite requires CI-generated files.
+
+The mechanism ships here and the run is dispatched. Downloading the artifact and
+committing the two good baselines is founder-owned until this session has
+Actions read access.
+
 ## 2026-08-01 — The settle rule that could not see loading (`.253`)
 
 Two correct decisions, composing into a blind spot.
@@ -1359,182 +1486,3 @@ via `defaultValue` — `npm run i18n:fill` has not been run for the ~14 new keys
 Verified at 390×844 in a real browser, not inferred: Today's order, the card and
 sheet, the segmented control's computed colours and keyboard, and axe clean with
 the sheet **open** (`.215`).
-
-## 2026-08-01 — The column that hid four more controls (`.224`)
-
-`.223` shipped `tests/e2e/fuel-floating-action.spec.ts` after "Log weight" was
-found **100% occluded** by the Fuel FAB at 375px. It guards that one control and
-leaves the rest of the column as a `TODO(founder)` with three options and one
-instruction: *tag the describe block `@gate` only if it passes.*
-
-This is the decision, and what the decision found.
-
-### The policy
-
-**A control may share the column; it may not *be* the column** — `overlapPx < width`.
-
-The other two options are both unavailable rather than merely stricter or looser:
-
-- *Zero overlap* cannot pass. The FAB is 121px wide in a 295px content column, and
-  the meal-description input is 295px. Every full-width control on the page fails
-  by construction, so the rule could only ever be a ratchet, never a gate — which
-  is what the TODO said, and measuring agrees.
-- *Guard only the named control* re-guards one bug and none of its siblings. The
-  reported defect was never specific to "Log weight"; it is specific to being a
-  short control in the end corner, and the page had four more of those.
-
-The line the surviving rule draws is the line the bug is actually on. A wide
-control clipped at one edge stays visible and reachable at every scroll offset. A
-control narrower than its own overlap is somewhere inside the FAB's x-range
-*entirely*, so the offset that brings it level with the FAB hides all of it.
-
-### Four live ones, and they were all alignment
-
-Measured at 375px, FAB at `x=[238,359]`:
-
-| Control | x | width | overlap |
-|---|---|---|---|
-| "Use base" (`FuelAdaptBanner`) | `[251,322]` | 71 | 71 |
-| "Edit targets" (`FuelTargetsEditor`) | `[248,335]` | 87 | 87 |
-| "Snack" meal tab (`FuelQuickLogPanel`) | `[266,325]` | 59 | 59 |
-| water stepper "+" (`FuelQuickLogPanel`) | `[302,335]` | 33 | 33 |
-
-None of these is about what the control *says*. Three are `justify-between` or
-`ms-auto` — an end-aligned short button, which on a phone means the bottom-end
-corner, which is the corner a viewport-fixed FAB owns. The fourth is four
-left-packed meal chips, where the fourth chip lands there by arithmetic.
-
-So the fixes are alignment: `flex-col items-start` until `sm` on the two rows that
-end-align a small button, `sm:ms-auto` on the water stepper, and a two-up grid for
-the meal tabs.
-
-**`grid-cols-4` would have moved that chip without fixing it** — four equal
-columns across 295px is ~69px each and the last one still ends at the container
-edge, still inside a 121px FAB, still fully occluded. Half-width tabs clear the
-FAB's left edge whatever the label says in any locale, which is the property
-worth having rather than a width that happens to work in English.
-
-### The guard was checked against the bug it is named after
-
-A guard whose failure mode has never been observed is `.204`'s defect. Reverting
-one fix — `sm:ms-auto` back to `ms-auto` — fails the spec with
-
-```
-+     "label": "+",
-+     "overlapPx": 33,
-+     "width": 33,
-```
-
-which is the control, the number, and the reason, without opening a screenshot.
-
-One narrowing the first draft needed: `overlapPx >= width` holds vacuously for a
-zero-width element (`0 >= 0`), reporting a control that cannot be hidden because
-it is not drawn. The filter requires `width > 0`.
-
-`@gate` e2e 52→53. No unit tests changed; this is entirely a browser-measured
-invariant and a layout consequence of it. Two failures in `hero-flows` (public
-exercise-page CTA) and `premium-pillars` (Mind guided-session player) reproduce
-unchanged on a clean tree — pre-existing, neither on the Fuel path.
-
-### Carried, not authored: one CI block (it was two)
-
-Actions is running again, and both of its checks were red on this PR for reasons
-that have nothing to do with a Fuel column.
-
-`build-and-test` failed on `first-90`'s *"Today shows one red action at 19:00"* —
-the push opt-in is not mounted, because `ci.yml`'s build env omitted
-`NEXT_PUBLIC_VAPID_PUBLIC_KEY` while `scripts/gate.mjs` sets it (`.198`). Same
-controlled experiment either way: a local build without the key reproduces the
-failure exactly, and with it all 53 pass. `gitleaks` never scanned anything — it
-403s on `ScanPullRequest` listing the PR's commits, because that job declares no
-`permissions:` block and inherits a repository default without `pull_requests`.
-Identical failure on #185, an unrelated diff, while PRs opened directly are green.
-
-Both already had correct fixes on `fix/ci-extended-env-parity` (`.235`), open at
-the time, whose own note reads *"#178, #179, #180 and #181 all carry an identical
-block. The conflict is textual, not semantic — take either side."* So both were
-carried here **verbatim** rather than re-authored, on the theory that identical
-text merges as a no-op.
-
-**Then #185 merged the `ci.yml` half to master with a different comment**, which
-is the conflict that note predicted, and this branch took master's side whole —
-so `ci.yml` is no longer part of this ship at all. `gitleaks.yml` still is:
-master does not have that block yet. Neither is my finding; the diagnosis was
-reached independently, the fix was not.
-
-### The gate that went green on a retry
-
-With `ci.yml` fixed the job passed — and its summary read **`1 flaky`, 52
-passed**. `offline.spec.ts`'s *"a set logged offline survives, and reconnecting
-does not lose it"* had failed and passed on retry, so the checkmark was green
-and the spec guarding **the offline promise** had not actually held. That is the
-`.235` complaint one file over: a check people re-run until it passes is a check
-they have stopped reading.
-
-The cause is in the product, not the test:
-
-```ts
-// @serwist/next sw-entry.ts
-if (self.__SERWIST_SW_ENTRY.reloadOnOnline) {
-  window.addEventListener("online", () => location.reload());
-}
-```
-
-`next.config.js` sets `reloadOnOnline: true`, so **the app reloads itself the
-moment connectivity returns** — and the spec's next line was
-`page.goto('/active')`, against a page already at `/active`. Two navigations,
-same URL, started microseconds apart: *"Navigation to /active is interrupted by
-another navigation to /active"*.
-
-**The race was never 50/50, and measuring said so.** With the `goto` removed
-entirely, reconnecting fires **two** main-frame navigations and wipes a marker
-stamped on `window` — the reload always happens; the `goto` only sometimes got
-there first. Ten local runs of the unfixed spec passed, which is exactly why
-this survived: it is a CI-timing coin flip, not a local one.
-
-So the spec now waits for the reload the product performs instead of driving a
-competing one. Deterministic, and a truer assertion — that reload is what a
-returning athlete actually gets. **Awaited, not assumed**: `reloadOnOnline: false`
-+ rebuild kills it with `page.waitForEvent: Timeout 15000ms exceeded while
-waiting for event "framenavigated"`, so it cannot go vacuous if that option is
-ever turned off. One mutant, killed.
-
-### One flake reported rather than fixed
-
-`first-90`'s *"every control in the feedback sheet is thumb-sized"* failed once,
-in the first full-suite run after the merge, and has not reproduced since —
-three full `@gate` suites and a run in isolation, all green.
-
-The obvious hypothesis is **wrong**: `boundingBox()` does report the transformed
-rectangle, so a control measured mid-animation would measure short — but
-`AdaptiveOverlay`'s entrance is `slide-in-from-bottom`, a *translate*, which does
-not change height, and the `zoom-in-95` that would is `md:` only while this suite
-runs at 390px. No cause established, so no fix: a speculative change here would
-be a guard written about a defect nobody has characterised, which is how this
-repo gets tests that cannot fail. Written down instead, with what is ruled out.
-
-### The status doc that contradicted itself about its own CI
-
-`CONTEXT.md` `## Now` answered *"does CI run?"* **twice, with opposite answers** —
-the standing Status table said *"billing-blocked. Every job dies in seconds with
-`runner_id: 0`"*, while the Ops bullet twelve lines down said *"cleared; Actions
-works again"*. `CLAUDE.md` states the rule this breaks: *whether Actions is
-currently running is recorded in exactly one place — do not restate it
-elsewhere.* `gate.mjs`'s header records the repo paying for this exact
-contradiction once already, across two files; it had since moved inside one.
-
-Measured today, both rows are now true rather than merely current: Actions ran
-`build-and-test` to completion in 7m22s on this PR, and gitleaks is green. The
-gitleaks row also attributed its redness to the `8ea3527a` Solana address, which
-was never the cause — on a `pull_request` event the action scans only the PR's
-own commits, so that history is not in scope at all. The finding stands and stays
-un-allowlisted; the row now says what actually made the check red.
-
-The Ops bullet no longer restates the Actions fact. **No guard written for this
-one**, deliberately: the only mechanical rule available is "the word Actions
-appears in one place", and existing ship bullets narrate CI history legitimately
-(`.213` does), so that check would fail on correct content. A guard keyed to a
-spelling of *"is it blocked"* is the shape this repo has already paid for four
-times.
-
----
