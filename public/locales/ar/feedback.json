@@ -19,5 +19,20 @@
   "feedbackThankEarly": "✓ Early access to updates",
   "feedbackThankEmail": "Watch your email for updates + community drops.",
   "feedbackBackToday": "العودة إلى اليوم",
-  "feedbackSignInDesc": "Sign in to link feedback to your journey and sync across devices."
+  "feedbackSignInDesc": "Sign in to link feedback to your journey and sync across devices.",
+  "feedbackCardTitle": "Tell us what broke",
+  "feedbackCardLead": "A bug, a confusing screen, or something you wish it did. One box, no account, and it sends even if you write it with no signal.",
+  "feedbackCardOpen": "Send feedback",
+  "feedbackSheetEyebrow": "Beta",
+  "feedbackSheetTitle": "What got in your way?",
+  "feedbackSheetPlaceholder": "What broke, what confused you, or what you wish it did.",
+  "feedbackSheetRemaining": "{{left}} characters left",
+  "feedbackSheetEmailLabel": "Email (optional)",
+  "feedbackSheetEmailHelp": "Only so we can reply. Leave it blank and send anyway.",
+  "feedbackSheetContext": "Sent with your app version and where you have been ({{screens}}), so we can find it.",
+  "feedbackSheetSend": "Send",
+  "feedbackSheetSentTitle": "Got it",
+  "feedbackSheetSentBody": "Queued. It sends when you have a connection — you can close the app.",
+  "feedbackSheetSentAnon": "No email, so there is no way to reply — but it was read.",
+  "feedbackSheetDone": "Close"
 }

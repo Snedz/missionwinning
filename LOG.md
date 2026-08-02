@@ -10,6 +10,71 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-01 — The exporter that undid the splitter (`.252`)
+
+`npm run export-locales` and `npm run check-locale-split` disagreed **by
+construction**, and the second could never survive the first.
+
+The exporter wrote, per language, every namespace **plus a merged
+`common.json`**. `split-locale-packs.mjs` enforces the opposite: each namespace
+trimmed to the keys English puts in it, and `common.json` deleted as
+`REDUNDANT` — it was the entire 1,687-key catalogue repeated fifteen times, and
+`fetchLocaleHttpOverrides` *preferred* it, so leaving it meant the loader kept
+choosing the big file.
+
+`.222` cut this directory 30.8 MB → 2.1 MB and built the splitter to be
+**re-runnable** for exactly one stated reason: *"a cleanup that cannot be
+repeated undoes itself the next time the fill tool runs."* It did. `.250` ran the
+exporter while checking which CI steps passed locally, committed the 394
+regenerated files with `git add -A`, and CI caught it on `.222`'s own guards.
+
+The mitigations were ordering — `check-locale-split` before `export-locales` in
+`ci.yml` — and remembering. Both worked *around* the conflict rather than
+removing it, which meant the shipped translator files had also quietly drifted
+behind the source, because nobody could safely re-export.
+
+**The fix is that the producer emits what the checker wants.** Each namespace is
+trimmed to `Object.keys(entry.stringsFor('en'))` and iterated in that order,
+which drops foreign keys and stabilises key order in one pass — the same two
+effects, from the same rule, as the splitter. No `common.json`.
+`buildMergedCommonStrings` stays exported: `i18n-fill-missing` uses it to find
+gaps, which is a different job from shipping a file to a browser.
+
+The splitter reads its schema from `public/locales/en/*.json`, which *is* this
+script's output, so the two now agree by construction rather than by a copied
+rule. A guard pins that: if the splitter stops deriving from English, the
+exporter's assumption is silently void.
+
+**252,286 out-of-namespace keys** were being written. `export-locales` is now
+safe to run at any point, and the round-trip passes in the order that used to
+break it.
+
+### What re-exporting exposed
+
+Fifteen `feedbackCard*`/`feedbackSheet*` keys from `.215` existed in the source
+modules and had never reached `public/locales` — the drift the conflict caused.
+Additive, and now shipped.
+
+And two keys went the other way. `coachWhySteadyWeek` and
+`coachWhyPlateauDeload` sat in the committed `en/coach.json` but **in no source
+module at all** — while `loadGuard.ts:42` and `progression.ts:173` still emit
+them. [`PlanExerciseLine`](../src/components/coach/PlanExerciseLine.tsx) renders
+`i18n.exists(whyKey) ? t(whyKey) : ''`, so nothing broke loudly: the coach
+decided a week was a plateau deload, wrote down why, and showed the athlete a
+**blank line** — in all fifteen languages, for as long as those keys have been
+missing.
+
+The tests made it worse. `progression.test.ts:117` and `loadGuard.test.ts:51`
+both assert the engine picks the right `whyKey`, and were green throughout —
+proving the *choice* while nothing proved the *string*. `.184` one layer down
+into i18n.
+
+Restored, with a guard that **discovers** rather than enumerates (`.220`): every
+`coachWhy*` literal scraped out of `src/lib/coach/` must have an English entry,
+so the next reason added is covered without anyone remembering to list it.
+
+Tests 1186 → 1191.
+
 ## 2026-08-01 — Replay a day (`.251`)
 
 The other half of `.247`, and the last of the four product references. Tesla's
@@ -1467,95 +1532,3 @@ casting.
 Tests 1178→1186.
 
 ---
-
-## 2026-07-31 — Take the weight out (`.222`)
-
-The brief was the "product excellence at the edges" thesis: capabilities keep
-improving where they lie askance to the primary vector, and the mechanism is
-**part and process elimination**. That maps here for a specific reason — the
-primary vector is blocked on `MAIL_POSTAL_ADDRESS`, which no agent can set.
-
-So: weight out of the Model X.
-
-### The same translations, three times
-
-| Copy | Size | Reaches the app via |
-|---|---|---|
-| `src/i18n/*Locales.ts` | 504 KB | compiled in, `hydrateResources.ts` |
-| `src/i18n/packs/*.json` | 1.1 MB | `applyLocalePack` |
-| `public/locales/**` (435 files) | **32 MB** | fetched by `LocaleHttpSync` |
-
-Not variants. `public/locales/ja/common.json` and `src/i18n/packs/ja.json` shared
-**947 keys with 100% byte-identical values**.
-
-### And every athlete paid for it, every load
-
-`LocaleHttpSync` is mounted in `app/i18n-pwa-provider.tsx:199` and fetched
-`common.json` — the **entire** 1,687-key catalogue, whether you opened `/log` or
-`/guide`, at **40–49 KB gzipped**, with `cache: 'no-cache'` so the browser cache
-never helped — to merge in values already present in the bundle.
-
-`.209` spent a whole PR taking 306 KB of locale packs off the critical path. This
-put ~45 KB back where `bundle-budget.mjs` **cannot see it**: that budget measures
-gzipped *initial JS*, and this is a runtime `fetch`. A budget measuring one thing
-while the cost moved somewhere it cannot look — the shape this repo keeps
-finding.
-
-### Three changes
-
-**The hotfix path is kept, and made opt-in.** Founder call. Correcting a string
-without a deploy is a real capability; it just was not worth its price. A
-translator turns it on with `?locale-http=1` (sticky across reloads) and off with
-`=0`; the `NEXT_PUBLIC_LOCALE_HTTP` kill switch still wins over both. Nothing
-about the loader, the merge or the fallback changed — only *when* it runs.
-
-**The packs are split to the English schema.** English was the only one already
-correct: 0.24 MB with disjoint namespaces, while `ja/coach.json` and
-`ja/fuel.json` shared 947 keys. `scripts/split-locale-packs.mjs` trims every
-language to the keys English declares for that namespace and drops `common.json`
-(every key again, a fourth copy — and `fetchLocaleHttpOverrides` *preferred* it,
-so leaving it would have kept the loader on the 1,687-key file).
-
-**30.8 MB → 2.1 MB. 93% removed.** `public/` went 38 MB → 5.4 MB.
-
-It is a re-runnable script with a `--check` gate step rather than 406 hand
-edits, because translations get regenerated and a cleanup that cannot be repeated
-undoes itself the next time the fill tool runs.
-
-### Verified on the wire, not in the diff
-
-`.221`'s lesson, applied on arrival. A built server, Playwright network capture,
-fresh browser per language, service workers blocked:
-
-```
-en: locale-reqs=0    ja: locale-reqs=0    es: locale-reqs=0
-```
-
-Zero. And Spanish still renders translated — *"Día I", "Aproximadamente dos
-minutos", "Bienvenido, miembro de la misión"* — so the split moved bytes without
-moving meaning. The opt-in path still fetches (58 requests, confirmed).
-
-Japanese `/welcome` shows English, and that is **pre-existing**: `ja/welcome.json`
-was 51 of 51 keys identical to English before the split as well. Checked rather
-than assumed, because "my change broke Japanese" and "Japanese was never
-translated here" look identical from a screenshot.
-
-### Two things found on the way
-
-**Removing `common.json` exposed a latent conflict.** Four keys are declared in
-**two namespaces with different English values** — `fuelTitle` is the Fuel page
-heading in `fuel.json` and the Today card heading in `today.json`. Whichever
-merges last wins, and `common.json` was silently resolving it. `.178` in the
-data. Inert for athletes now that nothing fetches these files, so it is recorded
-with a guard and the fix stated — splitting the key needs call-site edits, which
-is a different PR from one about weight.
-
-**`localeCommonJsonPath` became dead code kept alive only by its own test.** Once
-`common.json` was gone it had exactly one reference left: the assertion checking
-it. Both went. The best part is no part.
-
-### Falsification
-
-`http-sync-fetches-by-default`, `kill-switch-loses-to-opt-in`,
-`pack-regrows-full-catalogue`, `common-json-returns`,
-`footprint-ratchet-raised`, `copies-drift`, `new-namespace-collision`.

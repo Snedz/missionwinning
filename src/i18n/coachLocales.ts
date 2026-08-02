@@ -47,6 +47,16 @@ type CoachStrings = {
   coachWhyRepProgress: string;
   coachWhyHold: string;
   coachWhyHoldHard: string;
+  /**
+   * `.252` — restored. Both are emitted by the engine (`loadGuard.ts:42`,
+   * `progression.ts:173`) and had **no entry here at all**, so
+   * `PlanExerciseLine`'s `i18n.exists(whyKey) ? t(whyKey) : ''` rendered an
+   * empty line for a steady week and a plateau deload, in every language. The
+   * stale `public/locales/en/coach.json` still carried the copy, which is where
+   * these strings come from.
+   */
+  coachWhySteadyWeek: string;
+  coachWhyPlateauDeload: string;
   coachWhyDeload: string;
   coachWhyRecovery: string;
   coachWhyBodyweightReps: string;
@@ -134,6 +144,8 @@ const en: CoachStrings = {
   coachWhyRepProgress: 'Building reps before adding weight.',
   coachWhyHold: 'Hold this load until reps feel solid.',
   coachWhyHoldHard: 'Hard sets — hold load and consolidate.',
+  coachWhySteadyWeek: 'Big week against your own recent average — holding here.',
+  coachWhyPlateauDeload: 'No new best in a month — lighter week to rebuild from.',
   coachWhyDeload: 'Recovery week — lighter load, same patterns.',
   coachWhyRecovery: 'Mobility and activation for better training.',
   coachWhyBodyweightReps: 'Add reps until the set feels challenging.',
