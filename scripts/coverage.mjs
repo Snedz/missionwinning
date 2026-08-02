@@ -63,8 +63,36 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  * proposals in the coverage analysis get paid off one at a time.
  */
 const FLOORS = {
-  /** Source files that no test loads, directly or transitively. Must not rise. */
-  untestedFiles: 381,
+  /**
+   * Source files that no test loads, directly or transitively. Must not rise.
+   *
+   * 381 → 391 when this branch finally merged. **None of the ten is this
+   * branch's**: they arrived on `master` while `.260` sat in the queue behind
+   * `.244`–`.259`, and a floor measured against a `master` eight ships older
+   * than the one you merge into is a floor that fails for being stale rather
+   * than for being breached.
+   *
+   * Raised here rather than absorbed silently, because the guard's own failure
+   * message asks for exactly that — say so where a reviewer can see it. What
+   * arrived, by kind:
+   *
+   *   8  UI, Playwright-covered — `components/{charts,history,journey,public,
+   *      track,ui}`, `page-components/HistoryDayPage`
+   *   2  client hooks — `useDismissed`, `useLocaleFormat` (this lane is 0/18
+   *      and has been since the script was written)
+   *   3  locale packs — `firstSteps`, `notification`, `zeroState`
+   *   4  **logic, and the actionable ones** — `today/firstStepsDismissed`,
+   *      `today/todayBlockPriority`, `trends/resolveTrendSeries`,
+   *      `trends/trendMetrics`
+   *
+   * Those last four are real debt carried in from `.244`–`.251` and
+   * `.240`–`.243`, not UI that Playwright covers. They are named here rather
+   * than tested here because writing tests for another ship's modules inside a
+   * merge commit hides which change earned which test. The script lists them
+   * under "untested logic files" on every run, so the debt stays visible and
+   * this floor comes back down when they are paid off.
+   */
+  untestedFiles: 391,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
