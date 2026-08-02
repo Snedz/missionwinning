@@ -1,23 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Dumbbell, Sparkles, Target, X } from 'lucide-react';
-import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
-
-const DISMISS_KEY = 'mw_beta_banner_dismissed';
+import { BETA_BANNER_DISMISS_KEY } from '@/lib/today/betaBannerDismissed';
+import { useDismissed } from '@/hooks/useDismissed';
 
 const chipClass =
   'inline-flex items-center gap-1.5 rounded-xl border border-border/50 bg-muted/30 px-3 min-h-[44px] text-xs font-medium text-muted-foreground hover:text-foreground hover:border-border tap-target';
 
 export function BetaWelcomeBanner() {
-  const [visible, setVisible] = useState(false);
+  const { dismissed, ready, dismiss } = useDismissed(BETA_BANNER_DISMISS_KEY);
 
-  useEffect(() => {
-    setVisible(readRaw(DISMISS_KEY) !== '1');
-  }, []);
-
-  if (!visible) return null;
+  // `ready` gates the first paint: the shell declares this block from the same
+  // key, so showing it before the device has been read would flash a card the
+  // mount site is about to retract.
+  if (!ready || dismissed) return null;
 
   return (
     <div className="relative rounded-2xl border border-border/50 bg-muted/20 p-4 pr-12">
@@ -25,10 +22,7 @@ export function BetaWelcomeBanner() {
         type="button"
         aria-label="Dismiss"
         className="absolute top-2 end-2 flex h-11 w-11 items-center justify-center text-muted-foreground hover:text-foreground tap-target"
-        onClick={() => {
-          writeRaw(DISMISS_KEY, '1');
-          setVisible(false);
-        }}
+        onClick={dismiss}
       >
         <X className="h-4 w-4" />
       </button>

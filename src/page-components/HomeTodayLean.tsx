@@ -12,6 +12,8 @@ import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
 import { betaBannerMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
+import { BETA_BANNER_DISMISS_KEY } from '@/lib/today/betaBannerDismissed';
+import { useDismissed } from '@/hooks/useDismissed';
 import { computeReentry } from '@/lib/reentry';
 import { TodayPageHeader } from '@/components/today/TodayPageHeader';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
@@ -107,6 +109,7 @@ export function HomeTodayLean() {
    * the clock, and starting null keeps the chunk off the cold path.
    */
   const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
+  const { dismissed: betaDismissed } = useDismissed(BETA_BANNER_DISMISS_KEY);
 
   useEffect(() => {
     setReentry(computeReentry(workoutHistory, Date.now()));
@@ -235,7 +238,9 @@ export function HomeTodayLean() {
         action={action}
         showEditToday={false}
       />
-      {betaBannerMayMount(journeyState.phase) && <BetaWelcomeBanner />}
+      {betaBannerMayMount({ phase: journeyState.phase, dismissed: betaDismissed }) && (
+        <BetaWelcomeBanner />
+      )}
       <JourneyHero
         action={action}
         onPrimaryClick={handleJourneyPrimary}

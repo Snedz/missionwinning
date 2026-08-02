@@ -26,10 +26,28 @@ const PHASES: JourneyPhase[] = ['i-day', 'basic', 'readiness', 'commissioned'];
 test('the beta path card reaches every phase that can act on it', () => {
   for (const phase of PHASES) {
     assert.equal(
-      betaBannerMayMount(phase),
+      betaBannerMayMount({ phase, dismissed: false }),
       phase !== 'i-day',
       `phase ${phase}: the banner instructs "finish I-Day, log one workout, open Coach" — ` +
         `it is useful to everyone past in-processing and to nobody still inside it`
+    );
+  }
+});
+
+/**
+ * A dismissed card must not be *declared*, not merely render nothing.
+ *
+ * `planTodayBlocks` computes `room = max - pinned.length` from the candidate
+ * list, so a pinned block whose component returns `null` still costs the screen
+ * a top-level slot — permanently, since the dismissal is permanent. The card
+ * hiding itself was never enough; the budget never saw it hide.
+ */
+test('a dismissed beta card is never declared, in any phase', () => {
+  for (const phase of PHASES) {
+    assert.equal(
+      betaBannerMayMount({ phase, dismissed: true }),
+      false,
+      `phase ${phase}: a dismissed banner that still mounts spends a pinned Today slot on nothing`
     );
   }
 });
