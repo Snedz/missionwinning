@@ -1,7 +1,7 @@
 /**
  * A chart is a claim, and this is the file that decides what it claims.
  *
- * `.260` — landed on master without a test, caught by the coverage ratchet. Its
+ * `.262` — landed on master without a test, caught by the coverage ratchet. Its
  * own header states the rule it exists to keep: *"Asking for ninety days with
  * three logged entries must not draw a flat line back to an invented zero — the
  * app would be showing a plateau that never happened."*

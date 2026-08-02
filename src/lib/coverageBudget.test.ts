@@ -37,7 +37,7 @@ const HIGH_WATER = {
   /**
    * 389 of 685 source files are loaded by no test. Lower it by writing one.
    *
-   * `.260` took this from 386 to 381 (the revenue path, then the launch gate),
+   * `.262` took this from 386 to 381 (the revenue path, then the launch gate),
    * then master merged in twelve new source files and it rose to 389: ten are
    * Playwright-covered UI, two were logic and got tests. See the note at
    * `FLOORS.untestedFiles`.

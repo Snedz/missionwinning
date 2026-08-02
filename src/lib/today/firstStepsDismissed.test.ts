@@ -1,7 +1,7 @@
 /**
  * The dismissal that costs a Today block whether or not the card draws.
  *
- * `.260` — landed on master without a test, and caught by the coverage ratchet
+ * `.262` — landed on master without a test, and caught by the coverage ratchet
  * rather than by review. Its own header explains why it exists: the block is
  * declared `pinned`, and `planTodayBlocks` computes `room = max - pinned.length`
  * from the **candidate list**, not from what each candidate renders. So a card

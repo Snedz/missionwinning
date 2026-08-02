@@ -43,8 +43,23 @@ jobs:
           npm install -g vercel@latest
           npm install pg
 
+      # `secrets` is not a valid context in a step-level `if:`. Referencing it there
+      # does not evaluate false — it makes the whole file unparseable, so GitHub
+      # emits a failed run on every push and shows the path instead of the name.
+      # Same trap aikido.yml documents; same fix — gate on an env-fed output.
+      - name: Check SUPABASE_DB_URL
+        id: gate
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "has_db_url=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_db_url=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Pull production env (legacy path — skipped when SUPABASE_DB_URL is set)
-        if: ${{ secrets.SUPABASE_DB_URL == '' }}
+        if: steps.gate.outputs.has_db_url == 'false'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -82,7 +97,13 @@ jobs:
             console.error('Missing migration file:', path);
             process.exit(1);
           }
-          const envText = fs.readFileSync('.env.production', 'utf8');
+          // Only the legacy Vercel step writes this file, and it is skipped whenever
+          // SUPABASE_DB_URL is set — i.e. on the preferred path. Reading it
+          // unconditionally turned that path into an ENOENT before the connection
+          // string was ever chosen. Absent is a valid state: it means no legacy vars.
+          const envText = fs.existsSync('.env.production')
+            ? fs.readFileSync('.env.production', 'utf8')
+            : '';
           const env = {};
           for (const line of envText.split('\n')) {
             if (!line || line.startsWith('#') || !line.includes('=')) continue;

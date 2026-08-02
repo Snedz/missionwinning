@@ -1,7 +1,7 @@
 /**
  * The client half of checkout — the functions that start a payment.
  *
- * `.260` — `payments.ts` measured **73.54% lines / 33.33% functions**, and the
+ * `.262` — `payments.ts` measured **73.54% lines / 33.33% functions**, and the
  * covered part was the price constants: something imports `SUPER_BUNDLE_PRICE`, so
  * the file's top level runs and three quarters of its lines are "covered" while
  * `createCheckoutForPlan`, `openBillingPortal` and `getStripeCheckoutUrl` had never
