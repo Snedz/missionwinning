@@ -2,6 +2,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson } from '@/lib/storage/safeStorage';
 import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
+import { compareKeys, EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
 
 export type TrendMetricId = 'volume' | 'sessions' | 'protein' | 'active';
 
@@ -131,7 +132,7 @@ export function gatherJournalEntries(
       at: w.completedAt,
       pillar: 'train',
       title: w.workoutName,
-      detail: `${Math.round(w.totalVolume).toLocaleString()} vol`,
+      detail: `${formatLocalNumber(Math.round(w.totalVolume), EN_ONLY_SURFACE)} vol`,
     });
   }
 
@@ -192,7 +193,7 @@ export function gatherJournalEntries(
     });
   });
 
-  return entries.sort((a, b) => b.at.localeCompare(a.at)).slice(0, limit);
+  return entries.sort((a, b) => compareKeys(b.at, a.at)).slice(0, limit);
 }
 
 /** Best-effort parse of locale time string to HH:MM:SS for sorting. */

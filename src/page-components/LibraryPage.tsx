@@ -7,6 +7,7 @@
 import Link from 'next/link';
 import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Dumbbell, Search, SlidersHorizontal, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -56,6 +57,7 @@ const LEVEL_LABELS: Record<string, string> = {
 
 export function LibraryPage() {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const { premium } = usePremium();
   const [filters, setFilters] = useState<LibraryFilterState>({ ...DEFAULT_LIBRARY_FILTERS });
   const [detailId, setDetailId] = useState<string | null>(null);
@@ -69,9 +71,12 @@ export function LibraryPage() {
   }, []);
 
   const allMuscles = useMemo(
-    () => uniqueMuscleGroups(EXERCISES),
+    // `fmt.lang` is a real dependency: `.227` — a sorted list memoised without it
+    // keeps the previous language's collation until something else invalidates the
+    // memo, the staleness that made `benchmarks.dateLabel` worth deleting outright.
+    () => uniqueMuscleGroups(EXERCISES, fmt.lang),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
-    [catalogRevision]
+    [catalogRevision, fmt.lang]
   );
   const muscleOptions = useMemo(() => {
     const q = muscleQuery.trim().toLowerCase();

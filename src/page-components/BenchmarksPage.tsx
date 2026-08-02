@@ -7,6 +7,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { useLocaleFormat } from "@/hooks/useLocaleFormat";
 import dynamic from 'next/dynamic';
 import {
   BarChart3,
@@ -40,7 +41,6 @@ import {
   buildExerciseBenchmark,
   getExercisesWithBenchmarkData,
 } from "@/lib/benchmarks";
-import { formatDate } from "@/lib/utils";
 import { useUnits, weightUnitLabel } from "@/hooks/useUnits";
 import { useWorkoutStore } from "@/store/workoutStore";
 
@@ -59,6 +59,7 @@ import { bumpTrainingStreak } from "@/lib/streaks";
 
 export function BenchmarksPage() {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const router = useRouter();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
@@ -87,11 +88,14 @@ export function BenchmarksPage() {
   const chartData = useMemo(() => {
     if (!benchmark) return [];
     return benchmark.timeline.map((point) => ({
-      date: point.dateLabel,
+      date: fmt.axisDate(point.date),
       estimated: point.estimated1RM,
       actual: point.actual1RM,
     }));
-  }, [benchmark]);
+    // `fmt` and not just `benchmark`: `.227` — the axis label is built here now
+    // that `dateLabel` is gone from the data, so the memo has to invalidate when
+    // the language does or the chart keeps the previous one.
+  }, [benchmark, fmt]);
 
   const globalStats = useMemo(() => {
     const withActual = summaries.filter((s) => s.bestActual1RM !== null);
@@ -402,7 +406,7 @@ export function BenchmarksPage() {
                     return (
                       <TableRow key={point.workoutId}>
                         <TableCell className="whitespace-nowrap">
-                          {formatDate(point.date)}
+                          {fmt.longDate(point.date)}
                         </TableCell>
                         <TableCell>{point.workoutName}</TableCell>
                         <TableCell>

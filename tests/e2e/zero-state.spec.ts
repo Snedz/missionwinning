@@ -78,10 +78,14 @@ const APP_ROUTES = [
  *     and the caps below drop accordingly.
  *
  *  2. **One red CTA per list item.** `/coach` draws "Start this session" on every
- *     `PlanSessionCard`; `/mind` draws "Start" on every guided-session card;
- *     `/move` on every flow. That is the card-farm shape `DESIGN_ORCHESTRATION`
- *     names, and collapsing it is a composition decision per screen, not a colour
- *     swap. **Recorded, not silenced** — each entry below says which class it is.
+ *     `PlanSessionCard`. That is the card-farm shape `DESIGN_ORCHESTRATION` names.
+ *     **Recorded, not silenced** — each entry below says which class it is.
+ *
+ * `.227` found a **third** class hiding inside the second, and it was the larger
+ * one: a *shared component* painting red on every instance. `/mind` and `/move`
+ * were filed under class 2 as screens needing composition; they needed one line
+ * in `GuidedStepPlayer`. Before calling a count a composition problem, check
+ * whether one component is producing all of it — see the note under the table.
  */
 const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   // Clean. Zero, not one: in the zero-data state `JourneyHero` renders its grey
@@ -116,10 +120,31 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   },
 
   '/mind': {
-    cap: 34,
-    why: 'Worst offender, was 51. The 1-5 check-in scale is ink now (-15, and -2 elsewhere). The remaining 34 are one "Start" per guided-session card — class 2, and precisely why /mind is a card farm rather than a screen.',
+    cap: 2,
+    why: 'Was 51, then 34, now 2 — BreathingTimer\'s Start and DailyCheckIn\'s Save, one each. `.227` demoted GuidedStepPlayer\'s compact Start to `outline`, which took 32 of them out in one line.',
   },
 };
+
+/**
+ * **`.226`\'s diagnosis of `/mind` was wrong, and the ratchet is what said so.**
+ *
+ * The entry above used to read *"one `Start` per guided-session card — class 2,
+ * and precisely why /mind is a card farm rather than a screen"*, which framed 34
+ * red actions as a composition problem needing a screen redesign. They were one
+ * line: `GuidedStepPlayer` hardcoded `variant="fitness"`, and both of its callers
+ * render `compact` in a grid. Ten mind sessions and every Move flow inherited it.
+ *
+ * That reading was written from source rather than measured, and it is the shape
+ * this repo keeps paying for — a plausible story about why a number is high,
+ * recorded next to the number as though it had been checked. The `.226` LOG
+ * entry, the PR body and this table all carried it.
+ *
+ * The **under-cap failure** is what corrected it: this file fails when a route
+ * comes in *below* its budget, so the fix could not land quietly as a
+ * still-passing test. `i18n-coverage.ts` states the same rule for the same
+ * reason. A ratchet that only catches regressions is half a ratchet — it lets a
+ * stale diagnosis sit behind a green run indefinitely.
+ */
 
 
 /**

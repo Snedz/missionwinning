@@ -20,8 +20,22 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Legacy branded-CTA variant (10+ call sites) — now the plain red fill;
-        // fold into `default` when Phase 3 recuts the app screens.
+        /**
+         * Legacy branded-CTA variant — byte-identical to `default` above.
+         *
+         * The note here read *"10+ call sites; fold into `default` when Phase 3
+         * recuts the app screens"*. `.227` counted them: **56**, across 45 files.
+         * That is the number that makes the fold a decision rather than a
+         * tidy-up, so it is written down instead of estimated — and the fold is
+         * still deferred to the recut that its author conditioned it on, not
+         * smuggled into an unrelated wave.
+         *
+         * The duplication is not free while it lasts: two names for one rendered
+         * result is `.178`, and it is why `check-display-type` cannot hold a list
+         * of red variants and has to **derive** one out of this file (`.225`) —
+         * a rule that knew only `default` was blind to a button that was named
+         * and red.
+         */
         fitness: "bg-primary-fill text-primary-foreground hover:bg-primary-fill-hover",
         /**
          * A chosen option — a filter chip, a unit toggle, a days-per-week pick.

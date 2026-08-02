@@ -6,6 +6,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
 import type { MobilityFlow } from '@/data/mobilityFlows';
 import { TimedFlowRunner } from '@/components/pillars/TimedFlowRunner';
@@ -24,6 +25,7 @@ import { isFreeBeta } from '@/lib/freeBeta';
 
 export function MovePage() {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const { toast } = useToast();
   const { premium, loading: premiumLoading } = usePremium();
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
@@ -187,7 +189,7 @@ export function MovePage() {
           <CardContent className="text-sm space-y-1">
             {recentWins.map((w) => (
               <div key={w.id} className="text-muted-foreground">
-                {new Date(w.completedAt).toLocaleDateString()} — {w.title}
+                {fmt.date(w.completedAt)} — {w.title}
               </div>
             ))}
           </CardContent>

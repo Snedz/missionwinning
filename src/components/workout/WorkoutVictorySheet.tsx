@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ImageIcon, Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -59,6 +60,7 @@ export function WorkoutVictorySheet({
   workoutId,
 }: Props) {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const [feelSaved, setFeelSaved] = useState(false);
@@ -67,11 +69,11 @@ export function WorkoutVictorySheet({
 
   const shareText = t('victoryShareText', {
     name: summary.workoutName,
-    volume: summary.totalVolume.toLocaleString(),
+    volume: fmt.num(summary.totalVolume),
     unit: unitLabel,
     sets: summary.setCount,
     streak: summary.streak,
-    defaultValue: `Session done: ${summary.workoutName} — ${summary.totalVolume.toLocaleString()} ${unitLabel}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}.`,
+    defaultValue: `Session done: ${summary.workoutName} — ${fmt.num(summary.totalVolume)} ${unitLabel}, ${summary.setCount} sets${summary.streak > 0 ? `, ${summary.streak}-day streak` : ''}.`,
   });
 
   const handleShare = async () => {
@@ -173,7 +175,7 @@ export function WorkoutVictorySheet({
               {t('victoryVolume', { defaultValue: 'Volume' })}
             </p>
             <p className="text-xl font-semibold tabular-nums text-foreground">
-              {summary.totalVolume.toLocaleString()}
+              {fmt.num(summary.totalVolume)}
             </p>
             <p className="text-xs text-muted-foreground">{unitLabel}</p>
           </div>

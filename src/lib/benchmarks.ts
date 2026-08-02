@@ -15,7 +15,6 @@ export function estimateOneRepMax(weight: number, reps: number): number {
 
 export interface BenchmarkTimelinePoint {
   date: string;
-  dateLabel: string;
   workoutId: string;
   workoutName: string;
   estimated1RM: number;
@@ -36,9 +35,16 @@ export interface ExerciseBenchmarkStats {
   timeline: BenchmarkTimelinePoint[];
 }
 
-function formatChartDate(iso: string): string {
-  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-}
+/*
+ * `formatChartDate` used to live here, stamping a `dateLabel` onto every
+ * timeline point. `.227` deleted it rather than giving it a language, because
+ * threading one in would have fixed the wrong half: the label was computed
+ * inside a `useMemo` keyed on `workoutHistory`, so switching the app's language
+ * left the chart axis in the previous one until a workout was logged. A display
+ * string baked into a data structure is a language stamped at build time —
+ * `.195`'s shape, one field over. Points carry the raw ISO `date`; the component
+ * that draws the axis formats it, with `lang` in its deps.
+ */
 
 export function buildExerciseBenchmark(
   exerciseId: string,
@@ -82,7 +88,6 @@ export function buildExerciseBenchmark(
 
     timeline.push({
       date: log.completedAt,
-      dateLabel: formatChartDate(log.completedAt),
       workoutId: log.id,
       workoutName: log.workoutName,
       estimated1RM: bestEstimated,

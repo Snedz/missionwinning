@@ -6,6 +6,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { BreathingTimer } from '@/components/pillars/BreathingTimer';
 import { DailyCheckIn } from '@/components/pillars/DailyCheckIn';
 import { MindLockedPreview } from '@/components/mind/MindLockedPreview';
@@ -26,6 +27,7 @@ import { isFreeBeta } from '@/lib/freeBeta';
 
 export function MindPage() {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const { toast } = useToast();
   const { premium } = usePremium();
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
@@ -146,7 +148,7 @@ export function MindPage() {
           <CardContent className="text-sm space-y-1">
             {recentWins.map((w) => (
               <div key={w.id} className="text-muted-foreground">
-                {new Date(w.completedAt).toLocaleDateString()} — {w.title}
+                {fmt.date(w.completedAt)} — {w.title}
               </div>
             ))}
           </CardContent>

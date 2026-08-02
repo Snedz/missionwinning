@@ -1,6 +1,7 @@
 'use client';
 
 import { awardLabel, type FitnessAwardTier } from '@/lib/presidentialFitnessTest';
+import { EN_ONLY_SURFACE, formatLocalDateTime } from '@/lib/i18n/formatLocale';
 
 type Props = {
   className: string;
@@ -27,7 +28,7 @@ export function TeacherClassPrintSheet({ className, classCode, stats, entries }:
         {className} · <span className="font-mono">{classCode}</span>
       </p>
       <p className="text-xs text-gray-600 mb-6">
-        Generated {new Date().toLocaleString()} · Educational fitness tool — not an official U.S.
+        Generated {formatLocalDateTime(new Date(), EN_ONLY_SURFACE)} · Educational fitness tool — not an official U.S.
         government report.
       </p>
 

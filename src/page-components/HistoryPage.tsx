@@ -7,6 +7,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Calendar, Dumbbell, History as HistoryIcon, SearchX, Timer, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -50,7 +51,7 @@ const HistoryVolumeChart = dynamic(
 );
 import { getExerciseById } from '@/data/exercises';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
-import { cn, formatDate, formatDuration } from '@/lib/utils';
+import { cn, formatDuration } from '@/lib/utils';
 import { countsTowardVolume, setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import {
   build1RMChartData,
@@ -77,6 +78,7 @@ type HistoryTab = 'calendar' | 'sessions' | 'journal';
 
 export function HistoryPage() {
   const { t, i18n } = useTranslation();
+  const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
@@ -155,10 +157,10 @@ export function HistoryPage() {
     const vol = summary.totalVolume;
     return t('historyBriefingLine', {
       count: sessions,
-      volume: vol.toLocaleString(),
-      defaultValue: `${sessions} sessions · ${vol.toLocaleString()} total volume — consistency compounds.`,
+      volume: fmt.num(vol),
+      defaultValue: `${sessions} sessions · ${fmt.num(vol)} total volume — consistency compounds.`,
     });
-  }, [workoutHistory.length, summary, t]);
+  }, [workoutHistory.length, summary, t, fmt]);
 
   useEffect(() => {
     const sync = async () => {
@@ -208,9 +210,9 @@ export function HistoryPage() {
         {summary.sessionCount > 0 && (
           <p className="text-xs text-muted-foreground tabular-nums leading-relaxed">
             {t('historyAvgVolume', {
-              avg: summary.avgVolume.toLocaleString(),
+              avg: fmt.num(summary.avgVolume),
               unit: unitLabel,
-              defaultValue: `Recent avg volume ${summary.avgVolume.toLocaleString()} ${unitLabel}`,
+              defaultValue: `Recent avg volume ${fmt.num(summary.avgVolume)} ${unitLabel}`,
             })}
           </p>
         )}
@@ -372,14 +374,14 @@ export function HistoryPage() {
                     <p className="text-xs text-muted-foreground mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5">
                       <span className="inline-flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {formatDate(log.completedAt)}
+                        {fmt.longDate(log.completedAt)}
                       </span>
                       <span className="inline-flex items-center gap-1">
                         <Timer className="h-3 w-3" />
                         {formatDuration(log.durationSeconds)}
                       </span>
                       <span>
-                        {log.exercises.length} · {log.totalVolume.toLocaleString()} {unitLabel}
+                        {log.exercises.length} · {fmt.num(log.totalVolume)} {unitLabel}
                       </span>
                     </p>
                   </div>
@@ -438,7 +440,7 @@ export function HistoryPage() {
                 <span>
                   {w.name}{' '}
                   <span className="text-xs text-muted-foreground">
-                    ({formatDate(w.date || new Date().toISOString())})
+                    ({fmt.longDate(w.date || new Date().toISOString())})
                   </span>
                 </span>
                 <Link href="/nutrition" className="text-xs underline">
@@ -467,11 +469,11 @@ export function HistoryPage() {
               <DialogHeader>
                 <DialogTitle>{selected.workoutName}</DialogTitle>
                 <DialogDescription>
-                  {formatDate(selected.completedAt)} · {formatDuration(selected.durationSeconds)} ·{' '}
+                  {fmt.longDate(selected.completedAt)} · {formatDuration(selected.durationSeconds)} ·{' '}
                   {t('historySessionVolume', {
-                    volume: selected.totalVolume.toLocaleString(),
+                    volume: fmt.num(selected.totalVolume),
                     unit: unitLabel,
-                    defaultValue: `${selected.totalVolume.toLocaleString()} ${unitLabel} total volume`,
+                    defaultValue: `${fmt.num(selected.totalVolume)} ${unitLabel} total volume`,
                   })}
                 </DialogDescription>
               </DialogHeader>
@@ -572,7 +574,7 @@ export function HistoryPage() {
                                 <TableCell>
                                   {countsVolume ? (
                                     <>
-                                      {(set.reps * set.weight).toLocaleString()} {unitLabel}
+                                      {fmt.num(set.reps * set.weight)} {unitLabel}
                                     </>
                                   ) : (
                                     t('historyWarmupExcluded', { defaultValue: '—' })

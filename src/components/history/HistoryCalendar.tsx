@@ -16,8 +16,9 @@
  * cell has a full text label for screen readers.
  *
  * Weekday initials and the month name come from `i18n.language`, not the browser
- * locale — `utils.formatDate` and `benchmarks.formatChartDate` pass `undefined`
- * there and so silently ignore the app's own language switcher. Monday-first,
+ * locale. It was the only formatter in the repo that did: `.227` swept the
+ * other 42 sites onto `useLocaleFormat()` and deleted `utils.formatDate`, whose
+ * `undefined` first argument silently meant *ask the browser*. Monday-first,
  * matching `startOfLocalWeek` and every other week in the app.
  */
 

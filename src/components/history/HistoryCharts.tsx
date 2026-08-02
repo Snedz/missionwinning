@@ -13,6 +13,7 @@ import {
   YAxis,
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import type { WeeklyVolumePoint } from '@/lib/historyAnalytics';
@@ -23,6 +24,7 @@ type Props = {
 
 export function HistoryVolumeChart({ data }: Props) {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const hasData = data.some((d) => d.volume > 0);
@@ -59,7 +61,7 @@ export function HistoryVolumeChart({ data }: Props) {
                   fontSize: 12,
                 }}
                 formatter={(value: number, name: string) => [
-                  value.toLocaleString(),
+                  fmt.num(value),
                   name === 'volume'
                     ? t('historyVolumeLabel', { defaultValue: 'Volume' })
                     : t('historySessionsLabel', { defaultValue: 'Sessions' }),

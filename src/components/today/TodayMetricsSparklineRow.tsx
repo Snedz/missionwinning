@@ -1,6 +1,8 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
+import { formatLocalNumber } from '@/lib/i18n/formatLocale';
 import { Sparkline } from '@/components/today/Sparkline';
 import type { TodayTrends, TrendMetricId } from '@/lib/todayTrends';
 import { cn } from '@/lib/utils';
@@ -17,10 +19,26 @@ type Props = {
   className?: string;
 };
 
-function formatMetricValue(id: TrendMetricId, latest: number, weekTotal: number): string {
+/**
+ * `lang` rather than a hook: this is module scope, so `.227` threaded the
+ * language in from the component instead of moving the function inside it.
+ *
+ * The `k` abbreviation still goes through `formatLocalNumber` — `toFixed(1)`
+ * hardcodes a full stop as the decimal separator, so `4.2k` reads as four
+ * hundred and twenty in German. Recorded rather than swept: `toFixed` is not an
+ * *ambient-locale* call, so the guard cannot see it, and the repo has ~60 more
+ * of them, several feeding values back into inputs. Named in the `.227` LOG.
+ */
+function formatMetricValue(
+  id: TrendMetricId,
+  latest: number,
+  weekTotal: number,
+  lang: string
+): string {
   if (id === 'volume') {
-    if (latest >= 1000) return `${(latest / 1000).toFixed(1)}k`;
-    return latest.toLocaleString();
+    if (latest >= 1000)
+      return `${formatLocalNumber(latest / 1000, lang, { maximumFractionDigits: 1 })}k`;
+    return formatLocalNumber(latest, lang);
   }
   if (id === 'protein') return `${Math.round(latest)}g`;
   if (id === 'active') return `${Math.round(latest)}m`;
@@ -30,6 +48,7 @@ function formatMetricValue(id: TrendMetricId, latest: number, weekTotal: number)
 
 export function TodayMetricsSparklineRow({ trends, className }: Props) {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
 
   return (
     <div className={cn('space-y-2', className)}>
@@ -53,7 +72,7 @@ export function TodayMetricsSparklineRow({ trends, className }: Props) {
                 </span>
               </div>
               <p className="text-lg font-bold tabular-nums leading-none">
-                {formatMetricValue(series.id, series.latest, series.weekTotal)}
+                {formatMetricValue(series.id, series.latest, series.weekTotal, fmt.lang)}
               </p>
               <Sparkline values={series.values} className="mt-auto w-full" />
             </div>

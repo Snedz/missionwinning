@@ -24,6 +24,7 @@
 
 import { localDateKeyFromIso } from '@/lib/time/localDate';
 import { isCold, quietThresholdDays } from '@/lib/reentryTone';
+import { EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
 
 export type NudgeKind = 'comeback' | 'week1-recap' | 'week-behind' | 'wind-down' | 'day-review';
 
@@ -116,7 +117,7 @@ export function decideNudge(input: NudgeInput): NudgeCandidate | null {
         'Mission Winning — your first week on the path:',
         '',
         `Sessions: ${input.workoutCount14d}`,
-        `Volume moved: ${Math.round(input.totalVolume14d).toLocaleString()}`,
+        `Volume moved: ${formatLocalNumber(Math.round(input.totalVolume14d), EN_ONLY_SURFACE)}`,
         '',
         'Most people quit in the first week. You didn’t. This is where the habit locks in.',
         '',

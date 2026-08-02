@@ -269,6 +269,38 @@ past date), community as a pillar, serving-based Fuel targets (`MeterBar` carrie
 written ruling against segmenting a proportion), and the reference's Programs IA,
 which presumes an enrolment model the wedge deliberately does not have.
 
+### Wave D9 — The language switcher half the app ignores (Horizon W · 2026-08-02)
+
+**No reference screen.** D8 closed naming two functions that *"still pass
+`undefined` as the locale, so they follow the browser rather than the app's
+language switcher."* It was **42 sites in 22 files**, plus 17 `localeCompare`
+calls — in a product shipping **fifteen languages**.
+
+`Intl`'s ambient default is reached by *omitting* an argument, so
+`toLocaleDateString()` and `toLocaleDateString(undefined, {…})` are the same call
+and neither is visible as a mistake. An athlete who picked Spanish got Spanish
+copy, Spanish nav, Spanish pillar names — and `8/2/2026` with `1,234` separators.
+Numbers are most of what these screens show.
+
+| Track | Work |
+|-------|------|
+| **One home** | `lib/i18n/formatLocale.ts` — `lang` is a **required positional**, so the compiler catches the next call site rather than a scan. `useLocaleFormat()` binds it once per component |
+| **Guard** | `localeFormat.test.ts` discovers every ambient-locale call across `src/` + `app/`. Closed on the axis *"how does a value reach the browser locale"* — three doors, `Intl.*` matched by constructor rather than by name |
+| **Collation** | `localeCompare` must name a language. Thirteen sorts were ordering `YYYY-MM-DD` keys, where collation is a slower `<` — those became `compareKeys`, so the rule needs no allowlist |
+| **Red debt** | `GuidedStepPlayer`'s Start was red on every card. `/mind` **34 → 2** |
+| **LOG** | 27 entries / 127KB against its own ≤15 rule, enforced by nothing while its twin `CONTEXT.md` was guarded and compliant |
+
+**Two recorded diagnoses turned out to be wrong, and the guards are what said so.**
+D8 filed `/mind`'s 34 red actions as *"a composition decision per screen"* — it was
+one line in a shared component; the ratchet's **under-cap failure** is what refused
+to let the fix land quietly. And `LOG.md`'s *"≤15 entries / ≤20KB"* is unsatisfiable
+at this repo's ~5.6KB entries — 20KB permits **three** — which is a large part of
+why the rule was never followed. The count stands; the size became a ratchet.
+
+**Deferred, with a number attached:** `variant="fitness"` is byte-identical to
+`default`. Its docblock said *"10+ call sites; fold in when Phase 3 recuts the app
+screens"*; it is **56**, across 45 files. Recorded, and still left to that recut.
+
 ---
 
 ## Web ↔ Android parity matrix

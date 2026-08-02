@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import type { LeaderboardEntry, LeaderboardBoardTheme } from '@/lib/leaderboard/types';
 import { Medal } from 'lucide-react';
 
@@ -34,6 +35,7 @@ function deltaDisplay(delta?: number) {
 
 export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }: Props) {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
 
   /*
    * `.226` — nothing to list means no list.
@@ -105,7 +107,7 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
                 </div>
               </div>
               <div className="text-right font-mono font-semibold tabular-nums">
-                {e.score.toLocaleString()}
+                {fmt.num(e.score)}
                 <span className="text-[10px] text-muted-foreground ml-0.5">{unit}</span>
               </div>
               <div className="text-right text-xs font-mono">{deltaDisplay(e.delta)}</div>
