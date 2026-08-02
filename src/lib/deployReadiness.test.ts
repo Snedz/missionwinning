@@ -17,12 +17,12 @@ describe('deployReadiness', () => {
 
   it('report includes locale export plan', () => {
     const r = getDeployReadinessReport();
-    // `.224` — 28 → 29 namespaces (420 → 435 files) with `firstSteps`. These are
+    // `.224` 28→29 with `firstSteps`; `.225` 29→30 with `zeroState` (435→450 files). Pinned rather than derived:
     // pinned rather than derived on purpose: a namespace silently dropping out
     // of the export plan is how a language loses a screen, and a test that
     // recomputed the number from the same manifest could not see it.
-    assert.equal(r.localeFiles, 435);
-    assert.equal(r.localeNamespaces, 29);
+    assert.equal(r.localeFiles, 450);
+    assert.equal(r.localeNamespaces, 30);
     assert.ok(r.minTodayKeys >= 100);
     assert.equal(r.target, 'ci');
   });

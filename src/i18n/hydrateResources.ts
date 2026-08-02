@@ -34,6 +34,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       { mergeAssessmentsStrings },
       { mergeFeedbackStrings },
       { mergeFirstStepsStrings },
+      { mergeZeroStateStrings },
       { mergeProgramsStrings },
       { mergeCoachStrings },
       { mergeLibraryStrings },
@@ -66,6 +67,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       import('@/i18n/assessmentsLocales'),
       import('@/i18n/feedbackLocales'),
       import('@/i18n/firstStepsLocales'),
+      import('@/i18n/zeroStateLocales'),
       import('@/i18n/programsLocales'),
       import('@/i18n/coachLocales'),
       import('@/i18n/libraryLocales'),
@@ -118,6 +120,7 @@ export function hydrateI18nResources(instance: typeof i18n): Promise<void> {
       mergeAssessmentsStrings(resources[lang], lang);
       mergeFeedbackStrings(resources[lang], lang);
       mergeFirstStepsStrings(resources[lang], lang);
+      mergeZeroStateStrings(resources[lang], lang);
       mergeProgramsStrings(resources[lang], lang);
       mergeCoachStrings(resources[lang], lang);
       mergeLibraryStrings(resources[lang], lang);

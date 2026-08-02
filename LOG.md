@@ -6,6 +6,172 @@ Chronological record of shipped work. Newest first.
 
 ---
 
+## 2026-08-02 — The screens with nothing on them (`.225`)
+
+Five more Arnold's Pump Club screenshots. Lined up, they are one subject seen
+five times: **what a screen says when the athlete has no data.** A month calendar
+of thirty red ✕. A page reading `ALL GROUPS (0)` above nothing. And two
+zero-states that explain themselves and offer one action.
+
+Two of them are how to do it. Two are how not to. Mission Winning shipped one of
+the second kind.
+
+### The void, on a real route
+
+`LeaderboardTable` rendered unconditionally: a bordered box, a four-column header
+strip (`# / Operator / Score / Δ`), then an empty `<ul>`. On the class scope that
+is the **normal** state, not an edge — `rank.ts:74` builds class entries from
+`classRows` alone and pacers are excluded by design — so a class with nothing
+synced got a heading and a column header over a void, beneath a line reading
+*"0 operators"*. The reference screenshot, shipped.
+
+`/programs` had the same defect on a filter miss: `{filteredPrograms.map(…)}`
+with no fallback branch.
+
+### The rule was written down, and wrong about its own component
+
+`DESIGN_REVIEW.md` has said *"not a blank void"* since it was written; `grep`
+finds `EmptyState` in no script and no test. Worse, the line said **"dashed
+invite + CTA"** while `EmptyState`'s own docblock records that the dashed box was
+deliberately deleted in `.139` — *"a dashed rounded box on a `bg-muted/20` fill
+with a 10%-opacity red icon chip and centred copy: four things the system does
+not do."* Anyone fixing empty states from the checklist would have rebuilt a
+retired treatment.
+
+### The harness existed, pointed one property away
+
+`a11y.spec.ts` renders **all sixteen signed-in routes with zero data** on every
+gate run and asserts only that they are accessible. **A blank screen is
+maximally accessible** — no contrast failures, no unlabelled controls, no focus
+traps, because it has nothing.
+
+The inverse was true of the other rule. `first-90` asserts Today offers *exactly
+one* primary action, and `expectOneRedAction` was called for `/log` alone. A
+ceiling on how much a screen may ask; **no floor under how little it may
+offer**, on fifteen of sixteen routes.
+
+Fifth suite in this repo found pointing at its own assumptions rather than at the
+product, after `.129` sitemap, `.157` a11y routes, `.162` viewport, `.165` gate
+port.
+
+### What the sweep measured
+
+`zero-state.spec.ts`'s first run was the inventory, not a pass: **nine of fifteen
+routes over the one-red-action rule, `/mind` at 51.** Two classes hid in that number.
+
+**Class 1 — red as a *selected* state, fixed.** `variant={x ? 'default' :
+'outline'}` at twenty sites: filter chips, unit toggles, privacy and reminder
+switches, days-per-week picks — plus `bg-primary-fill` on two 1–5 rating scales.
+A selection is not an action. New `selected` variant carries what `.224` already
+settled for tabs: tint ground under a 2px poster rule. `/programs` 2→0,
+`/assessments` 2→1, `/track` 6→3, `/move` 2→1, `/profile` 5→4, `/mind` 51→34.
+
+**Class 2 — one red CTA per list card, recorded not silenced.** `/coach` draws
+"Start this session" on every `PlanSessionCard`; `/mind` on every guided session.
+That is a composition decision per screen, not a colour swap. So the rule ships
+as a **per-route ratchet** with a written reason each — the shape
+`i18n-coverage` and `bundle-budget` already use. Caps are set to measured truth,
+and going *under* fails too, asking you to lock the gain in.
+
+### The rest of the voids
+
+`/benchmarks` stopped hiding its four one-tap Quick Starters inside the has-data
+branch — they were visible only to athletes who already had benchmark data, and
+hidden from the one person its empty copy addresses (*"complete workouts with
+logged sets"*). `/learn/course` stopped swallowing a fetch failure into
+`setChapters([])`, which is why its single muted `<p>` had to *guess*, branching
+on `isFreeBeta()` between "check your connection" and "sign in with your bundle
+email" — two diagnoses for one silent failure, and no retry either way. `/move`
+and `/mind`'s `ErrorState`s got an `onAction`, because `ErrorState` renders no
+retry unless handed one. History's filter miss got a way out, and its pillar-wins
+line stopped being hardcoded English that spoke in raw URLs (*"Use /move or
+/mind"*).
+
+`EmptyState`'s CTA is `outline`, not `fitness` — a red fill on nine routes, from
+the primitive whose entire job is "here is the one thing to do".
+
+### The calendar marks only what happened
+
+`/history` gains a **Calendar** segment: ink fill = trained, a small ink rule =
+logged something else, 2px poster outline = today, everything else blank paper.
+**No day is ever marked missed.**
+
+That is criterion 4, and it is also the only honest option. `coach/storage.ts`
+persists **one** plan and `savePlan` overwrites it; `adaptPlan` flips
+`planned → missed` in place; `generateWeek` seeds from *current* body scores. What
+an athlete meant to do in March is not recoverable, so a red ✕ would be an
+invention as well as a reproach — thirty of them on the screen a lapsed athlete
+opens first.
+
+*"Logged"* is a fifth state the reference does not have: the day you used the app
+without lifting. And retention is part of the honesty — nutrition prunes at 90
+days, check-ins cap at 90 entries, pillar wins at 100, so an old month shows
+fewer logged days than the athlete had, and the grid **says so** rather than
+reporting a storage limit as behaviour.
+
+Month helpers live in `localDate.ts` under its own rule. Month length comes from
+`new Date(y, m, 0)`, so leap February answers 29 without a rule anyone has to
+remember. Monday-first, matching `startOfLocalWeek` rather than becoming the
+seventh derivation of when a week begins. Weekday initials and the month name
+come from `i18n.language`, not the browser locale.
+
+### The date rule's fifth spelling — and the guard could not have caught it
+
+`.212` widened `reachability.test.ts` from one slicing spelling to four and
+closed the list *"because these are the only three ways JavaScript has to take
+the date half of an ISO string"*. True — and it examined only the **slicing**
+half. Every pattern required a literal `toISOString()` call, so none could see
+the same defect performed on an ISO string that was **already stored**:
+
+```ts
+w.completedAt.split('T')[0] >= weekStart   // pillarScoreInputs, challenges
+const day = at.split('T')[0];              // TodayJournalStrip
+```
+
+`completedAt` is a UTC instant. All three compared its **UTC** date half against
+a **local** key — `weekStartIso()`, `state.weekStart`, `localDateKey()`. Exactly
+the frame mismatch `.212` found in `weekRecap`, three more times, surviving the
+sweep written for it because the guard was keyed to *how the date was produced*
+rather than to *what it was*. It now matches the shape.
+
+`todayTrends.ts` carried both defects in one loop — the banned spelling, and **no
+tombstone filter at all**, so a deleted session kept its volume in Today's
+sparklines. Fourth reader found not dropping tombstones after `.223`.
+
+Widening caught two sites that are **not** defects — a founder admin panel and a
+server-composed email, where UTC is the only frame that exists. Those are an
+allowlist with reasons, checked in both directions: a reason under 40 characters
+fails, and so does an exemption whose file would now pass anyway.
+
+### Verification
+
+Mutation-tested, every rule: restoring `EmptyState`'s red fails four routes,
+**none of them `/log`** — exactly the gap. An empty `<ul>` on `/library` fails
+the headed-void rule. Removing `LeaderboardTable`'s zero branch fails its unit
+guard, which is a *source* guard because `/leaderboard` is parked and the e2e
+sweep cannot reach it. Routing `localMonthDays` through `toISOString` fails the
+timezone sweep — and `process.env.TZ` was confirmed to actually switch before
+that sweep was trusted.
+
+**Two of my own drafts were wrong and running them is what said so.** The
+leaderboard's off-palette rule first failed on the string `text-red-400` inside
+the comment explaining that `text-red-400` had been removed —
+`check-design-system` solved this once and says why: *a guard that punishes
+documented reasoning gets switched off*. And the calendar's first draft faded
+future days with `text-muted-foreground/50`, which axe measured at **2.42:1** —
+the same alpha-on-a-contrast-token defect `.224` fixed three times in one wave.
+Rendered, not inferred: `/history` in `en` and `ar` (RTL, `dir=rtl`, month name
+`أغسطس 2026`), axe clean, month navigation confirmed to move.
+
+**Not done, named:** class-2 red debt is capped, not paid — `/mind` at 34 is a
+card farm and needs a composition pass, as do `/coach`, `/track` and `/nutrition`.
+`WeekStrip` and `Skeleton` still carry their own hardcoded English day arrays;
+the calendar derives its own rather than adding a third. `utils.formatDate` and
+`benchmarks.formatChartDate` still pass `undefined` as the locale, so they follow
+the browser rather than the app's language switcher.
+
+---
+
 ## 2026-08-02 — The screen that said how you were doing before what to do (`.224`)
 
 The brief was five screenshots of Arnold's Pump Club (iOS), handed over as

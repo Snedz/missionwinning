@@ -47,7 +47,14 @@ function DayCell({ day, label }: { day: MonthDay; label: string }) {
         day.mark === 'logged' && 'bg-card',
         // Drawn last so it still reads on a filled cell.
         day.isToday && 'border-[hsl(var(--accent-poster))]',
-        day.isFuture && 'text-muted-foreground/50'
+        /*
+         * Future days are muted, **not faded**. The first draft used
+         * `text-muted-foreground/50`, which axe measured at 2.42:1 (#9e9d9d on
+         * paper) — the same alpha-on-a-contrast-token defect `.224` fixed three
+         * times in one wave and `.127` before it. `--muted-foreground` at full
+         * strength is 8.4:1 and reads as quieter than ink on its own.
+         */
+        day.isFuture ? 'text-muted-foreground' : 'text-foreground'
       )}
     >
       <span className={cn('font-semibold', trained && 'text-background')}>{day.day}</span>
