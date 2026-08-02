@@ -29,6 +29,8 @@ When adding a doc:
 | [log/LOG-2026-07-20_tail.md](./log/LOG-2026-07-20_tail.md) | Victory / YC / pay-ready / Wave 11 — rotated 2026-07-21 |
 | [log/LOG-2026-07-20_to_2026-07-29.md](./log/LOG-2026-07-20_to_2026-07-29.md) | 131 entries (`.179` and earlier, incl. the Modernist rebrand and coach-loop sprints) — rotated 2026-07-30 |
 | [log/LOG-2026-07-29_to_2026-07-30.md](./log/LOG-2026-07-29_to_2026-07-30.md) | 20 entries (`.180`–`.199`: switching moment, growth loop, Field Notes journaling, LLM metering, behavior journal, sleep consistency) — rotated 2026-07-30 |
+| [log/LOG-2026-07-30_to_2026-07-31.md](./log/LOG-2026-07-30_to_2026-07-31.md) | 14 entries (`.200`–`.213`: the guards that never ran, the restore that destroys, the coach that thinks it is always Monday, 306KB of translations, the outbox that stops forever) — rotated 2026-08-02, the first rotation the entry-count rule was actually enforced for |
+| [log/LOG-2026-07-31_to_2026-08-01.md](./log/LOG-2026-07-31_to_2026-08-01.md) | 9 entries (`.214`–`.222`: the note nobody could read, the streak that never breaks, a security check that can actually fail, the design rules nothing checked, take the weight out) — rotated 2026-08-02 when the `.244`–`.251` wave merged alongside `.240`–`.243` and the live file went 23 entries over; `.222` joined it when `.252` merged |
 | [SETUP.md](./SETUP.md) | Stale PayPal-first setup — superseded by [docs/PRE_REVENUE_CHECKLIST.md](../PRE_REVENUE_CHECKLIST.md) + [docs/LLC_AND_PAYMENTS.md](../LLC_AND_PAYMENTS.md) |
 
 Canonical live launch path: root **[LAUNCH_RUNBOOK.md](../LAUNCH_RUNBOOK.md)** + [docs/SOCIAL_LAUNCH.md](../SOCIAL_LAUNCH.md) (copy kit).

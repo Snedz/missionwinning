@@ -19,6 +19,7 @@
 import type { PersonalRecord } from '@/lib/coach/progress';
 import type { WorkoutVictorySummary } from '@/lib/workout/workoutVictory';
 import type { WeeklyDebrief } from '@/lib/weeklyDebrief';
+import { EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
 
 /** From BRAND_HEX in scripts/check-token-sync.mjs — paper/ink/poster/red-700. */
 const PAPER = '#f3f2f2';
@@ -78,7 +79,7 @@ export function buildVictoryCardData(
   unitLabel: string
 ): ShareCardData {
   const stats: ShareCardStat[] = [
-    { label: 'Volume', value: `${summary.totalVolume.toLocaleString()} ${unitLabel}` },
+    { label: 'Volume', value: `${formatLocalNumber(summary.totalVolume, EN_ONLY_SURFACE)} ${unitLabel}` },
     { label: 'Sets', value: String(summary.setCount) },
     { label: 'Time', value: formatDuration(summary.durationSeconds) },
   ];
@@ -96,7 +97,7 @@ export function buildRecapCardData(debrief: WeeklyDebrief, unitLabel: string): S
   const stats: ShareCardStat[] = [
     { label: 'Sessions', value: String(debrief.train.sessions) },
     { label: 'Sets', value: String(debrief.train.sets) },
-    { label: 'Volume', value: `${debrief.train.volume.toLocaleString()} ${unitLabel}` },
+    { label: 'Volume', value: `${formatLocalNumber(debrief.train.volume, EN_ONLY_SURFACE)} ${unitLabel}` },
   ];
   return {
     kicker: 'WEEK IN THE BOOKS',

@@ -175,7 +175,7 @@ export function FeedbackPage() {
                         key={r}
                         type="button"
                         size="sm"
-                        variant={form.rating === r ? 'default' : 'outline'}
+                        variant={form.rating === r ? 'selected' : 'outline'}
                         onClick={() => setForm({ ...form, rating: r })}
                       >
                         {r}

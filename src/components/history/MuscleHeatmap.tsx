@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { muscleGroupLabel } from '@/lib/readinessDisplay';
 import type { MuscleHeatCell } from '@/lib/historyAnalytics';
@@ -29,6 +30,7 @@ function heatColor(intensity: number, daysSince: number): string {
 
 export function MuscleHeatmap({ cells, windowDays }: Props) {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
 
   return (
     <Card>
@@ -66,8 +68,8 @@ export function MuscleHeatmap({ cells, windowDays }: Props) {
               <div className="text-xs opacity-80 space-y-0.5 mt-2">
                 <p>
                   {t('historyHeatVolume', {
-                    volume: cell.volume.toLocaleString(),
-                    defaultValue: `${cell.volume.toLocaleString()} vol`,
+                    volume: fmt.num(cell.volume),
+                    defaultValue: `${fmt.num(cell.volume)} vol`,
                   })}
                 </p>
                 <p>

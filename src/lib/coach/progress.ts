@@ -28,6 +28,7 @@ import { localDateKey } from '@/lib/time/localDate';
 import { countsTowardStrengthEstimate } from '@/lib/workout/setKind';
 import { brzycki1rm, epley1rm } from '@/lib/calcHelpers';
 import type { CompletedWorkoutLog } from '@/types';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 
 /** Above this, the set is testing work capacity, not maximal strength. */
 export const MAX_REPS_FOR_E1RM = 12;
@@ -123,7 +124,7 @@ export function e1rmSeries(
     }
   }
 
-  return [...bySession.values()].sort((a, b) => a.date.localeCompare(b.date));
+  return [...bySession.values()].sort((a, b) => compareKeys(a.date, b.date));
 }
 
 export function exerciseProgress(
@@ -197,7 +198,7 @@ function bestRepsPerSession(
     }
   }
   return [...bySession.entries()]
-    .sort((a, b) => a[0].localeCompare(b[0]))
+    .sort((a, b) => compareKeys(a[0], b[0]))
     .map(([, reps]) => reps);
 }
 

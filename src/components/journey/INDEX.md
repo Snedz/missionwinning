@@ -12,7 +12,8 @@
 | `TodaySection.tsx` | Journey block on Today |
 | `TodayQuickLinks.tsx` | Phase-appropriate links |
 | `CommissioningCeremony.tsx` | Commissioned celebration |
-| `BetaWelcomeBanner.tsx` | Beta cohort banner |
+| `FirstStepsCard.tsx` | First-steps checklist card on Today (segment progress, dismissible) |
+| `FirstStepsSheet.tsx` | The full list — ruled rows, each with a reason line |
 
 ## Related
 

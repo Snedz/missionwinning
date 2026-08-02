@@ -1,4 +1,5 @@
 import type { Exercise, ProgramTag } from '@/types';
+import { compareText } from '@/lib/i18n/formatLocale';
 
 export type LibraryFilterState = {
   query: string;
@@ -35,12 +36,12 @@ export function filterExercises(exercises: Exercise[], filters: LibraryFilterSta
   });
 }
 
-export function uniqueMuscleGroups(exercises: Exercise[]): string[] {
+export function uniqueMuscleGroups(exercises: Exercise[], lang: string): string[] {
   const set = new Set<string>();
   for (const ex of exercises) {
     for (const m of ex.muscleGroups) set.add(m);
   }
-  return [...set].sort((a, b) => a.localeCompare(b));
+  return [...set].sort((a, b) => compareText(a, b, lang));
 }
 
 export function countExerciseHistory(
