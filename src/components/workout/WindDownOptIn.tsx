@@ -22,6 +22,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { track } from '@/lib/analytics';
@@ -34,6 +35,11 @@ type Mode = 'hidden' | 'offer' | 'install' | 'done';
 type MwWindow = Window & { triggerPwaInstall?: () => Promise<void> };
 
 export function WindDownOptIn() {
+  // `.228` — this component had six raw string literals in JSX and was not wired
+  // to i18n at all, so the one surface that asks an athlete to grant notification
+  // permission spoke English in fifteen languages. A permission ask nobody can
+  // read is a permission nobody grants.
+  const { t } = useTranslation();
   const [mode, setMode] = useState<Mode>('hidden');
 
   useEffect(() => {
@@ -99,25 +105,30 @@ export function WindDownOptIn() {
   if (mode === 'done') {
     return (
       <p className="border-t border-border pt-3 text-xs text-muted-foreground" role="status">
-        Done — you&apos;ll get a note on evenings like this one.
+        {t('windDownDone', { defaultValue: 'Done — you’ll get a note on evenings like this one.' })}
       </p>
     );
   }
 
   return (
     <div className="border-t border-border pt-3">
-      <p className="text-sm">Want a heads-up on evenings like this?</p>
+      <p className="text-sm">
+        {t('windDownAsk', { defaultValue: 'Want a heads-up on evenings like this?' })}
+      </p>
       <p className="mt-1 text-xs text-muted-foreground">
-        One note after a session that runs hot. Nothing else, and no account needed.
+        {t('windDownDesc', {
+          defaultValue:
+            'One note after a session that runs hot. Nothing else, and no account needed.',
+        })}
       </p>
       <div className="mt-2 flex flex-wrap gap-2">
         {mode === 'offer' ? (
           <Button size="sm" variant="outline" className="min-h-[44px]" onClick={enable}>
-            Turn on evening notes
+            {t('windDownEnable', { defaultValue: 'Turn on evening notes' })}
           </Button>
         ) : (
           <Button size="sm" variant="outline" className="min-h-[44px]" onClick={install}>
-            Add to Home Screen first
+            {t('windDownInstallFirst', { defaultValue: 'Add to Home Screen first' })}
           </Button>
         )}
         <Button
@@ -130,7 +141,7 @@ export function WindDownOptIn() {
             track('wind_down_optin_dismissed');
           }}
         >
-          Not now
+          {t('windDownNotNow', { defaultValue: 'Not now' })}
         </Button>
       </div>
     </div>

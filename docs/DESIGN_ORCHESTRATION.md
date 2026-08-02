@@ -301,6 +301,46 @@ why the rule was never followed. The count stands; the size became a ratchet.
 `default`. Its docblock said *"10+ call sites; fold in when Phase 3 recuts the app
 screens"*; it is **56**, across 45 files. Recorded, and still left to that recut.
 
+### Wave D10 — The notification that says nothing (Horizon W · 2026-08-02)
+
+**Reference:** five more Pump Club screens — a notification centre, a settings
+screen, and their version of the First Steps checklist D7 built.
+
+**The inbox is the best bad example in the whole series.** Thirteen rows, eleven
+reading *"A new article is out! A new article has been published!"* — the title
+restates the body, the body restates the title, and **neither names the
+article**. Zero information per row.
+
+**Mission Winning shipped that defect.** `cron/nudges/route.ts` built the
+signed-in push by slicing the email's **first line to 140 characters**, so
+`week1-recap` sent *"Mission Winning — your first week on the path:"* — the
+colon introducing two numbers the slice had just thrown away.
+
+| Track | Work |
+|-------|------|
+| **Push copy** | Per-kind push authored in `nudgeCopy` beside its email, so the numbers ride along and `reentryTone` can sweep it — a derived body did not exist until send time |
+| **Tags** | Required, not optional. Comeback and the mirrors both fell back to `mw-nudge`; same tag replaces, so one could overwrite the other unopened |
+| **Settings** | Per-kind trigger lines. The card said *"Two kinds"* while a signed-in athlete could receive **five** |
+| **i18n** | `WindDownOptIn` had six raw literals and no `useTranslation` — the one screen that asks for notification permission spoke English in fifteen languages |
+| **First Steps** | A second mount in the More sheet. Dismiss wrote a flag nothing clears and the card retires on completion, so **both endings were terminal** |
+
+**A live bug found on the way:** `syncJourneyPhase` returned before recomputing
+readiness milestones, so finishing the PAR-Q left step six unticked until a
+workout was logged — for exactly the Basic-phase cohort the card is built for.
+
+**Refused:** an in-app inbox (greenfield, for a channel that has never delivered
+a message), and — as **founder calls this wave** — the reminder-at-a-set-time
+and the completion badge. The reminder is genuinely absent, not broken: nothing
+in this app fires *before* a session. The badge would be the app's first durable
+earned record, which is a system decision rather than a checklist garnish; D10
+removes its blocker by giving a completed checklist somewhere to live.
+Community steps and *"70% more likely to succeed"* stay refused on third
+sighting.
+
+**Stated plainly:** VAPID unset, `PRIVATE_MODE` on, no `CRON_SECRET` — **zero
+notifications have ever been delivered**. This wave is worth doing precisely
+because the first one should not be the truncated one.
+
 ---
 
 ## Web ↔ Android parity matrix

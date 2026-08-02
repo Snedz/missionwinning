@@ -73,28 +73,81 @@ export function ProfileRemindersCard({
       ) : null}
 
       {pushSupported ? (
-        <CardContent
-          className={`flex items-center justify-between gap-4 ${
-            signedIn ? 'border-t border-border pt-4' : ''
-          }`}
-        >
-          <p className="text-sm text-muted-foreground">
-            {t('remindersPushDesc', {
-              defaultValue:
-                'Two kinds, on this device only: an evening note after a session that ran hot, and a quiet check-in if it has been a while. No account needed — the subscription is tied to this browser, not to you.',
-            })}
+        <CardContent className={signedIn ? 'border-t border-border pt-4' : ''}>
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">
+              {t('remindersPushDesc', {
+                defaultValue:
+                  'On this device only — the subscription is tied to this browser, not to your account.',
+              })}
+            </p>
+            <Button
+              variant={pushOn ? 'selected' : 'outline'}
+              disabled={pushBusy}
+              className="shrink-0 min-h-[44px]"
+              aria-pressed={pushOn}
+              onClick={onTogglePush}
+            >
+              {pushOn
+                ? t('remindersOn', { defaultValue: 'On' })
+                : t('remindersOff', { defaultValue: 'Off' })}
+            </Button>
+          </div>
+
+          {/*
+            Each kind, and when it fires.
+
+            `.228` — this description said *"Two kinds"* and named two, while the
+            device actually receives the evening review configured one row below
+            and, for a signed-in athlete, the two pushes that ride along with the
+            weekly emails: five, behind one toggle described as two. Listing them
+            is the reference app's one good structural idea in this batch, and it
+            costs only honest copy because every line below is a note the app
+            already sends. Nothing here is a new preference — the toggle is still
+            one subscription, which is why these are statements rather than rows
+            with their own switches.
+          */}
+          <p className="mt-4 text-xs font-semibold uppercase tracking-[0.04em] text-muted-foreground">
+            {t('remindersKindsLabel', { defaultValue: 'What this device will receive' })}
           </p>
-          <Button
-            variant={pushOn ? 'selected' : 'outline'}
-            disabled={pushBusy}
-            className="shrink-0 min-h-[44px]"
-            aria-pressed={pushOn}
-            onClick={onTogglePush}
-          >
-            {pushOn
-              ? t('remindersOn', { defaultValue: 'On' })
-              : t('remindersOff', { defaultValue: 'Off' })}
-          </Button>
+          <ul className="mt-2 space-y-2 border-t-2 border-border pt-2 text-[13px] text-muted-foreground">
+            <li>
+              {t('remindersKindComeback', {
+                defaultValue:
+                  'If you go quiet — one check-in, at your own cadence rather than a fixed day.',
+              })}
+            </li>
+            <li>
+              {t('remindersKindWindDown', {
+                defaultValue:
+                  'After a session that ran hotter than your recent usual — one evening note.',
+              })}
+            </li>
+            {signedIn ? (
+              <>
+                <li>
+                  {t('remindersKindWeekRecap', {
+                    defaultValue:
+                      'A recap at the end of your first week, with what you logged in it.',
+                  })}
+                </li>
+                <li>
+                  {t('remindersKindWeekBehind', {
+                    defaultValue:
+                      'Near the end of a week where you are short of the target you set — never framed as a deficit.',
+                  })}
+                </li>
+              </>
+            ) : null}
+          </ul>
+          {signedIn ? (
+            <p className="mt-2 text-[13px] text-muted-foreground">
+              {t('remindersKindsAccountNote', {
+                defaultValue:
+                  'The last two need an account, because they are sent alongside an email.',
+              })}
+            </p>
+          ) : null}
         </CardContent>
       ) : null}
 

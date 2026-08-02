@@ -251,6 +251,16 @@ export interface WindDownCandidate {
   kind: 'wind-down' | 'day-review';
   title: string;
   body: string;
+  /**
+   * `.228` — carried, not re-declared at the send site.
+   *
+   * Both cron routes had their own `tag: 'mw-…'` literal beside a comment
+   * explaining why it must be distinct, while `windDownPush()` / `dayReviewPush()`
+   * sat one import away without one. Two spellings of one fact is how the third
+   * kind ends up sharing a tag by accident (`.178`); the copy owns it now and
+   * these routes spread it.
+   */
+  tag: string;
   /** For dryRun only — lets the founder check the window maths from the response. */
   timeZone: string;
   localHour: number | null;

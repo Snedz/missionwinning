@@ -58,6 +58,7 @@ export const LOCALE_FILES = [
   { namespace: 'feedback', filename: 'feedback.json' },
   { namespace: 'firstSteps', filename: 'first-steps.json' },
   { namespace: 'zeroState', filename: 'zero-state.json' },
+  { namespace: 'notification', filename: 'notification.json' },
   { namespace: 'programs', filename: 'programs.json' },
   { namespace: 'library', filename: 'library.json' },
   { namespace: 'landing', filename: 'landing.json' },

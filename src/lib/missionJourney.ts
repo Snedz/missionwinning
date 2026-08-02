@@ -246,15 +246,29 @@ export function syncJourneyPhase(workoutHistory: CompletedWorkoutLog[] = []): Jo
     return s;
   }
 
+  /*
+   * Both milestone snapshots are recomputed before any phase decision.
+   *
+   * `.228` — `s.readiness` used to be computed *after* the `allBasicDone` early
+   * return, so for anyone still in Basic it was never refreshed. Completing the
+   * PAR-Q writes `mw_last_assessment` and nothing else touches journey state, so
+   * `readiness.parq` stayed false until a workout was logged — and the First
+   * Steps checklist reads that flag for its sixth step. The card exists mostly
+   * for the Basic-phase athlete on the lean shell, and it was showing exactly
+   * that athlete an unticked box for something they had just finished.
+   *
+   * Detection is pure reads; only the *snapshot* moves. The phase ladder below
+   * is unchanged — `allBasicDone` still gates `basic`, and a Basic athlete with
+   * `parq` true still stays in `basic`.
+   */
   s.basic = detectBasicMilestones(workoutHistory);
+  s.readiness = detectReadinessMilestones(workoutHistory);
 
   if (!allBasicDone(s.basic)) {
     s.phase = 'basic';
     saveJourneyState(s);
     return s;
   }
-
-  s.readiness = detectReadinessMilestones(workoutHistory);
 
   if (!allReadinessDone(s.readiness)) {
     s.phase = 'readiness';

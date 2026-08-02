@@ -21,7 +21,7 @@ const FIRST_STEPS_EN: Record<string, string> = {
   // Card + sheet chrome
   firstStepsEyebrow: 'Your first steps',
   firstStepsProgressLabel: 'Progress',
-  firstStepsDismiss: 'Dismiss',
+  firstStepsDismissToMore: 'Hide from Today — keep it under More',
   firstStepsSheetTitle: 'Get to know the app',
   firstStepsSheetIntro:
     'None of these are required — the logger and your weekly plan work without any of them. They are the parts of the app most people never find.',
@@ -63,7 +63,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
   es: fs({
     firstStepsEyebrow: 'Tus primeros pasos',
     firstStepsProgressLabel: 'Progreso',
-    firstStepsDismiss: 'Descartar',
+    firstStepsDismissToMore: 'Ocultar de Hoy — queda en Más',
     firstStepsSheetTitle: 'Conoce la aplicación',
     firstStepWorkoutTitle: 'Registra tu primer entrenamiento',
     firstStepFuelTitle: 'Registra lo que comiste',
@@ -77,7 +77,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
   fr: fs({
     firstStepsEyebrow: 'Vos premiers pas',
     firstStepsProgressLabel: 'Progression',
-    firstStepsDismiss: 'Masquer',
+    firstStepsDismissToMore: 'Masquer d’Aujourd’hui — reste dans Plus',
     firstStepsSheetTitle: 'Découvrir l’application',
     firstStepWorkoutTitle: 'Enregistrez votre première séance',
     firstStepFuelTitle: 'Enregistrez votre repas',
@@ -91,7 +91,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
   pt: fs({
     firstStepsEyebrow: 'Seus primeiros passos',
     firstStepsProgressLabel: 'Progresso',
-    firstStepsDismiss: 'Dispensar',
+    firstStepsDismissToMore: 'Ocultar de Hoje — fica em Mais',
     firstStepsSheetTitle: 'Conheça o aplicativo',
     firstStepWorkoutTitle: 'Registre seu primeiro treino',
     firstStepFuelTitle: 'Registre o que você comeu',
@@ -105,7 +105,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
   de: fs({
     firstStepsEyebrow: 'Deine ersten Schritte',
     firstStepsProgressLabel: 'Fortschritt',
-    firstStepsDismiss: 'Ausblenden',
+    firstStepsDismissToMore: 'Aus Heute ausblenden — bleibt unter Mehr',
     firstStepsSheetTitle: 'Lerne die App kennen',
     firstStepWorkoutTitle: 'Erstes Training erfassen',
     firstStepFuelTitle: 'Mahlzeit erfassen',
@@ -119,7 +119,7 @@ const BY_LANG: Record<string, Record<string, string>> = {
   it: fs({
     firstStepsEyebrow: 'I tuoi primi passi',
     firstStepsProgressLabel: 'Progresso',
-    firstStepsDismiss: 'Ignora',
+    firstStepsDismissToMore: 'Nascondi da Oggi — resta in Altro',
     firstStepsSheetTitle: 'Scopri l’app',
     firstStepWorkoutTitle: 'Registra il primo allenamento',
     firstStepFuelTitle: 'Registra cosa hai mangiato',

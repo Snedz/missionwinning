@@ -28,12 +28,44 @@ import { EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
 
 export type NudgeKind = 'comeback' | 'week1-recap' | 'week-behind' | 'wind-down' | 'day-review';
 
+/**
+ * A push message, authored — never sliced out of the email beside it.
+ *
+ * `.228` — the signed-in push was built at the send site by taking the email's
+ * **first line, truncated to 140 characters**. For `week1-recap` that produced
+ * the body *"Mission Winning — your first week on the path:"*: a colon pointing
+ * at the two numbers that made the message worth sending, both of them on the
+ * lines the slice threw away. A notification that announces it has something to
+ * say and then does not say it is the whole defect — the reference app for this
+ * wave ships a notification centre where eleven of thirteen rows read *"A new
+ * article is out! A new article has been published!"*, and neither the title nor
+ * the body names the article.
+ *
+ * So the rule is: **carry the what, not the that.** Each kind composes its own
+ * push from the same inputs the email used, which also means the tone contract
+ * (`reentryTone.ts`) sweeps it — a derived body was invisible to those tests
+ * because it did not exist until send time.
+ *
+ * `tag` is required rather than optional. Two kinds shared the `mw-nudge`
+ * fallback, and same tag replaces: a comeback the athlete had not opened could
+ * be overwritten by the recap that followed it, which is exactly what
+ * [`pushPayload.ts`](./pushPayload.ts) says tags were introduced to prevent.
+ */
+export interface PushCopy {
+  title: string;
+  body: string;
+  /** Distinct per kind — same tag replaces, so a shared one loses messages. */
+  tag: string;
+}
+
 export interface NudgeCandidate {
   userId: string;
   email: string;
   kind: NudgeKind;
   subject: string;
   body: string;
+  /** The push that rides with this email, authored beside it. */
+  push: PushCopy;
 }
 
 export interface NudgeInput {
@@ -50,6 +82,16 @@ export interface NudgeInput {
   appUrl: string;
   /** Built by the caller — keeps this module free of the HMAC secret. */
   unsubscribeUrl: string;
+}
+
+/** `1 session` / `4 sessions` — spelled once, used by the subject and the push. */
+function sessionCount(n: number): string {
+  return `${n} session${n === 1 ? '' : 's'}`;
+}
+
+/** Volume with the app's grouping. English-only: every line around it is. */
+function volumeMoved(total: number): string {
+  return formatLocalNumber(Math.round(total), EN_ONLY_SURFACE);
 }
 
 export function utcDay(d: string | Date): string {
@@ -101,6 +143,9 @@ export function decideNudge(input: NudgeInput): NudgeCandidate | null {
         `Start now: ${link}`,
         footer,
       ].join('\n'),
+      // One definition of what a comeback says, shared with the anonymous path
+      // (`.178`) — the two channels reach the same athlete on the same day.
+      push: anonymousComebackPush(),
     };
   }
 
@@ -112,18 +157,33 @@ export function decideNudge(input: NudgeInput): NudgeCandidate | null {
       userId: input.userId,
       email: input.email,
       kind: 'week1-recap',
-      subject: `Week one: ${input.workoutCount14d} session${input.workoutCount14d === 1 ? '' : 's'} logged`,
+      subject: `Week one: ${sessionCount(input.workoutCount14d)} logged`,
       body: [
         'Mission Winning — your first week on the path:',
         '',
         `Sessions: ${input.workoutCount14d}`,
-        `Volume moved: ${formatLocalNumber(Math.round(input.totalVolume14d), EN_ONLY_SURFACE)}`,
+        `Volume moved: ${volumeMoved(input.totalVolume14d)}`,
         '',
         'Most people quit in the first week. You didn’t. This is where the habit locks in.',
         '',
         `Keep going: ${link}`,
         footer,
       ].join('\n'),
+      /*
+       * The numbers ride along. This is the kind the truncation hurt most — the
+       * email's first line is a colon introducing them, so the old push was
+       * literally the setup without the payload.
+       *
+       * The privacy contract that keeps `dayReviewPush` contentless does not
+       * reach here: that one is sent from a row holding no behaviour data by
+       * design, while this path already has the counts in hand because it is
+       * composing an email out of them.
+       */
+      push: {
+        title: `Week one: ${sessionCount(input.workoutCount14d)} logged`,
+        body: `${volumeMoved(input.totalVolume14d)} moved. Most people quit in the first week — you didn’t.`,
+        tag: 'mw-week1-recap',
+      },
     };
   }
 
@@ -151,6 +211,11 @@ export function decideNudge(input: NudgeInput): NudgeCandidate | null {
         `Start now: ${link}`,
         footer,
       ].join('\n'),
+      push: {
+        title: 'Room for one more this week',
+        body: `You aimed at ${cadence} and have logged ${thisWeek}. A short session counts the same as a long one.`,
+        tag: 'mw-week-behind',
+      },
     };
   }
 
@@ -166,10 +231,11 @@ export function decideNudge(input: NudgeInput): NudgeCandidate | null {
  * names no medical concept — LEGAL_SAFETY §3a, and the same rule `load.ts` sets for
  * every band sentence.
  */
-export function windDownPush(): { title: string; body: string } {
+export function windDownPush(): PushCopy {
   return {
     title: 'That one ran hot',
     body: 'Heavier than your recent usual. Water, food, and an early night buy tomorrow back.',
+    tag: 'mw-wind-down',
   };
 }
 
@@ -182,17 +248,29 @@ export function windDownPush(): { title: string; body: string } {
  * things we promised not to. The review is composed on the device when the
  * athlete opens it.
  */
-export function dayReviewPush(): { title: string; body: string } {
+export function dayReviewPush(): PushCopy {
   return {
     title: 'Your day in review',
     body: 'Tonight’s recap is ready when you are — it opens on this device.',
+    tag: 'mw-day-review',
   };
 }
 
-/** Push copy for an anonymous device. No email exists, so there is no footer. */
-export function anonymousComebackPush(): { title: string; body: string } {
+/**
+ * Push copy for a comeback, on any channel.
+ *
+ * Named for the anonymous device because that is the only path with no email to
+ * sit beside, but the signed-in `comeback` branch returns this same object:
+ * one athlete, one message, one definition (`.178`).
+ *
+ * `mw-comeback` rather than the old `mw-nudge` fallback — sharing that tag with
+ * the recap meant an unopened comeback could be replaced by the message that
+ * came after it.
+ */
+export function anonymousComebackPush(): PushCopy {
   return {
     title: 'Your next session is still here',
     body: 'The path is right where you left it. One short session is a complete return.',
+    tag: 'mw-comeback',
   };
 }

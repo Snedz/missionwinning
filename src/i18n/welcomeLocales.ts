@@ -111,7 +111,7 @@ const en: WelcomeStrings = {
     'Sign in with Google or email to sync across devices. Skip anytime — local progress still works.',
   welcomeSkipSignIn: 'Skip — start training',
   welcomeRemindersOptIn:
-    'Email me training reminders (streak at risk, next step). Optional — unsubscribe anytime.',
+    'Email me if I go quiet, and a recap after my first week. Never more than one every two days — unsubscribe anytime.',
   editJourneyProfile: 'Edit journey profile',
   saveProfile: 'Save profile',
 };
@@ -328,7 +328,7 @@ const es: WelcomeStrings = {
     'Inicia sesión con Google o correo para sincronizar. Omite cuando quieras — el progreso local funciona.',
   welcomeSkipSignIn: 'Omitir — empezar a entrenar',
   welcomeRemindersOptIn:
-    'Envíame recordatorios de entrenamiento (racha en riesgo, siguiente paso). Opcional — cancela cuando quieras.',
+    'Escríbeme si me ausento, y un resumen tras mi primera semana. Nunca más de uno cada dos días — cancela cuando quieras.',
   editJourneyProfile: 'Editar perfil del viaje',
   saveProfile: 'Guardar perfil',
 };
@@ -374,7 +374,7 @@ const fr: WelcomeStrings = {
     'Connectez-vous avec Google ou e-mail pour synchroniser. Passez quand vous voulez — le progrès local fonctionne.',
   welcomeSkipSignIn: 'Passer — commencer l’entraînement',
   welcomeRemindersOptIn:
-    'Envoyez-moi des rappels d’entraînement (série en danger, prochaine étape). Optionnel — désabonnement en un clic.',
+    'Écrivez-moi si je disparais, et un bilan après ma première semaine. Jamais plus d’un tous les deux jours — désabonnement en un clic.',
   editJourneyProfile: 'Modifier le profil de parcours',
   saveProfile: 'Enregistrer le profil',
 };
@@ -428,7 +428,7 @@ const de: WelcomeStrings = {
     'Melde dich mit Google oder E-Mail an zum Synchronisieren. Überspringe jederzeit — lokaler Fortschritt funktioniert.',
   welcomeSkipSignIn: 'Überspringen — Training starten',
   welcomeRemindersOptIn:
-    'Schick mir Trainingserinnerungen (Serie in Gefahr, nächster Schritt). Optional — Abmeldung mit einem Klick.',
+    'Schreib mir, wenn ich still werde, und eine Bilanz nach meiner ersten Woche. Nie mehr als eine alle zwei Tage — Abmeldung mit einem Klick.',
   editJourneyProfile: 'Reiseprofil bearbeiten',
   saveProfile: 'Profil speichern',
 };

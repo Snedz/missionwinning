@@ -24,6 +24,7 @@ import { assessmentsStringsFor } from '@/i18n/assessmentsLocales';
 import { feedbackStringsFor } from '@/i18n/feedbackLocales';
 import { firstStepsStringsFor } from '@/i18n/firstStepsLocales';
 import { zeroStateStringsFor } from '@/i18n/zeroStateLocales';
+import { notificationStringsFor } from '@/i18n/notificationLocales';
 import { programsStringsFor } from '@/i18n/programsLocales';
 import { libraryStringsFor } from '@/i18n/libraryLocales';
 import { landingStringsFor } from '@/i18n/landingLocales';
@@ -202,6 +203,12 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'zeroState',
     filename: 'zero-state.json',
     stringsFor: packWrap(zeroStateStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'notification',
+    filename: 'notification.json',
+    stringsFor: packWrap(notificationStringsFor),
     langs: EXPORT_LANGS,
   },
   {

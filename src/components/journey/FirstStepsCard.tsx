@@ -15,6 +15,10 @@
  *
  * The card retires itself when every step is done — a checklist that stays on
  * the screen after it is finished is a permanent `+1` on a budgeted screen.
+ *
+ * It is no longer the only way in. `.228` put the same checklist in the More
+ * sheet, because dismissing here writes a flag nothing clears: both dismissal
+ * and completion used to end with the sheet unreachable for good.
  */
 
 import { useState } from 'react';
@@ -75,14 +79,19 @@ export function FirstStepsCard({ state }: { state: JourneyState }) {
 
       {/* Dismiss under its own rule, at a full tap target. The card is optional
           by design — nothing here gates anything — so the exit is a plain
-          labelled control, not a 24px × in a corner. */}
+          labelled control, not a 24px × in a corner.
+
+          `.228` — the label says where it goes. This flag is never cleared, and
+          until the More sheet carried the checklist that made Dismiss a one-way
+          door out of onboarding; the word alone gave no reason to expect
+          otherwise. Now it moves rather than deletes, so it says so. */}
       <div className="border-t-2 border-border">
         <button
           type="button"
           onClick={dismiss}
           className="min-h-[44px] w-full px-4 text-left text-[13px] font-semibold uppercase tracking-[0.08em] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
-          {t('firstStepsDismiss', { defaultValue: 'Dismiss' })}
+          {t('firstStepsDismissToMore', { defaultValue: 'Hide from Today — keep it under More' })}
         </button>
       </div>
 
