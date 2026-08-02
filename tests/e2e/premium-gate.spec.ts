@@ -15,7 +15,7 @@ test.describe('Premium API gate', () => {
   });
 
   /**
-   * `.237` — this asserted `premium === false` flatly, and the first run it ever
+   * `.257` — this asserted `premium === false` flatly, and the first run it ever
    * had returned `{"premium":true,"source":"free_beta"}`.
    *
    * The old allowlist (`anonymous`, `unconfigured`, `free`) never contained

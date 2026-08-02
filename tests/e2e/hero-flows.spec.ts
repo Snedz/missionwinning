@@ -176,7 +176,7 @@ test.describe('Wave 5 public CTA integrity', () => {
     expect(res?.status()).toBe(200);
     await expect(page.getByRole('link', { name: /start free|track|welcome|begin/i }).first()).toBeVisible();
     /*
-     * `.237` — `:visible`, and the missing filter is the entire bug.
+     * `.257` — `:visible`, and the missing filter is the entire bug.
      *
      * The page has three `/welcome` links and the first in DOM order is the
      * desktop nav's, `class="hidden … md:inline"`. Every project in

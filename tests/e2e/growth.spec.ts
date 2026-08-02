@@ -54,7 +54,7 @@ test.describe('Growth surfaces', () => {
   });
 
   /*
-   * `.237` — this navigated to `/profile` and landed on the I-Day welcome
+   * `.257` — this navigated to `/profile` and landed on the I-Day welcome
    * screen, so it was asserting against onboarding rather than the profile.
    * The received body was *"Welcome — I-Day … Set your path, then log your
    * first session"*.

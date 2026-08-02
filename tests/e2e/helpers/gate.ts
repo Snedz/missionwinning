@@ -42,7 +42,7 @@ export function gateRequired(): boolean {
 /**
  * Premium content APIs must match whatever entitlement the app itself reports.
  *
- * `.237` — this used to demand 401/403 unconditionally, and the first time it
+ * `.257` — this used to demand 401/403 unconditionally, and the first time it
  * ever ran it failed on all three routes with **200**. That is not a hole. The
  * free beta deliberately unlocks depth: `isPremiumBypassEnabled()` is
  * `isDemoPremiumEnabled() || isFreeBetaPremiumUnlocked()`, and `isFreeBeta()`

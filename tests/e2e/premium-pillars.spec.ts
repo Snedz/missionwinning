@@ -16,7 +16,7 @@ test.describe('Premium pillar experiences', () => {
     await page.goto('/mind', { waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('button', { name: /^start$/i }).first()).toBeVisible();
     /*
-     * `.237` — the heading is **"Guided sessions"**. This asserted an anchored
+     * `.257` — the heading is **"Guided sessions"**. This asserted an anchored
      * `/^free guided sessions$/i`, which the page has not rendered since the
      * word "Free" moved out of the heading and into the body copy beneath it
      * ("Free guided patterns — no audio required"). The player assertion above
