@@ -1,7 +1,7 @@
 /**
  * The card that tells you what to do must reach you before you have done it.
  *
- * `.204` — `BetaWelcomeBanner` was mounted in `HomeTodayDashboard` only, and
+ * `.204` — the first-run guidance card was mounted in `HomeTodayDashboard` only, and
  * `HomePage` routes `i-day` and `basic` to `HomeTodayLean`. A new tester is
  * `basic` until `detectBasicMilestones` sees all five pillars, so the banner
  * saying *"Finish I-Day, log one workout, then open Mission Coach"* appeared
@@ -16,19 +16,19 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { JourneyPhase } from '@/lib/missionJourney';
-import { betaBannerMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
+import { firstStepsMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
 const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
 
 const PHASES: JourneyPhase[] = ['i-day', 'basic', 'readiness', 'commissioned'];
 
-test('the beta path card reaches every phase that can act on it', () => {
+test('the first-steps card reaches every phase that can act on it', () => {
   for (const phase of PHASES) {
     assert.equal(
-      betaBannerMayMount({ phase, dismissed: false }),
+      firstStepsMayMount({ phase, dismissed: false }),
       phase !== 'i-day',
-      `phase ${phase}: the banner instructs "finish I-Day, log one workout, open Coach" — ` +
+      `phase ${phase}: the card instructs "finish I-Day, log one workout, open Coach" — ` +
         `it is useful to everyone past in-processing and to nobody still inside it`
     );
   }
@@ -42,12 +42,12 @@ test('the beta path card reaches every phase that can act on it', () => {
  * a top-level slot — permanently, since the dismissal is permanent. The card
  * hiding itself was never enough; the budget never saw it hide.
  */
-test('a dismissed beta card is never declared, in any phase', () => {
+test('a dismissed first-steps card is never declared, in any phase', () => {
   for (const phase of PHASES) {
     assert.equal(
-      betaBannerMayMount({ phase, dismissed: true }),
+      firstStepsMayMount({ phase, dismissed: true }),
       false,
-      `phase ${phase}: a dismissed banner that still mounts spends a pinned Today slot on nothing`
+      `phase ${phase}: a dismissed card that still mounts spends a pinned Today slot on nothing`
     );
   }
 });
@@ -79,7 +79,7 @@ const SHELLS = ['src/page-components/HomeTodayLean.tsx', 'src/page-components/Ho
 test('both Today shells render the guidance cards', () => {
   for (const shell of SHELLS) {
     const src = read(shell);
-    for (const card of ['BetaWelcomeBanner', 'TodayReentryCard']) {
+    for (const card of ['FirstStepsCard', 'TodayReentryCard']) {
       assert.match(
         src,
         new RegExp(`<${card}\\b`),
@@ -97,7 +97,7 @@ test('both Today shells render the guidance cards', () => {
 test('both shells ask the shared mount rule rather than re-deriving it', () => {
   for (const shell of SHELLS) {
     const src = read(shell);
-    assert.match(src, /betaBannerMayMount\(/, `${shell} must gate the banner on the shared rule`);
+    assert.match(src, /firstStepsMayMount\(/, `${shell} must gate first-steps on the shared rule`);
     assert.match(src, /reentryCardMayMount\(/, `${shell} must gate re-entry on the shared rule`);
   }
 });

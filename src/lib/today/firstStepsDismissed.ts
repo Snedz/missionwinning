@@ -1,7 +1,7 @@
 /**
- * One reader for "has the beta path card been dismissed".
+ * One reader for "has the first-steps card been dismissed".
  *
- * The card has always owned its own dismissal, and `todayGuidanceMount.ts` said
+ * The card it replaced owned its own dismissal, and `todayGuidanceMount.ts` said
  * so on purpose: *"this answers only may it appear at all, never has it been
  * dismissed — the card owns that, and duplicating it here is how the two answers
  * drift apart."* That reasoning is right about duplication and wrong about cost.
@@ -20,13 +20,20 @@
 
 import { readRaw } from '@/lib/storage/safeStorage';
 
-export const BETA_BANNER_DISMISS_KEY = 'mw_beta_banner_dismissed';
+/**
+ * Deliberately **not** `mw_beta_banner_dismissed`. An athlete who dismissed the
+ * old prose banner months ago did not thereby decline a checklist that did not
+ * exist, and reusing that key would silently hide the new card from every
+ * existing install — the cohort it is most useful to. The old key is left in
+ * place, unread; nothing is gained by deleting a value off someone's device.
+ */
+export const FIRST_STEPS_DISMISS_KEY = 'mw_first_steps_dismissed';
 
 /**
  * Device-local, like every other reading position in this app — a dismissal is
  * not data. Returns `false` on the server so the block is declared during SSR
  * and the client can retract it, rather than popping in after hydration.
  */
-export function isBetaBannerDismissed(): boolean {
-  return readRaw(BETA_BANNER_DISMISS_KEY) === '1';
+export function isFirstStepsDismissed(): boolean {
+  return readRaw(FIRST_STEPS_DISMISS_KEY) === '1';
 }

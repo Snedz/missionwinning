@@ -39,16 +39,16 @@ import { readJson, readRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { computeReentry, type Reentry } from "@/lib/reentry";
 import { TodayReentryCard } from "@/components/today/TodayReentryCard";
-import { betaBannerMayMount, reentryCardMayMount } from "@/lib/today/todayGuidanceMount";
-import { BETA_BANNER_DISMISS_KEY } from "@/lib/today/betaBannerDismissed";
+import { firstStepsMayMount, reentryCardMayMount } from "@/lib/today/todayGuidanceMount";
+import { FIRST_STEPS_DISMISS_KEY } from "@/lib/today/firstStepsDismissed";
 import { TODAY_BLOCK_PRIORITY as P } from "@/lib/today/todayBlockPriority";
 import { useDismissed } from "@/hooks/useDismissed";
 import { dayReviewMayMount } from "@/lib/today/dayReviewMount";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
 import { localDateKey } from '@/lib/time/localDate';
 
-const BetaWelcomeBanner = dynamic(
-  () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
+const FirstStepsCard = dynamic(
+  () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
   { ssr: false, loading: () => null }
 );
 
@@ -145,7 +145,7 @@ export function HomeTodayDashboard() {
       : { health: true, journal: true, week: true, progress: true, order: ['health', 'journal', 'week', 'progress'] }
   );
   const [editTodayOpen, setEditTodayOpen] = useState(false);
-  const { dismissed: betaDismissed } = useDismissed(BETA_BANNER_DISMISS_KEY);
+  const { dismissed: betaDismissed } = useDismissed(FIRST_STEPS_DISMISS_KEY);
   const [todayLabel, setTodayLabel] = useState('');
   const [belowFoldReady, setBelowFoldReady] = useState(false);
 
@@ -502,8 +502,8 @@ export function HomeTodayDashboard() {
    * file that exists to hold it.
    */
   const staggerBlocks: TodayBlockCandidate<React.ReactNode>[] = [
-    ...(betaBannerMayMount({ phase: state.phase, dismissed: betaDismissed })
-      ? [{ key: 'beta', priority: P.beta, pinned: true, node: <BetaWelcomeBanner /> }]
+    ...(firstStepsMayMount({ phase: state.phase, dismissed: betaDismissed })
+      ? [{ key: 'beta', priority: P.beta, pinned: true, node: <FirstStepsCard state={state} /> }]
       : []),
     {
       key: 'header',

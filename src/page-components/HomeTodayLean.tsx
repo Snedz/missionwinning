@@ -11,8 +11,8 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
-import { betaBannerMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
-import { BETA_BANNER_DISMISS_KEY } from '@/lib/today/betaBannerDismissed';
+import { firstStepsMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
+import { FIRST_STEPS_DISMISS_KEY } from '@/lib/today/firstStepsDismissed';
 import { useDismissed } from '@/hooks/useDismissed';
 import { TODAY_BLOCK_PRIORITY as P } from '@/lib/today/todayBlockPriority';
 import { planTodayBlocks, type TodayBlockCandidate } from '@/lib/today/todayBlockBudget';
@@ -55,9 +55,9 @@ const TodayDayReviewCard = dynamic(
  * long before the phase advances. Same `dynamic()` + mount-gate shape as the
  * evening card above, so neither chunk is fetched when it cannot render.
  */
-const BetaWelcomeBanner = dynamic(
-  () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
-  { ssr: false }
+const FirstStepsCard = dynamic(
+  () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
+  { ssr: false, loading: () => null }
 );
 
 const TodayReentryCard = dynamic(
@@ -112,7 +112,7 @@ export function HomeTodayLean() {
    * the clock, and starting null keeps the chunk off the cold path.
    */
   const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
-  const { dismissed: betaDismissed } = useDismissed(BETA_BANNER_DISMISS_KEY);
+  const { dismissed: betaDismissed } = useDismissed(FIRST_STEPS_DISMISS_KEY);
 
   useEffect(() => {
     setReentry(computeReentry(workoutHistory, Date.now()));
@@ -243,8 +243,8 @@ export function HomeTodayLean() {
    * instead of being a free `+1`, which is the whole history of the other shell.
    */
   const blocks: TodayBlockCandidate<React.ReactNode>[] = [
-    ...(betaBannerMayMount({ phase: journeyState.phase, dismissed: betaDismissed })
-      ? [{ key: 'beta', priority: P.beta, pinned: true, node: <BetaWelcomeBanner /> }]
+    ...(firstStepsMayMount({ phase: journeyState.phase, dismissed: betaDismissed })
+      ? [{ key: 'beta', priority: P.beta, pinned: true, node: <FirstStepsCard state={journeyState} /> }]
       : []),
     {
       key: 'header',
