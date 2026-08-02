@@ -10,6 +10,124 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-01 — The settle rule that could not see loading (`.253`)
+
+Two correct decisions, composing into a blind spot.
+
+`tests/e2e/a11y.spec.ts` waits for the page to stop animating before it measures
+contrast — right, because a half-faded element composites to a lower ratio than
+its resting state. `src/components/ui/Skeleton.tsx` deliberately does **not**
+animate; its header explains why in detail:
+
+> The old bars were `#eae9e9` at half alpha over a `#eae9e9` card — literally
+> invisible until the pulse dimmed them, which meant the animation *was* the
+> information and `prefers-reduced-motion` deleted it.
+
+So the wait asked "is anything animating?", the loading placeholders answered
+"no", and the gate measured a half-loaded page. **The better the loading design
+got, the blinder the wait became.**
+
+### Measured, not argued
+
+`/profile` under a 40x CPU throttle, instrumented at the moment axe runs:
+
+```
+CPU_RATE=40  serious/critical: 0
+aria-busy nodes at scan time: 2
+  still loading: Loading Profile | Loading
+running animations at scan time: 0
+```
+
+`settle()` now requires both conditions. `[aria-busy="true"]` rather than
+`[aria-busy]`: `HoldToConfirmButton` and `CoachChatPanel` bind the attribute to
+state, so a fully settled page still carries `aria-busy="false"` nodes and the
+looser selector would burn the whole timeout on every route.
+
+### The route special-case, deleted rather than extended
+
+```ts
+if (path === '/active') {
+  await page.getByRole('button', { name: /start workout|loading session/i })
+    .first().waitFor({ state: 'visible', timeout: 15_000 });
+}
+```
+
+`.220`'s shape: a rule written as the list of routes someone happened to hit,
+matched on the button's **copy**, so editing that string would have removed the
+wait silently. And `/active`'s pre-hydration state is not a code-split chunk —
+`RouteLoading` already announces those. It is `ActiveEmptyState` with
+`hydrated={false}`, which said nothing at all, so a screen reader announced a
+disabled button with no explanation. It declares `aria-busy` now, and the
+general rule covers the route it used to name.
+
+### Eight placeholders that never said they were loading
+
+The new wait only means something if the app sets the marker wherever it is
+loading — otherwise this is `.199`/`.212` again, a guard passing because the
+thing it looks for is simply absent. `src/lib/loadingStatesAnnounce.test.ts`
+holds up that half, by discovery rather than enumeration: it parses each
+`dynamic()` fallback expression, resolves the component it names **anywhere in
+the repo**, and reads the answer off that component's own source.
+
+It found eight, none of which I went looking for:
+
+| Where | What |
+|---|---|
+| `HomeTodayDashboard` (x5) | `loading: () => <Skeleton/>` on `/`, the most-linked page in the product. A bare `Skeleton` is `aria-hidden` — a shape, not content — so five placeholders were invisible to a screen reader *and* to any settle rule. |
+| `BenchmarksPage`, `HistoryPage` (x2) | `<div className="h-48 animate-pulse bg-card" />` for three chart slots: anonymous grey boxes carrying **the exact pulse `Skeleton` retired**. |
+| `FuelLogSheet`, `BuilderPage` | a bare `<p>Loading photo log…</p>` — visible text, in no live region, announced to nobody. |
+
+New `SkeletonBlock` wraps one `Skeleton` in `role="status" aria-busy="true"`.
+Two fallbacks are exempt with a stated reason and a staleness test:
+`LogToPlanHeroFallback` renders the hero for real (it is also the permanent
+no-JS shell at `LandingPage:134`), and CoachAdaptDemo's `min-h-[8rem]` box draws
+nothing at all.
+
+### `.220` inside the fix for `.220`
+
+The first version of the settle guard asserted that
+`querySelectorAll('[aria-busy="true"]')` **appeared** in the spec. A mutant that
+deleted `&& loading() === 0` from the quiet condition sailed straight through
+it: the query still ran, its answer was discarded, and the guard reported green
+while `settle()` was exactly as blind as before. A check whose name claims more
+than what it looks at — written into the change that exists to end that pattern.
+Nine mutants now die, including that one.
+
+### What this does not claim
+
+It is **not** a proven fix for the `/profile` skeleton-contrast violation seen
+once in `.250` (axe measured `#edecec` on `#f3f2f2`, 1.05:1). That did not
+reproduce in ~30 throttled runs at CPU rates 1, 6, 20, 40 and 80 — every single
+one reported zero serious/critical violations, including the runs where two
+`aria-busy` regions were demonstrably still on screen.
+
+Both statements stand together: **the blind spot is real and measurable; the
+violation is not reproduced.** `.224` records me calling three failures
+"container flakiness" when one was a real deterministic bug. Shipping a fix for
+an unreproduced race and declaring the matter closed is the same error mirrored,
+and the plan for this item said so in advance.
+
+**a11y therefore stays out of `ci.yml`.** Its `CI_ONLY_EXEMPT` entry reasons
+that a gate which reddens on a render race teaches people to re-run until green,
+which is worse than not having the gate. That should be honoured until there is
+stability evidence, not overridden because a fix feels right.
+
+### Process, third occurrence
+
+My mutant loop ran `git checkout HEAD -- <file>` against files holding
+uncommitted work and reverted four of my own edits. The archive already records
+this at `.202` and `.205`, where `.205` wrote the rule down verbatim: **commit
+before mutating.** I had read that file this same night. Nothing was lost — the
+edits were reconstructible and the guard caught the leftover mutant on the next
+run — but the habit is the finding, and the mutants were re-run against a
+committed tree.
+
+One related catch: `git checkout --` cannot revert an **untracked** file, so the
+mutant applied to the brand-new test file survived the cleanup silently and
+turned the next run red for a reason that had nothing to do with the code.
+
+Tests 1186→1192.
+
 ## 2026-08-01 — The exporter that undid the splitter (`.252`)
 
 `npm run export-locales` and `npm run check-locale-split` disagreed **by
@@ -1418,117 +1536,5 @@ appears in one place", and existing ship bullets narrate CI history legitimately
 (`.213` does), so that check would fail on correct content. A guard keyed to a
 spelling of *"is it blocked"* is the shape this repo has already paid for four
 times.
-
----
-
-## 2026-07-31 — The gate that could not go green (`.223`)
-
-The brief was four product references — WHOOP's AI charts and voice journaling,
-a member story built on 1,146 days of data, Tesla's live VPP dashboard. Research
-into what each would build on here found something worth shipping ahead of any of
-them: **the surfaces they point at are already broken, and one of the breaks is
-the launch gate itself.**
-
-### One name, two answers, and the launch decision paid for it
-
-```ts
-// src/lib/missionJourney.ts — what the product implements
-// Horizon W: Basic Training = first workout only. Other pillars stay free, not gated chores.
-return b.workout;
-
-// src/lib/betaMetricsServer.ts — what the founder dashboard measured
-return b.workout && b.fuel && b.move && b.mind && b.learn;
-```
-
-Horizon W narrowed Basic Training to the first workout. The client followed. The
-server copy did not — and it is the one that computes `basicCompletePct`, which
-`launchReady` gates on at **≥60**.
-
-So a tester who did everything the product asks of them registered as
-*Basic-incomplete*. The gate used to decide whether ten beta users are ready to
-launch was scoring them against a rule the app had stopped implementing, and it
-could not go green regardless of how well the beta went.
-
-`.178` at its most expensive. A word meaning two things costs whoever trusts the
-number, and here that is the launch decision.
-
-One definition now, in a new dependency-free `src/lib/journey/basicComplete.ts`
-that both sides import. Not an export from `missionJourney.ts`: importing that
-module drags `safeStorage`, `pillarLog`, `streaks` and `justGoSession` into a
-`server-only` bundle to reach one predicate that reads its argument and nothing
-else. The type import is erased at compile time, so the new module has no runtime
-dependencies at all.
-
-### A deleted session still counted, on a card meant for a public feed
-
-`weekRecap.ts` filtered workout history by date and nothing else, while
-`dayReview.ts:86` and `behaviorImpacts.ts:123` both drop `deletedAt` rows. Those
-three numbers — sessions, sets, volume — are not confined to a screen:
-`buildRecapCardData` prints them onto the PNG an athlete shares publicly.
-
-`.208`, the same shape as the PR chip that fired on the one set kind the rest of
-the app declines to trust: a celebration the app cannot support.
-
-### A PR line nothing could ever have supplied
-
-`buildWeeklyDebrief` counted records like this:
-
-```ts
-if ((log as { personalRecords?: number }).personalRecords) {
-```
-
-`personalRecords` exists **nowhere else in the repo**. Nothing writes it. So `prs`
-was structurally always 0, and two surfaces were dead on arrival — the recap
-card's PR line and the Today card's *"N PR marks this week"*. The hand-written
-`as` cast is precisely what stopped the compiler from pointing at it (`.195`, with
-the type system silenced on purpose).
-
-Counting it honestly turned out not to be available, and the reason is the real
-finding: `isPersonalRecord` — the definition `.208` hardened, which refuses sets
-to failure — runs at log time and `logSet` stores `isPr` on the **active** set.
-But `CompletedWorkoutLog.exercises[].sets` is `{ reps, weight, kind?, rpe? }`.
-**The flag is discarded the moment the session is saved.** The brass chip an
-athlete earns is off the record five seconds later.
-
-Reviving the line therefore means persisting `isPr` through completion, and that
-type syncs to `workout_logs` — a schema change with sync-v2 merge and revision
-consequences, which is a different PR from one about numbers that lie. Deleted,
-with the condition for its return written into a test.
-
-### The guard that proved the formatting of a dead feature
-
-`shareCard.test.ts` built a `WeeklyDebrief` by hand with `train.prs: 2`, then
-asserted the card said *"2 personal records"*. Green for the whole life of the
-bug. It proved the formatting worked and could not notice that no debrief the app
-can produce has ever carried a nonzero `prs` — a fixture supplying the very thing
-production cannot.
-
-### The guards, and two of them were wrong first
-
-New `src/lib/launchTruth.test.ts`, seven rules, discovering rather than
-enumerating (`.220`): no domain rule stated twice with two answers; the dashboard
-imports the basic-complete rule rather than restating it; every reader that
-windows workout history drops tombstones; no cast invents a field nothing writes;
-and the recap card's PR claim is cross-checked against whether `isPr` survives
-completion — so when that changes, the test fails and the line may come back.
-
-Running them is what caught two mistakes of my own:
-
-- The duplicate-name rule returned **18 hits**, nearly all legitimate — `clamp`,
-  `num`, `formatDuration`, and Next's `generateStaticParams`/`generateMetadata`,
-  which every dynamic route is *required* to define. A guard needing an
-  eighteen-entry allowlist is an allowlist wearing a guard's name. Narrowed to
-  what actually bit: both copies must answer about the same **project** type.
-- `/prLine:\s*(?!null)/` matched `prLine: null`, because `\s*` backtracks to zero
-  width and the lookahead is then tested against a space. The identical backtrack
-  `.221` hit on `border-radius: 0` and wrote down — reproduced anyway. The value
-  is captured and tested in code now.
-
-The cast rule's exemptions are all one thing: shapes this repo receives and never
-produces (xAI completions, Open Food Facts, PayPal, Play Billing, Apple Health).
-Each carries `why` + `fixWhen`, and a stale-entry check fails if a file stops
-casting.
-
-Tests 1178→1186.
 
 ---
