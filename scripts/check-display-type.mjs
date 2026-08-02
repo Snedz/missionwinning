@@ -82,14 +82,76 @@ const RED_ALLOWED = [
   },
 ];
 
-function defaultVariantButtons(source) {
+/**
+ * `.224` — which `Button` variants are red is **read out of `button.tsx`**, not
+ * listed here.
+ *
+ * The rule above understood two spellings of red: a red class in a `className`,
+ * and a `<Button>` with the `variant` omitted. It did not understand a
+ * `variant` that is *named* and red. `fitness` is defined as
+ * `bg-primary-fill text-primary-foreground` — its own comment calls it "the
+ * plain red fill" — so `<Button variant="fitness">` walked straight through a
+ * check written to stop exactly that colour, and put a second red action on
+ * Today inside the details disclosure, where `redActions.ts` never looked
+ * because the disclosure mounts only from `readiness` up.
+ *
+ * `.212`'s lesson, verbatim: a guard keyed to one spelling of a defect has only
+ * ever tested that spelling. So this derives the list from the variant
+ * definitions instead — a new red-filled variant is caught the day it is added,
+ * and a variant that stops being red stops being flagged, without anyone
+ * remembering to edit this file.
+ */
+const BUTTON_SOURCE = 'src/components/ui/button.tsx';
+
+function redButtonVariants() {
+  const src = fs.readFileSync(path.join(root, BUTTON_SOURCE), 'utf8');
+  const block = src.match(/variant:\s*\{([\s\S]*?)\n {6}\}/);
+  if (!block) {
+    console.error(
+      `check-display-type: could not read the variant map out of ${BUTTON_SOURCE}. ` +
+        `Refusing to run a red check that would silently pass — fix the parser.`
+    );
+    process.exit(1);
+  }
+  const names = new Set();
+  // `name: "…classes…"` — one entry per line, possibly wrapped.
+  for (const m of block[1].matchAll(/(\w+):\s*\n?\s*"([^"]*)"/g)) {
+    if (RED_FILL.test(m[2])) names.add(m[1]);
+  }
+  return names;
+}
+
+const RED_VARIANTS = redButtonVariants();
+/*
+ * A derived list that derives nothing passes everything. `default` and
+ * `fitness` are both `bg-primary-fill` today; if neither is found, the variant
+ * map moved and this rule has quietly stopped existing — which is the exact
+ * failure mode (`.213`, `.220`) that makes a guard worth less than no guard,
+ * because now nobody is looking.
+ */
+if (RED_VARIANTS.size === 0) {
+  console.error(
+    `check-display-type: derived zero red Button variants from ${BUTTON_SOURCE}. ` +
+      `That cannot be right while the design system has a red fill — the parser has drifted.`
+  );
+  process.exit(1);
+}
+
+function redVariantButtons(source) {
   const out = [];
-  // `<Button ...>` with no `variant=` before the closing bracket. shadcn's
-  // default variant is the poster-red fill, so omitting it is a choice to be red.
   const re = /<Button\b([^>]*)>/g;
   let m;
   while ((m = re.exec(source)) !== null) {
-    if (!/\bvariant\s*=/.test(m[1])) out.push({ index: m.index, value: m[0].replace(/\s+/g, ' ') });
+    const attrs = m[1];
+    const named = attrs.match(/\bvariant\s*=\s*["']([a-zA-Z]+)["']/);
+    // shadcn's default variant is the poster-red fill, so omitting it is a
+    // choice to be red — the `.198` case, kept.
+    const isRed = named ? RED_VARIANTS.has(named[1]) : RED_VARIANTS.has('default');
+    if (!isRed) continue;
+    out.push({
+      index: m.index,
+      value: `${m[0].replace(/\s+/g, ' ')} — variant "${named ? named[1] : 'default (omitted)'}" is a red fill`,
+    });
   }
   return out;
 }
@@ -113,11 +175,11 @@ for (const dir of TODAY_DIRS) {
         value: value.replace(/\s+/g, ' ').trim(),
       });
     }
-    for (const { index, value } of defaultVariantButtons(source)) {
+    for (const { index, value } of redVariantButtons(source)) {
       redViolations.push({
         file: rel,
         line: source.slice(0, index).split('\n').length,
-        value: `${value} — default variant is bg-primary-fill (poster red)`,
+        value,
       });
     }
   }

@@ -26,68 +26,105 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { planTodayBlocks, type TodayBlockCandidate } from '@/lib/today/todayBlockBudget';
+import { TODAY_BLOCK_PRIORITY, type TodayBlockKey } from '@/lib/today/todayBlockPriority';
 
 const root = path.join(import.meta.dirname, '..', '..', '..');
-const SHELL = 'src/page-components/HomeTodayDashboard.tsx';
+const SHELLS = [
+  'src/page-components/HomeTodayDashboard.tsx',
+  'src/page-components/HomeTodayLean.tsx',
+];
+const read = (p: string) => readFileSync(path.join(root, p), 'utf8');
+
+const p = (k: TodayBlockKey) => TODAY_BLOCK_PRIORITY[k];
 
 /**
- * Read the declared prices out of the shell rather than restating them, so the
- * assertions below are about the shipped screen and not about this file.
+ * The rules below are about the shipped screens, so the screens have to be the
+ * ones using this table. A price list nothing imports is a price list about
+ * nothing — `.221`, where `check-token-sync` pinned values that components had
+ * already drifted away from, because it never opened a `.tsx`.
  */
-function declaredPriorities(): Map<string, number> {
-  const src = readFileSync(path.join(root, SHELL), 'utf8');
-  const found = new Map<string, number>();
-  // `key: 'x', priority: N` and `key: 'x',\n priority: N` both occur.
-  const re = /key:\s*'([a-z-]+)'\s*,\s*(?:\/\/[^\n]*\n\s*)*priority:\s*(\d+)/g;
-  for (const m of src.matchAll(re)) found.set(m[1]!, Number(m[2]));
-  return found;
-}
+test('both Today shells price their blocks from the shared table', () => {
+  for (const shell of SHELLS) {
+    const src = read(shell);
+    assert.match(
+      src,
+      /from ["']@\/lib\/today\/todayBlockPriority["']/,
+      `${shell} does not import TODAY_BLOCK_PRIORITY — two shells with two price lists is ` +
+        `an ordering that can invert in one of them silently`
+    );
+    assert.doesNotMatch(
+      src,
+      /priority:\s*\d/,
+      `${shell} still declares a literal priority. Every price belongs in the shared table, ` +
+        `or the table stops being the answer to "what does Today show first"`
+    );
+  }
+});
 
-test('every Today block the shell declares has a price this guard can see', () => {
-  const prices = declaredPriorities();
-  // If the declaration syntax changes, the regex above silently matches nothing
-  // and every rule below passes vacuously. Anchor on the blocks this wave is about.
-  for (const key of ['coach-today', 'coach-week', 'dashboard', 'coach-invite', 'day-review']) {
-    assert.ok(
-      prices.has(key),
-      `could not read a priority for '${key}' out of ${SHELL} — the parser has drifted ` +
-        `from the declaration syntax, which would make every rule in this file vacuous`
+/**
+ * And both shells must actually apply the budget. `HomeTodayLean` had none
+ * before `.224`: it stacked whatever mounted, in source order, with no ceiling.
+ */
+test('both Today shells apply the block budget', () => {
+  for (const shell of SHELLS) {
+    assert.match(
+      read(shell),
+      /planTodayBlocks\(/,
+      `${shell} never calls planTodayBlocks — a shell with no budget is the feed the budget exists to prevent`
+    );
+  }
+});
+
+/**
+ * The next action is docked on both shells, or on neither.
+ *
+ * `.224` — `JourneyHero` was portalled to `ScreenDock` in the dashboard shell
+ * and rendered inline in the lean one. `ScreenDock` exists so the one red
+ * action cannot leave the fold; inline, it scrolls away. The cohort that lost
+ * it was `i-day`/`basic` — athletes who have not yet completed a workout, whose
+ * next action is the entire reason the screen exists.
+ */
+test('both Today shells dock the next action', () => {
+  for (const shell of SHELLS) {
+    const src = read(shell);
+    assert.match(
+      src,
+      /<ScreenDock>[\s\S]*?<JourneyHero/,
+      `${shell} does not dock <JourneyHero> — an inline hero can scroll off the bottom, ` +
+        `which is exactly what ScreenDock was built to prevent`
     );
   }
 });
 
 test('what to do outranks how you did', () => {
-  const p = declaredPriorities();
   assert.ok(
-    p.get('coach-today')! < p.get('dashboard')!,
-    `today's prescribed session (${p.get('coach-today')}) must outrank the Mission Score ` +
-      `(${p.get('dashboard')}) — Today answers "what now", not "how am I doing"`
+    p('coach-today') < p('dashboard'),
+    `today's prescribed session (${p('coach-today')}) must outrank the Mission Score ` +
+      `(${p('dashboard')}) — Today answers "what now", not "how am I doing"`
   );
   assert.ok(
-    p.get('coach-week')! < p.get('dashboard')!,
-    `this week's plan (${p.get('coach-week')}) must outrank the Mission Score (${p.get('dashboard')})`
+    p('coach-week') < p('dashboard'),
+    `this week's plan (${p('coach-week')}) must outrank the Mission Score (${p('dashboard')})`
   );
 });
 
 test('the invitation never outranks the thing it invites you to', () => {
-  const p = declaredPriorities();
   assert.ok(
-    p.get('coach-invite')! > p.get('coach-week')! && p.get('coach-invite')! > p.get('coach-today')!,
-    `'coach-invite' (${p.get('coach-invite')}) is a link asking the athlete to go and get a ` +
-      `weekly plan. It must never win a slot that the plan itself (${p.get('coach-today')}/` +
-      `${p.get('coach-week')}) then loses — an invitation replaces the thing, it does not sit beside it`
+    p('coach-invite') > p('coach-week') && p('coach-invite') > p('coach-today'),
+    `'coach-invite' (${p('coach-invite')}) is a link asking the athlete to go and get a ` +
+      `weekly plan. It must never win a slot that the plan itself (${p('coach-today')}/` +
+      `${p('coach-week')}) then loses — an invitation replaces the thing, it does not sit beside it`
   );
 });
 
 test('the session and the week survive the budget together, on a real screen', () => {
-  const p = declaredPriorities();
   // A commissioned athlete's evening, with the beta banner still up — the
   // densest screen the app produces, and the one the defect was found on.
   const candidates: TodayBlockCandidate<string>[] = [
     { key: 'beta', priority: 0, pinned: true, node: 'beta' },
     { key: 'header', priority: 1, pinned: true, node: 'header' },
     ...(['intent', 'dashboard', 'freshness', 'day-review', 'week-recap', 'coach-week', 'coach-today', 'guidebook'] as const).map(
-      (k) => ({ key: k, priority: p.get(k)!, node: k })
+      (k) => ({ key: k, priority: p(k), node: k })
     ),
     { key: 'more', priority: Number.MAX_SAFE_INTEGER, pinned: true, node: 'more' },
   ];
