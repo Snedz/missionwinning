@@ -95,7 +95,7 @@ export function BreathingTimer() {
               key={p}
               size="sm"
               className="min-h-[44px]"
-              variant={pattern === p ? 'default' : 'outline'}
+              variant={pattern === p ? 'selected' : 'outline'}
               onClick={() => setPattern(p)}
             >
               {PATTERNS[p].name.split(' ')[0]}

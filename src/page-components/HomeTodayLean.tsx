@@ -11,7 +11,12 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { JourneyHero } from '@/components/journey/JourneyHero';
 import { dayReviewMayMount } from '@/lib/today/dayReviewMount';
-import { betaBannerMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
+import { firstStepsMayMount, reentryCardMayMount } from '@/lib/today/todayGuidanceMount';
+import { FIRST_STEPS_DISMISS_KEY } from '@/lib/today/firstStepsDismissed';
+import { useDismissed } from '@/hooks/useDismissed';
+import { TODAY_BLOCK_PRIORITY as P } from '@/lib/today/todayBlockPriority';
+import { planTodayBlocks, type TodayBlockCandidate } from '@/lib/today/todayBlockBudget';
+import { ScreenDock } from '@/components/layout/ScreenDock';
 import { computeReentry } from '@/lib/reentry';
 import { TodayPageHeader } from '@/components/today/TodayPageHeader';
 import { useActiveWorkoutPulse } from '@/hooks/useActiveWorkoutPulse';
@@ -50,9 +55,9 @@ const TodayDayReviewCard = dynamic(
  * long before the phase advances. Same `dynamic()` + mount-gate shape as the
  * evening card above, so neither chunk is fetched when it cannot render.
  */
-const BetaWelcomeBanner = dynamic(
-  () => import('@/components/journey/BetaWelcomeBanner').then((m) => m.BetaWelcomeBanner),
-  { ssr: false }
+const FirstStepsCard = dynamic(
+  () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
+  { ssr: false, loading: () => null }
 );
 
 const TodayReentryCard = dynamic(
@@ -107,6 +112,7 @@ export function HomeTodayLean() {
    * the clock, and starting null keeps the chunk off the cold path.
    */
   const [reentry, setReentry] = useState<ReturnType<typeof computeReentry> | null>(null);
+  const { dismissed: betaDismissed } = useDismissed(FIRST_STEPS_DISMISS_KEY);
 
   useEffect(() => {
     setReentry(computeReentry(workoutHistory, Date.now()));
@@ -223,55 +229,139 @@ export function HomeTodayLean() {
         }
       : null;
 
-  // `max-w-lg` is a phone measure. The desktop handoff draws Today at
-  // `max-width:960px`, so at md+ this defers to `AppLayout`'s container
-  // (768/896/1024 by breakpoint) instead of capping a second time at 512.
-  return (
-    <div className="today-shell space-y-6 max-w-lg md:max-w-none mx-auto">
-      <TodayPageHeader
-        today={todayLabel}
-        streak={streak}
-        userEmail={null}
-        action={action}
-        showEditToday={false}
-      />
-      {betaBannerMayMount(journeyState.phase) && <BetaWelcomeBanner />}
-      <JourneyHero
-        action={action}
-        onPrimaryClick={handleJourneyPrimary}
-        activeWorkout={hasActiveWorkout}
-        justGoMeta={justGoMeta}
-      />
-      {/* Directly under the boss CTA, as in the dashboard shell: a returning
-          athlete sees the smaller ask before anything that reads as a
-          scoreboard of the gap. */}
-      {reentry && reentryCardMayMount({ phase: journeyState.phase, show: reentry.show }) && (
-        <TodayReentryCard reentry={reentry} />
-      )}
-      {journeyState.phase === 'basic' && streak === 0 && (
+  /*
+   * The same budget the dashboard shell runs, at the same prices.
+   *
+   * `.240` — this shell had none. It stacked whatever mounted, in source order,
+   * with no ceiling, while the other Today applied `planTodayBlocks` and spilled
+   * the excess into a disclosure. Two screens for one product, degrading two
+   * different ways, and the lean one belongs to the cohort least able to absorb
+   * a feed: an athlete who has not yet finished their first workout.
+   *
+   * Nothing spills today — five blocks against a budget of seven. That is the
+   * point. The budget is here so the *next* card has to argue for its slot
+   * instead of being a free `+1`, which is the whole history of the other shell.
+   */
+  const blocks: TodayBlockCandidate<React.ReactNode>[] = [
+    ...(firstStepsMayMount({ phase: journeyState.phase, dismissed: betaDismissed })
+      ? [{ key: 'beta', priority: P.beta, pinned: true, node: <FirstStepsCard state={journeyState} /> }]
+      : []),
+    {
+      key: 'header',
+      priority: P.header,
+      pinned: true,
+      node: (
+        <TodayPageHeader
+          today={todayLabel}
+          streak={streak}
+          userEmail={null}
+          action={action}
+          showEditToday={false}
+        />
+      ),
+    },
+  ];
+
+  // Directly under the boss CTA, as in the dashboard shell: a returning athlete
+  // sees the smaller ask before anything that reads as a scoreboard of the gap.
+  if (reentry && reentryCardMayMount({ phase: journeyState.phase, show: reentry.show })) {
+    blocks.push({
+      key: 'reentry',
+      priority: P.reentry,
+      pinned: true,
+      node: <TodayReentryCard reentry={reentry} />,
+    });
+  }
+
+  if (mayShowDayReview) {
+    blocks.push({ key: 'day-review', priority: P['day-review'], node: <TodayDayReviewCard /> });
+  }
+
+  if (workoutHistory.length >= 1 && journeyState.phase === 'basic') {
+    blocks.push({
+      key: 'coach-invite',
+      priority: P['coach-invite'],
+      node: (
+        /* Recut to the shipped system: 2px rules, no hairline at 40%, and
+           `font-semibold` — Archivo loads 400/600/800, so `font-medium` was
+           synthesising a weight the face does not have. */
+        <a
+          href="/coach"
+          className="block border-y-2 border-border py-3.5 transition-colors hover:bg-muted"
+        >
+          <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+            {t('todayCoachInviteEyebrow', { defaultValue: 'Mission Coach' })}
+          </p>
+          <p className="text-[15px] font-semibold leading-snug text-foreground">
+            {t('todayCoachInviteTitle', {
+              defaultValue: 'Turn your logs into this week’s plan',
+            })}
+          </p>
+        </a>
+      ),
+    });
+  }
+
+  if (journeyState.phase === 'basic' && streak === 0) {
+    blocks.push({
+      key: 'encourage',
+      priority: P.encourage,
+      node: (
         <p className="text-center text-sm text-muted-foreground px-4">
           {t('todayBasicEncouragement', {
             defaultValue:
               'One step at a time. Log a set — Mission Coach shapes the week from your history.',
           })}
         </p>
-      )}
-      {mayShowDayReview && <TodayDayReviewCard />}
-      {workoutHistory.length >= 1 && journeyState.phase === 'basic' && (
-        <a
-          href="/coach"
-          className="block rounded-2xl border border-border/40 bg-muted/20 px-4 py-3.5 mt-1 transition-colors hover:bg-muted/35 hover:border-border/60"
-        >
-          <p className="text-xs font-medium text-muted-foreground mb-0.5">
-            {t('todayCoachInviteEyebrow', { defaultValue: 'Mission Coach' })}
-          </p>
-          <p className="text-sm font-medium text-foreground leading-snug">
-            {t('todayCoachInviteTitle', {
-              defaultValue: 'Turn your logs into this week’s plan',
-            })}
-          </p>
-        </a>
-      )}
-    </div>
+      ),
+    });
+  }
+
+  const plan = planTodayBlocks(blocks);
+
+  // `max-w-lg` is a phone measure. The desktop handoff draws Today at
+  // `max-width:960px`, so at md+ this defers to `AppLayout`'s container
+  // (768/896/1024 by breakpoint) instead of capping a second time at 512.
+  return (
+    <>
+      <div className="today-shell space-y-6 max-w-lg md:max-w-none mx-auto">
+        {plan.top.map(({ key, node }) => (
+          <div key={key}>{node}</div>
+        ))}
+        {plan.inMore.length > 0 && (
+          <details className="group border-y-2 border-border">
+            <summary className="min-h-[44px] cursor-pointer list-none py-2.5 text-sm font-semibold text-muted-foreground marker:content-none hover:text-foreground">
+              <span className="flex items-center justify-between gap-3">
+                {t('todayMoreSummary', { defaultValue: 'Today details' })}
+                <span className="transition-transform group-open:rotate-45">+</span>
+              </span>
+            </summary>
+            <div className="space-y-4 border-t border-border pb-2 pt-4">
+              {plan.inMore.map(({ key, node }) => (
+                <div key={key}>{node}</div>
+              ))}
+            </div>
+          </details>
+        )}
+      </div>
+      {/*
+       * `.240` — the hero docks here too.
+       *
+       * It was inline in this shell and docked in the other, so the athletes who
+       * have never completed a workout — the entire `i-day`/`basic` cohort, the
+       * one cohort whose next action is the whole point of the screen — were the
+       * only ones whose next action could scroll off the bottom. `ScreenDock` is
+       * compact-only and renders in place at `md+`, so the desktop composition
+       * is unchanged.
+       */}
+      <ScreenDock>
+        <JourneyHero
+          action={action}
+          onPrimaryClick={handleJourneyPrimary}
+          activeWorkout={hasActiveWorkout}
+          justGoMeta={justGoMeta}
+        />
+      </ScreenDock>
+    </>
   );
 }

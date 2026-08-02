@@ -32,11 +32,41 @@ const CONTROL_SELECTOR =
  * on a screen whose sheet is entirely untouched — the `.194` gap again, one
  * layer up. Callers that open an overlay pass its scope explicitly.
  */
+/**
+ * Nothing is mid-transition when we measure it.
+ *
+ * `.242` — the feedback-sheet case failed once in a full-suite run with
+ * `(no text) h=44`, a control whose settled height is **exactly** 44 and whose
+ * computed height never changes. `expect(dialog).toBeVisible()` resolves the
+ * moment the sheet is in the DOM and painted, not when its open transition ends,
+ * and `boundingBox()` reports the *rendered* box — so a scale transform still a
+ * frame from identity returns 43.99, which `Math.round` then printed back as the
+ * passing value `44`.
+ *
+ * Deliberately not solved by widening the threshold: `< 44 - 0.5` would let a
+ * genuinely 43.6px control through forever to silence a race. `.224` made the
+ * same call on `offline.spec.ts` — wait for the thing the product is already
+ * doing rather than retry past it.
+ *
+ * A looping animation (a spinner) never finishes, so this is best-effort: on
+ * timeout we measure anyway rather than fail on an unrelated animation.
+ */
+async function settle(page: Page): Promise<void> {
+  await page
+    .waitForFunction(
+      () => document.getAnimations().every((a) => a.playState !== 'running'),
+      undefined,
+      { timeout: 1000 }
+    )
+    .catch(() => {});
+}
+
 export async function expectThumbSized(
   page: Page,
   where: string,
   scope = CONTROL_SELECTOR
 ): Promise<void> {
+  await settle(page);
   const undersized: string[] = [];
   for (const control of await page.locator(scope).all()) {
     if (!(await control.isVisible().catch(() => false))) continue;

@@ -2,10 +2,594 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep ≤15 entries / ≤20KB here. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30).
+**Rotation rule:** keep **≤15 entries** here, and never let the file grow. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Enforced by `src/lib/logBudget.test.ts` — until `.242` it was enforced by nothing, and the file had reached **27 entries / 127KB**.
+
+> **The `≤20KB` half of this rule was unmeetable and is retired.** An entry here averages ~5.6KB, because the house style is to explain the defect class rather than name the change — which is the most valuable thing in this repo and not something to trade away for a byte count. Fifteen entries is ~84KB; obeying 20KB would have meant keeping **three**. So the count rule stands, and the size rule becomes a **ratchet**: the file may shrink, never grow. If the founder wants a hard byte ceiling instead, that is a call about house style, not about this file.
+
+Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02).
 
 ---
 
+## 2026-08-02 — The notification that says nothing (`.243`)
+
+A third batch of Pump Club screenshots, and the notification centre in it is the
+best **bad** example the series has produced. Thirteen rows; eleven read, word
+for word, *"A new article is out! A new article has been published!"* The title
+restates the body, the body restates the title, and **neither names the
+article**. Information per row: none.
+
+### We shipped it
+
+[`cron/nudges/route.ts`](app/api/cron/nudges/route.ts) built the signed-in push
+by taking the email's **first line, truncated to 140 characters**. For
+`week1-recap` that is *"Mission Winning — your first week on the path:"* — a
+colon introducing the two numbers that made the message worth sending, both of
+them on the lines the slice discarded. The reference's defect at one-app scale,
+in our words.
+
+Deriving copy at the send site did something worse than produce a bad string: it
+put the string **out of reach of the tone contract**. `reentryTone.ts` sweeps
+`nudgeCopy` on every run, and this body did not exist until the cron executed.
+So each kind now composes its own push beside its email, from the same inputs —
+`week1-recap` carries the sessions and the volume, `week-behind` carries the
+target and the count. The privacy contract that keeps `dayReviewPush`
+deliberately contentless does not reach these: that one is sent from a row that
+holds no behaviour data **by design**, while this path is already composing an
+email out of the numbers.
+
+**Tags are required now, not optional.** [`pushPayload.ts`](src/lib/pushPayload.ts)
+added `tag` so *"an evening wind-down would not silently replace a comeback the
+athlete had not opened"* — and then comeback and both email mirrors shipped
+without one, all three falling through to the `mw-nudge` default. Same tag
+replaces. The two cron routes that *did* set tags did it with their own string
+literals beside a comment explaining why it must be unique, while the copy
+functions one import away had none: two spellings of one fact, which is how the
+third kind ends up colliding by accident (`.178`). The copy owns the tag; the
+routes carry it.
+
+**And the welcome screen still promised a kind that was deleted.** The pre-account
+opt-in offered *"training reminders (streak at risk, next step)"* in four
+languages. `streak-at-risk` was removed deliberately — it fired on a
+consecutive-day premise `reentry.ts` rejects — and its copy would now fail
+`findToneViolations` outright. Reworded to the two kinds that actually send.
+
+### The settings screen said two and meant five
+
+`ProfileRemindersCard` described device notifications as *"Two kinds"* and named
+two. A signed-in athlete with the toggle on can receive **five**: those two, the
+evening review configured one row below, and the two that ride with the weekly
+emails. The reference's one genuinely good structural idea in this batch is a
+settings screen where every kind says **when it fires**, so that is what the card
+does now — as statements, not switches, because there is still one subscription
+behind them and inventing per-kind preferences would mean a column, a control
+and a `pushPrefsReachable` entry each.
+
+`WindDownOptIn` — the one surface in the app that asks an athlete to grant
+notification permission — had **six raw string literals in JSX and no
+`useTranslation` at all**. A permission ask nobody can read is a permission
+nobody grants. New [`notificationLocales.ts`](src/i18n/notificationLocales.ts)
+(the `zeroStateLocales` shape) carries it and the trigger lines; coverage came in
+**one under the cap**, so the ratchet moved 710→709.
+
+### Dismissed or finished, the checklist was gone forever
+
+`.240` gave First Steps one mount: a Today card whose Dismiss writes a flag
+`useDismissed` **never clears**, and which also retires itself on completion.
+Both endings terminal, no reset control anywhere. The reference puts its
+checklist in the nav drawer with a progress bar, and that idea lands on a real
+hole rather than a missing ornament.
+
+`MoreSheet`'s own header already calls it *"a status board rather than a menu"*
+and it already reads live figures per row, so the checklist goes there: next
+step, a segmented `MeterBar`, and the same sheet — which turns Dismiss from
+*gone* into **moved off Today**, the thing it should always have meant. The
+label says so now, in all six translated languages.
+
+[`firstStepsReachable.test.ts`](src/lib/journey/firstStepsReachable.test.ts)
+counts the doors and **discovers them** rather than naming a file (`.220`), then
+asserts the harder half: at least one mount must not read the dismiss key. Two
+mounts both gated on `dismissed` would satisfy a count and change nothing.
+
+### The step that could not tick
+
+`syncJourneyPhase` recomputed `s.basic`, **returned** when Basic was incomplete,
+and only recomputed `s.readiness` past that early return. `AssessmentsPage`
+writes `mw_last_assessment` and touches no journey state, so finishing the PAR-Q
+left `readiness.parq` false until a *workout* was logged — and that flag is step
+six of the checklist, whose whole lean-shell audience is the Basic-phase athlete.
+The screen built to tell a new athlete what they had done was telling them they
+had not done the thing they had just finished.
+
+`firstSteps.test.ts` could not see it: that suite builds a `JourneyState` literal
+and asks `getFirstSteps` about it — a fair test of the checklist, structurally
+blind to whoever fills the state in. The defect lived entirely in the sentence
+that populates it, which is `.205` exactly (`mergeBackup` was always correct; the
+line after it was not). The new test goes **through** `syncJourneyPhase`, and its
+companion asserts the fix moved a *snapshot* and not a *gate* — a completed PAR-Q
+must still leave you in Basic, because `allBasicDone` is `b.workout` and `.223`
+is what a second definition cost.
+
+**Founder calls, both deferred with the reason recorded:** the reminder-at-a-set-time
+(genuinely absent rather than broken — nothing in this app fires *before* a
+session, so it is a column, a control, a cron branch and a new copy kind) and the
+completion badge (it would be the app's **first durable earned record**; nothing
+persists achievements today, and commissioning itself leaves no revisitable
+trace). An in-app inbox is refused outright: greenfield, for a channel that has
+never delivered a message.
+
+**Stated plainly, because it decides how to read all of the above:** VAPID keys
+unset, `PRIVATE_MODE` on, no `CRON_SECRET` — **zero notifications have ever been
+delivered**, and none of this is visible in dev. That is the argument for doing
+it now rather than against: the first push a beta tester ever receives should not
+be the truncated one.
+
+**Not done, named:** the four English-only surfaces (`EN_ONLY_SURFACE`) are
+unchanged; per-kind mute, quiet hours and snooze do not exist; the notification
+SW still ships one icon and no actions.
+
+Tests 1233→1237. i18n coverage cap 710→709. Locale namespaces 30→31.
+
+---
+
+## 2026-08-02 — The language switcher half the app ignores (`.242`)
+
+`.241` closed by naming two functions as unfinished business: *"`utils.formatDate`
+and `benchmarks.formatChartDate` still pass `undefined` as the locale, so they
+follow the browser rather than the app's language switcher."* Measuring before
+fixing turned two into **42 sites across 22 files**, plus **17 `localeCompare`
+calls in 12** — in a product shipping **fifteen languages including Arabic**.
+
+### An argument you reach by not passing one
+
+`Intl` formatting consults the ambient locale whenever the first argument is
+missing, and `undefined` is a *legal value that means exactly that*. So
+`d.toLocaleDateString()` and `d.toLocaleDateString(undefined, {…})` are the same
+call, and neither looks like a mistake at the call site. An athlete who set the app
+to Spanish got Spanish copy, Spanish nav, Spanish pillar names — and **`8/2/2026`
+with `1,234` separators**. In German every grouped number on every screen was
+wrong; in Hindi the *shape* was wrong, since `12,34,567` groups in lakh.
+
+The repo already had the right answer and had used it once: `HistoryCalendar`,
+written last wave, derives its month name from `i18n.language` and its header
+explains why. One correct implementation, a lone island, and `.178`'s definition
+of a missing home.
+
+**The fix is a required positional.** `formatLocalDate(iso, lang)` in the new
+[`lib/i18n/formatLocale.ts`](src/lib/i18n/formatLocale.ts) does not accept an
+optional language, because *the defect is an optional first argument* and an
+optional first argument cannot be its own fix. The compiler now catches call site
+43 before any scan has to; `useLocaleFormat()` binds it once per component so
+complying costs nothing, which is the difference between a rule that holds and one
+people route around. `utils.formatDate` ended the wave with **zero call sites** and
+was deleted — `.222`'s precedent, dead code kept alive by its importers.
+
+### Closing the list on the right axis
+
+`.212` earned this repo's rule — *a guard keyed to one spelling of a defect has
+only ever tested that spelling* — by closing its own list on the wrong axis: it
+enumerated ways to **slice** an ISO string and so never saw the ways to **compare**
+one, missing fifteen sites. So [`localeFormat.test.ts`](src/lib/i18n/localeFormat.test.ts)
+closes on *"how does a value reach the browser locale"*, and JavaScript has exactly
+three doors: the three `toLocale*String` methods, any `Intl.*` constructor, and
+`localeCompare`. `Intl` is matched as `new Intl.<anything>(` rather than by name,
+so a constructor TC39 adds next year cannot slip through the way a name list would
+— and the mutant proving it uses `new Intl.NumberFormat()`, **a spelling no file in
+this repo actually contained**, which is the test `.212` says to run.
+
+### The sort that claimed to be linguistic
+
+Seventeen `localeCompare` calls, and **thirteen were ordering `YYYY-MM-DD` keys and
+ISO timestamps** — a linguistic comparison of strings containing no language, which
+cannot return anything `<` would not, and pays for a collator to say so (`.210`
+clocked one of these running per tick on `/active`). Those became `compareKeys`.
+Two were leaderboard **tiebreaks**, where the requirement is that a rank not move
+with the viewer's language — also `compareKeys`, and a quiet defect fixed on the
+way. Only two sort actual language and take a locale. The rule is therefore
+absolute with **no allowlist**, which is the strongest form available: an allowlist
+that fills up has replaced the rule it was meant to enforce.
+
+**Four surfaces are English and only English** — the nudge email, the session
+debrief, the share card, the school report — and their numbers now say so through
+`EN_ONLY_SURFACE` rather than by accident. Before this, a German browser rendered
+`1.234` *inside a hardcoded English sentence*: not localisation, just the one token
+in ninety disagreeing with its neighbours.
+
+### `.241` was wrong about `/mind`, and the ratchet is what said so
+
+D8 recorded `/mind`'s 34 red actions as *"one Start per guided-session card — class
+2, and precisely why /mind is a card farm rather than a screen"*, framing a screen
+redesign. It was **one line**: `GuidedStepPlayer` hardcoded `variant="fitness"`, and
+both callers render `compact` in a grid, so ten mind sessions and every Move flow
+inherited it. Demoted to `outline` — and `outline` rather than the ink variants
+because that card is only ink while *running*, and Start renders only when idle, on
+paper; `onInkSolid` there would be near-white on paper, `.155`'s 1.01:1 defect in
+the other palette. **`/mind` 34 → 2.**
+
+That correction exists because the sweep **fails when a route comes in under its
+cap**. A ratchet that only catches regressions is half a ratchet: the fix would
+otherwise have landed as a still-green run with the wrong story still filed beside
+the number. The story had been written from source and never measured — the shape
+this repo keeps paying for.
+
+### The twin doc that had a guard, and the one that did not
+
+`LOG.md`'s header and `CLAUDE.md` §7 have both said *"≤15 entries / ≤20KB"* since
+they were written, and **nothing ever checked it**: the only automated reader is
+`check-build-label.mjs`, which asks whether the current version is *mentioned*. The
+file had reached **27 entries / 127,015 bytes** — 6.4× the byte rule. One file over,
+`CONTEXT.md`'s `## Now` has `contextBudget.test.ts` and was inside budget. Same
+repo, same rule, same archive directory; the checked twin stayed honest and the
+unchecked one drifted 6×. `.221` in the docs lane.
+
+**And the rule could never have been met.** Entries here average ~5.6KB because the
+house style explains the defect class rather than naming the change — the most
+valuable thing in this repo. Fifteen of those is ~84KB; obeying 20KB would mean
+keeping **three**. An unmeetable rule is not a strict rule, it is an ignored one.
+So the count stays a hard cap, `.200`–`.211` rotate to the archive, and the size
+becomes a **ratchet** in `bundle-budget`'s shape: the file may shrink, never grow.
+[`logBudget.test.ts`](src/lib/logBudget.test.ts) also checks that rotation
+**archived** rather than deleted, deriving the boundary from the files so it keeps
+checking the current one — `.213`'s lesson, that a budget guard counting without
+checking content will let you archive the truth.
+
+**A third instance of a familiar own-goal:** that guard's first draft failed on
+`LOG.md`'s own sentence explaining that the 20KB figure was retired — after `.241`
+did the identical thing twice. `check-design-system` wrote the rule down once
+already: *a guard that punishes documented reasoning gets switched off.* It now
+reads the rule line, not the prose beneath it.
+
+**Not done, named:** `variant="fitness"` is byte-identical to `default`; its
+docblock says *"10+ call sites, fold in at the Phase 3 recut"* and there are **56**,
+across 45 files — the count is recorded, the fold left to the recut its author
+conditioned it on. `toFixed` is a fourth locale hazard the guard **cannot** see
+(it is not ambient — it hardcodes `.` as the decimal separator, so `4.2k` reads as
+four hundred and twenty in German); ~60 call sites, several feeding values back
+into inputs, so it is named rather than swept. Class-2 red debt still stands at
+`/coach` 4, `/profile` 4, `/track` 3, `/builder` 3.
+
+Tests 1215→1233. `/mind` 34→2. LOG 27 entries/127KB → 15/84KB.
+
+---
+
+## 2026-08-02 — The screens with nothing on them (`.241`)
+
+Five more Arnold's Pump Club screenshots. Lined up, they are one subject seen
+five times: **what a screen says when the athlete has no data.** A month calendar
+of thirty red ✕. A page reading `ALL GROUPS (0)` above nothing. And two
+zero-states that explain themselves and offer one action.
+
+Two of them are how to do it. Two are how not to. Mission Winning shipped one of
+the second kind.
+
+### The void, on a real route
+
+`LeaderboardTable` rendered unconditionally: a bordered box, a four-column header
+strip (`# / Operator / Score / Δ`), then an empty `<ul>`. On the class scope that
+is the **normal** state, not an edge — `rank.ts:74` builds class entries from
+`classRows` alone and pacers are excluded by design — so a class with nothing
+synced got a heading and a column header over a void, beneath a line reading
+*"0 operators"*. The reference screenshot, shipped.
+
+`/programs` had the same defect on a filter miss: `{filteredPrograms.map(…)}`
+with no fallback branch.
+
+### The rule was written down, and wrong about its own component
+
+`DESIGN_REVIEW.md` has said *"not a blank void"* since it was written; `grep`
+finds `EmptyState` in no script and no test. Worse, the line said **"dashed
+invite + CTA"** while `EmptyState`'s own docblock records that the dashed box was
+deliberately deleted in `.139` — *"a dashed rounded box on a `bg-muted/20` fill
+with a 10%-opacity red icon chip and centred copy: four things the system does
+not do."* Anyone fixing empty states from the checklist would have rebuilt a
+retired treatment.
+
+### The harness existed, pointed one property away
+
+`a11y.spec.ts` renders **all sixteen signed-in routes with zero data** on every
+gate run and asserts only that they are accessible. **A blank screen is
+maximally accessible** — no contrast failures, no unlabelled controls, no focus
+traps, because it has nothing.
+
+The inverse was true of the other rule. `first-90` asserts Today offers *exactly
+one* primary action, and `expectOneRedAction` was called for `/log` alone. A
+ceiling on how much a screen may ask; **no floor under how little it may
+offer**, on fifteen of sixteen routes.
+
+Fifth suite in this repo found pointing at its own assumptions rather than at the
+product, after `.129` sitemap, `.157` a11y routes, `.162` viewport, `.165` gate
+port.
+
+### What the sweep measured
+
+`zero-state.spec.ts`'s first run was the inventory, not a pass: **nine of fifteen
+routes over the one-red-action rule, `/mind` at 51.** Two classes hid in that number.
+
+**Class 1 — red as a *selected* state, fixed.** `variant={x ? 'default' :
+'outline'}` at twenty sites: filter chips, unit toggles, privacy and reminder
+switches, days-per-week picks — plus `bg-primary-fill` on two 1–5 rating scales.
+A selection is not an action. New `selected` variant carries what `.240` already
+settled for tabs: tint ground under a 2px poster rule. `/programs` 2→0,
+`/assessments` 2→1, `/track` 6→3, `/move` 2→1, `/profile` 5→4, `/mind` 51→34.
+
+**Class 2 — one red CTA per list card, recorded not silenced.** `/coach` draws
+"Start this session" on every `PlanSessionCard`; `/mind` on every guided session.
+That is a composition decision per screen, not a colour swap. So the rule ships
+as a **per-route ratchet** with a written reason each — the shape
+`i18n-coverage` and `bundle-budget` already use. Caps are set to measured truth,
+and going *under* fails too, asking you to lock the gain in.
+
+### The rest of the voids
+
+`/benchmarks` stopped hiding its four one-tap Quick Starters inside the has-data
+branch — they were visible only to athletes who already had benchmark data, and
+hidden from the one person its empty copy addresses (*"complete workouts with
+logged sets"*). `/learn/course` stopped swallowing a fetch failure into
+`setChapters([])`, which is why its single muted `<p>` had to *guess*, branching
+on `isFreeBeta()` between "check your connection" and "sign in with your bundle
+email" — two diagnoses for one silent failure, and no retry either way. `/move`
+and `/mind`'s `ErrorState`s got an `onAction`, because `ErrorState` renders no
+retry unless handed one. History's filter miss got a way out, and its pillar-wins
+line stopped being hardcoded English that spoke in raw URLs (*"Use /move or
+/mind"*).
+
+`EmptyState`'s CTA is `outline`, not `fitness` — a red fill on nine routes, from
+the primitive whose entire job is "here is the one thing to do".
+
+### The calendar marks only what happened
+
+`/history` gains a **Calendar** segment: ink fill = trained, a small ink rule =
+logged something else, 2px poster outline = today, everything else blank paper.
+**No day is ever marked missed.**
+
+That is criterion 4, and it is also the only honest option. `coach/storage.ts`
+persists **one** plan and `savePlan` overwrites it; `adaptPlan` flips
+`planned → missed` in place; `generateWeek` seeds from *current* body scores. What
+an athlete meant to do in March is not recoverable, so a red ✕ would be an
+invention as well as a reproach — thirty of them on the screen a lapsed athlete
+opens first.
+
+*"Logged"* is a fifth state the reference does not have: the day you used the app
+without lifting. And retention is part of the honesty — nutrition prunes at 90
+days, check-ins cap at 90 entries, pillar wins at 100, so an old month shows
+fewer logged days than the athlete had, and the grid **says so** rather than
+reporting a storage limit as behaviour.
+
+Month helpers live in `localDate.ts` under its own rule. Month length comes from
+`new Date(y, m, 0)`, so leap February answers 29 without a rule anyone has to
+remember. Monday-first, matching `startOfLocalWeek` rather than becoming the
+seventh derivation of when a week begins. Weekday initials and the month name
+come from `i18n.language`, not the browser locale.
+
+### The date rule's fifth spelling — and the guard could not have caught it
+
+`.212` widened `reachability.test.ts` from one slicing spelling to four and
+closed the list *"because these are the only three ways JavaScript has to take
+the date half of an ISO string"*. True — and it examined only the **slicing**
+half. Every pattern required a literal `toISOString()` call, so none could see
+the same defect performed on an ISO string that was **already stored**:
+
+```ts
+w.completedAt.split('T')[0] >= weekStart   // pillarScoreInputs, challenges
+const day = at.split('T')[0];              // TodayJournalStrip
+```
+
+`completedAt` is a UTC instant. All three compared its **UTC** date half against
+a **local** key — `weekStartIso()`, `state.weekStart`, `localDateKey()`. Exactly
+the frame mismatch `.212` found in `weekRecap`, three more times, surviving the
+sweep written for it because the guard was keyed to *how the date was produced*
+rather than to *what it was*. It now matches the shape.
+
+`todayTrends.ts` carried both defects in one loop — the banned spelling, and **no
+tombstone filter at all**, so a deleted session kept its volume in Today's
+sparklines. Fourth reader found not dropping tombstones after `.223`.
+
+Widening caught two sites that are **not** defects — a founder admin panel and a
+server-composed email, where UTC is the only frame that exists. Those are an
+allowlist with reasons, checked in both directions: a reason under 40 characters
+fails, and so does an exemption whose file would now pass anyway.
+
+### Verification
+
+Mutation-tested, every rule: restoring `EmptyState`'s red fails four routes,
+**none of them `/log`** — exactly the gap. An empty `<ul>` on `/library` fails
+the headed-void rule. Removing `LeaderboardTable`'s zero branch fails its unit
+guard, which is a *source* guard because `/leaderboard` is parked and the e2e
+sweep cannot reach it. Routing `localMonthDays` through `toISOString` fails the
+timezone sweep — and `process.env.TZ` was confirmed to actually switch before
+that sweep was trusted.
+
+**Two of my own drafts were wrong and running them is what said so.** The
+leaderboard's off-palette rule first failed on the string `text-red-400` inside
+the comment explaining that `text-red-400` had been removed —
+`check-design-system` solved this once and says why: *a guard that punishes
+documented reasoning gets switched off*. And the calendar's first draft faded
+future days with `text-muted-foreground/50`, which axe measured at **2.42:1** —
+the same alpha-on-a-contrast-token defect `.240` fixed three times in one wave.
+Rendered, not inferred: `/history` in `en` and `ar` (RTL, `dir=rtl`, month name
+`أغسطس 2026`), axe clean, month navigation confirmed to move.
+
+**Not done, named:** class-2 red debt is capped, not paid — `/mind` at 34 is a
+card farm and needs a composition pass, as do `/coach`, `/track` and `/nutrition`.
+`WeekStrip` and `Skeleton` still carry their own hardcoded English day arrays;
+the calendar derives its own rather than adding a third. `utils.formatDate` and
+`benchmarks.formatChartDate` still pass `undefined` as the locale, so they follow
+the browser rather than the app's language switcher.
+
+---
+
+## 2026-08-02 — The screen that said how you were doing before what to do (`.240`)
+
+The brief was five screenshots of Arnold's Pump Club (iOS), handed over as
+design references for the website and the web app.
+
+**The first finding is that almost none of it is a styling problem.** The
+Modernist rebrand (wave D5) settled paper/ink, one red, Archivo, radius 0, 2px
+rules; the reference is a rounded-card, soft-shadow, glowing-FAB app. Copying
+its look would undo a founder-commissioned rebrand and fail gate step 10 on the
+first hex. What it is genuinely better at is **the shape of the daily screen**
+and **the first-run contract** — and three of those ideas landed on defects that
+were already here.
+
+### Today was answering the wrong question first
+
+Replaying `planTodayBlocks` against the declared prices, on a readiness
+athlete's evening screen:
+
+```
+visible: header · dashboard · coach-invite · day-review · week-recap
+hidden : coach-week · freshness · guidebook
+```
+
+`coach-invite` is a card asking the athlete to go and get a weekly plan. It was
+on the screen while `coach-week` — the weekly plan — was inside the "Today
+details" disclosure. At `commissioned` with the beta banner up, the session and
+the week were hidden together. Horizon W criterion 2 is *"one clear next session
+on Today"*, and the screen was leading with the Mission Score.
+
+Re-priced, not re-budgeted: `coach-today` 35→12, `coach-week` 45→14,
+`dashboard` 10→22, `coach-invite` 25→40 and restricted to `basic`, where it no
+longer overlaps the real week strip. `TODAY_MAX_TOP_LEVEL_BLOCKS` is untouched —
+that argument lives in the one file written to hold it. Both shells now price
+from one table rather than two lists of numbers that have to agree.
+
+**And a dismissed card was still spending a slot.** `planTodayBlocks` computes
+`room = max - pinned.length` from the *candidate list*, not from what each
+candidate renders, so `BetaWelcomeBanner` returning `null` still cost a pinned
+top-level block — permanently, since the dismissal is permanent. The budget
+never saw it hide.
+
+### Two Today screens, degrading two different ways
+
+`HomeTodayLean` had no block budget at all: it stacked whatever mounted, in
+source order, with no ceiling — and it belongs to the cohort least able to
+absorb a feed. It also rendered `JourneyHero` inline while the dashboard
+portalled it to `ScreenDock`, so `i-day`/`basic` athletes, whose next action is
+the entire reason the screen exists, were the only ones who could scroll it away.
+
+### The checklist the app could already fill in
+
+`detectBasicMilestones` has computed workout / fuel / move / mind / learn since
+the journey engine shipped, and `detectReadinessMilestones` computes the health
+screen. **Four of those six displayed nowhere** — `BASIC_STEPS` is a
+one-element array, so the stepper reads "Step 1 of 1" forever. The data for a
+real checklist was already on the device; the banner above it said the path in
+prose as three static chips that looked identical on day one and day ninety.
+
+`FirstStepsCard` + `FirstStepsSheet` replace it, each row carrying a line of
+*why* — "try a mobility flow" is a chore, "five minutes on the days you do not
+train is what keeps the streak reachable" is a reason. **Nothing here gates
+anything, and that is the whole risk.** `.223` cost the launch gate because
+`allBasicDone` meant two things, and this puts a six-item checklist on Today
+five of whose items are exactly the pillars Horizon W called "free, not gated
+chores". So `basicComplete` stays `b.workout`, is never consulted, and a guard
+asserts both — including that `basicComplete.ts` may not so much as mention
+`firstSteps`.
+
+### Continuity, and the part of it that is not honest yet
+
+`CoachTodayCard` printed a session name and nothing else. It now leads with
+`SESSION 14 · PUSH / PULL / LEGS` — an ordinal counted from logged history
+(tombstones dropped, the `.223` lesson), and a block name **read out of the plan
+that exists** rather than re-derived by calling `chooseSplit` twice.
+
+There is **no week number**. `useCoachPlan` overwrites the previous plan every
+Monday, so nothing knows this is week three, and a field nothing writes is
+`.195` with a nicer label. The guard reads `useCoachPlan` to confirm the plan is
+still discarded — so the day plan history becomes durable, it fails and asks to
+be deleted deliberately rather than quietly outliving its reason.
+
+### Four answers to "what does selected look like"
+
+`.seg`/`.seg-opt` sat in `index.css` since the rebrand with **zero call sites**,
+while `ui/tabs.tsx`, `HistoryPage` and two strips in `FuelLogSheet` each drew
+the control their own way. Two spent the screen's one do-this-now colour on a
+tab. One was invisible: `bg-card` on a `bg-card` parent, 1.01:1 — the same trap
+`.155` found on the check-in scales. And the unused CSS was wrong too
+(`bg-primary-fill`), so the primitive disagreed with the two live components
+that had it right. All of it is now one `SegmentedControl` drawing
+`is-active-tab`, which is what the tab bar already draws.
+
+### The guard that knew two spellings of red
+
+Found by rendering the screen rather than reading the diff: `TodayWeekSection`'s
+"Start Today's Workout" is a red `variant="fitness"` inside `main`, beside the
+docked hero. `redActions.ts` allows **zero** red controls in `main` and never
+caught it — that card lives in the details disclosure, which mounts only from
+`readiness` up, and the hero e2e stops earlier.
+
+`check-display-type` could not have caught it either, and that is the more
+useful half. It knew a red *class* and a `<Button>` with the variant *omitted* —
+but not a variant that is named and red. `fitness` is defined as
+`bg-primary-fill`; its own comment calls it "the plain red fill". `.212`
+verbatim: a guard keyed to one spelling of a defect has only ever tested that
+spelling. The red variant list is now **derived from `button.tsx`**, so a new
+red-filled variant is caught the day it is added, and both vacuity paths — an
+unparseable variant map, an empty derived set — were confirmed to exit 1.
+
+### The Design lane's entry doc was still enforcing the old brand
+
+`DESIGN_ORCHESTRATION.md`'s lock table named navy `#0a0c10`, emerald `#27b07d`
+and brass `#c7a860`, its type row read "Barlow Condensed · Inter · IBM Plex
+Mono", and its card row allowed "≤1 glow per screen". Its own escape clause said
+that described the outgoing system *"until the token-swap PR rewrites
+DESIGN_SYSTEM.md and brand-guidelines.md"* — that PR was `.131`, ten builds
+earlier. An agent opening the Design lane cold was being told to build navy.
+`.221`'s defect one level up: the rules nothing checks, now actively wrong.
+
+### Three contrast failures the a11y suite had been red on
+
+`npm run a11y` is gate step 17 and **gate-only** — it appears in zero workflows,
+so nothing had run it since the rebrand. Two routes were failing, both from the
+same habit: fading a token chosen for its contrast.
+
+- **`/coach`** — `PlanSessionCard` dimmed a missed session with `opacity-60`,
+  which dims the text with the container: #747372 on #eeeded (4.04:1) and
+  #8c8b8b on #eeeded (2.9:1). `.127` fixed this exact thing in `WeekStrip`
+  (*"de-emphasised by border not opacity, because dimming the container also
+  dims the day label past 4.5:1"*) and missed this file. Now a dashed 2px rule
+  on a transparent ground — and it belongs to this wave anyway, since a missed
+  session must stay readable to be *behind you* rather than hidden.
+- **`/profile`** — the demo-mode notice ran `text-status-warn/90` on a 10% amber
+  fill: #976115 on #e2dbd3, **3.79:1**. Restoring full strength gave #8f5300 on
+  #e2dbd3, **4.49:1** — still short by a hundredth, because the fill darkens the
+  ground the text has to beat. So the fill goes and a 2px rule carries it; the
+  Modernist answer was structural the whole time. `text-status-warn/90` was in
+  two more components (`SchoolClassPanel`, `WorkoutVictorySheet`) and all three
+  are fixed, because the defect is the habit, not the instance.
+
+**Gate note:** steps 1–15 pass. Steps 16–17 could not run under `npm run gate`
+in this container — @playwright/test 1.61.1 resolves chromium **1228** and the
+image ships **1194** — so both suites were run against the installed binary with
+an `executablePath` override: **52 @gate passed, 34 @a11y passed**.
+
+---
+
+### Public surfaces
+
+One honest status bar on both public shells — the open-beta line lived in the
+landing page's fifth section and on no other URL, while the free core is the
+strongest thing about the product. **Ink, not red**: the reference's bar is a
+sale countdown, this is a status, and red is the one do-this-now colour. It
+disappears with `isFreeBeta()` rather than becoming a slot that has to be filled.
+
+`app/robots.ts` defaulted to the **apex** host while `seoMetadata`, `sitemap`
+and `publicSeo` all default to `www` — so with `NEXT_PUBLIC_SITE_URL` unset,
+robots.txt advertised a sitemap on a host no canonical, OG tag or JSON-LD ever
+names. Both now read `siteBaseUrl()`.
+
+**Refused from the reference, on purpose:** the red ✕ on missed days (`WeekStrip`
+already strikes them through, and criterion 4 is "re-entry without shame"), the
+glowing AI FAB, sale countdowns, and *"members who publicly share their goals
+are 70% more likely to succeed"* — an invented number.
+
+**Not done, named:** the eleven pillar screens from wave D6 are still held for
+founder review; `/private`'s entry anatomy was left alone (it already runs
+headline → lede → one action → foot → legal); and the new copy ships English-only
+via `defaultValue` — `npm run i18n:fill` has not been run for the ~14 new keys.
+
+Verified at 390×844 in a real browser, not inferred: Today's order, the card and
+sheet, the segmented control's computed colours and keyboard, and axe clean with
+the sheet **open** (`.215`).
 ## 2026-08-01 — The column that hid four more controls (`.224`)
 
 `.223` shipped `tests/e2e/fuel-floating-action.spec.ts` after "Log weight" was
@@ -1154,879 +1738,3 @@ Killed: `feedback-prose-unreadable`, `panel-shows-counts-only`,
 `tester-gets-waitlist-email`, `tag-drifts-from-reader`.
 
 Tests 1097→1103. Next: `.215` the button in You, on a context-aware sheet.
-
----
-
-## 2026-07-31 — The status doc that archived the governing fact (`.213`)
-
-Last of the `.204`–`.213` wave, and it closes a defect I introduced in `.203`.
-
-**`CONTEXT.md` stopped saying the beta gates were red.** `ORCHESTRATION.md`
-§Do-not-build bars features while they are — *"Only hero bugs / launch
-unblock"* — and what makes them red is REDTEAM **A5**'s falsifier having fired.
-That fact lived in `## Now` **only inside the `.170` ship bullet**, and `.203`
-rotated `.123`–`.189` to the archive. For ten builds an agent booting cold read
-CONTEXT, saw no red gate, and would have concluded features were allowed.
-
-`contextBudget.test.ts` — which I wrote in the same PR — counted bullets,
-checked the archive existed, and checked the budget was stated. It asserted
-**nothing about which facts survive**. *A budget guard that counts without
-checking content will happily let you archive the truth.*
-
-The fix is not "never rotate". It is that these facts do not belong in ship
-bullets at all: `## Now` now opens with a standing **Status table** — gate state,
-`PRIVATE_MODE`, `MAIL_POSTAL_ADDRESS`, Actions, VAPID/cron/Sentry/Upstash,
-pending migrations, gitleaks — and a `MUST_STATE` list fails the build naming
-**the question `## Now` can no longer answer** rather than a missing string.
-
-**`ciTruth` counted dead workflows as coverage.** `.200`'s rule accepts a check
-that appears in any workflow YAML. Every workflow here is billing-blocked — jobs
-die in seconds with `runner_id: 0`. So the guard I wrote to catch *checks that do
-not run* was satisfied by workflows that **cannot run**: the same defect, one
-level up, inside the guard against it. The proof is `npm run security-audit`,
-which **exits 1 today** (48 advisories, 17 high) and lives only in `ci.yml`, so
-it has been red-by-omission for this suite's entire life.
-
-Honest scope, because overstating it would be its own failure: the worst
-advisories (axios CVSS 8.7, `bigint-buffer` 7.5) enter solely through
-`@phantom`/`@solana`, and that path is unreachable today — `/bundle` 307s during
-free beta, `PhantomLifetimePayButton` returns null, the SDK is already
-`dynamic()`. **CI truth and maintenance debt, not live exposure.** `next` and
-`sharp` are the reachable ones.
-
-**And the eighth vacuous guard, in the guard I had just written for that.** My
-first version opened `if (CI_CAN_RUN) return;`, so the mutant that flips one
-boolean disabled the entire assertion and survived. A guard switched off by a
-flag nothing checks is a comment with a semicolon. `CI_CAN_RUN` is now pinned to
-what `CONTEXT.md` records, so flipping it requires also saying, where a human
-reads, that Actions works again.
-
-**Two more checks that reported passes they had not measured.** `gate-smoke.ts`
-pushed `ok: true` with detail *"skipped"* for the PWA probe **and** the
-unlocked-`/welcome` probe, so "All gate checks passed" counted two things that
-never ran — the same shape `ci-extended.yml` documents for the visual job. They
-go to a separate `skipped` list now, printed and counted apart. **No policy
-changed**: the service worker stays deliberately off while `PRIVATE_MODE=true`.
-
-**Lint budget ratcheted 10 → 0**, and both outstanding warnings cleared — one
-`STORAGE_KEYS` leftover I left in `.203`, one unused `LOCALE_FILES` import I left
-in `.212`. The budget had allowed ten warnings since it was introduced while the
-real count was one, which is exactly the slack a `.202`-style ratchet exists to
-remove.
-
-Killed: `now-block-drops-the-gate-state`, `dead-workflow-counts-as-running`
-(survived first run — see above), `pwa-check-green-when-skipped`.
-
-Tests 1092→1097. **This closes the `.204`–`.213` plan.**
-
-**Not done, and named rather than quietly dropped:** the **8 open Dependabot
-PRs** (#110–#118) plus #120. `postcss`, `js-yaml` and `fast-uri` clear three high
-advisories directly. They are stuck because CI cannot verify them and the local
-gate is the substitute — but landing eight dependency bumps is a different kind
-of change from this wave, each wanting its own build and its own falsification,
-and folding them into a documentation PR would have been the wrong shape.
-Founder-visible in the Status table now.
-
----
-
-## 2026-07-31 — A guard that measured a spelling (`.212`)
-
-**This is a defect in my own `.199` work, and it is the fourth appearance of the
-same lesson in this programme.**
-
-`.199` shipped a rule — *no calendar date is derived from `toISOString()`* — that
-matched `toISOString().split('T')[0]` **and nothing else**. It passed `.199`'s
-own falsification because my mutants used the spelling the regex knew.
-
-**Fifteen live call sites used the other one.** Widening the regex first, before
-touching any of them, turned it red on **twelve files** — which is the only
-evidence that a guard can see the defect it claims to prevent.
-
-The one that mattered: **`weekRecap.ts` shared the wrong week.**
-`weekStart.toISOString().slice(0, 10)` applied to a correct *local* Monday from
-`startOfLocalWeek()`. East of UTC, local Monday 00:00 is still Sunday in UTC, so
-the field whose own JSDoc says *"Local Monday as `YYYY-MM-DD`"* reported a
-Sunday — and it is not internal: it reaches `weeklyDebrief` →
-`TodayWeekRecapCard`'s **shared text** and the share-card title, while
-`useCoachPlan().weekStart` said the correct Monday. Two answers for the same week,
-in the same product, in the same evening.
-
-`weekRecap.test.ts`'s assertion was `typeof recap.weekStart === 'string'`, which
-is why `.199` — the PR about exactly this class of bug — did not catch it. It now
-sweeps **six timezones × four hours**, including UTC+14 and UTC−11, and asserts
-the value is both the right date and an actual Monday. Verified to respond to
-`TZ`: reverting `weekRecap.ts` alone turns it red, which a timezone test that
-silently ignored `process.env.TZ` would not.
-
-The other fourteen — `coach/load.ts` (ACWR, feeds Coach and readiness),
-`coach/progress.ts`, `nutritionQuickLog`, `healthImport`, `wearables/mapSamples`,
-`SessionCheckInSheet`, `BodyMetricsSheet`, `ProgressPhotosCard`,
-`FuelWeightStrip`, `nudgeCopy`, `BetaAdminPanel` — all now call `localDateKey`.
-
-**The rule, written down because it keeps recurring:** *a guard keyed to one
-spelling of a defect has only ever tested that spelling.* Where a parsed shape
-can be asserted, assert that. Where only source text is available — as here —
-enumerate the spellings **explicitly** and say why the list is closed. It is
-closed here because `split('T')`, `slice(0,10)`, `substring(0,10)` and
-`substr(0,10)` are the only ways JavaScript has to take the date half of an ISO
-string; `substr` is included because it is deprecated, not removed.
-
-Killed: `slice-spelled-utc-date`, `substring-spelled-utc-date`,
-`week-recap-shares-the-wrong-week`.
-
-Tests 1091→1092.
-
----
-
-## 2026-07-31 — The queue that stops forever, and the cache that keeps your data (`.211`)
-
-Four defects on the offline path, in the module whose own header promises
-*"Nothing is ever dropped for failing… losing a workout is not an option."*
-
-**A hung fetch killed the outbox for the life of the tab.** `flushing` is cleared
-in a `finally`, and `finally` runs on **settle** — a promise that never settles
-never runs it. So every later `flush()` returned 0 forever, including the
-`online` and `visibilitychange` paths in `useOutboxDrain`. The queue kept
-accepting work, the UI kept saying "pending", and nothing left the device until a
-reload. No handler passes a signal, and `supabase-js` sets no default timeout.
-This is the product's own stated scenario: captive-portal gym wifi, or a TCP
-connection that goes dead-air without an RST.
-
-Two independent belts, because either alone can be defeated: each handler now
-races a **20s** timeout, and the `flushing` flag itself expires after 120s so a
-flush that somehow escapes the race cannot wedge the queue permanently. A
-timeout resolves `false`, which is already an ordinary failure — the existing
-backoff handles it, and no new state appears anywhere.
-
-**The cap dropped the work it had just been handed.** `save()` did
-`ops.slice(0, MAX_QUEUE)` while `enqueue` pushes to the **end**, so at 500 ops
-every new `workout.upsert` was truncated away by the same call that added it.
-New pure [`capQueue`](src/lib/sync/outbox.ts) states the order plainly: a logged
-workout is never dropped while anything else could go instead; among the rest the
-**oldest** goes first, because a superseded coach plan or leaderboard push has
-already been overtaken; and only a queue that is *all* workouts sheds its oldest
-workout, by which point the device is far past any recoverable state.
-
-**Authenticated API responses sat in CacheStorage for 24 hours.** `app/sw.ts`
-passed serwist's `defaultCache` unmodified, whose `/api/*` entry is
-`NetworkFirst` with `maxAgeSeconds: 86400`. That stored `/api/premium/status`,
-`/api/wearables/status` and — on a product with a `/api/youth/consent-*` surface
-— `/api/school/class/[code]/export`, a CSV of student names and scores. It
-survived sign-out and was served to the next user of a shared phone while
-offline. Serwist's own auth exemption matches `/api/auth/*`; this app's callback
-is **`/auth/callback`**, which fell through to the catch-all bucket. Explicit
-`NetworkOnly` matchers for both, **before** the spread — nothing offline reads an
-API response, so this costs nothing.
-
-**The teacher PIN was brute-forceable through the routes that did not limit it.**
-`/api/school/class/[code]/verify` caps PIN attempts at 5/minute; its siblings
-`stats`, `leaderboard` and `export` authenticate with the same PIN and had **no
-limit at all**. The limit now lives inside `resolveTeacherClassAccess`, so every
-consumer inherits it and the next route added does too. Only PIN attempts are
-counted — a signed-in creator should not be throttled by someone else guessing at
-their class code.
-
-**Also:** six routes returned `error.message` from a Supabase failure straight to
-the client, naming tables, columns and constraints — a free schema map for anyone
-probing the mobile sync surface. Opaque codes now; the detail goes to the server
-log, where the person debugging it is. And the four cron routes declare
-`maxDuration`: they send email serially and call `markNudged` only after the
-loop, so at Vercel's 10–15s default the function was killed mid-loop, the batch
-was never marked, and the next daily run **re-sent to everyone already emailed** —
-each timeout widening the duplicate window.
-
-**A test with a date literal in it is a test with an expiry date.** Three
-`first-90.spec.ts` cases pinned `page.clock.setFixedTime(new Date('2026-07-30T…'))`
-while `seedEveningReview` writes its check-in under the **real** current date.
-They passed all evening and failed the moment the clock rolled past midnight,
-because the day-review card looked for a day the fixture had not seeded and
-`composeDayReview` correctly returned null. New `fixedTimeAt(hour)` derives the
-day from the same clock the fixtures use, so "at 19:00" means the evening *of the
-seeded day* rather than of one particular Thursday. Not a `.211` regression —
-found by it.
-
-Six mutants killed: `newest-op-dropped`, `handler-can-hang-forever`,
-`flush-flag-sticks`, `api-response-cached`, `pin-brute-forceable`,
-`cron-resends`. None survived.
-
-Tests 1078→1091.
-
----
-
-## 2026-07-30 — The logger wrote your whole history every second (`.210`)
-
-`tickElapsed` and `tickRestTimer` each call `set()` on a one-second interval,
-and zustand's persist middleware calls `setItem()` after **every** `set()` — it
-does not diff the partialized slice. `elapsedSeconds` was in `partialize`, so
-every tick ran `partialize` + `JSON.stringify` + a synchronous
-`localStorage.setItem` of `savedWorkouts + workoutHistory + activeWorkout`.
-
-Benchmarked on realistic 6-exercise/4-set logs:
-
-| history | payload | `JSON.stringify` |
-|---|---|---|
-| 50 sessions | 163 KB | 0.85 ms |
-| 200 sessions | 647 KB | 3.45 ms |
-| 500 sessions | 1,616 KB | 9.64 ms |
-
-A mid-tier Android is 4–6× slower and the synchronous disk write costs about as
-much again, so a 200-session athlete lost roughly **30–50 ms of main thread per
-second while logging, 60–100 ms/s during rest**. On the wedge screen, mid-set,
-on the cheapest phone in the target market — and at 1.6 MB it walks toward the
-5 MB localStorage ceiling.
-
-**Two halves, because either alone leaves the write in place.**
-`elapsedSeconds` leaves `partialize` and is **derived from
-`activeWorkout.startedAt`** instead of counted — which is also more correct: the
-counter only advanced while the tab was open, so a session resumed after twenty
-minutes away reported the time the *tab* had been open rather than the time the
-athlete had been training. And [`dedupeWrites`](src/store/persistDedupe.ts)
-skips any `setItem` whose bytes are already on disk. Together a tick now
-produces an identical payload and is skipped outright.
-
-**Throttling was deliberately not added.** The obvious companion fix is to
-coalesce writes to ~1/2 s with a trailing flush on `pagehide`. This is the path
-that holds sessions nobody can reproduce from memory — `.205` was the last
-defect here — and a deferred write that fails to flush is data loss, while the
-browser events that would flush it are exactly the ones that fire unreliably on
-mobile. **Skipping a byte-identical write cannot lose anything**, because the
-value on disk is already the value being written. That asymmetry is the whole
-argument, and it is recorded at the function.
-
-Killed: `elapsed-back-in-partialize`, `dedupe-removed`, `dedupe-always-writes`,
-`elapsed-counted-not-derived`.
-
-**Two self-inflicted misses worth recording.** The SSR fallback shipped as
-`undefined!` and every store test died on `Cannot read properties of undefined
-(reading 'setItem')` — `browserStorage()` now gives an in-memory stand-in, the
-same promise `safeStorage` makes for `mw_*` keys. And the wiring guard bounded
-its slice with `indexOf('getRecentHistory:')` from position 0, which found the
-`WorkoutState` **interface** 400 lines *above* `tickElapsed` and produced a
-backwards slice — vacuously true. The first correction still matched
-`tickElapsed: () => void;`; only anchoring on the implementation's brace worked.
-Sixth and seventh vacuous-guard instances in this programme, both in a guard
-written minutes earlier.
-
-Tests 1066→1078. **`/active` render cost — the per-set history scan, the two
-`localStorage` reads in render, the `localeCompare` sort per tick — is not in
-this PR.** Those are re-render work, not disk writes, and belong with a
-`React.memo` pass rather than bolted onto a persistence change. Carried forward.
-
----
-
-## 2026-07-30 — 306 KB of translations on every route (`.209`)
-
-Measured, not estimated, and the largest user-visible win in the wave.
-
-`localeHttpLoader.ts` needed exactly two facts per namespace — its name and its
-filename — and got them by importing `LOCALE_EXPORTS` from
-`@/lib/exportLocales`. That module imports 28 `*Locales.ts` files **and**
-`@/i18n/localePacks`, which imports 14 `packs/*.json` totalling 1.1 MB on disk.
-And `localeHttpLoader` is reached from the **root layout**:
-
-```
-app/layout.tsx → I18nPwaProvider → LocaleHttpSync → localeHttpLoader
-               → exportLocales → localePacks → 14 × packs/*.json
-```
-
-Every link static. The result was one `chunks/7660-…js` at **1,053,845 B raw /
-313,839 B gzipped**, loaded as a plain `<script async>` on `/`, `/log` **and**
-`/active` — 44 % of the initial JS on the logger. An English user in Nairobi on
-3G downloaded Thai, Vietnamese and Hindi before first paint.
-
-That silently defeated the design `i18n/hydrateResources.ts` documents in its own
-header (*"dynamic imports keep ~8k LOC of `*Locales.ts` out of first paint"*) and
-`src/i18n.ts`'s *"minimal EN first paint"*. **Both were true of the source and
-false of the build**, which is the whole reason a byte budget is worth more than
-a comment.
-
-The fix is a new [`localeExportManifest.ts`](src/i18n/localeExportManifest.ts)
-with **zero imports** — 28 `{namespace, filename}` rows and nothing else.
-`localeHttpLoader` reads that; `exportLocales` reads it too and derives
-`LocaleNamespace` from the array rather than declaring the union a second time,
-so the list exists once. The remaining `import type { ExportLang }` is erased at
-compile time.
-
-**Measured after, same method as before:**
-
-| route | gzipped initial JS |
-|---|---|
-| `/` (gated teaser) | **164.0 KB** |
-| `/log` | **262.8 KB** (was 44 % locale pack) |
-| `/active` | **418.8 KB** |
-
-The megachunk no longer exists in the build, and a byte-level scan of every
-chunk still referenced from `/log` finds **no locale-pack strings at all** —
-checked for `Platos` (es), `ครั้ง` (th) and `तकरार` (hi) rather than trusting the
-chunk name.
-
-**The step that would have caught it.** `todayPerf.test.ts` says so in its own
-words — *"a bundle-size assertion would be better and does not exist here."* New
-[`scripts/bundle-budget.mjs`](scripts/bundle-budget.mjs) is that assertion, wired
-into `npm run gate` straight after the build. It reads the **prerendered HTML**,
-not the build manifest, because the question is not which chunks the graph
-contains but which `<script>` tags the browser actually fetches — the only form
-of the question a user experiences. Ratcheted the `.202` way: caps move down
-only, with the high-water marks checked into
-[`bundleBudget.test.ts`](src/lib/bundleBudget.test.ts) so a raise cannot pass
-unnoticed. It also refuses to pass when `.next/` is missing, rather than
-reporting green for a measurement it did not take.
-
-A second, cheaper rule runs in the unit lane and needs no build: nothing on the
-root-layout path may **value**-import `@/lib/exportLocales` or
-`@/i18n/localePacks`, and the manifest itself must import nothing.
-
-**The budget failed on its own first gate run**, and the reason is worth
-recording. I calibrated it against a default `npm run build`, where `/` is the
-six-chunk `/private` teaser at 164 KB. `gate.mjs` builds `PRIVATE_MODE=false`,
-where `/` is the real landing page — 20 chunks, 247.4 KB. That is the `.204`
-asymmetry in a new place: **the gate measures a configuration production does not
-currently serve.** The caps are now set against what the gate builds, because a
-cap the gate cannot check is not a cap, and the note at the constant says so.
-
-Killed: `locale-packs-back-on-the-critical-path`,
-`byte-budget-raised-instead-of-lowered`, `budget-not-in-gate`.
-
-Tests 1061→1066.
-
----
-
-## 2026-07-30 — Numbers the product overstates (`.208`)
-
-Two celebrations the app could not support.
-
-**Four filters for one quantity.** [`percentLoad.ts`](src/lib/workout/percentLoad.ts)
-says in prose that the prescriptions, the /benchmarks cards, the live PR chip and
-the debrief "all quote the same number". They did not:
-
-| site | warmup | failure | drop |
-|---|---|---|---|
-| `countsTowardPr` — **the live PR chip** | excl | **incl** | excl |
-| `benchmarks.ts` — 1RM chart | excl | excl | incl |
-| `coach/progress.ts` `isCountable` | excl | excl | incl |
-| `setMath.ts` `loadBearingSets` — prescribed load | excl | excl | incl |
-
-Prior best bench 100×6 (e1RM 116.1); log 100×8 marked **failure** → 124.1 → the
-brass chip fires and `isPr` is written into the log, while the chart, the debrief
-and next session's prescribed load all skip that set and still say 116.1.
-Verbatim the failure `benchmarks.ts:4-9` claims was already fixed.
-
-The majority is also the defensible answer: a set to failure gives the highest
-and least repeatable e1RM reading, which is exactly why the three estimate
-consumers refuse it — so the celebration was firing on the one kind of set the
-rest of the app declines to trust.
-
-**The `drop` disagreement was left standing, deliberately.** It is a taste
-judgement, not a numeric one: a drop set is evidence (it should feed e1RM) but
-the burnout at the end of the work is not a moment to celebrate. So `.208` splits
-the two reasons into two names — `countsTowardStrengthEstimate` for what the app
-*believes*, `countsTowardPr` for what it *celebrates* — rather than flattening a
-deliberate choice to make a table look tidy. Three consumers now delegate;
-`reachability.test.ts` fails a fifth copy.
-
-**The PR that could never not happen.** `estimateOneRepMax` returns 0 above 12
-reps, because no 1RM formula is fitted there. So `getBestPriorSet` can only ever
-return a set of 12 reps or fewer — and for an athlete who trains high-rep only it
-returned **null forever**, while `isPersonalRecord` answered `if (!prior) return
-true`. Goblet squats at 20kg × 20: a PR on set one, and a PR on set two hundred,
-with the chip and the haptic every time, and `isPr` written into the log so it is
-on the record too. A celebration that cannot fail to happen carries no
-information. Checking the *new* set first is the fix: no estimate, no claim — and
-the genuine first-estimable-set case still reads as a PR, correctly.
-
-**Two existing tests encoded the old behaviour** (`failure sets count toward
-volume and PR`, `drop sets skip PR`) with no stated rationale. The first was the
-bug written down; it now says what it means and why. The second was a real
-decision and survives, restated.
-
-Killed: `pr-chip-counts-failure-sets`, `high-rep-permanent-pr`,
-`fifth-countable-definition`.
-
-Tests 1058→1061. **The streak-decay item planned for `.208` is not in this PR** —
-it is a separate wrong number with its own blast radius (`StreakChip`,
-`WorkoutVictorySheet`, `computeWinScore`, the leaderboard snapshot) and folding
-it in would have made the falsification of these two harder to read. Carried
-forward, still open.
-
----
-
-## 2026-07-30 — The coach that thinks it is always Monday (`.207`)
-
-Three defects at one call site, and the test that should have caught them was
-the reason they survived.
-
-`useCoachPlan` called `adaptPlan(existing, ctx, weekStart)` — passing the start
-of the week as **today**. So `todayDayOffset(weekStart, today)` was always `0`:
-
-- `dayOffset < todayOffset` never matched, so **no session was ever marked
-  missed** on the automatic path, and the "life happened — N sessions missed,
-  remaining days re-spread" adaptation could not fire at all.
-- The low-readiness recovery swap targets `dayOffset === todayOffset`. On a
-  Thursday with readiness 30 the coach swapped **Monday's** session — a day
-  already gone — and left Thursday's heavy squat day exactly where it was. The
-  athlete asked for a lighter day and got one retroactively, on a day they had
-  already trained.
-
-The real date was in scope the whole time: `todayOffset` sits three lines above,
-derived from the clock, and is passed to `adaptForEquipmentChange` on the very
-next line.
-
-**The revision was a claim nobody had to earn.** `adaptPlan` returned
-`plan.revision + 1` unconditionally, and `useCoachPlan` guards its save with
-`next.revision !== existing.revision` — always true. Every mount rewrote the plan
-and called `scheduleCoachPush()`. Downstream `hasCoachAdaptationSignal` is
-`revision > 1`, so `CoachAdaptBanner` told **every athlete, on every visit** that
-the coach had adapted their week, including when nothing had changed. `.127`:
-nothing said on thin data. An unchanged week now returns the same object.
-
-**The cycle.** `savePlan` dispatches `mw-coach-plan-changed`; `useCoachPlan`
-listens and calls `refresh()`, which called `savePlan` again — and
-`dispatchEvent` is synchronous, so this recurses on one stack.
-`HomeTodayDashboard` mounts two `useCoachPlan()` consumers. **I did not execute
-it** — that needs a browser and a mounted React tree — so rather than claim a
-reproduction I did not run, the new
-[`adaptTermination.test.ts`](src/lib/coach/adaptTermination.test.ts) pins the
-property that closes the cycle: `adaptPlan` is idempotent, on **every day of the
-week**, so the `!==` guard is false on the second pass and `savePlan` is not
-called again. Worth having regardless — an adapt that is not idempotent means the
-plan an athlete sees depends on how many times a component happened to mount.
-
-**The vacuous assertion.** `adapt.test.ts`'s "marks past planned sessions as
-missed" passed `today = weekStart` and then asserted `missed.length >= 0`, which
-is true of every array ever created. It was green for the entire life of the bug
-it was named after. Rewritten to a real Thursday and a real count, plus the
-opposite direction (nothing is missed on Monday).
-
-**One mutant survived first run**, and it was my own new guard:
-`recovery-swap-hits-the-wrong-day`. The test read
-`if (session?.kind !== 'strength') return;` — and the fixture has **no session on
-day 3 at all**, so it returned without asserting anything. Fifth vacuous guard in
-this programme, same shape every time. Preconditions are now asserted, never
-skipped past, and the days either side are marked done so the missed-session
-re-spread cannot move the session under test.
-
-Killed: `today-is-always-monday`, `revision-always-bumps`,
-`recovery-swap-hits-the-wrong-day`.
-
-Tests 1049→1058.
-
----
-
-## 2026-07-30 — Two controls that write a number nobody asked for (`.206`)
-
-Both bugs are the same shape: a control the athlete touches for one reason
-quietly writes a second value they never entered.
-
-**Editing reps zeroed the prescribed weight.** `updateSetInput` rebuilt the whole
-`{reps, weight}` pair on every keystroke from `getSetInput(exIdx, setIdx, 10, 0)`,
-and `resolveSetInput` returns those defaults *verbatim* for a **prescribed**
-exercise. So a coached bench 3×5 @ 100kg, tapped once on reps, became
-`{reps: 6, weight: 0}` and logged **6 × 0kg** — zero volume on the lift the coach
-asked for, and then `getLastSessionSets` and `suggestNextSetTarget` computed next
-week's prescription from a set the athlete never did. Every other `getSetInput`
-call site passes `set.reps, set.weight`; this one alone passed `10, 0`, which is
-exactly why the console *displayed* the prescription correctly right up to the
-moment it was edited.
-
-The second half was the base. `updateSetInput` read `setInputs` from the render
-closure instead of the updater's `prev`, and "Apply targets" fires two
-synchronous calls per set — so the weight call rebuilt from a base that did not
-yet contain the reps the first call had just set, and a 3×5 prefilled as **10
-reps**. That is verbatim the `.175` bug the surrounding comment claims was fixed.
-
-The rule is now [`nextSetInput`](src/lib/workout/activeWorkoutHelpers.ts), a
-function rather than an inline spread, because the defect is a *shape* — which
-base, which field survives — and `.196` is the standing reminder that a rule
-spelled as a shape can only be checked as one.
-`activeWorkoutHelpers.test.ts` covered `resolveSetInput` thoroughly and **it was
-never wrong**: what broke was the arguments a caller handed it, which no test of
-a correct function can see.
-
-**Fuel logged your goal as your lunch.** `MacroCalculator.applyTargets` called
-`saveMacroTargets(...)` — the whole job — and then also unshifted
-`{ name: 'Calc target protein 180g', protein, cals }` into `mw_nutrition_log`.
-`NutritionPage` sums every row dated today into the day's **consumed** totals, so
-setting a 2400 kcal / 180g target made Fuel report 2400 kcal already eaten before
-a single meal, and fed `countHighProteinDaysFromNutritionLog` (threshold 150g),
-inflating the Mission Score's Fuel pillar off a number the athlete had only
-wished for. `.127` broken at the source: nothing said on thin data, least of all
-a score.
-
-And it wrote `logs.slice(0, 50)` — the only row cap in the codebase, where every
-other writer keeps **90 days** via `pruneNutritionLogToDays`. At ~4 entries a day
-that is under two weeks, so one tap of "Apply targets" deleted months of real
-meals and `NutritionPage`'s own next write persisted the truncated array back.
-`.170` already ruled non-food rows out of the Fuel diary; this is the same rule
-one layer down, on the device log rather than the cloud table. **Deleting the
-write fixes both**, and the guard is stated repo-wide — the food log is pruned by
-age, never by row count — so the next writer that invents its own retention fails.
-
-Four mutants killed: `reps-edit-zeroes-weight`, `apply-targets-stale-closure`,
-`targets-logged-as-food`, `fuel-log-truncated-to-50`.
-
-Tests 1041→1049.
-
----
-
-## 2026-07-30 — The restore the app forgets, then destroys (`.205`)
-
-The worst defect the `.204`–`.213` audits found, because it destroys the data an
-athlete deliberately asked the app to protect.
-
-[`backup.ts`](src/lib/backup.ts) and
-[`importCsvRestore.ts`](src/lib/workout/importCsvRestore.ts) write the zustand
-persist payload straight to `WORKOUT_STORE_KEY` and, by explicit design, leave the
-refresh to the caller — the pure merge stays testable, the browser half stays
-thin. That seam is right; what the callers did with it was not. Both ran
-`setTimeout(() => router.refresh(), 1200)`, and **`router.refresh()` preserves
-client-side React state by design**. The store was already hydrated. `persist`
-re-reads storage only on rehydrate. Nothing asked it to rehydrate.
-
-    New phone → restore a backup of 300 workouts → toast says "300 workouts
-    merged, 12 settings restored. Reloading…" → nothing reloads → History and
-    Today still show empty → the athlete logs one set → `persist` serialises its
-    in-memory state over the file → **all 300 workouts are gone, permanently.**
-
-Identical for Strong/Hevy CSV import. Both toasts end *"Reloading…"*, so the
-athlete waits, sees the old history, and concludes the restore failed — which is
-the more merciful reading of what happened.
-
-[`backup.test.ts`](src/lib/backup.test.ts) covers `mergeBackup` thoroughly and
-could not see this: **the merge was always correct.** The defect lived entirely in
-the sentence after it. That is why the new guard reads call sites rather than
-merge results — "which function did you call after writing storage" is a fact
-about the code, not about a return value.
-
-New [`reloadAfterRestore.ts`](src/lib/storage/reloadAfterRestore.ts) gives the
-rule a name and one home: *a function that writes storage behind a live store
-must say how the store learns.* A full document reload, not
-`persist.rehydrate()` — rehydrating repopulates the store, but every other module
-that cached a read at mount (history analytics, the Today digest, challenges)
-would still hold pre-restore values, and the copy has been promising a reload the
-whole time.
-
-The guard also pins the copy: a toast that says "Reloading…" must be attached to
-something that reloads.
-
-Two mutants, both killed with three failures each: `restore-without-rehydrate`,
-`csv-import-without-rehydrate`.
-
-**Process note, recorded because it is the second occurrence.** My mutant cleanup
-used `git checkout --` on files holding *uncommitted* work, which silently
-reverted the fix itself — exactly what happened in `.202`. The new guard caught it
-on the next run, which is the guard doing its job, but the rule is now explicit:
-**commit before mutating, every time.** A falsification run that can destroy the
-thing it is verifying is not a safe procedure.
-
-Tests 1035→1041.
-
----
-
-## 2026-07-30 — The invite that discarded its own code (`.204`)
-
-The beta gate is red because there are fewer than 10 users. The mechanism for
-getting users had a one-line bug that silently threw the invite code away.
-
-`src/emails/templates/beta-invite.html` linked to
-`https://www.missionwinning.com/?invite=MW-ALPHA-2026`. `proxy.ts` redirected
-every gated request with `NextResponse.redirect(new URL('/private', request.url))`
-— and the `URL` constructor replaces the path **and the query**:
-
-```
-new URL('/private', 'https://x.com/?invite=MW-B-ABC12')  →  'https://x.com/private'
-```
-
-`PrivateTeaserClient` reads `?invite=` to decide whether the invitee screen
-renders at all. So every invited tester arrived with the code stripped,
-`isInvitee` false, and was shown the **public waitlist form** with the code field
-folded inside a `<details>`. The one screen written for an invited tester was
-unreachable from the one email that exists to send them there. `docs/BETA_INVITE.md`
-says the link should be `/private?invite=…` and `print-beta-invite.ts` emits that;
-only the shipped HTML disagreed, so a doc, a script and a template described one
-URL and one of them was wrong.
-
-The same line dropped `?next=`, which the gate also reads (`:41`, `:71`) — and
-nothing in the repo ever set it, because this redirect was the only route to that
-page. It was dead code guarding the return path for every bookmark, push URL and
-share link. **Cloning instead of constructing fixes both**, and turns `?next=`
-from a dead parameter into the thing it was written to be.
-
-**Why nine waves missed it.** `scripts/gate.mjs` builds with `PRIVATE_MODE=false`
-— deliberately, since that is what compiles the service worker `offline.spec.ts`
-needs. So all 50 e2e cases and all 33 a11y cases run against a configuration **no
-beta user will ever load**, and the first code path every invited tester touches
-had never been executed by a test. That is `.200`'s thesis — *a guard nobody runs
-is a guard that does not exist* — applied to the deployed configuration. New
-[`privateGateRedirect.routetest.ts`](src/lib/privateGateRedirect.routetest.ts)
-calls `proxy()` directly under `PRIVATE_MODE=true` and asserts on the `Location`
-header a browser would follow: 18ms, against ~3 minutes for a second gated build.
-
-**Onboarding could take a session away.** `startWorkout` replaces `activeWorkout`
-outright, which is right at its seventeen other call sites — each is an athlete
-tapping "start this workout". `WelcomePage.finish()` is the exception: there the
-call is a side effect of finishing I-Day, and a returning athlete reaches it by
-accident, because `/` renders marketing for anyone past the gate and its only
-prominent CTA leads back into onboarding. New `hasLoggedWork` draws the line at a
-**completed set** — a session started and abandoned is noise, but a logged set is
-the first thing the app holds that the athlete cannot reproduce from memory. The
-guard sits at the one call site rather than in the store, because changing the
-store's contract would break the seventeen calls that mean exactly what they say.
-
-**Two cards reached the athletes who no longer needed them.** `BetaWelcomeBanner`
-— *"Finish I-Day, log one workout, then open Mission Coach"* — was mounted in
-`HomeTodayDashboard` only, and `HomePage` sends `i-day` and `basic` to the lean
-shell. `detectBasicMilestones` requires all five pillars, so an athlete stays
-`basic` well past their first workout: the instructions appeared only after the
-thing they instruct was done. `TodayReentryCard` had the same mount and the same
-consequence, and a `basic` athlete can accumulate real history and lapse. Both now
-gate on shared [`todayGuidanceMount.ts`](src/lib/today/todayGuidanceMount.ts),
-the `.195` `dayReviewMount` pattern — `i-day` still excluded, because the first
-run is the one screen that must stay bare.
-
-One claim from the audit was **refuted rather than fixed**: the lapsed-before-first-workout
-cohort does not need a re-entry card, because `computeReentry` returns `NONE` for
-zero history on purpose — *"Never logged: that is onboarding, not re-entry."* The
-mount rule defers to that rather than overriding it.
-
-Four mutants, all killed, none survived first run: `invite-code-dropped-again`
-(2 unit + 3 route failures), `welcome-dead-ends`, `onboarding-clobbers-active-session`,
-`banner-only-in-one-shell`. The redirect guard **did** fail its own first run —
-it matched the broken spelling inside the explanatory comment shipped with the
-fix, which is `ciTruth`'s workflow-header trap again. Comments are not code, and
-a guard that reads prose as behaviour will eventually be satisfied by an apology
-for the bug.
-
-Tests 1022→1035, routes 7→12. Opens the `.204`–`.213` wave.
-
-**Still founder-owned:** `MAIL_POSTAL_ADDRESS` is unset, and
-`scripts/send-beta-invite.ts` hard-exits without it while `renderEmail.ts` refuses
-to render. This PR fixes the link; the email still cannot be sent until that is set.
-
----
-
-## 2026-07-30 — State the repo can be trusted about (`.203`)
-
-Documentation as an executable contract. Every finding here is the wave's defect
-class one more time: *a thing exists, and nothing asserts anyone can act on it.*
-
-**Four migrations were on disk and in no founder checklist.** The audit found two;
-[`migrationLedger.test.ts`](src/lib/migrationLedger.test.ts) found two more on its
-first run. `20260731_llm_usage.sql` (the `.188` spend ledger) had one parenthetical
-in `ENV.md`; `20260801_day_review_push.sql` (`.194`/`.196`) had **nothing**;
-`20260719_wearable_connections.sql` and `20260720_perf_indexes.sql` had nothing
-either. All four gate merged, shipping features. A migration nobody wrote down is
-a migration nobody applies — and this is a repo where **9 of 28 are already
-recorded as pending**.
-
-The guard asserts three things: every file on disk appears in the runbook, the
-runbook names nothing that no longer exists, and **every entry says what breaks
-without it**. That last one caught three older entries — `push_subscriptions`,
-`referrals`, `beta_invites` — that named their contents but not their
-consequence. `ls` gives you a filename; the runbook's whole value is the
-sentence saying what stays broken until you run it.
-
-**`CONTEXT.md` had 79 bullets and 103KB in a block whose own header calls it
-"One screen of truth for any AI tool or human joining cold."** It is the first
-thing `CLAUDE.md` tells an agent to read, so every cold boot paid 103KB of
-mostly-superseded context before touching code. Same `+1`-per-feature pattern
-`.197` fixed on the Today screen, and no PR is ever the one that made it long —
-**I added seven of those bullets in a single day.** `.123`–`.189` rotated to
-[docs/archive/CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md);
-79 → 21 bullets, 103KB → 33KB. Nothing deleted, everything archived, and the full
-record was always LOG.md. Budget of 25 stated in the block itself and enforced by
-[`contextBudget.test.ts`](src/lib/contextBudget.test.ts) — a cap nobody can see
-is a cap nobody keeps.
-
-**Two more `.184`-class findings closed.** `ProfileOwnerTools` read
-`mw_contributors`, which **nothing writes** — so "Members: 12,400" and the
-revenue derived from it were constants dressed as stored data, on a card whose
-title said "(Demo)" while its figures did not. Founder-gated, so the blast radius
-is one person: the one making decisions from it. Now named illustrative, the fake
-read is gone, and the key is deleted (no reader, no writer, nothing left).
-
-`restorePremiumCourseProgressForUser` had **zero callers** while
-`markPremiumSectionComplete` wrote its mirror on every completion — written
-forever, read never. Wired into sign-in, where the parallel fuel mirror is
-already read from. The learn path was the one left half-connected.
-
-Killed: `migration-not-in-the-ledger`, `ledger-entry-with-no-reason`,
-`context-now-unbounded`.
-
-Tests 1016→1022. **This closes the `.199`–`.203` plan.**
-
-## 2026-07-30 — Measured, and it can only shrink (`.202`)
-
-**`i18n-parity.ts` never opens a `.tsx`.** Its only filesystem read is its own
-allowlist; everything else compares locale packs **to each other**. That is a
-real check — it catches a key present in EN and missing in Japanese — but it is
-structurally blind to the bigger problem: a key a component *uses* that exists in
-**no pack at all**. All fifteen languages agree they don't have it, so parity is
-trivially satisfied.
-
-Measured for the first time: **665 of 1538 literal keys (43%) exist in no EN
-pack.** Because every call site is `t('key', { defaultValue: 'English' })`,
-nobody sees raw key names — they see **English**, silently, in fourteen
-non-English languages. The `@gate` test asserting no raw keys leak has always
-passed, and always will. The app looks translated and is not.
-
-Founder call was **measure and ratchet, no translation work**. So
-[`i18n-coverage.ts`](scripts/i18n-coverage.ts) counts the gap, fails on any
-**new** uncovered key, and its cap can only ever be lowered. In the gate, because
-`i18n:parity` cannot see these keys by construction and so nothing else would.
-
-**The cap shipped at 710, not 665, and that is worth understanding.** Five
-components — `TodayDayReviewCard`, `DayReviewOptIn`, `BehaviorStrip`,
-`DailyCheckIn`, `BreathingTimer` — had **no `useTranslation` at all**. Giving
-them one added 42 keys and the count went *up*. That is measurement widening, not
-debt growing: those strings were previously hardcoded English with **no key**,
-invisible to the counter and impossible for anyone to translate. Now translating
-them is a data change rather than a code change. It is the only legitimate reason
-this number rises, it is documented at the constant, and
-[`i18nCoverage.test.ts`](src/lib/i18nCoverage.test.ts) pins a checked-in
-high-water mark so the next raise has to edit two files with the reason in the
-diff.
-
-**`BehaviorStrip` now uses the key pairs the library always shipped.**
-`behaviors.ts` has carried `labelKey`/`receiptKey` beside `labelDefault`/
-`receiptDefault` since `.190`, and **nothing had ever read them** — every
-consumer took the English. The library was built i18n-ready and its only renderer
-ignored that for eleven builds. Twelve behavior questions and their evidence
-receipts are translatable for the first time.
-
-Killed: `ratchet-raised-instead-of-lowered`, `key-never-added-to-a-pack`,
-`component-with-no-t`, `coverage-script-not-in-gate`, `raw-default-over-the-key`.
-
-**Two process notes, both mine.** `key-never-added-to-a-pack` survived its first
-run because I wrote it as a *swap* — one uncovered key for another — which leaves
-a total-count ratchet unmoved. A real regression *adds* a key; rewritten that
-way, it kills. And my mutant cleanup used `git checkout --` on two files whose
-`.202` work was **uncommitted**, silently reverting them. The coverage check
-caught it on the next run, which is the first time in this wave a guard I had
-just written caught me destroying my own work rather than shipping a defect.
-
-Tests 1012→1016.
-
-## 2026-07-30 — The screen that must not break (`.201`)
-
-The app is fully client-rendered and has **no nested `error.tsx` segment
-boundaries** — `app/error.tsx:8-10` says so outright. That single fact is what
-makes every finding here severe: a throw anywhere on a render path does not
-degrade one component, it replaces the entire route with the global error
-screen.
-
-**`MobileNav` threw inside `useMemo`.** A `MOBILE_TAB_HREFS` entry missing from
-`PRIMARY_NAV` blanked *every mobile screen* — the bar is on all of them. A typo
-in a list of five strings would have taken out the product on phones. It now
-drops the unresolvable href (four tabs beat zero screens) and
-[`mobileNavTabs.test.ts`](src/lib/mobileNavTabs.test.ts) catches the mismatch
-where failing is free. A render-path throw is not a safety net; it *is* the
-failure.
-
-**Six `activeWorkout!` assertions on the logger.** Each was true in practice —
-the handlers only fire from a rendered session — but this is the one screen the
-product promises never breaks, and an assertion is a promise the compiler stops
-checking. Narrowed once per handler, returning the values the callers already
-handle.
-
-**Then the e2e guard found something neither audit had.** A `@gate` case that
-loads `/active` with four kinds of corrupt persisted storage: two of them
-**blanked the screen**. `activeWorkout: 42` and `{ id: 'x' }` — valid JSON, wrong
-shape — both produced *"That wasn't supposed to happen."* Every consumer did
-`activeWorkout.exercises[i].sets[j]`, and `partialize` persists whatever shape
-the store held while what comes *back* is whatever is on the device: an older
-build's shape, a half-written record, a quota-truncated string.
-
-Fixed at rehydration with `isUsableActiveWorkout` — one check covering every
-consumer, including the ones written next year, rather than a guard at each read
-site. It **rejects the whole session when any exercise is unusable** rather than
-filtering: a half-restored session that silently loses sets is worse than a clean
-empty state, because the athlete can start again in one tap but cannot recover
-data the app quietly dropped.
-
-Also: `healthImport.ts` parsed JSON with no guard, contained only because its one
-caller happens to sit inside an upload queue's catch — a property of the caller,
-not the function. And `ProgramTemplatesPanel`'s `.find(…)!` was dereferenced
-unguarded twenty lines later.
-
-Corrupt-storage resilience had been unit-tested per parser and **never end to
-end**, which is exactly why the two store failures survived: the parsers were all
-fine, and the crash was in what happened to the parsed value afterwards.
-
-Killed: `nav-tab-with-no-item`, `shape-check-accepts-anything`,
-`sets-not-checked`. No mutant survived — but the e2e guard found two real
-defects during construction, which is the same thing arriving earlier.
-
-Tests 1003→1012; `@gate` e2e 46→50, plus 33 a11y. Gate 6.1 min.
-
-## 2026-07-30 — The guards that never ran (`.200`)
-
-`.195`–`.199` closed one defect class: *a thing was built and nothing asserted
-anyone could reach it.* This is that class applied to the checks themselves, and
-the repo had two live instances.
-
-**`npm run a11y` executed nowhere.** 33 tests over 30 routes — excluded from
-`npm run gate`, whose own closing line said so, and absent from every workflow,
-while [`ci.yml`](.github/workflows/ci.yml) carried a comment claiming a11y
-"stays in CI extended". `grep -rn a11y .github/workflows/` returned **zero
-hits**. The suite has existed since `.157`.
-
-Run for the first time, it found **one real serious violation**: `/compare`'s
-comparison table scrolls horizontally with no keyboard access
-(`scrollable-region-focusable`), so every column past the fold existed only for
-people with a pointer. Fixed with `tabIndex` + a named region. **32 of 33 passed
-on the first run** — the suite was in far better shape than "never executed"
-suggested, which is its own small lesson about assuming rot.
-
-`a11y` now runs **inside the gate**, reusing the server the hero lane already
-started, so the marginal cost is the run and not another build. Gate: 46 e2e +
-33 a11y.
-
-`eslint`'s `jsx-a11y/no-noninteractive-tabindex` and axe genuinely disagree
-here, and **axe is right** — the lint rule is a static heuristic about element
-types, axe measures the rendered box. One narrow disable, with that reasoning
-written at the call site.
-
-**The visual-regression job passed vacuously.** With no committed baselines it
-ran `--update-snapshots || true` and then re-ran `e2e:visual`, which found the
-snapshots it had just written. Green on every run, over zero baselines — the job
-could not fail. Now the absence of baselines is a loud failure with bootstrap
-instructions, because `visual.spec.ts` argues at length that a known-wrong
-baseline is worse than none and bootstrapping is a deliberate act. **Baselines
-were deliberately not generated here**: this container runs Chromium 1194
-against a repo pinning 1228, and at 2% tolerance those would likely diff on a
-correctly-provisioned runner — founder call, recorded.
-
-**One fact, one home.** `gate.mjs`'s header asserted *"Actions works again as of
-2026-07-29"* while `CONTEXT.md` recorded it re-blocked on the 30th; the repo
-contradicted itself about its own CI in two files. The gate now points at
-CONTEXT rather than restating it. Same shape: `ci.yml` inlined
-`npm audit --audit-level=high` while `package.json` already defined
-`security-audit` — two spellings of one check, now one.
-
-Guard — [`ciTruth.test.ts`](src/lib/ciTruth.test.ts): every npm script this repo
-treats as a check runs in the gate or a workflow, or sits in `NOT_RUN` with a
-written reason; the reverse (no stale exemptions); a11y specifically in the
-**gate**, not merely in some schedule; and the visual step must not write its own
-baselines, must not swallow its exit code, and must `exit 1` when baselines are
-missing. *A guard nobody runs is a guard that does not exist* — PR #142's
-discarded baselines and this a11y orphan stated as one rule.
-
-**Three things this suite caught on its own first run**, all of them mine:
-
-1. `secrets:scan` looked like it ran in CI because `gitleaks.yml`'s *header
-   comment* mentions `npm run secrets:scan`. A guard reading a comment as
-   execution is the `.195` header-menu defect again. Workflow YAML is now
-   comment-stripped before matching, and the `NOT_RUN` reason was rewritten —
-   it had been wrong about how the scan runs.
-2. The visual check flagged **its own help text**, because the step now *tells*
-   the reader to run `--update-snapshots`. `echo` lines are excluded: the rule is
-   about what a step runs, not what it says.
-3. Changing ci.yml to `npm run security-audit` broke compliance control
-   **MW-MON-003**, which grepped for the literal string `npm audit` — a third
-   place encoding the same fact, measuring a spelling rather than the thing it is
-   about. The probe now accepts either.
-
-Killed on first run: `a11y-dropped-from-gate`, `visual-passes-with-no-baseline`,
-`not-run-table-without-a-reason`, `script-not-run-anywhere`.
-
-Tests 999→1003. Gate 3.7→5.7 min.

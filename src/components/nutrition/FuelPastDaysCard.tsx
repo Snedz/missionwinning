@@ -6,6 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { NutritionLogRow } from '@/lib/nutritionQuickLog';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 
 type Props = {
   logs: NutritionLogRow[];
@@ -29,7 +30,7 @@ export function FuelPastDaysCard({ logs, todayIso, onCopyDayToToday }: Props) {
       map.set(row.date, list);
     }
     return [...map.entries()]
-      .sort((a, b) => b[0].localeCompare(a[0]))
+      .sort((a, b) => compareKeys(b[0], a[0]))
       .slice(0, 14);
   }, [logs, todayIso]);
 

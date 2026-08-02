@@ -7,7 +7,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Calendar, Dumbbell, History as HistoryIcon, Timer, Trophy } from 'lucide-react';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
+import { Calendar, Dumbbell, History as HistoryIcon, SearchX, Timer, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -37,6 +38,7 @@ import dynamic from 'next/dynamic';
 import { MuscleHeatmap } from '@/components/history/MuscleHeatmap';
 import { getJournalEntry } from '@/lib/journal/journalStore';
 import { JournalTimeline } from '@/components/history/JournalTimeline';
+import { HistoryCalendar } from '@/components/history/HistoryCalendar';
 import { AnatomyHeatMap } from '@/components/history/AnatomyHeatMap';
 
 const History1RMChart = dynamic(
@@ -49,7 +51,7 @@ const HistoryVolumeChart = dynamic(
 );
 import { getExerciseById } from '@/data/exercises';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
-import { cn, formatDate, formatDuration } from '@/lib/utils';
+import { cn, formatDuration } from '@/lib/utils';
 import { countsTowardVolume, setKindBadgeClass, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 import {
   build1RMChartData,
@@ -66,15 +68,17 @@ import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { TodaySection } from '@/components/journey/TodaySection';
 import { Input } from '@/components/ui/input';
-import { localDateKey } from '@/lib/time/localDate';
+import { SegmentedControl } from '@/components/ui/SegmentedControl';
+import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 
 const HEATMAP_WINDOW_DAYS = 14;
 
 type RangeFilter = '7' | '30' | 'all';
-type HistoryTab = 'sessions' | 'journal';
+type HistoryTab = 'calendar' | 'sessions' | 'journal';
 
 export function HistoryPage() {
   const { t, i18n } = useTranslation();
+  const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
@@ -88,6 +92,22 @@ export function HistoryPage() {
   const [range, setRange] = useState<RangeFilter>('30');
   const [visibleCount, setVisibleCount] = useState(30);
   const [tab, setTab] = useState<HistoryTab>('sessions');
+
+  /*
+   * Days the athlete used the app without lifting.
+   *
+   * Read from the pillar-win rows this page already loads rather than opening
+   * five more stores — `.178`: the calendar and the "Pillar Wins" list below it
+   * must not be able to disagree about what happened on a day.
+   */
+  const loggedDayKeys = useMemo(() => {
+    const keys = new Set<string>();
+    for (const w of pillarWins) {
+      const key = localDateKeyFromIso(w.date ?? '');
+      if (key) keys.add(key);
+    }
+    return keys;
+  }, [pillarWins]);
 
   const filteredHistory = useMemo(() => {
     const q = nameQuery.trim().toLowerCase();
@@ -137,10 +157,10 @@ export function HistoryPage() {
     const vol = summary.totalVolume;
     return t('historyBriefingLine', {
       count: sessions,
-      volume: vol.toLocaleString(),
-      defaultValue: `${sessions} sessions · ${vol.toLocaleString()} total volume — consistency compounds.`,
+      volume: fmt.num(vol),
+      defaultValue: `${sessions} sessions · ${fmt.num(vol)} total volume — consistency compounds.`,
     });
-  }, [workoutHistory.length, summary, t]);
+  }, [workoutHistory.length, summary, t, fmt]);
 
   useEffect(() => {
     const sync = async () => {
@@ -190,9 +210,9 @@ export function HistoryPage() {
         {summary.sessionCount > 0 && (
           <p className="text-xs text-muted-foreground tabular-nums leading-relaxed">
             {t('historyAvgVolume', {
-              avg: summary.avgVolume.toLocaleString(),
+              avg: fmt.num(summary.avgVolume),
               unit: unitLabel,
-              defaultValue: `Recent avg volume ${summary.avgVolume.toLocaleString()} ${unitLabel}`,
+              defaultValue: `Recent avg volume ${fmt.num(summary.avgVolume)} ${unitLabel}`,
             })}
           </p>
         )}
@@ -269,31 +289,20 @@ export function HistoryPage() {
       ) : (
         <div className="space-y-3">
           {/* Sessions = the numbers; Journal = the words (fragments + debriefs +
-              check-in notes, device-only). Same style as the range filter row. */}
-          <div className="flex gap-1.5" role="tablist" aria-label={t('historyTabsLabel', { defaultValue: 'History view' })}>
-            {(
-              [
-                ['sessions', t('historyTabSessions', { defaultValue: 'Sessions' })],
-                ['journal', t('historyTabJournal', { defaultValue: 'Journal' })],
-              ] as const
-            ).map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                role="tab"
-                aria-selected={tab === value}
-                onClick={() => setTab(value)}
-                className={
-                  tab === value
-                    ? 'min-h-[44px] border-2 border-transparent bg-primary-fill px-4 text-xs font-semibold text-primary-foreground'
-                    : 'min-h-[44px] border-2 border-border px-4 text-xs font-semibold text-muted-foreground hover:bg-foreground/[0.07]'
-                }
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          {tab === 'journal' ? (
+              check-in notes, device-only). */}
+          <SegmentedControl
+            options={[
+              { value: 'calendar' as const, label: t('historyTabCalendar', { defaultValue: 'Calendar' }) },
+              { value: 'sessions' as const, label: t('historyTabSessions', { defaultValue: 'Sessions' }) },
+              { value: 'journal' as const, label: t('historyTabJournal', { defaultValue: 'Journal' }) },
+            ]}
+            value={tab}
+            onChange={setTab}
+            ariaLabel={t('historyTabsLabel', { defaultValue: 'History view' })}
+          />
+          {tab === 'calendar' ? (
+            <HistoryCalendar history={workoutHistory} loggedKeys={loggedDayKeys} />
+          ) : tab === 'journal' ? (
             <JournalTimeline />
           ) : (
           <>
@@ -334,9 +343,23 @@ export function HistoryPage() {
             </div>
           </div>
           {filteredHistory.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-4 text-center">
-              {t('historyNoMatches', { defaultValue: 'No sessions match these filters.' })}
-            </p>
+            /* `.241` — was a centred muted sentence with no way out, while
+               `LibraryPage:369` solved the identical case with an EmptyState and
+               a clear-filters action. A filter miss the user cannot undo without
+               guessing which control caused it is a dead end. */
+            <EmptyState
+              icon={SearchX}
+              title={t('historyNoMatches', { defaultValue: 'No sessions match these filters' })}
+              description={t('historyNoMatchesDesc', {
+                defaultValue:
+                  'Nothing in this range matches that search. Widen the range or clear the search to see everything you have logged.',
+              })}
+              actionLabel={t('historyClearFilters', { defaultValue: 'Clear filters' })}
+              onAction={() => {
+                setNameQuery('');
+                setRange('all');
+              }}
+            />
           ) : (
             <>
             {visibleHistory.map((log) => (
@@ -351,14 +374,14 @@ export function HistoryPage() {
                     <p className="text-xs text-muted-foreground mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5">
                       <span className="inline-flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {formatDate(log.completedAt)}
+                        {fmt.longDate(log.completedAt)}
                       </span>
                       <span className="inline-flex items-center gap-1">
                         <Timer className="h-3 w-3" />
                         {formatDuration(log.durationSeconds)}
                       </span>
                       <span>
-                        {log.exercises.length} · {log.totalVolume.toLocaleString()} {unitLabel}
+                        {log.exercises.length} · {fmt.num(log.totalVolume)} {unitLabel}
                       </span>
                     </p>
                   </div>
@@ -417,7 +440,7 @@ export function HistoryPage() {
                 <span>
                   {w.name}{' '}
                   <span className="text-xs text-muted-foreground">
-                    ({formatDate(w.date || new Date().toISOString())})
+                    ({fmt.longDate(w.date || new Date().toISOString())})
                   </span>
                 </span>
                 <Link href="/nutrition" className="text-xs underline">
@@ -427,9 +450,15 @@ export function HistoryPage() {
             ))}
           </div>
         ) : (
-          <div className="text-xs text-muted-foreground">
-            No pillar wins logged today yet. Use /move or /mind, or complete Assessment.
-          </div>
+          /* `.241` — was hardcoded English (so it stayed English in all fifteen
+             locales) and it spoke in raw URLs: "Use /move or /mind". A path is
+             not a sentence, and the athlete cannot tap it. */
+          <p className="text-xs text-muted-foreground">
+            {t('historyNoPillarWins', {
+              defaultValue:
+                'No pillar wins logged today yet — a mobility flow, a check-in or an assessment all count.',
+            })}
+          </p>
         )}
       </div>
 
@@ -440,11 +469,11 @@ export function HistoryPage() {
               <DialogHeader>
                 <DialogTitle>{selected.workoutName}</DialogTitle>
                 <DialogDescription>
-                  {formatDate(selected.completedAt)} · {formatDuration(selected.durationSeconds)} ·{' '}
+                  {fmt.longDate(selected.completedAt)} · {formatDuration(selected.durationSeconds)} ·{' '}
                   {t('historySessionVolume', {
-                    volume: selected.totalVolume.toLocaleString(),
+                    volume: fmt.num(selected.totalVolume),
                     unit: unitLabel,
-                    defaultValue: `${selected.totalVolume.toLocaleString()} ${unitLabel} total volume`,
+                    defaultValue: `${fmt.num(selected.totalVolume)} ${unitLabel} total volume`,
                   })}
                 </DialogDescription>
               </DialogHeader>
@@ -545,7 +574,7 @@ export function HistoryPage() {
                                 <TableCell>
                                   {countsVolume ? (
                                     <>
-                                      {(set.reps * set.weight).toLocaleString()} {unitLabel}
+                                      {fmt.num(set.reps * set.weight)} {unitLabel}
                                     </>
                                   ) : (
                                     t('historyWarmupExcluded', { defaultValue: '—' })

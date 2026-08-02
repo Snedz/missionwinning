@@ -1,5 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import {
   anonymousComebackPush,
   dayReviewPush,
@@ -7,10 +9,12 @@ import {
   decideNudge,
   type NudgeCandidate,
   type NudgeKind,
+  type PushCopy,
 } from '@/lib/nudgeCopy';
 import { findToneViolations } from '@/lib/reentryTone';
 import { COLD_DEVICE_DAYS } from '@/lib/reentryTone';
 
+const root = path.join(import.meta.dirname, '..', '..');
 const APP = 'https://example.test';
 const UNSUB = `${APP}/api/nudges/unsubscribe?u=u1&t=tok`;
 
@@ -84,10 +88,123 @@ test('no message names an absence length or leans on a streak', () => {
   }
 });
 
-test('the anonymous push copy obeys the same contract', () => {
-  const p = anonymousComebackPush();
-  assert.deepEqual(findToneViolations(p.title), []);
-  assert.deepEqual(findToneViolations(p.body), []);
+/**
+ * Every push the app can send, whatever triggers it.
+ *
+ * The three email-mirrored kinds come off `decideNudge`; wind-down and
+ * day-review have no `decideNudge` branch because their gates select for
+ * someone who trained *today*. Enumerated rather than discovered, and the list
+ * is closed by construction: `NudgeKind` has five members and each appears once
+ * below, so adding a sixth without a push here fails the count assertion.
+ */
+function everyPush(): { kind: NudgeKind; push: PushCopy }[] {
+  const fromEmail = everyKind().map((c) => ({ kind: c.kind, push: c.push }));
+  return [
+    ...fromEmail,
+    { kind: 'wind-down' as const, push: windDownPush() },
+    { kind: 'day-review' as const, push: dayReviewPush() },
+  ];
+}
+
+test('every push copy obeys the tone contract', () => {
+  const pushes = everyPush();
+  assert.equal(pushes.length, 5, 'a kind was added without push copy beside it');
+  for (const { kind, push } of pushes) {
+    for (const field of ['title', 'body'] as const) {
+      assert.deepEqual(
+        findToneViolations(push[field]),
+        [],
+        `${kind}.push.${field} broke the tone contract`
+      );
+    }
+  }
+});
+
+/**
+ * Same tag replaces. `pushPayload.ts` added tags for exactly this and two kinds
+ * still shared the `mw-nudge` fallback — a comeback nobody had opened could be
+ * overwritten by the recap that followed it.
+ */
+/**
+ * The signed-in comeback and the anonymous one are the same message.
+ *
+ * They reach the same athlete on the same day through two channels — the
+ * anonymous path fires off a device row, the signed-in one off a user id — and
+ * `decideNudge`'s comeback branch returns `anonymousComebackPush()` rather than
+ * re-typing it. `.178`: the claim in that branch's comment is worth an assertion,
+ * because a second copy would drift silently and nothing would render both.
+ */
+test('a comeback says the same thing whether or not you have an account', () => {
+  const signedIn = everyKind().find((c) => c.kind === 'comeback');
+  assert.ok(signedIn, 'comeback should fire');
+  assert.deepEqual(signedIn.push, anonymousComebackPush());
+});
+
+test('each kind has its own notification tag', () => {
+  const tags = everyPush().map((p) => p.push.tag);
+  for (const t of tags) assert.match(t, /^mw-[a-z0-9-]+$/, `${t} is not a usable tag`);
+  assert.equal(new Set(tags).size, tags.length, `tags collide: ${tags.join(', ')}`);
+  assert.ok(!tags.includes('mw-nudge'), 'mw-nudge is the malformed-payload fallback, not a kind');
+});
+
+/**
+ * **The defect this wave exists for**, asserted as a shape rather than a spelling.
+ *
+ * The send site used to build the push body as
+ * `c.body.split('\n').find(l => l.trim()).slice(0, 140)`. `.212`'s rule says a
+ * guard keyed to one spelling has only ever tested that spelling, so this does
+ * not look for that expression: it asserts the *property* the expression
+ * violated — a push body that is a slice of the email cannot say anything the
+ * email's opening line did not.
+ *
+ * The `:` rule is the specific tell. `week1-recap`'s email opens *"Mission
+ * Winning — your first week on the path:"*, a colon introducing two numbers on
+ * the lines below. Truncation kept the promise and dropped the payload, which is
+ * the reference app's *"A new article is out!"* with our words.
+ */
+test('a push says something the email\'s first line does not', () => {
+  for (const c of everyKind()) {
+    const firstLine = c.body.split('\n').find((l) => l.trim()) ?? '';
+    assert.notEqual(
+      c.push.body,
+      firstLine.slice(0, 140),
+      `${c.kind}: the push body is the email's first line — carry the what, not the that`
+    );
+    assert.ok(
+      !c.body.includes(c.push.body),
+      `${c.kind}: the push body appears verbatim inside the email, so it is a slice of it`
+    );
+  }
+});
+
+test('no push announces content it then withholds', () => {
+  for (const { kind, push } of everyPush()) {
+    assert.ok(push.body.trim().length > 0, `${kind}: empty push body`);
+    assert.notEqual(push.body, push.title, `${kind}: the body only restates the title`);
+    assert.ok(
+      !push.body.trimEnd().endsWith(':'),
+      `${kind}: the body ends on a colon, promising something it does not carry`
+    );
+  }
+});
+
+/**
+ * The wiring, checked at the one place a slice could come back.
+ *
+ * The property test above cannot see the route — `decideNudge` could be perfect
+ * while the send site kept re-deriving. Source text is all that is available
+ * without a live Supabase, so this asserts the positive (the route sends
+ * `c.push`) as well as the negative, because a negative alone passes on a file
+ * that stopped sending pushes at all.
+ */
+test('the cron route sends the authored push, not a slice of the email', () => {
+  const src = readFileSync(path.join(root, 'app/api/cron/nudges/route.ts'), 'utf8');
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
+  for (const field of ['title', 'body', 'tag']) {
+    assert.match(code, new RegExp(`c\\.push\\.${field}`), `route does not send c.push.${field}`);
+  }
+  assert.doesNotMatch(code, /c\.body\s*\./, 'the route reads the email body to build the push again');
+  assert.doesNotMatch(code, /slice\(0,\s*140\)/, 'the 140-char truncation is back');
 });
 
 test('every message carries a way out', () => {
