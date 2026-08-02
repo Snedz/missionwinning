@@ -5,6 +5,7 @@
 
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readJson, writeJson } from '@/lib/storage/safeStorage';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 
 export const BODY_METRICS_KEY = STORAGE_KEYS.bodyMetrics;
 const MAX_ENTRIES = 200;
@@ -61,7 +62,7 @@ export function loadBodyMetrics(): BodyMetricEntry[] {
   return all
     .filter((e) => e && typeof e.date === 'string')
     .map(normalizeEntry)
-    .sort((a, b) => b.date.localeCompare(a.date));
+    .sort((a, b) => compareKeys(b.date, a.date));
 }
 
 export function saveBodyMetric(entry: BodyMetricEntry): BodyMetricEntry {

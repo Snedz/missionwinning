@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Flag, Medal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { isAmericaTrackEnabled } from '@/lib/americaConfig';
@@ -14,6 +15,7 @@ import type { FitnessTestSession } from '@/lib/presidentialFitnessTest';
 /** Presidential Fitness Test promo — scoped section on Benchmarks (U.S. track, free core). */
 export function PresidentialFitnessSection() {
  const { t } = useTranslation();
+ const fmt = useLocaleFormat();
  const [latest, setLatest] = useState<FitnessTestSession | null>(null);
 
  useEffect(() => {
@@ -54,7 +56,7 @@ export function PresidentialFitnessSection() {
  {t('pftLatestResult', {
  defaultValue: 'Last test: {{tier}} · {{date}}',
  tier: latest.overallTier,
- date: new Date(latest.completedAt).toLocaleDateString(),
+ date: fmt.date(latest.completedAt),
  })}
  </div>
  )}

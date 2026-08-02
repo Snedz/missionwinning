@@ -13,11 +13,13 @@ import {
 } from '@/lib/libraryFilters';
 import { FilterChip } from '@/components/ui/FilterChip';
 import type { ProgramTag } from '@/types';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 
 const EQUIP_CHIPS = ['', 'bodyweight', 'dumbbell', 'barbell', 'cable', 'band', 'kettlebell'] as const;
 const TAG_CHIPS: (ProgramTag | '')[] = ['', 'strength', 'hypertrophy', 'conditioning', 'corrective'];
 
 export function ExercisesPublicFilter() {
+  const fmt = useLocaleFormat();
   const [filters, setFilters] = useState<LibraryFilterState>({
     query: '',
     equipment: '',
@@ -32,9 +34,9 @@ export function ExercisesPublicFilter() {
   }, []);
 
   const muscleFilterChips = useMemo(
-    () => ['', ...uniqueMuscleGroups(EXERCISES).slice(0, 10)],
+    () => ['', ...uniqueMuscleGroups(EXERCISES, fmt.lang).slice(0, 10)],
     // eslint-disable-next-line react-hooks/exhaustive-deps -- in-place catalog extension
-    [catalogRevision]
+    [catalogRevision, fmt.lang]
   );
   const filtered = useMemo(
     () => filterExercises(EXERCISES, filters),

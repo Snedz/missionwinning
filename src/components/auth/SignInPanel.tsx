@@ -216,8 +216,18 @@ export function SignInPanel({
 
   return (
     <div className={compact ? 'space-y-4' : 'space-y-5'}>
+      {/*
+        `.240` — a 2px rule, not a tinted pill.
+        Two compounding failures, both from fading a token picked for its
+        contrast. `text-status-warn/90` composited to #976115 on the amber tint
+        (3.79:1, axe serious). Restoring full strength got #8f5300 on #e2dbd3 —
+        **4.49:1**, still short, because the 10% fill darkens the ground the text
+        has to beat. So the fill goes: Modernist draws structure with rules, and
+        the status colour now sits on the card's own paper where it clears AA
+        with room. `.127`'s lesson, twice in one element.
+      */}
       {!configured && (
-        <p className="text-xs text-status-warn/90 bg-[hsl(var(--status-warn)/0.1)] border border-[hsl(var(--status-warn)/0.2)] rounded-lg px-3 py-2">
+        <p className="text-xs text-status-warn border-2 border-[hsl(var(--status-warn)/0.35)] px-3 py-2">
           Demo mode — add Supabase keys to enable cloud sync and social sign-in.
         </p>
       )}

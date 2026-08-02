@@ -89,8 +89,9 @@ export const GET = withApiLogging('cron/day-review', async (request: NextRequest
       title: c.title,
       body: c.body,
       url: '/log?src=day-review',
-      // Its own tag: a shared one would replace an unopened wind-down.
-      tag: 'mw-day-review',
+      // Its own tag — a shared one would replace an unopened wind-down.
+      // Defined once, in `dayReviewPush()`, and carried on the candidate.
+      tag: c.tag,
     });
     if (r === 'sent') delivered.push(c.endpoint);
   }

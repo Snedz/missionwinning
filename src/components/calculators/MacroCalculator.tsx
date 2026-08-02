@@ -185,7 +185,7 @@ export function MacroCalculator() {
                 <Button
                   key={s}
                   size="sm"
-                  variant={sex === s ? 'default' : 'outline'}
+                  variant={sex === s ? 'selected' : 'outline'}
                   onClick={() => setSex(s)}
                   className="flex-1"
                 >
@@ -220,7 +220,7 @@ export function MacroCalculator() {
               <Button
                 key={g}
                 size="sm"
-                variant={goal === g ? 'default' : 'outline'}
+                variant={goal === g ? 'selected' : 'outline'}
                 onClick={() => setGoal(g)}
               >
                 {goalLabel(g)}

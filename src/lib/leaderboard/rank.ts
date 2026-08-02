@@ -9,6 +9,7 @@ import { boardById } from './boards';
 import { scopeLabel, resolveGeoFromLocale } from './regions';
 import { buildDemoPopulation, snapshotToEntry } from './demoPopulation';
 import { detailForBoard, scoreForBoard } from './computeLocalStats';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 
 export type ClassLeaderboardRow = {
   rank: number;
@@ -46,7 +47,7 @@ function filterByScope(
 }
 
 function rankEntries(entries: LeaderboardEntry[]): LeaderboardEntry[] {
-  const sorted = [...entries].sort((a, b) => b.score - a.score || a.operatorName.localeCompare(b.operatorName));
+  const sorted = [...entries].sort((a, b) => b.score - a.score || compareKeys(a.operatorName, b.operatorName));
   return sorted.map((e, i) => ({
     ...e,
     rank: i + 1,

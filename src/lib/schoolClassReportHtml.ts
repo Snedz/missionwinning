@@ -1,5 +1,6 @@
 import { awardLabel, type FitnessAwardTier } from '@/lib/presidentialFitnessTest';
 import type { ClassStandingsRow } from '@/lib/schoolClassExport';
+import { EN_ONLY_SURFACE, formatLocalDateTime } from '@/lib/i18n/formatLocale';
 
 export type ClassReportStats = {
   uniqueAthletes: number;
@@ -14,7 +15,7 @@ export function formatClassReportHtml(
   stats: ClassReportStats,
   entries: ClassStandingsRow[]
 ): string {
-  const generated = new Date().toLocaleString();
+  const generated = formatLocalDateTime(new Date(), EN_ONLY_SURFACE);
   const rows =
     entries.length === 0
       ? '<tr><td colspan="4" class="muted">No synced results yet.</td></tr>'
