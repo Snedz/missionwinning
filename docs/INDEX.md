@@ -36,6 +36,7 @@
 | [ADAPTIVE_LAYOUT.md](ADAPTIVE_LAYOUT.md) | Window size classes · adaptive overlays (web + Android) |
 | [API.md](API.md) | HTTP API reference |
 | [AGENT_RECIPES.md](AGENT_RECIPES.md) | Agent task playbooks |
+| [MERGE_QUEUE_HANDOFF.md](MERGE_QUEUE_HANDOFF.md) | Open-PR queue · build-label collisions · merge order (delete when empty) |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contributor guide |
 
 ---
