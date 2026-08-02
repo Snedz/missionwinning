@@ -2,7 +2,7 @@
 /**
  * The guidebook chapter heroes must be in the palette the product uses.
  *
- * `.238` — `.131` re-inked the app to paper/ink/one-red and `.137` re-inked the
+ * `.258` — `.131` re-inked the app to paper/ink/one-red and `.137` re-inked the
  * guidebook **cover**. The six chapter heroes were in neither pass, and nothing
  * could have said so: `check-design-system.mjs` reads source, and a palette
  * baked into a `.webp` is invisible to it. They sat at 84–97% near-black with

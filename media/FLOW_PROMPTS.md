@@ -6,9 +6,9 @@
 
 Always prepend the **brand block** from [MEDIA_SYSTEM](../docs/MEDIA_SYSTEM.md#brand-ai-prompt-block-raster--video-learn--art--social) — paper `#f3f2f2`, ink `#201e1d`, one accent `#ec3013`.
 
-> **`.239`** — this line used to name paper `#f3f2f2`, vermillion red `#ec3013` and mid grey `#6f6b69`, and every
+> **`.259`** — this line used to name paper `#f3f2f2`, vermillion red `#ec3013` and mid grey `#6f6b69`, and every
 > prompt in this file inherited it. `.131` retired that palette eleven builds ago. The six off-palette
-> guidebook heroes `.238` measured were not a mistake anyone made — they were this file working exactly
+> guidebook heroes `.258` measured were not a mistake anyone made — they were this file working exactly
 > as written. Colour values live in `src/index.css` and nowhere else; `src/lib/mediaPaletteTruth.test.ts`
 > checks this file against them.
 

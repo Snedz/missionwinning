@@ -6,9 +6,9 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-02 — The system that kept generating the wrong palette (`.239`)
+## 2026-08-02 — The system that kept generating the wrong palette (`.259`)
 
-`.238` found six off-brand guidebook heroes. This is **why they existed**, and it
+`.258` found six off-brand guidebook heroes. This is **why they existed**, and it
 is not that someone forgot a pass.
 
 `.131` re-inked the app to paper / ink / one red. The media system was never
@@ -61,7 +61,7 @@ Both docs re-inked. `src/index.css` is now the single source, and
 - requires every hex the docs name to be a real token, which caught `#e8eaed`
   and `#1a1f28` — two invented colours I had not spotted by eye;
 - checks the SVGs too. That is possible precisely because an SVG is *source*:
-  `.238` could not check the heroes this way because a palette baked into a
+  `.258` could not check the heroes this way because a palette baked into a
   `.webp` is invisible to static analysis and needed a histogram and a narrowly
   justified threshold. Here the colours are in the file, so the rule is exact.
 
@@ -83,12 +83,12 @@ container — the session's egress policy denies the image CDN
 routed around per `/root/.ccr/README.md`.
 
 What changes is that the next attempt starts from a prompt pack that names the
-right colours, and `.238`'s ratchet plus this guard mean neither the assets nor
+right colours, and `.258`'s ratchet plus this guard mean neither the assets nor
 the specification can quietly drift again.
 
 Tests 1191→1198.
 
-## 2026-08-02 — The palette a checker could not see (`.238`)
+## 2026-08-02 — The palette a checker could not see (`.258`)
 
 `.131` re-inked the app to paper / ink / one red. `.137` re-inked the guidebook
 **cover** and rebuilt the PDF. The six chapter heroes were in neither pass, and

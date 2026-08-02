@@ -1,7 +1,7 @@
 /**
  * The media system must specify the palette the product actually renders.
  *
- * `.239` — `.131` re-inked the app to paper / ink / one red, and the media
+ * `.259` — `.131` re-inked the app to paper / ink / one red, and the media
  * system was never told. `docs/MEDIA_SYSTEM.md` and `media/FLOW_PROMPTS.md`
  * carried **66 references to navy / emerald / brass and 37 hardcoded hex** from
  * the retired palette, including the line every prompt inherits:
@@ -9,7 +9,7 @@
  *   Always prepend the brand block from MEDIA_SYSTEM
  *   (navy `#0a0c10`, emerald `#27b07d`, brass `#c7a860`).
  *
- * So the six off-palette guidebook heroes `.238` measured were not an
+ * So the six off-palette guidebook heroes `.258` measured were not an
  * oversight in one pass. They were the **correct output of the documented
  * system**, and anyone following it — founder or agent — would have produced
  * more of them.
@@ -163,7 +163,7 @@ test('every colour the media system names is a real token', () => {
 test('the form-guide SVGs use only approved colour', () => {
   /*
    * The reason this check is possible at all, and worth stating: an SVG is
-   * source. `.238` could not check the guidebook heroes this way because a
+   * source. `.258` could not check the guidebook heroes this way because a
    * palette baked into a `.webp` is invisible to static analysis — it needed a
    * pixel histogram and a narrowly justified threshold. Here the colours are
    * literally in the file, so the rule can be exact.
