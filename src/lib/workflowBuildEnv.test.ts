@@ -1,7 +1,7 @@
 /**
  * Every place this app gets built must build the *same* app.
  *
- * `.229` found `scripts/gate.mjs` and `.github/workflows/ci.yml` disagreeing:
+ * `.249` found `scripts/gate.mjs` and `.github/workflows/ci.yml` disagreeing:
  * the gate set a VAPID placeholder and CI did not, so every push surface
  * rendered nothing on CI and *"Today shows one red action at 19:00"* failed
  * there while passing locally. The guard written for it named the two files it
@@ -11,7 +11,7 @@
  * separate jobs, and a guard that enumerates cannot notice a fourth. What the
  * enumeration missed, in the one run that job has ever had:
  *
- *   - `e2e-critical` had no VAPID key, so it reproduced `.229` exactly.
+ *   - `e2e-critical` had no VAPID key, so it reproduced `.249` exactly.
  *   - `visual-regression` set `PRIVATE_MODE` on a *step*, after the build and
  *     after the server started, so the private gate defaulted on and
  *     `home-reduced.png` was a screenshot of `/private`.
@@ -289,7 +289,7 @@ test('and sets them to the same values', () => {
   /*
    * Presence alone is not enough. A placeholder that differs between lanes
    * reproduces the defect with extra steps: the surfaces render in one lane and
-   * not the other, which is what `.229` actually was.
+   * not the other, which is what `.249` actually was.
    */
   const gate = gateEnv();
 

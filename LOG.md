@@ -30,7 +30,7 @@ env:
 # lighthouse-budget — nothing
 ```
 
-`e2e-critical` reproduced `.229` exactly: without `NEXT_PUBLIC_VAPID_PUBLIC_KEY`,
+`e2e-critical` reproduced `.249` exactly: without `NEXT_PUBLIC_VAPID_PUBLIC_KEY`,
 `isPushSupported()` returns false, every component behind it renders nothing, and
 *"Today shows one red action at 19:00"* asserts that one of them is mounted.
 
