@@ -39,7 +39,7 @@ describe('libraryFilters', () => {
   });
 
   it('filters by muscle chip', () => {
-    const muscles = uniqueMuscleGroups(EXERCISES);
+    const muscles = uniqueMuscleGroups(EXERCISES, 'en');
     assert.ok(muscles.length > 0);
     const muscle = muscles[0] as MuscleGroup;
     const result = filterExercises(EXERCISES, {

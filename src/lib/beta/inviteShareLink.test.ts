@@ -1,7 +1,7 @@
 /**
  * The link the founder hands to a beta tester.
  *
- * `.226` — inside `betaMetricsServer.ts`, which no test loaded, so this had never
+ * `.260` — inside `betaMetricsServer.ts`, which no test loaded, so this had never
  * run. It carries `PRIVATE_ACCESS_SECRET` in a query param on purpose (the row's
  * own comment: *"access from env, never stored in DB"*), which makes the empty
  * case the one that matters: a link with `access=` and nothing after it looks

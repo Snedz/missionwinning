@@ -4,7 +4,7 @@
  * `.195` fixed this shape for the Day in Review; `dayReviewMount.ts` is the
  * pattern. Two more cards had it and were missed:
  *
- *   - **`BetaWelcomeBanner`** — the card that tells an invited tester the path
+ *   - **the first-run guidance card** (`BetaWelcomeBanner` then, `FirstStepsCard` since `.240`) — the card that tells a new athlete the path
  *     ("Finish I-Day, log one workout, then open Mission Coach") — is mounted
  *     only in `HomeTodayDashboard`. `HomePage` sends `i-day` and `basic` to the
  *     lean shell, and a new tester stays `basic` until they *complete* a
@@ -25,12 +25,27 @@
 
 import type { JourneyPhase } from '@/lib/missionJourney';
 
+export interface FirstStepsMountInput {
+  phase: JourneyPhase;
+  /**
+   * `isFirstStepsDismissed()` — read at the mount site, from the one module that
+   * owns the key, so this stays pure and the two answers cannot drift.
+   */
+  dismissed: boolean;
+}
+
 /**
- * The beta path card. Self-dismissing (`mw_beta_banner_dismissed`), so this
- * answers only *may it appear at all*, never *has it been dismissed* — the card
- * owns that, and duplicating it here is how the two answers drift apart.
+ * The first-steps checklist card.
+ *
+ * Dismissal is part of *may it mount*, not only of *what it renders*. The block
+ * is `pinned`, and `planTodayBlocks` shrinks `room` by every pinned **candidate**
+ * regardless of whether it draws anything — so a card that returns `null` was
+ * still spending a top-level Today slot for the life of the install. See
+ * [`firstStepsDismissed.ts`](./firstStepsDismissed.ts) for why the check lives
+ * there and is passed in rather than duplicated here.
  */
-export function betaBannerMayMount(phase: JourneyPhase): boolean {
+export function firstStepsMayMount({ phase, dismissed }: FirstStepsMountInput): boolean {
+  if (dismissed) return false;
   return phase !== 'i-day';
 }
 

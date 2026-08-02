@@ -26,6 +26,7 @@ import type { CompletedWorkoutLog, SetKind, Rpe } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { EXERCISES } from '@/data/exercises';
 import { rpeNumberToCategory } from '@/lib/sync/normalizeExercises';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 
 export type CsvFormat = 'hevy' | 'strong';
 
@@ -248,7 +249,7 @@ function assembleWorkouts(sets: RawSet[], newId: () => string): CompletedWorkout
     });
   }
 
-  return workouts.sort((a, b) => a.completedAt.localeCompare(b.completedAt));
+  return workouts.sort((a, b) => compareKeys(a.completedAt, b.completedAt));
 }
 
 function headerIndex(header: string[]): (...names: string[]) => number {
@@ -413,7 +414,7 @@ export function mergeImportedLogs(
   }
   // History is stored newest-first (workoutStore prepends on complete).
   const merged = [...fresh, ...existing].sort((a, b) =>
-    b.completedAt.localeCompare(a.completedAt)
+    compareKeys(b.completedAt, a.completedAt)
   );
   return { merged, added: fresh.length, duplicates };
 }

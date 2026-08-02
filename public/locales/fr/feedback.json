@@ -19,5 +19,20 @@
   "feedbackThankEarly": "✓ Accès anticipé aux mises à jour",
   "feedbackThankEmail": "Surveillez votre courrier électronique pour les mises à jour et les baisses de la communauté.",
   "feedbackBackToday": "Retour à aujourd'hui",
-  "feedbackSignInDesc": "Connectez-vous pour associer les commentaires à votre parcours et synchroniser sur tous les appareils."
+  "feedbackSignInDesc": "Connectez-vous pour associer les commentaires à votre parcours et synchroniser sur tous les appareils.",
+  "feedbackCardTitle": "Tell us what broke",
+  "feedbackCardLead": "A bug, a confusing screen, or something you wish it did. One box, no account, and it sends even if you write it with no signal.",
+  "feedbackCardOpen": "Send feedback",
+  "feedbackSheetEyebrow": "Beta",
+  "feedbackSheetTitle": "What got in your way?",
+  "feedbackSheetPlaceholder": "What broke, what confused you, or what you wish it did.",
+  "feedbackSheetRemaining": "{{left}} characters left",
+  "feedbackSheetEmailLabel": "Email (optional)",
+  "feedbackSheetEmailHelp": "Only so we can reply. Leave it blank and send anyway.",
+  "feedbackSheetContext": "Sent with your app version and where you have been ({{screens}}), so we can find it.",
+  "feedbackSheetSend": "Send",
+  "feedbackSheetSentTitle": "Got it",
+  "feedbackSheetSentBody": "Queued. It sends when you have a connection — you can close the app.",
+  "feedbackSheetSentAnon": "No email, so there is no way to reply — but it was read.",
+  "feedbackSheetDone": "Close"
 }

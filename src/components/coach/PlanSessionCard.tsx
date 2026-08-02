@@ -48,7 +48,30 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
         // a red top rule and the single elevation this screen is allowed.
         session.status === 'done' && 'bg-card',
         isToday && 'border-t-[3px] border-t-[hsl(var(--accent-poster))] shadow-md',
-        session.status === 'missed' && 'opacity-60',
+        /*
+         * `.240` — de-emphasised by border, never by opacity.
+         *
+         * `opacity-60` dims the *text* along with the container: axe measured
+         * #747372 on #eeeded (4.04:1) and #8c8b8b on #eeeded (2.9:1) here, both
+         * serious. `.127` fixed exactly this in `WeekStrip` — "missed days
+         * de-emphasised by border not opacity, because dimming the container
+         * also dims the day label past 4.5:1" — and this file was missed in
+         * that pass. A missed session still has to be readable; it is behind
+         * you, not hidden from you (Horizon W criterion 4).
+         *
+         * `.256` reached the same conclusion from the other lane and measured
+         * the muscle badges at **2.97:1** (`#8a8888` on `#eeebeb`, 10px) — a
+         * third pair of numbers for one defect. It landed second, so `.240`'s
+         * treatment stands, and `dashed` is the better of the two: a plain 2px
+         * border is what every other card on this grid already draws, so it
+         * said "missed" in a language the screen was using for "normal".
+         *
+         * What `.256` keeps is the part neither border does — the **Badge**
+         * below. Both fixes were still visual-only; opacity and a border are
+         * equally nothing to a screen reader, and `WeekStrip` had said it in
+         * words the whole time.
+         */
+        session.status === 'missed' && 'border-2 border-dashed border-border bg-transparent',
         className
       )}
     >
@@ -66,6 +89,17 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
           {session.status === 'swapped' && (
             <Badge variant="secondary" className="text-[10px]">
               {t('coachSessionSwapped', { defaultValue: 'Adapted' })}
+            </Badge>
+          )}
+          {/*
+            The status was carried by opacity alone, which is nothing at all to a
+            screen reader — "missed" was visual-only on the card, while
+            `WeekStrip` has said it in words (`coachSessionMissed`) since it was
+            written. Same key, so this costs no translation.
+          */}
+          {session.status === 'missed' && (
+            <Badge variant="secondary" className="text-[10px]">
+              {t('coachSessionMissed', { defaultValue: 'Missed' })}
             </Badge>
           )}
         </div>

@@ -1,7 +1,7 @@
 /**
  * The row that turns a payment into an entitlement.
  *
- * `.226` — `grantEnrollmentFromWebhook` reaches Supabase on its first line, so
+ * `.260` — `grantEnrollmentFromWebhook` reaches Supabase on its first line, so
  * every decision in this row was only reachable through a service-role client and
  * none of it had ever been executed. `premiumServer.ts` was 124 lines that no test
  * imported, on the path a paying customer arrives through.

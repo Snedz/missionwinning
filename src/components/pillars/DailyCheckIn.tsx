@@ -42,8 +42,17 @@ function RatingRow({
             key={n}
             type="button"
             onClick={() => onChange(n)}
-            className={`min-h-[44px] flex-1 py-2 rounded text-sm font-medium transition-colors ${
-              value >= n ? 'bg-primary-fill text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
+            aria-pressed={value >= n}
+            /* `.241` — ink fill, not red. Five filled segments per scale × three
+               scales put fifteen red controls on `/mind`, which is most of why
+               that route measured 51 against a one-red-action rule. A rating is a
+               value, not the thing to do next; the ink fill is `WeekStrip`'s
+               "done" treatment and leaves red for Save. `font-semibold` because
+               Archivo has no 500. */
+            className={`min-h-[44px] flex-1 py-2 text-sm font-semibold tabular-nums transition-colors ${
+              value >= n
+                ? 'bg-foreground text-background'
+                : 'bg-card text-muted-foreground hover:bg-muted'
             }`}
           >
             {n}

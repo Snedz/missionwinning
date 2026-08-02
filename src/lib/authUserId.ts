@@ -1,7 +1,7 @@
 /**
  * What counts as a user id we may write to a column that references `auth.users`.
  *
- * `.226` — this rule existed **twice**, byte-identical, on the revenue path:
+ * `.260` — this rule existed **twice**, byte-identical, on the revenue path:
  * [`stripeWebhook.ts`](stripeWebhook.ts) used it to decide which id to take off a
  * Checkout Session, and `premiumServer.grantEnrollmentFromWebhook` had its own
  * inline copy deciding whether to put that id in the `INSERT`. `.178`'s defect on

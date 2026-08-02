@@ -9,6 +9,12 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import {
+  CHART_GRID,
+  CHART_SERIES_SOLO,
+  CHART_TICK,
+  CHART_TOOLTIP,
+} from '@/components/charts/chartTheme';
 
 type Point = { index: number; pace: number };
 
@@ -24,28 +30,24 @@ export function TrackPaceChart({ data, height = 120 }: Props) {
     <div className="w-full" style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+          {/*
+            `.244` — the grid was `rgba(255,255,255,0.06)` and the tick labels
+            `rgba(255,255,255,0.45)`: the pre-rebrand dark theme, still drawing
+            white onto a paper ground. Both were effectively invisible, and the
+            design-system guard matched hex only so neither ever reported.
+          */}
+          <CartesianGrid {...CHART_GRID} />
           <XAxis dataKey="index" hide />
-          <YAxis
-            width={36}
-            tick={{ fontSize: 10, fill: 'rgba(255,255,255,0.45)' }}
-            tickFormatter={(v) => `${v}`}
-          />
+          <YAxis width={36} tick={CHART_TICK} tickFormatter={(v) => `${v}`} />
           <Tooltip
-            contentStyle={{
-              background: 'hsl(var(--card))',
-              border: '1px solid hsl(var(--border))',
-              borderRadius: 0,
-              fontSize: 12,
-            }}
+            {...CHART_TOOLTIP}
             formatter={(value: number) => [`${value} min/km`, 'Pace']}
             labelFormatter={() => ''}
           />
           <Line
             type="monotone"
             dataKey="pace"
-            stroke="hsl(var(--primary-fill))"
-            strokeWidth={2}
+            {...CHART_SERIES_SOLO}
             dot={false}
             isAnimationActive={false}
           />

@@ -39,6 +39,7 @@
 
 import { localDateKey } from '@/lib/time/localDate';
 import type { CompletedWorkoutLog, Rpe } from '@/types';
+import { compareKeys } from '@/lib/i18n/formatLocale';
 
 /**
  * Categorical RPE → Borg CR10. The logger asks for easy/med/hard rather than a
@@ -146,7 +147,7 @@ export function loadSeries(history: CompletedWorkoutLog[]): SessionLoad[] {
     .filter((l) => !l.deletedAt)
     .map(sessionLoad)
     .filter((s) => s.workingSets > 0)
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .sort((a, b) => compareKeys(a.date, b.date));
 }
 
 /**

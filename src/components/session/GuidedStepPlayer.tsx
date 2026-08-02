@@ -265,8 +265,29 @@ export function GuidedStepPlayer({
           />
         </div>
         <div className="flex gap-2 flex-wrap">
+          {/*
+              `.242` — red on the full-screen player, paper-on-ink in a card.
+
+              This was `variant="fitness"` unconditionally, and both callers
+              (`GuidedMindSessionRunner`, `TimedFlowRunner`) render `compact` in a
+              grid — so `/mind` painted **one red Start per guided session**, ten
+              of them, and `/move` did the same per flow. That is the reading
+              `.241` recorded as *"a composition decision per screen"* and it was
+              too pessimistic by nine screens: it is one shared line.
+
+              `outline`, and the ground is why. The card goes ink only once
+              `running` is true (see the `cn` above), and Start renders in exactly
+              one state — `idle` — so it is always on **paper**. The ink-panel
+              variants are the trap here rather than the answer: `onInkSolid` is
+              `bg-neutral-100`, near-white on paper, which is `.155`'s 1.01:1
+              defect wearing the other palette. A 2px ink border is the same
+              demotion `.241` gave `EmptyState`'s CTA, on the same ground.
+
+              Full-screen keeps the red: there is one action on that screen, and
+              spending the do-this-now colour on it is what the colour is for.
+          */}
           {state.status === 'idle' && (
-            <Button variant="fitness" size={isCompact ? 'sm' : 'lg'} className="min-h-[44px]" onClick={handleStart} aria-label={t('guidedSessionStart', { defaultValue: 'Start session' })}>
+            <Button variant={isCompact ? 'outline' : 'fitness'} size={isCompact ? 'sm' : 'lg'} className="min-h-[44px]" onClick={handleStart} aria-label={t('guidedSessionStart', { defaultValue: 'Start session' })}>
               <Play className="h-4 w-4 mr-2" aria-hidden />
               {t('guidedSessionStart', { defaultValue: 'Start' })}
             </Button>

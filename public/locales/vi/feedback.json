@@ -19,5 +19,20 @@
   "feedbackThankEarly": "✓ Truy cập sớm vào các bản cập nhật",
   "feedbackThankEmail": "Xem email của bạn để biết thông tin cập nhật + nội dung chia sẻ của cộng đồng.",
   "feedbackBackToday": "Trở lại hôm nay",
-  "feedbackSignInDesc": "Đăng nhập để liên kết phản hồi với hành trình của bạn và đồng bộ hóa trên các thiết bị."
+  "feedbackSignInDesc": "Đăng nhập để liên kết phản hồi với hành trình của bạn và đồng bộ hóa trên các thiết bị.",
+  "feedbackCardTitle": "Tell us what broke",
+  "feedbackCardLead": "A bug, a confusing screen, or something you wish it did. One box, no account, and it sends even if you write it with no signal.",
+  "feedbackCardOpen": "Send feedback",
+  "feedbackSheetEyebrow": "Beta",
+  "feedbackSheetTitle": "What got in your way?",
+  "feedbackSheetPlaceholder": "What broke, what confused you, or what you wish it did.",
+  "feedbackSheetRemaining": "{{left}} characters left",
+  "feedbackSheetEmailLabel": "Email (optional)",
+  "feedbackSheetEmailHelp": "Only so we can reply. Leave it blank and send anyway.",
+  "feedbackSheetContext": "Sent with your app version and where you have been ({{screens}}), so we can find it.",
+  "feedbackSheetSend": "Send",
+  "feedbackSheetSentTitle": "Got it",
+  "feedbackSheetSentBody": "Queued. It sends when you have a connection — you can close the app.",
+  "feedbackSheetSentAnon": "No email, so there is no way to reply — but it was read.",
+  "feedbackSheetDone": "Close"
 }

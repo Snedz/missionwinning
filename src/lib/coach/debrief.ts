@@ -34,6 +34,7 @@ import { personalRecordsFor, stallSignal } from '@/lib/coach/progress';
 import type { PersonalRecord } from '@/lib/coach/progress';
 import { checkInReasons } from '@/lib/mindCheckIns';
 import type { MindCheckIn, ReadinessReason } from '@/lib/mindCheckIns';
+import { EN_ONLY_SURFACE, formatLocalNumber } from '@/lib/i18n/formatLocale';
 
 export type DebriefLineKind =
   | 'effort'
@@ -75,7 +76,7 @@ const FACTOR_WORD: Record<ReadinessReason['factor'], string> = {
 };
 
 function effortLine(session: SessionLoad, deltaPct: number | null, unit: string): string {
-  const moved = session.tonnage > 0 ? `${session.tonnage.toLocaleString()} ${unit} moved` : null;
+  const moved = session.tonnage > 0 ? `${formatLocalNumber(session.tonnage, EN_ONLY_SURFACE)} ${unit} moved` : null;
   const setWord = session.workingSets === 1 ? 'working set' : 'working sets';
   const shape = `${session.workingSets} ${setWord} in ${session.durationMinutes} min`;
   const head = moved ? `${moved}, ${shape}` : shape;

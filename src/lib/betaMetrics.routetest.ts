@@ -1,7 +1,7 @@
 /**
  * Who may read the founder dashboard, and what it answers when it cannot read.
  *
- * `.226` — `betaMetricsServer.ts` is `server-only` and was loaded by no test.
+ * `.260` — `betaMetricsServer.ts` is `server-only` and was loaded by no test.
  * `isBetaAdminEmail` is the allowlist standing between an arbitrary signed-in
  * account and the beta funnel, the lead sources and every invitee's email address;
  * the compute functions decide what the panel shows when Supabase is unreachable.

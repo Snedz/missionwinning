@@ -1,7 +1,7 @@
 /**
  * What the athlete is actually charged, and what comes back with the receipt.
  *
- * `.226` — lifted out of `checkoutServer.createCheckoutSession`, whose first line
+ * `.260` — lifted out of `checkoutServer.createCheckoutSession`, whose first line
  * is `getStripe()`, so none of this was reachable without a Stripe secret key and
  * none of it had ever been executed by a test. `payments.ts` measured 73.54% lines
  * / 33.33% functions and the covered third was the price constants; this is the

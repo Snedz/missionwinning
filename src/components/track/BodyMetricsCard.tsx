@@ -12,6 +12,12 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { Scale } from 'lucide-react';
+import {
+  CHART_GRID,
+  CHART_SERIES_SOLO,
+  CHART_TICK,
+  CHART_TOOLTIP,
+} from '@/components/charts/chartTheme';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
@@ -128,11 +134,11 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
           <div className="h-40 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                <XAxis dataKey="date" tick={{ fontSize: 10 }} />
+                <CartesianGrid {...CHART_GRID} />
+                <XAxis dataKey="date" tick={CHART_TICK} />
                 <YAxis
                   width={36}
-                  tick={{ fontSize: 10 }}
+                  tick={CHART_TICK}
                   domain={['auto', 'auto']}
                   tickFormatter={(v) =>
                     metric === 'weightKg'
@@ -140,14 +146,31 @@ export function BodyMetricsCard({ refreshKey = 0, onChanged }: Props) {
                       : String(v)
                   }
                 />
+                {/*
+                  `.244` — this `<Tooltip>` carried no `contentStyle`, so it
+                  rendered recharts' stock white box with a `#ccc` border and
+                  the library's own radius. Styling that is *absent* rather
+                  than wrong: no colour scan can see it, which is why
+                  `unstyled-chart-tooltip` now checks for the spread itself.
+                */}
                 <Tooltip
+                  {...CHART_TOOLTIP}
+                  /*
+                    One series, so there is no name to print — and recharts
+                    renders the separator whenever `name` is non-nil, so the
+                    `''` this formatter returns produced a stray leading
+                    colon: ": 80.8 kg". Invisible until the box above it was
+                    styled enough to read, which is `.221`'s note again —
+                    the screen said it, no scan could have.
+                  */
+                  separator=""
                   formatter={(v: number) =>
                     metric === 'weightKg'
                       ? [`${Math.round(kgToDisplay(v, units) * 10) / 10} ${weightUnitLabel(units)}`, '']
                       : [v, '']
                   }
                 />
-                <Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="value" {...CHART_SERIES_SOLO} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>

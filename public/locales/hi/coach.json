@@ -45,6 +45,8 @@
   "coachWhyRepProgress": "Building reps before adding weight.",
   "coachWhyHold": "Hold this load until reps feel solid.",
   "coachWhyHoldHard": "Hard sets — hold load and consolidate.",
+  "coachWhySteadyWeek": "Big week against your own recent average — holding here.",
+  "coachWhyPlateauDeload": "No new best in a month — lighter week to rebuild from.",
   "coachWhyDeload": "Recovery week — lighter load, same patterns.",
   "coachWhyRecovery": "Mobility and activation for better training.",
   "coachWhyBodyweightReps": "Add reps until the set feels challenging.",

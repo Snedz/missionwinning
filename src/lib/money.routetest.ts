@@ -1,7 +1,7 @@
 /**
  * The revenue path's server half — configuration, and the webhook that grants it.
  *
- * `.226` — `stripeServer.ts`, `checkoutServer.ts`, `premiumServer.ts` and
+ * `.260` — `stripeServer.ts`, `checkoutServer.ts`, `premiumServer.ts` and
  * `stripeDisputeNotify.ts` were **loaded by no test at all**. They are
  * `server-only`, which throws under plain `tsx`, so they sat in the one lane
  * nothing reached: 408 lines deciding whether an athlete can pay and whether a
