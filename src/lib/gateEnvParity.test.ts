@@ -85,37 +85,21 @@ function ciEnv(): Map<string, string> {
   return out;
 }
 
-test('every variable the local gate sets is also set in CI', () => {
-  const gate = gateEnv();
-  const ci = ciEnv();
-
-  assert.ok(gate.size >= 3, `parsed only ${gate.size} vars from gate.mjs — the parser broke`);
-  assert.ok(ci.size >= 3, `parsed only ${ci.size} vars from ci.yml — the parser broke`);
-
-  const missing = [...gate.keys()].filter((k) => !ci.has(k));
-  assert.deepEqual(
-    missing,
-    [],
-    'these are set for the local gate but not for CI, so the two lanes build different apps:\n  ' +
-      missing.join('\n  ')
-  );
-});
-
-test('and to the same value', () => {
-  /*
-   * Presence alone is not enough. A placeholder that differs between lanes
-   * reproduces the defect with extra steps — the surfaces would render in one
-   * lane and not the other, exactly as they just did.
-   */
-  const gate = gateEnv();
-  const ci = ciEnv();
-
-  const differing = [...gate.entries()]
-    .filter(([k, v]) => ci.has(k) && ci.get(k) !== v)
-    .map(([k, v]) => `${k}: gate=${v} ci=${ci.get(k)}`);
-
-  assert.deepEqual(differing, [], 'the two lanes disagree on these values:\n  ' + differing.join('\n  '));
-});
+/*
+ * The two env tests that lived here — *"every variable the local gate sets is
+ * also set in CI"* and *"and to the same value"* — are **deleted**, not moved.
+ * `src/lib/workflowBuildEnv.test.ts` asserts both against a strict superset:
+ * they compared `gate.mjs` to `ci.yml`, two files, while this repo has ten
+ * workflow files and the two defects that prompted them were in
+ * `ci-extended.yml`, which these could not see.
+ *
+ * That is the shape CLAUDE.md §6 forbids — a guard whose name claims a scope
+ * wider than its enumeration — and keeping both would be two definitions of one
+ * rule, which `launchTruth.test.ts` separately forbids.
+ *
+ * The step-parity and locale-ordering tests below stay: they answer a different
+ * question (which *checks* run), and nothing else asserts it.
+ */
 
 test('the VAPID placeholder is present in both, and is only the public half', () => {
   /*

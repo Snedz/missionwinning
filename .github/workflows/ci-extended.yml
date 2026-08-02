@@ -22,6 +22,9 @@ concurrency:
 jobs:
   e2e-critical:
     runs-on: ubuntu-latest
+    # `.255` — this block must match `scripts/gate.mjs`'s `BUILD_ENV` and
+    # `ci.yml`'s. Asserted in `src/lib/workflowBuildEnv.test.ts`; the VAPID
+    # placeholder's reasoning is in `ci.yml`, which is where it was proved.
     env:
       PRIVATE_MODE: 'false'
       NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
@@ -63,6 +66,22 @@ jobs:
   lighthouse-budget:
     runs-on: ubuntu-latest
     continue-on-error: true
+    # `.255` — this job had **no env at all**, and that is not cosmetic.
+    #
+    # `isPrivateModeEnabled()` defaults to *on* whenever `NODE_ENV=production`
+    # and `PRIVATE_MODE` is unset (`src/lib/privateGate.ts:23`), and `next
+    # build` / `next start` both set `NODE_ENV=production`. So this job built
+    # and served the **gated** app, and `scripts/lighthouse-budget.mjs:9`
+    # measures `['/', '/log', '/guide/human-performance', '/exercises/squats']`.
+    # `/` and `/log` are not in `PRIVATE_GATE_PUBLIC_PATHS`, so both redirected
+    # to `/private` — half this budget has been scoring the teaser page, which
+    # is the lightest page in the product. A performance budget that measures a
+    # near-empty page is `.200`'s check that cannot fail, wearing a stopwatch.
+    env:
+      PRIVATE_MODE: 'false'
+      NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
     steps:
       - uses: actions/checkout@v4
 
@@ -78,8 +97,12 @@ jobs:
         run: |
           npm run build
           npm run start &
+          # `/api/health` rather than `/private`: it is public in **both** gate
+          # modes (`PUBLIC_API_PATHS_WHILE_GATED`), so this readiness loop no
+          # longer quietly depends on the gate being up — which is the thing
+          # the env block above just turned off.
           for i in $(seq 1 30); do
-            curl -sf http://localhost:3000/private >/dev/null && break
+            curl -sf http://localhost:3000/api/health >/dev/null && break
             sleep 2
           done
 
@@ -94,6 +117,25 @@ jobs:
   visual-regression:
     runs-on: ubuntu-latest
     continue-on-error: true
+    # `.255` — `PRIVATE_MODE: 'false'` was set on the **assertion** step, which
+    # runs after the build and after the server started. Step env does not
+    # reach earlier steps, so it reached neither: this job built and served the
+    # gated app and then took screenshots of it.
+    #
+    # `/` is not in `PRIVATE_GATE_PUBLIC_PATHS`, so `home-reduced.png` — the
+    # case `visual.spec.ts` celebrates as covering the most-linked page in the
+    # product for the first time — was a picture of `/private`. `/guide` and
+    # `/exercises` are public prefixes and were genuinely themselves.
+    #
+    # That is precisely the failure the file's own header warns about: *"a
+    # baseline whose name and contents disagree is worse than no baseline"*.
+    # The `/bundle` case caught its own version of this by checking the landing
+    # URL; nothing else did. `visual.spec.ts` now checks all four.
+    env:
+      PRIVATE_MODE: 'false'
+      NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
     steps:
       - uses: actions/checkout@v4
 
@@ -152,10 +194,13 @@ jobs:
       # without looking, which launders whatever the app happens to render that
       # day into the new truth."* Committing unreviewed output is that same
       # failure arriving through the front door.
+      #
+      # `PRIVATE_MODE` used to be repeated here. It is on the job now — see the
+      # note there. Leaving it in both places would suggest this step is where
+      # it matters, and this step is exactly where it does *not*.
       - name: Visual regression (@visual)
         env:
           SMOKE_BASE_URL: http://localhost:3000
-          PRIVATE_MODE: 'false'
         run: |
           if [ "${{ inputs.bootstrap_baselines }}" = "true" ]; then
             echo "::notice::Generating visual baselines. Nothing is asserted here."
