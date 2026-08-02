@@ -19,17 +19,20 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 - [ ] Copy leads with the wedge (logger + Mission Coach), pillars below the fold.
 
 ### Color semantics
-- [ ] Red = the one "do this now" action; **exactly one primary CTA above the fold**; at most one poster-red field per page.
+- [ ] Red = the one "do this now" action; **exactly one primary CTA above the fold**; at most one poster-red field per page. Verified by computed background (`redActions.ts`), not by class name — a default-variant `Button` once shipped a second red CTA while the `.primary-action` count stayed at 1.
 - [ ] Small red text is `--primary` (#ae1800), never `--accent-poster` — 3.78:1 fails AA below large-text sizes.
 - [ ] Status colors map to `--status-*` tokens; no ad-hoc amber/blue; brass is retired.
+- [ ] Colour is never the only carrier of meaning — pair it with shape, stroke or a label (WCAG 1.4.1, and `.221`'s chart).
 
 ### Card tier ladder
-- [ ] ≤1 `card-elevated` and ≤1 tint-highlight (`card-glow-emerald`) per screen; no shadows/glows anywhere.
+- [ ] ≤1 `card-boss` per screen — the only sanctioned elevation. No shadows or glows anywhere else; `card-glow-emerald` was deleted in `.139`.
 - [ ] Dense/repeated rows stay on base `Card`; rules are 2px solid, never hairlines.
+- [ ] Radius 0. Raw CSS bypasses the Tailwind collapse — `border-radius` in a stylesheet must be written `0`.
 
 ### Metrics & type
-- [ ] All numerals `tabular-nums`; units in mono labels; no jitter on tick.
-- [ ] Type scale: Barlow Condensed display / Inter body / IBM Plex Mono labels — no new fonts, no faux weights.
+- [ ] All numerals `tabular-nums`; units in `.eyebrow` labels; no jitter on tick.
+- [ ] Type: **Archivo only**, weights 400/600/800 — so `font-semibold`/`font-extrabold`, never `font-medium`/`font-bold` on display type (500/700 would synthesize).
+- [ ] No `text-*` utility on a `.display-*` class — the utilities layer beats components and silently kills the clamp (`check-display-type`).
 
 ### Motion & feedback
 - [ ] Durations/easing per [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) § Motion; `prefers-reduced-motion` respected.
@@ -37,9 +40,11 @@ Review on a 390×844 phone viewport first (the Playwright target); desktop secon
 - [ ] No layout shift on data load — skeletons reserve space.
 
 ### States
-- [ ] Empty state = dashed invite + CTA (`EmptyState`), not a blank void.
-- [ ] Error state is recoverable and phrased as a briefing, not a stack trace.
+- [ ] Empty state = **ruled** invite + CTA (`EmptyState`), not a blank void. Two 2px rules, flush left, ink square mark — **not dashed**. This line said "dashed" until `.241`, describing a treatment `.139` deliberately deleted (*"a dashed rounded box on a `bg-muted/20` fill with a 10%-opacity red icon chip and centred copy: four things the system does not do"* — `EmptyState.tsx`), so a checklist-driven fix would have rebuilt it.
+- [ ] Error state is recoverable — **`ErrorState` renders no retry unless it is passed an `onAction`**, so "recoverable" means passing one, not reaching for the component. Phrased as a briefing, not a stack trace.
+- [ ] **A CTA has somewhere to go.** An action that scrolls the user back to content they already passed is a dead end wearing a button.
 - [ ] Loading, offline, and unauthorized each render intentionally (PWA offline shell).
+- [ ] Both state rules are swept at runtime with **no seeded data** by `tests/e2e/zero-state.spec.ts`, because a blank screen passes axe perfectly.
 
 ### i18n & a11y
 - [ ] Longest locale strings (de, pt) don't overflow or wrap-break the layout.

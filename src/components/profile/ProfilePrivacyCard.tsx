@@ -87,7 +87,7 @@ export function ProfilePrivacyCard() {
             <Button
               type="button"
               size="sm"
-              variant={pref === 'opted_out' || pref === null ? 'default' : 'outline'}
+              variant={pref === 'opted_out' || pref === null ? 'selected' : 'outline'}
               className="min-h-[40px]"
               onClick={() => setAllowed(false)}
             >
@@ -96,7 +96,7 @@ export function ProfilePrivacyCard() {
             <Button
               type="button"
               size="sm"
-              variant={pref === 'allowed' ? 'default' : 'outline'}
+              variant={pref === 'allowed' ? 'selected' : 'outline'}
               className="min-h-[40px]"
               onClick={() => setAllowed(true)}
             >

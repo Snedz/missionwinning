@@ -132,7 +132,7 @@ export function AmericaPage() {
                 })}
               </p>
             </div>
-            <Button variant={youth ? 'default' : 'outline'} onClick={toggleYouth}>
+            <Button variant={youth ? 'selected' : 'outline'} onClick={toggleYouth}>
               {youth
                 ? t('americaYouthOn', { defaultValue: 'Youth mode on' })
                 : t('americaYouthOff', { defaultValue: 'Enable youth mode' })}

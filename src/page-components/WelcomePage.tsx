@@ -305,7 +305,7 @@ export function WelcomePage() {
                           key={id}
                           type="button"
                           size="sm"
-                          variant={selected ? 'default' : 'outline'}
+                          variant={selected ? 'selected' : 'outline'}
                           onClick={() => setPrimaryGoal(value)}
                         >
                           {t(labelKey, { defaultValue: GOAL_PRESET_DEFAULTS[id] })}
@@ -387,7 +387,7 @@ export function WelcomePage() {
                   <span className="text-muted-foreground">
                     {t('welcomeRemindersOptIn', {
                       defaultValue:
-                        'Email me training reminders (streak at risk, next step). Optional — unsubscribe anytime.',
+                        'Email me if I go quiet, and a recap after my first week. Never more than one every two days — unsubscribe anytime.',
                     })}
                   </span>
                 </label>

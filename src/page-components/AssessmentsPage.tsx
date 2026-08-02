@@ -212,7 +212,7 @@ export function AssessmentsPage() {
                     { opt: 'no', label: t('assessNo', { defaultValue: 'No' }) },
                     { opt: 'unsure', label: t('assessUnsure', { defaultValue: 'Unsure' }) },
                   ].map(({ opt, label }) => (
-                    <Button key={opt} size="sm" variant={answers[item.key] === opt ? 'default' : 'outline'}
+                    <Button key={opt} size="sm" variant={answers[item.key] === opt ? 'selected' : 'outline'}
                       onClick={() => handleAnswer(item.key, opt)}
                     >
                       {label}
@@ -249,7 +249,7 @@ export function AssessmentsPage() {
         <CardContent className="space-y-3 text-sm">
           <div className="flex flex-wrap gap-2">
             {stages.map((s, i) => (
-              <Button key={s.shortKey} size="sm" variant={selectedStage === i ? 'default' : 'outline'}
+              <Button key={s.shortKey} size="sm" variant={selectedStage === i ? 'selected' : 'outline'}
                 onClick={() => setSelectedStage(i)}
               >
                 {t(s.shortKey, { defaultValue: s.shortKey })}

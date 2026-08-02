@@ -15,12 +15,13 @@ import {
   Trophy,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { Button } from '@/components/ui/button';
 import { useUnits, weightUnitLabel } from '@/hooks/useUnits';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { EXERCISES } from '@/data/exercises';
 import { FREE_STARTER_PROGRAMS } from '@/data/starterPrograms';
-import { formatDate, formatDuration } from '@/lib/utils';
+import { formatDuration } from '@/lib/utils';
 import { MAJOR_GROUPS } from '@/lib/muscleGroups';
 import { getUser, saveNutritionEntry, getUserNutritionForDate, type CloudNutritionEntry } from '@/lib/supabase';
 import { muscleGroupLabel } from '@/lib/readinessDisplay';
@@ -75,6 +76,7 @@ export function TodayProgressSection({
 }: TodayProgressSectionProps) {
   const router = useRouter();
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
@@ -203,7 +205,7 @@ export function TodayProgressSection({
               {t('todayStatVolume', { defaultValue: 'Total Volume' })}
             </CardDescription>
             <CardTitle className="text-3xl">
-              {totalVolume.toLocaleString()}{' '}
+              {fmt.num(totalVolume)}{' '}
               <span className="text-lg font-normal text-muted-foreground">{unitLabel}</span>
             </CardTitle>
           </CardHeader>
@@ -346,9 +348,9 @@ export function TodayProgressSection({
               {
                 done: totalVolume > 1000,
                 label: t('todayWinVolume', {
-                  current: totalVolume.toLocaleString(),
+                  current: fmt.num(totalVolume),
                   unit: unitLabel,
-                  defaultValue: `1000+ total volume (${totalVolume.toLocaleString()}/1000 ${unitLabel})`,
+                  defaultValue: `1000+ total volume (${fmt.num(totalVolume)}/1000 ${unitLabel})`,
                 }),
               },
               {
@@ -509,7 +511,7 @@ export function TodayProgressSection({
                 <CardContent className="flex items-center justify-between p-4">
                   <div>
                     <p className="font-medium">{log.workoutName}</p>
-                    <p className="text-sm text-muted-foreground">{formatDate(log.completedAt)}</p>
+                    <p className="text-sm text-muted-foreground">{fmt.longDate(log.completedAt)}</p>
                   </div>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
@@ -517,7 +519,7 @@ export function TodayProgressSection({
                       {formatDuration(log.durationSeconds)}
                     </span>
                     <span>
-                      {log.totalVolume.toLocaleString()} {unitLabel}
+                      {fmt.num(log.totalVolume)} {unitLabel}
                     </span>
                   </div>
                 </CardContent>
