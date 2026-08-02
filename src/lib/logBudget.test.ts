@@ -175,6 +175,55 @@ test('every rotated entry is in an archive, not gone', () => {
 });
 
 /**
+ * Rotation moves; it never deletes — **and it never duplicates**.
+ *
+ * `.256` — `.222` was archived **twice**. Two branches each rotated it as they
+ * rebased onto a moving `master`, the merge kept both appends, and it reached
+ * `master` unnoticed because every check here asks whether an entry is
+ * *present*. Presence is satisfied by the first copy, so the second was free.
+ *
+ * That is the same hole `.213` describes for `contextBudget`: a guard that
+ * counts, or that asks "is it there?", says nothing about the shape of what it
+ * found. The record is the product here — a reader who greps this history and
+ * gets two hits for one ship cannot tell which is the entry and which is the
+ * accident.
+ *
+ * Scoped across `LOG.md` **and** every archive, because the duplicate arrived
+ * from one file being appended to by two branches, and a per-file check would
+ * have missed a label live in `LOG.md` and archived at the same time — which is
+ * what a botched rotation looks like.
+ */
+test('no build label has two entries', () => {
+  const dir = path.join(root, 'docs/archive/log');
+  const sources: { file: string; src: string }[] = [
+    { file: 'LOG.md', src: read('LOG.md') },
+    ...readdirSync(dir)
+      .filter((f) => f.endsWith('.md'))
+      .map((f) => ({ file: `docs/archive/log/${f}`, src: readFileSync(path.join(dir, f), 'utf8') })),
+  ];
+
+  const seen = new Map<string, string[]>();
+  for (const { file, src } of sources) {
+    for (const h of entryHeadings(src)) {
+      const n = /\(`\.(\d+)`\)/.exec(h)?.[1];
+      if (!n) continue;
+      seen.set(n, [...(seen.get(n) ?? []), file]);
+    }
+  }
+
+  const dupes = [...seen.entries()]
+    .filter(([, files]) => files.length > 1)
+    .map(([n, files]) => `\`.${n}\` appears ${files.length}× (${files.join(', ')})`);
+
+  assert.deepEqual(
+    dupes,
+    [],
+    'a build label has more than one `##` entry — rotation duplicated instead of moved:\n  ' +
+      dupes.join('\n  ')
+  );
+});
+
+/**
  * The gap is real, and it has to stay real.
  *
  * An allowlist that outlives its reason is the failure this repo keeps paying
