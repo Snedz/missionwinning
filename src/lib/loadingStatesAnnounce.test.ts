@@ -1,7 +1,7 @@
 /**
  * Every loading placeholder announces itself — and the a11y gate reads that marker.
  *
- * `.233` — `tests/e2e/a11y.spec.ts` waited for `getAnimations()` to go quiet and
+ * `.253` — `tests/e2e/a11y.spec.ts` waited for `getAnimations()` to go quiet and
  * called the page settled. `src/components/ui/Skeleton.tsx` deliberately does not
  * animate (its header explains why: the old pulse *was* the information, so
  * `prefers-reduced-motion` deleted it). Two correct decisions composing into a
@@ -11,7 +11,7 @@
  *
  * The wait now asks about `aria-busy` too. That only works if the app sets it
  * wherever it is loading, so this file holds up the other half of the bargain.
- * Otherwise `.233` is `.199`/`.212` again: a guard keyed to one spelling, passing
+ * Otherwise `.253` is `.199`/`.212` again: a guard keyed to one spelling, passing
  * because the thing it looks for is simply absent.
  *
  * It found four on arrival, all real:

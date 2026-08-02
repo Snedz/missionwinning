@@ -49,7 +49,7 @@ export function ActiveEmptyState({
      * screen reader announced a disabled button with no explanation, and any
      * automated wait keyed on the semantic marker saw a settled page.
      *
-     * `.233` — `a11y.spec.ts` carried a route special-case for exactly this
+     * `.253` — `a11y.spec.ts` carried a route special-case for exactly this
      * state (`if (path === '/active') await …getByRole('button', { name:
      * /start workout|loading session/i })`), which is `.220`'s shape: a rule
      * written as a list of the routes someone happened to hit, matched on the

@@ -6,7 +6,7 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-01 — The settle rule that could not see loading (`.233`)
+## 2026-08-01 — The settle rule that could not see loading (`.253`)
 
 Two correct decisions, composing into a blind spot.
 

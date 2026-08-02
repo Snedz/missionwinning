@@ -70,7 +70,7 @@ const GATED_ROUTES = [
  * at roughly one run in two. This waits for two consecutive quiet frames instead,
  * which is the difference between a gate people trust and one they switch off.
  *
- * ## Why animations alone were the wrong question (`.233`)
+ * ## Why animations alone were the wrong question (`.253`)
  *
  * Asking only `getAnimations()` made this wait **structurally blind to loading**.
  * `src/components/ui/Skeleton.tsx` says so in its own header: the placeholders

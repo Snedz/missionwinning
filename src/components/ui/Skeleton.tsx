@@ -24,7 +24,7 @@ export function Skeleton({ className }: { className?: string }) {
  * result was a loading state invisible twice over: assistive tech was told to
  * skip it, and nothing in the DOM said the region was busy.
  *
- * `.233` — the second half of that mattered more than expected. `a11y.spec.ts`
+ * `.253` — the second half of that mattered more than expected. `a11y.spec.ts`
  * settles by waiting for `getAnimations()` to go quiet, and these placeholders
  * deliberately do not animate (see above), so the page read as *finished* while
  * five of them were still on screen. The better the loading design got, the
