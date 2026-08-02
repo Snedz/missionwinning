@@ -3,7 +3,7 @@
  * Today card linking to Mission Coach weekly plan.
  * See: src/components/coach/INDEX.md
  *
- * **Its buttons are `outline`, not red.** `.225` raised this card to the top of
+ * **Its buttons are `outline`, not red.** `.240` raised this card to the top of
  * Today's block budget, and it can render up to two actions ("Start this
  * session", "Generate this week") while `JourneyHero` already docks the
  * screen's one red action below. Three red fills on one screen is the competing-

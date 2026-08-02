@@ -27,7 +27,7 @@ import { redActionCount } from './helpers/redActions';
  * `{filteredPrograms.map(…)}` with no fallback branch, but reaching it needs a
  * filter interaction, and a sweep that pretends to cover states it never visits is
  * the vacuity this file exists to prevent. Those were found by reading and fixed
- * by hand; see the `.226` LOG entry for the list.
+ * by hand; see the `.241` LOG entry for the list.
  */
 
 /**
@@ -68,12 +68,12 @@ const APP_ROUTES = [
  * ratchet, because the untranslated-by-default behaviour is what produced 665 in
  * the first place."*
  *
- * Two distinct classes hide in these numbers, and only one is fixed in `.226`:
+ * Two distinct classes hide in these numbers, and only one is fixed in `.241`:
  *
  *  1. **Red as a *selected* state.** `variant="default"` on a chosen filter chip
  *     (`ProgramsPage:95,108`), `bg-primary-fill` on a 1–5 rating scale
  *     (`DailyCheckIn:46`), on a unit toggle, on a days-per-week chip. A selection
- *     is not an action, and `.225` already settled what selected looks like —
+ *     is not an action, and `.240` already settled what selected looks like —
  *     `is-active-tab`: tint ground under a 2px poster rule. These are fixed here
  *     and the caps below drop accordingly.
  *
@@ -81,7 +81,7 @@ const APP_ROUTES = [
  *     `PlanSessionCard`. That is the card-farm shape `DESIGN_ORCHESTRATION` names.
  *     **Recorded, not silenced** — each entry below says which class it is.
  *
- * `.227` found a **third** class hiding inside the second, and it was the larger
+ * `.242` found a **third** class hiding inside the second, and it was the larger
  * one: a *shared component* painting red on every instance. `/mind` and `/move`
  * were filed under class 2 as screens needing composition; they needed one line
  * in `GuidedStepPlayer`. Before calling a count a composition problem, check
@@ -121,12 +121,12 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
 
   '/mind': {
     cap: 2,
-    why: 'Was 51, then 34, now 2 — BreathingTimer\'s Start and DailyCheckIn\'s Save, one each. `.227` demoted GuidedStepPlayer\'s compact Start to `outline`, which took 32 of them out in one line.',
+    why: 'Was 51, then 34, now 2 — BreathingTimer\'s Start and DailyCheckIn\'s Save, one each. `.242` demoted GuidedStepPlayer\'s compact Start to `outline`, which took 32 of them out in one line.',
   },
 };
 
 /**
- * **`.226`\'s diagnosis of `/mind` was wrong, and the ratchet is what said so.**
+ * **`.241`\'s diagnosis of `/mind` was wrong, and the ratchet is what said so.**
  *
  * The entry above used to read *"one `Start` per guided-session card — class 2,
  * and precisely why /mind is a card farm rather than a screen"*, which framed 34
@@ -136,7 +136,7 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
  *
  * That reading was written from source rather than measured, and it is the shape
  * this repo keeps paying for — a plausible story about why a number is high,
- * recorded next to the number as though it had been checked. The `.226` LOG
+ * recorded next to the number as though it had been checked. The `.241` LOG
  * entry, the PR body and this table all carried it.
  *
  * The **under-cap failure** is what corrected it: this file fails when a route

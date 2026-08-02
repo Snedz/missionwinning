@@ -49,7 +49,7 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
         session.status === 'done' && 'bg-card',
         isToday && 'border-t-[3px] border-t-[hsl(var(--accent-poster))] shadow-md',
         /*
-         * `.225` — de-emphasised by border, never by opacity.
+         * `.240` — de-emphasised by border, never by opacity.
          *
          * `opacity-60` dims the *text* along with the container: axe measured
          * #747372 on #eeeded (4.04:1) and #8c8b8b on #eeeded (2.9:1) here, both

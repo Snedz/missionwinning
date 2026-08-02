@@ -178,7 +178,7 @@ export function pickChartExerciseId(history: CompletedWorkoutLog[]): string | nu
 export function build1RMChartData(exerciseId: string, history: CompletedWorkoutLog[]) {
   const stats = buildExerciseBenchmark(exerciseId, history);
   if (!stats) return [];
-  // Raw ISO, not a label. `.227` — the caller draws the axis and owns the
+  // Raw ISO, not a label. `.242` — the caller draws the axis and owns the
   // language; a label minted here would be stamped with whatever the app was
   // set to when the memo last ran.
   return stats.timeline.map((p) => ({

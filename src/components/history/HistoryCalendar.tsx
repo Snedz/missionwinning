@@ -16,7 +16,7 @@
  * cell has a full text label for screen readers.
  *
  * Weekday initials and the month name come from `i18n.language`, not the browser
- * locale. It was the only formatter in the repo that did: `.227` swept the
+ * locale. It was the only formatter in the repo that did: `.242` swept the
  * other 42 sites onto `useLocaleFormat()` and deleted `utils.formatDate`, whose
  * `undefined` first argument silently meant *ask the browser*. Monday-first,
  * matching `startOfLocalWeek` and every other week in the app.
@@ -51,7 +51,7 @@ function DayCell({ day, label }: { day: MonthDay; label: string }) {
         /*
          * Future days are muted, **not faded**. The first draft used
          * `text-muted-foreground/50`, which axe measured at 2.42:1 (#9e9d9d on
-         * paper) — the same alpha-on-a-contrast-token defect `.225` fixed three
+         * paper) — the same alpha-on-a-contrast-token defect `.240` fixed three
          * times in one wave and `.127` before it. `--muted-foreground` at full
          * strength is 8.4:1 and reads as quieter than ink on its own.
          */

@@ -3,7 +3,7 @@
 /**
  * One segmented control, finally used.
  *
- * `.225` — `.seg` / `.seg-opt` have been in `index.css` since the rebrand with
+ * `.240` — `.seg` / `.seg-opt` have been in `index.css` since the rebrand with
  * **zero call sites**, while three screens each hand-rolled the same row:
  * `HistoryPage` (Sessions / Journal), `FuelLogSheet` (meal picker), and the
  * Radix `ui/tabs.tsx` used by Calculators, Bundle and Builder. Two of the three

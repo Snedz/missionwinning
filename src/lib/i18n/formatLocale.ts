@@ -5,7 +5,7 @@
  * whenever you leave the first argument off — and `undefined` is a legal value
  * that means exactly that. So `new Date(iso).toLocaleDateString()` and
  * `toLocaleDateString(undefined, {…})` are the same call, and both ignore the
- * app's own language switcher. `.227` swept `src/` and `app/` and found **42
+ * app's own language switcher. `.242` swept `src/` and `app/` and found **42
  * sites in 22 files** doing it, plus 17 `localeCompare` calls, in a product
  * shipping **fifteen locales**: an athlete who picks Spanish got Spanish copy,
  * Spanish nav, Spanish pillar names and `8/2/2026` with `1,234` separators.
@@ -123,7 +123,7 @@ export function formatLocalNumber(
  * `'Most people quit in the first week.'` — and three of the four render outside
  * the app entirely, where no athlete language exists to read.
  *
- * Before `.227` those numbers were ambient, which is the worst of both: a German
+ * Before `.242` those numbers were ambient, which is the worst of both: a German
  * browser rendered `1.234` *inside an English sentence*, localising the one
  * token that had no business disagreeing with the ninety around it. Naming the
  * language makes it a decision instead of an accident, and makes the day the

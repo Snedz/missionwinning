@@ -31,7 +31,7 @@ export type NudgeKind = 'comeback' | 'week1-recap' | 'week-behind' | 'wind-down'
 /**
  * A push message, authored — never sliced out of the email beside it.
  *
- * `.228` — the signed-in push was built at the send site by taking the email's
+ * `.243` — the signed-in push was built at the send site by taking the email's
  * **first line, truncated to 140 characters**. For `week1-recap` that produced
  * the body *"Mission Winning — your first week on the path:"*: a colon pointing
  * at the two numbers that made the message worth sending, both of them on the

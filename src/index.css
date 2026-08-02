@@ -230,7 +230,7 @@
     @apply border-l border-border;
   }
 
-  /* `.225` — the selected segment is `is-active-tab`, not a red fill.
+  /* `.240` — the selected segment is `is-active-tab`, not a red fill.
      This shipped as `bg-primary-fill` and was never used by anything, while
      `MobileNav` and `FuelLogSheet` drew the same state as tint + a 2px poster
      rule. Four definitions of one question ("what does selected look like")

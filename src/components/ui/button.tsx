@@ -24,7 +24,7 @@ const buttonVariants = cva(
          * Legacy branded-CTA variant — byte-identical to `default` above.
          *
          * The note here read *"10+ call sites; fold into `default` when Phase 3
-         * recuts the app screens"*. `.227` counted them: **56**, across 45 files.
+         * recuts the app screens"*. `.242` counted them: **56**, across 45 files.
          * That is the number that makes the fold a decision rather than a
          * tidy-up, so it is written down instead of estimated — and the fold is
          * still deferred to the recut that its author conditioned it on, not
@@ -32,7 +32,7 @@ const buttonVariants = cva(
          *
          * The duplication is not free while it lasts: two names for one rendered
          * result is `.178`, and it is why `check-display-type` cannot hold a list
-         * of red variants and has to **derive** one out of this file (`.225`) —
+         * of red variants and has to **derive** one out of this file (`.240`) —
          * a rule that knew only `default` was blind to a button that was named
          * and red.
          */
@@ -40,13 +40,13 @@ const buttonVariants = cva(
         /**
          * A chosen option — a filter chip, a unit toggle, a days-per-week pick.
          *
-         * `.226` — this existed only as the default variant at ~20 sites
+         * `.241` — this existed only as the default variant at ~20 sites
          * (`selected ? 'default' : 'outline'`), which paints a *selection* in the screen's one
          * do-this-now colour. The zero-state sweep measured the result: nine of
          * fifteen routes over the one-red-action rule, `/profile` and `/programs`
          * entirely because of chips nobody would call actions.
          *
-         * Same treatment `.225` settled for the segmented control and the tab
+         * Same treatment `.240` settled for the segmented control and the tab
          * bar draw: tint ground under a 2px poster rule. Selected reads as
          * selected; red stays the thing you do next.
          */

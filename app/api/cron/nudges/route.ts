@@ -282,7 +282,7 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
       sent.push(c.userId);
       if (pushAdmin) {
         /*
-         * `.228` — the push is `decideNudge`'s, not a slice of the email.
+         * `.243` — the push is `decideNudge`'s, not a slice of the email.
          *
          * This read `c.body.split('\n').find(l => l.trim()).slice(0, 140)`, so
          * the `week1-recap` push shipped as *"Mission Winning — your first week

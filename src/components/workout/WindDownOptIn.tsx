@@ -35,7 +35,7 @@ type Mode = 'hidden' | 'offer' | 'install' | 'done';
 type MwWindow = Window & { triggerPwaInstall?: () => Promise<void> };
 
 export function WindDownOptIn() {
-  // `.228` — this component had six raw string literals in JSX and was not wired
+  // `.243` — this component had six raw string literals in JSX and was not wired
   // to i18n at all, so the one surface that asks an athlete to grant notification
   // permission spoke English in fifteen languages. A permission ask nobody can
   // read is a permission nobody grants.

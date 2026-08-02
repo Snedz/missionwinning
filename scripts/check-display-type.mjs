@@ -83,7 +83,7 @@ const RED_ALLOWED = [
 ];
 
 /**
- * `.225` — which `Button` variants are red is **read out of `button.tsx`**, not
+ * `.240` — which `Button` variants are red is **read out of `button.tsx`**, not
  * listed here.
  *
  * The rule above understood two spellings of red: a red class in a `className`,

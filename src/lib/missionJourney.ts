@@ -249,7 +249,7 @@ export function syncJourneyPhase(workoutHistory: CompletedWorkoutLog[] = []): Jo
   /*
    * Both milestone snapshots are recomputed before any phase decision.
    *
-   * `.228` — `s.readiness` used to be computed *after* the `allBasicDone` early
+   * `.243` — `s.readiness` used to be computed *after* the `allBasicDone` early
    * return, so for anyone still in Basic it was never refreshed. Completing the
    * PAR-Q writes `mw_last_assessment` and nothing else touches journey state, so
    * `readiness.parq` stayed false until a workout was logged — and the First

@@ -2,7 +2,7 @@
  * What Today spills, and why it is not a matter of taste.
  *
  * Horizon W excellence criterion 2 is *"one clear next session on Today"*.
- * Before `.225` the declared prices were `dashboard` 10, `day-review` 15,
+ * Before `.240` the declared prices were `dashboard` 10, `day-review` 15,
  * `intent` 20, `coach-invite` 25, `week-recap` 30, `coach-today` 35,
  * `coach-week` 45 — and with the four spillable slots a real athlete has, that
  * ordering produced this, on a readiness athlete's evening screen:
@@ -63,7 +63,7 @@ test('both Today shells price their blocks from the shared table', () => {
 
 /**
  * And both shells must actually apply the budget. `HomeTodayLean` had none
- * before `.225`: it stacked whatever mounted, in source order, with no ceiling.
+ * before `.240`: it stacked whatever mounted, in source order, with no ceiling.
  */
 test('both Today shells apply the block budget', () => {
   for (const shell of SHELLS) {
@@ -78,7 +78,7 @@ test('both Today shells apply the block budget', () => {
 /**
  * The next action is docked on both shells, or on neither.
  *
- * `.225` — `JourneyHero` was portalled to `ScreenDock` in the dashboard shell
+ * `.240` — `JourneyHero` was portalled to `ScreenDock` in the dashboard shell
  * and rendered inline in the lean one. `ScreenDock` exists so the one red
  * action cannot leave the fold; inline, it scrolls away. The cohort that lost
  * it was `i-day`/`basic` — athletes who have not yet completed a workout, whose

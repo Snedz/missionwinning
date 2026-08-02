@@ -20,14 +20,14 @@ type Props = {
 };
 
 /**
- * `lang` rather than a hook: this is module scope, so `.227` threaded the
+ * `lang` rather than a hook: this is module scope, so `.242` threaded the
  * language in from the component instead of moving the function inside it.
  *
  * The `k` abbreviation still goes through `formatLocalNumber` — `toFixed(1)`
  * hardcodes a full stop as the decimal separator, so `4.2k` reads as four
  * hundred and twenty in German. Recorded rather than swept: `toFixed` is not an
  * *ambient-locale* call, so the guard cannot see it, and the repo has ~60 more
- * of them, several feeding values back into inputs. Named in the `.227` LOG.
+ * of them, several feeding values back into inputs. Named in the `.242` LOG.
  */
 function formatMetricValue(
   id: TrendMetricId,

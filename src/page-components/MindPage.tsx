@@ -35,7 +35,7 @@ export function MindPage() {
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
-  // `.226` — a retry trigger. ErrorState renders no action unless it is handed
+  // `.241` — a retry trigger. ErrorState renders no action unless it is handed
   // one, so an unrecoverable error state was a dead end wearing a component.
   const [premiumRetry, setPremiumRetry] = useState(0);
 

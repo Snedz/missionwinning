@@ -71,7 +71,7 @@ export function LibraryPage() {
   }, []);
 
   const allMuscles = useMemo(
-    // `fmt.lang` is a real dependency: `.227` — a sorted list memoised without it
+    // `fmt.lang` is a real dependency: `.242` — a sorted list memoised without it
     // keeps the previous language's collation until something else invalidates the
     // memo, the staleness that made `benchmarks.dateLabel` worth deleting outright.
     () => uniqueMuscleGroups(EXERCISES, fmt.lang),

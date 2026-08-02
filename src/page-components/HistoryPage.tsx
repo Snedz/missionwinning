@@ -343,7 +343,7 @@ export function HistoryPage() {
             </div>
           </div>
           {filteredHistory.length === 0 ? (
-            /* `.226` — was a centred muted sentence with no way out, while
+            /* `.241` — was a centred muted sentence with no way out, while
                `LibraryPage:369` solved the identical case with an EmptyState and
                a clear-filters action. A filter miss the user cannot undo without
                guessing which control caused it is a dead end. */
@@ -450,7 +450,7 @@ export function HistoryPage() {
             ))}
           </div>
         ) : (
-          /* `.226` — was hardcoded English (so it stayed English in all fifteen
+          /* `.241` — was hardcoded English (so it stayed English in all fifteen
              locales) and it spoke in raw URLs: "Use /move or /mind". A path is
              not a sentence, and the athlete cannot tap it. */
           <p className="text-xs text-muted-foreground">

@@ -35,7 +35,7 @@ const CONTROL_SELECTOR =
 /**
  * Nothing is mid-transition when we measure it.
  *
- * `.227` — the feedback-sheet case failed once in a full-suite run with
+ * `.242` — the feedback-sheet case failed once in a full-suite run with
  * `(no text) h=44`, a control whose settled height is **exactly** 44 and whose
  * computed height never changes. `expect(dialog).toBeVisible()` resolves the
  * moment the sheet is in the DOM and painted, not when its open transition ends,

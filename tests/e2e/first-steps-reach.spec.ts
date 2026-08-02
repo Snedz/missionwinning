@@ -4,7 +4,7 @@ import { seedLegacyOnboarding } from './helpers/journey';
 /**
  * The checklist is still reachable after the athlete dismisses it.
  *
- * `.225` shipped First Steps with one mount — a Today card whose Dismiss writes
+ * `.240` shipped First Steps with one mount — a Today card whose Dismiss writes
  * `mw_first_steps_dismissed` through `useDismissed`, which **never clears** — and
  * which also retires itself on completion. Both endings terminal, and no reset
  * control anywhere in the app.
@@ -87,7 +87,7 @@ test.describe('First Steps reachability @gate', () => {
         JSON.stringify([{ id: '1', pillar: 'move', title: 'flow', completedAt: now }])
       );
       localStorage.setItem('mw_learn_completed', JSON.stringify(['strength-basics']));
-      // The sixth step, and the one `.228` fixed: this used to stay unticked for a
+      // The sixth step, and the one `.243` fixed: this used to stay unticked for a
       // Basic-phase athlete until a workout existed.
       localStorage.setItem('mw_last_assessment', JSON.stringify({ risk: 'low', date: '2026-01-01' }));
     });

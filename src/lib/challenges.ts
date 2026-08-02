@@ -173,7 +173,7 @@ export function getChallengeProgress(): Array<ChallengeDef & { current: number; 
 
   const pillarWinsThisWeek = (pillar: PillarType) =>
     getPillarWins(100).filter((w) => {
-      // `.226` — same frame mismatch as pillarScoreInputs: `weekStart` is local.
+      // `.241` — same frame mismatch as pillarScoreInputs: `weekStart` is local.
       const d = localDateKeyFromIso(w.completedAt);
       return w.pillar === pillar && d >= weekStart;
     }).length;

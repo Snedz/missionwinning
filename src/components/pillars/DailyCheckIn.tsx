@@ -43,7 +43,7 @@ function RatingRow({
             type="button"
             onClick={() => onChange(n)}
             aria-pressed={value >= n}
-            /* `.226` — ink fill, not red. Five filled segments per scale × three
+            /* `.241` — ink fill, not red. Five filled segments per scale × three
                scales put fifteen red controls on `/mind`, which is most of why
                that route measured 51 against a one-red-action rule. A rating is a
                value, not the thing to do next; the ink fill is `WeekStrip`'s

@@ -2,7 +2,7 @@
 
 Chronological record of shipped work. Newest first.
 
-**Rotation rule:** keep **≤15 entries** here, and never let the file grow. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Enforced by `src/lib/logBudget.test.ts` — until `.227` it was enforced by nothing, and the file had reached **27 entries / 127KB**.
+**Rotation rule:** keep **≤15 entries** here, and never let the file grow. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Enforced by `src/lib/logBudget.test.ts` — until `.242` it was enforced by nothing, and the file had reached **27 entries / 127KB**.
 
 > **The `≤20KB` half of this rule was unmeetable and is retired.** An entry here averages ~5.6KB, because the house style is to explain the defect class rather than name the change — which is the most valuable thing in this repo and not something to trade away for a byte count. Fifteen entries is ~84KB; obeying 20KB would have meant keeping **three**. So the count rule stands, and the size rule becomes a **ratchet**: the file may shrink, never grow. If the founder wants a hard byte ceiling instead, that is a call about house style, not about this file.
 
@@ -10,7 +10,7 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
-## 2026-08-02 — The notification that says nothing (`.228`)
+## 2026-08-02 — The notification that says nothing (`.243`)
 
 A third batch of Pump Club screenshots, and the notification centre in it is the
 best **bad** example the series has produced. Thirteen rows; eleven read, word
@@ -73,7 +73,7 @@ nobody grants. New [`notificationLocales.ts`](src/i18n/notificationLocales.ts)
 
 ### Dismissed or finished, the checklist was gone forever
 
-`.225` gave First Steps one mount: a Today card whose Dismiss writes a flag
+`.240` gave First Steps one mount: a Today card whose Dismiss writes a flag
 `useDismissed` **never clears**, and which also retires itself on completion.
 Both endings terminal, no reset control anywhere. The reference puts its
 checklist in the nav drawer with a progress bar, and that idea lands on a real
@@ -131,9 +131,9 @@ Tests 1233→1237. i18n coverage cap 710→709. Locale namespaces 30→31.
 
 ---
 
-## 2026-08-02 — The language switcher half the app ignores (`.227`)
+## 2026-08-02 — The language switcher half the app ignores (`.242`)
 
-`.226` closed by naming two functions as unfinished business: *"`utils.formatDate`
+`.241` closed by naming two functions as unfinished business: *"`utils.formatDate`
 and `benchmarks.formatChartDate` still pass `undefined` as the locale, so they
 follow the browser rather than the app's language switcher."* Measuring before
 fixing turned two into **42 sites across 22 files**, plus **17 `localeCompare`
@@ -194,7 +194,7 @@ debrief, the share card, the school report — and their numbers now say so thro
 `1.234` *inside a hardcoded English sentence*: not localisation, just the one token
 in ninety disagreeing with its neighbours.
 
-### `.226` was wrong about `/mind`, and the ratchet is what said so
+### `.241` was wrong about `/mind`, and the ratchet is what said so
 
 D8 recorded `/mind`'s 34 red actions as *"one Start per guided-session card — class
 2, and precisely why /mind is a card farm rather than a screen"*, framing a screen
@@ -233,7 +233,7 @@ checking the current one — `.213`'s lesson, that a budget guard counting witho
 checking content will let you archive the truth.
 
 **A third instance of a familiar own-goal:** that guard's first draft failed on
-`LOG.md`'s own sentence explaining that the 20KB figure was retired — after `.226`
+`LOG.md`'s own sentence explaining that the 20KB figure was retired — after `.241`
 did the identical thing twice. `check-design-system` wrote the rule down once
 already: *a guard that punishes documented reasoning gets switched off.* It now
 reads the rule line, not the prose beneath it.
@@ -251,7 +251,7 @@ Tests 1215→1233. `/mind` 34→2. LOG 27 entries/127KB → 15/84KB.
 
 ---
 
-## 2026-08-02 — The screens with nothing on them (`.226`)
+## 2026-08-02 — The screens with nothing on them (`.241`)
 
 Five more Arnold's Pump Club screenshots. Lined up, they are one subject seen
 five times: **what a screen says when the athlete has no data.** A month calendar
@@ -307,7 +307,7 @@ routes over the one-red-action rule, `/mind` at 51.** Two classes hid in that nu
 **Class 1 — red as a *selected* state, fixed.** `variant={x ? 'default' :
 'outline'}` at twenty sites: filter chips, unit toggles, privacy and reminder
 switches, days-per-week picks — plus `bg-primary-fill` on two 1–5 rating scales.
-A selection is not an action. New `selected` variant carries what `.225` already
+A selection is not an action. New `selected` variant carries what `.240` already
 settled for tabs: tint ground under a 2px poster rule. `/programs` 2→0,
 `/assessments` 2→1, `/track` 6→3, `/move` 2→1, `/profile` 5→4, `/mind` 51→34.
 
@@ -404,7 +404,7 @@ the comment explaining that `text-red-400` had been removed —
 `check-design-system` solved this once and says why: *a guard that punishes
 documented reasoning gets switched off*. And the calendar's first draft faded
 future days with `text-muted-foreground/50`, which axe measured at **2.42:1** —
-the same alpha-on-a-contrast-token defect `.225` fixed three times in one wave.
+the same alpha-on-a-contrast-token defect `.240` fixed three times in one wave.
 Rendered, not inferred: `/history` in `en` and `ar` (RTL, `dir=rtl`, month name
 `أغسطس 2026`), axe clean, month navigation confirmed to move.
 
@@ -417,7 +417,7 @@ the browser rather than the app's language switcher.
 
 ---
 
-## 2026-08-02 — The screen that said how you were doing before what to do (`.225`)
+## 2026-08-02 — The screen that said how you were doing before what to do (`.240`)
 
 The brief was five screenshots of Arnold's Pump Club (iOS), handed over as
 design references for the website and the web app.

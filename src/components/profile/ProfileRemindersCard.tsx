@@ -97,7 +97,7 @@ export function ProfileRemindersCard({
           {/*
             Each kind, and when it fires.
 
-            `.228` — this description said *"Two kinds"* and named two, while the
+            `.243` — this description said *"Two kinds"* and named two, while the
             device actually receives the evening review configured one row below
             and, for a signed-in athlete, the two pushes that ride along with the
             weekly emails: five, behind one toggle described as two. Listing them

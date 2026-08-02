@@ -37,7 +37,7 @@ export interface ExerciseBenchmarkStats {
 
 /*
  * `formatChartDate` used to live here, stamping a `dateLabel` onto every
- * timeline point. `.227` deleted it rather than giving it a language, because
+ * timeline point. `.242` deleted it rather than giving it a language, because
  * threading one in would have fixed the wrong half: the label was computed
  * inside a `useMemo` keyed on `workoutHistory`, so switching the app's language
  * left the chart axis in the previous one until a workout was logged. A display

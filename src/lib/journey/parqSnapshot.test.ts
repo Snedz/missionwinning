@@ -1,7 +1,7 @@
 /**
  * The health screen ticks its box the moment it is finished.
  *
- * `.228` — `syncJourneyPhase` recomputed `s.basic`, then **returned** when Basic
+ * `.243` — `syncJourneyPhase` recomputed `s.basic`, then **returned** when Basic
  * was incomplete, and only recomputed `s.readiness` past that early return. So
  * `readiness.parq` was frozen for every athlete still in Basic. `AssessmentsPage`
  * writes `mw_last_assessment` and touches nothing else in journey state, which

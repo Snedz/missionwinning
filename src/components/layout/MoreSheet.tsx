@@ -14,11 +14,11 @@
  * lie as a zeroed score, which is why `ScoreNumeral` renders an em-dash.
  *
  * **First Steps lives here too, and that is a fix rather than a feature.**
- * `.225` gave the checklist one mount — a Today card — with a Dismiss that
+ * `.240` gave the checklist one mount — a Today card — with a Dismiss that
  * writes a flag nothing ever clears, and a card that also retires itself on
  * completion. So both endings were terminal: dismissed or finished, the
  * checklist and the sheet behind it were unreachable for the life of the
- * install. `.228` makes this sheet the surface that survives, which turns
+ * install. `.243` makes this sheet the surface that survives, which turns
  * Dismiss from *gone* into *moved off Today* — the thing it should always have
  * meant. Being a status board already, the sheet is where an athlete would look.
  */

@@ -16,7 +16,7 @@
  * The card retires itself when every step is done — a checklist that stays on
  * the screen after it is finished is a permanent `+1` on a budgeted screen.
  *
- * It is no longer the only way in. `.228` put the same checklist in the More
+ * It is no longer the only way in. `.243` put the same checklist in the More
  * sheet, because dismissing here writes a flag nothing clears: both dismissal
  * and completion used to end with the sheet unreachable for good.
  */
@@ -81,7 +81,7 @@ export function FirstStepsCard({ state }: { state: JourneyState }) {
           by design — nothing here gates anything — so the exit is a plain
           labelled control, not a 24px × in a corner.
 
-          `.228` — the label says where it goes. This flag is never cleared, and
+          `.243` — the label says where it goes. This flag is never cleared, and
           until the More sheet carried the checklist that made Dismiss a one-way
           door out of onboarding; the word alone gave no reason to expect
           otherwise. Now it moves rather than deletes, so it says so. */}

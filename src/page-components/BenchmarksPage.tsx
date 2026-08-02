@@ -92,7 +92,7 @@ export function BenchmarksPage() {
       estimated: point.estimated1RM,
       actual: point.actual1RM,
     }));
-    // `fmt` and not just `benchmark`: `.227` — the axis label is built here now
+    // `fmt` and not just `benchmark`: `.242` — the axis label is built here now
     // that `dateLabel` is gone from the data, so the memo has to invalidate when
     // the language does or the chart keeps the previous one.
   }, [benchmark, fmt]);
@@ -114,7 +114,7 @@ export function BenchmarksPage() {
   }, [summaries]);
 
   /*
-   * `.226` — the starters render in **both** branches.
+   * `.241` — the starters render in **both** branches.
    *
    * These four one-tap session launchers sat inside the has-data `else` only, so
    * they were visible exclusively to athletes who already had benchmark data —

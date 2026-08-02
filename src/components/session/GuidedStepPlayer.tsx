@@ -266,13 +266,13 @@ export function GuidedStepPlayer({
         </div>
         <div className="flex gap-2 flex-wrap">
           {/*
-              `.227` — red on the full-screen player, paper-on-ink in a card.
+              `.242` — red on the full-screen player, paper-on-ink in a card.
 
               This was `variant="fitness"` unconditionally, and both callers
               (`GuidedMindSessionRunner`, `TimedFlowRunner`) render `compact` in a
               grid — so `/mind` painted **one red Start per guided session**, ten
               of them, and `/move` did the same per flow. That is the reading
-              `.226` recorded as *"a composition decision per screen"* and it was
+              `.241` recorded as *"a composition decision per screen"* and it was
               too pessimistic by nine screens: it is one shared line.
 
               `outline`, and the ground is why. The card goes ink only once
@@ -281,7 +281,7 @@ export function GuidedStepPlayer({
               variants are the trap here rather than the answer: `onInkSolid` is
               `bg-neutral-100`, near-white on paper, which is `.155`'s 1.01:1
               defect wearing the other palette. A 2px ink border is the same
-              demotion `.226` gave `EmptyState`'s CTA, on the same ground.
+              demotion `.241` gave `EmptyState`'s CTA, on the same ground.
 
               Full-screen keeps the red: there is one action on that screen, and
               spending the do-this-now colour on it is what the colour is for.

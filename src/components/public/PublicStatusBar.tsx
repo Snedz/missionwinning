@@ -1,7 +1,7 @@
 /**
  * The one-line status strip above the public chrome.
  *
- * `.225` — the reference app for this wave runs an announcement bar across the
+ * `.240` — the reference app for this wave runs an announcement bar across the
  * top of every page ("BIRTHDAY SALE · JULY 30 — AUG 9"). The *placement* is
  * worth taking: the thing that most changes how a visitor reads the price is
  * the first line on the page, not a paragraph five sections down. The *content*

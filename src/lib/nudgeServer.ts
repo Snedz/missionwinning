@@ -252,7 +252,7 @@ export interface WindDownCandidate {
   title: string;
   body: string;
   /**
-   * `.228` — carried, not re-declared at the send site.
+   * `.243` — carried, not re-declared at the send site.
    *
    * Both cron routes had their own `tag: 'mw-…'` literal beside a comment
    * explaining why it must be distinct, while `windDownPush()` / `dayReviewPush()`

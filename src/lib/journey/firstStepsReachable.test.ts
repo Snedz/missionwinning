@@ -1,7 +1,7 @@
 /**
  * The checklist is reachable after the athlete dismisses it.
  *
- * `.225` shipped First Steps with exactly one mount — a Today card — and a
+ * `.240` shipped First Steps with exactly one mount — a Today card — and a
  * Dismiss writing `mw_first_steps_dismissed` through `useDismissed`, which
  * **never clears**. The same card also retires itself on `progress.complete`.
  * Two endings, both terminal: dismissed or finished, the checklist and the sheet

@@ -2,7 +2,7 @@
  * `LOG.md` has had a rotation rule since it was written, and nothing enforced it.
  *
  * Its own header said *"keep ≤15 entries / ≤20KB here"*. `CLAUDE.md` §7 repeats
- * it. At `.227` the file held **27 entries / 127,015 bytes** — 80% over on
+ * it. At `.242` the file held **27 entries / 127,015 bytes** — 80% over on
  * entries and **6.4× over on bytes** — because the only automated thing that ever
  * opened it was [`check-build-label.mjs`](../../scripts/check-build-label.mjs),
  * which asks whether the current version is *mentioned* and nothing else.
@@ -45,7 +45,7 @@ const MAX_LOG_ENTRIES = 15;
 /**
  * The ratchet ceiling, in bytes. **Lower it; never raise it.**
  *
- * Set from measurement after `.227` rotated `.200`–`.213` out, with roughly one
+ * Set from measurement after `.242` rotated `.200`–`.213` out, with roughly one
  * entry of headroom so that shipping a wave does not *force* a rotation in the
  * same commit — rotation is a deliberate act with an archive file and an index
  * row, and a byte should not be what triggers it.
@@ -148,7 +148,7 @@ test('LOG.md still tells its reader the rule this file enforces', () => {
    * The first draft scanned the whole header and failed on the blockquote saying
    * *"the ≤20KB half of this rule is retired"* — the third time in this run of
    * work that a new guard has fired on the sentence documenting its own subject
-   * (`.226` twice, on `text-red-400` and on a UTC spelling). `check-design-system`
+   * (`.241` twice, on `text-red-400` and on a UTC spelling). `check-design-system`
    * wrote the rule down after paying for it once: *a guard that punishes
    * documented reasoning gets switched off*. The rule line is the bolded
    * `**Rotation rule:**` paragraph; everything after it is commentary.

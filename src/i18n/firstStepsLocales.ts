@@ -1,7 +1,7 @@
 /**
  * First-steps checklist strings — merged into the i18n `common` namespace.
  *
- * `.225`. English-first, like [`feedbackLocales.ts`](./feedbackLocales.ts):
+ * `.240`. English-first, like [`feedbackLocales.ts`](./feedbackLocales.ts):
  * `Record<string, string>` per language rather than a strict `Locale` type, so
  * a language can carry the lines that matter to it without a fifteen-way
  * translation pass blocking the feature. Every lookup falls back to `EN`.

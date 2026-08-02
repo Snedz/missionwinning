@@ -119,7 +119,7 @@ export const STORAGE_KEYS = {
   wearablesHubSamples: 'mw_wearables_hub_samples',
 
   // ── Beta / growth ──
-  /** Retired `.225` with `BetaWelcomeBanner`; left registered so the name is not reused. */
+  /** Retired `.240` with `BetaWelcomeBanner`; left registered so the name is not reused. */
   betaBannerDismissed: 'mw_beta_banner_dismissed',
   firstStepsDismissed: 'mw_first_steps_dismissed',
   betaContributor: 'mw_beta_contributor',

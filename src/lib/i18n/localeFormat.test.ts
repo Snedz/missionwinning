@@ -7,7 +7,7 @@
  * fifteen languages that is not a nicety: `1234` is `1.234` in German and
  * `12,34,567` groups as lakh in Hindi, and this app's screens are mostly numbers.
  *
- * `.227` measured it before fixing it — **42 formatting sites in 22 files**, plus
+ * `.242` measured it before fixing it — **42 formatting sites in 22 files**, plus
  * **17 `localeCompare` sites in 12** — and the two halves needed different rules,
  * so this file states both.
  *
@@ -75,7 +75,7 @@ const PRODUCT_SOURCE = [
  * Comments describe intent; only code calls anything.
  *
  * `check-design-system.mjs` solved this once and wrote down why — *a guard that
- * punishes documented reasoning gets switched off* — and `.226`'s off-palette
+ * punishes documented reasoning gets switched off* — and `.241`'s off-palette
  * rule proved it by failing on the comment that explained a removal. Every
  * docblock in this wave names the methods it replaced, so without this the guard
  * would fire hardest on the files that fixed the bug.

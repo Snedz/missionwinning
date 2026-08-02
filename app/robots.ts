@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { siteBaseUrl } from '@/lib/seoMetadata';
 
 /**
- * `.225` — the host comes from `siteBaseUrl()`, not a third literal.
+ * `.240` — the host comes from `siteBaseUrl()`, not a third literal.
  *
  * This defaulted to the **apex** host while `seoMetadata.ts`, `app/sitemap.ts`
  * and `publicSeo.ts` all default to `www`. With `NEXT_PUBLIC_SITE_URL` unset —

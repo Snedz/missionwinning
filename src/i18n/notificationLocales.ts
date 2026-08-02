@@ -1,7 +1,7 @@
 /**
  * What the app says about the notes it sends — merged into `common`.
  *
- * `.228`. English-first `Record<string, string>` per language, the
+ * `.243`. English-first `Record<string, string>` per language, the
  * [`firstStepsLocales`](./firstStepsLocales.ts) / [`zeroStateLocales`](./zeroStateLocales.ts)
  * shape, so a language can carry the lines that matter to it without a
  * fifteen-way pass blocking the wave. Every lookup falls back to `EN`.
