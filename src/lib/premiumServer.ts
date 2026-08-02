@@ -10,6 +10,11 @@ import {
   invalidatePremiumEnrollmentCache,
   setCachedPremiumFlag,
 } from '@/lib/premiumEnrollmentCache';
+import {
+  buildEnrollmentRow,
+  isAuthUserForeignKeyError,
+  type EnrollmentWebhookPayload,
+} from '@/lib/premium/enrollmentRow';
 
 export function isDemoPremiumEnabled(): boolean {
   if (process.env.NODE_ENV === 'production' && process.env.DEMO_PREMIUM === 'true') {
@@ -71,13 +76,7 @@ export async function isPremiumForUser(
 }
 
 /** Grant enrollment via service role (webhooks only). */
-export async function grantEnrollmentFromWebhook(payload: {
-  user_email: string;
-  user_id?: string | null;
-  product_id?: string;
-  provider: string;
-  external_id: string;
-}) {
+export async function grantEnrollmentFromWebhook(payload: EnrollmentWebhookPayload) {
   const admin = getSupabaseAdmin();
   if (!admin) throw new Error('Supabase admin not configured');
 
@@ -90,25 +89,12 @@ export async function grantEnrollmentFromWebhook(payload: {
 
   if (existing?.length) return { duplicate: true };
 
-  const row: Record<string, unknown> = {
-    user_email: payload.user_email.trim().toLowerCase(),
-    product_id: payload.product_id ?? 'super-bundle',
-    plan: 'bundle',
-    status: 'active',
-    premium_granted: true,
-    provider: payload.provider,
-    external_id: payload.external_id,
-  };
-  const uid = payload.user_id?.trim();
-  // enrollments.user_id references auth.users — only set when it looks like a UUID
-  if (uid && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uid)) {
-    row.user_id = uid;
-  }
+  const row = buildEnrollmentRow(payload);
 
   let { error } = await admin.from('enrollments').insert(row);
 
   // Payment Link / test pings may send a UUID that is not an auth user yet — fall back to email-only
-  if (error && row.user_id && (error.code === '23503' || /foreign key|auth\.users/i.test(error.message || ''))) {
+  if (error && row.user_id && isAuthUserForeignKeyError(error)) {
     delete row.user_id;
     ({ error } = await admin.from('enrollments').insert(row));
   }

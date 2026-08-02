@@ -64,11 +64,23 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  */
 const FLOORS = {
   /** Source files that no test loads, directly or transitively. Must not rise. */
-  untestedFiles: 386,
-  /** Line % across the files that *are* loaded. Must not fall. */
+  untestedFiles: 382,
+  /**
+   * Line % across the files that *are* loaded. Must not fall.
+   *
+   * Deliberately looser than the others, because **reaching a new file usually
+   * lowers this number**: a 400-line server module that no test imported
+   * contributed nothing to either side of the fraction, and the moment one test
+   * touches it, all its unexecuted branches join the denominator. `.224`'s
+   * revenue-path work moved reach 41.2% → 42.1% and line % 91.84 → 91.80.
+   *
+   * Ratcheting this tightly would therefore punish the exact change the other two
+   * floors exist to encourage. `untestedFiles` is the primary ratchet; this one is
+   * a floor against a real collapse, not a high-water mark.
+   */
   linePct: 91.5,
   /** Function % across the files that are loaded — the one that catches Zod. */
-  funcPct: 66.5,
+  funcPct: 67.0,
 };
 
 /**

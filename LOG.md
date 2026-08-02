@@ -163,18 +163,98 @@ the comment now states what is true rather than the lane being silently added.
 but still in history). Founder call, deliberately not allowlisted; unrelated to
 this branch.
 
+### Then the revenue path, which the script said was the worst of it
+
+Second half of the same ship. `stripeServer.ts`, `checkoutServer.ts`,
+`premiumServer.ts` and `stripeDisputeNotify.ts` were **loaded by no test at all** —
+408 lines deciding whether an athlete can pay and whether a payment becomes
+premium. They are `server-only`, which throws under plain `tsx`, so they sat in the
+lane nothing reached.
+
+**Exploring first changed the shape of the fix.** Two of the four are untestable
+where they stand, not by accident: `createCheckoutSession` calls `getStripe()` on
+its first line and `grantEnrollmentFromWebhook` reaches Supabase on its own, so
+every decision inside them was gated behind a live credential. Both got the `.223`
+treatment — the pure decision lifted into a dependency-free module both sides
+import, exactly as `journey/basicComplete.ts` was:
+
+- [`checkout/checkoutParams.ts`](src/lib/checkout/checkoutParams.ts) — what Stripe
+  is asked to charge. Every assertion on it is about a mistake that **does not
+  fail**: `lifetime` in `subscription` mode is a recurring charge on a one-off
+  product and Stripe bills it happily forever; the attribution triple on the wrong
+  carrier is a payment that cannot be matched to a user; dropping
+  `customer_creation: 'always'` leaves lifetime buyers — the ones who paid most —
+  with no Customer for the Billing Portal to open.
+- [`premium/enrollmentRow.ts`](src/lib/premium/enrollmentRow.ts) — what a paid
+  webhook writes. Same class: `premium_granted: false`, a non-`active` status or an
+  un-normalized email all insert cleanly and leave the buyer with a receipt, a row
+  saying they are enrolled, and no premium.
+
+**And the extraction found a real defect on the way.** The rule for *what may be
+written to an `auth.users` foreign key* existed **twice, byte-identical** —
+`stripeWebhook.ts:51` choosing an id off a Checkout Session, and an inline copy at
+`premiumServer.ts:104` deciding whether to put that id in the `INSERT`. `.178` on
+the two files that turn a payment into an entitlement, and the drift is quiet in
+the expensive direction: loosen the reader and the writer silently discards the id;
+loosen the writer and the insert takes an id no auth user owns, which is a
+foreign-key error on the row that grants somebody what they just paid for. One
+definition now, in [`authUserId.ts`](src/lib/authUserId.ts), with a guard that
+**discovers** further copies rather than checking the two I happened to fix.
+
+[`money.routetest.ts`](src/lib/money.routetest.ts) covers the server halves in the
+`test:routes` lane. **No network is involved, and that is the point** — an
+unconfigured Stripe returns 503 before constructing a client, and an absent service
+role makes the enrollment throw before reaching Supabase. The refusals *are* the
+contract, and nothing was checking them. What it pins: partial configuration
+disables checkout **entirely** rather than per-plan (two of three prices set reads
+as "Stripe works" and makes one plan quietly unbuyable); `DEMO_PREMIUM` cannot
+unlock premium in production, whatever the environment says; the webhook's replay
+window actually refuses a correctly-signed event from ten minutes ago; a verified
+purchase that cannot be enrolled **500s**, because Stripe only retries on non-2xx
+and that retry is the only thing that eventually gives the buyer what they paid
+for; and the dispute and expired-session side channels never 500, because that
+would make Stripe retry the grant riding in the same event.
+
+[`payments.test.ts`](src/lib/payments.test.ts) takes the client half from
+**73.54% lines / 33.33% functions to 87.89 / 60.00**. These functions are the
+athlete's error messages: 401 is *sign in*, 503 is *not configured*, 404 from the
+portal is *you have no Stripe customer* — collapsing any of them into the generic
+"Checkout failed" is a conversion bug, not a cosmetic one.
+
+`stripeServer.ts` 0 → **100 / 100**. `stripeWebhook.ts` **98.18 / 100**.
+Reach **41.2% → 42.1%**, untested files **386 → 382**, functions **66.94 → 67.10**.
+Tests **1199 → 1229**, route lane **12 → 32**.
+
+**21 mutants, none survived** — lifetime billed as a subscription, the metadata
+carrier swapped, `customer_creation` dropped, `payment_method_types` pinned,
+`premium_granted: false`, the FK guard removed, every error retried as email-only,
+the UUID version/variant nibbles loosened, 503 collapsed to a generic error, the
+session cookie dropped from the checkout POST, the config check reduced to one
+price, `appOrigin`'s trailing-slash strip removed, the production `DEMO_PREMIUM`
+guard disabled, the webhook 200ing on a failed enrollment, the replay window
+widened to a day, the signature check bypassed outright — plus a re-added duplicate
+of the UUID pattern, to confirm the one-definition guard fires rather than
+decorating.
+
+**One honest note on the line-% floor.** It went *down*, 91.84 → 91.80, and that is
+the correct direction: a 400-line server module no test imported contributed to
+neither side of the fraction, and reaching it puts all its unexecuted branches into
+the denominator. Ratcheting line % tightly would punish exactly the change the
+other two floors exist to reward, so it is held as a collapse guard and
+`untestedFiles` is the primary ratchet. Noted at both constants.
+
 ### Not done, and named
 
 Every one of these is a file no test currently loads, found by the script rather
 than asserted by it:
 
-- **The revenue path** — `checkoutServer.ts`, `premiumServer.ts`, `stripeServer.ts`,
-  `stripeDisputeNotify.ts`, `paypalWebhook.ts` and all three of
-  `cryptoCheckout/{intent,confirm,buildTransfer}.ts`. ~750 lines of entitlement and
-  payment handling. The e2e that would cover it — `premium-gate.spec.ts`,
-  `premium-pillars.spec.ts` — is in `e2e:critical`, which runs **only** on
-  `ci-extended.yml`'s Monday cron, so a checkout regression can merge and sit for
-  seven days.
+- **The rest of the revenue path** — `paypalWebhook.ts` and all three of
+  `cryptoCheckout/{intent,confirm,buildTransfer}.ts`. The crypto side already has
+  `verifyTransfer`, `intentExpiry` and `confirm.security` tests; the intent
+  construction and the transfer builder do not. And the e2e that would cover the
+  premium gates — `premium-gate.spec.ts`, `premium-pillars.spec.ts` — is in
+  `e2e:critical`, which runs **only** on `ci-extended.yml`'s Monday cron, so a
+  regression there can merge and sit for seven days.
 - **Authorization helpers** — `api/betaAdminAuth.ts`, `schoolClassAccess.ts`,
   `mobileAccess.ts`, `supabaseRequestAuth.ts`, `youthConsentServer.ts`,
   `wearables/oauthState.ts`. `.211` moved the teacher-PIN rate limit into
