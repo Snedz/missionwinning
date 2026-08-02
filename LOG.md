@@ -74,6 +74,21 @@ The first run printed `✓ 6 guidebook heroes in palette`. That was false: six o
 six are off-palette and merely declared. `.208` — a number stated more
 confidently than it can be supported — corrected to name the debt on every run.
 
+### Two mutants that did not mutate
+
+Both survived the first run, and neither was a gap in the guard:
+
+- `mutantSrc: '/learn/mutant-hero.webp'` does not match the discovery regex
+  `src:\s*'(\/learn\/[^']+)'` — capital `S`. It added no hero at all.
+- Loosening `MAX_INK_PCT` alone leaves `MIN_BRAND_PCT` firing at 0% brand, so
+  the declared six stayed off-palette and the ratchet had nothing to report.
+
+A mutant that does not mutate is a green run that proves nothing — the same
+shape as the vacuous assertions this programme keeps finding, arriving through
+the tooling meant to catch them. Rebuilt properly, both kill: a seventh
+undeclared chapter fails, and loosening *both* thresholds trips the
+staleness rule because the declared entries start passing.
+
 ### The re-ink is blocked, not done
 
 Replacement art generates, but the bytes cannot reach this repo: the session's
