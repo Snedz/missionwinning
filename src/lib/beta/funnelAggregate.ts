@@ -1,7 +1,7 @@
 /**
  * The arithmetic behind `launchReady` — the number the beta is steered by.
  *
- * `.225` — lifted out of `computeBetaFunnelAggregate`, which calls
+ * `.226` — lifted out of `computeBetaFunnelAggregate`, which calls
  * `getSupabaseAdmin()` on its first line, so **none of this had ever been
  * executed by a test**: 337 lines, zero coverage, computing the one figure
  * `ORCHESTRATION.md` keys the launch decision off.

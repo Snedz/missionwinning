@@ -1,7 +1,7 @@
 /**
  * What the athlete is charged, and whether the payment can be attributed to them.
  *
- * `.225` — `createCheckoutSession` calls `getStripe()` on its first line, so this
+ * `.226` — `createCheckoutSession` calls `getStripe()` on its first line, so this
  * object had never been built by a test. Every assertion here is about a mistake
  * that **does not fail**: Stripe accepts all of these params and bills accordingly.
  */

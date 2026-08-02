@@ -1,7 +1,7 @@
 /**
  * The launch gate, executable.
  *
- * `.225` — `betaMetricsServer.ts` was 337 lines that **no test imported**, and it
+ * `.226` — `betaMetricsServer.ts` was 337 lines that **no test imported**, and it
  * computes `launchReady`: the figure `ORCHESTRATION.md` keys the launch decision
  * off and the founder steers the beta by. `.223` already found one defect in it —
  * a private `allBasicDone` demanding all five pillars while the product had
