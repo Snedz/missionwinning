@@ -124,7 +124,22 @@ export function TrendAskCard({ history, locale = 'en' }: Props) {
             placeholder={t('trendAskPlaceholder', { defaultValue: 'volume over 30 days' })}
             className="min-h-[44px] flex-1 border-2 border-border bg-background px-3 text-sm"
           />
-          <Button type="button" onClick={submit} className="min-h-[44px]">
+          {/*
+            `outline`, not the default red fill.
+
+            This shipped as `default` and master's `.241` ratchet caught it on the
+            merge: `/track` is capped at **3** red actions and this made **4**.
+            The cap is a ratchet precisely so a new card cannot quietly raise it,
+            and raising it here would have been the wrong half of the trade —
+            `/track` is already carrying class-2 debt (two Log Activity buttons
+            plus Start GPS) that the cap exists to keep from growing.
+
+            It is also the right call on the merits. Red is *what you do next*;
+            this is the submit half of a text input the athlete has to type into
+            first, so it is an input affordance, not the screen's call to action.
+            Same reasoning `.241` applied to selection chips.
+          */}
+          <Button type="button" variant="outline" onClick={submit} className="min-h-[44px]">
             {t('trendAskGo', { defaultValue: 'Chart' })}
           </Button>
         </div>
