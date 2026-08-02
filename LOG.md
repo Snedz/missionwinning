@@ -6,7 +6,7 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-01 — Three jobs that built a different app (`.235`)
+## 2026-08-01 — Three jobs that built a different app (`.255`)
 
 `ci-extended.yml` ran for the first time on 2026-08-01. Actions had been
 billing-blocked, so a workflow the repo has carried for weeks had never executed
@@ -261,7 +261,7 @@ failure exactly, and with it all 53 pass. `gitleaks` never scanned anything — 
 `permissions:` block and inherits a repository default without `pull_requests`.
 Identical failure on #185, an unrelated diff, while PRs opened directly are green.
 
-Both already had correct fixes on `fix/ci-extended-env-parity` (`.235`), open at
+Both already had correct fixes on `fix/ci-extended-env-parity` (`.255`), open at
 the time, whose own note reads *"#178, #179, #180 and #181 all carry an identical
 block. The conflict is textual, not semantic — take either side."* So both were
 carried here **verbatim** rather than re-authored, on the theory that identical
@@ -279,7 +279,7 @@ With `ci.yml` fixed the job passed — and its summary read **`1 flaky`, 52
 passed**. `offline.spec.ts`'s *"a set logged offline survives, and reconnecting
 does not lose it"* had failed and passed on retry, so the checkmark was green
 and the spec guarding **the offline promise** had not actually held. That is the
-`.235` complaint one file over: a check people re-run until it passes is a check
+`.255` complaint one file over: a check people re-run until it passes is a check
 they have stopped reading.
 
 The cause is in the product, not the test:

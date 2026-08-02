@@ -7,7 +7,7 @@
  * there while passing locally. The guard written for it named the two files it
  * had just compared.
  *
- * `.235` — there were three. `ci-extended.yml` builds the app in **three**
+ * `.255` — there were three. `ci-extended.yml` builds the app in **three**
  * separate jobs, and a guard that enumerates cannot notice a fourth. What the
  * enumeration missed, in the one run that job has ever had:
  *
@@ -217,7 +217,7 @@ test('the workflow parser reads real jobs and real env', () => {
   /*
    * A parser that silently returns nothing turns every assertion below into a
    * vacuous pass — which is the exact defect this file exists to catch, so it
-   * would be a poor joke to ship one here. Floors as of `.235`: 10 workflow
+   * would be a poor joke to ship one here. Floors as of `.255`: 10 workflow
    * files, 16 jobs, 4 of them in scope.
    */
   const all = jobs();
@@ -308,7 +308,7 @@ test('and sets them to the same values', () => {
 
 test('no building job leaves the private gate to its default', () => {
   /*
-   * The specific mechanism behind two of the three `.235` failures, asserted on
+   * The specific mechanism behind two of the three `.255` failures, asserted on
    * its own so the failure message names the cause rather than a variable.
    *
    * `isPrivateModeEnabled()` returns true whenever `PRIVATE_MODE` is unset and

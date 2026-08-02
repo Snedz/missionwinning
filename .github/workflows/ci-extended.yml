@@ -15,7 +15,7 @@ concurrency:
 jobs:
   e2e-critical:
     runs-on: ubuntu-latest
-    # `.235` — this block must match `scripts/gate.mjs`'s `BUILD_ENV` and
+    # `.255` — this block must match `scripts/gate.mjs`'s `BUILD_ENV` and
     # `ci.yml`'s. Asserted in `src/lib/workflowBuildEnv.test.ts`; the VAPID
     # placeholder's reasoning is in `ci.yml`, which is where it was proved.
     env:
@@ -59,7 +59,7 @@ jobs:
   lighthouse-budget:
     runs-on: ubuntu-latest
     continue-on-error: true
-    # `.235` — this job had **no env at all**, and that is not cosmetic.
+    # `.255` — this job had **no env at all**, and that is not cosmetic.
     #
     # `isPrivateModeEnabled()` defaults to *on* whenever `NODE_ENV=production`
     # and `PRIVATE_MODE` is unset (`src/lib/privateGate.ts:23`), and `next
@@ -110,7 +110,7 @@ jobs:
   visual-regression:
     runs-on: ubuntu-latest
     continue-on-error: true
-    # `.235` — `PRIVATE_MODE: 'false'` was set on the **assertion** step, which
+    # `.255` — `PRIVATE_MODE: 'false'` was set on the **assertion** step, which
     # runs after the build and after the server started. Step env does not
     # reach earlier steps, so it reached neither: this job built and served the
     # gated app and then took screenshots of it.

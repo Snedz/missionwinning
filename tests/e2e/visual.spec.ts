@@ -28,7 +28,7 @@
  *
  * The first bootstrap did **not** cover it, and this paragraph said it would.
  * The runner was serving the gated build, so what got written under that name
- * was `/private`. See the `.235` note on `shoot()` below. The homepage is still
+ * was `/private`. See the `.255` note on `shoot()` below. The homepage is still
  * unguarded, and will be until a bootstrap runs with the workflow env fixed.
  *
  * `npm run gate` does not include this suite (it prints so at the end) — it
@@ -38,7 +38,7 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * `.235` — the landing-URL check is no longer optional, because the case that
+ * `.255` — the landing-URL check is no longer optional, because the case that
  * had it was the only one that survived.
  *
  * `/bundle` checked where it actually landed and refused to snapshot a redirect
