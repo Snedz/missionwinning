@@ -16,7 +16,7 @@ const PhotoMealLogger = dynamic(
   {
     ssr: false,
     loading: () => (
-      <p className="text-sm text-muted-foreground py-6 text-center">Loading photo log…</p>
+      <p className="text-sm text-muted-foreground py-6 text-center" role="status" aria-busy="true">Loading photo log…</p>
     ),
   }
 );

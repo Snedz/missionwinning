@@ -45,6 +45,8 @@
   "coachWhyRepProgress": "สร้างตัวแทนก่อนเพิ่มน้ำหนัก",
   "coachWhyHold": "ถือภาระนี้ไว้จนกว่าจำนวนครั้งจะรู้สึกมั่นคง",
   "coachWhyHoldHard": "ชุดฮาร์ด — เก็บภาระและรวมเข้าด้วยกัน",
+  "coachWhySteadyWeek": "Big week against your own recent average — holding here.",
+  "coachWhyPlateauDeload": "No new best in a month — lighter week to rebuild from.",
   "coachWhyDeload": "สัปดาห์แห่งการพักฟื้น — น้ำหนักที่เบากว่า รูปแบบเดียวกัน",
   "coachWhyRecovery": "ความคล่องตัวและการเปิดใช้งานเพื่อการฝึกอบรมที่ดีขึ้น",
   "coachWhyBodyweightReps": "เพิ่มจำนวนครั้งจนกว่าฉากจะรู้สึกท้าทาย",
