@@ -129,7 +129,7 @@ jobs:
       # set was deleted for depicting the pre-Modernist design. So the absence of
       # baselines is now a loud failure with instructions, not a silent pass.
       #
-      # `.234` — that failure told you to run a command, and there was **no way
+      # `.254` — that failure told you to run a command, and there was **no way
       # to run it**. This job is the only Linux/Chromium environment this project
       # has; baselines generated anywhere else differ by font hinting and
       # antialiasing alone, which is how the pixel comparison stops meaning
@@ -182,7 +182,7 @@ jobs:
       # Verified against run 30263001081 (2026-07-27): visual-regression
       # succeeded, "Upload visual diffs" skipped, nothing retrievable.
       #
-      # `.234` rewrote *why* that path passes — it used to be a soft `|| true`
+      # `.254` rewrote *why* that path passes — it used to be a soft `|| true`
       # plus a re-run that found the snapshots it had just written (`.200`'s
       # check that cannot fail), and is now an explicit opt-in that asserts
       # nothing on purpose. `always()` matters for the same reason either way,

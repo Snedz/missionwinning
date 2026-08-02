@@ -173,7 +173,7 @@ test('the visual job fails when it has no baselines', () => {
     .join('\n');
 
   /*
-   * `.234` — the rule used to be "`--update-snapshots` appears nowhere in this
+   * `.254` — the rule used to be "`--update-snapshots` appears nowhere in this
    * step", and that was too blunt in a way that mattered.
    *
    * The loud failure told the reader to run a bootstrap command, and there was

@@ -6,7 +6,7 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-01 — The bootstrap the visual gate could not run (`.234`)
+## 2026-08-01 — The bootstrap the visual gate could not run (`.254`)
 
 The visual suite has four cases and **zero committed baselines**.
 `home-reduced.png` never had one at all, so `/` — the most-linked page in the
