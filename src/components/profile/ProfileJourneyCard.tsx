@@ -116,7 +116,7 @@ export function ProfileJourneyCard({
                 key={n}
                 type="button"
                 size="sm"
-                variant={daysPerWeek === n ? 'default' : 'outline'}
+                variant={daysPerWeek === n ? 'selected' : 'outline'}
                 className={`min-h-[44px] min-w-[44px] ${daysPerWeek === n ? 'bg-primary hover:bg-primary-fill-hover' : ''}`}
                 onClick={() => {
                   onDaysPerWeekChange(n);
@@ -152,7 +152,7 @@ export function ProfileJourneyCard({
                   key={offset}
                   type="button"
                   size="sm"
-                  variant={on ? 'default' : 'outline'}
+                  variant={on ? 'selected' : 'outline'}
                   className={`min-h-[44px] ${on ? 'bg-primary hover:bg-primary-fill-hover' : ''}`}
                   aria-pressed={on}
                   onClick={() => togglePreferred(offset)}

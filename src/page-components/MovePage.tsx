@@ -6,6 +6,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { MOBILITY_FLOWS } from '@/data/mobilityFlows';
 import type { MobilityFlow } from '@/data/mobilityFlows';
 import { TimedFlowRunner } from '@/components/pillars/TimedFlowRunner';
@@ -24,6 +25,7 @@ import { isFreeBeta } from '@/lib/freeBeta';
 
 export function MovePage() {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const { toast } = useToast();
   const { premium, loading: premiumLoading } = usePremium();
   const [premiumFlows, setPremiumFlows] = useState<MobilityFlow[]>([]);
@@ -31,6 +33,9 @@ export function MovePage() {
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
+  // `.241` — a retry trigger. ErrorState renders no action unless it is handed
+  // one, so an unrecoverable error state was a dead end wearing a component.
+  const [premiumRetry, setPremiumRetry] = useState(0);
 
   useEffect(() => {
     if (!premium) {
@@ -52,7 +57,7 @@ export function MovePage() {
           variant: 'destructive',
         });
       });
-  }, [premium, t, toast]);
+  }, [premium, premiumRetry, t, toast]);
 
   const freeFlows = MOBILITY_FLOWS;
   const activeFlow = [...freeFlows, ...premiumFlows].find((f) => f.id === activeFlowId);
@@ -147,6 +152,8 @@ export function MovePage() {
       {premiumFetchError && premium && (
         <ErrorState
           className="py-6"
+          actionLabel={t('movePremiumRetry', { defaultValue: 'Try again' })}
+          onAction={() => setPremiumRetry((n) => n + 1)}
           title={t('movePremiumFetchFailed', { defaultValue: 'Could not load premium flows' })}
           description={t('movePremiumOffline', {
             defaultValue: 'Premium recovery flows unavailable offline — free flows below still work.',
@@ -182,7 +189,7 @@ export function MovePage() {
           <CardContent className="text-sm space-y-1">
             {recentWins.map((w) => (
               <div key={w.id} className="text-muted-foreground">
-                {new Date(w.completedAt).toLocaleDateString()} — {w.title}
+                {fmt.date(w.completedAt)} — {w.title}
               </div>
             ))}
           </CardContent>

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { siteBaseUrl } from '@/lib/seoMetadata';
 import { BEYOND_THE_BASICS_CHAPTERS } from '@/data/guidebook/chapters';
 import { EXERCISES, ensureFullExerciseCatalog } from '@/data/exercises';
 import { FREE_LEARN_PATHS } from '@/data/learnPaths';
@@ -31,7 +32,8 @@ function privateGateOn(): boolean {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await ensureFullExerciseCatalog();
   const gateOn = privateGateOn();
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.missionwinning.com';
+  // One definition of the canonical host — see app/robots.ts for what a second one cost.
+  const base = siteBaseUrl();
   const routes = [
     '',
     '/about',

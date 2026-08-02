@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocaleFormat } from "@/hooks/useLocaleFormat";
 import dynamic from "next/dynamic";
 import { Layers, PenTool, ChevronRight } from "lucide-react";
 import { Tabs } from "@/components/ui/tabs";
@@ -49,6 +50,7 @@ import {
 
 export function BuilderPage() {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const savedWorkouts = useWorkoutStore((s) => s.savedWorkouts);
   const addSavedWorkout = useWorkoutStore((s) => s.addSavedWorkout);
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
@@ -361,8 +363,8 @@ export function BuilderPage() {
                     <p className="text-sm text-muted-foreground">
                       {t('builderSavedMeta', {
                         count: w.exercises.length,
-                        date: new Date(w.createdAt).toLocaleDateString(),
-                        defaultValue: `${w.exercises.length} exercises · ${new Date(w.createdAt).toLocaleDateString()}`,
+                        date: fmt.date(w.createdAt),
+                        defaultValue: `${w.exercises.length} exercises · ${fmt.date(w.createdAt)}`,
                       })}
                     </p>
                   </div>

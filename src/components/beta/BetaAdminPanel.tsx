@@ -2,7 +2,7 @@
 
 import type { FeedbackNote } from '@/lib/feedbackSource';
 import { loadReviewedAt, markReviewed, unreadCount } from '@/lib/feedbackUnread';
-import { localDateKey } from '@/lib/time/localDate';
+import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 import { useCallback, useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BetaFunnelAggregate } from '@/types/betaMetrics';
@@ -391,7 +391,7 @@ export function BetaAdminPanel({ enabled }: Props) {
                       <li key={`${note.at}-${note.email}`} className="border-t border-border/40 pt-2 first:border-0 first:pt-0">
                         <div className="flex justify-between gap-2 text-[11px] text-muted-foreground">
                           <span className="truncate">{note.name || 'Anonymous'}</span>
-                          <span className="tabular-nums shrink-0">{note.at.slice(0, 10)}</span>
+                          <span className="tabular-nums shrink-0">{localDateKeyFromIso(note.at)}</span>
                         </div>
                         {note.email ? (
                           <div className="text-[11px] text-muted-foreground truncate">{note.email}</div>

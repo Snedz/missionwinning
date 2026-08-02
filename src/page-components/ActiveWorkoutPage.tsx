@@ -63,10 +63,13 @@ import {
   setInputKey,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
+import { compareText } from '@/lib/i18n/formatLocale';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 
 export function ActiveWorkoutPage() {
   const router = useRouter();
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const isCompact = useIsCompact();
   const units = useUnits();
   const unitLabel = weightUnitLabel(units);
@@ -521,7 +524,7 @@ export function ActiveWorkoutPage() {
                       const aShared = a.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
                       const bShared = b.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
                       if (aShared !== bShared) return aShared ? -1 : 1;
-                      return a.name.localeCompare(b.name);
+                      return compareText(a.name, b.name, fmt.lang);
                     })
                 : [];
 

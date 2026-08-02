@@ -17,24 +17,22 @@ jobs:
     runs-on: ubuntu-latest
     # Hero e2e runs in this job so the production build happens exactly once.
     # PRIVATE_MODE=false compiles the service worker, which the offline spec needs.
+    # Must stay in step with `BUILD_ENV` in scripts/gate.mjs — enforced by
+    # `gateEnvParity.test.ts`. `.249`: these two drifted, and nobody could see
+    # it while Actions was billing-blocked.
     env:
       PRIVATE_MODE: 'false'
       NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
-      # `.198` added this placeholder to `scripts/gate.mjs` and not here, and
-      # first-90.spec.ts's own comment says the key was "unset in CI until now —
-      # see gate.mjs", which reads as though this lane was covered. It was not:
-      # gate.mjs is the *local* gate. So the two lanes built different
-      # configurations, and the one test that depends on it passed locally and
-      # failed here — invisibly, because Actions was billing-blocked and this job
-      # died at `runner_id: 0` before it could run. A guard nobody runs is a
-      # guard that does not exist (`ciTruth.test.ts`).
+      # `.198` added this to the local gate and not here, so `isPushSupported()`
+      # returned false on CI and every component behind it — the wind-down
+      # offer, the day-review opt-in — rendered nothing. `Today shows one red
+      # action at 19:00` asserts that control is mounted, so it failed on CI and
+      # passed locally for as long as CI could not run.
       #
-      # `isPushSupported()` returns false without a VAPID public key, so the push
-      # opt-in renders *nothing* and the evening day-review assertion has no
-      # element to measure. Safe: this is the public half of a keypair and only
-      # gates whether the UI draws. Nothing can subscribe — the server has no
-      # private key, and no test grants notification permission.
+      # Safe: this is the public half of a keypair and only gates whether the UI
+      # draws. Nothing can subscribe — the server has no private key, and no
+      # test grants notification permission.
       NEXT_PUBLIC_VAPID_PUBLIC_KEY: BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
     steps:
       - uses: actions/checkout@v4
@@ -67,6 +65,24 @@ jobs:
       - name: Token sync (web ↔ Android)
         run: npm run check-token-sync
 
+      # `.250` — these four ran **only** in scripts/gate.mjs, so they were
+      # advisory in the one lane an agent can forget and absent from the lane
+      # that blocks the PR. That is the defect the comment above names, with the
+      # lanes swapped: `.221`'s design-system guard, `.209`'s byte budget and
+      # `.222`'s locale-split check were all invisible to CI.
+      - name: Design system (paper/ink · one red · radius 0)
+        run: npm run check-design-system
+
+      # MUST run before "Export locale JSON (smoke)". `npm run export-locales`
+      # regenerates public/locales/** in the pre-`.222` unsplit shape — verified
+      # by running it — so this check fails for certain if it comes after.
+      # `.222` built the splitter as re-runnable precisely because "a cleanup
+      # that cannot be repeated undoes itself the next time the fill tool runs";
+      # `.250` then had that happen for real and committed 394 regenerated files
+      # by accident.
+      - name: Locale split
+        run: npm run check-locale-split
+
       - name: Lint
         run: npm run lint
 
@@ -91,6 +107,9 @@ jobs:
       - name: i18n parity (APP_LANGS)
         run: npm run i18n:parity
 
+      - name: i18n coverage
+        run: npm run i18n:coverage
+
       - name: Deploy readiness
         run: npx tsx -e "import { assertDeployReady } from './src/lib/deployReadiness'; assertDeployReady();"
 
@@ -109,6 +128,10 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      # Reads the prerendered HTML, so it has to follow the build.
+      - name: Bundle budget (gzipped initial JS)
+        run: npm run bundle-budget
 
       # The logger is the product — a PR that breaks it must not go green.
       # Chromium only, @gate-tagged specs only; a11y / visual / Lighthouse stay in CI extended.

@@ -6,6 +6,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocaleFormat } from '@/hooks/useLocaleFormat';
 import { BreathingTimer } from '@/components/pillars/BreathingTimer';
 import { DailyCheckIn } from '@/components/pillars/DailyCheckIn';
 import { MindLockedPreview } from '@/components/mind/MindLockedPreview';
@@ -26,6 +27,7 @@ import { isFreeBeta } from '@/lib/freeBeta';
 
 export function MindPage() {
   const { t } = useTranslation();
+  const fmt = useLocaleFormat();
   const { toast } = useToast();
   const { premium } = usePremium();
   const [premiumSessions, setPremiumSessions] = useState<GuidedMindSession[]>([]);
@@ -33,6 +35,9 @@ export function MindPage() {
   const [refresh, setRefresh] = useState(0);
   const [premiumOpen, setPremiumOpen] = useState(false);
   const [premiumFetchError, setPremiumFetchError] = useState(false);
+  // `.241` — a retry trigger. ErrorState renders no action unless it is handed
+  // one, so an unrecoverable error state was a dead end wearing a component.
+  const [premiumRetry, setPremiumRetry] = useState(0);
 
   useEffect(() => {
     setRecentWins(getPillarWins(5).filter((w) => w.pillar === 'mind'));
@@ -58,7 +63,7 @@ export function MindPage() {
           variant: 'destructive',
         });
       });
-  }, [premium, t, toast]);
+  }, [premium, premiumRetry, t, toast]);
 
   return (
     <PillarPageShell
@@ -90,6 +95,8 @@ export function MindPage() {
       {premiumFetchError && premium && (
         <ErrorState
           className="py-6"
+          actionLabel={t('mindPremiumRetry', { defaultValue: 'Try again' })}
+          onAction={() => setPremiumRetry((n) => n + 1)}
           title={t('mindPremiumFetchFailed', { defaultValue: 'Could not load premium sessions' })}
           description={t('mindPremiumOffline', {
             defaultValue: 'Premium sessions unavailable offline — free tools above still work.',
@@ -141,7 +148,7 @@ export function MindPage() {
           <CardContent className="text-sm space-y-1">
             {recentWins.map((w) => (
               <div key={w.id} className="text-muted-foreground">
-                {new Date(w.completedAt).toLocaleDateString()} — {w.title}
+                {fmt.date(w.completedAt)} — {w.title}
               </div>
             ))}
           </CardContent>

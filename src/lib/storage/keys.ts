@@ -46,6 +46,12 @@ export const STORAGE_KEYS = {
   uiMode: 'mw_ui_mode',
   outbox: 'mw_outbox_v1',
   sessionJournal: 'mw_session_journal',
+  /**
+   * `.247` — every local day that holds data, `YYYY-MM-DD`, newest first.
+   * **Deliberately uncapped**: it is the one store that must outlive the
+   * caps on every other one, at ~10 bytes a day. See `journey/daysWithData`.
+   */
+  daysWithData: 'mw_days_with_data',
   /** Newest workout_logs.updated_at pulled — cursor for incremental sync. */
   cloudPullCursor: 'mw_cloud_pull_cursor',
 
@@ -119,7 +125,9 @@ export const STORAGE_KEYS = {
   wearablesHubSamples: 'mw_wearables_hub_samples',
 
   // ── Beta / growth ──
+  /** Retired `.240` with `BetaWelcomeBanner`; left registered so the name is not reused. */
   betaBannerDismissed: 'mw_beta_banner_dismissed',
+  firstStepsDismissed: 'mw_first_steps_dismissed',
   betaContributor: 'mw_beta_contributor',
   betaFeedback: 'mw_beta_feedback',
   /**

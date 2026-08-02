@@ -23,6 +23,8 @@ import {
 import { isGpsActivity } from '@/lib/trackGps';
 import { logPillarWin } from '@/lib/pillarLog';
 import { TrackGpsPanel } from '@/components/track/TrackGpsPanel';
+import { TrendAskCard } from '@/components/track/TrendAskCard';
+import { useWorkoutStore } from '@/store/workoutStore';
 import { TrackWeeklyInsights } from '@/components/track/TrackWeeklyInsights';
 import { ActivityImportPanel } from '@/components/track/ActivityImportPanel';
 import { ProfileWearablesCard } from '@/components/profile/ProfileWearablesCard';
@@ -36,6 +38,7 @@ import { localDateKey } from '@/lib/time/localDate';
 
 export function TrackPage() {
   const { t } = useTranslation();
+  const workoutHistory = useWorkoutStore((s) => s.workoutHistory);
   const { premium } = usePremium();
   const [type, setType] = useState<ActivityType>('walk');
   const [durationMin, setDurationMin] = useState(30);
@@ -146,7 +149,7 @@ export function TrackPage() {
                   <Button
                     key={act}
                     size="sm"
-                    variant={type === act ? 'default' : 'outline'}
+                    variant={type === act ? 'selected' : 'outline'}
                     onClick={() => setType(act)}
                   >
                     {ACTIVITY_LABELS[act]}
@@ -205,6 +208,7 @@ export function TrackPage() {
         {/* Flag-gated: NEXT_PUBLIC_WEARABLES — Strava connect/sync/disconnect */}
         <ProfileWearablesCard signedIn={signedIn} />
 
+        <TrendAskCard history={workoutHistory} />
         <BodyMetricsCard refreshKey={refresh} onChanged={() => setRefresh((r) => r + 1)} />
         <ProgressPhotosCard />
 

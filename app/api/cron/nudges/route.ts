@@ -281,10 +281,20 @@ export const GET = withApiLogging('cron/nudges', async (request: NextRequest) =>
     } else {
       sent.push(c.userId);
       if (pushAdmin) {
-        const firstLine = c.body.split('\n').find((l) => l.trim()) || c.subject;
+        /*
+         * `.243` — the push is `decideNudge`'s, not a slice of the email.
+         *
+         * This read `c.body.split('\n').find(l => l.trim()).slice(0, 140)`, so
+         * the `week1-recap` push shipped as *"Mission Winning — your first week
+         * on the path:"* — the colon introducing two numbers the slice had just
+         * discarded. Deriving copy at the send site also put it out of reach of
+         * `reentryTone`'s sweep, since the string did not exist until this line
+         * ran.
+         */
         const pr = await sendNudgePush(pushAdmin, c.userId, {
-          title: c.subject,
-          body: firstLine.slice(0, 140),
+          title: c.push.title,
+          body: c.push.body,
+          tag: c.push.tag,
           url: '/log?src=push',
         });
         if (pr === 'sent') pushed += 1;
