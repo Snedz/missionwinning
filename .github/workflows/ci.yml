@@ -21,6 +21,25 @@ jobs:
       PRIVATE_MODE: 'false'
       NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+      # `.224` — the same placeholder `gate.mjs` has carried since `.198`, which
+      # this file never got.
+      #
+      # `isPushSupported()` returns false without a VAPID public key, so every
+      # component behind it renders nothing. `.198` set it in the local gate and
+      # first-90.spec.ts's own comment says the key was "unset in CI until now" —
+      # but the key never reached this env block, so `Today shows one red action
+      # at 19:00 @gate` could pass under `npm run gate` and **never** here. Not
+      # flaky: deterministic, and red on every PR since `.211`.
+      #
+      # Which is this PR's subject arriving in its own CI run — `.213` found the
+      # gate and ci.yml had silently diverged, and the comment claiming otherwise
+      # is what kept it invisible.
+      #
+      # Safe, for the reason recorded at the same constant in `gate.mjs`: this is
+      # the public half of a keypair and only gates whether the UI draws. Nothing
+      # can subscribe — the server has no private key, and no test grants
+      # notification permission.
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
     steps:
       - uses: actions/checkout@v4
         with:
@@ -104,7 +123,14 @@ jobs:
         run: npm run build
 
       # The logger is the product — a PR that breaks it must not go green.
-      # Chromium only, @gate-tagged specs only; a11y / visual / Lighthouse stay in CI extended.
+      # Chromium only, @gate-tagged specs only.
+      #
+      # `.224` — this line used to claim "a11y / visual / Lighthouse stay in CI
+      # extended". Visual and Lighthouse do. **a11y does not**: `ci-extended.yml`
+      # has no such job, so those 34 tests run in `npm run gate` and nowhere else.
+      # `gate.mjs`'s header already called this comment out as false and it was
+      # still here. Whether to spend PR minutes on a11y is a founder call — the
+      # comment is corrected rather than the lane silently added.
       - name: Install Playwright chromium
         run: npx playwright install chromium
 

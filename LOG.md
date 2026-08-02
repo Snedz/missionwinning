@@ -127,6 +127,42 @@ which is the only evidence the mechanism does the job it was built for.
 
 Tests **1186 → 1199**. Typecheck, lint, unit and route lanes all green.
 
+### The divergence this PR is about, found by this PR's own CI run
+
+`build-and-test` went red on the first push, on a test this branch does not
+touch: `first-90.spec.ts` → *"Today shows one red action at 19:00 @gate"*, failing
+its own precondition — *the push opt-in must be mounted*.
+
+`isPushSupported()` returns false without a VAPID public key, so every component
+behind it renders nothing. `.198` added a placeholder to `gate.mjs` for exactly
+this reason, and the spec's comment records the key as *"unset in CI until now"* —
+**but it never reached `ci.yml`'s env block**, on this branch or on master or in
+any workflow in the repo. So the test could pass under `npm run gate` and **never
+in CI**. Not flaky: deterministic, and red on every PR since `.211`.
+
+Which is `.213` arriving in this PR's own CI run — the gate and `ci.yml` had
+diverged again, and a comment claiming they had not is what kept it invisible. The
+placeholder is now in `ci.yml` with the same safety note recorded at the constant
+in `gate.mjs`: it is the public half of a keypair and only gates whether the UI
+draws; nothing can subscribe, because the server has no private key and no test
+grants notification permission.
+
+**Verified in both directions rather than pushed hopefully** — built without the
+key and reproduced the identical failure locally, then built with it and ran the
+lane `ci.yml` runs: **52/52 @gate tests pass**.
+
+And `ci.yml:99`'s comment — *"a11y / visual / Lighthouse stay in CI extended"* —
+is corrected, not deleted. Visual and Lighthouse do; **a11y does not**, because
+`ci-extended.yml` has no such job, so those 34 tests run in `npm run gate` and
+nowhere else. `gate.mjs`'s own header already called this line out as false and it
+was still here. Whether to spend PR minutes on the a11y lane is a founder call, so
+the comment now states what is true rather than the lane being silently added.
+
+`gitleaks` remains red — the pre-existing finding recorded in `CONTEXT.md`
+(commit `8ea3527a`, a real Solana treasury address scrubbed from the working file
+but still in history). Founder call, deliberately not allowlisted; unrelated to
+this branch.
+
 ### Not done, and named
 
 Every one of these is a file no test currently loads, found by the script rather
