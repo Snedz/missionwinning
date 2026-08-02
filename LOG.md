@@ -9,7 +9,7 @@ Chronological record of shipped work. Newest first.
 ## 2026-08-01 — The suite that had never run (`.237`)
 
 `ci-extended`'s `e2e-critical` job executed for the first time on 2026-08-01 and
-failed **8** tests. One was `.229`, fixed on #182. These are the other seven.
+failed **8** tests. One was `.249`, fixed on #182. These are the other seven.
 
 All seven reproduce locally against a build carrying the exact CI env, so none
 of them is container flakiness — `.224` records me calling three failures that
