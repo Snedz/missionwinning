@@ -58,10 +58,10 @@ Generation is **offline batch** → founder approve → commit static files. The
 | Element | Spec |
 |---------|------|
 | Canvas | `viewBox="0 0 320 200"` (or 360×220 for multi-phase) |
-| Background | Navy `#0a0c10` (or transparent on dark card) |
-| Figure stroke | Near-white `#e8eaed`, `stroke-width="2.5"`, round caps/joins |
-| Motion arrows | Emerald `#27b07d` |
-| Joint / cue marks | Brass `#c7a860` dots + short labels |
+| Background | Paper `#f3f2f2` (or transparent on a surface card) |
+| Figure stroke | Ink `#201e1d`, `stroke-width="2.5"`, round caps/joins |
+| Motion arrows | The one red `#ec3013` |
+| Joint / cue marks | Mid grey `#6f6b69` dots + short labels |
 | Phase layout | 2–3 poses left→right: **setup → mid → lockout** (or hold) |
 | A11y | `role="img"`, `aria-label`, `<title>` with exercise name |
 | Animation | Optional SMIL/`animate` on 3–5 heroes only; loop, muted, few KB |
@@ -77,8 +77,11 @@ Do **not** use gym-bro aesthetics, neon glow stacks, or medical claim overlays o
 Paste or prepend in Google Flow (and Grok Imagine / Cursor GenerateImage):
 
 ```
-Mission Winning brand imagery. Dark navy canvas #0a0c10, emerald accent #27b07d,
-brass honor #c7a860. Clinical athletic clarity — not gym-bro hype, not medical.
+Mission Winning brand imagery. Modernist poster: paper ground #f3f2f2, ink #201e1d,
+and exactly one accent — vermillion red #ec3013, used sparingly. Flat printed
+surfaces, hard geometric edges, square corners, generous negative space. No
+gradients, no glow, no drop shadows, no dark backgrounds, no second accent hue.
+Clinical athletic clarity — not gym-bro hype, not medical.
 No logos invented; no competitor blue/violet identity; no cream/terracotta editorial look.
 Atmosphere: mission briefing, train-anywhere athlete, calm competence.
 Decorative or chapter-hero only — not instructional form diagrams (those are SVG stick figures).
