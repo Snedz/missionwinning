@@ -116,6 +116,481 @@ A route being in `GATED_ROUTES` is not the same as the states on that route
 being covered. That is the gap this check exists to cover, and it is why it
 reads source rather than pixels.
 
+## 2026-08-01 — Three jobs that built a different app (`.255`)
+
+`ci-extended.yml` ran for the first time on 2026-08-01. Actions had been
+billing-blocked, so a workflow the repo has carried for weeks had never executed
+a single job. All three of its app-building jobs were configured wrong — in
+three different ways, none of which any local run could have shown.
+
+### The same defect, three spellings
+
+```yaml
+# e2e-critical — no VAPID key at all
+env:
+  PRIVATE_MODE: 'false'
+  NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+
+# visual-regression — set on the *assertion step*, after the build and the server
+- name: Visual regression (@visual)
+  env:
+    PRIVATE_MODE: 'false'
+
+# lighthouse-budget — nothing
+```
+
+`e2e-critical` reproduced `.249` exactly: without `NEXT_PUBLIC_VAPID_PUBLIC_KEY`,
+`isPushSupported()` returns false, every component behind it renders nothing, and
+*"Today shows one red action at 19:00"* asserts that one of them is mounted.
+
+The other two are worse, because they passed.
+
+### "No env" is not neutral on a runner
+
+```ts
+// src/lib/privateGate.ts:19-24
+export function isPrivateModeEnabled(): boolean {
+  const flag = process.env.PRIVATE_MODE;
+  if (flag === 'false' || flag === '0') return false;
+  if (flag === 'true' || flag === '1') return true;
+  return process.env.NODE_ENV === 'production';
+}
+```
+
+`next build` and `next start` both set `NODE_ENV=production`. So a job that sets
+nothing does not get a neutral app — it gets the **gated** app, where `/` and
+`/log` are absent from `PRIVATE_GATE_PUBLIC_PATHS` and redirect to `/private`.
+
+GitHub step `env:` does not reach earlier steps, so `visual-regression`'s
+`PRIVATE_MODE: 'false'` applied to the Playwright invocation and to nothing that
+mattered. Both jobs built and served the teaser.
+
+### Two checks that could not fail
+
+`scripts/lighthouse-budget.mjs:9` scores
+`['/', '/log', '/guide/human-performance', '/exercises/squats']`. Two of those
+four were `/private` — the lightest page in the product, timed as if it were the
+product, in a job whose whole purpose is to notice the product getting heavier.
+
+And the `.234` baseline bootstrap wrote `home-reduced.png` as a screenshot of
+`/private`, under the name of the most-linked page in the app — in the same run
+that `visual.spec.ts`'s own header called *"covering it for the first time"*.
+
+That is verbatim the laundering `.221` deleted the previous baselines to avoid:
+
+> the obvious response to four huge visual diffs is `--update-snapshots` without
+> looking, which launders whatever the app happens to render that day into the
+> new truth.
+
+It arrived through the front door instead, wearing the right filename. **Neither
+of the two baselines already reviewed is affected** — `/guide` and `/exercises`
+are public prefixes and rendered themselves. `home-reduced.png` must not be
+committed, and the homepage remains visually unguarded until a bootstrap runs
+with this fix in place.
+
+### The one case that survived checked where it landed
+
+`/bundle` refused to snapshot a redirect, because it compared `page.url()` to the
+route it asked for. Three cases did not, and that is the difference between
+catching this and enshrining it.
+
+Every case now goes through one `shoot()` helper that compares the landing path
+to the file name and refuses on a mismatch. A redirect may only *skip* if the
+case states a reason — `/bundle` does (FREE_BETA), so it resumes by itself the
+day Bundle ships. The env fix removes the cause we found; the landing check
+catches the next one, because a baseline is precisely the artifact nobody
+re-reads.
+
+### The guard written for `.220` had the `.220` defect
+
+`gateEnvParity.test.ts` (on #178) asserts parity between `scripts/gate.mjs` and
+`.github/workflows/ci.yml`. It names the two files it was written from. There are
+three files and eight jobs, and a guard that enumerates cannot notice the fourth
+place this app gets built — which is exactly *a name that claims more than its
+enumeration*.
+
+New `src/lib/workflowBuildEnv.test.ts` globs `.github/workflows/*.yml` and
+requires every job that runs this app to set what `gate.mjs` sets, to the same
+values. Deliberately **job-level env only**: accepting env declared anywhere in
+the file would have passed on two of tonight's three failures. It also asserts
+its own parser is not returning an empty set, since a guard about vacuous checks
+is a poor place to ship one.
+
+Its first draft had the defect it was written about, and a mutant found it. It
+decided scope by testing `/\bnpm run build\b/` against the job block, so a job
+running `npx next build` with no env at all **passed** — the detector was keyed
+to one spelling, which is `.212`, inside a guard written about `.220`, a few
+tests after the sentence *"a guard that enumerates cannot notice a fourth"*.
+
+So the rule is inverted: every job is in scope unless `NOT_THIS_APP` names it
+with a reason. Twelve entries — the three scanners, the two cron HTTP pokes,
+`apply-migration` and `sync-vercel-env` (which must **never** receive the
+ci-placeholder values, so their exemption is load-bearing rather than
+housekeeping), `deploy-production` (Vercel builds remotely from the real project
+environment, which is correct), the three remote smokes, and the Android Gradle
+job. Two tests keep the list honest: a reason has to be one, and an entry naming
+a job that no longer exists fails.
+
+A pattern list is silent about what it misses. An exemption list is covered by
+default and makes leaving a thing a reviewer can disagree with.
+
+Overlap is stated rather than left to be discovered: when #178 lands, its two env
+tests are subsumed here and should be deleted; its step-parity and ordering tests
+are a different question and stay. One concept, one home — `.178`.
+
+### The secret scanner crashed on the first run of every PR
+
+Found while driving this PR to green, and it is the same defect one layer over.
+
+```
+RequestError [HttpError]: Resource not accessible by integration
+  at async Object.ScanPullRequest (…/gitleaks-action/v2/dist/index.js)
+  url: https://api.github.com/repos/Snedz/missionwinning/pulls/181/commits
+  status: 403
+  x-accepted-github-permissions: pull_requests=read
+```
+
+Identical on #181 (run 30684203909) and #182 (run 30719575181), with the same
+first-run failure on `feat/locale-export-split` and `feat/a11y-settle`. On a
+`pull_request` event `gitleaks-action` lists the PR's commits so it scans only
+what the PR adds; `gitleaks.yml` declared no `permissions:` block, so the job
+inherited the repository default, which does not include `pull_requests`.
+
+Every one of those failures went green on a later push and was left there. A
+check people re-run until it passes is a check they have stopped reading — and
+this one is the secret scanner, so the run being skipped is the one that scans a
+new branch's first commits.
+
+Fixed with least privilege stated rather than inherited: `contents: read` and
+`pull-requests: read`, nothing written. No guard: unlike the silent defects
+above, this one crashes loudly — it needed reading, not catching.
+
+### Process
+
+Third occurrence after `.202` and `.205`: I mutated `workflowBuildEnv.test.ts`
+while the rework inside it was uncommitted, and `git checkout HEAD --` threw the
+rework away. The rule is *commit before mutating*, and it applies to the guard
+being hardened exactly as much as to the code underneath it. Twelve mutants
+killed after that, all from committed states.
+
+### Not fixed here
+
+`ci-extended`'s `e2e-critical` failed **8** tests on that first run. This fixes
+the one with a proved cause. The other seven — four `premium-gate`, one `growth`,
+one `hero-flows`, one `premium-pillars` — are unread data and are being triaged
+separately rather than assumed to be env.
+
+## 2026-08-01 — The bootstrap the visual gate could not run (`.254`)
+
+The visual suite has four cases and **zero committed baselines**.
+`home-reduced.png` never had one at all, so `/` — the most-linked page in the
+product — has been silently self-approving on every run since the case was
+written. The other three were deleted in `.221` for depicting the pre-Modernist
+navy/emerald design.
+
+`.200` had already fixed the worse half. The job used to run
+`--update-snapshots || true` and then re-run against the files it had just
+written, so it was green every time over nothing. It now fails loudly with
+instructions instead.
+
+**The instructions named a command nobody could run.**
+
+    Bootstrap them deliberately, on a Linux runner:
+      npx playwright test --config=playwright.config.ts --grep @visual --update-snapshots
+
+This job is the only Linux/Chromium environment the project has. Baselines
+generated anywhere else differ by font hinting and antialiasing alone, which is
+exactly how a pixel comparison stops meaning anything. So the loud failure was
+correct **and terminal**: the only way out of it was a command that could not be
+executed, and the suite has had no baselines since.
+
+### An input, not a flag
+
+`bootstrap_baselines` is a named `workflow_dispatch` input, **defaulting false**,
+that generates instead of checking. Deliberately not a shell flag and not an
+auto-fallback:
+
+- the normal path stays a loud failure;
+- the weekly schedule supplies no inputs, so it can never reach the generate —
+  a scheduled run that regenerates its own baselines is `.200`'s check that
+  cannot fail, rebuilt;
+- bootstrapping stays something a person decides to do.
+
+The generate **asserts nothing**, on purpose. It writes the PNGs, the existing
+`always()` upload carries them off the runner, and the real gate is a human
+opening every file. `.221` deleted the old baselines rather than refresh them
+precisely because *"the obvious response to four huge visual diffs is
+`--update-snapshots` without looking, which launders whatever the app happens to
+render that day into the new truth."* A pass/fail on freshly written files would
+be that laundering with a green tick on it.
+
+### The guard, narrowed rather than weakened
+
+`ciTruth`'s *"the visual job fails when it has no baselines"* forbade
+`--update-snapshots` anywhere in the step, and this change trips it.
+
+The rule was blunter than its own reasoning. What made the old behaviour a
+defect was never the flag — it was that the **default path** wrote its own
+baselines and then re-read them. The rule is now about reachability: a generate
+may exist, but only behind an explicit default-false input, and it must not
+assert.
+
+Six mutants, all killed: the generate moved onto the default path; the input
+defaulting `true`; the generate asserting instead of exiting 0; `exit 1`
+softened to `exit 0`; the exit code swallowed with `|| true`; and the input
+renamed away while the generate stays.
+
+### Near-miss, third of its kind
+
+The block-extraction regex ended on `\n\s*fi` — which matched the `fi` inside
+`find` on the next line. The guard read one line of the block it was judging and
+failed on a fragment. That is the third time in this programme a lazy quantifier
+has stopped somewhere plausible and wrong, after `.221`'s `border-radius: 0` and
+`.223`'s `prLine: null`. Anchored to `\n\s*fi\n`.
+
+### Three baselines, not four
+
+`/bundle` self-skips while FREE_BETA redirects it to `/log`, refusing to
+snapshot a page under the wrong name. It resumes automatically the day Bundle
+ships. So this produces `guide-human-performance`, `exercise-squats` and
+`home-reduced`.
+
+### The review found something, which is the point
+
+The three pages were rendered and **looked at**, against the Modernist rules:
+paper ground, one red, radius 0, Archivo, no navy or emerald, and each image
+actually the page its filename claims.
+
+`exercise-squats` and `home-reduced` pass. Paper `#f3f2f2`, poster red on the
+CTAs, square corners, Archivo throughout. The homepage's grey photo blocks are
+`GrayscalePhoto`'s deliberate no-`base` state ("PHONE ON A BENCH, MID-SET"), not
+missing assets.
+
+**`guide-human-performance` does not.** Its chapter hero is a near-black render
+with a teal/emerald glow — a silhouette against a green ring — which is the
+navy/emerald palette `.131` retired, sitting on a paper page. Measured across
+the whole set rather than judged from one image:
+
+| Chapter hero | dark | green/teal | red |
+|---|---|---|---|
+| assessments-progress | 96% | 5% | 0% |
+| getting-started-mw | 89% | 0% | 1% |
+| human-performance | 89% | 6% | 0% |
+| movement-mechanics | 99% | 1% | 0% |
+| nutrition-recovery | 98% | 3% | 0% |
+| programming-tuning | 97% | 4% | 0% |
+
+All six, 89–99% dark, essentially zero red. `.137` re-inked the guidebook
+**cover** and rebuilt the PDF; the six chapter heroes were not in that pass, and
+nothing could have said so — `check-design-system` reads source, and these are
+`.webp` files in `public/`. A palette rule that scans code cannot see a palette
+baked into an asset. That is `.221`'s finding one layer out.
+
+So `guide-human-performance.png` **is not a baseline to commit**. The image is
+not wrong about what the page renders; it is wrong to enshrine, because the
+approved truth would then be the off-brand state, and the PR that re-inks those
+heroes would read as a regression. That is the laundering `.221` deleted the old
+baselines to avoid. Recorded as its own item.
+
+### Blocked, and named
+
+Committing the CI-generated PNGs needs the `visual-diffs` artifact, and this
+session's token cannot read Actions (`403 Resource not accessible by
+integration` on the run endpoint, so also on artifacts). The images reviewed
+above were rendered locally at the same viewport and `reducedMotion: 'reduce'`
+— which answers every question in the review list, since all of them are about
+design and content — but they are **not** committable baselines: local font
+hinting and antialiasing differ from the runner, which is the entire reason the
+suite requires CI-generated files.
+
+The mechanism ships here and the run is dispatched. Downloading the artifact and
+committing the two good baselines is founder-owned until this session has
+Actions read access.
+
+## 2026-08-01 — The settle rule that could not see loading (`.253`)
+
+Two correct decisions, composing into a blind spot.
+
+`tests/e2e/a11y.spec.ts` waits for the page to stop animating before it measures
+contrast — right, because a half-faded element composites to a lower ratio than
+its resting state. `src/components/ui/Skeleton.tsx` deliberately does **not**
+animate; its header explains why in detail:
+
+> The old bars were `#eae9e9` at half alpha over a `#eae9e9` card — literally
+> invisible until the pulse dimmed them, which meant the animation *was* the
+> information and `prefers-reduced-motion` deleted it.
+
+So the wait asked "is anything animating?", the loading placeholders answered
+"no", and the gate measured a half-loaded page. **The better the loading design
+got, the blinder the wait became.**
+
+### Measured, not argued
+
+`/profile` under a 40x CPU throttle, instrumented at the moment axe runs:
+
+```
+CPU_RATE=40  serious/critical: 0
+aria-busy nodes at scan time: 2
+  still loading: Loading Profile | Loading
+running animations at scan time: 0
+```
+
+`settle()` now requires both conditions. `[aria-busy="true"]` rather than
+`[aria-busy]`: `HoldToConfirmButton` and `CoachChatPanel` bind the attribute to
+state, so a fully settled page still carries `aria-busy="false"` nodes and the
+looser selector would burn the whole timeout on every route.
+
+### The route special-case, deleted rather than extended
+
+```ts
+if (path === '/active') {
+  await page.getByRole('button', { name: /start workout|loading session/i })
+    .first().waitFor({ state: 'visible', timeout: 15_000 });
+}
+```
+
+`.220`'s shape: a rule written as the list of routes someone happened to hit,
+matched on the button's **copy**, so editing that string would have removed the
+wait silently. And `/active`'s pre-hydration state is not a code-split chunk —
+`RouteLoading` already announces those. It is `ActiveEmptyState` with
+`hydrated={false}`, which said nothing at all, so a screen reader announced a
+disabled button with no explanation. It declares `aria-busy` now, and the
+general rule covers the route it used to name.
+
+### Eight placeholders that never said they were loading
+
+The new wait only means something if the app sets the marker wherever it is
+loading — otherwise this is `.199`/`.212` again, a guard passing because the
+thing it looks for is simply absent. `src/lib/loadingStatesAnnounce.test.ts`
+holds up that half, by discovery rather than enumeration: it parses each
+`dynamic()` fallback expression, resolves the component it names **anywhere in
+the repo**, and reads the answer off that component's own source.
+
+It found eight, none of which I went looking for:
+
+| Where | What |
+|---|---|
+| `HomeTodayDashboard` (x5) | `loading: () => <Skeleton/>` on `/`, the most-linked page in the product. A bare `Skeleton` is `aria-hidden` — a shape, not content — so five placeholders were invisible to a screen reader *and* to any settle rule. |
+| `BenchmarksPage`, `HistoryPage` (x2) | `<div className="h-48 animate-pulse bg-card" />` for three chart slots: anonymous grey boxes carrying **the exact pulse `Skeleton` retired**. |
+| `FuelLogSheet`, `BuilderPage` | a bare `<p>Loading photo log…</p>` — visible text, in no live region, announced to nobody. |
+
+New `SkeletonBlock` wraps one `Skeleton` in `role="status" aria-busy="true"`.
+Two fallbacks are exempt with a stated reason and a staleness test:
+`LogToPlanHeroFallback` renders the hero for real (it is also the permanent
+no-JS shell at `LandingPage:134`), and CoachAdaptDemo's `min-h-[8rem]` box draws
+nothing at all.
+
+### `.220` inside the fix for `.220`
+
+The first version of the settle guard asserted that
+`querySelectorAll('[aria-busy="true"]')` **appeared** in the spec. A mutant that
+deleted `&& loading() === 0` from the quiet condition sailed straight through
+it: the query still ran, its answer was discarded, and the guard reported green
+while `settle()` was exactly as blind as before. A check whose name claims more
+than what it looks at — written into the change that exists to end that pattern.
+Nine mutants now die, including that one.
+
+### What this does not claim
+
+It is **not** a proven fix for the `/profile` skeleton-contrast violation seen
+once in `.250` (axe measured `#edecec` on `#f3f2f2`, 1.05:1). That did not
+reproduce in ~30 throttled runs at CPU rates 1, 6, 20, 40 and 80 — every single
+one reported zero serious/critical violations, including the runs where two
+`aria-busy` regions were demonstrably still on screen.
+
+Both statements stand together: **the blind spot is real and measurable; the
+violation is not reproduced.** `.224` records me calling three failures
+"container flakiness" when one was a real deterministic bug. Shipping a fix for
+an unreproduced race and declaring the matter closed is the same error mirrored,
+and the plan for this item said so in advance.
+
+**a11y therefore stays out of `ci.yml`.** Its `CI_ONLY_EXEMPT` entry reasons
+that a gate which reddens on a render race teaches people to re-run until green,
+which is worse than not having the gate. That should be honoured until there is
+stability evidence, not overridden because a fix feels right.
+
+### Process, third occurrence
+
+My mutant loop ran `git checkout HEAD -- <file>` against files holding
+uncommitted work and reverted four of my own edits. The archive already records
+this at `.202` and `.205`, where `.205` wrote the rule down verbatim: **commit
+before mutating.** I had read that file this same night. Nothing was lost — the
+edits were reconstructible and the guard caught the leftover mutant on the next
+run — but the habit is the finding, and the mutants were re-run against a
+committed tree.
+
+One related catch: `git checkout --` cannot revert an **untracked** file, so the
+mutant applied to the brand-new test file survived the cleanup silently and
+turned the next run red for a reason that had nothing to do with the code.
+
+Tests 1186→1192.
+
+## 2026-08-01 — The exporter that undid the splitter (`.252`)
+
+`npm run export-locales` and `npm run check-locale-split` disagreed **by
+construction**, and the second could never survive the first.
+
+The exporter wrote, per language, every namespace **plus a merged
+`common.json`**. `split-locale-packs.mjs` enforces the opposite: each namespace
+trimmed to the keys English puts in it, and `common.json` deleted as
+`REDUNDANT` — it was the entire 1,687-key catalogue repeated fifteen times, and
+`fetchLocaleHttpOverrides` *preferred* it, so leaving it meant the loader kept
+choosing the big file.
+
+`.222` cut this directory 30.8 MB → 2.1 MB and built the splitter to be
+**re-runnable** for exactly one stated reason: *"a cleanup that cannot be
+repeated undoes itself the next time the fill tool runs."* It did. `.250` ran the
+exporter while checking which CI steps passed locally, committed the 394
+regenerated files with `git add -A`, and CI caught it on `.222`'s own guards.
+
+The mitigations were ordering — `check-locale-split` before `export-locales` in
+`ci.yml` — and remembering. Both worked *around* the conflict rather than
+removing it, which meant the shipped translator files had also quietly drifted
+behind the source, because nobody could safely re-export.
+
+**The fix is that the producer emits what the checker wants.** Each namespace is
+trimmed to `Object.keys(entry.stringsFor('en'))` and iterated in that order,
+which drops foreign keys and stabilises key order in one pass — the same two
+effects, from the same rule, as the splitter. No `common.json`.
+`buildMergedCommonStrings` stays exported: `i18n-fill-missing` uses it to find
+gaps, which is a different job from shipping a file to a browser.
+
+The splitter reads its schema from `public/locales/en/*.json`, which *is* this
+script's output, so the two now agree by construction rather than by a copied
+rule. A guard pins that: if the splitter stops deriving from English, the
+exporter's assumption is silently void.
+
+**252,286 out-of-namespace keys** were being written. `export-locales` is now
+safe to run at any point, and the round-trip passes in the order that used to
+break it.
+
+### What re-exporting exposed
+
+Fifteen `feedbackCard*`/`feedbackSheet*` keys from `.215` existed in the source
+modules and had never reached `public/locales` — the drift the conflict caused.
+Additive, and now shipped.
+
+And two keys went the other way. `coachWhySteadyWeek` and
+`coachWhyPlateauDeload` sat in the committed `en/coach.json` but **in no source
+module at all** — while `loadGuard.ts:42` and `progression.ts:173` still emit
+them. [`PlanExerciseLine`](../src/components/coach/PlanExerciseLine.tsx) renders
+`i18n.exists(whyKey) ? t(whyKey) : ''`, so nothing broke loudly: the coach
+decided a week was a plateau deload, wrote down why, and showed the athlete a
+**blank line** — in all fifteen languages, for as long as those keys have been
+missing.
+
+The tests made it worse. `progression.test.ts:117` and `loadGuard.test.ts:51`
+both assert the engine picks the right `whyKey`, and were green throughout —
+proving the *choice* while nothing proved the *string*. `.184` one layer down
+into i18n.
+
+Restored, with a guard that **discovers** rather than enumerates (`.220`): every
+`coachWhy*` literal scraped out of `src/lib/coach/` must have an English entry,
+so the next reason added is covered without anyone remembering to list it.
+
+Tests 1186 → 1191.
+
 ## 2026-08-01 — Replay a day (`.251`)
 
 The other half of `.247`, and the last of the four product references. Tesla's
@@ -940,636 +1415,5 @@ into inputs, so it is named rather than swept. Class-2 red debt still stands at
 `/coach` 4, `/profile` 4, `/track` 3, `/builder` 3.
 
 Tests 1215→1233. `/mind` 34→2. LOG 27 entries/127KB → 15/84KB.
-
----
-
-## 2026-08-02 — The screens with nothing on them (`.241`)
-
-Five more Arnold's Pump Club screenshots. Lined up, they are one subject seen
-five times: **what a screen says when the athlete has no data.** A month calendar
-of thirty red ✕. A page reading `ALL GROUPS (0)` above nothing. And two
-zero-states that explain themselves and offer one action.
-
-Two of them are how to do it. Two are how not to. Mission Winning shipped one of
-the second kind.
-
-### The void, on a real route
-
-`LeaderboardTable` rendered unconditionally: a bordered box, a four-column header
-strip (`# / Operator / Score / Δ`), then an empty `<ul>`. On the class scope that
-is the **normal** state, not an edge — `rank.ts:74` builds class entries from
-`classRows` alone and pacers are excluded by design — so a class with nothing
-synced got a heading and a column header over a void, beneath a line reading
-*"0 operators"*. The reference screenshot, shipped.
-
-`/programs` had the same defect on a filter miss: `{filteredPrograms.map(…)}`
-with no fallback branch.
-
-### The rule was written down, and wrong about its own component
-
-`DESIGN_REVIEW.md` has said *"not a blank void"* since it was written; `grep`
-finds `EmptyState` in no script and no test. Worse, the line said **"dashed
-invite + CTA"** while `EmptyState`'s own docblock records that the dashed box was
-deliberately deleted in `.139` — *"a dashed rounded box on a `bg-muted/20` fill
-with a 10%-opacity red icon chip and centred copy: four things the system does
-not do."* Anyone fixing empty states from the checklist would have rebuilt a
-retired treatment.
-
-### The harness existed, pointed one property away
-
-`a11y.spec.ts` renders **all sixteen signed-in routes with zero data** on every
-gate run and asserts only that they are accessible. **A blank screen is
-maximally accessible** — no contrast failures, no unlabelled controls, no focus
-traps, because it has nothing.
-
-The inverse was true of the other rule. `first-90` asserts Today offers *exactly
-one* primary action, and `expectOneRedAction` was called for `/log` alone. A
-ceiling on how much a screen may ask; **no floor under how little it may
-offer**, on fifteen of sixteen routes.
-
-Fifth suite in this repo found pointing at its own assumptions rather than at the
-product, after `.129` sitemap, `.157` a11y routes, `.162` viewport, `.165` gate
-port.
-
-### What the sweep measured
-
-`zero-state.spec.ts`'s first run was the inventory, not a pass: **nine of fifteen
-routes over the one-red-action rule, `/mind` at 51.** Two classes hid in that number.
-
-**Class 1 — red as a *selected* state, fixed.** `variant={x ? 'default' :
-'outline'}` at twenty sites: filter chips, unit toggles, privacy and reminder
-switches, days-per-week picks — plus `bg-primary-fill` on two 1–5 rating scales.
-A selection is not an action. New `selected` variant carries what `.240` already
-settled for tabs: tint ground under a 2px poster rule. `/programs` 2→0,
-`/assessments` 2→1, `/track` 6→3, `/move` 2→1, `/profile` 5→4, `/mind` 51→34.
-
-**Class 2 — one red CTA per list card, recorded not silenced.** `/coach` draws
-"Start this session" on every `PlanSessionCard`; `/mind` on every guided session.
-That is a composition decision per screen, not a colour swap. So the rule ships
-as a **per-route ratchet** with a written reason each — the shape
-`i18n-coverage` and `bundle-budget` already use. Caps are set to measured truth,
-and going *under* fails too, asking you to lock the gain in.
-
-### The rest of the voids
-
-`/benchmarks` stopped hiding its four one-tap Quick Starters inside the has-data
-branch — they were visible only to athletes who already had benchmark data, and
-hidden from the one person its empty copy addresses (*"complete workouts with
-logged sets"*). `/learn/course` stopped swallowing a fetch failure into
-`setChapters([])`, which is why its single muted `<p>` had to *guess*, branching
-on `isFreeBeta()` between "check your connection" and "sign in with your bundle
-email" — two diagnoses for one silent failure, and no retry either way. `/move`
-and `/mind`'s `ErrorState`s got an `onAction`, because `ErrorState` renders no
-retry unless handed one. History's filter miss got a way out, and its pillar-wins
-line stopped being hardcoded English that spoke in raw URLs (*"Use /move or
-/mind"*).
-
-`EmptyState`'s CTA is `outline`, not `fitness` — a red fill on nine routes, from
-the primitive whose entire job is "here is the one thing to do".
-
-### The calendar marks only what happened
-
-`/history` gains a **Calendar** segment: ink fill = trained, a small ink rule =
-logged something else, 2px poster outline = today, everything else blank paper.
-**No day is ever marked missed.**
-
-That is criterion 4, and it is also the only honest option. `coach/storage.ts`
-persists **one** plan and `savePlan` overwrites it; `adaptPlan` flips
-`planned → missed` in place; `generateWeek` seeds from *current* body scores. What
-an athlete meant to do in March is not recoverable, so a red ✕ would be an
-invention as well as a reproach — thirty of them on the screen a lapsed athlete
-opens first.
-
-*"Logged"* is a fifth state the reference does not have: the day you used the app
-without lifting. And retention is part of the honesty — nutrition prunes at 90
-days, check-ins cap at 90 entries, pillar wins at 100, so an old month shows
-fewer logged days than the athlete had, and the grid **says so** rather than
-reporting a storage limit as behaviour.
-
-Month helpers live in `localDate.ts` under its own rule. Month length comes from
-`new Date(y, m, 0)`, so leap February answers 29 without a rule anyone has to
-remember. Monday-first, matching `startOfLocalWeek` rather than becoming the
-seventh derivation of when a week begins. Weekday initials and the month name
-come from `i18n.language`, not the browser locale.
-
-### The date rule's fifth spelling — and the guard could not have caught it
-
-`.212` widened `reachability.test.ts` from one slicing spelling to four and
-closed the list *"because these are the only three ways JavaScript has to take
-the date half of an ISO string"*. True — and it examined only the **slicing**
-half. Every pattern required a literal `toISOString()` call, so none could see
-the same defect performed on an ISO string that was **already stored**:
-
-```ts
-w.completedAt.split('T')[0] >= weekStart   // pillarScoreInputs, challenges
-const day = at.split('T')[0];              // TodayJournalStrip
-```
-
-`completedAt` is a UTC instant. All three compared its **UTC** date half against
-a **local** key — `weekStartIso()`, `state.weekStart`, `localDateKey()`. Exactly
-the frame mismatch `.212` found in `weekRecap`, three more times, surviving the
-sweep written for it because the guard was keyed to *how the date was produced*
-rather than to *what it was*. It now matches the shape.
-
-`todayTrends.ts` carried both defects in one loop — the banned spelling, and **no
-tombstone filter at all**, so a deleted session kept its volume in Today's
-sparklines. Fourth reader found not dropping tombstones after `.223`.
-
-Widening caught two sites that are **not** defects — a founder admin panel and a
-server-composed email, where UTC is the only frame that exists. Those are an
-allowlist with reasons, checked in both directions: a reason under 40 characters
-fails, and so does an exemption whose file would now pass anyway.
-
-### Verification
-
-Mutation-tested, every rule: restoring `EmptyState`'s red fails four routes,
-**none of them `/log`** — exactly the gap. An empty `<ul>` on `/library` fails
-the headed-void rule. Removing `LeaderboardTable`'s zero branch fails its unit
-guard, which is a *source* guard because `/leaderboard` is parked and the e2e
-sweep cannot reach it. Routing `localMonthDays` through `toISOString` fails the
-timezone sweep — and `process.env.TZ` was confirmed to actually switch before
-that sweep was trusted.
-
-**Two of my own drafts were wrong and running them is what said so.** The
-leaderboard's off-palette rule first failed on the string `text-red-400` inside
-the comment explaining that `text-red-400` had been removed —
-`check-design-system` solved this once and says why: *a guard that punishes
-documented reasoning gets switched off*. And the calendar's first draft faded
-future days with `text-muted-foreground/50`, which axe measured at **2.42:1** —
-the same alpha-on-a-contrast-token defect `.240` fixed three times in one wave.
-Rendered, not inferred: `/history` in `en` and `ar` (RTL, `dir=rtl`, month name
-`أغسطس 2026`), axe clean, month navigation confirmed to move.
-
-**Not done, named:** class-2 red debt is capped, not paid — `/mind` at 34 is a
-card farm and needs a composition pass, as do `/coach`, `/track` and `/nutrition`.
-`WeekStrip` and `Skeleton` still carry their own hardcoded English day arrays;
-the calendar derives its own rather than adding a third. `utils.formatDate` and
-`benchmarks.formatChartDate` still pass `undefined` as the locale, so they follow
-the browser rather than the app's language switcher.
-
----
-
-## 2026-08-02 — The screen that said how you were doing before what to do (`.240`)
-
-The brief was five screenshots of Arnold's Pump Club (iOS), handed over as
-design references for the website and the web app.
-
-**The first finding is that almost none of it is a styling problem.** The
-Modernist rebrand (wave D5) settled paper/ink, one red, Archivo, radius 0, 2px
-rules; the reference is a rounded-card, soft-shadow, glowing-FAB app. Copying
-its look would undo a founder-commissioned rebrand and fail gate step 10 on the
-first hex. What it is genuinely better at is **the shape of the daily screen**
-and **the first-run contract** — and three of those ideas landed on defects that
-were already here.
-
-### Today was answering the wrong question first
-
-Replaying `planTodayBlocks` against the declared prices, on a readiness
-athlete's evening screen:
-
-```
-visible: header · dashboard · coach-invite · day-review · week-recap
-hidden : coach-week · freshness · guidebook
-```
-
-`coach-invite` is a card asking the athlete to go and get a weekly plan. It was
-on the screen while `coach-week` — the weekly plan — was inside the "Today
-details" disclosure. At `commissioned` with the beta banner up, the session and
-the week were hidden together. Horizon W criterion 2 is *"one clear next session
-on Today"*, and the screen was leading with the Mission Score.
-
-Re-priced, not re-budgeted: `coach-today` 35→12, `coach-week` 45→14,
-`dashboard` 10→22, `coach-invite` 25→40 and restricted to `basic`, where it no
-longer overlaps the real week strip. `TODAY_MAX_TOP_LEVEL_BLOCKS` is untouched —
-that argument lives in the one file written to hold it. Both shells now price
-from one table rather than two lists of numbers that have to agree.
-
-**And a dismissed card was still spending a slot.** `planTodayBlocks` computes
-`room = max - pinned.length` from the *candidate list*, not from what each
-candidate renders, so `BetaWelcomeBanner` returning `null` still cost a pinned
-top-level block — permanently, since the dismissal is permanent. The budget
-never saw it hide.
-
-### Two Today screens, degrading two different ways
-
-`HomeTodayLean` had no block budget at all: it stacked whatever mounted, in
-source order, with no ceiling — and it belongs to the cohort least able to
-absorb a feed. It also rendered `JourneyHero` inline while the dashboard
-portalled it to `ScreenDock`, so `i-day`/`basic` athletes, whose next action is
-the entire reason the screen exists, were the only ones who could scroll it away.
-
-### The checklist the app could already fill in
-
-`detectBasicMilestones` has computed workout / fuel / move / mind / learn since
-the journey engine shipped, and `detectReadinessMilestones` computes the health
-screen. **Four of those six displayed nowhere** — `BASIC_STEPS` is a
-one-element array, so the stepper reads "Step 1 of 1" forever. The data for a
-real checklist was already on the device; the banner above it said the path in
-prose as three static chips that looked identical on day one and day ninety.
-
-`FirstStepsCard` + `FirstStepsSheet` replace it, each row carrying a line of
-*why* — "try a mobility flow" is a chore, "five minutes on the days you do not
-train is what keeps the streak reachable" is a reason. **Nothing here gates
-anything, and that is the whole risk.** `.223` cost the launch gate because
-`allBasicDone` meant two things, and this puts a six-item checklist on Today
-five of whose items are exactly the pillars Horizon W called "free, not gated
-chores". So `basicComplete` stays `b.workout`, is never consulted, and a guard
-asserts both — including that `basicComplete.ts` may not so much as mention
-`firstSteps`.
-
-### Continuity, and the part of it that is not honest yet
-
-`CoachTodayCard` printed a session name and nothing else. It now leads with
-`SESSION 14 · PUSH / PULL / LEGS` — an ordinal counted from logged history
-(tombstones dropped, the `.223` lesson), and a block name **read out of the plan
-that exists** rather than re-derived by calling `chooseSplit` twice.
-
-There is **no week number**. `useCoachPlan` overwrites the previous plan every
-Monday, so nothing knows this is week three, and a field nothing writes is
-`.195` with a nicer label. The guard reads `useCoachPlan` to confirm the plan is
-still discarded — so the day plan history becomes durable, it fails and asks to
-be deleted deliberately rather than quietly outliving its reason.
-
-### Four answers to "what does selected look like"
-
-`.seg`/`.seg-opt` sat in `index.css` since the rebrand with **zero call sites**,
-while `ui/tabs.tsx`, `HistoryPage` and two strips in `FuelLogSheet` each drew
-the control their own way. Two spent the screen's one do-this-now colour on a
-tab. One was invisible: `bg-card` on a `bg-card` parent, 1.01:1 — the same trap
-`.155` found on the check-in scales. And the unused CSS was wrong too
-(`bg-primary-fill`), so the primitive disagreed with the two live components
-that had it right. All of it is now one `SegmentedControl` drawing
-`is-active-tab`, which is what the tab bar already draws.
-
-### The guard that knew two spellings of red
-
-Found by rendering the screen rather than reading the diff: `TodayWeekSection`'s
-"Start Today's Workout" is a red `variant="fitness"` inside `main`, beside the
-docked hero. `redActions.ts` allows **zero** red controls in `main` and never
-caught it — that card lives in the details disclosure, which mounts only from
-`readiness` up, and the hero e2e stops earlier.
-
-`check-display-type` could not have caught it either, and that is the more
-useful half. It knew a red *class* and a `<Button>` with the variant *omitted* —
-but not a variant that is named and red. `fitness` is defined as
-`bg-primary-fill`; its own comment calls it "the plain red fill". `.212`
-verbatim: a guard keyed to one spelling of a defect has only ever tested that
-spelling. The red variant list is now **derived from `button.tsx`**, so a new
-red-filled variant is caught the day it is added, and both vacuity paths — an
-unparseable variant map, an empty derived set — were confirmed to exit 1.
-
-### The Design lane's entry doc was still enforcing the old brand
-
-`DESIGN_ORCHESTRATION.md`'s lock table named navy `#0a0c10`, emerald `#27b07d`
-and brass `#c7a860`, its type row read "Barlow Condensed · Inter · IBM Plex
-Mono", and its card row allowed "≤1 glow per screen". Its own escape clause said
-that described the outgoing system *"until the token-swap PR rewrites
-DESIGN_SYSTEM.md and brand-guidelines.md"* — that PR was `.131`, ten builds
-earlier. An agent opening the Design lane cold was being told to build navy.
-`.221`'s defect one level up: the rules nothing checks, now actively wrong.
-
-### Three contrast failures the a11y suite had been red on
-
-`npm run a11y` is gate step 17 and **gate-only** — it appears in zero workflows,
-so nothing had run it since the rebrand. Two routes were failing, both from the
-same habit: fading a token chosen for its contrast.
-
-- **`/coach`** — `PlanSessionCard` dimmed a missed session with `opacity-60`,
-  which dims the text with the container: #747372 on #eeeded (4.04:1) and
-  #8c8b8b on #eeeded (2.9:1). `.127` fixed this exact thing in `WeekStrip`
-  (*"de-emphasised by border not opacity, because dimming the container also
-  dims the day label past 4.5:1"*) and missed this file. Now a dashed 2px rule
-  on a transparent ground — and it belongs to this wave anyway, since a missed
-  session must stay readable to be *behind you* rather than hidden.
-- **`/profile`** — the demo-mode notice ran `text-status-warn/90` on a 10% amber
-  fill: #976115 on #e2dbd3, **3.79:1**. Restoring full strength gave #8f5300 on
-  #e2dbd3, **4.49:1** — still short by a hundredth, because the fill darkens the
-  ground the text has to beat. So the fill goes and a 2px rule carries it; the
-  Modernist answer was structural the whole time. `text-status-warn/90` was in
-  two more components (`SchoolClassPanel`, `WorkoutVictorySheet`) and all three
-  are fixed, because the defect is the habit, not the instance.
-
-**Gate note:** steps 1–15 pass. Steps 16–17 could not run under `npm run gate`
-in this container — @playwright/test 1.61.1 resolves chromium **1228** and the
-image ships **1194** — so both suites were run against the installed binary with
-an `executablePath` override: **52 @gate passed, 34 @a11y passed**.
-
----
-
-### Public surfaces
-
-One honest status bar on both public shells — the open-beta line lived in the
-landing page's fifth section and on no other URL, while the free core is the
-strongest thing about the product. **Ink, not red**: the reference's bar is a
-sale countdown, this is a status, and red is the one do-this-now colour. It
-disappears with `isFreeBeta()` rather than becoming a slot that has to be filled.
-
-`app/robots.ts` defaulted to the **apex** host while `seoMetadata`, `sitemap`
-and `publicSeo` all default to `www` — so with `NEXT_PUBLIC_SITE_URL` unset,
-robots.txt advertised a sitemap on a host no canonical, OG tag or JSON-LD ever
-names. Both now read `siteBaseUrl()`.
-
-**Refused from the reference, on purpose:** the red ✕ on missed days (`WeekStrip`
-already strikes them through, and criterion 4 is "re-entry without shame"), the
-glowing AI FAB, sale countdowns, and *"members who publicly share their goals
-are 70% more likely to succeed"* — an invented number.
-
-**Not done, named:** the eleven pillar screens from wave D6 are still held for
-founder review; `/private`'s entry anatomy was left alone (it already runs
-headline → lede → one action → foot → legal); and the new copy ships English-only
-via `defaultValue` — `npm run i18n:fill` has not been run for the ~14 new keys.
-
-Verified at 390×844 in a real browser, not inferred: Today's order, the card and
-sheet, the segmented control's computed colours and keyboard, and axe clean with
-the sheet **open** (`.215`).
-
-## 2026-08-01 — The column that hid four more controls (`.224`)
-
-`.223` shipped `tests/e2e/fuel-floating-action.spec.ts` after "Log weight" was
-found **100% occluded** by the Fuel FAB at 375px. It guards that one control and
-leaves the rest of the column as a `TODO(founder)` with three options and one
-instruction: *tag the describe block `@gate` only if it passes.*
-
-This is the decision, and what the decision found.
-
-### The policy
-
-**A control may share the column; it may not *be* the column** — `overlapPx < width`.
-
-The other two options are both unavailable rather than merely stricter or looser:
-
-- *Zero overlap* cannot pass. The FAB is 121px wide in a 295px content column, and
-  the meal-description input is 295px. Every full-width control on the page fails
-  by construction, so the rule could only ever be a ratchet, never a gate — which
-  is what the TODO said, and measuring agrees.
-- *Guard only the named control* re-guards one bug and none of its siblings. The
-  reported defect was never specific to "Log weight"; it is specific to being a
-  short control in the end corner, and the page had four more of those.
-
-The line the surviving rule draws is the line the bug is actually on. A wide
-control clipped at one edge stays visible and reachable at every scroll offset. A
-control narrower than its own overlap is somewhere inside the FAB's x-range
-*entirely*, so the offset that brings it level with the FAB hides all of it.
-
-### Four live ones, and they were all alignment
-
-Measured at 375px, FAB at `x=[238,359]`:
-
-| Control | x | width | overlap |
-|---|---|---|---|
-| "Use base" (`FuelAdaptBanner`) | `[251,322]` | 71 | 71 |
-| "Edit targets" (`FuelTargetsEditor`) | `[248,335]` | 87 | 87 |
-| "Snack" meal tab (`FuelQuickLogPanel`) | `[266,325]` | 59 | 59 |
-| water stepper "+" (`FuelQuickLogPanel`) | `[302,335]` | 33 | 33 |
-
-None of these is about what the control *says*. Three are `justify-between` or
-`ms-auto` — an end-aligned short button, which on a phone means the bottom-end
-corner, which is the corner a viewport-fixed FAB owns. The fourth is four
-left-packed meal chips, where the fourth chip lands there by arithmetic.
-
-So the fixes are alignment: `flex-col items-start` until `sm` on the two rows that
-end-align a small button, `sm:ms-auto` on the water stepper, and a two-up grid for
-the meal tabs.
-
-**`grid-cols-4` would have moved that chip without fixing it** — four equal
-columns across 295px is ~69px each and the last one still ends at the container
-edge, still inside a 121px FAB, still fully occluded. Half-width tabs clear the
-FAB's left edge whatever the label says in any locale, which is the property
-worth having rather than a width that happens to work in English.
-
-### The guard was checked against the bug it is named after
-
-A guard whose failure mode has never been observed is `.204`'s defect. Reverting
-one fix — `sm:ms-auto` back to `ms-auto` — fails the spec with
-
-```
-+     "label": "+",
-+     "overlapPx": 33,
-+     "width": 33,
-```
-
-which is the control, the number, and the reason, without opening a screenshot.
-
-One narrowing the first draft needed: `overlapPx >= width` holds vacuously for a
-zero-width element (`0 >= 0`), reporting a control that cannot be hidden because
-it is not drawn. The filter requires `width > 0`.
-
-`@gate` e2e 52→53. No unit tests changed; this is entirely a browser-measured
-invariant and a layout consequence of it. Two failures in `hero-flows` (public
-exercise-page CTA) and `premium-pillars` (Mind guided-session player) reproduce
-unchanged on a clean tree — pre-existing, neither on the Fuel path.
-
-### Carried, not authored: one CI block (it was two)
-
-Actions is running again, and both of its checks were red on this PR for reasons
-that have nothing to do with a Fuel column.
-
-`build-and-test` failed on `first-90`'s *"Today shows one red action at 19:00"* —
-the push opt-in is not mounted, because `ci.yml`'s build env omitted
-`NEXT_PUBLIC_VAPID_PUBLIC_KEY` while `scripts/gate.mjs` sets it (`.198`). Same
-controlled experiment either way: a local build without the key reproduces the
-failure exactly, and with it all 53 pass. `gitleaks` never scanned anything — it
-403s on `ScanPullRequest` listing the PR's commits, because that job declares no
-`permissions:` block and inherits a repository default without `pull_requests`.
-Identical failure on #185, an unrelated diff, while PRs opened directly are green.
-
-Both already had correct fixes on `fix/ci-extended-env-parity` (`.235`), open at
-the time, whose own note reads *"#178, #179, #180 and #181 all carry an identical
-block. The conflict is textual, not semantic — take either side."* So both were
-carried here **verbatim** rather than re-authored, on the theory that identical
-text merges as a no-op.
-
-**Then #185 merged the `ci.yml` half to master with a different comment**, which
-is the conflict that note predicted, and this branch took master's side whole —
-so `ci.yml` is no longer part of this ship at all. `gitleaks.yml` still is:
-master does not have that block yet. Neither is my finding; the diagnosis was
-reached independently, the fix was not.
-
-### The gate that went green on a retry
-
-With `ci.yml` fixed the job passed — and its summary read **`1 flaky`, 52
-passed**. `offline.spec.ts`'s *"a set logged offline survives, and reconnecting
-does not lose it"* had failed and passed on retry, so the checkmark was green
-and the spec guarding **the offline promise** had not actually held. That is the
-`.235` complaint one file over: a check people re-run until it passes is a check
-they have stopped reading.
-
-The cause is in the product, not the test:
-
-```ts
-// @serwist/next sw-entry.ts
-if (self.__SERWIST_SW_ENTRY.reloadOnOnline) {
-  window.addEventListener("online", () => location.reload());
-}
-```
-
-`next.config.js` sets `reloadOnOnline: true`, so **the app reloads itself the
-moment connectivity returns** — and the spec's next line was
-`page.goto('/active')`, against a page already at `/active`. Two navigations,
-same URL, started microseconds apart: *"Navigation to /active is interrupted by
-another navigation to /active"*.
-
-**The race was never 50/50, and measuring said so.** With the `goto` removed
-entirely, reconnecting fires **two** main-frame navigations and wipes a marker
-stamped on `window` — the reload always happens; the `goto` only sometimes got
-there first. Ten local runs of the unfixed spec passed, which is exactly why
-this survived: it is a CI-timing coin flip, not a local one.
-
-So the spec now waits for the reload the product performs instead of driving a
-competing one. Deterministic, and a truer assertion — that reload is what a
-returning athlete actually gets. **Awaited, not assumed**: `reloadOnOnline: false`
-+ rebuild kills it with `page.waitForEvent: Timeout 15000ms exceeded while
-waiting for event "framenavigated"`, so it cannot go vacuous if that option is
-ever turned off. One mutant, killed.
-
-### One flake reported rather than fixed
-
-`first-90`'s *"every control in the feedback sheet is thumb-sized"* failed once,
-in the first full-suite run after the merge, and has not reproduced since —
-three full `@gate` suites and a run in isolation, all green.
-
-The obvious hypothesis is **wrong**: `boundingBox()` does report the transformed
-rectangle, so a control measured mid-animation would measure short — but
-`AdaptiveOverlay`'s entrance is `slide-in-from-bottom`, a *translate*, which does
-not change height, and the `zoom-in-95` that would is `md:` only while this suite
-runs at 390px. No cause established, so no fix: a speculative change here would
-be a guard written about a defect nobody has characterised, which is how this
-repo gets tests that cannot fail. Written down instead, with what is ruled out.
-
-### The status doc that contradicted itself about its own CI
-
-`CONTEXT.md` `## Now` answered *"does CI run?"* **twice, with opposite answers** —
-the standing Status table said *"billing-blocked. Every job dies in seconds with
-`runner_id: 0`"*, while the Ops bullet twelve lines down said *"cleared; Actions
-works again"*. `CLAUDE.md` states the rule this breaks: *whether Actions is
-currently running is recorded in exactly one place — do not restate it
-elsewhere.* `gate.mjs`'s header records the repo paying for this exact
-contradiction once already, across two files; it had since moved inside one.
-
-Measured today, both rows are now true rather than merely current: Actions ran
-`build-and-test` to completion in 7m22s on this PR, and gitleaks is green. The
-gitleaks row also attributed its redness to the `8ea3527a` Solana address, which
-was never the cause — on a `pull_request` event the action scans only the PR's
-own commits, so that history is not in scope at all. The finding stands and stays
-un-allowlisted; the row now says what actually made the check red.
-
-The Ops bullet no longer restates the Actions fact. **No guard written for this
-one**, deliberately: the only mechanical rule available is "the word Actions
-appears in one place", and existing ship bullets narrate CI history legitimately
-(`.213` does), so that check would fail on correct content. A guard keyed to a
-spelling of *"is it blocked"* is the shape this repo has already paid for four
-times.
-
----
-
-## 2026-07-31 — The gate that could not go green (`.223`)
-
-The brief was four product references — WHOOP's AI charts and voice journaling,
-a member story built on 1,146 days of data, Tesla's live VPP dashboard. Research
-into what each would build on here found something worth shipping ahead of any of
-them: **the surfaces they point at are already broken, and one of the breaks is
-the launch gate itself.**
-
-### One name, two answers, and the launch decision paid for it
-
-```ts
-// src/lib/missionJourney.ts — what the product implements
-// Horizon W: Basic Training = first workout only. Other pillars stay free, not gated chores.
-return b.workout;
-
-// src/lib/betaMetricsServer.ts — what the founder dashboard measured
-return b.workout && b.fuel && b.move && b.mind && b.learn;
-```
-
-Horizon W narrowed Basic Training to the first workout. The client followed. The
-server copy did not — and it is the one that computes `basicCompletePct`, which
-`launchReady` gates on at **≥60**.
-
-So a tester who did everything the product asks of them registered as
-*Basic-incomplete*. The gate used to decide whether ten beta users are ready to
-launch was scoring them against a rule the app had stopped implementing, and it
-could not go green regardless of how well the beta went.
-
-`.178` at its most expensive. A word meaning two things costs whoever trusts the
-number, and here that is the launch decision.
-
-One definition now, in a new dependency-free `src/lib/journey/basicComplete.ts`
-that both sides import. Not an export from `missionJourney.ts`: importing that
-module drags `safeStorage`, `pillarLog`, `streaks` and `justGoSession` into a
-`server-only` bundle to reach one predicate that reads its argument and nothing
-else. The type import is erased at compile time, so the new module has no runtime
-dependencies at all.
-
-### A deleted session still counted, on a card meant for a public feed
-
-`weekRecap.ts` filtered workout history by date and nothing else, while
-`dayReview.ts:86` and `behaviorImpacts.ts:123` both drop `deletedAt` rows. Those
-three numbers — sessions, sets, volume — are not confined to a screen:
-`buildRecapCardData` prints them onto the PNG an athlete shares publicly.
-
-`.208`, the same shape as the PR chip that fired on the one set kind the rest of
-the app declines to trust: a celebration the app cannot support.
-
-### A PR line nothing could ever have supplied
-
-`buildWeeklyDebrief` counted records like this:
-
-```ts
-if ((log as { personalRecords?: number }).personalRecords) {
-```
-
-`personalRecords` exists **nowhere else in the repo**. Nothing writes it. So `prs`
-was structurally always 0, and two surfaces were dead on arrival — the recap
-card's PR line and the Today card's *"N PR marks this week"*. The hand-written
-`as` cast is precisely what stopped the compiler from pointing at it (`.195`, with
-the type system silenced on purpose).
-
-Counting it honestly turned out not to be available, and the reason is the real
-finding: `isPersonalRecord` — the definition `.208` hardened, which refuses sets
-to failure — runs at log time and `logSet` stores `isPr` on the **active** set.
-But `CompletedWorkoutLog.exercises[].sets` is `{ reps, weight, kind?, rpe? }`.
-**The flag is discarded the moment the session is saved.** The brass chip an
-athlete earns is off the record five seconds later.
-
-Reviving the line therefore means persisting `isPr` through completion, and that
-type syncs to `workout_logs` — a schema change with sync-v2 merge and revision
-consequences, which is a different PR from one about numbers that lie. Deleted,
-with the condition for its return written into a test.
-
-### The guard that proved the formatting of a dead feature
-
-`shareCard.test.ts` built a `WeeklyDebrief` by hand with `train.prs: 2`, then
-asserted the card said *"2 personal records"*. Green for the whole life of the
-bug. It proved the formatting worked and could not notice that no debrief the app
-can produce has ever carried a nonzero `prs` — a fixture supplying the very thing
-production cannot.
-
-### The guards, and two of them were wrong first
-
-New `src/lib/launchTruth.test.ts`, seven rules, discovering rather than
-enumerating (`.220`): no domain rule stated twice with two answers; the dashboard
-imports the basic-complete rule rather than restating it; every reader that
-windows workout history drops tombstones; no cast invents a field nothing writes;
-and the recap card's PR claim is cross-checked against whether `isPr` survives
-completion — so when that changes, the test fails and the line may come back.
-
-Running them is what caught two mistakes of my own:
-
-- The duplicate-name rule returned **18 hits**, nearly all legitimate — `clamp`,
-  `num`, `formatDuration`, and Next's `generateStaticParams`/`generateMetadata`,
-  which every dynamic route is *required* to define. A guard needing an
-  eighteen-entry allowlist is an allowlist wearing a guard's name. Narrowed to
-  what actually bit: both copies must answer about the same **project** type.
-- `/prLine:\s*(?!null)/` matched `prLine: null`, because `\s*` backtracks to zero
-  width and the lookahead is then tested against a space. The identical backtrack
-  `.221` hit on `border-radius: 0` and wrote down — reproduced anyway. The value
-  is captured and tested in code now.
-
-The cast rule's exemptions are all one thing: shapes this repo receives and never
-produces (xAI completions, Open Food Facts, PayPal, Play Billing, Apple Health).
-Each carries `why` + `fixWhen`, and a stale-entry check fails if a file stops
-casting.
-
-Tests 1178→1186.
 
 ---

@@ -172,17 +172,62 @@ test('the visual job fails when it has no baselines', () => {
     .filter((line) => !/^\s*(#|echo\b)/.test(line))
     .join('\n');
 
-  assert.ok(
-    !/--update-snapshots/.test(commands),
-    'the visual step must not write its own baselines — it then re-runs against the files it just wrote and passes with nothing committed'
+  /*
+   * `.254` — the rule used to be "`--update-snapshots` appears nowhere in this
+   * step", and that was too blunt in a way that mattered.
+   *
+   * The loud failure told the reader to run a bootstrap command, and there was
+   * **no way to run it**: this job is the only Linux/Chromium environment the
+   * project has, and baselines generated anywhere else differ by font hinting
+   * and antialiasing alone. So the suite kept zero baselines, and `/` — which
+   * never had one — has been silently self-approving ever since.
+   *
+   * What made the old behaviour a defect was never the flag. It was that the
+   * **default path** wrote its own baselines and then re-read them. So the rule
+   * is now about reachability: the generate may exist, but only behind an
+   * explicit, default-false `workflow_dispatch` input. Scheduled and normal runs
+   * cannot reach it, because a schedule supplies no inputs and the default is
+   * false.
+   */
+  /*
+   * `\n\s*fi\n` and not `\n\s*fi` — the loose version terminated the block on
+   * the `fi` inside `find`, so the capture held one line and the `exit 0` check
+   * below failed against a fragment. A guard reading half the code it is judging
+   * is the same shape as `.221`'s `border-radius: 0` backtrack and `.223`'s
+   * `prLine: null`: third time a lazy quantifier has stopped somewhere plausible
+   * and wrong in this programme.
+   */
+  const guarded = /if \[ "\$\{\{ inputs\.bootstrap_baselines \}\}" = "true" \]; then([\s\S]*?)\n\s*fi\n/.exec(
+    commands
   );
+  const outsideBootstrap = guarded
+    ? commands.slice(0, guarded.index) + commands.slice(guarded.index + guarded[0].length)
+    : commands;
+
+  assert.ok(
+    !/--update-snapshots/.test(outsideBootstrap),
+    'the visual step must not write its own baselines on the default path — it then re-runs against the files it just wrote and passes with nothing committed'
+  );
+  if (/--update-snapshots/.test(commands)) {
+    assert.ok(guarded, 'a generate exists but is not behind the bootstrap_baselines input');
+    assert.match(
+      wf,
+      /bootstrap_baselines:[\s\S]{0,300}?default:\s*false/,
+      'bootstrap_baselines must exist as a workflow_dispatch input and default to false, or the weekly schedule regenerates the baselines it is meant to be checking'
+    );
+    assert.ok(
+      /exit 0/.test(guarded[1]),
+      'the generate must not assert — it writes PNGs for a human to review, and a pass/fail there would be a comparison against files it just wrote'
+    );
+  }
+
   assert.ok(
     !/\|\|\s*true/.test(commands),
     'the visual step must not swallow its exit code'
   );
   assert.ok(
-    /exit 1/.test(step),
-    'missing baselines must fail loudly — a green job over zero baselines is PR #142 wearing a different hat'
+    /exit 1/.test(outsideBootstrap),
+    'missing baselines must fail loudly on the default path — a green job over zero baselines is PR #142 wearing a different hat'
   );
 });
 
