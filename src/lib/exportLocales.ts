@@ -22,6 +22,7 @@ import { leaderboardStringsFor } from '@/i18n/leaderboardLocales';
 import { fitnessTestStringsFor } from '@/i18n/fitnessTestLocales';
 import { assessmentsStringsFor } from '@/i18n/assessmentsLocales';
 import { feedbackStringsFor } from '@/i18n/feedbackLocales';
+import { firstStepsStringsFor } from '@/i18n/firstStepsLocales';
 import { programsStringsFor } from '@/i18n/programsLocales';
 import { libraryStringsFor } from '@/i18n/libraryLocales';
 import { landingStringsFor } from '@/i18n/landingLocales';
@@ -188,6 +189,12 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'feedback',
     filename: 'feedback.json',
     stringsFor: packWrap(feedbackStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'firstSteps',
+    filename: 'first-steps.json',
+    stringsFor: packWrap(firstStepsStringsFor),
     langs: EXPORT_LANGS,
   },
   {

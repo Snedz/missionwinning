@@ -56,6 +56,7 @@ export const LOCALE_FILES = [
   { namespace: 'fitnessTest', filename: 'fitness-test.json' },
   { namespace: 'assessments', filename: 'assessments.json' },
   { namespace: 'feedback', filename: 'feedback.json' },
+  { namespace: 'firstSteps', filename: 'first-steps.json' },
   { namespace: 'programs', filename: 'programs.json' },
   { namespace: 'library', filename: 'library.json' },
   { namespace: 'landing', filename: 'landing.json' },

@@ -229,7 +229,7 @@ export function WorkoutVictorySheet({
             <span className="text-muted-foreground me-1">
               {t('victoryBodyDeltaLabel', { defaultValue: 'What changed' })}
             </span>
-            <span className="text-status-warn/90">
+            <span className="text-status-warn">
               {t('victoryReadinessDelta', {
                 delta:
                   summary.bodyDelta.readiness > 0
