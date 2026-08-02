@@ -92,7 +92,7 @@ Nine mutants now die, including that one.
 ### What this does not claim
 
 It is **not** a proven fix for the `/profile` skeleton-contrast violation seen
-once in `.230` (axe measured `#edecec` on `#f3f2f2`, 1.05:1). That did not
+once in `.250` (axe measured `#edecec` on `#f3f2f2`, 1.05:1). That did not
 reproduce in ~30 throttled runs at CPU rates 1, 6, 20, 40 and 80 — every single
 one reported zero serious/critical violations, including the runs where two
 `aria-busy` regions were demonstrably still on screen.

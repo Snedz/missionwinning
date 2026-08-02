@@ -90,7 +90,7 @@ const GATED_ROUTES = [
  * that were *not* marked were found by writing it down.
  *
  * Honest scope: this closes a real, measurable blind spot. It is **not** a proven
- * fix for the single `/profile` skeleton-contrast violation seen once in `.230` —
+ * fix for the single `/profile` skeleton-contrast violation seen once in `.250` —
  * that failure did not reproduce in ~30 throttled runs, and calling it fixed would
  * be a guess dressed as a result.
  */
