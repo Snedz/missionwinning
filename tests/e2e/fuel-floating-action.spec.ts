@@ -6,7 +6,7 @@ import { seedLegacyOnboarding } from './helpers/journey';
  * The Fuel floating action must not swallow the page's own controls.
  *
  * `/nutrition` renders "Log food" as a viewport-fixed FAB in the bottom-end
- * corner while stacking its secondary actions ("Log weight", "Edit targets",
+ * corner, and used to stack its secondary actions ("Log weight", "Edit targets",
  * "Use base", …) down the same end-aligned column. A fixed overlay owns its
  * viewport rectangle at every scroll offset, so any control sharing that
  * rectangle's x-range disappears underneath it at some point in the scroll —
@@ -19,14 +19,29 @@ import { seedLegacyOnboarding } from './helpers/journey';
  *
  * Page bottom padding is NOT the fix and is not what this guards — the document
  * end already clears the FAB by ~65px. The bug is mid-page collision.
+ *
+ * ## The policy, and why this one
+ *
+ * A control may *share* the column; it may not *be* the column. Concretely:
+ * `overlapPx < width`. A wide control clipped at one edge stays visible and
+ * reachable at every offset. A control narrower than the overlap is somewhere
+ * inside the FAB's x-range entirely, so the offset that brings it level with
+ * the FAB hides 100% of it — which is what "Log weight" shipped.
+ *
+ * Demanding zero overlap instead would make the column a no-go zone and fail
+ * every full-width control on the page (the meal input alone is 295px wide
+ * against a 121px FAB), so it could only ever be a ratchet, never a gate.
+ * Guarding "Log weight" alone would re-guard one bug and none of its siblings —
+ * this same policy caught four live ones the day it was written: "Use base",
+ * "Edit targets", the "Snack" meal tab, and the water stepper's "+".
  */
 
 /** Viewport the bug was reported at; the narrowest layout we support. */
 const MOBILE = { width: 375, height: 812 };
 
-type Control = { label: string; overlapPx: number; x: [number, number] };
+type Control = { label: string; overlapPx: number; width: number; x: [number, number] };
 
-test.describe('Fuel floating action', () => {
+test.describe('Fuel floating action @gate', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
     if (!baseURL) throw new Error('baseURL required');
     const ok = await unlockGate(page, context, baseURL);
@@ -35,7 +50,7 @@ test.describe('Fuel floating action', () => {
     }
   });
 
-  test('no Fuel control shares the floating action’s column', async ({ page }) => {
+  test('no Fuel control disappears into the floating action’s column', async ({ page }) => {
     await page.setViewportSize(MOBILE);
     await seedLegacyOnboarding(page);
     await page.goto('/nutrition', { waitUntil: 'domcontentloaded' });
@@ -61,6 +76,7 @@ test.describe('Fuel floating action', () => {
           return {
             label: (el.textContent || el.getAttribute('aria-label') || el.tagName).trim().slice(0, 40),
             x: [Math.round(r.left), Math.round(r.right)] as [number, number],
+            width: Math.round(r.width),
             overlapPx: Math.round(
               Math.max(0, Math.min(r.right, f.right) - Math.max(r.left, f.left))
             ),
@@ -78,25 +94,14 @@ test.describe('Fuel floating action', () => {
       '"Log weight" must not share the FAB column at any scroll offset'
     ).toBe(0);
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // TODO(founder): decide the policy for the *rest* of the column.
-    //
-    // `controls` currently reports 13 more controls with a non-zero overlapPx
-    // ("Edit targets", "Use base", the meal tabs, "Load from Cloud", …). Write
-    // the assertion that encodes how strict this repo wants to be. Options:
-    //
-    //   a) Only the named control is guarded (delete this block) — narrowest,
-    //      always green, guards only the reported regression.
-    //   b) No control may be *fully* occluded (overlapPx < its own width) —
-    //      tolerates a FAB clipping a wide control's edge, catches the case
-    //      where a small button vanishes entirely. Some current controls fail.
-    //   c) No control may overlap at all (every overlapPx === 0) — strictest,
-    //      turns the whole column into a no-go zone. Fails today until every
-    //      Fuel action is moved, so it is a ratchet, not a gate, unless that
-    //      work lands first.
-    //
-    // Whichever you pick, tag the describe block `@gate` only if it passes —
-    // `npm run gate` is the only thing guarding master while Actions is blocked.
-    // ─────────────────────────────────────────────────────────────────────────
+    // The policy, applied to the whole column: no control may be *fully*
+    // occluded. `width > 0` skips zero-size elements, for which the comparison
+    // would hold vacuously (0 >= 0) and report a control that cannot be hidden
+    // because it is not drawn.
+    const fullyOccluded = controls.filter((c) => c.width > 0 && c.overlapPx >= c.width);
+    expect(
+      fullyOccluded,
+      'these controls lie entirely inside the FAB column and vanish at some scroll offset'
+    ).toEqual([]);
   });
 });
