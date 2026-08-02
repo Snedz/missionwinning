@@ -48,7 +48,7 @@ type CoachStrings = {
   coachWhyHold: string;
   coachWhyHoldHard: string;
   /**
-   * `.232` — restored. Both are emitted by the engine (`loadGuard.ts:42`,
+   * `.252` — restored. Both are emitted by the engine (`loadGuard.ts:42`,
    * `progression.ts:173`) and had **no entry here at all**, so
    * `PlanExerciseLine`'s `i18n.exists(whyKey) ? t(whyKey) : ''` rendered an
    * empty line for a steady week and a plateau deload, in every language. The

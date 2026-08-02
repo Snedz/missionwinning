@@ -5,7 +5,7 @@
  *
  * ## It emits the split shape, because the alternative fights the splitter
  *
- * `.232` — this script used to write, per language, every namespace **plus a
+ * `.252` — this script used to write, per language, every namespace **plus a
  * merged `common.json`**. `split-locale-packs.mjs` enforces the exact opposite:
  * each non-English namespace carries only the keys English puts in it, and
  * `common.json` must not exist (it is that file's `REDUNDANT`).

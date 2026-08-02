@@ -1,7 +1,7 @@
 /**
  * Every reason the coach computes has words to say it with.
  *
- * `.232` — found while making the locale exporter emit the split shape. The
+ * `.252` — found while making the locale exporter emit the split shape. The
  * exporter now derives each namespace from `stringsFor('en')`, which dropped two
  * keys the committed `public/locales/en/coach.json` still carried:
  * `coachWhySteadyWeek` and `coachWhyPlateauDeload`. Both are **live** —
@@ -89,6 +89,6 @@ test('the two keys that were missing are specifically covered', () => {
    */
   const en = englishKeys();
   for (const key of ['coachWhySteadyWeek', 'coachWhyPlateauDeload']) {
-    assert.ok(en.has(key), `${key} lost its English string again — see .232`);
+    assert.ok(en.has(key), `${key} lost its English string again — see .252`);
   }
 });

@@ -6,7 +6,7 @@ Chronological record of shipped work. Newest first.
 
 ---
 
-## 2026-08-01 — The exporter that undid the splitter (`.232`)
+## 2026-08-01 — The exporter that undid the splitter (`.252`)
 
 `npm run export-locales` and `npm run check-locale-split` disagreed **by
 construction**, and the second could never survive the first.

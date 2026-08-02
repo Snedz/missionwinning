@@ -1,7 +1,7 @@
 /**
  * The exporter must emit what the checker wants.
  *
- * `.232` — `export-locale-json.ts` and `split-locale-packs.mjs` used to disagree
+ * `.252` — `export-locale-json.ts` and `split-locale-packs.mjs` used to disagree
  * by construction. The exporter wrote every namespace **plus** a merged
  * `common.json`; the splitter trims each namespace to the English schema and
  * deletes `common.json` as `REDUNDANT`. So one command undid the other, and
