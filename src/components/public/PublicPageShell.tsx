@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { PublicNavMenu } from '@/components/public/PublicNavMenu';
+import { PublicStatusBar } from '@/components/public/PublicStatusBar';
 import { PublicSiteFooter } from '@/components/public/PublicSiteFooter';
 import { footerGroups, primaryNavLinks } from '@/components/marketing/footerLinks';
 
@@ -85,6 +86,7 @@ export function PublicPageShell({
         aria-label="Site"
         className="sticky top-0 z-50 border-b-2 border-border bg-background"
       >
+        <PublicStatusBar />
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-5 sm:h-16">
           <Link href="/" className="flex min-w-0 items-center gap-2.5">
             <BrandMonogram className="h-8 w-8 text-sm sm:h-9 sm:w-9" />

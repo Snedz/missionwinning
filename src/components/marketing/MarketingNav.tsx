@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { BrandMonogram } from '@/components/brand/BrandMonogram';
 import { PublicNavMenu } from '@/components/public/PublicNavMenu';
 import { footerGroups, primaryNavLinks } from '@/components/marketing/footerLinks';
+import { PublicStatusBar } from '@/components/public/PublicStatusBar';
 
 type MarketingNavProps = {
   /** full = site links + primary CTA; compact = logo + primary CTA only */
@@ -28,6 +29,11 @@ export function MarketingNav({ variant = 'full', className }: MarketingNavProps)
         className
       )}
     >
+      <PublicStatusBar
+        label={t('publicStatusOpenBeta', {
+          defaultValue: 'Open beta — the full platform is free while we grow with you',
+        })}
+      />
       <div className="relative z-[1] mx-auto flex h-14 max-w-6xl items-center justify-between px-5 sm:h-16">
         <Link href="/" className="flex items-center gap-2.5 min-w-0">
           <BrandMonogram className="h-8 w-8 text-sm sm:h-9 sm:w-9" />

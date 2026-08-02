@@ -26,6 +26,18 @@ export type MeterBarProps = {
    */
   tone?: 'paper' | 'ink';
   size?: 'sm' | 'md';
+  /**
+   * Draw the track as N discrete cells instead of one continuous fill.
+   *
+   * For counts rather than quantities. "3 of 6 steps" is countable at a glance
+   * when it is three filled squares; as a 50%-wide bar it is a proportion the
+   * reader has to convert back. Fuel targets stay continuous — 132 g of 180 g
+   * genuinely is a proportion, and segmenting it would invent a precision the
+   * number does not have.
+   *
+   * Ignored when `over` is set: a segmented bar has no way to show 120%.
+   */
+  segments?: number;
   className?: string;
 };
 
@@ -44,6 +56,7 @@ export function MeterBar({
   over = false,
   tone = 'paper',
   size = 'md',
+  segments,
   className,
 }: MeterBarProps) {
   const onInk = tone === 'ink';
@@ -51,6 +64,7 @@ export function MeterBar({
   const clamped = Math.max(0, Math.min(safeMax, value));
   const pct = (clamped / safeMax) * 100;
   const isOver = over && value > safeMax;
+  const segmented = !!segments && segments > 0 && !isOver;
 
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
@@ -78,7 +92,7 @@ export function MeterBar({
       <div
         className={cn(
           'w-full',
-          onInk ? 'bg-neutral-700' : 'bg-neutral-300',
+          segmented ? 'flex gap-1 bg-transparent' : onInk ? 'bg-neutral-700' : 'bg-neutral-300',
           size === 'sm' ? 'h-1.5' : 'h-2'
         )}
         role="progressbar"
@@ -88,13 +102,34 @@ export function MeterBar({
         aria-valuemax={Math.round(safeMax)}
         aria-valuetext={readout}
       >
-        <div
-          className={cn(
-            'h-full transition-[width] duration-500 ease-out motion-reduce:transition-none',
-            isOver ? 'bg-accent-700' : onInk ? 'bg-accent-400' : 'bg-primary-fill'
-          )}
-          style={{ width: `${isOver ? 100 : pct}%` }}
-        />
+        {segmented ? (
+          // Each cell is its own track, so an empty checklist still draws six
+          // squares — the reader can see how long the list is before starting it,
+          // which a 0%-wide continuous fill cannot show.
+          Array.from({ length: segments }, (_, i) => (
+            <span
+              key={i}
+              className={cn(
+                'h-full flex-1',
+                i < Math.round((clamped / safeMax) * segments)
+                  ? onInk
+                    ? 'bg-accent-400'
+                    : 'bg-primary-fill'
+                  : onInk
+                    ? 'bg-neutral-700'
+                    : 'bg-neutral-300'
+              )}
+            />
+          ))
+        ) : (
+          <div
+            className={cn(
+              'h-full transition-[width] duration-500 ease-out motion-reduce:transition-none',
+              isOver ? 'bg-accent-700' : onInk ? 'bg-accent-400' : 'bg-primary-fill'
+            )}
+            style={{ width: `${isOver ? 100 : pct}%` }}
+          />
+        )}
       </div>
     </div>
   );

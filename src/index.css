@@ -230,10 +230,19 @@
     @apply border-l border-border;
   }
 
+  /* `.240` — the selected segment is `is-active-tab`, not a red fill.
+     This shipped as `bg-primary-fill` and was never used by anything, while
+     `MobileNav` and `FuelLogSheet` drew the same state as tint + a 2px poster
+     rule. Four definitions of one question ("what does selected look like")
+     with two different answers, two of them red. Red is the one do-this-now
+     action; a tab is a place, not an action. */
   .seg-opt[aria-checked='true'],
+  .seg-opt[aria-selected='true'],
   .seg-opt[data-state='on'],
+  .seg-opt[data-state='active'],
   .seg-opt:has(input:checked) {
-    @apply bg-primary-fill text-primary-foreground;
+    @apply bg-accent-100 text-primary;
+    box-shadow: inset 0 2px 0 0 hsl(var(--accent-poster));
   }
 
   .seg-opt:not([aria-checked='true']):not([data-state='on']):not(:has(input:checked)):hover {
@@ -665,7 +674,12 @@
 
 .magazine-screen-bar {
   border-bottom: 1px solid var(--mag-rule);
-  background: hsl(0 0% 100%);
+  /* `.244` — was `hsl(0 0% 100%)`. The `--background` token says it outright:
+     "paper #f3f2f2 — the only ground, never pure white". A sixth leftover in
+     the block `.221` cleaned, and it survived that pass for the same reason
+     the chart whites did: the rule matched hex, and this is `hsl()`. Chrome
+     over paper reads as the card surface, not as a brighter paper. */
+  background: hsl(var(--card));
 }
 
 .magazine-screen-bar-inner {
