@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { gateRequired, unlockGate } from './helpers/gate';
+import { seedLegacyOnboarding } from './helpers/journey';
 
 test.describe('Growth surfaces', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
@@ -52,8 +53,25 @@ test.describe('Growth surfaces', () => {
     expect(attr.utm_campaign).toBe('wave8');
   });
 
+  /*
+   * `.257` — this navigated to `/profile` and landed on the I-Day welcome
+   * screen, so it was asserting against onboarding rather than the profile.
+   * The received body was *"Welcome — I-Day … Set your path, then log your
+   * first session"*.
+   *
+   * Every other spec that needs a signed-in screen calls `seedLegacyOnboarding`
+   * first; this describe block never did, and nothing said so because
+   * `e2e:critical` had never run. Seeding is what makes the test about the
+   * referral card instead of about the redirect.
+   */
   test('profile signed-out shows referral invite card', async ({ page }) => {
+    await seedLegacyOnboarding(page);
     await page.goto('/profile', { waitUntil: 'domcontentloaded' });
+    expect(
+      new URL(page.url()).pathname,
+      'still being redirected away from /profile — the seed did not take, and the ' +
+        'assertion below would be measuring onboarding again'
+    ).toBe('/profile');
     await expect(page.locator('body')).toContainText(
       /invite a friend|invita|code|sign in|iniciar/i
     );

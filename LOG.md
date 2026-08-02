@@ -10,6 +10,124 @@ Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md)
 
 ---
 
+## 2026-08-01 — The suite that had never run (`.257`)
+
+`ci-extended`'s `e2e-critical` job executed for the first time on 2026-08-01 and
+failed **8** tests. One was `.249`, fixed on #182. These are the other seven.
+
+All seven reproduce locally against a build carrying the exact CI env, so none
+of them is container flakiness — `.224` records me calling three failures that
+when one was a real deterministic bug, and this time the reproduction came
+first. None of them is a product defect either. Every one is the **suite**
+describing a product the repo stopped shipping.
+
+The mechanical reason they all rotted together: `ci.yml` runs `e2e:gate`
+(`@gate`-tagged only), and `e2e:critical` — everything except `@a11y`/`@visual`
+— lives in the billing-blocked extended workflow. These assertions had never
+been compared against the app.
+
+### Three premium routes answered 200, and that is correct
+
+```
+Expected 401/403 for /api/premium/recipes, got 200
+Expected 401/403 for /api/premium/programs, got 200
+Expected 401/403 for /api/premium/fuel-plan, got 200
+premium status: expected false, received true
+```
+
+```ts
+// src/lib/premiumServer.ts:29
+export function isPremiumBypassEnabled(): boolean {
+  return isDemoPremiumEnabled() || isFreeBetaPremiumUnlocked();
+}
+
+// src/lib/freeBeta.ts:14 — the default is the whole story
+export function isFreeBeta(): boolean {
+  const raw = process.env.NEXT_PUBLIC_FREE_BETA?.trim().toLowerCase();
+  if (raw === '0' || raw === 'false' || raw === 'off') return false;
+  if (raw === '1' || raw === 'true' || raw === 'on') return true;
+  return true;
+}
+```
+
+`NEXT_PUBLIC_FREE_BETA` is unset in every environment that has not opted out, so
+depth is unlocked for everyone. That is the documented free-beta decision, and
+the tests were asserting the pre-beta contract.
+
+**Skipping under free beta was the easy answer and the wrong one.** The paywall
+would then be untested in the state it eventually ships in, and the day the beta
+ends nothing would tell anyone the gate had not come back — a check that stops
+existing exactly when it starts mattering.
+
+So the expectation is read from the app rather than guessed from an env var the
+test process cannot see anyway (`NEXT_PUBLIC_*` is inlined at build time, so a
+spec reading it reads its own environment, not the server's). `/api/premium/status`
+already names its own reason:
+
+```
+free beta on   → {"premium":true,"source":"free_beta"}   → routes must serve 200
+free beta off  → {"premium":false,"source":"anonymous"}  → routes must 401/403
+```
+
+**Verified in both states, which is the part that matters:**
+
+| build | `/api/premium/status` | `/api/premium/recipes` | premium-gate |
+|---|---|---|---|
+| default (free beta on) | `premium:true, source:free_beta` | 200 | 4/4 pass |
+| `NEXT_PUBLIC_FREE_BETA=false` | `premium:false, source:anonymous` | **403** | 4/4 pass |
+
+The second row is the first time this product's paywall has been executed by a
+test at all.
+
+The status case also asserted `premium === false` flatly, against an allowlist
+(`anonymous`, `unconfigured`, `free`) that never contained `free_beta`. Both
+halves described the old product. The two fields are now checked against each
+other: the source must be one the repo knows about, and the boolean must be what
+that source implies. An anonymous caller entitled for a reason the endpoint does
+not name still fails, which is what the test was written to catch.
+
+### A test that asserted a hidden element was visible
+
+```
+Locator: locator('a[href="/welcome"]').first()
+Expected: visible
+Received: hidden
+  14 × locator resolved to <a href="/welcome" class="hidden … md:inline">Start free</a>
+```
+
+`/exercises/squats` has three `/welcome` links. The first in DOM order is the
+desktop nav's, and every project in `playwright.config.ts` is mobile-chrome at
+375px — so `.first()` selected a `display: none` element and then asserted it was
+visible. `:visible` also makes the assertion say what it means: a reachable route
+to `/welcome`, not a `/welcome` string somewhere in the markup.
+
+### A test that was measuring onboarding
+
+`growth.spec.ts:55` navigated to `/profile` and asserted on the body. The body it
+got was *"Welcome — I-Day · … Set your path, then log your first session"* — the
+onboarding screen, because the block never called `seedLegacyOnboarding` the way
+every other spec needing a signed-in screen does.
+
+Seeded, plus an explicit landing-path assertion, so the next redirect fails
+loudly rather than silently retargeting the test at a different page.
+
+### A heading that lost a word
+
+`premium-pillars.spec.ts:15` asserted `/^free guided sessions$/i`. The heading is
+**"Guided sessions"**; "Free" now lives in the body copy beneath it (*"Free
+guided patterns — no audio required"*). The player assertion above it passed the
+whole time.
+
+Kept anchored rather than loosened to a substring: `/guided/` also matches
+"Browse guided sessions" and "Try a guided session", both links elsewhere on the
+page, and an assertion that cannot tell a section heading from a call to action
+is not asserting the section exists.
+
+### Result
+
+`15 passed · 7 failed` → **`22 passed · 1 skipped · 0 failed`**, against a real
+server built with the CI env.
+
 ## 2026-08-01 — Opacity is not a state, it is a contrast reduction (`.256`)
 
 > **Merge correction, written when this branch landed.** `.240` reached `master`
@@ -1295,125 +1413,5 @@ unchanged; per-kind mute, quiet hours and snooze do not exist; the notification
 SW still ships one icon and no actions.
 
 Tests 1233→1237. i18n coverage cap 710→709. Locale namespaces 30→31.
-
----
-
-## 2026-08-02 — The language switcher half the app ignores (`.242`)
-
-`.241` closed by naming two functions as unfinished business: *"`utils.formatDate`
-and `benchmarks.formatChartDate` still pass `undefined` as the locale, so they
-follow the browser rather than the app's language switcher."* Measuring before
-fixing turned two into **42 sites across 22 files**, plus **17 `localeCompare`
-calls in 12** — in a product shipping **fifteen languages including Arabic**.
-
-### An argument you reach by not passing one
-
-`Intl` formatting consults the ambient locale whenever the first argument is
-missing, and `undefined` is a *legal value that means exactly that*. So
-`d.toLocaleDateString()` and `d.toLocaleDateString(undefined, {…})` are the same
-call, and neither looks like a mistake at the call site. An athlete who set the app
-to Spanish got Spanish copy, Spanish nav, Spanish pillar names — and **`8/2/2026`
-with `1,234` separators**. In German every grouped number on every screen was
-wrong; in Hindi the *shape* was wrong, since `12,34,567` groups in lakh.
-
-The repo already had the right answer and had used it once: `HistoryCalendar`,
-written last wave, derives its month name from `i18n.language` and its header
-explains why. One correct implementation, a lone island, and `.178`'s definition
-of a missing home.
-
-**The fix is a required positional.** `formatLocalDate(iso, lang)` in the new
-[`lib/i18n/formatLocale.ts`](src/lib/i18n/formatLocale.ts) does not accept an
-optional language, because *the defect is an optional first argument* and an
-optional first argument cannot be its own fix. The compiler now catches call site
-43 before any scan has to; `useLocaleFormat()` binds it once per component so
-complying costs nothing, which is the difference between a rule that holds and one
-people route around. `utils.formatDate` ended the wave with **zero call sites** and
-was deleted — `.222`'s precedent, dead code kept alive by its importers.
-
-### Closing the list on the right axis
-
-`.212` earned this repo's rule — *a guard keyed to one spelling of a defect has
-only ever tested that spelling* — by closing its own list on the wrong axis: it
-enumerated ways to **slice** an ISO string and so never saw the ways to **compare**
-one, missing fifteen sites. So [`localeFormat.test.ts`](src/lib/i18n/localeFormat.test.ts)
-closes on *"how does a value reach the browser locale"*, and JavaScript has exactly
-three doors: the three `toLocale*String` methods, any `Intl.*` constructor, and
-`localeCompare`. `Intl` is matched as `new Intl.<anything>(` rather than by name,
-so a constructor TC39 adds next year cannot slip through the way a name list would
-— and the mutant proving it uses `new Intl.NumberFormat()`, **a spelling no file in
-this repo actually contained**, which is the test `.212` says to run.
-
-### The sort that claimed to be linguistic
-
-Seventeen `localeCompare` calls, and **thirteen were ordering `YYYY-MM-DD` keys and
-ISO timestamps** — a linguistic comparison of strings containing no language, which
-cannot return anything `<` would not, and pays for a collator to say so (`.210`
-clocked one of these running per tick on `/active`). Those became `compareKeys`.
-Two were leaderboard **tiebreaks**, where the requirement is that a rank not move
-with the viewer's language — also `compareKeys`, and a quiet defect fixed on the
-way. Only two sort actual language and take a locale. The rule is therefore
-absolute with **no allowlist**, which is the strongest form available: an allowlist
-that fills up has replaced the rule it was meant to enforce.
-
-**Four surfaces are English and only English** — the nudge email, the session
-debrief, the share card, the school report — and their numbers now say so through
-`EN_ONLY_SURFACE` rather than by accident. Before this, a German browser rendered
-`1.234` *inside a hardcoded English sentence*: not localisation, just the one token
-in ninety disagreeing with its neighbours.
-
-### `.241` was wrong about `/mind`, and the ratchet is what said so
-
-D8 recorded `/mind`'s 34 red actions as *"one Start per guided-session card — class
-2, and precisely why /mind is a card farm rather than a screen"*, framing a screen
-redesign. It was **one line**: `GuidedStepPlayer` hardcoded `variant="fitness"`, and
-both callers render `compact` in a grid, so ten mind sessions and every Move flow
-inherited it. Demoted to `outline` — and `outline` rather than the ink variants
-because that card is only ink while *running*, and Start renders only when idle, on
-paper; `onInkSolid` there would be near-white on paper, `.155`'s 1.01:1 defect in
-the other palette. **`/mind` 34 → 2.**
-
-That correction exists because the sweep **fails when a route comes in under its
-cap**. A ratchet that only catches regressions is half a ratchet: the fix would
-otherwise have landed as a still-green run with the wrong story still filed beside
-the number. The story had been written from source and never measured — the shape
-this repo keeps paying for.
-
-### The twin doc that had a guard, and the one that did not
-
-`LOG.md`'s header and `CLAUDE.md` §7 have both said *"≤15 entries / ≤20KB"* since
-they were written, and **nothing ever checked it**: the only automated reader is
-`check-build-label.mjs`, which asks whether the current version is *mentioned*. The
-file had reached **27 entries / 127,015 bytes** — 6.4× the byte rule. One file over,
-`CONTEXT.md`'s `## Now` has `contextBudget.test.ts` and was inside budget. Same
-repo, same rule, same archive directory; the checked twin stayed honest and the
-unchecked one drifted 6×. `.221` in the docs lane.
-
-**And the rule could never have been met.** Entries here average ~5.6KB because the
-house style explains the defect class rather than naming the change — the most
-valuable thing in this repo. Fifteen of those is ~84KB; obeying 20KB would mean
-keeping **three**. An unmeetable rule is not a strict rule, it is an ignored one.
-So the count stays a hard cap, `.200`–`.211` rotate to the archive, and the size
-becomes a **ratchet** in `bundle-budget`'s shape: the file may shrink, never grow.
-[`logBudget.test.ts`](src/lib/logBudget.test.ts) also checks that rotation
-**archived** rather than deleted, deriving the boundary from the files so it keeps
-checking the current one — `.213`'s lesson, that a budget guard counting without
-checking content will let you archive the truth.
-
-**A third instance of a familiar own-goal:** that guard's first draft failed on
-`LOG.md`'s own sentence explaining that the 20KB figure was retired — after `.241`
-did the identical thing twice. `check-design-system` wrote the rule down once
-already: *a guard that punishes documented reasoning gets switched off.* It now
-reads the rule line, not the prose beneath it.
-
-**Not done, named:** `variant="fitness"` is byte-identical to `default`; its
-docblock says *"10+ call sites, fold in at the Phase 3 recut"* and there are **56**,
-across 45 files — the count is recorded, the fold left to the recut its author
-conditioned it on. `toFixed` is a fourth locale hazard the guard **cannot** see
-(it is not ambient — it hardcodes `.` as the decimal separator, so `4.2k` reads as
-four hundred and twenty in German); ~60 call sites, several feeding values back
-into inputs, so it is named rather than swept. Class-2 red debt still stands at
-`/coach` 4, `/profile` 4, `/track` 3, `/builder` 3.
-
-Tests 1215→1233. `/mind` 34→2. LOG 27 entries/127KB → 15/84KB.
 
 ---
