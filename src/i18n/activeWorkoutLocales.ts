@@ -64,6 +64,14 @@ type ActiveWorkoutStrings = {
   /** Bodyweight load token when stored weight is 0 (not "0 kg"). */
   activeSetBodyweight: string;
   activeSetBodyweightAddLoad: string;
+  /** Console progressive-overload strip (last · next · why). */
+  activeOverloadLastLabel: string;
+  activeOverloadNextLabel: string;
+  activeOverloadAddReps: string;
+  activeOverloadAddWeight: string;
+  activeOverloadHold: string;
+  activeOverloadFromLast: string;
+  activeOverloadPrescribed: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -127,12 +135,26 @@ const en: ActiveWorkoutStrings = {
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — next exercise in superset',
   activeSetBodyweight: 'BW',
   activeSetBodyweightAddLoad: 'Bodyweight — tap to add load',
+  activeOverloadLastLabel: 'Last',
+  activeOverloadNextLabel: 'Next',
+  activeOverloadAddReps: 'Add a rep',
+  activeOverloadAddWeight: 'Add weight',
+  activeOverloadHold: 'Hold',
+  activeOverloadFromLast: 'From last time',
+  activeOverloadPrescribed: 'Coach plan',
 };
 
 const es: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'Sesión en vivo',
   activeCoachSessionEyebrow: 'Sesión Mission Coach',
+  activeOverloadLastLabel: 'Última',
+  activeOverloadNextLabel: 'Siguiente',
+  activeOverloadAddReps: 'Suma una rep',
+  activeOverloadAddWeight: 'Sube el peso',
+  activeOverloadHold: 'Mantén',
+  activeOverloadFromLast: 'De la última vez',
+  activeOverloadPrescribed: 'Plan del coach',
   activeElapsed: 'Transcurrido',
   activeSetsLabel: 'Series',
   activeNoWorkout: 'Sin entrenamiento activo',
@@ -174,6 +196,13 @@ const fr: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'Séance en direct',
   activeCoachSessionEyebrow: 'Séance Mission Coach',
+  activeOverloadLastLabel: 'Dernière',
+  activeOverloadNextLabel: 'Prochaine',
+  activeOverloadAddReps: 'Ajoute une rep',
+  activeOverloadAddWeight: 'Augmente la charge',
+  activeOverloadHold: 'Maintiens',
+  activeOverloadFromLast: 'De la dernière fois',
+  activeOverloadPrescribed: 'Plan coach',
   activeElapsed: 'Écoulé',
   activeSetsLabel: 'Séries',
   activeNoWorkout: 'Aucun entraînement actif',
@@ -291,6 +320,13 @@ const de: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'Live-Einheit',
   activeCoachSessionEyebrow: 'Mission-Coach-Einheit',
+  activeOverloadLastLabel: 'Zuletzt',
+  activeOverloadNextLabel: 'Als Nächstes',
+  activeOverloadAddReps: 'Eine Wiederholung mehr',
+  activeOverloadAddWeight: 'Gewicht erhöhen',
+  activeOverloadHold: 'Halten',
+  activeOverloadFromLast: 'Vom letzten Mal',
+  activeOverloadPrescribed: 'Coach-Plan',
   activeElapsed: 'Verstrichen',
   activeSetsLabel: 'Sätze',
   activeNoWorkout: 'Kein aktives Training',
@@ -367,6 +403,18 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeCoachSessionEyebrow: 'Sessão Mission Coach',
     activeElapsed: 'Decorrido',
     activeSetsLabel: 'Séries',
+    activeRestAdd15: '+15 s',
+    activeRestSub15: '−15 s',
+    activeSwapEyebrow: 'Este exercício',
+    activeSwapTitle: 'Trocar exercício',
+    activeSwapPlaceholder: 'Trocar por… (mesmos músculos primeiro)',
+    activeOverloadLastLabel: 'Última',
+    activeOverloadNextLabel: 'Próxima',
+    activeOverloadAddReps: 'Mais uma rep',
+    activeOverloadAddWeight: 'Aumentar carga',
+    activeOverloadHold: 'Manter',
+    activeOverloadFromLast: 'Da última vez',
+    activeOverloadPrescribed: 'Plano do coach',
   },
   it: {
     ...en,
@@ -376,6 +424,13 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeCoachSessionEyebrow: 'Sessione Mission Coach',
     activeElapsed: 'Trascorso',
     activeSetsLabel: 'Serie',
+    activeOverloadLastLabel: 'Ultima',
+    activeOverloadNextLabel: 'Prossima',
+    activeOverloadAddReps: 'Aggiungi una rep',
+    activeOverloadAddWeight: 'Aumenta il carico',
+    activeOverloadHold: 'Mantieni',
+    activeOverloadFromLast: "Dall'ultima volta",
+    activeOverloadPrescribed: 'Piano coach',
   },
   ko: {
     ...en,
