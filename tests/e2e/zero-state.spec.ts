@@ -99,7 +99,7 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   '/library': { cap: 0, why: 'Clean.' },
   '/programs': { cap: 0, why: 'Was 2 — both were selected filter chips. `variant="selected"` fixed it.' },
 
-  '/move': { cap: 1, why: 'Was 2. One "Start Flow" on the first flow card remains — class 2.' },
+  '/move': { cap: 0, why: 'Was 1 — first-card Start Flow demoted to outline (Loop 3 M5). EmptyState CTA stays outline.' },
   '/assessments': { cap: 1, why: 'Was 2 — the stage chip was a selection. Submit is the one action.' },
 
   '/nutrition': {

@@ -279,6 +279,33 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 3 M5 — TimedFlowRunner is the live Move state. Zero-data /move never
+   * starts a flow; axe must see the runner chrome after Start Flow.
+   */
+  test('axe serious/critical: /move with a flow running @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/move', { waitUntil: 'domcontentloaded' });
+    const start = page.getByRole('button', { name: /start flow/i }).first();
+    await expect(start).toBeVisible({ timeout: 15_000 });
+    await start.click();
+    // TimedFlowRunner mounts GuidedStepPlayer idle — Start is the live-state chrome
+    // zero-data /move never reaches.
+    await expect(page.getByRole('button', { name: /^(start|start session)$/i }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await axeSerious(page, '/move (flow running)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

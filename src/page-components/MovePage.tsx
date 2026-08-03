@@ -105,7 +105,7 @@ export function MovePage() {
                 {flow.durationMin} min · {flow.steps.length} steps
               </span>
               <Button
-                variant={!accent && i === 0 ? 'default' : 'outline'}
+                variant="outline"
                 size="sm"
                 onClick={() => setActiveFlowId(flow.id)}
               >
