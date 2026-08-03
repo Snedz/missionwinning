@@ -3,8 +3,10 @@ import assert from 'node:assert/strict';
 import {
   computeReentry,
   daysSinceLastSession,
+  doseScalePercent,
   easedSetCount,
   REENTRY_MIN_DAYS,
+  scaleExercisesByDose,
 } from '@/lib/reentry';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -95,5 +97,23 @@ test('reentry', async (t) => {
     assert.equal(easedSetCount(0, 0.5), 0);
     assert.equal(easedSetCount(5, 1), 5, 'no easing means no change');
     assert.ok(easedSetCount(5, 1.5) <= 5, 'easing must never increase the ask');
+  });
+
+  await t.test('scaleExercisesByDose trims sets when returning', () => {
+    const exercises = [
+      {
+        exerciseId: 'bench',
+        sets: [
+          { reps: 5, weight: 100 },
+          { reps: 5, weight: 100 },
+          { reps: 5, weight: 100 },
+          { reps: 5, weight: 100 },
+        ],
+      },
+    ];
+    const scaled = scaleExercisesByDose(exercises, 0.5);
+    assert.equal(scaled[0].sets.length, 2);
+    assert.equal(scaleExercisesByDose(exercises, 1)[0].sets.length, 4);
+    assert.equal(doseScalePercent(0.7), 70);
   });
 });

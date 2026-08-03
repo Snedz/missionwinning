@@ -10,6 +10,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { loadCoachTodayOptional } from '@/lib/coach/loadCoachTodayOptional';
 import { track } from '@/lib/analytics';
+import { scaleExercisesByDose } from '@/lib/reentry';
 
 type StartWorkoutFn = (
   name: string,
@@ -27,6 +28,11 @@ export type TodayPrimaryActionOpts = {
   equipment: string;
   /** When true, treat basic phase train-ready like lean (href /active or startWorkout or basic). */
   includeBasicJustGo?: boolean;
+  /**
+   * Re-entry dose from `computeReentry` (1 = full). When &lt; 1, Just Go / plan
+   * starts with fewer sets so the first session back is finishable.
+   */
+  doseScale?: number;
   startWorkout: StartWorkoutFn;
   navigate: (href: string) => void;
 };
@@ -41,9 +47,14 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
     units,
     equipment,
     includeBasicJustGo = false,
+    doseScale = 1,
     startWorkout,
     navigate,
   } = opts;
+
+  const applyDose = <T extends { sets: { reps: number; weight: number }[] }>(
+    exercises: T[]
+  ): T[] => scaleExercisesByDose(exercises, doseScale);
 
   if (hasActiveWorkout) {
     navigate('/active');
@@ -70,18 +81,25 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
       coachToday,
     });
     if (session.exercises.length > 0) {
-      startWorkout(session.name, session.exercises);
-      track('just_go_started', { source: session.source, focus: session.focusGroup });
+      const exercises = applyDose(session.exercises);
+      startWorkout(session.name, exercises);
+      track('just_go_started', {
+        source: session.source,
+        focus: session.focusGroup,
+        doseScale,
+      });
       navigate('/active');
       return;
     }
     if (action.startWorkout) {
       startWorkout(
         action.startWorkout.name,
-        action.startWorkout.exercises.map((e) => ({
-          exerciseId: e.exerciseId,
-          sets: e.sets,
-        }))
+        applyDose(
+          action.startWorkout.exercises.map((e) => ({
+            exerciseId: e.exerciseId,
+            sets: e.sets,
+          }))
+        )
       );
       navigate('/active');
       return;
@@ -93,10 +111,12 @@ export async function runTodayPrimaryAction(opts: TodayPrimaryActionOpts): Promi
   if (action.startWorkout) {
     startWorkout(
       action.startWorkout.name,
-      action.startWorkout.exercises.map((e) => ({
-        exerciseId: e.exerciseId,
-        sets: e.sets,
-      }))
+      applyDose(
+        action.startWorkout.exercises.map((e) => ({
+          exerciseId: e.exerciseId,
+          sets: e.sets,
+        }))
+      )
     );
     navigate('/active');
     return;

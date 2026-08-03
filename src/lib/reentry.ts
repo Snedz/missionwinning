@@ -85,3 +85,24 @@ export function easedSetCount(usual: number, doseScale: number): number {
   if (usual <= 1) return usual;
   return Math.max(1, Math.min(usual, Math.round(usual * doseScale)));
 }
+
+/**
+ * Apply re-entry dose to a planned exercise list (Just Go or coach day).
+ * Trims trailing planned sets so the first session back is finishable.
+ * Pure — no React; unit-tested.
+ */
+export function scaleExercisesByDose<
+  T extends { sets: unknown[] },
+>(exercises: T[], doseScale: number): T[] {
+  if (!(doseScale > 0) || doseScale >= 1) return exercises;
+  return exercises.map((ex) => {
+    const n = easedSetCount(ex.sets.length, doseScale);
+    if (n >= ex.sets.length) return ex;
+    return { ...ex, sets: ex.sets.slice(0, n) };
+  });
+}
+
+/** Percent label for UI (70, 50) — never invents precision beyond the scale. */
+export function doseScalePercent(doseScale: number): number {
+  return Math.round(Math.min(1, Math.max(0, doseScale)) * 100);
+}

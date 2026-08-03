@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import type { Reentry } from '@/lib/reentry';
+import { doseScalePercent } from '@/lib/reentry';
 
 /**
  * Coming-back surface for Today.
@@ -9,10 +10,15 @@ import type { Reentry } from '@/lib/reentry';
  * No streak-loss framing, no "you missed 6 days", no guilt mechanics — the point is
  * to make the next session smaller and obviously worth starting. Deliberately plain:
  * a returning user does not need a celebration, they need one easy decision.
+ *
+ * `.286`: copy names the real dose (`doseScale`) because the primary CTA now
+ * trims sets to match — the card must not promise lighter without applying it.
  */
 export function TodayReentryCard({ reentry }: { reentry: Reentry }) {
   const { t } = useTranslation();
   if (!reentry.show) return null;
+
+  const pct = doseScalePercent(reentry.doseScale);
 
   const title =
     reentry.tone === 'lapsed'
@@ -22,17 +28,20 @@ export function TodayReentryCard({ reentry }: { reentry: Reentry }) {
   const body =
     reentry.tone === 'lapsed'
       ? t('todayReentryLapsedBody', {
+          pct,
           defaultValue:
-            "It's been a while, so today starts fresh — a short session, nothing to catch up on.",
+            "It's been a while — today's session starts at about {{pct}}% of usual size. Nothing to catch up on.",
         })
       : reentry.tone === 'long-gap'
         ? t('todayReentryLongBody', {
+            pct,
             defaultValue:
-              "Coach trimmed today's session so the first one back is easy to finish. Your history is all still here.",
+              "Today's session is about {{pct}}% of usual so the first one back is easy to finish. Your history is still here.",
           })
         : t('todayReentryBody', {
+            pct,
             defaultValue:
-              "Today's session is a little lighter than usual. Get it done and the week rebuilds itself.",
+              "Today's session is about {{pct}}% of usual sets. Get it done and the week rebuilds itself.",
           });
 
   return (
