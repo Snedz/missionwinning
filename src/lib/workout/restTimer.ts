@@ -1,10 +1,20 @@
-/** Rest timer helpers — Strong/Hevy-style smart defaults. */
+/**
+ * Rest timer helpers — Strong/Hevy-style smart defaults.
+ *
+ * `.292` — one fallback everywhere. The store used to default `startRestTimer()`
+ * to **30s** while this module and the rest dock initial state used **90s**. A
+ * bare `startRestTimer()` (or a future caller that omits seconds) was half a
+ * Hevy rest — wrong for compounds and inconsistent with the preset strip.
+ */
 
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw, writeRaw } from '@/lib/storage/safeStorage';
 
 export const REST_PRESETS = [60, 90, 120, 180] as const;
 export type RestPreset = (typeof REST_PRESETS)[number];
+
+/** Single fallback when no user preset and no exercise suggestion applies. */
+export const FALLBACK_REST_SECONDS = 90;
 
 const DEFAULT_REST_KEY = STORAGE_KEYS.defaultRestSec;
 
@@ -17,14 +27,14 @@ export function getSuggestedRestSeconds(exerciseName: string): number {
   const name = exerciseName.toLowerCase();
   if (COMPOUND_KEYWORDS.some((k) => name.includes(k))) return 180;
   if (ISOLATION_KEYWORDS.some((k) => name.includes(k))) return 60;
-  return 90;
+  return FALLBACK_REST_SECONDS;
 }
 
 export function loadDefaultRestSeconds(): number {
   const raw = readRaw(DEFAULT_REST_KEY);
   const n = raw ? parseInt(raw, 10) : NaN;
   if (Number.isFinite(n) && n >= 15 && n <= 600) return n;
-  return 90;
+  return FALLBACK_REST_SECONDS;
 }
 
 export function saveDefaultRestSeconds(seconds: number): void {
@@ -36,6 +46,18 @@ export function resolveRestSeconds(exerciseName: string): number {
   const suggested = getSuggestedRestSeconds(exerciseName);
   const userDefault = loadDefaultRestSeconds();
   return Math.max(suggested, userDefault);
+}
+
+/**
+ * Seconds to start the dock with.
+ * Explicit positive duration wins (capped, not floored — short rests are valid);
+ * otherwise the athlete's saved default (or FALLBACK_REST_SECONDS).
+ */
+export function resolveStartRestSeconds(seconds?: number): number {
+  if (typeof seconds === 'number' && Number.isFinite(seconds) && seconds > 0) {
+    return Math.min(600, Math.max(1, Math.round(seconds)));
+  }
+  return loadDefaultRestSeconds();
 }
 
 export function formatRestClock(seconds: number): string {
