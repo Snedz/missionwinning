@@ -65,6 +65,7 @@ import {
   getLastSessionSets,
   nextSetInput,
   priorCompletedInExercise,
+  rankSwapCandidates,
   resolveSetInput,
   sessionIsCoachPrescribed,
   sessionSetStats,
@@ -570,14 +571,9 @@ export function ActiveWorkoutPage() {
             if (!exercise) return null;
             const swapCandidates =
               swapOpenIdx === exIdx
-                ? [...EXERCISES]
-                    .filter((e) => e.id !== exLog.exerciseId)
-                    .sort((a, b) => {
-                      const aShared = a.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
-                      const bShared = b.muscleGroups.some((m) => exercise.muscleGroups.includes(m));
-                      if (aShared !== bShared) return aShared ? -1 : 1;
-                      return compareText(a.name, b.name, fmt.lang);
-                    })
+                ? rankSwapCandidates(EXERCISES, exercise, (a, b) =>
+                    compareText(a, b, fmt.lang)
+                  )
                 : [];
 
             return (

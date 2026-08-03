@@ -275,7 +275,7 @@ export function ProgramTemplatesPanel({
           {t('builderStyleFilter', { defaultValue: 'Style:' })}
         </span>
         {(["", "strength", "hypertrophy", "conditioning", "corrective"] as const).map((tag) => (
-          <Button key={tag || "all"} size="sm" variant={tagFilter === tag ? "default" : "outline"}
+          <Button key={tag || "all"} size="sm" variant={tagFilter === tag ? "selected" : "outline"}
             className="h-7 text-xs"
             onClick={() => setTagFilter(tag)}
           >
@@ -348,7 +348,7 @@ export function ProgramTemplatesPanel({
               })}
             </SelectContent>
           </Select>
-          <Button variant="default" onClick={handleQuickLoad} disabled={!quickPick}>
+          <Button variant="outline" onClick={handleQuickLoad} disabled={!quickPick}>
             {t('builderQuickLoadButton', { defaultValue: 'Load into builder' })}
           </Button>
         </div>

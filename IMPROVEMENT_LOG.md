@@ -7,43 +7,50 @@ PR: #234
 
 ## Contract
 
-- Steal Pump *structure/behavior* already documented; never chrome (dark mode, radius, glow FAB).
-- Horizon W craft window; refuse new pillars / Habits tab / landing redesign / durable pause-restart.
+- Steal Pump *structure/behavior* already documented; never chrome.
+- Horizon W craft window; refuse new pillars / Habits / landing redesign / pause-restart.
 - Commit frequently; ship protocol on each web ship.
-- If screenshots arrive mid-loop → park as D14 proposal here; do not pause.
 
 ## Waves
 
 | Wave | Status | Notes |
 |------|--------|-------|
 | K0 Bootstrap | done | Branch + living log |
-| K1 Today composure | done (`.294`) | dashboard 22→32; budget 7→6; Mission Score spills |
+| K1 Today composure | done (`.294`) | dashboard 22→32; budget 7→6 |
 | K2 Fuel photo honesty | done (`.294`) | heuristic ≤ medium; DB → `api` |
-| K3 Seeded a11y | pending | History volume + Coach missed |
-| K4 Zero-state caps | pending | `/builder` / `/profile` |
-| K5 Active decomp | pending | Behavior-preserving extract |
-| K6 i18n ratchet | pending | Cap below 685 |
+| K3 Seeded a11y | done (`.295`) | History + Coach green; anatomy a11y |
+| K4 Zero-state caps | done (`.295`) | `/builder` 1, `/profile` 1 |
+| K5 Active decomp | done (`.295`) | `rankSwapCandidates` |
+| K6 i18n ratchet | done (`.295`) | Cap 685→680 |
 
 ## Standing refuses
 
-- Pause / restart program / week numbers (no durable plan history)
-- Fixed vs Flexible as a second planner engine
-- Glow AI FAB, Habits primary tab, community/podcast pillars
-- In-app notification inbox; scraping LOG into athlete UI
-- Landing redesign; Bundle/pay UI; native product work; flip `PRIVATE_MODE`
+- Pause / restart / week numbers · Fixed vs Flexible · glow FAB · Habits/community
+- In-app inbox · LOG scrape · landing redesign · Bundle UI · native · `PRIVATE_MODE`
 
 ## Decisions / findings
 
-- **K1:** Densest commissioned evening with First Steps: room = 4 spillable → session, week, day-review, intent; Mission Score in More. Budget fixture now imports `TODAY_BLOCK_PRIORITY` (was a stale 35/40 copy that no longer matched production).
-- **K2:** Filename+palette used to claim `high` while the UI said “Rough estimate (filename / color)”. Cap heuristic at medium. Database tap set `source: 'heuristic'` and useEffect reset `draftSource` — both fixed (`api` + map api→database).
+- **K1:** Densest evening room=4 → session/week/day-review/intent; Mission Score in More.
+- **K2:** Filename+palette must not claim `high`; DB tap must not reset to heuristic via useEffect.
+- **K3:** `adaptPlan` drops all `missed` when any `planned` remains — seed needs done + overflow misses. Dynamic `import()` of seed helper fails under Playwright CJS.
+- **K3 anatomy:** `role=img` on SVG wrapping `<a>` = nested-interactive; figcaption labels Front/Back.
+- **K4:** Cap ratchet under-cap failure forced `/profile` to 1 (Continue absent when onboarded).
+- **K5:** Swap sort extracted; wiring guard asserts Active no longer inlines muscle-share sort.
+- **K6:** Five LogConsole aria/step keys into `activeWorkoutLocales` EN (other langs inherit via `...en`).
 
 ## Metrics
 
-| Metric | Start | Current |
-|--------|-------|---------|
-| Build | `.293` | `.294` |
-| i18n uncovered cap | 685 | — |
-| Zero-state `/builder` cap | 3 | — |
-| Zero-state `/profile` cap | 4 | — |
+| Metric | Start | End |
+|--------|-------|-----|
+| Build | `.293` | `.295` |
+| i18n uncovered cap | 685 | 680 |
+| Zero-state `/builder` | 3 | 1 |
+| Zero-state `/profile` | 4 | 1 |
 | Today max top-level | 7 | 6 |
 | dashboard priority | 22 | 32 |
+
+## End of night
+
+**Delivered:** K0–K6 on `cursor/kaizen-wedge-night-be9b` → PR #234.
+**Not run:** full `npm run gate` (targeted unit + seeded a11y + zero-state builder/profile).
+**Next:** await Pump screenshot batch → D14; founder phone excellence; visual baseline bootstrap.

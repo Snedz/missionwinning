@@ -107,7 +107,7 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
     why: 'K5: docked Log food is the one red; empty state dropped its duplicate CTA (dock owns the action).',
   },
 
-  '/builder': { cap: 3, why: 'Class 2: "Blank workout" renders in both the wizard and the template panel.' },
+  '/builder': { cap: 1, why: 'One red Blank workout in the wizard; style chips use selected; quick-load is outline; EmptyState Blank stays outline.' },
   '/track': { cap: 3, why: 'Was 6. Activity-type chips were selections; two Log Activity buttons and Start GPS remain — class 2.' },
 
   '/coach': {
@@ -115,8 +115,8 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
     why: 'D12: only today’s PlanSessionCard uses filled Start; other days outline; Regenerate lives in Manage sheet.',
   },
   '/profile': {
-    cap: 4,
-    why: 'Was 5. Unit/privacy/reminder toggles were selections; magic-link, Save Goals, backup and a days chip remain on a settings screen.',
+    cap: 1,
+    why: 'Send magic link is the one red; Continue/Save Goals/backup demoted. Day chips use selected without bg-primary.',
   },
 
   '/mind': {

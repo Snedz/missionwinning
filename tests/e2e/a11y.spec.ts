@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { gateRequired, unlockGate } from './helpers/gate';
 import { seedLegacyOnboarding } from './helpers/journey';
+import { seedHistoryAndMissedCoach } from './helpers/seedHistoryCoach';
 
 /**
  * a11y automation — tagged @a11y (excluded from e2e:critical).
@@ -186,9 +187,13 @@ test.describe('Accessibility @a11y', () => {
       test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
     }
     await seedLegacyOnboarding(page);
-    await page.goto('/profile', { waitUntil: 'domcontentloaded' });
-    await page.getByRole('button', { name: /send feedback/i }).click();
-    await expect(page.getByRole('dialog')).toBeVisible();
+    await page.goto('/profile', { waitUntil: 'networkidle' });
+    // Prefer the card CTA (outline) — scroll past referral chrome first.
+    const feedback = page.locator('main').getByRole('button', { name: /send feedback/i });
+    await feedback.scrollIntoViewIfNeeded();
+    await expect(feedback).toBeVisible();
+    await feedback.click();
+    await expect(page.getByRole('dialog')).toBeVisible({ timeout: 10_000 });
     await axeSerious(page, '/profile (feedback sheet)');
   });
 
@@ -207,7 +212,6 @@ test.describe('Accessibility @a11y', () => {
     if (gateRequired() && !ok) {
       test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
     }
-    const { seedHistoryAndMissedCoach } = await import('./helpers/seedHistoryCoach');
     await seedHistoryAndMissedCoach(page);
     await page.goto('/history', { waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('tab', { name: /exercises/i }).or(page.getByText(/exercises/i).first())).toBeVisible({
@@ -228,7 +232,6 @@ test.describe('Accessibility @a11y', () => {
     if (gateRequired() && !ok) {
       test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
     }
-    const { seedHistoryAndMissedCoach } = await import('./helpers/seedHistoryCoach');
     await seedHistoryAndMissedCoach(page);
     await page.goto('/coach', { waitUntil: 'domcontentloaded' });
     await expect(page.getByText(/missed/i).first()).toBeVisible({ timeout: 15_000 });

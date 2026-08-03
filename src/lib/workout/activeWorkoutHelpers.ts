@@ -195,3 +195,22 @@ export function nextSetInput(params: {
   const base = prevManual ?? resolved;
   return { reps: base.reps, weight: base.weight, [field]: value };
 }
+
+/**
+ * Swap picker ranking — shared muscle groups first, then locale name order.
+ * Extracted from ActiveWorkoutPage so the sort cannot silently invert (Kaizen K5).
+ */
+export function rankSwapCandidates<T extends { id: string; name: string; muscleGroups: string[] }>(
+  catalog: readonly T[],
+  current: { id: string; muscleGroups: readonly string[] },
+  compareNames: (a: string, b: string) => number
+): T[] {
+  return [...catalog]
+    .filter((e) => e.id !== current.id)
+    .sort((a, b) => {
+      const aShared = a.muscleGroups.some((m) => current.muscleGroups.includes(m));
+      const bShared = b.muscleGroups.some((m) => current.muscleGroups.includes(m));
+      if (aShared !== bShared) return aShared ? -1 : 1;
+      return compareNames(a.name, b.name);
+    });
+}

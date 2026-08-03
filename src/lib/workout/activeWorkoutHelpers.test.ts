@@ -13,6 +13,7 @@ import {
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
+  rankSwapCandidates,
 } from './activeWorkoutHelpers.ts';
 import type { CompletedWorkoutLog } from '@/types';
 
@@ -320,5 +321,35 @@ describe('the updateSetInput call site', () => {
     );
     assert.match(body, /set\?\.reps/, 'the base must come from the set being edited');
     assert.match(body, /prevManual:\s*prev\[key\]/, 'the base must come from `prev`, not the render closure');
+  });
+});
+
+describe('rankSwapCandidates', () => {
+  const catalog = [
+    { id: 'a', name: 'Zebra Press', muscleGroups: ['Chest'] },
+    { id: 'b', name: 'Alpha Curl', muscleGroups: ['Arms'] },
+    { id: 'c', name: 'Bench Press', muscleGroups: ['Chest'] },
+    { id: 'current', name: 'Current', muscleGroups: ['Chest'] },
+  ];
+
+  it('excludes the current exercise and prefers shared muscle groups', () => {
+    const ranked = rankSwapCandidates(catalog, catalog[3]!, (a, b) => a.localeCompare(b));
+    assert.deepEqual(
+      ranked.map((e) => e.id),
+      ['c', 'a', 'b']
+    );
+  });
+
+  it('ActiveWorkoutPage uses the shared ranker rather than an inline sort', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /rankSwapCandidates\(/);
+    assert.doesNotMatch(
+      src,
+      /aShared !== bShared/,
+      'inline muscle-share sort returned — keep one definition in activeWorkoutHelpers'
+    );
   });
 });

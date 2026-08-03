@@ -82,7 +82,7 @@ export function ProfilePreferencesCard({
             onChange={(e) => onGoalsChange(e.target.value)}
             rows={3}
           />
-          <Button className="min-h-[44px]" onClick={onSaveGoals}>{t('saveGoals', { defaultValue: 'Save Goals' })}</Button>
+          <Button variant="outline" className="min-h-[44px]" onClick={onSaveGoals}>{t('saveGoals', { defaultValue: 'Save Goals' })}</Button>
           <div className="text-xs">Used for program recommendations (future personalization).</div>
         </CardContent>
       </Card>

@@ -74,6 +74,12 @@ type ActiveWorkoutStrings = {
   activeOverloadPrescribed: string;
   /** One-tap fill console from progressive-overload / coach next (.288). */
   activeUseNextTarget: string;
+  /** Compact console set ordinal ("Set 2 of 4"). */
+  activeSetOf: string;
+  activeDecreaseReps: string;
+  activeIncreaseReps: string;
+  activeDecreaseWeight: string;
+  activeIncreaseWeight: string;
   /** Victory next-session progression (structured insight, `.290`). */
   victoryProgressAddWeight: string;
   victoryProgressAddReps: string;
@@ -151,6 +157,11 @@ const en: ActiveWorkoutStrings = {
   activeOverloadFromLast: 'From last time',
   activeOverloadPrescribed: 'Coach plan',
   activeUseNextTarget: 'Use next target',
+  activeSetOf: 'Set {{current}} of {{total}}',
+  activeDecreaseReps: 'Decrease reps',
+  activeIncreaseReps: 'Increase reps',
+  activeDecreaseWeight: 'Decrease weight',
+  activeIncreaseWeight: 'Increase weight',
   victoryProgressAddWeight: 'Next: +{{step}} {{unit}} on {{name}} (hit top of range)',
   victoryProgressAddReps: 'Next: {{reps}} × {{weight}} {{unit}} on {{name}}',
   victoryProgressHold: 'Next: hold {{reps}} × {{weight}} {{unit}} on {{name}}',
