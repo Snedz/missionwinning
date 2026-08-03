@@ -146,7 +146,9 @@ export function MovePage() {
       )}
 
       {premiumLoading && premium && (
-        <p className="text-xs text-muted-foreground">{t('loading', { defaultValue: 'Loading premium flows…' })}</p>
+        <p className="text-xs text-muted-foreground" role="status" aria-live="polite">
+          {t('movePremiumLoading', { defaultValue: 'Loading recovery flows…' })}
+        </p>
       )}
 
       {premiumFetchError && premium && (

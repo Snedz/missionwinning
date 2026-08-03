@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
+import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { SetLogRow } from '@/components/workout/SetLogRow';
 import { SetLogTable } from '@/components/workout/SetLogTable';
 import { useIsCompact } from '@/hooks/useIsCompact';
@@ -331,17 +332,33 @@ export function ActiveExerciseCard({
           </Button>
         )}
 
-        {swapOpen && !hasCompleted && (
-          <div>
+        {/*
+          Swap used to expand an inline max-h-48 list inside the scrolling
+          logger — same defect AddExerciseSheet closed: list competes for
+          height with the session it mutates. Sheet gives the catalog room;
+          pick closes and swaps (one tap, no second confirm — mid-set speed).
+        */}
+        {!hasCompleted && (
+          <AdaptiveOverlay
+            open={swapOpen}
+            onClose={onToggleSwap}
+            size="sm"
+            eyebrow={t('activeSwapEyebrow', { defaultValue: 'This exercise' })}
+            title={t('activeSwapTitle', {
+              defaultValue: 'Swap exercise',
+            })}
+            bodyClassName="p-4"
+          >
             <ExercisePicker
               value=""
               exercises={swapCandidates}
+              listClassName="max-h-[52vh]"
               placeholder={t('activeSwapPlaceholder', {
                 defaultValue: 'Swap to… (same muscles first)',
               })}
               onChange={onSwapTo}
             />
-          </div>
+          </AdaptiveOverlay>
         )}
         {lastNote && (
           <p className="text-[11px] text-muted-foreground">
@@ -361,7 +378,7 @@ export function ActiveExerciseCard({
               defaultValue: 'Note — "machine 3, seat 4", "left knee tight"…',
             })}
             onChange={(e) => onNoteChange(e.target.value)}
-            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full border-2 border-border bg-background px-3 py-2.5 min-h-[44px] text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
           />
         )}
       </CardHeader>
