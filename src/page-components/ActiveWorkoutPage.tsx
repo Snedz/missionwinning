@@ -305,6 +305,9 @@ export function ActiveWorkoutPage() {
           ? formatOverloadSetLine(cue.next.reps, cue.next.weight, unitLabel, bwLabel)
           : null,
         reasonLine: reasonLine || null,
+        nextTarget: cue.next
+          ? { reps: cue.next.reps, weight: cue.next.weight }
+          : null,
       },
     };
   })();
@@ -785,6 +788,10 @@ export function ActiveWorkoutPage() {
             onWeightChange={(v) => updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'weight', v)}
             onKindChange={(kind) => setSetKind(consoleSet.exIdx, consoleSet.setIdx, kind)}
             onLog={() => handleLogSet(consoleSet.exIdx, consoleSet.setIdx)}
+            onUseNext={(target) => {
+              updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'reps', target.reps);
+              updateSetInput(consoleSet.exIdx, consoleSet.setIdx, 'weight', target.weight);
+            }}
           />
         </ScreenDock>
       ) : null}

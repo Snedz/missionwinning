@@ -9,6 +9,12 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
 
 ---
+## 2026-08-03 — Gym-speed logger: Enter + Use next (`.288`)
+
+Compact log console: **Enter** submits the set; **Use next target** one-taps
+progressive-overload / coach numbers into reps·weight when the dial differs.
+Pure `shouldOfferUseNext` / `consoleMatchesTarget`.
+
 ## 2026-08-03 — Coach why panel: named days + today's reasons (`.287`)
 
 Adapt banner names **which weekdays** were missed/swapped. Full Coach also lists
@@ -110,11 +116,4 @@ rows + proof/verdict, Press kit downloads/palette/boilerplate, Programs
 curriculum modules, Coaching interest + Feedback textareas — solid 2px
 paper/ink, focus via border (not ring glow). Coaching errors use brand primary
 text, not off-palette red.
-
-## 2026-08-03 — Public SEO + Train/Mind/Move chrome (`.273`)
-
-Solid 2px paper/ink on high-traffic public and in-app surfaces still on soft
-borders: exercise pages (form media, safety, alt/related chips, free CTA),
-learn path teaser + I-Day CTA, beta start list rules, Train readiness/volume
-strip, Mind and Move premium preview toggles.
 

@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-03 · web `2026.07-unified.287` · Android `1.24.1`)
+## Now (2026-08-03 · web `2026.07-unified.288` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -46,6 +46,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.285` dropped `.270` detail (full text remains in LOG.md / archive)
 > and `.286` dropped `.271` detail (full text remains in LOG.md / archive)
 > and `.287` dropped `.272` detail (full text remains in LOG.md / archive)
+> and `.288` dropped `.273` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -66,6 +67,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.288`:** Gym-speed logger — **Enter** logs the set; **Use next target** one-taps progressive-overload / coach numbers when the dial differs (`shouldOfferUseNext`).
 - **`.287`:** Coach why panel — adapt beats name weekdays; today's prescription why-keys + adjust/keep control.
 - **`.286`:** Re-entry **doseScale applied** — Just Go / plan starts trim sets; card copy names real % (70/50).
 - **`.285`:** Progressive overload on compact log console — **Last · Next · why** via pure `buildOverloadCue`; i18n **685**.
@@ -80,7 +82,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.276`:** Landing hero demo + reentry + history/auth/HR chrome; Actions `checkout`/`setup-node`/`upload-artifact` v4→v5 (not Dependabot’s jump to v7).
 - **`.275`:** Leaderboard (picker/table/tabs/inputs) + public exercise/learn index hubs — solid 2px; fixed corrupted night/dawn header classes.
 - **`.274`:** Compare/Press/Programs + Coaching/Feedback forms — 2px paper/ink fields (no ring glow / soft tiles).
-- **`.273`:** Public exercise/learn/beta + Train readiness strip + Mind/Move previews — solid 2px paper/ink (no soft `/50` tiles).
 - **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.
