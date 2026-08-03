@@ -241,6 +241,17 @@ test('workoutStore', async (t) => {
     assert.equal(useWorkoutStore.getState().restTimerActive, false);
   });
 
+  await t.test('startRestTimer without seconds uses the shared fallback (≥60s), not 30', () => {
+    useWorkoutStore.getState().startRestTimer();
+    const remaining = useWorkoutStore.getState().restSecondsRemaining;
+    assert.ok(
+      remaining >= 60,
+      `expected smart default rest, got ${remaining}s (old bug was bare 30)`
+    );
+    assert.equal(useWorkoutStore.getState().restTimerInitialSeconds, remaining);
+    assert.equal(useWorkoutStore.getState().restTimerActive, true);
+  });
+
   await t.test('adding a set copies the last set as the target', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template());

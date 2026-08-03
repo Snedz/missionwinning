@@ -28,8 +28,10 @@ import { newClientId } from "@/lib/workout/clientId";
 import { readRaw, writeRaw } from "@/lib/storage/safeStorage";
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { browserStorage, dedupeWrites, elapsedSecondsFrom } from "@/store/persistDedupe";
-
-const DEFAULT_REST_SECONDS = 30;
+import {
+  FALLBACK_REST_SECONDS,
+  resolveStartRestSeconds,
+} from "@/lib/workout/restTimer";
 
 /**
  * Set by `onRehydrateStorage`. Declared before `create()` on purpose: with a
@@ -124,7 +126,7 @@ export const useWorkoutStore = create<WorkoutState>()(
       activeWorkout: null,
       restSecondsRemaining: 0,
       restTimerActive: false,
-      restTimerInitialSeconds: 90,
+      restTimerInitialSeconds: FALLBACK_REST_SECONDS,
       elapsedSeconds: 0,
       hasHydrated: false,
 
@@ -165,7 +167,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
-          restTimerInitialSeconds: 90,
+          restTimerInitialSeconds: FALLBACK_REST_SECONDS,
         });
       },
 
@@ -181,7 +183,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
-          restTimerInitialSeconds: 90,
+          restTimerInitialSeconds: FALLBACK_REST_SECONDS,
         });
       },
 
@@ -192,7 +194,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
-          restTimerInitialSeconds: 90,
+          restTimerInitialSeconds: FALLBACK_REST_SECONDS,
         });
       },
 
@@ -250,7 +252,7 @@ export const useWorkoutStore = create<WorkoutState>()(
           elapsedSeconds: 0,
           restSecondsRemaining: 0,
           restTimerActive: false,
-          restTimerInitialSeconds: 90,
+          restTimerInitialSeconds: FALLBACK_REST_SECONDS,
         }));
 
         recordWorkoutCompleted(log);
@@ -487,10 +489,12 @@ export const useWorkoutStore = create<WorkoutState>()(
         });
       },
 
-      startRestTimer: (seconds = DEFAULT_REST_SECONDS) => {
+      startRestTimer: (seconds?: number) => {
+        // `.292` — never invent 30s. One fallback lives in restTimer.ts.
+        const sec = resolveStartRestSeconds(seconds);
         set({
-          restSecondsRemaining: seconds,
-          restTimerInitialSeconds: seconds,
+          restSecondsRemaining: sec,
+          restTimerInitialSeconds: sec,
           restTimerActive: true,
         });
       },

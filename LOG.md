@@ -9,6 +9,12 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
 
 ---
+## 2026-08-03 — Rest timer default is one source of truth (`.292`)
+
+Store `startRestTimer()` no longer invents **30s**. Duration resolves through
+`resolveStartRestSeconds` → saved default / **90s** fallback shared with exercise
+heuristics. Guard: store must not hardcode 30.
+
 ## 2026-08-03 — Week-1 second-session activation (`.291`)
 
 After the first log, First Steps next is **session 2** (not Fuel tourism). Today
@@ -103,12 +109,4 @@ re-guess loads; Active chrome eyebrow **Mission Coach session** when prescribed.
 Docs: Vercel free-tier **100 deploys/day** batching
 ([VERCEL_DEPLOY_CHECKLIST](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.6); beta invite
 checklist unblocks postal → migrations → invites first. i18n ratchet **702→698**.
-
-## 2026-08-03 — Form/Today chrome + safe Dependabot (`.277`)
-
-Form guide media, fuel photo dropzone, Today muscle readiness tiles, week
-recap pillar stats, mind locked preview, sidebar, PFT runner/school panel —
-solid 2px paper/ink. Deps: zustand 5.0.14, stripe 22.4.0 (apiVersion `2026-07-29.dahlia`),
-radix-select 2.3.7, typescript-eslint 8.65. CodeQL action **v3 → v4**. Skipped
-`@types/node` 26 (major) and Actions v7 majors.
 
