@@ -59,6 +59,7 @@ import {
   getLastSessionSets,
   nextSetInput,
   resolveSetInput,
+  sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
 } from '@/lib/workout/activeWorkoutHelpers';
@@ -492,7 +493,7 @@ export function ActiveWorkoutPage() {
         totalSets={totalSets}
         hardCount={hardCount}
         elapsedSeconds={elapsedSeconds}
-        fromCoachPlan={activeWorkout.exercises.some((ex) => ex.prescribed)}
+        fromCoachPlan={sessionIsCoachPrescribed(activeWorkout.exercises)}
         onOpenAddExercise={() => setAddExerciseOpen(true)}
         onOpenPlateCalc={() => setPlateCalcOpen(true)}
         onDiscard={discardWorkout}

@@ -47,6 +47,16 @@ export function setInputKey(exIdx: number, setIdx: number): string {
   return `${exIdx}-${setIdx}`;
 }
 
+/**
+ * True when any exercise was prescribed by Mission Coach (Today Just Go coach
+ * path or plan-session load). Active chrome + apply-targets must agree.
+ */
+export function sessionIsCoachPrescribed(
+  exercises: { prescribed?: boolean }[]
+): boolean {
+  return exercises.some((ex) => ex.prescribed === true);
+}
+
 /** Count completed sets, planned sets, and hard RPE logs for coach copy. */
 export function sessionSetStats(
   exercises: { sets: { completed: boolean; rpe?: string }[] }[]

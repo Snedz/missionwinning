@@ -1,3 +1,8 @@
+## 2026-08-03 — Coach session predicate for Active chrome (`.280`)
+
+`sessionIsCoachPrescribed` pure helper — Active eyebrow and future apply-targets
+call sites share one definition of "this is a Mission Coach load".
+
 ## 2026-08-03 — Shared Just Go hero meta builder (`.279`)
 
 Lean + full Today shells now build train-CTA meta through pure
@@ -115,14 +120,6 @@ History / Active / Coach / Library empty copy tightened (no marketing filler).
 `hasCoachAdaptationSignal` no longer fires on bare revision bumps — the adapt
 banner needs a missed/swapped/logged beat, so cold-start re-spread does not
 claim the week "reshaped" with nothing to say.
-
-## 2026-08-03 — Pre-EIN craft window opens (`.265`)
-
-Founder waived the A5 *feature freeze* for the EIN wait (public-flip gates
-remain). ORCHESTRATION + CONTEXT state the override. Week-1 recap push/email
-drops peer-shame ("most people quit"). Builder arrange uses AdaptiveOverlay
-for add-exercise on compact widths. Named loading labels on fitness-test /
-teacher routes instead of bare "Loading…".
 
 # Mission Winning — Development Log
 
