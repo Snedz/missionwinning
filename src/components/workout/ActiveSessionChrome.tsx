@@ -53,7 +53,7 @@ export function ActiveSessionChrome({
         className={[
           'sticky top-0 z-30 -mx-1 px-1 py-2',
           'bg-background',
-          'border-b border-border/40 md:border-border/60',
+          'border-b-2 border-border',
         ].join(' ')}
       >
         <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
