@@ -124,7 +124,7 @@ export function MindPage() {
         <div className="space-y-2">
           <button
             type="button"
-            className="flex w-full items-center justify-between gap-2 rounded-xl border border-border/50 px-4 py-3 text-sm min-h-[44px]"
+            className="flex w-full items-center justify-between gap-2 border-2 border-border bg-card px-4 py-3 text-sm min-h-[44px]"
             onClick={() => setPremiumOpen((v) => !v)}
           >
             <span className="font-medium text-muted-foreground">

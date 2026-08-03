@@ -643,7 +643,7 @@ export function ActiveWorkoutPage() {
         )}
 
       {readinessAfter != null && readinessBefore != null && readinessAfter !== readinessBefore ? (
-        <div className="rounded-lg border border-border/40 bg-muted/15 px-3 py-2 text-xs flex flex-wrap items-center gap-2">
+        <div className="border-2 border-border bg-card px-3 py-2 text-xs flex flex-wrap items-center gap-2">
           <span className="font-medium text-muted-foreground">
             {t('sessionReadinessDelta', {
               defaultValue: 'Readiness {{from}} → {{to}}',
@@ -654,7 +654,7 @@ export function ActiveWorkoutPage() {
           {offerVolumeTrim && plan ? (
             <button
               type="button"
-              className="border border-border/50 bg-muted/20 px-3 py-1 text-muted-foreground font-medium hover:text-foreground"
+              className="border-2 border-border bg-background px-3 py-1 text-muted-foreground font-medium hover:border-primary hover:text-foreground"
               onClick={() => {
                 const next = adjustToday({ type: 'readiness' });
                 if (next) {
