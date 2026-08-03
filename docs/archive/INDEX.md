@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-307.md](./log/LOG-rotate-307.md) | `.292` rest timer default — rotated for `.307` Fuel leftovers i18n |
 | [log/LOG-rotate-306.md](./log/LOG-rotate-306.md) | `.291` week-1 second-session — rotated for `.306` Mind i18n |
 | [log/LOG-rotate-305.md](./log/LOG-rotate-305.md) | `.290` Victory progression i18n — rotated for `.305` Move zero-state + a11y |
 | [log/LOG-rotate-304.md](./log/LOG-rotate-304.md) | `.289` gym-speed set carry — rotated for `.304` soft chrome + fuel i18n |

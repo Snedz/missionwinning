@@ -128,6 +128,73 @@ type FuelStrings = {
   fuelFatShort: string;
   fuelHideScience: string;
   fuelShowScience: string;
+  /** Kaizen Loop 4 N2 — adapt / targets / weight leftovers (.307) */
+  fuelLoadHeavy: string;
+  fuelLoadModerate: string;
+  fuelLoadLight: string;
+  fuelLoadRest: string;
+  fuelLoadChip: string;
+  fuelAdaptUseBase: string;
+  fuelAdaptUseTrain: string;
+  fuelAdaptOffHint: string;
+  fuelAdaptRestDefault: string;
+  fuelAdaptFromLogs: string;
+  fuelGoalLose: string;
+  fuelGoalGain: string;
+  fuelGoalMaintain: string;
+  fuelGoalWizardCta: string;
+  fuelGoalApplied: string;
+  fuelGoalWizardTitle: string;
+  fuelGoalWizardHint: string;
+  fuelGoalPick: string;
+  fuelGoalHideDetails: string;
+  fuelGoalShowDetails: string;
+  fuelGoalPreview: string;
+  fuelGoalPreviewMacros: string;
+  fuelApplyGoalTargets: string;
+  fuelCalsOver: string;
+  fuelBudgetLeft: string;
+  fuelLeftWord: string;
+  fuelPastDaysTitle: string;
+  fuelPastDaysCount: string;
+  fuelCopyDayToToday: string;
+  fuelSourceRecipe: string;
+  logRecipe: string;
+  fuelUseRecipe: string;
+  fuelPremiumOffline: string;
+  fuelTargetsSummary: string;
+  fuelEditTargets: string;
+  fuelTargetsSaved: string;
+  fuelEditTargetsTitle: string;
+  fuelEditTargetsHint: string;
+  fuelSaveTargets: string;
+  fuelEditEntry: string;
+  fuelSaveEntry: string;
+  fuelSaveMeal: string;
+  fuelDeleteMealEntry: string;
+  fuelDangerZone: string;
+  fuelClearDayHint: string;
+  fuelClearTodaysMeals: string;
+  fuelWeekGlance: string;
+  fuelWeightTitle: string;
+  fuelWeight7d: string;
+  fuelWeightNoTrend: string;
+  fuelWeightEmpty: string;
+  fuelWeightLog: string;
+  fuelWeightSaved: string;
+  fuelWeightInput: string;
+  fuelPremiumFetchFailed: string;
+  fuelPremiumFetchFailedDesc: string;
+  fuelLoggedToast: string;
+  fuelLoggedToastDesc: string;
+  fuelEntryUpdated: string;
+  fuelCopiedDay: string;
+  fuelCopiedDayDesc: string;
+  fuelCopiedDayNone: string;
+  fuelEyebrow: string;
+  fuelGoalAppliedDesc: string;
+  fuelHideMore: string;
+  fuelShowMore: string;
 };
 
 const en: FuelStrings = {
@@ -267,6 +334,73 @@ const en: FuelStrings = {
   fuelFatShort: 'Fat',
   fuelHideScience: 'Hide protein notes',
   fuelShowScience: 'Why protein matters',
+  fuelLoadHeavy: 'Heavy',
+  fuelLoadModerate: 'Training',
+  fuelLoadLight: 'Recovery',
+  fuelLoadRest: 'Rest',
+  fuelLoadChip: '{{load}} day',
+  fuelAdaptUseBase: 'Use base',
+  fuelAdaptUseTrain: 'Match training',
+  fuelAdaptOffHint: 'Showing your saved base targets (no train-day adjustment).',
+  fuelAdaptRestDefault: 'Rest day — slightly lower carbs vs your base.',
+  fuelAdaptFromLogs: "Targets flex from today's logged training volume.",
+  fuelGoalLose: 'Lose',
+  fuelGoalGain: 'Gain',
+  fuelGoalMaintain: 'Maintain',
+  fuelGoalWizardCta: 'Set from goal',
+  fuelGoalApplied: 'Goal targets applied',
+  fuelGoalWizardTitle: 'Targets from goal',
+  fuelGoalWizardHint:
+    'Lose ≈ 15% under maintain, gain ≈ 10% over. Estimates only — not medical advice.',
+  fuelGoalPick: 'Goal',
+  fuelGoalHideDetails: 'Hide height, age, sex',
+  fuelGoalShowDetails: 'Height, age, sex',
+  fuelGoalPreview: '{{cals}} kcal · {{protein}}g protein',
+  fuelGoalPreviewMacros: '{{carbs}}g C · {{fat}}g F · TDEE ~{{tdee}}',
+  fuelApplyGoalTargets: 'Apply targets',
+  fuelCalsOver: 'Over target',
+  fuelBudgetLeft: 'Remaining today',
+  fuelLeftWord: 'left',
+  fuelPastDaysTitle: 'Past days',
+  fuelPastDaysCount: '{{count}} days with logs',
+  fuelCopyDayToToday: 'Copy to today',
+  fuelSourceRecipe: 'Recipe',
+  logRecipe: 'Log recipe',
+  fuelUseRecipe: 'Use',
+  fuelPremiumOffline: 'Premium recipes unavailable offline — free recipes above still work.',
+  fuelTargetsSummary: 'Targets: {{cals}} kcal · {{protein}}g protein',
+  fuelEditTargets: 'Edit targets',
+  fuelTargetsSaved: 'Targets saved',
+  fuelEditTargetsTitle: 'Daily targets',
+  fuelEditTargetsHint: 'Used for remaining calories and protein. Stored on this device.',
+  fuelSaveTargets: 'Save targets',
+  fuelEditEntry: 'Edit entry',
+  fuelSaveEntry: 'Save changes',
+  fuelSaveMeal: 'Save',
+  fuelDeleteMealEntry: 'Delete meal entry',
+  fuelDangerZone: 'Danger zone',
+  fuelClearDayHint: 'Clears every meal logged today. Hold to confirm.',
+  fuelClearTodaysMeals: "Clear today's meals",
+  fuelWeekGlance: 'Last 7 days',
+  fuelWeightTitle: 'Weight',
+  fuelWeight7d: '7d',
+  fuelWeightNoTrend: 'Log a few days for trend',
+  fuelWeightEmpty: 'No weight logged yet',
+  fuelWeightLog: 'Log weight',
+  fuelWeightSaved: 'Weight saved',
+  fuelWeightInput: 'Today ({{unit}})',
+  fuelPremiumFetchFailed: 'Could not load premium recipes',
+  fuelPremiumFetchFailedDesc: 'Free recipes still work. Check your connection and try again.',
+  fuelLoggedToast: 'Logged',
+  fuelLoggedToastDesc: '{{name}} · {{protein}}g protein · {{cals}} kcal',
+  fuelEntryUpdated: 'Entry updated',
+  fuelCopiedDay: 'Copied to today',
+  fuelCopiedDayDesc: '{{count}} meals added — edit anything that changed.',
+  fuelCopiedDayNone: 'Those meals are already on today.',
+  fuelEyebrow: 'Fuel',
+  fuelGoalAppliedDesc: '{{cals}} kcal · {{protein}}g protein',
+  fuelHideMore: 'Hide search & recipes',
+  fuelShowMore: 'Search, barcode & recipes',
 };
 
 const es: FuelStrings = {
