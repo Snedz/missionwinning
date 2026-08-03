@@ -233,7 +233,7 @@ export function TodayWeekRecapCard({ recap }: Props) {
 
 function PillarStat({ eyebrow, body }: { eyebrow: string; body: string }) {
  return (
- <div className="rounded-lg border border-border/50 bg-background/40 p-2.5">
+ <div className="border-2 border-border bg-background p-2.5">
  <div className="eyebrow text-[9px] text-muted-foreground mb-0.5">{eyebrow}</div>
  <div className="tabular-nums text-foreground font-medium">{body}</div>
  </div>

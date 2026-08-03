@@ -107,7 +107,7 @@ function FormGuideMedia({
 }) {
   if (type === 'video') {
     return (
-      <div className="overflow-hidden rounded-xl border border-border/40 bg-muted/30">
+      <div className="overflow-hidden border-2 border-border bg-card">
         <video
           className="w-full max-h-56 object-contain"
           src={url}
@@ -123,7 +123,7 @@ function FormGuideMedia({
   }
 
   return (
-    <figure className="overflow-hidden rounded-xl border-2 border-border bg-card">
+    <figure className="overflow-hidden border-2 border-border bg-card">
       <img
         src={url}
         alt={`${name} form diagram`}
@@ -131,7 +131,7 @@ function FormGuideMedia({
         decoding="async"
         className="mx-auto w-full max-h-64 object-contain"
       />
-      <figcaption className="border-t border-border/30 px-3 py-1.5 text-center text-xs text-muted-foreground">
+      <figcaption className="border-t-2 border-border px-3 py-1.5 text-center text-xs text-muted-foreground">
         Form diagram
       </figcaption>
     </figure>

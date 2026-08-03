@@ -33,7 +33,7 @@ export function MindLockedPreview() {
               'Guided sessions, sleep stories, expert lessons on building resilience.',
           })}
         </p>
-        <div className="relative rounded-lg border border-border/50 bg-card p-4">
+        <div className="relative border-2 border-border bg-card p-4">
           <div className="pointer-events-none select-none opacity-60 blur-[1px] flex flex-col sm:flex-row items-center gap-4">
             <MeterBar label="Progress" value={42} readout="42% · 2:30" className="w-full sm:w-48" />
             <ul className="text-sm space-y-2 flex-1">

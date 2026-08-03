@@ -149,7 +149,7 @@ export function FitnessTestRunner() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="rounded-xl border border-border bg-card px-4 py-3 text-center">
+          <div className="border-2 border-border bg-card px-4 py-3 text-center">
             <p className="text-xs uppercase tracking-widest text-muted-foreground">
               {t('pftOverallAward', { defaultValue: 'Overall award' })}
             </p>
@@ -158,7 +158,7 @@ export function FitnessTestRunner() {
             </p>
           </div>
           {classRank && (
-            <div className="rounded-xl border border-primary/40 bg-primary/10 px-4 py-3 text-center text-sm">
+            <div className="border-2 border-primary bg-tint px-4 py-3 text-center text-sm">
               <p className="text-primary font-medium">
                 {t('pftClassRank', {
                   defaultValue: '#{{rank}} in class {{code}}',
@@ -183,7 +183,7 @@ export function FitnessTestRunner() {
             {session.events.map((ev) => (
               <li
                 key={ev.eventId}
-                className="flex justify-between gap-4 border-b border-border/50 pb-2"
+                className="flex justify-between gap-4 border-b-2 border-border pb-2"
               >
                 <span>{ev.eventName}</span>
                 <span className="text-muted-foreground shrink-0">
