@@ -134,3 +134,25 @@ PR: #234
 **Verified:** i18n @332; unit helpers for repeat-last; ship-protocol guards green.
 **Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
 **Next:** Pump screenshot batch → D14; founder phone excellence; visual baseline bootstrap; more profile/track i18n if craft continues.
+
+## Loop 5 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| O1 Track/reminders i18n | done (`.311`) | Body metrics + progress photos + reminders; **332→299** |
+| O2 Profile + soft chrome | done (`.312`) | Backup/account pack; FileUpload/Today/nav solid chrome; **299→274** |
+| O3 Living-log close | done (docs) | Loop 5 recorded; craft window continues if agents resume |
+
+## Metrics
+
+| Metric | Loop 4 end | Loop 5 end |
+|--------|------------|------------|
+| Build | `.310` | **`.312`** |
+| i18n uncovered cap | 332 | **274** |
+
+## End of Loop 5
+
+**Delivered:** O1–O2 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.311`–`.312`).
+**Verified:** i18n @274; ship-protocol guards green.
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Pump screenshot batch → D14; founder phone excellence; visual baseline bootstrap.
