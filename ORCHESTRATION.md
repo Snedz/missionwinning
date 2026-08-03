@@ -104,14 +104,17 @@ flowchart TB
 
 | # | Task | Doc |
 |---|------|-----|
+| 0 | **`MAIL_POSTAL_ADDRESS`** (invite email hard-blocked without it) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 · CONTEXT status |
+| 0b | Pending Supabase migrations (return loop / week-4 / push) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2–§3 |
 | 1 | Vercel Production: `SUPABASE_SERVICE_ROLE_KEY`, `DEMO_PREMIUM=false`, rotated `PRIVATE_ACCESS_SECRET` | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) §2 |
-| 2 | Stripe monthly / 12-mo $59 / lifetime $149 links + `STRIPE_WEBHOOK_SECRET` | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md) |
-| 3 | Recruit ≥10 beta users **(after excellence pass)** | [docs/STRATEGY.md](docs/STRATEGY.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) |
-| 4 | Gates: I-Day ≥80%, Basic Training ≥60% | Profile beta panel, [docs/PLAN.md](docs/PLAN.md) F4 |
-| 5 | Mobile hero QA: Welcome → first set → Mission Coach | Manual + `npm run e2e:critical` |
-| 6 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
-| 7 | Public flip day (after gates) | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) + [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) |
-| 8 | Ops maturity Wave A: Upstash + Sentry DSN + `SMOKE_BASE_URL` / `VERCEL_*` + backup drill | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md) |
+| 2 | Stripe monthly / 12-mo $59 / lifetime $149 links + `STRIPE_WEBHOOK_SECRET` — **after EIN** (free-first beta now) | [docs/STRIPE_PREMIUM_SETUP.md](docs/STRIPE_PREMIUM_SETUP.md), [docs/FREE_BETA.md](docs/FREE_BETA.md) |
+| 3 | **Dogfood notes** on current build (2–5 min; paste #1 friction to agents) | [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md) **§3a** |
+| 4 | Recruit ≥10 beta users **(after excellence pass + postal)** | [docs/STRATEGY.md](docs/STRATEGY.md), [docs/BETA_INVITE.md](docs/BETA_INVITE.md) |
+| 5 | Gates: I-Day ≥80%, Basic Training ≥60% | Profile beta panel, [docs/PLAN.md](docs/PLAN.md) F4 |
+| 6 | Mobile hero QA: Welcome → first set → Victory → Coach (with dogfood notes) | Manual + `npm run e2e:critical` + §3a |
+| 7 | `LAUNCH_STRICT=true npm run launch-verify` against prod | Scripts |
+| 8 | Public flip day (after gates) | [docs/archive/SOFT_LAUNCH_DAY.md](docs/archive/SOFT_LAUNCH_DAY.md) + [docs/archive/PUBLIC_FLIP_CHECKLIST.md](docs/archive/PUBLIC_FLIP_CHECKLIST.md) |
+| 9 | Ops maturity Wave A: Upstash + Sentry DSN + `SMOKE_BASE_URL` / `VERCEL_*` + backup drill | [docs/PRODUCTION_STACK.md](docs/PRODUCTION_STACK.md), [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md) |
 
 ### Agent-allowed (Horizon 0)
 
