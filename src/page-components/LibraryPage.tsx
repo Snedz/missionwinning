@@ -373,10 +373,9 @@ export function LibraryPage() {
       {filtered.length === 0 && (
         <EmptyState
           icon={Dumbbell}
-          title={t('libraryNoResultsTitle', { defaultValue: 'No matches' })}
+          title={t('libraryNoResultsTitle', { defaultValue: 'Nothing matches' })}
           description={t('libraryNoResults', {
-            defaultValue:
-              'No exercises match these filters. Try clearing equipment or muscle filters.',
+            defaultValue: 'Clear equipment or muscle filters to see the full library again.',
           })}
           actionLabel={t('libraryClearFilters', { defaultValue: 'Clear filters' })}
           onAction={() => setFilters({ ...DEFAULT_LIBRARY_FILTERS })}

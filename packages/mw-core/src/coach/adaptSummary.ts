@@ -48,7 +48,13 @@ export function summarizeCoachAdaptations(plan: CoachPlan): CoachAdaptBeat[] {
   return beats;
 }
 
-/** True when the UI should show the adaptation banner (demo-critical). */
+/**
+ * True when the UI should show the adaptation banner.
+ *
+ * Revision alone is not a story — mid-week generate / cold-start re-spread can
+ * bump revision without a missed/swapped/logged beat. Showing "plan reshaped"
+ * with no beat was empty theater (and read as AI slop on a first Coach visit).
+ */
 export function hasCoachAdaptationSignal(plan: CoachPlan): boolean {
-  return summarizeCoachAdaptations(plan).length > 0 || plan.revision > 1;
+  return summarizeCoachAdaptations(plan).length > 0;
 }

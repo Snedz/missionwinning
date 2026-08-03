@@ -70,30 +70,30 @@ export function ActiveEmptyState({
         icon={Timer}
         title={
           hydrated
-            ? t('activeNoWorkout', { defaultValue: 'No Active Workout' })
-            : t('activeLoadingSession', { defaultValue: 'Loading session…' })
+            ? t('activeNoWorkout', { defaultValue: 'No session running' })
+            : t('activeLoadingSession', { defaultValue: 'Restoring session…' })
         }
         description={
           hydrated
             ? t('activeNoWorkoutDesc', {
                 defaultValue:
-                  'Start a quick workout from Today or launch a saved routine from the builder.',
+                  'Start here, or open Today for the session already planned for you.',
               })
             : t('activeLoadingSessionDesc', {
-                defaultValue: 'Restoring your last session from this device.',
+                defaultValue: 'Reading the last workout saved on this device.',
               })
         }
         actionLabel={
           hydrated
-            ? t('activeStartWorkout', { defaultValue: 'Start Workout' })
-            : t('activeLoadingSession', { defaultValue: 'Loading session…' })
+            ? t('activeStartWorkout', { defaultValue: 'Start workout' })
+            : t('activeLoadingSession', { defaultValue: 'Restoring session…' })
         }
         onAction={hydrated ? onStart : undefined}
         actionDisabled={!hydrated}
       />
-      <div className="flex flex-wrap gap-3 justify-center text-sm">
+      <div className="flex flex-wrap gap-3 text-sm">
         <Button variant="outline" className="min-h-[44px]" asChild>
-          <a href="/log">{t('activeGoToday', { defaultValue: 'Today hub' })}</a>
+          <a href="/log">{t('activeGoToday', { defaultValue: 'Today' })}</a>
         </Button>
         <Button variant="outline" className="min-h-[44px]" asChild>
           <a href="/builder">{t('activeGoBuilder', { defaultValue: 'Builder' })}</a>

@@ -108,8 +108,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           icon={Sparkles}
           title={t('coachGenerateEmptyTitle', { defaultValue: 'Ready for a new week?' })}
           description={t('coachFreeBetaNextWeek', {
-            defaultValue:
-              'Open beta keeps Coach open. Generate the next week from your latest logs — no payment.',
+            defaultValue: 'Generate next week from your latest logs. Free while beta is open.',
           })}
           actionLabel={t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
           onAction={() => generate()}
@@ -162,11 +161,11 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
       {!loading && !plan && !locked && (
         <EmptyState
           icon={Sparkles}
-          title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week yet' })}
+          title={t('coachGenerateEmptyTitle', { defaultValue: 'No plan this week' })}
           description={t('coachGenerateEmptyDesc', {
             defaultValue: freeBeta
-              ? 'Generate this week’s plan from your logs — free every week.'
-              : 'Generate this week’s plan from your logs — free every week. Super Bundle unlocks chat and on-demand regenerate.',
+              ? 'One week from your logs. Free every week — no wearable.'
+              : 'One week from your logs. Free every week; Bundle adds chat and regenerate.',
           })}
           actionLabel={t('coachGenerateWeek', { defaultValue: 'Generate this week' })}
           onAction={() => generate()}
