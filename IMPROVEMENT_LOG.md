@@ -109,3 +109,28 @@ PR: #234
 | N3 | `.308` | Active helper extract (overload cue / rest dock decision) or soft-chrome residue |
 | N4 | `.309` | Today/pillars i18n batch |
 | N5 | `.310` | Seeded a11y (Fuel sheet open or Mind check-in) + living-log close |
+
+## Loop 4 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| N1 Mind i18n | done (`.306`) | Check-in / breathing / page; cap **473→447** |
+| N2 Fuel leftovers | done (`.307`) | Adapt/targets/weight/recipes/toasts; **447→381** |
+| N3 Repeat-last + chrome | done (`.308`) | `resolveRepeatLastTarget`; solid onInk/outline/footer |
+| N4 Today/Behavior i18n | done (`.309`) | BehaviorStrip / DayReview / freshness / reentry; **381→332** |
+| N5 Fuel sheet a11y | done (`.310`) | Seeded axe on FuelLogSheet open |
+
+## Metrics
+
+| Metric | Loop 3 end | Loop 4 end |
+|--------|------------|------------|
+| Build | `.305` | **`.310`** |
+| i18n uncovered cap | 473 | **332** |
+| Zero-state `/move` | 0 | 0 |
+
+## End of Loop 4
+
+**Delivered:** N1–N5 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.306`–`.310`).
+**Verified:** i18n @332; unit helpers for repeat-last; ship-protocol guards green.
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Pump screenshot batch → D14; founder phone excellence; visual baseline bootstrap; more profile/track i18n if craft continues.

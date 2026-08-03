@@ -306,6 +306,31 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * Loop 4 N5 — FuelLogSheet is the log path. Zero-data /nutrition never opens
+   * the sheet; axe must see Quick/Describe/Custom/Photo chrome after Log food.
+   */
+  test('axe serious/critical: /nutrition with Log food sheet open @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await page.goto('/nutrition', { waitUntil: 'domcontentloaded' });
+    const fab = page.getByRole('button', { name: /log food/i }).first();
+    await expect(fab).toBeVisible({ timeout: 15_000 });
+    await fab.click();
+    await expect(page.getByRole('button', { name: /^describe$/i }).or(page.getByText(/^describe$/i)).first()).toBeVisible({
+      timeout: 10_000,
+    });
+    await axeSerious(page, '/nutrition (log sheet open)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at
