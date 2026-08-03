@@ -139,39 +139,101 @@ function sharesFocus(a: MuscleGroup[], b: MuscleGroup[]): boolean {
   return a.some((g) => b.includes(g));
 }
 
+/**
+ * Spread `count` sessions evenly across `available` day offsets (already sorted).
+ * When the week is short (e.g. only Sunday left), we place as many as fit — one
+ * per remaining day — rather than inventing past days that would immediately
+ * read as "missed".
+ */
+export function packOffsetsIntoAvailable(count: number, available: number[]): number[] {
+  if (available.length === 0 || count <= 0) return [];
+  const n = Math.min(count, available.length);
+  if (n === 1) return [available[0]!];
+  if (n === available.length) return available.slice();
+
+  const out: number[] = [];
+  for (let i = 0; i < n; i++) {
+    const idx = Math.round((i * (available.length - 1)) / (n - 1));
+    out.push(available[idx]!);
+  }
+  // Dedupe if rounding collided, then fill next free slots.
+  const unique: number[] = [];
+  for (const o of out) {
+    if (!unique.includes(o)) unique.push(o);
+  }
+  for (const a of available) {
+    if (unique.length >= n) break;
+    if (!unique.includes(a)) unique.push(a);
+  }
+  return unique.sort((a, b) => a - b);
+}
+
+/**
+ * Map a split onto calendar day offsets.
+ *
+ * `notBeforeOffset` (0–6) is how far into the week we already are. Preferred
+ * days that have already passed are dropped; the split is re-packed into the
+ * remaining days so a Sunday I-Day never seeds Mon/Wed/Fri as instant misses.
+ */
 export function mapToCalendar(
   split: SplitDay[],
   preferredDays: number[],
-  _weekStart: string
+  _weekStart: string,
+  notBeforeOffset = 0
 ): { day: SplitDay; dayOffset: number }[] {
   const count = split.length;
-  const offsets =
-    preferredDays.length >= count
-      ? [...preferredDays].sort((a, b) => a - b).slice(0, count)
-      : defaultPreferredOffsets(count);
+  const floor = Math.max(0, Math.min(6, notBeforeOffset));
+  const available = Array.from({ length: 7 - floor }, (_, i) => floor + i);
+  if (available.length === 0) return [];
+
+  const preferredFuture = preferredDays.filter((d) => d >= floor).sort((a, b) => a - b);
+  let offsets: number[];
+  if (preferredFuture.length >= count) {
+    offsets = preferredFuture.slice(0, count);
+  } else if (preferredFuture.length > 0) {
+    // Keep future preferences, fill the rest evenly in the window.
+    const need = Math.min(count, available.length);
+    offsets = [...preferredFuture];
+    for (const a of packOffsetsIntoAvailable(need, available)) {
+      if (offsets.length >= need) break;
+      if (!offsets.includes(a)) offsets.push(a);
+    }
+    offsets = offsets.sort((a, b) => a - b).slice(0, need);
+  } else if (floor === 0) {
+    offsets = defaultPreferredOffsets(count);
+  } else {
+    offsets = packOffsetsIntoAvailable(count, available);
+  }
+
+  // Clip to remaining week if a default pattern still sits in the past.
+  offsets = offsets.filter((o) => o >= floor);
+  if (offsets.length < Math.min(count, available.length)) {
+    offsets = packOffsetsIntoAvailable(count, available);
+  }
 
   // Avoid back-to-back same focus groups when possible
+  const days = split.slice(0, offsets.length);
   for (let pass = 0; pass < 3; pass++) {
-    for (let i = 1; i < split.length; i++) {
+    for (let i = 1; i < days.length; i++) {
       if (
-        offsets[i] - offsets[i - 1] === 1 &&
-        sharesFocus(split[i].focusGroups, split[i - 1].focusGroups) &&
-        split[i].kind === 'strength' &&
-        split[i - 1].kind === 'strength'
+        offsets[i]! - offsets[i - 1]! === 1 &&
+        sharesFocus(days[i]!.focusGroups, days[i - 1]!.focusGroups) &&
+        days[i]!.kind === 'strength' &&
+        days[i - 1]!.kind === 'strength'
       ) {
-        const swapIdx = offsets.findIndex((o, j) => j > i && o - offsets[i - 1] > 1);
+        const swapIdx = offsets.findIndex((o, j) => j > i && o - offsets[i - 1]! > 1);
         if (swapIdx > i) {
-          const tmp = offsets[i];
-          offsets[i] = offsets[swapIdx];
+          const tmp = offsets[i]!;
+          offsets[i] = offsets[swapIdx]!;
           offsets[swapIdx] = tmp;
         }
       }
     }
   }
 
-  return split.map((day, i) => ({
+  return days.map((day, i) => ({
     day,
-    dayOffset: offsets[i] ?? i,
+    dayOffset: offsets[i] ?? available[Math.min(i, available.length - 1)]!,
   }));
 }
 
@@ -207,4 +269,18 @@ export function todayDayOffset(weekStart: string, todayIso?: string): number {
   now.setHours(12, 0, 0, 0);
   const diff = Math.floor((now.getTime() - start.getTime()) / 86400000);
   return Math.max(0, Math.min(6, diff));
+}
+
+/**
+ * Day offset for *scheduling into* a week. Unlike `todayDayOffset`, returns 0
+ * when `today` is outside the week (tests and rollover fixtures) so we still
+ * materialise a full Mon–Sun pattern. Inside the week, past days are skipped.
+ */
+export function scheduleFromOffset(weekStart: string, todayIso: string): number {
+  const start = new Date(`${weekStart}T12:00:00`);
+  const now = new Date(`${todayIso}T12:00:00`);
+  now.setHours(12, 0, 0, 0);
+  const diff = Math.floor((now.getTime() - start.getTime()) / 86400000);
+  if (diff < 0 || diff > 6) return 0;
+  return diff;
 }

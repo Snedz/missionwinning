@@ -107,17 +107,60 @@ export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): Co
 
   // Mark missed sessions
   for (let i = 0; i < sessions.length; i++) {
-    if (sessions[i].dayOffset < todayOffset && sessions[i].status === 'planned') {
-      sessions[i] = { ...sessions[i], status: 'missed' };
+    if (sessions[i]!.dayOffset < todayOffset && sessions[i]!.status === 'planned') {
+      sessions[i] = { ...sessions[i]!, status: 'missed' };
     }
   }
 
   const missed = sessions.filter((s) => s.status === 'missed');
   const remaining = sessions.filter((s) => s.status === 'planned' || s.status === 'swapped');
+  const doneSessions = sessions.filter((s) => s.status === 'done');
+  const daysLeft = 7 - todayOffset;
+  const slots = Array.from({ length: daysLeft }, (_, i) => todayOffset + i);
 
-  if (missed.length > 0 && remaining.length > 0) {
-    const daysLeft = 7 - todayOffset;
-    const slots = Array.from({ length: daysLeft }, (_, i) => todayOffset + i);
+  /*
+   * Late-week / cold-start collapse: every planned day is already in the past,
+   * so `remaining` is empty and the old path left a wall of `missed` with no
+   * forward session — "Life happened — 3 sessions missed" on a brand-new
+   * Sunday I-Day. Re-open those sessions onto the days that are still left
+   * as **planned**, and only keep true misses when nothing can be salvaged
+   * (no days left, or the athlete already finished the week).
+   */
+  if (missed.length > 0 && remaining.length === 0 && slots.length > 0) {
+    const strengthDays = missed.filter((s) => s.kind === 'strength');
+    const otherDays = missed.filter((s) => s.kind !== 'strength');
+    let slotIdx = 0;
+    const reassigned: PlanSession[] = [];
+    const assign = (list: PlanSession[]) => {
+      for (const s of list) {
+        while (slotIdx < slots.length - 1) {
+          const prev = reassigned[reassigned.length - 1];
+          if (
+            prev &&
+            prev.kind === 'strength' &&
+            s.kind === 'strength' &&
+            slots[slotIdx]! - prev.dayOffset === 1
+          ) {
+            slotIdx++;
+            continue;
+          }
+          break;
+        }
+        if (slotIdx >= slots.length) break;
+        reassigned.push({ ...s, dayOffset: slots[slotIdx]!, status: 'planned' });
+        slotIdx++;
+      }
+    };
+    assign(strengthDays);
+    assign(otherDays);
+    // Only keep as missed what could not fit — never the whole week as shame.
+    const placedIds = new Set(reassigned.map((s) => s.id));
+    const stillMissed =
+      doneSessions.length > 0
+        ? missed.filter((s) => !placedIds.has(s.id))
+        : []; // cold start: drop unplaceable past days, don't label them missed
+    sessions = [...doneSessions, ...stillMissed, ...reassigned];
+  } else if (missed.length > 0 && remaining.length > 0) {
     const strengthDays = remaining.filter((s) => s.kind === 'strength');
     const otherDays = remaining.filter((s) => s.kind !== 'strength');
 
@@ -128,14 +171,19 @@ export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): Co
       for (const s of list) {
         while (slotIdx < slots.length - 1) {
           const prev = reassigned[reassigned.length - 1];
-          if (prev && prev.kind === 'strength' && s.kind === 'strength' && slots[slotIdx] - prev.dayOffset === 1) {
+          if (
+            prev &&
+            prev.kind === 'strength' &&
+            s.kind === 'strength' &&
+            slots[slotIdx]! - prev.dayOffset === 1
+          ) {
             slotIdx++;
             continue;
           }
           break;
         }
         if (slotIdx >= slots.length) break;
-        reassigned.push({ ...s, dayOffset: slots[slotIdx], status: 'planned' });
+        reassigned.push({ ...s, dayOffset: slots[slotIdx]!, status: 'planned' });
         slotIdx++;
       }
     };
@@ -143,12 +191,9 @@ export function adaptPlan(plan: CoachPlan, ctx: CoachContext, today: string): Co
     assign(strengthDays);
     assign(otherDays);
 
-    const done = sessions.filter((s) => s.status === 'done');
-    const dropped = remaining.length - reassigned.length;
-    sessions = [...done, ...reassigned];
-    if (dropped > 0 && reassigned.length) {
-      // lowest priority accessory dropped implicitly
-    }
+    sessions = [...doneSessions, ...reassigned];
+    // Missed days that were re-spread away are dropped from the list so the
+    // week strip does not keep painting "Missed" on days the plan left.
   }
 
   // Low readiness swap today

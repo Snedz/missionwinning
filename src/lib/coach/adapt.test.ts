@@ -50,12 +50,68 @@ describe('adaptPlan', () => {
       daysPerWeek: 3,
       seedId: 'adapt-miss-monday',
     });
-    const plan = generateWeek(ctx, '2026-07-06');
+    const plan = generateWeek(ctx, '2026-07-06', 1, '2026-07-06');
     const adapted = adaptPlan(plan, ctx, '2026-07-06');
     assert.deepEqual(
       adapted.sessions.filter((s) => s.status === 'missed'),
       [],
       'nothing has been missed yet on Monday — the other direction of the same rule'
+    );
+  });
+
+  /*
+   * Cold-start Sunday: seed used to place Mon/Wed/Fri, adapt marked all three
+   * missed (no remaining future sessions to re-spread), and Coach opened with
+   * "Life happened — 3 sessions missed" for an athlete who had never trained.
+   */
+  it('does not leave a wall of missed sessions on a cold-start late week', () => {
+    const ctx = buildCoachContextFromInputs({
+      history: [],
+      experience: 'beginner',
+      equipment: 'bodyweight',
+      goal: 'goal:general',
+      daysPerWeek: 3,
+      seedId: 'adapt-cold-sunday',
+    });
+    // Generate as if Monday (full pattern), then adapt on Sunday — the stored
+    // plan shape an athlete would hit after a mid-week code path or old seed.
+    const plan = generateWeek(ctx, '2026-07-06', 1, '2026-07-06');
+    assert.ok(
+      plan.sessions.some((s) => s.dayOffset < 6),
+      'fixture needs past-week sessions to exercise the collapse path'
+    );
+    const adapted = adaptPlan(plan, ctx, '2026-07-12'); // Sunday of that week
+    const missed = adapted.sessions.filter((s) => s.status === 'missed');
+    const planned = adapted.sessions.filter(
+      (s) => s.status === 'planned' || s.status === 'swapped'
+    );
+    assert.deepEqual(missed, [], 'cold start must not paint past seed days as missed');
+    assert.ok(planned.length >= 1, 'at least one session must still be open on Sunday');
+    assert.ok(
+      planned.every((s) => s.dayOffset >= 6),
+      'open sessions sit on the remaining day(s), not the past'
+    );
+  });
+
+  it('generateWeek mid-week only schedules remaining days', () => {
+    const ctx = buildCoachContextFromInputs({
+      history: [],
+      experience: 'beginner',
+      equipment: 'bodyweight',
+      goal: 'goal:general',
+      daysPerWeek: 3,
+      seedId: 'gen-midweek',
+    });
+    // Thursday of the week starting Monday 2026-07-06
+    const plan = generateWeek(ctx, '2026-07-06', 1, '2026-07-09');
+    assert.ok(plan.sessions.length >= 1);
+    assert.ok(
+      plan.sessions.every((s) => s.dayOffset >= 3),
+      `no session before Thursday, got offsets ${plan.sessions.map((s) => s.dayOffset)}`
+    );
+    assert.ok(
+      plan.sessions.every((s) => s.status === 'planned'),
+      'fresh generate is all planned'
     );
   });
 

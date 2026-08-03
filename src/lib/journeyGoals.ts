@@ -1,5 +1,7 @@
 /** Journey goal presets — stored as `goal:<id>` in localStorage; legacy English strings still resolve. */
 
+import { isSurfaceEnabled } from '@/lib/surface';
+
 export const GOAL_PRESET_IDS = [
   'strength',
   'fat_loss',
@@ -11,6 +13,22 @@ export const GOAL_PRESET_IDS = [
   'america_health',
 ] as const;
 export type GoalPresetId = (typeof GOAL_PRESET_IDS)[number];
+
+/** Goals that only make sense when the America / PFT track is on. */
+export const AMERICA_GOAL_PRESET_IDS: readonly GoalPresetId[] = [
+  'pft',
+  'kids',
+  'america_health',
+];
+
+/**
+ * Chips shown on I-Day. America/PFT/kids are hidden while that surface is
+ * parked so we do not pitch a track the athlete cannot open.
+ */
+export function visibleGoalPresetIds(): GoalPresetId[] {
+  if (isSurfaceEnabled('america')) return [...GOAL_PRESET_IDS];
+  return GOAL_PRESET_IDS.filter((id) => !AMERICA_GOAL_PRESET_IDS.includes(id));
+}
 
 export function goalPresetValue(id: GoalPresetId): string {
   return `goal:${id}`;

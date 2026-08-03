@@ -22,6 +22,7 @@ import {
   setKindDefaultLabel,
   setKindLabelKey,
 } from '@/lib/workout/setKind';
+import { formatLoggedSetLine } from '@/lib/workout/activeWorkoutHelpers';
 import { cn } from '@/lib/utils';
 
 const SET_KIND_TIPS: Record<SetKind, { key: string; defaultValue: string }> = {
@@ -63,7 +64,12 @@ export function SetLogRow({ setNumber, set, isNext, weightLabel, onRate }: Props
 
       {set.completed ? (
         <span className="text-[15px] font-semibold tabular-nums">
-          {set.reps} × {set.weight} {weightLabel}
+          {formatLoggedSetLine(
+            set.reps,
+            set.weight,
+            weightLabel,
+            t('activeSetBodyweight', { defaultValue: 'BW' })
+          )}
         </span>
       ) : (
         <span className="text-[15px] tabular-nums text-muted-foreground">

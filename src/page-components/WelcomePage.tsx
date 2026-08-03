@@ -20,7 +20,7 @@ import { scheduleJourneyPush } from '@/lib/journeySync';
 import { SignInPanel } from '@/components/auth/SignInPanel';
 import { AppLegalFooter } from '@/components/layout/AppLegalFooter';
 import {
-  GOAL_PRESET_IDS,
+  visibleGoalPresetIds,
   GOAL_PRESET_LABEL_KEY,
   GOAL_PRESET_DEFAULTS,
   goalPresetValue,
@@ -296,7 +296,7 @@ export function WelcomePage() {
                     })}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {GOAL_PRESET_IDS.map((id) => {
+                    {visibleGoalPresetIds().map((id) => {
                       const value = goalPresetValue(id);
                       const selected = primaryGoal === value;
                       const labelKey = GOAL_PRESET_LABEL_KEY[id];
