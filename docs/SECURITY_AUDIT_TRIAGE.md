@@ -40,6 +40,7 @@ No evidence of `SUPABASE_SERVICE_ROLE_KEY` or webhook secrets in client bundles 
 |------|----------|----------|-----------|
 | Solana/Phantom high advisories | High (upstream) | **Accept** while crypto checkout is optional lifetime path | Next quarterly or before marketing crypto heavily |
 | Soft CI audit (`continue-on-error`) | Process | Keep soft until upstream clean or crypto path removed | After H1 public |
+| `postcss@8.4.31` nested under `next@16.2.12` (Dependabot alerts #44–#45) | High (upstream pin) | **Accept until Next bumps.** Root app `postcss` is already `8.5.25` (past fixed `8.5.18`). The remaining copy is Next’s own nested dep (`dependencies.postcss: "8.4.31"` on latest stable `16.2.12` as of 2026-08-03; no newer stable). Do **not** force an `overrides` pin under Next without a full `next build` + `@gate` e2e — the pin is intentional upstream. Revisit on the next `next` minor. | Next Next.js bump |
 
 ---
 
@@ -49,6 +50,7 @@ No evidence of `SUPABASE_SERVICE_ROLE_KEY` or webhook secrets in client bundles 
 - [ ] Prefer Phantom/Solana minor bumps when available  
 - [ ] If crypto checkout is shelved: remove `@phantom/*` + unused `@solana/*` to shrink surface  
 - [ ] Never force-fix without `e2e:critical` + crypto unit tests green  
+- [ ] On next `next` upgrade: re-check nested `postcss` (alerts #44–#45) before accepting risk again  
 
 ---
 
