@@ -160,6 +160,19 @@ type ActiveWorkoutStrings = {
   sessionVolumeNoPlanDesc: string;
   sessionVolumeReduced: string;
   sessionVolumeReducedDesc: string;
+  /** Kaizen Loop 3 M1 — set table + jot (.301) */
+  activeAddExerciseEyebrow: string;
+  activeColSet: string;
+  activeColPrev: string;
+  activeColReps: string;
+  activeColAction: string;
+  activePrBadge: string;
+  activeSetInConsole: string;
+  activeSetPlanned: string;
+  activePrTip: string;
+  sessionJotLabel: string;
+  sessionJotPlaceholder: string;
+  sessionJotPrivacy: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -313,6 +326,18 @@ const en: ActiveWorkoutStrings = {
   sessionVolumeNoPlanDesc: 'Start from Mission Coach for plan volume cuts. Sets here stay yours.',
   sessionVolumeReduced: 'Volume reduced',
   sessionVolumeReducedDesc: 'One set trimmed from accessories (min 2). Plan marked Adapted.',
+  activeAddExerciseEyebrow: 'This session',
+  activeColSet: 'Set',
+  activeColPrev: 'Prev',
+  activeColReps: 'Reps',
+  activeColAction: 'Action',
+  activePrBadge: 'PR',
+  activeSetInConsole: 'In the console',
+  activeSetPlanned: '{{reps}} planned',
+  activePrTip: 'Personal record for this exercise',
+  sessionJotLabel: 'Field note',
+  sessionJotPlaceholder: 'Five words is enough — "knee twinge set 3". Opens your journal entry.',
+  sessionJotPrivacy: 'Stays on this device.',
 };
 
 const es: ActiveWorkoutStrings = {

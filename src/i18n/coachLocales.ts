@@ -109,6 +109,38 @@ type CoachStrings = {
   coachGenerateEmptyDesc: string;
   coachManageCancel: string;
   coachManageBack: string;
+  /** Kaizen Loop 3 M1 — Adjust/chat/today (.301) */
+  coachAdjustAppliedTime: string;
+  coachAdjustAppliedEquipment: string;
+  coachAdjustAppliedAvoid: string;
+  coachAdjustAppliedReadiness: string;
+  coachAdjustAppliedTitle: string;
+  coachAdjustGroupTime: string;
+  coachAdjustGroupGear: string;
+  coachAdjustGroupHurt: string;
+  coachAdjustMinutes: string;
+  coachAdjustPickArea: string;
+  coachFreeFormTitle: string;
+  coachFreeFormFallback: string;
+  coachFreeFormChatHintFree: string;
+  coachFreeFormChatHint: string;
+  coachChatSoftTip: string;
+  coachChatAskFormPrefill: string;
+  coachChatRateLimited: string;
+  coachChatUnauthorized: string;
+  coachChatPremium: string;
+  coachChatError: string;
+  coachChatBrowserOffline: string;
+  coachChatQuota: string;
+  coachChatStopped: string;
+  coachChatStop: string;
+  coachTodayBandHigh: string;
+  coachTodayBandLight: string;
+  coachTodayBandSteady: string;
+  coachTodayMoreExercises: string;
+  coachSessionMobility: string;
+  coachAiBadge: string;
+  coachLoading: string;
 };
 
 const en: CoachStrings = {
@@ -224,6 +256,37 @@ const en: CoachStrings = {
   coachGenerateEmptyDesc: 'One week from your logs. Free every week — no wearable.',
   coachManageCancel: 'Cancel',
   coachManageBack: 'Back',
+  coachAdjustAppliedTime: 'Trimmed to about {{minutes}} minutes',
+  coachAdjustAppliedEquipment: 'Rebuilt with bodyweight movements only',
+  coachAdjustAppliedAvoid: 'Working around {{group}}',
+  coachAdjustAppliedReadiness: 'Scaled to how recovered you are',
+  coachAdjustAppliedTitle: 'Applied',
+  coachAdjustGroupTime: 'Less time today',
+  coachAdjustGroupGear: 'Different gear',
+  coachAdjustGroupHurt: 'Something hurts',
+  coachAdjustMinutes: '{{minutes}} min',
+  coachAdjustPickArea: 'Pick the area',
+  coachFreeFormTitle: 'Form cues — {{name}}',
+  coachFreeFormFallback: 'Open Form guide on the logger for setup and execute tips.',
+  coachFreeFormChatHintFree: 'Your weekly plan and Adjust today stay free. Live chat opens later in beta.',
+  coachFreeFormChatHint: 'Live Q&A chat is Super Bundle — your weekly plan and Adjust today stay free.',
+  coachChatSoftTip: 'Want to ask the coach anything? Chat is Super Bundle.',
+  coachChatAskFormPrefill: 'How should I perform {{name}} with good form?',
+  coachChatRateLimited: 'Too many messages — wait a moment and try again.',
+  coachChatUnauthorized: 'Sign in again to keep chatting with your coach.',
+  coachChatPremium: 'Coach chat needs an active Super Bundle.',
+  coachChatError: 'Could not reach the coach. Try again.',
+  coachChatBrowserOffline: 'You appear offline — reconnect and try again.',
+  coachChatQuota: "Today's chat limit reached — resets tomorrow. Your plan and logger are unaffected.",
+  coachChatStopped: 'Stopped.',
+  coachChatStop: 'Stop',
+  coachTodayBandHigh: 'Your last week is running heavier than your month.',
+  coachTodayBandLight: 'Your last week is lighter than your month — room to add.',
+  coachTodayBandSteady: 'Your week is tracking with your month.',
+  coachTodayMoreExercises: '+{{count}} more',
+  coachSessionMobility: 'Mobility',
+  coachAiBadge: 'Live',
+  coachLoading: 'Looking at your week…',
 };
 
 const es: CoachStrings = {

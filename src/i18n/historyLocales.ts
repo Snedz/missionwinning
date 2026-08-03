@@ -45,6 +45,15 @@ type HistoryStrings = {
   historyTableVolume: string;
   historyTableType: string;
   historyWarmupExcluded: string;
+  /** Kaizen Loop 3 M1 — History chrome (.301) */
+  historyBriefingEmpty: string;
+  historyBriefingLine: string;
+  historyEyebrow: string;
+  historyMissionStory: string;
+  historyStartWorkout: string;
+  historySearchPlaceholder: string;
+  historyNoMatches: string;
+  historyLoadMore: string;
 };
 
 const en: HistoryStrings = {
@@ -92,6 +101,14 @@ const en: HistoryStrings = {
   historyTableVolume: 'Volume',
   historyTableType: 'Type',
   historyWarmupExcluded: '—',
+  historyBriefingEmpty: 'Your mission story starts with the first logged set.',
+  historyBriefingLine: '{{count}} sessions · {{volume}} total volume — consistency compounds.',
+  historyEyebrow: 'History',
+  historyMissionStory: 'At a glance',
+  historyStartWorkout: 'Open Today',
+  historySearchPlaceholder: 'Search by workout name…',
+  historyNoMatches: 'No sessions match these filters',
+  historyLoadMore: 'Show more ({{remaining}} left)',
 };
 
 const es: HistoryStrings = {
