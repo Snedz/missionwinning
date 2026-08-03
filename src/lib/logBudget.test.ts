@@ -78,6 +78,14 @@ const NEVER_SHIPPED: { from: number; to: number; why: string }[] = [
       'renumbered above master before landing — #178 shipped as `.244`–`.251`. No commit on ' +
       'master ever carried these, so there is nothing to rotate and nothing to archive.',
   },
+  {
+    from: 260,
+    to: 260,
+    why:
+      'Coverage branch renumbered mid-flight (`.226` → `.260` → landed as `.262`). No LOG ' +
+      'heading on master ever ended in (`.260`), so the live window can sit on `.261` without ' +
+      'a prior rotate of a missing section.',
+  },
 ];
 const neverShipped = (x: number) => NEVER_SHIPPED.some((g) => x >= g.from && x <= g.to);
 

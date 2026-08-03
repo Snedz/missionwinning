@@ -37,18 +37,18 @@ export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
             type="button"
             onClick={() => onBoardChange(b.id)}
             className={cn(
-              'rounded-xl border p-3 text-left transition-all min-h-[72px]',
+              'border-2 p-3 text-left transition-colors min-h-[72px]',
               active && b.theme === 'night' && 'border-border bg-card',
-              active && b.theme === 'dawn' && 'border-[hsl(var(--status-warn)/0.5)] bg-[hsl(var(--status-warn)/0.12)]',
-              active && !themed && 'border-primary/40 bg-primary/10',
-              !active && 'border-border/50 bg-card/50 hover:border-border'
+              active && b.theme === 'dawn' && 'border-border bg-accent-100',
+              active && !themed && 'border-primary bg-tint',
+              !active && 'border-border bg-card hover:border-foreground'
             )}
           >
             <Icon
               className={cn(
                 'h-4 w-4 mb-1.5',
                 active && b.theme === 'night' && 'text-muted-foreground',
-                active && b.theme === 'dawn' && 'text-status-warn',
+                active && b.theme === 'dawn' && 'text-accent-900',
                 active && !themed && 'text-primary',
                 !active && 'text-muted-foreground'
               )}
@@ -57,8 +57,9 @@ export function LeaderboardBoardPicker({ boardId, onBoardChange }: Props) {
               className={cn(
                 'text-xs font-semibold leading-tight',
                 active && b.theme === 'night' && 'text-muted-foreground',
-                active && b.theme === 'dawn' && 'text-[hsl(var(--status-warn))]',
-                active && !themed && 'text-primary-foreground'
+                active && b.theme === 'dawn' && 'text-accent-900',
+                active && !themed && 'text-primary',
+                !active && 'text-foreground'
               )}
             >
               {title}

@@ -240,10 +240,10 @@ export function LeaderboardPage() {
  type="button"
  onClick={() => handleBoardChange('under-the-stars')}
  className={cn(
- 'inline-flex items-center gap-1.5 border px-3 py-1.5 transition-colors',
+ 'inline-flex items-center gap-1.5 border-2 px-3 py-1.5 transition-colors',
  boardId === 'under-the-stars'
  ? 'border-border bg-card text-muted-foreground'
- : 'border-border/50 text-muted-foreground hover:border-border'
+ : 'border-border text-muted-foreground hover:border-foreground'
  )}
  >
  <Moon className="h-3.5 w-3.5" />
@@ -256,10 +256,10 @@ export function LeaderboardPage() {
  type="button"
  onClick={() => handleBoardChange('dawns-early-light')}
  className={cn(
- 'inline-flex items-center gap-1.5 border px-3 py-1.5 transition-colors',
+ 'inline-flex items-center gap-1.5 border-2 px-3 py-1.5 transition-colors',
  boardId === 'dawns-early-light'
  ? 'border-border bg-accent-100 text-accent-900'
- : 'border-border/50 text-muted-foreground hover:border-border'
+ : 'border-border text-muted-foreground hover:border-foreground'
  )}
  >
  <Sunrise className="h-3.5 w-3.5" />
@@ -273,10 +273,10 @@ export function LeaderboardPage() {
  <div
  className={
  boardTheme === 'night'
- ? ' border border-border (var(--status-info)/0.15)] via-card to-background p-4 md:p-5'
+ ? 'border-2 border-border bg-card p-4 md:p-5'
  : boardTheme === 'dawn'
- ? ' border border-border via-card to-background p-4 md:p-5'
- : ' border border-border/50 bg-card/40 p-4 md:p-5'
+ ? 'border-2 border-border bg-accent-100 p-4 md:p-5'
+ : 'border-2 border-border bg-card p-4 md:p-5'
  }
  >
  <h2 className="text-lg font-semibold tracking-tight">{boardTitle}</h2>
@@ -327,7 +327,7 @@ export function LeaderboardPage() {
  }}
  maxLength={24}
  placeholder="Your name"
- className="w-full rounded-lg border border-border/50 bg-background px-3 py-2 text-sm"
+ className="w-full min-h-[44px] border-2 border-border bg-background px-3 py-2 text-sm focus:outline-none focus:border-foreground"
  />
  </label>
  <label className="space-y-1">
@@ -343,7 +343,7 @@ export function LeaderboardPage() {
  }}
  maxLength={8}
  placeholder="e.g. ALPHA"
- className="w-full rounded-lg border border-border/50 bg-background px-3 py-2 text-sm font-mono uppercase"
+ className="w-full min-h-[44px] border-2 border-border bg-background px-3 py-2 text-sm font-mono uppercase focus:outline-none focus:border-foreground"
  />
  </label>
  </div>
@@ -373,7 +373,7 @@ export function LeaderboardPage() {
  )}
 
  {scope === 'friends' && squadCode.startsWith('MW') && (
- <p className="text-xs text-status-info rounded-lg border border-border bg-card px-3 py-2">
+ <p className="text-xs text-status-info border-2 border-border bg-card px-3 py-2">
  {t('leaderboardClassHint', {
  defaultValue:
  'PE class code active — squad rankings include classmates who sync while signed in.',

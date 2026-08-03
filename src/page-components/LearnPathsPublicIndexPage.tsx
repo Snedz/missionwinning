@@ -19,11 +19,11 @@ export function LearnPathsPublicIndexPage() {
           <Link
             key={path.id}
             href={`/paths/${path.id}`}
-            className="block rounded-2xl border border-border/50 px-5 py-4 hover:border-primary/40 hover:bg-primary/10 transition-colors"
+            className="block border-2 border-border bg-card px-5 py-4 hover:border-primary hover:bg-tint transition-colors"
           >
             <p className="font-semibold">{path.title}</p>
             <p className="text-sm text-muted-foreground mt-1">{path.subtitle}</p>
-            <p className="text-xs text-primary/90 mt-2">
+            <p className="text-xs text-primary mt-2">
               {path.lessons.length} lessons · free teaser →
             </p>
           </Link>
