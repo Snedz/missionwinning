@@ -68,41 +68,38 @@ test('no chapter hero is off-palette except the declared debt', async () => {
   );
 });
 
-test('the debt is real, and the check is not passing vacuously', async () => {
+test('every chapter hero is in palette after the .268 re-ink', async () => {
   /*
-   * The one that would have caught a hollow version of this file. If the
-   * measurement silently returned zeros, or the rule never fired, everything
-   * above would still be green — so assert that the six *do* trip the rule and
-   * are passing only because they are declared.
+   * `.258` declared six off-palette heroes as debt. `.268` re-inked them
+   * (paper ground, ink linework, brand red accents). If measurement silently
+   * returned zeros, or a hero regressed to near-black, this is the guard —
+   * not a ratchet that can only loosen.
    */
   const { rows } = await check();
+  assert.ok(rows.length >= 6, `expected ≥6 heroes, got ${rows.length}`);
   const debt = rows.filter((r) => r.known);
-  assert.equal(debt.length, 6, `expected 6 declared heroes, measured ${debt.length}`);
+  assert.equal(debt.length, 0, `stale KNOWN_OFF_PALETTE entries: ${debt.map((r) => r.rel).join(', ')}`);
 
-  for (const r of debt) {
-    assert.ok(
-      r.offPalette,
-      `${r.rel} is declared as debt but measures in-palette (${r.ink}% ink, ${r.brand}% brand) — ` +
-        `delete its entry rather than leaving a ratchet that cannot tighten`
-    );
-    // The specific defect: near-black art on a paper ground.
-    assert.ok(r.ink > 45, `${r.rel} measured only ${r.ink}% ink — re-read this guard`);
+  for (const r of rows) {
+    assert.equal(r.offPalette, false, `${r.rel} is off-palette (${r.ink}% ink, ${r.brand}% brand)`);
+    // Paper-ground heroes must not be dominated by near-black (the pre-.131 defect).
+    assert.ok(r.ink <= 45, `${r.rel} measured ${r.ink}% ink — near-black on paper again`);
+    assert.ok(r.brand >= 1, `${r.rel} measured ${r.brand}% brand red — missing the one accent`);
   }
 });
 
-test('the check reports the debt rather than claiming success', async () => {
+test('the check reports debt honestly when any remains', async () => {
   /*
    * `.208` — "6 guidebook heroes in palette" was the first thing this script
-   * printed, and it was false: six of the six are off-palette and merely
-   * declared. A number stated more confidently than it can be supported is the
-   * defect, not a rounding choice.
+   * printed while six were only declared. The summary still names the debt
+   * slot so a future off-palette arrival cannot quietly re-lie.
    */
   const src = read('scripts/check-guidebook-heroes.mjs');
   assert.match(src, /declared debt awaiting re-ink/, 'the summary no longer names the debt');
   assert.doesNotMatch(
     src,
     /✓ \$\{rows\.length\} guidebook heroes in palette/,
-    'the summary claims every hero is in palette again'
+    'the summary claims every hero is in palette without measuring'
   );
 });
 
