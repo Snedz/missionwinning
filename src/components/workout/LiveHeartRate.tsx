@@ -58,7 +58,7 @@ export function LiveHeartRate() {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border/50 bg-muted/20 px-3 py-2">
+    <div className="flex flex-wrap items-center gap-3 border-2 border-border bg-card px-3 py-2">
       <HeartPulse className="h-4 w-4 text-primary shrink-0" aria-hidden />
       <div className="min-w-0 flex-1">
         <div className="text-sm font-medium text-foreground">

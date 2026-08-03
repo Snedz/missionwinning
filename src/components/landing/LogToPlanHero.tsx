@@ -79,15 +79,15 @@ export function LogToPlanHero({ staticFallback }: Props) {
   if (!todayTarget) return <>{staticFallback ?? null}</>;
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-card/80 p-4 sm:p-5">
+    <div className="border-2 border-border bg-card p-4 sm:p-5">
       <div className="mb-4 flex items-baseline justify-between gap-3">
         <p className="eyebrow">{t('heroDemoExercise', { defaultValue: 'Squat · today' })}</p>
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] tabular-nums text-muted-foreground/70">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] tabular-nums text-muted-foreground">
           {logged.length}/{PLANNED_SETS}
         </p>
       </div>
 
-      {/* Completed rows carry brass — earned, per brand guidelines. Emerald marks what's next. */}
+      {/* Next set = primary border; done sets = ink rule; pending = quiet border. */}
       <ul className="space-y-1.5">
         {Array.from({ length: PLANNED_SETS }, (_, i) => {
           const set = logged[i];
@@ -96,20 +96,20 @@ export function LogToPlanHero({ staticFallback }: Props) {
             <li
               key={i}
               className={[
-                'flex items-center gap-3 rounded-xl border px-3 py-2.5 transition-colors duration-200',
+                'flex items-center gap-3 border-2 px-3 py-2.5 transition-colors duration-200',
                 set
-                  ? 'border-border bg-card'
+                  ? 'border-border bg-background'
                   : isNext
-                    ? 'border-primary/40 bg-primary/[0.04]'
-                    : 'border-border/40',
+                    ? 'border-primary bg-tint'
+                    : 'border-border bg-card',
               ].join(' ')}
             >
-              <span className="w-4 shrink-0 font-mono text-xs tabular-nums text-muted-foreground/70">
+              <span className="w-4 shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
                 {i + 1}
               </span>
               <span
                 className={`font-mono text-sm tabular-nums ${
- set || isNext ?'text-foreground' : 'text-muted-foreground/50'
+                  set || isNext ? 'text-foreground' : 'text-muted-foreground'
                 }`}
               >
                 {fmt(todayTarget)}
@@ -122,7 +122,7 @@ export function LogToPlanHero({ staticFallback }: Props) {
 
       {/* The payoff. Before: why today asks for this. After: what it changed. */}
       <div
-        className="mt-4 min-h-[3.5rem] rounded-xl border border-border/40 bg-muted/20 px-3 py-2.5"
+        className="mt-4 min-h-[3.5rem] border-2 border-border bg-background px-3 py-2.5"
         aria-live="polite"
       >
         {done && nextTarget ? (
@@ -152,7 +152,7 @@ export function LogToPlanHero({ staticFallback }: Props) {
               two emerald CTAs on this page, and a third would dilute both. */}
           <button
             type="button"
-            className="tap-target flex w-full items-center justify-center gap-2 rounded-xl border border-primary/50 bg-primary/10 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-primary/20"
+            className="tap-target flex w-full items-center justify-center gap-2 border-2 border-primary bg-tint py-3 text-sm font-semibold text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
             onClick={() => router.push('/welcome')}
           >
             {t('heroDemoStart', { defaultValue: 'Do this with your own numbers' })}
@@ -170,14 +170,14 @@ export function LogToPlanHero({ staticFallback }: Props) {
         <button
           type="button"
           onClick={logSet}
-          className="tap-target mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/10 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-primary/15 active:scale-[0.99]"
+          className="tap-target mt-4 flex w-full items-center justify-center gap-2 border-2 border-primary bg-tint py-3 text-sm font-semibold text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
         >
           {t('heroDemoLog', { defaultValue: 'Log set' })}{' '}
           <span className="font-mono tabular-nums text-muted-foreground">{fmt(todayTarget)}</span>
         </button>
       )}
 
-      <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60">
+      <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
         {t('heroDemoLabel', { defaultValue: 'Demo · same engine as the app' })}
       </p>
     </div>
@@ -187,10 +187,10 @@ export function LogToPlanHero({ staticFallback }: Props) {
 /** SSR / no-JS shell. Same geometry so hydration causes no layout shift. */
 export function LogToPlanHeroFallback() {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card/80 p-4 sm:p-5" aria-hidden>
+    <div className="border-2 border-border bg-card p-4 sm:p-5" aria-hidden>
       <div className="mb-4 flex items-baseline justify-between gap-3">
         <p className="eyebrow">Squat · today</p>
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] tabular-nums text-muted-foreground/70">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] tabular-nums text-muted-foreground">
           0/3
         </p>
       </div>
@@ -198,16 +198,16 @@ export function LogToPlanHeroFallback() {
         {[0, 1, 2].map((i) => (
           <li
             key={i}
-            className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 ${
- i === 0 ?'border-primary/40 bg-primary/[0.04]' : 'border-border/40'
+            className={`flex items-center gap-3 border-2 px-3 py-2.5 ${
+              i === 0 ? 'border-primary bg-tint' : 'border-border bg-card'
             }`}
           >
-            <span className="w-4 shrink-0 font-mono text-xs tabular-nums text-muted-foreground/70">
+            <span className="w-4 shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
               {i + 1}
             </span>
             <span
               className={`font-mono text-sm tabular-nums ${
- i === 0 ?'text-foreground' : 'text-muted-foreground/50'
+                i === 0 ? 'text-foreground' : 'text-muted-foreground'
               }`}
             >
               8 × 82.5 kg
@@ -215,15 +215,15 @@ export function LogToPlanHeroFallback() {
           </li>
         ))}
       </ul>
-      <div className="mt-4 min-h-[3.5rem] rounded-xl border border-border/40 bg-muted/20 px-3 py-2.5">
+      <div className="mt-4 min-h-[3.5rem] border-2 border-border bg-background px-3 py-2.5">
         <p className="text-xs leading-relaxed text-muted-foreground">
           Last squat session you finished 3 × 12 at 80 kg, so today asks for more load.
         </p>
       </div>
-      <div className="tap-target mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/10 py-3 text-sm font-semibold text-foreground">
+      <div className="tap-target mt-4 flex w-full items-center justify-center gap-2 border-2 border-primary bg-tint py-3 text-sm font-semibold text-foreground">
         Log set <span className="font-mono tabular-nums text-muted-foreground">8 × 82.5 kg</span>
       </div>
-      <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60">
+      <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
         Demo · same engine as the app
       </p>
     </div>

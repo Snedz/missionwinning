@@ -87,7 +87,7 @@ export function CoachAdaptDemo() {
       <button
         type="button"
         onClick={toggle}
-        className="tap-target mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-border/60 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-border hover:bg-muted/30"
+        className="tap-target mt-2 flex w-full items-center justify-center gap-2 border-2 border-border bg-card py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary hover:bg-tint"
       >
         {adapted ? (
           <>
