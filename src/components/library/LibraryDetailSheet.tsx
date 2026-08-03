@@ -91,7 +91,7 @@ export function LibraryDetailSheet({ exercise, open, onOpenChange, onSelectExerc
         bodyClassName="p-5"
         footer={
           exercise ? (
-            <Button variant="fitness" className="w-full min-h-[52px]" onClick={addToSession}>
+            <Button variant="default" className="w-full min-h-[52px]" onClick={addToSession}>
               <Plus className="h-4 w-4 mr-2" />
               {activeWorkout
                 ? t('libraryAddToActive', { defaultValue: "Add to today's session" })

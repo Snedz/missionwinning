@@ -62,7 +62,7 @@ export function GuideApexShell({
         onNavigate={() => setTocOpen(false)}
       />
       <div className="mt-8 space-y-2 border-t border-border pt-6">
-        <Button asChild variant="fitness" size="sm" className="w-full">
+        <Button asChild variant="default" size="sm" className="w-full">
           <a
             href={pdfHref}
             download

@@ -36,8 +36,11 @@ import { isPathEnabled } from '@/lib/surface';
 import { isFreeBeta } from '@/lib/freeBeta';
 import { MeterBar } from '@/components/ui/MeterBar';
 import { FirstStepsSheet } from '@/components/journey/FirstStepsSheet';
+import { WhatsNewSheet } from '@/components/profile/WhatsNewSheet';
 import { getFirstSteps, summarizeFirstSteps } from '@/lib/journey/firstSteps';
 import { syncJourneyPhase } from '@/lib/missionJourney';
+import { APP_BUILD_LABEL } from '@/lib/buildInfo';
+import { isWhatsNewUnseen } from '@/lib/whatsNew';
 
 /** Quiet links below the groups — reachable, but not screens the rail counts. */
 const QUIET_LINKS: { href: string; labelKey: string; label: string }[] = [
@@ -144,6 +147,12 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
     }
   }, [open]);
   const [stepsOpen, setStepsOpen] = useState(false);
+  const [whatsNewOpen, setWhatsNewOpen] = useState(false);
+  const [whatsNewUnseen, setWhatsNewUnseen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    setWhatsNewUnseen(isWhatsNewUnseen(APP_BUILD_LABEL));
+  }, [open]);
   const stepProgress = useMemo(() => summarizeFirstSteps(firstSteps), [firstSteps]);
 
   const bundle = MORE_NAV.find((i) => i.href === '/bundle');
@@ -202,6 +211,31 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
           />
         </div>
       ) : null}
+
+      <div className="border-b-2 border-border">
+        <button
+          type="button"
+          onClick={() => setWhatsNewOpen(true)}
+          className="flex w-full min-h-[52px] items-center gap-3 px-4 text-left transition-colors hover:bg-muted"
+        >
+          <span className="flex-1 truncate text-[15px] font-semibold">
+            {t('whatsNewMoreRow', { defaultValue: 'What’s new' })}
+          </span>
+          {whatsNewUnseen ? (
+            <span className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
+              {t('whatsNewMoreUnseen', { defaultValue: 'New' })}
+            </span>
+          ) : null}
+          <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
+        </button>
+        <WhatsNewSheet
+          open={whatsNewOpen}
+          onClose={() => {
+            setWhatsNewOpen(false);
+            setWhatsNewUnseen(false);
+          }}
+        />
+      </div>
 
       {groups.map((group) => (
         <div key={group.id} className="border-b-2 border-border">

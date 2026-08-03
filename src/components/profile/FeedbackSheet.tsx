@@ -106,7 +106,7 @@ export function FeedbackSheet({ open, onClose, screen }: Props) {
           </Button>
         ) : (
           <Button
-            variant="fitness"
+            variant="default"
             className="min-h-[44px] w-full"
             disabled={!canSend}
             onClick={send}

@@ -268,7 +268,7 @@ export function GuidedStepPlayer({
           {/*
               `.242` — red on the full-screen player, paper-on-ink in a card.
 
-              This was `variant="fitness"` unconditionally, and both callers
+              This was `variant="default"` unconditionally, and both callers
               (`GuidedMindSessionRunner`, `TimedFlowRunner`) render `compact` in a
               grid — so `/mind` painted **one red Start per guided session**, ten
               of them, and `/move` did the same per flow. That is the reading
@@ -287,7 +287,7 @@ export function GuidedStepPlayer({
               spending the do-this-now colour on it is what the colour is for.
           */}
           {state.status === 'idle' && (
-            <Button variant={isCompact ? 'outline' : 'fitness'} size={isCompact ? 'sm' : 'lg'} className="min-h-[44px]" onClick={handleStart} aria-label={t('guidedSessionStart', { defaultValue: 'Start session' })}>
+            <Button variant={isCompact ? 'outline' : 'default'} size={isCompact ? 'sm' : 'lg'} className="min-h-[44px]" onClick={handleStart} aria-label={t('guidedSessionStart', { defaultValue: 'Start session' })}>
               <Play className="h-4 w-4 mr-2" aria-hidden />
               {t('guidedSessionStart', { defaultValue: 'Start' })}
             </Button>

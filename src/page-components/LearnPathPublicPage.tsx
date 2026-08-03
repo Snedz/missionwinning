@@ -81,7 +81,7 @@ export function LearnPathPublicPage({ path }: Props) {
             Start free with I-Day (~2 min), then open this path in Learn. Free core needs no AI key.
             Offline when you install the PWA.
           </p>
-          {/* Plain link with `.primary-action`, not `Button variant="fitness"` wrapping it:
+          {/* Plain link with `.primary-action`, not `Button variant="default"` wrapping it:
               utilities beat the components layer, so Button's `rounded-md`/`text-sm` won
               while `.primary-action`'s `w-full` survived — the CTA rendered at the wrong
               radius and size and forced itself onto its own row. */}

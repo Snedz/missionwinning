@@ -183,7 +183,7 @@ export function FuelWeightStrip({ todayIso, refreshKey = 0, onLogged }: Props) {
               autoFocus
             />
           </div>
-          <Button type="button" variant="fitness" size="sm" className="h-10" onClick={save}>
+          <Button type="button" variant="default" size="sm" className="h-10" onClick={save}>
             {t('save', { defaultValue: 'Save' })}
           </Button>
           <Button type="button" variant="outline" size="sm" className="h-10" onClick={() => setOpen(false)}>

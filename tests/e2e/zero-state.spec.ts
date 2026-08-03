@@ -103,16 +103,16 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   '/assessments': { cap: 1, why: 'Was 2 — the stage chip was a selection. Submit is the one action.' },
 
   '/nutrition': {
-    cap: 2,
-    why: 'Class 2: the docked "Log food" plus the empty-state CTA. Collapsing them is a Fuel composition pass.',
+    cap: 1,
+    why: 'K5: docked Log food is the one red; empty state dropped its duplicate CTA (dock owns the action).',
   },
 
   '/builder': { cap: 3, why: 'Class 2: "Blank workout" renders in both the wizard and the template panel.' },
   '/track': { cap: 3, why: 'Was 6. Activity-type chips were selections; two Log Activity buttons and Start GPS remain — class 2.' },
 
   '/coach': {
-    cap: 4,
-    why: 'Class 2: one "Start this session" per PlanSessionCard, plus Regenerate. Needs a week-grid composition pass.',
+    cap: 1,
+    why: 'D12: only today’s PlanSessionCard uses filled Start; other days outline; Regenerate lives in Manage sheet.',
   },
   '/profile': {
     cap: 4,

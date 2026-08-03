@@ -19,6 +19,11 @@
 const ZERO_STATE_EN: Record<string, string> = {
   // --- /history calendar ---
   historyTabCalendar: 'Calendar',
+  historyTabSessions: 'Sessions',
+  historyTabExercises: 'Exercises',
+  historyTabJournal: 'Journal',
+  historyTabsLabel: 'History view',
+  historyTrendsDesc: 'Volume, estimated 1RM, and muscle heatmap',
   historyCalendarLabel: 'Training calendar',
   historyCalPrev: 'Previous month',
   historyCalNext: 'Next month',

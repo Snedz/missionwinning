@@ -7,11 +7,17 @@ import {
   hasCoachAdaptationSignal,
   summarizeCoachAdaptations,
 } from '@/lib/coach/adaptSummary';
+import { coachAdaptReentryIsPrescribed } from '@/lib/coach/coachAdaptReentry';
 
 type Props = {
   plan: CoachPlan;
   /** Compact for Today card — one beat only. */
   compact?: boolean;
+  /**
+   * Monday-based day offset for “today” in this plan week.
+   * When a live (not-done) session matches, re-entry must not say Just Go.
+   */
+  todayOffset?: number;
 };
 
 /**
@@ -19,7 +25,7 @@ type Props = {
  * Surfaces existing adaptPlan outcomes — not a new engine.
  * D2: glanceable — headline + one beat by default; full list only when not compact.
  */
-export function CoachAdaptBanner({ plan, compact }: Props) {
+export function CoachAdaptBanner({ plan, compact, todayOffset }: Props) {
   const { t } = useTranslation();
   const beats = summarizeCoachAdaptations(plan);
   if (!hasCoachAdaptationSignal(plan) && beats.length === 0) return null;
@@ -30,6 +36,7 @@ export function CoachAdaptBanner({ plan, compact }: Props) {
   const visibleBeats = compact ? beats.slice(0, 1) : beats.slice(0, 3);
   const missedCount = plan.sessions.filter((s) => s.status === 'missed').length;
   const showReentry = !compact && missedCount > 0;
+  const reentryIsCoach = coachAdaptReentryIsPrescribed(plan, todayOffset);
 
   return (
     <div
@@ -94,15 +101,23 @@ export function CoachAdaptBanner({ plan, compact }: Props) {
             })}
           </p>
           <div className="flex flex-wrap gap-2">
+            {/*
+              K1 / `.278` honesty: when Mission Coach still has a live session
+              today, the primary re-entry is that session — not freestyle Just Go.
+            */}
             <Link
               href="/active"
-              className="inline-flex min-h-[44px] items-center rounded-md bg-primary-fill px-3 text-sm font-medium text-primary-foreground tap-target"
+              className="inline-flex min-h-[44px] items-center border-2 border-border bg-primary-fill px-3 text-sm font-medium text-primary-foreground tap-target"
             >
-              {t('coachAdaptJustGo', { defaultValue: 'Just Go — log one set' })}
+              {reentryIsCoach
+                ? t('coachStartSession', {
+                    defaultValue: 'Start this session',
+                  })
+                : t('coachAdaptJustGo', { defaultValue: 'Just Go — log one set' })}
             </Link>
             <Link
               href="/log"
-              className="inline-flex min-h-[44px] items-center rounded-md border border-border px-3 text-sm text-muted-foreground hover:text-foreground tap-target"
+              className="inline-flex min-h-[44px] items-center border-2 border-border px-3 text-sm text-muted-foreground hover:text-foreground tap-target"
             >
               {t('coachAdaptLighterWeek', { defaultValue: 'Open Today' })}
             </Link>

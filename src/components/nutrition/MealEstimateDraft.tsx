@@ -150,7 +150,7 @@ export function MealEstimateDraft({
               key={s}
               type="button"
               size="sm"
-              variant={servings === s ? 'fitness' : 'outline'}
+              variant={servings === s ? 'selected' : 'outline'}
               className="h-8 min-w-[2.5rem]  px-2.5 text-xs tabular-nums"
               onClick={() => applyServings(s)}
             >
@@ -230,7 +230,7 @@ export function MealEstimateDraft({
       <div className="flex flex-wrap gap-2 pt-1">
         <Button
           type="button"
-          variant="fitness"
+          variant="default"
           className="h-10"
           disabled={!draft.name.trim()}
           onClick={onLog}

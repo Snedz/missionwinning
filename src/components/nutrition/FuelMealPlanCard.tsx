@@ -41,7 +41,7 @@ export function FuelMealPlanCard() {
           <p className="text-xs text-muted-foreground tabular-nums">
             {baseTargets.cals} kcal · {baseTargets.protein}g protein · {baseTargets.carbs}g carbs
           </p>
-          <Button variant="fitness" size="sm" onClick={() => generate()}>
+          <Button variant="default" size="sm" onClick={() => generate()}>
             {t('fuelCoachGenerate', { defaultValue: 'Generate meal plan' })}
           </Button>
         </CardContent>

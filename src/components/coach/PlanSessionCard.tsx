@@ -22,16 +22,28 @@ type Props = {
   className?: string;
   /** Marks the card for today — 2px red top rule (no elevation; radius 0 system). */
   isToday?: boolean;
+  /**
+   * D12 — filled Start only on the one boss session (today, or next upcoming
+   * when today is rest). Other days stay outline so `/coach` is not a red farm.
+   */
+  isPrimaryStart?: boolean;
   /** Today’s not-done session only — opens adjust flow. */
   onAdjust?: () => void;
 };
 
-export function PlanSessionCard({ session, className, isToday, onAdjust }: Props) {
+export function PlanSessionCard({
+  session,
+  className,
+  isToday,
+  isPrimaryStart,
+  onAdjust,
+}: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const units = useUnits();
   const startWorkout = useWorkoutStore((s) => s.startWorkout);
   const unit = weightUnitLabel(units);
+  const primary = isPrimaryStart ?? isToday;
 
   const start = () => {
     startWorkout(session.name, planSessionToTemplates(session));
@@ -119,7 +131,16 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
         </ul>
         {session.status !== 'done' && (
           <div className="space-y-2">
-            <Button className="w-full primary-action" variant="fitness" onClick={start}>
+            {/*
+              D12 — one red Start on the week grid: only today.
+              Other days stay outline so zero-state `/coach` is not a farm of
+              primary fills (was cap 4 = every card + Regenerate).
+            */}
+            <Button
+              className={primary ? 'w-full primary-action' : 'w-full'}
+              variant={primary ? 'default' : 'outline'}
+              onClick={start}
+            >
               {t('coachStartSession', { defaultValue: 'Start this session' })}
             </Button>
             {onAdjust ? (

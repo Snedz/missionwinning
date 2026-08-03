@@ -127,6 +127,21 @@ type Hit = {
   end: number;
 };
 
+/**
+ * Portion-word scale relative to a template serving.
+ * Cups ≈ one plate scoop; handful / slice are smaller snack bites;
+ * piece counts as one unit (egg, chicken piece, fruit).
+ */
+function portionWordScale(word: string): number {
+  const w = word.toLowerCase();
+  if (/^cups?$/.test(w)) return 1;
+  if (/^pieces?$|^pcs?$/.test(w)) return 1;
+  if (/^handfuls?$/.test(w)) return 0.5;
+  if (/^slices?$/.test(w)) return 0.5;
+  if (/^scoops?$|^scoopfuls?$/.test(w)) return 1;
+  return 1;
+}
+
 function findQtyBefore(text: string, kwStart: number): { qty: number; start: number } {
   const before = text.slice(0, kwStart);
   // 100g chicken ≈ 1 serving template (templates are ~100–150g portions)
@@ -146,21 +161,42 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       return { qty: Math.round((g / 100) * 10) / 10, start: kwStart - ounces[0].length };
     }
   }
-  // 2 scoops whey — one scoop ≈ one powder template serving
-  const scoops = before.match(/(\d+(?:\.\d+)?)\s*(?:scoops?|scoopfuls?)\s*(?:of\s+)?$/i);
-  if (scoops) {
-    const s = parseFloat(scoops[1]);
-    if (s > 0 && s <= 6) {
-      return { qty: s, start: kwStart - scoops[0].length };
+  // Numbered portion words: "2 scoops whey", "1 cup rice", "2 handfuls almonds",
+  // "3 pieces chicken", "2 slices bread" — optional "of" before the food.
+  const numberedPortion = before.match(
+    /(\d+(?:\.\d+)?)\s*(scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?)\s*(?:of\s+)?$/i
+  );
+  if (numberedPortion) {
+    const n = parseFloat(numberedPortion[1]);
+    const scale = portionWordScale(numberedPortion[2]);
+    if (n > 0 && n <= 12) {
+      return {
+        qty: Math.round(n * scale * 10) / 10,
+        start: kwStart - numberedPortion[0].length,
+      };
     }
   }
-  // 1 cup rice / 2 cups oats
-  const cups = before.match(/(\d+(?:\.\d+)?)\s*cups?\s*$/i);
-  if (cups) {
-    const c = parseFloat(cups[1]);
-    if (c > 0 && c <= 8) {
-      return { qty: c, start: kwStart - cups[0].length };
-    }
+  // Word + portion: "a cup of rice", "two handfuls of almonds", "a piece of chicken"
+  const wordPortion = before.match(
+    /\b(a|an|one|two|three|four|five|six)\s+(scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?)\s*(?:of\s+)?$/i
+  );
+  if (wordPortion) {
+    const n = WORD_QTY[wordPortion[1].toLowerCase()] ?? 1;
+    const scale = portionWordScale(wordPortion[2]);
+    return {
+      qty: Math.round(n * scale * 10) / 10,
+      start: kwStart - wordPortion[0].length,
+    };
+  }
+  // Bare portion word without count: "cup of oats", "handful almonds"
+  const barePortion = before.match(
+    /\b(scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?)\s*(?:of\s+)?$/i
+  );
+  if (barePortion) {
+    return {
+      qty: portionWordScale(barePortion[1]),
+      start: kwStart - barePortion[0].length,
+    };
   }
   // 2 tbsp peanut butter
   const tbsp = before.match(/(\d+(?:\.\d+)?)\s*(?:tbsp|tablespoons?)\s*$/i);

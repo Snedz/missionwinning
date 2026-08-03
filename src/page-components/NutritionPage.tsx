@@ -588,7 +588,6 @@ export function NutritionPage() {
           setCloudStatus(t('fuelCloudLoaded', { defaultValue: 'Cloud loaded (signed-in only)' }));
           setTimeout(() => setCloudStatus(''), 1800);
         }}
-        onOpenLogSheet={() => setLogSheetOpen(true)}
         onSaveMeal={(l) => {
           setSavedMeals(
             saveMealPreset({
@@ -625,7 +624,7 @@ export function NutritionPage() {
 
       {!logSheetOpen ? (
         <Button
-          variant="fitness"
+          variant="default"
           size="lg"
           /* 56px, not 52 — the tab bar's real height since the five-tab recut.
              It is in flow now, so this offset clears an element that actually

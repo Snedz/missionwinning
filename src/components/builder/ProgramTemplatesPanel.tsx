@@ -123,7 +123,7 @@ function ProgramList({
                       })}
                     </p>
                   </div>
-                  <Button size="sm" variant="fitness" onClick={() => onLoadSession(program, session)}>
+                  <Button size="sm" variant="default" onClick={() => onLoadSession(program, session)}>
                     {t('builderLoad', { defaultValue: 'Load' })}
                   </Button>
                 </div>
@@ -348,7 +348,7 @@ export function ProgramTemplatesPanel({
               })}
             </SelectContent>
           </Select>
-          <Button variant="fitness" onClick={handleQuickLoad} disabled={!quickPick}>
+          <Button variant="default" onClick={handleQuickLoad} disabled={!quickPick}>
             {t('builderQuickLoadButton', { defaultValue: 'Load into builder' })}
           </Button>
         </div>

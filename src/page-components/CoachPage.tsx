@@ -10,13 +10,13 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { HoldToConfirmButton } from '@/components/ui/HoldToConfirmButton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
 import { WeekStrip } from '@/components/coach/WeekStrip';
 import { PlanSessionCard } from '@/components/coach/PlanSessionCard';
 import { AdjustSessionSheet } from '@/components/coach/AdjustSessionSheet';
 import { CoachAdaptBanner } from '@/components/coach/CoachAdaptBanner';
+import { CoachManageSheet } from '@/components/coach/CoachManageSheet';
 import { UnlockButton } from '@/components/UnlockButton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { CoachPlanSkeleton, SkeletonCard } from '@/components/ui/Skeleton';
@@ -54,6 +54,7 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
     adjustToday,
   } = useCoachPlan();
   const [adjustOpen, setAdjustOpen] = useState(false);
+  const [manageOpen, setManageOpen] = useState(false);
   const weekDose = plan ? summarizeWeekDose(plan) : null;
   const doseIntentKey =
     weekDose?.intent === 'strength'
@@ -189,83 +190,115 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             )}
           </div>
 
-          <CoachAdaptBanner plan={plan} />
+          <CoachAdaptBanner plan={plan} todayOffset={todayOffset} />
 
           <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
 
           {/* Form deep-link (?ask=): show free cues / chat near top */}
           {askExerciseId ? (
-            <CoachChatPanel
-              premium={premium}
-              readiness={ctx.bodyScores.readiness}
-              strain={ctx.bodyScores.strain}
-              recovery={ctx.bodyScores.recovery}
-              todaySession={todaySession}
-              askExerciseId={askExerciseId}
-            />
-          ) : null}
-
-          {todaySession && todaySession.status !== 'done' && (
-            <div className="space-y-2">
-              {!adjustOpen ? (
-                <button
-                  type="button"
-                  className="text-sm text-primary min-h-[44px] hover:underline"
-                  onClick={() => setAdjustOpen(true)}
-                >
-                  {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
-                </button>
-              ) : null}
-              <AdjustSessionSheet
-                open={adjustOpen}
-                onClose={() => setAdjustOpen(false)}
-                onAdjust={(c) => {
-                  adjustToday(c);
-                }}
+            <div id="coach-chat">
+              <CoachChatPanel
+                premium={premium}
+                readiness={ctx.bodyScores.readiness}
+                strain={ctx.bodyScores.strain}
+                recovery={ctx.bodyScores.recovery}
+                todaySession={todaySession}
+                askExerciseId={askExerciseId}
               />
             </div>
-          )}
+          ) : null}
+
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              className="text-sm text-primary min-h-[44px] hover:underline"
+              onClick={() => setManageOpen(true)}
+            >
+              {t('coachManageWeek', { defaultValue: 'Manage this week' })}
+            </button>
+            {todaySession && todaySession.status !== 'done' && !adjustOpen ? (
+              <button
+                type="button"
+                className="text-sm text-muted-foreground min-h-[44px] hover:underline"
+                onClick={() => setAdjustOpen(true)}
+              >
+                {t('coachAdjustToday', { defaultValue: 'Adjust today' })}
+              </button>
+            ) : null}
+          </div>
+
+          <AdjustSessionSheet
+            open={adjustOpen}
+            onClose={() => setAdjustOpen(false)}
+            onAdjust={(c) => {
+              adjustToday(c);
+            }}
+          />
+
+          <CoachManageSheet
+            open={manageOpen}
+            onClose={() => setManageOpen(false)}
+            canAdjustToday={!!todaySession && todaySession.status !== 'done'}
+            onAdjustToday={() => setAdjustOpen(true)}
+            canRegenerate={premium}
+            onRegenerate={() => generate()}
+          />
 
           {/* Free Coach hero: week sessions before any Bundle upsell.
               Two columns from sm up, per the handoff — a week of sessions is a
               grid you scan, not a stack you scroll. */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            {plan.sessions
-              .slice()
-              .sort((a, b) => a.dayOffset - b.dayOffset)
-              .map((session) => (
-                <PlanSessionCard
-                  key={session.id}
-                  session={session}
-                  isToday={session.dayOffset === todayOffset}
-                  onAdjust={
-                    session.dayOffset === todayOffset && session.status !== 'done'
-                      ? () => setAdjustOpen(true)
-                      : undefined
-                  }
-                />
-              ))}
-          </div>
+          {/* Free Coach hero: week sessions before any Bundle upsell.
+              Two columns from sm up, per the handoff — a week of sessions is a
+              grid you scan, not a stack you scroll. */}
+          {(() => {
+            const pending = plan.sessions
+              .filter((s) => s.status !== 'done')
+              .sort((a, b) => a.dayOffset - b.dayOffset);
+            const todayPending = pending.find((s) => s.dayOffset === todayOffset);
+            const nextPending =
+              pending.find((s) => s.dayOffset >= todayOffset) ?? pending[0];
+            const bossId = (todayPending ?? nextPending)?.id;
+            return (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {plan.sessions
+                  .slice()
+                  .sort((a, b) => a.dayOffset - b.dayOffset)
+                  .map((session) => {
+                    const isToday = session.dayOffset === todayOffset;
+                    return (
+                      <PlanSessionCard
+                        key={session.id}
+                        session={session}
+                        isToday={isToday}
+                        isPrimaryStart={session.id === bossId}
+                        onAdjust={
+                          isToday && session.status !== 'done'
+                            ? () => setAdjustOpen(true)
+                            : undefined
+                        }
+                      />
+                    );
+                  })}
+              </div>
+            );
+          })()}
 
           {!askExerciseId ? (
-            <CoachChatPanel
-              premium={premium}
-              readiness={ctx.bodyScores.readiness}
-              strain={ctx.bodyScores.strain}
-              recovery={ctx.bodyScores.recovery}
-              todaySession={todaySession}
-            />
+            <div id="coach-chat">
+              <CoachChatPanel
+                premium={premium}
+                readiness={ctx.bodyScores.readiness}
+                strain={ctx.bodyScores.strain}
+                recovery={ctx.bodyScores.recovery}
+                todaySession={todaySession}
+              />
+            </div>
           ) : null}
-          {premium && (
-            <HoldToConfirmButton
-              variant="destructive"
-              className="w-full"
-              label={t('coachRegenerateWeekPlan', {
-                defaultValue: 'Regenerate week plan',
-              })}
-              onConfirm={() => generate()}
-            />
-          )}
+          {/*
+            Regenerate stays in Manage sheet as the hold-confirm path.
+            Keeping a second red/destructive on the page fought the one-red rule.
+            Premium athletes still reach it via Manage → Regenerate.
+          */}
         </div>
       )}
 

@@ -23,6 +23,7 @@ import { fitnessTestStringsFor } from '@/i18n/fitnessTestLocales';
 import { assessmentsStringsFor } from '@/i18n/assessmentsLocales';
 import { feedbackStringsFor } from '@/i18n/feedbackLocales';
 import { firstStepsStringsFor } from '@/i18n/firstStepsLocales';
+import { whatsNewStringsFor } from '@/i18n/whatsNewLocales';
 import { zeroStateStringsFor } from '@/i18n/zeroStateLocales';
 import { notificationStringsFor } from '@/i18n/notificationLocales';
 import { programsStringsFor } from '@/i18n/programsLocales';
@@ -197,6 +198,12 @@ export const LOCALE_EXPORTS: LocaleExportEntry[] = [
     namespace: 'firstSteps',
     filename: 'first-steps.json',
     stringsFor: packWrap(firstStepsStringsFor),
+    langs: EXPORT_LANGS,
+  },
+  {
+    namespace: 'whatsNew',
+    filename: 'whats-new.json',
+    stringsFor: packWrap(whatsNewStringsFor),
     langs: EXPORT_LANGS,
   },
   {

@@ -85,7 +85,7 @@ export function LearnPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="fitness" size="sm" asChild>
+            <Button variant="default" size="sm" asChild>
               <Link href="/learn/guide">
                 {t('learnOpenGuidebook', { defaultValue: 'Open Guidebook →' })}
               </Link>

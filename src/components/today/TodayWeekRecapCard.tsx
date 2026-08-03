@@ -103,7 +103,7 @@ export function TodayWeekRecapCard({ recap }: Props) {
  streak: recap.streak,
  defaultValue: recap.hasActivity
  ? `${recap.sessions} sessions · ${recap.totalSets} sets · ${recap.streak}-day streak`
- : 'No sessions yet this week — Just Go keeps the path alive.',
+ : 'No sessions yet this week — open Coach or start today’s plan.',
  })}
  </p>
  </div>

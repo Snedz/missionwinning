@@ -162,7 +162,7 @@ export function JournalTimeline() {
                     onChange={(e) => setDraft(e.target.value)}
                     rows={Math.max(2, draft.split('\n').length)}
                     aria-label={t('journalEditLabel', { defaultValue: 'Your notes, one per line' })}
-                    className="w-full border-2 border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="w-full border-2 border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus-visible:border-foreground"
                     placeholder={t('journalEditPlaceholder', {
                       defaultValue: 'One note per line — your words, kept verbatim.',
                     })}

@@ -283,7 +283,7 @@ export function MacroCalculator() {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Button size="sm" variant="fitness" onClick={applyTargets}>
+          <Button size="sm" variant="default" onClick={applyTargets}>
             {t('calcApplyTargets', { defaultValue: 'Apply targets to Fuel' })}
           </Button>
           <Button size="sm" variant="outline" asChild>

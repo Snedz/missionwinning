@@ -81,7 +81,7 @@ export function GuidebookIndexPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button variant="fitness" size="sm" asChild>
+              <Button variant="default" size="sm" asChild>
                 <a
                   href={MAGAZINE_PDF_PATH}
                   download

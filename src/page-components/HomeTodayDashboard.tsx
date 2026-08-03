@@ -61,7 +61,7 @@ const CommandersIntent = dynamic(
 
 const MuscleFreshnessStrip = dynamic(
   () => import('@/components/today/MuscleFreshnessStrip').then((m) => m.MuscleFreshnessStrip),
-  { ssr: false, loading: () => <SkeletonBlock className="h-10 w-full rounded-xl" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-10 w-full" /> }
 );
 
 const CoachTodayCard = dynamic(
@@ -71,17 +71,17 @@ const CoachTodayCard = dynamic(
 
 const TodayCoachWeekStrip = dynamic(
   () => import('@/components/coach/TodayCoachWeekStrip').then((m) => m.TodayCoachWeekStrip),
-  { ssr: false, loading: () => <SkeletonBlock className="h-14 w-full rounded-xl" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-14 w-full" /> }
 );
 
 const GuidebookContinueCard = dynamic(
   () => import('@/components/learn/GuidebookContinueCard').then((m) => m.GuidebookContinueCard),
-  { ssr: false, loading: () => <SkeletonBlock className="h-20 w-full rounded-xl" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-20 w-full" /> }
 );
 
 const TodayQuickLinks = dynamic(
   () => import('@/components/journey/TodayQuickLinks').then((m) => m.TodayQuickLinks),
-  { ssr: false, loading: () => <SkeletonBlock className="h-24 w-full rounded-xl" /> }
+  { ssr: false, loading: () => <SkeletonBlock className="h-24 w-full" /> }
 );
 
 const TodayDashboardCustomize = dynamic(

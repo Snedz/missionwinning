@@ -166,7 +166,7 @@ export function TodayProgressSection({
       </Card>
 
       {/* Recommended starting point - tied to onboarding for clear progression */}
-      <Card className="border-primary/30">
+      <Card className="border-2 border-border">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Target className="h-5 w-5 text-primary" /> {t('todayRecommendedStart', { defaultValue: 'Recommended Starting Point' })}
@@ -189,7 +189,7 @@ export function TodayProgressSection({
 
       {/* Stats row (supporting, not the hero) */}
       <div className="grid gap-4 sm:grid-cols-4">
-        <Card className="border-primary/20 bg-primary/5">
+        <Card className="border-2 border-border bg-card">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Flame className="h-4 w-4 text-primary" />
@@ -198,10 +198,10 @@ export function TodayProgressSection({
             <CardTitle className="text-3xl">{totalSessions}</CardTitle>
           </CardHeader>
         </Card>
-        <Card className="border-secondary/20 bg-secondary/5">
+        <Card className="border-2 border-border bg-card">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-secondary" />
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
               {t('todayStatVolume', { defaultValue: 'Total Volume' })}
             </CardDescription>
             <CardTitle className="text-3xl">
@@ -210,7 +210,7 @@ export function TodayProgressSection({
             </CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="border-2 border-border bg-card">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Dumbbell className="h-4 w-4" />
@@ -219,7 +219,7 @@ export function TodayProgressSection({
             <CardTitle className="text-3xl">{savedWorkouts.length}</CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="border-2 border-border bg-card">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Flame className="h-4 w-4 text-primary" />
@@ -232,7 +232,7 @@ export function TodayProgressSection({
         </Card>
 
         {/* Last Assessment + Recent Pillar Wins (cloud loaded) - free core visibility + functional */}
-        <Card className="border-primary/40">
+        <Card className="border-2 border-border bg-card">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Target className="h-4 w-4" /> {t('todayAssessmentCardTitle', { defaultValue: 'Last Assessment & Recent Pillar Wins' })}
@@ -327,10 +327,10 @@ export function TodayProgressSection({
       </div>
 
       {/* Wins & Challenges — earned milestones, secondary to the primary CTA */}
-      <Card className="border-primary/30">
+      <Card className="border-2 border-border">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-primary">
-            <Trophy className="h-5 w-5" /> {t('todayYourWins', { defaultValue: 'Your Wins & Streaks' })}
+          <CardTitle className="flex items-center gap-2">
+            <Trophy className="h-5 w-5 text-primary" /> {t('todayYourWins', { defaultValue: 'Your Wins & Streaks' })}
           </CardTitle>
           <CardDescription>
             {t('todayYourWinsDesc', {
@@ -383,7 +383,7 @@ export function TodayProgressSection({
               {win.done ? (
                 <Check className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
               ) : (
-                <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/50" aria-hidden />
+                <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
               )}
               <span>
                 {win.label}
@@ -395,7 +395,7 @@ export function TodayProgressSection({
             {nightSessions >= 3 ? (
               <Moon className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
             ) : (
-              <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/50" aria-hidden />
+              <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
             )}
             <span>
               {t('todayWinUnderStars', {
@@ -416,7 +416,7 @@ export function TodayProgressSection({
             {dawnSessions >= 3 ? (
               <Sunrise className="mt-0.5 h-4 w-4 shrink-0" aria-label="done" />
             ) : (
-              <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/50" aria-hidden />
+              <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
             )}
             <span>
               {t('todayWinDawn', {
@@ -480,7 +480,7 @@ export function TodayProgressSection({
 
       {/* PWA Install Banner (kept, now in context of daily use) */}
       {typeof window !== 'undefined' && !window.matchMedia('(display-mode: standalone)').matches && (
-        <div className="p-3 bg-primary/10 border border-primary/40 rounded text-sm flex items-center justify-between">
+        <div className="p-3 border-2 border-border bg-card text-sm flex items-center justify-between gap-3">
           <span>{t('todayInstallPwa', { defaultValue: 'Install Mission Winning for offline use anywhere (PWA).' })}</span>
           <Button size="sm" variant="outline" onClick={() => {
             const mw = window as MwWindow;
@@ -507,7 +507,7 @@ export function TodayProgressSection({
           <h3 className="mb-4 text-lg font-semibold">{t('todayRecentWins', { defaultValue: 'Recent Wins' })}</h3>
           <div className="grid gap-3">
             {recent.map((log) => (
-              <Card key={log.id} className="hover:border-primary/30 transition-colors">
+              <Card key={log.id} className="border-2 border-border hover:border-foreground transition-colors">
                 <CardContent className="flex items-center justify-between p-4">
                   <div>
                     <p className="font-medium">{log.workoutName}</p>

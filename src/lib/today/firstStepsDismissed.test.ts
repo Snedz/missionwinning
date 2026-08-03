@@ -18,6 +18,7 @@ import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   isFirstStepsDismissed,
+  clearFirstStepsDismissed,
   FIRST_STEPS_DISMISS_KEY,
 } from '@/lib/today/firstStepsDismissed';
 import { __resetForTests as resetStorage } from '@/lib/storage/safeStorage';
@@ -95,5 +96,14 @@ describe('first-steps dismissal', () => {
       false,
       'an old banner dismissal must not carry over to the new card'
     );
+  });
+
+  it('clearFirstStepsDismissed removes the Today dismiss flag', () => {
+    localStorage.setItem(FIRST_STEPS_DISMISS_KEY, '1');
+    resetStorage();
+    assert.equal(isFirstStepsDismissed(), true);
+    clearFirstStepsDismissed();
+    assert.equal(isFirstStepsDismissed(), false);
+    assert.equal(localStorage.getItem(FIRST_STEPS_DISMISS_KEY), null);
   });
 });

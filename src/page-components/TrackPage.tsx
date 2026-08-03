@@ -197,7 +197,7 @@ export function TrackPage() {
                 })}
               />
             </div>
-            <Button variant="fitness" onClick={handleLog}>
+            <Button variant="default" onClick={handleLog}>
               {t('trackLogBtn', { defaultValue: 'Log Activity' })}
             </Button>
           </CardContent>

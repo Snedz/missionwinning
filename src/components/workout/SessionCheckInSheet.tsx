@@ -139,7 +139,7 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
         <div className="flex flex-col gap-2">
           <Button
             type="button"
-            variant="fitness"
+            variant="default"
             className="w-full min-h-[52px] tap-target"
             onClick={save}
           >

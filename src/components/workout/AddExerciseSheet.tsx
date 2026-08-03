@@ -41,7 +41,7 @@ export function AddExerciseSheet({ open, onClose, value, onChange, onConfirm }: 
       footer={
         <Button
           type="button"
-          variant="fitness"
+          variant="default"
           className="w-full min-h-[52px]"
           disabled={!value}
           // Kept verbatim: `logger-depth` and `first-90` both drive this name.

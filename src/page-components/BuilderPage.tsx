@@ -293,7 +293,7 @@ export function BuilderPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2">
-              <Button variant="fitness" onClick={startBlank}>
+              <Button variant="default" onClick={startBlank}>
                 {t('builderStartBlank', { defaultValue: 'Blank workout' })}
               </Button>
             </CardContent>
@@ -508,7 +508,7 @@ export function BuilderPage() {
             <Button variant="outline" onClick={() => setStep(2)}>
               {t('builderBack', { defaultValue: 'Back' })}
             </Button>
-            <Button variant="fitness" className="flex-1 primary-action" onClick={handleSave}>
+            <Button variant="default" className="flex-1 primary-action" onClick={handleSave}>
               {t('builderSaveWorkout', { defaultValue: 'Save workout' })}
             </Button>
             <Button variant="secondary" onClick={handleStart}>

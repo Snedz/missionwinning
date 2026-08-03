@@ -126,7 +126,7 @@ export function CourseReader({ chapters, initialChapterId }: Props) {
                     </p>
                   ))}
                   <div className="flex flex-wrap gap-2 pt-2">
-                    <Button size="sm" variant="fitness" asChild>
+                    <Button size="sm" variant="default" asChild>
                       <Link href={section.practiceCTA.href}>{section.practiceCTA.label}</Link>
                     </Button>
                     {!done && (

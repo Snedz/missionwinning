@@ -18,7 +18,7 @@
  * declares. `.178` — a value that decides two things lives in one place.
  */
 
-import { readRaw } from '@/lib/storage/safeStorage';
+import { readRaw, remove } from '@/lib/storage/safeStorage';
 
 /**
  * Deliberately **not** `mw_beta_banner_dismissed`. An athlete who dismissed the
@@ -36,4 +36,13 @@ export const FIRST_STEPS_DISMISS_KEY = 'mw_first_steps_dismissed';
  */
 export function isFirstStepsDismissed(): boolean {
   return readRaw(FIRST_STEPS_DISMISS_KEY) === '1';
+}
+
+/**
+ * D13 — Profile “Show First Steps again”. Clears the Today dismiss flag so the
+ * card may remount. More sheet still carries the checklist when dismissed;
+ * this only restores the Today surface.
+ */
+export function clearFirstStepsDismissed(): void {
+  remove(FIRST_STEPS_DISMISS_KEY);
 }
