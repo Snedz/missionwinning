@@ -38,6 +38,14 @@ type FuelStrings = {
   fuelTabQuick: string;
   fuelTabCustom: string;
   fuelTabPhoto: string;
+  /** Describe → Custom honesty chips (`.270`) */
+  fuelSourceMatched: string;
+  fuelSourceRough: string;
+  fuelConfHigh: string;
+  fuelConfMed: string;
+  fuelConfLow: string;
+  fuelEstimateMatchedList: string;
+  fuelEstimateRoughNote: string;
   fuelMealBreakfast: string;
   fuelMealLunch: string;
   fuelMealDinner: string;
@@ -106,6 +114,14 @@ const en: FuelStrings = {
   fuelTabQuick: 'Quick',
   fuelTabCustom: 'Custom',
   fuelTabPhoto: 'Photo',
+  fuelSourceMatched: 'Matched foods',
+  fuelSourceRough: 'Rough estimate',
+  fuelConfHigh: 'Higher confidence',
+  fuelConfMed: 'Medium confidence',
+  fuelConfLow: 'Low confidence — edit before log',
+  fuelEstimateMatchedList: 'Detected: {{list}}',
+  fuelEstimateRoughNote:
+    'No foods matched — these numbers are a placeholder. Edit them before logging.',
   fuelMealBreakfast: 'Breakfast',
   fuelMealLunch: 'Lunch',
   fuelMealDinner: 'Dinner',
