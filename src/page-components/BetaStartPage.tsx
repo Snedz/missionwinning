@@ -67,7 +67,7 @@ export function BetaStartPage() {
           </div>
         ) : null}
 
-        <ol className="space-y-4 border-t border-border/40 pt-6">
+        <ol className="space-y-4 border-t-2 border-border pt-6">
           {BETA_STEP_DEFS.slice(1).map((step) => (
             <li key={step.n} className="flex gap-3">
               <span className="eyebrow shrink-0 tabular-nums text-muted-foreground pt-0.5">
@@ -88,7 +88,7 @@ export function BetaStartPage() {
           ))}
         </ol>
 
-        <p className="text-xs text-muted-foreground leading-relaxed border-t border-border/40 pt-6">
+        <p className="text-xs text-muted-foreground leading-relaxed border-t-2 border-border pt-6">
           {t('betaFootWedge', {
             defaultValue:
               'Train anywhere: log from Today offline — no account required. After your first log, open Mission Coach for a week that adapts from sessions alone.',

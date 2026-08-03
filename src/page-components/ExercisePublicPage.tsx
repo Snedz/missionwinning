@@ -84,7 +84,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           <section>
             <h2 className="mb-2 font-display text-lg font-semibold uppercase tracking-wide text-foreground">Form guide</h2>
             {guide.mediaUrl && (
-              <div className="mb-4 overflow-hidden rounded-xl border border-border/40 bg-muted/30">
+              <div className="mb-4 overflow-hidden border-2 border-border bg-card">
                 {guide.mediaType === 'video' ? (
                   <video
                     className="w-full max-h-56 object-contain"
@@ -152,7 +152,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
         )}
 
         {safety ? (
-          <section className="rounded-xl border border-border/50 bg-muted/20 px-4 py-3 text-sm text-muted-foreground">
+          <section className="border-2 border-border bg-card px-4 py-3 text-sm text-muted-foreground">
             <span className="font-medium text-foreground">Safety: </span>
             {safety}
           </section>
@@ -187,7 +187,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
                 <Link
                   key={alt.id}
                   href={`/exercises/${alt.id}`}
-                  className="text-sm px-3 py-1 border border-border/60 hover:bg-muted/50"
+                  className="text-sm px-3 py-1.5 border-2 border-border bg-background hover:border-primary hover:bg-tint"
                 >
                   {alt.name}
                 </Link>
@@ -204,7 +204,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
                 <Link
                   key={ex.id}
                   href={`/exercises/${ex.id}`}
-                  className="text-sm px-3 py-1 border border-primary/30 bg-primary/10 hover:bg-primary/15"
+                  className="text-sm px-3 py-1.5 border-2 border-primary bg-tint hover:bg-primary hover:text-primary-foreground"
                 >
                   {ex.name}
                 </Link>
@@ -228,7 +228,7 @@ export function ExercisePublicPage({ exercise: raw, jsonLd }: Props) {
           </section>
         )}
 
-        <div className="space-y-3 rounded-2xl border border-primary/30 bg-primary/10 p-5">
+        <div className="space-y-3 border-2 border-primary bg-tint p-5">
           <p className="text-sm text-muted-foreground">
             Log sets offline — no account, no AI API key. {EXERCISES.length} free exercise pages in
             the library.

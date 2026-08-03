@@ -30,7 +30,7 @@ export function LearnPathPublicPage({ path }: Props) {
       }
     >
         {first && (
-          <section className="space-y-3 rounded-2xl border border-border/50 bg-muted/15 p-5">
+          <section className="space-y-3 border-2 border-border bg-card p-5">
             <p className="eyebrow">First lesson teaser</p>
             <h2 className="font-display text-xl font-semibold uppercase tracking-wide text-foreground">
               {first.title}
@@ -42,7 +42,7 @@ export function LearnPathPublicPage({ path }: Props) {
               ))}
             </ul>
             {first.body && first.body.length > 0 && (
-              <div className="space-y-2 text-sm text-muted-foreground leading-relaxed pt-2 border-t border-border/40">
+              <div className="space-y-2 text-sm text-muted-foreground leading-relaxed pt-2 border-t-2 border-border">
                 {first.body.map((para) => (
                   <p key={para.slice(0, 40)}>{para}</p>
                 ))}
@@ -59,7 +59,7 @@ export function LearnPathPublicPage({ path }: Props) {
             {path.lessons.map((lesson, i) => (
               <li key={lesson.id} className="space-y-1">
                 <div className="flex gap-2 text-foreground">
-                  <span className="tabular-nums text-foreground/70">{i + 1}.</span>
+                  <span className="tabular-nums text-muted-foreground">{i + 1}.</span>
                   <span className="font-medium">{lesson.title}</span>
                 </div>
                 {lesson.body && lesson.body.length > 0 ? (
@@ -76,7 +76,7 @@ export function LearnPathPublicPage({ path }: Props) {
           </ol>
         </section>
 
-        <div className="space-y-3 rounded-2xl border border-primary/40 bg-primary/10 p-5">
+        <div className="space-y-3 border-2 border-primary bg-tint p-5">
           <p className="text-sm text-muted-foreground">
             Start free with I-Day (~2 min), then open this path in Learn. Free core needs no AI key.
             Offline when you install the PWA.
