@@ -80,3 +80,33 @@ pointed at a day the athlete actually lived — is the other half of `.247` and
 is not here. `listDaysWithData()` is the index it needs and now exists.
 
 ---
+
+## 2026-08-01 — Give gitleaks the permission it needs to scan (`.248`)
+
+Actions billing cleared at **00:12 UTC** and gitleaks ran for the first time.
+It did not report a secret: it failed **before scanning anything**.
+
+    GET /repos/Snedz/missionwinning/pulls/178/commits  ->  403
+    'Resource not accessible by integration'
+    'x-accepted-github-permissions': 'pull_requests=read'
+
+`gitleaks-action@v2` lists a PR's commits to work out its scan range, and the
+workflow declared **no `permissions:` block**, so the job inherited a
+contents-only token. The secret gate could not scan a pull request at all, and
+the red it produced said nothing about whether the diff holds a secret. Now
+declares least privilege: `contents: read` + `pull-requests: read`.
+
+CONTEXT recorded that red as the known finding in `8ea3527a` — a real Solana
+treasury address in history, deliberately not allowlisted (founder call). Still
+true of `master`; **not** why the check was failing. Both causes are now stated
+separately.
+
+Also corrects the Actions status, which this file had wrong in **both**
+directions within one night: it claimed "cleared" while jobs were dying at
+`runner_id: 0`, and the correction claimed "blocked" an hour before billing came
+back. The Ops bullet no longer describes CI at all — two places describing one
+fact is `.178`, and the fix is not a better sentence but **no** sentence. The
+Status table now says to read `runner_id` before recording anything: **0 means
+it never ran; non-zero means it ran and something is genuinely wrong.**
+
+---
