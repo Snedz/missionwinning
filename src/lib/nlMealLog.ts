@@ -129,18 +129,24 @@ type Hit = {
 
 /**
  * Portion-word scale relative to a template serving.
- * Cups ≈ one plate scoop; handful / slice are smaller snack bites;
- * piece counts as one unit (egg, chicken piece, fruit).
+ * Cups / plates ≈ one serving; handful / slice are smaller snack bites;
+ * piece counts as one unit (egg, chicken piece, fruit); tsp is a dab (~⅓ tbsp).
  */
 function portionWordScale(word: string): number {
   const w = word.toLowerCase();
   if (/^cups?$/.test(w)) return 1;
+  if (/^plates?$/.test(w)) return 1;
   if (/^pieces?$|^pcs?$/.test(w)) return 1;
   if (/^handfuls?$/.test(w)) return 0.5;
   if (/^slices?$/.test(w)) return 0.5;
   if (/^scoops?$|^scoopfuls?$/.test(w)) return 1;
+  if (/^tsps?$|^teaspoons?$/.test(w)) return 0.5 / 3; // ≈⅓ tbsp path
   return 1;
 }
+
+/** Shared portion-word token for numbered / word / bare parsers. */
+const PORTION_WORD =
+  'scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?|plates?|tsps?|teaspoons?';
 
 function findQtyBefore(text: string, kwStart: number): { qty: number; start: number } {
   const before = text.slice(0, kwStart);
@@ -150,6 +156,17 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
     const g = parseInt(grams[1], 10);
     if (g >= 20 && g <= 800) {
       return { qty: Math.round((g / 100) * 10) / 10, start: kwStart - grams[0].length };
+    }
+  }
+  // 250ml milk ≈ 1 cup / liquid serving
+  const milliliters = before.match(/(\d{2,4})\s*ml(?:s)?\s*$/i);
+  if (milliliters) {
+    const ml = parseInt(milliliters[1], 10);
+    if (ml >= 20 && ml <= 2000) {
+      return {
+        qty: Math.round((ml / 250) * 10) / 10,
+        start: kwStart - milliliters[0].length,
+      };
     }
   }
   // 6 oz chicken ≈ 170g → ~1.7 template servings
@@ -162,9 +179,10 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
     }
   }
   // Numbered portion words: "2 scoops whey", "1 cup rice", "2 handfuls almonds",
-  // "3 pieces chicken", "2 slices bread" — optional "of" before the food.
+  // "3 pieces chicken", "2 slices bread", "a plate of rice", "2 tsp oil"
+  // — optional "of" before the food.
   const numberedPortion = before.match(
-    /(\d+(?:\.\d+)?)\s*(scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?)\s*(?:of\s+)?$/i
+    new RegExp(`(\\d+(?:\\.\\d+)?)\\s*(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
   );
   if (numberedPortion) {
     const n = parseFloat(numberedPortion[1]);
@@ -176,9 +194,12 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       };
     }
   }
-  // Word + portion: "a cup of rice", "two handfuls of almonds", "a piece of chicken"
+  // Word + portion: "a cup of rice", "two handfuls of almonds", "a plate of chicken"
   const wordPortion = before.match(
-    /\b(a|an|one|two|three|four|five|six)\s+(scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?)\s*(?:of\s+)?$/i
+    new RegExp(
+      `\\b(a|an|one|two|three|four|five|six)\\s+(${PORTION_WORD})\\s*(?:of\\s+)?$`,
+      'i'
+    )
   );
   if (wordPortion) {
     const n = WORD_QTY[wordPortion[1].toLowerCase()] ?? 1;
@@ -188,9 +209,9 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
       start: kwStart - wordPortion[0].length,
     };
   }
-  // Bare portion word without count: "cup of oats", "handful almonds"
+  // Bare portion word without count: "cup of oats", "handful almonds", "plate of rice"
   const barePortion = before.match(
-    /\b(scoops?|scoopfuls?|cups?|pieces?|pcs?|handfuls?|slices?)\s*(?:of\s+)?$/i
+    new RegExp(`\\b(${PORTION_WORD})\\s*(?:of\\s+)?$`, 'i')
   );
   if (barePortion) {
     return {
@@ -205,6 +226,17 @@ function findQtyBefore(text: string, kwStart: number): { qty: number; start: num
     if (t > 0 && t <= 12) {
       // templates are ~1–2 tbsp for spreads; treat 1 tbsp ≈ 0.5 serving of PB template
       return { qty: Math.round(t * 0.5 * 10) / 10, start: kwStart - tbsp[0].length };
+    }
+  }
+  // 2 tsp olive oil (same scale as portion-word tsp)
+  const tsp = before.match(/(\d+(?:\.\d+)?)\s*(?:tsp|teaspoons?)\s*$/i);
+  if (tsp) {
+    const t = parseFloat(tsp[1]);
+    if (t > 0 && t <= 24) {
+      return {
+        qty: Math.round(t * portionWordScale('tsp') * 10) / 10,
+        start: kwStart - tsp[0].length,
+      };
     }
   }
   const num = before.match(/(\d{1,2})\s*(?:x\s*)?$/i);

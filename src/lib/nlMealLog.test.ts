@@ -120,4 +120,31 @@ describe('nlMealLog', () => {
     assert.equal(e.confidence, 'medium');
     assert.ok(e.matched.length >= 1);
   });
+
+  it('scales tsp / ml / plate of via portion path', () => {
+    const oil = estimateMealFromDescription('olive oil');
+    const oneTbsp = estimateMealFromDescription('1 tbsp olive oil');
+    const threeTsp = estimateMealFromDescription('3 tsp olive oil');
+    const milk = estimateMealFromDescription('milk');
+    const halfCupMl = estimateMealFromDescription('125ml milk');
+    const rice = estimateMealFromDescription('rice');
+    const plateOf = estimateMealFromDescription('a plate of rice');
+    assert.ok(oil && oneTbsp && threeTsp && milk && halfCupMl && rice && plateOf);
+    // 3 tsp ≈ 1 tbsp on the shared 0.5-serving scale
+    assert.equal(threeTsp.fat, oneTbsp.fat);
+    assert.ok(threeTsp.fat < oil.fat);
+    assert.equal(threeTsp.source, 'matched');
+    // 125ml ≈ 0.5 of 250ml cup serving
+    assert.equal(halfCupMl.protein, Math.round(milk.protein * 0.5));
+    assert.equal(plateOf.protein, rice.protein);
+    assert.equal(plateOf.source, 'matched');
+  });
+
+  it('bare portion words without food stay rough (no invented match)', () => {
+    const bare = estimateMealFromDescription('tsp ml plate');
+    assert.ok(bare);
+    assert.equal(bare.source, 'rough');
+    assert.equal(bare.confidence, 'low');
+    assert.equal(bare.matched.length, 0);
+  });
 });

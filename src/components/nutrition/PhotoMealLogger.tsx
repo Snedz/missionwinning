@@ -11,6 +11,11 @@ import {
   type MealDraftFields,
 } from '@/components/nutrition/MealEstimateDraft';
 import {
+  draftSourceFromEstimate,
+  estimateToDraft,
+  foodToDraft,
+} from '@/lib/mealDraft';
+import {
   estimateMealFromPhoto,
   estimateMealViaApi,
   sampleMealImageHints,
@@ -25,26 +30,6 @@ type Props = {
 };
 
 type Phase = 'idle' | 'preview' | 'processing' | 'estimate' | 'error';
-
-function foodToDraft(item: FoodSearchItem): MealDraftFields {
-  return {
-    name: item.brand ? `${item.name} (${item.brand})` : item.name,
-    protein: item.protein,
-    cals: item.calories,
-    carbs: item.carbs,
-    fat: item.fat,
-  };
-}
-
-function estimateToDraft(e: MealEstimate): MealDraftFields {
-  return {
-    name: e.name,
-    protein: e.protein,
-    cals: e.cals,
-    carbs: e.carbs,
-    fat: e.fat,
-  };
-}
 
 /** Bevel-style photo meal log — drop zone, honest %, inline retry without re-pick. */
 export function PhotoMealLogger({ onLogEstimate }: Props) {
@@ -70,13 +55,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
   useEffect(() => {
     if (estimate) {
       setDraft(estimateToDraft(estimate));
-      setDraftSource(
-        estimate.source === 'vision'
-          ? 'vision'
-          : estimate.source === 'api'
-            ? 'database'
-            : 'heuristic'
-      );
+      setDraftSource(draftSourceFromEstimate(estimate.source));
     } else {
       setDraft(null);
     }

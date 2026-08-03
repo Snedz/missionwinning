@@ -6,14 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { scaleMealMacros } from '@/lib/nutritionQuickLog';
+import type { MealDraftFields } from '@/lib/mealDraft';
 
-export type MealDraftFields = {
-  name: string;
-  protein: number;
-  cals: number;
-  carbs: number;
-  fat: number;
-};
+export type { MealDraftFields };
 
 type Props = {
   draft: MealDraftFields;
