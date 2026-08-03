@@ -102,26 +102,17 @@ export async function measure(file) {
 }
 
 /**
- * Heroes known to be off-palette today, and therefore allowed to fail — for now.
+ * Heroes known to be off-palette, and therefore allowed to fail — for now.
  *
- * A ratchet, in the shape `.202` used for the 709 untranslated strings: measure
- * the debt, refuse anything new, and let the number only go **down**. Shipping
- * this check red would have meant shipping a gate nobody can make green, which
- * is how a check gets switched off; shipping it green with the debt unlisted
- * would have meant `.200`'s check that cannot fail.
+ * A ratchet (`.202` shape): measure the debt, refuse anything new, number only
+ * goes **down**. A stale entry that starts passing must be deleted — otherwise
+ * it quietly re-permits what it documents.
  *
- * These six are the `.131` rebrand's blind spot — re-inking them is a separate
- * act, and the entry has to be deleted when it happens because a stale entry
- * quietly re-permits the thing it documents.
+ * `.268` cleared the six `.131` blind-spot chapter heroes (paper ground, ink
+ * diagrams, brand red accents — same system as form-guides). Keep the array
+ * for the next off-palette arrival rather than deleting the ratchet mechanism.
  */
-const KNOWN_OFF_PALETTE = [
-  '/learn/human-performance-hero.webp',
-  '/learn/movement-mechanics-hero.webp',
-  '/learn/programming-tuning-hero.webp',
-  '/learn/getting-started-mw-hero.webp',
-  '/learn/nutrition-recovery-hero.webp',
-  '/learn/assessments-progress-hero.webp',
-];
+const KNOWN_OFF_PALETTE = [];
 
 export async function check() {
   const problems = [];

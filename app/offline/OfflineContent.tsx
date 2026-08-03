@@ -33,13 +33,18 @@ const KIND_LABEL: Record<OutboxKind, { key: string; defaultValue: string }> = {
 };
 
 /** Coarse on purpose — a queued write does not need a to-the-minute timestamp. */
-function whenLabel(createdAt: number, now: number): string {
+function whenLabel(
+  createdAt: number,
+  now: number,
+  t: (key: string, opts?: Record<string, unknown>) => string
+): string {
   const mins = Math.max(0, Math.round((now - createdAt) / 60_000));
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return t('offlineWhenJustNow', { defaultValue: 'just now' });
+  if (mins < 60) return t('offlineWhenMinutes', { count: mins, defaultValue: `${mins}m ago` });
   const hours = Math.round(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return `${Math.round(hours / 24)}d ago`;
+  if (hours < 24) return t('offlineWhenHours', { count: hours, defaultValue: `${hours}h ago` });
+  const days = Math.round(hours / 24);
+  return t('offlineWhenDays', { count: days, defaultValue: `${days}d ago` });
 }
 
 export function OfflineContent() {
@@ -106,7 +111,7 @@ export function OfflineContent() {
                     })}
                   </span>
                   <span className="shrink-0 tabular-nums text-muted-foreground">
-                    {whenLabel(item.createdAt, now)}
+                    {whenLabel(item.createdAt, now, t)}
                   </span>
                 </li>
               ))}

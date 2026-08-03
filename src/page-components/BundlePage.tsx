@@ -246,7 +246,7 @@ export function BundlePage() {
                   key={id}
                   value={id}
                   className={cn(
-                    "flex h-auto flex-col items-start gap-0.5 rounded-xl border-2 border-border bg-card px-3 py-3 text-left data-[state=active]:border-[hsl(var(--accent-poster))] data-[state=active]:bg-tint"
+                    "flex h-auto flex-col items-start gap-0.5 border-2 border-border bg-card px-3 py-3 text-left data-[state=active]:border-primary data-[state=active]:bg-tint"
                   )}
                 >
                   <span className="text-xs font-medium sm:text-sm">{label}</span>
@@ -399,10 +399,10 @@ export function BundlePage() {
               <span className="transition-transform group-open:rotate-45">+</span>
             </span>
           </summary>
-          <div className="mt-4 overflow-x-auto rounded-xl border border-border/40">
+          <div className="mt-4 overflow-x-auto border-2 border-border">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border/50 bg-muted/30">
+                <tr className="border-b-2 border-border bg-card">
                   <th className="p-3 text-start font-medium">{t("bundleColPillar")}</th>
                   <th className="hidden p-3 text-start font-medium sm:table-cell">
                     {t("bundleColPremium")}
@@ -415,7 +415,7 @@ export function BundlePage() {
                 {BUNDLE_PILLARS.map((pillar) => {
                   const keys = BUNDLE_PILLAR_I18N[pillar.id];
                   return (
-                    <tr key={pillar.id} className="border-b border-border/30 last:border-0">
+                    <tr key={pillar.id} className="border-b border-border last:border-0">
                       <td className="p-3">
                         <p className="font-medium">{keys ? t(keys.nameKey) : pillar.name}</p>
                         <p className="text-xs text-muted-foreground sm:hidden">
@@ -434,7 +434,7 @@ export function BundlePage() {
                     </tr>
                   );
                 })}
-                <tr className="bg-primary/5 font-medium">
+                <tr className="border-t-2 border-border bg-tint font-medium">
                   <td className="p-3" colSpan={2}>
                     {t("bundleRowTotal")}
                   </td>
