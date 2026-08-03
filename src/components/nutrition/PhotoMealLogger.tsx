@@ -420,7 +420,7 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
         </div>
       )}
 
-      <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
+      <p className="text-[11px] text-muted-foreground leading-relaxed">
         {t('photoLogBetaNote', {
           defaultValue:
             'Estimates are approximate. Prefer database matches when listed. Not medical advice.',

@@ -60,6 +60,7 @@ import {
   nextSetInput,
   planApplyTargets,
   resolveActiveSetDial,
+  resolveRepeatLastTarget,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
@@ -291,10 +292,9 @@ export function ActiveWorkoutPage() {
   const handleRepeatLast = (exIdx: number) => {
     const ex = activeWorkout?.exercises[exIdx];
     if (!ex) return;
-    const lastCompleted = [...ex.sets].reverse().find((s) => s.completed);
-    const nextIdx = ex.sets.findIndex((s) => !s.completed);
-    if (!lastCompleted || nextIdx < 0) return;
-    handleLogSet(exIdx, nextIdx, { reps: lastCompleted.reps, weight: lastCompleted.weight });
+    const target = resolveRepeatLastTarget(ex);
+    if (!target) return;
+    handleLogSet(exIdx, target.setIdx, { reps: target.reps, weight: target.weight });
   };
 
   const handleComplete = () => {

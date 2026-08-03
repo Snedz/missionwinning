@@ -14,7 +14,7 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
 
   return (
     <footer
-      className={`text-center text-[11px] text-muted-foreground/80 space-y-2 py-4 ${className}`}
+      className={`text-center text-[11px] text-muted-foreground space-y-2 py-4 ${className}`}
     >
       <nav className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
         <Link href="/terms" className="hover:text-primary transition-colors">
@@ -57,7 +57,7 @@ export function AppLegalFooter({ className = '', showBuild = false, buildLabel }
         </a>
       </nav>
       {showBuild && buildLabel && (
-        <p className="text-[10px] text-muted-foreground/50">Build {buildLabel}</p>
+        <p className="text-[10px] text-muted-foreground">Build {buildLabel}</p>
       )}
     </footer>
   );

@@ -11,6 +11,7 @@ import {
   planApplyTargets,
   priorCompletedInExercise,
   resolveActiveSetDial,
+  resolveRepeatLastTarget,
   resolveSetInput,
   formatLoggedSetLine,
   sessionIsCoachPrescribed,
@@ -507,6 +508,50 @@ describe('resolveActiveSetDial', () => {
       src,
       /priorCompletedInExercise\(/,
       'session carry must stay inside resolveActiveSetDial'
+    );
+  });
+});
+
+describe('resolveRepeatLastTarget', () => {
+  it('copies the last completed set onto the next open slot', () => {
+    const out = resolveRepeatLastTarget({
+      sets: [
+        { completed: true, reps: 8, weight: 100 },
+        { completed: true, reps: 7, weight: 105 },
+        { completed: false, reps: 10, weight: 0 },
+      ],
+    });
+    assert.deepEqual(out, { setIdx: 2, reps: 7, weight: 105 });
+  });
+
+  it('returns null when nothing is completed or every set is done', () => {
+    assert.equal(
+      resolveRepeatLastTarget({
+        sets: [
+          { completed: false, reps: 10, weight: 0 },
+          { completed: false, reps: 10, weight: 0 },
+        ],
+      }),
+      null
+    );
+    assert.equal(
+      resolveRepeatLastTarget({
+        sets: [{ completed: true, reps: 5, weight: 50 }],
+      }),
+      null
+    );
+  });
+
+  it('ActiveWorkoutPage uses resolveRepeatLastTarget rather than inlining reverse-find', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /resolveRepeatLastTarget\(/);
+    assert.doesNotMatch(
+      src,
+      /\.reverse\(\)\.find\(\(s\) => s\.completed\)/,
+      'repeat-last must stay inside resolveRepeatLastTarget'
     );
   });
 });

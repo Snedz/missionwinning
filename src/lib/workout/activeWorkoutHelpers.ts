@@ -411,3 +411,16 @@ export function resolveActiveSetDial(params: {
     lastPerformance: params.lastPerformance,
   });
 }
+
+/**
+ * Repeat-last on Active: copy the most recent completed set onto the next open
+ * slot. Returns null when there is nothing to copy or nowhere to put it.
+ */
+export function resolveRepeatLastTarget(ex: {
+  sets: { completed: boolean; reps: number; weight: number }[];
+}): { setIdx: number; reps: number; weight: number } | null {
+  const lastCompleted = [...ex.sets].reverse().find((s) => s.completed);
+  const nextIdx = ex.sets.findIndex((s) => !s.completed);
+  if (!lastCompleted || nextIdx < 0) return null;
+  return { setIdx: nextIdx, reps: lastCompleted.reps, weight: lastCompleted.weight };
+}

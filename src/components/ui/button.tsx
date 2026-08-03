@@ -16,7 +16,7 @@ const buttonVariants = cva(
         default: "bg-primary-fill text-primary-foreground hover:bg-primary-fill-hover",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         // Modernist ghost = 2px ink border (never a hairline).
-        outline: "border-2 border-foreground bg-transparent hover:bg-foreground/[0.07] active:bg-foreground/[0.14]",
+        outline: "border-2 border-foreground bg-transparent hover:bg-accent-100 active:bg-accent-100",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
@@ -41,7 +41,7 @@ const buttonVariants = cva(
          * disappear entirely.
          */
         onInk:
-          "border-2 border-neutral-500 bg-transparent text-neutral-100 hover:bg-neutral-100/10 active:bg-neutral-100/20",
+          "border-2 border-neutral-500 bg-transparent text-neutral-100 hover:bg-neutral-800 active:bg-neutral-700",
         onInkSolid:
           "border-2 border-transparent bg-neutral-100 text-neutral-900 hover:bg-white",
       },
