@@ -62,6 +62,8 @@ npm run export-locales     # TS + packs → public/locales/
 | `programsLocales.ts` | Programs |
 | `libraryLocales.ts` | Exercise library |
 | `feedbackLocales.ts` | Feedback |
+| `firstStepsLocales.ts` | First Steps checklist |
+| `whatsNewLocales.ts` | What’s New sheet + First Steps restore |
 | `infoLocales.ts` | About, vision, coaching info |
 | `growthLocales.ts` | Referral / invite / share recognition |
 | `leaderboardLocales.ts` | Leaderboard |

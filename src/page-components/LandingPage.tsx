@@ -16,7 +16,14 @@
  * product doing the thing (the hero) and facts that are checkable (the library).
  */
 
-import { useEffect, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
@@ -80,6 +87,52 @@ export function LandingPage() {
   const { t } = useTranslation();
   /** Defer below-fold demos until idle so first paint stays lean (Lighthouse ≥90). */
   const [belowFoldReady, setBelowFoldReady] = useState(false);
+  /**
+   * D13 — exclusive-open FAQ. Native `<details>` allows every panel open at once;
+   * one open at a time matches the reference accordion without redesigning bands.
+   * Controlled `open` + prevented summary click keeps keyboard (Enter/Space) and
+   * pointer on the same path.
+   */
+  const [openFaq, setOpenFaq] = useState<string | null>(null);
+  const faqListId = useId();
+  const faqSummaryRefs = useRef<(HTMLElement | null)[]>([]);
+
+  const focusFaq = useCallback((index: number) => {
+    const el = faqSummaryRefs.current[index];
+    el?.focus();
+  }, []);
+
+  const onFaqSummaryKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLElement>, index: number) => {
+      const last = FAQ.length - 1;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        focusFaq(Math.min(index + 1, last));
+        return;
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        focusFaq(Math.max(index - 1, 0));
+        return;
+      }
+      if (e.key === 'Home') {
+        e.preventDefault();
+        focusFaq(0);
+        return;
+      }
+      if (e.key === 'End') {
+        e.preventDefault();
+        focusFaq(last);
+        return;
+      }
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const key = FAQ[index]?.qKey;
+        if (key) setOpenFaq((prev) => (prev === key ? null : key));
+      }
+    },
+    [focusFaq]
+  );
 
   useEffect(() => {
     const ready = () => setBelowFoldReady(true);
@@ -306,16 +359,35 @@ export function LandingPage() {
       </section>
 
       {/* ── QUESTIONS ───────────────────────────────────────────────── */}
-      <section className="section-seam">
+      <section className="section-seam" aria-labelledby={faqListId}>
         <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
-          <p className="eyebrow mb-8">{t('landingFaqEyebrow', { defaultValue: 'Straight answers' })}</p>
+          <p id={faqListId} className="eyebrow mb-8">
+            {t('landingFaqEyebrow', { defaultValue: 'Straight answers' })}
+          </p>
           <div className="divide-y-2 divide-border border-y-2 border-border">
-            {FAQ.map((f) => (
-              <details key={f.qKey} className="group py-4 first:pt-0">
-                <summary className="cursor-pointer list-none text-sm font-semibold marker:content-none">
+            {FAQ.map((f, index) => (
+              <details
+                key={f.qKey}
+                className="group py-4 first:pt-0"
+                open={openFaq === f.qKey}
+              >
+                <summary
+                  ref={(el) => {
+                    faqSummaryRefs.current[index] = el;
+                  }}
+                  className="cursor-pointer list-none text-sm font-semibold marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setOpenFaq((prev) => (prev === f.qKey ? null : f.qKey));
+                  }}
+                  onKeyDown={(e) => onFaqSummaryKeyDown(e, index)}
+                >
                   <span className="flex items-center justify-between gap-4">
                     {t(f.qKey, { defaultValue: f.qDefault })}
-                    <span className="shrink-0 text-muted-foreground transition-transform group-open:rotate-45">
+                    <span
+                      className="shrink-0 text-muted-foreground transition-transform group-open:rotate-45"
+                      aria-hidden
+                    >
                       +
                     </span>
                   </span>

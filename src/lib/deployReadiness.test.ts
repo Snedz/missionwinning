@@ -18,12 +18,12 @@ describe('deployReadiness', () => {
   it('report includes locale export plan', () => {
     const r = getDeployReadinessReport();
     // `.240` 28→29 with `firstSteps`; `.241` 29→30 with `zeroState` (435→450);
-    // `.243` 30→31 with `notification` (450→465). Pinned rather than derived on
-    // purpose: a namespace silently dropping out of the export plan is how a
-    // language loses a screen, and a test that recomputed the number from the
-    // same manifest could not see it.
-    assert.equal(r.localeFiles, 465);
-    assert.equal(r.localeNamespaces, 31);
+    // `.243` 30→31 with `notification` (450→465). `.281` 31→32 with `whatsNew`
+    // (465→480). Pinned rather than derived on purpose: a namespace silently
+    // dropping out of the export plan is how a language loses a screen, and a
+    // test that recomputed the number from the same manifest could not see it.
+    assert.equal(r.localeFiles, 480);
+    assert.equal(r.localeNamespaces, 32);
     assert.ok(r.minTodayKeys >= 100);
     assert.equal(r.target, 'ci');
   });
