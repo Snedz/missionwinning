@@ -430,7 +430,9 @@ export function CoachChatPanel({
                   key={`${turn.role}-${i}`}
                   className={cn(
                     'rounded-md px-2 py-1.5 whitespace-pre-wrap',
-                    turn.role === 'user' ? 'bg-primary/10 ml-4' : 'bg-muted/40 mr-4'
+                    turn.role === 'user'
+                      ? 'border-2 border-primary bg-tint ml-4'
+                      : 'border-2 border-border bg-card mr-4'
                   )}
                 >
                   {turn.content}

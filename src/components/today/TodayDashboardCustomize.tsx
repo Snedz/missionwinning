@@ -41,7 +41,7 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
   };
 
   return (
-    <div className="rounded-xl border border-border/50 bg-card/60 px-4 py-3 space-y-2">
+    <div className="border-2 border-border bg-card px-4 py-3 space-y-2">
       <div className="flex items-center gap-2 text-sm font-medium">
         <LayoutGrid className="h-4 w-4 text-primary" />
         {t('todayCustomizeTitle', { defaultValue: 'Customize Today' })}
@@ -58,7 +58,7 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
           return (
             <div
               key={id}
-              className="flex items-center gap-2 rounded-lg border border-border/40 bg-muted/20 px-2 py-1.5"
+              className="flex items-center gap-2 border-2 border-border bg-background px-2 py-1.5"
             >
               <div className="flex flex-col">
                 <button
@@ -66,7 +66,7 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
                   aria-label={t('todayMoveSectionUp', { defaultValue: 'Move up' })}
                   disabled={idx === 0}
                   onClick={() => reorder(id, 'up')}
-                  className="rounded p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+                  className="p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
                 >
                   <ChevronUp className="h-3.5 w-3.5" />
                 </button>
@@ -75,7 +75,7 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
                   aria-label={t('todayMoveSectionDown', { defaultValue: 'Move down' })}
                   disabled={idx === prefs.order.length - 1}
                   onClick={() => reorder(id, 'down')}
-                  className="rounded p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none"
+                  className="p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
                 >
                   <ChevronDown className="h-3.5 w-3.5" />
                 </button>
@@ -83,10 +83,10 @@ export function TodayDashboardCustomize({ prefs, onChange }: Props) {
               <button
                 type="button"
                 onClick={() => toggle(id)}
-                className={`flex-1 px-3 py-1.5 text-xs font-semibold border transition-colors min-h-[36px] text-left ${
+                className={`flex-1 px-3 py-1.5 text-xs font-semibold border-2 transition-colors min-h-[36px] text-left ${
                   on
-                    ? 'bg-primary/20 border-primary/40 text-primary'
-                    : 'bg-muted/30 border-border text-muted-foreground hover:border-border/80'
+                    ? 'bg-tint border-primary text-primary'
+                    : 'bg-card border-border text-muted-foreground hover:border-foreground'
                 }`}
               >
                 {t(title, { defaultValue: defaultTitle })}
