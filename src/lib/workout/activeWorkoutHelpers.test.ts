@@ -3,10 +3,12 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import {
+  buildConsoleSet,
   findNextSet,
   getLastPerformanceForSet,
   getLastSessionSets,
   nextSetInput,
+  planApplyTargets,
   priorCompletedInExercise,
   resolveSetInput,
   formatLoggedSetLine,
@@ -351,5 +353,106 @@ describe('rankSwapCandidates', () => {
       /aShared !== bShared/,
       'inline muscle-share sort returned — keep one definition in activeWorkoutHelpers'
     );
+  });
+});
+
+describe('buildConsoleSet', () => {
+  it('returns null when there is no next set', () => {
+    assert.equal(
+      buildConsoleSet({
+        exercises: [],
+        nextSet: null,
+        workoutHistory: [],
+        units: 'metric',
+        goalId: 'general',
+        unitLabel: 'kg',
+        bodyweightLabel: 'BW',
+        resolveExerciseName: (id) => id,
+        resolveInput: (_e, _s, r, w) => ({ reps: r, weight: w }),
+        translateReason: (_k, d) => d,
+      }),
+      null
+    );
+  });
+
+  it('uses prescribed numbers and a prescribed reason for coach sets', () => {
+    const view = buildConsoleSet({
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          prescribed: true,
+          sets: [{ reps: 5, weight: 100, completed: false, kind: 'normal' }],
+        },
+      ],
+      nextSet: { exIdx: 0, setIdx: 0 },
+      workoutHistory: historyWith('bench-press', [{ reps: 8, weight: 80 }]),
+      units: 'metric',
+      goalId: 'strength',
+      unitLabel: 'kg',
+      bodyweightLabel: 'BW',
+      resolveExerciseName: () => 'Bench Press',
+      resolveInput: (_e, _s, r, w) => ({ reps: r, weight: w }),
+      translateReason: (key) => key,
+    });
+    assert.ok(view);
+    assert.equal(view!.exerciseName, 'Bench Press');
+    assert.equal(view!.input.reps, 5);
+    assert.equal(view!.input.weight, 100);
+    assert.equal(view!.overloadCue.nextTarget?.reps, 5);
+    assert.equal(view!.overloadCue.nextTarget?.weight, 100);
+    assert.equal(view!.overloadCue.reasonLine, 'activeOverloadPrescribed');
+    assert.equal(view!.overloadCue.nextLine, '5 × 100 kg');
+  });
+
+  it('ActiveWorkoutPage uses buildConsoleSet rather than an inline IIFE', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /buildConsoleSet\(/);
+    assert.doesNotMatch(
+      src,
+      /buildOverloadCue\(/,
+      'console overload cue must stay in the helper — not re-inlined on the page'
+    );
+  });
+});
+
+describe('planApplyTargets', () => {
+  it('applies prescription to incomplete sets only', () => {
+    const targets = planApplyTargets({
+      prescribed: true,
+      sets: [
+        { completed: true, reps: 5, weight: 100 },
+        { completed: false, reps: 5, weight: 105 },
+      ],
+      lastSets: [{ reps: 8, weight: 60 }],
+      units: 'metric',
+      repMin: 8,
+      repMax: 12,
+    });
+    assert.deepEqual(targets, [{ setIdx: 1, reps: 5, weight: 105 }]);
+  });
+
+  it('returns empty when freestyle has no history', () => {
+    assert.deepEqual(
+      planApplyTargets({
+        prescribed: false,
+        sets: [{ completed: false, reps: 10, weight: 0 }],
+        lastSets: null,
+        units: 'metric',
+        repMin: 8,
+        repMax: 12,
+      }),
+      []
+    );
+  });
+
+  it('ActiveWorkoutPage uses planApplyTargets for Apply targets', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /planApplyTargets\(/);
   });
 });

@@ -45,12 +45,6 @@ import type { Debrief } from '@/lib/coach/debrief';
 import { collectFragments, composeSessionEntry } from '@/lib/journal/composeEntry';
 import { SessionJotField } from '@/components/workout/SessionJotField';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
-import {
-  buildOverloadCue,
-  formatOverloadSetLine,
-  overloadReasonDefault,
-  overloadReasonKey,
-} from '@/lib/workout/progressiveOverloadCue';
 import { computeBodyScores } from '@/lib/score';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
 import {
@@ -60,10 +54,12 @@ import {
 } from '@/components/workout/SessionCheckInSheet';
 import { useCoachPlan } from '@/hooks/useCoachPlan';
 import {
+  buildConsoleSet,
   findNextSet,
   getLastPerformanceForSet,
   getLastSessionSets,
   nextSetInput,
+  planApplyTargets,
   priorCompletedInExercise,
   rankSwapCandidates,
   resolveSetInput,
@@ -257,68 +253,18 @@ export function ActiveWorkoutPage() {
    * which is the correct empty state rather than a console for a set that does
    * not exist.
    */
-  const consoleSet = (() => {
-    if (!activeWorkout || !nextSet) return null;
-    const exLog = activeWorkout.exercises[nextSet.exIdx];
-    if (!exLog) return null;
-    const set = exLog.sets[nextSet.setIdx];
-    if (!set) return null;
-    const last = getLastPerformanceForSet(workoutHistory, exLog.exerciseId, nextSet.setIdx);
-    const lastSets = getLastSessionSets(workoutHistory, exLog.exerciseId);
-    const range = repRangeForGoal(goalId);
-    const bwLabel = t('activeSetBodyweight', { defaultValue: 'BW' });
-
-    // Coach prescription wins; freestyle uses double-progression from history.
-    const suggested =
-      exLog.prescribed
-        ? {
-            reps: set.reps,
-            weight: set.weight,
-            reason: null as null,
-          }
-        : lastSets
-          ? suggestNextSetTarget(lastSets, nextSet.setIdx, units, {
-              repMin: range.min,
-              repMax: range.max,
-            })
-          : null;
-
-    const cue = buildOverloadCue({
-      last: last ? { reps: last.reps, weight: last.weight } : null,
-      next: suggested
-        ? { reps: suggested.reps, weight: suggested.weight }
-        : null,
-      reason: suggested && 'reason' in suggested ? suggested.reason : null,
-      prescribed: !!exLog.prescribed,
-    });
-
-    const reasonKey = overloadReasonKey(cue.reason);
-    const reasonLine =
-      reasonKey && cue.reason
-        ? t(reasonKey, { defaultValue: overloadReasonDefault(cue.reason) ?? '' })
-        : null;
-
-    return {
-      exIdx: nextSet.exIdx,
-      setIdx: nextSet.setIdx,
-      exerciseName: getExerciseById(exLog.exerciseId)?.name ?? exLog.exerciseId,
-      totalSets: exLog.sets.length,
-      kind: set.kind ?? ('normal' as const),
-      input: getSetInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
-      overloadCue: {
-        lastLine: cue.last
-          ? formatOverloadSetLine(cue.last.reps, cue.last.weight, unitLabel, bwLabel)
-          : null,
-        nextLine: cue.next
-          ? formatOverloadSetLine(cue.next.reps, cue.next.weight, unitLabel, bwLabel)
-          : null,
-        reasonLine: reasonLine || null,
-        nextTarget: cue.next
-          ? { reps: cue.next.reps, weight: cue.next.weight }
-          : null,
-      },
-    };
-  })();
+  const consoleSet = buildConsoleSet({
+    exercises: activeWorkout?.exercises ?? [],
+    nextSet,
+    workoutHistory,
+    units,
+    goalId,
+    unitLabel,
+    bodyweightLabel: t('activeSetBodyweight', { defaultValue: 'BW' }),
+    resolveExerciseName: (id) => getExerciseById(id)?.name ?? id,
+    resolveInput: getSetInput,
+    translateReason: (key, defaultValue) => t(key, { defaultValue }),
+  });
 
   const handleLogSet = (exIdx: number, setIdx: number, override?: { reps: number; weight: number }) => {
     const exLog = activeWorkout?.exercises[exIdx];
@@ -463,29 +409,19 @@ export function ActiveWorkoutPage() {
   const applyTargetsForExercise = (exIdx: number) => {
     if (!activeWorkout) return;
     const exLog = activeWorkout.exercises[exIdx];
-
-    if (exLog.prescribed) {
-      exLog.sets.forEach((set, setIdx) => {
-        if (set.completed) return;
-        updateSetInput(exIdx, setIdx, 'reps', set.reps);
-        updateSetInput(exIdx, setIdx, 'weight', set.weight);
-      });
-      return;
-    }
-
-    const lastSets = getLastSessionSets(workoutHistory, exLog.exerciseId);
-    if (!lastSets) return;
     const range = repRangeForGoal(goalId);
-    exLog.sets.forEach((set, setIdx) => {
-      if (set.completed) return;
-      const target = suggestNextSetTarget(lastSets, setIdx, units, {
-        repMin: range.min,
-        repMax: range.max,
-      });
-      if (!target) return;
-      updateSetInput(exIdx, setIdx, 'reps', target.reps);
-      updateSetInput(exIdx, setIdx, 'weight', target.weight);
+    const targets = planApplyTargets({
+      prescribed: exLog.prescribed,
+      sets: exLog.sets,
+      lastSets: getLastSessionSets(workoutHistory, exLog.exerciseId),
+      units,
+      repMin: range.min,
+      repMax: range.max,
     });
+    for (const target of targets) {
+      updateSetInput(exIdx, target.setIdx, 'reps', target.reps);
+      updateSetInput(exIdx, target.setIdx, 'weight', target.weight);
+    }
   };
 
   const discardWorkout = () => {

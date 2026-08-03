@@ -3,6 +3,14 @@
  * Consumers: ActiveWorkoutPage, unit tests.
  */
 import type { CompletedWorkoutLog } from '@/types';
+import { repRangeForGoal } from '@/lib/coach/progression';
+import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+import {
+  buildOverloadCue,
+  formatOverloadSetLine,
+  overloadReasonDefault,
+  overloadReasonKey,
+} from '@/lib/workout/progressiveOverloadCue';
 
 /** First incomplete set across the active session, or null when all done. */
 export function findNextSet(exercises: { sets: { completed: boolean }[] }[]): {
@@ -213,4 +221,154 @@ export function rankSwapCandidates<T extends { id: string; name: string; muscleG
       if (aShared !== bShared) return aShared ? -1 : 1;
       return compareNames(a.name, b.name);
     });
+}
+
+export type ConsoleSetKind = 'normal' | 'warmup' | 'failure' | 'drop';
+
+export type ConsoleSetView = {
+  exIdx: number;
+  setIdx: number;
+  exerciseName: string;
+  totalSets: number;
+  kind: ConsoleSetKind;
+  input: { reps: number; weight: number };
+  overloadCue: {
+    lastLine: string | null;
+    nextLine: string | null;
+    reasonLine: string | null;
+    nextTarget: { reps: number; weight: number } | null;
+  };
+};
+
+/**
+ * Compact log-console payload for the next incomplete set.
+ * Extracted from ActiveWorkoutPage so coach-vs-freestyle + overload cue cannot
+ * silently diverge from tests (Kaizen Loop 2 L2 / `.297`).
+ */
+export function buildConsoleSet(params: {
+  exercises: {
+    exerciseId: string;
+    prescribed?: boolean;
+    sets: {
+      reps: number;
+      weight: number;
+      completed: boolean;
+      kind?: ConsoleSetKind;
+    }[];
+  }[];
+  nextSet: { exIdx: number; setIdx: number } | null;
+  workoutHistory: CompletedWorkoutLog[];
+  units: 'metric' | 'imperial';
+  goalId: string;
+  unitLabel: string;
+  bodyweightLabel: string;
+  resolveExerciseName: (exerciseId: string) => string;
+  resolveInput: (
+    exIdx: number,
+    setIdx: number,
+    defaultReps: number,
+    defaultWeight: number
+  ) => { reps: number; weight: number };
+  translateReason: (key: string, defaultValue: string) => string;
+}): ConsoleSetView | null {
+  const { exercises, nextSet } = params;
+  if (!nextSet) return null;
+  const exLog = exercises[nextSet.exIdx];
+  if (!exLog) return null;
+  const set = exLog.sets[nextSet.setIdx];
+  if (!set) return null;
+
+  const last = getLastPerformanceForSet(
+    params.workoutHistory,
+    exLog.exerciseId,
+    nextSet.setIdx
+  );
+  const lastSets = getLastSessionSets(params.workoutHistory, exLog.exerciseId);
+  const range = repRangeForGoal(params.goalId);
+
+  const suggested = exLog.prescribed
+    ? { reps: set.reps, weight: set.weight, reason: null as null }
+    : lastSets
+      ? suggestNextSetTarget(lastSets, nextSet.setIdx, params.units, {
+          repMin: range.min,
+          repMax: range.max,
+        })
+      : null;
+
+  const cue = buildOverloadCue({
+    last: last ? { reps: last.reps, weight: last.weight } : null,
+    next: suggested ? { reps: suggested.reps, weight: suggested.weight } : null,
+    reason: suggested && 'reason' in suggested ? suggested.reason : null,
+    prescribed: !!exLog.prescribed,
+  });
+
+  const reasonKey = overloadReasonKey(cue.reason);
+  const reasonLine =
+    reasonKey && cue.reason
+      ? params.translateReason(reasonKey, overloadReasonDefault(cue.reason) ?? '')
+      : null;
+
+  return {
+    exIdx: nextSet.exIdx,
+    setIdx: nextSet.setIdx,
+    exerciseName: params.resolveExerciseName(exLog.exerciseId),
+    totalSets: exLog.sets.length,
+    kind: set.kind ?? 'normal',
+    input: params.resolveInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
+    overloadCue: {
+      lastLine: cue.last
+        ? formatOverloadSetLine(
+            cue.last.reps,
+            cue.last.weight,
+            params.unitLabel,
+            params.bodyweightLabel
+          )
+        : null,
+      nextLine: cue.next
+        ? formatOverloadSetLine(
+            cue.next.reps,
+            cue.next.weight,
+            params.unitLabel,
+            params.bodyweightLabel
+          )
+        : null,
+      reasonLine: reasonLine || null,
+      nextTarget: cue.next
+        ? { reps: cue.next.reps, weight: cue.next.weight }
+        : null,
+    },
+  };
+}
+
+/**
+ * Which incomplete sets get which targets when the athlete taps Apply targets.
+ * Prescribed → template numbers; freestyle → suggestion engine in goal range.
+ */
+export function planApplyTargets(params: {
+  prescribed?: boolean;
+  sets: { completed: boolean; reps: number; weight: number }[];
+  lastSets: { reps: number; weight: number }[] | null;
+  units: 'metric' | 'imperial';
+  repMin: number;
+  repMax: number;
+}): { setIdx: number; reps: number; weight: number }[] {
+  const out: { setIdx: number; reps: number; weight: number }[] = [];
+  if (params.prescribed) {
+    params.sets.forEach((set, setIdx) => {
+      if (set.completed) return;
+      out.push({ setIdx, reps: set.reps, weight: set.weight });
+    });
+    return out;
+  }
+  if (!params.lastSets) return out;
+  params.sets.forEach((set, setIdx) => {
+    if (set.completed) return;
+    const target = suggestNextSetTarget(params.lastSets!, setIdx, params.units, {
+      repMin: params.repMin,
+      repMax: params.repMax,
+    });
+    if (!target) return;
+    out.push({ setIdx, reps: target.reps, weight: target.weight });
+  });
+  return out;
 }

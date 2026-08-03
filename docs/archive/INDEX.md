@@ -49,6 +49,7 @@ When adding a doc:
 | [log/LOG-rotate-279.md](./log/LOG-rotate-279.md) | oldest live LOG section — rotated for `.279` hero meta helper |
 | [log/LOG-rotate-280.md](./log/LOG-rotate-280.md) | Coach session predicate — rotated for `.295` seeded a11y + zero-state |
 | [log/LOG-rotate-296.md](./log/LOG-rotate-296.md) | `.281` Fuel NL / Today chrome — rotated for `.296` Victory+CheckIn i18n |
+| [log/LOG-rotate-297.md](./log/LOG-rotate-297.md) | `.282` D13 trust — rotated for `.297` buildConsoleSet extract |
 | [log/LOG-rotate-279.md](./log/LOG-rotate-279.md) | Just Go hero meta — rotated for `.294` Today composure + Fuel honesty |
 | [log/LOG-rotate-278.md](./log/LOG-rotate-278.md) | `.263` cold-start Coach — rotated for `.278` Just Go honesty |
 | [log/LOG-rotate-277.md](./log/LOG-rotate-277.md) | rotated for `.277` |
