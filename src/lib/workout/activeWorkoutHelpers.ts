@@ -372,3 +372,42 @@ export function planApplyTargets(params: {
   });
   return out;
 }
+
+/**
+ * What the Active dial shows for one set — prescribed vs freestyle carry vs
+ * suggestion. Extracted so the page cannot silently reorder resolveSetInput
+ * inputs (Kaizen Loop 3 M3 / `.303`).
+ */
+export function resolveActiveSetDial(params: {
+  manual?: { reps: number; weight: number };
+  prescribed?: boolean;
+  defaultReps: number;
+  defaultWeight: number;
+  sets: { completed: boolean; reps: number; weight: number }[];
+  setIdx: number;
+  lastSets: { reps: number; weight: number }[] | null;
+  units: 'metric' | 'imperial';
+  repMin: number;
+  repMax: number;
+  lastPerformance: { reps: number; weight: number } | null;
+}): { reps: number; weight: number } {
+  const sessionCarry = params.prescribed
+    ? null
+    : priorCompletedInExercise(params.sets, params.setIdx);
+  const suggestion =
+    !params.prescribed && params.lastSets
+      ? suggestNextSetTarget(params.lastSets, params.setIdx, params.units, {
+          repMin: params.repMin,
+          repMax: params.repMax,
+        })
+      : null;
+  return resolveSetInput({
+    manual: params.manual,
+    prescribed: params.prescribed,
+    defaultReps: params.defaultReps,
+    defaultWeight: params.defaultWeight,
+    sessionCarry,
+    suggestion,
+    lastPerformance: params.lastPerformance,
+  });
+}

@@ -44,7 +44,6 @@ import { buildDebrief } from '@/lib/coach/debrief';
 import type { Debrief } from '@/lib/coach/debrief';
 import { collectFragments, composeSessionEntry } from '@/lib/journal/composeEntry';
 import { SessionJotField } from '@/components/workout/SessionJotField';
-import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
 import { computeBodyScores } from '@/lib/score';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
 import {
@@ -60,12 +59,11 @@ import {
   getLastSessionSets,
   nextSetInput,
   planApplyTargets,
-  priorCompletedInExercise,
-  rankSwapCandidates,
-  resolveSetInput,
+  resolveActiveSetDial,
   sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
+  rankSwapCandidates,
 } from '@/lib/workout/activeWorkoutHelpers';
 import { prefersReducedMotion } from '@/lib/motion';
 import { compareText } from '@/lib/i18n/formatLocale';
@@ -204,22 +202,18 @@ export function ActiveWorkoutPage() {
     const exLog = activeWorkout?.exercises[exIdx];
     if (!exLog) return { reps: defaultReps, weight: defaultWeight };
     const exerciseId = exLog.exerciseId;
-    const lastSets = exLog.prescribed ? null : getLastSessionSets(workoutHistory, exerciseId);
     const range = repRangeForGoal(goalId);
-    // Freestyle only: carry the set you just logged into the next dial.
-    // Coach prescriptions stay per-set (resolveSetInput order 2).
-    const sessionCarry = exLog.prescribed
-      ? null
-      : priorCompletedInExercise(exLog.sets, setIdx);
-    return resolveSetInput({
+    return resolveActiveSetDial({
       manual: setInputs[setInputKey(exIdx, setIdx)],
       prescribed: exLog.prescribed,
       defaultReps,
       defaultWeight,
-      sessionCarry,
-      suggestion: lastSets
-        ? suggestNextSetTarget(lastSets, setIdx, units, { repMin: range.min, repMax: range.max })
-        : null,
+      sets: exLog.sets,
+      setIdx,
+      lastSets: exLog.prescribed ? null : getLastSessionSets(workoutHistory, exerciseId),
+      units,
+      repMin: range.min,
+      repMax: range.max,
       lastPerformance: getLastPerformanceForSet(workoutHistory, exerciseId, setIdx),
     });
   };

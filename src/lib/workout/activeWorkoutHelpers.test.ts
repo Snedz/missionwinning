@@ -10,6 +10,7 @@ import {
   nextSetInput,
   planApplyTargets,
   priorCompletedInExercise,
+  resolveActiveSetDial,
   resolveSetInput,
   formatLoggedSetLine,
   sessionIsCoachPrescribed,
@@ -454,5 +455,58 @@ describe('planApplyTargets', () => {
       'utf8'
     );
     assert.match(src, /planApplyTargets\(/);
+  });
+});
+
+describe('resolveActiveSetDial', () => {
+  it('prescribed ignores history and returns template numbers', () => {
+    const out = resolveActiveSetDial({
+      prescribed: true,
+      defaultReps: 5,
+      defaultWeight: 100,
+      sets: [
+        { completed: true, reps: 5, weight: 100 },
+        { completed: false, reps: 5, weight: 100 },
+      ],
+      setIdx: 1,
+      lastSets: [{ reps: 12, weight: 60 }],
+      units: 'metric',
+      repMin: 8,
+      repMax: 12,
+      lastPerformance: { reps: 12, weight: 60 },
+    });
+    assert.deepEqual(out, { reps: 5, weight: 100 });
+  });
+
+  it('freestyle carries the prior completed set in this exercise', () => {
+    const out = resolveActiveSetDial({
+      prescribed: false,
+      defaultReps: 10,
+      defaultWeight: 0,
+      sets: [
+        { completed: true, reps: 8, weight: 70 },
+        { completed: false, reps: 10, weight: 0 },
+      ],
+      setIdx: 1,
+      lastSets: [{ reps: 6, weight: 65 }],
+      units: 'metric',
+      repMin: 8,
+      repMax: 12,
+      lastPerformance: { reps: 6, weight: 65 },
+    });
+    assert.deepEqual(out, { reps: 8, weight: 70 });
+  });
+
+  it('ActiveWorkoutPage uses resolveActiveSetDial rather than inlining carry', () => {
+    const src = readFileSync(
+      path.join(import.meta.dirname, '..', '..', 'page-components', 'ActiveWorkoutPage.tsx'),
+      'utf8'
+    );
+    assert.match(src, /resolveActiveSetDial\(/);
+    assert.doesNotMatch(
+      src,
+      /priorCompletedInExercise\(/,
+      'session carry must stay inside resolveActiveSetDial'
+    );
   });
 });
