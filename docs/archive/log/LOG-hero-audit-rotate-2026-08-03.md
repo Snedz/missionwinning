@@ -239,3 +239,60 @@ above it.
 Tests 1232 → 1236 (1235 under CI env before this entry's additions).
 
 ---
+
+## 2026-08-01 — Replay a day (`.251`)
+
+The other half of `.247`, and the last of the four product references. Tesla's
+VPP dashboard lets you go back to a specific grid event and see what the fleet
+actually did; `/history/[date]` is that pointed at a day the athlete lived —
+every pillar, in order, with the neighbouring logged days a tap away.
+
+`.247` built the index this reads from, so the route is a lookup rather than a
+scan.
+
+### It collects nothing of its own
+
+`gatherJournalEntries` already walks every pillar store and returns one shape.
+Writing a second cross-pillar collector — even a slightly better one — is
+`.178`, which this repo has paid for six times in thirty builds. So
+`buildDayRecord` **filters what that returns** and never re-derives it: when a
+new pillar starts logging, both the Today strip and the replay gain it at once
+or neither does.
+
+### A day reads forwards
+
+`gatherJournalEntries` is newest-first, which is right for a *feed* — the Today
+strip has no end and recency is the point. A **bounded day being replayed** is
+the opposite, and rendering it showed why: the 8pm check-in sat above the 7am
+session, so the page described the evening before the morning. Sorted ascending,
+it reads as the day was lived — the walk, the session, breakfast, the check-in.
+
+Fourth time this run that rendering a screen caught what the diff could not.
+
+### The two ways a replay lies
+
+- **Empty when it should be full.** `gatherJournalEntries` takes a limit and
+  sorts newest-first, so a small ceiling silently drops the *oldest* days — and
+  a day rendering empty reads as *"you did nothing"* rather than *"this page
+  could not see it."* `.208`'s shape. The ceiling is deliberately far above any
+  real day and a test puts an old day behind 300 newer rows.
+- **The wrong calendar day.** Bucketing goes through `localDateKeyFromIso`
+  (`.245`), and the entries arrive with two timestamp shapes — real instants
+  from workouts and wins, synthesised `${date}T12:00:00` strings from meals and
+  check-ins. Both are correct through that function; slicing either would put an
+  Auckland morning on the previous day. Pinned in `Pacific/Auckland`.
+
+The date is user input straight off the URL, so a malformed one renders an empty
+record rather than throwing, and `/history` links to the replay so the route is
+not built-and-unreachable (`.195`).
+
+**And the CI status is finally true.** `ad101b34` ran all **25** steps green —
+Hero E2E included, which settles `.249` — and gitleaks scanned for the first
+time in this repo's history: *10 commits, 30.32 MB, no leaks found*. Both
+CONTEXT rows are corrected, including the long-standing claim that gitleaks was
+red because of `8ea3527a`: the action scans **the PR's commits only**, so that
+finding was never going to fire on a pull request.
+
+Tests 1236 → 1243.
+
+---

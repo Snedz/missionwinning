@@ -41,8 +41,35 @@ export function ProfileRemindersCard({
 }: ProfileRemindersCardProps) {
   const { t } = useTranslation();
 
-  // Nothing to offer: no account for email, no support for push.
-  if (!signedIn && !pushSupported) return null;
+  /*
+   * Signed-out + push dark used to return null — a void on You for the modal
+   * athlete (no account, free logger). Return-loop code is already built; what
+   * fails here is env (no VAPID / private mode kills SW). Say so, and point at
+   * the in-app return path that does work offline.
+   */
+  if (!signedIn && !pushSupported) {
+    return (
+      <Card className="content-card">
+        <CardHeader>
+          <CardTitle>{t('remindersTitle', { defaultValue: 'Training reminders' })}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <p className="text-sm text-muted-foreground">
+            {t('remindersPushUnavailable', {
+              defaultValue:
+                'Device notifications are not available on this install yet. When they are, you can turn them on here without an account.',
+            })}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {t('remindersPushUnavailableHint', {
+              defaultValue:
+                'Until then: open Today after a rest day — one next session, no catch-up.',
+            })}
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="content-card">
