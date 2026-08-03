@@ -9,6 +9,12 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
 
 ---
+## 2026-08-03 — Coach why panel: named days + today's reasons (`.287`)
+
+Adapt banner names **which weekdays** were missed/swapped. Full Coach also lists
+up to three unique prescription why-keys for today and a control to adjust/keep
+today's version. Pure `todaySessionWhyKeys` + richer adaptSummary.
+
 ## 2026-08-03 — Re-entry dose actually trims the session (`.286`)
 
 `doseScale` from `computeReentry` now scales Just Go / plan starts via
@@ -111,13 +117,4 @@ Solid 2px paper/ink on high-traffic public and in-app surfaces still on soft
 borders: exercise pages (form media, safety, alt/related chips, free CTA),
 learn path teaser + I-Day CTA, beta start list rules, Train readiness/volume
 strip, Mind and Move premium preview toggles.
-
-## 2026-08-03 — Victory + guide chrome (`.272`)
-
-Habit-loop close and public guide polish: Victory sheet volume/sets, feel
-scale, body-delta strip, and next-action card use solid 2px paper/ink (feel
-scale is a ruled five-cell strip like session check-in — no soft muted
-tiles). Live session header is a 2px bottom rule. Public `/guide` related
-exercises section + chips match the same system. Actions major Dependabot
-(checkout/upload-artifact/codeql v7) left open — higher CI risk.
 

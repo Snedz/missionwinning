@@ -2,4 +2,6 @@ export type { CoachAdaptBeat } from '../../../packages/mw-core/src/coach/adaptSu
 export {
   summarizeCoachAdaptations,
   hasCoachAdaptationSignal,
+  todaySessionWhyKeys,
+  weekdayLabel,
 } from '../../../packages/mw-core/src/coach/adaptSummary';

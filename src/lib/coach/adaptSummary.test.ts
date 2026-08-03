@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import {
   hasCoachAdaptationSignal,
   summarizeCoachAdaptations,
+  todaySessionWhyKeys,
+  weekdayLabel,
 } from './adaptSummary.ts';
 import type { CoachPlan, PlanSession } from './types.ts';
 
@@ -65,5 +67,54 @@ describe('summarizeCoachAdaptations', () => {
       hasCoachAdaptationSignal(plan([session({ id: 'a', status: 'missed' })], 1)),
       true
     );
+  });
+
+  it('names the weekday for missed sessions', () => {
+    const beats = summarizeCoachAdaptations(
+      plan([
+        session({ id: 'a', status: 'missed', dayOffset: 0, name: 'Push' }),
+        session({ id: 'b', status: 'missed', dayOffset: 2, name: 'Pull' }),
+      ])
+    );
+    assert.equal(beats[0].days, 'Mon, Wed');
+    assert.match(beats[0].defaultMessage, /Mon, Wed/);
+  });
+
+  it('todaySessionWhyKeys returns unique why keys for today', () => {
+    assert.equal(weekdayLabel(0), 'Mon');
+    const keys = todaySessionWhyKeys(
+      plan([
+        session({
+          id: 'a',
+          status: 'planned',
+          dayOffset: 1,
+          exercises: [
+            {
+              exerciseId: 'bench',
+              sets: 3,
+              reps: 5,
+              weight: 60,
+              whyKey: 'coachWhyLoadUp',
+            },
+            {
+              exerciseId: 'row',
+              sets: 3,
+              reps: 8,
+              weight: 40,
+              whyKey: 'coachWhyLoadUp',
+            },
+            {
+              exerciseId: 'curl',
+              sets: 2,
+              reps: 12,
+              weight: 10,
+              whyKey: 'coachWhyHold',
+            },
+          ],
+        }),
+      ]),
+      1
+    );
+    assert.deepEqual(keys, ['coachWhyLoadUp', 'coachWhyHold']);
   });
 });
