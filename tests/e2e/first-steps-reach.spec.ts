@@ -63,10 +63,20 @@ test.describe('First Steps reachability @gate', () => {
         'workout-tracker-storage',
         JSON.stringify({
           state: {
+            // Two sessions: first-steps session2 completes only at history length ≥ 2 (.291).
             workoutHistory: [
               {
                 id: 'w1',
-                workoutName: 'Session',
+                workoutName: 'Session 1',
+                completedAt: now,
+                durationSeconds: 600,
+                totalVolume: 1000,
+                totalSets: 4,
+                exercises: [],
+              },
+              {
+                id: 'w2',
+                workoutName: 'Session 2',
                 completedAt: now,
                 durationSeconds: 600,
                 totalVolume: 1000,
