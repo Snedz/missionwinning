@@ -57,8 +57,13 @@ describe('summarizeCoachAdaptations', () => {
     assert.equal(beats[0].key, 'coachAdaptLoggedNote');
   });
 
-  it('hasCoachAdaptationSignal true when revision > 1', () => {
-    assert.equal(hasCoachAdaptationSignal(plan([], 2)), true);
+  it('hasCoachAdaptationSignal needs a real beat, not bare revision', () => {
+    // Revision alone is empty theater after cold-start re-spread.
+    assert.equal(hasCoachAdaptationSignal(plan([], 2)), false);
     assert.equal(hasCoachAdaptationSignal(plan([], 1)), false);
+    assert.equal(
+      hasCoachAdaptationSignal(plan([session({ id: 'a', status: 'missed' })], 1)),
+      true
+    );
   });
 });
