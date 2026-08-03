@@ -234,7 +234,7 @@ jobs:
       # so the condition stands and only its justification changed.
       - name: Upload visual baselines + diffs
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: visual-diffs
           path: |
@@ -364,7 +364,7 @@ jobs:
 
       - name: Upload release AAB (debug-signed)
         if: success()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: app-release-aab
           path: apps/android/app/build/outputs/bundle/release/app-release.aab
@@ -378,7 +378,7 @@ jobs:
 
       - name: Upload debug APK
         if: success()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: app-debug
           path: apps/android/app/build/outputs/apk/debug/*.apk
