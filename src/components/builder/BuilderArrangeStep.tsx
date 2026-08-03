@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +16,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ExercisePicker } from '@/components/library/ExercisePicker';
+import { AdaptiveOverlay } from '@/components/ui/AdaptiveOverlay';
 import { getExerciseById } from '@/data/exercises';
+import { useIsCompact } from '@/hooks/useIsCompact';
 import type { WorkoutExerciseTemplate } from '@/types';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -57,6 +60,8 @@ export function BuilderArrangeStep({
   onContinue,
 }: Props) {
   const { t } = useTranslation();
+  const isCompact = useIsCompact();
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   return (
     <Card className="content-card">
@@ -76,16 +81,65 @@ export function BuilderArrangeStep({
           </div>
         )}
 
-        <div className="flex gap-2 items-start">
-          <ExercisePicker value={selectedExerciseId} onChange={onSelectedChange} />
-          <Button
-            onClick={onAddExercise} disabled={!selectedExerciseId}
-            className="min-h-[44px] shrink-0"
-          >
-            <Plus className="h-4 w-4" />
-            {t('builderAdd', { defaultValue: 'Add' })}
-          </Button>
-        </div>
+        {/*
+          Compact: sheet (same contract as Active AddExerciseSheet) — inline
+          max-h-48 fought the session list for height. Desktop keeps inline
+          search; the mock has room.
+        */}
+        {isCompact ? (
+          <>
+            <Button
+              type="button"
+              className="w-full min-h-[52px]"
+              variant="outline"
+              onClick={() => setPickerOpen(true)}
+            >
+              <Plus className="h-4 w-4 me-2" aria-hidden />
+              {t('builderAddExercise', { defaultValue: 'Add exercise' })}
+            </Button>
+            <AdaptiveOverlay
+              open={pickerOpen}
+              onClose={() => setPickerOpen(false)}
+              size="sm"
+              eyebrow={t('builderNewWorkout', { defaultValue: 'New Workout' })}
+              title={t('builderAddExercise', { defaultValue: 'Add exercise' })}
+              bodyClassName="p-4"
+              footer={
+                <Button
+                  type="button"
+                  variant="fitness"
+                  className="w-full min-h-[52px]"
+                  disabled={!selectedExerciseId}
+                  onClick={() => {
+                    onAddExercise();
+                    setPickerOpen(false);
+                  }}
+                >
+                  <Plus className="h-4 w-4 me-2" aria-hidden />
+                  {t('builderAdd', { defaultValue: 'Add' })}
+                </Button>
+              }
+            >
+              <ExercisePicker
+                value={selectedExerciseId}
+                onChange={onSelectedChange}
+                listClassName="max-h-[52vh]"
+              />
+            </AdaptiveOverlay>
+          </>
+        ) : (
+          <div className="flex gap-2 items-start">
+            <ExercisePicker value={selectedExerciseId} onChange={onSelectedChange} />
+            <Button
+              onClick={onAddExercise}
+              disabled={!selectedExerciseId}
+              className="min-h-[44px] shrink-0"
+            >
+              <Plus className="h-4 w-4" />
+              {t('builderAdd', { defaultValue: 'Add' })}
+            </Button>
+          </div>
+        )}
 
         <Button variant="outline" size="sm" className="text-xs" onClick={onQuickMobility}>
           {t('builderQuickMobility', {
