@@ -1,3 +1,11 @@
+## 2026-08-03 — Fuel edit-before-log gate (`.282`)
+
+Low-confidence (and rough/heuristic) meal estimates no longer log until the
+athlete touches a field or scales servings away from 1×. Pure
+`estimateLogAllowed` + `MealEstimateDraft` `athleteTouched`; medium/high
+matched foods stay name-only. Closes the `.270` honesty hole where Log was
+enabled on an untouched low estimate.
+
 ## 2026-08-03 — Coach session predicate for Active chrome (`.280`)
 
 `sessionIsCoachPrescribed` pure helper — Active eyebrow and future apply-targets
@@ -114,12 +122,6 @@ rendered nothing about reminders when VAPID/SW are dark. Profile now shows
 an honest card pointing at Today re-entry. Docs: RETURN_LOOP_PLAN status
 corrected to code-shipped / founder-ops inert.
 
-## 2026-08-03 — Empty states that speak, adapt that only speaks when true (`.266`)
-
-History / Active / Coach / Library empty copy tightened (no marketing filler).
-`hasCoachAdaptationSignal` no longer fires on bare revision bumps — the adapt
-banner needs a missed/swapped/logged beat, so cold-start re-spread does not
-claim the week "reshaped" with nothing to say.
 
 # Mission Winning — Development Log
 

@@ -184,6 +184,11 @@ export function FuelQuickLogPanel({
               }}
               confidence={confidence}
               sourceLabel={sourceLabel}
+              requireEdit={
+                !draftFromDb &&
+                !manualDraft &&
+                (nlPreview?.source === 'rough' || nlPreview?.confidence === 'low')
+              }
               onLog={() => {
                 onLogNlMeal(draft);
                 setDraft(null);
