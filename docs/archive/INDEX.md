@@ -36,6 +36,7 @@ When adding a doc:
 | [log/LOG-rotate-283.md](./log/LOG-rotate-283.md) | `.268` guidebook heroes — rotated for `.283` Pump Kaizen D11–D12 |
 | [log/LOG-rotate-282.md](./log/LOG-rotate-282.md) | `.267` return-loop honesty — rotated for `.282` D13 trust |
 | [log/LOG-rotate-281.md](./log/LOG-rotate-281.md) | `.266` empty states / adapt honesty — rotated for `.281` K3–K5 Fuel/Today chrome |
+| [log/LOG-rotate-293.md](./log/LOG-rotate-293.md) | rotated for .293 first-mission check-in |
 | [log/LOG-rotate-292.md](./log/LOG-rotate-292.md) | rotated for .292 rest default |
 | [log/LOG-rotate-291.md](./log/LOG-rotate-291.md) | rotated for .291 week-1 second session |
 | [log/LOG-rotate-290.md](./log/LOG-rotate-290.md) | rotated for .290 victory progression |

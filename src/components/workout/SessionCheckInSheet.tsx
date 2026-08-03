@@ -18,6 +18,7 @@ import {
 } from '@/lib/mindCheckIns';
 import { track } from '@/lib/analytics';
 import { readWorkoutHistoryFromStorage } from '@/lib/workout/workoutPersistLite';
+import { shouldOfferSessionCheckInDecision } from '@/lib/workout/sessionCheckInOffer';
 
 type Props = {
   open: boolean;
@@ -190,17 +191,23 @@ export function SessionCheckInSheet({ open, onDismiss }: Props) {
   );
 }
 
-/** True when the session sheet should open (no complete check-in today). */
+/**
+ * True when the session sheet should open.
+ * W1 / pure rule: [`shouldOfferSessionCheckInDecision`](../../lib/workout/sessionCheckInOffer.ts).
+ */
 export function shouldOfferSessionCheckIn(): boolean {
   if (typeof window === 'undefined') return false;
-  // W1: never block the first mission with a Mind questionnaire.
-  if (readWorkoutHistoryFromStorage().length < 1) return false;
+  let skippedForToday = false;
   try {
-    if (sessionStorage.getItem('mw_session_checkin_skipped') === todayKey()) return false;
+    skippedForToday = sessionStorage.getItem('mw_session_checkin_skipped') === todayKey();
   } catch {
     /* private mode */
   }
-  return !isTodayCheckInComplete();
+  return shouldOfferSessionCheckInDecision({
+    completedHistoryLength: readWorkoutHistoryFromStorage().length,
+    skippedForToday,
+    todayCheckInComplete: isTodayCheckInComplete(),
+  });
 }
 
 function todayKey(): string {

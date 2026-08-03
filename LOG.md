@@ -9,6 +9,12 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
 
 ---
+## 2026-08-03 — First-mission check-in is one pure rule (`.293`)
+
+`shouldOfferSessionCheckInDecision`: never open the pre-session Mind sheet when
+completed history is empty (W1). Sheet wraps storage; unit + wiring guards so the
+cold path cannot re-grow an interstitial without a red test.
+
 ## 2026-08-03 — Rest timer default is one source of truth (`.292`)
 
 Store `startRestTimer()` no longer invents **30s**. Duration resolves through
@@ -97,16 +103,4 @@ call sites share one definition of "this is a Mission Coach load".
 Lean + full Today shells now build train-CTA meta through pure
 `buildJustGoHeroMeta` (one coach/freestyle rule, unit-tested). No product
 behavior change beyond locking the `.278` honesty contract in one place.
-
-## 2026-08-03 — Just Go honesty + deploy discipline (`.278`)
-
-Today primary CTA no longer says **Just Go** when Mission Coach has a live
-session for today — label/title load the planned session (`coachStartSession` /
-session name); freestyle still says Just Go. Pure `resolveJustGoHeroCopy` +
-`peekCoachToday` (sync). **Also:** coach path from Today now sets
-`prescribed: true` (parity with `planSessionToTemplates`) so the logger does not
-re-guess loads; Active chrome eyebrow **Mission Coach session** when prescribed.
-Docs: Vercel free-tier **100 deploys/day** batching
-([VERCEL_DEPLOY_CHECKLIST](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.6); beta invite
-checklist unblocks postal → migrations → invites first. i18n ratchet **702→698**.
 
