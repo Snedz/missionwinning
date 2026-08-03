@@ -119,18 +119,51 @@ Scorecard: [docs/PRODUCTION_STACK.md](PRODUCTION_STACK.md). Recovery: [docs/BACK
 
 ## §3 — Beta: 10 real users (target: **2026-08-02**)
 
-> **Sprint order:** billing (§1) → phone hero QA below → issue 10 invites this week → day-2/day-7 follow-ups. Do not flip `PRIVATE_MODE` until gates pass.
+> **Sprint order:** **`MAIL_POSTAL_ADDRESS`** (§2 — invites cannot send without it) → migrations → **dogfood notes** (below) → issue 10 invites → day-2/day-7 follow-ups. Do not flip `PRIVATE_MODE` until gates pass.
 
-1. Smoke-check the hero flow yourself **on your phone**: teaser → access code → `/welcome` I-Day → first workout → Win Score updates → sign in → Profile shows cloud sync. **Write down the #1 confusion** (agents fix only that).
-2. Recruit using the scripts in [STRATEGY.md §First 10 users](STRATEGY.md). Send personal invites with the URL + access code. Preferred: Profile → Beta panel → `MW-B-…` link.
+### §3a — Dogfood notes (standing founder todo)
+
+**What:** 2–5 minutes of notes after a real phone session (or gym wifi). Not a formal QA report. Agents treat this as the product signal: **fix what you wrote**, don’t invent logger polish without it.
+
+**Paste template** (chat or note to self before next agent session):
+
+```text
+Device / build: <phone> · <Profile footer or /api/health label>
+Path: Today → Start → log 3 sets → Finish → Victory → Coach/Today
+
+Worked:
+- …
+
+Friction / bugs:
+- … (what you did · expected · got)
+
+Nice-to-have only if it slowed you:
+- …
+```
+
+**Poke list for recent craft (www ≥ `.292`):**
+
+| Build | Check on phone |
+|-------|----------------|
+| `.285`–`.289` | Last · Next · why; Enter logs set; Use next when dial ≠ target; next set carries what you just did |
+| `.290` | Victory “Next: …” after a real session (BW line if you have bodyweight work) |
+| `.291` | After **one** finished workout, Today / First Steps push **session 2**, not Fuel |
+| `.292` | Rest after a set feels ~90s+ for compounds (not a bare 30s if something started without a duration) |
+
+Also Horizon W: one-thumb outdoors · one clear next session · coach week earned · re-entry after a gap · ≤90s first open not a chore list.
+
+- [ ] Dogfood notes taken on current build (paste to agent or keep; at least **#1 friction** written down)
+- [ ] Hero flow QA'd on a real phone: teaser → access → I-Day → first workout → Victory → Coach/Today
+- [ ] 10+ testers invited · [ ] gates met (check the beta panel) — **target 2026-08-02**
+
+1. Smoke-check the hero flow yourself **on your phone** (table above). **Write down the #1 confusion** — agents fix only that until you paste new notes.
+2. Recruit using the scripts in [STRATEGY.md §First 10 users](STRATEGY.md). Send personal invites with the URL + access code. Preferred: Profile → Beta panel → `MW-B-…` link. **Blocked until `MAIL_POSTAL_ADDRESS` is set.**
 3. Track the funnel: Profile → founder beta panel (`BETA_ADMIN_EMAILS`). Gates: **10+ users, I-Day ≥80%, Basic Training ≥60%.**  
    Client drop-off (after analytics allow): PostHog funnel  
    `iday_started → iday_mission_accepted → iday_profile_completed → iday_completed → first_workout_completed`  
    ([docs/SEO_ANALYTICS.md](SEO_ANALYTICS.md)). Monday email digest repeats server funnel + week-4 RPC.
 4. Message every tester at day 2 and day 7 (script in STRATEGY.md + [BETA_INVITE.md](BETA_INVITE.md)). Fix the #1 confusion each week.
 
-- [ ] Hero flow QA'd on a real phone (agent: gate-smoke + e2e against www green on `.98`; founder confirms on device)
-- [ ] 10+ testers invited · [ ] gates met (check the beta panel) — **target 2026-08-02**
 - **Invite format:** `/private?invite=MW-B-XXXXX` + access code out-of-band — [BETA_INVITE.md](BETA_INVITE.md)
 
 
