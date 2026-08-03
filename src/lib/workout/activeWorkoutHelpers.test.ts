@@ -7,6 +7,7 @@ import {
   getLastPerformanceForSet,
   getLastSessionSets,
   nextSetInput,
+  priorCompletedInExercise,
   resolveSetInput,
   formatLoggedSetLine,
   sessionIsCoachPrescribed,
@@ -154,6 +155,28 @@ describe('resolveSetInput', () => {
     assert.deepEqual(out, { reps: 9, weight: 80 });
   });
 
+  it('same-session carry beats last-session suggestion (gym speed)', () => {
+    // Logged set 1 as 9×82 today; set 2 dial must not jump back to last week's set 2.
+    const out = resolveSetInput({
+      ...base,
+      prescribed: false,
+      sessionCarry: { reps: 9, weight: 82 },
+      suggestion: { reps: 8, weight: 80 },
+      lastPerformance: { reps: 8, weight: 80 },
+    });
+    assert.deepEqual(out, { reps: 9, weight: 82 });
+  });
+
+  it('coach prescription still beats same-session carry', () => {
+    const out = resolveSetInput({
+      ...base,
+      prescribed: true,
+      sessionCarry: { reps: 9, weight: 82 },
+      suggestion: { reps: 9, weight: 82 },
+    });
+    assert.deepEqual(out, { reps: 5, weight: 85 });
+  });
+
   it('what the athlete typed always wins, prescribed or not', () => {
     const manual = { reps: 3, weight: 120 };
     assert.deepEqual(
@@ -175,6 +198,28 @@ describe('resolveSetInput', () => {
       reps: 5,
       weight: 85,
     });
+  });
+});
+
+describe('priorCompletedInExercise', () => {
+  it('returns the nearest completed set before setIdx', () => {
+    const sets = [
+      { completed: true, reps: 8, weight: 60 },
+      { completed: true, reps: 9, weight: 62 },
+      { completed: false, reps: 10, weight: 0 },
+    ];
+    assert.deepEqual(priorCompletedInExercise(sets, 2), { reps: 9, weight: 62 });
+    assert.deepEqual(priorCompletedInExercise(sets, 1), { reps: 8, weight: 60 });
+    assert.equal(priorCompletedInExercise(sets, 0), null);
+  });
+
+  it('skips incomplete earlier sets', () => {
+    const sets = [
+      { completed: false, reps: 10, weight: 50 },
+      { completed: true, reps: 8, weight: 55 },
+      { completed: false, reps: 10, weight: 0 },
+    ];
+    assert.deepEqual(priorCompletedInExercise(sets, 2), { reps: 8, weight: 55 });
   });
 });
 
