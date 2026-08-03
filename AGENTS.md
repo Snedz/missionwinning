@@ -138,3 +138,16 @@ See [INDEX.md](INDEX.md) §4. Highlights:
 - `~/.cursor/plans/*.plan.md` — session plans, not repo truth
 - Empty ghost dirs under `app/about/`, etc. — routes live in `app/(app)/`
 
+---
+
+## Cursor Cloud specific instructions
+
+Durable, non-obvious notes for agents on a VM where the update script (`npm install`) has already run. Standard commands live in §Commands above and in [CLAUDE.md](CLAUDE.md) §4 — use those; this section only records gotchas.
+
+- **Runtime:** this is the web PWA at the repo root (Next.js 16 + Turbopack). It is the only service that must run for end-to-end testing of the wedge (Train / Today / Coach / Fuel). Android (`apps/android`) and the Expo prototype (`apps/mobile`) are separate products with their own toolchains and are not needed for web work.
+- **Node 22 is required** but is not pinned by any `.nvmrc`/`engines`; the VM already runs Node 22. `nvm` is present — do not let it silently downgrade the shell to an older default.
+- **No env vars are needed to run or test the web app in dev.** `npm run dev` boots with an empty/absent `.env.local`. In dev the private gate is **off** (`isPrivateModeEnabled()` is only true in a production build with `PRIVATE_MODE` unset/true), free-beta is **on** so premium depth is unlocked, and Supabase/Stripe/Redis/LLM all degrade gracefully (localStorage "demo mode", in-memory rate limits, rule-based coach). Add Supabase URL + anon key to `.env.local` only when testing auth/cloud-sync/enrollment flows.
+- **Hello-world flow:** `/active` is the free Train logger. From a fresh state it routes through a short onboarding (Begin → Continue → "Skip — start training"), lands on a seeded workout, and you log a set by entering weight/reps and clicking **Log set**.
+- **`npm install` prints a harmless `EBADENGINE` warning** for `lighthouse` (wants Node ≥22.19; only used by the optional `npm run lighthouse-budget`). It does not affect install, dev, test, or build.
+- **E2E/gate need Chromium.** `npm run gate`, `npm run e2e:*`, and `npm run a11y` run Playwright, whose browsers are not installed by the update script (`npx playwright install chromium` first). Plain `npm run dev`/`test`/`build`/`lint`/`typecheck` need no browser.
+
