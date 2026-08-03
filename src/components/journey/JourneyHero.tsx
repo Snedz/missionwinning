@@ -10,6 +10,10 @@ import { useTranslation } from 'react-i18next';
 import type { JourneyAction } from '@/lib/missionJourney';
 import { getPhaseLabel } from '@/lib/missionJourney';
 import { useIsCompact } from '@/hooks/useIsCompact';
+import {
+  resolveJustGoHeroCopy,
+  type JustGoHeroMeta,
+} from '@/lib/justGoHeroMeta';
 
 export function JourneyStrip({ action }: { action: JourneyAction }) {
   const { t } = useTranslation();
@@ -58,8 +62,11 @@ interface JourneyHeroProps {
   action: JourneyAction;
   onPrimaryClick: () => void;
   activeWorkout?: boolean;
-  /** Forge-style Just Go meta — muscle focus under CTA (not a second button). */
-  justGoMeta?: { focusLabel: string } | null;
+  /**
+   * Primary train CTA meta. When `source` is `coach`, copy must not say
+   * "Just Go" — the tap loads today's prescribed session.
+   */
+  justGoMeta?: JustGoHeroMeta | null;
 }
 
 export function JourneyHero({
@@ -70,30 +77,35 @@ export function JourneyHero({
 }: JourneyHeroProps) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
-  const useJustGo = !activeWorkout && !!justGoMeta;
+  const useTrainCta = !activeWorkout && !!justGoMeta;
+  const heroCopy = justGoMeta ? resolveJustGoHeroCopy(justGoMeta) : null;
+
   const label = activeWorkout
     ? t('resumeWorkout', { defaultValue: 'Resume workout' })
-    : useJustGo
-      ? t('justGoCta', { defaultValue: 'Just Go' })
+    : useTrainCta && heroCopy
+      ? t(heroCopy.labelKey, { defaultValue: heroCopy.defaultLabel })
       : action.label;
 
-  const kicker = useJustGo
-    ? t('justGoEyebrow', { defaultValue: 'Ready to train' })
-    : t('yourNextStep', { defaultValue: 'Your next step' });
+  const kicker =
+    useTrainCta && heroCopy
+      ? t(heroCopy.kickerKey, { defaultValue: heroCopy.defaultKicker })
+      : t('yourNextStep', { defaultValue: 'Your next step' });
 
-  const title = useJustGo
-    ? t('justGoTitle', {
-        focus: justGoMeta!.focusLabel,
-        defaultValue: `${justGoMeta!.focusLabel} — Just Go`,
-      })
-    : label;
+  const title =
+    useTrainCta && heroCopy
+      ? t(heroCopy.titleKey, {
+          ...(heroCopy.titleParams ?? {}),
+          defaultValue: heroCopy.defaultTitle,
+        })
+      : label;
 
-  const description = useJustGo
-    ? t('justGoDesc', {
-        focus: justGoMeta!.focusLabel,
-        defaultValue: `One tap builds today’s ${justGoMeta!.focusLabel.toLowerCase()} session from how fresh you are and what you lifted last time.`,
-      })
-    : action.description;
+  const description =
+    useTrainCta && heroCopy
+      ? t(heroCopy.descKey, {
+          ...(heroCopy.descParams ?? {}),
+          defaultValue: heroCopy.defaultDesc,
+        })
+      : action.description;
 
   /*
    * Desktop keeps the form handoff 2 drew: a full block in the content flow,
@@ -121,7 +133,7 @@ export function JourneyHero({
           {label}
           <ChevronRight className="h-5 w-5" />
         </button>
-        {action.phase === 'basic' && !useJustGo && (
+        {action.phase === 'basic' && !useTrainCta && (
           <p className="poster-sub text-sm leading-relaxed">
             {t('journeyBasicFoot', {
               defaultValue:

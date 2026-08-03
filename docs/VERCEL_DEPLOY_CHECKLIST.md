@@ -78,6 +78,50 @@ the production alias by itself. Check Vercel → **Settings → Git → Producti
 if it is unset or points elsewhere, that is the root cause and fixing it makes the Actions
 workflow redundant rather than load-bearing.
 
+### 1.6 Free-tier deploy quota (100 / rolling day) — **read before thrashing**
+
+Vercel **Hobby (free)** caps **deployments** (production + preview + redeploys) at about
+**100 per rolling 24 hours** (`api-deployments-free-per-day`). When exhausted:
+
+- **Production promote fails** even if `master` is green.
+- **Preview deploys for every PR** (including Dependabot) still count against the same bucket.
+- Symptom: CLI / dashboard error containing `api-deployments-free-per-day` or “too many
+  deployments”; www can lag `master` by one or more `.N` labels.
+
+**Measured 2026-08-03:** after ships `.265`–`.277` in one day, master was `.277` while
+www stayed on `.276` until the quota recovered. Code ahead of production is a **trust bug**
+for beta testers (Profile build label ≠ repo).
+
+#### Agent / ship discipline (default)
+
+| Do | Don’t |
+|----|--------|
+| **1–2 meaningful PRs per day** that touch `src` / `app` (each merge → prod hook) | Ten chrome-only ships the same afternoon |
+| Batch small fixes into **one** concern-coherent PR | Open a Dependabot PR storm + craft PRs the same hour |
+| Prefer **promote existing deployment** when the build already exists (§1.2) | Redeploy-from-scratch just to “nudge” |
+| Docs-only / spine-only PRs when possible (no product deploy if Vercel ignores docs-only — still check) | Assume every commit is free |
+| After quota error: **stop shipping** product deploys; wait for reset or founder Pro | Retry promote in a loop |
+
+#### Founder UI levers (Vercel project)
+
+1. **Git → Ignored Build Step** (or “Skip deployments” for paths) for pure docs if available on plan.
+2. **Disable automatic preview** for Dependabot / bot branches if the project setting allows it —
+   Dependabot bumps still run CI on GitHub; they do not need a full Vercel preview each time
+   during free-tier crunch.
+3. Optional: **Pro** if craft velocity stays high for weeks — removes the ceiling; not required
+   for Horizon W if agents batch.
+
+#### Recovery checklist when www ≠ master
+
+1. Confirm error was quota (not secrets / build failure).
+2. Wait until the rolling window frees slots (often next calendar day UTC-ish).
+3. Promote the latest successful Production-ready deployment for the desired SHA (§1.2), or
+   one `vercel deploy --prod` / Deploy Hook fire — **once**.
+4. Verify Profile / health shows the expected `APP_BUILD_LABEL` (§1.3).
+
+**Kaizen note:** success is not “number of `.N` builds per day.” Prefer activation and honest
+product over paint-layer thrash that burns the deploy budget.
+
 ---
 
 ## 2. Environment variables

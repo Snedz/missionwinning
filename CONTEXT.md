@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-03 · web `2026.07-unified.277` · Android `1.24.1`)
+## Now (2026-08-03 · web `2026.07-unified.278` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -36,6 +36,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.262` moved `.242`
 > and `.263` moved `.246`–`.247`
 > and `.265` moved `.244`
+> and `.278` dropped `.263` detail (full text remains in LOG.md)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -56,6 +57,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.278`:** Just Go honesty — coach day CTA is “Start this session” / plan name, not freestyle Just Go; Vercel free 100-deploy/day discipline in checklist; invite checklist orders postal→migrations→invites; i18n **698**.
 - **`.277`:** Form guide + fuel dropzone + Today muscle/recap chrome; Dependabot zustand/stripe/radix-select/ts-eslint; CodeQL action v4.
 - **`.276`:** Landing hero demo + reentry + history/auth/HR chrome; Actions `checkout`/`setup-node`/`upload-artifact` v4→v5 (not Dependabot’s jump to v7).
 - **`.275`:** Leaderboard (picker/table/tabs/inputs) + public exercise/learn index hubs — solid 2px; fixed corrupted night/dawn header classes.
@@ -70,7 +72,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.266`:** Empty-state copy craft; adapt banner only with real beats (no bare revision theater).
 - **`.265`:** Pre-EIN craft window recorded (A5 not a build freeze); week-1 recap tone; builder compact add-exercise sheet; named loading on parked school/PFT routes.
 - **`.264`:** Gate + status bar invite-only copy parity across locales (not only EN).
-- **`.263` hero audit fixes:** Cold-start Coach no longer paints a new Sunday athlete with "Life happened — 3 sessions missed" (mid-week generate + late-week re-open). Free-beta `usePremium` snapshot is stable (no getServerSnapshot loop). Bodyweight logs read `BW` not `0 kg`. I-Day hides America/PFT goal chips while that surface is parked. GPS title drops "(Premium)" when unlocked.
 - **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.
