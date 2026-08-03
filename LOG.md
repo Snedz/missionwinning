@@ -1,3 +1,9 @@
+## 2026-08-03 — Invite-only gate copy in every locale (`.264`)
+
+`.263` fixed English private-gate and public status bar copy; non-EN packs still
+said "private beta / launching soon" (and auto language made www look unfixed).
+Eyebrows + ES/FR/PT/DE waitlist lines now match invite-only open beta.
+
 ## 2026-08-03 — Cold-start Coach stopped shaming new athletes (`.263`)
 
 Phone dogfood after I-Day on a Sunday: Mission Coach painted Mon/Wed/Fri as
@@ -1586,35 +1592,5 @@ fails differently every run trains you to discount the next failure, which is
 what nearly happened here.
 
 Tests 1229 → 1232.
-
----
-
-## 2026-08-01 — Give gitleaks the permission it needs to scan (`.248`)
-
-Actions billing cleared at **00:12 UTC** and gitleaks ran for the first time.
-It did not report a secret: it failed **before scanning anything**.
-
-    GET /repos/Snedz/missionwinning/pulls/178/commits  ->  403
-    'Resource not accessible by integration'
-    'x-accepted-github-permissions': 'pull_requests=read'
-
-`gitleaks-action@v2` lists a PR's commits to work out its scan range, and the
-workflow declared **no `permissions:` block**, so the job inherited a
-contents-only token. The secret gate could not scan a pull request at all, and
-the red it produced said nothing about whether the diff holds a secret. Now
-declares least privilege: `contents: read` + `pull-requests: read`.
-
-CONTEXT recorded that red as the known finding in `8ea3527a` — a real Solana
-treasury address in history, deliberately not allowlisted (founder call). Still
-true of `master`; **not** why the check was failing. Both causes are now stated
-separately.
-
-Also corrects the Actions status, which this file had wrong in **both**
-directions within one night: it claimed "cleared" while jobs were dying at
-`runner_id: 0`, and the correction claimed "blocked" an hour before billing came
-back. The Ops bullet no longer describes CI at all — two places describing one
-fact is `.178`, and the fix is not a better sentence but **no** sentence. The
-Status table now says to read `runner_id` before recording anything: **0 means
-it never ran; non-zero means it ran and something is genuinely wrong.**
 
 ---
