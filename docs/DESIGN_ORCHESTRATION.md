@@ -26,6 +26,9 @@ Product status lives in [CONTEXT.md](../CONTEXT.md) `## Now`. Design craft waves
 | **D6 Mobile app structure** | Horizon W (founder override 2026-07-26) | **Wedge complete** (`.150`–`.159`) — primitives → five-tab nav + More sheet → Today dock → logger console → first run → sheets/offline/errors → a11y coverage → **`.159` scoped the whole wave to compact widths**. The eleven pillar screens are specified and **held for founder review** of the wedge |
 | **D7 Daily-screen structure** | Horizon W (founder override 2026-08-02) | Reference: five screenshots of Arnold's Pump Club (iOS). **Not a restyle** — the Modernist system stands. Takes the *shape of the daily screen* and the *first-run contract*: Today orders session-before-scores, one Today shell instead of two, a resumable First Steps checklist, display-only program continuity, one segmented control, and an honest status bar on the public shells |
 | **D8 The screens with nothing on them** | Horizon W (founder override 2026-08-02) | Five more reference screenshots, all one subject: what a screen says with **no data**. Two written state rules made executable at runtime (no void; ≤1 red action) across every signed-in route, the voids they catch, and a `/history` month calendar that marks **only what happened** |
+| **D11 History Exercises** | Horizon W (founder override 2026-08-03) | Pump History → Exercises. Fourth History segment lifts Trends charts/heatmaps into a first-class tab. Modernist chrome only — no missed-day ✕, no enrolment Programs IA |
+| **D12 Coach program sheet** | Horizon W (founder override 2026-08-03) | Pump manage-program menu → one Coach overlay: Adjust today · Change schedule · Regenerate · Ask. Week-grid one-red (today only). Refuse pause/restart / week numbers |
+| **D13 Trust micro-surfaces** | Horizon W (founder override 2026-08-03) | FAQ exclusive-open polish (not landing redesign) + thin What’s New from build label. Refuse inbox / sale countdown / invented stats |
 
 ### Three handoffs = three surfaces
 
@@ -340,6 +343,43 @@ sighting.
 **Stated plainly:** VAPID unset, `PRIVATE_MODE` on, no `CRON_SECRET` — **zero
 notifications have ever been delivered**. This wave is worth doing precisely
 because the first one should not be the truncated one.
+
+### Wave D11 — History Exercises (Horizon W · founder override 2026-08-03)
+
+**Reference:** Pump Club Programs → History → Exercises list.
+
+**The visual system does not move.** Promote buried Trends (volume / 1RM /
+muscle heat) into a first-class History segment beside Calendar · Sessions ·
+Journal. Empty state follows D8 (explain + ≤1 red). No new analytics engine.
+
+**Refused:** red ✕ missed days on the month grid; enrolment-style Programs IA.
+
+### Wave D12 — Coach program sheet (Horizon W · founder override 2026-08-03)
+
+**Reference:** Pump “manage program” menu (change schedule / pause / restart)
+and Fixed vs Flexible schedule type.
+
+| Track | Work |
+|-------|------|
+| **Manage sheet** | One `AdaptiveOverlay`: Adjust today · Change schedule · Regenerate · Ask coach |
+| **Schedule** | Prefs already in `schedulePrefs` — surface days/week + preferred weekdays from Coach; remap this week via regenerate |
+| **One red** | Only today’s `PlanSessionCard` uses the filled Start; other days are outline |
+
+**Refused:** pause program, restart phase, week/phase numbers (plan overwrites
+weekly — same block as `programContinuity`), Fixed/Flexible as a second planner
+engine (preferred days + adapt already cover flexible miss recovery).
+
+### Wave D13 — Trust micro-surfaces (Horizon W · founder override 2026-08-03)
+
+**Reference:** Pump FAQ accordion polish and What’s New modal.
+
+| Track | Work |
+|-------|------|
+| **FAQ** | Exclusive-open + keyboard polish on existing Landing `<details>` — not a band redesign |
+| **What’s New** | Thin sheet keyed off `APP_BUILD_LABEL` + last-seen in safeStorage; curated athlete bullets only |
+
+**Refused:** in-app notification inbox; sale countdowns; invented stats; scraping
+`LOG.md` into the product UI.
 
 ---
 

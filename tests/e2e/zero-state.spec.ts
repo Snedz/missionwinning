@@ -111,8 +111,8 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   '/track': { cap: 3, why: 'Was 6. Activity-type chips were selections; two Log Activity buttons and Start GPS remain — class 2.' },
 
   '/coach': {
-    cap: 4,
-    why: 'Class 2: one "Start this session" per PlanSessionCard, plus Regenerate. Needs a week-grid composition pass.',
+    cap: 1,
+    why: 'D12: only today’s PlanSessionCard uses filled Start; other days outline; Regenerate lives in Manage sheet.',
   },
   '/profile': {
     cap: 4,
