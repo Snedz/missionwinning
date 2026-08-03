@@ -80,7 +80,7 @@ import { localDateKey, localDateKeyFromIso } from '@/lib/time/localDate';
 const HEATMAP_WINDOW_DAYS = 14;
 
 type RangeFilter = '7' | '30' | 'all';
-type HistoryTab = 'calendar' | 'sessions' | 'journal';
+type HistoryTab = 'calendar' | 'sessions' | 'exercises' | 'journal';
 
 /**
  * `YYYY-MM-DD` → a readable date, built from **local** fields.
@@ -308,49 +308,6 @@ export function HistoryPage() {
         </p>
       </div>
 
-      {workoutHistory.length > 0 && (
-        <TodaySection
-          title={t('historyTrendsTitle', { defaultValue: 'Trends' })}
-          description={t('historyTrendsDesc', {
-            defaultValue: 'Volume, estimated 1RM, and muscle heatmap',
-          })}
-          defaultOpen={false}
-        >
-          <div className="grid gap-4 lg:grid-cols-2 pt-3">
-            <HistoryVolumeChart data={weeklyVolume} />
-            <div className="space-y-2">
-              {exerciseIds.length > 1 && (
-                <Select value={activeChartId} onValueChange={setChartExerciseId}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue
-                      placeholder={t('historySelectExercise', { defaultValue: 'Chart exercise' })}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {exerciseIds.map((id) => {
-                      const ex = getExerciseById(id);
-                      return (
-                        <SelectItem key={id} value={id}>
-                          {ex?.name ?? id}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-              )}
-              <History1RMChart
-                data={oneRmData}
-                exerciseName={getExerciseById(activeChartId)?.name ?? activeChartId}
-              />
-            </div>
-          </div>
-          <div className="pt-3 space-y-4">
-            <AnatomyHeatMap cells={heatmapCells} />
-            <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
-          </div>
-        </TodaySection>
-      )}
-
       {workoutHistory.length === 0 ? (
         <EmptyState
           icon={Dumbbell}
@@ -365,12 +322,13 @@ export function HistoryPage() {
         />
       ) : (
         <div className="space-y-3">
-          {/* Sessions = the numbers; Journal = the words (fragments + debriefs +
-              check-in notes, device-only). */}
+          {/* D11 — Exercises is Trends promoted: volume / 1RM / heat as a first-class tab
+              (Pump History → Exercises shape, Modernist chrome). */}
           <SegmentedControl
             options={[
               { value: 'calendar' as const, label: t('historyTabCalendar', { defaultValue: 'Calendar' }) },
               { value: 'sessions' as const, label: t('historyTabSessions', { defaultValue: 'Sessions' }) },
+              { value: 'exercises' as const, label: t('historyTabExercises', { defaultValue: 'Exercises' }) },
               { value: 'journal' as const, label: t('historyTabJournal', { defaultValue: 'Journal' }) },
             ]}
             value={tab}
@@ -381,6 +339,48 @@ export function HistoryPage() {
             <HistoryCalendar history={workoutHistory} loggedKeys={loggedDayKeys} />
           ) : tab === 'journal' ? (
             <JournalTimeline />
+          ) : tab === 'exercises' ? (
+            <div className="space-y-4" data-testid="history-exercises">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {t('historyTrendsDesc', {
+                  defaultValue: 'Volume, estimated 1RM, and muscle heatmap',
+                })}
+              </p>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <HistoryVolumeChart data={weeklyVolume} />
+                <div className="space-y-2">
+                  {exerciseIds.length > 1 && (
+                    <Select value={activeChartId} onValueChange={setChartExerciseId}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue
+                          placeholder={t('historySelectExercise', {
+                            defaultValue: 'Chart exercise',
+                          })}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {exerciseIds.map((id) => {
+                          const ex = getExerciseById(id);
+                          return (
+                            <SelectItem key={id} value={id}>
+                              {ex?.name ?? id}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                  )}
+                  <History1RMChart
+                    data={oneRmData}
+                    exerciseName={getExerciseById(activeChartId)?.name ?? activeChartId}
+                  />
+                </div>
+              </div>
+              <div className="space-y-4 border-t-2 border-border pt-4">
+                <AnatomyHeatMap cells={heatmapCells} />
+                <MuscleHeatmap cells={heatmapCells} windowDays={HEATMAP_WINDOW_DAYS} />
+              </div>
+            </div>
           ) : (
           <>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -442,7 +442,7 @@ export function HistoryPage() {
             {visibleHistory.map((log) => (
               <Card
                 key={log.id}
-                className="content-card hover:border-primary/30 transition-colors cursor-pointer"
+                className="content-card hover:border-foreground transition-colors cursor-pointer"
                 onClick={() => setSelected(log)}
               >
                 <CardContent className="flex items-center justify-between gap-3 py-3 px-4">
