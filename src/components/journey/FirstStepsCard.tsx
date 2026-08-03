@@ -30,13 +30,15 @@ import { getFirstSteps, summarizeFirstSteps } from '@/lib/journey/firstSteps';
 import { useDismissed } from '@/hooks/useDismissed';
 import { FIRST_STEPS_DISMISS_KEY } from '@/lib/today/firstStepsDismissed';
 import type { JourneyState } from '@/lib/missionJourney';
+import { useWorkoutStore } from '@/store/workoutStore';
 
 export function FirstStepsCard({ state }: { state: JourneyState }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { dismissed, ready, dismiss } = useDismissed(FIRST_STEPS_DISMISS_KEY);
+  const completedSessions = useWorkoutStore((s) => s.workoutHistory.length);
 
-  const steps = getFirstSteps(state);
+  const steps = getFirstSteps(state, { completedSessions });
   const progress = summarizeFirstSteps(steps);
 
   // `ready` gates the first paint — the shell declares this block from the same

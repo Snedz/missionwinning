@@ -71,6 +71,22 @@ describe('buildJustGoHeroMeta', () => {
 });
 
 describe('resolveJustGoHeroCopy', () => {
+  it('names session 2 after exactly one completed workout', () => {
+    const freestyle = resolveJustGoHeroCopy(
+      { focusLabel: 'Back', source: 'focus' },
+      { completedSessions: 1 }
+    );
+    assert.equal(freestyle.labelKey, 'week1SecondSessionCta');
+    assert.match(freestyle.defaultLabel, /session 2/i);
+
+    const coach = resolveJustGoHeroCopy(
+      { focusLabel: 'Chest', source: 'coach', sessionName: 'Upper A' },
+      { completedSessions: 1 }
+    );
+    assert.equal(coach.labelKey, 'week1SecondSessionCta');
+    assert.equal(coach.titleParams?.name, 'Upper A');
+  });
+
   it('does not say Just Go when source is coach', () => {
     const copy = resolveJustGoHeroCopy({
       focusLabel: 'Chest',

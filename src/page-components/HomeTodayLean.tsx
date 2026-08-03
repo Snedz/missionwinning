@@ -362,6 +362,7 @@ export function HomeTodayLean() {
           onPrimaryClick={handleJourneyPrimary}
           activeWorkout={hasActiveWorkout}
           justGoMeta={justGoMeta}
+          completedSessions={workoutHistory.length}
         />
       </ScreenDock>
     </>

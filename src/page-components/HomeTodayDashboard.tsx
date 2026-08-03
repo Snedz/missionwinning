@@ -776,6 +776,7 @@ export function HomeTodayDashboard() {
           onPrimaryClick={handleJourneyPrimary}
           activeWorkout={!!activeWorkout}
           justGoMeta={justGoMeta}
+          completedSessions={workoutHistory.length}
         />
       </ScreenDock>
     </>

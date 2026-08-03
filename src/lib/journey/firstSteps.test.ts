@@ -37,7 +37,7 @@ function stateWith(basic: Partial<JourneyState['basic']>, parq = false): Journey
 
 test('the first workout alone still completes Basic, with the checklist barely started', () => {
   const s = stateWith({ workout: true });
-  const progress = summarizeFirstSteps(getFirstSteps(s));
+  const progress = summarizeFirstSteps(getFirstSteps(s, { completedSessions: 1 }));
 
   assert.equal(
     allBasicDone(s.basic),
@@ -47,6 +47,11 @@ test('the first workout alone still completes Basic, with the checklist barely s
   assert.ok(
     progress.done < progress.total,
     'and the checklist should still show work remaining, or it is not a checklist'
+  );
+  assert.equal(
+    progress.next?.key,
+    'session2',
+    'after the first log, next is session 2 — not Fuel pillar tourism (.291)'
   );
 });
 
@@ -61,15 +66,23 @@ test('every step maps to a milestone the app already detects', () => {
   // Discovering, not enumerating: each step's `done` must actually respond to
   // the state it claims to read. A step wired to nothing would sit unchecked
   // forever and the athlete would never learn why.
+  // session2 only mounts after first workout — compare by key, not index.
   const all = getFirstSteps(
-    stateWith({ workout: true, fuel: true, move: true, mind: true, learn: true }, true)
+    stateWith({ workout: true, fuel: true, move: true, mind: true, learn: true }, true),
+    { completedSessions: 2 }
   );
   const none = getFirstSteps(stateWith({}, false));
+  const byKey = (steps: ReturnType<typeof getFirstSteps>, key: string) =>
+    steps.find((s) => s.key === key);
 
-  for (let i = 0; i < all.length; i++) {
-    assert.equal(all[i]!.done, true, `step '${all[i]!.key}' never reads as done`);
-    assert.equal(none[i]!.done, false, `step '${none[i]!.key}' is done even with nothing logged`);
+  for (const step of all) {
+    assert.equal(step.done, true, `step '${step.key}' never reads as done`);
   }
+  for (const step of none) {
+    assert.equal(step.done, false, `step '${step.key}' is done even with nothing logged`);
+  }
+  assert.ok(byKey(all, 'session2')?.done, 'session2 complete at 2 sessions');
+  assert.equal(byKey(none, 'session2'), undefined, 'session2 absent before first workout');
   assert.equal(summarizeFirstSteps(all).complete, true);
 });
 

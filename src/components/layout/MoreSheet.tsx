@@ -41,6 +41,7 @@ import { getFirstSteps, summarizeFirstSteps } from '@/lib/journey/firstSteps';
 import { syncJourneyPhase } from '@/lib/missionJourney';
 import { APP_BUILD_LABEL } from '@/lib/buildInfo';
 import { isWhatsNewUnseen } from '@/lib/whatsNew';
+import { useWorkoutStore } from '@/store/workoutStore';
 
 /** Quiet links below the groups — reachable, but not screens the rail counts. */
 const QUIET_LINKS: { href: string; labelKey: string; label: string }[] = [
@@ -137,15 +138,16 @@ export function MoreSheet({ open, onClose }: { open: boolean; onClose: () => voi
    * open-gated timing as `useMoreFigures` — off-screen work for a sheet nobody
    * opened is the `.210` shape.
    */
+  const completedSessions = useWorkoutStore((s) => s.workoutHistory.length);
   const [firstSteps, setFirstSteps] = useState<ReturnType<typeof getFirstSteps>>([]);
   useEffect(() => {
     if (!open) return;
     try {
-      setFirstSteps(getFirstSteps(syncJourneyPhase()));
+      setFirstSteps(getFirstSteps(syncJourneyPhase(), { completedSessions }));
     } catch {
       setFirstSteps([]);
     }
-  }, [open]);
+  }, [open, completedSessions]);
   const [stepsOpen, setStepsOpen] = useState(false);
   const [whatsNewOpen, setWhatsNewOpen] = useState(false);
   const [whatsNewUnseen, setWhatsNewUnseen] = useState(false);

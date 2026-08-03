@@ -17,11 +17,13 @@
  * checklist that invents its own progress is a second source of truth for how
  * far along someone is (`.178`).
  *
- * Order is by what actually helps first, not by pillar hierarchy: log something,
- * then eat for it, then the screen that decides how hard the app may push you.
+ * Order is by what actually helps first, not by pillar hierarchy: first log,
+ * **second log (week-1 habit)**, then optional pillars, then the health screen.
+ * `.291` inserted session 2 so Fuel is no longer the default next after one set.
  */
 
 import type { JourneyState } from '@/lib/missionJourney';
+import { week1SecondSessionDone } from '@/lib/activation/week1SecondSession';
 
 export interface FirstStep {
   key: string;
@@ -38,9 +40,25 @@ export interface FirstStep {
   whyKey: string;
 }
 
-export function getFirstSteps(state: JourneyState): FirstStep[] {
+export type GetFirstStepsOpts = {
+  /**
+   * `workoutHistory.length`. Required for the week-1 second-session step (`.291`).
+   * When omitted after a first workout, the step still appears and stays open
+   * until a caller passes a real count ≥ 2.
+   */
+  completedSessions?: number;
+};
+
+export function getFirstSteps(state: JourneyState, opts?: GetFirstStepsOpts): FirstStep[] {
   const b = state.basic;
-  return [
+  const sessions =
+    typeof opts?.completedSessions === 'number'
+      ? opts.completedSessions
+      : b.workout
+        ? 1
+        : 0;
+
+  const steps: FirstStep[] = [
     {
       key: 'workout',
       done: b.workout,
@@ -50,6 +68,23 @@ export function getFirstSteps(state: JourneyState): FirstStep[] {
       whyKey: 'firstStepWorkoutWhy',
       why: 'One logged set is all Mission Coach needs to start building your week.',
     },
+  ];
+
+  // Week-1 activation: second train before Fuel/Mind tourism (Horizon W).
+  // Only after the first log exists — otherwise the card still leads with workout.
+  if (b.workout) {
+    steps.push({
+      key: 'session2',
+      done: week1SecondSessionDone(sessions),
+      href: '/active',
+      titleKey: 'firstStepSession2Title',
+      title: 'Log a second session',
+      whyKey: 'firstStepSession2Why',
+      why: 'Two sessions in week one locks the habit. Coach builds from the logs — not every pillar at once.',
+    });
+  }
+
+  steps.push(
     {
       key: 'fuel',
       done: b.fuel,
@@ -94,8 +129,10 @@ export function getFirstSteps(state: JourneyState): FirstStep[] {
       title: 'Complete the health screen',
       whyKey: 'firstStepParqWhy',
       why: 'A short safety questionnaire. It is the one step the app does ask for before pushing harder.',
-    },
-  ];
+    }
+  );
+
+  return steps;
 }
 
 export interface FirstStepsProgress {
