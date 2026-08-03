@@ -112,7 +112,7 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
         })}
 
         {relatedExercises.length > 0 && (
-          <section className="space-y-3 rounded-2xl border border-border/50 bg-muted/15 p-5">
+          <section className="space-y-3 border-2 border-border bg-card p-5">
             <h3 className="text-base font-semibold">
               {t('guidePublicPracticeExercises', {
                 defaultValue: 'Practice these free exercises',
@@ -123,7 +123,7 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
                 <Link
                   key={ex.id}
                   href={`/exercises/${ex.id}`}
-                  className="border border-border/60 px-3 py-1.5 text-sm hover:border-primary/40 hover:bg-primary/10"
+                  className="border-2 border-border bg-background px-3 py-1.5 text-sm hover:border-primary hover:bg-tint"
                 >
                   {ex.name}
                 </Link>
@@ -137,7 +137,7 @@ export function GuidePublicChapterPage({ chapter: chapterProp, prev, next, jsonL
           </section>
         )}
 
-        <div className="flex justify-between gap-4 border-t border-border/60 pt-8">
+        <div className="flex justify-between gap-4 border-t-2 border-border pt-8">
           {prevLocalized ? (
             <Link
               href={`/guide/${prevLocalized.id}`}

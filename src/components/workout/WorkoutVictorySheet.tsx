@@ -48,7 +48,7 @@ type Props = {
   workoutId?: string;
 };
 
-/** D2 Victory ritual — lock scale + brass volume + one next action. */
+/** D2 Victory ritual — lock scale + volume + one next action (paper/ink). */
 export function WorkoutVictorySheet({
   open,
   summary,
@@ -149,7 +149,7 @@ export function WorkoutVictorySheet({
           dvh, not vh, so mobile browser chrome does not eat the footer. */}
       <DialogContent className="victory-lock sm:max-w-md md:max-w-lg xl:max-w-xl border-2 border-border bg-card max-h-[90dvh] overflow-y-auto">
         <DialogHeader className="text-center space-y-3 victory-reveal">
-          <div className="mx-auto relative h-16 w-16 overflow-hidden rounded-2xl border border-border/50 bg-muted/30">
+          <div className="mx-auto relative h-16 w-16 overflow-hidden border-2 border-border bg-card">
             <Image
               src="/brand/mascot/scout-celebrate.webp"
               alt=""
@@ -170,7 +170,7 @@ export function WorkoutVictorySheet({
         </DialogHeader>
 
         <div className="grid grid-cols-2 gap-3 py-2">
-          <div className="rounded-xl border border-border/50 bg-muted/15 p-3 text-center">
+          <div className="border-2 border-border bg-background p-3 text-center">
             <p className="text-xs font-medium text-muted-foreground">
               {t('victoryVolume', { defaultValue: 'Volume' })}
             </p>
@@ -179,7 +179,7 @@ export function WorkoutVictorySheet({
             </p>
             <p className="text-xs text-muted-foreground">{unitLabel}</p>
           </div>
-          <div className="rounded-xl border border-border/50 bg-muted/15 p-3 text-center">
+          <div className="border-2 border-border bg-background p-3 text-center">
             <p className="text-xs font-medium text-muted-foreground">
               {t('victorySets', { defaultValue: 'Sets' })}
             </p>
@@ -190,7 +190,12 @@ export function WorkoutVictorySheet({
           </div>
         </div>
 
-        <div className="rounded-xl border border-border/40 bg-muted/15 px-3 py-3 space-y-2">
+        {/*
+          Feel scale: one 2px-ruled strip, five full-height cells — same treatment
+          as session check-in (`.155`). Soft `bg-muted` on `bg-card` was invisible
+          at rest; selected/hover uses primary fill only.
+        */}
+        <div className="border-2 border-border bg-background px-3 py-3 space-y-2">
           <p className="text-center text-xs text-muted-foreground">
             {feelSaved
               ? t('victoryFeelSaved', { defaultValue: 'Logged — feeds readiness on Today.' })
@@ -201,18 +206,20 @@ export function WorkoutVictorySheet({
           {!feelSaved && (
             <>
               <div
-                className="flex gap-1"
+                className="flex border-2 border-border"
                 role="group"
                 aria-label={t('victoryFeelPrompt', {
                   defaultValue: 'How do you feel after this session?',
                 })}
               >
-                {[1, 2, 3, 4, 5].map((n) => (
+                {[1, 2, 3, 4, 5].map((n, i) => (
                   <button
                     key={n}
                     type="button"
                     onClick={() => saveFeel(n)}
-                    className="flex-1 min-h-[44px] tap-target rounded-md text-sm font-medium bg-muted text-muted-foreground hover:bg-primary-fill hover:text-primary-foreground transition-colors"
+                    className={`flex-1 min-h-[52px] tap-target text-sm font-semibold text-foreground bg-card hover:bg-primary-fill hover:text-primary-foreground transition-colors ${
+                      i > 0 ? 'border-s-2 border-border' : ''
+                    }`}
                   >
                     {n}
                   </button>
@@ -227,7 +234,7 @@ export function WorkoutVictorySheet({
         </div>
 
         {summary.bodyDelta && (
-          <div className="flex flex-wrap items-center justify-center gap-2 rounded-xl border border-border/40 bg-muted/15 px-3 py-2 text-xs tabular-nums">
+          <div className="flex flex-wrap items-center justify-center gap-2 border-2 border-border bg-background px-3 py-2 text-xs tabular-nums">
             <span className="text-muted-foreground me-1">
               {t('victoryBodyDeltaLabel', { defaultValue: 'What changed' })}
             </span>
@@ -245,7 +252,7 @@ export function WorkoutVictorySheet({
               })}
             </span>
             <span className="text-muted-foreground">·</span>
-            <span className="text-status-danger/90">
+            <span className="text-status-danger">
               {t('victoryStrainDelta', {
                 delta:
                   summary.bodyDelta.strain > 0
@@ -259,7 +266,7 @@ export function WorkoutVictorySheet({
               })}
             </span>
             <span className="text-muted-foreground">·</span>
-            <span className="text-primary/90">
+            <span className="text-primary">
               {t('victoryRecoveryDelta', {
                 delta:
                   summary.bodyDelta.recovery > 0
@@ -293,8 +300,8 @@ export function WorkoutVictorySheet({
         )}
 
         {summary.nextAction && (
-          <div className="rounded-xl border border-border/50 bg-muted/15 p-3 space-y-2 text-center">
-            <p className="text-xs font-medium text-muted-foreground">
+          <div className="border-2 border-primary bg-tint p-3 space-y-2 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-primary">
               {t('victoryNextLabel', { defaultValue: 'Next' })}
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed">
