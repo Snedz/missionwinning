@@ -9,6 +9,7 @@ import { ChevronLeft, Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { FitnessTestRunner } from '@/components/fitness-test/FitnessTestRunner';
 import { PillarPageShell } from '@/components/layout/PillarPageShell';
+import { SkeletonBlock } from '@/components/ui/Skeleton';
 import { isAmericaTrackEnabled } from '@/lib/americaConfig';
 import { Suspense } from 'react';
 
@@ -45,7 +46,14 @@ function FitnessTestInner() {
 
 export function FitnessTestPage() {
   return (
-    <Suspense fallback={<div className="p-6 text-muted-foreground">Loading…</div>}>
+    <Suspense
+      fallback={
+        <div className="p-6">
+          <SkeletonBlock className="h-8 w-48 mb-3" label="Loading fitness test" />
+          <SkeletonBlock className="h-24 w-full" label="Loading fitness test" />
+        </div>
+      }
+    >
       <FitnessTestInner />
     </Suspense>
   );

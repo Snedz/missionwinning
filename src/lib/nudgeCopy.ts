@@ -164,7 +164,7 @@ export function decideNudge(input: NudgeInput): NudgeCandidate | null {
         `Sessions: ${input.workoutCount14d}`,
         `Volume moved: ${volumeMoved(input.totalVolume14d)}`,
         '',
-        'Most people quit in the first week. You didn’t. This is where the habit locks in.',
+        'The first week is the hard one. You showed up — keep the same simple next session.',
         '',
         `Keep going: ${link}`,
         footer,
@@ -178,10 +178,13 @@ export function decideNudge(input: NudgeInput): NudgeCandidate | null {
        * reach here: that one is sent from a row holding no behaviour data by
        * design, while this path already has the counts in hand because it is
        * composing an email out of them.
+       *
+       * Copy avoids peer-shame framing ("most people quit") — same tone contract
+       * as `reentry.ts` / comeback: honor what they did, one next step.
        */
       push: {
         title: `Week one: ${sessionCount(input.workoutCount14d)} logged`,
-        body: `${volumeMoved(input.totalVolume14d)} moved. Most people quit in the first week — you didn’t.`,
+        body: `${volumeMoved(input.totalVolume14d)} moved. Same simple next session — keep going.`,
         tag: 'mw-week1-recap',
       },
     };

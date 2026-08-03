@@ -1,3 +1,11 @@
+## 2026-08-03 — Pre-EIN craft window opens (`.265`)
+
+Founder waived the A5 *feature freeze* for the EIN wait (public-flip gates
+remain). ORCHESTRATION + CONTEXT state the override. Week-1 recap push/email
+drops peer-shame ("most people quit"). Builder arrange uses AdaptiveOverlay
+for add-exercise on compact widths. Named loading labels on fitness-test /
+teacher routes instead of bare "Loading…".
+
 ## 2026-08-03 — Invite-only gate copy in every locale (`.264`)
 
 `.263` fixed English private-gate and public status bar copy; non-EN packs still
@@ -1539,58 +1547,5 @@ renders English in all fifteen languages. Added to `trackLocales` and
 above it.
 
 Tests 1232 → 1236 (1235 under CI env before this entry's additions).
-
----
-
-## 2026-08-01 — The gate CI could not pass (`.249`)
-
-Actions billing cleared at **00:12 UTC** and the PR gate ran for the first time
-in this programme. It found two things nobody could have seen while every job
-was dying at `runner_id: 0` — and one of them had been latent since `.198`.
-
-### The local gate and CI built different apps
-
-`Today shows one red action at 19:00` failed on CI — on the retry too, so not
-flaky — while passing locally. 51 passed, 1 failed.
-
-`.198` found that `isPushSupported()` returns false without a VAPID public key,
-so every component behind it rendered **nothing** in every e2e run this repo had
-ever done, and the guards over those surfaces passed vacuously. Its fix was a
-placeholder key in `BUILD_ENV`.
-
-That went into [`gate.mjs`](scripts/gate.mjs) and **not** into
-[`ci.yml`](.github/workflows/ci.yml). One fact, two homes, drifted
-immediately (`.178`) — and invisible for as long as CI could not run.
-
-**Proved, not assumed.** Rebuilt locally with the key removed: the test fails,
-reproducing CI exactly. Rebuilt with it: passes. Causation, not correlation.
-
-This is `.209`'s lesson pointed the other way. There, the gate measured a
-configuration production does not serve. Here **CI measured a configuration the
-local gate does not serve** — and the local gate is what every agent runs before
-pushing, so a green local gate meant nothing about CI.
-
-[`gateEnvParity.test.ts`](src/lib/gateEnvParity.test.ts) now compares the two
-lists: every variable the local gate sets must be set in CI, **to the same
-value**, because a placeholder that differs between lanes is the same defect
-with extra steps. Both mutants — deleting the CI entry, and changing its value —
-turn it red.
-
-**The guard's own parser was wrong first.** One regex read both
-`NAME: 'x',` and `NAME:\n  process.env.NAME || 'x',`, and its cross-line branch
-let `PRIVATE_MODE: 'false',` reach past its own line to the *next* variable's
-literal — reporting a disagreement that did not exist. Split into bounded
-segments per declaration. `.212`'s rule holds for the tools as much as the code.
-
-### What CI settled about the flakiness
-
-Three local gate runs had failed on three *different* timing-sensitive tests,
-each passing standalone, and `.244` recorded that as container flakiness. **CI
-passed all three.** So that attribution was right — and it was also hiding a
-fourth failure that was entirely real and entirely deterministic. A suite that
-fails differently every run trains you to discount the next failure, which is
-what nearly happened here.
-
-Tests 1229 → 1232.
 
 ---

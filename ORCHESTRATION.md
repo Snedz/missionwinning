@@ -14,6 +14,18 @@ Do not use old chat plans as source of truth — prefer this file + PLAN + LOG.
 
 **Status lives in exactly one place: [CONTEXT.md](CONTEXT.md) `## Now`.** Update it there on every ship (same commit as the LOG entry) — do not restate status here. Founder launch detail: [docs/LAUNCH_RUNBOOK.md](docs/LAUNCH_RUNBOOK.md).
 
+### Founder override — pre-EIN craft window (2026-08-03)
+
+**≥10 beta users is no longer a build freeze.** REDTEAM A5 remains a *launch/public-flip* signal, not a ban on product work. EIN/payments may take weeks — use the window for **excellence craft, habit loop, return channel, and launch prep**.
+
+| Still required | Still forbidden |
+|----------------|-----------------|
+| Horizon W excellence (phone path, no AI slop) | Gate free logger |
+| Free-first mute pay until EIN | Agents invent traction or flip `PRIVATE_MODE` |
+| One concern per PR; ship protocol | America marketing without legal; wearables as score; iOS before Android Accept B |
+
+Agents may ship beyond “hero bugs only” for this window. Prefer delete/refine over new pillars.
+
 ---
 
 ## Principles
@@ -187,7 +199,7 @@ Unlock **only after** week-4 retention holds.
 | America/MAHA marketing | Legal + school channel |
 | Paid ads | Organic funnel known |
 | Greenfield rewrite | Never as default |
-| Features while beta gates red | Only hero bugs / launch unblock |
+| Features while beta gates red | **Waived 2026-08-03 (pre-EIN craft window)** — excellence still required; public flip still needs founder readiness |
 
 ---
 

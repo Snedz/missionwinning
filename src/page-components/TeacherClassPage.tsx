@@ -252,7 +252,9 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
         </div>
 
         {loading ? (
-          <p className="text-muted-foreground text-sm">{t('teacherLoading', { defaultValue: 'Loading…' })}</p>
+          <p className="text-muted-foreground text-sm" role="status" aria-busy="true">
+            {t('teacherLoading', { defaultValue: 'Loading class…' })}
+          </p>
         ) : (
           <>
             <div className="grid gap-4 sm:grid-cols-3">
@@ -384,7 +386,13 @@ function TeacherClassInner({ code: rawCode }: { code: string }) {
 
 export function TeacherClassPage({ code }: { code: string }) {
   return (
-    <Suspense fallback={<div className="p-6 text-muted-foreground">Loading…</div>}>
+    <Suspense
+      fallback={
+        <div className="p-6 text-muted-foreground" role="status" aria-busy="true">
+          Loading class…
+        </div>
+      }
+    >
       <TeacherClassInner code={code} />
     </Suspense>
   );
