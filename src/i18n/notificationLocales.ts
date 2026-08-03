@@ -61,6 +61,34 @@ const NOTIFICATION_EN: Record<string, string> = {
   remindersUpdateFailedDesc: 'Try again in a moment.',
   remindersPushFailed: 'Could not enable device notifications',
   remindersDayReviewFailed: 'Could not save the evening review time',
+
+  /** Kaizen Loop 5 O2 — Profile backup / account leftovers (.312) */
+  backupReading: 'Reading backup…',
+  backupRestoring: 'Restoring…',
+  importFailed: 'Restore failed',
+  importDone: 'Backup restored',
+  importDoneDesc: '{{workouts}} workouts merged, {{keys}} settings restored. Reloading…',
+  dataBackup: 'Back up your data',
+  exportData: 'Download backup (JSON)',
+  importData: 'Restore from backup',
+  backupDropIdle: 'Drop backup JSON or click to browse',
+  backupDropActive: 'Drop to restore',
+  backupNeedJson: 'Use a Mission Winning backup JSON file.',
+  dataBackupFoot:
+    'The backup includes workouts, saved routines, nutrition, and journey progress from this device. Restoring merges — nothing on this device is deleted.',
+  account: 'Account',
+  signedInAs: 'Signed in as',
+  profileFreeBetaFoot: 'Open beta — full tools free while we grow with you. Logger stays free forever.',
+  premiumStatusFoot: 'Super Bundle unlocks Coach depth. The free logger is never gated.',
+  retake: 'Retake Assessment',
+  takeAssessment: 'Take the free Readiness Assessment',
+  profileSetupHint: 'Answer a few questions so sessions match your gear (~2 minutes).',
+  changeLanguage: 'Change language',
+  units: 'Units',
+  metric: 'Metric (kg, cm)',
+  imperial: 'Imperial (lbs, in)',
+  trainingGoals: 'Training Goals',
+  saveGoals: 'Save Goals',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({

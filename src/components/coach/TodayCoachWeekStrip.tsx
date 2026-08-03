@@ -15,7 +15,7 @@ export function TodayCoachWeekStrip() {
   if (loading) return null;
 
   return (
-    <Card className="content-card border-border/60">
+    <Card className="content-card border-2 border-border">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center justify-between gap-2">
           <span className="flex items-center gap-2">
