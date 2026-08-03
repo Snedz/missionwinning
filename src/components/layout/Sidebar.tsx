@@ -31,7 +31,7 @@ export function Sidebar() {
   const groups = useMemo(() => railGroupsForNav(), []);
 
   return (
-    <aside className="hidden md:flex h-full w-[72px] lg:w-[210px] shrink-0 flex-col border-e-2 border-border bg-card/30">
+    <aside className="hidden md:flex h-full w-[72px] lg:w-[210px] shrink-0 flex-col border-e-2 border-border bg-card">
       <nav className="flex-1 overflow-y-auto p-2 lg:p-3">
         {groups.map((group, groupIndex) => (
           <div

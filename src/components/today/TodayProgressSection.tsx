@@ -136,7 +136,7 @@ export function TodayProgressSection({
               const groupLabel = muscleGroupLabel(g, t);
               const matchingEx = EXERCISES.filter(e => e.muscleGroups.includes(g)).slice(0, 2);
               return (
-                <div key={g} className={`p-3 rounded border ${isPrime ?'border-primary/40 bg-primary/10' : 'border-border/60'}`}>
+                <div key={g} className={`p-3 border-2 ${isPrime ? 'border-primary bg-tint' : 'border-border bg-card'}`}>
                   <div className="font-medium">{groupLabel}</div>
                   <div className={isPrime ? "text-primary" : "text-muted-foreground"}>
                     {r.days === 99

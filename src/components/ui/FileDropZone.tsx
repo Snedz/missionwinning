@@ -99,23 +99,16 @@ export function FileDropZone({
       onDragOver={onDragOver}
       onDrop={onDrop}
       className={cn(
-        'w-full rounded-xl border-2 border-dashed transition-all duration-200 outline-none',
-        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        'w-full border-2 border-dashed transition-colors duration-200 outline-none',
+        'focus-visible:border-foreground',
         /*
-         * `.221` — the active state was a 28px red glow plus `scale-[1.01]`:
-         * `shadow-[0_0_0_1px_…,0_0_28px_-4px_hsl(var(--primary)/0.45)]`. That is
-         * the pre-rebrand glow idiom recoloured, and `.131` retired glows
-         * outright ("glows/gradients/shadows retired"); `.136`'s ship note even
-         * claims blur and shadow reached zero. It survived because nothing
-         * checks components — see `scripts/check-design-system.mjs`.
-         *
-         * Drag-over now reads the way every other active surface in the app
-         * does: the accent border thickens to the poster red over the same
-         * tinted fill. No elevation, no transform.
+         * `.221` — the active state was a 28px red glow plus `scale-[1.01]`.
+         * Drag-over reads like every other active surface: poster border + tint.
+         * Idle is solid dashed ink on paper — no soft muted fills.
          */
         active
-          ? 'border-[hsl(var(--accent-poster))] bg-primary/10'
-          : 'border-border/70 bg-muted/20 hover:border-primary/40 hover:bg-muted/35',
+          ? 'border-primary bg-tint'
+          : 'border-border bg-card hover:border-primary hover:bg-tint',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         !disabled && 'cursor-pointer',
         className

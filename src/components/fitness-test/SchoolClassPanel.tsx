@@ -146,7 +146,7 @@ export function SchoolClassPanel() {
       </CardHeader>
       <CardContent className="space-y-4">
         {joined ? (
-          <div className="rounded-xl border border-border bg-card px-4 py-3 space-y-2">
+          <div className="border-2 border-border bg-card px-4 py-3 space-y-2">
             <p className="font-medium">
               {t('schoolJoined', { defaultValue: 'Joined class' })}:{' '}
               <span className="font-mono text-muted-foreground">{joined}</span>
@@ -185,7 +185,7 @@ export function SchoolClassPanel() {
           </div>
         )}
 
-        <div className="border-t border-border/50 pt-4 space-y-2">
+        <div className="border-t-2 border-border pt-4 space-y-2">
           <p className="text-sm font-medium">{t('schoolCreateTitle', { defaultValue: 'Create a class' })}</p>
           <input
             value={className}
