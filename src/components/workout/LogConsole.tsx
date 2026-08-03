@@ -20,12 +20,15 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { SetKind } from '@/types';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
+import { shouldOfferUseNext } from '@/lib/workout/loggerSpeed';
 
 /** Progressive-overload strip under the exercise name (last · next · why). */
 export type LogConsoleOverloadCue = {
   lastLine?: string | null;
   nextLine?: string | null;
   reasonLine?: string | null;
+  /** Numeric next target for one-tap fill (gym speed). */
+  nextTarget?: { reps: number; weight: number } | null;
 };
 
 type Props = {
@@ -48,6 +51,8 @@ type Props = {
   onWeightChange: (weight: number) => void;
   onKindChange: (kind: SetKind) => void;
   onLog: () => void;
+  /** Fill console from progressive-overload / coach next target. */
+  onUseNext?: (target: { reps: number; weight: number }) => void;
 };
 
 /** 48 × 52px, 2px light rule — the ink ground needs a lighter border than paper. */
@@ -63,6 +68,7 @@ function Field({
   increaseLabel,
   inputLabel,
   onInput,
+  onSubmit,
   inputMode,
 }: {
   label: string;
@@ -73,6 +79,8 @@ function Field({
   increaseLabel: string;
   inputLabel: string;
   onInput: (raw: string) => void;
+  /** Enter / Go on the soft keyboard logs the set (gym speed). */
+  onSubmit?: () => void;
   inputMode: 'numeric' | 'decimal';
 }) {
   return (
@@ -87,10 +95,17 @@ function Field({
         <input
           type="text"
           inputMode={inputMode}
+          enterKeyHint="done"
           value={value}
           aria-label={inputLabel}
           onFocus={(e) => e.target.select()}
           onChange={(e) => onInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && onSubmit) {
+              e.preventDefault();
+              onSubmit();
+            }
+          }}
           className="h-[52px] min-w-0 flex-1 bg-foreground text-center text-[26px] font-extrabold tabular-nums text-neutral-100"
         />
         <button type="button" className={stepper} aria-label={increaseLabel} onClick={onIncrease}>
@@ -116,13 +131,17 @@ export function LogConsole({
   onWeightChange,
   onKindChange,
   onLog,
+  onUseNext,
 }: Props) {
   const { t } = useTranslation();
   const lastLine = overloadCue?.lastLine ?? null;
   const nextLine = overloadCue?.nextLine ?? null;
   const reasonLine = overloadCue?.reasonLine ?? null;
+  const nextTarget = overloadCue?.nextTarget ?? null;
   const hasStructured = !!(lastLine || nextLine || reasonLine);
   const legacyLine = !hasStructured ? targetLine : null;
+  const offerUseNext =
+    !!onUseNext && shouldOfferUseNext(reps, weight, nextTarget ?? undefined);
 
   return (
     <div className="border-t-2 border-neutral-900 bg-neutral-900 px-4 pb-4 pt-3.5 text-neutral-100">
@@ -165,6 +184,19 @@ export function LogConsole({
         <p className="mt-1 truncate text-xs tabular-nums text-neutral-400">{legacyLine}</p>
       ) : null}
 
+      {offerUseNext && nextTarget ? (
+        <button
+          type="button"
+          onClick={() => onUseNext!(nextTarget)}
+          className="mt-2 min-h-[44px] w-full border-2 border-accent-400 px-3 text-start text-sm font-semibold text-accent-400 tap-target"
+          data-testid="log-console-use-next"
+        >
+          {t('activeUseNextTarget', {
+            defaultValue: 'Use next target',
+          })}
+        </button>
+      ) : null}
+
       {/* Set kind moved here from the row's "More" expander: this is where the
           set is being defined, and it was one of three controls in the app
           labelled "More" meaning three different things. */}
@@ -199,6 +231,7 @@ export function LogConsole({
           increaseLabel={t('activeIncreaseReps', { defaultValue: 'Increase reps' })}
           onDecrease={() => onRepsChange(Math.max(1, reps - 1))}
           onIncrease={() => onRepsChange(reps + 1)}
+          onSubmit={onLog}
           onInput={(raw) => {
             const parsed = parseInt(raw.replace(/\D/g, ''), 10);
             onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
@@ -236,6 +269,7 @@ export function LogConsole({
             })}
             onDecrease={() => onWeightChange(Math.max(0, weight - weightStep))}
             onIncrease={() => onWeightChange(weight + weightStep)}
+            onSubmit={onLog}
             onInput={(raw) => {
               const cleaned = raw.replace(',', '.').replace(/[^0-9.]/g, '');
               const parsed = parseFloat(cleaned);

@@ -72,6 +72,8 @@ type ActiveWorkoutStrings = {
   activeOverloadHold: string;
   activeOverloadFromLast: string;
   activeOverloadPrescribed: string;
+  /** One-tap fill console from progressive-overload / coach next (.288). */
+  activeUseNextTarget: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -142,6 +144,7 @@ const en: ActiveWorkoutStrings = {
   activeOverloadHold: 'Hold',
   activeOverloadFromLast: 'From last time',
   activeOverloadPrescribed: 'Coach plan',
+  activeUseNextTarget: 'Use next target',
 };
 
 const es: ActiveWorkoutStrings = {
@@ -155,6 +158,7 @@ const es: ActiveWorkoutStrings = {
   activeOverloadHold: 'Mantén',
   activeOverloadFromLast: 'De la última vez',
   activeOverloadPrescribed: 'Plan del coach',
+  activeUseNextTarget: 'Usar el siguiente objetivo',
   activeElapsed: 'Transcurrido',
   activeSetsLabel: 'Series',
   activeNoWorkout: 'Sin entrenamiento activo',
@@ -203,6 +207,7 @@ const fr: ActiveWorkoutStrings = {
   activeOverloadHold: 'Maintiens',
   activeOverloadFromLast: 'De la dernière fois',
   activeOverloadPrescribed: 'Plan coach',
+  activeUseNextTarget: 'Utiliser la cible suivante',
   activeElapsed: 'Écoulé',
   activeSetsLabel: 'Séries',
   activeNoWorkout: 'Aucun entraînement actif',
@@ -415,6 +420,7 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeOverloadHold: 'Manter',
     activeOverloadFromLast: 'Da última vez',
     activeOverloadPrescribed: 'Plano do coach',
+    activeUseNextTarget: 'Usar próximo alvo',
   },
   it: {
     ...en,
