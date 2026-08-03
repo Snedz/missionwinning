@@ -72,3 +72,40 @@ PR: #234
 **Verified:** unit helpers; `i18n:coverage` @566; zero-state `/track`+`/mind`; Victory a11y axe.
 **Aikido:** `aikido_full_scan` failed again — `Cannot autolaunch D-Bus without X11 $DISPLAY`. Noted; continue.
 **Next:** Pump screenshot batch → D14; founder phone excellence; visual baseline bootstrap.
+
+## Loop 3 waves
+
+| Wave | Status | Notes |
+|------|--------|-------|
+| M1 Coach/History i18n | done (`.301`) | Adjust/chat/today + History + Active set/jot; cap **566→515** |
+| M2 Debrief reply ids | done (`.302`) | Stable `harder`/`exact`/`easy` + SessionDebriefCard i18n |
+| M3 resolveActiveSetDial | done (`.303`) | Freestyle carry + suggestion + prescription; wiring guard |
+| M4 Soft chrome + Fuel search | done (`.304`) | Coach/Active solid chrome; search/describe/estimate pack; **515→489** |
+| M5 Move zero-state + a11y | done (`.305`) | `/move` **1→0**; Move+assess i18n; TimedFlowRunner seeded axe; **489→473** |
+
+## Metrics
+
+| Metric | Loop 2 end | Loop 3 end |
+|--------|------------|------------|
+| Build | `.300` | **`.305`** |
+| i18n uncovered cap | 566 | **473** |
+| Zero-state `/move` | 1 | **0** |
+| Zero-state `/track` | 1 | 1 |
+| Zero-state `/mind` | 1 | 1 |
+
+## End of Loop 3
+
+**Delivered:** M1–M5 on `cursor/kaizen-wedge-night-be9b` → PR #234 (`.301`–`.305`).
+**Verified:** i18n @473; zero-state `/move` 0; ship-protocol guards green.
+**Aikido:** `aikido_full_scan` still fails without X11 `$DISPLAY`. Noted; continue.
+**Next:** Loop 4 — more Fuel/Today/Mind i18n batches, Active decomp leftovers, soft-chrome residue, seeded a11y.
+
+## Loop 4 plan (execute immediately)
+
+| Wave | Ship | Scope |
+|------|------|-------|
+| N1 | `.306` | Mind check-in / breathing i18n batch → lower cap |
+| N2 | `.307` | Fuel adapt/targets/weight leftovers i18n |
+| N3 | `.308` | Active helper extract (overload cue / rest dock decision) or soft-chrome residue |
+| N4 | `.309` | Today/pillars i18n batch |
+| N5 | `.310` | Seeded a11y (Fuel sheet open or Mind check-in) + living-log close |
