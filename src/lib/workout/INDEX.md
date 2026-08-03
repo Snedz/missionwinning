@@ -18,13 +18,15 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats  
 11. `activeWorkoutPulse.ts` — nav pulse flag without store  
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
+13. `sessionCheckInOffer.ts` — pure W1 gate: never Mind-sheet the first mission (`.293`)
+14. `loggerSpeed.ts` — Enter/Use-next helpers (`.288`)
 
 ## Tests (colocated)
 
 | File | Covers |
 |------|--------|
 | `setKind.test.ts` | Volume / PR eligibility |
-| `restTimer.test.ts` | Clock + defaults |
+| `restTimer.test.ts` | Clock + defaults + start seconds (`.292`) |
 | `superset.test.ts` | Advance, rest gate |
 | `nextSetTargets.test.ts` | Progression targets |
 | `percentLoad.test.ts` | e1RM max, % → weight, scale |
@@ -33,6 +35,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 | `workoutMerge.test.ts` | Conflict / cap / fingerprint |
 | `workoutVictory.test.ts` | Victory next action |
 | `activeWorkoutHelpers.test.ts` | Next set, last session stats |
+| `sessionCheckInOffer.test.ts` | First-mission never offers check-in (`.293`) |
+| `loggerSpeed.test.ts` | Use-next offer rules (`.288`) |
 
 ## UI & integration (not in this folder)
 
