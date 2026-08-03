@@ -16,7 +16,7 @@ type Props = {
 
 /** Buttons sitting on the ink ground — a light 2px rule, not the ink border. */
 const inkButton =
-  'inline-flex min-h-[44px] items-center justify-center border-2 border-neutral-500 px-3 text-sm font-semibold text-neutral-100 transition-colors hover:bg-neutral-100/10 active:bg-neutral-100/20';
+  'inline-flex min-h-[44px] items-center justify-center border-2 border-neutral-500 px-3 text-sm font-semibold text-neutral-100 transition-colors hover:bg-neutral-800 active:bg-neutral-700';
 
 /**
  * Rest dock — a full-bleed ink panel, per the handoff. It is the only thing on
@@ -109,7 +109,7 @@ export function RestTimerBar({
             /* 44px, not 36 — these are pressed one-handed between sets like
                everything else in the logger. `first-90` sweeps `main`, and the
                dock is not in `main`, which is why they stayed undersized. */
-            className="min-h-[44px] px-2.5 text-xs font-semibold text-neutral-300 transition-colors hover:bg-neutral-100/10 hover:text-neutral-100"
+            className="min-h-[44px] px-2.5 text-xs font-semibold text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-neutral-100"
             onClick={() => {
               onPreset(sec);
               saveDefaultRestSeconds(sec);

@@ -57,7 +57,7 @@ function FreeFormAskPanel({
   }, [askExerciseId]);
 
   return (
-    <Card className={cn('content-card border-primary/30', className)} data-testid="coach-free-form-ask">
+    <Card className={cn('content-card border-2 border-border', className)} data-testid="coach-free-form-ask">
       <CardHeader className="pb-2">
         <CardTitle className="text-base">
           {t('coachFreeFormTitle', {
@@ -438,7 +438,7 @@ export function CoachChatPanel({
                   {turn.content}
                   {sending && turn.role === 'coach' && i === turns.length - 1 ? (
                     <span
-                      className="inline-block w-1.5 h-3.5 ms-0.5 align-middle bg-primary/70 animate-pulse"
+                      className="inline-block w-1.5 h-3.5 ms-0.5 align-middle bg-primary animate-pulse"
                       aria-hidden
                     />
                   ) : null}

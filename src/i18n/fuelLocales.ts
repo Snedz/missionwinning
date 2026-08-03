@@ -101,6 +101,33 @@ type FuelStrings = {
   fuelSearchToImprove: string;
   fuelSourceDb: string;
   fuelSourceRecent: string;
+  /** Kaizen Loop 3 M4 — search / describe / estimate leftovers (.304) */
+  fuelTabDescribe: string;
+  fuelDescribeHint: string;
+  fuelDescribePlaceholder: string;
+  fuelDescribeEstimate: string;
+  fuelDescribeMiss: string;
+  fuelSearchUnavailable: string;
+  fuelSearchEmpty: string;
+  fuelSearchOffline: string;
+  fuelSearchPlaceholder: string;
+  fuelSearchLoading: string;
+  fuelSearchCredit: string;
+  fuelBarcodeInvalid: string;
+  fuelBarcodeNotFound: string;
+  fuelBarcodeLabel: string;
+  fuelBarcodeLookup: string;
+  fuelEstimateDraftTitle: string;
+  fuelEstimateLowHint: string;
+  fuelEstimateEditHint: string;
+  fuelServings: string;
+  fuelEstimateDismiss: string;
+  fuelLogMeal: string;
+  fuelSearchThenEdit: string;
+  fuelCarbsShort: string;
+  fuelFatShort: string;
+  fuelHideScience: string;
+  fuelShowScience: string;
 };
 
 const en: FuelStrings = {
@@ -211,6 +238,35 @@ const en: FuelStrings = {
   fuelSearchToImprove: 'Search the food database for better macros',
   fuelSourceDb: 'Database',
   fuelSourceRecent: 'Recent',
+  fuelTabDescribe: 'Describe',
+  fuelDescribeHint:
+    'Type what you ate in plain words. We estimate the macros, then you check them before logging.',
+  fuelDescribePlaceholder: 'chicken rice broccoli',
+  fuelDescribeEstimate: 'Estimate macros',
+  fuelDescribeMiss: 'No foods recognised in that — try Custom and enter it yourself.',
+  fuelSearchUnavailable: 'Food search temporarily unavailable. Use quick-add or manual log.',
+  fuelSearchEmpty: 'No matches — try a simpler name.',
+  fuelSearchOffline: 'You appear offline — try again when connected.',
+  fuelSearchPlaceholder: 'Search foods (global database)…',
+  fuelSearchLoading: 'Searching…',
+  fuelSearchCredit:
+    'Powered by Open Food Facts — community database, edit portions after adding.',
+  fuelBarcodeInvalid: 'Enter at least 8 digits.',
+  fuelBarcodeNotFound: 'Product not found — try manual search or quick-add.',
+  fuelBarcodeLabel: 'Barcode (UPC/EAN)',
+  fuelBarcodeLookup: 'Look up',
+  fuelEstimateDraftTitle: 'Review estimate',
+  fuelEstimateLowHint:
+    'We could not match this well. Edit protein and calories before logging, or search foods instead.',
+  fuelEstimateEditHint: 'Estimates are approximate — adjust anything that looks off, then log.',
+  fuelServings: 'Servings',
+  fuelEstimateDismiss: 'Clear',
+  fuelLogMeal: 'Log meal',
+  fuelSearchThenEdit: 'Scan or search, then review macros before logging.',
+  fuelCarbsShort: 'Carbs',
+  fuelFatShort: 'Fat',
+  fuelHideScience: 'Hide protein notes',
+  fuelShowScience: 'Why protein matters',
 };
 
 const es: FuelStrings = {

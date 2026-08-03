@@ -85,7 +85,7 @@ export function CoachVoiceCard({ plan, bodyScores, premium }: Props) {
       : voice?.message;
 
   return (
-    <Card className="content-card border-primary/40">
+    <Card className="content-card border-2 border-border">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-primary" />
