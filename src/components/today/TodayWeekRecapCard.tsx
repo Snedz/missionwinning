@@ -89,7 +89,7 @@ export function TodayWeekRecapCard({ recap }: Props) {
  return (
  <section className="content-card border-border bg-accent-100 p-4 space-y-3">
  <div className="flex items-start gap-3">
- <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-100 text-accent-900">
+ <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-card text-accent-900">
  <CalendarDays className="h-5 w-5" aria-hidden />
  </div>
  <div className="min-w-0 flex-1 space-y-1">
@@ -119,9 +119,9 @@ export function TodayWeekRecapCard({ recap }: Props) {
  });
 
  return (
- <section className="content-card border-border via-card to-background p-4 space-y-4">
+ <section className="content-card border-border p-4 space-y-4">
  <div className="flex items-start gap-3">
- <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-100 text-accent-900">
+ <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-card text-accent-900">
  <CalendarDays className="h-5 w-5" aria-hidden />
  </div>
  <div className="min-w-0 flex-1">

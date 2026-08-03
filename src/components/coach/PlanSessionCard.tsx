@@ -20,7 +20,7 @@ import { cn } from '@/lib/utils';
 type Props = {
   session: PlanSession;
   className?: string;
-  /** Marks the card for today — red top rule + the one elevation on this screen. */
+  /** Marks the card for today — 2px red top rule (no elevation; radius 0 system). */
   isToday?: boolean;
   /** Today’s not-done session only — opens adjust flow. */
   onAdjust?: () => void;
@@ -44,10 +44,10 @@ export function PlanSessionCard({ session, className, isToday, onAdjust }: Props
       className={cn(
         'content-card',
         // Done is the surface fill; the amber border was a status hue in a
-        // one-colour system. Today keeps the only marked treatment on the grid:
-        // a red top rule and the single elevation this screen is allowed.
+        // one-colour system. Today is the only marked treatment: a 2px primary
+        // top rule — no shadow (Modernist has none).
         session.status === 'done' && 'bg-card',
-        isToday && 'border-t-[3px] border-t-[hsl(var(--accent-poster))] shadow-md',
+        isToday && 'border-t-2 border-t-primary',
         /*
          * `.240` — de-emphasised by border, never by opacity.
          *
