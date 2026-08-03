@@ -51,14 +51,14 @@ export function PillarScoreBreakdown({ breakdown }: { breakdown: WinScoreBreakdo
             <a
               key={key}
               href={href}
-              className="block p-3 rounded-xl border border-border/50 bg-card/40 hover:border-border transition-colors"
+              className="block p-3 border-2 border-border bg-card hover:border-foreground transition-colors"
             >
               <div className="flex justify-between text-sm mb-1">
                 <span className="font-medium">{t(labelKey, { defaultValue: key })}</span>
                 <span className="text-muted-foreground">{val}/{max}</span>
               </div>
-              <div className="h-1.5 bg-muted rounded overflow-hidden">
-                <div className="h-full bg-primary rounded" style={{ width: `${pct}%` }} />
+              <div className="h-1.5 bg-muted overflow-hidden">
+                <div className="h-full bg-primary" style={{ width: `${pct}%` }} />
               </div>
             </a>
           );

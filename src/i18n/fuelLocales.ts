@@ -98,7 +98,8 @@ const en: FuelStrings = {
   fuelLoadCloud: 'Load from Cloud',
   fuelCloudLoading: 'Loading...',
   fuelCloudLoaded: 'Cloud loaded (signed-in only)',
-  fuelNoEntries: 'No entries yet. Use quick logs or custom above.',
+  fuelNoEntries:
+    'Describe what you ate above, or tap Log food — always review macros before logging.',
   fuelTotals: 'Totals',
   fuelTotalsLine: '{{protein}}g protein • {{cals}} kcal',
   fuelLocalNote:

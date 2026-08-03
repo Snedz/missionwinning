@@ -588,7 +588,6 @@ export function NutritionPage() {
           setCloudStatus(t('fuelCloudLoaded', { defaultValue: 'Cloud loaded (signed-in only)' }));
           setTimeout(() => setCloudStatus(''), 1800);
         }}
-        onOpenLogSheet={() => setLogSheetOpen(true)}
         onSaveMeal={(l) => {
           setSavedMeals(
             saveMealPreset({

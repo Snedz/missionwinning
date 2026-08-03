@@ -6,7 +6,7 @@ import { ChevronRight, History, Moon, Sparkles, Sunrise, Trophy } from 'lucide-r
 import { isFreeBeta } from '@/lib/freeBeta';
 
 const linkClass =
-  'group flex items-center gap-3 rounded-2xl border p-4 hover:border-primary/40 transition-colors min-h-[72px]';
+  'group flex items-center gap-3 border-2 border-border bg-card p-4 hover:border-foreground transition-colors min-h-[72px]';
 
 interface TodayQuickLinksProps {
   /** Basic phase (pre-first-workout): no Bundle upsell, no themed boards —
@@ -23,9 +23,9 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
       <div className={`grid grid-cols-1 gap-3 ${compact || isFreeBeta() ?'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
         <Link
           href="/leaderboard"
-          className={`${linkClass} border-border/50 bg-muted/20`}
+          className={linkClass}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-background">
             <Trophy className="h-5 w-5 text-muted-foreground" />
           </div>
           <div className="flex-1 min-w-0">
@@ -41,9 +41,9 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
 
         <Link
           href="/history"
-          className={`${linkClass} border-border bg-card`}
+          className={linkClass}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-background">
             <History className="h-5 w-5 text-muted-foreground" />
           </div>
           <div className="flex-1 min-w-0">
@@ -54,12 +54,12 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
               {t('todayQuickHistoryDesc', { defaultValue: 'Volume, 1RM & muscle map' })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-muted-foreground" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
         </Link>
 
         {showBundle && (
         <Link href="/bundle" className={`${linkClass} border-border bg-accent-100`}>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-100">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-background">
             <Sparkles className="h-5 w-5 text-accent-900" />
           </div>
           <div className="flex-1 min-w-0">
@@ -81,9 +81,9 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Link
           href="/leaderboard?board=under-the-stars"
-          className={`${linkClass} border-border bg-card`}
+          className={linkClass}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-background">
             <Moon className="h-5 w-5 text-muted-foreground" />
           </div>
           <div className="flex-1 min-w-0">
@@ -94,25 +94,25 @@ export function TodayQuickLinks({ compact = false }: TodayQuickLinksProps) {
               {t('todayQuickNightDesc', { defaultValue: '22:00–05:00 sessions' })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-muted-foreground" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
         </Link>
 
         <Link
           href="/leaderboard?board=dawns-early-light"
-          className={`${linkClass} border-[hsl(var(--status-warn)/0.3)] bg-[hsl(var(--status-warn)/0.08)]`}
+          className={linkClass}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--status-warn)/0.15)]">
-            <Sunrise className="h-5 w-5 text-[hsl(var(--status-warn))]" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-background">
+            <Sunrise className="h-5 w-5 text-status-warn" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="font-semibold text-sm text-[hsl(var(--status-warn))]">
+            <div className="font-semibold text-sm text-status-warn">
               {t('lbBoardDawnsEarlyLight', { defaultValue: "By Dawn's Early Light" })}
             </div>
-            <div className="text-xs text-[hsl(var(--status-warn)/0.6)] truncate">
+            <div className="text-xs text-muted-foreground truncate">
               {t('todayQuickDawnDesc', { defaultValue: '05:00–08:00 sessions' })}
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-status-warn/60 group-hover:text-status-warn" />
+          <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-status-warn" />
         </Link>
       </div>
       )}

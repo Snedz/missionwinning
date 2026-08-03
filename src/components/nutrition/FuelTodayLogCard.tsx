@@ -34,7 +34,6 @@ type Props = {
   onRemoveEntry: (index: number) => void;
   onUpdateEntry: (index: number, next: MealDraftFields) => void;
   onLoadCloud: () => void;
-  onOpenLogSheet: () => void;
   onSaveMeal: (entry: FuelLogEntry) => void;
 };
 
@@ -50,7 +49,6 @@ export function FuelTodayLogCard({
   onRemoveEntry,
   onUpdateEntry,
   onLoadCloud,
-  onOpenLogSheet,
   onSaveMeal,
 }: Props) {
   const { t } = useTranslation();
@@ -102,10 +100,8 @@ export function FuelTodayLogCard({
             title={t('fuelEmptyTitle', { defaultValue: 'No meals logged today' })}
             description={t('fuelNoEntries', {
               defaultValue:
-                'Describe what you ate above, or use search and barcode — always review macros before logging.',
+                'Describe what you ate above, or tap Log food — always review macros before logging.',
             })}
-            actionLabel={t('fuelLogFirstMeal', { defaultValue: 'Log first meal' })}
-            onAction={onOpenLogSheet}
           />
         ) : (
           orderedKeys.map((mealKey) => {

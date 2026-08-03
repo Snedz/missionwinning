@@ -84,4 +84,40 @@ describe('nlMealLog', () => {
     assert.equal(olive.source, 'matched');
     assert.ok(olive.matched.some((m) => m.includes('Oil') || m.includes('Fish')));
   });
+
+  it('scales cups of rice', () => {
+    const one = estimateMealFromDescription('rice');
+    const twoCups = estimateMealFromDescription('2 cups rice');
+    const aCupOf = estimateMealFromDescription('a cup of rice');
+    assert.ok(one && twoCups && aCupOf);
+    assert.equal(twoCups.protein, one.protein * 2);
+    assert.equal(twoCups.cals, one.cals * 2);
+    assert.equal(aCupOf.protein, one.protein);
+    assert.equal(twoCups.source, 'matched');
+    assert.equal(twoCups.confidence, 'medium');
+  });
+
+  it('scales piece / handful / slice portion words', () => {
+    const chicken = estimateMealFromDescription('chicken');
+    const twoPieces = estimateMealFromDescription('2 pieces chicken');
+    const handfulNuts = estimateMealFromDescription('a handful of almonds');
+    const bread = estimateMealFromDescription('bread');
+    const twoSlices = estimateMealFromDescription('2 slices bread');
+    assert.ok(chicken && twoPieces && handfulNuts && bread && twoSlices);
+    assert.equal(twoPieces.protein, chicken.protein * 2);
+    // handful ≈ half a nut serving
+    assert.equal(handfulNuts.protein, Math.round(6 * 0.5));
+    assert.equal(handfulNuts.source, 'matched');
+    // slice ≈ half a bread serving
+    assert.equal(twoSlices.protein, Math.round(bread.protein * 0.5 * 2));
+    assert.ok(handfulNuts.matched.some((m) => m.includes('Nuts')));
+  });
+
+  it('keeps honesty chips: matched + confidence for portion-scaled single food', () => {
+    const e = estimateMealFromDescription('handful of almonds');
+    assert.ok(e);
+    assert.equal(e.source, 'matched');
+    assert.equal(e.confidence, 'medium');
+    assert.ok(e.matched.length >= 1);
+  });
 });

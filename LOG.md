@@ -1,3 +1,18 @@
+## 2026-08-03 — D13 trust micro-surfaces (`.282`)
+
+Landing FAQ exclusive-open + keyboard polish (existing `<details>`, not a band
+redesign). Thin What’s New sheet keyed off `APP_BUILD_LABEL` + safeStorage
+last-seen; curated athlete bullets only (no LOG scrape). Mounted from Profile
+and More. Profile can clear First Steps dismiss so the Today card returns.
+
+## 2026-08-03 — Fuel NL portions + Today/Fuel chrome (`.281`)
+
+K3–K5: NL meal estimate gains cup/piece/handful/slice (and “a cup of …”) with
+matched/rough + confidence honesty unchanged. Today progress/quick-links/pillar
+breakdown/skeletons — solid 2px paper/ink (no soft `/10`–`/50` or `rounded-xl`).
+Fuel empty state drops duplicate CTA; docked Log food is the one red
+(`/nutrition` zero-state cap 2→1).
+
 ## 2026-08-03 — Coach session predicate for Active chrome (`.280`)
 
 `sessionIsCoachPrescribed` pure helper — Active eyebrow and future apply-targets
@@ -105,21 +120,6 @@ paper `/guide` pages, and declared them debt because the image CDN was blocked.
 `check-guidebook-heroes.mjs`. `KNOWN_OFF_PALETTE` is empty — the ratchet
 tightened. Bundle compare/tabs use 2px rules and token borders (no raw accent
 HSL). Offline queue relative times use i18n keys instead of hard-coded English.
-
-## 2026-08-03 — Return loop honest when push is dark (`.267`)
-
-The anonymous return channel was already built (migration, subscribe route,
-device_id, cron candidates). What remained was a **void**: signed-out You
-rendered nothing about reminders when VAPID/SW are dark. Profile now shows
-an honest card pointing at Today re-entry. Docs: RETURN_LOOP_PLAN status
-corrected to code-shipped / founder-ops inert.
-
-## 2026-08-03 — Empty states that speak, adapt that only speaks when true (`.266`)
-
-History / Active / Coach / Library empty copy tightened (no marketing filler).
-`hasCoachAdaptationSignal` no longer fires on bare revision bumps — the adapt
-banner needs a missed/swapped/logged beat, so cold-start re-spread does not
-claim the week "reshaped" with nothing to say.
 
 # Mission Winning — Development Log
 
