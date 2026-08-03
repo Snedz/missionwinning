@@ -34,6 +34,11 @@ const NOTIFICATION_EN: Record<string, string> = {
   remindersKindWeekBehind:
     'Near the end of a week where you are short of the target you set — never framed as a deficit.',
   remindersKindsAccountNote: 'The last two need an account, because they are sent alongside an email.',
+  // Push dark (no VAPID / private SW) — signed-out athlete still sees a card.
+  remindersPushUnavailable:
+    'Device notifications are not available on this install yet. When they are, you can turn them on here without an account.',
+  remindersPushUnavailableHint:
+    'Until then: open Today after a rest day — one next session, no catch-up.',
 
   // --- wind-down opt-in (was six raw literals in JSX) ---
   windDownAsk: 'Want a heads-up on evenings like this?',

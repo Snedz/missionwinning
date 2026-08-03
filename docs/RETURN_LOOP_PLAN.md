@@ -1,6 +1,6 @@
 # RETURN_LOOP_PLAN.md — the return channel for athletes without accounts
 
-**Lane:** Engineering-Web · **Horizon:** W (excellence criterion 4) · **Status:** proposed, not started
+**Lane:** Engineering-Web · **Horizon:** W (excellence criterion 4) · **Status:** **code shipped** (migration + subscribe + anonymous candidates + client; UI honest when push is dark as of `.267`) · **inert until founder ops** (VAPID, migration apply, `PRIVATE_MODE=false` for SW)
 **Entry docs:** [CONTEXT.md](../CONTEXT.md) · [ORCHESTRATION.md](../ORCHESTRATION.md) · [src/lib/sync/INDEX.md](../src/lib/sync/INDEX.md)
 
 ---
@@ -27,18 +27,11 @@ anonymous, offline athlete. Each layer is individually correct and all five assu
 **Consequence:** an athlete who logs six sessions without signing in, then goes quiet, is
 unreachable forever. There is no channel to them and no row that knows they existed.
 
-## The second defect: two channels, opposite tones
+## Tone (status)
 
-[`src/lib/reentry.ts`](../src/lib/reentry.ts) is deliberate and well-judged — no shame,
-dose scaled to 0.5–0.7, *"rest days are part of training"* (`REENTRY_MIN_DAYS = 4`).
-
-The email channel says the opposite, at the moment of highest churn risk:
-
-- `nudgeServer.ts:93` — **"Your N-day streak ends tonight"** (streak-loss language)
-- `nudgeServer.ts:139` — **"it's been N days"** (names the length of the absence)
-
-Both are live today for signed-in users. The in-app principle exists in prose and in one
-module; nothing makes the email obey it.
+[`src/lib/reentry.ts`](../src/lib/reentry.ts) and [`src/lib/nudgeCopy.ts`](../src/lib/nudgeCopy.ts)
+are the single tone contract. Streak-loss / absence-length language was removed from
+live kinds; `nudgeCopy.test.ts` asserts the gate. Do not reintroduce.
 
 ---
 

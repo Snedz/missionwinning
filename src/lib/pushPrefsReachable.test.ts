@@ -139,6 +139,23 @@ test('every push preference has a control the athlete can operate', () => {
  * two hundred lines below and passed with the field deleted — a guard against an
  * omission that could not see the omission.
  */
+/**
+ * Signed-out + push dark must not erase the reminders surface — the free
+ * logger's modal athlete otherwise has no You-card about return at all.
+ */
+test('signed-out dark push still renders an honest reminders card', () => {
+  const src = stripComments(read('src/components/profile/ProfileRemindersCard.tsx'));
+  assert.ok(
+    src.includes('remindersPushUnavailable') || src.includes('not available on this install'),
+    'ProfileRemindersCard must speak when push is unsupported for signed-out athletes — returning null is a void'
+  );
+  // Guard against re-introducing the early exit that hid the card entirely.
+  assert.ok(
+    !/if\s*\(\s*!signedIn\s*&&\s*!pushSupported\s*\)\s*return\s+null/.test(src),
+    'do not restore `if (!signedIn && !pushSupported) return null` — that was the void'
+  );
+});
+
 test('the cadence sync carries the evening hour', () => {
   const src = stripComments(read(CADENCE_READER));
   const start = src.indexOf('function readPushCadence');
