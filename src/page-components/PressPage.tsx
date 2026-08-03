@@ -60,7 +60,7 @@ function CopyButton({ text, className }: { text: string; className?: string }) {
       type="button"
       onClick={() => void handleCopy()}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-surface-raised/40 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground',
+        'inline-flex items-center gap-1.5 border-2 border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary hover:text-foreground',
         className
       )}
     >
@@ -112,9 +112,9 @@ export function PressPage() {
                 <a
                   href={item.href}
                   download
-                  className="pressable-card flex items-center gap-4 rounded-2xl border border-border/50 bg-card/40 px-4 py-4 transition-colors hover:border-primary/35"
+                  className="pressable-card flex items-center gap-4 border-2 border-border bg-card px-4 py-4 transition-colors hover:border-primary"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-border bg-tint text-primary">
                     <Download className="h-4 w-4" />
                   </span>
                   <span className="min-w-0">
@@ -127,7 +127,7 @@ export function PressPage() {
           </div>
         </section>
 
-        <section className="section-seam-glow bg-surface-raised/20 py-14">
+        <section className="section-seam bg-card py-14">
           <div className="mx-auto max-w-4xl px-5">
             <Reveal>
               <p className="eyebrow mb-2">02 · Identity</p>
@@ -136,11 +136,11 @@ export function PressPage() {
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {COLORS.map((c, i) => (
                 <Reveal key={c.hex} delayMs={40 * i}>
-                  <div className="rounded-2xl border border-border/50 bg-card/30 p-3">
+                  <div className="border-2 border-border bg-background p-3">
                     <div
                       className={cn(
-                        'mb-3 h-16 rounded-xl',
-                        c.border && 'border border-border/80'
+                        'mb-3 h-16 border-2 border-border',
+                        c.border && 'border-border'
                       )}
                       style={{ backgroundColor: c.swatch }}
                     />
@@ -158,7 +158,7 @@ export function PressPage() {
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               {FONTS.map((f, i) => (
                 <Reveal key={f.name} delayMs={40 * i}>
-                  <div className="rounded-2xl border border-border/50 px-4 py-4">
+                  <div className="border-2 border-border bg-background px-4 py-4">
                     <p className="font-display text-lg uppercase tracking-wide text-foreground">{f.name}</p>
                     <p className="text-xs text-muted-foreground">{f.role}</p>
                   </div>
@@ -175,7 +175,7 @@ export function PressPage() {
           </Reveal>
           <div className="space-y-4">
             <Reveal>
-              <div className="rounded-2xl border border-border/50 bg-card/30 p-5">
+              <div className="border-2 border-border bg-card p-5">
                 <div className="mb-2 flex items-center justify-between gap-3">
                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Short</p>
                   <CopyButton text={SHORT_BOILERPLATE} />
@@ -184,7 +184,7 @@ export function PressPage() {
               </div>
             </Reveal>
             <Reveal delayMs={60}>
-              <div className="rounded-2xl border border-border/50 bg-card/30 p-5">
+              <div className="border-2 border-border bg-card p-5">
                 <div className="mb-2 flex items-center justify-between gap-3">
                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Medium</p>
                   <CopyButton text={MEDIUM_BOILERPLATE} />

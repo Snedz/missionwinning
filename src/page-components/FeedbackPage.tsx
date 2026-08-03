@@ -79,7 +79,7 @@ export function FeedbackPage() {
       >
         <Card className="bg-card text-center">
             <CardContent className="pt-8 pb-8 space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-1 bg-muted/40 text-foreground text-sm border border-border/50">
+              <div className="inline-flex items-center gap-2 border-2 border-border bg-card px-4 py-1 text-sm text-foreground">
                 {t('feedbackThankBadge', { defaultValue: 'Thanks' })}
               </div>
               <div className="text-left max-w-md mx-auto space-y-2 text-sm leading-relaxed">
@@ -143,7 +143,7 @@ export function FeedbackPage() {
               <div>
                 <Label>{t('feedbackResultsLabel', { defaultValue: 'Key results so far' })}</Label>
                 <textarea
-                  className="mt-1 w-full h-24 rounded-xl border border-input bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full h-24 border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
                   value={form.results}
                   onChange={(e) => setForm({ ...form, results: e.target.value })}
                   placeholder={t('feedbackResultsPlaceholder', {
@@ -156,7 +156,7 @@ export function FeedbackPage() {
               <div>
                 <Label>{t('feedbackTestimonialLabel', { defaultValue: 'Your testimonial' })}</Label>
                 <textarea
-                  className="mt-1 w-full h-28 rounded-xl border border-input bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full h-28 border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
                   value={form.testimonial}
                   onChange={(e) => setForm({ ...form, testimonial: e.target.value })}
                   placeholder={t('feedbackTestimonialPlaceholder', {

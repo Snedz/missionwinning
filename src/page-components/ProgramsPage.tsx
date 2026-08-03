@@ -185,7 +185,7 @@ export function ProgramsPage() {
                           {curriculum.modules.map((m) => (
                             <details
                               key={m.index}
-                              className="rounded-xl border border-border/50 px-3 py-2 text-sm"
+                              className="border-2 border-border bg-card px-3 py-2 text-sm"
                             >
                               <summary className="cursor-pointer font-medium list-none flex justify-between gap-2">
                                 <span>
@@ -219,7 +219,7 @@ export function ProgramsPage() {
                     );
                   })()}
                 </div>
-                <div className="md:col-span-2 rounded-xl border border-border/60 bg-muted/30 p-4 text-sm space-y-3">
+                <div className="md:col-span-2 border-2 border-border bg-card p-4 text-sm space-y-3">
                   <div className="font-semibold text-primary text-xs uppercase tracking-wide">
                     {freeBeta
                       ? t('programsFreeNote', { defaultValue: 'Free education path' })

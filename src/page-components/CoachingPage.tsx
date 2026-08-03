@@ -86,7 +86,7 @@ export function CoachingPage() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="tap-target rounded-xl border border-input bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="tap-target min-h-[44px] border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
               placeholder={t('infoCoachingName', { defaultValue: 'Name' })}
               aria-label={t('infoCoachingName', { defaultValue: 'Name' })}
             />
@@ -95,7 +95,7 @@ export function CoachingPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="tap-target rounded-xl border border-input bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="tap-target min-h-[44px] border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
               placeholder={t('infoCoachingEmail', { defaultValue: 'Email' })}
               aria-label={t('infoCoachingEmail', { defaultValue: 'Email' })}
             />
@@ -104,13 +104,13 @@ export function CoachingPage() {
             required
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="h-32 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="h-32 w-full border-2 border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
             placeholder={t('infoCoachingGoalsPlaceholder', {
               defaultValue: "Your goals, your current training, and what you'd want from a coach…",
             })}
             aria-label={t('infoCoachingGoalsLabel', { defaultValue: 'Your goals and current training' })}
           />
-          {error && <p className="text-sm text-red-400">{error}</p>}
+          {error && <p className="text-sm font-medium text-primary">{error}</p>}
           <Button type="submit" size="lg" variant="fitness" className="w-full" disabled={loading}>
             {loading
               ? t('infoCoachingSending', { defaultValue: 'Sending…' })
