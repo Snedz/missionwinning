@@ -247,34 +247,41 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
           {/* Free Coach hero: week sessions before any Bundle upsell.
               Two columns from sm up, per the handoff — a week of sessions is a
               grid you scan, not a stack you scroll. */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            {plan.sessions
-              .slice()
-              .sort((a, b) => a.dayOffset - b.dayOffset)
-              .map((session) => {
-                const isToday = session.dayOffset === todayOffset;
-                const pending = plan.sessions
-                  .filter((s) => s.status !== 'done')
-                  .sort((a, b) => a.dayOffset - b.dayOffset);
-                const todayPending = pending.find((s) => s.dayOffset === todayOffset);
-                const nextPending = pending.find((s) => s.dayOffset >= todayOffset) ?? pending[0];
-                const boss = todayPending ?? nextPending;
-                const isPrimaryStart = !!boss && boss.id === session.id;
-                return (
-                  <PlanSessionCard
-                    key={session.id}
-                    session={session}
-                    isToday={isToday}
-                    isPrimaryStart={isPrimaryStart}
-                    onAdjust={
-                      isToday && session.status !== 'done'
-                        ? () => setAdjustOpen(true)
-                        : undefined
-                    }
-                  />
-                );
-              })}
-          </div>
+          {/* Free Coach hero: week sessions before any Bundle upsell.
+              Two columns from sm up, per the handoff — a week of sessions is a
+              grid you scan, not a stack you scroll. */}
+          {(() => {
+            const pending = plan.sessions
+              .filter((s) => s.status !== 'done')
+              .sort((a, b) => a.dayOffset - b.dayOffset);
+            const todayPending = pending.find((s) => s.dayOffset === todayOffset);
+            const nextPending =
+              pending.find((s) => s.dayOffset >= todayOffset) ?? pending[0];
+            const bossId = (todayPending ?? nextPending)?.id;
+            return (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {plan.sessions
+                  .slice()
+                  .sort((a, b) => a.dayOffset - b.dayOffset)
+                  .map((session) => {
+                    const isToday = session.dayOffset === todayOffset;
+                    return (
+                      <PlanSessionCard
+                        key={session.id}
+                        session={session}
+                        isToday={isToday}
+                        isPrimaryStart={session.id === bossId}
+                        onAdjust={
+                          isToday && session.status !== 'done'
+                            ? () => setAdjustOpen(true)
+                            : undefined
+                        }
+                      />
+                    );
+                  })}
+              </div>
+            );
+          })()}
 
           {!askExerciseId ? (
             <div id="coach-chat">
