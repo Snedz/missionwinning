@@ -77,6 +77,23 @@ export function sessionSetStats(
 }
 
 /**
+ * Most recent completed set before `setIdx` in this exercise (same session).
+ * Hevy/Strong gym-speed: the next dial starts where you just left off — not a
+ * second copy of last session's set 2 while set 1 of *today* is already logged.
+ * Null when nothing earlier in this exercise is completed.
+ */
+export function priorCompletedInExercise(
+  sets: { completed: boolean; reps: number; weight: number }[],
+  setIdx: number
+): { reps: number; weight: number } | null {
+  for (let i = setIdx - 1; i >= 0; i--) {
+    const s = sets[i];
+    if (s?.completed) return { reps: s.reps, weight: s.weight };
+  }
+  return null;
+}
+
+/**
  * What the reps/weight fields start at for one set — the decision, extracted so it
  * can be tested.
  *
@@ -89,20 +106,32 @@ export function sessionSetStats(
  * Order:
  *  1. What the athlete typed. Always wins.
  *  2. The coach's prescription, when this exercise came from a plan.
- *  3. The suggestion engine, for freestyle work, inside the athlete's goal range.
- *  4. The same set last time, then the template default.
+ *  3. Same-session carry — prior completed set of this exercise (gym speed, `.289`).
+ *  4. The suggestion engine, for freestyle work, inside the athlete's goal range.
+ *  5. The same set last time, then the template default.
  */
 export function resolveSetInput(params: {
   manual?: { reps: number; weight: number };
   prescribed?: boolean;
   defaultReps: number;
   defaultWeight: number;
+  /** Same-session prior completed set of this exercise (freestyle only). */
+  sessionCarry?: { reps: number; weight: number } | null;
   suggestion?: { reps: number; weight: number } | null;
   lastPerformance?: { reps: number; weight: number } | null;
 }): { reps: number; weight: number } {
-  const { manual, prescribed, defaultReps, defaultWeight, suggestion, lastPerformance } = params;
+  const {
+    manual,
+    prescribed,
+    defaultReps,
+    defaultWeight,
+    sessionCarry,
+    suggestion,
+    lastPerformance,
+  } = params;
   if (manual) return manual;
   if (prescribed) return { reps: defaultReps, weight: defaultWeight };
+  if (sessionCarry) return { reps: sessionCarry.reps, weight: sessionCarry.weight };
   if (suggestion) return { reps: suggestion.reps, weight: suggestion.weight };
   if (lastPerformance) return { reps: lastPerformance.reps, weight: lastPerformance.weight };
   return { reps: defaultReps, weight: defaultWeight };

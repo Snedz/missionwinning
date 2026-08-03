@@ -9,6 +9,12 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
 
 ---
+## 2026-08-03 — Same-session set carry on the logger (`.289`)
+
+After you log a freestyle set, the next set of that exercise dials in what you
+just did (Hevy/Strong gym-speed). Coach prescriptions stay per-set. Pure
+`priorCompletedInExercise` + `resolveSetInput` order 3.
+
 ## 2026-08-03 — Gym-speed logger: Enter + Use next (`.288`)
 
 Compact log console: **Enter** submits the set; **Use next target** one-taps
@@ -108,12 +114,4 @@ Leaderboard board picker, scope tabs, table, call-sign/squad inputs — solid
 2px paper/ink; “you” row uses a primary side rule instead of glow rings.
 Board header dropped corrupted gradient utility stubs. Public `/exercises`
 and `/paths` index/hub lists match the same chrome.
-
-## 2026-08-03 — Compare, Press, forms chrome (`.274`)
-
-Public marketing and lead forms still on soft tiles/focus rings: Compare story
-rows + proof/verdict, Press kit downloads/palette/boilerplate, Programs
-curriculum modules, Coaching interest + Feedback textareas — solid 2px
-paper/ink, focus via border (not ring glow). Coaching errors use brand primary
-text, not off-palette red.
 

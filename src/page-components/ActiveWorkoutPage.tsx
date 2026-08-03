@@ -64,6 +64,7 @@ import {
   getLastPerformanceForSet,
   getLastSessionSets,
   nextSetInput,
+  priorCompletedInExercise,
   resolveSetInput,
   sessionIsCoachPrescribed,
   sessionSetStats,
@@ -208,11 +209,17 @@ export function ActiveWorkoutPage() {
     const exerciseId = exLog.exerciseId;
     const lastSets = exLog.prescribed ? null : getLastSessionSets(workoutHistory, exerciseId);
     const range = repRangeForGoal(goalId);
+    // Freestyle only: carry the set you just logged into the next dial.
+    // Coach prescriptions stay per-set (resolveSetInput order 2).
+    const sessionCarry = exLog.prescribed
+      ? null
+      : priorCompletedInExercise(exLog.sets, setIdx);
     return resolveSetInput({
       manual: setInputs[setInputKey(exIdx, setIdx)],
       prescribed: exLog.prescribed,
       defaultReps,
       defaultWeight,
+      sessionCarry,
       suggestion: lastSets
         ? suggestNextSetTarget(lastSets, setIdx, units, { repMin: range.min, repMax: range.max })
         : null,
