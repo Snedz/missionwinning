@@ -21,7 +21,10 @@ function installStorage(): () => void {
       return map.size;
     },
   };
-  const g = globalThis as { window?: unknown; localStorage?: typeof ls };
+  const g = globalThis as unknown as {
+    window?: unknown;
+    localStorage?: typeof ls;
+  };
   const prevWin = g.window;
   const prevLs = g.localStorage;
   g.window = { localStorage: ls, dispatchEvent: () => true };
