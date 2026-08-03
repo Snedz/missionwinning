@@ -1,3 +1,9 @@
+## 2026-08-03 — Shared Just Go hero meta builder (`.279`)
+
+Lean + full Today shells now build train-CTA meta through pure
+`buildJustGoHeroMeta` (one coach/freestyle rule, unit-tested). No product
+behavior change beyond locking the `.278` honesty contract in one place.
+
 ## 2026-08-03 — Just Go honesty + deploy discipline (`.278`)
 
 Today primary CTA no longer says **Just Go** when Mission Coach has a live
@@ -117,12 +123,6 @@ remain). ORCHESTRATION + CONTEXT state the override. Week-1 recap push/email
 drops peer-shame ("most people quit"). Builder arrange uses AdaptiveOverlay
 for add-exercise on compact widths. Named loading labels on fitness-test /
 teacher routes instead of bare "Loading…".
-
-## 2026-08-03 — Invite-only gate copy in every locale (`.264`)
-
-`.263` fixed English private-gate and public status bar copy; non-EN packs still
-said "private beta / launching soon" (and auto language made www look unfixed).
-Eyebrows + ES/FR/PT/DE waitlist lines now match invite-only open beta.
 
 # Mission Winning — Development Log
 
