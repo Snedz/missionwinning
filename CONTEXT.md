@@ -16,7 +16,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 
 ---
 
-## Now (2026-08-03 · web `2026.07-unified.293` · Android `1.24.1`)
+## Now (2026-08-03 · web `2026.07-unified.294` · Android `1.24.1`)
 
 > The ONLY "where we are" block in the repo — [ORCHESTRATION.md](ORCHESTRATION.md) points here.
 >
@@ -52,6 +52,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > and `.291` dropped `.276` detail (full text remains in LOG.md / archive)
 > and `.292` dropped `.277` detail (full text remains in LOG.md / archive)
 > and `.293` dropped `.278` detail (full text remains in LOG.md / archive)
+> and `.294` dropped `.279` detail (full text remains in LOG.md / archive)
 > to [CONTEXT-now-2026-07-30.md](docs/archive/CONTEXT-now-2026-07-30.md) after this
 > block reached **79 bullets / 103KB**. A status doc that only grows stops being read.
 
@@ -72,6 +73,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
+- **`.294`:** Today composure — Mission Score **spills** on densest evening (`dashboard` 22→32; top-level budget **7→6**); Fuel photo heuristic **never claims high** + DB picks log as `api` (not heuristic).
 - **`.293`:** First-mission **session check-in** is one pure rule — never Mind-sheet empty history (`shouldOfferSessionCheckInDecision`); unit + wiring guards (W1 / first-90).
 - **`.292`:** Rest timer **one default** — store no longer invents 30s; `resolveStartRestSeconds` → saved default / 90s fallback shared with exercise heuristics.
 - **`.291`:** Week-1 **second-session** activation — after first log, First Steps next is session 2 (not Fuel); Today CTA “Start session 2”; pure `week1SecondSessionCue`. Basic still = first workout only.
@@ -86,7 +88,6 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 - **`.282`:** D13 trust — Landing FAQ exclusive-open; What’s New sheet (`APP_BUILD_LABEL` + safeStorage); First Steps show-again on Profile.
 - **`.281`:** K3–K5 — Fuel NL cup/piece/handful/slice; Today soft-chrome → 2px paper/ink; Fuel empty dual-red collapsed (dock owns Log food; zero-state cap 1).
 - **`.280`:** Pure `sessionIsCoachPrescribed` for Active chrome (one definition of coach-loaded session).
-- **`.279`:** Pure `buildJustGoHeroMeta` shared by lean + full Today (locks `.278` coach vs freestyle CTA rule in one place). Master has `.279`; **www may lag** while free deploy quota is hot.
 - **Horizon W — wedge excellence.** Web craft 1–6 + **Fuel estimate accuracy** (edit-before-log, better NL match, honest photo sources).
 - **Free-first beta (~4 weeks):** LLC + EIN pending — **no Bundle UI** + **full depth unlocked** + **full More nav** (journey train-only deferred) ([docs/FREE_BETA.md](docs/FREE_BETA.md)).
 - **`e2e:visual` is the one dark gate.** Its three baselines were generated **2026-07-22, before the rebrand**, and depicted the old navy/emerald dark design — black grounds, emerald CTAs, rounded corners. Verified by opening one, not inferred from dates. **Deleted**, because a known-wrong baseline is worse than none: the first Linux run would have shown four huge diffs, and the reflex there is `--update-snapshots` without looking, which launders whatever renders that day into truth. `home-reduced.png` **never had a baseline at all**, so the homepage has been silently self-approving since the case was written. **First Linux CI run after billing clears must bootstrap all four** (`npx playwright test --grep @visual --update-snapshots`, then commit the artifact) — it cannot be done on macOS, the pixels will not match.

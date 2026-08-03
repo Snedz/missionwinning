@@ -1,8 +1,11 @@
-# Rotated for .279
+# LOG rotate — `.279` (2026-08-03)
 
-## 2026-08-03 — Invite-only gate copy in every locale (`.264`)
+Rotated from [LOG.md](../../../LOG.md) when `.294` shipped (≤15-entry rule).
 
-`.263` fixed English private-gate and public status bar copy; non-EN packs still
-said "private beta / launching soon" (and auto language made www look unfixed).
-Eyebrows + ES/FR/PT/DE waitlist lines now match invite-only open beta.
+---
 
+## 2026-08-03 — Shared Just Go hero meta builder (`.279`)
+
+Lean + full Today shells now build train-CTA meta through pure
+`buildJustGoHeroMeta` (one coach/freestyle rule, unit-tested). No product
+behavior change beyond locking the `.278` honesty contract in one place.

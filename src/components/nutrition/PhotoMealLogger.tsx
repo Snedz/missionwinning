@@ -70,7 +70,13 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
   useEffect(() => {
     if (estimate) {
       setDraft(estimateToDraft(estimate));
-      setDraftSource(estimate.source === 'vision' ? 'vision' : 'heuristic');
+      setDraftSource(
+        estimate.source === 'vision'
+          ? 'vision'
+          : estimate.source === 'api'
+            ? 'database'
+            : 'heuristic'
+      );
     } else {
       setDraft(null);
     }
@@ -357,7 +363,8 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
                       ...estimate,
                       ...foodToDraft(item),
                       confidence: 'high',
-                      source: 'heuristic',
+                      // Database match is grounded food data — not the filename heuristic.
+                      source: 'api',
                     });
                   }}
                 >
@@ -393,7 +400,12 @@ export function PhotoMealLogger({ onLogEstimate }: Props) {
                 carbs: draft.carbs,
                 fat: draft.fat,
                 confidence: draftSource === 'database' ? 'high' : estimate.confidence,
-                source: draftSource === 'vision' ? 'vision' : 'heuristic',
+                source:
+                  draftSource === 'vision'
+                    ? 'vision'
+                    : draftSource === 'database'
+                      ? 'api'
+                      : 'heuristic',
               });
               reset();
             }}

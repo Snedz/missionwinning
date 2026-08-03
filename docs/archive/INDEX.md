@@ -47,6 +47,7 @@ When adding a doc:
 | [log/LOG-rotate-285.md](./log/LOG-rotate-285.md) | `.270` Fuel estimate honesty — rotated for `.285` progressive overload console |
 | [log/LOG-rotate-280.md](./log/LOG-rotate-280.md) | `.265` Pre-EIN craft — rotated for `.280` coach prescribed helper |
 | [log/LOG-rotate-279.md](./log/LOG-rotate-279.md) | oldest live LOG section — rotated for `.279` hero meta helper |
+| [log/LOG-rotate-279.md](./log/LOG-rotate-279.md) | Just Go hero meta — rotated for `.294` Today composure + Fuel honesty |
 | [log/LOG-rotate-278.md](./log/LOG-rotate-278.md) | `.263` cold-start Coach — rotated for `.278` Just Go honesty |
 | [log/LOG-rotate-277.md](./log/LOG-rotate-277.md) | rotated for `.277` |
 | [log/LOG-rotate-276.md](./log/LOG-rotate-276.md) | rotated for `.276` |

@@ -5,26 +5,37 @@ import {
   planTodayBlocks,
   type TodayBlockCandidate,
 } from '@/lib/today/todayBlockBudget';
+import { TODAY_BLOCK_PRIORITY, type TodayBlockKey } from '@/lib/today/todayBlockPriority';
 
 const block = (
+  key: TodayBlockKey,
+  pinned = false
+): TodayBlockCandidate<string> => ({
+  key,
+  priority: TODAY_BLOCK_PRIORITY[key],
+  pinned,
+  node: key,
+});
+
+const synthetic = (
   key: string,
   priority: number,
   pinned = false
 ): TodayBlockCandidate<string> => ({ key, priority, pinned, node: key });
 
-/** The real Today set, in the order the dashboard declares them. */
+/** The real Today set, priced from the shared table (not a stale copy). */
 const TODAY_BLOCKS: TodayBlockCandidate<string>[] = [
-  block('beta', 0, true),
-  block('header', 1, true),
-  block('intent', 20),
-  block('reentry', 2, true),
-  block('dashboard', 10),
-  block('freshness', 60),
-  block('day-review', 15),
-  block('week-recap', 30),
-  block('coach-week', 40),
-  block('coach-today', 35),
-  block('guidebook', 70),
+  block('beta', true),
+  block('header', true),
+  block('intent'),
+  block('reentry', true),
+  block('dashboard'),
+  block('freshness'),
+  block('day-review'),
+  block('week-recap'),
+  block('coach-week'),
+  block('coach-today'),
+  block('guidebook'),
 ];
 
 describe('planTodayBlocks', () => {
@@ -57,7 +68,7 @@ describe('planTodayBlocks', () => {
    */
   it('never spills a pinned block, even past the budget', () => {
     const allPinned = Array.from({ length: TODAY_MAX_TOP_LEVEL_BLOCKS + 4 }, (_, i) =>
-      block(`p${i}`, i, true)
+      synthetic(`p${i}`, i, true)
     );
     const { top, inMore } = planTodayBlocks(allPinned);
     assert.equal(top.length, allPinned.length);

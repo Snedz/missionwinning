@@ -52,9 +52,14 @@ export const TODAY_BLOCK_PRIORITY: Record<TodayBlockKey, number> = {
   // What it is for.
   intent: 20,
 
-  // How it went.
-  dashboard: 22,
+  // How the week went — ceremony before the standing scoreboard.
   'week-recap': 30,
+
+  // Mission Score + rings. Behind session/week/day-review/intent so a dense
+  // evening still answers "what now" above the fold (Kaizen K1 · `.294`).
+  // Was 22 — tied with intent for the last spillable slots and won them over
+  // week-recap on some masks; the scoreboard is one tap in Today details.
+  dashboard: 32,
 
   // Invitations and depth — always behind the thing they point at.
   'coach-invite': 40,

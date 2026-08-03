@@ -18,7 +18,12 @@
  * degrades predictably rather than by whichever `push()` happened to run first.
  */
 
-export const TODAY_MAX_TOP_LEVEL_BLOCKS = 7;
+/**
+ * Kaizen K1 (`.294`): 7 → 6. One fewer spillable slot so Mission Score /
+ * guidebook chrome yield to session + week on the densest evening screen.
+ * Overflow still lands in "Today details" — nothing is deleted.
+ */
+export const TODAY_MAX_TOP_LEVEL_BLOCKS = 6;
 
 export interface TodayBlockCandidate<T = unknown> {
   key: string;
