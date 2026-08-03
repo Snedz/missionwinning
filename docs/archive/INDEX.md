@@ -55,6 +55,7 @@ When adding a doc:
 | [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-301.md](./log/LOG-rotate-301.md) | `.286` re-entry dose — rotated for `.301` Coach/History i18n |
 | [log/LOG-rotate-302.md](./log/LOG-rotate-302.md) | `.287` coach why — rotated for `.302` debrief i18n |
+| [log/LOG-rotate-311.md](./log/LOG-rotate-311.md) | `.296` Victory CheckIn i18n — rotated for `.311` Track/reminders i18n |
 | [log/LOG-rotate-310.md](./log/LOG-rotate-310.md) | `.295` seeded a11y + zero-state — rotated for `.310` Fuel sheet a11y |
 | [log/LOG-rotate-309.md](./log/LOG-rotate-309.md) | `.294` Today composure — rotated for `.309` Today/Behavior i18n |
 | [log/LOG-rotate-308.md](./log/LOG-rotate-308.md) | `.293` session check-in rule — rotated for `.308` repeat-last + chrome |

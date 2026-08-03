@@ -63,6 +63,30 @@ type TrackStrings = {
   trackGpsLockedHint: string;
   trackExploreBundle: string;
   trackWeeklyGpsLocked: string;
+  /** Kaizen Loop 5 O1 — body metrics / progress photos (.311) */
+  bodyMetricsTitle: string;
+  bodyMetricsLead: string;
+  bodyMetricsLog: string;
+  bodyWeight: string;
+  bodyFat: string;
+  bodyWaist: string;
+  bodyMetricsNeedTwo: string;
+  bodyMetricsCount: string;
+  bodyMetricsLogTitle: string;
+  bodyDate: string;
+  bodyNote: string;
+  bodySave: string;
+  progressCompare: string;
+  progressEarlier: string;
+  progressLatest: string;
+  progressPhotosTitle: string;
+  progressPhotosPrivacy: string;
+  progressPhotosLead: string;
+  progressPhotosSaving: string;
+  progressPhotosDrop: string;
+  progressPhotosEmpty: string;
+  trackEyebrow: string;
+  trackDeleteActivity: string;
 };
 
 const en: TrackStrings = {
@@ -129,6 +153,29 @@ const en: TrackStrings = {
     'Free tier keeps manual logging and JSON import. Premium unlocks GPS + weekly pace stats.',
   trackExploreBundle: 'See Super Bundle',
   trackWeeklyGpsLocked: 'Weekly GPS distance and average pace — Super Bundle.',
+  bodyMetricsTitle: 'Body metrics',
+  bodyMetricsLead: 'Weight and measures on this device. Included in JSON backup.',
+  bodyMetricsLog: 'Log',
+  bodyWeight: 'Weight',
+  bodyFat: 'Body fat',
+  bodyWaist: 'Waist',
+  bodyMetricsNeedTwo: 'Log at least two entries to see a trend.',
+  bodyMetricsCount: '{{count}} entries on device',
+  bodyMetricsLogTitle: 'Log body metrics',
+  bodyDate: 'Date',
+  bodyNote: 'Note',
+  bodySave: 'Save',
+  progressCompare: 'Compare',
+  progressEarlier: 'Earlier',
+  progressLatest: 'Latest',
+  progressPhotosTitle: 'Progress photos',
+  progressPhotosPrivacy: 'Photos never leave this device.',
+  progressPhotosLead: 'Stored in browser IndexedDB only — not uploaded, not in JSON backup.',
+  progressPhotosSaving: 'Saving…',
+  progressPhotosDrop: 'Drop or tap to add a photo',
+  progressPhotosEmpty: 'No photos yet.',
+  trackEyebrow: 'Track',
+  trackDeleteActivity: 'Delete activity',
 };
 
 const es: TrackStrings = {

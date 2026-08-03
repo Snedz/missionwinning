@@ -47,6 +47,20 @@ const NOTIFICATION_EN: Record<string, string> = {
   windDownInstallFirst: 'Add to Home Screen first',
   windDownNotNow: 'Not now',
   windDownDone: 'Done — you’ll get a note on evenings like this one.',
+
+  /** Kaizen Loop 5 O1 — Profile reminders leftovers (.311) */
+  remindersDayReviewDesc:
+    'One evening note asking you to look back at the day, at an hour you pick. The review itself is written on this device — the note carries no numbers.',
+  remindersDayReviewLabel: 'Evening review time',
+  remindersOff: 'Off',
+  remindersTitle: 'Training reminders',
+  remindersDesc:
+    'Occasional emails when you go quiet — never more than one every two days. One-tap unsubscribe in every email.',
+  remindersOn: 'On',
+  remindersUpdateFailed: 'Could not update reminders',
+  remindersUpdateFailedDesc: 'Try again in a moment.',
+  remindersPushFailed: 'Could not enable device notifications',
+  remindersDayReviewFailed: 'Could not save the evening review time',
 };
 
 const nl = (over: Record<string, string>): Record<string, string> => ({
