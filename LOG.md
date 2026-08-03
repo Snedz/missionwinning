@@ -9,6 +9,13 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
 
 ---
+## 2026-08-03 — Coverage floor for D11–D13 UI sheets (`.284`)
+
+`npm run coverage` failed CI: **393 untested** vs floor **389**. Four new
+Playwright-covered sheets (`CoachManageSheet`, `CoachScheduleEditor`,
+`WhatsNewSheet`, `ProfileWhatsNewCard`) — pure helpers already unit-tested.
+Raised `FLOORS.untestedFiles` / high-water **389 → 393** via the escape hatch
+the coverage script names (same commit a reviewer can see).
 
 ## 2026-08-03 — Pump Kaizen D11–D12 + guards (`.283`)
 
@@ -119,13 +126,4 @@ before Log — estimates no longer land on Custom looking finished. NL parser
 gains scoops / oz / tbsp quantities, multi-word oils only (bare “oil” is rough),
 and more gym foods. Photo heuristic: color-only guesses are named
 “(color guess)” and never high confidence. i18n coverage 707→702.
-
-## 2026-08-03 — Magazine PDF + logger swap sheet (`.269`)
-
-`.268` re-inked chapter heroes on the web; the magazine PDF still shipped the
-dark set. Rebuilt `public/magazine/beyond-the-basics.pdf` from `/guide/print`
-(~27pp, v1.4.2). Logger **swap exercise** moves into `AdaptiveOverlay` (same
-treatment as add-exercise) so the catalog no longer fights the set list for
-height. Session note field squared to 2px border. Move premium loading label
-named.
 

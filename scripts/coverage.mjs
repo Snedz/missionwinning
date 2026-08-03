@@ -74,10 +74,16 @@ const FLOORS = {
    * got tests instead** (`today/firstStepsDismissed.ts`,
    * `trends/resolveTrendSeries.ts`), which is why this is 389 and not 391.
    *
+   * Raised 389 → 393 for Pump Kaizen D11–D13: four new AdaptiveOverlay / card
+   * surfaces (`CoachManageSheet`, `CoachScheduleEditor`, `WhatsNewSheet`,
+   * `ProfileWhatsNewCard`) — Playwright-covered Coach/Profile/More chrome.
+   * The pure helpers they wrap (`coachAdaptReentry`, `whatsNew`) got unit tests
+   * in the same night, so this is not 395.
+   *
    * That split is the point of the ratchet: it does not stop the number moving,
    * it makes somebody look at what moved it.
    */
-  untestedFiles: 389,
+  untestedFiles: 393,
   /**
    * Line % across the files that *are* loaded. Must not fall.
    *
