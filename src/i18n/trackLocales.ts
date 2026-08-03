@@ -21,6 +21,8 @@ type TrackStrings = {
   trackPremiumDesc: string;
   trackPremiumBtn: string;
   trackGpsTitle: string;
+  /** Unlocked GPS panel title (free beta / premium) — no paywall wording. */
+  trackGpsTitleUnlocked: string;
   trackGpsPremiumDesc: string;
   trackGpsUnsupported: string;
   trackGpsDenied: string;
@@ -85,6 +87,7 @@ const en: TrackStrings = {
   trackPremiumDesc: 'MapMy-style tracking, routes, pace charts, cross-pillar coaching.',
   trackPremiumBtn: 'Track Premium',
   trackGpsTitle: 'GPS track (Premium)',
+  trackGpsTitleUnlocked: 'GPS track',
   trackGpsPremiumDesc:
     'Record outdoor walks and runs with live distance — MapMy-style, Super Bundle.',
   trackGpsUnsupported: 'GPS not supported on this device.',
