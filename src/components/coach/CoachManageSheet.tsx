@@ -119,7 +119,7 @@ export function CoachManageSheet({
             className="w-full min-h-[44px]"
             onClick={handleClose}
           >
-            {t('cancel', { defaultValue: 'Cancel' })}
+            {t('coachManageCancel', { defaultValue: 'Cancel' })}
           </Button>
         </div>
       ) : (
@@ -153,7 +153,7 @@ export function CoachManageSheet({
               setScheduleDirty(false);
             }}
           >
-            {t('back', { defaultValue: 'Back' })}
+            {t('coachManageBack', { defaultValue: 'Back' })}
           </Button>
         </div>
       )}

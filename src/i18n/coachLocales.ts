@@ -91,6 +91,21 @@ type CoachStrings = {
   coachChatLockedDesc: string;
   coachChatOffline: string;
   coachChatOpen: string;
+  /** D12 — manage-week sheet */
+  coachManageWeek: string;
+  coachChangeSchedule: string;
+  coachAskCoach: string;
+  coachScheduleRemapNote: string;
+  coachRemapThisWeek: string;
+  coachRegenerateWeekPlan: string;
+  coachPreferredDays: string;
+  coachPreferredDaysUsed: string;
+  coachPreferredDaysSpread: string;
+  coachGenerateEmptyTitle: string;
+  coachFreeBetaNextWeek: string;
+  coachGenerateEmptyDesc: string;
+  coachManageCancel: string;
+  coachManageBack: string;
 };
 
 const en: CoachStrings = {
@@ -188,6 +203,22 @@ const en: CoachStrings = {
     'Chat with your coach about form, fuel, and recovery. Free core keeps the plan and offline adjustments.',
   coachChatOffline: 'Coach voice offline — your plan and adjustments still work.',
   coachChatOpen: 'Ask your coach',
+  coachManageWeek: 'Manage this week',
+  coachChangeSchedule: 'Change schedule',
+  coachAskCoach: 'Ask coach',
+  coachScheduleRemapNote:
+    'Changing days updates the next generate. Remap this week now so today’s strip matches — it replaces the current plan.',
+  coachRemapThisWeek: 'Remap this week',
+  coachRegenerateWeekPlan: 'Regenerate week plan',
+  coachPreferredDays: 'Which days suit you?',
+  coachPreferredDaysUsed: 'Your coach week will use these days.',
+  coachPreferredDaysSpread:
+    'Pick at least {{count}} to choose your own days — otherwise sessions spread evenly.',
+  coachGenerateEmptyTitle: 'No plan this week',
+  coachFreeBetaNextWeek: 'Generate next week from your latest logs. Free while beta is open.',
+  coachGenerateEmptyDesc: 'One week from your logs. Free every week — no wearable.',
+  coachManageCancel: 'Cancel',
+  coachManageBack: 'Back',
 };
 
 const es: CoachStrings = {

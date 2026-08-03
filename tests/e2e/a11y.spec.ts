@@ -193,6 +193,49 @@ test.describe('Accessibility @a11y', () => {
   });
 
   /**
+   * K6 — route ∈ GATED_ROUTES is not the same as the *states* on that route
+   * being covered. Zero-data axe never reaches MuscleHeatmap intensity text or
+   * a PlanSessionCard "Missed" badge. Seed both, then measure.
+   */
+  test('axe serious/critical: /history with trained volume @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    const { seedHistoryAndMissedCoach } = await import('./helpers/seedHistoryCoach');
+    await seedHistoryAndMissedCoach(page);
+    await page.goto('/history', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByRole('tab', { name: /exercises/i }).or(page.getByText(/exercises/i).first())).toBeVisible({
+      timeout: 15_000,
+    });
+    // Open Exercises so heatmaps/charts mount (SegmentedControl is not ARIA tabs).
+    await page.getByText(/^Exercises$/i).first().click();
+    await axeSerious(page, '/history (seeded exercises)');
+  });
+
+  test('axe serious/critical: /coach with a missed session @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    const { seedHistoryAndMissedCoach } = await import('./helpers/seedHistoryCoach');
+    await seedHistoryAndMissedCoach(page);
+    await page.goto('/coach', { waitUntil: 'domcontentloaded' });
+    await expect(page.getByText(/missed/i).first()).toBeVisible({ timeout: 15_000 });
+    await axeSerious(page, '/coach (seeded missed)');
+  });
+
+  /**
    * The assertion axe cannot make.
    *
    * axe-core does not reliably test focus visibility, which is how this suite sat at

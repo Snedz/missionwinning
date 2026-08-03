@@ -24,7 +24,7 @@ Started: 2026-08-03 · Web craft only · Modernist system stands
 | K1 Just Go honesty leftovers | done (branch) | Adapt re-entry no longer says Just Go on coach days |
 | K2 fitness → default | done (branch) | Alias folded; chips use selected |
 | K3–K5 Fuel + Today soft | done (`.281`) | NL cup/piece/handful/slice; Today 2px chrome; Fuel dual-red →1 |
-| K6–K7 a11y + i18n | pending | |
+| K6–K7 a11y + i18n | done (`.283`) | Seeded History/Coach a11y; i18n uncovered **698→686** |
 
 ## Refuses (standing)
 
