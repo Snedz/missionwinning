@@ -7,6 +7,8 @@ type ActiveWorkoutStrings = {
   activeSetsCompleted: string;
   activeCancel: string;
   activeLiveSession: string;
+  /** Sticky eyebrow when session exercises are Coach-prescribed (not freestyle). */
+  activeCoachSessionEyebrow: string;
   activeElapsed: string;
   activeSetsLabel: string;
   activeFinish: string;
@@ -66,6 +68,7 @@ type ActiveWorkoutStrings = {
 
 const en: ActiveWorkoutStrings = {
   activeLiveSession: 'Live session',
+  activeCoachSessionEyebrow: 'Mission Coach session',
   activeElapsed: 'Elapsed',
   activeSetsLabel: 'Sets',
   activeNoWorkout: 'No Active Workout',
@@ -129,6 +132,7 @@ const en: ActiveWorkoutStrings = {
 const es: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'Sesión en vivo',
+  activeCoachSessionEyebrow: 'Sesión Mission Coach',
   activeElapsed: 'Transcurrido',
   activeSetsLabel: 'Series',
   activeNoWorkout: 'Sin entrenamiento activo',
@@ -169,6 +173,7 @@ const es: ActiveWorkoutStrings = {
 const fr: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'Séance en direct',
+  activeCoachSessionEyebrow: 'Séance Mission Coach',
   activeElapsed: 'Écoulé',
   activeSetsLabel: 'Séries',
   activeNoWorkout: 'Aucun entraînement actif',
@@ -231,6 +236,7 @@ const fr: ActiveWorkoutStrings = {
 const zh: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: '进行中',
+  activeCoachSessionEyebrow: 'Mission Coach 训练',
   activeElapsed: '已用时',
   activeSetsLabel: '组数',
   activeNoWorkout: '没有进行中的训练',
@@ -247,6 +253,7 @@ const zh: ActiveWorkoutStrings = {
 const id: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'Sesi langsung',
+  activeCoachSessionEyebrow: 'Sesi Mission Coach',
   activeElapsed: 'Berjalan',
   activeSetsLabel: 'Set',
   activeStartWorkout: 'Mulai latihan',
@@ -258,6 +265,7 @@ const id: ActiveWorkoutStrings = {
 const th: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'เซสชันสด',
+  activeCoachSessionEyebrow: 'เซสชัน Mission Coach',
   activeElapsed: 'ผ่านไป',
   activeSetsLabel: 'เซ็ต',
   activeStartWorkout: 'เริ่มฝึก',
@@ -269,6 +277,7 @@ const th: ActiveWorkoutStrings = {
 const ar: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'جلسة مباشرة',
+  activeCoachSessionEyebrow: 'جلسة Mission Coach',
   activeElapsed: 'المنقضي',
   activeSetsLabel: 'المجموعات',
   activeStartWorkout: 'بدء التمرين',
@@ -281,6 +290,7 @@ const ar: ActiveWorkoutStrings = {
 const de: ActiveWorkoutStrings = {
   ...en,
   activeLiveSession: 'Live-Einheit',
+  activeCoachSessionEyebrow: 'Mission-Coach-Einheit',
   activeElapsed: 'Verstrichen',
   activeSetsLabel: 'Sätze',
   activeNoWorkout: 'Kein aktives Training',
@@ -354,6 +364,7 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeNoWorkout: 'Nenhum treino ativo',
     activeFinish: 'Concluir',
     activeLiveSession: 'Sessão ao vivo',
+    activeCoachSessionEyebrow: 'Sessão Mission Coach',
     activeElapsed: 'Decorrido',
     activeSetsLabel: 'Séries',
   },
@@ -362,6 +373,7 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeNoWorkout: 'Nessun allenamento attivo',
     activeFinish: 'Fine',
     activeLiveSession: 'Sessione dal vivo',
+    activeCoachSessionEyebrow: 'Sessione Mission Coach',
     activeElapsed: 'Trascorso',
     activeSetsLabel: 'Serie',
   },
@@ -370,6 +382,7 @@ const LOCALES: Partial<Record<string, ActiveWorkoutStrings>> = {
     activeNoWorkout: '진행 중인 운동 없음',
     activeFinish: '완료',
     activeLiveSession: '진행 중인 세션',
+    activeCoachSessionEyebrow: 'Mission Coach 세션',
     activeElapsed: '경과',
     activeSetsLabel: '세트',
   },

@@ -1,3 +1,15 @@
+## 2026-08-03 — Just Go honesty + deploy discipline (`.278`)
+
+Today primary CTA no longer says **Just Go** when Mission Coach has a live
+session for today — label/title load the planned session (`coachStartSession` /
+session name); freestyle still says Just Go. Pure `resolveJustGoHeroCopy` +
+`peekCoachToday` (sync). **Also:** coach path from Today now sets
+`prescribed: true` (parity with `planSessionToTemplates`) so the logger does not
+re-guess loads; Active chrome eyebrow **Mission Coach session** when prescribed.
+Docs: Vercel free-tier **100 deploys/day** batching
+([VERCEL_DEPLOY_CHECKLIST](docs/VERCEL_DEPLOY_CHECKLIST.md) §1.6); beta invite
+checklist unblocks postal → migrations → invites first. i18n ratchet **702→698**.
+
 ## 2026-08-03 — Form/Today chrome + safe Dependabot (`.277`)
 
 Form guide media, fuel photo dropzone, Today muscle readiness tiles, week
@@ -111,32 +123,6 @@ teacher routes instead of bare "Loading…".
 `.263` fixed English private-gate and public status bar copy; non-EN packs still
 said "private beta / launching soon" (and auto language made www look unfixed).
 Eyebrows + ES/FR/PT/DE waitlist lines now match invite-only open beta.
-
-## 2026-08-03 — Cold-start Coach stopped shaming new athletes (`.263`)
-
-Phone dogfood after I-Day on a Sunday: Mission Coach painted Mon/Wed/Fri as
-**Missed** and opened with *"Life happened — 3 sessions missed"* for someone who
-had never had a plan. Seed placed the default mid-week pattern in the past; when
-every session was already past, adapt marked them missed and had nothing left to
-re-spread — so the week strip stayed a wall of shame.
-
-**Fixes (hero / A5-allowed):**
-- `generateWeek` schedules only remaining days of the current week
-  (`scheduleFromOffset` + `mapToCalendar(…, notBefore)`).
-- `adaptPlan` re-opens a late-week collapse onto days still left as **planned**,
-  and drops unplaceable cold-start past days instead of labeling them missed.
-- `usePremium` free-beta snapshot is a stable reference (no more
-  getServerSnapshot infinite-loop warning).
-- Logged bodyweight sets read `8 × BW`, not `8 × 0 kg`.
-- I-Day hides America/PFT/kids goal chips while `america` is parked.
-- GPS panel title is "GPS track" when unlocked (not "(Premium)" under free beta).
-
-Also in `.263` (follow-up commits on the same PR):
-- Public story aligned: invite-only beta bar + private gate copy (no more
-  "OPEN BETA" next to "Launching soon").
-- Log console shows **BW** (tap to add load) instead of a 0 kg stepper.
-
-
 
 # Mission Winning — Development Log
 

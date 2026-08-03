@@ -18,6 +18,11 @@ type Props = {
   totalSets: number;
   hardCount: number;
   elapsedSeconds: number;
+  /**
+   * True when at least one exercise was prescribed by Mission Coach.
+   * Eyebrow must not say a generic "Live session" that hides the plan origin.
+   */
+  fromCoachPlan?: boolean;
   onOpenAddExercise: () => void;
   onOpenPlateCalc: () => void;
   onDiscard: () => void;
@@ -30,6 +35,7 @@ export function ActiveSessionChrome({
   totalSets,
   hardCount,
   elapsedSeconds,
+  fromCoachPlan = false,
   onOpenAddExercise,
   onOpenPlateCalc,
   onDiscard,
@@ -47,6 +53,10 @@ export function ActiveSessionChrome({
           defaultValue: 'Rate Easy / Med / Hard after each set so Coach can learn.',
         });
 
+  const sessionEyebrow = fromCoachPlan
+    ? t('activeCoachSessionEyebrow', { defaultValue: 'Mission Coach session' })
+    : t('activeLiveSession', { defaultValue: 'Live session' });
+
   return (
     <div className="space-y-3">
       <div
@@ -57,7 +67,7 @@ export function ActiveSessionChrome({
         ].join(' ')}
       >
         <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
-          {t('activeLiveSession', { defaultValue: 'Live session' })}
+          {sessionEyebrow}
         </p>
         <div className="mt-0.5 flex flex-nowrap items-center gap-2 min-w-0">
           <div className="min-w-0 flex-1">

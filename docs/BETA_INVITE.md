@@ -6,14 +6,18 @@ Use this when inviting the first **10 private beta operators**. Prod is live at 
 
 **Founder sprint checklist (agents cannot mark these done):**
 
-1. Verify www `/api/health` shows **`.104`+** after master deploy (billing cleared 2026-07-22).
-2. Phone hero QA: `/private` → access → `/welcome` → workout → Mission Score → sign-in. Note #1 confusion.
-3. Issue ≥10 invites via Profile → Beta panel (`/private?invite=MW-B-…` + access code out-of-band).
-4. Day-2 / day-7 follow-ups (scripts below).
-5. After web hero feels solid: Android [FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) 15-min Accept B → Play Internal.
-6. Wave A: Sentry `NEXT_PUBLIC_SENTRY_DSN` · optional Aikido MCP permissions + `AIKIDO_SECRET_KEY`.
+1. Verify www `/api/health` / Profile build label matches latest master after deploy (see [VERCEL_DEPLOY_CHECKLIST.md](VERCEL_DEPLOY_CHECKLIST.md) §1.3, §1.6 free-tier quota).
+2. **Unblock mail:** set `MAIL_POSTAL_ADDRESS` (CAN-SPAM footer) — without it invite email hard-exits ([LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md) § env).
+3. Apply pending Supabase migrations (runbook order) so `beta_invites` / panel progress exist.
+4. Phone hero QA: `/private` → access → `/welcome` → workout → Mission Score → sign-in. Note #1 confusion.
+5. Issue ≥10 invites via Profile → Beta panel (`/private?invite=MW-B-…` + access code out-of-band). Prefer personal DMs if email still blocked.
+6. Day-2 / day-7 follow-ups (scripts below).
+7. After web hero feels solid: Android [FOUNDER_ACCEPT.md](../apps/android/FOUNDER_ACCEPT.md) 15-min Accept B → Play Internal.
+8. Wave A: Sentry `NEXT_PUBLIC_SENTRY_DSN` · optional Aikido MCP permissions + `AIKIDO_SECRET_KEY`.
 
-**Deferral:** Cohort of ≥10 invites targeted by **2026-08-02** (Horizon 0 day-14). Founder owns phone hero QA + personal invites; agents fix only #1 confusion from tester feedback.
+**Order that unblocks A5 (users):** postal → migrations → first invite → phone QA feedback → more invites. Craft ships do not substitute for step 5.
+
+**Deferral:** Cohort of ≥10 invites still the public-flip gate (A5). Founder owns phone hero QA + personal invites; agents fix only #1 confusion from tester feedback and never invent traction.
 
 **Paid help:** Optional outreach VA — [docs/OUTREACH_VA_BRIEF.md](OUTREACH_VA_BRIEF.md). **Zero paid ads** until week-4 ([docs/PRELAUNCH_CAPITAL.md](PRELAUNCH_CAPITAL.md)).
 

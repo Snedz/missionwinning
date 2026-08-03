@@ -46,6 +46,8 @@ import { useDismissed } from "@/hooks/useDismissed";
 import { dayReviewMayMount } from "@/lib/today/dayReviewMount";
 import { planTodayBlocks, type TodayBlockCandidate } from "@/lib/today/todayBlockBudget";
 import { localDateKey } from '@/lib/time/localDate';
+import { peekCoachToday } from '@/lib/coach/peekCoachToday';
+import type { JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 
 const FirstStepsCard = dynamic(
   () => import('@/components/journey/FirstStepsCard').then((m) => m.FirstStepsCard),
@@ -468,11 +470,24 @@ export function HomeTodayDashboard() {
     router.push('/active');
   };
 
-  const justGoMeta =
-    !activeWorkout &&
-    (action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned')
-      ? { focusLabel: muscleGroupLabel(recommendedFocus.group, t) }
-      : null;
+  const justGoMeta = useMemo((): JustGoHeroMeta | null => {
+    if (activeWorkout) return null;
+    const trainReady =
+      action.href === '/active' || !!action.startWorkout || action.phase === 'commissioned';
+    if (!trainReady) return null;
+    const coach = peekCoachToday();
+    const focusLabel = muscleGroupLabel(recommendedFocus.group, t);
+    if (coach && coach.exercises.length > 0) {
+      return {
+        focusLabel,
+        source: 'coach',
+        sessionName: coach.name,
+      };
+    }
+    return { focusLabel, source: 'focus' };
+    // workoutHistory.length: re-peek when sessions change (plan may mark done)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- t() stable enough; plan lives in storage
+  }, [activeWorkout, action.href, action.startWorkout, action.phase, recommendedFocus.group, t, workoutHistory.length]);
 
   /*
    * Every block declares what it costs the screen.

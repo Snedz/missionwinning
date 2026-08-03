@@ -9,6 +9,10 @@ type CoachStrings = {
   coachRegenerate: string;
   coachRegenerateConfirm: string;
   coachStartSession: string;
+  /** Today hero title when the primary CTA loads today's coach session (not freestyle). */
+  coachPlanHeroTitle: string;
+  /** Today hero body: honest that this is the plan, not Just Go. */
+  coachPlanHeroDesc: string;
   coachViewPlan: string;
   coachTodayMission: string;
   coachWeekOverview: string;
@@ -99,6 +103,9 @@ const en: CoachStrings = {
   coachRegenerate: 'Regenerate week',
   coachRegenerateConfirm: 'Tap again to confirm',
   coachStartSession: 'Start this session',
+  coachPlanHeroTitle: '{{name}}',
+  coachPlanHeroDesc:
+    "Today's planned session from Mission Coach — not freestyle Just Go.",
   coachViewPlan: 'View full week',
   coachTodayMission: 'Mission Coach · adapts from logs',
   coachWeekOverview: 'Mission Coach · this week',
@@ -189,6 +196,9 @@ const es: CoachStrings = {
   coachWeekEyebrow: 'MISIÓN DE ESTA SEMANA',
   coachGenerateWeek: 'Generar esta semana',
   coachStartSession: 'Iniciar sesión',
+  coachPlanHeroTitle: '{{name}}',
+  coachPlanHeroDesc:
+    'Sesión planificada de hoy de Mission Coach — no es Just Go libre.',
   coachDaysPerWeek: '¿Cuántos días a la semana?',
   coachTasterLocked: 'Tu semana gratis terminó',
   coachTasterLockedDesc:
@@ -226,6 +236,9 @@ const fr: CoachStrings = {
   coachRegenerate: 'Régénérer la semaine',
   coachRegenerateConfirm: 'Appuyez encore pour confirmer',
   coachStartSession: 'Commencer cette séance',
+  coachPlanHeroTitle: '{{name}}',
+  coachPlanHeroDesc:
+    "Séance planifiée d'aujourd'hui par Mission Coach — pas un Just Go libre.",
   coachViewPlan: 'Voir la semaine complète',
   coachTodayMission: 'Mission du jour',
   coachNoSessionToday: 'Jour de repos ou de récupération — un peu de mouvement compte encore.',
@@ -271,6 +284,9 @@ const de: CoachStrings = {
   coachRegenerate: 'Woche neu generieren',
   coachRegenerateConfirm: 'Nochmal tippen zum Bestätigen',
   coachStartSession: 'Diese Einheit starten',
+  coachPlanHeroTitle: '{{name}}',
+  coachPlanHeroDesc:
+    'Heutige geplante Einheit von Mission Coach — kein freies Just Go.',
   coachViewPlan: 'Ganze Woche ansehen',
   coachTodayMission: 'Mission des Tages',
   coachNoSessionToday: 'Ruhe- oder Erholungstag — leichte Bewegung zählt trotzdem.',
