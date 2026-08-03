@@ -216,6 +216,7 @@ export function HomeTodayLean() {
         units,
         equipment: userEquip,
         includeBasicJustGo: false,
+        doseScale: reentry?.show ? reentry.doseScale : 1,
         startWorkout: (name, exercises) => startWorkoutFromStore(name, exercises),
         navigate: (href) => router.push(href),
       });

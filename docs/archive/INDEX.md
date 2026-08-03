@@ -36,6 +36,7 @@ When adding a doc:
 | [log/LOG-rotate-283.md](./log/LOG-rotate-283.md) | `.268` guidebook heroes — rotated for `.283` Pump Kaizen D11–D12 |
 | [log/LOG-rotate-282.md](./log/LOG-rotate-282.md) | `.267` return-loop honesty — rotated for `.282` D13 trust |
 | [log/LOG-rotate-281.md](./log/LOG-rotate-281.md) | `.266` empty states / adapt honesty — rotated for `.281` K3–K5 Fuel/Today chrome |
+| [log/LOG-rotate-286.md](./log/LOG-rotate-286.md) | oldest for `.286` re-entry dose |
 | [log/LOG-rotate-285.md](./log/LOG-rotate-285.md) | `.270` Fuel estimate honesty — rotated for `.285` progressive overload console |
 | [log/LOG-rotate-280.md](./log/LOG-rotate-280.md) | `.265` Pre-EIN craft — rotated for `.280` coach prescribed helper |
 | [log/LOG-rotate-279.md](./log/LOG-rotate-279.md) | oldest live LOG section — rotated for `.279` hero meta helper |

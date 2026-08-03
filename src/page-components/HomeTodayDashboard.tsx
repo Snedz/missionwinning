@@ -460,6 +460,7 @@ export function HomeTodayDashboard() {
       history: workoutHistory,
       units,
       equipment: userEquip,
+      doseScale: reentry?.show ? reentry.doseScale : 1,
       startWorkout,
       navigate: (href) => router.push(href),
     });
