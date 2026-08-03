@@ -9,6 +9,7 @@ import {
   nextSetInput,
   resolveSetInput,
   formatLoggedSetLine,
+  sessionIsCoachPrescribed,
   sessionSetStats,
   setInputKey,
 } from './activeWorkoutHelpers.ts';
@@ -35,6 +36,20 @@ function historyWith(
     },
   ];
 }
+
+describe('sessionIsCoachPrescribed', () => {
+  it('is true when any exercise carries prescribed', () => {
+    assert.equal(
+      sessionIsCoachPrescribed([{ prescribed: true }, { prescribed: false }]),
+      true
+    );
+  });
+
+  it('is false for freestyle sessions', () => {
+    assert.equal(sessionIsCoachPrescribed([{}, { prescribed: false }]), false);
+    assert.equal(sessionIsCoachPrescribed([]), false);
+  });
+});
 
 describe('activeWorkoutHelpers', () => {
   it('findNextSet returns first incomplete set', () => {
