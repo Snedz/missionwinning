@@ -181,6 +181,19 @@ type TodayStrings = {
   debriefExpand: string;
   debriefDetails: string;
   debriefTrackLink: string;
+  /** Kaizen Loop 3 M2 — Victory SessionDebriefCard (.302) */
+  debriefSectionLabel: string;
+  debriefFieldNotesLabel: string;
+  debriefListen: string;
+  debriefStop: string;
+  debriefListenAria: string;
+  debriefStopAria: string;
+  debriefDoseQuestion: string;
+  debriefReplyHarder: string;
+  debriefReplyExact: string;
+  debriefReplyEasy: string;
+  debriefNoted: string;
+  debriefSavedJournal: string;
 };
 
 const en: TodayStrings = {
@@ -382,6 +395,18 @@ const en: TodayStrings = {
   debriefExpand: 'Details',
   debriefDetails: 'Training volume ~{{volume}}. Focus next week on the note above — honest, not automatic.',
   debriefTrackLink: 'Body metrics',
+  debriefSectionLabel: 'Session debrief',
+  debriefFieldNotesLabel: 'Your field notes',
+  debriefListen: 'Listen',
+  debriefStop: 'Stop',
+  debriefListenAria: 'Read the debrief aloud',
+  debriefStopAria: 'Stop reading the debrief',
+  debriefDoseQuestion: 'Did that run hotter than planned, or was it the work you wanted?',
+  debriefReplyHarder: 'Harder than expected',
+  debriefReplyExact: 'Exactly what I wanted',
+  debriefReplyEasy: 'Too easy',
+  debriefNoted: 'Noted — next session will account for that.',
+  debriefSavedJournal: 'Saved to your journal — edit any time from History.',
 };
 
 const coachPlanDefaults = {
@@ -573,6 +598,18 @@ const zh: TodayStrings = {
   debriefExpand: en.debriefExpand,
   debriefDetails: en.debriefDetails,
   debriefTrackLink: en.debriefTrackLink,
+  debriefSectionLabel: en.debriefSectionLabel,
+  debriefFieldNotesLabel: en.debriefFieldNotesLabel,
+  debriefListen: en.debriefListen,
+  debriefStop: en.debriefStop,
+  debriefListenAria: en.debriefListenAria,
+  debriefStopAria: en.debriefStopAria,
+  debriefDoseQuestion: en.debriefDoseQuestion,
+  debriefReplyHarder: en.debriefReplyHarder,
+  debriefReplyExact: en.debriefReplyExact,
+  debriefReplyEasy: en.debriefReplyEasy,
+  debriefNoted: en.debriefNoted,
+  debriefSavedJournal: en.debriefSavedJournal,
   todayBasicEncouragement: '一步一步来。健康属于每个人 — 在你的路上训练、营养、活动和学习。',
   todaySectionHealth: '健康评分',
   todaySectionHealthDesc: '教练洞察与支柱分解',
@@ -749,6 +786,18 @@ const id: TodayStrings = {
   debriefExpand: en.debriefExpand,
   debriefDetails: en.debriefDetails,
   debriefTrackLink: en.debriefTrackLink,
+  debriefSectionLabel: en.debriefSectionLabel,
+  debriefFieldNotesLabel: en.debriefFieldNotesLabel,
+  debriefListen: en.debriefListen,
+  debriefStop: en.debriefStop,
+  debriefListenAria: en.debriefListenAria,
+  debriefStopAria: en.debriefStopAria,
+  debriefDoseQuestion: en.debriefDoseQuestion,
+  debriefReplyHarder: en.debriefReplyHarder,
+  debriefReplyExact: en.debriefReplyExact,
+  debriefReplyEasy: en.debriefReplyEasy,
+  debriefNoted: en.debriefNoted,
+  debriefSavedJournal: en.debriefSavedJournal,
   todayBasicEncouragement:
     'Satu langkah demi langkah. Kesehatan untuk semua — latihan, nutrisi, gerak, dan belajar.',
   todaySectionHealth: 'Skor kesehatan',
@@ -939,6 +988,18 @@ const th: TodayStrings = {
   debriefExpand: en.debriefExpand,
   debriefDetails: en.debriefDetails,
   debriefTrackLink: en.debriefTrackLink,
+  debriefSectionLabel: en.debriefSectionLabel,
+  debriefFieldNotesLabel: en.debriefFieldNotesLabel,
+  debriefListen: en.debriefListen,
+  debriefStop: en.debriefStop,
+  debriefListenAria: en.debriefListenAria,
+  debriefStopAria: en.debriefStopAria,
+  debriefDoseQuestion: en.debriefDoseQuestion,
+  debriefReplyHarder: en.debriefReplyHarder,
+  debriefReplyExact: en.debriefReplyExact,
+  debriefReplyEasy: en.debriefReplyEasy,
+  debriefNoted: en.debriefNoted,
+  debriefSavedJournal: en.debriefSavedJournal,
   todayBasicEncouragement:
     'ทีละขั้น สุขภาพสำหรับทุกคน — ฝึก โภชนาการ เคลื่อนไหว และเรียนรู้บนเส้นทางของคุณ',
   todaySectionHealth: 'คะแนนสุขภาพ',
@@ -1119,6 +1180,18 @@ const ar: TodayStrings = {
   debriefExpand: en.debriefExpand,
   debriefDetails: en.debriefDetails,
   debriefTrackLink: en.debriefTrackLink,
+  debriefSectionLabel: en.debriefSectionLabel,
+  debriefFieldNotesLabel: en.debriefFieldNotesLabel,
+  debriefListen: en.debriefListen,
+  debriefStop: en.debriefStop,
+  debriefListenAria: en.debriefListenAria,
+  debriefStopAria: en.debriefStopAria,
+  debriefDoseQuestion: en.debriefDoseQuestion,
+  debriefReplyHarder: en.debriefReplyHarder,
+  debriefReplyExact: en.debriefReplyExact,
+  debriefReplyEasy: en.debriefReplyEasy,
+  debriefNoted: en.debriefNoted,
+  debriefSavedJournal: en.debriefSavedJournal,
   todayBasicEncouragement: 'خطوة بخطوة. الصحة للجميع — تدريب وتغذية وحركة وتعلّم على مسارك.',
   todaySectionHealth: 'درجات الصحة',
   todaySectionHealthDesc: 'رؤية المدرب وتفصيل الركائز',

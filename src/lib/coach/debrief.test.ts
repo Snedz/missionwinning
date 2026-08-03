@@ -43,6 +43,11 @@ test('the debrief always leads with effort and closes with a question', () => {
   assert.equal(d.lines[0].kind, 'effort');
   assert.equal(d.lines[d.lines.length - 1].kind, 'question');
   assert.equal(d.replies.length, 3, 'the question needs chips to be answerable');
+  assert.deepEqual(
+    d.replies,
+    ['harder', 'exact', 'easy'],
+    'reply chips are stable ids — labels live in i18n, not English literals'
+  );
 });
 
 test('every line obeys the re-entry tone contract', () => {
