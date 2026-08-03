@@ -30,7 +30,7 @@ export function ExerciseEquipmentHubPage({ equipmentLabel, exercises }: Props) {
             <li key={ex.id}>
               <Link
                 href={`/exercises/${ex.id}`}
-                className="flex justify-between gap-3 rounded-xl border border-border/50 px-4 py-3 hover:border-primary/40 hover:bg-primary/10 transition-colors"
+                className="flex justify-between gap-3 border-2 border-border bg-card px-4 py-3 hover:border-primary hover:bg-tint transition-colors"
               >
                 <span className="font-medium">{ex.name}</span>
                 <span className="text-xs text-muted-foreground shrink-0">
@@ -47,7 +47,7 @@ export function ExerciseEquipmentHubPage({ equipmentLabel, exercises }: Props) {
               <Link
                 key={g}
                 href={`/exercises/muscle/${muscleHubSlug(g)}`}
-                className="border border-border/60 px-3 py-1.5 text-xs transition-colors hover:border-primary/40 hover:bg-primary/10"
+                className="border-2 border-border bg-background px-3 py-1.5 text-xs transition-colors hover:border-primary hover:bg-tint"
               >
                 {g}
               </Link>

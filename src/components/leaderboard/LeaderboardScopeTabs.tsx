@@ -23,10 +23,10 @@ export function LeaderboardScopeTabs({ scope, onScopeChange, scopeLabel }: Props
             type="button"
             onClick={() => onScopeChange(s.id)}
             className={cn(
-              'shrink-0  px-3.5 py-2 text-xs font-medium transition-colors min-h-[36px]',
+              'shrink-0 border-2 px-3.5 py-2 text-xs font-medium transition-colors min-h-[36px]',
               scope === s.id
-                ? 'bg-primary-fill text-white'
-                : 'bg-muted/60 text-muted-foreground hover:bg-muted'
+                ? 'border-primary bg-primary-fill text-primary-foreground'
+                : 'border-border bg-card text-muted-foreground hover:border-foreground'
             )}
           >
             {t(SCOPE_I18N_KEY[s.id], { defaultValue: s.label })}

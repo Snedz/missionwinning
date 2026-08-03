@@ -57,17 +57,17 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
       className={cn(
         'border-2 overflow-hidden',
         theme === 'night' && 'border-border bg-card',
-        theme === 'dawn' && 'border-[hsl(var(--status-warn)/0.25)] bg-[hsl(var(--status-warn)/0.08)]',
-        theme === 'default' && 'border-border bg-card/80'
+        theme === 'dawn' && 'border-border bg-accent-100',
+        theme === 'default' && 'border-border bg-card'
       )}
     >
-      <div className="grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem] gap-2 px-3 py-2 text-[10px] uppercase tracking-wider text-muted-foreground border-b border-border/50 bg-muted/20">
+      <div className="grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem] gap-2 px-3 py-2 text-[10px] uppercase tracking-wider text-muted-foreground border-b-2 border-border bg-background">
         <span>#</span>
         <span>Operator</span>
         <span className="text-right">Score</span>
         <span className="text-right">Δ</span>
       </div>
-      <ul className="max-h-[min(52vh,420px)] overflow-y-auto divide-y divide-border/30">
+      <ul className="max-h-[min(52vh,420px)] overflow-y-auto divide-y divide-border">
         {entries.map((e) => {
           const rank = e.rank ?? 0;
           return (
@@ -75,10 +75,10 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
               key={e.id}
               className={cn(
                 'grid grid-cols-[2.5rem_1fr_4.5rem_3.5rem] gap-2 px-3 py-2.5 items-center text-sm',
-                e.isYou && theme === 'night' && 'bg-card ring-1 ring-inset ring-[hsl(var(--status-info)/0.4)]',
-                e.isYou && theme === 'dawn' && 'bg-[hsl(var(--status-warn)/0.15)] ring-1 ring-inset ring-[hsl(var(--status-warn)/0.4)]',
-                e.isYou && theme === 'default' && 'bg-tint ring-1 ring-inset ring-primary/30',
-                rank <= 3 && !e.isYou && 'bg-[hsl(var(--status-warn)/0.05)]'
+                e.isYou && theme === 'night' && 'bg-card border-s-2 border-s-foreground',
+                e.isYou && theme === 'dawn' && 'bg-accent-100 border-s-2 border-s-primary',
+                e.isYou && theme === 'default' && 'bg-tint border-s-2 border-s-primary',
+                rank <= 3 && !e.isYou && 'bg-background'
               )}
             >
               <div className="flex justify-center">{rankDisplay(rank)}</div>
@@ -86,13 +86,13 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
                 <div className={cn('font-medium truncate', e.isYou && 'text-primary')}>
                   {e.operatorName}
                   {e.isYou && (
-                    <span className="ml-1.5 text-[10px] uppercase tracking-wide text-primary/80">
+                    <span className="ml-1.5 text-[10px] uppercase tracking-wide text-primary">
                       {t('lbYou', { defaultValue: 'You' })}
                     </span>
                   )}
                   {e.isPacer && !e.isYou && (
                     <span
-                      className="ml-1.5 rounded border border-border/60 bg-muted/40 px-1 py-px text-[9px] uppercase tracking-wide text-muted-foreground align-middle"
+                      className="ml-1.5 border border-border bg-background px-1 py-px text-[9px] uppercase tracking-wide text-muted-foreground align-middle"
                       title={t('lbPacerHint', {
                         defaultValue: 'Pacer — a virtual pace-setter, not a real athlete',
                       })}
@@ -116,8 +116,8 @@ export function LeaderboardTable({ entries, unit, yourRank, theme = 'default' }:
         })}
       </ul>
       {yourRank != null && yourRank > entries.length && (
-        <div className="px-3 py-2 text-xs text-muted-foreground border-t border-border/50">
-          Your rank #{yourRank} — scroll up to find your row highlighted in green.
+        <div className="px-3 py-2 text-xs text-muted-foreground border-t-2 border-border">
+          Your rank #{yourRank} — scroll up to find your row highlighted.
         </div>
       )}
     </div>
