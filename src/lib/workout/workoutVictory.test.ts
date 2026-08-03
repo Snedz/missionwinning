@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   COACH_VICTORY_EARLY_WORKOUTS,
+  buildProgressionInsight,
   pickVictoryNextAction,
   summarizeWorkoutVictory,
 } from './workoutVictory.ts';
@@ -102,5 +103,69 @@ describe('summarizeWorkoutVictory', () => {
       hasCoachPlan: true,
     });
     assert.equal(s.nextAction?.href, '/coach');
+  });
+});
+
+describe('buildProgressionInsight', () => {
+  const freestyleLog: CompletedWorkoutLog = {
+    id: '1',
+    workoutName: 'Just Go',
+    startedAt: '2026-07-01T10:00:00Z',
+    completedAt: '2026-07-01T10:30:00Z',
+    durationSeconds: 1800,
+    totalVolume: 5000,
+    exercises: [
+      {
+        exerciseId: 'bench-press',
+        sets: [
+          { reps: 12, weight: 100 },
+          { reps: 12, weight: 100 },
+        ],
+      },
+    ],
+  };
+
+  it('uses freestyle double progression when nothing was prescribed', () => {
+    const line = buildProgressionInsight(freestyleLog, 'metric', { min: 8, max: 12 });
+    assert.ok(line);
+    assert.match(line!, /Next:/);
+    assert.doesNotMatch(line!, /Mission Coach|not freestyle/i);
+  });
+
+  it('does not freestyle-progress a Mission Coach prescribed session', () => {
+    const log: CompletedWorkoutLog = {
+      ...freestyleLog,
+      workoutName: 'Push A',
+      exercises: [
+        {
+          exerciseId: 'bench-press',
+          prescribed: true,
+          // Strength 3×5 — freestyle 8–12 engine would wrongly say "add reps"
+          sets: [
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 100 },
+          ],
+        },
+      ],
+    };
+    const line = buildProgressionInsight(log, 'metric', { min: 8, max: 12 });
+    assert.ok(line);
+    assert.match(line!, /Mission Coach/i);
+    assert.match(line!, /not freestyle/i);
+    assert.doesNotMatch(line!, /hit top of range|Next: \+/);
+  });
+
+  it('treats a mixed session with any prescribed lift as coached', () => {
+    const log: CompletedWorkoutLog = {
+      ...freestyleLog,
+      exercises: [
+        { exerciseId: 'bench-press', prescribed: true, sets: [{ reps: 5, weight: 100 }] },
+        { exerciseId: 'lateral-raise', sets: [{ reps: 12, weight: 10 }] },
+      ],
+    };
+    const line = buildProgressionInsight(log, 'metric');
+    assert.ok(line);
+    assert.match(line!, /Mission Coach/i);
   });
 });

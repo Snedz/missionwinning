@@ -78,6 +78,23 @@ test('normalize is the identity on rows web already wrote', () => {
   assert.deepEqual(normalizeCloudExercises(nested), nested);
 });
 
+test('normalize keeps prescribed so Victory honesty survives a cloud pull', () => {
+  const nested = [
+    {
+      exerciseId: 'bench-press',
+      prescribed: true as const,
+      sets: [{ reps: 5, weight: 100 }],
+    },
+    {
+      exerciseId: 'row',
+      sets: [{ reps: 8, weight: 60 }],
+    },
+  ];
+  const out = normalizeCloudExercises(nested);
+  assert.equal(out[0].prescribed, true);
+  assert.equal(out[1].prescribed, undefined);
+});
+
 test('garbage becomes an empty session rather than a thrown engine', () => {
   assert.deepEqual(normalizeCloudExercises(null), []);
   assert.deepEqual(normalizeCloudExercises('nope'), []);

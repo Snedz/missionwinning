@@ -2,6 +2,7 @@ import type { CompletedWorkoutLog } from '@/types';
 import type { UnitsPref } from '@/lib/units';
 import { weightStep, weightUnitLabel } from '@/lib/units';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+import { sessionIsCoachPrescribed } from '@/lib/workout/activeWorkoutHelpers';
 import { getExerciseById } from '@/data/exercises';
 
 export type VictoryBodyDelta = {
@@ -34,13 +35,27 @@ export interface WorkoutVictorySummary {
   nextAction?: VictoryNextAction;
 }
 
-/** Build a short “Next: …” line from the heaviest working set in this log. */
+/**
+ * Build a short “Next: …” line from the heaviest working set in this log.
+ *
+ * Freestyle sessions use double progression (add reps, then weight). A Coach-
+ * prescribed session must not get that language — the plan owns next loads
+ * (deload, strength 3×5, etc.), and Victory already points the athlete at
+ * Mission Coach. Freestyle "hit top of range" after a coached 5 is a lie.
+ *
+ * Uses `sessionIsCoachPrescribed` (.280) — one definition for Active chrome
+ * and Victory. Requires the completed log to still carry `prescribed`.
+ */
 export function buildProgressionInsight(
   log: CompletedWorkoutLog,
   units: UnitsPref,
   /** The athlete's goal range; omitted falls back to the generic 8-12. */
   repRange?: { min: number; max: number }
 ): string | undefined {
+  if (sessionIsCoachPrescribed(log.exercises)) {
+    return 'Logged for Mission Coach — next loads come from your plan, not freestyle.';
+  }
+
   let best: { exerciseId: string; reps: number; weight: number } | null = null;
   for (const ex of log.exercises) {
     for (const set of ex.sets) {

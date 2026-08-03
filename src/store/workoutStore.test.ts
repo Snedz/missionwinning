@@ -111,6 +111,31 @@ test('workoutStore', async (t) => {
     assert.equal(log?.exercises[0].sets.length, 1);
   });
 
+  await t.test('prescribed flag survives complete so Victory can stay honest', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Push A', [
+      {
+        exerciseId: 'bench-press',
+        prescribed: true,
+        sets: [
+          { reps: 5, weight: 100 },
+          { reps: 5, weight: 100 },
+        ],
+      },
+    ]);
+    store.logSet(0, 0, 5, 100);
+    const log = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal(log?.exercises[0].prescribed, true, 'Coach load must not become freestyle at finish');
+  });
+
+  await t.test('freestyle complete does not invent a prescribed stamp', () => {
+    const store = useWorkoutStore.getState();
+    store.startWorkout('Just Go', template('push-ups', 1));
+    store.logSet(0, 0, 10, 0);
+    const log = useWorkoutStore.getState().completeActiveWorkout();
+    assert.equal(log?.exercises[0].prescribed, undefined);
+  });
+
   await t.test('finishing with nothing logged discards instead of saving an empty session', () => {
     const store = useWorkoutStore.getState();
     store.startWorkout('Push', template());

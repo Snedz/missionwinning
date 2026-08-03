@@ -14,8 +14,8 @@ Root-level `@/lib/{name}` paths re-export from here for compatibility — prefer
 6. `workoutTemplate.ts` — template → logged sets  
 7. `workoutPr.ts` — personal record detection  
 8. `workoutMerge.ts` — local/cloud history fingerprint merge  
-9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach, else Fuel/Mind/Move  
-10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats  
+9. `workoutVictory.ts` — post-workout summary; early/no-plan → Mission Coach; progression insight uses `sessionIsCoachPrescribed` (no freestyle double-progression after coached session)  
+10. `activeWorkoutHelpers.ts` — next incomplete set, last session, set stats; `sessionIsCoachPrescribed`  
 11. `activeWorkoutPulse.ts` — nav pulse flag without store  
 12. `workoutPersistLite.ts` — history/streak from localStorage (cold path)
 
