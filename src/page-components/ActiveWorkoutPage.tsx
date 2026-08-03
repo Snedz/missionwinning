@@ -492,6 +492,7 @@ export function ActiveWorkoutPage() {
         totalSets={totalSets}
         hardCount={hardCount}
         elapsedSeconds={elapsedSeconds}
+        fromCoachPlan={activeWorkout.exercises.some((ex) => ex.prescribed)}
         onOpenAddExercise={() => setAddExerciseOpen(true)}
         onOpenPlateCalc={() => setPlateCalcOpen(true)}
         onDiscard={discardWorkout}

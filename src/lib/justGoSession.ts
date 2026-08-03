@@ -146,6 +146,9 @@ export function buildJustGoSession(opts: {
               }))
             : seeded.sets,
         ...(ex.loadPct != null && ex.loadPct > 0 ? { loadPct: ex.loadPct } : {}),
+        // Same flag as planSessionToTemplates — Today Just Go must not re-guess
+        // coach numbers via suggestNextSetTarget (see ActiveWorkoutPage getSetInput).
+        prescribed: true,
       };
     });
     return {

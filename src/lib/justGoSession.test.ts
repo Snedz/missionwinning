@@ -64,6 +64,23 @@ describe('justGoSession', () => {
     assert.equal(session.exercises[0].sets.length, 3);
     assert.equal(session.exercises[0].sets[0].weight, 60);
     assert.equal(session.exercises[0].loadPct, 80);
+    // Today path used to omit this — logger re-guessed weights as freestyle.
+    assert.equal(session.exercises[0].prescribed, true);
+    assert.equal(session.exercises[1].prescribed, true);
+  });
+
+  it('does not mark freestyle focus sessions as prescribed', () => {
+    const session = buildJustGoSession({
+      focus: { group: 'Chest', statusKey: 'todayReadinessPrime' },
+      readiness: readinessAll(5),
+      history: [],
+      units: 'metric',
+      equipment: 'full-gym',
+    });
+    assert.notEqual(session.source, 'coach');
+    for (const ex of session.exercises) {
+      assert.equal(ex.prescribed, undefined);
+    }
   });
 
   it('skips done coach sessions', () => {

@@ -57,7 +57,7 @@ One screen of truth for any AI tool or human joining cold. Read this, then [AGEN
 > | Migrations | **9 recorded pending** — [LAUNCH_RUNBOOK](docs/LAUNCH_RUNBOOK.md) §3, enforced by `src/lib/migrationLedger.test.ts`. |
 > | gitleaks | **green — and scanning for the first time.** It had never scanned anything: on a `pull_request` event the action lists the PR's commits, the job declared no `permissions:` block, and it 403'd (`pull_requests=read`) before opening a file. Fixed by a `permissions:` block (`.224` carrying `.255`). It scans **only the PR's own commits**, so commit `8ea3527a`'s real Solana treasury address — scrubbed from the working file, still in history — is out of its scope. That finding stands, deliberately not allowlisted; it was never what made this check red. |
 
-- **`.278`:** Just Go honesty — coach day CTA is “Start this session” / plan name, not freestyle Just Go; Vercel free 100-deploy/day discipline in checklist; invite checklist orders postal→migrations→invites; i18n **698**.
+- **`.278`:** Just Go honesty — coach day CTA is “Start this session” / plan name; coach loads set `prescribed: true` (logger no re-guess); Active eyebrow when prescribed; Vercel 100-deploy/day discipline; invite checklist postal→migrations→invites; i18n **698**.
 - **`.277`:** Form guide + fuel dropzone + Today muscle/recap chrome; Dependabot zustand/stripe/radix-select/ts-eslint; CodeQL action v4.
 - **`.276`:** Landing hero demo + reentry + history/auth/HR chrome; Actions `checkout`/`setup-node`/`upload-artifact` v4→v5 (not Dependabot’s jump to v7).
 - **`.275`:** Leaderboard (picker/table/tabs/inputs) + public exercise/learn index hubs — solid 2px; fixed corrupted night/dawn header classes.
