@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { gateRequired, unlockGate } from './helpers/gate';
-import { seedLegacyOnboarding } from './helpers/journey';
+import { seedLegacyOnboarding, seedReadinessPhase } from './helpers/journey';
 import { seedHistoryAndMissedCoach } from './helpers/seedHistoryCoach';
+import { startEmptyActiveWorkout } from './helpers/active';
 
 /**
  * a11y automation — tagged @a11y (excluded from e2e:critical).
@@ -236,6 +237,45 @@ test.describe('Accessibility @a11y', () => {
     await page.goto('/coach', { waitUntil: 'domcontentloaded' });
     await expect(page.getByText(/missed/i).first()).toBeVisible({ timeout: 15_000 });
     await axeSerious(page, '/coach (seeded missed)');
+  });
+
+  /**
+   * Loop 2 L5 — Victory sheet is the post-finish hero state. Zero-data /active
+   * never opens it; axe must see Session locked + feel controls after a real log.
+   */
+  test('axe serious/critical: Victory sheet after finish @a11y', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    if (!baseURL) throw new Error('baseURL required');
+    const ok = await unlockGate(page, context, baseURL);
+    if (gateRequired() && !ok) {
+      test.skip(true, 'SMOKE_ACCESS_SECRET required to unlock private gate');
+    }
+    await seedLegacyOnboarding(page);
+    await seedReadinessPhase(page);
+    await startEmptyActiveWorkout(page);
+
+    await page.getByRole('button', { name: /^add exercise$/i }).click();
+    const search = page.getByPlaceholder(/search exercises/i);
+    await expect(search).toBeVisible({ timeout: 10_000 });
+    await search.fill('push-ups');
+    await page.getByRole('option', { name: /push-ups/i }).first().click();
+    await page.getByRole('button', { name: /add selected exercise/i }).click();
+
+    const logBtn = page.getByRole('button', { name: /^log( set)?$/i }).first();
+    await expect(logBtn).toBeVisible({ timeout: 15_000 });
+    await logBtn.click();
+    const skipRest = page.getByRole('button', { name: /^skip$/i });
+    if (await skipRest.isVisible({ timeout: 3_000 }).catch(() => false)) {
+      await skipRest.click();
+    }
+    await page.getByRole('button', { name: /^finish$/i }).first().click();
+    await expect(page.getByRole('button', { name: /back to today/i })).toBeVisible({
+      timeout: 15_000,
+    });
+    await axeSerious(page, '/active (victory sheet)');
   });
 
   /**

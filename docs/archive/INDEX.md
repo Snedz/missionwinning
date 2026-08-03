@@ -52,6 +52,7 @@ When adding a doc:
 | [log/LOG-rotate-297.md](./log/LOG-rotate-297.md) | `.282` D13 trust — rotated for `.297` buildConsoleSet extract |
 | [log/LOG-rotate-298.md](./log/LOG-rotate-298.md) | `.283` Pump Kaizen D11–D12 — rotated for `.298` Fuel NL + mealDraft |
 | [log/LOG-rotate-299.md](./log/LOG-rotate-299.md) | `.284` coverage floor — rotated for `.299` i18n batches |
+| [log/LOG-rotate-300.md](./log/LOG-rotate-300.md) | `.285` progressive overload — rotated for `.300` L5 fillers |
 | [log/LOG-rotate-279.md](./log/LOG-rotate-279.md) | Just Go hero meta — rotated for `.294` Today composure + Fuel honesty |
 | [log/LOG-rotate-278.md](./log/LOG-rotate-278.md) | `.263` cold-start Coach — rotated for `.278` Just Go honesty |
 | [log/LOG-rotate-277.md](./log/LOG-rotate-277.md) | rotated for `.277` |

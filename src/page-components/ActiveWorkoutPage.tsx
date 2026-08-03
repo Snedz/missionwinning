@@ -621,7 +621,7 @@ export function ActiveWorkoutPage() {
                 addExerciseToActive(addExerciseId, ex?.muscleGroups);
                 setAddExerciseId('');
               }}
-              className="mt-3 min-h-[40px] border-2 border-border px-4 text-sm font-semibold transition-colors hover:bg-accent-100 disabled:opacity-45"
+              className="mt-3 min-h-[40px] border-2 border-border px-4 text-sm font-semibold transition-colors hover:bg-accent-100 disabled:pointer-events-none disabled:border-dashed disabled:text-muted-foreground"
             >
               {t('activeAddSelectedExercise', { defaultValue: 'Add selected exercise' })}
             </button>

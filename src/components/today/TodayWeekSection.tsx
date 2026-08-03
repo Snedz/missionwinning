@@ -46,9 +46,9 @@ export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTod
                   {c.current}/{c.target}
                 </span>
               </div>
-              <div className="h-2 bg-muted rounded overflow-hidden">
+              <div className="h-2 bg-muted overflow-hidden border-2 border-border">
                 <div
-                  className="h-2 bg-primary rounded transition-all"
+                  className="h-full bg-primary transition-all"
                   style={{ width: `${c.percent}%` }}
                 />
               </div>
@@ -60,12 +60,12 @@ export function TodayWeekSection({ challenges, streak, todaysWorkout, onStartTod
         </CardContent>
       </Card>
 
-      <Card className="content-card border-primary/30">
+      <Card className="content-card border-2 border-border">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Dumbbell className="h-5 w-5 text-primary" />
             {todaysWorkout.name}
-            <span className="text-xs font-normal px-2 py-0.5 rounded bg-primary/20 text-primary">
+            <span className="text-xs font-normal border-2 border-border bg-card px-2 py-0.5 text-foreground">
               {todaysWorkout.tag}
             </span>
           </CardTitle>

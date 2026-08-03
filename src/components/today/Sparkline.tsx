@@ -23,7 +23,7 @@ export function Sparkline({
       <svg
         width={width}
         height={height}
-        className={cn('text-muted-foreground/30', className)}
+        className={cn('text-muted-foreground', className)}
         aria-hidden
       >
         <line

@@ -108,7 +108,10 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   },
 
   '/builder': { cap: 1, why: 'One red Blank workout in the wizard; style chips use selected; quick-load is outline; EmptyState Blank stays outline.' },
-  '/track': { cap: 3, why: 'Was 6. Activity-type chips were selections; two Log Activity buttons and Start GPS remain — class 2.' },
+  '/track': {
+    cap: 1,
+    why: 'Log Activity is the one red; Start GPS + body-metrics Log demoted to outline (Loop 2 L5).',
+  },
 
   '/coach': {
     cap: 1,
@@ -120,8 +123,8 @@ const RED_ACTION_CAP: Record<string, { cap: number; why: string }> = {
   },
 
   '/mind': {
-    cap: 2,
-    why: 'Was 51, then 34, now 2 — BreathingTimer\'s Start and DailyCheckIn\'s Save, one each. `.242` demoted GuidedStepPlayer\'s compact Start to `outline`, which took 32 of them out in one line.',
+    cap: 1,
+    why: 'DailyCheckIn Save is the one red; BreathingTimer Start demoted to outline (Loop 2 L5). Was 2.',
   },
 };
 
