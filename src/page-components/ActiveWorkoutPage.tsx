@@ -45,6 +45,12 @@ import type { Debrief } from '@/lib/coach/debrief';
 import { collectFragments, composeSessionEntry } from '@/lib/journal/composeEntry';
 import { SessionJotField } from '@/components/workout/SessionJotField';
 import { suggestNextSetTarget } from '@/lib/workout/nextSetTargets';
+import {
+  buildOverloadCue,
+  formatOverloadSetLine,
+  overloadReasonDefault,
+  overloadReasonKey,
+} from '@/lib/workout/progressiveOverloadCue';
 import { computeBodyScores } from '@/lib/score';
 import { getTodayCheckIn } from '@/lib/mindCheckIns';
 import {
@@ -250,6 +256,40 @@ export function ActiveWorkoutPage() {
     const set = exLog.sets[nextSet.setIdx];
     if (!set) return null;
     const last = getLastPerformanceForSet(workoutHistory, exLog.exerciseId, nextSet.setIdx);
+    const lastSets = getLastSessionSets(workoutHistory, exLog.exerciseId);
+    const range = repRangeForGoal(goalId);
+    const bwLabel = t('activeSetBodyweight', { defaultValue: 'BW' });
+
+    // Coach prescription wins; freestyle uses double-progression from history.
+    const suggested =
+      exLog.prescribed
+        ? {
+            reps: set.reps,
+            weight: set.weight,
+            reason: null as null,
+          }
+        : lastSets
+          ? suggestNextSetTarget(lastSets, nextSet.setIdx, units, {
+              repMin: range.min,
+              repMax: range.max,
+            })
+          : null;
+
+    const cue = buildOverloadCue({
+      last: last ? { reps: last.reps, weight: last.weight } : null,
+      next: suggested
+        ? { reps: suggested.reps, weight: suggested.weight }
+        : null,
+      reason: suggested && 'reason' in suggested ? suggested.reason : null,
+      prescribed: !!exLog.prescribed,
+    });
+
+    const reasonKey = overloadReasonKey(cue.reason);
+    const reasonLine =
+      reasonKey && cue.reason
+        ? t(reasonKey, { defaultValue: overloadReasonDefault(cue.reason) ?? '' })
+        : null;
+
     return {
       exIdx: nextSet.exIdx,
       setIdx: nextSet.setIdx,
@@ -257,15 +297,15 @@ export function ActiveWorkoutPage() {
       totalSets: exLog.sets.length,
       kind: set.kind ?? ('normal' as const),
       input: getSetInput(nextSet.exIdx, nextSet.setIdx, set.reps, set.weight),
-      // Only when there is a real previous performance — no placeholder line.
-      targetLine: last
-        ? t('activeLastTime', {
-            reps: last.reps,
-            weight: last.weight,
-            unit: unitLabel,
-            defaultValue: `Last time ${last.reps} × ${last.weight} ${unitLabel}`,
-          })
-        : null,
+      overloadCue: {
+        lastLine: cue.last
+          ? formatOverloadSetLine(cue.last.reps, cue.last.weight, unitLabel, bwLabel)
+          : null,
+        nextLine: cue.next
+          ? formatOverloadSetLine(cue.next.reps, cue.next.weight, unitLabel, bwLabel)
+          : null,
+        reasonLine: reasonLine || null,
+      },
     };
   })();
 
@@ -735,7 +775,7 @@ export function ActiveWorkoutPage() {
             exerciseName={consoleSet.exerciseName}
             setNumber={consoleSet.setIdx + 1}
             totalSets={consoleSet.totalSets}
-            targetLine={consoleSet.targetLine}
+            overloadCue={consoleSet.overloadCue}
             reps={consoleSet.input.reps}
             weight={consoleSet.input.weight}
             weightLabel={unitLabel}

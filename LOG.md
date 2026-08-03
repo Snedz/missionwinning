@@ -9,6 +9,23 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
 
 ---
+## 2026-08-03 — Progressive overload on the log console (`.285`)
+
+Compact logger shows **Last · Next · why** (add rep / add weight / hold /
+coach plan) from pure `buildOverloadCue` + double-progression or prescribed
+sets. Industry table stakes for gym-speed overload without a second card.
+
+# Mission Winning — Development Log
+
+Chronological record of shipped work. Newest first.
+
+**Rotation rule:** keep **≤15 entries** here, and never let the file grow. When over, move the oldest entries (whole `##` sections, order preserved) to `docs/archive/log/` and list the file in [docs/archive/INDEX.md](docs/archive/INDEX.md). Enforced by `src/lib/logBudget.test.ts` — until `.242` it was enforced by nothing, and the file had reached **27 entries / 127KB**.
+
+> **The `≤20KB` half of this rule was unmeetable and is retired.** An entry here averages ~5.6KB, because the house style is to explain the defect class rather than name the change — which is the most valuable thing in this repo and not something to trade away for a byte count. Fifteen entries is ~84KB; obeying 20KB would have meant keeping **three**. So the count rule stands, and the size rule becomes a **ratchet**: the file may shrink, never grow. If the founder wants a hard byte ceiling instead, that is a call about house style, not about this file.
+
+Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
+
+---
 ## 2026-08-03 — Coverage floor for D11–D13 UI sheets (`.284`)
 
 `npm run coverage` failed CI: **393 untested** vs floor **389**. Four new
@@ -117,13 +134,4 @@ shadows, and leftover gradient utility stubs: Coach today-session card is a
 recap icons, and chat bubbles use solid 2px paper/ink rules. Bumped
 `@radix-ui/react-tabs` 1.1.13→1.1.21 and `globals` 15→17.8 (Dependabot #112,
 #111) on master so those PRs can close.
-
-## 2026-08-03 — Fuel estimate honesty + better NL match (`.270`)
-
-Horizon W Fuel accuracy: Describe→Custom now shows **matched/rough** +
-confidence chips and a detected-foods line (or a clear rough placeholder note)
-before Log — estimates no longer land on Custom looking finished. NL parser
-gains scoops / oz / tbsp quantities, multi-word oils only (bare “oil” is rough),
-and more gym foods. Photo heuristic: color-only guesses are named
-“(color guess)” and never high confidence. i18n coverage 707→702.
 

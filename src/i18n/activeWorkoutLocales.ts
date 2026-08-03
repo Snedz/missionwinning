@@ -64,6 +64,14 @@ type ActiveWorkoutStrings = {
   /** Bodyweight load token when stored weight is 0 (not "0 kg"). */
   activeSetBodyweight: string;
   activeSetBodyweightAddLoad: string;
+  /** Console progressive-overload strip (last · next · why). */
+  activeOverloadLastLabel: string;
+  activeOverloadNextLabel: string;
+  activeOverloadAddReps: string;
+  activeOverloadAddWeight: string;
+  activeOverloadHold: string;
+  activeOverloadFromLast: string;
+  activeOverloadPrescribed: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -127,6 +135,13 @@ const en: ActiveWorkoutStrings = {
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — next exercise in superset',
   activeSetBodyweight: 'BW',
   activeSetBodyweightAddLoad: 'Bodyweight — tap to add load',
+  activeOverloadLastLabel: 'Last',
+  activeOverloadNextLabel: 'Next',
+  activeOverloadAddReps: 'Add a rep',
+  activeOverloadAddWeight: 'Add weight',
+  activeOverloadHold: 'Hold',
+  activeOverloadFromLast: 'From last time',
+  activeOverloadPrescribed: 'Coach plan',
 };
 
 const es: ActiveWorkoutStrings = {

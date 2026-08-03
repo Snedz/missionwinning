@@ -21,12 +21,24 @@ import { cn } from '@/lib/utils';
 import type { SetKind } from '@/types';
 import { SET_KINDS, setKindDefaultLabel, setKindLabelKey } from '@/lib/workout/setKind';
 
+/** Progressive-overload strip under the exercise name (last · next · why). */
+export type LogConsoleOverloadCue = {
+  lastLine?: string | null;
+  nextLine?: string | null;
+  reasonLine?: string | null;
+};
+
 type Props = {
   exerciseName: string;
   setNumber: number;
   totalSets: number;
-  /** "Last time 8 × 62.5 kg" — from suggestNextSetTarget. Omitted when unknown. */
+  /**
+   * @deprecated Prefer `overloadCue` — single last-time line only.
+   * Kept so callers without next/reason still work.
+   */
   targetLine?: string | null;
+  /** Last · next · why — gym-speed progressive overload (industry table stakes). */
+  overloadCue?: LogConsoleOverloadCue | null;
   reps: number;
   weight: number;
   weightLabel: string;
@@ -94,6 +106,7 @@ export function LogConsole({
   setNumber,
   totalSets,
   targetLine,
+  overloadCue,
   reps,
   weight,
   weightLabel,
@@ -105,6 +118,11 @@ export function LogConsole({
   onLog,
 }: Props) {
   const { t } = useTranslation();
+  const lastLine = overloadCue?.lastLine ?? null;
+  const nextLine = overloadCue?.nextLine ?? null;
+  const reasonLine = overloadCue?.reasonLine ?? null;
+  const hasStructured = !!(lastLine || nextLine || reasonLine);
+  const legacyLine = !hasStructured ? targetLine : null;
 
   return (
     <div className="border-t-2 border-neutral-900 bg-neutral-900 px-4 pb-4 pt-3.5 text-neutral-100">
@@ -119,8 +137,32 @@ export function LogConsole({
         </span>
       </div>
 
-      {targetLine ? (
-        <p className="mt-1 truncate text-xs tabular-nums text-neutral-400">{targetLine}</p>
+      {hasStructured ? (
+        <div className="mt-1.5 space-y-0.5 text-xs tabular-nums leading-snug">
+          {lastLine ? (
+            <p className="truncate text-neutral-400">
+              <span className="me-1.5 font-semibold uppercase tracking-[0.06em] text-neutral-500">
+                {t('activeOverloadLastLabel', { defaultValue: 'Last' })}
+              </span>
+              {lastLine}
+            </p>
+          ) : null}
+          {nextLine ? (
+            <p className="truncate text-neutral-200">
+              <span className="me-1.5 font-semibold uppercase tracking-[0.06em] text-accent-400">
+                {t('activeOverloadNextLabel', { defaultValue: 'Next' })}
+              </span>
+              {nextLine}
+              {reasonLine ? (
+                <span className="text-neutral-500"> · {reasonLine}</span>
+              ) : null}
+            </p>
+          ) : reasonLine && !nextLine ? (
+            <p className="truncate text-neutral-500">{reasonLine}</p>
+          ) : null}
+        </div>
+      ) : legacyLine ? (
+        <p className="mt-1 truncate text-xs tabular-nums text-neutral-400">{legacyLine}</p>
       ) : null}
 
       {/* Set kind moved here from the row's "More" expander: this is where the
