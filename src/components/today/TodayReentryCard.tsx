@@ -36,7 +36,7 @@ export function TodayReentryCard({ reentry }: { reentry: Reentry }) {
           });
 
   return (
-    <div className="rounded-2xl border border-border/40 bg-muted/20 px-4 py-3.5 text-sm">
+    <div className="border-2 border-border bg-card px-4 py-3.5 text-sm">
       <p className="mb-0.5 text-xs font-medium text-muted-foreground">
         {t('todayReentryEyebrow', { defaultValue: 'Back in' })}
       </p>

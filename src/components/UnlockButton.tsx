@@ -212,7 +212,7 @@ export function UnlockButton({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           aria-label="Email for the founders waitlist"
-          className="tap-target w-full rounded-xl border border-input bg-background/60 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          className="tap-target w-full min-h-[44px] border-2 border-border bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground"
         />
         <button type="submit" disabled={submitting} className="primary-action disabled:opacity-60">
           {submitting ? 'Joining…' : 'Join the founders waitlist'}

@@ -89,7 +89,7 @@ export function CoachTodayCard() {
   const freeBeta = isFreeBeta();
 
   return (
-    <Card className="content-card border-border/50 shadow-none">
+    <Card className="content-card border-border shadow-none">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2 font-semibold">
           <Sparkles className="h-4 w-4 text-primary shrink-0" />

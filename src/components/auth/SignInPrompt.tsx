@@ -37,7 +37,7 @@ export function SignInPrompt({
     });
 
   return (
-    <div className={`auth-panel rounded-xl p-4 ${className}`}>
+    <div className={`auth-panel border-2 border-border bg-card p-4 ${className}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="font-medium text-primary text-sm">
@@ -54,7 +54,7 @@ export function SignInPrompt({
           type="button"
           variant="outline"
           size="sm"
-          className="min-h-[44px] rounded-lg"
+          className="min-h-[44px]"
           onClick={() => setExpanded((v) => !v)}
         >
           {expanded
@@ -68,7 +68,7 @@ export function SignInPrompt({
         </Button>
       </div>
       {expanded && (
-        <div className="mt-4 pt-4 border-t border-border/50">
+        <div className="mt-4 pt-4 border-t-2 border-border">
           <SignInPanel compact nextPath={nextPath} />
         </div>
       )}

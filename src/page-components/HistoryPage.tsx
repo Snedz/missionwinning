@@ -512,7 +512,7 @@ export function HistoryPage() {
             {pillarWins.slice(0, 5).map((w, i) => (
               <div
                 key={i}
-                className="text-sm p-2 border rounded bg-muted/20 flex justify-between"
+                className="text-sm p-3 border-2 border-border bg-card flex justify-between gap-2"
               >
                 <span>
                   {w.name}{' '}

@@ -35,7 +35,7 @@ jobs:
       # test grants notification permission.
       NEXT_PUBLIC_VAPID_PUBLIC_KEY: BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # Full history so `origin/master` exists — check-build-label compares the
           # branch's APP_BUILD_LABEL against the base. Under the default shallow
@@ -43,7 +43,7 @@ jobs:
           # made the step below decorative rather than a gate.
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: npm
@@ -127,7 +127,7 @@ jobs:
 
       - name: Upload compliance status
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: compliance-status
           path: compliance-status.json
