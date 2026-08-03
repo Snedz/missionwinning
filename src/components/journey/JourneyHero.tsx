@@ -67,6 +67,8 @@ interface JourneyHeroProps {
    * "Just Go" — the tap loads today's prescribed session.
    */
   justGoMeta?: JustGoHeroMeta | null;
+  /** `workoutHistory.length` — week-1 second-session CTA when exactly 1 (`.291`). */
+  completedSessions?: number;
 }
 
 export function JourneyHero({
@@ -74,11 +76,14 @@ export function JourneyHero({
   onPrimaryClick,
   activeWorkout,
   justGoMeta,
+  completedSessions,
 }: JourneyHeroProps) {
   const { t } = useTranslation();
   const isCompact = useIsCompact();
   const useTrainCta = !activeWorkout && !!justGoMeta;
-  const heroCopy = justGoMeta ? resolveJustGoHeroCopy(justGoMeta) : null;
+  const heroCopy = justGoMeta
+    ? resolveJustGoHeroCopy(justGoMeta, { completedSessions })
+    : null;
 
   const label = activeWorkout
     ? t('resumeWorkout', { defaultValue: 'Resume workout' })

@@ -56,13 +56,38 @@ export type JustGoHeroCopy = {
   descParams?: Record<string, string>;
 };
 
+export type ResolveJustGoHeroCopyOpts = {
+  /** `workoutHistory.length` — week-1 second-session CTA when exactly 1 (`.291`). */
+  completedSessions?: number;
+};
+
 /**
  * Resolve presentation for the Today train CTA.
  * Pure — unit-tested so UI cannot re-lie without a failing test.
  */
-export function resolveJustGoHeroCopy(meta: JustGoHeroMeta): JustGoHeroCopy {
+export function resolveJustGoHeroCopy(
+  meta: JustGoHeroMeta,
+  opts?: ResolveJustGoHeroCopyOpts
+): JustGoHeroCopy {
+  const week1Second = opts?.completedSessions === 1;
+
   if (meta.source === 'coach') {
     const name = meta.sessionName?.trim() || meta.focusLabel;
+    if (week1Second) {
+      return {
+        labelKey: 'week1SecondSessionCta',
+        defaultLabel: 'Start session 2',
+        kickerKey: 'week1SecondSessionKicker',
+        defaultKicker: 'Week one habit',
+        titleKey: 'coachPlanHeroTitle',
+        defaultTitle: name,
+        titleParams: { name },
+        descKey: 'week1SecondSessionCoachDesc',
+        defaultDesc:
+          'Session two of week one — from the plan that already saw your first log.',
+        descParams: { name },
+      };
+    }
     return {
       labelKey: 'coachStartSession',
       defaultLabel: 'Start this session',
@@ -75,6 +100,22 @@ export function resolveJustGoHeroCopy(meta: JustGoHeroMeta): JustGoHeroCopy {
       defaultDesc:
         "Today's planned session from Mission Coach — not freestyle Just Go.",
       descParams: { name },
+    };
+  }
+
+  if (week1Second) {
+    return {
+      labelKey: 'week1SecondSessionCta',
+      defaultLabel: 'Start session 2',
+      kickerKey: 'week1SecondSessionKicker',
+      defaultKicker: 'Week one habit',
+      titleKey: 'justGoTitle',
+      defaultTitle: `${meta.focusLabel} — session 2`,
+      titleParams: { focus: meta.focusLabel },
+      descKey: 'week1SecondSessionReason',
+      defaultDesc:
+        'One session logged. A second this week locks the loop — Coach builds from the logs, not another pillar.',
+      descParams: { focus: meta.focusLabel },
     };
   }
 

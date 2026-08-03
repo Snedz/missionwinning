@@ -9,6 +9,12 @@ Chronological record of shipped work. Newest first.
 Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md).
 
 ---
+## 2026-08-03 — Week-1 second-session activation (`.291`)
+
+After the first log, First Steps next is **session 2** (not Fuel tourism). Today
+train CTA says "Start session 2" when history length is 1. Pure
+`week1SecondSessionCue` + checklist order. Basic still = first workout only.
+
 ## 2026-08-03 — Victory progression is structured + i18n (`.290`)
 
 `buildProgressionInsight` returns a pure payload (reason · lift · numbers), not a
@@ -105,12 +111,4 @@ recap pillar stats, mind locked preview, sidebar, PFT runner/school panel —
 solid 2px paper/ink. Deps: zustand 5.0.14, stripe 22.4.0 (apiVersion `2026-07-29.dahlia`),
 radix-select 2.3.7, typescript-eslint 8.65. CodeQL action **v3 → v4**. Skipped
 `@types/node` 26 (major) and Actions v7 majors.
-
-## 2026-08-03 — Landing hero + Actions v5 (`.276`)
-
-Public first impression: `LogToPlanHero` / fallback and coach adapt demo use
-solid 2px paper/ink. Today reentry card, history pillar wins, sign-in prompt,
-unlock waitlist field, live HR strip, Coach today card border. CI workflows:
-`actions/checkout`, `setup-node`, `upload-artifact` **v4 → v5** (Node-20
-deprecation path; Dependabot still open for v7 majors).
 

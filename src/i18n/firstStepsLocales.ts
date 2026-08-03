@@ -30,6 +30,15 @@ const FIRST_STEPS_EN: Record<string, string> = {
   // between a checklist someone finishes and a chore list they dismiss.
   firstStepWorkoutTitle: 'Log your first workout',
   firstStepWorkoutWhy: 'One logged set is all Mission Coach needs to start building your week.',
+  firstStepSession2Title: 'Log a second session',
+  firstStepSession2Why:
+    'Two sessions in week one locks the habit. Coach builds from the logs — not every pillar at once.',
+  week1SecondSessionCta: 'Start session 2',
+  week1SecondSessionKicker: 'Week one habit',
+  week1SecondSessionReason:
+    'One session logged. A second this week locks the loop — Coach builds from the logs, not another pillar.',
+  week1SecondSessionCoachDesc:
+    'Session two of week one — from the plan that already saw your first log.',
   firstStepFuelTitle: 'Log what you ate',
   firstStepFuelWhy: 'Protein is the one number worth watching early. Nothing else is required.',
   firstStepMindTitle: 'Take one check-in',
