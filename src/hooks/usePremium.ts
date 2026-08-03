@@ -21,6 +21,15 @@ let cache: PremiumCache | null = null;
 let inflight: Promise<boolean> | null = null;
 const listeners = new Set<() => void>();
 
+/**
+ * Stable free-beta snapshot. `useSyncExternalStore` requires getSnapshot /
+ * getServerSnapshot to return the **same reference** when nothing changed —
+ * a fresh `{ premium: true, fetchedAt: Date.now() }` every call caused
+ * "The result of getServerSnapshot should be cached to avoid an infinite loop"
+ * on Learn/Active during free beta.
+ */
+const FREE_BETA_SNAPSHOT: PremiumCache = { premium: true, fetchedAt: 0 };
+
 function notify() {
   listeners.forEach((l) => l());
 }
@@ -34,17 +43,13 @@ function subscribe(listener: () => void) {
 
 function getSnapshot(): PremiumCache | null {
   if (cache) return cache;
-  if (isFreeBetaPremiumUnlocked()) {
-    return { premium: true, fetchedAt: Date.now() };
-  }
+  if (isFreeBetaPremiumUnlocked()) return FREE_BETA_SNAPSHOT;
   return null;
 }
 
 function getServerSnapshot(): PremiumCache | null {
   // Open beta: treat as premium on SSR so gated UI does not flash locked.
-  if (isFreeBetaPremiumUnlocked()) {
-    return { premium: true, fetchedAt: Date.now() };
-  }
+  if (isFreeBetaPremiumUnlocked()) return FREE_BETA_SNAPSHOT;
   return null;
 }
 

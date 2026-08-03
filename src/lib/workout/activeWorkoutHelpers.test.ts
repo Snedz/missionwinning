@@ -8,6 +8,7 @@ import {
   getLastSessionSets,
   nextSetInput,
   resolveSetInput,
+  formatLoggedSetLine,
   sessionSetStats,
   setInputKey,
 } from './activeWorkoutHelpers.ts';
@@ -159,6 +160,17 @@ describe('resolveSetInput', () => {
       reps: 5,
       weight: 85,
     });
+  });
+});
+
+describe('formatLoggedSetLine', () => {
+  it('prints BW instead of 0 kg for bodyweight sets', () => {
+    assert.equal(formatLoggedSetLine(8, 0, 'kg'), '8 × BW');
+    assert.equal(formatLoggedSetLine(8, 0, 'kg', 'BW'), '8 × BW');
+  });
+
+  it('keeps weighted sets with the unit label', () => {
+    assert.equal(formatLoggedSetLine(5, 100, 'kg'), '5 × 100 kg');
   });
 });
 

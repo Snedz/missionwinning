@@ -99,6 +99,24 @@ export function resolveSetInput(params: {
 }
 
 /**
+ * How a completed set reads in the list.
+ *
+ * Bodyweight work is stored as `weight: 0` (no bar). Showing `8 × 0 kg` after
+ * the first Just Go set made the logger look broken — print BW instead.
+ */
+export function formatLoggedSetLine(
+  reps: number,
+  weight: number,
+  weightLabel: string,
+  bodyweightLabel = 'BW'
+): string {
+  if (!Number.isFinite(weight) || weight <= 0) {
+    return `${reps} × ${bodyweightLabel}`;
+  }
+  return `${reps} × ${weight} ${weightLabel}`;
+}
+
+/**
  * Editing one field must not invent the other.
  *
  * `.206` — `updateSetInput` rebuilt the whole `{reps, weight}` pair on every

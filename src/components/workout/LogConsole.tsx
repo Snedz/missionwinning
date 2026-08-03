@@ -162,27 +162,45 @@ export function LogConsole({
             onRepsChange(Number.isFinite(parsed) ? Math.min(999, Math.max(1, parsed)) : 1);
           }}
         />
-        <Field
-          label={weightLabel}
-          value={weight}
-          inputMode="decimal"
-          inputLabel={weightLabel}
-          decreaseLabel={t('activeDecreaseWeight', {
-            unit: weightLabel,
-            defaultValue: `Decrease ${weightLabel}`,
-          })}
-          increaseLabel={t('activeIncreaseWeight', {
-            unit: weightLabel,
-            defaultValue: `Increase ${weightLabel}`,
-          })}
-          onDecrease={() => onWeightChange(Math.max(0, weight - weightStep))}
-          onIncrease={() => onWeightChange(weight + weightStep)}
-          onInput={(raw) => {
-            const cleaned = raw.replace(',', '.').replace(/[^0-9.]/g, '');
-            const parsed = parseFloat(cleaned);
-            onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
-          }}
-        />
+        {weight <= 0 ? (
+          <div className="min-w-0 flex-1">
+            <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
+              {weightLabel}
+            </span>
+            <button
+              type="button"
+              onClick={() => onWeightChange(weightStep > 0 ? weightStep : 5)}
+              className="flex h-[52px] w-full items-center justify-center border-2 border-neutral-700 bg-foreground text-[22px] font-extrabold text-neutral-100"
+              aria-label={t('activeSetBodyweightAddLoad', {
+                defaultValue: 'Bodyweight — tap to add load',
+              })}
+            >
+              {t('activeSetBodyweight', { defaultValue: 'BW' })}
+            </button>
+          </div>
+        ) : (
+          <Field
+            label={weightLabel}
+            value={weight}
+            inputMode="decimal"
+            inputLabel={weightLabel}
+            decreaseLabel={t('activeDecreaseWeight', {
+              unit: weightLabel,
+              defaultValue: `Decrease ${weightLabel}`,
+            })}
+            increaseLabel={t('activeIncreaseWeight', {
+              unit: weightLabel,
+              defaultValue: `Increase ${weightLabel}`,
+            })}
+            onDecrease={() => onWeightChange(Math.max(0, weight - weightStep))}
+            onIncrease={() => onWeightChange(weight + weightStep)}
+            onInput={(raw) => {
+              const cleaned = raw.replace(',', '.').replace(/[^0-9.]/g, '');
+              const parsed = parseFloat(cleaned);
+              onWeightChange(Number.isFinite(parsed) ? Math.min(9999, Math.max(0, parsed)) : 0);
+            }}
+          />
+        )}
       </div>
 
       {/* Poster red, and the only fill this size in the app: every line on it is

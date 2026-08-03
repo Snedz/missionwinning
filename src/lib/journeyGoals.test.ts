@@ -5,6 +5,8 @@ import {
   goalPresetValue,
   parseGoalPresetId,
   GOAL_PRESET_DEFAULTS,
+  visibleGoalPresetIds,
+  AMERICA_GOAL_PRESET_IDS,
 } from '@/lib/journeyGoals';
 
 const t = (key: string, opts?: { defaultValue?: string }) => opts?.defaultValue ?? key;
@@ -35,5 +37,15 @@ describe('journeyGoals', () => {
       formatStoredGoal(goalPresetValue('america_health'), t),
       GOAL_PRESET_DEFAULTS.america_health
     );
+  });
+
+  it('hides America/PFT chips while the america surface is parked', () => {
+    // Default env parks america — I-Day must not pitch a dead track.
+    const visible = visibleGoalPresetIds();
+    for (const id of AMERICA_GOAL_PRESET_IDS) {
+      assert.ok(!visible.includes(id), `${id} should be hidden while america is parked`);
+    }
+    assert.ok(visible.includes('strength'));
+    assert.ok(visible.includes('general'));
   });
 });

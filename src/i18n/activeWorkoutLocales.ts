@@ -55,6 +55,9 @@ type ActiveWorkoutStrings = {
   activeSupersetLink: string;
   activeSupersetUnlink: string;
   activeSetLoggedSuperset: string;
+  /** Bodyweight load token when stored weight is 0 (not "0 kg"). */
+  activeSetBodyweight: string;
+  activeSetBodyweightAddLoad: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -112,6 +115,8 @@ const en: ActiveWorkoutStrings = {
   activeSupersetLink: 'Superset w/ next',
   activeSupersetUnlink: 'Unlink superset',
   activeSetLoggedSuperset: '{{reps}} × {{weight}} — next exercise in superset',
+  activeSetBodyweight: 'BW',
+  activeSetBodyweightAddLoad: 'Bodyweight — tap to add load',
 };
 
 const es: ActiveWorkoutStrings = {

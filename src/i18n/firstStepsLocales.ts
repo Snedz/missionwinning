@@ -50,7 +50,9 @@ const FIRST_STEPS_EN: Record<string, string> = {
   fuelModeStripLabel: 'Log method',
 
   // The public status bar — true only while `isFreeBeta()`.
-  publicStatusOpenBeta: 'Open beta — the full platform is free while we grow with you',
+  // Invite-only while PRIVATE_MODE is on; same free-first promise either way.
+  publicStatusOpenBeta:
+    'Invite-only beta — full platform free for testers while we grow with you',
 };
 
 const fs = (over: Record<string, string>): Record<string, string> => ({
