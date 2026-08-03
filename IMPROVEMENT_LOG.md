@@ -40,3 +40,17 @@ Started: 2026-08-03 · Web craft only · Modernist system stands
 - **D13 What’s New:** hand-authored `WHATS_NEW_BULLETS` in `whatsNew.ts` — never auto from LOG. Last-seen key `mw_whats_new_seen_label` via safeStorage.
 - **D13 FAQ:** controlled `<details open>` + prevented summary click so only one panel opens; Arrow/Home/End move focus between summaries.
 - **D13 First Steps:** `clearFirstStepsDismissed()` under Profile; More already kept the checklist after Today dismiss (`.243`).
+
+## End of night (.283)
+
+**Delivered:** D11–D13 + K1–K7 on `cursor/pump-kaizen-d11-d13-0dc6` → PR #222.
+**Build:** `2026.07-unified.283`
+**i18n uncovered:** 698 → 686
+**Zero-state caps:** `/coach` 4→1, `/nutrition` 2→1
+**Aikido:** MCP `aikido_full_scan` failed (`Cannot autolaunch D-Bus without X11 $DISPLAY`) — founder/local rescan recommended.
+**Not run:** full `npm run gate` / Playwright e2e (Chromium may be absent); unit + i18n + display-type + budget guards green.
+
+### Remaining / next
+- Run seeded a11y cases once Chromium available
+- Durable plan pause/restart still refused until plan history exists
+- Native iOS/Android can reuse History Exercises + manage-week contracts later
