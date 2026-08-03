@@ -12,15 +12,11 @@ import {
   type CheckoutPlanId,
 } from '@/lib/stripeServer';
 
+import { buildCheckoutSessionParams } from '@/lib/checkout/checkoutParams';
+
 export type { CheckoutPlanId };
 
 export { isStripeCheckoutConfigured };
-
-const PLAN_MODE: Record<CheckoutPlanId, 'subscription' | 'payment'> = {
-  monthly: 'subscription',
-  '12mo': 'subscription',
-  lifetime: 'payment',
-};
 
 export type CreateCheckoutInput = {
   planId: CheckoutPlanId;
@@ -46,45 +42,15 @@ export async function createCheckoutSession(
     return { ok: false, status: 503, error: `Price not configured for plan ${input.planId}` };
   }
 
-  const mode = PLAN_MODE[input.planId];
-  const origin = appOrigin();
-  const email = input.email.trim().toLowerCase();
-
-  const params: Stripe.Checkout.SessionCreateParams = {
-    mode,
-    line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${origin}/bundle?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/bundle`,
-    client_reference_id: input.userId,
-    customer_email: email,
-    metadata: {
-      user_id: input.userId,
-      product_id: 'super-bundle',
-      plan_id: input.planId,
-    },
-    // Automatic payment methods (card, Link, wallets, PayPal, crypto when enabled in Dashboard).
-    // Do not set payment_method_types — lets Dashboard config control the list.
-  };
-
-  if (mode === 'payment') {
-    // Lifetime: create a Customer so Billing Portal works later.
-    params.customer_creation = 'always';
-    params.payment_intent_data = {
-      metadata: {
-        user_id: input.userId,
-        product_id: 'super-bundle',
-        plan_id: input.planId,
-      },
-    };
-  } else {
-    params.subscription_data = {
-      metadata: {
-        user_id: input.userId,
-        product_id: 'super-bundle',
-        plan_id: input.planId,
-      },
-    };
-  }
+  // Shape lives in `checkout/checkoutParams.ts` so it can be asserted without a
+  // Stripe key; the SDK type is applied here, where the compiler still checks it.
+  const params = buildCheckoutSessionParams({
+    planId: input.planId,
+    userId: input.userId,
+    email: input.email,
+    priceId,
+    origin: appOrigin(),
+  }) as Stripe.Checkout.SessionCreateParams;
 
   try {
     const session = await stripe.checkout.sessions.create(params);

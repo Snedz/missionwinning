@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from 'crypto';
+import { asAuthUserId } from '@/lib/authUserId';
 
 /** Verify Stripe webhook signature (v1 scheme) without adding stripe npm dependency. */
 export function verifyStripeSignature(payload: string, header: string, secret: string): boolean {
@@ -48,16 +49,7 @@ export function emailFromCheckoutSession(session: StripeCheckoutSession): string
   return session.customer_details?.email ?? session.customer_email ?? null;
 }
 
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-function asUuid(value: string | null | undefined): string | null {
-  const v = value?.trim();
-  if (!v || !UUID_RE.test(v)) return null;
-  return v;
-}
-
 /** Prefer metadata.user_id, then client_reference_id (Checkout Sessions). Ignores non-UUID junk. */
 export function userIdFromCheckoutSession(session: StripeCheckoutSession): string | null {
-  return asUuid(session.metadata?.user_id) ?? asUuid(session.client_reference_id);
+  return asAuthUserId(session.metadata?.user_id) ?? asAuthUserId(session.client_reference_id);
 }

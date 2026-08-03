@@ -139,6 +139,19 @@ run('Unit tests', 'npm', ['test']);
 // resolves it to a no-op via node's own `react-server` export condition, so the
 // spend gates (`.188`) can be tested as wiring, not just as pure decisions.
 run('Route contract tests', 'npm', ['run', 'test:routes']);
+/*
+ * `.262` — how much of the codebase did those two lanes actually execute?
+ *
+ * `node --test --experimental-test-coverage` answered 92%, over the 271 of 657
+ * source files it happened to load; the other 386 were absent from the report
+ * rather than scored zero. This runs both lanes again with lcov and fixes the
+ * denominator, so a new file with no test raises a number somebody sees.
+ *
+ * It re-runs the tests rather than reusing the two lanes above — coverage needs
+ * the instrumentation on, and paying ~1 min to have the figure be real beats
+ * threading lcov through the lanes whose job is to be the fast red/green signal.
+ */
+run('Coverage floors', 'npm', ['run', 'coverage']);
 run('i18n parity', 'npm', ['run', 'i18n:parity']);
 // `i18n:parity` compares locale packs to each other and never opens a `.tsx`, so
 // it is structurally blind to a key that exists in no pack at all. `.202`.

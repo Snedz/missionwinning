@@ -1,19 +1,21 @@
 import 'server-only';
-import type { JourneyPhase, JourneyState } from '@/lib/missionJourney';
+import type { JourneyState } from '@/lib/missionJourney';
 /*
  * `.223` — imported, not redefined. This file carried its own `allBasicDone`
  * requiring all five pillars while the client had narrowed to `b.workout`, and it
  * is this copy that computes the launch gate. See `journey/basicComplete.ts`.
+ *
+ * `.262` — and the arithmetic that turns that predicate into `launchReady` now
+ * lives in `beta/funnelAggregate.ts` for the same reason one step on: this
+ * function reaches Supabase on its first line, so the gate itself had never been
+ * executed by a test.
  */
-import { allBasicDone } from '@/lib/journey/basicComplete';
+import { aggregateBetaFunnel, type BetaProfileRow } from '@/lib/beta/funnelAggregate';
+import { buildInviteShareLink, inviteTotals } from '@/lib/beta/inviteShareLink';
 import type { BetaFunnelAggregate } from '@/types/betaMetrics';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 
 export type { BetaFunnelAggregate };
-
-function emptyPhaseCounts(): Record<JourneyPhase, number> {
-  return { 'i-day': 0, basic: 0, readiness: 0, commissioned: 0 };
-}
 
 /** Aggregate journey funnel across all profiles (service role). */
 export async function computeBetaFunnelAggregate(): Promise<BetaFunnelAggregate | null> {
@@ -29,30 +31,9 @@ export async function computeBetaFunnelAggregate(): Promise<BetaFunnelAggregate 
     return null;
   }
 
-  const phaseCounts = emptyPhaseCounts();
-  let iDayComplete = 0;
-  let basicComplete = 0;
-  let commissioned = 0;
-  const cutoff = Date.now() - 14 * 86400000;
-  let signedUpLast14Days = 0;
-
-  for (const row of profiles ?? []) {
-    if (row.created_at && new Date(row.created_at).getTime() >= cutoff) {
-      signedUpLast14Days++;
-    }
-
-    const js = row.journey_state as JourneyState | null;
-    if (!js?.phase) continue;
-
-    phaseCounts[js.phase] = (phaseCounts[js.phase] ?? 0) + 1;
-
-    if (js.iDay?.completedAt) iDayComplete++;
-    if (js.basic && allBasicDone(js.basic)) basicComplete++;
-    if (js.commissionedAt || js.phase === 'commissioned') commissioned++;
-  }
-
-  const totalProfiles = profiles?.length ?? 0;
-  const pct = (n: number) => (totalProfiles ? Math.round((n / totalProfiles) * 100) : 0);
+  // The maths lives in `beta/funnelAggregate.ts` so the launch gate can be
+  // asserted without a service-role client. `.262`.
+  const funnel = aggregateBetaFunnel(profiles as BetaProfileRow[] | null);
 
   const { count: journeyEventCount } = await admin
     .from('journey_events')
@@ -62,34 +43,6 @@ export async function computeBetaFunnelAggregate(): Promise<BetaFunnelAggregate 
     .from('journey_events')
     .select('*', { count: 'exact', head: true })
     .eq('event_name', 'journey_phase_complete');
-
-  const targets = {
-    iDayPct: 80,
-    basicPct: 40,
-    commissionedPct: 25,
-    launchBasicPct: 60,
-  };
-
-  const iDayCompletionPct = pct(iDayComplete);
-  const basicCompletePct = pct(basicComplete);
-  const commissionedPct = pct(commissioned);
-
-  const launchNotes: string[] = [];
-  if (totalProfiles < 10) launchNotes.push(`Need ≥10 beta users (currently ${totalProfiles}).`);
-  if (iDayCompletionPct < targets.iDayPct) {
-    launchNotes.push(`I-Day completion ${iDayCompletionPct}% — target ≥${targets.iDayPct}%.`);
-  }
-  if (basicCompletePct < targets.launchBasicPct) {
-    launchNotes.push(`Basic Training complete ${basicCompletePct}% — launch gate ≥${targets.launchBasicPct}%.`);
-  }
-  if (commissionedPct < targets.commissionedPct) {
-    launchNotes.push(`Commissioned ${commissionedPct}% — target ≥${targets.commissionedPct}% in 14 days.`);
-  }
-
-  const launchReady =
-    totalProfiles >= 10 &&
-    iDayCompletionPct >= targets.iDayPct &&
-    basicCompletePct >= targets.launchBasicPct;
 
   // Waitlist / lead source breakdown (package_interest) — best-effort.
   let leadSourceTop: Array<{ source: string; count: number }> = [];
@@ -116,20 +69,9 @@ export async function computeBetaFunnelAggregate(): Promise<BetaFunnelAggregate 
   }
 
   return {
-    totalProfiles,
-    signedUpLast14Days,
-    iDayComplete,
-    iDayCompletionPct,
-    basicComplete,
-    basicCompletePct,
-    commissioned,
-    commissionedPct,
-    phaseCounts,
+    ...funnel,
     journeyEventCount: journeyEventCount ?? 0,
     phaseTransitionCount: phaseTransitionCount ?? 0,
-    targets,
-    launchReady,
-    launchNotes,
     leadSourceTop,
     leadTotal,
   };
@@ -220,22 +162,6 @@ export type InviteFunnelRow = {
   firstWorkout: boolean;
 };
 
-function buildInviteShareLink(inviteCode: string): string {
-  const access =
-    process.env.PRIVATE_ACCESS_SECRET?.trim() ||
-    process.env.PRIVATE_ACCESS_CODES?.split(',')[0]?.trim() ||
-    '';
-  const raw =
-    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
-    process.env.NEXT_PUBLIC_APP_URL?.trim() ||
-    'https://www.missionwinning.com';
-  const base = raw.replace(/\/$/, '');
-  const params = new URLSearchParams();
-  if (access) params.set('access', access);
-  params.set('invite', inviteCode);
-  return `${base}/?${params.toString()}`;
-}
-
 export type InviteFunnel = {
   rows: InviteFunnelRow[];
   totals: {
@@ -320,14 +246,7 @@ export async function computeInviteFunnel(): Promise<InviteFunnel | null> {
       };
     });
 
-    const totals = {
-      issued: rows.length,
-      landed: rows.filter((r) => r.first_landed_at).length,
-      signedUp: rows.filter((r) => r.signed_up_user_id).length,
-      iDayDone: rows.filter((r) => r.iDayDone).length,
-      withWorkout: rows.filter((r) => r.firstWorkout).length,
-      target: 10,
-    };
+    const totals = inviteTotals(rows);
 
     return { rows, totals };
   } catch (e) {

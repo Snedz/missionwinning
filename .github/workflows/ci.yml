@@ -95,6 +95,14 @@ jobs:
       - name: Route contract tests
         run: npm run test:routes
 
+      # `.262` — the two lanes above report pass/fail; this reports how much of the
+      # codebase they touched, over every source file rather than only the ones
+      # something imported. Here as well as in `npm run gate` on purpose: `.213`
+      # found the two had silently diverged, and `.200`/`.219` were both checks
+      # that existed and ran nowhere.
+      - name: Coverage floors
+        run: npm run coverage
+
       - name: Dependency audit (high)
         # `npm run security-audit`, not the raw command: package.json already
         # defines it, and two spellings of one check is how they drift.
@@ -134,7 +142,14 @@ jobs:
         run: npm run bundle-budget
 
       # The logger is the product — a PR that breaks it must not go green.
-      # Chromium only, @gate-tagged specs only; a11y / visual / Lighthouse stay in CI extended.
+      # Chromium only, @gate-tagged specs only.
+      #
+      # `.262` — this line used to claim "a11y / visual / Lighthouse stay in CI
+      # extended". Visual and Lighthouse do. **a11y does not**: `ci-extended.yml`
+      # has no such job, so those 34 tests run in `npm run gate` and nowhere else.
+      # `gate.mjs`'s header already called this comment out as false and it was
+      # still here. Whether to spend PR minutes on a11y is a founder call — the
+      # comment is corrected rather than the lane silently added.
       - name: Install Playwright chromium
         run: npx playwright install chromium
 

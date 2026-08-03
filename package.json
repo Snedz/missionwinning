@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test \"src/**/*.test.ts\"",
     "test:routes": "tsx --conditions=react-server --test \"src/**/*.routetest.ts\"",
+    "coverage": "node scripts/coverage.mjs",
     "export-locales": "tsx scripts/export-locale-json.ts",
     "check-env": "node --env-file=.env.local scripts/check-env.mjs",
     "check-token-sync": "node scripts/check-token-sync.mjs",
