@@ -190,7 +190,15 @@ export function CoachPage({ askExerciseId }: CoachPageProps = {}) {
             )}
           </div>
 
-          <CoachAdaptBanner plan={plan} todayOffset={todayOffset} />
+          <CoachAdaptBanner
+            plan={plan}
+            todayOffset={todayOffset}
+            onAdjustToday={
+              todaySession && todaySession.status !== 'done'
+                ? () => setAdjustOpen(true)
+                : undefined
+            }
+          />
 
           <CoachVoiceCard plan={plan} bodyScores={ctx.bodyScores} premium={premium} />
 

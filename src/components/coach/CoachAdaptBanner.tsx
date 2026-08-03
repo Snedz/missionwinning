@@ -6,6 +6,7 @@ import type { CoachPlan } from '@/lib/coach/types';
 import {
   hasCoachAdaptationSignal,
   summarizeCoachAdaptations,
+  todaySessionWhyKeys,
 } from '@/lib/coach/adaptSummary';
 import { coachAdaptReentryIsPrescribed } from '@/lib/coach/coachAdaptReentry';
 
@@ -18,19 +19,28 @@ type Props = {
    * When a live (not-done) session matches, re-entry must not say Just Go.
    */
   todayOffset?: number;
+  /** Open adjust-today sheet (keep / lighten my version) — full Coach only. */
+  onAdjustToday?: () => void;
 };
 
 /**
  * Demo-critical: partners must see log/miss → week changed in ≤60s.
  * Surfaces existing adaptPlan outcomes — not a new engine.
  * D2: glanceable — headline + one beat by default; full list only when not compact.
+ * `.287`: day-named adapt beats + today's prescription why keys (why panel).
  */
-export function CoachAdaptBanner({ plan, compact, todayOffset }: Props) {
-  const { t } = useTranslation();
+export function CoachAdaptBanner({ plan, compact, todayOffset, onAdjustToday }: Props) {
+  const { t, i18n } = useTranslation();
   const beats = summarizeCoachAdaptations(plan);
-  if (!hasCoachAdaptationSignal(plan) && beats.length === 0) return null;
+  const whyKeys =
+    !compact && typeof todayOffset === 'number'
+      ? todaySessionWhyKeys(plan, todayOffset)
+      : [];
+  if (!hasCoachAdaptationSignal(plan) && beats.length === 0 && whyKeys.length === 0) {
+    return null;
+  }
 
-  const showHeadline = beats.length > 0 || plan.revision > 1;
+  const showHeadline = beats.length > 0 || plan.revision > 1 || whyKeys.length > 0;
   if (!showHeadline) return null;
 
   const visibleBeats = compact ? beats.slice(0, 1) : beats.slice(0, 3);
@@ -74,12 +84,13 @@ export function CoachAdaptBanner({ plan, compact, todayOffset }: Props) {
             >
               {t(beat.key, {
                 count: beat.count,
+                days: beat.days,
                 defaultValue: beat.defaultMessage,
               })}
             </li>
           ))}
         </ul>
-      ) : (
+      ) : beats.length === 0 && whyKeys.length === 0 ? (
         <p
           className={
             compact
@@ -92,7 +103,39 @@ export function CoachAdaptBanner({ plan, compact, todayOffset }: Props) {
             defaultValue: `Plan revision ${plan.revision} — week reshaped from workout history alone.`,
           })}
         </p>
-      )}
+      ) : null}
+
+      {whyKeys.length > 0 ? (
+        <div className="space-y-1 pt-1" data-testid="coach-why-panel">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-accent-900">
+            {t('coachWhyTodayEyebrow', { defaultValue: "Why today's plan" })}
+          </p>
+          <ul className="space-y-1">
+            {whyKeys.map((key) => {
+              const line = i18n.exists(key) ? t(key) : '';
+              if (!line) return null;
+              return (
+                <li key={key} className="text-xs leading-relaxed text-muted-foreground">
+                  {line}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ) : null}
+
+      {!compact && onAdjustToday ? (
+        <button
+          type="button"
+          className="min-h-[44px] text-xs font-medium text-primary underline-offset-2 hover:underline"
+          onClick={onAdjustToday}
+        >
+          {t('coachAdaptKeepVersion', {
+            defaultValue: 'Adjust or keep my version of today',
+          })}
+        </button>
+      ) : null}
+
       {showReentry && (
         <div className="pt-1 space-y-2">
           <p className="text-xs text-foreground/90">
