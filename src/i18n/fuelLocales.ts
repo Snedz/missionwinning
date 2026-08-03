@@ -72,6 +72,35 @@ type FuelStrings = {
   fuelCoachLockedDesc: string;
   fuelCoachTargets: string;
   fuelCoachPreviewNote: string;
+  /** Kaizen Loop 2 L4 — photoLog + fuel quick (.299) */
+  photoLogAnalyze: string;
+  photoLogCamera: string;
+  photoLogDone: string;
+  photoLogDropActive: string;
+  photoLogDropIdle: string;
+  photoLogError: string;
+  photoLogNeedImage: string;
+  photoLogOffFailed: string;
+  photoLogOffMatches: string;
+  photoLogOffSearching: string;
+  photoLogSampling: string;
+  photoLogSourceDb: string;
+  photoLogSourceHeuristic: string;
+  photoLogSourceVision: string;
+  photoLogUploading: string;
+  uploadWrongType: string;
+  fuelEditThenLog: string;
+  fuelFrequent: string;
+  fuelLogDetailed: string;
+  fuelMealPicker: string;
+  fuelNlPlaceholder: string;
+  fuelNlTitle: string;
+  fuelRecents: string;
+  fuelRecentsHint: string;
+  fuelSavedMeals: string;
+  fuelSearchToImprove: string;
+  fuelSourceDb: string;
+  fuelSourceRecent: string;
 };
 
 const en: FuelStrings = {
@@ -154,6 +183,34 @@ const en: FuelStrings = {
     'Macro-synced 7-day plan from your targets and training load — not a static sample.',
   fuelCoachTargets: 'Your targets',
   fuelCoachPreviewNote: 'Recipes from your library, adapted to heavy vs rest days',
+  photoLogAnalyze: 'Analyze',
+  photoLogCamera: 'Use camera',
+  photoLogDone: 'Done',
+  photoLogDropActive: 'Drop to analyze',
+  photoLogDropIdle: 'Drop a meal photo or click to browse',
+  photoLogError: 'Could not analyze that photo. Try again.',
+  photoLogNeedImage: 'Drop a photo (JPEG, PNG, WebP).',
+  photoLogOffFailed: 'Food database lookup unavailable — edit the estimate below.',
+  photoLogOffMatches: 'Database matches — tap to fill macros (more accurate)',
+  photoLogOffSearching: 'Searching food database…',
+  photoLogSampling: 'Reading image…',
+  photoLogSourceDb: 'Database',
+  photoLogSourceHeuristic: 'Rough estimate (filename / color)',
+  photoLogSourceVision: 'Vision estimate',
+  photoLogUploading: 'Uploading…',
+  uploadWrongType: 'Wrong file type',
+  fuelEditThenLog: 'Edit servings then log',
+  fuelFrequent: 'Frequent',
+  fuelLogDetailed: 'Photo & detailed log',
+  fuelMealPicker: 'Meal',
+  fuelNlPlaceholder: 'chicken rice broccoli… or 3 eggs',
+  fuelNlTitle: 'Describe what you ate',
+  fuelRecents: 'Recent',
+  fuelRecentsHint: 'Tap to log · pencil to adjust servings first',
+  fuelSavedMeals: 'Saved meals',
+  fuelSearchToImprove: 'Search the food database for better macros',
+  fuelSourceDb: 'Database',
+  fuelSourceRecent: 'Recent',
 };
 
 const es: FuelStrings = {

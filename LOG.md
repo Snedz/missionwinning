@@ -6,9 +6,14 @@ Chronological record of shipped work. Newest first.
 
 > **The `≤20KB` half of this rule was unmeetable and is retired.** An entry here averages ~5.6KB, because the house style is to explain the defect class rather than name the change — which is the most valuable thing in this repo and not something to trade away for a byte count. Fifteen entries is ~84KB; obeying 20KB would have meant keeping **three**. So the count rule stands, and the size rule becomes a **ratchet**: the file may shrink, never grow. If the founder wants a hard byte ceiling instead, that is a call about house style, not about this file.
 
-Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md) · [`.279`](docs/archive/log/LOG-rotate-279.md) · [`.280`](docs/archive/log/LOG-rotate-280.md) · [`.281` for `.296`](docs/archive/log/LOG-rotate-296.md) · [`.282` for `.297`](docs/archive/log/LOG-rotate-297.md) · [`.283` for `.298`](docs/archive/log/LOG-rotate-298.md).
+Archive: [2026-06 → 2026-07-20](docs/archive/log/LOG-2026-06_to_2026-07-20.md) · [2026-07-20 tail](docs/archive/log/LOG-2026-07-20_tail.md) (incl. Accelerator sprint kit rotated 2026-07-22) · [2026-07-20 → 2026-07-29 (`.179` and earlier)](docs/archive/log/LOG-2026-07-20_to_2026-07-29.md) · [2026-07-29 → 2026-07-30 (`.180`–`.199`)](docs/archive/log/LOG-2026-07-29_to_2026-07-30.md) (both rotated 2026-07-30) · [2026-07-30 → 2026-07-31 (`.200`–`.213`)](docs/archive/log/LOG-2026-07-30_to_2026-07-31.md) (rotated 2026-08-02) · [`.247` for `.263`](docs/archive/log/LOG-hero-audit-rotate-2026-08-03.md) · [`.279`](docs/archive/log/LOG-rotate-279.md) · [`.280`](docs/archive/log/LOG-rotate-280.md) · [`.281` for `.296`](docs/archive/log/LOG-rotate-296.md) · [`.282` for `.297`](docs/archive/log/LOG-rotate-297.md) · [`.283` for `.298`](docs/archive/log/LOG-rotate-298.md) · [`.284` for `.299`](docs/archive/log/LOG-rotate-299.md).
 
 ---
+## 2026-08-03 — i18n Active/Fuel/Today batch (`.299`)
+
+Kaizen Loop 2 L4. Active chrome + session volume (~36), photoLog/fuelQuick (~28),
+and Today week-recap/debrief (~17) keys into EN packs. Uncovered **647→566**.
+
 ## 2026-08-03 — Fuel NL tsp/ml/plate + mealDraft (`.298`)
 
 Kaizen Loop 2 L3. NL portion path gains tsp / ml / “plate of” with bare-word
@@ -100,12 +105,4 @@ real percent (e.g. 70% / 50%) so the promise matches the workout.
 Compact logger shows **Last · Next · why** (add rep / add weight / hold /
 coach plan) from pure `buildOverloadCue` + double-progression or prescribed
 sets. Industry table stakes for gym-speed overload without a second card.
-
-## 2026-08-03 — Coverage floor for D11–D13 UI sheets (`.284`)
-
-`npm run coverage` failed CI: **393 untested** vs floor **389**. Four new
-Playwright-covered sheets (`CoachManageSheet`, `CoachScheduleEditor`,
-`WhatsNewSheet`, `ProfileWhatsNewCard`) — pure helpers already unit-tested.
-Raised `FLOORS.untestedFiles` / high-water **389 → 393** via the escape hatch
-the coverage script names (same commit a reviewer can see).
 

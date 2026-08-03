@@ -163,6 +163,24 @@ type TodayStrings = {
   coachPlanGenerating: string;
   coachPlanLoad: string;
   coachPlanRegenerate: string;
+  /** Kaizen Loop 2 L4 — week recap + debrief (.299) */
+  todayWeekRecapTitle: string;
+  todayWeekRecapBody: string;
+  todayWeekRecapShareCard: string;
+  todayWeekRecapCoach: string;
+  todayWeekRecapHistory: string;
+  debriefTitle: string;
+  debriefTrain: string;
+  debriefFuel: string;
+  debriefMoveMind: string;
+  debriefBody: string;
+  debriefBodyNone: string;
+  debriefImpacts: string;
+  debriefBehaviorImpacts: string;
+  debriefCollapse: string;
+  debriefExpand: string;
+  debriefDetails: string;
+  debriefTrackLink: string;
 };
 
 const en: TodayStrings = {
@@ -347,6 +365,23 @@ const en: TodayStrings = {
   coachPlanGenerating: 'Building your week…',
   coachPlanLoad: 'Load',
   coachPlanRegenerate: 'Regenerate',
+  todayWeekRecapTitle: 'This week',
+  todayWeekRecapBody: '{{sessions}} sessions · {{sets}} sets · {{streak}}-day streak',
+  todayWeekRecapShareCard: 'Share card',
+  todayWeekRecapCoach: 'Open AI weekly plan',
+  todayWeekRecapHistory: 'History',
+  debriefTitle: 'Mission Debrief',
+  debriefTrain: 'Train',
+  debriefFuel: 'Fuel',
+  debriefMoveMind: 'Move / Mind',
+  debriefBody: 'Body',
+  debriefBodyNone: 'No weight logged',
+  debriefImpacts: 'Impacts',
+  debriefBehaviorImpacts: 'Behaviors',
+  debriefCollapse: 'Less',
+  debriefExpand: 'Details',
+  debriefDetails: 'Training volume ~{{volume}}. Focus next week on the note above — honest, not automatic.',
+  debriefTrackLink: 'Body metrics',
 };
 
 const coachPlanDefaults = {
@@ -521,6 +556,23 @@ const es: TodayStrings = {
 };
 
 const zh: TodayStrings = {
+  todayWeekRecapTitle: en.todayWeekRecapTitle,
+  todayWeekRecapBody: en.todayWeekRecapBody,
+  todayWeekRecapShareCard: en.todayWeekRecapShareCard,
+  todayWeekRecapCoach: en.todayWeekRecapCoach,
+  todayWeekRecapHistory: en.todayWeekRecapHistory,
+  debriefTitle: en.debriefTitle,
+  debriefTrain: en.debriefTrain,
+  debriefFuel: en.debriefFuel,
+  debriefMoveMind: en.debriefMoveMind,
+  debriefBody: en.debriefBody,
+  debriefBodyNone: en.debriefBodyNone,
+  debriefImpacts: en.debriefImpacts,
+  debriefBehaviorImpacts: en.debriefBehaviorImpacts,
+  debriefCollapse: en.debriefCollapse,
+  debriefExpand: en.debriefExpand,
+  debriefDetails: en.debriefDetails,
+  debriefTrackLink: en.debriefTrackLink,
   todayBasicEncouragement: '一步一步来。健康属于每个人 — 在你的路上训练、营养、活动和学习。',
   todaySectionHealth: '健康评分',
   todaySectionHealthDesc: '教练洞察与支柱分解',
@@ -680,6 +732,23 @@ const zh: TodayStrings = {
 };
 
 const id: TodayStrings = {
+  todayWeekRecapTitle: en.todayWeekRecapTitle,
+  todayWeekRecapBody: en.todayWeekRecapBody,
+  todayWeekRecapShareCard: en.todayWeekRecapShareCard,
+  todayWeekRecapCoach: en.todayWeekRecapCoach,
+  todayWeekRecapHistory: en.todayWeekRecapHistory,
+  debriefTitle: en.debriefTitle,
+  debriefTrain: en.debriefTrain,
+  debriefFuel: en.debriefFuel,
+  debriefMoveMind: en.debriefMoveMind,
+  debriefBody: en.debriefBody,
+  debriefBodyNone: en.debriefBodyNone,
+  debriefImpacts: en.debriefImpacts,
+  debriefBehaviorImpacts: en.debriefBehaviorImpacts,
+  debriefCollapse: en.debriefCollapse,
+  debriefExpand: en.debriefExpand,
+  debriefDetails: en.debriefDetails,
+  debriefTrackLink: en.debriefTrackLink,
   todayBasicEncouragement:
     'Satu langkah demi langkah. Kesehatan untuk semua — latihan, nutrisi, gerak, dan belajar.',
   todaySectionHealth: 'Skor kesehatan',
@@ -853,6 +922,23 @@ const id: TodayStrings = {
 };
 
 const th: TodayStrings = {
+  todayWeekRecapTitle: en.todayWeekRecapTitle,
+  todayWeekRecapBody: en.todayWeekRecapBody,
+  todayWeekRecapShareCard: en.todayWeekRecapShareCard,
+  todayWeekRecapCoach: en.todayWeekRecapCoach,
+  todayWeekRecapHistory: en.todayWeekRecapHistory,
+  debriefTitle: en.debriefTitle,
+  debriefTrain: en.debriefTrain,
+  debriefFuel: en.debriefFuel,
+  debriefMoveMind: en.debriefMoveMind,
+  debriefBody: en.debriefBody,
+  debriefBodyNone: en.debriefBodyNone,
+  debriefImpacts: en.debriefImpacts,
+  debriefBehaviorImpacts: en.debriefBehaviorImpacts,
+  debriefCollapse: en.debriefCollapse,
+  debriefExpand: en.debriefExpand,
+  debriefDetails: en.debriefDetails,
+  debriefTrackLink: en.debriefTrackLink,
   todayBasicEncouragement:
     'ทีละขั้น สุขภาพสำหรับทุกคน — ฝึก โภชนาการ เคลื่อนไหว และเรียนรู้บนเส้นทางของคุณ',
   todaySectionHealth: 'คะแนนสุขภาพ',
@@ -1016,6 +1102,23 @@ const th: TodayStrings = {
 };
 
 const ar: TodayStrings = {
+  todayWeekRecapTitle: en.todayWeekRecapTitle,
+  todayWeekRecapBody: en.todayWeekRecapBody,
+  todayWeekRecapShareCard: en.todayWeekRecapShareCard,
+  todayWeekRecapCoach: en.todayWeekRecapCoach,
+  todayWeekRecapHistory: en.todayWeekRecapHistory,
+  debriefTitle: en.debriefTitle,
+  debriefTrain: en.debriefTrain,
+  debriefFuel: en.debriefFuel,
+  debriefMoveMind: en.debriefMoveMind,
+  debriefBody: en.debriefBody,
+  debriefBodyNone: en.debriefBodyNone,
+  debriefImpacts: en.debriefImpacts,
+  debriefBehaviorImpacts: en.debriefBehaviorImpacts,
+  debriefCollapse: en.debriefCollapse,
+  debriefExpand: en.debriefExpand,
+  debriefDetails: en.debriefDetails,
+  debriefTrackLink: en.debriefTrackLink,
   todayBasicEncouragement: 'خطوة بخطوة. الصحة للجميع — تدريب وتغذية وحركة وتعلّم على مسارك.',
   todaySectionHealth: 'درجات الصحة',
   todaySectionHealthDesc: 'رؤية المدرب وتفصيل الركائز',

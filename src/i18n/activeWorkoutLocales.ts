@@ -123,6 +123,43 @@ type ActiveWorkoutStrings = {
   sessionCheckInMotivation: string;
   sessionCheckInLow: string;
   sessionCheckInFired: string;
+  /** Kaizen Loop 2 L4 — Active chrome + session volume (.299) */
+  activeAddExerciseTitle: string;
+  activeApplyAllTargets: string;
+  activeAskAboutForm: string;
+  activeCloseMenu: string;
+  activeCoachNotesDefault: string;
+  activeCoachNotesHighEffort: string;
+  activeDiscardWorkout: string;
+  activeEmptySubtitle: string;
+  activeExerciseMore: string;
+  activeEyebrow: string;
+  activeGoBuilder: string;
+  activeGoToday: string;
+  activeLastNoteLine: string;
+  activeLoadingSession: string;
+  activeLoadingSessionDesc: string;
+  activeNextTargetLine: string;
+  activeNote: string;
+  activeNotePlaceholder: string;
+  activeRemoveExercise: string;
+  activeRemoveExerciseLogged: string;
+  activeRemoveSet: string;
+  activeRestDefault: string;
+  activeSessionMore: string;
+  activeSessionTimer: string;
+  activeSetLess: string;
+  activeSetOptions: string;
+  activeSwap: string;
+  activeTitle: string;
+  activeAddExerciseInline: string;
+  activeAddSelectedExercise: string;
+  sessionReadinessDelta: string;
+  sessionReduceVolume: string;
+  sessionVolumeNoPlan: string;
+  sessionVolumeNoPlanDesc: string;
+  sessionVolumeReduced: string;
+  sessionVolumeReducedDesc: string;
 };
 
 const en: ActiveWorkoutStrings = {
@@ -240,6 +277,42 @@ const en: ActiveWorkoutStrings = {
   sessionCheckInMotivation: 'Motivation',
   sessionCheckInLow: 'Low',
   sessionCheckInFired: 'Fired up',
+  activeAddExerciseTitle: 'Add exercise',
+  activeApplyAllTargets: 'Apply targets',
+  activeAskAboutForm: 'Ask about form',
+  activeCloseMenu: 'Close menu',
+  activeCoachNotesDefault: 'Rate Easy / Med / Hard after each set so Coach can learn.',
+  activeCoachNotesHighEffort: 'Hard sets stacking up — leave a little in the tank if form slips.',
+  activeDiscardWorkout: 'Discard workout',
+  activeEmptySubtitle: 'Log sets with rest timers, PRs, and form cues — offline ready.',
+  activeExerciseMore: 'More actions',
+  activeEyebrow: 'Train',
+  activeGoBuilder: 'Builder',
+  activeGoToday: 'Today',
+  activeLastNoteLine: 'Last note ({{date}}):',
+  activeLoadingSession: 'Restoring session…',
+  activeLoadingSessionDesc: 'Reading the last workout saved on this device.',
+  activeNextTargetLine: 'Next: {{reps}} × {{weight}} {{unit}}',
+  activeNote: 'Note',
+  activeNotePlaceholder: 'Note — "machine 3, seat 4", "left knee tight"…',
+  activeRemoveExercise: 'Remove exercise',
+  activeRemoveExerciseLogged: 'Remove exercise — discards logged sets',
+  activeRemoveSet: 'Remove set',
+  activeRestDefault: 'Default',
+  activeSessionMore: 'More session actions',
+  activeSessionTimer: 'Session timer',
+  activeSetLess: 'Less',
+  activeSetOptions: 'Set options',
+  activeSwap: 'Swap',
+  activeTitle: 'Active workout',
+  activeAddExerciseInline: 'Add exercise — search 300+ movements',
+  activeAddSelectedExercise: 'Add selected exercise',
+  sessionReadinessDelta: 'Readiness {{from}} → {{to}}',
+  sessionReduceVolume: "Reduce today's volume",
+  sessionVolumeNoPlan: 'No coach session today',
+  sessionVolumeNoPlanDesc: 'Start from Mission Coach for plan volume cuts. Sets here stay yours.',
+  sessionVolumeReduced: 'Volume reduced',
+  sessionVolumeReducedDesc: 'One set trimmed from accessories (min 2). Plan marked Adapted.',
 };
 
 const es: ActiveWorkoutStrings = {
