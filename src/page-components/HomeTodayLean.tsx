@@ -36,7 +36,7 @@ import { runTodayPrimaryAction } from '@/lib/todayPrimaryAction';
 import { STORAGE_KEYS } from '@/lib/storage/keys';
 import { readRaw } from '@/lib/storage/safeStorage';
 import { peekCoachToday } from '@/lib/coach/peekCoachToday';
-import type { JustGoHeroMeta } from '@/lib/justGoHeroMeta';
+import { buildJustGoHeroMeta, type JustGoHeroMeta } from '@/lib/justGoHeroMeta';
 
 /**
  * The evening card reaches the lean shell too — `.192` shipped it dashboard-only,
@@ -222,21 +222,13 @@ export function HomeTodayLean() {
     })();
   };
 
-  const justGoMeta = ((): JustGoHeroMeta | null => {
-    if (hasActiveWorkout) return null;
-    if (!(action.href === '/active' || !!action.startWorkout)) return null;
-    const label =
-      focusLabel || t('todaySessionFocus', { defaultValue: 'Training' });
-    const coach = peekCoachToday();
-    if (coach && coach.exercises.length > 0) {
-      return {
-        focusLabel: label,
-        source: 'coach',
-        sessionName: coach.name,
-      };
-    }
-    return { focusLabel: label, source: 'focus' };
-  })();
+  const justGoMeta: JustGoHeroMeta | null = buildJustGoHeroMeta({
+    hasActiveWorkout,
+    trainReady: action.href === '/active' || !!action.startWorkout,
+    focusLabel:
+      focusLabel || t('todaySessionFocus', { defaultValue: 'Training' }),
+    coach: peekCoachToday(),
+  });
 
   /*
    * The same budget the dashboard shell runs, at the same prices.

@@ -4,7 +4,7 @@
  * Just Go is freestyle (focus/starter). When Mission Coach has a live session
  * for today, the same tap loads that plan — the label must not say "Just Go".
  */
-import type { JustGoSession } from '@/lib/justGoSession';
+import type { CoachSessionLike, JustGoSession } from '@/lib/justGoSession';
 
 export type JustGoHeroSource = JustGoSession['source'];
 
@@ -14,6 +14,33 @@ export type JustGoHeroMeta = {
   /** Coach session name when source === 'coach' */
   sessionName?: string;
 };
+
+export type BuildJustGoHeroMetaOpts = {
+  hasActiveWorkout: boolean;
+  /** Journey says train is the primary next step. */
+  trainReady: boolean;
+  focusLabel: string;
+  /** From peekCoachToday / loadCoachTodayOptional — null when no live plan day. */
+  coach: CoachSessionLike | null;
+};
+
+/**
+ * Build Today train-CTA meta for lean + full shells.
+ * Pure: coach peek stays outside so SSR / tests do not touch storage.
+ */
+export function buildJustGoHeroMeta(opts: BuildJustGoHeroMetaOpts): JustGoHeroMeta | null {
+  if (opts.hasActiveWorkout || !opts.trainReady) return null;
+  const focusLabel = opts.focusLabel.trim() || 'Training';
+  const coach = opts.coach;
+  if (coach && coach.exercises.length > 0) {
+    return {
+      focusLabel,
+      source: 'coach',
+      sessionName: coach.name,
+    };
+  }
+  return { focusLabel, source: 'focus' };
+}
 
 export type JustGoHeroCopy = {
   /** i18n key for the button / dock primary label */

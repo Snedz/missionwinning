@@ -1,9 +1,74 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  buildJustGoHeroMeta,
   isFreestyleJustGo,
   resolveJustGoHeroCopy,
 } from './justGoHeroMeta.ts';
+
+describe('buildJustGoHeroMeta', () => {
+  it('returns null when a workout is already active', () => {
+    assert.equal(
+      buildJustGoHeroMeta({
+        hasActiveWorkout: true,
+        trainReady: true,
+        focusLabel: 'Chest',
+        coach: null,
+      }),
+      null
+    );
+  });
+
+  it('returns null when train is not the journey next step', () => {
+    assert.equal(
+      buildJustGoHeroMeta({
+        hasActiveWorkout: false,
+        trainReady: false,
+        focusLabel: 'Chest',
+        coach: null,
+      }),
+      null
+    );
+  });
+
+  it('marks coach when a live session has exercises', () => {
+    const meta = buildJustGoHeroMeta({
+      hasActiveWorkout: false,
+      trainReady: true,
+      focusLabel: 'Legs',
+      coach: {
+        name: 'Upper A',
+        status: 'planned',
+        exercises: [{ exerciseId: 'bench-press', sets: 3, reps: 8, weight: 60 }],
+      },
+    });
+    assert.deepEqual(meta, {
+      focusLabel: 'Legs',
+      source: 'coach',
+      sessionName: 'Upper A',
+    });
+  });
+
+  it('falls back to freestyle focus without a coach day', () => {
+    const meta = buildJustGoHeroMeta({
+      hasActiveWorkout: false,
+      trainReady: true,
+      focusLabel: 'Back',
+      coach: null,
+    });
+    assert.deepEqual(meta, { focusLabel: 'Back', source: 'focus' });
+  });
+
+  it('ignores coach days with no exercises', () => {
+    const meta = buildJustGoHeroMeta({
+      hasActiveWorkout: false,
+      trainReady: true,
+      focusLabel: 'Core',
+      coach: { name: 'Empty', status: 'planned', exercises: [] },
+    });
+    assert.equal(meta?.source, 'focus');
+  });
+});
 
 describe('resolveJustGoHeroCopy', () => {
   it('does not say Just Go when source is coach', () => {
