@@ -8,6 +8,7 @@ type MoveStrings = {
   movePremiumTitle: string;
   movePremiumDesc: string;
   movePremiumBtn: string;
+  movePremiumLoading: string;
 };
 
 const en: MoveStrings = {
@@ -19,6 +20,7 @@ const en: MoveStrings = {
   movePremiumTitle: 'Premium — Pliability / Skill Yoga depth',
   movePremiumDesc: 'Sports-specific mobility, recovery protocols, and advanced flows.',
   movePremiumBtn: 'Move Premium',
+  movePremiumLoading: 'Loading recovery flows…',
 };
 
 const es: MoveStrings = {
@@ -27,6 +29,7 @@ const es: MoveStrings = {
   moveSubtitle: 'Flujos guiados gratuitos con temporizador. Premium añade profundidad deportiva.',
   moveStartFlow: 'Iniciar flujo',
   moveRecentWins: 'Victorias recientes de Move',
+  movePremiumLoading: 'Cargando flujos de recuperación…',
 };
 
 const zh: MoveStrings = {

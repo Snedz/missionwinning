@@ -18,6 +18,10 @@ type ActiveWorkoutStrings = {
   activeRestAdd15: string;
   activeRestSub15: string;
   activeAddExercise: string;
+  /** Mid-session swap sheet (AdaptiveOverlay) — `.269` */
+  activeSwapEyebrow: string;
+  activeSwapTitle: string;
+  activeSwapPlaceholder: string;
   activeChooseExercise: string;
   activeEmptyExercises: string;
   activeFormGuide: string;
@@ -78,6 +82,9 @@ const en: ActiveWorkoutStrings = {
   activeRestAdd15: '+15s',
   activeRestSub15: '−15s',
   activeAddExercise: 'Add Exercise',
+  activeSwapEyebrow: 'This exercise',
+  activeSwapTitle: 'Swap exercise',
+  activeSwapPlaceholder: 'Swap to… (same muscles first)',
   activeChooseExercise: 'Choose exercise...',
   activeEmptyExercises: 'Add exercises above to begin logging sets.',
   activeFormGuide: 'Form guide',
@@ -137,6 +144,9 @@ const es: ActiveWorkoutStrings = {
   activeRestSubtitle: 'Recupera — siguiente serie cuando estés listo',
   activeRestSkip: 'Saltar',
   activeAddExercise: 'Añadir ejercicio',
+  activeSwapEyebrow: 'Este ejercicio',
+  activeSwapTitle: 'Cambiar ejercicio',
+  activeSwapPlaceholder: 'Cambiar a… (mismos músculos primero)',
   activeChooseExercise: 'Elegir ejercicio…',
   activeEmptyExercises: 'Añade ejercicios arriba para registrar series.',
   activeFormGuide: 'Guía de forma',
@@ -176,6 +186,9 @@ const fr: ActiveWorkoutStrings = {
   activeRestAdd15: '+15 s',
   activeRestSub15: '−15 s',
   activeAddExercise: 'Ajouter un exercice',
+  activeSwapEyebrow: 'Cet exercice',
+  activeSwapTitle: 'Remplacer l’exercice',
+  activeSwapPlaceholder: 'Remplacer par… (mêmes muscles d’abord)',
   activeChooseExercise: 'Choisir un exercice…',
   activeEmptyExercises: 'Ajoutez des exercices ci-dessus pour enregistrer des séries.',
   activeFormGuide: 'Guide de forme',
@@ -285,6 +298,9 @@ const de: ActiveWorkoutStrings = {
   activeRestAdd15: '+15 s',
   activeRestSub15: '−15 s',
   activeAddExercise: 'Übung hinzufügen',
+  activeSwapEyebrow: 'Diese Übung',
+  activeSwapTitle: 'Übung tauschen',
+  activeSwapPlaceholder: 'Tauschen zu… (gleiche Muskeln zuerst)',
   activeChooseExercise: 'Übung wählen…',
   activeEmptyExercises: 'Füge oben Übungen hinzu, um Sätze zu protokollieren.',
   activeFormGuide: 'Form-Guide',
