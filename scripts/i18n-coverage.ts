@@ -57,7 +57,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
  * This is the *only* legitimate reason for the cap to increase, and it happened
  * inside the same PR that introduced the ratchet. Every future move is down.
  */
-const MAX_UNCOVERED_KEYS = 473;
+const MAX_UNCOVERED_KEYS = 447;
 
 /** Components whose user-visible text is not translated, each with a reason. */
 const SKIP_UNTRANSLATED: { file: string; why: string }[] = [
