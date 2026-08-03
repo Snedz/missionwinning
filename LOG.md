@@ -1,3 +1,9 @@
+## 2026-08-03 — Victory honesty after coach-prescribed sessions (`.281`)
+
+Completed logs keep `prescribed`; Victory progression insight uses
+`sessionIsCoachPrescribed` so coached sessions do not get freestyle double-
+progression copy. Cloud normalize preserves the stamp.
+
 ## 2026-08-03 — Coach session predicate for Active chrome (`.280`)
 
 `sessionIsCoachPrescribed` pure helper — Active eyebrow and future apply-targets
@@ -113,13 +119,6 @@ device_id, cron candidates). What remained was a **void**: signed-out You
 rendered nothing about reminders when VAPID/SW are dark. Profile now shows
 an honest card pointing at Today re-entry. Docs: RETURN_LOOP_PLAN status
 corrected to code-shipped / founder-ops inert.
-
-## 2026-08-03 — Empty states that speak, adapt that only speaks when true (`.266`)
-
-History / Active / Coach / Library empty copy tightened (no marketing filler).
-`hasCoachAdaptationSignal` no longer fires on bare revision bumps — the adapt
-banner needs a missed/swapped/logged beat, so cold-start re-spread does not
-claim the week "reshaped" with nothing to say.
 
 # Mission Winning — Development Log
 
